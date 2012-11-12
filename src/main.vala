@@ -8,8 +8,20 @@ using Gtk;
 
 class Corebird : Gtk.Application {
 
+	public Corebird() throws GLib.Error{
+
+		GLib.Object(application_id: "org.baedert.corebird",
+		            flags: ApplicationFlags.FLAGS_NONE);
+		this.register_session = true;
+		this.register();
 
 
+
+
+
+		var window = new MainWindow();
+		this.add_window(window);
+	}
 }
 
 
@@ -23,10 +35,14 @@ class Corebird : Gtk.Application {
 
 
 
-int main () {
+int main (string[] args){
+	Gtk.init(ref args);
+	var corebird = new Corebird();
+
+	corebird.run(args);
 
 
-	var proxy = new OAuthProxy(
+	/*var proxy = new OAuthProxy(
 	            "0rvHLdbzRULZd5dz6X1TUA",						//Consumer Key
 	            "oGrvd6654nWLhzLcJywSW3pltUfkhP4BnraPPVNhHtY", 	//Consumer Secret
 	            "https://api.twitter.com",						//Url Format
@@ -37,7 +53,7 @@ int main () {
 
 
 	proxy.token = "118055879-Uct8UjTQmtIPNZwEFE9tgMPV7YUdaEWkVbL88D8p";
-	proxy.token_secret = "3ncxak11QEUbSKqLylk1lRU4AdmYAoTROk42n0Gmlak";
+	proxy.token_secret = "3ncxak11QEUbSKqLylk1lRU4AdmYAoTROk42n0Gmlak";*/
 
 
 	//Request token
