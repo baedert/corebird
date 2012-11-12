@@ -1,6 +1,26 @@
 
 using Soup;
 using Rest;
+using Gtk;
+
+
+
+
+class Corebird : Gtk.Application {
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
 
 
 int main () {
@@ -47,7 +67,7 @@ int main () {
 */
 
 
-	ProxyCall call = proxy.new_call();
+/*	ProxyCall call = proxy.new_call();
 	call.set_function("1/statuses/update.xml");
 	call.set_method("POST");
 	call.add_param("status", "TEST!");
@@ -56,7 +76,7 @@ int main () {
 	}catch(Error e){
 		stderr.printf("Error while tweeting: %s\n", e.message);
 		return -3;
-	}
+	}*/
 
 	return 0;
 }
