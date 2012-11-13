@@ -18,9 +18,10 @@ class Corebird : Gtk.Application {
 
 
 
-
-		var window = new MainWindow();
-		this.add_window(window);
+		if (Settings.is_first_run())
+		    this.add_window(new FirstRunWindow());
+		else
+			this.add_window(new MainWindow());
 	}
 }
 
@@ -39,8 +40,8 @@ int main (string[] args){
 	Gtk.init(ref args);
 
 	try{
-		var corebird = new Corebird();
 		Settings.init();
+		var corebird = new Corebird();
 		corebird.run(args);
 	} catch(GLib.Error e){
 		stderr.printf(e.message+"\n");

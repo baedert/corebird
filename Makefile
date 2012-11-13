@@ -1,7 +1,11 @@
 FILES = src/main.vala \
 		src/MainWindow.vala \
 		src/Tweet.vala \
-		src/Settings.vala
+		src/Settings.vala \
+		src/FirstRunWindow.vala
+
+
+
 LIBS = --pkg gio-2.0  --pkg gee-1.0 --pkg libsoup-2.4 --pkg rest-0.7 --pkg gtk+-3.0
 NAME = Corebird
 CC = clang
@@ -11,3 +15,9 @@ all: compile
 
 compile: $(FILES)
 	valac --cc=$(CC) $(PARAMS) $(LIBS) $(FILES) -o $(NAME)
+
+
+settings: org.baedert.corebird.gschema.xml
+	sudo cp org.baedert.corebird.gschema.xml /usr/share/glib-2.0/schemas
+	sudo glib-compile-schemas /usr/share/glib-2.0/schemas
+

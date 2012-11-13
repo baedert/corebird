@@ -17,7 +17,7 @@ class Settings{
 	* Notice that this only relies on the information saved in GSettings, nothing else.
 	*/
 	public static bool is_first_run(){
-		return settings.get_boolean("is_first_run");
+		return settings.get_boolean("first-run");
 	}
 
 

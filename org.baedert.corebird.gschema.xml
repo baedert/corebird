@@ -1,0 +1,12 @@
+<schemalist>
+	<schema id="org.baedert.corebird"
+  		path="/org/baedert/corebird/"
+	  	gettext-domain="corebird">
+  
+		<key name="first-run" type="b">
+			<default>true</default>
+			<summary>True if the next start is the first one, false otherwise.</summary>
+			<description>See above.</description>
+		</key>
+	</schema>
+</schemalist>
