@@ -37,10 +37,14 @@ class Corebird : Gtk.Application {
 
 int main (string[] args){
 	Gtk.init(ref args);
-	var corebird = new Corebird();
 
-	corebird.run(args);
-
+	try{
+		var corebird = new Corebird();
+		corebird.run(args);
+	} catch(GLib.Error e){
+		stderr.printf(e.message+"\n");
+		return -1;
+	}
 
 	/*var proxy = new OAuthProxy(
 	            "0rvHLdbzRULZd5dz6X1TUA",						//Consumer Key
