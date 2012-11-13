@@ -40,6 +40,7 @@ int main (string[] args){
 
 	try{
 		var corebird = new Corebird();
+		Settings.init();
 		corebird.run(args);
 	} catch(GLib.Error e){
 		stderr.printf(e.message+"\n");
