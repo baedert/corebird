@@ -71,6 +71,7 @@ class FirstRunWindow : Window {
 				}
 
 				// Save token + token_secret
+				SQLHeavy.Database db = new SQLHeavy.Database("test.db");
 				
 			}
 			notebook.set_current_page(page);
