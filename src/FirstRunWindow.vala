@@ -71,8 +71,21 @@ class FirstRunWindow : Window {
 				}
 
 				// Save token + token_secret
-				SQLHeavy.Database db = new SQLHeavy.Database("test.db");
-				
+				try{
+					Corebird.create_databases();
+					//Write token + token_secret ot the database
+					SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db, 
+						"INSERT INTO common(token, token_secret) VALUES (:token, :token_secret);");
+					q.set_string(":token", proxy.get_token());
+					q.set_string(":token_secret", proxy.get_token_secret());
+					Corebird.db.queue(q);
+				}catch(SQLHeavy.Error e){
+					stderr.printf("SQL ERROR: "+e.message);
+				}
+
+				//Tell everyone that the first run has just ended.
+				Settings.set_bool("first-run", false);
+
 			}
 			notebook.set_current_page(page);
 		});

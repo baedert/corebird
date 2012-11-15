@@ -20,5 +20,9 @@ class Settings{
 		return settings.get_boolean("first-run");
 	}
 
+	public static void set_bool(string key, bool value){
+		settings.set_boolean(key, value);
+	}
+
 
 }
