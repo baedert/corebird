@@ -4,7 +4,7 @@ using Rest;
 using Gtk;
 
 
-
+using Json;
 
 class Corebird : Gtk.Application {
 	public static SQLHeavy.Database db;
@@ -25,29 +25,30 @@ class Corebird : Gtk.Application {
 
 		stdout.printf("SQLite version: %d\n", SQLHeavy.Version.sqlite_library());
 
+		Twitter.init();
+
+
 
 		if (Settings.is_first_run())
 		    this.add_window(new FirstRunWindow());
 		else
 			this.add_window(new MainWindow());
+
+
+		this.activate.connect( ()  => {});
 	}
 
-	public static void create_databases() throws SQLHeavy.Error{
-		SQLHeavy.Query q = new SQLHeavy.Query(db, 
-			"CREATE TABLE 'common'(token VARCHAR(255), token_secret VARCHAR(255));");
-		db.queue(q);
+	public static void create_tables(){
+		try{
+			db.execute("CREATE TABLE IF NOT EXISTS `common`(token VARCHAR(255), 
+				token_secret VARCHAR(255));");
+			db.execute("CREATE TABLE IF NOT EXISTS `avatars`(id INTEGER(11) PRIMARY KEY,
+			           path VARCHAR(255), time INTEGER(11));");
+		}catch(SQLHeavy.Error e){
+			stderr.printf("Error while initing creating the tables: %s\n", e.message);
+		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
 
 
 int main (string[] args){

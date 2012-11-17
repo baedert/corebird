@@ -14,18 +14,21 @@ class MainWindow : Window {
 
 		ToolButton new_tweet_button = new ToolButton.from_stock(Stock.NEW);
 		main_toolbar.add(new_tweet_button);
+		ToolButton settingsButton = new ToolButton.from_stock(Stock.PREFERENCES);
+		main_toolbar.add(settingsButton);
 		main_toolbar.get_style_context().add_class("primary-toolbar");
 		main_toolbar.orientation = Orientation.HORIZONTAL;
 		main_box.pack_start(main_toolbar, false, false);
 
 
 
-
-
 		ToolButton b = new ToolButton.from_stock(Stock.ADD);
 		left_toolbar.add(b);
+		ToolButton c = new ToolButton.from_stock(Stock.DELETE);
+		left_toolbar.add(c);
 		left_toolbar.orientation = Orientation.VERTICAL;
 		left_toolbar.set_style(ToolbarStyle.ICONS);
+		left_toolbar.get_style_context().add_class("inline-toolbar");
 		bottom_box.pack_start(left_toolbar, false, true);
 
 
@@ -38,18 +41,56 @@ class MainWindow : Window {
 		tweet_tree.append_column(column);
 
 
+		tweet_tree.headers_visible = false;
 		tweet_tree.set_model (tweets);
 		ScrolledWindow tweet_scroller = new ScrolledWindow(null, null);
 		tweet_scroller.add(tweet_tree);
 		bottom_box.pack_end (tweet_scroller, true, true);
-
-
-
 		main_box.pack_end(bottom_box, true, true);
+
+		var call = Twitter.proxy.new_call();
+		call.set_function("1.1/statuses/home_timeline.json");
+		call.set_method("GET");
+
+		call.invoke_async.begin(null, () => {
+			string back = call.get_payload();
+			var parser = new Json.Parser();
+			parser.load_from_data(back);
+			var root = parser.get_root().get_array();
+
+			root.foreach_element( (array, index, node) => {
+				Json.Object o = node.get_object();
+				Json.Object user = o.get_object_member("user");
+				Tweet t = new Tweet(o.get_string_member("text"));
+				t.favorited = o.get_boolean_member("favorited");
+				t.retweeted = o.get_boolean_member("retweeted");
+				t.from = user.get_string_member("name");
+				t.from_screenname = user.get_string_member("screen_name");
+
+				if (o.has_member("retweeted_status")){
+					Json.Object rt = o.get_object_member("retweeted_status");
+					t.is_retweet = true;
+					t.text = rt.get_string_member("text");
+					t.from_screenname = rt.get_object_member("user").
+							get_string_member ("screen_name");
+					t.from = rt.get_object_member("user").get_string_member("name");
+				}
+				TreeIter iter;
+				tweets.append(out iter);
+				tweets.set(iter, 0, t);
+			});
+		});
+
+		unowned Thread<void*> avatar_thread = Thread.create<void*>(() => {
+			return null;
+		}, true);
+
+
+
 
 
 		this.add(main_box);
-		this.set_default_size (300, 400);
+		this.set_default_size (450, 600);
 		this.show_all();
 	}
 

@@ -10,7 +10,6 @@ class FirstRunWindow : Window {
 	private Box main_box = new Box(Orientation.VERTICAL, 2);
 	private Box button_box = new Box(Orientation.HORIZONTAL, 15);
 	private int page = 0;
-	private OAuthProxy proxy;
 
 
 	public FirstRunWindow(){
@@ -72,15 +71,15 @@ class FirstRunWindow : Window {
 
 				// Save token + token_secret
 				try{
-					Corebird.create_databases();
+					Corebird.create_tables();
 					//Write token + token_secret ot the database
-					SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db, 
-						"INSERT INTO common(token, token_secret) VALUES (:token, :token_secret);");
-					q.set_string(":token", proxy.get_token());
-					q.set_string(":token_secret", proxy.get_token_secret());
-					Corebird.db.queue(q);
+					SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db, "INSERT INTO 'common'(token, token_secret) 
+					                  VALUES (:t, :ts);");
+					q.set_string(":t", proxy.get_token());
+					q.set_string(":ts", proxy.get_token_secret());
+					q.execute();
 				}catch(SQLHeavy.Error e){
-					stderr.printf("SQL ERROR: "+e.message);
+					stderr.printf("SQL ERROR: "+e.message+"\n");
 				}
 
 				//Tell everyone that the first run has just ended.
