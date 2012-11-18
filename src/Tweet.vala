@@ -13,6 +13,7 @@ class Tweet : GLib.Object{
 
 	public Tweet(string text){
 		this.text = text;
+		this.avatar = Twitter.no_avatar;
 	}
 
 	public Gdk.Pixbuf? get_status_pixbuf(){
@@ -63,20 +64,20 @@ class TweetRenderer : Gtk.CellRenderer {
 
 		c.save();
 		Gdk.cairo_rectangle(c, background_area);
-		Gdk.cairo_set_source_pixbuf (c, Twitter.no_avatar,
+		Gdk.cairo_set_source_pixbuf (c, tweet.avatar,
 				PADDING, background_area.y + PADDING);
 		c.fill();
 		c.restore();
 
 
-		c.move_to(background_area.x + 2*PADDING + Twitter.no_avatar.get_width(), 
+		c.move_to(background_area.x + 2*PADDING + tweet.avatar.get_width(), 
 		          background_area.y + PADDING);
 		Pango.Layout from_layout = Pango.cairo_create_layout(c);
 		from_layout.set_text(tweet.from, -1);
 		Pango.cairo_show_layout(c, from_layout);
 		from_layout.get_extents(null, out size);
 
-		c.move_to(background_area.x + 2* PADDING + Twitter.no_avatar.get_width(),
+		c.move_to(background_area.x + 2* PADDING + tweet.avatar.get_width(),
 		          background_area.y + PADDING + (size.height / Pango.SCALE) + 3);
 
 

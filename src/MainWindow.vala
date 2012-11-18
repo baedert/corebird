@@ -1,5 +1,6 @@
 
 using Gtk;
+using Soup;
 
 
 class MainWindow : Window {
@@ -58,6 +59,7 @@ class MainWindow : Window {
 			parser.load_from_data(back);
 			var root = parser.get_root().get_array();
 
+
 			root.foreach_element( (array, index, node) => {
 				Json.Object o = node.get_object();
 				Json.Object user = o.get_object_member("user");
@@ -66,6 +68,7 @@ class MainWindow : Window {
 				t.retweeted = o.get_boolean_member("retweeted");
 				t.from = user.get_string_member("name");
 				t.from_screenname = user.get_string_member("screen_name");
+				string id = user.get_string_member("id_str");
 
 				if (o.has_member("retweeted_status")){
 					Json.Object rt = o.get_object_member("retweeted_status");
@@ -75,18 +78,43 @@ class MainWindow : Window {
 							get_string_member ("screen_name");
 					t.from = rt.get_object_member("user").get_string_member("name");
 				}
+
+				string? path = null;
+				SQLHeavy.Query avatar_query;
+				SQLHeavy.QueryResult avatar_result;
+				try{
+					avatar_query = new SQLHeavy.Query(Corebird.db, "SELECT `id`, `path` FROM `avatars`
+								WHERE `id`='"+id+"';");
+					avatar_result = avatar_query.execute();
+					path = avatar_result.fetch_string(1);
+				}catch(SQLHeavy.Error e){
+					error("Error while checking the avatar: %s\n", e.message);
+				}
+
+				
+				if(path == null){
+					//Load Avatar
+					message("Loading avatar\n");
+					string avatar = user.get_string_member("profile_image_url");
+					path = "assets/avatars/%s.png".printf(id);
+					File a = File.new_for_uri(avatar);
+					File dest = File.new_for_path(path);
+					a.copy(dest, FileCopyFlags.OVERWRITE);
+					try{
+						Corebird.db.execute("INSERT INTO avatars(`id`, `path`, `time`) VALUES
+					    	('%s', '%s', '1');".printf(id, path));
+					}catch(SQLHeavy.Error e){
+						stderr.printf("Error while saving avatar: %s\n", e.message);
+					}
+				}
+				t.avatar = new Gdk.Pixbuf.from_file(path);
+
+
 				TreeIter iter;
 				tweets.append(out iter);
 				tweets.set(iter, 0, t);
 			});
 		});
-
-		unowned Thread<void*> avatar_thread = Thread.create<void*>(() => {
-			return null;
-		}, true);
-
-
-
 
 
 		this.add(main_box);

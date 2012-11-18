@@ -42,8 +42,7 @@ class Corebird : Gtk.Application {
 		try{
 			db.execute("CREATE TABLE IF NOT EXISTS `common`(token VARCHAR(255), 
 				token_secret VARCHAR(255));");
-			db.execute("CREATE TABLE IF NOT EXISTS `avatars`(id INTEGER(11) PRIMARY KEY,
-			           path VARCHAR(255), time INTEGER(11));");
+			db.execute("CREATE TABLE IF NOT EXISTS `avatars`(id INTEGER(11), path VARCHAR(255), time INTEGER(11));");
 		}catch(SQLHeavy.Error e){
 			stderr.printf("Error while initing creating the tables: %s\n", e.message);
 		}
