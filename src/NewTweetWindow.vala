@@ -6,8 +6,16 @@ class NewTweetWindow : Window {
 	
 
 
-	public NewTweetWindow() {
-		// GLib.Object(type : WindowType.POPUP);
+	public NewTweetWindow(Window parent) {
+		this.set_transient_for(parent);
+		this.set_modal(true);
+		this.set_type_hint(Gdk.WindowTypeHint.DIALOG);
+
+
+		ToolItem left_item = new ToolItem();
+		Box left_box = new Box(Orientation.HORIZONTAL, 0);
+		left_item.add(left_box);
+
 
 
 
@@ -15,16 +23,31 @@ class NewTweetWindow : Window {
 		bottom_bar.show_arrow = false;
 		bottom_bar.get_style_context().add_class("inline-toolbar");
 
-		ToolButton a = new ToolButton(null, "START");
-		a.halign = Align.START;
-		a.hexpand = true;
-		bottom_bar.add(a);
+		Button img_button = new Button.with_label("Add Image");
+		Button location_button = new Button.with_label("Add Location");
 
-		ToolButton send_button = new ToolButton(null, "Send");
+		left_box.pack_start(img_button, false, false);
+		left_box.pack_start(location_button, false, false);
 
-		send_button.halign = Align.END;
-		send_button.set_expand(true);
-		bottom_bar.add(send_button);
+		bottom_bar.add(left_item);
+		var sep1 = new SeparatorToolItem();
+		sep1.draw = false;
+		sep1.set_expand(true);
+		bottom_bar.add(sep1);
+
+
+		ToolItem right_item = new ToolItem();
+		Box right_box = new Box(Orientation.HORIZONTAL, 0);
+		Button cancel_button = new Button.with_label("Cancel");
+		cancel_button.clicked.connect( () => {
+			this.destroy();
+		});
+		right_box.pack_start(cancel_button, false, false);
+		Button send_button = new Button.with_label("Send");
+		right_box.pack_end(send_button, false, false);
+		right_item.add(right_box);
+		bottom_bar.add(right_item);
+
 
 
 		TextView text_view = new TextView();

@@ -15,7 +15,7 @@ class MainWindow : Window {
 
 		ToolButton new_tweet_button = new ToolButton.from_stock(Stock.NEW);
 		new_tweet_button.clicked.connect( () => {
-			NewTweetWindow win = new NewTweetWindow();
+			NewTweetWindow win = new NewTweetWindow(this);
 		});
 		main_toolbar.add(new_tweet_button);
 		ToolButton settingsButton = new ToolButton.from_stock(Stock.PREFERENCES);
@@ -32,7 +32,6 @@ class MainWindow : Window {
 		left_toolbar.add(c);
 		left_toolbar.orientation = Orientation.VERTICAL;
 		left_toolbar.set_style(ToolbarStyle.ICONS);
-		left_toolbar.get_style_context().add_class("inline-toolbar");
 		bottom_box.pack_start(left_toolbar, false, true);
 
 
@@ -57,8 +56,8 @@ class MainWindow : Window {
 		call.set_method("GET");
 
 		call.invoke_async.begin(null, () => {
-			return;
 			string back = call.get_payload();
+			stdout.printf(back+"\n");
 			var parser = new Json.Parser();
 			parser.load_from_data(back);
 			var root = parser.get_root().get_array();
@@ -73,15 +72,24 @@ class MainWindow : Window {
 				t.from = user.get_string_member("name");
 				t.from_screenname = user.get_string_member("screen_name");
 				string id = user.get_string_member("id_str");
+				string avatar = user.get_string_member("profile_image_url");
 
+
+
+				
+
+				
 				if (o.has_member("retweeted_status")){
 					Json.Object rt = o.get_object_member("retweeted_status");
 					t.is_retweet = true;
 					t.text = rt.get_string_member("text");
-					t.from_screenname = rt.get_object_member("user").
-							get_string_member ("screen_name");
-					t.from = rt.get_object_member("user").get_string_member("name");
+					Json.Object rt_user = rt.get_object_member("user");
+					t.from_screenname = rt_user.get_string_member ("screen_name");
+					t.from = rt_user.get_string_member("name");
+					avatar = rt_user.get_string_member("profile_image_url");
+					id = rt_user.get_string_member("id_str");
 				}
+
 
 				string? path = null;
 				SQLHeavy.Query avatar_query;
@@ -95,11 +103,11 @@ class MainWindow : Window {
 					error("Error while checking the avatar: %s\n", e.message);
 				}
 
-				
+
+				// If path is still null at this point, we have to download the user's avatar.
 				if(path == null){
 					//Load Avatar
-					message("Loading avatar");
-					string avatar = user.get_string_member("profile_image_url");
+					message("Loading avatar for "+id);
 					path = "assets/avatars/%s.png".printf(id);
 					File a = File.new_for_uri(avatar);
 					File dest = File.new_for_path(path);
@@ -108,9 +116,10 @@ class MainWindow : Window {
 						Corebird.db.execute("INSERT INTO avatars(`id`, `path`, `time`) VALUES
 					    	('%s', '%s', '1');".printf(id, path));
 					}catch(SQLHeavy.Error e){
-						stderr.printf("Error while saving avatar: %s\n", e.message);
+						error("Error while saving avatar: %s\n".printf(e.message));
 					}
 				}
+
 				t.avatar = new Gdk.Pixbuf.from_file(path);
 
 

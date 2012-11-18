@@ -39,9 +39,8 @@ class TweetRenderer : Gtk.CellRenderer {
 
 	public TweetRenderer(){
 		GLib.Object();
-		this.font = Pango.FontDescription.from_string("Ubuntu 9");
-		this.from_font = this.font.copy();
-		this.from_font.set_weight(Pango.Weight.BOLD);
+		this.font = Pango.FontDescription.from_string("'Droid Sans' 9");
+		this.from_font = Pango.FontDescription.from_string("'Droid Sans' Bold 9.5");
 	}
 
 	public override void render (Cairo.Context c, Widget tree,
@@ -73,6 +72,7 @@ class TweetRenderer : Gtk.CellRenderer {
 		c.move_to(background_area.x + 2*PADDING + tweet.avatar.get_width(), 
 		          background_area.y + PADDING);
 		Pango.Layout from_layout = Pango.cairo_create_layout(c);
+		from_layout.set_font_description(this.from_font);
 		from_layout.set_text(tweet.from, -1);
 		Pango.cairo_show_layout(c, from_layout);
 		from_layout.get_extents(null, out size);
@@ -81,7 +81,9 @@ class TweetRenderer : Gtk.CellRenderer {
 		          background_area.y + PADDING + (size.height / Pango.SCALE) + 3);
 
 
+		// Draw the actual text
 		Pango.Layout layout = Pango.cairo_create_layout(c);
+		layout.set_font_description(this.font);
 		layout.set_width((cell_area.width - 3*PADDING -
 			Twitter.no_avatar.get_width()) * Pango.SCALE);
 		layout.set_font_description(font);
