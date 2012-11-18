@@ -61,25 +61,5 @@ int main (string[] args){
 		stderr.printf(e.message+"\n");
 		return -1;
 	}
-
-	/*
-
-	stdout.printf("TOKEN: %s\nTOKEN SECRET: %s\n",
-	              proxy.token, proxy.token_secret);
-
-*/
-
-
-/*	ProxyCall call = proxy.new_call();
-	call.set_function("1/statuses/update.xml");
-	call.set_method("POST");
-	call.add_param("status", "TEST!");
-	try{
-		call.sync();
-	}catch(Error e){
-		stderr.printf("Error while tweeting: %s\n", e.message);
-		return -3;
-	}*/
-
 	return 0;
 }

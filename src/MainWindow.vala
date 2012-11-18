@@ -14,6 +14,9 @@ class MainWindow : Window {
 	public MainWindow(){
 
 		ToolButton new_tweet_button = new ToolButton.from_stock(Stock.NEW);
+		new_tweet_button.clicked.connect( () => {
+			NewTweetWindow win = new NewTweetWindow();
+		});
 		main_toolbar.add(new_tweet_button);
 		ToolButton settingsButton = new ToolButton.from_stock(Stock.PREFERENCES);
 		main_toolbar.add(settingsButton);
@@ -54,6 +57,7 @@ class MainWindow : Window {
 		call.set_method("GET");
 
 		call.invoke_async.begin(null, () => {
+			return;
 			string back = call.get_payload();
 			var parser = new Json.Parser();
 			parser.load_from_data(back);
@@ -94,7 +98,7 @@ class MainWindow : Window {
 				
 				if(path == null){
 					//Load Avatar
-					message("Loading avatar\n");
+					message("Loading avatar");
 					string avatar = user.get_string_member("profile_image_url");
 					path = "assets/avatars/%s.png".printf(id);
 					File a = File.new_for_uri(avatar);
