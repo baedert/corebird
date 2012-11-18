@@ -18,8 +18,8 @@ class MainWindow : Window {
 			NewTweetWindow win = new NewTweetWindow(this);
 		});
 		main_toolbar.add(new_tweet_button);
-		ToolButton settingsButton = new ToolButton.from_stock(Stock.PREFERENCES);
-		main_toolbar.add(settingsButton);
+		ToolButton refresh_button = new ToolButton.from_stock(Stock.REFRESH);
+		main_toolbar.add(refresh_button);
 		main_toolbar.get_style_context().add_class("primary-toolbar");
 		main_toolbar.orientation = Orientation.HORIZONTAL;
 		main_box.pack_start(main_toolbar, false, false);
@@ -135,4 +135,8 @@ class MainWindow : Window {
 		this.show_all();
 	}
 
+
+	private async void load_new_tweets(){
+
+	}
 }

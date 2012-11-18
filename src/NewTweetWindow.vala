@@ -1,9 +1,10 @@
 
 using Gtk;
+using Rest;
 
 
 class NewTweetWindow : Window {
-	
+	private TextView text_view = new TextView();
 
 
 	public NewTweetWindow(Window parent) {
@@ -44,14 +45,27 @@ class NewTweetWindow : Window {
 		});
 		right_box.pack_start(cancel_button, false, false);
 		Button send_button = new Button.with_label("Send");
+		send_button.clicked.connect( () => {
+			TextIter start, end;
+			text_view.buffer.get_start_iter(out start);
+			text_view.buffer.get_end_iter(out end);
+			string text = text_view.buffer.get_text(start, end, true);
+			var call = Twitter.proxy.new_call();
+			call.set_function("1.1/statuses/update.json");
+			call.set_method("POST");
+			call.add_param("status", text);
+			call.invoke_async(null);
+			this.destroy();
+		});
 		right_box.pack_end(send_button, false, false);
 		right_item.add(right_box);
 		bottom_bar.add(right_item);
 
 
 
-		TextView text_view = new TextView();
+		
 		text_view.margin = 5;
+		text_view.wrap_mode = WrapMode.WORD_CHAR;
 		ScrolledWindow text_scroller = new ScrolledWindow(null, null);
 		text_scroller.add(text_view);
 
@@ -64,7 +78,6 @@ class NewTweetWindow : Window {
 		this.add(main_box);
 		this.set_default_size(300, 150);
 		this.show_all();
-		// this.set_resizable(false);
 	}
 	
 }
