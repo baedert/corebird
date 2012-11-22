@@ -60,8 +60,21 @@ class MainWindow : Window {
 		main_box.pack_end(bottom_box, true, true);
 
 
+		//TODO: Parse date
+		GLib.Date date = {};
+		date.set_parse("Wed Jun 20 19:01:28 +0000 2012");
+		GLib.DateDay day = date.get_day();
+		GLib.DateMonth month = date.get_month();
+		GLib.DateYear year = date.get_year();
+
+		stdout.printf("Date: %d.%d.%d\n", day, month, year);
+
+
+return;
+
 		try{
 			load_new_tweets();
+			refresh_profile.begin();
 		}catch(SQLHeavy.Error e){
 			error("Warning while fetching new tweets: %s", e.message);
 		}
@@ -110,13 +123,14 @@ class MainWindow : Window {
 		var call = Twitter.proxy.new_call();
 		call.set_function("1.1/statuses/home_timeline.json");
 		call.set_method("GET");
-		call.add_param("count", "3");
+		call.add_param("count", "30");
+		call.add_param("include_entities", "false");
 		if(greatest_id > 0)
 			call.add_param("since_id", greatest_id.to_string());
 
 		call.invoke_async.begin(null, () => {
 			string back = call.get_payload();
-			// stdout.printf(back+"\n");
+			stdout.printf(back+"\n");
 			var parser = new Json.Parser();
 			parser.load_from_data(back);
 			if (parser.get_root().get_node_type() != Json.NodeType.ARRAY){
@@ -132,10 +146,6 @@ class MainWindow : Window {
 			SQLHeavy.Query cache_query = new SQLHeavy.Query(Corebird.db,
 				"INSERT INTO `cache`(`id`, `text`,`user_id`, `user_name`, `time`) 
 				VALUES (:id, :text, :user_id, :user_name, :time);");
-
-			List<unowned Json.Node> nodes = root.get_elements();
-			// uint index = nodes.length()-1;
-			// do{
 
 			root.foreach_element( (array, index, node) => {
 				Json.Object o = node.get_object();
@@ -197,5 +207,22 @@ class MainWindow : Window {
 			});
 		});
 
+	}
+
+	private async void refresh_profile(){
+		var call = Twitter.proxy.new_call();
+		call.set_method("GET");
+		call.set_function("1.1/users/show.json");
+		call.add_param("user_id", "15");
+		call.invoke_async.begin(null, () => {
+			string json_string = call.get_payload();
+			Json.Parser parser = new Json.Parser();
+			try{
+				parser.load_from_data (json_string);
+				// stdout.printf(json_string+"\n");
+			}catch(GLib.Error e){
+				error("Error while refreshing profile: %s", e.message);
+			}
+		});
 	}
 }
