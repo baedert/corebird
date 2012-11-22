@@ -40,7 +40,7 @@ class Twitter{
 				Twitter.token_secret = result.fetch_string();
 				return Twitter.token_secret;
 			}catch(SQLHeavy.Error e){
-				stderr.printf("Error while retrieving token_secret: %s\n", e.message);
+				error("Error while retrieving token_secret: %s", e.message);
 			}
 		}
 		return Twitter.token_secret;		
@@ -64,7 +64,7 @@ class Twitter{
 					new Gdk.Pixbuf.from_file("assets/retweeted_favorited.png");
 			Twitter.no_avatar = new Gdk.Pixbuf.from_file("assets/no_avatar.png");
 		}catch(GLib.Error e){
-			stderr.printf("Error while loading assets: %s\n", e.message);
+			error("Error while loading assets: %s", e.message);
 		}
 
 		Twitter.avatars = new HashMap<int, Gdk.Pixbuf>();

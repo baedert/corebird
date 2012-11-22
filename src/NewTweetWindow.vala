@@ -50,11 +50,14 @@ class NewTweetWindow : Window {
 			text_view.buffer.get_start_iter(out start);
 			text_view.buffer.get_end_iter(out end);
 			string text = text_view.buffer.get_text(start, end, true);
+			if(text.strip() == "")
+				return;
+				
 			var call = Twitter.proxy.new_call();
 			call.set_function("1.1/statuses/update.json");
 			call.set_method("POST");
 			call.add_param("status", text);
-			call.invoke_async(null);
+			call.invoke_async.begin(null);
 			this.destroy();
 		});
 		right_box.pack_end(send_button, false, false);

@@ -2,17 +2,17 @@ using Gtk;
 
 
 class Tweet : GLib.Object{
+	public string id;
 	public bool retweeted = false;
 	public bool favorited = false;
 	public string text;
-	public string from;
-	public string from_screenname;
-	public string retweeded_by;
+	public int user_id;
+	public string user_name;
+	public string retweeted_by;
 	public bool is_retweet;
 	public Gdk.Pixbuf avatar;
 
-	public Tweet(string text){
-		this.text = text;
+	public Tweet(){
 		this.avatar = Twitter.no_avatar;
 	}
 
@@ -25,6 +25,24 @@ class Tweet : GLib.Object{
 			return Twitter.favorited_img;
 
 		return null;
+	}
+
+	public void load_avatar(){
+		if (Twitter.avatars.has_key(user_id))
+			this.avatar = Twitter.avatars.get(user_id);
+		else{
+			string path = "assets/avatars/%d.png".printf(user_id);
+			File f = File.new_for_path(path);
+			if(f.query_exists()){
+				Twitter.avatars.set(user_id,
+				    new Gdk.Pixbuf.from_file(path));
+				this.avatar = Twitter.avatars.get(user_id);
+			}
+		}
+	}
+
+	public bool has_avatar(){
+		return this.avatar != Twitter.no_avatar;
 	}
 
 }
@@ -73,7 +91,8 @@ class TweetRenderer : Gtk.CellRenderer {
 		          background_area.y + PADDING);
 		Pango.Layout from_layout = Pango.cairo_create_layout(c);
 		from_layout.set_font_description(this.from_font);
-		from_layout.set_text(tweet.from, -1);
+		// from_layout.set_text("%s/%s".printf(tweet.user_name, tweet.id), -1);
+		from_layout.set_text(tweet.user_name, -1);
 		Pango.cairo_show_layout(c, from_layout);
 		from_layout.get_extents(null, out size);
 

@@ -20,7 +20,7 @@ class Corebird : Gtk.Application {
 		try{
 			Corebird.db = new SQLHeavy.Database("Corebird.db");
 		}catch(SQLHeavy.Error e){
-			stderr.printf("SQL ERROR: "+e.message);
+			error("SQL ERROR: "+e.message);
 		}
 
 		stdout.printf("SQLite version: %d\n", SQLHeavy.Version.sqlite_library());
@@ -38,13 +38,18 @@ class Corebird : Gtk.Application {
 		this.activate.connect( ()  => {});
 	}
 
+	/**
+	 * Creates the tables in the SQLite database
+	 */
 	public static void create_tables(){
 		try{
 			db.execute("CREATE TABLE IF NOT EXISTS `common`(token VARCHAR(255), 
 				token_secret VARCHAR(255));");
-			db.execute("CREATE TABLE IF NOT EXISTS `avatars`(id INTEGER(11), path VARCHAR(255), time INTEGER(11));");
+			db.execute("CREATE TABLE IF NOT EXISTS `cache`(id INTEGER(11),
+			           text VARCHAR(140), user_id INTEGR(11), user_name VARCHAR(100), 
+			           time INTEGER(11), retweet BOOL, reweeted_by VARCHAR(100))");
 		}catch(SQLHeavy.Error e){
-			stderr.printf("Error while initing creating the tables: %s\n", e.message);
+			error("Error while creating the tables: %s".printf(e.message));
 		}
 	}
 }
