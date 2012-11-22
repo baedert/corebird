@@ -22,6 +22,7 @@ class NewTweetWindow : Window {
 
 		Toolbar bottom_bar = new Toolbar();
 		bottom_bar.show_arrow = false;
+		bottom_bar.toolbar_style = ToolbarStyle.ICONS;
 		bottom_bar.get_style_context().add_class("inline-toolbar");
 
 		Button img_button = new Button.with_label("Add Image");
@@ -39,12 +40,14 @@ class NewTweetWindow : Window {
 
 		ToolItem right_item = new ToolItem();
 		Box right_box = new Box(Orientation.HORIZONTAL, 0);
-		Button cancel_button = new Button.with_label("Cancel");
+		Button cancel_button = new Button();
+		cancel_button.image = new Image.from_icon_name("send-to", IconSize.SMALL_TOOLBAR);
 		cancel_button.clicked.connect( () => {
 			this.destroy();
 		});
 		right_box.pack_start(cancel_button, false, false);
-		Button send_button = new Button.with_label("Send");
+		Button send_button = new Button();
+		send_button.image = new Image.from_icon_name("list-add-symbolic", IconSize.SMALL_TOOLBAR);
 		send_button.clicked.connect( () => {
 			TextIter start, end;
 			text_view.buffer.get_start_iter(out start);

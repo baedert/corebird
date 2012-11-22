@@ -93,7 +93,6 @@ class TweetRenderer : Gtk.CellRenderer {
 		          background_area.y + PADDING);
 		Pango.Layout from_layout = Pango.cairo_create_layout(c);
 		from_layout.set_font_description(this.from_font);
-		// from_layout.set_text("%s/%s".printf(tweet.user_name, tweet.id), -1);
 		from_layout.set_text(tweet.user_name, -1);
 		Pango.cairo_show_layout(c, from_layout);
 		from_layout.get_extents(null, out size);
@@ -114,7 +113,6 @@ class TweetRenderer : Gtk.CellRenderer {
 
 		// If the tweet is a retweet, we need so show who retweeted it.
 		if(tweet.is_retweet){
-			// message("Retweet by "+tweet.retweeted_by);
 			Pango.Layout rt_layout = Pango.cairo_create_layout(c);
 			rt_layout.set_text("RT by "+tweet.retweeted_by, -1);
 			rt_layout.set_font_description(rt_font);
