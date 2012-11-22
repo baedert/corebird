@@ -62,16 +62,16 @@ class MainWindow : Window {
 		//TODO Find out how to get the user_id of the authenticated user(needed for the profile info lookup)
 
 		//TODO: Parse date
-		GLib.Date date = {};
-		date.set_parse("Wed Jun 20 19:01:28 +0000 2012");
-		GLib.DateDay day = date.get_day();
-		GLib.DateMonth month = date.get_month();
-		GLib.DateYear year = date.get_year();
+// 		GLib.Date date = {};
+// 		date.set_parse("Wed Jun 20 19:01:28 +0000 2012");
+// 		GLib.DateDay day = date.get_day();
+// 		GLib.DateMonth month = date.get_month();
+// 		GLib.DateYear year = date.get_year();
 
-		stdout.printf("Date: %d.%d.%d\n", day, month, year);
+// 		stdout.printf("Date: %d.%d.%d\n", day, month, year);
 
 
-return;
+// return;
 
 		try{
 			load_new_tweets();
@@ -90,7 +90,8 @@ return;
 		tweets.clear();
 
 		SQLHeavy.Query query = new SQLHeavy.Query(Corebird.db,
-			"SELECT `id`, `text`, `user_id`, `user_name`, `retweet` FROM `cache`
+			"SELECT `id`, `text`, `user_id`, `user_name`, `is_retweet`,
+					`retweeted_by`, `retweeted`, `favorited` FROM `cache`
 			ORDER BY `id` DESC LIMIT 25");
 		SQLHeavy.QueryResult result = query.execute();
 		
@@ -101,6 +102,10 @@ return;
 			t.text = result.fetch_string(1);
 			t.user_id = result.fetch_int(2);
 			t.user_name = result.fetch_string(3);
+			t.is_retweet = (bool)result.fetch_int(4);
+			t.retweeted_by = result.fetch_string(5);
+			t.retweeted = (bool)result.fetch_int(6);
+			t.favorited = (bool)result.fetch_int(7);
 			t.load_avatar();
 
 
@@ -145,8 +150,10 @@ return;
 
 
 			SQLHeavy.Query cache_query = new SQLHeavy.Query(Corebird.db,
-				"INSERT INTO `cache`(`id`, `text`,`user_id`, `user_name`, `time`) 
-				VALUES (:id, :text, :user_id, :user_name, :time);");
+				"INSERT INTO `cache`(`id`, `text`,`user_id`, `user_name`, `time`, `is_retweet`,
+				                     `retweeted_by`, `retweeted`, `favorited`) 
+				VALUES (:id, :text, :user_id, :user_name, :time, :is_retweet, :retweeted_by,
+				        :retweeted, :favorited);");
 
 			root.foreach_element( (array, index, node) => {
 				Json.Object o = node.get_object();
@@ -164,6 +171,7 @@ return;
 				if (o.has_member("retweeted_status")){
 					Json.Object rt = o.get_object_member("retweeted_status");
 					t.is_retweet = true;
+					t.retweeted_by = user.get_string_member("name");
 					t.text = rt.get_string_member("text");
 					t.id = rt.get_string_member("id_str");
 					Json.Object rt_user = rt.get_object_member("user");
@@ -194,6 +202,10 @@ return;
 					cache_query.set_int(":user_id", t.user_id);
 					cache_query.set_string(":user_name", t.user_name);
 					cache_query.set_int64(":time", (int64)time.tv_usec);
+					cache_query.set_int(":is_retweet", t.is_retweet ? 1 : 0);
+					cache_query.set_string(":retweeted_by", t.retweeted_by);
+					cache_query.set_int(":retweeted", t.retweeted ? 1 : 0);
+					cache_query.set_int(":favorited", t.favorited ? 1 : 0);
 					cache_query.execute();
 				}catch(SQLHeavy.Error e){
 					error("Error while caching tweet: %s", e.message);

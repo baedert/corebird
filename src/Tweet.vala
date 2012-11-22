@@ -54,11 +54,13 @@ class TweetRenderer : Gtk.CellRenderer {
 	public Tweet tweet {get; set;}
 	public Pango.FontDescription font {get; set;}
 	public Pango.FontDescription from_font {get; set;}
+	public Pango.FontDescription rt_font {get; set;}
 
 	public TweetRenderer(){
 		GLib.Object();
 		this.font = Pango.FontDescription.from_string("'Droid Sans' 9");
 		this.from_font = Pango.FontDescription.from_string("'Droid Sans' Bold 9.5");
+		this.rt_font = Pango.FontDescription.from_string("'Droi Sans' 7.5");
 	}
 
 	public override void render (Cairo.Context c, Widget tree,
@@ -108,6 +110,19 @@ class TweetRenderer : Gtk.CellRenderer {
 		layout.set_font_description(font);
 		layout.set_text(tweet.text, tweet.text.length);
 		Pango.cairo_show_layout(c, layout);
+
+
+		// If the tweet is a retweet, we need so show who retweeted it.
+		if(tweet.is_retweet){
+			// message("Retweet by "+tweet.retweeted_by);
+			Pango.Layout rt_layout = Pango.cairo_create_layout(c);
+			rt_layout.set_text("RT by "+tweet.retweeted_by, -1);
+			rt_layout.set_font_description(rt_font);
+			rt_layout.get_extents(null, out size);
+			c.move_to(background_area.x+PADDING,
+			          background_area.y + background_area.height - PADDING - (size.height / Pango.SCALE));
+			Pango.cairo_show_layout(c, rt_layout);
+		}
 
 	}
 
