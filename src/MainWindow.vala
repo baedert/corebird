@@ -59,6 +59,7 @@ class MainWindow : Window {
 		bottom_box.pack_end (tweet_scroller, true, true);
 		main_box.pack_end(bottom_box, true, true);
 
+		//TODO Find out how to get the user_id of the authenticated user(needed for the profile info lookup)
 
 		//TODO: Parse date
 		GLib.Date date = {};
