@@ -160,7 +160,7 @@ class MainWindow : Window {
 				VALUES (:id, :text, :user_id, :user_name, :time, :is_retweet, :retweeted_by,
 				        :retweeted, :favorited);");
 			}catch(SQLHeavy.Error e){
-				stdout.printf("hih\n");
+				error("Error in cache query: %s", e.message);
 			}
 			
 			root.foreach_element( (array, index, node) => {
