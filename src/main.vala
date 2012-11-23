@@ -54,15 +54,22 @@ class Corebird : Gtk.Application {
 
 
 int main (string[] args){
-	Gtk.init(ref args);
+	// Gtk.init(ref args);
 
-	try{
-		Settings.init();
-		var corebird = new Corebird();
-		corebird.run(args);
-	} catch(GLib.Error e){
-		stderr.printf(e.message+"\n");
-		return -1;
-	}
+	// try{
+	// 	Settings.init();
+	// 	var corebird = new Corebird();
+	// 	corebird.run(args);
+	// } catch(GLib.Error e){
+	// 	stderr.printf(e.message+"\n");
+	// 	return -1;
+	// }
+
+	//TODO: Find out if this information is relative to the user's time zone
+	string given = "Wed Jun 20 19:01:28 +0000 2012";
+	Utils.parse_date(given);
+
+	
+
 	return 0;
 }

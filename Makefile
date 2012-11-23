@@ -4,7 +4,8 @@ FILES = src/main.vala \
 		src/Settings.vala \
 		src/FirstRunWindow.vala \
 		src/Twitter.vala \
-		src/NewTweetWindow.vala
+		src/NewTweetWindow.vala \
+		src/Utils.vala
 
 
 
