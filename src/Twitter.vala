@@ -54,8 +54,10 @@ class Twitter{
         	"https://api.twitter.com",						//Url Format
         	false
         );
-		proxy.token = Twitter.get_token();
-		proxy.token_secret = Twitter.get_token_secret();
+        if (!Settings.is_first_run()){
+			proxy.token = Twitter.get_token();
+			proxy.token_secret = Twitter.get_token_secret();
+		}
 
 		try{
 			Twitter.retweeted_img = new Gdk.Pixbuf.from_file("assets/retweeted.png");

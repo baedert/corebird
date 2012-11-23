@@ -10,6 +10,7 @@ class MainWindow : Window {
 	private Box bottom_box = new Box(Orientation.HORIZONTAL, 0);
 	private ListStore tweets = new ListStore(1, typeof(Tweet));
 	private TreeView tweet_tree = new TreeView();
+	private Notebook main_notebook = new Notebook();
 
 	public MainWindow(){
 
@@ -56,22 +57,11 @@ class MainWindow : Window {
 		tweet_tree.set_model (tweets);
 		ScrolledWindow tweet_scroller = new ScrolledWindow(null, null);
 		tweet_scroller.add(tweet_tree);
-		bottom_box.pack_end (tweet_scroller, true, true);
+		main_notebook.append_page(tweet_scroller);
+		bottom_box.pack_end (main_notebook, true, true);
 		main_box.pack_end(bottom_box, true, true);
 
 		//TODO Find out how to get the user_id of the authenticated user(needed for the profile info lookup)
-
-		//TODO: Parse date
-// 		GLib.Date date = {};
-// 		date.set_parse("Wed Jun 20 19:01:28 +0000 2012");
-// 		GLib.DateDay day = date.get_day();
-// 		GLib.DateMonth month = date.get_month();
-// 		GLib.DateYear year = date.get_year();
-
-// 		stdout.printf("Date: %d.%d.%d\n", day, month, year);
-
-
-// return;
 
 		try{
 			load_new_tweets();
