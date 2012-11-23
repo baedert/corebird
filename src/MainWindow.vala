@@ -138,7 +138,11 @@ class MainWindow : Window {
 			string back = call.get_payload();
 			stdout.printf(back+"\n");
 			var parser = new Json.Parser();
-			parser.load_from_data(back);
+			try{
+				parser.load_from_data(back);
+			}catch(GLib.Error e){
+				warning("Problem with json data from twitter: %s", e.message);
+			}
 			if (parser.get_root().get_node_type() != Json.NodeType.ARRAY){
 				warning("Root node is no Array.");
 				warning("Back: %s", back);
@@ -148,13 +152,17 @@ class MainWindow : Window {
 
 			var root = parser.get_root().get_array();
 
-
-			SQLHeavy.Query cache_query = new SQLHeavy.Query(Corebird.db,
+			SQLHeavy.Query cache_query = null;
+			try{
+				cache_query = new SQLHeavy.Query(Corebird.db,
 				"INSERT INTO `cache`(`id`, `text`,`user_id`, `user_name`, `time`, `is_retweet`,
 				                     `retweeted_by`, `retweeted`, `favorited`) 
 				VALUES (:id, :text, :user_id, :user_name, :time, :is_retweet, :retweeted_by,
 				        :retweeted, :favorited);");
-
+			}catch(SQLHeavy.Error e){
+				stdout.printf("hih\n");
+			}
+			
 			root.foreach_element( (array, index, node) => {
 				Json.Object o = node.get_object();
 				Json.Object user = o.get_object_member("user");
@@ -186,9 +194,13 @@ class MainWindow : Window {
 				t.load_avatar();
 				if(!t.has_avatar()){
 					message("Downloading avatar for %s", t.user_name);
-					File a = File.new_for_uri(avatar);
+					File av = File.new_for_uri(avatar);
 					File dest = File.new_for_path("assets/avatars/%d.png".printf(t.user_id));
-					a.copy(dest, FileCopyFlags.OVERWRITE); 
+					try{
+						av.copy(dest, FileCopyFlags.OVERWRITE); 
+					}catch(GLib.Error e){
+						warning("Problem while downloading avatar: %s", e.message);
+					}
 					t.load_avatar();
 				}
 	

@@ -34,8 +34,12 @@ class Tweet : GLib.Object{
 			string path = "assets/avatars/%d.png".printf(user_id);
 			File f = File.new_for_path(path);
 			if(f.query_exists()){
-				Twitter.avatars.set(user_id,
-				    new Gdk.Pixbuf.from_file(path));
+				try{
+					Twitter.avatars.set(user_id,
+				    	new Gdk.Pixbuf.from_file(path));
+				}catch(GLib.Error e){
+					warning("Error while loading avatar from database: %s", e.message);
+				}
 				this.avatar = Twitter.avatars.get(user_id);
 			}
 		}

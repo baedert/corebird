@@ -13,6 +13,8 @@ class Utils{
 	/**
 	* Parses a date given by Twitter in the form 'Wed Jun 20 19:01:28 +0000 2012'
 	* and creates a GLib.Date from it to work with.
+	*
+	* @return The given date as GLib.Date.
 	*/
 	public static GLib.Date parse_date(string input){
 		string month_str = input.substring(4, 3);
@@ -35,13 +37,6 @@ class Utils{
 			case "Dec": month = 12; break;
 
 		}
-
-		// stdout.printf("Month:%s:\n", month_str);
-		// stdout.printf("Day:%d:\n", day);
-		// stdout.printf("Year:%d:\n", year);
-
-		// stdout.printf("Complete date: %d.%d.%d\n", day, month, year);
-
 		GLib.Date date = {};
 		return date;
 	}
