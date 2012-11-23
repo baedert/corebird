@@ -32,16 +32,6 @@ class FirstRunWindow : Window {
 
 		main_box.pack_start(notebook, true, true);
 
-
-		var proxy = new OAuthProxy(
-        	"0rvHLdbzRULZd5dz6X1TUA",						//Consumer Key
-        	"oGrvd6654nWLhzLcJywSW3pltUfkhP4BnraPPVNhHtY", 	//Consumer Secret
-        	"https://api.twitter.com",						//Url Format
-        	false
-        );
-
-
-
 		cancel_button.margin_left = 10;
 		cancel_button.margin_bottom = 10;
 		cancel_button.clicked.connect( () => {
@@ -54,9 +44,9 @@ class FirstRunWindow : Window {
 			page++;
 			if (page == 1){
 	            try{
-					proxy.request_token ("oauth/request_token", "oob");
+					Twitter.proxy.request_token ("oauth/request_token", "oob");
 					GLib.AppInfo.launch_default_for_uri("http://twitter.com/oauth/authorize?oauth_token=%s"
-				                                    .printf(proxy.get_token()), null);
+				                                    .printf(Twitter.proxy.get_token()), null);
 				}catch(Error e){
 					stderr.printf("Error while requesting token: "+e.message+"\n");
 				}
@@ -64,7 +54,7 @@ class FirstRunWindow : Window {
 
 			}else if (page == 2){
 				try{
-					proxy.access_token("oauth/access_token", pin_entry.get_text());
+					Twitter.proxy.access_token("oauth/access_token", pin_entry.get_text());
 				}catch(Error e){
 					stderr.printf(e.message+"\n");
 				}
@@ -75,8 +65,8 @@ class FirstRunWindow : Window {
 					//Write token + token_secret ot the database
 					SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db, "INSERT INTO 'common'(token, token_secret) 
 					                  VALUES (:t, :ts);");
-					q.set_string(":t", proxy.get_token());
-					q.set_string(":ts", proxy.get_token_secret());
+					q.set_string(":t", Twitter.proxy.get_token());
+					q.set_string(":ts", Twitter.proxy.get_token_secret());
 					q.execute();
 				}catch(SQLHeavy.Error e){
 					stderr.printf("SQL ERROR: "+e.message+"\n");
