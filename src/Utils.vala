@@ -38,6 +38,9 @@ class Utils{
 
 		}
 		GLib.Date date = {};
+		date.set_day((GLib.DateDay)day);
+		date.set_month((GLib.DateMonth)month);
+		date.set_year((GLib.DateYear)year);
 		return date;
 	}
 }
