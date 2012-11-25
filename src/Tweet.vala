@@ -11,6 +11,7 @@ class Tweet : GLib.Object{
 	public string retweeted_by;
 	public bool is_retweet;
 	public Gdk.Pixbuf avatar;
+	public string time_delta = "0s";
 
 	public Tweet(){
 		this.avatar = Twitter.no_avatar;
@@ -56,15 +57,17 @@ class Tweet : GLib.Object{
 class TweetRenderer : Gtk.CellRenderer {
 	private static const int PADDING = 5;
 	public Tweet tweet {get; set;}
-	public Pango.FontDescription font {get; set;}
-	public Pango.FontDescription from_font {get; set;}
-	public Pango.FontDescription rt_font {get; set;}
+	// public Pango.FontDescription font {get; set;}
+	// public Pango.FontDescription from_font {get; set;}
+	// public Pango.FontDescription rt_font {get; set;}
+	private Regex hashtag_regex;
 
 	public TweetRenderer(){
 		GLib.Object();
-		this.font = Pango.FontDescription.from_string("'Droid Sans' 9");
-		this.from_font = Pango.FontDescription.from_string("'Droid Sans' Bold 9.5");
-		this.rt_font = Pango.FontDescription.from_string("'Droi Sans' 7.5");
+		hashtag_regex = new Regex("#\\w+", RegexCompileFlags.OPTIMIZE);
+		// this.font = Pango.FontDescription.from_string("'Droid Sans' 9");
+		// this.from_font = Pango.FontDescription.from_string("'Droid Sans' Bold 9.5");
+		// this.rt_font = Pango.FontDescription.from_string("'Droi Sans' 7.5");
 	}
 
 	public override void render (Cairo.Context c, Widget tree,
@@ -73,57 +76,56 @@ class TweetRenderer : Gtk.CellRenderer {
 							 	 CellRendererState flags) {
 		Pango.Rectangle size;
 		Gdk.Pixbuf? status_pixbuf = tweet.get_status_pixbuf();
+		StyleContext style = tree.get_style_context();
+		
 
+		style.render_background(c, background_area.x, background_area.y,
+		                      background_area.width, background_area.height);
+		style.render_frame(c, background_area.x, background_area.y,
+		                      background_area.width, background_area.height);
 
 		if(status_pixbuf != null){
-			c.save();
-			Gdk.cairo_rectangle(c, background_area);
-			Gdk.cairo_set_source_pixbuf (c, status_pixbuf,
-			    background_area.x+background_area.width-Twitter.retweeted_img.width,
-			    background_area.y);
-			c.fill();
-			c.restore();
+			style.render_icon(c, status_pixbuf, background_area.x+background_area.width-Twitter.retweeted_img.width,
+			                  background_area.y);
 		}
 
-		c.save();
-		Gdk.cairo_rectangle(c, background_area);
-		Gdk.cairo_set_source_pixbuf (c, tweet.avatar,
-				PADDING, background_area.y + PADDING);
-		c.fill();
-		c.restore();
+		//Draw the avatar
+		style.render_icon(c, tweet.avatar, background_area.x + PADDING, background_area.y + PADDING);
 
-
-		c.move_to(background_area.x + 2*PADDING + tweet.avatar.get_width(), 
-		          background_area.y + PADDING);
-		Pango.Layout from_layout = Pango.cairo_create_layout(c);
-		from_layout.set_font_description(this.from_font);
-		from_layout.set_text(tweet.user_name, -1);
-		Pango.cairo_show_layout(c, from_layout);
+		// Draw the tweet's author
+		// style.add_class("from");
+		Pango.Layout from_layout = tree.create_pango_layout(tweet.user_name);
+		from_layout.set_markup("<b>"+tweet.user_name+"</b>", -1);
+		style.render_layout(c, background_area.x + 2*PADDING + tweet.avatar.get_width(),
+		                    background_area.y + PADDING, from_layout);
 		from_layout.get_extents(null, out size);
-
-		c.move_to(background_area.x + 2* PADDING + tweet.avatar.get_width(),
-		          background_area.y + PADDING + (size.height / Pango.SCALE) + 3);
-
+		// style.remove_class("from");
 
 		// Draw the actual text
-		Pango.Layout layout = Pango.cairo_create_layout(c);
-		layout.set_font_description(this.font);
+		// style.add_class("tweet");
+		string text = hashtag_regex.replace(tweet.text, tweet.text.length, 0, "<span foreground=\"blue\">\\0</span>");
+		Pango.Layout layout = tree.create_pango_layout("");
+		layout.set_markup(text, -1);
 		layout.set_width((cell_area.width - 3*PADDING -
 			Twitter.no_avatar.get_width()) * Pango.SCALE);
-		layout.set_font_description(font);
-		layout.set_text(tweet.text, tweet.text.length);
-		Pango.cairo_show_layout(c, layout);
 
+		style.render_layout(c, background_area.x + 2* PADDING + tweet.avatar.get_width(),
+		          background_area.y + PADDING + (size.height / Pango.SCALE) + 3, layout);
+		// style.remove_class("tweet");
+
+		// Draw how long ago the tweet was created
+		Pango.Layout delta_layout = tree.create_pango_layout(tweet.time_delta);
+		delta_layout.set_markup("<span size=\"small\">"+tweet.time_delta+"</span>", -1);
+		style.render_layout(c, background_area.x + PADDING, background_area.y + PADDING + tweet.avatar.get_height() + 5,
+		                    delta_layout);
 
 		// If the tweet is a retweet, we need so show who retweeted it.
 		if(tweet.is_retweet){
-			Pango.Layout rt_layout = Pango.cairo_create_layout(c);
-			rt_layout.set_text("RT by "+tweet.retweeted_by, -1);
-			rt_layout.set_font_description(rt_font);
+			Pango.Layout rt_layout = tree.create_pango_layout("");
+			rt_layout.set_markup("<span size=\"small\">RT by "+tweet.retweeted_by+"</span>", -1);
 			rt_layout.get_extents(null, out size);
-			c.move_to(background_area.x+PADDING,
-			          background_area.y + background_area.height - PADDING - (size.height / Pango.SCALE));
-			Pango.cairo_show_layout(c, rt_layout);
+			style.render_layout(c, background_area.x+background_area.width-PADDING - (size.width/Pango.SCALE),
+			          background_area.y + PADDING, rt_layout);
 		}
 
 	}

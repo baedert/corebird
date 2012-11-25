@@ -14,6 +14,25 @@ class MainWindow : Window {
 
 	public MainWindow(){
 
+
+				CssProvider prov = new CssProvider();
+		prov.load_from_data("
+		.from{
+			color: blue;
+			font-weight: bold;
+			font-family: sans;
+		}
+		.tweet{
+			color: green;
+			font-family: sans;
+			font-weight: normal;
+		}
+		", -1);
+		tweet_tree.get_style_context().add_provider(prov, STYLE_PROVIDER_PRIORITY_APPLICATION);
+
+
+
+
 		ToolButton new_tweet_button = new ToolButton.from_stock(Stock.NEW);
 		new_tweet_button.clicked.connect( () => {
 			NewTweetWindow win = new NewTweetWindow(this);
@@ -29,6 +48,8 @@ class MainWindow : Window {
 			}
 		});
 		main_toolbar.add(refresh_button);
+		ToolButton settings_button = new ToolButton.from_stock(Stock.PREFERENCES);
+		main_toolbar.add(settings_button);
 		main_toolbar.get_style_context().add_class("primary-toolbar");
 		main_toolbar.orientation = Orientation.HORIZONTAL;
 		main_box.pack_start(main_toolbar, false, false);
@@ -41,6 +62,7 @@ class MainWindow : Window {
 		left_toolbar.add(c);
 		left_toolbar.orientation = Orientation.VERTICAL;
 		left_toolbar.set_style(ToolbarStyle.ICONS);
+		left_toolbar.get_style_context().add_class("sidebar");
 		bottom_box.pack_start(left_toolbar, false, true);
 
 
@@ -50,25 +72,46 @@ class MainWindow : Window {
 		column.pack_start(tweet_renderer, true);
 		column.set_title("Tweets");
 		column.add_attribute(tweet_renderer, "tweet", 0);
+		column.set_resizable(false);
+		column.set_sizing(TreeViewColumnSizing.FIXED);
 		tweet_tree.append_column(column);
 
 
 		tweet_tree.headers_visible = false;
+		tweet_tree.fixed_height_mode = true;
 		tweet_tree.set_model (tweets);
 		ScrolledWindow tweet_scroller = new ScrolledWindow(null, null);
-		tweet_scroller.add(tweet_tree);
+		TweetList tweet_list = new TweetList();
+		tweet_scroller.add_with_viewport(tweet_list);
+
+		for(int i = 0; i < 5; i++){
+			tweet_list.add_tweet(new TweetEntry());
+		}
+		// tweet_scroller.vadjustment.value_changed.connect( () => {
+		// 	int max = (int)(tweet_scroller.vadjustment.upper - tweet_scroller.vadjustment.page_size);
+		// 	int value = (int)tweet_scroller.vadjustment.value;
+		// 	if (value >= (max * 0.9f)){
+		// 		//Load older tweets
+				
+		// 	}
+		// });
+		// tweet_scroller.add(tweet_tree);
+
+
 		main_notebook.append_page(tweet_scroller);
+		main_notebook.show_tabs = false;
+		main_notebook.show_border = false;
 		bottom_box.pack_end (main_notebook, true, true);
 		main_box.pack_end(bottom_box, true, true);
 
 		//TODO Find out how to get the user_id of the authenticated user(needed for the profile info lookup)
 
-		try{
-			load_new_tweets();
-			refresh_profile.begin();
-		}catch(SQLHeavy.Error e){
-			error("Warning while fetching new tweets: %s", e.message);
-		}
+		// try{
+			// load_new_tweets();
+			// refresh_profile.begin();
+		// }catch(SQLHeavy.Error e){
+		// 	error("Warning while fetching new tweets: %s", e.message);
+		// }
 
 		this.add(main_box);
 		this.set_default_size (450, 600);
@@ -78,25 +121,26 @@ class MainWindow : Window {
 
 	private void load_new_tweets() throws SQLHeavy.Error {
 		tweets.clear();
+		GLib.DateTime now = new GLib.DateTime.now_local();
 
 		SQLHeavy.Query query = new SQLHeavy.Query(Corebird.db,
 			"SELECT `id`, `text`, `user_id`, `user_name`, `is_retweet`,
-					`retweeted_by`, `retweeted`, `favorited` FROM `cache`
+					`retweeted_by`, `retweeted`, `favorited`, `created_at` FROM `cache`
 			ORDER BY `id` DESC LIMIT 25");
 		SQLHeavy.QueryResult result = query.execute();
-		
 		while(!result.finished){
-
-			Tweet t = new Tweet();
-			t.id = result.fetch_string(0);
-			t.text = result.fetch_string(1);
-			t.user_id = result.fetch_int(2);
-			t.user_name = result.fetch_string(3);
-			t.is_retweet = (bool)result.fetch_int(4);
+			Tweet t        = new Tweet();
+			t.id           = result.fetch_string(0);
+			t.text         = result.fetch_string(1);
+			t.user_id      = result.fetch_int(2);
+			t.user_name    = result.fetch_string(3);
+			t.is_retweet   = (bool)result.fetch_int(4);
 			t.retweeted_by = result.fetch_string(5);
-			t.retweeted = (bool)result.fetch_int(6);
-			t.favorited = (bool)result.fetch_int(7);
+			t.retweeted    = (bool)result.fetch_int(6);
+			t.favorited    = (bool)result.fetch_int(7);
 			t.load_avatar();
+			GLib.DateTime created = Utils.parse_date(result.fetch_string(8));
+			t.time_delta = Utils.get_time_delta(created, now);
 
 
 			// Append the tweet to the ListStore
@@ -107,7 +151,7 @@ class MainWindow : Window {
 			result.next();
 		}
 
-
+		// return;
 
 		SQLHeavy.Query id_query = new SQLHeavy.Query(Corebird.db,
 			"SELECT `id`, `time` FROM `cache` ORDER BY `id` DESC LIMIT 1;");
@@ -146,12 +190,13 @@ class MainWindow : Window {
 			try{
 				cache_query = new SQLHeavy.Query(Corebird.db,
 				"INSERT INTO `cache`(`id`, `text`,`user_id`, `user_name`, `time`, `is_retweet`,
-				                     `retweeted_by`, `retweeted`, `favorited`) 
+				                     `retweeted_by`, `retweeted`, `favorited`, `created_at`) 
 				VALUES (:id, :text, :user_id, :user_name, :time, :is_retweet, :retweeted_by,
-				        :retweeted, :favorited);");
+				        :retweeted, :favorited, :created_at);");
 			}catch(SQLHeavy.Error e){
 				error("Error in cache query: %s", e.message);
 			}
+
 			
 			root.foreach_element( (array, index, node) => {
 				Json.Object o = node.get_object();
@@ -163,6 +208,8 @@ class MainWindow : Window {
 				t.id = o.get_string_member("id_str");
 				t.user_name = user.get_string_member("name");
 				t.user_id = (int)user.get_int_member("id");
+				string created_at = o.get_string_member("created_at");
+
 
 				string avatar = user.get_string_member("profile_image_url");
 				
@@ -176,9 +223,12 @@ class MainWindow : Window {
 					t.user_name = rt_user.get_string_member ("name");
 					avatar = rt_user.get_string_member("profile_image_url");
 					t.user_id = (int)rt_user.get_int_member("id");
+					created_at = rt.get_string_member("created_at");
 				}
+				GLib.DateTime dt = Utils.parse_date(created_at);
+				t.time_delta = Utils.get_time_delta(dt, now);
 
-				stdout.printf("%u: %s\n", index, t.user_name);
+				// stdout.printf("%u: %s\n", index, t.user_name);
 
 
 				t.load_avatar();
@@ -208,6 +258,7 @@ class MainWindow : Window {
 					cache_query.set_string(":retweeted_by", t.retweeted_by);
 					cache_query.set_int(":retweeted", t.retweeted ? 1 : 0);
 					cache_query.set_int(":favorited", t.favorited ? 1 : 0);
+					cache_query.set_string(":created_at", created_at);
 					cache_query.execute();
 				}catch(SQLHeavy.Error e){
 					error("Error while caching tweet: %s", e.message);
@@ -215,8 +266,6 @@ class MainWindow : Window {
 
 				TreeIter iter;
 				tweets.insert(out iter, (int)index);
-				// tweets.insert(out iter, 0);
-				// tweets.append(out iter);
 				tweets.set(iter, 0, t);
 				index--;
 			});

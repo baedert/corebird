@@ -23,6 +23,8 @@ Corebird is a new native Twitter client for the linux desktop written with Gtk+.
 
 * [TweetBot](https://itunes.apple.com/de/app/tweetbot-for-twitter/id557168941?mt=12)
 * [DanRabbit's Twitter Client Mockup](http://danrabbit.deviantart.com/art/Twitter-333689268)
+* [Twitter For Mac](http://a1991.phobos.apple.com/us/r1000/030/Purple/54/2d/b0/mzl.ifsvcyku.800x500-75.jpg)
+* [Dribble](http://dribbble.s3.amazonaws.com/users/30071/screenshots/666701/attachments/58662/Timeline.png)
 
 
 ## TODO

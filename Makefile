@@ -5,22 +5,31 @@ FILES = src/main.vala \
 		src/FirstRunWindow.vala \
 		src/Twitter.vala \
 		src/NewTweetWindow.vala \
-		src/Utils.vala
+		src/Utils.vala \
+		src/TweetList.vala \
+		src/TweetEntry.vala
 
 
 
-LIBS =  --pkg gio-2.0 --pkg gee-1.0 --pkg libsoup-2.4 --pkg rest-0.7 --pkg gtk+-3.0 --pkg sqlheavy-0.2 --pkg json-glib-1.0 --pkg libsoup-2.4
+LIBS =  --pkg gio-2.0 \
+		--pkg gee-1.0 \
+		--pkg libsoup-2.4 \
+		--pkg rest-0.7 \
+		--pkg gtk+-3.0 \
+		--pkg sqlheavy-0.2 \
+		--pkg json-glib-1.0 \
+		--pkg libsoup-2.4 \
+
 NAME = Corebird
 CC = clang
-PARAMS = -X -O2 -X -Wno-incompatible-pointer-types -X -Wno-unused-value -g
+PARAMS = -X -Wno-incompatible-pointer-types -X -Wno-unused-value -g
 
 all: compile
 
 compile: $(FILES)
-	valac --thread --cc=$(CC) $(PARAMS) $(LIBS) $(FILES) -o $(NAME)
+	valac --enable-checking --cc=$(CC) $(PARAMS) $(LIBS)  $(FILES) -o $(NAME)
 
 
 settings: org.baedert.corebird.gschema.xml
 	sudo cp org.baedert.corebird.gschema.xml /usr/share/glib-2.0/schemas
 	sudo glib-compile-schemas /usr/share/glib-2.0/schemas
-
