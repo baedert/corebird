@@ -8,27 +8,24 @@ class MainWindow : Window {
 	private Toolbar left_toolbar = new Toolbar();
 	private Box main_box = new Box(Orientation.VERTICAL, 0);
 	private Box bottom_box = new Box(Orientation.HORIZONTAL, 0);
-	private ListStore tweets = new ListStore(1, typeof(Tweet));
-	private TreeView tweet_tree = new TreeView();
 	private Notebook main_notebook = new Notebook();
+	private TweetList tweet_list = new TweetList();
 
 	public MainWindow(){
 
 
 				CssProvider prov = new CssProvider();
 		prov.load_from_data("
-		.from{
-			color: blue;
-			font-weight: bold;
-			font-family: sans;
-		}
 		.tweet{
 			color: green;
-			font-family: sans;
-			font-weight: normal;
+			background-image: none;
+			background-color: #DDD;
+			border-color: #000;
+		}
+		.tweet .label{
+			background-color: green;
 		}
 		", -1);
-		tweet_tree.get_style_context().add_provider(prov, STYLE_PROVIDER_PRIORITY_APPLICATION);
 
 
 
@@ -67,26 +64,9 @@ class MainWindow : Window {
 
 
 
-		var tweet_renderer = new TweetRenderer();
-		var column = new TreeViewColumn();
-		column.pack_start(tweet_renderer, true);
-		column.set_title("Tweets");
-		column.add_attribute(tweet_renderer, "tweet", 0);
-		column.set_resizable(false);
-		column.set_sizing(TreeViewColumnSizing.FIXED);
-		tweet_tree.append_column(column);
-
-
-		tweet_tree.headers_visible = false;
-		tweet_tree.fixed_height_mode = true;
-		tweet_tree.set_model (tweets);
 		ScrolledWindow tweet_scroller = new ScrolledWindow(null, null);
-		TweetList tweet_list = new TweetList();
+		tweet_list.get_style_context().add_provider(prov, STYLE_PROVIDER_PRIORITY_APPLICATION);
 		tweet_scroller.add_with_viewport(tweet_list);
-
-		for(int i = 0; i < 5; i++){
-			tweet_list.add_tweet(new TweetEntry());
-		}
 		// tweet_scroller.vadjustment.value_changed.connect( () => {
 		// 	int max = (int)(tweet_scroller.vadjustment.upper - tweet_scroller.vadjustment.page_size);
 		// 	int value = (int)tweet_scroller.vadjustment.value;
@@ -106,12 +86,12 @@ class MainWindow : Window {
 
 		//TODO Find out how to get the user_id of the authenticated user(needed for the profile info lookup)
 
-		// try{
-			// load_new_tweets();
+		try{
+			load_new_tweets();
 			// refresh_profile.begin();
-		// }catch(SQLHeavy.Error e){
-		// 	error("Warning while fetching new tweets: %s", e.message);
-		// }
+		}catch(SQLHeavy.Error e){
+			error("Warning while fetching new tweets: %s", e.message);
+		}
 
 		this.add(main_box);
 		this.set_default_size (450, 600);
@@ -120,7 +100,6 @@ class MainWindow : Window {
 
 
 	private void load_new_tweets() throws SQLHeavy.Error {
-		tweets.clear();
 		GLib.DateTime now = new GLib.DateTime.now_local();
 
 		SQLHeavy.Query query = new SQLHeavy.Query(Corebird.db,
@@ -144,14 +123,17 @@ class MainWindow : Window {
 
 
 			// Append the tweet to the ListStore
-			TreeIter iter;
-			tweets.append(out iter);
-			tweets.set(iter, 0, t);
+			// TreeIter iter;
+			// tweets.append(out iter);
+			// tweets.set(iter, 0, t);
+			TweetListEntry list_entry = new TweetListEntry(t);
+			list_entry.tweet = t;
+			tweet_list.add_tweet(list_entry);
 
 			result.next();
 		}
 
-		// return;
+		return;
 
 		SQLHeavy.Query id_query = new SQLHeavy.Query(Corebird.db,
 			"SELECT `id`, `time` FROM `cache` ORDER BY `id` DESC LIMIT 1;");
@@ -264,29 +246,29 @@ class MainWindow : Window {
 					error("Error while caching tweet: %s", e.message);
 				}
 
-				TreeIter iter;
-				tweets.insert(out iter, (int)index);
-				tweets.set(iter, 0, t);
+				// TreeIter iter;
+				// tweets.insert(out iter, (int)index);
+				// tweets.set(iter, 0, t);
 				index--;
 			});
 		});
 
 	}
 
-	private async void refresh_profile(){
-		var call = Twitter.proxy.new_call();
-		call.set_method("GET");
-		call.set_function("1.1/users/show.json");
-		call.add_param("user_id", "15");
-		call.invoke_async.begin(null, () => {
-			string json_string = call.get_payload();
-			Json.Parser parser = new Json.Parser();
-			try{
-				parser.load_from_data (json_string);
-				// stdout.printf(json_string+"\n");
-			}catch(GLib.Error e){
-				error("Error while refreshing profile: %s", e.message);
-			}
-		});
-	}
+	// private async void refresh_profile(){
+	// 	var call = Twitter.proxy.new_call();
+	// 	call.set_method("GET");
+	// 	call.set_function("1.1/users/show.json");
+	// 	call.add_param("user_id", "15");
+	// 	call.invoke_async.begin(null, () => {
+	// 		string json_string = call.get_payload();
+	// 		Json.Parser parser = new Json.Parser();
+	// 		try{
+	// 			parser.load_from_data (json_string);
+	// 			// stdout.printf(json_string+"\n");
+	// 		}catch(GLib.Error e){
+	// 			error("Error while refreshing profile: %s", e.message);
+	// 		}
+	// 	});
+	// }
 }

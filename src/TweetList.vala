@@ -1,7 +1,14 @@
 using Gtk;
 
+
+
+
+
+
 class TweetList : Box {
 	
+
+
 	public TweetList(){
 		GLib.Object(orientation: Orientation.VERTICAL);
 		set_has_window(false);
@@ -9,7 +16,7 @@ class TweetList : Box {
 
 
 
-	public void add_tweet(TweetEntry entry){
-		this.pack_end(entry, false, true);
+	public void add_tweet(TweetListEntry entry){
+		this.pack_start(entry, false, true);
 	}
 }

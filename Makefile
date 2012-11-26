@@ -7,7 +7,7 @@ FILES = src/main.vala \
 		src/NewTweetWindow.vala \
 		src/Utils.vala \
 		src/TweetList.vala \
-		src/TweetEntry.vala
+		src/TweetListEntry.vala
 
 
 
