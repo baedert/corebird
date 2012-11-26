@@ -14,17 +14,8 @@ class MainWindow : Window {
 	public MainWindow(){
 
 
-				CssProvider prov = new CssProvider();
+		CssProvider prov = new CssProvider();
 		prov.load_from_data("
-		.tweet{
-			color: green;
-			background-image: none;
-			background-color: #DDD;
-			border-color: #000;
-		}
-		.tweet .label{
-			background-color: green;
-		}
 		", -1);
 
 
@@ -65,17 +56,16 @@ class MainWindow : Window {
 
 
 		ScrolledWindow tweet_scroller = new ScrolledWindow(null, null);
-		tweet_list.get_style_context().add_provider(prov, STYLE_PROVIDER_PRIORITY_APPLICATION);
+		// tweet_list.get_style_context().add_provider(prov, STYLE_PROVIDER_PRIORITY_APPLICATION);
 		tweet_scroller.add_with_viewport(tweet_list);
 		// tweet_scroller.vadjustment.value_changed.connect( () => {
 		// 	int max = (int)(tweet_scroller.vadjustment.upper - tweet_scroller.vadjustment.page_size);
 		// 	int value = (int)tweet_scroller.vadjustment.value;
 		// 	if (value >= (max * 0.9f)){
 		// 		//Load older tweets
-				
+		// 		message("end!");
 		// 	}
 		// });
-		// tweet_scroller.add(tweet_tree);
 
 
 		main_notebook.append_page(tweet_scroller);
@@ -122,10 +112,7 @@ class MainWindow : Window {
 			t.time_delta = Utils.get_time_delta(created, now);
 
 
-			// Append the tweet to the ListStore
-			// TreeIter iter;
-			// tweets.append(out iter);
-			// tweets.set(iter, 0, t);
+			// Append the tweet to the TweetList
 			TweetListEntry list_entry = new TweetListEntry(t);
 			list_entry.tweet = t;
 			tweet_list.add_tweet(list_entry);
@@ -246,6 +233,7 @@ class MainWindow : Window {
 					error("Error while caching tweet: %s", e.message);
 				}
 
+				
 				// TreeIter iter;
 				// tweets.insert(out iter, (int)index);
 				// tweets.set(iter, 0, t);
