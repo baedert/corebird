@@ -21,36 +21,44 @@ class MainWindow : Window {
 
 
 
-		ToolButton new_tweet_button = new ToolButton.from_stock(Stock.NEW);
-		new_tweet_button.clicked.connect( () => {
-			NewTweetWindow win = new NewTweetWindow(this);
-			win.show_all();
-		});
-		main_toolbar.add(new_tweet_button);
+		// ToolButton new_tweet_button = new ToolButton.from_stock(Stock.HOME);
+		// new_tweet_button.clicked.connect( () => {
+		// 	NewTweetWindow win = new NewTweetWindow(this);
+		// 	win.show_all();
+		// });
+		// main_toolbar.add(new_tweet_button);
+		// ToolButton settings_button = new ToolButton.from_stock(Stock.PREFERENCES);
+		// main_toolbar.add(settings_button);
+		// main_toolbar.get_style_context().add_class("primary-toolbar");
+		// main_toolbar.orientation = Orientation.HORIZONTAL;
+		// main_box.pack_start(main_toolbar, false, false);
+
+
+
+
+		left_toolbar.orientation = Orientation.VERTICAL;
+		left_toolbar.set_style(ToolbarStyle.ICONS);
+		left_toolbar.get_style_context().add_class("sidebar");
+		RadioToolButton home_button = new RadioToolButton.from_stock(null, Stock.HOME);
+		left_toolbar.add(home_button);
+		RadioToolButton mentions_button = new RadioToolButton.with_stock_from_widget(home_button, Stock.ADD);
+		left_toolbar.add(mentions_button);
+
+		SeparatorToolItem sep = new SeparatorToolItem();
+		sep.draw = false;
+		sep.set_expand(true);
+		left_toolbar.add(sep);
 		ToolButton refresh_button = new ToolButton.from_stock(Stock.REFRESH);
 		refresh_button.clicked.connect( () => {
 			try{
-				load_new_tweets();
+				load_new_tweets.begin();
 			}catch(SQLHeavy.Error e){
 				error("Warning while fetching new tweets: %s", e.message);
 			}
 		});
-		main_toolbar.add(refresh_button);
+		left_toolbar.add(refresh_button);
 		ToolButton settings_button = new ToolButton.from_stock(Stock.PREFERENCES);
-		main_toolbar.add(settings_button);
-		main_toolbar.get_style_context().add_class("primary-toolbar");
-		main_toolbar.orientation = Orientation.HORIZONTAL;
-		main_box.pack_start(main_toolbar, false, false);
-
-
-
-		ToolButton b = new ToolButton.from_stock(Stock.ADD);
-		left_toolbar.add(b);
-		ToolButton c = new ToolButton.from_stock(Stock.DELETE);
-		left_toolbar.add(c);
-		left_toolbar.orientation = Orientation.VERTICAL;
-		left_toolbar.set_style(ToolbarStyle.ICONS);
-		left_toolbar.get_style_context().add_class("sidebar");
+		left_toolbar.add(settings_button);
 		bottom_box.pack_start(left_toolbar, false, true);
 
 
@@ -76,12 +84,13 @@ class MainWindow : Window {
 
 		//TODO Find out how to get the user_id of the authenticated user(needed for the profile info lookup)
 
-		try{
-			load_new_tweets();
+		// try{
+			load_cached_tweets.begin();
+			// load_new_tweets.begin();
 			// refresh_profile.begin();
-		}catch(SQLHeavy.Error e){
-			error("Warning while fetching new tweets: %s", e.message);
-		}
+		// }catch(SQLHeavy.Error e){
+		// 	error("Warning while fetching new tweets: %s", e.message);
+		// }
 
 		this.add(main_box);
 		this.set_default_size (450, 600);
@@ -89,7 +98,7 @@ class MainWindow : Window {
 	}
 
 
-	private void load_new_tweets() throws SQLHeavy.Error {
+	private async void load_cached_tweets() throws SQLHeavy.Error{
 		GLib.DateTime now = new GLib.DateTime.now_local();
 
 		SQLHeavy.Query query = new SQLHeavy.Query(Corebird.db,
@@ -119,8 +128,12 @@ class MainWindow : Window {
 
 			result.next();
 		}
+	}
 
-		return;
+
+	private async void load_new_tweets() throws SQLHeavy.Error {
+		GLib.DateTime now = new GLib.DateTime.now_local();
+
 
 		SQLHeavy.Query id_query = new SQLHeavy.Query(Corebird.db,
 			"SELECT `id`, `time` FROM `cache` ORDER BY `id` DESC LIMIT 1;");
@@ -197,12 +210,12 @@ class MainWindow : Window {
 				GLib.DateTime dt = Utils.parse_date(created_at);
 				t.time_delta = Utils.get_time_delta(dt, now);
 
-				// stdout.printf("%u: %s\n", index, t.user_name);
+				stdout.printf("%u: %s\n", index, t.user_name);
 
 
 				t.load_avatar();
 				if(!t.has_avatar()){
-					message("Downloading avatar for %s", t.user_name);
+					// message("Downloading avatar for %s", t.user_name);
 					File av = File.new_for_uri(avatar);
 					File dest = File.new_for_path("assets/avatars/%d.png".printf(t.user_id));
 					try{
@@ -237,6 +250,9 @@ class MainWindow : Window {
 				// TreeIter iter;
 				// tweets.insert(out iter, (int)index);
 				// tweets.set(iter, 0, t);
+				TweetListEntry entry  = new TweetListEntry(t);
+				tweet_list.insert_tweet(entry, index);
+				// tweet_list.add_tweet(entry);
 				index--;
 			});
 		});
