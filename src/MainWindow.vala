@@ -4,7 +4,6 @@ using Soup;
 
 
 class MainWindow : Window {
-	// private Toolbar main_toolbar = new Toolbar();
 	private Toolbar left_toolbar = new Toolbar();
 	private Box main_box = new Box(Orientation.VERTICAL, 0);
 	private Box bottom_box = new Box(Orientation.HORIZONTAL, 0);

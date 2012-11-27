@@ -1,15 +1,14 @@
-
-
 using Gtk;
 
 
 class TweetListEntry : Gtk.Box {
 	public Tweet tweet;
-	private Gtk.Image avatar = new Gtk.Image();
-	private Label text       = new Label("");
-	private Label author     = new Label("");
-	private Label rt_label   = new Label("");
-	private Label time_delta = new Label("");
+	private Gtk.Image avatar   = new Gtk.Image();
+	private Label text         = new Label("");
+	private Label author       = new Label("");
+	private Label rt_label     = new Label("");
+	private Label time_delta   = new Label("");
+	private Label rt_fav_label = new Label("");
 
 
 
@@ -28,6 +27,11 @@ class TweetListEntry : Gtk.Box {
 		time_delta.label = "<small>"+tweet.time_delta+"</small>";
 		time_delta.set_alignment(0,0);
 		left_box.pack_start(time_delta, false, false);
+		//TODO: Is there a way to display an icon right next to a text?
+		rt_fav_label.set_use_markup(true);
+		rt_fav_label.set_alignment(0, 0);
+		rt_fav_label.label = "<small>%d/%d</small>".printf(tweet.retweets, tweet.favorites);
+		left_box.pack_start(rt_fav_label, false, false);
 		this.pack_start(left_box, false, false);
 
 		var top_box = new Box(Orientation.HORIZONTAL, 4);

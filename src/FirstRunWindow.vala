@@ -56,7 +56,7 @@ class FirstRunWindow : Window {
 				try{
 					Twitter.proxy.access_token("oauth/access_token", pin_entry.get_text());
 				}catch(Error e){
-					stderr.printf(e.message+"\n");
+					error("Error while obtatning access token: %s", e.message);
 				}
 
 				// Save token + token_secret
