@@ -3,9 +3,7 @@ using Gtk;
 class StreamContainer : TweetList{
 	
 
-	public StreamContainer(){
-
-	}	
+	public StreamContainer(){}	
 
 
 
@@ -15,8 +13,8 @@ class StreamContainer : TweetList{
 
 		SQLHeavy.Query query = new SQLHeavy.Query(Corebird.db,
 			"SELECT `id`, `text`, `user_id`, `user_name`, `is_retweet`,
-					`retweeted_by`, `retweeted`, `favorited`, `created_at` FROM `cache`
-			ORDER BY `id` DESC LIMIT 25");
+					`retweeted_by`, `retweeted`, `favorited`, `created_at`, `added_to_stream` FROM `cache`
+			ORDER BY `added_to_stream` DESC LIMIT 75");
 		SQLHeavy.QueryResult result = query.execute();
 		while(!result.finished){
 			Tweet t        = new Tweet();
@@ -29,8 +27,8 @@ class StreamContainer : TweetList{
 			t.retweeted    = (bool)result.fetch_int(6);
 			t.favorited    = (bool)result.fetch_int(7);
 			t.load_avatar();
-			// GLib.DateTime created = Utils.parse_date(result.fetch_string(8));
-			// t.time_delta = Utils.get_time_delta(created, now);
+			GLib.DateTime created = Utils.parse_date(result.fetch_string(8));
+			t.time_delta = Utils.get_time_delta(created, now);
 
 
 			// Append the tweet to the TweetList
@@ -47,16 +45,15 @@ class StreamContainer : TweetList{
 
 
 		SQLHeavy.Query id_query = new SQLHeavy.Query(Corebird.db,
-			"SELECT `id`, `time` FROM `cache` ORDER BY `id` DESC LIMIT 1;");
+			"SELECT `id`, `added_to_stream` FROM `cache` ORDER BY `added_to_stream` DESC LIMIT 1;");
 		SQLHeavy.QueryResult id_result = id_query.execute();
 		int64 greatest_id = id_result.fetch_int64(0);
-		message("Greatest_id: %s", greatest_id.to_string());
 
 
 		var call = Twitter.proxy.new_call();
 		call.set_function("1.1/statuses/home_timeline.json");
 		call.set_method("GET");
-		call.add_param("count", "30");
+		call.add_param("count", "40");
 		call.add_param("include_entities", "false");
 		if(greatest_id > 0)
 			call.add_param("since_id", greatest_id.to_string());
@@ -84,11 +81,11 @@ class StreamContainer : TweetList{
 			try{
 				cache_query = new SQLHeavy.Query(Corebird.db,
 				"INSERT INTO `cache`(`id`, `text`,`user_id`, `user_name`, `time`, `is_retweet`,
-				                     `retweeted_by`, `retweeted`, `favorited`, `created_at`) 
+				                     `retweeted_by`, `retweeted`, `favorited`, `created_at`, `added_to_stream`) 
 				VALUES (:id, :text, :user_id, :user_name, :time, :is_retweet, :retweeted_by,
-				        :retweeted, :favorited, :created_at);");
+				        :retweeted, :favorited, :created_at, :added_to_stream);");
 			}catch(SQLHeavy.Error e){
-				error("Error in cache query: %s", e.message);
+				warning("Error in cache query: %s", e.message);
 			}
 
 			
@@ -103,6 +100,7 @@ class StreamContainer : TweetList{
 				t.user_name = user.get_string_member("name");
 				t.user_id = (int)user.get_int_member("id");
 				string created_at = o.get_string_member("created_at");
+				int64 added_to_stream = Utils.parse_date(created_at).to_unix();
 
 
 				string avatar = user.get_string_member("profile_image_url");
@@ -153,6 +151,7 @@ class StreamContainer : TweetList{
 					cache_query.set_int(":retweeted", t.retweeted ? 1 : 0);
 					cache_query.set_int(":favorited", t.favorited ? 1 : 0);
 					cache_query.set_string(":created_at", created_at);
+					cache_query.set_int64(":added_to_stream", added_to_stream);
 					cache_query.execute();
 				}catch(SQLHeavy.Error e){
 					error("Error while caching tweet: %s", e.message);

@@ -48,7 +48,8 @@ class Corebird : Gtk.Application {
 			db.execute("CREATE TABLE IF NOT EXISTS `cache`(id INTEGER(11), text VARCHAR(140),
 					user_id INTEGR(11), user_name VARCHAR(100),  time INTEGER(11), is_retweet BOOL,
 			           retweeted_by VARCHAR(100), retweeted BOOL, favorited BOOL, created_at VARCHAR(30),
-			           avatar_url VARCHAR(255), retweets INTEGER(5), favorites INTEGER(5));");
+			           avatar_url VARCHAR(255), retweets INTEGER(5), favorites INTEGER(5),
+			           added_to_stream INTEGER(11));");
 			// TODO: Avatar URL for avatar refreshing
 			// TODO: retweets&favorites!
 		}catch(SQLHeavy.Error e){

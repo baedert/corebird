@@ -8,7 +8,6 @@ class TweetListEntry : Gtk.Box {
 	private Label author       = new Label("");
 	private Label rt_label     = new Label("");
 	private Label time_delta   = new Label("");
-	private Label rt_fav_label = new Label("");
 
 
 
@@ -27,11 +26,6 @@ class TweetListEntry : Gtk.Box {
 		time_delta.label = "<small>"+tweet.time_delta+"</small>";
 		time_delta.set_alignment(0,0);
 		left_box.pack_start(time_delta, false, false);
-		//TODO: Is there a way to display an icon right next to a text?
-		rt_fav_label.set_use_markup(true);
-		rt_fav_label.set_alignment(0, 0);
-		rt_fav_label.label = "<small>%d/%d</small>".printf(tweet.retweets, tweet.favorites);
-		left_box.pack_start(rt_fav_label, false, false);
 		this.pack_start(left_box, false, false);
 
 		var top_box = new Box(Orientation.HORIZONTAL, 4);
@@ -55,6 +49,15 @@ class TweetListEntry : Gtk.Box {
 		right_box.pack_start(text, true, true);
 
 		this.pack_start(right_box, true, true);
+
+		this.button_press_event.connect( (btn) => {
+			if (btn.type == Gdk.EventType.@2BUTTON_PRESS){
+				message("double click");
+				return true;
+			}
+			message("evt");
+			return false;
+		});
 
 
 		this.set_size_request(150, 80);

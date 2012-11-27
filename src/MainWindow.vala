@@ -91,10 +91,10 @@ class MainWindow : Window {
 		//TODO Find out how to get the user_id of the authenticated user(needed for the profile info lookup)
 
 		// Load the cached tweets from the database
-		for(int i = 0;  i  < 300; i++){
-			stdout.printf("%d\n", i);
+		// for(int i = 0;  i  < 300; i++){
+			// stdout.printf("%d\n", i);
 			stream_container.load_cached_tweets.begin();
-		}
+		// }
 
 		this.add(main_box);
 		this.set_default_size (450, 600);

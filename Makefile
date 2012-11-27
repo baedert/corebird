@@ -11,7 +11,8 @@ FILES = src/Corebird.vala \
 		src/SettingsDialog.vala \
 		src/containers/SearchContainer.vala \
 		src/containers/StreamContainer.vala \
-		src/containers/MentionsContainer.vala
+		src/containers/MentionsContainer.vala \
+		src/ImageLabel.vala
 
 
 
