@@ -16,27 +16,11 @@ class MainWindow : Window {
 
 	public MainWindow(){
 
-
-		// CssProvider prov = new CssProvider();
-		// prov.load_from_data("
-		// ", -1);
-
-
-
-
 		 ToolButton new_tweet_button = new ToolButton.from_stock(Stock.NEW);
 		 new_tweet_button.clicked.connect( () => {
 		 	NewTweetWindow win = new NewTweetWindow(this);
 		 	win.show_all();
 		 });
-		// main_toolbar.add(new_tweet_button);
-		// ToolButton settings_button = new ToolButton.from_stock(Stock.PREFERENCES);
-		// main_toolbar.add(settings_button);
-		// main_toolbar.get_style_context().add_class("primary-toolbar");
-		// main_toolbar.orientation = Orientation.HORIZONTAL;
-		// main_box.pack_start(main_toolbar, false, false);
-
-
 
 
 		left_toolbar.orientation = Orientation.VERTICAL;
@@ -83,7 +67,6 @@ class MainWindow : Window {
 
 
 		ScrolledWindow tweet_scroller = new ScrolledWindow(null, null);
-		// tweet_list.get_style_context().add_provider(prov, STYLE_PROVIDER_PRIORITY_APPLICATION);
 		tweet_scroller.add_with_viewport(stream_container);
 		// tweet_scroller.vadjustment.value_changed.connect( () => {
 		// 	int max = (int)(tweet_scroller.vadjustment.upper - tweet_scroller.vadjustment.page_size);

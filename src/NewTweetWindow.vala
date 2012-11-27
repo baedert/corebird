@@ -83,7 +83,6 @@ class NewTweetWindow : Window {
 
 		this.add(main_box);
 		this.set_default_size(300, 150);
-		this.show_all();
 	}
 	
 }
