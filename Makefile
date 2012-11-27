@@ -1,4 +1,4 @@
-FILES = src/main.vala \
+FILES = src/Corebird.vala \
 		src/MainWindow.vala \
 		src/Tweet.vala \
 		src/Settings.vala \
@@ -7,7 +7,9 @@ FILES = src/main.vala \
 		src/NewTweetWindow.vala \
 		src/Utils.vala \
 		src/TweetList.vala \
-		src/TweetListEntry.vala
+		src/TweetListEntry.vala \
+		src/SettingsDialog.vala \
+		src/SearchContainer.vala
 
 
 

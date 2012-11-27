@@ -4,28 +4,29 @@ using Soup;
 
 
 class MainWindow : Window {
-	private Toolbar main_toolbar = new Toolbar();
+	// private Toolbar main_toolbar = new Toolbar();
 	private Toolbar left_toolbar = new Toolbar();
 	private Box main_box = new Box(Orientation.VERTICAL, 0);
 	private Box bottom_box = new Box(Orientation.HORIZONTAL, 0);
 	private Notebook main_notebook = new Notebook();
 	private TweetList tweet_list = new TweetList();
+	private SearchContainer search_container = new SearchContainer();
 
 	public MainWindow(){
 
 
-		CssProvider prov = new CssProvider();
-		prov.load_from_data("
-		", -1);
+		// CssProvider prov = new CssProvider();
+		// prov.load_from_data("
+		// ", -1);
 
 
 
 
-		// ToolButton new_tweet_button = new ToolButton.from_stock(Stock.HOME);
-		// new_tweet_button.clicked.connect( () => {
-		// 	NewTweetWindow win = new NewTweetWindow(this);
-		// 	win.show_all();
-		// });
+		 ToolButton new_tweet_button = new ToolButton.from_stock(Stock.NEW);
+		 new_tweet_button.clicked.connect( () => {
+		 	NewTweetWindow win = new NewTweetWindow(this);
+		 	win.show_all();
+		 });
 		// main_toolbar.add(new_tweet_button);
 		// ToolButton settings_button = new ToolButton.from_stock(Stock.PREFERENCES);
 		// main_toolbar.add(settings_button);
@@ -39,9 +40,20 @@ class MainWindow : Window {
 		left_toolbar.orientation = Orientation.VERTICAL;
 		left_toolbar.set_style(ToolbarStyle.ICONS);
 		left_toolbar.get_style_context().add_class("sidebar");
+		left_toolbar.add(new_tweet_button);
+		left_toolbar.add(new SeparatorToolItem());
 		RadioToolButton home_button = new RadioToolButton.from_stock(null, Stock.HOME);
+		home_button.clicked.connect( () => {
+			main_notebook.set_current_page(0);
+			message("Active Page: 0");
+		});
 		left_toolbar.add(home_button);
 		RadioToolButton mentions_button = new RadioToolButton.with_stock_from_widget(home_button, Stock.ADD);
+		// TODO: don't use clicked here.
+		mentions_button.clicked.connect( () => {
+			main_notebook.set_current_page(1);
+			message("Active Page: 1");
+		});
 		left_toolbar.add(mentions_button);
 
 		SeparatorToolItem sep = new SeparatorToolItem();
@@ -50,14 +62,14 @@ class MainWindow : Window {
 		left_toolbar.add(sep);
 		ToolButton refresh_button = new ToolButton.from_stock(Stock.REFRESH);
 		refresh_button.clicked.connect( () => {
-			try{
-				load_new_tweets.begin();
-			}catch(SQLHeavy.Error e){
-				error("Warning while fetching new tweets: %s", e.message);
-			}
+			load_new_tweets.begin();
 		});
 		left_toolbar.add(refresh_button);
 		ToolButton settings_button = new ToolButton.from_stock(Stock.PREFERENCES);
+		settings_button.clicked.connect( () => {
+			SettingsDialog sd = new SettingsDialog();
+			sd.show_all();
+		});
 		left_toolbar.add(settings_button);
 		bottom_box.pack_start(left_toolbar, false, true);
 
@@ -75,8 +87,9 @@ class MainWindow : Window {
 		// 	}
 		// });
 
-
+		tweet_scroller.kinetic_scrolling = true;
 		main_notebook.append_page(tweet_scroller);
+		main_notebook.append_page(search_container);
 		main_notebook.show_tabs = false;
 		main_notebook.show_border = false;
 		bottom_box.pack_end (main_notebook, true, true);
@@ -84,17 +97,14 @@ class MainWindow : Window {
 
 		//TODO Find out how to get the user_id of the authenticated user(needed for the profile info lookup)
 
-		// try{
-			load_cached_tweets.begin();
-			// load_new_tweets.begin();
-			// refresh_profile.begin();
-		// }catch(SQLHeavy.Error e){
-		// 	error("Warning while fetching new tweets: %s", e.message);
-		// }
+		// Load the cached tweets from the database
+		load_cached_tweets.begin();
 
 		this.add(main_box);
 		this.set_default_size (450, 600);
 		this.show_all();
+
+		Corebird.create_tables();
 	}
 
 
@@ -158,6 +168,7 @@ class MainWindow : Window {
 				parser.load_from_data(back);
 			}catch(GLib.Error e){
 				warning("Problem with json data from twitter: %s", e.message);
+				return;
 			}
 			if (parser.get_root().get_node_type() != Json.NodeType.ARRAY){
 				warning("Root node is no Array.");
