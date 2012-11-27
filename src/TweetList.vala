@@ -12,6 +12,7 @@ class TweetList : Box {
 	public TweetList(){
 		GLib.Object(orientation: Orientation.VERTICAL, spacing: 0);
 		set_has_window(false);
+		this.get_style_context().add_class("stream");
 	}
 
 

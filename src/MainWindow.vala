@@ -20,6 +20,15 @@ class MainWindow : Window {
 		 	win.show_all();
 		 });
 
+		 CssProvider provider = new CssProvider();
+		 provider.load_from_data(
+			"TweetListEntry .horizontal .tweet{
+				background-image: none;
+				background-color: red;
+				color: green;
+			}", -1);
+		 this.get_style_context().add_provider(provider,STYLE_PROVIDER_PRIORITY_APPLICATION);
+
 
 		left_toolbar.orientation = Orientation.VERTICAL;
 		left_toolbar.set_style(ToolbarStyle.ICONS);
@@ -101,6 +110,8 @@ class MainWindow : Window {
 		this.show_all();
 
 		Corebird.create_tables();
+
+		message(stream_container.get_style_context().get_path().to_string());
 	}
 
 	// private async void refresh_profile(){

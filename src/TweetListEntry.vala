@@ -14,7 +14,7 @@ class TweetListEntry : Gtk.Box {
 	public TweetListEntry(Tweet tweet){
 		GLib.Object(orientation: Orientation.HORIZONTAL, spacing: 3);
 		set_has_window(false);
-		get_style_context().add_class("tweet");
+		this.get_style_context().add_class("tweet");
 		this.border_width = 4;
 
 
@@ -47,6 +47,7 @@ class TweetListEntry : Gtk.Box {
 		text.wrap_mode = Pango.WrapMode.WORD_CHAR;
 		text.set_alignment(0, 0);		
 		right_box.pack_start(text, true, true);
+
 
 		this.pack_start(right_box, true, true);
 

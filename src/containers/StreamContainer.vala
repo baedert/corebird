@@ -3,7 +3,8 @@ using Gtk;
 class StreamContainer : TweetList{
 	
 
-	public StreamContainer(){}	
+	public StreamContainer(){
+	}	
 
 
 
@@ -14,7 +15,7 @@ class StreamContainer : TweetList{
 		SQLHeavy.Query query = new SQLHeavy.Query(Corebird.db,
 			"SELECT `id`, `text`, `user_id`, `user_name`, `is_retweet`,
 					`retweeted_by`, `retweeted`, `favorited`, `created_at`, `added_to_stream` FROM `cache`
-			ORDER BY `added_to_stream` DESC LIMIT 75");
+			ORDER BY `added_to_stream` DESC LIMIT 30");
 		SQLHeavy.QueryResult result = query.execute();
 		while(!result.finished){
 			Tweet t        = new Tweet();
