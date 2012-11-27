@@ -9,7 +9,9 @@ FILES = src/Corebird.vala \
 		src/TweetList.vala \
 		src/TweetListEntry.vala \
 		src/SettingsDialog.vala \
-		src/SearchContainer.vala
+		src/containers/SearchContainer.vala \
+		src/containers/StreamContainer.vala \
+		src/containers/MentionsContainer.vala
 
 
 

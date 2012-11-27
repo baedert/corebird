@@ -11,7 +11,9 @@ class Tweet : GLib.Object{
 	public string retweeted_by;
 	public bool is_retweet;
 	public Gdk.Pixbuf avatar;
-	public string time_delta = "0s";
+	public string time_delta = "-1s";
+	public int retweets;
+	public int favorites;
 
 	public Tweet(){
 		this.avatar = Twitter.no_avatar;

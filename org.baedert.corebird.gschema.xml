@@ -8,5 +8,10 @@
 			<summary>True if the next start is the first one, false otherwise.</summary>
 			<description>See above.</description>
 		</key>
+		<key name="use-dark-theme" type="b">
+			<default>false</default>
+			<summary>Specifies if Corebird shoult request to use the dark variant of the gtk theme</summary>
+			<description>Although not intended by the creators, a lot of users prefer to use a dark twitter client. </description>
+		</key>
 	</schema>
 </schemalist>

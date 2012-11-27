@@ -8,7 +8,7 @@ class SearchContainer : Box{
 	private Entry search_entry = new Entry();
 
 
-	public SearchContainer(){
+	public SearchContainer() {
 		GLib.Object(orientation: Orientation.VERTICAL);
 		this.border_width = 4;
 
