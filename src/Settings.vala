@@ -19,6 +19,9 @@ class Settings{
 	public static bool is_first_run(){
 		return settings.get_boolean("first-run");
 	}
+	/**
+	* Check whether the user wants Corebird to always use the dark gtk theme variant.
+	*/
 	public static bool use_dark_theme(){
 		return settings.get_boolean("use-dark-theme");		
 	}

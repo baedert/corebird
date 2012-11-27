@@ -29,8 +29,8 @@ class StreamContainer : TweetList{
 			t.retweeted    = (bool)result.fetch_int(6);
 			t.favorited    = (bool)result.fetch_int(7);
 			t.load_avatar();
-			GLib.DateTime created = Utils.parse_date(result.fetch_string(8));
-			t.time_delta = Utils.get_time_delta(created, now);
+			// GLib.DateTime created = Utils.parse_date(result.fetch_string(8));
+			// t.time_delta = Utils.get_time_delta(created, now);
 
 
 			// Append the tweet to the TweetList

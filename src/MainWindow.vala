@@ -9,7 +9,6 @@ class MainWindow : Window {
 	private Box main_box = new Box(Orientation.VERTICAL, 0);
 	private Box bottom_box = new Box(Orientation.HORIZONTAL, 0);
 	private Notebook main_notebook = new Notebook();
-	private TweetList tweet_list = new TweetList();
 	private StreamContainer stream_container = new StreamContainer();
 	private MentionsContainer mentions_container = new MentionsContainer();
 	private SearchContainer search_container = new SearchContainer();
@@ -93,7 +92,10 @@ class MainWindow : Window {
 		//TODO Find out how to get the user_id of the authenticated user(needed for the profile info lookup)
 
 		// Load the cached tweets from the database
-		stream_container.load_cached_tweets.begin();
+		for(int i = 0;  i  < 300; i++){
+			stdout.printf("%d\n", i);
+			stream_container.load_cached_tweets.begin();
+		}
 
 		this.add(main_box);
 		this.set_default_size (450, 600);
