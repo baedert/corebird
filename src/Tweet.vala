@@ -14,6 +14,8 @@ class Tweet : GLib.Object{
 	public string time_delta = "-1s";
 	public int retweets;
 	public int favorites;
+	public string avatar_url;
+	public string avatar_name;
 
 	public Tweet(){
 		this.avatar = Twitter.no_avatar;
@@ -31,19 +33,19 @@ class Tweet : GLib.Object{
 	}
 
 	public void load_avatar(){
-		if (Twitter.avatars.has_key(user_id))
-			this.avatar = Twitter.avatars.get(user_id);
+		if (Twitter.avatars.has_key(avatar_name))
+			this.avatar = Twitter.avatars.get(avatar_name);
 		else{
-			string path = "assets/avatars/%d.png".printf(user_id);
+			string path = "assets/avatars/%s".printf(avatar_name);
 			File f = File.new_for_path(path);
 			if(f.query_exists()){
 				try{
-					Twitter.avatars.set(user_id,
+					Twitter.avatars.set(avatar_name,
 				    	new Gdk.Pixbuf.from_file(path));
 				}catch(GLib.Error e){
 					warning("Error while loading avatar from database: %s", e.message);
 				}
-				this.avatar = Twitter.avatars.get(user_id);
+				this.avatar = Twitter.avatars.get(avatar_name);
 			}
 		}
 	}

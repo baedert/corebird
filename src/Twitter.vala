@@ -9,7 +9,7 @@ class Twitter{
 	public static Gdk.Pixbuf favorited_img;
 	public static Gdk.Pixbuf retweeted_favorited_img;
 	public static Gdk.Pixbuf no_avatar;
-	public static HashMap<int, Gdk.Pixbuf> avatars;
+	public static HashMap<string, Gdk.Pixbuf> avatars;
 
 
 	/**
@@ -69,6 +69,6 @@ class Twitter{
 			error("Error while loading assets: %s", e.message);
 		}
 
-		Twitter.avatars = new HashMap<int, Gdk.Pixbuf>();
+		Twitter.avatars = new HashMap<string, Gdk.Pixbuf>();
 	}
 }

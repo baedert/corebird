@@ -14,7 +14,8 @@ class StreamContainer : TweetList{
 
 		SQLHeavy.Query query = new SQLHeavy.Query(Corebird.db,
 			"SELECT `id`, `text`, `user_id`, `user_name`, `is_retweet`,
-					`retweeted_by`, `retweeted`, `favorited`, `created_at`, `added_to_stream` FROM `cache`
+					`retweeted_by`, `retweeted`, `favorited`, `created_at`,
+					`added_to_stream`, `avatar_name` FROM `cache`
 			ORDER BY `added_to_stream` DESC LIMIT 30");
 		SQLHeavy.QueryResult result = query.execute();
 		while(!result.finished){
@@ -27,10 +28,11 @@ class StreamContainer : TweetList{
 			t.retweeted_by = result.fetch_string(5);
 			t.retweeted    = (bool)result.fetch_int(6);
 			t.favorited    = (bool)result.fetch_int(7);
-			t.load_avatar();
+
 			GLib.DateTime created = Utils.parse_date(result.fetch_string(8));
 			t.time_delta = Utils.get_time_delta(created, now);
-
+			t.avatar_name  = result.fetch_string(10); 
+			t.load_avatar();
 
 			// Append the tweet to the TweetList
 			TweetListEntry list_entry = new TweetListEntry(t);
@@ -54,7 +56,7 @@ class StreamContainer : TweetList{
 		var call = Twitter.proxy.new_call();
 		call.set_function("1.1/statuses/home_timeline.json");
 		call.set_method("GET");
-		call.add_param("count", "40");
+		call.add_param("count", "30");
 		call.add_param("include_entities", "false");
 		if(greatest_id > 0)
 			call.add_param("since_id", greatest_id.to_string());
@@ -82,9 +84,10 @@ class StreamContainer : TweetList{
 			try{
 				cache_query = new SQLHeavy.Query(Corebird.db,
 				"INSERT INTO `cache`(`id`, `text`,`user_id`, `user_name`, `time`, `is_retweet`,
-				                     `retweeted_by`, `retweeted`, `favorited`, `created_at`, `added_to_stream`) 
+				                     `retweeted_by`, `retweeted`, `favorited`, `created_at`, `added_to_stream`,
+				                     `avatar_name`) 
 				VALUES (:id, :text, :user_id, :user_name, :time, :is_retweet, :retweeted_by,
-				        :retweeted, :favorited, :created_at, :added_to_stream);");
+				        :retweeted, :favorited, :created_at, :added_to_stream, :avatar_name);");
 			}catch(SQLHeavy.Error e){
 				warning("Error in cache query: %s", e.message);
 			}
@@ -101,10 +104,14 @@ class StreamContainer : TweetList{
 				t.user_name = user.get_string_member("name");
 				t.user_id = (int)user.get_int_member("id");
 				string created_at = o.get_string_member("created_at");
+				string display_name = user.get_string_member("screen_name");
 				int64 added_to_stream = Utils.parse_date(created_at).to_unix();
 
 
-				string avatar = user.get_string_member("profile_image_url");
+				t.avatar_url = user.get_string_member("profile_image_url");
+				t.avatar_name = t.avatar_url.substring(t.avatar_url.last_index_of("/")+1);
+				// stdout.printf(t.avatar_name+"\n");
+
 				
 				if (o.has_member("retweeted_status")){
 					Json.Object rt = o.get_object_member("retweeted_status");
@@ -114,9 +121,10 @@ class StreamContainer : TweetList{
 					t.id = rt.get_string_member("id_str");
 					Json.Object rt_user = rt.get_object_member("user");
 					t.user_name = rt_user.get_string_member ("name");
-					avatar = rt_user.get_string_member("profile_image_url");
+					t.avatar_url = rt_user.get_string_member("profile_image_url");
 					t.user_id = (int)rt_user.get_int_member("id");
 					created_at = rt.get_string_member("created_at");
+					display_name = rt_user.get_string_member("display_name");
 				}
 				GLib.DateTime dt = Utils.parse_date(created_at);
 				t.time_delta = Utils.get_time_delta(dt, now);
@@ -127,14 +135,45 @@ class StreamContainer : TweetList{
 				t.load_avatar();
 				if(!t.has_avatar()){
 					// message("Downloading avatar for %s", t.user_name);
-					File av = File.new_for_uri(avatar);
-					File dest = File.new_for_path("assets/avatars/%d.png".printf(t.user_id));
+					File av = File.new_for_uri(t.avatar_url);
+					stdout.printf("assets/avatars/%s".printf(t.avatar_name));
+					File dest = File.new_for_path("assets/avatars/%s".printf(t.avatar_name));
 					try{
 						av.copy(dest, FileCopyFlags.OVERWRITE); 
 					}catch(GLib.Error e){
 						warning("Problem while downloading avatar: %s", e.message);
 					}
 					t.load_avatar();
+				}
+
+				// Check the tweeter's details and update them if necessary
+				try{
+					SQLHeavy.Query author_query = new SQLHeavy.Query(Corebird.db,
+						"SELECT `id`, `screen_name`, `avatar_url` FROM `people`
+						WHERE `id`='%d';".printf(t.user_id));
+					SQLHeavy.QueryResult author_result = author_query.execute();
+					if (author_result.finished){
+						//The author is not in the DB so we insert him
+						SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db,
+							"INSERT INTO `people`(id,name,screen_name,avatar_url,avatar_name) VALUES ('%d', 
+							'%s', '%s', '%s', '%s');".printf(t.user_id, t.user_name,
+							display_name, t.avatar_url, t.avatar_name));
+						q.execute_async.begin();
+					}else{
+						string old_avatar = author_result.fetch_string(2);
+						if (old_avatar != t.avatar_url){
+							SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db,
+							    "UPDATE `people` SET `avatar`='%s';".printf(t.avatar_url));
+							q.execute_async.begin();
+						}
+						if (t.user_name != author_result.fetch_string(1)){
+							SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db,
+								"UPDATE `people` SET `screen_name`='%s';".printf(t.user_name));						
+							q.execute_async.begin();
+						}
+					}
+				}catch(SQLHeavy.Error e){
+					warning("Error while updating author: %s", e.message);
 				}
 	
 
@@ -153,18 +192,14 @@ class StreamContainer : TweetList{
 					cache_query.set_int(":favorited", t.favorited ? 1 : 0);
 					cache_query.set_string(":created_at", created_at);
 					cache_query.set_int64(":added_to_stream", added_to_stream);
-					cache_query.execute();
+					cache_query.set_string(":avatar_name", t.avatar_name);
+					cache_query.execute_async.begin();
 				}catch(SQLHeavy.Error e){
 					error("Error while caching tweet: %s", e.message);
 				}
 
-				
-				// TreeIter iter;
-				// tweets.insert(out iter, (int)index);
-				// tweets.set(iter, 0, t);
 				TweetListEntry entry  = new TweetListEntry(t);
 				this.insert_tweet(entry, index);
-				// tweet_list.add_tweet(entry);
 				index--;
 			});
 		});

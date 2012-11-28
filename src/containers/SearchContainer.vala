@@ -13,6 +13,7 @@ class SearchContainer : Box{
 		this.border_width = 4;
 
 		search_entry.placeholder_text = "Search keyword(s)";
+		search_entry.secondary_icon_stock = Stock.FIND;
 		this.pack_start(search_entry, false, true);
 	}
 }

@@ -48,10 +48,11 @@ class Corebird : Gtk.Application {
 			db.execute("CREATE TABLE IF NOT EXISTS `cache`(id INTEGER(11), text VARCHAR(140),
 					user_id INTEGR(11), user_name VARCHAR(100),  time INTEGER(11), is_retweet BOOL,
 			           retweeted_by VARCHAR(100), retweeted BOOL, favorited BOOL, created_at VARCHAR(30),
-			           avatar_url VARCHAR(255), retweets INTEGER(5), favorites INTEGER(5),
+			           avatar_url VARCHAR(255), avatar_name VARCHAR(50), retweets INTEGER(5), favorites INTEGER(5),
 			           added_to_stream INTEGER(11));");
-			// TODO: Avatar URL for avatar refreshing
-			// TODO: retweets&favorites!
+			db.execute("CREATE TABLE IF NOT EXISTS `people`(id INTEGER(11), 
+			           name VARCHAR(30), screen_name VACHAR(30), avatar_url VARCHAR(255),
+			           avatar_name VARCHAR(70));");
 		}catch(SQLHeavy.Error e){
 			error("Error while creating the tables: %s".printf(e.message));
 		}
@@ -71,12 +72,6 @@ int main (string[] args){
 		stderr.printf(e.message+"\n");
 		return -1;
 	}
-
-	//TODO: Find out if this information is relative to the user's time zone
-	string given = "Wed Jun 20 19:01:28 +0000 2012";
-	Utils.parse_date(given);
-
-	
 
 	return 0;
 }
