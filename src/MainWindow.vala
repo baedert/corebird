@@ -22,7 +22,7 @@ class MainWindow : Window {
 
 		 CssProvider provider = new CssProvider();
 		 provider.load_from_data(
-			"TweetListEntry .horizontal .tweet{
+			"StreemContainer.stream.vertical{
 				background-image: none;
 				background-color: red;
 				color: green;
@@ -32,7 +32,9 @@ class MainWindow : Window {
 
 		left_toolbar.orientation = Orientation.VERTICAL;
 		left_toolbar.set_style(ToolbarStyle.ICONS);
+		left_toolbar.get_style_context().add_class("primary-toolbar");
 		left_toolbar.get_style_context().add_class("sidebar");
+
 		left_toolbar.add(new_tweet_button);
 		left_toolbar.add(new SeparatorToolItem());
 		RadioToolButton home_button = new RadioToolButton.from_stock(null, Stock.HOME);

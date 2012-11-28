@@ -51,12 +51,13 @@ class StreamContainer : TweetList{
 			"SELECT `id`, `added_to_stream` FROM `cache` ORDER BY `added_to_stream` DESC LIMIT 1;");
 		SQLHeavy.QueryResult id_result = id_query.execute();
 		int64 greatest_id = id_result.fetch_int64(0);
+		message("greatest_id: %s", greatest_id.to_string());
 
 
 		var call = Twitter.proxy.new_call();
 		call.set_function("1.1/statuses/home_timeline.json");
 		call.set_method("GET");
-		call.add_param("count", "30");
+		call.add_param("count", "4");
 		call.add_param("include_entities", "false");
 		if(greatest_id > 0)
 			call.add_param("since_id", greatest_id.to_string());
@@ -107,9 +108,9 @@ class StreamContainer : TweetList{
 				string display_name = user.get_string_member("screen_name");
 				int64 added_to_stream = Utils.parse_date(created_at).to_unix();
 
-
 				t.avatar_url = user.get_string_member("profile_image_url");
-				t.avatar_name = t.avatar_url.substring(t.avatar_url.last_index_of("/")+1);
+				t.avatar_name = t.avatar_url.substring(t.avatar_url.last_index_of("/") + 1);
+				stdout.printf(" URL: %s\nNAME:%s\n", t.avatar_url, t.avatar_name);
 				// stdout.printf(t.avatar_name+"\n");
 
 				
@@ -122,9 +123,10 @@ class StreamContainer : TweetList{
 					Json.Object rt_user = rt.get_object_member("user");
 					t.user_name = rt_user.get_string_member ("name");
 					t.avatar_url = rt_user.get_string_member("profile_image_url");
+					t.avatar_name = t.avatar_url.substring(t.avatar_url.last_index_of("/") + 1);
 					t.user_id = (int)rt_user.get_int_member("id");
 					created_at = rt.get_string_member("created_at");
-					display_name = rt_user.get_string_member("display_name");
+					display_name = rt_user.get_string_member("screen_name");
 				}
 				GLib.DateTime dt = Utils.parse_date(created_at);
 				t.time_delta = Utils.get_time_delta(dt, now);
