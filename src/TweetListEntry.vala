@@ -31,6 +31,7 @@ class TweetListEntry : Gtk.Box {
 		var top_box = new Box(Orientation.HORIZONTAL, 4);
 		author.set_use_markup(true);
 		author.label = "<span size=\"larger\"><b>"+tweet.user_name+"</b></span>";
+		author.get_style_context().add_class("tweet");
 		top_box.pack_start(author, false, false);
 		if (tweet.is_retweet){
 			rt_label.set_use_markup(true);
@@ -51,14 +52,20 @@ class TweetListEntry : Gtk.Box {
 
 		this.pack_start(right_box, true, true);
 
-		this.button_press_event.connect( (btn) => {
-			if (btn.type == Gdk.EventType.@2BUTTON_PRESS){
-				message("double click");
-				return true;
-			}
-			message("evt");
-			return false;
-		});
+		// this.button_press_event.connect( (btn) => {
+		// 	if (btn.type == Gdk.EventType.@2BUTTON_PRESS){
+		// 		message("double click");
+		// 		return true;
+		// 	}
+		// 	message("evt");
+		// 	return false;
+		// });
+		
+		this.enter_notify_event.connect( () => {
+			stdout.printf(tweet.text+"\n");
+			return true;
+		}) ;
+		
 
 
 		this.set_size_request(150, 80);

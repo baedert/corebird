@@ -29,10 +29,10 @@ class Corebird : Gtk.Application {
 
 
 
-		if (Settings.is_first_run())
-		    this.add_window(new FirstRunWindow());
-		else
-			this.add_window(new MainWindow());
+		if (Settings.is_first_run()){
+			this.add_window(new FirstRunWindow(this));
+		} else
+			this.add_window(new MainWindow(this));
 
 
 		this.activate.connect( ()  => {});
@@ -53,6 +53,8 @@ class Corebird : Gtk.Application {
 			db.execute("CREATE TABLE IF NOT EXISTS `people`(id INTEGER(11), 
 			           name VARCHAR(30), screen_name VACHAR(30), avatar_url VARCHAR(255),
 			           avatar_name VARCHAR(70));");
+			db.execute("CREATE TABLE IF NOT EXISTS `user`(id INTEGER(11),
+			           name VARCHAR(40), screen_name VARCHAR(40));");
 		}catch(SQLHeavy.Error e){
 			error("Error while creating the tables: %s".printf(e.message));
 		}

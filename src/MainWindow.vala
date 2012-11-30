@@ -3,7 +3,7 @@ using Gtk;
 using Soup;
 
 
-class MainWindow : Window {
+class MainWindow : ApplicationWindow {
 	private Toolbar left_toolbar = new Toolbar();
 	private Box main_box = new Box(Orientation.VERTICAL, 0);
 	private Box bottom_box = new Box(Orientation.HORIZONTAL, 0);
@@ -12,7 +12,8 @@ class MainWindow : Window {
 	private MentionsContainer mentions_container = new MentionsContainer();
 	private SearchContainer search_container = new SearchContainer();
 
-	public MainWindow(){
+	public MainWindow(Gtk.Application app){
+		GLib.Object (application: app);
 
 		 ToolButton new_tweet_button = new ToolButton.from_stock(Stock.NEW);
 		 new_tweet_button.clicked.connect( () => {
@@ -22,7 +23,7 @@ class MainWindow : Window {
 
 		 CssProvider provider = new CssProvider();
 		 provider.load_from_data(
-			"StreemContainer.stream.vertical{
+			"*:hover{
 				background-image: none;
 				background-color: red;
 				color: green;
@@ -34,6 +35,11 @@ class MainWindow : Window {
 		left_toolbar.set_style(ToolbarStyle.ICONS);
 		left_toolbar.get_style_context().add_class("primary-toolbar");
 		left_toolbar.get_style_context().add_class("sidebar");
+
+
+		ToolButton avatar_button = new ToolButton(new Image.from_file("assets/no_avatar.png"), null);
+		left_toolbar.add(avatar_button);
+
 
 		left_toolbar.add(new_tweet_button);
 		left_toolbar.add(new SeparatorToolItem());
@@ -99,8 +105,6 @@ class MainWindow : Window {
 		bottom_box.pack_end (main_notebook, true, true);
 		main_box.pack_end(bottom_box, true, true);
 
-		//TODO Find out how to get the user_id of the authenticated user(needed for the profile info lookup)
-
 		// Load the cached tweets from the database
 		// for(int i = 0;  i  < 300; i++){
 			// stdout.printf("%d\n", i);
@@ -112,8 +116,6 @@ class MainWindow : Window {
 		this.show_all();
 
 		Corebird.create_tables();
-
-		message(stream_container.get_style_context().get_path().to_string());
 	}
 
 	// private async void refresh_profile(){

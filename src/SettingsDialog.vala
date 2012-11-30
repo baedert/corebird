@@ -20,7 +20,7 @@ public class SettingsDialog {
 	}
 
 	[CCode (instance_pos = -1)]
-	private void show_primary_toolbar_cb(Switch source){
+	public void show_primary_toolbar_cb(Button source){
 		message("hihi");
 	}
 

@@ -3,7 +3,7 @@ using Gtk;
 using Rest;
 
 
-class FirstRunWindow : Window {
+class FirstRunWindow : ApplicationWindow {
 	private Button cancel_button = new Button.with_label("Cancel");
 	private Button next_button = new Button.with_label("Next");
 	private Notebook notebook = new Notebook();
@@ -12,7 +12,8 @@ class FirstRunWindow : Window {
 	private int page = 0;
 
 
-	public FirstRunWindow(){
+	public FirstRunWindow(Gtk.Application app){
+		GLib.Object(application: app);
 		this.resize(600, 300);
 		notebook.show_border = false;
 		notebook.show_tabs = false;
@@ -59,6 +60,8 @@ class FirstRunWindow : Window {
 					error("Error while obtatning access token: %s", e.message);
 				}
 
+
+
 				// Save token + token_secret
 				try{
 					Corebird.create_tables();
@@ -72,8 +75,25 @@ class FirstRunWindow : Window {
 					stderr.printf("SQL ERROR: "+e.message+"\n");
 				}
 
+				//Load the user's settings
+				var settings_call = Twitter.proxy.new_call();
+				settings_call.set_function("1.1/account/settings.json");
+				settings_call.set_method("GET");
+				settings_call.invoke_async.begin(null, (obj, res) => {
+					settings_call.invoke_async.end(res);
+					string back = settings_call.get_payload();
+					stdout.printf(back+"\n");
+					var parser = new Json.Parser();
+					parser.load_from_data(back);
+					var root = parser.get_root().get_object();
+					string screen_name = root.get_string_member("screen_name");
+					SQLHeavy.Query screen_name_query = new SQLHeavy.Query(Corebird.db,
+						"INSERT INTO `user`(screen_name) VALUES ('%s');".printf(screen_name));
+					screen_name_query.execute_async.begin();
+				});
+
 				//Tell everyone that the first run has just ended.
-				Settings.set_bool("first-run", false);
+				// Settings.set_bool("first-run", false);
 
 			}
 			notebook.set_current_page(page);

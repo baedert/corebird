@@ -20,6 +20,7 @@ class TweetList : Box {
 	public void add_tweet(TweetListEntry entry){
 		this.pack_start(entry, false, true);
 		entry.set_visible(true);
+		// message(entry.get_style_context().get_path().to_string());
 	}
 
 	public void insert_tweet(TweetListEntry entry, uint pos){
