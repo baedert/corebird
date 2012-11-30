@@ -80,16 +80,27 @@ class FirstRunWindow : ApplicationWindow {
 				settings_call.set_function("1.1/account/settings.json");
 				settings_call.set_method("GET");
 				settings_call.invoke_async.begin(null, (obj, res) => {
-					settings_call.invoke_async.end(res);
+					try{
+						settings_call.invoke_async.end(res);
+					} catch (GLib.Error e){
+						error ("Error while ending settings_call: %s", e.message);
+					}
 					string back = settings_call.get_payload();
-					stdout.printf(back+"\n");
 					var parser = new Json.Parser();
-					parser.load_from_data(back);
+					try{
+						parser.load_from_data(back);
+					} catch(GLib.Error e){
+						error("Error with Json data: %s\n DATA:\n%s", e.message, back);
+					}
 					var root = parser.get_root().get_object();
 					string screen_name = root.get_string_member("screen_name");
-					SQLHeavy.Query screen_name_query = new SQLHeavy.Query(Corebird.db,
-						"INSERT INTO `user`(screen_name) VALUES ('%s');".printf(screen_name));
-					screen_name_query.execute_async.begin();
+					try{
+						SQLHeavy.Query screen_name_query = new SQLHeavy.Query(Corebird.db,
+							"INSERT INTO `user`(screen_name) VALUES ('%s');".printf(screen_name));
+						screen_name_query.execute_async.begin();
+					}catch(SQLHeavy.Error e){
+						error("Error while settings the screen_name: %s", e.message);
+					}
 				});
 
 				//Tell everyone that the first run has just ended.

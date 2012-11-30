@@ -26,14 +26,14 @@ class MainWindow : ApplicationWindow {
 
 
 
-		CssProvider provider = new CssProvider();
-		provider.load_from_data(
-			"*:hover{
-				background-image: none;
-				background-color: red;
-				color: green;
-			}", -1);
-		this.get_style_context().add_provider(provider,STYLE_PROVIDER_PRIORITY_APPLICATION);
+		// CssProvider provider = new CssProvider();
+		// provider.load_from_data(
+		// 	"*:hover{
+		// 		background-image: none;
+		// 		background-color: red;
+		// 		color: green;
+		// 	}", -1);
+		// this.get_style_context().add_provider(provider,STYLE_PROVIDER_PRIORITY_APPLICATION);
 
 		left_toolbar.orientation = Orientation.VERTICAL;
 		left_toolbar.set_style(ToolbarStyle.ICONS);
@@ -42,6 +42,10 @@ class MainWindow : ApplicationWindow {
 
 
 		ToolButton avatar_button = new ToolButton(new Image.from_file(User.get_avatar_path()), null);
+		avatar_button.clicked.connect( () => {
+			ProfileDialog pd = new ProfileDialog();
+			pd.show_all();
+		});
 		left_toolbar.add(avatar_button);
 
 		//Update the user's info
