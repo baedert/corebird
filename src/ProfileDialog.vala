@@ -9,7 +9,11 @@ class ProfileDialog : Gtk.Window {
 	private ImageBox banner_box = new ImageBox(Orientation.VERTICAL, 3);
 	private Image avatar_image = new Image();
 	private Label name_label = new Label("");
+	private Label screen_name_label = new Label("");
 	private Label description_label = new Label("");
+	private Label tweets_label = new Label("");
+	private Label follower_label = new Label("");
+	private Label following_label = new Label("");
 
 	//TODO: Implement proper caching here.
 	public ProfileDialog(string screen_name = ""){
@@ -21,7 +25,6 @@ class ProfileDialog : Gtk.Window {
 		var main_box = new Gtk.Box(Orientation.VERTICAL, 2);
 
 		avatar_image.margin_top = 20;
-		avatar_image.set_alignment(0.5f, 0);
 		banner_box.pack_start(avatar_image, false, false);
 		name_label.set_use_markup(true);
 		name_label.justify = Justification.CENTER;
@@ -29,6 +32,9 @@ class ProfileDialog : Gtk.Window {
 		b.parse("#F00");
 		// name_label.override_background_color(StateFlags.NORMAL, b);
 		banner_box.pack_start(name_label, false, false);
+		screen_name_label.set_use_markup(true);
+		screen_name_label.set_markup("<big><span color='white'>@%s</span></big>".printf(screen_name));
+		banner_box.pack_start(screen_name_label, false, false);
 		description_label.set_use_markup(true);
 		description_label.set_line_wrap(true);
 		description_label.wrap_mode = Pango.WrapMode.WORD_CHAR;
@@ -40,17 +46,51 @@ class ProfileDialog : Gtk.Window {
 		// description_label.override_background_color(StateFlags.NORMAL, c);
 		banner_box.pack_start(description_label, false, false);
 
-
+		banner_box.set_pixbuf(new Gdk.Pixbuf.from_file("assets/banners/no_banner.png"));
 		main_box.pack_start(banner_box, false, false);
 
-		
+		var data_box = new Box(Orientation.HORIZONTAL, 3);
+		data_box.homogeneous = true;
+		tweets_label.set_use_markup(true);
+		data_box.pack_start(tweets_label, false, false);
+		following_label.set_use_markup(true);
+		data_box.pack_start(following_label, false, false);
+		follower_label.set_use_markup(true);
+		data_box.pack_start(follower_label, false, false);
+		main_box.pack_start(data_box, false, false);
+
+		//Load cached data
+		try{
+			SQLHeavy.Query cache_query = new SQLHeavy.Query(Corebird.db,
+				"SELECT screen_name, name, description, tweets, following, followers, avatar_name
+				FROM profiles
+				WHERE screen_name='%s';".printf(screen_name));
+			SQLHeavy.QueryResult cache_result = cache_query.execute();
+			if (!cache_result.finished){
+				name_label.set_markup("<big><big><big><b><span color='white'>%s</span></b></big></big></big>"
+					                      .printf(cache_result.fetch_string(1)));
+				description_label.set_markup("<big><span color='white'>%s</span></big>"
+					                             .printf(cache_result.fetch_string(2)));
+
+				tweets_label.set_markup("<big><b>%d</b></big>\nTweets".printf(cache_result.fetch_int(3)));
+				following_label.set_markup("<big><b>%d</b></big>\nFollowing".printf(cache_result.fetch_int(4)));
+				follower_label.set_markup("<big><b>%d</b></big>\nFollowers".printf(cache_result.fetch_int(5)));
+				message("assets/avatars/%s".printf(cache_result.fetch_string(6)));
+				avatar_image.set_from_file("assets/avatars/%s".printf(cache_result.fetch_string(6)));
+				if(FileUtils.test("assets/banners/%s.png".printf(screen_name), FileTest.EXISTS))
+					banner_box.set_pixbuf(new Gdk.Pixbuf.from_file("assets/banners/%s.png"
+				                      .printf(screen_name)));
+			}
+		}catch(SQLHeavy.Error e){
+			warning("Error while loading cached profile data: %s", e.message);
+		}
 
 		load_banner.begin(screen_name);
 		load_profile_data.begin(screen_name);
 
 
 
-		this.set_default_size(320, 450);
+		this.resize(320, 450);
 		this.add(main_box);
 	}
 
@@ -85,14 +125,41 @@ class ProfileDialog : Gtk.Window {
 				av.copy(dest, FileCopyFlags.OVERWRITE);
 			}
 			avatar_image.set_from_file(avatar_on_disk);
+			string name        = root.get_string_member("name");
+			string description = root.get_string_member("description");
+			int64 id		   = root.get_int_member("id");
+			int followers      = (int)root.get_int_member("followers_count");
+			int following      = (int)root.get_int_member("friends_count");
+			int tweets         = (int)root.get_int_member("statuses_count");
 
 
-			name_label.set_markup("<big><big><big><b><span color='white'>%s
-			                      </span></b></big></big></big>".printf(root.get_string_member("name")));
+
+			name_label.set_markup("<big><big><big><b><span color='white'>%s</span></b></big></big></big>"
+			                      .printf(name));
 			description_label.set_markup("<big><span color='white'>%s</span></big>"
-			                             .printf(root.get_string_member("description")));
+			                             .printf(description));
 
+			tweets_label.set_markup("<big><b>%d</b></big>\nTweets".printf(tweets));
+			following_label.set_markup("<big><b>%d</b></big>\nFollowing".printf(following));
+			follower_label.set_markup("<big><b>%d</b></big>\nFollowers".printf(followers));
 
+			try{
+				SQLHeavy.Query update_query = new SQLHeavy.Query(Corebird.db,
+					"INSERT OR REPLACE INTO `profiles`(`id`, `screen_name`, `name`,
+					   `followers`, `following`, `tweets`, `description`, `avatar_name`) VALUES
+					(:id, :screen_name, :name, :followers, :following, :tweets, :description, :avatar_name);");
+				update_query.set_int64(":id", id);
+				update_query.set_string(":screen_name", screen_name);
+				update_query.set_string(":name", name);
+				update_query.set_int(":followers", followers);
+				update_query.set_int(":following", following);
+				update_query.set_int(":tweets", tweets);
+				update_query.set_string(":description", description);
+				update_query.set_string(":avatar_name", avatar_name);
+				update_query.execute_async.begin();
+			}catch(SQLHeavy.Error e){
+				warning("Error while updating profile info for %s:%s", screen_name, e.message);
+			}
 		});
 	}
 
@@ -109,7 +176,6 @@ class ProfileDialog : Gtk.Window {
 			if (call.get_status_code() == 404){
 				// Normal. The user has not set a profile banner.
 				message("No Banner set.");
-				banner_box.set_pixbuf(new Gdk.Pixbuf.from_file("assets/banners/no_banner.png"));
 				return;
 			}
 			try{
@@ -142,6 +208,7 @@ class ProfileDialog : Gtk.Window {
 					FileInputStream in_stream = banner_file.read();
 					Gdk.Pixbuf b = new Gdk.Pixbuf.from_stream(in_stream);
 					banner_box.set_pixbuf(b);
+					message("Banner saved.");
 					b.save(banner_on_disk, "png");
 				} catch (GLib.Error ex) {
 					warning ("Error while setting banner: %s", ex.message);

@@ -55,6 +55,10 @@ class Corebird : Gtk.Application {
 			           avatar_name VARCHAR(70));");
 			db.execute("CREATE TABLE IF NOT EXISTS `user`(id INTEGER(11),
 			           name VARCHAR(40), screen_name VARCHAR(40));");
+			db.execute("CREATE TABLE IF NOT EXISTS `profiles`(id INTEGER(11),
+			           name VARCHAR(40) PRIMARY KEY, screen_name VARCHAR(40), tweets INTEGER(11),
+			           followers INTEGER(11), following INTEGER(11), description VARCHAR(160),
+			           avatar_name VARCHAR(100));");
 		}catch(SQLHeavy.Error e){
 			error("Error while creating the tables: %s".printf(e.message));
 		}
