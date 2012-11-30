@@ -25,15 +25,16 @@ class MainWindow : ApplicationWindow {
 		});
 
 
+		//Load custom style sheet
+		try{
+			CssProvider provider = new CssProvider();
+			provider.load_from_file(File.new_for_path("ui/style.css"));
+			Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(), provider,
+		                                         STYLE_PROVIDER_PRIORITY_APPLICATION);
+		}catch(GLib.Error e){
+			warning("Error while loading ui/style.css: %s", e.message);
+		}
 
-		// CssProvider provider = new CssProvider();
-		// provider.load_from_data(
-		// 	"*:hover{
-		// 		background-image: none;
-		// 		background-color: red;
-		// 		color: green;
-		// 	}", -1);
-		// this.get_style_context().add_provider(provider,STYLE_PROVIDER_PRIORITY_APPLICATION);
 
 		left_toolbar.orientation = Orientation.VERTICAL;
 		left_toolbar.set_style(ToolbarStyle.ICONS);
@@ -117,10 +118,7 @@ class MainWindow : ApplicationWindow {
 		main_box.pack_end(bottom_box, true, true);
 
 		// Load the cached tweets from the database
-		// for(int i = 0;  i  < 300; i++){
-			// stdout.printf("%d\n", i);
-			stream_container.load_cached_tweets.begin();
-		// }
+		stream_container.load_cached_tweets.begin();
 
 		this.add(main_box);
 		this.set_default_size (450, 600);
@@ -128,21 +126,4 @@ class MainWindow : ApplicationWindow {
 
 		Corebird.create_tables();
 	}
-
-	// private async void refresh_profile(){
-	// 	var call = Twitter.proxy.new_call();
-	// 	call.set_method("GET");
-	// 	call.set_function("1.1/users/show.json");
-	// 	call.add_param("user_id", "15");
-	// 	call.invoke_async.begin(null, () => {
-	// 		string json_string = call.get_payload();
-	// 		Json.Parser parser = new Json.Parser();
-	// 		try{
-	// 			parser.load_from_data (json_string);
-	// 			// stdout.printf(json_string+"\n");
-	// 		}catch(GLib.Error e){
-	// 			error("Error while refreshing profile: %s", e.message);
-	// 		}
-	// 	});
-	// }
 }

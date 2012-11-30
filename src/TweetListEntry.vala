@@ -3,11 +3,11 @@ using Gtk;
 
 class TweetListEntry : Gtk.Box {
 	public Tweet tweet;
-	private Gtk.Image avatar   = new Gtk.Image();
-	private Label text         = new Label("");
-	private Label author       = new Label("");
-	private Label rt_label     = new Label("");
-	private Label time_delta   = new Label("");
+	private Button avatar_button = new Button();
+	private Label text           = new Label("");
+	private Label author         = new Label("");
+	private Label rt_label       = new Label("");
+	private Label time_delta     = new Label("");
 
 
 
@@ -17,21 +17,26 @@ class TweetListEntry : Gtk.Box {
 		this.get_style_context().add_class("tweet");
 		this.border_width = 4;
 
-
 		var left_box = new Box(Orientation.VERTICAL, 2);
-		avatar.pixbuf = tweet.avatar;
-		avatar.set_alignment(0, 0);
-		left_box.pack_start(avatar, false, false);
+		avatar_button.clicked.connect( () => {
+			ProfileDialog pd = new ProfileDialog(tweet.screen_name);
+			pd.show_all();
+		});
+		avatar_button.image = new Gtk.Image.from_pixbuf(tweet.avatar);
+		avatar_button.set_alignment(0,0);
+		avatar_button.border_width = 0;
+		left_box.pack_start(avatar_button, false, false);
 		time_delta.set_use_markup(true);
 		time_delta.label = "<small>"+tweet.time_delta+"</small>";
 		time_delta.set_alignment(0,0);
+		time_delta.get_style_context().add_class("time-delta");
 		left_box.pack_start(time_delta, false, false);
 		this.pack_start(left_box, false, false);
 
 		var top_box = new Box(Orientation.HORIZONTAL, 4);
 		author.set_use_markup(true);
 		author.label = "<span size=\"larger\"><b>"+tweet.user_name+"</b></span>";
-		author.get_style_context().add_class("tweet");
+		author.get_style_context().add_class("author");
 		top_box.pack_start(author, false, false);
 		if (tweet.is_retweet){
 			rt_label.set_use_markup(true);

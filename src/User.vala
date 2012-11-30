@@ -88,7 +88,7 @@ class User{
 					"UPDATE `user` SET `avatar_name`='%s';".printf(avatar_name));
 					query.execute();
 				}catch(SQLHeavy.Error e){
-					warning("Error while settinsg the new avatar_name: %s", e.message);
+					warning("Error while setting the new avatar_name: %s", e.message);
 				}
 				message("Updated the avatar image!");
 			}

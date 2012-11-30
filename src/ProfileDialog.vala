@@ -15,12 +15,9 @@ class ProfileDialog : Gtk.Window {
 	private Label follower_label = new Label("");
 	private Label following_label = new Label("");
 
-	//TODO: Implement proper caching here.
 	public ProfileDialog(string screen_name = ""){
 		if (screen_name == "")
 			screen_name = User.screen_name;
-		// screen_name = "bl2nk";
-
 
 		var main_box = new Gtk.Box(Orientation.VERTICAL, 2);
 
@@ -28,9 +25,6 @@ class ProfileDialog : Gtk.Window {
 		banner_box.pack_start(avatar_image, false, false);
 		name_label.set_use_markup(true);
 		name_label.justify = Justification.CENTER;
-		Gdk.RGBA b = {};
-		b.parse("#F00");
-		// name_label.override_background_color(StateFlags.NORMAL, b);
 		banner_box.pack_start(name_label, false, false);
 		screen_name_label.set_use_markup(true);
 		screen_name_label.set_markup("<big><span color='white'>@%s</span></big>".printf(screen_name));
@@ -41,12 +35,12 @@ class ProfileDialog : Gtk.Window {
 		description_label.justify = Justification.CENTER;
 		description_label.margin_left = 5;
 		description_label.margin_right = 5;
-		Gdk.RGBA c = {};
-		c.parse("#0F0");
-		// description_label.override_background_color(StateFlags.NORMAL, c);
 		banner_box.pack_start(description_label, false, false);
-
-		banner_box.set_pixbuf(new Gdk.Pixbuf.from_file("assets/banners/no_banner.png"));
+		try{
+			banner_box.set_pixbuf(new Gdk.Pixbuf.from_file("assets/banners/no_banner.png"));
+		}catch(GLib.Error e){
+			warning("Error while loading default banner: %s", e.message);
+		}
 		main_box.pack_start(banner_box, false, false);
 
 		var data_box = new Box(Orientation.HORIZONTAL, 3);
@@ -75,7 +69,6 @@ class ProfileDialog : Gtk.Window {
 				tweets_label.set_markup("<big><b>%d</b></big>\nTweets".printf(cache_result.fetch_int(3)));
 				following_label.set_markup("<big><b>%d</b></big>\nFollowing".printf(cache_result.fetch_int(4)));
 				follower_label.set_markup("<big><b>%d</b></big>\nFollowers".printf(cache_result.fetch_int(5)));
-				message("assets/avatars/%s".printf(cache_result.fetch_string(6)));
 				avatar_image.set_from_file("assets/avatars/%s".printf(cache_result.fetch_string(6)));
 				if(FileUtils.test("assets/banners/%s.png".printf(screen_name), FileTest.EXISTS))
 					banner_box.set_pixbuf(new Gdk.Pixbuf.from_file("assets/banners/%s.png"
@@ -83,6 +76,8 @@ class ProfileDialog : Gtk.Window {
 			}
 		}catch(SQLHeavy.Error e){
 			warning("Error while loading cached profile data: %s", e.message);
+		}catch(GLib.Error e){
+			warning("Error while loading cached banner: %s", e.message);
 		}
 
 		load_banner.begin(screen_name);
@@ -122,11 +117,16 @@ class ProfileDialog : Gtk.Window {
 			if(!FileUtils.test(avatar_on_disk, FileTest.EXISTS)){
 				File av = File.new_for_uri(avatar_url);
 				File dest = File.new_for_path(avatar_on_disk);
-				av.copy(dest, FileCopyFlags.OVERWRITE);
+				try{
+					av.copy(dest, FileCopyFlags.OVERWRITE);
+				}catch(GLib.Error e){
+					warning("Error while copying avatar to disk: %s", e.message);
+
+				}
 			}
 			avatar_image.set_from_file(avatar_on_disk);
 			string name        = root.get_string_member("name");
-			string description = root.get_string_member("description");
+			string description = root.get_string_member("description").replace("&", "&amp;");
 			int64 id		   = root.get_int_member("id");
 			int followers      = (int)root.get_int_member("followers_count");
 			int following      = (int)root.get_int_member("friends_count");
@@ -214,7 +214,11 @@ class ProfileDialog : Gtk.Window {
 					warning ("Error while setting banner: %s", ex.message);
 				}
 			}else {
-				banner_box.set_pixbuf(new Gdk.Pixbuf.from_file(banner_on_disk));
+				try{
+					banner_box.set_pixbuf(new Gdk.Pixbuf.from_file(banner_on_disk));
+				}catch(GLib.Error e){
+					warning("Error while loading banner_on_disk: %s", e.message);
+				}
 			}
 		});
 	}
