@@ -2,7 +2,10 @@
 
 
 class User{
+	/** screen_name, unique per user, e.g. baedert(always written as @baedert) */
 	public static string screen_name;
+	/** Normal name like 'Chuck Norris' */
+	public static string name;
 	private static string avatar_name = "no_profile_pic.png";
 
 	public static string get_avatar_path(){
@@ -10,6 +13,9 @@ class User{
 	}
 
 
+	/**
+	 * Loads the user's cached data from the database.
+	 */
 	public static void load(){
 		try{
 			SQLHeavy.Query query = new SQLHeavy.Query(Corebird.db,
@@ -51,13 +57,14 @@ class User{
 				return;
 			}
 			var root = parser.get_root().get_object();
+			User.name = root.get_string_member("name");
 			string url = root.get_string_member("profile_image_url");
 			string avatar_name = Utils.get_file_name(url);
 			// Check if the avatar of the user has changed.
 			if (avatar_name != User.avatar_name
 			    || !FileUtils.test(get_avatar_path(), FileTest.EXISTS)){
 				File user_avatar = File.new_for_uri(url);
-				// TODO: This is insanely inperformant and stupid. FIX!
+				// TODO: This is insanely imperformant and stupid. FIX!
 				string dest_path = "assets/user/%s".printf(avatar_name);
 				File dest = File.new_for_path(dest_path);
 				
@@ -68,7 +75,7 @@ class User{
 					Gdk.Pixbuf scaled = new Gdk.Pixbuf(Gdk.Colorspace.RGB, true, 8, 24, 24);
 					av.scale(scaled, 0, 0, 24, 24, 0, 0, 0.5, 0.5, Gdk.InterpType.HYPER);
 					// Overwrite current avatar because its too big.
-					string type = avatar_name.substring(avatar_name.last_index_of(".") + 1);
+					string type = Utils.get_file_type(avatar_name);
 					scaled.save (dest_path, type);
 				} catch (GLib.Error e){
 					warning("Error while scaling the avatar: %s", e.message);

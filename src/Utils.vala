@@ -74,4 +74,12 @@ class Utils{
 	public static string get_file_name(string path){
 		return path.substring(path.last_index_of("/") + 1);
 	}
+
+	/**
+	 * Extracts the file type from the given path.
+	 * E.g. for http://foo.org/bar/bla.png, this will just return "png"
+	 */
+	public static string get_file_type(string path){
+		return path.substring(path.last_index_of(".") + 1);
+	}
 }
