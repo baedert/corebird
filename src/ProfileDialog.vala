@@ -20,14 +20,17 @@ class ProfileDialog : Gtk.Window {
 			screen_name = User.screen_name;
 
 		var main_box = new Gtk.Box(Orientation.VERTICAL, 2);
+		banner_box.get_style_context().add_class("profile-header");
 
 		avatar_image.margin_top = 20;
 		banner_box.pack_start(avatar_image, false, false);
 		name_label.set_use_markup(true);
 		name_label.justify = Justification.CENTER;
+		name_label.get_style_context().add_class("name");
 		banner_box.pack_start(name_label, false, false);
 		screen_name_label.set_use_markup(true);
-		screen_name_label.set_markup("<big><span color='white'>@%s</span></big>".printf(screen_name));
+		screen_name_label.set_markup("<big>@%s</big>".printf(screen_name));
+		screen_name_label.get_style_context().add_class("screen-name");
 		banner_box.pack_start(screen_name_label, false, false);
 		description_label.set_use_markup(true);
 		description_label.set_line_wrap(true);
@@ -35,6 +38,7 @@ class ProfileDialog : Gtk.Window {
 		description_label.justify = Justification.CENTER;
 		description_label.margin_left = 5;
 		description_label.margin_right = 5;
+		description_label.get_style_context().add_class("description");
 		banner_box.pack_start(description_label, false, false);
 		try{
 			banner_box.set_pixbuf(new Gdk.Pixbuf.from_file("assets/banners/no_banner.png"));
@@ -61,9 +65,9 @@ class ProfileDialog : Gtk.Window {
 				WHERE screen_name='%s';".printf(screen_name));
 			SQLHeavy.QueryResult cache_result = cache_query.execute();
 			if (!cache_result.finished){
-				name_label.set_markup("<big><big><big><b><span color='white'>%s</span></b></big></big></big>"
+				name_label.set_markup("<big><big><big><b>%s</b></big></big></big>"
 					                      .printf(cache_result.fetch_string(1)));
-				description_label.set_markup("<big><span color='white'>%s</span></big>"
+				description_label.set_markup("<big>%s</big>"
 					                             .printf(cache_result.fetch_string(2)));
 
 				tweets_label.set_markup("<big><b>%d</b></big>\nTweets".printf(cache_result.fetch_int(3)));
@@ -134,9 +138,9 @@ class ProfileDialog : Gtk.Window {
 
 
 
-			name_label.set_markup("<big><big><big><b><span color='white'>%s</span></b></big></big></big>"
+			name_label.set_markup("<big><big><big><b>%s</b></big></big></big>"
 			                      .printf(name));
-			description_label.set_markup("<big><span color='white'>%s</span></big>"
+			description_label.set_markup("<big>%s</big>"
 			                             .printf(description));
 
 			tweets_label.set_markup("<big><b>%d</b></big>\nTweets".printf(tweets));

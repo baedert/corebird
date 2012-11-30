@@ -4,6 +4,7 @@ class StreamContainer : TweetList{
 	
 
 	public StreamContainer(){
+		// this.add_tweet(new ProgressItem());
 	}	
 
 
@@ -58,7 +59,7 @@ class StreamContainer : TweetList{
 		var call = Twitter.proxy.new_call();
 		call.set_function("1.1/statuses/home_timeline.json");
 		call.set_method("GET");
-		call.add_param("count", "4");
+		call.add_param("count", "50");
 		call.add_param("include_entities", "false");
 		call.add_param("contributor_details", "true");
 		if(greatest_id > 0)
@@ -143,7 +144,7 @@ class StreamContainer : TweetList{
 				if(!t.has_avatar()){
 					// message("Downloading avatar for %s", t.user_name);
 					File av = File.new_for_uri(t.avatar_url);
-					stdout.printf("assets/avatars/%s".printf(t.avatar_name));
+					// stdout.printf("assets/avatars/%s".printf(t.avatar_name));
 					File dest = File.new_for_path("assets/avatars/%s".printf(t.avatar_name));
 					try{
 						av.copy(dest, FileCopyFlags.OVERWRITE); 

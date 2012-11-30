@@ -67,9 +67,8 @@ class User{
 				// TODO: This is insanely imperformant and stupid. FIX!
 				string dest_path = "assets/user/%s".printf(avatar_name);
 				File dest = File.new_for_path(dest_path);
-				
-
 				try{
+					// Download-> save -> load -> scale -> save
 					user_avatar.copy(dest, FileCopyFlags.OVERWRITE); 
 					Gdk.Pixbuf av = new Gdk.Pixbuf.from_file(dest_path);
 					Gdk.Pixbuf scaled = new Gdk.Pixbuf(Gdk.Colorspace.RGB, true, 8, 24, 24);

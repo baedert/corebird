@@ -120,6 +120,8 @@ class MainWindow : ApplicationWindow {
 		// Load the cached tweets from the database
 		stream_container.load_cached_tweets.begin();
 
+
+
 		this.add(main_box);
 		this.set_default_size (450, 600);
 		this.show_all();

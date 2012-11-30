@@ -15,7 +15,8 @@ FILES = src/Corebird.vala \
 		src/ImageLabel.vala \
 		src/User.vala \
 		src/ProfileDialog.vala \
-		src/ImageBox.vala
+		src/ImageBox.vala \
+		src/ProgressItem.vala
 
 
 
