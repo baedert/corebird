@@ -93,7 +93,7 @@ class FirstRunWindow : ApplicationWindow {
 				});
 
 				//Tell everyone that the first run has just ended.
-				// Settings.set_bool("first-run", false);
+				Settings.set_bool("first-run", false);
 
 			}
 			notebook.set_current_page(page);

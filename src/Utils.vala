@@ -63,4 +63,15 @@ class Utils{
 		//If 'time' was over 24 hours ago, we just return that
 		return "%d %s".printf(time.get_day_of_month(), MONTHS[time.get_month()-1]);
 	}
+
+
+	/**
+	 * Extracts the actual filename out of a given path.
+	 * E.g. for /home/foo/bar.png, it will return "bar.png"
+	 *
+	 * @return The filename of the given path, and nothing else.
+	 */
+	public static string get_file_name(string path){
+		return path.substring(path.last_index_of("/") + 1);
+	}
 }

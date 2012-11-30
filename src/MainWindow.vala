@@ -15,21 +15,25 @@ class MainWindow : ApplicationWindow {
 	public MainWindow(Gtk.Application app){
 		GLib.Object (application: app);
 
-		 ToolButton new_tweet_button = new ToolButton.from_stock(Stock.NEW);
-		 new_tweet_button.clicked.connect( () => {
-		 	NewTweetWindow win = new NewTweetWindow(this);
-		 	win.show_all();
-		 });
+		//Load the user's sceen_name used for identifying him
+		User.load();
 
-		 CssProvider provider = new CssProvider();
-		 provider.load_from_data(
+		ToolButton new_tweet_button = new ToolButton.from_stock(Stock.NEW);
+		new_tweet_button.clicked.connect( () => {
+		 	NewTweetWindow win = new NewTweetWindow(this);
+			win.show_all();
+		});
+
+
+
+		CssProvider provider = new CssProvider();
+		provider.load_from_data(
 			"*:hover{
 				background-image: none;
 				background-color: red;
 				color: green;
 			}", -1);
-		 this.get_style_context().add_provider(provider,STYLE_PROVIDER_PRIORITY_APPLICATION);
-
+		this.get_style_context().add_provider(provider,STYLE_PROVIDER_PRIORITY_APPLICATION);
 
 		left_toolbar.orientation = Orientation.VERTICAL;
 		left_toolbar.set_style(ToolbarStyle.ICONS);
@@ -37,8 +41,11 @@ class MainWindow : ApplicationWindow {
 		left_toolbar.get_style_context().add_class("sidebar");
 
 
-		ToolButton avatar_button = new ToolButton(new Image.from_file("assets/no_avatar.png"), null);
+		ToolButton avatar_button = new ToolButton(new Image.from_file(User.get_avatar_path()), null);
 		left_toolbar.add(avatar_button);
+
+		//Update the user's info
+		User.update_info.begin((Image)avatar_button.icon_widget);
 
 
 		left_toolbar.add(new_tweet_button);
