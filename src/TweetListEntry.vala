@@ -2,6 +2,9 @@ using Gtk;
 
 
 class TweetListEntry : Gtk.Box {
+	private static GLib.Regex? hashtag_regex = null;
+	private static GLib.Regex? link_regex    = null;
+	private static GLib.Regex? user_regex    = null;
 	public Tweet tweet;
 	private Button avatar_button = new Button();
 	private Label text           = new Label("");
@@ -13,6 +16,12 @@ class TweetListEntry : Gtk.Box {
 
 	public TweetListEntry(Tweet tweet){
 		GLib.Object(orientation: Orientation.HORIZONTAL, spacing: 3);
+		if (hashtag_regex == null){
+			hashtag_regex = new GLib.Regex("#\\w*", RegexCompileFlags.OPTIMIZE);	
+			link_regex  = new GLib.Regex("(http|https)://[a-zA-Z.-\\?\\-\\+\\&]*",
+				RegexCompileFlags.OPTIMIZE);
+			user_regex = new GLib.Regex("@\\w*", RegexCompileFlags.OPTIMIZE);
+		}
 		set_has_window(false);
 		this.get_style_context().add_class("tweet");
 		this.border_width = 4;
@@ -47,7 +56,11 @@ class TweetListEntry : Gtk.Box {
 		var right_box = new Box(Orientation.VERTICAL, 2);
 		right_box.pack_start(top_box, false, false);
 
-		text.label = tweet.text;
+		string real_text = tweet.text;
+		real_text = hashtag_regex.replace(real_text, -1, 0, "<a href='cb://search/\\0'>\\0</a>");
+		real_text = link_regex.replace(real_text, -1, 0, "<a href='\\0'>\\0</a>");
+		real_text = user_regex.replace(real_text, -1, 0, "<a href='cb://profile/\\0'>\\0</a>");
+		text.label = real_text;
 		text.set_use_markup(true);
 		text.set_line_wrap(true);
 		text.wrap_mode = Pango.WrapMode.WORD_CHAR;
@@ -57,15 +70,6 @@ class TweetListEntry : Gtk.Box {
 
 		this.pack_start(right_box, true, true);
 
-		// this.button_press_event.connect( (btn) => {
-		// 	if (btn.type == Gdk.EventType.@2BUTTON_PRESS){
-		// 		message("double click");
-		// 		return true;
-		// 	}
-		// 	message("evt");
-		// 	return false;
-		// });
-		
 		this.enter_notify_event.connect( () => {
 			stdout.printf(tweet.text+"\n");
 			return true;

@@ -3,10 +3,10 @@
 	background-image: none;
 	border: none;
 	border-width: 0px;
+	border-radius: 0px;
 	-GtkButton-inner-border: 0;
 	padding: 0px;
 }
-
 
 .tweet .button:hover {
 	background-image: linear-gradient(to bottom,
@@ -22,13 +22,20 @@
 	background-image: none;
 }
 
+.tweet .author {
+	
+}
+
 .tweet .time-delta {
 	color: alpha(@theme_fg_color, 0.8);
+}
+.tweet .time-delta:backdrop{
+	color: @theme_unfocused_fg_color;
 }
 
 .profile-header .name,
 .profile-header .screen-name,
 .profile-header .description {
 	color: #EEE;
-	text-shadow: 1px 1px 3px #000;
+	text-shadow: 1px 1px 0px #000;
 }

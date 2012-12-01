@@ -121,7 +121,6 @@ class MainWindow : ApplicationWindow {
 		stream_container.load_cached_tweets.begin();
 
 
-
 		this.add(main_box);
 		this.set_default_size (450, 600);
 		this.show_all();

@@ -18,6 +18,8 @@ class ImageBox : Gtk.Box  {
 			StyleContext context = this.get_style_context();
 			context.render_icon(c, pixbuf, 0, 0);
 		}
+		
+		//Boxes do not draw any background! YAY
 		base.draw(c);
 		return false;
 	}

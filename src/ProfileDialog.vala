@@ -6,14 +6,14 @@ using Gtk;
  * A Dialog showing information about the given user.
  */
 class ProfileDialog : Gtk.Window {
-	private ImageBox banner_box = new ImageBox(Orientation.VERTICAL, 3);
-	private Image avatar_image = new Image();
-	private Label name_label = new Label("");
+	private ImageBox banner_box     = new ImageBox(Orientation.VERTICAL, 3);
+	private Image avatar_image      = new Image();
+	private Label name_label        = new Label("");
 	private Label screen_name_label = new Label("");
 	private Label description_label = new Label("");
-	private Label tweets_label = new Label("");
-	private Label follower_label = new Label("");
-	private Label following_label = new Label("");
+	private Label tweets_label      = new Label("");
+	private Label follower_label    = new Label("");
+	private Label following_label   = new Label("");
 
 	public ProfileDialog(string screen_name = ""){
 		if (screen_name == "")
@@ -48,12 +48,14 @@ class ProfileDialog : Gtk.Window {
 		main_box.pack_start(banner_box, false, false);
 
 		var data_box = new Box(Orientation.HORIZONTAL, 3);
-		data_box.homogeneous = true;
+		// data_box.homogeneous = true;
 		tweets_label.set_use_markup(true);
+		tweets_label.margin_left = 10;
 		data_box.pack_start(tweets_label, false, false);
 		following_label.set_use_markup(true);
-		data_box.pack_start(following_label, false, false);
+		data_box.pack_start(following_label, true, true);
 		follower_label.set_use_markup(true);
+		follower_label.margin_right = 10;
 		data_box.pack_start(follower_label, false, false);
 		main_box.pack_start(data_box, false, false);
 
@@ -67,12 +69,12 @@ class ProfileDialog : Gtk.Window {
 			if (!cache_result.finished){
 				name_label.set_markup("<big><big><big><b>%s</b></big></big></big>"
 					                      .printf(cache_result.fetch_string(1)));
-				description_label.set_markup("<big>%s</big>"
+				description_label.set_markup("<small>%s</small>"
 					                             .printf(cache_result.fetch_string(2)));
 
-				tweets_label.set_markup("<big><b>%d</b></big>\nTweets".printf(cache_result.fetch_int(3)));
-				following_label.set_markup("<big><b>%d</b></big>\nFollowing".printf(cache_result.fetch_int(4)));
-				follower_label.set_markup("<big><b>%d</b></big>\nFollowers".printf(cache_result.fetch_int(5)));
+				tweets_label.set_markup("<big><b>%'d</b></big>\nTweets".printf(cache_result.fetch_int(3)));
+				following_label.set_markup("<big><b>%'d</b></big>\nFollowing".printf(cache_result.fetch_int(4)));
+				follower_label.set_markup("<big><b>%'d</b></big>\nFollowers".printf(cache_result.fetch_int(5)));
 				avatar_image.set_from_file("assets/avatars/%s".printf(cache_result.fetch_string(6)));
 				if(FileUtils.test("assets/banners/%s.png".printf(screen_name), FileTest.EXISTS))
 					banner_box.set_pixbuf(new Gdk.Pixbuf.from_file("assets/banners/%s.png"
@@ -140,12 +142,12 @@ class ProfileDialog : Gtk.Window {
 
 			name_label.set_markup("<big><big><big><b>%s</b></big></big></big>"
 			                      .printf(name));
-			description_label.set_markup("<big>%s</big>"
+			description_label.set_markup("<small>%s</small>"
 			                             .printf(description));
 
-			tweets_label.set_markup("<big><b>%d</b></big>\nTweets".printf(tweets));
-			following_label.set_markup("<big><b>%d</b></big>\nFollowing".printf(following));
-			follower_label.set_markup("<big><b>%d</b></big>\nFollowers".printf(followers));
+			tweets_label.set_markup("<big><b>%'d</b></big>\nTweets".printf(tweets));
+			following_label.set_markup("<big><b>%'d</b></big>\nFollowing".printf(following));
+			follower_label.set_markup("<big><b>%'d</b></big>\nFollowers".printf(followers));
 
 			try{
 				SQLHeavy.Query update_query = new SQLHeavy.Query(Corebird.db,

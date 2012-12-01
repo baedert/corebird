@@ -4,19 +4,19 @@ using Gtk;
 
 
 public class SettingsDialog {
-	private Dialog dialog;
+	public Dialog dialog;
 
 	public SettingsDialog(){
 		Builder builder = new Builder();
 		try{
 			builder.add_from_file("ui/settings.ui");
+			builder.connect_signals(this);
 		}catch(GLib.Error e){
 			error("Error while loading ui: %s", e.message);
 		}
+		
 
-		dialog = (Dialog)builder.get_object("dialog1");
-
-		builder.connect_signals(null);
+		dialog = builder.get_object("dialog") as Dialog;
 	}
 
 	[CCode (instance_pos = -1)]
