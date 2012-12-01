@@ -4,6 +4,11 @@ using Soup;
 
 
 class MainWindow : ApplicationWindow {
+	public static const int PAGE_STREAM    = 0;
+	public static const int PAGE_MENTIONS  = 1;
+	public static const int PAGE_SEARCH    = 2;
+
+
 	private Toolbar left_toolbar = new Toolbar();
 	private Box main_box = new Box(Orientation.VERTICAL, 0);
 	private Box bottom_box = new Box(Orientation.HORIZONTAL, 0);
@@ -58,19 +63,19 @@ class MainWindow : ApplicationWindow {
 		RadioToolButton home_button = new RadioToolButton.from_stock(null, Stock.HOME);
 		home_button.toggled.connect( () => {
 			if (home_button.active)
-				main_notebook.set_current_page(0);
+				main_notebook.set_current_page(PAGE_STREAM);
 		});
 		left_toolbar.add(home_button);
 		RadioToolButton mentions_button = new RadioToolButton.with_stock_from_widget(home_button, Stock.ADD);
 		mentions_button.toggled.connect( () => {
 			if(mentions_button.active)
-				main_notebook.set_current_page(1);
+				main_notebook.set_current_page(PAGE_MENTIONS);
 		});
 		left_toolbar.add(mentions_button);
 		RadioToolButton search_button = new RadioToolButton.with_stock_from_widget(home_button, Stock.FIND);
 		search_button.toggled.connect( () => {
 			if(search_button.active)
-				main_notebook.set_current_page(2);
+				main_notebook.set_current_page(PAGE_SEARCH);
 		});
 		left_toolbar.add(search_button);
 
@@ -126,5 +131,10 @@ class MainWindow : ApplicationWindow {
 		this.show_all();
 
 		Corebird.create_tables();
+	}
+
+	public void switch_to_search(string search_term){
+		search_container.search_for(search_term);
+		main_notebook.set_current_page(PAGE_SEARCH);
 	}
 }

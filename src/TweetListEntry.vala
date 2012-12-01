@@ -17,10 +17,14 @@ class TweetListEntry : Gtk.Box {
 	public TweetListEntry(Tweet tweet){
 		GLib.Object(orientation: Orientation.HORIZONTAL, spacing: 3);
 		if (hashtag_regex == null){
-			hashtag_regex = new GLib.Regex("#\\w*", RegexCompileFlags.OPTIMIZE);	
-			link_regex  = new GLib.Regex("(http|https)://[a-zA-Z.-\\?\\-\\+\\&]*",
-				RegexCompileFlags.OPTIMIZE);
-			user_regex = new GLib.Regex("@\\w*", RegexCompileFlags.OPTIMIZE);
+			try{
+				hashtag_regex = new GLib.Regex("#\\w*", RegexCompileFlags.OPTIMIZE);	
+				link_regex  = new GLib.Regex("(http|https)://[a-zA-Z.-\\?\\-\\+\\&]*",
+					RegexCompileFlags.OPTIMIZE);
+				user_regex = new GLib.Regex("@\\w*", RegexCompileFlags.OPTIMIZE);
+			}catch(GLib.RegexError e){
+				warning("Error while creating regexes: %s", e.message);
+			}
 		}
 		set_has_window(false);
 		this.get_style_context().add_class("tweet");
@@ -57,9 +61,13 @@ class TweetListEntry : Gtk.Box {
 		right_box.pack_start(top_box, false, false);
 
 		string real_text = tweet.text;
-		real_text = hashtag_regex.replace(real_text, -1, 0, "<a href='cb://search/\\0'>\\0</a>");
-		real_text = link_regex.replace(real_text, -1, 0, "<a href='\\0'>\\0</a>");
-		real_text = user_regex.replace(real_text, -1, 0, "<a href='cb://profile/\\0'>\\0</a>");
+		try{
+			real_text = hashtag_regex.replace(real_text, -1, 0, "<a href='cb://search/\\0'>\\0</a>");
+			real_text = link_regex.replace(real_text, -1, 0, "<a href='\\0'>\\0</a>");
+			real_text = user_regex.replace(real_text, -1, 0, "<a href='cb://profile/\\0'>\\0</a>");
+		}catch(GLib.RegexError e){
+			warning("Error while applying regexes: %s", e.message);
+		}
 		text.label = real_text;
 		text.set_use_markup(true);
 		text.set_line_wrap(true);
@@ -74,6 +82,18 @@ class TweetListEntry : Gtk.Box {
 			stdout.printf(tweet.text+"\n");
 			return true;
 		}) ;
+
+		text.activate_link.connect( (uri) => {
+			if (uri.has_prefix("cb://")){
+				// Format: cb://foo/bar
+				string[] tokens = uri.split("/");
+				string action = tokens[2];
+				string value = tokens[3];
+				handle_link(action, value);
+				return true;
+			}
+			return false;
+		});
 		
 
 
@@ -81,4 +101,14 @@ class TweetListEntry : Gtk.Box {
 		this.show_all();
 	}
 
+
+	private void handle_link(string action, string value){
+		if (action == "profile"){
+			// Value: @name
+			ProfileDialog pd = new ProfileDialog(value.substring(1));
+			pd.show_all();
+		}else if(action == "search"){
+			
+		}
+	}
 }
