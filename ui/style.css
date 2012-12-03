@@ -1,3 +1,11 @@
+.tweet {
+	background-color: transparent;
+}
+
+/** Tweets the user sent himself */
+.user-tweet {
+
+}
 
 .tweet .button {
 	background-image: none;

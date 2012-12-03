@@ -22,13 +22,11 @@ FILES = src/Corebird.vala \
 
 LIBS =  --pkg gio-2.0 \
 		--pkg gee-1.0 \
-		--pkg libsoup-2.4 \
 		--pkg rest-0.7 \
 		--pkg gtk+-3.0 \
+		--pkg  gmodule-2.0 \
 		--pkg sqlheavy-0.2 \
 		--pkg json-glib-1.0 \
-		--pkg libsoup-2.4 \
-		--pkg gmodule-2.0
 
 NAME = Corebird
 CC = clang

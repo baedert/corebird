@@ -1,7 +1,4 @@
-
 using Gtk;
-using Soup;
-
 
 class MainWindow : ApplicationWindow {
 	public static const int PAGE_STREAM    = 0;
@@ -16,10 +13,12 @@ class MainWindow : ApplicationWindow {
 	private StreamContainer stream_container = new StreamContainer();
 	private MentionsContainer mentions_container = new MentionsContainer();
 	private SearchContainer search_container = new SearchContainer();
+	private RadioToolButton[] switch_page_buttons = new RadioToolButton[3];
 
 	public MainWindow(Gtk.Application app){
 		GLib.Object (application: app);
-
+		stream_container.window = this;
+		search_container.window = this;
 		//Load the user's sceen_name used for identifying him
 		User.load();
 
@@ -29,6 +28,9 @@ class MainWindow : ApplicationWindow {
 			win.show_all();
 		});
 
+		SettingsDialog _sd = new SettingsDialog(this);
+		_sd.show_all();
+		_sd.run();
 
 		//Load custom style sheet
 		try{
@@ -60,24 +62,26 @@ class MainWindow : ApplicationWindow {
 
 		left_toolbar.add(new_tweet_button);
 		left_toolbar.add(new SeparatorToolItem());
-		RadioToolButton home_button = new RadioToolButton.from_stock(null, Stock.HOME);
-		home_button.toggled.connect( () => {
-			if (home_button.active)
+		switch_page_buttons[PAGE_STREAM]   = new RadioToolButton.from_stock(null, Stock.HOME);
+		switch_page_buttons[PAGE_STREAM].toggled.connect( () => {
+			if (switch_page_buttons[PAGE_STREAM].active)
 				main_notebook.set_current_page(PAGE_STREAM);
 		});
-		left_toolbar.add(home_button);
-		RadioToolButton mentions_button = new RadioToolButton.with_stock_from_widget(home_button, Stock.ADD);
-		mentions_button.toggled.connect( () => {
-			if(mentions_button.active)
+		switch_page_buttons[PAGE_MENTIONS] = new RadioToolButton.with_stock_from_widget(
+			switch_page_buttons[0], Stock.ADD);
+		switch_page_buttons[PAGE_MENTIONS].toggled.connect( () => {
+			if (switch_page_buttons[PAGE_MENTIONS].active)
 				main_notebook.set_current_page(PAGE_MENTIONS);
 		});
-		left_toolbar.add(mentions_button);
-		RadioToolButton search_button = new RadioToolButton.with_stock_from_widget(home_button, Stock.FIND);
-		search_button.toggled.connect( () => {
-			if(search_button.active)
+		switch_page_buttons[PAGE_SEARCH]   = new RadioToolButton.with_stock_from_widget(
+			switch_page_buttons[0], Stock.FIND);
+		switch_page_buttons[PAGE_SEARCH].toggled.connect( () => {
+			if (switch_page_buttons[PAGE_SEARCH].active)
 				main_notebook.set_current_page(PAGE_SEARCH);
 		});
-		left_toolbar.add(search_button);
+		left_toolbar.add(switch_page_buttons[PAGE_STREAM]);
+		left_toolbar.add(switch_page_buttons[PAGE_MENTIONS]);
+		left_toolbar.add(switch_page_buttons[PAGE_SEARCH]);
 
 		SeparatorToolItem sep = new SeparatorToolItem();
 		sep.draw = false;
@@ -90,7 +94,7 @@ class MainWindow : ApplicationWindow {
 		left_toolbar.add(refresh_button);
 		ToolButton settings_button = new ToolButton.from_stock(Stock.PREFERENCES);
 		settings_button.clicked.connect( () => {
-			SettingsDialog sd = new SettingsDialog();
+			SettingsDialog sd = new SettingsDialog(this);
 			sd.show_all();
 		});
 		left_toolbar.add(settings_button);
@@ -134,7 +138,12 @@ class MainWindow : ApplicationWindow {
 	}
 
 	public void switch_to_search(string search_term){
-		search_container.search_for(search_term);
+		search_container.search_for.begin(search_term, true);
+		switch_page_buttons[PAGE_SEARCH].active = true;
 		main_notebook.set_current_page(PAGE_SEARCH);
+	}
+
+	public void set_show_primary_toolbar(bool show_primary_toolbar){
+
 	}
 }

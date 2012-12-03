@@ -5,21 +5,21 @@ class TweetListEntry : Gtk.Box {
 	private static GLib.Regex? hashtag_regex = null;
 	private static GLib.Regex? link_regex    = null;
 	private static GLib.Regex? user_regex    = null;
-	public Tweet tweet;
 	private Button avatar_button = new Button();
 	private Label text           = new Label("");
 	private Label author         = new Label("");
 	private Label rt_label       = new Label("");
 	private Label time_delta     = new Label("");
+	private MainWindow window;
 
 
-
-	public TweetListEntry(Tweet tweet){
+	public TweetListEntry(Tweet tweet, MainWindow window){
 		GLib.Object(orientation: Orientation.HORIZONTAL, spacing: 3);
+		this.window = window;
 		if (hashtag_regex == null){
 			try{
 				hashtag_regex = new GLib.Regex("#\\w*", RegexCompileFlags.OPTIMIZE);	
-				link_regex  = new GLib.Regex("(http|https)://[a-zA-Z.-\\?\\-\\+\\&]*",
+				link_regex  = new GLib.Regex("(http|https)://[\\w\\.\\/\\?\\-\\+\\&]*",
 					RegexCompileFlags.OPTIMIZE);
 				user_regex = new GLib.Regex("@\\w*", RegexCompileFlags.OPTIMIZE);
 			}catch(GLib.RegexError e){
@@ -27,8 +27,12 @@ class TweetListEntry : Gtk.Box {
 			}
 		}
 		set_has_window(false);
-		this.get_style_context().add_class("tweet");
-		this.border_width = 4;
+		
+		// Set the correct CSS style class
+		get_style_context().add_class("tweet");
+		if (tweet.screen_name == User.screen_name)
+			get_style_context().add_class("user-tweet");
+			
 
 		var left_box = new Box(Orientation.VERTICAL, 2);
 		avatar_button.clicked.connect( () => {
@@ -101,6 +105,16 @@ class TweetListEntry : Gtk.Box {
 		this.show_all();
 	}
 
+	public override bool draw(Cairo.Context c){
+		var style = this.get_style_context();
+		int w, h;
+		this.get_size_request(out w, out h);
+		style.render_background(c, 0, 0, get_allocated_width(), get_allocated_height());
+		style.render_frame(c, 0, 0, get_allocated_width(), get_allocated_height());
+		base.draw(c);
+		return false;
+	}
+
 
 	private void handle_link(string action, string value){
 		if (action == "profile"){
@@ -108,7 +122,8 @@ class TweetListEntry : Gtk.Box {
 			ProfileDialog pd = new ProfileDialog(value.substring(1));
 			pd.show_all();
 		}else if(action == "search"){
-			
+			message("Search for %s", value);
+			window.switch_to_search(value);
 		}
 	}
 }

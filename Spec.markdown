@@ -33,6 +33,9 @@ Corebird is a new native Twitter client for the linux desktop written with Gtk+.
 * Also, find someone to make some icons for use in the app(send, home, mentions, ...)
 
 ## Feature completion
-* Highlight &  implement links in tweets
+* <s>Highlight &  implement links in tweets</s>
 * Load user's last X tweets in the profiles
 * Make the settings window work FFS
+* <s>Implement search</s>
+* Use progress indicators in search
+* Add batches to the toolbar icons(?)

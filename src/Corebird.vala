@@ -68,7 +68,7 @@ class Corebird : Gtk.Application {
 
 
 int main (string[] args){
-	 Gtk.init(ref args);
+	 // Gtk.init(ref args);
 
 	try{
 		Settings.init();

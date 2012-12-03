@@ -13,5 +13,15 @@
 			<summary>Specifies if Corebird shoult request to use the dark variant of the gtk theme</summary>
 			<description>Although not intended by the creators, a lot of users prefer to use a dark twitter client. </description>
 		</key>
+		<key name="show-primary-toolbar" type="b">
+			<default>false</default>
+			<summary>Whether to show the primary toolbar in the main window or not</summary>
+			<description>See summary</description>
+		</key>
+		<key name="update-interval" type="i">
+			<default>5</default>
+			<summary>bla</summary>
+			<description>bla bla</description>
+		</key>
 	</schema>
 </schemalist>

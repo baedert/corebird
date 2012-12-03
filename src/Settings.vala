@@ -26,8 +26,20 @@ class Settings{
 		return settings.get_boolean("use-dark-theme");		
 	}
 
+	public static bool show_primary_toolbar(){
+		return settings.get_boolean("show-primary-toolbar");
+	}
+
+	public static int get_update_interval(){
+		return settings.get_int("update-interval");
+	}
+
 	public static void set_bool(string key, bool value){
 		settings.set_boolean(key, value);
+	}
+
+	public static void set_int(string key, int value) {
+		settings.set_int(key, value);
 	}
 
 

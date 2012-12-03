@@ -5,7 +5,11 @@ using Gtk;
 
 
 class SearchContainer : Box{
-	private Entry search_entry = new Entry();
+	private Entry search_entry    = new Entry();
+	private TweetList result_list = new TweetList();
+	private ProgressItem progress_item = new ProgressItem(50);
+	public MainWindow window;
+
 
 
 	public SearchContainer() {
@@ -16,23 +20,34 @@ class SearchContainer : Box{
 		search_entry.secondary_icon_stock = Stock.FIND;
 		search_entry.icon_press.connect( (pos) => {
 			if (pos == EntryIconPosition.SECONDARY){
-				search_for(search_entry.get_text());
+				search_for.begin(search_entry.get_text());
 			}
 		});
 		search_entry.key_release_event.connect( (event) => {
 			if (event.keyval == Gdk.Key.Return){
-				search_for(search_entry.get_text());	
+				result_list.clear();
+				// result_list.add_item(progress_item);
+				search_for.begin(search_entry.get_text());	
 				return true;
 			}
 			
 			return false;
 		});
 		this.pack_start(search_entry, false, true);
+		var result_scroller = new ScrolledWindow(null, null);
+		result_scroller.add_with_viewport(result_list);
+		this.pack_start(result_scroller, true, true);
 	}
 
-	public void search_for(string search_term){
+	public async void search_for(string search_term, bool set_text = false){
 		if(search_term.length == 0)
 			return;
+
+		result_list.clear();
+
+		if (set_text)
+			search_entry.set_text(search_term);
+
 
 		var call = Twitter.proxy.new_call();
 		call.set_function("1.1/search/tweets.json");
@@ -52,6 +67,14 @@ class SearchContainer : Box{
 			} catch (GLib.Error e){
 				critical("Problem with json data from search call: %s\nDATA:\n%s", e.message, back);
 			}
+			GLib.DateTime now = new GLib.DateTime.now_local();
+			var statuses = parser.get_root().get_object().get_array_member("statuses");
+			statuses.foreach_element((array, index, node) => {
+				Tweet t = new Tweet();
+				t.load_from_json(node.get_object(), now, null, null);
+				result_list.add_item(new TweetListEntry(t, window));
+			});
 		});
+		// result_list.remove(progress_item);
 	}
 }
