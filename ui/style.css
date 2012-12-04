@@ -14,11 +14,13 @@
 	border-radius: 0px;
 	-GtkButton-inner-border: 0;
 	padding: 0px;
+	/*background-color: red;*/
 }
 
 .tweet .button:hover {
-	background-image: linear-gradient(to bottom,
-		alpha(black, 0.6), alpha(black, 0.2));
+	/*background-image: linear-gradient(to bottom,*/
+		/*alpha(black, 0.6), alpha(black, 0.2));*/
+	box-shadow: 0px 0px 3px black;
 }
 
 .tweet .button:active {

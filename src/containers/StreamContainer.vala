@@ -5,6 +5,15 @@ class StreamContainer : TweetList{
 
 
 	public StreamContainer(){
+		//Start the update timeout
+		
+		// load_new_tweets.begin();
+
+		int minutes = Settings.get_update_interval();
+		GLib.Timeout.add(minutes * 60 * 1000, () => {
+			message("Update");
+			return true;
+		});
 	}	
 
 
@@ -36,11 +45,7 @@ class StreamContainer : TweetList{
 
 			// Append the tweet to the TweetList
 			TweetListEntry list_entry = new TweetListEntry(t, window);
-			// GLib.Idle.add( () => {
 			this.add_item(list_entry);	
-				// return false;
-			// });
-			
 			result.next();
 		}
 	}
@@ -59,7 +64,7 @@ class StreamContainer : TweetList{
 		var call = Twitter.proxy.new_call();
 		call.set_function("1.1/statuses/home_timeline.json");
 		call.set_method("GET");
-		call.add_param("count", "50");
+		call.add_param("count", "30");
 		call.add_param("include_entities", "false");
 		call.add_param("contributor_details", "true");
 		if(greatest_id > 0)
@@ -87,10 +92,10 @@ class StreamContainer : TweetList{
 			SQLHeavy.Query cache_query = null;
 			try{
 				cache_query = new SQLHeavy.Query(Corebird.db,
-				"INSERT INTO `cache`(`id`, `text`,`user_id`, `user_name`, `time`, `is_retweet`,
+				"INSERT INTO `cache`(`id`, `text`,`user_id`, `user_name`, `is_retweet`,
 				                     `retweeted_by`, `retweeted`, `favorited`, `created_at`, `added_to_stream`,
 				                     `avatar_name`, `screen_name`) 
-				VALUES (:id, :text, :user_id, :user_name, :time, :is_retweet, :retweeted_by,
+				VALUES (:id, :text, :user_id, :user_name, :is_retweet, :retweeted_by,
 				        :retweeted, :favorited, :created_at, :added_to_stream, :avatar_name,
 				        :screen_name);");
 			}catch(SQLHeavy.Error e){
@@ -102,10 +107,10 @@ class StreamContainer : TweetList{
 				Tweet t = new Tweet();
 				string created_at;
 				int64 added_to_stream;
+				Benchmark.start("Extracting tweet details");
 				t.load_from_json(node.get_object(), now, 
-					out created_at, out added_to_stream);
-
-
+						out created_at, out added_to_stream);
+				Benchmark.stop();
 
 			
 
@@ -142,13 +147,13 @@ class StreamContainer : TweetList{
 
 				// Insert tweet into cache table
 				try{
-					TimeVal time = {};
-					time.get_current_time();
+					// TimeVal time = {};
+					// time.get_current_time();
 					cache_query.set_string(":id", t.id);
 					cache_query.set_string(":text", t.text);
 					cache_query.set_int(":user_id", t.user_id);
 					cache_query.set_string(":user_name", t.user_name);
-					cache_query.set_int64(":time", (int64)time.tv_usec);
+					// cache_query.set_int64(":time", (int64)time.tv_usec);
 					cache_query.set_int(":is_retweet", t.is_retweet ? 1 : 0);
 					cache_query.set_string(":retweeted_by", t.retweeted_by);
 					cache_query.set_int(":retweeted", t.retweeted ? 1 : 0);
@@ -164,11 +169,6 @@ class StreamContainer : TweetList{
 
 				TweetListEntry entry  = new TweetListEntry(t, window);
 				this.insert_item(entry, index);
-				// GLib.Idle.add( () => {
-					// this.insert_tweet(entry, index);
-					// return false;
-				// });
-				// index--; // FIXME WTF
 			});
 		});
 

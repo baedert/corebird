@@ -85,4 +85,9 @@ class Utils{
 	public static string get_file_type(string path){
 		return path.substring(path.last_index_of(".") + 1);
 	}
+
+	public static string get_avatar_name(string path){
+		string[] parts = path.split("/");
+		return parts[parts.length - 2]+"_"+parts[parts.length - 1];
+	}
 }

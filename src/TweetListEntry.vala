@@ -27,6 +27,10 @@ class TweetListEntry : Gtk.Box {
 			}
 		}
 		set_has_window(false);
+
+		tweet.notify["avatar"].connect( () => {
+			avatar_button.image = new Gtk.Image.from_pixbuf(tweet.avatar);
+		});
 		
 		// Set the correct CSS style class
 		get_style_context().add_class("tweet");

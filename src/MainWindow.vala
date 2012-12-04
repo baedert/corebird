@@ -3,17 +3,19 @@ using Gtk;
 class MainWindow : ApplicationWindow {
 	public static const int PAGE_STREAM    = 0;
 	public static const int PAGE_MENTIONS  = 1;
-	public static const int PAGE_SEARCH    = 2;
+	public static const int PAGE_FAVORITES = 2;
+	public static const int PAGE_SEARCH    = 3;
 
 
-	private Toolbar left_toolbar = new Toolbar();
-	private Box main_box = new Box(Orientation.VERTICAL, 0);
-	private Box bottom_box = new Box(Orientation.HORIZONTAL, 0);
-	private Notebook main_notebook = new Notebook();
-	private StreamContainer stream_container = new StreamContainer();
-	private MentionsContainer mentions_container = new MentionsContainer();
-	private SearchContainer search_container = new SearchContainer();
-	private RadioToolButton[] switch_page_buttons = new RadioToolButton[3];
+	private Toolbar left_toolbar                  = new Toolbar();
+	private Box main_box                          = new Box(Orientation.VERTICAL, 0);
+	private Box bottom_box                        = new Box(Orientation.HORIZONTAL, 0);
+	private Notebook main_notebook                = new Notebook();
+	private StreamContainer stream_container      = new StreamContainer();
+	private MentionsContainer mentions_container  = new MentionsContainer();
+	private FavoriteContainer favorite_container  = new FavoriteContainer();
+	private SearchContainer search_container      = new SearchContainer();
+	private RadioToolButton[] switch_page_buttons = new RadioToolButton[4];
 
 	public MainWindow(Gtk.Application app){
 		GLib.Object (application: app);
@@ -28,9 +30,9 @@ class MainWindow : ApplicationWindow {
 			win.show_all();
 		});
 
-		SettingsDialog _sd = new SettingsDialog(this);
-		_sd.show_all();
-		_sd.run();
+		// SettingsDialog _sd = new SettingsDialog(this);
+		// _sd.show_all();
+		// _sd.run();
 
 		//Load custom style sheet
 		try{
@@ -59,7 +61,6 @@ class MainWindow : ApplicationWindow {
 		//Update the user's info
 		User.update_info.begin((Image)avatar_button.icon_widget);
 
-
 		left_toolbar.add(new_tweet_button);
 		left_toolbar.add(new SeparatorToolItem());
 		switch_page_buttons[PAGE_STREAM]   = new RadioToolButton.from_stock(null, Stock.HOME);
@@ -73,6 +74,12 @@ class MainWindow : ApplicationWindow {
 			if (switch_page_buttons[PAGE_MENTIONS].active)
 				main_notebook.set_current_page(PAGE_MENTIONS);
 		});
+		switch_page_buttons[PAGE_FAVORITES] = new RadioToolButton.from_widget(switch_page_buttons[0]);
+		switch_page_buttons[PAGE_FAVORITES].icon_name = "emblem-favorite";
+		switch_page_buttons[PAGE_FAVORITES].toggled.connect( () => {
+			if(switch_page_buttons[PAGE_FAVORITES].active)
+				main_notebook.set_current_page(PAGE_FAVORITES);
+		});
 		switch_page_buttons[PAGE_SEARCH]   = new RadioToolButton.with_stock_from_widget(
 			switch_page_buttons[0], Stock.FIND);
 		switch_page_buttons[PAGE_SEARCH].toggled.connect( () => {
@@ -81,6 +88,7 @@ class MainWindow : ApplicationWindow {
 		});
 		left_toolbar.add(switch_page_buttons[PAGE_STREAM]);
 		left_toolbar.add(switch_page_buttons[PAGE_MENTIONS]);
+		left_toolbar.add(switch_page_buttons[PAGE_FAVORITES]);
 		left_toolbar.add(switch_page_buttons[PAGE_SEARCH]);
 
 		SeparatorToolItem sep = new SeparatorToolItem();
@@ -119,6 +127,9 @@ class MainWindow : ApplicationWindow {
 		mentions_scroller.kinetic_scrolling = true;
 		mentions_scroller.add_with_viewport(mentions_container);
 		main_notebook.append_page(mentions_scroller);
+		var favorite_scroller = new ScrolledWindow(null, null);
+		favorite_scroller.add_with_viewport(favorite_container);
+		main_notebook.append_page(favorite_scroller);
 		main_notebook.append_page(search_container);
 
 		main_notebook.show_tabs = false;
