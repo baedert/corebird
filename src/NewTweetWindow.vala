@@ -4,7 +4,7 @@ using Rest;
 
 
 class NewTweetWindow : Window {
-	private TextView text_view = new TextView();
+	private TweetTextView text_view = new TweetTextView();
 
 
 	public NewTweetWindow(Window parent) {
@@ -72,6 +72,7 @@ class NewTweetWindow : Window {
 		
 		text_view.margin = 5;
 		text_view.wrap_mode = WrapMode.WORD_CHAR;
+		text_view.set_size_request(160, 250);
 		ScrolledWindow text_scroller = new ScrolledWindow(null, null);
 		text_scroller.add(text_view);
 

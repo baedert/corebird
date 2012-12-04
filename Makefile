@@ -18,7 +18,8 @@ FILES = src/Corebird.vala \
 		src/ProfileDialog.vala \
 		src/ImageBox.vala \
 		src/ProgressItem.vala \
-		src/Benchmark.vala
+		src/Benchmark.vala \
+		src/TweetTextView.vala
 
 
 

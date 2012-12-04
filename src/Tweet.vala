@@ -57,39 +57,39 @@ class Tweet : GLib.Object{
 	 */
 	public void load_from_json(Json.Object status, GLib.DateTime now,
 	            	out string created_at, out int64 added_to_stream){
-		Json.Object user = status.get_object_member("user");
-		this.text = status.get_string_member("text");
-		this.favorited = status.get_boolean_member("favorited");
-		this.retweeted = status.get_boolean_member("retweeted");
-		this.id = status.get_string_member("id_str");
-		this.user_name = user.get_string_member("name");
-		this.user_id = (int)user.get_int_member("id");
-		this.screen_name = user.get_string_member("screen_name");
-		created_at = status.get_string_member("created_at");
+		Json.Object user    = status.get_object_member("user");
+		this.text           = status.get_string_member("text");
+		this.favorited      = status.get_boolean_member("favorited");
+		this.retweeted      = status.get_boolean_member("retweeted");
+		this.id             = status.get_string_member("id_str");
+		this.user_name      = user.get_string_member("name");
+		this.user_id        = (int)user.get_int_member("id");
+		this.screen_name    = user.get_string_member("screen_name");
+		created_at          = status.get_string_member("created_at");
 		string display_name = user.get_string_member("screen_name");
-		added_to_stream = Utils.parse_date(created_at).to_unix();
-		this.avatar_url = user.get_string_member("profile_image_url");
+		added_to_stream     = Utils.parse_date(created_at).to_unix();
+		this.avatar_url     = user.get_string_member("profile_image_url");
 
 
 
 		if (status.has_member("retweeted_status")){
-			Json.Object rt = status.get_object_member("retweeted_status");
-			this.is_retweet = true;
-			this.retweeted_by = user.get_string_member("name");
-			this.text = rt.get_string_member("text");
-			this.id = rt.get_string_member("id_str");
+			Json.Object rt      = status.get_object_member("retweeted_status");
 			Json.Object rt_user = rt.get_object_member("user");
-			this.user_name = rt_user.get_string_member ("name");
-			this.avatar_url = rt_user.get_string_member("profile_image_url");
-			this.user_id = (int)rt_user.get_int_member("id");
-			this.screen_name = rt_user.get_string_member("screen_name");
-			created_at = rt.get_string_member("created_at");
-			display_name = rt_user.get_string_member("screen_name");
+			this.is_retweet   = true;
+			this.retweeted_by = user.get_string_member("name");
+			this.text         = rt.get_string_member("text");
+			this.id           = rt.get_string_member("id_str");
+			this.user_name    = rt_user.get_string_member ("name");
+			this.avatar_url   = rt_user.get_string_member("profile_image_url");
+			this.user_id      = (int)rt_user.get_int_member("id");
+			this.screen_name  = rt_user.get_string_member("screen_name");
+			created_at        = rt.get_string_member("created_at");
+			display_name      = rt_user.get_string_member("screen_name");
 		}
 		this.avatar_name = Utils.get_avatar_name(this.avatar_url);
 
 		GLib.DateTime dt = Utils.parse_date(created_at);
-		this.time_delta = Utils.get_time_delta(dt, now);
+		this.time_delta  = Utils.get_time_delta(dt, now);
 
 
 

@@ -26,7 +26,7 @@ class SearchContainer : Box{
 		search_entry.key_release_event.connect( (event) => {
 			if (event.keyval == Gdk.Key.Return){
 				result_list.clear();
-				// result_list.add_item(progress_item);
+				result_list.add_item(progress_item);
 				search_for.begin(search_entry.get_text());	
 				return true;
 			}
@@ -75,6 +75,6 @@ class SearchContainer : Box{
 				result_list.add_item(new TweetListEntry(t, window));
 			});
 		});
-		// result_list.remove(progress_item);
+		result_list.remove(progress_item);
 	}
 }
