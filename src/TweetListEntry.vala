@@ -50,6 +50,7 @@ class TweetListEntry : Gtk.Box {
 		time_delta.set_use_markup(true);
 		time_delta.label = "<small>"+tweet.time_delta+"</small>";
 		time_delta.set_alignment(0,0);
+		time_delta.margin_left = 5;
 		time_delta.get_style_context().add_class("time-delta");
 		left_box.pack_start(time_delta, false, false);
 		this.pack_start(left_box, false, false);
@@ -62,6 +63,7 @@ class TweetListEntry : Gtk.Box {
 		if (tweet.is_retweet){
 			rt_label.set_use_markup(true);
 			rt_label.label = "<small>RT by "+tweet.retweeted_by+"</small>";
+			rt_label.margin_right = 5;
 		}
 		top_box.pack_end(rt_label, false, false);
 

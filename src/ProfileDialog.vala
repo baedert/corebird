@@ -40,11 +40,7 @@ class ProfileDialog : Gtk.Window {
 		description_label.margin_right = 5;
 		description_label.get_style_context().add_class("description");
 		banner_box.pack_start(description_label, false, false);
-		try{
-			banner_box.set_pixbuf(new Gdk.Pixbuf.from_file("assets/banners/no_banner.png"));
-		}catch(GLib.Error e){
-			warning("Error while loading default banner: %s", e.message);
-		}
+		banner_box.set_pixbuf(Twitter.no_banner);
 		main_box.pack_start(banner_box, false, false);
 
 		var data_box = new Box(Orientation.HORIZONTAL, 3);

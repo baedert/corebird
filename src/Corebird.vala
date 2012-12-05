@@ -1,4 +1,6 @@
 
+
+
 using Gtk;
 // TODO: Profile startup when adding e.g. 300 tweets.
 class Corebird : Gtk.Application {
@@ -55,7 +57,7 @@ class Corebird : Gtk.Application {
 			           name VARCHAR(30), screen_name VACHAR(30), avatar_url VARCHAR(255),
 			           avatar_name VARCHAR(70));");
 			db.execute("CREATE TABLE IF NOT EXISTS `user`(id INTEGER(11),
-			           name VARCHAR(40), screen_name VARCHAR(40));");
+			           name VARCHAR(40), screen_name VARCHAR(40), avatar_name VARCHAR(40));");
 			db.execute("CREATE TABLE IF NOT EXISTS `profiles`(id INTEGER(11),
 			           name VARCHAR(40) PRIMARY KEY, screen_name VARCHAR(40), tweets INTEGER(11),
 			           followers INTEGER(11), following INTEGER(11), description VARCHAR(160),
@@ -68,16 +70,13 @@ class Corebird : Gtk.Application {
 
 
 int main (string[] args){
-	 // Gtk.init(ref args);
-
 	try{
 		Settings.init();
 		new Utils(); //no initialisation of static fields :(
 		var corebird = new Corebird();
 		corebird.run(args);
 	} catch(GLib.Error e){
-		stderr.printf(e.message+"\n");
-		return -1;
+		error(e.message);
 	}
 
 	return 0;

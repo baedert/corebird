@@ -5,19 +5,30 @@ using Rest;
 
 class NewTweetWindow : Window {
 	private TweetTextView text_view = new TweetTextView();
+	private Button send_button = new Button();
 
 
 	public NewTweetWindow(Window parent) {
 		this.set_transient_for(parent);
 		this.set_modal(true);
 		this.set_type_hint(Gdk.WindowTypeHint.DIALOG);
+		this.set_title("New Tweet");
+
+		//No text, so disable the send button
+		send_button.set_sensitive(false);
 
 
 		ToolItem left_item = new ToolItem();
 		Box left_box = new Box(Orientation.HORIZONTAL, 0);
 		left_item.add(left_box);
 
-
+		text_view.key_release_event.connect( () => {
+			if (text_view.too_long || text_view.get_length() == 0)
+				send_button.set_sensitive(false);
+			else
+				send_button.set_sensitive(true);
+			return false;
+		});
 
 
 		Toolbar bottom_bar = new Toolbar();
@@ -25,11 +36,12 @@ class NewTweetWindow : Window {
 		bottom_bar.toolbar_style = ToolbarStyle.ICONS;
 		bottom_bar.get_style_context().add_class("inline-toolbar");
 
-		Button img_button = new Button.with_label("Add Image");
-		Button location_button = new Button.with_label("Add Location");
-
+		Button img_button = new Button();
+		img_button.image = new Image.from_icon_name("insert-image", IconSize.SMALL_TOOLBAR);
+		img_button.clicked.connect( () => {
+			message("Show window...");
+		});
 		left_box.pack_start(img_button, false, false);
-		left_box.pack_start(location_button, false, false);
 
 		bottom_bar.add(left_item);
 		var sep1 = new SeparatorToolItem();
@@ -38,16 +50,15 @@ class NewTweetWindow : Window {
 		bottom_bar.add(sep1);
 
 
-		ToolItem right_item = new ToolItem();
-		Box right_box = new Box(Orientation.HORIZONTAL, 0);
+		ToolItem right_item  = new ToolItem();
+		Box right_box        = new Box(Orientation.HORIZONTAL, 0);
 		Button cancel_button = new Button();
-		cancel_button.image = new Image.from_icon_name("send-to", IconSize.SMALL_TOOLBAR);
+		cancel_button.image  = new Image.from_icon_name("window-close", IconSize.SMALL_TOOLBAR);
 		cancel_button.clicked.connect( () => {
 			this.destroy();
 		});
 		right_box.pack_start(cancel_button, false, false);
-		Button send_button = new Button();
-		send_button.image = new Image.from_icon_name("list-add-symbolic", IconSize.SMALL_TOOLBAR);
+		send_button.image = new Image.from_icon_name("document-send", IconSize.SMALL_TOOLBAR);
 		send_button.clicked.connect( () => {
 			TextIter start, end;
 			text_view.buffer.get_start_iter(out start);
@@ -60,7 +71,9 @@ class NewTweetWindow : Window {
 			call.set_function("1.1/statuses/update.json");
 			call.set_method("POST");
 			call.add_param("status", text);
-			call.invoke_async.begin(null);
+			call.invoke_async.begin(null, () => {
+				message("Sent: %s", call.get_payload());
+			});
 			this.destroy();
 		});
 		right_box.pack_end(send_button, false, false);

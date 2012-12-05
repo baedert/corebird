@@ -13,13 +13,13 @@ FILES = src/Corebird.vala \
 		src/containers/StreamContainer.vala \
 		src/containers/MentionsContainer.vala \
 		src/containers/FavoriteContainer.vala \
-		src/ImageLabel.vala \
 		src/User.vala \
 		src/ProfileDialog.vala \
-		src/ImageBox.vala \
 		src/ProgressItem.vala \
 		src/Benchmark.vala \
-		src/TweetTextView.vala
+		src/TweetTextView.vala \
+		src/widgets/ImageBox.vala \
+		src/widgets/ImageLabel.vala
 
 
 

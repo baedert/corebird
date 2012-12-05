@@ -44,7 +44,6 @@ class MainWindow : ApplicationWindow {
 			warning("Error while loading ui/style.css: %s", e.message);
 		}
 
-
 		left_toolbar.orientation = Orientation.VERTICAL;
 		left_toolbar.set_style(ToolbarStyle.ICONS);
 		left_toolbar.get_style_context().add_class("primary-toolbar");
