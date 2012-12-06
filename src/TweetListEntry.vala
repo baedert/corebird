@@ -29,6 +29,7 @@ class TweetListEntry : Gtk.Box {
 		set_has_window(false);
 
 		tweet.notify["avatar"].connect( () => {
+			avatar_button.bg = tweet.avatar;
 			avatar_button.queue_draw();
 		});
 		

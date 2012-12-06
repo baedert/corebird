@@ -14,13 +14,15 @@ class Corebird : Gtk.Application {
 
 		// If the user wants the dark theme, apply it
 		if(Settings.use_dark_theme()){
-
+			Gtk.Settings settings = Gtk.Settings.get_default();
+			settings.gtk_application_prefer_dark_theme = true;
 		}
 
 
 		//Create the database needed almost everywhere
 		try{
 			Corebird.db = new SQLHeavy.ProfilingDatabase("Corebird.db");
+			Corebird.create_tables();
 		}catch(SQLHeavy.Error e){
 			error("SQL ERROR: "+e.message);
 		}
@@ -57,7 +59,8 @@ class Corebird : Gtk.Application {
 			           name VARCHAR(30), screen_name VACHAR(30), avatar_url VARCHAR(255),
 			           avatar_name VARCHAR(70));");
 			db.execute("CREATE TABLE IF NOT EXISTS `user`(id INTEGER(11),
-			           name VARCHAR(40), screen_name VARCHAR(40), avatar_name VARCHAR(40));");
+			           name VARCHAR(40), screen_name VARCHAR(40), avatar_name VARCHAR(40),
+			           avatar_url VARCHAR(50));");
 			db.execute("CREATE TABLE IF NOT EXISTS `profiles`(id INTEGER(11),
 			           name VARCHAR(40) PRIMARY KEY, screen_name VARCHAR(40), tweets INTEGER(11),
 			           followers INTEGER(11), following INTEGER(11), description VARCHAR(160),

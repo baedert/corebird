@@ -144,8 +144,6 @@ class MainWindow : ApplicationWindow {
 		this.add(main_box);
 		this.set_default_size (450, 600);
 		this.show_all();
-
-		Corebird.create_tables();
 	}
 
 	public void switch_to_search(string search_term){

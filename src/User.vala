@@ -7,6 +7,7 @@ class User{
 	/** Normal name like 'Chuck Norris' */
 	public static string name;
 	private static string avatar_name = "no_profile_pic.png";
+	public static string avatar_url;
 
 	public static string get_avatar_path(){
 		return "assets/user/"+avatar_name;
@@ -19,7 +20,7 @@ class User{
 	public static void load(){
 		try{
 			SQLHeavy.Query query = new SQLHeavy.Query(Corebird.db,
-				"SELECT screen_name, avatar_name FROM `user`;");
+				"SELECT screen_name, avatar_name, avatar_url FROM `user`;");
 			SQLHeavy.QueryResult res = query.execute();
 			User.screen_name = res.fetch_string(0);
 			User.avatar_name = res.fetch_string(1);
@@ -58,12 +59,12 @@ class User{
 			}
 			var root = parser.get_root().get_object();
 			User.name = root.get_string_member("name");
-			string url = root.get_string_member("profile_image_url");
-			string avatar_name = Utils.get_file_name(url);
+			avatar_url = root.get_string_member("profile_image_url");
+			string avatar_name = Utils.get_file_name(avatar_url);
 			// Check if the avatar of the user has changed.
 			if (avatar_name != User.avatar_name
 			    || !FileUtils.test(get_avatar_path(), FileTest.EXISTS)){
-				File user_avatar = File.new_for_uri(url);
+				File user_avatar = File.new_for_uri(avatar_url);
 				// TODO: This is insanely imperformant and stupid. FIX!
 				string dest_path = "assets/user/%s".printf(avatar_name);
 				File dest = File.new_for_path(dest_path);
@@ -84,7 +85,8 @@ class User{
 				User.avatar_name = avatar_name;
 				try{
 					SQLHeavy.Query query = new SQLHeavy.Query(Corebird.db, 
-					"UPDATE `user` SET `avatar_name`='%s';".printf(avatar_name));
+					"UPDATE `user` SET `avatar_name`='%s', `avatar_url`='%s';".printf(avatar_name,
+						avatar_url));
 					query.execute();
 				}catch(SQLHeavy.Error e){
 					warning("Error while setting the new avatar_name: %s", e.message);

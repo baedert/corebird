@@ -39,11 +39,9 @@ class NewTweetWindow : Window {
 
 
 		var main_box = new Box(Orientation.VERTICAL, 5);
-		// main_box.pack_start(text_scroller, true, true);
-		// main_box.pack_end(bottom_bar, false, true);
 
 		var middle_box = new Box(Orientation.HORIZONTAL, 3);
-		var av = new Gtk.Image.from_file("assets/avatars/omg-twitter_normal.png");
+		var av = new Gtk.Image.from_file("assets/avatars/%s".printf(Utils.get_avatar_name(User.avatar_url)));
 		av.set_alignment(0,0);
 
 
