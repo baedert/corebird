@@ -20,7 +20,7 @@ class Corebird : Gtk.Application {
 
 		//Create the database needed almost everywhere
 		try{
-			Corebird.db = new SQLHeavy.Database("Corebird.db");
+			Corebird.db = new SQLHeavy.ProfilingDatabase("Corebird.db");
 		}catch(SQLHeavy.Error e){
 			error("SQL ERROR: "+e.message);
 		}
