@@ -16,76 +16,25 @@ class NewTweetWindow : Window {
 		this.set_title("New Tweet");
 		this.border_width = 5;
 
-		//No text, so disable the send button
-		// send_button.set_sensitive(false);
-
-
-		// ToolItem left_item = new ToolItem();
-		// Box left_box = new Box(Orientation.HORIZONTAL, 0);
-		// left_item.add(left_box);
-
-		// tweet_text.key_release_event.connect( () => {
-		// 	if (tweet_text.too_long || tweet_text.get_length() == 0)
-		// 		send_button.set_sensitive(false);
-		// 	else
-		// 		send_button.set_sensitive(true);
-		// 	return false;
-		// });
-
-
-		// Toolbar bottom_bar = new Toolbar();
-		// bottom_bar.show_arrow = false;
-		// bottom_bar.toolbar_style = ToolbarStyle.ICONS;
-		// bottom_bar.get_style_context().add_class("inline-toolbar");
-
-		// Button img_button = new Button();
-		// img_button.image = new Image.from_icon_name("insert-object", IconSize.SMALL_TOOLBAR);
-		// img_button.clicked.connect( () => {
-		// 	message("Show window...");
-		// });
-		// left_box.pack_start(img_button, false, false);
-
-		// bottom_bar.add(left_item);
-		// var sep1 = new SeparatorToolItem();
-		// sep1.draw = false;
-		// sep1.set_expand(true);
-		// bottom_bar.add(sep1);
-
-
-		// ToolItem right_item  = new ToolItem();
-		// Box right_box        = new Box(Orientation.HORIZONTAL, 0);
-		// Button cancel_button = new Button();
-		// cancel_button.image  = new Image.from_icon_name("window-close", IconSize.SMALL_TOOLBAR);
-		// cancel_button.clicked.connect( () => {
-		// 	this.destroy();
-		// });
-		// right_box.pack_start(cancel_button, false, false);
-		// send_button.image = new Image.from_icon_name("document-send", IconSize.SMALL_TOOLBAR);
-		// send_button.clicked.connect( () => {
-		// 	TextIter start, end;
-		// 	tweet_text.buffer.get_start_iter(out start);
-		// 	tweet_text.buffer.get_end_iter(out end);
-		// 	string text = tweet_text.buffer.get_text(start, end, true);
-		// 	if(text.strip() == "")
-		// 		return;
-				
-		// 	var call = Twitter.proxy.new_call();
-		// 	call.set_function("1.1/statuses/update.json");
-		// 	call.set_method("POST");
-		// 	call.add_param("status", text);
-		// 	call.invoke_async.begin(null, () => {
-		// 		message("Sent: %s", call.get_payload());
-		// 	});
-		// 	this.destroy();
-		// });
-		// right_box.pack_end(send_button, false, false);
-		// right_item.add(right_box);
-		// bottom_bar.add(right_item);
-
 		//Configure actions
 		cancel_button.clicked.connect( () => {
 			this.destroy();
 		});
+
+		//No text, so disable the send button
+		send_button.set_sensitive(false);
+		send_button.clicked.connect(() => {
+			send_tweet();
+		});
+
+		tweet_text.key_release_event.connect( () => {
+			if (tweet_text.too_long || tweet_text.get_length() == 0)
+				send_button.set_sensitive(false);
+			else
+				send_button.set_sensitive(true);
+			return false;
+		});
+
 
 
 
@@ -129,4 +78,22 @@ class NewTweetWindow : Window {
 		this.set_default_size(380, 175);
 	}
 	
+
+	private void send_tweet(){
+		TextIter start, end;
+		tweet_text.buffer.get_start_iter(out start);
+		tweet_text.buffer.get_end_iter(out end);
+		string text = tweet_text.buffer.get_text(start, end, true);
+		if(text.strip() == "")
+			return;
+			
+		var call = Twitter.proxy.new_call();
+		call.set_function("1.1/statuses/update.json");
+		call.set_method("POST");
+		call.add_param("status", text);
+		call.invoke_async.begin(null, () => {
+			message("Sent: %s", call.get_payload());
+		});
+		this.destroy();		
+	}
 }
