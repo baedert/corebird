@@ -60,7 +60,7 @@ class User{
 			var root = parser.get_root().get_object();
 			User.name = root.get_string_member("name");
 			avatar_url = root.get_string_member("profile_image_url");
-			string avatar_name = Utils.get_file_name(avatar_url);
+			User.avatar_name = Utils.get_file_name(avatar_url);
 			// Check if the avatar of the user has changed.
 			if (avatar_name != User.avatar_name
 			    || !FileUtils.test(get_avatar_path(), FileTest.EXISTS)){
@@ -68,9 +68,12 @@ class User{
 				// TODO: This is insanely imperformant and stupid. FIX!
 				string dest_path = "assets/user/%s".printf(avatar_name);
 				File dest = File.new_for_path(dest_path);
+				File big_dest = File.new_for_path("assets/avatars/%s".printf(Utils.get_avatar_name(avatar_url)));
 				try{
 					// Download-> save -> load -> scale -> save
 					user_avatar.copy(dest, FileCopyFlags.OVERWRITE); 
+					//Also save it in the normal avatars folder.
+					user_avatar.copy(big_dest, FileCopyFlags.OVERWRITE);
 					Gdk.Pixbuf av = new Gdk.Pixbuf.from_file(dest_path);
 					Gdk.Pixbuf scaled = new Gdk.Pixbuf(Gdk.Colorspace.RGB, true, 8, 24, 24);
 					av.scale(scaled, 0, 0, 24, 24, 0, 0, 0.5, 0.5, Gdk.InterpType.HYPER);
@@ -82,7 +85,6 @@ class User{
 				}
 
 				avatar_widget.set_from_file(dest_path);
-				User.avatar_name = avatar_name;
 				try{
 					SQLHeavy.Query query = new SQLHeavy.Query(Corebird.db, 
 					"UPDATE `user` SET `avatar_name`='%s', `avatar_url`='%s';".printf(avatar_name,

@@ -114,7 +114,7 @@ class ProfileDialog : Gtk.Window {
 			}
 			var root = parser.get_root().get_object();
 			string avatar_url = root.get_string_member("profile_image_url");
-			string avatar_name = Utils.get_file_name(avatar_url);
+			string avatar_name = Utils.get_avatar_name(avatar_url);
 			string avatar_on_disk = "assets/avatars/"+avatar_name;
 			if(!FileUtils.test(avatar_on_disk, FileTest.EXISTS)){
 				File av = File.new_for_uri(avatar_url);

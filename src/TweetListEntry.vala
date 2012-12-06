@@ -28,6 +28,7 @@ class TweetListEntry : Gtk.Box {
 		}
 		set_has_window(false);
 
+		// If the tweet's avatar changed, also reset it in the widgets
 		tweet.notify["avatar"].connect( () => {
 			avatar_button.bg = tweet.avatar;
 			avatar_button.queue_draw();

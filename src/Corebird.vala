@@ -24,7 +24,7 @@ class Corebird : Gtk.Application {
 			Corebird.db = new SQLHeavy.ProfilingDatabase("Corebird.db");
 			Corebird.create_tables();
 		}catch(SQLHeavy.Error e){
-			error("SQL ERROR: "+e.message);
+			error("SQL ERROR: %s", e.message);
 		}
 
 		stdout.printf("SQLite version: %d\n", SQLHeavy.Version.sqlite_library());

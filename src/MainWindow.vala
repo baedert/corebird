@@ -132,7 +132,7 @@ class MainWindow : ApplicationWindow {
 		main_notebook.append_page(favorite_scroller);
 		main_notebook.append_page(search_container);
 
-		main_notebook.show_tabs = false;
+		main_notebook.show_tabs   = false;
 		main_notebook.show_border = false;
 		bottom_box.pack_end (main_notebook, true, true);
 		main_box.pack_end(bottom_box, true, true);
