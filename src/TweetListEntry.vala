@@ -50,7 +50,7 @@ class TweetListEntry : Gtk.Box {
 		time_delta.set_use_markup(true);
 		time_delta.label = "<small>"+tweet.time_delta+"</small>";
 		time_delta.set_alignment(0,0);
-		time_delta.margin_left = 5;
+		time_delta.margin_left = 3;
 		time_delta.get_style_context().add_class("time-delta");
 		left_box.pack_start(time_delta, false, false);
 		this.pack_start(left_box, false, false);
@@ -104,8 +104,6 @@ class TweetListEntry : Gtk.Box {
 			}
 			return false;
 		});
-		
-
 
 		this.set_size_request(150, 80);
 		this.show_all();
@@ -113,8 +111,6 @@ class TweetListEntry : Gtk.Box {
 
 	public override bool draw(Cairo.Context c){
 		var style = this.get_style_context();
-		int w, h;
-		this.get_size_request(out w, out h);
 		style.render_background(c, 0, 0, get_allocated_width(), get_allocated_height());
 		style.render_frame(c, 0, 0, get_allocated_width(), get_allocated_height());
 		base.draw(c);
