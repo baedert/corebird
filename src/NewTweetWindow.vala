@@ -5,7 +5,7 @@ using Rest;
 
 class NewTweetWindow : Window {
 	private TweetTextView text_view = new TweetTextView();
-	private Button send_button = new Button();
+	private Button send_button      = new Button();
 
 
 	public NewTweetWindow(Window parent) {

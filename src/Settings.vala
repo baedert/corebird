@@ -3,9 +3,6 @@
 class Settings{
 	private static GLib.Settings settings;
 
-
-
-
 	public static void init(){
 		settings = new GLib.Settings("org.baedert.corebird");
 	}
@@ -26,10 +23,17 @@ class Settings{
 		return settings.get_boolean("use-dark-theme");		
 	}
 
+	/**
+	 * Returns whether the user wants to use a primary toolbar in the
+	 * main window or not.
+	 */
 	public static bool show_primary_toolbar(){
 		return settings.get_boolean("show-primary-toolbar");
 	}
 
+	/**
+	 * Retuns the update interval in minutes.
+	 */
 	public static int get_update_interval(){
 		return settings.get_int("update-interval");
 	}
