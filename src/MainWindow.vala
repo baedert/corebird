@@ -96,6 +96,7 @@ class MainWindow : ApplicationWindow {
 		left_toolbar.add(sep);
 		ToolButton refresh_button = new ToolButton.from_stock(Stock.REFRESH);
 		refresh_button.clicked.connect( () => {
+			message("refresh_button clicked");
 			stream_container.load_new_tweets.begin();
 		});
 		left_toolbar.add(refresh_button);

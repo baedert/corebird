@@ -53,13 +53,13 @@ class StreamContainer : TweetList{
 	public async void load_new_tweets() throws SQLHeavy.Error {
 		GLib.DateTime now = new GLib.DateTime.now_local();
 
-
-		SQLHeavy.Query id_query = new SQLHeavy.Query(Corebird.db,
-			"SELECT `id`, `added_to_stream` FROM `cache` ORDER BY `added_to_stream` DESC LIMIT 1;");
-		SQLHeavy.QueryResult id_result = id_query.execute();
+		 SQLHeavy.Query id_query = new SQLHeavy.Query(Corebird.db,
+		 	"SELECT `id`, `added_to_stream` FROM `cache` ORDER BY `added_to_stream` DESC LIMIT 1;");
+		 SQLHeavy.QueryResult id_result = id_query.execute();
 		int64 greatest_id = id_result.fetch_int64(0);
-		message("greatest_id: %s", greatest_id.to_string());
+		 message("greatest_id: %s", greatest_id.to_string());
 
+		message("over.");
 
 		var call = Twitter.proxy.new_call();
 		call.set_function("1.1/statuses/home_timeline.json");
@@ -147,13 +147,10 @@ class StreamContainer : TweetList{
 
 				// Insert tweet into cache table
 				try{
-					// TimeVal time = {};
-					// time.get_current_time();
 					cache_query.set_string(":id", t.id);
 					cache_query.set_string(":text", t.text);
 					cache_query.set_int(":user_id", t.user_id);
 					cache_query.set_string(":user_name", t.user_name);
-					// cache_query.set_int64(":time", (int64)time.tv_usec);
 					cache_query.set_int(":is_retweet", t.is_retweet ? 1 : 0);
 					cache_query.set_string(":retweeted_by", t.retweeted_by);
 					cache_query.set_int(":retweeted", t.retweeted ? 1 : 0);
