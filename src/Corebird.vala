@@ -21,7 +21,7 @@ class Corebird : Gtk.Application {
 
 		//Create the database needed almost everywhere
 		try{
-			Corebird.db = new SQLHeavy.ProfilingDatabase("Corebird.db");
+			Corebird.db = new SQLHeavy.Database("Corebird.db");
 			Corebird.create_tables();
 		}catch(SQLHeavy.Error e){
 			error("SQL ERROR: %s", e.message);
