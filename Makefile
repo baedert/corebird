@@ -17,9 +17,10 @@ FILES = src/Corebird.vala \
 		src/ProfileDialog.vala \
 		src/ProgressItem.vala \
 		src/Benchmark.vala \
-		src/TweetTextView.vala \
 		src/widgets/ImageBox.vala \
-		src/widgets/ImageLabel.vala
+		src/widgets/ImageLabel.vala \
+		src/widgets/TweetTextView.vala \
+		src/widgets/ImageButton.vala
 
 
 
@@ -27,7 +28,7 @@ LIBS =  --pkg gio-2.0 \
 		--pkg gee-1.0 \
 		--pkg rest-0.7 \
 		--pkg gtk+-3.0 \
-		--pkg  gmodule-2.0 \
+		--pkg gmodule-2.0 \
 		--pkg sqlheavy-0.2 \
 		--pkg json-glib-1.0 \
 

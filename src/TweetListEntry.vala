@@ -5,11 +5,11 @@ class TweetListEntry : Gtk.Box {
 	private static GLib.Regex? hashtag_regex = null;
 	private static GLib.Regex? link_regex    = null;
 	private static GLib.Regex? user_regex    = null;
-	private Button avatar_button = new Button();
-	private Label text           = new Label("");
-	private Label author         = new Label("");
-	private Label rt_label       = new Label("");
-	private Label time_delta     = new Label("");
+	private ImageButton avatar_button = new ImageButton();
+	private Label text                = new Label("");
+	private Label author              = new Label("");
+	private Label rt_label            = new Label("");
+	private Label time_delta          = new Label("");
 	private MainWindow window;
 
 
@@ -28,9 +28,9 @@ class TweetListEntry : Gtk.Box {
 		}
 		set_has_window(false);
 
-		tweet.notify["avatar"].connect( () => {
-			avatar_button.image = new Gtk.Image.from_pixbuf(tweet.avatar);
-		});
+		// tweet.notify["avatar"].connect( () => {
+		// 	avatar_button.bg = tweet.avatar;
+		// });
 		
 		// Set the correct CSS style class
 		get_style_context().add_class("tweet");
@@ -43,9 +43,9 @@ class TweetListEntry : Gtk.Box {
 			ProfileDialog pd = new ProfileDialog(tweet.screen_name);
 			pd.show_all();
 		});
-		avatar_button.image = new Gtk.Image.from_pixbuf(tweet.avatar);
-		avatar_button.set_alignment(0,0);
-		avatar_button.border_width = 0;
+		avatar_button.get_style_context().add_class("avatar");
+		avatar_button.set_size_request(48, 48);
+		avatar_button.bg = tweet.avatar;
 		left_box.pack_start(avatar_button, false, false);
 		time_delta.set_use_markup(true);
 		time_delta.label = "<small>"+tweet.time_delta+"</small>";

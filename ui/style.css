@@ -7,27 +7,24 @@
 
 }
 
-.tweet .button {
-	background-image: none;
-	border: none;
-	border-width: 0px;
-	border-radius: 0px;
-	-GtkButton-inner-border: 0;
+.tweet .avatar {
 	padding: 0px;
-	/*background-color: red;*/
+	background-image: none;
+	background-color: transparent;
+	border: none;
+	border-radius: 0px;
 }
 
-.tweet .button:hover {
+.tweet .avatar:hover {
 	/*background-image: linear-gradient(to bottom,*/
 		/*alpha(black, 0.6), alpha(black, 0.2));*/
-	box-shadow: 0px 0px 3px black;
+	box-shadow: 0px 0px 10px alpha(black, 0.8);
 }
 
-.tweet .button:active {
-	background-image: none;
-	background-color: black;
+.tweet .avatar:active {
+	box-shadow: 0px 0px 10px alpha(black, 0.95);
 }
-.tweet .button:backdrop {
+.tweet .avatar:backdrop {
 	background-color: transparent;
 	background-image: none;
 }
