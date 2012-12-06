@@ -28,9 +28,9 @@ class TweetListEntry : Gtk.Box {
 		}
 		set_has_window(false);
 
-		// tweet.notify["avatar"].connect( () => {
-		// 	avatar_button.bg = tweet.avatar;
-		// });
+		tweet.notify["avatar"].connect( () => {
+			avatar_button.queue_draw();
+		});
 		
 		// Set the correct CSS style class
 		get_style_context().add_class("tweet");
@@ -56,14 +56,14 @@ class TweetListEntry : Gtk.Box {
 		this.pack_start(left_box, false, false);
 
 		var top_box = new Box(Orientation.HORIZONTAL, 4);
+		author.get_style_context().add_class("author");
 		author.set_use_markup(true);
 		author.label = "<span size=\"larger\"><b>"+tweet.user_name+"</b></span>";
-		author.get_style_context().add_class("author");
 		top_box.pack_start(author, false, false);
 		if (tweet.is_retweet){
 			rt_label.set_use_markup(true);
 			rt_label.label = "<small>RT by "+tweet.retweeted_by+"</small>";
-			rt_label.margin_right = 5;
+			rt_label.margin_right = 3;
 		}
 		top_box.pack_end(rt_label, false, false);
 
