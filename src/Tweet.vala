@@ -92,6 +92,8 @@ class Tweet : GLib.Object{
 		this.time_delta  = Utils.get_time_delta(dt, now);
 
 
+		//TODO: Since the avatar gets loaded asynchronously, it's possible that the same avatar gets loaded
+		//      several times. Introduce some kind of lock here.
 
 		this.load_avatar();
 		if(!this.has_avatar()){
