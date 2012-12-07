@@ -53,11 +53,11 @@ class StreamContainer : TweetList{
 		});
 		
 
-		 SQLHeavy.Query id_query = new SQLHeavy.Query(Corebird.db,
+		SQLHeavy.Query id_query = new SQLHeavy.Query(Corebird.db,
 		 	"SELECT `id`, `added_to_stream` FROM `cache` ORDER BY `added_to_stream` DESC LIMIT 1;");
-		 SQLHeavy.QueryResult id_result = id_query.execute();
+		SQLHeavy.QueryResult id_result = id_query.execute();
 		int64 greatest_id = id_result.fetch_int64(0);
-		 message("greatest_id: %s", greatest_id.to_string());
+		message("greatest_id: %s", greatest_id.to_string());
 
 		var call = Twitter.proxy.new_call();
 		call.set_function("1.1/statuses/home_timeline.json");
@@ -120,14 +120,14 @@ class StreamContainer : TweetList{
 				
 				
 				// Insert tweet into cache table
-				SQLHeavy.Query cache_query = new SQLHeavy.Query(Corebird.db,
-				"INSERT INTO `cache`(`id`, `text`,`user_id`, `user_name`, `is_retweet`,
-				                     `retweeted_by`, `retweeted`, `favorited`, `created_at`, `added_to_stream`,
-				                     `avatar_name`, `screen_name`) 
-				VALUES (:id, :text, :user_id, :user_name, :is_retweet, :retweeted_by,
-				        :retweeted, :favorited, :created_at, :added_to_stream, :avatar_name,
-				        :screen_name);");
 				try{
+					SQLHeavy.Query cache_query = new SQLHeavy.Query(Corebird.db,
+					"INSERT INTO `cache`(`id`, `text`,`user_id`, `user_name`, `is_retweet`,
+					                     `retweeted_by`, `retweeted`, `favorited`, `created_at`, `added_to_stream`,
+					                     `avatar_name`, `screen_name`) 
+					VALUES (:id, :text, :user_id, :user_name, :is_retweet, :retweeted_by,
+					        :retweeted, :favorited, :created_at, :added_to_stream, :avatar_name,
+					        :screen_name);");					
 					cache_query.set_string(":id", t.id);
 					cache_query.set_string(":text", t.text);
 					cache_query.set_int(":user_id", t.user_id);
