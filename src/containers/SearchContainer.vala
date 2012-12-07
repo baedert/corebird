@@ -7,7 +7,6 @@ using Gtk;
 class SearchContainer : Box{
 	private Entry search_entry    = new Entry();
 	private TweetList result_list = new TweetList();
-	private ProgressItem progress_item = new ProgressItem(50);
 	public MainWindow window;
 
 
@@ -26,7 +25,6 @@ class SearchContainer : Box{
 		search_entry.key_release_event.connect( (event) => {
 			if (event.keyval == Gdk.Key.Return){
 				result_list.clear();
-				result_list.add_item(progress_item);
 				search_for.begin(search_entry.get_text());	
 				return true;
 			}
@@ -44,6 +42,10 @@ class SearchContainer : Box{
 			return;
 
 		result_list.clear();
+		GLib.Idle.add( () => {
+			result_list.show_spinner();
+			return false;
+		});
 
 		if (set_text)
 			search_entry.set_text(search_term);
@@ -67,14 +69,9 @@ class SearchContainer : Box{
 			} catch (GLib.Error e){
 				critical("Problem with json data from search call: %s\nDATA:\n%s", e.message, back);
 			}
-			GLib.DateTime now = new GLib.DateTime.now_local();
 			var statuses = parser.get_root().get_object().get_array_member("statuses");
-			statuses.foreach_element((array, index, node) => {
-				Tweet t = new Tweet();
-				t.load_from_json(node.get_object(), now, null, null);
-				result_list.add_item(new TweetListEntry(t, window));
-			});
+			LoaderThread loader_thread = new LoaderThread(statuses, window, result_list);
+			loader_thread.run();
 		});
-		result_list.remove(progress_item);
 	}
 }

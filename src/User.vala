@@ -35,7 +35,6 @@ class User{
 	 * @param avatar_widget The widget to update if the avatar has changed.
 	 */
 	public static async void update_info(Gtk.Image avatar_widget){
-
 		var img_call = Twitter.proxy.new_call();
 		img_call.set_function("1.1/users/show.json");
 		img_call.set_method("GET");

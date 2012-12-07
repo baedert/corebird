@@ -6,16 +6,11 @@ class StreamContainer : TweetList{
 
 	public StreamContainer(){
 		//Start the update timeout
-		
-		// load_new_tweets.begin();
-
 		int minutes = Settings.get_update_interval();
 		GLib.Timeout.add(minutes * 60 * 1000, () => {
 			message("Update");
 			return true;
 		});
-
-		// this.display_spinner();
 	}
 
 	public async void load_cached_tweets() throws SQLHeavy.Error{
@@ -51,13 +46,12 @@ class StreamContainer : TweetList{
 		}
 	}
 
-	public void load_new_tweets() throws SQLHeavy.Error {
+	public async void load_new_tweets() throws SQLHeavy.Error {
 		GLib.Idle.add( () => {
 			this.show_spinner();
-			message("Add spinner");
 			return false;
 		});
-		GLib.DateTime now = new GLib.DateTime.now_local();
+		
 
 		 SQLHeavy.Query id_query = new SQLHeavy.Query(Corebird.db,
 		 	"SELECT `id`, `added_to_stream` FROM `cache` ORDER BY `added_to_stream` DESC LIMIT 1;");
@@ -70,7 +64,7 @@ class StreamContainer : TweetList{
 		var call = Twitter.proxy.new_call();
 		call.set_function("1.1/statuses/home_timeline.json");
 		call.set_method("GET");
-		call.add_param("count", "30");
+		call.add_param("count", "10");
 		call.add_param("include_entities", "false");
 		call.add_param("contributor_details", "true");
 		if(greatest_id > 0)
@@ -94,88 +88,10 @@ class StreamContainer : TweetList{
 
 
 			var root = parser.get_root().get_array();
-
-			SQLHeavy.Query cache_query = null;
-			try{
-				cache_query = new SQLHeavy.Query(Corebird.db,
-				"INSERT INTO `cache`(`id`, `text`,`user_id`, `user_name`, `is_retweet`,
-				                     `retweeted_by`, `retweeted`, `favorited`, `created_at`, `added_to_stream`,
-				                     `avatar_name`, `screen_name`) 
-				VALUES (:id, :text, :user_id, :user_name, :is_retweet, :retweeted_by,
-				        :retweeted, :favorited, :created_at, :added_to_stream, :avatar_name,
-				        :screen_name);");
-			}catch(SQLHeavy.Error e){
-				warning("Error in cache query: %s", e.message);
-			}
-
-			
-			root.foreach_element( (array, index, node) => {
-				Tweet t = new Tweet();
-				string created_at;
-				int64 added_to_stream;
-				Benchmark.start("Extracting tweet details");
-				t.load_from_json(node.get_object(), now, 
-						out created_at, out added_to_stream);
-				Benchmark.stop();
-
-			
-
-				// Check the tweeter's details and update them if necessary
-				try{
-					SQLHeavy.Query author_query = new SQLHeavy.Query(Corebird.db,
-						"SELECT `id`, `screen_name`, `avatar_url` FROM `people`
-						WHERE `id`='%d';".printf(t.user_id));
-					SQLHeavy.QueryResult author_result = author_query.execute();
-					if (author_result.finished){
-						//The author is not in the DB so we insert him
-						SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db,
-							"INSERT INTO `people`(id,name,screen_name,avatar_url,avatar_name) VALUES ('%d', 
-							'%s', '%s', '%s', '%s');".printf(t.user_id, t.user_name,
-							t.screen_name, t.avatar_url, t.avatar_name));
-						q.execute_async.begin();
-					}else{
-						string old_avatar = author_result.fetch_string(2);
-						if (old_avatar != t.avatar_url){
-							SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db,
-							    "UPDATE `people` SET `avatar`='%s';".printf(t.avatar_url));
-							q.execute_async.begin();
-						}
-						if (t.user_name != author_result.fetch_string(1)){
-							SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db,
-								"UPDATE `people` SET `screen_name`='%s';".printf(t.user_name));						
-							q.execute_async.begin();
-						}
-					}
-				}catch(SQLHeavy.Error e){
-					warning("Error while updating author: %s", e.message);
-				}
-	
-
-				// Insert tweet into cache table
-				try{
-					cache_query.set_string(":id", t.id);
-					cache_query.set_string(":text", t.text);
-					cache_query.set_int(":user_id", t.user_id);
-					cache_query.set_string(":user_name", t.user_name);
-					cache_query.set_int(":is_retweet", t.is_retweet ? 1 : 0);
-					cache_query.set_string(":retweeted_by", t.retweeted_by);
-					cache_query.set_int(":retweeted", t.retweeted ? 1 : 0);
-					cache_query.set_int(":favorited", t.favorited ? 1 : 0);
-					cache_query.set_string(":created_at", created_at);
-					cache_query.set_int64(":added_to_stream", added_to_stream);
-					cache_query.set_string(":avatar_name", t.avatar_name);
-					cache_query.set_string(":screen_name", t.screen_name);
-					cache_query.execute_async.begin();
-				}catch(SQLHeavy.Error e){
-					error("Error while caching tweet: %s", e.message);
-				}
-
-				TweetListEntry entry  = new TweetListEntry(t, window);
-				this.insert_item(entry, index);
-
-			});
-			this.hide_spinner();
+			var loader_thread = new LoaderThread(root, window, this);
+			loader_thread.run();
 		});
-
 	}
+
+
 }

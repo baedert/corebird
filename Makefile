@@ -20,7 +20,8 @@ FILES = src/Corebird.vala \
 		src/widgets/ImageBox.vala \
 		src/widgets/ImageLabel.vala \
 		src/widgets/TweetTextView.vala \
-		src/widgets/ImageButton.vala
+		src/widgets/ImageButton.vala \
+		src/LoaderThread.vala
 
 
 
@@ -34,7 +35,7 @@ LIBS =  --pkg gio-2.0 \
 
 NAME = Corebird
 CC = clang
-PARAMS = -X -Wno-incompatible-pointer-types -X -Wno-unused-value -g
+PARAMS = -X -Wno-incompatible-pointer-types -X -Wno-unused-value -g --thread --target-glib=2.32
 
 all: compile
 
