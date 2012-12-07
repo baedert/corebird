@@ -8,6 +8,7 @@ class MainWindow : ApplicationWindow {
 
 
 	private Toolbar left_toolbar                  = new Toolbar();
+	private Toolbar primary_toolbar 			  = new Toolbar();
 	private Box main_box                          = new Box(Orientation.VERTICAL, 0);
 	private Box bottom_box                        = new Box(Orientation.HORIZONTAL, 0);
 	private Notebook main_notebook                = new Notebook();
@@ -16,6 +17,12 @@ class MainWindow : ApplicationWindow {
 	private FavoriteContainer favorite_container  = new FavoriteContainer();
 	private SearchContainer search_container      = new SearchContainer();
 	private RadioToolButton[] switch_page_buttons = new RadioToolButton[4];
+	private ToolButton avatar_button			  = new ToolButton(null, null);
+	private ToolButton refresh_button			  = new ToolButton.from_stock(Stock.REFRESH);
+	private ToolButton settings_button			  = new ToolButton.from_stock(Stock.PREFERENCES);
+	private ToolButton new_tweet_button			  = new ToolButton.from_stock(Stock.NEW);
+	private SeparatorToolItem expander_item		  = new SeparatorToolItem();
+	private SeparatorToolItem left_separator	  = new SeparatorToolItem();
 
 	public MainWindow(Gtk.Application app){
 		GLib.Object (application: app);
@@ -24,15 +31,10 @@ class MainWindow : ApplicationWindow {
 		//Load the user's sceen_name used for identifying him
 		User.load();
 
-		ToolButton new_tweet_button = new ToolButton.from_stock(Stock.NEW);
 		new_tweet_button.clicked.connect( () => {
 		 	NewTweetWindow win = new NewTweetWindow(this);
 			win.show_all();
 		});
-
-		// SettingsDialog _sd = new SettingsDialog(this);
-		// _sd.show_all();
-		// _sd.run();
 
 		//Load custom style sheet
 		try{
@@ -47,21 +49,29 @@ class MainWindow : ApplicationWindow {
 		left_toolbar.orientation = Orientation.VERTICAL;
 		left_toolbar.set_style(ToolbarStyle.ICONS);
 		left_toolbar.get_style_context().add_class("primary-toolbar");
-		left_toolbar.get_style_context().add_class("sidebar");
+
+		primary_toolbar.orientation = Orientation.HORIZONTAL;
+		primary_toolbar.set_style(ToolbarStyle.ICONS);
+		primary_toolbar.get_style_context().add_class("primary-toolbar");
+		primary_toolbar.set_visible(true);
 
 
-		ToolButton avatar_button = new ToolButton(new Image.from_file(User.get_avatar_path()), null);
+		expander_item.draw = false;
+		expander_item.set_expand(true);
+
+
+		avatar_button.set_icon_widget(new Image.from_file(User.get_avatar_path()));
 		avatar_button.clicked.connect( () => {
 			ProfileDialog pd = new ProfileDialog();
 			pd.show_all();
 		});
-		left_toolbar.add(avatar_button);
+		// left_toolbar.add(avatar_button);
 
 		//Update the user's info
 		User.update_info.begin((Image)avatar_button.icon_widget);
 
-		left_toolbar.add(new_tweet_button);
-		left_toolbar.add(new SeparatorToolItem());
+		// left_toolbar.add(new_tweet_button);
+		// left_toolbar.add(left_separator);
 		switch_page_buttons[PAGE_STREAM]   = new RadioToolButton.from_stock(null, Stock.HOME);
 		switch_page_buttons[PAGE_STREAM].toggled.connect( () => {
 			if (switch_page_buttons[PAGE_STREAM].active)
@@ -90,24 +100,25 @@ class MainWindow : ApplicationWindow {
 		left_toolbar.add(switch_page_buttons[PAGE_FAVORITES]);
 		left_toolbar.add(switch_page_buttons[PAGE_SEARCH]);
 
-		SeparatorToolItem sep = new SeparatorToolItem();
-		sep.draw = false;
-		sep.set_expand(true);
-		left_toolbar.add(sep);
-		ToolButton refresh_button = new ToolButton.from_stock(Stock.REFRESH);
+		// left_toolbar.add(expander_item);
 		refresh_button.clicked.connect( () => {
 			message("refresh_button clicked");
 			stream_container.load_new_tweets.begin();
 		});
-		left_toolbar.add(refresh_button);
-		ToolButton settings_button = new ToolButton.from_stock(Stock.PREFERENCES);
+		// left_toolbar.add(refresh_button);
 		settings_button.clicked.connect( () => {
 			SettingsDialog sd = new SettingsDialog(this);
 			sd.show_all();
 		});
-		left_toolbar.add(settings_button);
+		// left_toolbar.add(settings_button);
 		bottom_box.pack_start(left_toolbar, false, true);
 
+		if (Settings.show_primary_toolbar()){
+			main_box.pack_start(primary_toolbar, false, false);
+			setup_primary_toolbar();
+		}else{
+			setup_left_toolbar();
+		}
 
 
 		ScrolledWindow tweet_scroller = new ScrolledWindow(null, null);
@@ -152,7 +163,59 @@ class MainWindow : ApplicationWindow {
 		main_notebook.set_current_page(PAGE_SEARCH);
 	}
 
-	public void set_show_primary_toolbar(bool show_primary_toolbar){
+	/**
+	 * Adds/inserts the widgets into the left toolbar.
+	 */
+	private void setup_left_toolbar(){
+		left_toolbar.get_style_context().remove_class("sidebar");
+		left_toolbar.get_style_context().add_class("primary-toolbar");
+		
+		left_toolbar.insert(avatar_button, 0);
+		left_toolbar.insert(new_tweet_button, 1);
+		left_toolbar.insert(left_separator, 2);
+		left_toolbar.add(expander_item);
+		left_toolbar.add(refresh_button);
+		left_toolbar.add(settings_button);
+	}
 
+	/**
+	 * Adds/inserts the widgets into the primary toolbar
+	 */
+	private void setup_primary_toolbar(){
+		primary_toolbar.add(avatar_button);
+		primary_toolbar.add(new_tweet_button);
+		primary_toolbar.add(expander_item);
+		primary_toolbar.add(refresh_button);
+		primary_toolbar.add(settings_button);	
+		//Make the left toolbar a sidebar
+		left_toolbar.get_style_context().remove_class("primary-toolbar");
+		left_toolbar.get_style_context().add_class("sidebar");
+	}
+
+	public void set_show_primary_toolbar(bool show_primary_toolbar){
+		// We just ASSUME that this value only toggles and that 2 subsequent calls NEVER have the
+		// same value of show_primary_toolbar.
+		if(show_primary_toolbar){
+			main_box.pack_start(primary_toolbar, false, false);
+			//Remove widgets
+			left_toolbar.remove(avatar_button);
+			left_toolbar.remove(settings_button);
+			left_toolbar.remove(refresh_button);
+			left_toolbar.remove(new_tweet_button);
+			left_toolbar.remove(expander_item);
+			left_toolbar.remove(left_separator);
+			//Add them again
+			setup_primary_toolbar();
+		}else{
+			main_box.remove(primary_toolbar);
+			//Remove widgets
+			primary_toolbar.remove(avatar_button);
+			primary_toolbar.remove(new_tweet_button);
+			primary_toolbar.remove(expander_item);
+			primary_toolbar.remove(refresh_button);
+			primary_toolbar.remove(settings_button);
+			//add them again
+			setup_left_toolbar();
+		}
 	}
 }
