@@ -14,8 +14,9 @@ class StreamContainer : TweetList{
 			message("Update");
 			return true;
 		});
-	}	
 
+		// this.display_spinner();
+	}
 
 	public async void load_cached_tweets() throws SQLHeavy.Error{
 		GLib.DateTime now = new GLib.DateTime.now_local();
@@ -50,7 +51,12 @@ class StreamContainer : TweetList{
 		}
 	}
 
-	public async void load_new_tweets() throws SQLHeavy.Error {
+	public void load_new_tweets() throws SQLHeavy.Error {
+		GLib.Idle.add( () => {
+			this.show_spinner();
+			message("Add spinner");
+			return false;
+		});
 		GLib.DateTime now = new GLib.DateTime.now_local();
 
 		 SQLHeavy.Query id_query = new SQLHeavy.Query(Corebird.db,
@@ -166,7 +172,9 @@ class StreamContainer : TweetList{
 
 				TweetListEntry entry  = new TweetListEntry(t, window);
 				this.insert_item(entry, index);
+
 			});
+			this.hide_spinner();
 		});
 
 	}

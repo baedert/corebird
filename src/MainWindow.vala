@@ -102,8 +102,8 @@ class MainWindow : ApplicationWindow {
 
 		// left_toolbar.add(expander_item);
 		refresh_button.clicked.connect( () => {
-			message("refresh_button clicked");
-			stream_container.load_new_tweets.begin();
+			// stream_container.load_new_tweets.begin();
+			stream_container.load_new_tweets();
 		});
 		// left_toolbar.add(refresh_button);
 		settings_button.clicked.connect( () => {
