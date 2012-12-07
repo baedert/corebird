@@ -46,6 +46,7 @@ class NewTweetWindow : Window {
 
 
 		middle_box.pack_start(av, false, false);
+		tweet_text.wrap_mode = WrapMode.WORD_CHAR;
 		var text_scroller = new ScrolledWindow(null, null);
 		text_scroller.add(tweet_text);
 		middle_box.pack_start(text_scroller, true, true);
