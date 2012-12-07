@@ -5,10 +5,10 @@ using Rest;
 
 class FirstRunWindow : ApplicationWindow {
 	private Button cancel_button = new Button.with_label("Cancel");
-	private Button next_button = new Button.with_label("Next");
-	private Notebook notebook = new Notebook();
-	private Box main_box = new Box(Orientation.VERTICAL, 2);
-	private Box button_box = new Box(Orientation.HORIZONTAL, 15);
+	private Button next_button   = new Button.with_label("Next");
+	private Notebook notebook    = new Notebook();
+	private Box main_box         = new Box(Orientation.VERTICAL, 2);
+	private Box button_box       = new Box(Orientation.HORIZONTAL, 15);
 	private int page = 0;
 
 
