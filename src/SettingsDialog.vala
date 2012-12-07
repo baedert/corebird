@@ -15,6 +15,7 @@ class SettingsDialog : Dialog{
 		common_grid.border_width = 4;
 		common_grid.attach(new Label("Update interval(minutes)"), 0, 0, 1, 1);
 		SpinButton interval_spinner = new SpinButton.with_range(1, 60, 1);
+		interval_spinner.value = Settings.get_update_interval();
 		interval_spinner.value_changed.connect( () => {
 			Settings.set_int("update-interval", (int)interval_spinner.value);
 		});
