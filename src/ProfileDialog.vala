@@ -101,7 +101,7 @@ class ProfileDialog : Gtk.Window {
 			try{
 				call.invoke_async.end (res);
 			} catch (GLib.Error e){
-				warning("Error while ending call: %s", e.message);
+				warning("Error while ending call: %s(%s)", e.message, screen_name);
 				return;
 			}
 			string back = call.get_payload();
