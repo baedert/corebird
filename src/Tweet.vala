@@ -99,9 +99,7 @@ class Tweet : GLib.Object{
 		if(!this.has_avatar()){
 			File av = File.new_for_uri(this.avatar_url);
 			File dest = File.new_for_path("assets/avatars/%s".printf(this.avatar_name));
-			av.copy_async.begin(dest, FileCopyFlags.OVERWRITE, Priority.DEFAULT, null, (curr, total) => {
-				// message("%lli bytes of %lli", curr, total);
-			}, (obj, res) => {
+			av.copy_async.begin(dest, FileCopyFlags.OVERWRITE, Priority.DEFAULT, null, null, (obj, res) => {
 				try{
 					av.copy_async.end(res);
 				}catch(GLib.Error e){
