@@ -4,6 +4,11 @@ using Gee;
 class Twitter{
 	private static string token;
 	private static string token_secret;
+	private static int max_media_per_upload;
+	private static int characters_reserved_per_media;
+	private static int short_url_length;
+	private static int short_url_length_https;
+	private static int photo_size_limit;
 	public static OAuthProxy proxy;
 	public static Gdk.Pixbuf retweeted_img;
 	public static Gdk.Pixbuf favorited_img;
@@ -72,5 +77,45 @@ class Twitter{
 		}
 
 		Twitter.avatars = new HashMap<string, Gdk.Pixbuf>();
+	}
+
+	/**
+	 * Updates the config
+	 */
+	public static async void update_config(){
+		var call = Twitter.proxy.new_call();
+		call.set_method("GET");
+		call.set_function("1.1/help/configuration.json");
+		call.invoke_async.begin(null, (obj, res) => {
+			call.invoke_async.end(res);
+			string back = call.get_payload();
+			Json.Parser parser = new Json.Parser();
+			parser.load_from_data(back);
+			var root = parser.get_root().get_object();
+			Twitter.characters_reserved_per_media =
+				(int)root.get_int_member("characters_reserved_per_media");
+			Twitter.max_media_per_upload = (int)root.get_int_member("max_media_per_upload");
+			Twitter.photo_size_limit = (int)root.get_int_member("photo_size_limit");
+			Twitter.short_url_length = (int)root.get_int_member("short_url_length");
+			Twitter.short_url_length_https = (int)root.get_int_member("short_url_length_https");
+
+			message("Updated the twitter configuration");
+		});
+	}
+
+	public static int get_characters_reserved_by_media(){
+		return characters_reserved_per_media;
+	}
+	public static int get_max_media_per_upload(){
+		return max_media_per_upload;
+	}
+	public static int get_photo_size_limit(){
+		return photo_size_limit;
+	}
+	public static int get_short_url_length(){
+		return short_url_length;
+	}
+	public static int get_short_url_length_https(){
+		return short_url_length_https;
 	}
 }
