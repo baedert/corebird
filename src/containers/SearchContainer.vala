@@ -13,8 +13,8 @@ class SearchContainer : Box{
 
 	public SearchContainer() {
 		GLib.Object(orientation: Orientation.VERTICAL);
-		this.border_width = 4;
 
+		search_entry.margin = 5;
 		search_entry.placeholder_text = "Search keyword(s)";
 		search_entry.secondary_icon_stock = Stock.FIND;
 		search_entry.icon_press.connect( (pos) => {

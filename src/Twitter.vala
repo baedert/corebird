@@ -89,10 +89,20 @@ class Twitter{
 		call.set_method("GET");
 		call.set_function("1.1/help/configuration.json");
 		call.invoke_async.begin(null, (obj, res) => {
-			call.invoke_async.end(res);
+			try{
+				call.invoke_async.end(res);
+			} catch (GLib.Error e){
+				warning("Error while refreshing config: %s", e.message);
+			}
 			string back = call.get_payload();
 			Json.Parser parser = new Json.Parser();
-			parser.load_from_data(back);
+			try{
+				parser.load_from_data(back);
+			}catch(GLib.Error e){
+				warning("Error while parsing Json: %s\nData:%s", e.message, back);
+				return;
+			}
+			
 			var root = parser.get_root().get_object();
 			Twitter.characters_reserved_per_media =
 				(int)root.get_int_member("characters_reserved_per_media");

@@ -31,7 +31,7 @@ class MainWindow : ApplicationWindow {
 		//Load the user's sceen_name used for identifying him
 		User.load();
 		//Update the Twitter config
-		Twitter.update_config();
+		Twitter.update_config.begin();
 
 		new_tweet_button.clicked.connect( () => {
 		 	NewTweetWindow win = new NewTweetWindow(this);

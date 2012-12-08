@@ -76,7 +76,9 @@ class TweetList : Box {
 		if (pos == int.MAX)
 			pos = (int)this.get_children().length();
 
-		this.remove(spinner);
-		spinner.stop();
+		if(spinner.parent != null){
+			this.remove(spinner);
+			spinner.stop();
+		}
 	}
 }
