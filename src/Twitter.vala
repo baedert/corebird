@@ -24,7 +24,8 @@ class Twitter{
 	public static string get_token(){
 		if (Twitter.token == null){
 			try{
-				SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db, "SELECT `token` FROM `common` LIMIT 1;");
+				SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db,
+					"SELECT `token` FROM `common` LIMIT 1;");
 				SQLHeavy.QueryResult result = q.execute();
 				Twitter.token = result.fetch_string();
 				return Twitter.token;
@@ -41,7 +42,8 @@ class Twitter{
 	public static string get_token_secret(){
 		if (Twitter.token_secret == null){
 			try{
-				SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db, "SELECT `token_secret` FROM `common` LIMIT 1;");
+				SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db, 
+				   "SELECT `token_secret` FROM `common` LIMIT 1;");
 				SQLHeavy.QueryResult result = q.execute();
 				Twitter.token_secret = result.fetch_string();
 				return Twitter.token_secret;

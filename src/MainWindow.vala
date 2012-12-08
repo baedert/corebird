@@ -50,7 +50,6 @@ class MainWindow : ApplicationWindow {
 
 		left_toolbar.orientation = Orientation.VERTICAL;
 		left_toolbar.set_style(ToolbarStyle.ICONS);
-		left_toolbar.get_style_context().add_class("primary-toolbar");
 
 		primary_toolbar.orientation = Orientation.HORIZONTAL;
 		primary_toolbar.set_style(ToolbarStyle.ICONS);
