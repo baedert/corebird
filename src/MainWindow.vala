@@ -66,13 +66,10 @@ class MainWindow : ApplicationWindow {
 			ProfileDialog pd = new ProfileDialog();
 			pd.show_all();
 		});
-		// left_toolbar.add(avatar_button);
 
 		//Update the user's info
 		User.update_info.begin((Image)avatar_button.icon_widget);
 
-		// left_toolbar.add(new_tweet_button);
-		// left_toolbar.add(left_separator);
 		switch_page_buttons[PAGE_STREAM]   = new RadioToolButton.from_stock(null, Stock.HOME);
 		switch_page_buttons[PAGE_STREAM].toggled.connect( () => {
 			if (switch_page_buttons[PAGE_STREAM].active)
@@ -101,16 +98,13 @@ class MainWindow : ApplicationWindow {
 		left_toolbar.add(switch_page_buttons[PAGE_FAVORITES]);
 		left_toolbar.add(switch_page_buttons[PAGE_SEARCH]);
 
-		// left_toolbar.add(expander_item);
 		refresh_button.clicked.connect( () => {
 			stream_container.load_new_tweets.begin();
 		});
-		// left_toolbar.add(refresh_button);
 		settings_button.clicked.connect( () => {
 			SettingsDialog sd = new SettingsDialog(this);
 			sd.show_all();
 		});
-		// left_toolbar.add(settings_button);
 		bottom_box.pack_start(left_toolbar, false, true);
 
 		if (Settings.show_primary_toolbar()){
