@@ -1,6 +1,6 @@
 using Gtk;
 
-
+// Todo: resolve the links in the tweet
 class TweetListEntry : Gtk.Box {
 	private static GLib.Regex? hashtag_regex = null;
 	private static GLib.Regex? link_regex    = null;

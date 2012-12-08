@@ -1,6 +1,6 @@
 using Gtk;
 
-
+// TODO: include the entities, https://dev.twitter.com/docs/api/1.1/post/statuses/update_with_media
 class Tweet : GLib.Object{
 	public string id;
 	public bool retweeted = false;

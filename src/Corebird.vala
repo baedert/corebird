@@ -3,6 +3,8 @@
 
 using Gtk;
 // TODO: Profile startup when adding e.g. 300 tweets.
+// TODO: Check the spec and add exception handling(e.g. different http status codes)
+// TODO: Use help/configuration to get the config from Twitter
 class Corebird : Gtk.Application {
 	public static SQLHeavy.Database db;
 
