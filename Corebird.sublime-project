@@ -3,8 +3,9 @@
 	[
 		{
 			"path": "/home/baedert/Code/Vala/Corebird",
-			"folder_exclude_patterns" : [".*","CMakeFiles"],
-			"file_exclude_patterns" :  [".*", "CMakeCache.txt", "*.sublime-*", "*.cmake", "cmake_*", "*.c"]
+			"folder_exclude_patterns" : [".*","CMakeFiles", "build"],
+			"file_exclude_patterns" :  [".*", "CMakeCache.txt", 
+					"*.sublime-*", "*.cmake", "cmake_*", "*.c"]
 		}
 	]
 }
