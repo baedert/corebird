@@ -1,5 +1,15 @@
 Corebird
 Corebird.db
+src/*.c
+src/widgets/*.c
+src/containers/*.c
+CMakeCache.txt
+CMakeFiles
+Makefile
+*.cmake
+src/CMakeFiles
+src/Makefile
+src/*.cmake
 assets/avatars/*
 assets/banners/*
 assets/user/*
