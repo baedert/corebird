@@ -7,6 +7,7 @@ CMakeCache.txt
 CMakeFiles
 Makefile
 *.cmake
+install_manifest.txt
 src/CMakeFiles
 src/Makefile
 src/*.cmake

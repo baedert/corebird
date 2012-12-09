@@ -103,3 +103,7 @@ OPTIONS
 add_executable(Corebird ${VALA_C})
 target_link_libraries(Corebird ${DEPS_LIBRARIES})
 
+
+# GSettings
+include (GSettings)
+add_schema("org.baedert.corebird.gschema.xml")

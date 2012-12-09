@@ -35,11 +35,11 @@ class SettingsDialog : PreferencesDialog{
 		// NOTIFICATION SETTINGS
 		int notify = append_page("Notifications");
 		add_heading(notify, "Actions");
-		add_bool_option(notify, "On new Tweets:", false, (val) => {
-
+		add_bool_option(notify, "On new Tweets:", Settings.notify_new_tweets(), (val) => {
+			Settings.set_bool("new-tweets-notify", val);
 		});
-		add_bool_option(notify, "On new mentions:", true, (val) => {
-
+		add_bool_option(notify, "On new mentions:", Settings.notify_new_mentions(), (val) => {
+			Settings.set_bool("new-mentions-notify", val);
 		});
 	}
 }

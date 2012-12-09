@@ -38,6 +38,15 @@ class Settings{
 		return settings.get_int("update-interval");
 	}
 
+	public static bool notify_new_tweets(){
+		return settings.get_boolean("new-tweets-notify");
+	}
+
+	public static bool notify_new_mentions(){
+		return settings.get_boolean("new-mentions-notify");
+	}
+
+
 	public static void set_bool(string key, bool value){
 		settings.set_boolean(key, value);
 	}
@@ -45,6 +54,7 @@ class Settings{
 	public static void set_int(string key, int value) {
 		settings.set_int(key, value);
 	}
+
 
 
 

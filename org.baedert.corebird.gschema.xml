@@ -23,5 +23,15 @@
 			<summary>bla</summary>
 			<description>bla bla</description>
 		</key>
+		<key name="new-tweets-notify" type="b">
+			<default>false</default>
+			<summary>X</summary>
+			<description>Y</description>
+		</key>
+		<key name="new-mentions-notify" type="b">
+			<default>true</default>
+			<summary>X</summary>
+			<description>Y</description>
+		</key>
 	</schema>
 </schemalist>
