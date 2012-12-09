@@ -1,16 +1,23 @@
 using Gtk;
 
-class StreamContainer : TweetList{
-	public MainWindow window {get; set;}
 
+//TODO: If the list is completely empty and you add more items than the page can handle, the scrollWidget
+//      scrolls DOWN but it should stay at the top.
+class StreamContainer : ScrollWidget {
+	public MainWindow window {get; set;}
+	private TweetList list = new TweetList();
+	private double upper_cache = 0;
+	private bool preserve_next_upper_change = false;
 
 	public StreamContainer(){
+		base();
 		//Start the update timeout
 		int minutes = Settings.get_update_interval();
 		GLib.Timeout.add(minutes * 60 * 1000, () => {
-			message("Update");
+			load_new_tweets.begin(false);
 			return true;
 		});
+		this.add_with_viewport(list);
 	}
 
 	public async void load_cached_tweets() throws SQLHeavy.Error{
@@ -41,16 +48,18 @@ class StreamContainer : TweetList{
 
 			// Append the tweet to the TweetList
 			TweetListEntry list_entry = new TweetListEntry(t, window);
-			this.add_item(list_entry);	
+			list.add_item(list_entry);	
 			result.next();
 		}
 	}
 
-	public async void load_new_tweets() throws SQLHeavy.Error {
-		GLib.Idle.add( () => {
-			this.show_spinner();
-			return false;
-		});
+	public async void load_new_tweets(bool add_spinner = true) throws SQLHeavy.Error {
+		if (add_spinner){
+			GLib.Idle.add( () => {
+				list.show_spinner();
+				return false;
+			});
+		}
 		
 
 		SQLHeavy.Query id_query = new SQLHeavy.Query(Corebird.db,
@@ -87,7 +96,7 @@ class StreamContainer : TweetList{
 			//TODO: The queries in that lambda can ALL be cached, but that kinda breaks. Find out how.
 
 			var root = parser.get_root().get_array();
-			var loader_thread = new LoaderThread(root, window, this, (t, created_at, added_to_stream) => {
+			var loader_thread = new LoaderThread(root, window, list, (t, created_at, added_to_stream) => {
 				// Check the tweeter's details and update them if necessary
 				try{
 					SQLHeavy.Query author_query = new SQLHeavy.Query(Corebird.db,

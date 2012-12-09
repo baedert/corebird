@@ -80,6 +80,7 @@ vala_precompile(VALA_C
 	src/widgets/ImageLabel.vala
 	src/widgets/TweetTextView.vala
 	src/widgets/ImageButton.vala
+	src/widgets/ScrollWidget.vala
 	src/LoaderThread.vala
 PACKAGES
 	glib-2.0

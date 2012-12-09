@@ -115,8 +115,6 @@ class MainWindow : ApplicationWindow {
 		}
 
 
-		ScrolledWindow tweet_scroller = new ScrolledWindow(null, null);
-		tweet_scroller.add_with_viewport(stream_container);
 		// tweet_scroller.vadjustment.value_changed.connect( () => {
 		// 	int max = (int)(tweet_scroller.vadjustment.upper - tweet_scroller.vadjustment.page_size);
 		// 	int value = (int)tweet_scroller.vadjustment.value;
@@ -126,8 +124,7 @@ class MainWindow : ApplicationWindow {
 		// 	}
 		// });
 
-		tweet_scroller.kinetic_scrolling = true;
-		main_notebook.append_page(tweet_scroller);
+		main_notebook.append_page(stream_container);
 		var mentions_scroller = new ScrolledWindow(null, null);
 		mentions_scroller.kinetic_scrolling = true;
 		mentions_scroller.add_with_viewport(mentions_container);

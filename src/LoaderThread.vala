@@ -39,9 +39,12 @@ class LoaderThread{
 			entries[index] = entry;
 		});
 		GLib.Idle.add( () => {
+			list.hide_spinner();
+			//FIXME: God this sucks.
+			((ScrollWidget)list.parent.parent).balance_next_upper_change();
 			for(int i = 0; i < entries.length; i++)
 				list.insert_item(entries[i], i);
-			list.hide_spinner();
+			
 			return false;
 		});
 		return null;
