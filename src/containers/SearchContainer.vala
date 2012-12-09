@@ -71,6 +71,7 @@ class SearchContainer : Box{
 			}
 			var statuses = parser.get_root().get_object().get_array_member("statuses");
 			LoaderThread loader_thread = new LoaderThread(statuses, window, result_list);
+			loader_thread.balance_upper_change = false;
 			loader_thread.run();
 		});
 	}
