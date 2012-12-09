@@ -151,6 +151,16 @@ class StreamContainer : ScrollWidget {
 				}catch(SQLHeavy.Error e){
 					error("Error while caching tweet: %s", e.message);
 				}
+			}, (num)=> {
+				if(num > 0 && Settings.notify_new_tweets()&& !window.has_toplevel_focus){
+					Notify.Notification n = new Notify.Notification("%d new Tweets".printf(num), null, null);
+					n.set_urgency(Notify.Urgency.LOW);
+					try{
+						n.show();
+					}catch(GLib.Error e){
+						warning("Error while showing notification: %s", e.message);
+					}
+				}
 			});
 			loader_thread.run();
 		});

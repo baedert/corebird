@@ -19,6 +19,8 @@ class Corebird : Gtk.Application {
 			settings.gtk_application_prefer_dark_theme = true;
 		}
 
+		Notify.init("Corebird");
+
 
 		//Create the database needed almost everywhere
 		try{

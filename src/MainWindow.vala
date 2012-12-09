@@ -26,8 +26,9 @@ class MainWindow : ApplicationWindow {
 
 	public MainWindow(Gtk.Application app){
 		GLib.Object (application: app);
-		stream_container.window = this;
-		search_container.window = this;
+		stream_container.window   = this;
+		search_container.window   = this;
+		mentions_container.window = this;
 		//Load the user's sceen_name used for identifying him
 		User.load();
 		//Update the Twitter config
@@ -125,10 +126,7 @@ class MainWindow : ApplicationWindow {
 		// });
 
 		main_notebook.append_page(stream_container);
-		var mentions_scroller = new ScrolledWindow(null, null);
-		mentions_scroller.kinetic_scrolling = true;
-		mentions_scroller.add_with_viewport(mentions_container);
-		main_notebook.append_page(mentions_scroller);
+		main_notebook.append_page(mentions_container);
 		var favorite_scroller = new ScrolledWindow(null, null);
 		favorite_scroller.add_with_viewport(favorite_container);
 		main_notebook.append_page(favorite_scroller);

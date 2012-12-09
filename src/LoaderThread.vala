@@ -6,14 +6,18 @@ class LoaderThread{
 	private TweetList list;
 	private Thread<void*> thread;
 	public delegate void TweetReceivedFunc(Tweet t, string created_at, int64 added_to_stream);
+	public delegate void EndLoadFunc(int tweet_count);
 	private unowned TweetReceivedFunc? received_tweet;
+	private unowned EndLoadFunc? finished;
 
 	public LoaderThread(Json.Array root, MainWindow window, TweetList list,
-	                    TweetReceivedFunc? received_tweet = null){
+	                    TweetReceivedFunc? received_tweet = null,
+	                    EndLoadFunc? finished = null){
 		this.root           = root;
 		this.window         = window;
 		this.list           = list;
 		this.received_tweet = received_tweet;
+		this.finished       = finished;
 	}
 
 	public void run(){
@@ -45,6 +49,10 @@ class LoaderThread{
 			for(int i = 0; i < entries.length; i++)
 				list.insert_item(entries[i], i);
 			
+			if (finished != null){
+				finished(entries.length);
+			}
+
 			return false;
 		});
 		return null;
