@@ -83,6 +83,7 @@ class Twitter{
 
 	/**
 	 * Updates the config
+	 * TODO: Do this only once a day.
 	 */
 	public static async void update_config(){
 		var call = Twitter.proxy.new_call();

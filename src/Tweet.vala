@@ -78,7 +78,8 @@ class Tweet : GLib.Object{
 			this.is_retweet   = true;
 			this.retweeted_by = user.get_string_member("name");
 			this.text         = rt.get_string_member("text");
-			this.id           = rt.get_string_member("id_str");
+			// this.id           = rt.get_string_member("id_str");
+			// this.rt_id 		  = rt.get_string_member("id_str");
 			this.user_name    = rt_user.get_string_member ("name");
 			this.avatar_url   = rt_user.get_string_member("profile_image_url");
 			this.user_id      = (int)rt_user.get_int_member("id");
