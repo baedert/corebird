@@ -32,7 +32,7 @@ class SearchContainer : Box{
 			return false;
 		});
 		this.pack_start(search_entry, false, true);
-		var result_scroller = new ScrolledWindow(null, null);
+		var result_scroller = new ScrollWidget();
 		result_scroller.add_with_viewport(result_list);
 		this.pack_start(result_scroller, true, true);
 	}

@@ -76,12 +76,13 @@ vala_precompile(VALA_C
 	src/ProfileDialog.vala
 	src/ProgressItem.vala
 	src/Benchmark.vala
+	src/LoaderThread.vala
 	src/widgets/ImageBox.vala
 	src/widgets/ImageLabel.vala
 	src/widgets/TweetTextView.vala
 	src/widgets/ImageButton.vala
 	src/widgets/ScrollWidget.vala
-	src/LoaderThread.vala
+	src/widgets/PreferencesDialog.vala
 PACKAGES
 	glib-2.0
 	gtk+-3.0

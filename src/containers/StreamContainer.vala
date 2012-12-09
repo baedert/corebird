@@ -6,8 +6,6 @@ using Gtk;
 class StreamContainer : ScrollWidget {
 	public MainWindow window {get; set;}
 	private TweetList list = new TweetList();
-	private double upper_cache = 0;
-	private bool preserve_next_upper_change = false;
 
 	public StreamContainer(){
 		base();
