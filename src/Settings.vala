@@ -46,6 +46,10 @@ class Settings{
 		return settings.get_boolean("new-mentions-notify");
 	}
 
+	public static bool load_new_tweets_on_startup(){
+		return settings.get_boolean("load-new-tweets-on-startup");
+	}
+
 
 	public static void set_bool(string key, bool value){
 		settings.set_boolean(key, value);

@@ -33,5 +33,10 @@
 			<summary>X</summary>
 			<description>Y</description>
 		</key>
+		<key name="load-new-tweets-on-startup" type="b">
+			<default>true</default>
+			<summary>X</summary>
+			<description>Y</description>
+		</key>
 	</schema>
 </schemalist>

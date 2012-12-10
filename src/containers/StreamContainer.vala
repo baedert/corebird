@@ -9,6 +9,9 @@ class StreamContainer : ScrollWidget {
 
 	public StreamContainer(){
 		base();
+		if(Settings.load_new_tweets_on_startup())
+			load_new_tweets.begin();
+
 		//Start the update timeout
 		int minutes = Settings.get_update_interval();
 		GLib.Timeout.add(minutes * 60 * 1000, () => {

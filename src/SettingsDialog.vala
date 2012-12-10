@@ -8,6 +8,7 @@ class SettingsDialog : PreferencesDialog{
 	public SettingsDialog(MainWindow win){
 		base("Settings", 3);
 		this.win = win;
+		this.set_default_size(450, 2);
 
 
 		// GENERAL SETTINGS
@@ -16,6 +17,10 @@ class SettingsDialog : PreferencesDialog{
 		add_int_option(general, "Tweet update interval:", 1, 
 		               Settings.get_update_interval(), 60, (val) => {
 		    Settings.set_int("update-interval", val);
+		});
+		add_bool_option(general, "Refresh stream on startup:", Settings.load_new_tweets_on_startup(), 
+		                (val) => {
+		    Settings.set_bool("load-new-tweets-on-startup", val);
 		});
 
 		// INTERFACE SETTINGS
@@ -26,7 +31,6 @@ class SettingsDialog : PreferencesDialog{
 			Gtk.Settings.get_default().gtk_application_prefer_dark_theme = val;
 		});
 		add_bool_option(inter, "Show primary toolbar:", Settings.show_primary_toolbar(), (val) => {
-			message("Settings 'show-primary-toolbar' to %s", val ? "true" : "false");
 			Settings.set_bool("show-primary-toolbar", val);
 			this.win.set_show_primary_toolbar(val);
 		});
