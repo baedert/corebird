@@ -88,6 +88,7 @@ class PreferencesDialog : Dialog {
 		heights[page]++;
 	}
 
+	// TODO: Something in here causes a crash
 	public void add_array_option(int page, string title, string[] options,
 	                             int default_index, ArrayDelegate action){
 		Grid grid = (Grid)nb.get_nth_page(page);
