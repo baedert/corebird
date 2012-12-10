@@ -4,15 +4,16 @@
 using Gtk;
 
 
-class SearchContainer : Box{
+class SearchContainer : Box {
 	private Entry search_entry    = new Entry();
 	private TweetList result_list = new TweetList();
 	public MainWindow window;
 
 
 
-	public SearchContainer() {
+	public SearchContainer(MainWindow window) {
 		GLib.Object(orientation: Orientation.VERTICAL);
+		this.window = window;
 
 		search_entry.margin = 5;
 		search_entry.placeholder_text = "Search keyword(s)";

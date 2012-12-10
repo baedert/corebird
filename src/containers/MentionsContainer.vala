@@ -7,20 +7,23 @@ class MentionsContainer : ScrollWidget {
 	public MainWindow window;
 	private TweetList list = new TweetList();
 
-	public MentionsContainer(){
+	public MentionsContainer(MainWindow window){
 		base();
 		this.add_with_viewport(list);
+		this.window = window;
+
+		load_cached_mentions.begin();
 
 		load_new_mentions.begin();
 	}
 
-	private async void load_cached_mentions(){
+	private async void load_cached_mentions() throws SQLHeavy.Error{
 		GLib.DateTime now = new GLib.DateTime.now_local();
 
 		SQLHeavy.Query query = new SQLHeavy.Query(Corebird.db,
 			"SELECT `id`, `text`, `user_id`, `user_name`, `is_retweet`,
 					`retweeted_by`, `retweeted`, `favorited`, `created_at`,
-					`added_to_stream`, `avatar_name`, `screen_name` FROM `cache`
+					`added_to_stream`, `avatar_name`, `screen_name`,`type` FROM `cache`
 			WHERE `type`='2' 
 			ORDER BY `added_to_stream` DESC LIMIT 30");
 		SQLHeavy.QueryResult result = query.execute();
@@ -49,9 +52,7 @@ class MentionsContainer : ScrollWidget {
 	}
 
 
-
-	// TODO: Cache this.
-	private async void load_new_mentions(){
+	private async void load_new_mentions() throws SQLHeavy.Error{
 		SQLHeavy.Query id_query = new SQLHeavy.Query(Corebird.db,
 		 	"SELECT `id`, `added_to_stream` FROM `cache` 
 		 	WHERE `type`='2' ORDER BY `added_to_stream` DESC LIMIT 1;");
@@ -64,6 +65,8 @@ class MentionsContainer : ScrollWidget {
 		var call = Twitter.proxy.new_call();
 		call.set_method("GET");
 		call.set_function("1.1/statuses/mentions_timeline.json");
+		if(greatest_id > 0)
+			call.add_param("since_id", greatest_id.to_string());
 		call.invoke_async.begin(null, (obj, res) => {
 			try{
 				call.invoke_async.end(res);
@@ -78,7 +81,7 @@ class MentionsContainer : ScrollWidget {
 				critical("Error while parsing mentions json: %s\nData:%s", e.message, back);
 			}
 			Json.Array root = parser.get_root().get_array();
-			var loader_thread = new LoaderThread(root, window, list);
+			var loader_thread = new LoaderThread(root, window, list, 2);
 			loader_thread.balance_upper_change = false;
 			loader_thread.run();
 

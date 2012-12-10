@@ -12,10 +12,10 @@ class MainWindow : ApplicationWindow {
 	private Box main_box                          = new Box(Orientation.VERTICAL, 0);
 	private Box bottom_box                        = new Box(Orientation.HORIZONTAL, 0);
 	private Notebook main_notebook                = new Notebook();
-	private StreamContainer stream_container      = new StreamContainer();
-	private MentionsContainer mentions_container  = new MentionsContainer();
-	private FavoriteContainer favorite_container  = new FavoriteContainer();
-	private SearchContainer search_container      = new SearchContainer();
+	private StreamContainer stream_container;
+	private MentionsContainer mentions_container;
+	private FavoriteContainer favorite_container = new FavoriteContainer();
+	private SearchContainer search_container;
 	private RadioToolButton[] switch_page_buttons = new RadioToolButton[4];
 	private ToolButton avatar_button			  = new ToolButton(null, null);
 	private ToolButton refresh_button			  = new ToolButton.from_stock(Stock.REFRESH);
@@ -26,9 +26,9 @@ class MainWindow : ApplicationWindow {
 
 	public MainWindow(Gtk.Application app){
 		GLib.Object (application: app);
-		stream_container.window   = this;
-		search_container.window   = this;
-		mentions_container.window = this;
+		stream_container   = new StreamContainer(this);
+		mentions_container = new MentionsContainer(this);
+		search_container   = new SearchContainer(this);
 		//Load the user's sceen_name used for identifying him
 		User.load();
 		//Update the Twitter config

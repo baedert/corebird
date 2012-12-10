@@ -107,9 +107,9 @@ class Twitter{
 			var root = parser.get_root().get_object();
 			Twitter.characters_reserved_per_media =
 				(int)root.get_int_member("characters_reserved_per_media");
-			Twitter.max_media_per_upload = (int)root.get_int_member("max_media_per_upload");
-			Twitter.photo_size_limit = (int)root.get_int_member("photo_size_limit");
-			Twitter.short_url_length = (int)root.get_int_member("short_url_length");
+			Twitter.max_media_per_upload   = (int)root.get_int_member("max_media_per_upload");
+			Twitter.photo_size_limit       = (int)root.get_int_member("photo_size_limit");
+			Twitter.short_url_length       = (int)root.get_int_member("short_url_length");
 			Twitter.short_url_length_https = (int)root.get_int_member("short_url_length_https");
 
 			message("Updated the twitter configuration");
