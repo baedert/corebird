@@ -23,12 +23,13 @@ class SettingsDialog : PreferencesDialog {
 		    Settings.set_bool("refresh-streams-on-startup", val);
 		});
 
-		// // BEHAVIOR SETTINGS
+		// BEHAVIOR SETTINGS
 		int behavior = append_page("Behavior");
-		// add_array_option(behavior, "On close:", {"Minimize to tray", "close"},
-		//                  0, (index) => {
-  //           message("Index %d", index);
-		// });
+		add_array_option(behavior, "On close:", {"Minimize to tray", "close"},
+		                 0, (index) => {
+            message("Index %d", index);
+		});
+		add_bool_option(behavior, "Show tray icon:", true, () => {});
 
 
 
