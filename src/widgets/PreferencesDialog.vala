@@ -13,7 +13,6 @@ class PreferencesDialog : Dialog {
 	private int[] heights;
 
 
-
 	public PreferencesDialog(string title, int num_pages){
 		this.title = title;
 		this.heights = new int[num_pages];
@@ -88,7 +87,6 @@ class PreferencesDialog : Dialog {
 		heights[page]++;
 	}
 
-	// TODO: Something in here causes a crash
 	public void add_array_option(int page, string title, string[] options,
 	                             int default_index, ArrayDelegate action){
 		Grid grid = (Grid)nb.get_nth_page(page);

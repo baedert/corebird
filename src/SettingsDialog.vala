@@ -6,7 +6,7 @@ class SettingsDialog : PreferencesDialog {
 	private MainWindow win;
 
 	public SettingsDialog(MainWindow win){
-		base("Settings", 4);
+		base("Settings", 1);
 		this.win = win;
 		this.set_default_size(450, 2);
 
@@ -46,7 +46,7 @@ class SettingsDialog : PreferencesDialog {
 		});
 
 
-		// // NOTIFICATION SETTINGS
+		// NOTIFICATION SETTINGS
 		int notify = append_page("Notifications");
 		add_heading(notify, "Actions");
 		add_bool_option(notify, "On new Tweets:", Settings.notify_new_tweets(), (val) => {
