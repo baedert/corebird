@@ -156,7 +156,10 @@ class StreamContainer : ScrollWidget {
 				}
 			}, (num)=> {
 				if(num > 0 && Settings.notify_new_tweets()&& !window.has_toplevel_focus){
-					Notify.Notification n = new Notify.Notification("%d new Tweets".printf(num), null, null);
+					string tweets = "Tweets";
+					if(num == 1)
+						tweets = "Tweet";
+					Notify.Notification n = new Notify.Notification("%d new %s".printf(num, tweets), null, null);
 					n.set_urgency(Notify.Urgency.LOW);
 					try{
 						n.show();
