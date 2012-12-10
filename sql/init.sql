@@ -19,7 +19,8 @@ CREATE TABLE IF NOT EXISTS `cache`(
 			    avatar_name VARCHAR(50),
 			    retweets INTEGER(5),
 			    favorites INTEGER(5),
-			    added_to_stream INTEGER(11));
+			    added_to_stream INTEGER(11),
+			    type INTEGER(1));
 
 CREATE TABLE IF NOT EXISTS `people`(
 				id INTEGER(11), 
