@@ -8,6 +8,7 @@ class PreferencesDialog : Dialog {
 	private static int RESPONSE_CLOSE = 1;
 	public delegate void BoolDelegate(bool value);
 	public delegate void IntDelegate(int value);
+	public delegate void ArrayDelegate(int index);
 	private Notebook nb = new Notebook();
 	private int[] heights;
 
@@ -85,6 +86,33 @@ class PreferencesDialog : Dialog {
 		grid.attach(title_label, 0, heights[page], 1, 1);
 		grid.attach(sb, 1, heights[page], 1, 1);
 		heights[page]++;
+	}
 
+	public void add_array_option(int page, string title, string[] options,
+	                             int default_index, ArrayDelegate action){
+		Grid grid = (Grid)nb.get_nth_page(page);
+		Label title_label = new Label(title);
+		title_label.xalign = 1.0f;
+		
+		ListStore store = new ListStore(1, typeof(string));
+		TreeIter iter;
+		foreach(string item in options){
+			store.append(out iter);	
+			store.set(iter, 0, item);
+		}
+		ComboBox combo = new ComboBox.with_model(store);
+		combo.set_halign(Align.START);
+		CellRendererText renderer = new CellRendererText();
+		combo.pack_start(renderer, true);
+		combo.add_attribute(renderer, "text", 0);
+		combo.active = default_index;
+		combo.changed.connect( () => {
+			int index = combo.get_active();
+			action(index);
+		});
+
+		grid.attach(title_label, 0, heights[page], 1, 1);
+		grid.attach(combo, 1, heights[page], 1, 1);
+		heights[page]++;	
 	}
 }

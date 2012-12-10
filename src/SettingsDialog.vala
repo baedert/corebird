@@ -23,6 +23,15 @@ class SettingsDialog : PreferencesDialog{
 		    Settings.set_bool("load-new-tweets-on-startup", val);
 		});
 
+		// BEHAVIOR SETTINGS
+		int behavior = append_page("Behavior");
+		add_array_option(behavior, "On close:", {"Minimize to tray", "close"},
+		                 0, (index) => {
+            message("Index %d", index);
+		});
+
+
+
 		// INTERFACE SETTINGS
 		int inter = append_page("Interface");
 		add_heading(inter, "Main window");
