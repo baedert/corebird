@@ -104,7 +104,7 @@ class MainWindow : ApplicationWindow {
 		});
 		settings_button.clicked.connect( () => {
 			SettingsDialog sd = new SettingsDialog(this);
-			sd.show_all();
+			// sd.show_all();
 			sd.run();
 		});
 		bottom_box.pack_start(left_toolbar, false, true);
