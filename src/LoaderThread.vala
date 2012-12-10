@@ -43,6 +43,7 @@ class LoaderThread{
 			TweetListEntry entry  = new TweetListEntry(t, window);
 			entries[index] = entry;
 		});
+
 		GLib.Idle.add( () => {
 			list.hide_spinner();
 			//FIXME: God this sucks.

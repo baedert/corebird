@@ -1,6 +1,6 @@
 
 
-class Settings{
+class Settings : GLib.Object {
 	private static GLib.Settings settings;
 
 	public static void init(){
@@ -46,8 +46,8 @@ class Settings{
 		return settings.get_boolean("new-mentions-notify");
 	}
 
-	public static bool load_new_tweets_on_startup(){
-		return settings.get_boolean("load-new-tweets-on-startup");
+	public static bool refresh_streams_on_startup(){
+		return settings.get_boolean("refresh-streams-on-startup");
 	}
 
 

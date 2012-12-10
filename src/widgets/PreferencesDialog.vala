@@ -23,7 +23,7 @@ class PreferencesDialog : Dialog {
 
 		this.response.connect( (id) => {
 			if (id == RESPONSE_CLOSE)
-				this.destroy();
+				this.hide();
 		});
 	}
 

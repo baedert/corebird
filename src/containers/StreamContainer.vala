@@ -10,7 +10,7 @@ class StreamContainer : ScrollWidget {
 	public StreamContainer(MainWindow window){
 		base();
 		this.window = window;
-		if(Settings.load_new_tweets_on_startup())
+		if(Settings.refresh_streams_on_startup())
 			load_new_tweets.begin();
 
 		//Start the update timeout
@@ -20,9 +20,10 @@ class StreamContainer : ScrollWidget {
 			return true;
 		});
 		this.add_with_viewport(list);
+		this.load_cached_tweets();
 	}
 
-	public async void load_cached_tweets() throws SQLHeavy.Error{
+	public void load_cached_tweets() throws SQLHeavy.Error{
 		GLib.DateTime now = new GLib.DateTime.now_local();
 
 		SQLHeavy.Query query = new SQLHeavy.Query(Corebird.db,
@@ -50,9 +51,9 @@ class StreamContainer : ScrollWidget {
 			t.load_avatar();
 
 			// Append the tweet to the TweetList
-			// TweetListEntry list_entry = new TweetListEntry(t, window);
-			// list.add_item(list_entry);	
-			// result.next();
+			TweetListEntry list_entry = new TweetListEntry(t, window);
+			list.add_item(list_entry);	
+			result.next();
 		}
 	}
 

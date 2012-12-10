@@ -14,7 +14,7 @@ class MainWindow : ApplicationWindow {
 	private Notebook main_notebook                = new Notebook();
 	private StreamContainer stream_container;
 	private MentionsContainer mentions_container;
-	private FavoriteContainer favorite_container = new FavoriteContainer();
+	private FavoriteContainer favorite_container  = new FavoriteContainer();
 	private SearchContainer search_container;
 	private RadioToolButton[] switch_page_buttons = new RadioToolButton[4];
 	private ToolButton avatar_button			  = new ToolButton(null, null);
@@ -105,6 +105,7 @@ class MainWindow : ApplicationWindow {
 		settings_button.clicked.connect( () => {
 			SettingsDialog sd = new SettingsDialog(this);
 			sd.show_all();
+			sd.run();
 		});
 		bottom_box.pack_start(left_toolbar, false, true);
 
@@ -136,9 +137,6 @@ class MainWindow : ApplicationWindow {
 		main_notebook.show_border = false;
 		bottom_box.pack_end (main_notebook, true, true);
 		main_box.pack_end(bottom_box, true, true);
-
-		// Load the cached tweets from the database
-		stream_container.load_cached_tweets.begin();
 
 
 		this.add(main_box);

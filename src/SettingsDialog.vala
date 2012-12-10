@@ -2,7 +2,7 @@
 
 using Gtk;
 
-class SettingsDialog : PreferencesDialog{
+class SettingsDialog : PreferencesDialog {
 	private MainWindow win;
 
 	public SettingsDialog(MainWindow win){
@@ -18,17 +18,17 @@ class SettingsDialog : PreferencesDialog{
 		               Settings.get_update_interval(), 60, (val) => {
 		    Settings.set_int("update-interval", val);
 		});
-		add_bool_option(general, "Refresh stream on startup:", Settings.load_new_tweets_on_startup(), 
+		add_bool_option(general, "Refresh streams on startup:", Settings.refresh_streams_on_startup(), 
 		                (val) => {
-		    Settings.set_bool("load-new-tweets-on-startup", val);
+		    Settings.set_bool("refresh-streams-on-startup", val);
 		});
 
 		// // BEHAVIOR SETTINGS
 		int behavior = append_page("Behavior");
-		add_array_option(behavior, "On close:", {"Minimize to tray", "close"},
-		                 0, (index) => {
-            message("Index %d", index);
-		});
+		// add_array_option(behavior, "On close:", {"Minimize to tray", "close"},
+		//                  0, (index) => {
+  //           message("Index %d", index);
+		// });
 
 
 
