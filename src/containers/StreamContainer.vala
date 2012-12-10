@@ -28,6 +28,7 @@ class StreamContainer : ScrollWidget {
 			"SELECT `id`, `text`, `user_id`, `user_name`, `is_retweet`,
 					`retweeted_by`, `retweeted`, `favorited`, `created_at`,
 					`added_to_stream`, `avatar_name`, `screen_name` FROM `cache`
+			WHERE `type`='1' 
 			ORDER BY `added_to_stream` DESC LIMIT 30");
 		SQLHeavy.QueryResult result = query.execute();
 		while(!result.finished){
