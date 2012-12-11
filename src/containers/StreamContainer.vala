@@ -77,7 +77,7 @@ class StreamContainer : ScrollWidget {
 		call.set_function("1.1/statuses/home_timeline.json");
 		call.set_method("GET");
 		call.add_param("count", "10");
-		call.add_param("include_entities", "false");
+		//call.add_param("include_entities", "false");
 		call.add_param("contributor_details", "true");
 		if(greatest_id > 0)
 			call.add_param("since_id", greatest_id.to_string());
@@ -98,7 +98,7 @@ class StreamContainer : ScrollWidget {
 				return;
 			}
 
-			//TODO: The queries in that lambda can ALL be cached, but that kinda breaks. Find out how.
+			//TODO: The queries in that lambda can ALL be cached, but that kinda breaks. Find out how. Probably works now that it's in Tweet
 			var root = parser.get_root().get_array();
 			var loader_thread = new LoaderThread(root, window, list, 1, (num)=> {
 				if(num > 0 && Settings.notify_new_tweets()&& !window.has_toplevel_focus){

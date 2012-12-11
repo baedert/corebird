@@ -46,3 +46,11 @@
 	color: #EEE;
 	text-shadow: 1px 1px 0px #000;
 }
+
+
+/* Progress-item showed when loading new tweets */
+.progress-item .button {
+	background-image: none;
+	border: none;
+	background-color: transparent;
+}

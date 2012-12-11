@@ -17,6 +17,7 @@ class MentionsContainer : ScrollWidget {
 		load_new_mentions.begin();
 	}
 
+	// TODO: Save this somewhere else, it's needed more than once.
 	private async void load_cached_mentions() throws SQLHeavy.Error{
 		GLib.DateTime now = new GLib.DateTime.now_local();
 
