@@ -72,6 +72,7 @@ class MentionsContainer : ScrollWidget {
 				call.invoke_async.end(res);
 			} catch(GLib.Error e){
 				critical("Error while loading mentions: %s", e.message);
+				return;
 			}
 			string back = call.get_payload();
 			Json.Parser parser = new Json.Parser();
