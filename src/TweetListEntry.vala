@@ -12,7 +12,7 @@ class TweetListEntry : Gtk.Box {
 	private Label rt_label            = new Label("");
 	private Button time_delta		  = new Button.with_label("<b>lulz</b>");
 	private MainWindow window;
-	private Gtk.Menu popup_menu		  = new Gtk.Menu();
+	private new Gtk.Menu popup_menu	  = new Gtk.Menu();
 
 
 	public TweetListEntry(Tweet tweet, MainWindow window){
@@ -36,21 +36,28 @@ class TweetListEntry : Gtk.Box {
 			avatar_button.queue_draw();
 		});
 		
+
+
 		// Set the correct CSS style class
 		get_style_context().add_class("tweet");
-		if (tweet.screen_name == User.screen_name)
+		if (tweet.screen_name == User.screen_name){
 			get_style_context().add_class("user-tweet");
-			
-
-		var left_box = new Box(Orientation.VERTICAL, 2);
-		avatar_button.clicked.connect( () => {
+			var delete_item = new Gtk.MenuItem.with_label("Delete");
+			popup_menu.add(delete_item);
+		}else{
 			var rt_item = new Gtk.MenuItem.with_label("Retweet");
 			popup_menu.add(rt_item);
 			var fav_item = new Gtk.MenuItem.with_label("Favorite");
 			popup_menu.add(fav_item);
 			var answer_item = new Gtk.MenuItem.with_label("Answer");
 			popup_menu.add(answer_item);
-			popup_menu.show_all();
+		}
+			
+		popup_menu.show_all();
+
+
+		var left_box = new Box(Orientation.VERTICAL, 2);
+		avatar_button.clicked.connect( () => {
 			popup_menu.popup(null, null, null, 0, 0);
 		});
 		avatar_button.get_style_context().add_class("avatar");
