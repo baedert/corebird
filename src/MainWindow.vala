@@ -19,7 +19,7 @@ class MainWindow : ApplicationWindow {
 	private RadioToolButton[] switch_page_buttons = new RadioToolButton[4];
 	private ToolButton avatar_button			  = new ToolButton(null, null);
 	private ToolButton refresh_button			  = new ToolButton.from_stock(Stock.REFRESH);
-	private ToolButton settings_button			  = new ToolButton.from_stock(Stock.PREFERENCES);
+	private ToolButton settings_button			  = new ToolButton.from_stock(Stock.PROPERTIES);
 	private ToolButton new_tweet_button			  = new ToolButton.from_stock(Stock.NEW);
 	private SeparatorToolItem expander_item		  = new SeparatorToolItem();
 	private SeparatorToolItem left_separator	  = new SeparatorToolItem();

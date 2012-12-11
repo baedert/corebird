@@ -10,8 +10,9 @@ class TweetListEntry : Gtk.Box {
 	private Label text                = new Label("");
 	private Label author              = new Label("");
 	private Label rt_label            = new Label("");
-	private Label time_delta          = new Label("");
+	private Button time_delta		  = new Button.with_label("<b>lulz</b>");
 	private MainWindow window;
+	private Gtk.Menu popup_menu		  = new Gtk.Menu();
 
 
 	public TweetListEntry(Tweet tweet, MainWindow window){
@@ -43,8 +44,14 @@ class TweetListEntry : Gtk.Box {
 
 		var left_box = new Box(Orientation.VERTICAL, 2);
 		avatar_button.clicked.connect( () => {
-			ProfileDialog pd = new ProfileDialog(tweet.screen_name);
-			pd.show_all();
+			var rt_item = new Gtk.MenuItem.with_label("Retweet");
+			popup_menu.add(rt_item);
+			var fav_item = new Gtk.MenuItem.with_label("Favorite");
+			popup_menu.add(fav_item);
+			var answer_item = new Gtk.MenuItem.with_label("Answer");
+			popup_menu.add(answer_item);
+			popup_menu.show_all();
+			popup_menu.popup(null, null, null, 0, 0);
 		});
 		avatar_button.get_style_context().add_class("avatar");
 		avatar_button.set_size_request(48, 48);
@@ -52,10 +59,9 @@ class TweetListEntry : Gtk.Box {
 		avatar_button.margin_left = 3;
 		avatar_button.margin_top = 3;
 		left_box.pack_start(avatar_button, false, false);
-		time_delta.set_use_markup(true);
-		time_delta.label = "<small>"+tweet.time_delta+"</small>";
+		//time_delta.set_use_markup(true);
+		time_delta.label = "%s".printf(tweet.time_delta);
 		time_delta.set_alignment(0,0);
-		time_delta.margin_left = 3;
 		time_delta.get_style_context().add_class("time-delta");
 		left_box.pack_start(time_delta, false, false);
 		this.pack_start(left_box, false, false);
@@ -92,23 +98,7 @@ class TweetListEntry : Gtk.Box {
 
 
 		this.pack_start(right_box, true, true);
-
-		this.enter_notify_event.connect( () => {
-			stdout.printf(tweet.text+"\n");
-			return true;
-		}) ;
-
-		text.activate_link.connect( (uri) => {
-			if (uri.has_prefix("cb://")){
-				// Format: cb://foo/bar
-				string[] tokens = uri.split("/");
-				string action = tokens[2];
-				string value = tokens[3];
-				handle_link(action, value);
-				return true;
-			}
-			return false;
-		});
+		text.activate_link.connect(handle_uri);
 
 		this.set_size_request(150, 80);
 		this.show_all();
@@ -123,14 +113,27 @@ class TweetListEntry : Gtk.Box {
 	}
 
 
-	private void handle_link(string action, string value){
-		if (action == "profile"){
-			// Value: @name
-			ProfileDialog pd = new ProfileDialog(value.substring(1));
-			pd.show_all();
-		}else if(action == "search"){
-			message("Search for %s", value);
-			window.switch_to_search(value);
+	/**
+	* Handle uris in the tweets
+	*/
+	private bool handle_uri(string uri){
+		if (uri.has_prefix("cb://")){
+			// Format: cb://foo/bar
+			string[] tokens = uri.split("/");
+			string action = tokens[2];
+			string value = tokens[3];
+
+		
+			if (action == "profile"){
+				// Value: @name
+				ProfileDialog pd = new ProfileDialog(value.substring(1));
+				pd.show_all();
+			}else if(action == "search"){
+				message("Search for %s", value);
+				window.switch_to_search(value);
+			}
+			return true;
 		}
+		return false;
 	}
 }
