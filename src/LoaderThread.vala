@@ -45,7 +45,7 @@ class LoaderThread{
 		});
 
 		GLib.Idle.add( () => {
-			//list.hide_spinner();
+			list.hide_spinner();
 			//FIXME: God this sucks.
 			if(balance_upper_change)
 				((ScrollWidget)list.parent.parent).balance_next_upper_change();
