@@ -6,7 +6,7 @@ class SettingsDialog : PreferencesDialog {
 	private MainWindow win;
 
 	public SettingsDialog(MainWindow win){
-		base("Settings", 1);
+		base("Settings", 4);
 		this.win = win;
 		this.set_default_size(450, 2);
 
