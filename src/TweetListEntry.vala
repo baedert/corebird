@@ -56,6 +56,7 @@ class TweetListEntry : Gtk.Box {
 			var answer_item = new Gtk.MenuItem.with_label("Answer");
 			popup_menu.add(answer_item);
 		}
+		get_style_context().add_class("row");
 			
 		popup_menu.show_all();
 
