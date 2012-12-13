@@ -6,7 +6,7 @@ class SettingsDialog : PreferencesDialog {
 	private MainWindow win;
 
 	public SettingsDialog(MainWindow win){
-		base("Settings", 1);
+		base("Settings", 4);
 		this.win = win;
 		this.set_default_size(450, 2);
 
@@ -57,5 +57,5 @@ class SettingsDialog : PreferencesDialog {
 		add_bool_option(notify, "On new mentions:", Settings.notify_new_mentions(), (val) => {
 			Settings.set_bool("new-mentions-notify", val);
 		});
-	}//L5wU7ktJt93yE
+	}
 }

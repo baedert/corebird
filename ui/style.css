@@ -1,10 +1,11 @@
 .tweet {
-	background-color: transparent;
+	/*background-color: transparent;*/
+	/*border-bottom: 1px solid #DDD;*/
 }
 
 /** Tweets the user sent himself */
 .user-tweet {
-
+	/* Set a special background color or something */
 }
 
 .tweet .avatar {
@@ -16,8 +17,6 @@
 }
 
 .tweet .avatar:hover {
-	/*background-image: linear-gradient(to bottom,*/
-		/*alpha(black, 0.6), alpha(black, 0.2));*/
 	box-shadow: 0px 0px 10px alpha(black, 0.8);
 }
 
@@ -33,6 +32,9 @@
 	
 }
 
+.tweet .screen-name {
+	/* Label containing the author's screen_name */
+}
 
 .tweet .time-delta,
 .tweet .time-delta .label,

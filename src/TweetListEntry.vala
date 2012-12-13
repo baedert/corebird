@@ -10,15 +10,18 @@ class TweetListEntry : Gtk.Box {
 	private Label text                = new Label("");
 	private Label author              = new Label("");
 	private Label rt_label            = new Label("");
-	private Button time_delta		  = new Button.with_label("<b>lulz</b>");
+	private Label screen_name	      = new Label("");
+	private Label time_delta		  = new Label("");
 	private MainWindow window;
-	private Gtk.Menu popup_menu		  = new Gtk.Menu();
+	private new Gtk.Menu popup_menu	  = new Gtk.Menu();
 
 
 	public TweetListEntry(Tweet tweet, MainWindow window){
-		GLib.Object(orientation: Orientation.HORIZONTAL, spacing: 3);
+		GLib.Object(orientation: Orientation.HORIZONTAL, spacing: 5);
 		this.window = window;
 		this.margin_left = 10;
+
+
 		if (hashtag_regex == null){
 			try{
 				hashtag_regex = new GLib.Regex("#\\w*", RegexCompileFlags.OPTIMIZE);	
@@ -29,30 +32,45 @@ class TweetListEntry : Gtk.Box {
 				warning("Error while creating regexes: %s", e.message);
 			}
 		}
-		set_has_window(false);
-
 		// If the tweet's avatar changed, also reset it in the widgets
 		tweet.notify["avatar"].connect( () => {
 			avatar_button.bg = tweet.avatar;
 			avatar_button.queue_draw();
 		});
 		
+		this.enter_notify_event.connect(() => {
+			message("ENTER");
+			return false;
+		});
+
+
 		// Set the correct CSS style class
 		get_style_context().add_class("tweet");
-		//if (tweet.screen_name == User.screen_name)
+ 		//if (tweet.screen_name == User.screen_name)
 		//	get_style_context().add_class("user-tweet");
 		get_style_context().add_class("row");
 			
 
-		var left_box = new Box(Orientation.VERTICAL, 2);
-		avatar_button.clicked.connect( () => {
-			var rt_item = new Gtk.MenuItem.with_label("Retweet");
+
+		if (tweet.screen_name == User.screen_name){
+			get_style_context().add_class("user-tweet");
+			var delete_item = new Gtk.MenuItem.with_label("Delete");
+			popup_menu.add(delete_item);
+		}else{
+			var rt_item = new Gtk.CheckMenuItem.with_label("Retweet");
 			popup_menu.add(rt_item);
-			var fav_item = new Gtk.MenuItem.with_label("Favorite");
+			var fav_item = new Gtk.CheckMenuItem.with_label("Favorite");
 			popup_menu.add(fav_item);
 			var answer_item = new Gtk.MenuItem.with_label("Answer");
 			popup_menu.add(answer_item);
-			popup_menu.show_all();
+		}
+
+			
+		popup_menu.show_all();
+
+
+		var left_box = new Box(Orientation.VERTICAL, 2);
+		avatar_button.clicked.connect( () => {
 			popup_menu.popup(null, null, null, 0, 0);
 		});
 		avatar_button.get_style_context().add_class("avatar");
@@ -61,11 +79,8 @@ class TweetListEntry : Gtk.Box {
 		avatar_button.margin_left = 3;
 		avatar_button.margin_top = 3;
 		left_box.pack_start(avatar_button, false, false);
-		//time_delta.set_use_markup(true);
-		time_delta.label = "%s".printf(tweet.time_delta);
-		time_delta.set_alignment(0,0);
-		time_delta.get_style_context().add_class("time-delta");
-		left_box.pack_start(time_delta, false, false);
+
+
 		this.pack_start(left_box, false, false);
 
 		var top_box = new Box(Orientation.HORIZONTAL, 4);
@@ -73,12 +88,20 @@ class TweetListEntry : Gtk.Box {
 		author.set_use_markup(true);
 		author.label = "<span size=\"larger\"><b>"+tweet.user_name+"</b></span>";
 		top_box.pack_start(author, false, false);
-		if (tweet.is_retweet){
-			rt_label.set_use_markup(true);
-			rt_label.label = "<small>RT by "+tweet.retweeted_by+"</small>";
-			rt_label.margin_right = 3;
-		}
-		top_box.pack_end(rt_label, false, false);
+
+		screen_name.set_use_markup(true);
+		screen_name.label = "<small>@%s</small>".printf(tweet.screen_name);
+		screen_name.ellipsize = Pango.EllipsizeMode.END;
+		top_box.pack_start(screen_name, false, false);
+
+		time_delta.set_use_markup(true);
+		time_delta.label = "<small>%s</small>".printf(tweet.time_delta);
+		time_delta.set_alignment(1, 0.5f);
+		time_delta.get_style_context().add_class("time-delta");
+		top_box.pack_end(time_delta, false, false);
+
+
+
 
 		var right_box = new Box(Orientation.VERTICAL, 2);
 		right_box.pack_start(top_box, false, false);
