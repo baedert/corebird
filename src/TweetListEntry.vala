@@ -19,6 +19,9 @@ class TweetListEntry : Gtk.Box {
 	public TweetListEntry(Tweet tweet, MainWindow window){
 		GLib.Object(orientation: Orientation.HORIZONTAL, spacing: 5);
 		this.window = window;
+		// TODO: Use this!
+		// get_style_context().add_region(STYLE_REGION_ROW);
+		
 
 		if (hashtag_regex == null){
 			try{
@@ -56,7 +59,7 @@ class TweetListEntry : Gtk.Box {
 			var answer_item = new Gtk.MenuItem.with_label("Answer");
 			popup_menu.add(answer_item);
 		}
-		get_style_context().add_class("row");
+		// get_style_context().add_class("cell");
 			
 		popup_menu.show_all();
 

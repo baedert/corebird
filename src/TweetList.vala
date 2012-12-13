@@ -7,6 +7,7 @@ using Gtk;
 
 class TweetList : Box {
 	private ProgressItem spinner = new ProgressItem();
+	int childCount = 0;
 
 	public TweetList(){
 		GLib.Object(orientation: Orientation.VERTICAL, spacing: 0);
@@ -18,8 +19,16 @@ class TweetList : Box {
 	 * @param entry The entry to add.
 	 */
 	public void add_item(Box entry){
+
+		if (childCount % 2 == 0){
+			entry.get_style_context().add_region(STYLE_REGION_ROW, RegionFlags.EVEN);
+		}else{
+			entry.get_style_context().add_region(STYLE_REGION_ROW, RegionFlags.ODD);
+		}
+
 		this.pack_start(entry, false, true);
 		entry.show_all();
+		childCount++;
 	}
 	/**
 	 * Inserts the given entry into the place at the given position.
