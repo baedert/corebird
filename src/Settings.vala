@@ -50,6 +50,12 @@ class Settings : GLib.Object {
 		return settings.get_boolean("refresh-streams-on-startup");
 	}
 
+	// TODO: Use a GSettings array here?
+	public static int close_behavior(){
+		return settings.get_int("close_behavior");
+	}
+
+
 
 	public static void set_bool(string key, bool value){
 		settings.set_boolean(key, value);

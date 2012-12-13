@@ -25,11 +25,13 @@ class SettingsDialog : PreferencesDialog {
 
 		// BEHAVIOR SETTINGS
 		int behavior = append_page("Behavior");
-		add_array_option(behavior, "On close:", {"Minimize to tray", "close"},
-		                 0, (index) => {
-            message("Index %d", index);
+		add_bool_option(behavior, "Show tray icon", false, (val) => {
+			if (val){
+
+			}else{
+				
+			}
 		});
-		add_bool_option(behavior, "Show tray icon:", true, () => {});
 
 
 
@@ -55,5 +57,5 @@ class SettingsDialog : PreferencesDialog {
 		add_bool_option(notify, "On new mentions:", Settings.notify_new_mentions(), (val) => {
 			Settings.set_bool("new-mentions-notify", val);
 		});
-	}
+	}//L5wU7ktJt93yE
 }

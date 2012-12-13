@@ -18,6 +18,7 @@ class TweetListEntry : Gtk.Box {
 	public TweetListEntry(Tweet tweet, MainWindow window){
 		GLib.Object(orientation: Orientation.HORIZONTAL, spacing: 3);
 		this.window = window;
+		this.margin_left = 10;
 		if (hashtag_regex == null){
 			try{
 				hashtag_regex = new GLib.Regex("#\\w*", RegexCompileFlags.OPTIMIZE);	
@@ -38,8 +39,9 @@ class TweetListEntry : Gtk.Box {
 		
 		// Set the correct CSS style class
 		get_style_context().add_class("tweet");
-		if (tweet.screen_name == User.screen_name)
-			get_style_context().add_class("user-tweet");
+		//if (tweet.screen_name == User.screen_name)
+		//	get_style_context().add_class("user-tweet");
+		get_style_context().add_class("row");
 			
 
 		var left_box = new Box(Orientation.VERTICAL, 2);

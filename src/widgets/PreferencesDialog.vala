@@ -55,7 +55,8 @@ class PreferencesDialog : Dialog {
 
 	public void add_bool_option(int page, string title,
 	                              bool default_value,
-	                              BoolDelegate action){
+	                              BoolDelegate action,
+	                              string help_text = "PENIS"){
 		Grid grid = (Grid)nb.get_nth_page(page);
 		Label title_label = new Label(title);
 		title_label.xalign = 1.0f;

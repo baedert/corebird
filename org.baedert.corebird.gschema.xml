@@ -38,5 +38,10 @@
 			<summary>X</summary>
 			<description>Y</description>
 		</key>
+		<key name="close-behavior" type="i">
+			<default>0</default>
+			<summary>X</summary>
+			<description>Y</description>
+		</key>
 	</schema>
 </schemalist>
