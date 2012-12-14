@@ -38,8 +38,9 @@ class Corebird : Gtk.Application {
 
 		if (Settings.is_first_run()){
 			this.add_window(new FirstRunWindow(this));
-		} else
+		} else{
 			this.add_window(new MainWindow(this));
+		}
 
 
 		this.activate.connect( ()  => {});
@@ -67,7 +68,8 @@ int main (string[] args){
 		Settings.init();
 		new Utils(); //no initialisation of static fields :(
 		var corebird = new Corebird();
-		corebird.run(args);
+		// corebird.run(args);
+		Gtk.main();
 	} catch(GLib.Error e){
 		error(e.message);
 	}

@@ -38,8 +38,8 @@
 			<summary>X</summary>
 			<description>Y</description>
 		</key>
-		<key name="close-behavior" type="i">
-			<default>0</default>
+		<key name="show-tray-icon" type="b">
+			<default>true</default>
 			<summary>X</summary>
 			<description>Y</description>
 		</key>

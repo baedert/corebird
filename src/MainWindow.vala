@@ -34,6 +34,17 @@ class MainWindow : ApplicationWindow {
 		//Update the Twitter config
 		Twitter.update_config.begin();
 
+		this.delete_event.connect(() => {
+			message("destroy.");
+			// if (Settings.show_tray_icon()){
+				// 'Minimize to tray'
+				// set_visible(false);
+			// }else{
+				Gtk.main_quit();
+			// }
+			return true;
+		});
+
 		new_tweet_button.clicked.connect( () => {
 		 	NewTweetWindow win = new NewTweetWindow(this);
 			win.show_all();

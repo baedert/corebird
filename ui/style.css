@@ -8,6 +8,18 @@
 	/* Set a special background color or something */
 }
 
+.text-button{
+	padding: 0px;
+	font-weight: bold;
+	background-image: none;
+	border:none;
+}
+.text-button:hover{
+	text-shadow: 0px 0px 5px #444;
+	background-image: none;
+	color: green;
+}
+
 .tweet .avatar {
 	padding: 0px;
 	background-image: none;
@@ -18,6 +30,7 @@
 
 .tweet .avatar:hover {
 	box-shadow: 0px 0px 10px alpha(black, 0.8);
+
 }
 
 .tweet .avatar:active {

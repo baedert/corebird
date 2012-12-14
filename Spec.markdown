@@ -12,7 +12,7 @@ Corebird is a new native Twitter client for the linux desktop written with Gtk+.
 * Can be minimized to the tray
 * Notification integration
 * relatively well adjustable
-* Localized
+* Localized (See common questions on developer.gnome.org)
 
 ### Undecided
 * Multi-Account support?

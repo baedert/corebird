@@ -87,6 +87,7 @@ vala_precompile(VALA_C
 	src/widgets/ScrollWidget.vala
 	src/widgets/PreferencesDialog.vala
 	src/widgets/ProgressItem.vala
+	src/widgets/TextButton.vala
 PACKAGES
 	glib-2.0
 	gtk+-3.0

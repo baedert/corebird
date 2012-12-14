@@ -84,10 +84,11 @@ class TweetListEntry : Gtk.Box {
 		this.pack_start(left_box, false, false);
 
 		var top_box = new Box(Orientation.HORIZONTAL, 4);
+		TextButton author_button = new TextButton(tweet.user_name);
 		author.get_style_context().add_class("author");
 		author.set_use_markup(true);
 		author.label = "<span size=\"larger\"><b>"+tweet.user_name+"</b></span>";
-		top_box.pack_start(author, false, false);
+		top_box.pack_start(author_button, false, false);
 
 		screen_name.set_use_markup(true);
 		screen_name.label = "<small>@%s</small>".printf(tweet.screen_name);
