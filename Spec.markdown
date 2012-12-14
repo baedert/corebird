@@ -38,15 +38,19 @@ Corebird is a new native Twitter client for the linux desktop written with Gtk+.
     * Followers/followings
     * Most trending topics(special and cool)
 
+## Release plan
+* Ende Januar 2013: Beta-test mit ausgewählten Testern
+* Wenn der Beta-Test gut läuft, dann finales Release mitte März 2013
+
+
 ## Consider
 * Let the user choose an application for opening images/videos
     * youtube-viewer
-* Open profiles, tweets, etc. in a second column in the main window
 
 ## Feature completion
 * <s>Highlight &  implement links in tweets</s>
 * Load user's last X tweets in the profiles
 * <s>Make the settings window work FFS</s>
 * <s>Implement search</s>
-* Use progress indicators in search
+* <s>Use progress indicators in search</s>
 * Add batches to the toolbar icons(?)

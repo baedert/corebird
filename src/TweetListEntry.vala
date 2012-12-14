@@ -19,7 +19,8 @@ class TweetListEntry : Gtk.Box {
 	public TweetListEntry(Tweet tweet, MainWindow window){
 		GLib.Object(orientation: Orientation.HORIZONTAL, spacing: 5);
 		this.window = window;
-		this.margin_left = 10;
+		this.margin_left = 5;
+		this.margin_right = 5;
 
 
 		if (hashtag_regex == null){
@@ -76,7 +77,6 @@ class TweetListEntry : Gtk.Box {
 		avatar_button.get_style_context().add_class("avatar");
 		avatar_button.set_size_request(48, 48);
 		avatar_button.bg = tweet.avatar;
-		avatar_button.margin_left = 3;
 		avatar_button.margin_top = 3;
 		left_box.pack_start(avatar_button, false, false);
 

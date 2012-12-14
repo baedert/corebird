@@ -7,12 +7,13 @@ using Gtk;
 
 class TweetList : Box {
 	private ProgressItem spinner = new ProgressItem();
-	int childCount = 0;
+	private int childCount = 0;
 
 	public TweetList(){
 		GLib.Object(orientation: Orientation.VERTICAL, spacing: 0);
 		set_has_window(false);
 	}
+
 	/**
 	 * Appends the given entry to the end of the list.
 	 *
