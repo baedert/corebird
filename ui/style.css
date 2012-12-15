@@ -23,6 +23,9 @@
 	background-image: none;
 	background-color: #AAA;
 }
+.arrow-button:backdrop{
+	background-color: transparent;
+}
 
 .text-button{
 	padding: 0px;
