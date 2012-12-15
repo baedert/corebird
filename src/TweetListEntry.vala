@@ -20,7 +20,7 @@ class TweetListEntry : Gtk.Box {
 		GLib.Object(orientation: Orientation.HORIZONTAL, spacing: 5);
 		this.window = window;
 		this.margin_left   = 5;
-		this.margin_right  = 5;
+		this.margin_right  = 0;
 		this.margin_top    = 2;
 		this.margin_bottom = 2;
 
@@ -39,7 +39,7 @@ class TweetListEntry : Gtk.Box {
 		}
 		// If the tweet's avatar changed, also reset it in the widgets
 		tweet.notify["avatar"].connect( () => {
-			avatar_button.bg = tweet.avatar;
+			avatar_button.set_bg(tweet.avatar);
 			avatar_button.queue_draw();
 		});
 
@@ -78,8 +78,7 @@ class TweetListEntry : Gtk.Box {
 
 		avatar_button.set_valign(Align.START);
 		avatar_button.get_style_context().add_class("avatar");
-		avatar_button.set_size_request(48, 48);
-		avatar_button.bg = tweet.avatar;
+		avatar_button.set_bg(tweet.avatar);
 		avatar_button.margin_top = 3;
 		this.pack_start(avatar_button, false, false);
 
@@ -87,6 +86,10 @@ class TweetListEntry : Gtk.Box {
 		var middle_box = new Box(Orientation.VERTICAL, 3);
 		var author_box = new Box(Orientation.HORIZONTAL, 8);
 		author_button = new TextButton(tweet.user_name);
+		author_button.clicked.connect(() => {
+			ProfileDialog d = new ProfileDialog(tweet.screen_name);
+			d.show_all();
+		});
 		author_box.pack_start(author_button, false, false);
 		screen_name.set_use_markup(true);
 		screen_name.label = "<small>@%s</small>".printf(tweet.screen_name);
@@ -108,6 +111,7 @@ class TweetListEntry : Gtk.Box {
 		time_delta.label = "<small>%s</small>".printf(tweet.time_delta);
 		time_delta.set_alignment(1, 0.5f);
 		time_delta.get_style_context().add_class("time-delta");
+		time_delta.margin_right = 3;
 		right_box.pack_start(time_delta, false, false);
 		var ab = new ArrowButton();
 		ab.vexpand = true;

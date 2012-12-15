@@ -48,6 +48,7 @@ class MainWindow : ApplicationWindow {
 		new_tweet_button.clicked.connect( () => {
 		 	NewTweetWindow win = new NewTweetWindow(this);
 			win.show_all();
+
 		});
 
 		//Load custom style sheet
