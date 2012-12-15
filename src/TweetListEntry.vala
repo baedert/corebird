@@ -8,7 +8,7 @@ class TweetListEntry : Gtk.Box {
 	private static GLib.Regex? user_regex    = null;
 	private ImageButton avatar_button = new ImageButton();
 	private Label text                = new Label("");
-	private Label author              = new Label("");
+	private TextButton author_button;
 	private Label rt_label            = new Label("");
 	private Label screen_name	      = new Label("");
 	private Label time_delta		  = new Label("");
@@ -21,6 +21,10 @@ class TweetListEntry : Gtk.Box {
 		this.window = window;
 		this.margin_left = 5;
 		this.margin_right = 5;
+		this.margin_top = 2;
+		this.margin_bottom = 2;
+
+
 
 
 		if (hashtag_regex == null){
@@ -65,6 +69,7 @@ class TweetListEntry : Gtk.Box {
 		popup_menu.show_all();
 
 
+		//TODO: Remove left_box and make avatar_button not expand
 		var left_box = new Box(Orientation.VERTICAL, 2);
 		avatar_button.clicked.connect( () => {
 			popup_menu.popup(null, null, null, 0, 0);
@@ -73,16 +78,18 @@ class TweetListEntry : Gtk.Box {
 		avatar_button.set_size_request(48, 48);
 		avatar_button.bg = tweet.avatar;
 		avatar_button.margin_top = 3;
+		avatar_button.vexpand = false;
 		left_box.pack_start(avatar_button, false, false);
 
 
 		this.pack_start(left_box, false, false);
 
 		var top_box = new Box(Orientation.HORIZONTAL, 4);
-		TextButton author_button = new TextButton(tweet.user_name);
-		author.get_style_context().add_class("author");
-		author.set_use_markup(true);
-		author.label = "<span size=\"larger\"><b>"+tweet.user_name+"</b></span>";
+		this.author_button = new TextButton(tweet.user_name);
+		author_button.clicked.connect(() => {
+			ProfileDialog pd = new ProfileDialog(tweet.screen_name);
+			pd.show_all();
+		});
 		top_box.pack_start(author_button, false, false);
 
 		screen_name.set_use_markup(true);

@@ -12,9 +12,10 @@ class MentionsContainer : ScrollWidget {
 		this.add_with_viewport(list);
 		this.window = window;
 
-		// load_cached_mentions.begin();
+		load_cached_mentions.begin();
 
-		// load_new_mentions.begin();
+		if(Settings.refresh_streams_on_startup())
+			load_new_mentions.begin();
 	}
 
 	// TODO: Save this somewhere else, it's needed more than once.

@@ -9,10 +9,12 @@ class NewTweetWindow : Window {
 	private Button cancel_button	 = new Button.with_label("Cancel");
 
 
-	public NewTweetWindow(Window parent) {
-		this.set_transient_for(parent);
-		this.set_modal(true);
-		this.set_type_hint(Gdk.WindowTypeHint.DIALOG);
+	public NewTweetWindow(Window? parent, string answer_to = "") {
+		if(parent != null){
+			this.set_transient_for(parent);
+			this.set_modal(true);
+			this.set_type_hint(Gdk.WindowTypeHint.DIALOG);
+		}
 		this.set_title("New Tweet");
 		this.border_width = 5;
 
