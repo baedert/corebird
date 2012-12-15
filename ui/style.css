@@ -8,6 +8,13 @@
 	/* Set a special background color or something */
 }
 
+.arrow-button {
+	color: alpha(@theme_fg_color, 0.7);
+}
+.arrow-button:hover{
+	
+}
+
 .text-button{
 	padding: 0px;
 	font-weight: bold;

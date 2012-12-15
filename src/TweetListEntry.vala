@@ -101,7 +101,10 @@ class TweetListEntry : Gtk.Box {
 		time_delta.label = "<small>%s</small>".printf(tweet.time_delta);
 		time_delta.set_alignment(1, 0.5f);
 		time_delta.get_style_context().add_class("time-delta");
-		top_box.pack_end(time_delta, false, false);
+		// top_box.pack_end(time_delta, false, false);
+
+		var ab = new ArrowButton();
+		top_box.pack_end(ab, false, false);
 
 
 
