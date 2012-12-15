@@ -83,9 +83,35 @@ class Twitter{
 
 	/**
 	 * Updates the config
-	 * TODO: Do this only once a day.
 	 */
 	public static async void update_config(){
+		// Check when the last update was
+		var now = new GLib.DateTime.now_local();
+		try{
+			SQLHeavy.Query time_query = new SQLHeavy.Query(Corebird.db,
+				"SELECT `update_config`, `characters_reserved_per_media`,
+				`max_media_per_upload`, `photo_size_limit`, `short_url_length`,
+				`short_url_length_https` FROM `common`;");
+			SQLHeavy.QueryResult time_result = time_query.execute();
+			int64 last_update = time_result.fetch_int64(0);
+			var then = new GLib.DateTime.from_unix_local(last_update);
+			
+			var diff = then.difference(now);
+			if (diff < GLib.TimeSpan.DAY * 7){
+				Twitter.characters_reserved_per_media = time_result.fetch_int(1);
+				Twitter.max_media_per_upload          = time_result.fetch_int(2);
+				Twitter.photo_size_limit              = time_result.fetch_int(3);
+				Twitter.short_url_length              = time_result.fetch_int(4);
+				Twitter.short_url_length_https        = time_result.fetch_int(5);
+				return;		
+			}
+		}catch(SQLHeavy.Error e){
+			warning("Error while querying config: %s", e.message);
+			return;
+		}
+
+
+
 		var call = Twitter.proxy.new_call();
 		call.set_method("GET");
 		call.set_function("1.1/help/configuration.json");
@@ -111,6 +137,14 @@ class Twitter{
 			Twitter.photo_size_limit       = (int)root.get_int_member("photo_size_limit");
 			Twitter.short_url_length       = (int)root.get_int_member("short_url_length");
 			Twitter.short_url_length_https = (int)root.get_int_member("short_url_length_https");
+
+			//Update the stuff in the database
+			Corebird.db.execute(@"UPDATE `common` SET
+			`update_config`='%d',
+			`characters_reserved_per_media`='$characters_reserved_per_media',
+			`photo_size_limit`='$photo_size_limit',
+			`short_url_length`='$short_url_length',
+			`short_url_length_https`='$short_url_length_https';".printf(now.to_unix()));
 
 			message("Updated the twitter configuration");
 		});

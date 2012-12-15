@@ -38,11 +38,6 @@ class TweetListEntry : Gtk.Box {
 			avatar_button.bg = tweet.avatar;
 			avatar_button.queue_draw();
 		});
-		
-		this.enter_notify_event.connect(() => {
-			message("ENTER");
-			return false;
-		});
 
 
 		// Set the correct CSS style class
