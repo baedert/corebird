@@ -24,6 +24,7 @@ class User{
 			SQLHeavy.QueryResult res = query.execute();
 			User.screen_name = res.fetch_string(0);
 			User.avatar_name = res.fetch_string(1);
+			User.avatar_url  = res.fetch_string(2);
 		}catch(SQLHeavy.Error e){
 			error("Error while loading the user: %s", e.message);
 		}
