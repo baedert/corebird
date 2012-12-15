@@ -16,8 +16,10 @@ class ArrowButton : Button {
 
 	public override bool draw(Cairo.Context c){
 		var context = this.get_style_context();
-		// base.draw(c);
-		context.render_arrow(c, angle, 0, 0, size);
+		base.draw(c);
+		Allocation all;
+		this.get_allocation(out all);
+		context.render_arrow(c, angle, all.width-size, (all.height/2.0)-(size/2.0), size);
 		return false;
 	}
 }

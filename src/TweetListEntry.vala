@@ -19,9 +19,9 @@ class TweetListEntry : Gtk.Box {
 	public TweetListEntry(Tweet tweet, MainWindow window){
 		GLib.Object(orientation: Orientation.HORIZONTAL, spacing: 5);
 		this.window = window;
-		this.margin_left = 5;
-		this.margin_right = 5;
-		this.margin_top = 2;
+		this.margin_left   = 5;
+		this.margin_right  = 5;
+		this.margin_top    = 2;
 		this.margin_bottom = 2;
 
 
@@ -64,53 +64,7 @@ class TweetListEntry : Gtk.Box {
 			var answer_item = new Gtk.MenuItem.with_label("Answer");
 			popup_menu.add(answer_item);
 		}
-
-			
 		popup_menu.show_all();
-
-
-		//TODO: Remove left_box and make avatar_button not expand
-		var left_box = new Box(Orientation.VERTICAL, 2);
-		avatar_button.clicked.connect( () => {
-			popup_menu.popup(null, null, null, 0, 0);
-		});
-		avatar_button.get_style_context().add_class("avatar");
-		avatar_button.set_size_request(48, 48);
-		avatar_button.bg = tweet.avatar;
-		avatar_button.margin_top = 3;
-		avatar_button.vexpand = false;
-		left_box.pack_start(avatar_button, false, false);
-
-
-		this.pack_start(left_box, false, false);
-
-		var top_box = new Box(Orientation.HORIZONTAL, 4);
-		this.author_button = new TextButton(tweet.user_name);
-		author_button.clicked.connect(() => {
-			ProfileDialog pd = new ProfileDialog(tweet.screen_name);
-			pd.show_all();
-		});
-		top_box.pack_start(author_button, false, false);
-
-		screen_name.set_use_markup(true);
-		screen_name.label = "<small>@%s</small>".printf(tweet.screen_name);
-		screen_name.ellipsize = Pango.EllipsizeMode.END;
-		top_box.pack_start(screen_name, false, false);
-
-		time_delta.set_use_markup(true);
-		time_delta.label = "<small>%s</small>".printf(tweet.time_delta);
-		time_delta.set_alignment(1, 0.5f);
-		time_delta.get_style_context().add_class("time-delta");
-		// top_box.pack_end(time_delta, false, false);
-
-		var ab = new ArrowButton();
-		top_box.pack_end(ab, false, false);
-
-
-
-
-		var right_box = new Box(Orientation.VERTICAL, 2);
-		right_box.pack_start(top_box, false, false);
 
 		string real_text = tweet.text;
 		try{
@@ -120,16 +74,50 @@ class TweetListEntry : Gtk.Box {
 		}catch(GLib.RegexError e){
 			warning("Error while applying regexes: %s", e.message);
 		}
+
+
+		avatar_button.set_valign(Align.START);
+		avatar_button.get_style_context().add_class("avatar");
+		avatar_button.set_size_request(48, 48);
+		avatar_button.bg = tweet.avatar;
+		avatar_button.margin_top = 3;
+		this.pack_start(avatar_button, false, false);
+
+
+		var middle_box = new Box(Orientation.VERTICAL, 3);
+		var author_box = new Box(Orientation.HORIZONTAL, 8);
+		author_button = new TextButton(tweet.user_name);
+		author_box.pack_start(author_button, false, false);
+		screen_name.set_use_markup(true);
+		screen_name.label = "<small>@%s</small>".printf(tweet.screen_name);
+		screen_name.ellipsize = Pango.EllipsizeMode.END;
+		author_box.pack_start(screen_name, false, false);
+
+		middle_box.pack_start(author_box, false, false);
+
 		text.label = real_text;
 		text.set_use_markup(true);
 		text.set_line_wrap(true);
 		text.wrap_mode = Pango.WrapMode.WORD_CHAR;
 		text.set_alignment(0, 0);		
-		right_box.pack_start(text, true, true);
+		middle_box.pack_start(text, true, true);
+		this.pack_start(middle_box, true, true);
 
+		var right_box = new Box(Orientation.VERTICAL, 2);
+		time_delta.set_use_markup(true);
+		time_delta.label = "<small>%s</small>".printf(tweet.time_delta);
+		time_delta.set_alignment(1, 0.5f);
+		time_delta.get_style_context().add_class("time-delta");
+		right_box.pack_start(time_delta, false, false);
+		var ab = new ArrowButton();
+		ab.vexpand = true;
+		ab.hexpand = false;
+		ab.set_halign(Align.END);
+		ab.set_valign(Align.FILL);
+		// EXPAND, FILL
+		right_box.pack_start(ab, false, true);
 
-		this.pack_start(right_box, true, true);
-		text.activate_link.connect(handle_uri);
+		this.pack_start(right_box, false, false);
 
 		this.set_size_request(150, 80);
 		this.show_all();
