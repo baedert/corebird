@@ -43,5 +43,10 @@
 			<summary>X</summary>
 			<description>Y</description>
 		</key>
+		<key name="main-window-geometry" type="s">
+			<default>"0,0,50,50"</default>
+			<summary>X</summary>
+			<description>Y</description>
+		</key>
 	</schema>
 </schemalist>

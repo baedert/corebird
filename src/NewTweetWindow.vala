@@ -3,6 +3,8 @@ using Gtk;
 using Rest;
 
 
+uint8[] pixels;
+
 class NewTweetWindow : Window {
 	private TweetTextView tweet_text = new TweetTextView();
 	private Button send_button       = new Button.with_label("Send");
@@ -12,6 +14,9 @@ class NewTweetWindow : Window {
 	private Button add_image_button  = new Button();
 	private int media_count			 = 0;
 	private ImageButton media_image  = new ImageButton();	
+	private string media_uri;
+	private Param param;
+
 
 
 	public NewTweetWindow(Window? parent, string answer_to = "") {
@@ -84,9 +89,11 @@ class NewTweetWindow : Window {
 			FileFilter filter = new FileFilter();
 			filter.add_mime_type("image/png");
 			filter.add_mime_type("image/jpeg");
+			filter.add_mime_type("image/gif");
 			fcd.set_filter(filter);
 			if(fcd.run() == ResponseType.ACCEPT){
 				string file = fcd.get_filename();
+				this.media_uri = file;
 				media_image.set_bg(new Gdk.Pixbuf.from_file_at_size(file, 40, 40));
 				media_image.set_visible(true);
 				media_count++;
@@ -122,16 +129,37 @@ class NewTweetWindow : Window {
 			return;
 			
 		var call = Twitter.proxy.new_call();
+		call.set_method("POST");
 		if(media_count == 0){
 			call.set_function("1.1/statuses/update.json");
-			call.set_method("POST");
-			call.add_param("status", text);
 		} else {
+			call.set_function("1.1/statuses/update_with_media.json");
+			Gdk.Pixbuf pic = new Gdk.Pixbuf.from_file(media_uri);
+			pixels = pic.get_pixels_with_length();
 
+			this.param = new Param.full("media[]", MemoryUse.COPY, pixels,
+			                            "multipart/form-data", media_uri);
+			call.add_param_full(param);
 		}
-		call.invoke_async.begin(null, () => {
-			message("Sent: %s", call.get_payload());
-		});
+
+		call.add_param("status", text);
+
+		try{
+			call.run();
+		}catch(GLib.Error e){
+			message(e.message);
+			message(call.get_payload());
+			HashTable<void*, void*> headers = call.get_response_headers();
+			foreach(void* a in headers.get_keys()){
+				message(((string)a)+" / "+((string)headers.get(a)));
+			}
+		}
+		// message("Back: %s", call.get_payload());
+		message("Code: %u, Status: %s", call.get_status_code(), call.get_status_message());
+		// call.invoke_async.begin(null, () => {
+			// message("Back: %s", call.get_payload());
+			// message("Code: %u, Status: %s", call.get_status_code(), call.get_status_message());
+		// });
 		this.destroy();		
 	}
 

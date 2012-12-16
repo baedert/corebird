@@ -40,6 +40,7 @@ class MainWindow : ApplicationWindow {
 				// 'Minimize to tray'
 				// set_visible(false);
 			// }else{
+				save_geometry();
 				Gtk.main_quit();
 			// }
 			return true;
@@ -112,7 +113,8 @@ class MainWindow : ApplicationWindow {
 		left_toolbar.add(switch_page_buttons[PAGE_SEARCH]);
 
 		refresh_button.clicked.connect( () => {
-			stream_container.load_new_tweets.begin();
+			// stream_container.load_new_tweets.begin();
+
 		});
 		settings_button.clicked.connect( () => {
 			SettingsDialog sd = new SettingsDialog(this);
@@ -151,8 +153,9 @@ class MainWindow : ApplicationWindow {
 
 
 		this.add(main_box);
-		this.set_default_size (450, 600);
+		// this.set_default_size (450, 600);
 		this.show_all();
+		this.load_geometry();
 	}
 
 	public void switch_to_search(string search_term){
@@ -215,5 +218,25 @@ class MainWindow : ApplicationWindow {
 			//add them again
 			setup_left_toolbar();
 		}
+	}
+
+	private void save_geometry(){
+		Allocation all;
+		get_allocation(out all);
+		int x, y;
+		this.get_position(out x, out y);
+		Settings.set_string("main-window-geometry", "%d,%d,%d,%d".printf(x, y,
+						all.width, all.height));
+	}
+
+	private void load_geometry(){
+		string geometry_str = Settings.get_string("main-window-geometry");
+		string[] parts = geometry_str.split(",");
+		int x = int.parse(parts[0]);
+		int y = int.parse(parts[1]);
+		int width = int.parse(parts[2]);
+		int height = int.parse(parts[3]);
+		this.move(x, y);
+		this.resize(width, height);
 	}
 }

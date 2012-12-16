@@ -64,7 +64,14 @@ class Settings : GLib.Object {
 		settings.set_int(key, value);
 	}
 
+	public static void set_string(string key, string value){
+		settings.set_string(key, value);
+	}
 
+
+	public static string get_string(string key){
+		return settings.get_string(key);
+	}
 
 
 }
