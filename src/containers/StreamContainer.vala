@@ -4,7 +4,6 @@ using Gtk;
 //TODO: If the list is completely empty and you add more items than the page can handle, the scrollWidget
 //      scrolls DOWN but it should stay at the top.
 class StreamContainer : TweetContainer{
-	private TweetList list = new TweetList();
 
 	public StreamContainer(){
 		base();
@@ -17,7 +16,7 @@ class StreamContainer : TweetContainer{
 			load_new_tweets.begin(false);
 			return true;
 		});
-		this.add_with_viewport(list);
+		this.add_with_viewport(tweet_list);
 	}
 
 	public void load_cached_tweets() throws SQLHeavy.Error{
@@ -49,7 +48,7 @@ class StreamContainer : TweetContainer{
 
 			// Append the tweet to the TweetList
 			TweetListEntry list_entry = new TweetListEntry(t, main_window);
-			list.add_item(list_entry);	
+			tweet_list.add_item(list_entry);	
 			result.next();
 		}
 	}
@@ -57,7 +56,7 @@ class StreamContainer : TweetContainer{
 	public async void load_new_tweets(bool add_spinner = true) throws SQLHeavy.Error {
 		if (add_spinner){
 			GLib.Idle.add( () => {
-				list.show_spinner();
+				tweet_list.show_spinner();
 				return false;
 			});
 		}
@@ -74,7 +73,6 @@ class StreamContainer : TweetContainer{
 		call.set_function("1.1/statuses/home_timeline.json");
 		call.set_method("GET");
 		call.add_param("count", "10");
-		//call.add_param("include_entities", "false");
 		call.add_param("contributor_details", "true");
 		if(greatest_id > 0)
 			call.add_param("since_id", greatest_id.to_string());
@@ -98,7 +96,7 @@ class StreamContainer : TweetContainer{
 			//TODO: The queries in that lambda can ALL be cached, but that kinda breaks.
 			//	Find out how. Probably works now that it's in Tweet
 			var root = parser.get_root().get_array();
-			var loader_thread = new LoaderThread(root, main_window, list, 1, (num)=> {
+			var loader_thread = new LoaderThread(root, main_window, tweet_list, 1, (num)=> {
 				if(num > 0 && Settings.notify_new_tweets()&& !main_window.has_toplevel_focus){
 					string tweets = "Tweets";
 					if(num == 1)

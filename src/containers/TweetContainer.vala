@@ -6,6 +6,7 @@ using Gtk;
  */
 abstract class TweetContainer : ScrollWidget{
 	protected MainWindow main_window;
+	protected TweetList tweet_list;
 
 	public void set_main_window(MainWindow main_window){
 		this.main_window = main_window;

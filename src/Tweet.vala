@@ -21,17 +21,6 @@ class Tweet : GLib.Object{
 		this.avatar = Twitter.no_avatar;
 	}
 
-	public Gdk.Pixbuf? get_status_pixbuf(){
-		if (retweeted && favorited)
-			return Twitter.retweeted_favorited_img;
-		else if (retweeted)
-			return Twitter.retweeted_img;
-		else if (favorited)
-			return Twitter.favorited_img;
-
-		return null;
-	}
-
 	public void load_avatar(){
 		if (Twitter.avatars.has_key(avatar_name))
 			this.avatar = Twitter.avatars.get(avatar_name);
