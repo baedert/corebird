@@ -43,6 +43,7 @@ class Corebird : Gtk.Application {
 
 
 		this.activate.connect( ()  => {});
+		this.set_inactivity_timeout(500);
 	}
 
 	/**
@@ -67,8 +68,7 @@ int main (string[] args){
 		Settings.init();
 		new Utils(); //no initialisation of static fields :(
 		var corebird = new Corebird();
-		// corebird.run(args);
-		Gtk.main();
+		return corebird.run(args);
 	} catch(GLib.Error e){
 		error(e.message);
 	}

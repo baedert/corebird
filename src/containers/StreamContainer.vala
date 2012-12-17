@@ -16,6 +16,7 @@ class StreamContainer : TweetContainer{
 			load_new_tweets.begin(false);
 			return true;
 		});
+		this.tweet_list = new TweetList();
 		this.add_with_viewport(tweet_list);
 	}
 
