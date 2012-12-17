@@ -77,6 +77,7 @@ vala_precompile(VALA_C
 	src/containers/StreamContainer.vala
 	src/containers/MentionsContainer.vala
 	src/containers/FavoriteContainer.vala
+	src/containers/TweetContainer.vala
 	src/User.vala
 	src/ProfileDialog.vala
 	src/Benchmark.vala

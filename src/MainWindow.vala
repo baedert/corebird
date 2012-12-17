@@ -26,7 +26,9 @@ class MainWindow : ApplicationWindow {
 
 	public MainWindow(Gtk.Application app){
 		GLib.Object (application: app);
-		stream_container   = new StreamContainer(this);
+		stream_container   = new StreamContainer();
+		stream_container.set_main_window(this);
+		stream_container.load_cached();
 		mentions_container = new MentionsContainer(this);
 		search_container   = new SearchContainer(this);
 		//Load the user's sceen_name used for identifying him

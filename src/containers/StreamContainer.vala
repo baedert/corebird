@@ -3,13 +3,11 @@ using Gtk;
 
 //TODO: If the list is completely empty and you add more items than the page can handle, the scrollWidget
 //      scrolls DOWN but it should stay at the top.
-class StreamContainer : ScrollWidget {
-	public MainWindow window {get; set;}
+class StreamContainer : TweetContainer{
 	private TweetList list = new TweetList();
 
-	public StreamContainer(MainWindow window){
+	public StreamContainer(){
 		base();
-		this.window = window;
 		if(Settings.refresh_streams_on_startup())
 			load_new_tweets.begin();
 
@@ -20,7 +18,6 @@ class StreamContainer : ScrollWidget {
 			return true;
 		});
 		this.add_with_viewport(list);
-		this.load_cached_tweets();
 	}
 
 	public void load_cached_tweets() throws SQLHeavy.Error{
@@ -51,7 +48,7 @@ class StreamContainer : ScrollWidget {
 			t.load_avatar();
 
 			// Append the tweet to the TweetList
-			TweetListEntry list_entry = new TweetListEntry(t, window);
+			TweetListEntry list_entry = new TweetListEntry(t, main_window);
 			list.add_item(list_entry);	
 			result.next();
 		}
@@ -98,21 +95,15 @@ class StreamContainer : ScrollWidget {
 				return;
 			}
 
-			//TODO: The queries in that lambda can ALL be cached, but that kinda breaks. Find out how. Probably works now that it's in Tweet
+			//TODO: The queries in that lambda can ALL be cached, but that kinda breaks.
+			//	Find out how. Probably works now that it's in Tweet
 			var root = parser.get_root().get_array();
-			var loader_thread = new LoaderThread(root, window, list, 1, (num)=> {
-				if(num > 0 && Settings.notify_new_tweets()&& !window.has_toplevel_focus){
+			var loader_thread = new LoaderThread(root, main_window, list, 1, (num)=> {
+				if(num > 0 && Settings.notify_new_tweets()&& !main_window.has_toplevel_focus){
 					string tweets = "Tweets";
 					if(num == 1)
 						tweets = "Tweet";
-					// Notify.Notification n = new Notify.Notification("%d new %s".printf(num, tweets), null, null);
-					// n.set_urgency(Notify.Urgency.LOW);
 					NotificationManager.notify("%d new %s".printf(num, tweets));
-					// try{
-						// n.show();
-					// }catch(GLib.Error e){
-						// warning("Error while showing notification: %s", e.message);
-					// }
 				}
 			});
 			loader_thread.run();
@@ -120,4 +111,15 @@ class StreamContainer : ScrollWidget {
 	}
 
 
+	public override void refresh(){
+		load_new_tweets.begin();
+	}
+
+	public override void load_cached(){
+		load_cached_tweets();
+	}
+
+	public override RadioToolButton? get_tool_button(){
+		return null;
+	}
 }
