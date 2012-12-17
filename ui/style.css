@@ -36,6 +36,7 @@
 .text-button:hover{
 	text-shadow: 0px 0px 5px #444;
 	background-image: none;
+	border: none;
 }
 .text-button:active{
 	color: black;

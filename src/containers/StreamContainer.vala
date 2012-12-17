@@ -105,13 +105,14 @@ class StreamContainer : ScrollWidget {
 					string tweets = "Tweets";
 					if(num == 1)
 						tweets = "Tweet";
-					Notify.Notification n = new Notify.Notification("%d new %s".printf(num, tweets), null, null);
-					n.set_urgency(Notify.Urgency.LOW);
-					try{
-						n.show();
-					}catch(GLib.Error e){
-						warning("Error while showing notification: %s", e.message);
-					}
+					// Notify.Notification n = new Notify.Notification("%d new %s".printf(num, tweets), null, null);
+					// n.set_urgency(Notify.Urgency.LOW);
+					NotificationManager.notify("%d new %s".printf(num, tweets));
+					// try{
+						// n.show();
+					// }catch(GLib.Error e){
+						// warning("Error while showing notification: %s", e.message);
+					// }
 				}
 			});
 			loader_thread.run();

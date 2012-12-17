@@ -36,6 +36,7 @@ class MainWindow : ApplicationWindow {
 
 		this.delete_event.connect(() => {
 			message("destroy.");
+			NotificationManager.uninit();
 			// if (Settings.show_tray_icon()){
 				// 'Minimize to tray'
 				// set_visible(false);
@@ -113,8 +114,7 @@ class MainWindow : ApplicationWindow {
 		left_toolbar.add(switch_page_buttons[PAGE_SEARCH]);
 
 		refresh_button.clicked.connect( () => {
-			// stream_container.load_new_tweets.begin();
-
+			stream_container.load_new_tweets.begin();
 		});
 		settings_button.clicked.connect( () => {
 			SettingsDialog sd = new SettingsDialog(this);
@@ -153,9 +153,8 @@ class MainWindow : ApplicationWindow {
 
 
 		this.add(main_box);
-		// this.set_default_size (450, 600);
-		this.show_all();
 		this.load_geometry();
+		this.show_all();
 	}
 
 	public void switch_to_search(string search_term){
