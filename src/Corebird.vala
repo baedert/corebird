@@ -72,6 +72,4 @@ int main (string[] args){
 	} catch(GLib.Error e){
 		error(e.message);
 	}
-
-	return 0;
 }

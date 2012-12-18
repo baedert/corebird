@@ -139,12 +139,16 @@ class Twitter{
 			Twitter.short_url_length_https = (int)root.get_int_member("short_url_length_https");
 
 			//Update the stuff in the database
-			Corebird.db.execute(@"UPDATE `common` SET
-			`update_config`='%d',
-			`characters_reserved_per_media`='$characters_reserved_per_media',
-			`photo_size_limit`='$photo_size_limit',
-			`short_url_length`='$short_url_length',
-			`short_url_length_https`='$short_url_length_https';".printf(now.to_unix()));
+			try{
+				Corebird.db.execute(@"UPDATE `common` SET
+				`update_config`='%d',
+				`characters_reserved_per_media`='$characters_reserved_per_media',
+				`photo_size_limit`='$photo_size_limit',
+				`short_url_length`='$short_url_length',
+				`short_url_length_https`='$short_url_length_https';".printf(now.to_unix()));
+			}catch(SQLHeavy.Error e){
+				error("Error while updating the twitter config: %s", e.message);
+			}
 
 			message("Updated the twitter configuration");
 		});

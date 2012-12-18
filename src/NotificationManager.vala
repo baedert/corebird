@@ -17,7 +17,11 @@ class NotificationManager {
 				message("Not creating any tray icon");
 				is_persistent = true;
 				notification = new Notification("Corebird", "summary", null);
-				notification.show();
+				try{
+					notification.show();
+				}catch(GLib.Error e){
+					error("Error while showing the persistent notification: %s", e.message);
+				}
 				return;
 			}
 		}
@@ -44,8 +48,13 @@ class NotificationManager {
 
 
 	public static void uninit(){
-		if(is_persistent)
-			notification.close();
+		if(is_persistent){
+			try{
+				notification.close();
+			}catch(GLib.Error e){
+				message("Closing the notification: %s", e.message);
+			}	
+		}
 		Notify.uninit();	
 	}
 

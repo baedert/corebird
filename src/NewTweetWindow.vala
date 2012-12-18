@@ -9,7 +9,6 @@ class NewTweetWindow : Window {
 	private TweetTextView tweet_text = new TweetTextView();
 	private Button send_button       = new Button.with_label("Send");
 	private Button cancel_button	 = new Button.with_label("Cancel");
-	private Image media_preview		 = new Image();
 	private Box left_box			 = new Box(Orientation.VERTICAL, 4);
 	private Button add_image_button  = new Button();
 	private int media_count			 = 0;
@@ -94,7 +93,9 @@ class NewTweetWindow : Window {
 			if(fcd.run() == ResponseType.ACCEPT){
 				string file = fcd.get_filename();
 				this.media_uri = file;
+				try{
 				media_image.set_bg(new Gdk.Pixbuf.from_file_at_size(file, 40, 40));
+				}catch(GLib.Error e){critical("Loading scaled image: %s", e.message);}
 				media_image.set_visible(true);
 				media_count++;
 				if(media_count >= Twitter.get_max_media_per_upload()){

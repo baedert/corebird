@@ -12,10 +12,6 @@ class MainWindow : ApplicationWindow {
 	private Box main_box                          = new Box(Orientation.VERTICAL, 0);
 	private Box bottom_box                        = new Box(Orientation.HORIZONTAL, 0);
 	private Notebook main_notebook                = new Notebook();
-	//private StreamContainer stream_container;
-	//private MentionsContainer mentions_container;
-	//private FavoriteContainer favorite_container  = new FavoriteContainer();
-	//private SearchContainer search_container;
 	private RadioToolButton[] switch_page_buttons = new RadioToolButton[4];
 	private TweetContainer[] containers			  = new TweetContainer[4];
 	private ToolButton avatar_button			  = new ToolButton(null, null);
@@ -39,11 +35,6 @@ class MainWindow : ApplicationWindow {
 			tc.create_tool_button();
 		}
 
-		//stream_container   = new StreamContainer();
-		//stream_container.set_main_window(this);
-		//stream_container.load_cached();
-		//mentions_container = new MentionsContainer();
-		//search_container   = new SearchContainer();
 		//Load the user's sceen_name used for identifying him
 		User.load();
 		//Update the Twitter config
