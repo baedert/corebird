@@ -53,4 +53,4 @@ Corebird is a new native Twitter client for the linux desktop written with Gtk+.
 * <s>Make the settings window work FFS</s>
 * <s>Implement search</s>
 * <s>Use progress indicators in search</s>
-* Add batches to the toolbar icons(?)
+* Add badges to the toolbar icons(?)
