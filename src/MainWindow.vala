@@ -12,7 +12,6 @@ class MainWindow : ApplicationWindow {
 	private Box main_box                          = new Box(Orientation.VERTICAL, 0);
 	private Box bottom_box                        = new Box(Orientation.HORIZONTAL, 0);
 	private Notebook main_notebook                = new Notebook();
-	private RadioToolButton[] switch_page_buttons = new RadioToolButton[4];
 	private TweetContainer[] containers			  = new TweetContainer[4];
 	private ToolButton avatar_button			  = new ToolButton(null, null);
 	private ToolButton refresh_button			  = new ToolButton.from_stock(Stock.REFRESH);
@@ -20,6 +19,7 @@ class MainWindow : ApplicationWindow {
 	private ToolButton new_tweet_button			  = new ToolButton.from_stock(Stock.NEW);
 	private SeparatorToolItem expander_item		  = new SeparatorToolItem();
 	private SeparatorToolItem left_separator	  = new SeparatorToolItem();
+	private PaneWidget right_pane;
 
 	public MainWindow(Gtk.Application app){
 		GLib.Object (application: app);
@@ -33,6 +33,7 @@ class MainWindow : ApplicationWindow {
 		foreach(var tc in containers){
 			tc.set_main_window(this);
 			tc.create_tool_button();
+			tc.load_cached();
 		}
 
 		//Load the user's sceen_name used for identifying him
@@ -41,7 +42,7 @@ class MainWindow : ApplicationWindow {
 		Twitter.update_config.begin();
 
 		this.delete_event.connect(() => {
-			message("destroy.");
+			//message("destroy.");
 			NotificationManager.uninit();
 			// if (Settings.show_tray_icon()){
 				// 'Minimize to tray'
@@ -113,14 +114,12 @@ class MainWindow : ApplicationWindow {
 		}
 
 
-		// tweet_scroller.vadjustment.value_changed.connect( () => {
-		// 	int max = (int)(tweet_scroller.vadjustment.upper - tweet_scroller.vadjustment.page_size);
-		// 	int value = (int)tweet_scroller.vadjustment.value;
-		// 	if (value >= (max * 0.9f)){
-		// 		//Load older tweets
-		// 		message("end!");
-		// 	}
-		// });
+		// TODO: Implement TestToolButton
+		var tt = new TestToolButton();
+		tt.icon_name = "find";
+		//left_toolbar.add(tt);
+
+
 
 
 		foreach(var tc in containers){
@@ -129,18 +128,20 @@ class MainWindow : ApplicationWindow {
 
 		main_notebook.show_tabs   = false;
 		main_notebook.show_border = false;
-		bottom_box.pack_end (main_notebook, true, true);
+		bottom_box.pack_start (main_notebook, true, true);
+		//bottom_box.pack_end(right_list, true, true);
 		main_box.pack_end(bottom_box, true, true);
+
 
 
 		this.add(main_box);
 		this.load_geometry();
 		this.show_all();
+		//right_list.set_visible(false);
 	}
 
 	public void switch_to_search(string search_term){
 		//search_container.search_for.begin(search_term, true);
-		switch_page_buttons[PAGE_SEARCH].active = true;
 		main_notebook.set_current_page(PAGE_SEARCH);
 	}
 
@@ -211,12 +212,24 @@ class MainWindow : ApplicationWindow {
 
 	private void load_geometry(){
 		string geometry_str = Settings.get_string("main-window-geometry");
-		string[] parts = geometry_str.split(",");
-		int x = int.parse(parts[0]);
-		int y = int.parse(parts[1]);
-		int width = int.parse(parts[2]);
+		string[] parts 		= geometry_str.split(",");
+		int x      = int.parse(parts[0]);
+		int y      = int.parse(parts[1]);
+		int width  = int.parse(parts[2]);
 		int height = int.parse(parts[3]);
 		this.move(x, y);
 		this.resize(width, height);
+	}
+
+
+
+	public void toggle_right_pane(PaneWidget new_pane){
+		// If both panes have the same ID, we don't need to do anything, yay \o/
+		if (right_pane == null || (right_pane.get_id() != new_pane.get_id())){
+			bottom_box.remove(right_pane);
+			right_pane = new_pane;
+			right_pane.set_visible(!right_pane.visible);	
+			bottom_box.pack_end(right_pane, true, true);
+		}
 	}
 }

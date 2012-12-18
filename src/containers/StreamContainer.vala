@@ -21,6 +21,16 @@ class StreamContainer : TweetContainer, ScrollWidget{
 		});
 		this.tweet_list = new TweetList();
 		this.add_with_viewport(tweet_list);
+
+
+		// tweet_scroller.vadjustment.value_changed.connect( () => {
+		// 	int max = (int)(tweet_scroller.vadjustment.upper - tweet_scroller.vadjustment.page_size);
+		// 	int value = (int)tweet_scroller.vadjustment.value;
+		// 	if (value >= (max * 0.9f)){
+		// 		//Load older tweets
+		// 		message("end!");
+		// 	}
+		// });
 	}
 
 	public void load_cached_tweets() throws SQLHeavy.Error{
