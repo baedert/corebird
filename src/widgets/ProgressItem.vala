@@ -4,7 +4,7 @@ class ProgressItem : Box {
 	private Spinner spinner 		= new Spinner();
 	private Button cancel_button 	= new Button();
 
-	public ProgressItem(int size = 35){
+	public ProgressItem(int size = 25){
 		GLib.Object(orientation: Orientation.HORIZONTAL, spacing: 3);
 		this.get_style_context().add_class("progress-item");
 		this.pack_start(spinner, true, true);
