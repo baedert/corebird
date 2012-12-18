@@ -8,6 +8,8 @@ class SettingsDialog : PreferencesDialog {
 	public SettingsDialog(MainWindow win){
 		base("Settings", 4);
 		this.win = win;
+		this.set_transient_for(win);
+		this.set_modal(true);
 		this.set_default_size(450, 2);
 
 
