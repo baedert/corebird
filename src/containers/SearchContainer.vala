@@ -4,16 +4,16 @@
 using Gtk;
 
 
-class SearchContainer : Box {
+class SearchContainer : TweetContainer, Box {
 	private Entry search_entry    = new Entry();
 	private TweetList result_list = new TweetList();
-	public MainWindow window;
+	public MainWindow main_window;
+	private RadioToolButton tool_button;
 
 
 
-	public SearchContainer(MainWindow window) {
+	public SearchContainer() {
 		GLib.Object(orientation: Orientation.VERTICAL);
-		this.window = window;
 
 		search_entry.margin = 5;
 		search_entry.placeholder_text = "Search keyword(s)";
@@ -71,9 +71,31 @@ class SearchContainer : Box {
 				critical("Problem with json data from search call: %s\nDATA:\n%s", e.message, back);
 			}
 			var statuses = parser.get_root().get_object().get_array_member("statuses");
-			LoaderThread loader_thread = new LoaderThread(statuses, window, result_list);
+			LoaderThread loader_thread = new LoaderThread(statuses, main_window, result_list);
 			loader_thread.balance_upper_change = false;
 			loader_thread.run();
 		});
+	}
+
+
+
+
+
+	public void refresh(){
+	}
+
+	public void load_cached(){
+	}
+
+	public void create_tool_button(){
+		tool_button = new RadioToolButton.from_stock(null, Stock.FIND);
+	}	
+
+	public RadioToolButton? get_tool_button(){
+		return tool_button;
+	}
+
+	public void set_main_window(MainWindow main_window){
+		this.main_window = main_window;
 	}
 }

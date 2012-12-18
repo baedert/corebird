@@ -3,14 +3,14 @@ using Gtk;
 
 
 
-class MentionsContainer : ScrollWidget {
-	public MainWindow window;
+class MentionsContainer : TweetContainer, ScrollWidget {
+	public MainWindow main_window;
 	private TweetList list = new TweetList();
+	private RadioToolButton tool_button;
 
-	public MentionsContainer(MainWindow window){
+	public MentionsContainer(){
 		base();
 		this.add_with_viewport(list);
-		this.window = window;
 
 		load_cached_mentions.begin();
 
@@ -47,7 +47,7 @@ class MentionsContainer : ScrollWidget {
 			t.load_avatar();
 
 			// Append the tweet to the TweetList
-			TweetListEntry list_entry = new TweetListEntry(t, window);
+			TweetListEntry list_entry = new TweetListEntry(t, main_window);
 			list.add_item(list_entry);	
 			result.next();
 		}
@@ -84,11 +84,31 @@ class MentionsContainer : ScrollWidget {
 				critical("Error while parsing mentions json: %s\nData:%s", e.message, back);
 			}
 			Json.Array root = parser.get_root().get_array();
-			var loader_thread = new LoaderThread(root, window, list, 2);
+			var loader_thread = new LoaderThread(root, main_window, list, 2);
 			loader_thread.balance_upper_change = false;
 			loader_thread.run();
 
 		});
+	}
+
+
+
+	public void refresh(){
+	}
+
+	public void load_cached(){
+	}
+
+	public void create_tool_button(){
+		tool_button = new RadioToolButton.from_stock(null, Stock.ADD);
+	}
+
+	public RadioToolButton? get_tool_button(){
+		return tool_button;
+	}
+
+	public void set_main_window(MainWindow main_window){
+		this.main_window = main_window;
 	}
 
 }

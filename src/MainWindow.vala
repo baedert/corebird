@@ -12,11 +12,12 @@ class MainWindow : ApplicationWindow {
 	private Box main_box                          = new Box(Orientation.VERTICAL, 0);
 	private Box bottom_box                        = new Box(Orientation.HORIZONTAL, 0);
 	private Notebook main_notebook                = new Notebook();
-	private StreamContainer stream_container;
-	private MentionsContainer mentions_container;
-	private FavoriteContainer favorite_container  = new FavoriteContainer();
-	private SearchContainer search_container;
+	//private StreamContainer stream_container;
+	//private MentionsContainer mentions_container;
+	//private FavoriteContainer favorite_container  = new FavoriteContainer();
+	//private SearchContainer search_container;
 	private RadioToolButton[] switch_page_buttons = new RadioToolButton[4];
+	private TweetContainer[] containers			  = new TweetContainer[4];
 	private ToolButton avatar_button			  = new ToolButton(null, null);
 	private ToolButton refresh_button			  = new ToolButton.from_stock(Stock.REFRESH);
 	private ToolButton settings_button			  = new ToolButton.from_stock(Stock.PROPERTIES);
@@ -26,11 +27,23 @@ class MainWindow : ApplicationWindow {
 
 	public MainWindow(Gtk.Application app){
 		GLib.Object (application: app);
-		stream_container   = new StreamContainer();
-		stream_container.set_main_window(this);
-		stream_container.load_cached();
-		mentions_container = new MentionsContainer(this);
-		search_container   = new SearchContainer(this);
+
+		containers[0] = new StreamContainer();
+		containers[1] = new MentionsContainer();
+		containers[2] = new FavoriteContainer();
+		containers[3] = new SearchContainer();
+
+		/** Initialize all containers */
+		foreach(var tc in containers){
+			tc.set_main_window(this);
+			tc.create_tool_button();
+		}
+
+		//stream_container   = new StreamContainer();
+		//stream_container.set_main_window(this);
+		//stream_container.load_cached();
+		//mentions_container = new MentionsContainer();
+		//search_container   = new SearchContainer();
 		//Load the user's sceen_name used for identifying him
 		User.load();
 		//Update the Twitter config
@@ -88,36 +101,12 @@ class MainWindow : ApplicationWindow {
 		//Update the user's info
 		User.update_info.begin((Image)avatar_button.icon_widget);
 
-		switch_page_buttons[PAGE_STREAM]   = new RadioToolButton.from_stock(null, Stock.HOME);
-		switch_page_buttons[PAGE_STREAM].toggled.connect( () => {
-			if (switch_page_buttons[PAGE_STREAM].active)
-				main_notebook.set_current_page(PAGE_STREAM);
-		});
-		switch_page_buttons[PAGE_MENTIONS] = new RadioToolButton.with_stock_from_widget(
-			switch_page_buttons[0], Stock.ADD);
-		switch_page_buttons[PAGE_MENTIONS].toggled.connect( () => {
-			if (switch_page_buttons[PAGE_MENTIONS].active)
-				main_notebook.set_current_page(PAGE_MENTIONS);
-		});
-		switch_page_buttons[PAGE_FAVORITES] = new RadioToolButton.from_widget(switch_page_buttons[0]);
-		switch_page_buttons[PAGE_FAVORITES].icon_name = "emblem-favorite";
-		switch_page_buttons[PAGE_FAVORITES].toggled.connect( () => {
-			if(switch_page_buttons[PAGE_FAVORITES].active)
-				main_notebook.set_current_page(PAGE_FAVORITES);
-		});
-		switch_page_buttons[PAGE_SEARCH]   = new RadioToolButton.with_stock_from_widget(
-			switch_page_buttons[0], Stock.FIND);
-		switch_page_buttons[PAGE_SEARCH].toggled.connect( () => {
-			if (switch_page_buttons[PAGE_SEARCH].active)
-				main_notebook.set_current_page(PAGE_SEARCH);
-		});
-		left_toolbar.add(switch_page_buttons[PAGE_STREAM]);
-		left_toolbar.add(switch_page_buttons[PAGE_MENTIONS]);
-		left_toolbar.add(switch_page_buttons[PAGE_FAVORITES]);
-		left_toolbar.add(switch_page_buttons[PAGE_SEARCH]);
+		foreach(var tc in containers){
+			left_toolbar.add(tc.get_tool_button());
+		}
 
 		refresh_button.clicked.connect( () => {
-			stream_container.load_new_tweets.begin();
+			//Refresh the current container
 		});
 		settings_button.clicked.connect( () => {
 			SettingsDialog sd = new SettingsDialog(this);
@@ -142,12 +131,10 @@ class MainWindow : ApplicationWindow {
 		// 	}
 		// });
 
-		main_notebook.append_page(stream_container);
-		main_notebook.append_page(mentions_container);
-		var favorite_scroller = new ScrolledWindow(null, null);
-		favorite_scroller.add_with_viewport(favorite_container);
-		main_notebook.append_page(favorite_scroller);
-		main_notebook.append_page(search_container);
+
+		foreach(var tc in containers){
+			main_notebook.append_page(tc);
+		}
 
 		main_notebook.show_tabs   = false;
 		main_notebook.show_border = false;
@@ -161,7 +148,7 @@ class MainWindow : ApplicationWindow {
 	}
 
 	public void switch_to_search(string search_term){
-		search_container.search_for.begin(search_term, true);
+		//search_container.search_for.begin(search_term, true);
 		switch_page_buttons[PAGE_SEARCH].active = true;
 		main_notebook.set_current_page(PAGE_SEARCH);
 	}

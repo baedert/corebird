@@ -4,17 +4,12 @@ using Gtk;
 /**
  * Abstract base class for all containers.
  */
-abstract class TweetContainer : ScrollWidget{
-	protected MainWindow main_window;
-	protected TweetList tweet_list;
+abstract interface TweetContainer : Widget{
 
-	public void set_main_window(MainWindow main_window){
-		this.main_window = main_window;
-	}
-
-
+	public abstract void set_main_window(MainWindow main_window);
 	public abstract void load_cached();
 	public abstract void refresh();
+	public abstract void create_tool_button();
 	public abstract RadioToolButton? get_tool_button();
 
 }

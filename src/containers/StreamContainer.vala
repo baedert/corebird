@@ -3,7 +3,10 @@ using Gtk;
 
 //TODO: If the list is completely empty and you add more items than the page can handle, the scrollWidget
 //      scrolls DOWN but it should stay at the top.
-class StreamContainer : TweetContainer{
+class StreamContainer : TweetContainer, ScrollWidget{
+	private TweetList tweet_list = new TweetList();
+	private MainWindow main_window;
+	private RadioToolButton tool_button;
 
 	public StreamContainer(){
 		base();
@@ -110,15 +113,23 @@ class StreamContainer : TweetContainer{
 	}
 
 
-	public override void refresh(){
+	public void refresh(){
 		load_new_tweets.begin();
 	}
 
-	public override void load_cached(){
+	public void load_cached(){
 		load_cached_tweets();
 	}
 
-	public override RadioToolButton? get_tool_button(){
-		return null;
+	public void create_tool_button(){
+		tool_button = new RadioToolButton.from_stock(null, Stock.HOME);
+	}
+
+	public RadioToolButton? get_tool_button(){
+		return tool_button;
+	}
+
+	public void set_main_window(MainWindow main_window){
+		this.main_window = main_window;
 	}
 }
