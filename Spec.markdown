@@ -33,7 +33,7 @@ Corebird is a new native Twitter client for the linux desktop written with Gtk+.
 * Find someone to make a few UI-Prototypes(or make them yourself in Glade...)
 * Find someone to make an Icon(or make a crappy one yourself...)
 * Also, find someone to make some icons for use in the app(send, home, mentions, ...)
-* Localice via gettext
+* Localize via gettext
 * Implement auto-completion of 
     * Followers/followings
     * Most trending topics(special and cool)
