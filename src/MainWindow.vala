@@ -129,7 +129,6 @@ class MainWindow : ApplicationWindow {
 		main_notebook.show_tabs   = false;
 		main_notebook.show_border = false;
 		bottom_box.pack_start (main_notebook, true, true);
-		//bottom_box.pack_end(right_list, true, true);
 		main_box.pack_end(bottom_box, true, true);
 
 
@@ -137,7 +136,6 @@ class MainWindow : ApplicationWindow {
 		this.add(main_box);
 		this.load_geometry();
 		this.show_all();
-		//right_list.set_visible(false);
 	}
 
 	public void switch_to_search(string search_term){
@@ -224,7 +222,6 @@ class MainWindow : ApplicationWindow {
 
 
 	public void toggle_right_pane(PaneWidget new_pane){
-		// If both panes have the same ID, we don't need to do anything, yay \o/
 		if (right_pane == null || (right_pane.get_id() != new_pane.get_id())){
 			if(right_pane != null)
 				bottom_box.remove(right_pane);
