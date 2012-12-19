@@ -226,10 +226,12 @@ class MainWindow : ApplicationWindow {
 	public void toggle_right_pane(PaneWidget new_pane){
 		// If both panes have the same ID, we don't need to do anything, yay \o/
 		if (right_pane == null || (right_pane.get_id() != new_pane.get_id())){
-			bottom_box.remove(right_pane);
+			if(right_pane != null)
+				bottom_box.remove(right_pane);
 			right_pane = new_pane;
 			right_pane.set_visible(!right_pane.visible);	
 			bottom_box.pack_end(right_pane, true, true);
-		}
+		}else
+			right_pane.set_visible(!right_pane.visible);
 	}
 }
