@@ -19,9 +19,7 @@ class StreamContainer : TweetContainer, ScrollWidget{
 			load_new_tweets.begin(false);
 			return true;
 		});
-		this.tweet_list = new TweetList();
 		this.add_with_viewport(tweet_list);
-
 
 		// tweet_scroller.vadjustment.value_changed.connect( () => {
 		// 	int max = (int)(tweet_scroller.vadjustment.upper - tweet_scroller.vadjustment.page_size);
@@ -86,7 +84,7 @@ class StreamContainer : TweetContainer, ScrollWidget{
 		var call = Twitter.proxy.new_call();
 		call.set_function("1.1/statuses/home_timeline.json");
 		call.set_method("GET");
-		call.add_param("count", "10");
+		call.add_param("count", "5");
 		call.add_param("contributor_details", "true");
 		if(greatest_id > 0)
 			call.add_param("since_id", greatest_id.to_string());

@@ -1,6 +1,5 @@
 using Gtk;
 
-// TODO: include the entities, https://dev.twitter.com/docs/api/1.1/post/statuses/update_with_media
 /// TODO: Rework the author database
 class Tweet : GLib.Object{
 	public string id;
@@ -62,6 +61,7 @@ class Tweet : GLib.Object{
 
 
 
+
 		if (status.has_member("retweeted_status")){
 			Json.Object rt      = status.get_object_member("retweeted_status");
 			Json.Object rt_user = rt.get_object_member("user");
@@ -79,8 +79,23 @@ class Tweet : GLib.Object{
 		}
 		this.avatar_name = Utils.get_avatar_name(this.avatar_url);
 
+
+		// 'Resolve' the used URLs
+		var entities = status.get_object_member("entities");
+		var urls = entities.get_array_member("urls");
+		urls.foreach_element((arr, index, node) => {
+			var url = node.get_object();
+			this.text = this.text.replace(url.get_string_member("url"),
+			    "<a href='%s'>%s</a>".printf(
+			    url.get_string_member("expanded_url"),
+			    url.get_string_member("display_url")));
+		});
+
 		GLib.DateTime dt = Utils.parse_date(created_at);
 		this.time_delta  = Utils.get_time_delta(dt, now);
+
+		// TODO: Apply the regexes from TweetListEntry HERE, so the
+		// results are 'cached' in the DB.
 
 
 		//TODO: Since the avatar gets loaded asynchronously, it's possible that the same avatar gets loaded
@@ -112,7 +127,7 @@ class Tweet : GLib.Object{
 			SQLHeavy.QueryResult author_result = author_query.execute();
 			if (author_result.finished){
 				//The author is not in the DB so we insert him
-				message("Inserting new author");
+				message("Inserting new author %s", t.screen_name);
 				SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db,
 				"INSERT INTO `people`(id,name,screen_name,avatar_url,avatar_name) VALUES ('%d', 
 				'%s', '%s', '%s', '%s');".printf(t.user_id, t.user_name,

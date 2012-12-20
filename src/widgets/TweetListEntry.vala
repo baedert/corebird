@@ -1,6 +1,5 @@
 using Gtk;
 
-// TODO: resolve the links in the tweet
 // TODO: Deleted tweets don't get deleted in the stream
 class TweetListEntry : Gtk.Box{
 	private static GLib.Regex? hashtag_regex = null;
@@ -16,7 +15,7 @@ class TweetListEntry : Gtk.Box{
 	private new Gtk.Menu popup_menu	  = new Gtk.Menu();
 
 
-	public TweetListEntry(Tweet tweet, MainWindow window){
+	public TweetListEntry(Tweet tweet, MainWindow? window){
 		GLib.Object(orientation: Orientation.HORIZONTAL, spacing: 5);
 		this.window = window;
 		this.margin_left   = 5;
@@ -67,7 +66,7 @@ class TweetListEntry : Gtk.Box{
 		string real_text = tweet.text;
 		try{
 			real_text = hashtag_regex.replace(real_text, -1, 0, "<a href='cb://search/\\0'>\\0</a>");
-			real_text = link_regex.replace(real_text, -1, 0, "<a href='\\0'>\\0</a>");
+			// real_text = link_regex.replace(real_text, -1, 0, "<a href='\\0'>\\0</a>");
 			real_text = user_regex.replace(real_text, -1, 0, "<a href='cb://profile/\\0'>\\0</a>");
 		}catch(GLib.RegexError e){
 			warning("Error while applying regexes: %s", e.message);
