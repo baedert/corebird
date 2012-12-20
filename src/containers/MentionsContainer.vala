@@ -97,9 +97,11 @@ class MentionsContainer : TweetContainer, ScrollWidget {
 
 
 	public void refresh(){
+		load_new_mentions.begin();
 	}
 
 	public void load_cached(){
+		load_cached_mentions.begin();
 	}
 
 	public void create_tool_button(RadioToolButton? group){
