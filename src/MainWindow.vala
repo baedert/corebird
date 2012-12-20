@@ -21,6 +21,8 @@ class MainWindow : ApplicationWindow {
 	private SeparatorToolItem left_separator	  = new SeparatorToolItem();
 	private PaneWidget right_pane;
 
+	private int right_pane_width = -500;
+
 	public MainWindow(Gtk.Application app){
 		GLib.Object (application: app);
 
@@ -200,12 +202,10 @@ class MainWindow : ApplicationWindow {
 	}
 
 	private void save_geometry(){
-		Allocation all;
-		get_allocation(out all);
-		int x, y;
+		int x, y, w, h;
+		this.get_size(out w, out h);
 		this.get_position(out x, out y);
-		Settings.set_string("main-window-geometry", "%d,%d,%d,%d".printf(x, y,
-						all.width, all.height));
+		Settings.set_string("main-window-geometry", "%d,%d,%d,%d".printf(x, y, w, h));
 	}
 
 	private void load_geometry(){
@@ -220,15 +220,33 @@ class MainWindow : ApplicationWindow {
 	}
 
 
-
+	// TODO: Refactor this
 	public void toggle_right_pane(PaneWidget new_pane){
 		if (right_pane == null || (right_pane.get_id() != new_pane.get_id())){
 			if(right_pane != null)
 				bottom_box.remove(right_pane);
 			right_pane = new_pane;
-			right_pane.set_visible(!right_pane.visible);	
-			bottom_box.pack_end(right_pane, true, true);
-		}else
 			right_pane.set_visible(!right_pane.visible);
+			bottom_box.pack_end(right_pane, false, true);
+
+			//Enlarge the window
+			int w, h;
+			this.get_size(out w, out h);
+			this.right_pane_width = (int)(w * 0.3f);
+			right_pane.width_request = right_pane_width;
+			this.resize_to_geometry(w + right_pane_width, h);
+		}else{
+			bool new_visibility=  !right_pane.visible;
+			if (!new_visibility){
+				int w, h;
+				this.get_size(out w, out h);
+				this.resize_to_geometry(w-right_pane_width, h);
+			}else {
+			int w, h;
+				this.get_size(out w, out h);
+				this.resize_to_geometry(w + right_pane_width, h);				
+			}
+			right_pane.set_visible(!right_pane.visible);
+		}
 	}
 }
