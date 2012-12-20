@@ -2,6 +2,8 @@ using Gtk;
 
 /// TODO: Rework the author database
 class Tweet : GLib.Object{
+	private static GLib.Regex? hashtag_regex = null;
+	private static GLib.Regex? user_regex    = null;
 	public string id;
 	public bool retweeted = false;
 	public bool favorited = false;
@@ -18,6 +20,14 @@ class Tweet : GLib.Object{
 
 	public Tweet(){
 		this.avatar = Twitter.no_avatar;
+		if (hashtag_regex == null){
+			try{
+				hashtag_regex = new GLib.Regex("#\\w*", RegexCompileFlags.OPTIMIZE);	
+				user_regex = new GLib.Regex("@\\w*", RegexCompileFlags.OPTIMIZE);
+			}catch(GLib.RegexError e){
+				warning("Error while creating regexes: %s", e.message);
+			}
+		}
 	}
 
 	public void load_avatar(){
@@ -91,11 +101,17 @@ class Tweet : GLib.Object{
 			    url.get_string_member("display_url")));
 		});
 
+		// Also set User/Hashtag links
+		try{
+			text = hashtag_regex.replace(text, -1, 0, "<a href='cb://search/\\0'>\\0</a>");
+			text = user_regex.replace(text, -1, 0, "<a href='cb://profile/\\0'>\\0</a>");
+		}catch(GLib.RegexError e){
+			warning("Error while applying regexes: %s", e.message);
+		}
+
+
 		GLib.DateTime dt = Utils.parse_date(created_at);
 		this.time_delta  = Utils.get_time_delta(dt, now);
-
-		// TODO: Apply the regexes from TweetListEntry HERE, so the
-		// results are 'cached' in the DB.
 
 
 		//TODO: Since the avatar gets loaded asynchronously, it's possible that the same avatar gets loaded

@@ -2,9 +2,6 @@ using Gtk;
 
 // TODO: Deleted tweets don't get deleted in the stream
 class TweetListEntry : Gtk.Box{
-	private static GLib.Regex? hashtag_regex = null;
-	private static GLib.Regex? link_regex    = null;
-	private static GLib.Regex? user_regex    = null;
 	private ImageButton avatar_button = new ImageButton();
 	private Label text                = new Label("");
 	private TextButton author_button;
@@ -24,16 +21,6 @@ class TweetListEntry : Gtk.Box{
 		this.margin_bottom = 2;
 
 
-		if (hashtag_regex == null){
-			try{
-				hashtag_regex = new GLib.Regex("#\\w*", RegexCompileFlags.OPTIMIZE);	
-				link_regex  = new GLib.Regex("(http|https)://[\\w\\.\\/\\?\\-\\+\\&]*",
-					RegexCompileFlags.OPTIMIZE);
-				user_regex = new GLib.Regex("@\\w*", RegexCompileFlags.OPTIMIZE);
-			}catch(GLib.RegexError e){
-				warning("Error while creating regexes: %s", e.message);
-			}
-		}
 		// If the tweet's avatar changed, also reset it in the widgets
 		tweet.notify["avatar"].connect( () => {
 			avatar_button.set_bg(tweet.avatar);
@@ -63,15 +50,6 @@ class TweetListEntry : Gtk.Box{
 		}
 		popup_menu.show_all();
 
-		string real_text = tweet.text;
-		try{
-			real_text = hashtag_regex.replace(real_text, -1, 0, "<a href='cb://search/\\0'>\\0</a>");
-			// real_text = link_regex.replace(real_text, -1, 0, "<a href='\\0'>\\0</a>");
-			real_text = user_regex.replace(real_text, -1, 0, "<a href='cb://profile/\\0'>\\0</a>");
-		}catch(GLib.RegexError e){
-			warning("Error while applying regexes: %s", e.message);
-		}
-
 
 		avatar_button.set_valign(Align.START);
 		avatar_button.get_style_context().add_class("avatar");
@@ -95,7 +73,7 @@ class TweetListEntry : Gtk.Box{
 
 		middle_box.pack_start(author_box, false, false);
 
-		text.label = real_text;
+		text.label = tweet.text;
 		text.set_use_markup(true);
 		text.set_line_wrap(true);
 		text.wrap_mode = Pango.WrapMode.WORD_CHAR;
