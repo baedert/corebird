@@ -2,7 +2,7 @@ using Gtk;
 
 // TODO: resolve the links in the tweet
 // TODO: Deleted tweets don't get deleted in the stream
-class TweetListEntry : Gtk.Box {
+class TweetListEntry : Gtk.Box{
 	private static GLib.Regex? hashtag_regex = null;
 	private static GLib.Regex? link_regex    = null;
 	private static GLib.Regex? user_regex    = null;
@@ -23,8 +23,6 @@ class TweetListEntry : Gtk.Box {
 		this.margin_right  = 0;
 		this.margin_top    = 2;
 		this.margin_bottom = 2;
-
-
 
 
 		if (hashtag_regex == null){
@@ -119,7 +117,7 @@ class TweetListEntry : Gtk.Box {
 		ab.set_halign(Align.END);
 		ab.set_valign(Align.FILL);
 		ab.clicked.connect(() => {
-			window.toggle_right_pane(new TweetInfoWidget());
+			window.toggle_right_pane(new TweetInfoWidget(tweet));
 		});
 		// EXPAND, FILL
 		right_box.pack_start(ab, false, true);

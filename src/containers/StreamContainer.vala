@@ -12,8 +12,6 @@ class StreamContainer : TweetContainer, ScrollWidget{
 	public StreamContainer(int id){
 		base();
 		this.id = id;
-		if(Settings.refresh_streams_on_startup())
-			load_new_tweets.begin();
 
 		//Start the update timeout
 		int minutes = Settings.get_update_interval();

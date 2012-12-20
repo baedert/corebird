@@ -13,11 +13,6 @@ class MentionsContainer : TweetContainer, ScrollWidget {
 		base();
 		this.id = id;
 		this.add_with_viewport(list);
-
-		load_cached_mentions.begin();
-
-		if(Settings.refresh_streams_on_startup())
-			load_new_mentions.begin();
 	}
 
 	// TODO: Save this somewhere else, it's needed more than once.
