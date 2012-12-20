@@ -7,9 +7,11 @@ class StreamContainer : TweetContainer, ScrollWidget{
 	private TweetList tweet_list = new TweetList();
 	private MainWindow main_window;
 	private RadioToolButton tool_button;
+	private int id;
 
-	public StreamContainer(){
+	public StreamContainer(int id){
 		base();
+		this.id = id;
 		if(Settings.refresh_streams_on_startup())
 			load_new_tweets.begin();
 
@@ -131,8 +133,11 @@ class StreamContainer : TweetContainer, ScrollWidget{
 		load_cached_tweets();
 	}
 
-	public void create_tool_button(){
-		tool_button = new RadioToolButton.from_stock(null, Stock.HOME);
+	public void create_tool_button(RadioToolButton? group){
+		if(group == null)
+			tool_button = new RadioToolButton.from_stock(null, Stock.HOME);
+		else
+			tool_button = new RadioToolButton.with_stock_from_widget(group, Stock.HOME);
 	}
 
 	public RadioToolButton? get_tool_button(){
@@ -141,5 +146,9 @@ class StreamContainer : TweetContainer, ScrollWidget{
 
 	public void set_main_window(MainWindow main_window){
 		this.main_window = main_window;
+	}
+
+	public int get_id(){
+		return id;
 	}
 }

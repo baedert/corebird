@@ -7,9 +7,11 @@ class MentionsContainer : TweetContainer, ScrollWidget {
 	public MainWindow main_window;
 	private TweetList list = new TweetList();
 	private RadioToolButton tool_button;
+	private int id;
 
-	public MentionsContainer(){
+	public MentionsContainer(int id){
 		base();
+		this.id = id;
 		this.add_with_viewport(list);
 
 		load_cached_mentions.begin();
@@ -100,8 +102,8 @@ class MentionsContainer : TweetContainer, ScrollWidget {
 	public void load_cached(){
 	}
 
-	public void create_tool_button(){
-		tool_button = new RadioToolButton.from_stock(null, Stock.ADD);
+	public void create_tool_button(RadioToolButton? group){
+		tool_button = new RadioToolButton.with_stock_from_widget(group, Stock.ADD);
 	}
 
 	public RadioToolButton? get_tool_button(){
@@ -112,4 +114,7 @@ class MentionsContainer : TweetContainer, ScrollWidget {
 		this.main_window = main_window;
 	}
 
+	public int get_id(){
+		return id;
+	}
 }

@@ -9,12 +9,13 @@ class SearchContainer : TweetContainer, Box {
 	private TweetList result_list = new TweetList();
 	public MainWindow main_window;
 	private RadioToolButton tool_button;
+	private int id;
 
 
 
-	public SearchContainer() {
+	public SearchContainer(int id) {
 		GLib.Object(orientation: Orientation.VERTICAL);
-
+		this.id = id;
 		search_entry.margin = 5;
 		search_entry.placeholder_text = "Search keyword(s)";
 		search_entry.primary_icon_stock = Stock.FIND;
@@ -87,8 +88,8 @@ class SearchContainer : TweetContainer, Box {
 	public void load_cached(){
 	}
 
-	public void create_tool_button(){
-		tool_button = new RadioToolButton.from_stock(null, Stock.FIND);
+	public void create_tool_button(RadioToolButton? group){
+		tool_button = new RadioToolButton.with_stock_from_widget(group, Stock.FIND);
 	}	
 
 	public RadioToolButton? get_tool_button(){
@@ -97,5 +98,9 @@ class SearchContainer : TweetContainer, Box {
 
 	public void set_main_window(MainWindow main_window){
 		this.main_window = main_window;
+	}
+
+	public int get_id(){
+		return id;
 	}
 }

@@ -20,22 +20,27 @@ class MainWindow : ApplicationWindow {
 	private SeparatorToolItem expander_item		  = new SeparatorToolItem();
 	private SeparatorToolItem left_separator	  = new SeparatorToolItem();
 	private PaneWidget right_pane;
-
 	private int right_pane_width = -500;
+	private SList<RadioToolButton> container_group = new SList<RadioToolButton>();
 
 	public MainWindow(Gtk.Application app){
 		GLib.Object (application: app);
 
-		containers[0] = new StreamContainer();
-		containers[1] = new MentionsContainer();
-		containers[2] = new FavoriteContainer();
-		containers[3] = new SearchContainer();
+		containers[0] = new StreamContainer(PAGE_STREAM);
+		containers[1] = new MentionsContainer(PAGE_MENTIONS);
+		containers[2] = new FavoriteContainer(PAGE_FAVORITES);
+		containers[3] = new SearchContainer(PAGE_SEARCH);
 
 		/** Initialize all containers */
-		foreach(var tc in containers){
+		for(int i = 0; i < containers.length; i++){
+			TweetContainer tc = containers[i];
 			tc.set_main_window(this);
-			tc.create_tool_button();
+			tc.create_tool_button(containers[0].get_tool_button());
 			tc.load_cached();
+			tc.get_tool_button().toggled.connect(() => {
+					if(tc.get_tool_button().active)
+					this.main_notebook.set_current_page(tc.get_id());
+			});
 		}
 
 		//Load the user's sceen_name used for identifying him
@@ -95,12 +100,15 @@ class MainWindow : ApplicationWindow {
 		//Update the user's info
 		User.update_info.begin((Image)avatar_button.icon_widget);
 
+		// Add all tool buttons for the containers
 		foreach(var tc in containers){
 			left_toolbar.add(tc.get_tool_button());
+			main_notebook.append_page(tc);
 		}
 
 		refresh_button.clicked.connect( () => {
 			//Refresh the current container
+			containers[main_notebook.page].refresh();
 		});
 		settings_button.clicked.connect( () => {
 			SettingsDialog sd = new SettingsDialog(this);
@@ -117,16 +125,9 @@ class MainWindow : ApplicationWindow {
 
 
 		// TODO: Implement TestToolButton
-		var tt = new TestToolButton();
-		tt.icon_name = "find";
+		// var tt = new TestToolButton();
+		// tt.icon_name = "find";
 		//left_toolbar.add(tt);
-
-
-
-
-		foreach(var tc in containers){
-			main_notebook.append_page(tc);
-		}
 
 		main_notebook.show_tabs   = false;
 		main_notebook.show_border = false;
@@ -232,7 +233,7 @@ class MainWindow : ApplicationWindow {
 			//Enlarge the window
 			int w, h;
 			this.get_size(out w, out h);
-			this.right_pane_width = (int)(w * 0.3f);
+			this.right_pane_width = (int)(w * 0.4f);
 			right_pane.width_request = right_pane_width;
 			this.resize_to_geometry(w + right_pane_width, h);
 		}else{
