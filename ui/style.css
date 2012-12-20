@@ -10,6 +10,7 @@
 .tweet {
 	/*background-color: transparent;*/
 	/*border-bottom: 1px solid #DDD;*/
+	border: 1px solid black;
 }
 
 /** Tweets the user sent himself */
