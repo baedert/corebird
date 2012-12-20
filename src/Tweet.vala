@@ -112,6 +112,7 @@ class Tweet : GLib.Object{
 			SQLHeavy.QueryResult author_result = author_query.execute();
 			if (author_result.finished){
 				//The author is not in the DB so we insert him
+				message("Inserting new author");
 				SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db,
 				"INSERT INTO `people`(id,name,screen_name,avatar_url,avatar_name) VALUES ('%d', 
 				'%s', '%s', '%s', '%s');".printf(t.user_id, t.user_name,
@@ -120,14 +121,10 @@ class Tweet : GLib.Object{
 			}else{
 				string old_avatar = author_result.fetch_string(2);
 				if (old_avatar != t.avatar_url){
-					SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db,
-					"UPDATE `people` SET `avatar`='%s';".printf(t.avatar_url));
-					q.execute();
+					Corebird.db.execute("UPDATE `people` SET `avatar_url`='%s';", t.avatar_url);
 				}
 				if (t.user_name != author_result.fetch_string(1)){
-					SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db,
-					"UPDATE `people` SET `screen_name`='%s';".printf(t.user_name));						
-					q.execute();
+					Corebird.db.execute("UPDATE `people` SET `screen_name`='%s';", t.user_name);
 				}
 			}
 		}catch(SQLHeavy.Error e){
