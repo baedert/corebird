@@ -89,6 +89,13 @@ class Tweet : GLib.Object{
 		}
 		this.avatar_name = Utils.get_avatar_name(this.avatar_url);
 
+		// Also set User/Hashtag links
+		try{
+			text = hashtag_regex.replace(text, -1, 0, "<a href='\\0'>\\0</a>");
+			text = user_regex.replace(text, -1, 0, "<a href='\\0'>\\0</a>");
+		}catch(GLib.RegexError e){
+			warning("Error while applying regexes: %s", e.message);
+		}
 
 		// 'Resolve' the used URLs
 		var entities = status.get_object_member("entities");
@@ -101,13 +108,7 @@ class Tweet : GLib.Object{
 			    url.get_string_member("display_url")));
 		});
 
-		// Also set User/Hashtag links
-		try{
-			text = hashtag_regex.replace(text, -1, 0, "<a href='cb://search/\\0'>\\0</a>");
-			text = user_regex.replace(text, -1, 0, "<a href='cb://profile/\\0'>\\0</a>");
-		}catch(GLib.RegexError e){
-			warning("Error while applying regexes: %s", e.message);
-		}
+
 
 
 		GLib.DateTime dt = Utils.parse_date(created_at);

@@ -77,7 +77,8 @@ class TweetListEntry : Gtk.Box{
 		text.set_use_markup(true);
 		text.set_line_wrap(true);
 		text.wrap_mode = Pango.WrapMode.WORD_CHAR;
-		text.set_alignment(0, 0);		
+		text.set_alignment(0, 0);
+		text.activate_link.connect(handle_uri);		
 		middle_box.pack_start(text, true, true);
 		this.pack_start(middle_box, true, true);
 
@@ -88,7 +89,7 @@ class TweetListEntry : Gtk.Box{
 		time_delta.get_style_context().add_class("time-delta");
 		time_delta.margin_right = 3;
 		right_box.pack_start(time_delta, false, false);
-		var ab = new ArrowButton();
+		var ab = new ArrowButton();  //TODO: Rename this
 		ab.vexpand = true;
 		ab.hexpand = false;
 		ab.set_halign(Align.END);
@@ -118,21 +119,11 @@ class TweetListEntry : Gtk.Box{
 	* Handle uris in the tweets
 	*/
 	private bool handle_uri(string uri){
-		if (uri.has_prefix("cb://")){
-			// Format: cb://foo/bar
-			string[] tokens = uri.split("/");
-			string action = tokens[2];
-			string value = tokens[3];
-
-		
-			if (action == "profile"){
-				// Value: @name
-				ProfileDialog pd = new ProfileDialog(value.substring(1));
-				pd.show_all();
-			}else if(action == "search"){
-				message("Search for %s", value);
-				window.switch_to_search(value);
-			}
+		if(uri.has_prefix("@")){
+			ProfileDialog pd = new ProfileDialog(uri.substring(1));
+			pd.show_all();
+			return true;
+		}else if(uri.has_prefix("#")){
 			return true;
 		}
 		return false;
