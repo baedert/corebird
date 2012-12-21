@@ -226,15 +226,20 @@ class MainWindow : ApplicationWindow {
 		if (right_pane == null || (right_pane.get_id() != new_pane.get_id())){
 			if(right_pane != null)
 				bottom_box.remove(right_pane);
-			right_pane = new_pane;
-			right_pane.set_visible(!right_pane.visible);
-			bottom_box.pack_end(right_pane, false, true);
-
-			//Enlarge the window
 			int w, h;
 			this.get_size(out w, out h);
 			this.right_pane_width = (int)(w * 0.4f);
-			right_pane.width_request = right_pane_width;
+			right_pane = new_pane;
+			right_pane.set_visible(!right_pane.visible);
+			right_pane.set_size_request(10, 10);
+			// right_pane.width_request = right_pane_width;
+			bottom_box.pack_end(right_pane, false, false);
+
+			int natural_width, minimum_width;
+			right_pane.get_preferred_width(out minimum_width, out natural_width);
+			message("nat: %d, min: %d", natural_width, minimum_width);
+
+			//Enlarge the window
 			this.resize_to_geometry(w + right_pane_width, h);
 		}else{
 			bool new_visibility=  !right_pane.visible;

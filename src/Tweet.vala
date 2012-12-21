@@ -130,7 +130,28 @@ class Tweet : GLib.Object{
 				}
 				message("Loaded Avatar for %s", this.screen_name);
 				this.load_avatar();
+				//Make the corners round
+				// TODO: How to write it as gif/jpg file?
+				// Cairo.ImageSurface frame = new Cairo.ImageSurface.from_png("assets/frame.png");
+				// Cairo.ImageSurface result = new Cairo.ImageSurface(Cairo.Format.ARGB32, 48, 48);
+				// surface = new Cairo.ImageSurface (Cairo.Format.ARGB32, 48, 48);
+				// Cairo.Context context = new Cairo.Context(result);
+				// context.set_source_surface(surface, 0, 0);
+				// context.rectangle(0, 0, 48,48);
+				// context.fill();
+
+
+				// context.set_operator(Cairo.Operator.DEST_OUT);
+				// context.set_source_surface(frame, 0, 0);
+				// context.rectangle(0, 0, 48, 48);
+				// context.paint();
+				
+				// context.fill();
+
+				// result.write_to_png("avatar_changed.png");
 			});
+
+
 		}
 	}
 

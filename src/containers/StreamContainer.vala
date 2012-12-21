@@ -108,14 +108,14 @@ class StreamContainer : TweetContainer, ScrollWidget{
 			//TODO: The queries in that lambda can ALL be cached, but that kinda breaks.
 			//	Find out how. Probably works now that it's in Tweet
 			var root = parser.get_root().get_array();
-			var loader_thread = new LoaderThread(root, main_window, tweet_list, 1, (num)=> {
+			var loader_thread = new LoaderThread(root, main_window, tweet_list, 1/*, (num)=> {
 				if(num > 0 && Settings.notify_new_tweets()&& !main_window.has_toplevel_focus){
 					string tweets = "Tweets";
 					if(num == 1)
 						tweets = "Tweet";
 					NotificationManager.notify("%d new %s".printf(num, tweets));
 				}
-			});
+			}*/);
 			loader_thread.run();
 		});
 	}

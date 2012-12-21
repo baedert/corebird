@@ -33,10 +33,10 @@ class LoaderThread{
 			Tweet t = new Tweet();
 			string created_at;
 			int64 added_to_stream;
-			t.load_from_json(o, now, 
-				out created_at, out added_to_stream);
+			t.load_from_json(o, now, out created_at, out added_to_stream);
 			
 			if (tweet_type != -1){
+				//TODO: This takes very long. Also, removing it kinda breaks the loading...
 				Tweet.cache(t, created_at, added_to_stream, tweet_type);
 			}
 
