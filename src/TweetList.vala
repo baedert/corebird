@@ -11,7 +11,6 @@ class TweetList : Box {
 
 	public TweetList(){
 		GLib.Object(orientation: Orientation.VERTICAL, spacing: 0);
-		set_has_window(false);
 	}
 
 	/**
@@ -26,9 +25,9 @@ class TweetList : Box {
 		}else{
 			entry.get_style_context().add_region(STYLE_REGION_ROW, RegionFlags.ODD);
 		}
-
-		this.pack_start(entry, false, true);
+		
 		entry.show_all();
+		base.pack_start(entry, false, true);
 		childCount++;
 	}
 	/**
@@ -40,8 +39,8 @@ class TweetList : Box {
 	 */
 	public void insert_item(Box entry, uint pos){
 		entry.show_all();
-		this.pack_start(entry, false, true);
-		this.reorder_child(entry, (int)pos);
+		base.pack_start(entry, false, false);
+		base.reorder_child(entry, (int)pos);
 	}
 	
 	/**
@@ -90,5 +89,12 @@ class TweetList : Box {
 			this.remove(spinner);
 			spinner.stop();
 		}
+	}
+
+	public void pack_start(Widget container, bool a = true, bool b = true, int i = 0){
+		error("pack_start on a TweetList is bullshit, use add_item or insert_item.");
+	}
+	public void pack_end(Widget container, bool a = true, bool b = true, int i = 0){
+		error("pack_end on a TweetList is bullshit, use add_item or insert_item.");
 	}
 }

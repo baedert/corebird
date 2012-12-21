@@ -6,7 +6,6 @@ class TweetListEntry : Gtk.Box{
 	private ImageButton avatar_button = new ImageButton();
 	private Label text                = new Label("");
 	private TextButton author_button;
-	private Label rt_label            = new Label("");
 	private Label screen_name	      = new Label("");
 	private Label time_delta		  = new Label("");
 	private MainWindow window;
@@ -20,6 +19,7 @@ class TweetListEntry : Gtk.Box{
 		this.margin_right  = 0;
 		this.margin_top    = 2; //TODO: Use spacing in the TweetList here?
 		this.margin_bottom = 2;
+		this.vexpand = false;
 
 
 		// If the tweet's avatar changed, also reset it in the widgets
