@@ -10,6 +10,8 @@ class TweetInfoWidget : PaneWidget, Box {
 		GLib.Object(orientation: Orientation.VERTICAL, spacing: 4);
 		this.tweet = tweet;
 
+
+//		this.pack_start(new TweetListEntry(tweet, null), false, false);
 		this.pack_start(new TweetListEntry(tweet, null), false, false);
 	}
 

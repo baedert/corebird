@@ -23,7 +23,7 @@ class MainWindow : ApplicationWindow {
 	private ToolButton new_tweet_button			  = new ToolButton.from_stock(Stock.NEW);
 	private SeparatorToolItem expander_item		  = new SeparatorToolItem();
 	private SeparatorToolItem left_separator	  = new SeparatorToolItem();
-	private PaneWidget right_pane;
+	private Widget right_pane;
 	private int right_pane_width = -500;
 	private SList<RadioToolButton> container_group = new SList<RadioToolButton>();
 
@@ -129,9 +129,9 @@ class MainWindow : ApplicationWindow {
 
 
 		// TODO: Implement TestToolButton
-		// var tt = new TestToolButton();
-		// tt.icon_name = "find";
-		//left_toolbar.add(tt);
+		var tt = new TestToolButton();
+		tt.icon_name = "find";
+		left_toolbar.add(tt);
 
 		main_notebook.show_tabs   = false;
 		main_notebook.show_border = false;
@@ -227,13 +227,13 @@ class MainWindow : ApplicationWindow {
 
 	// TODO: Refactor this.
 	// TODO: Make this work FFS.
-	public void toggle_right_pane(PaneWidget new_pane){
-		if (right_pane == null || (right_pane.get_id() != new_pane.get_id())){
+	public void toggle_right_pane(Widget new_pane){
+		if (right_pane == null/* || (right_pane.get_id() != new_pane.get_id())*/){
 			if(right_pane != null)
 				bottom_box.remove(right_pane);
 			Allocation all;
 			main_notebook.get_allocation(out all);
-			this.right_pane_width = (int)(all.width * 0.5f);
+			this.right_pane_width = (int)(all.width * 0.7);
 			right_pane = new_pane;
 			new_pane.set_visible(!new_pane.visible);
 			new_pane.set_size_request(right_pane_width, 80);
@@ -241,7 +241,10 @@ class MainWindow : ApplicationWindow {
 
 			int natural_width, minimum_width;
 			new_pane.get_preferred_width(out minimum_width, out natural_width);
-			message("nat: %d, min: %d, set: %d", natural_width, minimum_width, right_pane_width);
+			
+//			this.right_pane_width = (int)Math.fminf(right_pane_width, minimum_width);
+			right_pane_width = minimum_width;
+			new_pane.set_size_request(right_pane_width, 80);
 			// Allocation all;
 			// right_pane.get_allocation(out all);
 			// message("Width: %d", all.width);
@@ -249,8 +252,12 @@ class MainWindow : ApplicationWindow {
 			//Enlarge the window
 			int w, h;
 			this.get_size(out w, out h);
-			this.resize_to_geometry(w + minimum_width, h);
+			this.resize_to_geometry(w + right_pane_width, h);
+			message("nat: %d, min: %d, set: %d", natural_width, minimum_width, right_pane_width);
 		}else{
+			Allocation all;
+			right_pane.get_allocation(out all);
+			message("Size: %d/%d", all.width, all.height);
 			bool new_visibility=  !right_pane.visible;
 			if (!new_visibility){
 				int w, h;

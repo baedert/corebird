@@ -79,6 +79,9 @@ class TweetListEntry : Gtk.Box{
 		text.set_use_markup(true);
 		text.set_line_wrap(true);
 		text.wrap_mode = Pango.WrapMode.WORD_CHAR;
+		text.max_width_chars = 10;
+		text.width_chars = 20;
+		text.track_visited_links = true;
 		text.set_alignment(0, 0);
 		text.activate_link.connect(handle_uri);		
 		middle_box.pack_start(text, true, true);
@@ -97,7 +100,8 @@ class TweetListEntry : Gtk.Box{
 		ab.set_halign(Align.END);
 		ab.set_valign(Align.FILL);
 		ab.clicked.connect(() => {
-			// window.toggle_right_pane(new TweetInfoWidget(tweet));
+			//window.toggle_right_pane(new Label("hihihihi asdf asd fsa df sad fas dfsad fa sdf "));
+			window.toggle_right_pane(new TweetInfoWidget(tweet));
 		});
 		// EXPAND, FILL
 		right_box.pack_start(ab, false, true);

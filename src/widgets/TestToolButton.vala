@@ -8,9 +8,9 @@ class TestToolButton : ToolButton {
 
 
 	public TestToolButton(){
-		count_label.set_use_markup(true);
-		count_label.label = "<small>40</small>";
-		count_label.get_style_context().add_class("badge");
+		//count_label.set_use_markup(true);
+		//count_label.label = "<small>40</small>";
+		//count_label.get_style_context().add_class("badge");
 	}
 
 	// TODO: Use the count_label for drawing.
@@ -35,17 +35,17 @@ class TestToolButton : ToolButton {
 		alloc.height = 25;
 		count_label.set_allocation(alloc);
 		//c.move_to();
-		count_label.draw(c);
+		//count_label.draw(c);
 
 
-/*		int x = all.width - (size.width / Pango.SCALE);
+		int x = all.width - (size.width / Pango.SCALE);
 		int y = 0;
 		context.add_class("badge");
 		context.render_background(c, x, y, size.width / Pango.SCALE, size.height / Pango.SCALE);
 		context.render_frame(c, x, y, size.width / Pango.SCALE, size.height / Pango.SCALE);
 
 		context.render_layout(c, all.width  - (size.width / Pango.SCALE),
-								 0, layout);*/
+								 0, layout);
 
 
 		return false;
