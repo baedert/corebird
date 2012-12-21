@@ -23,9 +23,8 @@ class MainWindow : ApplicationWindow {
 	private ToolButton new_tweet_button			  = new ToolButton.from_stock(Stock.NEW);
 	private SeparatorToolItem expander_item		  = new SeparatorToolItem();
 	private SeparatorToolItem left_separator	  = new SeparatorToolItem();
-	private Widget right_pane;
+	private PaneWidget right_pane;
 	private int right_pane_width = -500;
-	private SList<RadioToolButton> container_group = new SList<RadioToolButton>();
 
 	public MainWindow(Gtk.Application app){
 		GLib.Object (application: app);
@@ -210,7 +209,8 @@ class MainWindow : ApplicationWindow {
 		int x, y, w, h;
 		this.get_size(out w, out h);
 		this.get_position(out x, out y);
-		Settings.set_string("main-window-geometry", "%d,%d,%d,%d".printf(x, y, w, h));
+		Settings.set_string("main-window-geometry", "%d,%d,%d,%d".printf(x,
+		                    y, w-right_pane_width, h));
 	}
 
 	private void load_geometry(){
@@ -227,48 +227,56 @@ class MainWindow : ApplicationWindow {
 
 	// TODO: Refactor this.
 	// TODO: Make this work FFS.
-	public void toggle_right_pane(Widget new_pane){
-		if (right_pane == null/* || (right_pane.get_id() != new_pane.get_id())*/){
+	public void toggle_right_pane(PaneWidget new_pane){
+		if (right_pane == null || (right_pane.get_id() != new_pane.get_id())){
 			if(right_pane != null)
 				bottom_box.remove(right_pane);
 			Allocation all;
 			main_notebook.get_allocation(out all);
-			this.right_pane_width = (int)(all.width * 0.7);
-			right_pane = new_pane;
+			// The width of the NEW right widget
+			int new_right_width = (int)(all.width * 0.7);
+			int min_width;
+			new_pane.get_preferred_width(out min_width, null);
+			if(new_right_width < min_width)
+				new_right_width = min_width;
+
+			
 			new_pane.set_visible(!new_pane.visible);
-			new_pane.set_size_request(right_pane_width, 80);
+			new_pane.set_size_request(new_right_width, 80);
 			bottom_box.pack_end(new_pane, false, true);
 
-			int natural_width, minimum_width;
-			new_pane.get_preferred_width(out minimum_width, out natural_width);
-			
-//			this.right_pane_width = (int)Math.fminf(right_pane_width, minimum_width);
-			right_pane_width = minimum_width;
-			new_pane.set_size_request(right_pane_width, 80);
-			// Allocation all;
-			// right_pane.get_allocation(out all);
-			// message("Width: %d", all.width);
+
+			message("Min: %d, Set: %d", min_width, new_right_width);
+
+
+			int window_diff = new_right_width;
+			if (right_pane != null){
+				window_diff = right_pane_width - new_right_width;
+			}
+
+			message("diff: %d", window_diff);
 
 			//Enlarge the window
 			int w, h;
 			this.get_size(out w, out h);
-			this.resize_to_geometry(w + right_pane_width, h);
-			message("nat: %d, min: %d, set: %d", natural_width, minimum_width, right_pane_width);
+			this.resize_to_geometry(w + window_diff, h);
+			this.right_pane = new_pane;
+			this.right_pane_width = new_right_width;
 		}else{
-			Allocation all;
-			right_pane.get_allocation(out all);
-			message("Size: %d/%d", all.width, all.height);
-			bool new_visibility=  !right_pane.visible;
-			if (!new_visibility){
-				int w, h;
-				this.get_size(out w, out h);
-				this.resize_to_geometry(w-right_pane_width, h);
-			}else {
-			int w, h;
-				this.get_size(out w, out h);
-				this.resize_to_geometry(w + right_pane_width, h);				
-			}
-			right_pane.set_visible(!right_pane.visible);
+			//Enlarge/shrink the window
+            bool new_visibility = !right_pane.visible;
+            if (!new_visibility){
+                   int w, h;
+                   this.get_size(out w, out h);
+                   this.resize_to_geometry(w-right_pane_width, h);
+            }else {
+            int w, h;
+                   this.get_size(out w, out h);
+                   this.resize_to_geometry(w + right_pane_width, h);       
+           
+            }
+           right_pane.set_visible(!right_pane.visible);
+	
 		}
 	}
 }

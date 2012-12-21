@@ -91,10 +91,10 @@ class TweetList : Box {
 		}
 	}
 
-	public void pack_start(Widget container, bool a = true, bool b = true, int i = 0){
+	public new void pack_start(Widget container, bool a = true, bool b = true, int i = 0){
 		error("pack_start on a TweetList is bullshit, use add_item or insert_item.");
 	}
-	public void pack_end(Widget container, bool a = true, bool b = true, int i = 0){
+	public new void pack_end(Widget container, bool a = true, bool b = true, int i = 0){
 		error("pack_end on a TweetList is bullshit, use add_item or insert_item.");
 	}
 }

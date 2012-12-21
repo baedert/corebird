@@ -126,7 +126,11 @@ class StreamContainer : TweetContainer, ScrollWidget{
 	}
 
 	public void load_cached(){
-		load_cached_tweets();
+		try{
+			load_cached_tweets();
+		}catch(SQLHeavy.Error e){
+			critical("Error while loading cached tweets: %s", e.message);
+		}
 	}
 
 	public void create_tool_button(RadioToolButton? group){

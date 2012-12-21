@@ -13,6 +13,8 @@ class TweetInfoWidget : PaneWidget, Box {
 
 //		this.pack_start(new TweetListEntry(tweet, null), false, false);
 		this.pack_start(new TweetListEntry(tweet, null), false, false);
+
+		this.hexpand = false;
 	}
 
 
