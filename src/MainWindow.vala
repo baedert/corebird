@@ -1,5 +1,9 @@
 using Gtk;
 
+
+
+// TODO: & characters in link urls should be escaped as &amp;
+
 class MainWindow : ApplicationWindow {
 	public static const int PAGE_STREAM    = 0;
 	public static const int PAGE_MENTIONS  = 1;
@@ -114,7 +118,7 @@ class MainWindow : ApplicationWindow {
 			SettingsDialog sd = new SettingsDialog(this);
 			sd.show_all();
 		});
-		bottom_box.pack_start(left_toolbar, false, true);
+		bottom_box.pack_start(left_toolbar, false, false);
 
 		if (Settings.show_primary_toolbar()){
 			main_box.pack_start(primary_toolbar, false, false);
@@ -221,26 +225,31 @@ class MainWindow : ApplicationWindow {
 	}
 
 
-	// TODO: Refactor this
+	// TODO: Refactor this.
+	// TODO: Make this work FFS.
 	public void toggle_right_pane(PaneWidget new_pane){
 		if (right_pane == null || (right_pane.get_id() != new_pane.get_id())){
 			if(right_pane != null)
 				bottom_box.remove(right_pane);
-			int w, h;
-			this.get_size(out w, out h);
-			this.right_pane_width = (int)(w * 0.4f);
+			Allocation all;
+			main_notebook.get_allocation(out all);
+			this.right_pane_width = (int)(all.width * 0.5f);
 			right_pane = new_pane;
-			right_pane.set_visible(!right_pane.visible);
-			right_pane.set_size_request(10, 10);
-			// right_pane.width_request = right_pane_width;
-			bottom_box.pack_end(right_pane, false, false);
+			new_pane.set_visible(!new_pane.visible);
+			new_pane.set_size_request(right_pane_width, 80);
+			bottom_box.pack_end(new_pane, false, true);
 
 			int natural_width, minimum_width;
-			right_pane.get_preferred_width(out minimum_width, out natural_width);
-			message("nat: %d, min: %d", natural_width, minimum_width);
+			new_pane.get_preferred_width(out minimum_width, out natural_width);
+			message("nat: %d, min: %d, set: %d", natural_width, minimum_width, right_pane_width);
+			// Allocation all;
+			// right_pane.get_allocation(out all);
+			// message("Width: %d", all.width);
 
 			//Enlarge the window
-			this.resize_to_geometry(w + right_pane_width, h);
+			int w, h;
+			this.get_size(out w, out h);
+			this.resize_to_geometry(w + minimum_width, h);
 		}else{
 			bool new_visibility=  !right_pane.visible;
 			if (!new_visibility){

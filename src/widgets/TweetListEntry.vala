@@ -1,6 +1,7 @@
 using Gtk;
 
 // TODO: Deleted tweets don't get deleted in the stream
+// TODO: margin between avatar, author and text is not the same.
 class TweetListEntry : Gtk.Box{
 	private ImageButton avatar_button = new ImageButton();
 	private Label text                = new Label("");
@@ -17,7 +18,7 @@ class TweetListEntry : Gtk.Box{
 		this.window = window;
 		this.margin_left   = 0;
 		this.margin_right  = 0;
-		this.margin_top    = 2;
+		this.margin_top    = 2; //TODO: Use spacing in the TweetList here?
 		this.margin_bottom = 2;
 
 
@@ -96,14 +97,14 @@ class TweetListEntry : Gtk.Box{
 		ab.set_halign(Align.END);
 		ab.set_valign(Align.FILL);
 		ab.clicked.connect(() => {
-			window.toggle_right_pane(new TweetInfoWidget(tweet));
+			// window.toggle_right_pane(new TweetInfoWidget(tweet));
 		});
 		// EXPAND, FILL
 		right_box.pack_start(ab, false, true);
 
 		this.pack_start(right_box, false, false);
 
-		this.set_size_request(150, 80);
+		this.set_size_request(20, 80);
 		this.show_all();
 	}
 
@@ -125,6 +126,7 @@ class TweetListEntry : Gtk.Box{
 			pd.show_all();
 			return true;
 		}else if(uri.has_prefix("#")){
+			message("TODO: Implement search");
 			return true;
 		}
 		return false;
