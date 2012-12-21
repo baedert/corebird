@@ -209,8 +209,10 @@ class MainWindow : ApplicationWindow {
 		int x, y, w, h;
 		this.get_size(out w, out h);
 		this.get_position(out x, out y);
+		if (right_pane != null && right_pane.visible)
+			w -= right_pane_width;
 		Settings.set_string("main-window-geometry", "%d,%d,%d,%d".printf(x,
-		                    y, w-right_pane_width, h));
+		                    y, w, h));
 	}
 
 	private void load_geometry(){
