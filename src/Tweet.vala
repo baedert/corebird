@@ -3,8 +3,7 @@ using Gtk;
 // TODO: Rework the author database
 // TODO: Make tweet loading in the main-timeline work!
 class Tweet : GLib.Object{
-	private static GLib.Regex? hashtag_regex = null;
-	private static GLib.Regex? user_regex    = null;
+
 	public string id;
 	public bool retweeted = false;
 	public bool favorited = false;
@@ -21,14 +20,7 @@ class Tweet : GLib.Object{
 
 	public Tweet(){
 		this.avatar = Twitter.no_avatar;
-		if (hashtag_regex == null){
-			try{
-				hashtag_regex = new GLib.Regex("#\\w*", RegexCompileFlags.OPTIMIZE);	
-				user_regex = new GLib.Regex("@\\w*", RegexCompileFlags.OPTIMIZE);
-			}catch(GLib.RegexError e){
-				warning("Error while creating regexes: %s", e.message);
-			}
-		}
+
 	}
 
 	public void load_avatar(){
@@ -72,7 +64,7 @@ class Tweet : GLib.Object{
 
 
 
-
+		var entities = status.get_object_member("entities");
 		if (status.has_member("retweeted_status")){
 			Json.Object rt      = status.get_object_member("retweeted_status");
 			Json.Object rt_user = rt.get_object_member("user");
@@ -87,27 +79,34 @@ class Tweet : GLib.Object{
 			this.screen_name  = rt_user.get_string_member("screen_name");
 			created_at        = rt.get_string_member("created_at");
 			display_name      = rt_user.get_string_member("screen_name");
+			entities 		  = rt.get_object_member("entities");
 		}
 		this.avatar_name = Utils.get_avatar_name(this.avatar_url);
 
-		// Also set User/Hashtag links
-		try{
-			text = hashtag_regex.replace(text, -1, 0, "<a href='\\0'>\\0</a>");
-			text = user_regex.replace(text, -1, 0, "<a href='\\0'>\\0</a>");
-		}catch(GLib.RegexError e){
-			warning("Error while applying regexes: %s", e.message);
-		}
+
 
 		// 'Resolve' the used URLs
-		var entities = status.get_object_member("entities");
+		
 		var urls = entities.get_array_member("urls");
 		urls.foreach_element((arr, index, node) => {
 			var url = node.get_object();
+			string expanded_url = url.get_string_member("expanded_url");
+			// message("Text: %s, expanded: %s", this.text, expanded_url);	
+			expanded_url = expanded_url.replace("&", "&amp;");
 			this.text = this.text.replace(url.get_string_member("url"),
-			    "<a href='%s'>%s</a>".printf(
-			    url.get_string_member("expanded_url"),
-			    url.get_string_member("display_url")));
+			    expanded_url);
 		});
+
+		// The same with media
+		if(entities.has_member("media")){
+			var medias = entities.get_array_member("media");
+			medias.foreach_element((arr, index, node) => {
+				var url = node.get_object();
+				string expanded_url = "https://"+url.get_string_member("display_url");
+				this.text = this.text.replace(url.get_string_member("url"),
+				    expanded_url);
+			});
+		}
 
 
 

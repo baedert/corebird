@@ -3,6 +3,9 @@ using Gtk;
 // TODO: Deleted tweets don't get deleted in the stream
 // TODO: margin between avatar, author and text is not the same.
 class TweetListEntry : Gtk.Box{
+	private static GLib.Regex? hashtag_regex = null;
+	private static GLib.Regex? user_regex    = null;
+	private static GLib.Regex? link_regex    = null;
 	private ImageButton avatar_button = new ImageButton();
 	private Label text                = new Label("");
 	private TextButton author_button;
@@ -20,6 +23,18 @@ class TweetListEntry : Gtk.Box{
 		this.margin_top    = 2; //TODO: Use spacing in the TweetList here?
 		this.margin_bottom = 2;
 		this.vexpand = false;
+
+
+		if (hashtag_regex == null){
+			try{
+				hashtag_regex = new GLib.Regex("#\\w+", RegexCompileFlags.OPTIMIZE);	
+				user_regex = new GLib.Regex("@\\w+", RegexCompileFlags.OPTIMIZE);
+				link_regex = new GLib.Regex("http[s]{0,1}:\\/\\/[a-zA-Z\\_.\\+\\?\\/#=&;\\-0-9%,]+",
+				                            RegexCompileFlags.OPTIMIZE);
+			}catch(GLib.RegexError e){
+				warning("Error while creating regexes: %s", e.message);
+			}
+		}
 
 
 		// If the tweet's avatar changed, also reset it in the widgets
@@ -74,6 +89,43 @@ class TweetListEntry : Gtk.Box{
 		author_box.pack_start(screen_name, false, false);
 
 		middle_box.pack_start(author_box, false, false);
+
+
+
+		// Also set User/Hashtag links
+		try{
+			// tweet.text = hashtag_regex.replace(tweet.text, -1, 0, "<a href='\\0'>\\0</a>");
+			// tweet.text = user_regex.replace(tweet.text, -1, 0, "<a href='\\0'>\\0</a>");	
+			MatchInfo mi;
+			if (link_regex.match(tweet.text, 0, out mi)){
+				do{
+
+					string link = mi.fetch(0);
+message(link);
+					if (link.length > 25){
+						if(link.has_prefix("http://"))
+							link = link.substring(7);
+						else
+							link = link.substring(8);
+
+						if(link.has_prefix("www."))
+							link = link.substring(4);
+
+						if(link.length > 25){
+							link = link.substring(0, 25);
+							link += "…";
+						}
+
+					}
+					tweet.text = tweet.text.replace(mi.fetch(0),
+						"<a href='%s'>%s</a>".printf(mi.fetch(0), link));
+				}while(mi.next());
+			}
+	
+		}catch(GLib.RegexError e){
+			warning("Error while applying regexes: %s", e.message);
+		}
+
 
 		text.label = tweet.text;
 		text.set_use_markup(true);
