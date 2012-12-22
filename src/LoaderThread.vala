@@ -2,7 +2,7 @@
 
 class LoaderThread{
 	private Json.Array root;
-	private MainWindow window;
+	private MainWindow? window;
 	private TweetList list;
 	private Thread<void*> thread;
 	public delegate void EndLoadFunc(int tweet_count);
@@ -10,7 +10,7 @@ class LoaderThread{
 	public bool balance_upper_change = true;
 	private int tweet_type;
 
-	public LoaderThread(Json.Array root, MainWindow window, TweetList list,
+	public LoaderThread(Json.Array root, MainWindow? window, TweetList list,
 	                    int tweet_type = -1,
 	                    EndLoadFunc? finished = null){
 		this.root           = root;
