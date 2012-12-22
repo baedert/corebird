@@ -1,6 +1,7 @@
 using Gtk;
 
-/// TODO: Rework the author database
+// TODO: Rework the author database
+// TODO: Make tweet loading in the main-timeline work!
 class Tweet : GLib.Object{
 	private static GLib.Regex? hashtag_regex = null;
 	private static GLib.Regex? user_regex    = null;

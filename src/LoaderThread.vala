@@ -50,6 +50,8 @@ class LoaderThread{
 			if(balance_upper_change)
 				((ScrollWidget)list.parent.parent).balance_next_upper_change();
 				
+
+			message("Results: %d", entries.length);
 			for(int i = 0; i < entries.length; i++)
 				list.insert_item(entries[i], i);
 			

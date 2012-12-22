@@ -3,7 +3,6 @@ using Gtk;
 using Rest;
 
 
-uint8[] pixels;
 
 class NewTweetWindow : Window {
 	private TweetTextView tweet_text = new TweetTextView();
@@ -14,8 +13,6 @@ class NewTweetWindow : Window {
 	private int media_count			 = 0;
 	private ImageButton media_image  = new ImageButton();	
 	private string media_uri;
-	private Param param;
-
 
 
 	public NewTweetWindow(Window? parent, string answer_to = "") {
@@ -134,13 +131,14 @@ class NewTweetWindow : Window {
 		if(media_count == 0){
 			call.set_function("1.1/statuses/update.json");
 		} else {
-			call.set_function("1.1/statuses/update_with_media.json");
+/*			call.set_function("1.1/statuses/update_with_media.json");
 			Gdk.Pixbuf pic = new Gdk.Pixbuf.from_file(media_uri);
 			pixels = pic.get_pixels_with_length();
 
 			this.param = new Param.full("media[]", MemoryUse.COPY, pixels,
 			                            "multipart/form-data", media_uri);
-			call.add_param_full(param);
+			call.add_param_full(param);*/
+			debug("Not yet implemented.");
 		}
 
 		call.add_param("status", text);

@@ -245,6 +245,7 @@ class MainWindow : ApplicationWindow {
 			
 			new_pane.set_visible(!new_pane.visible);
 			new_pane.set_size_request(new_right_width, 80);
+			new_pane.show_all();
 			bottom_box.pack_end(new_pane, false, true);
 
 
