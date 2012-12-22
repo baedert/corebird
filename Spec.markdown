@@ -17,7 +17,7 @@ Corebird is a new native Twitter client for the linux desktop written with Gtk+.
 ### Undecided
 * Multi-Account support?
 * Column support?
- 
+
 
 
 ## Inspiration
@@ -33,7 +33,7 @@ Corebird is a new native Twitter client for the linux desktop written with Gtk+.
 * Find someone to make an Icon(or make a crappy one yourself...)
 * Also, find someone to make some icons for use in the app(send, home, mentions, ...)
 * Localize via gettext
-* Implement auto-completion of 
+* Implement auto-completion of
     * Followers/followings
     * Most trending topics(special and cool)
 
@@ -55,3 +55,34 @@ Corebird is a new native Twitter client for the linux desktop written with Gtk+.
 * Add badges to the toolbar icons(?)
 * Implement inline media
 * implement stupid side pane FFS
+
+
+# Coding Specification
+
+## Tweets
+Tweets get loaded as Json from the Twitter Servers and thus need to be parsed. Also, they need to be
+stored(cached) in the SQLite Database, so they need to be written(and read from the database) again.
+
+The text of a Tweet gets saved in its 'natural' state, meaning the actual form that gets sent from the
+Twitter server.
+Problems:
+
+* That form sucks because the links in there are a no-go because they t.co doesn't tell the user anything.
+   However, replacing those links with their actual destination also sucks because that would mean that any
+   information regarding the length of the tweet will disappear completely.
+   Saving all links in a Tweet also sucks because that means we need to create an extra SQL table just for
+   that, also it would make loading/displaying Tweets a lot slower.
+
+Thoughts:
+
+* Replace all links with their specific display_url.
+* Since a link only takes a specified amount of length(21 ATM), the original tweet length can still
+  be calculated.
+* Does update_status shorten the URLs automatically? YES IT DOES
+* The *original* short URL can't be kept
+* _Profit_
+* Problem: The display_url Twitter gives us can't be kept. We simply use our own form. Sucks but so what.
+
+
+
+
