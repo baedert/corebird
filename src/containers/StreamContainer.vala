@@ -84,7 +84,7 @@ class StreamContainer : TweetContainer, ScrollWidget{
 		var call = Twitter.proxy.new_call();
 		call.set_function("1.1/statuses/home_timeline.json");
 		call.set_method("GET");
-		call.add_param("count", "3");
+		call.add_param("count", "20");
 		call.add_param("contributor_details", "true");
 		if(greatest_id > 0)
 			call.add_param("since_id", greatest_id.to_string());

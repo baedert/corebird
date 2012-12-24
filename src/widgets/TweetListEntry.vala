@@ -93,15 +93,15 @@ class TweetListEntry : Gtk.Box{
 
 
 		// Also set User/Hashtag links
+		string real_text = tweet.text;
 		try{
 			// tweet.text = hashtag_regex.replace(tweet.text, -1, 0, "<a href='\\0'>\\0</a>");
 			// tweet.text = user_regex.replace(tweet.text, -1, 0, "<a href='\\0'>\\0</a>");	
 			MatchInfo mi;
-			if (link_regex.match(tweet.text, 0, out mi)){
+			if (link_regex.match(real_text, 0, out mi)){
 				do{
 
 					string link = mi.fetch(0);
-message(link);
 					if (link.length > 25){
 						if(link.has_prefix("http://"))
 							link = link.substring(7);
@@ -117,7 +117,7 @@ message(link);
 						}
 
 					}
-					tweet.text = tweet.text.replace(mi.fetch(0),
+					real_text = real_text.replace(mi.fetch(0),
 						"<a href='%s'>%s</a>".printf(mi.fetch(0), link));
 				}while(mi.next());
 			}
@@ -127,12 +127,10 @@ message(link);
 		}
 
 
-		text.label = tweet.text;
+		text.label = real_text;
 		text.set_use_markup(true);
 		text.set_line_wrap(true);
 		text.wrap_mode = Pango.WrapMode.WORD_CHAR;
-		text.max_width_chars = 10;
-		text.width_chars = 20;
 		text.track_visited_links = true;
 		text.set_alignment(0, 0);
 		text.activate_link.connect(handle_uri);		
@@ -152,8 +150,10 @@ message(link);
 		ab.set_halign(Align.END);
 		ab.set_valign(Align.FILL);
 		ab.clicked.connect(() => {
-			//window.toggle_right_pane(new Label("hihihihi asdf asd fsa df sad fas dfsad fa sdf "));
-			window.toggle_right_pane(new TweetInfoWidget(tweet));
+			// window.toggle_right_pane(new TweetInfoWidget(tweet));
+			var w = TweetInfoWindow.
+					load_from_file("ui/tweet-info-window.ui", tweet);
+			w.show_all();
 		});
 		// EXPAND, FILL
 		right_box.pack_start(ab, false, true);

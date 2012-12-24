@@ -227,7 +227,6 @@ class MainWindow : ApplicationWindow {
 	}
 
 
-	// TODO: Refactor this.
 	// TODO: Make this work FFS.
 	public void toggle_right_pane(PaneWidget new_pane){
 		if (right_pane == null || (right_pane.get_id() != new_pane.get_id())){

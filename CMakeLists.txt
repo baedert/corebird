@@ -72,6 +72,7 @@ vala_precompile(VALA_C
 	src/TweetList.vala
 	src/SettingsDialog.vala
 	src/NotificationManager.vala
+	src/TweetInfoWindow.vala
 	src/containers/SearchContainer.vala
 	src/containers/StreamContainer.vala
 	src/containers/MentionsContainer.vala
