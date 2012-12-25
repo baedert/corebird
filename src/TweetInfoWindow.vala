@@ -67,12 +67,17 @@ class TweetInfoWindow : Gtk.Window {
 				"<big><b>"+tweet.user_name+"</b></big>";
 		((Label)builder.get_object("screen_name_label")).label = "@"+tweet.screen_name;
 		((Label)builder.get_object("tweet_text")).label = tweet.text;
+		((Label)builder.get_object("time_delta")).label = tweet.time_delta;
 		
 
 		win.resize(350, 500);
 		return win;
 	}
 
+	[CCode (inscance_pos = -1)]
+	private void test(){
+		message("hihi");
+	}
 
 
 	private async void load_data(){

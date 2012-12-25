@@ -104,7 +104,7 @@
             <property name="can_focus">False</property>
             <property name="spacing">5</property>
             <child>
-              <object class="GtkLabel" id="label1">
+              <object class="GtkLabel" id="time_delta">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">&lt;small&gt; 32 Sep&lt;/small&gt;</property>
@@ -130,6 +130,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <signal name="clicked" handler="tweet_info_window_test" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
