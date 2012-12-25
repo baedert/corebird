@@ -30,4 +30,8 @@ public class UIBuilder {
 	public Box get_box(string name){
 		return builder.get_object(name) as Box;
 	}
+
+	public ToggleButton get_toggle(string name){
+		return builder.get_object(name) as ToggleButton;
+	}
 }
