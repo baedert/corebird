@@ -13,6 +13,7 @@ using Gtk;
  * · Who favorited this tweet
  * · Replies to this tweet
  * · Access to the media in this tweet
+ * · If the tweet is a reply to another tweet, show the entire conversation
 **/
 class TweetInfoWindow {
 	public Tweet tweet {get; set;}
@@ -34,14 +35,26 @@ class TweetInfoWindow {
 		builder.get_button("reply_button").clicked.connect(() => {
 			message("reply");
 		});
-		builder.get_toggle("retweet_button").toggled.connect(() => {
-			message("reteet");
-		});
-		builder.get_toggle("favorite_button").toggled.connect(() => {
-			message("favorite");
+
+		var retweet_toggle = builder.get_toggle("retweet_button");
+		retweet_toggle.active = tweet.retweeted;
+		retweet_toggle.toggled.connect(() => {
+			if (retweet_toggle.active)
+				message("RT ON");
+			else
+				message("RT OFF");
 		});
 		
-		window.resize(350, 500);
+		var favorite_toggle = builder.get_toggle("favorite_button");
+		favorite_toggle.active = tweet.favorited;
+		favorite_toggle.toggled.connect(() => {
+			if(favorite_toggle.active)
+				message("FAV ON");
+			else
+				message("FAV OFF");
+		});
+		
+		window.resize(350, 2);
 	}
 
 	public void show_all(){

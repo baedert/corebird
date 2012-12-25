@@ -3,7 +3,6 @@ using Gtk;
 // TODO: Rework the author database
 // TODO: Make tweet loading in the main-timeline work!
 class Tweet : GLib.Object{
-
 	public string id;
 	public bool retweeted = false;
 	public bool favorited = false;
@@ -223,8 +222,6 @@ class Tweet : GLib.Object{
 		}
 		string real_text = text;
 		try{
-			// tweet.text = hashtag_regex.replace(tweet.text, -1, 0, "<a href='\\0'>\\0</a>");
-			// tweet.text = user_regex.replace(tweet.text, -1, 0, "<a href='\\0'>\\0</a>");	
 			MatchInfo mi;
 			if (link_regex.match(real_text, 0, out mi)){
 				do{
@@ -233,7 +230,7 @@ class Tweet : GLib.Object{
 					if (link.length > 25){
 						if(link.has_prefix("http://"))
 							link = link.substring(7);
-						else
+						else //https
 							link = link.substring(8);
 
 						if(link.has_prefix("www."))

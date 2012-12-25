@@ -2,10 +2,11 @@ using Gtk;
 
 // TODO: Deleted tweets don't get deleted in the stream
 // TODO: margin between avatar, author and text is not the same.
+// TODO: Open 'new windows' in a new window, an extended main window,
+//       or just replace the main window's content?
 class TweetListEntry : Gtk.Box{
 	private static GLib.Regex? hashtag_regex = null;
 	private static GLib.Regex? user_regex    = null;
-	private static GLib.Regex? link_regex    = null;
 	private ImageButton avatar_button = new ImageButton();
 	private Label text                = new Label("");
 	private TextButton author_button;
@@ -29,8 +30,6 @@ class TweetListEntry : Gtk.Box{
 			try{
 				hashtag_regex = new GLib.Regex("#\\w+", RegexCompileFlags.OPTIMIZE);	
 				user_regex = new GLib.Regex("@\\w+", RegexCompileFlags.OPTIMIZE);
-				link_regex = new GLib.Regex("http[s]{0,1}:\\/\\/[a-zA-Z\\_.\\+\\?\\/#=&;\\-0-9%,]+",
-				                            RegexCompileFlags.OPTIMIZE);
 			}catch(GLib.RegexError e){
 				warning("Error while creating regexes: %s", e.message);
 			}
@@ -67,12 +66,18 @@ class TweetListEntry : Gtk.Box{
 		popup_menu.show_all();
 
 
+		var left_box = new Box(Orientation.VERTICAL, 3);
 		avatar_button.set_valign(Align.START);
 		avatar_button.get_style_context().add_class("avatar");
 		avatar_button.set_bg(tweet.avatar);
 		avatar_button.margin_top = 3;
 		avatar_button.margin_left = 3;
-		this.pack_start(avatar_button, false, false);
+		left_box.pack_start(avatar_button, false, false);
+
+		if(tweet.retweeted){
+			left_box.pack_start(new Image.from_pixbuf(Twitter.favorited_img), false, false);
+		}
+		this.pack_start(left_box, false, false);
 
 
 		var middle_box = new Box(Orientation.VERTICAL, 3);
