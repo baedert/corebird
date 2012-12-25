@@ -14,69 +14,28 @@ using Gtk;
  * · Replies to this tweet
  * · Access to the media in this tweet
 **/
-class TweetInfoWindow : Gtk.Window {
+class TweetInfoWindow {
 	public Tweet tweet {get; set;}
+	private Window window;
 
-	public TweetInfoWindow(){
-		// this.tweet = tweet;
-		/*TweetListEntry entry = new TweetListEntry(tweet, null);
+	public TweetInfoWindow(Tweet tweet){
+		this.tweet = tweet;
 
+		UIBuilder builder = new UIBuilder("ui/tweet-info-window.ui");
+		window = builder.get_window("main_window");
 
-		Box top_box = new Box(Orientation.HORIZONTAL, 5);
-		top_box.pack_start(new Image.from_pixbuf(tweet.avatar));
-		Box author_box = new Box(Orientation.VERTICAL, 3);
-		Label name_label = new Label("");
-		name_label.xalign = 0;
-		name_label.set_markup("<big><b>"+tweet.user_name+"</b></big>");
-		author_box.pack_start(name_label, false, true);
-		Label screen_name_label = new Label("");
-		screen_name_label.set_markup("<small>"+tweet.screen_name+"</small>");
-		screen_name_label.xalign = 0;
-		author_box.pack_start(screen_name_label, false, false);
-		top_box.pack_start(author_box, false, true);
-
-		main_box.pack_start(top_box, false, true);
-
-		ButtonBox bb = new ButtonBox(Orientation.HORIZONTAL);
-		bb.layout_style = ButtonBoxStyle.CENTER;
-
-		ToggleButton rt_button = new ToggleButton.with_label("Retweet");
-		rt_button.active = tweet.retweeted;
-		bb.pack_start(rt_button, false, false);
-
-		ToggleButton fav_button = new ToggleButton.with_label("Favorite");
-		fav_button.active = tweet.favorited;
-		bb.pack_start(fav_button, false, false);
-
-		bb.get_style_context().add_class("linked");
-		main_box.pack_start(bb, false, false);
-		this.add(main_box);*/
-
-		//load_data.begin();
-	}
-
-
-	public static Window load_from_file(string path, Tweet tweet){
-		Builder builder = new Builder();
-		builder.add_from_file(path);
-		builder.connect_signals(null);
-		var win = builder.get_object("main_window") as Window;
-
-		((Image)builder.get_object("avatar")).pixbuf = tweet.avatar;
-		((Label)builder.get_object("name_label")).label = 
+		builder.get_image("avatar").pixbuf = tweet.avatar;
+		builder.get_label("name_label").label = 
 				"<big><b>"+tweet.user_name+"</b></big>";
-		((Label)builder.get_object("screen_name_label")).label = "@"+tweet.screen_name;
-		((Label)builder.get_object("tweet_text")).label = tweet.text;
-		((Label)builder.get_object("time_delta")).label = tweet.time_delta;
+		builder.get_label("screen_name_label").label = "@"+tweet.screen_name;
+		builder.get_label("tweet_text").label = tweet.text;
+		builder.get_label("time_delta").label = tweet.time_delta;
 		
-
-		win.resize(350, 500);
-		return win;
+		window.resize(350, 500);
 	}
 
-	[CCode (inscance_pos = -1)]
-	private void test(){
-		message("hihi");
+	public void show_all(){
+		window.show_all();
 	}
 
 

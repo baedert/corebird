@@ -1,7 +1,7 @@
 
 
 
-class Benchmark{
+public class Benchmark{
 	private static GLib.Timer timer;
 	private static string action_name;
 

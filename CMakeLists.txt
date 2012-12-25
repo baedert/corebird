@@ -68,7 +68,6 @@ vala_precompile(VALA_C
 	src/FirstRunWindow.vala
 	src/Twitter.vala
 	src/NewTweetWindow.vala
-	src/Utils.vala
 	src/TweetList.vala
 	src/SettingsDialog.vala
 	src/NotificationManager.vala
@@ -80,7 +79,6 @@ vala_precompile(VALA_C
 	src/containers/TweetContainer.vala
 	src/User.vala
 	src/ProfileDialog.vala
-	src/Benchmark.vala
 	src/LoaderThread.vala
 	src/widgets/ImageBox.vala
 	src/widgets/ImageLabel.vala
@@ -95,6 +93,9 @@ vala_precompile(VALA_C
 	src/widgets/PaneWidget.vala
 	src/widgets/TweetListEntry.vala
 	src/widgets/TweetInfoWidget.vala
+	src/util/UIBuilder.vala
+	src/util/Utils.vala
+	src/util/Benchmark.vala
 PACKAGES
 	glib-2.0
 	gtk+-3.0

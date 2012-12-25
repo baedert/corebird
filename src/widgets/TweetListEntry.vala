@@ -150,9 +150,7 @@ class TweetListEntry : Gtk.Box{
 		ab.set_halign(Align.END);
 		ab.set_valign(Align.FILL);
 		ab.clicked.connect(() => {
-			// window.toggle_right_pane(new TweetInfoWidget(tweet));
-			var w = TweetInfoWindow.
-					load_from_file("ui/tweet-info-window.ui", tweet);
+			var w = new TweetInfoWindow(tweet);
 			w.show_all();
 		});
 		// EXPAND, FILL
