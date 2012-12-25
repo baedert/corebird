@@ -93,41 +93,7 @@ class TweetListEntry : Gtk.Box{
 
 
 		// Also set User/Hashtag links
-		string real_text = tweet.text;
-		try{
-			// tweet.text = hashtag_regex.replace(tweet.text, -1, 0, "<a href='\\0'>\\0</a>");
-			// tweet.text = user_regex.replace(tweet.text, -1, 0, "<a href='\\0'>\\0</a>");	
-			MatchInfo mi;
-			if (link_regex.match(real_text, 0, out mi)){
-				do{
-
-					string link = mi.fetch(0);
-					if (link.length > 25){
-						if(link.has_prefix("http://"))
-							link = link.substring(7);
-						else
-							link = link.substring(8);
-
-						if(link.has_prefix("www."))
-							link = link.substring(4);
-
-						if(link.length > 25){
-							link = link.substring(0, 25);
-							link += "…";
-						}
-
-					}
-					real_text = real_text.replace(mi.fetch(0),
-						"<a href='%s'>%s</a>".printf(mi.fetch(0), link));
-				}while(mi.next());
-			}
-	
-		}catch(GLib.RegexError e){
-			warning("Error while applying regexes: %s", e.message);
-		}
-
-
-		text.label = real_text;
+		text.label = Tweet.replace_links(tweet.text);
 		text.set_use_markup(true);
 		text.set_line_wrap(true);
 		text.wrap_mode = Pango.WrapMode.WORD_CHAR;

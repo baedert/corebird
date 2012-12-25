@@ -27,7 +27,7 @@ class TweetInfoWindow {
 		builder.get_image("avatar").pixbuf = tweet.avatar;
 		builder.get_label("name_label").label = "<big><b>"+tweet.user_name+"</b></big>";
 		builder.get_label("screen_name_label").label = "@"+tweet.screen_name;
-		builder.get_label("tweet_text").label = tweet.text;
+		builder.get_label("tweet_text").label = Tweet.replace_links(tweet.text);
 		builder.get_label("time_delta").label = tweet.time_delta;
 
 		//Connect signals
