@@ -13,7 +13,7 @@
    height="1284.2787"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.3.1 r9886"
+   inkscape:version="0.48.4 r9939"
    sodipodi:docname="favorite.svg"
    inkscape:export-filename="/home/baedert/Code/Vala/Corebird/assets/favorite.png"
    inkscape:export-xdpi="2.2991488"
@@ -67,9 +67,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.3830017"
-     inkscape:cx="359.31737"
-     inkscape:cy="682.01736"
+     inkscape:zoom="0.62948064"
+     inkscape:cx="286.24125"
+     inkscape:cy="883.77098"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -198,10 +198,10 @@
        inkscape:export-ydpi="2.5540071" />
     <g
        id="g3059"
-       transform="translate(-9.2311181,-42.463143)"
-       inkscape:export-filename="/home/baedert/icons1.png"
-       inkscape:export-xdpi="2.5540071"
-       inkscape:export-ydpi="2.5540071">
+       transform="matrix(1.0035966,0,0,1.0405214,17.65618,-54.125594)"
+       inkscape:export-filename="/home/baedert/favorite.png"
+       inkscape:export-xdpi="3.6000001"
+       inkscape:export-ydpi="3.6000001">
       <path
          inkscape:export-ydpi="2.2991483"
          inkscape:export-xdpi="2.2991483"
