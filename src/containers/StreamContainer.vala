@@ -64,7 +64,7 @@ class StreamContainer : TweetContainer, ScrollWidget{
 
 			// Append the tweet to the TweetList
 			TweetListEntry list_entry = new TweetListEntry(t, main_window);
-			tweet_list.add_item(list_entry);	
+			tweet_list.append(list_entry);	
 			result.next();
 		}
 	}

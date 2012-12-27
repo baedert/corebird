@@ -5,14 +5,14 @@ using Gtk;
 
 class MentionsContainer : TweetContainer, ScrollWidget {
 	public MainWindow main_window;
-	private TweetList list = new TweetList();
+	private TweetList tweet_list = new TweetList();
 	private RadioToolButton tool_button;
 	private int id;
 
 	public MentionsContainer(int id){
 		base();
 		this.id = id;
-		this.add_with_viewport(list);
+		this.add_with_viewport(tweet_list);
 	}
 
 	// TODO: Save this somewhere else, it's needed more than once.
@@ -45,7 +45,7 @@ class MentionsContainer : TweetContainer, ScrollWidget {
 
 			// Append the tweet to the TweetList
 			TweetListEntry list_entry = new TweetListEntry(t, main_window);
-			list.add_item(list_entry);	
+			tweet_list.append(list_entry);	
 			result.next();
 		}
 	}
@@ -82,7 +82,7 @@ class MentionsContainer : TweetContainer, ScrollWidget {
 				critical("Error while parsing mentions json: %s\nData:%s", e.message, back);
 			}
 			Json.Array root = parser.get_root().get_array();
-			var loader_thread = new LoaderThread(root, main_window, list, Tweet.TYPE_MENTION);
+			var loader_thread = new LoaderThread(root, main_window, tweet_list, Tweet.TYPE_MENTION);
 			loader_thread.balance_upper_change = false;
 			loader_thread.run();
 

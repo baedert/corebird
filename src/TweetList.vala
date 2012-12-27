@@ -16,12 +16,13 @@ public class TweetList : Box{
 	}
 
 	/**
-	 * Appends the given entry to the end of the list.
+	 * Appends the given entry to the END of the list.
 	 *
 	 * @param entry The entry to add.
 	 */
-	public void add_item(Box entry){
+	public void append(Box entry){
 
+		//XXX: This is probably completely broken.
 		if (childCount % 2 == 0){
 			entry.get_style_context().add_region(STYLE_REGION_ROW, RegionFlags.EVEN);
 		}else{
@@ -31,6 +32,10 @@ public class TweetList : Box{
 		entry.show_all();
 		base.pack_start(entry, false, true);
 		childCount++;
+	}
+
+	public void prepend(Box entry){
+		critical("Implement.");
 	}
 	/**
 	 * Inserts the given entry into the place at the given position.
