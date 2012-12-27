@@ -18,6 +18,7 @@ using Gtk;
 class TweetInfoWindow {
 	public Tweet tweet {get; set;}
 	private Window window;
+	private string rt_id;
 
 	public TweetInfoWindow(Tweet tweet){
 		this.tweet = tweet;
@@ -39,19 +40,13 @@ class TweetInfoWindow {
 		var retweet_toggle = builder.get_toggle("retweet_button");
 		retweet_toggle.active = tweet.retweeted;
 		retweet_toggle.toggled.connect(() => {
-			if (retweet_toggle.active)
-				message("RT ON");
-			else
-				message("RT OFF");
+			retweet.begin(retweet_toggle.active);
 		});
 		
 		var favorite_toggle = builder.get_toggle("favorite_button");
 		favorite_toggle.active = tweet.favorited;
 		favorite_toggle.toggled.connect(() => {
-			if(favorite_toggle.active)
-				message("FAV ON");
-			else
-				message("FAV OFF");
+			favorite.begin(favorite_toggle.active);
 		});
 		
 		window.resize(350, 2);
@@ -86,5 +81,45 @@ class TweetInfoWindow {
 			message(back);
 
 		});
+	}
+
+	/**
+	 * Favorite the current tweet.
+	 * @param fav_on If true, the tweet will be favorited, else it will be unfavorited.
+	 */
+	private async void favorite(bool fav_on){
+		var call = Twitter.proxy.new_call();
+		call.set_method("POST");
+		if(fav_on)
+			call.set_function("1.1/favorites/create.json");
+		else
+			call.set_function("1.1/favorites/destroy.json");
+
+		call.add_param("id", tweet.id);
+		call.invoke_async.begin(null);
+
+		//Reflect the change in the database
+		if(fav_on)
+			Corebird.db.execute("UPDATE cache SET `favorited`='1' WHERE `id`="+tweet.id);
+		else
+			Corebird.db.execute("UPDATE cache SET `favorited`='0' WHERE `id`="+tweet.id);
+	}
+
+	/**
+	* Retweet the current tweet
+	* @param rt_on If true, the tweet will be retweeted. If false it will be un-retweeted.
+	*/
+	private async void retweet(bool rt_on){
+		var call = Twitter.proxy.new_call();
+		call.set_method("POST");
+		if(rt_on)
+			call.set_function("1.1/statuses/retweet/"+tweet.id+".json");
+		else
+			critical("fuck");
+
+		call.add_param("id", tweet.id);
+
+		call.invoke_async(null);
+
 	}
 }

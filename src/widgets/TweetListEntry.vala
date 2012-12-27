@@ -74,7 +74,7 @@ class TweetListEntry : Gtk.Box{
 		avatar_button.margin_left = 3;
 		left_box.pack_start(avatar_button, false, false);
 
-		if(tweet.retweeted){
+		if(tweet.favorited){
 			left_box.pack_start(new Image.from_pixbuf(Twitter.favorited_img), false, false);
 		}
 		this.pack_start(left_box, false, false);

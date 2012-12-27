@@ -82,7 +82,7 @@ class MentionsContainer : TweetContainer, ScrollWidget {
 				critical("Error while parsing mentions json: %s\nData:%s", e.message, back);
 			}
 			Json.Array root = parser.get_root().get_array();
-			var loader_thread = new LoaderThread(root, main_window, list, 2);
+			var loader_thread = new LoaderThread(root, main_window, list, Tweet.TYPE_MENTION);
 			loader_thread.balance_upper_change = false;
 			loader_thread.run();
 

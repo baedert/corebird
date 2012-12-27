@@ -3,6 +3,11 @@ using Gtk;
 // TODO: Rework the author database
 // TODO: Make tweet loading in the main-timeline work!
 class Tweet : GLib.Object{
+	public static int TYPE_NORMAL   = 1;
+	public static int TYPE_MENTION  = 2;
+	public static int TYPE_FAVORITE = 3;
+
+
 	public string id;
 	public bool retweeted = false;
 	public bool favorited = false;
