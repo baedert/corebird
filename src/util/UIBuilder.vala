@@ -8,7 +8,11 @@ public class UIBuilder {
 
 
 	public UIBuilder(string path){
-		builder.add_from_file(path);
+		try{
+			builder.add_from_file(path);
+		}catch(GLib.Error e){
+			critical("Loading %s: %s", path, e.message);
+		}
 	}
 
 	public Button get_button(string name){

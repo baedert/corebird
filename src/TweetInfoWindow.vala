@@ -59,7 +59,7 @@ class TweetInfoWindow {
 
 	private async void load_data(){
 		var call = Twitter.proxy.new_call();
-		call.set_function("1.1/statuses/show/"+tweet.id+".json");
+		call.set_function("1.1/statuses/show/"+tweet.id.to_string()+".json");
 		call.set_method("GET");
 		call.invoke_async.begin(null, (obj, res) => {
 			try{
@@ -94,14 +94,18 @@ class TweetInfoWindow {
 		else
 			call.set_function("1.1/favorites/destroy.json");
 
-		call.add_param("id", tweet.id);
+		call.add_param("id", tweet.id.to_string());
 		call.invoke_async.begin(null);
 
 		//Reflect the change in the database
-		if(fav_on)
-			Corebird.db.execute("UPDATE cache SET `favorited`='1' WHERE `id`="+tweet.id);
-		else
-			Corebird.db.execute("UPDATE cache SET `favorited`='0' WHERE `id`="+tweet.id);
+		try{
+			if(fav_on)
+				Corebird.db.execute("UPDATE cache SET `favorited`='1' WHERE `id`="+tweet.id.to_string());
+			else
+				Corebird.db.execute("UPDATE cache SET `favorited`='0' WHERE `id`="+tweet.id.to_string());
+		}catch(SQLHeavy.Error e){
+			critical("(un)favoriting tweet: %s", e.message);
+		}
 	}
 
 	/**
@@ -112,13 +116,13 @@ class TweetInfoWindow {
 		var call = Twitter.proxy.new_call();
 		call.set_method("POST");
 		if(rt_on)
-			call.set_function("1.1/statuses/retweet/"+tweet.id+".json");
+			call.set_function("1.1/statuses/retweet/"+tweet.id.to_string()+".json");
 		else
 			critical("fuck");
 
-		call.add_param("id", tweet.id);
+		call.add_param("id", tweet.id.to_string());
 
-		call.invoke_async(null);
+		call.invoke_async.begin(null);
 
 	}
 }

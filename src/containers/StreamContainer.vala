@@ -47,7 +47,7 @@ class StreamContainer : TweetContainer, ScrollWidget{
 		SQLHeavy.QueryResult result = query.execute();
 		while(!result.finished){
 			Tweet t        = new Tweet();
-			t.id           = result.fetch_string(0);
+			t.id           = result.fetch_int(0);
 			t.text         = result.fetch_string(1);
 			t.user_id      = result.fetch_int(2);
 			t.user_name    = result.fetch_string(3);

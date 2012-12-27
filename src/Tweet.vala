@@ -10,7 +10,7 @@ class Tweet : GLib.Object{
 	private static SQLHeavy.Query cache_query;
 
 
-	public string id;
+	public int64 id;
 	public bool retweeted = false;
 	public bool favorited = false;
 	public string text;
@@ -71,7 +71,7 @@ class Tweet : GLib.Object{
 		this.text           = status.get_string_member("text");
 		this.favorited      = status.get_boolean_member("favorited");
 		this.retweeted      = status.get_boolean_member("retweeted");
-		this.id             = status.get_string_member("id_str");
+		this.id             = status.get_int_member("id");
 		this.user_name      = user.get_string_member("name");
 		this.user_id        = (int)user.get_int_member("id");
 		this.screen_name    = user.get_string_member("screen_name");
@@ -199,7 +199,7 @@ class Tweet : GLib.Object{
 		
 		// Insert tweet into cache table
 		try{
-			cache_query.set_string(":id", t.id);
+			cache_query.set_int64(":id", t.id);
 			cache_query.set_string(":text", t.text);
 			cache_query.set_int(":user_id", t.user_id);
 			cache_query.set_string(":user_name", t.user_name);

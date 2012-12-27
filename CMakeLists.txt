@@ -92,7 +92,6 @@ vala_precompile(VALA_C
 	src/widgets/TestToolButton.vala
 	src/widgets/PaneWidget.vala
 	src/widgets/TweetListEntry.vala
-	src/widgets/TweetInfoWidget.vala
 	src/util/UIBuilder.vala
 	src/util/Utils.vala
 	src/util/Benchmark.vala
