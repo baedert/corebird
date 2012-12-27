@@ -5,12 +5,14 @@ using Gtk;
 //TODO: is there a better way to insert a widget than
 //      adding and reordering?
 
-public class TweetList : Box {
+//TODO: Extend viewport and make some culling
+public class TweetList : Box{
 	private ProgressItem spinner = new ProgressItem();
 	private int childCount = 0;
 
 	public TweetList(){
-		GLib.Object(orientation: Orientation.VERTICAL, spacing: 0);
+		GLib.Object(orientation: Orientation.VERTICAL, spacing: 4);
+		this.get_style_context().add_class("stream");
 	}
 
 	/**

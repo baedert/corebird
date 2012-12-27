@@ -19,10 +19,6 @@ class TweetListEntry : Gtk.Box{
 	public TweetListEntry(Tweet tweet, MainWindow? window){
 		GLib.Object(orientation: Orientation.HORIZONTAL, spacing: 5);
 		this.window = window;
-		this.margin_left   = 0;
-		this.margin_right  = 0;
-		this.margin_top    = 2; //TODO: Use spacing in the TweetList here?
-		this.margin_bottom = 2;
 		this.vexpand = false;
 
 

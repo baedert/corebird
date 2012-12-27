@@ -21,6 +21,10 @@ class StreamContainer : TweetContainer, ScrollWidget{
 		});
 		this.add_with_viewport(tweet_list);
 
+
+
+		
+
 		// tweet_scroller.vadjustment.value_changed.connect( () => {
 		// 	int max = (int)(tweet_scroller.vadjustment.upper - tweet_scroller.vadjustment.page_size);
 		// 	int value = (int)tweet_scroller.vadjustment.value;
@@ -151,4 +155,5 @@ class StreamContainer : TweetContainer, ScrollWidget{
 	public int get_id(){
 		return id;
 	}
+
 }
