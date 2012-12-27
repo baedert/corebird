@@ -77,9 +77,8 @@ class TweetInfoWindow {
 				critical("Error with Json data: %s\nDATA:%s", e.message, back);
 			}
 			var root = parser.get_root().get_object();
-
-			message(back);
-
+			//Update this tweet here and in the database
+			
 		});
 	}
 

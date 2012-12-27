@@ -7,6 +7,8 @@ class Tweet : GLib.Object{
 	public static int TYPE_MENTION  = 2;
 	public static int TYPE_FAVORITE = 3;
 
+	private static SQLHeavy.Query cache_query;
+
 
 	public string id;
 	public bool retweeted = false;
@@ -24,7 +26,15 @@ class Tweet : GLib.Object{
 
 	public Tweet(){
 		this.avatar = Twitter.no_avatar;
-
+		if(cache_query == null){
+			cache_query = new SQLHeavy.Query(Corebird.db,
+			"INSERT INTO `cache`(`id`, `text`,`user_id`, `user_name`, `is_retweet`,
+			                     `retweeted_by`, `retweeted`, `favorited`, `created_at`, `added_to_stream`,
+			                     `avatar_name`, `screen_name`, `type`) 
+			VALUES (:id, :text, :user_id, :user_name, :is_retweet, :retweeted_by,
+			        :retweeted, :favorited, :created_at, :added_to_stream, :avatar_name,
+			        :screen_name, :type);");					
+		}
 	}
 
 	public void load_avatar(){
@@ -50,6 +60,10 @@ class Tweet : GLib.Object{
 
 	/**
 	 * Fills all the data of this tweet from Json data.
+	 * @param status The Json object to get the data from
+	 * @param now The current time
+	 * @param created_at When the tweet was created
+	 * @param added_to_stream when the tweet was added to the stream
 	 */
 	public void load_from_json(Json.Object status, GLib.DateTime now,
 	            	out string created_at, out int64 added_to_stream){
@@ -62,7 +76,6 @@ class Tweet : GLib.Object{
 		this.user_id        = (int)user.get_int_member("id");
 		this.screen_name    = user.get_string_member("screen_name");
 		created_at          = status.get_string_member("created_at");
-		string display_name = user.get_string_member("screen_name");
 		added_to_stream     = Utils.parse_date(created_at).to_unix();
 		this.avatar_url     = user.get_string_member("profile_image_url");
 
@@ -75,14 +88,11 @@ class Tweet : GLib.Object{
 			this.is_retweet   = true;
 			this.retweeted_by = user.get_string_member("name");
 			this.text         = rt.get_string_member("text");
-			// this.id           = rt.get_string_member("id_str");
-			// this.rt_id 		  = rt.get_string_member("id_str");
 			this.user_name    = rt_user.get_string_member ("name");
 			this.avatar_url   = rt_user.get_string_member("profile_image_url");
 			this.user_id      = (int)rt_user.get_int_member("id");
 			this.screen_name  = rt_user.get_string_member("screen_name");
 			created_at        = rt.get_string_member("created_at");
-			display_name      = rt_user.get_string_member("screen_name");
 			entities 		  = rt.get_object_member("entities");
 		}
 		this.avatar_name = Utils.get_avatar_name(this.avatar_url);
@@ -158,8 +168,6 @@ class Tweet : GLib.Object{
 
 		}
 	}
-
-
 	public static void cache(Tweet t, string created_at, int64 added_to_stream, int type){
 		// Check the tweeter's details and update them if necessary
 		try{
@@ -191,13 +199,6 @@ class Tweet : GLib.Object{
 		
 		// Insert tweet into cache table
 		try{
-			SQLHeavy.Query cache_query = new SQLHeavy.Query(Corebird.db,
-			"INSERT INTO `cache`(`id`, `text`,`user_id`, `user_name`, `is_retweet`,
-			                     `retweeted_by`, `retweeted`, `favorited`, `created_at`, `added_to_stream`,
-			                     `avatar_name`, `screen_name`, `type`) 
-			VALUES (:id, :text, :user_id, :user_name, :is_retweet, :retweeted_by,
-			        :retweeted, :favorited, :created_at, :added_to_stream, :avatar_name,
-			        :screen_name, :type);");					
 			cache_query.set_string(":id", t.id);
 			cache_query.set_string(":text", t.text);
 			cache_query.set_int(":user_id", t.user_id);

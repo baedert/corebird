@@ -51,10 +51,6 @@ class StreamContainer : TweetContainer, ScrollWidget{
 			t.retweeted_by = result.fetch_string(5);
 			t.retweeted    = (bool)result.fetch_int(6);
 			t.favorited    = (bool)result.fetch_int(7);
-			if(t.favorited)
-				message(t.text);
-
-
 
 			GLib.DateTime created = Utils.parse_date(result.fetch_string(8));
 			t.time_delta = Utils.get_time_delta(created, now);
