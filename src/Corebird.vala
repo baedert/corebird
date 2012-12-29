@@ -24,6 +24,8 @@ class Corebird : Gtk.Application {
 		//Create the database needed almost everywhere
 		try{
 			Corebird.db = new SQLHeavy.Database("Corebird.db");
+			db.journal_mode = SQLHeavy.JournalMode.MEMORY; //Don't know if this is good.
+			db.execute("PRAGMA synchronous = off"); // Either
 			Corebird.create_tables();
 		}catch(SQLHeavy.Error e){
 			error("SQL ERROR: %s", e.message);
