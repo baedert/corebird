@@ -172,6 +172,16 @@ class Tweet : GLib.Object{
 		}
 	}
 
+	/**
+	 * Caches the given tweet by writing it into the database.
+	 *
+	 * @param t The tweet to cache.
+	 * @param created_at The 'created_at' string received from Twitter 
+	 * @param added_to_stream A unix timestamp indicating when the tweet was added to the
+	 *                        user's timeline
+	 * @param type The type of the tweet, see Tweet.TYPE_* constants.
+	 * 
+	 */
 	public static void cache(Tweet t, string created_at, int64 added_to_stream, int type){
 		// Check the tweeter's details and update them if necessary
 		try{
@@ -181,8 +191,8 @@ class Tweet : GLib.Object{
 				//The author is not in the DB so we insert him
 				message("Inserting new author %s", t.screen_name);
 				SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db,
-				"INSERT INTO `people`(id,name,screen_name,avatar_url,avatar_name) VALUES ('%d', 
-				'%s', '%s', '%s', '%s');".printf(t.user_id, t.user_name,
+				"INSERT INTO `people`(id,name,screen_name,avatar_url,avatar_name)
+				 VALUES ('%d', '%s', '%s', '%s', '%s');".printf(t.user_id, t.user_name,
 				t.screen_name, t.avatar_url, t.avatar_name));
 				q.execute();
 			}else{
@@ -225,6 +235,13 @@ class Tweet : GLib.Object{
 
 
 	private static GLib.Regex? link_regex    = null;
+	/**
+	 * Replaces the links in the given text with html tags to be used in
+	 * pango layouts.
+	 *
+	 * @param text The text to replace the links in
+	 * @return The text with replaced links
+	 */
 	public static string replace_links(string text){
 		if(link_regex == null){
 			link_regex = new GLib.Regex("http[s]{0,1}:\\/\\/[a-zA-Z\\_.\\+\\?\\/#=&;\\-0-9%,]+",
