@@ -47,6 +47,10 @@ class NotificationManager {
 	}
 
 
+	/**
+	 * Uninitializes the notification manager
+	 * Should be called when the application gets closed completely.
+	 */
 	public static void uninit(){
 		if(is_persistent){
 			try{

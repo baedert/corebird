@@ -25,7 +25,10 @@ class Corebird : Gtk.Application {
 		try{
 			Corebird.db = new SQLHeavy.Database("Corebird.db");
 			db.journal_mode = SQLHeavy.JournalMode.MEMORY; //Don't know if this is good.
-			db.execute("PRAGMA synchronous = off"); // Either
+
+			// The following should give better performance, but it also breaks
+			// loadnig new tweets. :'(
+			// db.execute("PRAGMA synchronous = off"); 
 			Corebird.create_tables();
 		}catch(SQLHeavy.Error e){
 			error("SQL ERROR: %s", e.message);
@@ -34,28 +37,6 @@ class Corebird : Gtk.Application {
 		stdout.printf("SQLite version: %d\n", SQLHeavy.Version.sqlite_library());
 
 		Twitter.init();
-
-
-		// Cairo.ImageSurface surface = new Cairo.ImageSurface.from_png("avatar.png");
-		// message("Format: %d", surface.get_format());
-		// Cairo.ImageSurface frame = new Cairo.ImageSurface.from_png("assets/frame.png");
-		// Cairo.ImageSurface result = new Cairo.ImageSurface(Cairo.Format.ARGB32, 48, 48);
-		// // surface = new Cairo.ImageSurface (Cairo.Format.ARGB32, 48, 48);
-		// Cairo.Context context = new Cairo.Context(result);
-		// context.set_source_surface(surface, 0, 0);
-		// context.rectangle(0, 0, 48,48);
-		// context.fill();
-
-
-		// context.set_operator(Cairo.Operator.DEST_OUT);
-		// context.set_source_surface(frame, 0, 0);
-		// context.rectangle(0, 0, 48, 48);
-		// context.paint();
-		
-		// context.fill();
-
-		// result.write_to_png("avatar_changed.png");
-
 
 		if (Settings.is_first_run()){
 			this.add_window(new FirstRunWindow(this));
