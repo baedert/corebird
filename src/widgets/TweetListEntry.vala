@@ -7,7 +7,8 @@ using Gtk;
 class TweetListEntry : Gtk.Box{
 	private static GLib.Regex? hashtag_regex = null;
 	private static GLib.Regex? user_regex    = null;
-	private ImageButton avatar_button = new ImageButton();
+	// private ImageButton avatar_button = new ImageButton();
+	private Image avatar_button 	  = new Image();
 	private Label text                = new Label("");
 	private TextButton author_button;
 	private Label screen_name	      = new Label("");
@@ -34,7 +35,9 @@ class TweetListEntry : Gtk.Box{
 
 		// If the tweet's avatar changed, also reset it in the widgets
 		tweet.notify["avatar"].connect( () => {
-			avatar_button.set_bg(tweet.avatar);
+			// avatar_button.set_bg(tweet.avatar);
+			avatar_button.pixbuf = tweet.avatar;
+
 			avatar_button.queue_draw();
 		});
 
@@ -65,7 +68,8 @@ class TweetListEntry : Gtk.Box{
 		var left_box = new Box(Orientation.VERTICAL, 3);
 		avatar_button.set_valign(Align.START);
 		avatar_button.get_style_context().add_class("avatar");
-		avatar_button.set_bg(tweet.avatar);
+		avatar_button.pixbuf = tweet.avatar;
+		// avatar_button.set_bg(tweet.avatar);
 		avatar_button.margin_top = 3;
 		avatar_button.margin_left = 3;
 		left_box.pack_start(avatar_button, false, false);
@@ -147,7 +151,7 @@ class TweetListEntry : Gtk.Box{
 			pd.show_all();
 			return true;
 		}else if(uri.has_prefix("#")){
-			message("TODO: Implement search");
+			debug("TODO: Implement search");
 			return true;
 		}
 		return false;

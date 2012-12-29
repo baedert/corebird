@@ -48,7 +48,8 @@ class NewTweetWindow : Window {
 		var main_box = new Box(Orientation.VERTICAL, 5);
 
 		var middle_box = new Box(Orientation.HORIZONTAL, 3);
-		var av = new Gtk.Image.from_file("assets/avatars/"+Utils.get_avatar_name(User.avatar_url));
+		var av = new Gtk.Image.from_file("assets/avatars/"+
+		                                 Utils.get_avatar_name(User.avatar_url));
 		av.set_alignment(0,0);
 		left_box.pack_start(av, false, false);
 		left_box.pack_start(new Separator(Orientation.HORIZONTAL), false, false);
