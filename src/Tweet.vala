@@ -8,6 +8,7 @@ class Tweet : GLib.Object{
 	public static int TYPE_FAVORITE = 3;
 
 	private static SQLHeavy.Query cache_query;
+	private static SQLHeavy.Query author_query;
 
 
 	public int64 id;
@@ -33,7 +34,10 @@ class Tweet : GLib.Object{
 			                     `avatar_name`, `screen_name`, `type`) 
 			VALUES (:id, :text, :user_id, :user_name, :is_retweet, :retweeted_by,
 			        :retweeted, :favorited, :created_at, :added_to_stream, :avatar_name,
-			        :screen_name, :type);");					
+			        :screen_name, :type);");		
+			author_query = new SQLHeavy.Query(Corebird.db,
+			"SELECT `id`, `screen_name`, `avatar_url` FROM `people`
+			WHERE `id`=:id;");			
 		}
 	}
 
@@ -131,7 +135,6 @@ class Tweet : GLib.Object{
 
 		//TODO: Since the avatar gets loaded asynchronously, it's possible that the same avatar gets loaded
 		//      several times. Introduce some kind of lock here.
-
 		this.load_avatar();
 		if(!this.has_avatar()){
 			File av = File.new_for_uri(this.avatar_url);
@@ -168,12 +171,11 @@ class Tweet : GLib.Object{
 
 		}
 	}
+
 	public static void cache(Tweet t, string created_at, int64 added_to_stream, int type){
 		// Check the tweeter's details and update them if necessary
 		try{
-			SQLHeavy.Query author_query = new SQLHeavy.Query(Corebird.db,
-			"SELECT `id`, `screen_name`, `avatar_url` FROM `people`
-			WHERE `id`='%d';".printf(t.user_id));
+			author_query.set_int(":id", t.user_id);
 			SQLHeavy.QueryResult author_result = author_query.execute();
 			if (author_result.finished){
 				//The author is not in the DB so we insert him
@@ -186,10 +188,12 @@ class Tweet : GLib.Object{
 			}else{
 				string old_avatar = author_result.fetch_string(2);
 				if (old_avatar != t.avatar_url){
-					Corebird.db.execute("UPDATE `people` SET `avatar_url`='%s';", t.avatar_url);
+					Corebird.db.execute("UPDATE `people` SET `avatar_url`='%s'
+					                    WHERE `id`='%d';", t.avatar_url, t.user_id);
 				}
 				if (t.user_name != author_result.fetch_string(1)){
-					Corebird.db.execute("UPDATE `people` SET `screen_name`='%s';", t.user_name);
+					Corebird.db.execute("UPDATE `people` SET `screen_name`='%s'
+					                    WHERE `id`='%d';", t.user_name, t.user_id);
 				}
 			}
 		}catch(SQLHeavy.Error e){

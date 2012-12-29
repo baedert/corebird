@@ -8,6 +8,9 @@ class StreamContainer : TweetContainer, ScrollWidget{
 	private MainWindow main_window;
 	private RadioToolButton tool_button;
 	private int id;
+	/** If we are currently downloading/processing data */
+	private bool loading = false;
+
 
 	public StreamContainer(int id){
 		base();
@@ -25,14 +28,16 @@ class StreamContainer : TweetContainer, ScrollWidget{
 
 		
 
-		// tweet_scroller.vadjustment.value_changed.connect( () => {
-		// 	int max = (int)(tweet_scroller.vadjustment.upper - tweet_scroller.vadjustment.page_size);
-		// 	int value = (int)tweet_scroller.vadjustment.value;
-		// 	if (value >= (max * 0.9f)){
-		// 		//Load older tweets
-		// 		message("end!");
-		// 	}
-		// });
+		this.vadjustment.value_changed.connect( () => {
+			int max = (int)(this.vadjustment.upper - this.vadjustment.page_size);
+			int value = (int)this.vadjustment.value;
+			if (value >= (max * 0.9f) && !loading){
+				//Load older tweets
+				loading = true;
+				message("end! %d/%d", value, max);
+
+			}
+		});
 	}
 
 	public void load_cached_tweets() throws SQLHeavy.Error{
@@ -43,7 +48,7 @@ class StreamContainer : TweetContainer, ScrollWidget{
 					`retweeted_by`, `retweeted`, `favorited`, `created_at`,
 					`added_to_stream`, `avatar_name`, `screen_name`, `type` FROM `cache`
 			WHERE `type`='1' 
-			ORDER BY `added_to_stream` DESC LIMIT 30");
+			ORDER BY `added_to_stream` DESC LIMIT 10");
 		SQLHeavy.QueryResult result = query.execute();
 		while(!result.finished){
 			Tweet t        = new Tweet();
