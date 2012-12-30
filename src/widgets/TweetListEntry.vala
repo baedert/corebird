@@ -37,7 +37,6 @@ class TweetListEntry : Gtk.Box{
 		tweet.notify["avatar"].connect( () => {
 			// avatar_button.set_bg(tweet.avatar);
 			avatar_button.pixbuf = tweet.avatar;
-
 			avatar_button.queue_draw();
 		});
 
@@ -102,7 +101,6 @@ class TweetListEntry : Gtk.Box{
 		text.set_use_markup(true);
 		text.set_line_wrap(true);
 		text.wrap_mode = Pango.WrapMode.WORD_CHAR;
-		text.track_visited_links = true;
 		text.set_alignment(0, 0);
 		text.activate_link.connect(handle_uri);		
 		middle_box.pack_start(text, true, true);
@@ -121,8 +119,11 @@ class TweetListEntry : Gtk.Box{
 		ab.set_halign(Align.END);
 		ab.set_valign(Align.FILL);
 		ab.clicked.connect(() => {
-			var w = new TweetInfoWindow(tweet);
-			w.show_all();
+			// var w = new TweetInfoWindow(tweet);
+			// w.show_all();
+			var a = new TweetInfoWidget(tweet);
+			window.toggle_right_pane(a);
+			// window.toggle_right_pane(new TweetInfoWidget(tweet));
 		});
 		// EXPAND, FILL
 		right_box.pack_start(ab, false, true);

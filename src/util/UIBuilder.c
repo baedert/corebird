@@ -57,8 +57,8 @@ GType ui_builder_get_type (void) G_GNUC_CONST;
 enum  {
 	UI_BUILDER_DUMMY_PROPERTY
 };
-UIBuilder* ui_builder_new (const gchar* path);
-UIBuilder* ui_builder_construct (GType object_type, const gchar* path);
+UIBuilder* ui_builder_new (const gchar* path, const gchar* object_name);
+UIBuilder* ui_builder_construct (GType object_type, const gchar* path, const gchar* object_name);
 GtkButton* ui_builder_get_button (UIBuilder* self, const gchar* name);
 GtkWindow* ui_builder_get_window (UIBuilder* self, const gchar* name);
 GtkLabel* ui_builder_get_label (UIBuilder* self, const gchar* name);
@@ -66,53 +66,97 @@ GtkImage* ui_builder_get_image (UIBuilder* self, const gchar* name);
 GtkBox* ui_builder_get_box (UIBuilder* self, const gchar* name);
 GtkToggleButton* ui_builder_get_toggle (UIBuilder* self, const gchar* name);
 static void ui_builder_finalize (UIBuilder* obj);
+static void _vala_array_destroy (gpointer array, gint array_length, GDestroyNotify destroy_func);
+static void _vala_array_free (gpointer array, gint array_length, GDestroyNotify destroy_func);
 
 
-UIBuilder* ui_builder_construct (GType object_type, const gchar* path) {
+UIBuilder* ui_builder_construct (GType object_type, const gchar* path, const gchar* object_name) {
 	UIBuilder* self = NULL;
 	GError * _inner_error_ = NULL;
 #line 10 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	g_return_val_if_fail (path != NULL, NULL);
 #line 10 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+	g_return_val_if_fail (object_name != NULL, NULL);
+#line 10 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	self = (UIBuilder*) g_type_create_instance (object_type);
-#line 79 "UIBuilder.c"
+#line 83 "UIBuilder.c"
 	{
-		GtkBuilder* _tmp0_;
-		const gchar* _tmp1_;
+		const gchar* _tmp0_;
 #line 12 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
-		_tmp0_ = self->priv->builder;
+		_tmp0_ = object_name;
 #line 12 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
-		_tmp1_ = path;
-#line 12 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
-		gtk_builder_add_from_file (_tmp0_, _tmp1_, &_inner_error_);
-#line 12 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
-		if (_inner_error_ != NULL) {
-#line 91 "UIBuilder.c"
-			goto __catch53_g_error;
+		if (g_strcmp0 (_tmp0_, "") != 0) {
+#line 90 "UIBuilder.c"
+			GtkBuilder* _tmp1_;
+			const gchar* _tmp2_;
+			const gchar* _tmp3_;
+			gchar* _tmp4_;
+			gchar** _tmp5_ = NULL;
+			gchar** _tmp6_;
+			gint _tmp6__length1;
+#line 13 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+			_tmp1_ = self->priv->builder;
+#line 13 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+			_tmp2_ = path;
+#line 13 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+			_tmp3_ = object_name;
+#line 13 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+			_tmp4_ = g_strdup (_tmp3_);
+#line 13 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+			_tmp5_ = g_new0 (gchar*, 1 + 1);
+#line 13 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+			_tmp5_[0] = _tmp4_;
+#line 13 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+			_tmp6_ = _tmp5_;
+#line 13 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+			_tmp6__length1 = 1;
+#line 13 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+			gtk_builder_add_objects_from_file (_tmp1_, _tmp2_, _tmp6_, &_inner_error_);
+#line 13 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+			_tmp6_ = (_vala_array_free (_tmp6_, _tmp6__length1, (GDestroyNotify) g_free), NULL);
+#line 13 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+			if (_inner_error_ != NULL) {
+#line 120 "UIBuilder.c"
+				goto __catch53_g_error;
+			}
+		} else {
+			GtkBuilder* _tmp7_;
+			const gchar* _tmp8_;
+#line 15 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+			_tmp7_ = self->priv->builder;
+#line 15 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+			_tmp8_ = path;
+#line 15 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+			gtk_builder_add_from_file (_tmp7_, _tmp8_, &_inner_error_);
+#line 15 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+			if (_inner_error_ != NULL) {
+#line 134 "UIBuilder.c"
+				goto __catch53_g_error;
+			}
 		}
 	}
 	goto __finally53;
 	__catch53_g_error:
 	{
 		GError* e = NULL;
-		const gchar* _tmp2_;
-		GError* _tmp3_;
-		const gchar* _tmp4_;
+		const gchar* _tmp9_;
+		GError* _tmp10_;
+		const gchar* _tmp11_;
 #line 11 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 		e = _inner_error_;
 #line 11 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 		_inner_error_ = NULL;
-#line 14 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
-		_tmp2_ = path;
-#line 14 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
-		_tmp3_ = e;
-#line 14 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
-		_tmp4_ = _tmp3_->message;
-#line 14 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
-		g_critical ("UIBuilder.vala:14: Loading %s: %s", _tmp2_, _tmp4_);
+#line 17 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+		_tmp9_ = path;
+#line 17 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+		_tmp10_ = e;
+#line 17 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+		_tmp11_ = _tmp10_->message;
+#line 17 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+		g_critical ("UIBuilder.vala:17: Loading %s: %s", _tmp9_, _tmp11_);
 #line 11 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 		_g_error_free0 (e);
-#line 116 "UIBuilder.c"
+#line 160 "UIBuilder.c"
 	}
 	__finally53:
 #line 11 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
@@ -123,25 +167,25 @@ UIBuilder* ui_builder_construct (GType object_type, const gchar* path) {
 		g_clear_error (&_inner_error_);
 #line 11 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 		return NULL;
-#line 127 "UIBuilder.c"
+#line 171 "UIBuilder.c"
 	}
 #line 10 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	return self;
-#line 131 "UIBuilder.c"
+#line 175 "UIBuilder.c"
 }
 
 
-UIBuilder* ui_builder_new (const gchar* path) {
+UIBuilder* ui_builder_new (const gchar* path, const gchar* object_name) {
 #line 10 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
-	return ui_builder_construct (TYPE_UI_BUILDER, path);
-#line 138 "UIBuilder.c"
+	return ui_builder_construct (TYPE_UI_BUILDER, path, object_name);
+#line 182 "UIBuilder.c"
 }
 
 
 static gpointer _g_object_ref0 (gpointer self) {
-#line 19 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 22 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	return self ? g_object_ref (self) : NULL;
-#line 145 "UIBuilder.c"
+#line 189 "UIBuilder.c"
 }
 
 
@@ -151,23 +195,23 @@ GtkButton* ui_builder_get_button (UIBuilder* self, const gchar* name) {
 	const gchar* _tmp1_;
 	GObject* _tmp2_ = NULL;
 	GtkButton* _tmp3_;
-#line 18 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 21 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	g_return_val_if_fail (IS_UI_BUILDER (self), NULL);
-#line 18 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 21 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	g_return_val_if_fail (name != NULL, NULL);
-#line 19 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 22 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	_tmp0_ = self->priv->builder;
-#line 19 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 22 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	_tmp1_ = name;
-#line 19 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 22 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	_tmp2_ = gtk_builder_get_object (_tmp0_, _tmp1_);
-#line 19 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 22 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	_tmp3_ = _g_object_ref0 (G_TYPE_CHECK_INSTANCE_TYPE (_tmp2_, GTK_TYPE_BUTTON) ? ((GtkButton*) _tmp2_) : NULL);
-#line 19 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 22 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	result = _tmp3_;
-#line 19 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 22 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	return result;
-#line 171 "UIBuilder.c"
+#line 215 "UIBuilder.c"
 }
 
 
@@ -177,23 +221,23 @@ GtkWindow* ui_builder_get_window (UIBuilder* self, const gchar* name) {
 	const gchar* _tmp1_;
 	GObject* _tmp2_ = NULL;
 	GtkWindow* _tmp3_;
-#line 22 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 25 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	g_return_val_if_fail (IS_UI_BUILDER (self), NULL);
-#line 22 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 25 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	g_return_val_if_fail (name != NULL, NULL);
-#line 23 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 26 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	_tmp0_ = self->priv->builder;
-#line 23 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 26 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	_tmp1_ = name;
-#line 23 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 26 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	_tmp2_ = gtk_builder_get_object (_tmp0_, _tmp1_);
-#line 23 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 26 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	_tmp3_ = _g_object_ref0 (G_TYPE_CHECK_INSTANCE_TYPE (_tmp2_, GTK_TYPE_WINDOW) ? ((GtkWindow*) _tmp2_) : NULL);
-#line 23 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 26 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	result = _tmp3_;
-#line 23 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 26 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	return result;
-#line 197 "UIBuilder.c"
+#line 241 "UIBuilder.c"
 }
 
 
@@ -203,23 +247,23 @@ GtkLabel* ui_builder_get_label (UIBuilder* self, const gchar* name) {
 	const gchar* _tmp1_;
 	GObject* _tmp2_ = NULL;
 	GtkLabel* _tmp3_;
-#line 26 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 29 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	g_return_val_if_fail (IS_UI_BUILDER (self), NULL);
-#line 26 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 29 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	g_return_val_if_fail (name != NULL, NULL);
-#line 27 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 30 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	_tmp0_ = self->priv->builder;
-#line 27 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 30 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	_tmp1_ = name;
-#line 27 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 30 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	_tmp2_ = gtk_builder_get_object (_tmp0_, _tmp1_);
-#line 27 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 30 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	_tmp3_ = _g_object_ref0 (G_TYPE_CHECK_INSTANCE_TYPE (_tmp2_, GTK_TYPE_LABEL) ? ((GtkLabel*) _tmp2_) : NULL);
-#line 27 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 30 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	result = _tmp3_;
-#line 27 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 30 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	return result;
-#line 223 "UIBuilder.c"
+#line 267 "UIBuilder.c"
 }
 
 
@@ -229,23 +273,23 @@ GtkImage* ui_builder_get_image (UIBuilder* self, const gchar* name) {
 	const gchar* _tmp1_;
 	GObject* _tmp2_ = NULL;
 	GtkImage* _tmp3_;
-#line 30 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 33 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	g_return_val_if_fail (IS_UI_BUILDER (self), NULL);
-#line 30 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 33 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	g_return_val_if_fail (name != NULL, NULL);
-#line 31 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 34 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	_tmp0_ = self->priv->builder;
-#line 31 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 34 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	_tmp1_ = name;
-#line 31 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 34 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	_tmp2_ = gtk_builder_get_object (_tmp0_, _tmp1_);
-#line 31 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 34 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	_tmp3_ = _g_object_ref0 (G_TYPE_CHECK_INSTANCE_TYPE (_tmp2_, GTK_TYPE_IMAGE) ? ((GtkImage*) _tmp2_) : NULL);
-#line 31 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 34 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	result = _tmp3_;
-#line 31 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 34 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	return result;
-#line 249 "UIBuilder.c"
+#line 293 "UIBuilder.c"
 }
 
 
@@ -255,23 +299,23 @@ GtkBox* ui_builder_get_box (UIBuilder* self, const gchar* name) {
 	const gchar* _tmp1_;
 	GObject* _tmp2_ = NULL;
 	GtkBox* _tmp3_;
-#line 34 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 37 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	g_return_val_if_fail (IS_UI_BUILDER (self), NULL);
-#line 34 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 37 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	g_return_val_if_fail (name != NULL, NULL);
-#line 35 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 38 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	_tmp0_ = self->priv->builder;
-#line 35 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 38 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	_tmp1_ = name;
-#line 35 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 38 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	_tmp2_ = gtk_builder_get_object (_tmp0_, _tmp1_);
-#line 35 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 38 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	_tmp3_ = _g_object_ref0 (G_TYPE_CHECK_INSTANCE_TYPE (_tmp2_, GTK_TYPE_BOX) ? ((GtkBox*) _tmp2_) : NULL);
-#line 35 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 38 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	result = _tmp3_;
-#line 35 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 38 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	return result;
-#line 275 "UIBuilder.c"
+#line 319 "UIBuilder.c"
 }
 
 
@@ -281,30 +325,30 @@ GtkToggleButton* ui_builder_get_toggle (UIBuilder* self, const gchar* name) {
 	const gchar* _tmp1_;
 	GObject* _tmp2_ = NULL;
 	GtkToggleButton* _tmp3_;
-#line 38 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 41 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	g_return_val_if_fail (IS_UI_BUILDER (self), NULL);
-#line 38 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 41 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	g_return_val_if_fail (name != NULL, NULL);
-#line 39 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 42 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	_tmp0_ = self->priv->builder;
-#line 39 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 42 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	_tmp1_ = name;
-#line 39 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 42 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	_tmp2_ = gtk_builder_get_object (_tmp0_, _tmp1_);
-#line 39 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 42 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	_tmp3_ = _g_object_ref0 (G_TYPE_CHECK_INSTANCE_TYPE (_tmp2_, GTK_TYPE_TOGGLE_BUTTON) ? ((GtkToggleButton*) _tmp2_) : NULL);
-#line 39 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 42 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	result = _tmp3_;
-#line 39 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
+#line 42 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	return result;
-#line 301 "UIBuilder.c"
+#line 345 "UIBuilder.c"
 }
 
 
 static void value_ui_builder_init (GValue* value) {
 #line 6 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	value->data[0].v_pointer = NULL;
-#line 308 "UIBuilder.c"
+#line 352 "UIBuilder.c"
 }
 
 
@@ -313,7 +357,7 @@ static void value_ui_builder_free_value (GValue* value) {
 	if (value->data[0].v_pointer) {
 #line 6 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 		ui_builder_unref (value->data[0].v_pointer);
-#line 317 "UIBuilder.c"
+#line 361 "UIBuilder.c"
 	}
 }
 
@@ -323,11 +367,11 @@ static void value_ui_builder_copy_value (const GValue* src_value, GValue* dest_v
 	if (src_value->data[0].v_pointer) {
 #line 6 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 		dest_value->data[0].v_pointer = ui_builder_ref (src_value->data[0].v_pointer);
-#line 327 "UIBuilder.c"
+#line 371 "UIBuilder.c"
 	} else {
 #line 6 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 		dest_value->data[0].v_pointer = NULL;
-#line 331 "UIBuilder.c"
+#line 375 "UIBuilder.c"
 	}
 }
 
@@ -335,37 +379,37 @@ static void value_ui_builder_copy_value (const GValue* src_value, GValue* dest_v
 static gpointer value_ui_builder_peek_pointer (const GValue* value) {
 #line 6 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	return value->data[0].v_pointer;
-#line 339 "UIBuilder.c"
+#line 383 "UIBuilder.c"
 }
 
 
 static gchar* value_ui_builder_collect_value (GValue* value, guint n_collect_values, GTypeCValue* collect_values, guint collect_flags) {
 #line 6 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	if (collect_values[0].v_pointer) {
-#line 346 "UIBuilder.c"
+#line 390 "UIBuilder.c"
 		UIBuilder* object;
 		object = collect_values[0].v_pointer;
 #line 6 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 		if (object->parent_instance.g_class == NULL) {
 #line 6 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 			return g_strconcat ("invalid unclassed object pointer for value type `", G_VALUE_TYPE_NAME (value), "'", NULL);
-#line 353 "UIBuilder.c"
+#line 397 "UIBuilder.c"
 		} else if (!g_value_type_compatible (G_TYPE_FROM_INSTANCE (object), G_VALUE_TYPE (value))) {
 #line 6 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 			return g_strconcat ("invalid object type `", g_type_name (G_TYPE_FROM_INSTANCE (object)), "' for value type `", G_VALUE_TYPE_NAME (value), "'", NULL);
-#line 357 "UIBuilder.c"
+#line 401 "UIBuilder.c"
 		}
 #line 6 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 		value->data[0].v_pointer = ui_builder_ref (object);
-#line 361 "UIBuilder.c"
+#line 405 "UIBuilder.c"
 	} else {
 #line 6 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 		value->data[0].v_pointer = NULL;
-#line 365 "UIBuilder.c"
+#line 409 "UIBuilder.c"
 	}
 #line 6 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	return NULL;
-#line 369 "UIBuilder.c"
+#line 413 "UIBuilder.c"
 }
 
 
@@ -376,25 +420,25 @@ static gchar* value_ui_builder_lcopy_value (const GValue* value, guint n_collect
 	if (!object_p) {
 #line 6 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 		return g_strdup_printf ("value location for `%s' passed as NULL", G_VALUE_TYPE_NAME (value));
-#line 380 "UIBuilder.c"
+#line 424 "UIBuilder.c"
 	}
 #line 6 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	if (!value->data[0].v_pointer) {
 #line 6 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 		*object_p = NULL;
-#line 386 "UIBuilder.c"
+#line 430 "UIBuilder.c"
 	} else if (collect_flags & G_VALUE_NOCOPY_CONTENTS) {
 #line 6 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 		*object_p = value->data[0].v_pointer;
-#line 390 "UIBuilder.c"
+#line 434 "UIBuilder.c"
 	} else {
 #line 6 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 		*object_p = ui_builder_ref (value->data[0].v_pointer);
-#line 394 "UIBuilder.c"
+#line 438 "UIBuilder.c"
 	}
 #line 6 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	return NULL;
-#line 398 "UIBuilder.c"
+#line 442 "UIBuilder.c"
 }
 
 
@@ -408,7 +452,7 @@ GParamSpec* param_spec_ui_builder (const gchar* name, const gchar* nick, const g
 	G_PARAM_SPEC (spec)->value_type = object_type;
 #line 6 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	return G_PARAM_SPEC (spec);
-#line 412 "UIBuilder.c"
+#line 456 "UIBuilder.c"
 }
 
 
@@ -417,7 +461,7 @@ gpointer value_get_ui_builder (const GValue* value) {
 	g_return_val_if_fail (G_TYPE_CHECK_VALUE_TYPE (value, TYPE_UI_BUILDER), NULL);
 #line 6 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	return value->data[0].v_pointer;
-#line 421 "UIBuilder.c"
+#line 465 "UIBuilder.c"
 }
 
 
@@ -437,17 +481,17 @@ void value_set_ui_builder (GValue* value, gpointer v_object) {
 		value->data[0].v_pointer = v_object;
 #line 6 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 		ui_builder_ref (value->data[0].v_pointer);
-#line 441 "UIBuilder.c"
+#line 485 "UIBuilder.c"
 	} else {
 #line 6 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 		value->data[0].v_pointer = NULL;
-#line 445 "UIBuilder.c"
+#line 489 "UIBuilder.c"
 	}
 #line 6 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	if (old) {
 #line 6 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 		ui_builder_unref (old);
-#line 451 "UIBuilder.c"
+#line 495 "UIBuilder.c"
 	}
 }
 
@@ -466,17 +510,17 @@ void value_take_ui_builder (GValue* value, gpointer v_object) {
 		g_return_if_fail (g_value_type_compatible (G_TYPE_FROM_INSTANCE (v_object), G_VALUE_TYPE (value)));
 #line 6 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 		value->data[0].v_pointer = v_object;
-#line 470 "UIBuilder.c"
+#line 514 "UIBuilder.c"
 	} else {
 #line 6 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 		value->data[0].v_pointer = NULL;
-#line 474 "UIBuilder.c"
+#line 518 "UIBuilder.c"
 	}
 #line 6 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	if (old) {
 #line 6 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 		ui_builder_unref (old);
-#line 480 "UIBuilder.c"
+#line 524 "UIBuilder.c"
 	}
 }
 
@@ -488,7 +532,7 @@ static void ui_builder_class_init (UIBuilderClass * klass) {
 	UI_BUILDER_CLASS (klass)->finalize = ui_builder_finalize;
 #line 6 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	g_type_class_add_private (klass, sizeof (UIBuilderPrivate));
-#line 492 "UIBuilder.c"
+#line 536 "UIBuilder.c"
 }
 
 
@@ -502,7 +546,7 @@ static void ui_builder_instance_init (UIBuilder * self) {
 	self->priv->builder = _tmp0_;
 #line 6 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	self->ref_count = 1;
-#line 506 "UIBuilder.c"
+#line 550 "UIBuilder.c"
 }
 
 
@@ -512,7 +556,7 @@ static void ui_builder_finalize (UIBuilder* obj) {
 	self = G_TYPE_CHECK_INSTANCE_CAST (obj, TYPE_UI_BUILDER, UIBuilder);
 #line 7 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	_g_object_unref0 (self->priv->builder);
-#line 516 "UIBuilder.c"
+#line 560 "UIBuilder.c"
 }
 
 
@@ -537,7 +581,7 @@ gpointer ui_builder_ref (gpointer instance) {
 	g_atomic_int_inc (&self->ref_count);
 #line 6 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	return instance;
-#line 541 "UIBuilder.c"
+#line 585 "UIBuilder.c"
 }
 
 
@@ -550,8 +594,26 @@ void ui_builder_unref (gpointer instance) {
 		UI_BUILDER_GET_CLASS (self)->finalize (self);
 #line 6 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 		g_type_free_instance ((GTypeInstance *) self);
-#line 554 "UIBuilder.c"
+#line 598 "UIBuilder.c"
 	}
+}
+
+
+static void _vala_array_destroy (gpointer array, gint array_length, GDestroyNotify destroy_func) {
+	if ((array != NULL) && (destroy_func != NULL)) {
+		int i;
+		for (i = 0; i < array_length; i = i + 1) {
+			if (((gpointer*) array)[i] != NULL) {
+				destroy_func (((gpointer*) array)[i]);
+			}
+		}
+	}
+}
+
+
+static void _vala_array_free (gpointer array, gint array_length, GDestroyNotify destroy_func) {
+	_vala_array_destroy (array, array_length, destroy_func);
+	g_free (array);
 }
 
 

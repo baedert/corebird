@@ -35,7 +35,7 @@ class StreamContainer : TweetContainer, ScrollWidget{
 				//Load older tweets
 				loading = true;
 				message("end! %d/%d", value, max);
-
+				// https://dev.twitter.com/docs/working-with-timelines
 			}
 		});
 	}

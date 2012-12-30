@@ -7,9 +7,12 @@ public class UIBuilder {
 	private Gtk.Builder builder = new Gtk.Builder();
 
 
-	public UIBuilder(string path){
+	public UIBuilder(string path, string object_name = ""){
 		try{
-			builder.add_from_file(path);
+			if(object_name != "")
+				builder.add_objects_from_file(path, {object_name});
+			else
+				builder.add_from_file(path);
 		}catch(GLib.Error e){
 			critical("Loading %s: %s", path, e.message);
 		}
