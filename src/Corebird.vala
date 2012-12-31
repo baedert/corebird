@@ -11,6 +11,8 @@ class Corebird : Gtk.Application {
 		GLib.Object(application_id: "org.baedert.corebird",
 		            flags: ApplicationFlags.FLAGS_NONE);
 		this.register_session = true;
+		
+		//TODO: This is possibl wrong:
 		this.register();
 
 		// If the user wants the dark theme, apply it

@@ -86,10 +86,9 @@ class User{
 
 				avatar_widget.set_from_file(dest_path);
 				try{
-					SQLHeavy.Query query = new SQLHeavy.Query(Corebird.db, 
-					"UPDATE `user` SET `avatar_name`='%s', `avatar_url`='%s';".printf(avatar_name,
-						avatar_url));
-					query.execute();
+					Corebird.db.execute("UPDATE `user` SET 
+					                    `avatar_name`='%s', `avatar_url`='%s';",
+					                    avatar_name, avatar_url);
 				}catch(SQLHeavy.Error e){
 					warning("Error while setting the new avatar_name: %s", e.message);
 				}

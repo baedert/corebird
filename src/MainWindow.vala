@@ -209,7 +209,7 @@ class MainWindow : ApplicationWindow {
 		int x, y, w, h;
 		this.get_size(out w, out h);
 		this.get_position(out x, out y);
-		if (right_pane != null && right_pane.visible)
+		if (right_pane != null && right_pane.is_visible())
 			w -= right_pane_width;
 		Settings.set_string("main-window-geometry", "%d,%d,%d,%d".printf(x,
 		                    y, w, h));
@@ -229,56 +229,6 @@ class MainWindow : ApplicationWindow {
 
 	// TODO: Make this work FFS.
 	public void toggle_right_pane(PaneWidget new_pane){
-		if (right_pane == null || (right_pane.get_id() != new_pane.get_id())){
-			if(right_pane != null)
-				bottom_box.remove(right_pane);
-			Allocation all;
-			main_notebook.get_allocation(out all);
-			// The width of the NEW right widget
-			int new_right_width = (int)(all.width * 0.7);
-			int min_width;
-			new_pane.get_preferred_width(out min_width, null);
-			if(new_right_width < min_width)
-				new_right_width = min_width;
 
-			
-			new_pane.set_visible(!new_pane.visible);
-			new_pane.set_size_request(new_right_width, 80);
-			new_pane.show_all();
-			bottom_box.pack_end(new_pane, false, true);
-
-
-			message("Min: %d, Set: %d", min_width, new_right_width);
-
-
-			int window_diff = new_right_width;
-			if (right_pane != null){
-				window_diff = right_pane_width - new_right_width;
-			}
-
-			message("diff: %d", window_diff);
-
-			//Enlarge the window
-			int w, h;
-			this.get_size(out w, out h);
-			this.resize_to_geometry(w + window_diff, h);
-			this.right_pane = new_pane;
-			this.right_pane_width = new_right_width;
-		}else{
-			//Enlarge/shrink the window
-            bool new_visibility = !right_pane.visible;
-            if (!new_visibility){
-                   int w, h;
-                   this.get_size(out w, out h);
-                   this.resize_to_geometry(w-right_pane_width, h);
-            }else {
-            int w, h;
-                   this.get_size(out w, out h);
-                   this.resize_to_geometry(w + right_pane_width, h);       
-           
-            }
-           right_pane.set_visible(!right_pane.visible);
-	
-		}
 	}
 }

@@ -52,6 +52,7 @@ class TweetInfoWindow {
 		window.resize(350, 2);
 	}
 
+
 	public void show_all(){
 		window.show_all();
 	}

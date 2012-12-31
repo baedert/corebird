@@ -35,7 +35,7 @@ class StreamContainer : TweetContainer, ScrollWidget{
 				//Load older tweets
 				loading = true;
 				message("end! %d/%d", value, max);
-
+				// https://dev.twitter.com/docs/working-with-timelines
 			}
 		});
 	}
@@ -62,9 +62,9 @@ class StreamContainer : TweetContainer, ScrollWidget{
 			t.favorited    = (bool)result.fetch_int(7);
 
 			GLib.DateTime created = Utils.parse_date(result.fetch_string(8));
-			t.time_delta = Utils.get_time_delta(created, now);
+			t.time_delta   = Utils.get_time_delta(created, now);
 			t.avatar_name  = result.fetch_string(10); 
-			t.screen_name = result.fetch_string(11);
+			t.screen_name  = result.fetch_string(11);
 			t.load_avatar();
 
 			// Append the tweet to the TweetList

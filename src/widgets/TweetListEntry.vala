@@ -7,7 +7,8 @@ using Gtk;
 class TweetListEntry : Gtk.Box{
 	private static GLib.Regex? hashtag_regex = null;
 	private static GLib.Regex? user_regex    = null;
-	private ImageButton avatar_button = new ImageButton();
+	// private ImageButton avatar_button = new ImageButton();
+	private Image avatar_button 	  = new Image();
 	private Label text                = new Label("");
 	private TextButton author_button;
 	private Label screen_name	      = new Label("");
@@ -34,7 +35,8 @@ class TweetListEntry : Gtk.Box{
 
 		// If the tweet's avatar changed, also reset it in the widgets
 		tweet.notify["avatar"].connect( () => {
-			avatar_button.set_bg(tweet.avatar);
+			// avatar_button.set_bg(tweet.avatar);
+			avatar_button.pixbuf = tweet.avatar;
 			avatar_button.queue_draw();
 		});
 
@@ -65,7 +67,8 @@ class TweetListEntry : Gtk.Box{
 		var left_box = new Box(Orientation.VERTICAL, 3);
 		avatar_button.set_valign(Align.START);
 		avatar_button.get_style_context().add_class("avatar");
-		avatar_button.set_bg(tweet.avatar);
+		avatar_button.pixbuf = tweet.avatar;
+		// avatar_button.set_bg(tweet.avatar);
 		avatar_button.margin_top = 3;
 		avatar_button.margin_left = 3;
 		left_box.pack_start(avatar_button, false, false);
@@ -98,7 +101,6 @@ class TweetListEntry : Gtk.Box{
 		text.set_use_markup(true);
 		text.set_line_wrap(true);
 		text.wrap_mode = Pango.WrapMode.WORD_CHAR;
-		text.track_visited_links = true;
 		text.set_alignment(0, 0);
 		text.activate_link.connect(handle_uri);		
 		middle_box.pack_start(text, true, true);
@@ -117,8 +119,11 @@ class TweetListEntry : Gtk.Box{
 		ab.set_halign(Align.END);
 		ab.set_valign(Align.FILL);
 		ab.clicked.connect(() => {
-			var w = new TweetInfoWindow(tweet);
-			w.show_all();
+			// var w = new TweetInfoWindow(tweet);
+			// w.show_all();
+			var a = new TweetInfoWidget(tweet);
+			window.toggle_right_pane(a);
+			// window.toggle_right_pane(new TweetInfoWidget(tweet));
 		});
 		// EXPAND, FILL
 		right_box.pack_start(ab, false, true);
@@ -147,7 +152,7 @@ class TweetListEntry : Gtk.Box{
 			pd.show_all();
 			return true;
 		}else if(uri.has_prefix("#")){
-			message("TODO: Implement search");
+			debug("TODO: Implement search");
 			return true;
 		}
 		return false;
