@@ -3,6 +3,7 @@ Corebird.db
 src/*.c
 src/widgets/*.c
 src/containers/*.c
+src/util/*.c
 CMakeCache.txt
 CMakeFiles
 Makefile
