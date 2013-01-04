@@ -179,8 +179,8 @@ class MainWindow : ApplicationWindow {
 	}
 
 	public void set_show_primary_toolbar(bool show_primary_toolbar){
-		// We just ASSUME that this value only toggles and that 2 subsequent calls NEVER have the
-		// same value of show_primary_toolbar.
+		// We just ASSUME that this value only toggles and that 2 subsequent calls
+		// NEVER have the same value of show_primary_toolbar.
 		if(show_primary_toolbar){
 			main_box.pack_start(primary_toolbar, false, false);
 			//Remove widgets
@@ -229,6 +229,23 @@ class MainWindow : ApplicationWindow {
 
 	// TODO: Make this work FFS.
 	public void toggle_right_pane(PaneWidget new_pane){
+		int preferred_width;
+		int min_width;
+		new_pane.get_widget().get_preferred_width(out min_width, out preferred_width);
 
+
+		int width, height;
+		this.get_size(out width, out height);		
+
+		// this.resize_to_geometry(width + preferred_width, height);
+		bottom_box.pack_start(new_pane.get_widget(), false, true);
+		Allocation alloc;
+		new_pane.get_widget().get_allocation(out alloc);
+
+
+
+		message("Pref Width: %d, Min width: %d, Alloc: %d", preferred_width, min_width,
+		        alloc.width);
+		this.resize_to_geometry(width + alloc.width + preferred_width, height);
 	}
 }

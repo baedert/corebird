@@ -143,6 +143,10 @@ class StreamContainer : TweetContainer, ScrollWidget{
 	}
 
 	public void create_tool_button(RadioToolButton? group){
+		// tool_button = new RadioToolButton.from_widget(group);
+		// tool_button.label = "Stream";
+		// tool_button.set_icon_widget(new Image.from_icon_name("starred", IconSize.DIALOG));
+		GLib.Icon icon = new GLib.FileIcon(File.new_for_path("assets/icons/stream.png"));
 		if(group == null)
 			tool_button = new RadioToolButton.from_stock(null, Stock.HOME);
 		else

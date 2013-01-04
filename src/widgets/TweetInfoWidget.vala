@@ -17,7 +17,8 @@ class TweetInfoWidget : PaneWidget, GLib.Object{
 		UIBuilder builder = new UIBuilder("ui/tweet-info-window.ui", "main_box");
 		builder.get_label("name_label").label = "<big><b>"+t.user_name+"</b></big>";
 		box = builder.get_box("main_box");
-		box.unparent();
+		// box.unparent();
+
 	}
 
 	public string get_id(){

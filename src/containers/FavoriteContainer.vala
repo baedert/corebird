@@ -51,7 +51,7 @@ class FavoriteContainer : TweetContainer, ScrollWidget {
 
 	public void create_tool_button(RadioToolButton? group){
 		tool_button = new RadioToolButton.from_widget(group);
-		tool_button.icon_name = "emblem-favorite";
+		tool_button.icon_name = "starred";
 	}
 
 	public RadioToolButton? get_tool_button(){

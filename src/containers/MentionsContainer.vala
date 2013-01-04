@@ -100,7 +100,8 @@ class MentionsContainer : TweetContainer, ScrollWidget {
 	}
 
 	public void create_tool_button(RadioToolButton? group){
-		tool_button = new RadioToolButton.with_stock_from_widget(group, Stock.ADD);
+		tool_button = new RadioToolButton.from_widget(group);
+		tool_button.icon_name = "user-info";
 	}
 
 	public RadioToolButton? get_tool_button(){
