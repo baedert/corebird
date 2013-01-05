@@ -9,7 +9,6 @@ class TextButton : Button {
 	public TextButton(string label){
 		this.label= label;	
 		this.get_style_context().add_class("text-button");
-		this.relief = ReliefStyle.NONE;
 
 
 		this.enter_notify_event.connect( () => {
@@ -21,7 +20,6 @@ class TextButton : Button {
 			this.get_window().cursor = last_cursor;
 			return false;
 		});
-
 	}
 
 	public override bool draw(Cairo.Context c){

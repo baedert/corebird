@@ -206,13 +206,13 @@ class MainWindow : ApplicationWindow {
 	}
 
 	private void save_geometry(){
-		int x, y, w, h;
-		this.get_size(out w, out h);
-		this.get_position(out x, out y);
-		if (right_pane != null && right_pane.is_visible())
-			w -= right_pane_width;
-		Settings.set_string("main-window-geometry", "%d,%d,%d,%d".printf(x,
-		                    y, w, h));
+		// int x, y, w, h;
+		// this.get_size(out w, out h);
+		// this.get_position(out x, out y);
+		// if (right_pane != null && right_pane.is_visible())
+		// 	w -= right_pane_width;
+		// Settings.set_string("main-window-geometry", "%d,%d,%d,%d".printf(x,
+		//                     y, w, h));
 	}
 
 	private void load_geometry(){
@@ -238,7 +238,8 @@ class MainWindow : ApplicationWindow {
 		this.get_size(out width, out height);		
 
 		// this.resize_to_geometry(width + preferred_width, height);
-		bottom_box.pack_start(new_pane.get_widget(), false, true);
+		new_pane.get_widget().set_size_request(300, 2);
+		
 		Allocation alloc;
 		new_pane.get_widget().get_allocation(out alloc);
 
@@ -246,6 +247,7 @@ class MainWindow : ApplicationWindow {
 
 		message("Pref Width: %d, Min width: %d, Alloc: %d", preferred_width, min_width,
 		        alloc.width);
-		this.resize_to_geometry(width + alloc.width + preferred_width, height);
+		this.resize_to_geometry(width + 200 , height);
+		bottom_box.pack_start(new_pane.get_widget(), false, false);
 	}
 }

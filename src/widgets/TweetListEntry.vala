@@ -1,7 +1,6 @@
 using Gtk;
 
 // TODO: Deleted tweets don't get deleted in the stream
-// TODO: margin between avatar, author and text is not the same.
 // TODO: Open 'new windows' in a new window, an extended main window,
 //       or just replace the main window's content?
 class TweetListEntry : Gtk.Box{

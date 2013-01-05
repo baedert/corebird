@@ -33,7 +33,7 @@ class TweetInfoWidget : PaneWidget, GLib.Object{
 		box.visible = visible;
 	}
 
-	public Widget get_widget(){
+	public Box get_widget(){
 		return box;
 	}
 }

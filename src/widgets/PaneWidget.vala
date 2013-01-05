@@ -15,5 +15,5 @@ interface PaneWidget : GLib.Object{
 	public abstract string get_id();
 	public abstract void set_visible(bool visible);
 	public abstract bool is_visible();
-	public abstract Gtk.Widget get_widget();
+	public abstract Gtk.Box get_widget();
 }
