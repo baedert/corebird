@@ -250,7 +250,7 @@ class MainWindow : ApplicationWindow {
 
 		// message("Pref Width: %d, Min width: %d, Alloc: %d", preferred_width, min_width,
 		        // alloc.width);
-		this.resize(width + preferred_width*3 , height);
+		this.resize(width + preferred_width , height);
 		bottom_box.pack_start(new_pane.get_widget(), false, true);
 	}
 }
