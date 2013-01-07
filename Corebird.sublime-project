@@ -6,7 +6,7 @@
 			"folder_exclude_patterns" : [".*","CMakeFiles", "build", "stats"],
 			"file_exclude_patterns" :  [".*", "CMakeCache.txt", 
 					"*.sublime-*", "*.cmake", "cmake_*", "*.c",
-					"install_manifest.txt"]
+					"install_manifest.txt", "Corebird"]
 		}
 	]
 }

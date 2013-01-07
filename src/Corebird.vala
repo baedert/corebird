@@ -12,7 +12,7 @@ class Corebird : Gtk.Application {
 		            flags: ApplicationFlags.FLAGS_NONE);
 		this.register_session = true;
 		
-		//TODO: This is possibl wrong:
+		//TODO: This is possibly wrong:
 		this.register();
 
 		// If the user wants the dark theme, apply it
@@ -49,6 +49,7 @@ class Corebird : Gtk.Application {
 
 		this.activate.connect( ()  => {});
 		this.set_inactivity_timeout(500);
+
 	}
 
 	/**

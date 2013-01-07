@@ -25,6 +25,7 @@ pkg_check_modules(GMODULE REQUIRED gmodule-2.0)
 pkg_check_modules(GEE REQUIRED gee-1.0)
 pkg_check_modules(JSON REQUIRED json-glib-1.0)
 pkg_check_modules(LIBNOTIFY REQUIRED libnotify)
+pkg_check_modules(SQLITE REQUIRED sqlite3)
 add_definitions(
 	${GLIB_CFLAGS} ${GLIB_FLAGS_OTHER}	
 	${GTK_CFLAGS} ${GTK_FLAGS_OTHER}
@@ -35,6 +36,7 @@ add_definitions(
 	${GEE_CFLAGS} ${GEE_FLAGS_OTHER}
 	${JSON_CFLAGS} ${JSON_FLAGS_OTHER}
 	${LIBNOTIFY_CFLAGS} ${LIBNOTIFY_FLAGS_OTHER}
+	${SQLITE_CFLAGS} ${SQLITE_FLAGS_OTHER}
 )
 link_libraries(
 	${GLIB_LIBRARIES}
@@ -46,6 +48,7 @@ link_libraries(
 	${GEE_LIBRARIES}
 	${JSON_LIBRARIES}
 	${LIBNOTIFY_LIBRARIES}
+	${SQLITE_LIBRARIES}
 )
 link_directories(
 	${GLIB_LIBRARY_DIRS}
@@ -57,6 +60,7 @@ link_directories(
 	${GEE_LIBRARY_DIRS}
 	${JSON_LIBRARY_DIRS}
 	${LIBNOTIFY_LIBRARY_DIRS}
+	${SQLITE_LIBRARY_DIRS}
 )
 
 
@@ -107,6 +111,7 @@ PACKAGES
 	gee-1.0
 	json-glib-1.0
 	libnotify
+	sqlite3
 OPTIONS
 	-g
 	--thread 

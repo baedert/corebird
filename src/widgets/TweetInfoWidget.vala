@@ -5,8 +5,6 @@ class TweetInfoWidget : PaneWidget, GLib.Object{
 	private Box box;
 
 
-	//TASK:
-	// make the "window" open in the right of MainWindow!
 	public TweetInfoWidget(Tweet t){
 		// text_label.set_use_markup(true);
 		// text_label.set_line_wrap(true);

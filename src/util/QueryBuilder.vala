@@ -1,7 +1,7 @@
 
 
 
-class QueryBuilder{
+class Query{
 	public enum CompareType{
 		EQUALS,
 		LOWER_THAN,
@@ -10,16 +10,17 @@ class QueryBuilder{
 	public enum OrderType{
 		DESC, ASC
 	}
-	private string query;
+	
+	public static Sqlite.Database db;	
+	private StringBuilder query = new StringBuilder();
 
-
-	public QueryBuilder(){
+	public Query(){
 	}
 
 
-	public QueryBuilder select(string field1, ...){
-		StringBuilder builder = new StringBuilder("SELECT ");
-		builder.append("`").append(field1).append("`");
+	public Query select(string field1, ...){
+		query.append("SELECT ").append("`")
+			 .append(field1).append("`");
 
 		var list = va_list();
 
@@ -27,36 +28,41 @@ class QueryBuilder{
 			string field = list.arg();
 			if(field == null)
 				break;
-			builder.append(", `")
+			query.append(", `")
 				   .append(field)
 				   .append("`");
 		}
+		return this;
+	}
 
-		query =  builder.str;
+	public Query from(string table_name){
+		query.append(" FROM ").append(table_name);
 		return this;
 	}
 
 
-	public QueryBuilder where(string field, string value,
-	                          CompareType ct = CompareType.EQUALS){
+	public Query where(string field, CompareType ct = CompareType.EQUALS,
+	                   string value){
 		//TODO: Support the others
-		query += " WHERE `%s`='%s'".printf(field, value);
+		query.append(" WHERE `").append(field).append("`='")
+		     .append(value).append("'");
 		return this;
 	}
 
-	public QueryBuilder order(string field_name, OrderType ot = OrderType.ASC){
+	public Query order(string field_name, OrderType ot = OrderType.ASC){
 		string o = ot == OrderType.ASC ? "ASC" : "DESC";
-		query += " ORDER BY `%s` %s".printf(field_name, o);
-
-		//This is the last call, so we just set the sql string
-		// this.sql = query;
+		query.append(" ORDER BY `").append(field_name).append("` ")
+		     .append(o);
 
 		return this;
 	}
 
-	public SQLHeavy.QueryResult execute(SQLHeavy.Database db) throws SQLHeavy.Error{
-		SQLHeavy.Query q = new SQLHeavy.Query(db, query);
-		return q.execute();
+	public void execute(Sqlite.Callback? callback = null){
+		Query.db.exec(query.str, callback);
 	}
 
+
+	public string get_sql(){
+		return query.str;
+	}
 }
