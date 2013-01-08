@@ -47,8 +47,10 @@ Corebird is a new native Twitter client for the linux desktop written with Gtk+.
 * Let the user choose an application for opening images/videos     
     * youtube-viewer 
 * Let the user choose if he wants to open e.g. the details to a tweet open
-* in a new window(good for tiling wms) or in a side pane in the 
-* main window(good for floating wms).
+   in a new window(good for tiling wms) or in a side pane in the 
+   main window(good for floating wms).
+* Extend the style.css to style everything entirely so the app gets its
+   own style all over?
 
 ## Feature completion
 * <s>Highlight &  implement links in tweets</s>
