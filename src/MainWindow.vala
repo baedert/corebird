@@ -24,7 +24,6 @@ class MainWindow : ApplicationWindow {
 	private SeparatorToolItem expander_item		  = new SeparatorToolItem();
 	private SeparatorToolItem left_separator	  = new SeparatorToolItem();
 	private PaneWidget right_pane;
-	private int right_pane_width = -500;
 
 	public MainWindow(Gtk.Application app){
 		GLib.Object (application: app);
@@ -42,7 +41,7 @@ class MainWindow : ApplicationWindow {
 			tc.load_cached();
 			tc.get_tool_button().toggled.connect(() => {
 					if(tc.get_tool_button().active)
-					this.main_notebook.set_current_page(tc.get_id());
+						this.main_notebook.set_current_page(tc.get_id());
 			});
 		}
 
