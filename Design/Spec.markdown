@@ -39,7 +39,7 @@ Corebird is a new native Twitter client for the linux desktop written with Gtk+.
     * Most trending topics(special and cool)
 
 ## Release plan
-* Ende Januar 2013: Beta-test mit ausgewählten Testern
+* Ende Februar 2013: Beta-test mit ausgewählten Testern
 * Wenn der Beta-Test gut läuft, dann finales Release mitte März 2013
 
 
@@ -73,17 +73,3 @@ Problems:
    information regarding the length of the tweet will disappear completely.
    Saving all links in a Tweet also sucks because that means we need to create an extra SQL table just for
    that, also it would make loading/displaying Tweets a lot slower.
-
-Thoughts:
-
-* Replace all links with their specific display_url.
-* Since a link only takes a specified amount of length(21 ATM), the original tweet length can still
-  be calculated.
-* Does update_status shorten the URLs automatically? YES IT DOES
-* The *original* short URL can't be kept
-* _Profit_
-* Problem: The display_url Twitter gives us can't be kept. We simply use our own form. Sucks but so what.
-
-
-
-
