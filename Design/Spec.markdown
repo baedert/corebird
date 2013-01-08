@@ -9,7 +9,7 @@ Corebird is a new native Twitter client for the linux desktop written with Gtk+.
 * Native Gtk+3.x GUI
 * Uses GLib/Gtk+'s newest APIs to provide perfect desktop integration and the best UX possible.
 * No stupid webkit for tweet rendering
-* Can be minimized to the tray
+* Can be minimized to tray
 * Notification integration  
 * relatively well adjustable
 * Localized (See common questions on developer.gnome.org)
@@ -40,6 +40,10 @@ Corebird is a new native Twitter client for the linux desktop written with Gtk+.
 
 ## Release plan
 * Ende Februar 2013: Beta-test mit ausgewählten Testern
+    * Bl1nk
+    * Heinz
+    * ?
+    * Use bitbucket/issue-tracker for bugs 
 * Wenn der Beta-Test gut läuft, dann finales Release mitte März 2013
 
 
@@ -53,14 +57,14 @@ Corebird is a new native Twitter client for the linux desktop written with Gtk+.
    own style all over?
 
 ## Feature completion
-* <s>Highlight &  implement links in tweets</s>
 * Load user's last X tweets in the profiles
-* <s>Make the settings window work FFS</s>
-* <s>Implement search</s>
-* <s>Use progress indicators in search</s>
 * Add badges to the toolbar icons(?)
+* Make nickname and hashtag highlighting work again
 * Implement inline media
 * implement stupid side pane FFS
+* Ask the librest maintainer about the patches
+* Experiment with lazy loading(loading new tweets when the user
+   hits the end of the list)
 
 
 # Coding Specification
