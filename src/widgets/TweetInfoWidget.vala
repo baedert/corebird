@@ -1,37 +1,27 @@
 using Gtk;
 
 class TweetInfoWidget : PaneWidget, Gtk.ScrolledWindow{
-	// private Label text_label = new Label("");
-	private Box box;
+	private int64 tweet_id;
 
 
 	public TweetInfoWidget(Tweet t){
-		// text_label.set_use_markup(true);
-		// text_label.set_line_wrap(true);
-		// text_label.wrap_mode = Pango.WrapMode.WORD_CHAR;
-		// text_label.label = t.text;
-		// text_label.max_width_chars = 20;
-		// this.pack_start(text_label, true, true);
+		this.tweet_id = t.id;
 		UIBuilder builder = new UIBuilder("ui/tweet-info-window.ui", "main_box");
-		builder.get_label("name_label").label = "<big><b>"+t.user_name+"</b></big>";
-		box = builder.get_box("main_box");
-		// box.unparent();
+		var box = builder.get_box("main_box");
+
+
+		builder.get_label("text").label = t.text;
+		builder.get_label("name").label = "<big><b>"+t.user_name+"</b></big>";
+		builder.get_label("screen_name").label = "<small>@"+t.screen_name+"</small>";
+
+
 
 		this.hscrollbar_policy = PolicyType.NEVER;
-		//box.set_size_request(280, 2000);
 		this.add_with_viewport(box);
 		this.show_all();
 	}
 
-	public string get_id(){
-		return "bla";
-	}
-
-	public bool is_visible(){
-		return box.visible;
-	}
-
-	public Box get_widget(){
-		return box;
+	public int64 get_id(){
+		return tweet_id;
 	}
 }

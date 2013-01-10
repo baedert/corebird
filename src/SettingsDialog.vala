@@ -35,7 +35,7 @@ class SettingsDialog : PreferencesDialog {
 				
 			}
 		});
-		add_array_option(behavior, "Additional Information:", 
+		add_array_option(behavior, "Additional Information:",
 			{"Side Pane", "New Window"}, 0, () => {});
 
 

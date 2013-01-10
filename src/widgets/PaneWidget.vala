@@ -8,9 +8,7 @@ using Gtk;
  * Example:
  *   If TweetWidget implements PaneWidget it could easily provide the 
  *   tweet's ID for its id.
- *
- * TODO: I HATE THIS.
 **/
 interface PaneWidget : Gtk.Widget{
-	public abstract string get_id();
+	public abstract int64 get_id();
 }
