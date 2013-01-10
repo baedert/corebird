@@ -131,10 +131,10 @@ class MainWindow : ApplicationWindow {
 		tt.icon_name = "find";
 		left_toolbar.add(tt);
 
-		main_notebook.show_tabs   = false;
+		//main_notebook.show_tabs   = false;
 		main_notebook.show_border = false;
 		bottom_box.pack_start (main_notebook, true, true);
-		main_box.pack_end(bottom_box, true, true);
+		main_box.pack_start(bottom_box, true, true);
 
 
 
@@ -228,28 +228,27 @@ class MainWindow : ApplicationWindow {
 
 	// TODO: Make this work FFS.
 	public void toggle_right_pane(PaneWidget new_pane){
-
+		bottom_box.pack_start(new_pane, false, true);
 		int preferred_width;
 		int min_width;
-		new_pane.get_widget().set_resize_mode(ResizeMode.QUEUE);
-		new_pane.get_widget().get_preferred_width(out min_width, out preferred_width);
-
-		Gtk.Requisition req = new_pane.get_widget().get_requisition();
-		message("REQ W: %d, H: %d", req.width, req.height);
-
-
+		
 		int width, height;
 		this.get_size(out width, out height);		
 
-		
 		Allocation alloc;
-		new_pane.get_widget().get_allocation(out alloc);
+		main_notebook.get_allocation(out alloc);
+		message("W: %d", alloc.width);
+		main_notebook.set_size_request(alloc.width, alloc.height);
 
-		new_pane.get_widget().set_size_request(preferred_width, 2);
-
-		// message("Pref Width: %d, Min width: %d, Alloc: %d", preferred_width, min_width,
-		        // alloc.width);
+		
+		//new_pane.get_widget().set_size_request(250, 450);
+		new_pane.get_preferred_width(out min_width, out preferred_width);
 		this.resize(width + preferred_width , height);
-		bottom_box.pack_start(new_pane.get_widget(), false, true);
+		message("PREF: %d", preferred_width);
+		message("MIN: %d", min_width);
+
+		new_pane.get_widget().get_preferred_width(out min_width, out preferred_width);
+		message("PREF: %d", preferred_width);
+		message("MIN: %d", min_width);
 	}
 }

@@ -11,7 +11,7 @@ using Gtk;
  *
  * TODO: I HATE THIS.
 **/
-interface PaneWidget : GLib.Object{
+interface PaneWidget : Gtk.Widget{
 	public abstract string get_id();
 	public abstract void set_visible(bool visible);
 	public abstract bool is_visible();

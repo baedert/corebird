@@ -1,6 +1,6 @@
 using Gtk;
 
-class TweetInfoWidget : PaneWidget, GLib.Object{
+class TweetInfoWidget : PaneWidget, Gtk.ScrolledWindow{
 	// private Label text_label = new Label("");
 	private Box box;
 
@@ -17,6 +17,10 @@ class TweetInfoWidget : PaneWidget, GLib.Object{
 		box = builder.get_box("main_box");
 		// box.unparent();
 
+		this.hscrollbar_policy = PolicyType.NEVER;
+		//box.set_size_request(280, 2000);
+		this.add_with_viewport(box);
+		this.show_all();
 	}
 
 	public string get_id(){
@@ -25,10 +29,6 @@ class TweetInfoWidget : PaneWidget, GLib.Object{
 
 	public bool is_visible(){
 		return box.visible;
-	}
-
-	public void set_visible(bool visible){
-		box.visible = visible;
 	}
 
 	public Box get_widget(){
