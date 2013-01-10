@@ -1,7 +1,8 @@
 using Gtk;
 
 
-//TODO: If the list is completely empty and you add more items than the page can handle, the scrollWidget
+//TODO: If the list is completely empty and you add more items
+//		than the page can handle, the scrollWidget
 //      scrolls DOWN but it should stay at the top.
 class StreamContainer : TweetContainer, ScrollWidget{
 	private TweetList tweet_list = new TweetList();
@@ -118,8 +119,11 @@ class StreamContainer : TweetContainer, ScrollWidget{
 			//TODO: The queries in that lambda can ALL be cached, but that kinda breaks.
 			//	Find out how. Probably works now that it's in Tweet
 			var root = parser.get_root().get_array();
-			var loader_thread = new LoaderThread(root, main_window, tweet_list, Tweet.TYPE_NORMAL/*, (num)=> {
-				if(num > 0 && Settings.notify_new_tweets()&& !main_window.has_toplevel_focus){
+			var loader_thread = new LoaderThread(root, main_window, 
+												 tweet_list, Tweet.TYPE_NORMAL/*,
+			(num)=> {
+				if(num > 0 && Settings.notify_new_tweets()&&
+					!main_window.has_toplevel_focus){
 					string tweets = "Tweets";
 					if(num == 1)
 						tweets = "Tweet";

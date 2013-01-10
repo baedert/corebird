@@ -27,6 +27,7 @@ class SettingsDialog : PreferencesDialog {
 
 		// BEHAVIOR SETTINGS
 		int behavior = append_page("Behavior");
+		add_heading(behavior, "Application");
 		add_bool_option(behavior, "Show tray icon:", false, (val) => {
 			if (val){
 

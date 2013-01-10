@@ -50,57 +50,57 @@ class MainWindow : ApplicationWindow {
 		//Update the Twitter config
 		Twitter.update_config.begin();
 
-		// this.delete_event.connect(() => {
-		// 	//message("destroy.");
-		// 	NotificationManager.uninit();
-		// 	// if (Settings.show_tray_icon()){
-		// 		// 'Minimize to tray'
-		// 		// set_visible(false);
-		// 	// }else{
-		// 		save_geometry();
-		// 		// Gtk.main_quit();
-		// 		this.application.release();
-		// 	// }
-		// 	return true;
-		// });
+		this.delete_event.connect(() => {
+			//message("destroy.");
+			NotificationManager.uninit();
+			// if (Settings.show_tray_icon()){
+				// 'Minimize to tray'
+				// set_visible(false);
+			// }else{
+				save_geometry();
+				// Gtk.main_quit();
+				this.application.release();
+			// }
+			return true;
+		});
 
-		// new_tweet_button.clicked.connect( () => {
-		//  	NewTweetWindow win = new NewTweetWindow(this);
-		// 	win.show_all();
+		new_tweet_button.clicked.connect( () => {
+		 	NewTweetWindow win = new NewTweetWindow(this);
+			win.show_all();
 
-		// });
+		});
 
-		// //Load custom style sheet
-		// try{
-		// 	CssProvider provider = new CssProvider();
-		// 	provider.load_from_file(File.new_for_path("ui/style.css"));
-		// 	Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(), provider,
-		//                                          STYLE_PROVIDER_PRIORITY_APPLICATION);
-		// }catch(GLib.Error e){
-		// 	warning("Error while loading ui/style.css: %s", e.message);
-		// }
+		//Load custom style sheet
+		try{
+			CssProvider provider = new CssProvider();
+			provider.load_from_file(File.new_for_path("ui/style.css"));
+			Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(), provider,
+		                                         STYLE_PROVIDER_PRIORITY_APPLICATION);
+		}catch(GLib.Error e){
+			warning("Error while loading ui/style.css: %s", e.message);
+		}
 
-		// left_toolbar.orientation = Orientation.VERTICAL;
-		// left_toolbar.set_style(ToolbarStyle.ICONS);
+		left_toolbar.orientation = Orientation.VERTICAL;
+		left_toolbar.set_style(ToolbarStyle.ICONS);
 
-		// primary_toolbar.orientation = Orientation.HORIZONTAL;
-		// primary_toolbar.set_style(ToolbarStyle.ICONS);
-		// primary_toolbar.get_style_context().add_class("primary-toolbar");
-		// primary_toolbar.set_visible(true);
-
-
-		// expander_item.draw = false;
-		// expander_item.set_expand(true);
+		primary_toolbar.orientation = Orientation.HORIZONTAL;
+		primary_toolbar.set_style(ToolbarStyle.ICONS);
+		primary_toolbar.get_style_context().add_class("primary-toolbar");
+		primary_toolbar.set_visible(true);
 
 
-		// avatar_button.set_icon_widget(new Image.from_file(User.get_avatar_path()));
-		// avatar_button.clicked.connect( () => {
-		// 	ProfileDialog pd = new ProfileDialog();
-		// 	pd.show_all();
-		// });
+		expander_item.draw = false;
+		expander_item.set_expand(true);
 
-		// //Update the user's info
-		// User.update_info.begin((Image)avatar_button.icon_widget);
+
+		avatar_button.set_icon_widget(new Image.from_file(User.get_avatar_path()));
+		avatar_button.clicked.connect( () => {
+			ProfileDialog pd = new ProfileDialog();
+			pd.show_all();
+		});
+
+		//Update the user's info
+		User.update_info.begin((Image)avatar_button.icon_widget);
 
 		// // Add all tool buttons for the containers
 		foreach(var tc in containers){
@@ -108,22 +108,22 @@ class MainWindow : ApplicationWindow {
 			main_notebook.append_page(tc);
 		}
 
-		// refresh_button.clicked.connect( () => {
-		// 	//Refresh the current container
-		// 	containers[main_notebook.page].refresh();
-		// });
-		// settings_button.clicked.connect( () => {
-		// 	SettingsDialog sd = new SettingsDialog(this);
-		// 	sd.show_all();
-		// });
-		// bottom_box.pack_start(left_toolbar, false, false);
+		refresh_button.clicked.connect( () => {
+			//Refresh the current container
+			containers[main_notebook.page].refresh();
+		});
+		settings_button.clicked.connect( () => {
+			SettingsDialog sd = new SettingsDialog(this);
+			sd.show_all();
+		});
+		bottom_box.pack_start(left_toolbar, false, false);
 
-		// if (Settings.show_primary_toolbar()){
-		// 	main_box.pack_start(primary_toolbar, false, false);
-		// 	setup_primary_toolbar();
-		// }else{
-		// 	setup_left_toolbar();
-		// }
+		if (Settings.show_primary_toolbar()){
+			main_box.pack_start(primary_toolbar, false, false);
+			setup_primary_toolbar();
+		}else{
+			setup_left_toolbar();
+		}
 
 
 		// TODO: Implement TestToolButton
@@ -133,6 +133,7 @@ class MainWindow : ApplicationWindow {
 
 		//main_notebook.show_tabs   = false;
 		main_notebook.show_border = false;
+		main_notebook.show_tabs = false;
 		bottom_box.pack_start (main_notebook, true, true);
 		main_box.pack_start(bottom_box, true, true);
 
@@ -245,18 +246,18 @@ class MainWindow : ApplicationWindow {
 
 		Allocation alloc;
 		main_notebook.get_allocation(out alloc);
-		message("W: %d", alloc.width);
+		// message("W: %d", alloc.width);
 		main_notebook.set_size_request(alloc.width, alloc.height);
 
 		
 		//new_pane.get_widget().set_size_request(250, 450);
 		new_pane.get_preferred_width(out min_width, out preferred_width);
 		this.resize(width + preferred_width , height);
-		message("PREF: %d", preferred_width);
-		message("MIN: %d", min_width);
+		// message("PREF: %d", preferred_width);
+		// message("MIN: %d", min_width);
 
-		new_pane.get_widget().get_preferred_width(out min_width, out preferred_width);
-		message("PREF: %d", preferred_width);
-		message("MIN: %d", min_width);
+		// new_pane.get_widget().get_preferred_width(out min_width, out preferred_width);
+		// message("PREF: %d", preferred_width);
+		// message("MIN: %d", min_width);
 	}
 }
