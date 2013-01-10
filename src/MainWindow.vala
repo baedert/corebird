@@ -226,7 +226,15 @@ class MainWindow : ApplicationWindow {
 	}
 
 
-	// TODO: Make this work FFS.
+	/**
+	*  Toggles the right pane of the window.
+	*  If the given pane is the same as the one currently shown,
+	*  the current one will be hidden, not shown.
+	*  If it's not the same, the current one will be removed from
+	*  the window and the given pane will be added and shown.
+	* 
+	*  @param new_pane the pane to show/hide
+	**/
 	public void toggle_right_pane(PaneWidget new_pane){
 		bottom_box.pack_start(new_pane, false, true);
 		int preferred_width;
