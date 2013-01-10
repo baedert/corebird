@@ -15,6 +15,7 @@ class StreamContainer : TweetContainer, ScrollWidget{
 	public StreamContainer(int id){
 		base();
 		this.id = id;
+		this.hscrollbar_policy = PolicyType.NEVER;
 
 		//Start the update timeout
 		int minutes = Settings.get_update_interval();
