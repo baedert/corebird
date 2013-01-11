@@ -12,7 +12,7 @@ class Query{
 	}
 	
 	public static Sqlite.Database db;	
-	private StringBuilder query = new StringBuilder();
+	protected StringBuilder query = new StringBuilder();
 
 	public Query(){
 	}

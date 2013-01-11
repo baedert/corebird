@@ -2,15 +2,14 @@ using Gtk;
 
 /**
  * A normal box, but with an image as background.
- * The image will always be drawn at the upper right corner and it won't be stretched.
+ * The image will always be drawn at the upper left corner
+ * and it won't be stretched.(TODO: Change this)
  */
 class ImageBox : Gtk.Box  {
 	public Gdk.Pixbuf pixbuf;
 
 	public ImageBox(Orientation orientation, int spacing){
 		GLib.Object(orientation: orientation, spacing: spacing);
-		//Default size of mobile-banner
-		set_size_request(160, 320);
 	}
 
 	public override bool draw(Cairo.Context c){
@@ -24,10 +23,9 @@ class ImageBox : Gtk.Box  {
 		return false;
 	}
 
-	public void set_pixbuf(Gdk.Pixbuf p){
+	public void set_pixbuf(Gdk.Pixbuf p) {
 		this.pixbuf = p;
 		this.queue_draw();
-		set_size_request(80, p.get_height());
 	}
 	//TODO: Actually stretch/shrink the background image.
 	//TODO: Implement second overlay image.(?)
