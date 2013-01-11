@@ -1,0 +1,49 @@
+
+
+
+using Sqlite;
+
+class InsertQuery : Query {
+	private Gee.HashMap<string, string> binds = new Gee.HashMap<string, string>();
+
+	public InsertQuery(bool update_or_insert = false){
+		if(update_or_insert)
+			query.append("INSERT OR REPLACE INTO");
+		else
+			query.append("INSERT INTO");
+	}
+
+	public void bind(string column, string value){
+		binds.set(column, value);
+	}
+
+
+	public void select(string table){
+		query.append("`").append(table).append("`");
+	}
+
+	public void execute(Sqlite.Callback? callback = null){
+		if(binds.size == 0)
+			error("No values bind");
+		//Actually build the query
+		var key_it = binds.keys.iterator();
+		query.append("(");
+		query.append("`").append(key_it.get())
+			 .append("`");
+		for(var has_next = key_it.next(); has_next; has_next = key_it.next()){
+			query.append(", `").append(key_it.get()).append("`");
+		}
+		query.append(") VALUES (");
+
+		var value_it = binds.values.iterator();
+
+		query.append("'").append(value_it.get()).append("'");
+		for(var has_next = value_it.next(); has_next; has_next = value_it.next()){
+			query.append(", `").append(value_it.get()).append("`");
+		}
+		query.append(");");
+		Query.db.exec(query.str, callback);
+	}
+
+
+}

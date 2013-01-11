@@ -100,7 +100,8 @@ vala_precompile(VALA_C
 	src/util/UIBuilder.vala
 	src/util/Utils.vala
 	src/util/Benchmark.vala
-	src/util/QueryBuilder.vala
+	src/sql/Query.vala
+	src/sql/InsertQuery.vala
 PACKAGES
 	glib-2.0
 	gtk+-3.0
