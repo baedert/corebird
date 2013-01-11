@@ -4,6 +4,7 @@ src/*.c
 src/widgets/*.c
 src/containers/*.c
 src/util/*.c
+*.c
 src/sql/*.c
 CMakeCache.txt
 CMakeFiles
