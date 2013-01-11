@@ -119,7 +119,7 @@ UIBuilder* ui_builder_construct (GType object_type, const gchar* path, const gch
 #line 13 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 			if (_inner_error_ != NULL) {
 #line 122 "UIBuilder.c"
-				goto __catch49_g_error;
+				goto __catch50_g_error;
 			}
 		} else {
 			GtkBuilder* _tmp7_;
@@ -133,12 +133,12 @@ UIBuilder* ui_builder_construct (GType object_type, const gchar* path, const gch
 #line 15 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 			if (_inner_error_ != NULL) {
 #line 136 "UIBuilder.c"
-				goto __catch49_g_error;
+				goto __catch50_g_error;
 			}
 		}
 	}
-	goto __finally49;
-	__catch49_g_error:
+	goto __finally50;
+	__catch50_g_error:
 	{
 		GError* e = NULL;
 		const gchar* _tmp9_;
@@ -160,7 +160,7 @@ UIBuilder* ui_builder_construct (GType object_type, const gchar* path, const gch
 		_g_error_free0 (e);
 #line 162 "UIBuilder.c"
 	}
-	__finally49:
+	__finally50:
 #line 11 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"
 	if (_inner_error_ != NULL) {
 #line 11 "/home/baedert/Code/Vala/Corebird/src/util/UIBuilder.vala"

@@ -56,10 +56,14 @@ class FirstRunWindow : ApplicationWindow {
 
 	private void request_token(){
     	GLib.Idle.add(() => {
-			Twitter.proxy.request_token ("oauth/request_token", "oob");
-			GLib.AppInfo.launch_default_for_uri(
-				"http://twitter.com/oauth/authorize?oauth_token=%s"
+			try{
+				Twitter.proxy.request_token ("oauth/request_token", "oob");
+				GLib.AppInfo.launch_default_for_uri(
+					"http://twitter.com/oauth/authorize?oauth_token=%s"
 	                                    .printf(Twitter.proxy.get_token()), null);
+			}catch(GLib.Error e){
+				critical("ERROR(request_token): %s", e.message);
+			}
 			return false;
 		});
 	}

@@ -58,6 +58,9 @@
 	color: black;
 	background-color: red;
 }
+.text-button:backdrop{
+	background-color: transparent;
+}
 
 .image-button {
 	padding: 0px;

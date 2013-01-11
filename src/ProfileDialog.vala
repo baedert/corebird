@@ -87,7 +87,7 @@ class ProfileDialog : Gtk.Window {
 
 
 
-		this.resize(320, 450);
+		this.resize(520, 680);
 		this.add(main_box);
 	}
 
@@ -197,9 +197,9 @@ class ProfileDialog : Gtk.Window {
 
 			var root = parser.get_root().get_object().get_object_member("sizes");
 			string banner_url;
-			if (root.has_member("mobile"))
-				banner_url = root.get_object_member("mobile").get_string_member("url");
-			else
+			// if (root.has_member("mobile"))
+				// banner_url = root.get_object_member("mobile").get_string_member("url");
+			// else
 				banner_url = root.get_object_member("web").get_string_member("url");
 
 			string banner_on_disk = "assets/banners/"+screen_name+".png";

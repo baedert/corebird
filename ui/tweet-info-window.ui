@@ -106,6 +106,7 @@
         <property name="use_markup">True</property>
         <property name="wrap">True</property>
         <property name="selectable">True</property>
+        <property name="max_width_chars">20</property>
         <property name="track_visited_links">False</property>
       </object>
       <packing>

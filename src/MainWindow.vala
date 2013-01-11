@@ -135,7 +135,7 @@ class MainWindow : ApplicationWindow {
 		main_notebook.show_border = false;
 		main_notebook.show_tabs = false;
 		bottom_box.pack_start (main_notebook, true, true);
-		main_box.pack_start(bottom_box, true, true);
+		main_box.pack_end(bottom_box, true, true);
 
 
 
@@ -248,12 +248,13 @@ class MainWindow : ApplicationWindow {
 			
 			right_pane.visible = !right_pane.visible;
 			return;
-		}else if(right_pane != null){
+		}
+		else if(right_pane != null){
 			//Remove current pane
-			width -= right_pane.get_allocated_width();
+			width -= right_pane.get_width();
 			bottom_box.remove(right_pane);
 		}
-		bottom_box.pack_start(new_pane, true, true);
+		bottom_box.pack_end(new_pane, false, true);
 
 		Allocation alloc;
 		main_notebook.get_allocation(out alloc);

@@ -26,6 +26,7 @@ class ImageBox : Gtk.Box  {
 	public void set_pixbuf(Gdk.Pixbuf p) {
 		this.pixbuf = p;
 		this.queue_draw();
+		this.set_size_request(p.get_width(), p.get_height());
 	}
 	//TODO: Actually stretch/shrink the background image.
 	//TODO: Implement second overlay image.(?)
