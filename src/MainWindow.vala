@@ -253,7 +253,7 @@ class MainWindow : ApplicationWindow {
 			width -= right_pane.get_allocated_width();
 			bottom_box.remove(right_pane);
 		}
-		bottom_box.pack_start(new_pane, false, true);
+		bottom_box.pack_start(new_pane, true, true);
 
 		Allocation alloc;
 		main_notebook.get_allocation(out alloc);

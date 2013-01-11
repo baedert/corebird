@@ -31,6 +31,7 @@ class Corebird : Gtk.Application {
 			// The following should give better performance, but it also breaks
 			// loadnig new tweets. :'(
 			// db.execute("PRAGMA synchronous = off"); 
+			// 
 			Corebird.create_tables();
 
 			// Sqlite.Database.open("Corebird.db", out Query.db);
@@ -52,6 +53,11 @@ class Corebird : Gtk.Application {
 		this.activate.connect( ()  => {});
 		this.set_inactivity_timeout(500);
 
+	}
+
+
+	public void add_main_window(){
+		this.add_window(new MainWindow(this));
 	}
 
 	/**

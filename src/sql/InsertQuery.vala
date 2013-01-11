@@ -6,11 +6,14 @@ using Sqlite;
 class InsertQuery : Query {
 	private Gee.HashMap<string, string> binds = new Gee.HashMap<string, string>();
 
-	public InsertQuery(bool update_or_insert = false){
+	public InsertQuery(Sqlite.Database? local_db = null, 
+	                   bool update_or_insert = false){
 		if(update_or_insert)
 			query.append("INSERT OR REPLACE INTO");
 		else
 			query.append("INSERT INTO");
+
+		this.local_db = local_db;
 	}
 
 	public void bind(string column, string value){
@@ -43,7 +46,11 @@ class InsertQuery : Query {
 			query.append(", `").append(value_it.get()).append("`");
 		}
 		query.append(");");
-		Query.db.exec(query.str, callback);
+
+		if(local_db == null)
+			Query.db.exec(query.str, callback);
+		else
+			local_db.exec(query.str, callback);
 
 		base.execute(callback);
 	}

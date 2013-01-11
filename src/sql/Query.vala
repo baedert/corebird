@@ -13,8 +13,10 @@ class Query{
 	
 	public static Sqlite.Database db;	
 	protected StringBuilder query = new StringBuilder();
+	protected unowned Sqlite.Database local_db;
 
-	public Query(){
+	public Query(Sqlite.Database? local_db = null){
+		this.local_db = local_db;
 	}
 
 
@@ -58,7 +60,10 @@ class Query{
 	}
 
 	public void execute(Sqlite.Callback? callback = null){
-		Query.db.exec(query.str, callback);
+		if (local_db == null)
+			Query.db.exec(query.str, callback);
+		else
+			local_db.exec(query.str, callback);
 	}
 
 

@@ -8,12 +8,12 @@ public class UIBuilder {
 
 
 	public UIBuilder(string path, string object_name = ""){
-		try{
+		try {
 			if(object_name != "")
 				builder.add_objects_from_file(path, {object_name});
 			else
 				builder.add_from_file(path);
-		}catch(GLib.Error e){
+		} catch(GLib.Error e) {
 			critical("Loading %s: %s", path, e.message);
 		}
 	}
@@ -40,5 +40,13 @@ public class UIBuilder {
 
 	public ToggleButton get_toggle(string name){
 		return builder.get_object(name) as ToggleButton;
+	}
+
+	public Notebook get_notebook(string name){
+		return builder.get_object(name) as Notebook;
+	}
+
+	public Entry get_entry(string name){
+		return builder.get_object(name) as Entry;
 	}
 }
