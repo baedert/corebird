@@ -18,11 +18,11 @@ class InsertQuery : Query {
 	}
 
 
-	public void select(string table){
+	public new void select(string table){
 		query.append("`").append(table).append("`");
 	}
 
-	public void execute(Sqlite.Callback? callback = null){
+	public new void execute(Sqlite.Callback? callback = null){
 		if(binds.size == 0)
 			error("No values bind");
 		//Actually build the query
@@ -43,6 +43,8 @@ class InsertQuery : Query {
 		}
 		query.append(");");
 		Query.db.exec(query.str, callback);
+
+		base.execute(callback);
 	}
 
 
