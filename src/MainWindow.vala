@@ -248,6 +248,10 @@ class MainWindow : ApplicationWindow {
 			
 			right_pane.visible = !right_pane.visible;
 			return;
+		}else if(right_pane != null){
+			//Remove current pane
+			width -= right_pane.get_allocated_width();
+			bottom_box.remove(right_pane);
 		}
 		bottom_box.pack_start(new_pane, false, true);
 
