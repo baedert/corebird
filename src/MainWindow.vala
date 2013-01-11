@@ -237,27 +237,26 @@ class MainWindow : ApplicationWindow {
 	*  @param new_pane the pane to show/hide
 	**/
 	public void toggle_right_pane(PaneWidget new_pane){
-		bottom_box.pack_start(new_pane, false, true);
-		int preferred_width;
-		int min_width;
-		
 		int width, height;
-		this.get_size(out width, out height);		
+		this.get_size(out width, out height);	
+
+		if(right_pane != null && new_pane.get_id() == right_pane.get_id()){
+			if(right_pane.visible)
+				this.resize(width - new_pane.get_width(), height);
+			else
+				this.resize(width + new_pane.get_width(), height);
+			
+			right_pane.visible = !right_pane.visible;
+			return;
+		}
+		bottom_box.pack_start(new_pane, false, true);
 
 		Allocation alloc;
 		main_notebook.get_allocation(out alloc);
-		// message("W: %d", alloc.width);
 		main_notebook.set_size_request(alloc.width, alloc.height);
 
 		
-		//new_pane.get_widget().set_size_request(250, 450);
-		new_pane.get_preferred_width(out min_width, out preferred_width);
-		this.resize(width + preferred_width , height);
-		// message("PREF: %d", preferred_width);
-		// message("MIN: %d", min_width);
-
-		// new_pane.get_widget().get_preferred_width(out min_width, out preferred_width);
-		// message("PREF: %d", preferred_width);
-		// message("MIN: %d", min_width);
+		this.resize(width + new_pane.get_width(), height);
+		this.right_pane = new_pane;
 	}
 }

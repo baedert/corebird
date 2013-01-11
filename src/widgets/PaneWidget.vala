@@ -11,4 +11,5 @@ using Gtk;
 **/
 interface PaneWidget : Gtk.Widget{
 	public abstract int64 get_id();
+	public abstract int get_width();
 }
