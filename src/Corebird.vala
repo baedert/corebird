@@ -32,6 +32,8 @@ class Corebird : Gtk.Application {
 			// loadnig new tweets. :'(
 			// db.execute("PRAGMA synchronous = off"); 
 			Corebird.create_tables();
+
+			// Sqlite.Database.open("Corebird.db", out Query.db);
 		}catch(SQLHeavy.Error e){
 			error("SQL ERROR: %s", e.message);
 		}

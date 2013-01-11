@@ -2,7 +2,7 @@
 
 
 using Sqlite;
-
+// TODO: How to best provide data to the actual result of a query?
 class InsertQuery : Query {
 	private Gee.HashMap<string, string> binds = new Gee.HashMap<string, string>();
 
@@ -25,6 +25,7 @@ class InsertQuery : Query {
 	public new void execute(Sqlite.Callback? callback = null){
 		if(binds.size == 0)
 			error("No values bind");
+
 		//Actually build the query
 		var key_it = binds.keys.iterator();
 		query.append("(");
