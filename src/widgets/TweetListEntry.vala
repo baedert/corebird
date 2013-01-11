@@ -118,11 +118,8 @@ class TweetListEntry : Gtk.Box{
 		ab.set_halign(Align.END);
 		ab.set_valign(Align.FILL);
 		ab.clicked.connect(() => {
-			// var w = new TweetInfoWindow(tweet);
-			// w.show_all();
-			var a = new TweetInfoWidget(tweet);
+			var a = new TweetInfoWidget(tweet, window);
 			window.toggle_right_pane(a);
-			// window.toggle_right_pane(new TweetInfoWidget(tweet));
 		});
 		// EXPAND, FILL
 		right_box.pack_start(ab, false, true);

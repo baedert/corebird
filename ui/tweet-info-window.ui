@@ -4,6 +4,7 @@
   <object class="GtkBox" id="main_box">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
+    <property name="border_width">4</property>
     <property name="orientation">vertical</property>
     <property name="spacing">5</property>
     <child>
@@ -68,13 +69,19 @@
         </child>
         <child>
           <object class="GtkButton" id="close_button">
-            <property name="label">gtk-close</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="halign">end</property>
             <property name="valign">start</property>
-            <property name="use_stock">True</property>
+            <property name="relief">none</property>
+            <child>
+              <object class="GtkImage" id="image4">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="stock">gtk-close</property>
+              </object>
+            </child>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -127,19 +134,24 @@
           </packing>
         </child>
         <child>
-          <object class="GtkButtonBox" id="buttonbox2">
+          <object class="GtkBox" id="box3">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="layout_style">end</property>
             <style>
               <class name="linked"/>
             </style>
             <child>
               <object class="GtkButton" id="reply_button">
-                <property name="label" translatable="yes">Reply</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <child>
+                  <object class="GtkImage" id="image1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="stock">gtk-revert-to-saved</property>
+                  </object>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -149,10 +161,16 @@
             </child>
             <child>
               <object class="GtkToggleButton" id="retweet_button">
-                <property name="label" translatable="yes">RT</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <child>
+                  <object class="GtkImage" id="image2">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="stock">gtk-justify-center</property>
+                  </object>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -162,10 +180,16 @@
             </child>
             <child>
               <object class="GtkToggleButton" id="favorite_button">
-                <property name="label" translatable="yes">FAV</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <child>
+                  <object class="GtkImage" id="image3">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="stock">gtk-close</property>
+                  </object>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -176,7 +200,7 @@
           </object>
           <packing>
             <property name="expand">False</property>
-            <property name="fill">False</property>
+            <property name="fill">True</property>
             <property name="pack_type">end</property>
             <property name="position">1</property>
           </packing>
