@@ -138,12 +138,16 @@ class Tweet : GLib.Object{
 		this.load_avatar();
 		if(!this.has_avatar()){
 			File av = File.new_for_uri(this.avatar_url);
-			File dest = File.new_for_path("assets/avatars/%s".printf(this.avatar_name));
+			File dest = File.new_for_path("assets/avatars/"+this.avatar_name);
+			// TODO: Use libsoup and not GIO for downloading the avatar.
+			//       It's a dependency anyway
 			av.copy_async.begin(dest, FileCopyFlags.OVERWRITE, Priority.DEFAULT, null, null, (obj, res) => {
 				try{
 					av.copy_async.end(res);
 				}catch(GLib.Error e){
-					warning("Couldn't download avatar for %s: %s", this.screen_name, e.message);
+					warning("Couldn't download avatar for %s(%s): %s", this.screen_name,
+						this.avatar_url, e.message);
+					return;
 				}
 				message("Loaded Avatar for %s", this.screen_name);
 				this.load_avatar();
