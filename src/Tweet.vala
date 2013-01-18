@@ -133,18 +133,21 @@ class Tweet : GLib.Object{
 		this.time_delta  = Utils.get_time_delta(dt, now);
 
 
-		//TODO: Since the avatar gets loaded asynchronously, it's possible that the same avatar gets loaded
-		//      several times. Introduce some kind of lock here.
 		this.load_avatar();
 		if(!this.has_avatar()){
 			// File av = File.new_for_uri(this.avatar_url);
 			File dest = File.new_for_path("assets/avatars/"+this.avatar_name);
+			// This is our lock now. Assuming that not 2 tweets create this file at exactly
+			// the same time, the avatar won't be loaded twice.
+			FileIOStream io_stream = dest.create_readwrite(FileCreateFlags.PRIVATE);
 			var session = new Soup.SessionAsync();
+			// TODO: This is now async!
 			var msg = new Soup.Message("GET", this.avatar_url);
 			session.send_message(msg);
-			FileIOStream io_stream = dest.create_readwrite(FileCreateFlags.PRIVATE);
+			
 			io_stream.output_stream.write(msg.response_body.data);
 			this.load_avatar();
+			message("Loaded avatar for %s", screen_name);
 			//Make the corners round
 			// TODO: How to write it as gif/jpg file?
 			// Cairo.ImageSurface frame = new Cairo.ImageSurface.from_png("assets/frame.png");

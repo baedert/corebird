@@ -6,31 +6,38 @@ using Sqlite;
 class InsertQuery : Query {
 	private Gee.HashMap<string, string> binds = new Gee.HashMap<string, string>();
 
-	public InsertQuery(Sqlite.Database? local_db = null, 
-	                   bool update_or_insert = false){
-		if(update_or_insert)
-			query.append("INSERT OR REPLACE INTO");
+	public InsertQuery(bool replace = false, Sqlite.Database? local_db = null){
+		if(replace)
+			query.append("INSERT OR REPLACE INTO ");
 		else
-			query.append("INSERT INTO");
+			query.append("INSERT INTO ");
 
 		this.local_db = local_db;
 	}
 
-	public void bind(string column, string value){
+	public void bind_string(string column, string value){
 		binds.set(column, value);
 	}
-
-
-	public new void select(string table){
-		query.append("`").append(table).append("`");
+	public void bind_int(string column, int value){
+		binds.set(column, value.to_string());
+	}
+	public void bind_float(string column, float value){
+		binds.set(column, value.to_string());
 	}
 
-	public new void execute(Sqlite.Callback? callback = null){
+
+	public new InsertQuery select(string table){
+		query.append("`").append(table).append("`");
+		return this;
+	}
+
+	public new void execute(){
 		if(binds.size == 0)
-			error("No values bind");
+			error("No values bound");
 
 		//Actually build the query
 		var key_it = binds.keys.iterator();
+		key_it.next();
 		query.append("(");
 		query.append("`").append(key_it.get())
 			 .append("`");
@@ -40,19 +47,20 @@ class InsertQuery : Query {
 		query.append(") VALUES (");
 
 		var value_it = binds.values.iterator();
-
+		value_it.next();
 		query.append("'").append(value_it.get()).append("'");
 		for(var has_next = value_it.next(); has_next; has_next = value_it.next()){
-			query.append(", `").append(value_it.get()).append("`");
+			query.append(", '").append(value_it.get()).append("'");
 		}
+
 		query.append(");");
 
-		if(local_db == null)
-			Query.db.exec(query.str, callback);
-		else
-			local_db.exec(query.str, callback);
+		// if(local_db == null)
+		// 	Query.db.exec(query.str);
+		// else
+		// 	local_db.exec(query.str);
 
-		base.execute(callback);
+		// base.execute();
 	}
 
 
