@@ -13,7 +13,7 @@ class Corebird : Gtk.Application {
 		this.register_session = true;
 		
 		//TODO: This is possibly wrong:
-		this.register();
+		this.register(); 
 
 		// If the user wants the dark theme, apply it
 		if(Settings.use_dark_theme()){
@@ -64,7 +64,9 @@ class Corebird : Gtk.Application {
 
 	}
 
-
+	/**
+	 * Adds a main window to this application
+	 */
 	public void add_main_window(){
 		this.add_window(new MainWindow(this));
 	}

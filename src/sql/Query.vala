@@ -66,6 +66,10 @@ class Query{
 			local_db.exec(query.str, callback);
 	}
 
+	public static void execute_query(string sql){
+		Query.db.exec(sql, null);
+	}
+
 
 	public string get_sql(){
 		return query.str;

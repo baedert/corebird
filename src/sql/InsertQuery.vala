@@ -21,10 +21,13 @@ class InsertQuery : Query {
 	public void bind_int(string column, int value){
 		binds.set(column, value.to_string());
 	}
+
+	public void bind_int64(string column, int64 value){
+		binds.set(column, value.to_string());
+	}
 	public void bind_float(string column, float value){
 		binds.set(column, value.to_string());
 	}
-
 
 	public new InsertQuery select(string table){
 		query.append("`").append(table).append("`");
