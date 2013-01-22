@@ -6,8 +6,8 @@ using Gtk;
 class TweetListEntry : Gtk.Box{
 	private static GLib.Regex? hashtag_regex = null;
 	private static GLib.Regex? user_regex    = null;
-	// private ImageButton avatar_button = new ImageButton();
-	private Image avatar_button 	  = new Image();
+	// private ImageButton avatar = new ImageButton();
+	private Image avatar 	  = new Image();
 	private Label text                = new Label("");
 	private TextButton author_button;
 	private Label screen_name	      = new Label("");
@@ -25,7 +25,7 @@ class TweetListEntry : Gtk.Box{
 		if (hashtag_regex == null){
 			try{
 				hashtag_regex = new GLib.Regex("#\\w+", RegexCompileFlags.OPTIMIZE);	
-				user_regex = new GLib.Regex("@\\w+", RegexCompileFlags.OPTIMIZE);
+				user_regex    = new GLib.Regex("@\\w+", RegexCompileFlags.OPTIMIZE);
 			}catch(GLib.RegexError e){
 				warning("Error while creating regexes: %s", e.message);
 			}
@@ -34,16 +34,13 @@ class TweetListEntry : Gtk.Box{
 
 		// If the tweet's avatar changed, also reset it in the widgets
 		tweet.notify["avatar"].connect( () => {
-			// avatar_button.set_bg(tweet.avatar);
-			avatar_button.pixbuf = tweet.avatar;
-			avatar_button.queue_draw();
+			avatar.pixbuf = tweet.avatar;
+			avatar.queue_draw();
 		});
 
 
 		// Set the correct CSS style class
 		get_style_context().add_class("tweet");
- 		//if (tweet.screen_name == User.screen_name)
-		//	get_style_context().add_class("user-tweet");
 		get_style_context().add_class("row");
 			
 
@@ -64,13 +61,13 @@ class TweetListEntry : Gtk.Box{
 
 
 		var left_box = new Box(Orientation.VERTICAL, 3);
-		avatar_button.set_valign(Align.START);
-		avatar_button.get_style_context().add_class("avatar");
-		avatar_button.pixbuf = tweet.avatar;
-		// avatar_button.set_bg(tweet.avatar);
-		avatar_button.margin_top = 3;
-		avatar_button.margin_left = 3;
-		left_box.pack_start(avatar_button, false, false);
+		avatar.set_valign(Align.START);
+		avatar.get_style_context().add_class("avatar");
+		avatar.pixbuf = tweet.avatar;
+		// avatar.set_bg(tweet.avatar);
+		avatar.margin_top = 3;
+		avatar.margin_left = 3;
+		left_box.pack_start(avatar, false, false);
 
 		if(tweet.favorited){
 			left_box.pack_start(new Image.from_pixbuf(Twitter.favorited_img), false, false);

@@ -1,6 +1,7 @@
 using Gtk;
 
 // TODO: Make tweet loading in the main-timeline work!
+// TODO: Look at EggListBox's source code
 class Tweet : GLib.Object{
 	public static int TYPE_NORMAL   = 1;
 	public static int TYPE_MENTION  = 2;
@@ -21,7 +22,9 @@ class Tweet : GLib.Object{
 	public bool is_retweet;
 	public Gdk.Pixbuf avatar {get; set;}
 	public string time_delta = "-1s";
+	/** The avatar url on the server */
 	public string avatar_url;
+	/** The name of the avatar image file on the hard disk */
 	public string avatar_name;
 	public string screen_name;
 
@@ -140,7 +143,6 @@ class Tweet : GLib.Object{
 			// This is our lock now. Assuming that not 2 tweets create this file at exactly
 			// the same time, the avatar won't be loaded twice.
 			FileIOStream io_stream = dest.create_readwrite(FileCreateFlags.PRIVATE);
-			// TODO: This is not async!
 			GLib.Idle.add(() => {
 				var session = new Soup.SessionAsync();
 				var msg = new Soup.Message("GET", this.avatar_url);
