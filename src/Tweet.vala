@@ -1,6 +1,5 @@
 using Gtk;
 
-// TODO: Rework the author database
 // TODO: Make tweet loading in the main-timeline work!
 class Tweet : GLib.Object{
 	public static int TYPE_NORMAL   = 1;
@@ -9,6 +8,7 @@ class Tweet : GLib.Object{
 
 	private static SQLHeavy.Query cache_query;
 	private static SQLHeavy.Query author_query;
+	private static GLib.Regex link_regex;
 
 
 	public int64 id;
@@ -31,7 +31,7 @@ class Tweet : GLib.Object{
 			cache_query = new SQLHeavy.Query(Corebird.db,
 			"INSERT INTO `cache`(`id`, `text`,`user_id`, `user_name`, `is_retweet`,
 			                     `retweeted_by`, `retweeted`, `favorited`, `created_at`,
-			                      `added_to_stream`, `avatar_name`, `screen_name`, `type`) 
+			                     `added_to_stream`, `avatar_name`, `screen_name`, `type`) 
 			VALUES (:id, :text, :user_id, :user_name, :is_retweet, :retweeted_by,
 			        :retweeted, :favorited, :created_at, :added_to_stream, :avatar_name,
 			        :screen_name, :type);");		
@@ -121,6 +121,7 @@ class Tweet : GLib.Object{
 			medias.foreach_element((arr, index, node) => {
 				var url = node.get_object();
 				string expanded_url = "https://"+url.get_string_member("display_url");
+				expanded_url = expanded_url.replace("&", "&amp;");
 				this.text = this.text.replace(url.get_string_member("url"),
 				    expanded_url);
 			});
@@ -135,19 +136,22 @@ class Tweet : GLib.Object{
 
 		this.load_avatar();
 		if(!this.has_avatar()){
-			// File av = File.new_for_uri(this.avatar_url);
 			File dest = File.new_for_path("assets/avatars/"+this.avatar_name);
 			// This is our lock now. Assuming that not 2 tweets create this file at exactly
 			// the same time, the avatar won't be loaded twice.
 			FileIOStream io_stream = dest.create_readwrite(FileCreateFlags.PRIVATE);
-			var session = new Soup.SessionAsync();
 			// TODO: This is not async!
-			var msg = new Soup.Message("GET", this.avatar_url);
-			session.send_message(msg);
-			
-			io_stream.output_stream.write(msg.response_body.data);
-			this.load_avatar();
-			message("Loaded avatar for %s", screen_name);
+			GLib.Idle.add(() => {
+				var session = new Soup.SessionAsync();
+				var msg = new Soup.Message("GET", this.avatar_url);
+				session.send_message(msg);
+				
+				io_stream.output_stream.write(msg.response_body.data);
+				this.load_avatar();
+				message("Loaded avatar for %s", screen_name);
+				return false;
+			});
+
 			//Make the corners round
 			// TODO: How to write it as gif/jpg file?
 			// Cairo.ImageSurface frame = new Cairo.ImageSurface.from_png("assets/frame.png");
@@ -188,11 +192,10 @@ class Tweet : GLib.Object{
 			if (author_result.finished){
 				//The author is not in the DB so we insert him
 				message("Inserting new author %s", t.screen_name);
-				SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db,
-				"INSERT INTO `people`(id,name,screen_name,avatar_url,avatar_name)
-				 VALUES ('%d', '%s', '%s', '%s', '%s');".printf(t.user_id, t.user_name,
-				t.screen_name, t.avatar_url, t.avatar_name));
-				q.execute();
+				Corebird.db.execute("INSERT INTO `people`(id,name,screen_name,avatar_url,
+				                    avatar_name) VALUES ('%d', '%s', '%s', '%s', '%s');",
+				                    t.user_id, t.user_name, t.screen_name, t.avatar_url,
+				                    t.avatar_name);
 			}else{
 				string old_avatar = author_result.fetch_string(2);
 				if (old_avatar != t.avatar_url){
@@ -232,7 +235,6 @@ class Tweet : GLib.Object{
 
 
 
-	private static GLib.Regex? link_regex    = null;
 	/**
 	 * Replaces the links in the given text with html tags to be used in
 	 * pango layouts.
