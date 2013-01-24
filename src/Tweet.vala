@@ -16,7 +16,7 @@ class Tweet : GLib.Object{
 	public bool retweeted = false;
 	public bool favorited = false;
 	public string text;
-	public int user_id;
+	public int64 user_id;
 	public string user_name;
 	public string retweeted_by;
 	public bool is_retweet;
@@ -189,7 +189,7 @@ class Tweet : GLib.Object{
 	public static void cache(Tweet t, string created_at, int64 added_to_stream, int type){
 		// Check the tweeter's details and update them if necessary
 		try{
-			author_query.set_int(":id", t.user_id);
+			author_query.set_int64(":id", t.user_id);
 			SQLHeavy.QueryResult author_result = author_query.execute();
 			if (author_result.finished){
 				//The author is not in the DB so we insert him
@@ -218,7 +218,7 @@ class Tweet : GLib.Object{
 		try{
 			cache_query.set_int64(":id", t.id);
 			cache_query.set_string(":text", t.text);
-			cache_query.set_int(":user_id", t.user_id);
+			cache_query.set_int64(":user_id", t.user_id);
 			cache_query.set_string(":user_name", t.user_name);
 			cache_query.set_int(":is_retweet", t.is_retweet ? 1 : 0);
 			cache_query.set_string(":retweeted_by", t.retweeted_by);
