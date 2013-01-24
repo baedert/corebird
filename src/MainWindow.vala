@@ -2,7 +2,6 @@ using Gtk;
 
 
 
-// TODO: & characters in link urls should be escaped as &amp;
 
 class MainWindow : ApplicationWindow {
 	public static const int PAGE_STREAM    = 0;

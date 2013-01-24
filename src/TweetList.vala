@@ -4,8 +4,6 @@ using Gtk;
 
 //TODO: is there a better way to insert a widget than
 //      adding and reordering?
-
-//TODO: Extend viewport and make some culling
 public class TweetList : Box{
 	private ProgressItem spinner = new ProgressItem();
 	private int childCount = 0;
