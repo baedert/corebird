@@ -78,11 +78,9 @@ class User{
 			User.avatar_name = Utils.get_file_name(avatar_url);
 			// Check if the avatar of the user has changed.
 			if (avatar_name != User.avatar_name
-			    || !FileUtils.test(get_avatar_path(), FileTest.EXISTS)){
+			    	|| !FileUtils.test(get_avatar_path(), FileTest.EXISTS)){
 
 				//TODO: Find better variable names here
-				File user_avatar = File.new_for_uri(avatar_url);
-				// TODO: This is insanely imperformant and stupid. FIX!
 				string dest_path = "assets/user/%s".printf(avatar_name);
 				string big_dest  = "assets/avatars/"+Utils.get_avatar_name(avatar_url);
 				var session = new Soup.SessionAsync();
@@ -91,33 +89,16 @@ class User{
 
 				string type = Utils.get_file_type(avatar_name);
 
-				// Gdk.Pixdata pixdata = {};
-				// pixdata.deserialize(msg.response_body.data);
-				// // var pixbuf = Gdk.Pixbuf.from_pixdata(pixdata);
-				// var pixbuf = new Gdk.Pixbuf.from_inline(msg.response_body.data);
-				// pixbuf.save(big_dest, type);
-				// pixbuf.scale_simple(24, 24, Gdk.InterpType.HYPER);
-				// pixbuf.save(dest_path, type);
-
-				// var pixbuf = new Gdk.Pixbuf.from_data((owned)msg.response_body.data,
-				                                      // Gdk.Colorspace.RGB,
-										    		  // true, 8, 24, 24, 0);
-
-				File dest = File.new_for_path(dest_path);
-				File big_dest_file = File.new_for_path(big_dest);
 				try{
-					// Download-> save -> load -> scale -> save
-					// TODO: Also use libsoup here
-					user_avatar.copy(dest, FileCopyFlags.OVERWRITE); 
-					//Also save it in the normal avatars folder.
-					user_avatar.copy(big_dest_file, FileCopyFlags.OVERWRITE);
-					Gdk.Pixbuf av = new Gdk.Pixbuf.from_file(dest_path);
-					Gdk.Pixbuf scaled = new Gdk.Pixbuf(Gdk.Colorspace.RGB, true, 8, 24, 24);
-					av.scale(scaled, 0, 0, 24, 24, 0, 0, 0.5, 0.5, Gdk.InterpType.HYPER);
-					// Overwrite current avatar because its too big.
-					scaled.save (dest_path, type);
-				} catch (GLib.Error e){
-					warning("Error while scaling the avatar: %s", e.message);
+					var data_stream = new MemoryInputStream.from_data(
+									(owned)msg.response_body.data,null);
+					var pixbuf = new Gdk.Pixbuf.from_stream_at_scale(data_stream,
+					                                                 24, 24, false);
+					pixbuf.save(big_dest, type);
+					pixbuf.scale_simple(24, 24, Gdk.InterpType.HYPER);
+					pixbuf.save(dest_path, type);
+				} catch(GLib.Error e) {
+
 				}
 
 				if(avatar_widget != null)
