@@ -5,19 +5,20 @@ class LoaderThread{
 	private MainWindow? window;
 	private TweetList list;
 	private Thread<void*> thread;
-	public delegate void EndLoadFunc(int tweet_count);
+	public delegate void EndLoadFunc(int tweet_count, int64 lowest_id);
 	private unowned EndLoadFunc? finished;
 	public bool balance_upper_change = true;
 	private int tweet_type;
+	private int64 lowest_id = -1;
 
 	public LoaderThread(Json.Array root, MainWindow? window, TweetList list,
 	                    int tweet_type = -1,
 	                    EndLoadFunc? finished = null){
-		this.root           = root;
-		this.window         = window;
-		this.list           = list;
-		this.finished       = finished;
-		this.tweet_type 	= tweet_type;
+		this.root       = root;
+		this.window     = window;
+		this.list       = list;
+		this.finished   = finished;
+		this.tweet_type = tweet_type;
 	}
 
 	public void run(){
@@ -39,6 +40,9 @@ class LoaderThread{
 				Tweet.cache(t, created_at, added_to_stream, tweet_type);
 			}
 
+			if(t.id < lowest_id)
+				lowest_id = t.id;
+
 			TweetListEntry entry  = new TweetListEntry(t, window);
 			entries[index] = entry;
 		});
@@ -55,7 +59,7 @@ class LoaderThread{
 				list.insert_item(entries[i], i);
 			
 			if (finished != null){
-				finished(entries.length);
+				finished(entries.length, lowest_id);
 			}
 
 			return false;

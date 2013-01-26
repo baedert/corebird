@@ -11,6 +11,7 @@ class StreamContainer : TweetContainer, ScrollWidget{
 	private int id;
 	/** If we are currently downloading/processing data */
 	private bool loading = false;
+	private int64 max_id = int64.MAX;
 
 
 	public StreamContainer(int id){
@@ -38,6 +39,7 @@ class StreamContainer : TweetContainer, ScrollWidget{
 				loading = true;
 				message("end! %d/%d", value, max);
 				// https://dev.twitter.com/docs/working-with-timelines
+				load_older_tweets.begin();
 			}
 		});
 	}
@@ -54,14 +56,18 @@ class StreamContainer : TweetContainer, ScrollWidget{
 		SQLHeavy.QueryResult result = query.execute();
 		while(!result.finished){
 			Tweet t        = new Tweet();
-			t.id           = result.fetch_int(0);
+			t.id           = result.fetch_int64(0);
 			t.text         = result.fetch_string(1);
-			t.user_id      = result.fetch_int(2);
+			t.user_id      = result.fetch_int64(2);
 			t.user_name    = result.fetch_string(3);
 			t.is_retweet   = (bool)result.fetch_int(4);
 			t.retweeted_by = result.fetch_string(5);
 			t.retweeted    = (bool)result.fetch_int(6);
 			t.favorited    = (bool)result.fetch_int(7);
+
+
+			if(t.id < max_id)
+				max_id = t.id;
 
 			GLib.DateTime created = Utils.parse_date(result.fetch_string(8));
 			t.time_delta   = Utils.get_time_delta(created, now);
@@ -133,6 +139,37 @@ class StreamContainer : TweetContainer, ScrollWidget{
 			loader_thread.run();
 		});
 	}
+
+
+	private async void load_older_tweets() {
+		message(@"Loading older tweets(max_id: $max_id)");
+		GLib.DateTime now = new GLib.DateTime.now_local();
+		var call  = Twitter.proxy.new_call();
+		call.set_function("1.1/statuses/home_timeline.json");
+		call.set_method("GET");
+		call.add_param("count", "3");
+		call.add_param("max_id", (max_id - 1).to_string());
+		call.add_param("contributor_details", "true");
+
+		call.invoke_async.begin(null, (obj, res) => {
+			call.invoke_async.end(res);
+			string back = call.get_payload();
+			var parser = new Json.Parser();
+			parser.load_from_data(back);
+			var root = parser.get_root().get_array();
+			message("Older tweets: %u", root.get_length());
+			root.foreach_element((array, index, node) => {
+				var o = node.get_object();
+				Tweet t = new Tweet();
+				string created_at;
+				int64 added_to_stream;
+				t.load_from_json(o, now, out created_at, out added_to_stream);
+				message(t.user_name);
+				tweet_list.prepend(new TweetListEntry(t, null));
+			});
+		});
+	}
+
 
 
 	public void refresh(){
