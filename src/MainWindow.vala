@@ -28,8 +28,6 @@ class MainWindow : ApplicationWindow {
 	public MainWindow(Gtk.Application app){
 		GLib.Object (application: app);
 		
-		int64 a = 5;
-
 		containers[0] = new StreamContainer(PAGE_STREAM);
 		containers[1] = new MentionsContainer(PAGE_MENTIONS);
 		containers[2] = new FavoriteContainer(PAGE_FAVORITES);
