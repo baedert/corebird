@@ -34,7 +34,7 @@ class Corebird : Gtk.Application {
 			// 
 			Corebird.create_tables();
 
-			// Sqlite.Database.open("Corebird.db", out Query.db);
+			Sqlite.Database.open("Corebird.db", out Query.db);
 
 			// InsertQuery iq = new InsertQuery();
 			// iq.select("foo");
@@ -42,8 +42,6 @@ class Corebird : Gtk.Application {
 			// iq.bind_string("s", "hihihi");
 			// iq.execute();
 			// message(iq.get_sql());
-
-			// Sqlite.Database.open("Corebird.db", out Query.db);
 		}catch(SQLHeavy.Error e){
 			error("SQL ERROR: %s", e.message);
 		}

@@ -219,20 +219,36 @@ class Tweet : GLib.Object{
 		
 		// Insert tweet into cache table
 		try{
-			cache_query.set_int64(":id", t.id);
-			cache_query.set_string(":text", t.text);
-			cache_query.set_int64(":user_id", t.user_id);
-			cache_query.set_string(":user_name", t.user_name);
-			cache_query.set_int(":is_retweet", t.is_retweet ? 1 : 0);
-			cache_query.set_string(":retweeted_by", t.retweeted_by);
-			cache_query.set_int(":retweeted", t.retweeted ? 1 : 0);
-			cache_query.set_int(":favorited", t.favorited ? 1 : 0);
-			cache_query.set_string(":created_at", created_at);
-			cache_query.set_int64(":added_to_stream", added_to_stream);
-			cache_query.set_string(":avatar_name", t.avatar_name);
-			cache_query.set_string(":screen_name", t.screen_name);
-			cache_query.set_int(":type", type); // 1 = normal tweet
-			cache_query.execute();
+			// cache_query.set_int64(":id", t.id);
+			// cache_query.set_string(":text", t.text);
+			// cache_query.set_int64(":user_id", t.user_id);
+			// cache_query.set_string(":user_name", t.user_name);
+			// cache_query.set_int(":is_retweet", t.is_retweet ? 1 : 0);
+			// cache_query.set_string(":retweeted_by", t.retweeted_by);
+			// cache_query.set_int(":retweeted", t.retweeted ? 1 : 0);
+			// cache_query.set_int(":favorited", t.favorited ? 1 : 0);
+			// cache_query.set_string(":created_at", created_at);
+			// cache_query.set_int64(":added_to_stream", added_to_stream);
+			// cache_query.set_string(":avatar_name", t.avatar_name);
+			// cache_query.set_string(":screen_name", t.screen_name);
+			// cache_query.set_int(":type", type); // 1 = normal tweet
+			// cache_query.execute();
+			InsertQuery iq = new InsertQuery();
+			iq.select("cache");
+			iq.bind_int64("id", t.id);
+			iq.bind_string("text", t.text);
+			iq.bind_int64("user_id", t.user_id);
+			iq.bind_string("user_name", t.user_name);
+			iq.bind_int("is_retweet", t.is_retweet ? 1 : 0);
+			iq.bind_string("retweeted_by", t.retweeted_by);
+			iq.bind_int("retweeted", t.retweeted ? 1 : 0);
+			iq.bind_int("favorited", t.favorited ? 1 : 0);
+			iq.bind_string("created_at", created_at);
+			iq.bind_int64("added_to_stream", added_to_stream);
+			iq.bind_string("avatar_name", t.avatar_name);
+			iq.bind_string("screen_name", t.screen_name);
+			iq.bind_int("type", type);
+			iq.execute();
 		}catch(SQLHeavy.Error e){
 			error("Error while caching tweet: %s", e.message);
 		}

@@ -58,12 +58,12 @@ class InsertQuery : Query {
 
 		query.append(");");
 
-		// if(local_db == null)
-		// 	Query.db.exec(query.str);
-		// else
-		// 	local_db.exec(query.str);
+		if(local_db == null)
+			Query.db.exec(query.str);
+		else
+			local_db.exec(query.str);
 
-		// base.execute();
+		base.execute();
 	}
 
 

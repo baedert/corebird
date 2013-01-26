@@ -19,17 +19,16 @@ class User{
 	 * Loads the user's cached data from the database.
 	 */
 	public static void load(){
-		try{
-			SQLHeavy.Query query = new SQLHeavy.Query(Corebird.db,
-				"SELECT screen_name, avatar_name, avatar_url, id FROM `user`;");
-			SQLHeavy.QueryResult res = query.execute();
-			User.screen_name = res.fetch_string(0);
-			User.avatar_name = res.fetch_string(1);
-			User.avatar_url  = res.fetch_string(2);
-			User.id          = res.fetch_int64(3);
-		}catch(SQLHeavy.Error e){
-			error("Error while loading the user: %s", e.message);
-		}
+		Query q = new Query();
+		q.select("id", "screen_name", "avatar_name", "avatar_url")
+		 .from("user");
+		q.execute((n, values, names) => {
+			User.id = int64.parse(values[0]);
+			User.screen_name = values[1];
+			User.avatar_name = values[2];
+			User.avatar_url  = values[3];
+			return 0;
+		});
 	}
 
 	/**
@@ -110,6 +109,7 @@ class User{
 
 				try{
 					Corebird.db.execute(@"UPDATE `user` SET `avatar_name`='$avatar_name',`avatar_url`='$avatar_url',`id`='$id';");
+					
 				}catch(SQLHeavy.Error e){
 					warning("Error while setting the new avatar_name: %s", e.message);
 				}
