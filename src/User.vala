@@ -8,6 +8,7 @@ class User{
 	public static string name;
 	private static string avatar_name = "no_profile_pic.png";
 	public static string avatar_url;
+	public static int64 id;
 
 	public static string get_avatar_path(){
 		return "assets/user/"+avatar_name;
@@ -20,11 +21,12 @@ class User{
 	public static void load(){
 		try{
 			SQLHeavy.Query query = new SQLHeavy.Query(Corebird.db,
-				"SELECT screen_name, avatar_name, avatar_url FROM `user`;");
+				"SELECT screen_name, avatar_name, avatar_url, id FROM `user`;");
 			SQLHeavy.QueryResult res = query.execute();
 			User.screen_name = res.fetch_string(0);
 			User.avatar_name = res.fetch_string(1);
 			User.avatar_url  = res.fetch_string(2);
+			User.id          = res.fetch_int64(3);
 		}catch(SQLHeavy.Error e){
 			error("Error while loading the user: %s", e.message);
 		}
@@ -35,17 +37,27 @@ class User{
 	 *
 	 * @param avatar_widget The widget to update if the avatar has changed.
 	 */
-	public static async void update_info(Gtk.Image avatar_widget){
+	public static async void update_info(Gtk.Image? avatar_widget, bool use_name = false){
 		var img_call = Twitter.proxy.new_call();
 		img_call.set_function("1.1/users/show.json");
 		img_call.set_method("GET");
-		img_call.add_param("screen_name", User.screen_name);
+		if(use_name || id == 0)
+			img_call.add_param("screen_name", User.screen_name);
+		else
+			img_call.add_param("user_id", User.id.to_string());
+
+		if(use_name || id== 0)
+			message("Using the screen_name(%s)",screen_name);
+		else
+			message("Using the id");
+
 		img_call.add_param("include_entities", "false");
 		img_call.invoke_async.begin(null, (obj, res) => {
 			try{
 				img_call.invoke_async.end(res);
 			} catch (GLib.Error e){
 				warning("Error while ending img_call: %s", e.message);
+				Utils.show_error_dialog(e.message);
 				return;
 			}
 
@@ -59,6 +71,9 @@ class User{
 			}
 			var root = parser.get_root().get_object();
 			User.name = root.get_string_member("name");
+			User.id = root.get_int_member("id");
+			int64 id = root.get_int_member("id");
+			message(@"ID: $id");
 			avatar_url = root.get_string_member("profile_image_url");
 			User.avatar_name = Utils.get_file_name(avatar_url);
 			// Check if the avatar of the user has changed.
@@ -68,9 +83,11 @@ class User{
 				// TODO: This is insanely imperformant and stupid. FIX!
 				string dest_path = "assets/user/%s".printf(avatar_name);
 				File dest = File.new_for_path(dest_path);
-				File big_dest = File.new_for_path("assets/avatars/%s".printf(Utils.get_avatar_name(avatar_url)));
+				File big_dest = File.new_for_path("assets/avatars/"+
+				                                  Utils.get_avatar_name(avatar_url));
 				try{
 					// Download-> save -> load -> scale -> save
+					// TODO: Also use libsoup here
 					user_avatar.copy(dest, FileCopyFlags.OVERWRITE); 
 					//Also save it in the normal avatars folder.
 					user_avatar.copy(big_dest, FileCopyFlags.OVERWRITE);
@@ -84,11 +101,11 @@ class User{
 					warning("Error while scaling the avatar: %s", e.message);
 				}
 
-				avatar_widget.set_from_file(dest_path);
+				if(avatar_widget != null)
+					avatar_widget.set_from_file(dest_path);
+
 				try{
-					Corebird.db.execute("UPDATE `user` SET 
-					                    `avatar_name`='%s', `avatar_url`='%s';",
-					                    avatar_name, avatar_url);
+					Corebird.db.execute(@"UPDATE `user` SET `avatar_name`='$avatar_name',`avatar_url`='$avatar_url',`id`='$id';");
 				}catch(SQLHeavy.Error e){
 					warning("Error while setting the new avatar_name: %s", e.message);
 				}

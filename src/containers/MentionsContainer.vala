@@ -63,7 +63,7 @@ class MentionsContainer : TweetContainer, ScrollWidget {
 
 		var call = Twitter.proxy.new_call();
 		call.set_method("GET");
-		call.set_function("1.1/statuses/mentions_timeline.json");
+		call.set_function("/statuses/mentions_timeline.json");
 		if(greatest_id > 0)
 			call.add_param("since_id", greatest_id.to_string());
 			

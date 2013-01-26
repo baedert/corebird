@@ -130,9 +130,9 @@ class NewTweetWindow : Window {
 		var call = Twitter.proxy.new_call();
 		call.set_method("POST");
 		if(media_count == 0){
-			call.set_function("1.1/statuses/update.json");
+			call.set_function("/statuses/update.json");
 		} else {
-/*			call.set_function("1.1/statuses/update_with_media.json");
+/*			call.set_function("/statuses/update_with_media.json");
 			Gdk.Pixbuf pic = new Gdk.Pixbuf.from_file(media_uri);
 			pixels = pic.get_pixels_with_length();
 

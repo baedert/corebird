@@ -54,7 +54,7 @@ class SearchContainer : TweetContainer, Box {
 
 
 		var call = Twitter.proxy.new_call();
-		call.set_function("1.1/search/tweets.json");
+		call.set_function("/search/tweets.json");
 		call.set_method("GET");
 		call.add_param("q", GLib.Uri.escape_string(search_entry.get_text()));
 		call.invoke_async.begin(null, (obj, res) => {

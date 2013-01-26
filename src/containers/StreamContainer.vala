@@ -49,8 +49,8 @@ class StreamContainer : TweetContainer, ScrollWidget{
 			"SELECT `id`, `text`, `user_id`, `user_name`, `is_retweet`,
 					`retweeted_by`, `retweeted`, `favorited`, `created_at`,
 					`added_to_stream`, `avatar_name`, `screen_name`, `type` FROM `cache`
-			WHERE `type`='1' 
-			ORDER BY `added_to_stream` DESC LIMIT 10");
+			WHERE `type`='%d' 
+			ORDER BY `added_to_stream` DESC LIMIT 10".printf(Tweet.TYPE_NORMAL));
 		SQLHeavy.QueryResult result = query.execute();
 		while(!result.finished){
 			Tweet t        = new Tweet();
@@ -148,9 +148,6 @@ class StreamContainer : TweetContainer, ScrollWidget{
 	}
 
 	public void create_tool_button(RadioToolButton? group){
-		// tool_button = new RadioToolButton.from_widget(group);
-		// tool_button.label = "Stream";
-		// tool_button.set_icon_widget(new Image.from_icon_name("starred", IconSize.DIALOG));
 		GLib.Icon icon = new GLib.FileIcon(File.new_for_path("assets/icons/stream.png"));
 		if(group == null)
 			tool_button = new RadioToolButton.from_stock(null, Stock.HOME);

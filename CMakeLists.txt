@@ -5,7 +5,7 @@ list(APPEND CMAKE_MODULE_PATH
 	${CMAKE_SOURCE_DIR}/build/
 )
 
-set (CMAKE_C_FLAGS "-g -Wall -Wno-incompatible-pointer-types -Wno-unused-value -Wno-unused-function -Wno-unused-variable")
+set (CMAKE_C_FLAGS "-g -Wall -Wno-incompatible-pointer-types -Wno-unused-value -Wno-unused-function -Wno-unused-variable -Wno-format-invalid-specifier")
 set (CMAKE_C_COMPILER "clang")
 
 

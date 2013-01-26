@@ -34,7 +34,6 @@ class FirstRunWindow : ApplicationWindow {
 				case 1:
 					if(check_pin()){
 						get_user_info();
-						switch_windows();
 					}
 				break;
 
@@ -81,7 +80,7 @@ class FirstRunWindow : ApplicationWindow {
 		// Save token + token_secret
 		try{
 			Corebird.create_tables();
-			//Write token + token_secret ot the database
+			//Write token + token_secret to the database
 			SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db, "INSERT INTO 
 			                  `common`(token, token_secret) 
 			                  VALUES (:t, :ts);");
@@ -111,16 +110,32 @@ class FirstRunWindow : ApplicationWindow {
 			} catch(GLib.Error e){
 				error("Error with Json data: %s\n DATA:\n%s", e.message, back);
 			}
-			var root = parser.get_root().get_object();
+
+			var root           = parser.get_root().get_object();
 			string screen_name = root.get_string_member("screen_name");
 			try{
 				SQLHeavy.Query screen_name_query = new SQLHeavy.Query(Corebird.db,
-					"INSERT INTO `user`(screen_name) VALUES ('%s');".printf(screen_name));
-				screen_name_query.execute_async.begin();
+					@"INSERT INTO `user`(screen_name) VALUES ('$screen_name');");
+				screen_name_query.execute();
 			}catch(SQLHeavy.Error e){
 				error("Error while settings the screen_name: %s", e.message);
 			}
-		});		
+
+			// Now, get the user's other data
+			User.screen_name = screen_name;
+			User.load();
+			User.update_info.begin(null, true, () => {
+				switch_windows();
+			});
+			// TODO: If the User.update_info in the main window executes before this
+			// call completed, the id will be 0 and a "not found" error will occure.
+			
+			// int64 id = User.id;
+			// message(@"ID: $id");
+			// Corebird.db.execute(@"UPDATE `user` SET `id`='$id' WHERE 
+			                    // `screen_name`='@screen_name'");
+		});
+			
 	}
 
 }

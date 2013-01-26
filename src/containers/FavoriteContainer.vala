@@ -18,7 +18,7 @@ class FavoriteContainer : TweetContainer, ScrollWidget {
 
 	public void refresh(){
 		var call = Twitter.proxy.new_call();
-		call.set_function("1.1/favorites/list.json");
+		call.set_function("/favorites/list.json");
 		call.set_method("GET");
 		call.add_param("count", "20");
 

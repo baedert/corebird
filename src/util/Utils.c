@@ -8,6 +8,7 @@
 #include <string.h>
 #include <float.h>
 #include <math.h>
+#include <gtk/gtk.h>
 #include <gobject/gvaluecollector.h>
 
 
@@ -24,6 +25,8 @@ typedef struct _UtilsPrivate UtilsPrivate;
 #define _g_free0(var) (var = (g_free (var), NULL))
 #define _g_time_zone_unref0(var) ((var == NULL) ? NULL : (var = (g_time_zone_unref (var), NULL)))
 #define _g_date_time_unref0(var) ((var == NULL) ? NULL : (var = (g_date_time_unref (var), NULL)))
+typedef struct _Block18Data Block18Data;
+#define _g_object_unref0(var) ((var == NULL) ? NULL : (var = (g_object_unref (var), NULL)))
 typedef struct _ParamSpecUtils ParamSpecUtils;
 
 struct _Utils {
@@ -35,6 +38,11 @@ struct _Utils {
 struct _UtilsClass {
 	GTypeClass parent_class;
 	void (*finalize) (Utils *self);
+};
+
+struct _Block18Data {
+	int _ref_count_;
+	GtkMessageDialog* dialog;
 };
 
 struct _ParamSpecUtils {
@@ -64,6 +72,11 @@ gchar* utils_get_time_delta (GDateTime* time, GDateTime* now);
 gchar* utils_get_file_name (const gchar* path);
 gchar* utils_get_file_type (const gchar* path);
 gchar* utils_get_avatar_name (const gchar* path);
+void utils_show_error_dialog (const gchar* message);
+static Block18Data* block18_data_ref (Block18Data* _data18_);
+static void block18_data_unref (void * _userdata_);
+static void __lambda8_ (Block18Data* _data18_, gint id);
+static void ___lambda8__gtk_dialog_response (GtkDialog* _sender, gint response_id, gpointer self);
 Utils* utils_new (void);
 Utils* utils_construct (GType object_type);
 static void utils_finalize (Utils* obj);
@@ -97,7 +110,7 @@ static glong string_strnlen (gchar* str, glong maxlen) {
 	_tmp3_ = end;
 #line 1148 "/usr/share/vala-0.18/vapi/glib-2.0.vapi"
 	if (_tmp3_ == NULL) {
-#line 101 "Utils.c"
+#line 114 "Utils.c"
 		glong _tmp4_;
 #line 1149 "/usr/share/vala-0.18/vapi/glib-2.0.vapi"
 		_tmp4_ = maxlen;
@@ -105,7 +118,7 @@ static glong string_strnlen (gchar* str, glong maxlen) {
 		result = _tmp4_;
 #line 1149 "/usr/share/vala-0.18/vapi/glib-2.0.vapi"
 		return result;
-#line 109 "Utils.c"
+#line 122 "Utils.c"
 	} else {
 		gchar* _tmp5_;
 		gchar* _tmp6_;
@@ -117,7 +130,7 @@ static glong string_strnlen (gchar* str, glong maxlen) {
 		result = (glong) (_tmp5_ - _tmp6_);
 #line 1151 "/usr/share/vala-0.18/vapi/glib-2.0.vapi"
 		return result;
-#line 121 "Utils.c"
+#line 134 "Utils.c"
 	}
 }
 
@@ -142,23 +155,23 @@ static gchar* string_substring (const gchar* self, glong offset, glong len) {
 	_tmp1_ = offset;
 #line 1160 "/usr/share/vala-0.18/vapi/glib-2.0.vapi"
 	if (_tmp1_ >= ((glong) 0)) {
-#line 146 "Utils.c"
+#line 159 "Utils.c"
 		glong _tmp2_;
 #line 1160 "/usr/share/vala-0.18/vapi/glib-2.0.vapi"
 		_tmp2_ = len;
 #line 1160 "/usr/share/vala-0.18/vapi/glib-2.0.vapi"
 		_tmp0_ = _tmp2_ >= ((glong) 0);
-#line 152 "Utils.c"
+#line 165 "Utils.c"
 	} else {
 #line 1160 "/usr/share/vala-0.18/vapi/glib-2.0.vapi"
 		_tmp0_ = FALSE;
-#line 156 "Utils.c"
+#line 169 "Utils.c"
 	}
 #line 1160 "/usr/share/vala-0.18/vapi/glib-2.0.vapi"
 	_tmp3_ = _tmp0_;
 #line 1160 "/usr/share/vala-0.18/vapi/glib-2.0.vapi"
 	if (_tmp3_) {
-#line 162 "Utils.c"
+#line 175 "Utils.c"
 		glong _tmp4_;
 		glong _tmp5_;
 		glong _tmp6_ = 0L;
@@ -170,7 +183,7 @@ static gchar* string_substring (const gchar* self, glong offset, glong len) {
 		_tmp6_ = string_strnlen ((gchar*) self, _tmp4_ + _tmp5_);
 #line 1162 "/usr/share/vala-0.18/vapi/glib-2.0.vapi"
 		string_length = _tmp6_;
-#line 174 "Utils.c"
+#line 187 "Utils.c"
 	} else {
 		gint _tmp7_;
 		gint _tmp8_;
@@ -180,13 +193,13 @@ static gchar* string_substring (const gchar* self, glong offset, glong len) {
 		_tmp8_ = _tmp7_;
 #line 1164 "/usr/share/vala-0.18/vapi/glib-2.0.vapi"
 		string_length = (glong) _tmp8_;
-#line 184 "Utils.c"
+#line 197 "Utils.c"
 	}
 #line 1167 "/usr/share/vala-0.18/vapi/glib-2.0.vapi"
 	_tmp9_ = offset;
 #line 1167 "/usr/share/vala-0.18/vapi/glib-2.0.vapi"
 	if (_tmp9_ < ((glong) 0)) {
-#line 190 "Utils.c"
+#line 203 "Utils.c"
 		glong _tmp10_;
 		glong _tmp11_;
 		glong _tmp12_;
@@ -200,7 +213,7 @@ static gchar* string_substring (const gchar* self, glong offset, glong len) {
 		_tmp12_ = offset;
 #line 1169 "/usr/share/vala-0.18/vapi/glib-2.0.vapi"
 		g_return_val_if_fail (_tmp12_ >= ((glong) 0), NULL);
-#line 204 "Utils.c"
+#line 217 "Utils.c"
 	} else {
 		glong _tmp13_;
 		glong _tmp14_;
@@ -210,13 +223,13 @@ static gchar* string_substring (const gchar* self, glong offset, glong len) {
 		_tmp14_ = string_length;
 #line 1171 "/usr/share/vala-0.18/vapi/glib-2.0.vapi"
 		g_return_val_if_fail (_tmp13_ <= _tmp14_, NULL);
-#line 214 "Utils.c"
+#line 227 "Utils.c"
 	}
 #line 1173 "/usr/share/vala-0.18/vapi/glib-2.0.vapi"
 	_tmp15_ = len;
 #line 1173 "/usr/share/vala-0.18/vapi/glib-2.0.vapi"
 	if (_tmp15_ < ((glong) 0)) {
-#line 220 "Utils.c"
+#line 233 "Utils.c"
 		glong _tmp16_;
 		glong _tmp17_;
 #line 1174 "/usr/share/vala-0.18/vapi/glib-2.0.vapi"
@@ -225,7 +238,7 @@ static gchar* string_substring (const gchar* self, glong offset, glong len) {
 		_tmp17_ = offset;
 #line 1174 "/usr/share/vala-0.18/vapi/glib-2.0.vapi"
 		len = _tmp16_ - _tmp17_;
-#line 229 "Utils.c"
+#line 242 "Utils.c"
 	}
 #line 1176 "/usr/share/vala-0.18/vapi/glib-2.0.vapi"
 	_tmp18_ = offset;
@@ -245,7 +258,7 @@ static gchar* string_substring (const gchar* self, glong offset, glong len) {
 	result = _tmp23_;
 #line 1177 "/usr/share/vala-0.18/vapi/glib-2.0.vapi"
 	return result;
-#line 249 "Utils.c"
+#line 262 "Utils.c"
 }
 
 
@@ -301,7 +314,7 @@ GDateTime* utils_parse_date (const gchar* input) {
 	static GQuark _tmp21_label10 = 0;
 #line 27 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	static GQuark _tmp21_label11 = 0;
-#line 305 "Utils.c"
+#line 318 "Utils.c"
 	const gchar* _tmp23_;
 	gchar* _tmp24_ = NULL;
 	gchar* _tmp25_;
@@ -343,7 +356,7 @@ GDateTime* utils_parse_date (const gchar* input) {
 	_tmp0_ = input;
 #line 18 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	if (g_strcmp0 (_tmp0_, "") == 0) {
-#line 347 "Utils.c"
+#line 360 "Utils.c"
 		GDateTime* _tmp1_;
 #line 19 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 		_tmp1_ = g_date_time_new_now_local ();
@@ -351,7 +364,7 @@ GDateTime* utils_parse_date (const gchar* input) {
 		result = _tmp1_;
 #line 19 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 		return result;
-#line 355 "Utils.c"
+#line 368 "Utils.c"
 	}
 #line 21 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	_tmp2_ = input;
@@ -411,157 +424,157 @@ GDateTime* utils_parse_date (const gchar* input) {
 	if (_tmp22_ == ((0 != _tmp21_label0) ? _tmp21_label0 : (_tmp21_label0 = g_quark_from_static_string ("Jan")))) {
 #line 27 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 		switch (0) {
-#line 415 "Utils.c"
+#line 428 "Utils.c"
 			default:
 			{
 #line 28 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 				month = 1;
 #line 28 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 				break;
-#line 422 "Utils.c"
+#line 435 "Utils.c"
 			}
 		}
 	} else if (_tmp22_ == ((0 != _tmp21_label1) ? _tmp21_label1 : (_tmp21_label1 = g_quark_from_static_string ("Feb")))) {
 #line 27 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 		switch (0) {
-#line 428 "Utils.c"
+#line 441 "Utils.c"
 			default:
 			{
 #line 29 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 				month = 2;
 #line 29 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 				break;
-#line 435 "Utils.c"
+#line 448 "Utils.c"
 			}
 		}
 	} else if (_tmp22_ == ((0 != _tmp21_label2) ? _tmp21_label2 : (_tmp21_label2 = g_quark_from_static_string ("Mar")))) {
 #line 27 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 		switch (0) {
-#line 441 "Utils.c"
+#line 454 "Utils.c"
 			default:
 			{
 #line 30 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 				month = 3;
 #line 30 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 				break;
-#line 448 "Utils.c"
+#line 461 "Utils.c"
 			}
 		}
 	} else if (_tmp22_ == ((0 != _tmp21_label3) ? _tmp21_label3 : (_tmp21_label3 = g_quark_from_static_string ("Apr")))) {
 #line 27 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 		switch (0) {
-#line 454 "Utils.c"
+#line 467 "Utils.c"
 			default:
 			{
 #line 31 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 				month = 4;
 #line 31 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 				break;
-#line 461 "Utils.c"
+#line 474 "Utils.c"
 			}
 		}
 	} else if (_tmp22_ == ((0 != _tmp21_label4) ? _tmp21_label4 : (_tmp21_label4 = g_quark_from_static_string ("May")))) {
 #line 27 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 		switch (0) {
-#line 467 "Utils.c"
+#line 480 "Utils.c"
 			default:
 			{
 #line 32 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 				month = 5;
 #line 32 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 				break;
-#line 474 "Utils.c"
+#line 487 "Utils.c"
 			}
 		}
 	} else if (_tmp22_ == ((0 != _tmp21_label5) ? _tmp21_label5 : (_tmp21_label5 = g_quark_from_static_string ("Jun")))) {
 #line 27 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 		switch (0) {
-#line 480 "Utils.c"
+#line 493 "Utils.c"
 			default:
 			{
 #line 33 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 				month = 6;
 #line 33 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 				break;
-#line 487 "Utils.c"
+#line 500 "Utils.c"
 			}
 		}
 	} else if (_tmp22_ == ((0 != _tmp21_label6) ? _tmp21_label6 : (_tmp21_label6 = g_quark_from_static_string ("Jul")))) {
 #line 27 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 		switch (0) {
-#line 493 "Utils.c"
+#line 506 "Utils.c"
 			default:
 			{
 #line 34 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 				month = 7;
 #line 34 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 				break;
-#line 500 "Utils.c"
+#line 513 "Utils.c"
 			}
 		}
 	} else if (_tmp22_ == ((0 != _tmp21_label7) ? _tmp21_label7 : (_tmp21_label7 = g_quark_from_static_string ("Aug")))) {
 #line 27 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 		switch (0) {
-#line 506 "Utils.c"
+#line 519 "Utils.c"
 			default:
 			{
 #line 35 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 				month = 8;
 #line 35 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 				break;
-#line 513 "Utils.c"
+#line 526 "Utils.c"
 			}
 		}
 	} else if (_tmp22_ == ((0 != _tmp21_label8) ? _tmp21_label8 : (_tmp21_label8 = g_quark_from_static_string ("Sep")))) {
 #line 27 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 		switch (0) {
-#line 519 "Utils.c"
+#line 532 "Utils.c"
 			default:
 			{
 #line 36 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 				month = 9;
 #line 36 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 				break;
-#line 526 "Utils.c"
+#line 539 "Utils.c"
 			}
 		}
 	} else if (_tmp22_ == ((0 != _tmp21_label9) ? _tmp21_label9 : (_tmp21_label9 = g_quark_from_static_string ("Oct")))) {
 #line 27 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 		switch (0) {
-#line 532 "Utils.c"
+#line 545 "Utils.c"
 			default:
 			{
 #line 37 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 				month = 10;
 #line 37 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 				break;
-#line 539 "Utils.c"
+#line 552 "Utils.c"
 			}
 		}
 	} else if (_tmp22_ == ((0 != _tmp21_label10) ? _tmp21_label10 : (_tmp21_label10 = g_quark_from_static_string ("Nov")))) {
 #line 27 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 		switch (0) {
-#line 545 "Utils.c"
+#line 558 "Utils.c"
 			default:
 			{
 #line 38 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 				month = 11;
 #line 38 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 				break;
-#line 552 "Utils.c"
+#line 565 "Utils.c"
 			}
 		}
 	} else if (_tmp22_ == ((0 != _tmp21_label11) ? _tmp21_label11 : (_tmp21_label11 = g_quark_from_static_string ("Dec")))) {
 #line 27 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 		switch (0) {
-#line 558 "Utils.c"
+#line 571 "Utils.c"
 			default:
 			{
 #line 39 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 				month = 12;
 #line 39 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 				break;
-#line 565 "Utils.c"
+#line 578 "Utils.c"
 			}
 		}
 	}
@@ -633,29 +646,29 @@ GDateTime* utils_parse_date (const gchar* input) {
 	_g_time_zone_unref0 (_tmp40_);
 #line 45 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	dt = _tmp48_;
-#line 46 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 47 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	_tmp49_ = dt;
-#line 46 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 47 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	_tmp50_ = g_time_zone_new_local ();
-#line 46 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 47 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	_tmp51_ = _tmp50_;
-#line 46 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 47 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	_tmp52_ = g_date_time_to_timezone (_tmp49_, _tmp51_);
-#line 46 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 47 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	_tmp53_ = _tmp52_;
-#line 46 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 47 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	_g_time_zone_unref0 (_tmp51_);
-#line 46 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 47 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	result = _tmp53_;
-#line 46 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 47 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	_g_date_time_unref0 (dt);
-#line 46 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 47 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	_g_free0 (timezone);
-#line 46 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 47 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	_g_free0 (month_str);
-#line 46 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 47 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	return result;
-#line 659 "Utils.c"
+#line 672 "Utils.c"
 }
 
 
@@ -684,81 +697,81 @@ gchar* utils_get_time_delta (GDateTime* time, GDateTime* now) {
 	gint _tmp15_ = 0;
 	const gchar* _tmp16_;
 	gchar* _tmp17_ = NULL;
-#line 54 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 55 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	g_return_val_if_fail (time != NULL, NULL);
-#line 54 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 55 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	g_return_val_if_fail (now != NULL, NULL);
-#line 56 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 57 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	_tmp0_ = now;
-#line 56 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 57 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	_tmp1_ = time;
-#line 56 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 57 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	_tmp2_ = g_date_time_difference (_tmp0_, _tmp1_);
-#line 56 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 57 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	diff = _tmp2_;
-#line 58 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 59 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	_tmp3_ = diff;
-#line 58 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 59 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	minutes = (gint) (((_tmp3_ / 1000.0) / 1000.0) / 60.0);
-#line 59 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 60 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	_tmp4_ = minutes;
-#line 59 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 60 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	if (_tmp4_ < 60) {
-#line 708 "Utils.c"
+#line 721 "Utils.c"
 		gint _tmp5_;
 		gchar* _tmp6_ = NULL;
-#line 60 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 61 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 		_tmp5_ = minutes;
-#line 60 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 61 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 		_tmp6_ = g_strdup_printf ("%dm", _tmp5_);
-#line 60 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 61 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 		result = _tmp6_;
-#line 60 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 61 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 		return result;
-#line 719 "Utils.c"
+#line 732 "Utils.c"
 	}
-#line 62 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 63 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	_tmp7_ = minutes;
-#line 62 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 63 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	hours = (gint) (_tmp7_ / 60.0);
-#line 63 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 64 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	_tmp8_ = hours;
-#line 63 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 64 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	if (_tmp8_ < 24) {
-#line 729 "Utils.c"
+#line 742 "Utils.c"
 		gint _tmp9_;
 		gchar* _tmp10_ = NULL;
-#line 64 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 65 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 		_tmp9_ = hours;
-#line 64 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 65 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 		_tmp10_ = g_strdup_printf ("%dh", _tmp9_);
-#line 64 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 65 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 		result = _tmp10_;
-#line 64 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 65 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 		return result;
-#line 740 "Utils.c"
+#line 753 "Utils.c"
 	}
-#line 67 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 68 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	_tmp11_ = time;
-#line 67 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 68 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	_tmp12_ = g_date_time_get_day_of_month (_tmp11_);
-#line 67 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 68 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	_tmp13_ = utils_MONTHS;
-#line 67 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 68 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	_tmp13__length1 = utils_MONTHS_length1;
-#line 67 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 68 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	_tmp14_ = time;
-#line 67 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 68 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	_tmp15_ = g_date_time_get_month (_tmp14_);
-#line 67 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 68 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	_tmp16_ = _tmp13_[_tmp15_ - 1];
-#line 67 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 68 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	_tmp17_ = g_strdup_printf ("%d %s", _tmp12_, _tmp16_);
-#line 67 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 68 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	result = _tmp17_;
-#line 67 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 68 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	return result;
-#line 762 "Utils.c"
+#line 775 "Utils.c"
 }
 
 
@@ -791,7 +804,7 @@ static gint string_last_index_of (const gchar* self, const gchar* needle, gint s
 	_tmp3_ = _result_;
 #line 901 "/usr/share/vala-0.18/vapi/glib-2.0.vapi"
 	if (_tmp3_ != NULL) {
-#line 795 "Utils.c"
+#line 808 "Utils.c"
 		gchar* _tmp4_;
 #line 902 "/usr/share/vala-0.18/vapi/glib-2.0.vapi"
 		_tmp4_ = _result_;
@@ -799,13 +812,13 @@ static gint string_last_index_of (const gchar* self, const gchar* needle, gint s
 		result = (gint) (_tmp4_ - ((gchar*) self));
 #line 902 "/usr/share/vala-0.18/vapi/glib-2.0.vapi"
 		return result;
-#line 803 "Utils.c"
+#line 816 "Utils.c"
 	} else {
 #line 904 "/usr/share/vala-0.18/vapi/glib-2.0.vapi"
 		result = -1;
 #line 904 "/usr/share/vala-0.18/vapi/glib-2.0.vapi"
 		return result;
-#line 809 "Utils.c"
+#line 822 "Utils.c"
 	}
 }
 
@@ -816,21 +829,21 @@ gchar* utils_get_file_name (const gchar* path) {
 	const gchar* _tmp1_;
 	gint _tmp2_ = 0;
 	gchar* _tmp3_ = NULL;
-#line 77 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 78 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	g_return_val_if_fail (path != NULL, NULL);
-#line 78 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 79 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	_tmp0_ = path;
-#line 78 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 79 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	_tmp1_ = path;
-#line 78 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 79 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	_tmp2_ = string_last_index_of (_tmp1_, "/", 0);
-#line 78 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 79 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	_tmp3_ = string_substring (_tmp0_, (glong) (_tmp2_ + 1), (glong) (-1));
-#line 78 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 79 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	result = _tmp3_;
-#line 78 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 79 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	return result;
-#line 834 "Utils.c"
+#line 847 "Utils.c"
 }
 
 
@@ -844,24 +857,29 @@ gchar* utils_get_file_type (const gchar* path) {
 	const gchar* _tmp1_;
 	gint _tmp2_ = 0;
 	gchar* _tmp3_ = NULL;
-#line 85 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 86 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	g_return_val_if_fail (path != NULL, NULL);
-#line 86 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 87 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	_tmp0_ = path;
-#line 86 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 87 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	_tmp1_ = path;
-#line 86 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 87 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	_tmp2_ = string_last_index_of (_tmp1_, ".", 0);
-#line 86 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 87 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	_tmp3_ = string_substring (_tmp0_, (glong) (_tmp2_ + 1), (glong) (-1));
-#line 86 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 87 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	result = _tmp3_;
-#line 86 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 87 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	return result;
-#line 862 "Utils.c"
+#line 875 "Utils.c"
 }
 
 
+/**
+ * Returns the avatar name for the given path
+ *
+ * @return the 'calculated' avatar name
+ */
 gchar* utils_get_avatar_name (const gchar* path) {
 	gchar* result = NULL;
 	const gchar* _tmp0_;
@@ -876,39 +894,115 @@ gchar* utils_get_avatar_name (const gchar* path) {
 	const gchar* _tmp6_;
 	gchar* _tmp7_;
 	gchar* _tmp8_;
-#line 89 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 95 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	g_return_val_if_fail (path != NULL, NULL);
-#line 90 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 96 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	_tmp0_ = path;
-#line 90 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 96 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	_tmp2_ = _tmp1_ = g_strsplit (_tmp0_, "/", 0);
-#line 90 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 96 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	parts = _tmp2_;
-#line 90 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 96 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	parts_length1 = _vala_array_length (_tmp1_);
-#line 90 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 96 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	_parts_size_ = parts_length1;
-#line 91 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 97 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	_tmp3_ = parts[parts_length1 - 2];
-#line 91 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 97 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	_tmp4_ = g_strconcat (_tmp3_, "_", NULL);
-#line 91 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 97 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	_tmp5_ = _tmp4_;
-#line 91 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 97 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	_tmp6_ = parts[parts_length1 - 1];
-#line 91 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 97 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	_tmp7_ = g_strconcat (_tmp5_, _tmp6_, NULL);
-#line 91 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 97 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	_tmp8_ = _tmp7_;
-#line 91 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 97 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	_g_free0 (_tmp5_);
-#line 91 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 97 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	result = _tmp8_;
-#line 91 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 97 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	parts = (_vala_array_free (parts, parts_length1, (GDestroyNotify) g_free), NULL);
-#line 91 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+#line 97 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	return result;
-#line 912 "Utils.c"
+#line 930 "Utils.c"
+}
+
+
+/**
+ * Shows an error dialog with the given error message
+ */
+static Block18Data* block18_data_ref (Block18Data* _data18_) {
+#line 104 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+	g_atomic_int_inc (&_data18_->_ref_count_);
+#line 104 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+	return _data18_;
+#line 942 "Utils.c"
+}
+
+
+static void block18_data_unref (void * _userdata_) {
+	Block18Data* _data18_;
+	_data18_ = (Block18Data*) _userdata_;
+#line 104 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+	if (g_atomic_int_dec_and_test (&_data18_->_ref_count_)) {
+#line 104 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+		_g_object_unref0 (_data18_->dialog);
+#line 104 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+		g_slice_free (Block18Data, _data18_);
+#line 955 "Utils.c"
+	}
+}
+
+
+static void __lambda8_ (Block18Data* _data18_, gint id) {
+	gint _tmp0_;
+#line 110 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+	_tmp0_ = id;
+#line 110 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+	if (_tmp0_ == ((gint) GTK_RESPONSE_OK)) {
+#line 111 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+		gtk_widget_destroy (G_TYPE_CHECK_INSTANCE_CAST (_data18_->dialog, GTK_TYPE_WIDGET, GtkWidget));
+#line 968 "Utils.c"
+	}
+}
+
+
+static void ___lambda8__gtk_dialog_response (GtkDialog* _sender, gint response_id, gpointer self) {
+#line 109 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+	__lambda8_ (self, response_id);
+#line 976 "Utils.c"
+}
+
+
+void utils_show_error_dialog (const gchar* message) {
+	Block18Data* _data18_;
+	const gchar* _tmp0_;
+	GtkMessageDialog* _tmp1_;
+#line 104 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+	g_return_if_fail (message != NULL);
+#line 104 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+	_data18_ = g_slice_new0 (Block18Data);
+#line 104 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+	_data18_->_ref_count_ = 1;
+#line 105 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+	_tmp0_ = message;
+#line 105 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+	_tmp1_ = (GtkMessageDialog*) gtk_message_dialog_new (NULL, GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK, _tmp0_);
+#line 105 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+	g_object_ref_sink (_tmp1_);
+#line 105 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+	_data18_->dialog = _tmp1_;
+#line 109 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+	g_signal_connect_data (G_TYPE_CHECK_INSTANCE_CAST (_data18_->dialog, GTK_TYPE_DIALOG, GtkDialog), "response", (GCallback) ___lambda8__gtk_dialog_response, block18_data_ref (_data18_), (GClosureNotify) block18_data_unref, 0);
+#line 114 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+	gtk_widget_show (G_TYPE_CHECK_INSTANCE_CAST (_data18_->dialog, GTK_TYPE_WIDGET, GtkWidget));
+#line 104 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+	block18_data_unref (_data18_);
+#line 104 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
+	_data18_ = NULL;
+#line 1006 "Utils.c"
 }
 
 
@@ -918,21 +1012,21 @@ Utils* utils_construct (GType object_type) {
 	self = (Utils*) g_type_create_instance (object_type);
 #line 5 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	return self;
-#line 922 "Utils.c"
+#line 1016 "Utils.c"
 }
 
 
 Utils* utils_new (void) {
 #line 5 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	return utils_construct (TYPE_UTILS);
-#line 929 "Utils.c"
+#line 1023 "Utils.c"
 }
 
 
 static void value_utils_init (GValue* value) {
 #line 5 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	value->data[0].v_pointer = NULL;
-#line 936 "Utils.c"
+#line 1030 "Utils.c"
 }
 
 
@@ -941,7 +1035,7 @@ static void value_utils_free_value (GValue* value) {
 	if (value->data[0].v_pointer) {
 #line 5 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 		utils_unref (value->data[0].v_pointer);
-#line 945 "Utils.c"
+#line 1039 "Utils.c"
 	}
 }
 
@@ -951,11 +1045,11 @@ static void value_utils_copy_value (const GValue* src_value, GValue* dest_value)
 	if (src_value->data[0].v_pointer) {
 #line 5 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 		dest_value->data[0].v_pointer = utils_ref (src_value->data[0].v_pointer);
-#line 955 "Utils.c"
+#line 1049 "Utils.c"
 	} else {
 #line 5 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 		dest_value->data[0].v_pointer = NULL;
-#line 959 "Utils.c"
+#line 1053 "Utils.c"
 	}
 }
 
@@ -963,37 +1057,37 @@ static void value_utils_copy_value (const GValue* src_value, GValue* dest_value)
 static gpointer value_utils_peek_pointer (const GValue* value) {
 #line 5 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	return value->data[0].v_pointer;
-#line 967 "Utils.c"
+#line 1061 "Utils.c"
 }
 
 
 static gchar* value_utils_collect_value (GValue* value, guint n_collect_values, GTypeCValue* collect_values, guint collect_flags) {
 #line 5 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	if (collect_values[0].v_pointer) {
-#line 974 "Utils.c"
+#line 1068 "Utils.c"
 		Utils* object;
 		object = collect_values[0].v_pointer;
 #line 5 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 		if (object->parent_instance.g_class == NULL) {
 #line 5 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 			return g_strconcat ("invalid unclassed object pointer for value type `", G_VALUE_TYPE_NAME (value), "'", NULL);
-#line 981 "Utils.c"
+#line 1075 "Utils.c"
 		} else if (!g_value_type_compatible (G_TYPE_FROM_INSTANCE (object), G_VALUE_TYPE (value))) {
 #line 5 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 			return g_strconcat ("invalid object type `", g_type_name (G_TYPE_FROM_INSTANCE (object)), "' for value type `", G_VALUE_TYPE_NAME (value), "'", NULL);
-#line 985 "Utils.c"
+#line 1079 "Utils.c"
 		}
 #line 5 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 		value->data[0].v_pointer = utils_ref (object);
-#line 989 "Utils.c"
+#line 1083 "Utils.c"
 	} else {
 #line 5 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 		value->data[0].v_pointer = NULL;
-#line 993 "Utils.c"
+#line 1087 "Utils.c"
 	}
 #line 5 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	return NULL;
-#line 997 "Utils.c"
+#line 1091 "Utils.c"
 }
 
 
@@ -1004,25 +1098,25 @@ static gchar* value_utils_lcopy_value (const GValue* value, guint n_collect_valu
 	if (!object_p) {
 #line 5 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 		return g_strdup_printf ("value location for `%s' passed as NULL", G_VALUE_TYPE_NAME (value));
-#line 1008 "Utils.c"
+#line 1102 "Utils.c"
 	}
 #line 5 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	if (!value->data[0].v_pointer) {
 #line 5 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 		*object_p = NULL;
-#line 1014 "Utils.c"
+#line 1108 "Utils.c"
 	} else if (collect_flags & G_VALUE_NOCOPY_CONTENTS) {
 #line 5 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 		*object_p = value->data[0].v_pointer;
-#line 1018 "Utils.c"
+#line 1112 "Utils.c"
 	} else {
 #line 5 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 		*object_p = utils_ref (value->data[0].v_pointer);
-#line 1022 "Utils.c"
+#line 1116 "Utils.c"
 	}
 #line 5 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	return NULL;
-#line 1026 "Utils.c"
+#line 1120 "Utils.c"
 }
 
 
@@ -1036,7 +1130,7 @@ GParamSpec* param_spec_utils (const gchar* name, const gchar* nick, const gchar*
 	G_PARAM_SPEC (spec)->value_type = object_type;
 #line 5 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	return G_PARAM_SPEC (spec);
-#line 1040 "Utils.c"
+#line 1134 "Utils.c"
 }
 
 
@@ -1045,7 +1139,7 @@ gpointer value_get_utils (const GValue* value) {
 	g_return_val_if_fail (G_TYPE_CHECK_VALUE_TYPE (value, TYPE_UTILS), NULL);
 #line 5 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	return value->data[0].v_pointer;
-#line 1049 "Utils.c"
+#line 1143 "Utils.c"
 }
 
 
@@ -1065,17 +1159,17 @@ void value_set_utils (GValue* value, gpointer v_object) {
 		value->data[0].v_pointer = v_object;
 #line 5 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 		utils_ref (value->data[0].v_pointer);
-#line 1069 "Utils.c"
+#line 1163 "Utils.c"
 	} else {
 #line 5 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 		value->data[0].v_pointer = NULL;
-#line 1073 "Utils.c"
+#line 1167 "Utils.c"
 	}
 #line 5 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	if (old) {
 #line 5 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 		utils_unref (old);
-#line 1079 "Utils.c"
+#line 1173 "Utils.c"
 	}
 }
 
@@ -1094,17 +1188,17 @@ void value_take_utils (GValue* value, gpointer v_object) {
 		g_return_if_fail (g_value_type_compatible (G_TYPE_FROM_INSTANCE (v_object), G_VALUE_TYPE (value)));
 #line 5 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 		value->data[0].v_pointer = v_object;
-#line 1098 "Utils.c"
+#line 1192 "Utils.c"
 	} else {
 #line 5 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 		value->data[0].v_pointer = NULL;
-#line 1102 "Utils.c"
+#line 1196 "Utils.c"
 	}
 #line 5 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	if (old) {
 #line 5 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 		utils_unref (old);
-#line 1108 "Utils.c"
+#line 1202 "Utils.c"
 	}
 }
 
@@ -1181,14 +1275,14 @@ static void utils_class_init (UtilsClass * klass) {
 	utils_MONTHS = _tmp12_;
 #line 6 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	utils_MONTHS_length1 = 12;
-#line 1185 "Utils.c"
+#line 1279 "Utils.c"
 }
 
 
 static void utils_instance_init (Utils * self) {
 #line 5 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	self->ref_count = 1;
-#line 1192 "Utils.c"
+#line 1286 "Utils.c"
 }
 
 
@@ -1196,7 +1290,7 @@ static void utils_finalize (Utils* obj) {
 	Utils * self;
 #line 5 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	self = G_TYPE_CHECK_INSTANCE_CAST (obj, TYPE_UTILS, Utils);
-#line 1200 "Utils.c"
+#line 1294 "Utils.c"
 }
 
 
@@ -1221,7 +1315,7 @@ gpointer utils_ref (gpointer instance) {
 	g_atomic_int_inc (&self->ref_count);
 #line 5 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 	return instance;
-#line 1225 "Utils.c"
+#line 1319 "Utils.c"
 }
 
 
@@ -1234,7 +1328,7 @@ void utils_unref (gpointer instance) {
 		UTILS_GET_CLASS (self)->finalize (self);
 #line 5 "/home/baedert/Code/Vala/Corebird/src/util/Utils.vala"
 		g_type_free_instance ((GTypeInstance *) self);
-#line 1238 "Utils.c"
+#line 1332 "Utils.c"
 	}
 }
 

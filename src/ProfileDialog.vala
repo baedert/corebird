@@ -95,7 +95,7 @@ class ProfileDialog : Gtk.Window {
 	private async void load_profile_data(string screen_name){
 		var call = Twitter.proxy.new_call();
 		call.set_method("GET");
-		call.set_function("1.1/users/show.json");
+		call.set_function("/users/show.json");
 		call.add_param("screen_name", screen_name);
 		call.invoke_async.begin(null, (obj, res) => {
 			try{
@@ -172,7 +172,7 @@ class ProfileDialog : Gtk.Window {
 	private async void load_banner(string screen_name){
 		var call = Twitter.proxy.new_call();
 		call.set_method("GET");
-		call.set_function("1.1/users/profile_banner.json");
+		call.set_function("/users/profile_banner.json");
 		call.add_param("screen_name", screen_name);
 		call.invoke_async.begin(null, (obj, res) => {
 			if (call.get_status_code() == 404){

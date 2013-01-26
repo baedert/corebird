@@ -19,9 +19,9 @@ class Utils{
 			return new GLib.DateTime.now_local();
 		}
 		string month_str = input.substring(4, 3);
-		int day = int.parse(input.substring(8, 2));
-		int year = int.parse(input.substring(input.length-4));
-		string timezone = input.substring(20, 5);
+		int day          = int.parse(input.substring(8, 2));
+		int year         = int.parse(input.substring(input.length-4));
+		string timezone  = input.substring(20, 5);
 
 		int month = -1;
 		switch(month_str){
@@ -42,7 +42,8 @@ class Utils{
 		int hour   = int.parse(input.substring(11, 2));
 		int minute = int.parse(input.substring(14, 2));
 		int second = int.parse(input.substring(17, 2));
-		GLib.DateTime dt = new GLib.DateTime(new GLib.TimeZone(timezone), year, month, day, hour, minute, second);
+		GLib.DateTime dt = new GLib.DateTime(new GLib.TimeZone(timezone), 
+		                                     year, month, day, hour, minute, second);
 		return dt.to_timezone(new TimeZone.local());
 	}
 
@@ -86,8 +87,30 @@ class Utils{
 		return path.substring(path.last_index_of(".") + 1);
 	}
 
+	/**
+	 * Returns the avatar name for the given path
+	 *
+	 * @return the 'calculated' avatar name
+	 */
 	public static string get_avatar_name(string path){
 		string[] parts = path.split("/");
 		return parts[parts.length - 2]+"_"+parts[parts.length - 1];
+	}
+
+
+	/**
+	 * Shows an error dialog with the given error message
+	 */
+	public static void show_error_dialog(string message){
+		var dialog = new Gtk.MessageDialog(null, Gtk.DialogFlags.DESTROY_WITH_PARENT,
+		           Gtk.MessageType.ERROR, Gtk.ButtonsType.OK,
+		           message);
+
+		dialog.response.connect((id) => {
+			if(id == Gtk.ResponseType.OK)
+				dialog.destroy();
+		});
+
+		dialog.show();
 	}
 }
