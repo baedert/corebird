@@ -139,16 +139,19 @@ class Tweet : GLib.Object{
 
 		this.load_avatar();
 		if(!this.has_avatar()){
-			File dest = File.new_for_path("assets/avatars/"+this.avatar_name);
-			// This is our lock now. Assuming that not 2 tweets create this file at exactly
-			// the same time, the avatar won't be loaded twice.
-			FileIOStream io_stream = dest.create_readwrite(FileCreateFlags.PRIVATE);
+			// File dest = File.new_for_path("assets/avatars/"+this.avatar_name);
+			string dest = "assets/avatars/"+this.avatar_name;
+			// FileIOStream io_stream = dest.create_readwrite(FileCreateFlags.PRIVATE);
 			GLib.Idle.add(() => {
 				var session = new Soup.SessionAsync();
 				var msg = new Soup.Message("GET", this.avatar_url);
 				session.send_message(msg);
 				
-				io_stream.output_stream.write(msg.response_body.data);
+				var memory_stream = new MemoryInputStream.from_data(msg.response_body.data,
+				                                                    null);
+				var pixbuf = new Gdk.Pixbuf.from_stream_at_scale(memory_stream, 48, 48, 
+				                                                 false);
+				pixbuf.save(dest, Utils.get_file_type(avatar_name));
 				this.load_avatar();
 				message("Loaded avatar for %s", screen_name);
 				return false;

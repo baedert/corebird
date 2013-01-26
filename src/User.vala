@@ -81,7 +81,7 @@ class User{
 			    	|| !FileUtils.test(get_avatar_path(), FileTest.EXISTS)){
 
 				//TODO: Find better variable names here
-				string dest_path = "assets/user/%s".printf(avatar_name);
+				string dest_path = "assets/user/"+avatar_name;
 				string big_dest  = "assets/avatars/"+Utils.get_avatar_name(avatar_url);
 				var session = new Soup.SessionAsync();
 				var msg = new Soup.Message("GET", avatar_url);
@@ -92,13 +92,17 @@ class User{
 				try{
 					var data_stream = new MemoryInputStream.from_data(
 									(owned)msg.response_body.data,null);
-					var pixbuf = new Gdk.Pixbuf.from_stream_at_scale(data_stream,
-					                                                 24, 24, false);
+					var pixbuf = new Gdk.Pixbuf.from_stream(data_stream);
 					pixbuf.save(big_dest, type);
-					pixbuf.scale_simple(24, 24, Gdk.InterpType.HYPER);
-					pixbuf.save(dest_path, type);
+					double scale_x = 24.0 / pixbuf.get_width();
+					double scale_y = 24.0 / pixbuf.get_height();
+					var scaled_pixbuf = new Gdk.Pixbuf(Gdk.Colorspace.RGB, false,
+					                                   8, 24, 24);
+					pixbuf.scale(scaled_pixbuf, 0, 0, 24, 24, 0, 0, scale_x, scale_y,
+					             Gdk.InterpType.HYPER);
+					scaled_pixbuf.save(dest_path, type);
 				} catch(GLib.Error e) {
-
+					critical("Error while downloading/scaling avatar: %s", e.message);
 				}
 
 				if(avatar_widget != null)
