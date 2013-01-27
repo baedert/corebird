@@ -24,6 +24,7 @@ class MainWindow : ApplicationWindow {
 	private SeparatorToolItem expander_item  = new SeparatorToolItem();
 	private SeparatorToolItem left_separator = new SeparatorToolItem();
 	private PaneWidget right_pane;
+	private Egg.ListBox list = new Egg.ListBox();
 
 	public MainWindow(Gtk.Application app){
 		GLib.Object (application: app);
@@ -64,8 +65,6 @@ class MainWindow : ApplicationWindow {
 			return true;
 		});
 
-		Egg.ListBox lb = new Egg.ListBox();
-
 		new_tweet_button.clicked.connect( () => {
 		 	NewTweetWindow win = new NewTweetWindow(this);
 			win.show_all();
@@ -105,10 +104,15 @@ class MainWindow : ApplicationWindow {
 		User.update_info.begin((Image)avatar_button.icon_widget);
 
 		// // Add all tool buttons for the containers
-		foreach(var tc in containers){
-			left_toolbar.add(tc.get_tool_button());
-			main_notebook.append_page(tc);
-		}
+		// foreach(var tc in containers){
+		// 	left_toolbar.add(tc.get_tool_button());
+		// 	main_notebook.append_page(tc);
+		// }
+
+		main_notebook.append_page(list);
+
+		for(int i =0 ;  i < 100; i++)
+			list.add(new Button.with_label("HIHI"));
 
 		refresh_button.clicked.connect( () => {
 			//Refresh the current container

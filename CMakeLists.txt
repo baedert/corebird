@@ -5,7 +5,7 @@ list(APPEND CMAKE_MODULE_PATH
 	${CMAKE_SOURCE_DIR}/build/
 )
 
-set (CMAKE_C_FLAGS "-g -Wall -Wno-incompatible-pointer-types -Wno-unused-value -Wno-unused-function -Wno-unused-variable -Wno-format-invalid-specifier ")
+set (CMAKE_C_FLAGS "-g -Wall -Wno-incompatible-pointer-types -Wno-unused-value -Wno-unused-function -Wno-unused-variable -Wno-format-invalid-specifier")
 
 
 find_package(Vala REQUIRED)
@@ -73,23 +73,20 @@ vala_precompile(VALA_C
 	src/util/Benchmark.vala
 	src/sql/Query.vala
 	src/sql/InsertQuery.vala
+	src/egglistbox/egg-list-box.c
+	src/egglistbox/egg-list-box.h
 PACKAGES
 	${DEPS}
+	egglistbox
 OPTIONS
 	-g
 	-v
 	-X -v
-	--enable-mem-profiler
-	--cc=clang
 	--thread 
 	--target-glib=2.32
 	--enable-checking
 	--vapidir=src/egglistbox/
-CUSTOM_VAPIS
-	src/egglistbox/egglistbox.vapi
 )
-include_directories("src/egglistbox")
-#add_subdirectory("src/egglistbox")
 
 add_executable(Corebird ${VALA_C})
 target_link_libraries(Corebird ${DEPS_LIBRARIES})
