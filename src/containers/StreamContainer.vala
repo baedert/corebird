@@ -120,16 +120,7 @@ class StreamContainer : TweetContainer, ScrollWidget{
 			//	Find out how. Probably works now that it's in Tweet
 			var root = parser.get_root().get_array();
 			var loader_thread = new LoaderThread(root, main_window, 
-												 tweet_list, Tweet.TYPE_NORMAL/*,
-			(num)=> {
-				if(num > 0 && Settings.notify_new_tweets()&&
-					!main_window.has_toplevel_focus){
-					string tweets = "Tweets";
-					if(num == 1)
-						tweets = "Tweet";
-					NotificationManager.notify("%d new %s".printf(num, tweets));
-				}
-			}*/);
+												 tweet_list, Tweet.TYPE_NORMAL);
 			loader_thread.run();
 		});
 	}
