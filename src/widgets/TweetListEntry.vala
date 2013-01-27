@@ -13,7 +13,6 @@ class TweetListEntry : Gtk.Box{
 	private Label screen_name	      = new Label("");
 	private Label time_delta		  = new Label("");
 	private MainWindow window;
-	private new Gtk.Menu popup_menu	  = new Gtk.Menu();
 
 
 	public TweetListEntry(Tweet tweet, MainWindow? window){
@@ -47,17 +46,7 @@ class TweetListEntry : Gtk.Box{
 
 		if (tweet.screen_name == User.screen_name){
 			get_style_context().add_class("user-tweet");
-			var delete_item = new Gtk.MenuItem.with_label("Delete");
-			popup_menu.add(delete_item);
-		}else{
-			var rt_item = new Gtk.CheckMenuItem.with_label("Retweet");
-			popup_menu.add(rt_item);
-			var fav_item = new Gtk.CheckMenuItem.with_label("Favorite");
-			popup_menu.add(fav_item);
-			var answer_item = new Gtk.MenuItem.with_label("Answer");
-			popup_menu.add(answer_item);
 		}
-		popup_menu.show_all();
 
 
 		var left_box = new Box(Orientation.VERTICAL, 3);
@@ -140,8 +129,10 @@ class TweetListEntry : Gtk.Box{
 	* Handle uris in the tweets
 	*/
 	private bool handle_uri(string uri){
+		string term = uri.substring(1);
+
 		if(uri.has_prefix("@")){
-			ProfileDialog pd = new ProfileDialog(uri.substring(1));
+			ProfileDialog pd = new ProfileDialog(term);
 			pd.show_all();
 			return true;
 		}else if(uri.has_prefix("#")){

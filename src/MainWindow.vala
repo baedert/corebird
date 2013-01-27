@@ -24,7 +24,6 @@ class MainWindow : ApplicationWindow {
 	private SeparatorToolItem expander_item  = new SeparatorToolItem();
 	private SeparatorToolItem left_separator = new SeparatorToolItem();
 	private PaneWidget right_pane;
-	private Egg.ListBox list = new Egg.ListBox();
 
 	public MainWindow(Gtk.Application app){
 		GLib.Object (application: app);
@@ -108,8 +107,6 @@ class MainWindow : ApplicationWindow {
 			left_toolbar.add(tc.get_tool_button());
 			main_notebook.append_page(tc);
 		}
-
-		main_notebook.append_page(list);
 
 		refresh_button.clicked.connect( () => {
 			//Refresh the current container
