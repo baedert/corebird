@@ -1,0 +1,12 @@
+prefix=
+exec_prefix=
+abs_top_srcdir=/home/baedert/Code/Vala/Corebird/src/egglistbox/
+abs_top_builddir=/home/baedert/Code/Vala/Corebird/src/egglistbox/
+
+Name: egg-list-box (uninstalled copy)
+Description: Sorting widget container
+Version: 3.5.1
+Requires: pkg-config >= 0.21
+Requires.private: glib-2.0 >= 2.31.10, gobject-2.0 >= 2.31.10, gtk+-3.0 >= 3.4.0
+Libs: ${abs_top_builddir}/libegglistbox.a
+Cflags: -I${abs_top_srcdir} -I${abs_top_builddir}

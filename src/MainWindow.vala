@@ -64,6 +64,8 @@ class MainWindow : ApplicationWindow {
 			return true;
 		});
 
+		Egg.ListBox lb = new Egg.ListBox();
+
 		new_tweet_button.clicked.connect( () => {
 		 	NewTweetWindow win = new NewTweetWindow(this);
 			win.show_all();
