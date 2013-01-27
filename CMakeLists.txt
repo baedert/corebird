@@ -5,8 +5,16 @@ list(APPEND CMAKE_MODULE_PATH
 	${CMAKE_SOURCE_DIR}/build/
 )
 
-set (CMAKE_C_FLAGS "-g -Wall -Wno-incompatible-pointer-types -Wno-unused-value -Wno-unused-function -Wno-unused-variable -Wno-format-invalid-specifier")
+# Enable coloring
+set (CMAKE_COLOR_MAKEFILE ON)
+set (CMAKE_VERBOSE_MAKEFILE ON)
 
+set (CMAKE_C_FLAGS "-g -Wall")
+set (CMAKE_C_FLAGS "-Wno-incompatible-pointer-types")
+set (CMAKE_C_FLAGS "-Wno-unused-value")
+set (CMAKE_C_FLAGS "-Wno-unused-function")
+set (CMAKE_C_FLAGS "-Wno-unused-variable")
+set (CMAKE_C_FLAGS "-Wno-deprecated-declarations")
 
 find_package(Vala REQUIRED)
 include(ValaVersion)
@@ -73,15 +81,13 @@ vala_precompile(VALA_C
 	src/util/Benchmark.vala
 	src/sql/Query.vala
 	src/sql/InsertQuery.vala
-	src/egglistbox/egg-list-box.c
 	src/egglistbox/egg-list-box.h
+	src/egglistbox/egg-list-box.c
 PACKAGES
 	${DEPS}
 	egglistbox
 OPTIONS
 	-g
-	-v
-	-X -v
 	--thread 
 	--target-glib=2.32
 	--enable-checking
