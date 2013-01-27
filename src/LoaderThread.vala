@@ -3,14 +3,14 @@
 class LoaderThread{
 	private Json.Array root;
 	private MainWindow? window;
-	private TweetList list;
+	private Egg.ListBox list;
 	private Thread<void*> thread;
 	public delegate void EndLoadFunc(int tweet_count);
 	private unowned EndLoadFunc? finished;
 	public bool balance_upper_change = true;
 	private int tweet_type;
 
-	public LoaderThread(Json.Array root, MainWindow? window, TweetList list,
+	public LoaderThread(Json.Array root, MainWindow? window, Egg.ListBox list,
 	                    int tweet_type = -1,
 	                    EndLoadFunc? finished = null){
 		this.root           = root;
@@ -44,15 +44,16 @@ class LoaderThread{
 		});
 
 		GLib.Idle.add( () => {
-			list.hide_spinner();
+			// list.hide_spinner();
 			//FIXME: God this sucks.
-			if(balance_upper_change)
-				((ScrollWidget)list.parent.parent).balance_next_upper_change();
+			// if(balance_upper_change)
+			// 	((ScrollWidget)list.parent.parent).balance_next_upper_change();
 				
 
 			message("Results: %d", entries.length);
 			for(int i = 0; i < entries.length; i++)
-				list.insert_item(entries[i], i);
+				// list.insert(entries[i], i);
+				list.add(entries[i]);
 			
 			if (finished != null){
 				finished(entries.length);

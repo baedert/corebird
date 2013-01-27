@@ -6,7 +6,7 @@ using Gtk;
 
 class SearchContainer : TweetContainer, Box {
 	private Entry search_entry    = new Entry();
-	private TweetList result_list = new TweetList();
+	// private TweetList result_list = new TweetList();
 	public MainWindow main_window;
 	private RadioToolButton tool_button;
 	private int id;
@@ -26,7 +26,7 @@ class SearchContainer : TweetContainer, Box {
 		});
 		search_entry.key_release_event.connect( (event) => {
 			if (event.keyval == Gdk.Key.Return){
-				result_list.clear();
+				// result_list.clear();
 				search_for.begin(search_entry.get_text());	
 				return true;
 			}
@@ -34,20 +34,20 @@ class SearchContainer : TweetContainer, Box {
 			return false;
 		});
 		this.pack_start(search_entry, false, true);
-		var result_scroller = new ScrollWidget();
-		result_scroller.add_with_viewport(result_list);
-		this.pack_start(result_scroller, true, true);
+		// var result_scroller = new ScrollWidget();
+		// result_scroller.add_with_viewport(result_list);
+		// this.pack_start(result_scroller, true, true);
 	}
 
 	public async void search_for(string search_term, bool set_text = false){
 		if(search_term.length == 0)
 			return;
 
-		result_list.clear();
-		GLib.Idle.add( () => {
-			result_list.show_spinner();
-			return false;
-		});
+		// result_list.clear();
+		// GLib.Idle.add( () => {
+		// 	result_list.show_spinner();
+		// 	return false;
+		// });
 
 		if (set_text)
 			search_entry.set_text(search_term);
@@ -72,9 +72,9 @@ class SearchContainer : TweetContainer, Box {
 				critical("Problem with json data from search call: %s\nDATA:\n%s", e.message, back);
 			}
 			var statuses = parser.get_root().get_object().get_array_member("statuses");
-			LoaderThread loader_thread = new LoaderThread(statuses, main_window, result_list);
-			loader_thread.balance_upper_change = false;
-			loader_thread.run();
+			// LoaderThread loader_thread = new LoaderThread(statuses, main_window, result_list);
+			// loader_thread.balance_upper_change = false;
+			// loader_thread.run();
 		});
 	}
 

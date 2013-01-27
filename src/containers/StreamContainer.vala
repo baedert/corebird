@@ -5,7 +5,7 @@ using Gtk;
 //		than the page can handle, the scrollWidget
 //      scrolls DOWN but it should stay at the top.
 class StreamContainer : TweetContainer, ScrollWidget{
-	private TweetList tweet_list = new TweetList();
+	private Egg.ListBox tweet_list = new Egg.ListBox();
 	private MainWindow main_window;
 	private RadioToolButton tool_button;
 	private int id;
@@ -71,7 +71,7 @@ class StreamContainer : TweetContainer, ScrollWidget{
 
 			// Append the tweet to the TweetList
 			TweetListEntry list_entry = new TweetListEntry(t, main_window);
-			tweet_list.append(list_entry);	
+			tweet_list.add(list_entry);	
 			result.next();
 		}
 	}
@@ -79,7 +79,7 @@ class StreamContainer : TweetContainer, ScrollWidget{
 	public async void load_new_tweets(bool add_spinner = true) throws SQLHeavy.Error {
 		if (add_spinner){
 			GLib.Idle.add( () => {
-				tweet_list.show_spinner();
+				// tweet_list.show_spinner();
 				return false;
 			});
 		}
