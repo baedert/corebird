@@ -58,7 +58,6 @@ class MainWindow : ApplicationWindow {
 				// set_visible(false);
 			// }else{
 				save_geometry();
-				// Gtk.main_quit();
 				this.application.release();
 			// }
 			return true;

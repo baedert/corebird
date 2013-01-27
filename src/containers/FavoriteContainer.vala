@@ -5,14 +5,14 @@ class FavoriteContainer : TweetContainer, ScrollWidget {
 	private MainWindow main_window;
 	private RadioToolButton tool_button;
 	private int id;
-	private TweetList tweet_list = new TweetList();
+	// private TweetList tweet_list = new TweetList();
 
 
 	public FavoriteContainer(int id){
 		base();
 		this.id = id;
 
-		this.add_with_viewport(tweet_list);
+		// this.add_with_viewport(tweet_list);
 	}
 
 
@@ -40,9 +40,9 @@ class FavoriteContainer : TweetContainer, ScrollWidget {
 
 			//TODO: The queries in that lambda can ALL be cached, but that kinda breaks.
 			//	Find out how. Probably works now that it's in Tweet
-			var root = parser.get_root().get_array();
-			var loader_thread = new LoaderThread(root, main_window, tweet_list, 1);
-			loader_thread.run();
+			// var root = parser.get_root().get_array();
+			// var loader_thread = new LoaderThread(root, main_window, tweet_list, 1);
+			// loader_thread.run();
 		});
 	}
 

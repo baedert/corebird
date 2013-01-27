@@ -20,3 +20,5 @@ assets/user/*
 stats
 Corebird.sublime-workspace
 *.swp
+*.ninja
+.ninja_log
