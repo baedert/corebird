@@ -47,9 +47,9 @@ class Tweet : GLib.Object{
 	}
 
 	public void load_avatar(){
-		if (Twitter.avatars.has_key(avatar_name))
-			this.avatar = Twitter.avatars.get(avatar_name);
-		else{
+		if (Twitter.avatars.has_key(avatar_name)){
+		 	this.avatar = Twitter.avatars.get(avatar_name);
+		 }else{
 			string path = "assets/avatars/"+avatar_name;
 			if(FileUtils.test(path, FileTest.EXISTS)){
 				try{

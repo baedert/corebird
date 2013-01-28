@@ -40,6 +40,7 @@ class StreamContainer : TweetContainer, ScrollWidget{
 				message("end! %d/%d", value, max);
 				// https://dev.twitter.com/docs/working-with-timelines
 				load_older_tweets.begin();
+				message(":/");
 			}
 		});
 	}
@@ -156,7 +157,7 @@ class StreamContainer : TweetContainer, ScrollWidget{
 				int64 added_to_stream;
 				t.load_from_json(o, now, out created_at, out added_to_stream);
 				message(t.user_name);
-				tweet_list.prepend(new TweetListEntry(t, null));
+				tweet_list.add(new TweetListEntry(t, null));
 			});
 		});
 	}

@@ -15,9 +15,9 @@ class ProfileDialog : Gtk.Window {
 	private Label follower_label    = new Label("");
 	private Label following_label   = new Label("");
 
-	public ProfileDialog(string screen_name = ""){
-		if (screen_name == "")
-			screen_name = User.screen_name;
+	public ProfileDialog(int64 user_id = 0){
+		if (user_id <= 0)
+			user_id = User.id;
 
 		var main_box = new Gtk.Box(Orientation.VERTICAL, 2);
 		banner_box.get_style_context().add_class("profile-header");
@@ -29,7 +29,7 @@ class ProfileDialog : Gtk.Window {
 		name_label.get_style_context().add_class("name");
 		banner_box.pack_start(name_label, false, false);
 		screen_name_label.set_use_markup(true);
-		screen_name_label.set_markup("<big>@%s</big>".printf(screen_name));
+		screen_name_label.set_markup(@"<big>@$user_id</big>");
 		screen_name_label.get_style_context().add_class("screen-name");
 		banner_box.pack_start(screen_name_label, false, false);
 		description_label.set_use_markup(true);
@@ -58,9 +58,9 @@ class ProfileDialog : Gtk.Window {
 		//Load cached data
 		try{
 			SQLHeavy.Query cache_query = new SQLHeavy.Query(Corebird.db,
-				"SELECT screen_name, name, description, tweets, following, followers, avatar_name
+				@"SELECT screen_name, name, description, tweets, following, followers, avatar_name
 				FROM profiles
-				WHERE screen_name='%s';".printf(screen_name));
+				WHERE screen_name='$user_id';");
 			SQLHeavy.QueryResult cache_result = cache_query.execute();
 			if (!cache_result.finished){
 				name_label.set_markup("<big><big><big><b>%s</b></big></big></big>"
@@ -72,9 +72,9 @@ class ProfileDialog : Gtk.Window {
 				following_label.set_markup("<big><b>%'d</b></big>\nFollowing".printf(cache_result.fetch_int(4)));
 				follower_label.set_markup("<big><b>%'d</b></big>\nFollowers".printf(cache_result.fetch_int(5)));
 				avatar_image.set_from_file("assets/avatars/%s".printf(cache_result.fetch_string(6)));
-				if(FileUtils.test("assets/banners/%s.png".printf(screen_name), FileTest.EXISTS))
-					banner_box.set_pixbuf(new Gdk.Pixbuf.from_file("assets/banners/%s.png"
-				                      .printf(screen_name)));
+				if(FileUtils.test(@"assets/banners/$user_id.png", FileTest.EXISTS))
+					banner_box.set_pixbuf(new Gdk.Pixbuf.
+					                      from_file(@"assets/banners/$user_id.png"));
 			}
 		}catch(SQLHeavy.Error e){
 			warning("Error while loading cached profile data: %s", e.message);
@@ -82,8 +82,8 @@ class ProfileDialog : Gtk.Window {
 			warning("Error while loading cached banner: %s", e.message);
 		}
 
-		load_banner.begin(screen_name);
-		load_profile_data.begin(screen_name);
+		load_banner.begin(user_id);
+		load_profile_data.begin(user_id);
 
 
 
@@ -92,16 +92,16 @@ class ProfileDialog : Gtk.Window {
 	}
 
 
-	private async void load_profile_data(string screen_name){
+	private async void load_profile_data(int64 user_id){
 		var call = Twitter.proxy.new_call();
 		call.set_method("GET");
 		call.set_function("/users/show.json");
-		call.add_param("screen_name", screen_name);
+		call.add_param("user_id", user_id.to_string());
 		call.invoke_async.begin(null, (obj, res) => {
 			try{
 				call.invoke_async.end (res);
 			} catch (GLib.Error e){
-				warning("Error while ending call: %s(%s)", e.message, screen_name);
+				warning("Error while ending call: %s", e.message);
 				return;
 			}
 			string back = call.get_payload();
@@ -116,6 +116,7 @@ class ProfileDialog : Gtk.Window {
 			string avatar_url = root.get_string_member("profile_image_url");
 			string avatar_name = Utils.get_avatar_name(avatar_url);
 			string avatar_on_disk = "assets/avatars/"+avatar_name;
+			//TODO: Also use libsoup here
 			if(!FileUtils.test(avatar_on_disk, FileTest.EXISTS)){
 				File av = File.new_for_uri(avatar_url);
 				File dest = File.new_for_path(avatar_on_disk);
@@ -128,6 +129,7 @@ class ProfileDialog : Gtk.Window {
 			}
 			avatar_image.set_from_file(avatar_on_disk);
 			string name        = root.get_string_member("name");
+			string screen_name = root.get_string_member("screen_name");
 			string description = root.get_string_member("description").replace("&", "&amp;");
 			int64 id		   = root.get_int_member("id");
 			int followers      = (int)root.get_int_member("followers_count");
@@ -169,11 +171,11 @@ class ProfileDialog : Gtk.Window {
 	/**
 	 * Loads the user's banner image.
 	 */
-	private async void load_banner(string screen_name){
+	private async void load_banner(int64 user_id){
 		var call = Twitter.proxy.new_call();
 		call.set_method("GET");
 		call.set_function("/users/profile_banner.json");
-		call.add_param("screen_name", screen_name);
+		call.add_param("user_id", user_id.to_string());
 		call.invoke_async.begin(null, (obj, res) => {
 			if (call.get_status_code() == 404){
 				// Normal. The user has not set a profile banner.
@@ -202,7 +204,7 @@ class ProfileDialog : Gtk.Window {
 			// else
 				banner_url = root.get_object_member("web").get_string_member("url");
 
-			string banner_on_disk = "assets/banners/"+screen_name+".png";
+			string banner_on_disk = @"assets/banners/$user_id.png";
 			if (!FileUtils.test(banner_on_disk, FileTest.EXISTS)){
 				message("Loading banner...");
 				try{

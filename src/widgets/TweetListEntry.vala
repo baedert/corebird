@@ -68,7 +68,7 @@ class TweetListEntry : Gtk.Box{
 		var author_box = new Box(Orientation.HORIZONTAL, 8);
 		author_button = new TextButton(tweet.user_name);
 		author_button.clicked.connect(() => {
-			ProfileDialog d = new ProfileDialog(tweet.screen_name);
+			ProfileDialog d = new ProfileDialog(tweet.user_id);
 			d.show_all();
 		});
 		author_box.pack_start(author_button, false, false);
@@ -98,17 +98,6 @@ class TweetListEntry : Gtk.Box{
 		time_delta.get_style_context().add_class("time-delta");
 		time_delta.margin_right = 3;
 		right_box.pack_start(time_delta, false, false);
-		var expand_button = new ArrowButton();
-		expand_button.vexpand = true;
-		expand_button.hexpand = false;
-		expand_button.set_halign(Align.END);
-		expand_button.set_valign(Align.FILL);
-		expand_button.clicked.connect(() => {
-			var a = new TweetInfoWidget(tweet, window);
-			window.toggle_right_pane(a);
-		});
-		// EXPAND, FILL
-		right_box.pack_start(expand_button, false, true);
 
 		this.pack_start(right_box, false, false);
 
@@ -132,8 +121,9 @@ class TweetListEntry : Gtk.Box{
 		string term = uri.substring(1);
 
 		if(uri.has_prefix("@")){
-			ProfileDialog pd = new ProfileDialog(term);
-			pd.show_all();
+			// FIXME: Use the id OR the handle in ProfileDialog
+			// ProfileDialog pd = new ProfileDialog(term);
+			// pd.show_all();
 			return true;
 		}else if(uri.has_prefix("#")){
 			debug("TODO: Implement search");
