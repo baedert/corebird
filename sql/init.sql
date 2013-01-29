@@ -6,13 +6,14 @@ CREATE TABLE IF NOT EXISTS `common`(
 				photo_size_limit INTEGER(10),
 				short_url_length INTEGER(3),
 				short_url_length_https INTEGER(3),
-				characters_reserved_per_media INTEGER(3));
+				characters_reserved_per_media INTEGER(3)
+);
 
 CREATE TABLE IF NOT EXISTS `cache`(
-                id INTEGER(11),
-                rt_id INTEGER(11),
+                id NUMERIC(19,0),
+                rt_id NUMERIC(19,0),
                 text VARCHAR(140),
-				user_id INTEGR(11),
+				user_id NUMERIC(19,0),
 				user_name VARCHAR(100),
 				screen_name VARCHAR(40), 
 				time INTEGER(11),
@@ -26,21 +27,24 @@ CREATE TABLE IF NOT EXISTS `cache`(
 			    retweets INTEGER(5),
 			    favorites INTEGER(5),
 			    added_to_stream INTEGER(11),
-			    type INTEGER(1));
+			    type INTEGER(1)
+);
 
 CREATE TABLE IF NOT EXISTS `people`(
-				id INTEGER(11), 
+				id NUMERIC(19,0), 
 			    name VARCHAR(30),
 			    screen_name VACHAR(30),
 			    avatar_url VARCHAR(255),
-			    avatar_name VARCHAR(70));
+			    avatar_name VARCHAR(70)
+);
 
 CREATE TABLE IF NOT EXISTS `user`(
-                id INTEGER(11),
+                id NUMERIC(19,0),
 			    name VARCHAR(40),
 			    screen_name VARCHAR(40),
 			    avatar_name VARCHAR(40),
-			    avatar_url VARCHAR(50));
+			    avatar_url VARCHAR(50)
+);
 
 CREATE TABLE IF NOT EXISTS `profiles`(
                 id INTEGER(11),
@@ -50,4 +54,5 @@ CREATE TABLE IF NOT EXISTS `profiles`(
 			    followers INTEGER(11),
 			    following INTEGER(11),
 			    description VARCHAR(160),
-			    avatar_name VARCHAR(100));
+			    avatar_name VARCHAR(100)
+);

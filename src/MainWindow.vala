@@ -10,23 +10,23 @@ class MainWindow : ApplicationWindow {
 	public static const int PAGE_SEARCH    = 3;
 
 
-	private Toolbar left_toolbar                  = new Toolbar();
-	private Toolbar primary_toolbar 			  = new Toolbar();
-	private Box main_box                          = new Box(Orientation.VERTICAL, 0);
-	private Box bottom_box                        = new Box(Orientation.HORIZONTAL, 0);
-	private Notebook main_notebook                = new Notebook();
-	private TweetContainer[] containers			  = new TweetContainer[4];
-	private ToolButton avatar_button			  = new ToolButton(null, null);
-	private ToolButton refresh_button			  = new ToolButton.from_stock(Stock.REFRESH);
-	private ToolButton settings_button			  = new ToolButton.from_stock(Stock.PROPERTIES);
-	private ToolButton new_tweet_button			  = new ToolButton.from_stock(Stock.NEW);
-	private SeparatorToolItem expander_item		  = new SeparatorToolItem();
-	private SeparatorToolItem left_separator	  = new SeparatorToolItem();
+	private Toolbar left_toolbar             = new Toolbar();
+	private Toolbar primary_toolbar          = new Toolbar();
+	private Box main_box                     = new Box(Orientation.VERTICAL, 0);
+	private Box bottom_box                   = new Box(Orientation.HORIZONTAL, 0);
+	private Notebook main_notebook           = new Notebook();
+	private TweetContainer[] containers      = new TweetContainer[4];
+	private ToolButton avatar_button         = new ToolButton(null, null);
+	private ToolButton refresh_button        = new ToolButton.from_stock(Stock.REFRESH);
+	private ToolButton settings_button       = new ToolButton.from_stock(Stock.PROPERTIES);
+	private ToolButton new_tweet_button      = new ToolButton.from_stock(Stock.NEW);
+	private SeparatorToolItem expander_item  = new SeparatorToolItem();
+	private SeparatorToolItem left_separator = new SeparatorToolItem();
 	private PaneWidget right_pane;
 
 	public MainWindow(Gtk.Application app){
 		GLib.Object (application: app);
-
+		
 		containers[0] = new StreamContainer(PAGE_STREAM);
 		containers[1] = new MentionsContainer(PAGE_MENTIONS);
 		containers[2] = new FavoriteContainer(PAGE_FAVORITES);
@@ -57,7 +57,6 @@ class MainWindow : ApplicationWindow {
 				// set_visible(false);
 			// }else{
 				save_geometry();
-				// Gtk.main_quit();
 				this.application.release();
 			// }
 			return true;
@@ -205,13 +204,13 @@ class MainWindow : ApplicationWindow {
 	}
 
 	private void save_geometry(){
-		// int x, y, w, h;
-		// this.get_size(out w, out h);
-		// this.get_position(out x, out y);
+		int x, y, w, h;
+		this.get_size(out w, out h);
+		this.get_position(out x, out y);
 		// if (right_pane != null && right_pane.is_visible())
-		// 	w -= right_pane_width;
-		// Settings.set_string("main-window-geometry", "%d,%d,%d,%d".printf(x,
-		//                     y, w, h));
+			// w -= right_pane_width;
+		Settings.set_string("main-window-geometry", "%d,%d,%d,%d".printf(x,
+		                    y, w, h));
 	}
 
 	private void load_geometry(){

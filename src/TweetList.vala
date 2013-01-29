@@ -6,7 +6,7 @@ using Gtk;
 //      adding and reordering?
 public class TweetList : Box{
 	private ProgressItem spinner = new ProgressItem();
-	private int childCount = 0;
+	private int child_count = 0;
 
 	public TweetList(){
 		GLib.Object(orientation: Orientation.VERTICAL, spacing: 4);
@@ -19,21 +19,21 @@ public class TweetList : Box{
 	 * @param entry The entry to add.
 	 */
 	public void append(Box entry){
-
-		//XXX: This is probably completely broken.
-		if (childCount % 2 == 0){
-			entry.get_style_context().add_region(STYLE_REGION_ROW, RegionFlags.EVEN);
-		}else{
-			entry.get_style_context().add_region(STYLE_REGION_ROW, RegionFlags.ODD);
-		}
-		
 		entry.show_all();
 		base.pack_start(entry, false, true);
-		childCount++;
+		child_count++;
 	}
 
-	public void prepend(Box entry){
-		critical("Implement.");
+	public void prepend(Box entry, uint offset = 0){
+		// critical("Implement.");
+		entry.show_all();
+		if(offset == 0)
+			base.pack_end(entry, false,true);
+		else{
+			this.insert_item (entry, child_count - offset);
+		}
+
+		child_count++;
 	}
 	/**
 	 * Inserts the given entry into the place at the given position.

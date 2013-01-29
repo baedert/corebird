@@ -13,6 +13,7 @@ class Tweet : GLib.Object{
 
 
 	public int64 id;
+	public int64 rt_id;
 	public bool retweeted = false;
 	public bool favorited = false;
 	public string text;
@@ -34,10 +35,11 @@ class Tweet : GLib.Object{
 			cache_query = new SQLHeavy.Query(Corebird.db,
 			"INSERT INTO `cache`(`id`, `text`,`user_id`, `user_name`, `is_retweet`,
 			                     `retweeted_by`, `retweeted`, `favorited`, `created_at`,
-			                     `added_to_stream`, `avatar_name`, `screen_name`, `type`) 
+			                     `added_to_stream`, `avatar_name`, `screen_name`, `type`,
+			                     `rt_id`) 
 			VALUES (:id, :text, :user_id, :user_name, :is_retweet, :retweeted_by,
 			        :retweeted, :favorited, :created_at, :added_to_stream, :avatar_name,
-			        :screen_name, :type);");		
+			        :screen_name, :type, :rt_id);");		
 			author_query = new SQLHeavy.Query(Corebird.db,
 			"SELECT `id`, `screen_name`, `avatar_url` FROM `people`
 			WHERE `id`=:id;");			
@@ -45,10 +47,10 @@ class Tweet : GLib.Object{
 	}
 
 	public void load_avatar(){
-		if (Twitter.avatars.has_key(avatar_name))
-			this.avatar = Twitter.avatars.get(avatar_name);
-		else{
-			string path = "assets/avatars/%s".printf(avatar_name);
+		if (Twitter.avatars.has_key(avatar_name)){
+		 	this.avatar = Twitter.avatars.get(avatar_name);
+		 }else{
+			string path = "assets/avatars/"+avatar_name;
 			if(FileUtils.test(path, FileTest.EXISTS)){
 				try{
 					Twitter.avatars.set(avatar_name,
@@ -79,8 +81,10 @@ class Tweet : GLib.Object{
 		this.favorited      = status.get_boolean_member("favorited");
 		this.retweeted      = status.get_boolean_member("retweeted");
 		this.id             = status.get_int_member("id");
+		if(this.id < 0)
+			message(@"<0: $id");
 		this.user_name      = user.get_string_member("name");
-		this.user_id        = (int)user.get_int_member("id");
+		this.user_id        = user.get_int_member("id");
 		this.screen_name    = user.get_string_member("screen_name");
 		created_at          = status.get_string_member("created_at");
 		added_to_stream     = Utils.parse_date(created_at).to_unix();
@@ -93,11 +97,12 @@ class Tweet : GLib.Object{
 			Json.Object rt      = status.get_object_member("retweeted_status");
 			Json.Object rt_user = rt.get_object_member("user");
 			this.is_retweet   = true;
+			this.rt_id        = rt.get_int_member("id");
 			this.retweeted_by = user.get_string_member("name");
 			this.text         = rt.get_string_member("text");
 			this.user_name    = rt_user.get_string_member ("name");
 			this.avatar_url   = rt_user.get_string_member("profile_image_url");
-			this.user_id      = (int)rt_user.get_int_member("id");
+			this.user_id      = rt_user.get_int_member("id");
 			this.screen_name  = rt_user.get_string_member("screen_name");
 			created_at        = rt.get_string_member("created_at");
 			entities 		  = rt.get_object_member("entities");
@@ -139,16 +144,17 @@ class Tweet : GLib.Object{
 
 		this.load_avatar();
 		if(!this.has_avatar()){
-			File dest = File.new_for_path("assets/avatars/"+this.avatar_name);
-			// This is our lock now. Assuming that not 2 tweets create this file at exactly
-			// the same time, the avatar won't be loaded twice.
-			FileIOStream io_stream = dest.create_readwrite(FileCreateFlags.PRIVATE);
+			string dest = "assets/avatars/"+this.avatar_name;
 			GLib.Idle.add(() => {
 				var session = new Soup.SessionAsync();
-				var msg = new Soup.Message("GET", this.avatar_url);
+				var msg     = new Soup.Message("GET", this.avatar_url);
 				session.send_message(msg);
 				
-				io_stream.output_stream.write(msg.response_body.data);
+				var memory_stream = new MemoryInputStream.from_data(msg.response_body.data,
+				                                                    null);
+				var pixbuf = new Gdk.Pixbuf.from_stream_at_scale(memory_stream, 48, 48, 
+				                                                 false);
+				pixbuf.save(dest, Utils.get_file_type(avatar_name));
 				this.load_avatar();
 				message("Loaded avatar for %s", screen_name);
 				return false;
@@ -217,6 +223,7 @@ class Tweet : GLib.Object{
 		// Insert tweet into cache table
 		try{
 			cache_query.set_int64(":id", t.id);
+			cache_query.set_int64(":rt_id", t.rt_id);
 			cache_query.set_string(":text", t.text);
 			cache_query.set_int64(":user_id", t.user_id);
 			cache_query.set_string(":user_name", t.user_name);

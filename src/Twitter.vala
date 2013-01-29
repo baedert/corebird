@@ -55,10 +55,11 @@ class Twitter{
 
 
 	public static void init(){
+		//TODO: Obfuscate this somehow
 		Twitter.proxy = new OAuthProxy(
         	"0rvHLdbzRULZd5dz6X1TUA",						//Consumer Key
         	"oGrvd6654nWLhzLcJywSW3pltUfkhP4BnraPPVNhHtY", 	//Consumer Secret
-        	"https://api.twitter.com",						//Url Format
+        	"https://api.twitter.com/",					//Url Format
         	false
         );
         if (!Settings.is_first_run()){
