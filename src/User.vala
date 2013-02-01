@@ -8,7 +8,7 @@ class User{
 	public static string name;
 	private static string avatar_name = "no_profile_pic.png";
 	public static string avatar_url;
-	public static int64 id;
+	private  static int64 id;
 
 	public static string get_avatar_path(){
 		return "assets/user/"+avatar_name;
@@ -71,15 +71,17 @@ class User{
 			}
 			var root = parser.get_root().get_object();
 			User.name = root.get_string_member("name");
-			User.id = root.get_int_member("id");
 			int64 id = root.get_int_member("id");
-			message(@"ID: $id");
-			avatar_url = root.get_string_member("profile_image_url");
-			User.avatar_name = Utils.get_file_name(avatar_url);
+			User.id = id;
+			string avatar_url = root.get_string_member("profile_image_url");
+			string avatar_name = Utils.get_avatar_name(avatar_url);
+			message(@"Received ID: $id");
+			
 			// Check if the avatar of the user has changed.
 			if (avatar_name != User.avatar_name
 			    	|| !FileUtils.test(get_avatar_path(), FileTest.EXISTS)){
 
+				message("Downloading new avatar...");
 				//TODO: Find better variable names here
 				string dest_path = "assets/user/"+avatar_name;
 				string big_dest  = "assets/avatars/"+Utils.get_avatar_name(avatar_url);
@@ -114,8 +116,22 @@ class User{
 					warning("Error while setting the new avatar_name: %s", e.message);
 				}
 				message("Updated the avatar image!");
+				User.avatar_name = avatar_name;
+				User.avatar_url	 = avatar_url;
 			}
 		});
 	}
 
+
+
+
+
+	/**
+	 * Simply returns the id of the user.
+	 *
+	 * @return The user's ID.
+	 */
+	public static int64 get_id(){
+		return id;
+	}
 }

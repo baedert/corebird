@@ -177,7 +177,6 @@ class StreamContainer : TweetContainer, ScrollWidget{
 	}
 
 	public void create_tool_button(RadioToolButton? group){
-		GLib.Icon icon = new GLib.FileIcon(File.new_for_path("assets/icons/stream.png"));
 		if(group == null)
 			tool_button = new RadioToolButton.from_stock(null, Stock.HOME);
 		else

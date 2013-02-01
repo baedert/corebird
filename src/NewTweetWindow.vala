@@ -7,7 +7,7 @@ using Rest;
 class NewTweetWindow : Window {
 	private TweetTextView tweet_text = new TweetTextView();
 	private Button send_button       = new Button.with_label("Send");
-	private Button cancel_button	 = new Button.with_label("Cancel");
+	private Button cancel_button	 = new Button.from_stock(Stock.CANCEL);
 	private Box left_box			 = new Box(Orientation.VERTICAL, 4);
 	private Button add_image_button  = new Button();
 	private int media_count			 = 0;
@@ -130,7 +130,7 @@ class NewTweetWindow : Window {
 		var call = Twitter.proxy.new_call();
 		call.set_method("POST");
 		if(media_count == 0){
-			call.set_function("/statuses/update.json");
+			call.set_function("1.1/statuses/update.json");
 		} else {
 /*			call.set_function("/statuses/update_with_media.json");
 			Gdk.Pixbuf pic = new Gdk.Pixbuf.from_file(media_uri);
@@ -144,22 +144,12 @@ class NewTweetWindow : Window {
 
 		call.add_param("status", text);
 
-		try{
-			call.run();
-		}catch(GLib.Error e){
-			message(e.message);
-			message(call.get_payload());
-			HashTable<void*, void*> headers = call.get_response_headers();
-			foreach(void* a in headers.get_keys()){
-				message(((string)a)+" / "+((string)headers.get(a)));
-			}
-		}
 		// message("Back: %s", call.get_payload());
 		message("Code: %u, Status: %s", call.get_status_code(), call.get_status_message());
-		// call.invoke_async.begin(null, () => {
-			// message("Back: %s", call.get_payload());
-			// message("Code: %u, Status: %s", call.get_status_code(), call.get_status_message());
-		// });
+		call.invoke_async.begin(null, () => {
+			message("Back: %s", call.get_payload());
+			message("Code: %u, Status: %s", call.get_status_code(), call.get_status_message());
+		});
 		this.destroy();		
 	}
 

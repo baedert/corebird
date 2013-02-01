@@ -143,10 +143,6 @@ class MainWindow : ApplicationWindow {
 		this.show_all();
 	}
 
-	public void switch_to_search(string search_term){
-		//search_container.search_for.begin(search_term, true);
-		main_notebook.set_current_page(PAGE_SEARCH);
-	}
 
 	/**
 	 * Adds/inserts the widgets into the left toolbar.

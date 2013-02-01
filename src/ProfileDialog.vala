@@ -17,7 +17,7 @@ class ProfileDialog : Gtk.Window {
 
 	public ProfileDialog(int64 user_id = 0){
 		if (user_id <= 0)
-			user_id = User.id;
+			user_id = User.get_id();
 
 		var main_box = new Gtk.Box(Orientation.VERTICAL, 2);
 		banner_box.get_style_context().add_class("profile-header");
