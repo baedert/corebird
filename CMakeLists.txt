@@ -7,7 +7,7 @@ list(APPEND CMAKE_MODULE_PATH
 
 # Enable coloring
 set (CMAKE_COLOR_MAKEFILE ON)
-set (CMAKE_VERBOSE_MAKEFILE ON)
+# set (CMAKE_VERBOSE_MAKEFILE ON)
 
 set (CMAKE_C_FLAGS "-g")
 set (CMAKE_C_FLAGS "-Wall")
@@ -21,7 +21,6 @@ find_package(Vala REQUIRED)
 include(ValaVersion)
 ensure_vala_version("0.16" MINIMUM)
 include(ValaPrecompile)
-
 
 
 set (DEPS glib-2.0;
@@ -79,8 +78,6 @@ vala_precompile(VALA_C
 	src/util/UIBuilder.vala
 	src/util/Utils.vala
 	src/util/Benchmark.vala
-	src/sql/Query.vala
-	src/sql/InsertQuery.vala
 	src/egglistbox/egg-list-box.h
 	src/egglistbox/egg-list-box.c
 PACKAGES

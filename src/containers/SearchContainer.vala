@@ -6,7 +6,7 @@ using Gtk;
 
 class SearchContainer : TweetContainer, Box {
 	private Entry search_entry    = new Entry();
-	// private TweetList result_list = new TweetList();
+	private Egg.ListBox result_list = new Egg.ListBox();
 	public MainWindow main_window;
 	private RadioToolButton tool_button;
 	private int id;
@@ -54,7 +54,7 @@ class SearchContainer : TweetContainer, Box {
 
 
 		var call = Twitter.proxy.new_call();
-		call.set_function("/search/tweets.json");
+		call.set_function("1.1/search/tweets.json");
 		call.set_method("GET");
 		call.add_param("q", GLib.Uri.escape_string(search_entry.get_text()));
 		call.invoke_async.begin(null, (obj, res) => {
@@ -72,9 +72,9 @@ class SearchContainer : TweetContainer, Box {
 				critical("Problem with json data from search call: %s\nDATA:\n%s", e.message, back);
 			}
 			var statuses = parser.get_root().get_object().get_array_member("statuses");
-			// LoaderThread loader_thread = new LoaderThread(statuses, main_window, result_list);
-			// loader_thread.balance_upper_change = false;
-			// loader_thread.run();
+			LoaderThread loader_thread = new LoaderThread(statuses, main_window, result_list);
+			loader_thread.balance_upper_change = false;
+			loader_thread.run();
 		});
 	}
 

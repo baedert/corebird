@@ -14,7 +14,7 @@
 			<description>Although not intended by the creators, a lot of users prefer to use a dark twitter client. </description>
 		</key>
 		<key name="show-primary-toolbar" type="b">
-			<default>false</default>
+			<default>true</default>
 			<summary>Whether to show the primary toolbar in the main window or not</summary>
 			<description>See summary</description>
 		</key>
@@ -44,7 +44,7 @@
 			<description>Y</description>
 		</key>
 		<key name="main-window-geometry" type="s">
-			<default>"0,0,320,600"</default>
+			<default>"0,0,400,600"</default>
 			<summary>X</summary>
 			<description>Y</description>
 		</key>
