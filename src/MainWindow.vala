@@ -131,7 +131,7 @@ class MainWindow : ApplicationWindow {
 
 		//main_notebook.show_tabs   = false;
 		main_notebook.show_border = false;
-		main_notebook.show_tabs = false;
+		main_notebook.show_tabs   = false;
 		bottom_box.pack_start (main_notebook, true, true);
 		main_box.pack_end(bottom_box, true, true);
 

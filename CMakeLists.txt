@@ -16,6 +16,8 @@ set (CMAKE_C_FLAGS "-Wno-unused-value")
 set (CMAKE_C_FLAGS "-Wno-unused-function")
 set (CMAKE_C_FLAGS "-Wno-unused-variable")
 set (CMAKE_C_FLAGS "-Wno-deprecated-declarations")
+set (CMAKE_C_FLAGS "-I src/egglistbox/")
+
 
 find_package(Vala REQUIRED)
 include(ValaVersion)
@@ -78,7 +80,6 @@ vala_precompile(VALA_C
 	src/util/UIBuilder.vala
 	src/util/Utils.vala
 	src/util/Benchmark.vala
-	src/egglistbox/egg-list-box.h
 	src/egglistbox/egg-list-box.c
 PACKAGES
 	${DEPS}
@@ -89,6 +90,7 @@ OPTIONS
 	--target-glib=2.32
 	--enable-checking
 	--vapidir=src/egglistbox/
+	-X '-I src/egglistbox/'
 )
 
 add_executable(Corebird ${VALA_C})
