@@ -9,7 +9,7 @@ if(GSETTINGS_LOCALINSTALL)
 endif()
 
 if(GSETTINGS_COMPILE)
-    message(STATUS "GSettings shemas will be compiled.")
+    message(STATUS "GSettings schemas will be compiled.")
 endif()
 
 macro(add_schema SCHEMA_NAME)
