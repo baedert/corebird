@@ -87,7 +87,7 @@ class ProfileDialog : Gtk.Window {
 
 
 
-		this.resize(520, 680);
+		this.resize(320, 480);
 		this.add(main_box);
 	}
 
@@ -95,7 +95,7 @@ class ProfileDialog : Gtk.Window {
 	private async void load_profile_data(int64 user_id){
 		var call = Twitter.proxy.new_call();
 		call.set_method("GET");
-		call.set_function("/users/show.json");
+		call.set_function("1.1/users/show.json");
 		call.add_param("user_id", user_id.to_string());
 		call.invoke_async.begin(null, (obj, res) => {
 			try{
@@ -174,7 +174,7 @@ class ProfileDialog : Gtk.Window {
 	private async void load_banner(int64 user_id){
 		var call = Twitter.proxy.new_call();
 		call.set_method("GET");
-		call.set_function("/users/profile_banner.json");
+		call.set_function("1.1/users/profile_banner.json");
 		call.add_param("user_id", user_id.to_string());
 		call.invoke_async.begin(null, (obj, res) => {
 			if (call.get_status_code() == 404){
@@ -202,7 +202,7 @@ class ProfileDialog : Gtk.Window {
 			// if (root.has_member("mobile"))
 				// banner_url = root.get_object_member("mobile").get_string_member("url");
 			// else
-				banner_url = root.get_object_member("web").get_string_member("url");
+				banner_url = root.get_object_member("mobile").get_string_member("url");
 
 			string banner_on_disk = @"assets/banners/$user_id.png";
 			if (!FileUtils.test(banner_on_disk, FileTest.EXISTS)){

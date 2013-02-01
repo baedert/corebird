@@ -23,7 +23,6 @@ ensure_vala_version("0.16" MINIMUM)
 include(ValaPrecompile)
 
 
-
 set (DEPS glib-2.0;
 		  gtk+-3.0;
 		  gio-2.0;
