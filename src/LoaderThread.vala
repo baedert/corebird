@@ -1,4 +1,4 @@
- 
+
 
 class LoaderThread{
 	private Json.Array root;
@@ -32,12 +32,10 @@ class LoaderThread{
 		root.foreach_element( (array, index, node) => {
 			Json.Object o = node.get_object();
 			Tweet t = new Tweet();
-			string created_at;
-			int64 added_to_stream;
-			t.load_from_json(o, now, out created_at, out added_to_stream);
-			
+			t.load_from_json(o, now);
+
 			if (tweet_type != -1){
-				Tweet.cache(t, created_at, added_to_stream, tweet_type);
+				Tweet.cache(t, tweet_type);
 			}
 
 			if(t.id < lowest_id)
@@ -52,13 +50,13 @@ class LoaderThread{
 			//FIXME: God this sucks.
 			// if(balance_upper_change)
 			// 	((ScrollWidget)list.parent.parent).balance_next_upper_change();
-				
+
 
 			message("Results: %d", entries.length);
 			for(int i = 0; i < entries.length; i++)
 				// list.insert(entries[i], i);
 				list.add(entries[i]);
-			
+
 			if (finished != null){
 				finished(entries.length, lowest_id);
 			}

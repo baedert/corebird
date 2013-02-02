@@ -30,9 +30,9 @@ interface Timeline : Gtk.Widget {
 		SQLHeavy.Query query = new SQLHeavy.Query(Corebird.db,
 			@"SELECT `id`, `text`, `user_id`, `user_name`, `is_retweet`,
 			`retweeted_by`, `retweeted`, `favorited`, `created_at`,
-			`added_to_stream`, `avatar_name`, `screen_name`, `type`
+			`rt_created_at`, `avatar_name`, `screen_name`, `type`
 			FROM `cache` WHERE `type`='$tweet_type'
-			ORDER BY `added_to_stream` DESC LIMIT 15");
+			ORDER BY `created_at` DESC LIMIT 15");
 		SQLHeavy.QueryResult result = query.execute();
 		while(!result.finished){
 			Tweet t        = new Tweet();
@@ -44,13 +44,20 @@ interface Timeline : Gtk.Widget {
 			t.retweeted_by = result.fetch_string(5);
 			t.retweeted    = (bool)result.fetch_int(6);
 			t.favorited    = (bool)result.fetch_int(7);
+			t.created_at   = result.fetch_int64(8);
 
 
 			if(t.id < max_id)
 				max_id = t.id;
 
-			GLib.DateTime created = Utils.parse_date(result.fetch_string(8));
-			t.time_delta   = Utils.get_time_delta(created, now);
+			int64 created = -1;
+			if(t.is_retweet)
+				created = result.fetch_int64(9);
+			else
+				created = t.created_at;
+
+			// GLib.DateTime created = Utils.parse_date(result.fetch_string(8));
+			t.time_delta   = Utils.get_time_delta(new DateTime.from_unix_local(created), now);
 			t.avatar_name  = result.fetch_string(10);
 			t.screen_name  = result.fetch_string(11);
 			t.load_avatar();
@@ -72,8 +79,8 @@ interface Timeline : Gtk.Widget {
 	 */
 	protected void load_newest_internal(string function, int tweet_type) {
 		SQLHeavy.Query id_query = new SQLHeavy.Query(Corebird.db,
-		 	@"SELECT `id`, `added_to_stream` FROM `cache`
-		 	WHERE `type`='$tweet_type' ORDER BY `added_to_stream` DESC LIMIT 1;");
+		 	@"SELECT `id`, `created_at` FROM `cache`
+		 	WHERE `type`='$tweet_type' ORDER BY `created_at` DESC LIMIT 1;");
 		SQLHeavy.QueryResult id_result = id_query.execute();
 		int64 greatest_id = id_result.fetch_int64(0);
 		message("greatest_id: %s", greatest_id.to_string());

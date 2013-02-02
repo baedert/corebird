@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS `common`(
-				token VARCHAR(255), 
+				token VARCHAR(255),
 				token_secret VARCHAR(255),
 				update_config INTEGER(11),
 				max_media_per_upload INTEGER(2),
@@ -15,25 +15,24 @@ CREATE TABLE IF NOT EXISTS `cache`(
                 text VARCHAR(140),
 				user_id NUMERIC(19,0),
 				user_name VARCHAR(100),
-				screen_name VARCHAR(40), 
-				time INTEGER(11),
+				screen_name VARCHAR(40),
 				is_retweet BOOL,
 			    retweeted_by VARCHAR(100),
 			    retweeted BOOL,
 			    favorited BOOL,
-			    created_at VARCHAR(30),
+			    created_at INTEGER(19,0),
+			    rt_created_at INTEGER(19,0),
 			    avatar_url VARCHAR(255),
 			    avatar_name VARCHAR(50),
 			    retweets INTEGER(5),
 			    favorites INTEGER(5),
-			    added_to_stream INTEGER(11),
 			    type INTEGER(1)
 );
 
 CREATE TABLE IF NOT EXISTS `people`(
-				id NUMERIC(19,0), 
+				id NUMERIC(19,0),
 			    name VARCHAR(30),
-			    screen_name VACHAR(30),
+			    screen_name VARCHAR(30),
 			    avatar_url VARCHAR(255),
 			    avatar_name VARCHAR(70)
 );

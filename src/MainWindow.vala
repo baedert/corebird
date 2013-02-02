@@ -8,6 +8,7 @@ class MainWindow : ApplicationWindow {
 	public static const int PAGE_MENTIONS  = 1;
 	public static const int PAGE_FAVORITES = 2;
 	public static const int PAGE_SEARCH    = 3;
+	public static const int PAGE_PROFILE   = 4;
 
 
 	private Toolbar left_toolbar             = new Toolbar();
@@ -257,5 +258,17 @@ class MainWindow : ApplicationWindow {
 
 		this.resize(width + new_pane.get_width(), height);
 		this.right_pane = new_pane;
+	}
+
+
+	/**
+	 * Switches the window's main notebook to the given page.
+	 *
+	 * @param page_id The id of the page to switch to.
+	 *                See the PAGE_* constants.
+	 * @param ... The parameters to pass to the page
+	 */
+	public void switch_page(int page_id, ...){
+		main_notebook.set_current_page(page_id);
 	}
 }

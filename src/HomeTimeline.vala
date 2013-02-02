@@ -11,7 +11,10 @@ class HomeTimeline : Timeline, ScrollWidget{
 	public HomeTimeline(int id){
 		this.id = id;
 		tweet_list = new Egg.ListBox();
-		this.add_with_viewport(tweet_list);
+		tweet_list.add_to_scrolled(this);
+		tweet_list.set_sort_func((w1, w2) => {
+			return -1;
+ 		});
 	}
 
 	public void load_cached() {

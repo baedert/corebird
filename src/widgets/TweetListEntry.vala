@@ -23,7 +23,7 @@ class TweetListEntry : Gtk.Box{
 
 		if (hashtag_regex == null){
 			try{
-				hashtag_regex = new GLib.Regex("#\\w+", RegexCompileFlags.OPTIMIZE);	
+				hashtag_regex = new GLib.Regex("#\\w+", RegexCompileFlags.OPTIMIZE);
 				user_regex    = new GLib.Regex("@\\w+", RegexCompileFlags.OPTIMIZE);
 			}catch(GLib.RegexError e){
 				warning("Error while creating regexes: %s", e.message);
@@ -41,12 +41,17 @@ class TweetListEntry : Gtk.Box{
 		// Set the correct CSS style class
 		get_style_context().add_class("tweet");
 		get_style_context().add_class("row");
-			
+
 
 
 		if (tweet.screen_name == User.screen_name){
 			get_style_context().add_class("user-tweet");
 		}
+
+		this.enter_notify_event.connect( ()=> {
+				message("MOOOOH!");
+				return false;
+		});
 
 
 		var left_box = new Box(Orientation.VERTICAL, 3);
@@ -87,7 +92,7 @@ class TweetListEntry : Gtk.Box{
 		text.set_line_wrap(true);
 		text.wrap_mode = Pango.WrapMode.WORD_CHAR;
 		text.set_alignment(0, 0);
-		text.activate_link.connect(handle_uri);		
+		text.activate_link.connect(handle_uri);
 		middle_box.pack_start(text, true, true);
 		this.pack_start(middle_box, true, true);
 

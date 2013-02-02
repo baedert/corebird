@@ -28,6 +28,8 @@ class Tweet : GLib.Object{
 	/** The name of the avatar image file on the hard disk */
 	public string avatar_name;
 	public string screen_name;
+	public int64 created_at;
+	public int64 rt_created_at;
 
 	public Tweet(){
 		this.avatar = Twitter.no_avatar;
@@ -35,14 +37,14 @@ class Tweet : GLib.Object{
 			cache_query = new SQLHeavy.Query(Corebird.db,
 			"INSERT INTO `cache`(`id`, `text`,`user_id`, `user_name`, `is_retweet`,
 			                     `retweeted_by`, `retweeted`, `favorited`, `created_at`,
-			                     `added_to_stream`, `avatar_name`, `screen_name`, `type`,
-			                     `rt_id`) 
+			                     `rt_created_at`, `avatar_name`, `screen_name`, `type`,
+			                     `rt_id`)
 			VALUES (:id, :text, :user_id, :user_name, :is_retweet, :retweeted_by,
-			        :retweeted, :favorited, :created_at, :added_to_stream, :avatar_name,
-			        :screen_name, :type, :rt_id);");		
+			        :retweeted, :favorited, :created_at, :rt_created_at, :avatar_name,
+			        :screen_name, :type, :rt_id);");
 			author_query = new SQLHeavy.Query(Corebird.db,
 			"SELECT `id`, `screen_name`, `avatar_url` FROM `people`
-			WHERE `id`=:id;");			
+			WHERE `id`=:id;");
 		}
 	}
 
@@ -71,53 +73,49 @@ class Tweet : GLib.Object{
 	 * Fills all the data of this tweet from Json data.
 	 * @param status The Json object to get the data from
 	 * @param now The current time
-	 * @param created_at When the tweet was created
-	 * @param added_to_stream when the tweet was added to the stream
 	 */
-	public void load_from_json(Json.Object status, GLib.DateTime now,
-	            	out string created_at, out int64 added_to_stream){
+	public void load_from_json(Json.Object status, GLib.DateTime now){
 		Json.Object user    = status.get_object_member("user");
 		this.text           = status.get_string_member("text");
 		this.favorited      = status.get_boolean_member("favorited");
 		this.retweeted      = status.get_boolean_member("retweeted");
 		this.id             = status.get_int_member("id");
-		if(this.id < 0)
-			message(@"<0: $id");
 		this.user_name      = user.get_string_member("name");
 		this.user_id        = user.get_int_member("id");
 		this.screen_name    = user.get_string_member("screen_name");
-		created_at          = status.get_string_member("created_at");
-		added_to_stream     = Utils.parse_date(created_at).to_unix();
+		this.created_at     = Utils.parse_date(status.get_string_member("created_at"))
+									.to_unix();
 		this.avatar_url     = user.get_string_member("profile_image_url");
 
 
 
-		var entities = status.get_object_member("entities");
+
 		if (status.has_member("retweeted_status")){
 			Json.Object rt      = status.get_object_member("retweeted_status");
 			Json.Object rt_user = rt.get_object_member("user");
-			this.is_retweet   = true;
-			this.rt_id        = rt.get_int_member("id");
-			this.retweeted_by = user.get_string_member("name");
-			this.text         = rt.get_string_member("text");
-			this.user_name    = rt_user.get_string_member ("name");
-			this.avatar_url   = rt_user.get_string_member("profile_image_url");
-			this.user_id      = rt_user.get_int_member("id");
-			this.screen_name  = rt_user.get_string_member("screen_name");
-			created_at        = rt.get_string_member("created_at");
-			entities 		  = rt.get_object_member("entities");
+			this.is_retweet    = true;
+			this.rt_id         = rt.get_int_member("id");
+			this.retweeted_by  = user.get_string_member("name");
+			this.text          = rt.get_string_member("text");
+			this.user_name     = rt_user.get_string_member ("name");
+			this.avatar_url    = rt_user.get_string_member("profile_image_url");
+			this.user_id       = rt_user.get_int_member("id");
+			this.screen_name   = rt_user.get_string_member("screen_name");
+			this.rt_created_at = Utils.parse_date(rt.get_string_member("created_at"))
+			                            .to_unix();
 		}
 		this.avatar_name = Utils.get_avatar_name(this.avatar_url);
 
 
 
 		// 'Resolve' the used URLs
-		
+		var entities = status.get_object_member("entities");
+
 		var urls = entities.get_array_member("urls");
 		urls.foreach_element((arr, index, node) => {
 			var url = node.get_object();
 			string expanded_url = url.get_string_member("expanded_url");
-			// message("Text: %s, expanded: %s", this.text, expanded_url);	
+			// message("Text: %s, expanded: %s", this.text, expanded_url);
 			expanded_url = expanded_url.replace("&", "&amp;");
 			this.text = this.text.replace(url.get_string_member("url"),
 			    expanded_url);
@@ -138,7 +136,7 @@ class Tweet : GLib.Object{
 
 
 
-		GLib.DateTime dt = Utils.parse_date(created_at);
+		var dt = new DateTime.from_unix_local(is_retweet ? rt_created_at : created_at);
 		this.time_delta  = Utils.get_time_delta(dt, now);
 
 
@@ -149,36 +147,16 @@ class Tweet : GLib.Object{
 				var session = new Soup.SessionAsync();
 				var msg     = new Soup.Message("GET", this.avatar_url);
 				session.send_message(msg);
-				
+
 				var memory_stream = new MemoryInputStream.from_data(msg.response_body.data,
 				                                                    null);
-				var pixbuf = new Gdk.Pixbuf.from_stream_at_scale(memory_stream, 48, 48, 
+				var pixbuf = new Gdk.Pixbuf.from_stream_at_scale(memory_stream, 48, 48,
 				                                                 false);
 				pixbuf.save(dest, Utils.get_file_type(avatar_name));
 				this.load_avatar();
 				message("Loaded avatar for %s", screen_name);
 				return false;
 			});
-
-			//Make the corners round
-			// TODO: How to write it as gif/jpg file?
-			// Cairo.ImageSurface frame = new Cairo.ImageSurface.from_png("assets/frame.png");
-			// Cairo.ImageSurface result = new Cairo.ImageSurface(Cairo.Format.ARGB32, 48, 48);
-			// surface = new Cairo.ImageSurface (Cairo.Format.ARGB32, 48, 48);
-			// Cairo.Context context = new Cairo.Context(result);
-			// context.set_source_surface(surface, 0, 0);
-			// context.rectangle(0, 0, 48,48);
-			// context.fill();
-
-
-			// context.set_operator(Cairo.Operator.DEST_OUT);
-			// context.set_source_surface(frame, 0, 0);
-			// context.rectangle(0, 0, 48, 48);
-			// context.paint();
-			
-			// context.fill();
-
-			// result.write_to_png("avatar_changed.png");
 		}
 	}
 
@@ -186,13 +164,10 @@ class Tweet : GLib.Object{
 	 * Caches the given tweet by writing it into the database.
 	 *
 	 * @param t The tweet to cache.
-	 * @param created_at The 'created_at' string received from Twitter 
-	 * @param added_to_stream A unix timestamp indicating when the tweet was added to the
-	 *                        user's timeline
 	 * @param type The type of the tweet, see Tweet.TYPE_* constants.
-	 * 
+	 *
 	 */
-	public static void cache(Tweet t, string created_at, int64 added_to_stream, int type){
+	public static void cache(Tweet t, int type){
 		// Check the tweeter's details and update them if necessary
 		try{
 			author_query.set_int64(":id", t.user_id);
@@ -218,8 +193,8 @@ class Tweet : GLib.Object{
 		}catch(SQLHeavy.Error e){
 			warning("Error while updating author: %s", e.message);
 		}
-		
-		
+
+
 		// Insert tweet into cache table
 		try{
 			cache_query.set_int64(":id", t.id);
@@ -231,8 +206,9 @@ class Tweet : GLib.Object{
 			cache_query.set_string(":retweeted_by", t.retweeted_by);
 			cache_query.set_int(":retweeted", t.retweeted ? 1 : 0);
 			cache_query.set_int(":favorited", t.favorited ? 1 : 0);
-			cache_query.set_string(":created_at", created_at);
-			cache_query.set_int64(":added_to_stream", added_to_stream);
+			cache_query.set_int64(":created_at", t.created_at);
+			cache_query.set_int64(":rt_created_at", t.rt_created_at);
+			// TODO: Set the avatar_url
 			cache_query.set_string(":avatar_name", t.avatar_name);
 			cache_query.set_string(":screen_name", t.screen_name);
 			cache_query.set_int(":type", type); // 1 = normal tweet
@@ -282,7 +258,7 @@ class Tweet : GLib.Object{
 						"<a href='%s'>%s</a>".printf(mi.fetch(0), link));
 				}while(mi.next());
 			}
-	
+
 		}catch(GLib.RegexError e){
 			warning("Error while applying regexes: %s", e.message);
 		}

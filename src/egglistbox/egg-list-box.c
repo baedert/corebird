@@ -1400,6 +1400,14 @@ egg_list_box_real_add (GtkContainer* container, GtkWidget* child)
 }
 
 static void
+egg_list_box_append(GtkContainer* container, GtkWidget* child){
+  EggListBox *list_box = EGG_LIST_BOX (container);
+  EggListBoxPrivate *pric = list_box->priv;
+  EggListBoxChildInfo *info;
+  info = egg_list_box_child_info_new (child);
+}
+
+static void
 egg_list_box_real_remove (GtkContainer* container, GtkWidget* child)
 {
   EggListBox *list_box = EGG_LIST_BOX (container);
