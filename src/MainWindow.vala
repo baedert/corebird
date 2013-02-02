@@ -15,7 +15,8 @@ class MainWindow : ApplicationWindow {
 	private Box main_box                     = new Box(Orientation.VERTICAL, 0);
 	private Box bottom_box                   = new Box(Orientation.HORIZONTAL, 0);
 	private Notebook main_notebook           = new Notebook();
-	private TweetContainer[] containers      = new TweetContainer[4];
+	// private TweetContainer[] containers      = new TweetContainer[4];
+	private Timeline[] timelines			 = new Timeline[2];
 	private ToolButton avatar_button         = new ToolButton(null, null);
 	private ToolButton refresh_button        = new ToolButton.from_stock(Stock.REFRESH);
 	private ToolButton settings_button       = new ToolButton.from_stock(Stock.PROPERTIES);
@@ -26,21 +27,21 @@ class MainWindow : ApplicationWindow {
 
 	public MainWindow(Gtk.Application app){
 		GLib.Object (application: app);
-		
-		containers[0] = new StreamContainer(PAGE_STREAM);
-		containers[1] = new MentionsContainer(PAGE_MENTIONS);
-		containers[2] = new FavoriteContainer(PAGE_FAVORITES);
-		containers[3] = new SearchContainer(PAGE_SEARCH);
+
+		timelines[0] = new HomeTimeline(PAGE_STREAM);
+		timelines[1] = new MentionsTimeline(PAGE_MENTIONS);
+		// timelines[2] = new FavoriteContainer(PAGE_FAVORITES);
+		// timelines[3] = new SearchContainer(PAGE_SEARCH);
 
 		/** Initialize all containers */
-		for(int i = 0; i < containers.length; i++){
-			TweetContainer tc = containers[i];
-			tc.set_main_window(this);
-			tc.create_tool_button(containers[0].get_tool_button());
-			tc.load_cached();
-			tc.get_tool_button().toggled.connect(() => {
-					if(tc.get_tool_button().active)
-						this.main_notebook.set_current_page(tc.get_id());
+		for(int i = 0; i < timelines.length; i++){
+			Timeline tl = timelines[i];
+			tl.load_cached();
+			tl.main_window = this;
+			tl.create_tool_button(timelines[0].get_tool_button());
+			tl.get_tool_button().toggled.connect(() => {
+				if(tl.get_tool_button().active)
+					this.main_notebook.set_current_page(tl.get_id());
 			});
 		}
 
@@ -100,15 +101,15 @@ class MainWindow : ApplicationWindow {
 		//Update the user's info
 		User.update_info.begin((Image)avatar_button.icon_widget);
 
-		// // Add all tool buttons for the containers
-		foreach(var tc in containers){
-			left_toolbar.add(tc.get_tool_button());
-			main_notebook.append_page(tc);
+		// Add all tool buttons for the timelines
+		foreach(var tl in timelines) {
+			left_toolbar.add(tl.get_tool_button());
+			main_notebook.append_page(tl);
 		}
 
 		refresh_button.clicked.connect( () => {
 			//Refresh the current container
-			containers[main_notebook.page].refresh();
+			timelines[main_notebook.page].load_newest();
 		});
 		settings_button.clicked.connect( () => {
 			SettingsDialog sd = new SettingsDialog(this);
@@ -129,7 +130,6 @@ class MainWindow : ApplicationWindow {
 		tt.icon_name = "find";
 		left_toolbar.add(tt);
 
-		//main_notebook.show_tabs   = false;
 		main_notebook.show_border = false;
 		main_notebook.show_tabs   = false;
 		bottom_box.pack_start (main_notebook, true, true);
@@ -149,7 +149,7 @@ class MainWindow : ApplicationWindow {
 	private void setup_left_toolbar(){
 		left_toolbar.get_style_context().remove_class("sidebar");
 		left_toolbar.get_style_context().add_class("primary-toolbar");
-		
+
 		left_toolbar.insert(avatar_button, 0);
 		left_toolbar.insert(new_tweet_button, 1);
 		left_toolbar.insert(left_separator, 2);
@@ -166,7 +166,7 @@ class MainWindow : ApplicationWindow {
 		primary_toolbar.add(new_tweet_button);
 		primary_toolbar.add(expander_item);
 		primary_toolbar.add(refresh_button);
-		primary_toolbar.add(settings_button);	
+		primary_toolbar.add(settings_button);
 		//Make the left toolbar a sidebar
 		left_toolbar.get_style_context().remove_class("primary-toolbar");
 		left_toolbar.get_style_context().add_class("sidebar");
@@ -227,19 +227,19 @@ class MainWindow : ApplicationWindow {
 	*  the current one will be hidden, not shown.
 	*  If it's not the same, the current one will be removed from
 	*  the window and the given pane will be added and shown.
-	* 
+	*
 	*  @param new_pane the pane to show/hide
 	**/
 	public void toggle_right_pane(PaneWidget new_pane){
 		int width, height;
-		this.get_size(out width, out height);	
+		this.get_size(out width, out height);
 
 		if(right_pane != null && new_pane.get_id() == right_pane.get_id()){
 			if(right_pane.visible)
 				this.resize(width - new_pane.get_width(), height);
 			else
 				this.resize(width + new_pane.get_width(), height);
-			
+
 			right_pane.visible = !right_pane.visible;
 			return;
 		}
@@ -254,7 +254,7 @@ class MainWindow : ApplicationWindow {
 		main_notebook.get_allocation(out alloc);
 		main_notebook.set_size_request(alloc.width, alloc.height);
 
-		
+
 		this.resize(width + new_pane.get_width(), height);
 		this.right_pane = new_pane;
 	}
