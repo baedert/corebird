@@ -25,14 +25,16 @@ class TweetTextView : TextView {
 			layout.set_markup("<small><span color='red'>%d/%u</span></small>".
 			        printf(length, MAX_TWEET_LENGTH), -1);
 		else
-			layout.set_markup("<small>%d/%u</small>".printf(length, MAX_TWEET_LENGTH), -1);
+			layout.set_markup("<small>%d/%u</small>".printf(length,
+			                  MAX_TWEET_LENGTH), -1);
 
 		Pango.Rectangle layout_size;
 		layout.get_extents(null, out layout_size);
 
 		base.draw(c);
 		context.render_layout(c, a.width  - (layout_size.width  / Pango.SCALE) - 5,
-		                    	 a.height - (layout_size.height / Pango.SCALE) - 5, layout);
+		                    	 a.height - (layout_size.height / Pango.SCALE) - 5,
+		                    	 layout);
 		return false;
 	}
 
