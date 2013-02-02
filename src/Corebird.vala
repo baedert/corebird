@@ -11,9 +11,9 @@ class Corebird : Gtk.Application {
 		GLib.Object(application_id: "org.baedert.corebird",
 		            flags: ApplicationFlags.FLAGS_NONE);
 		this.register_session = true;
-		
+
 		//TODO: This is possibly wrong:
-		this.register(); 
+		this.register();
 
 		// If the user wants the dark theme, apply it
 		if(Settings.use_dark_theme()){
@@ -21,7 +21,7 @@ class Corebird : Gtk.Application {
 			settings.gtk_application_prefer_dark_theme = true;
 		}
 
-		NotificationManager.init();	
+		NotificationManager.init();
 
 		//Create the database needed almost everywhere
 		try{
@@ -30,20 +30,10 @@ class Corebird : Gtk.Application {
 
 			// The following should give better performance, but it also breaks
 			// loadnig new tweets. :'(
-			// db.execute("PRAGMA synchronous = off"); 
-			// 
+			// db.execute("PRAGMA synchronous = off");
+			//
 			Corebird.create_tables();
 
-			// Sqlite.Database.open("Corebird.db", out Query.db);
-
-			// InsertQuery iq = new InsertQuery();
-			// iq.select("foo");
-			// iq.bind_int("test", 5);
-			// iq.bind_string("s", "hihihi");
-			// iq.execute();
-			// message(iq.get_sql());
-
-			// Sqlite.Database.open("Corebird.db", out Query.db);
 		}catch(SQLHeavy.Error e){
 			error("SQL ERROR: %s", e.message);
 		}

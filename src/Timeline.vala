@@ -35,7 +35,6 @@ interface Timeline : Gtk.Widget {
 			ORDER BY `added_to_stream` DESC LIMIT 15");
 		SQLHeavy.QueryResult result = query.execute();
 		while(!result.finished){
-			message("result!");
 			Tweet t        = new Tweet();
 			t.id           = result.fetch_int64(0);
 			t.text         = result.fetch_string(1);
