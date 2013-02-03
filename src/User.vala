@@ -1,14 +1,16 @@
 
 
 
-class User{
+class User {
+	/** The user's id */
+	private int64 id;
 	/** screen_name, unique per user, e.g. baedert(always written as @baedert) */
 	public static string screen_name;
 	/** Normal name like 'Chuck Norris' */
 	public static string name;
 	private static string avatar_name = "no_profile_pic.png";
 	public static string avatar_url;
-	private  static int64 id;
+
 
 	public static string get_avatar_path(){
 		return "assets/user/"+avatar_name;
@@ -46,11 +48,6 @@ class User{
 		else
 			img_call.add_param("user_id", User.id.to_string());
 
-		if(use_name || id== 0)
-			message("Using the screen_name(%s)",screen_name);
-		else
-			message("Using the id");
-
 		img_call.add_param("include_entities", "false");
 		img_call.invoke_async.begin(null, (obj, res) => {
 			try{
@@ -76,7 +73,7 @@ class User{
 			string avatar_url = root.get_string_member("profile_image_url");
 			string avatar_name = Utils.get_avatar_name(avatar_url);
 			message(@"Received ID: $id");
-			
+
 			// Check if the avatar of the user has changed.
 			if (avatar_name != User.avatar_name
 			    	|| !FileUtils.test(get_avatar_path(), FileTest.EXISTS)){
@@ -84,7 +81,7 @@ class User{
 				message("Downloading new avatar...");
 				//TODO: Find better variable names here
 				string dest_path = "assets/user/"+avatar_name;
-				string big_dest  = "assets/avatars/"+Utils.get_avatar_name(avatar_url);
+				string big_dest  = "assets/avatars/"+avatar_name;
 				var session = new Soup.SessionAsync();
 				var msg = new Soup.Message("GET", avatar_url);
 				session.send_message(msg);

@@ -12,8 +12,7 @@ class LoaderThread{
 	private int64 lowest_id = -1;
 
 	public LoaderThread(Json.Array root, MainWindow? window, Egg.ListBox list,
-	                    int tweet_type = -1,
-	                    EndLoadFunc? finished = null){
+	                    int tweet_type = -1, EndLoadFunc? finished = null){
 		this.root       = root;
 		this.window     = window;
 		this.list       = list;
