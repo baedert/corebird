@@ -12,16 +12,14 @@ class HomeTimeline : Timeline, ScrollWidget{
 		this.id = id;
 		tweet_list = new Egg.ListBox();
 		tweet_list.add_to_scrolled(this);
-		tweet_list.set_sort_func((w1, w2) => {
-			TweetListEntry tlw1 = (TweetListEntry) w1;
-			TweetListEntry tlw2 = (TweetListEntry) w2;
-			if(tlw1.timestamp < tlw2.timestamp)
+		tweet_list.set_sort_func((tle1, tle2) => {
+			if(((TweetListEntry)tle1).timestamp <
+			   ((TweetListEntry)tle2).timestamp)
 				return 1;
 			else
 				return -1;
-
 			return 0;
- 		});
+		});
 	}
 
 	public void load_cached() {
@@ -31,6 +29,7 @@ class HomeTimeline : Timeline, ScrollWidget{
 			critical("Error while loading cached tweets of the home timeline: %s",
 			         e.message);
 		}
+		tweet_list.resort();
 	}
 
 	public void load_newest() {

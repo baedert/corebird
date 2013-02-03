@@ -54,9 +54,8 @@ class LoaderThread{
 
 			message("Results: %d", entries.length);
 			for(int i = 0; i < entries.length; i++)
-				// list.insert(entries[i], i);
 				list.add(entries[i]);
-
+			list.resort();
 			if (finished != null){
 				finished(entries.length, lowest_id);
 			}

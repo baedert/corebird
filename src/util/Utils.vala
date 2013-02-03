@@ -38,17 +38,17 @@ class Utils{
 			case "Nov": month = 11; break;
 			case "Dec": month = 12; break;
 		}
-		
+
 		int hour   = int.parse(input.substring(11, 2));
 		int minute = int.parse(input.substring(14, 2));
 		int second = int.parse(input.substring(17, 2));
-		GLib.DateTime dt = new GLib.DateTime(new GLib.TimeZone(timezone), 
+		GLib.DateTime dt = new GLib.DateTime(new GLib.TimeZone(timezone),
 		                                     year, month, day, hour, minute, second);
 		return dt.to_timezone(new TimeZone.local());
 	}
 
 	/**
-	 * Calculates an easily human-readable version of the time difference between 
+	 * Calculates an easily human-readable version of the time difference between
 	 * time and now.
 	 * Example: "5m" or "3h" or "26m" or "16 Nov"
 	 */
@@ -59,7 +59,7 @@ class Utils{
 		int minutes = (int)(diff / 1000.0 / 1000.0 / 60.0);
 		if (minutes < 60)
 			return "%dm".printf(minutes);
-		
+
 		int hours = (int)(minutes / 60.0);
 		if (hours < 24)
 			return "%dh".printf(hours);
@@ -85,6 +85,7 @@ class Utils{
 	 */
 	public static string get_file_type(string path){
 		string type = path.substring(path.last_index_of(".") + 1);
+		type = type.down();
 		if(type == "jpg")
 			return "jpeg";
 		return type;

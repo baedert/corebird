@@ -11,7 +11,16 @@ class MentionsTimeline : Timeline, ScrollWidget {
 	public MentionsTimeline(int id){
 		this.id = id;
 		tweet_list = new Egg.ListBox();
+		tweet_list.set_sort_func((tle1, tle2) => {
+			if(((TweetListEntry)tle1).timestamp <
+			   ((TweetListEntry)tle2).timestamp)
+				return 1;
+			else
+				return -1;
+			return 0;
+		});
 		this.add_with_viewport(tweet_list);
+
 	}
 
 	public void load_cached() {

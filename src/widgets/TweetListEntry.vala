@@ -1,9 +1,8 @@
 using Gtk;
-
 // TODO: Deleted tweets don't get deleted in the stream
 // TODO: Open 'new windows' in a new window, an extended main window,
 //       or just replace the main window's content?
-class TweetListEntry : Gtk.Box{
+class TweetListEntry : Gtk.Box {
 	private static GLib.Regex? hashtag_regex = null;
 	private static GLib.Regex? user_regex    = null;
 	private Image avatar 	  = new Image();
@@ -31,10 +30,7 @@ class TweetListEntry : Gtk.Box{
 			}
 		}
 
-		if(tweet.is_retweet)
-			timestamp = tweet.rt_created_at;
-		else
-			timestamp = tweet.created_at;
+		timestamp = tweet.created_at;
 
 
 		// If the tweet's avatar changed, also reset it in the widgets
@@ -142,4 +138,6 @@ class TweetListEntry : Gtk.Box{
 		}
 		return false;
 	}
+
+
 }
