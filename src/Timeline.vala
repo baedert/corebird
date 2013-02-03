@@ -17,6 +17,16 @@ interface Timeline : Gtk.Widget {
 	public abstract int get_id();
 	public abstract Gtk.RadioToolButton? get_tool_button();
 
+	protected void start_updates(bool notify, string function, int tweet_type) {
+		GLib.Timeout.add(Settings.get_update_interval() * 1000 * 60, () => {
+			load_newest_internal(function, tweet_type, (count) => {
+				if(count > 0)
+					NotificationManager.notify("%d new tweets!".printf(count));
+			});
+			return true;
+		});
+	}
+
 
 	/**
 	 * Default implementation to load cached tweets from the
@@ -64,7 +74,6 @@ interface Timeline : Gtk.Widget {
 
 			// Append the tweet to the TweetList
 			TweetListEntry list_entry = new TweetListEntry(t, main_window);
-			list_entry.visible = true;
 			tweet_list.add(list_entry);
 			result.next();
 		}
@@ -77,7 +86,8 @@ interface Timeline : Gtk.Widget {
 	 * @param function The twitter function to use
 	 * @param tweet_type The type of tweets to load
 	 */
-	protected void load_newest_internal(string function, int tweet_type) {
+	protected void load_newest_internal(string function, int tweet_type,
+	                                    LoaderThread.EndLoadFunc? end_load_func = null) {
 		SQLHeavy.Query id_query = new SQLHeavy.Query(Corebird.db,
 		 	@"SELECT `id`, `created_at` FROM `cache`
 		 	WHERE `type`='$tweet_type' ORDER BY `created_at` DESC LIMIT 1;");
@@ -111,7 +121,8 @@ interface Timeline : Gtk.Widget {
 
 			var root = parser.get_root().get_array();
 			var loader_thread = new LoaderThread(root, main_window,
-												 tweet_list, tweet_type);
+												 tweet_list, tweet_type,
+												 end_load_func);
 			loader_thread.run();
 		});
 	}

@@ -28,7 +28,7 @@ class LoaderThread{
 	public void* thread_func(){
 		GLib.DateTime now = new GLib.DateTime.now_local();
 
-		TweetListEntry[] entries = new TweetListEntry[root.get_length()];
+		var entries = new TweetListEntry[root.get_length()];
 		root.foreach_element( (array, index, node) => {
 			Json.Object o = node.get_object();
 			Tweet t = new Tweet();
@@ -41,7 +41,7 @@ class LoaderThread{
 			if(t.id < lowest_id)
 				lowest_id = t.id;
 
-			TweetListEntry entry  = new TweetListEntry(t, window);
+			var entry  = new TweetListEntry(t, window);
 			entries[index] = entry;
 		});
 

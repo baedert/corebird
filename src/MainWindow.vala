@@ -16,7 +16,6 @@ class MainWindow : ApplicationWindow {
 	private Box main_box                     = new Box(Orientation.VERTICAL, 0);
 	private Box bottom_box                   = new Box(Orientation.HORIZONTAL, 0);
 	private Notebook main_notebook           = new Notebook();
-	// private TweetContainer[] containers      = new TweetContainer[4];
 	private Timeline[] timelines			 = new Timeline[2];
 	private ToolButton avatar_button         = new ToolButton(null, null);
 	private ToolButton refresh_button        = new ToolButton.from_stock(Stock.REFRESH);

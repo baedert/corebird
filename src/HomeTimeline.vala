@@ -16,10 +16,9 @@ class HomeTimeline : Timeline, ScrollWidget{
 			if(((TweetListEntry)tle1).timestamp <
 			   ((TweetListEntry)tle2).timestamp)
 				return 1;
-			else
-				return -1;
-			return 0;
+			return -1;
 		});
+		this.start_updates(true, "1.1/statuses/home_timeline.json", Tweet.TYPE_NORMAL);
 	}
 
 	public void load_cached() {
