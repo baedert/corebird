@@ -13,7 +13,14 @@ class HomeTimeline : Timeline, ScrollWidget{
 		tweet_list = new Egg.ListBox();
 		tweet_list.add_to_scrolled(this);
 		tweet_list.set_sort_func((w1, w2) => {
-			return -1;
+			TweetListEntry tlw1 = (TweetListEntry) w1;
+			TweetListEntry tlw2 = (TweetListEntry) w2;
+			if(tlw1.timestamp < tlw2.timestamp)
+				return 1;
+			else
+				return -1;
+
+			return 0;
  		});
 	}
 

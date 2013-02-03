@@ -6,13 +6,14 @@ using Gtk;
 class TweetListEntry : Gtk.Box{
 	private static GLib.Regex? hashtag_regex = null;
 	private static GLib.Regex? user_regex    = null;
-	// private ImageButton avatar = new ImageButton();
 	private Image avatar 	  = new Image();
 	private Label text                = new Label("");
 	private TextButton author_button;
 	private Label screen_name	      = new Label("");
 	private Label time_delta		  = new Label("");
 	private MainWindow window;
+	// Timestamp used for sorting
+	public int64 timestamp;
 
 
 	public TweetListEntry(Tweet tweet, MainWindow? window){
@@ -29,6 +30,11 @@ class TweetListEntry : Gtk.Box{
 				warning("Error while creating regexes: %s", e.message);
 			}
 		}
+
+		if(tweet.is_retweet)
+			timestamp = tweet.rt_created_at;
+		else
+			timestamp = tweet.created_at;
 
 
 		// If the tweet's avatar changed, also reset it in the widgets
