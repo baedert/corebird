@@ -4,18 +4,15 @@
  * Describes everything a timeline should provide, in an abstract way.
  * Default implementations are given through the *_internal methods.
  */
-interface ITimeline : Gtk.Widget {
+interface ITimeline : Gtk.Widget, IPage {
 	protected abstract int64 max_id{get;set;}
 	public    abstract MainWindow main_window{get;set;}
 	protected abstract Egg.ListBox tweet_list{get;set;}
 
-
 	public abstract void load_cached();
 	public abstract void load_newest();
 	public abstract void load_older ();
-	public abstract void create_tool_button(Gtk.RadioToolButton? group);
-	public abstract int get_id();
-	public abstract Gtk.RadioToolButton? get_tool_button();
+
 
 	protected void start_updates(bool notify, string function, int tweet_type) {
 		GLib.Timeout.add(Settings.get_update_interval() * 1000 * 60, () => {
@@ -67,7 +64,8 @@ interface ITimeline : Gtk.Widget {
 				created = t.created_at;
 
 			// GLib.DateTime created = Utils.parse_date(result.fetch_string(8));
-			t.time_delta   = Utils.get_time_delta(new DateTime.from_unix_local(created), now);
+			t.time_delta   = Utils.get_time_delta(new DateTime.from_unix_local(created),
+												  now);
 			t.avatar_name  = result.fetch_string(10);
 			t.screen_name  = result.fetch_string(11);
 			t.load_avatar();

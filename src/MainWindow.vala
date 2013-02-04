@@ -36,6 +36,9 @@ class MainWindow : ApplicationWindow {
 		/** Initialize all containers */
 		for(int i = 0; i < timelines.length; i++){
 			ITimeline tl = timelines[i];
+			if(!(tl is IPage))
+				break;
+
 			tl.load_cached();
 			tl.main_window = this;
 			tl.create_tool_button(timelines[0].get_tool_button());
@@ -103,7 +106,9 @@ class MainWindow : ApplicationWindow {
 
 		// Add all tool buttons for the timelines
 		foreach(var tl in timelines) {
-			left_toolbar.add(tl.get_tool_button());
+			if(tl.get_tool_button() != null)
+				left_toolbar.add(tl.get_tool_button());
+
 			main_notebook.append_page(tl);
 		}
 
@@ -242,8 +247,7 @@ class MainWindow : ApplicationWindow {
 
 			right_pane.visible = !right_pane.visible;
 			return;
-		}
-		else if(right_pane != null){
+		} else if(right_pane != null) {
 			//Remove current pane
 			width -= right_pane.get_width();
 			bottom_box.remove(right_pane);
@@ -269,11 +273,11 @@ class MainWindow : ApplicationWindow {
 	 */
 	public void switch_page(int page_id, ...){
 		ITimeline tl = timelines[page_id];
-		if(tl is IPage) {
+		if(tl is IPage)
 			((IPage)tl).onJoin(page_id, va_list());
-		} else {
+		else
 			critical("Timeline %d is no instance of IPage", page_id);
-		}
+
 		main_notebook.set_current_page(page_id);
 	}
 }
