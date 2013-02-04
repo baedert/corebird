@@ -59,9 +59,6 @@ vala_precompile(VALA_C
 	src/Timeline.vala
 	src/HomeTimeline.vala
 	src/MentionsTimeline.vala
-	src/containers/SearchContainer.vala
-	src/containers/FavoriteContainer.vala
-	src/containers/TweetContainer.vala
 	src/User.vala
 	src/ProfileDialog.vala
 	src/LoaderThread.vala
