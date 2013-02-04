@@ -269,9 +269,9 @@ class MainWindow : ApplicationWindow {
 	 */
 	public void switch_page(int page_id, ...){
 		ITimeline tl = timelines[page_id];
-		if(tl is Page){
-
-		}else{
+		if(tl is IPage) {
+			((IPage)tl).onJoin(page_id, va_list());
+		} else {
 			critical("Timeline %d is no instance of IPage", page_id);
 		}
 		main_notebook.set_current_page(page_id);

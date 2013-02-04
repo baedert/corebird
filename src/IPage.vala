@@ -1,5 +1,5 @@
 
 
-interface Page {
-	public abstract void onJoin(...);
+interface IPage {
+	public abstract void onJoin(int page_id, ...);
 }

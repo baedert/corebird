@@ -1,7 +1,7 @@
 
 using Gtk;
 
-class HomeTimeline : ITimeline, ScrollWidget{
+class HomeTimeline : ITimeline, IPage, ScrollWidget{
 	public MainWindow main_window{set;get;}
 	protected int64 max_id{get;set;}
 	protected Egg.ListBox tweet_list{set;get;}
@@ -21,6 +21,16 @@ class HomeTimeline : ITimeline, ScrollWidget{
 		this.start_updates(true, "1.1/statuses/home_timeline.json", Tweet.TYPE_NORMAL);
 	}
 
+	/**
+	 * see IPage#onJoin
+	 */
+	public void onJoin(int page_id, ...){
+
+	}
+
+	/**
+	 * see ITimeline#load_cached()
+	 */
 	public void load_cached() {
 		try{
 			this.load_cached_internal(Tweet.TYPE_NORMAL);
