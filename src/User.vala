@@ -3,7 +3,7 @@
 
 class User {
 	/** The user's id */
-	private int64 id;
+	private static int64 id;
 	/** screen_name, unique per user, e.g. baedert(always written as @baedert) */
 	public static string screen_name;
 	/** Normal name like 'Chuck Norris' */
