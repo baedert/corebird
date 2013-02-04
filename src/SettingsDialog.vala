@@ -16,11 +16,11 @@ class SettingsDialog : PreferencesDialog {
 		// GENERAL SETTINGS
 		int general = append_page("General");
 		add_heading(general, "Updates");
-		add_int_option(general, "Tweet update interval:", 1, 
+		add_int_option(general, "Tweet update interval:", 1,
 		               Settings.get_update_interval(), 60, (val) => {
 		    Settings.set_int("update-interval", val);
 		});
-		add_bool_option(general, "Refresh streams on startup:", Settings.refresh_streams_on_startup(), 
+		add_bool_option(general, "Refresh streams on startup:", Settings.refresh_streams_on_startup(),
 		                (val) => {
 		    Settings.set_bool("refresh-streams-on-startup", val);
 		});
@@ -32,11 +32,11 @@ class SettingsDialog : PreferencesDialog {
 			if (val){
 
 			}else{
-				
+
 			}
 		});
 		add_array_option(behavior, "Additional Information:",
-			{"Side Pane", "New Window"}, 0, () => {});
+			{"Same Window", "Side Pane", "New Window"}, 0, () => {});
 
 
 
