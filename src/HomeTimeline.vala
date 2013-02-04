@@ -42,8 +42,13 @@ class HomeTimeline : IPage, ITimeline, ScrollWidget{
 	}
 
 	public void load_newest() {
-		this.load_newest_internal("1.1/statuses/home_timeline.json",
-	    	                      Tweet.TYPE_NORMAL);
+		try {
+			this.load_newest_internal("1.1/statuses/home_timeline.json",
+	    		                      Tweet.TYPE_NORMAL);
+		} catch(SQLHeavy.Error e){
+			warning("SQL Error while loading newest tweets of timeline %d: %s",
+			        this.id, e.message);
+		}
 	}
 
 	public void load_older() {

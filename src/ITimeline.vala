@@ -85,7 +85,8 @@ interface ITimeline : Gtk.Widget, IPage {
 	 * @param tweet_type The type of tweets to load
 	 */
 	protected void load_newest_internal(string function, int tweet_type,
-	                                    LoaderThread.EndLoadFunc? end_load_func = null) {
+	                                    LoaderThread.EndLoadFunc? end_load_func = null)
+	                                    throws SQLHeavy.Error {
 		SQLHeavy.Query id_query = new SQLHeavy.Query(Corebird.db,
 		 	@"SELECT `id`, `created_at` FROM `cache`
 		 	WHERE `type`='$tweet_type' ORDER BY `created_at` DESC LIMIT 1;");

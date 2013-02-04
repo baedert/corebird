@@ -63,6 +63,7 @@ vala_precompile(VALA_C
 	src/ProfileDialog.vala
 	src/LoaderThread.vala
 	src/IPage.vala
+	src/ProfilePage.vala
 	src/widgets/ImageBox.vala
 	src/widgets/ImageLabel.vala
 	src/widgets/TweetTextView.vala

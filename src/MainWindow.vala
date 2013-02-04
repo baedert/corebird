@@ -6,9 +6,9 @@ using Gtk;
 class MainWindow : ApplicationWindow {
 	public static const int PAGE_STREAM    = 0;
 	public static const int PAGE_MENTIONS  = 1;
-	public static const int PAGE_FAVORITES = 2;
-	public static const int PAGE_SEARCH    = 3;
-	public static const int PAGE_PROFILE   = 4;
+	// public static const int PAGE_FAVORITES = 2;
+	// public static const int PAGE_SEARCH    = 3;
+	public static const int PAGE_PROFILE   = 2;
 
 
 	private Toolbar left_toolbar             = new Toolbar();
@@ -17,6 +17,7 @@ class MainWindow : ApplicationWindow {
 	private Box bottom_box                   = new Box(Orientation.HORIZONTAL, 0);
 	private Notebook main_notebook           = new Notebook();
 	private ITimeline[] timelines			 = new ITimeline[2];
+	private IPage[] pages 				     = new IPage[1];
 	private ToolButton avatar_button         = new ToolButton(null, null);
 	private ToolButton refresh_button        = new ToolButton.from_stock(Stock.REFRESH);
 	private ToolButton settings_button       = new ToolButton.from_stock(Stock.PROPERTIES);
@@ -39,14 +40,18 @@ class MainWindow : ApplicationWindow {
 			if(!(tl is IPage))
 				break;
 
-			tl.load_cached();
 			tl.main_window = this;
+			tl.load_cached();
 			tl.create_tool_button(timelines[0].get_tool_button());
 			tl.get_tool_button().toggled.connect(() => {
 				if(tl.get_tool_button().active)
 					this.main_notebook.set_current_page(tl.get_id());
 			});
 		}
+
+		//Setup additional pages
+		pages[0] = new ProfilePage(PAGE_PROFILE);
+
 
 		//Load the user's sceen_name used for identifying him
 		User.load();
@@ -110,6 +115,10 @@ class MainWindow : ApplicationWindow {
 				left_toolbar.add(tl.get_tool_button());
 
 			main_notebook.append_page(tl);
+		}
+
+		foreach(var page in pages){
+			main_notebook.append_page(page);
 		}
 
 		refresh_button.clicked.connect( () => {
@@ -272,12 +281,16 @@ class MainWindow : ApplicationWindow {
 	 * @param ... The parameters to pass to the page
 	 */
 	public void switch_page(int page_id, ...){
-		ITimeline tl = timelines[page_id];
-		if(tl is IPage)
-			((IPage)tl).onJoin(page_id, va_list());
-		else
-			critical("Timeline %d is no instance of IPage", page_id);
+		IPage page = timelines[0];
+		if(page_id < timelines.length)
+			page = timelines[page_id];
+		else{
+			message("index: %d", page_id - timelines.length);
+			page = pages[page_id - timelines.length];
+		}
 
+		page.onJoin(page_id, va_list());
+		message("ID: %d", page_id);
 		main_notebook.set_current_page(page_id);
 	}
 }

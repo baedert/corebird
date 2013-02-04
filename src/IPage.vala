@@ -1,6 +1,6 @@
 
 
-interface IPage {
+interface IPage : Gtk.Widget {
 	public abstract void onJoin(int page_id, ...);
 	public abstract void create_tool_button(Gtk.RadioToolButton? group);
 	public abstract int get_id();
