@@ -1,7 +1,7 @@
 
 using Gtk;
 
-class MentionsTimeline : Timeline, ScrollWidget {
+class MentionsTimeline : ITimeline, ScrollWidget {
 	public MainWindow main_window{set;get;}
 	protected int64 max_id{get;set;}
 	protected Egg.ListBox tweet_list{set;get;}

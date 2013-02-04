@@ -4,7 +4,7 @@
  * Describes everything a timeline should provide, in an abstract way.
  * Default implementations are given through the *_internal methods.
  */
-interface Timeline : Gtk.Widget {
+interface ITimeline : Gtk.Widget {
 	protected abstract int64 max_id{get;set;}
 	public    abstract MainWindow main_window{get;set;}
 	protected abstract Egg.ListBox tweet_list{get;set;}

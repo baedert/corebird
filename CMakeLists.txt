@@ -56,12 +56,13 @@ vala_precompile(VALA_C
 	src/NewTweetWindow.vala
 	src/SettingsDialog.vala
 	src/NotificationManager.vala
-	src/Timeline.vala
+	src/ITimeline.vala
 	src/HomeTimeline.vala
 	src/MentionsTimeline.vala
 	src/User.vala
 	src/ProfileDialog.vala
 	src/LoaderThread.vala
+	src/IPage.vala
 	src/widgets/ImageBox.vala
 	src/widgets/ImageLabel.vala
 	src/widgets/TweetTextView.vala
@@ -72,7 +73,7 @@ vala_precompile(VALA_C
 	src/widgets/TextButton.vala
 	src/widgets/ArrowButton.vala
 	src/widgets/TestToolButton.vala
-	src/widgets/PaneWidget.vala
+	src/widgets/IPaneWidget.vala
 	src/widgets/TweetListEntry.vala
 	src/widgets/TweetInfoWidget.vala
 	src/util/UIBuilder.vala

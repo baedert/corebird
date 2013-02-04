@@ -16,14 +16,14 @@ class MainWindow : ApplicationWindow {
 	private Box main_box                     = new Box(Orientation.VERTICAL, 0);
 	private Box bottom_box                   = new Box(Orientation.HORIZONTAL, 0);
 	private Notebook main_notebook           = new Notebook();
-	private Timeline[] timelines			 = new Timeline[2];
+	private ITimeline[] timelines			 = new ITimeline[2];
 	private ToolButton avatar_button         = new ToolButton(null, null);
 	private ToolButton refresh_button        = new ToolButton.from_stock(Stock.REFRESH);
 	private ToolButton settings_button       = new ToolButton.from_stock(Stock.PROPERTIES);
 	private ToolButton new_tweet_button      = new ToolButton.from_stock(Stock.NEW);
 	private SeparatorToolItem expander_item  = new SeparatorToolItem();
 	private SeparatorToolItem left_separator = new SeparatorToolItem();
-	private PaneWidget right_pane;
+	private IPaneWidget right_pane;
 
 	public MainWindow(Gtk.Application app){
 		GLib.Object (application: app);
@@ -35,7 +35,7 @@ class MainWindow : ApplicationWindow {
 
 		/** Initialize all containers */
 		for(int i = 0; i < timelines.length; i++){
-			Timeline tl = timelines[i];
+			ITimeline tl = timelines[i];
 			tl.load_cached();
 			tl.main_window = this;
 			tl.create_tool_button(timelines[0].get_tool_button());
@@ -230,7 +230,7 @@ class MainWindow : ApplicationWindow {
 	*
 	*  @param new_pane the pane to show/hide
 	**/
-	public void toggle_right_pane(PaneWidget new_pane){
+	public void toggle_right_pane(IPaneWidget new_pane){
 		int width, height;
 		this.get_size(out width, out height);
 
@@ -268,6 +268,12 @@ class MainWindow : ApplicationWindow {
 	 * @param ... The parameters to pass to the page
 	 */
 	public void switch_page(int page_id, ...){
+		ITimeline tl = timelines[page_id];
+		if(tl is Page){
+
+		}else{
+			critical("Timeline %d is no instance of IPage", page_id);
+		}
 		main_notebook.set_current_page(page_id);
 	}
 }
