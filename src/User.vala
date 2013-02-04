@@ -104,8 +104,10 @@ class User {
 					critical("Error while downloading/scaling avatar: %s", e.message);
 				}
 
-				if(avatar_widget != null)
+				if(avatar_widget != null){
 					avatar_widget.set_from_file(dest_path);
+					avatar_widget.queue_draw();
+				}
 
 				try{
 					Corebird.db.execute(@"UPDATE `user` SET `avatar_name`='$avatar_name',`avatar_url`='$avatar_url',`id`='$id';");
