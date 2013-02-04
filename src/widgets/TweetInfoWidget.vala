@@ -1,6 +1,6 @@
 using Gtk;
 
-class TweetInfoWidget : PaneWidget, Gtk.ScrolledWindow{
+class TweetInfoWidget : IPaneWidget, Gtk.ScrolledWindow{
 	private int64 tweet_id;
 
 

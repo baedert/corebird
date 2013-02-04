@@ -6,6 +6,7 @@ using Gtk;
  * and it won't be stretched.(TODO: Change this)
  */
 class ImageBox : Gtk.Box  {
+	private static const float RATIO = (160f/320f);
 	public Gdk.Pixbuf pixbuf;
 
 	public ImageBox(Orientation orientation, int spacing){
@@ -13,21 +14,24 @@ class ImageBox : Gtk.Box  {
 	}
 
 	public override bool draw(Cairo.Context c){
-		if(pixbuf != null){
-			StyleContext context = this.get_style_context();
-			context.render_icon(c, pixbuf, 0, 0);
-		}
-		
+
+		Allocation alloc;
+		this.get_allocation(out alloc);
+		var sc = this.get_style_context();
+
 		//Boxes do not draw any background! YAY
+		sc.render_background(c, 0, 0, alloc.width, alloc.height);
 		base.draw(c);
 		return false;
 	}
 
-	public void set_pixbuf(Gdk.Pixbuf p) {
-		this.pixbuf = p;
-		this.queue_draw();
-		this.set_size_request(p.get_width(), p.get_height());
+	public override void get_preferred_height_for_width(int width, out int min_height,
+	                                                    out int natural_height){
+		min_height = (int)(width * RATIO);
+		natural_height = (int)(width * RATIO);
 	}
-	//TODO: Actually stretch/shrink the background image.
-	//TODO: Implement second overlay image.(?)
+
+	public override SizeRequestMode get_request_mode(){
+		return SizeRequestMode.HEIGHT_FOR_WIDTH;
+	}
 }

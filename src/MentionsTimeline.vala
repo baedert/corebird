@@ -1,7 +1,7 @@
 
 using Gtk;
 
-class MentionsTimeline : Timeline, ScrollWidget {
+class MentionsTimeline : IPage, ITimeline, ScrollWidget{
 	public MainWindow main_window{set;get;}
 	protected int64 max_id{get;set;}
 	protected Egg.ListBox tweet_list{set;get;}
@@ -15,11 +15,15 @@ class MentionsTimeline : Timeline, ScrollWidget {
 			if(((TweetListEntry)tle1).timestamp <
 			   ((TweetListEntry)tle2).timestamp)
 				return 1;
-			else
-				return -1;
-			return 0;
+			return -1;
 		});
 		this.add_with_viewport(tweet_list);
+	}
+
+	/**
+	 * see IPage#onJoin
+	 */
+	public void onJoin(int page_id, va_list arg_list){
 
 	}
 

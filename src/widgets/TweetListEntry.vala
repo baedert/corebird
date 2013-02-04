@@ -75,8 +75,10 @@ class TweetListEntry : Gtk.Box {
 		var author_box = new Box(Orientation.HORIZONTAL, 8);
 		author_button = new TextButton(tweet.user_name);
 		author_button.clicked.connect(() => {
-			ProfileDialog d = new ProfileDialog(tweet.user_id);
-			d.show_all();
+			if(window != null){
+				window.switch_page(MainWindow.PAGE_PROFILE, tweet.user_id);
+			}else
+				critical("main window instance is null!");
 		});
 		author_box.pack_start(author_button, false, false);
 		screen_name.set_use_markup(true);

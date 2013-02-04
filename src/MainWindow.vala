@@ -6,9 +6,9 @@ using Gtk;
 class MainWindow : ApplicationWindow {
 	public static const int PAGE_STREAM    = 0;
 	public static const int PAGE_MENTIONS  = 1;
-	public static const int PAGE_FAVORITES = 2;
-	public static const int PAGE_SEARCH    = 3;
-	public static const int PAGE_PROFILE   = 4;
+	// public static const int PAGE_FAVORITES = 2;
+	// public static const int PAGE_SEARCH    = 3;
+	public static const int PAGE_PROFILE   = 2;
 
 
 	private Toolbar left_toolbar             = new Toolbar();
@@ -16,14 +16,15 @@ class MainWindow : ApplicationWindow {
 	private Box main_box                     = new Box(Orientation.VERTICAL, 0);
 	private Box bottom_box                   = new Box(Orientation.HORIZONTAL, 0);
 	private Notebook main_notebook           = new Notebook();
-	private Timeline[] timelines			 = new Timeline[2];
+	private ITimeline[] timelines			 = new ITimeline[2];
+	private IPage[] pages 				     = new IPage[1];
 	private ToolButton avatar_button         = new ToolButton(null, null);
 	private ToolButton refresh_button        = new ToolButton.from_stock(Stock.REFRESH);
 	private ToolButton settings_button       = new ToolButton.from_stock(Stock.PROPERTIES);
 	private ToolButton new_tweet_button      = new ToolButton.from_stock(Stock.NEW);
 	private SeparatorToolItem expander_item  = new SeparatorToolItem();
 	private SeparatorToolItem left_separator = new SeparatorToolItem();
-	private PaneWidget right_pane;
+	private IPaneWidget right_pane;
 
 	public MainWindow(Gtk.Application app){
 		GLib.Object (application: app);
@@ -35,15 +36,22 @@ class MainWindow : ApplicationWindow {
 
 		/** Initialize all containers */
 		for(int i = 0; i < timelines.length; i++){
-			Timeline tl = timelines[i];
-			tl.load_cached();
+			ITimeline tl = timelines[i];
+			if(!(tl is IPage))
+				break;
+
 			tl.main_window = this;
+			tl.load_cached();
 			tl.create_tool_button(timelines[0].get_tool_button());
 			tl.get_tool_button().toggled.connect(() => {
 				if(tl.get_tool_button().active)
 					this.main_notebook.set_current_page(tl.get_id());
 			});
 		}
+
+		//Setup additional pages
+		pages[0] = new ProfilePage(PAGE_PROFILE);
+
 
 		//Load the user's sceen_name used for identifying him
 		User.load();
@@ -103,8 +111,14 @@ class MainWindow : ApplicationWindow {
 
 		// Add all tool buttons for the timelines
 		foreach(var tl in timelines) {
-			left_toolbar.add(tl.get_tool_button());
+			if(tl.get_tool_button() != null)
+				left_toolbar.add(tl.get_tool_button());
+
 			main_notebook.append_page(tl);
+		}
+
+		foreach(var page in pages){
+			main_notebook.append_page(page);
 		}
 
 		refresh_button.clicked.connect( () => {
@@ -230,7 +244,7 @@ class MainWindow : ApplicationWindow {
 	*
 	*  @param new_pane the pane to show/hide
 	**/
-	public void toggle_right_pane(PaneWidget new_pane){
+	public void toggle_right_pane(IPaneWidget new_pane){
 		int width, height;
 		this.get_size(out width, out height);
 
@@ -242,8 +256,7 @@ class MainWindow : ApplicationWindow {
 
 			right_pane.visible = !right_pane.visible;
 			return;
-		}
-		else if(right_pane != null){
+		} else if(right_pane != null) {
 			//Remove current pane
 			width -= right_pane.get_width();
 			bottom_box.remove(right_pane);
@@ -268,6 +281,13 @@ class MainWindow : ApplicationWindow {
 	 * @param ... The parameters to pass to the page
 	 */
 	public void switch_page(int page_id, ...){
+		IPage page = timelines[0];
+		if(page_id < timelines.length)
+			page = timelines[page_id];
+		else
+			page = pages[page_id - timelines.length];
+
+		page.onJoin(page_id, va_list());
 		main_notebook.set_current_page(page_id);
 	}
 }
