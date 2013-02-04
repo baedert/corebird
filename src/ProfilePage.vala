@@ -3,11 +3,11 @@ using Gtk;
 
 class ProfilePage : IPage, Gtk.Box {
 	private int id;
-
+	private ProfileWidget profile_widget = new ProfileWidget();
 
 	public ProfilePage(int id){
 		this.id = id;
-
+		this.pack_start(profile_widget, true, true);
 	}
 
 
@@ -17,8 +17,9 @@ class ProfilePage : IPage, Gtk.Box {
 	/**
 	 * see IPage#onJoin
 	 */
-	public void onJoin(int page_id, ...) {
-
+	public void onJoin(int page_id, va_list arg_list) {
+		int64 user_id = arg_list.arg();
+		profile_widget.set_user_id(user_id);
 	}
 
 

@@ -24,7 +24,7 @@ class HomeTimeline : IPage, ITimeline, ScrollWidget{
 	/**
 	 * see IPage#onJoin
 	 */
-	public void onJoin(int page_id, ...){
+	public void onJoin(int page_id, va_list arg_list){
 
 	}
 

@@ -77,6 +77,7 @@ vala_precompile(VALA_C
 	src/widgets/IPaneWidget.vala
 	src/widgets/TweetListEntry.vala
 	src/widgets/TweetInfoWidget.vala
+	src/widgets/ProfileWidget.vala
 	src/util/UIBuilder.vala
 	src/util/Utils.vala
 	src/util/Benchmark.vala

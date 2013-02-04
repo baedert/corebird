@@ -284,13 +284,10 @@ class MainWindow : ApplicationWindow {
 		IPage page = timelines[0];
 		if(page_id < timelines.length)
 			page = timelines[page_id];
-		else{
-			message("index: %d", page_id - timelines.length);
+		else
 			page = pages[page_id - timelines.length];
-		}
 
 		page.onJoin(page_id, va_list());
-		message("ID: %d", page_id);
 		main_notebook.set_current_page(page_id);
 	}
 }

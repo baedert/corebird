@@ -79,8 +79,6 @@ class TweetListEntry : Gtk.Box {
 				window.switch_page(MainWindow.PAGE_PROFILE, tweet.user_id);
 			}else
 				critical("main window instance is null!");
-			// ProfileDialog d = new ProfileDialog(tweet.user_id);
-			// d.show_all();
 		});
 		author_box.pack_start(author_button, false, false);
 		screen_name.set_use_markup(true);
