@@ -74,10 +74,26 @@ class MainWindow : ApplicationWindow {
 			return true;
 		});
 
-		new_tweet_button.clicked.connect( () => {
-		 	NewTweetWindow win = new NewTweetWindow(this);
-			win.show_all();
 
+		// Set up the actions
+		SimpleAction new_tweet_action = new SimpleAction("compose-tweet", null);
+		new_tweet_action.activate.connect(() => {
+			NewTweetWindow win = new NewTweetWindow(this);
+			win.show_all();
+		});
+		this.get_application().add_action(new_tweet_action);
+		var refresh_action = new SimpleAction("refresh", null);
+		refresh_action.activate.connect(() => {
+			timelines[main_notebook.page].load_newest();
+		});
+		this.get_application().add_action(refresh_action);
+
+
+
+		new_tweet_button.clicked.connect( () => {
+		 	//NewTweetWindow win = new NewTweetWindow(this);
+			//win.show_all();
+			this.get_application().lookup_action("compose-tweet").activate(null);
 		});
 
 		//Load custom style sheet
@@ -126,7 +142,7 @@ class MainWindow : ApplicationWindow {
 
 		refresh_button.clicked.connect( () => {
 			//Refresh the current container
-			timelines[main_notebook.page].load_newest();
+			application.lookup_action("refresh").activate(null);
 		});
 		settings_button.clicked.connect( () => {
 			SettingsDialog sd = new SettingsDialog(this);
@@ -157,6 +173,7 @@ class MainWindow : ApplicationWindow {
 		this.add(main_box);
 		this.load_geometry();
 		this.show_all();
+
 	}
 
 

@@ -49,4 +49,8 @@ public class UIBuilder {
 	public Entry get_entry(string name){
 		return builder.get_object(name) as Entry;
 	}
+
+	public MenuModel get_menu_model(string name){
+		return builder.get_object(name) as MenuModel;
+	}
 }

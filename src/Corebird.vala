@@ -26,12 +26,8 @@ class Corebird : Gtk.Application {
 		//Create the database needed almost everywhere
 		try{
 			Corebird.db = new SQLHeavy.Database("Corebird.db");
-			db.journal_mode = SQLHeavy.JournalMode.MEMORY; //Don't know if this is good.
+			db.journal_mode = SQLHeavy.JournalMode.MEMORY;
 
-			// The following should give better performance, but it also breaks
-			// loadnig new tweets. :'(
-			// db.execute("PRAGMA synchronous = off");
-			//
 			Corebird.create_tables();
 
 		}catch(SQLHeavy.Error e){
@@ -42,9 +38,11 @@ class Corebird : Gtk.Application {
 
 		Twitter.init();
 
-		if (Settings.is_first_run()){
+		if (Settings.is_first_run()) {
 			this.add_window(new FirstRunWindow(this));
-		} else{
+		} else {
+			UIBuilder builder = new UIBuilder("ui/menu.ui");
+			this.set_app_menu(builder.get_menu_model("app-menu"));
 			this.add_window(new MainWindow(this));
 		}
 
