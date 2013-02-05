@@ -10,6 +10,10 @@ class ProfileWidget : Gtk.Box {
 	private Label tweets_label      = new Label("");
 	private Label follower_label    = new Label("");
 	private Label following_label   = new Label("");
+	private static string banner_css = "*{
+		background-image: url('%s');
+		background-size: 100% 100%;
+	}";
 
 
 	public ProfileWidget(){
@@ -32,7 +36,6 @@ class ProfileWidget : Gtk.Box {
 		description_label.margin_right = 5;
 		description_label.get_style_context().add_class("description");
 		banner_box.pack_start(description_label, false, false);
-		// banner_box.set_pixbuf(Twitter.no_banner);
 		this.pack_start(banner_box, false, false);
 
 		var data_box = new Box(Orientation.HORIZONTAL, 3);
@@ -53,9 +56,10 @@ class ProfileWidget : Gtk.Box {
 		//Load cached data
 		try{
 			SQLHeavy.Query cache_query = new SQLHeavy.Query(Corebird.db,
-				@"SELECT screen_name, name, description, tweets, following, followers, avatar_name
+				@"SELECT id, screen_name, name, description, tweets,
+						 following, followers, avatar_name
 				FROM profiles
-				WHERE screen_name='$user_id';");
+				WHERE id='$user_id';");
 			SQLHeavy.QueryResult cache_result = cache_query.execute();
 			if (!cache_result.finished){
 				name_label.set_markup("<big><big><big><b>%s</b></big></big></big>"
@@ -67,10 +71,12 @@ class ProfileWidget : Gtk.Box {
 				following_label.set_markup("<big><b>%'d</b></big>\nFollowing".printf(cache_result.fetch_int(4)));
 				follower_label.set_markup("<big><b>%'d</b></big>\nFollowers".printf(cache_result.fetch_int(5)));
 				avatar_image.set_from_file("assets/avatars/%s".printf(cache_result.fetch_string(6)));
-				// if(FileUtils.test(@"assets/banners/$user_id.png", FileTest.EXISTS))
-				// 	banner_box.set_pixbuf(new Gdk.Pixbuf.
-				// 	                      from_file(@"assets/banners/$user_id.png"));
-			}
+				if(FileUtils.test(@"assets/banners/$user_id.png", FileTest.EXISTS)){
+					set_banner(@"assets/banners/$user_id.png");
+				}else
+					set_banner("assets/no_banner.png");
+			}else
+				set_banner("assets/no_banner.png");
 		}catch(SQLHeavy.Error e){
 			warning("Error while loading cached profile data: %s", e.message);
 		}catch(GLib.Error e){
@@ -203,13 +209,7 @@ class ProfileWidget : Gtk.Box {
 					// banner_box.set_pixbuf(b);
 					message("Banner saved.");
 					b.save(banner_on_disk, "png");
-					var prov = new CssProvider();
-					prov.load_from_data("*{
-						background-image: url('%s');
-						background-size: 100% 100%;
-					}".printf(banner_on_disk), -1);
-					banner_box.get_style_context().add_provider(prov,
-									STYLE_PROVIDER_PRIORITY_APPLICATION);
+					set_banner(banner_on_disk);
 				} catch (GLib.Error ex) {
 					warning ("Error while setting banner: %s", ex.message);
 				}
@@ -221,5 +221,16 @@ class ProfileWidget : Gtk.Box {
 				}
 			}
 		});
+	}
+
+	private void set_banner(string path){
+		try{
+			CssProvider prov = new CssProvider();
+			prov.load_from_data(banner_css.printf(path), -1);
+			banner_box.get_style_context().add_provider(prov,
+		                       	         STYLE_PROVIDER_PRIORITY_APPLICATION);
+		} catch (GLib.Error e){
+			warning(e.message);
+		}
 	}
 }

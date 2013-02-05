@@ -290,7 +290,6 @@ class MainWindow : ApplicationWindow {
 		}else{
 			page = pages[page_id - timelines.length];
 			dummy_button.active = true;
-
 		}
 
 

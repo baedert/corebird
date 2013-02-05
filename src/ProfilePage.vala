@@ -18,6 +18,7 @@ class ProfilePage : IPage, Gtk.Box {
 	 * see IPage#onJoin
 	 */
 	public void onJoin(int page_id, va_list arg_list) {
+		message("ProfilePage#onJoin");
 		int64 user_id = arg_list.arg();
 		profile_widget.set_user_id(user_id);
 	}
