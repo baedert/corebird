@@ -16,6 +16,7 @@ class MainWindow : ApplicationWindow {
 	private Box main_box                     = new Box(Orientation.VERTICAL, 0);
 	private Box bottom_box                   = new Box(Orientation.HORIZONTAL, 0);
 	private Notebook main_notebook           = new Notebook();
+	private RadioToolButton dummy_button	 = new RadioToolButton(null);
 	private ITimeline[] timelines			 = new ITimeline[2];
 	private IPage[] pages 				     = new IPage[1];
 	private ToolButton avatar_button         = new ToolButton(null, null);
@@ -42,12 +43,14 @@ class MainWindow : ApplicationWindow {
 
 			tl.main_window = this;
 			tl.load_cached();
-			tl.create_tool_button(timelines[0].get_tool_button());
+			tl.create_tool_button(dummy_button);
 			tl.get_tool_button().toggled.connect(() => {
 				if(tl.get_tool_button().active)
 					this.main_notebook.set_current_page(tl.get_id());
 			});
 		}
+		// Activate the first timeline
+		timelines[0].get_tool_button().active = true;
 
 		//Setup additional pages
 		pages[0] = new ProfilePage(PAGE_PROFILE);
@@ -282,10 +285,14 @@ class MainWindow : ApplicationWindow {
 	 */
 	public void switch_page(int page_id, ...){
 		IPage page = timelines[0];
-		if(page_id < timelines.length)
+		if(page_id < timelines.length){
 			page = timelines[page_id];
-		else
+		}else{
 			page = pages[page_id - timelines.length];
+			dummy_button.active = true;
+
+		}
+
 
 		page.onJoin(page_id, va_list());
 		main_notebook.set_current_page(page_id);
