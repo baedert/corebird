@@ -114,10 +114,21 @@ class TweetListEntry : Gtk.Box {
 		this.show_all();
 	}
 
+	public void update_time_delta() {
+		GLib.DateTime now = new GLib.DateTime.now_local();
+		GLib.DateTime then = new GLib.DateTime.from_unix_local(timestamp);
+		this.time_delta.label = "<small>%s</small>".printf(
+			Utils.get_time_delta(then, now));
+	}
+
+
+
 	public override bool draw(Cairo.Context c){
 		var style = this.get_style_context();
-		style.render_background(c, 0, 0, get_allocated_width(), get_allocated_height());
-		style.render_frame(c, 0, 0, get_allocated_width(), get_allocated_height());
+		int w = get_allocated_width();
+		int h = get_allocated_height();
+		style.render_background(c, 0, 0, w, h);
+		style.render_frame(c, 0, 0, w, h);
 		base.draw(c);
 		return false;
 	}

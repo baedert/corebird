@@ -17,6 +17,10 @@ interface ITimeline : Gtk.Widget, IPage {
 	protected void start_updates(bool notify, string function, int tweet_type) {
 		GLib.Timeout.add(Settings.get_update_interval() * 1000 * 60, () => {
 			load_newest_internal(function, tweet_type, (count) => {
+				//Update all current tweets
+				tweet_list.forall_internal(false, (w) => {
+					((TweetListEntry)w).update_time_delta();
+				});
 				if(count > 0)
 					NotificationManager.notify("%d new tweets!".printf(count));
 			});
