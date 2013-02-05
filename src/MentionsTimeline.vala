@@ -37,8 +37,12 @@ class MentionsTimeline : IPage, ITimeline, ScrollWidget{
 	}
 
 	public void load_newest() {
-		this.load_newest_internal("1.1/statuses/mentions_timeline.json",
-	    	                      Tweet.TYPE_MENTION);
+		try {
+			this.load_newest_internal("1.1/statuses/mentions_timeline.json",
+	    		                   	   Tweet.TYPE_MENTION);
+		} catch (SQLHeavy.Error e) {
+			warning(e.message);
+		}
 	}
 
 	public void load_older() {

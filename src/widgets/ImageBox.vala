@@ -7,7 +7,6 @@ using Gtk;
  */
 class ImageBox : Gtk.Box  {
 	private static const float RATIO = (160f/320f);
-	public Gdk.Pixbuf pixbuf;
 
 	public ImageBox(Orientation orientation, int spacing){
 		GLib.Object(orientation: orientation, spacing: spacing);

@@ -34,17 +34,21 @@ class Tweet : GLib.Object{
 	public Tweet(){
 		this.avatar = Twitter.no_avatar;
 		if(cache_query == null){
-			cache_query = new SQLHeavy.Query(Corebird.db,
-			"INSERT INTO `cache`(`id`, `text`,`user_id`, `user_name`, `is_retweet`,
-			                     `retweeted_by`, `retweeted`, `favorited`, `created_at`,
-			                     `rt_created_at`, `avatar_name`, `screen_name`, `type`,
-			                     `rt_id`)
-			VALUES (:id, :text, :user_id, :user_name, :is_retweet, :retweeted_by,
-			        :retweeted, :favorited, :created_at, :rt_created_at, :avatar_name,
-			        :screen_name, :type, :rt_id);");
-			author_query = new SQLHeavy.Query(Corebird.db,
-			"SELECT `id`, `screen_name`, `avatar_url` FROM `people`
-			WHERE `id`=:id;");
+			try {
+				cache_query = new SQLHeavy.Query(Corebird.db,
+				"INSERT INTO `cache`(`id`, `text`,`user_id`, `user_name`, `is_retweet`,
+				                     `retweeted_by`, `retweeted`, `favorited`,
+				                     `created_at`,`rt_created_at`, `avatar_name`,
+				                     `screen_name`, `type`,`rt_id`)
+				VALUES (:id, :text, :user_id, :user_name, :is_retweet, :retweeted_by,
+				        :retweeted, :favorited, :created_at, :rt_created_at, :avatar_name,
+				        :screen_name, :type, :rt_id);");
+				author_query = new SQLHeavy.Query(Corebird.db,
+				"SELECT `id`, `screen_name`, `avatar_url` FROM `people`
+				WHERE `id`=:id;");
+			} catch (SQLHeavy.Error e) {
+				critical(e.message);
+			}
 		}
 	}
 
