@@ -56,7 +56,7 @@ class Tweet : GLib.Object{
 		if (Twitter.avatars.has_key(avatar_name)){
 		 	this.avatar = Twitter.avatars.get(avatar_name);
 		 }else{
-			string path = "assets/avatars/"+avatar_name;
+			string path = Utils.get_user_file_path("assets/avatars/"+avatar_name);
 			if(FileUtils.test(path, FileTest.EXISTS)){
 				try{
 					Twitter.avatars.set(avatar_name,
@@ -146,7 +146,7 @@ class Tweet : GLib.Object{
 
 		this.load_avatar();
 		if(!this.has_avatar()){
-			string dest = "assets/avatars/"+this.avatar_name;
+			string dest = Utils.get_user_file_path("assets/avatars/"+this.avatar_name);
 			GLib.Idle.add(() => {
 				var session = new Soup.SessionAsync();
 				var msg     = new Soup.Message("GET", this.avatar_url);

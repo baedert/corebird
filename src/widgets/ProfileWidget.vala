@@ -72,11 +72,11 @@ class ProfileWidget : Gtk.Box {
 				follower_label.set_markup("<big><b>%'d</b></big>\nFollowers".printf(cache_result.fetch_int(5)));
 				avatar_image.set_from_file("assets/avatars/%s".printf(cache_result.fetch_string(6)));
 				if(FileUtils.test(@"assets/banners/$user_id.png", FileTest.EXISTS)){
-					set_banner(@"assets/banners/$user_id.png");
+					set_banner(Utils.get_user_file_path(@"assets/banners/$user_id.png"));
 				}else
-					set_banner("assets/no_banner.png");
+					set_banner("assets/no_banner.png"); // TODO: Change
 			}else
-				set_banner("assets/no_banner.png");
+				set_banner("assets/no_banner.png"); // TODO Change
 		}catch(SQLHeavy.Error e){
 			warning("Error while loading cached profile data: %s", e.message);
 		}catch(GLib.Error e){
@@ -111,7 +111,7 @@ class ProfileWidget : Gtk.Box {
 			var root = parser.get_root().get_object();
 			string avatar_url = root.get_string_member("profile_image_url");
 			string avatar_name = Utils.get_avatar_name(avatar_url);
-			string avatar_on_disk = "assets/avatars/"+avatar_name;
+			string avatar_on_disk = Utils.get_user_file_path("assets/avatars/"+avatar_name);
 			//TODO: Also use libsoup here
 			if(!FileUtils.test(avatar_on_disk, FileTest.EXISTS)){
 				File av = File.new_for_uri(avatar_url);
@@ -199,7 +199,7 @@ class ProfileWidget : Gtk.Box {
 			// else
 			banner_url = root.get_object_member("mobile").get_string_member("url");
 
-			string banner_on_disk = @"assets/banners/$user_id.png";
+			string banner_on_disk = Utils.get_user_file_path(@"assets/banners/$user_id.png");
 			if (!FileUtils.test(banner_on_disk, FileTest.EXISTS)){
 				message("Loading banner...");
 				try{

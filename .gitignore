@@ -1,4 +1,5 @@
 Corebird
+corebird
 Corebird.db
 src/*.c
 src/widgets/*.c

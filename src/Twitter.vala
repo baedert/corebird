@@ -1,7 +1,7 @@
 using Rest;
 using Gee;
 
-class Twitter{
+class Twitter {
 	private static string token;
 	private static string token_secret;
 	private static int max_media_per_upload;
@@ -10,6 +10,7 @@ class Twitter{
 	private static int short_url_length_https;
 	private static int photo_size_limit;
 	public static OAuthProxy proxy;
+	// TODO Move these to some dir in /usr/share and use it.
 	public static Gdk.Pixbuf retweeted_img;
 	public static Gdk.Pixbuf favorited_img;
 	public static Gdk.Pixbuf no_avatar;
@@ -41,7 +42,7 @@ class Twitter{
 	public static string get_token_secret(){
 		if (Twitter.token_secret == null){
 			try{
-				SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db, 
+				SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db,
 				   "SELECT `token_secret` FROM `common` LIMIT 1;");
 				SQLHeavy.QueryResult result = q.execute();
 				Twitter.token_secret = result.fetch_string();
@@ -50,7 +51,7 @@ class Twitter{
 				error("Error while retrieving token_secret: %s", e.message);
 			}
 		}
-		return Twitter.token_secret;		
+		return Twitter.token_secret;
 	}
 
 
@@ -93,7 +94,7 @@ class Twitter{
 			SQLHeavy.QueryResult time_result = time_query.execute();
 			int64 last_update = time_result.fetch_int64(0);
 			var then = new GLib.DateTime.from_unix_local(last_update);
-			
+
 			var diff = then.difference(now);
 			if (diff < GLib.TimeSpan.DAY * 7){
 				Twitter.characters_reserved_per_media = time_result.fetch_int(1);
@@ -101,7 +102,7 @@ class Twitter{
 				Twitter.photo_size_limit              = time_result.fetch_int(3);
 				Twitter.short_url_length              = time_result.fetch_int(4);
 				Twitter.short_url_length_https        = time_result.fetch_int(5);
-				return;		
+				return;
 			}
 		}catch(SQLHeavy.Error e){
 			warning("Error while querying config: %s", e.message);
@@ -127,7 +128,7 @@ class Twitter{
 				warning("Error while parsing Json: %s\nData:%s", e.message, back);
 				return;
 			}
-			
+
 			var root = parser.get_root().get_object();
 			Twitter.characters_reserved_per_media =
 				(int)root.get_int_member("characters_reserved_per_media");

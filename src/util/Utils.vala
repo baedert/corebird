@@ -3,6 +3,7 @@
 
 
 class Utils{
+	// TODO: there's probably something for this in glib
 	private static string[] MONTHS = {
 		"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
 	};
@@ -117,4 +118,14 @@ class Utils{
 
 		dialog.show();
 	}
+
+
+	/**
+	 * TODO: Maybe use the XDG_CONFIG_DIR here?
+	 * @return a path to the file or folder ~/Corebird/file_name
+	 */
+	public static string get_user_file_path(string file_name){
+		return GLib.Environment.get_home_dir()+"/.corebird/"+file_name;
+	}
+
 }

@@ -11,7 +11,7 @@ class NewTweetWindow : Window {
 	private Box left_box			 = new Box(Orientation.VERTICAL, 4);
 	private Button add_image_button  = new Button();
 	private int media_count			 = 0;
-	private ImageButton media_image  = new ImageButton();	
+	private ImageButton media_image  = new ImageButton();
 	private string media_uri;
 
 
@@ -48,8 +48,8 @@ class NewTweetWindow : Window {
 		var main_box = new Box(Orientation.VERTICAL, 5);
 
 		var middle_box = new Box(Orientation.HORIZONTAL, 3);
-		var av = new Gtk.Image.from_file("assets/avatars/"+
-		                                 Utils.get_avatar_name(User.avatar_url));
+		var av = new Gtk.Image.from_file(Utils.get_user_file_path("assets/avatars/"
+		                                 +Utils.get_avatar_name(User.avatar_url)));
 		av.set_alignment(0,0);
 		left_box.pack_start(av, false, false);
 		left_box.pack_start(new Separator(Orientation.HORIZONTAL), false, false);
@@ -117,7 +117,7 @@ class NewTweetWindow : Window {
 		if(media_count <= Twitter.get_max_media_per_upload())
 			add_image_button.set_sensitive(true);
 	}
-	
+
 
 	private void send_tweet(){
 		TextIter start, end;
@@ -126,7 +126,7 @@ class NewTweetWindow : Window {
 		string text = tweet_text.buffer.get_text(start, end, true);
 		if(text.strip() == "")
 			return;
-			
+
 		var call = Twitter.proxy.new_call();
 		call.set_method("POST");
 		if(media_count == 0){
@@ -150,7 +150,7 @@ class NewTweetWindow : Window {
 			message("Back: %s", call.get_payload());
 			message("Code: %u, Status: %s", call.get_status_code(), call.get_status_message());
 		});
-		this.destroy();		
+		this.destroy();
 	}
 
 }

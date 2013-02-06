@@ -87,16 +87,17 @@ PACKAGES
 	egglistbox
 OPTIONS
 	-g
-	--thread 
+	--thread
 	--target-glib=2.32
 	--enable-checking
 	--vapidir=src/egglistbox/
-	-X '-I src/egglistbox/'
 )
 
-add_executable(Corebird ${VALA_C})
-target_link_libraries(Corebird ${DEPS_LIBRARIES})
+add_executable(corebird ${VALA_C})
+target_link_libraries(corebird ${DEPS_LIBRARIES})
 
 # GSettings
 include (GSettings)
 add_schema("org.baedert.corebird.gschema.xml")
+
+install(TARGETS corebird RUNTIME DESTINATION bin)

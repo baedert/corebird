@@ -23,9 +23,28 @@ class Corebird : Gtk.Application {
 
 		NotificationManager.init();
 
+		// Create ~/.corebird if neccessary
+		if(!FileUtils.test(Utils.get_user_file_path(""), FileTest.EXISTS)){
+			bool success = File.new_for_path(Utils.get_user_file_path(""))
+								.make_directory();
+			if(!success){
+				critical("Couldn't create the ~/.corebird directory");
+			}
+
+			success = File.new_for_path(Utils.get_user_file_path("assets/"))
+								.make_directory();
+			success = File.new_for_path(Utils.get_user_file_path("assets/avatars/"))
+								.make_directory();
+			success = File.new_for_path(Utils.get_user_file_path("assets/banners/"))
+								.make_directory();
+			success = File.new_for_path(Utils.get_user_file_path("assets/user/"))
+								.make_directory();
+		}
+
+
 		//Create the database needed almost everywhere
 		try{
-			Corebird.db = new SQLHeavy.Database("Corebird.db");
+			Corebird.db = new SQLHeavy.Database(Utils.get_user_file_path("Corebird.db"));
 			db.journal_mode = SQLHeavy.JournalMode.MEMORY;
 
 			Corebird.create_tables();
