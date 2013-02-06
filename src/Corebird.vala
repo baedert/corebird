@@ -60,7 +60,7 @@ class Corebird : Gtk.Application {
 		if (Settings.is_first_run()) {
 			this.add_window(new FirstRunWindow(this));
 		} else {
-			UIBuilder builder = new UIBuilder("ui/menu.ui");
+			UIBuilder builder = new UIBuilder(DATADIR+"/ui/menu.ui");
 			this.set_app_menu(builder.get_menu_model("app-menu"));
 			this.add_window(new MainWindow(this));
 		}

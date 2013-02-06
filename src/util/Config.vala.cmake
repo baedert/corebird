@@ -1,0 +1,3 @@
+
+
+const string DATADIR = "@DATADIR@";

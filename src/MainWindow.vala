@@ -99,7 +99,7 @@ class MainWindow : ApplicationWindow {
 		//Load custom style sheet
 		try{
 			CssProvider provider = new CssProvider();
-			provider.load_from_file(File.new_for_path("ui/style.css"));
+			provider.load_from_file(File.new_for_path(DATADIR+"/ui/style.css"));
 			Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(), provider,
 		                                         STYLE_PROVIDER_PRIORITY_APPLICATION);
 		}catch(GLib.Error e){

@@ -56,6 +56,7 @@ class Twitter {
 
 
 	public static void init(){
+		message(DATADIR);
 		//TODO: Obfuscate this somehow
 		Twitter.proxy = new OAuthProxy(
         	"0rvHLdbzRULZd5dz6X1TUA",						//Consumer Key
@@ -70,9 +71,12 @@ class Twitter {
 
 		try{
 			// Twitter.retweeted_img = new Gdk.Pixbuf.from_file("assets/retweeted.png");
-			Twitter.favorited_img = new Gdk.Pixbuf.from_file("assets/favorited.png");
-			Twitter.no_avatar = new Gdk.Pixbuf.from_file("assets/no_avatar.png");
-			Twitter.no_banner = new Gdk.Pixbuf.from_file("assets/no_banner.png");
+			Twitter.favorited_img = new Gdk.Pixbuf.from_file(
+			                               DATADIR+"/favorited.png");
+			Twitter.no_avatar = new Gdk.Pixbuf.from_file(
+			                               DATADIR+"/no_avatar.png");
+			Twitter.no_banner = new Gdk.Pixbuf.from_file(
+			                               DATADIR+"/no_banner.png");
 		}catch(GLib.Error e){
 			error("Error while loading assets: %s", e.message);
 		}

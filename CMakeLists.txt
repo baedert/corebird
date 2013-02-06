@@ -19,6 +19,12 @@ set (CMAKE_C_FLAGS "-Wno-deprecated-declarations")
 set (CMAKE_C_FLAGS "-I src/egglistbox/")
 
 
+set (DATADIR "${CMAKE_INSTALL_PREFIX}/share/corebird")
+
+message(${CMAKE_SOURCE_DIR})
+
+configure_file (${CMAKE_SOURCE_DIR}/src/util/Config.vala.cmake ${CMAKE_SOURCE_DIR}/src/util/Config.vala)
+
 find_package(Vala REQUIRED)
 include(ValaVersion)
 ensure_vala_version("0.16" MINIMUM)
@@ -81,6 +87,7 @@ vala_precompile(VALA_C
 	src/util/UIBuilder.vala
 	src/util/Utils.vala
 	src/util/Benchmark.vala
+	src/util/Config.vala
 	src/egglistbox/egg-list-box.c
 PACKAGES
 	${DEPS}
@@ -98,6 +105,13 @@ target_link_libraries(corebird ${DEPS_LIBRARIES})
 
 # GSettings
 include (GSettings)
-add_schema("org.baedert.corebird.gschema.xml")
+add_schema ("org.baedert.corebird.gschema.xml")
 
-install(TARGETS corebird RUNTIME DESTINATION bin)
+install (TARGETS corebird RUNTIME DESTINATION bin)
+install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/no_avatar.png DESTINATION ${DATADIR})
+install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/no_banner.png DESTINATION ${DATADIR})
+install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/favorited.png DESTINATION ${DATADIR})
+install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/ui/style.css DESTINATION ${DATADIR}/ui/)
+install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/ui/first-run-window.ui DESTINATION ${DATADIR}/ui/)
+install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/ui/tweet-info-window.ui DESTINATION ${DATADIR}/ui/)
+install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/ui/menu.ui DESTINATION ${DATADIR}/ui/)
