@@ -144,36 +144,35 @@ class Tweet : GLib.Object{
 		this.time_delta  = Utils.get_time_delta(dt, now);
 
 
+		string dest = Utils.get_user_file_path("assets/avatars/"+
+		                                       this.avatar_name);
+		File dest_file = File.new_for_path(dest);
 		this.load_avatar();
-		if(!this.has_avatar()){
+		if(!FileUtils.test(dest_file.get_path(), FileTest.EXISTS) || !this.has_avatar()){
+			message("avatar name: %s", avatar_name);
+			var session = new Soup.SessionAsync();
+			message("avatar url: %s", this.avatar_url);
+			var msg     = new Soup.Message("GET", this.avatar_url);
 
-			// GLib.Idle.add(() => {
-				var session = new Soup.SessionAsync();
-				var msg     = new Soup.Message("GET", this.avatar_url);
-				session.queue_message((owned)msg,
+			// string dest = Utils.get_user_file_path("assets/avatars/"+
+			                                       // this.avatar_name);
+			message(dest);
+			try{
+				File.new_for_path(dest).create(FileCreateFlags.NONE);
+			} catch (GLib.Error e){
+				critical(e.message);
+			}
+			session.queue_message(msg, (s, m) => {
+				// message("avatar name: %s", avatar_name);
+				// message("Type: %s", Utils.get_file_type(avatar_name));
+				// message("Length: %d", m.response_body.data.length);
+				// var ms = new MemoryInputStream.from_data(m.response_body.data, null);
+				// var pixbuf = new Gdk.Pixbuf.from_stream_at_scale(ms, 48, 48, false);
 
-				 (s, m) => {
-					string dest = Utils.get_user_file_path("assets/avatars/"+
-					                                       this.avatar_name);
-					message("Type: %s", Utils.get_file_type(avatar_name));
-					var ms = new MemoryInputStream.from_data(m.response_body.data, null);
-					var pixbuf = new Gdk.Pixbuf.from_stream_at_scale(ms, 48, 48, false);
-
-					pixbuf.save(dest, Utils.get_file_type(avatar_name));
-					this.load_avatar();
-					message("Loaded avatar for %s", screen_name);
-				});
-
-				// var memory_stream = new MemoryInputStream.from_data(msg.response_body.data,
-				//                                                     null);
-				// var pixbuf = new Gdk.Pixbuf.from_stream_at_scale(memory_stream, 48, 48,
-				//                                                  false);
 				// pixbuf.save(dest, Utils.get_file_type(avatar_name));
-				// this.load_avatar();
-				session.flush_queue();
-
-				// return false;
-			// });
+				// // this.load_avatar();
+				// message("Loaded avatar for %s", screen_name);
+			});
 		}
 	}
 
