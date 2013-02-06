@@ -10,8 +10,6 @@ class Twitter {
 	private static int short_url_length_https;
 	private static int photo_size_limit;
 	public static OAuthProxy proxy;
-	// TODO Move these to some dir in /usr/share and use it.
-	public static Gdk.Pixbuf retweeted_img;
 	public static Gdk.Pixbuf favorited_img;
 	public static Gdk.Pixbuf no_avatar;
 	public static Gdk.Pixbuf no_banner;
@@ -56,7 +54,6 @@ class Twitter {
 
 
 	public static void init(){
-		message(DATADIR);
 		//TODO: Obfuscate this somehow
 		Twitter.proxy = new OAuthProxy(
         	"0rvHLdbzRULZd5dz6X1TUA",						//Consumer Key
@@ -70,7 +67,6 @@ class Twitter {
 		}
 
 		try{
-			// Twitter.retweeted_img = new Gdk.Pixbuf.from_file("assets/retweeted.png");
 			Twitter.favorited_img = new Gdk.Pixbuf.from_file(
 			                               DATADIR+"/favorited.png");
 			Twitter.no_avatar = new Gdk.Pixbuf.from_file(
