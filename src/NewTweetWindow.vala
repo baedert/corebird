@@ -4,7 +4,7 @@ using Rest;
 
 
 
-class NewTweetWindow : Window {
+class NewTweetWindow : Gtk.ApplicationWindow {
 	private TweetTextView tweet_text = new TweetTextView();
 	private Button send_button       = new Button.with_label("Send");
 	private Button cancel_button	 = new Button.from_stock(Stock.CANCEL);
@@ -15,11 +15,21 @@ class NewTweetWindow : Window {
 	private string media_uri;
 
 
-	public NewTweetWindow(Window? parent, string answer_to = "") {
+	public NewTweetWindow(Window? parent, string? answer_to = null, Gtk.Application? app = null) {
+		// if(app != null)
+			GLib.Object(application: app);
+		// else
+			// GLib.Object();
+
+
+		this.show_menubar = false;
 		if(parent != null){
-			this.set_transient_for(parent);
 			this.set_type_hint(Gdk.WindowTypeHint.DIALOG);
 			this.set_modal(true);
+			this.set_transient_for(parent);
+		} else {
+			// If the dialog has no parent window, we just make it an actual window
+			set_position(WindowPosition.CENTER);
 		}
 		this.set_title("New Tweet");
 		this.border_width = 5;
@@ -109,6 +119,7 @@ class NewTweetWindow : Window {
 		main_box.pack_end(button_box, false, true);
 		this.add(main_box);
 		this.set_default_size(380, 175);
+		this.show_all();
 	}
 
 	private void remove_media(){
