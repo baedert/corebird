@@ -2,6 +2,9 @@ using Gtk;
 
 // TODO: Make tweet loading in the main-timeline work!
 // TODO: Look at EggListBox's source code
+class DLSession : Soup.Session{
+
+}
 class Tweet : GLib.Object{
 	public static int TYPE_NORMAL   = 1;
 	public static int TYPE_MENTION  = 2;
@@ -147,11 +150,13 @@ class Tweet : GLib.Object{
 		string dest = Utils.get_user_file_path("assets/avatars/"+
 		                                       this.avatar_name);
 		File dest_file = File.new_for_path(dest);
+		if(FileUtils.test(dest, FileTest.EXISTS))
+			return;
+
 		this.load_avatar();
-		if(!FileUtils.test(dest_file.get_path(), FileTest.EXISTS) || !this.has_avatar()){
-			message("avatar name: %s", avatar_name);
+		if(!FileUtils.test(dest_file.get_path(), FileTest.EXISTS) ||
+		   											!this.has_avatar()){
 			var session = new Soup.SessionAsync();
-			message("avatar url: %s", this.avatar_url);
 			var msg     = new Soup.Message("GET", this.avatar_url);
 
 			// string dest = Utils.get_user_file_path("assets/avatars/"+
@@ -166,12 +171,12 @@ class Tweet : GLib.Object{
 				// message("avatar name: %s", avatar_name);
 				// message("Type: %s", Utils.get_file_type(avatar_name));
 				// message("Length: %d", m.response_body.data.length);
-				// var ms = new MemoryInputStream.from_data(m.response_body.data, null);
-				// var pixbuf = new Gdk.Pixbuf.from_stream_at_scale(ms, 48, 48, false);
+				var ms = new MemoryInputStream.from_data(m.response_body.data, null);
+				var pixbuf = new Gdk.Pixbuf.from_stream_at_scale(ms, 48, 48, false);
 
-				// pixbuf.save(dest, Utils.get_file_type(avatar_name));
-				// // this.load_avatar();
-				// message("Loaded avatar for %s", screen_name);
+				pixbuf.save(dest, Utils.get_file_type(avatar_name));
+				// this.load_avatar();
+				message("Loaded avatar for %s", screen_name);
 			});
 		}
 	}
@@ -190,7 +195,7 @@ class Tweet : GLib.Object{
 			SQLHeavy.QueryResult author_result = author_query.execute();
 			if (author_result.finished){
 				//The author is not in the DB so we insert him
-				message("Inserting new author %s", t.screen_name);
+				// message("Inserting new author %s", t.screen_name);
 				Corebird.db.execute("INSERT INTO `people`(id,name,screen_name,avatar_url,
 				                    avatar_name) VALUES ('%d', '%s', '%s', '%s', '%s');",
 				                    t.user_id, t.user_name, t.screen_name, t.avatar_url,
