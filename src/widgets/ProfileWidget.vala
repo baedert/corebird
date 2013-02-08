@@ -168,6 +168,8 @@ class ProfileWidget : Gtk.Box {
 
 	/**
 	 * Loads the user's banner image.
+	 *
+	 * @param user_id The user's ID
 	 */
 	private async void load_banner(int64 user_id){
 		var call = Twitter.proxy.new_call();
@@ -175,17 +177,19 @@ class ProfileWidget : Gtk.Box {
 		call.set_function("1.1/users/profile_banner.json");
 		call.add_param("user_id", user_id.to_string());
 		call.invoke_async.begin(null, (obj, res) => {
-			if (call.get_status_code() == 404){
-				// Normal. The user has not set a profile banner.
-				message("No Banner set.");
-				return;
-			}
 			try{
 				call.invoke_async.end (res);
 			} catch (GLib.Error e){
 				warning("Error while ending call: %s", e.message);
 				return;
 			}
+
+			if (call.get_status_code() == 404){
+				// Normal. The user has not set a profile banner.
+				message("No Banner set.");
+				return;
+			}
+
 			string back = call.get_payload();
 			Json.Parser parser = new Json.Parser();
 			try{

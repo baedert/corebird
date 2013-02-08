@@ -35,7 +35,6 @@ class ImageBox : Gtk.Box  {
 	}
 
 	public void set_background(string path){
-		message("Setting backgorund to %s", path);
 		string banner_css = "*{
 		background-image: url('%s');
 		background-size: 100% 100%;
