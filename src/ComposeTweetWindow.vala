@@ -16,10 +16,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
 
 	public ComposeTweetWindow(Window? parent, string? answer_to = null, Gtk.Application? app = null) {
-		// if(app != null)
-			GLib.Object(application: app);
-		// else
-			// GLib.Object();
+		GLib.Object(application: app);
 
 
 		this.show_menubar = false;
