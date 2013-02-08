@@ -4,7 +4,7 @@ using Rest;
 
 
 
-class NewTweetWindow : Gtk.ApplicationWindow {
+class ComposeTweetWindow : Gtk.ApplicationWindow {
 	private TweetTextView tweet_text = new TweetTextView();
 	private Button send_button       = new Button.with_label("Send");
 	private Button cancel_button	 = new Button.from_stock(Stock.CANCEL);
@@ -15,7 +15,7 @@ class NewTweetWindow : Gtk.ApplicationWindow {
 	private string media_uri;
 
 
-	public NewTweetWindow(Window? parent, string? answer_to = null, Gtk.Application? app = null) {
+	public ComposeTweetWindow(Window? parent, string? answer_to = null, Gtk.Application? app = null) {
 		// if(app != null)
 			GLib.Object(application: app);
 		// else

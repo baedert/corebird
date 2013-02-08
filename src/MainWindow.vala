@@ -74,7 +74,7 @@ class MainWindow : ApplicationWindow {
 		// Set up the actions
 		SimpleAction new_tweet_action = new SimpleAction("compose-tweet", null);
 		new_tweet_action.activate.connect(() => {
-			NewTweetWindow win = new NewTweetWindow(this);
+			ComposeTweetWindow win = new ComposeTweetWindow(this);
 			win.show_all();
 		});
 		this.get_application().add_action(new_tweet_action);

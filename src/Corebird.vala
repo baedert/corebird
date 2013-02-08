@@ -124,8 +124,7 @@ class Corebird : Gtk.Application {
 				this.add_window(mw);
 			}
 		} else {
-			// TODO: Rename NewTweetWindow to ComposeTweetWindow
-			NewTweetWindow win = new NewTweetWindow(null, null, this);
+			ComposeTweetWindow win = new ComposeTweetWindow(null, null, this);
 			this.add_window(win);
 		}
 	}

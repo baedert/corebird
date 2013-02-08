@@ -59,7 +59,7 @@ vala_precompile(VALA_C
 	src/Settings.vala
 	src/FirstRunWindow.vala
 	src/Twitter.vala
-	src/NewTweetWindow.vala
+	src/ComposeTweetWindow.vala
 	src/SettingsDialog.vala
 	src/NotificationManager.vala
 	src/ITimeline.vala
