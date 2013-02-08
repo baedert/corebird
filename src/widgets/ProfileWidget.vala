@@ -47,7 +47,6 @@ class ProfileWidget : Gtk.Box {
 
 
 	public void set_user_id(int64 user_id){
-
 		//Load cached data
 		try{
 			SQLHeavy.Query cache_query = new SQLHeavy.Query(Corebird.db,
@@ -177,6 +176,12 @@ class ProfileWidget : Gtk.Box {
 		call.set_function("1.1/users/profile_banner.json");
 		call.add_param("user_id", user_id.to_string());
 		call.invoke_async.begin(null, (obj, res) => {
+			if (call.get_status_code() == 404){
+				// Normal. The user has not set a profile banner.
+				message("No Banner set.");
+				return;
+			}
+
 			try{
 				call.invoke_async.end (res);
 			} catch (GLib.Error e){
@@ -184,11 +189,7 @@ class ProfileWidget : Gtk.Box {
 				return;
 			}
 
-			if (call.get_status_code() == 404){
-				// Normal. The user has not set a profile banner.
-				message("No Banner set.");
-				return;
-			}
+
 
 			string back = call.get_payload();
 			Json.Parser parser = new Json.Parser();
