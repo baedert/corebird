@@ -10,11 +10,6 @@ class ProfileWidget : Gtk.Box {
 	private Label tweets_label      = new Label("");
 	private Label follower_label    = new Label("");
 	private Label following_label   = new Label("");
-	private static string banner_css = "*{
-		background-image: url('%s');
-		background-size: 100% 100%;
-	}";
-
 
 	public ProfileWidget(){
 		GLib.Object(orientation: Orientation.VERTICAL);
@@ -76,12 +71,14 @@ class ProfileWidget : Gtk.Box {
 				                          .printf(cache_result.fetch_int(6)));
 				avatar_image.set_from_file(Utils.get_user_file_path(
 				                           "/assets/avatars/"+cache_result.fetch_string(7)));
-				if(FileUtils.test(@"assets/banners/$user_id.png", FileTest.EXISTS)){
-					set_banner(Utils.get_user_file_path(@"assets/banners/$user_id.png"));
+				if(FileUtils.test(Utils.get_user_file_path(@"assets/banners/$user_id.png"),
+								  FileTest.EXISTS)){
+					banner_box.set_background(Utils.get_user_file_path(
+					                          @"assets/banners/$user_id.png"));
 				}else
-					set_banner(DATADIR+"/no_banner.png");
+					banner_box.set_background(DATADIR+"/no_banner.png");
 			}else
-				set_banner(DATADIR+"/no_banner.png");
+				banner_box.set_background(DATADIR+"/no_banner.png");
 		}catch(SQLHeavy.Error e){
 			warning("Error while loading cached profile data: %s", e.message);
 		}catch(GLib.Error e){
@@ -216,7 +213,7 @@ class ProfileWidget : Gtk.Box {
 					// banner_box.set_pixbuf(b);
 					message("Banner saved.");
 					b.save(banner_on_disk, "png");
-					set_banner(banner_on_disk);
+					banner_box.set_background(banner_on_disk);
 				} catch (GLib.Error ex) {
 					warning ("Error while setting banner: %s", ex.message);
 				}
@@ -230,14 +227,4 @@ class ProfileWidget : Gtk.Box {
 		});
 	}
 
-	private void set_banner(string path){
-		try{
-			CssProvider prov = new CssProvider();
-			prov.load_from_data(banner_css.printf(path), -1);
-			banner_box.get_style_context().add_provider(prov,
-		                       	         STYLE_PROVIDER_PRIORITY_APPLICATION);
-		} catch (GLib.Error e){
-			warning(e.message);
-		}
-	}
 }
