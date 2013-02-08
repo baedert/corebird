@@ -203,6 +203,7 @@ class ProfileWidget : Gtk.Box {
 			if (!FileUtils.test(banner_on_disk, FileTest.EXISTS)){
 				message("Loading banner...");
 				try{
+					// TODO: Use soap here
 					File banner_file = File.new_for_uri(banner_url);
 					FileInputStream in_stream = banner_file.read();
 					Gdk.Pixbuf b = new Gdk.Pixbuf.from_stream(in_stream);
