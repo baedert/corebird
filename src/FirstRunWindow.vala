@@ -13,7 +13,8 @@ class FirstRunWindow : ApplicationWindow {
 		GLib.Object(application: app);
 		this.app = app;
 
-		UIBuilder builder = new UIBuilder("ui/first-run-window.ui", "main_box");
+		UIBuilder builder = new UIBuilder(DATADIR+"/ui/first-run-window.ui",
+		                                  "main_box");
 		this.main_box = builder.get_box("main_box");
 		this.nb = builder.get_notebook("main_notebook");
 		this.pin_entry = builder.get_entry("pin_entry");
@@ -81,8 +82,8 @@ class FirstRunWindow : ApplicationWindow {
 		try{
 			Corebird.create_tables();
 			//Write token + token_secret to the database
-			SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db, "INSERT INTO 
-			                  `common`(token, token_secret) 
+			SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db, "INSERT INTO
+			                  `common`(token, token_secret)
 			                  VALUES (:t, :ts);");
 			q.set_string(":t", Twitter.proxy.get_token());
 			q.set_string(":ts", Twitter.proxy.get_token_secret());
@@ -129,13 +130,13 @@ class FirstRunWindow : ApplicationWindow {
 			});
 			// TODO: If the User.update_info in the main window executes before this
 			// call completed, the id will be 0 and a "not found" error will occure.
-			
+
 			// int64 id = User.id;
 			// message(@"ID: $id");
-			// Corebird.db.execute(@"UPDATE `user` SET `id`='$id' WHERE 
+			// Corebird.db.execute(@"UPDATE `user` SET `id`='$id' WHERE
 			                    // `screen_name`='@screen_name'");
 		});
-			
+
 	}
 
 }
