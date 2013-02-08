@@ -52,7 +52,7 @@ class ProfileWidget : Gtk.Box {
 
 
 	public void set_user_id(int64 user_id){
-		screen_name_label.set_markup(@"<big>@$user_id</big>");
+
 		//Load cached data
 		try{
 			SQLHeavy.Query cache_query = new SQLHeavy.Query(Corebird.db,
@@ -63,20 +63,25 @@ class ProfileWidget : Gtk.Box {
 			SQLHeavy.QueryResult cache_result = cache_query.execute();
 			if (!cache_result.finished){
 				name_label.set_markup("<big><big><big><b>%s</b></big></big></big>"
-					                      .printf(cache_result.fetch_string(1)));
-				description_label.set_markup("<small>%s</small>"
-					                             .printf(cache_result.fetch_string(2)));
+					                      .printf(cache_result.fetch_string(2)));
+				screen_name_label.set_markup("<big>@%s</big>"
+				                             .printf(cache_result.fetch_string(1)));
+				description_label.set_markup("%s".printf(cache_result.fetch_string(3)));
 
-				tweets_label.set_markup("<big><b>%'d</b></big>\nTweets".printf(cache_result.fetch_int(3)));
-				following_label.set_markup("<big><b>%'d</b></big>\nFollowing".printf(cache_result.fetch_int(4)));
-				follower_label.set_markup("<big><b>%'d</b></big>\nFollowers".printf(cache_result.fetch_int(5)));
-				avatar_image.set_from_file("assets/avatars/%s".printf(cache_result.fetch_string(6)));
+				tweets_label.set_markup("<big><b>%'d</b></big>\nTweets"
+				                        .printf(cache_result.fetch_int(4)));
+				following_label.set_markup("<big><b>%'d</b></big>\nFollowing"
+				                           .printf(cache_result.fetch_int(5)));
+				follower_label.set_markup("<big><b>%'d</b></big>\nFollowers"
+				                          .printf(cache_result.fetch_int(6)));
+				avatar_image.set_from_file(Utils.get_user_file_path(
+				                           "/assets/avatars/"+cache_result.fetch_string(7)));
 				if(FileUtils.test(@"assets/banners/$user_id.png", FileTest.EXISTS)){
 					set_banner(Utils.get_user_file_path(@"assets/banners/$user_id.png"));
 				}else
-					set_banner("assets/no_banner.png"); // TODO: Change
+					set_banner(DATADIR+"/no_banner.png");
 			}else
-				set_banner("assets/no_banner.png"); // TODO Change
+				set_banner(DATADIR+"/no_banner.png");
 		}catch(SQLHeavy.Error e){
 			warning("Error while loading cached profile data: %s", e.message);
 		}catch(GLib.Error e){
@@ -136,6 +141,7 @@ class ProfileWidget : Gtk.Box {
 
 			name_label.set_markup("<big><big><big><b>%s</b></big></big></big>"
 			                      .printf(name));
+			screen_name_label.set_markup("<big>@%s</big>".printf(screen_name));
 			description_label.set_markup(description);
 
 			tweets_label.set_markup("<big><b>%'d</b></big>\nTweets".printf(tweets));
