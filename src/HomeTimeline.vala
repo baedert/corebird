@@ -3,10 +3,11 @@ using Gtk;
 
 class HomeTimeline : IPage, ITimeline, ScrollWidget{
 	public MainWindow main_window{set;get;}
-	protected int64 max_id{get;set;}
+	protected int64 max_id{get;set; default = int64.MAX-2;}
 	protected Egg.ListBox tweet_list{set;get;}
 	private int id;
 	private RadioToolButton tool_button;
+	private bool loading = false;
 
 	public HomeTimeline(int id){
 		this.id = id;
@@ -19,6 +20,18 @@ class HomeTimeline : IPage, ITimeline, ScrollWidget{
 			return -1;
 		});
 		this.start_updates(true, "1.1/statuses/home_timeline.json", Tweet.TYPE_NORMAL);
+
+	    this.vadjustment.value_changed.connect( () => {
+            int max = (int)(this.vadjustment.upper - this.vadjustment.page_size);
+            int value = (int)this.vadjustment.value;
+            if (value >= (max * 0.9f) && !loading){
+                    //Load older tweets
+                    loading = true;
+                    message("end! %d/%d", value, max);
+                    load_older();
+                    //https://dev.twitter.com/docs/working-with-timelines
+            }
+        });
 	}
 
 	/**
@@ -43,8 +56,13 @@ class HomeTimeline : IPage, ITimeline, ScrollWidget{
 
 	public void load_newest() {
 		try {
+			this.balance_next_upper_change(TOP);
 			this.load_newest_internal("1.1/statuses/home_timeline.json",
-	    		                      Tweet.TYPE_NORMAL);
+	    		                      Tweet.TYPE_NORMAL,
+            (count, max_id) => {
+        		if(max_id < this.max_id)
+        			this.max_id = max_id;
+            });
 		} catch(SQLHeavy.Error e){
 			warning("SQL Error while loading newest tweets of timeline %d: %s",
 			        this.id, e.message);
@@ -52,7 +70,13 @@ class HomeTimeline : IPage, ITimeline, ScrollWidget{
 	}
 
 	public void load_older() {
-
+		this.balance_next_upper_change(BOTTOM);
+		this.load_older_internal("1.1/statuses/home_timeline.json",
+		                         Tweet.TYPE_NORMAL,
+        (count, mid) => {
+        	if(mid < this.max_id)
+        		this.max_id = mid;
+        });
 	}
 
 

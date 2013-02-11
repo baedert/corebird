@@ -113,12 +113,8 @@ interface ITimeline : Gtk.Widget, IPage {
 			try {
 				parser.load_from_data(back);
 			} catch(GLib.Error e) {
-				warning("Problem with json data from twitter: %s", e.message);
-				return;
-			}
-			if (parser.get_root().get_node_type() != Json.NodeType.ARRAY){
-				warning("Root node is no Array.");
-				warning("Back: %s", back);
+				stdout.printf(back+"\n");
+				critical("Problem with json data from twitter: %s", e.message);
 				return;
 			}
 
@@ -137,8 +133,35 @@ interface ITimeline : Gtk.Widget, IPage {
 	 * @param function The Twitter function to use
 	 * @param max_id The highest id of tweets to receive
 	 */
-	protected void load_older_internal(string function, int max_id) {
+	protected void load_older_internal(string function, int tweet_type,
+	                                   LoaderThread.EndLoadFunc? end_load_func = null) {
+		var call = Twitter.proxy.new_call();
+		call.set_function(function);
+		call.set_method("GET");
+		message(@"using max_id: $max_id");
+		call.add_param("max_id", (max_id - 1).to_string());
+		call.invoke_async.begin(null, (obj, result) => {
+			try{
+				call.invoke_async.end(result);
+			} catch (GLib.Error e) {
+				error(e.message);
+			}
 
+
+			string back = call.get_payload();
+			var parser = new Json.Parser();
+			try{
+				parser.load_from_data (back);
+			} catch (GLib.Error e) {
+				stdout.printf (back+"\n");
+				critical(e.message);
+			}
+
+			var root = parser.get_root().get_array();
+			var loader_thread = new LoaderThread(root, main_window, tweet_list,
+			                                     tweet_type, end_load_func);
+			loader_thread.run();
+		});
 	}
 
 }
