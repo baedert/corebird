@@ -71,10 +71,12 @@ class Twitter {
 		try{
 			// Twitter.retweeted_img = new Gdk.Pixbuf.from_file("assets/retweeted.png");
 			Twitter.favorited_img = new Gdk.Pixbuf.from_file(
-			                               DATADIR+"/favorited.png");
-			Twitter.no_avatar = new Gdk.Pixbuf.from_file(
+			                               DATADIR+"/favorite.png");
+			Twitter.retweeted_img = new Gdk.Pixbuf.from_file(
+			                               DATADIR+"/retweet.png");
+			Twitter.no_avatar     = new Gdk.Pixbuf.from_file(
 			                               DATADIR+"/no_avatar.png");
-			Twitter.no_banner = new Gdk.Pixbuf.from_file(
+			Twitter.no_banner     = new Gdk.Pixbuf.from_file(
 			                               DATADIR+"/no_banner.png");
 		}catch(GLib.Error e){
 			error("Error while loading assets: %s", e.message);

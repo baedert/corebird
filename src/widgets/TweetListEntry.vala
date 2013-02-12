@@ -60,14 +60,20 @@ class TweetListEntry : Gtk.Box {
 		avatar.set_valign(Align.START);
 		avatar.get_style_context().add_class("avatar");
 		avatar.pixbuf = tweet.avatar;
-		// avatar.set_bg(tweet.avatar);
 		avatar.margin_top = 3;
 		avatar.margin_left = 3;
 		left_box.pack_start(avatar, false, false);
 
+		var status_box = new Box(Orientation.HORIZONTAL, 5);
 		if(tweet.favorited){
-			left_box.pack_start(new Image.from_pixbuf(Twitter.favorited_img), false, false);
+			status_box.pack_start(new Image.from_pixbuf(Twitter.favorited_img),
+								true, true);
 		}
+		if(tweet.retweeted) {
+			status_box.pack_start(new Image.from_pixbuf(Twitter.retweeted_img),
+			                    true, true);
+		}
+		left_box.pack_start(status_box, true, false);
 		this.pack_start(left_box, false, false);
 
 
