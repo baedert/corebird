@@ -56,10 +56,6 @@ class MainWindow : ApplicationWindow {
 		pages[0] = new ProfilePage(PAGE_PROFILE);
 
 
-		//Load the user's sceen_name used for identifying him
-		User.load();
-		//Update the Twitter config
-		Twitter.update_config.begin();
 
 		this.delete_event.connect(() => {
 			//message("destroy.");
@@ -78,7 +74,7 @@ class MainWindow : ApplicationWindow {
 		// Set up the actions
 		SimpleAction new_tweet_action = new SimpleAction("compose-tweet", null);
 		new_tweet_action.activate.connect(() => {
-			NewTweetWindow win = new NewTweetWindow(this);
+			ComposeTweetWindow win = new ComposeTweetWindow(this);
 			win.show_all();
 		});
 		this.get_application().add_action(new_tweet_action);
@@ -91,20 +87,10 @@ class MainWindow : ApplicationWindow {
 
 
 		new_tweet_button.clicked.connect( () => {
-		 	//NewTweetWindow win = new NewTweetWindow(this);
-			//win.show_all();
 			this.get_application().lookup_action("compose-tweet").activate(null);
 		});
 
-		//Load custom style sheet
-		try{
-			CssProvider provider = new CssProvider();
-			provider.load_from_file(File.new_for_path(DATADIR+"/ui/style.css"));
-			Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(), provider,
-		                                         STYLE_PROVIDER_PRIORITY_APPLICATION);
-		}catch(GLib.Error e){
-			warning("Error while loading ui/style.css: %s", e.message);
-		}
+
 
 		left_toolbar.orientation = Orientation.VERTICAL;
 		left_toolbar.set_style(ToolbarStyle.ICONS);
@@ -173,7 +159,6 @@ class MainWindow : ApplicationWindow {
 		this.add(main_box);
 		this.load_geometry();
 		this.show_all();
-
 	}
 
 

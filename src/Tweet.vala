@@ -250,7 +250,7 @@ class Tweet : GLib.Object{
 	 */
 	public static string replace_links(string text){
 		if(link_regex == null){
-			link_regex = new GLib.Regex("http[s]{0,1}:\\/\\/[a-zA-Z\\_.\\+\\?\\/#=&;\\-0-9%,]+",
+			link_regex = new GLib.Regex("http[s]{0,1}:\\/\\/[a-zA-Z\\_.\\+\\?\\/#=&;\\-0-9%,~]+",
 			                            RegexCompileFlags.OPTIMIZE);
 		}
 		string real_text = text;

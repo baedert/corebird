@@ -33,4 +33,20 @@ class ImageBox : Gtk.Box  {
 	public override SizeRequestMode get_request_mode(){
 		return SizeRequestMode.HEIGHT_FOR_WIDTH;
 	}
+
+	public void set_background(string path){
+		string banner_css = "*{
+		background-image: url('%s');
+		background-size: 100% 100%;
+		}".printf(path);
+
+		try{
+			CssProvider prov = new CssProvider();
+			prov.load_from_data(banner_css, -1);
+			this.get_style_context().add_provider(prov,
+		                       	         STYLE_PROVIDER_PRIORITY_APPLICATION);
+		} catch (GLib.Error e){
+			warning(e.message);
+		}
+	}
 }

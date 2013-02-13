@@ -59,7 +59,7 @@ vala_precompile(VALA_C
 	src/Settings.vala
 	src/FirstRunWindow.vala
 	src/Twitter.vala
-	src/NewTweetWindow.vala
+	src/ComposeTweetWindow.vala
 	src/SettingsDialog.vala
 	src/NotificationManager.vala
 	src/ITimeline.vala
@@ -110,8 +110,10 @@ add_schema ("org.baedert.corebird.gschema.xml")
 install (TARGETS corebird RUNTIME DESTINATION bin)
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/no_avatar.png DESTINATION ${DATADIR})
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/no_banner.png DESTINATION ${DATADIR})
-install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/favorited.png DESTINATION ${DATADIR})
+install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/favorite.png DESTINATION ${DATADIR})
+install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/retweet.png DESTINATION ${DATADIR})
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/ui/style.css DESTINATION ${DATADIR}/ui/)
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/ui/first-run-window.ui DESTINATION ${DATADIR}/ui/)
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/ui/tweet-info-window.ui DESTINATION ${DATADIR}/ui/)
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/ui/menu.ui DESTINATION ${DATADIR}/ui/)
+install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/sql/init.sql DESTINATION ${DATADIR}/sql/)

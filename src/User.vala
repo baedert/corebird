@@ -1,6 +1,6 @@
 
 
-
+//TODO: un-singleton-ify this to ensure multi-user compatibility
 class User {
 	/** The user's id */
 	private static int64 id;
@@ -119,6 +119,11 @@ class User {
 				User.avatar_url	 = avatar_url;
 			}
 		});
+
+
+		// Check who the user follows, etc. to builid a cache and give the user
+		// auto-completion when composing a tweet
+
 	}
 
 

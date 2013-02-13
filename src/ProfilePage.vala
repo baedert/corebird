@@ -1,13 +1,13 @@
 
 using Gtk;
 
-class ProfilePage : IPage, Gtk.Box {
+class ProfilePage : IPage, ScrollWidget {
 	private int id;
 	private ProfileWidget profile_widget = new ProfileWidget();
 
 	public ProfilePage(int id){
 		this.id = id;
-		this.pack_start(profile_widget, true, true);
+		this.add_with_viewport(profile_widget);
 	}
 
 
