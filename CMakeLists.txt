@@ -10,6 +10,7 @@ set (CMAKE_COLOR_MAKEFILE ON)
 # set (CMAKE_VERBOSE_MAKEFILE ON)
 
 set (CMAKE_C_FLAGS "-g")
+set (CMAKE_C_FLAGS "-O0")
 set (CMAKE_C_FLAGS "-Wall")
 set (CMAKE_C_FLAGS "-Wno-incompatible-pointer-types")
 set (CMAKE_C_FLAGS "-Wno-unused-value")

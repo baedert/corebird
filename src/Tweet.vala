@@ -156,27 +156,42 @@ class Tweet : GLib.Object{
 		this.load_avatar();
 		if(!FileUtils.test(dest_file.get_path(), FileTest.EXISTS) ||
 		   											!this.has_avatar()){
-			var session = new Soup.SessionAsync();
+
+
+			var session = new Soup.SessionSync();
+			if(avatar_url == null)
+				return;
+			// message("avatar_url before: %s", avatar_url);
 			var msg     = new Soup.Message("GET", this.avatar_url);
 
 			// string dest = Utils.get_user_file_path("assets/avatars/"+
 			                                       // this.avatar_name);
 			message(dest);
-			try{
-				File.new_for_path(dest).create(FileCreateFlags.NONE);
-			} catch (GLib.Error e){
-				critical(e.message);
-			}
+			// try{
+			// 	File.new_for_path(dest).create(FileCreateFlags.NONE);
+			// } catch (GLib.Error e){
+			// 	critical(e.message);
+			// }
+			// message("Queueing message...");
+			// session.send_message(msg);
 			session.queue_message(msg, (s, m) => {
 				// message("avatar name: %s", avatar_name);
 				// message("Type: %s", Utils.get_file_type(avatar_name));
 				// message("Length: %d", m.response_body.data.length);
 				var ms = new MemoryInputStream.from_data(m.response_body.data, null);
 				var pixbuf = new Gdk.Pixbuf.from_stream_at_scale(ms, 48, 48, false);
+				if(avatar_name == null)
+					return;
+				// message("avatar_name: %s", avatar_name);
+				string type = Utils.get_file_type(avatar_name);
+				message("TYPE: %s", type);
+				// GLib.Idle.add(() => {
+					// pixbuf.save(dest, Utils.get_file_type(avatar_name));
+					// return false;
+				// });
 
-				pixbuf.save(dest, Utils.get_file_type(avatar_name));
-				// this.load_avatar();
-				message("Loaded avatar for %s", screen_name);
+				this.load_avatar();
+				// message("Loaded avatar for %s", screen_name);
 			});
 		}
 	}
