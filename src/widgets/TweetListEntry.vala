@@ -118,6 +118,8 @@ class TweetListEntry : Gtk.Box {
 
 		this.set_size_request(20, 80);
 		this.show_all();
+
+
 	}
 
 	public void update_time_delta() {

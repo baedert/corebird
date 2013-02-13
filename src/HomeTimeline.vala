@@ -62,6 +62,7 @@ class HomeTimeline : IPage, ITimeline, ScrollWidget{
             (count, max_id) => {
         		if(max_id < this.max_id)
         			this.max_id = max_id;
+
             });
 		} catch(SQLHeavy.Error e){
 			warning("SQL Error while loading newest tweets of timeline %d: %s",
@@ -76,6 +77,8 @@ class HomeTimeline : IPage, ITimeline, ScrollWidget{
         (count, mid) => {
         	if(mid < this.max_id)
         		this.max_id = mid;
+
+        	this.loading = false;
         });
 	}
 

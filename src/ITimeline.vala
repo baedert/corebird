@@ -120,9 +120,8 @@ interface ITimeline : Gtk.Widget, IPage {
 
 			var root = parser.get_root().get_array();
 			var loader_thread = new LoaderThread(root, main_window,
-												 tweet_list, tweet_type,
-												 end_load_func);
-			loader_thread.run();
+												 tweet_list, tweet_type);
+			loader_thread.run(end_load_func);
 		});
 	}
 
@@ -144,7 +143,7 @@ interface ITimeline : Gtk.Widget, IPage {
 			try{
 				call.invoke_async.end(result);
 			} catch (GLib.Error e) {
-				error(e.message);
+				critical(e.message);
 			}
 
 
@@ -159,8 +158,8 @@ interface ITimeline : Gtk.Widget, IPage {
 
 			var root = parser.get_root().get_array();
 			var loader_thread = new LoaderThread(root, main_window, tweet_list,
-			                                     tweet_type, end_load_func);
-			loader_thread.run();
+			                                     tweet_type);
+			loader_thread.run(end_load_func);
 		});
 	}
 

@@ -178,7 +178,7 @@ class Tweet : GLib.Object{
 			SQLHeavy.QueryResult author_result = author_query.execute();
 			if (author_result.finished){
 				//The author is not in the DB so we insert him
-				message("Inserting new author %s", t.screen_name);
+				// message("Inserting new author %s", t.screen_name);
 				Corebird.db.execute("INSERT INTO `people`(id,name,screen_name,avatar_url,
 				                    avatar_name) VALUES ('%d', '%s', '%s', '%s', '%s');",
 				                    t.user_id, t.user_name, t.screen_name, t.avatar_url,
