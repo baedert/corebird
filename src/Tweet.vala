@@ -52,7 +52,13 @@ class Tweet : GLib.Object{
 		}
 	}
 
-	public void load_avatar(){
+	public void load_avatar(Gdk.Pixbuf? pixbuf = null){
+		if(pixbuf != null){
+			Twitter.avatars.set(avatar_name, pixbuf);
+			this.avatar = pixbuf;
+			return;
+		}
+
 		if (Twitter.avatars.has_key(avatar_name)){
 		 	this.avatar = Twitter.avatars.get(avatar_name);
 		 }else{
@@ -90,7 +96,6 @@ class Tweet : GLib.Object{
 		this.created_at     = Utils.parse_date(status.get_string_member("created_at"))
 									.to_unix();
 		this.avatar_url     = user.get_string_member("profile_image_url");
-
 
 
 
@@ -158,7 +163,7 @@ class Tweet : GLib.Object{
 					var pixbuf = new Gdk.Pixbuf.from_stream_at_scale(memory_stream, 48, 48,
 					                                                 false);
 					pixbuf.save(dest, Utils.get_file_type(avatar_name));
-					this.load_avatar();
+					this.load_avatar(pixbuf);
 					message("Loaded avatar for %s", screen_name);
 				} catch (GLib.Error e) {
 					critical(e.message);
