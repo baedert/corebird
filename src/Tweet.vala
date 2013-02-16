@@ -65,8 +65,7 @@ class Tweet : GLib.Object{
 			string path = Utils.get_user_file_path("assets/avatars/"+avatar_name);
 			if(FileUtils.test(path, FileTest.EXISTS)){
 				try{
-					Twitter.avatars.set(avatar_name,
-				    	new Gdk.Pixbuf.from_file(path));
+					Twitter.avatars.set(avatar_name, new Gdk.Pixbuf.from_file(path));
 				}catch(GLib.Error e){
 					warning("Error while loading avatar from database: %s", e.message);
 				}
@@ -85,17 +84,17 @@ class Tweet : GLib.Object{
 	 * @param now The current time
 	 */
 	public void load_from_json(Json.Object status, GLib.DateTime now){
-		Json.Object user    = status.get_object_member("user");
-		this.text           = status.get_string_member("text");
-		this.favorited      = status.get_boolean_member("favorited");
-		this.retweeted      = status.get_boolean_member("retweeted");
-		this.id             = status.get_int_member("id");
-		this.user_name      = user.get_string_member("name");
-		this.user_id        = user.get_int_member("id");
-		this.screen_name    = user.get_string_member("screen_name");
-		this.created_at     = Utils.parse_date(status.get_string_member("created_at"))
-									.to_unix();
-		this.avatar_url     = user.get_string_member("profile_image_url");
+		Json.Object user = status.get_object_member("user");
+		this.text        = status.get_string_member("text");
+		this.favorited   = status.get_boolean_member("favorited");
+		this.retweeted   = status.get_boolean_member("retweeted");
+		this.id          = status.get_int_member("id");
+		this.user_name   = user.get_string_member("name");
+		this.user_id     = user.get_int_member("id");
+		this.screen_name = user.get_string_member("screen_name");
+		this.created_at  = Utils.parse_date(status.get_string_member("created_at"))
+										.to_unix();
+		this.avatar_url  = user.get_string_member("profile_image_url");
 
 
 

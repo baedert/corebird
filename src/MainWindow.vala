@@ -35,7 +35,7 @@ class MainWindow : ApplicationWindow {
 		// timelines[2] = new FavoriteContainer(PAGE_FAVORITES);
 		// timelines[3] = new SearchContainer(PAGE_SEARCH);
 
-		/** Initialize all containers */
+		/*Initialize all containers */
 		for(int i = 0; i < timelines.length; i++){
 			ITimeline tl = timelines[i];
 			if(!(tl is IPage))

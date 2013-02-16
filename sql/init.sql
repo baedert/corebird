@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS `user`(
 );
 
 CREATE TABLE IF NOT EXISTS `profiles`(
-                id INTEGER(11),
+                id NUMERIC(19,0),
 			    name VARCHAR(40) PRIMARY KEY,
 			    screen_name VARCHAR(40),
 			    tweets INTEGER(11),

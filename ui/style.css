@@ -1,7 +1,48 @@
 
-/*ImageBox{
-	background-color: green;
-}*/
+
+.retweet-button {
+	background-image: none;
+	-GtkButton-default-border: 0;
+	-GtkButton-default-outside-border: 0;
+	-GtkButton-inner-border: 0;
+	-GtkWidget-focus-line-width: 0;
+	-GtkWidget-focus-padding: 0;
+	box-shadow: none;
+	padding: 8px; /* Just to set the size here... */
+	border: none;
+	border-radius: 0px;
+	text-shadow: none;
+	background-image:url('../retweet-normal.png');
+}
+.retweet-button:hover,
+.retweet-button:active {
+	background-image:url('../retweet.png');
+}
+
+.favorite-button {
+	background-image: none;
+	-GtkButton-default-border: 0;
+	-GtkButton-default-outside-border: 0;
+	-GtkButton-inner-border: 0;
+	-GtkWidget-focus-line-width: 0;
+	-GtkWidget-focus-padding: 0;
+	box-shadow: none;
+	padding: 8px; /* Just to set the size here... */
+	border: none;
+	border-radius: 0px;
+	text-shadow: none;
+	background-image:url('../favorite-normal.png');
+}
+
+.favorite-button:hover,
+.favorite-button:active {
+	background-image:url('../favorite.png');
+}
+
+.favorite-button:backdrop,
+.retweet-button:backdrop {
+	background-color: transparent;
+}
 
 .badge{
 	background-color: red;
@@ -20,25 +61,6 @@
 	/* Set a special background color or something */
 }
 
-.arrow-button {
-	color: alpha(@theme_fg_color, 0.5);
-	border-radius: 0px;
-	background-image: none;
-	border:none;
-	box-shadow: none;
-}
-.arrow-button:hover{
-	/*color: green;*/
-	background-image: linear-gradient(to right, alpha(#888, 0.7),
-	                                  alpha(#888, 0.2));
-}
-.arrow-button:active{
-	background-image: none;
-	background-color: #AAA;
-}
-.arrow-button:backdrop{
-	background-color: transparent;
-}
 
 .text-button{
 	font-weight: bold;

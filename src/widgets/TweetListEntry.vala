@@ -65,15 +65,16 @@ class TweetListEntry : Gtk.Box {
 		left_box.pack_start(avatar, false, false);
 
 		var status_box = new Box(Orientation.HORIZONTAL, 5);
-		if(tweet.favorited){
-			status_box.pack_start(new Image.from_pixbuf(Twitter.favorited_img),
-								true, true);
-		}
-		if(tweet.retweeted) {
-			status_box.pack_start(new Image.from_pixbuf(Twitter.retweeted_img),
-			                    true, true);
-		}
-		left_box.pack_start(status_box, true, false);
+
+		var rt_button = new ToggleButton();
+		rt_button.get_style_context().add_class("retweet-button");
+		status_box.pack_start(rt_button, false, false);
+
+		var fav_button = new ToggleButton();
+		fav_button.get_style_context().add_class("favorite-button");
+		status_box.pack_start(fav_button, false, false);
+
+		left_box.pack_start(status_box, false, false);
 		this.pack_start(left_box, false, false);
 
 
