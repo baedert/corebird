@@ -75,10 +75,10 @@ class TweetListEntry : Gtk.Box {
 		left_box.pack_start(avatar, false, false);
 
 		var status_box = new Box(Orientation.HORIZONTAL, 5);
-		favorite_button.get_style_context().add_class("favorite_button");
+		favorite_button.get_style_context().add_class("favorite-button");
 		favorite_button.no_show_all = true;
 		status_box.pack_start(favorite_button, false, false);
-		retweet_button.get_style_context().add_class("retweet_button");
+		retweet_button.get_style_context().add_class("retweet-button");
 		retweet_button.no_show_all = true;
 		status_box.pack_start(retweet_button, false, false);
 		left_box.pack_start(status_box, true, false);
@@ -178,7 +178,6 @@ class TweetListEntry : Gtk.Box {
 
 
 	private void list_entry_realize() {
-		message("Realizing list entry...");
 		Allocation alloc;
 		this.get_allocation(out alloc);
 
