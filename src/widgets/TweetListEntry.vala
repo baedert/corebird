@@ -56,22 +56,22 @@ class TweetListEntry : Gtk.Box {
 		}
 
 		this.enter_notify_event.connect( ()=> {
-			// GLib.Idle.add(() => {
+			GLib.Idle.add(() => {
 				favorite_button.show();
-				retweet_button.show();
-				message("OUT");
-				// return false;
-			// });
+				// retweet_button.show();
+				message(" IN");
+				return false;
+			});
 
 			return false;
 		});
 		this.leave_notify_event.connect( () => {
-			// GLib.Idle.add(() => {
+			GLib.Idle.add(() => {
 				favorite_button.hide();
-				retweet_button.hide();
+				// retweet_button.hide();
 				message("OUT");
-			// 	return false;
-			// });
+				return false;
+			});
 
 			return false;
 		});
@@ -86,9 +86,9 @@ class TweetListEntry : Gtk.Box {
 		left_box.pack_start(avatar, false, false);
 
 		var status_box = new Box(Orientation.HORIZONTAL, 5);
-		favorite_button.get_style_context().add_class("favorite-button");
+		// favorite_button.get_style_context().add_class("favorite-button");
 		favorite_button.set_window(this.get_window());
-		// favorite_button.no_show_all = true;
+		favorite_button.no_show_all = true;
 		status_box.pack_start(favorite_button, false, false);
 		retweet_button.get_style_context().add_class("retweet-button");
 		retweet_button.no_show_all = true;
@@ -212,25 +212,24 @@ class TweetListEntry : Gtk.Box {
 
 		bool visible_window = get_has_window();
 		if(visible_window) {
-			// attr.visual  = get_visual();
-			// attr.wclass  = Gdk.WindowWindowClass.INPUT_OUTPUT;
-			// attr_type   |= Gdk.WindowAttributesType.VISUAL;
+			attr.visual  = get_visual();
+			attr.wclass  = Gdk.WindowWindowClass.INPUT_OUTPUT;
+			attr_type   |= Gdk.WindowAttributesType.VISUAL;
 
-		 //    window = new Gdk.Window(get_parent_window(),
-		 //                            attr, attr_type);
-		 //    this.set_window(window);
-		 //    window.set_user_data(this);
-		 //    message("Visible window");
+		    window = new Gdk.Window(get_parent_window(),
+		                            attr, attr_type);
+		    this.set_window(window);
+		    window.set_user_data(this);
+		    message("Visible window");
 		}else {
 			window = get_parent_window();
 			set_window(window);
-			window.ref(); // TODO:?
+			// window.ref(); // TODO:?
 
 			attr.wclass = Gdk.WindowWindowClass.INPUT_ONLY;
 
 			this.event_window = new Gdk.Window(window, attr, attr_type);
 			this.event_window.set_user_data(this);
-			event_window.lower();
 			message("No visible window");
 
 		}
@@ -272,8 +271,6 @@ class TweetListEntry : Gtk.Box {
 
 	public override void size_allocate(Allocation alloc) {
 		message("size_allocate");
-		base.size_allocate(alloc);
-
 		this.set_allocation(alloc);
 
 
@@ -288,6 +285,6 @@ class TweetListEntry : Gtk.Box {
 			}
 		}
 
-
+		base.size_allocate(alloc);
 	}
 }
