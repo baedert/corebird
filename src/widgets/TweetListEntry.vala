@@ -3,7 +3,6 @@ using Gtk;
 // TODO: Open 'new windows' in a new window, an extended main window,
 //       or just replace the main window's content?
 class TweetListEntry : Gtk.Box {
-	private Gdk.Window event_window;
 	private static GLib.Regex? hashtag_regex = null;
 	private static GLib.Regex? user_regex    = null;
 	private Image avatar                 = new Image();
@@ -16,7 +15,7 @@ class TweetListEntry : Gtk.Box {
 	private MainWindow window;
 	// Timestamp used for sorting
 	public int64 timestamp;
-
+	private int64 tweet_id;
 
 
 	public TweetListEntry(Tweet tweet, MainWindow? window){
@@ -34,7 +33,8 @@ class TweetListEntry : Gtk.Box {
 			}
 		}
 
-		timestamp = tweet.created_at;
+		this.timestamp = tweet.created_at;
+		this.tweet_id  = tweet.id;
 
 
 		// If the tweet's avatar changed, also reset it in the widgets
@@ -76,10 +76,16 @@ class TweetListEntry : Gtk.Box {
 
 		var status_box = new Box(Orientation.HORIZONTAL, 5);
 		favorite_button.get_style_context().add_class("favorite-button");
-		favorite_button.no_show_all = true;
+		favorite_button.active = tweet.favorited;
+		favorite_button.clicked.connect(favorite_tweet);
+
+		// favorite_button.no_show_all = true;
 		status_box.pack_start(favorite_button, false, false);
 		retweet_button.get_style_context().add_class("retweet-button");
-		retweet_button.no_show_all = true;
+		retweet_button.active = tweet.retweeted;
+		retweet_button.toggled.connect(retweet_tweet);
+
+		// retweet_button.no_show_all = true;
 		status_box.pack_start(retweet_button, false, false);
 		left_box.pack_start(status_box, true, false);
 		this.pack_start(left_box, false, false);
@@ -125,17 +131,8 @@ class TweetListEntry : Gtk.Box {
 		this.pack_start(right_box, false, false);
 
 
-		this.realize.connect(list_entry_realize);
-		this.unrealize.connect(list_entry_unrealize);
-		this.map.connect(list_entry_map);
-		this.unmap.connect(list_entry_unmap);
-
 		this.set_size_request(20, 80);
 		this.show_all();
-		favorite_button.hide();
-		retweet_button.hide();
-
-
 	}
 
 	public void update_time_delta() {
@@ -143,6 +140,35 @@ class TweetListEntry : Gtk.Box {
 		GLib.DateTime then = new GLib.DateTime.from_unix_local(timestamp);
 		this.time_delta.label = "<small>%s</small>".printf(
 			Utils.get_time_delta(then, now));
+	}
+
+	private void favorite_tweet() {
+		var call = Twitter.proxy.new_call();
+		call.set_function("1.1/favorites/create.json");
+		call.set_method("POST");
+		call.add_param("id", tweet_id.to_string());
+		call.invoke_async.begin(null, (obj, res) => {
+			try{
+				call.invoke_async.end(res);
+			} catch (GLib.Error e) {
+				critical(e.message);
+			}
+
+			try{
+				SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db,
+				                           @"UPDATE `cache` SET
+				                            `favorited`='1' WHERE
+				                            `id`='$tweet_id';");
+				q.execute();
+			} catch(SQLHeavy.Error e) {
+				critical(e.message);
+			}
+		});
+	}
+
+	private void retweet_tweet() {
+		var call = Twitter.proxy.new_call();
+		call.set_function(@"1.1/statuses/retweet/$tweet_id.json");
 	}
 
 
@@ -177,51 +203,4 @@ class TweetListEntry : Gtk.Box {
 	}
 
 
-	private void list_entry_realize() {
-		Allocation alloc;
-		this.get_allocation(out alloc);
-
-		this.set_realized(true);
-
-		Gdk.WindowAttr attr = {};
-		attr.window_type = Gdk.WindowType.CHILD;
-		attr.x = alloc.x;
-		attr.y = alloc.y;
-		attr.width = alloc.width;
-		attr.height = alloc.height;
-		attr.wclass = Gdk.WindowWindowClass.INPUT_ONLY;
-		attr.event_mask = this.get_events();
-		attr.event_mask |= Gdk.EventMask.BUTTON_PRESS_MASK |
-		                   Gdk.EventMask.BUTTON_RELEASE_MASK |
-		                   Gdk.EventMask.TOUCH_MASK |
-		                   Gdk.EventMask.ENTER_NOTIFY_MASK |
-		                   Gdk.EventMask.LEAVE_NOTIFY_MASK;
-
-        var attr_type = Gdk.WindowAttributesType.X |
-        				Gdk.WindowAttributesType.Y;
-
-
-		Gdk.Window window = this.get_parent_window();
-		this.set_window(window);
-		this.event_window = new Gdk.Window(window, attr,
-		                                   attr_type);
-		event_window.set_user_data(this);
-	}
-
-	private void list_entry_unrealize() {
-		if(this.event_window != null) {
-			this.event_window.set_user_data(null);
-			this.event_window = null;
-		}
-	}
-
-	private void list_entry_map() {
-		if(this.event_window != null)
-			event_window.show();
-	}
-
-	private void list_entry_unmap() {
-		if(this.event_window != null)
-			event_window.hide();
-	}
 }
