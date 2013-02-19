@@ -183,7 +183,7 @@ class Tweet : GLib.Object{
 				if(avatar_name == null)
 					return;
 				// message("avatar_name: %s", avatar_name);
-				string type = Utils.get_file_type(avatar_name);
+				string type = Utils.get_file_type(this.avatar_name);
 				message("TYPE: %s", type);
 				// GLib.Idle.add(() => {
 					// pixbuf.save(dest, Utils.get_file_type(avatar_name));
