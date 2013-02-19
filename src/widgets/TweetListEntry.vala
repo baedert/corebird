@@ -1,7 +1,4 @@
 using Gtk;
-// TODO: Deleted tweets don't get deleted in the stream
-// TODO: Open 'new windows' in a new window, an extended main window,
-//       or just replace the main window's content?
 class TweetListEntry : Gtk.Box {
 	private static GLib.Regex? hashtag_regex = null;
 	private static GLib.Regex? user_regex    = null;
@@ -67,11 +64,6 @@ class TweetListEntry : Gtk.Box {
 
 
 		var left_box = new Box(Orientation.VERTICAL, 3);
-
-
-
-
-		// var left_box = new Box(Orientation.VERTICAL, 3);
 		avatar.set_valign(Align.START);
 		avatar.get_style_context().add_class("avatar");
 		avatar.pixbuf = tweet.avatar;

@@ -145,9 +145,9 @@ class MainWindow : ApplicationWindow {
 
 
 		// TODO: Implement TestToolButton
-		// var tt = new TestToolButton();
-		// tt.icon_name = "find";
-		// left_toolbar.add(tt);
+		var tt = new TestToolButton();
+		tt.icon_name = "find";
+		left_toolbar.add(tt);
 
 		main_notebook.show_border = false;
 		main_notebook.show_tabs   = false;

@@ -15,7 +15,8 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 	private string media_uri;
 
 
-	public ComposeTweetWindow(Window? parent, string? answer_to = null, Gtk.Application? app = null) {
+	public ComposeTweetWindow(Window? parent, string? answer_to = null,
+	                          Gtk.Application? app = null) {
 		GLib.Object(application: app);
 
 
