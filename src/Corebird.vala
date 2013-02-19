@@ -41,6 +41,8 @@ class Corebird : Gtk.Application {
 								.make_directory();
 			success = File.new_for_path(Utils.get_user_file_path("assets/user/"))
 								.make_directory();
+			success = File.new_for_path(Utils.get_user_file_path("assets/media/"))
+								.make_directory();
 		}
 
 

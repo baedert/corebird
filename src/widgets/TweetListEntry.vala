@@ -13,13 +13,14 @@ class TweetListEntry : Gtk.Box {
 	// Timestamp used for sorting
 	public int64 timestamp;
 	private int64 tweet_id;
+	private Tweet tweet;
 
 
 	public TweetListEntry(Tweet tweet, MainWindow? window){
 		GLib.Object(orientation: Orientation.HORIZONTAL, spacing: 5);
 		this.window = window;
 		this.vexpand = false;
-
+		this.tweet = tweet;
 
 		if (hashtag_regex == null){
 			try{
@@ -130,6 +131,12 @@ class TweetListEntry : Gtk.Box {
 		right_box.pack_start(text, true, true);
 
 		this.pack_start(right_box, true, true);
+
+		tweet.inline_media_added.connect((pic) => {
+			var img = new Image.from_pixbuf(pic);
+			img.visible = true;
+			this.pack_start(img, false, false);
+		});
 
 		this.set_size_request(20, 80);
 		this.show_all();

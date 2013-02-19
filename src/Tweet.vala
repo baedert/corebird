@@ -32,6 +32,7 @@ class Tweet : GLib.Object{
 	public int64 rt_created_at;
 	/** if 0, this tweet is NOT part of a conversation */
 	public int64 reply_id = 0;
+	public signal void inline_media_added(Gdk.Pixbuf? media);
 
 	public Tweet(){
 		this.avatar = Twitter.no_avatar;
@@ -130,7 +131,6 @@ class Tweet : GLib.Object{
 		urls.foreach_element((arr, index, node) => {
 			var url = node.get_object();
 			string expanded_url = url.get_string_member("expanded_url");
-			// message("Text: %s, expanded: %s", this.text, expanded_url);
 			expanded_url = expanded_url.replace("&", "&amp;");
 			this.text = this.text.replace(url.get_string_member("url"),
 			    expanded_url);
@@ -145,6 +145,9 @@ class Tweet : GLib.Object{
 				expanded_url = expanded_url.replace("&", "&amp;");
 				this.text = this.text.replace(url.get_string_member("url"),
 				    expanded_url);
+				if(Settings.show_inline_media()) {
+					load_inline_media.begin(url.get_string_member("media_url"));
+				}
 			});
 		}
 
@@ -168,7 +171,8 @@ class Tweet : GLib.Object{
 					                                                    null);
 					var pixbuf = new Gdk.Pixbuf.from_stream_at_scale(memory_stream, 48, 48,
 					                                                 false);
-					pixbuf.save(dest, Utils.get_file_type(avatar_name));
+					// pixbuf.save(dest, Utils.get_file_type(avatar_name));
+					pixbuf.save(dest, "png");
 					this.load_avatar(pixbuf);
 					message("Loaded avatar for %s", screen_name);
 				} catch (GLib.Error e) {
@@ -238,6 +242,20 @@ class Tweet : GLib.Object{
 		}
 	}
 
+	private async void load_inline_media(string url) {
+		var session = new Soup.SessionAsync();
+		var msg     = new Soup.Message("GET", url);
+
+		session.queue_message(msg, (s, m) => {
+			var ms  = new MemoryInputStream.from_data(m.response_body.data, null);
+			var pic = new Gdk.Pixbuf.from_stream_at_scale(ms, 50, 50, true);
+			string path = Utils.get_user_file_path("media/"+id.to_string()+
+			                                       "_"+this.user_id.to_string()+".png");
+			// stdout.printf("Save to %s\n", path);
+			pic.save(path, "png");
+			inline_media_added(pic);
+		});
+	}
 
 
 	/**
