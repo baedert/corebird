@@ -55,15 +55,20 @@ class Tweet : GLib.Object{
 		}
 	}
 
-	public void load_avatar(){
+	public void load_avatar(Gdk.Pixbuf? pixbuf = null){
+		if(pixbuf != null){
+			Twitter.avatars.set(avatar_name, pixbuf);
+			this.avatar = pixbuf;
+			return;
+		}
+
 		if (Twitter.avatars.has_key(avatar_name)){
 		 	this.avatar = Twitter.avatars.get(avatar_name);
 		 }else{
 			string path = Utils.get_user_file_path("assets/avatars/"+avatar_name);
 			if(FileUtils.test(path, FileTest.EXISTS)){
 				try{
-					Twitter.avatars.set(avatar_name,
-				    	new Gdk.Pixbuf.from_file(path));
+					Twitter.avatars.set(avatar_name, new Gdk.Pixbuf.from_file(path));
 				}catch(GLib.Error e){
 					warning("Error while loading avatar from database: %s", e.message);
 				}
@@ -190,7 +195,7 @@ class Tweet : GLib.Object{
 					// return false;
 				// });
 
-				this.load_avatar();
+				this.load_avatar(pixbuf);
 				// message("Loaded avatar for %s", screen_name);
 			});
 		}
