@@ -65,7 +65,6 @@ class TweetListEntry : Gtk.Box {
 
 		var left_box = new Box(Orientation.VERTICAL, 3);
 		avatar.set_valign(Align.START);
-		avatar.get_style_context().add_class("avatar");
 		avatar.pixbuf = tweet.avatar;
 		avatar.margin_top = 3;
 		avatar.margin_left = 3;
