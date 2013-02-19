@@ -26,7 +26,8 @@ CREATE TABLE IF NOT EXISTS `cache`(
 			    avatar_name VARCHAR(50),
 			    retweets INTEGER(5),
 			    favorites INTEGER(5),
-			    type INTEGER(1)
+			    type INTEGER(1),
+			    reply_id NUMERIC(19,0)
 );
 
 CREATE TABLE IF NOT EXISTS `people`(

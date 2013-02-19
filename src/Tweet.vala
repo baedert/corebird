@@ -30,6 +30,8 @@ class Tweet : GLib.Object{
 	public string screen_name;
 	public int64 created_at;
 	public int64 rt_created_at;
+	/** if 0, this tweet is NOT part of a conversation */
+	public int64 reply_id = 0;
 
 	public Tweet(){
 		this.avatar = Twitter.no_avatar;
@@ -39,10 +41,10 @@ class Tweet : GLib.Object{
 				"INSERT INTO `cache`(`id`, `text`,`user_id`, `user_name`, `is_retweet`,
 				                     `retweeted_by`, `retweeted`, `favorited`,
 				                     `created_at`,`rt_created_at`, `avatar_name`,
-				                     `screen_name`, `type`,`rt_id`)
+				                     `screen_name`, `type`,`rt_id`, `reply_id`)
 				VALUES (:id, :text, :user_id, :user_name, :is_retweet, :retweeted_by,
 				        :retweeted, :favorited, :created_at, :rt_created_at, :avatar_name,
-				        :screen_name, :type, :rt_id);");
+				        :screen_name, :type, :rt_id, :reply_id);");
 				author_query = new SQLHeavy.Query(Corebird.db,
 				"SELECT `id`, `screen_name`, `avatar_url` FROM `people`
 				WHERE `id`=:id;");
@@ -80,6 +82,7 @@ class Tweet : GLib.Object{
 
 	/**
 	 * Fills all the data of this tweet from Json data.
+	 *
 	 * @param status The Json object to get the data from
 	 * @param now The current time
 	 */
@@ -95,6 +98,8 @@ class Tweet : GLib.Object{
 		this.created_at  = Utils.parse_date(status.get_string_member("created_at"))
 										.to_unix();
 		this.avatar_url  = user.get_string_member("profile_image_url");
+		if(!status.get_null_member("in_reply_to_status_id"))
+			this.reply_id  = status.get_int_member("in_reply_to_status_id");
 
 
 
@@ -111,6 +116,8 @@ class Tweet : GLib.Object{
 			this.screen_name   = rt_user.get_string_member("screen_name");
 			this.rt_created_at = Utils.parse_date(rt.get_string_member("created_at"))
 			                            .to_unix();
+            if(!rt.get_null_member("in_reply_to_status_id"))
+				this.reply_id = rt.get_int_member("in_reply_to_status_id");
 		}
 		this.avatar_name = Utils.get_avatar_name(this.avatar_url);
 
@@ -224,6 +231,7 @@ class Tweet : GLib.Object{
 			cache_query.set_string(":avatar_name", t.avatar_name);
 			cache_query.set_string(":screen_name", t.screen_name);
 			cache_query.set_int(":type", type); // 1 = normal tweet
+			cache_query.set_int64(":reply_id", t.reply_id);
 			cache_query.execute();
 		}catch(SQLHeavy.Error e){
 			error("Error while caching tweet: %s", e.message);
