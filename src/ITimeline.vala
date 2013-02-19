@@ -134,6 +134,7 @@ interface ITimeline : Gtk.Widget, IPage {
 	 */
 	protected void load_older_internal(string function, int tweet_type,
 	                                   LoaderThread.EndLoadFunc? end_load_func = null) {
+		return;
 		var call = Twitter.proxy.new_call();
 		call.set_function(function);
 		call.set_method("GET");

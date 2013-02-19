@@ -60,7 +60,7 @@ class MainWindow : ApplicationWindow {
 		var msg = new Soup.Message("GET", "http://fc07.deviantart.net/fs70/f/2010/186/5/2/LedaMonsterBunny_by_LedaMonsterBunnyy.jpg");
 		session.queue_message(msg, (s, m) => {
 			var ms = new MemoryInputStream.from_data(m.response_body.data, null);
-			var pixbuf = new Gdk.Pixbuf.from_stream_at_scale(ms, 48, 48, false);
+			var pixbuf = new Gdk.Pixbuf.from_stream_at_scale(ms, 500, 500, true);
 			pixbuf.save("/home/baedert/leda.jpg", "jpeg");
 			message("Saved.");
 		});

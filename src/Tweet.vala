@@ -123,27 +123,27 @@ class Tweet : GLib.Object{
 		// 'Resolve' the used URLs
 		var entities = status.get_object_member("entities");
 
-		var urls = entities.get_array_member("urls");
-		urls.foreach_element((arr, index, node) => {
-			var url = node.get_object();
-			string expanded_url = url.get_string_member("expanded_url");
-			// message("Text: %s, expanded: %s", this.text, expanded_url);
-			expanded_url = expanded_url.replace("&", "&amp;");
-			this.text = this.text.replace(url.get_string_member("url"),
-			    expanded_url);
-		});
+		// var urls = entities.get_array_member("urls");
+		// urls.foreach_element((arr, index, node) => {
+		// 	var url = node.get_object();
+		// 	string expanded_url = url.get_string_member("expanded_url");
+		// 	// message("Text: %s, expanded: %s", this.text, expanded_url);
+		// 	expanded_url = expanded_url.replace("&", "&amp;");
+		// 	this.text = this.text.replace(url.get_string_member("url"),
+		// 	    expanded_url);
+		// });
 
-		// The same with media
-		if(entities.has_member("media")){
-			var medias = entities.get_array_member("media");
-			medias.foreach_element((arr, index, node) => {
-				var url = node.get_object();
-				string expanded_url = "https://"+url.get_string_member("display_url");
-				expanded_url = expanded_url.replace("&", "&amp;");
-				this.text = this.text.replace(url.get_string_member("url"),
-				    expanded_url);
-			});
-		}
+		// // The same with media
+		// if(entities.has_member("media")){
+		// 	var medias = entities.get_array_member("media");
+		// 	medias.foreach_element((arr, index, node) => {
+		// 		var url = node.get_object();
+		// 		string expanded_url = "https://"+url.get_string_member("display_url");
+		// 		expanded_url = expanded_url.replace("&", "&amp;");
+		// 		this.text = this.text.replace(url.get_string_member("url"),
+		// 		    expanded_url);
+		// 	});
+		// }
 
 
 
@@ -155,43 +155,34 @@ class Tweet : GLib.Object{
 		string dest = Utils.get_user_file_path("assets/avatars/"+
 		                                       this.avatar_name);
 		File dest_file = File.new_for_path(dest);
-		if(FileUtils.test(dest, FileTest.EXISTS))
-			return;
+		// if(FileUtils.test(dest, FileTest.EXISTS))
+		// 	return;
 
 		this.load_avatar();
 		if(!FileUtils.test(dest_file.get_path(), FileTest.EXISTS) ||
 		   											!this.has_avatar()){
 
 
-			var session = new Soup.SessionSync();
-			if(avatar_url == null)
-				return;
+			var session = new Soup.SessionAsync();
 			// message("avatar_url before: %s", avatar_url);
 			var msg     = new Soup.Message("GET", this.avatar_url);
 
-			// string dest = Utils.get_user_file_path("assets/avatars/"+
-			                                       // this.avatar_name);
-			message(dest);
 			// try{
-			// 	File.new_for_path(dest).create(FileCreateFlags.NONE);
+				// File.new_for_path(dest).create(FileCreateFlags.NONE);
 			// } catch (GLib.Error e){
-			// 	critical(e.message);
+				// critical(e.message);
 			// }
-			// message("Queueing message...");
-			// session.send_message(msg);
 			session.queue_message(msg, (s, m) => {
+				string out_file = Utils.get_user_file_path("assets/avatars/"+
+		                                       this.avatar_name);
 				// message("avatar name: %s", avatar_name);
 				// message("Type: %s", Utils.get_file_type(avatar_name));
 				// message("Length: %d", m.response_body.data.length);
 				var ms = new MemoryInputStream.from_data(m.response_body.data, null);
 				var pixbuf = new Gdk.Pixbuf.from_stream_at_scale(ms, 48, 48, false);
-				if(avatar_name == null)
-					return;
 				// message("avatar_name: %s", avatar_name);
-				string type = Utils.get_file_type(this.avatar_name);
-				message("TYPE: %s", type);
 				// GLib.Idle.add(() => {
-					// pixbuf.save(dest, Utils.get_file_type(avatar_name));
+					pixbuf.save(out_file, Utils.get_file_type(this.avatar_name));
 					// return false;
 				// });
 
