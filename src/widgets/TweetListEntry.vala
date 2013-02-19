@@ -67,6 +67,11 @@ class TweetListEntry : Gtk.Box {
 
 
 		var left_box = new Box(Orientation.VERTICAL, 3);
+
+
+
+
+		// var left_box = new Box(Orientation.VERTICAL, 3);
 		avatar.set_valign(Align.START);
 		avatar.get_style_context().add_class("avatar");
 		avatar.pixbuf = tweet.avatar;
@@ -91,8 +96,11 @@ class TweetListEntry : Gtk.Box {
 		this.pack_start(left_box, false, false);
 
 
-		var middle_box = new Box(Orientation.VERTICAL, 3);
-		var author_box = new Box(Orientation.HORIZONTAL, 8);
+		var right_box = new Box(Orientation.VERTICAL, 8);
+		var top_box = new Box(Orientation.HORIZONTAL, 5);
+
+
+
 		author_button = new TextButton(tweet.user_name);
 		author_button.clicked.connect(() => {
 			if(window != null){
@@ -100,36 +108,37 @@ class TweetListEntry : Gtk.Box {
 			}else
 				critical("main window instance is null!");
 		});
-		author_box.pack_start(author_button, false, false);
+		top_box.pack_start(author_button, false, false);
 		screen_name.set_use_markup(true);
 		screen_name.label = "<small>@%s</small>".printf(tweet.screen_name);
 		screen_name.ellipsize = Pango.EllipsizeMode.END;
-		author_box.pack_start(screen_name, false, false);
-
-		middle_box.pack_start(author_box, false, false);
+		top_box.pack_start(screen_name, false, false);
 
 
+		time_delta.set_use_markup(true);
+		time_delta.label = "<small>%s</small>".printf(tweet.time_delta);
+		time_delta.set_alignment(1, 0.5f);
+		time_delta.get_style_context().add_class("time-delta");
+		time_delta.margin_right = 3;
+		top_box.pack_end(time_delta, false, false);
 
-		// Also set User/Hashtag links
+		right_box.pack_start(top_box, false, true);
+
+		if(tweet.reply_id != 0)
+			top_box.pack_end(new Image.from_pixbuf(Twitter.conversation_img),
+			                 false, false);
+
+
+	    // Also set User/Hashtag links
 		text.label = Tweet.replace_links(tweet.text);
 		text.set_use_markup(true);
 		text.set_line_wrap(true);
 		text.wrap_mode = Pango.WrapMode.WORD_CHAR;
 		text.set_alignment(0, 0);
 		text.activate_link.connect(handle_uri);
-		middle_box.pack_start(text, true, true);
-		this.pack_start(middle_box, true, true);
+		right_box.pack_start(text, true, true);
 
-		var right_box = new Box(Orientation.VERTICAL, 2);
-		time_delta.set_use_markup(true);
-		time_delta.label = "<small>%s</small>".printf(tweet.time_delta);
-		time_delta.set_alignment(1, 0.5f);
-		time_delta.get_style_context().add_class("time-delta");
-		time_delta.margin_right = 3;
-		right_box.pack_start(time_delta, false, false);
-
-		this.pack_start(right_box, false, false);
-
+		this.pack_start(right_box, true, true);
 
 		this.set_size_request(20, 80);
 		this.show_all();
