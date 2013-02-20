@@ -136,28 +136,35 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 		if(text.strip() == "")
 			return;
 
+		Rest.Param param;
 		var call = Twitter.proxy.new_call();
-		call.set_method("POST");
+
 		if(media_count == 0){
 			call.set_function("1.1/statuses/update.json");
 		} else {
-/*			call.set_function("/statuses/update_with_media.json");
-			Gdk.Pixbuf pic = new Gdk.Pixbuf.from_file(media_uri);
-			pixels = pic.get_pixels_with_length();
+			call.set_function("1.1/statuses/update_with_media.json");
 
-			this.param = new Param.full("media[]", MemoryUse.COPY, pixels,
-			                            "multipart/form-data", media_uri);
-			call.add_param_full(param);*/
+			call.set_method("POST");
+			call.add_param("status", text);
+
+
+			uint8[] content;
+			GLib.File media_file = GLib.File.new_for_path(media_uri);
+			media_file.load_contents(null, out content, null);
+
+			param = new Rest.Param.full("media[]", Rest.MemoryUse.COPY,
+			                                   content, "multipart/form-data",
+			                                   media_uri);
+			call.add_param_full(param);
 			debug("Not yet implemented.");
 		}
 
-		call.add_param("status", text);
-
-		// message("Back: %s", call.get_payload());
-		message("Code: %u, Status: %s", call.get_status_code(), call.get_status_message());
-		call.invoke_async.begin(null, () => {
-			message("Back: %s", call.get_payload());
-			message("Code: %u, Status: %s", call.get_status_code(), call.get_status_message());
+		call.invoke_async.begin(null, (obj, res) => {
+			try{
+				call.invoke_async.end(res);
+			} catch(GLib.Error e) {
+				Utils.show_error_dialog(e.message);
+			}
 		});
 		this.destroy();
 	}
