@@ -2,7 +2,7 @@
 using Gtk;
 
 /**
- * Displays an icon on the left side of the 
+ * Displays an icon on the left side of the
  * specified text. Helps to reduce the complexity of layouts.
  */
 class ImageLabel : Label {
@@ -10,7 +10,7 @@ class ImageLabel : Label {
 	public Gdk.Pixbuf icon {get; set;}
 	/** The gap between icon and text */
 	public int gap{get; set; default = 2;}
-
+	public Gtk.PositionType icon_pos = Gtk.PositionType.LEFT;
 
 
 	public ImageLabel(string text){
@@ -24,7 +24,7 @@ class ImageLabel : Label {
 		base.draw(c);
 		return false;
 	}
-	
+
     public override void size_allocate (Allocation allocation) {
     	allocation.width += icon.width + gap;
 	    base.size_allocate (allocation);

@@ -133,9 +133,10 @@ class TweetListEntry : Gtk.Box {
 		this.pack_start(right_box, true, true);
 
 		tweet.inline_media_added.connect((pic) => {
-			var img = new Image.from_pixbuf(pic);
-			img.visible = true;
-			this.pack_start(img, false, false);
+			var media_button = new ImageButton();
+			media_button.set_bg(pic);
+			media_button.visible = true;
+			this.pack_start(media_button, false, false);
 		});
 
 		this.set_size_request(20, 80);

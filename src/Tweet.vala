@@ -251,7 +251,7 @@ class Tweet : GLib.Object{
 			var pic = new Gdk.Pixbuf.from_stream_at_scale(ms, 50, 50, true);
 			string path = Utils.get_user_file_path("media/"+id.to_string()+
 			                                       "_"+this.user_id.to_string()+".png");
-			// stdout.printf("Save to %s\n", path);
+			stdout.printf("Save to %s\n", this.user_name);
 			pic.save(path, "png");
 			inline_media_added(pic);
 		});
