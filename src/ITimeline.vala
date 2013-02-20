@@ -41,9 +41,9 @@ interface ITimeline : Gtk.Widget, IPage {
 		SQLHeavy.Query query = new SQLHeavy.Query(Corebird.db,
 			@"SELECT `id`, `text`, `user_id`, `user_name`, `is_retweet`,
 			`retweeted_by`, `retweeted`, `favorited`, `created_at`,
-			`rt_created_at`, `avatar_name`, `screen_name`, `type`
+			`rt_created_at`, `avatar_name`, `screen_name`, `type`, `media`
 			FROM `cache` WHERE `type`='$tweet_type'
-			ORDER BY `created_at` DESC LIMIT 15");
+			ORDER BY `created_at` DESC LIMIT 15;");
 		SQLHeavy.QueryResult result = query.execute();
 		while(!result.finished){
 			Tweet t        = new Tweet();
@@ -56,6 +56,7 @@ interface ITimeline : Gtk.Widget, IPage {
 			t.retweeted    = (bool)result.fetch_int(6);
 			t.favorited    = (bool)result.fetch_int(7);
 			t.created_at   = result.fetch_int64(8);
+			t.media        = result.fetch_string(13);
 
 
 			if(t.id < max_id)
@@ -67,7 +68,6 @@ interface ITimeline : Gtk.Widget, IPage {
 			else
 				created = t.created_at;
 
-			// GLib.DateTime created = Utils.parse_date(result.fetch_string(8));
 			t.time_delta   = Utils.get_time_delta(new DateTime.from_unix_local(created),
 												  now);
 			t.avatar_name  = result.fetch_string(10);
@@ -76,6 +76,8 @@ interface ITimeline : Gtk.Widget, IPage {
 
 			// Append the tweet to the TweetList
 			TweetListEntry list_entry = new TweetListEntry(t, main_window);
+			if(t.media != null)
+				t.inline_media_added(new Gdk.Pixbuf.from_file(t.media));
 			tweet_list.add(list_entry);
 			result.next();
 		}

@@ -32,6 +32,7 @@ class Tweet : GLib.Object{
 	public int64 rt_created_at;
 	/** if 0, this tweet is NOT part of a conversation */
 	public int64 reply_id = 0;
+	public string media;
 	public signal void inline_media_added(Gdk.Pixbuf? media);
 
 	public Tweet(){
@@ -39,13 +40,14 @@ class Tweet : GLib.Object{
 		if(cache_query == null){
 			try {
 				cache_query = new SQLHeavy.Query(Corebird.db,
-				"INSERT INTO `cache`(`id`, `text`,`user_id`, `user_name`, `is_retweet`,
+				"INSERT INTO `cache`(`id`, `text`,`user_id`, `user_name`,
+				                                `is_retweet`,
 				                     `retweeted_by`, `retweeted`, `favorited`,
 				                     `created_at`,`rt_created_at`, `avatar_name`,
-				                     `screen_name`, `type`,`rt_id`, `reply_id`)
+				                     `screen_name`, `type`,`rt_id`, `reply_id`, `media`)
 				VALUES (:id, :text, :user_id, :user_name, :is_retweet, :retweeted_by,
 				        :retweeted, :favorited, :created_at, :rt_created_at, :avatar_name,
-				        :screen_name, :type, :rt_id, :reply_id);");
+				        :screen_name, :type, :rt_id, :reply_id, :media);");
 				author_query = new SQLHeavy.Query(Corebird.db,
 				"SELECT `id`, `screen_name`, `avatar_url` FROM `people`
 				WHERE `id`=:id;");
@@ -193,6 +195,7 @@ class Tweet : GLib.Object{
 	public static void cache(Tweet t, int type){
 		// Check the tweeter's details and update them if necessary
 		try{
+            // TODO: All the following queries are wrong!
 			author_query.set_int64(":id", t.user_id);
 			SQLHeavy.QueryResult author_result = author_query.execute();
 			if (author_result.finished){
@@ -236,6 +239,7 @@ class Tweet : GLib.Object{
 			cache_query.set_string(":screen_name", t.screen_name);
 			cache_query.set_int(":type", type); // 1 = normal tweet
 			cache_query.set_int64(":reply_id", t.reply_id);
+			cache_query.set_string(":media", t.media);
 			cache_query.execute();
 		}catch(SQLHeavy.Error e){
 			error("Error while caching tweet: %s", e.message);
@@ -252,6 +256,14 @@ class Tweet : GLib.Object{
 			string path = Utils.get_user_file_path("media/"+id.to_string()+
 			                                       "_"+this.user_id.to_string()+".png");
 			stdout.printf("Save to %s\n", this.user_name);
+			// Corebird.db.execute(
+				// "UPDATE `cache` SET `media`=`media`||'%s%s' WHERE `id`='%s';",
+				// GLib.Path.SEARCHPATH_SEPARATOR, path, this.id.to_string());
+			Corebird.db.execute("UPDATE `cache` SET `media`='%s' WHERE `id`='%s';"
+                                .printf(path, this.id.to_string()));
+			// Corebird.db.execute("INSERT OR REPLACE INTO `cache`(id, media) VALUES
+			                    // ('%s', '%s');".printf(this.id.to_string(), path));
+			this.media = path;
 			pic.save(path, "png");
 			inline_media_added(pic);
 		});
