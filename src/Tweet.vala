@@ -259,7 +259,6 @@ class Tweet : GLib.Object{
 			string thumb_path = Utils.get_user_file_path("assets/media/thumbs/"+
 			                                             id.to_string()+
 			                                       "_"+this.user_id.to_string()+".png");
-			stdout.printf("Save to %s\n", this.user_name);
 			Corebird.db.execute("UPDATE `cache` SET `media`='%s' WHERE `id`='%s';"
                                 .printf(path, this.id.to_string()));
 			this.media = path;
