@@ -199,18 +199,20 @@ class Tweet : GLib.Object{
 				//The author is not in the DB so we insert him
 				// message("Inserting new author %s", t.screen_name);
 				Corebird.db.execute("INSERT INTO `people`(id,name,screen_name,avatar_url,
-				                    avatar_name) VALUES ('%d', '%s', '%s', '%s', '%s');",
-				                    t.user_id, t.user_name, t.screen_name, t.avatar_url,
-				                    t.avatar_name);
+				                    avatar_name) VALUES ('%s', '%s', '%s', '%s', '%s');"
+                                    .printf(t.user_id.to_string(), t.user_name, t.screen_name,
+                                    t.avatar_url,t.avatar_name));
 			}else{
 				string old_avatar = author_result.fetch_string(2);
 				if (old_avatar != t.avatar_url){
 					Corebird.db.execute("UPDATE `people` SET `avatar_url`='%s'
-					                    WHERE `id`='%d';", t.avatar_url, t.user_id);
+					                    WHERE `id`='%s';".printf(t.avatar_url,
+                                        t.user_id.to_string()));
 				}
 				if (t.user_name != author_result.fetch_string(1)){
 					Corebird.db.execute("UPDATE `people` SET `screen_name`='%s'
-					                    WHERE `id`='%d';", t.user_name, t.user_id);
+					                    WHERE `id`='%s';".printf(t.user_name,
+                                                                 t.user_id.to_string()));
 				}
 			}
 		}catch(SQLHeavy.Error e){
