@@ -251,21 +251,21 @@ class Tweet : GLib.Object{
 		var msg     = new Soup.Message("GET", url);
 
 		session.queue_message(msg, (s, m) => {
-			var ms  = new MemoryInputStream.from_data(m.response_body.data, null);
-			var pic = new Gdk.Pixbuf.from_stream_at_scale(ms, 50, 50, true);
-			string path = Utils.get_user_file_path("media/"+id.to_string()+
+			var ms    = new MemoryInputStream.from_data(m.response_body.data, null);
+			var pic   = new Gdk.Pixbuf.from_stream(ms);
+			var thumb = pic.scale_simple(50, 50, Gdk.InterpType.TILES);
+			string path = Utils.get_user_file_path("assets/media/"+id.to_string()+
+			                                       "_"+this.user_id.to_string()+".png");
+			string thumb_path = Utils.get_user_file_path("assets/media/thumbs/"+
+			                                             id.to_string()+
 			                                       "_"+this.user_id.to_string()+".png");
 			stdout.printf("Save to %s\n", this.user_name);
-			// Corebird.db.execute(
-				// "UPDATE `cache` SET `media`=`media`||'%s%s' WHERE `id`='%s';",
-				// GLib.Path.SEARCHPATH_SEPARATOR, path, this.id.to_string());
 			Corebird.db.execute("UPDATE `cache` SET `media`='%s' WHERE `id`='%s';"
                                 .printf(path, this.id.to_string()));
-			// Corebird.db.execute("INSERT OR REPLACE INTO `cache`(id, media) VALUES
-			                    // ('%s', '%s');".printf(this.id.to_string(), path));
 			this.media = path;
 			pic.save(path, "png");
-			inline_media_added(pic);
+			thumb.save(thumb_path, "png");
+			inline_media_added(thumb);
 		});
 	}
 

@@ -13,7 +13,6 @@ class TweetListEntry : Gtk.Box {
 	// Timestamp used for sorting
 	public int64 timestamp;
 	private int64 tweet_id;
-	private Tweet tweet;
 
 
 	public TweetListEntry(Tweet tweet, MainWindow? window){
@@ -21,7 +20,6 @@ class TweetListEntry : Gtk.Box {
 		this.window = window;
 		this.vexpand = false;
 		this.hexpand = false;
-		this.tweet = tweet;
 
 		if (hashtag_regex == null){
 			try{
@@ -138,6 +136,10 @@ class TweetListEntry : Gtk.Box {
 			var media_button = new ImageButton();
 			media_button.set_bg(pic);
 			media_button.visible = true;
+			media_button.clicked.connect(() => {
+				ImageDialog id = new ImageDialog(window, tweet.media);
+				id.show_all();
+			});
 			media_box.pack_start(media_button, false, false);
 		});
 		this.pack_start(media_box, false, false);
@@ -145,7 +147,7 @@ class TweetListEntry : Gtk.Box {
 		// var b = new Button.with_label("BAR");
 		// this.pack_start(b, false, false);
 
-		// this.set_size_request(20, 80);
+		this.set_size_request(20, 80);
 		this.show_all();
 	}
 

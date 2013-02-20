@@ -59,6 +59,9 @@ interface ITimeline : Gtk.Widget, IPage {
 			t.media        = result.fetch_string(13);
 
 
+			string thumb_path = Utils.get_user_file_path("assets/media/thumbs/"+
+				Utils.get_file_name(t.media));
+
 			if(t.id < max_id)
 				max_id = t.id;
 
@@ -77,7 +80,7 @@ interface ITimeline : Gtk.Widget, IPage {
 			// Append the tweet to the TweetList
 			TweetListEntry list_entry = new TweetListEntry(t, main_window);
 			if(t.media != null)
-				t.inline_media_added(new Gdk.Pixbuf.from_file(t.media));
+				t.inline_media_added(new Gdk.Pixbuf.from_file(thumb_path));
 			tweet_list.add(list_entry);
 			result.next();
 		}
