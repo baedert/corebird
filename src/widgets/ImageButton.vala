@@ -17,8 +17,8 @@ class ImageButton : Button {
 			StyleContext context = this.get_style_context();
 			context.render_icon(c, bg, 0, 0);
 		}
-	
-		// The css-styled background should be transparent.		
+
+		// The css-styled background should be transparent.
 		base.draw(c);
 		return false;
 	}

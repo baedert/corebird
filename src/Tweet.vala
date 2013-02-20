@@ -195,7 +195,7 @@ class Tweet : GLib.Object{
 	public static void cache(Tweet t, int type){
 		// Check the tweeter's details and update them if necessary
 		try{
-            // TODO: All the following queries are wrong!
+
 			author_query.set_int64(":id", t.user_id);
 			SQLHeavy.QueryResult author_result = author_query.execute();
 			if (author_result.finished){

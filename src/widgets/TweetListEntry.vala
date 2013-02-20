@@ -20,6 +20,7 @@ class TweetListEntry : Gtk.Box {
 		GLib.Object(orientation: Orientation.HORIZONTAL, spacing: 5);
 		this.window = window;
 		this.vexpand = false;
+		this.hexpand = false;
 		this.tweet = tweet;
 
 		if (hashtag_regex == null){
@@ -42,7 +43,7 @@ class TweetListEntry : Gtk.Box {
 		});
 
 
-		// Set the correct CSS style class
+		// // Set the correct CSS style class
 		get_style_context().add_class("tweet");
 		get_style_context().add_class("row");
 
@@ -121,7 +122,7 @@ class TweetListEntry : Gtk.Box {
 			                 false, false);
 
 
-	    // Also set User/Hashtag links
+	 //    // Also set User/Hashtag links
 		text.label = Tweet.replace_links(tweet.text);
 		text.set_use_markup(true);
 		text.set_line_wrap(true);
@@ -132,14 +133,19 @@ class TweetListEntry : Gtk.Box {
 
 		this.pack_start(right_box, true, true);
 
+		var media_box = new Box(Orientation.VERTICAL, 3);
 		tweet.inline_media_added.connect((pic) => {
 			var media_button = new ImageButton();
 			media_button.set_bg(pic);
 			media_button.visible = true;
-			this.pack_start(media_button, false, false);
+			media_box.pack_start(media_button, false, false);
 		});
+		this.pack_start(media_box, false, false);
 
-		this.set_size_request(20, 80);
+		// var b = new Button.with_label("BAR");
+		// this.pack_start(b, false, false);
+
+		// this.set_size_request(20, 80);
 		this.show_all();
 	}
 
@@ -186,11 +192,11 @@ class TweetListEntry : Gtk.Box {
 
 
 	public override bool draw(Cairo.Context c){
-		var style = this.get_style_context();
-		int w = get_allocated_width();
-		int h = get_allocated_height();
-		style.render_background(c, 0, 0, w, h);
-		style.render_frame(c, 0, 0, w, h);
+		// var style = this.get_style_context();
+		// int w = get_allocated_width();
+		// int h = get_allocated_height();
+		// style.render_background(c, 0, 0, w, h);
+		// style.render_frame(c, 0, 0, w, h);
 		base.draw(c);
 		return false;
 	}
