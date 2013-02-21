@@ -12,6 +12,7 @@ class HomeTimeline : IPage, ITimeline, ScrollWidget{
 	public HomeTimeline(int id){
 		this.id = id;
 		tweet_list = new Egg.ListBox();
+		tweet_list.set_selection_mode(SelectionMode.NONE);
 		tweet_list.add_to_scrolled(this);
 		tweet_list.set_sort_func((tle1, tle2) => {
 			if(((TweetListEntry)tle1).timestamp <
@@ -25,11 +26,10 @@ class HomeTimeline : IPage, ITimeline, ScrollWidget{
             int max = (int)(this.vadjustment.upper - this.vadjustment.page_size);
             int value = (int)this.vadjustment.value;
             if (value >= (max * 0.9f) && !loading){
-                    //Load older tweets
-                    loading = true;
-                    message("end! %d/%d", value, max);
-                    load_older();
-                    //https://dev.twitter.com/docs/working-with-timelines
+                //Load older tweets
+                loading = true;
+                message("end! %d/%d", value, max);
+                load_older();
             }
         });
 	}

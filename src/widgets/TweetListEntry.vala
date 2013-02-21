@@ -13,6 +13,7 @@ class TweetListEntry : Gtk.Box {
 	// Timestamp used for sorting
 	public int64 timestamp;
 	private int64 tweet_id;
+	private Tweet tweet;
 
 
 	public TweetListEntry(Tweet tweet, MainWindow? window){
@@ -32,6 +33,7 @@ class TweetListEntry : Gtk.Box {
 
 		this.timestamp = tweet.created_at;
 		this.tweet_id  = tweet.id;
+		this.tweet 	   = tweet;
 
 
 		// If the tweet's avatar changed, also reset it in the widgets
@@ -179,11 +181,9 @@ class TweetListEntry : Gtk.Box {
 			}
 
 			try{
-				SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db,
-				                           @"UPDATE `cache` SET
-				                            `favorited`='1' WHERE
-				                            `id`='$tweet_id';");
-				q.execute();
+				Corebird.db.execute(@"UPDATE `cache` SET `favorited`='%d'
+				                    WHERE `id`='$tweet_id';"
+				                    .printf(favorite_button.active ? 1 : 0));
 			} catch(SQLHeavy.Error e) {
 				critical(e.message);
 			}
@@ -192,7 +192,54 @@ class TweetListEntry : Gtk.Box {
 
 	private void retweet_tweet() {
 		var call = Twitter.proxy.new_call();
-		call.set_function(@"1.1/statuses/retweet/$tweet_id.json");
+		call.set_method("POST");
+
+		if(retweet_button.active) {
+			call.set_function(@"1.1/statuses/retweet/$tweet_id.json");
+			call.invoke_async.begin(null, (obj, res) => {
+				try{
+					call.invoke_async.end(res);
+				} catch (GLib.Error e) {
+					Utils.show_error_dialog(e.message);
+				}
+				string back = call.get_payload();
+				var parser = new Json.Parser();
+				try{
+					parser.load_from_data(back);
+				} catch(GLib.Error e){
+					critical(e.message);
+					critical(back);
+				}
+				int64 new_id = parser.get_root().get_object().get_int_member("id");
+
+				try{
+					Corebird.db.execute(@"UPDATE `cache` SET `retweeted`='1',
+					                    `rt_id`='$new_id'
+					                    WHERE `id`='$tweet_id';");
+
+				}catch (SQLHeavy.Error e) {
+					critical(e.message);
+				}
+				tweet.rt_id = new_id;
+			});
+		} else {
+			call.set_function("1.1/statuses/destroy/%s.json"
+			                  .printf(tweet.rt_id.to_string()));
+			call.invoke_async.begin(null, (obj, res) => {
+				try {
+					call.invoke_async.end(res);
+				} catch (GLib.Error e) {
+					Utils.show_error_dialog(e.message);
+					critical(e.message);
+				}
+				try{
+					Corebird.db.execute(@"UPDATE `cache` SET `retweeted`='0'
+					                    WHERE `id`='$tweet_id';");
+				}catch (SQLHeavy.Error e) {
+					critical(e.message);
+				}
+			});
+		}
 	}
 
 

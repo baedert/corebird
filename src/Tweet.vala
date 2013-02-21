@@ -2,9 +2,6 @@ using Gtk;
 
 // TODO: Make tweet loading in the main-timeline work!
 // TODO: Look at EggListBox's source code
-class DLSession : Soup.Session{
-
-}
 class Tweet : GLib.Object{
 	public static int TYPE_NORMAL   = 1;
 	public static int TYPE_MENTION  = 2;
@@ -33,24 +30,25 @@ class Tweet : GLib.Object{
 	public string screen_name;
 	public int64 created_at;
 	public int64 rt_created_at;
-	/** if 0, this tweet is NOT part of a conversation */
-	public int64 reply_id = 0;
-	public string media;
-	public signal void inline_media_added(Gdk.Pixbuf? media);
+
+    /** if 0, this tweet is NOT part of a conversation */
+    public int64 reply_id = 0;
+    public string media;
+    public signal void inline_media_added(Gdk.Pixbuf? media);
+
 
 	public Tweet(){
 		this.avatar = Twitter.no_avatar;
 		if(cache_query == null){
 			try {
 				cache_query = new SQLHeavy.Query(Corebird.db,
-				"INSERT INTO `cache`(`id`, `text`,`user_id`, `user_name`,
-				                                `is_retweet`,
+				"INSERT INTO `cache`(`id`, `text`,`user_id`, `user_name`, `is_retweet`,
 				                     `retweeted_by`, `retweeted`, `favorited`,
 				                     `created_at`,`rt_created_at`, `avatar_name`,
-				                     `screen_name`, `type`,`rt_id`, `reply_id`, `media`)
+				                     `screen_name`, `type`,`rt_id`)
 				VALUES (:id, :text, :user_id, :user_name, :is_retweet, :retweeted_by,
 				        :retweeted, :favorited, :created_at, :rt_created_at, :avatar_name,
-				        :screen_name, :type, :rt_id, :reply_id, :media);");
+				        :screen_name, :type, :rt_id);");
 				author_query = new SQLHeavy.Query(Corebird.db,
 				"SELECT `id`, `screen_name`, `avatar_url` FROM `people`
 				WHERE `id`=:id;");
@@ -88,7 +86,6 @@ class Tweet : GLib.Object{
 
 	/**
 	 * Fills all the data of this tweet from Json data.
-	 *
 	 * @param status The Json object to get the data from
 	 * @param now The current time
 	 */
@@ -104,8 +101,6 @@ class Tweet : GLib.Object{
 		this.created_at  = Utils.parse_date(status.get_string_member("created_at"))
 										.to_unix();
 		this.avatar_url  = user.get_string_member("profile_image_url");
-		if(!status.get_null_member("in_reply_to_status_id"))
-			this.reply_id  = status.get_int_member("in_reply_to_status_id");
 
 
 
@@ -122,39 +117,38 @@ class Tweet : GLib.Object{
 			this.screen_name   = rt_user.get_string_member("screen_name");
 			this.rt_created_at = Utils.parse_date(rt.get_string_member("created_at"))
 			                            .to_unix();
-            if(!rt.get_null_member("in_reply_to_status_id"))
-				this.reply_id = rt.get_int_member("in_reply_to_status_id");
 		}
 		this.avatar_name = Utils.get_avatar_name(this.avatar_url);
 
 
 
-        // 'Resolve' the used URLs
-        var entities = status.get_object_member("entities");
+		// 'Resolve' the used URLs
+		var entities = status.get_object_member("entities");
 
-        var urls = entities.get_array_member("urls");
-        urls.foreach_element((arr, index, node) => {
-                var url = node.get_object();
-                string expanded_url = url.get_string_member("expanded_url");
-                expanded_url = expanded_url.replace("&", "&amp;");
-                this.text = this.text.replace(url.get_string_member("url"),
-                    expanded_url);
-        });
+		var urls = entities.get_array_member("urls");
+		urls.foreach_element((arr, index, node) => {
+			var url = node.get_object();
+			string expanded_url = url.get_string_member("expanded_url");
+			// message("Text: %s, expanded: %s", this.text, expanded_url);
+			expanded_url = expanded_url.replace("&", "&amp;");
+			this.text = this.text.replace(url.get_string_member("url"),
+			    expanded_url);
+		});
 
-        // The same with media
-        if(entities.has_member("media")){
-                var medias = entities.get_array_member("media");
-                medias.foreach_element((arr, index, node) => {
-                        var url = node.get_object();
-                        string expanded_url = "https://"+url.get_string_member("display_url");
-                        expanded_url = expanded_url.replace("&", "&amp;");
-                        this.text = this.text.replace(url.get_string_member("url"),
-                            expanded_url);
-                        if(Settings.show_inline_media()) {
-                                load_inline_media.begin(url.get_string_member("media_url"));
-                        }
-                });
-        }
+		// The same with media
+		if(entities.has_member("media")){
+			var medias = entities.get_array_member("media");
+			medias.foreach_element((arr, index, node) => {
+				var url = node.get_object();
+				string expanded_url = "https://"+url.get_string_member("display_url");
+				expanded_url = expanded_url.replace("&", "&amp;");
+				this.text = this.text.replace(url.get_string_member("url"),
+				    expanded_url);
+			});
+		}
+
+
+
 
 		var dt = new DateTime.from_unix_local(is_retweet ? rt_created_at : created_at);
 		this.time_delta  = Utils.get_time_delta(dt, now);
@@ -162,18 +156,24 @@ class Tweet : GLib.Object{
 
 		this.load_avatar();
 		if(!this.has_avatar()){
+			string dest = Utils.get_user_file_path("assets/avatars/"+this.avatar_name);
+			GLib.Idle.add(() => {
+				try{
+					var session = new Soup.SessionAsync();
+					var msg     = new Soup.Message("GET", this.avatar_url);
+					session.send_message(msg);
 
-			var session = new Soup.SessionSync();
-			var msg     = new Soup.Message("GET", this.avatar_url);
-			session.queue_message(msg, (s,m) => {
-				string dest = Utils.get_user_file_path("assets/avatars/"+this.avatar_name);
-				var memory_stream = new MemoryInputStream.from_data(m.response_body.data,
-				                                                    null);
-				var pixbuf = new Gdk.Pixbuf.from_stream_at_scale(memory_stream, 48, 48,
-				                                                 false);
-				pixbuf.save(dest, "png");
-				this.load_avatar(pixbuf);
-				message("Loaded avatar for %s", screen_name);
+					var memory_stream = new MemoryInputStream.from_data(msg.response_body.data,
+					                                                    null);
+					var pixbuf = new Gdk.Pixbuf.from_stream_at_scale(memory_stream, 48, 48,
+					                                                 false);
+					pixbuf.save(dest, Utils.get_file_type(avatar_name));
+					this.load_avatar(pixbuf);
+					message("Loaded avatar for %s", screen_name);
+				} catch (GLib.Error e) {
+					critical(e.message);
+				}
+				return false;
 			});
 		}
 	}
@@ -188,27 +188,24 @@ class Tweet : GLib.Object{
 	public static void cache(Tweet t, int type){
 		// Check the tweeter's details and update them if necessary
 		try{
-
 			author_query.set_int64(":id", t.user_id);
 			SQLHeavy.QueryResult author_result = author_query.execute();
 			if (author_result.finished){
 				//The author is not in the DB so we insert him
 				// message("Inserting new author %s", t.screen_name);
 				Corebird.db.execute("INSERT INTO `people`(id,name,screen_name,avatar_url,
-				                    avatar_name) VALUES ('%s', '%s', '%s', '%s', '%s');"
-                                    .printf(t.user_id.to_string(), t.user_name, t.screen_name,
-                                    t.avatar_url,t.avatar_name));
+				                    avatar_name) VALUES ('%d', '%s', '%s', '%s', '%s');",
+				                    t.user_id, t.user_name, t.screen_name, t.avatar_url,
+				                    t.avatar_name);
 			}else{
 				string old_avatar = author_result.fetch_string(2);
 				if (old_avatar != t.avatar_url){
 					Corebird.db.execute("UPDATE `people` SET `avatar_url`='%s'
-					                    WHERE `id`='%s';".printf(t.avatar_url,
-                                        t.user_id.to_string()));
+					                    WHERE `id`='%d';", t.avatar_url, t.user_id);
 				}
 				if (t.user_name != author_result.fetch_string(1)){
 					Corebird.db.execute("UPDATE `people` SET `screen_name`='%s'
-					                    WHERE `id`='%s';".printf(t.user_name,
-                                                                 t.user_id.to_string()));
+					                    WHERE `id`='%d';", t.user_name, t.user_id);
 				}
 			}
 		}catch(SQLHeavy.Error e){
@@ -233,39 +230,12 @@ class Tweet : GLib.Object{
 			cache_query.set_string(":avatar_name", t.avatar_name);
 			cache_query.set_string(":screen_name", t.screen_name);
 			cache_query.set_int(":type", type); // 1 = normal tweet
-			cache_query.set_int64(":reply_id", t.reply_id);
-			cache_query.set_string(":media", t.media);
 			cache_query.execute();
 		}catch(SQLHeavy.Error e){
 			error("Error while caching tweet: %s", e.message);
 		}
 	}
 
-	private async void load_inline_media(string url) {
-		var session = new Soup.SessionAsync();
-		var msg     = new Soup.Message("GET", url);
-
-		session.queue_message(msg, (s, m) => {
-			try {
-				var ms    = new MemoryInputStream.from_data(m.response_body.data, null);
-				var pic   = new Gdk.Pixbuf.from_stream(ms);
-				var thumb = pic.scale_simple(50, 50, Gdk.InterpType.TILES);
-				string path = Utils.get_user_file_path("assets/media/"+id.to_string()+
-				                                       "_"+user_id.to_string()+".png");
-				string thumb_path = Utils.get_user_file_path("assets/media/thumbs/"+
-				                                             id.to_string()+
-				                                       "_"+user_id.to_string()+".png");
-				Corebird.db.execute("UPDATE `cache` SET `media`='%s' WHERE `id`='%s';"
-	                                .printf(path, this.id.to_string()));
-				this.media = path;
-				pic.save(path, "png");
-				thumb.save(thumb_path, "png");
-				inline_media_added(thumb);
-			} catch (GLib.Error e) {
-				critical(e.message);
-			}
-		});
-	}
 
 
 	/**
@@ -277,13 +247,8 @@ class Tweet : GLib.Object{
 	 */
 	public static string replace_links(string text){
 		if(link_regex == null){
-			try {
-				link_regex = new GLib.Regex("http[s]{0,1}:\\/\\/[a-zA-Z\\_.\\+\\?\\/
-				                            #=&;\\-0-9%,~]+",
-			    	                        RegexCompileFlags.OPTIMIZE);
-			} catch (GLib.RegexError e) {
-				warning(e.message);
-			}
+			link_regex = new GLib.Regex("http[s]{0,1}:\\/\\/[a-zA-Z\\_.\\+\\?\\/#=&;\\-0-9%,~]+",
+			                            RegexCompileFlags.OPTIMIZE);
 		}
 		string real_text = text;
 		try{
