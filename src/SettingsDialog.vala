@@ -20,7 +20,8 @@ class SettingsDialog : PreferencesDialog {
 		               Settings.get_update_interval(), 60, (val) => {
 		    Settings.set_int("update-interval", val);
 		});
-		add_bool_option(general, "Refresh streams on startup:", Settings.refresh_streams_on_startup(),
+		add_bool_option(general, "Refresh streams on startup:",
+		                Settings.refresh_streams_on_startup(),
 		                (val) => {
 		    Settings.set_bool("refresh-streams-on-startup", val);
 		});
@@ -47,9 +48,15 @@ class SettingsDialog : PreferencesDialog {
 			Settings.set_bool("use-dark-theme", val);
 			Gtk.Settings.get_default().gtk_application_prefer_dark_theme = val;
 		});
-		add_bool_option(inter, "Show primary toolbar:", Settings.show_primary_toolbar(), (val) => {
+		add_bool_option(inter, "Show primary toolbar:", Settings.show_primary_toolbar(),
+		                (val) => {
 			Settings.set_bool("show-primary-toolbar", val);
 			this.win.set_show_primary_toolbar(val);
+		});
+
+		add_heading(inter, "Tweets");
+		add_bool_option(inter, "Show inline media:", true, (value) => {
+			Settings.set_bool("show-inline-media", value);
 		});
 
 
@@ -59,7 +66,8 @@ class SettingsDialog : PreferencesDialog {
 		add_bool_option(notify, "On new Tweets:", Settings.notify_new_tweets(), (val) => {
 			Settings.set_bool("new-tweets-notify", val);
 		});
-		add_bool_option(notify, "On new mentions:", Settings.notify_new_mentions(), (val) => {
+		add_bool_option(notify, "On new mentions:", Settings.notify_new_mentions(),
+		                (val) => {
 			Settings.set_bool("new-mentions-notify", val);
 		});
 	}

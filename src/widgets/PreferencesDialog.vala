@@ -52,7 +52,7 @@ class PreferencesDialog : Dialog {
 		heights[page]++;
 	}
 
-
+	// TODO: Implement help_text
 	public void add_bool_option(int page, string title,
 	                              bool default_value,
 	                              BoolDelegate action,
@@ -93,11 +93,11 @@ class PreferencesDialog : Dialog {
 		Grid grid = (Grid)nb.get_nth_page(page);
 		Label title_label = new Label(title);
 		title_label.xalign = 1.0f;
-		
+
 		ListStore store = new ListStore(1, typeof(string));
 		TreeIter iter;
 		foreach(string item in options){
-			store.append(out iter);	
+			store.append(out iter);
 			store.set(iter, 0, item);
 		}
 		ComboBox combo = new ComboBox.with_model(store);
@@ -113,6 +113,6 @@ class PreferencesDialog : Dialog {
 
 		grid.attach(title_label, 0, heights[page], 1, 1);
 		grid.attach(combo, 1, heights[page], 1, 1);
-		heights[page]++;	
+		heights[page]++;
 	}
 }

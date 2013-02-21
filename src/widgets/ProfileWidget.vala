@@ -80,8 +80,6 @@ class ProfileWidget : Gtk.Box {
 				banner_box.set_background(DATADIR+"/no_banner.png");
 		}catch(SQLHeavy.Error e){
 			warning("Error while loading cached profile data: %s", e.message);
-		}catch(GLib.Error e){
-			warning("Error while loading cached banner: %s", e.message);
 		}
 
 		load_banner.begin(user_id);
@@ -202,9 +200,6 @@ class ProfileWidget : Gtk.Box {
 
 			var root = parser.get_root().get_object().get_object_member("sizes");
 			string banner_url;
-			// if (root.has_member("mobile"))
-				// banner_url = root.get_object_member("mobile").get_string_member("url");
-			// else
 			banner_url = root.get_object_member("mobile").get_string_member("url");
 
 			string banner_on_disk = Utils.get_user_file_path(@"assets/banners/$user_id.png");
@@ -215,20 +210,13 @@ class ProfileWidget : Gtk.Box {
 					File banner_file = File.new_for_uri(banner_url);
 					FileInputStream in_stream = banner_file.read();
 					Gdk.Pixbuf b = new Gdk.Pixbuf.from_stream(in_stream);
-					// banner_box.set_pixbuf(b);
 					message("Banner saved.");
 					b.save(banner_on_disk, "png");
-					banner_box.set_background(banner_on_disk);
 				} catch (GLib.Error ex) {
 					warning ("Error while setting banner: %s", ex.message);
 				}
-			}else {
-				try{
-					// banner_box.set_pixbuf(new Gdk.Pixbuf.from_file(banner_on_disk));
-				}catch(GLib.Error e){
-					warning("Error while loading banner_on_disk: %s", e.message);
-				}
 			}
+			banner_box.set_background(banner_on_disk);
 		});
 	}
 

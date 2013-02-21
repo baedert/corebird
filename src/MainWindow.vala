@@ -35,7 +35,7 @@ class MainWindow : ApplicationWindow {
 		// timelines[2] = new FavoriteContainer(PAGE_FAVORITES);
 		// timelines[3] = new SearchContainer(PAGE_SEARCH);
 
-		/** Initialize all containers */
+		/*Initialize all containers */
 		for(int i = 0; i < timelines.length; i++){
 			ITimeline tl = timelines[i];
 			if(!(tl is IPage))
@@ -168,9 +168,9 @@ class MainWindow : ApplicationWindow {
 
 
 		// TODO: Implement TestToolButton
-		// var tt = new TestToolButton();
-		// tt.icon_name = "find";
-		// left_toolbar.add(tt);
+		var tt = new TestToolButton();
+		tt.icon_name = "find";
+		left_toolbar.add(tt);
 
 		main_notebook.show_border = false;
 		main_notebook.show_tabs   = false;

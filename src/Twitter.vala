@@ -14,6 +14,7 @@ class Twitter {
 	public static Gdk.Pixbuf favorited_img;
 	public static Gdk.Pixbuf no_avatar;
 	public static Gdk.Pixbuf no_banner;
+	public static Gdk.Pixbuf conversation_img;
 	public static HashMap<string, Gdk.Pixbuf> avatars;
 
 
@@ -68,14 +69,16 @@ class Twitter {
 		}
 
 		try{
-			Twitter.favorited_img = new Gdk.Pixbuf.from_file(
+			Twitter.favorited_img 	 = new Gdk.Pixbuf.from_file(
 			                               DATADIR+"/favorite.png");
-			Twitter.retweeted_img = new Gdk.Pixbuf.from_file(
+			Twitter.retweeted_img 	 = new Gdk.Pixbuf.from_file(
 			                               DATADIR+"/retweet.png");
-			Twitter.no_avatar     = new Gdk.Pixbuf.from_file(
+			Twitter.no_avatar     	 = new Gdk.Pixbuf.from_file(
 			                               DATADIR+"/no_avatar.png");
-			Twitter.no_banner     = new Gdk.Pixbuf.from_file(
+			Twitter.no_banner     	 = new Gdk.Pixbuf.from_file(
 			                               DATADIR+"/no_banner.png");
+			Twitter.conversation_img = new Gdk.Pixbuf.from_file(
+			                               DATADIR+"/conversation.png");
 		}catch(GLib.Error e){
 			error("Error while loading assets: %s", e.message);
 		}

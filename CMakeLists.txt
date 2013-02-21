@@ -71,6 +71,7 @@ vala_precompile(VALA_C
 	src/LoaderThread.vala
 	src/IPage.vala
 	src/ProfilePage.vala
+	src/widgets/ImageDialog.vala
 	src/widgets/ImageBox.vala
 	src/widgets/ImageLabel.vala
 	src/widgets/TweetTextView.vala
@@ -112,7 +113,10 @@ install (TARGETS corebird RUNTIME DESTINATION bin)
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/no_avatar.png DESTINATION ${DATADIR})
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/no_banner.png DESTINATION ${DATADIR})
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/favorite.png DESTINATION ${DATADIR})
+install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/favorite-normal.png DESTINATION ${DATADIR})
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/retweet.png DESTINATION ${DATADIR})
+install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/retweet-normal.png DESTINATION ${DATADIR})
+install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/conversation.png DESTINATION ${DATADIR})
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/ui/style.css DESTINATION ${DATADIR}/ui/)
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/ui/first-run-window.ui DESTINATION ${DATADIR}/ui/)
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/ui/tweet-info-window.ui DESTINATION ${DATADIR}/ui/)
