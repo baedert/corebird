@@ -129,8 +129,32 @@ class Tweet : GLib.Object{
 
 
 
-		// 'Resolve' the used URLs
-		var entities = status.get_object_member("entities");
+        // 'Resolve' the used URLs
+        var entities = status.get_object_member("entities");
+
+        var urls = entities.get_array_member("urls");
+        urls.foreach_element((arr, index, node) => {
+                var url = node.get_object();
+                string expanded_url = url.get_string_member("expanded_url");
+                expanded_url = expanded_url.replace("&", "&amp;");
+                this.text = this.text.replace(url.get_string_member("url"),
+                    expanded_url);
+        });
+
+        // The same with media
+        if(entities.has_member("media")){
+                var medias = entities.get_array_member("media");
+                medias.foreach_element((arr, index, node) => {
+                        var url = node.get_object();
+                        string expanded_url = "https://"+url.get_string_member("display_url");
+                        expanded_url = expanded_url.replace("&", "&amp;");
+                        this.text = this.text.replace(url.get_string_member("url"),
+                            expanded_url);
+                        if(Settings.show_inline_media()) {
+                                load_inline_media.begin(url.get_string_member("media_url"));
+                        }
+                });
+        }
 
 		var dt = new DateTime.from_unix_local(is_retweet ? rt_created_at : created_at);
 		this.time_delta  = Utils.get_time_delta(dt, now);
