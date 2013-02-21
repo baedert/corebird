@@ -87,7 +87,6 @@ interface ITimeline : Gtk.Widget, IPage {
 			if(t.media != null){
 				string thumb_path = Utils.get_user_file_path("assets/media/thumbs/"+
 							Utils.get_file_name(t.media));
-				message(thumb_path);
 				try {
 					t.inline_media_added(new Gdk.Pixbuf.from_file(thumb_path));
 				} catch (GLib.Error e) {
