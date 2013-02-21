@@ -27,11 +27,21 @@ class ImageDialog : Gtk.Window {
 
 		image = new Gtk.Image.from_pixbuf(pixbuf);
 		scroller.add_with_viewport(image);
+		scroller.can_focus = false;
+		image.can_focus = false;
 		this.add(scroller);
 		this.set_decorated(false);
 		this.set_transient_for(parent);
 		this.set_type_hint(Gdk.WindowTypeHint.DIALOG);
 		this.focus_out_event.connect(() => {
+			this.destroy();
+			return false;
+		});
+		this.button_press_event.connect(() => {
+			this.destroy();
+			return false;
+		});
+		this.key_press_event.connect(() => {
 			this.destroy();
 			return false;
 		});
