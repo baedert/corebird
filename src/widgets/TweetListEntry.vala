@@ -9,6 +9,8 @@ class TweetListEntry : Gtk.Box {
 	private Label time_delta             = new Label("");
 	private ToggleButton retweet_button  = new ToggleButton();
 	private ToggleButton favorite_button = new ToggleButton();
+	private Spinner retweet_spinner      = new Spinner();
+	private Spinner favorite_spinner     = new Spinner();
 	private MainWindow window;
 	// Timestamp used for sorting
 	public int64 timestamp;
@@ -121,12 +123,10 @@ class TweetListEntry : Gtk.Box {
 			var conv_button = new Button();
 			conv_button.get_style_context().add_class("conversation-button");
 			top_box.pack_end(conv_button, false, false);
-			// top_box.pack_end(new Image.from_pixbuf(Twitter.conversation_img),
-			                 // false, false);
 		}
 
 
-	 //    // Also set User/Hashtag links
+	    // Also set User/Hashtag links
 		text.label = Tweet.replace_links(tweet.text);
 		text.set_use_markup(true);
 		text.set_line_wrap(true);
@@ -165,6 +165,8 @@ class TweetListEntry : Gtk.Box {
 	}
 
 	private void favorite_tweet() {
+		favorite_spinner.start();
+		WidgetReplacer.replace(favorite_button, favorite_spinner);
 
 		var call = Twitter.proxy.new_call();
 		if(favorite_button.active)
@@ -187,10 +189,19 @@ class TweetListEntry : Gtk.Box {
 			} catch(SQLHeavy.Error e) {
 				critical(e.message);
 			}
+			favorite_spinner.stop();
+			WidgetReplacer.replace(favorite_spinner, favorite_button);
 		});
 	}
 
+	/**
+	 * (Un)retweets the tweet that is saved in this ListEntry.
+	 */
 	private void retweet_tweet() {
+
+		retweet_spinner.start();
+		WidgetReplacer.replace(retweet_button, retweet_spinner);
+
 		var call = Twitter.proxy.new_call();
 		call.set_method("POST");
 
@@ -238,6 +249,8 @@ class TweetListEntry : Gtk.Box {
 				}catch (SQLHeavy.Error e) {
 					critical(e.message);
 				}
+				retweet_spinner.stop();
+				WidgetReplacer.replace(retweet_spinner, retweet_button);
 			});
 		}
 	}

@@ -90,6 +90,7 @@ vala_precompile(VALA_C
 	src/util/Utils.vala
 	src/util/Benchmark.vala
 	src/util/Config.vala
+	src/util/WidgetReplacer.vala
 	src/egglistbox/egg-list-box.c
 PACKAGES
 	${DEPS}
