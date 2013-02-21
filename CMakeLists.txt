@@ -117,6 +117,7 @@ install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/favorite-normal.png DESTINATIO
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/retweet.png DESTINATION ${DATADIR})
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/retweet-normal.png DESTINATION ${DATADIR})
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/conversation.png DESTINATION ${DATADIR})
+install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/conversation-normal.png DESTINATION ${DATADIR})
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/ui/style.css DESTINATION ${DATADIR}/ui/)
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/ui/first-run-window.ui DESTINATION ${DATADIR}/ui/)
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/ui/tweet-info-window.ui DESTINATION ${DATADIR}/ui/)

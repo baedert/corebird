@@ -10,7 +10,7 @@ Corebird is a new native Twitter client for the linux desktop written with Gtk+.
 * Uses GLib/Gtk+'s newest APIs to provide perfect desktop integration and the best UX possible.
 * No stupid webkit for tweet rendering
 * Can be minimized to tray
-* Notification integration  
+* Notification integration
 * relatively well adjustable
 * Localized (See common questions on developer.gnome.org)
 
@@ -28,7 +28,7 @@ Corebird is a new native Twitter client for the linux desktop written with Gtk+.
 * [Dribble](http://dribbble.s3.amazonaws.com/users/30071/screenshots/666701/attachments/58662/Timeline.png)
 * [Settings Dialog](http://elementaryos.org/sites/default/files/user/5/Screenshot%20from%202012-03-11%2000%3A00%3A40.png)
 * [Osfoora For Mac](http://osfoora.com/mac/)
-
+* [Twitterific](http://vimeo.com/19757392)
 
 ## ToDo
 * Find someone to make an Icon(or make a crappy one yourself...)
@@ -43,15 +43,15 @@ Corebird is a new native Twitter client for the linux desktop written with Gtk+.
     * Bl1nk
     * Heinz
     * ?
-    * Use bitbucket/issue-tracker for bugs 
+    * Use bitbucket/issue-tracker for bugs
 * Wenn der Beta-Test gut läuft, dann finales Release mitte März 2013
 
 
 ## Consider
-* Let the user choose an application for opening images/videos     
-    * youtube-viewer 
+* Let the user choose an application for opening images/videos
+    * youtube-viewer
 * Let the user choose if he wants to open e.g. the details to a tweet open
-   in a new window(good for tiling wms) or in a side pane in the 
+   in a new window(good for tiling wms) or in a side pane in the
    main window(good for floating wms).
 * Extend the style.css to style everything entirely so the app gets its
    own style all over?

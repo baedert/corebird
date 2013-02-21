@@ -56,30 +56,6 @@ class MainWindow : ApplicationWindow {
 		pages[0] = new ProfilePage(PAGE_PROFILE);
 
 
-		var session = new Soup.SessionAsync();
-		var msg = new Soup.Message("GET", "http://fc07.deviantart.net/fs70/f/2010/186/5/2/LedaMonsterBunny_by_LedaMonsterBunnyy.jpg");
-		session.queue_message(msg, (s, m) => {
-			var ms = new MemoryInputStream.from_data(m.response_body.data, null);
-			var pixbuf = new Gdk.Pixbuf.from_stream_at_scale(ms, 500, 500, true);
-			pixbuf.save("/home/baedert/leda.jpg", "jpeg");
-			message("Saved.");
-		});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 		this.delete_event.connect(() => {
 			//message("destroy.");
 			NotificationManager.uninit();

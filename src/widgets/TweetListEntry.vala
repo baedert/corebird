@@ -115,9 +115,13 @@ class TweetListEntry : Gtk.Box {
 
 		right_box.pack_start(top_box, false, true);
 
-		if(tweet.reply_id != 0)
-			top_box.pack_end(new Image.from_pixbuf(Twitter.conversation_img),
-			                 false, false);
+		if(tweet.reply_id != 0){
+			var conv_button = new Button();
+			conv_button.get_style_context().add_class("conversation-button");
+			top_box.pack_end(conv_button, false, false);
+			// top_box.pack_end(new Image.from_pixbuf(Twitter.conversation_img),
+			                 // false, false);
+		}
 
 
 	 //    // Also set User/Hashtag links

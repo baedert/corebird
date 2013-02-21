@@ -138,14 +138,14 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
 		Rest.Param param;
 		var call = Twitter.proxy.new_call();
-
+		call.set_method("POST");
+		call.add_param("status", text);
 		if(media_count == 0){
 			call.set_function("1.1/statuses/update.json");
 		} else {
 			call.set_function("1.1/statuses/update_with_media.json");
 
-			call.set_method("POST");
-			call.add_param("status", text);
+
 
 
 			uint8[] content;
@@ -167,6 +167,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 			try{
 				call.invoke_async.end(res);
 			} catch(GLib.Error e) {
+				critical(e.message);
 				Utils.show_error_dialog(e.message);
 			}
 		});

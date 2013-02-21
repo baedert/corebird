@@ -78,7 +78,7 @@ class Twitter {
 			Twitter.no_banner     	 = new Gdk.Pixbuf.from_file(
 			                               DATADIR+"/no_banner.png");
 			Twitter.conversation_img = new Gdk.Pixbuf.from_file(
-			                               DATADIR+"/conversation.png");
+			                               DATADIR+"/conversation-normal.png");
 		}catch(GLib.Error e){
 			error("Error while loading assets: %s", e.message);
 		}
