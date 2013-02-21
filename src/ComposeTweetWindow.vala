@@ -149,8 +149,12 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
 
 			uint8[] content;
-			GLib.File media_file = GLib.File.new_for_path(media_uri);
-			media_file.load_contents(null, out content, null);
+			try {
+				GLib.File media_file = GLib.File.new_for_path(media_uri);
+				media_file.load_contents(null, out content, null);
+			} catch (GLib.Error e) {
+				critical(e.message);
+			}
 
 			param = new Rest.Param.full("media[]", Rest.MemoryUse.COPY,
 			                                   content, "multipart/form-data",

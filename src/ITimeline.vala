@@ -16,14 +16,18 @@ interface ITimeline : Gtk.Widget, IPage {
 
 	protected void start_updates(bool notify, string function, int tweet_type) {
 		GLib.Timeout.add(Settings.get_update_interval() * 1000 * 60, () => {
-			load_newest_internal(function, tweet_type, (count) => {
-				//Update all current tweets
-				tweet_list.forall_internal(false, (w) => {
-					((TweetListEntry)w).update_time_delta();
+			try {
+				load_newest_internal(function, tweet_type, (count) => {
+					//Update all current tweets
+					tweet_list.forall_internal(false, (w) => {
+						((TweetListEntry)w).update_time_delta();
+					});
+					if(count > 0)
+						NotificationManager.notify("%d new tweets!".printf(count));
 				});
-				if(count > 0)
-					NotificationManager.notify("%d new tweets!".printf(count));
-			});
+			} catch(SQLHeavy.Error e) {
+				warning(e.message);
+			}
 			return true;
 		});
 	}
@@ -41,9 +45,9 @@ interface ITimeline : Gtk.Widget, IPage {
 		SQLHeavy.Query query = new SQLHeavy.Query(Corebird.db,
 			@"SELECT `id`, `text`, `user_id`, `user_name`, `is_retweet`,
 			`retweeted_by`, `retweeted`, `favorited`, `created_at`,
-			`rt_created_at`, `avatar_name`, `screen_name`, `type`
+			`rt_created_at`, `avatar_name`, `screen_name`, `type`, `media`
 			FROM `cache` WHERE `type`='$tweet_type'
-			ORDER BY `created_at` DESC LIMIT 15");
+			ORDER BY `created_at` DESC LIMIT 15;");
 		SQLHeavy.QueryResult result = query.execute();
 		while(!result.finished){
 			Tweet t        = new Tweet();
@@ -56,6 +60,9 @@ interface ITimeline : Gtk.Widget, IPage {
 			t.retweeted    = (bool)result.fetch_int(6);
 			t.favorited    = (bool)result.fetch_int(7);
 			t.created_at   = result.fetch_int64(8);
+			t.media        = result.fetch_string(13);
+
+
 
 
 			if(t.id < max_id)
@@ -67,7 +74,6 @@ interface ITimeline : Gtk.Widget, IPage {
 			else
 				created = t.created_at;
 
-			// GLib.DateTime created = Utils.parse_date(result.fetch_string(8));
 			t.time_delta   = Utils.get_time_delta(new DateTime.from_unix_local(created),
 												  now);
 			t.avatar_name  = result.fetch_string(10);
@@ -76,6 +82,16 @@ interface ITimeline : Gtk.Widget, IPage {
 
 			// Append the tweet to the TweetList
 			TweetListEntry list_entry = new TweetListEntry(t, main_window);
+			if(t.media != null){
+				string thumb_path = Utils.get_user_file_path("assets/media/thumbs/"+
+							Utils.get_file_name(t.media));
+				message(thumb_path);
+				try {
+					t.inline_media_added(new Gdk.Pixbuf.from_file(thumb_path));
+				} catch (GLib.Error e) {
+					warning(e.message);
+				}
+			}
 			tweet_list.add(list_entry);
 			result.next();
 		}

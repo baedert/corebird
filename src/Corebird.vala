@@ -33,16 +33,12 @@ class Corebird : Gtk.Application {
 				critical("Couldn't create the ~/.corebird directory");
 			}
 
-			success = File.new_for_path(Utils.get_user_file_path("assets/"))
-								.make_directory();
-			success = File.new_for_path(Utils.get_user_file_path("assets/avatars/"))
-								.make_directory();
-			success = File.new_for_path(Utils.get_user_file_path("assets/banners/"))
-								.make_directory();
-			success = File.new_for_path(Utils.get_user_file_path("assets/user/"))
-								.make_directory();
-			success = File.new_for_path(Utils.get_user_file_path("assets/media/"))
-								.make_directory();
+			create_user_folder("assets/");
+			create_user_folder("assets/avatars/");
+			create_user_folder("assets/banners/");
+			create_user_folder("assets/user");
+			create_user_folder("assets/media/");
+			create_user_folder("assets/media/thumbs/");
 		}
 
 
@@ -151,6 +147,17 @@ class Corebird : Gtk.Application {
 		} catch (GLib.FileError e){
 			error("Error while loading sql file: %s", e.message);
 		}
+	}
+
+	private void create_user_folder(string name) {
+		try {
+			bool success = File.new_for_path(Utils.get_user_file_path(name))
+									.make_directory();
+	        if(!success)
+	        	critical("Couldn't create user folder %s", name);
+    	} catch (GLib.Error e) {
+    		critical(e.message);
+    	}
 	}
 }
 
