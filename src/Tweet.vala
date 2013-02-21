@@ -132,62 +132,24 @@ class Tweet : GLib.Object{
 		// 'Resolve' the used URLs
 		var entities = status.get_object_member("entities");
 
-		// var urls = entities.get_array_member("urls");
-		// urls.foreach_element((arr, index, node) => {
-		// 	var url = node.get_object();
-		// 	string expanded_url = url.get_string_member("expanded_url");
-		// 	// message("Text: %s, expanded: %s", this.text, expanded_url);
-		// 	expanded_url = expanded_url.replace("&", "&amp;");
-		// 	this.text = this.text.replace(url.get_string_member("url"),
-		// 	    expanded_url);
-		// });
-
-		// // The same with media
-		// if(entities.has_member("media")){
-		// 	var medias = entities.get_array_member("media");
-		// 	medias.foreach_element((arr, index, node) => {
-		// 		var url = node.get_object();
-		// 		string expanded_url = "https://"+url.get_string_member("display_url");
-		// 		expanded_url = expanded_url.replace("&", "&amp;");
-		// 		this.text = this.text.replace(url.get_string_member("url"),
-		// 		    expanded_url);
-		// 	});
-		// }
-
-
-
-
 		var dt = new DateTime.from_unix_local(is_retweet ? rt_created_at : created_at);
 		this.time_delta  = Utils.get_time_delta(dt, now);
 
 
-		string dest = Utils.get_user_file_path("assets/avatars/"+
-		                                       this.avatar_name);
-		File dest_file = File.new_for_path(dest);
-		// if(FileUtils.test(dest, FileTest.EXISTS))
-		// 	return;
-
 		this.load_avatar();
 		if(!this.has_avatar()){
-			string dest = Utils.get_user_file_path("assets/avatars/"+this.avatar_name);
-			GLib.Idle.add(() => {
-				try{
-					var session = new Soup.SessionAsync();
-					var msg     = new Soup.Message("GET", this.avatar_url);
-					session.send_message(msg);
 
-					var memory_stream = new MemoryInputStream.from_data(msg.response_body.data,
-					                                                    null);
-					var pixbuf = new Gdk.Pixbuf.from_stream_at_scale(memory_stream, 48, 48,
-					                                                 false);
-					// pixbuf.save(dest, Utils.get_file_type(avatar_name));
-					pixbuf.save(dest, "png");
-					this.load_avatar(pixbuf);
-					message("Loaded avatar for %s", screen_name);
-				} catch (GLib.Error e) {
-					critical(e.message);
-				}
-				return false;
+			var session = new Soup.SessionSync();
+			var msg     = new Soup.Message("GET", this.avatar_url);
+			session.queue_message(msg, (s,m) => {
+				string dest = Utils.get_user_file_path("assets/avatars/"+this.avatar_name);
+				var memory_stream = new MemoryInputStream.from_data(m.response_body.data,
+				                                                    null);
+				var pixbuf = new Gdk.Pixbuf.from_stream_at_scale(memory_stream, 48, 48,
+				                                                 false);
+				pixbuf.save(dest, "png");
+				this.load_avatar(pixbuf);
+				message("Loaded avatar for %s", screen_name);
 			});
 		}
 	}
