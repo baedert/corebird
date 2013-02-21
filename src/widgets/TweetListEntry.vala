@@ -232,6 +232,8 @@ class TweetListEntry : Gtk.Box {
 					critical(e.message);
 				}
 				tweet.rt_id = new_id;
+				retweet_spinner.stop();
+				WidgetReplacer.replace(retweet_spinner, retweet_button);
 			});
 		} else {
 			call.set_function("1.1/statuses/destroy/%s.json"
