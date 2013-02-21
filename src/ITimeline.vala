@@ -16,14 +16,18 @@ interface ITimeline : Gtk.Widget, IPage {
 
 	protected void start_updates(bool notify, string function, int tweet_type) {
 		GLib.Timeout.add(Settings.get_update_interval() * 1000 * 60, () => {
-			load_newest_internal(function, tweet_type, (count) => {
-				//Update all current tweets
-				tweet_list.forall_internal(false, (w) => {
-					((TweetListEntry)w).update_time_delta();
+			try {
+				load_newest_internal(function, tweet_type, (count) => {
+					//Update all current tweets
+					tweet_list.forall_internal(false, (w) => {
+						((TweetListEntry)w).update_time_delta();
+					});
+					if(count > 0)
+						NotificationManager.notify("%d new tweets!".printf(count));
 				});
-				if(count > 0)
-					NotificationManager.notify("%d new tweets!".printf(count));
-			});
+			} catch(SQLHeavy.Error e) {
+				warning(e.message);
+			}
 			return true;
 		});
 	}
@@ -82,7 +86,11 @@ interface ITimeline : Gtk.Widget, IPage {
 				string thumb_path = Utils.get_user_file_path("assets/media/thumbs/"+
 							Utils.get_file_name(t.media));
 				message(thumb_path);
-				t.inline_media_added(new Gdk.Pixbuf.from_file(thumb_path));
+				try {
+					t.inline_media_added(new Gdk.Pixbuf.from_file(thumb_path));
+				} catch (GLib.Error e) {
+					warning(e.message);
+				}
 			}
 			tweet_list.add(list_entry);
 			result.next();

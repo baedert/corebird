@@ -150,10 +150,14 @@ class Corebird : Gtk.Application {
 	}
 
 	private void create_user_folder(string name) {
-		bool success = File.new_for_path(Utils.get_user_file_path(name))
-								.make_directory();
-        if(!success)
-        	critical("Couldn't create user folder %s", name);
+		try {
+			bool success = File.new_for_path(Utils.get_user_file_path(name))
+									.make_directory();
+	        if(!success)
+	        	critical("Couldn't create user folder %s", name);
+    	} catch (GLib.Error e) {
+    		critical(e.message);
+    	}
 	}
 }
 

@@ -10,7 +10,12 @@ class ImageDialog : Gtk.Window {
 	public ImageDialog(Window parent, string path) {
 
 		//Choose proper width/height
-		var pixbuf = new Gdk.Pixbuf.from_file(path);
+		Gdk.Pixbuf pixbuf = null;
+		try {
+			pixbuf = new Gdk.Pixbuf.from_file(path);
+		} catch (GLib.Error e) {
+			critical(e.message);
+		}
 		int img_width = pixbuf.get_width();
 		int img_height = pixbuf.get_height();
 

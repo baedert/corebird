@@ -33,7 +33,7 @@ class NotificationManager {
 		Notification n;
 		if (is_persistent){
 			n = notification;
-			n.update(summary, body, null);
+			n.update(summary, body, "");
 			n.set_urgency(urgency);
 		}else{
 			n = new Notification(summary, body, null);
@@ -57,9 +57,9 @@ class NotificationManager {
 				notification.close();
 			}catch(GLib.Error e){
 				message("Closing the notification: %s", e.message);
-			}	
+			}
 		}
-		Notify.uninit();	
+		Notify.uninit();
 	}
 
 }

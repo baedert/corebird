@@ -251,20 +251,24 @@ class Tweet : GLib.Object{
 		var msg     = new Soup.Message("GET", url);
 
 		session.queue_message(msg, (s, m) => {
-			var ms    = new MemoryInputStream.from_data(m.response_body.data, null);
-			var pic   = new Gdk.Pixbuf.from_stream(ms);
-			var thumb = pic.scale_simple(50, 50, Gdk.InterpType.TILES);
-			string path = Utils.get_user_file_path("assets/media/"+id.to_string()+
-			                                       "_"+this.user_id.to_string()+".png");
-			string thumb_path = Utils.get_user_file_path("assets/media/thumbs/"+
-			                                             id.to_string()+
-			                                       "_"+this.user_id.to_string()+".png");
-			Corebird.db.execute("UPDATE `cache` SET `media`='%s' WHERE `id`='%s';"
-                                .printf(path, this.id.to_string()));
-			this.media = path;
-			pic.save(path, "png");
-			thumb.save(thumb_path, "png");
-			inline_media_added(thumb);
+			try {
+				var ms    = new MemoryInputStream.from_data(m.response_body.data, null);
+				var pic   = new Gdk.Pixbuf.from_stream(ms);
+				var thumb = pic.scale_simple(50, 50, Gdk.InterpType.TILES);
+				string path = Utils.get_user_file_path("assets/media/"+id.to_string()+
+				                                       "_"+user_id.to_string()+".png");
+				string thumb_path = Utils.get_user_file_path("assets/media/thumbs/"+
+				                                             id.to_string()+
+				                                       "_"+user_id.to_string()+".png");
+				Corebird.db.execute("UPDATE `cache` SET `media`='%s' WHERE `id`='%s';"
+	                                .printf(path, this.id.to_string()));
+				this.media = path;
+				pic.save(path, "png");
+				thumb.save(thumb_path, "png");
+				inline_media_added(thumb);
+			} catch (GLib.Error e) {
+				critical(e.message);
+			}
 		});
 	}
 
@@ -278,8 +282,13 @@ class Tweet : GLib.Object{
 	 */
 	public static string replace_links(string text){
 		if(link_regex == null){
-			link_regex = new GLib.Regex("http[s]{0,1}:\\/\\/[a-zA-Z\\_.\\+\\?\\/#=&;\\-0-9%,~]+",
-			                            RegexCompileFlags.OPTIMIZE);
+			try {
+				link_regex = new GLib.Regex("http[s]{0,1}:\\/\\/[a-zA-Z\\_.\\+\\?\\/
+				                            #=&;\\-0-9%,~]+",
+			    	                        RegexCompileFlags.OPTIMIZE);
+			} catch (GLib.RegexError e) {
+				warning(e.message);
+			}
 		}
 		string real_text = text;
 		try{
