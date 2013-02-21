@@ -56,22 +56,22 @@ class TweetListEntry : Gtk.Box {
 		}
 
 		this.enter_notify_event.connect( ()=> {
-			GLib.Idle.add(() => {
+			// GLib.Idle.add(() => {
 				favorite_button.show();
 				// retweet_button.show();
 				message(" IN");
-				return false;
-			});
+				// return false;
+			// });
 
 			return false;
 		});
 		this.leave_notify_event.connect( () => {
-			GLib.Idle.add(() => {
+			// GLib.Idle.add(() => {
 				favorite_button.hide();
 				// retweet_button.hide();
 				message("OUT");
-				return false;
-			});
+				// return false;
+			// });
 
 			return false;
 		});
