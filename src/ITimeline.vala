@@ -45,7 +45,8 @@ interface ITimeline : Gtk.Widget, IPage {
 		SQLHeavy.Query query = new SQLHeavy.Query(Corebird.db,
 			@"SELECT `id`, `text`, `user_id`, `user_name`, `is_retweet`,
 			`retweeted_by`, `retweeted`, `favorited`, `created_at`,
-			`rt_created_at`, `avatar_name`, `screen_name`, `type`, `media`
+			`rt_created_at`, `avatar_name`, `screen_name`, `type`,
+			`reply_id`, `media`
 			FROM `cache` WHERE `type`='$tweet_type'
 			ORDER BY `created_at` DESC LIMIT 15;");
 		SQLHeavy.QueryResult result = query.execute();
@@ -60,7 +61,8 @@ interface ITimeline : Gtk.Widget, IPage {
 			t.retweeted    = (bool)result.fetch_int(6);
 			t.favorited    = (bool)result.fetch_int(7);
 			t.created_at   = result.fetch_int64(8);
-			t.media        = result.fetch_string(13);
+			t.reply_id     = result.fetch_int64(13);
+			t.media        = result.fetch_string(14);
 
 
 

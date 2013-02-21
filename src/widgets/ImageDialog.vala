@@ -23,7 +23,8 @@ class ImageDialog : Gtk.Window {
 		    		img_height <= Gdk.Screen.height()*0.7){
 
 			this.resize(img_width, img_height);
-		}else {
+		} else {
+			// TODO: Set proper size
 			this.resize(800, 600);
 		}
 
