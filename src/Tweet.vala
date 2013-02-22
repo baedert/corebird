@@ -101,7 +101,8 @@ class Tweet : GLib.Object{
 		this.created_at  = Utils.parse_date(status.get_string_member("created_at"))
 										.to_unix();
 		this.avatar_url  = user.get_string_member("profile_image_url");
-
+        if(!status.get_null_member("in_reply_to_status_id"))
+                this.reply_id  = status.get_int_member("in_reply_to_status_id");
 
 
 		if (status.has_member("retweeted_status")){
@@ -117,6 +118,8 @@ class Tweet : GLib.Object{
 			this.screen_name   = rt_user.get_string_member("screen_name");
 			this.rt_created_at = Utils.parse_date(rt.get_string_member("created_at"))
 			                            .to_unix();
+            if(!rt.get_null_member("in_reply_to_status_id"))
+                                this.reply_id = rt.get_int_member("in_reply_to_status_id");
 		}
 		this.avatar_name = Utils.get_avatar_name(this.avatar_url);
 
@@ -144,6 +147,9 @@ class Tweet : GLib.Object{
 				expanded_url = expanded_url.replace("&", "&amp;");
 				this.text = this.text.replace(url.get_string_member("url"),
 				    expanded_url);
+				if(Settings.show_inline_media()) {
+					load_inline_media.begin(url.get_string_member("media_url"));
+				}
 			});
 		}
 
@@ -236,7 +242,31 @@ class Tweet : GLib.Object{
 		}
 	}
 
+	private async void load_inline_media(string url) {
+		var session = new Soup.SessionAsync();
+		var msg     = new Soup.Message("GET", url);
 
+		session.queue_message(msg, (s, m) => {
+			try {
+				var ms    = new MemoryInputStream.from_data(m.response_body.data, null);
+				var pic   = new Gdk.Pixbuf.from_stream(ms);
+				var thumb = pic.scale_simple(50, 50, Gdk.InterpType.TILES);
+				string path = Utils.get_user_file_path("assets/media/"+id.to_string()+
+														"_"+user_id.to_string()+".png");
+				string thumb_path = Utils.get_user_file_path("assets/media/thumbs/"+
+															id.to_string()+
+														"_"+user_id.to_string()+".png");
+				Corebird.db.execute("UPDATE `cache` SET `media`='%s' WHERE `id`='%s';"
+											.printf(path, this.id.to_string()));
+				this.media = path;
+				pic.save(path, "png");
+				thumb.save(thumb_path, "png");
+				inline_media_added(thumb);
+			} catch (GLib.Error e) {
+				critical(e.message);
+			}
+		});
+	}
 
 	/**
 	 * Replaces the links in the given text with html tags to be used in
