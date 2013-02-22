@@ -169,6 +169,7 @@ interface ITimeline : Gtk.Widget, IPage {
 
 
 			string back = call.get_payload();
+			stdout.printf(back+"\n");
 			var parser = new Json.Parser();
 			try{
 				parser.load_from_data (back);

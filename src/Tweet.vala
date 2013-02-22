@@ -3,9 +3,11 @@ using Gtk;
 // TODO: Make tweet loading in the main-timeline work!
 // TODO: Look at EggListBox's source code
 class Tweet : GLib.Object{
-	public static int TYPE_NORMAL   = 1;
-	public static int TYPE_MENTION  = 2;
-	public static int TYPE_FAVORITE = 3;
+	public static const int THUMB_SIZE    = 50;
+
+	public static const int TYPE_NORMAL   = 1;
+	public static const int TYPE_MENTION  = 2;
+	public static const int TYPE_FAVORITE = 3;
 
 	private static SQLHeavy.Query cache_query;
 	private static SQLHeavy.Query author_query;
@@ -134,6 +136,10 @@ class Tweet : GLib.Object{
 			string expanded_url = url.get_string_member("expanded_url");
 			// message("Text: %s, expanded: %s", this.text, expanded_url);
 			expanded_url = expanded_url.replace("&", "&amp;");
+			if(Settings.show_inline_media() &&
+			   expanded_url.has_prefix("http://instagr.am")) {
+				load_instagram_media.begin(expanded_url);
+			}
 			this.text = this.text.replace(url.get_string_member("url"),
 			    expanded_url);
 		});
@@ -251,7 +257,7 @@ class Tweet : GLib.Object{
 			try {
 				var ms    = new MemoryInputStream.from_data(m.response_body.data, null);
 				var pic   = new Gdk.Pixbuf.from_stream(ms);
-				var thumb = pic.scale_simple(50, 50, Gdk.InterpType.TILES);
+				var thumb = pic.scale_simple(THUMB_SIZE, THUMB_SIZE, Gdk.InterpType.TILES);
 				string path = Utils.get_user_file_path("assets/media/"+id.to_string()+
 														"_"+user_id.to_string()+".png");
 				string thumb_path = Utils.get_user_file_path("assets/media/thumbs/"+
@@ -269,6 +275,25 @@ class Tweet : GLib.Object{
 		});
 	}
 
+	private async void load_instagram_media(string url) {
+		message("Loading instagram media...");
+		var session = new Soup.SessionAsync();
+		var msg = new Soup.Message("GET", url);
+		session.queue_message(msg, (s,m) => {
+			try {
+				string back = (string)m.response_body.data;
+				GLib.Regex regex = new GLib.Regex(
+					"<img class=\"photo\" src=\"(.*?)\"", RegexCompileFlags.OPTIMIZE);
+				MatchInfo mi;
+				regex.match(back, 0, out mi);
+				string link = mi.fetch(1);
+				load_inline_media.begin(link);
+			}catch (GLib.Error e) {
+				critical(e.message);
+			}
+		});
+	}
+
 	/**
 	 * Replaces the links in the given text with html tags to be used in
 	 * pango layouts.
@@ -278,6 +303,7 @@ class Tweet : GLib.Object{
 	 */
 	public static string replace_links(string text){
 		if(link_regex == null){
+			//TODO: Most regexes can be truly static.
 			link_regex = new GLib.Regex("http[s]{0,1}:\\/\\/[a-zA-Z\\_.\\+\\?\\/#=&;\\-0-9%,~]+",
 			                            RegexCompileFlags.OPTIMIZE);
 		}
