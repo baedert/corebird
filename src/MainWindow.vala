@@ -158,6 +158,18 @@ class MainWindow : ApplicationWindow {
 		this.add(main_box);
 		this.load_geometry();
 		this.show_all();
+
+
+
+
+		var w = new Window();
+		w.set_opacity(0);
+		ArrowBin ab = new ArrowBin(PositionType.TOP);
+
+		ab.set_size_request(200, 200);
+		w.add(ab);
+		w.show_all();
+
 	}
 
 
