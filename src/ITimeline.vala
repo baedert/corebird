@@ -164,6 +164,7 @@ interface ITimeline : Gtk.Widget, IPage {
 				call.invoke_async.end(result);
 			} catch (GLib.Error e) {
 				critical(e.message);
+				critical("Code: %u", call.get_status_code());
 			}
 
 

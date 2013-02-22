@@ -2,7 +2,7 @@
 using Gtk;
 
 /**
- * Displays an icon on the left side of the
+ * Displays an icon on the left/right side of the
  * specified text. Helps to reduce the complexity of layouts.
  */
 class ImageLabel : Label {
@@ -19,9 +19,17 @@ class ImageLabel : Label {
 
 	public override bool draw(Cairo.Context c){
 		StyleContext context = this.get_style_context();
-		context.render_icon(c, icon, 0, 0);
-		c.translate(icon.width + gap, 0);
-		base.draw(c);
+		if(icon_pos == PositionType.LEFT){
+			context.render_icon(c, icon, 0, 0);
+			c.translate(icon.width + gap, 0);
+			base.draw(c);
+		} else {
+			base.draw(c);
+			c.translate(base.get_allocated_width() - icon.width, 0);
+			context.render_icon(c, icon, 0, 0);
+		}
+
+
 		return false;
 	}
 

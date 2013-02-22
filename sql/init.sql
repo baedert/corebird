@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS `common`(
 CREATE TABLE IF NOT EXISTS `cache`(
                 id NUMERIC(19,0) PRIMARY KEY,
                 rt_id NUMERIC(19,0),
-                text VARCHAR(140),
+                text VARCHAR(200),
 				user_id NUMERIC(19,0),
 				user_name VARCHAR(100),
 				screen_name VARCHAR(40),

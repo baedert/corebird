@@ -42,7 +42,7 @@ class Tweet : GLib.Object{
 		if(cache_query == null){
 			try {
 				cache_query = new SQLHeavy.Query(Corebird.db,
-				"INSERT INTO `cache`(`id`, `text`,`user_id`, `user_name`, `is_retweet`,
+				"REPLACE INTO `cache`(`id`, `text`,`user_id`, `user_name`, `is_retweet`,
 				                     `retweeted_by`, `retweeted`, `favorited`,
 				                     `created_at`,`rt_created_at`, `avatar_name`,
 				                     `screen_name`, `type`,`rt_id`, `reply_id`)
