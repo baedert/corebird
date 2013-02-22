@@ -46,7 +46,7 @@ interface ITimeline : Gtk.Widget, IPage {
 			@"SELECT `id`, `text`, `user_id`, `user_name`, `is_retweet`,
 			`retweeted_by`, `retweeted`, `favorited`, `created_at`,
 			`rt_created_at`, `avatar_name`, `screen_name`, `type`,
-			`reply_id`, `media`, `rt_id`
+			`reply_id`, `media`, `rt_id`, `reply_id`
 			FROM `cache` WHERE `type`='$tweet_type'
 			ORDER BY `created_at` DESC LIMIT 15;");
 		SQLHeavy.QueryResult result = query.execute();
@@ -64,6 +64,7 @@ interface ITimeline : Gtk.Widget, IPage {
 			t.reply_id     = result.fetch_int64(13);
 			t.media        = result.fetch_string(14);
 			t.rt_id		   = result.fetch_int64(15);
+			t.reply_id     = result.fetch_int64(16);
 
 
 
@@ -152,7 +153,7 @@ interface ITimeline : Gtk.Widget, IPage {
 	 */
 	protected void load_older_internal(string function, int tweet_type,
 	                                   LoaderThread.EndLoadFunc? end_load_func = null) {
-		return;
+		// return;
 		var call = Twitter.proxy.new_call();
 		call.set_function(function);
 		call.set_method("GET");
