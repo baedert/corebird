@@ -140,6 +140,10 @@ class Tweet : GLib.Object{
 			   expanded_url.has_prefix("http://instagr.am")) {
 				load_instagram_media.begin(expanded_url);
 			}
+			if(Settings.show_inline_media() &&
+			   expanded_url.has_prefix("http://i.imgur.com")) {
+				load_inline_media.begin(expanded_url);
+			}
 			this.text = this.text.replace(url.get_string_member("url"),
 			    expanded_url);
 		});
