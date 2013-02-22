@@ -1,14 +1,31 @@
 
 using Gtk;
 
+// TODO: TweetMarker integration
+
 class WidgetReplacer {
+	private static Gee.HashMap<Gtk.Widget, Gtk.Widget> tmp_widgets =
+									new Gee.HashMap<Gtk.Widget, Gtk.Widget>();
+
+
+
+	public static void replace_tmp(Widget w1, owned Widget w2) {
+		tmp_widgets.set(w1, w2);
+		replace(w1, w2);
+	}
+
+	public static void replace_tmp_back(Widget w) {
+		Widget w2 = tmp_widgets.get(w);
+		replace(w2, w);
+		tmp_widgets.unset(w);
+	}
+
 
 	public static void replace(Widget w1, Widget w2) {
 		if(w1.parent == null)
-			error("w1.parent = null");
-
+			error("w1 has no parent");
 		if(!(w1.parent is Gtk.Box))
-			error("Only Box parents are supported ATM");
+			error("Only Gtk.Box is supported as parent ATM");
 
 		Box parent = (Box) w1.parent;
 

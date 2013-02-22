@@ -9,8 +9,6 @@ class TweetListEntry : Gtk.Box {
 	private Label time_delta             = new Label("");
 	private ToggleButton retweet_button  = new ToggleButton();
 	private ToggleButton favorite_button = new ToggleButton();
-	private Spinner retweet_spinner      = new Spinner();
-	private Spinner favorite_spinner     = new Spinner();
 	private MainWindow window;
 	// Timestamp used for sorting
 	public int64 timestamp;
@@ -150,8 +148,6 @@ class TweetListEntry : Gtk.Box {
 		});
 		this.pack_start(media_box, false, false);
 
-		// var b = new Button.with_label("BAR");
-		// this.pack_start(b, false, false);
 
 		this.set_size_request(20, 80);
 		this.show_all();
@@ -165,8 +161,9 @@ class TweetListEntry : Gtk.Box {
 	}
 
 	private void favorite_tweet() {
-		favorite_spinner.start();
-		WidgetReplacer.replace(favorite_button, favorite_spinner);
+		var spinner = new Spinner();
+		spinner.start();
+		WidgetReplacer.replace_tmp(favorite_button, spinner);
 
 		var call = Twitter.proxy.new_call();
 		if(favorite_button.active)
@@ -189,8 +186,7 @@ class TweetListEntry : Gtk.Box {
 			} catch(SQLHeavy.Error e) {
 				critical(e.message);
 			}
-			favorite_spinner.stop();
-			WidgetReplacer.replace(favorite_spinner, favorite_button);
+			WidgetReplacer.replace_tmp_back(favorite_button);
 		});
 	}
 
@@ -198,9 +194,9 @@ class TweetListEntry : Gtk.Box {
 	 * (Un)retweets the tweet that is saved in this ListEntry.
 	 */
 	private void retweet_tweet() {
-
-		retweet_spinner.start();
-		WidgetReplacer.replace(retweet_button, retweet_spinner);
+		var spinner = new Spinner();
+		spinner.start();
+		WidgetReplacer.replace_tmp(retweet_button, spinner);
 
 		var call = Twitter.proxy.new_call();
 		call.set_method("POST");
@@ -232,8 +228,7 @@ class TweetListEntry : Gtk.Box {
 					critical(e.message);
 				}
 				tweet.rt_id = new_id;
-				retweet_spinner.stop();
-				WidgetReplacer.replace(retweet_spinner, retweet_button);
+				WidgetReplacer.replace_tmp_back(retweet_button);
 			});
 		} else {
 			call.set_function("1.1/statuses/destroy/%s.json"
@@ -251,8 +246,7 @@ class TweetListEntry : Gtk.Box {
 				}catch (SQLHeavy.Error e) {
 					critical(e.message);
 				}
-				retweet_spinner.stop();
-				WidgetReplacer.replace(retweet_spinner, retweet_button);
+				WidgetReplacer.replace_tmp_back(retweet_button);
 			});
 		}
 	}

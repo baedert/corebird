@@ -183,7 +183,7 @@ class Tweet : GLib.Object{
 					                                                    null);
 					var pixbuf = new Gdk.Pixbuf.from_stream_at_scale(memory_stream, 48, 48,
 					                                                 false);
-					pixbuf.save(dest, Utils.get_file_type(avatar_name));
+					pixbuf.save(dest, "png");
 					this.load_avatar(pixbuf);
 					message("Loaded avatar for %s", screen_name);
 				} catch (GLib.Error e) {
