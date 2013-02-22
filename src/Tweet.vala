@@ -136,6 +136,7 @@ class Tweet : GLib.Object{
 			string expanded_url = url.get_string_member("expanded_url");
 			// message("Text: %s, expanded: %s", this.text, expanded_url);
 			expanded_url = expanded_url.replace("&", "&amp;");
+			//TODO: Refactor this!
 			if(Settings.show_inline_media() &&
 			   expanded_url.has_prefix("http://instagr.am")) {
 				load_instagram_media.begin(expanded_url);
@@ -143,6 +144,10 @@ class Tweet : GLib.Object{
 			if(Settings.show_inline_media() &&
 			   expanded_url.has_prefix("http://i.imgur.com")) {
 				load_inline_media.begin(expanded_url);
+			}
+			if(Settings.show_inline_media() &&
+			   expanded_url.has_prefix("http://d.pr/")) {
+				load_droplr_media.begin(expanded_url);
 			}
 			this.text = this.text.replace(url.get_string_member("url"),
 			    expanded_url);
@@ -288,6 +293,26 @@ class Tweet : GLib.Object{
 				string back = (string)m.response_body.data;
 				GLib.Regex regex = new GLib.Regex(
 					"<img class=\"photo\" src=\"(.*?)\"", RegexCompileFlags.OPTIMIZE);
+				MatchInfo mi;
+				regex.match(back, 0, out mi);
+				string link = mi.fetch(1);
+				load_inline_media.begin(link);
+			}catch (GLib.Error e) {
+				critical(e.message);
+			}
+		});
+	}
+
+	private async void load_droplr_media(string url) {
+		message("Loading droplr media...");
+		var session = new Soup.SessionAsync();
+		var msg = new Soup.Message("GET", url);
+		session.queue_message(msg, (s,m) => {
+			try {
+				string back = (string)m.response_body.data;
+				GLib.Regex regex = new GLib.Regex(
+							"<meta property=\"og:image\" content=\"(.*?)\"",
+					 		RegexCompileFlags.OPTIMIZE);
 				MatchInfo mi;
 				regex.match(back, 0, out mi);
 				string link = mi.fetch(1);
