@@ -137,6 +137,14 @@ class Tweet : GLib.Object{
 			// message("Text: %s, expanded: %s", this.text, expanded_url);
 			expanded_url = expanded_url.replace("&", "&amp;");
 			//TODO: Refactor this!
+			/*
+				Support For:
+					* pic.twitter.com
+					* twitpic.com (see tweedle upload)
+					* droplr
+					* instagram
+
+			 */
 			if(Settings.show_inline_media() &&
 			   expanded_url.has_prefix("http://instagr.am")) {
 				load_instagram_media.begin(expanded_url);
@@ -148,6 +156,10 @@ class Tweet : GLib.Object{
 			if(Settings.show_inline_media() &&
 			   expanded_url.has_prefix("http://d.pr/")) {
 				load_droplr_media.begin(expanded_url);
+			}
+			if(Settings.show_inline_media() &&
+			   expanded_url.has_prefix("http://www.youtube.com/watch?v=")) {
+				load_yt_media.begin(expanded_url);
 			}
 			this.text = this.text.replace(url.get_string_member("url"),
 			    expanded_url);
@@ -321,6 +333,17 @@ class Tweet : GLib.Object{
 				critical(e.message);
 			}
 		});
+
+	}
+
+	private async void load_yt_media(string url) {
+		var regex = new GLib.Regex("(v=|\\/)([\\w-]+)(&.+)?$",
+		                           RegexCompileFlags.OPTIMIZE);
+		MatchInfo mi;
+		regex.match(url, 0, out mi);
+		string yid = mi.fetch(2);
+		load_inline_media.begin("http://i1.ytimg.com/vi/"+yid+"/default.jpg");
+
 	}
 
 	/**

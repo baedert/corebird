@@ -11,6 +11,7 @@ class MentionsTimeline : IPage, ITimeline, ScrollWidget{
 	public MentionsTimeline(int id){
 		this.id = id;
 		tweet_list = new Egg.ListBox();
+		tweet_list.set_selection_mode(SelectionMode.NONE);
 		tweet_list.set_sort_func((tle1, tle2) => {
 			if(((TweetListEntry)tle1).timestamp <
 			   ((TweetListEntry)tle2).timestamp)

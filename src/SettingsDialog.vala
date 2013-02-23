@@ -36,8 +36,14 @@ class SettingsDialog : PreferencesDialog {
 
 			}
 		});
-		add_array_option(behavior, "Additional Information:",
-			{"Same Window", "Side Pane", "New Window"}, 0, () => {});
+		add_heading(behavior, "Composing");
+		add_array_option(behavior, "Image Upload:",
+		                 {"Twitter"}, 0,
+		() => {
+
+		});
+		// add_array_option(behavior, "Additional Information:",
+			// {"Same Window", "Side Pane", "New Window"}, 0, () => {});
 
 
 
