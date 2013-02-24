@@ -134,33 +134,9 @@ class Tweet : GLib.Object{
 		urls.foreach_element((arr, index, node) => {
 			var url = node.get_object();
 			string expanded_url = url.get_string_member("expanded_url");
-			// message("Text: %s, expanded: %s", this.text, expanded_url);
 			expanded_url = expanded_url.replace("&", "&amp;");
-			//TODO: Refactor this!
-			/*
-				Support For:
-					* pic.twitter.com
-					* twitpic.com (see tweedle upload)
-					* droplr
-					* instagram
+			InlineMediaDownloader.try_load_media(this, expanded_url);
 
-			 */
-			if(Settings.show_inline_media() &&
-			   expanded_url.has_prefix("http://instagr.am")) {
-				load_instagram_media.begin(expanded_url);
-			}
-			if(Settings.show_inline_media() &&
-			   expanded_url.has_prefix("http://i.imgur.com")) {
-				load_inline_media.begin(expanded_url);
-			}
-			if(Settings.show_inline_media() &&
-			   expanded_url.has_prefix("http://d.pr/")) {
-				load_droplr_media.begin(expanded_url);
-			}
-			if(Settings.show_inline_media() &&
-			   expanded_url.has_prefix("http://www.youtube.com/watch?v=")) {
-				load_yt_media.begin(expanded_url);
-			}
 			this.text = this.text.replace(url.get_string_member("url"),
 			    expanded_url);
 		});
@@ -174,9 +150,6 @@ class Tweet : GLib.Object{
 				expanded_url = expanded_url.replace("&", "&amp;");
 				this.text = this.text.replace(url.get_string_member("url"),
 				    expanded_url);
-				if(Settings.show_inline_media()) {
-					load_inline_media.begin(url.get_string_member("media_url"));
-				}
 			});
 		}
 
@@ -268,82 +241,6 @@ class Tweet : GLib.Object{
 		}catch(SQLHeavy.Error e){
 			error("Error while caching tweet: %s", e.message);
 		}
-	}
-
-	private async void load_inline_media(string url) {
-		var session = new Soup.SessionAsync();
-		var msg     = new Soup.Message("GET", url);
-
-		session.queue_message(msg, (s, m) => {
-			try {
-				var ms    = new MemoryInputStream.from_data(m.response_body.data, null);
-				var pic   = new Gdk.Pixbuf.from_stream(ms);
-				var thumb = pic.scale_simple(THUMB_SIZE, THUMB_SIZE, Gdk.InterpType.TILES);
-				string path = Utils.get_user_file_path("assets/media/"+id.to_string()+
-														"_"+user_id.to_string()+".png");
-				string thumb_path = Utils.get_user_file_path("assets/media/thumbs/"+
-															id.to_string()+
-														"_"+user_id.to_string()+".png");
-				Corebird.db.execute("UPDATE `cache` SET `media`='%s' WHERE `id`='%s';"
-											.printf(path, this.id.to_string()));
-				this.media = path;
-				pic.save(path, "png");
-				thumb.save(thumb_path, "png");
-				inline_media_added(thumb);
-			} catch (GLib.Error e) {
-				critical(e.message);
-			}
-		});
-	}
-
-	private async void load_instagram_media(string url) {
-		message("Loading instagram media...");
-		var session = new Soup.SessionAsync();
-		var msg = new Soup.Message("GET", url);
-		session.queue_message(msg, (s,m) => {
-			try {
-				string back = (string)m.response_body.data;
-				GLib.Regex regex = new GLib.Regex(
-					"<img class=\"photo\" src=\"(.*?)\"", RegexCompileFlags.OPTIMIZE);
-				MatchInfo mi;
-				regex.match(back, 0, out mi);
-				string link = mi.fetch(1);
-				load_inline_media.begin(link);
-			}catch (GLib.Error e) {
-				critical(e.message);
-			}
-		});
-	}
-
-	private async void load_droplr_media(string url) {
-		message("Loading droplr media...");
-		var session = new Soup.SessionAsync();
-		var msg = new Soup.Message("GET", url);
-		session.queue_message(msg, (s,m) => {
-			try {
-				string back = (string)m.response_body.data;
-				GLib.Regex regex = new GLib.Regex(
-							"<meta property=\"og:image\" content=\"(.*?)\"",
-					 		RegexCompileFlags.OPTIMIZE);
-				MatchInfo mi;
-				regex.match(back, 0, out mi);
-				string link = mi.fetch(1);
-				load_inline_media.begin(link);
-			}catch (GLib.Error e) {
-				critical(e.message);
-			}
-		});
-
-	}
-
-	private async void load_yt_media(string url) {
-		var regex = new GLib.Regex("(v=|\\/)([\\w-]+)(&.+)?$",
-		                           RegexCompileFlags.OPTIMIZE);
-		MatchInfo mi;
-		regex.match(url, 0, out mi);
-		string yid = mi.fetch(2);
-		load_inline_media.begin("http://i1.ytimg.com/vi/"+yid+"/default.jpg");
-
 	}
 
 	/**

@@ -164,8 +164,10 @@ class Corebird : Gtk.Application {
 
 int main (string[] args){
 	try{
+		//no initialisation of static fields :(
 		Settings.init();
-		new Utils(); //no initialisation of static fields :(
+		new Utils();
+		new WidgetReplacer();
 		var corebird = new Corebird();
 		return corebird.run(args);
 	} catch(GLib.Error e){

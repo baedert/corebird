@@ -30,9 +30,7 @@ class MainWindow : ApplicationWindow {
 	public MainWindow(Gtk.Application app){
 		GLib.Object (application: app);
 
-		//Initialize static fields :'(
-		typeof(WidgetReplacer);
-		new WidgetReplacer();
+
 
 		timelines[0] = new HomeTimeline(PAGE_STREAM);
 		timelines[1] = new MentionsTimeline(PAGE_MENTIONS);

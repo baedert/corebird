@@ -8,15 +8,16 @@ list(APPEND CMAKE_MODULE_PATH
 # Enable coloring
 set (CMAKE_COLOR_MAKEFILE ON)
 # set (CMAKE_VERBOSE_MAKEFILE ON)
-set (CMAKE_C_FLAGS "-g")
-set (CMAKE_C_FLAGS "-O0")
-set (CMAKE_C_FLAGS "-Wall")
-set (CMAKE_C_FLAGS "-Wno-incompatible-pointer-types")
-set (CMAKE_C_FLAGS "-Wno-unused-value")
-set (CMAKE_C_FLAGS "-Wno-unused-function")
-set (CMAKE_C_FLAGS "-Wno-unused-variable")
-set (CMAKE_C_FLAGS "-Wno-deprecated-declarations")
-set (CMAKE_C_FLAGS "-I src/egglistbox/")
+
+set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g")
+set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0")
+#set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
+set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-value")
+set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-function")
+set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-variable")
+set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-but-set-variable")
+set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-deprecated-declarations")
+set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -I src/egglistbox/")
 # TODO: This always resets the CMAKE_C_FLAGS variable
 
 
@@ -71,6 +72,7 @@ vala_precompile(VALA_C
 	src/LoaderThread.vala
 	src/IPage.vala
 	src/ProfilePage.vala
+	src/InlineMediaDownloader.vala
 	src/widgets/ImageDialog.vala
 	src/widgets/ImageBox.vala
 	src/widgets/ImageLabel.vala
