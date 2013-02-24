@@ -12,50 +12,60 @@ class InlineMediaDownloader {
 			Support For:
 				* pic.twitter.com
 				* twitpic.com (see tweedle upload)
-				* droplr
-				* instagram
+
+				* Youtube
 
 		*/
 
+		message("Trying to download %s", url);
 		if(url.has_prefix("http://instagr.am")) {
-			two_step_load(t, url, "<img class=\"photo\" src=\"(.*?)\"", 1);
+			two_step_load.begin(t, url, "<img class=\"photo\" src=\"(.*?)\"", 1);
 		} else if(url.has_prefix("http://i.imgur.com")) {
-			// load_inline_media.begin(t, url);
+			load_inline_media(t, url);
 		} else if(url.has_prefix("http://d.pr/")) {
-			// load_droplr_media.begin(t, url);
-		} else if(url.has_prefix("http://www.youtube.com/watch?v=")) {
-			// load_yt_media.begin(t, url);
+			two_step_load.begin(t, url, "<meta property=\"og:image\" content=\"(.*?)\"",
+			                    1);
+		} else if(url.has_prefix("http://pbs.twimg.com/media/")) {
+			load_inline_media.begin(t, url);
 		}
 	}
 
-	private static  void two_step_load(Tweet t, string first_url, string regex_str,
+	private static async void two_step_load(Tweet t, string first_url, string regex_str,
 	                                        int match_index) {
-		var session = new Soup.SessionAsync();
-		var msg     = new Soup.Message("GET", first_url);
-		session.queue_message(msg, (s, m) => {
-			string back = (string)m.response_body.data;
-			message(regex_str);
+		GLib.Idle.add(() => {
+			var session = new Soup.SessionAsync();
+			var msg     = new Soup.Message("GET", first_url);
+			session.send_message(msg);
+			string back = (string)msg.response_body.data;
 			var regex = new GLib.Regex(regex_str, RegexCompileFlags.OPTIMIZE);
 			MatchInfo info;
 			regex.match(back, 0, out info);
 			string real_url = info.fetch(match_index);
-			load_inline_media(t, real_url);
+			if(real_url != null)
+				load_inline_media(t, real_url, session);
+
+			return false;
 		});
 	}
 
-	private static  void load_inline_media(Tweet t, string url, Soup.Session? sess = null) {
-		Soup.Session session = sess;
-		if(session == null)
-			session = new Soup.SessionAsync();
-		var msg     = new Soup.Message("GET", url);
+	private static async void load_inline_media(Tweet t, string url,
+	                                       Soup.Session? sess = null) {
+		GLib.Idle.add(() => {
+			Soup.Session session = sess;
+			message("Directly Downloading %s", url);
+			if(session == null)
+				session = new Soup.SessionAsync();
+			var msg     = new Soup.Message("GET", url);
 
-		session.queue_message(msg, (s, m) => {
+
+			session.send_message(msg);
 			try {
-				var ms    = new MemoryInputStream.from_data(m.response_body.data, null);
+				var ms    = new MemoryInputStream.from_data(msg.response_body.data, null);
 				var pic   = new Gdk.Pixbuf.from_stream(ms);
 				string file_name = @"$(t.id)_$(t.user_id).png";
 
-				var thumb = pic.scale_simple(THUMB_SIZE, THUMB_SIZE, Gdk.InterpType.TILES);
+				var thumb = pic.scale_simple(THUMB_SIZE, THUMB_SIZE,
+				                             Gdk.InterpType.TILES);
 
 				string path = Utils.get_user_file_path("assets/media/"+file_name);
 				string thumb_path = Utils.get_user_file_path("assets/media/thumbs/"
@@ -69,7 +79,9 @@ class InlineMediaDownloader {
 			} catch (GLib.Error e) {
 				critical(e.message);
 			}
+			return false;
 		});
+
 	}
 
 

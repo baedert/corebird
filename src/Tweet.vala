@@ -135,7 +135,7 @@ class Tweet : GLib.Object{
 			var url = node.get_object();
 			string expanded_url = url.get_string_member("expanded_url");
 			expanded_url = expanded_url.replace("&", "&amp;");
-			InlineMediaDownloader.try_load_media(this, expanded_url);
+			InlineMediaDownloader.try_load_media.begin(this, expanded_url);
 
 			this.text = this.text.replace(url.get_string_member("url"),
 			    expanded_url);
@@ -147,6 +147,8 @@ class Tweet : GLib.Object{
 			medias.foreach_element((arr, index, node) => {
 				var url = node.get_object();
 				string expanded_url = "https://"+url.get_string_member("display_url");
+				InlineMediaDownloader.try_load_media.begin(this,
+				        url.get_string_member("media_url"));
 				expanded_url = expanded_url.replace("&", "&amp;");
 				this.text = this.text.replace(url.get_string_member("url"),
 				    expanded_url);
