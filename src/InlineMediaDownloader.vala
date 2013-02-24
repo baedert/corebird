@@ -11,6 +11,7 @@ class InlineMediaDownloader {
 		/*
 			Support For:
 				* yfrog
+				* ow.ly
 
 				* Youtube (Preview image with video indicator. Click on the video
 				           opens/streams it in some video player)
@@ -30,6 +31,9 @@ class InlineMediaDownloader {
 		} else if(url.has_prefix("http://twitpic.com/")) {
 			two_step_load.begin(t, url,
 			                    "<meta name=\"twitter:image\" value=\"(.*?)\"", 1);
+		} else if(url.has_prefix("http://ow.ly/i/")) {
+			two_step_load.begin(t, url,
+			                	"<meta name=\"twitter:image\" content=\"(.*?)\"", 1);
 		}
 	}
 
