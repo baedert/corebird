@@ -10,8 +10,8 @@ class InlineMediaDownloader {
 
 		/*
 			Support For:
-				* pic.twitter.com
 				* twitpic.com (see tweedle upload)
+				* yfrog
 
 				* Youtube
 
@@ -27,6 +27,9 @@ class InlineMediaDownloader {
 			                    1);
 		} else if(url.has_prefix("http://pbs.twimg.com/media/")) {
 			load_inline_media.begin(t, url);
+		} else if(url.has_prefix("http://twitpic.com/")) {
+			two_step_load.begin(t, url,
+			  "<meta name=\"twitter:image\" value=\"(.*?)\"", 1);
 		}
 	}
 
