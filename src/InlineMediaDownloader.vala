@@ -10,10 +10,10 @@ class InlineMediaDownloader {
 
 		/*
 			Support For:
-				* twitpic.com (see tweedle upload)
 				* yfrog
 
-				* Youtube
+				* Youtube (Preview image with video indicator. Click on the video
+				           opens/streams it in some video player)
 
 		*/
 
@@ -29,7 +29,7 @@ class InlineMediaDownloader {
 			load_inline_media.begin(t, url);
 		} else if(url.has_prefix("http://twitpic.com/")) {
 			two_step_load.begin(t, url,
-			  "<meta name=\"twitter:image\" value=\"(.*?)\"", 1);
+			                    "<meta name=\"twitter:image\" value=\"(.*?)\"", 1);
 		}
 	}
 
@@ -67,8 +67,10 @@ class InlineMediaDownloader {
 				var pic   = new Gdk.Pixbuf.from_stream(ms);
 				string file_name = @"$(t.id)_$(t.user_id).png";
 
-				var thumb = pic.scale_simple(THUMB_SIZE, THUMB_SIZE,
-				                             Gdk.InterpType.TILES);
+				int thumb_w, thumb_h;
+				get_thumb_size(pic.get_width(), pic.get_height(), out thumb_w,
+				               out thumb_h);
+				var thumb = pic.scale_simple(thumb_w, thumb_h, Gdk.InterpType.TILES);
 
 				string path = Utils.get_user_file_path("assets/media/"+file_name);
 				string thumb_path = Utils.get_user_file_path("assets/media/thumbs/"
@@ -88,7 +90,11 @@ class InlineMediaDownloader {
 	}
 
 
-	private static void scale(out int width, out int height) {
+	private static void get_thumb_size(int pic_width, int pic_height,
+	                                   out int width, out int height) {
+		double size_ratio = pic_width / pic_height;
 
+		width  = THUMB_SIZE;
+		height = THUMB_SIZE;
 	}
 }
