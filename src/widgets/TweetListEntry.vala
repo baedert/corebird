@@ -143,6 +143,8 @@ class TweetListEntry : Gtk.Box {
 			var media_button = new ImageButton();
 			media_button.set_bg(pic);
 			media_button.visible = true;
+			media_button.vexpand = false;
+			media_button.set_valign(Align.START);
 			media_button.clicked.connect(() => {
 				ImageDialog id = new ImageDialog(window, tweet.media);
 				id.show_all();
