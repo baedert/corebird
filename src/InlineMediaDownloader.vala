@@ -18,7 +18,6 @@ class InlineMediaDownloader {
 
 		*/
 
-		message("Trying to download %s", url);
 		if(url.has_prefix("http://instagr.am")) {
 			two_step_load.begin(t, url, "<img class=\"photo\" src=\"(.*?)\"", 1);
 		} else if(url.has_prefix("http://i.imgur.com")) {

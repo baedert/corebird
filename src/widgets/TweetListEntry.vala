@@ -11,6 +11,7 @@ class TweetListEntry : Gtk.Box {
 	private ToggleButton favorite_button = new ToggleButton();
 	private Box text_box				 = new Box(Orientation.HORIZONTAL, 3);
 	private MainWindow window;
+	private Gtk.Menu more_menu;
 	// Timestamp used for sorting
 	public int64 timestamp;
 	private int64 tweet_id;
@@ -19,7 +20,7 @@ class TweetListEntry : Gtk.Box {
 
 	public TweetListEntry(Tweet tweet, MainWindow? window){
 		GLib.Object(orientation: Orientation.HORIZONTAL, spacing: 5);
-		this.window = window;
+		this.window  = window;
 		this.vexpand = false;
 		this.hexpand = false;
 
@@ -69,7 +70,7 @@ class TweetListEntry : Gtk.Box {
 		var left_box = new Box(Orientation.VERTICAL, 3);
 		avatar.set_valign(Align.START);
 		avatar.pixbuf = tweet.avatar;
-		avatar.margin_top = 3;
+		avatar.margin_top  = 3;
 		avatar.margin_left = 3;
 		left_box.pack_start(avatar, false, false);
 
@@ -87,6 +88,7 @@ class TweetListEntry : Gtk.Box {
 
 		var more_button = new Button();
 		more_button.get_style_context().add_class("more-button");
+		more_button.clicked.connect(more_button_clicked);
 		status_box.pack_start(more_button, false, false);
 
 		left_box.pack_start(status_box, true, false);
@@ -129,7 +131,11 @@ class TweetListEntry : Gtk.Box {
 
 
 	    // Also set User/Hashtag links
-		text.label = Tweet.replace_links(tweet.text);
+	    string display_text = tweet.text;
+	    display_text = user_regex.replace(display_text, display_text.length, 0,
+	                                      "<a href='cb://user/\\0'>\\0</a>");
+		display_text = Tweet.replace_links(display_text);
+		text.label = display_text;
 		text.set_use_markup(true);
 		text.set_line_wrap(true);
 		text.wrap_mode = Pango.WrapMode.WORD_CHAR;
@@ -278,7 +284,7 @@ class TweetListEntry : Gtk.Box {
 		string term = uri.substring(1);
 
 		if(uri.has_prefix("@")){
-			// FIXME: Use the id OR the handle in ProfileDialog
+			// TODO: Use the id OR the handle in ProfileDialog
 			// ProfileDialog pd = new ProfileDialog(term);
 			// pd.show_all();
 			return true;
@@ -290,4 +296,22 @@ class TweetListEntry : Gtk.Box {
 	}
 
 
+	private void more_button_clicked() {
+		if(more_menu == null)
+			construct_more_menu();
+
+
+		more_menu.popup(null, null, null, 0, 0);
+	}
+
+	private void construct_more_menu() {
+		more_menu = new Gtk.Menu();
+
+		Gtk.MenuItem reply_item = new Gtk.MenuItem.with_label("Reply");
+		more_menu.add(reply_item);
+		Gtk.MenuItem details_item = new Gtk.MenuItem.with_label("Details");
+		more_menu.add(details_item);
+
+		more_menu.show_all();
+	}
 }

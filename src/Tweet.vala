@@ -11,6 +11,7 @@ class Tweet : GLib.Object{
 
 	private static SQLHeavy.Query cache_query;
 	private static SQLHeavy.Query author_query;
+
 	private static GLib.Regex link_regex;
 
 
@@ -255,8 +256,9 @@ class Tweet : GLib.Object{
 	public static string replace_links(string text){
 		if(link_regex == null){
 			//TODO: Most regexes can be truly static.
-			link_regex = new GLib.Regex("http[s]{0,1}:\\/\\/[a-zA-Z\\_.\\+\\?\\/#=&;\\-0-9%,~]+",
-			                            RegexCompileFlags.OPTIMIZE);
+			link_regex = new GLib.Regex(
+			"http[s]{0,1}:\\/\\/[a-zA-Z\\_.\\+!\\?\\/#=&;\\-0-9%,~]+",
+			RegexCompileFlags.OPTIMIZE);
 		}
 		string real_text = text;
 		try{

@@ -128,4 +128,13 @@ class Utils{
 		return GLib.Environment.get_home_dir()+"/.corebird/"+file_name;
 	}
 
+
+	public static string replace_range(string source, int start, int end,
+	                                   string replacement) {
+		string first = source.substring(0, start);
+		string last  = source.substring(end);
+
+		return first+replacement+last;
+	}
+
 }
