@@ -9,6 +9,7 @@ class TweetListEntry : Gtk.Box {
 	private Label time_delta             = new Label("");
 	private ToggleButton retweet_button  = new ToggleButton();
 	private ToggleButton favorite_button = new ToggleButton();
+	private Box text_box				 = new Box(Orientation.HORIZONTAL, 3);
 	private MainWindow window;
 	// Timestamp used for sorting
 	public int64 timestamp;
@@ -131,11 +132,13 @@ class TweetListEntry : Gtk.Box {
 		text.wrap_mode = Pango.WrapMode.WORD_CHAR;
 		text.set_alignment(0, 0);
 		text.activate_link.connect(handle_uri);
-		right_box.pack_start(text, true, true);
+		text_box.pack_start(text, true, true);
+
+
+		right_box.pack_start(text_box, true, true);
 
 		this.pack_start(right_box, true, true);
 
-		var media_box = new Box(Orientation.VERTICAL, 3);
 		tweet.inline_media_added.connect((pic) => {
 			var media_button = new ImageButton();
 			media_button.set_bg(pic);
@@ -144,9 +147,8 @@ class TweetListEntry : Gtk.Box {
 				ImageDialog id = new ImageDialog(window, tweet.media);
 				id.show_all();
 			});
-			media_box.pack_start(media_button, false, false);
+			text_box.pack_start(media_button, false, false);
 		});
-		this.pack_start(media_box, false, false);
 
 
 		this.set_size_request(20, 80);
