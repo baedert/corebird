@@ -20,7 +20,6 @@ class HomeTimeline : IPage, ITimeline, ScrollWidget{
 				return 1;
 			return -1;
 		});
-		this.start_updates(true, "1.1/statuses/home_timeline.json", Tweet.TYPE_NORMAL);
 
 	    this.vadjustment.value_changed.connect( () => {
             int max = (int)(this.vadjustment.upper - this.vadjustment.page_size);
@@ -32,6 +31,8 @@ class HomeTimeline : IPage, ITimeline, ScrollWidget{
                 load_older();
             }
         });
+
+        start_updates();
 	}
 
 	/**
@@ -39,6 +40,23 @@ class HomeTimeline : IPage, ITimeline, ScrollWidget{
 	 */
 	public void onJoin(int page_id, va_list arg_list){
 
+	}
+
+	public void update () {
+		try {
+			this.balance_next_upper_change(TOP);
+			load_newest_internal("1.1/statuses/home_timeline.json",
+			                     Tweet.TYPE_NORMAL, (count) => {
+				//Update all current tweets
+				tweet_list.forall_internal(false, (w) => {
+					((TweetListEntry)w).update_time_delta();
+				});
+				if(count > 0)
+					NotificationManager.notify("%d new tweets!".printf(count));
+			});
+		} catch(SQLHeavy.Error e) {
+			warning(e.message);
+		}
 	}
 
 	/**

@@ -77,15 +77,18 @@ class TweetListEntry : Gtk.Box {
 		favorite_button.get_style_context().add_class("favorite-button");
 		favorite_button.active = tweet.favorited;
 		favorite_button.toggled.connect(favorite_tweet);
-
 		// favorite_button.no_show_all = true;
 		status_box.pack_start(favorite_button, false, false);
 		retweet_button.get_style_context().add_class("retweet-button");
 		retweet_button.active = tweet.retweeted;
 		retweet_button.toggled.connect(retweet_tweet);
-
 		// retweet_button.no_show_all = true;
 		status_box.pack_start(retweet_button, false, false);
+
+		var more_button = new Button();
+		more_button.get_style_context().add_class("more-button");
+		status_box.pack_start(more_button, false, false);
+
 		left_box.pack_start(status_box, true, false);
 		this.pack_start(left_box, false, false);
 

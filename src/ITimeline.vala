@@ -12,22 +12,12 @@ interface ITimeline : Gtk.Widget, IPage {
 	public abstract void load_cached();
 	public abstract void load_newest();
 	public abstract void load_older ();
+	public abstract void update     ();
 
 
-	protected void start_updates(bool notify, string function, int tweet_type) {
+	protected void start_updates() {
 		GLib.Timeout.add(Settings.get_update_interval() * 1000 * 60, () => {
-			try {
-				load_newest_internal(function, tweet_type, (count) => {
-					//Update all current tweets
-					tweet_list.forall_internal(false, (w) => {
-						((TweetListEntry)w).update_time_delta();
-					});
-					if(count > 0)
-						NotificationManager.notify("%d new tweets!".printf(count));
-				});
-			} catch(SQLHeavy.Error e) {
-				warning(e.message);
-			}
+			update();
 			return true;
 		});
 	}

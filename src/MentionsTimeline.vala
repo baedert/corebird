@@ -28,6 +28,10 @@ class MentionsTimeline : IPage, ITimeline, ScrollWidget{
 
 	}
 
+	public void update () {
+
+	}
+
 	public void load_cached() {
 		try{
 			this.load_cached_internal(Tweet.TYPE_MENTION);
