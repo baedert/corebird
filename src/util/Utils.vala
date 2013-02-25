@@ -127,14 +127,4 @@ class Utils{
 	public static string get_user_file_path(string file_name){
 		return GLib.Environment.get_home_dir()+"/.corebird/"+file_name;
 	}
-
-
-	public static string replace_range(string source, int start, int end,
-	                                   string replacement) {
-		string first = source.substring(0, start);
-		string last  = source.substring(end);
-
-		return first+replacement+last;
-	}
-
 }
