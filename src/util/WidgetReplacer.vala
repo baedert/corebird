@@ -45,6 +45,8 @@ class WidgetReplacer {
 
 		Allocation alloc;
 		w1.get_allocation(out alloc);
+		message("Replacing widget of type %s with size %d/%d",
+		        w1.get_type().name(), alloc.width, alloc.height);
 
 		parent.query_child_packing(w1, out expand, out fill, out padding, out pack_type);
 		parent.remove(w1);

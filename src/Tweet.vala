@@ -38,6 +38,7 @@ class Tweet : GLib.Object{
     public int64 reply_id = 0;
     public string media;
     public signal void inline_media_added(Gdk.Pixbuf? media);
+    public bool has_inline_media = false;
 
 
 	public Tweet(){
@@ -153,6 +154,7 @@ class Tweet : GLib.Object{
 				expanded_url = expanded_url.replace("&", "&amp;");
 				this.text = this.text.replace(url.get_string_member("url"),
 				    expanded_url);
+				this.has_inline_media = true;
 			});
 		}
 

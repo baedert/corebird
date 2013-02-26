@@ -12,7 +12,6 @@ class TextButton : Button {
 
 
 		this.enter_notify_event.connect( () => {
-			// this.last_cursor = this.get_window().cursor;
 			this.get_window().cursor = hand_cursor;
 			return false;
 		});
