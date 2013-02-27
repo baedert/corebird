@@ -9,9 +9,10 @@ class WidgetReplacer {
 
 
 
-	public static void replace_tmp(Widget w1, owned Widget w2) {
+	public static void replace_tmp(Widget w1, owned Widget w2,
+	                               bool take_size = true) {
 		tmp_widgets.set(w1, w2);
-		replace(w1, w2);
+		replace(w1, w2, take_size);
 	}
 
 	public static void replace_tmp_back(Widget w, bool take_size = true) {
