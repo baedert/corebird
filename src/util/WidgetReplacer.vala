@@ -14,14 +14,14 @@ class WidgetReplacer {
 		replace(w1, w2);
 	}
 
-	public static void replace_tmp_back(Widget w) {
+	public static void replace_tmp_back(Widget w, bool take_size = true) {
 		Widget w2 = tmp_widgets.get(w);
-		replace(w2, w);
+		replace(w2, w, take_size);
 		tmp_widgets.unset(w);
 	}
 
 
-	public static void replace(Widget w1, Widget w2) {
+	public static void replace(Widget w1, Widget w2, bool take_size = true) {
 		if(w1.parent == null)
 			error("w1 has no parent");
 		if(!(w1.parent is Gtk.Box))
@@ -51,7 +51,8 @@ class WidgetReplacer {
 		parent.query_child_packing(w1, out expand, out fill, out padding, out pack_type);
 		parent.remove(w1);
 
-		w2.set_size_request(alloc.width, alloc.height);
+		if(take_size)
+			w2.set_size_request(alloc.width, alloc.height);
 		parent.pack_start(w2, expand, fill, padding);
 		w2.visible = true;
 		parent.set_child_packing(w2, expand, fill, padding, pack_type);
