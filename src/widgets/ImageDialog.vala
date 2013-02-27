@@ -30,9 +30,14 @@ class ImageDialog : Gtk.Window {
 		}
 
 		image = new Gtk.Image.from_pixbuf(pixbuf);
-		scroller.add_with_viewport(image);
-		scroller.can_focus = false;
-		image.can_focus = false;
+		image.button_press_event.connect(() => {
+			message("press");
+			return false;
+		});
+		var ebox = new EventBox();
+		ebox.add(image);
+		scroller.add_with_viewport(ebox);
+
 		this.add(scroller);
 		this.set_decorated(false);
 		this.set_transient_for(parent);
