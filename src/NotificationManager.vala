@@ -18,7 +18,6 @@ class NotificationManager {
 				is_persistent = true;
 				notification = new Notification("Corebird", "Started", null);
 				notification.set_urgency(Urgency.LOW);
-				// notification.set_hint("transient", new Variant.boolean(true));
 				notification.set_timeout(Notify.EXPIRES_NEVER);
 				try{
 					notification.show();

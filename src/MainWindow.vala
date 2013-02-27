@@ -6,9 +6,11 @@ using Gtk;
 class MainWindow : ApplicationWindow {
 	public static const int PAGE_STREAM    = 0;
 	public static const int PAGE_MENTIONS  = 1;
+	public static const int PAGE_SEARCH    = 2;
 	// public static const int PAGE_FAVORITES = 2;
-	// public static const int PAGE_SEARCH    = 3;
-	public static const int PAGE_PROFILE   = 2;
+
+	public static const int PAGE_PROFILE   = 3;
+
 
 
 	private Toolbar left_toolbar             = new Toolbar();
@@ -17,7 +19,7 @@ class MainWindow : ApplicationWindow {
 	private Box bottom_box                   = new Box(Orientation.HORIZONTAL, 0);
 	private Notebook main_notebook           = new Notebook();
 	private RadioToolButton dummy_button	 = new RadioToolButton(null);
-	private ITimeline[] timelines			 = new ITimeline[2];
+	private ITimeline[] timelines			 = new ITimeline[3];
 	private IPage[] pages 				     = new IPage[1];
 	private ToolButton avatar_button         = new ToolButton(null, null);
 	private ToolButton refresh_button        = new ToolButton.from_stock(Stock.REFRESH);
@@ -34,8 +36,9 @@ class MainWindow : ApplicationWindow {
 
 		timelines[0] = new HomeTimeline(PAGE_STREAM);
 		timelines[1] = new MentionsTimeline(PAGE_MENTIONS);
+		timelines[2] = new SearchTimeline(PAGE_SEARCH);
 		// timelines[2] = new FavoriteContainer(PAGE_FAVORITES);
-		// timelines[3] = new SearchContainer(PAGE_SEARCH);
+
 
 		/*Initialize all containers */
 		for(int i = 0; i < timelines.length; i++){
@@ -58,6 +61,8 @@ class MainWindow : ApplicationWindow {
 		pages[0] = new ProfilePage(PAGE_PROFILE);
 
 
+
+
 		this.delete_event.connect(() => {
 			//message("destroy.");
 			NotificationManager.uninit();
@@ -65,8 +70,9 @@ class MainWindow : ApplicationWindow {
 				// 'Minimize to tray'
 				// set_visible(false);
 			// }else{
-				save_geometry();
-				this.application.release();
+			save_geometry();
+			this.application.release();
+			message("releasing application...");
 			// }
 			return true;
 		});
@@ -122,6 +128,7 @@ class MainWindow : ApplicationWindow {
 
 			main_notebook.append_page(tl);
 		}
+
 
 		foreach(var page in pages){
 			main_notebook.append_page(page);

@@ -67,6 +67,7 @@ vala_precompile(VALA_C
 	src/ITimeline.vala
 	src/HomeTimeline.vala
 	src/MentionsTimeline.vala
+	src/SearchTimeline.vala
 	src/User.vala
 	src/ProfileDialog.vala
 	src/LoaderThread.vala
