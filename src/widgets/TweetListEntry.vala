@@ -12,6 +12,7 @@ class TweetListEntry : Gtk.Box {
 	private Box text_box				 = new Box(Orientation.HORIZONTAL, 3);
 	private MainWindow window;
 	private Gtk.Menu more_menu;
+	private Gtk.Button more_button;
 	// Timestamp used for sorting
 	public int64 timestamp;
 	private int64 tweet_id;
@@ -87,7 +88,7 @@ class TweetListEntry : Gtk.Box {
 		status_box.pack_start(favorite_button, false, false);
 
 
-		var more_button = new Button();
+		more_button = new Button();
 		more_button.get_style_context().add_class("more-button");
 		more_button.clicked.connect(more_button_clicked);
 		status_box.pack_start(more_button, false, false);

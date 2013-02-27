@@ -21,8 +21,8 @@ class InlineMediaDownloader {
 		if(url.has_prefix("http://instagr.am")) {
 			two_step_load.begin(t, url, "<img class=\"photo\" src=\"(.*?)\"", 1);
 		} else if(url.has_prefix("http://i.imgur.com")) {
-			load_inline_media(t, url);
-		} else if(url.has_prefix("http://d.pr/")) {
+			load_inline_media.begin(t, url);
+		} else if(url.has_prefix("http://d.pr/i/")) {
 			two_step_load.begin(t, url, "<meta property=\"og:image\" content=\"(.*?)\"",
 			                    1);
 		} else if(url.has_prefix("http://pbs.twimg.com/media/")) {
@@ -48,7 +48,7 @@ class InlineMediaDownloader {
 			regex.match(back, 0, out info);
 			string real_url = info.fetch(match_index);
 			if(real_url != null)
-				load_inline_media(t, real_url, session);
+				load_inline_media.begin(t, real_url, session);
 
 			return false;
 		});

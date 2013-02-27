@@ -7,6 +7,7 @@ class ImageDialog : Gtk.Window {
 	private Image image;
 
 
+
 	public ImageDialog(Window parent, string path) {
 
 		//Choose proper width/height

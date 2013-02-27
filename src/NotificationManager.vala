@@ -11,20 +11,21 @@ class NotificationManager {
 
 	public static void init(){
 		Notify.init("Corebird");
-		// unowned List<string> caps = Notify.get_server_caps();
-		// foreach(string s in caps){
-		// 	if (s == "persistence"){
-		// 		message("Not creating any tray icon");
-		// 		is_persistent = true;
-		// 		notification = new Notification("Corebird", "summary", null);
-		// 		try{
-		// 			notification.show();
-		// 		}catch(GLib.Error e){
-		// 			error("Error while showing the persistent notification: %s", e.message);
-		// 		}
-		// 		return;
-		// 	}
-		// }
+		unowned List<string> caps = Notify.get_server_caps();
+		foreach(string s in caps){
+			if (s == "persistence"){
+				message("Not creating any tray icon");
+				is_persistent = true;
+				notification = new Notification("Corebird", "Started", null);
+				notification.set_urgency(Urgency.LOW);
+				try{
+					notification.show();
+				}catch(GLib.Error e){
+					critical(e.message);
+				}
+				return;
+			}
+		}
 	}
 
 

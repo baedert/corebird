@@ -51,7 +51,7 @@ class Tweet : GLib.Object{
 				                     `created_at`,`rt_created_at`, `avatar_name`,
 				                     `screen_name`, `type`,`rt_id`, `reply_id`)
 				VALUES (:id, :text, :user_id, :user_name, :is_retweet, :retweeted_by,
-				        :retweeted, :favorited, :created_at, :rt_created_at, :avatar_name,
+				        :retweeted, :favorited, :created_at, :rt_created_at,:avatar_name,
 				        :screen_name, :type, :rt_id, :reply_id);");
 				author_query = new SQLHeavy.Query(Corebird.db,
 				"SELECT `id`, `screen_name`, `avatar_url` FROM `people`
@@ -123,7 +123,7 @@ class Tweet : GLib.Object{
 			this.rt_created_at = Utils.parse_date(rt.get_string_member("created_at"))
 			                            .to_unix();
             if(!rt.get_null_member("in_reply_to_status_id"))
-                                this.reply_id = rt.get_int_member("in_reply_to_status_id");
+				this.reply_id = rt.get_int_member("in_reply_to_status_id");
 		}
 		this.avatar_name = Utils.get_avatar_name(this.avatar_url);
 
@@ -174,9 +174,11 @@ class Tweet : GLib.Object{
 					var msg     = new Soup.Message("GET", this.avatar_url);
 					session.send_message(msg);
 
-					var memory_stream = new MemoryInputStream.from_data(msg.response_body.data,
-					                                                    null);
-					var pixbuf = new Gdk.Pixbuf.from_stream_at_scale(memory_stream, 48, 48,
+					var memory_stream = new MemoryInputStream.from_data(
+					                                   msg.response_body.data,
+					                                   null);
+					var pixbuf = new Gdk.Pixbuf.from_stream_at_scale(memory_stream,
+					                                                 48, 48,
 					                                                 false);
 					pixbuf.save(dest, "png");
 					this.load_avatar(pixbuf);
