@@ -171,6 +171,7 @@ class TweetListEntry : Gtk.Box {
 			rt_label.set_justify(Justification.RIGHT);
 			rt_label.set_halign(Align.END);
 			rt_label.set_valign(Align.START);
+			rt_label.margin_bottom = 4;
 			right_box.pack_end(rt_label, true, true);
 		}
 
