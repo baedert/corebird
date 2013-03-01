@@ -297,6 +297,7 @@ class MainWindow : ApplicationWindow {
 		IPage page = timelines[0];
 		if(page_id < timelines.length){
 			page = timelines[page_id];
+			page.get_tool_button().active = true;
 		}else{
 			page = pages[page_id - timelines.length];
 			dummy_button.active = true;

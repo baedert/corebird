@@ -56,10 +56,7 @@ class MentionsTimeline : IPage, ITimeline, ScrollWidget{
 
 
 	public void create_tool_button(RadioToolButton? group){
-		if(group == null)
-			tool_button = new RadioToolButton.from_stock(null, Stock.HOME);
-		else
-			tool_button = new RadioToolButton.with_stock_from_widget(group, Stock.CANCEL);
+		tool_button = new RadioToolButton.with_stock_from_widget(group, Stock.OK);
 	}
 
 	public RadioToolButton? get_tool_button(){
