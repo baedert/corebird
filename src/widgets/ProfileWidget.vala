@@ -50,10 +50,13 @@ class ProfileWidget : Gtk.Box {
 		if(user_id != 0 && screen_name != "") {
 			error("Can't use both user_id and screen_name.");
 		}
+
+		load_profile_data.begin(user_id, screen_name);
+
 		//Load cached data
 		try{
 			string query_string = "SELECT id, screen_name, name, description, tweets,
-						 following, followers, avatar_name FROM profiles ";
+						 following, followers, avatar_name,banner_url FROM profiles ";
 			if(user_id != 0)
 				query_string += @"WHERE id='$user_id';";
 			else
@@ -63,6 +66,11 @@ class ProfileWidget : Gtk.Box {
 			                                                query_string);
 			SQLHeavy.QueryResult cache_result = cache_query.execute();
 			if (!cache_result.finished){
+				if(screen_name != "")
+					user_id = cache_result.fetch_int64(0);
+
+				load_banner.begin(user_id, cache_result.fetch_string(8));
+
 				name_label.set_markup("<big><big><big><b>%s</b></big></big></big>"
 					                      .printf(cache_result.fetch_string(2)));
 				screen_name_label.set_markup("<big>@%s</big>"
@@ -89,8 +97,7 @@ class ProfileWidget : Gtk.Box {
 			warning("Error while loading cached profile data: %s", e.message);
 		}
 
-		load_banner.begin(user_id, screen_name);
-		load_profile_data.begin(user_id, screen_name);
+
 	}
 
 
@@ -159,8 +166,10 @@ class ProfileWidget : Gtk.Box {
 			try{
 				SQLHeavy.Query update_query = new SQLHeavy.Query(Corebird.db,
 					"INSERT OR REPLACE INTO `profiles`(`id`, `screen_name`, `name`,
-					   `followers`, `following`, `tweets`, `description`, `avatar_name`) VALUES
-					(:id, :screen_name, :name, :followers, :following, :tweets, :description, :avatar_name);");
+					   `followers`, `following`, `tweets`, `description`, `avatar_name`)
+					 VALUES
+					(:id, :screen_name, :name, :followers, :following, :tweets,
+					 :description, :avatar_name);");
 				update_query.set_int64(":id", id);
 				update_query.set_string(":screen_name", screen_name);
 				update_query.set_string(":name", name);
@@ -182,18 +191,12 @@ class ProfileWidget : Gtk.Box {
 	 *
 	 * @param user_id The user's ID
 	 */
-	private async void load_banner(int64 user_id, string screen_name = ""){
-		if(user_id != 0 && screen_name != "") {
-			error("Can't use both user_id and screen_name.");
-		}
+	private async void load_banner(int64 user_id, string saved_banner_url){
 
 		var call = Twitter.proxy.new_call();
 		call.set_method("GET");
 		call.set_function("1.1/users/profile_banner.json");
-		if(user_id != 0)
-			call.add_param("user_id", user_id.to_string());
-		else
-			call.add_param("screen_name", screen_name);
+		call.add_param("user_id", user_id.to_string());
 
 		call.invoke_async.begin(null, (obj, res) => {
 			if (call.get_status_code() == 404){
@@ -225,8 +228,9 @@ class ProfileWidget : Gtk.Box {
 			banner_url = root.get_object_member("mobile").get_string_member("url");
 
 			string banner_on_disk = Utils.get_user_file_path(@"assets/banners/$user_id.png");
-			if (!FileUtils.test(banner_on_disk, FileTest.EXISTS)){
-				message("Loading banner...");
+			if (!FileUtils.test(banner_on_disk, FileTest.EXISTS) ||
+			    banner_url != saved_banner_url){
+				message("Loading banner...%s\n%s", banner_url, saved_banner_url);
 				try{
 					// TODO: Use soap here
 					File banner_file = File.new_for_uri(banner_url);
@@ -234,6 +238,8 @@ class ProfileWidget : Gtk.Box {
 					Gdk.Pixbuf b = new Gdk.Pixbuf.from_stream(in_stream);
 					message("Banner saved.");
 					b.save(banner_on_disk, "png");
+					Corebird.db.execute(@"UPDATE `profiles` SET `banner_url`='$banner_url'
+					                    WHERE `id`='$user_id';");
 				} catch (GLib.Error ex) {
 					warning ("Error while setting banner: %s", ex.message);
 				}

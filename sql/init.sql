@@ -55,5 +55,6 @@ CREATE TABLE IF NOT EXISTS `profiles`(
 			    followers INTEGER(11),
 			    following INTEGER(11),
 			    description VARCHAR(160),
-			    avatar_name VARCHAR(100)
+			    avatar_name VARCHAR(100),
+			    banner_url VARCHAR(255)
 );

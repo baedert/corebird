@@ -27,7 +27,7 @@ class TweetListEntry : Gtk.Box {
 
 		if (hashtag_regex == null){
 			try{
-				hashtag_regex = new GLib.Regex("^\\s*#\\w+", RegexCompileFlags.OPTIMIZE);
+				hashtag_regex = new GLib.Regex("#\\w+", RegexCompileFlags.OPTIMIZE);
 				user_regex    = new GLib.Regex("@\\w+", RegexCompileFlags.OPTIMIZE);
 			}catch(GLib.RegexError e){
 				warning("Error while creating regexes: %s", e.message);
@@ -318,7 +318,7 @@ class TweetListEntry : Gtk.Box {
 			                   term);
 			return true;
 		}else if(uri.has_prefix("#")){
-			debug("TODO: Implement search");
+			window.switch_page(MainWindow.PAGE_SEARCH, term);
 			return true;
 		}
 		return false;
