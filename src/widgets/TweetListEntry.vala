@@ -27,7 +27,7 @@ class TweetListEntry : Gtk.Box {
 
 		if (hashtag_regex == null){
 			try{
-				hashtag_regex = new GLib.Regex("#\\w+", RegexCompileFlags.OPTIMIZE);
+				hashtag_regex = new GLib.Regex("^\\s*#\\w+", RegexCompileFlags.OPTIMIZE);
 				user_regex    = new GLib.Regex("@\\w+", RegexCompileFlags.OPTIMIZE);
 			}catch(GLib.RegexError e){
 				warning("Error while creating regexes: %s", e.message);
@@ -137,6 +137,8 @@ class TweetListEntry : Gtk.Box {
 	    string display_text = tweet.text;
 	    display_text = user_regex.replace(display_text, display_text.length, 0,
 	                                      "<a href='\\0'>\\0</a>");
+	    display_text = hashtag_regex.replace(display_text, display_text.length, 0,
+	                                         "<a href='\\0'>\\0</a>");
 		display_text = Tweet.replace_links(display_text);
 		text.label = display_text;
 		text.set_use_markup(true);
