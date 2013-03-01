@@ -46,14 +46,21 @@ class ProfileWidget : Gtk.Box {
 	}
 
 
-	public void set_user_id(int64 user_id){
+	public void set_user_id(int64 user_id, string screen_name = ""){
+		if(user_id != 0 && screen_name != "") {
+			error("Can't use both user_id and screen_name.");
+		}
 		//Load cached data
 		try{
+			string query_string = "SELECT id, screen_name, name, description, tweets,
+						 following, followers, avatar_name FROM profiles ";
+			if(user_id != 0)
+				query_string += @"WHERE id='$user_id';";
+			else
+				query_string += @"WHERE screen_name='$screen_name';";
+
 			SQLHeavy.Query cache_query = new SQLHeavy.Query(Corebird.db,
-				@"SELECT id, screen_name, name, description, tweets,
-						 following, followers, avatar_name
-				FROM profiles
-				WHERE id='$user_id';");
+			                                                query_string);
 			SQLHeavy.QueryResult cache_result = cache_query.execute();
 			if (!cache_result.finished){
 				name_label.set_markup("<big><big><big><b>%s</b></big></big></big>"
@@ -82,16 +89,23 @@ class ProfileWidget : Gtk.Box {
 			warning("Error while loading cached profile data: %s", e.message);
 		}
 
-		load_banner.begin(user_id);
-		load_profile_data.begin(user_id);
+		load_banner.begin(user_id, screen_name);
+		load_profile_data.begin(user_id, screen_name);
 	}
 
 
-	private async void load_profile_data(int64 user_id){
+	private async void load_profile_data(int64 user_id, string screen_name = ""){
+		if(user_id != 0 && screen_name != "") {
+			error("Can't use both user_id and screen_name.");
+		}
+
 		var call = Twitter.proxy.new_call();
 		call.set_method("GET");
 		call.set_function("1.1/users/show.json");
-		call.add_param("user_id", user_id.to_string());
+		if(user_id != 0)
+			call.add_param("user_id", user_id.to_string());
+		else
+			call.add_param("screen_name", screen_name);
 		call.invoke_async.begin(null, (obj, res) => {
 			try{
 				call.invoke_async.end (res);
@@ -124,7 +138,7 @@ class ProfileWidget : Gtk.Box {
 			}
 			avatar_image.set_from_file(avatar_on_disk);
 			string name        = root.get_string_member("name");
-			string screen_name = root.get_string_member("screen_name");
+			       screen_name = root.get_string_member("screen_name");
 			string description = root.get_string_member("description").replace("&", "&amp;");
 			int64 id		   = root.get_int_member("id");
 			int followers      = (int)root.get_int_member("followers_count");
@@ -168,11 +182,19 @@ class ProfileWidget : Gtk.Box {
 	 *
 	 * @param user_id The user's ID
 	 */
-	private async void load_banner(int64 user_id){
+	private async void load_banner(int64 user_id, string screen_name = ""){
+		if(user_id != 0 && screen_name != "") {
+			error("Can't use both user_id and screen_name.");
+		}
+
 		var call = Twitter.proxy.new_call();
 		call.set_method("GET");
 		call.set_function("1.1/users/profile_banner.json");
-		call.add_param("user_id", user_id.to_string());
+		if(user_id != 0)
+			call.add_param("user_id", user_id.to_string());
+		else
+			call.add_param("screen_name", screen_name);
+
 		call.invoke_async.begin(null, (obj, res) => {
 			if (call.get_status_code() == 404){
 				// Normal. The user has not set a profile banner.

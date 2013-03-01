@@ -65,7 +65,6 @@ class SearchTimeline : IPage, ITimeline, Box {
 
 	}
 	public void update () {}
-	}
 
 	public async void search_for(string search_term, bool set_text = false){
 		if(search_term.length == 0)
