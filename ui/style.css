@@ -101,6 +101,7 @@
 }
 
 .tweet {
+	border-color: alpha(black, 0.2);
 }
 
 /** Tweets the user sent himself */

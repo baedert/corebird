@@ -97,7 +97,7 @@ class TweetListEntry : Gtk.Box {
 		this.pack_start(left_box, false, false);
 
 
-		var right_box = new Box(Orientation.VERTICAL, 8);
+		var right_box = new Box(Orientation.VERTICAL, 4);
 		var top_box = new Box(Orientation.HORIZONTAL, 5);
 
 
@@ -105,7 +105,8 @@ class TweetListEntry : Gtk.Box {
 		author_button = new TextButton(tweet.user_name);
 		author_button.clicked.connect(() => {
 			if(window != null){
-				window.switch_page(MainWindow.PAGE_PROFILE, tweet.user_id);
+				window.switch_page(MainWindow.PAGE_PROFILE,
+				                   ProfilePage.BY_ID, tweet.user_id);
 			}else
 				critical("main window instance is null!");
 		});
@@ -135,7 +136,7 @@ class TweetListEntry : Gtk.Box {
 	    // Also set User/Hashtag links
 	    string display_text = tweet.text;
 	    display_text = user_regex.replace(display_text, display_text.length, 0,
-	                                      "<a href='cb://user/\\0'>\\0</a>");
+	                                      "<a href='\\0'>\\0</a>");
 		display_text = Tweet.replace_links(display_text);
 		text.label = display_text;
 		text.set_use_markup(true);
@@ -162,6 +163,16 @@ class TweetListEntry : Gtk.Box {
 			});
 			text_box.pack_start(media_button, false, false);
 		});
+
+		if(tweet.is_retweet) {
+			// TODO: Use rt image here
+			var rt_label = new Label("<small>RT by "+tweet.retweeted_by+"</small>");
+			rt_label.set_use_markup(true);
+			rt_label.set_justify(Justification.RIGHT);
+			rt_label.set_halign(Align.END);
+			rt_label.set_valign(Align.START);
+			right_box.pack_end(rt_label, true, true);
+		}
 
 
 		this.set_size_request(20, 80);
@@ -269,12 +280,22 @@ class TweetListEntry : Gtk.Box {
 
 
 	public override bool draw(Cairo.Context c){
-		// var style = this.get_style_context();
-		// int w = get_allocated_width();
-		// int h = get_allocated_height();
-		// style.render_background(c, 0, 0, w, h);
-		// style.render_frame(c, 0, 0, w, h);
+		var style = this.get_style_context();
+		int w = get_allocated_width();
+		int h = get_allocated_height();
+		style.render_background(c, 0, 0, w, h);
+
+		var border_color = style.get_border_color(get_state_flags());
+		c.set_source_rgba(border_color.red, border_color.green, border_color.blue,
+						  border_color.alpha);
+
+		// The line here is 50% of the width
+		c.move_to(w*0.25, h);
+		c.line_to(w*0.75, h);
+		c.stroke();
+
 		base.draw(c);
+
 		return false;
 	}
 
@@ -289,6 +310,9 @@ class TweetListEntry : Gtk.Box {
 			// TODO: Use the id OR the handle in ProfileDialog
 			// ProfileDialog pd = new ProfileDialog(term);
 			// pd.show_all();
+			window.switch_page(MainWindow.PAGE_PROFILE,
+			                   ProfilePage.BY_NAME,
+			                   term);
 			return true;
 		}else if(uri.has_prefix("#")){
 			debug("TODO: Implement search");
