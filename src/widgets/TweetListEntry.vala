@@ -311,9 +311,6 @@ class TweetListEntry : Gtk.Box {
 		string term = uri.substring(1);
 
 		if(uri.has_prefix("@")){
-			// TODO: Use the id OR the handle in ProfileDialog
-			// ProfileDialog pd = new ProfileDialog(term);
-			// pd.show_all();
 			window.switch_page(MainWindow.PAGE_PROFILE,
 			                   ProfilePage.BY_NAME,
 			                   term);

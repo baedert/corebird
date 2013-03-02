@@ -17,28 +17,48 @@ class ImageDialog : Gtk.Window {
 		} catch (GLib.Error e) {
 			critical(e.message);
 		}
+
+		image = new Gtk.Image.from_pixbuf(pixbuf);
+		var ebox = new EventBox();
+		ebox.add(image);
+		scroller.add_with_viewport(ebox);
+		this.add(scroller);
+
 		int img_width = pixbuf.get_width();
 		int img_height = pixbuf.get_height();
 
-		if (img_width <= Gdk.Screen.width()*0.7 &&
-		    		img_height <= Gdk.Screen.height()*0.7){
+		int win_width  = 800;
+		int win_height = 600;
+		if(img_width <= Gdk.Screen.width()*0.7)
+			win_width = img_width;
 
-			this.resize(img_width, img_height);
-		} else {
-			// TODO: Set proper size
-			this.resize(800, 600);
+		if(img_height <= Gdk.Screen.height()*0.7)
+			win_height = img_height;
+
+		if(win_width < 800 && win_height == 600) {
+			int add_width;
+			scroller.get_vscrollbar().get_preferred_width(null, out add_width);
+			win_width += add_width;
 		}
 
-		image = new Gtk.Image.from_pixbuf(pixbuf);
+		if(win_width == 800 && win_height < 600) {
+			int add_height;
+			scroller.get_hscrollbar().get_preferred_width(null, out add_height);
+			win_height += add_height;
+		}
+
+		scroller.set_size_request(win_width, win_height);
+
+
+
 		image.button_press_event.connect(() => {
 			message("press");
 			return false;
 		});
-		var ebox = new EventBox();
-		ebox.add(image);
-		scroller.add_with_viewport(ebox);
 
-		this.add(scroller);
+
+
+		// this.add(scroller);
 		this.set_decorated(false);
 		this.set_transient_for(parent);
 		this.set_type_hint(Gdk.WindowTypeHint.DIALOG);
