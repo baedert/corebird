@@ -13,12 +13,14 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 	private int media_count			 = 0;
 	private ImageButton media_image  = new ImageButton();
 	private string media_uri;
+	private Tweet answer_to;
 
 
-	public ComposeTweetWindow(Window? parent, string? answer_to = null,
+	public ComposeTweetWindow(Window? parent, Tweet? answer_to = null,
 	                          Gtk.Application? app = null) {
 		GLib.Object(application: app);
 
+		this.answer_to = answer_to;
 
 		this.show_menubar = false;
 		if(parent != null){
@@ -54,6 +56,15 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
 
 		var main_box = new Box(Orientation.VERTICAL, 5);
+
+		if(answer_to != null) {
+			var answer_to_entry = new TweetListEntry(answer_to, (MainWindow)parent);
+			answer_to_entry.margin_bottom = 10;
+			main_box.pack_start(answer_to_entry, false, true);
+
+			tweet_text.buffer.text = "@"+answer_to.screen_name;
+		}
+
 
 		var middle_box = new Box(Orientation.HORIZONTAL, 3);
 		var av = new Gtk.Image.from_file(Utils.get_user_file_path("assets/avatars/"
@@ -140,6 +151,11 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 		var call = Twitter.proxy.new_call();
 		call.set_method("POST");
 		call.add_param("status", text);
+		if(this.answer_to != null) {
+			call.add_param("in_reply_to_status_id", answer_to.id.to_string());
+		}
+
+
 		if(media_count == 0){
 			call.set_function("1.1/statuses/update.json");
 		} else {
