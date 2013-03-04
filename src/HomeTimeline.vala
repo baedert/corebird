@@ -45,6 +45,7 @@ class HomeTimeline : IPage, ITimeline, ScrollWidget{
 			GLib.DateTime now = new GLib.DateTime.now_local();
 			Tweet t = new Tweet();
 			t.load_from_json(msg.root_object, now);
+			Tweet.cache(t, Tweet.TYPE_NORMAL);
 
 			this.balance_next_upper_change(TOP);
 			tweet_list.add(new TweetListEntry(t, main_window));
