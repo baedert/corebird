@@ -58,7 +58,11 @@ class Corebird : Gtk.Application {
 		//Load custom style sheet
 		try{
 			CssProvider provider = new CssProvider();
-			provider.load_from_file(File.new_for_path(DATADIR+"/ui/style.css"));
+			string style = Utils.get_user_file_path("style.css");
+			if(!FileUtils.test(style, FileTest.EXISTS))
+				style = DATADIR+"/ui/style.css";
+
+			provider.load_from_file(File.new_for_path(style));
 			Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(), provider,
 		                                         STYLE_PROVIDER_PRIORITY_APPLICATION);
 		}catch(GLib.Error e){
