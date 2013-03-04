@@ -7,6 +7,7 @@ enum StreamMessageType {
 	LIMIT,
 	DISCONNECT,
 	FRIENDS,
+	EVENT,
 
 	TWEET,
 }
@@ -97,6 +98,8 @@ class UserStream : Object{
 				msg.type = StreamMessageType.FRIENDS;
 			else if(root.has_member("text"))
 				msg.type = StreamMessageType.TWEET;
+			else if(root.has_member("event"))
+				msg.type = StreamMessageType.EVENT;
 
 
 			foreach(ITimeline it in registered_timelines){
