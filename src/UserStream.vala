@@ -1,5 +1,20 @@
 
 
+// See https://dev.twitter.com/docs/streaming-apis/messages
+enum StreamMessageType {
+	DELETE,
+	SCRUB_GEO,
+	LIMIT,
+	DISCONNECT,
+	FRIENDS,
+
+	TWEET,
+}
+
+struct StreamMessage {
+	StreamMessageType type;
+	Json.Object root_object;
+}
 
 
 class UserStream : Object{
@@ -12,8 +27,10 @@ class UserStream : Object{
 	}
 
 
+
 	private Rest.OAuthProxy proxy;
-	private StringBuilder data = new StringBuilder();
+	private StringBuilder data                    = new StringBuilder();
+	public SList<ITimeline> registered_timelines = new SList<ITimeline>();
 
 
 
@@ -25,7 +42,7 @@ class UserStream : Object{
         	false
         );
 
-        proxy.token = Twitter.get_token();
+		proxy.token        = Twitter.get_token();
 		proxy.token_secret = Twitter.get_token_secret();
 	}
 
@@ -37,7 +54,11 @@ class UserStream : Object{
 		var call = proxy.new_call();
 		call.set_function("1.1/user.json");
 		call.set_method("GET");
-		call.continuous(parse_data_cb, this);
+		try{
+			call.continuous(parse_data_cb, this);
+		} catch (GLib.Error e) {
+			error(e.message);
+		}
 	}
 
 
@@ -54,10 +75,34 @@ class UserStream : Object{
 				return;
 			}
 
+			stdout.printf("USING DATA:\n%s\n", data.str);
+
 			var parser = new Json.Parser();
 			parser.load_from_data(data.str);
 
 			var root = parser.get_root().get_object();
+
+			StreamMessage msg = {};
+			msg.root_object = root;
+
+			if(root.has_member("delete"))
+				msg.type = StreamMessageType.DELETE;
+			else if(root.has_member("scrub_geo"))
+				msg.type = StreamMessageType.SCRUB_GEO;
+			else if(root.has_member("limit"))
+				msg.type = StreamMessageType.LIMIT;
+			else if(root.has_member("disconnect"))
+				msg.type = StreamMessageType.DISCONNECT;
+			else if(root.has_member("friends"))
+				msg.type = StreamMessageType.FRIENDS;
+			else if(root.has_member("text"))
+				msg.type = StreamMessageType.TWEET;
+
+
+			foreach(ITimeline it in registered_timelines){
+				it.stream_message_received(msg);
+			}
+
 
 			data.erase();
 		}

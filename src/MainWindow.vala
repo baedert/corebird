@@ -62,6 +62,10 @@ class MainWindow : ApplicationWindow {
 
 
 
+		// Start userstream
+		UserStream.get().start();
+
+
 
 		this.delete_event.connect(() => {
 			//message("destroy.");

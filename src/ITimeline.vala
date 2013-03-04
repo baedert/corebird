@@ -14,6 +14,8 @@ interface ITimeline : Gtk.Widget, IPage {
 	public abstract void load_older ();
 	public abstract void update     ();
 
+	public abstract signal void stream_message_received(StreamMessage msg);
+
 
 	protected void start_updates() {
 		GLib.Timeout.add(Settings.get_update_interval() * 1000 * 60, () => {
