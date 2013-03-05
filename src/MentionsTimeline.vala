@@ -39,6 +39,14 @@ class MentionsTimeline : IPage, ITimeline, ScrollWidget{
 				this.balance_next_upper_change(TOP);
 				tweet_list.add(new TweetListEntry(t, main_window));
 				tweet_list.resort();
+
+				if(Settings.notify_new_mentions()) {
+					NotificationManager.notify(
+						"New Mention from @"+t.screen_name,
+						t.text,
+						Notify.Urgency.CRITICAL,
+						t.avatar);
+				}
 			}
 		}
 	}
@@ -48,10 +56,6 @@ class MentionsTimeline : IPage, ITimeline, ScrollWidget{
 	 * see IPage#onJoin
 	 */
 	public void onJoin(int page_id, va_list arg_list){
-
-	}
-
-	public void update () {
 
 	}
 

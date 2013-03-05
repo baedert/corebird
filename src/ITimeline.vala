@@ -12,7 +12,7 @@ interface ITimeline : Gtk.Widget, IPage {
 	public abstract void load_cached();
 	public abstract void load_newest();
 	public abstract void load_older ();
-	public abstract void update     ();
+	public void update (){}
 
 	public abstract signal void stream_message_received(StreamMessageType type,
 	                                                    Json.Object root);
