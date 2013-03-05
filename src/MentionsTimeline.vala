@@ -44,7 +44,7 @@ class MentionsTimeline : IPage, ITimeline, ScrollWidget{
 					NotificationManager.notify(
 						"New Mention from @"+t.screen_name,
 						t.text,
-						Notify.Urgency.CRITICAL,
+						Notify.Urgency.NORMAL,
 						t.avatar);
 				}
 			}
