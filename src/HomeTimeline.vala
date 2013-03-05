@@ -40,11 +40,11 @@ class HomeTimeline : IPage, ITimeline, ScrollWidget{
         this.stream_message_received.connect(stream_message_received_cb);
 	}
 
-	private void stream_message_received_cb(StreamMessage msg){
-		if(msg.type == StreamMessageType.TWEET) {
+	private void stream_message_received_cb(StreamMessageType type, Json.Object root) {
+		if(type == StreamMessageType.TWEET) {
 			GLib.DateTime now = new GLib.DateTime.now_local();
 			Tweet t = new Tweet();
-			t.load_from_json(msg.root_object, now);
+			t.load_from_json(root, now);
 			Tweet.cache(t, Tweet.TYPE_NORMAL);
 
 			this.balance_next_upper_change(TOP);

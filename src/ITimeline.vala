@@ -14,7 +14,8 @@ interface ITimeline : Gtk.Widget, IPage {
 	public abstract void load_older ();
 	public abstract void update     ();
 
-	public abstract signal void stream_message_received(StreamMessage msg);
+	public abstract signal void stream_message_received(StreamMessageType type,
+	                                                    Json.Object root);
 
 
 	protected void start_updates() {

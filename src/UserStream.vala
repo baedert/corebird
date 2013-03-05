@@ -12,11 +12,6 @@ enum StreamMessageType {
 	TWEET,
 }
 
-struct StreamMessage {
-	StreamMessageType type;
-	Json.Object root_object;
-}
-
 
 class UserStream : Object{
 	private static UserStream instance;
@@ -83,27 +78,26 @@ class UserStream : Object{
 
 			var root = parser.get_root().get_object();
 
-			StreamMessage msg = {};
-			msg.root_object = root;
+			StreamMessageType type = 0;
 
 			if(root.has_member("delete"))
-				msg.type = StreamMessageType.DELETE;
+				type = StreamMessageType.DELETE;
 			else if(root.has_member("scrub_geo"))
-				msg.type = StreamMessageType.SCRUB_GEO;
+				type = StreamMessageType.SCRUB_GEO;
 			else if(root.has_member("limit"))
-				msg.type = StreamMessageType.LIMIT;
+				type = StreamMessageType.LIMIT;
 			else if(root.has_member("disconnect"))
-				msg.type = StreamMessageType.DISCONNECT;
+				type = StreamMessageType.DISCONNECT;
 			else if(root.has_member("friends"))
-				msg.type = StreamMessageType.FRIENDS;
+				type = StreamMessageType.FRIENDS;
 			else if(root.has_member("text"))
-				msg.type = StreamMessageType.TWEET;
+				type = StreamMessageType.TWEET;
 			else if(root.has_member("event"))
-				msg.type = StreamMessageType.EVENT;
+				type = StreamMessageType.EVENT;
 
 
 			foreach(ITimeline it in registered_timelines){
-				it.stream_message_received(msg);
+				it.stream_message_received(type, root);
 			}
 
 

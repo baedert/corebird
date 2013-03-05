@@ -20,7 +20,26 @@ class MentionsTimeline : IPage, ITimeline, ScrollWidget{
 				return 1;
 			return -1;
 		});
+
+
+
+        UserStream.get().registered_timelines.append(this);
+        this.stream_message_received.connect(stream_message_received_cb);
 	}
+
+	private void stream_message_received_cb(StreamMessageType type, Json.Object root){
+		if(type == StreamMessageType.TWEET) {
+			GLib.DateTime now = new GLib.DateTime.now_local();
+			Tweet t = new Tweet();
+			t.load_from_json(root, now);
+			Tweet.cache(t, Tweet.TYPE_NORMAL);
+
+			this.balance_next_upper_change(TOP);
+			tweet_list.add(new TweetListEntry(t, main_window));
+			tweet_list.resort();
+		}
+	}
+
 
 	/**
 	 * see IPage#onJoin
