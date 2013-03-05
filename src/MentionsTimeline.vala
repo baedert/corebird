@@ -29,14 +29,17 @@ class MentionsTimeline : IPage, ITimeline, ScrollWidget{
 
 	private void stream_message_received_cb(StreamMessageType type, Json.Object root){
 		if(type == StreamMessageType.TWEET) {
-			GLib.DateTime now = new GLib.DateTime.now_local();
-			Tweet t = new Tweet();
-			t.load_from_json(root, now);
-			Tweet.cache(t, Tweet.TYPE_NORMAL);
+			if(root.get_string_member("text").contains("@"+User.screen_name)) {
 
-			this.balance_next_upper_change(TOP);
-			tweet_list.add(new TweetListEntry(t, main_window));
-			tweet_list.resort();
+				GLib.DateTime now = new GLib.DateTime.now_local();
+				Tweet t = new Tweet();
+				t.load_from_json(root, now);
+				Tweet.cache(t, Tweet.TYPE_NORMAL);
+
+				this.balance_next_upper_change(TOP);
+				tweet_list.add(new TweetListEntry(t, main_window));
+				tweet_list.resort();
+			}
 		}
 	}
 
