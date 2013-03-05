@@ -31,16 +31,20 @@ class NotificationManager {
 
 
 	public static void notify(string summary, string body="",
-	                          Urgency urgency = Urgency.LOW){
+	                          Urgency urgency = Urgency.LOW,
+	                          Gdk.Pixbuf? pixbuf = null){
 		Notification n;
 		if (is_persistent){
 			n = notification;
 			n.update(summary, body, "");
-			n.set_urgency(urgency);
 		}else{
 			n = new Notification(summary, body, null);
-			n.set_urgency(urgency);
 		}
+
+		n.set_urgency(urgency);
+		if(pixbuf != null)
+			n.set_icon_from_pixbuf(pixbuf);
+
 		try{
 			n.show();
 		}catch(GLib.Error e){

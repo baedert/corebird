@@ -33,31 +33,30 @@ class HomeTimeline : IPage, ITimeline, ScrollWidget{
             }
         });
 
-        start_updates();
+        UserStream.get().registered_timelines.append(this);
+
+        this.stream_message_received.connect(stream_message_received_cb);
 	}
+
+	private void stream_message_received_cb(StreamMessageType type, Json.Object root) {
+		if(type == StreamMessageType.TWEET) {
+			GLib.DateTime now = new GLib.DateTime.now_local();
+			Tweet t = new Tweet();
+			t.load_from_json(root, now);
+			Tweet.cache(t, Tweet.TYPE_NORMAL);
+
+			this.balance_next_upper_change(TOP);
+			tweet_list.add(new TweetListEntry(t, main_window));
+			tweet_list.resort();
+		}
+	}
+
 
 	/**
 	 * see IPage#onJoin
 	 */
 	public void onJoin(int page_id, va_list arg_list){
 
-	}
-
-	public void update () {
-		try {
-			this.balance_next_upper_change(TOP);
-			load_newest_internal("1.1/statuses/home_timeline.json",
-			                     Tweet.TYPE_NORMAL, (count) => {
-				//Update all current tweets
-				tweet_list.forall_internal(false, (w) => {
-					((TweetListEntry)w).update_time_delta();
-				});
-				if(count > 0)
-					NotificationManager.notify("%d new tweets!".printf(count));
-			});
-		} catch(SQLHeavy.Error e) {
-			warning(e.message);
-		}
 	}
 
 	/**
