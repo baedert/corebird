@@ -23,7 +23,6 @@ class Corebird : Gtk.Application {
 			settings.gtk_application_prefer_dark_theme = true;
 		}
 
-		NotificationManager.init();
 
 		// Create ~/.corebird if neccessary
 		if(!FileUtils.test(Utils.get_user_file_path(""), FileTest.EXISTS)){
@@ -122,6 +121,7 @@ class Corebird : Gtk.Application {
 				UIBuilder builder = new UIBuilder(DATADIR+"/ui/menu.ui");
 				this.set_app_menu(builder.get_menu_model("app-menu"));
 				var mw = new MainWindow(this);
+				NotificationManager.init(mw);
 				mw.set_role(role_name);
 				this.add_window(mw);
 			}

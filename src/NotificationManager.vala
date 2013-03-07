@@ -9,17 +9,33 @@ class NotificationManager {
 
 
 
-	public static void init(){
+	public static void init(MainWindow window){
 		Notify.init("Corebird");
 		unowned List<string> caps = Notify.get_server_caps();
 		foreach(string s in caps){
+			message(s);
 			if (s == "persistence"){
 				message("Not creating any tray icon");
 				is_persistent = true;
-				notification = new Notification("Corebird", "Started", null);
+				notification = new Notification("Corebird",
+				                                "Logged in as "+User.screen_name, null);
 				notification.set_urgency(Urgency.LOW);
 				notification.set_timeout(Notify.EXPIRES_NEVER);
+				notification.add_action("clicked", "Open",
+				() => {
+					window.show_again();
+				});
+				notification.add_action("compose", "Compose",
+				() => {
+					ComposeTweetWindow win = new ComposeTweetWindow(null,
+									null,
+					                window.get_application());
+					win.show_all();
+				});
+				notification.set_icon_from_pixbuf(
+                      	new Gdk.Pixbuf.from_file(User.get_avatar_path()));
 				try{
+					notification.set_hint("resident", new Variant.boolean(true));
 					notification.show();
 				}catch(GLib.Error e){
 					critical(e.message);

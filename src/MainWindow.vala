@@ -69,13 +69,14 @@ class MainWindow : ApplicationWindow {
 
 		this.delete_event.connect(() => {
 			//message("destroy.");
-			NotificationManager.uninit();
+			// NotificationManager.uninit();
 			// if (Settings.show_tray_icon()){
 				// 'Minimize to tray'
 				// set_visible(false);
 			// }else{
 			save_geometry();
-			this.application.release();
+			this.set_visible(false);
+			// this.application.release();
 			message("releasing application...");
 			// }
 			return true;
@@ -310,5 +311,14 @@ class MainWindow : ApplicationWindow {
 
 		page.onJoin(page_id, va_list());
 		main_notebook.set_current_page(page_id);
+	}
+
+
+
+
+	public void show_again() {
+
+		this.load_geometry();
+		this.set_visible(true);
 	}
 }
