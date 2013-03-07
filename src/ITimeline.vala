@@ -18,14 +18,6 @@ interface ITimeline : Gtk.Widget, IPage {
 	                                                    Json.Object root);
 
 
-	protected void start_updates() {
-		GLib.Timeout.add(Settings.get_update_interval() * 1000 * 60, () => {
-			update();
-			return true;
-		});
-	}
-
-
 	/**
 	 * Default implementation to load cached tweets from the
 	 * 'cache' sql table
@@ -44,20 +36,21 @@ interface ITimeline : Gtk.Widget, IPage {
 			ORDER BY `created_at` DESC LIMIT 15;");
 		SQLHeavy.QueryResult result = query.execute();
 		while(!result.finished){
-			Tweet t        = new Tweet();
-			t.id           = result.fetch_int64(0);
-			t.text         = result.fetch_string(1);
-			t.user_id      = result.fetch_int64(2);
-			t.user_name    = result.fetch_string(3);
-			t.is_retweet   = (bool)result.fetch_int(4);
-			t.retweeted_by = result.fetch_string(5);
-			t.retweeted    = (bool)result.fetch_int(6);
-			t.favorited    = (bool)result.fetch_int(7);
-			t.created_at   = result.fetch_int64(8);
-			t.reply_id     = result.fetch_int64(13);
-			t.media        = result.fetch_string(14);
-			t.rt_id		   = result.fetch_int64(15);
-			t.reply_id     = result.fetch_int64(16);
+			Tweet t         = new Tweet();
+			t.id            = result.fetch_int64(0);
+			t.text          = result.fetch_string(1);
+			t.user_id       = result.fetch_int64(2);
+			t.user_name     = result.fetch_string(3);
+			t.is_retweet    = (bool)result.fetch_int(4);
+			t.retweeted_by  = result.fetch_string(5);
+			t.retweeted     = (bool)result.fetch_int(6);
+			t.favorited     = (bool)result.fetch_int(7);
+			t.created_at    = result.fetch_int64(8);
+			t.rt_created_at = result.fetch_int64(9);
+			t.reply_id      = result.fetch_int64(13);
+			t.media         = result.fetch_string(14);
+			t.rt_id         = result.fetch_int64(15);
+			t.reply_id      = result.fetch_int64(16);
 
 
 

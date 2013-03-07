@@ -75,6 +75,7 @@ vala_precompile(VALA_C
 	src/ProfilePage.vala
 	src/InlineMediaDownloader.vala
 	src/UserStream.vala
+	src/DeltaUpdater.vala
 	src/widgets/ImageDialog.vala
 	src/widgets/ImageBox.vala
 	src/widgets/ImageLabel.vala

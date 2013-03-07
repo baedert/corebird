@@ -1,7 +1,5 @@
 using Gtk;
 
-// TODO: Make tweet loading in the main-timeline work!
-// TODO: Look at EggListBox's source code
 class Tweet : GLib.Object{
 	public static const int THUMB_SIZE    = 50;
 

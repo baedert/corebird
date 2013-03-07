@@ -118,7 +118,7 @@ class TweetListEntry : Gtk.Box {
 
 
 		time_delta.set_use_markup(true);
-		time_delta.label = "<small>%s</small>".printf(tweet.time_delta);
+		update_time_delta();
 		time_delta.set_alignment(1, 0.5f);
 		time_delta.get_style_context().add_class("time-delta");
 		time_delta.margin_right = 3;
@@ -177,16 +177,25 @@ class TweetListEntry : Gtk.Box {
 			right_box.pack_end(rt_label, true, true);
 		}
 
+		DeltaUpdater.get().add(this);
 
 		this.set_size_request(20, 80);
 		this.show_all();
 	}
 
-	public void update_time_delta() {
+	/**
+	 * Updates the time delta label in the upper right
+	 *
+	 * @return The seconds between the current time and
+	 *         the time the tweet was created
+	 */
+	public int update_time_delta() {
 		GLib.DateTime now = new GLib.DateTime.now_local();
-		GLib.DateTime then = new GLib.DateTime.from_unix_local(timestamp);
+		GLib.DateTime then = new GLib.DateTime.from_unix_local(
+			tweet.is_retweet ? tweet.rt_created_at : tweet.created_at);
 		this.time_delta.label = "<small>%s</small>".printf(
 			Utils.get_time_delta(then, now));
+		return (int)(now.difference(then) / 1000.0 / 1000.0);
 	}
 
 	private void favorite_tweet() {
