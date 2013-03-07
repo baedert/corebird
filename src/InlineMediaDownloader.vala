@@ -12,6 +12,8 @@ class InlineMediaDownloader {
 			Support For:
 				* yfrog
 				* ow.ly
+				* say.ly
+					* <img src="contentImage" src="(.*?)"
 
 				* Youtube (Preview image with video indicator. Click on the video
 				           opens/streams it in some video player)
