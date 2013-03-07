@@ -14,9 +14,6 @@ interface ITimeline : Gtk.Widget, IPage {
 	public abstract void load_older ();
 	public void update (){}
 
-	public abstract signal void stream_message_received(StreamMessageType type,
-	                                                    Json.Object root);
-
 
 	/**
 	 * Default implementation to load cached tweets from the

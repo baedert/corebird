@@ -27,7 +27,7 @@ class UserStream : Object{
 
 	private Rest.OAuthProxy proxy;
 	private StringBuilder data                    = new StringBuilder();
-	public SList<ITimeline> registered_timelines = new SList<ITimeline>();
+	private SList<IMessageReceiver> receivers 	  = new SList<IMessageReceiver>();
 
 
 
@@ -41,8 +41,15 @@ class UserStream : Object{
 
 		proxy.token        = Twitter.get_token();
 		proxy.token_secret = Twitter.get_token_secret();
+
+		//Register a new warning service
+		receivers.append(new WarningService("UserStream"));
 	}
 
+
+	public void register(IMessageReceiver receiver) {
+		receivers.append(receiver);
+	}
 
 
 
@@ -99,7 +106,7 @@ class UserStream : Object{
 				type = StreamMessageType.WARNING;
 
 
-			foreach(ITimeline it in registered_timelines){
+			foreach(IMessageReceiver it in receivers){
 				it.stream_message_received(type, root);
 			}
 

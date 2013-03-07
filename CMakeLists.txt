@@ -76,6 +76,8 @@ vala_precompile(VALA_C
 	src/InlineMediaDownloader.vala
 	src/UserStream.vala
 	src/DeltaUpdater.vala
+	src/WarningService.vala
+	src/IMessageReceiver.vala
 	src/widgets/ImageDialog.vala
 	src/widgets/ImageBox.vala
 	src/widgets/ImageLabel.vala

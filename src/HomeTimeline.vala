@@ -1,7 +1,7 @@
 
 using Gtk;
 
-class HomeTimeline : IPage, ITimeline, ScrollWidget{
+class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 	public MainWindow main_window{set;get;}
 	protected int64 max_id{get;set; default = int64.MAX-2;}
 	protected Egg.ListBox tweet_list{set;get;}
@@ -33,12 +33,10 @@ class HomeTimeline : IPage, ITimeline, ScrollWidget{
             }
         });
 
-        UserStream.get().registered_timelines.append(this);
-
-        this.stream_message_received.connect(stream_message_received_cb);
+        UserStream.get().register(this);
 	}
 
-	private void stream_message_received_cb(StreamMessageType type, Json.Object root) {
+	private void stream_message_received(StreamMessageType type, Json.Object root) {
 		if(type == StreamMessageType.TWEET) {
 			GLib.DateTime now = new GLib.DateTime.now_local();
 			Tweet t = new Tweet();

@@ -1,7 +1,7 @@
 
 using Gtk;
 
-class MentionsTimeline : IPage, ITimeline, ScrollWidget{
+class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 	public MainWindow main_window{set;get;}
 	protected int64 max_id{get;set;}
 	protected Egg.ListBox tweet_list{set;get;}
@@ -23,11 +23,10 @@ class MentionsTimeline : IPage, ITimeline, ScrollWidget{
 
 
 
-        UserStream.get().registered_timelines.append(this);
-        this.stream_message_received.connect(stream_message_received_cb);
+        UserStream.get().register(this);
 	}
 
-	private void stream_message_received_cb(StreamMessageType type, Json.Object root){
+	private void stream_message_received(StreamMessageType type, Json.Object root){
 		if(type == StreamMessageType.TWEET) {
 			if(root.get_string_member("text").contains("@"+User.screen_name)) {
 
