@@ -12,6 +12,7 @@ class InlineMediaDownloader {
 			Support For:
 				* yfrog
 				* ow.ly
+				* lockerz.com
 				* say.ly
 					* <img src="contentImage" src="(.*?)"
 

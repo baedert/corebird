@@ -3,46 +3,47 @@ using Gtk;
 
 class ProfileWidget : Gtk.Box {
 	private ImageBox banner_box     = new ImageBox(Orientation.VERTICAL, 3);
-	private Image avatar_image      = new Image();
+	private ImageBox avatar_image   = new ImageBox(Orientation.VERTICAL, 0);
 	private Label name_label        = new Label("");
-	private Label screen_name_label = new Label("");
 	private Label description_label = new Label("");
-	private Label tweets_label      = new Label("");
-	private Label follower_label    = new Label("");
-	private Label following_label   = new Label("");
+	private Label url_label			= new Label("");
+	private Label location_label	= new Label("");
 
 	public ProfileWidget(){
 		GLib.Object(orientation: Orientation.VERTICAL);
+
 		banner_box.get_style_context().add_class("profile-header");
-		avatar_image.margin_top = 20;
-		banner_box.pack_start(avatar_image, false, false);
+		var top_banner_box = new Gtk.Box(Orientation.HORIZONTAL, 8);
+		avatar_image.set_size_request(100, 100);
+		avatar_image.margin_left = 8;
+		avatar_image.margin_top = 8;
+		top_banner_box.pack_start(avatar_image, false, false);
+
+
+		var data_box = new Gtk.Box(Orientation.VERTICAL, 5);
 		name_label.set_use_markup(true);
-		name_label.justify = Justification.CENTER;
-		name_label.get_style_context().add_class("name");
-		banner_box.pack_start(name_label, false, false);
-		screen_name_label.set_use_markup(true);
-		screen_name_label.get_style_context().add_class("screen-name");
-		banner_box.pack_start(screen_name_label, false, false);
+		name_label.get_style_context().add_class("data");
+		name_label.set_alignment(0, 0.5f);
+		name_label.margin_top = 8;
+		data_box.pack_start(name_label, false, true);
+		url_label.set_alignment(0, 0.5f);
+		url_label.get_style_context().add_class("data");
+		data_box.pack_start(url_label, false, true);
+		location_label.set_alignment(0, 0.5f);
+		location_label.get_style_context().add_class("data");
+		data_box.pack_start(location_label, false, true);
+		top_banner_box.pack_start(data_box, true, true);
+
+		banner_box.pack_start(top_banner_box, false, false);
+
 		description_label.set_use_markup(true);
 		description_label.set_line_wrap(true);
-		description_label.wrap_mode = Pango.WrapMode.WORD_CHAR;
-		description_label.justify = Justification.CENTER;
-		description_label.margin_left = 5;
-		description_label.margin_right = 5;
 		description_label.get_style_context().add_class("description");
-		banner_box.pack_start(description_label, false, false);
-		this.pack_start(banner_box, false, false);
+		description_label.set_justify(Justification.CENTER);
+		description_label.margin_bottom = 5;
+		banner_box.pack_start(description_label, true, true);
 
-		var data_box = new Box(Orientation.HORIZONTAL, 3);
-		tweets_label.set_use_markup(true);
-		tweets_label.margin_left = 10;
-		data_box.pack_start(tweets_label, false, false);
-		following_label.set_use_markup(true);
-		data_box.pack_start(following_label, true, true);
-		follower_label.set_use_markup(true);
-		follower_label.margin_right = 10;
-		data_box.pack_start(follower_label, false, false);
-		this.pack_start(data_box, false, false);
+		this.pack_start(banner_box, false, false);
 	}
 
 
@@ -56,7 +57,8 @@ class ProfileWidget : Gtk.Box {
 		//Load cached data
 		try{
 			string query_string = "SELECT id, screen_name, name, description, tweets,
-						 following, followers, avatar_name,banner_url FROM profiles ";
+						 following, followers, avatar_name,banner_url,
+						 url, location FROM profiles ";
 			if(user_id != 0)
 				query_string += @"WHERE id='$user_id';";
 			else
@@ -69,21 +71,36 @@ class ProfileWidget : Gtk.Box {
 				if(screen_name != "")
 					user_id = cache_result.fetch_int64(0);
 
+				string url = cache_result.fetch_string(9);
+				string location = cache_result.fetch_string(10);
+
 				load_banner.begin(user_id, cache_result.fetch_string(8));
 
-				name_label.set_markup("<big><big><big><b>%s</b></big></big></big>"
-					                      .printf(cache_result.fetch_string(2)));
-				screen_name_label.set_markup("<big>@%s</big>"
-				                             .printf(cache_result.fetch_string(1)));
-				description_label.set_markup("%s".printf(cache_result.fetch_string(3)));
+				name_label.set_markup("<big><big><b>%s</b>  @%s</big></big>"
+					                      .printf(cache_result.fetch_string(2),
+					                              cache_result.fetch_string(1)));
+				description_label.set_markup("<big><big><big>%s</big></big></big>".
+				                             printf(cache_result.fetch_string(3)));
+				if(url != "") {
+					url_label.visible = true;
+					url_label.set_markup("<big><big><a href='%s'>%s</a></big></big>"
+					                     .printf(url, url));
+				}else
+					url_label.visible = false;
 
-				tweets_label.set_markup("<big><b>%'d</b></big>\nTweets"
-				                        .printf(cache_result.fetch_int(4)));
-				following_label.set_markup("<big><b>%'d</b></big>\nFollowing"
-				                           .printf(cache_result.fetch_int(5)));
-				follower_label.set_markup("<big><b>%'d</b></big>\nFollowers"
-				                          .printf(cache_result.fetch_int(6)));
-				avatar_image.set_from_file(Utils.get_user_file_path(
+				if(location != "") {
+					location_label.visible = true;
+					location_label.set_markup("<big><big>%s</big></big>"
+				    	                      .printf(cache_result.fetch_string(10)));
+				}else
+					location_label.visible = false;
+				// tweets_label.set_markup("<big><b>%'d</b></big>\nTweets"
+				//                         .printf(cache_result.fetch_int(4)));
+				// following_label.set_markup("<big><b>%'d</b></big>\nFollowing"
+				//                            .printf(cache_result.fetch_int(5)));
+				// follower_label.set_markup("<big><b>%'d</b></big>\nFollowers"
+				                          // .printf(cache_result.fetch_int(6)));
+				avatar_image.set_background(Utils.get_user_file_path(
 				                           "/assets/avatars/"+cache_result.fetch_string(7)));
 				if(FileUtils.test(Utils.get_user_file_path(@"assets/banners/$user_id.png"),
 								  FileTest.EXISTS)){
@@ -96,8 +113,6 @@ class ProfileWidget : Gtk.Box {
 		}catch(SQLHeavy.Error e){
 			warning("Error while loading cached profile data: %s", e.message);
 		}
-
-
 	}
 
 
@@ -128,6 +143,8 @@ class ProfileWidget : Gtk.Box {
 				warning ("Error while loading profile data: %s", e.message);
 				return;
 			}
+
+			stdout.printf("\n\n\n%s\n\n\n", back);
 			var root = parser.get_root().get_object();
 			string avatar_url = root.get_string_member("profile_image_url");
 			string avatar_name = Utils.get_avatar_name(avatar_url);
@@ -143,7 +160,7 @@ class ProfileWidget : Gtk.Box {
 
 				}
 			}
-			avatar_image.set_from_file(avatar_on_disk);
+			avatar_image.set_background(avatar_on_disk);
 			string name        = root.get_string_member("name");
 			       screen_name = root.get_string_member("screen_name");
 			string description = root.get_string_member("description").replace("&", "&amp;");
@@ -151,25 +168,54 @@ class ProfileWidget : Gtk.Box {
 			int followers      = (int)root.get_int_member("followers_count");
 			int following      = (int)root.get_int_member("friends_count");
 			int tweets         = (int)root.get_int_member("statuses_count");
+			bool has_url       = root.get_object_member("entities").has_member("url");
+
+			string display_url = "";
+			if(has_url) {
+				var urls_object = root.get_object_member("entities")
+					.get_object_member("url").get_array_member("urls").get_element(0)
+						.get_object();
+
+				var url = urls_object.get_string_member("expanded_url");
+				if(urls_object.has_member("display_url")){
+					display_url = urls_object.get_string_member("display_url");
+				}else{
+					url = urls_object.get_string_member("url");
+					display_url = url;
+				}
+
+				url_label.set_markup("<big><big><a href='%s'>%s</a></big></big>".printf(
+			                     url, display_url));
+				url_label.visible = true;
+			} else
+				url_label.visible = false;
+
+			string location = "";
+			if(root.has_member("location")){
+				location	   = root.get_string_member("location");
+				if(location != "")
+					location_label.visible = true;
+				location_label.set_markup("<big><big>%s</big></big>".printf(location));
+			} else
+				location_label.visible = false;
 
 
-
-			name_label.set_markup("<big><big><big><b>%s</b></big></big></big>"
-			                      .printf(name));
-			screen_name_label.set_markup("<big>@%s</big>".printf(screen_name));
-			description_label.set_markup(description);
-
-			tweets_label.set_markup("<big><b>%'d</b></big>\nTweets".printf(tweets));
-			following_label.set_markup("<big><b>%'d</b></big>\nFollowing".printf(following));
-			follower_label.set_markup("<big><b>%'d</b></big>\nFollowers".printf(followers));
+			name_label.set_markup("<big><big><b>%s</b>  @%s</big></big>"
+				                      .printf(name, screen_name));
+			description_label.set_markup("<big><big><big>%s</big></big></big>".printf(
+			                             description));
+		// 	tweets_label.set_markup("<big><b>%'d</b></big>\nTweets".printf(tweets));
+		// 	following_label.set_markup("<big><b>%'d</b></big>\nFollowing".printf(following));
+		// 	follower_label.set_markup("<big><b>%'d</b></big>\nFollowers".printf(followers));
 
 			try{
 				SQLHeavy.Query update_query = new SQLHeavy.Query(Corebird.db,
 					"INSERT OR REPLACE INTO `profiles`(`id`, `screen_name`, `name`,
-					   `followers`, `following`, `tweets`, `description`, `avatar_name`)
+					   `followers`, `following`, `tweets`, `description`, `avatar_name`,
+					   `url`, `location`)
 					 VALUES
 					(:id, :screen_name, :name, :followers, :following, :tweets,
-					 :description, :avatar_name);");
+					 :description, :avatar_name, :url, :location);");
 				update_query.set_int64(":id", id);
 				update_query.set_string(":screen_name", screen_name);
 				update_query.set_string(":name", name);
@@ -178,9 +224,12 @@ class ProfileWidget : Gtk.Box {
 				update_query.set_int(":tweets", tweets);
 				update_query.set_string(":description", description);
 				update_query.set_string(":avatar_name", avatar_name);
+				update_query.set_string(":url", display_url);
+				update_query.set_string(":location", location);
 				update_query.execute_async.begin();
 			}catch(SQLHeavy.Error e){
-				warning("Error while updating profile info for %s:%s", screen_name, e.message);
+				warning("Error while updating profile info for %s:%s", screen_name,
+						e.message);
 			}
 		});
 	}

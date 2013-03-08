@@ -56,5 +56,7 @@ CREATE TABLE IF NOT EXISTS `profiles`(
 			    following INTEGER(11),
 			    description VARCHAR(160),
 			    avatar_name VARCHAR(100),
-			    banner_url VARCHAR(255)
+			    banner_url VARCHAR(255),
+			    url VARCHAR(150),
+			    location VARCHAR(100)
 );

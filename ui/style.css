@@ -177,11 +177,16 @@
 	color: @theme_unfocused_fg_color;
 }
 
-.profile-header .name,
-.profile-header .screen-name,
 .profile-header .description {
 	color: #EEE;
-	text-shadow: 1px 1px 0px #000;
+	text-shadow: 1px 1px 1px #000,
+				 0px 0px 2px #000;
+}
+
+.profile-header .data {
+	color: #EEE;
+	background-color: alpha(black, 0.55);
+	-GtkWidget-link-color: #EEE;
 }
 
 
