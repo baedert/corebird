@@ -15,5 +15,12 @@
 				<attribute name="accel">F5</attribute>
 			</item>
 		</section>
+		<section>
+			<item>
+				<attribute name="label">Quit</attribute>
+				<attribute name="action">app.quit</attribute>
+				<attribute name="accel">&lt;Control&gt;q</attribute>
+			</item>
+		</section>
 	</menu>
 </interface>

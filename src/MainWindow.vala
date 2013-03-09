@@ -68,18 +68,13 @@ class MainWindow : ApplicationWindow {
 
 
 		this.delete_event.connect(() => {
-			//message("destroy.");
-			// NotificationManager.uninit();
-			// if (Settings.show_tray_icon()){
-				// 'Minimize to tray'
-				// set_visible(false);
-			// }else{
 			save_geometry();
 			this.set_visible(false);
-			// this.application.release();
-			message("releasing application...");
-			// }
 			return true;
+		});
+
+		this.get_application().shutdown.connect(() => {
+			NotificationManager.uninit();
 		});
 
 
@@ -90,11 +85,11 @@ class MainWindow : ApplicationWindow {
 			win.show_all();
 		});
 		this.get_application().add_action(new_tweet_action);
-		var refresh_action = new SimpleAction("refresh", null);
-		refresh_action.activate.connect(() => {
-			timelines[main_notebook.page].load_newest();
+		var quit_action = new SimpleAction("quit", null);
+		quit_action.activate.connect(() => {
+			this.get_application().release();
 		});
-		this.get_application().add_action(refresh_action);
+		this.get_application().add_action(quit_action);
 
 
 
