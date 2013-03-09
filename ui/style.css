@@ -183,7 +183,8 @@
 				 0px 0px 2px #000;
 }
 
-.profile-header .data {
+.profile-header .data ,
+.profile-header .image-button{
 	color: #EEE;
 	background-color: alpha(black, 0.55);
 	-GtkWidget-link-color: #EEE;

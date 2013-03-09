@@ -2,12 +2,13 @@
 using Gtk;
 
 class ProfileWidget : Gtk.Box {
-	private ImageBox banner_box     = new ImageBox(Orientation.VERTICAL, 3);
-	private ImageBox avatar_image   = new ImageBox(Orientation.VERTICAL, 0);
-	private Label name_label        = new Label("");
-	private Label description_label = new Label("");
-	private Label url_label			= new Label("");
-	private Label location_label	= new Label("");
+	private ImageBox banner_box      = new ImageBox(Orientation.VERTICAL, 3);
+	private ImageBox avatar_image    = new ImageBox(Orientation.VERTICAL, 0);
+	private Label name_label         = new Label("");
+	private Label description_label  = new Label("");
+	private Label url_label          = new Label("");
+	private Label location_label     = new Label("");
+	private TextButton tweets_button = new TextButton("");
 
 	public ProfileWidget(){
 		GLib.Object(orientation: Orientation.VERTICAL);
@@ -21,7 +22,6 @@ class ProfileWidget : Gtk.Box {
 
 
 		var data_box = new Gtk.Box(Orientation.VERTICAL, 5);
-		name_label.set_use_markup(true);
 		name_label.get_style_context().add_class("data");
 		name_label.set_alignment(0, 0.5f);
 		name_label.margin_top = 8;
@@ -43,7 +43,16 @@ class ProfileWidget : Gtk.Box {
 		description_label.margin_bottom = 5;
 		banner_box.pack_start(description_label, true, true);
 
+		var bottom_banner_box = new Gtk.Box(Orientation.HORIZONTAL, 5);
+		bottom_banner_box.homogeneous = true;
+
+		bottom_banner_box.pack_start(tweets_button, false, false);
+		bottom_banner_box.pack_start(new Button.with_label("LOLOOL"), false, false);
+
+		// banner_box.pack_start(bottom_banner_box, false, true);
+
 		this.pack_start(banner_box, false, false);
+		// this.pack_start(bottom_banner_box, false, false);
 	}
 
 
@@ -94,8 +103,8 @@ class ProfileWidget : Gtk.Box {
 				    	                      .printf(cache_result.fetch_string(10)));
 				}else
 					location_label.visible = false;
-				// tweets_label.set_markup("<big><b>%'d</b></big>\nTweets"
-				//                         .printf(cache_result.fetch_int(4)));
+				tweets_button.set_label("<big><b>%'d</b></big>\nTweets"
+				                        .printf(cache_result.fetch_int(4)));
 				// following_label.set_markup("<big><b>%'d</b></big>\nFollowing"
 				//                            .printf(cache_result.fetch_int(5)));
 				// follower_label.set_markup("<big><b>%'d</b></big>\nFollowers"
