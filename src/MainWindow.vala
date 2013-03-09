@@ -22,7 +22,6 @@ class MainWindow : ApplicationWindow {
 	private ITimeline[] timelines			 = new ITimeline[3];
 	private IPage[] pages 				     = new IPage[1];
 	private ToolButton avatar_button         = new ToolButton(null, null);
-	private ToolButton refresh_button        = new ToolButton.from_stock(Stock.REFRESH);
 	private ToolButton settings_button       = new ToolButton.from_stock(Stock.PROPERTIES);
 	private ToolButton new_tweet_button      = new ToolButton.from_stock(Stock.NEW);
 	private SeparatorToolItem expander_item  = new SeparatorToolItem();
@@ -134,10 +133,6 @@ class MainWindow : ApplicationWindow {
 			main_notebook.append_page(page);
 		}
 
-		refresh_button.clicked.connect( () => {
-			//Refresh the current container
-			application.lookup_action("refresh").activate(null);
-		});
 		settings_button.clicked.connect( () => {
 			SettingsDialog sd = new SettingsDialog(this);
 			sd.show_all();
@@ -181,7 +176,6 @@ class MainWindow : ApplicationWindow {
 		left_toolbar.insert(new_tweet_button, 1);
 		left_toolbar.insert(left_separator, 2);
 		left_toolbar.add(expander_item);
-		left_toolbar.add(refresh_button);
 		left_toolbar.add(settings_button);
 	}
 
@@ -192,7 +186,6 @@ class MainWindow : ApplicationWindow {
 		primary_toolbar.add(avatar_button);
 		primary_toolbar.add(new_tweet_button);
 		primary_toolbar.add(expander_item);
-		primary_toolbar.add(refresh_button);
 		primary_toolbar.add(settings_button);
 		//Make the left toolbar a sidebar
 		left_toolbar.get_style_context().remove_class("primary-toolbar");
@@ -207,7 +200,6 @@ class MainWindow : ApplicationWindow {
 			//Remove widgets
 			left_toolbar.remove(avatar_button);
 			left_toolbar.remove(settings_button);
-			left_toolbar.remove(refresh_button);
 			left_toolbar.remove(new_tweet_button);
 			left_toolbar.remove(expander_item);
 			left_toolbar.remove(left_separator);
@@ -219,7 +211,6 @@ class MainWindow : ApplicationWindow {
 			primary_toolbar.remove(avatar_button);
 			primary_toolbar.remove(new_tweet_button);
 			primary_toolbar.remove(expander_item);
-			primary_toolbar.remove(refresh_button);
 			primary_toolbar.remove(settings_button);
 			//add them again
 			setup_left_toolbar();
