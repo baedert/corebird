@@ -181,6 +181,7 @@ class Tweet : GLib.Object{
 					pixbuf.save(dest, "png");
 					this.load_avatar(pixbuf);
 					message("Loaded avatar for %s", screen_name);
+					message("Dest: %s", dest);
 				} catch (GLib.Error e) {
 					critical(e.message);
 				}
