@@ -2,11 +2,10 @@ using Gtk;
 
 /**
  * A normal box, but with an image as background.
- * The image will always be drawn at the upper left corner
- * and it won't be stretched.(TODO: Change this)
  */
 class ImageBox : Gtk.Box  {
 	private static const float RATIO = (160f/320f);
+	public bool use_ratio{get; set; default=true;}
 
 	public ImageBox(Orientation orientation, int spacing){
 		GLib.Object(orientation: orientation, spacing: spacing);
@@ -26,6 +25,12 @@ class ImageBox : Gtk.Box  {
 
 	public override void get_preferred_height_for_width(int width, out int min_height,
 	                                                    out int natural_height){
+		if(!use_ratio){
+			base.get_preferred_height_for_width(width, out min_height,
+			                                    out natural_height);
+			return;
+		}
+
 		min_height = (int)(width * RATIO);
 		natural_height = (int)(width * RATIO);
 	}

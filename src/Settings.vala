@@ -20,7 +20,7 @@ class Settings : GLib.Object {
 	* Check whether the user wants Corebird to always use the dark gtk theme variant.
 	*/
 	public static bool use_dark_theme(){
-		return settings.get_boolean("use-dark-theme");		
+		return settings.get_boolean("use-dark-theme");
 	}
 
 	/**
@@ -52,6 +52,10 @@ class Settings : GLib.Object {
 
 	public static bool show_tray_icon(){
 		return settings.get_boolean("show-tray-icon");
+	}
+
+	public static bool show_inline_media(){
+		return settings.get_boolean("show-inline-media");
 	}
 
 

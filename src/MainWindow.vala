@@ -6,9 +6,11 @@ using Gtk;
 class MainWindow : ApplicationWindow {
 	public static const int PAGE_STREAM    = 0;
 	public static const int PAGE_MENTIONS  = 1;
+	public static const int PAGE_SEARCH    = 2;
 	// public static const int PAGE_FAVORITES = 2;
-	// public static const int PAGE_SEARCH    = 3;
-	public static const int PAGE_PROFILE   = 2;
+
+	public static const int PAGE_PROFILE   = 3;
+
 
 
 	private Toolbar left_toolbar             = new Toolbar();
@@ -17,10 +19,9 @@ class MainWindow : ApplicationWindow {
 	private Box bottom_box                   = new Box(Orientation.HORIZONTAL, 0);
 	private Notebook main_notebook           = new Notebook();
 	private RadioToolButton dummy_button	 = new RadioToolButton(null);
-	private ITimeline[] timelines			 = new ITimeline[2];
+	private ITimeline[] timelines			 = new ITimeline[3];
 	private IPage[] pages 				     = new IPage[1];
 	private ToolButton avatar_button         = new ToolButton(null, null);
-	private ToolButton refresh_button        = new ToolButton.from_stock(Stock.REFRESH);
 	private ToolButton settings_button       = new ToolButton.from_stock(Stock.PROPERTIES);
 	private ToolButton new_tweet_button      = new ToolButton.from_stock(Stock.NEW);
 	private SeparatorToolItem expander_item  = new SeparatorToolItem();
@@ -30,10 +31,13 @@ class MainWindow : ApplicationWindow {
 	public MainWindow(Gtk.Application app){
 		GLib.Object (application: app);
 
+
+
 		timelines[0] = new HomeTimeline(PAGE_STREAM);
 		timelines[1] = new MentionsTimeline(PAGE_MENTIONS);
+		timelines[2] = new SearchTimeline(PAGE_SEARCH);
 		// timelines[2] = new FavoriteContainer(PAGE_FAVORITES);
-		// timelines[3] = new SearchContainer(PAGE_SEARCH);
+
 
 		/*Initialize all containers */
 		for(int i = 0; i < timelines.length; i++){
@@ -57,32 +61,34 @@ class MainWindow : ApplicationWindow {
 
 
 
+		// Start userstream
+		UserStream.get().start();
+
+
+
 		this.delete_event.connect(() => {
-			//message("destroy.");
-			NotificationManager.uninit();
-			// if (Settings.show_tray_icon()){
-				// 'Minimize to tray'
-				// set_visible(false);
-			// }else{
-				save_geometry();
-				this.application.release();
-			// }
+			save_geometry();
+			this.set_visible(false);
 			return true;
+		});
+
+		this.get_application().shutdown.connect(() => {
+			NotificationManager.uninit();
 		});
 
 
 		// Set up the actions
 		SimpleAction new_tweet_action = new SimpleAction("compose-tweet", null);
 		new_tweet_action.activate.connect(() => {
-			ComposeTweetWindow win = new ComposeTweetWindow(this);
+			ComposeTweetWindow win = new ComposeTweetWindow(this, null, app);
 			win.show_all();
 		});
 		this.get_application().add_action(new_tweet_action);
-		var refresh_action = new SimpleAction("refresh", null);
-		refresh_action.activate.connect(() => {
-			timelines[main_notebook.page].load_newest();
+		var quit_action = new SimpleAction("quit", null);
+		quit_action.activate.connect(() => {
+			this.get_application().release();
 		});
-		this.get_application().add_action(refresh_action);
+		this.get_application().add_action(quit_action);
 
 
 
@@ -122,14 +128,11 @@ class MainWindow : ApplicationWindow {
 			main_notebook.append_page(tl);
 		}
 
+
 		foreach(var page in pages){
 			main_notebook.append_page(page);
 		}
 
-		refresh_button.clicked.connect( () => {
-			//Refresh the current container
-			application.lookup_action("refresh").activate(null);
-		});
 		settings_button.clicked.connect( () => {
 			SettingsDialog sd = new SettingsDialog(this);
 			sd.show_all();
@@ -145,9 +148,9 @@ class MainWindow : ApplicationWindow {
 
 
 		// TODO: Implement TestToolButton
-		// var tt = new TestToolButton();
-		// tt.icon_name = "find";
-		// left_toolbar.add(tt);
+		var tt = new TestToolButton();
+		tt.icon_name = "find";
+		left_toolbar.add(tt);
 
 		main_notebook.show_border = false;
 		main_notebook.show_tabs   = false;
@@ -173,7 +176,6 @@ class MainWindow : ApplicationWindow {
 		left_toolbar.insert(new_tweet_button, 1);
 		left_toolbar.insert(left_separator, 2);
 		left_toolbar.add(expander_item);
-		left_toolbar.add(refresh_button);
 		left_toolbar.add(settings_button);
 	}
 
@@ -184,7 +186,6 @@ class MainWindow : ApplicationWindow {
 		primary_toolbar.add(avatar_button);
 		primary_toolbar.add(new_tweet_button);
 		primary_toolbar.add(expander_item);
-		primary_toolbar.add(refresh_button);
 		primary_toolbar.add(settings_button);
 		//Make the left toolbar a sidebar
 		left_toolbar.get_style_context().remove_class("primary-toolbar");
@@ -199,7 +200,6 @@ class MainWindow : ApplicationWindow {
 			//Remove widgets
 			left_toolbar.remove(avatar_button);
 			left_toolbar.remove(settings_button);
-			left_toolbar.remove(refresh_button);
 			left_toolbar.remove(new_tweet_button);
 			left_toolbar.remove(expander_item);
 			left_toolbar.remove(left_separator);
@@ -211,7 +211,6 @@ class MainWindow : ApplicationWindow {
 			primary_toolbar.remove(avatar_button);
 			primary_toolbar.remove(new_tweet_button);
 			primary_toolbar.remove(expander_item);
-			primary_toolbar.remove(refresh_button);
 			primary_toolbar.remove(settings_button);
 			//add them again
 			setup_left_toolbar();
@@ -289,6 +288,7 @@ class MainWindow : ApplicationWindow {
 		IPage page = timelines[0];
 		if(page_id < timelines.length){
 			page = timelines[page_id];
+			page.get_tool_button().active = true;
 		}else{
 			page = pages[page_id - timelines.length];
 			dummy_button.active = true;
@@ -297,5 +297,14 @@ class MainWindow : ApplicationWindow {
 
 		page.onJoin(page_id, va_list());
 		main_notebook.set_current_page(page_id);
+	}
+
+
+
+
+	public void show_again() {
+
+		this.load_geometry();
+		this.set_visible(true);
 	}
 }

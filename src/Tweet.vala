@@ -1,14 +1,15 @@
 using Gtk;
 
-// TODO: Make tweet loading in the main-timeline work!
-// TODO: Look at EggListBox's source code
 class Tweet : GLib.Object{
-	public static int TYPE_NORMAL   = 1;
-	public static int TYPE_MENTION  = 2;
-	public static int TYPE_FAVORITE = 3;
+	public static const int THUMB_SIZE    = 50;
+
+	public static const int TYPE_NORMAL   = 1;
+	public static const int TYPE_MENTION  = 2;
+	public static const int TYPE_FAVORITE = 3;
 
 	private static SQLHeavy.Query cache_query;
 	private static SQLHeavy.Query author_query;
+
 	private static GLib.Regex link_regex;
 
 
@@ -31,18 +32,25 @@ class Tweet : GLib.Object{
 	public int64 created_at;
 	public int64 rt_created_at;
 
+    /** if 0, this tweet is NOT part of a conversation */
+    public int64 reply_id = 0;
+    public string media;
+    public signal void inline_media_added(Gdk.Pixbuf? media);
+    public bool has_inline_media = false;
+
+
 	public Tweet(){
 		this.avatar = Twitter.no_avatar;
 		if(cache_query == null){
 			try {
 				cache_query = new SQLHeavy.Query(Corebird.db,
-				"INSERT INTO `cache`(`id`, `text`,`user_id`, `user_name`, `is_retweet`,
+				"REPLACE INTO `cache`(`id`, `text`,`user_id`, `user_name`, `is_retweet`,
 				                     `retweeted_by`, `retweeted`, `favorited`,
 				                     `created_at`,`rt_created_at`, `avatar_name`,
-				                     `screen_name`, `type`,`rt_id`)
+				                     `screen_name`, `type`,`rt_id`, `reply_id`)
 				VALUES (:id, :text, :user_id, :user_name, :is_retweet, :retweeted_by,
-				        :retweeted, :favorited, :created_at, :rt_created_at, :avatar_name,
-				        :screen_name, :type, :rt_id);");
+				        :retweeted, :favorited, :created_at, :rt_created_at,:avatar_name,
+				        :screen_name, :type, :rt_id, :reply_id);");
 				author_query = new SQLHeavy.Query(Corebird.db,
 				"SELECT `id`, `screen_name`, `avatar_url` FROM `people`
 				WHERE `id`=:id;");
@@ -95,7 +103,8 @@ class Tweet : GLib.Object{
 		this.created_at  = Utils.parse_date(status.get_string_member("created_at"))
 										.to_unix();
 		this.avatar_url  = user.get_string_member("profile_image_url");
-
+        if(!status.get_null_member("in_reply_to_status_id"))
+                this.reply_id  = status.get_int_member("in_reply_to_status_id");
 
 
 		if (status.has_member("retweeted_status")){
@@ -111,6 +120,8 @@ class Tweet : GLib.Object{
 			this.screen_name   = rt_user.get_string_member("screen_name");
 			this.rt_created_at = Utils.parse_date(rt.get_string_member("created_at"))
 			                            .to_unix();
+            if(!rt.get_null_member("in_reply_to_status_id"))
+				this.reply_id = rt.get_int_member("in_reply_to_status_id");
 		}
 		this.avatar_name = Utils.get_avatar_name(this.avatar_url);
 
@@ -123,8 +134,9 @@ class Tweet : GLib.Object{
 		urls.foreach_element((arr, index, node) => {
 			var url = node.get_object();
 			string expanded_url = url.get_string_member("expanded_url");
-			// message("Text: %s, expanded: %s", this.text, expanded_url);
 			expanded_url = expanded_url.replace("&", "&amp;");
+			InlineMediaDownloader.try_load_media.begin(this, expanded_url);
+
 			this.text = this.text.replace(url.get_string_member("url"),
 			    expanded_url);
 		});
@@ -135,9 +147,12 @@ class Tweet : GLib.Object{
 			medias.foreach_element((arr, index, node) => {
 				var url = node.get_object();
 				string expanded_url = "https://"+url.get_string_member("display_url");
+				InlineMediaDownloader.try_load_media.begin(this,
+				        url.get_string_member("media_url"));
 				expanded_url = expanded_url.replace("&", "&amp;");
 				this.text = this.text.replace(url.get_string_member("url"),
 				    expanded_url);
+				this.has_inline_media = true;
 			});
 		}
 
@@ -157,13 +172,16 @@ class Tweet : GLib.Object{
 					var msg     = new Soup.Message("GET", this.avatar_url);
 					session.send_message(msg);
 
-					var memory_stream = new MemoryInputStream.from_data(msg.response_body.data,
-					                                                    null);
-					var pixbuf = new Gdk.Pixbuf.from_stream_at_scale(memory_stream, 48, 48,
+					var memory_stream = new MemoryInputStream.from_data(
+					                                   msg.response_body.data,
+					                                   null);
+					var pixbuf = new Gdk.Pixbuf.from_stream_at_scale(memory_stream,
+					                                                 48, 48,
 					                                                 false);
-					pixbuf.save(dest, Utils.get_file_type(avatar_name));
+					pixbuf.save(dest, "png");
 					this.load_avatar(pixbuf);
 					message("Loaded avatar for %s", screen_name);
+					message("Dest: %s", dest);
 				} catch (GLib.Error e) {
 					critical(e.message);
 				}
@@ -224,13 +242,12 @@ class Tweet : GLib.Object{
 			cache_query.set_string(":avatar_name", t.avatar_name);
 			cache_query.set_string(":screen_name", t.screen_name);
 			cache_query.set_int(":type", type); // 1 = normal tweet
+			cache_query.set_int64(":reply_id", t.reply_id);
 			cache_query.execute();
 		}catch(SQLHeavy.Error e){
 			error("Error while caching tweet: %s", e.message);
 		}
 	}
-
-
 
 	/**
 	 * Replaces the links in the given text with html tags to be used in
@@ -241,8 +258,10 @@ class Tweet : GLib.Object{
 	 */
 	public static string replace_links(string text){
 		if(link_regex == null){
-			link_regex = new GLib.Regex("http[s]{0,1}:\\/\\/[a-zA-Z\\_.\\+\\?\\/#=&;\\-0-9%,~]+",
-			                            RegexCompileFlags.OPTIMIZE);
+			//TODO: Most regexes can be truly static.
+			link_regex = new GLib.Regex(
+			"http[s]{0,1}:\\/\\/[a-zA-Z\\_.\\+!\\?\\/#=&;\\-0-9%,~]+",
+			RegexCompileFlags.OPTIMIZE);
 		}
 		string real_text = text;
 		try{

@@ -12,21 +12,7 @@ interface ITimeline : Gtk.Widget, IPage {
 	public abstract void load_cached();
 	public abstract void load_newest();
 	public abstract void load_older ();
-
-
-	protected void start_updates(bool notify, string function, int tweet_type) {
-		GLib.Timeout.add(Settings.get_update_interval() * 1000 * 60, () => {
-			load_newest_internal(function, tweet_type, (count) => {
-				//Update all current tweets
-				tweet_list.forall_internal(false, (w) => {
-					((TweetListEntry)w).update_time_delta();
-				});
-				if(count > 0)
-					NotificationManager.notify("%d new tweets!".printf(count));
-			});
-			return true;
-		});
-	}
+	public void update (){}
 
 
 	/**
@@ -41,21 +27,29 @@ interface ITimeline : Gtk.Widget, IPage {
 		SQLHeavy.Query query = new SQLHeavy.Query(Corebird.db,
 			@"SELECT `id`, `text`, `user_id`, `user_name`, `is_retweet`,
 			`retweeted_by`, `retweeted`, `favorited`, `created_at`,
-			`rt_created_at`, `avatar_name`, `screen_name`, `type`
+			`rt_created_at`, `avatar_name`, `screen_name`, `type`,
+			`reply_id`, `media`, `rt_id`, `reply_id`
 			FROM `cache` WHERE `type`='$tweet_type'
-			ORDER BY `created_at` DESC LIMIT 15");
+			ORDER BY `created_at` DESC LIMIT 15;");
 		SQLHeavy.QueryResult result = query.execute();
 		while(!result.finished){
-			Tweet t        = new Tweet();
-			t.id           = result.fetch_int64(0);
-			t.text         = result.fetch_string(1);
-			t.user_id      = result.fetch_int64(2);
-			t.user_name    = result.fetch_string(3);
-			t.is_retweet   = (bool)result.fetch_int(4);
-			t.retweeted_by = result.fetch_string(5);
-			t.retweeted    = (bool)result.fetch_int(6);
-			t.favorited    = (bool)result.fetch_int(7);
-			t.created_at   = result.fetch_int64(8);
+			Tweet t         = new Tweet();
+			t.id            = result.fetch_int64(0);
+			t.text          = result.fetch_string(1);
+			t.user_id       = result.fetch_int64(2);
+			t.user_name     = result.fetch_string(3);
+			t.is_retweet    = (bool)result.fetch_int(4);
+			t.retweeted_by  = result.fetch_string(5);
+			t.retweeted     = (bool)result.fetch_int(6);
+			t.favorited     = (bool)result.fetch_int(7);
+			t.created_at    = result.fetch_int64(8);
+			t.rt_created_at = result.fetch_int64(9);
+			t.reply_id      = result.fetch_int64(13);
+			t.media         = result.fetch_string(14);
+			t.rt_id         = result.fetch_int64(15);
+			t.reply_id      = result.fetch_int64(16);
+
+
 
 
 			if(t.id < max_id)
@@ -67,7 +61,6 @@ interface ITimeline : Gtk.Widget, IPage {
 			else
 				created = t.created_at;
 
-			// GLib.DateTime created = Utils.parse_date(result.fetch_string(8));
 			t.time_delta   = Utils.get_time_delta(new DateTime.from_unix_local(created),
 												  now);
 			t.avatar_name  = result.fetch_string(10);
@@ -76,6 +69,15 @@ interface ITimeline : Gtk.Widget, IPage {
 
 			// Append the tweet to the TweetList
 			TweetListEntry list_entry = new TweetListEntry(t, main_window);
+			if(t.media != null){
+				string thumb_path = Utils.get_user_file_path("assets/media/thumbs/"+
+							Utils.get_file_name(t.media));
+				try {
+					t.inline_media_added(new Gdk.Pixbuf.from_file(thumb_path));
+				} catch (GLib.Error e) {
+					warning(e.message);
+				}
+			}
 			tweet_list.add(list_entry);
 			result.next();
 		}
@@ -134,6 +136,7 @@ interface ITimeline : Gtk.Widget, IPage {
 	 */
 	protected void load_older_internal(string function, int tweet_type,
 	                                   LoaderThread.EndLoadFunc? end_load_func = null) {
+		// return;
 		var call = Twitter.proxy.new_call();
 		call.set_function(function);
 		call.set_method("GET");
@@ -144,10 +147,12 @@ interface ITimeline : Gtk.Widget, IPage {
 				call.invoke_async.end(result);
 			} catch (GLib.Error e) {
 				critical(e.message);
+				critical("Code: %u", call.get_status_code());
 			}
 
 
 			string back = call.get_payload();
+			stdout.printf(back+"\n");
 			var parser = new Json.Parser();
 			try{
 				parser.load_from_data (back);

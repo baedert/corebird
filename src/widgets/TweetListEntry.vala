@@ -1,9 +1,5 @@
 using Gtk;
-// TODO: Deleted tweets don't get deleted in the stream
-// TODO: Open 'new windows' in a new window, an extended main window,
-//       or just replace the main window's content?
 class TweetListEntry : Gtk.Box {
-	private Gdk.Window event_window;
 	private static GLib.Regex? hashtag_regex = null;
 	private static GLib.Regex? user_regex    = null;
 	private Image avatar                 = new Image();
@@ -13,29 +9,35 @@ class TweetListEntry : Gtk.Box {
 	private Label time_delta             = new Label("");
 	private ToggleButton retweet_button  = new ToggleButton();
 	private ToggleButton favorite_button = new ToggleButton();
+	private Box text_box				 = new Box(Orientation.HORIZONTAL, 3);
 	private MainWindow window;
+	private Gtk.Menu more_menu;
+	private Gtk.Button more_button;
 	// Timestamp used for sorting
 	public int64 timestamp;
-
+	private int64 tweet_id;
+	private Tweet tweet;
+	private Gdk.Window event_window;
 
 
 	public TweetListEntry(Tweet tweet, MainWindow? window){
 		GLib.Object(orientation: Orientation.HORIZONTAL, spacing: 5);
-		this.window = window;
+		this.window  = window;
 		this.vexpand = false;
-		// this.set_has_window(true);
-
+		this.hexpand = false;
 
 		if (hashtag_regex == null){
 			try{
-				hashtag_regex = new GLib.Regex("#\\w+", RegexCompileFlags.OPTIMIZE);
+				hashtag_regex = new GLib.Regex("(^|\\s)#\\w+", RegexCompileFlags.OPTIMIZE);
 				user_regex    = new GLib.Regex("@\\w+", RegexCompileFlags.OPTIMIZE);
 			}catch(GLib.RegexError e){
 				warning("Error while creating regexes: %s", e.message);
 			}
 		}
 
-		timestamp = tweet.created_at;
+		this.timestamp = tweet.created_at;
+		this.tweet_id  = tweet.id;
+		this.tweet 	   = tweet;
 
 
 		// If the tweet's avatar changed, also reset it in the widgets
@@ -45,7 +47,7 @@ class TweetListEntry : Gtk.Box {
 		});
 
 
-		// Set the correct CSS style class
+		// // Set the correct CSS style class
 		get_style_context().add_class("tweet");
 		get_style_context().add_class("row");
 
@@ -79,78 +81,223 @@ class TweetListEntry : Gtk.Box {
 
 		var left_box = new Box(Orientation.VERTICAL, 3);
 		avatar.set_valign(Align.START);
-		avatar.get_style_context().add_class("avatar");
 		avatar.pixbuf = tweet.avatar;
-		avatar.margin_top = 3;
+		avatar.margin_top  = 3;
 		avatar.margin_left = 3;
 		left_box.pack_start(avatar, false, false);
 
 		var status_box = new Box(Orientation.HORIZONTAL, 5);
-		// favorite_button.get_style_context().add_class("favorite-button");
-		favorite_button.set_window(this.get_window());
-		favorite_button.no_show_all = true;
-		status_box.pack_start(favorite_button, false, false);
 		retweet_button.get_style_context().add_class("retweet-button");
-		retweet_button.no_show_all = true;
-//		status_box.pack_start(retweet_button, false, false);
+		retweet_button.active = tweet.retweeted;
+		retweet_button.toggled.connect(retweet_tweet);
+		// retweet_button.no_show_all = true;
+		status_box.pack_start(retweet_button, false, false);
+		favorite_button.get_style_context().add_class("favorite-button");
+		favorite_button.active = tweet.favorited;
+		favorite_button.toggled.connect(favorite_tweet);
+		// favorite_button.no_show_all = true;
+		status_box.pack_start(favorite_button, false, false);
+
+
+		more_button = new Button();
+		more_button.get_style_context().add_class("more-button");
+		more_button.clicked.connect(more_button_clicked);
+		status_box.pack_start(more_button, false, false);
+
 		left_box.pack_start(status_box, true, false);
 		this.pack_start(left_box, false, false);
 
 
-		var middle_box = new Box(Orientation.VERTICAL, 3);
-		var author_box = new Box(Orientation.HORIZONTAL, 8);
+		var right_box = new Box(Orientation.VERTICAL, 4);
+		var top_box = new Box(Orientation.HORIZONTAL, 5);
+
+
+
 		author_button = new TextButton(tweet.user_name);
 		author_button.clicked.connect(() => {
 			if(window != null){
-				window.switch_page(MainWindow.PAGE_PROFILE, tweet.user_id);
+				window.switch_page(MainWindow.PAGE_PROFILE,
+				                   ProfilePage.BY_ID, tweet.user_id);
 			}else
 				critical("main window instance is null!");
 		});
-		author_box.pack_start(author_button, false, false);
+		top_box.pack_start(author_button, false, false);
 		screen_name.set_use_markup(true);
 		screen_name.label = "<small>@%s</small>".printf(tweet.screen_name);
 		screen_name.ellipsize = Pango.EllipsizeMode.END;
-		author_box.pack_start(screen_name, false, false);
-
-		middle_box.pack_start(author_box, false, false);
+		top_box.pack_start(screen_name, false, false);
 
 
+		time_delta.set_use_markup(true);
+		update_time_delta();
+		time_delta.set_alignment(1, 0.5f);
+		time_delta.get_style_context().add_class("time-delta");
+		time_delta.margin_right = 3;
+		top_box.pack_end(time_delta, false, false);
 
-		// Also set User/Hashtag links
-		text.label = Tweet.replace_links(tweet.text);
+		right_box.pack_start(top_box, false, true);
+
+		if(tweet.reply_id != 0){
+			var conv_button = new Button();
+			conv_button.get_style_context().add_class("conversation-button");
+			top_box.pack_end(conv_button, false, false);
+		}
+
+
+	    // Also set User/Hashtag links
+	    string display_text = tweet.text;
+	    display_text = user_regex.replace(display_text, display_text.length, 0,
+	                                      "<a href='\\0'>\\0</a>");
+	    display_text = hashtag_regex.replace(display_text, display_text.length, 0,
+	                                         "<a href='\\0'>\\0</a>");
+		display_text = Tweet.replace_links(display_text);
+		text.label = display_text;
 		text.set_use_markup(true);
 		text.set_line_wrap(true);
 		text.wrap_mode = Pango.WrapMode.WORD_CHAR;
 		text.set_alignment(0, 0);
 		text.activate_link.connect(handle_uri);
-		middle_box.pack_start(text, true, true);
-		this.pack_start(middle_box, true, true);
+		text_box.pack_start(text, true, true);
 
-		var right_box = new Box(Orientation.VERTICAL, 2);
-		time_delta.set_use_markup(true);
-		time_delta.label = "<small>%s</small>".printf(tweet.time_delta);
-		time_delta.set_alignment(1, 0.5f);
-		time_delta.get_style_context().add_class("time-delta");
-		time_delta.margin_right = 3;
-		right_box.pack_start(time_delta, false, false);
 
-		this.pack_start(right_box, false, false);
+		right_box.pack_start(text_box, true, true);
 
+		this.pack_start(right_box, true, true);
+
+		tweet.inline_media_added.connect((pic) => {
+			var media_button = new ImageButton();
+			media_button.set_bg(pic);
+			media_button.visible = true;
+			media_button.vexpand = false;
+			media_button.set_valign(Align.START);
+			media_button.clicked.connect(() => {
+				ImageDialog id = new ImageDialog(window, tweet.media);
+				id.show_all();
+			});
+			text_box.pack_start(media_button, false, false);
+		});
+
+		if(tweet.is_retweet) {
+			// TODO: Use rt image here
+			var rt_label = new Label("<small>RT by "+tweet.retweeted_by+"</small>");
+			rt_label.set_use_markup(true);
+			rt_label.set_justify(Justification.RIGHT);
+			rt_label.set_halign(Align.END);
+			rt_label.set_valign(Align.START);
+			rt_label.margin_bottom = 4;
+			right_box.pack_end(rt_label, true, true);
+		}
+
+		DeltaUpdater.get().add(this);
 
 		this.set_size_request(20, 80);
 		this.show_all();
-		favorite_button.hide();
-		retweet_button.hide();
-
-
 	}
 
-
-	public void update_time_delta() {
+	/**
+	 * Updates the time delta label in the upper right
+	 *
+	 * @return The seconds between the current time and
+	 *         the time the tweet was created
+	 */
+	public int update_time_delta() {
 		GLib.DateTime now = new GLib.DateTime.now_local();
-		GLib.DateTime then = new GLib.DateTime.from_unix_local(timestamp);
+		GLib.DateTime then = new GLib.DateTime.from_unix_local(
+			tweet.is_retweet ? tweet.rt_created_at : tweet.created_at);
 		this.time_delta.label = "<small>%s</small>".printf(
 			Utils.get_time_delta(then, now));
+		return (int)(now.difference(then) / 1000.0 / 1000.0);
+	}
+
+	private void favorite_tweet() {
+		var spinner = new Spinner();
+		spinner.start();
+		WidgetReplacer.replace_tmp(favorite_button, spinner);
+
+		var call = Twitter.proxy.new_call();
+		if(favorite_button.active)
+			call.set_function("1.1/favorites/create.json");
+		else
+			call.set_function("1.1/favorites/destroy.json");
+		call.set_method("POST");
+		call.add_param("id", tweet_id.to_string());
+		call.invoke_async.begin(null, (obj, res) => {
+			try{
+				call.invoke_async.end(res);
+			} catch (GLib.Error e) {
+				critical(e.message);
+			}
+
+			try{
+				Corebird.db.execute(@"UPDATE `cache` SET `favorited`='%d'
+				                    WHERE `id`='$tweet_id';"
+				                    .printf(favorite_button.active ? 1 : 0));
+			} catch(SQLHeavy.Error e) {
+				critical(e.message);
+			}
+			WidgetReplacer.replace_tmp_back(favorite_button);
+		});
+	}
+
+	/**
+	 * (Un)retweets the tweet that is saved in this ListEntry.
+	 */
+	private void retweet_tweet() {
+		var spinner = new Spinner();
+		spinner.start();
+		WidgetReplacer.replace_tmp(retweet_button, spinner);
+
+		var call = Twitter.proxy.new_call();
+		call.set_method("POST");
+
+		if(retweet_button.active) {
+			call.set_function(@"1.1/statuses/retweet/$tweet_id.json");
+			call.invoke_async.begin(null, (obj, res) => {
+				try{
+					call.invoke_async.end(res);
+				} catch (GLib.Error e) {
+					Utils.show_error_dialog(e.message);
+				}
+				string back = call.get_payload();
+				var parser = new Json.Parser();
+				try{
+					parser.load_from_data(back);
+				} catch(GLib.Error e){
+					critical(e.message);
+					critical(back);
+				}
+				int64 new_id = parser.get_root().get_object().get_int_member("id");
+
+				try{
+					Corebird.db.execute(@"UPDATE `cache` SET `retweeted`='1',
+					                    `rt_id`='$new_id'
+					                    WHERE `id`='$tweet_id';");
+
+				}catch (SQLHeavy.Error e) {
+					critical(e.message);
+				}
+				tweet.rt_id = new_id;
+				WidgetReplacer.replace_tmp_back(retweet_button);
+			});
+		} else {
+			call.set_function("1.1/statuses/destroy/%s.json"
+			                  .printf(tweet.rt_id.to_string()));
+			call.invoke_async.begin(null, (obj, res) => {
+				try {
+					call.invoke_async.end(res);
+				} catch (GLib.Error e) {
+					Utils.show_error_dialog(e.message);
+					critical(e.message);
+				}
+				try{
+					Corebird.db.execute(@"UPDATE `cache` SET `retweeted`='0'
+					                    WHERE `id`='$tweet_id';");
+				}catch (SQLHeavy.Error e) {
+					critical(e.message);
+				}
+				WidgetReplacer.replace_tmp_back(retweet_button);
+			});
+		}
 	}
 
 
@@ -160,8 +307,18 @@ class TweetListEntry : Gtk.Box {
 		int w = get_allocated_width();
 		int h = get_allocated_height();
 		style.render_background(c, 0, 0, w, h);
-		style.render_frame(c, 0, 0, w, h);
+
+		var border_color = style.get_border_color(get_state_flags());
+		c.set_source_rgba(border_color.red, border_color.green, border_color.blue,
+						  border_color.alpha);
+
+		// The line here is 50% of the width
+		c.move_to(w*0.25, h);
+		c.line_to(w*0.75, h);
+		c.stroke();
+
 		base.draw(c);
+
 		return false;
 	}
 
@@ -170,15 +327,16 @@ class TweetListEntry : Gtk.Box {
 	* Handle uris in the tweets
 	*/
 	private bool handle_uri(string uri){
+		uri = uri._strip();
 		string term = uri.substring(1);
 
 		if(uri.has_prefix("@")){
-			// FIXME: Use the id OR the handle in ProfileDialog
-			// ProfileDialog pd = new ProfileDialog(term);
-			// pd.show_all();
+			window.switch_page(MainWindow.PAGE_PROFILE,
+			                   ProfilePage.BY_NAME,
+			                   term);
 			return true;
 		}else if(uri.has_prefix("#")){
-			debug("TODO: Implement search");
+			window.switch_page(MainWindow.PAGE_SEARCH, uri);
 			return true;
 		}
 		return false;
@@ -286,5 +444,29 @@ class TweetListEntry : Gtk.Box {
 		}
 
 		base.size_allocate(alloc);
+	}
+
+	private void more_button_clicked() {
+		if(more_menu == null)
+			construct_more_menu();
+
+
+		more_menu.popup(null, null, null, 0, 0);
+	}
+
+	private void construct_more_menu() {
+		more_menu = new Gtk.Menu();
+
+		Gtk.MenuItem reply_item = new Gtk.MenuItem.with_label("Reply");
+		reply_item.activate.connect(() => {
+			var compose_win = new ComposeTweetWindow(window, tweet,
+			                                         window.get_application());
+			compose_win.show_all();
+		});
+		more_menu.add(reply_item);
+		Gtk.MenuItem details_item = new Gtk.MenuItem.with_label("Details");
+		more_menu.add(details_item);
+
+		more_menu.show_all();
 	}
 }

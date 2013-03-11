@@ -9,17 +9,19 @@ list(APPEND CMAKE_MODULE_PATH
 set (CMAKE_COLOR_MAKEFILE ON)
 # set (CMAKE_VERBOSE_MAKEFILE ON)
 
-set (CMAKE_C_FLAGS "-g")
-set (CMAKE_C_FLAGS "-Wall")
-set (CMAKE_C_FLAGS "-Wno-incompatible-pointer-types")
-set (CMAKE_C_FLAGS "-Wno-unused-value")
-set (CMAKE_C_FLAGS "-Wno-unused-function")
-set (CMAKE_C_FLAGS "-Wno-unused-variable")
-set (CMAKE_C_FLAGS "-Wno-deprecated-declarations")
-set (CMAKE_C_FLAGS "-I src/egglistbox/")
+set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g")
+set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0")
+#set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
+set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-value")
+set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-function")
+set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-variable")
+set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-but-set-variable")
+set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-deprecated-declarations")
+set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -I src/egglistbox/")
+# TODO: This always resets the CMAKE_C_FLAGS variable
 
 
-set (DATADIR "${CMAKE_INSTALL_PREFIX}/share/corebird")
+set (DATADIR "${CMAKE_INSTALL_PREFIX}/share/corebird/")
 
 message(${CMAKE_SOURCE_DIR})
 
@@ -65,11 +67,18 @@ vala_precompile(VALA_C
 	src/ITimeline.vala
 	src/HomeTimeline.vala
 	src/MentionsTimeline.vala
+	src/SearchTimeline.vala
 	src/User.vala
 	src/ProfileDialog.vala
 	src/LoaderThread.vala
 	src/IPage.vala
 	src/ProfilePage.vala
+	src/InlineMediaDownloader.vala
+	src/UserStream.vala
+	src/DeltaUpdater.vala
+	src/WarningService.vala
+	src/IMessageReceiver.vala
+	src/widgets/ImageDialog.vala
 	src/widgets/ImageBox.vala
 	src/widgets/ImageLabel.vala
 	src/widgets/TweetTextView.vala
@@ -88,6 +97,7 @@ vala_precompile(VALA_C
 	src/util/Utils.vala
 	src/util/Benchmark.vala
 	src/util/Config.vala
+	src/util/WidgetReplacer.vala
 	src/egglistbox/egg-list-box.c
 PACKAGES
 	${DEPS}
@@ -114,6 +124,10 @@ install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/favorite.png DESTINATION ${DAT
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/favorite-normal.png DESTINATION ${DATADIR})
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/retweet.png DESTINATION ${DATADIR})
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/retweet-normal.png DESTINATION ${DATADIR})
+install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/conversation.png DESTINATION ${DATADIR})
+install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/conversation-normal.png DESTINATION ${DATADIR})
+install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/more-normal.png DESTINATION ${DATADIR})
+install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/more.png DESTINATION ${DATADIR})
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/ui/style.css DESTINATION ${DATADIR}/ui/)
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/ui/first-run-window.ui DESTINATION ${DATADIR}/ui/)
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/ui/tweet-info-window.ui DESTINATION ${DATADIR}/ui/)

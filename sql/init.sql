@@ -10,9 +10,9 @@ CREATE TABLE IF NOT EXISTS `common`(
 );
 
 CREATE TABLE IF NOT EXISTS `cache`(
-                id NUMERIC(19,0),
+                id NUMERIC(19,0) PRIMARY KEY,
                 rt_id NUMERIC(19,0),
-                text VARCHAR(140),
+                text VARCHAR(200),
 				user_id NUMERIC(19,0),
 				user_name VARCHAR(100),
 				screen_name VARCHAR(40),
@@ -26,7 +26,9 @@ CREATE TABLE IF NOT EXISTS `cache`(
 			    avatar_name VARCHAR(50),
 			    retweets INTEGER(5),
 			    favorites INTEGER(5),
-			    type INTEGER(1)
+			    type INTEGER(1),
+			    reply_id NUMERIC(19,0),
+			    media VARCHAR(255)
 );
 
 CREATE TABLE IF NOT EXISTS `people`(
@@ -53,5 +55,8 @@ CREATE TABLE IF NOT EXISTS `profiles`(
 			    followers INTEGER(11),
 			    following INTEGER(11),
 			    description VARCHAR(160),
-			    avatar_name VARCHAR(100)
+			    avatar_name VARCHAR(100),
+			    banner_url VARCHAR(255),
+			    url VARCHAR(150),
+			    location VARCHAR(100)
 );

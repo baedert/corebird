@@ -13,11 +13,14 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 	private int media_count			 = 0;
 	private ImageButton media_image  = new ImageButton();
 	private string media_uri;
+	private Tweet answer_to;
 
 
-	public ComposeTweetWindow(Window? parent, string? answer_to = null, Gtk.Application? app = null) {
+	public ComposeTweetWindow(Window? parent, Tweet? answer_to = null,
+	                          Gtk.Application? app = null) {
 		GLib.Object(application: app);
 
+		this.answer_to = answer_to;
 
 		this.show_menubar = false;
 		if(parent != null){
@@ -53,6 +56,15 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
 
 		var main_box = new Box(Orientation.VERTICAL, 5);
+
+		if(answer_to != null) {
+			var answer_to_entry = new TweetListEntry(answer_to, (MainWindow)parent);
+			answer_to_entry.margin_bottom = 10;
+			main_box.pack_start(answer_to_entry, false, true);
+
+			tweet_text.buffer.text = "@"+answer_to.screen_name;
+		}
+
 
 		var middle_box = new Box(Orientation.HORIZONTAL, 3);
 		var av = new Gtk.Image.from_file(Utils.get_user_file_path("assets/avatars/"
@@ -135,28 +147,45 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 		if(text.strip() == "")
 			return;
 
+		Rest.Param param;
 		var call = Twitter.proxy.new_call();
 		call.set_method("POST");
+		call.add_param("status", text);
+		if(this.answer_to != null) {
+			call.add_param("in_reply_to_status_id", answer_to.id.to_string());
+		}
+
+
 		if(media_count == 0){
 			call.set_function("1.1/statuses/update.json");
 		} else {
-/*			call.set_function("/statuses/update_with_media.json");
-			Gdk.Pixbuf pic = new Gdk.Pixbuf.from_file(media_uri);
-			pixels = pic.get_pixels_with_length();
+			call.set_function("1.1/statuses/update_with_media.json");
 
-			this.param = new Param.full("media[]", MemoryUse.COPY, pixels,
-			                            "multipart/form-data", media_uri);
-			call.add_param_full(param);*/
+
+
+
+			uint8[] content;
+			try {
+				GLib.File media_file = GLib.File.new_for_path(media_uri);
+				media_file.load_contents(null, out content, null);
+			} catch (GLib.Error e) {
+				critical(e.message);
+			}
+
+			param = new Rest.Param.full("media[]", Rest.MemoryUse.COPY,
+			                                   content, "multipart/form-data",
+			                                   media_uri);
+			call.add_param_full(param);
 			debug("Not yet implemented.");
 		}
 
-		call.add_param("status", text);
-
-		// message("Back: %s", call.get_payload());
-		message("Code: %u, Status: %s", call.get_status_code(), call.get_status_message());
-		call.invoke_async.begin(null, () => {
-			message("Back: %s", call.get_payload());
-			message("Code: %u, Status: %s", call.get_status_code(), call.get_status_message());
+		call.invoke_async.begin(null, (obj, res) => {
+			try{
+				call.invoke_async.end(res);
+			} catch(GLib.Error e) {
+				critical(e.message);
+				Utils.show_error_dialog(e.message);
+			}
 		});
 		this.destroy();
 	}

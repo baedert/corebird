@@ -23,7 +23,6 @@ class Corebird : Gtk.Application {
 			settings.gtk_application_prefer_dark_theme = true;
 		}
 
-		NotificationManager.init();
 
 		// Create ~/.corebird if neccessary
 		if(!FileUtils.test(Utils.get_user_file_path(""), FileTest.EXISTS)){
@@ -33,14 +32,12 @@ class Corebird : Gtk.Application {
 				critical("Couldn't create the ~/.corebird directory");
 			}
 
-			success = File.new_for_path(Utils.get_user_file_path("assets/"))
-								.make_directory();
-			success = File.new_for_path(Utils.get_user_file_path("assets/avatars/"))
-								.make_directory();
-			success = File.new_for_path(Utils.get_user_file_path("assets/banners/"))
-								.make_directory();
-			success = File.new_for_path(Utils.get_user_file_path("assets/user/"))
-								.make_directory();
+			create_user_folder("assets/");
+			create_user_folder("assets/avatars/");
+			create_user_folder("assets/banners/");
+			create_user_folder("assets/user");
+			create_user_folder("assets/media/");
+			create_user_folder("assets/media/thumbs/");
 		}
 
 
@@ -60,7 +57,11 @@ class Corebird : Gtk.Application {
 		//Load custom style sheet
 		try{
 			CssProvider provider = new CssProvider();
-			provider.load_from_file(File.new_for_path(DATADIR+"/ui/style.css"));
+			string style = Utils.get_user_file_path("style.css");
+			if(!FileUtils.test(style, FileTest.EXISTS))
+				style = DATADIR+"/ui/style.css";
+
+			provider.load_from_file(File.new_for_path(style));
 			Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(), provider,
 		                                         STYLE_PROVIDER_PRIORITY_APPLICATION);
 		}catch(GLib.Error e){
@@ -120,6 +121,7 @@ class Corebird : Gtk.Application {
 				UIBuilder builder = new UIBuilder(DATADIR+"/ui/menu.ui");
 				this.set_app_menu(builder.get_menu_model("app-menu"));
 				var mw = new MainWindow(this);
+				NotificationManager.init(mw);
 				mw.set_role(role_name);
 				this.add_window(mw);
 			}
@@ -150,13 +152,26 @@ class Corebird : Gtk.Application {
 			error("Error while loading sql file: %s", e.message);
 		}
 	}
+
+	private void create_user_folder(string name) {
+		try {
+			bool success = File.new_for_path(Utils.get_user_file_path(name))
+									.make_directory();
+	        if(!success)
+	        	critical("Couldn't create user folder %s", name);
+    	} catch (GLib.Error e) {
+    		critical(e.message);
+    	}
+	}
 }
 
 
 int main (string[] args){
 	try{
+		//no initialisation of static fields :(
 		Settings.init();
-		new Utils(); //no initialisation of static fields :(
+		new Utils();
+		new WidgetReplacer();
 		var corebird = new Corebird();
 		return corebird.run(args);
 	} catch(GLib.Error e){
