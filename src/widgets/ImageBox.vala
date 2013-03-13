@@ -38,7 +38,6 @@ class ImageBox : Gtk.Box  {
 
 		int ratio_height = (int)(width * RATIO);
 
-		message("Min: %d, Ratio: %d", min, ratio_height);
 		if(min > ratio_height) {
 			min_height = min;
 			natural_height = natural;
