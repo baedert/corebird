@@ -59,7 +59,6 @@ class TweetListEntry : Gtk.Box {
 
 		this.enter_notify_event.connect( (evt)=> {
 			message("ENTER Detail: %d", evt.detail);
-			message("ENTER Mode: %d", evt.mode);
 			message("---------------------");
 			if(evt.detail == Gdk.NotifyType.NONLINEAR ||
 			   evt.detail == Gdk.NotifyType.INFERIOR)
@@ -74,7 +73,6 @@ class TweetListEntry : Gtk.Box {
 		});
 		this.leave_notify_event.connect( (evt) => {
 			message("LEAVE Detail: %d", evt.detail);
-			message("LEAVE Mode: %d", evt.mode);
 			message("---------------------");
 			if(evt.detail == Gdk.NotifyType.NONLINEAR ||
 			   evt.detail == Gdk.NotifyType.INFERIOR)
