@@ -57,23 +57,33 @@ class TweetListEntry : Gtk.Box {
 			get_style_context().add_class("user-tweet");
 		}
 
-		this.enter_notify_event.connect( ()=> {
-			// GLib.Idle.add(() => {
-				favorite_button.show();
-				// retweet_button.show();
-				message(" IN");
-				// return false;
-			// });
+		this.enter_notify_event.connect( (evt)=> {
+			message("ENTER Detail: %d", evt.detail);
+			message("ENTER Mode: %d", evt.mode);
+			message("---------------------");
+			if(evt.detail == Gdk.NotifyType.NONLINEAR ||
+			   evt.detail == Gdk.NotifyType.INFERIOR)
+				return true;
+
+			favorite_button.show();
+			retweet_button.show();
+			more_button.show();
+			// message(" IN");
 
 			return false;
 		});
-		this.leave_notify_event.connect( () => {
-			// GLib.Idle.add(() => {
-				favorite_button.hide();
-				// retweet_button.hide();
-				message("OUT");
-				// return false;
-			// });
+		this.leave_notify_event.connect( (evt) => {
+			message("LEAVE Detail: %d", evt.detail);
+			message("LEAVE Mode: %d", evt.mode);
+			message("---------------------");
+			if(evt.detail == Gdk.NotifyType.NONLINEAR ||
+			   evt.detail == Gdk.NotifyType.INFERIOR)
+				return true;
+
+			favorite_button.hide();
+			retweet_button.hide();
+			more_button.hide();
+			// message("OUT");
 
 			return false;
 		});
@@ -82,26 +92,28 @@ class TweetListEntry : Gtk.Box {
 		var left_box = new Box(Orientation.VERTICAL, 3);
 		avatar.set_valign(Align.START);
 		avatar.pixbuf = tweet.avatar;
-		avatar.margin_top  = 3;
-		avatar.margin_left = 3;
+		avatar.margin_top   = 3;
+		avatar.margin_left  = 3;
+		avatar.margin_right = 3;
 		left_box.pack_start(avatar, false, false);
 
-		var status_box = new Box(Orientation.HORIZONTAL, 5);
+		var status_box = new Box(Orientation.HORIZONTAL, 3);
 		retweet_button.get_style_context().add_class("retweet-button");
 		retweet_button.active = tweet.retweeted;
 		retweet_button.toggled.connect(retweet_tweet);
-		// retweet_button.no_show_all = true;
+		retweet_button.no_show_all = true;
 		status_box.pack_start(retweet_button, false, false);
 		favorite_button.get_style_context().add_class("favorite-button");
 		favorite_button.active = tweet.favorited;
 		favorite_button.toggled.connect(favorite_tweet);
-		// favorite_button.no_show_all = true;
+		favorite_button.no_show_all = true;
 		status_box.pack_start(favorite_button, false, false);
 
 
 		more_button = new Button();
 		more_button.get_style_context().add_class("more-button");
 		more_button.clicked.connect(more_button_clicked);
+		more_button.no_show_all = true;
 		status_box.pack_start(more_button, false, false);
 
 		left_box.pack_start(status_box, true, false);
@@ -343,7 +355,7 @@ class TweetListEntry : Gtk.Box {
 	}
 
 	public override void realize() {
-		message("realize");
+		// message("realize");
 		Allocation alloc;
 		Gdk.WindowAttr attr = {};
 		Gdk.Window window;
@@ -367,19 +379,22 @@ class TweetListEntry : Gtk.Box {
 						Gdk.WindowAttributesType.Y;
 
 
+		//This widget has no window...
 
-		bool visible_window = get_has_window();
-		if(visible_window) {
-			attr.visual  = get_visual();
-			attr.wclass  = Gdk.WindowWindowClass.INPUT_OUTPUT;
-			attr_type   |= Gdk.WindowAttributesType.VISUAL;
 
-		    window = new Gdk.Window(get_parent_window(),
-		                            attr, attr_type);
-		    this.set_window(window);
-		    window.set_user_data(this);
-		    message("Visible window");
-		}else {
+		// bool visible_window = get_has_window();
+		// if(visible_window) {
+		// 	attr.visual  = get_visual();
+		// 	attr.wclass  = Gdk.WindowWindowClass.INPUT_OUTPUT;
+		// 	attr_type   |= Gdk.WindowAttributesType.VISUAL;
+
+		//     window = new Gdk.Window(get_parent_window(),
+		//                             attr, attr_type);
+		//     this.set_window(window);
+		//     window.set_user_data(this);
+		//     // message("Visible window");
+		// }
+		// else {
 			window = get_parent_window();
 			set_window(window);
 			// window.ref(); // TODO:?
@@ -388,14 +403,14 @@ class TweetListEntry : Gtk.Box {
 
 			this.event_window = new Gdk.Window(window, attr, attr_type);
 			this.event_window.set_user_data(this);
-			message("No visible window");
+			// message("No visible window");
 
-		}
+		// }
 
 	}
 
 	public override void unrealize() {
-		message("unrealize");
+		// message("unrealize");
 		if(this.event_window != null) {
 			this.event_window.set_user_data(null);
 			this.event_window.destroy();
@@ -407,7 +422,7 @@ class TweetListEntry : Gtk.Box {
 
 	public override void map(){
 
-		message("map");
+		// message("map");
 
 		if(event_window != null)
 			event_window.show();
@@ -419,7 +434,7 @@ class TweetListEntry : Gtk.Box {
 	}
 
 	public override void unmap() {
-		message("unmap");
+		// message("unmap");
 
 		if(event_window != null)
 			event_window.hide();
@@ -428,7 +443,7 @@ class TweetListEntry : Gtk.Box {
 	}
 
 	public override void size_allocate(Allocation alloc) {
-		message("size_allocate");
+		// message("size_allocate");
 		this.set_allocation(alloc);
 
 
