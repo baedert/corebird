@@ -2,13 +2,15 @@
 using Gtk;
 
 class ProfileWidget : Gtk.Box {
-	private ImageBox banner_box      = new ImageBox(Orientation.VERTICAL, 3);
-	private ImageBox avatar_image    = new ImageBox(Orientation.VERTICAL, 0);
-	private Label name_label         = new Label("");
-	private Label description_label  = new Label("");
-	private Label url_label          = new Label("");
-	private Label location_label     = new Label("");
-	private TextButton tweets_button = new TextButton("");
+	private ImageBox banner_box         = new ImageBox(Orientation.VERTICAL, 3);
+	private ImageBox avatar_image       = new ImageBox(Orientation.VERTICAL, 0);
+	private Label name_label            = new Label("");
+	private Label description_label     = new Label("");
+	private Label url_label             = new Label("");
+	private Label location_label        = new Label("");
+	private TextButton tweets_button    = new TextButton();
+	private TextButton following_button = new TextButton();
+	private TextButton followers_button = new TextButton();
 
 	public ProfileWidget(){
 		GLib.Object(orientation: Orientation.VERTICAL);
@@ -17,7 +19,7 @@ class ProfileWidget : Gtk.Box {
 		var top_banner_box = new Gtk.Box(Orientation.HORIZONTAL, 8);
 		avatar_image.set_size_request(100, 100);
 		avatar_image.margin_left = 8;
-		avatar_image.margin_top = 8;
+		avatar_image.margin_top  = 8;
 		top_banner_box.pack_start(avatar_image, false, false);
 
 
@@ -43,13 +45,18 @@ class ProfileWidget : Gtk.Box {
 		description_label.margin_bottom = 5;
 		banner_box.pack_start(description_label, true, true);
 
-		var bottom_banner_box = new Gtk.Box(Orientation.HORIZONTAL, 5);
+		var bottom_banner_box = new Gtk.Box(Orientation.HORIZONTAL, 0);
 		bottom_banner_box.homogeneous = true;
 
-		bottom_banner_box.pack_start(tweets_button, false, false);
-		bottom_banner_box.pack_start(new Button.with_label("LOLOOL"), false, false);
+		tweets_button.get_style_context().add_class("data-button");
+		following_button.get_style_context().add_class("data-button");
+		followers_button.get_style_context().add_class("data-button");
+		bottom_banner_box.pack_start(tweets_button, false, true);
+		bottom_banner_box.pack_start(following_button, false, true);
+		bottom_banner_box.pack_start(followers_button, false, true);
 
-		// banner_box.pack_start(bottom_banner_box, false, true);
+
+		banner_box.pack_start(bottom_banner_box, false, false);
 
 		this.pack_start(banner_box, false, false);
 		// this.pack_start(bottom_banner_box, false, false);
@@ -103,12 +110,15 @@ class ProfileWidget : Gtk.Box {
 				    	                      .printf(cache_result.fetch_string(10)));
 				}else
 					location_label.visible = false;
-				tweets_button.set_label("<big><b>%'d</b></big>\nTweets"
-				                        .printf(cache_result.fetch_int(4)));
-				// following_label.set_markup("<big><b>%'d</b></big>\nFollowing"
-				//                            .printf(cache_result.fetch_int(5)));
-				// follower_label.set_markup("<big><b>%'d</b></big>\nFollowers"
-				                          // .printf(cache_result.fetch_int(6)));
+				tweets_button.set_markup(
+						"<big><big><b>%'d</b></big></big>\nTweets"
+						.printf(cache_result.fetch_int(4)));
+				following_button.set_markup(
+						"<big><big><b>%'d</b></big></big>\nFollowing"
+						.printf(cache_result.fetch_int(5)));
+				followers_button.set_markup(
+						"<big><big><b>%'d</b></big></big>\nFollowers"
+						.printf(cache_result.fetch_int(6)));
 				avatar_image.set_background(Utils.get_user_file_path(
 				                           "/assets/avatars/"+cache_result.fetch_string(7)));
 				if(FileUtils.test(Utils.get_user_file_path(@"assets/banners/$user_id.png"),

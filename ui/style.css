@@ -190,6 +190,19 @@
 	-GtkWidget-link-color: #EEE;
 }
 
+.profile-header .data-button {
+	background-color: alpha(black, 0.55);
+	border-radius: 0px;
+	color: #EEE;
+	text-shadow: none;
+	padding-top: 3px;
+	padding-right: 8px;
+	padding-left: 8px;
+}
+.profile-header .data-button:hover {
+	text-shadow: 0px 1px 1px #FFF;
+}
+
 
 /* Progress-item showed when loading new tweets */
 .progress-item .button {
