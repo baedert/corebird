@@ -3,6 +3,7 @@ using Gtk;
 
 
 class TextButton : Button {
+	//TODO: Really use the hand cursor?
 	private Gdk.Cursor hand_cursor  = new Gdk.Cursor(Gdk.CursorType.HAND1);
 	private Gdk.Cursor arrow_cursor = new Gdk.Cursor(Gdk.CursorType.TOP_LEFT_ARROW);
 
@@ -23,9 +24,24 @@ class TextButton : Button {
 	}
 
 	public void set_markup(string text) {
-		var label = new Label(text);
+		Label label = null;
+		Widget child = get_child();
+		if(child != null){
+			if(child is Label) {
+				label = (Label)child;
+				label.set_markup(text);
+			}else{
+				this.remove(child);
+				label = new Label(text);
+			}
+		}else{
+			label = new Label(text);
+		}
 		label.set_use_markup(true);
 		label.set_justify(Justification.CENTER);
-		this.add(label);
+
+		label.visible = true;
+		if(label.parent == null)
+			this.add(label);
 	}
 }

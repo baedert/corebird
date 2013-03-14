@@ -201,6 +201,7 @@
 }
 .profile-header .data-button:hover {
 	text-shadow: 0px 1px 1px #FFF;
+	background-color: alpha(black, 0.8);
 }
 
 

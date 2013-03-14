@@ -136,6 +136,7 @@ class ProfileWidget : Gtk.Box {
 
 
 	private async void load_profile_data(int64 user_id, string screen_name = ""){
+		return;
 		if(user_id != 0 && screen_name != "") {
 			error("Can't use both user_id and screen_name.");
 		}
@@ -163,7 +164,7 @@ class ProfileWidget : Gtk.Box {
 				return;
 			}
 
-			stdout.printf("\n\n\n%s\n\n\n", back);
+			// stdout.printf("\n\n\n%s\n\n\n", back);
 			var root = parser.get_root().get_object();
 			string avatar_url = root.get_string_member("profile_image_url");
 			string avatar_name = Utils.get_avatar_name(avatar_url);
@@ -223,9 +224,15 @@ class ProfileWidget : Gtk.Box {
 				                      .printf(name, screen_name));
 			description_label.set_markup("<big><big><big>%s</big></big></big>".printf(
 			                             description));
-		// 	tweets_label.set_markup("<big><b>%'d</b></big>\nTweets".printf(tweets));
-		// 	following_label.set_markup("<big><b>%'d</b></big>\nFollowing".printf(following));
-		// 	follower_label.set_markup("<big><b>%'d</b></big>\nFollowers".printf(followers));
+			tweets_button.set_markup(
+					"<big><big><b>%'d</b></big></big>\nTweets"
+					.printf(tweets));
+			following_button.set_markup(
+					"<big><big><b>%'d</b></big></big>\nFollowing"
+					.printf(followers));
+			followers_button.set_markup(
+					"<big><big><b>%'d</b></big></big>\nFollowers"
+					.printf(following));
 
 			try{
 				SQLHeavy.Query update_query = new SQLHeavy.Query(Corebird.db,
