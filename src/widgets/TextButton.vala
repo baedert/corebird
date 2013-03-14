@@ -23,6 +23,14 @@ class TextButton : Button {
 		});
 	}
 
+
+	/**
+	 * Adds a GtkLabel to the Button using the given text as markup.
+	 * If the button already contains another child, that will either be replaced if it's
+	 * no instance of GtkLabel, or - if it's a GtkLabel already - be reused.
+	 *
+	 * @param text The markup to use(see pango markup)
+	 */
 	public void set_markup(string text) {
 		Label label = null;
 		Widget child = get_child();
