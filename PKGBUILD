@@ -7,7 +7,13 @@ pkgdesc="Gtk+ Twitter client"
 url="http://pango.com"
 arch=('i686' 'x86_64')
 license=('LGPL')
-depends=('gtk3>=3.6')
+depends=('gtk3>=3.6'
+		 'glib2>=2.32'
+		 'rest>=0.7' #media upload needs rest-git from the AUR
+		 'libgee'
+		 'sqlite3'
+		 'libsoup>=2.4'
+		 'libnotify')
 makedepends=('vala' 'git')
 
 _gitroot="https://baedert@bitbucket.org/baedert/corebird.git"
