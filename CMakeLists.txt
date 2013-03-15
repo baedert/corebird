@@ -18,7 +18,6 @@ set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-variable")
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-but-set-variable")
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-deprecated-declarations")
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -I src/egglistbox/")
-# TODO: This always resets the CMAKE_C_FLAGS variable
 
 
 set (DATADIR "${CMAKE_INSTALL_PREFIX}/share/corebird/")
