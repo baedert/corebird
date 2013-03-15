@@ -5,6 +5,10 @@ class ProfilePage : IPage, ScrollWidget {
 	public static const int BY_ID   = 1;
 	public static const int BY_NAME = 2;
 
+
+	public int unread_count {
+		get{return 0;}
+	}
 	private int id;
 	private ProfileWidget profile_widget = new ProfileWidget();
 

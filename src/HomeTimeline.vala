@@ -2,12 +2,16 @@
 using Gtk;
 
 class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
+	public int unread_count{
+		get {return unread_tweets;}
+	}
 	public MainWindow main_window{set;get;}
 	protected int64 max_id{get;set; default = int64.MAX-2;}
 	protected Egg.ListBox tweet_list{set;get;}
 	private int id;
 	private RadioToolButton tool_button;
 	private bool loading = false;
+	private int unread_tweets = 0;
 
 	public HomeTimeline(int id){
 		this.id = id;
