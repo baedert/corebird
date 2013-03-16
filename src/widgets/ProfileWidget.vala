@@ -289,12 +289,14 @@ class ProfileWidget : Gtk.Box {
 			tweets_button.set_markup(
 					"<big><big><b>%'d</b></big></big>\nTweets"
 					.printf(tweets));
+
 			following_button.set_markup(
 					"<big><big><b>%'d</b></big></big>\nFollowing"
-					.printf(followers));
+					.printf(following));
+
 			followers_button.set_markup(
 					"<big><big><b>%'d</b></big></big>\nFollowers"
-					.printf(following));
+					.printf(followers));
 
 			if(location != null && location != ""){
 				location_label.visible = true;
