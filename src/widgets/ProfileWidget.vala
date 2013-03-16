@@ -86,8 +86,6 @@ class ProfileWidget : Gtk.Box {
 				if(screen_name != "")
 					user_id = cache_result.fetch_int64(0);
 
-				string location = cache_result.fetch_string(10);
-
 				load_banner.begin(user_id, cache_result.fetch_string(8));
 
 				avatar_image.set_background(Utils.get_user_file_path(
@@ -280,9 +278,9 @@ class ProfileWidget : Gtk.Box {
 	}
 
 
-	private void set_data(string name, string screen_name, string? url,
-	                      string? location, string description, int tweets, int following,
-	                      int followers) {
+	private new void set_data(string name, string screen_name, string? url,
+	                          string? location, string description, int tweets,
+	                          int following, int followers) {
 
 			name_label.set_markup("<big><big><b>%s</b>  @%s</big></big>"
 				                      .printf(name, screen_name));

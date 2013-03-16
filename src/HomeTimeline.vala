@@ -5,13 +5,17 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 	public int unread_count{
 		get {return unread_tweets;}
 	}
+	protected int64 max_id{
+		get {return lowest_id;}
+		set {lowest_id = value;}
+	}
 	public MainWindow main_window{set;get;}
-	protected int64 max_id{get;set; default = int64.MAX-2;}
 	protected Egg.ListBox tweet_list{set;get;}
 	private int id;
 	private RadioToolButton tool_button;
 	private bool loading = false;
 	private int unread_tweets = 0;
+	private int64 lowest_id = int64.MAX-2;
 
 	public HomeTimeline(int id){
 		this.id = id;
@@ -29,7 +33,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 	    this.vadjustment.value_changed.connect( () => {
             int max = (int)(this.vadjustment.upper - this.vadjustment.page_size);
             int value = (int)this.vadjustment.value;
-            if (value >= (max * 0.9f) && !loading){
+            if (value >= (max - 100) && !loading){
                 //Load older tweets
                 loading = true;
                 message("end! %d/%d", value, max);
@@ -50,6 +54,8 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 			this.balance_next_upper_change(TOP);
 			tweet_list.add(new TweetListEntry(t, main_window));
 			tweet_list.resort();
+
+			unread_tweets++;
 		}
 	}
 
@@ -79,9 +85,9 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 			this.balance_next_upper_change(TOP);
 			this.load_newest_internal("1.1/statuses/home_timeline.json",
 	    		                      Tweet.TYPE_NORMAL,
-            (count, max_id) => {
-        		if(max_id < this.max_id)
-        			this.max_id = max_id;
+            (count, lowest_id) => {
+        		if(lowest_id < this.lowest_id)
+        			this.lowest_id = lowest_id;
 
             });
 		} catch(SQLHeavy.Error e){
@@ -94,9 +100,11 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 		this.balance_next_upper_change(BOTTOM);
 		this.load_older_internal("1.1/statuses/home_timeline.json",
 		                         Tweet.TYPE_NORMAL,
-        (count, mid) => {
-        	if(mid < this.max_id)
-        		this.max_id = mid;
+        (count, lowest_id) => {
+        	if(lowest_id < this.lowest_id){
+        		this.lowest_id = lowest_id;
+        		message("Setting lowest_id to new value(%s)", lowest_id.to_string());
+        	}
 
         	this.loading = false;
         });
@@ -104,10 +112,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 
 
 	public void create_tool_button(RadioToolButton? group){
-		if(group == null)
-			tool_button = new RadioToolButton.from_stock(null, Stock.HOME);
-		else
-			tool_button = new RadioToolButton.with_stock_from_widget(group, Stock.HOME);
+		tool_button = new RadioToolButton.with_stock_from_widget(group, Stock.HOME);
 	}
 
 	public RadioToolButton? get_tool_button(){
