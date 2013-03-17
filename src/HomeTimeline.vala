@@ -30,16 +30,16 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 			return -1;
 		});
 
-	    this.vadjustment.value_changed.connect( () => {
-            int max = (int)(this.vadjustment.upper - this.vadjustment.page_size);
-            int value = (int)this.vadjustment.value;
-            if (value >= (max - 100) && !loading){
-                //Load older tweets
-                loading = true;
-                message("end! %d/%d", value, max);
-                load_older();
-            }
-        });
+	    // this.vadjustment.value_changed.connect( () => {
+     //        int max = (int)(this.vadjustment.upper - this.vadjustment.page_size);
+     //        int value = (int)this.vadjustment.value;
+     //        if (value >= (max - 100) && !loading){
+     //            //Load older tweets
+     //            loading = true;
+     //            message("end! %d/%d", value, max);
+     //            load_older();
+     //        }
+     //    });
 
         UserStream.get().register(this);
 	}
@@ -108,6 +108,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 
         	this.loading = false;
         });
+
 	}
 
 

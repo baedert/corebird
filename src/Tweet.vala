@@ -197,7 +197,7 @@ class Tweet : GLib.Object{
 	 * @param type The type of the tweet, see Tweet.TYPE_* constants.
 	 *
 	 */
-	public static void cache(Tweet t, int type){
+	public static async void cache(Tweet t, int type){
 		// Check the tweeter's details and update them if necessary
 		try{
 			author_query.set_int64(":id", t.user_id);
@@ -205,8 +205,9 @@ class Tweet : GLib.Object{
 			if (author_result.finished){
 				//The author is not in the DB so we insert him
 				// message("Inserting new author %s", t.screen_name);
-				Corebird.db.execute("INSERT INTO `people`(id,name,screen_name,avatar_url,
-				                    avatar_name) VALUES ('%d', '%s', '%s', '%s', '%s');",
+				Corebird.db.execute("INSERT INTO `people`(id,name,screen_name,
+				                    avatar_url, avatar_name) VALUES
+									('%d', '%s', '%s', '%s', '%s');",
 				                    t.user_id, t.user_name, t.screen_name, t.avatar_url,
 				                    t.avatar_name);
 			}else{
