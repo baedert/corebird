@@ -80,11 +80,9 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 		}
 		tweet_list.resort();
 		this.vadjustment.set_upper(0);
-		message("CACHED END");
 	}
 
 	public void load_newest() {
-		message("NEWEST START");
 		try {
 			// this.balance_next_upper_change(TOP);
 			this.load_newest_internal("1.1/statuses/home_timeline.json",
