@@ -28,7 +28,7 @@ class TweetCacher : GLib.Object {
 	* @param t The tweet to queue for later caching.
 	**/
 	public void enqueue(Tweet t) {
-		queue.prepend(t);
+		queue.append(t);
 	}
 
 	/**
@@ -75,7 +75,7 @@ class TweetCacher : GLib.Object {
 	 */
 	private void do_cache() {
 		GLib.Idle.add(() => {
-			return ready && !cache_tweet();
+			return ready && cache_tweet();
 		});
 	}
 
