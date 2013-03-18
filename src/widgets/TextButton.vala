@@ -14,11 +14,11 @@ class TextButton : Button {
 
 
 		this.enter_notify_event.connect( () => {
-			this.get_window().cursor = hand_cursor;
+			// this.get_window().cursor = hand_cursor;
 			return false;
 		});
 		this.leave_notify_event.connect( () => {
-			this.get_window().cursor = arrow_cursor;
+			// this.get_window().cursor = arrow_cursor;
 			return false;
 		});
 	}

@@ -21,7 +21,7 @@ class TestToolButton : ToolButton {
 		base.draw(c);
 		Allocation all;
 		this.get_allocation(out all);
-	
+
 		Pango.Layout layout = this.create_pango_layout("30");
 		Pango.Rectangle size;
 		layout.get_extents(null, out size);
@@ -33,7 +33,7 @@ class TestToolButton : ToolButton {
 		alloc.y = all.y;
 		alloc.width = 35;
 		alloc.height = 25;
-		count_label.set_allocation(alloc);
+		// count_label.set_allocation(alloc);
 		//c.move_to();
 		//count_label.draw(c);
 
