@@ -42,6 +42,9 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
      //    });
 
         UserStream.get().register(this);
+        this.vadjustment.notify["upper"].connect(() => {
+        	message("upper: %f", vadjustment.upper);
+        });
 	}
 
 	private void stream_message_received(StreamMessageType type, Json.Object root) {
@@ -49,6 +52,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 			GLib.DateTime now = new GLib.DateTime.now_local();
 			Tweet t = new Tweet();
 			t.load_from_json(root, now);
+			// TODO: Maybe also use TweetCacher here?
 			Tweet.cache(t, Tweet.TYPE_NORMAL);
 
 			this.balance_next_upper_change(TOP);
@@ -78,11 +82,14 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 			         e.message);
 		}
 		tweet_list.resort();
+		this.vadjustment.set_upper(0);
+		message("CACHED END");
 	}
 
 	public void load_newest() {
+		message("NEWEST START");
 		try {
-			this.balance_next_upper_change(TOP);
+			// this.balance_next_upper_change(TOP);
 			this.load_newest_internal("1.1/statuses/home_timeline.json",
 	    		                      Tweet.TYPE_NORMAL,
             (count, lowest_id) => {
