@@ -22,7 +22,8 @@ class MainWindow : ApplicationWindow {
 	private ITimeline[] timelines			 = new ITimeline[3];
 	private IPage[] pages 				     = new IPage[1];
 	private ToolButton avatar_button         = new ToolButton(null, null);
-	private ToolButton settings_button       = new ToolButton.from_stock(Stock.PROPERTIES);
+	private ToolButton settings_button       = new ToolButton.from_stock(
+	                                                          Stock.PROPERTIES);
 	private ToolButton new_tweet_button      = new ToolButton.from_stock(Stock.NEW);
 	private SeparatorToolItem expander_item  = new SeparatorToolItem();
 	private SeparatorToolItem left_separator = new SeparatorToolItem();
