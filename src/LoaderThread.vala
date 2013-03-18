@@ -38,6 +38,8 @@ class LoaderThread{
 				// 	Tweet.cache(t, tweet_type);
 				// 	return false;
 				// });
+				t.type = tweet_type;
+				TweetCacher.get().enqueue(t);
 			}
 
 			if(t.id < lowest_id)

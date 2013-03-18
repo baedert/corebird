@@ -73,6 +73,7 @@ class MainWindow : ApplicationWindow {
 		this.delete_event.connect(() => {
 			save_geometry();
 			this.set_visible(false);
+			TweetCacher.get().start();
 			return true;
 		});
 

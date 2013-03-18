@@ -37,6 +37,7 @@ class Tweet : GLib.Object{
     public string media;
     public signal void inline_media_added(Gdk.Pixbuf? media);
     public bool has_inline_media = false;
+    public int type = -1;
 
 
 	public Tweet(){

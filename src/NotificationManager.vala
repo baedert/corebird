@@ -24,6 +24,7 @@ class NotificationManager {
 				notification.add_action("clicked", "Open",
 				() => {
 					window.show_again();
+					TweetCacher.get().stop();
 				});
 				notification.add_action("compose", "Compose",
 				() => {

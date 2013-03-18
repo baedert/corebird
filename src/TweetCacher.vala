@@ -6,18 +6,18 @@ class TweetCacher : GLib.Object {
 	private bool ready = false;
 
 	private TweetCacher(){}
-	
+
 	/**
 	* Returns the one and only instance of TweetCacher
-	* 
+	*
   	* @return The singleton instance of this class.
 	**/
-	public static TweetCacher get(){
+	public static new TweetCacher get(){
 		if(instance == null)
 			instance = new TweetCacher();
 		return instance;
 	}
-	
+
 	/**
 	* Queues the given tweet for caching.
 	* Caching will happen whenever someone called start()
@@ -57,7 +57,17 @@ class TweetCacher : GLib.Object {
 
 	private void do_cache() {
 		GLib.Idle.add(() => {
+			Tweet t = queue.nth_data(0);
+			if(t == null){
+				ready = false;
+				return false;
+			}
 
+			queue.remove(t);
+			Tweet.cache(t, t.type);
+			// queue = queue.next;
+			message("(%s)Caching tweet from %s",
+			        ready ? "TRUE" : "FALSE", t.user_name);
 			return ready && !queue_empty();
 		});
 	}
