@@ -67,9 +67,6 @@ class MainWindow : ApplicationWindow {
 		UserStream.get().start();
 
 
-
-
-
 		this.delete_event.connect(() => {
 			save_geometry();
 			this.set_visible(false);
@@ -91,7 +88,12 @@ class MainWindow : ApplicationWindow {
 		this.get_application().add_action(new_tweet_action);
 		var quit_action = new SimpleAction("quit", null);
 		quit_action.activate.connect(() => {
-			this.get_application().release();
+			this.visible = false;
+
+			TweetCacher.get().start_sync.begin(() => {
+				this.get_application().release();
+			});
+
 		});
 		this.get_application().add_action(quit_action);
 

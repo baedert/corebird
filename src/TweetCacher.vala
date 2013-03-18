@@ -40,6 +40,20 @@ class TweetCacher : GLib.Object {
 	}
 
 	/**
+	 * Asynchronously start caching.
+	 * Actually, start() is also
+	 */
+	public async void start_sync() {
+		ready = true;
+		// Use only one idle callback
+		GLib.Idle.add(() => {
+			do{}while(cache_tweet());
+			return false;
+		});
+
+	}
+
+	/**
 	* End caching. Note that if there's currently a caching in progress,
 	* it won't be cancelled but it will be the last cached Tweet until
 	* start() gets called again.
@@ -55,21 +69,34 @@ class TweetCacher : GLib.Object {
 		return queue.length() == 0;
 	}
 
+	/**
+	 * Cache the tweets asynchronously(through GLib.Idle). Caching will stop
+	 * if the queue is empty or 'ready' becomes false.
+	 */
 	private void do_cache() {
 		GLib.Idle.add(() => {
-			Tweet t = queue.nth_data(0);
-			if(t == null){
-				ready = false;
-				return false;
-			}
-
-			queue.remove(t);
-			Tweet.cache(t, t.type);
-			// queue = queue.next;
-			message("(%s)Caching tweet from %s",
-			        ready ? "TRUE" : "FALSE", t.user_name);
-			return ready && !queue_empty();
+			return ready && !cache_tweet();
 		});
+	}
+
+	/**
+	 * Caches exactly one tweet.
+	 *
+	 * @return true if there are more tweets in the queue, false otherwise.
+	 */
+	private bool cache_tweet(){
+		Tweet t = queue.nth_data(0);
+		if(t == null){
+			ready = false;
+			return false;
+		}
+
+		queue.remove(t);
+		Tweet.cache(t, t.type);
+		message("(%s)Caching tweet from %s",
+		        ready ? "TRUE" : "FALSE", t.user_name);
+
+		return true;
 	}
 
 }
