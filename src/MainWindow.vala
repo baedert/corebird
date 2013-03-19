@@ -63,9 +63,18 @@ class MainWindow : ApplicationWindow {
 		pages[0] = new ProfilePage(PAGE_PROFILE);
 
 
-
 		// Start userstream
 		UserStream.get().start();
+
+		this.window_state_event.connect((evt) => {
+			// If the window gets unfocused
+			if(evt.new_window_state == 0) {
+				TweetCacher.get().start();
+			}else if(evt.new_window_state == Gdk.WindowState.FOCUSED) {
+				TweetCacher.get().stop();
+			}
+			return false;
+		});
 
 
 		this.delete_event.connect(() => {
