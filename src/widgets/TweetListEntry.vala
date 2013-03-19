@@ -113,6 +113,7 @@ class TweetListEntry : Gtk.Box {
 		top_box.pack_start(author_button, false, false);
 		screen_name.set_use_markup(true);
 		screen_name.label = "<small>@%s</small>".printf(tweet.screen_name);
+		screen_name.get_style_context().add_class("dim-label");
 		screen_name.ellipsize = Pango.EllipsizeMode.END;
 		top_box.pack_start(screen_name, false, false);
 
@@ -120,7 +121,7 @@ class TweetListEntry : Gtk.Box {
 		time_delta.set_use_markup(true);
 		update_time_delta();
 		time_delta.set_alignment(1, 0.5f);
-		time_delta.get_style_context().add_class("time-delta");
+		time_delta.get_style_context().add_class("dim-label");
 		time_delta.margin_right = 3;
 		top_box.pack_end(time_delta, false, false);
 
