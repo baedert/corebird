@@ -27,7 +27,8 @@ class TweetListEntry : Gtk.Box {
 
 		if (hashtag_regex == null){
 			try{
-				hashtag_regex = new GLib.Regex("(^|\\s)#\\w+", RegexCompileFlags.OPTIMIZE);
+				hashtag_regex = new GLib.Regex("(^|\\s)#\\w+",
+				                               RegexCompileFlags.OPTIMIZE);
 				user_regex    = new GLib.Regex("@\\w+", RegexCompileFlags.OPTIMIZE);
 			}catch(GLib.RegexError e){
 				warning("Error while creating regexes: %s", e.message);
@@ -55,18 +56,6 @@ class TweetListEntry : Gtk.Box {
 		if (tweet.screen_name == User.screen_name){
 			get_style_context().add_class("user-tweet");
 		}
-
-		this.enter_notify_event.connect( ()=> {
-			favorite_button.show();
-			retweet_button.show();
-			return false;
-		});
-		this.leave_notify_event.connect( () => {
-			favorite_button.hide();
-			retweet_button.hide();
-			return false;
-		});
-
 
 		var left_box = new Box(Orientation.VERTICAL, 3);
 		avatar.set_valign(Align.START);
