@@ -60,9 +60,9 @@ class TweetListEntry : Gtk.Box {
 		this.enter_notify_event.connect( (evt)=> {
 			message("ENTER Detail: %d", evt.detail);
 			message("---------------------");
-			if(evt.detail == Gdk.NotifyType.NONLINEAR ||
-			   evt.detail == Gdk.NotifyType.INFERIOR)
-				return true;
+			// if(evt.detail == Gdk.NotifyType.NONLINEAR ||
+			//    evt.detail == Gdk.NotifyType.INFERIOR)
+			// 	return true;
 
 			favorite_button.show();
 			retweet_button.show();
@@ -74,9 +74,9 @@ class TweetListEntry : Gtk.Box {
 		this.leave_notify_event.connect( (evt) => {
 			message("LEAVE Detail: %d", evt.detail);
 			message("---------------------");
-			if(evt.detail == Gdk.NotifyType.NONLINEAR ||
-			   evt.detail == Gdk.NotifyType.INFERIOR)
-				return true;
+			// if(evt.detail == Gdk.NotifyType.NONLINEAR ||
+			//    evt.detail == Gdk.NotifyType.INFERIOR)
+			// 	return true;
 
 			favorite_button.hide();
 			retweet_button.hide();
@@ -378,33 +378,12 @@ class TweetListEntry : Gtk.Box {
 						Gdk.WindowAttributesType.Y;
 
 
-		//This widget has no window...
-
-
-		// bool visible_window = get_has_window();
-		// if(visible_window) {
-		// 	attr.visual  = get_visual();
-		// 	attr.wclass  = Gdk.WindowWindowClass.INPUT_OUTPUT;
-		// 	attr_type   |= Gdk.WindowAttributesType.VISUAL;
-
-		//     window = new Gdk.Window(get_parent_window(),
-		//                             attr, attr_type);
-		//     this.set_window(window);
-		//     window.set_user_data(this);
-		//     // message("Visible window");
-		// }
-		// else {
-			window = get_parent_window();
-			set_window(window);
-			// window.ref(); // TODO:?
-
-			attr.wclass = Gdk.WindowWindowClass.INPUT_ONLY;
-
-			this.event_window = new Gdk.Window(window, attr, attr_type);
-			this.event_window.set_user_data(this);
-			// message("No visible window");
-
-		// }
+		window = get_parent_window();
+		set_window(window);
+		attr.wclass = Gdk.WindowWindowClass.INPUT_ONLY;
+		this.event_window = new Gdk.Window(window, attr, attr_type);
+		this.event_window.set_user_data(this);
+		// message("No visible window");
 
 	}
 
@@ -427,9 +406,6 @@ class TweetListEntry : Gtk.Box {
 			event_window.show();
 
 		base.map();
-
-		if(event_window != null)
-			event_window.show();
 	}
 
 	public override void unmap() {
