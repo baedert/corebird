@@ -11,6 +11,9 @@ class ProfileWidget : Gtk.Box {
 	private TextButton tweets_button    = new TextButton();
 	private TextButton following_button = new TextButton();
 	private TextButton followers_button = new TextButton();
+	private ToggleButton follow_button  = new ToggleButton.with_label("Follow");
+	private int64 user_id;
+	private string screen_name;
 
 	public ProfileWidget(){
 		GLib.Object(orientation: Orientation.VERTICAL);
@@ -34,6 +37,8 @@ class ProfileWidget : Gtk.Box {
 		location_label.set_alignment(0, 0.5f);
 		location_label.get_style_context().add_class("data");
 		data_box.pack_start(location_label, false, true);
+		follow_button.toggled.connect(toggle_follow);
+		data_box.pack_start(follow_button, false, false);
 		top_banner_box.pack_start(data_box, true, true);
 
 		banner_box.pack_start(top_banner_box, false, false);
@@ -66,6 +71,8 @@ class ProfileWidget : Gtk.Box {
 		if(user_id != 0 && screen_name != "") {
 			error("Can't use both user_id and screen_name.");
 		}
+		this.user_id = user_id;
+		this.screen_name = screen_name;
 
 		load_profile_data.begin(user_id, screen_name);
 
@@ -73,7 +80,7 @@ class ProfileWidget : Gtk.Box {
 		try{
 			string query_string = "SELECT id, screen_name, name, description, tweets,
 						 following, followers, avatar_name, banner_url,
-						 url, location FROM profiles ";
+						 url, location, following, is_following FROM profiles ";
 			if(user_id != 0)
 				query_string += @"WHERE id='$user_id';";
 			else
@@ -96,6 +103,7 @@ class ProfileWidget : Gtk.Box {
 				         cache_result.fetch_string(3),
 				         cache_result.fetch_int(4), cache_result.fetch_int(5),
 				         cache_result.fetch_int(6));
+				follow_button.active = cache_result.fetch_int(12) == 1;
 
 				if(FileUtils.test(Utils.get_user_file_path(@"assets/banners/$user_id.png"),
 								  FileTest.EXISTS)){
@@ -163,6 +171,7 @@ class ProfileWidget : Gtk.Box {
 			int followers      = (int)root.get_int_member("followers_count");
 			int following      = (int)root.get_int_member("friends_count");
 			int tweets         = (int)root.get_int_member("statuses_count");
+			bool is_following  = root.get_boolean_member("following");
 			bool has_url       = root.get_object_member("entities").has_member("url");
 
 			string display_url = null;
@@ -187,15 +196,16 @@ class ProfileWidget : Gtk.Box {
 
 			set_data(name, screen_name, display_url, location, description, tweets,
 					 following, followers);
+			follow_button.active = is_following;
 
 			try{
 				SQLHeavy.Query update_query = new SQLHeavy.Query(Corebird.db,
 					"INSERT OR REPLACE INTO `profiles`(`id`, `screen_name`, `name`,
 					   `followers`, `following`, `tweets`, `description`, `avatar_name`,
-					   `url`, `location`)
+					   `url`, `location`, `is_following`)
 					 VALUES
 					(:id, :screen_name, :name, :followers, :following, :tweets,
-					 :description, :avatar_name, :url, :location);");
+					 :description, :avatar_name, :url, :location, :is_following);");
 				update_query.set_int64(":id", id);
 				update_query.set_string(":screen_name", screen_name);
 				update_query.set_string(":name", name);
@@ -206,6 +216,7 @@ class ProfileWidget : Gtk.Box {
 				update_query.set_string(":avatar_name", avatar_name);
 				update_query.set_string(":url", display_url);
 				update_query.set_string(":location", location);
+				update_query.set_int(":is_following", is_following ? 1 : 0);
 				update_query.execute_async.begin();
 			}catch(SQLHeavy.Error e){
 				warning("Error while updating profile info for %s:%s", screen_name,
@@ -314,4 +325,26 @@ class ProfileWidget : Gtk.Box {
 	}
 
 
+	private void toggle_follow() {
+		bool value = follow_button.active;
+		var call = Twitter.proxy.new_call();
+		if(value)
+			call.set_function("1.1/friendships/create.json");
+		else
+			call.set_function("1.1/friendships/destroy.json");
+		call.set_method("POST");
+		call.add_param("follow", "true");
+		if(user_id != 0)
+			call.add_param("id", user_id.to_string());
+		else
+			call.add_param("screen_name", screen_name);
+		call.invoke_async.begin(null, (obj, res) => {
+			try{
+				call.invoke_async.end(res);
+			} catch (GLib.Error e) {
+				critical(e.message);
+			}
+			stdout.printf(call.get_payload()+"\n");
+		});
+	}
 }
