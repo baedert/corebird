@@ -34,7 +34,12 @@ class LoaderThread{
 			t.load_from_json(o, now);
 
 			if (tweet_type != -1){
-				Tweet.cache(t, tweet_type);
+				// GLib.Idle.add(() => {
+				// 	Tweet.cache(t, tweet_type);
+				// 	return false;
+				// });
+				t.type = tweet_type;
+				TweetCacher.get().enqueue(t);
 			}
 
 			if(t.id < lowest_id)

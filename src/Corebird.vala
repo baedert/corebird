@@ -1,9 +1,5 @@
-
-
-
 using Gtk;
-// TODO: Profile startup when adding e.g. 300 tweets.
-// TODO: Check the spec and add exception handling(e.g. different http status codes)
+
 class Corebird : Gtk.Application {
 	public static SQLHeavy.Database db;
 	private bool show_tweet_window = false;
@@ -45,6 +41,7 @@ class Corebird : Gtk.Application {
 		try{
 			Corebird.db = new SQLHeavy.Database(Utils.get_user_file_path("Corebird.db"));
 			db.journal_mode = SQLHeavy.JournalMode.MEMORY;
+			db.temp_store   = SQLHeavy.TempStoreMode.MEMORY;
 
 			Corebird.create_tables();
 		}catch(SQLHeavy.Error e){

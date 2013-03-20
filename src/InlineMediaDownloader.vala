@@ -1,7 +1,7 @@
 
 
 class InlineMediaDownloader {
-	public static const int THUMB_SIZE    = 50;
+	public static const int THUMB_SIZE = 50;
 
 
 	public static async void try_load_media(Tweet t, string url) {
@@ -15,9 +15,11 @@ class InlineMediaDownloader {
 				* lockerz.com
 				* say.ly
 					* <img src="contentImage" src="(.*?)"
+				* moby.tv
 
 				* Youtube (Preview image with video indicator. Click on the video
 				           opens/streams it in some video player)
+				* vine!
 
 		*/
 
@@ -46,13 +48,16 @@ class InlineMediaDownloader {
 			var msg     = new Soup.Message("GET", first_url);
 			session.send_message(msg);
 			string back = (string)msg.response_body.data;
-			var regex = new GLib.Regex(regex_str, RegexCompileFlags.OPTIMIZE);
-			MatchInfo info;
-			regex.match(back, 0, out info);
-			string real_url = info.fetch(match_index);
-			if(real_url != null)
-				load_inline_media.begin(t, real_url, session);
-
+			try{
+				var regex = new GLib.Regex(regex_str, RegexCompileFlags.OPTIMIZE);
+				MatchInfo info;
+				regex.match(back, 0, out info);
+				string real_url = info.fetch(match_index);
+				if(real_url != null)
+					load_inline_media.begin(t, real_url, session);
+			} catch (GLib.RegexError e) {
+				critical("Regex Error: %s", e.message);
+			}
 			return false;
 		});
 	}
@@ -64,7 +69,8 @@ class InlineMediaDownloader {
 			message("Directly Downloading %s", url);
 			if(session == null)
 				session = new Soup.SessionAsync();
-			var msg     = new Soup.Message("GET", url);
+
+			var msg = new Soup.Message("GET", url);
 
 
 			session.send_message(msg);

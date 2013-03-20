@@ -22,7 +22,8 @@ class MainWindow : ApplicationWindow {
 	private ITimeline[] timelines			 = new ITimeline[3];
 	private IPage[] pages 				     = new IPage[1];
 	private ToolButton avatar_button         = new ToolButton(null, null);
-	private ToolButton settings_button       = new ToolButton.from_stock(Stock.PROPERTIES);
+	private ToolButton settings_button       = new ToolButton.from_stock(
+	                                                          Stock.PROPERTIES);
 	private ToolButton new_tweet_button      = new ToolButton.from_stock(Stock.NEW);
 	private SeparatorToolItem expander_item  = new SeparatorToolItem();
 	private SeparatorToolItem left_separator = new SeparatorToolItem();
@@ -39,14 +40,16 @@ class MainWindow : ApplicationWindow {
 		// timelines[2] = new FavoriteContainer(PAGE_FAVORITES);
 
 
-		/*Initialize all containers */
+		/* Initialize all containers */
 		for(int i = 0; i < timelines.length; i++){
 			ITimeline tl = timelines[i];
 			if(!(tl is IPage))
 				break;
 
+
 			tl.main_window = this;
 			tl.load_cached();
+			tl.load_newest();
 			tl.create_tool_button(dummy_button);
 			tl.get_tool_button().toggled.connect(() => {
 				if(tl.get_tool_button().active)
@@ -60,15 +63,24 @@ class MainWindow : ApplicationWindow {
 		pages[0] = new ProfilePage(PAGE_PROFILE);
 
 
-
 		// Start userstream
 		UserStream.get().start();
 
+		this.window_state_event.connect((evt) => {
+			// If the window gets unfocused
+			if(evt.new_window_state == 0) {
+				TweetCacher.get().start();
+			}else if(evt.new_window_state == Gdk.WindowState.FOCUSED) {
+				TweetCacher.get().stop();
+			}
+			return false;
+		});
 
 
 		this.delete_event.connect(() => {
 			save_geometry();
 			this.set_visible(false);
+			TweetCacher.get().start();
 			return true;
 		});
 
@@ -86,7 +98,12 @@ class MainWindow : ApplicationWindow {
 		this.get_application().add_action(new_tweet_action);
 		var quit_action = new SimpleAction("quit", null);
 		quit_action.activate.connect(() => {
-			this.get_application().release();
+			this.visible = false;
+
+			TweetCacher.get().start_sync.begin(() => {
+				this.get_application().release();
+			});
+
 		});
 		this.get_application().add_action(quit_action);
 

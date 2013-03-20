@@ -25,14 +25,28 @@ class ImageBox : Gtk.Box  {
 
 	public override void get_preferred_height_for_width(int width, out int min_height,
 	                                                    out int natural_height){
+
+		int min, natural;
+		base.get_preferred_height_for_width(width, out min, out natural);
+
 		if(!use_ratio){
-			base.get_preferred_height_for_width(width, out min_height,
-			                                    out natural_height);
+			min_height     = min;
+			natural_height = natural;
 			return;
 		}
 
-		min_height = (int)(width * RATIO);
-		natural_height = (int)(width * RATIO);
+
+		int ratio_height = (int)(width * RATIO);
+
+		if(min > ratio_height) {
+			min_height = min;
+			natural_height = natural;
+		} else {
+			min_height = (int)(width * RATIO);
+			natural_height = (int)(width * RATIO);
+		}
+
+
 	}
 
 	public override SizeRequestMode get_request_mode(){

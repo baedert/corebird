@@ -2,13 +2,15 @@
 using Gtk;
 
 class ProfileWidget : Gtk.Box {
-	private ImageBox banner_box      = new ImageBox(Orientation.VERTICAL, 3);
-	private ImageBox avatar_image    = new ImageBox(Orientation.VERTICAL, 0);
-	private Label name_label         = new Label("");
-	private Label description_label  = new Label("");
-	private Label url_label          = new Label("");
-	private Label location_label     = new Label("");
-	private TextButton tweets_button = new TextButton("");
+	private ImageBox banner_box         = new ImageBox(Orientation.VERTICAL, 3);
+	private ImageBox avatar_image       = new ImageBox(Orientation.VERTICAL, 0);
+	private Label name_label            = new Label("");
+	private Label description_label     = new Label("");
+	private Label url_label             = new Label("");
+	private Label location_label        = new Label("");
+	private TextButton tweets_button    = new TextButton();
+	private TextButton following_button = new TextButton();
+	private TextButton followers_button = new TextButton();
 
 	public ProfileWidget(){
 		GLib.Object(orientation: Orientation.VERTICAL);
@@ -17,7 +19,7 @@ class ProfileWidget : Gtk.Box {
 		var top_banner_box = new Gtk.Box(Orientation.HORIZONTAL, 8);
 		avatar_image.set_size_request(100, 100);
 		avatar_image.margin_left = 8;
-		avatar_image.margin_top = 8;
+		avatar_image.margin_top  = 8;
 		top_banner_box.pack_start(avatar_image, false, false);
 
 
@@ -43,16 +45,20 @@ class ProfileWidget : Gtk.Box {
 		description_label.margin_bottom = 5;
 		banner_box.pack_start(description_label, true, true);
 
-		var bottom_banner_box = new Gtk.Box(Orientation.HORIZONTAL, 5);
+		var bottom_banner_box = new Gtk.Box(Orientation.HORIZONTAL, 0);
 		bottom_banner_box.homogeneous = true;
 
-		bottom_banner_box.pack_start(tweets_button, false, false);
-		bottom_banner_box.pack_start(new Button.with_label("LOLOOL"), false, false);
+		tweets_button.get_style_context().add_class("data-button");
+		following_button.get_style_context().add_class("data-button");
+		followers_button.get_style_context().add_class("data-button");
+		bottom_banner_box.pack_start(tweets_button, false, true);
+		bottom_banner_box.pack_start(following_button, false, true);
+		bottom_banner_box.pack_start(followers_button, false, true);
 
-		// banner_box.pack_start(bottom_banner_box, false, true);
+
+		banner_box.pack_start(bottom_banner_box, false, false);
 
 		this.pack_start(banner_box, false, false);
-		// this.pack_start(bottom_banner_box, false, false);
 	}
 
 
@@ -66,7 +72,7 @@ class ProfileWidget : Gtk.Box {
 		//Load cached data
 		try{
 			string query_string = "SELECT id, screen_name, name, description, tweets,
-						 following, followers, avatar_name,banner_url,
+						 following, followers, avatar_name, banner_url,
 						 url, location FROM profiles ";
 			if(user_id != 0)
 				query_string += @"WHERE id='$user_id';";
@@ -80,37 +86,17 @@ class ProfileWidget : Gtk.Box {
 				if(screen_name != "")
 					user_id = cache_result.fetch_int64(0);
 
-				string url = cache_result.fetch_string(9);
-				string location = cache_result.fetch_string(10);
-
 				load_banner.begin(user_id, cache_result.fetch_string(8));
 
-				name_label.set_markup("<big><big><b>%s</b>  @%s</big></big>"
-					                      .printf(cache_result.fetch_string(2),
-					                              cache_result.fetch_string(1)));
-				description_label.set_markup("<big><big><big>%s</big></big></big>".
-				                             printf(cache_result.fetch_string(3)));
-				if(url != "") {
-					url_label.visible = true;
-					url_label.set_markup("<big><big><a href='%s'>%s</a></big></big>"
-					                     .printf(url, url));
-				}else
-					url_label.visible = false;
-
-				if(location != "") {
-					location_label.visible = true;
-					location_label.set_markup("<big><big>%s</big></big>"
-				    	                      .printf(cache_result.fetch_string(10)));
-				}else
-					location_label.visible = false;
-				tweets_button.set_label("<big><b>%'d</b></big>\nTweets"
-				                        .printf(cache_result.fetch_int(4)));
-				// following_label.set_markup("<big><b>%'d</b></big>\nFollowing"
-				//                            .printf(cache_result.fetch_int(5)));
-				// follower_label.set_markup("<big><b>%'d</b></big>\nFollowers"
-				                          // .printf(cache_result.fetch_int(6)));
 				avatar_image.set_background(Utils.get_user_file_path(
-				                           "/assets/avatars/"+cache_result.fetch_string(7)));
+				                       "/assets/avatars/"+cache_result.fetch_string(7)));
+
+				set_data(cache_result.fetch_string(2), cache_result.fetch_string(1),
+				         cache_result.fetch_string(9), cache_result.fetch_string(10),
+				         cache_result.fetch_string(3),
+				         cache_result.fetch_int(4), cache_result.fetch_int(5),
+				         cache_result.fetch_int(6));
+
 				if(FileUtils.test(Utils.get_user_file_path(@"assets/banners/$user_id.png"),
 								  FileTest.EXISTS)){
 					banner_box.set_background(Utils.get_user_file_path(
@@ -153,7 +139,7 @@ class ProfileWidget : Gtk.Box {
 				return;
 			}
 
-			stdout.printf("\n\n\n%s\n\n\n", back);
+			// stdout.printf("\n\n\n%s\n\n\n", back);
 			var root = parser.get_root().get_object();
 			string avatar_url = root.get_string_member("profile_image_url");
 			string avatar_name = Utils.get_avatar_name(avatar_url);
@@ -179,7 +165,7 @@ class ProfileWidget : Gtk.Box {
 			int tweets         = (int)root.get_int_member("statuses_count");
 			bool has_url       = root.get_object_member("entities").has_member("url");
 
-			string display_url = "";
+			string display_url = null;
 			if(has_url) {
 				var urls_object = root.get_object_member("entities")
 					.get_object_member("url").get_array_member("urls").get_element(0)
@@ -192,30 +178,15 @@ class ProfileWidget : Gtk.Box {
 					url = urls_object.get_string_member("url");
 					display_url = url;
 				}
+			}
 
-				url_label.set_markup("<big><big><a href='%s'>%s</a></big></big>".printf(
-			                     url, display_url));
-				url_label.visible = true;
-			} else
-				url_label.visible = false;
-
-			string location = "";
+			string location = null;
 			if(root.has_member("location")){
 				location	   = root.get_string_member("location");
-				if(location != "")
-					location_label.visible = true;
-				location_label.set_markup("<big><big>%s</big></big>".printf(location));
-			} else
-				location_label.visible = false;
+			}
 
-
-			name_label.set_markup("<big><big><b>%s</b>  @%s</big></big>"
-				                      .printf(name, screen_name));
-			description_label.set_markup("<big><big><big>%s</big></big></big>".printf(
-			                             description));
-		// 	tweets_label.set_markup("<big><b>%'d</b></big>\nTweets".printf(tweets));
-		// 	following_label.set_markup("<big><b>%'d</b></big>\nFollowing".printf(following));
-		// 	follower_label.set_markup("<big><b>%'d</b></big>\nFollowers".printf(followers));
+			set_data(name, screen_name, display_url, location, description, tweets,
+					 following, followers);
 
 			try{
 				SQLHeavy.Query update_query = new SQLHeavy.Query(Corebird.db,
@@ -305,5 +276,42 @@ class ProfileWidget : Gtk.Box {
 			banner_box.set_background(banner_on_disk);
 		});
 	}
+
+
+	private new void set_data(string name, string screen_name, string? url,
+	                          string? location, string description, int tweets,
+	                          int following, int followers) {
+
+			name_label.set_markup("<big><big><b>%s</b>  @%s</big></big>"
+				                      .printf(name, screen_name));
+			description_label.set_markup("<big><big><big>%s</big></big></big>".printf(
+			                             description));
+			tweets_button.set_markup(
+					"<big><big><b>%'d</b></big></big>\nTweets"
+					.printf(tweets));
+
+			following_button.set_markup(
+					"<big><big><b>%'d</b></big></big>\nFollowing"
+					.printf(following));
+
+			followers_button.set_markup(
+					"<big><big><b>%'d</b></big></big>\nFollowers"
+					.printf(followers));
+
+			if(location != null && location != ""){
+				location_label.visible = true;
+				location_label.set_markup("<big><big>%s</big></big>".printf(location));
+			}else
+				location_label.visible = false;
+
+			if(url != null && url != ""){
+				url_label.visible = true;
+				url_label.set_markup("<big><big><a href='%s'>%s</a></big></big>"
+				                     .printf(url, url));
+			}else
+				url_label.visible = false;
+
+	}
+
 
 }

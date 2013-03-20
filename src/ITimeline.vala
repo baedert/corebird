@@ -121,9 +121,9 @@ interface ITimeline : Gtk.Widget, IPage {
 			}
 
 			var root = parser.get_root().get_array();
-			var loader_thread = new LoaderThread(root, main_window,
-												 tweet_list, tweet_type);
-			loader_thread.run(end_load_func);
+			var loader_thread = new LoaderThread(root, main_window, tweet_list,
+			                                     tweet_type);
+			loader_thread.run();
 		});
 	}
 
@@ -136,7 +136,6 @@ interface ITimeline : Gtk.Widget, IPage {
 	 */
 	protected void load_older_internal(string function, int tweet_type,
 	                                   LoaderThread.EndLoadFunc? end_load_func = null) {
-		// return;
 		var call = Twitter.proxy.new_call();
 		call.set_function(function);
 		call.set_method("GET");

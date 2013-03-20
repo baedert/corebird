@@ -2,11 +2,16 @@
 using Gtk;
 
 class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
+	public int unread_count {
+		get{return unread_messages;}
+	}
 	public MainWindow main_window{set;get;}
 	protected int64 max_id{get;set;}
 	protected Egg.ListBox tweet_list{set;get;}
 	private int id;
 	private RadioToolButton tool_button;
+	private int unread_messages = 0;
+
 
 	public MentionsTimeline(int id){
 		this.id = id;
