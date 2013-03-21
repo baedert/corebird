@@ -49,15 +49,6 @@ class ImageDialog : Gtk.Window {
 
 		scroller.set_size_request(win_width, win_height);
 
-
-
-		image.button_press_event.connect(() => {
-			message("press");
-			return false;
-		});
-
-
-
 		// this.add(scroller);
 		this.set_decorated(false);
 		this.set_transient_for(parent);

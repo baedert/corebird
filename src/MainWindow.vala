@@ -67,6 +67,7 @@ class MainWindow : ApplicationWindow {
 		UserStream.get().start();
 
 		this.window_state_event.connect((evt) => {
+			message("state");
 			// If the window gets unfocused
 			if(evt.new_window_state == 0) {
 				TweetCacher.get().start();
