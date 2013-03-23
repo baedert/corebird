@@ -2,21 +2,22 @@
 
 using Gtk;
 
-class SettingsDialog : Gtk.Window {
+class SettingsDialog : Gtk.Dialog {
 	private MainWindow win;
 
 	public SettingsDialog(MainWindow win){
-		// base("Settings", 4);
 		this.win = win;
 		this.set_transient_for(win);
 		this.set_modal(true);
 		this.set_default_size(450, 2);
+		this.set_type_hint(Gdk.WindowTypeHint.DIALOG);
 		this.border_width = 5;
 
-		var builder = new UIBuilder(DATADIR+"ui/settings-dialog.ui", "main_box");
-		var main_box = builder.get_box("main_box");
+		var builder = new UIBuilder(DATADIR+"ui/settings-dialog.ui", "main_notebook");
+		var main_notebook = builder.get_notebook("main_notebook");
 
-		this.add(main_box);
+		// this.add(main_box);
+		this.get_content_area().pack_start(main_notebook, true, true);
 
 		var updates_disabled_label = builder.get_label("updates_disabled_label");
 		var tweet_interval = builder.get_spin_button("update_interval");
@@ -47,6 +48,14 @@ class SettingsDialog : Gtk.Window {
 			bool val = dark_theme_switch.active;
 			Settings.set_bool("use-dark-theme", val);
 			Gtk.Settings.get_default().gtk_application_prefer_dark_theme = val;
+		});
+
+
+		this.add_button("Close", 1);
+
+		this.response.connect((id) => {
+			if(id == 1)
+				this.dispose();
 		});
 
 		// // GENERAL SETTINGS
