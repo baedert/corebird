@@ -84,7 +84,6 @@ vala_precompile(VALA_C
 	src/widgets/TweetTextView.vala
 	src/widgets/ImageButton.vala
 	src/widgets/ScrollWidget.vala
-	src/widgets/PreferencesDialog.vala
 	src/widgets/ProgressItem.vala
 	src/widgets/TextButton.vala
 	src/widgets/ArrowButton.vala
