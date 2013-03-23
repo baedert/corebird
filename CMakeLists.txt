@@ -132,4 +132,5 @@ install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/ui/style.css DESTINATION ${DATADIR}/u
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/ui/first-run-window.ui DESTINATION ${DATADIR}/ui/)
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/ui/tweet-info-window.ui DESTINATION ${DATADIR}/ui/)
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/ui/menu.ui DESTINATION ${DATADIR}/ui/)
+install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/ui/settings-dialog.ui DESTINATION ${DATADIR}/ui/)
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/sql/init.sql DESTINATION ${DATADIR}/sql/)

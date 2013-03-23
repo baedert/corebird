@@ -26,6 +26,10 @@ public class UIBuilder {
 		return builder.get_object(name) as Window;
 	}
 
+	public Switch get_switch(string name) {
+		return builder.get_object(name) as Switch;
+	}
+
 	public Label get_label(string name){
 		return builder.get_object(name) as Label;
 	}
@@ -52,5 +56,8 @@ public class UIBuilder {
 
 	public MenuModel get_menu_model(string name){
 		return builder.get_object(name) as MenuModel;
+	}
+	public SpinButton get_spin_button(string name) {
+		return builder.get_object(name) as SpinButton;
 	}
 }
