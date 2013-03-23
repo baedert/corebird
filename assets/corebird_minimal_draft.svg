@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="427.15625"
+   height="339.21875"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="corebird_minimal_draft.svg">
+  <title
+     id="title4015">CoreBird Logo</title>
+  <defs
+     id="defs4">
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3095"
+       is_visible="true" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4142136"
+     inkscape:cx="128.70359"
+     inkscape:cy="161.43725"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1125"
+     inkscape:window-height="852"
+     inkscape:window-x="793"
+     inkscape:window-y="113"
+     inkscape:window-maximized="0"
+     showguides="false"
+     inkscape:guide-bbox="true"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0">
+    <sodipodi:guide
+       orientation="1,0"
+       position="370.98442,173.91006"
+       id="guide3107" />
+    <sodipodi:guide
+       orientation="1,0"
+       position="326.03263,-13.094433"
+       id="guide3109" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>CoreBird Logo</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Hrvoje Hodak - tribly</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:date>22.03.2013</dc:date>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>Hrvoje Hodak - tribly</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <cc:license
+           rdf:resource="http://creativecommons.org/licenses/by-sa/3.0/" />
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/licenses/by-sa/3.0/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Notice" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Attribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#ShareAlike" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-112.75238,-147.62183)">
+    <path
+       style="font-size:448.47656250000000000px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#2e3436;fill-opacity:1;stroke:none;font-family:DejaVu Serif;-inkscape-font-specification:DejaVu Serif"
+       d="m 272.81488,147.62183 c -48.03034,3.3e-4 -86.68767,15.63379 -116.03125,46.875 -29.34372,31.0958 -44.03128,72.03998 -44.03125,122.84375 -3e-5,26.27806 3.92909,49.84251 11.8125,70.71875 8.02932,20.73043 20.24298,39.27435 36.59375,55.625 14.16079,14.1609 30.34509,24.88809 48.59375,32.1875 18.24842,7.29942 38.02927,10.96874 59.34375,10.96875 34.74504,-10e-6 63.43404,-7.81673 86.0625,-23.4375 22.77391,-15.76672 38.98945,-38.92585 48.625,-69.4375 l -40.28125,0 c -7.00772,23.06624 -18.421,40.44597 -34.1875,52.125 -15.76698,11.53311 -35.83888,17.31252 -60.21875,17.3125 -34.89139,2e-5 -61.29354,-12.32792 -79.25,-37 -17.95667,-24.81796 -26.93758,-61.17817 -26.9375,-109.0625 -8e-5,-48.02999 8.98083,-84.3902 26.9375,-109.0625 17.95646,-24.81774 44.35861,-37.21844 79.25,-37.21875 29.34347,3.1e-4 52.1388,6.50733 68.34375,19.5 16.35044,12.99325 27.22315,33.21068 32.625,60.65625 l 24.75,0 0,-75.34375 c -23.21245,-9.48894 -44.91635,-16.57805 -65.0625,-21.25 -20.14663,-4.6713 -39.12711,-6.99967 -56.9375,-7 z"
+       id="path3069" />
+    <path
+       style="font-size:448.47656250000000000px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#2e3436;fill-opacity:1;stroke:none;font-family:DejaVu Serif;-inkscape-font-specification:DejaVu Serif"
+       d="m 300.40863,224.27808 c -5.40891,-0.004 -10.80721,2.03283 -14.9375,6.15625 l 14.90625,14.96875 -20.90625,-2.9375 c -0.92577,6.56746 1.28285,13.18129 5.96875,17.875 8.24684,8.26059 21.61441,8.27809 29.875,0.0312 8.26059,-8.24684 8.27809,-21.64566 0.0312,-29.90625 -4.12342,-4.13029 -9.52859,-6.183 -14.9375,-6.1875 z"
+       id="path3067" />
+    <path
+       style="font-size:448.47656250000000000px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#2e3436;fill-opacity:1;stroke:none;font-family:DejaVu Serif;-inkscape-font-specification:DejaVu Serif"
+       d="m 394.59613,273.71558 -31.0625,95.6875 176.375,4.375 -145.3125,-100.0625 z"
+       id="text3097" />
+  </g>
+</svg>
