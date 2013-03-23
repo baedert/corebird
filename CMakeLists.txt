@@ -19,10 +19,10 @@ set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-but-set-variable")
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-deprecated-declarations")
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -I src/egglistbox/")
 
+# Just use PREFIX instead of CMAKE_INSTALL_PREFIX
+set (PREFIX "${CMAKE_INSTALL_PREFIX}")
+set (DATADIR "${PREFIX}/share/corebird/")
 
-set (DATADIR "${CMAKE_INSTALL_PREFIX}/share/corebird/")
-
-message(${CMAKE_SOURCE_DIR})
 
 configure_file (${CMAKE_SOURCE_DIR}/src/util/Config.vala.cmake ${CMAKE_SOURCE_DIR}/src/util/Config.vala)
 
