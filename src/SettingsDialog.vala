@@ -19,15 +19,6 @@ class SettingsDialog : Gtk.Dialog {
 		// this.add(main_box);
 		this.get_content_area().pack_start(main_notebook, true, true);
 
-		// var updates_disabled_label = builder.get_label("updates_disabled_label");
-		// var tweet_interval = builder.get_spin_button("update_interval");
-		// tweet_interval.adjustment = new Gtk.Adjustment(0, 0, 60, 1, 0, 0);
-		// tweet_interval.changed.connect(() => {
-		// 	if((int)tweet_interval.value == 0)
-		// 		updates_disabled_label.visible = true;
-		// 	else
-		// 		updates_disabled_label.visible = false;
-		// });
 
 		var primary_toolbar_switch = builder.get_switch("primary_toolbar_switch");
 		primary_toolbar_switch.active = Settings.show_primary_toolbar();
@@ -74,30 +65,6 @@ class SettingsDialog : Gtk.Dialog {
 			if(id == 1)
 				this.dispose();
 		});
-
-		// // GENERAL SETTINGS
-		// int general = append_page("General");
-		// add_heading(general, "Updates");
-		// add_int_option(general, "Tweet update interval:", 1,
-		//                Settings.get_update_interval(), 60, (val) => {
-		//     Settings.set_int("update-interval", val);
-		// });
-		// add_bool_option(general, "Refresh streams on startup:",
-		//                 Settings.refresh_streams_on_startup(),
-		//                 (val) => {
-		//     Settings.set_bool("refresh-streams-on-startup", val);
-		// });
-
-		// // BEHAVIOR SETTINGS
-		// int behavior = append_page("Behavior");
-		// add_heading(behavior, "Application");
-		// add_bool_option(behavior, "Show tray icon:", false, (val) => {
-		// 	if (val){
-
-		// 	}else{
-
-		// 	}
-		// });
 
 	}
 }

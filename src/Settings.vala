@@ -31,13 +31,6 @@ class Settings : GLib.Object {
 		return settings.get_boolean("show-primary-toolbar");
 	}
 
-	/**
-	 * Retuns the update interval in minutes.
-	 */
-	public static int get_update_interval(){
-		return settings.get_int("update-interval");
-	}
-
 	public static int notify_new_tweets(){
 		return settings.get_int("new-tweets-notify");
 	}

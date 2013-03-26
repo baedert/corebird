@@ -18,11 +18,7 @@
 			<summary>Whether to show the primary toolbar in the main window or not</summary>
 			<description>See summary</description>
 		</key>
-		<key name="update-interval" type="i">
-			<default>5</default>
-			<summary>bla</summary>
-			<description>bla bla</description>
-		</key>
+
 		<key name="new-tweets-notify" type="i">
 			<default>0</default>
 			<summary>FOO FOO BAR BLA BLA BLA</summary>
