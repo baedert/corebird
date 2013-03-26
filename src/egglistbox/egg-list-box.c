@@ -514,6 +514,13 @@ egg_list_box_set_filter_func (EggListBox *list_box,
   egg_list_box_refilter (list_box);
 }
 
+int
+egg_list_box_get_size(EggListBox *list_box)
+{
+  EggListBoxPrivate *priv = list_box->priv;
+  return g_sequence_get_length(priv->children);
+}
+
 void
 egg_list_box_set_separator_funcs (EggListBox *list_box,
 				  EggListBoxUpdateSeparatorFunc update_separator,
@@ -1864,6 +1871,8 @@ egg_list_box_real_toggle_cursor_child (EggListBox *list_box)
   else
     egg_list_box_select_and_activate (list_box, priv->cursor_child);
 }
+
+
 
 static void
 egg_list_box_real_move_cursor (EggListBox *list_box,
