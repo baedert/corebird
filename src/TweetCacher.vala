@@ -63,13 +63,6 @@ class TweetCacher : GLib.Object {
 	}
 
 	/**
-	* @return Whether the queue is empty or not
-	**/
-	public bool queue_empty() {
-		return queue.length() == 0;
-	}
-
-	/**
 	 * Cache the tweets asynchronously(through GLib.Idle). Caching will stop
 	 * if the queue is empty or 'ready' becomes false.
 	 */
