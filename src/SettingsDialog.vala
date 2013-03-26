@@ -19,6 +19,11 @@ class SettingsDialog : Gtk.Dialog {
 		// this.add(main_box);
 		this.get_content_area().pack_start(main_notebook, true, true);
 
+		var upload_provider_combobox = builder.get_combobox("upload_provider_combobox");
+		upload_provider_combobox.active = Settings.upload_provider();
+		upload_provider_combobox.changed.connect(() => {
+			Settings.set_int("upload-provider", upload_provider_combobox.active);
+		});
 
 		var primary_toolbar_switch = builder.get_switch("primary_toolbar_switch");
 		primary_toolbar_switch.active = Settings.show_primary_toolbar();

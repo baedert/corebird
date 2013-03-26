@@ -61,5 +61,12 @@
 			<summary>bla bla</summary>
 			<description>babbada</description>
 		</key>
+		<key name="upload-provider" type="i">
+			<default>0</default>
+			<summary></summary>
+			<description>
+				0 = pic.twitter.com
+			</description>
+		</key>
 	</schema>
 </schemalist>

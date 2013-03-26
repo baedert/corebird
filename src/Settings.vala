@@ -43,6 +43,10 @@ class Settings : GLib.Object {
 		return settings.get_boolean("new-dms-notify");
 	}
 
+	public static int upload_provider(){
+		return settings.get_int("upload-provider");
+	}
+
 	public static bool refresh_streams_on_startup(){
 		return settings.get_boolean("refresh-streams-on-startup");
 	}
