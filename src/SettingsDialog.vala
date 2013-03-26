@@ -19,15 +19,15 @@ class SettingsDialog : Gtk.Dialog {
 		// this.add(main_box);
 		this.get_content_area().pack_start(main_notebook, true, true);
 
-		var updates_disabled_label = builder.get_label("updates_disabled_label");
-		var tweet_interval = builder.get_spin_button("update_interval");
-		tweet_interval.adjustment = new Gtk.Adjustment(0, 0, 60, 1, 0, 0);
-		tweet_interval.changed.connect(() => {
-			if((int)tweet_interval.value == 0)
-				updates_disabled_label.visible = true;
-			else
-				updates_disabled_label.visible = false;
-		});
+		// var updates_disabled_label = builder.get_label("updates_disabled_label");
+		// var tweet_interval = builder.get_spin_button("update_interval");
+		// tweet_interval.adjustment = new Gtk.Adjustment(0, 0, 60, 1, 0, 0);
+		// tweet_interval.changed.connect(() => {
+		// 	if((int)tweet_interval.value == 0)
+		// 		updates_disabled_label.visible = true;
+		// 	else
+		// 		updates_disabled_label.visible = false;
+		// });
 
 		var primary_toolbar_switch = builder.get_switch("primary_toolbar_switch");
 		primary_toolbar_switch.active = Settings.show_primary_toolbar();
@@ -50,6 +50,23 @@ class SettingsDialog : Gtk.Dialog {
 			Gtk.Settings.get_default().gtk_application_prefer_dark_theme = val;
 		});
 
+		var on_new_tweets_combobox = builder.get_combobox("on_new_tweets_combobox");
+		on_new_tweets_combobox.active = Settings.notify_new_tweets();
+		on_new_tweets_combobox.changed.connect(() => {
+			Settings.set_int("new-tweets-notify", on_new_tweets_combobox.active);
+		});
+
+		var on_new_mentions_switch = builder.get_switch("on_new_mentions_switch");
+		on_new_mentions_switch.active = Settings.notify_new_mentions();
+		on_new_mentions_switch.notify["active"].connect(() => {
+			Settings.set_bool("new-mentions-notify", on_new_mentions_switch.active);
+		});
+
+		var on_new_dms_switch = builder.get_switch("on_new_dms_switch");
+		on_new_dms_switch.active = Settings.notify_new_dms();
+		on_new_dms_switch.notify["active"].connect(() => {
+			Settings.set_bool("new-dms-notify", on_new_dms_switch.active);
+		});
 
 		this.add_button("Close", 1);
 

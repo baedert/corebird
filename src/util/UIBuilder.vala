@@ -60,4 +60,8 @@ public class UIBuilder {
 	public SpinButton get_spin_button(string name) {
 		return builder.get_object(name) as SpinButton;
 	}
+
+	public ComboBox get_combobox(string name){
+		return builder.get_object(name) as ComboBox;
+	}
 }

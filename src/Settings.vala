@@ -38,12 +38,16 @@ class Settings : GLib.Object {
 		return settings.get_int("update-interval");
 	}
 
-	public static bool notify_new_tweets(){
-		return settings.get_boolean("new-tweets-notify");
+	public static int notify_new_tweets(){
+		return settings.get_int("new-tweets-notify");
 	}
 
 	public static bool notify_new_mentions(){
 		return settings.get_boolean("new-mentions-notify");
+	}
+
+	public static bool notify_new_dms(){
+		return settings.get_boolean("new-dms-notify");
 	}
 
 	public static bool refresh_streams_on_startup(){

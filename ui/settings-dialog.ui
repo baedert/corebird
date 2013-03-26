@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <!-- interface-requires gtk+ 3.0 -->
+  <object class="GtkListStore" id="liststore1">
+    <columns>
+      <!-- column-name < define a new column >1 -->
+      <column type="&lt; define a new column &gt;"/>
+    </columns>
+    <data>
+      <row/>
+      <row/>
+    </data>
+  </object>
   <object class="GtkWindow" id="window1">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
@@ -246,60 +256,14 @@
             <property name="border_width">10</property>
             <property name="row_spacing">3</property>
             <property name="column_spacing">8</property>
-            <child>
-              <object class="GtkLabel" id="label5">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="halign">start</property>
-                <property name="xalign">0</property>
-                <property name="label" translatable="yes">&lt;b&gt;Updates&lt;/b&gt;</property>
-                <property name="use_markup">True</property>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">0</property>
-                <property name="width">3</property>
-                <property name="height">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkSpinButton" id="update_interval">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="halign">start</property>
-                <property name="invisible_char">●</property>
-                <property name="invisible_char_set">True</property>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">1</property>
-                <property name="width">1</property>
-                <property name="height">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="updates_disabled_label">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="halign">start</property>
-                <property name="hexpand">True</property>
-                <property name="xalign">0</property>
-                <property name="label" translatable="yes">(Disabled)</property>
-              </object>
-              <packing>
-                <property name="left_attach">2</property>
-                <property name="top_attach">1</property>
-                <property name="width">1</property>
-                <property name="height">1</property>
-              </packing>
-            </child>
+            <property name="column_homogeneous">True</property>
             <child>
               <object class="GtkLabel" id="label6">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="hexpand">True</property>
+                <property name="halign">end</property>
                 <property name="xalign">1</property>
-                <property name="label" translatable="yes">Tweet Update Interval:</property>
+                <property name="label" translatable="yes">On New Tweets:</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -318,22 +282,8 @@
               </object>
               <packing>
                 <property name="left_attach">0</property>
-                <property name="top_attach">2</property>
-                <property name="width">3</property>
-                <property name="height">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="label13">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="xalign">1</property>
-                <property name="label" translatable="yes">On New Tweets:</property>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">3</property>
-                <property name="width">1</property>
+                <property name="top_attach">0</property>
+                <property name="width">2</property>
                 <property name="height">1</property>
               </packing>
             </child>
@@ -346,7 +296,7 @@
               </object>
               <packing>
                 <property name="left_attach">0</property>
-                <property name="top_attach">4</property>
+                <property name="top_attach">2</property>
                 <property name="width">1</property>
                 <property name="height">1</property>
               </packing>
@@ -360,21 +310,8 @@
               </object>
               <packing>
                 <property name="left_attach">0</property>
-                <property name="top_attach">5</property>
-                <property name="width">1</property>
-                <property name="height">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkSwitch" id="on_new_tweets_switch">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="halign">start</property>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
                 <property name="top_attach">3</property>
-                <property name="width">2</property>
+                <property name="width">1</property>
                 <property name="height">1</property>
               </packing>
             </child>
@@ -386,21 +323,44 @@
               </object>
               <packing>
                 <property name="left_attach">1</property>
-                <property name="top_attach">4</property>
-                <property name="width">2</property>
+                <property name="top_attach">2</property>
+                <property name="width">1</property>
                 <property name="height">1</property>
               </packing>
             </child>
             <child>
-              <object class="GtkSwitch" id="on_new_msgs_switch">
+              <object class="GtkSwitch" id="on_new_dms_switch">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="halign">start</property>
               </object>
               <packing>
                 <property name="left_attach">1</property>
-                <property name="top_attach">5</property>
-                <property name="width">2</property>
+                <property name="top_attach">3</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkComboBoxText" id="on_new_tweets_combobox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="active">0</property>
+                <property name="id_column">0</property>
+                <items>
+                  <item translatable="yes">Disabled</item>
+                  <item translatable="yes">Every</item>
+                  <item translatable="yes">Stack 5</item>
+                  <item translatable="yes">Stack 10</item>
+                  <item translatable="yes">Stack 25</item>
+                  <item translatable="yes">Stack 50</item>
+                </items>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">1</property>
+                <property name="width">1</property>
                 <property name="height">1</property>
               </packing>
             </child>

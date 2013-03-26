@@ -23,12 +23,24 @@
 			<summary>bla</summary>
 			<description>bla bla</description>
 		</key>
-		<key name="new-tweets-notify" type="b">
-			<default>false</default>
+		<key name="new-tweets-notify" type="i">
+			<default>0</default>
+			<summary>FOO FOO BAR BLA BLA BLA</summary>
+			<description>
+				0 = 'Disabled'
+				1 = 'Every'
+				2 = 'Stack 5'
+				3 = 'Stack 10'
+				4 = 'Stack 25'
+				5 = 'Stack 50'
+			</description>
+		</key>
+		<key name="new-mentions-notify" type="b">
+			<default>true</default>
 			<summary>X</summary>
 			<description>Y</description>
 		</key>
-		<key name="new-mentions-notify" type="b">
+		<key name="new-dms-notify" type="b">
 			<default>true</default>
 			<summary>X</summary>
 			<description>Y</description>
