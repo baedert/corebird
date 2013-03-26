@@ -119,6 +119,7 @@ class TweetListEntry : Gtk.Box {
 		if(tweet.reply_id != 0){
 			var conv_button = new Button();
 			conv_button.get_style_context().add_class("conversation-button");
+			conv_button.set_tooltip_text("View Conversation");
 			top_box.pack_end(conv_button, false, false);
 		}
 
