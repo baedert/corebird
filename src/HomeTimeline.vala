@@ -16,6 +16,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 	private bool loading = false;
 	private int unread_tweets = 0;
 	private int64 lowest_id = int64.MAX-2;
+	private uint tweet_remove_timeout = -1;
 
 	public HomeTimeline(int id){
 		this.id = id;
@@ -39,6 +40,21 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
                 message("end! %d/%d", value, max);
                 load_older();
             }
+        });
+
+        this.vadjustment.notify["value"].connect(() => {
+        	double value = vadjustment.value;
+        	if(value == 0 && tweet_list.get_size() > ITimeline.REST) {
+        		tweet_remove_timeout = GLib.Timeout.add(3000, () => {
+        			tweet_list.remove_last(tweet_list.get_size() - ITimeline.REST);
+        			return false;
+        		});
+        	} else {
+        		if(tweet_remove_timeout != 0){
+        			GLib.Source.remove(tweet_remove_timeout);
+        			tweet_remove_timeout = 0;
+        		}
+        	}
         });
 
         UserStream.get().register(this);
@@ -65,7 +81,6 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 	 * see IPage#onJoin
 	 */
 	public void onJoin(int page_id, va_list arg_list){
-
 	}
 
 	/**

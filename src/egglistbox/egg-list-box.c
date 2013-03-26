@@ -1497,6 +1497,38 @@ egg_list_box_real_forall_internal (GtkContainer* container,
     }
 }
 
+void
+egg_list_box_remove_last(GtkContainer* container,
+                         int amount)
+{
+  EggListBox *list_box = EGG_LIST_BOX (container);
+  EggListBoxPrivate *priv = list_box->priv;
+  GSequenceIter *iter;
+  EggListBoxChildInfo *child_info;
+  GtkWidget *child;
+  int i = 0;
+
+  // TODO: This sucks. Is that really the best way to do it?
+  iter = g_sequence_get_end_iter (priv->children);
+  iter = g_sequence_iter_prev(iter);
+  while (i < amount)
+    {
+      child_info = g_sequence_get(iter);
+      child = child_info->widget;
+
+      gtk_widget_unparent(child);
+      g_hash_table_remove(priv->child_hash, child);
+      g_sequence_remove(iter);
+      iter = g_sequence_get_end_iter(priv->children);
+      iter = g_sequence_iter_prev(iter);
+      i++;
+    }
+
+  if(gtk_widget_get_visible(GTK_WIDGET(container)))
+    gtk_widget_queue_resize(GTK_WIDGET(container));
+
+}
+
 static void
 egg_list_box_real_compute_expand_internal (GtkWidget* widget,
 					   gboolean* hexpand,
