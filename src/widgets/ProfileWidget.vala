@@ -33,6 +33,8 @@ class ProfileWidget : Gtk.Box {
 		data_box.pack_start(name_label, false, true);
 		url_label.set_alignment(0, 0.5f);
 		url_label.get_style_context().add_class("data");
+		url_label.max_width_chars = 20;
+		url_label.set_ellipsize(Pango.EllipsizeMode.MIDDLE);
 		data_box.pack_start(url_label, false, true);
 		location_label.set_alignment(0, 0.5f);
 		location_label.get_style_context().add_class("data");
@@ -182,7 +184,7 @@ class ProfileWidget : Gtk.Box {
 
 				var url = urls_object.get_string_member("expanded_url");
 				if(urls_object.has_member("display_url")){
-					display_url = urls_object.get_string_member("display_url");
+					display_url = urls_object.get_string_member("expanded_url");
 				}else{
 					url = urls_object.get_string_member("url");
 					display_url = url;
