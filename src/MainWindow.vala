@@ -53,7 +53,7 @@ class MainWindow : ApplicationWindow {
 			tl.create_tool_button(dummy_button);
 			tl.get_tool_button().toggled.connect(() => {
 				if(tl.get_tool_button().active)
-					this.switch_page(tl.get_id());
+					this.main_notebook.set_current_page(tl.get_id());
 			});
 		}
 		// Activate the first timeline
