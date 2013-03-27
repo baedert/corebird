@@ -45,7 +45,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
         this.vadjustment.notify["value"].connect(() => {
         	double value = vadjustment.value;
         	if(value == 0 && tweet_list.get_size() > ITimeline.REST) {
-        		tweet_remove_timeout = GLib.Timeout.add(3000, () => {
+        		tweet_remove_timeout = GLib.Timeout.add(5000, () => {
         			tweet_list.remove_last(tweet_list.get_size() - ITimeline.REST);
         			return false;
         		});
@@ -66,7 +66,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 			Tweet t = new Tweet();
 			t.load_from_json(root, now);
 			// TODO: Maybe also use TweetCacher here?
-			Tweet.cache(t, Tweet.TYPE_NORMAL);
+			Tweet.cache.begin(t, Tweet.TYPE_NORMAL);
 
 			this.balance_next_upper_change(TOP);
 			tweet_list.add(new TweetListEntry(t, main_window));

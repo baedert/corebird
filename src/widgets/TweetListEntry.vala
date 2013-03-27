@@ -47,7 +47,7 @@ class TweetListEntry : Gtk.Box {
 		});
 
 
-		// // Set the correct CSS style class
+		// Set the correct CSS style class
 		get_style_context().add_class("tweet");
 		get_style_context().add_class("row");
 

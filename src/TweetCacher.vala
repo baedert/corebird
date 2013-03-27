@@ -85,7 +85,7 @@ class TweetCacher : GLib.Object {
 		}
 
 		queue.remove(t);
-		Tweet.cache(t, t.type);
+		Tweet.cache.begin(t, t.type);
 		message("(%s)Caching tweet from %s",
 		        ready ? "TRUE" : "FALSE", t.user_name);
 
