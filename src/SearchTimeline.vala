@@ -44,12 +44,7 @@ class SearchTimeline : IPage, ITimeline, Box {
 		tweet_list.add_to_scrolled(result_scroller);
 		this.pack_start(result_scroller, true, true);
 
-		tweet_list.set_sort_func((tle1, tle2) => {
-			if(((TweetListEntry)tle1).timestamp <
-			   ((TweetListEntry)tle2).timestamp)
-				return 1;
-			return -1;
-		});
+		tweet_list.set_sort_func(TweetListEntry.sort_func);
 	}
 
 	/**

@@ -1,5 +1,11 @@
 using Gtk;
 class TweetListEntry : Gtk.Box {
+	public static int sort_func(Widget a, Widget b) {
+		if(((TweetListEntry)a).timestamp <
+		   ((TweetListEntry)b).timestamp)
+			return 1;
+		return -1;
+	}
 	private static GLib.Regex? hashtag_regex = null;
 	private static GLib.Regex? user_regex    = null;
 	private Image avatar                 = new Image();

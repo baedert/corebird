@@ -24,12 +24,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 		tweet_list.get_style_context().add_class("stream");
 		tweet_list.set_selection_mode(SelectionMode.NONE);
 		tweet_list.add_to_scrolled(this);
-		tweet_list.set_sort_func((tle1, tle2) => {
-			if(((TweetListEntry)tle1).timestamp <
-			   ((TweetListEntry)tle2).timestamp)
-				return 1;
-			return -1;
-		});
+		tweet_list.set_sort_func(TweetListEntry.sort_func);
 
 	    this.vadjustment.value_changed.connect( () => {
             int max = (int)(this.vadjustment.upper - this.vadjustment.page_size);
