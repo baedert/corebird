@@ -40,7 +40,6 @@ build() {
 	msg "Starting build..."
 	cmake .
 	make
-	make
 }
 
 package() {
