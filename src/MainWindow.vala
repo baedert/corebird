@@ -17,7 +17,6 @@ class MainWindow : ApplicationWindow {
 	private Toolbar primary_toolbar          = new Toolbar();
 	private Box main_box                     = new Box(Orientation.VERTICAL, 0);
 	private Box bottom_box                   = new Box(Orientation.HORIZONTAL, 0);
-	private Notebook main_notebook           = new Notebook();
 	private RadioToolButton dummy_button	 = new RadioToolButton(null);
 	private ITimeline[] timelines			 = new ITimeline[3];
 	private IPage[] pages 				     = new IPage[1];
@@ -143,20 +142,16 @@ class MainWindow : ApplicationWindow {
 		User.update_info.begin((Image)avatar_button.icon_widget);
 
 		// Add all tool buttons for the timelines
-		int i = 0;
 		foreach(var tl in timelines) {
 			if(tl.get_tool_button() != null)
 				left_toolbar.add(tl.get_tool_button());
 
-			// main_notebook.append_page(tl);
-			message("Name: %d", i);
-			stack.add_named(tl, "%d".printf(i));
-			i++;
+			stack.add_named(tl, "%d".printf(tl.get_id()));
 		}
 
 
 		foreach(var page in pages){
-			main_notebook.append_page(page);
+			stack.add_named(page, "%d".printf(page.get_id()));
 		}
 
 		settings_button.clicked.connect( () => {
@@ -178,16 +173,12 @@ class MainWindow : ApplicationWindow {
 		tt.icon_name = "find";
 		left_toolbar.add(tt);
 
-		main_notebook.show_border = false;
-		main_notebook.show_tabs   = false;
 		bottom_box.pack_start (stack, true, true);
-		// bottom_box.pack_start (main_notebook, true, true);
 		main_box.pack_end(bottom_box, true, true);
 
 
 
 		this.add(main_box);
-		// this.add(stack);
 		this.load_geometry();
 		this.show_all();
 	}
@@ -296,8 +287,8 @@ class MainWindow : ApplicationWindow {
 		bottom_box.pack_end(new_pane, false, true);
 
 		Allocation alloc;
-		main_notebook.get_allocation(out alloc);
-		main_notebook.set_size_request(alloc.width, alloc.height);
+		// main_notebook.get_allocation(out alloc);
+		// main_notebook.set_size_request(alloc.width, alloc.height);
 
 
 		this.resize(width + new_pane.get_width(), height);
@@ -324,7 +315,7 @@ class MainWindow : ApplicationWindow {
 
 
 		page.onJoin(page_id, va_list());
-		main_notebook.set_current_page(page_id);
+		stack.set_visible_child_name("%d".printf(page_id));
 	}
 
 
