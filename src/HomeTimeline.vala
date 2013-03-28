@@ -64,10 +64,17 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 			Tweet.cache.begin(t, Tweet.TYPE_NORMAL);
 
 			this.balance_next_upper_change(TOP);
-			tweet_list.add(new TweetListEntry(t, main_window));
+			var entry = new TweetListEntry(t, main_window);
+			tweet_list.add(entry);
 			tweet_list.resort();
 
 			unread_tweets++;
+
+			int stack_size = Settings.get_tweet_stack_count();
+			if(stack_size != 0 && unread_tweets >= stack_size) {
+				string summary = "%d new Tweets!".printf(unread_tweets);
+				NotificationManager.notify(summary);
+			}
 		}
 	}
 

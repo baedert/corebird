@@ -355,4 +355,5 @@ class TweetListEntry : Gtk.Box {
 
 		more_menu.show_all();
 	}
+
 }

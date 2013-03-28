@@ -7,6 +7,28 @@ class Settings : GLib.Object {
 		settings = new GLib.Settings("org.baedert.corebird");
 	}
 
+	/**
+	 * Returns how many tweets should be stacked before a
+	 * notification should be created.
+	 */
+	public static int get_tweet_stack_count() {
+		int setting_val = settings.get_int("new-tweets-notify");
+		switch(setting_val){
+			case 2:
+				return 5;
+			case 3:
+				return 10;
+			case 4:
+				return 25;
+			case 5: return 50;
+			default:
+				return setting_val;
+		}
+
+		return -1;
+	}
+
+
 
 
 	/**
