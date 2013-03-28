@@ -98,15 +98,18 @@ vala_precompile(VALA_C
 	src/util/Config.vala
 	src/util/WidgetReplacer.vala
 	src/egglistbox/egg-list-box.c
+	src/libgd/gd-stack.c
 PACKAGES
 	${DEPS}
 	egglistbox
+	gd-stack
 OPTIONS
 	-g
 	--thread
 	--target-glib=2.32
 	--enable-checking
 	--vapidir=src/egglistbox/
+	--vapidir=src/libgd/
 )
 
 add_executable(corebird ${VALA_C})
