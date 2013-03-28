@@ -18,6 +18,7 @@ set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-variable")
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-but-set-variable")
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-deprecated-declarations")
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -I src/egglistbox/")
+set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -I src/libgd/")
 
 # Just use PREFIX instead of CMAKE_INSTALL_PREFIX
 set (PREFIX "${CMAKE_INSTALL_PREFIX}")

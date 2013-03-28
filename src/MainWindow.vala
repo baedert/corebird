@@ -28,11 +28,13 @@ class MainWindow : ApplicationWindow {
 	private SeparatorToolItem expander_item  = new SeparatorToolItem();
 	private SeparatorToolItem left_separator = new SeparatorToolItem();
 	private IPaneWidget right_pane;
+	private Gd.Stack stack = new Gd.Stack();
 
 	public MainWindow(Gtk.Application app){
 		GLib.Object (application: app);
 
-
+		stack.transition_duration = 300;
+		stack.transition_type = Gd.Stack.TransitionType.SLIDE_RIGHT;
 
 		timelines[0] = new HomeTimeline(PAGE_STREAM);
 		timelines[1] = new MentionsTimeline(PAGE_MENTIONS);
@@ -52,8 +54,11 @@ class MainWindow : ApplicationWindow {
 			tl.load_newest();
 			tl.create_tool_button(dummy_button);
 			tl.get_tool_button().toggled.connect(() => {
-				if(tl.get_tool_button().active)
-					this.main_notebook.set_current_page(tl.get_id());
+				if(tl.get_tool_button().active){
+					stack.set_visible_child_name("%d".printf(tl.get_id()));
+					message("Set %d", tl.get_id());
+				}
+					// this.main_notebook.set_current_page(tl.get_id());
 			});
 		}
 		// Activate the first timeline
@@ -138,11 +143,15 @@ class MainWindow : ApplicationWindow {
 		User.update_info.begin((Image)avatar_button.icon_widget);
 
 		// Add all tool buttons for the timelines
+		int i = 0;
 		foreach(var tl in timelines) {
 			if(tl.get_tool_button() != null)
 				left_toolbar.add(tl.get_tool_button());
 
-			main_notebook.append_page(tl);
+			// main_notebook.append_page(tl);
+			message("Name: %d", i);
+			stack.add_named(tl, "%d".printf(i));
+			i++;
 		}
 
 
@@ -171,12 +180,14 @@ class MainWindow : ApplicationWindow {
 
 		main_notebook.show_border = false;
 		main_notebook.show_tabs   = false;
-		bottom_box.pack_start (main_notebook, true, true);
+		bottom_box.pack_start (stack, true, true);
+		// bottom_box.pack_start (main_notebook, true, true);
 		main_box.pack_end(bottom_box, true, true);
 
 
 
 		this.add(main_box);
+		// this.add(stack);
 		this.load_geometry();
 		this.show_all();
 	}
