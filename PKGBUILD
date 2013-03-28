@@ -13,7 +13,8 @@ depends=('gtk3>=3.6'
 		 'libgee'
 		 'sqlite3'
 		 'libsoup>=2.4'
-		 'libnotify')
+		 'libnotify'
+		 'sqlheavy-git')
 makedepends=('vala' 'git' 'cmake')
 
 _gitroot="https://baedert@bitbucket.org/baedert/corebird.git"
