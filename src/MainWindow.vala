@@ -163,6 +163,7 @@ class MainWindow : ApplicationWindow {
 			setup_left_toolbar();
 		}
 
+		this.icon_name = "corebird";
 
 		// TODO: Implement TestToolButton
 		var tt = new TestToolButton();

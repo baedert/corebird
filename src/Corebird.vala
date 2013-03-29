@@ -65,6 +65,12 @@ class Corebird : Gtk.Application {
 			warning("Error while loading ui/style.css: %s", e.message);
 		}
 
+		//Load & set the corebird icon
+		// TODO: Find out how to do this the right way.
+		Gtk.IconTheme.add_builtin_icon("corebird", 64,
+		                               new Gdk.Pixbuf.from_file(DATADIR+"/icon.png"));
+
+
 		Twitter.init();
 		//Load the user's sceen_name used for identifying him
 		User.load();

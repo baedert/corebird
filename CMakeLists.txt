@@ -127,6 +127,7 @@ install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/conversation.png DESTINATION $
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/conversation-normal.png DESTINATION ${DATADIR})
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/more-normal.png DESTINATION ${DATADIR})
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/more.png DESTINATION ${DATADIR})
+install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/icon.png DESTINATION ${DATADIR})
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/ui/style.css DESTINATION ${DATADIR}/ui/)
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/ui/first-run-window.ui DESTINATION ${DATADIR}/ui/)
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/ui/tweet-info-window.ui DESTINATION ${DATADIR}/ui/)
