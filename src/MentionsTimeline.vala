@@ -54,7 +54,7 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 	/**
 	 * see IPage#onJoin
 	 */
-	public void onJoin(int page_id, va_list arg_list){
+	public void on_join(int page_id, va_list arg_list){
 
 	}
 

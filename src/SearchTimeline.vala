@@ -50,7 +50,7 @@ class SearchTimeline : IPage, ITimeline, Box {
 	/**
 	 * see IPage#onJoin
 	 */
-	public void onJoin(int page_id, va_list arg_list){
+	public void on_join(int page_id, va_list arg_list){
 		string term = arg_list.arg<string>();
 		search_for.begin(term, true);
 	}
