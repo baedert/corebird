@@ -128,6 +128,7 @@ class TweetListEntry : Gtk.Box {
 			var conv_button = new Button();
 			conv_button.get_style_context().add_class("conversation-button");
 			conv_button.set_tooltip_text("View Conversation");
+			conv_button.vexpand = false;
 			top_box.pack_end(conv_button, false, false);
 		}
 
@@ -194,7 +195,7 @@ class TweetListEntry : Gtk.Box {
 			tweet.is_retweet ? tweet.rt_created_at : tweet.created_at);
 		string link = "https://twitter.com/%s/status/%s".printf(tweet.screen_name,
 		                                                        tweet.id.to_string());
-		this.time_delta.label = "<small><a href='%s'>%s</a></small>"
+		this.time_delta.label = "<small><a href='%s' title='Open in Browser'>%s</a></small>"
 									.printf(link, Utils.get_time_delta(then, now));
 		return (int)(now.difference(then) / 1000.0 / 1000.0);
 	}
