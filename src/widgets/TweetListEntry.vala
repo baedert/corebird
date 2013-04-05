@@ -75,13 +75,11 @@ class TweetListEntry : Gtk.Box {
 		retweet_button.active = tweet.retweeted;
 		retweet_button.set_tooltip_text("Retweet");
 		retweet_button.toggled.connect(retweet_tweet);
-		// retweet_button.no_show_all = true;
 		status_box.pack_start(retweet_button, false, false);
 		favorite_button.get_style_context().add_class("favorite-button");
 		favorite_button.active = tweet.favorited;
 		favorite_button.set_tooltip_text("Favorite");
 		favorite_button.toggled.connect(favorite_tweet);
-		// favorite_button.no_show_all = true;
 		status_box.pack_start(favorite_button, false, false);
 
 
@@ -120,6 +118,7 @@ class TweetListEntry : Gtk.Box {
 		update_time_delta();
 		time_delta.set_alignment(1, 0.5f);
 		time_delta.get_style_context().add_class("dim-label");
+		time_delta.get_style_context().add_class("time-delta-label");
 		time_delta.margin_right = 3;
 		top_box.pack_end(time_delta, false, false);
 
@@ -193,8 +192,10 @@ class TweetListEntry : Gtk.Box {
 		GLib.DateTime now = new GLib.DateTime.now_local();
 		GLib.DateTime then = new GLib.DateTime.from_unix_local(
 			tweet.is_retweet ? tweet.rt_created_at : tweet.created_at);
-		this.time_delta.label = "<small>%s</small>".printf(
-			Utils.get_time_delta(then, now));
+		string link = "https://twitter.com/%s/status/%s".printf(tweet.screen_name,
+		                                                        tweet.id.to_string());
+		this.time_delta.label = "<small><a href='%s'>%s</a></small>"
+									.printf(link, Utils.get_time_delta(then, now));
 		return (int)(now.difference(then) / 1000.0 / 1000.0);
 	}
 

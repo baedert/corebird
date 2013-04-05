@@ -106,9 +106,12 @@
 
 /** Tweets the user sent himself */
 .user-tweet {
-	/* Set a special background color or something */
+	/* TODO: Set a special background color or something */
 }
 
+.time-delta-label {
+	-GtkWidget-link-color: #555;
+}
 
 .text-button{
 	font-weight: bold;
