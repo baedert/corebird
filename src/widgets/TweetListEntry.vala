@@ -118,7 +118,6 @@ class TweetListEntry : Gtk.Box {
 		update_time_delta();
 		time_delta.set_alignment(1, 0.5f);
 		time_delta.get_style_context().add_class("dim-label");
-		time_delta.get_style_context().add_class("time-delta-label");
 		time_delta.margin_right = 3;
 		top_box.pack_end(time_delta, false, false);
 
