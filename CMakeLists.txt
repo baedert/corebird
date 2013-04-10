@@ -19,10 +19,10 @@ set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-but-set-variable")
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-deprecated-declarations")
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -I src/egglistbox/")
 
+# Just use PREFIX instead of CMAKE_INSTALL_PREFIX
+set (PREFIX "${CMAKE_INSTALL_PREFIX}")
+set (DATADIR "${PREFIX}/share/corebird/")
 
-set (DATADIR "${CMAKE_INSTALL_PREFIX}/share/corebird/")
-
-message(${CMAKE_SOURCE_DIR})
 
 configure_file (${CMAKE_SOURCE_DIR}/src/util/Config.vala.cmake ${CMAKE_SOURCE_DIR}/src/util/Config.vala)
 
@@ -84,7 +84,6 @@ vala_precompile(VALA_C
 	src/widgets/TweetTextView.vala
 	src/widgets/ImageButton.vala
 	src/widgets/ScrollWidget.vala
-	src/widgets/PreferencesDialog.vala
 	src/widgets/ProgressItem.vala
 	src/widgets/TextButton.vala
 	src/widgets/ArrowButton.vala
@@ -128,8 +127,10 @@ install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/conversation.png DESTINATION $
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/conversation-normal.png DESTINATION ${DATADIR})
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/more-normal.png DESTINATION ${DATADIR})
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/more.png DESTINATION ${DATADIR})
+install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/icon.png DESTINATION ${DATADIR})
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/ui/style.css DESTINATION ${DATADIR}/ui/)
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/ui/first-run-window.ui DESTINATION ${DATADIR}/ui/)
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/ui/tweet-info-window.ui DESTINATION ${DATADIR}/ui/)
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/ui/menu.ui DESTINATION ${DATADIR}/ui/)
+install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/ui/settings-dialog.ui DESTINATION ${DATADIR}/ui/)
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/sql/init.sql DESTINATION ${DATADIR}/sql/)

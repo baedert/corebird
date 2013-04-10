@@ -43,6 +43,8 @@ namespace Egg {
 		public void set_sort_func (owned GLib.CompareDataFunc<Gtk.Widget>? f);
 		public override void show ();
 		public override void size_allocate (Gtk.Allocation allocation);
+		public int get_size();
+		public void remove_last(int amount);
 		[Signal (action = true)]
 		public virtual signal void activate_cursor_child ();
 		public virtual signal void child_activated (Gtk.Widget? child);

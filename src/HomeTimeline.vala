@@ -16,6 +16,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 	private bool loading = false;
 	private int unread_tweets = 0;
 	private int64 lowest_id = int64.MAX-2;
+	private uint tweet_remove_timeout = -1;
 
 	public HomeTimeline(int id){
 		this.id = id;
@@ -23,12 +24,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 		tweet_list.get_style_context().add_class("stream");
 		tweet_list.set_selection_mode(SelectionMode.NONE);
 		tweet_list.add_to_scrolled(this);
-		tweet_list.set_sort_func((tle1, tle2) => {
-			if(((TweetListEntry)tle1).timestamp <
-			   ((TweetListEntry)tle2).timestamp)
-				return 1;
-			return -1;
-		});
+		tweet_list.set_sort_func(TweetListEntry.sort_func);
 
 	    this.vadjustment.value_changed.connect( () => {
             int max = (int)(this.vadjustment.upper - this.vadjustment.page_size);
@@ -41,6 +37,21 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
             }
         });
 
+        this.vadjustment.notify["value"].connect(() => {
+        	double value = vadjustment.value;
+        	if(value == 0 && tweet_list.get_size() > ITimeline.REST) {
+        		tweet_remove_timeout = GLib.Timeout.add(5000, () => {
+        			tweet_list.remove_last(tweet_list.get_size() - ITimeline.REST);
+        			return false;
+        		});
+        	} else {
+        		if(tweet_remove_timeout != 0){
+        			GLib.Source.remove(tweet_remove_timeout);
+        			tweet_remove_timeout = 0;
+        		}
+        	}
+        });
+
         UserStream.get().register(this);
 	}
 
@@ -50,13 +61,20 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 			Tweet t = new Tweet();
 			t.load_from_json(root, now);
 			// TODO: Maybe also use TweetCacher here?
-			Tweet.cache(t, Tweet.TYPE_NORMAL);
+			Tweet.cache.begin(t, Tweet.TYPE_NORMAL);
 
 			this.balance_next_upper_change(TOP);
-			tweet_list.add(new TweetListEntry(t, main_window));
+			var entry = new TweetListEntry(t, main_window);
+			tweet_list.add(entry);
 			tweet_list.resort();
 
 			unread_tweets++;
+
+			int stack_size = Settings.get_tweet_stack_count();
+			if(stack_size != 0 && unread_tweets >= stack_size) {
+				string summary = "%d new Tweets!".printf(unread_tweets);
+				NotificationManager.notify(summary);
+			}
 		}
 	}
 
@@ -64,8 +82,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 	/**
 	 * see IPage#onJoin
 	 */
-	public void onJoin(int page_id, va_list arg_list){
-
+	public void on_join(int page_id, va_list arg_list){
 	}
 
 	/**

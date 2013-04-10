@@ -18,17 +18,25 @@
 			<summary>Whether to show the primary toolbar in the main window or not</summary>
 			<description>See summary</description>
 		</key>
-		<key name="update-interval" type="i">
-			<default>5</default>
-			<summary>bla</summary>
-			<description>bla bla</description>
+
+		<key name="new-tweets-notify" type="i">
+			<default>0</default>
+			<summary>FOO FOO BAR BLA BLA BLA</summary>
+			<description>
+				0 = 'Disabled'
+				1 = 'Every'
+				2 = 'Stack 5'
+				3 = 'Stack 10'
+				4 = 'Stack 25'
+				5 = 'Stack 50'
+			</description>
 		</key>
-		<key name="new-tweets-notify" type="b">
-			<default>false</default>
+		<key name="new-mentions-notify" type="b">
+			<default>true</default>
 			<summary>X</summary>
 			<description>Y</description>
 		</key>
-		<key name="new-mentions-notify" type="b">
+		<key name="new-dms-notify" type="b">
 			<default>true</default>
 			<summary>X</summary>
 			<description>Y</description>
@@ -52,6 +60,13 @@
 			<default>true</default>
 			<summary>bla bla</summary>
 			<description>babbada</description>
+		</key>
+		<key name="upload-provider" type="i">
+			<default>0</default>
+			<summary></summary>
+			<description>
+				0 = pic.twitter.com
+			</description>
 		</key>
 	</schema>
 </schemalist>

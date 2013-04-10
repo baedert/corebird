@@ -5,6 +5,7 @@
  * Default implementations are given through the *_internal methods.
  */
 interface ITimeline : Gtk.Widget, IPage {
+	public static const int REST = 25;
 	protected abstract int64 max_id{get;set;}
 	public    abstract MainWindow main_window{get;set;}
 	protected abstract Egg.ListBox tweet_list{get;set;}

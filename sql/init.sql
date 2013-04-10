@@ -58,5 +58,6 @@ CREATE TABLE IF NOT EXISTS `profiles`(
 			    avatar_name VARCHAR(100),
 			    banner_url VARCHAR(255),
 			    url VARCHAR(150),
-			    location VARCHAR(100)
+			    location VARCHAR(100),
+			    is_following BOOL
 );

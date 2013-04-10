@@ -1,5 +1,11 @@
 using Gtk;
 class TweetListEntry : Gtk.Box {
+	public static int sort_func(Widget a, Widget b) {
+		if(((TweetListEntry)a).timestamp <
+		   ((TweetListEntry)b).timestamp)
+			return 1;
+		return -1;
+	}
 	private static GLib.Regex? hashtag_regex = null;
 	private static GLib.Regex? user_regex    = null;
 	private Image avatar                 = new Image();
@@ -28,7 +34,8 @@ class TweetListEntry : Gtk.Box {
 
 		if (hashtag_regex == null){
 			try{
-				hashtag_regex = new GLib.Regex("(^|\\s)#\\w+", RegexCompileFlags.OPTIMIZE);
+				hashtag_regex = new GLib.Regex("(^|\\s)#\\w+",
+				                               RegexCompileFlags.OPTIMIZE);
 				user_regex    = new GLib.Regex("@\\w+", RegexCompileFlags.OPTIMIZE);
 			}catch(GLib.RegexError e){
 				warning("Error while creating regexes: %s", e.message);
@@ -47,7 +54,7 @@ class TweetListEntry : Gtk.Box {
 		});
 
 
-		// // Set the correct CSS style class
+		// Set the correct CSS style class
 		get_style_context().add_class("tweet");
 		get_style_context().add_class("row");
 
@@ -56,6 +63,7 @@ class TweetListEntry : Gtk.Box {
 		if (tweet.screen_name == User.screen_name){
 			get_style_context().add_class("user-tweet");
 		}
+
 
 		this.enter_notify_event.connect( (evt)=> {
 			message("ENTER Detail: %d", evt.detail);
@@ -87,6 +95,7 @@ class TweetListEntry : Gtk.Box {
 		});
 
 
+
 		var left_box = new Box(Orientation.VERTICAL, 3);
 		avatar.set_valign(Align.START);
 		avatar.pixbuf = tweet.avatar;
@@ -98,11 +107,13 @@ class TweetListEntry : Gtk.Box {
 		var status_box = new Box(Orientation.HORIZONTAL, 3);
 		retweet_button.get_style_context().add_class("retweet-button");
 		retweet_button.active = tweet.retweeted;
+		retweet_button.set_tooltip_text("Retweet");
 		retweet_button.toggled.connect(retweet_tweet);
 		retweet_button.no_show_all = true;
 		status_box.pack_start(retweet_button, false, false);
 		favorite_button.get_style_context().add_class("favorite-button");
 		favorite_button.active = tweet.favorited;
+		favorite_button.set_tooltip_text("Favorite");
 		favorite_button.toggled.connect(favorite_tweet);
 		favorite_button.no_show_all = true;
 		status_box.pack_start(favorite_button, false, false);
@@ -110,6 +121,7 @@ class TweetListEntry : Gtk.Box {
 
 		more_button = new Button();
 		more_button.get_style_context().add_class("more-button");
+		more_button.set_tooltip_text("More…");
 		more_button.clicked.connect(more_button_clicked);
 		more_button.no_show_all = true;
 		status_box.pack_start(more_button, false, false);
@@ -151,6 +163,8 @@ class TweetListEntry : Gtk.Box {
 		if(tweet.reply_id != 0){
 			var conv_button = new Button();
 			conv_button.get_style_context().add_class("conversation-button");
+			conv_button.set_tooltip_text("View Conversation");
+			conv_button.vexpand = false;
 			top_box.pack_end(conv_button, false, false);
 		}
 
@@ -215,8 +229,10 @@ class TweetListEntry : Gtk.Box {
 		GLib.DateTime now = new GLib.DateTime.now_local();
 		GLib.DateTime then = new GLib.DateTime.from_unix_local(
 			tweet.is_retweet ? tweet.rt_created_at : tweet.created_at);
-		this.time_delta.label = "<small>%s</small>".printf(
-			Utils.get_time_delta(then, now));
+		string link = "https://twitter.com/%s/status/%s".printf(tweet.screen_name,
+		                                                        tweet.id.to_string());
+		this.time_delta.label = "<small><a href='%s' title='Open in Browser'>%s</a></small>"
+									.printf(link, Utils.get_time_delta(then, now));
 		return (int)(now.difference(then) / 1000.0 / 1000.0);
 	}
 
@@ -459,4 +475,5 @@ class TweetListEntry : Gtk.Box {
 
 		more_menu.show_all();
 	}
+
 }

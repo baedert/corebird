@@ -2,79 +2,74 @@
 
 using Gtk;
 
-class SettingsDialog : PreferencesDialog {
+class SettingsDialog : Gtk.Dialog {
 	private MainWindow win;
 
 	public SettingsDialog(MainWindow win){
-		base("Settings", 4);
 		this.win = win;
 		this.set_transient_for(win);
 		this.set_modal(true);
 		this.set_default_size(450, 2);
+		this.set_type_hint(Gdk.WindowTypeHint.DIALOG);
+		this.border_width = 5;
 
+		var builder = new UIBuilder(DATADIR+"ui/settings-dialog.ui", "main_notebook");
+		var main_notebook = builder.get_notebook("main_notebook");
 
-		// GENERAL SETTINGS
-		int general = append_page("General");
-		add_heading(general, "Updates");
-		add_int_option(general, "Tweet update interval:", 1,
-		               Settings.get_update_interval(), 60, (val) => {
-		    Settings.set_int("update-interval", val);
+		// this.add(main_box);
+		this.get_content_area().pack_start(main_notebook, true, true);
+
+		var upload_provider_combobox = builder.get_combobox("upload_provider_combobox");
+		upload_provider_combobox.active = Settings.upload_provider();
+		upload_provider_combobox.changed.connect(() => {
+			Settings.set_int("upload-provider", upload_provider_combobox.active);
 		});
-		add_bool_option(general, "Refresh streams on startup:",
-		                Settings.refresh_streams_on_startup(),
-		                (val) => {
-		    Settings.set_bool("refresh-streams-on-startup", val);
+
+		var primary_toolbar_switch = builder.get_switch("primary_toolbar_switch");
+		primary_toolbar_switch.active = Settings.show_primary_toolbar();
+		primary_toolbar_switch.notify["active"].connect(() => {
+			Settings.set_bool("show-primary-toolbar", primary_toolbar_switch.active);
+			win.set_show_primary_toolbar(primary_toolbar_switch.active);
 		});
 
-		// BEHAVIOR SETTINGS
-		int behavior = append_page("Behavior");
-		add_heading(behavior, "Application");
-		add_bool_option(behavior, "Show tray icon:", false, (val) => {
-			if (val){
-
-			}else{
-
-			}
+		var inline_media_switch = builder.get_switch("inline_media_switch");
+		inline_media_switch.active = Settings.show_inline_media();
+		inline_media_switch.notify["active"].connect(() => {
+			Settings.set_bool("show-inline-media", inline_media_switch.active);
 		});
-		add_heading(behavior, "Composing");
-		add_array_option(behavior, "Image Upload:",
-		                 {"Twitter"}, 0,
-		() => {
 
-		});
-		// add_array_option(behavior, "Additional Information:",
-			// {"Same Window", "Side Pane", "New Window"}, 0, () => {});
-
-
-
-		// INTERFACE SETTINGS
-		int inter = append_page("Interface");
-		add_heading(inter, "Main window");
-		add_bool_option(inter, "Use dark theme:", Settings.use_dark_theme(), (val) => {
+		var dark_theme_switch = builder.get_switch("dark_theme_switch");
+		dark_theme_switch.active = Settings.use_dark_theme();
+		dark_theme_switch.notify["active"].connect(() => {
+			bool val = dark_theme_switch.active;
 			Settings.set_bool("use-dark-theme", val);
 			Gtk.Settings.get_default().gtk_application_prefer_dark_theme = val;
 		});
-		add_bool_option(inter, "Show primary toolbar:", Settings.show_primary_toolbar(),
-		                (val) => {
-			Settings.set_bool("show-primary-toolbar", val);
-			this.win.set_show_primary_toolbar(val);
+
+		var on_new_tweets_combobox = builder.get_combobox("on_new_tweets_combobox");
+		on_new_tweets_combobox.active = Settings.notify_new_tweets();
+		on_new_tweets_combobox.changed.connect(() => {
+			Settings.set_int("new-tweets-notify", on_new_tweets_combobox.active);
 		});
 
-		add_heading(inter, "Tweets");
-		add_bool_option(inter, "Show inline media:", true, (value) => {
-			Settings.set_bool("show-inline-media", value);
+		var on_new_mentions_switch = builder.get_switch("on_new_mentions_switch");
+		on_new_mentions_switch.active = Settings.notify_new_mentions();
+		on_new_mentions_switch.notify["active"].connect(() => {
+			Settings.set_bool("new-mentions-notify", on_new_mentions_switch.active);
 		});
 
+		var on_new_dms_switch = builder.get_switch("on_new_dms_switch");
+		on_new_dms_switch.active = Settings.notify_new_dms();
+		on_new_dms_switch.notify["active"].connect(() => {
+			Settings.set_bool("new-dms-notify", on_new_dms_switch.active);
+		});
 
-		// NOTIFICATION SETTINGS
-		int notify = append_page("Notifications");
-		add_heading(notify, "Actions");
-		add_bool_option(notify, "On new Tweets:", Settings.notify_new_tweets(), (val) => {
-			Settings.set_bool("new-tweets-notify", val);
+		this.add_button("Close", 1);
+
+		this.response.connect((id) => {
+			if(id == 1)
+				this.dispose();
 		});
-		add_bool_option(notify, "On new mentions:", Settings.notify_new_mentions(),
-		                (val) => {
-			Settings.set_bool("new-mentions-notify", val);
-		});
+
 	}
 }

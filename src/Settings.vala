@@ -7,6 +7,28 @@ class Settings : GLib.Object {
 		settings = new GLib.Settings("org.baedert.corebird");
 	}
 
+	/**
+	 * Returns how many tweets should be stacked before a
+	 * notification should be created.
+	 */
+	public static int get_tweet_stack_count() {
+		int setting_val = settings.get_int("new-tweets-notify");
+		switch(setting_val){
+			case 2:
+				return 5;
+			case 3:
+				return 10;
+			case 4:
+				return 25;
+			case 5: return 50;
+			default:
+				return setting_val;
+		}
+
+		return -1;
+	}
+
+
 
 
 	/**
@@ -31,19 +53,20 @@ class Settings : GLib.Object {
 		return settings.get_boolean("show-primary-toolbar");
 	}
 
-	/**
-	 * Retuns the update interval in minutes.
-	 */
-	public static int get_update_interval(){
-		return settings.get_int("update-interval");
-	}
-
-	public static bool notify_new_tweets(){
-		return settings.get_boolean("new-tweets-notify");
+	public static int notify_new_tweets(){
+		return settings.get_int("new-tweets-notify");
 	}
 
 	public static bool notify_new_mentions(){
 		return settings.get_boolean("new-mentions-notify");
+	}
+
+	public static bool notify_new_dms(){
+		return settings.get_boolean("new-dms-notify");
+	}
+
+	public static int upload_provider(){
+		return settings.get_int("upload-provider");
 	}
 
 	public static bool refresh_streams_on_startup(){

@@ -24,7 +24,7 @@ class ProfilePage : IPage, ScrollWidget {
 	/**
 	 * see IPage#onJoin
 	 */
-	public void onJoin(int page_id, va_list arg_list) {
+	public void on_join(int page_id, va_list arg_list) {
 		message("ProfilePage#onJoin");
 		int mode = arg_list.arg();
 		if(mode == BY_ID){

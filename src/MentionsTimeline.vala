@@ -19,12 +19,7 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 		tweet_list.set_selection_mode(SelectionMode.NONE);
 		tweet_list.get_style_context().add_class("stream");
 		tweet_list.add_to_scrolled(this);
-		tweet_list.set_sort_func((tle1, tle2) => {
-			if(((TweetListEntry)tle1).timestamp <
-			   ((TweetListEntry)tle2).timestamp)
-				return 1;
-			return -1;
-		});
+		tweet_list.set_sort_func(TweetListEntry.sort_func);
 
 
 
@@ -38,7 +33,7 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 				GLib.DateTime now = new GLib.DateTime.now_local();
 				Tweet t = new Tweet();
 				t.load_from_json(root, now);
-				Tweet.cache(t, Tweet.TYPE_MENTION);
+				Tweet.cache.begin(t, Tweet.TYPE_MENTION);
 
 				this.balance_next_upper_change(TOP);
 				tweet_list.add(new TweetListEntry(t, main_window));
@@ -59,7 +54,7 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 	/**
 	 * see IPage#onJoin
 	 */
-	public void onJoin(int page_id, va_list arg_list){
+	public void on_join(int page_id, va_list arg_list){
 
 	}
 

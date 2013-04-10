@@ -163,6 +163,7 @@ class MainWindow : ApplicationWindow {
 			setup_left_toolbar();
 		}
 
+		this.icon_name = "corebird";
 
 		// TODO: Implement TestToolButton
 		var tt = new TestToolButton();
@@ -312,7 +313,7 @@ class MainWindow : ApplicationWindow {
 		}
 
 
-		page.onJoin(page_id, va_list());
+		page.on_join(page_id, va_list());
 		main_notebook.set_current_page(page_id);
 	}
 
