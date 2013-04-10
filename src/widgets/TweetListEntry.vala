@@ -24,6 +24,7 @@ class TweetListEntry : Gtk.Box {
 	private int64 tweet_id;
 	private Tweet tweet;
 	private Gdk.Window event_window;
+	private uint in_event;
 
 
 	public TweetListEntry(Tweet tweet, MainWindow? window){
@@ -67,24 +68,21 @@ class TweetListEntry : Gtk.Box {
 
 		this.enter_notify_event.connect( (evt)=> {
 			message("ENTER Detail: %d", evt.detail);
-			message("---------------------");
-			// if(evt.detail == Gdk.NotifyType.NONLINEAR ||
-			//    evt.detail == Gdk.NotifyType.INFERIOR)
-			// 	return true;
+			message("---------------------\n");
 
 			favorite_button.show();
 			retweet_button.show();
 			more_button.show();
 			// message(" IN");
+			this.in_event = evt.detail;
 
 			return false;
 		});
 		this.leave_notify_event.connect( (evt) => {
 			message("LEAVE Detail: %d", evt.detail);
-			message("---------------------");
-			// if(evt.detail == Gdk.NotifyType.NONLINEAR ||
-			//    evt.detail == Gdk.NotifyType.INFERIOR)
-			// 	return true;
+			message("---------------------\n");
+			if(evt.detail == 3)
+				return true;
 
 			favorite_button.hide();
 			retweet_button.hide();
