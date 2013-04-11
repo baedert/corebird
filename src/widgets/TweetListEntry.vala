@@ -23,6 +23,7 @@ class TweetListEntry : Gtk.Box {
 	public int64 timestamp;
 	private int64 tweet_id;
 	private Tweet tweet;
+	public bool seen = true;
 
 
 	public TweetListEntry(Tweet tweet, MainWindow? window){
@@ -30,6 +31,7 @@ class TweetListEntry : Gtk.Box {
 		this.window  = window;
 		this.vexpand = false;
 		this.hexpand = false;
+
 
 		if (hashtag_regex == null){
 			try{
@@ -66,11 +68,12 @@ class TweetListEntry : Gtk.Box {
 		var left_box = new Box(Orientation.VERTICAL, 3);
 		avatar.set_valign(Align.START);
 		avatar.pixbuf = tweet.avatar;
-		avatar.margin_top  = 3;
-		avatar.margin_left = 3;
+		avatar.margin_top   = 3;
+		avatar.margin_left  = 3;
+		avatar.margin_right = 3;
 		left_box.pack_start(avatar, false, false);
 
-		var status_box = new Box(Orientation.HORIZONTAL, 5);
+		var status_box = new Box(Orientation.HORIZONTAL, 3);
 		retweet_button.get_style_context().add_class("retweet-button");
 		retweet_button.active = tweet.retweeted;
 		retweet_button.set_tooltip_text("Retweet");

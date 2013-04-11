@@ -50,7 +50,23 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
         			tweet_remove_timeout = 0;
         		}
         	}
+        	if(unread_tweets > 0 && get_last_scroll_dir() == -1){
+		       	tweet_list.forall_internal(false, (w) => {
+		       		TweetListEntry tle = (TweetListEntry)w;
+		       		if(tle.seen)
+		       			return;
+		       		Allocation alloc;
+		       		tle.get_allocation(out alloc);
+		       		if(alloc.x+(alloc.height/2.0) >= vadjustment.value) {
+		       			tle.seen = true;
+		       			unread_tweets--;
+		       		}
+	        	});
+	       	}
+
         });
+
+
 
         UserStream.get().register(this);
 	}
@@ -65,6 +81,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 
 			this.balance_next_upper_change(TOP);
 			var entry = new TweetListEntry(t, main_window);
+			entry.seen = false;
 			tweet_list.add(entry);
 			tweet_list.resort();
 
