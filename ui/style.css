@@ -92,8 +92,13 @@
 }
 
 .badge{
-	background-color: red;
-	border-radius: 4px;
+	background-color: alpha(orange, 0.75);
+	text-shadow: 0px 1px 1px #FFF;
+	border-radius: 20px;
+	padding: 3px 2px;
+}
+.badge:backdrop{
+	background-color: transparent;
 }
 
 .stream{

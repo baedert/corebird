@@ -87,11 +87,11 @@ vala_precompile(VALA_C
 	src/widgets/ProgressItem.vala
 	src/widgets/TextButton.vala
 	src/widgets/ArrowButton.vala
-	src/widgets/TestToolButton.vala
 	src/widgets/IPaneWidget.vala
 	src/widgets/TweetListEntry.vala
 	src/widgets/TweetInfoWidget.vala
 	src/widgets/ProfileWidget.vala
+	src/widgets/BadgeRadioToolButton.vala
 	src/util/UIBuilder.vala
 	src/util/Utils.vala
 	src/util/Benchmark.vala

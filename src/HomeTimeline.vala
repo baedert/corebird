@@ -12,7 +12,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 	public MainWindow main_window{set;get;}
 	protected Egg.ListBox tweet_list{set;get;}
 	private int id;
-	private RadioToolButton tool_button;
+	private BadgeRadioToolButton tool_button;
 	private bool loading = false;
 	private int unread_tweets = 0;
 	private int64 lowest_id = int64.MAX-2;
@@ -59,7 +59,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 		       		tle.get_allocation(out alloc);
 		       		if(alloc.x+(alloc.height/2.0) >= vadjustment.value) {
 		       			tle.seen = true;
-		       			unread_tweets--;
+		       			decrease_unread_count();
 		       		}
 	        	});
 	       	}
@@ -85,7 +85,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 			tweet_list.add(entry);
 			tweet_list.resort();
 
-			unread_tweets++;
+			increase_unread_count();
 
 			int stack_size = Settings.get_tweet_stack_count();
 			if(stack_size != 0 && unread_tweets >= stack_size) {
@@ -149,7 +149,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 
 
 	public void create_tool_button(RadioToolButton? group){
-		tool_button = new RadioToolButton.with_stock_from_widget(group, Stock.HOME);
+		tool_button = new BadgeRadioToolButton(group, Stock.HOME);
 	}
 
 	public RadioToolButton? get_tool_button(){
@@ -158,5 +158,17 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 
 	public int get_id(){
 		return id;
+	}
+
+	private void decrease_unread_count() {
+		this.unread_tweets --;
+		tool_button.set_badge_value(unread_tweets);
+		tool_button.queue_draw();
+	}
+
+	private void increase_unread_count() {
+		this.unread_tweets ++;
+		tool_button.set_badge_value(unread_tweets);
+		tool_button.queue_draw();
 	}
 }
