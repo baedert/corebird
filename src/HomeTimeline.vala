@@ -57,9 +57,10 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 		       			return;
 		       		Allocation alloc;
 		       		tle.get_allocation(out alloc);
-		       		if(alloc.x+(alloc.height/2.0) >= vadjustment.value) {
+		       		if(alloc.y+(alloc.height/2.0) >= vadjustment.value) {
 		       			tle.seen = true;
 		       			decrease_unread_count();
+		       			message("Decrease by one");
 		       		}
 	        	});
 	       	}
