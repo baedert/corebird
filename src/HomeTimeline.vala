@@ -76,7 +76,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 			GLib.DateTime now = new GLib.DateTime.now_local();
 			Tweet t = new Tweet();
 			t.load_from_json(root, now);
-			// TODO: Maybe also use TweetCacher here?
+
 			Tweet.cache.begin(t, Tweet.TYPE_NORMAL);
 
 			this.balance_next_upper_change(TOP);
