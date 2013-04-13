@@ -94,7 +94,7 @@
 .badge{
 	background-color: alpha(orange, 0.75);
 	text-shadow: 0px 1px 1px #FFF;
-	border-radius: 20px;
+	border-radius: 2px;
 	padding: 3px 2px;
 }
 .badge:backdrop{
