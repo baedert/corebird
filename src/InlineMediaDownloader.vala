@@ -23,7 +23,8 @@ class InlineMediaDownloader {
 
 		*/
 
-		if(url.has_prefix("http://instagr.am")) {
+		if(url.has_prefix("http://instagr.am") ||
+		   url.has_prefix("http://instagram.com/p/")) {
 			two_step_load.begin(t, url, "<img class=\"photo\" src=\"(.*?)\"", 1);
 		} else if(url.has_prefix("http://i.imgur.com")) {
 			load_inline_media.begin(t, url);
