@@ -59,8 +59,8 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 		       		tle.get_allocation(out alloc);
 		       		if(alloc.y+(alloc.height/2.0) >= vadjustment.value) {
 		       			tle.seen = true;
-		       			decrease_unread_count();
-		       			message("Decrease by one");
+		       			unread_tweets--;
+		       			update_unread_count();
 		       		}
 	        	});
 	       	}
@@ -86,7 +86,8 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 			tweet_list.add(entry);
 			tweet_list.resort();
 
-			increase_unread_count();
+			unread_tweets++;
+			update_unread_count();
 
 			int stack_size = Settings.get_tweet_stack_count();
 			if(stack_size != 0 && unread_tweets >= stack_size) {
@@ -161,14 +162,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 		return id;
 	}
 
-	private void decrease_unread_count() {
-		this.unread_tweets --;
-		tool_button.set_badge_value(unread_tweets);
-		tool_button.queue_draw();
-	}
-
-	private void increase_unread_count() {
-		this.unread_tweets ++;
+	private void update_unread_count() {
 		tool_button.set_badge_value(unread_tweets);
 		tool_button.queue_draw();
 	}
