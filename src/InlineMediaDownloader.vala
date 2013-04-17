@@ -78,7 +78,8 @@ class InlineMediaDownloader {
 			try {
 				var ms    = new MemoryInputStream.from_data(msg.response_body.data, null);
 				var pic   = new Gdk.Pixbuf.from_stream(ms);
-				string file_name = @"$(t.id)_$(t.user_id).png";
+				string ext = Utils.get_file_type(url);
+				string file_name = @"$(t.id)_$(t.user_id).$(ext)";
 
 				int thumb_w, thumb_h;
 				get_thumb_size(pic.get_width(), pic.get_height(), out thumb_w,
@@ -91,8 +92,8 @@ class InlineMediaDownloader {
 				Corebird.db.execute(@"UPDATE `cache` SET `media`='$path'
 				                    WHERE `id`='$(t.id)';");
 				t.media = path;
-				pic.save(path, "png");
-				thumb.save(thumb_path, "png");
+				pic.save(path, ext);
+				thumb.save(thumb_path, ext);
 				t.inline_media_added(thumb);
 			} catch (GLib.Error e) {
 				critical(e.message);
