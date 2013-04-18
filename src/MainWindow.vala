@@ -163,13 +163,6 @@ class MainWindow : ApplicationWindow {
 			setup_left_toolbar();
 		}
 
-		this.icon_name = "corebird";
-
-		// TODO: Implement TestToolButton
-		var tt = new TestToolButton();
-		tt.icon_name = "find";
-		left_toolbar.add(tt);
-
 		main_notebook.show_border = false;
 		main_notebook.show_tabs   = false;
 		bottom_box.pack_start (main_notebook, true, true);

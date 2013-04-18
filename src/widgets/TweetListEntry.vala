@@ -25,6 +25,7 @@ class TweetListEntry : Gtk.Box {
 	private Tweet tweet;
 	private Gdk.Window event_window;
 	private uint in_event;
+	public bool seen = true;
 
 
 	public TweetListEntry(Tweet tweet, MainWindow? window){
@@ -32,6 +33,7 @@ class TweetListEntry : Gtk.Box {
 		this.window  = window;
 		this.vexpand = false;
 		this.hexpand = false;
+
 
 		if (hashtag_regex == null){
 			try{

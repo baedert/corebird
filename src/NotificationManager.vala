@@ -13,7 +13,7 @@ class NotificationManager {
 		Notify.init("Corebird");
 		unowned List<string> caps = Notify.get_server_caps();
 		foreach(string s in caps){
-			message(s);
+			// message(s);
 			if (s == "persistence"){
 				message("Not creating any tray icon");
 				is_persistent = true;

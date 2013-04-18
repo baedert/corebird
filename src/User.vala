@@ -121,7 +121,7 @@ class User {
 		});
 
 
-		// Check who the user follows, etc. to builid a cache and give the user
+		// TODO: Check who the user follows, etc. to builid a cache and give the user
 		// auto-completion when composing a tweet
 
 	}

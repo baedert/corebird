@@ -8,6 +8,7 @@ class ScrollWidget : ScrolledWindow {
 	private double upper_cache;
 	private double value_cache;
 	private int balance = NONE;
+	private uint last_scroll_dir = 0;
 
 	public ScrollWidget(){
 		GLib.Object(hadjustment: null, vadjustment: null);
@@ -41,8 +42,16 @@ class ScrollWidget : ScrolledWindow {
 			this.vadjustment.value -= inc;
 			balance = NONE;
 		}
+		if(value_cache < vadjustment.value)
+			last_scroll_dir = 1;
+		else if(value_cache > vadjustment.value)
+			last_scroll_dir = -1;
+		else
+			last_scroll_dir = 0;
+
 		this.upper_cache = vadjustment.upper;
 		this.value_cache = vadjustment.value;
+
 	}
 
 	public void balance_next_upper_change(int mode){
@@ -51,6 +60,10 @@ class ScrollWidget : ScrolledWindow {
 		// else
 		// 	message("SETTING MODE TO BOTTOM");
 		balance = mode;
+	}
+
+	public uint get_last_scroll_dir(){
+		return last_scroll_dir;
 	}
 
 }
