@@ -150,6 +150,7 @@
 	background-color: transparent;
 	border: none;
 	border-radius: 0px;
+	transition: box-shadow 0.25s ease-in-out;
 }
 
 .image-button:hover {
