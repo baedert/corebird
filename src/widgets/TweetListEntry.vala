@@ -28,7 +28,6 @@ class TweetListEntry : Gtk.EventBox {
 
 
 	public TweetListEntry(Tweet tweet, MainWindow? window){
-		// GLib.Object(orientation: Orientation.HORIZONTAL, spacing: 5);
 		this.window  = window;
 		this.vexpand = false;
 		this.hexpand = false;
@@ -47,7 +46,6 @@ class TweetListEntry : Gtk.EventBox {
 		this.timestamp = tweet.created_at;
 		this.tweet_id  = tweet.id;
 		this.tweet 	   = tweet;
-		// set_has_window(true);
 
 
 		// If the tweet's avatar changed, also reset it in the widgets
@@ -72,7 +70,7 @@ class TweetListEntry : Gtk.EventBox {
 			// message("ENTER Detail: %d", evt.detail);
 
 			// message("---------------------\n");
-
+			message("enter");
 			favorite_button.show();
 			retweet_button.show();
 			more_button.show();
@@ -81,7 +79,7 @@ class TweetListEntry : Gtk.EventBox {
 		this.leave_notify_event.connect( (evt) => {
 			// message("LEAVE Detail: %d", evt.detail);
 			// message("---------------------\n");
-
+			message("leave");
 			if(evt.detail == 2)
 				return false;
 
@@ -107,15 +105,19 @@ class TweetListEntry : Gtk.EventBox {
 		var status_box = new Box(Orientation.HORIZONTAL, 3);
 		retweet_button.get_style_context().add_class("retweet-button");
 		retweet_button.active = tweet.retweeted;
+		if(!tweet.retweeted)
+			retweet_button.no_show_all = true;
 		retweet_button.set_tooltip_text("Retweet");
 		retweet_button.toggled.connect(retweet_tweet);
-		retweet_button.no_show_all = true;
 		status_box.pack_start(retweet_button, false, false);
+
 		favorite_button.get_style_context().add_class("favorite-button");
 		favorite_button.active = tweet.favorited;
+		if(!tweet.favorited)
+			favorite_button.no_show_all = true;
 		favorite_button.set_tooltip_text("Favorite");
 		favorite_button.toggled.connect(favorite_tweet);
-		favorite_button.no_show_all = true;
+
 		status_box.pack_start(favorite_button, false, false);
 
 
