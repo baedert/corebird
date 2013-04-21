@@ -74,6 +74,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 		left_box.pack_start(new Separator(Orientation.HORIZONTAL), false, false);
 		media_image.set_halign(Align.CENTER);
 		media_image.set_valign(Align.START);
+		media_image.no_show_all = true;
 		media_image.clicked.connect(remove_media);
 		media_image.tooltip_text = "Click to remove";
 		left_box.pack_start(media_image, false, false);
@@ -96,7 +97,8 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 		var attachment_button_box = new Box(Orientation.HORIZONTAL, 0);
 		attachment_button_box.get_style_context().add_class("linked");
 
-		add_image_button.image = new Image.from_icon_name("insert-image", IconSize.SMALL_TOOLBAR);
+		add_image_button.image = new Image.from_icon_name("insert-image",
+														  IconSize.SMALL_TOOLBAR);
 		add_image_button.clicked.connect(() => {
 			FileChooserDialog fcd = new FileChooserDialog("Select Image", null,
 				FileChooserAction.OPEN, Stock.CANCEL, ResponseType.CANCEL,
