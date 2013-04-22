@@ -77,7 +77,7 @@ class Utils{
 	 * @return The filename of the given path, and nothing else.
 	 */
 	public static string get_file_name(string path){
-		return path.substring(path.last_index_of("/") + 1);
+		return path.substring(path.last_index_of_char('/') + 1);
 	}
 
 	/**
@@ -85,10 +85,12 @@ class Utils{
 	 * E.g. for http://foo.org/bar/bla.png, this will just return "png"
 	 */
 	public static string get_file_type(string path){
+		message("path: %s", path);
 		string filename = get_file_name(path);
+		message("filename: %s", filename);
 		if(filename.index_of_char('.') == -1)
 			return "";
-		string type = filename.substring(path.last_index_of(".") + 1);
+		string type = filename.substring(filename.last_index_of_char('.') + 1);
 		type = type.down();
 		if(type == "jpg")
 			return "jpeg";
