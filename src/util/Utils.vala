@@ -85,7 +85,10 @@ class Utils{
 	 * E.g. for http://foo.org/bar/bla.png, this will just return "png"
 	 */
 	public static string get_file_type(string path){
-		string type = path.substring(path.last_index_of(".") + 1);
+		string filename = get_file_name(path);
+		if(filename.index_of_char('.') == -1)
+			return "";
+		string type = filename.substring(path.last_index_of(".") + 1);
 		type = type.down();
 		if(type == "jpg")
 			return "jpeg";
