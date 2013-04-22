@@ -70,7 +70,7 @@ class TweetListEntry : Gtk.EventBox {
 			// message("ENTER Detail: %d", evt.detail);
 
 			// message("---------------------\n");
-			message("enter");
+			message("enter(%d)", evt.detail);
 			favorite_button.show();
 			retweet_button.show();
 			more_button.show();
@@ -79,9 +79,9 @@ class TweetListEntry : Gtk.EventBox {
 		this.leave_notify_event.connect( (evt) => {
 			// message("LEAVE Detail: %d", evt.detail);
 			// message("---------------------\n");
-			message("leave");
+			message("leave(%d)", evt.detail);
 			if(evt.detail == 2)
-				return false;
+				return true;
 
 			if(!favorite_button.active)
 				favorite_button.hide();
