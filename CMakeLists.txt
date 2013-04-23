@@ -38,7 +38,7 @@ set (DEPS glib-2.0;
 		  rest-0.7;
 		  sqlheavy-0.2;
 		  gmodule-2.0;
-		  gee-1.0;
+		  gee-0.8;
 		  json-glib-1.0;
 		  libnotify;
 		  sqlite3;
