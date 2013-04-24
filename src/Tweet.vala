@@ -166,27 +166,21 @@ class Tweet : GLib.Object{
 
 		this.load_avatar();
 		if(!this.has_avatar()){
-			string dest = Utils.get_user_file_path("assets/avatars/"+this.avatar_name);
-			GLib.Idle.add(() => {
-				try{
-					var session = new Soup.SessionAsync();
-					var msg     = new Soup.Message("GET", this.avatar_url);
-					session.send_message(msg);
-
-					var memory_stream = new MemoryInputStream.from_data(
-					                                   msg.response_body.data,
-					                                   null);
-					var pixbuf = new Gdk.Pixbuf.from_stream_at_scale(memory_stream,
-					                                                 48, 48,
-					                                                 false);
-					pixbuf.save(dest, "png");
-					this.load_avatar(pixbuf);
-					message("Loaded avatar for %s", screen_name);
-					message("Dest: %s", dest);
-				} catch (GLib.Error e) {
-					critical(e.message);
-				}
-				return false;
+			var session = new Soup.SessionAsync();
+			var msg     = new Soup.Message("GET", this.avatar_url);
+			session.queue_message(msg, (s, _msg) => {
+				string dest = Utils.get_user_file_path("assets/avatars/"+
+				                                       this.avatar_name);
+				var memory_stream = new MemoryInputStream.from_data(
+				                                   _msg.response_body.data,
+				                                   null);
+				var pixbuf = new Gdk.Pixbuf.from_stream_at_scale(memory_stream,
+				                                                 48, 48,
+				                                                 false);
+				pixbuf.save(dest, "png");
+				this.load_avatar(pixbuf);
+				message("Loaded avatar for %s", screen_name);
+				message("Dest: %s", dest);
 			});
 		}
 	}
