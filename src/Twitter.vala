@@ -10,11 +10,8 @@ class Twitter {
 	private static int short_url_length_https;
 	private static int photo_size_limit;
 	public static OAuthProxy proxy;
-	public static Gdk.Pixbuf retweeted_img;
-	public static Gdk.Pixbuf favorited_img;
 	public static Gdk.Pixbuf no_avatar;
 	public static Gdk.Pixbuf no_banner;
-	public static Gdk.Pixbuf conversation_img;
 	public static HashMap<string, Gdk.Pixbuf> avatars;
 
 
