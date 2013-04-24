@@ -13,6 +13,7 @@ class TweetListEntry : Gtk.EventBox {
 	private TextButton author_button;
 	private Label screen_name            = new Label("");
 	private Label time_delta             = new Label("");
+	private InvisibilityBin rt_bin		 = new InvisibilityBin();
 	private ToggleButton retweet_button  = new ToggleButton();
 	private ToggleButton favorite_button = new ToggleButton();
 	private Box text_box				 = new Box(Orientation.HORIZONTAL, 3);
@@ -70,23 +71,27 @@ class TweetListEntry : Gtk.EventBox {
 			// message("ENTER Detail: %d", evt.detail);
 
 			// message("---------------------\n");
-			message("enter(%d)", evt.detail);
+		//	message("enter(%d)", evt.detail);
 			favorite_button.show();
-			retweet_button.show();
+			//rt_bin.show();
+			rt_bin.show_child();
+
+			//retweet_button.show();
 			more_button.show();
 			return false;
 		});
 		this.leave_notify_event.connect( (evt) => {
 			// message("LEAVE Detail: %d", evt.detail);
 			// message("---------------------\n");
-			message("leave(%d)", evt.detail);
+		//	message("leave(%d)", evt.detail);
 			if(evt.detail == 2)
 				return true;
 
 			if(!favorite_button.active)
 				favorite_button.hide();
 			if(!retweet_button.active)
-				retweet_button.hide();
+				rt_bin.hide_child();
+				//retweet_button.hide();
 			more_button.hide();
 
 			return false;
@@ -106,10 +111,12 @@ class TweetListEntry : Gtk.EventBox {
 		retweet_button.get_style_context().add_class("retweet-button");
 		retweet_button.active = tweet.retweeted;
 		if(!tweet.retweeted)
+	//		rt_bin.no_show_all = true;
 			retweet_button.no_show_all = true;
 		retweet_button.set_tooltip_text("Retweet");
 		retweet_button.toggled.connect(retweet_tweet);
-		status_box.pack_start(retweet_button, false, false);
+		rt_bin.add(retweet_button);
+		status_box.pack_start(rt_bin, false, false);
 
 		favorite_button.get_style_context().add_class("favorite-button");
 		favorite_button.active = tweet.favorited;

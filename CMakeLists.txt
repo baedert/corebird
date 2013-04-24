@@ -92,6 +92,7 @@ vala_precompile(VALA_C
 	src/widgets/TweetInfoWidget.vala
 	src/widgets/ProfileWidget.vala
 	src/widgets/BadgeRadioToolButton.vala
+	src/widgets/InvisibilityBin.vala
 	src/util/UIBuilder.vala
 	src/util/Utils.vala
 	src/util/Benchmark.vala
