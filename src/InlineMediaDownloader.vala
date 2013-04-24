@@ -79,6 +79,8 @@ class InlineMediaDownloader {
 				var ms    = new MemoryInputStream.from_data(msg.response_body.data, null);
 				var pic   = new Gdk.Pixbuf.from_stream(ms);
 				string ext = Utils.get_file_type(url);
+				if(ext == "")
+					ext = "png";
 				string file_name = @"$(t.id)_$(t.user_id).$(ext)";
 
 				int thumb_w, thumb_h;

@@ -19,7 +19,7 @@ set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-but-set-variable")
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-deprecated-declarations")
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -I src/egglistbox/")
 
-# Just use PREFIX instead of CMAKE_INSTALL_PREFIX
+# Just use PREFIX instead of CMAKE_INSTALL_PREFIX(but CMAKE_INSTALL_PREFIX will work too)
 set (PREFIX "${CMAKE_INSTALL_PREFIX}")
 set (DATADIR "${PREFIX}/share/corebird/")
 
@@ -38,7 +38,7 @@ set (DEPS glib-2.0;
 		  rest-0.7;
 		  sqlheavy-0.2;
 		  gmodule-2.0;
-		  gee-1.0;
+		  gee-0.8;
 		  json-glib-1.0;
 		  libnotify;
 		  sqlite3;
@@ -92,6 +92,7 @@ vala_precompile(VALA_C
 	src/widgets/TweetInfoWidget.vala
 	src/widgets/ProfileWidget.vala
 	src/widgets/BadgeRadioToolButton.vala
+	src/widgets/InvisibilityBin.vala
 	src/util/UIBuilder.vala
 	src/util/Utils.vala
 	src/util/Benchmark.vala

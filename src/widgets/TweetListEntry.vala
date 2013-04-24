@@ -1,5 +1,5 @@
 using Gtk;
-class TweetListEntry : Gtk.Box {
+class TweetListEntry : Gtk.EventBox {
 	public static int sort_func(Widget a, Widget b) {
 		if(((TweetListEntry)a).timestamp <
 		   ((TweetListEntry)b).timestamp)
@@ -13,6 +13,7 @@ class TweetListEntry : Gtk.Box {
 	private TextButton author_button;
 	private Label screen_name            = new Label("");
 	private Label time_delta             = new Label("");
+	private InvisibilityBin rt_bin		 = new InvisibilityBin();
 	private ToggleButton retweet_button  = new ToggleButton();
 	private ToggleButton favorite_button = new ToggleButton();
 	private Box text_box				 = new Box(Orientation.HORIZONTAL, 3);
@@ -24,10 +25,10 @@ class TweetListEntry : Gtk.Box {
 	private int64 tweet_id;
 	private Tweet tweet;
 	public bool seen = true;
+	private Gtk.Box box = new Box(Orientation.HORIZONTAL, 5);
 
 
 	public TweetListEntry(Tweet tweet, MainWindow? window){
-		GLib.Object(orientation: Orientation.HORIZONTAL, spacing: 5);
 		this.window  = window;
 		this.vexpand = false;
 		this.hexpand = false;
@@ -65,6 +66,39 @@ class TweetListEntry : Gtk.Box {
 			get_style_context().add_class("user-tweet");
 		}
 
+
+		this.enter_notify_event.connect( (evt)=> {
+			// message("ENTER Detail: %d", evt.detail);
+
+			// message("---------------------\n");
+		//	message("enter(%d)", evt.detail);
+			favorite_button.show();
+			//rt_bin.show();
+			rt_bin.show_child();
+
+			//retweet_button.show();
+			more_button.show();
+			return false;
+		});
+		this.leave_notify_event.connect( (evt) => {
+			// message("LEAVE Detail: %d", evt.detail);
+			// message("---------------------\n");
+		//	message("leave(%d)", evt.detail);
+			if(evt.detail == 2)
+				return true;
+
+			if(!favorite_button.active)
+				favorite_button.hide();
+			if(!retweet_button.active)
+				rt_bin.hide_child();
+				//retweet_button.hide();
+			more_button.hide();
+
+			return false;
+		});
+
+
+
 		var left_box = new Box(Orientation.VERTICAL, 3);
 		avatar.set_valign(Align.START);
 		avatar.pixbuf = tweet.avatar;
@@ -76,13 +110,21 @@ class TweetListEntry : Gtk.Box {
 		var status_box = new Box(Orientation.HORIZONTAL, 3);
 		retweet_button.get_style_context().add_class("retweet-button");
 		retweet_button.active = tweet.retweeted;
+		if(!tweet.retweeted)
+	//		rt_bin.no_show_all = true;
+			retweet_button.no_show_all = true;
 		retweet_button.set_tooltip_text("Retweet");
 		retweet_button.toggled.connect(retweet_tweet);
-		status_box.pack_start(retweet_button, false, false);
+		rt_bin.add(retweet_button);
+		status_box.pack_start(rt_bin, false, false);
+
 		favorite_button.get_style_context().add_class("favorite-button");
 		favorite_button.active = tweet.favorited;
+		if(!tweet.favorited)
+			favorite_button.no_show_all = true;
 		favorite_button.set_tooltip_text("Favorite");
 		favorite_button.toggled.connect(favorite_tweet);
+
 		status_box.pack_start(favorite_button, false, false);
 
 
@@ -90,10 +132,11 @@ class TweetListEntry : Gtk.Box {
 		more_button.get_style_context().add_class("more-button");
 		more_button.set_tooltip_text("More…");
 		more_button.clicked.connect(more_button_clicked);
+		more_button.no_show_all = true;
 		status_box.pack_start(more_button, false, false);
 
 		left_box.pack_start(status_box, true, false);
-		this.pack_start(left_box, false, false);
+		box.pack_start(left_box, false, false);
 
 
 		var right_box = new Box(Orientation.VERTICAL, 4);
@@ -153,7 +196,7 @@ class TweetListEntry : Gtk.Box {
 
 		right_box.pack_start(text_box, true, true);
 
-		this.pack_start(right_box, true, true);
+		box.pack_start(right_box, true, true);
 
 		tweet.inline_media_added.connect((pic) => {
 			var media_button = new ImageButton();
@@ -182,6 +225,7 @@ class TweetListEntry : Gtk.Box {
 		DeltaUpdater.get().add(this);
 
 		this.set_size_request(20, 80);
+		this.add(box);
 		this.show_all();
 	}
 
@@ -334,7 +378,6 @@ class TweetListEntry : Gtk.Box {
 		}
 		return false;
 	}
-
 
 	private void more_button_clicked() {
 		if(more_menu == null)
