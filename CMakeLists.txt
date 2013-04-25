@@ -20,16 +20,21 @@ set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-deprecated-declarations")
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -I src/egglistbox/")
 
 # Just use PREFIX instead of CMAKE_INSTALL_PREFIX(but CMAKE_INSTALL_PREFIX will work too)
-set (PREFIX "${CMAKE_INSTALL_PREFIX}")
-set (DATADIR "${PREFIX}/share/corebird/")
+set (PREFIX 			"${CMAKE_INSTALL_PREFIX}")
+set (DATADIR 			"${PREFIX}/share/corebird/")
+set (GETTEXT_PACKAGE 	"corebird")
 
 
 configure_file (${CMAKE_SOURCE_DIR}/src/util/Config.vala.cmake ${CMAKE_SOURCE_DIR}/src/util/Config.vala)
 
-find_package(Vala REQUIRED)
 include(ValaVersion)
-ensure_vala_version("0.16" MINIMUM)
 include(ValaPrecompile)
+include (Gettext)
+include (GSettings)
+
+find_package(Vala REQUIRED)
+ensure_vala_version("0.16" MINIMUM)
+
 
 
 set (DEPS glib-2.0;
@@ -52,8 +57,7 @@ add_definitions(${DEPS_CFLAGS})
 link_directories(${DEPS_LIBRARY_DIRS})
 
 
-
-vala_precompile(VALA_C
+set (VALA_SOURCE
 	src/Corebird.vala
 	src/MainWindow.vala
 	src/Tweet.vala
@@ -99,6 +103,10 @@ vala_precompile(VALA_C
 	src/util/Config.vala
 	src/util/WidgetReplacer.vala
 	src/egglistbox/egg-list-box.c
+)
+
+vala_precompile(VALA_C
+	${VALA_SOURCE}
 PACKAGES
 	${DEPS}
 	egglistbox
@@ -114,24 +122,16 @@ add_executable(corebird ${VALA_C})
 target_link_libraries(corebird ${DEPS_LIBRARIES})
 
 # GSettings
-include (GSettings)
 add_schema ("org.baedert.corebird.gschema.xml")
 
 install (TARGETS corebird RUNTIME DESTINATION bin)
-install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/no_avatar.png DESTINATION ${DATADIR})
-install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/no_banner.png DESTINATION ${DATADIR})
-install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/favorite.png DESTINATION ${DATADIR})
-install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/favorite-normal.png DESTINATION ${DATADIR})
-install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/retweet.png DESTINATION ${DATADIR})
-install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/retweet-normal.png DESTINATION ${DATADIR})
-install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/conversation.png DESTINATION ${DATADIR})
-install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/conversation-normal.png DESTINATION ${DATADIR})
-install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/more-normal.png DESTINATION ${DATADIR})
-install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/more.png DESTINATION ${DATADIR})
-install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/icon.png DESTINATION ${DATADIR})
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/ui/style.css DESTINATION ${DATADIR}/ui/)
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/ui/first-run-window.ui DESTINATION ${DATADIR}/ui/)
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/ui/tweet-info-window.ui DESTINATION ${DATADIR}/ui/)
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/ui/menu.ui DESTINATION ${DATADIR}/ui/)
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/ui/settings-dialog.ui DESTINATION ${DATADIR}/ui/)
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/sql/init.sql DESTINATION ${DATADIR}/sql/)
+
+
+add_subdirectory(po)
+add_subdirectory(assets)

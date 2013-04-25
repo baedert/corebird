@@ -65,7 +65,10 @@ class InlineMediaDownloader {
 
 	private static async void load_inline_media(Tweet t, string url,
 	                                       Soup.Session? sess = null) {
-		GLib.Idle.add(() => {
+
+		return; //FIXME: Remove.
+
+//		GLib.Idle.add(() => {
 			Soup.Session session = sess;
 			message("Directly Downloading %s", url);
 			if(session == null)
@@ -74,13 +77,16 @@ class InlineMediaDownloader {
 			var msg = new Soup.Message("GET", url);
 
 
-			session.send_message(msg);
+//			session.send_message(msg);
+		session.queue_message(msg, (s, _msg) => {
 			try {
-				var ms    = new MemoryInputStream.from_data(msg.response_body.data, null);
-				var pic   = new Gdk.Pixbuf.from_stream(ms);
-				string ext = Utils.get_file_type(url);
-				if(ext == "")
+				var ms  = new MemoryInputStream.from_data(_msg.response_body.data, null);
+				var pic = new Gdk.Pixbuf.from_stream(ms);
+				string ext = Utils.get_file_type(_msg.uri.get_path());
+
+				if(ext.length == 0)
 					ext = "png";
+
 				string file_name = @"$(t.id)_$(t.user_id).$(ext)";
 
 				int thumb_w, thumb_h;
@@ -100,8 +106,10 @@ class InlineMediaDownloader {
 			} catch (GLib.Error e) {
 				critical(e.message);
 			}
-			return false;
 		});
+
+//			return false;
+//		});
 
 	}
 

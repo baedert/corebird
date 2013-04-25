@@ -62,6 +62,8 @@ class MainWindow : ApplicationWindow {
 		//Setup additional pages
 		pages[0] = new ProfilePage(PAGE_PROFILE);
 
+		message(_("test"));
+	//	message(_("FROOOO"));
 
 		// Start userstream
 		UserStream.get().start();

@@ -1,0 +1,17 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: corebird 0.3\n"
+"Report-Msgid-Bugs-To: baedert@gmail.com\n"
+"POT-Creation-Date: 2013-02-26 16:16-0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+msgid "test"
+msgstr ""

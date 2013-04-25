@@ -24,8 +24,6 @@ class Settings : GLib.Object {
 			default:
 				return setting_val;
 		}
-
-		return -1;
 	}
 
 
