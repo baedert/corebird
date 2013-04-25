@@ -1,17 +1,33 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: corebird 0.3\n"
-"Report-Msgid-Bugs-To: baedert@gmail.com\n"
-"POT-Creation-Date: 2013-02-26 16:16-0800\n"
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-04-25 19:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
+#: /home/baedert/Code/Vala/Corebird/src/MainWindow.vala:65
+#: /home/baedert/Code/Vala/Corebird/po/../src/MainWindow.vala:65
 msgid "test"
+msgstr ""
+
+#: /home/baedert/Code/Vala/Corebird/src/MainWindow.vala:66
+#: /home/baedert/Code/Vala/Corebird/po/../src/MainWindow.vala:66
+msgid "FROOOO"
+msgstr ""
+
+#: /home/baedert/Code/Vala/Corebird/src/MainWindow.vala:67
+#: /home/baedert/Code/Vala/Corebird/po/../src/MainWindow.vala:67
+msgid "Enable Tweetmarker"
 msgstr ""

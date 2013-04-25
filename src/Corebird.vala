@@ -13,9 +13,6 @@ class Corebird : Gtk.Application {
 		this.activate.connect( ()  => {});
 		this.set_inactivity_timeout(500);
 
-		//critical(GETTEXT_PACKAGE);
-		message(GETTEXT_PACKAGE);
-	//	string t = GETTEXT_PACKAGE;
 
 		// If the user wants the dark theme, apply it
 		if(Settings.use_dark_theme()){

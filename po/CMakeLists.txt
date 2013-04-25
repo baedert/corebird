@@ -1,12 +1,11 @@
 
-set (TRANSLATED
-	en_US
+include (Translations)
+
+add_translations_directory("${GETTEXT_PACKAGE}")
+add_translations_catalog("${GETTEXT_PACKAGE}"
+	../src
+	../src/widgets
+	../src/util
+	../ui
 )
 
-
-IF (XGETTEXT_FOUND)
-    GETTEXT_CREATE_TRANSLATIONS(${GETTEXT_PACKAGE}.pot ALL ${TRANSLATED}
-	    COMMENT "Creating translations.")
-ELSE ()
-    message(STATUS "xgettext not found")
-ENDIF()

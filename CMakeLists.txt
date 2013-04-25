@@ -23,18 +23,21 @@ set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -I src/egglistbox/")
 set (PREFIX 			"${CMAKE_INSTALL_PREFIX}")
 set (DATADIR 			"${PREFIX}/share/corebird/")
 set (GETTEXT_PACKAGE 	"corebird")
+set (VERSION 			0.1)
 
-
-configure_file (${CMAKE_SOURCE_DIR}/src/util/Config.vala.cmake ${CMAKE_SOURCE_DIR}/src/util/Config.vala)
+configure_file (${CMAKE_SOURCE_DIR}/src/util/Config.vala.cmake ${CMAKE_BINARY_DIR}/src/util/Config.vala)
 
 include(ValaVersion)
 include(ValaPrecompile)
-include (Gettext)
 include (GSettings)
 
 find_package(Vala REQUIRED)
 ensure_vala_version("0.16" MINIMUM)
 
+
+add_subdirectory (po)
+add_subdirectory (assets)
+add_subdirectory (ui)
 
 
 set (DEPS glib-2.0;
@@ -53,7 +56,7 @@ set (DEPS glib-2.0;
 find_package(PkgConfig)
 pkg_check_modules(DEPS REQUIRED ${DEPS})
 
-add_definitions(${DEPS_CFLAGS})
+add_definitions(${DEPS_CFLAGS} "-DGETTEXT_PACKAGE=\"${GETTEXT_PACKAGE}\"")
 link_directories(${DEPS_LIBRARY_DIRS})
 
 
@@ -125,13 +128,7 @@ target_link_libraries(corebird ${DEPS_LIBRARIES})
 add_schema ("org.baedert.corebird.gschema.xml")
 
 install (TARGETS corebird RUNTIME DESTINATION bin)
-install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/ui/style.css DESTINATION ${DATADIR}/ui/)
-install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/ui/first-run-window.ui DESTINATION ${DATADIR}/ui/)
-install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/ui/tweet-info-window.ui DESTINATION ${DATADIR}/ui/)
-install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/ui/menu.ui DESTINATION ${DATADIR}/ui/)
-install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/ui/settings-dialog.ui DESTINATION ${DATADIR}/ui/)
 install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/sql/init.sql DESTINATION ${DATADIR}/sql/)
 
 
-add_subdirectory(po)
-add_subdirectory(assets)
+
