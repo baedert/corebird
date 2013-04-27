@@ -132,4 +132,14 @@ class Utils{
 	public static string get_user_file_path(string file_name){
 		return GLib.Environment.get_home_dir()+"/.corebird/"+file_name;
 	}
+
+	public static async void download_file_async(string url, string path) {
+		var session = new Soup.SessionAsync();
+		var msg = new Soup.Message("GET", url);
+		session.queue_message(msg, (_s, _msg) => {
+			File out_file = File.new_for_path(path);
+			var out_stream = out_file.create(FileCreateFlags.REPLACE_DESTINATION);
+			out_stream.write_all(_msg.response_body.data, null);
+		});
+	}
 }

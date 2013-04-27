@@ -154,16 +154,9 @@ class ProfileWidget : Gtk.Box {
 			string avatar_url = root.get_string_member("profile_image_url");
 			string avatar_name = Utils.get_avatar_name(avatar_url);
 			string avatar_on_disk = Utils.get_user_file_path("assets/avatars/"+avatar_name);
-			//TODO: Also use libsoup here
-			if(!FileUtils.test(avatar_on_disk, FileTest.EXISTS)){
-				File av = File.new_for_uri(avatar_url);
-				File dest = File.new_for_path(avatar_on_disk);
-				try{
-					av.copy(dest, FileCopyFlags.OVERWRITE);
-				}catch(GLib.Error e){
-					warning("Error while copying avatar to disk: %s", e.message);
 
-				}
+			if(!FileUtils.test(avatar_on_disk, FileTest.EXISTS)){
+				Utils.download_file_async.begin(avatar_url, avatar_on_disk);
 			}
 			avatar_image.set_background(avatar_on_disk);
 			string name        = root.get_string_member("name");
@@ -254,8 +247,6 @@ class ProfileWidget : Gtk.Box {
 				return;
 			}
 
-
-
 			string back = call.get_payload();
 			Json.Parser parser = new Json.Parser();
 			try{
@@ -271,22 +262,18 @@ class ProfileWidget : Gtk.Box {
 
 			string banner_on_disk = Utils.get_user_file_path(@"assets/banners/$user_id.png");
 			if (!FileUtils.test(banner_on_disk, FileTest.EXISTS) ||
-			    banner_url != saved_banner_url){
+			    	banner_url != saved_banner_url){
 				message("Loading banner...%s\n%s", banner_url, saved_banner_url);
+				Utils.download_file_async(banner_url, banner_on_disk);
+				// TODO: Set the banner after this ^ call finished.
 				try{
-					// TODO: Use soap here
-					File banner_file = File.new_for_uri(banner_url);
-					FileInputStream in_stream = banner_file.read();
-					Gdk.Pixbuf b = new Gdk.Pixbuf.from_stream(in_stream);
-					message("Banner saved.");
-					b.save(banner_on_disk, "png");
 					Corebird.db.execute(@"UPDATE `profiles` SET `banner_url`='$banner_url'
 					                    WHERE `id`='$user_id';");
 				} catch (GLib.Error ex) {
 					warning ("Error while setting banner: %s", ex.message);
 				}
-			}
-			banner_box.set_background(banner_on_disk);
+			}else
+				banner_box.set_background(banner_on_disk);
 		});
 	}
 
