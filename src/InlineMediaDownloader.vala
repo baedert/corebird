@@ -44,11 +44,11 @@ class InlineMediaDownloader {
 
 	private static async void two_step_load(Tweet t, string first_url, string regex_str,
 	                                        int match_index) {
-		GLib.Idle.add(() => {
-			var session = new Soup.SessionAsync();
-			var msg     = new Soup.Message("GET", first_url);
-			session.send_message(msg);
-			string back = (string)msg.response_body.data;
+		var session = new Soup.SessionAsync();
+		var msg     = new Soup.Message("GET", first_url);
+		session.send_message(msg);
+		session.queue_message(msg, (_s, _msg) => {
+		string back = (string)_msg.response_body.data;
 			try{
 				var regex = new GLib.Regex(regex_str, RegexCompileFlags.OPTIMIZE);
 				MatchInfo info;
@@ -59,30 +59,26 @@ class InlineMediaDownloader {
 			} catch (GLib.RegexError e) {
 				critical("Regex Error: %s", e.message);
 			}
-			return false;
 		});
+
 	}
 
 	private static async void load_inline_media(Tweet t, string url,
 	                                       Soup.Session? sess = null) {
 
-		return; //FIXME: Remove.
 
-//		GLib.Idle.add(() => {
-			Soup.Session session = sess;
-			message("Directly Downloading %s", url);
-			if(session == null)
-				session = new Soup.SessionAsync();
+		Soup.Session session = sess;
+		message("Directly Downloading %s", url);
+		if(session == null)
+			session = new Soup.SessionAsync();
 
-			var msg = new Soup.Message("GET", url);
+		var msg = new Soup.Message("GET", url);
 
-
-//			session.send_message(msg);
 		session.queue_message(msg, (s, _msg) => {
 			try {
 				var ms  = new MemoryInputStream.from_data(_msg.response_body.data, null);
 				var pic = new Gdk.Pixbuf.from_stream(ms);
-				string ext = Utils.get_file_type(_msg.uri.get_path());
+				string ext = Utils.get_file_type(url);
 
 				if(ext.length == 0)
 					ext = "png";
@@ -107,10 +103,6 @@ class InlineMediaDownloader {
 				critical(e.message);
 			}
 		});
-
-//			return false;
-//		});
-
 	}
 
 
