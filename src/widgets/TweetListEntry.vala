@@ -8,7 +8,7 @@ class TweetListEntry : Gtk.EventBox {
 	}
 	private static GLib.Regex? hashtag_regex = null;
 	private static GLib.Regex? user_regex    = null;
-	private Image avatar                 = new Image();
+	private ImageOverlay avatar          = new ImageOverlay();
 	private Label text                   = new Label("");
 	private TextButton author_button;
 	private Label screen_name            = new Label("");
@@ -101,17 +101,15 @@ class TweetListEntry : Gtk.EventBox {
 
 		var left_box = new Box(Orientation.VERTICAL, 3);
 		avatar.set_valign(Align.START);
+		if(tweet.verified)
+			avatar.overlay_image = Twitter.verified_icon;
 		avatar.pixbuf = tweet.avatar;
-		avatar.margin_top   = 3;
-		avatar.margin_left  = 3;
-		avatar.margin_right = 3;
 		left_box.pack_start(avatar, false, false);
 
 		var status_box = new Box(Orientation.HORIZONTAL, 3);
 		retweet_button.get_style_context().add_class("retweet-button");
 		retweet_button.active = tweet.retweeted;
 		if(!tweet.retweeted)
-	//		rt_bin.no_show_all = true;
 			retweet_button.no_show_all = true;
 		retweet_button.set_tooltip_text("Retweet");
 		retweet_button.toggled.connect(retweet_tweet);

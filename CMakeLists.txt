@@ -100,6 +100,7 @@ set (VALA_SOURCE
 	src/widgets/ProfileWidget.vala
 	src/widgets/BadgeRadioToolButton.vala
 	src/widgets/InvisibilityBin.vala
+	src/widgets/ImageOverlay.vala
 	src/util/UIBuilder.vala
 	src/util/Utils.vala
 	src/util/Benchmark.vala

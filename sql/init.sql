@@ -28,7 +28,8 @@ CREATE TABLE IF NOT EXISTS `cache`(
 			    favorites INTEGER(5),
 			    type INTEGER(1),
 			    reply_id NUMERIC(19,0),
-			    media VARCHAR(255)
+			    media VARCHAR(255),
+			    verified BOOL
 );
 
 CREATE TABLE IF NOT EXISTS `people`(

@@ -29,7 +29,7 @@ interface ITimeline : Gtk.Widget, IPage {
 			@"SELECT `id`, `text`, `user_id`, `user_name`, `is_retweet`,
 			`retweeted_by`, `retweeted`, `favorited`, `created_at`,
 			`rt_created_at`, `avatar_name`, `screen_name`, `type`,
-			`reply_id`, `media`, `rt_id`, `reply_id`
+			`reply_id`, `media`, `rt_id`, `reply_id`, `verified`
 			FROM `cache` WHERE `type`='$tweet_type'
 			ORDER BY `created_at` DESC LIMIT 15;");
 		SQLHeavy.QueryResult result = query.execute();
@@ -49,6 +49,7 @@ interface ITimeline : Gtk.Widget, IPage {
 			t.media         = result.fetch_string(14);
 			t.rt_id         = result.fetch_int64(15);
 			t.reply_id      = result.fetch_int64(16);
+			t.verified      = (bool)result.fetch_int(17);
 
 
 
@@ -163,7 +164,7 @@ interface ITimeline : Gtk.Widget, IPage {
 
 			var root = parser.get_root().get_array();
 			var loader_thread = new LoaderThread(root, main_window, tweet_list,
-			                                     tweet_type);
+			                                     tweet_type, false);
 			loader_thread.run(end_load_func);
 		});
 	}

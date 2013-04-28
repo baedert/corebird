@@ -7,16 +7,17 @@ class LoaderThread{
 	private Thread<void*> thread;
 	public delegate void EndLoadFunc(int tweet_count, int64 lowest_id);
 	private unowned EndLoadFunc? finished;
-	public bool balance_upper_change = true;
 	private int tweet_type;
 	private int64 lowest_id = int64.MAX - 1;
+	private bool cache = true;
 
 	public LoaderThread(Json.Array root, MainWindow? window, Egg.ListBox list,
-	                    int tweet_type = -1){
+	                    int tweet_type = -1, bool cache = true){
 		this.root       = root;
 		this.window     = window;
 		this.list       = list;
 		this.tweet_type = tweet_type;
+		this.cache 		= true;
 	}
 
 	public void run(EndLoadFunc? finished = null){
@@ -34,12 +35,9 @@ class LoaderThread{
 			t.load_from_json(o, now);
 
 			if (tweet_type != -1){
-				// GLib.Idle.add(() => {
-				// 	Tweet.cache(t, tweet_type);
-				// 	return false;
-				// });
 				t.type = tweet_type;
-				TweetCacher.get().enqueue(t);
+				if(cache)
+					TweetCacher.get().enqueue(t);
 			}
 
 			if(t.id < lowest_id)
