@@ -39,6 +39,7 @@ class ProfileWidget : Gtk.Box {
 		location_label.set_alignment(0, 0.5f);
 		location_label.get_style_context().add_class("data");
 		data_box.pack_start(location_label, false, true);
+		follow_button.set_halign(Align.START);
 		follow_button.toggled.connect(toggle_follow);
 		data_box.pack_start(follow_button, false, false);
 		top_banner_box.pack_start(data_box, true, true);
