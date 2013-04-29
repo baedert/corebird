@@ -20,6 +20,7 @@ class MainWindow : ApplicationWindow {
 	private RadioToolButton dummy_button	 = new RadioToolButton(null);
 	private ITimeline[] timelines			 = new ITimeline[3];
 	private IPage[] pages 				     = new IPage[1];
+	private int active_page                  = 0;
 	private ToolButton avatar_button         = new ToolButton(null, null);
 	private ToolButton settings_button       = new ToolButton.from_stock(
 	                                                          Stock.PROPERTIES);
@@ -54,8 +55,9 @@ class MainWindow : ApplicationWindow {
 			tl.create_tool_button(dummy_button);
 			tl.get_tool_button().toggled.connect(() => {
 				if(tl.get_tool_button().active){
-					stack.set_visible_child_name("%d".printf(tl.get_id()));
-					message("Set %d", tl.get_id());
+					switch_page(tl.get_id());
+					//stack.set_visible_child_name("%d".printf(tl.get_id()));
+					//message("Set %d", tl.get_id());
 				}
 					// this.main_notebook.set_current_page(tl.get_id());
 			});
@@ -297,6 +299,9 @@ class MainWindow : ApplicationWindow {
 	 * @param ... The parameters to pass to the page
 	 */
 	public void switch_page(int page_id, ...){
+		if(page_id == active_page)
+			return;
+
 		IPage page = timelines[0];
 		if(page_id < timelines.length){
 			page = timelines[page_id];
@@ -306,9 +311,14 @@ class MainWindow : ApplicationWindow {
 			dummy_button.active = true;
 		}
 
+		if(page_id > active_page)
+			stack.transition_type = Gd.Stack.TransitionType.SLIDE_RIGHT;
+		else
+			stack.transition_type = Gd.Stack.TransitionType.SLIDE_LEFT;
 
 		page.on_join(page_id, va_list());
 		stack.set_visible_child_name("%d".printf(page_id));
+		this.active_page = page_id;
 	}
 
 
