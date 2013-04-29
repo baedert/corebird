@@ -48,6 +48,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
         	}
 	    });
 
+	    // TODO: Move this to ITimeline
         this.vadjustment.notify["value"].connect(() => {
         	double value = vadjustment.value;
 
@@ -147,7 +148,6 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 
         	this.loading = false;
         });
-
 	}
 
 
