@@ -18,6 +18,7 @@ set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-variable")
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-but-set-variable")
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-deprecated-declarations")
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -I src/egglistbox/")
+set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -I src/libgd/")
 
 # Just use PREFIX instead of CMAKE_INSTALL_PREFIX(but CMAKE_INSTALL_PREFIX will work too)
 set (PREFIX 			"${CMAKE_INSTALL_PREFIX}")
@@ -107,6 +108,7 @@ set (VALA_SOURCE
 	src/util/Config.vala
 	src/util/WidgetReplacer.vala
 	src/egglistbox/egg-list-box.c
+	src/libgd/gd-stack.c
 )
 
 vala_precompile(VALA_C
@@ -114,12 +116,14 @@ vala_precompile(VALA_C
 PACKAGES
 	${DEPS}
 	egglistbox
+	gd-stack
 OPTIONS
 	-g
 	--thread
 	--target-glib=2.32
 	--enable-checking
 	--vapidir=src/egglistbox/
+	--vapidir=src/libgd/
 )
 
 add_executable(corebird ${VALA_C})
