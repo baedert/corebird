@@ -17,7 +17,7 @@ class LoaderThread{
 		this.window     = window;
 		this.list       = list;
 		this.tweet_type = tweet_type;
-		this.cache 		= true;
+		this.cache 		= cache;
 	}
 
 	public void run(EndLoadFunc? finished = null){
