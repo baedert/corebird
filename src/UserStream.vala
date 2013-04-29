@@ -59,7 +59,7 @@ class UserStream : Object{
 		call.set_function("1.1/user.json");
 		call.set_method("GET");
 		try{
-			call.continuous(parse_data_cb, this);
+			call.continuous(parse_data_cb, instance);
 		} catch (GLib.Error e) {
 			error(e.message);
 		}
@@ -67,8 +67,13 @@ class UserStream : Object{
 
 
 
-	private void parse_data_cb(Rest.ProxyCall call, string buf, size_t length,
+	private void parse_data_cb(Rest.ProxyCall call, string? buf, size_t length,
 	                           Error? error) {
+		if(buf == null) {
+			warning("buf == NULL");
+			return;
+		}
+
 		string real = buf.substring(0, (int)length);
 
 		data.append(real);
