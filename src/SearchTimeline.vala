@@ -52,7 +52,8 @@ class SearchTimeline : IPage, ITimeline, Box {
 	 */
 	public void on_join(int page_id, va_list arg_list){
 		string term = arg_list.arg<string>();
-		search_for.begin(term, true);
+		if(term != null)
+			search_for.begin(term, true);
 	}
 
 	public void load_cached() {
