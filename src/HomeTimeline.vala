@@ -26,20 +26,16 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 		tweet_list.add_to_scrolled(this);
 		tweet_list.set_sort_func(TweetListEntry.sort_func);
 
-	    this.vadjustment.value_changed.connect( () => {
-            int max = (int)(this.vadjustment.upper - this.vadjustment.page_size);
-            int value = (int)this.vadjustment.value;
-            if (value >= (max - 100) && !loading){
-                //Load older tweets
-                loading = true;
-                message("end! %d/%d", value, max);
-                load_older();
-            }
-        });
 
-        this.vadjustment.notify["value"].connect(() => {
-        	double value = vadjustment.value;
-        	if(value == 0 && tweet_list.get_size() > ITimeline.REST) {
+		this.scrolled_to_end.connect(() => {
+			if(!loading) {
+				loading = true;
+				load_older();
+			}
+		});
+
+	    this.scrolled_to_start.connect(() => {
+        	if(tweet_list.get_size() > ITimeline.REST) {
         		tweet_remove_timeout = GLib.Timeout.add(5000, () => {
         			tweet_list.remove_last(tweet_list.get_size() - ITimeline.REST);
         			return false;
@@ -50,6 +46,11 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
         			tweet_remove_timeout = 0;
         		}
         	}
+	    });
+
+        this.vadjustment.notify["value"].connect(() => {
+        	double value = vadjustment.value;
+
         	if(unread_tweets > 0 && get_last_scroll_dir() == -1){
 		       	tweet_list.forall_internal(false, (w) => {
 		       		TweetListEntry tle = (TweetListEntry)w;
