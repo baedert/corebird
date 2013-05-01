@@ -262,7 +262,7 @@ class Tweet : GLib.Object{
 		if(link_regex == null){
 			//TODO: Most regexes can be truly static.
 			link_regex = new GLib.Regex(
-			"http[s]{0,1}:\\/\\/[a-zA-Z\\_.\\+!\\?\\/#=&;\\-0-9%,~]+",
+			"http[s]{0,1}:\\/\\/[a-zA-Z\\_.\\+!\\?\\/#=&;\\-0-9%,~:]+",
 			RegexCompileFlags.OPTIMIZE);
 		}
 		string real_text = text;
