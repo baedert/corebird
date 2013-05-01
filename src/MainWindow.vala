@@ -56,10 +56,7 @@ class MainWindow : ApplicationWindow {
 			tl.get_tool_button().toggled.connect(() => {
 				if(tl.get_tool_button().active){
 					switch_page(tl.get_id());
-					//stack.set_visible_child_name("%d".printf(tl.get_id()));
-					//message("Set %d", tl.get_id());
 				}
-					// this.main_notebook.set_current_page(tl.get_id());
 			});
 		}
 		// Activate the first timeline
@@ -235,8 +232,6 @@ class MainWindow : ApplicationWindow {
 		int x, y, w, h;
 		this.get_size(out w, out h);
 		this.get_position(out x, out y);
-		// if (right_pane != null && right_pane.is_visible())
-			// w -= right_pane_width;
 		Settings.set_string("main-window-geometry", "%d,%d,%d,%d".printf(x,
 		                    y, w, h));
 	}
@@ -250,44 +245,6 @@ class MainWindow : ApplicationWindow {
 		int height = int.parse(parts[3]);
 		this.move(x, y);
 		this.resize(width, height);
-	}
-
-
-	/**
-	*  Toggles the right pane of the window.
-	*  If the given pane is the same as the one currently shown,
-	*  the current one will be hidden, not shown.
-	*  If it's not the same, the current one will be removed from
-	*  the window and the given pane will be added and shown.
-	*
-	*  @param new_pane the pane to show/hide
-	**/
-	public void toggle_right_pane(IPaneWidget new_pane){
-		int width, height;
-		this.get_size(out width, out height);
-
-		if(right_pane != null && new_pane.get_id() == right_pane.get_id()){
-			if(right_pane.visible)
-				this.resize(width - new_pane.get_width(), height);
-			else
-				this.resize(width + new_pane.get_width(), height);
-
-			right_pane.visible = !right_pane.visible;
-			return;
-		} else if(right_pane != null) {
-			//Remove current pane
-			width -= right_pane.get_width();
-			bottom_box.remove(right_pane);
-		}
-		bottom_box.pack_end(new_pane, false, true);
-
-		Allocation alloc;
-		// main_notebook.get_allocation(out alloc);
-		// main_notebook.set_size_request(alloc.width, alloc.height);
-
-
-		this.resize(width + new_pane.get_width(), height);
-		this.right_pane = new_pane;
 	}
 
 

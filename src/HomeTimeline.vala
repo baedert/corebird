@@ -165,10 +165,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 	}
 
 	private void update_unread_count() {
-		if(unread_tweets > 0)
-			tool_button.show_badge = true;
-		else
-			tool_button.show_badge = false;
+		tool_button.show_badge = (unread_tweets > 0);
 		tool_button.queue_draw();
 	}
 }

@@ -19,8 +19,7 @@ class TweetInfoWidget : IPaneWidget, Gtk.ScrolledWindow{
 		builder.get_toggle("favorite_button").active = t.favorited;
 
 		builder.get_button("close_button").clicked.connect(() => {
-			window.toggle_right_pane(this);
-		});
+			});
 
 
 
