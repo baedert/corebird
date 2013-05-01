@@ -278,11 +278,7 @@ class MainWindow : ApplicationWindow {
 		this.active_page = page_id;
 	}
 
-
-
-
 	public void show_again() {
-
 		this.load_geometry();
 		this.set_visible(true);
 	}
