@@ -52,9 +52,6 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 			return false;
 		});
 
-
-
-
 		var main_box = new Box(Orientation.VERTICAL, 5);
 
 		if(answer_to != null) {
@@ -131,6 +128,12 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 		this.add(main_box);
 		this.set_default_size(380, 175);
 		this.show_all();
+	}
+
+	public override bool key_release_event(Gdk.EventKey evt) {
+		if(evt.keyval == Gdk.Key.Escape)
+			this.destroy();
+		return false;
 	}
 
 	private void remove_media(){
