@@ -49,6 +49,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 	    });
 
 	    // TODO: Move this to ITimeline
+	    // TODO: Use just an unread indicator that doesn't show any count at all.
         this.vadjustment.notify["value"].connect(() => {
         	double value = vadjustment.value;
 
@@ -164,7 +165,10 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 	}
 
 	private void update_unread_count() {
-		tool_button.set_badge_value(unread_tweets);
+		if(unread_tweets > 0)
+			tool_button.show_badge = true;
+		else
+			tool_button.show_badge = false;
 		tool_button.queue_draw();
 	}
 }

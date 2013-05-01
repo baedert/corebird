@@ -3,7 +3,8 @@ using Gtk;
 
 
 class BadgeRadioToolButton : Gtk.RadioToolButton {
-	private int badge_value = 0;
+	private static const int BADGE_SIZE = 10;
+	public bool show_badge{ get; set; default = false;}
 
 	public BadgeRadioToolButton(RadioToolButton group, string stock_id) {
 		GLib.Object(group: group, stock_id: stock_id);
@@ -12,35 +13,14 @@ class BadgeRadioToolButton : Gtk.RadioToolButton {
 	public override bool draw(Cairo.Context c){
 		var context = this.get_style_context();
 		base.draw(c);
-		if(badge_value == 0)
+		if(!show_badge)
 			return false;
 
-		Allocation all;
-		this.get_allocation(out all);
 
-		Pango.Layout layout = this.create_pango_layout(badge_value.to_string());
-		Pango.Rectangle size;
-		layout.get_extents(null, out size);
-
-
+		int width = get_allocated_width();
 		context.add_class("badge");
-		Border padding = context.get_padding(get_state_flags());
-		int x = all.width - (size.width / Pango.SCALE) - padding.left - padding.right;
-		int y = 0;
-		int w = (size.width / Pango.SCALE) + padding.left + padding.right;
-		int h = (size.height / Pango.SCALE) + padding.top + padding.bottom;
-
-		context.render_background(c, x, y, w, h);
-		context.render_frame(c, x, y, w, h);
-
-		context.render_layout(c, all.width  - (size.width / Pango.SCALE) - padding.right,
-								 padding.top, layout);
-
-
+		context.render_background(c, width - BADGE_SIZE, 0, BADGE_SIZE, BADGE_SIZE);
+		context.render_frame(c, width - BADGE_SIZE, 0, BADGE_SIZE, BADGE_SIZE);
 		return false;
-	}
-
-	public void set_badge_value(int value){
-		this.badge_value = value;
 	}
 }

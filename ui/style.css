@@ -96,9 +96,10 @@
 }
 
 .badge{
-	background-color: alpha(orange, 0.75);
+	background-color: shade(blue, 1.4);
 	text-shadow: 0px 1px 1px #FFF;
-	border-radius: 2px;
+	border-radius: 20px;
+	border: 1px solid white;
 	padding: 3px 2px;
 }
 .badge:backdrop{
