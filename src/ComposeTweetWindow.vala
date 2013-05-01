@@ -15,7 +15,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 	private string media_uri;
 	private Tweet answer_to;
 
-
+	//TODO: Use GtkBuilder here
 	public ComposeTweetWindow(Window? parent, Tweet? answer_to = null,
 	                          Gtk.Application? app = null) {
 		GLib.Object(application: app);
@@ -131,9 +131,11 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 	}
 
 	public override bool key_release_event(Gdk.EventKey evt) {
-		if(evt.keyval == Gdk.Key.Escape)
+		if(evt.keyval == Gdk.Key.Escape) {
 			this.destroy();
-		return false;
+			return true;
+		}
+		return base.key_release_event(evt);
 	}
 
 	private void remove_media(){
