@@ -49,7 +49,6 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 	    });
 
 	    // TODO: Move this to ITimeline
-	    // TODO: Use just an unread indicator that doesn't show any count at all.
         this.vadjustment.notify["value"].connect(() => {
         	double value = vadjustment.value;
 
