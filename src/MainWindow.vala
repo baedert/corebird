@@ -312,9 +312,9 @@ class MainWindow : ApplicationWindow {
 		}
 
 		if(page_id > active_page)
-			stack.transition_type = Gd.Stack.TransitionType.SLIDE_RIGHT;
-		else
 			stack.transition_type = Gd.Stack.TransitionType.SLIDE_LEFT;
+		else
+			stack.transition_type = Gd.Stack.TransitionType.SLIDE_RIGHT;
 
 		page.on_join(page_id, va_list());
 		stack.set_visible_child_name("%d".printf(page_id));
