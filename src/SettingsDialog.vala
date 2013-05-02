@@ -9,9 +9,8 @@ class SettingsDialog : Gtk.Dialog {
 		this.win = win;
 		this.set_transient_for(win);
 		this.set_modal(true);
-		this.set_default_size(450, 2);
-		this.set_type_hint(Gdk.WindowTypeHint.DIALOG);
-		this.border_width = 5;
+		this.set_default_size(450, 120);
+		this.title = "Settings";
 
 		var builder = new UIBuilder(DATADIR+"ui/settings-dialog.ui", "main_notebook");
 		var main_notebook = builder.get_notebook("main_notebook");
@@ -70,6 +69,5 @@ class SettingsDialog : Gtk.Dialog {
 			if(id == 1)
 				this.dispose();
 		});
-
 	}
 }
