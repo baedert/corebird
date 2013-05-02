@@ -110,10 +110,11 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 				string file = fcd.get_filename();
 				this.media_uri = file;
 				try{
-				media_image.set_bg(new Gdk.Pixbuf.from_file_at_size(file, 40, 40));
+					media_image.set_bg(new Gdk.Pixbuf.from_file_at_size(file, 40, 40));
+					media_count++;
+					media_image.set_visible(true);
 				}catch(GLib.Error e){critical("Loading scaled image: %s", e.message);}
-				media_image.set_visible(true);
-				media_count++;
+
 				if(media_count >= Twitter.get_max_media_per_upload()){
 					add_image_button.set_sensitive(false);
 				}
@@ -167,10 +168,6 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 			call.set_function("1.1/statuses/update.json");
 		} else {
 			call.set_function("1.1/statuses/update_with_media.json");
-
-
-
-
 			uint8[] content;
 			try {
 				GLib.File media_file = GLib.File.new_for_path(media_uri);
@@ -183,7 +180,6 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 			                                   content, "multipart/form-data",
 			                                   media_uri);
 			call.add_param_full(param);
-			debug("Not yet implemented.");
 		}
 
 		call.invoke_async.begin(null, (obj, res) => {
@@ -192,9 +188,11 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 			} catch(GLib.Error e) {
 				critical(e.message);
 				Utils.show_error_dialog(e.message);
+			} finally {
+				this.destroy();
 			}
 		});
-		this.destroy();
+		this.visible = false;
 	}
 
 }
