@@ -26,6 +26,7 @@ class TweetListEntry : Gtk.EventBox {
 	private Tweet tweet;
 	public bool seen = true;
 	private Gtk.Box box = new Box(Orientation.HORIZONTAL, 5);
+	private bool is_user_tweet = false;
 
 
 	public TweetListEntry(Tweet tweet, MainWindow? window){
@@ -64,10 +65,13 @@ class TweetListEntry : Gtk.EventBox {
 
 		if (tweet.screen_name == User.screen_name){
 			get_style_context().add_class("user-tweet");
+			is_user_tweet = true;
 		}
 
 
 		this.enter_notify_event.connect( (evt)=> {
+			if(is_user_tweet)
+				return false;
 			// message("ENTER Detail: %d", evt.detail);
 
 			// message("---------------------\n");
