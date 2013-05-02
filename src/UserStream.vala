@@ -9,6 +9,7 @@ enum StreamMessageType {
 	FRIENDS,
 	EVENT,
 	WARNING,
+	FOLLOW,
 
 	TWEET,
 }
@@ -105,8 +106,13 @@ class UserStream : Object{
 				type = StreamMessageType.FRIENDS;
 			else if(root.has_member("text"))
 				type = StreamMessageType.TWEET;
-			else if(root.has_member("event"))
-				type = StreamMessageType.EVENT;
+			else if(root.has_member("event")){
+				string evt_str = root.get_string_member("event");
+				if(evt_str == "follow")
+					type = StreamMessageType.FOLLOW;
+				else
+					type = StreamMessageType.EVENT;
+			}
 			else if(root.has_member("warning"))
 				type = StreamMessageType.WARNING;
 
