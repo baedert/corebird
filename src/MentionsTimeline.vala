@@ -16,6 +16,7 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 	private int unread_messages = 0;
 	private bool loading = false;
 	private int64 lowest_id = int64.MAX-2;
+	private uint tweet_remove_timeout = -1;
 
 
 	public MentionsTimeline(int id){
@@ -32,6 +33,20 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 				load_older();
 			}
 		});
+
+	    this.scrolled_to_start.connect(() => {
+        	if(tweet_list.get_size() > ITimeline.REST) {
+        		tweet_remove_timeout = GLib.Timeout.add(5000, () => {
+        			tweet_list.remove_last(tweet_list.get_size() - ITimeline.REST);
+        			return false;
+        		});
+        	} else {
+        		if(tweet_remove_timeout != 0){
+        			GLib.Source.remove(tweet_remove_timeout);
+        			tweet_remove_timeout = 0;
+        		}
+        	}
+	    });
 
         UserStream.get().register(this);
 	}
