@@ -8,6 +8,7 @@ class ProfilePage : IPage, ScrollWidget {
 
 	public int unread_count {
 		get{return 0;}
+		set{;}
 	}
 	private int id;
 	private ProfileWidget profile_widget = new ProfileWidget();

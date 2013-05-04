@@ -2,9 +2,7 @@
 using Gtk;
 
 class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
-	public int unread_count{
-		get {return unread_tweets;}
-	}
+	public int unread_count{get;set;}
 	protected int64 max_id{
 		get {return lowest_id;}
 		set {lowest_id = value;}
@@ -14,9 +12,8 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 	private int id;
 	private BadgeRadioToolButton tool_button;
 	private bool loading = false;
-	private int unread_tweets = 0;
 	private int64 lowest_id = int64.MAX-2;
-	private uint tweet_remove_timeout = -1;
+	protected uint tweet_remove_timeout{get;set;}
 
 	public HomeTimeline(int id){
 		this.id = id;
@@ -34,41 +31,14 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 			}
 		});
 
-	    this.scrolled_to_start.connect(() => {
-        	if(tweet_list.get_size() > ITimeline.REST) {
-        		tweet_remove_timeout = GLib.Timeout.add(5000, () => {
-        			tweet_list.remove_last(tweet_list.get_size() - ITimeline.REST);
-        			return false;
-        		});
-        	} else {
-        		if(tweet_remove_timeout != 0){
-        			GLib.Source.remove(tweet_remove_timeout);
-        			tweet_remove_timeout = 0;
-        		}
-        	}
-	    });
+		this.scrolled_to_start.connect(() => {
+			handle_scrolled_to_start();
+		});
 
-	    // TODO: Move this to ITimeline
-        this.vadjustment.notify["value"].connect(() => {
-        	double value = vadjustment.value;
-
-        	if(unread_tweets > 0 && get_last_scroll_dir() == -1){
-		       	tweet_list.forall_internal(false, (w) => {
-		       		TweetListEntry tle = (TweetListEntry)w;
-		       		if(tle.seen)
-		       			return;
-		       		Allocation alloc;
-		       		tle.get_allocation(out alloc);
-		       		if(alloc.y+(alloc.height/2.0) >= vadjustment.value) {
-		       			tle.seen = true;
-		       			unread_tweets--;
-		       			update_unread_count();
-		       		}
-	        	});
-	       	}
-
-        });
-
+		this.vadjustment.notify["value"].connect(() => {
+			mark_seen_on_scroll (vadjustment.value);
+			update_unread_count();
+		});
 
 
         UserStream.get().register(this);
@@ -88,12 +58,12 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 			tweet_list.add(entry);
 			tweet_list.resort();
 
-			unread_tweets++;
+			unread_count++;
 			update_unread_count();
 
 			int stack_size = Settings.get_tweet_stack_count();
-			if(stack_size != 0 && unread_tweets >= stack_size) {
-				string summary = "%d new Tweets!".printf(unread_tweets);
+			if(stack_size != 0 && unread_count >= stack_size) {
+				string summary = "%d new Tweets!".printf(unread_count);
 				NotificationManager.notify(summary);
 			}
 		}
@@ -164,7 +134,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 	}
 
 	private void update_unread_count() {
-		tool_button.show_badge = (unread_tweets > 0);
+		tool_button.show_badge = (unread_count > 0);
 		tool_button.queue_draw();
 	}
 }

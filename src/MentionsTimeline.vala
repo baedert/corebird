@@ -2,9 +2,7 @@
 using Gtk;
 
 class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
-	public int unread_count {
-		get{return unread_messages;}
-	}
+	public int unread_count {get;set;}
 	protected int64 max_id{
 		get {return lowest_id;}
 		set {lowest_id = value;}
@@ -12,20 +10,19 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 	public MainWindow main_window{set;get;}
 	protected Egg.ListBox tweet_list{set;get;}
 	private int id;
-	private RadioToolButton tool_button;
-	private int unread_messages = 0;
+	private BadgeRadioToolButton tool_button;
 	private bool loading = false;
 	private int64 lowest_id = int64.MAX-2;
-	private uint tweet_remove_timeout = -1;
-
+	protected uint tweet_remove_timeout{get;set;}
 
 	public MentionsTimeline(int id){
 		this.id = id;
 		tweet_list = new Egg.ListBox();
-		tweet_list.set_selection_mode(SelectionMode.NONE);
 		tweet_list.get_style_context().add_class("stream");
+		tweet_list.set_selection_mode(SelectionMode.NONE);
 		tweet_list.add_to_scrolled(this);
 		tweet_list.set_sort_func(TweetListEntry.sort_func);
+
 
 		this.scrolled_to_end.connect(() => {
 			if(!loading) {
@@ -33,20 +30,16 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 				load_older();
 			}
 		});
+		
+		this.scrolled_to_start.connect(() => {
+			handle_scrolled_to_start();
+		});
 
-	    this.scrolled_to_start.connect(() => {
-        	if(tweet_list.get_size() > ITimeline.REST) {
-        		tweet_remove_timeout = GLib.Timeout.add(5000, () => {
-        			tweet_list.remove_last(tweet_list.get_size() - ITimeline.REST);
-        			return false;
-        		});
-        	} else {
-        		if(tweet_remove_timeout != 0){
-        			GLib.Source.remove(tweet_remove_timeout);
-        			tweet_remove_timeout = 0;
-        		}
-        	}
-	    });
+		this.vadjustment.notify["value"].connect(() => {
+			mark_seen_on_scroll (vadjustment.value);
+			update_unread_count();
+		});
+
 
         UserStream.get().register(this);
 	}
@@ -61,8 +54,14 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 				Tweet.cache.begin(t, Tweet.TYPE_MENTION);
 
 				this.balance_next_upper_change(TOP);
-				tweet_list.add(new TweetListEntry(t, main_window));
+				var entry = new TweetListEntry(t, main_window);
+				entry.seen = false;
+
+				tweet_list.add(entry);
 				tweet_list.resort();
+
+				unread_count++;
+				update_unread_count();
 
 				if(Settings.notify_new_mentions()) {
 					NotificationManager.notify(
@@ -119,7 +118,7 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 
 
 	public void create_tool_button(RadioToolButton? group){
-		tool_button = new RadioToolButton.with_stock_from_widget(group, Stock.OK);
+		tool_button = new BadgeRadioToolButton(group, Stock.EXECUTE);
 	}
 
 	public RadioToolButton? get_tool_button(){
@@ -128,5 +127,10 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 
 	public int get_id(){
 		return id;
+	}
+
+	private void update_unread_count() {
+		tool_button.show_badge = (unread_count > 0);
+		tool_button.queue_draw();
 	}
 }

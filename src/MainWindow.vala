@@ -236,6 +236,7 @@ class MainWindow : ApplicationWindow {
 	}
 
 	private void load_geometry(){
+		// TODO: Use gtk_window_parse_geometry
 		string geometry_str = Settings.get_string("main-window-geometry");
 		string[] parts 		= geometry_str.split(",");
 		int x      = int.parse(parts[0]);

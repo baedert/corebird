@@ -8,7 +8,9 @@ class SearchTimeline : IPage, ITimeline, Box {
 	/** The unread count here is always zero */
 	public int unread_count{
 		get{return 0;}
+		set{;}
 	}
+	protected uint tweet_remove_timeout{get;set;}
 	private Entry search_entry    = new Entry();
 	public MainWindow main_window{set;get;}
 	protected int64 max_id{get;set; default = int64.MAX-2;}

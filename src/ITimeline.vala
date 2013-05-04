@@ -15,6 +15,8 @@ interface ITimeline : Gtk.Widget, IPage {
 	public abstract void load_older ();
 	public void update (){}
 
+	protected abstract uint tweet_remove_timeout{get; set;}
+
 
 	/**
 	 * Default implementation to load cached tweets from the
@@ -168,4 +170,41 @@ interface ITimeline : Gtk.Widget, IPage {
 		});
 	}
 
+	/**
+	 * Mark the TweetListEntries the user has already seen.
+	 * 
+	 * @param value The scrolling value as from Gtk.Adjustment
+	 */
+	protected void mark_seen_on_scroll(double value) {
+		if(unread_count == 0)
+			return;
+
+		tweet_list.forall_internal(false, (w) => {
+			TweetListEntry tle = (TweetListEntry)w;
+			if(tle.seen)
+				return;
+
+			Gtk.Allocation alloc;
+			tle.get_allocation(out alloc);
+			if(alloc.y+(alloc.height/2.0) >= value) {
+				tle.seen = true;
+				unread_count--;
+			}
+				
+		});
+	}
+
+	protected void handle_scrolled_to_start() {
+		if(tweet_list.get_size() > ITimeline.REST) {
+			tweet_remove_timeout = GLib.Timeout.add(5000, () => {
+				tweet_list.remove_last (tweet_list.get_size() - REST);
+				return false;
+			});
+		} else {
+			if(tweet_remove_timeout != 0) {
+				GLib.Source.remove(tweet_remove_timeout);
+				tweet_remove_timeout = 0;
+			}
+		}
+	}
 }
