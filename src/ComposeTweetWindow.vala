@@ -64,7 +64,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
 
 		var middle_box = new Box(Orientation.HORIZONTAL, 3);
-		var av = new Gtk.Image.from_file(Utils.get_user_file_path("assets/avatars/"
+		var av = new Gtk.Image.from_file(Utils.user_file("assets/avatars/"
 		                                 +Utils.get_avatar_name(User.avatar_url)));
 		av.set_alignment(0,0);
 		left_box.pack_start(av, false, false);

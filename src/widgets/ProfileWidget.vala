@@ -99,7 +99,7 @@ class ProfileWidget : Gtk.Box {
 			if(screen_name != "")
 				user_id = cache_result.fetch_int64(0);
 
-			avatar_image.set_background(Utils.get_user_file_path(
+			avatar_image.set_background(Utils.user_file(
 								   "/assets/avatars/"+cache_result.fetch_string(7)));
 
 			set_data(cache_result.fetch_string(2), cache_result.fetch_string(1),
@@ -111,12 +111,12 @@ class ProfileWidget : Gtk.Box {
 			string banner_name = cache_result.fetch_string(13);
 
 			if(banner_name != null && 
-				FileUtils.test(Utils.get_user_file_path("assets/banners/"+banner_name), FileTest.EXISTS)){
-				banner_box.set_background(Utils.get_user_file_path(
+				FileUtils.test(Utils.user_file("assets/banners/"+banner_name), FileTest.EXISTS)){
+				banner_box.set_background(Utils.user_file(
 										  "assets/banners/"+banner_name));
 			}else{
 				// If the cached banner does somehow not exist, load it again.
-				load_banner(user_id, Utils.get_user_file_path("assets/banners/"+banner_name),
+				load_banner(user_id, Utils.user_file("assets/banners/"+banner_name),
 							screen_name);
 				banner_box.set_background(DATADIR+"/no_banner.png");
 			}
@@ -158,7 +158,7 @@ class ProfileWidget : Gtk.Box {
 			var root = parser.get_root().get_object();
 			string avatar_url = root.get_string_member("profile_image_url");
 			string avatar_name = Utils.get_avatar_name(avatar_url);
-			string avatar_on_disk = Utils.get_user_file_path("assets/avatars/"+avatar_name);
+			string avatar_on_disk = Utils.user_file("assets/avatars/"+avatar_name);
 
 			if(!FileUtils.test(avatar_on_disk, FileTest.EXISTS)){
 				Utils.download_file_async.begin(avatar_url, avatar_on_disk);
@@ -275,7 +275,7 @@ class ProfileWidget : Gtk.Box {
 			else
 				banner_name = screen_name+".png";
 
-			string banner_on_disk = Utils.get_user_file_path(@"assets/banners/"+banner_name);
+			string banner_on_disk = Utils.user_file(@"assets/banners/"+banner_name);
 			if (!FileUtils.test(banner_on_disk, FileTest.EXISTS) ||
 			    	banner_url != saved_banner_url){
 

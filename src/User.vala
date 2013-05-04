@@ -13,7 +13,7 @@ class User {
 
 
 	public static string get_avatar_path(){
-		return Utils.get_user_file_path("assets/user/"+avatar_name);
+		return Utils.user_file("assets/user/"+avatar_name);
 	}
 
 
@@ -80,8 +80,8 @@ class User {
 
 				message("Downloading new avatar...");
 				//TODO: Find better variable names here
-				string dest_path = Utils.get_user_file_path("assets/user/"+avatar_name);
-				string big_dest  = Utils.get_user_file_path("assets/avatars/"+avatar_name);
+				string dest_path = Utils.user_file("assets/user/"+avatar_name);
+				string big_dest  = Utils.user_file("assets/avatars/"+avatar_name);
 				var session = new Soup.SessionAsync();
 				var msg = new Soup.Message("GET", avatar_url);
 				session.send_message(msg);

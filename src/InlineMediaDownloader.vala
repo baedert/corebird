@@ -90,8 +90,8 @@ class InlineMediaDownloader {
 				               out thumb_h);
 				var thumb = pic.scale_simple(thumb_w, thumb_h, Gdk.InterpType.TILES);
 
-				string path = Utils.get_user_file_path("assets/media/"+file_name);
-				string thumb_path = Utils.get_user_file_path("assets/media/thumbs/"
+				string path = Utils.user_file("assets/media/"+file_name);
+				string thumb_path = Utils.user_file("assets/media/thumbs/"
 				                                             +file_name);
 				Corebird.db.execute(@"UPDATE `cache` SET `media`='$path'
 				                    WHERE `id`='$(t.id)';");

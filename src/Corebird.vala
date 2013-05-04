@@ -22,9 +22,8 @@ class Corebird : Gtk.Application {
 
 
 		// Create ~/.corebird if neccessary
-		if(!FileUtils.test(Utils.get_user_file_path(""), FileTest.EXISTS)){
-			bool success = File.new_for_path(Utils.get_user_file_path(""))
-								.make_directory();
+		if(!FileUtils.test(Utils.user_file(""), FileTest.EXISTS)){
+			bool success = File.new_for_path(Utils.user_file("")).make_directory();
 			if(!success){
 				critical("Couldn't create the ~/.corebird directory");
 			}
@@ -40,7 +39,7 @@ class Corebird : Gtk.Application {
 
 		//Create the database needed almost everywhere
 		try{
-			Corebird.db = new SQLHeavy.Database(Utils.get_user_file_path("Corebird.db"));
+			Corebird.db = new SQLHeavy.Database(Utils.user_file("Corebird.db"));
 			db.journal_mode = SQLHeavy.JournalMode.MEMORY;
 			db.temp_store   = SQLHeavy.TempStoreMode.MEMORY;
 
@@ -55,7 +54,7 @@ class Corebird : Gtk.Application {
 		//Load custom style sheet
 		try{
 			CssProvider provider = new CssProvider();
-			string style = Utils.get_user_file_path("style.css");
+			string style = Utils.user_file("style.css");
 			if(!FileUtils.test(style, FileTest.EXISTS))
 				style = DATADIR+"/ui/style.css";
 
@@ -159,7 +158,7 @@ class Corebird : Gtk.Application {
 
 	private void create_user_folder(string name) {
 		try {
-			bool success = File.new_for_path(Utils.get_user_file_path(name))
+			bool success = File.new_for_path(Utils.user_file(name))
 									.make_directory();
 	        if(!success)
 	        	critical("Couldn't create user folder %s", name);

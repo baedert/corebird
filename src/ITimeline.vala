@@ -72,8 +72,7 @@ interface ITimeline : Gtk.Widget, IPage {
 			// Append the tweet to the TweetList
 			TweetListEntry list_entry = new TweetListEntry(t, main_window);
 			if(t.media != null){
-				string thumb_path = Utils.get_user_file_path("assets/media/thumbs/"+
-							Utils.get_file_name(t.media));
+				string thumb_path = Utils.user_file("assets/media/thumbs/"+Utils.get_file_name(t.media));
 				try {
 					t.inline_media_added(new Gdk.Pixbuf.from_file(thumb_path));
 				} catch (GLib.Error e) {

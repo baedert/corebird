@@ -73,7 +73,7 @@ class Tweet : GLib.Object{
 		if (Twitter.avatars.has_key(avatar_name)){
 		 	this.avatar = Twitter.avatars.get(avatar_name);
 		 }else{
-			string path = Utils.get_user_file_path("assets/avatars/"+avatar_name);
+			string path = Utils.user_file("assets/avatars/"+avatar_name);
 			if(FileUtils.test(path, FileTest.EXISTS)){
 				try{
 					Twitter.avatars.set(avatar_name, new Gdk.Pixbuf.from_file(path));
@@ -173,7 +173,7 @@ class Tweet : GLib.Object{
 			var session = new Soup.SessionAsync();
 			var msg     = new Soup.Message("GET", this.avatar_url);
 			session.queue_message(msg, (s, _msg) => {
-				string dest = Utils.get_user_file_path("assets/avatars/"+
+				string dest = Utils.user_file("assets/avatars/"+
 				                                       this.avatar_name);
 				var memory_stream = new MemoryInputStream.from_data(
 				                                   _msg.response_body.data,
@@ -183,8 +183,8 @@ class Tweet : GLib.Object{
 				                                                 false);
 				pixbuf.save(dest, "png");
 				this.load_avatar(pixbuf);
-				message("Loaded avatar for %s", screen_name);
-				message("Dest: %s", dest);
+				debug("Loaded avatar for %s", screen_name);
+				debug("Dest: %s", dest);
 			});
 		}
 	}
