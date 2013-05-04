@@ -25,7 +25,6 @@ class ProfilePage : IPage, ScrollWidget {
 	 * see IPage#onJoin
 	 */
 	public void on_join(int page_id, va_list arg_list) {
-		message("ProfilePage#onJoin");
 		int mode = arg_list.arg();
 		if(mode == BY_ID){
 			int64 user_id = arg_list.arg();

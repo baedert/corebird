@@ -48,6 +48,7 @@ CREATE TABLE IF NOT EXISTS `user`(
 			    avatar_url VARCHAR(50)
 );
 
+
 CREATE TABLE IF NOT EXISTS `profiles`(
                 id NUMERIC(19,0),
 			    name VARCHAR(40) PRIMARY KEY,
@@ -58,6 +59,8 @@ CREATE TABLE IF NOT EXISTS `profiles`(
 			    description VARCHAR(160),
 			    avatar_name VARCHAR(100),
 			    banner_url VARCHAR(255),
+			    banner_name VARCHAR(255),
+				banner_on_disk VARCHAR(255),
 			    url VARCHAR(150),
 			    location VARCHAR(100),
 			    is_following BOOL

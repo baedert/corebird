@@ -85,9 +85,7 @@ class Utils{
 	 * E.g. for http://foo.org/bar/bla.png, this will just return "png"
 	 */
 	public static string get_file_type(string path){
-		message("path: %s", path);
 		string filename = get_file_name(path);
-		message("filename: %s", filename);
 		if(filename.index_of_char('.') == -1)
 			return "";
 		string type = filename.substring(filename.last_index_of_char('.') + 1);
@@ -127,19 +125,33 @@ class Utils{
 
 	/**
 	 * TODO: Maybe use the XDG_CONFIG_DIR here?
+	 * TODO: Rename this.
 	 * @return a path to the file or folder ~/Corebird/file_name
 	 */
 	public static string get_user_file_path(string file_name){
 		return GLib.Environment.get_home_dir()+"/.corebird/"+file_name;
 	}
 
+	/**
+	 * download_file_async:
+	 * Downloads the given file asynchronously to the given location.
+	 * 
+	 * @param url The URL of the file to download
+	 * @param path The filesystem path to save the file to
+	 * 
+	 */
 	public static async void download_file_async(string url, string path) {
 		var session = new Soup.SessionAsync();
 		var msg = new Soup.Message("GET", url);
+		GLib.SourceFunc cb = download_file_async.callback;
 		session.queue_message(msg, (_s, _msg) => {
 			File out_file = File.new_for_path(path);
-			var out_stream = out_file.create(FileCreateFlags.REPLACE_DESTINATION);
+			var out_stream = out_file.replace(null, false,
+				FileCreateFlags.REPLACE_DESTINATION, null);
+
 			out_stream.write_all(_msg.response_body.data, null);
+			cb();
 		});
+		yield;
 	}
 }
