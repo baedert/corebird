@@ -95,7 +95,6 @@ set (VALA_SOURCE
 	src/widgets/ProgressItem.vala
 	src/widgets/TextButton.vala
 	src/widgets/ArrowButton.vala
-	src/widgets/IPaneWidget.vala
 	src/widgets/TweetListEntry.vala
 	src/widgets/TweetInfoWidget.vala
 	src/widgets/ProfileWidget.vala

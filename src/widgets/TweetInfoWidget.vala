@@ -31,11 +31,4 @@ class TweetInfoWidget :Gtk.ScrolledWindow{
 	public int64 get_id(){
 		return tweet_id;
 	}
-
-	public int get_width(){
-		int pref_width;
-		this.get_preferred_width(null, out pref_width);
-		message("PW: %d", pref_width);
-		return pref_width;
-	}
 }
