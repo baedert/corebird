@@ -258,6 +258,17 @@ class MainWindow : ApplicationWindow {
 		if(page_id == active_page)
 			return;
 
+		debug("switching page from %d to %d", active_page, page_id);
+
+
+		if(page_id > active_page)
+			stack.transition_type = Gd.Stack.TransitionType.SLIDE_LEFT;
+		else
+			stack.transition_type = Gd.Stack.TransitionType.SLIDE_RIGHT;
+
+		this.active_page = page_id;
+
+
 		IPage page = timelines[0];
 		if(page_id < timelines.length){
 			page = timelines[page_id];
@@ -267,14 +278,9 @@ class MainWindow : ApplicationWindow {
 			dummy_button.active = true;
 		}
 
-		if(page_id > active_page)
-			stack.transition_type = Gd.Stack.TransitionType.SLIDE_LEFT;
-		else
-			stack.transition_type = Gd.Stack.TransitionType.SLIDE_RIGHT;
 
 		page.on_join(page_id, va_list());
 		stack.set_visible_child_name("%d".printf(page_id));
-		this.active_page = page_id;
 	}
 
 	public void show_again() {
