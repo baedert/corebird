@@ -116,13 +116,13 @@ class ProfileWidget : Gtk.Box {
 										  "assets/banners/"+banner_name));
 			}else{
 				// If the cached banner does somehow not exist, load it again.
-				load_banner(user_id, Utils.user_file("assets/banners/"+banner_name),
+				load_banner.begin(user_id, Utils.user_file("assets/banners/"+banner_name),
 							screen_name);
 				banner_box.set_background(DATADIR+"/no_banner.png");
 			}
 		}else {
 			banner_box.set_background(DATADIR+"/no_banner.png");
-			load_banner(user_id, "", screen_name);
+			load_banner.begin(user_id, "", screen_name);
 		}
 	}
 
