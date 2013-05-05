@@ -57,6 +57,7 @@ class ImageBox : Gtk.Box  {
 		string banner_css = "*{
 		background-image: url('%s');
 		background-size: 100% 100%;
+		background-repeat: no-repeat;
 		}".printf(path);
 
 		try{

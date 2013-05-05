@@ -157,13 +157,15 @@ class ProfileWidget : Gtk.Box {
 
 			var root = parser.get_root().get_object();
 			string avatar_url = root.get_string_member("profile_image_url");
+			avatar_url = avatar_url.replace("_normal", "");
 			string avatar_name = Utils.get_avatar_name(avatar_url);
 			string avatar_on_disk = Utils.user_file("assets/avatars/"+avatar_name);
 
 			if(!FileUtils.test(avatar_on_disk, FileTest.EXISTS)){
-				Utils.download_file_async.begin(avatar_url, avatar_on_disk);
-			}
-			avatar_image.set_background(avatar_on_disk);
+				Utils.download_file_async.begin(avatar_url, avatar_on_disk, 
+					() => {avatar_image.set_background(avatar_on_disk);});
+			}else
+				avatar_image.set_background(avatar_on_disk);
 			string name        = root.get_string_member("name");
 			       screen_name = root.get_string_member("screen_name");
 			string description = root.get_string_member("description").replace("&", "&amp;");
