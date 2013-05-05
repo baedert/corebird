@@ -14,9 +14,11 @@ class ProfileWidget : Gtk.Box {
 	private ToggleButton follow_button  = new ToggleButton.with_label("Follow");
 	private int64 user_id;
 	private string screen_name;
+	private MainWindow window;
 
-	public ProfileWidget(){
+	public ProfileWidget(MainWindow window){
 		GLib.Object(orientation: Orientation.VERTICAL);
+		this.window = window;
 
 		banner_box.get_style_context().add_class("profile-header");
 		var top_banner_box = new Gtk.Box(Orientation.HORIZONTAL, 8);
@@ -50,6 +52,7 @@ class ProfileWidget : Gtk.Box {
 		description_label.set_line_wrap(true);
 		description_label.get_style_context().add_class("description");
 		description_label.set_justify(Justification.CENTER);
+		description_label.activate_link.connect(handle_uri);
 		description_label.margin_bottom = 5;
 		banner_box.pack_start(description_label, true, true);
 
@@ -308,8 +311,8 @@ class ProfileWidget : Gtk.Box {
 
 			name_label.set_markup("<big><big><b>%s</b>  @%s</big></big>"
 				                      .printf(name, screen_name));
-			description_label.set_markup("<big><big><big>%s</big></big></big>".printf(
-			                             description));
+			string d = Tweet.replace_links(description);
+			description_label.set_markup("<big><big><big>%s</big></big></big>".printf(d));
 			tweets_button.set_markup(
 					"<big><big><b>%'d</b></big></big>\nTweets"
 					.printf(tweets));
@@ -367,5 +370,21 @@ class ProfileWidget : Gtk.Box {
 		if(user_id != 0)
 			return user_id.to_string()+".png";
 		return screen_name+".png";
+	}
+
+	private bool handle_uri(string uri){
+		uri = uri._strip();
+		string term = uri.substring(1);
+
+		if(uri.has_prefix("@")){
+			window.switch_page(MainWindow.PAGE_PROFILE,
+			                   ProfilePage.BY_NAME,
+			                   term);
+			return true;
+		}else if(uri.has_prefix("#")){
+			window.switch_page(MainWindow.PAGE_SEARCH, uri);
+			return true;
+		}
+		return false;
 	}
 }

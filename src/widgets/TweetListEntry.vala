@@ -1,4 +1,5 @@
 using Gtk;
+
 class TweetListEntry : Gtk.EventBox {
 	public static int sort_func(Widget a, Widget b) {
 		if(((TweetListEntry)a).timestamp <
@@ -17,7 +18,7 @@ class TweetListEntry : Gtk.EventBox {
 	private ToggleButton retweet_button  = new ToggleButton();
 	private ToggleButton favorite_button = new ToggleButton();
 	private Box text_box				 = new Box(Orientation.HORIZONTAL, 3);
-	private MainWindow window;
+	private unowned  MainWindow window;
 	private Gtk.Menu more_menu;
 	private Gtk.Button more_button;
 	// Timestamp used for sorting

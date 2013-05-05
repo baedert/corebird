@@ -62,7 +62,7 @@ class MainWindow : ApplicationWindow {
 		timelines[0].get_tool_button().active = true;
 
 		//Setup additional pages
-		pages[0] = new ProfilePage(PAGE_PROFILE);
+		pages[0] = new ProfilePage(PAGE_PROFILE, this);
 
 		// Start userstream
 		UserStream.get().start();

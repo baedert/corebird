@@ -13,7 +13,7 @@ class ProfileDialog : Gtk.Window {
 			user_id = User.get_id();
 		message(@"ID: $user_id");
 
-		profile_widget = new ProfileWidget();
+		profile_widget = new ProfileWidget(null);
 		profile_widget.set_user_id(user_id);
 
 		this.resize(320, 480);

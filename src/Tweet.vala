@@ -1,7 +1,7 @@
 using Gtk;
 
 class Tweet : GLib.Object{
-	public static const int THUMB_SIZE    = 50;
+	public static const int THUMB_SIZE    = 40;
 
 	public static const int TYPE_NORMAL   = 1;
 	public static const int TYPE_MENTION  = 2;
@@ -10,7 +10,7 @@ class Tweet : GLib.Object{
 	private static SQLHeavy.Query cache_query;
 	private static SQLHeavy.Query author_query;
 
-	private static GLib.Regex link_regex;
+	public static GLib.Regex link_regex;
 
 
 	public int64 id;

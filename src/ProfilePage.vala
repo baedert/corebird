@@ -11,9 +11,10 @@ class ProfilePage : IPage, ScrollWidget {
 		set{;}
 	}
 	private int id;
-	private ProfileWidget profile_widget = new ProfileWidget();
+	private ProfileWidget profile_widget;
 
-	public ProfilePage(int id){
+	public ProfilePage(int id, MainWindow window){
+		profile_widget = new ProfileWidget(window);
 		this.id = id;
 		this.add_with_viewport(profile_widget);
 	}
