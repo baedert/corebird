@@ -109,13 +109,16 @@ class ProfileWidget : Gtk.Box {
 					 cache_result.fetch_int(6));
 			follow_button.active = (cache_result.fetch_int(12) == 1);
 			string banner_name = cache_result.fetch_string(13);
+			debug("banner_name: %s", banner_name);
 
 			if(banner_name != null && 
 				FileUtils.test(Utils.user_file("assets/banners/"+banner_name), FileTest.EXISTS)){
+				debug("Banner exists, set it directly...");
 				banner_box.set_background(Utils.user_file(
 										  "assets/banners/"+banner_name));
 			}else{
 				// If the cached banner does somehow not exist, load it again.
+				debug("Banner %s does not exist, load it first...", banner_name);
 				load_banner.begin(user_id, Utils.user_file("assets/banners/"+banner_name),
 							screen_name);
 				banner_box.set_background(DATADIR+"/no_banner.png");
@@ -175,6 +178,7 @@ class ProfileWidget : Gtk.Box {
 			int tweets         = (int)root.get_int_member("statuses_count");
 			bool is_following  = root.get_boolean_member("following");
 			bool has_url       = root.get_object_member("entities").has_member("url");
+			string banner_name = get_banner_name(user_id, screen_name);
 
 			string display_url = null;
 			if(has_url) {
@@ -204,10 +208,11 @@ class ProfileWidget : Gtk.Box {
 				SQLHeavy.Query update_query = new SQLHeavy.Query(Corebird.db,
 					"INSERT OR REPLACE INTO `profiles`(`id`, `screen_name`, `name`,
 					   `followers`, `following`, `tweets`, `description`, `avatar_name`,
-					   `url`, `location`, `is_following`)
+					   `url`, `location`, `is_following`, `banner_name`)
 					 VALUES
 					(:id, :screen_name, :name, :followers, :following, :tweets,
-					 :description, :avatar_name, :url, :location, :is_following);");
+					 :description, :avatar_name, :url, :location, :is_following,
+					 :banner_name);");
 				update_query.set_int64(":id", id);
 				update_query.set_string(":screen_name", screen_name);
 				update_query.set_string(":name", name);
@@ -219,6 +224,7 @@ class ProfileWidget : Gtk.Box {
 				update_query.set_string(":url", display_url);
 				update_query.set_string(":location", location);
 				update_query.set_int(":is_following", is_following ? 1 : 0);
+				update_query.set_string(":banner_name", banner_name);
 				update_query.execute_async.begin();
 			}catch(SQLHeavy.Error e){
 				warning("Error while updating profile info for %s:%s", screen_name,
@@ -272,18 +278,16 @@ class ProfileWidget : Gtk.Box {
 			var root = parser.get_root().get_object().get_object_member("sizes");
 			string banner_url, banner_name;
 			banner_url = root.get_object_member("mobile").get_string_member("url");
-			if(user_id != 0)
-				banner_name = user_id.to_string()+".png";
-			else
-				banner_name = screen_name+".png";
+			banner_name = get_banner_name(user_id, screen_name);
 
-			string banner_on_disk = Utils.user_file(@"assets/banners/"+banner_name);
+			string banner_on_disk = Utils.user_file("assets/banners/"+banner_name);
 			if (!FileUtils.test(banner_on_disk, FileTest.EXISTS) ||
 			    	banner_url != saved_banner_url){
 
 				Utils.download_file_async.begin(banner_url, banner_on_disk,
 						() => {banner_box.set_background(banner_on_disk);});
 				try{
+					debug("Setting the banner name to %s", banner_name);
 					Corebird.db.execute(@"UPDATE `profiles` SET `banner_url`='$banner_url',
 					                    `banner_name`='$banner_name'
 					                    WHERE `id`='$user_id';");
@@ -357,5 +361,11 @@ class ProfileWidget : Gtk.Box {
 			}
 			//stdout.printf(call.get_payload()+"\n");
 		});
+	}
+
+	private string get_banner_name(int64 user_id, string screen_name) {
+		if(user_id != 0)
+			return user_id.to_string()+".png";
+		return screen_name+".png";
 	}
 }
