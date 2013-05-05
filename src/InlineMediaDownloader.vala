@@ -1,7 +1,7 @@
 
 
 class InlineMediaDownloader {
-	public static const int THUMB_SIZE = 50;
+	public static const int THUMB_SIZE = 40;
 
 
 	public static async void try_load_media(Tweet t, string url) {

@@ -1,7 +1,6 @@
 using Gtk;
 
 class Tweet : GLib.Object{
-	public static const int THUMB_SIZE    = 40;
 
 	public static const int TYPE_NORMAL   = 1;
 	public static const int TYPE_MENTION  = 2;
