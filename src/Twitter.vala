@@ -66,6 +66,23 @@ class Twitter {
 			proxy.token_secret = Twitter.get_token_secret();
 		}
 
+
+/*		Rest.Proxy echo_proxy = proxy.new_echo_proxy(
+		    "https://api.twitter.com/1/account/verify_credentials.json",
+            "https://api.tweetmarker.net/", false);
+
+		var c = echo_proxy.new_call();
+		c.set_function("/v2/lastread?api_key=CO-1D3B7DE87173&username=baedert");
+		c.set_method("POST");
+		c.set_content("{\"timeline\":{\"id\":\"325602117844865027\"}}");
+		try{
+			c.run();
+		}catch(GLib.Error e){
+			warning(e.message);
+		}finally{
+			stdout.printf(c.get_payload()+"\n");
+		}*/
+
 		try{
 			Twitter.no_avatar     	 = new Gdk.Pixbuf.from_file(
 			                               DATADIR+"/no_avatar.png");
