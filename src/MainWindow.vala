@@ -167,13 +167,29 @@ class MainWindow : ApplicationWindow {
 		bottom_box.pack_start (stack, true, true);
 		main_box.pack_end(bottom_box, true, true);
 
-
+		add_accels();
 
 		this.add(main_box);
 		this.load_geometry();
 		this.show_all();
 	}
 
+	/**
+	 * Adds the accelerators to the GtkWindow
+	 */
+	private void add_accels() {
+		AccelGroup ag = new AccelGroup();
+		ag.connect(Gdk.Key.@1, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
+			() => {switch_page(0);return true;});
+		ag.connect(Gdk.Key.@2, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
+			() => {switch_page(1);return true;});
+		ag.connect(Gdk.Key.@3, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
+			() => {switch_page(2);return true;});
+
+
+		this.add_accel_group(ag);
+	}
+	
 
 	/**
 	 * Adds/inserts the widgets into the left toolbar.
