@@ -2,6 +2,10 @@
 using Gtk;
 
 class ProfileWidget : Gtk.Box {
+	private static const int PAGE_TWEETS     = 0;
+	private static const int PAGE_FOLLOWING  = 1;
+	private static const int PAGE_FOLLOWERS  = 2;
+
 	private ImageBox banner_box         = new ImageBox(Orientation.VERTICAL, 3);
 	private ImageBox avatar_image       = new ImageBox(Orientation.VERTICAL, 0);
 	private Label name_label            = new Label("");
@@ -12,6 +16,8 @@ class ProfileWidget : Gtk.Box {
 	private TextButton following_button = new TextButton();
 	private TextButton followers_button = new TextButton();
 	private ToggleButton follow_button  = new ToggleButton.with_label("Follow");
+	private Gd.Stack bottom_stack       = new Gd.Stack();
+	private int active_page 			= 0;
 	private int64 user_id;
 	private string screen_name;
 	private MainWindow window;
@@ -60,8 +66,17 @@ class ProfileWidget : Gtk.Box {
 		bottom_banner_box.homogeneous = true;
 
 		tweets_button.get_style_context().add_class("data-button");
+		tweets_button.clicked.connect(() => {
+			switch_page (PAGE_TWEETS);
+		});
 		following_button.get_style_context().add_class("data-button");
+		following_button.clicked.connect(() => {
+			switch_page (PAGE_FOLLOWING);
+		});
 		followers_button.get_style_context().add_class("data-button");
+		followers_button.clicked.connect(() => {
+			switch_page (PAGE_FOLLOWERS);
+		});
 		bottom_banner_box.pack_start(tweets_button, false, true);
 		bottom_banner_box.pack_start(following_button, false, true);
 		bottom_banner_box.pack_start(followers_button, false, true);
@@ -70,6 +85,7 @@ class ProfileWidget : Gtk.Box {
 		banner_box.pack_start(bottom_banner_box, false, false);
 
 		this.pack_start(banner_box, false, false);
+		this.pack_start(bottom_stack, true, true);
 	}
 
 
@@ -280,7 +296,7 @@ class ProfileWidget : Gtk.Box {
 
 			var root = parser.get_root().get_object().get_object_member("sizes");
 			string banner_url, banner_name;
-			banner_url = root.get_object_member("mobile").get_string_member("url");
+			banner_url = root.get_object_member("mobile_retina").get_string_member("url");
 			banner_name = get_banner_name(user_id, screen_name);
 
 			string banner_on_disk = Utils.user_file("assets/banners/"+banner_name);
@@ -386,5 +402,21 @@ class ProfileWidget : Gtk.Box {
 			return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * Switch the page to the one with the given ID
+	 * @param page The page to switch to
+	 */
+	private void switch_page(int page) {
+		if(page == active_page)
+			return;
+
+		if(page > active_page)
+			bottom_stack.transition_type = Gd.Stack.TransitionType.SLIDE_LEFT;
+		else
+			bottom_stack.transition_type = Gd.Stack.TransitionType.SLIDE_RIGHT;
+
+		bottom_stack.set_visible_child_name("%d".printf(page));
 	}
 }
