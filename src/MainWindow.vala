@@ -21,6 +21,7 @@ class MainWindow : ApplicationWindow {
 	private ITimeline[] timelines			 = new ITimeline[3];
 	private IPage[] pages 				     = new IPage[1];
 	private int active_page                  = 0;
+	private int last_page				     = 0;
 	private ToolButton avatar_button         = new ToolButton(null, null);
 	private ToolButton settings_button       = new ToolButton.from_stock(
 	                                                          Stock.PROPERTIES);
@@ -264,6 +265,7 @@ class MainWindow : ApplicationWindow {
 	}
 
 
+
 	/**
 	 * Switches the window's main notebook to the given page.
 	 *
@@ -283,6 +285,7 @@ class MainWindow : ApplicationWindow {
 		else
 			stack.transition_type = Gd.Stack.TransitionType.SLIDE_RIGHT;
 
+		this.last_page   = this.active_page;
 		this.active_page = page_id;
 
 
