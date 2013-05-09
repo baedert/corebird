@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS `cache`(
 			    type INTEGER(1),
 			    reply_id NUMERIC(19,0),
 			    media VARCHAR(255),
+				media_thumb VARCHAR(255),
 			    verified BOOL
 );
 

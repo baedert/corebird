@@ -32,6 +32,9 @@ class LoaderThread{
 		root.foreach_element( (array, index, node) => {
 			Json.Object o = node.get_object();
 			Tweet t = new Tweet();
+			t.inline_media_added.connect(() => {
+				message("WELL, FUCK YOU.");
+			});
 			t.load_from_json(o, now);
 
 			if (tweet_type != -1){
@@ -48,12 +51,6 @@ class LoaderThread{
 		});
 
 		GLib.Idle.add( () => {
-			// list.hide_spinner();
-			//FIXME: God this sucks.
-			// if(balance_upper_change)
-				// ((ScrollWidget)list.parent.parent).balance_next_upper_change();
-
-
 			message("Results: %d", entries.length);
 			for(int i = 0; i < entries.length; i++)
 				list.add(entries[i]);
@@ -61,7 +58,6 @@ class LoaderThread{
 			if (finished != null){
 				finished(entries.length, lowest_id);
 			}
-
 			return false;
 		});
 

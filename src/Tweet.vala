@@ -35,6 +35,7 @@ class Tweet : GLib.Object{
     /** if 0, this tweet is NOT part of a conversation */
     public int64 reply_id = 0;
     public string media;
+	public string media_thumb;
     public signal void inline_media_added(Gdk.Pixbuf? media);
     public bool has_inline_media = false;
     public int type = -1;
@@ -49,10 +50,10 @@ class Tweet : GLib.Object{
 				                     `retweeted_by`, `retweeted`, `favorited`,
 				                     `created_at`,`rt_created_at`, `avatar_name`,
 				                     `screen_name`, `type`,`rt_id`, `reply_id`, `media`,
-				                     `verified`)
+				                     `verified`, `media_thumb`)
 				VALUES (:id, :text, :user_id, :user_name, :is_retweet, :retweeted_by,
 				        :retweeted, :favorited, :created_at, :rt_created_at,:avatar_name,
-				        :screen_name, :type, :rt_id, :reply_id, :media, :verified);");
+				        :screen_name, :type, :rt_id, :reply_id, :media, :verified, :media_thumb);");
 				author_query = new SQLHeavy.Query(Corebird.db,
 				"SELECT `id`, `screen_name`, `avatar_url` FROM `people`
 				WHERE `id`=:id;");
@@ -156,7 +157,6 @@ class Tweet : GLib.Object{
 				expanded_url = expanded_url.replace("&", "&amp;");
 				this.text = this.text.replace(url.get_string_member("url"),
 				    expanded_url);
-				this.has_inline_media = true;
 			});
 		}
 
@@ -244,6 +244,7 @@ class Tweet : GLib.Object{
 			cache_query.set_int64(":reply_id", t.reply_id);
 			cache_query.set_string(":media", t.media);
 			cache_query.set_int(":verified", t.verified ? 1 : 0);
+			cache_query.set_string(":media_thumb", t.media_thumb);
 			cache_query.execute();
 		}catch(SQLHeavy.Error e){
 			error("Error while caching tweet: %s", e.message);

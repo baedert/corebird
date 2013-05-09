@@ -31,7 +31,7 @@ interface ITimeline : Gtk.Widget, IPage {
 			@"SELECT `id`, `text`, `user_id`, `user_name`, `is_retweet`,
 			`retweeted_by`, `retweeted`, `favorited`, `created_at`,
 			`rt_created_at`, `avatar_name`, `screen_name`, `type`,
-			`reply_id`, `media`, `rt_id`, `reply_id`, `verified`
+			`reply_id`, `media`, `rt_id`, `reply_id`, `verified`, `media_thumb`
 			FROM `cache` WHERE `type`='$tweet_type'
 			ORDER BY `created_at` DESC LIMIT 15;");
 		SQLHeavy.QueryResult result = query.execute();
@@ -52,6 +52,7 @@ interface ITimeline : Gtk.Widget, IPage {
 			t.rt_id         = result.fetch_int64(15);
 			t.reply_id      = result.fetch_int64(16);
 			t.verified      = (bool)result.fetch_int(17);
+			t.media_thumb   = result.fetch_string(18);
 
 
 
@@ -74,12 +75,12 @@ interface ITimeline : Gtk.Widget, IPage {
 			// Append the tweet to the TweetList
 			TweetListEntry list_entry = new TweetListEntry(t, main_window);
 			if(t.media != null){
-				string thumb_path = Utils.user_file("assets/media/thumbs/"+Utils.get_file_name(t.media));
 				try {
-					t.inline_media_added(new Gdk.Pixbuf.from_file(thumb_path));
+					t.inline_media_added(new Gdk.Pixbuf.from_file(t.media_thumb));
 				} catch (GLib.Error e) {
 					warning(e.message);
 				}
+				t.has_inline_media = true;
 			}
 			tweet_list.add(list_entry);
 			result.next();
@@ -154,7 +155,7 @@ interface ITimeline : Gtk.Widget, IPage {
 
 
 			string back = call.get_payload();
-			stdout.printf(back+"\n");
+			//stdout.printf(back+"\n");
 			var parser = new Json.Parser();
 			try{
 				parser.load_from_data (back);

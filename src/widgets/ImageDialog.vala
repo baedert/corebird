@@ -18,7 +18,12 @@ class ImageDialog : Gtk.Window {
 			critical(e.message);
 		}
 
-		image = new Gtk.Image.from_pixbuf(pixbuf);
+		image = new Gtk.Image();
+		if(path.has_suffix("gif"))
+			// use animation
+			image.pixbuf_animation = new Gdk.PixbufAnimation.from_file(path);
+		else
+			image.pixbuf = new Gdk.Pixbuf.from_file(path);
 		var ebox = new EventBox();
 		ebox.add(image);
 		scroller.add_with_viewport(ebox);

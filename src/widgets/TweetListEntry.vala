@@ -202,17 +202,12 @@ class TweetListEntry : Gtk.EventBox {
 		box.pack_start(right_box, true, true);
 
 		tweet.inline_media_added.connect((pic) => {
-			var media_button = new ImageButton();
-			media_button.set_bg(pic);
-			media_button.visible = true;
-			media_button.vexpand = false;
-			media_button.set_valign(Align.START);
-			media_button.clicked.connect(() => {
-				ImageDialog id = new ImageDialog(window, tweet.media);
-				id.show_all();
-			});
-			text_box.pack_start(media_button, false, false);
+			add_inline_media(text_box);
 		});
+		// If the has_inline_media flag is already set, add the inline media immediately
+		if(tweet.has_inline_media) {
+			add_inline_media(text_box);
+		}
 
 		if(tweet.is_retweet) {
 			// TODO: Use rt image here
@@ -230,6 +225,21 @@ class TweetListEntry : Gtk.EventBox {
 		this.set_size_request(20, 80);
 		this.add(box);
 		this.show_all();
+	}
+
+	private void add_inline_media(Box box) {
+		var pic = new Gdk.Pixbuf.from_file(tweet.media_thumb);
+		var media_button = new ImageButton();
+		media_button.set_bg(pic);
+		media_button.visible = true;
+		media_button.vexpand = false;
+		media_button.set_valign(Align.START);
+		media_button.clicked.connect(() => {
+			ImageDialog id = new ImageDialog(window, tweet.media);
+			id.show_all();
+		});
+		media_button.show_all();
+		box.pack_start(media_button, false, false);
 	}
 
 	/**
@@ -405,5 +415,6 @@ class TweetListEntry : Gtk.EventBox {
 
 		more_menu.show_all();
 	}
+
 
 }

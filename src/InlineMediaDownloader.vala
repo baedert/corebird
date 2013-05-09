@@ -66,6 +66,19 @@ class InlineMediaDownloader {
 	private static async void load_inline_media(Tweet t, string url,
 	                                       Soup.Session? sess = null) {
 
+		// First, check if the media already exists...
+		string path = get_media_path (t, url);
+		string thumb_path = get_thumb_path (t, url);
+		message("THUMB PATH: %s", thumb_path);
+		if(FileUtils.test(path, FileTest.EXISTS)) {
+			/* If the media already exists, the thumbnail also exists.
+			   If not, fuck you.*/ 
+			message("%s already exists...", path);
+			var thumb = new Gdk.Pixbuf.from_file(thumb_path);
+			fire_media_added(t, path, thumb, thumb_path);
+			return;
+		}
+
 
 		Soup.Session session = sess;
 		message("Directly Downloading %s", url);
@@ -77,40 +90,59 @@ class InlineMediaDownloader {
 		session.queue_message(msg, (s, _msg) => {
 			try {
 				var ms  = new MemoryInputStream.from_data(_msg.response_body.data, null);
-				var pic = new Gdk.Pixbuf.from_stream(ms);
 				string ext = Utils.get_file_type(url);
-
 				if(ext.length == 0)
 					ext = "png";
+				ext = ext.down();
 
-				string file_name = @"$(t.id)_$(t.user_id).$(ext)";
+				Gdk.Pixbuf thumb = null;
+				if(ext == "gif"){
+					var file = File.new_for_path(path);
+					var fout = file.create(FileCreateFlags.REPLACE_DESTINATION);
+					fout.write_all(_msg.response_body.data, null);
+					fout.flush();
+					var anim = new Gdk.PixbufAnimation.from_file(path);
+					thumb = anim.get_static_image().scale_simple(THUMB_SIZE, THUMB_SIZE,
+												Gdk.InterpType.TILES);
+				} else {
+					var pic = new Gdk.Pixbuf.from_stream(ms);
+					pic.save(path, ext);
+					thumb = pic.scale_simple(THUMB_SIZE, THUMB_SIZE,
+						                         Gdk.InterpType.TILES);
+				}
 
-				int thumb_w, thumb_h;
-				get_thumb_size(pic.get_width(), pic.get_height(), out thumb_w,
-				               out thumb_h);
-				var thumb = pic.scale_simple(thumb_w, thumb_h, Gdk.InterpType.TILES);
-
-				string path = Utils.user_file("assets/media/"+file_name);
-				string thumb_path = Utils.user_file("assets/media/thumbs/"
-				                                             +file_name);
-				Corebird.db.execute(@"UPDATE `cache` SET `media`='$path'
-				                    WHERE `id`='$(t.id)';");
-				t.media = path;
-				pic.save(path, ext);
-				thumb.save(thumb_path, ext);
-				t.inline_media_added(thumb);
+				thumb.save(thumb_path, "png");
+				fire_media_added(t, path, thumb, thumb_path);
 			} catch (GLib.Error e) {
 				critical(e.message);
 			}
 		});
 	}
 
+	private static void fire_media_added(Tweet t, string path, Gdk.Pixbuf thumb,
+			                             string thumb_path) {
+		try{
+			Corebird.db.execute(@"UPDATE `cache` SET `media`='$path', `media_thumb`='$thumb_path'
+				                    WHERE `id`='$(t.id)';");
+		}catch(SQLHeavy.Error e) {
+			error(e.message);
+		}
+		t.media = path;
+		t.media_thumb = thumb_path;
+		t.inline_media_added(thumb);
+		t.has_inline_media = true;
+	}
 
-	private static void get_thumb_size(int pic_width, int pic_height,
-	                                   out int width, out int height) {
-		double size_ratio = pic_width / pic_height;
+	private static string get_media_path (Tweet t, string url) {
+		string ext = Utils.get_file_type (url);
+		ext = ext.down();
+		if(ext.length == 0)
+			ext = "png";
 
-		width  = THUMB_SIZE;
-		height = THUMB_SIZE;
+		return Utils.user_file(@"assets/media/$(t.id)_$(t.user_id).$(ext)");
+	}
+
+	private static string get_thumb_path (Tweet t, string url) {
+		return Utils.user_file(@"assets/media/thumbs/$(t.id)_$(t.user_id).png");
 	}
 }
