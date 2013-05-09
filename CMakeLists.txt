@@ -122,6 +122,7 @@ OPTIONS
 	--enable-checking
 	--vapidir=src/egglistbox/
 	--vapidir=src/libgd/
+	--disable-warnings
 )
 
 add_executable(corebird ${VALA_C})
