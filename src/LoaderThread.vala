@@ -32,9 +32,6 @@ class LoaderThread{
 		root.foreach_element( (array, index, node) => {
 			Json.Object o = node.get_object();
 			Tweet t = new Tweet();
-			t.inline_media_added.connect(() => {
-				message("WELL, FUCK YOU.");
-			});
 			t.load_from_json(o, now);
 
 			if (tweet_type != -1){
