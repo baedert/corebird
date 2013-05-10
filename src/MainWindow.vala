@@ -32,7 +32,7 @@ class MainWindow : ApplicationWindow {
 	public MainWindow(Gtk.Application app){
 		GLib.Object (application: app);
 
-		stack.transition_duration = 300;
+		stack.transition_duration = Settings.get_animation_duration();
 		stack.transition_type = Gd.Stack.TransitionType.SLIDE_RIGHT;
 
 		timelines[0] = new HomeTimeline(PAGE_STREAM);

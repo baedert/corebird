@@ -79,6 +79,10 @@ class Settings : GLib.Object {
 		return settings.get_boolean("show-inline-media");
 	}
 
+	public static int get_animation_duration() {
+		return settings.get_int("animation-duration");
+	}
+
 
 
 	public static void set_bool(string key, bool value){

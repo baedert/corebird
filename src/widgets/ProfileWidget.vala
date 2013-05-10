@@ -26,6 +26,8 @@ class ProfileWidget : Gtk.Box {
 		GLib.Object(orientation: Orientation.VERTICAL);
 		this.window = window;
 
+		bottom_stack.transition_duration = Settings.get_animation_duration();
+
 		banner_box.get_style_context().add_class("profile-header");
 		var top_banner_box = new Gtk.Box(Orientation.HORIZONTAL, 8);
 		avatar_image.set_size_request(100, 100);
