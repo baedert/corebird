@@ -268,6 +268,7 @@ class ProfileWidget : Gtk.Box {
 		var call = Twitter.proxy.new_call();
 		call.set_method("GET");
 		call.set_function("1.1/users/profile_banner.json");
+		message(@"id: $user_id, name: $screen_name");
 		if(user_id != 0)
 			call.add_param("user_id", user_id.to_string());
 		else
@@ -283,7 +284,8 @@ class ProfileWidget : Gtk.Box {
 			try{
 				call.invoke_async.end (res);
 			} catch (GLib.Error e){
-				warning("Error while ending call: %s", e.message);
+				warning("Error while ending call: %s\nDATA:\n%s", e.message,
+					call.get_payload());
 				return;
 			}
 
@@ -380,7 +382,6 @@ class ProfileWidget : Gtk.Box {
 			} catch (GLib.Error e) {
 				critical(e.message);
 			}
-			//stdout.printf(call.get_payload()+"\n");
 		});
 	}
 

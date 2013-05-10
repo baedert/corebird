@@ -1,5 +1,7 @@
 using Gtk;
 
+extern string cb_replace_links(string text);
+
 class Tweet : GLib.Object{
 
 	public static const int TYPE_NORMAL   = 1;
@@ -255,12 +257,14 @@ class Tweet : GLib.Object{
 	 * Replaces the links in the given text with html tags to be used in
 	 * pango layouts.
 	 *
+	 * TODO: Also replace nicknames and hashtags here
 	 * @param text The text to replace the links in
 	 * @return The text with replaced links
 	 */
 	public static string replace_links(string text){
 		if(link_regex == null){
 			//TODO: Most regexes can be truly static.
+			//TODO: This regex actually sucks.
 			link_regex = new GLib.Regex(
 			"http[s]{0,1}:\\/\\/[a-zA-Z\\_.\\+!\\?\\/#=&;\\-0-9%,~:]+",
 			RegexCompileFlags.OPTIMIZE);
@@ -273,6 +277,7 @@ class Tweet : GLib.Object{
 
 					string link = mi.fetch(0);
 					if (link.length > 25){
+						int protocol_index = link.index_of("//");
 						if(link.has_prefix("http://"))
 							link = link.substring(7);
 						else //https
