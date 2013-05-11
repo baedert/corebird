@@ -70,10 +70,10 @@ class UserStream : Object {
 		}
 	}
 
-  private bool timeout_cb() {
-    Utils.show_error_dialog ("Streaming connection stalled");
-    return false;
-  }
+	private bool timeout_cb() {
+		Utils.show_error_dialog ("Streaming connection stalled");
+		return false;
+	}
 
 	private void parse_data_cb(Rest.ProxyCall call, string? buf, size_t length,
 	                           Error? error) {
