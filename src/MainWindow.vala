@@ -132,8 +132,8 @@ class MainWindow : ApplicationWindow {
 
 		avatar_button.set_icon_widget(new Image.from_file(User.get_avatar_path()));
 		avatar_button.clicked.connect( () => {
-			ProfileDialog pd = new ProfileDialog();
-			pd.show_all();
+//			ProfileDialog pd = new ProfileDialog();
+//			pd.show_all();
 		});
 
 		//Update the user's info
