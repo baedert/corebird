@@ -92,7 +92,6 @@ class UserStream : Object {
 			warning("buf == NULL");
 			return;
 		}
-		timeout_cb();
 
 		string real = buf.substring(0, (int)length);
 
