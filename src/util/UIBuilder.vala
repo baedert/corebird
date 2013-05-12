@@ -26,6 +26,10 @@ public class UIBuilder {
 		return builder.get_object(name) as Window;
 	}
 
+	public Dialog get_dialog(string name) {
+		return builder.get_object(name) as Dialog;
+	}
+
 	public Switch get_switch(string name) {
 		return builder.get_object(name) as Switch;
 	}

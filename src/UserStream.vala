@@ -71,7 +71,18 @@ class UserStream : Object {
 	}
 
 	private bool timeout_cb() {
-		Utils.show_error_dialog ("Streaming connection stalled");
+		var builder = new UIBuilder(DATADIR+"/ui/connection-lost-dialog.ui");
+		var dialog = builder.get_dialog ("dialog1");
+		var label = builder.get_label("text_label");
+		dialog.response.connect((id) => {
+			if(id == 0)
+				dialog.destroy();
+			else if(id == 1) {
+				error ("Implement reconnecting");
+			}
+		});
+
+		dialog.show_all();
 		return false;
 	}
 
@@ -81,6 +92,7 @@ class UserStream : Object {
 			warning("buf == NULL");
 			return;
 		}
+		timeout_cb();
 
 		string real = buf.substring(0, (int)length);
 
