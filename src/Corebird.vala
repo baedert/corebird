@@ -3,6 +3,7 @@ using Gtk;
 class Corebird : Gtk.Application {
 	public static SQLHeavy.Database db;
 	private bool show_tweet_window = false;
+  private bool run_in_cmd = true;
 	private string role_name = "corebird";
 
 	public Corebird() throws GLib.Error{
@@ -71,6 +72,14 @@ class Corebird : Gtk.Application {
 		                               new Gdk.Pixbuf.from_file(DATADIR+"/icon.png"));
 
 
+    if(!run_in_cmd) {
+      /* If we do not run on the command line, we simply redirect stdout
+         to a log file */
+      GLib.set_printerr_handler (this.print_to_log_file);
+      GLib.set_print_handler    (this.print_to_log_file);
+    }
+
+
 		Twitter.init();
 		//Load the user's sceen_name used for identifying him
 		User.load();
@@ -83,7 +92,7 @@ class Corebird : Gtk.Application {
 		this.hold();
 		bool new_instance = false;
 
-		OptionEntry[] options = new OptionEntry[3];
+		OptionEntry[] options = new OptionEntry[4];
 		options[0] = {"tweet", 't', 0, OptionArg.NONE, ref show_tweet_window,
 					  "Shows only the 'compose tweet' window, nothing else.", null};
 		options[1] = {"new-instance", 'n', 0, OptionArg.NONE, ref new_instance,
@@ -91,6 +100,9 @@ class Corebird : Gtk.Application {
 		options[2] = {"role", 'r', 0, OptionArg.STRING, ref role_name,
 					  "Sets the role name of the main window(default is 'corebird')",
 					  "ROLE"};
+    options[3] = {"mode", 'p', 0, OptionArg.NONE, ref run_in_cmd,
+            "Use this flag to indicate that the application does NOT run on the command line", 
+            "MODE"};
 
 		string[] args = cmd.get_arguments();
 		string*[] _args = new string[args.length];
@@ -166,6 +178,9 @@ class Corebird : Gtk.Application {
     		critical(e.message);
     	}
 	}
+
+  public static void print_to_log_file(string s) {
+  }
 }
 
 
