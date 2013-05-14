@@ -2,8 +2,10 @@ using Gtk;
 
 class Corebird : Gtk.Application {
 	public static SQLHeavy.Database db;
+  /* Only used if -p is passed */
+  private static GLib.OutputStream log_stream;
 	private bool show_tweet_window = false;
-  private bool run_in_cmd = true;
+  private bool not_in_cmd = false;
 	private string role_name = "corebird";
 
 	public Corebird() throws GLib.Error{
@@ -71,15 +73,6 @@ class Corebird : Gtk.Application {
 		Gtk.IconTheme.add_builtin_icon("corebird", 64,
 		                               new Gdk.Pixbuf.from_file(DATADIR+"/icon.png"));
 
-
-    if(!run_in_cmd) {
-      /* If we do not run on the command line, we simply redirect stdout
-         to a log file */
-      GLib.set_printerr_handler (this.print_to_log_file);
-      GLib.set_print_handler    (this.print_to_log_file);
-    }
-
-
 		Twitter.init();
 		//Load the user's sceen_name used for identifying him
 		User.load();
@@ -95,20 +88,24 @@ class Corebird : Gtk.Application {
 		OptionEntry[] options = new OptionEntry[4];
 		options[0] = {"tweet", 't', 0, OptionArg.NONE, ref show_tweet_window,
 					  "Shows only the 'compose tweet' window, nothing else.", null};
-		options[1] = {"new-instance", 'n', 0, OptionArg.NONE, ref new_instance,
+    options[1] = {"mode", 'u', 0, OptionArg.NONE, ref not_in_cmd,
+            "Use this flag to indicate that the application does NOT run on the command line", 
+            null};
+		options[2] = {"new-instance", 'n', 0, OptionArg.NONE, ref new_instance,
 					  "Force a new instance", null};
-		options[2] = {"role", 'r', 0, OptionArg.STRING, ref role_name,
+		options[3] = {"role", 'r', 0, OptionArg.STRING, ref role_name,
 					  "Sets the role name of the main window(default is 'corebird')",
 					  "ROLE"};
-    options[3] = {"mode", 'p', 0, OptionArg.NONE, ref run_in_cmd,
-            "Use this flag to indicate that the application does NOT run on the command line", 
-            "MODE"};
+   
 
 		string[] args = cmd.get_arguments();
 		string*[] _args = new string[args.length];
 		for(int i = 0; i < args.length; i++){
 			_args[i] = args[i];
 		}
+
+
+
 
 		try{
 			var opt_context = new OptionContext("");
@@ -120,8 +117,20 @@ class Corebird : Gtk.Application {
 			cmd.print("Use --help to see available options\n");
 			return -1;
 		}
-
 		add_windows();
+
+    if(not_in_cmd) {
+      message("Redirecting console output to log file...");
+      /* First, create that log file */
+      var now = new GLib.DateTime.now_local();
+      create_user_folder("log/");
+      File log_file = File.new_for_path(Utils.user_file("log/%s.txt".printf(now.to_string())));
+      log_stream = log_file.create(FileCreateFlags.REPLACE_DESTINATION);
+      /* If we do not run on the command line, we simply redirect stdout
+         to a log file */
+      GLib.set_printerr_handler (this.print_to_log_file);
+      GLib.set_print_handler    (this.print_to_log_file);
+    }
 
 
 		this.release();
@@ -129,7 +138,7 @@ class Corebird : Gtk.Application {
 	}
 
 	public void add_windows() {
-		if(!show_tweet_window){
+		if(!show_tweet_window) {
 			if (Settings.is_first_run()) {
 				this.add_window(new FirstRunWindow(this));
 			} else {
@@ -172,20 +181,19 @@ class Corebird : Gtk.Application {
 		try {
 			bool success = File.new_for_path(Utils.user_file(name))
 									.make_directory();
-	        if(!success)
-	        	critical("Couldn't create user folder %s", name);
+	    if(!success)
+        critical("Couldn't create user folder %s", name);
     	} catch (GLib.Error e) {
     		critical(e.message);
     	}
 	}
 
+  /**
+   * Log handler in case the application is not
+   * started from the command line.
+   */
   public static void print_to_log_file(string s) {
-    var now = new GLib.DateTime.now_local();
-    File log_file = File.new_for_path("/var/log/corebird/%s.txt".printf(now.to_string()));
-    if(!log_file.make_directory_with_parents())
-      critical("Couldn't create log file directory");
-
-
+    log_stream.write_all (s.data, null);
   }
 }
 
