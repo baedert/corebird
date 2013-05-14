@@ -180,6 +180,12 @@ class Corebird : Gtk.Application {
 	}
 
   public static void print_to_log_file(string s) {
+    var now = new GLib.DateTime.now_local();
+    File log_file = File.new_for_path("/var/log/corebird/%s.txt".printf(now.to_string()));
+    if(!log_file.make_directory_with_parents())
+      critical("Couldn't create log file directory");
+
+
   }
 }
 
