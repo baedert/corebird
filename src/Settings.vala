@@ -34,7 +34,9 @@ class Settings : GLib.Object {
 	* Notice that this only relies on the information saved in GSettings, nothing else.
 	*/
 	public static bool is_first_run(){
-		return settings.get_boolean("first-run");
+    // If the database file exists, this is NOT the first run...
+    string db_file = Utils.user_file("corebird.db");
+    return FileUtils.test(db_file, FileTest.EXISTS);
 	}
 	/**
 	* Check whether the user wants Corebird to always use the dark gtk theme variant.
