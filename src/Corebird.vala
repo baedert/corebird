@@ -37,6 +37,7 @@ class Corebird : Gtk.Application {
 			create_user_folder("assets/user");
 			create_user_folder("assets/media/");
 			create_user_folder("assets/media/thumbs/");
+      create_user_folder("log/");
 		}
 
 
@@ -72,6 +73,21 @@ class Corebird : Gtk.Application {
 		// TODO: Find out how to do this the right way.
 		Gtk.IconTheme.add_builtin_icon("corebird", 64,
 		                               new Gdk.Pixbuf.from_file(DATADIR+"/icon.png"));
+
+    /* First, create that log file */
+    var now = new GLib.DateTime.now_local();
+    File log_file = File.new_for_path(Utils.user_file("log/%s.txt".printf(now.to_string())));
+    log_stream = log_file.create(FileCreateFlags.REPLACE_DESTINATION);
+    /* If we do not run on the command line, we simply redirect stdout
+       to a log file */
+    GLib.Log.set_handler (null, LogLevelFlags.LEVEL_MESSAGE, print_to_log_file);
+    GLib.Log.set_handler (null, LogLevelFlags.LEVEL_ERROR, print_to_log_file);
+    GLib.Log.set_handler (null, LogLevelFlags.LEVEL_CRITICAL, print_to_log_file);
+    GLib.Log.set_handler (null, LogLevelFlags.LEVEL_WARNING, print_to_log_file);
+    GLib.Log.set_handler (null, LogLevelFlags.LEVEL_DEBUG, print_to_log_file);
+
+
+
 
 		Twitter.init();
 		//Load the user's sceen_name used for identifying him
@@ -118,20 +134,6 @@ class Corebird : Gtk.Application {
 			return -1;
 		}
 		add_windows();
-
-    if(not_in_cmd) {
-      message("Redirecting console output to log file...");
-      /* First, create that log file */
-      var now = new GLib.DateTime.now_local();
-      create_user_folder("log/");
-      File log_file = File.new_for_path(Utils.user_file("log/%s.txt".printf(now.to_string())));
-      log_stream = log_file.create(FileCreateFlags.REPLACE_DESTINATION);
-      /* If we do not run on the command line, we simply redirect stdout
-         to a log file */
-      GLib.set_printerr_handler (this.print_to_log_file);
-      GLib.set_print_handler    (this.print_to_log_file);
-    }
-
 
 		this.release();
 		return 0;
@@ -184,7 +186,7 @@ class Corebird : Gtk.Application {
 	    if(!success)
         critical("Couldn't create user folder %s", name);
     	} catch (GLib.Error e) {
-    		critical(e.message);
+    		critical("%s(%s)", e.message, name);
     	}
 	}
 
@@ -192,8 +194,17 @@ class Corebird : Gtk.Application {
    * Log handler in case the application is not
    * started from the command line.
    */
-  public static void print_to_log_file(string s) {
-    log_stream.write_all (s.data, null);
+  public static void print_to_log_file(string? log_domain, LogLevelFlags flags,
+                                       string msg) {
+    string out_string;
+    if(log_domain == null)
+      out_string = msg+"\n";
+    else
+      out_string = "(%s) %s".printf(log_domain, msg);
+
+    log_stream.write_all (out_string.data, null);
+    log_stream.flush();
+    stdout.printf(out_string);
   }
 }
 
