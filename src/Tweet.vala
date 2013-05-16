@@ -196,58 +196,6 @@ class Tweet : GLib.Object{
 	 *
 	 */
 	public static async void cache(Tweet t, int type){
-		// Check the tweeter's details and update them if necessary
-		try{
-			author_query.set_int64(":id", t.user_id);
-			SQLHeavy.QueryResult author_result = author_query.execute();
-			if (author_result.finished){
-				//The author is not in the DB so we insert him
-				// message("Inserting new author %s", t.screen_name);
-				Corebird.db.execute("INSERT INTO `people`(id,name,screen_name,
-				                    avatar_url, avatar_name) VALUES
-									('%d', '%s', '%s', '%s', '%s');",
-				                    t.user_id, t.user_name, t.screen_name, t.avatar_url,
-				                    t.avatar_name);
-			}else{
-				string old_avatar = author_result.fetch_string(2);
-				if (old_avatar != t.avatar_url){
-					Corebird.db.execute("UPDATE `people` SET `avatar_url`='%s'
-					                    WHERE `id`='%d';", t.avatar_url, t.user_id);
-				}
-				if (t.user_name != author_result.fetch_string(1)){
-					Corebird.db.execute("UPDATE `people` SET `screen_name`='%s'
-					                    WHERE `id`='%d';", t.user_name, t.user_id);
-				}
-			}
-		}catch(SQLHeavy.Error e){
-			warning("Error while updating author: %s", e.message);
-		}
-
-
-		// Insert tweet into cache table
-		try{
-			cache_query.set_int64(":id", t.id);
-			cache_query.set_int64(":rt_id", t.rt_id);
-			cache_query.set_string(":text", t.text);
-			cache_query.set_int64(":user_id", t.user_id);
-			cache_query.set_string(":user_name", t.user_name);
-			cache_query.set_int(":is_retweet", t.is_retweet ? 1 : 0);
-			cache_query.set_string(":retweeted_by", t.retweeted_by);
-			cache_query.set_int(":retweeted", t.retweeted ? 1 : 0);
-			cache_query.set_int(":favorited", t.favorited ? 1 : 0);
-			cache_query.set_int64(":created_at", t.created_at);
-			cache_query.set_int64(":rt_created_at", t.rt_created_at);
-			// TODO: Set the avatar_url
-			cache_query.set_string(":avatar_name", t.avatar_name);
-			cache_query.set_string(":screen_name", t.screen_name);
-			cache_query.set_int(":type", type); // 1 = normal tweet
-			cache_query.set_int64(":reply_id", t.reply_id);
-			cache_query.set_string(":media", t.media);
-			cache_query.set_int(":verified", t.verified ? 1 : 0);
-			cache_query.execute();
-		}catch(SQLHeavy.Error e){
-			error("Error while caching tweet: %s", e.message);
-		}
 	}
 
 	/**

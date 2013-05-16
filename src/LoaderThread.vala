@@ -36,8 +36,6 @@ class LoaderThread{
 
 			if (tweet_type != -1){
 				t.type = tweet_type;
-				if(cache)
-					TweetCacher.get().enqueue(t);
 			}
 
 			if(t.id < lowest_id)
