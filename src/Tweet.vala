@@ -6,7 +6,6 @@ class Tweet : GLib.Object{
 	public static const int TYPE_MENTION  = 2;
 	public static const int TYPE_FAVORITE = 3;
 
-	private static SQLHeavy.Query cache_query;
 	private static SQLHeavy.Query author_query;
 
 	public static GLib.Regex link_regex;
@@ -42,24 +41,6 @@ class Tweet : GLib.Object{
 
 	public Tweet(){
 		this.avatar = Twitter.no_avatar;
-		if(cache_query == null){
-			try {
-				cache_query = new SQLHeavy.Query(Corebird.db,
-				"REPLACE INTO `cache`(`id`, `text`,`user_id`, `user_name`, `is_retweet`,
-				                     `retweeted_by`, `retweeted`, `favorited`,
-				                     `created_at`,`rt_created_at`, `avatar_name`,
-				                     `screen_name`, `type`,`rt_id`, `reply_id`, `media`,
-				                     `verified`)
-				VALUES (:id, :text, :user_id, :user_name, :is_retweet, :retweeted_by,
-				        :retweeted, :favorited, :created_at, :rt_created_at,:avatar_name,
-				        :screen_name, :type, :rt_id, :reply_id, :media, :verified);");
-				author_query = new SQLHeavy.Query(Corebird.db,
-				"SELECT `id`, `screen_name`, `avatar_url` FROM `people`
-				WHERE `id`=:id;");
-			} catch (SQLHeavy.Error e) {
-				critical(e.message);
-			}
-		}
 	}
 
 	public void load_avatar(Gdk.Pixbuf? pixbuf = null){

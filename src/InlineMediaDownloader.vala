@@ -93,8 +93,6 @@ class InlineMediaDownloader {
 				string path = Utils.user_file("assets/media/"+file_name);
 				string thumb_path = Utils.user_file("assets/media/thumbs/"
 				                                             +file_name);
-				Corebird.db.execute(@"UPDATE `cache` SET `media`='$path'
-				                    WHERE `id`='$(t.id)';");
 				t.media = path;
 				pic.save(path, ext);
 				thumb.save(thumb_path, ext);

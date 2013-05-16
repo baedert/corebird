@@ -25,65 +25,6 @@ interface ITimeline : Gtk.Widget, IPage {
 	 * @param tweet_type The type of tweet to load
 	 */
 	protected void load_cached_internal(int tweet_type) throws SQLHeavy.Error {
-		GLib.DateTime now = new GLib.DateTime.now_local();
-
-		SQLHeavy.Query query = new SQLHeavy.Query(Corebird.db,
-			@"SELECT `id`, `text`, `user_id`, `user_name`, `is_retweet`,
-			`retweeted_by`, `retweeted`, `favorited`, `created_at`,
-			`rt_created_at`, `avatar_name`, `screen_name`, `type`,
-			`reply_id`, `media`, `rt_id`, `reply_id`, `verified`
-			FROM `cache` WHERE `type`='$tweet_type'
-			ORDER BY `created_at` DESC LIMIT 15;");
-		SQLHeavy.QueryResult result = query.execute();
-		while(!result.finished){
-			Tweet t         = new Tweet();
-			t.id            = result.fetch_int64(0);
-			t.text          = result.fetch_string(1);
-			t.user_id       = result.fetch_int64(2);
-			t.user_name     = result.fetch_string(3);
-			t.is_retweet    = (bool)result.fetch_int(4);
-			t.retweeted_by  = result.fetch_string(5);
-			t.retweeted     = (bool)result.fetch_int(6);
-			t.favorited     = (bool)result.fetch_int(7);
-			t.created_at    = result.fetch_int64(8);
-			t.rt_created_at = result.fetch_int64(9);
-			t.reply_id      = result.fetch_int64(13);
-			t.media         = result.fetch_string(14);
-			t.rt_id         = result.fetch_int64(15);
-			t.reply_id      = result.fetch_int64(16);
-			t.verified      = (bool)result.fetch_int(17);
-
-
-
-
-			if(t.id < max_id)
-				max_id = t.id;
-
-			int64 created = -1;
-			if(t.is_retweet)
-				created = result.fetch_int64(9);
-			else
-				created = t.created_at;
-
-			t.time_delta   = Utils.get_time_delta(new DateTime.from_unix_local(created),
-												  now);
-			t.avatar_name  = result.fetch_string(10);
-			t.screen_name  = result.fetch_string(11);
-			t.load_avatar();
-
-			// Append the tweet to the TweetList
-			TweetListEntry list_entry = new TweetListEntry(t, main_window);
-			if(t.media != null){
-				string thumb_path = Utils.user_file("assets/media/thumbs/"+Utils.get_file_name(t.media));
-				try {
-					t.inline_media_added(new Gdk.Pixbuf.from_file(thumb_path));
-				} catch (GLib.Error e) {
-					warning(e.message);
-				}
-			}
-			tweet_list.add(list_entry);
-			result.next();
-		}
 	}
 
 	/**
@@ -96,12 +37,7 @@ interface ITimeline : Gtk.Widget, IPage {
 	protected void load_newest_internal(string function, int tweet_type,
 	                                    LoaderThread.EndLoadFunc? end_load_func = null)
 	                                    throws SQLHeavy.Error {
-		SQLHeavy.Query id_query = new SQLHeavy.Query(Corebird.db,
-		 	@"SELECT `id`, `created_at` FROM `cache`
-		 	WHERE `type`='$tweet_type' ORDER BY `created_at` DESC LIMIT 1;");
-		SQLHeavy.QueryResult id_result = id_query.execute();
-		int64 greatest_id = id_result.fetch_int64(0);
-		message("greatest_id: %s", greatest_id.to_string());
+		int64 greatest_id = 0;
 
 		var call = Twitter.proxy.new_call();
 		call.set_function(function);

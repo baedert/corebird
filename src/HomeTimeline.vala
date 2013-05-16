@@ -98,7 +98,6 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
             (count, lowest_id) => {
         		if(lowest_id < this.lowest_id)
         			this.lowest_id = lowest_id;
-
             });
 		} catch(SQLHeavy.Error e){
 			warning("SQL Error while loading newest tweets of timeline %d: %s",
