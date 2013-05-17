@@ -27,16 +27,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.35695875"
-     inkscape:cx="536.75195"
-     inkscape:cy="474.94308"
+     inkscape:zoom="0.50902762"
+     inkscape:cx="649.55797"
+     inkscape:cy="410.73266"
      inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="layer2"
      showgrid="false"
-     inkscape:window-width="730"
-     inkscape:window-height="654"
-     inkscape:window-x="1167"
-     inkscape:window-y="70"
+     inkscape:window-width="1372"
+     inkscape:window-height="945"
+     inkscape:window-x="498"
+     inkscape:window-y="27"
      inkscape:window-maximized="0"
      fit-margin-top="0"
      fit-margin-left="0"
@@ -50,46 +50,33 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <g
-     inkscape:label="Layer 1"
+     inkscape:label="status"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-165.95982,-157.13231)">
+     transform="translate(-165.95982,-157.13231)" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="actions">
     <g
-       id="g3058"
-       transform="translate(-0.46874,-46.51559)">
-      <g
-         transform="translate(0,4)"
-         style="fill:#eeeeec"
-         id="g3052">
-        <path
-           id="path3054"
-           d="m 812.67857,818.6948 c -58.24416,59.6497 -139.54481,96.6875 -229.5,96.6875 -87.15553,0 -166.16001,-34.7719 -223.96875,-91.1875 -79.2234,41.4504 -145.98719,103.4752 -193.25,178.9375 l 850.93748,0 C 967.47687,924.225 896.69145,860.0605 812.67857,818.6948 z"
-           style="fill:#eeeeec;fill-opacity:1;fill-rule:nonzero;stroke:none"
-           inkscape:connector-curvature="0" />
-        <path
-           id="path3056"
-           d="m 591.42857,250.1635 c -166.43667,0 -301.375,134.9384 -301.375,301.375 0,166.4367 134.93833,301.3438 301.375,301.3438 166.43667,0 301.375,-134.9071 301.375,-301.3438 0,-166.4366 -134.93833,-301.375 -301.375,-301.375 z m -206.5,442.9063 413,0 c -44.1788,67.0904 -120.16335,111.375 -206.5,111.375 -86.33351,0 -162.32049,-44.2887 -206.5,-111.375 z"
-           style="fill:#eeeeec;fill-opacity:1;fill-rule:nonzero;stroke:none"
-           inkscape:connector-curvature="0" />
-      </g>
-      <g
-         id="g3048">
-        <path
-           inkscape:connector-curvature="0"
-           style="fill:#bebebe;fill-opacity:1;fill-rule:nonzero;stroke:none"
-           d="m 812.67857,818.6948 c -58.24416,59.6497 -139.54481,96.6875 -229.5,96.6875 -87.15553,0 -166.16001,-34.7719 -223.96875,-91.1875 -79.2234,41.4504 -145.98719,103.4752 -193.25,178.9375 l 850.93748,0 C 967.47687,924.225 896.69145,860.0605 812.67857,818.6948 z"
-           id="path3775" />
-        <path
-           inkscape:connector-curvature="0"
-           style="fill:#bebebe;fill-opacity:1;fill-rule:nonzero;stroke:none"
-           d="m 591.42857,250.1635 c -166.43667,0 -301.375,134.9384 -301.375,301.375 0,166.4367 134.93833,301.3438 301.375,301.3438 166.43667,0 301.375,-134.9071 301.375,-301.3438 0,-166.4366 -134.93833,-301.375 -301.375,-301.375 z m -206.5,442.9063 413,0 c -44.1788,67.0904 -120.16335,111.375 -206.5,111.375 -86.33351,0 -162.32049,-44.2887 -206.5,-111.375 z"
-           id="path3782" />
-      </g>
+       id="g3048"
+       transform="translate(-166.42856,-201.6479)"
+       style="fill:#2e3436">
+      <path
+         id="path3775"
+         d="m 812.67857,818.6948 c -58.24416,59.6497 -139.54481,96.6875 -229.5,96.6875 -87.15553,0 -166.16001,-34.7719 -223.96875,-91.1875 -79.2234,41.4504 -145.98719,103.4752 -193.25,178.9375 l 850.93748,0 C 967.47687,924.225 896.69145,860.0605 812.67857,818.6948 z"
+         style="fill:#2e3436;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         inkscape:connector-curvature="0" />
+      <path
+         id="path3782"
+         d="m 591.42857,250.1635 c -166.43667,0 -301.375,134.9384 -301.375,301.375 0,166.4367 134.93833,301.3438 301.375,301.3438 166.43667,0 301.375,-134.9071 301.375,-301.3438 0,-166.4366 -134.93833,-301.375 -301.375,-301.375 z m -206.5,442.9063 413,0 c -44.1788,67.0904 -120.16335,111.375 -206.5,111.375 -86.33351,0 -162.32049,-44.2887 -206.5,-111.375 z"
+         style="fill:#2e3436;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         inkscape:connector-curvature="0" />
     </g>
   </g>
 </svg>

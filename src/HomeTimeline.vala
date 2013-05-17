@@ -122,7 +122,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 
 
 	public void create_tool_button(RadioToolButton? group){
-		tool_button = new BadgeRadioToolButton(group, Stock.HOME);
+		tool_button = new BadgeRadioToolButton(group, "stream");
 	}
 
 	public RadioToolButton? get_tool_button(){

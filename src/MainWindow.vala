@@ -17,14 +17,13 @@ class MainWindow : ApplicationWindow {
 	private Toolbar primary_toolbar          = new Toolbar();
 	private Box main_box                     = new Box(Orientation.VERTICAL, 0);
 	private Box bottom_box                   = new Box(Orientation.HORIZONTAL, 0);
-	private RadioToolButton dummy_button	 = new RadioToolButton(null);
-	private ITimeline[] timelines			 = new ITimeline[3];
-	private IPage[] pages 				     = new IPage[1];
+	private RadioToolButton dummy_button	   = new RadioToolButton(null);
+	private ITimeline[] timelines			       = new ITimeline[3];
+	private IPage[] pages 				           = new IPage[1];
 	private int active_page                  = 0;
-	private int last_page				     = 0;
+	private int last_page				             = 0;
 	private ToolButton avatar_button         = new ToolButton(null, null);
-	private ToolButton settings_button       = new ToolButton.from_stock(
-	                                                          Stock.PROPERTIES);
+	private ToolButton settings_button       = new ToolButton.from_stock(Stock.PROPERTIES);
 	private ToolButton new_tweet_button      = new ToolButton.from_stock(Stock.NEW);
 	private SeparatorToolItem expander_item  = new SeparatorToolItem();
 	private SeparatorToolItem left_separator = new SeparatorToolItem();
@@ -32,6 +31,7 @@ class MainWindow : ApplicationWindow {
 
 	public MainWindow(Gtk.Application app){
 		GLib.Object (application: app);
+    this.set_icon_name("corebird");
 
 		stack.transition_duration = 300;
 		stack.transition_type = Gd.Stack.TransitionType.SLIDE_RIGHT;
