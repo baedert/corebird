@@ -51,7 +51,6 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 				GLib.DateTime now = new GLib.DateTime.now_local();
 				Tweet t = new Tweet();
 				t.load_from_json(root, now);
-				Tweet.cache.begin(t, Tweet.TYPE_MENTION);
 
 				this.balance_next_upper_change(TOP);
 				var entry = new TweetListEntry(t, main_window);

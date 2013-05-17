@@ -170,16 +170,6 @@ class Tweet : GLib.Object{
 	}
 
 	/**
-	 * Caches the given tweet by writing it into the database.
-	 *
-	 * @param t The tweet to cache.
-	 * @param type The type of the tweet, see Tweet.TYPE_* constants.
-	 *
-	 */
-	public static async void cache(Tweet t, int type){
-	}
-
-	/**
 	 * Replaces the links in the given text with html tags to be used in
 	 * pango layouts.
 	 *
