@@ -6,7 +6,6 @@ class Tweet : GLib.Object{
 	public static const int TYPE_MENTION  = 2;
 	public static const int TYPE_FAVORITE = 3;
 
-	private static SQLHeavy.Query author_query;
 
 	public static GLib.Regex link_regex;
 
