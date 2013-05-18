@@ -50,8 +50,6 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
       Tweet t = new Tweet();
       t.load_from_json(root, now);
 
-      Tweet.cache.begin(t, Tweet.TYPE_NORMAL);
-
       this.balance_next_upper_change(TOP);
       var entry = new TweetListEntry(t, main_window);
       entry.seen = false;
@@ -98,7 +96,6 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
             (count, lowest_id) => {
             if(lowest_id < this.lowest_id)
               this.lowest_id = lowest_id;
-
             });
     } catch(SQLHeavy.Error e){
       warning("SQL Error while loading newest tweets of timeline %d: %s",

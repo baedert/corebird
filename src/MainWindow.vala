@@ -68,21 +68,9 @@ class MainWindow : ApplicationWindow {
 		// Start userstream
 		UserStream.get().start();
 
-		this.window_state_event.connect((evt) => {
-			// If the window gets unfocused
-			if(evt.new_window_state == 0) {
-				TweetCacher.get().start();
-			}else if(evt.new_window_state == Gdk.WindowState.FOCUSED) {
-				TweetCacher.get().stop();
-			}
-			return false;
-		});
-
-
 		this.delete_event.connect(() => {
 			save_geometry();
 			this.set_visible(false);
-			TweetCacher.get().start();
 			return true;
 		});
 
@@ -100,12 +88,7 @@ class MainWindow : ApplicationWindow {
 		this.get_application().add_action(new_tweet_action);
 		var quit_action = new SimpleAction("quit", null);
 		quit_action.activate.connect(() => {
-			this.visible = false;
-
-			TweetCacher.get().start_sync.begin(() => {
-				this.get_application().release();
-			});
-
+        this.get_application().release();
 		});
 		this.get_application().add_action(quit_action);
 

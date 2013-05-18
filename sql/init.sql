@@ -9,30 +9,6 @@ CREATE TABLE IF NOT EXISTS `common`(
 				characters_reserved_per_media INTEGER(3)
 );
 
-CREATE TABLE IF NOT EXISTS `cache`(
-                id NUMERIC(19,0) PRIMARY KEY,
-                rt_id NUMERIC(19,0),
-                text VARCHAR(200),
-				user_id NUMERIC(19,0),
-				user_name VARCHAR(100),
-				screen_name VARCHAR(40),
-				is_retweet BOOL,
-			    retweeted_by VARCHAR(100),
-			    retweeted BOOL,
-			    favorited BOOL,
-			    created_at INTEGER(19,0),
-			    rt_created_at INTEGER(19,0),
-			    avatar_url VARCHAR(255),
-			    avatar_name VARCHAR(50),
-			    retweets INTEGER(5),
-			    favorites INTEGER(5),
-			    type INTEGER(1),
-			    reply_id NUMERIC(19,0),
-			    media VARCHAR(255),
-				media_thumb VARCHAR(255),
-			    verified BOOL
-);
-
 CREATE TABLE IF NOT EXISTS `people`(
 				id NUMERIC(19,0),
 			    name VARCHAR(30),

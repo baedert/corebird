@@ -9,15 +9,13 @@ class LoaderThread{
 	private unowned EndLoadFunc? finished;
 	private int tweet_type;
 	private int64 lowest_id = int64.MAX - 1;
-	private bool cache = true;
 
 	public LoaderThread(Json.Array root, MainWindow? window, Egg.ListBox list,
-	                    int tweet_type = -1, bool cache = true){
+	                    int tweet_type = -1){
 		this.root       = root;
 		this.window     = window;
 		this.list       = list;
 		this.tweet_type = tweet_type;
-		this.cache 		= cache;
 	}
 
 	public void run(EndLoadFunc? finished = null){
@@ -36,8 +34,6 @@ class LoaderThread{
 
 			if (tweet_type != -1){
 				t.type = tweet_type;
-				if(cache)
-					TweetCacher.get().enqueue(t);
 			}
 
 			if(t.id < lowest_id)
