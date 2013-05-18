@@ -18,7 +18,7 @@ enum StreamMessageType {
 // TODO: Retweets(other user retweet the user's tweet) are
 //       recognized as mentions(and...tweets?)
 
-class UserStream : Object{
+class UserStream : Object {
 	private static UserStream instance;
 	public static new UserStream get(){
 		if(instance == null)
@@ -28,10 +28,11 @@ class UserStream : Object{
 	}
 
 
-
+	private static const int TIMEOUT_INTERVAL 	  = 45*1000;
 	private Rest.OAuthProxy proxy;
 	private StringBuilder data                    = new StringBuilder();
 	private SList<IMessageReceiver> receivers 	  = new SList<IMessageReceiver>();
+	private uint timeout_id = -1;
 
 
 
@@ -69,7 +70,21 @@ class UserStream : Object{
 		}
 	}
 
+	private bool timeout_cb() {
+		var builder = new UIBuilder(DATADIR+"/ui/connection-lost-dialog.ui");
+		var dialog = builder.get_dialog ("dialog1");
+		var label = builder.get_label("text_label");
+		dialog.response.connect((id) => {
+			if(id == 0)
+				dialog.destroy();
+			else if(id == 1) {
+				error ("Implement reconnecting");
+			}
+		});
 
+		dialog.show_all();
+		return false;
+	}
 
 	private void parse_data_cb(Rest.ProxyCall call, string? buf, size_t length,
 	                           Error? error) {
@@ -83,7 +98,13 @@ class UserStream : Object{
 		data.append(real);
 
 		if(real.has_suffix("\r\n")) {
+			//Reset the timeout
+			if(timeout_id != -1)
+				GLib.Source.remove (timeout_id);
+ 			timeout_id = GLib.Timeout.add (TIMEOUT_INTERVAL, timeout_cb);
+
 			if(real == "\r\n") {
+				message("HEARTBEAT");
 				data.erase();
 				return;
 			}
@@ -91,7 +112,11 @@ class UserStream : Object{
 			stdout.printf("USING DATA:\n%s\n", data.str);
 
 			var parser = new Json.Parser();
-			parser.load_from_data(data.str);
+			try{
+				parser.load_from_data(data.str);
+			} catch (GLib.Error e) {
+				critical(e.message);
+			}
 
 			var root = parser.get_root().get_object();
 
@@ -120,9 +145,8 @@ class UserStream : Object{
 				type = StreamMessageType.WARNING;
 
 
-			foreach(IMessageReceiver it in receivers){
+			foreach(IMessageReceiver it in receivers)
 				it.stream_message_received(type, root);
-			}
 
 
 			data.erase();

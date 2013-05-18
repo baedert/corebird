@@ -49,7 +49,6 @@ class FirstRunWindow : ApplicationWindow {
 	}
 
 	private void switch_windows(){
-		Settings.set_bool("first-run", false);
 		app.add_main_window();
 		this.destroy();
 	}

@@ -3,7 +3,7 @@
 
 using Gtk;
 
-
+// TODO: Add timeout that removes all entries after X seconds when switched away
 class SearchTimeline : IPage, ITimeline, Box {
 	/** The unread count here is always zero */
 	public int unread_count{

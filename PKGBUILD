@@ -14,10 +14,11 @@ depends=('gtk3>=3.6'
 		 'sqlite3'
 		 'libsoup>=2.4'
 		 'libnotify'
-		 'sqlheavy-git')
+		 'sqlheavy-git'
+		 'json-glib')
 makedepends=('vala' 'git' 'cmake')
 
-_gitroot="https://baedert@bitbucket.org/baedert/corebird.git"
+_gitroot="https://bitbucket.org/baedert/corebird.git"
 _gitname="corebird"
 
 build() {
