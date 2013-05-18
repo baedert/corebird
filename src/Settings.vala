@@ -35,8 +35,8 @@ class Settings : GLib.Object {
 	*/
 	public static bool is_first_run(){
     // If the database file exists, this is NOT the first run...
-    string db_file = Utils.user_file("corebird.db");
-    return FileUtils.test(db_file, FileTest.EXISTS);
+    string db_file = Utils.user_file("Corebird.db");
+    return !FileUtils.test(db_file, FileTest.EXISTS);
 	}
 	/**
 	* Check whether the user wants Corebird to always use the dark gtk theme variant.
