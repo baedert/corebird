@@ -119,6 +119,7 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 
 	public void create_tool_button(RadioToolButton? group){
 		tool_button = new BadgeRadioToolButton(group, "mentions");
+    tool_button.label = "Connect";
 	}
 
 	public RadioToolButton? get_tool_button(){
