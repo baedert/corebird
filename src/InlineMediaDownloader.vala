@@ -68,7 +68,7 @@ class InlineMediaDownloader {
 
 
 		Soup.Session session = sess;
-		message("Directly Downloading %s", url);
+		debug("Directly Downloading %s", url);
 		if(session == null)
 			session = new Soup.SessionAsync();
 

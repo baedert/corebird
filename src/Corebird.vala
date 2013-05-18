@@ -213,7 +213,8 @@ class Corebird : Gtk.Application {
 
     log_stream.write_all (out_string.data, null);
     log_stream.flush();
-    stdout.printf(out_string);
+    if (flags != LogLevelFlags.LEVEL_DEBUG)
+      stdout.printf(out_string);
   }
 }
 
