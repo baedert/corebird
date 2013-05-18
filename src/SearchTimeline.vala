@@ -111,7 +111,7 @@ class SearchTimeline : IPage, ITimeline, Box {
 
 
 	public void create_tool_button(RadioToolButton? group){
-		tool_button = new RadioToolButton.with_stock_from_widget(group, Stock.FIND);
+		tool_button = new RadioToolButton.with_stock_from_widget(group, "search");
 	}
 
 	public RadioToolButton? get_tool_button(){
