@@ -1516,9 +1516,10 @@ egg_list_box_remove_last(GtkContainer* container,
       child_info = g_sequence_get(iter);
       child = child_info->widget;
 
-      gtk_widget_unparent(child);
+ /*     gtk_widget_unparent(child);
       g_hash_table_remove(priv->child_hash, child);
-      g_sequence_remove(iter);
+      g_sequence_remove(iter);*/
+      egg_list_box_real_remove (container, child);
       iter = g_sequence_get_end_iter(priv->children);
       iter = g_sequence_iter_prev(iter);
       i++;

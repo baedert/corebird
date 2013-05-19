@@ -87,6 +87,7 @@ set (VALA_SOURCE
 	src/DeltaUpdater.vala
 	src/WarningService.vala
 	src/IMessageReceiver.vala
+  src/ITwitterItem.vala
 	src/widgets/ImageDialog.vala
 	src/widgets/ImageBox.vala
 	src/widgets/ImageLabel.vala

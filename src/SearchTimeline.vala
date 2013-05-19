@@ -46,7 +46,7 @@ class SearchTimeline : IPage, ITimeline, Box {
 		tweet_list.add_to_scrolled(result_scroller);
 		this.pack_start(result_scroller, true, true);
 
-		tweet_list.set_sort_func(TweetListEntry.sort_func);
+		tweet_list.set_sort_func(ITwitterItem.sort_func);
 	}
 
 	/**

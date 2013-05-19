@@ -21,7 +21,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
     tweet_list.get_style_context().add_class("stream");
     tweet_list.set_selection_mode(SelectionMode.NONE);
     tweet_list.add_to_scrolled(this);
-    tweet_list.set_sort_func(TweetListEntry.sort_func);
+    tweet_list.set_sort_func (ITwitterItem.sort_func);
 
 
     this.scrolled_to_end.connect(() => {

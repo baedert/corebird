@@ -88,7 +88,6 @@ class ImageDialog : Gtk.Window {
 			return true;
 		});
 		this.button_press_event.connect((evt) => {
-			message("B: %u", evt.button);
 			if(evt.button != 3)
 				this.destroy();
 			else
