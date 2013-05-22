@@ -1,72 +1,77 @@
 <schemalist>
-	<schema id="org.baedert.corebird"
-  		path="/org/baedert/corebird/"
-	  	gettext-domain="corebird">
+  <schema id="org.baedert.corebird"
+      path="/org/baedert/corebird/"
+      gettext-domain="corebird">
 
-		<key name="use-dark-theme" type="b">
-			<default>false</default>
-			<summary>Specifies if Corebird shoult request to use the dark variant of the gtk theme</summary>
-			<description>Although not intended by the creators, a lot of users prefer to use a dark twitter client. </description>
-		</key>
-		<key name="show-primary-toolbar" type="b">
-			<default>true</default>
-			<summary>Whether to show the primary toolbar in the main window or not</summary>
-			<description>See summary</description>
-		</key>
+    <key name="use-dark-theme" type="b">
+      <default>false</default>
+      <summary>Specifies if Corebird shoult request to use the dark variant of the gtk theme</summary>
+      <description>Although not intended by the creators, a lot of users prefer to use a dark twitter client. </description>
+    </key>
+    <key name="show-primary-toolbar" type="b">
+      <default>true</default>
+      <summary>Whether to show the primary toolbar in the main window or not</summary>
+      <description>See summary</description>
+    </key>
 
-		<key name="new-tweets-notify" type="i">
-			<default>0</default>
-			<summary>FOO FOO BAR BLA BLA BLA</summary>
-			<description>
-				0 = 'Disabled'
-				1 = 'Every'
-				2 = 'Stack 5'
-				3 = 'Stack 10'
-				4 = 'Stack 25'
-				5 = 'Stack 50'
-			</description>
-		</key>
-		<key name="new-mentions-notify" type="b">
-			<default>true</default>
-			<summary>X</summary>
-			<description>Y</description>
-		</key>
-		<key name="new-dms-notify" type="b">
-			<default>true</default>
-			<summary>X</summary>
-			<description>Y</description>
-		</key>
-		<key name="refresh-streams-on-startup" type="b">
-			<default>true</default>
-			<summary>X</summary>
-			<description>Y</description>
-		</key>
-		<key name="show-tray-icon" type="b">
-			<default>true</default>
-			<summary>X</summary>
-			<description>Y</description>
-		</key>
-		<key name="main-window-geometry" type="s">
-			<default>"0,0,400,600"</default>
-			<summary>X</summary>
-			<description>Y</description>
-		</key>
-		<key name="show-inline-media" type="b">
-			<default>true</default>
-			<summary>bla bla</summary>
-			<description>babbada</description>
-		</key>
-		<key name="upload-provider" type="i">
-			<default>0</default>
-			<summary></summary>
-			<description>
-				0 = pic.twitter.com
-			</description>
-		</key>
-		<key name="animation-duration" type="i">
-			<default>300</default>
-			<summary>Duration of slide animations[ms]</summary>
-			<description></description>
-		</key>
-	</schema>
+    <key name="new-tweets-notify" type="i">
+      <default>0</default>
+      <summary>FOO FOO BAR BLA BLA BLA</summary>
+      <description>
+        0 = 'Disabled'
+        1 = 'Every'
+        2 = 'Stack 5'
+        3 = 'Stack 10'
+        4 = 'Stack 25'
+        5 = 'Stack 50'
+      </description>
+    </key>
+    <key name="new-mentions-notify" type="b">
+      <default>true</default>
+      <summary>X</summary>
+      <description>Y</description>
+    </key>
+    <key name="new-dms-notify" type="b">
+      <default>true</default>
+      <summary>X</summary>
+      <description>Y</description>
+    </key>
+    <key name="new-followers-notify" type="b">
+      <default>true</default>
+      <summary>X</summary>
+      <description>Y</description>
+    </key>
+    <key name="refresh-streams-on-startup" type="b">
+      <default>true</default>
+      <summary>X</summary>
+      <description>Y</description>
+    </key>
+    <key name="show-tray-icon" type="b">
+      <default>true</default>
+      <summary>X</summary>
+      <description>Y</description>
+    </key>
+    <key name="main-window-geometry" type="s">
+      <default>"0,0,400,600"</default>
+      <summary>X</summary>
+      <description>Y</description>
+    </key>
+    <key name="show-inline-media" type="b">
+      <default>true</default>
+      <summary>bla bla</summary>
+      <description>babbada</description>
+    </key>
+    <key name="upload-provider" type="i">
+      <default>0</default>
+      <summary></summary>
+      <description>
+        0 = pic.twitter.com
+      </description>
+    </key>
+    <key name="animation-duration" type="i">
+      <default>300</default>
+      <summary>Duration of slide animations[ms]</summary>
+      <description></description>
+    </key>
+  </schema>
 </schemalist>

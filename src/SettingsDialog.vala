@@ -63,6 +63,12 @@ class SettingsDialog : Gtk.Dialog {
 			Settings.set_bool("new-dms-notify", on_new_dms_switch.active);
 		});
 
+    var on_new_followers_switch = builder.get_switch("on_new_followers_switch");
+    on_new_followers_switch.active = Settings.notify_new_followers();
+    on_new_followers_switch.notify["active"].connect(() => {
+        Settings.set_bool("new-followers-notify", on_new_followers_switch.active);
+    });
+
 		this.add_button("Close", 1);
 
 		this.response.connect((id) => {

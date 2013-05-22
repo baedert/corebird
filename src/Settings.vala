@@ -65,6 +65,10 @@ class Settings : GLib.Object {
 		return settings.get_boolean("new-dms-notify");
 	}
 
+  public static bool notify_new_followers() {
+    return settings.get_boolean("new-followers-notify");
+  }
+
 	public static int upload_provider(){
 		return settings.get_int("upload-provider");
 	}
