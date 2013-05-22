@@ -116,7 +116,7 @@ interface ITimeline : Gtk.Widget, IPage {
 			return;
 
 		tweet_list.forall_internal(false, (w) => {
-			TweetListEntry tle = (TweetListEntry)w;
+			ITwitterItem tle = (ITwitterItem)w;
 			if(tle.seen)
 				return;
 
