@@ -214,6 +214,7 @@ class TweetListEntry : ITwitterItem, Gtk.EventBox {
       rt_label.set_halign(Align.END);
       rt_label.set_valign(Align.START);
       rt_label.margin_bottom = 4;
+      rt_label.get_style_context().add_class("dim-label");
       right_box.pack_end(rt_label, true, true);
     }
 
