@@ -329,40 +329,39 @@ class ProfileWidget : Gtk.Box {
                             string? location, string description, int tweets,
                             int following, int followers) {
 
-      name_label.set_markup("<big><big><b>%s</b>  @%s</big></big>"
-                              .printf(name, screen_name));
-      string d = Tweet.replace_links(description);
-      description_label.set_markup("<big><big><big>%s</big></big></big>".printf(d));
-      tweets_button.set_markup(
-          "<big><big><b>%'d</b></big></big>\nTweets"
-          .printf(tweets));
+    name_label.set_markup("<big><big><b>%s</b>  @%s</big></big>"
+                          .printf(name, screen_name));
+    string d = Tweet.replace_links(description);
+    description_label.set_markup("<big><big><big>%s</big></big></big>".printf(d));
+    tweets_button.set_markup(
+      "<big><big><b>%'d</b></big></big>\nTweets"
+      .printf(tweets));
 
-      following_button.set_markup(
-          "<big><big><b>%'d</b></big></big>\nFollowing"
-          .printf(following));
+    following_button.set_markup(
+      "<big><big><b>%'d</b></big></big>\nFollowing"
+      .printf(following));
 
-      followers_button.set_markup(
-          "<big><big><b>%'d</b></big></big>\nFollowers"
-          .printf(followers));
+    followers_button.set_markup(
+      "<big><big><b>%'d</b></big></big>\nFollowers"
+      .printf(followers));
 
-      if(location != null && location != ""){
-        location_label.visible = true;
-        location_label.set_markup("<big><big>%s</big></big>".printf(location));
-      }else
-        location_label.visible = false;
+    if(location != null && location != ""){
+      location_label.visible = true;
+      location_label.set_markup("<big><big>%s</big></big>".printf(location));
+    }else
+      location_label.visible = false;
 
-      if(url != null && url != ""){
-        url_label.visible = true;
-        url_label.set_markup("<big><big><a href='%s'>%s</a></big></big>"
-                             .printf(url, url));
-      }else
-        url_label.visible = false;
+    if(url != null && url != ""){
+      url_label.visible = true;
+      url_label.set_markup("<big><big><a href='%s'>%s</a></big></big>"
+                         .printf(url, url));
+    }else
+      url_label.visible = false;
 
   }
 
 
   private void toggle_follow() {
-    return;
     // TODO: Don't automatically call this whenever the user opens a profile…
     bool value = follow_button.active;
     var call = Twitter.proxy.new_call();
