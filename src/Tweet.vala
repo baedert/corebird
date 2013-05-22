@@ -32,13 +32,13 @@ class Tweet : GLib.Object{
 	public int64 rt_created_at;
 	public bool verified = false;
 
-    /** if 0, this tweet is NOT part of a conversation */
-    public int64 reply_id = 0;
-    public string media;
+  /** if 0, this tweet is NOT part of a conversation */
+  public int64 reply_id = 0;
+  public string media;
 	public string media_thumb;
-    public signal void inline_media_added(Gdk.Pixbuf? media);
-    public bool has_inline_media = false;
-    public int type = -1;
+  public signal void inline_media_added(Gdk.Pixbuf? media);
+  public bool has_inline_media = false;
+  public int type = -1;
 
 
 	public Tweet(){

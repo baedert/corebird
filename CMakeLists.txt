@@ -48,7 +48,6 @@ set (DEPS glib-2.0;
 		  gio-2.0;
 		  rest-0.7;
 		  sqlheavy-0.2;
-		  gmodule-2.0;
 		  gee-0.8;
 		  json-glib-1.0;
 		  libnotify;
@@ -102,6 +101,7 @@ set (VALA_SOURCE
 	src/widgets/InvisibilityBin.vala
 	src/widgets/ImageOverlay.vala
   src/list/TweetListEntry.vala
+  src/list/NewFollowerEntry.vala
 	src/util/UIBuilder.vala
 	src/util/Utils.vala
 	src/util/Benchmark.vala

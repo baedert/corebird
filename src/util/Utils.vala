@@ -146,8 +146,7 @@ class Utils{
     session.queue_message(msg, (_s, _msg) => {
       File out_file = File.new_for_path(path);
       var out_stream = out_file.replace(null, false,
-        FileCreateFlags.REPLACE_DESTINATION, null);
-
+                                        FileCreateFlags.REPLACE_DESTINATION, null);
       out_stream.write_all(_msg.response_body.data, null);
       cb();
     });
