@@ -24,3 +24,4 @@ Corebird.sublime-workspace
 *.ninja
 .ninja_log
 src/util/Config.vala
+session.vim
