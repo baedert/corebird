@@ -22,7 +22,7 @@ class TweetListEntry : ITwitterItem, Gtk.EventBox {
   public int64 timestamp;
   private int64 tweet_id;
   private Tweet tweet;
-  public bool seen = true;
+  public bool seen{get;set; default=true;}
   private Gtk.Box box = new Box(Orientation.HORIZONTAL, 5);
   private bool is_user_tweet = false;
 

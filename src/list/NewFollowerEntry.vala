@@ -7,6 +7,10 @@ class NewFollowerEntry : Gtk.Box, ITwitterItem {
   public int64 sort_factor{
     get { return date; }
   }
+  public bool seen{get;set; default=true;}
+
+  private Image follow_image = new Gtk.Image.from_file(DATADIR+"/follower.png");
+  private Box right_box = new Box(Orientation.VERTICAL, 3);
 
   public NewFollowerEntry (Json.Object root) {
     GLib.Object(orientation: Orientation.HORIZONTAL, spacing: 5);
@@ -16,7 +20,14 @@ class NewFollowerEntry : Gtk.Box, ITwitterItem {
     string avatar_url = source.get_string_member("profile_image_url");
 
     Label l = new Label("@%s followed you".printf(source.get_string_member("screen_name")));
-    this.pack_start(l, false, false);
+
+    follow_image.valign = Align.START;
+    this.pack_start(follow_image, false, false);
+
+    l.xalign = 0.0f;
+    l.yalign = 0.0f;
+    right_box.pack_end(l, true, true);
+    this.pack_start(right_box, true, true);
 
 
     this.show_all();

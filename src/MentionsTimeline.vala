@@ -41,7 +41,7 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
     });
 
 
-        UserStream.get().register(this);
+    UserStream.get().register(this);
   }
 
   private void stream_message_received(StreamMessageType type, Json.Object root){
@@ -71,11 +71,17 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
         }
       }
     } else if(type == StreamMessageType.FOLLOW) {
-      message("FOLLOW, YAY");
       var follower_entry = new NewFollowerEntry(root);
       tweet_list.add(follower_entry);
       // TODO: Are all there resort calls actually needed?
       tweet_list.resort();
+      unread_count++;
+      update_unread_count();
+
+      // Show notification
+      if(Settings.notify_new_followers()) {
+        
+      }
     }
   }
 
