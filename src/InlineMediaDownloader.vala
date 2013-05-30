@@ -119,12 +119,12 @@ class InlineMediaDownloader {
 
 	private static void fire_media_added(Tweet t, string path, Gdk.Pixbuf thumb,
 			                             string thumb_path) {
-		try{
+/*		try{
 			Corebird.db.execute(@"UPDATE `cache` SET `media`='$path', `media_thumb`='$thumb_path'
 				                    WHERE `id`='$(t.id)';");
 		}catch(SQLHeavy.Error e) {
 			error(e.message);
-		}
+		}*/
 		t.media = path;
 		t.media_thumb = thumb_path;
 		t.inline_media_added(thumb);

@@ -71,8 +71,17 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
         }
       }
     } else if(type == StreamMessageType.FOLLOW) {
-      var follower_entry = new NewFollowerEntry(root);
-      tweet_list.add(follower_entry);
+      NewFollowerEntry follower_entry;
+      ITwitterItem first_entry = (ITwitterItem)tweet_list.get_children().first().data;
+
+      if(first_entry is NewFollowerEntry)
+        follower_entry = (NewFollowerEntry) first_entry;
+      else{
+        follower_entry = new NewFollowerEntry();
+        tweet_list.add(follower_entry);
+      }
+
+      follower_entry.add_follower(root);
       // TODO: Are all there resort calls actually needed?
       tweet_list.resort();
       unread_count++;
@@ -94,11 +103,16 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
   }
 
   public void load_cached() {
-    try{
-      this.load_cached_internal(Tweet.TYPE_MENTION);
-    } catch(SQLHeavy.Error e){
-      critical("Error while loading cached tweets of the home timeline: %s",
-               e.message);
+    SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db,
+      "SELECT `sort_factor`, `type`, `data` FROM cache WHERE `type`='%d';".printf(NewFollowerEntry.TYPE));
+    SQLHeavy.QueryResult result = q.execute();
+    while(!result.finished){
+      var entry = new NewFollowerEntry.from_data(result.fetch_string(2),
+                                                 result.fetch_int64(0));
+      tweet_list.add(entry);
+      entry.show_all();
+      message("Adding entry...");
+      result.next();
     }
     tweet_list.resort();
     this.vadjustment.set_upper(0);

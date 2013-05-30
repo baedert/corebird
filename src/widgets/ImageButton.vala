@@ -13,7 +13,7 @@ class ImageButton : Button {
 	}
 
 	public override bool draw(Cairo.Context c){
-		if(bg!= null){
+		if(bg != null){
 			StyleContext context = this.get_style_context();
 			context.render_icon(c, bg, 0, 0);
 		}

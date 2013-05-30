@@ -1,174 +1,174 @@
 .image-overlay{
-	padding-right: 5px;
-	padding-top: 2px;
+  padding-right: 5px;
+  padding-top: 2px;
 }
 
 
 .retweet-button {
-	background-image: none;
-	background-color: transparent;
+  background-image: none;
+  background-color: transparent;
 
-	-GtkButton-default-border: 0;
-	-GtkButton-default-outside-border: 0;
-	-GtkButton-inner-border: 0;
-	-GtkWidget-focus-line-width: 0;
-	-GtkWidget-focus-padding: 0;
-	box-shadow: none;
-	padding: 8px; /* Just to set the size here... */
-	border: none;
-	border-radius: 0px;
-	text-shadow: none;
-	background-image:url('../retweet-normal.png');
+  -GtkButton-default-border: 0;
+  -GtkButton-default-outside-border: 0;
+  -GtkButton-inner-border: 0;
+  -GtkWidget-focus-line-width: 0;
+  -GtkWidget-focus-padding: 0;
+  box-shadow: none;
+  padding: 8px; /* Just to set the size here... */
+  border: none;
+  border-radius: 0px;
+  text-shadow: none;
+  background-image:url('../retweet-normal.png');
 }
 .retweet-button:hover,
 .retweet-button:active {
-	background-image:url('../retweet.png');
+  background-image:url('../retweet.png');
 }
 
 .favorite-button {
-	background-image: none;
-	background-color: transparent;
-	-GtkButton-default-border: 0;
-	-GtkButton-default-outside-border: 0;
-	-GtkButton-inner-border: 0;
-	-GtkWidget-focus-line-width: 0;
-	-GtkWidget-focus-padding: 0;
-	box-shadow: none;
-	padding: 8px; /* Just to set the size here... */
-	border: none;
-	border-radius: 0px;
-	text-shadow: none;
-	background-image:url('../favorite-normal.png');
+  background-image: none;
+  background-color: transparent;
+  -GtkButton-default-border: 0;
+  -GtkButton-default-outside-border: 0;
+  -GtkButton-inner-border: 0;
+  -GtkWidget-focus-line-width: 0;
+  -GtkWidget-focus-padding: 0;
+  box-shadow: none;
+  padding: 8px; /* Just to set the size here... */
+  border: none;
+  border-radius: 0px;
+  text-shadow: none;
+  background-image:url('../favorite-normal.png');
 }
 
 
 .favorite-button:hover,
 .favorite-button:active {
-	background-image:url('../favorite.png');
+  background-image:url('../favorite.png');
 }
 
 .conversation-button {
-	background-color: transparent;
-	-GtkButton-default-border: 0;
-	-GtkButton-default-outside-border: 0;
-	-GtkButton-inner-border: 0;
-	-GtkWidget-focus-line-width: 0;
-	-GtkWidget-focus-padding: 0;
-	box-shadow: none;
-	padding: 8px; /* Just to set the size here... */
-	border: none;
-	border-radius: 0px;
-	text-shadow: none;
-	background-image:url('../conversation-normal.png');
-	background-repeat: no-repeat;
+  background-color: transparent;
+  -GtkButton-default-border: 0;
+  -GtkButton-default-outside-border: 0;
+  -GtkButton-inner-border: 0;
+  -GtkWidget-focus-line-width: 0;
+  -GtkWidget-focus-padding: 0;
+  box-shadow: none;
+  padding: 8px; /* Just to set the size here... */
+  border: none;
+  border-radius: 0px;
+  text-shadow: none;
+  background-image:url('../conversation-normal.png');
+  background-repeat: no-repeat;
 }
 
 .conversation-button:hover {
-	background-image: url('../conversation.png');
+  background-image: url('../conversation.png');
 }
 
 
 .more-button {
-	background-image: none;
-	background-color: transparent;
-	-GtkButton-default-border: 0;
-	-GtkButton-default-outside-border: 0;
-	-GtkButton-inner-border: 0;
-	-GtkWidget-focus-line-width: 0;
-	-GtkWidget-focus-padding: 0;
-	box-shadow: none;
-	padding: 8px; /* Just to set the size here... */
-	border: none;
-	border-radius: 0px;
-	text-shadow: none;
-	background-image:url('../more-normal.png');
+  background-image: none;
+  background-color: transparent;
+  -GtkButton-default-border: 0;
+  -GtkButton-default-outside-border: 0;
+  -GtkButton-inner-border: 0;
+  -GtkWidget-focus-line-width: 0;
+  -GtkWidget-focus-padding: 0;
+  box-shadow: none;
+  padding: 8px; /* Just to set the size here... */
+  border: none;
+  border-radius: 0px;
+  text-shadow: none;
+  background-image:url('../more-normal.png');
 }
 
 .more-button:hover {
-	background-image: url('../more.png');
+  background-image: url('../more.png');
 }
 
 .favorite-button:backdrop,
 .retweet-button:backdrop,
 .conversation-button:backdrop,
 .more-button:backdrop {
-	background-color: transparent;
+  background-color: transparent;
 }
 
 .badge{
-	background-color: shade(blue, 1.4);
-	text-shadow: 0px 1px 1px #FFF;
-	border-radius: 20px;
-	border: 1px solid white;
-	padding: 3px 2px;
+  background-color: shade(blue, 1.4);
+  text-shadow: 0px 1px 1px #FFF;
+  border-radius: 20px;
+  border: 1px solid white;
+  padding: 3px 2px;
 }
 .badge:backdrop{
-	background-color: transparent;
+  background-color: transparent;
 }
 
 .stream{
-	-GtkBox-spacing: 3;
+  -GtkBox-spacing: 3;
 }
 
 .tweet {
-	border-color: alpha(black, 0.2);
+  border-color: alpha(black, 0.2);
 }
 
 /** Tweets the user sent himself */
 .user-tweet {
-	/* TODO: Set a special background color or something */
+  /* TODO: Set a special background color or something */
 }
 
 .time-delta-label {
-	-GtkWidget-link-color: #555;
+  -GtkWidget-link-color: #555;
 }
 
 .text-button{
-	font-weight: bold;
-	background-image: none;
-	background-color: transparent;
-	border:none;
-	-GtkButton-default-border: 0;
-	-GtkButton-default-outside-border: 0;
-	-GtkButton-inner-border: 0;
-	-GtkWidget-focus-line-width: 0;
-	-GtkWidget-focus-padding: 0;
-	padding: 0px;
-	box-shadow: none;
+  font-weight: bold;
+  background-image: none;
+  background-color: transparent;
+  border:none;
+  -GtkButton-default-border: 0;
+  -GtkButton-default-outside-border: 0;
+  -GtkButton-inner-border: 0;
+  -GtkWidget-focus-line-width: 0;
+  -GtkWidget-focus-padding: 0;
+  padding: 0px;
+  box-shadow: none;
 }
 .text-button:hover{
-	text-shadow: 0px 0px 5px #444;
-	background-image: none;
-	border: none;
+  text-shadow: 0px 0px 5px #444;
+  background-image: none;
+  border: none;
 }
 .text-button:active{
-	color: black;
-	background-color: red;
+  color: black;
+  background-color: red;
 }
 .text-button:backdrop{
-	background-color: transparent;
+  background-color: transparent;
 }
 
 .image-button {
-	padding: 0px;
-	background-image: none;
-	background-color: transparent;
-	border: none;
-	border-radius: 0px;
-	transition: box-shadow 0.25s ease-in-out;
+  padding: 0px;
+  background-image: none;
+  background-color: transparent;
+  border: none;
+  border-radius: 0px;
+  transition: box-shadow 0.25s ease-in-out;
 }
 
 .image-button:hover {
-	box-shadow: 0px 0px 10px alpha(black, 0.8);
-
+/*  box-shadow: 0px 0px 10px alpha(black, 0.8);*/
+  border: 2px solid green;
 }
 
 .image-button:active {
-	box-shadow: 0px 0px 10px alpha(black, 0.95);
+  box-shadow: 0px 0px 10px alpha(black, 0.95);
 }
 .image-button:backdrop {
-	background-color: transparent;
-	background-image: none;
+  background-color: transparent;
+  background-image: none;
 }
 
 .tweet .author {
@@ -176,41 +176,41 @@
 }
 
 .tweet .screen-name {
-	/* Label containing the author's screen_name */
+  /* Label containing the author's screen_name */
 }
 
 .profile-header .description {
-	color: #EEE;
-	text-shadow: 1px 1px 1px #000,
-				 0px 0px 2px #000;
-	-GtkWidget-link-color: #EEE;
+  color: #EEE;
+  text-shadow: 1px 1px 1px #000,
+         0px 0px 2px #000;
+  -GtkWidget-link-color: #EEE;
 }
 
 .profile-header .data ,
 .profile-header .image-button{
-	color: #EEE;
-	background-color: alpha(black, 0.55);
-	-GtkWidget-link-color: #EEE;
+  color: #EEE;
+  background-color: alpha(black, 0.55);
+  -GtkWidget-link-color: #EEE;
 }
 
 .profile-header .data-button {
-	background-color: alpha(black, 0.55);
-	border-radius: 0px;
-	color: #EEE;
-	text-shadow: none;
-	padding-top: 3px;
-	padding-right: 8px;
-	padding-left: 8px;
+  background-color: alpha(black, 0.55);
+  border-radius: 0px;
+  color: #EEE;
+  text-shadow: none;
+  padding-top: 3px;
+  padding-right: 8px;
+  padding-left: 8px;
 }
 .profile-header .data-button:hover {
-	text-shadow: 0px 1px 1px #FFF;
-	background-color: alpha(black, 0.8);
+  text-shadow: 0px 1px 1px #FFF;
+  background-color: alpha(black, 0.8);
 }
 
 
 /* Progress-item showed when loading new tweets */
 .progress-item .button {
-	background-image: none;
-	border: none;
-	background-color: transparent;
+  background-image: none;
+  border: none;
+  background-color: transparent;
 }
