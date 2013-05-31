@@ -11,7 +11,8 @@ CREATE TABLE IF NOT EXISTS `common`(
 
 
 CREATE TABLE IF NOT EXISTS `cache`(
-  sort_factor INTEGER(19,0) PRIMARY KEY,
+  id INTEGER(11) PRIMARY KEY,
+  sort_factor INTEGER(19,0),
   type INTEGER(2),
   data TEXT
 );

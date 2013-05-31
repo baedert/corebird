@@ -10,6 +10,7 @@ class NewFollowerEntry : Gtk.Box, ITwitterItem {
   }
   public bool seen{get;set; default=true;}
 
+  private int64 id;
   private int count = 0;
   private string[] followers = new string[5];
   private Image follow_image = new Gtk.Image.from_file(DATADIR+"/follower.png");
@@ -30,6 +31,7 @@ class NewFollowerEntry : Gtk.Box, ITwitterItem {
     follow_text.xalign = 0.0f;
     follow_text.yalign = 0.0f;
     follow_text.use_markup = true;
+    follow_text.wrap_mode = Pango.WrapMode.WORD_CHAR;
     right_box.pack_end(follow_text, true, true);
     this.pack_start(right_box, true, true);
 
@@ -43,9 +45,10 @@ class NewFollowerEntry : Gtk.Box, ITwitterItem {
    *
    * @param text The text to parse
    */
-  public NewFollowerEntry.from_data(string text, int64 sort_factor) {
+  public NewFollowerEntry.from_data(int id, string text, int64 sort_factor) {
     this();
     this.date = sort_factor;
+    this.id = id;
     string[] parts = text.split(",");
     int count = int.parse(parts[0]);
 
@@ -57,13 +60,19 @@ class NewFollowerEntry : Gtk.Box, ITwitterItem {
   }
 
 
-  public void add_follower (Json.Object root) {
-    this.date = Utils.parse_date (root.get_string_member("created_at")).to_unix();
+  public bool add_follower (Json.Object root) {
     Json.Object source = root.get_object_member("source");
+    string name = source.get_string_member("screen_name");
+
+    //If the same user quickly follows/unfollows/follows/… the user, don't show him twice
+   for(int i = 0; i < count; i++)
+      if(followers[i] == name)
+        return false;
+
+    this.date = Utils.parse_date (root.get_string_member("created_at")).to_unix();
     string avatar_url = source.get_string_member ("profile_image_url");
     avatar_url = avatar_url.replace("_normal", "_mini");
-    string name = source.get_string_member("screen_name");
-    string mini_thumb_path = Utils.user_file("assets/avatars/mini_thumb_"+name+".png");
+        string mini_thumb_path = Utils.user_file("assets/avatars/mini_thumb_"+name+".png");
     followers[count] = name;  
   
     ImageButton avatar_button = new ImageButton();
@@ -74,9 +83,12 @@ class NewFollowerEntry : Gtk.Box, ITwitterItem {
       avatar_button.set_bg(new Gdk.Pixbuf.from_file(mini_thumb_path));
       avatar_button.show();
     });
+
+
     count++;
     set_new_label_text();
     save();
+    return true;
   }
 
   /**
@@ -96,16 +108,15 @@ class NewFollowerEntry : Gtk.Box, ITwitterItem {
   // TODO: Use StringBUilder
   private void set_new_label_text() {
     string s = "";
-    for(int i = 0; i < count-1; i++)
-      s += "<a href='@%s'>@%s</a>,".printf(followers[i], followers[i]);
+    for(int i = 0; i < count-2; i++)
+      s += "<a href='@%s'>@%s</a>, ".printf(followers[i], followers[i]);
     
     if(count >= 2)
-      s += "<a href='@%s'>@%s</a> and".printf(followers[count-2], followers[count-2]);
-    message("Count: %d", count); 
+      s += "<a href='@%s'>@%s</a> and ".printf(followers[count-2], followers[count-2]);
+
     s += "<a href='@%s'>@%s</a> followed you".printf(followers[count-1], followers[count-1]);
     follow_text.label = s;
   }
-
 
   public void save() {
     StringBuilder data = new StringBuilder();
@@ -114,8 +125,16 @@ class NewFollowerEntry : Gtk.Box, ITwitterItem {
       data.append_c(',');
       data.append(followers[i]);
     }
-    string s = @"INSERT OR REPLACE INTO `cache`
-        (`sort_factor`, `type`, `data`) VALUES ('$date', '$TYPE', '$(data.str)');";
-    Corebird.db.execute(s);
+    string param_string = @" INTO `cache` (`sort_factor`, `type`, `data`) VALUES ('$date', '$TYPE', '$(data.str)');";
+    
+    if(id == -1){
+      SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db,
+                  "INSERT"+param_string);
+      this.id = q.execute_insert();
+    } else {
+      Corebird.db.execute(
+       @"INSERT OR REPLACE INTO `cache` (`id`, `sort_factor`, `type`, `data`) VALUES ('$id', '$date', '$TYPE', '$(data.str)');");
+
+    }
   }
 }
