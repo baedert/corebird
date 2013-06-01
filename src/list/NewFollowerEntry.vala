@@ -59,7 +59,12 @@ class NewFollowerEntry : Gtk.Box, ITwitterItem {
     set_new_label_text();
   }
 
-
+  /**
+   * Add a follower to the NewFollowerEntry.
+   *
+   * @param root The root Json-object retrieved from Twitter.
+   *
+   */
   public bool add_follower (Json.Object root) {
     Json.Object source = root.get_object_member("source");
     string name = source.get_string_member("screen_name");
@@ -105,7 +110,9 @@ class NewFollowerEntry : Gtk.Box, ITwitterItem {
     count++;
   }
 
-  // TODO: Use StringBUilder
+  /**
+   * Recalculates the text of the follow_text GtkLabel
+   */
   private void set_new_label_text() {
     string s = "";
     for(int i = 0; i < count-2; i++)
@@ -118,6 +125,10 @@ class NewFollowerEntry : Gtk.Box, ITwitterItem {
     follow_text.label = s;
   }
 
+  /**
+   *
+   * Saves(or updates) the entry in the cache table
+   */
   public void save() {
     StringBuilder data = new StringBuilder();
     data.append(count.to_string());
