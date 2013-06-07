@@ -28,6 +28,7 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
   private bool loading = false;
   private int64 lowest_id = int64.MAX-2;
   protected uint tweet_remove_timeout{get;set;}
+  private ProgressEntry progress_entry = new ProgressEntry(75);
 
   public MentionsTimeline(int id){
     this.id = id;
@@ -54,6 +55,7 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
       update_unread_count();
     });
 
+    tweet_list.add(progress_entry);
 
     UserStream.get().register(this);
   }
@@ -139,7 +141,13 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
   public void load_newest() {
     try {
       this.load_newest_internal("1.1/statuses/mentions_timeline.json",
-                                 Tweet.TYPE_MENTION);
+                                 Tweet.TYPE_MENTION,
+        (count, lowest_id) => {
+          if(lowest_id < this.lowest_id)
+            this.lowest_id = lowest_id;
+          tweet_list.remove(progress_entry);
+          progress_entry = null;  
+        });
     } catch (SQLHeavy.Error e) {
       warning(e.message);
     }

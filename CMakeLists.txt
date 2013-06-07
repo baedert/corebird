@@ -93,7 +93,6 @@ set (VALA_SOURCE
 	src/widgets/TweetTextView.vala
 	src/widgets/ImageButton.vala
 	src/widgets/ScrollWidget.vala
-	src/widgets/ProgressItem.vala
 	src/widgets/TextButton.vala
 	src/widgets/TweetInfoWidget.vala
 	src/widgets/ProfileWidget.vala
@@ -102,6 +101,7 @@ set (VALA_SOURCE
 	src/widgets/ImageOverlay.vala
   src/list/TweetListEntry.vala
   src/list/NewFollowerEntry.vala
+  src/list/ProgressEntry.vala
 	src/util/UIBuilder.vala
 	src/util/Utils.vala
 	src/util/Benchmark.vala
