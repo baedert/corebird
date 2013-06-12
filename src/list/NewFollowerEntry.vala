@@ -26,11 +26,11 @@ class NewFollowerEntry : Gtk.Box, ITwitterItem {
 
   private int64 id;
   private int count = 0;
-  private string[] followers = new string[5];
-  private Image follow_image = new Gtk.Image.from_file(DATADIR+"/follower.png");
-  private Box right_box = new Box(Orientation.VERTICAL, 3);
-  private Box avatar_box = new Box(Orientation.HORIZONTAL, 5);
-  private Label follow_text = new Label("bla bla bla");
+  private string[] followers  = new string[5];
+  private Image follow_image  = new Gtk.Image.from_file(DATADIR+"/follower.png");
+  private Box right_box       = new Box(Orientation.VERTICAL, 3);
+  private Box avatar_box      = new Box(Orientation.HORIZONTAL, 5);
+  private Label follow_text   = new Label("bla bla bla");
 
   public NewFollowerEntry () {
     GLib.Object(orientation: Orientation.HORIZONTAL, spacing: 5);
