@@ -6,8 +6,13 @@
 				<attribute name="action">app.compose-tweet</attribute>
 				<attribute name="accel">&lt;Control&gt;t</attribute>
 			</item>
-		</section>
-		<section>
+    </section>
+
+    <section>
+      <item>
+        <attribute name="label">About</attribute>
+        <attribute name="action">app.show-about-dialog</attribute>
+      </item> 
 			<item>
 				<attribute name="label">Quit</attribute>
 				<attribute name="action">app.quit</attribute>

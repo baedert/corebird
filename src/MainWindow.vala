@@ -102,6 +102,14 @@ class MainWindow : ApplicationWindow {
 			win.show_all();
 		});
 		this.get_application().add_action(new_tweet_action);
+    var about_dialog_action = new SimpleAction("show-about-dialog", null);
+    about_dialog_action.activate.connect(() => {
+      var b = new Gtk.Builder();
+      b.add_from_file(DATADIR+"/ui/about-dialog.ui");
+      Gtk.AboutDialog ad = b.get_object("about-dialog") as Gtk.AboutDialog;
+      ad.show();
+    });
+    this.get_application().add_action(about_dialog_action);
 		var quit_action = new SimpleAction("quit", null);
 		quit_action.activate.connect(() => {
         this.get_application().release();
