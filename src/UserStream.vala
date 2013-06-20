@@ -158,7 +158,7 @@ class UserStream : Object {
 			else if(root.has_member("warning"))
 				type = StreamMessageType.WARNING;
 
-      message("Message with type %d", type);
+      message("Message with type %s", type.to_string());
 			foreach(IMessageReceiver it in receivers)
 				it.stream_message_received(type, root);
 

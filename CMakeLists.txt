@@ -87,6 +87,7 @@ set (VALA_SOURCE
 	src/WarningService.vala
 	src/IMessageReceiver.vala
   src/ITwitterItem.vala
+  src/Account.vala
 	src/widgets/ImageDialog.vala
 	src/widgets/ImageBox.vala
 	src/widgets/ImageLabel.vala
@@ -124,7 +125,7 @@ OPTIONS
 	--enable-checking
 	--vapidir=src/egglistbox/
 	--vapidir=src/libgd/
-	--disable-warnings
+  #	--disable-warnings
 )
 
 add_executable(corebird ${VALA_C})

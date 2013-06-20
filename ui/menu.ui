@@ -1,13 +1,5 @@
 <interface>
 	<menu id="app-menu">
-		<section>
-			<item>
-				<attribute name="label">Compose</attribute>
-				<attribute name="action">app.compose-tweet</attribute>
-				<attribute name="accel">&lt;Control&gt;t</attribute>
-			</item>
-    </section>
-
     <section>
       <item>
         <attribute name="label">Settings</attribute>

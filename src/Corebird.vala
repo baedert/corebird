@@ -18,18 +18,12 @@ using Gtk;
 
 class Corebird : Gtk.Application {
   public static SQLHeavy.Database db;
-  /* Only used if -p is passed */
   private static GLib.OutputStream log_stream;
-  private bool show_tweet_window = false;
-  private bool not_in_cmd = false;
-  private string role_name = "corebird";
 
   public Corebird() throws GLib.Error{
     GLib.Object(application_id: "org.baedert.corebird",
-                flags: ApplicationFlags.HANDLES_COMMAND_LINE);
-    this.register();
-    this.set_default();
-    this.activate.connect( ()  => {});
+                flags: ApplicationFlags.HANDLES_COMMAND_LINE,
+                register_session: true);
     this.set_inactivity_timeout(500);
 
 
@@ -38,9 +32,70 @@ class Corebird : Gtk.Application {
       Gtk.Settings settings = Gtk.Settings.get_default();
       settings.gtk_application_prefer_dark_theme = true;
     }
+  }
+
+  public override int command_line(ApplicationCommandLine cmd){
+    this.hold();
+    message("Parsing command line options...");
+    bool new_instance = false;
+    bool show_tweet_window = false;
+    bool not_in_cmd = false;
+   
+
+    OptionEntry[] options = new OptionEntry[2];
+    options[0] = {"tweet", 't', 0, OptionArg.NONE, ref show_tweet_window,
+            "Shows only the 'compose tweet' window, nothing else.", null};
+    options[1] = {"mode", 'u', 0, OptionArg.NONE, ref not_in_cmd,
+            "Use this flag to indicate that the application does NOT run on the command line", 
+            null};
+
+    string[] args = cmd.get_arguments();
+    string*[] _args = new string[args.length];
+    for(int i = 0; i < args.length; i++){
+      _args[i] = args[i];
+    }
+
+    try{
+      var opt_context = new OptionContext("");
+      opt_context.set_help_enabled(true);
+      opt_context.add_main_entries(options, null);
+      unowned string[] tmp = _args;
+      opt_context.parse(ref tmp);
+    } catch (GLib.OptionError e) {
+      cmd.print("Use --help to see available options\n");
+      return -1;
+    }
+
+    if (!show_tweet_window){
+      if (Settings.is_first_run ())
+        add_window (new FirstRunWindow(this));
+      else
+        add_window (new MainWindow (this));
+    } else {
+      add_window (new ComposeTweetWindow (null, null, this));
+    }
+    /* First, create that log file */
+    var now = new GLib.DateTime.now_local();
+    File log_file = File.new_for_path(Utils.user_file("log/%s.txt".printf(now.to_string())));
+    log_stream = log_file.create(FileCreateFlags.REPLACE_DESTINATION);
+    /* If we do not run on the command line, we simply redirect stdout
+       to a log file*/
+    GLib.Log.set_handler (null, LogLevelFlags.LEVEL_MESSAGE, print_to_log_file);
+    GLib.Log.set_handler (null, LogLevelFlags.LEVEL_ERROR, print_to_log_file);
+    GLib.Log.set_handler (null, LogLevelFlags.LEVEL_CRITICAL, print_to_log_file);
+    GLib.Log.set_handler (null, LogLevelFlags.LEVEL_WARNING, print_to_log_file);
+    GLib.Log.set_handler (null, LogLevelFlags.LEVEL_DEBUG, print_to_log_file);
 
 
-    // Create ~/.corebird if neccessary
+    this.release();
+    return 0;
+  }
+
+  public override void startup () {
+    base.startup();
+    UIBuilder builder = new UIBuilder(DATADIR+"/ui/menu.ui");
+    this.set_app_menu(builder.get_menu_model("app-menu"));
+
     if(!FileUtils.test(Utils.user_file(""), FileTest.EXISTS)){
       bool success = File.new_for_path(Utils.user_file("")).make_directory();
       if(!success){
@@ -56,22 +111,32 @@ class Corebird : Gtk.Application {
       create_user_folder("log/");
     }
 
+    Corebird.db = new SQLHeavy.Database(Utils.user_file("Corebird.db"));
+    db.journal_mode = SQLHeavy.JournalMode.MEMORY;
+    db.temp_store   = SQLHeavy.TempStoreMode.MEMORY;
 
-    //Create the database needed almost everywhere
-    try{
-      Corebird.db = new SQLHeavy.Database(Utils.user_file("Corebird.db"));
-      db.journal_mode = SQLHeavy.JournalMode.MEMORY;
-      db.temp_store   = SQLHeavy.TempStoreMode.MEMORY;
-
-      Corebird.create_tables();
-    }catch(SQLHeavy.Error e){
-      error("SQL ERROR: %s", e.message);
-    }
-
-    stdout.printf("SQLite version: %d\n", SQLHeavy.Version.sqlite_library());
+    Corebird.create_tables();
+    Twitter.init();
+    User.load ();
+    Twitter.update_config.begin ();
 
 
-    //Load custom style sheet
+		// Set up the actions
+    var about_dialog_action = new SimpleAction("show-about-dialog", null);
+    about_dialog_action.activate.connect(() => {
+      var b = new Gtk.Builder();
+      b.add_from_file(DATADIR+"/ui/about-dialog.ui");
+      Gtk.AboutDialog ad = b.get_object("about-dialog") as Gtk.AboutDialog;
+      ad.show();
+    });
+    add_action(about_dialog_action);
+		var quit_action = new SimpleAction("quit", null);
+		quit_action.activate.connect(() => {
+        quit();
+		});
+		add_action(quit_action);
+
+    // Load custom CSS stuff
     try{
       CssProvider provider = new CssProvider();
       string style = Utils.user_file("style.css");
@@ -85,12 +150,7 @@ class Corebird : Gtk.Application {
       warning("Error while loading ui/style.css: %s", e.message);
     }
 
-    //Load & set the corebird icon
-/*    IconSet icons = new IconSet.from_pixbuf(new Gdk.Pixbuf.from_file(DATADIR+"/icon.png"));
-    IconFactory factory = new IconFactory();
-    factory.add("corebird", icons);
-    factory.add_default();*/
-
+    // Load custom icons
     IconSet micon = new IconSet.from_pixbuf(new Gdk.Pixbuf.from_file(DATADIR+"/mentions.svg"));
     IconSet sicon = new IconSet.from_pixbuf(new Gdk.Pixbuf.from_file(DATADIR+"/stream.svg"));
     IconSet search_icon = new IconSet.from_pixbuf(new Gdk.Pixbuf.from_file(DATADIR+"/search.svg"));
@@ -99,89 +159,12 @@ class Corebird : Gtk.Application {
     mfac.add("stream", sicon);
     mfac.add("search", search_icon);
     mfac.add_default();
-    
-    
-    /* First, create that log file */
-    var now = new GLib.DateTime.now_local();
-    File log_file = File.new_for_path(Utils.user_file("log/%s.txt".printf(now.to_string())));
-    log_stream = log_file.create(FileCreateFlags.REPLACE_DESTINATION);
-    /* If we do not run on the command line, we simply redirect stdout
-       to a log file */
-    GLib.Log.set_handler (null, LogLevelFlags.LEVEL_MESSAGE, print_to_log_file);
-    GLib.Log.set_handler (null, LogLevelFlags.LEVEL_ERROR, print_to_log_file);
-    GLib.Log.set_handler (null, LogLevelFlags.LEVEL_CRITICAL, print_to_log_file);
-    GLib.Log.set_handler (null, LogLevelFlags.LEVEL_WARNING, print_to_log_file);
-    GLib.Log.set_handler (null, LogLevelFlags.LEVEL_DEBUG, print_to_log_file);
 
-
-
-
-    Twitter.init();
-    //Load the user's sceen_name used for identifying him
-    User.load();
-    //Update the Twitter config
-    Twitter.update_config.begin();
+    message("STARTUP");
   }
 
-  public override int command_line(ApplicationCommandLine cmd){
-    message("Parsing command line options...");
-    this.hold();
-    bool new_instance = false;
-
-    OptionEntry[] options = new OptionEntry[4];
-    options[0] = {"tweet", 't', 0, OptionArg.NONE, ref show_tweet_window,
-            "Shows only the 'compose tweet' window, nothing else.", null};
-    options[1] = {"mode", 'u', 0, OptionArg.NONE, ref not_in_cmd,
-            "Use this flag to indicate that the application does NOT run on the command line", 
-            null};
-    options[2] = {"new-instance", 'n', 0, OptionArg.NONE, ref new_instance,
-            "Force a new instance", null};
-    options[3] = {"role", 'r', 0, OptionArg.STRING, ref role_name,
-            "Sets the role name of the main window(default is 'corebird')",
-            "ROLE"};
-   
-
-    string[] args = cmd.get_arguments();
-    string*[] _args = new string[args.length];
-    for(int i = 0; i < args.length; i++){
-      _args[i] = args[i];
-    }
-
-
-
-
-    try{
-      var opt_context = new OptionContext("");
-      opt_context.set_help_enabled(true);
-      opt_context.add_main_entries(options, null);
-      unowned string[] tmp = _args;
-      opt_context.parse(ref tmp);
-    } catch (GLib.OptionError e) {
-      cmd.print("Use --help to see available options\n");
-      return -1;
-    }
-    add_windows();
-
-    this.release();
-    return 0;
-  }
-
-  public void add_windows() {
-    if(!show_tweet_window) {
-      if (Settings.is_first_run()) {
-        this.add_window(new FirstRunWindow(this));
-      } else {
-        UIBuilder builder = new UIBuilder(DATADIR+"/ui/menu.ui");
-        this.set_app_menu(builder.get_menu_model("app-menu"));
-        var mw = new MainWindow(this);
-        NotificationManager.init(mw);
-        mw.set_role(role_name);
-        this.add_window(mw);
-      }
-    } else {
-      ComposeTweetWindow win = new ComposeTweetWindow(null, null, this);
-      this.add_window(win);
-    }
+  public override void shutdown () {
+    base.shutdown();
   }
 
   /**
@@ -209,7 +192,7 @@ class Corebird : Gtk.Application {
   private void create_user_folder(string name) {
     try {
       bool success = File.new_for_path(Utils.user_file(name))
-                  .make_directory();
+                     .make_directory();
       if(!success)
         critical("Couldn't create user folder %s", name);
       } catch (GLib.Error e) {
