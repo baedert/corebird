@@ -84,17 +84,6 @@ class MainWindow : ApplicationWindow {
 		// Start userstream
 		UserStream.get().start();
 
-		this.delete_event.connect(() => {
-			save_geometry();
-			this.set_visible(false);
-			return true;
-		});
-
-		this.get_application().shutdown.connect(() => {
-			NotificationManager.uninit();
-		});
-
-
 		// Set up the actions
 		SimpleAction new_tweet_action = new SimpleAction("compose-tweet", null);
 		new_tweet_action.activate.connect(() => {
