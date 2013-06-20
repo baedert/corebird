@@ -39,7 +39,6 @@ class MainWindow : ApplicationWindow {
 	private int active_page                  = 0;
 	private int last_page				             = 0;
 	private ToolButton avatar_button         = new ToolButton(null, null);
-	private ToolButton settings_button       = new ToolButton.from_stock(Stock.PROPERTIES);
 	private ToolButton new_tweet_button      = new ToolButton.from_stock(Stock.NEW);
 	private SeparatorToolItem expander_item  = new SeparatorToolItem();
 	private SeparatorToolItem left_separator = new SeparatorToolItem();
@@ -148,10 +147,6 @@ class MainWindow : ApplicationWindow {
 			stack.add_named(page, "%d".printf(page.get_id()));
 		}
 
-		settings_button.clicked.connect( () => {
-			SettingsDialog sd = new SettingsDialog(this);
-			sd.show_all();
-		});
 		bottom_box.pack_start(left_toolbar, false, false);
 
 		if (Settings.show_primary_toolbar()){
@@ -199,7 +194,6 @@ class MainWindow : ApplicationWindow {
 		left_toolbar.insert(new_tweet_button, 1);
 		left_toolbar.insert(left_separator, 2);
 		left_toolbar.add(expander_item);
-		left_toolbar.add(settings_button);
 	}
 
 	/**
@@ -209,7 +203,6 @@ class MainWindow : ApplicationWindow {
 		primary_toolbar.add(avatar_button);
 		primary_toolbar.add(new_tweet_button);
 		primary_toolbar.add(expander_item);
-		primary_toolbar.add(settings_button);
 		//Make the left toolbar a sidebar
 		left_toolbar.get_style_context().remove_class("primary-toolbar");
 		left_toolbar.get_style_context().add_class("sidebar");
@@ -222,7 +215,6 @@ class MainWindow : ApplicationWindow {
 			main_box.pack_start(primary_toolbar, false, false);
 			//Remove widgets
 			left_toolbar.remove(avatar_button);
-			left_toolbar.remove(settings_button);
 			left_toolbar.remove(new_tweet_button);
 			left_toolbar.remove(expander_item);
 			left_toolbar.remove(left_separator);
@@ -234,7 +226,6 @@ class MainWindow : ApplicationWindow {
 			primary_toolbar.remove(avatar_button);
 			primary_toolbar.remove(new_tweet_button);
 			primary_toolbar.remove(expander_item);
-			primary_toolbar.remove(settings_button);
 			//add them again
 			setup_left_toolbar();
 		}
