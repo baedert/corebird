@@ -63,6 +63,7 @@ class Corebird : Gtk.Application {
       opt_context.parse(ref tmp);
     } catch (GLib.OptionError e) {
       cmd.print("Use --help to see available options\n");
+      quit();
       return -1;
     }
 
@@ -102,13 +103,14 @@ class Corebird : Gtk.Application {
         critical("Couldn't create the ~/.corebird directory");
       }
 
-      create_user_folder("assets/");
-      create_user_folder("assets/avatars/");
-      create_user_folder("assets/banners/");
-      create_user_folder("assets/user");
-      create_user_folder("assets/media/");
-      create_user_folder("assets/media/thumbs/");
-      create_user_folder("log/");
+      create_user_folder ("assets/");
+      create_user_folder ("assets/avatars/");
+      create_user_folder ("assets/banners/");
+      create_user_folder ("assets/user");
+      create_user_folder ("assets/media/");
+      create_user_folder ("assets/media/thumbs/");
+      create_user_folder ("log/");
+      create_user_folder ("accounts");
     }
 
     Corebird.db = new SQLHeavy.VersionedDatabase(Utils.user_file("Corebird.db"),
@@ -123,6 +125,12 @@ class Corebird : Gtk.Application {
 
 
 		// Set up the actions
+    var settings_action = new SimpleAction("show-settings", null);
+    settings_action.activate.connect(() => {
+      var dialog = new SettingsDialog();
+      dialog.show_all ();
+    });
+    add_action (settings_action);
     var about_dialog_action = new SimpleAction("show-about-dialog", null);
     about_dialog_action.activate.connect(() => {
       var b = new Gtk.Builder();
