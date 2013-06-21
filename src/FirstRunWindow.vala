@@ -93,7 +93,6 @@ class FirstRunWindow : ApplicationWindow {
 
 		// Save token + token_secret
 		try{
-			Corebird.create_tables();
 			//Write token + token_secret to the database
 			SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db, "INSERT INTO
 			                  `common`(token, token_secret)

@@ -118,7 +118,6 @@ class Corebird : Gtk.Application {
     db.journal_mode = SQLHeavy.JournalMode.MEMORY;
     db.temp_store   = SQLHeavy.TempStoreMode.MEMORY;
 
-    Corebird.create_tables();
     Twitter.init();
     User.load ();
     Twitter.update_config.begin ();
@@ -181,21 +180,6 @@ class Corebird : Gtk.Application {
    */
   public void add_main_window(){
     this.add_window(new MainWindow(this));
-  }
-
-  /**
-   * Creates the tables in the SQLite database
-   */
-  public static void create_tables(){
-    try{
-      string sql;
-      FileUtils.get_contents(DATADIR+"/sql/init.sql", out sql);
-      db.run(sql);
-    } catch (SQLHeavy.Error e) {
-      error("Error while creating the tables: %s", e.message);
-    } catch (GLib.FileError e){
-      error("Error while loading sql file: %s", e.message);
-    }
   }
 
   private void create_user_folder(string name) {
