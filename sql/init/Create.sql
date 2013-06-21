@@ -13,6 +13,18 @@ CREATE TABLE IF NOT EXISTS `common`(
   characters_reserved_per_media INTEGER(3)
 );
 
+-- This table caches information about all the accounts
+-- the user set up.
+-- This is helpful so we don't have to initialize
+-- all the databases just because the user wants
+-- a list of all his accounts
+CREATE TABLE IF NOT EXISTS `accounts`(
+  id NUMERIC(19,0) PRIMARY KEY,
+  screen_name VARCHAR(30),
+  name VARCHAR(30),
+  notifications_enabled BOOL
+);
+
 
 CREATE TABLE IF NOT EXISTS `cache`(
   id INTEGER(11) PRIMARY KEY,
