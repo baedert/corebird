@@ -14,7 +14,10 @@
    inkscape:version="0.48.4 r9939"
    width="15.458242"
    height="15.458242"
-   sodipodi:docname="verified.png">
+   sodipodi:docname="verified.svg"
+   inkscape:export-filename="/home/baedert/Code/Vala/Corebird/assets/verified.png"
+   inkscape:export-xdpi="93.15419"
+   inkscape:export-ydpi="93.15419">
   <metadata
      id="metadata3051">
     <rdf:RDF>
@@ -45,8 +48,8 @@
      inkscape:zoom="22.43978"
      inkscape:cx="1.2274378"
      inkscape:cy="8.4422052"
-     inkscape:window-x="438"
-     inkscape:window-y="49"
+     inkscape:window-x="514"
+     inkscape:window-y="67"
      inkscape:window-maximized="0"
      inkscape:current-layer="svg3045"
      fit-margin-top="1"
