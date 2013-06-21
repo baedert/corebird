@@ -42,9 +42,9 @@ class MainWindow : ApplicationWindow {
 	private ToolButton new_tweet_button      = new ToolButton.from_stock(Stock.NEW);
 	private SeparatorToolItem expander_item  = new SeparatorToolItem();
 	private SeparatorToolItem left_separator = new SeparatorToolItem();
-	private Gd.Stack stack = new Gd.Stack();
+	private Gd.Stack stack                   = new Gd.Stack();
 
-	public MainWindow(Gtk.Application app){
+	public MainWindow(Gtk.Application app, Account? account = null){
 		GLib.Object (application: app);
     this.set_icon_name("corebird");
 
@@ -84,7 +84,8 @@ class MainWindow : ApplicationWindow {
 		UserStream.get().start();
 
 		new_tweet_button.clicked.connect( () => {
-			this.get_application().lookup_action("compose-tweet").activate(null);
+      var cw = new ComposeTweetWindow(this, null, get_application ());
+      cw.show();                                                     
 		});
 
   
@@ -103,8 +104,7 @@ class MainWindow : ApplicationWindow {
 
 		avatar_button.set_icon_widget(new Image.from_file(User.get_avatar_path()));
 		avatar_button.clicked.connect( () => {
-//			ProfileDialog pd = new ProfileDialog();
-//			pd.show_all();
+        message("IMPLEMENT: Show account switcher");
 		});
 
 		//Update the user's info
@@ -264,10 +264,5 @@ class MainWindow : ApplicationWindow {
 
 		page.on_join(page_id, va_list());
 		stack.set_visible_child_name("%d".printf(page_id));
-	}
-
-	public void show_again() {
-		this.load_geometry();
-		this.set_visible(true);
 	}
 }
