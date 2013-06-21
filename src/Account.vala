@@ -22,15 +22,37 @@ class Account : GLib.Object {
   private Database db        {public get; private set;}
   
 
+  public Account (int64 id) {
+    this.id = id;
+  }
+
 
 
 
   /** Static stuff */
-  private static Account[] accounts;
+  private static GLib.List<Account> accounts = null;
 
-  public static unowned Account[] list_accounts () {
+  public static unowned GLib.List<Account> list_accounts () {
     return accounts;
   }
+  /**
+   * Look up the accounts. Each account has a <id>.db in ~/.corebird/accounts/
+   * The accounts are initialized with only their screen_name and their ID.
+   */
+  private static void lookup_accounts () {
+    File accounts_dir = File.new_for_path (Utils.user_file ("accounts/"));
+    var enumerator = accounts_dir.enumerate_children (FileAttribute.STANDARD_NAME, 
+                                                      FileQueryInfoFlags.NOFOLLOW_SYMLINKS);
+    // Each of the accounts files ends with '.db'
+    FileInfo info = null;
+    while ((info = enumerator.next_file ()) != null) {
+      string file_name = info.get_name ();
+      int64 user_id = int64.parse (file_name.substring (file_name.length - 3));
+      Account acc = new Account (user_id);
+      
+      accounts.append (acc);
+    }
 
+  }
 
 }

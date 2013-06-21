@@ -42,14 +42,14 @@ class MainWindow : ApplicationWindow {
 	private ToolButton new_tweet_button      = new ToolButton.from_stock(Stock.NEW);
 	private SeparatorToolItem expander_item  = new SeparatorToolItem();
 	private SeparatorToolItem left_separator = new SeparatorToolItem();
-	private Gd.Stack stack                   = new Gd.Stack();
+	private Gtk.Stack stack                  = new Gtk.Stack();
 
 	public MainWindow(Gtk.Application app, Account? account = null){
 		GLib.Object (application: app);
     this.set_icon_name("corebird");
 
 		stack.transition_duration = Settings.get_animation_duration();
-		stack.transition_type = Gd.Stack.TransitionType.SLIDE_RIGHT;
+		stack.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
 
 		timelines[0] = new HomeTimeline(PAGE_STREAM);
 		timelines[1] = new MentionsTimeline(PAGE_MENTIONS);
@@ -244,9 +244,9 @@ class MainWindow : ApplicationWindow {
 
 
 		if(page_id > active_page)
-			stack.transition_type = Gd.Stack.TransitionType.SLIDE_LEFT;
+			stack.transition_type = StackTransitionType.SLIDE_LEFT;
 		else
-			stack.transition_type = Gd.Stack.TransitionType.SLIDE_RIGHT;
+			stack.transition_type = StackTransitionType.SLIDE_RIGHT;
 
 		this.last_page   = this.active_page;
 		this.active_page = page_id;

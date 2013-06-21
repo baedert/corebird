@@ -83,22 +83,21 @@ class SettingsDialog : Gtk.Dialog {
     on_new_followers_switch.notify["active"].connect(() => {
         Settings.set_bool("new-followers-notify", on_new_followers_switch.active);
     });
-
-		this.add_button("Close", 1);
-
-		this.response.connect((id) => {
-			if(id == 1)
-				this.dispose();
-		});*/
+    */
 	}
 
   [GtkCallback]
-  private void add_account_clicked (){
+  private void add_account_clicked () {
 
   }
 
   [GtkCallback]
-  private void remove_account_clicked (){
+  private void remove_account_clicked () {
 
+  }
+
+  [GtkCallback]
+  private void close_button_clicked () {
+    close ();
   }
 }

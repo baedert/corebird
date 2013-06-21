@@ -30,7 +30,7 @@ class ProfileWidget : Gtk.Box {
   private TextButton following_button = new TextButton();
   private TextButton followers_button = new TextButton();
   private ToggleButton follow_button  = new ToggleButton.with_label("Follow");
-  private Gd.Stack bottom_stack       = new Gd.Stack();
+  private Gtk.Stack bottom_stack      = new Gtk.Stack();
   private int active_page       = 0;
   private int64 user_id;
   private string screen_name;
@@ -429,9 +429,9 @@ class ProfileWidget : Gtk.Box {
       return;
 
     if(page > active_page)
-      bottom_stack.transition_type = Gd.Stack.TransitionType.SLIDE_LEFT;
+      bottom_stack.transition_type = StackTransitionType.SLIDE_LEFT;
     else
-      bottom_stack.transition_type = Gd.Stack.TransitionType.SLIDE_RIGHT;
+      bottom_stack.transition_type = StackTransitionType.SLIDE_RIGHT;
 
     bottom_stack.set_visible_child_name("%d".printf(page));
   }
