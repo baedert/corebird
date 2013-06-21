@@ -17,7 +17,7 @@
 using Gtk;
 
 class Corebird : Gtk.Application {
-  public static SQLHeavy.Database db;
+  public static SQLHeavy.VersionedDatabase db;
   private static GLib.OutputStream log_stream;
 
   public Corebird() throws GLib.Error{
@@ -111,7 +111,8 @@ class Corebird : Gtk.Application {
       create_user_folder("log/");
     }
 
-    Corebird.db = new SQLHeavy.Database(Utils.user_file("Corebird.db"));
+    Corebird.db = new SQLHeavy.VersionedDatabase(Utils.user_file("Corebird.db"),
+                                                 DATADIR+"/sql/init/");
     db.journal_mode = SQLHeavy.JournalMode.MEMORY;
     db.temp_store   = SQLHeavy.TempStoreMode.MEMORY;
 

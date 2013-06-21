@@ -41,6 +41,7 @@ ensure_vala_version("0.16" MINIMUM)
 add_subdirectory (po)
 add_subdirectory (assets)
 add_subdirectory (ui)
+add_subdirectory (sql)
 
 
 set (DEPS glib-2.0;
@@ -135,7 +136,4 @@ target_link_libraries(corebird ${DEPS_LIBRARIES})
 add_schema ("org.baedert.corebird.gschema.xml")
 
 install (TARGETS corebird RUNTIME DESTINATION bin)
-install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/sql/init.sql DESTINATION ${DATADIR}/sql/)
-
-
 
