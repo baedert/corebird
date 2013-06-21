@@ -111,7 +111,6 @@ set (VALA_SOURCE
   src/util/Config.vala
   src/util/WidgetReplacer.vala
   src/egglistbox/egg-list-box.c
-  src/libgd/gd-stack.c
   src/resources.c
 )
 
@@ -120,14 +119,12 @@ vala_precompile(VALA_C
 PACKAGES
   ${DEPS}
   egglistbox
-  gd-stack
 OPTIONS
   -g
   --thread
   --target-glib=2.32
   --enable-checking
   --vapidir=src/egglistbox/
-  --vapidir=src/libgd/
   --disable-warnings
   --gresources=resources.xml
 )
