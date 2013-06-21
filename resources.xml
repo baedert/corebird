@@ -1,0 +1,5 @@
+<gresources>
+  <gresource prefix="/org/baedert/corebird">
+    <file compressed="true" preprocess="xml-stripblanks">ui/settings-dialog.ui</file>
+  </gresource>
+</gresources>

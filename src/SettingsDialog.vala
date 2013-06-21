@@ -16,17 +16,18 @@
 
 using Gtk;
 
+[GtkTemplate (ui = "/org/baedert/corebird/ui/settings-dialog.ui")]
 class SettingsDialog : Gtk.Dialog {
 	private MainWindow win;
 
-	public SettingsDialog(MainWindow win){
+	public SettingsDialog(MainWindow? win = null){
 		this.win = win;
-		this.set_transient_for(win);
-		this.set_modal(true);
-		this.set_default_size(450, 120);
-		this.title = "Settings";
+//		this.set_transient_for(win);
+//		this.set_modal(true);
+//		this.set_default_size(450, 120);
+//		this.title = "Settings";
 
-		var builder = new UIBuilder(DATADIR+"ui/settings-dialog.ui", "main_notebook");
+/*		var builder = new UIBuilder(DATADIR+"ui/settings-dialog.ui", "main_notebook");
 		var main_notebook = builder.get_notebook("main_notebook");
 
 		// this.add(main_box);
@@ -88,6 +89,16 @@ class SettingsDialog : Gtk.Dialog {
 		this.response.connect((id) => {
 			if(id == 1)
 				this.dispose();
-		});
+		});*/
 	}
+
+  [GtkCallback]
+  private void add_account_clicked (){
+
+  }
+
+  [GtkCallback]
+  private void remove_account_clicked (){
+
+  }
 }
