@@ -1,6 +1,6 @@
 
-pragma user_version 1
-
+ --#pragma user_version 1
+PRAGMA user_version = 1;
 
 CREATE TABLE IF NOT EXISTS `common`(
   token VARCHAR(255),

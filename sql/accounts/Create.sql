@@ -1,6 +1,6 @@
 
 
-pragma user_version 1
+PRAGMA user_version = 1;
 
 -- SQL schema for an account database
 
