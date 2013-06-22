@@ -57,7 +57,7 @@
                     </style>
                     <property name="icon_size">1</property>
                     <child>
-                      <object class="GtkToolButton" id="add-account-button">
+                      <object class="GtkToolButton" id="add_account_button">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Add account</property>
@@ -71,8 +71,9 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkToolButton" id="remove-account-button">
+                      <object class="GtkToolButton" id="remove_account_button">
                         <property name="visible">True</property>
+                        <property name="sensitive">False</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Remove selected account</property>
                         <property name="use_underline">True</property>
@@ -93,13 +94,38 @@
                   </packing>
                 </child>
                 <child>
-                  <placeholder/>
+                  <object class="GtkListBox" id="account_list">
+                    <property name="width_request">77</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">start</property>
+                    <property name="vexpand">True</property>
+                    <signal name="row-selected" handler="account_list_selected" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">0</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
                 </child>
                 <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
+                  <object class="GtkStack" id="account_info_stack">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
+                    <property name="transition_type">crossfade</property>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">0</property>
+                    <property name="width">1</property>
+                    <property name="height">2</property>
+                  </packing>
                 </child>
               </object>
             </child>

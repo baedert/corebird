@@ -102,9 +102,12 @@ set (VALA_SOURCE
   src/widgets/BadgeRadioToolButton.vala
   src/widgets/InvisibilityBin.vala
   src/widgets/ImageOverlay.vala
+  src/widgets/AccountCreateWidget.vala
+  src/widgets/AccountInfoWidget.vala
   src/list/TweetListEntry.vala
   src/list/NewFollowerEntry.vala
   src/list/ProgressEntry.vala
+  src/list/AccountListEntry.vala
   src/util/UIBuilder.vala
   src/util/Utils.vala
   src/util/Benchmark.vala

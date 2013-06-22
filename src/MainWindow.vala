@@ -65,8 +65,8 @@ class MainWindow : ApplicationWindow {
 
 
 			tl.main_window = this;
-			tl.load_cached();
-			tl.load_newest();
+//			tl.load_cached();
+//		tl.load_newest();
 			tl.create_tool_button(dummy_button);
 			tl.get_tool_button().toggled.connect(() => {
 				if(tl.get_tool_button().active){

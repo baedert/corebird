@@ -18,7 +18,16 @@ using Gtk;
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/settings-dialog.ui")]
 class SettingsDialog : Gtk.Dialog {
+  private static const string DUMMY_SCREEN_NAME = "<Unnamed>";
 	private MainWindow win;
+  [GtkChild]
+  private ListBox account_list;
+  [GtkChild]
+  private ToolButton add_account_button;
+  [GtkChild]
+  private ToolButton remove_account_button;
+  [GtkChild]
+  private Gtk.Stack account_info_stack;
 
 	public SettingsDialog(MainWindow? win = null){
 		this.win = win;
@@ -84,16 +93,49 @@ class SettingsDialog : Gtk.Dialog {
         Settings.set_bool("new-followers-notify", on_new_followers_switch.active);
     });
     */
+
+    unowned SList<Account> accs = Account.list_accounts ();
+    foreach (Account a in accs) {
+      account_list.add (new AccountListEntry (a));
+      account_info_stack.add_named (new AccountInfoWidget (a), a.screen_name);
+    }
 	}
 
   [GtkCallback]
   private void add_account_clicked () {
+    Account dummy_acc = new Account(0, DUMMY_SCREEN_NAME, "<__>");
+    Account.add_account (dummy_acc);
+    ListBoxRow row = new ListBoxRow();
+    row.add (new AccountListEntry (dummy_acc));
+    account_list.add (row);
+    account_info_stack.add_named (new AccountCreateWidget (dummy_acc), DUMMY_SCREEN_NAME);
+    row.show_all ();
+    account_list.select_row (row);
 
+    add_account_button.sensitive = false;   
   }
 
   [GtkCallback]
   private void remove_account_clicked () {
+    ListBoxRow row = account_list.get_selected_row ();
+    AccountListEntry entry = (AccountListEntry)row.get_child ();
+    if (entry.screen_name == DUMMY_SCREEN_NAME) {
+      account_list.remove (row);
+      account_info_stack.remove (account_info_stack.get_visible_child ());
+      add_account_button.sensitive = true;
+    }
+  }
 
+  [GtkCallback]
+  private void account_list_selected () {
+    ListBoxRow row = account_list.get_selected_row ();
+    if (row == null) {
+      remove_account_button.sensitive = false;
+      return;
+    }
+    AccountListEntry entry = (AccountListEntry)row.get_child ();
+    account_info_stack.set_visible_child_name (entry.screen_name);
+    remove_account_button.sensitive = true;
   }
 
   [GtkCallback]
