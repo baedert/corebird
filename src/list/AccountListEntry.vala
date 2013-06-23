@@ -31,5 +31,9 @@ class AccountListEntry : Gtk.Box {
   public AccountListEntry (Account acc) {
     screen_name_label.label = acc.screen_name;
     avatar_image.pixbuf = acc.avatar_small;
+    acc.notify["avatar-small"].connect(() => {
+      avatar_image.pixbuf = acc.avatar_small;
+      message("hihi");
+    });
   }
 }

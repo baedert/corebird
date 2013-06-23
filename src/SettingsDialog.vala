@@ -96,6 +96,7 @@ class SettingsDialog : Gtk.Dialog {
 
     unowned SList<Account> accs = Account.list_accounts ();
     foreach (Account a in accs) {
+      a.load_avatar ();
       account_list.add (new AccountListEntry (a));
       account_info_stack.add_named (new AccountInfoWidget (a), a.screen_name);
     }

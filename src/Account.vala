@@ -114,10 +114,8 @@ class Account : GLib.Object {
       pixbuf.save(big_dest, type);
       double scale_x = 24.0 / pixbuf.get_width();
       double scale_y = 24.0 / pixbuf.get_height();
-      var scaled_pixbuf = new Gdk.Pixbuf(Gdk.Colorspace.RGB, false,
-                                         8, 24, 24);
-      pixbuf.scale(scaled_pixbuf, 0, 0, 24, 24, 0, 0, scale_x, scale_y,
-                   Gdk.InterpType.HYPER);
+      var scaled_pixbuf = new Gdk.Pixbuf(Gdk.Colorspace.RGB, false, 8, 24, 24);
+      pixbuf.scale(scaled_pixbuf, 0, 0, 24, 24, 0, 0, scale_x, scale_y, Gdk.InterpType.HYPER);
       scaled_pixbuf.save(dest_path, type);
       message ("saving to %s", dest_path);
 
@@ -127,7 +125,6 @@ class Account : GLib.Object {
     } else {
       critical ("Not implemented yet");
     }
-
   }
   
   /**
