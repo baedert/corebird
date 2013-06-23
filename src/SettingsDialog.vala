@@ -99,6 +99,8 @@ class SettingsDialog : Gtk.Dialog {
       account_list.add (new AccountListEntry (a));
       account_info_stack.add_named (new AccountInfoWidget (a), a.screen_name);
     }
+    if (accs.length() > 0)
+      account_list.select_row (account_list.get_row_at_index (0));
 	}
 
   [GtkCallback]

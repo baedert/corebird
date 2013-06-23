@@ -30,7 +30,7 @@ class AccountCreateWidget : Gtk.Grid {
 
   [GtkCallback]
   private void request_pin_button_clicked () {
-    Twitter.proxy.request_token ("oauth/request_token", "oob");
+    acc.proxy.request_token ("oauth/request_token", "oob");
     GLib.AppInfo.launch_default_for_uri(
 					"http://twitter.com/oauth/authorize?oauth_token=%s"
 	              .printf(Twitter.proxy.get_token()), null);
@@ -40,15 +40,15 @@ class AccountCreateWidget : Gtk.Grid {
   [GtkCallback]
   private void confirm_button_clicked () {
     try {
-      Twitter.proxy.access_token("oauth/access_token", pin_entry.get_text());
+      acc.proxy.access_token("oauth/access_token", pin_entry.get_text());
     } catch (GLib.Error e) {
       critical (e.message);
       return;
     }
-
+    
     // The token and token secret have been successfully received
     // So, get some account information
-    var call = Twitter.proxy.new_call ();
+    var call = acc.proxy.new_call ();
     call.set_function ("1.1/account/settings.json");
     call.set_method ("GET");
     call.invoke_async.begin (null, (obj, res) => {
@@ -59,6 +59,8 @@ class AccountCreateWidget : Gtk.Grid {
       acc.query_user_info_by_scren_name.begin (screen_name, () => {
         acc.init_database ();
         acc.save_info();
+        acc.db.execute ("INSERT INTO `common`(token, token_secret) VALUES ('%s', '%s');"
+                        .printf (acc.proxy.token, acc.proxy.token_secret));
       });
     });
   }
