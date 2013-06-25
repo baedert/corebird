@@ -69,7 +69,7 @@ class Corebird : Gtk.Application {
 
     if (!show_tweet_window){
       if (Settings.is_first_run ())
-        add_window (new FirstRunWindow(this));
+        critical ("Implement this.");
       else
         add_window (new MainWindow (this));
     } else {

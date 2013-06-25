@@ -69,7 +69,6 @@ set (VALA_SOURCE
   src/MainWindow.vala
   src/Tweet.vala
   src/Settings.vala
-  src/FirstRunWindow.vala
   src/Twitter.vala
   src/ComposeTweetWindow.vala
   src/SettingsDialog.vala
