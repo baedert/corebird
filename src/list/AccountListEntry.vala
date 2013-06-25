@@ -28,8 +28,21 @@ class AccountListEntry : Gtk.Box {
     get { return screen_name_label.label; }
   }
 
+  private ulong avatar_change_id;
+  private unowned Account acc;
+
   public AccountListEntry (Account acc) {
+    this.acc = acc;
     screen_name_label.label = acc.screen_name;
     avatar_image.pixbuf = acc.avatar_small;
+    avatar_change_id = acc.notify["avatar-small"].connect(() => {
+      avatar_image.pixbuf = acc.avatar_small;
+    });
+    message(@"Signal ID: $avatar_change_id");
+  }
+
+  public override void destroy (){
+    base.destroy();
+    message("destructor");
   }
 }

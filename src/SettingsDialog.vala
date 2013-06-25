@@ -28,6 +28,18 @@ class SettingsDialog : Gtk.Dialog {
   private ToolButton remove_account_button;
   [GtkChild]
   private Gtk.Stack account_info_stack;
+  [GtkChild]
+  private Switch on_new_mentions_switch;
+  [GtkChild]
+  private Switch on_new_followers_switch;
+  [GtkChild]
+  private Switch on_new_dms_switch;
+  [GtkChild]
+  private Switch primary_toolbar_switch;
+  [GtkChild]
+  private Switch inline_media_switch;
+  [GtkChild]
+  private Switch dark_theme_switch;
 
 	public SettingsDialog(MainWindow? win = null){
 		this.win = win;
@@ -94,8 +106,27 @@ class SettingsDialog : Gtk.Dialog {
     });
     */
 
+    // Bind all the settings
+
+    // Notifications page 
+    Settings.get ().bind ("new-mentions-notify", on_new_mentions_switch, "active", 
+                          SettingsBindFlags.DEFAULT);
+    Settings.get ().bind ("new-followers-notify", on_new_followers_switch, "active",
+                          SettingsBindFlags.DEFAULT);
+    Settings.get ().bind ("new-dms-notify", on_new_dms_switch, "active",
+                          SettingsBindFlags.DEFAULT);
+    //Interface page
+    Settings.get ().bind ("show-primary-toolbar", primary_toolbar_switch, "active",
+                          SettingsBindFlags.DEFAULT);
+    Settings.get ().bind ("show-inline-media", inline_media_switch, "active",
+                          SettingsBindFlags.DEFAULT);
+    Settings.get ().bind ("use-dark-theme", dark_theme_switch, "active",
+                          SettingsBindFlags.DEFAULT);
+
+
     unowned SList<Account> accs = Account.list_accounts ();
     foreach (Account a in accs) {
+      a.load_avatar ();
       account_list.add (new AccountListEntry (a));
       account_info_stack.add_named (new AccountInfoWidget (a), a.screen_name);
     }
@@ -126,6 +157,7 @@ class SettingsDialog : Gtk.Dialog {
     if (entry.screen_name == DUMMY_SCREEN_NAME) {
       account_list.remove (row);
       account_info_stack.remove (account_info_stack.get_visible_child ());
+      Account.remove_account (DUMMY_SCREEN_NAME);
       add_account_button.sensitive = true;
     }
   }
@@ -144,7 +176,8 @@ class SettingsDialog : Gtk.Dialog {
 
   [GtkCallback]
   private void close_button_clicked () {
-    close ();
+    Account.remove_account (DUMMY_SCREEN_NAME);
+    destroy();
   }
 
   private void on_account_access (bool result, Account acc) {
