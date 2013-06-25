@@ -66,7 +66,6 @@ class NewFollowerEntry : Gtk.Box, ITwitterItem {
     string[] parts = text.split(",");
     int count = int.parse(parts[0]);
 
-    GLib.return_if_fail(parts.length == count+1);
     for(int i = 0; i < count; i++)
       add_follower_from_name (parts[1+i]);
 
