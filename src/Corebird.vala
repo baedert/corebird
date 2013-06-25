@@ -69,6 +69,9 @@ class Corebird : Gtk.Application {
 
     string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
 
+    if(startup_accounts.length == 1)
+      message("Using account '@%s'", startup_accounts[0]);
+
     if (!show_tweet_window){
       if (Settings.is_first_run ())
         critical ("Implement this.");

@@ -7,7 +7,7 @@ pkgdesc="Gtk+ Twitter client"
 url="http://pango.com"
 arch=('i686' 'x86_64')
 license=('LGPL')
-depends=('gtk3>=3.6'
+depends=('gtk3>=3.10'
 		 'glib2>=2.32'
 		 'rest>=0.7' #media upload needs rest-git from the AUR
 		 'libgee'
@@ -40,6 +40,7 @@ build() {
 	cd $srcdir/$_gitname-build
 
 	msg "Starting build..."
+  ./compile-resources
 	cmake .
 	make
 }
