@@ -67,11 +67,19 @@ class Corebird : Gtk.Application {
       return -1;
     }
 
+    string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
+
     if (!show_tweet_window){
       if (Settings.is_first_run ())
         critical ("Implement this.");
-      else
-        add_window (new MainWindow (this));
+      else{
+        if (startup_accounts.length == 1)
+          add_window (new MainWindow (this, Account.list_accounts().data));
+        else {
+          foreach (string a in startup_accounts)
+            message("TODO: ADD %s", a);
+        }
+      }
     } else {
       add_window (new ComposeTweetWindow (null, null, this));
     }

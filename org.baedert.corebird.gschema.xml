@@ -73,5 +73,11 @@
       <summary>Duration of slide animations[ms]</summary>
       <description></description>
     </key>
+    <key name="startup-accounts" type="as">
+      <default>[""]</default>
+      <summary>-</summary>
+      <description>-</description>
+    </key>
+
   </schema>
 </schemalist>
