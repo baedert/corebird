@@ -179,5 +179,13 @@ class Account : GLib.Object {
   public static void add_account (Account acc) {
     accounts.append (acc);
   }
+  public static void remove_account (string screen_name) {
+    foreach(Account a in accounts) {
+      if(a.screen_name == screen_name){
+        accounts.remove (a);
+        return;
+      }
+    }
+  }
 
 }
