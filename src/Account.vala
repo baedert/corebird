@@ -40,7 +40,7 @@ class Account : GLib.Object {
                                      DATADIR+"/sql/accounts");
   }
 
-  public void init_proxy () {
+  public void init_proxy (bool load_secrets = true) {
     if (proxy != null)
       return;
     init_database ();
@@ -48,10 +48,12 @@ class Account : GLib.Object {
                                       "oGrvd6654nWLhzLcJywSW3pltUfkhP4BnraPPVNhHtY",
                                       "https://api.twitter.com/",
                                       false);
-    var q = new Query (db, "SELECT token, token_secret FROM common;");
-    var result = q.execute ();
-    proxy.token = result.fetch_string (0);
-    proxy.token_secret = result.fetch_string (1);
+    if (load_secrets) {
+      var q = new Query (db, "SELECT token, token_secret FROM common;");
+      var result = q.execute ();
+      proxy.token = result.fetch_string (0);
+      proxy.token_secret = result.fetch_string (1);
+    }
   }
 
   public void load_avatar (){

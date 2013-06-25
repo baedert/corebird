@@ -21,8 +21,8 @@ using Gtk;
 class AccountCreateWidget : Gtk.Grid {
   [GtkChild]
   private Entry pin_entry;
-
   private unowned Account acc;
+  public signal void result_received (bool result, Account acc);
 
   public AccountCreateWidget (Account acc){
     this.acc = acc;
@@ -30,10 +30,11 @@ class AccountCreateWidget : Gtk.Grid {
 
   [GtkCallback]
   private void request_pin_button_clicked () {
+    acc.init_proxy ();
     acc.proxy.request_token ("oauth/request_token", "oob");
     GLib.AppInfo.launch_default_for_uri(
 					"http://twitter.com/oauth/authorize?oauth_token=%s"
-	              .printf(Twitter.proxy.get_token()), null);
+	              .printf(acc.proxy.get_token()), null);
 
   }
 
@@ -43,6 +44,7 @@ class AccountCreateWidget : Gtk.Grid {
       acc.proxy.access_token("oauth/access_token", pin_entry.get_text());
     } catch (GLib.Error e) {
       critical (e.message);
+      result_received (false, acc);
       return;
     }
     
@@ -61,6 +63,7 @@ class AccountCreateWidget : Gtk.Grid {
         acc.save_info();
         acc.db.execute ("INSERT INTO `common`(token, token_secret) VALUES ('%s', '%s');"
                         .printf (acc.proxy.token, acc.proxy.token_secret));
+        result_received (true, acc);
       });
     });
   }

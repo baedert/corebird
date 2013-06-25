@@ -110,7 +110,9 @@ class SettingsDialog : Gtk.Dialog {
     ListBoxRow row = new ListBoxRow();
     row.add (new AccountListEntry (dummy_acc));
     account_list.add (row);
-    account_info_stack.add_named (new AccountCreateWidget (dummy_acc), DUMMY_SCREEN_NAME);
+    var create_widget = new AccountCreateWidget (dummy_acc);
+    create_widget.result_received.connect (on_account_access);
+    account_info_stack.add_named (create_widget, DUMMY_SCREEN_NAME);
     row.show_all ();
     account_list.select_row (row);
 
@@ -143,5 +145,18 @@ class SettingsDialog : Gtk.Dialog {
   [GtkCallback]
   private void close_button_clicked () {
     close ();
+  }
+
+  private void on_account_access (bool result, Account acc) {
+    if (result) {
+      account_info_stack.remove (account_info_stack.get_visible_child ());
+      var acc_widget = new AccountInfoWidget (acc);
+      account_info_stack.add_named (acc_widget, acc.screen_name);
+      account_info_stack.set_visible_child_name (acc.screen_name);
+      account_list.remove (account_list.get_selected_row ());
+      account_list.add (new AccountListEntry (acc));
+    } else {
+      warning ("Wrong token!");
+    }
   }
 }
