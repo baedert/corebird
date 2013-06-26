@@ -8,6 +8,10 @@
     <value nick="Stack 50" value="50" />
   </enum>
 
+  <enum id="org.baedert.corebird.upload-providers">
+    <value nick="Twitter"  value="0" />
+  </enum>
+
   <schema id="org.baedert.corebird"
       path="/org/baedert/corebird/"
       gettext-domain="corebird">
@@ -64,11 +68,10 @@
       <summary>bla bla</summary>
       <description>babbada</description>
     </key>
-    <key name="upload-provider" type="i">
-      <default>0</default>
+    <key name="upload-provider" enum="org.baedert.corebird.upload-providers">
+      <default>"Twitter"</default>
       <summary></summary>
       <description>
-        0 = pic.twitter.com
       </description>
     </key>
     <key name="animation-duration" type="i">

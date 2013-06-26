@@ -76,7 +76,7 @@ class Settings : GLib.Object {
   }
 
 	public static int upload_provider(){
-		return settings.get_int("upload-provider");
+		return settings.get_enum("upload-provider");
 	}
 
 	public static bool refresh_streams_on_startup(){
