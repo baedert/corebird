@@ -30,21 +30,9 @@ class Settings : GLib.Object {
 	 * notification should be created.
 	 */
 	public static int get_tweet_stack_count() {
-		int setting_val = settings.get_int("new-tweets-notify");
-		switch(setting_val){
-			case 2:
-				return 5;
-			case 3:
-				return 10;
-			case 4:
-				return 25;
-			case 5: return 50;
-			default:
-				return setting_val;
-		}
+		int setting_val = settings.get_enum("new-tweets-notify");
+    return setting_val;
 	}
-
-
 
 
 	/**

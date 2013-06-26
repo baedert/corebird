@@ -1,4 +1,13 @@
 <schemalist>
+  <enum id="org.baedert.corebird.tweet-stack">
+    <value nick="Never"    value="0"  />
+    <value nick="Every"    value="1"  />
+    <value nick="Stack 5"  value="5"  />
+    <value nick="Stack 10" value="10" />
+    <value nick="Stack 25" value="25" />
+    <value nick="Stack 50" value="50" />
+  </enum>
+
   <schema id="org.baedert.corebird"
       path="/org/baedert/corebird/"
       gettext-domain="corebird">
@@ -14,16 +23,10 @@
       <description>See summary</description>
     </key>
 
-    <key name="new-tweets-notify" type="i">
-      <default>0</default>
+    <key name="new-tweets-notify" enum="org.baedert.corebird.tweet-stack">
+      <default>"Never"</default>
       <summary>FOO FOO BAR BLA BLA BLA</summary>
       <description>
-        0 = 'Disabled'
-        1 = 'Every'
-        2 = 'Stack 5'
-        3 = 'Stack 10'
-        4 = 'Stack 25'
-        5 = 'Stack 50'
       </description>
     </key>
     <key name="new-mentions-notify" type="b">
