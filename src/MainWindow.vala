@@ -63,7 +63,6 @@ class MainWindow : ApplicationWindow {
 			if(!(tl is IPage))
 				break;
 
-
 			tl.main_window = this;
 //			tl.load_cached();
 //		tl.load_newest();
@@ -101,26 +100,25 @@ class MainWindow : ApplicationWindow {
 		expander_item.draw = false;
 		expander_item.set_expand(true);
 
-
-		avatar_button.set_icon_widget(new Image.from_file(User.get_avatar_path()));
+    account.load_avatar ();
+		avatar_button.set_icon_widget (new Image.from_pixbuf (account.avatar_small));
+    account.notify["avatar_small"].connect(() => {
+      avatar_button.set_icon_widget (new Image.from_pixbuf (account.avatar_small));
+    });
 		avatar_button.clicked.connect( () => {
         message("IMPLEMENT: Show account switcher");
 		});
-
-		//Update the user's info
-		User.update_info.begin((Image)avatar_button.icon_widget);
 
 		// Add all tool buttons for the timelines
 		foreach(var tl in timelines) {
 			if(tl.get_tool_button() != null)
 				left_toolbar.add(tl.get_tool_button());
 
-			stack.add_named(tl, "%d".printf(tl.get_id()));
+			stack.add_named(tl, tl.get_id ().to_string ());
 		}
 
-
 		foreach(var page in pages){
-			stack.add_named(page, "%d".printf(page.get_id()));
+			stack.add_named(page, page.get_id ().to_string ());
 		}
 
 		bottom_box.pack_start(left_toolbar, false, false);
