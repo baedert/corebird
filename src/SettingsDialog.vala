@@ -47,32 +47,15 @@ class SettingsDialog : Gtk.Dialog {
 
 	public SettingsDialog(MainWindow? win = null){
 		this.win = win;
-/*
-		var upload_provider_combobox = builder.get_combobox("upload_provider_combobox");
-		upload_provider_combobox.active = Settings.upload_provider();
-		upload_provider_combobox.changed.connect(() => {
-			Settings.set_int("upload-provider", upload_provider_combobox.active);
-		});
-    */
-
-    // Bind all the settings
-
-    // Notifications page 
-    Settings.get ().bind_with_mapping ("new-tweets-notify", on_new_tweets_combobox, "active",
-                          SettingsBindFlags.DEFAULT, (value) => {
-                            value = 3;
-                            return true;
-                          }, (value, variant_type) => {
-                            variant_type = VariantType.STRING;
-                            value = "Disabled";
-                            return new Variant.string ("Never");
-                          }, null, null);
+    Settings.get ().bind ("new-tweets-notify", on_new_tweets_combobox, "active-id",
+                          SettingsBindFlags.DEFAULT);
     Settings.get ().bind ("new-mentions-notify", on_new_mentions_switch, "active", 
                           SettingsBindFlags.DEFAULT);
     Settings.get ().bind ("new-followers-notify", on_new_followers_switch, "active",
                           SettingsBindFlags.DEFAULT);
     Settings.get ().bind ("new-dms-notify", on_new_dms_switch, "active",
                           SettingsBindFlags.DEFAULT);
+
     // Interface page
     Settings.get ().bind ("show-primary-toolbar", primary_toolbar_switch, "active",
                           SettingsBindFlags.DEFAULT);

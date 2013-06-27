@@ -473,12 +473,12 @@
                     <property name="halign">start</property>
                     <property name="active">0</property>
                     <items>
-                      <item translatable="yes">Disabled</item>
-                      <item translatable="yes">Every</item>
-                      <item translatable="yes">Stack 5</item>
-                      <item translatable="yes">Stack 10</item>
-                      <item translatable="yes">Stack 25</item>
-                      <item translatable="yes">Stack 50</item>
+                      <item id="Never" translatable="yes">Never</item>
+                      <item id="Every" translatable="yes">Every</item>
+                      <item id="Stack 5" translatable="yes">Stack 5</item>
+                      <item id="Stack 10" translatable="yes">Stack 10</item>
+                      <item id="Stack 25" translatable="yes">Stack 25</item>
+                      <item id="Stack 50" translatable="yes">Stack 50</item>
                     </items>
                   </object>
                   <packing>
