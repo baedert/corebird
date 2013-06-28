@@ -87,7 +87,6 @@ class UserStream : Object {
 	private bool timeout_cb() {
 		var builder = new UIBuilder(DATADIR+"/ui/connection-lost-dialog.ui");
 		var dialog = builder.get_dialog ("dialog1");
-		var label = builder.get_label("text_label");
 		dialog.response.connect((id) => {
 			if(id == 0)
 				dialog.destroy();

@@ -129,7 +129,7 @@ OPTIONS
   --target-glib=2.32
   --enable-checking
   --vapidir=src/egglistbox/
-  --disable-warnings
+  #  --disable-warnings
   --gresources=resources.xml
 )
 

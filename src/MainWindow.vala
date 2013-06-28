@@ -56,16 +56,22 @@ class MainWindow : ApplicationWindow {
     timelines[2] = new SearchTimeline(PAGE_SEARCH);
     // timelines[2] = new FavoriteContainer(PAGE_FAVORITES);
 
+    if (account == null) {
+      app.lookup_action ("show-settings").activate (null);
+      return;
+    }
+
 
     /* Initialize all containers */
     for(int i = 0; i < timelines.length; i++){
       ITimeline tl = timelines[i];
+      tl.account = account;
       if(!(tl is IPage))
         break;
 
       tl.main_window = this;
-//      tl.load_cached();
-//    tl.load_newest();
+      tl.load_cached();
+      tl.load_newest();
       tl.create_tool_button(dummy_button);
       tl.get_tool_button().toggled.connect(() => {
         if(tl.get_tool_button().active){

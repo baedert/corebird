@@ -43,12 +43,12 @@ class Account : GLib.Object {
   public void init_proxy (bool load_secrets = true) {
     if (proxy != null)
       return;
-    init_database ();
     this.proxy = new Rest.OAuthProxy ("0rvHLdbzRULZd5dz6X1TUA",
                                       "oGrvd6654nWLhzLcJywSW3pltUfkhP4BnraPPVNhHtY",
                                       "https://api.twitter.com/",
                                       false);
     if (load_secrets) {
+      init_database ();
       var q = new Query (db, "SELECT token, token_secret FROM common;");
       var result = q.execute ();
       proxy.token = result.fetch_string (0);
@@ -101,6 +101,8 @@ class Account : GLib.Object {
   public async void update_avatar (string url = "") {
     if (url.length > 0 && url == this.avatar_url)
       return;
+
+    message ("Using %s to update the avatar", url);
   
     if (url.length > 0) {
       var session = new Soup.Session ();     
@@ -134,13 +136,22 @@ class Account : GLib.Object {
    * global one.
    */
   public void save_info () {
-    Query q = new Query (db, @"INSERT OR REPLACE INTO `info`(id,screen_name,name) VALUES
-        ('$id','$screen_name','$name');");
-    q.execute ();
+    Query q;
+    try {
+      q = new Query (db, @"INSERT OR REPLACE INTO `info`(id,screen_name,name) VALUES
+                                 ('$id','$screen_name','$name');");
+      q.execute ();
+    } catch (SQLHeavy.Error e) {
+      critical (e.message);
+    }
 
-    q = new Query (Corebird.db, @"INSERT OR REPLACE INTO `accounts`(id,screen_name,name,avatar_url) VALUES
-        ('$id','$screen_name','$name', '$avatar_url');");
-    q.execute ();
+    try {
+      q = new Query (Corebird.db, @"INSERT OR REPLACE INTO `accounts`(id,screen_name,name,avatar_url) VALUES
+                                    ('$id','$screen_name','$name', '$avatar_url');");
+      q.execute ();
+    } catch (SQLHeavy.Error e) {
+      critical (e.message);  
+    }
   }
 
   /** Static stuff ********************************************************************/

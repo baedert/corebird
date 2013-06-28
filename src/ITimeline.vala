@@ -20,9 +20,10 @@
  */
 interface ITimeline : Gtk.Widget, IPage {
   public static const int REST = 25;
-  protected abstract int64 max_id{get;set;}
-  public    abstract MainWindow main_window{get;set;}
-  protected abstract Egg.ListBox tweet_list{get;set;}
+  protected abstract int64 max_id           {get; set;}
+  public    abstract MainWindow main_window {get; set;}
+  protected abstract Egg.ListBox tweet_list {get; set;}
+  public    abstract Account account        {get; set;}
 
   public abstract void load_cached();
   public abstract void load_newest();
@@ -53,7 +54,7 @@ interface ITimeline : Gtk.Widget, IPage {
                                       throws SQLHeavy.Error {
     int64 greatest_id = 0;
 
-    var call = Twitter.proxy.new_call();
+    var call = account.proxy.new_call();
     call.set_function(function);
     call.set_method("GET");
     call.add_param("count", "20");
@@ -89,7 +90,7 @@ interface ITimeline : Gtk.Widget, IPage {
    */
   protected void load_older_internal(string function, int tweet_type,
                                      LoaderThread.EndLoadFunc? end_load_func = null) {
-    var call = Twitter.proxy.new_call();
+    var call = account.proxy.new_call();
     call.set_function(function);
     call.set_method("GET");
     message(@"using max_id: $max_id");

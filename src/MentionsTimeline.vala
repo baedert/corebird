@@ -21,8 +21,9 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
     get {return lowest_id;}
     set {lowest_id = value;}
   }
-  public MainWindow main_window{set;get;}
-  protected Egg.ListBox tweet_list{set;get;}
+  public MainWindow main_window {set; get;}
+  protected Egg.ListBox tweet_list {set; get;}
+  public Account account {get; set;}
   private int id;
   private BadgeRadioToolButton tool_button;
   private bool loading = false;

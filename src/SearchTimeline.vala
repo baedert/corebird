@@ -24,6 +24,7 @@ class SearchTimeline : IPage, ITimeline, Box {
 		get{return 0;}
 		set{;}
 	}
+  public Account account {get; set;}
 	protected uint tweet_remove_timeout{get;set;}
 	private Entry search_entry    = new Entry();
 	public MainWindow main_window{set;get;}
