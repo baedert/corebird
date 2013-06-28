@@ -88,8 +88,10 @@ class SettingsDialog : Gtk.Dialog {
   private void add_account_clicked () {
     Account dummy_acc = new Account(0, DUMMY_SCREEN_NAME, "<__>");
     Account.add_account (dummy_acc);
-    ListBoxRow row = new ListBoxRow();
-    row.add (new AccountListEntry (dummy_acc));
+//    ListBoxRow row = new ListBoxRow();
+//    row.add (new AccountListEntry (dummy_acc));
+//    account_list.add (row);
+    var row = new AccountListEntry (dummy_acc);
     account_list.add (row);
     var create_widget = new AccountCreateWidget (dummy_acc);
     create_widget.result_received.connect (on_account_access);
@@ -119,7 +121,7 @@ class SettingsDialog : Gtk.Dialog {
       remove_account_button.sensitive = false;
       return;
     }
-    AccountListEntry entry = (AccountListEntry)row.get_child ();
+    AccountListEntry entry = (AccountListEntry)row;
     account_info_stack.set_visible_child_name (entry.screen_name);
     remove_account_button.sensitive = true;
   }

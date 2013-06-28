@@ -38,7 +38,6 @@ class ProgressEntry : Box, ITwitterItem {
 		this.border_width = 5;
 		spinner.set_size_request(size, size);
 		this.set_size_request(size, size);
-
     this.start();
 	}
 

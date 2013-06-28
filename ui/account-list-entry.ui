@@ -1,37 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <!-- interface-requires gtk+ 3.10 -->
-  <template class="AccountListEntry" parent="GtkBox">
+  <template class="AccountListEntry" parent="GtkListBoxRow">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="orientation">vertical</property>
+    <property name="can_focus">True</property>
     <child>
-      <object class="GtkImage" id="avatar_image">
+      <object class="GtkBox" id="box2">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="xpad">11</property>
-        <property name="ypad">5</property>
-        <property name="stock">gtk-missing-image</property>
-        <property name="icon_size">0</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkImage" id="avatar_image">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="stock">gtk-missing-image</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="screen_name_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">label</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
       </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">0</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkLabel" id="screen_name_label">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="margin_bottom">2</property>
-        <property name="label" translatable="yes">label</property>
-      </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">1</property>
-      </packing>
     </child>
   </template>
 </interface>

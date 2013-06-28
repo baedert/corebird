@@ -18,7 +18,7 @@ using Gtk;
 
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/account-list-entry.ui")]
-class AccountListEntry : Gtk.Box {
+class AccountListEntry : Gtk.ListBoxRow {
   [GtkChild]
   private Label screen_name_label;
   [GtkChild]
@@ -38,7 +38,6 @@ class AccountListEntry : Gtk.Box {
     avatar_change_id = acc.notify["avatar-small"].connect(() => {
       avatar_image.pixbuf = acc.avatar_small;
     });
-    message(@"Signal ID: $avatar_change_id");
   }
 
   public override void destroy (){

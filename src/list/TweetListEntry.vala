@@ -82,7 +82,7 @@ class TweetListEntry : ITwitterItem, Gtk.EventBox {
     }
 
 
-    this.enter_notify_event.connect( (evt)=> {
+/*    this.enter_notify_event.connect( (evt)=> {
       if(is_user_tweet)
         return false;
       // message("ENTER Detail: %d", evt.detail);
@@ -112,8 +112,17 @@ class TweetListEntry : ITwitterItem, Gtk.EventBox {
       more_button.hide();
 
       return false;
-    });
+    });*/
 
+
+    this.state_flags_changed.connect ((previous) => {
+      message("FLAG CHANGE!");
+      Gtk.StateFlags flags = this.get_state_flags ();
+
+      bool buttons_visible = (bool)(flags & (StateFlags.PRELIGHT | StateFlags.SELECTED));
+      if(buttons_visible)
+      message("MAKE BUTTONS VISIBLE");
+    });
 
 
     var left_box = new Box(Orientation.VERTICAL, 3);
