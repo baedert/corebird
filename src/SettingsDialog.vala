@@ -47,6 +47,12 @@ class SettingsDialog : Gtk.Dialog {
 
 	public SettingsDialog(MainWindow? win = null){
 		this.win = win;
+
+    // General Page
+    Settings.get ().bind ("upload-provider", upload_provider_combobox, "active-id",
+                          SettingsBindFlags.DEFAULT);
+
+    // Notifications Page
     Settings.get ().bind ("new-tweets-notify", on_new_tweets_combobox, "active-id",
                           SettingsBindFlags.DEFAULT);
     Settings.get ().bind ("new-mentions-notify", on_new_mentions_switch, "active", 
