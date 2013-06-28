@@ -22,7 +22,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
     set {lowest_id = value;}
   }
   public MainWindow main_window {set; get;}
-  protected Egg.ListBox tweet_list {set; get;}
+  protected Gtk.ListBox tweet_list {set; get;}
   public Account account {get; set;}
   private int id;
   private BadgeRadioToolButton tool_button;
@@ -33,10 +33,10 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 
   public HomeTimeline(int id){
     this.id = id;
-    tweet_list = new Egg.ListBox();
+    tweet_list = new Gtk.ListBox();
     tweet_list.get_style_context().add_class("stream");
     tweet_list.set_selection_mode(SelectionMode.NONE);
-    tweet_list.add_to_scrolled(this);
+    this.add (tweet_list);
     tweet_list.set_sort_func (ITwitterItem.sort_func);
 
 
@@ -72,7 +72,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
       var entry = new TweetListEntry(t, main_window);
       entry.seen = false;
       tweet_list.add(entry);
-      tweet_list.resort();
+//      tweet_list.resort();
 
       unread_count++;
       update_unread_count();
@@ -102,7 +102,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
       critical("Error while loading cached tweets of the home timeline: %s",
                e.message);
     }
-    tweet_list.resort();
+//    tweet_list.resort();
     this.vadjustment.set_upper(0);
   }
 

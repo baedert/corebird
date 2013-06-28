@@ -22,7 +22,7 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
     set {lowest_id = value;}
   }
   public MainWindow main_window {set; get;}
-  protected Egg.ListBox tweet_list {set; get;}
+  protected Gtk.ListBox tweet_list {set; get;}
   public Account account {get; set;}
   private int id;
   private BadgeRadioToolButton tool_button;
@@ -33,10 +33,10 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 
   public MentionsTimeline(int id){
     this.id = id;
-    tweet_list = new Egg.ListBox();
+    tweet_list = new Gtk.ListBox();
     tweet_list.get_style_context().add_class("stream");
     tweet_list.set_selection_mode(SelectionMode.NONE);
-    tweet_list.add_to_scrolled(this);
+    this.add (tweet_list);
     tweet_list.set_sort_func(ITwitterItem.sort_func);
 
 
@@ -74,7 +74,7 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
         entry.seen = false;
 
         tweet_list.add(entry);
-        tweet_list.resort();
+//        tweet_list.resort();
 
         unread_count++;
         update_unread_count();
@@ -106,7 +106,7 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
       }
 
       // TODO: Are all there resort calls actually needed?
-      tweet_list.resort();
+//      tweet_list.resort();
 
       // Show notification
       if(Settings.notify_new_followers()) {
@@ -135,7 +135,7 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
       entry.show_all();
       result.next();
     }
-    tweet_list.resort();
+//    tweet_list.resort();
     this.vadjustment.set_upper(0);
   }
 

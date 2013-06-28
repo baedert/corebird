@@ -15,9 +15,9 @@
  */
 
 interface ITwitterItem : Gtk.Widget {
- public static int sort_func(Gtk.Widget a, Gtk.Widget b) {
-    if(((ITwitterItem)a).sort_factor <
-       ((ITwitterItem)b).sort_factor)
+ public static int sort_func(Gtk.ListBoxRow a, Gtk.ListBoxRow b) {
+    if(((ITwitterItem)a.get_child ()).sort_factor <
+       ((ITwitterItem)b.get_child ()).sort_factor)
       return 1;
     return -1;
   }

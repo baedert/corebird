@@ -29,7 +29,7 @@ class SearchTimeline : IPage, ITimeline, Box {
 	private Entry search_entry    = new Entry();
 	public MainWindow main_window{set;get;}
 	protected int64 max_id{get;set; default = int64.MAX-2;}
-	protected Egg.ListBox tweet_list{set;get;}
+	protected Gtk.ListBox tweet_list{set;get;}
 	private int id;
 	private RadioToolButton tool_button;
 
@@ -56,9 +56,9 @@ class SearchTimeline : IPage, ITimeline, Box {
 		});
 		this.pack_start(search_entry, false, true);
 
-		tweet_list = new Egg.ListBox();
+		tweet_list = new Gtk.ListBox();
 		var result_scroller = new ScrollWidget();
-		tweet_list.add_to_scrolled(result_scroller);
+    result_scroller.add (tweet_list);
 		this.pack_start(result_scroller, true, true);
 
 		tweet_list.set_sort_func(ITwitterItem.sort_func);

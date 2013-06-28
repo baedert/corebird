@@ -22,7 +22,6 @@ set (CMAKE_F_FLAGS "${CMAKE_C_FLAGS} -Wno-incompatible-pointer-types-discards-qu
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-function")
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-variable")
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-deprecated-declarations")
-set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -I src/egglistbox/")
 
 # Just use PREFIX instead of CMAKE_INSTALL_PREFIX(but CMAKE_INSTALL_PREFIX will work too)
 set (PREFIX           "${CMAKE_INSTALL_PREFIX}")
@@ -114,7 +113,6 @@ set (VALA_SOURCE
   src/util/Benchmark.vala
   src/util/Config.vala
   src/util/WidgetReplacer.vala
-  src/egglistbox/egg-list-box.c
   src/resources.c
 )
 
@@ -122,13 +120,11 @@ vala_precompile(VALA_C
   ${VALA_SOURCE}
 PACKAGES
   ${DEPS}
-  egglistbox
 OPTIONS
   -g
   --thread
   --target-glib=2.32
   --enable-checking
-  --vapidir=src/egglistbox/
   #  --disable-warnings
   --gresources=resources.xml
 )

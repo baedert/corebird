@@ -17,14 +17,14 @@
 class LoaderThread{
 	private Json.Array root;
 	private MainWindow? window;
-	private Egg.ListBox list;
+	private Gtk.ListBox list;
 	private Thread<void*> thread;
 	public delegate void EndLoadFunc(int tweet_count, int64 lowest_id);
 	private unowned EndLoadFunc? finished;
 	private int tweet_type;
 	private int64 lowest_id = int64.MAX - 1;
 
-	public LoaderThread(Json.Array root, MainWindow? window, Egg.ListBox list,
+	public LoaderThread(Json.Array root, MainWindow? window, Gtk.ListBox list,
 	                    int tweet_type = -1){
 		this.root       = root;
 		this.window     = window;
@@ -61,7 +61,7 @@ class LoaderThread{
 			message("Results: %d", entries.length);
 			for(int i = 0; i < entries.length; i++)
 				list.add(entries[i]);
-			list.resort();
+//			list.resort();
 			if (finished != null){
 				finished(entries.length, lowest_id);
 			}

@@ -22,7 +22,7 @@ interface ITimeline : Gtk.Widget, IPage {
   public static const int REST = 25;
   protected abstract int64 max_id           {get; set;}
   public    abstract MainWindow main_window {get; set;}
-  protected abstract Egg.ListBox tweet_list {get; set;}
+  protected abstract Gtk.ListBox tweet_list {get; set;}
   public    abstract Account account        {get; set;}
 
   public abstract void load_cached();
@@ -146,7 +146,7 @@ interface ITimeline : Gtk.Widget, IPage {
   }
 
   protected void handle_scrolled_to_start() {
-    if(tweet_list.get_size() > ITimeline.REST) {
+    /*if(tweet_list.get_size() > ITimeline.REST) {
       tweet_remove_timeout = GLib.Timeout.add(5000, () => {
         tweet_list.remove_last (tweet_list.get_size() - REST);
         return false;
@@ -156,6 +156,6 @@ interface ITimeline : Gtk.Widget, IPage {
         GLib.Source.remove(tweet_remove_timeout);
         tweet_remove_timeout = 0;
       }
-    }
+    }*/
   }
 }
