@@ -102,6 +102,7 @@ class InlineMediaDownloader {
 		session.queue_message(msg, (s, _msg) => {
 			try {
 				var ms  = new MemoryInputStream.from_data(_msg.response_body.data, null);
+        message ("Getting file type for %s", url);
 				string ext = Utils.get_file_type(url);
 				if(ext.length == 0)
 					ext = "png";
@@ -146,6 +147,7 @@ class InlineMediaDownloader {
 	}
 
 	private static string get_media_path (Tweet t, string url) {
+    message ("Getting file type for %s", url);
 		string ext = Utils.get_file_type (url);
 		ext = ext.down();
 		if(ext.length == 0)

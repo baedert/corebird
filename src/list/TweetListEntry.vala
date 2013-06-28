@@ -15,7 +15,7 @@
  */
 using Gtk;
 
-class TweetListEntry : ITwitterItem, Gtk.EventBox {
+class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   public int64 sort_factor{
     get{ return timestamp; }
   }

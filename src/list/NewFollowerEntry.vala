@@ -16,7 +16,7 @@
 using Gtk;
 
 
-class NewFollowerEntry : Gtk.Box, ITwitterItem {
+class NewFollowerEntry : Gtk.ListBoxRow, ITwitterItem {
   public static const int TYPE = 2;
   private int64 date;
   public int64 sort_factor{
@@ -27,17 +27,15 @@ class NewFollowerEntry : Gtk.Box, ITwitterItem {
   private int64 id;
   private int count = 0;
   private string[] followers  = new string[5];
+  private Box main_box        = new Box(Orientation.HORIZONTAL, 5);
   private Image follow_image  = new Gtk.Image.from_file(DATADIR+"/follower.png");
   private Box right_box       = new Box(Orientation.VERTICAL, 3);
   private Box avatar_box      = new Box(Orientation.HORIZONTAL, 5);
   private Label follow_text   = new Label("bla bla bla");
 
   public NewFollowerEntry () {
-    GLib.Object(orientation: Orientation.HORIZONTAL, spacing: 5);
-
-
     follow_image.valign = Align.START;
-    this.pack_start(follow_image, false, false);
+    main_box.pack_start(follow_image, false, false);
 
 
     right_box.pack_start(avatar_box, true, false);
@@ -47,8 +45,9 @@ class NewFollowerEntry : Gtk.Box, ITwitterItem {
     follow_text.use_markup = true;
     follow_text.wrap_mode = Pango.WrapMode.WORD_CHAR;
     right_box.pack_end(follow_text, true, true);
-    this.pack_start(right_box, true, true);
+    main_box.pack_start(right_box, true, true);
 
+    this.add (main_box);
     this.show_all();
   }
 
