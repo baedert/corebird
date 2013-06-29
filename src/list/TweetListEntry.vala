@@ -82,46 +82,13 @@ class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     }
 
 
-/*    this.enter_notify_event.connect( (evt)=> {
-      if(is_user_tweet)
-        return false;
-      // message("ENTER Detail: %d", evt.detail);
-
-      // message("---------------------\n");
-    //  message("enter(%d)", evt.detail);
-      favorite_button.show();
-      //rt_bin.show();
-      rt_bin.show_child();
-
-      //retweet_button.show();
-      more_button.show();
-      return false;
-    });
-    this.leave_notify_event.connect( (evt) => {
-      // message("LEAVE Detail: %d", evt.detail);
-      // message("---------------------\n");
-    //  message("leave(%d)", evt.detail);
-      if(evt.detail == 2)
-        return true;
-
-      if(!favorite_button.active)
-        favorite_button.hide();
-      if(!retweet_button.active)
-        rt_bin.hide_child();
-        //retweet_button.hide();
-      more_button.hide();
-
-      return false;
-    });*/
 
 
     this.state_flags_changed.connect ((previous) => {
-      message("FLAG CHANGE!");
       Gtk.StateFlags flags = this.get_state_flags ();
 
       bool buttons_visible = (bool)(flags & (StateFlags.PRELIGHT | StateFlags.SELECTED));
-      if(buttons_visible)
-      message("MAKE BUTTONS VISIBLE");
+      toggle_button_visibility (buttons_visible);
     });
 
 
@@ -438,5 +405,17 @@ class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     more_menu.show_all();
   }
 
-
+  private void toggle_button_visibility (bool visible) {
+    if (visible) {
+      favorite_button.show();
+      rt_bin.show_child();
+      more_button.show();
+    } else {
+      if(!favorite_button.active)
+        favorite_button.hide();
+      if(!retweet_button.active)
+        rt_bin.hide_child();
+      more_button.hide();
+    }
+  }
 }
