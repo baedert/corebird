@@ -1,6 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
 <interface>
-	<menu id="app-menu">
+  <menu id="app-menu">
     <section>
+      <submenu>
+        <attribute name="label">Open Account…</attribute>
+      </submenu>
       <item>
         <attribute name="label">Settings</attribute>
         <attribute name="action">app.show-settings</attribute>

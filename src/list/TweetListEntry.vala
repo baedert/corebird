@@ -91,6 +91,13 @@ class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       toggle_button_visibility (buttons_visible);
     });
 
+    this.button_press_event.connect( (evt) => {
+      if (evt.type == Gdk.EventType.@2BUTTON_PRESS) {
+        message ("Implement inline replies");
+      }
+      return true;
+    });
+
 
     var left_box = new Box(Orientation.VERTICAL, 3);
     avatar.set_valign(Align.START);
