@@ -48,7 +48,7 @@ class MainWindow : ApplicationWindow {
     GLib.Object (application: app);
     this.set_icon_name("corebird");
     if (account != null)
-      this.set_title ("Corebird(%s)".printf (account.screen_name));
+      this.set_title ("Corebird(@%s)".printf (account.screen_name));
     else
       this.set_title ("Corebird");
 
