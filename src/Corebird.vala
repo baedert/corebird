@@ -17,8 +17,10 @@
 using Gtk;
 
 class Corebird : Gtk.Application {
+  // TODO: Is the static here needed?
   public static SQLHeavy.VersionedDatabase db;
   private static GLib.OutputStream log_stream;
+  private static GLib.Menu account_menu;
 
   public Corebird() throws GLib.Error{
     GLib.Object(application_id: "org.baedert.corebird",
@@ -108,10 +110,26 @@ class Corebird : Gtk.Application {
 
   public override void startup () {
     base.startup();
+    // Load Database
+    Corebird.db = new SQLHeavy.VersionedDatabase(Utils.user_file("Corebird.db"),
+                                                 DATADIR+"/sql/init/");
+    db.journal_mode = SQLHeavy.JournalMode.MEMORY;
+    db.temp_store   = SQLHeavy.TempStoreMode.MEMORY;
+
+    // Construct app menu
     Gtk.Builder builder = new Gtk.Builder ();
     builder.add_from_resource ("/org/baedert/corebird/ui/menu.ui");
-    this.set_app_menu ((GLib.MenuModel)builder.get_object ("app-menu"));
+    GLib.MenuModel app_menu = (MenuModel)builder.get_object ("app-menu");
+    var acc_menu = app_menu.get_item_link(0, "section");
+    account_menu = new GLib.Menu();
 
+    unowned GLib.SList<Account> accounts = Account.list_accounts ();
+    foreach (var acc in accounts) {
+      account_menu.append ("@"+acc.screen_name, "app.foo");
+    }
+    ((GLib.Menu)acc_menu).append_submenu ("Open Account", account_menu);
+
+    this.set_app_menu (app_menu);
     if(!FileUtils.test(Utils.user_file(""), FileTest.EXISTS)){
       bool success = File.new_for_path(Utils.user_file("")).make_directory();
       if(!success){
@@ -134,7 +152,6 @@ class Corebird : Gtk.Application {
     db.temp_store   = SQLHeavy.TempStoreMode.MEMORY;
 
     Twitter.init();
-    User.load ();
     Twitter.update_config.begin ();
 
 
@@ -158,6 +175,9 @@ class Corebird : Gtk.Application {
         quit();
 		});
 		add_action(quit_action);
+    var foo_action = new SimpleAction ("foo", null);
+    foo_action.activate.connect(()=> {message("hihihi");});
+    add_action(foo_action);
 
     // Load custom CSS stuff
     try{
