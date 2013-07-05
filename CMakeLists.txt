@@ -43,6 +43,7 @@ add_subdirectory (po)
 add_subdirectory (assets)
 add_subdirectory (ui)
 add_subdirectory (sql)
+add_subdirectory (data)
 
 
 set (DEPS glib-2.0;
