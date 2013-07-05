@@ -108,8 +108,9 @@ class Corebird : Gtk.Application {
 
   public override void startup () {
     base.startup();
-    UIBuilder builder = new UIBuilder(DATADIR+"/ui/menu.ui");
-    this.set_app_menu(builder.get_menu_model("app-menu"));
+    Gtk.Builder builder = new Gtk.Builder ();
+    builder.add_from_resource ("/org/baedert/corebird/ui/menu.ui");
+    this.set_app_menu ((GLib.MenuModel)builder.get_object ("app-menu"));
 
     if(!FileUtils.test(Utils.user_file(""), FileTest.EXISTS)){
       bool success = File.new_for_path(Utils.user_file("")).make_directory();

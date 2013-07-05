@@ -4,5 +4,6 @@
     <file compressed="true" preprocess="xml-stripblanks">ui/account-list-entry.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/account-create-widget.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/account-info-widget.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">ui/menu.ui</file>
   </gresource>
 </gresources>
