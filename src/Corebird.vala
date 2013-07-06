@@ -18,9 +18,9 @@ using Gtk;
 
 class Corebird : Gtk.Application {
   // TODO: Is the static here needed?
-  public static SQLHeavy.VersionedDatabase db;
+  public  static SQLHeavy.VersionedDatabase db;
   private static GLib.OutputStream log_stream;
-  private static GLib.Menu account_menu;
+  public  static GLib.Menu account_menu;
 
   public Corebird() throws GLib.Error{
     GLib.Object(application_id: "org.baedert.corebird",
@@ -89,7 +89,8 @@ class Corebird : Gtk.Application {
         }
       }
     } else {
-      add_window (new ComposeTweetWindow (null, null, this));
+/*      add_window (new ComposeTweetWindow (null, null, this));*/
+      critical ("Implement.");
     }
     /* First, create that log file */
     var now = new GLib.DateTime.now_local();

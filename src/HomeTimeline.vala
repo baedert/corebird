@@ -69,7 +69,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
       t.load_from_json(root, now);
 
       this.balance_next_upper_change(TOP);
-      var entry = new TweetListEntry(t, main_window);
+      var entry = new TweetListEntry(t, main_window, account);
       entry.seen = false;
       tweet_list.add(entry);
 //      tweet_list.resort();

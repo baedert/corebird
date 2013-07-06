@@ -117,7 +117,8 @@ class SearchTimeline : IPage, ITimeline, Box {
 				critical(" %s\nDATA:\n%s", e.message, back);
 			}
 			var statuses = parser.get_root().get_object().get_array_member("statuses");
-			LoaderThread loader_thread = new LoaderThread(statuses, main_window,
+			LoaderThread loader_thread = new LoaderThread(statuses, account, 
+                                                    main_window,
 			                                              tweet_list);
 			loader_thread.run();
 		});

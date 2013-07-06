@@ -47,10 +47,25 @@ class MainWindow : ApplicationWindow {
   public MainWindow(Gtk.Application app, Account? account = null){
     GLib.Object (application: app);
     this.set_icon_name("corebird");
-    if (account != null)
+
+    if (account != null) {
       this.set_title ("Corebird(@%s)".printf (account.screen_name));
-    else
+      var acc_menu = (GLib.Menu)Corebird.account_menu;
+      for (int i = 0; i < acc_menu.get_n_items (); i++){
+        Variant item_name = acc_menu.get_item_attribute_value (i,
+                                         "label", VariantType.STRING);
+        if (item_name.get_string () == "@"+account.screen_name){
+          var item = new GLib.MenuItem.from_model (Corebird.account_menu, i);
+          item.set_attribute_value ("enabled", new Variant.boolean (false));
+          acc_menu.remove(i);
+          acc_menu.append_item (item);
+          acc_menu.items_changed(i, 1, 1);
+        }
+      }
+    } else {
       this.set_title ("Corebird");
+      app.lookup_action ("show-settings").activate (null);
+    }
 
     stack.transition_duration = Settings.get_animation_duration();
     stack.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
@@ -59,12 +74,6 @@ class MainWindow : ApplicationWindow {
     timelines[1] = new MentionsTimeline(PAGE_MENTIONS);
     timelines[2] = new SearchTimeline(PAGE_SEARCH);
     // timelines[2] = new FavoriteContainer(PAGE_FAVORITES);
-
-    if (account == null) {
-      app.lookup_action ("show-settings").activate (null);
-      return;
-    }
-
 
     /* Initialize all containers */
     for(int i = 0; i < timelines.length; i++){
@@ -93,7 +102,7 @@ class MainWindow : ApplicationWindow {
     UserStream.get().start();
 
     new_tweet_button.clicked.connect( () => {
-      var cw = new ComposeTweetWindow(this, null, get_application ());
+      var cw = new ComposeTweetWindow(this, account, null, get_application ());
       cw.show();                                                     
     });
 

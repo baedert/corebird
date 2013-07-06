@@ -40,12 +40,14 @@ class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   public bool seen{get;set; default=true;}
   private Gtk.Box box = new Box(Orientation.HORIZONTAL, 5);
   private bool is_user_tweet = false;
+  private unowned Account acc;
 
 
-  public TweetListEntry(Tweet tweet, MainWindow? window){
+  public TweetListEntry(Tweet tweet, MainWindow? window, Account acc){
     this.window  = window;
     this.vexpand = false;
     this.hexpand = false;
+    this.acc     = acc;
 
 
     if (hashtag_regex == null){
@@ -401,7 +403,7 @@ class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
     Gtk.MenuItem reply_item = new Gtk.MenuItem.with_label("Reply");
     reply_item.activate.connect(() => {
-      var compose_win = new ComposeTweetWindow(window, tweet,
+      var compose_win = new ComposeTweetWindow(window, acc, tweet,
                                                window.get_application());
       compose_win.show_all();
     });

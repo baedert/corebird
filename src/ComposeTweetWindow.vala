@@ -29,7 +29,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 	private Tweet answer_to;
 
 	//TODO: Use GtkBuilder here
-	public ComposeTweetWindow(Window? parent, Tweet? answer_to = null,
+	public ComposeTweetWindow(Window? parent, Account acc, Tweet? answer_to = null,
 	                          Gtk.Application? app = null) {
 		GLib.Object(application: app);
 
@@ -68,7 +68,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 		var main_box = new Box(Orientation.VERTICAL, 5);
 
 		if(answer_to != null) {
-			var answer_to_entry = new TweetListEntry(answer_to, (MainWindow)parent);
+			var answer_to_entry = new TweetListEntry(answer_to, (MainWindow)parent, acc);
 			answer_to_entry.margin_bottom = 10;
 			main_box.pack_start(answer_to_entry, false, true);
 
@@ -77,8 +77,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
 
 		var middle_box = new Box(Orientation.HORIZONTAL, 3);
-		var av = new Gtk.Image.from_file(Utils.user_file("assets/avatars/"
-		                                 +Utils.get_avatar_name(User.avatar_url)));
+		var av = new Gtk.Image.from_pixbuf (acc.avatar_small);
 		av.set_alignment(0,0);
 		left_box.pack_start(av, false, false);
 		left_box.pack_start(new Separator(Orientation.HORIZONTAL), false, false);

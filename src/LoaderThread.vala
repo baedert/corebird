@@ -23,13 +23,16 @@ class LoaderThread{
 	private unowned EndLoadFunc? finished;
 	private int tweet_type;
 	private int64 lowest_id = int64.MAX - 1;
+  private unowned Account acc;
 
-	public LoaderThread(Json.Array root, MainWindow? window, Gtk.ListBox list,
+	public LoaderThread(Json.Array root, Account acc,
+                      MainWindow? window, Gtk.ListBox list,
 	                    int tweet_type = -1){
 		this.root       = root;
 		this.window     = window;
 		this.list       = list;
 		this.tweet_type = tweet_type;
+    this.acc        = acc;
 	}
 
 	public void run(EndLoadFunc? finished = null){
@@ -53,7 +56,7 @@ class LoaderThread{
 			if(t.id < lowest_id)
 				lowest_id = t.id;
 
-			var entry  = new TweetListEntry(t, window);
+			var entry  = new TweetListEntry(t, window, acc);
 			entries[index] = entry;
 		});
 

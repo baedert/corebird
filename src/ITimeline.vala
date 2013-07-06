@@ -75,7 +75,7 @@ interface ITimeline : Gtk.Widget, IPage {
       }
 
       var root = parser.get_root().get_array();
-      var loader_thread = new LoaderThread(root, main_window, tweet_list,
+      var loader_thread = new LoaderThread(root, account, main_window, tweet_list,
                                            tweet_type);
       loader_thread.run(end_load_func);
     });
@@ -115,7 +115,8 @@ interface ITimeline : Gtk.Widget, IPage {
       }
 
       var root = parser.get_root().get_array();
-      var loader_thread = new LoaderThread(root, main_window, tweet_list,
+      var loader_thread = new LoaderThread(root, account,
+                                           main_window, tweet_list,
                                            tweet_type);
       loader_thread.run(end_load_func);
     });
