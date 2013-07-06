@@ -104,6 +104,7 @@ class Corebird : Gtk.Application {
     GLib.Log.set_handler (null, LogLevelFlags.LEVEL_WARNING, print_to_log_file);
     GLib.Log.set_handler (null, LogLevelFlags.LEVEL_DEBUG, print_to_log_file);
 
+    NotificationManager.init ();
 
     this.release();
     return 0;
