@@ -126,7 +126,9 @@ class Corebird : Gtk.Application {
 
     unowned GLib.SList<Account> accounts = Account.list_accounts ();
     foreach (var acc in accounts) {
-      account_menu.append ("@"+acc.screen_name, "app.foo");
+      var mi = new GLib.MenuItem ("@"+acc.screen_name, "app.show-win");
+      mi.set_action_and_target_value ("app.show-win", new Variant.string (acc.screen_name));
+      account_menu.append_item (mi);
     }
     ((GLib.Menu)acc_menu).append_submenu ("Open Account", account_menu);
 
@@ -176,9 +178,11 @@ class Corebird : Gtk.Application {
         quit();
 		});
 		add_action(quit_action);
-    var foo_action = new SimpleAction ("foo", null);
-    foo_action.activate.connect(()=> {message("hihihi");});
-    add_action(foo_action);
+    var show_win_action = new SimpleAction ("show-win", VariantType.STRING);
+    show_win_action.activate.connect((acc_screen_name)=> {
+        message(acc_screen_name.get_string ());
+    });
+    add_action(show_win_action);
 
     // Load custom CSS stuff
     try{
