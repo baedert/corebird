@@ -98,7 +98,7 @@ class SearchTimeline : IPage, ITimeline, Box {
 			search_entry.set_text(search_term);
 
 
-		var call = Twitter.proxy.new_call();
+		var call = account.proxy.new_call();
 		call.set_function("1.1/search/tweets.json");
 		call.set_method("GET");
 		call.add_param("q", GLib.Uri.escape_string(search_entry.get_text()));

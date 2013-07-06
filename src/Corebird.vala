@@ -154,8 +154,7 @@ class Corebird : Gtk.Application {
     db.journal_mode = SQLHeavy.JournalMode.MEMORY;
     db.temp_store   = SQLHeavy.TempStoreMode.MEMORY;
 
-    Twitter.init();
-    Twitter.update_config.begin ();
+    //Twitter.update_config.begin ();
 
 
 		// Set up the actions
@@ -198,6 +197,7 @@ class Corebird : Gtk.Application {
     }catch(GLib.Error e){
       warning("Error while loading ui/style.css: %s", e.message);
     }
+
 
     // Load custom icons
     try{

@@ -35,10 +35,12 @@ class ProfileWidget : Gtk.Box {
   private int64 user_id;
   private string screen_name;
   private MainWindow window;
+  private unowned Account account;
 
-  public ProfileWidget(MainWindow window){
+  public ProfileWidget(MainWindow window, Account account){
     GLib.Object(orientation: Orientation.VERTICAL);
     this.window = window;
+    this.account = account;
 
     bottom_stack.transition_duration = Settings.get_animation_duration();
 
@@ -170,7 +172,7 @@ class ProfileWidget : Gtk.Box {
       error("Can't use both user_id and screen_name.");
     }
 
-    var call = Twitter.proxy.new_call();
+    var call = account.proxy.new_call();
     call.set_method("GET");
     call.set_function("1.1/users/show.json");
     if(user_id != 0)
@@ -279,7 +281,7 @@ class ProfileWidget : Gtk.Box {
   private async void load_banner(int64 user_id, string saved_banner_url,
                                  string screen_name = ""){
 
-    var call = Twitter.proxy.new_call();
+    var call = account.proxy.new_call();
     call.set_function("1.1/users/profile_banner.json");
     call.set_method("GET");
     message(@"id: $user_id, name: $screen_name");
@@ -378,7 +380,7 @@ class ProfileWidget : Gtk.Box {
   private void toggle_follow() {
     // TODO: Don't automatically call this whenever the user opens a profile…
     bool value = follow_button.active;
-    var call = Twitter.proxy.new_call();
+    var call = account.proxy.new_call();
     if(value)
       call.set_function("1.1/friendships/create.json");
     else

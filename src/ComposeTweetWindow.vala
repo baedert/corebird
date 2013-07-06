@@ -27,11 +27,13 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 	private ImageButton media_image  = new ImageButton();
 	private string media_uri;
 	private Tweet answer_to;
+  private unowned Account account;
 
 	//TODO: Use GtkBuilder here
 	public ComposeTweetWindow(Window? parent, Account acc, Tweet? answer_to = null,
 	                          Gtk.Application? app = null) {
 		GLib.Object(application: app);
+    this.account = acc;
 
 		this.answer_to = answer_to;
 
@@ -168,7 +170,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 			return;
 
 		Rest.Param param;
-		var call = Twitter.proxy.new_call();
+		var call = account.proxy.new_call();
 		call.set_method("POST");
 		call.add_param("status", text);
 		if(this.answer_to != null) {

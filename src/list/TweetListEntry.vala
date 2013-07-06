@@ -262,7 +262,7 @@ class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     spinner.start();
     WidgetReplacer.replace_tmp(favorite_button, spinner);
 
-    var call = Twitter.proxy.new_call();
+    var call = acc.proxy.new_call();
     if(favorite_button.active)
       call.set_function("1.1/favorites/create.json");
     else
@@ -295,7 +295,7 @@ class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     spinner.start();
     WidgetReplacer.replace_tmp(retweet_button, spinner);
 
-    var call = Twitter.proxy.new_call();
+    var call = acc.proxy.new_call();
     call.set_method("POST");
 
     if(retweet_button.active) {

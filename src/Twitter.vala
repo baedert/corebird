@@ -25,94 +25,12 @@ class Twitter {
 	private static int short_url_length;
 	private static int short_url_length_https;
 	private static int photo_size_limit;
-	public static OAuthProxy proxy;
+//	public static OAuthProxy proxy;
 	public static Gdk.Pixbuf no_avatar;
 	public static Gdk.Pixbuf no_banner;
 	public static Gdk.Pixbuf verified_icon;
 	public static HashMap<string, Gdk.Pixbuf> avatars;
 
-
-	/**
-	 * Returns the OAuth token
-	 */
-  // TODO: REMOVE
-	public static string get_token(){
-		if (Twitter.token == null){
-			try{
-				SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db,
-					"SELECT `token` FROM `common` LIMIT 1;");
-				SQLHeavy.QueryResult result = q.execute();
-				Twitter.token = result.fetch_string();
-				return Twitter.token;
-			}catch(SQLHeavy.Error e){
-				stderr.printf("Error while retrieving token: %s\n", e.message);
-			}
-		}
-		return Twitter.token;
-	}
-
-	/**
-	 * Returns the OAuth token secret
-	 */
-	public static string get_token_secret(){
-		if (Twitter.token_secret == null){
-			try{
-				SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db,
-				   "SELECT `token_secret` FROM `common` LIMIT 1;");
-				SQLHeavy.QueryResult result = q.execute();
-				Twitter.token_secret = result.fetch_string();
-				return Twitter.token_secret;
-			}catch(SQLHeavy.Error e){
-				error("Error while retrieving token_secret: %s", e.message);
-			}
-		}
-		return Twitter.token_secret;
-	}
-
-
-	public static void init(){
-		//TODO: Obfuscate this somehow
-		Twitter.proxy = new OAuthProxy(
-        	"0rvHLdbzRULZd5dz6X1TUA",						//Consumer Key
-        	"oGrvd6654nWLhzLcJywSW3pltUfkhP4BnraPPVNhHtY", 	//Consumer Secret
-        	"https://api.twitter.com/",					//Url Format
-        	false
-        );
-    if (!Settings.is_first_run()){
-			proxy.token = Twitter.get_token();
-			proxy.token_secret = Twitter.get_token_secret();
-		}
-
-
-/*		Rest.Proxy echo_proxy = proxy.new_echo_proxy(
-		    "https://api.twitter.com/1/account/verify_credentials.json",
-            "https://api.tweetmarker.net/", false);
-
-		var c = echo_proxy.new_call();
-		c.set_function("/v2/lastread?api_key=CO-1D3B7DE87173&username=baedert");
-		c.set_method("POST");
-		c.set_content("{\"timeline\":{\"id\":\"325602117844865027\"}}");
-		try{
-			c.run();
-		}catch(GLib.Error e){
-			warning(e.message);
-		}finally{
-			stdout.printf(c.get_payload()+"\n");
-		}*/
-
-		try{
-			Twitter.no_avatar     	 = new Gdk.Pixbuf.from_file(
-			                               DATADIR+"/no_avatar.png");
-			Twitter.no_banner     	 = new Gdk.Pixbuf.from_file(
-			                               DATADIR+"/no_banner.png");
-			Twitter.verified_icon    = new Gdk.Pixbuf.from_file(
-			                               DATADIR+"/verified.png");
-		}catch(GLib.Error e){
-			error("Error while loading assets: %s", e.message);
-		}
-
-		Twitter.avatars = new HashMap<string, Gdk.Pixbuf>();
-	}
 
 	/**
 	 * Updates the config
@@ -145,7 +63,7 @@ class Twitter {
 
 
 
-		var call = Twitter.proxy.new_call();
+/*		var call = Twi_tter.proxy.new_call();
 		call.set_method("GET");
 		call.set_function("1.1/help/configuration.json");
 		call.invoke_async.begin(null, (obj, res) => {
@@ -184,7 +102,7 @@ class Twitter {
 			}
 
 			message("Updated the twitter configuration");
-		});
+		});*/
 	}
 
 	public static int get_characters_reserved_by_media(){
