@@ -181,6 +181,7 @@ class Corebird : Gtk.Application {
     var show_win_action = new SimpleAction ("show-win", VariantType.STRING);
     show_win_action.activate.connect((acc_screen_name)=> {
         message(acc_screen_name.get_string ());
+        add_window_for_screen_name (acc_screen_name.get_string ());
     });
     add_action(show_win_action);
 
@@ -217,11 +218,14 @@ class Corebird : Gtk.Application {
     base.shutdown();
   }
 
-  /**
-   * Adds a main window to this application
-   */
-  public void add_main_window(){
-    this.add_window(new MainWindow(this));
+  private void add_window_for_screen_name (string screen_name) {
+    unowned GLib.SList<Account> accs = Account.list_accounts ();
+    foreach (Account a in accs) {
+      if (a.screen_name == screen_name) {
+        add_window (new MainWindow (this, a));
+        return;
+      }
+    }
   }
 
   private void create_user_folder(string name) {
