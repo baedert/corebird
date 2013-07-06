@@ -35,6 +35,7 @@ class Twitter {
 	/**
 	 * Returns the OAuth token
 	 */
+  // TODO: REMOVE
 	public static string get_token(){
 		if (Twitter.token == null){
 			try{

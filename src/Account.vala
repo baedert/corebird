@@ -24,6 +24,7 @@ class Account : GLib.Object {
   public Gdk.Pixbuf avatar_small  {public get; private set;}
   public Database db              {public get; private set;}
   public Rest.OAuthProxy proxy    {public get; private set;}
+  public UserStream user_stream   {public get; private set;}
   
 
   public Account (int64 id, string screen_name, string name) {
@@ -47,16 +48,19 @@ class Account : GLib.Object {
                                       "oGrvd6654nWLhzLcJywSW3pltUfkhP4BnraPPVNhHtY",
                                       "https://api.twitter.com/",
                                       false);
+    this.user_stream = new UserStream ();
     if (load_secrets) {
       init_database ();
       var q = new Query (db, "SELECT token, token_secret FROM common;");
       var result = q.execute ();
       proxy.token = result.fetch_string (0);
       proxy.token_secret = result.fetch_string (1);
+      user_stream.token = result.fetch_string (0);
+      user_stream.token_secret = result.fetch_string (1);
     }
   }
 
-  public void load_avatar (){
+  public void load_avatar () {
     string path = Utils.user_file (@"accounts/$(id)_small.png");
     this.avatar_small = new Gdk.Pixbuf.from_file (path);
   }

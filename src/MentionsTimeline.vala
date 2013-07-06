@@ -57,8 +57,6 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
     });
 
     tweet_list.add(progress_entry);
-
-    UserStream.get().register(this);
   }
 
   private void stream_message_received(StreamMessageType type, Json.Object root){

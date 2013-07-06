@@ -67,6 +67,7 @@ class AccountCreateWidget : Gtk.Grid {
         try {
           acc.db.execute ("INSERT INTO `common`(token, token_secret) VALUES ('%s', '%s');"
                           .printf (acc.proxy.token, acc.proxy.token_secret));
+          // TODO: Insert account into 
         } catch (SQLHeavy.Error e) {
           critical (e.message);
         }

@@ -62,6 +62,7 @@ class MainWindow : ApplicationWindow {
           acc_menu.items_changed(i, 1, 1);
         }
       }
+      account.user_stream.start ();
     } else {
       this.set_title ("Corebird");
       app.lookup_action ("show-settings").activate (null);
@@ -82,6 +83,9 @@ class MainWindow : ApplicationWindow {
       if(!(tl is IPage))
         break;
 
+      if (tl is IMessageReceiver)
+        account.user_stream.register ((IMessageReceiver)tl);
+
       tl.main_window = this;
       tl.load_cached();
       tl.load_newest();
@@ -98,8 +102,6 @@ class MainWindow : ApplicationWindow {
     //Setup additional pages
     pages[0] = new ProfilePage(PAGE_PROFILE, this);
 
-    // Start userstream
-    UserStream.get().start();
 
     new_tweet_button.clicked.connect( () => {
       var cw = new ComposeTweetWindow(this, account, null, get_application ());
