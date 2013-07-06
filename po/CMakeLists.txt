@@ -6,6 +6,7 @@ add_translations_catalog("${GETTEXT_PACKAGE}"
 	../src
 	../src/widgets
 	../src/util
+  ../src/list
 	../ui
 )
 
