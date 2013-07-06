@@ -32,6 +32,21 @@ class Twitter {
 	public static HashMap<string, Gdk.Pixbuf> avatars;
 
 
+	public static void init(){
+		try{
+			Twitter.no_avatar     	 = new Gdk.Pixbuf.from_file(
+			                               DATADIR+"/no_avatar.png");
+			Twitter.no_banner     	 = new Gdk.Pixbuf.from_file(
+			                               DATADIR+"/no_banner.png");
+			Twitter.verified_icon    = new Gdk.Pixbuf.from_file(
+			                               DATADIR+"/verified.png");
+		}catch(GLib.Error e){
+			error("Error while loading assets: %s", e.message);
+		}
+
+		Twitter.avatars = new HashMap<string, Gdk.Pixbuf>();
+	}
+
 	/**
 	 * Updates the config
 	 */
