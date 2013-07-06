@@ -23,8 +23,6 @@ class ProfileDialog : Gtk.Window {
 	private ProfileWidget profile_widget;
 
 	public ProfileDialog(int64 user_id = 0){
-		if (user_id <= 0)
-			user_id = User.get_id();
 		message(@"ID: $user_id");
 
 		profile_widget = new ProfileWidget(null);

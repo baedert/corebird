@@ -63,7 +63,7 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 
   private void stream_message_received(StreamMessageType type, Json.Object root){
     if(type == StreamMessageType.TWEET) {
-      if(root.get_string_member("text").contains("@"+User.screen_name)) {
+      if(root.get_string_member("text").contains("@"+account.screen_name)) {
 
         GLib.DateTime now = new GLib.DateTime.now_local();
         Tweet t = new Tweet();

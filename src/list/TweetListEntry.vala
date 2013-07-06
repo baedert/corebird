@@ -78,7 +78,7 @@ class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
 
 
-    if (tweet.screen_name == User.screen_name){
+    if (tweet.screen_name == acc.screen_name){
       get_style_context().add_class("user-tweet");
       is_user_tweet = true;
     }
