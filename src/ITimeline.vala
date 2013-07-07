@@ -147,16 +147,19 @@ interface ITimeline : Gtk.Widget, IPage {
   }
 
   protected void handle_scrolled_to_start() {
-    /*if(tweet_list.get_size() > ITimeline.REST) {
-      tweet_remove_timeout = GLib.Timeout.add(5000, () => {
-        tweet_list.remove_last (tweet_list.get_size() - REST);
+    GLib.List<weak Gtk.Widget> entries = tweet_list.get_children ();
+    uint item_count = entries.length ();
+    if (item_count > ITimeline.REST) {
+      tweet_remove_timeout = GLib.Timeout.add (5000, () => {
+        while (item_count > ITimeline.REST) {
+          tweet_list.remove (tweet_list.get_row_at_index (ITimeline.REST));
+          item_count--;
+        }
         return false;
       });
-    } else {
-      if(tweet_remove_timeout != 0) {
-        GLib.Source.remove(tweet_remove_timeout);
-        tweet_remove_timeout = 0;
-      }
-    }*/
+    } else if (tweet_remove_timeout != 0) {
+      GLib.Source.remove (tweet_remove_timeout);
+      tweet_remove_timeout = 0;
+    }
   }
 }

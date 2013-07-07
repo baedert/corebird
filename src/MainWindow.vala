@@ -60,6 +60,7 @@ class MainWindow : ApplicationWindow {
           acc_menu.remove(i);
           acc_menu.append_item (item);
           acc_menu.items_changed(i, 1, 1);
+          ((SimpleAction)app.lookup_action("show-win")).set_enabled(false);
         }
       }
       account.user_stream.start ();
@@ -67,6 +68,14 @@ class MainWindow : ApplicationWindow {
       this.set_title ("Corebird");
       app.lookup_action ("show-settings").activate (null);
     }
+
+/*    var f = new Gtk.HeaderBar ();
+    f.set_title ("Corebird");
+    f.set_subtitle ("@"+account.screen_name);
+    var k = new Button.from_stock ("gtk-preferences");
+    k.always_show_image = true;
+    f.pack_end (k);
+    this.set_titlebar(f);*/
 
     stack.transition_duration = Settings.get_animation_duration();
     stack.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;

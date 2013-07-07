@@ -186,6 +186,7 @@ class Corebird : Gtk.Application {
 		});
 		add_action(quit_action);
     var show_win_action = new SimpleAction ("show-win", VariantType.STRING);
+    show_win_action.set_enabled(false);
     show_win_action.activate.connect((acc_screen_name)=> {
         message(acc_screen_name.get_string ());
         add_window_for_screen_name (acc_screen_name.get_string ());
