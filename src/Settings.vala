@@ -21,7 +21,7 @@ class Settings : GLib.Object {
 		settings = new GLib.Settings("org.baedert.corebird");
 	}
 
-  public static GLib.Settings get (){
+  public static new GLib.Settings get (){
     return settings;
   }
 

@@ -39,7 +39,6 @@ class Corebird : Gtk.Application {
   public override int command_line(ApplicationCommandLine cmd){
     this.hold();
     message("Parsing command line options...");
-    bool new_instance = false;
     bool show_tweet_window = false;
     bool not_in_cmd = false;
    
@@ -135,9 +134,13 @@ class Corebird : Gtk.Application {
 
     this.set_app_menu (app_menu);
     if(!FileUtils.test(Utils.user_file(""), FileTest.EXISTS)){
-      bool success = File.new_for_path(Utils.user_file("")).make_directory();
-      if(!success){
-        critical("Couldn't create the ~/.corebird directory");
+      try{
+        bool success = File.new_for_path(Utils.user_file("")).make_directory();
+        if(!success){
+          critical("Couldn't create the ~/.corebird directory");
+        }
+      } catch (GLib.Error e) {
+        critical (e.message);
       }
 
       create_user_folder ("assets/");
@@ -216,6 +219,7 @@ class Corebird : Gtk.Application {
   }
 
   public override void shutdown () {
+    NotificationManager.uninit ();
     base.shutdown();
   }
 
@@ -235,9 +239,9 @@ class Corebird : Gtk.Application {
                      .make_directory();
       if(!success)
         critical("Couldn't create user folder %s", name);
-      } catch (GLib.Error e) {
-        critical("%s(%s)", e.message, name);
-      }
+    } catch (GLib.Error e) {
+      critical("%s(%s)", e.message, name);
+    }
   }
 
   /**

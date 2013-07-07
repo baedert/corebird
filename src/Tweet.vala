@@ -210,7 +210,6 @@ class Tweet : GLib.Object{
 
 					string link = mi.fetch(0);
 					if (link.length > 25){
-						int protocol_index = link.index_of("//");
 						if(link.has_prefix("http://"))
 							link = link.substring(7);
 						else //https

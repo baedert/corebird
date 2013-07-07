@@ -59,6 +59,14 @@ class AccountCreateWidget : Gtk.Grid {
       parser.load_from_data (call.get_payload ());
       var root = parser.get_root ().get_object ();
       string screen_name = root.get_string_member ("screen_name");
+
+      unowned GLib.SList<Account> current_accounts = Account.list_accounts ();
+      foreach (var a in current_accounts) {
+        if (a.screen_name == screen_name)
+          critical ("Account is already in use");
+          // TODO: Show a dialog here
+      }
+
       acc.query_user_info_by_scren_name.begin (screen_name, (obj, res) => {
         acc.query_user_info_by_scren_name.end (res);
         message ("user info call");
@@ -67,7 +75,7 @@ class AccountCreateWidget : Gtk.Grid {
         try {
           acc.db.execute ("INSERT INTO `common`(token, token_secret) VALUES ('%s', '%s');"
                           .printf (acc.proxy.token, acc.proxy.token_secret));
-          // TODO: Insert account into 
+          // TODO: Insert account into app menu
         } catch (SQLHeavy.Error e) {
           critical (e.message);
         }

@@ -37,8 +37,12 @@ class Account : GLib.Object {
     if (db != null)
       return;
 
-    this.db = new VersionedDatabase (Utils.user_file (@"accounts/$id.db"),
-                                     DATADIR+"/sql/accounts");
+    try {
+      this.db = new VersionedDatabase (Utils.user_file (@"accounts/$id.db"),
+                                       DATADIR+"/sql/accounts");
+    } catch (SQLHeavy.Error e) {
+      critical (e.message);
+    }
   }
 
   public void init_proxy (bool load_secrets = true) {
@@ -51,18 +55,26 @@ class Account : GLib.Object {
     this.user_stream = new UserStream ();
     if (load_secrets) {
       init_database ();
-      var q = new Query (db, "SELECT token, token_secret FROM common;");
-      var result = q.execute ();
-      proxy.token = result.fetch_string (0);
-      proxy.token_secret = result.fetch_string (1);
-      user_stream.token = result.fetch_string (0);
-      user_stream.token_secret = result.fetch_string (1);
+      try {
+        var q = new Query (db, "SELECT token, token_secret FROM common;");
+        var result = q.execute ();
+        proxy.token = result.fetch_string (0);
+        proxy.token_secret = result.fetch_string (1);
+        user_stream.token = result.fetch_string (0);
+        user_stream.token_secret = result.fetch_string (1);
+      } catch (SQLHeavy.Error e) {
+        critical (e.message);
+      }
     }
   }
 
   public void load_avatar () {
     string path = Utils.user_file (@"accounts/$(id)_small.png");
-    this.avatar_small = new Gdk.Pixbuf.from_file (path);
+    try {
+      this.avatar_small = new Gdk.Pixbuf.from_file (path);
+    } catch (GLib.Error e) {
+      warning (e.message);
+    }
   }
 
   /**
