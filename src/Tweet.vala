@@ -16,8 +16,6 @@
 
  using Gtk;
 
-extern string cb_replace_links(string text);
-
 class Tweet : GLib.Object{
 
 	public static const int TYPE_NORMAL   = 1;
