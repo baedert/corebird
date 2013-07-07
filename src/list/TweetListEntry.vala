@@ -30,7 +30,7 @@ class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   private ToggleButton retweet_button  = new ToggleButton();
   private ToggleButton favorite_button = new ToggleButton();
   private Box text_box         = new Box(Orientation.HORIZONTAL, 3);
-  private unowned  MainWindow window;
+  private unowned MainWindow window;
   private Gtk.Menu more_menu;
   private Gtk.Button more_button;
   // Timestamp used for sorting
@@ -48,6 +48,9 @@ class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     this.vexpand = false;
     this.hexpand = false;
     this.acc     = acc;
+
+    if (window == null)
+      message("WINDOW == NULL!");
 
 
     if (hashtag_regex == null){
@@ -93,12 +96,12 @@ class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       toggle_button_visibility (buttons_visible);
     });
 
-    this.button_press_event.connect( (evt) => {
+/*    this.button_press_event.connect( (evt) => {
       if (evt.type == Gdk.EventType.@2BUTTON_PRESS) {
         message ("Implement inline replies");
       }
       return true;
-    });
+    });*/
 
 
     var left_box = new Box(Orientation.VERTICAL, 3);

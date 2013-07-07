@@ -38,7 +38,6 @@ class Corebird : Gtk.Application {
 
   public override int command_line(ApplicationCommandLine cmd){
     this.hold();
-    message("Parsing command line options...");
     bool show_tweet_window = false;
     bool not_in_cmd = false;
    
