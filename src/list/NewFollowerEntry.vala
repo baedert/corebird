@@ -97,7 +97,11 @@ class NewFollowerEntry : Gtk.ListBoxRow, ITwitterItem {
     Utils.download_file_async.begin(avatar_url,mini_thumb_path,
     () => {
     // TODO: This sucks
-      avatar_button.set_bg(new Gdk.Pixbuf.from_file(mini_thumb_path));
+      try {
+        avatar_button.set_bg(new Gdk.Pixbuf.from_file(mini_thumb_path));
+      } catch (GLib.Error e) {
+        warning (e.message);
+      }
       avatar_button.show();
     });
 
@@ -115,7 +119,11 @@ class NewFollowerEntry : Gtk.ListBoxRow, ITwitterItem {
     string mini_thumb_path = Utils.user_file("assets/avatars/mini_thumb_"+name+".png");
     if(FileUtils.test(mini_thumb_path, FileTest.EXISTS)) {
       ImageButton avatar_button = new ImageButton();
-      avatar_button.set_bg(new Gdk.Pixbuf.from_file(mini_thumb_path));
+      try {
+        avatar_button.set_bg(new Gdk.Pixbuf.from_file(mini_thumb_path));
+      } catch (GLib.Error e) {
+        warning (e.message);
+      }
       avatar_box.pack_start(avatar_button, false, false);
     }
     followers[count] = name;
@@ -150,14 +158,17 @@ class NewFollowerEntry : Gtk.ListBoxRow, ITwitterItem {
     }
     string param_string = @" INTO `cache` (`sort_factor`, `type`, `data`) VALUES ('$date', '$TYPE', '$(data.str)');";
     
-    if(id == -1){
-      SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db,
-                  "INSERT"+param_string);
-      this.id = q.execute_insert();
-    } else {
-      Corebird.db.execute(
-       @"INSERT OR REPLACE INTO `cache` (`id`, `sort_factor`, `type`, `data`) VALUES ('$id', '$date', '$TYPE', '$(data.str)');");
-
+    try {
+      if(id == -1){
+        SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db,
+                    "INSERT"+param_string);
+        this.id = q.execute_insert();
+      } else {
+        Corebird.db.execute(
+         @"INSERT OR REPLACE INTO `cache` (`id`, `sort_factor`, `type`, `data`) VALUES ('$id', '$date', '$TYPE', '$(data.str)');");
+      }
+    } catch (SQLHeavy.Error e) {
+      critical (e.message);
     }
   }
 }

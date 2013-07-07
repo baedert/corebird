@@ -86,9 +86,13 @@ class InlineMediaDownloader {
 		if(FileUtils.test(path, FileTest.EXISTS)) {
 			/* If the media already exists, the thumbnail also exists.
 			   If not, fuck you.*/ 
-			var thumb = new Gdk.Pixbuf.from_file(thumb_path);
-			fire_media_added(t, path, thumb, thumb_path);
-			return;
+      try {
+        var thumb = new Gdk.Pixbuf.from_file(thumb_path);
+        fire_media_added(t, path, thumb, thumb_path);
+        return;
+      } catch (GLib.Error e) {
+        critical (e.message);
+      }
 		}
 
 

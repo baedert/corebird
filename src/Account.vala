@@ -94,7 +94,11 @@ class Account : GLib.Object {
       try{call.invoke_async.end (res);} catch (GLib.Error e)
       { critical (e.message);}
       var parser = new Json.Parser ();
-      parser.load_from_data (call.get_payload ());
+      try {
+        parser.load_from_data (call.get_payload ());
+      } catch (GLib.Error e) {
+        critical (e.message);
+      }
       var root = parser.get_root ().get_object ();
       this.id = root.get_int_member ("id");
       this.name = root.get_string_member ("name");
@@ -125,23 +129,30 @@ class Account : GLib.Object {
       var msg = new Soup.Message ("GET", url);
       session.send_message (msg);
       var data_stream = new MemoryInputStream.from_data ((owned)msg.response_body.data, null);
-      var pixbuf = new Gdk.Pixbuf.from_stream(data_stream);
       string type = Utils.get_file_type (url);
       string filename = Utils.get_file_name (url);
       string dest_path = Utils.user_file(@"accounts/$(id)_small.png");
       string big_dest  = Utils.user_file("assets/avatars/"+filename);
-
-      pixbuf.save(big_dest, type);
-      double scale_x = 24.0 / pixbuf.get_width();
-      double scale_y = 24.0 / pixbuf.get_height();
-      var scaled_pixbuf = new Gdk.Pixbuf(Gdk.Colorspace.RGB, false, 8, 24, 24);
-      pixbuf.scale(scaled_pixbuf, 0, 0, 24, 24, 0, 0, scale_x, scale_y, Gdk.InterpType.HYPER);
-      scaled_pixbuf.save(dest_path, type);
-      message ("saving to %s", dest_path);
-
+      Gdk.Pixbuf pixbuf;
+      try {
+        pixbuf = new Gdk.Pixbuf.from_stream(data_stream);
+        pixbuf.save(big_dest, type);
+        double scale_x = 24.0 / pixbuf.get_width();
+        double scale_y = 24.0 / pixbuf.get_height();
+        var scaled_pixbuf = new Gdk.Pixbuf(Gdk.Colorspace.RGB, false, 8, 24, 24);
+        pixbuf.scale(scaled_pixbuf, 0, 0, 24, 24, 0, 0, scale_x, scale_y, Gdk.InterpType.HYPER);
+        scaled_pixbuf.save(dest_path, type);
+        message ("saving to %s", dest_path);
+        this.avatar_small = scaled_pixbuf;
+      } catch (GLib.Error e) {
+        critical (e.message);
+      }
       this.avatar_url = url;
-      this.avatar_small = scaled_pixbuf;
-      Corebird.db.execute (@"UPDATE `accounts` SET `avatar_url`='$url' WHERE `id`='$id';");
+      try {
+        Corebird.db.execute (@"UPDATE `accounts` SET `avatar_url`='$url' WHERE `id`='$id';");
+      } catch (SQLHeavy.Error e) {
+        critical (e.message);
+      }
     } else {
       critical ("Not implemented yet");
     }
@@ -190,19 +201,23 @@ class Account : GLib.Object {
    */
   private static void lookup_accounts () {
     accounts = new GLib.SList<Account> ();
-    Query q = new Query (Corebird.db, "SELECT id,screen_name,name,avatar_url FROM `accounts`;");
-    QueryResult res = q.execute ();
-    while (!res.finished) {
-      Account acc = new Account (res.fetch_int64 (0),
-                                 res.fetch_string (1),
-                                 res.fetch_string (2));
-      acc.avatar_url = res.fetch_string (3);
-      acc.init_proxy ();
-      acc.query_user_info_by_scren_name.begin (acc.screen_name, (obj, res) => {
-        acc.load_avatar ();
-      });
-      accounts.append (acc);
-      res.next();
+    try {
+      Query q = new Query (Corebird.db, "SELECT id,screen_name,name,avatar_url FROM `accounts`;");
+      QueryResult res = q.execute ();
+      while (!res.finished) {
+        Account acc = new Account (res.fetch_int64 (0),
+                                   res.fetch_string (1),
+                                   res.fetch_string (2));
+        acc.avatar_url = res.fetch_string (3);
+        acc.init_proxy ();
+        acc.query_user_info_by_scren_name.begin (acc.screen_name, (obj, res) => {
+          acc.load_avatar ();
+        });
+        accounts.append (acc);
+        res.next();
+      }
+    } catch (SQLHeavy.Error e) {
+      critical (e.message);
     }
   }
   public static void add_account (Account acc) {

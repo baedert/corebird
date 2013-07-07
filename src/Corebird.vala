@@ -94,7 +94,11 @@ class Corebird : Gtk.Application {
     /* First, create that log file */
     var now = new GLib.DateTime.now_local();
     File log_file = File.new_for_path(Utils.user_file("log/%s.txt".printf(now.to_string())));
-    log_stream = log_file.create(FileCreateFlags.REPLACE_DESTINATION);
+    try {
+      log_stream = log_file.create(FileCreateFlags.REPLACE_DESTINATION);
+    } catch (GLib.Error e) {
+      warning ("Couldn't open log file: %s", e.message);
+    }
     /* If we do not run on the command line, we simply redirect stdout
        to a log file*/
     GLib.Log.set_handler (null, LogLevelFlags.LEVEL_MESSAGE, print_to_log_file);
@@ -112,14 +116,22 @@ class Corebird : Gtk.Application {
   public override void startup () {
     base.startup();
     // Load Database
-    Corebird.db = new SQLHeavy.VersionedDatabase(Utils.user_file("Corebird.db"),
-                                                 DATADIR+"/sql/init/");
-    db.journal_mode = SQLHeavy.JournalMode.MEMORY;
-    db.temp_store   = SQLHeavy.TempStoreMode.MEMORY;
+    try {
+     Corebird.db = new SQLHeavy.VersionedDatabase(Utils.user_file("Corebird.db"),
+                                                  DATADIR+"/sql/init/");
+      db.journal_mode = SQLHeavy.JournalMode.MEMORY;
+      db.temp_store   = SQLHeavy.TempStoreMode.MEMORY;
+    } catch (SQLHeavy.Error e) {
+      warning (e.message);
+    }
 
     // Construct app menu
     Gtk.Builder builder = new Gtk.Builder ();
-    builder.add_from_resource ("/org/baedert/corebird/ui/menu.ui");
+    try {
+      builder.add_from_resource ("/org/baedert/corebird/ui/menu.ui");
+    } catch (GLib.Error e) {
+      critical (e.message);
+    }
     GLib.MenuModel app_menu = (MenuModel)builder.get_object ("app-menu");
     var acc_menu = app_menu.get_item_link(0, "section");
     account_menu = new GLib.Menu();
@@ -153,14 +165,6 @@ class Corebird : Gtk.Application {
       create_user_folder ("accounts");
     }
 
-    Corebird.db = new SQLHeavy.VersionedDatabase(Utils.user_file("Corebird.db"),
-                                                 DATADIR+"/sql/init/");
-    db.journal_mode = SQLHeavy.JournalMode.MEMORY;
-    db.temp_store   = SQLHeavy.TempStoreMode.MEMORY;
-
-    //Twitter.update_config.begin ();
-
-
 		// Set up the actions
     var settings_action = new SimpleAction("show-settings", null);
     settings_action.activate.connect(() => {
@@ -170,10 +174,10 @@ class Corebird : Gtk.Application {
     add_action (settings_action);
     var about_dialog_action = new SimpleAction("show-about-dialog", null);
     about_dialog_action.activate.connect(() => {
-      var b = new Gtk.Builder();
-      b.add_from_file(DATADIR+"/ui/about-dialog.ui");
-      Gtk.AboutDialog ad = b.get_object("about-dialog") as Gtk.AboutDialog;
-      ad.show();
+//      var b = new Gtk.Builder();
+//      b.add_from_file(DATADIR+"/ui/about-dialog.ui");
+//      Gtk.AboutDialog ad = b.get_object("about-dialog") as Gtk.AboutDialog;
+//      ad.show();
     });
     add_action(about_dialog_action);
 		var quit_action = new SimpleAction("quit", null);
@@ -256,8 +260,12 @@ class Corebird : Gtk.Application {
     else
       out_string = "(%s) %s".printf(log_domain, msg);
 
-    log_stream.write_all (out_string.data, null);
-    log_stream.flush();
+    try {
+      log_stream.write_all (out_string.data, null);
+      log_stream.flush();
+    } catch (GLib.Error e) {
+      warning (e.message);
+    }
     if (flags != LogLevelFlags.LEVEL_DEBUG)
       stdout.printf(out_string);
   }

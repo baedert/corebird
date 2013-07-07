@@ -127,42 +127,46 @@ class ProfileWidget : Gtk.Box {
     else
       query_string += @"WHERE screen_name='$screen_name';";
 
-    SQLHeavy.Query cache_query = new SQLHeavy.Query(Corebird.db,
-                            query_string);
-    SQLHeavy.QueryResult cache_result = cache_query.execute();
-    if (!cache_result.finished){
-      /* If we get inside this block, there is already some data in the 
-        DB we can use. */
-      if(screen_name != "")
-        user_id = cache_result.fetch_int64(0);
+    try {
+      SQLHeavy.Query cache_query = new SQLHeavy.Query(Corebird.db,
+                              query_string);
+      SQLHeavy.QueryResult cache_result = cache_query.execute();
+      if (!cache_result.finished){
+        /* If we get inside this block, there is already some data in the 
+          DB we can use. */
+        if(screen_name != "")
+          user_id = cache_result.fetch_int64(0);
 
-      avatar_image.set_background(Utils.user_file(
-                   "/assets/avatars/"+cache_result.fetch_string(7)));
+        avatar_image.set_background(Utils.user_file(
+                     "/assets/avatars/"+cache_result.fetch_string(7)));
 
-      set_data(cache_result.fetch_string(2), cache_result.fetch_string(1),
-           cache_result.fetch_string(9), cache_result.fetch_string(10),
-           cache_result.fetch_string(3),
-           cache_result.fetch_int(4), cache_result.fetch_int(5),
-           cache_result.fetch_int(6));
-      follow_button.active = (cache_result.fetch_int(12) == 1);
-      string banner_name = cache_result.fetch_string(13);
-      debug("banner_name: %s", banner_name);
+        set_data(cache_result.fetch_string(2), cache_result.fetch_string(1),
+             cache_result.fetch_string(9), cache_result.fetch_string(10),
+             cache_result.fetch_string(3),
+             cache_result.fetch_int(4), cache_result.fetch_int(5),
+             cache_result.fetch_int(6));
+        follow_button.active = (cache_result.fetch_int(12) == 1);
+        string banner_name = cache_result.fetch_string(13);
+        debug("banner_name: %s", banner_name);
 
-      if(banner_name != null && 
-        FileUtils.test(Utils.user_file("assets/banners/"+banner_name), FileTest.EXISTS)){
-        debug("Banner exists, set it directly...");
-        banner_box.set_background(Utils.user_file(
-                      "assets/banners/"+banner_name));
-      }else{
-        // If the cached banner does somehow not exist, load it again.
-        debug("Banner %s does not exist, load it first...", banner_name);
-        load_banner.begin(user_id, Utils.user_file("assets/banners/"+banner_name),
-              screen_name);
+        if(banner_name != null && 
+          FileUtils.test(Utils.user_file("assets/banners/"+banner_name), FileTest.EXISTS)){
+          debug("Banner exists, set it directly...");
+          banner_box.set_background(Utils.user_file(
+                        "assets/banners/"+banner_name));
+        }else{
+          // If the cached banner does somehow not exist, load it again.
+          debug("Banner %s does not exist, load it first...", banner_name);
+          load_banner.begin(user_id, Utils.user_file("assets/banners/"+banner_name),
+                screen_name);
+          banner_box.set_background(DATADIR+"/no_banner.png");
+        }
+      }else {
         banner_box.set_background(DATADIR+"/no_banner.png");
+        load_banner.begin(user_id, "", screen_name);
       }
-    }else {
-      banner_box.set_background(DATADIR+"/no_banner.png");
-      load_banner.begin(user_id, "", screen_name);
+    } catch (SQLHeavy.Error e) {
+      critical (e.message);
     }
   }
 

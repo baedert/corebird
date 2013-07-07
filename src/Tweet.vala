@@ -175,11 +175,15 @@ class Tweet : GLib.Object{
 				var memory_stream = new MemoryInputStream.from_data(
 				                                   _msg.response_body.data,
 				                                   null);
-				var pixbuf = new Gdk.Pixbuf.from_stream_at_scale(memory_stream,
-				                                                 48, 48,
-				                                                 false);
-				pixbuf.save(dest, "png");
-				this.load_avatar(pixbuf);
+        try {
+          var pixbuf = new Gdk.Pixbuf.from_stream_at_scale(memory_stream,
+                                                           48, 48,
+                                                           false);
+          pixbuf.save(dest, "png");
+          this.load_avatar(pixbuf);
+        } catch (GLib.Error e) {
+          critical (e.message);
+        }
 				debug("Loaded avatar for %s", screen_name);
 				debug("Dest: %s", dest);
 			});
@@ -191,6 +195,7 @@ class Tweet : GLib.Object{
 	 * pango layouts.
 	 *
 	 * TODO: Also replace nicknames and hashtags here
+   * TODO: Multiple links in one tweet don't work
 	 * @param text The text to replace the links in
 	 * @return The text with replaced links
 	 */
@@ -198,9 +203,13 @@ class Tweet : GLib.Object{
 		if(link_regex == null){
 			//TODO: Most regexes can be truly static.
 			//TODO: This regex actually sucks.
-			link_regex = new GLib.Regex(
-			"http[s]{0,1}:\\/\\/[a-zA-Z\\_.\\+!\\?\\/#=&;\\-0-9%,~:]+",
-			RegexCompileFlags.OPTIMIZE);
+      try {
+        link_regex = new GLib.Regex(
+        "http[s]{0,1}:\\/\\/[a-zA-Z\\_.\\+!\\?\\/#=&;\\-0-9%,~:]+",
+        RegexCompileFlags.OPTIMIZE);
+      } catch (GLib.RegexError e) {
+        critical (e.message);
+      }
 		}
 		string real_text = text;
 		try{

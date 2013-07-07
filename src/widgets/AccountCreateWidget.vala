@@ -31,11 +31,14 @@ class AccountCreateWidget : Gtk.Grid {
   [GtkCallback]
   private void request_pin_button_clicked () {
     acc.init_proxy (false);
-    acc.proxy.request_token ("oauth/request_token", "oob");
-    GLib.AppInfo.launch_default_for_uri(
-					"http://twitter.com/oauth/authorize?oauth_token=%s"
-	              .printf(acc.proxy.get_token()), null);
-
+    try {
+     acc.proxy.request_token ("oauth/request_token", "oob");
+     GLib.AppInfo.launch_default_for_uri(
+  					"http://twitter.com/oauth/authorize?oauth_token=%s"
+  	              .printf(acc.proxy.get_token()), null);
+    } catch (GLib.Error e) {
+      critical (e.message);
+    }
   }
 
   [GtkCallback]
@@ -56,7 +59,11 @@ class AccountCreateWidget : Gtk.Grid {
     call.invoke_async.begin (null, (obj, res) => {
       message ("settings call");
       var parser = new Json.Parser ();
-      parser.load_from_data (call.get_payload ());
+      try {
+        parser.load_from_data (call.get_payload ());
+      } catch (GLib.Error e) {
+        critical ("Problem with JSON Data: %s\n%s", e.message, call.get_payload ());
+      } 
       var root = parser.get_root ().get_object ();
       string screen_name = root.get_string_member ("screen_name");
 

@@ -33,11 +33,14 @@ class ImageDialog : Gtk.Window {
 		}
 
 		image = new Gtk.Image();
-		if(path.has_suffix("gif"))
-			// use animation
-			image.pixbuf_animation = new Gdk.PixbufAnimation.from_file(path);
-		else
-			image.pixbuf = new Gdk.Pixbuf.from_file(path);
+    try {
+		  if(path.has_suffix("gif"))
+	  		image.pixbuf_animation = new Gdk.PixbufAnimation.from_file(path);
+		  else
+		  	image.pixbuf = new Gdk.Pixbuf.from_file(path);
+    } catch (GLib.Error e) {
+      critical (e.message);
+    }
 		var ebox = new EventBox();
 		ebox.add(image);
 		scroller.add_with_viewport(ebox);
@@ -85,7 +88,11 @@ class ImageDialog : Gtk.Window {
 				message("Source: %s", path);
 				message("Destin: %s", fc.get_uri());
 				File source = File.new_for_path(path);
-				source.copy(dest, FileCopyFlags.OVERWRITE);
+        try {
+  				source.copy(dest, FileCopyFlags.OVERWRITE);
+        } catch (GLib.Error e) {
+          critical (e.message);
+        }
 				fc.close();
 			}
 

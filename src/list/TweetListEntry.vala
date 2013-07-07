@@ -178,12 +178,16 @@ class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     }
 
 
-      // Also set User/Hashtag links
-      string display_text = tweet.text;
+    // Also set User/Hashtag links
+    string display_text = tweet.text;
+    try {
       display_text = user_regex.replace(display_text, display_text.length, 0,
                                         "<a href='\\0'>\\0</a>");
       display_text = hashtag_regex.replace(display_text, display_text.length, 0,
                                            "<a href='\\0'>\\0</a>");
+    } catch (GLib.RegexError e) {
+      warning (e.message);
+    }
     display_text = Tweet.replace_links(display_text);
     text.label = display_text;
     text.set_use_markup(true);
@@ -226,7 +230,12 @@ class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   }
 
   private void add_inline_media(Box box) {
-    var pic = new Gdk.Pixbuf.from_file(tweet.media_thumb);
+    Gdk.Pixbuf pic = null;
+    try {
+      pic = new Gdk.Pixbuf.from_file(tweet.media_thumb);
+    } catch (GLib.Error e) {
+      critical (e.message);
+    }
     var media_button = new ImageButton();
     media_button.set_bg(pic);
     media_button.visible = true;
