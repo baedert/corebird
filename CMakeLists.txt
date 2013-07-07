@@ -47,7 +47,7 @@ add_subdirectory (data)
 
 
 set (DEPS glib-2.0;
-      gtk+-3.0;
+      gtk+-3.0>=3.9;
       gio-2.0;
       rest-0.7;
       sqlheavy-0.2;
