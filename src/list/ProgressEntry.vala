@@ -28,16 +28,7 @@ class ProgressEntry : ListBoxRow, ITwitterItem {
     spinner.set_size_request(size, size);
     this.set_size_request(size, size);
     this.add (spinner);
-    this.start();
+    spinner.start ();
   }
 
-
-
-  public void start(){
-    spinner.start();
-  }
-
-  public void stop(){
-    spinner.stop();
-  }
 }
