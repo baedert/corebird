@@ -69,22 +69,22 @@ class Corebird : Gtk.Application {
 
     string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
     
-    if(startup_accounts.length == 1)
+    if(startup_accounts.length == 1) {
+      if (startup_accounts[0] == "")
+        startup_accounts = new string[0];
       message("Using account '@%s'", startup_accounts[0]);
+
+    }
     message("Startup accounts: %d", startup_accounts.length);
 
     if (!show_tweet_window){
-      if (Settings.is_first_run ())
-        critical ("Implement this.");
-      else{
-        if (startup_accounts.length == 1)
-          add_window (new MainWindow (this, Account.list_accounts().data));
-        else if(startup_accounts.length == 0)
-          add_window (new MainWindow (this, null));
-        else {
-          foreach (string a in startup_accounts)
-            message("TODO: ADD %s", a);
-        }
+      if (startup_accounts.length == 1)
+        add_window (new MainWindow (this, Account.list_accounts().data));
+      else if(startup_accounts.length == 0)
+        add_window (new MainWindow (this, null));
+      else {
+        foreach (string a in startup_accounts)
+          message("TODO: ADD %s", a);
       }
     } else {
 /*      add_window (new ComposeTweetWindow (null, null, this));*/

@@ -67,6 +67,7 @@ class MainWindow : ApplicationWindow {
     } else {
       this.set_title ("Corebird");
       app.lookup_action ("show-settings").activate (null);
+      return;
     }
 
 /*    var f = new Gtk.HeaderBar ();
