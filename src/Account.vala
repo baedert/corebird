@@ -22,6 +22,7 @@ class Account : GLib.Object {
   public string name              {public get; private set;}
   public string avatar_url        {public get; public  set;}
   public Gdk.Pixbuf avatar_small  {public get; private set;}
+  public Gdk.Pixbuf avatar        {public get; private set;}
   public Database db              {public get; private set;}
   public Rest.OAuthProxy proxy    {public get; private set;}
   public UserStream user_stream   {public get; private set;}
@@ -69,9 +70,11 @@ class Account : GLib.Object {
   }
 
   public void load_avatar () {
-    string path = Utils.user_file (@"accounts/$(id)_small.png");
+    string small_path = Utils.user_file (@"accounts/$(id)_small.png");
+    string path = Utils.user_file (@"accounts/$(id).png");
     try {
-      this.avatar_small = new Gdk.Pixbuf.from_file (path);
+      this.avatar_small = new Gdk.Pixbuf.from_file (small_path);
+      this.avatar = new Gdk.Pixbuf.from_file (path);
     } catch (GLib.Error e) {
       warning (e.message);
     }
@@ -119,8 +122,8 @@ class Account : GLib.Object {
    * @param url The url of the (possibly) new avatar(optional).
    */
   public async void update_avatar (string url = "") {
-    if (url.length > 0 && url == this.avatar_url)
-      return;
+//    if (url.length > 0 && url == this.avatar_url)
+//      return;
 
     message ("Using %s to update the avatar", url);
   
@@ -132,7 +135,7 @@ class Account : GLib.Object {
       string type = Utils.get_file_type (url);
       string filename = Utils.get_file_name (url);
       string dest_path = Utils.user_file(@"accounts/$(id)_small.png");
-      string big_dest  = Utils.user_file("assets/avatars/"+filename);
+      string big_dest  = Utils.user_file(@"accounts/$(id).png");
       Gdk.Pixbuf pixbuf;
       try {
         pixbuf = new Gdk.Pixbuf.from_stream(data_stream);

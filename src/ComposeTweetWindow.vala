@@ -78,7 +78,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
 
     var middle_box = new Box(Orientation.HORIZONTAL, 3);
-    var av = new Gtk.Image.from_pixbuf (acc.avatar_small);
+    var av = new Gtk.Image.from_pixbuf (acc.avatar);
     av.set_alignment(0,0);
     left_box.pack_start(av, false, false);
     left_box.pack_start(new Separator(Orientation.HORIZONTAL), false, false);
