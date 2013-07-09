@@ -162,7 +162,7 @@ class Corebird : Gtk.Application {
       create_user_folder ("assets/media/");
       create_user_folder ("assets/media/thumbs/");
       create_user_folder ("log/");
-      create_user_folder ("accounts");
+      create_user_folder ("accounts/");
     }
 
 		// Set up the actions

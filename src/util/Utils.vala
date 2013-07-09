@@ -122,6 +122,8 @@ class Utils{
 
   /**
    * Shows an error dialog with the given error message
+   
+     @param message The error message to show
    */
   public static void show_error_dialog(string message){
     var dialog = new Gtk.MessageDialog(null, Gtk.DialogFlags.DESTROY_WITH_PARENT,

@@ -37,6 +37,7 @@ class AccountCreateWidget : Gtk.Grid {
       message ("Trying to open %s", uri);
       GLib.AppInfo.launch_default_for_uri(uri, null);
     } catch (GLib.Error e) {
+      Utils.show_error_dialog (e.message);
       critical (e.message);
     }
   }
