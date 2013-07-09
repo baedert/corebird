@@ -33,8 +33,8 @@ class AccountCreateWidget : Gtk.Grid {
   private void request_pin_button_clicked () {
     acc.init_proxy (false);
     try {
-      string uri = "http://twitter.com/oauth/authorize?oauth_token="+acc.proxy.get_token();
       acc.proxy.request_token ("oauth/request_token", "oob");
+      string uri = "http://twitter.com/oauth/authorize?oauth_token="+acc.proxy.get_token();
       message ("Trying to open %s", uri);
       GLib.AppInfo.launch_default_for_uri(uri, null);
     } catch (GLib.Error e) {
