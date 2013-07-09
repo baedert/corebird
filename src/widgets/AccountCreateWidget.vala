@@ -16,7 +16,8 @@
 
 using Gtk;
 
-
+// TODO: If the account is open in a MainWindow instance, either close that window or
+//       diable the remove button
 [GtkTemplate (ui = "/org/baedert/corebird/ui/account-create-widget.ui")]
 class AccountCreateWidget : Gtk.Grid {
   [GtkChild]
@@ -73,6 +74,7 @@ class AccountCreateWidget : Gtk.Grid {
         if (a.screen_name == screen_name)
           critical ("Account is already in use");
           // TODO: Show a dialog here
+          //       Remove the used AccountCreateWidget again.
       }
 
       acc.query_user_info_by_scren_name.begin (screen_name, (obj, res) => {
