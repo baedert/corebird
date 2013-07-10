@@ -47,6 +47,7 @@ class MainWindow : ApplicationWindow {
 
   public MainWindow(Gtk.Application app, Account? account = null){
     GLib.Object (application: app);
+    set_default_size (480, 700);
     this.set_icon_name("corebird");
     this.account = account;
 
@@ -168,7 +169,6 @@ class MainWindow : ApplicationWindow {
     add_accels();
 
     this.add(main_box);
-    this.load_geometry();
     this.show_all();
   }
 
@@ -236,28 +236,6 @@ class MainWindow : ApplicationWindow {
       setup_left_toolbar();
     }
   }
-
-  private void save_geometry(){
-    int x, y, w, h;
-    this.get_size(out w, out h);
-    this.get_position(out x, out y);
-    Settings.set_string("main-window-geometry", "%d,%d,%d,%d".printf(x,
-                        y, w, h));
-  }
-
-  private void load_geometry(){
-    // TODO: Use gtk_window_parse_geometry
-    string geometry_str = Settings.get_string("main-window-geometry");
-    string[] parts    = geometry_str.split(",");
-    int x      = int.parse(parts[0]);
-    int y      = int.parse(parts[1]);
-    int width  = int.parse(parts[2]);
-    int height = int.parse(parts[3]);
-    this.move(x, y);
-    this.resize(width, height);
-  }
-
-
 
   /**
    * Switches the window's main notebook to the given page.

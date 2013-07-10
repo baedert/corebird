@@ -48,11 +48,6 @@
       <summary>X</summary>
       <description>Y</description>
     </key>
-    <key name="main-window-geometry" type="s">
-      <default>"0,0,400,600"</default>
-      <summary>X</summary>
-      <description>Y</description>
-    </key>
     <key name="show-inline-media" type="b">
       <default>true</default>
       <summary>bla bla</summary>
