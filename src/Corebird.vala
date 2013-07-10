@@ -224,7 +224,7 @@ class Corebird : Gtk.Application {
   public override void shutdown () {
     NotificationManager.uninit ();
     unowned GLib.List<weak Window> windows = get_windows ();
-    // TODO: Don't assume that ever window is a MainWindow
+    // TODO: Don't assume that every window is a MainWindow
     string[] startup_accounts = new string[windows.length ()];
     int i = 0;
     foreach (var w in windows) {
@@ -234,7 +234,17 @@ class Corebird : Gtk.Application {
     Settings.get ().set_strv ("startup-accounts", startup_accounts);
     base.shutdown();
   }
-
+  
+  /**
+   * Adds a new MainWindow instance with the account that 
+   * has the given screen name.
+   * Note that this only works if the account is already properly
+   * set up and won't warn or fail if if isn't.
+   *
+   * @param screen_name The screen name of the account do add a
+   *                    MainWindow for.
+   *
+   */
   private void add_window_for_screen_name (string screen_name) {
     unowned GLib.SList<Account> accs = Account.list_accounts ();
     foreach (Account a in accs) {
