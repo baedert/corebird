@@ -96,7 +96,6 @@ set (VALA_SOURCE
   src/widgets/ImageButton.vala
   src/widgets/ScrollWidget.vala
   src/widgets/TextButton.vala
-  src/widgets/TweetInfoWidget.vala
   src/widgets/ProfileWidget.vala
   src/widgets/BadgeRadioToolButton.vala
   src/widgets/InvisibilityBin.vala
