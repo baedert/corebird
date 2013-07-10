@@ -167,7 +167,7 @@ class Corebird : Gtk.Application {
 		// Set up the actions
     var settings_action = new SimpleAction("show-settings", null);
     settings_action.activate.connect(() => {
-      var dialog = new SettingsDialog();
+      var dialog = new SettingsDialog(null, this);
       dialog.show_all ();
     });
     add_action (settings_action);
@@ -245,7 +245,7 @@ class Corebird : Gtk.Application {
    *                    MainWindow for.
    *
    */
-  private void add_window_for_screen_name (string screen_name) {
+  public void add_window_for_screen_name (string screen_name) {
     unowned GLib.SList<Account> accs = Account.list_accounts ();
     foreach (Account a in accs) {
       if (a.screen_name == screen_name) {

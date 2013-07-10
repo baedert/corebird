@@ -45,8 +45,9 @@ class SettingsDialog : Gtk.Dialog {
   [GtkChild]
   private ComboBoxText on_new_tweets_combobox;
 
-	public SettingsDialog(MainWindow? win = null){
+	public SettingsDialog(MainWindow? win = null, Corebird? application = null){
 		this.win = win;
+    this.application = application;
 
     // General Page
     Settings.get ().bind ("upload-provider", upload_provider_combobox, "active-id",
@@ -78,7 +79,7 @@ class SettingsDialog : Gtk.Dialog {
     foreach (Account a in accs) {
       a.load_avatar ();
       account_list.add (new AccountListEntry (a));
-      account_info_stack.add_named (new AccountInfoWidget (a), a.screen_name);
+      account_info_stack.add_named (new AccountInfoWidget (a, this.application), a.screen_name);
     }
     if (accs.length() > 0)
       account_list.select_row (account_list.get_row_at_index (0));
@@ -104,14 +105,14 @@ class SettingsDialog : Gtk.Dialog {
 
   [GtkCallback]
   private void remove_account_clicked () {
-    ListBoxRow row = account_list.get_selected_row ();
-    AccountListEntry entry = (AccountListEntry)row.get_child ();
+    AccountListEntry entry = (AccountListEntry)account_list.get_selected_row ();
     if (entry.screen_name == DUMMY_SCREEN_NAME) {
-      account_list.remove (row);
+      account_list.remove (entry);
       account_info_stack.remove (account_info_stack.get_visible_child ());
       Account.remove_account (DUMMY_SCREEN_NAME);
       add_account_button.sensitive = true;
-    }
+    } else 
+      message ("Implement removal of non-dummy accounts!");
   }
 
   [GtkCallback]
@@ -135,7 +136,7 @@ class SettingsDialog : Gtk.Dialog {
   private void on_account_access (bool result, Account acc) {
     if (result) {
       account_info_stack.remove (account_info_stack.get_visible_child ());
-      var acc_widget = new AccountInfoWidget (acc);
+      var acc_widget = new AccountInfoWidget (acc, this.application);
       account_info_stack.add_named (acc_widget, acc.screen_name);
       account_info_stack.set_visible_child_name (acc.screen_name);
       account_list.remove (account_list.get_selected_row ());

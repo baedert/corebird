@@ -122,8 +122,8 @@ class Account : GLib.Object {
    * @param url The url of the (possibly) new avatar(optional).
    */
   public async void update_avatar (string url = "") {
-//    if (url.length > 0 && url == this.avatar_url)
-//      return;
+    if (url.length > 0 && url == this.avatar_url)
+      return;
 
     message ("Using %s to update the avatar", url);
   
