@@ -157,13 +157,10 @@ class ProfileWidget : Gtk.Box {
         }else{
           // If the cached banner does somehow not exist, load it again.
           debug("Banner %s does not exist, load it first...", banner_name);
-          load_banner.begin(user_id, Utils.user_file("assets/banners/"+banner_name),
-                screen_name);
           banner_box.set_background(DATADIR+"/no_banner.png");
         }
       }else {
         banner_box.set_background(DATADIR+"/no_banner.png");
-        load_banner.begin(user_id, "", screen_name);
       }
     } catch (SQLHeavy.Error e) {
       critical (e.message);
@@ -213,13 +210,19 @@ class ProfileWidget : Gtk.Box {
       string name        = root.get_string_member("name");
              screen_name = root.get_string_member("screen_name");
       string description = root.get_string_member("description").replace("&", "&amp;");
-      int64 id       = root.get_int_member("id");
+      int64 id           = root.get_int_member("id");
       int followers      = (int)root.get_int_member("followers_count");
       int following      = (int)root.get_int_member("friends_count");
       int tweets         = (int)root.get_int_member("statuses_count");
       bool is_following  = root.get_boolean_member("following");
       bool has_url       = root.get_object_member("entities").has_member("url");
       string banner_name = get_banner_name(user_id, screen_name);
+
+      if (root.has_member ("profile_banner_url")) {
+        string banner_base_url = root.get_string_member ("profile_banner_url");
+        load_profile_banner (banner_base_url, Utils.user_file ("assets/banners/"+banner_name),
+                             user_id, screen_name);
+      }
 
       string display_url = null;
       if(has_url) {
@@ -228,9 +231,9 @@ class ProfileWidget : Gtk.Box {
             .get_object();
 
         var url = urls_object.get_string_member("expanded_url");
-        if(urls_object.has_member("display_url")){
+        if (urls_object.has_member ("display_url")) {
           display_url = urls_object.get_string_member("expanded_url");
-        }else{
+        } else {
           url = urls_object.get_string_member("url");
           display_url = url;
         }
@@ -282,66 +285,25 @@ class ProfileWidget : Gtk.Box {
    * @param saved_banner_url 
    * @param screen_name
    */
-  private async void load_banner(int64 user_id, string saved_banner_url,
-                                 string screen_name = ""){
-
-    var call = account.proxy.new_call();
-    call.set_function("1.1/users/profile_banner.json");
-    call.set_method("GET");
-    message(@"id: $user_id, name: $screen_name");
-    if(user_id != 0)
-      call.add_param("user_id", user_id.to_string());
-    else
-      call.add_param("screen_name", screen_name);
-
-    call.invoke_async.begin(null, (obj, res) => {
-      if (call.get_status_code() == 404){
-        // Normal. The user has not set a profile banner.
-        message("No Banner set.");
-        return;
-      }
-
+  private void load_profile_banner (string base_url, string saved_banner_url,
+                                    int64 user_id, string screen_name) {
+    string banner_url  = base_url+"/mobile_retina";
+    string banner_name = get_banner_name (user_id, screen_name);
+    string banner_on_disk = Utils.user_file("assets/banners/"+banner_name);
+    if (!FileUtils.test (banner_on_disk, FileTest.EXISTS) || banner_url != saved_banner_url) {
+      Utils.download_file_async .begin (banner_url, banner_on_disk, 
+          () => {banner_box.set_background (banner_on_disk);});
       try{
-        call.invoke_async.end (res);
-      } catch (GLib.Error e){
-        warning("Error while ending call(HTTP Code: %u): %s\nDATA:\n%s",
-                call.get_status_code(), e.message, call.get_payload());
-        return;
+        debug("Setting the banner name to %s", banner_name);
+        Corebird.db.execute(@"UPDATE `profiles` SET `banner_url`='$banner_url',
+            `banner_name`='$banner_name'
+            WHERE `id`='$user_id';");
+      } catch (GLib.Error ex) {
+        warning ("Error while setting banner: %s", ex.message);
       }
-
-      string back = call.get_payload();
-      Json.Parser parser = new Json.Parser();
-      try{
-        parser.load_from_data(back);
-      } catch (GLib.Error e){
-        warning ("Error while loading banner: %s\nDATA:%s\n", e.message, back);
-        return;
-      }
-
-      var root = parser.get_root().get_object().get_object_member("sizes");
-      string banner_url, banner_name;
-      banner_url = root.get_object_member("mobile_retina").get_string_member("url");
-      banner_name = get_banner_name(user_id, screen_name);
-
-      string banner_on_disk = Utils.user_file("assets/banners/"+banner_name);
-      if (!FileUtils.test(banner_on_disk, FileTest.EXISTS) ||
-            banner_url != saved_banner_url){
-
-        Utils.download_file_async.begin(banner_url, banner_on_disk,
-            () => {banner_box.set_background(banner_on_disk);});
-        try{
-          debug("Setting the banner name to %s", banner_name);
-          Corebird.db.execute(@"UPDATE `profiles` SET `banner_url`='$banner_url',
-                              `banner_name`='$banner_name'
-                              WHERE `id`='$user_id';");
-        } catch (GLib.Error ex) {
-          warning ("Error while setting banner: %s", ex.message);
-        }
-      }else
-        // If the user's banner on the server is the same as the cached one AND
-        // it exists on disk, we just use that.
-        banner_box.set_background(banner_on_disk);
-    });
+    } else {
+      banner_box.set_background (banner_on_disk);
+    }
   }
 
 
