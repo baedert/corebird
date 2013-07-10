@@ -81,7 +81,7 @@ class Corebird : Gtk.Application {
       if (startup_accounts.length == 1)
         add_window (new MainWindow (this, Account.list_accounts().data));
       else if(startup_accounts.length == 0)
-        add_window (new MainWindow (this, null));
+        this.lookup_action ("show-settings").activate (null);
       else {
         foreach (string a in startup_accounts)
           add_window_for_screen_name (a);
@@ -223,15 +223,6 @@ class Corebird : Gtk.Application {
 
   public override void shutdown () {
     NotificationManager.uninit ();
-    unowned GLib.List<weak Window> windows = get_windows ();
-    // TODO: Don't assume that every window is a MainWindow
-    string[] startup_accounts = new string[windows.length ()];
-    int i = 0;
-    foreach (var w in windows) {
-      startup_accounts[i] = ((MainWindow)w).account.screen_name;
-      i++;
-    }
-    Settings.get ().set_strv ("startup-accounts", startup_accounts);
     base.shutdown();
   }
   

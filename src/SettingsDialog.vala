@@ -48,6 +48,7 @@ class SettingsDialog : Gtk.Dialog {
 	public SettingsDialog(MainWindow? win = null, Corebird? application = null){
 		this.win = win;
     this.application = application;
+    this.title = "Corebird Settings";
 
     // General Page
     Settings.get ().bind ("upload-provider", upload_provider_combobox, "active-id",

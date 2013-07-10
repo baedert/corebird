@@ -68,8 +68,7 @@ class MainWindow : ApplicationWindow {
       }
       account.user_stream.start ();
     } else {
-      this.set_title ("Corebird");
-      app.lookup_action ("show-settings").activate (null);
+      warning ("account == NULL");
       return;
     }
 
@@ -167,6 +166,16 @@ class MainWindow : ApplicationWindow {
     main_box.pack_end(bottom_box, true, true);
 
     add_accels();
+    this.destroy.connect (() => {
+      unowned GLib.List<weak Window> ws = this.application.get_windows ();
+      message("Windows: %u", ws.length ());
+      if (ws.length () == 1) {
+        // This is the last window so we save this one anyways...
+        string[] startup_accounts = new string[1];
+        startup_accounts[0] = ((MainWindow)ws.nth_data (0)).account.screen_name;
+        Settings.get ().set_strv ("startup-accounts", startup_accounts);
+      }
+     });
 
     this.add(main_box);
     this.show_all();
