@@ -84,7 +84,7 @@ class Corebird : Gtk.Application {
         add_window (new MainWindow (this, null));
       else {
         foreach (string a in startup_accounts)
-          message("TODO: ADD %s", a);
+          add_window_for_screen_name (a);
       }
     } else {
 /*      add_window (new ComposeTweetWindow (null, null, this));*/
