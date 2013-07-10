@@ -133,7 +133,6 @@ class Account : GLib.Object {
       session.send_message (msg);
       var data_stream = new MemoryInputStream.from_data ((owned)msg.response_body.data, null);
       string type = Utils.get_file_type (url);
-      string filename = Utils.get_file_name (url);
       string dest_path = Utils.user_file(@"accounts/$(id)_small.png");
       string big_dest  = Utils.user_file(@"accounts/$(id).png");
       Gdk.Pixbuf pixbuf;

@@ -43,10 +43,12 @@ class MainWindow : ApplicationWindow {
   private SeparatorToolItem expander_item  = new SeparatorToolItem();
   private SeparatorToolItem left_separator = new SeparatorToolItem();
   private Gtk.Stack stack                  = new Gtk.Stack();
+  public unowned Account account {public get; private set;}
 
   public MainWindow(Gtk.Application app, Account? account = null){
     GLib.Object (application: app);
     this.set_icon_name("corebird");
+    this.account = account;
 
     if (account != null) {
       this.set_title ("Corebird(@%s)".printf (account.screen_name));
@@ -60,7 +62,7 @@ class MainWindow : ApplicationWindow {
           acc_menu.remove(i);
           acc_menu.append_item (item);
           acc_menu.items_changed(i, 1, 1);
-          ((SimpleAction)app.lookup_action("show-win")).set_enabled(false);
+        //  ((SimpleAction)app.lookup_action("show-win")).set_enabled(false);
         }
       }
       account.user_stream.start ();
