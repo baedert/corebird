@@ -15,8 +15,6 @@
  */
 using Gtk;
 
-// TODO: Show a 'open window' button
-
 [GtkTemplate (ui = "/org/baedert/corebird/ui/account-info-widget.ui")]
 class AccountInfoWidget : Gtk.Grid {
   [GtkChild]
@@ -26,8 +24,16 @@ class AccountInfoWidget : Gtk.Grid {
   [GtkChild]
   private Label name_label;
 
+  private unowned Account account;
+
   public AccountInfoWidget (Account acc) {
+    this.account = acc;
     screen_name_label.label = acc.screen_name;
     name_label.label = acc.name;
+  }
+
+  [GtkCallback]
+  private void open_window_clicked () {
+    message ("open window clicked");
   }
 }
