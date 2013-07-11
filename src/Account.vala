@@ -95,7 +95,7 @@ class Account : GLib.Object {
     call.add_param ("screen_name", screen_name);
     call.invoke_async.begin (null, (obj, res) => {
       try{call.invoke_async.end (res);} catch (GLib.Error e)
-      { critical (e.message);}
+      { critical (e.message);return;}
       var parser = new Json.Parser ();
       try {
         parser.load_from_data (call.get_payload ());
