@@ -1,2 +1,2 @@
-install (FILES corebird.desktop            DESTINATION ${PREFIX}/applications/)
+install (FILES corebird.desktop            DESTINATION ${PREFIX}/share/applications/)
 

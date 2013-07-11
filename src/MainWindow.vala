@@ -117,7 +117,7 @@ class MainWindow : ApplicationWindow {
 
     new_tweet_button.clicked.connect( () => {
       var cw = new ComposeTweetWindow(this, account, null, get_application ());
-      cw.show();                                                     
+      cw.show();
     });
 
     left_toolbar.orientation = Orientation.VERTICAL;
