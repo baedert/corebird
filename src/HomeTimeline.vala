@@ -70,13 +70,13 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
       var entry = new TweetListEntry(t, main_window, account);
       entry.seen = false;
       tweet_list.add(entry);
-//      tweet_list.resort();
 
       unread_count++;
       update_unread_count();
 
       int stack_size = Settings.get_tweet_stack_count();
-      if(stack_size != 0 && unread_count >= stack_size) {
+      message ("Stack size: %d", stack_size);
+      if(stack_size != 0 && unread_count % stack_size == 0) {
         string summary = "%d new Tweets!".printf(unread_count);
         NotificationManager.notify(summary);
       }
