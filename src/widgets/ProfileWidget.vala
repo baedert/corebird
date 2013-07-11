@@ -220,8 +220,7 @@ class ProfileWidget : Gtk.Box {
 
       if (root.has_member ("profile_banner_url")) {
         string banner_base_url = root.get_string_member ("profile_banner_url");
-        load_profile_banner (banner_base_url, Utils.user_file ("assets/banners/"+banner_name),
-                             user_id, screen_name);
+        load_profile_banner (banner_base_url, user_id, screen_name);
       }
 
       string display_url = null;
@@ -280,13 +279,14 @@ class ProfileWidget : Gtk.Box {
 
   /**
    * Loads the user's banner image.
-   *
-   * @param user_id The user's ID
-   * @param saved_banner_url 
-   * @param screen_name
+   * 
+   * @param base_url The "base url" of the banner, obtained from the users/show call from Twitter.
+   * @param user_id Foo
+   * @param screen_name Bar
    */
-  private void load_profile_banner (string base_url, string saved_banner_url,
+  private void load_profile_banner (string base_url,
                                     int64 user_id, string screen_name) {
+    string saved_banner_url = Utils.user_file ("assets/banners/"+get_banner_name (user_id, screen_name));
     string banner_url  = base_url+"/mobile_retina";
     string banner_name = get_banner_name (user_id, screen_name);
     string banner_on_disk = Utils.user_file("assets/banners/"+banner_name);
@@ -366,6 +366,10 @@ class ProfileWidget : Gtk.Box {
     });
   }
 
+  /*
+   * Returns the banner name for the given user by user_id and screen_name.
+   * This is useful since both of them might be used for the banner name.
+   */
   private string get_banner_name(int64 user_id, string screen_name) {
     if(user_id != 0)
       return user_id.to_string()+".png";
