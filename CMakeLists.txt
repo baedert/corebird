@@ -72,7 +72,7 @@ set (VALA_SOURCE
   src/Tweet.vala
   src/Settings.vala
   src/Twitter.vala
-  src/ComposeTweetWindow.vala
+  src/ComposeTweetWindow2.vala
   src/SettingsDialog.vala
   src/NotificationManager.vala
   src/ITimeline.vala

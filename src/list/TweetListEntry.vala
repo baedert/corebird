@@ -415,9 +415,9 @@ class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
     Gtk.MenuItem reply_item = new Gtk.MenuItem.with_label("Reply");
     reply_item.activate.connect(() => {
-      var compose_win = new ComposeTweetWindow(window, acc, tweet,
-                                               window.get_application());
-      compose_win.show_all();
+//      var compose_win = new ComposeTweetWindow(window, acc, tweet,
+//                                               window.get_application());
+//      compose_win.show_all();
     });
     more_menu.add(reply_item);
     Gtk.MenuItem details_item = new Gtk.MenuItem.with_label("Details");
