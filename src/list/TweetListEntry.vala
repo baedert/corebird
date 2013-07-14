@@ -49,9 +49,6 @@ class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     this.hexpand = false;
     this.acc     = acc;
 
-    if (window == null)
-      message("WINDOW == NULL!");
-
 
     if (hashtag_regex == null){
       try{

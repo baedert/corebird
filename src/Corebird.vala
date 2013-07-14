@@ -246,6 +246,17 @@ class Corebird : Gtk.Application {
     }
   }
 
+  private bool is_window_open_for_screen_name (string screen_name) {
+    unowned GLib.List<weak Window> windows = this.get_windows ();
+    foreach (Window win in windows) {
+      if (win is MainWindow) {
+        if (((MainWindow)win).account.screen_name == screen_name)
+          return true;
+      }
+    }
+    return false;
+  }
+
   private void create_user_folder(string name) {
     try {
       bool success = File.new_for_path(Utils.user_file(name))
