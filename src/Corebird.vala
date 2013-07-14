@@ -164,7 +164,7 @@ class Corebird : Gtk.Application {
       create_user_folder ("accounts/");
     }
 
-		// Set up the actions
+    // Set up the actions
     var settings_action = new SimpleAction("show-settings", null);
     settings_action.activate.connect(() => {
       var dialog = new SettingsDialog(null, this);
@@ -179,15 +179,18 @@ class Corebird : Gtk.Application {
 //      ad.show();
     });
     add_action(about_dialog_action);
-		var quit_action = new SimpleAction("quit", null);
-		quit_action.activate.connect(() => {
+    var quit_action = new SimpleAction("quit", null);
+    quit_action.activate.connect(() => {
         quit();
-		});
-		add_action(quit_action);
+    });
+    add_action(quit_action);
     var show_win_action = new SimpleAction ("show-win", VariantType.STRING);
     show_win_action.activate.connect((acc_screen_name)=> {
         message(acc_screen_name.get_string ());
-        add_window_for_screen_name (acc_screen_name.get_string ());
+        if (is_window_open_for_screen_name (acc_screen_name.get_string ()))
+          critical ("that account is already open");
+        else
+          add_window_for_screen_name (acc_screen_name.get_string ());
     });
     add_action(show_win_action);
 
@@ -225,7 +228,7 @@ class Corebird : Gtk.Application {
     NotificationManager.uninit ();
     base.shutdown();
   }
-  
+
   /**
    * Adds a new MainWindow instance with the account that 
    * has the given screen name.
@@ -246,6 +249,16 @@ class Corebird : Gtk.Application {
     }
   }
 
+  /**
+   * Checks if there's currently a MainWindow instance open that has a 
+   * reference to the account with the given screen name.
+   * (This makes a linear search over all open windows, with a text comparison
+   * in each iteration)
+   *
+   * @param screen_name The screen name to search for
+   * @return TRUE if a window with the account associated to the given
+   *         screen name is open, FALSE otherwise.
+   */
   private bool is_window_open_for_screen_name (string screen_name) {
     unowned GLib.List<weak Window> windows = this.get_windows ();
     foreach (Window win in windows) {
