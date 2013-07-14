@@ -46,7 +46,7 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
         load_older();
       }
     });
-    
+
     this.scrolled_to_start.connect(() => {
       handle_scrolled_to_start();
     });
@@ -62,17 +62,17 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
   private void stream_message_received(StreamMessageType type, Json.Object root){
     if(type == StreamMessageType.TWEET) {
       if(root.get_string_member("text").contains("@"+account.screen_name)) {
-
         GLib.DateTime now = new GLib.DateTime.now_local();
         Tweet t = new Tweet();
         t.load_from_json(root, now);
+        if (t.user_id == account.id)
+          return;
 
         this.balance_next_upper_change(TOP);
         var entry = new TweetListEntry(t, main_window, account);
         entry.seen = false;
 
         tweet_list.add(entry);
-//        tweet_list.resort();
 
         unread_count++;
         update_unread_count();

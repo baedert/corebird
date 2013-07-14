@@ -26,7 +26,7 @@ class Account : GLib.Object {
   public Database db              {public get; private set;}
   public Rest.OAuthProxy proxy    {public get; private set;}
   public UserStream user_stream   {public get; private set;}
-  
+
 
   public Account (int64 id, string screen_name, string name) {
     this.id = id;
