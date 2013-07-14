@@ -19,7 +19,7 @@ using Gtk;
 [GtkTemplate (ui = "/org/baedert/corebird/ui/settings-dialog.ui")]
 class SettingsDialog : Gtk.Dialog {
   private static const string DUMMY_SCREEN_NAME = "<Unnamed>";
-	private MainWindow win;
+  private MainWindow win;
   [GtkChild]
   private ListBox account_list;
   [GtkChild]
@@ -45,8 +45,8 @@ class SettingsDialog : Gtk.Dialog {
   [GtkChild]
   private ComboBoxText on_new_tweets_combobox;
 
-	public SettingsDialog(MainWindow? win = null, Corebird? application = null){
-		this.win = win;
+  public SettingsDialog(MainWindow? win = null, Corebird? application = null){
+    this.win = win;
     this.application = application;
     this.title = "Corebird Settings";
 
@@ -84,15 +84,12 @@ class SettingsDialog : Gtk.Dialog {
     }
     if (accs.length() > 0)
       account_list.select_row (account_list.get_row_at_index (0));
-	}
+  }
 
   [GtkCallback]
   private void add_account_clicked () {
     Account dummy_acc = new Account(0, DUMMY_SCREEN_NAME, "<__>");
     Account.add_account (dummy_acc);
-//    ListBoxRow row = new ListBoxRow();
-//    row.add (new AccountListEntry (dummy_acc));
-//    account_list.add (row);
     var row = new AccountListEntry (dummy_acc);
     account_list.add (row);
     var create_widget = new AccountCreateWidget (dummy_acc);

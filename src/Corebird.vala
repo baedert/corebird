@@ -259,7 +259,7 @@ class Corebird : Gtk.Application {
    * @return TRUE if a window with the account associated to the given
    *         screen name is open, FALSE otherwise.
    */
-  private bool is_window_open_for_screen_name (string screen_name) {
+  public bool is_window_open_for_screen_name (string screen_name) {
     unowned GLib.List<weak Window> windows = this.get_windows ();
     foreach (Window win in windows) {
       if (win is MainWindow) {

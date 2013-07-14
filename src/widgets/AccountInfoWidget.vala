@@ -23,6 +23,8 @@ class AccountInfoWidget : Gtk.Grid {
   private Label screen_name_label;
   [GtkChild]
   private Label name_label;
+  [GtkChild]
+  private Button open_window_button;
 
   private unowned Account account;
   private unowned Gtk.Application application;
@@ -32,6 +34,8 @@ class AccountInfoWidget : Gtk.Grid {
     this.application = application;
     screen_name_label.label = acc.screen_name;
     name_label.label = acc.name;
+    if (((Corebird)application).is_window_open_for_screen_name (acc.screen_name))
+      open_window_button.sensitive = false;
   }
 
   [GtkCallback]
