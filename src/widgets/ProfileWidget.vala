@@ -132,7 +132,7 @@ class ProfileWidget : Gtk.Box {
                               query_string);
       SQLHeavy.QueryResult cache_result = cache_query.execute();
       if (!cache_result.finished){
-        /* If we get inside this block, there is already some data in the 
+        /* If we get inside this block, there is already some data in the
           DB we can use. */
         if(screen_name != "")
           user_id = cache_result.fetch_int64(0);
@@ -197,20 +197,21 @@ class ProfileWidget : Gtk.Box {
       }
 
       var root = parser.get_root().get_object();
+      int64 id = root.get_int_member ("id");
+
       string avatar_url = root.get_string_member("profile_image_url");
-      avatar_url = avatar_url.replace("_normal", "");
+      avatar_url = avatar_url.replace("_normal", "_bigger");
       string avatar_name = Utils.get_avatar_name(avatar_url);
       string avatar_on_disk = Utils.user_file("assets/avatars/"+avatar_name);
 
       if(!FileUtils.test(avatar_on_disk, FileTest.EXISTS)){
-        Utils.download_file_async.begin(avatar_url, avatar_on_disk, 
+        Utils.download_file_async.begin(avatar_url, avatar_on_disk,
           () => {avatar_image.set_background(avatar_on_disk);});
       }else
         avatar_image.set_background(avatar_on_disk);
       string name        = root.get_string_member("name");
              screen_name = root.get_string_member("screen_name");
       string description = root.get_string_member("description").replace("&", "&amp;");
-      int64 id           = root.get_int_member("id");
       int followers      = (int)root.get_int_member("followers_count");
       int following      = (int)root.get_int_member("friends_count");
       int tweets         = (int)root.get_int_member("statuses_count");

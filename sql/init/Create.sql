@@ -54,8 +54,8 @@ CREATE TABLE IF NOT EXISTS `user`(
 
 CREATE TABLE IF NOT EXISTS `profiles`(
   id NUMERIC(19,0),
-  name VARCHAR(40) PRIMARY KEY,
-  screen_name VARCHAR(40),
+  name VARCHAR(40),
+  screen_name VARCHAR(40) PRIMARY KEY,
   tweets INTEGER(11),
   followers INTEGER(11),
   following INTEGER(11),
