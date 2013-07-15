@@ -14,7 +14,7 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 using Gtk;
-
+// TODO: Try to port this to Gtk templates
 class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   public int64 sort_factor{
     get{ return timestamp; }
@@ -22,14 +22,16 @@ class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   private static GLib.Regex? hashtag_regex = null;
   private static GLib.Regex? user_regex    = null;
   private ImageOverlay avatar          = new ImageOverlay();
-  private Label text                   = new Label("");
+  private Label text                   = new Label ("");
   private TextButton author_button;
-  private Label screen_name            = new Label("");
-  private Label time_delta             = new Label("");
-  private InvisibilityBin rt_bin     = new InvisibilityBin();
-  private ToggleButton retweet_button  = new ToggleButton();
-  private ToggleButton favorite_button = new ToggleButton();
-  private Box text_box         = new Box(Orientation.HORIZONTAL, 3);
+  private Label screen_name            = new Label ("");
+  private Label time_delta             = new Label ("");
+  private InvisibilityBin rt_bin       = new InvisibilityBin ();
+  private ToggleButton retweet_button  = new ToggleButton ();
+  private ToggleButton favorite_button = new ToggleButton ();
+  private Box text_box                 = new Box (Orientation.HORIZONTAL, 3);
+  private Revealer reply_revealer      = new Revealer ();
+  private Entry reply_entry            = new Entry ();
   private unowned MainWindow window;
   private Gtk.Menu more_menu;
   private Gtk.Button more_button;
@@ -98,10 +100,14 @@ class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
           retweet_button.active = !retweet_button.active; // calls toggled ()
           return false;
         case Gdk.Key.r:
-          message ("Implement: reply");
+          reply_revealer.reveal_child = !reply_revealer.reveal_child;
+          reply_entry.grab_focus ();
           return false;
         case Gdk.Key.f:
           favorite_button.active = !favorite_button.active; // calls toggled ()
+          return false;
+        case Gdk.Key.Escape:
+          reply_revealer.set_reveal_child (false);
           return false;
       }
       return true;
@@ -239,8 +245,35 @@ class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
     DeltaUpdater.get().add(this);
 
+
+    var reply_box = new Gtk.Box (Orientation.HORIZONTAL, 5);
+    reply_entry.text = "@"+tweet.screen_name;
+    reply_entry.key_release_event.connect ((evt) => {
+      if (evt.keyval != Gdk.Key.Return) return true;
+      string text = reply_entry.text;
+      if (text.strip().length > 0){
+        var call = account.proxy.new_call ();
+        call.set_function ("1.1/statuses/update.json");
+        call.set_method ("POST");
+        call.add_param ("in_reply_to_status_id", tweet.id.to_string ());
+        call.add_param ("status", text);
+        call.invoke_async.begin (null, () => {
+          reply_revealer.reveal_child = false;
+        });
+      }
+      return true;
+    });
+    reply_box.pack_start (reply_entry, true, true);
+
+    reply_revealer.add (reply_box);
+    reply_revealer.transition_type = RevealerTransitionType.SLIDE_DOWN;
+
     this.set_size_request(20, 80);
-    this.add(box);
+    var revealer_box = new Gtk.Box (Orientation.VERTICAL, 4);
+    revealer_box.pack_start (box, true,true);
+    revealer_box.pack_end (reply_revealer, false, false);
+    this.add (revealer_box);
+//    this.add(box);
     this.show_all();
   }
 
