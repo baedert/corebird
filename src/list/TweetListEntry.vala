@@ -89,10 +89,19 @@ class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       toggle_button_visibility (buttons_visible);
     });
 
+
+
+    //TODO When retweeting a tweet via shortcut, the RT button does not get immediately shown.
     this.key_release_event.connect ((evt) => {
       switch (evt.keyval) {
         case Gdk.Key.t:
-          retweet_button.active = true; // calls toggled ()
+          retweet_button.active = !retweet_button.active; // calls toggled ()
+          return false;
+        case Gdk.Key.r:
+          message ("Implement: reply");
+          return false;
+        case Gdk.Key.f:
+          favorite_button.active = !favorite_button.active; // calls toggled ()
           return false;
       }
       return true;
@@ -328,8 +337,7 @@ class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
         WidgetReplacer.replace_tmp_back(retweet_button);
       });
     } else {
-      call.set_function("1.1/statuses/destroy/%s.json"
-                        .printf(tweet.rt_id.to_string()));
+      call.set_function(@"1.1/statuses/destroy/$(tweet.rt_id).json");
       call.invoke_async.begin(null, (obj, res) => {
         try {
           call.invoke_async.end(res);
