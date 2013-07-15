@@ -40,14 +40,14 @@ class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   public bool seen{get;set; default=true;}
   private Gtk.Box box = new Box(Orientation.HORIZONTAL, 5);
   private bool is_user_tweet = false;
-  private unowned Account acc;
+  private unowned Account account;
 
 
   public TweetListEntry(Tweet tweet, MainWindow? window, Account acc){
     this.window  = window;
     this.vexpand = false;
     this.hexpand = false;
-    this.acc     = acc;
+    this.account = acc;
 
 
     if (hashtag_regex == null){
@@ -78,21 +78,25 @@ class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
 
 
-    if (tweet.screen_name == acc.screen_name){
+    if (tweet.screen_name == account.screen_name){
       get_style_context().add_class("user-tweet");
       is_user_tweet = true;
     }
 
-
-
-
     this.state_flags_changed.connect ((previous) => {
       Gtk.StateFlags flags = this.get_state_flags ();
-
       bool buttons_visible = (bool)(flags & (StateFlags.PRELIGHT | StateFlags.SELECTED));
       toggle_button_visibility (buttons_visible);
     });
 
+    this.key_release_event.connect ((evt) => {
+      switch (evt.keyval) {
+        case Gdk.Key.t:
+          retweet_button.active = true; // calls toggled ()
+          return false;
+      }
+      return true;
+    });
 /*    this.button_press_event.connect( (evt) => {
       if (evt.type == Gdk.EventType.@2BUTTON_PRESS) {
         message ("Implement inline replies");
@@ -109,13 +113,15 @@ class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     left_box.pack_start(avatar, false, false);
 
     var status_box = new Box(Orientation.HORIZONTAL, 3);
-    retweet_button.get_style_context().add_class("retweet-button");
-    retweet_button.active = tweet.retweeted;
-    if(!tweet.retweeted)
-      retweet_button.no_show_all = true;
-    retweet_button.set_tooltip_text("Retweet");
-    retweet_button.toggled.connect(retweet_tweet);
-    rt_bin.add(retweet_button);
+    if (account.id != tweet.user_id) {
+      retweet_button.get_style_context().add_class("retweet-button");
+      retweet_button.active = tweet.retweeted;
+      if(!tweet.retweeted)
+        retweet_button.no_show_all = true;
+      retweet_button.set_tooltip_text("Retweet");
+      retweet_button.toggled.connect(retweet_tweet);
+      rt_bin.add(retweet_button);
+    }
     status_box.pack_start(rt_bin, false, false);
 
     favorite_button.get_style_context().add_class("favorite-button");
@@ -271,7 +277,7 @@ class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     spinner.start();
     WidgetReplacer.replace_tmp(favorite_button, spinner);
 
-    var call = acc.proxy.new_call();
+    var call = account.proxy.new_call();
     if(favorite_button.active)
       call.set_function("1.1/favorites/create.json");
     else
@@ -284,31 +290,25 @@ class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       } catch (GLib.Error e) {
         critical(e.message);
       }
-
-      try{
-        Corebird.db.execute(@"UPDATE `cache` SET `favorited`='%d'
-                            WHERE `id`='$tweet_id';"
-                            .printf(favorite_button.active ? 1 : 0));
-      } catch(SQLHeavy.Error e) {
-        critical(e.message);
-      }
       WidgetReplacer.replace_tmp_back(favorite_button);
     });
   }
 
   /**
-   * (Un)retweets the tweet that is saved in this ListEntry.
+   * Retweets the tweet if the 
    */
   private void retweet_tweet() {
+    // You can't retweet your own tweets.
+    if (account.id == this.tweet.user_id)
+      return;
     var spinner = new Spinner();
     spinner.start();
     WidgetReplacer.replace_tmp(retweet_button, spinner);
 
-    var call = acc.proxy.new_call();
+    var call = account.proxy.new_call();
     call.set_method("POST");
-
     if(retweet_button.active) {
-      call.set_function(@"1.1/statuses/retweet/$tweet_id.json");
+      call.set_function(@"1.1/statuses/retweet/$(tweet.id).json");
       call.invoke_async.begin(null, (obj, res) => {
         try{
           call.invoke_async.end(res);
@@ -324,15 +324,6 @@ class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
           critical(back);
         }
         int64 new_id = parser.get_root().get_object().get_int_member("id");
-
-        try{
-          Corebird.db.execute(@"UPDATE `cache` SET `retweeted`='1',
-                              `rt_id`='$new_id'
-                              WHERE `id`='$tweet_id';");
-
-        }catch (SQLHeavy.Error e) {
-          critical(e.message);
-        }
         tweet.rt_id = new_id;
         WidgetReplacer.replace_tmp_back(retweet_button);
       });
@@ -344,12 +335,6 @@ class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
           call.invoke_async.end(res);
         } catch (GLib.Error e) {
           Utils.show_error_dialog(e.message);
-          critical(e.message);
-        }
-        try{
-          Corebird.db.execute(@"UPDATE `cache` SET `retweeted`='0'
-                              WHERE `id`='$tweet_id';");
-        }catch (SQLHeavy.Error e) {
           critical(e.message);
         }
         WidgetReplacer.replace_tmp_back(retweet_button);
@@ -426,12 +411,13 @@ class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   private void toggle_button_visibility (bool visible) {
     if (visible) {
       favorite_button.show();
-      rt_bin.show_child();
+      if (account.id != tweet.user_id)
+        rt_bin.show_child();
       more_button.show();
     } else {
       if(!favorite_button.active)
         favorite_button.hide();
-      if(!retweet_button.active)
+      if(!retweet_button.active && account.id != tweet.user_id)
         rt_bin.hide_child();
       more_button.hide();
     }
