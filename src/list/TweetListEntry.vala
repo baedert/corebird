@@ -267,6 +267,8 @@ class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
     reply_revealer.add (reply_box);
     reply_revealer.transition_type = RevealerTransitionType.SLIDE_DOWN;
+    reply_revealer.get_style_context ().add_class ("primary-toolbar");
+    reply_box.get_style_context ().add_class ("primary-toolbar");
 
     this.set_size_request(20, 80);
     var revealer_box = new Gtk.Box (Orientation.VERTICAL, 4);
