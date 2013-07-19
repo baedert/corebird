@@ -16,70 +16,80 @@
 using Gtk;
 
 class WidgetReplacer {
-	private static Gee.HashMap<Gtk.Widget, Gtk.Widget> tmp_widgets =
-									new Gee.HashMap<Gtk.Widget, Gtk.Widget>();
+  private static Gee.HashMap<Gtk.Widget, Gtk.Widget> tmp_widgets =
+                  new Gee.HashMap<Gtk.Widget, Gtk.Widget>();
 
 
 
-	public static void replace_tmp(Widget w1, owned Widget w2,
-	                               bool take_size = true) {
-		tmp_widgets.set(w1, w2);
-		replace(w1, w2, take_size, true);
-	}
+  public static void replace_tmp(Widget w1, owned Widget w2,
+                                 bool take_size = true) {
+    tmp_widgets.set(w1, w2);
+    replace(w1, w2, take_size, true);
+  }
 
-	public static void replace_tmp_back(Widget w, bool take_size = true) {
-		Widget w2 = tmp_widgets.get(w);
-		replace(w2, w, take_size);
-		tmp_widgets.unset(w);
-	}
+  public static void replace_tmp_back(Widget w, bool take_size = true, 
+                                      bool force_visible = false) {
+    Widget w2 = tmp_widgets.get(w);
+    replace(w2, w, take_size, force_visible);
+    tmp_widgets.unset(w);
+  }
 
 
-	public static void replace(Widget w1, Widget w2, bool take_size = true,
-	                           bool force_visible = false) {
-		if(w1.parent == null)
-			error("w1 has no parent");
-		if(!(w1.parent is Gtk.Box) && !(w1.parent is Gtk.Bin))
-			error("Only GtkBox and GtkBin is supported as parent ATM");
+  public static void replace(Widget w1, Widget w2, bool take_size = true,
+                             bool force_visible = false) {
+    if(w1.parent == null)
+      error("w1 has no parent");
+    if(!(w1.parent is Gtk.Box) && !(w1.parent is Gtk.Bin) && !(w1.parent is Gtk.Grid))
+      error("Only GtkBox, GtkGrid and GtkBin is supported as parent ATM");
 
-		Widget parent = w1.parent;
+    Widget parent = w1.parent;
 
-		if(take_size) {
-			Allocation alloc;
-			w1.get_allocation(out alloc);
-			w2.set_size_request(alloc.width, alloc.height);
-			message("Replacing widget of type %s with size %d/%d",
-			        w1.get_type().name(), alloc.width, alloc.height);
-		}
+    if (take_size) {
+      Allocation alloc;
+      w1.get_allocation(out alloc);
+      w2.set_size_request(alloc.width, alloc.height);
+      message("Replacing widget of type %s with size %d/%d",
+              w1.get_type().name(), alloc.width, alloc.height);
+    }
 
-		if(parent is Gtk.Box){
-			Gtk.Box box_parent = (Box) parent;
-			bool expand;
-			bool fill;
-			uint padding;
-			PackType pack_type;
+    if (parent is Gtk.Box) {
+      Gtk.Box box_parent = (Box) parent;
+      bool expand;
+      bool fill;
+      uint padding;
+      PackType pack_type;
 
-			int pos = 0;
-			int i = 0;
-			box_parent.@foreach((widget) => {
-				if(widget == w1){
-					pos = i;
-				}
-				i++;
-			});
+      int pos = 0;
+      int i = 0;
+      box_parent.@foreach ((widget) => {
+        if (widget == w1) {
+          pos = i;
+        }
+        i++;
+      });
 
-			box_parent.query_child_packing(w1, out expand, out fill, out padding,
-			                           out pack_type);
-			box_parent.remove(w1);
-			box_parent.pack_start(w2, expand, fill, padding);
-			box_parent.set_child_packing(w2, expand, fill, padding, pack_type);
-			box_parent.reorder_child(w2, pos);
-		}else if(parent is Gtk.Bin) {
-			Bin bin_parent = (Bin) parent;
-			bin_parent.remove(w1);
-			bin_parent.add(w2);
-		}
+      box_parent.query_child_packing (w1, out expand, out fill, out padding,
+                                      out pack_type);
+      box_parent.remove (w1);
+      box_parent.pack_start (w2, expand, fill, padding);
+      box_parent.set_child_packing (w2, expand, fill, padding, pack_type);
+      box_parent.reorder_child (w2, pos);
+    } else if (parent is Gtk.Bin) {
+      Bin bin_parent = (Bin) parent;
+      bin_parent.remove(w1);
+      bin_parent.add(w2);
+    } else if (parent is Gtk.Grid) {
+      int x, y, width, height;
+      Container c = (Container)parent;
+      c.child_get (w1, "left-attach", out x);
+      c.child_get (w1, "top-attach", out y);
+      c.child_get (w1, "width", out width);
+      c.child_get (w1, "height", out height);
+      c.remove (w1);
+      ((Gtk.Grid)c).attach (w2, x, y, width, height);
+    }
 
-		if(force_visible)
-			w2.visible = true;
-	}
+    if(force_visible)
+      w2.visible = true;
+  }
 }
