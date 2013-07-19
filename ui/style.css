@@ -5,7 +5,6 @@
 
 
 .retweet-button {
-  background-image: none;
   background-color: transparent;
 
   -GtkButton-default-border: 0;
@@ -19,6 +18,7 @@
   border-radius: 0px;
   text-shadow: none;
   background-image:url('../retweet-normal.png');
+  background-repeat: no-repeat;
 }
 .retweet-button:hover,
 .retweet-button:active {
@@ -26,7 +26,6 @@
 }
 
 .favorite-button {
-  background-image: none;
   background-color: transparent;
   -GtkButton-default-border: 0;
   -GtkButton-default-outside-border: 0;
@@ -39,6 +38,7 @@
   border-radius: 0px;
   text-shadow: none;
   background-image:url('../favorite-normal.png');
+  background-repeat: no-repeat;
 }
 
 
