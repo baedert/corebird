@@ -51,6 +51,14 @@ class WidgetReplacer {
       message("Replacing widget of type %s with size %d/%d",
               w1.get_type().name(), alloc.width, alloc.height);
     }
+      w2.valign        = w1.valign;
+      w2.halign        = w1.halign;
+      w2.hexpand       = w1.hexpand;
+      w2.vexpand       = w1.vexpand;
+      w2.margin_top    = w1.margin_top;
+      w2.margin_left   = w1.margin_left;
+      w2.margin_right  = w1.margin_right;
+      w2.margin_bottom = w1.margin_bottom;
 
     if (parent is Gtk.Box) {
       Gtk.Box box_parent = (Box) parent;

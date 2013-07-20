@@ -2,8 +2,7 @@
 <interface>
   <!-- interface-requires gtk+ 3.10 -->
   <template class="TweetListEntry" parent="GtkListBoxRow">
-    <property name="width_request">-1</property>
-    <property name="height_request">80</property>
+    <property name="height_request">90</property>
     <property name="visible">True</property>
     <property name="can_focus">True</property>
     <property name="hexpand">True</property>
@@ -21,6 +20,7 @@
         <property name="can_focus">False</property>
         <property name="hexpand">True</property>
         <property name="vexpand">True</property>
+        <property name="baseline_row">2</property>
         <style>
           <class name="inline-toolbar"/>
         </style>
@@ -29,6 +29,8 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="valign">start</property>
+            <property name="hexpand">False</property>
+            <property name="vexpand">False</property>
             <property name="yalign">0</property>
             <property name="stock">gtk-missing-image</property>
           </object>
@@ -36,7 +38,7 @@
             <property name="left_attach">0</property>
             <property name="top_attach">0</property>
             <property name="width">3</property>
-            <property name="height">2</property>
+            <property name="height">3</property>
           </packing>
         </child>
         <child>
@@ -99,67 +101,9 @@
           </packing>
         </child>
         <child>
-          <object class="GtkToggleButton" id="retweet_button">
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="halign">start</property>
-            <property name="valign">start</property>
-            <property name="margin_top">5</property>
-            <style>
-              <class name="retweet-button"/>
-            </style>
-            <signal name="toggled" handler="retweet_button_toggled" swapped="no"/>
-          </object>
-          <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">2</property>
-            <property name="width">1</property>
-            <property name="height">2</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="more_button">
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="halign">start</property>
-            <property name="valign">start</property>
-            <property name="margin_top">5</property>
-            <style>
-              <class name="more-button"/>
-            </style>
-          </object>
-          <packing>
-            <property name="left_attach">2</property>
-            <property name="top_attach">2</property>
-            <property name="width">1</property>
-            <property name="height">2</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkToggleButton" id="favorite_button">
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="halign">start</property>
-            <property name="valign">start</property>
-            <property name="margin_top">5</property>
-            <style>
-              <class name="favorite-button"/>
-            </style>
-            <signal name="toggled" handler="favorite_button_toggled" swapped="no"/>
-          </object>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">2</property>
-            <property name="width">1</property>
-            <property name="height">2</property>
-          </packing>
-        </child>
-        <child>
           <object class="GtkLabel" id="text_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="halign">start</property>
-            <property name="valign">start</property>
             <property name="margin_left">5</property>
             <property name="margin_top">5</property>
             <property name="hexpand">True</property>
@@ -259,11 +203,81 @@
           </packing>
         </child>
         <child>
-          <object class="GtkLabel" id="label1">
+          <object class="GtkBox" id="box1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="hexpand">True</property>
             <property name="vexpand">True</property>
+            <child>
+              <object class="GtkToggleButton" id="retweet_button">
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="halign">start</property>
+                <property name="valign">start</property>
+                <property name="margin_top">5</property>
+                <style>
+                  <class name="retweet-button"/>
+                </style>
+                <signal name="toggled" handler="retweet_button_toggled" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToggleButton" id="favorite_button">
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="halign">start</property>
+                <property name="valign">start</property>
+                <property name="margin_top">5</property>
+                <style>
+                  <class name="favorite-button"/>
+                </style>
+                <signal name="toggled" handler="favorite_button_toggled" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="more_button">
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="halign">start</property>
+                <property name="valign">start</property>
+                <property name="margin_top">5</property>
+                <style>
+                  <class name="more-button"/>
+                </style>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">3</property>
+            <property name="width">3</property>
+            <property name="height">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="rt_label">
+            <property name="can_focus">False</property>
+            <property name="halign">start</property>
+            <property name="valign">end</property>
+            <property name="margin_left">5</property>
+            <property name="xalign">0.0099999997764825821</property>
+            <style>
+              <class name="dim-label"/>
+            </style>
           </object>
           <packing>
             <property name="left_attach">3</property>
