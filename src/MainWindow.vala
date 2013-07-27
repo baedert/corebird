@@ -53,6 +53,7 @@ class MainWindow : ApplicationWindow {
 
     if (account != null) {
       this.set_title ("Corebird(@%s)".printf (account.screen_name));
+      this.set_role ("corebird-"+account.screen_name);
       var acc_menu = (GLib.Menu)Corebird.account_menu;
       for (int i = 0; i < acc_menu.get_n_items (); i++){
         Variant item_name = acc_menu.get_item_attribute_value (i,
