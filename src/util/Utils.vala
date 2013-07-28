@@ -141,7 +141,7 @@ class Utils{
 
   /**
    * TODO: Maybe use the XDG_CONFIG_DIR here?
-   * @return a path to the file or folder ~/Corebird/file_name
+   * @return a path to the file or folder ~/.corebird/file_name
    */
   public static string user_file(string file_name){
     return GLib.Environment.get_home_dir()+"/.corebird/"+file_name;
@@ -171,5 +171,21 @@ class Utils{
       }
     });
     yield;
+  }
+
+
+  public static string format_tweet_text (string text) {
+    int length = text.length;
+    string display_text = text;
+    Regex hashtag_regex = new GLib.Regex("(^|\\s)#\\w+",
+                                         RegexCompileFlags.OPTIMIZE);
+    Regex user_regex    = new GLib.Regex("@\\w+", RegexCompileFlags.OPTIMIZE);
+
+    display_text = user_regex.replace(display_text, display_text.length, 0,
+                                      "<a href='\\0'>\\0</a>");
+    display_text = hashtag_regex.replace(display_text, display_text.length, 0,
+                                         "<a href='\\0'>\\0</a>");
+
+    return display_text;
   }
 }
