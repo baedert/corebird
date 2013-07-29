@@ -8,7 +8,7 @@ url="http://pango.com"
 arch=('i686' 'x86_64')
 license=('LGPL')
 depends=('gtk3>=3.10'
-		 'glib2>=2.32'
+		 'glib2>=2.38'
 		 'rest>=0.7' #media upload needs rest-git from the AUR
 		 'libgee'
 		 'sqlite3'

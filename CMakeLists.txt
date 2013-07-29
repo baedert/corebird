@@ -120,7 +120,7 @@ PACKAGES
 OPTIONS
   -g
   --thread
-  --target-glib=2.32
+  --target-glib=2.38
   --enable-checking
   #  --disable-warnings
   --gresources=resources.xml
