@@ -39,9 +39,4 @@ class AccountListEntry : Gtk.ListBoxRow {
       avatar_image.pixbuf = acc.avatar_small;
     });
   }
-
-  public override void destroy (){
-    base.destroy();
-    message("destructor");
-  }
 }
