@@ -139,6 +139,11 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       case Gdk.Key.d:
         delete_tweet ();
         return true;
+#if __DEV
+      case Gdk.Key.k:
+        stdout.printf (tweet.json_data);
+        return true;
+#endif
     }
     return false;
   }

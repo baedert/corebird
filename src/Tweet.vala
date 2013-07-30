@@ -25,6 +25,10 @@ class Tweet : GLib.Object{
 
   public static GLib.Regex link_regex;
 
+#if __DEV
+  public string json_data;
+#endif
+
 
   public int64 id;
   public int64 rt_id;

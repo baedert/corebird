@@ -1,19 +1,23 @@
 # TODO: https://github.com/rcrowther/Vala_CMake
 
-cmake_minimum_required(VERSION 2.6)
-project("Corebrid" C)
+cmake_minimum_required (VERSION 2.6)
+project ("Corebrid" C)
 
-list(APPEND CMAKE_MODULE_PATH
+list (APPEND CMAKE_MODULE_PATH
   ${CMAKE_SOURCE_DIR}/cmake/
 )
 
 # Enable coloring
 set (CMAKE_COLOR_MAKEFILE ON)
-# set (CMAKE_VERBOSE_MAKEFILE ON)
 
-set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g")
-set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0")
-#set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
+
+option (DEBUG "enable debugging stuff" OFF)
+
+if (DEBUG)
+  set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g")
+  set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0")
+  #  set (CMAKE_VERBOSE_MAKEFILE ON)
+endif (DEBUG)
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fdiagnostics-show-option")
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcolor-diagnostics")
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-value")
@@ -29,14 +33,15 @@ set (DATADIR          "${PREFIX}/share/corebird/")
 set (GETTEXT_PACKAGE  "corebird")
 set (VERSION          0.1)
 
+
 configure_file (${CMAKE_SOURCE_DIR}/src/util/Config.vala.cmake ${CMAKE_BINARY_DIR}/src/util/Config.vala)
 
 include (ValaVersion)
 include (ValaPrecompile)
 include (GSettings)
 
-find_package(Vala REQUIRED)
-ensure_vala_version("0.20" MINIMUM)
+find_package (Vala REQUIRED)
+ensure_vala_version ("0.20" MINIMUM) # TODO: Bump to 0.22
 
 
 add_subdirectory (po)
@@ -59,11 +64,11 @@ set (DEPS glib-2.0;
       gmodule-2.0;
 )
 
-find_package(PkgConfig)
-pkg_check_modules(DEPS REQUIRED ${DEPS})
+find_package (PkgConfig)
+pkg_check_modules (DEPS REQUIRED ${DEPS})
 
-add_definitions(${DEPS_CFLAGS} "-DGETTEXT_PACKAGE=\"${GETTEXT_PACKAGE}\"")
-link_directories(${DEPS_LIBRARY_DIRS})
+add_definitions (${DEPS_CFLAGS} "-DGETTEXT_PACKAGE=\"${GETTEXT_PACKAGE}\"")
+link_directories (${DEPS_LIBRARY_DIRS})
 
 
 set (VALA_SOURCE
@@ -113,21 +118,31 @@ set (VALA_SOURCE
   src/resources.c
 )
 
-vala_precompile(VALA_C
+
+
+set (VALAC_OPTIONS
+  -g
+  --thread
+  --gresources=resources.xml
+  --target-glib=2.38
+  --enable-checking
+)
+
+if (DEBUG)
+  set (VALAC_OPTIONS ${VALAC_OPTIONS} -D __DEV)
+endif (DEBUG)
+
+
+vala_precompile (VALA_C
   ${VALA_SOURCE}
 PACKAGES
   ${DEPS}
 OPTIONS
-  -g
-  --thread
-  --target-glib=2.38
-  --enable-checking
-  #  --disable-warnings
-  --gresources=resources.xml
+  ${VALAC_OPTIONS}
 )
 
-add_executable(corebird ${VALA_C})
-target_link_libraries(corebird ${DEPS_LIBRARIES})
+add_executable (corebird ${VALA_C})
+target_link_libraries (corebird ${DEPS_LIBRARIES})
 
 # GSettings
 add_schema ("org.baedert.corebird.gschema.xml")

@@ -71,7 +71,7 @@ class InlineMediaDownloader {
         if(real_url != null)
           load_inline_media.begin(t, real_url, session);
       } catch (GLib.RegexError e) {
-        critical("Regex Error: %s", e.message);
+        critical("Regex Error(%s): %s", regex_str, e.message);
       }
     });
 
