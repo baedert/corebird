@@ -99,8 +99,6 @@ class Utils{
    * E.g. for http://foo.org/bar/bla.png, this will just return "png"
    */
   public static string get_file_type(string path){
-    if (path == null)
-      return "";
     string filename = get_file_name(path);
     if(filename.index_of_char('.') == -1)
       return "";

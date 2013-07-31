@@ -43,6 +43,8 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   private Entry reply_entry;
   [GtkChild]
   private Button conversation_button;
+  [GtkChild]
+  private Image inline_image;
   
   
 
@@ -83,6 +85,16 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       avatar_image.pixbuf = tweet.avatar;
       avatar_image.queue_draw ();
     });
+
+    tweet.inline_media_added.connect ((pic) => {
+      inline_image.set_from_pixbuf (pic);
+      inline_image.show ();
+      message ("hihihihihihihihi");
+    });
+    if (tweet.media_thumb != null) {
+      inline_image.set_from_pixbuf (new Gdk.Pixbuf.from_file(tweet.media_thumb));
+      inline_image.show ();
+    }
 
     if (tweet.reply_id != 0)
       conversation_button.show ();
