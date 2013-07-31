@@ -314,7 +314,8 @@ class ProfileWidget : Gtk.Box {
 
     name_label.set_markup("<big><big><b>%s</b>  @%s</big></big>"
                           .printf(name, screen_name));
-    string d = Tweet.replace_links(description);
+//    string d = Tweet.replace_links(description);
+    string d = ""; // TODO: Use blablabla
     description_label.set_markup("<big><big><big>%s</big></big></big>".printf(d));
     tweets_button.set_markup(
       "<big><big><b>%'d</b></big></big>\nTweets"

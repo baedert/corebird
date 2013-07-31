@@ -5,6 +5,9 @@
     <property name="height_request">90</property>
     <property name="visible">True</property>
     <property name="can_focus">True</property>
+    <style>
+      <class name="tweet"/>
+    </style>
     <signal name="focus-out-event" handler="focus_out_cb" swapped="no"/>
     <signal name="key-release-event" handler="key_released_cb" swapped="no"/>
     <signal name="state-flags-changed" handler="state_flags_changed_cb" swapped="no"/>

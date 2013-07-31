@@ -68,7 +68,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
                                                              tweet.user_name);
     screen_name_label.label = "@"+tweet.screen_name;
     avatar_image.pixbuf = tweet.avatar;
-    text_label.label = Utils.format_tweet_text (tweet.text);
+    text_label.label = tweet.get_formatted_text ();
     update_time_delta ();
     reply_entry.text = "@"+tweet.screen_name;
     reply_entry.move_cursor (MovementStep.BUFFER_ENDS, 1, true);
@@ -303,5 +303,25 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
                   .printf (link, Utils.get_time_delta (then, now));
     return (int)(now.difference (then) / 1000.0 / 1000.0);
   }
+
+  public override bool draw (Cairo.Context c) {
+    var style = this.get_style_context();
+    int w = get_allocated_width();
+    int h = get_allocated_height();
+    style.render_background(c, 0, 0, w, h);
+
+    var border_color = style.get_border_color(get_state_flags());
+    c.set_source_rgba(border_color.red, border_color.green, border_color.blue,
+              border_color.alpha);
+
+    // The line here is 50% of the width
+    c.move_to(w*0.25, h);
+    c.line_to(w*0.75, h);
+    c.stroke();
+
+    base.draw(c);
+    return false;
+  }
+
 }
 

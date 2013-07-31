@@ -465,4 +465,7 @@ class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       more_button.hide();
     }
   }
+
+
+
 }

@@ -115,11 +115,12 @@ class UserStream : Object {
         return;
       }
 
-      stdout.printf("USING DATA:\n%s\n", data.str);
-
       var parser = new Json.Parser();
       try{
         parser.load_from_data(data.str);
+#if __DEV
+        stdout.printf (data.str+"\n");
+#endif
       } catch (GLib.Error e) {
         critical(e.message);
       }

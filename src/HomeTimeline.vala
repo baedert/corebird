@@ -57,7 +57,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
       update_unread_count();
     });
 
-    
+
     tweet_list.add(progress_entry);
   }
 

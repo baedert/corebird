@@ -99,6 +99,8 @@ class Utils{
    * E.g. for http://foo.org/bar/bla.png, this will just return "png"
    */
   public static string get_file_type(string path){
+    if (path == null)
+      return "";
     string filename = get_file_name(path);
     if(filename.index_of_char('.') == -1)
       return "";
@@ -174,18 +176,4 @@ class Utils{
   }
 
 
-  public static string format_tweet_text (string text) {
-    int length = text.length;
-    string display_text = text;
-    Regex hashtag_regex = new GLib.Regex("(^|\\s)#\\w+",
-                                         RegexCompileFlags.OPTIMIZE);
-    Regex user_regex    = new GLib.Regex("@\\w+", RegexCompileFlags.OPTIMIZE);
-
-    display_text = user_regex.replace(display_text, display_text.length, 0,
-                                      "<a href='\\0'>\\0</a>");
-    display_text = hashtag_regex.replace(display_text, display_text.length, 0,
-                                         "<a href='\\0'>\\0</a>");
-
-    return display_text;
-  }
 }

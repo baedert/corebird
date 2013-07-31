@@ -14,7 +14,14 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
- using Gtk;
+using Gtk;
+
+struct Sequence {
+  int start;
+  int end;
+  string url;
+  string display_url;
+}
 
 class Tweet : GLib.Object{
 
@@ -57,6 +64,7 @@ class Tweet : GLib.Object{
   public signal void inline_media_added(Gdk.Pixbuf? media);
   public bool has_inline_media = false;
   public int type = -1;
+  private GLib.SList<Sequence?> urls;
 
 
   public Tweet(){
@@ -110,10 +118,12 @@ class Tweet : GLib.Object{
         if(!status.get_null_member("in_reply_to_status_id"))
                 this.reply_id  = status.get_int_member("in_reply_to_status_id");
 
+    var entities = status.get_object_member ("entities");
 
     if (status.has_member("retweeted_status")){
       Json.Object rt      = status.get_object_member("retweeted_status");
       Json.Object rt_user = rt.get_object_member("user");
+      entities = rt.get_object_member ("entities");
       this.is_retweet    = true;
       this.rt_id         = rt.get_int_member("id");
       this.retweeted_by  = user.get_string_member("name");
@@ -133,18 +143,50 @@ class Tweet : GLib.Object{
 
 
     // 'Resolve' the used URLs
-    var entities = status.get_object_member("entities");
-
     var urls = entities.get_array_member("urls");
+    var hashtags = entities.get_array_member ("hashtags");
+    var user_mentions = entities.get_array_member ("user_mentions");
+    this.urls = new GLib.SList<Sequence?>();
     urls.foreach_element((arr, index, node) => {
       var url = node.get_object();
       string expanded_url = url.get_string_member("expanded_url");
+
+      Json.Array indices = url.get_array_member ("indices");
+      expanded_url = expanded_url.replace("&", "&amp;");
+      this.urls.append(Sequence() {
+        start = (int)indices.get_int_element (0),
+        end   = (int)indices.get_int_element (1) ,
+        url   = expanded_url,
+        display_url = url.get_string_member ("display_url")
+      });
+
       expanded_url = expanded_url.replace("&", "&amp;");
       InlineMediaDownloader.try_load_media.begin(this, expanded_url);
-
-      this.text = this.text.replace(url.get_string_member("url"),
-          expanded_url);
     });
+
+    hashtags.foreach_element ((arr, index, node) => {
+      var hashtag = node.get_object ();
+      Json.Array indices = hashtag.get_array_member ("indices");
+      this.urls.append(Sequence(){
+        start = (int)indices.get_int_element (0),
+        end   = (int)indices.get_int_element (1),
+        url   = "#"+hashtag.get_string_member ("text"),
+        display_url = "#"+hashtag.get_string_member ("text")
+      });
+    });
+
+    user_mentions.foreach_element ((arr, index, node) => {
+      var mention = node.get_object ();
+      Json.Array indices = mention.get_array_member ("indices");
+
+      this.urls.append(Sequence(){
+        start =  (int)indices.get_int_element (0),
+        end   =  (int)indices.get_int_element (1),
+        url   =  "@"+mention.get_string_member ("screen_name"),
+        display_url = "@"+mention.get_string_member ("screen_name")
+      });
+    });
+
 
     // The same with media
     if(entities.has_member("media")){
@@ -155,8 +197,6 @@ class Tweet : GLib.Object{
         InlineMediaDownloader.try_load_media.begin(this,
                 url.get_string_member("media_url"));
         expanded_url = expanded_url.replace("&", "&amp;");
-        this.text = this.text.replace(url.get_string_member("url"),
-            expanded_url);
       });
     }
 
@@ -192,60 +232,23 @@ class Tweet : GLib.Object{
     }
   }
 
-  /**
-   * Replaces the links in the given text with html tags to be used in
-   * pango layouts.
-   *
-   * TODO: Also replace nicknames and hashtags here
-   * TODO: Multiple links in one tweet don't work
-   * @param text The text to replace the links in
-   * @return The text with replaced links
-   */
-  public static string replace_links(string text){
-    if(link_regex == null){
-      //TODO: Most regexes can be truly static.
-      //TODO: This regex actually sucks.
-      try {
-        link_regex = new GLib.Regex(
-        "http[s]{0,1}:\\/\\/[a-zA-Z\\_.\\+!\\?\\/#=&;\\-0-9%,~:]+",
-        RegexCompileFlags.OPTIMIZE);
-      } catch (GLib.RegexError e) {
-        critical (e.message);
-      }
+  public string get_formatted_text () {
+    string formatted_text = this.text;
+    int char_diff = 0;
+    urls.sort ((a, b) => {
+      if (a.start < b.start)
+      return -1;
+      else return 1;
+    });
+    foreach (Sequence s in urls) {
+      int length_before = formatted_text.char_count ();
+      int from = formatted_text.index_of_nth_char (s.start + char_diff);
+      int to   = formatted_text.index_of_nth_char (s.end + char_diff);
+      formatted_text = formatted_text.splice (from,
+                                              to,
+           "<a href='%s'>%s</a>".printf(s.url, s.display_url));
+      char_diff += formatted_text.char_count () - length_before;
     }
-    string real_text = text;
-    try{
-      MatchInfo mi;
-      if (link_regex.match(real_text, 0, out mi)){
-        do{
-
-          string link = mi.fetch(0);
-          if (link.length > 25){
-            if(link.has_prefix("http://"))
-              link = link.substring(7);
-            else //https
-              link = link.substring(8);
-
-            if(link.has_prefix("www."))
-              link = link.substring(4);
-
-            if(link.length > 25){
-              link = link.substring(0, 25);
-              link += "…";
-            }
-
-          }
-          //TODO: This doesn't work for if there are multiple links in one
-          //      tweet.
-          real_text = real_text.replace(mi.fetch(0),
-            "<a href='%s'>%s</a>".printf(mi.fetch(0), link));
-        }while(mi.next());
-      }
-
-    }catch(GLib.RegexError e){
-      warning("Error while applying regexes: %s", e.message);
-    }
-
-    return real_text;
+    return formatted_text;
   }
 }
