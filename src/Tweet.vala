@@ -153,7 +153,7 @@ class Tweet : GLib.Object{
 
       Json.Array indices = url.get_array_member ("indices");
       expanded_url = expanded_url.replace("&", "&amp;");
-      this.urls.append(Sequence() {
+      this.urls.prepend(Sequence() {
         start = (int)indices.get_int_element (0),
         end   = (int)indices.get_int_element (1) ,
         url   = expanded_url,
@@ -167,7 +167,7 @@ class Tweet : GLib.Object{
     hashtags.foreach_element ((arr, index, node) => {
       var hashtag = node.get_object ();
       Json.Array indices = hashtag.get_array_member ("indices");
-      this.urls.append(Sequence(){
+      this.urls.prepend(Sequence(){
         start = (int)indices.get_int_element (0),
         end   = (int)indices.get_int_element (1),
         url   = "#"+hashtag.get_string_member ("text"),
@@ -179,7 +179,7 @@ class Tweet : GLib.Object{
       var mention = node.get_object ();
       Json.Array indices = mention.get_array_member ("indices");
 
-      this.urls.append(Sequence(){
+      this.urls.prepend(Sequence(){
         start =  (int)indices.get_int_element (0),
         end   =  (int)indices.get_int_element (1),
         url   =  "@"+mention.get_string_member ("screen_name"),
@@ -193,10 +193,18 @@ class Tweet : GLib.Object{
       var medias = entities.get_array_member("media");
       medias.foreach_element((arr, index, node) => {
         var url = node.get_object();
-        string expanded_url = "https://"+url.get_string_member("display_url");
+        string expanded_url = url.get_string_member ("expanded_url");
+        expanded_url = expanded_url.replace("&", "&amp;");
+        Json.Array indices = url.get_array_member ("indices");
+        this.urls.prepend(Sequence(){
+          start = (int)indices.get_int_element (0),
+          end   = (int)indices.get_int_element (1),
+          url   = expanded_url,
+          display_url = url.get_string_member ("display_url")
+        });
+        //string expanded_url = "https://"+url.get_string_member("display_url");
         InlineMediaDownloader.try_load_media.begin(this,
                 url.get_string_member("media_url"));
-        expanded_url = expanded_url.replace("&", "&amp;");
       });
     }
 
