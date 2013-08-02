@@ -60,6 +60,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   private unowned MainWindow window;
   private Tweet tweet;
   private Gtk.Menu more_menu;
+  private bool values_set = false;
 
 
   public TweetListEntry(Tweet tweet, MainWindow? window, Account account){
@@ -80,17 +81,13 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     }
 
     if (tweet.retweeted) {
-      retweet_button.toggled.disconnect (retweet_button_toggled);
       retweet_button.active = true;
       retweet_button.show ();
-      retweet_button.toggled.connect (retweet_button_toggled);
     }
 
     if (tweet.favorited) {
-      favorite_button.toggled.disconnect (favorite_button_toggled);
       favorite_button.active = true;
       favorite_button.show ();
-      favorite_button.toggled.connect (favorite_button_toggled);
     }
 
     // If the avatar gets loaded, we want to change it here immediately
@@ -128,6 +125,8 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     }
 
     DeltaUpdater.get ().add (this);
+
+    values_set = true;
   }
 
 
@@ -226,7 +225,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   [GtkCallback]
   private void retweet_button_toggled () {
     // You can't retweet your own tweets.
-    if (account.id == this.tweet.user_id)
+    if (account.id == this.tweet.user_id || !values_set)
       return;
     var spinner = new Spinner();
     spinner.start();
@@ -271,6 +270,8 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
 
   [GtkCallback]
   private void favorite_button_toggled () {
+    if (!values_set)
+      return;
     var spinner = new Spinner();
     spinner.start();
     WidgetReplacer.replace_tmp(favorite_button, spinner);
