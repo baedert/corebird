@@ -44,7 +44,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   [GtkChild]
   private Button conversation_button;
   [GtkChild]
-  private Image inline_image;
+  private Box text_box;
   
   
 
@@ -87,17 +87,28 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     });
 
     tweet.inline_media_added.connect ((pic) => {
-      inline_image.set_from_pixbuf (pic);
-      inline_image.show ();
-      message ("hihihihihihihihi");
+ //     inline_image.set_from_pixbuf (pic);
+ //     inline_image.show ();
+      var inline_button = new ImageButton ();
+      inline_button.set_bg (pic);
+      text_box.pack_end (inline_button, false, false);
+      inline_button.valign = Align.START;
+      inline_button.show ();
     });
+
     if (tweet.media_thumb != null) {
-      inline_image.set_from_pixbuf (new Gdk.Pixbuf.from_file(tweet.media_thumb));
-      inline_image.show ();
+//      inline_image.set_from_pixbuf (new Gdk.Pixbuf.from_file(tweet.media_thumb));
+//      inline_image.show ();
+      var inline_button = new ImageButton ();
+      inline_button.set_bg (new Gdk.Pixbuf.from_file (tweet.media_thumb));
+      text_box.pack_end (inline_button, false, false);
+      inline_button.valign = Align.START;
+      inline_button.show ();
     }
 
-    if (tweet.reply_id != 0)
+    if (tweet.reply_id != 0) {
       conversation_button.show ();
+    }
 
     DeltaUpdater.get ().add (this);
   }
