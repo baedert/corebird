@@ -335,7 +335,15 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   private void delete_tweet () {
     if (tweet.user_id != account.id)
       return; // Nope.
-    message ("TODO: Implement");
+    var call = account.proxy.new_call ();
+    call.set_method ("POST");
+    call.set_function ("1.1/statuses/destroy/"+tweet.id.to_string ()+".json");
+    call.add_param ("id", tweet.id.to_string ());
+    call.invoke_async (null, (obj, res) => {
+      try { call.invoke_async.end (res);} catch (GLib.Error e) { critical (e.message);}
+      this.sensitive = false;
+      this.opacity = 0.8;
+    });
   }
 
 
