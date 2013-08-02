@@ -12,12 +12,12 @@
       <item>
         <attribute name="label">About</attribute>
         <attribute name="action">app.show-about-dialog</attribute>
-      </item> 
-			<item>
-				<attribute name="label">Quit</attribute>
-				<attribute name="action">app.quit</attribute>
+      </item>
+      <item>
+        <attribute name="label">Quit</attribute>
+        <attribute name="action">app.quit</attribute>
         <attribute name="accel">&lt;Control&gt;&lt;Shift&gt;q</attribute>
-			</item>
-		</section>
-	</menu>
+      </item>
+    </section>
+  </menu>
 </interface>

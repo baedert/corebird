@@ -45,13 +45,13 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   private Button conversation_button;
   [GtkChild]
   private Box text_box;
-  
-  
 
-  
-  
-  
-  
+
+
+
+
+
+
   public int64 sort_factor{
     get{ return tweet.created_at;}
   }
@@ -59,6 +59,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   private unowned Account account;
   private unowned MainWindow window;
   private Tweet tweet;
+  private Gtk.Menu more_menu;
 
 
   public TweetListEntry(Tweet tweet, MainWindow? window, Account account){
@@ -72,8 +73,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     avatar_image.pixbuf = tweet.avatar;
     text_label.label = tweet.get_formatted_text ();
     update_time_delta ();
-    reply_entry.text = "@"+tweet.screen_name;
-    reply_entry.move_cursor (MovementStep.BUFFER_ENDS, 1, true);
+    reply_entry.text = "@"+tweet.screen_name+" ";
     if (tweet.is_retweet) {
       rt_label.show ();
       rt_label.label = "RT by "+tweet.retweeted_by;
@@ -87,22 +87,26 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     });
 
     tweet.inline_media_added.connect ((pic) => {
- //     inline_image.set_from_pixbuf (pic);
- //     inline_image.show ();
       var inline_button = new ImageButton ();
       inline_button.set_bg (pic);
       text_box.pack_end (inline_button, false, false);
       inline_button.valign = Align.START;
+      inline_button.clicked.connect(() => {
+        ImageDialog id = new ImageDialog(window, tweet.media);
+        id.show_all();
+      });
       inline_button.show ();
     });
 
     if (tweet.media_thumb != null) {
-//      inline_image.set_from_pixbuf (new Gdk.Pixbuf.from_file(tweet.media_thumb));
-//      inline_image.show ();
       var inline_button = new ImageButton ();
       inline_button.set_bg (new Gdk.Pixbuf.from_file (tweet.media_thumb));
       text_box.pack_end (inline_button, false, false);
       inline_button.valign = Align.START;
+      inline_button.clicked.connect(() => {
+        ImageDialog id = new ImageDialog(window, tweet.media);
+        id.show_all();
+      });
       inline_button.show ();
     }
 
@@ -152,6 +156,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       case Gdk.Key.r:
         reply_revealer.reveal_child = !reply_revealer.reveal_child;
         reply_entry.grab_focus ();
+        reply_entry.move_cursor (MovementStep.BUFFER_ENDS, 1, false);
         return true;
       case Gdk.Key.f:
         favorite_button.active = !favorite_button.active;
@@ -189,7 +194,17 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
 
   [GtkCallback]
   private void more_button_clicked_cb () {
+    if (more_menu == null) {
+      more_menu = new Gtk.Menu ();
+      more_menu.attach_widget = more_button;
+      Gtk.MenuItem info_item = new Gtk.MenuItem.with_label (_("Info"));
+      more_menu.add (info_item);
+      Gtk.MenuItem delete_item = new Gtk.MenuItem.with_label (_("Delete"));
+      more_menu.add (delete_item);
 
+      more_menu.show_all ();
+    }
+    more_menu.popup (null, null, null, 0, 0);
   }
 
   /**
