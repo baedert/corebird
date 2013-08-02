@@ -40,7 +40,7 @@ class Corebird : Gtk.Application {
     this.hold();
     bool show_tweet_window = false;
     bool not_in_cmd = false;
-   
+
 
     OptionEntry[] options = new OptionEntry[2];
     options[0] = {"tweet", 't', 0, OptionArg.NONE, ref show_tweet_window,
@@ -68,7 +68,7 @@ class Corebird : Gtk.Application {
     }
 
     string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
-    
+
     if(startup_accounts.length == 1) {
       if (startup_accounts[0] == "")
         startup_accounts = new string[0];

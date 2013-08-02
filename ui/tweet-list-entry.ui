@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.15.2 on Wed Jul 31 17:14:34 2013 -->
+<!-- Generated with glade 3.15.2 on Fri Aug  2 10:36:02 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.10 -->
   <template class="TweetListEntry" parent="GtkListBoxRow">
@@ -123,6 +123,7 @@
                         <property name="margin_left">5</property>
                         <property name="label" translatable="yes">Username</property>
                         <property name="use_markup">True</property>
+                        <signal name="activate-link" handler="link_activated_cb" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -187,7 +188,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkBox" id="box2">
+                  <object class="GtkBox" id="text_box">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
@@ -209,18 +210,6 @@
                         <property name="expand">False</property>
                         <property name="fill">True</property>
                         <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkImage" id="inline_image">
-                        <property name="can_focus">False</property>
-                        <property name="yalign">0</property>
-                        <property name="stock">gtk-missing-image</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
                       </packing>
                     </child>
                   </object>

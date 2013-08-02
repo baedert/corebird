@@ -39,7 +39,7 @@ class SearchTimeline : IPage, ITimeline, Box {
     this.id = id;
     search_entry.margin = 5;
     search_entry.placeholder_text = "Search keyword(s)";
-    search_entry.primary_icon_stock = Stock.FIND;
+    search_entry.primary_icon_name = "find";
     search_entry.icon_press.connect( (pos) => {
       if (pos == EntryIconPosition.PRIMARY){
         search_for.begin(search_entry.get_text());

@@ -39,7 +39,7 @@ class MainWindow : ApplicationWindow {
   private int active_page                  = 0;
   private int last_page                    = 0;
   private ToolButton avatar_button         = new ToolButton(null, null);
-  private ToolButton new_tweet_button      = new ToolButton.from_stock(Stock.NEW);
+  private ToolButton new_tweet_button      = new ToolButton(null, _("Compose Tweet"));
   private SeparatorToolItem expander_item  = new SeparatorToolItem();
   private SeparatorToolItem left_separator = new SeparatorToolItem();
   private Gtk.Stack stack                  = new Gtk.Stack();
@@ -115,7 +115,7 @@ class MainWindow : ApplicationWindow {
     //Setup additional pages
     pages[0] = new ProfilePage(PAGE_PROFILE, this, account);
 
-
+    new_tweet_button.icon_name = "document-new";
     new_tweet_button.clicked.connect( () => {
       var cw = new ComposeTweetWindow(this, account, null, get_application ());
       cw.show();
