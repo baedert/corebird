@@ -110,7 +110,12 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
 
     if (tweet.media_thumb != null) {
       var inline_button = new ImageButton ();
-      inline_button.set_bg (new Gdk.Pixbuf.from_file (tweet.media_thumb));
+      try {
+        inline_button.set_bg (new Gdk.Pixbuf.from_file (tweet.media_thumb));
+      } catch (GLib.Error e) {
+        warning (e.message);
+        return;
+      }
       text_box.pack_end (inline_button, false, false);
       inline_button.valign = Align.START;
       inline_button.clicked.connect(() => {
@@ -127,6 +132,15 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     DeltaUpdater.get ().add (this);
 
     values_set = true;
+
+    reply_entry.focus_in_event.connect(() => {
+      reply_revealer.reveal_child = true;
+      return false;
+    });
+    reply_entry.focus_out_event.connect(() => {
+      reply_revealer.reveal_child = false;
+      return false;
+    });
   }
 
 
@@ -150,15 +164,8 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
 
   [GtkCallback]
   private bool focus_out_cb (Gdk.EventFocus evt) {
-//    message ("in: %d, send_event: %d, type: %s", 
-//        (int)evt.@in, (int)evt.send_event, evt.type.to_string ());
-//    reply_revealer.reveal_child = false;
+    reply_revealer.reveal_child = false;
     return false;
-    // The focus gets moved out -> the revealer reveals again
-    /*
-      Problem: This also gets called when we automatically focus the
-      reply_entry when pressing 'r', so it gets un-revealed immediately.
-    */
   }
 
 
@@ -212,6 +219,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       Gtk.MenuItem info_item = new Gtk.MenuItem.with_label (_("Info"));
       more_menu.add (info_item);
       Gtk.MenuItem delete_item = new Gtk.MenuItem.with_label (_("Delete"));
+      delete_item.activate.connect(delete_tweet);
       more_menu.add (delete_item);
 
       more_menu.show_all ();
@@ -339,7 +347,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     call.set_method ("POST");
     call.set_function ("1.1/statuses/destroy/"+tweet.id.to_string ()+".json");
     call.add_param ("id", tweet.id.to_string ());
-    call.invoke_async (null, (obj, res) => {
+    call.invoke_async.begin (null, (obj, res) => {
       try { call.invoke_async.end (res);} catch (GLib.Error e) { critical (e.message);}
       this.sensitive = false;
       this.opacity = 0.8;
