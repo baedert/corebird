@@ -59,12 +59,8 @@ class MainWindow : ApplicationWindow {
         Variant item_name = acc_menu.get_item_attribute_value (i,
                                          "label", VariantType.STRING);
         if (item_name.get_string () == "@"+account.screen_name){
-          var item = new GLib.MenuItem.from_model (Corebird.account_menu, i);
-          item.set_attribute_value ("enabled", new Variant.boolean (false));
-          acc_menu.remove(i);
-          acc_menu.append_item (item);
-          acc_menu.items_changed(i, 1, 1);
-        //  ((SimpleAction)app.lookup_action("show-win")).set_enabled(false);
+          ((SimpleAction)app.lookup_action("show-"+account.screen_name)).set_enabled(false);
+          break;
         }
       }
       account.user_stream.start ();
@@ -170,6 +166,18 @@ class MainWindow : ApplicationWindow {
     this.destroy.connect (() => {
       unowned GLib.List<weak Window> ws = this.application.get_windows ();
       message("Windows: %u", ws.length ());
+
+      // Enable the account's entry in the app menu again
+      var acc_menu = (GLib.Menu)Corebird.account_menu;
+      for (int i = 0; i < acc_menu.get_n_items (); i++){
+        Variant item_name = acc_menu.get_item_attribute_value (i,
+                                         "label", VariantType.STRING);
+        if (item_name.get_string () == "@"+account.screen_name){
+          ((SimpleAction)app.lookup_action("show-"+account.screen_name)).set_enabled(true);
+          break;
+        }
+      }
+
       if (ws.length () == 1) {
         // This is the last window so we save this one anyways...
         string[] startup_accounts = new string[1];
@@ -197,7 +205,6 @@ class MainWindow : ApplicationWindow {
 
     this.add_accel_group(ag);
   }
-  
 
   /**
    * Adds/inserts the widgets into the left toolbar.

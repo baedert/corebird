@@ -23,8 +23,8 @@ class Corebird : Gtk.Application {
   public  static GLib.Menu account_menu;
 
   public Corebird() throws GLib.Error{
-    GLib.Object(application_id: "org.baedert.corebird",
-                flags: ApplicationFlags.HANDLES_COMMAND_LINE,
+    GLib.Object(application_id:   "org.baedert.corebird",
+                flags:            ApplicationFlags.HANDLES_COMMAND_LINE,
                 register_session: true);
     this.set_inactivity_timeout(500);
 
@@ -46,7 +46,7 @@ class Corebird : Gtk.Application {
     options[0] = {"tweet", 't', 0, OptionArg.NONE, ref show_tweet_window,
             "Shows only the 'compose tweet' window, nothing else.", null};
     options[1] = {"mode", 'u', 0, OptionArg.NONE, ref not_in_cmd,
-            "Use this flag to indicate that the application does NOT run on the command line", 
+            "Use this flag to indicate that the application does NOT run on the command line",
             null};
 
     string[] args = cmd.get_arguments();
@@ -137,8 +137,16 @@ class Corebird : Gtk.Application {
 
     unowned GLib.SList<Account> accounts = Account.list_accounts ();
     foreach (var acc in accounts) {
-      var mi = new GLib.MenuItem ("@"+acc.screen_name, "app.show-win");
-      mi.set_action_and_target_value ("app.show-win", new Variant.string (acc.screen_name));
+      var show_win_action = new SimpleAction ("show-"+acc.screen_name, null);
+      show_win_action.activate.connect(()=> {
+          add_window_for_screen_name (acc.screen_name);
+      });
+      add_action(show_win_action);
+
+
+
+      var mi = new GLib.MenuItem ("@"+acc.screen_name, "app.show-"+acc.screen_name);
+      mi.set_action_and_target_value ("app.show-"+acc.screen_name, null);
       account_menu.append_item (mi);
     }
     ((GLib.Menu)acc_menu).append_submenu ("Open Account", account_menu);
@@ -184,7 +192,7 @@ class Corebird : Gtk.Application {
         quit();
     });
     add_action(quit_action);
-    var show_win_action = new SimpleAction ("show-win", VariantType.STRING);
+/*    var show_win_action = new SimpleAction ("show-win", VariantType.STRING);
     show_win_action.activate.connect((acc_screen_name)=> {
         message(acc_screen_name.get_string ());
         if (is_window_open_for_screen_name (acc_screen_name.get_string ()))
@@ -192,7 +200,7 @@ class Corebird : Gtk.Application {
         else
           add_window_for_screen_name (acc_screen_name.get_string ());
     });
-    add_action(show_win_action);
+    add_action(show_win_action);*/
 
     // Load custom CSS stuff
     try{
