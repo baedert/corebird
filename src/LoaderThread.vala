@@ -14,10 +14,10 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class LoaderThread{
+class LoaderThread : GLib.Object {
   private Json.Array root;
-  private MainWindow? window;
-  private Gtk.ListBox list;
+  private unowned MainWindow? window;
+  private unowned Gtk.ListBox list;
   private Thread<void*> thread;
   public delegate void EndLoadFunc(int tweet_count, int64 lowest_id);
   private unowned EndLoadFunc? finished;

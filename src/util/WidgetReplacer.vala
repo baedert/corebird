@@ -48,8 +48,6 @@ class WidgetReplacer {
       Allocation alloc;
       w1.get_allocation(out alloc);
       w2.set_size_request(alloc.width, alloc.height);
-      message("Replacing widget of type %s with size %d/%d",
-              w1.get_type().name(), alloc.width, alloc.height);
     }
       w2.valign        = w1.valign;
       w2.halign        = w1.halign;

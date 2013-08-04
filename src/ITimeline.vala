@@ -124,21 +124,21 @@ interface ITimeline : Gtk.Widget, IPage {
 
   /**
    * Mark the TweetListEntries the user has already seen.
-   * 
+   *
    * @param value The scrolling value as from Gtk.Adjustment
    */
   protected void mark_seen_on_scroll(double value) {
-    if(unread_count == 0)
+    if (unread_count == 0)
       return;
 
-    tweet_list.forall_internal(false, (w) => {
+    tweet_list.forall_internal (false, (w) => {
       ITwitterItem tle = (ITwitterItem)w;
-      if(tle.seen)
+      if (tle.seen)
         return;
 
       Gtk.Allocation alloc;
       tle.get_allocation(out alloc);
-      if(alloc.y+(alloc.height/2.0) >= value) {
+      if (alloc.y+(alloc.height/2.0) >= value) {
         tle.seen = true;
         unread_count--;
       }
@@ -151,6 +151,7 @@ interface ITimeline : Gtk.Widget, IPage {
     uint item_count = entries.length ();
     if (item_count > ITimeline.REST) {
       tweet_remove_timeout = GLib.Timeout.add (5000, () => {
+        // TODO: This is obviously wrong.
         while (item_count > ITimeline.REST) {
           tweet_list.remove (tweet_list.get_row_at_index (ITimeline.REST));
           item_count--;

@@ -171,6 +171,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
 
   [GtkCallback]
   private bool key_released_cb (Gdk.EventKey evt) {
+    //TODO: Use Accels instead of this?
     switch(evt.keyval) {
       case Gdk.Key.r:
         reply_revealer.reveal_child = !reply_revealer.reveal_child;
@@ -178,10 +179,12 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
         reply_entry.move_cursor (MovementStep.BUFFER_ENDS, 1, false);
         return true;
       case Gdk.Key.f:
-        favorite_button.active = !favorite_button.active;
+        if (favorite_button.parent != null)
+          favorite_button.active = !favorite_button.active;
         return true;
       case Gdk.Key.t:
-        retweet_button.active = !retweet_button.active;
+        if (retweet_button.parent != null)
+          retweet_button.active = !retweet_button.active;
         return true;
       case Gdk.Key.d:
         delete_tweet ();
@@ -280,15 +283,17 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   private void favorite_button_toggled () {
     if (!values_set)
       return;
+
     var spinner = new Spinner();
     spinner.start();
     WidgetReplacer.replace_tmp(favorite_button, spinner);
 
     var call = account.proxy.new_call();
-    if (favorite_button.active)
+    if (favorite_button.active) {
       call.set_function("1.1/favorites/create.json");
-    else
+    } else {
       call.set_function("1.1/favorites/destroy.json");
+    }
 
     call.set_method("POST");
     call.add_param("id", tweet.id.to_string());
