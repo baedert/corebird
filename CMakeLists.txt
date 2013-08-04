@@ -11,7 +11,8 @@ list (APPEND CMAKE_MODULE_PATH
 set (CMAKE_COLOR_MAKEFILE ON)
 
 
-option (DEBUG "enable debugging stuff" OFF)
+option (DEBUG   "enable debugging stuff" OFF)
+option (CATALOG "install corebird's glade catalog" ON)
 
 if (DEBUG)
   set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g")
