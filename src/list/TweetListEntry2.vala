@@ -348,6 +348,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   private void delete_tweet () {
     if (tweet.user_id != account.id)
       return; // Nope.
+    // TODO: Show confirmation dialog
     var call = account.proxy.new_call ();
     call.set_method ("POST");
     call.set_function ("1.1/statuses/destroy/"+tweet.id.to_string ()+".json");
@@ -355,7 +356,6 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     call.invoke_async.begin (null, (obj, res) => {
       try { call.invoke_async.end (res);} catch (GLib.Error e) { critical (e.message);}
       this.sensitive = false;
-      this.opacity = 0.8;
     });
   }
 

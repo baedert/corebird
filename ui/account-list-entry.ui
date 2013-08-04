@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.15.2 on Sun Aug  4 16:02:57 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.10 -->
   <template class="AccountListEntry" parent="GtkListBoxRow">
     <property name="visible">True</property>
     <property name="can_focus">True</property>
+    <property name="margin_left">8</property>
+    <property name="margin_right">8</property>
     <child>
       <object class="GtkBox" id="box2">
         <property name="visible">True</property>
