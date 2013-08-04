@@ -32,7 +32,7 @@ class DeltaUpdater {
     GLib.Timeout.add(60000, // All 60 seconds
     () => {
       minutely.@foreach((item) => {
-        int seconds = 0;//item.update_time_delta();
+        int seconds = item.update_time_delta();
         if(seconds >= 3600){
           minutely.remove(item);
           hourly.append(item);
@@ -44,7 +44,7 @@ class DeltaUpdater {
     GLib.Timeout.add(3600000, // all 3600 seconds(one hour)
     () => {
       hourly.@foreach((item) => {
-        //item.update_time_delta();
+        item.update_time_delta();
       });
       return true;
     });

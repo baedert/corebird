@@ -125,7 +125,8 @@ class UserStream : Object {
         critical(e.message);
       }
 
-      var root = parser.get_root().get_object();
+      var root_node = parser.get_root();
+      var root = root_node.get_object ();
 
       StreamMessageType type = 0;
 
@@ -153,7 +154,7 @@ class UserStream : Object {
 
       message("Message with type %s", type.to_string());
       foreach(IMessageReceiver it in receivers)
-        it.stream_message_received(type, root);
+        it.stream_message_received(type, root_node);
 
 
       data.erase();

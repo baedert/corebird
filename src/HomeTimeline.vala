@@ -15,7 +15,7 @@
  */
 using Gtk;
 
-class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
+class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
   public int unread_count{get;set;}
   protected int64 max_id{
     get {return lowest_id;}
@@ -39,29 +39,27 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
     this.add (tweet_list);
     tweet_list.set_sort_func (ITwitterItem.sort_func);
 
-    // row_activated, row_selected
-
-    this.scrolled_to_end.connect(() => {
-      if(!loading) {
+    this.scrolled_to_end.connect (() => {
+      if (!loading) {
         loading = true;
         load_older();
       }
     });
 
-    this.scrolled_to_start.connect(() => {
+    this.scrolled_to_start.connect (() => {
       handle_scrolled_to_start();
     });
 
-    this.vadjustment.notify["value"].connect(() => {
+    this.vadjustment.notify["value"].connect (() => {
       mark_seen_on_scroll (vadjustment.value);
-      update_unread_count();
+      update_unread_count ();
     });
 
 
-    tweet_list.add(progress_entry);
+    tweet_list.add (progress_entry);
   }
 
-  private void stream_message_received(StreamMessageType type, Json.Object root) {
+  private void stream_message_received (StreamMessageType type, Json.Node root) {
     if(type == StreamMessageType.TWEET) {
       GLib.DateTime now = new GLib.DateTime.now_local();
       Tweet t = new Tweet();

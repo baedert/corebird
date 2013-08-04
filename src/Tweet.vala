@@ -23,7 +23,7 @@ struct Sequence {
   string display_url;
 }
 
-class Tweet : GLib.Object{
+class Tweet : GLib.Object {
 
   public static const int TYPE_NORMAL   = 1;
   public static const int TYPE_MENTION  = 2;
@@ -99,7 +99,8 @@ class Tweet : GLib.Object{
    * @param status The Json object to get the data from
    * @param now The current time
    */
-  public void load_from_json(Json.Object status, GLib.DateTime now){
+  public void load_from_json(Json.Node status_node, GLib.DateTime now){
+    Json.Object status = status_node.get_object ();
     Json.Object user = status.get_object_member("user");
     this.text        = status.get_string_member("text");
     this.favorited   = status.get_boolean_member("favorited");
@@ -235,6 +236,15 @@ class Tweet : GLib.Object{
         debug("Dest: %s", dest);
       });
     }
+
+#if __DEV
+  // This is pretty stupid because we're actually getting the json string
+  // from Twitter but meh...
+  var gen = new Json.Generator ();
+  gen.root = status_node;
+  gen.pretty = true;
+  this.json_data = gen.to_data (null);
+#endif
   }
 
   public string get_formatted_text () {

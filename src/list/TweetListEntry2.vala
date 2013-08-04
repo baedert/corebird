@@ -191,7 +191,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
         return true;
 #if __DEV
       case Gdk.Key.k:
-        stdout.printf (tweet.json_data);
+        stdout.printf (tweet.json_data+"\n");
         return true;
 #endif
     }

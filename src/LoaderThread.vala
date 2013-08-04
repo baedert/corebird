@@ -45,9 +45,8 @@ class LoaderThread : GLib.Object {
 
     var entries = new TweetListEntry[root.get_length()];
     root.foreach_element( (array, index, node) => {
-      Json.Object o = node.get_object();
       Tweet t = new Tweet();
-      t.load_from_json(o, now);
+      t.load_from_json(node, now);
 
       if (tweet_type != -1){
         t.type = tweet_type;

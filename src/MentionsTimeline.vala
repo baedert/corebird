@@ -59,12 +59,13 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
     tweet_list.add(progress_entry);
   }
 
-  private void stream_message_received(StreamMessageType type, Json.Object root){
+  private void stream_message_received(StreamMessageType type, Json.Node root_node){
+    Json.Object root = root_node.get_object ();
     if(type == StreamMessageType.TWEET) {
       if(root.get_string_member("text").contains("@"+account.screen_name)) {
         GLib.DateTime now = new GLib.DateTime.now_local();
         Tweet t = new Tweet();
-        t.load_from_json(root, now);
+        t.load_from_json(root_node, now);
         if (t.user_id == account.id)
           return;
 
