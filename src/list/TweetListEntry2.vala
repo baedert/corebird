@@ -221,9 +221,11 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       more_menu.attach_widget = more_button;
       Gtk.MenuItem info_item = new Gtk.MenuItem.with_label (_("Info"));
       more_menu.add (info_item);
-      Gtk.MenuItem delete_item = new Gtk.MenuItem.with_label (_("Delete"));
-      delete_item.activate.connect(delete_tweet);
-      more_menu.add (delete_item);
+      if (tweet.user_id == account.id) {
+        Gtk.MenuItem delete_item = new Gtk.MenuItem.with_label (_("Delete"));
+        delete_item.activate.connect(delete_tweet);
+        more_menu.add (delete_item);
+      }
 
       more_menu.show_all ();
     }
