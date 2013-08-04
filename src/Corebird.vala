@@ -100,11 +100,11 @@ class Corebird : Gtk.Application {
     }
     /* If we do not run on the command line, we simply redirect stdout
        to a log file*/
-    GLib.Log.set_handler (null, LogLevelFlags.LEVEL_MESSAGE, print_to_log_file);
-    GLib.Log.set_handler (null, LogLevelFlags.LEVEL_ERROR, print_to_log_file);
+    GLib.Log.set_handler (null, LogLevelFlags.LEVEL_MESSAGE,  print_to_log_file);
+    GLib.Log.set_handler (null, LogLevelFlags.LEVEL_ERROR,    print_to_log_file);
     GLib.Log.set_handler (null, LogLevelFlags.LEVEL_CRITICAL, print_to_log_file);
-    GLib.Log.set_handler (null, LogLevelFlags.LEVEL_WARNING, print_to_log_file);
-    GLib.Log.set_handler (null, LogLevelFlags.LEVEL_DEBUG, print_to_log_file);
+    GLib.Log.set_handler (null, LogLevelFlags.LEVEL_WARNING,  print_to_log_file);
+    GLib.Log.set_handler (null, LogLevelFlags.LEVEL_DEBUG,    print_to_log_file);
 
     NotificationManager.init ();
 
@@ -114,6 +114,7 @@ class Corebird : Gtk.Application {
 
   public override void startup () {
     base.startup();
+    message ("startup");
     // Load Database
     try {
      Corebird.db = new SQLHeavy.VersionedDatabase(Utils.user_file("Corebird.db"),
@@ -152,25 +153,16 @@ class Corebird : Gtk.Application {
     ((GLib.Menu)acc_menu).append_submenu ("Open Account", account_menu);
 
     this.set_app_menu (app_menu);
-    if(!FileUtils.test(Utils.user_file(""), FileTest.EXISTS)){
-      try{
-        bool success = File.new_for_path(Utils.user_file("")).make_directory();
-        if(!success){
-          critical("Couldn't create the ~/.corebird directory");
-        }
-      } catch (GLib.Error e) {
-        critical (e.message);
-      }
 
-      create_user_folder ("assets/");
-      create_user_folder ("assets/avatars/");
-      create_user_folder ("assets/banners/");
-      create_user_folder ("assets/user");
-      create_user_folder ("assets/media/");
-      create_user_folder ("assets/media/thumbs/");
-      create_user_folder ("log/");
-      create_user_folder ("accounts/");
-    }
+    create_user_folder ("");
+    create_user_folder ("assets/");
+    create_user_folder ("assets/avatars/");
+    create_user_folder ("assets/banners/");
+    create_user_folder ("assets/user");
+    create_user_folder ("assets/media/");
+    create_user_folder ("assets/media/thumbs/");
+    create_user_folder ("log/");
+    create_user_folder ("accounts/");
 
     // Set up the actions
     var settings_action = new SimpleAction("show-settings", null);
@@ -192,15 +184,6 @@ class Corebird : Gtk.Application {
         quit();
     });
     add_action(quit_action);
-/*    var show_win_action = new SimpleAction ("show-win", VariantType.STRING);
-    show_win_action.activate.connect((acc_screen_name)=> {
-        message(acc_screen_name.get_string ());
-        if (is_window_open_for_screen_name (acc_screen_name.get_string ()))
-          critical ("that account is already open");
-        else
-          add_window_for_screen_name (acc_screen_name.get_string ());
-    });
-    add_action(show_win_action);*/
 
     // Load custom CSS stuff
     try{
@@ -279,6 +262,9 @@ class Corebird : Gtk.Application {
   }
 
   private void create_user_folder(string name) {
+    if (FileUtils.test (Utils.user_file (name), FileTest.EXISTS))
+      return;
+
     try {
       bool success = File.new_for_path(Utils.user_file(name))
                      .make_directory();
@@ -301,12 +287,15 @@ class Corebird : Gtk.Application {
     else
       out_string = "(%s) %s".printf(log_domain, msg);
 
-    try {
-      log_stream.write_all (out_string.data, null);
-      log_stream.flush();
-    } catch (GLib.Error e) {
-      warning (e.message);
+    if (log_stream != null) {
+      try {
+        log_stream.write_all (out_string.data, null);
+        log_stream.flush();
+      } catch (GLib.Error e) {
+        warning (e.message);
+      }
     }
+
     if (flags != LogLevelFlags.LEVEL_DEBUG)
       stdout.printf(out_string);
   }
