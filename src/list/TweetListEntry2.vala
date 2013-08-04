@@ -22,7 +22,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   [GtkChild]
   private Label screen_name_label;
   [GtkChild]
-  private Label name_label;
+  private TextButton name_button;
   [GtkChild]
   private Label time_delta_label;
   [GtkChild]
@@ -68,8 +68,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     this.tweet = tweet;
     this.window = window;
 
-    name_label.label = "<b><a href='@%s'>%s</a></b>".printf (tweet.screen_name,
-                                                             tweet.user_name);
+    name_button.set_markup (tweet.user_name);
     screen_name_label.label = "@"+tweet.screen_name;
     avatar_image.pixbuf = tweet.avatar;
     text_label.label = tweet.get_formatted_text ();

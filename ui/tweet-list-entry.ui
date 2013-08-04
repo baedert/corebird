@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.15.2 on Sat Aug  3 12:15:46 2013 -->
+<!-- Generated with glade 3.15.2 on Sun Aug  4 21:50:14 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.10 -->
+  <!-- interface-requires corebird 0.0 -->
   <template class="TweetListEntry" parent="GtkListBoxRow">
     <property name="height_request">90</property>
     <property name="visible">True</property>
@@ -118,13 +119,15 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkLabel" id="name_label">
+                      <object class="TextButton" id="name_button">
+                        <property name="label" translatable="yes">button</property>
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
                         <property name="margin_left">5</property>
-                        <property name="label" translatable="yes">Username</property>
-                        <property name="use_markup">True</property>
-                        <signal name="activate-link" handler="link_activated_cb" swapped="no"/>
+                        <style>
+                          <class name="text-button"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="expand">False</property>
