@@ -37,7 +37,6 @@ class ComposeTweetWindow : Gtk.Window {
   private uint media_count = 0;
   private unowned Account account;
   private unowned Tweet answer_to;
-  private int tweet_length = 0;
 
 
   public ComposeTweetWindow(Window? parent, Account acc, Tweet? answer_to = null,
@@ -45,6 +44,7 @@ class ComposeTweetWindow : Gtk.Window {
     this.account = acc;
     this.answer_to = answer_to;
     avatar_image.set_from_pixbuf (acc.avatar);
+    length_label.label = MAX_TWEET_LENGTH.to_string ();
 
     if (parent != null) {
       this.set_transient_for (parent);
@@ -64,17 +64,58 @@ class ComposeTweetWindow : Gtk.Window {
     // Doesn't work at the moment
     add_image_button.sensitive = false;
 
-    tweet_text.key_release_event.connect(() => {
-      this.tweet_length = tweet_text.buffer.text.length;
-      length_label.label = tweet_length.to_string ();
-      if (tweet_length > 0 && tweet_length <= MAX_TWEET_LENGTH)
-        send_button.sensitive = true;
-      else
-        send_button.sensitive = false;
-//      this.too_long = this.length > MAX_TWEET_LENGTH;
-//      this.queue_draw();
-      return false;
+    tweet_text.buffer.changed.connect (() => {
+      TextIter cursor_iter, back_iter, front_iter;
+      tweet_text.buffer.get_iter_at_offset (out cursor_iter, tweet_text.buffer.cursor_position);
+      tweet_text.buffer.get_iter_at_offset (out back_iter, tweet_text.buffer.cursor_position - 1);
+      tweet_text.buffer.get_iter_at_offset (out front_iter, tweet_text.buffer.cursor_position + 1);
+      string lookback;
+
+      while (true) {
+        lookback = tweet_text.buffer.get_slice (back_iter, cursor_iter, true);
+        if (lookback.has_prefix ("@") || lookback.has_prefix ("\n") ||
+            lookback.has_prefix (" "))
+          break;
+
+
+        bool start_not_reached = back_iter.backward_char ();
+        if (!start_not_reached)
+          break;
+     }
+     message (lookback);
+
     });
+    tweet_text.buffer.changed.connect (recalc_tweet_length);
+
+
+  }
+
+  private void recalc_tweet_length () {
+    TextIter start, end;
+    tweet_text.buffer.get_start_iter(out start);
+    tweet_text.buffer.get_end_iter(out end);
+    string text = tweet_text.buffer.get_text(start, end, true);
+    string[] words = text.split (" ");
+    int length = 0;
+
+    foreach (string s in words) {
+      if (s.has_prefix ("http://") || s.has_prefix ("www."))
+        length += 22; //TODO: Get this from Twitter
+      else if (s.has_prefix ("https://"))
+        length += 23; //TODO: Get this from Twitter
+      else
+        length += s.char_count ();
+    }
+    // Don't forget the n-1 whitespaces
+    length += words.length - 1;
+
+    length_label.label = (MAX_TWEET_LENGTH - length).to_string ();
+    if (length > 0 && length <= MAX_TWEET_LENGTH)
+      send_button.sensitive = true;
+    else
+      send_button.sensitive = false;
+
+
   }
 
   [GtkCallback]
