@@ -128,6 +128,7 @@ set (VALAC_OPTIONS
   --gresources=resources.xml
   --target-glib=2.38
   --enable-checking
+  --vapidir=vapi/
 )
 
 if (DEBUG)
