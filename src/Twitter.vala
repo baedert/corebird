@@ -18,14 +18,11 @@ using Rest;
 using Gee;
 
 class Twitter {
-//  private static string token;
-//  private static string token_secret;
   private static int max_media_per_upload;
   private static int characters_reserved_per_media;
   private static int short_url_length;
   private static int short_url_length_https;
   private static int photo_size_limit;
-//  public static OAuthProxy proxy;
   public static Gdk.Pixbuf no_avatar;
   public static Gdk.Pixbuf no_banner;
   public static Gdk.Pixbuf verified_icon;
