@@ -31,7 +31,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
   protected uint tweet_remove_timeout{get;set;}
   private ProgressEntry progress_entry = new ProgressEntry(75);
 
-  public HomeTimeline(int id){
+  public HomeTimeline(int id) {
     this.id = id;
     tweet_list = new Gtk.ListBox();
     tweet_list.get_style_context().add_class("stream");
@@ -64,6 +64,9 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
       GLib.DateTime now = new GLib.DateTime.now_local();
       Tweet t = new Tweet();
       t.load_from_json(root, now);
+
+      if (t.is_retweet && t.retweeted_by == account.name)
+        return;
 
       this.balance_next_upper_change(TOP);
       var entry = new TweetListEntry(t, main_window, account);
@@ -110,7 +113,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
             (count, lowest_id) => {
             if(lowest_id < this.lowest_id)
               this.lowest_id = lowest_id;
-            
+
             tweet_list.remove(progress_entry);
             progress_entry = null;
             });
@@ -135,16 +138,16 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
   }
 
 
-  public void create_tool_button(RadioToolButton? group){
+  public void create_tool_button(RadioToolButton? group) {
     tool_button = new BadgeRadioToolButton(group, "stream");
     tool_button.label = "Home";
   }
 
-  public RadioToolButton? get_tool_button(){
+  public RadioToolButton? get_tool_button() {
     return tool_button;
   }
 
-  public int get_id(){
+  public int get_id() {
     return id;
   }
 
