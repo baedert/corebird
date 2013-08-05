@@ -88,6 +88,7 @@ set (VALA_SOURCE
   src/LoaderThread.vala
   src/IPage.vala
   src/ProfilePage.vala
+  src/TweetInfoPage.vala
   src/InlineMediaDownloader.vala
   src/UserStream.vala
   src/DeltaUpdater.vala

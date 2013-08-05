@@ -20,12 +20,12 @@
 
 
 class MainWindow : ApplicationWindow {
-  public static const int PAGE_STREAM    = 0;
-  public static const int PAGE_MENTIONS  = 1;
-  public static const int PAGE_SEARCH    = 2;
-  // public static const int PAGE_FAVORITES = 2;
+  public static const int PAGE_STREAM     = 0;
+  public static const int PAGE_MENTIONS   = 1;
+  public static const int PAGE_SEARCH     = 2;
 
-  public static const int PAGE_PROFILE   = 3;
+  public static const int PAGE_PROFILE    = 3;
+  public static const int PAGE_TWEET_INFO = 4;
 
 
 
@@ -35,7 +35,7 @@ class MainWindow : ApplicationWindow {
   private Box bottom_box                   = new Box(Orientation.HORIZONTAL, 0);
   private RadioToolButton dummy_button     = new RadioToolButton(null);
   private ITimeline[] timelines            = new ITimeline[3];
-  private IPage[] pages                    = new IPage[1];
+  private IPage[] pages                    = new IPage[2];
   private int active_page                  = 0;
   private int last_page                    = 0;
   private ToolButton avatar_button         = new ToolButton(null, null);
@@ -83,7 +83,6 @@ class MainWindow : ApplicationWindow {
     timelines[0] = new HomeTimeline(PAGE_STREAM);
     timelines[1] = new MentionsTimeline(PAGE_MENTIONS);
     timelines[2] = new SearchTimeline(PAGE_SEARCH);
-    // timelines[2] = new FavoriteContainer(PAGE_FAVORITES);
 
     /* Initialize all containers */
     for(int i = 0; i < timelines.length; i++){
@@ -109,7 +108,8 @@ class MainWindow : ApplicationWindow {
     timelines[0].get_tool_button().active = true;
 
     //Setup additional pages
-    pages[0] = new ProfilePage(PAGE_PROFILE, this, account);
+    pages[0] = new ProfilePage (PAGE_PROFILE, this, account);
+    pages[1] = new TweetInfoPage (PAGE_TWEET_INFO, this, account);
 
     new_tweet_button.icon_name = "document-new";
     new_tweet_button.clicked.connect( () => {
@@ -261,7 +261,7 @@ class MainWindow : ApplicationWindow {
    *                See the PAGE_* constants.
    * @param ... The parameters to pass to the page
    */
-  public void switch_page(int page_id, ...){
+  public void switch_page (int page_id, ...) {
     if(page_id == active_page)
       return;
 

@@ -16,10 +16,10 @@
 using Gtk;
 
 class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
-  public int unread_count{get;set;}
-  protected int64 max_id{
-    get {return lowest_id;}
-    set {lowest_id = value;}
+  public int unread_count { get;set; }
+  protected int64 max_id {
+    get { return lowest_id; }
+    set { lowest_id = value; }
   }
   public MainWindow main_window {set; get;}
   protected Gtk.ListBox tweet_list {set; get;}
@@ -53,6 +53,11 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
     this.vadjustment.notify["value"].connect (() => {
       mark_seen_on_scroll (vadjustment.value);
       update_unread_count ();
+    });
+
+    tweet_list.activate_on_single_click = false;
+    tweet_list.row_activated.connect (() => {
+      main_window.switch_page (MainWindow.PAGE_TWEET_INFO, null);
     });
 
 
