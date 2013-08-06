@@ -48,6 +48,7 @@ class MainWindow : ApplicationWindow {
     GLib.Object (application: app);
     set_default_size (480, 700);
     this.set_icon_name("corebird");
+    this.destroy.connect (window_destroy_cb);
     this.account = account;
 
     if (account != null) {
@@ -134,11 +135,11 @@ class MainWindow : ApplicationWindow {
     });
 
     // Add all tool buttons for the timelines
-    foreach(var tl in timelines) {
-      if(tl.get_tool_button() != null)
-        left_toolbar.add(tl.get_tool_button());
+    foreach (var tl in timelines) {
+      if (tl.get_tool_button () != null)
+        left_toolbar.add (tl.get_tool_button ());
 
-      stack.add_named(tl, tl.get_id ().to_string ());
+      stack.add_named (tl, tl.get_id ().to_string ());
     }
 
     foreach(var page in pages){
@@ -153,36 +154,12 @@ class MainWindow : ApplicationWindow {
     main_box.pack_end(bottom_box, true, true);
 
     add_accels();
-    this.destroy.connect (() => {
-      unowned GLib.List<weak Window> ws = this.application.get_windows ();
-      message("Windows: %u", ws.length ());
-
-      // Enable the account's entry in the app menu again
-      var acc_menu = (GLib.Menu)Corebird.account_menu;
-      for (int i = 0; i < acc_menu.get_n_items (); i++){
-        Variant item_name = acc_menu.get_item_attribute_value (i,
-                                         "label", VariantType.STRING);
-        if (item_name.get_string () == "@"+account.screen_name){
-          ((SimpleAction)app.lookup_action("show-"+account.screen_name)).set_enabled(true);
-          break;
-        }
-      }
-
-      if (ws.length () == 1) {
-        // This is the last window so we save this one anyways...
-        string[] startup_accounts = new string[1];
-        startup_accounts[0] = ((MainWindow)ws.nth_data (0)).account.screen_name;
-        Settings.get ().set_strv ("startup-accounts", startup_accounts);
-      }
-     });
 
     this.add(main_box);
     this.show_all();
 
-
     // Activate the first timeline
     timelines[0].get_tool_button().active = true;
-
   }
 
   /**
@@ -236,5 +213,29 @@ class MainWindow : ApplicationWindow {
 
     page.on_join (page_id, va_list ());
     stack.set_visible_child_name ("%d".printf (page_id));
+  }
+
+  private void window_destroy_cb() {
+    unowned GLib.List<weak Window> ws = this.application.get_windows ();
+    message("Windows: %u", ws.length ());
+
+    // Enable the account's entry in the app menu again
+    var acc_menu = (GLib.Menu)Corebird.account_menu;
+    for (int i = 0; i < acc_menu.get_n_items (); i++){
+      Variant item_name = acc_menu.get_item_attribute_value (i,
+                                       "label", VariantType.STRING);
+      if (item_name.get_string () == "@"+account.screen_name){
+        ((SimpleAction)this.application.lookup_action("show-"+account.screen_name)).set_enabled(true);
+        break;
+      }
+    }
+
+    if (ws.length () == 1) {
+      // This is the last window so we save this one anyways...
+      string[] startup_accounts = new string[1];
+      startup_accounts[0] = ((MainWindow)ws.nth_data (0)).account.screen_name;
+      Settings.get ().set_strv ("startup-accounts", startup_accounts);
+    }
+
   }
 }
