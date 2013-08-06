@@ -35,8 +35,6 @@ class SettingsDialog : Gtk.Dialog {
   [GtkChild]
   private Switch on_new_dms_switch;
   [GtkChild]
-  private Switch primary_toolbar_switch;
-  [GtkChild]
   private Switch inline_media_switch;
   [GtkChild]
   private Switch dark_theme_switch;
@@ -65,8 +63,6 @@ class SettingsDialog : Gtk.Dialog {
                           SettingsBindFlags.DEFAULT);
 
     // Interface page
-    Settings.get ().bind ("show-primary-toolbar", primary_toolbar_switch, "active",
-                          SettingsBindFlags.DEFAULT);
     Settings.get ().bind ("show-inline-media", inline_media_switch, "active",
                           SettingsBindFlags.DEFAULT);
     Settings.get ().bind ("use-dark-theme", dark_theme_switch, "active",
