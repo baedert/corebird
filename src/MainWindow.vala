@@ -35,11 +35,9 @@ class MainWindow : ApplicationWindow {
   private RadioToolButton dummy_button     = new RadioToolButton(null);
   private ITimeline[] timelines            = new ITimeline[3];
   private IPage[] pages                    = new IPage[2];
-  private int active_page                  = 0;
+  private int active_page                  = -1;
   private int last_page                    = 0;
-//  private ToolButton avatar_button         = new ToolButton(null, null);
   private Button avatar_button             = new Button();
-//  private ToolButton new_tweet_button      = new ToolButton(null, _("Compose Tweet"));
   private Button new_tweet_button          = new Button ();
   private SeparatorToolItem expander_item  = new SeparatorToolItem();
   private SeparatorToolItem left_separator = new SeparatorToolItem();
@@ -105,8 +103,6 @@ class MainWindow : ApplicationWindow {
         }
       });
     }
-    // Activate the first timeline
-    timelines[0].get_tool_button().active = true;
 
     //Setup additional pages
     pages[0] = new ProfilePage (PAGE_PROFILE, this, account);
@@ -182,6 +178,11 @@ class MainWindow : ApplicationWindow {
 
     this.add(main_box);
     this.show_all();
+
+
+    // Activate the first timeline
+    timelines[0].get_tool_button().active = true;
+
   }
 
   /**
@@ -208,13 +209,13 @@ class MainWindow : ApplicationWindow {
    * @param ... The parameters to pass to the page
    */
   public void switch_page (int page_id, ...) {
-    if(page_id == active_page)
+    if (page_id == active_page)
       return;
 
-    debug("switching page from %d to %d", active_page, page_id);
+    debug ("switching page from %d to %d", active_page, page_id);
 
 
-    if(page_id > active_page)
+    if (page_id > active_page)
       stack.transition_type = StackTransitionType.SLIDE_LEFT;
     else
       stack.transition_type = StackTransitionType.SLIDE_RIGHT;
@@ -224,16 +225,16 @@ class MainWindow : ApplicationWindow {
 
 
     IPage page = timelines[0];
-    if(page_id < timelines.length){
+    if (page_id < timelines.length) {
       page = timelines[page_id];
       page.get_tool_button().active = true;
-    }else{
+    } else {
       page = pages[page_id - timelines.length];
       dummy_button.active = true;
     }
 
 
-    page.on_join(page_id, va_list());
-    stack.set_visible_child_name("%d".printf(page_id));
+    page.on_join (page_id, va_list ());
+    stack.set_visible_child_name ("%d".printf (page_id));
   }
 }
