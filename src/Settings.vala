@@ -51,14 +51,6 @@ class Settings : GLib.Object {
     return settings.get_boolean("use-dark-theme");
   }
 
-  /**
-   * Returns whether the user wants to use a primary toolbar in the
-   * main window or not.
-   */
-  public static bool show_primary_toolbar(){
-    return settings.get_boolean("show-primary-toolbar");
-  }
-
   public static int notify_new_tweets(){
     return settings.get_int("new-tweets-notify");
   }

@@ -30,7 +30,6 @@ class MainWindow : ApplicationWindow {
 
 
   private Toolbar left_toolbar             = new Toolbar();
-  private Toolbar primary_toolbar          = new Toolbar();
   private Box main_box                     = new Box(Orientation.VERTICAL, 0);
   private Box bottom_box                   = new Box(Orientation.HORIZONTAL, 0);
   private RadioToolButton dummy_button     = new RadioToolButton(null);
