@@ -62,6 +62,8 @@ class Tweet : GLib.Object {
   public bool has_inline_media = false;
   public int type = -1;
   private GLib.SList<Sequence?> urls;
+  public int retweet_count;
+  public int favorite_count;
 
 
   public Tweet(){
@@ -106,6 +108,8 @@ class Tweet : GLib.Object {
     this.favorited   = status.get_boolean_member("favorited");
     this.retweeted   = status.get_boolean_member("retweeted");
     this.id          = status.get_int_member("id");
+    this.retweet_count = (int)status.get_int_member ("retweet_count");
+    this.favorite_count = (int)status.get_int_member ("favorite_count");
     this.user_name   = user.get_string_member("name");
     this.user_id     = user.get_int_member("id");
     this.screen_name = user.get_string_member("screen_name");
