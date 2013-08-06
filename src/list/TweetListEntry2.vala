@@ -60,7 +60,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   public bool seen {get; set; default = true;}
   private unowned Account account;
   private unowned MainWindow window;
-  private Tweet tweet;
+  public Tweet tweet;
   private Gtk.Menu more_menu;
   private bool values_set = false;
 
@@ -201,17 +201,21 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
 
   [GtkCallback]
   private bool reply_entry_key_released_cb (Gdk.EventKey evt) {
-    if (evt.keyval == Gdk.Key.Escape) {
-      reply_revealer.reveal_child = false;
-      this.grab_focus ();
-      return true;
-    } else if (evt.keyval == Gdk.Key.r)
-      return true;
-    else if (evt.keyval == Gdk.Key.Return) {
-      reply_send_button_clicked_cb ();
-      return true;
+    switch (evt.keyval) {
+      case Gdk.Key.Escape:
+        reply_revealer.reveal_child = false;
+        this.grab_focus ();
+        return true;
+      case Gdk.Key.r:
+      case Gdk.Key.k:
+      case Gdk.Key.f:
+      case Gdk.Key.d:
+      case Gdk.Key.t:
+        return true;
+      case Gdk.Key.Return:
+        reply_send_button_clicked_cb ();
+        return true;
     }
-
     return false;
   }
 
