@@ -38,8 +38,10 @@ class MainWindow : ApplicationWindow {
   private IPage[] pages                    = new IPage[2];
   private int active_page                  = 0;
   private int last_page                    = 0;
-  private ToolButton avatar_button         = new ToolButton(null, null);
-  private ToolButton new_tweet_button      = new ToolButton(null, _("Compose Tweet"));
+//  private ToolButton avatar_button         = new ToolButton(null, null);
+  private Button avatar_button             = new Button();
+//  private ToolButton new_tweet_button      = new ToolButton(null, _("Compose Tweet"));
+  private Button new_tweet_button          = new Button ();
   private SeparatorToolItem expander_item  = new SeparatorToolItem();
   private SeparatorToolItem left_separator = new SeparatorToolItem();
   private Gtk.Stack stack                  = new Gtk.Stack();
@@ -69,13 +71,13 @@ class MainWindow : ApplicationWindow {
       return;
     }
 
-/*    var f = new Gtk.HeaderBar ();
+    var f = new Gtk.HeaderBar ();
     f.set_title ("Corebird");
     f.set_subtitle ("@"+account.screen_name);
-    var k = new Button.from_stock ("gtk-preferences");
-    k.always_show_image = true;
-    f.pack_end (k);
-    this.set_titlebar(f);*/
+    f.set_show_close_button (true);
+    f.pack_start (avatar_button);
+    f.pack_start (new_tweet_button);
+    this.set_titlebar(f);
 
     stack.transition_duration = Settings.get_animation_duration();
     stack.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
@@ -111,7 +113,9 @@ class MainWindow : ApplicationWindow {
     pages[0] = new ProfilePage (PAGE_PROFILE, this, account);
     pages[1] = new TweetInfoPage (PAGE_TWEET_INFO, this, account);
 
-    new_tweet_button.icon_name = "document-new";
+    new_tweet_button.always_show_image = true;
+    new_tweet_button.relief = ReliefStyle.NONE;
+    new_tweet_button.image = new Gtk.Image.from_icon_name ("document-new", IconSize.LARGE_TOOLBAR);
     new_tweet_button.clicked.connect( () => {
       var cw = new ComposeTweetWindow(this, account, null, get_application ());
       cw.show();
@@ -120,19 +124,15 @@ class MainWindow : ApplicationWindow {
     left_toolbar.orientation = Orientation.VERTICAL;
     left_toolbar.set_style(ToolbarStyle.ICONS);
 
-    primary_toolbar.orientation = Orientation.HORIZONTAL;
-    primary_toolbar.set_style(ToolbarStyle.ICONS);
-    primary_toolbar.get_style_context().add_class("primary-toolbar");
-    primary_toolbar.set_visible(true);
-
 
     expander_item.draw = false;
     expander_item.set_expand(true);
 
     account.load_avatar ();
-    avatar_button.set_icon_widget (new Image.from_pixbuf (account.avatar_small));
+    avatar_button.set_image (new Image.from_pixbuf (account.avatar_small));
+    avatar_button.relief = ReliefStyle.NONE;
     account.notify["avatar_small"].connect(() => {
-      avatar_button.set_icon_widget (new Image.from_pixbuf (account.avatar_small));
+      avatar_button.set_image (new Image.from_pixbuf (account.avatar_small));
     });
     avatar_button.clicked.connect( () => {
         message("IMPLEMENT: Show account switcher");
@@ -150,14 +150,9 @@ class MainWindow : ApplicationWindow {
       stack.add_named(page, page.get_id ().to_string ());
     }
 
+    left_toolbar.add (expander_item);
     bottom_box.pack_start(left_toolbar, false, false);
 
-    if (Settings.show_primary_toolbar()){
-      main_box.pack_start(primary_toolbar, false, false);
-      setup_primary_toolbar();
-    }else{
-      setup_left_toolbar();
-    }
 
     bottom_box.pack_start (stack, true, true);
     main_box.pack_end(bottom_box, true, true);
@@ -204,54 +199,6 @@ class MainWindow : ApplicationWindow {
 
 
     this.add_accel_group(ag);
-  }
-
-  /**
-   * Adds/inserts the widgets into the left toolbar.
-   */
-  private void setup_left_toolbar(){
-    left_toolbar.get_style_context().remove_class("sidebar");
-    left_toolbar.get_style_context().add_class("primary-toolbar");
-
-    left_toolbar.insert(avatar_button, 0);
-    left_toolbar.insert(new_tweet_button, 1);
-    left_toolbar.insert(left_separator, 2);
-    left_toolbar.add(expander_item);
-  }
-
-  /**
-   * Adds/inserts the widgets into the primary toolbar
-   */
-  private void setup_primary_toolbar(){
-    primary_toolbar.add(avatar_button);
-    primary_toolbar.add(new_tweet_button);
-    primary_toolbar.add(expander_item);
-    //Make the left toolbar a sidebar
-    left_toolbar.get_style_context().remove_class("primary-toolbar");
-    left_toolbar.get_style_context().add_class("sidebar");
-  }
-
-  public void set_show_primary_toolbar(bool show_primary_toolbar){
-    // We just ASSUME that this value only toggles and that 2 subsequent calls
-    // NEVER have the same value of show_primary_toolbar.
-    if(show_primary_toolbar){
-      main_box.pack_start(primary_toolbar, false, false);
-      //Remove widgets
-      left_toolbar.remove(avatar_button);
-      left_toolbar.remove(new_tweet_button);
-      left_toolbar.remove(expander_item);
-      left_toolbar.remove(left_separator);
-      //Add them again
-      setup_primary_toolbar();
-    }else{
-      main_box.remove(primary_toolbar);
-      //Remove widgets
-      primary_toolbar.remove(avatar_button);
-      primary_toolbar.remove(new_tweet_button);
-      primary_toolbar.remove(expander_item);
-      //add them again
-      setup_left_toolbar();
-    }
   }
 
   /**
