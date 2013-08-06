@@ -20,7 +20,6 @@ class InvisibilityBin : Gtk.Bin {
   private int child_height = 0;
 
 
-
   public override void get_preferred_width(out int minimum_width,
                                            out int natural_width) {
     if(child_width == 0 && child_height == 0) {
@@ -63,5 +62,10 @@ class InvisibilityBin : Gtk.Bin {
     this.get_child().show();
   }
 
-
+  public new void set_child_visible (bool visible) {
+   if (visible)
+     show_child ();
+   else
+     hide_child ();
+  }
 }

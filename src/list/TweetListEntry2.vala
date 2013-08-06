@@ -45,6 +45,8 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   private Button conversation_button;
   [GtkChild]
   private Box text_box;
+  [GtkChild]
+  private InvisibilityBin retweet_bin;
 
 
 
@@ -150,13 +152,13 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     bool buttons_visible = (bool)(flags & (StateFlags.PRELIGHT | StateFlags.SELECTED));
     if (buttons_visible) {
       if (account.id != tweet.user_id){
-        retweet_button.show ();
+        retweet_bin.show_child ();
         favorite_button.show ();
       }
       more_button.show ();
     } else {
       favorite_button.set_visible (favorite_button.active);
-      retweet_button.set_visible (retweet_button.active);
+      retweet_bin.set_child_visible (retweet_button.active);
       more_button.hide ();
     }
   }
@@ -386,7 +388,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
 
     var border_color = style.get_border_color(get_state_flags());
     c.set_source_rgba(border_color.red, border_color.green, border_color.blue,
-              border_color.alpha);
+                      border_color.alpha);
 
     // The line here is 50% of the width
     c.move_to(w*0.25, h);
