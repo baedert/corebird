@@ -51,7 +51,7 @@ class NewFollowerEntry : Gtk.ListBoxRow, ITwitterItem {
     this.show_all();
   }
 
-  /** 
+  /**
    * "Parses" the given text.
    * Format:
    * COUNT,FOLLOWER1[,FOLLOWER2,…]
@@ -90,9 +90,9 @@ class NewFollowerEntry : Gtk.ListBoxRow, ITwitterItem {
     string avatar_url = source.get_string_member ("profile_image_url");
     avatar_url = avatar_url.replace("_normal", "_mini");
         string mini_thumb_path = Utils.user_file("assets/avatars/mini_thumb_"+name+".png");
-    followers[count] = name;  
-  
-    ImageButton avatar_button = new ImageButton();
+    followers[count] = name;
+
+    PixbufButton avatar_button = new PixbufButton();
     avatar_box.pack_start(avatar_button, false, false);
     Utils.download_file_async.begin(avatar_url,mini_thumb_path,
     () => {
@@ -118,7 +118,7 @@ class NewFollowerEntry : Gtk.ListBoxRow, ITwitterItem {
   private void add_follower_from_name (string name){
     string mini_thumb_path = Utils.user_file("assets/avatars/mini_thumb_"+name+".png");
     if(FileUtils.test(mini_thumb_path, FileTest.EXISTS)) {
-      ImageButton avatar_button = new ImageButton();
+      PixbufButton avatar_button = new PixbufButton();
       try {
         avatar_button.set_bg(new Gdk.Pixbuf.from_file(mini_thumb_path));
       } catch (GLib.Error e) {
@@ -137,7 +137,7 @@ class NewFollowerEntry : Gtk.ListBoxRow, ITwitterItem {
     string s = "";
     for(int i = 0; i < count-2; i++)
       s += "<a href='@%s'>@%s</a>, ".printf(followers[i], followers[i]);
-    
+
     if(count >= 2)
       s += "<a href='@%s'>@%s</a> and ".printf(followers[count-2], followers[count-2]);
 
@@ -157,7 +157,7 @@ class NewFollowerEntry : Gtk.ListBoxRow, ITwitterItem {
       data.append(followers[i]);
     }
     string param_string = @" INTO `cache` (`sort_factor`, `type`, `data`) VALUES ('$date', '$TYPE', '$(data.str)');";
-    
+
     try {
       if(id == -1){
         SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db,

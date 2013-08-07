@@ -18,13 +18,13 @@ using Gtk;
 /**
  * A button with the given pixbuf as background.
  */
-class ImageButton : Button {
+class PixbufButton : Button {
   private Gdk.Pixbuf bg;
 
 
-  public ImageButton(){
+  public PixbufButton(){
     this.border_width = 0;
-    get_style_context().add_class("image-button");
+    get_style_context().add_class("pixbuf-button");
   }
 
   public override bool draw(Cairo.Context c){

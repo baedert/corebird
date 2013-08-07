@@ -98,7 +98,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     });
 
     tweet.inline_media_added.connect ((pic) => {
-      var inline_button = new ImageButton ();
+      var inline_button = new PixbufButton ();
       inline_button.set_bg (pic);
       text_box.pack_end (inline_button, false, false);
       inline_button.valign = Align.START;
@@ -110,7 +110,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     });
 
     if (tweet.media_thumb != null) {
-      var inline_button = new ImageButton ();
+      var inline_button = new PixbufButton ();
       try {
         inline_button.set_bg (new Gdk.Pixbuf.from_file (tweet.media_thumb));
       } catch (GLib.Error e) {

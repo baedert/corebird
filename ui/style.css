@@ -149,7 +149,7 @@
   background-color: transparent;
 }
 
-.image-button {
+.pixbuf-button {
   padding: 0px;
   background-image: none;
   background-color: transparent;
@@ -158,15 +158,15 @@
   transition: box-shadow 0.25s ease-in-out;
 }
 
-.image-button:hover {
+.pixbuf-button:hover {
 /*  box-shadow: 0px 0px 10px alpha(black, 0.8);*/
   border: 2px solid green;
 }
 
-.image-button:active {
+.pixbuf-button:active {
   box-shadow: 0px 0px 10px alpha(black, 0.95);
 }
-.image-button:backdrop {
+.pixbuf-button:backdrop {
   background-color: transparent;
   background-image: none;
 }
@@ -186,8 +186,7 @@
   -GtkWidget-link-color: #EEE;
 }
 
-.profile-header .data ,
-.profile-header .image-button{
+.profile-header .data {
   color: #EEE;
   background-color: alpha(black, 0.55);
   -GtkWidget-link-color: #EEE;

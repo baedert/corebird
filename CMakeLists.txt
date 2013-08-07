@@ -99,7 +99,7 @@ set (VALA_SOURCE
   src/widgets/ImageDialog.vala
   src/widgets/ImageBox.vala
   src/widgets/ImageLabel.vala
-  src/widgets/ImageButton.vala
+  src/widgets/PixbufButton.vala
   src/widgets/ScrollWidget.vala
   src/widgets/TextButton.vala
   src/widgets/ProfileWidget.vala

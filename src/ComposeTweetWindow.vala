@@ -32,7 +32,7 @@ class ComposeTweetWindow : Gtk.Window {
   private Gtk.Label length_label;
   [GtkChild]
   private Gtk.Button send_button;
-  private ImageButton media_image = new ImageButton ();
+  private PixbufButton media_image = new PixbufButton ();
   private string media_uri;
   private uint media_count = 0;
   private unowned Account account;
