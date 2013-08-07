@@ -112,6 +112,7 @@ class MainWindow : ApplicationWindow {
       app_menu_button.get_style_context ().add_class ("image-button");
       app_menu_button.menu_model = this.application.app_menu;
       f.pack_end (app_menu_button);
+      this.show_menubar = false;
     }
 
     //Setup additional pages
