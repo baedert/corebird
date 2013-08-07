@@ -190,6 +190,9 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       case Gdk.Key.d:
         delete_tweet ();
         return true;
+      case Gdk.Key.Return:
+        ((ListBox)(this.parent)).row_activated (this);
+        return true;
 #if __DEV
       case Gdk.Key.k:
         stdout.printf (tweet.json_data+"\n");
