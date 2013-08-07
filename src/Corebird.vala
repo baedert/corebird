@@ -180,9 +180,7 @@ class Corebird : Gtk.Application {
     });
     add_action(about_dialog_action);
     var quit_action = new SimpleAction("quit", null);
-    quit_action.activate.connect(() => {
-        quit();
-    });
+    quit_action.activate.connect(quit);
     add_action(quit_action);
 
     // Load custom CSS stuff
