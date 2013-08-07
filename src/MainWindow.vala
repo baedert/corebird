@@ -85,24 +85,32 @@ class MainWindow : ApplicationWindow {
     timelines[2] = new SearchTimeline(PAGE_SEARCH);
 
     /* Initialize all containers */
-    for(int i = 0; i < timelines.length; i++){
+    for (int i = 0; i < timelines.length; i++) {
       ITimeline tl = timelines[i];
       tl.account = account;
-      if(!(tl is IPage))
+      if (!(tl is IPage))
         break;
 
       if (tl is IMessageReceiver)
         account.user_stream.register ((IMessageReceiver)tl);
 
       tl.main_window = this;
-      tl.load_cached();
-      tl.load_newest();
-      tl.create_tool_button(dummy_button);
-      tl.get_tool_button().toggled.connect(() => {
-        if(tl.get_tool_button().active){
-          switch_page(tl.get_id());
+      tl.load_cached ();
+      tl.load_newest ();
+      tl.create_tool_button (dummy_button);
+      tl.get_tool_button ().toggled.connect (() => {
+        if (tl.get_tool_button ().active){
+          switch_page (tl.get_id ());
         }
       });
+    }
+
+    if (!Gtk.Settings.get_default ().gtk_shell_shows_app_menu) {
+      MenuButton app_menu_button = new MenuButton ();
+      app_menu_button.image = new Gtk.Image.from_icon_name ("emblem-system-symbolic", IconSize.MENU);
+//      app_menu_button.get_style_context ().add_class ("image-button");
+      app_menu_button.menu_model = this.application.app_menu;
+      f.pack_end (app_menu_button);
     }
 
     //Setup additional pages
@@ -111,14 +119,14 @@ class MainWindow : ApplicationWindow {
 
     new_tweet_button.always_show_image = true;
     new_tweet_button.relief = ReliefStyle.NONE;
-    new_tweet_button.image = new Gtk.Image.from_icon_name ("document-new", IconSize.LARGE_TOOLBAR);
+    new_tweet_button.image = new Gtk.Image.from_icon_name ("document-new", IconSize.MENU);
     new_tweet_button.clicked.connect( () => {
       var cw = new ComposeTweetWindow(this, account, null, get_application ());
       cw.show();
     });
 
     left_toolbar.orientation = Orientation.VERTICAL;
-    left_toolbar.set_style(ToolbarStyle.ICONS);
+    left_toolbar.set_style (ToolbarStyle.ICONS);
 
 
     expander_item.draw = false;
