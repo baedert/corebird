@@ -74,6 +74,7 @@ class MainWindow : ApplicationWindow {
     f.set_subtitle ("@"+account.screen_name);
     f.set_show_close_button (true);
     f.pack_start (avatar_button);
+    new_tweet_button.get_style_context ().add_class ("image_button");
     f.pack_start (new_tweet_button);
     this.set_titlebar(f);
 
@@ -108,7 +109,7 @@ class MainWindow : ApplicationWindow {
     if (!Gtk.Settings.get_default ().gtk_shell_shows_app_menu) {
       MenuButton app_menu_button = new MenuButton ();
       app_menu_button.image = new Gtk.Image.from_icon_name ("emblem-system-symbolic", IconSize.MENU);
-//      app_menu_button.get_style_context ().add_class ("image-button");
+      app_menu_button.get_style_context ().add_class ("image-button");
       app_menu_button.menu_model = this.application.app_menu;
       f.pack_end (app_menu_button);
     }
