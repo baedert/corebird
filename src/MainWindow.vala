@@ -36,7 +36,7 @@ class MainWindow : ApplicationWindow {
   private ITimeline[] timelines            = new ITimeline[3];
   private IPage[] pages                    = new IPage[2];
   private int active_page                  = -1;
-  private int last_page                    = 0;
+  private int last_page                    = -1;
   private Button avatar_button             = new Button();
   private Button new_tweet_button          = new Button ();
   private SeparatorToolItem expander_item  = new SeparatorToolItem();
@@ -177,12 +177,14 @@ class MainWindow : ApplicationWindow {
    */
   private void add_accels() {
     AccelGroup ag = new AccelGroup();
-    ag.connect(Gdk.Key.@1, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
+    ag.connect (Gdk.Key.@1, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
       () => {switch_page(0);return true;});
-    ag.connect(Gdk.Key.@2, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
+    ag.connect (Gdk.Key.@2, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
       () => {switch_page(1);return true;});
-    ag.connect(Gdk.Key.@3, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
+    ag.connect (Gdk.Key.@3, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
       () => {switch_page(2);return true;});
+    ag.connect (Gdk.Key.Left, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
+        () => {switch_page (last_page); last_page = -1; return true;});
 
 
     this.add_accel_group(ag);
@@ -197,6 +199,9 @@ class MainWindow : ApplicationWindow {
    */
   public void switch_page (int page_id, ...) {
     if (page_id == active_page)
+      return;
+
+    if (page_id == -1)
       return;
 
     debug ("switching page from %d to %d", active_page, page_id);
@@ -245,6 +250,7 @@ class MainWindow : ApplicationWindow {
       string[] startup_accounts = new string[1];
       startup_accounts[0] = ((MainWindow)ws.nth_data (0)).account.screen_name;
       Settings.get ().set_strv ("startup-accounts", startup_accounts);
+      message ("Saving the account %s", ((MainWindow)ws.nth_data (0)).account.screen_name);
     }
 
   }
