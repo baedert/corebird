@@ -117,8 +117,8 @@ class Tweet : GLib.Object {
                     .to_unix();
     this.avatar_url  = user.get_string_member("profile_image_url");
     this.verified    = user.get_boolean_member("verified");
-        if(!status.get_null_member("in_reply_to_status_id"))
-                this.reply_id  = status.get_int_member("in_reply_to_status_id");
+    if (!status.get_null_member("in_reply_to_status_id"))
+      this.reply_id  = status.get_int_member("in_reply_to_status_id");
 
     var entities = status.get_object_member ("entities");
 
@@ -137,7 +137,7 @@ class Tweet : GLib.Object {
       this.rt_created_at = Utils.parse_date(rt.get_string_member("created_at"))
                                   .to_unix();
       this.verified      = rt_user.get_boolean_member("verified");
-            if(!rt.get_null_member("in_reply_to_status_id"))
+      if (!rt.get_null_member("in_reply_to_status_id"))
         this.reply_id = rt.get_int_member("in_reply_to_status_id");
     }
     this.avatar_name = Utils.get_avatar_name(this.avatar_url);
