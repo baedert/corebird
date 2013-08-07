@@ -344,7 +344,6 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
 
     if(uri.has_prefix("@")){
       window.switch_page(MainWindow.PAGE_PROFILE,
-                         ProfilePage.BY_ID,
                          int64.parse (term));
       return true;
     }else if(uri.has_prefix("#")){
