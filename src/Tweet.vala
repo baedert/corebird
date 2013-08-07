@@ -182,9 +182,9 @@ class Tweet : GLib.Object {
       Json.Array indices = mention.get_array_member ("indices");
 
       this.urls.prepend(Sequence(){
-        start =  (int)indices.get_int_element (0),
-        end   =  (int)indices.get_int_element (1),
-        url   =  "@"+mention.get_string_member ("screen_name"),
+        start = (int)indices.get_int_element (0),
+        end   = (int)indices.get_int_element (1),
+        url   = "@"+mention.get_string_member ("id_str"),
         display_url = "@"+mention.get_string_member ("screen_name")
       });
     });
