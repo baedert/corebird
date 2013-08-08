@@ -191,6 +191,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
         delete_tweet ();
         return true;
       case Gdk.Key.Return:
+        message ("yoyo");
         ((ListBox)(this.parent)).row_activated (this);
         return true;
 #if __DEV

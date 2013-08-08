@@ -22,9 +22,12 @@ class ProfilePage : IPage, ScrollWidget {
   }
   private int id;
   private ProfileWidget profile_widget;
+  public unowned MainWindow main_window { get; set; }
+  public unowned Account account { get; set; }
 
   public ProfilePage(int id, MainWindow window, Account account){
     profile_widget = new ProfileWidget(window, account);
+    this.main_window = window;
     this.id = id;
     this.add_with_viewport(profile_widget);
   }

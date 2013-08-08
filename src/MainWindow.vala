@@ -23,7 +23,6 @@ class MainWindow : ApplicationWindow {
   public static const int PAGE_STREAM     = 0;
   public static const int PAGE_MENTIONS   = 1;
   public static const int PAGE_SEARCH     = 2;
-
   public static const int PAGE_PROFILE    = 3;
   public static const int PAGE_TWEET_INFO = 4;
 
@@ -33,8 +32,7 @@ class MainWindow : ApplicationWindow {
   private Box main_box                     = new Box(Orientation.VERTICAL, 0);
   private Box bottom_box                   = new Box(Orientation.HORIZONTAL, 0);
   private RadioToolButton dummy_button     = new RadioToolButton(null);
-  private ITimeline[] timelines            = new ITimeline[3];
-  private IPage[] pages                    = new IPage[2];
+  private IPage[] pages                    = new IPage[5];
   private int active_page                  = -1;
   private int last_page                    = -1;
   private Button avatar_button             = new Button();
@@ -81,29 +79,41 @@ class MainWindow : ApplicationWindow {
     stack.transition_duration = Settings.get_animation_duration();
     stack.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
 
-    timelines[0] = new HomeTimeline(PAGE_STREAM);
-    timelines[1] = new MentionsTimeline(PAGE_MENTIONS);
-    timelines[2] = new SearchTimeline(PAGE_SEARCH);
+    pages[0] = new HomeTimeline(PAGE_STREAM);
+    pages[1] = new MentionsTimeline(PAGE_MENTIONS);
+    pages[2] = new SearchTimeline(PAGE_SEARCH);
+    pages[3] = new ProfilePage (PAGE_PROFILE, this, account);
+    pages[4] = new TweetInfoPage (PAGE_TWEET_INFO);
 
     /* Initialize all containers */
-    for (int i = 0; i < timelines.length; i++) {
-      ITimeline tl = timelines[i];
-      tl.account = account;
-      if (!(tl is IPage))
-        break;
+    for (int i = 0; i < pages.length; i++) {
+      message ("Page: %d", i);
+      IPage page = pages[i];
+      page.main_window = this;
+      page.account = account;
 
-      if (tl is IMessageReceiver)
-        account.user_stream.register ((IMessageReceiver)tl);
+      if (page is IMessageReceiver)
+        account.user_stream.register ((IMessageReceiver)page);
 
-      tl.main_window = this;
+      page.create_tool_button (dummy_button);
+      stack.add_named (page, page.get_id ().to_string ());
+      if (page.get_tool_button () != null) {
+        left_toolbar.add (page.get_tool_button ());
+        page.get_tool_button ().toggled.connect (() => {
+          if (page.get_tool_button ().active){
+            switch_page (page.get_id ());
+          }
+        });
+      }
+
+
+      if (!(page is ITimeline))
+        continue;
+
+      ITimeline tl = (ITimeline)page;
+
       tl.load_cached ();
       tl.load_newest ();
-      tl.create_tool_button (dummy_button);
-      tl.get_tool_button ().toggled.connect (() => {
-        if (tl.get_tool_button ().active){
-          switch_page (tl.get_id ());
-        }
-      });
     }
 
     if (!Gtk.Settings.get_default ().gtk_shell_shows_app_menu) {
@@ -114,10 +124,6 @@ class MainWindow : ApplicationWindow {
       f.pack_end (app_menu_button);
       this.show_menubar = false;
     }
-
-    //Setup additional pages
-    pages[0] = new ProfilePage (PAGE_PROFILE, this, account);
-    pages[1] = new TweetInfoPage (PAGE_TWEET_INFO, this, account);
 
     new_tweet_button.always_show_image = true;
     new_tweet_button.relief = ReliefStyle.NONE;
@@ -144,18 +150,6 @@ class MainWindow : ApplicationWindow {
         message("IMPLEMENT: Show account switcher");
     });
 
-    // Add all tool buttons for the timelines
-    foreach (var tl in timelines) {
-      if (tl.get_tool_button () != null)
-        left_toolbar.add (tl.get_tool_button ());
-
-      stack.add_named (tl, tl.get_id ().to_string ());
-    }
-
-    foreach(var page in pages){
-      stack.add_named(page, page.get_id ().to_string ());
-    }
-
     left_toolbar.add (expander_item);
     bottom_box.pack_start(left_toolbar, false, false);
 
@@ -169,7 +163,7 @@ class MainWindow : ApplicationWindow {
     this.show_all();
 
     // Activate the first timeline
-    timelines[0].get_tool_button().active = true;
+    pages[0].get_tool_button().active = true;
   }
 
   /**
@@ -198,6 +192,7 @@ class MainWindow : ApplicationWindow {
    * @param ... The parameters to pass to the page
    */
   public void switch_page (int page_id, ...) {
+    message ("Id: %d, current: %d", page_id, active_page);
     if (page_id == active_page)
       return;
 
@@ -216,20 +211,18 @@ class MainWindow : ApplicationWindow {
     this.active_page = page_id;
 
 
-    IPage page = timelines[0];
-    if (page_id < timelines.length) {
-      page = timelines[page_id];
+    IPage page = pages[page_id];
+    if (page.get_tool_button () != null)
       page.get_tool_button().active = true;
-    } else {
-      page = pages[page_id - timelines.length];
-      dummy_button.active = true;
-    }
-
 
     page.on_join (page_id, va_list ());
     stack.set_visible_child_name ("%d".printf (page_id));
   }
 
+  /**
+    *
+    *
+    */
   private void window_destroy_cb() {
     unowned GLib.List<weak Window> ws = this.application.get_windows ();
     message("Windows: %u", ws.length ());

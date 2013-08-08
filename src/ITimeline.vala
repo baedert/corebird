@@ -21,26 +21,14 @@
 interface ITimeline : Gtk.Widget, IPage {
   public static const int REST = 25;
   protected abstract int64 max_id           {get; set;}
-  public    abstract MainWindow main_window {get; set;}
   protected abstract Gtk.ListBox tweet_list {get; set;}
-  public    abstract Account account        {get; set;}
+  public    abstract int unread_count       {get; set;}
 
   public abstract void load_cached();
   public abstract void load_newest();
   public abstract void load_older ();
-  public void update (){}
 
   protected abstract uint tweet_remove_timeout{get; set;}
-
-
-  /**
-   * Default implementation to load cached tweets from the
-   * 'cache' sql table
-   *
-   * @param tweet_type The type of tweet to load
-   */
-  protected void load_cached_internal(int tweet_type) throws SQLHeavy.Error {
-  }
 
   /**
    * Default implementation for loading the newest tweets
@@ -75,7 +63,7 @@ interface ITimeline : Gtk.Widget, IPage {
       }
 
       var root = parser.get_root().get_array();
-      var loader_thread = new LoaderThread(root, account, main_window, tweet_list,
+      var loader_thread = new LoaderThread(root, account, tweet_list, main_window,
                                            tweet_type);
       loader_thread.run(end_load_func);
     });
@@ -103,20 +91,18 @@ interface ITimeline : Gtk.Widget, IPage {
         critical("Code: %u", call.get_status_code());
       }
 
-
       string back = call.get_payload();
       stdout.printf(back+"\n");
       var parser = new Json.Parser();
       try{
         parser.load_from_data (back);
       } catch (GLib.Error e) {
-//        stdout.printf (back+"\n");
         critical(e.message);
       }
 
       var root = parser.get_root().get_array();
       var loader_thread = new LoaderThread(root, account,
-                                           main_window, tweet_list,
+                                           tweet_list, main_window,
                                            tweet_type);
       loader_thread.run(end_load_func);
     });

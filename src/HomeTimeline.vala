@@ -21,7 +21,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
     get { return lowest_id; }
     set { lowest_id = value; }
   }
-  public MainWindow main_window {set; get;}
+  public unowned MainWindow main_window {set; get;}
   protected Gtk.ListBox tweet_list {set; get;}
   public Account account {get; set;}
   private int id;
@@ -36,8 +36,8 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
     tweet_list = new Gtk.ListBox();
     tweet_list.get_style_context().add_class("stream");
     tweet_list.set_selection_mode(SelectionMode.NONE);
-    this.add (tweet_list);
     tweet_list.set_sort_func (ITwitterItem.sort_func);
+    this.add (tweet_list);
 
     this.scrolled_to_end.connect (() => {
       if (!loading) {
@@ -46,9 +46,8 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
       }
     });
 
-    this.scrolled_to_start.connect (() => {
-      handle_scrolled_to_start();
-    });
+    this.scrolled_to_start.connect (handle_scrolled_to_start);
+    this.button_press_event.connect (button_pressed_event_cb);
 
     this.vadjustment.notify["value"].connect (() => {
       mark_seen_on_scroll (vadjustment.value);
@@ -98,19 +97,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
   public void on_join(int page_id, va_list arg_list){
   }
 
-  /**
-   * see ITimeline#load_cached()
-   */
-  public void load_cached() {
-    try{
-      this.load_cached_internal(Tweet.TYPE_NORMAL);
-    } catch(SQLHeavy.Error e){
-      critical("Error while loading cached tweets of the home timeline: %s",
-               e.message);
-    }
-//    tweet_list.resort();
-    this.vadjustment.set_upper(0);
-  }
+  public void load_cached() {}
 
   public void load_newest() {
     try {

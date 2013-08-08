@@ -35,6 +35,8 @@ set (DATADIR          "${PREFIX}/share/corebird/")
 set (GETTEXT_PACKAGE  "corebird")
 set (VERSION          0.1)
 
+message ("PREFIX: ${PREFIX}")
+
 
 configure_file (${CMAKE_SOURCE_DIR}/src/util/Config.vala.cmake ${CMAKE_BINARY_DIR}/src/util/Config.vala)
 

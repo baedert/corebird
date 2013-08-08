@@ -21,7 +21,7 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
     get {return lowest_id;}
     set {lowest_id = value;}
   }
-  public MainWindow main_window {set; get;}
+  public unowned MainWindow main_window {set; get;}
   protected Gtk.ListBox tweet_list {set; get;}
   public Account account {get; set;}
   private int id;
@@ -109,7 +109,7 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 
       // Show notification
       if(Settings.notify_new_followers()) {
-        
+
       }
     }
   }
@@ -150,7 +150,7 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
           if(lowest_id < this.lowest_id)
             this.lowest_id = lowest_id;
           tweet_list.remove(progress_entry);
-          progress_entry = null;  
+          progress_entry = null;
         });
     } catch (SQLHeavy.Error e) {
       warning(e.message);

@@ -18,8 +18,8 @@ using Gtk;
 class TweetInfoPage : IPage , Gtk.Box {
   public int unread_count { get{return 0;} set {} }
   private int id;
-  private unowned Account account;
-  private unowned MainWindow window;
+  public unowned MainWindow main_window { get; set; }
+  public unowned Account account { get; set; }
 
   [GtkChild]
   private Label text_label;
@@ -34,10 +34,8 @@ class TweetInfoPage : IPage , Gtk.Box {
 
 
 
-  public TweetInfoPage (int id, MainWindow window, Account account) {
+  public TweetInfoPage (int id) {
     this.id = id;
-    this.account = account;
-    this.window = window;
   }
 
   public void on_join (int page_id, va_list args){
@@ -51,16 +49,18 @@ class TweetInfoPage : IPage , Gtk.Box {
     avatar_image.pixbuf = tweet.avatar;
     retweets_label.label = _("Retweets: ") + tweet.retweet_count.to_string ();
     favorites_label.label = _("Favorites: ") + tweet.favorite_count.to_string ();
+
+    if (tweet.reply_id != 0) {
+
+    }
   }
 
   public int get_id () {
     return id;
   }
 
-
   public void create_tool_button (Gtk.RadioToolButton? group) {
   }
-
 
   public Gtk.RadioToolButton? get_tool_button () {
     return null;

@@ -18,7 +18,7 @@
 using Gtk;
 
 // TODO: Add timeout that removes all entries after X seconds when switched away
-class SearchTimeline : IPage, ITimeline, Box {
+class SearchTimeline : IPage, Box {
   /** The unread count here is always zero */
   public int unread_count{
     get{return 0;}
@@ -27,7 +27,7 @@ class SearchTimeline : IPage, ITimeline, Box {
   public Account account {get; set;}
   protected uint tweet_remove_timeout{get;set;}
   private Entry search_entry    = new Entry();
-  public MainWindow main_window{set;get;}
+  public unowned MainWindow main_window{set;get;}
   protected int64 max_id{get;set; default = int64.MAX-2;}
   protected Gtk.ListBox tweet_list{set;get;}
   private int id;
@@ -73,17 +73,6 @@ class SearchTimeline : IPage, ITimeline, Box {
       search_for.begin(term, true);
   }
 
-  public void load_cached() {
-
-  }
-  public void load_newest() {
-
-  }
-  public void load_older () {
-
-  }
-  public void update () {}
-
   public async void search_for(string search_term, bool set_text = false){
     if(search_term.length == 0)
       return;
@@ -117,9 +106,8 @@ class SearchTimeline : IPage, ITimeline, Box {
         critical(" %s\nDATA:\n%s", e.message, back);
       }
       var statuses = parser.get_root().get_object().get_array_member("statuses");
-      LoaderThread loader_thread = new LoaderThread(statuses, account, 
-                                                    main_window,
-                                                    tweet_list);
+      LoaderThread loader_thread = new LoaderThread(statuses, account,
+                                                    tweet_list, main_window);
       loader_thread.run();
     });
   }
