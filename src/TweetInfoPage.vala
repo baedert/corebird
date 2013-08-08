@@ -55,6 +55,7 @@ class TweetInfoPage : IPage , Gtk.Box {
     if (tweet.reply_id != 0) {
 
     }
+    this.button_press_event.connect (button_pressed_event_cb);
   }
 
   public int get_id () {

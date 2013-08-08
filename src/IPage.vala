@@ -29,12 +29,12 @@ interface IPage : Gtk.Widget {
   protected bool button_pressed_event_cb (Gdk.EventButton evt) {// {{{
     if (evt.button == 9) {
       // Forward thumb button
-
+      main_window.switch_page (MainWindow.PAGE_NEXT);
 
       return true;
     } else if (evt.button == 8) {
       // backward thumb button
-
+      main_window.switch_page (MainWindow.PAGE_PREVIOUS);
 
       return true;
     }

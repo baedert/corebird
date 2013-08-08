@@ -30,6 +30,7 @@ class ProfilePage : IPage, ScrollWidget {
     this.main_window = window;
     this.id = id;
     this.add_with_viewport(profile_widget);
+    this.button_press_event.connect (button_pressed_event_cb);
   }
 
   /**

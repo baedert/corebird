@@ -36,8 +36,8 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
     tweet_list = new Gtk.ListBox();
     tweet_list.get_style_context().add_class("stream");
     tweet_list.set_selection_mode(SelectionMode.NONE);
-    this.add (tweet_list);
     tweet_list.set_sort_func(ITwitterItem.sort_func);
+    this.add (tweet_list);
 
 
     this.scrolled_to_end.connect(() => {
@@ -47,9 +47,8 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
       }
     });
 
-    this.scrolled_to_start.connect(() => {
-      handle_scrolled_to_start();
-    });
+    this.scrolled_to_start.connect(handle_scrolled_to_start);
+    this.button_press_event.connect (button_pressed_event_cb);
 
     this.vadjustment.notify["value"].connect(() => {
       mark_seen_on_scroll (vadjustment.value);

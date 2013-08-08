@@ -62,6 +62,7 @@ class SearchTimeline : IPage, Box {
     this.pack_start(result_scroller, true, true);
 
     tweet_list.set_sort_func(ITwitterItem.sort_func);
+    this.button_press_event.connect (button_pressed_event_cb);
   }
 
   /**
