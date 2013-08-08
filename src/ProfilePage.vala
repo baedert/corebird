@@ -32,15 +32,13 @@ class ProfilePage : IPage, ScrollWidget {
     this.add_with_viewport(profile_widget);
   }
 
-
-
-
-
   /**
    * see IPage#onJoin
    */
   public void on_join(int page_id, va_list arg_list) {
     int64 user_id = arg_list.arg();
+    if (user_id == 0)
+      return;
     profile_widget.set_user_id(user_id);
   }
 

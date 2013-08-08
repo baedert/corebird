@@ -40,6 +40,8 @@ class TweetInfoPage : IPage , Gtk.Box {
 
   public void on_join (int page_id, va_list args){
     Tweet tweet = args.arg ();
+    if (tweet == null)
+      return;
 
     GLib.DateTime created_at = new GLib.DateTime.from_unix_local (tweet.created_at);
     string time_format = created_at.format ("%x, %X");
