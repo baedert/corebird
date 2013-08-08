@@ -111,7 +111,7 @@ set (VALA_SOURCE
   src/widgets/ImageOverlay.vala
   src/widgets/AccountCreateWidget.vala
   src/widgets/AccountInfoWidget.vala
-  src/list/TweetListEntry2.vala
+  src/list/TweetListEntry.vala
   src/list/NewFollowerEntry.vala
   src/list/ProgressEntry.vala
   src/list/AccountListEntry.vala
