@@ -30,15 +30,17 @@ class ProfileWidget : Gtk.Box {
   private TextButton following_button = new TextButton();
   private TextButton followers_button = new TextButton();
   private ToggleButton follow_button  = new ToggleButton.with_label("Follow");
-  private Gd.Stack bottom_stack       = new Gd.Stack();
+  private Gtk.Stack bottom_stack      = new Gtk.Stack();
   private int active_page       = 0;
   private int64 user_id;
   private string screen_name;
   private MainWindow window;
+  private unowned Account account;
 
-  public ProfileWidget(MainWindow window){
+  public ProfileWidget(MainWindow window, Account account){
     GLib.Object(orientation: Orientation.VERTICAL);
     this.window = window;
+    this.account = account;
 
     bottom_stack.transition_duration = Settings.get_animation_duration();
 
@@ -105,78 +107,62 @@ class ProfileWidget : Gtk.Box {
   }
 
 
-  public void set_user_id(int64 user_id, string screen_name = ""){
-    if(user_id != 0 && screen_name != "") {
-      error("Can't use both user_id and screen_name.");
-    }
+  public void set_user_id(int64 user_id){
     this.user_id = user_id;
-    this.screen_name = screen_name;
 
     /* Load the profile data now, then - if available - set the cached data */
-    load_profile_data.begin(user_id, screen_name);
+    load_profile_data.begin(user_id);
 
     //Load cached data
     string query_string = "SELECT id, screen_name, name, description, tweets,
            following, followers, avatar_name, banner_url,
            url, location, following, is_following, banner_name
            FROM profiles ";
-    if(user_id != 0)
       query_string += @"WHERE id='$user_id';";
-    else
-      query_string += @"WHERE screen_name='$screen_name';";
 
-    SQLHeavy.Query cache_query = new SQLHeavy.Query(Corebird.db,
-                            query_string);
-    SQLHeavy.QueryResult cache_result = cache_query.execute();
-    if (!cache_result.finished){
-      /* If we get inside this block, there is already some data in the 
-        DB we can use. */
-      if(screen_name != "")
-        user_id = cache_result.fetch_int64(0);
+    try {
+      SQLHeavy.Query cache_query = new SQLHeavy.Query(Corebird.db,
+                              query_string);
+      SQLHeavy.QueryResult cache_result = cache_query.execute();
+      if (!cache_result.finished){
+        /* If we get inside this block, there is already some data in the
+          DB we can use. */
+        avatar_image.set_background(Utils.user_file(
+                     "/assets/avatars/"+cache_result.fetch_string(7)));
 
-      avatar_image.set_background(Utils.user_file(
-                   "/assets/avatars/"+cache_result.fetch_string(7)));
+        set_data(cache_result.fetch_string(2), cache_result.fetch_string(1),
+             cache_result.fetch_string(9), cache_result.fetch_string(10),
+             cache_result.fetch_string(3),
+             cache_result.fetch_int(4), cache_result.fetch_int(5),
+             cache_result.fetch_int(6));
+        follow_button.active = (cache_result.fetch_int(12) == 1);
+        string banner_name = cache_result.fetch_string(13);
+        debug("banner_name: %s", banner_name);
 
-      set_data(cache_result.fetch_string(2), cache_result.fetch_string(1),
-           cache_result.fetch_string(9), cache_result.fetch_string(10),
-           cache_result.fetch_string(3),
-           cache_result.fetch_int(4), cache_result.fetch_int(5),
-           cache_result.fetch_int(6));
-      follow_button.active = (cache_result.fetch_int(12) == 1);
-      string banner_name = cache_result.fetch_string(13);
-      debug("banner_name: %s", banner_name);
-
-      if(banner_name != null && 
-        FileUtils.test(Utils.user_file("assets/banners/"+banner_name), FileTest.EXISTS)){
-        debug("Banner exists, set it directly...");
-        banner_box.set_background(Utils.user_file(
-                      "assets/banners/"+banner_name));
-      }else{
-        // If the cached banner does somehow not exist, load it again.
-        debug("Banner %s does not exist, load it first...", banner_name);
-        load_banner.begin(user_id, Utils.user_file("assets/banners/"+banner_name),
-              screen_name);
+        if(banner_name != null &&
+          FileUtils.test(Utils.user_file("assets/banners/"+banner_name), FileTest.EXISTS)){
+          debug("Banner exists, set it directly...");
+          banner_box.set_background(Utils.user_file(
+                        "assets/banners/"+banner_name));
+        }else{
+          // If the cached banner does somehow not exist, load it again.
+          debug("Banner %s does not exist, load it first...", banner_name);
+          banner_box.set_background(DATADIR+"/no_banner.png");
+        }
+      }else {
         banner_box.set_background(DATADIR+"/no_banner.png");
       }
-    }else {
-      banner_box.set_background(DATADIR+"/no_banner.png");
-      load_banner.begin(user_id, "", screen_name);
+    } catch (SQLHeavy.Error e) {
+      critical (e.message);
     }
   }
 
 
-  private async void load_profile_data(int64 user_id, string screen_name = ""){
-    if(user_id != 0 && screen_name != "") {
-      error("Can't use both user_id and screen_name.");
-    }
-
-    var call = Twitter.proxy.new_call();
+  private async void load_profile_data(int64 user_id){
+    var call = account.proxy.new_call();
     call.set_method("GET");
     call.set_function("1.1/users/show.json");
-    if(user_id != 0)
-      call.add_param("user_id", user_id.to_string());
-    else
-      call.add_param("screen_name", screen_name);
+    call.add_param("user_id", user_id.to_string());
     call.invoke_async.begin(null, (obj, res) => {
       try{
         call.invoke_async.end (res);
@@ -194,26 +180,32 @@ class ProfileWidget : Gtk.Box {
       }
 
       var root = parser.get_root().get_object();
+      int64 id = root.get_int_member ("id");
+
       string avatar_url = root.get_string_member("profile_image_url");
-      avatar_url = avatar_url.replace("_normal", "");
+      avatar_url = avatar_url.replace("_normal", "_bigger");
       string avatar_name = Utils.get_avatar_name(avatar_url);
       string avatar_on_disk = Utils.user_file("assets/avatars/"+avatar_name);
 
       if(!FileUtils.test(avatar_on_disk, FileTest.EXISTS)){
-        Utils.download_file_async.begin(avatar_url, avatar_on_disk, 
+        Utils.download_file_async.begin(avatar_url, avatar_on_disk,
           () => {avatar_image.set_background(avatar_on_disk);});
       }else
         avatar_image.set_background(avatar_on_disk);
       string name        = root.get_string_member("name");
              screen_name = root.get_string_member("screen_name");
       string description = root.get_string_member("description").replace("&", "&amp;");
-      int64 id       = root.get_int_member("id");
       int followers      = (int)root.get_int_member("followers_count");
       int following      = (int)root.get_int_member("friends_count");
       int tweets         = (int)root.get_int_member("statuses_count");
       bool is_following  = root.get_boolean_member("following");
       bool has_url       = root.get_object_member("entities").has_member("url");
-      string banner_name = get_banner_name(user_id, screen_name);
+      string banner_name = get_banner_name(user_id);
+
+      if (root.has_member ("profile_banner_url")) {
+        string banner_base_url = root.get_string_member ("profile_banner_url");
+        load_profile_banner (banner_base_url, user_id, screen_name);
+      }
 
       string display_url = null;
       if(has_url) {
@@ -222,9 +214,9 @@ class ProfileWidget : Gtk.Box {
             .get_object();
 
         var url = urls_object.get_string_member("expanded_url");
-        if(urls_object.has_member("display_url")){
+        if (urls_object.has_member ("display_url")) {
           display_url = urls_object.get_string_member("expanded_url");
-        }else{
+        } else {
           url = urls_object.get_string_member("url");
           display_url = url;
         }
@@ -272,70 +264,30 @@ class ProfileWidget : Gtk.Box {
   /**
    * Loads the user's banner image.
    *
-   * @param user_id The user's ID
-   * @param saved_banner_url 
-   * @param screen_name
+   * @param base_url The "base url" of the banner, obtained from the users/show call from Twitter.
+   * @param user_id Foo
+   * @param screen_name Bar
    */
-  private async void load_banner(int64 user_id, string saved_banner_url,
-                                 string screen_name = ""){
-
-    var call = Twitter.proxy.new_call();
-    call.set_function("1.1/users/profile_banner.json");
-    call.set_method("GET");
-    message(@"id: $user_id, name: $screen_name");
-    if(user_id != 0)
-      call.add_param("user_id", user_id.to_string());
-    else
-      call.add_param("screen_name", screen_name);
-
-    call.invoke_async.begin(null, (obj, res) => {
-      if (call.get_status_code() == 404){
-        // Normal. The user has not set a profile banner.
-        message("No Banner set.");
-        return;
-      }
-
+  private void load_profile_banner (string base_url,
+                                    int64 user_id, string screen_name) {
+    string saved_banner_url = Utils.user_file ("assets/banners/"+get_banner_name (user_id));
+    string banner_url  = base_url+"/mobile_retina";
+    string banner_name = get_banner_name (user_id);
+    string banner_on_disk = Utils.user_file("assets/banners/"+banner_name);
+    if (!FileUtils.test (banner_on_disk, FileTest.EXISTS) || banner_url != saved_banner_url) {
+      Utils.download_file_async .begin (banner_url, banner_on_disk,
+          () => {banner_box.set_background (banner_on_disk);});
       try{
-        call.invoke_async.end (res);
-      } catch (GLib.Error e){
-        warning("Error while ending call(HTTP Code: %u): %s\nDATA:\n%s",
-                call.get_status_code(), e.message, call.get_payload());
-        return;
+        debug("Setting the banner name to %s", banner_name);
+        Corebird.db.execute(@"UPDATE `profiles` SET `banner_url`='$banner_url',
+            `banner_name`='$banner_name'
+            WHERE `id`='$user_id';");
+      } catch (GLib.Error ex) {
+        warning ("Error while setting banner: %s", ex.message);
       }
-
-      string back = call.get_payload();
-      Json.Parser parser = new Json.Parser();
-      try{
-        parser.load_from_data(back);
-      } catch (GLib.Error e){
-        warning ("Error while loading banner: %s\nDATA:%s\n", e.message, back);
-        return;
-      }
-
-      var root = parser.get_root().get_object().get_object_member("sizes");
-      string banner_url, banner_name;
-      banner_url = root.get_object_member("mobile_retina").get_string_member("url");
-      banner_name = get_banner_name(user_id, screen_name);
-
-      string banner_on_disk = Utils.user_file("assets/banners/"+banner_name);
-      if (!FileUtils.test(banner_on_disk, FileTest.EXISTS) ||
-            banner_url != saved_banner_url){
-
-        Utils.download_file_async.begin(banner_url, banner_on_disk,
-            () => {banner_box.set_background(banner_on_disk);});
-        try{
-          debug("Setting the banner name to %s", banner_name);
-          Corebird.db.execute(@"UPDATE `profiles` SET `banner_url`='$banner_url',
-                              `banner_name`='$banner_name'
-                              WHERE `id`='$user_id';");
-        } catch (GLib.Error ex) {
-          warning ("Error while setting banner: %s", ex.message);
-        }
-      }else
-        // If the user's banner on the server is the same as the cached one AND
-        // it exists on disk, we just use that.
-        banner_box.set_background(banner_on_disk);
-    });
+    } else {
+      banner_box.set_background (banner_on_disk);
+    }
   }
 
 
@@ -345,7 +297,8 @@ class ProfileWidget : Gtk.Box {
 
     name_label.set_markup("<big><big><b>%s</b>  @%s</big></big>"
                           .printf(name, screen_name));
-    string d = Tweet.replace_links(description);
+//    string d = Tweet.replace_links(description);
+    string d = ""; // TODO: Use blablabla
     description_label.set_markup("<big><big><big>%s</big></big></big>".printf(d));
     tweets_button.set_markup(
       "<big><big><b>%'d</b></big></big>\nTweets"
@@ -378,7 +331,7 @@ class ProfileWidget : Gtk.Box {
   private void toggle_follow() {
     // TODO: Don't automatically call this whenever the user opens a profile…
     bool value = follow_button.active;
-    var call = Twitter.proxy.new_call();
+    var call = account.proxy.new_call();
     if(value)
       call.set_function("1.1/friendships/create.json");
     else
@@ -398,10 +351,12 @@ class ProfileWidget : Gtk.Box {
     });
   }
 
-  private string get_banner_name(int64 user_id, string screen_name) {
-    if(user_id != 0)
-      return user_id.to_string()+".png";
-    return screen_name+".png";
+  /*
+   * Returns the banner name for the given user by user_id and screen_name.
+   * This is useful since both of them might be used for the banner name.
+   */
+  private string get_banner_name(int64 user_id) {
+    return user_id.to_string()+".png";
   }
 
   private bool handle_uri(string uri){
@@ -410,8 +365,7 @@ class ProfileWidget : Gtk.Box {
 
     if(uri.has_prefix("@")){
       window.switch_page(MainWindow.PAGE_PROFILE,
-                         ProfilePage.BY_NAME,
-                         term);
+                         int64.parse (term));
       return true;
     }else if(uri.has_prefix("#")){
       window.switch_page(MainWindow.PAGE_SEARCH, uri);
@@ -419,7 +373,7 @@ class ProfileWidget : Gtk.Box {
     }
     return false;
   }
-  
+
   /**
    * Switch the page to the one with the given ID
    * @param page The page to switch to
@@ -429,9 +383,9 @@ class ProfileWidget : Gtk.Box {
       return;
 
     if(page > active_page)
-      bottom_stack.transition_type = Gd.Stack.TransitionType.SLIDE_LEFT;
+      bottom_stack.transition_type = StackTransitionType.SLIDE_LEFT;
     else
-      bottom_stack.transition_type = Gd.Stack.TransitionType.SLIDE_RIGHT;
+      bottom_stack.transition_type = StackTransitionType.SLIDE_RIGHT;
 
     bottom_stack.set_visible_child_name("%d".printf(page));
   }

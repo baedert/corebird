@@ -20,287 +20,230 @@
 
 
 class MainWindow : ApplicationWindow {
-	public static const int PAGE_STREAM    = 0;
-	public static const int PAGE_MENTIONS  = 1;
-	public static const int PAGE_SEARCH    = 2;
-	// public static const int PAGE_FAVORITES = 2;
+  public static const int PAGE_STREAM     = 0;
+  public static const int PAGE_MENTIONS   = 1;
+  public static const int PAGE_SEARCH     = 2;
+  public static const int PAGE_PROFILE    = 3;
+  public static const int PAGE_TWEET_INFO = 4;
 
-	public static const int PAGE_PROFILE   = 3;
+  public static const int PAGE_PREVIOUS   = 1024;
+  public static const int PAGE_NEXT       = 2048;
 
 
 
-	private Toolbar left_toolbar             = new Toolbar();
-	private Toolbar primary_toolbar          = new Toolbar();
-	private Box main_box                     = new Box(Orientation.VERTICAL, 0);
-	private Box bottom_box                   = new Box(Orientation.HORIZONTAL, 0);
-	private RadioToolButton dummy_button	   = new RadioToolButton(null);
-	private ITimeline[] timelines			       = new ITimeline[3];
-	private IPage[] pages 				           = new IPage[1];
-	private int active_page                  = 0;
-	private int last_page				             = 0;
-	private ToolButton avatar_button         = new ToolButton(null, null);
-	private ToolButton settings_button       = new ToolButton.from_stock(Stock.PROPERTIES);
-	private ToolButton new_tweet_button      = new ToolButton.from_stock(Stock.NEW);
-	private SeparatorToolItem expander_item  = new SeparatorToolItem();
-	private SeparatorToolItem left_separator = new SeparatorToolItem();
-	private Gd.Stack stack = new Gd.Stack();
+  private Toolbar left_toolbar             = new Toolbar();
+  private Box main_box                     = new Box(Orientation.HORIZONTAL, 0);
+  private RadioToolButton dummy_button     = new RadioToolButton(null);
+  private IPage[] pages                    = new IPage[5];
+  private IntHistory history               = new IntHistory (5);
+  private Button avatar_button             = new Button();
+  private Button new_tweet_button          = new Button ();
+  private Gtk.Stack stack                  = new Gtk.Stack();
+  public unowned Account account {public get; private set;}
 
-	public MainWindow(Gtk.Application app){
-		GLib.Object (application: app);
+  public MainWindow(Gtk.Application app, Account? account = null){
+    GLib.Object (application: app);
+    set_default_size (480, 700);
     this.set_icon_name("corebird");
+    this.destroy.connect (window_destroy_cb);
+    this.account = account;
 
-		stack.transition_duration = Settings.get_animation_duration();
-		stack.transition_type = Gd.Stack.TransitionType.SLIDE_RIGHT;
+    if (account != null) {
+      this.set_title ("Corebird(@%s)".printf (account.screen_name));
+      this.set_role ("corebird-"+account.screen_name);
+      var acc_menu = (GLib.Menu)Corebird.account_menu;
+      for (int i = 0; i < acc_menu.get_n_items (); i++){
+        Variant item_name = acc_menu.get_item_attribute_value (i,
+                                         "label", VariantType.STRING);
+        if (item_name.get_string () == "@"+account.screen_name){
+          ((SimpleAction)app.lookup_action("show-"+account.screen_name)).set_enabled(false);
+          break;
+        }
+      }
+      account.user_stream.start ();
+    } else {
+      warning ("account == NULL");
+      return;
+    }
 
-		timelines[0] = new HomeTimeline(PAGE_STREAM);
-		timelines[1] = new MentionsTimeline(PAGE_MENTIONS);
-		timelines[2] = new SearchTimeline(PAGE_SEARCH);
-		// timelines[2] = new FavoriteContainer(PAGE_FAVORITES);
+    var f = new Gtk.HeaderBar ();
+    f.set_title ("Corebird");
+    f.set_subtitle ("@"+account.screen_name);
+    f.set_show_close_button (true);
+    f.pack_start (avatar_button);
+    new_tweet_button.get_style_context ().add_class ("image_button");
+    f.pack_start (new_tweet_button);
+    this.set_titlebar(f);
+
+    stack.transition_duration = Settings.get_animation_duration();
+    stack.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
+
+    pages[0] = new HomeTimeline(PAGE_STREAM);
+    pages[1] = new MentionsTimeline(PAGE_MENTIONS);
+    pages[2] = new SearchTimeline(PAGE_SEARCH);
+    pages[3] = new ProfilePage (PAGE_PROFILE, this, account);
+    pages[4] = new TweetInfoPage (PAGE_TWEET_INFO);
+
+    /* Initialize all containers */
+    for (int i = 0; i < pages.length; i++) {
+      IPage page = pages[i];
+      page.main_window = this;
+      page.account = account;
+
+      if (page is IMessageReceiver)
+        account.user_stream.register ((IMessageReceiver)page);
+
+      page.create_tool_button (dummy_button);
+      stack.add_named (page, page.get_id ().to_string ());
+      if (page.get_tool_button () != null) {
+        left_toolbar.add (page.get_tool_button ());
+        page.get_tool_button ().toggled.connect (() => {
+          if (page.get_tool_button ().active){
+            switch_page (page.get_id ());
+          }
+        });
+      }
 
 
-		/* Initialize all containers */
-		for(int i = 0; i < timelines.length; i++){
-			ITimeline tl = timelines[i];
-			if(!(tl is IPage))
-				break;
+      if (!(page is ITimeline))
+        continue;
 
+      ITimeline tl = (ITimeline)page;
 
-			tl.main_window = this;
-			tl.load_cached();
-			tl.load_newest();
-			tl.create_tool_button(dummy_button);
-			tl.get_tool_button().toggled.connect(() => {
-				if(tl.get_tool_button().active){
-					switch_page(tl.get_id());
-				}
-			});
-		}
-		// Activate the first timeline
-		timelines[0].get_tool_button().active = true;
+      tl.load_cached ();
+      tl.load_newest ();
+    }
 
-		//Setup additional pages
-		pages[0] = new ProfilePage(PAGE_PROFILE, this);
+    if (!Gtk.Settings.get_default ().gtk_shell_shows_app_menu) {
+      MenuButton app_menu_button = new MenuButton ();
+      app_menu_button.image = new Gtk.Image.from_icon_name ("emblem-system-symbolic", IconSize.MENU);
+      app_menu_button.get_style_context ().add_class ("image-button");
+      app_menu_button.menu_model = this.application.app_menu;
+      f.pack_end (app_menu_button);
+      this.show_menubar = false;
+    }
 
-		// Start userstream
-		UserStream.get().start();
-
-		// Set up the actions
-		SimpleAction new_tweet_action = new SimpleAction("compose-tweet", null);
-		new_tweet_action.activate.connect(() => {
-			ComposeTweetWindow win = new ComposeTweetWindow(this, null, app);
-			win.show_all();
-		});
-		this.get_application().add_action(new_tweet_action);
-    var about_dialog_action = new SimpleAction("show-about-dialog", null);
-    about_dialog_action.activate.connect(() => {
-      var b = new Gtk.Builder();
-      b.add_from_file(DATADIR+"/ui/about-dialog.ui");
-      Gtk.AboutDialog ad = b.get_object("about-dialog") as Gtk.AboutDialog;
-      ad.show();
+    new_tweet_button.always_show_image = true;
+    new_tweet_button.relief = ReliefStyle.NONE;
+    new_tweet_button.image = new Gtk.Image.from_icon_name ("document-new", IconSize.MENU);
+    new_tweet_button.clicked.connect( () => {
+      var cw = new ComposeTweetWindow(this, account, null, get_application ());
+      cw.show();
     });
-    this.get_application().add_action(about_dialog_action);
-		var quit_action = new SimpleAction("quit", null);
-		quit_action.activate.connect(() => {
-        this.get_application().release();
-		});
-		this.get_application().add_action(quit_action);
+
+    left_toolbar.orientation = Orientation.VERTICAL;
+    left_toolbar.set_style (ToolbarStyle.ICONS);
+
+    account.load_avatar ();
+    avatar_button.set_image (new Image.from_pixbuf (account.avatar_small));
+    avatar_button.relief = ReliefStyle.NONE;
+    account.notify["avatar_small"].connect(() => {
+      avatar_button.set_image (new Image.from_pixbuf (account.avatar_small));
+    });
+    avatar_button.clicked.connect( () => {
+        message("IMPLEMENT: Show account switcher");
+    });
+
+    main_box.pack_start(left_toolbar, false, false);
+    main_box.pack_start (stack, true, true);
+
+    add_accels();
+
+    this.add(main_box);
+    this.show_all();
+
+    // Activate the first timeline
+    this.switch_page (0);
+  }
+
+  /**
+   * Adds the accelerators to the GtkWindow
+   */
+  private void add_accels() {
+    AccelGroup ag = new AccelGroup();
+    ag.connect (Gdk.Key.@1, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
+        () => {switch_page(0);return true;});
+    ag.connect (Gdk.Key.@2, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
+        () => {switch_page(1);return true;});
+    ag.connect (Gdk.Key.@3, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
+        () => {switch_page(2);return true;});
+    ag.connect (Gdk.Key.Left, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
+        () => {switch_page (PAGE_PREVIOUS); return true;});
+    ag.connect (Gdk.Key.Right, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
+        () => {switch_page (PAGE_NEXT); return true;});
 
 
+    this.add_accel_group(ag);
+  }
 
-		new_tweet_button.clicked.connect( () => {
-			this.get_application().lookup_action("compose-tweet").activate(null);
-		});
+  /**
+   * Switches the window's main notebook to the given page.
+   *
+   * @param page_id The id of the page to switch to.
+   *                See the PAGE_* constants.
+   * @param ... The parameters to pass to the page
+   */
+  public void switch_page (int page_id, ...) {
+    debug ("Switching from %d to %d", history.current, page_id);
+    if (page_id == history.current)
+     return;
 
+    bool push = true;
 
+    if (page_id == PAGE_PREVIOUS) {
+      page_id = history.back ();
+      push = false;
+    } else if (page_id == PAGE_NEXT) {
+      page_id = history.forward ();
+      push = false;
+    }
 
-		left_toolbar.orientation = Orientation.VERTICAL;
-		left_toolbar.set_style(ToolbarStyle.ICONS);
+    if (page_id == -1)
+      return;
 
-		primary_toolbar.orientation = Orientation.HORIZONTAL;
-		primary_toolbar.set_style(ToolbarStyle.ICONS);
-		primary_toolbar.get_style_context().add_class("primary-toolbar");
-		primary_toolbar.set_visible(true);
+    if (page_id > history.current)
+      stack.transition_type = StackTransitionType.SLIDE_LEFT;
+    else
+      stack.transition_type = StackTransitionType.SLIDE_RIGHT;
 
-
-		expander_item.draw = false;
-		expander_item.set_expand(true);
-
-
-		avatar_button.set_icon_widget(new Image.from_file(User.get_avatar_path()));
-		avatar_button.clicked.connect( () => {
-//			ProfileDialog pd = new ProfileDialog();
-//			pd.show_all();
-		});
-
-		//Update the user's info
-		User.update_info.begin((Image)avatar_button.icon_widget);
-
-		// Add all tool buttons for the timelines
-		foreach(var tl in timelines) {
-			if(tl.get_tool_button() != null)
-				left_toolbar.add(tl.get_tool_button());
-
-			stack.add_named(tl, "%d".printf(tl.get_id()));
-		}
-
-
-		foreach(var page in pages){
-			stack.add_named(page, "%d".printf(page.get_id()));
-		}
-
-		settings_button.clicked.connect( () => {
-			SettingsDialog sd = new SettingsDialog(this);
-			sd.show_all();
-		});
-		bottom_box.pack_start(left_toolbar, false, false);
-
-		if (Settings.show_primary_toolbar()){
-			main_box.pack_start(primary_toolbar, false, false);
-			setup_primary_toolbar();
-		}else{
-			setup_left_toolbar();
-		}
-
-		bottom_box.pack_start (stack, true, true);
-		main_box.pack_end(bottom_box, true, true);
-
-		add_accels();
-
-		this.add(main_box);
-		this.load_geometry();
-		this.show_all();
-	}
-
-	/**
-	 * Adds the accelerators to the GtkWindow
-	 */
-	private void add_accels() {
-		AccelGroup ag = new AccelGroup();
-		ag.connect(Gdk.Key.@1, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
-			() => {switch_page(0);return true;});
-		ag.connect(Gdk.Key.@2, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
-			() => {switch_page(1);return true;});
-		ag.connect(Gdk.Key.@3, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
-			() => {switch_page(2);return true;});
+    if (push)
+      history.push (page_id);
 
 
-		this.add_accel_group(ag);
-	}
-	
+    IPage page = pages[page_id];
+    if (page.get_tool_button () != null)
+      page.get_tool_button().active = true;
 
-	/**
-	 * Adds/inserts the widgets into the left toolbar.
-	 */
-	private void setup_left_toolbar(){
-		left_toolbar.get_style_context().remove_class("sidebar");
-		left_toolbar.get_style_context().add_class("primary-toolbar");
+    page.on_join (page_id, va_list ());
+    stack.set_visible_child_name ("%d".printf (page_id));
+  }
 
-		left_toolbar.insert(avatar_button, 0);
-		left_toolbar.insert(new_tweet_button, 1);
-		left_toolbar.insert(left_separator, 2);
-		left_toolbar.add(expander_item);
-		left_toolbar.add(settings_button);
-	}
+  /**
+    *
+    *
+    */
+  private void window_destroy_cb() {
+    unowned GLib.List<weak Window> ws = this.application.get_windows ();
+    message("Windows: %u", ws.length ());
 
-	/**
-	 * Adds/inserts the widgets into the primary toolbar
-	 */
-	private void setup_primary_toolbar(){
-		primary_toolbar.add(avatar_button);
-		primary_toolbar.add(new_tweet_button);
-		primary_toolbar.add(expander_item);
-		primary_toolbar.add(settings_button);
-		//Make the left toolbar a sidebar
-		left_toolbar.get_style_context().remove_class("primary-toolbar");
-		left_toolbar.get_style_context().add_class("sidebar");
-	}
+    // Enable the account's entry in the app menu again
+    var acc_menu = (GLib.Menu)Corebird.account_menu;
+    for (int i = 0; i < acc_menu.get_n_items (); i++){
+      Variant item_name = acc_menu.get_item_attribute_value (i,
+                                       "label", VariantType.STRING);
+      if (item_name.get_string () == "@"+account.screen_name){
+        ((SimpleAction)this.application.lookup_action("show-"+account.screen_name)).set_enabled(true);
+        break;
+      }
+    }
 
-	public void set_show_primary_toolbar(bool show_primary_toolbar){
-		// We just ASSUME that this value only toggles and that 2 subsequent calls
-		// NEVER have the same value of show_primary_toolbar.
-		if(show_primary_toolbar){
-			main_box.pack_start(primary_toolbar, false, false);
-			//Remove widgets
-			left_toolbar.remove(avatar_button);
-			left_toolbar.remove(settings_button);
-			left_toolbar.remove(new_tweet_button);
-			left_toolbar.remove(expander_item);
-			left_toolbar.remove(left_separator);
-			//Add them again
-			setup_primary_toolbar();
-		}else{
-			main_box.remove(primary_toolbar);
-			//Remove widgets
-			primary_toolbar.remove(avatar_button);
-			primary_toolbar.remove(new_tweet_button);
-			primary_toolbar.remove(expander_item);
-			primary_toolbar.remove(settings_button);
-			//add them again
-			setup_left_toolbar();
-		}
-	}
+    if (ws.length () == 1) {
+      // This is the last window so we save this one anyways...
+      string[] startup_accounts = new string[1];
+      startup_accounts[0] = ((MainWindow)ws.nth_data (0)).account.screen_name;
+      Settings.get ().set_strv ("startup-accounts", startup_accounts);
+      message ("Saving the account %s", ((MainWindow)ws.nth_data (0)).account.screen_name);
+    }
 
-	private void save_geometry(){
-		int x, y, w, h;
-		this.get_size(out w, out h);
-		this.get_position(out x, out y);
-		Settings.set_string("main-window-geometry", "%d,%d,%d,%d".printf(x,
-		                    y, w, h));
-	}
-
-	private void load_geometry(){
-		// TODO: Use gtk_window_parse_geometry
-		string geometry_str = Settings.get_string("main-window-geometry");
-		string[] parts 		= geometry_str.split(",");
-		int x      = int.parse(parts[0]);
-		int y      = int.parse(parts[1]);
-		int width  = int.parse(parts[2]);
-		int height = int.parse(parts[3]);
-		this.move(x, y);
-		this.resize(width, height);
-	}
-
-
-
-	/**
-	 * Switches the window's main notebook to the given page.
-	 *
-	 * @param page_id The id of the page to switch to.
-	 *                See the PAGE_* constants.
-	 * @param ... The parameters to pass to the page
-	 */
-	public void switch_page(int page_id, ...){
-		if(page_id == active_page)
-			return;
-
-		debug("switching page from %d to %d", active_page, page_id);
-
-
-		if(page_id > active_page)
-			stack.transition_type = Gd.Stack.TransitionType.SLIDE_LEFT;
-		else
-			stack.transition_type = Gd.Stack.TransitionType.SLIDE_RIGHT;
-
-		this.last_page   = this.active_page;
-		this.active_page = page_id;
-
-
-		IPage page = timelines[0];
-		if(page_id < timelines.length){
-			page = timelines[page_id];
-			page.get_tool_button().active = true;
-		}else{
-			page = pages[page_id - timelines.length];
-			dummy_button.active = true;
-		}
-
-
-		page.on_join(page_id, va_list());
-		stack.set_visible_child_name("%d".printf(page_id));
-	}
-
-	public void show_again() {
-		this.load_geometry();
-		this.set_visible(true);
-	}
+  }
 }

@@ -14,23 +14,25 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 using Gtk;
-
-class TweetListEntry : ITwitterItem, Gtk.EventBox {
+// TODO: Try to port this to Gtk templates
+class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   public int64 sort_factor{
     get{ return timestamp; }
   }
   private static GLib.Regex? hashtag_regex = null;
   private static GLib.Regex? user_regex    = null;
   private ImageOverlay avatar          = new ImageOverlay();
-  private Label text                   = new Label("");
+  private Label text                   = new Label ("");
   private TextButton author_button;
-  private Label screen_name            = new Label("");
-  private Label time_delta             = new Label("");
-  private InvisibilityBin rt_bin     = new InvisibilityBin();
-  private ToggleButton retweet_button  = new ToggleButton();
-  private ToggleButton favorite_button = new ToggleButton();
-  private Box text_box         = new Box(Orientation.HORIZONTAL, 3);
-  private unowned  MainWindow window;
+  private Label screen_name            = new Label ("");
+  private Label time_delta             = new Label ("");
+  private InvisibilityBin rt_bin       = new InvisibilityBin ();
+  private ToggleButton retweet_button  = new ToggleButton ();
+  private ToggleButton favorite_button = new ToggleButton ();
+  private Box text_box                 = new Box (Orientation.HORIZONTAL, 3);
+  private Revealer reply_revealer      = new Revealer ();
+  private Entry reply_entry            = new Entry ();
+  private unowned MainWindow window;
   private Gtk.Menu more_menu;
   private Gtk.Button more_button;
   // Timestamp used for sorting
@@ -40,12 +42,14 @@ class TweetListEntry : ITwitterItem, Gtk.EventBox {
   public bool seen{get;set; default=true;}
   private Gtk.Box box = new Box(Orientation.HORIZONTAL, 5);
   private bool is_user_tweet = false;
+  private unowned Account account;
 
 
-  public TweetListEntry(Tweet tweet, MainWindow? window){
+  public TweetListEntry(Tweet tweet, MainWindow? window, Account acc){
     this.window  = window;
     this.vexpand = false;
     this.hexpand = false;
+    this.account = acc;
 
 
     if (hashtag_regex == null){
@@ -76,44 +80,44 @@ class TweetListEntry : ITwitterItem, Gtk.EventBox {
 
 
 
-    if (tweet.screen_name == User.screen_name){
+    if (tweet.screen_name == account.screen_name){
       get_style_context().add_class("user-tweet");
       is_user_tweet = true;
     }
 
-
-    this.enter_notify_event.connect( (evt)=> {
-      if(is_user_tweet)
-        return false;
-      // message("ENTER Detail: %d", evt.detail);
-
-      // message("---------------------\n");
-    //  message("enter(%d)", evt.detail);
-      favorite_button.show();
-      //rt_bin.show();
-      rt_bin.show_child();
-
-      //retweet_button.show();
-      more_button.show();
-      return false;
-    });
-    this.leave_notify_event.connect( (evt) => {
-      // message("LEAVE Detail: %d", evt.detail);
-      // message("---------------------\n");
-    //  message("leave(%d)", evt.detail);
-      if(evt.detail == 2)
-        return true;
-
-      if(!favorite_button.active)
-        favorite_button.hide();
-      if(!retweet_button.active)
-        rt_bin.hide_child();
-        //retweet_button.hide();
-      more_button.hide();
-
-      return false;
+    this.state_flags_changed.connect ((previous) => {
+      Gtk.StateFlags flags = this.get_state_flags ();
+      bool buttons_visible = (bool)(flags & (StateFlags.PRELIGHT | StateFlags.SELECTED));
+      toggle_button_visibility (buttons_visible);
     });
 
+
+
+    //TODO When retweeting a tweet via shortcut, the RT button does not get immediately shown.
+    this.key_release_event.connect ((evt) => {
+      switch (evt.keyval) {
+        case Gdk.Key.t:
+          retweet_button.active = !retweet_button.active; // calls toggled ()
+          return false;
+        case Gdk.Key.r:
+          reply_revealer.reveal_child = !reply_revealer.reveal_child;
+          reply_entry.grab_focus ();
+          return false;
+        case Gdk.Key.f:
+          favorite_button.active = !favorite_button.active; // calls toggled ()
+          return false;
+        case Gdk.Key.Escape:
+          reply_revealer.set_reveal_child (false);
+          return false;
+      }
+      return true;
+    });
+/*    this.button_press_event.connect( (evt) => {
+      if (evt.type == Gdk.EventType.@2BUTTON_PRESS) {
+        message ("Implement inline replies");
+      }
+      return true;
+    });*/
 
 
     var left_box = new Box(Orientation.VERTICAL, 3);
@@ -124,13 +128,15 @@ class TweetListEntry : ITwitterItem, Gtk.EventBox {
     left_box.pack_start(avatar, false, false);
 
     var status_box = new Box(Orientation.HORIZONTAL, 3);
-    retweet_button.get_style_context().add_class("retweet-button");
-    retweet_button.active = tweet.retweeted;
-    if(!tweet.retweeted)
-      retweet_button.no_show_all = true;
-    retweet_button.set_tooltip_text("Retweet");
-    retweet_button.toggled.connect(retweet_tweet);
-    rt_bin.add(retweet_button);
+    if (account.id != tweet.user_id) {
+      retweet_button.get_style_context().add_class("retweet-button");
+      retweet_button.active = tweet.retweeted;
+      if(!tweet.retweeted)
+        retweet_button.no_show_all = true;
+      retweet_button.set_tooltip_text("Retweet");
+      retweet_button.toggled.connect(retweet_tweet);
+      rt_bin.add(retweet_button);
+    }
     status_box.pack_start(rt_bin, false, false);
 
     favorite_button.get_style_context().add_class("favorite-button");
@@ -193,12 +199,16 @@ class TweetListEntry : ITwitterItem, Gtk.EventBox {
     }
 
 
-      // Also set User/Hashtag links
-      string display_text = tweet.text;
+    // Also set User/Hashtag links
+    string display_text = tweet.text;
+    try {
       display_text = user_regex.replace(display_text, display_text.length, 0,
                                         "<a href='\\0'>\\0</a>");
       display_text = hashtag_regex.replace(display_text, display_text.length, 0,
                                            "<a href='\\0'>\\0</a>");
+    } catch (GLib.RegexError e) {
+      warning (e.message);
+    }
     display_text = Tweet.replace_links(display_text);
     text.label = display_text;
     text.set_use_markup(true);
@@ -235,13 +245,47 @@ class TweetListEntry : ITwitterItem, Gtk.EventBox {
 
     DeltaUpdater.get().add(this);
 
+
+    var reply_box = new Gtk.Box (Orientation.HORIZONTAL, 5);
+    reply_entry.text = "@"+tweet.screen_name;
+    reply_entry.key_release_event.connect ((evt) => {
+      if (evt.keyval != Gdk.Key.Return) return true;
+      string text = reply_entry.text;
+      if (text.strip().length > 0){
+        var call = account.proxy.new_call ();
+        call.set_function ("1.1/statuses/update.json");
+        call.set_method ("POST");
+        call.add_param ("in_reply_to_status_id", tweet.id.to_string ());
+        call.add_param ("status", text);
+        call.invoke_async.begin (null, () => {
+          reply_revealer.reveal_child = false;
+        });
+      }
+      return true;
+    });
+    reply_box.pack_start (reply_entry, true, true);
+
+    reply_revealer.add (reply_box);
+    reply_revealer.transition_type = RevealerTransitionType.SLIDE_DOWN;
+    reply_revealer.get_style_context ().add_class ("primary-toolbar");
+    reply_box.get_style_context ().add_class ("primary-toolbar");
+
     this.set_size_request(20, 80);
-    this.add(box);
+    var revealer_box = new Gtk.Box (Orientation.VERTICAL, 4);
+    revealer_box.pack_start (box, true,true);
+    revealer_box.pack_end (reply_revealer, false, false);
+    this.add (revealer_box);
+//    this.add(box);
     this.show_all();
   }
 
   private void add_inline_media(Box box) {
-    var pic = new Gdk.Pixbuf.from_file(tweet.media_thumb);
+    Gdk.Pixbuf pic = null;
+    try {
+      pic = new Gdk.Pixbuf.from_file(tweet.media_thumb);
+    } catch (GLib.Error e) {
+      critical (e.message);
+    }
     var media_button = new ImageButton();
     media_button.set_bg(pic);
     media_button.visible = true;
@@ -277,7 +321,7 @@ class TweetListEntry : ITwitterItem, Gtk.EventBox {
     spinner.start();
     WidgetReplacer.replace_tmp(favorite_button, spinner);
 
-    var call = Twitter.proxy.new_call();
+    var call = account.proxy.new_call();
     if(favorite_button.active)
       call.set_function("1.1/favorites/create.json");
     else
@@ -290,31 +334,25 @@ class TweetListEntry : ITwitterItem, Gtk.EventBox {
       } catch (GLib.Error e) {
         critical(e.message);
       }
-
-      try{
-        Corebird.db.execute(@"UPDATE `cache` SET `favorited`='%d'
-                            WHERE `id`='$tweet_id';"
-                            .printf(favorite_button.active ? 1 : 0));
-      } catch(SQLHeavy.Error e) {
-        critical(e.message);
-      }
       WidgetReplacer.replace_tmp_back(favorite_button);
     });
   }
 
   /**
-   * (Un)retweets the tweet that is saved in this ListEntry.
+   * Retweets the tweet if the 
    */
   private void retweet_tweet() {
+    // You can't retweet your own tweets.
+    if (account.id == this.tweet.user_id)
+      return;
     var spinner = new Spinner();
     spinner.start();
     WidgetReplacer.replace_tmp(retweet_button, spinner);
 
-    var call = Twitter.proxy.new_call();
+    var call = account.proxy.new_call();
     call.set_method("POST");
-
     if(retweet_button.active) {
-      call.set_function(@"1.1/statuses/retweet/$tweet_id.json");
+      call.set_function(@"1.1/statuses/retweet/$(tweet.id).json");
       call.invoke_async.begin(null, (obj, res) => {
         try{
           call.invoke_async.end(res);
@@ -330,32 +368,16 @@ class TweetListEntry : ITwitterItem, Gtk.EventBox {
           critical(back);
         }
         int64 new_id = parser.get_root().get_object().get_int_member("id");
-
-        try{
-          Corebird.db.execute(@"UPDATE `cache` SET `retweeted`='1',
-                              `rt_id`='$new_id'
-                              WHERE `id`='$tweet_id';");
-
-        }catch (SQLHeavy.Error e) {
-          critical(e.message);
-        }
         tweet.rt_id = new_id;
         WidgetReplacer.replace_tmp_back(retweet_button);
       });
     } else {
-      call.set_function("1.1/statuses/destroy/%s.json"
-                        .printf(tweet.rt_id.to_string()));
+      call.set_function(@"1.1/statuses/destroy/$(tweet.rt_id).json");
       call.invoke_async.begin(null, (obj, res) => {
         try {
           call.invoke_async.end(res);
         } catch (GLib.Error e) {
           Utils.show_error_dialog(e.message);
-          critical(e.message);
-        }
-        try{
-          Corebird.db.execute(@"UPDATE `cache` SET `retweeted`='0'
-                              WHERE `id`='$tweet_id';");
-        }catch (SQLHeavy.Error e) {
           critical(e.message);
         }
         WidgetReplacer.replace_tmp_back(retweet_button);
@@ -418,9 +440,9 @@ class TweetListEntry : ITwitterItem, Gtk.EventBox {
 
     Gtk.MenuItem reply_item = new Gtk.MenuItem.with_label("Reply");
     reply_item.activate.connect(() => {
-      var compose_win = new ComposeTweetWindow(window, tweet,
-                                               window.get_application());
-      compose_win.show_all();
+//      var compose_win = new ComposeTweetWindow(window, acc, tweet,
+//                                               window.get_application());
+//      compose_win.show_all();
     });
     more_menu.add(reply_item);
     Gtk.MenuItem details_item = new Gtk.MenuItem.with_label("Details");
@@ -428,6 +450,22 @@ class TweetListEntry : ITwitterItem, Gtk.EventBox {
 
     more_menu.show_all();
   }
+
+  private void toggle_button_visibility (bool visible) {
+    if (visible) {
+      favorite_button.show();
+      if (account.id != tweet.user_id)
+        rt_bin.show_child();
+      more_button.show();
+    } else {
+      if(!favorite_button.active)
+        favorite_button.hide();
+      if(!retweet_button.active && account.id != tweet.user_id)
+        rt_bin.hide_child();
+      more_button.hide();
+    }
+  }
+
 
 
 }

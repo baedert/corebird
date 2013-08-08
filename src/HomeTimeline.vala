@@ -15,14 +15,15 @@
  */
 using Gtk;
 
-class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
-  public int unread_count{get;set;}
-  protected int64 max_id{
-    get {return lowest_id;}
-    set {lowest_id = value;}
+class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
+  public int unread_count { get;set; }
+  protected int64 max_id {
+    get { return lowest_id; }
+    set { lowest_id = value; }
   }
-  public MainWindow main_window{set;get;}
-  protected Egg.ListBox tweet_list{set;get;}
+  public unowned MainWindow main_window {set; get;}
+  protected Gtk.ListBox tweet_list {set; get;}
+  public Account account {get; set;}
   private int id;
   private BadgeRadioToolButton tool_button;
   private bool loading = false;
@@ -30,54 +31,59 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
   protected uint tweet_remove_timeout{get;set;}
   private ProgressEntry progress_entry = new ProgressEntry(75);
 
-  public HomeTimeline(int id){
+  public HomeTimeline(int id) {
     this.id = id;
-    tweet_list = new Egg.ListBox();
+    tweet_list = new Gtk.ListBox();
     tweet_list.get_style_context().add_class("stream");
     tweet_list.set_selection_mode(SelectionMode.NONE);
-    tweet_list.add_to_scrolled(this);
     tweet_list.set_sort_func (ITwitterItem.sort_func);
+    this.add (tweet_list);
 
-
-    this.scrolled_to_end.connect(() => {
-      if(!loading) {
+    this.scrolled_to_end.connect (() => {
+      if (!loading) {
         loading = true;
         load_older();
       }
     });
 
-    this.scrolled_to_start.connect(() => {
-      handle_scrolled_to_start();
-    });
+    this.scrolled_to_start.connect (handle_scrolled_to_start);
+    this.button_press_event.connect (button_pressed_event_cb);
 
-    this.vadjustment.notify["value"].connect(() => {
+    this.vadjustment.notify["value"].connect (() => {
       mark_seen_on_scroll (vadjustment.value);
-      update_unread_count();
+      update_unread_count ();
     });
 
-    
-    tweet_list.add(progress_entry);
+    tweet_list.activate_on_single_click = false;
+    tweet_list.row_activated.connect ((row) => {
+      main_window.switch_page (MainWindow.PAGE_TWEET_INFO,
+                               ((TweetListEntry)row).tweet);
+    });
 
-    UserStream.get().register(this);
+
+    tweet_list.add (progress_entry);
   }
 
-  private void stream_message_received(StreamMessageType type, Json.Object root) {
+  private void stream_message_received (StreamMessageType type, Json.Node root) {
     if(type == StreamMessageType.TWEET) {
       GLib.DateTime now = new GLib.DateTime.now_local();
       Tweet t = new Tweet();
       t.load_from_json(root, now);
 
+      if (t.is_retweet && t.retweeted_by == account.name)
+        return;
+
       this.balance_next_upper_change(TOP);
-      var entry = new TweetListEntry(t, main_window);
+      var entry = new TweetListEntry(t, main_window, account);
       entry.seen = false;
       tweet_list.add(entry);
-      tweet_list.resort();
 
       unread_count++;
       update_unread_count();
 
       int stack_size = Settings.get_tweet_stack_count();
-      if(stack_size != 0 && unread_count >= stack_size) {
+      message ("Stack size: %d", stack_size);
+      if(stack_size != 0 && unread_count % stack_size == 0) {
         string summary = "%d new Tweets!".printf(unread_count);
         NotificationManager.notify(summary);
       }
@@ -91,19 +97,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
   public void on_join(int page_id, va_list arg_list){
   }
 
-  /**
-   * see ITimeline#load_cached()
-   */
-  public void load_cached() {
-    try{
-      this.load_cached_internal(Tweet.TYPE_NORMAL);
-    } catch(SQLHeavy.Error e){
-      critical("Error while loading cached tweets of the home timeline: %s",
-               e.message);
-    }
-    tweet_list.resort();
-    this.vadjustment.set_upper(0);
-  }
+  public void load_cached() {}
 
   public void load_newest() {
     try {
@@ -112,7 +106,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
             (count, lowest_id) => {
             if(lowest_id < this.lowest_id)
               this.lowest_id = lowest_id;
-            
+
             tweet_list.remove(progress_entry);
             progress_entry = null;
             });
@@ -137,16 +131,16 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
   }
 
 
-  public void create_tool_button(RadioToolButton? group){
+  public void create_tool_button(RadioToolButton? group) {
     tool_button = new BadgeRadioToolButton(group, "stream");
     tool_button.label = "Home";
   }
 
-  public RadioToolButton? get_tool_button(){
+  public RadioToolButton? get_tool_button() {
     return tool_button;
   }
 
-  public int get_id(){
+  public int get_id() {
     return id;
   }
 

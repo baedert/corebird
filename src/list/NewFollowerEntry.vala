@@ -16,7 +16,7 @@
 using Gtk;
 
 
-class NewFollowerEntry : Gtk.Box, ITwitterItem {
+class NewFollowerEntry : Gtk.ListBoxRow, ITwitterItem {
   public static const int TYPE = 2;
   private int64 date;
   public int64 sort_factor{
@@ -27,17 +27,15 @@ class NewFollowerEntry : Gtk.Box, ITwitterItem {
   private int64 id;
   private int count = 0;
   private string[] followers  = new string[5];
+  private Box main_box        = new Box(Orientation.HORIZONTAL, 5);
   private Image follow_image  = new Gtk.Image.from_file(DATADIR+"/follower.png");
   private Box right_box       = new Box(Orientation.VERTICAL, 3);
   private Box avatar_box      = new Box(Orientation.HORIZONTAL, 5);
   private Label follow_text   = new Label("bla bla bla");
 
   public NewFollowerEntry () {
-    GLib.Object(orientation: Orientation.HORIZONTAL, spacing: 5);
-
-
     follow_image.valign = Align.START;
-    this.pack_start(follow_image, false, false);
+    main_box.pack_start(follow_image, false, false);
 
 
     right_box.pack_start(avatar_box, true, false);
@@ -47,12 +45,13 @@ class NewFollowerEntry : Gtk.Box, ITwitterItem {
     follow_text.use_markup = true;
     follow_text.wrap_mode = Pango.WrapMode.WORD_CHAR;
     right_box.pack_end(follow_text, true, true);
-    this.pack_start(right_box, true, true);
+    main_box.pack_start(right_box, true, true);
 
+    this.add (main_box);
     this.show_all();
   }
 
-  /** 
+  /**
    * "Parses" the given text.
    * Format:
    * COUNT,FOLLOWER1[,FOLLOWER2,…]
@@ -91,14 +90,18 @@ class NewFollowerEntry : Gtk.Box, ITwitterItem {
     string avatar_url = source.get_string_member ("profile_image_url");
     avatar_url = avatar_url.replace("_normal", "_mini");
         string mini_thumb_path = Utils.user_file("assets/avatars/mini_thumb_"+name+".png");
-    followers[count] = name;  
-  
-    ImageButton avatar_button = new ImageButton();
+    followers[count] = name;
+
+    PixbufButton avatar_button = new PixbufButton();
     avatar_box.pack_start(avatar_button, false, false);
     Utils.download_file_async.begin(avatar_url,mini_thumb_path,
     () => {
     // TODO: This sucks
-      avatar_button.set_bg(new Gdk.Pixbuf.from_file(mini_thumb_path));
+      try {
+        avatar_button.set_bg(new Gdk.Pixbuf.from_file(mini_thumb_path));
+      } catch (GLib.Error e) {
+        warning (e.message);
+      }
       avatar_button.show();
     });
 
@@ -115,8 +118,12 @@ class NewFollowerEntry : Gtk.Box, ITwitterItem {
   private void add_follower_from_name (string name){
     string mini_thumb_path = Utils.user_file("assets/avatars/mini_thumb_"+name+".png");
     if(FileUtils.test(mini_thumb_path, FileTest.EXISTS)) {
-      ImageButton avatar_button = new ImageButton();
-      avatar_button.set_bg(new Gdk.Pixbuf.from_file(mini_thumb_path));
+      PixbufButton avatar_button = new PixbufButton();
+      try {
+        avatar_button.set_bg(new Gdk.Pixbuf.from_file(mini_thumb_path));
+      } catch (GLib.Error e) {
+        warning (e.message);
+      }
       avatar_box.pack_start(avatar_button, false, false);
     }
     followers[count] = name;
@@ -130,7 +137,7 @@ class NewFollowerEntry : Gtk.Box, ITwitterItem {
     string s = "";
     for(int i = 0; i < count-2; i++)
       s += "<a href='@%s'>@%s</a>, ".printf(followers[i], followers[i]);
-    
+
     if(count >= 2)
       s += "<a href='@%s'>@%s</a> and ".printf(followers[count-2], followers[count-2]);
 
@@ -150,15 +157,18 @@ class NewFollowerEntry : Gtk.Box, ITwitterItem {
       data.append(followers[i]);
     }
     string param_string = @" INTO `cache` (`sort_factor`, `type`, `data`) VALUES ('$date', '$TYPE', '$(data.str)');";
-    
-    if(id == -1){
-      SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db,
-                  "INSERT"+param_string);
-      this.id = q.execute_insert();
-    } else {
-      Corebird.db.execute(
-       @"INSERT OR REPLACE INTO `cache` (`id`, `sort_factor`, `type`, `data`) VALUES ('$id', '$date', '$TYPE', '$(data.str)');");
 
+    try {
+      if(id == -1){
+        SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db,
+                    "INSERT"+param_string);
+        this.id = q.execute_insert();
+      } else {
+        Corebird.db.execute(
+         @"INSERT OR REPLACE INTO `cache` (`id`, `sort_factor`, `type`, `data`) VALUES ('$id', '$date', '$TYPE', '$(data.str)');");
+      }
+    } catch (SQLHeavy.Error e) {
+      critical (e.message);
     }
   }
 }

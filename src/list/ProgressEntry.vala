@@ -15,40 +15,20 @@
  */
 using Gtk;
 
-class ProgressEntry : Box, ITwitterItem {
+class ProgressEntry : ListBoxRow, ITwitterItem {
   public int64 sort_factor{
     get{ return 0;}
   }
   public bool seen{get; set; default = true;}
-	private Spinner spinner 		= new Spinner();
-	private Button cancel_button 	= new Button();
+  private Spinner spinner     = new Spinner();
 
-	public ProgressEntry(int size = 25, bool show_stop_button = false){
-		GLib.Object(orientation: Orientation.HORIZONTAL, spacing: 3);
-		this.get_style_context().add_class("progress-item");
-		this.pack_start(spinner, true, true);
-    if(show_stop_button) {
-	  	cancel_button.image = new Image.from_stock(Stock.CANCEL, IconSize.LARGE_TOOLBAR);
-	  	cancel_button.clicked.connect( () => {
-	  		this.stop();
-	  		this.parent.remove(this);
-	  	});
-		  this.pack_start(cancel_button, false, false);
-    }
-		this.border_width = 5;
-		spinner.set_size_request(size, size);
-		this.set_size_request(size, size);
+  public ProgressEntry(int size = 25){
+    this.get_style_context().add_class("progress-item");
+    this.border_width = 5;
+    spinner.set_size_request(size, size);
+    this.set_size_request(size, size);
+    this.add (spinner);
+    spinner.start ();
+  }
 
-    this.start();
-	}
-
-
-
-	public void start(){
-		spinner.start();
-	}
-
-	public void stop(){
-		spinner.stop();
-	}
 }

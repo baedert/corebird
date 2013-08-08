@@ -21,8 +21,9 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
     get {return lowest_id;}
     set {lowest_id = value;}
   }
-  public MainWindow main_window{set;get;}
-  protected Egg.ListBox tweet_list{set;get;}
+  public unowned MainWindow main_window {set; get;}
+  protected Gtk.ListBox tweet_list {set; get;}
+  public Account account {get; set;}
   private int id;
   private BadgeRadioToolButton tool_button;
   private bool loading = false;
@@ -32,11 +33,11 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 
   public MentionsTimeline(int id){
     this.id = id;
-    tweet_list = new Egg.ListBox();
+    tweet_list = new Gtk.ListBox();
     tweet_list.get_style_context().add_class("stream");
     tweet_list.set_selection_mode(SelectionMode.NONE);
-    tweet_list.add_to_scrolled(this);
     tweet_list.set_sort_func(ITwitterItem.sort_func);
+    this.add (tweet_list);
 
 
     this.scrolled_to_end.connect(() => {
@@ -45,10 +46,9 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
         load_older();
       }
     });
-    
-    this.scrolled_to_start.connect(() => {
-      handle_scrolled_to_start();
-    });
+
+    this.scrolled_to_start.connect(handle_scrolled_to_start);
+    this.button_press_event.connect (button_pressed_event_cb);
 
     this.vadjustment.notify["value"].connect(() => {
       mark_seen_on_scroll (vadjustment.value);
@@ -56,24 +56,23 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
     });
 
     tweet_list.add(progress_entry);
-
-    UserStream.get().register(this);
   }
 
-  private void stream_message_received(StreamMessageType type, Json.Object root){
+  private void stream_message_received(StreamMessageType type, Json.Node root_node){
+    Json.Object root = root_node.get_object ();
     if(type == StreamMessageType.TWEET) {
-      if(root.get_string_member("text").contains("@"+User.screen_name)) {
-
+      if(root.get_string_member("text").contains("@"+account.screen_name)) {
         GLib.DateTime now = new GLib.DateTime.now_local();
         Tweet t = new Tweet();
-        t.load_from_json(root, now);
+        t.load_from_json(root_node, now);
+        if (t.user_id == account.id)
+          return;
 
         this.balance_next_upper_change(TOP);
-        var entry = new TweetListEntry(t, main_window);
+        var entry = new TweetListEntry(t, main_window, account);
         entry.seen = false;
 
         tweet_list.add(entry);
-        tweet_list.resort();
 
         unread_count++;
         update_unread_count();
@@ -105,11 +104,11 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
       }
 
       // TODO: Are all there resort calls actually needed?
-      tweet_list.resort();
+//      tweet_list.resort();
 
       // Show notification
       if(Settings.notify_new_followers()) {
-        
+
       }
     }
   }
@@ -123,18 +122,22 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
   }
 
   public void load_cached() {
-    SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db,
-      "SELECT `sort_factor`, `type`, `data`, `id` FROM cache WHERE `type`='%d';".printf(NewFollowerEntry.TYPE));
-    SQLHeavy.QueryResult result = q.execute();
-    while(!result.finished){
-      var entry = new NewFollowerEntry.from_data(result.fetch_int(3),
-                                                 result.fetch_string(2),
-                                                 result.fetch_int64(0));
-      tweet_list.add(entry);
-      entry.show_all();
-      result.next();
+    try {
+      SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db,
+        "SELECT `sort_factor`, `type`, `data`, `id` FROM cache WHERE `type`='%d';".printf(NewFollowerEntry.TYPE));
+      SQLHeavy.QueryResult result = q.execute();
+      while(!result.finished){
+        var entry = new NewFollowerEntry.from_data(result.fetch_int(3),
+                                                   result.fetch_string(2),
+                                                   result.fetch_int64(0));
+        tweet_list.add(entry);
+        entry.show_all();
+        result.next();
+      }
+    } catch (SQLHeavy.Error e) {
+      critical (e.message);
     }
-    tweet_list.resort();
+//    tweet_list.resort();
     this.vadjustment.set_upper(0);
   }
 
@@ -146,7 +149,7 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
           if(lowest_id < this.lowest_id)
             this.lowest_id = lowest_id;
           tweet_list.remove(progress_entry);
-          progress_entry = null;  
+          progress_entry = null;
         });
     } catch (SQLHeavy.Error e) {
       warning(e.message);

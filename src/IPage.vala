@@ -14,10 +14,30 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
+/**
+ * Page in a MainWindow(i.e. in the MainWindow's GtkStack).
+ */
 interface IPage : Gtk.Widget {
-	public abstract void on_join(int page_id, va_list arg_list);
-	public abstract void create_tool_button(Gtk.RadioToolButton? group);
-	public abstract int get_id();
-	public abstract Gtk.RadioToolButton? get_tool_button();
-	public abstract int unread_count{get;set;}
+  public abstract void on_join(int page_id, va_list arg_list);
+  public abstract void create_tool_button(Gtk.RadioToolButton? group);
+  public abstract int get_id();
+  public abstract Gtk.RadioToolButton? get_tool_button();
+  public abstract unowned MainWindow main_window {get; set;}
+  public abstract unowned Account account        {get; set;}
+
+  protected bool button_pressed_event_cb (Gdk.EventButton evt) {// {{{
+    if (evt.button == 9) {
+      // Forward thumb button
+      main_window.switch_page (MainWindow.PAGE_NEXT);
+
+      return true;
+    } else if (evt.button == 8) {
+      // backward thumb button
+      main_window.switch_page (MainWindow.PAGE_PREVIOUS);
+
+      return true;
+    }
+    return false;
+  }// }}}
 }

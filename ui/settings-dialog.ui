@@ -1,407 +1,518 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.15.2 on Tue Aug  6 15:43:09 2013 -->
 <interface>
-  <!-- interface-requires gtk+ 3.0 -->
-  <object class="GtkListStore" id="liststore1">
-    <columns>
-      <!-- column-name < -->
-      <column type="&lt; define a new column &gt;"/>
-    </columns>
-    <data>
-      <row/>
-      <row/>
-    </data>
-  </object>
-  <object class="GtkNotebook" id="main_notebook">
+  <!-- interface-requires gtk+ 3.10 -->
+  <template class="SettingsDialog" parent="GtkDialog">
     <property name="visible">True</property>
-    <property name="can_focus">True</property>
-    <child>
-      <object class="GtkGrid" id="general_grid">
+    <property name="can_focus">False</property>
+    <property name="type_hint">dialog</property>
+    <child internal-child="vbox">
+      <object class="GtkBox" id="dialog-vbox1">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="border_width">10</property>
-        <property name="row_spacing">3</property>
-        <property name="column_spacing">8</property>
-        <property name="column_homogeneous">True</property>
-        <child>
-          <object class="GtkLabel" id="label7">
+        <property name="margin_left">5</property>
+        <property name="margin_right">5</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox" id="dialog-action_area1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="halign">start</property>
-            <property name="xalign">0</property>
-            <property name="label" translatable="yes" context="ee" comments="e">&lt;b&gt;Composing&lt;/b&gt;</property>
-            <property name="use_markup">True</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton" id="close-button">
+                <property name="label" translatable="yes">Close</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="close_button_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">0</property>
-            <property name="width">2</property>
-            <property name="height">1</property>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
           </packing>
         </child>
         <child>
-          <object class="GtkLabel" id="label8">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="halign">end</property>
-            <property name="hexpand">True</property>
-            <property name="xalign">1</property>
-            <property name="label" translatable="yes">Upload Provider:</property>
-          </object>
-          <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">1</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkComboBoxText" id="upload_provider_combobox">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="halign">start</property>
-            <property name="active">0</property>
-            <property name="entry_text_column">0</property>
-            <property name="id_column">1</property>
-            <items>
-              <item translatable="yes">Twitter</item>
-            </items>
-          </object>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">1</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-      </object>
-    </child>
-    <child type="tab">
-      <object class="GtkLabel" id="label1">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="margin_top">1</property>
-        <property name="label" translatable="yes">General</property>
-      </object>
-      <packing>
-        <property name="tab_fill">False</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkGrid" id="behavior_grid">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="border_width">10</property>
-        <property name="row_spacing">3</property>
-        <property name="column_spacing">8</property>
-        <child>
-          <object class="GtkLabel" id="label11">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="halign">start</property>
-            <property name="xalign">0</property>
-            <property name="label" translatable="yes">&lt;b&gt;Updates&lt;/b&gt;</property>
-            <property name="use_markup">True</property>
-          </object>
-          <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">0</property>
-            <property name="width">2</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-      </object>
-      <packing>
-        <property name="position">1</property>
-      </packing>
-    </child>
-    <child type="tab">
-      <object class="GtkLabel" id="label2">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Behavior</property>
-      </object>
-      <packing>
-        <property name="position">1</property>
-        <property name="tab_fill">False</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkGrid" id="interface_grid">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="border_width">10</property>
-        <property name="row_spacing">3</property>
-        <property name="column_spacing">8</property>
-        <property name="column_homogeneous">True</property>
-        <child>
-          <object class="GtkLabel" id="label9">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="halign">start</property>
-            <property name="label" translatable="yes">&lt;b&gt;MainWindow&lt;/b&gt;</property>
-            <property name="use_markup">True</property>
-          </object>
-          <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">0</property>
-            <property name="width">2</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel" id="label10">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="xalign">1</property>
-            <property name="label" translatable="yes">Show Primary Toolbar:</property>
-          </object>
-          <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">1</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkSwitch" id="primary_toolbar_switch">
+          <object class="GtkNotebook" id="main_notebook">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="halign">start</property>
+            <child>
+              <object class="GtkGrid" id="accounts_grid">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkToolbar" id="toolbar1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="valign">end</property>
+                    <property name="toolbar_style">icons</property>
+                    <style>
+                      <class name="inline-toolbar"/>
+                    </style>
+                    <property name="icon_size">1</property>
+                    <child>
+                      <object class="GtkToolButton" id="add_account_button">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Add account</property>
+                        <property name="use_underline">True</property>
+                        <property name="icon_name">list-add-symbolic</property>
+                        <signal name="clicked" handler="add_account_clicked" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="homogeneous">True</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkToolButton" id="remove_account_button">
+                        <property name="visible">True</property>
+                        <property name="sensitive">False</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Remove selected account</property>
+                        <property name="use_underline">True</property>
+                        <property name="icon_name">list-remove-symbolic</property>
+                        <signal name="clicked" handler="remove_account_clicked" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="homogeneous">True</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">1</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkListBox" id="account_list">
+                    <property name="width_request">77</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">start</property>
+                    <property name="vexpand">True</property>
+                    <signal name="row-selected" handler="account_list_selected" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">0</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkStack" id="account_info_stack">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
+                    <property name="transition_type">crossfade</property>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">0</property>
+                    <property name="width">1</property>
+                    <property name="height">2</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+            <child type="tab">
+              <object class="GtkLabel" id="label13">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Accounts</property>
+              </object>
+              <packing>
+                <property name="tab_fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkGrid" id="general_grid">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="border_width">10</property>
+                <property name="row_spacing">3</property>
+                <property name="column_spacing">8</property>
+                <property name="column_homogeneous">True</property>
+                <child>
+                  <object class="GtkLabel" id="label7">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">start</property>
+                    <property name="xalign">0</property>
+                    <property name="label" translatable="yes" context="ee" comments="e">&lt;b&gt;Composing&lt;/b&gt;</property>
+                    <property name="use_markup">True</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">0</property>
+                    <property name="width">2</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label8">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">end</property>
+                    <property name="hexpand">True</property>
+                    <property name="xalign">1</property>
+                    <property name="label" translatable="yes">Upload Provider:</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">1</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkComboBoxText" id="upload_provider_combobox">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">start</property>
+                    <property name="active">0</property>
+                    <items>
+                      <item id="Twitter" translatable="yes">Twitter</item>
+                    </items>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">1</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child type="tab">
+              <object class="GtkLabel" id="label1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="margin_top">1</property>
+                <property name="label" translatable="yes">General</property>
+              </object>
+              <packing>
+                <property name="position">1</property>
+                <property name="tab_fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkGrid" id="behavior_grid">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="border_width">10</property>
+                <property name="row_spacing">3</property>
+                <property name="column_spacing">8</property>
+                <child>
+                  <object class="GtkLabel" id="label11">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">start</property>
+                    <property name="xalign">0</property>
+                    <property name="label" translatable="yes">&lt;b&gt;Updates&lt;/b&gt;</property>
+                    <property name="use_markup">True</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">0</property>
+                    <property name="width">2</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child type="tab">
+              <object class="GtkLabel" id="label2">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Behavior</property>
+              </object>
+              <packing>
+                <property name="position">2</property>
+                <property name="tab_fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkGrid" id="interface_grid">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="border_width">10</property>
+                <property name="row_spacing">3</property>
+                <property name="column_spacing">8</property>
+                <property name="column_homogeneous">True</property>
+                <child>
+                  <object class="GtkLabel" id="label9">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">start</property>
+                    <property name="label" translatable="yes">&lt;b&gt;MainWindow&lt;/b&gt;</property>
+                    <property name="use_markup">True</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">0</property>
+                    <property name="width">2</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label16">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">end</property>
+                    <property name="label" translatable="yes">Show Inline Media:</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">1</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label17">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">end</property>
+                    <property name="label" translatable="yes">Use Dark Theme:</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">2</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSwitch" id="inline_media_switch">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="halign">start</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">1</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSwitch" id="dark_theme_switch">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="halign">start</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">2</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="position">3</property>
+              </packing>
+            </child>
+            <child type="tab">
+              <object class="GtkLabel" id="label3">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Interface</property>
+              </object>
+              <packing>
+                <property name="position">3</property>
+                <property name="tab_fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkGrid" id="notification_grid">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="border_width">10</property>
+                <property name="row_spacing">3</property>
+                <property name="column_spacing">8</property>
+                <property name="column_homogeneous">True</property>
+                <child>
+                  <object class="GtkLabel" id="label6">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">end</property>
+                    <property name="xalign">1</property>
+                    <property name="label" translatable="yes">On New Tweets:</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">1</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label12">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">start</property>
+                    <property name="label" translatable="yes">&lt;b&gt;Actions&lt;/b&gt;</property>
+                    <property name="use_markup">True</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">0</property>
+                    <property name="width">2</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label14">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="xalign">1</property>
+                    <property name="label" translatable="yes">On New Mentions:</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">2</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label15">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="xalign">1</property>
+                    <property name="label" translatable="yes">On New Messages:</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">3</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSwitch" id="on_new_mentions_switch">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="halign">start</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">2</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSwitch" id="on_new_dms_switch">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="halign">start</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">3</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkComboBoxText" id="on_new_tweets_combobox">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">start</property>
+                    <property name="active">0</property>
+                    <items>
+                      <item id="Never" translatable="yes">Never</item>
+                      <item id="Every" translatable="yes">Every</item>
+                      <item id="Stack 5" translatable="yes">Stack 5</item>
+                      <item id="Stack 10" translatable="yes">Stack 10</item>
+                      <item id="Stack 25" translatable="yes">Stack 25</item>
+                      <item id="Stack 50" translatable="yes">Stack 50</item>
+                    </items>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">1</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label5">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="xalign">1</property>
+                    <property name="label" translatable="yes">On New Followers:</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">4</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSwitch" id="on_new_followers_switch">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="halign">start</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">4</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="position">4</property>
+              </packing>
+            </child>
+            <child type="tab">
+              <object class="GtkLabel" id="label4">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Notifications</property>
+              </object>
+              <packing>
+                <property name="position">4</property>
+                <property name="tab_fill">False</property>
+              </packing>
+            </child>
           </object>
           <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">1</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel" id="label16">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="halign">end</property>
-            <property name="label" translatable="yes">Show Inline Media:</property>
-          </object>
-          <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">2</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkSwitch" id="inline_media_switch">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="halign">start</property>
-          </object>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">2</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel" id="label17">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="halign">end</property>
-            <property name="label" translatable="yes">Use Dark Theme:</property>
-          </object>
-          <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">3</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkSwitch" id="dark_theme_switch">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="halign">start</property>
-          </object>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">3</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
           </packing>
         </child>
       </object>
-      <packing>
-        <property name="position">2</property>
-      </packing>
     </child>
-    <child type="tab">
-      <object class="GtkLabel" id="label3">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Interface</property>
-      </object>
-      <packing>
-        <property name="position">2</property>
-        <property name="tab_fill">False</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkGrid" id="notification_grid">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="border_width">10</property>
-        <property name="row_spacing">3</property>
-        <property name="column_spacing">8</property>
-        <property name="column_homogeneous">True</property>
-        <child>
-          <object class="GtkLabel" id="label6">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="halign">end</property>
-            <property name="xalign">1</property>
-            <property name="label" translatable="yes">On New Tweets:</property>
-          </object>
-          <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">1</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel" id="label12">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="halign">start</property>
-            <property name="label" translatable="yes">&lt;b&gt;Actions&lt;/b&gt;</property>
-            <property name="use_markup">True</property>
-          </object>
-          <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">0</property>
-            <property name="width">2</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel" id="label14">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="xalign">1</property>
-            <property name="label" translatable="yes">On New Mentions:</property>
-          </object>
-          <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">2</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel" id="label15">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="xalign">1</property>
-            <property name="label" translatable="yes">On New Messages:</property>
-          </object>
-          <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">3</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkSwitch" id="on_new_mentions_switch">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="halign">start</property>
-          </object>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">2</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkSwitch" id="on_new_dms_switch">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="halign">start</property>
-          </object>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">3</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkComboBoxText" id="on_new_tweets_combobox">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="halign">start</property>
-            <property name="active">0</property>
-            <property name="id_column">0</property>
-            <items>
-              <item translatable="yes">Disabled</item>
-              <item translatable="yes">Every</item>
-              <item translatable="yes">Stack 5</item>
-              <item translatable="yes">Stack 10</item>
-              <item translatable="yes">Stack 25</item>
-              <item translatable="yes">Stack 50</item>
-            </items>
-          </object>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">1</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel" id="label5">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="xalign">1</property>
-            <property name="label" translatable="yes">On New Followers:</property>
-          </object>
-          <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">4</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkSwitch" id="on_new_followers_switch">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="halign">start</property>
-          </object>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">4</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-      </object>
-      <packing>
-        <property name="position">3</property>
-      </packing>
-    </child>
-    <child type="tab">
-      <object class="GtkLabel" id="label4">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Notifications</property>
-      </object>
-      <packing>
-        <property name="position">3</property>
-        <property name="tab_fill">False</property>
-      </packing>
-    </child>
-  </object>
+  </template>
 </interface>

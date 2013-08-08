@@ -122,6 +122,8 @@ class Utils{
 
   /**
    * Shows an error dialog with the given error message
+   *
+   * @param message The error message to show
    */
   public static void show_error_dialog(string message){
     var dialog = new Gtk.MessageDialog(null, Gtk.DialogFlags.DESTROY_WITH_PARENT,
@@ -139,7 +141,7 @@ class Utils{
 
   /**
    * TODO: Maybe use the XDG_CONFIG_DIR here?
-   * @return a path to the file or folder ~/Corebird/file_name
+   * @return a path to the file or folder ~/.corebird/file_name
    */
   public static string user_file(string file_name){
     return GLib.Environment.get_home_dir()+"/.corebird/"+file_name;
@@ -158,12 +160,18 @@ class Utils{
     var msg = new Soup.Message("GET", url);
     GLib.SourceFunc cb = download_file_async.callback;
     session.queue_message(msg, (_s, _msg) => {
-      File out_file = File.new_for_path(path);
-      var out_stream = out_file.replace(null, false,
-                                        FileCreateFlags.REPLACE_DESTINATION, null);
-      out_stream.write_all(_msg.response_body.data, null);
-      cb();
+      try {
+        File out_file = File.new_for_path(path);
+        var out_stream = out_file.replace(null, false,
+                                          FileCreateFlags.REPLACE_DESTINATION, null);
+        out_stream.write_all(_msg.response_body.data, null);
+        cb();
+      } catch (GLib.Error e) {
+        critical (e.message);
+      }
     });
     yield;
   }
+
+
 }

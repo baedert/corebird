@@ -20,26 +20,15 @@
  */
 interface ITimeline : Gtk.Widget, IPage {
   public static const int REST = 25;
-  protected abstract int64 max_id{get;set;}
-  public    abstract MainWindow main_window{get;set;}
-  protected abstract Egg.ListBox tweet_list{get;set;}
+  protected abstract int64 max_id           {get; set;}
+  protected abstract Gtk.ListBox tweet_list {get; set;}
+  public    abstract int unread_count       {get; set;}
 
   public abstract void load_cached();
   public abstract void load_newest();
   public abstract void load_older ();
-  public void update (){}
 
   protected abstract uint tweet_remove_timeout{get; set;}
-
-
-  /**
-   * Default implementation to load cached tweets from the
-   * 'cache' sql table
-   *
-   * @param tweet_type The type of tweet to load
-   */
-  protected void load_cached_internal(int tweet_type) throws SQLHeavy.Error {
-  }
 
   /**
    * Default implementation for loading the newest tweets
@@ -53,7 +42,7 @@ interface ITimeline : Gtk.Widget, IPage {
                                       throws SQLHeavy.Error {
     int64 greatest_id = 0;
 
-    var call = Twitter.proxy.new_call();
+    var call = account.proxy.new_call();
     call.set_function(function);
     call.set_method("GET");
     call.add_param("count", "20");
@@ -74,7 +63,7 @@ interface ITimeline : Gtk.Widget, IPage {
       }
 
       var root = parser.get_root().get_array();
-      var loader_thread = new LoaderThread(root, main_window, tweet_list,
+      var loader_thread = new LoaderThread(root, account, tweet_list, main_window,
                                            tweet_type);
       loader_thread.run(end_load_func);
     });
@@ -89,7 +78,7 @@ interface ITimeline : Gtk.Widget, IPage {
    */
   protected void load_older_internal(string function, int tweet_type,
                                      LoaderThread.EndLoadFunc? end_load_func = null) {
-    var call = Twitter.proxy.new_call();
+    var call = account.proxy.new_call();
     call.set_function(function);
     call.set_method("GET");
     message(@"using max_id: $max_id");
@@ -102,19 +91,18 @@ interface ITimeline : Gtk.Widget, IPage {
         critical("Code: %u", call.get_status_code());
       }
 
-
       string back = call.get_payload();
-      //stdout.printf(back+"\n");
+      stdout.printf(back+"\n");
       var parser = new Json.Parser();
       try{
         parser.load_from_data (back);
       } catch (GLib.Error e) {
-        stdout.printf (back+"\n");
         critical(e.message);
       }
 
       var root = parser.get_root().get_array();
-      var loader_thread = new LoaderThread(root, main_window, tweet_list,
+      var loader_thread = new LoaderThread(root, account,
+                                           tweet_list, main_window,
                                            tweet_type);
       loader_thread.run(end_load_func);
     });
@@ -122,39 +110,43 @@ interface ITimeline : Gtk.Widget, IPage {
 
   /**
    * Mark the TweetListEntries the user has already seen.
-   * 
+   *
    * @param value The scrolling value as from Gtk.Adjustment
    */
   protected void mark_seen_on_scroll(double value) {
-    if(unread_count == 0)
+    if (unread_count == 0)
       return;
 
-    tweet_list.forall_internal(false, (w) => {
+    tweet_list.forall_internal (false, (w) => {
       ITwitterItem tle = (ITwitterItem)w;
-      if(tle.seen)
+      if (tle.seen)
         return;
 
       Gtk.Allocation alloc;
       tle.get_allocation(out alloc);
-      if(alloc.y+(alloc.height/2.0) >= value) {
+      if (alloc.y+(alloc.height/2.0) >= value) {
         tle.seen = true;
         unread_count--;
       }
-        
+
     });
   }
 
   protected void handle_scrolled_to_start() {
-    if(tweet_list.get_size() > ITimeline.REST) {
-      tweet_remove_timeout = GLib.Timeout.add(5000, () => {
-        tweet_list.remove_last (tweet_list.get_size() - REST);
+    GLib.List<weak Gtk.Widget> entries = tweet_list.get_children ();
+    uint item_count = entries.length ();
+    if (item_count > ITimeline.REST) {
+      tweet_remove_timeout = GLib.Timeout.add (5000, () => {
+        // TODO: This is obviously wrong.
+        while (item_count > ITimeline.REST) {
+          tweet_list.remove (tweet_list.get_row_at_index (ITimeline.REST));
+          item_count--;
+        }
         return false;
       });
-    } else {
-      if(tweet_remove_timeout != 0) {
-        GLib.Source.remove(tweet_remove_timeout);
-        tweet_remove_timeout = 0;
-      }
+    } else if (tweet_remove_timeout != 0) {
+      GLib.Source.remove (tweet_remove_timeout);
+      tweet_remove_timeout = 0;
     }
   }
 }

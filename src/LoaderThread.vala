@@ -14,60 +14,61 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class LoaderThread{
-	private Json.Array root;
-	private MainWindow? window;
-	private Egg.ListBox list;
-	private Thread<void*> thread;
-	public delegate void EndLoadFunc(int tweet_count, int64 lowest_id);
-	private unowned EndLoadFunc? finished;
-	private int tweet_type;
-	private int64 lowest_id = int64.MAX - 1;
+class LoaderThread : GLib.Object {
+  private Json.Array root;
+  private unowned Gtk.ListBox list;
+  private Thread<void*> thread;
+  public delegate void EndLoadFunc(int tweet_count, int64 lowest_id);
+  private unowned EndLoadFunc? finished;
+  private int tweet_type;
+  private int64 lowest_id = int64.MAX - 1;
+  private unowned Account acc;
+  private unowned MainWindow main_window;
 
-	public LoaderThread(Json.Array root, MainWindow? window, Egg.ListBox list,
-	                    int tweet_type = -1){
-		this.root       = root;
-		this.window     = window;
-		this.list       = list;
-		this.tweet_type = tweet_type;
-	}
+  public LoaderThread(Json.Array root, Account acc,
+                      Gtk.ListBox list, MainWindow main_window,
+                      int tweet_type = -1){
+    this.root        = root;
+    this.list        = list;
+    this.tweet_type  = tweet_type;
+    this.acc         = acc;
+    this.main_window = main_window;
+  }
 
-	public void run(EndLoadFunc? finished = null){
-		this.finished = finished;
-		thread = new Thread<void*>("TweetLoaderThread", thread_func);
-	}
+  public void run(EndLoadFunc? finished = null){
+    this.finished = finished;
+    thread = new Thread<void*>("TweetLoaderThread", thread_func);
+  }
 
-	public void* thread_func(){
-		GLib.DateTime now = new GLib.DateTime.now_local();
+  public void* thread_func(){
+    GLib.DateTime now = new GLib.DateTime.now_local();
 
-		var entries = new TweetListEntry[root.get_length()];
-		root.foreach_element( (array, index, node) => {
-			Json.Object o = node.get_object();
-			Tweet t = new Tweet();
-			t.load_from_json(o, now);
+    var entries = new TweetListEntry[root.get_length()];
+    root.foreach_element( (array, index, node) => {
+      Tweet t = new Tweet();
+      t.load_from_json(node, now);
 
-			if (tweet_type != -1){
-				t.type = tweet_type;
-			}
+      if (tweet_type != -1){
+        t.type = tweet_type;
+      }
 
-			if(t.id < lowest_id)
-				lowest_id = t.id;
+      if(t.id < lowest_id)
+        lowest_id = t.id;
 
-			var entry  = new TweetListEntry(t, window);
-			entries[index] = entry;
-		});
+      var entry  = new TweetListEntry(t, main_window, acc);
+      entries[index] = entry;
+    });
 
-		GLib.Idle.add( () => {
-			message("Results: %d", entries.length);
-			for(int i = 0; i < entries.length; i++)
-				list.add(entries[i]);
-			list.resort();
-			if (finished != null){
-				finished(entries.length, lowest_id);
-			}
-			return false;
-		});
+    GLib.Idle.add( () => {
+      message("Results: %d", entries.length);
+      for(int i = 0; i < entries.length; i++)
+        list.add(entries[i]);
+      if (finished != null){
+        finished(entries.length, lowest_id);
+      }
+      return false;
+    });
 
-		return null;
-	}
+    return null;
+  }
 }

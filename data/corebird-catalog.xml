@@ -1,0 +1,28 @@
+<glade-catalog name="corebird" depends="gtk+">
+
+
+  <glade-widget-classes>
+    <glade-widget-class name="TextButton" generic-name="textbutton" title="TextButton"
+      parent="GtkButton" />
+
+    <glade-widget-class name="ImageBox" generic-name="imagebox" title="ImageBox"
+      parent="GtkBox" />
+
+    <glade-widget-class name="ImageLabel" generic-name="imagelabel" title="ImageLabel"
+      parent="GtkLabel" />
+
+    <glade-widget-class name="InvisibilityBin" generic-name="invisibilitybin" title="InvisibilityBin"
+      parent="GtkEventBox" />
+  </glade-widget-classes>
+
+
+
+
+
+  <glade-widget-group name="corebird-widgets" title="Corebird">
+    <glade-widget-class-ref name="TextButton" />
+    <glade-widget-class-ref name="ImageBox" />
+    <glade-widget-class-ref name="ImageLabel" />
+    <glade-widget-class-ref name="InvisibilityBin" />
+  </glade-widget-group>
+</glade-catalog>

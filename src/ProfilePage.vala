@@ -16,51 +16,41 @@
 using Gtk;
 
 class ProfilePage : IPage, ScrollWidget {
-	public static const int BY_ID   = 1;
-	public static const int BY_NAME = 2;
+  public int unread_count {
+    get{return 0;}
+    set{;}
+  }
+  private int id;
+  private ProfileWidget profile_widget;
+  public unowned MainWindow main_window { get; set; }
+  public unowned Account account { get; set; }
+
+  public ProfilePage(int id, MainWindow window, Account account){
+    profile_widget = new ProfileWidget(window, account);
+    this.main_window = window;
+    this.id = id;
+    this.add_with_viewport(profile_widget);
+    this.button_press_event.connect (button_pressed_event_cb);
+  }
+
+  /**
+   * see IPage#onJoin
+   */
+  public void on_join(int page_id, va_list arg_list) {
+    int64 user_id = arg_list.arg();
+    if (user_id == 0)
+      return;
+    profile_widget.set_user_id(user_id);
+  }
 
 
-	public int unread_count {
-		get{return 0;}
-		set{;}
-	}
-	private int id;
-	private ProfileWidget profile_widget;
+  public void create_tool_button(RadioToolButton? group) {}
 
-	public ProfilePage(int id, MainWindow window){
-		profile_widget = new ProfileWidget(window);
-		this.id = id;
-		this.add_with_viewport(profile_widget);
-	}
+  public RadioToolButton? get_tool_button(){
+    return null;
+  }
 
-
-
-
-
-	/**
-	 * see IPage#onJoin
-	 */
-	public void on_join(int page_id, va_list arg_list) {
-		int mode = arg_list.arg();
-		if(mode == BY_ID){
-			int64 user_id = arg_list.arg();
-			profile_widget.set_user_id(user_id);
-		} else if(mode == BY_NAME) {
-			string name = arg_list.arg();
-			profile_widget.set_user_id(0, name);
-		} else {
-			critical("%d is no valid mode for ProfilePage", mode);
-		}
-	}
-
-
-	public void create_tool_button(RadioToolButton? group) {}
-
-	public RadioToolButton? get_tool_button(){
-		return null;
-	}
-
-	public int get_id(){
-		return id;
-	}
+  public int get_id(){
+    return id;
+  }
 }

@@ -16,78 +16,127 @@
 
 using Gtk;
 
+[GtkTemplate (ui = "/org/baedert/corebird/ui/settings-dialog.ui")]
 class SettingsDialog : Gtk.Dialog {
-	private MainWindow win;
+  private static const string DUMMY_SCREEN_NAME = "<Unnamed>";
+  private MainWindow win;
+  [GtkChild]
+  private ListBox account_list;
+  [GtkChild]
+  private ToolButton add_account_button;
+  [GtkChild]
+  private ToolButton remove_account_button;
+  [GtkChild]
+  private Gtk.Stack account_info_stack;
+  [GtkChild]
+  private Switch on_new_mentions_switch;
+  [GtkChild]
+  private Switch on_new_followers_switch;
+  [GtkChild]
+  private Switch on_new_dms_switch;
+  [GtkChild]
+  private Switch inline_media_switch;
+  [GtkChild]
+  private Switch dark_theme_switch;
+  [GtkChild]
+  private ComboBoxText upload_provider_combobox;
+  [GtkChild]
+  private ComboBoxText on_new_tweets_combobox;
 
-	public SettingsDialog(MainWindow win){
-		this.win = win;
-		this.set_transient_for(win);
-		this.set_modal(true);
-		this.set_default_size(450, 120);
-		this.title = "Settings";
+  public SettingsDialog(MainWindow? win = null, Corebird? application = null){
+    this.win = win;
+    this.application = application;
+    this.title = "Corebird Settings";
 
-		var builder = new UIBuilder(DATADIR+"ui/settings-dialog.ui", "main_notebook");
-		var main_notebook = builder.get_notebook("main_notebook");
+    // General Page
+    Settings.get ().bind ("upload-provider", upload_provider_combobox, "active-id",
+                          SettingsBindFlags.DEFAULT);
 
-		// this.add(main_box);
-		this.get_content_area().pack_start(main_notebook, true, true);
+    // Notifications Page
+    Settings.get ().bind ("new-tweets-notify", on_new_tweets_combobox, "active-id",
+                          SettingsBindFlags.DEFAULT);
+    Settings.get ().bind ("new-mentions-notify", on_new_mentions_switch, "active", 
+                          SettingsBindFlags.DEFAULT);
+    Settings.get ().bind ("new-followers-notify", on_new_followers_switch, "active",
+                          SettingsBindFlags.DEFAULT);
+    Settings.get ().bind ("new-dms-notify", on_new_dms_switch, "active",
+                          SettingsBindFlags.DEFAULT);
 
-		var upload_provider_combobox = builder.get_combobox("upload_provider_combobox");
-		upload_provider_combobox.active = Settings.upload_provider();
-		upload_provider_combobox.changed.connect(() => {
-			Settings.set_int("upload-provider", upload_provider_combobox.active);
-		});
+    // Interface page
+    Settings.get ().bind ("show-inline-media", inline_media_switch, "active",
+                          SettingsBindFlags.DEFAULT);
+    Settings.get ().bind ("use-dark-theme", dark_theme_switch, "active",
+                          SettingsBindFlags.DEFAULT);
 
-		var primary_toolbar_switch = builder.get_switch("primary_toolbar_switch");
-		primary_toolbar_switch.active = Settings.show_primary_toolbar();
-		primary_toolbar_switch.notify["active"].connect(() => {
-			Settings.set_bool("show-primary-toolbar", primary_toolbar_switch.active);
-			win.set_show_primary_toolbar(primary_toolbar_switch.active);
-		});
+    // General Page
+    Settings.get ().bind ("upload-provider", upload_provider_combobox, "active_id",
+                          SettingsBindFlags.DEFAULT);
 
-		var inline_media_switch = builder.get_switch("inline_media_switch");
-		inline_media_switch.active = Settings.show_inline_media();
-		inline_media_switch.notify["active"].connect(() => {
-			Settings.set_bool("show-inline-media", inline_media_switch.active);
-		});
+    unowned SList<Account> accs = Account.list_accounts ();
+    foreach (Account a in accs) {
+      a.load_avatar ();
+      account_list.add (new AccountListEntry (a));
+      account_info_stack.add_named (new AccountInfoWidget (a, this.application), a.screen_name);
+    }
+    if (accs.length() > 0)
+      account_list.select_row (account_list.get_row_at_index (0));
+  }
 
-		var dark_theme_switch = builder.get_switch("dark_theme_switch");
-		dark_theme_switch.active = Settings.use_dark_theme();
-		dark_theme_switch.notify["active"].connect(() => {
-			bool val = dark_theme_switch.active;
-			Settings.set_bool("use-dark-theme", val);
-			Gtk.Settings.get_default().gtk_application_prefer_dark_theme = val;
-		});
+  [GtkCallback]
+  private void add_account_clicked () {
+    Account dummy_acc = new Account(0, DUMMY_SCREEN_NAME, "<__>");
+    Account.add_account (dummy_acc);
+    var row = new AccountListEntry (dummy_acc);
+    account_list.add (row);
+    var create_widget = new AccountCreateWidget (dummy_acc);
+    create_widget.result_received.connect (on_account_access);
+    account_info_stack.add_named (create_widget, DUMMY_SCREEN_NAME);
+    row.show_all ();
+    account_list.select_row (row);
 
-		var on_new_tweets_combobox = builder.get_combobox("on_new_tweets_combobox");
-		on_new_tweets_combobox.active = Settings.notify_new_tweets();
-		on_new_tweets_combobox.changed.connect(() => {
-			Settings.set_int("new-tweets-notify", on_new_tweets_combobox.active);
-		});
+    add_account_button.sensitive = false;   
+  }
 
-		var on_new_mentions_switch = builder.get_switch("on_new_mentions_switch");
-		on_new_mentions_switch.active = Settings.notify_new_mentions();
-		on_new_mentions_switch.notify["active"].connect(() => {
-			Settings.set_bool("new-mentions-notify", on_new_mentions_switch.active);
-		});
+  [GtkCallback]
+  private void remove_account_clicked () {
+    AccountListEntry entry = (AccountListEntry)account_list.get_selected_row ();
+    if (entry.screen_name == DUMMY_SCREEN_NAME) {
+      account_list.remove (entry);
+      account_info_stack.remove (account_info_stack.get_visible_child ());
+      Account.remove_account (DUMMY_SCREEN_NAME);
+      add_account_button.sensitive = true;
+    } else 
+      message ("Implement removal of non-dummy accounts!");
+  }
 
-		var on_new_dms_switch = builder.get_switch("on_new_dms_switch");
-		on_new_dms_switch.active = Settings.notify_new_dms();
-		on_new_dms_switch.notify["active"].connect(() => {
-			Settings.set_bool("new-dms-notify", on_new_dms_switch.active);
-		});
+  [GtkCallback]
+  private void account_list_selected () {
+    ListBoxRow row = account_list.get_selected_row ();
+    if (row == null) {
+      remove_account_button.sensitive = false;
+      return;
+    }
+    AccountListEntry entry = (AccountListEntry)row;
+    account_info_stack.set_visible_child_name (entry.screen_name);
+    remove_account_button.sensitive = true;
+  }
 
-    var on_new_followers_switch = builder.get_switch("on_new_followers_switch");
-    on_new_followers_switch.active = Settings.notify_new_followers();
-    on_new_followers_switch.notify["active"].connect(() => {
-        Settings.set_bool("new-followers-notify", on_new_followers_switch.active);
-    });
+  [GtkCallback]
+  private void close_button_clicked () {
+    Account.remove_account (DUMMY_SCREEN_NAME);
+    destroy();
+  }
 
-		this.add_button("Close", 1);
-
-		this.response.connect((id) => {
-			if(id == 1)
-				this.dispose();
-		});
-	}
+  private void on_account_access (bool result, Account acc) {
+    if (result) {
+      account_info_stack.remove (account_info_stack.get_visible_child ());
+      var acc_widget = new AccountInfoWidget (acc, this.application);
+      account_info_stack.add_named (acc_widget, acc.screen_name);
+      account_info_stack.set_visible_child_name (acc.screen_name);
+      account_list.remove (account_list.get_selected_row ());
+      account_list.add (new AccountListEntry (acc));
+    } else {
+      warning ("Wrong token!");
+    }
+  }
 }

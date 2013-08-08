@@ -19,7 +19,7 @@ using Notify;
 
 class NotificationManager {
 
-  public static void init(MainWindow window){
+  public static void init(){
     Notify.init("Corebird");
   }
 

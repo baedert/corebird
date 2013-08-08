@@ -15,22 +15,32 @@
  */
 using Gtk;
 
-
 /**
- * A Dialog showing information about the given user.
+ * A button with the given pixbuf as background.
  */
-class ProfileDialog : Gtk.Window {
-	private ProfileWidget profile_widget;
+class PixbufButton : Button {
+  private Gdk.Pixbuf bg;
 
-	public ProfileDialog(int64 user_id = 0){
-		if (user_id <= 0)
-			user_id = User.get_id();
-		message(@"ID: $user_id");
 
-		profile_widget = new ProfileWidget(null);
-		profile_widget.set_user_id(user_id);
+  public PixbufButton(){
+    this.border_width = 0;
+    get_style_context().add_class("pixbuf-button");
+  }
 
-		this.resize(320, 480);
-		this.add(profile_widget);
-	}
+  public override bool draw(Cairo.Context c){
+    if(bg != null){
+      StyleContext context = this.get_style_context();
+      context.render_icon(c, bg, 0, 0);
+    }
+
+    // The css-styled background should be transparent.
+    base.draw(c);
+    return false;
+  }
+
+  public void set_bg(Gdk.Pixbuf bg){
+    this.bg = bg;
+    this.set_size_request(bg.get_width(), bg.get_height());
+    this.queue_draw();
+  }
 }

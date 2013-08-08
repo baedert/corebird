@@ -20,7 +20,7 @@ using Gtk;
  */
 class ImageBox : Gtk.Box  {
 	private static const float RATIO = (160f/320f);
-	public bool use_ratio{get; set; default=true;}
+	public bool use_ratio {get; set; default=true;}
 
 	public ImageBox(Orientation orientation, int spacing){
 		GLib.Object(orientation: orientation, spacing: spacing);
