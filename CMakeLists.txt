@@ -120,6 +120,7 @@ set (VALA_SOURCE
   src/util/Benchmark.vala
   src/util/Config.vala
   src/util/WidgetReplacer.vala
+  src/util/IntHistory.vala
   src/resources.c
 )
 

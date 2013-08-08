@@ -26,19 +26,18 @@ class MainWindow : ApplicationWindow {
   public static const int PAGE_PROFILE    = 3;
   public static const int PAGE_TWEET_INFO = 4;
 
+  public static const int PAGE_PREVIOUS   = 1024;
+  public static const int PAGE_NEXT       = 2048;
+
 
 
   private Toolbar left_toolbar             = new Toolbar();
-  private Box main_box                     = new Box(Orientation.VERTICAL, 0);
-  private Box bottom_box                   = new Box(Orientation.HORIZONTAL, 0);
+  private Box main_box                     = new Box(Orientation.HORIZONTAL, 0);
   private RadioToolButton dummy_button     = new RadioToolButton(null);
   private IPage[] pages                    = new IPage[5];
-  private int active_page                  = -1;
-  private int last_page                    = -1;
+  private IntHistory history               = new IntHistory (5);
   private Button avatar_button             = new Button();
   private Button new_tweet_button          = new Button ();
-  private SeparatorToolItem expander_item  = new SeparatorToolItem();
-  private SeparatorToolItem left_separator = new SeparatorToolItem();
   private Gtk.Stack stack                  = new Gtk.Stack();
   public unowned Account account {public get; private set;}
 
@@ -87,7 +86,6 @@ class MainWindow : ApplicationWindow {
 
     /* Initialize all containers */
     for (int i = 0; i < pages.length; i++) {
-      message ("Page: %d", i);
       IPage page = pages[i];
       page.main_window = this;
       page.account = account;
@@ -136,10 +134,6 @@ class MainWindow : ApplicationWindow {
     left_toolbar.orientation = Orientation.VERTICAL;
     left_toolbar.set_style (ToolbarStyle.ICONS);
 
-
-    expander_item.draw = false;
-    expander_item.set_expand(true);
-
     account.load_avatar ();
     avatar_button.set_image (new Image.from_pixbuf (account.avatar_small));
     avatar_button.relief = ReliefStyle.NONE;
@@ -150,12 +144,8 @@ class MainWindow : ApplicationWindow {
         message("IMPLEMENT: Show account switcher");
     });
 
-    left_toolbar.add (expander_item);
-    bottom_box.pack_start(left_toolbar, false, false);
-
-
-    bottom_box.pack_start (stack, true, true);
-    main_box.pack_end(bottom_box, true, true);
+    main_box.pack_start(left_toolbar, false, false);
+    main_box.pack_start (stack, true, true);
 
     add_accels();
 
@@ -163,7 +153,7 @@ class MainWindow : ApplicationWindow {
     this.show_all();
 
     // Activate the first timeline
-    pages[0].get_tool_button().active = true;
+    this.switch_page (0);
   }
 
   /**
@@ -172,13 +162,15 @@ class MainWindow : ApplicationWindow {
   private void add_accels() {
     AccelGroup ag = new AccelGroup();
     ag.connect (Gdk.Key.@1, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
-      () => {switch_page(0);return true;});
+        () => {switch_page(0);return true;});
     ag.connect (Gdk.Key.@2, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
-      () => {switch_page(1);return true;});
+        () => {switch_page(1);return true;});
     ag.connect (Gdk.Key.@3, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
-      () => {switch_page(2);return true;});
+        () => {switch_page(2);return true;});
     ag.connect (Gdk.Key.Left, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
-        () => {switch_page (last_page); last_page = -1; return true;});
+        () => {switch_page (PAGE_PREVIOUS); return true;});
+    ag.connect (Gdk.Key.Right, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
+        () => {switch_page (PAGE_NEXT); return true;});
 
 
     this.add_accel_group(ag);
@@ -192,23 +184,30 @@ class MainWindow : ApplicationWindow {
    * @param ... The parameters to pass to the page
    */
   public void switch_page (int page_id, ...) {
-    message ("Id: %d, current: %d", page_id, active_page);
-    if (page_id == active_page)
-      return;
+    debug ("Switching from %d to %d", history.current, page_id);
+    if (page_id == history.current)
+     return;
+
+    bool push = true;
+
+    if (page_id == PAGE_PREVIOUS) {
+      page_id = history.back ();
+      push = false;
+    } else if (page_id == PAGE_NEXT) {
+      page_id = history.forward ();
+      push = false;
+    }
 
     if (page_id == -1)
       return;
 
-    debug ("switching page from %d to %d", active_page, page_id);
-
-
-    if (page_id > active_page)
+    if (page_id > history.current)
       stack.transition_type = StackTransitionType.SLIDE_LEFT;
     else
       stack.transition_type = StackTransitionType.SLIDE_RIGHT;
 
-    this.last_page   = this.active_page;
-    this.active_page = page_id;
+    if (push)
+      history.push (page_id);
 
 
     IPage page = pages[page_id];
