@@ -223,10 +223,20 @@ class Account : GLib.Object {
     }
   }
 
+  /**
+   * Adds the given account to the end of the current account list.
+   *
+   * @param acc The account to add.
+   */
   public static void add_account (Account acc) {
     accounts.append (acc);
   }
 
+  /**
+   * Removes the acccunt with th given screen name from the account list.
+   *
+   * @param screen_name The screen name of the account to remove.
+   */
   public static void remove_account (string screen_name) {
     foreach(Account a in accounts) {
       if(a.screen_name == screen_name){
@@ -236,7 +246,14 @@ class Account : GLib.Object {
     }
   }
 
-  public static Account? query_account (string screen_name) {
+  /**
+   * Returns an unowned reference to the account with the given screen name.
+   *
+   * @param screen_name The screen name of the account to return
+   * @return An unowned reference to the account object with the given screen name or
+   *         null of no such instance could be found.
+   */
+  public static unowned Account? query_account (string screen_name) {
     foreach (Account a in accounts) {
       if (screen_name == a.screen_name)
         return a;
