@@ -254,7 +254,7 @@ class Account : GLib.Object {
    *         null of no such instance could be found.
    */
   public static unowned Account? query_account (string screen_name) {
-    foreach (Account a in accounts) {
+    foreach (unowned Account a in accounts) {
       if (screen_name == a.screen_name)
         return a;
     }
