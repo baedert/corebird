@@ -132,14 +132,10 @@ class ImageDialog : Gtk.Window {
 
   [GtkCallback]
   private bool button_press_event_cb (Gdk.EventButton evt) {
-    if(evt.button != 3) {
-     this.destroy();
-     return true;
-    } else {
-      image_context_menu.popup(null, null, null, evt.button, evt.time);
-      return true;
-    }
-    return false;
+    if (evt.button == 3)
+      image_context_menu.popup (null, null, null, evt.button, evt.time);
+    else
+      this.destroy ();
   }
 
   [GtkCallback]
