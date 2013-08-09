@@ -1,4 +1,6 @@
-install (FILES corebird.png             DESTINATION ${PREFIX}/share/icons/hicolor/128x128/apps)
+install (FILES 64x64/corebird.png       DESTINATION ${PREFIX}/share/icons/hicolor/64x64/apps/)
+install (FILES 128x128/corebird.png     DESTINATION ${PREFIX}/share/icons/hicolor/128x128/apps/)
+install (FILES 512x512/corebird.png     DESTINATION ${PREFIX}/share/icons/hicolor/512x512/apps/)
 install (FILES no_avatar.png            DESTINATION ${DATADIR})
 install (FILES no_banner.png            DESTINATION ${DATADIR})
 install (FILES favorite.png             DESTINATION ${DATADIR})

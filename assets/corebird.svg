@@ -15,9 +15,9 @@
    version="1.1"
    inkscape:version="0.48.4 r9939"
    sodipodi:docname="corebird.svg"
-   inkscape:export-filename="/home/baedert/Code/Vala/Corebird/assets/corebird.png"
-   inkscape:export-xdpi="18"
-   inkscape:export-ydpi="18">
+   inkscape:export-filename="/home/baedert/Code/Vala/Corebird/assets/64x64/corebird.png"
+   inkscape:export-xdpi="9"
+   inkscape:export-ydpi="9">
   <defs
      id="defs4" />
   <sodipodi:namedview
@@ -27,9 +27,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.3270898"
-     inkscape:cx="309.33687"
-     inkscape:cy="311.21693"
+     inkscape:zoom="0.44598767"
+     inkscape:cx="929.18852"
+     inkscape:cy="124.27836"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
