@@ -26,8 +26,12 @@ class ImageDialog : Gtk.Window {
   private Gtk.Menu image_context_menu;
   [GtkChild]
   private FileChooserDialog file_dialog;
+  [GtkChild]
+  private EventBox event_box;
 
   private new string path;
+  private double dnd_x;
+  private double dnd_y;
 
   public ImageDialog(Window parent, string path) {
     this.path = path;
@@ -85,6 +89,29 @@ class ImageDialog : Gtk.Window {
   }
 
   [GtkCallback]
+  private bool event_box_motion_notify_cb (Gdk.EventMotion evt) {
+    //Srsly, don't ask me why 528.
+    if (evt.state == 528) {
+      double diff_x = dnd_x - evt.x;
+      double diff_y = dnd_y - evt.y;
+      scroller.vadjustment.value += diff_y;
+      scroller.hadjustment.value += diff_x;
+      return true;
+    }
+    return false;
+  }
+
+  [GtkCallback]
+  private bool event_box_button_press_cb (Gdk.EventButton evt) {
+    if (evt.button == 2) {
+      this.dnd_x = evt.x;
+      this.dnd_y = evt.y;
+      return true;
+    }
+    return false;
+  }
+
+  [GtkCallback]
   private void save_item_activated_cb () {
     int response = file_dialog.run ();
     if (response == -1)
@@ -105,11 +132,14 @@ class ImageDialog : Gtk.Window {
 
   [GtkCallback]
   private bool button_press_event_cb (Gdk.EventButton evt) {
-    if(evt.button != 3)
-      this.destroy();
-    else
+    if(evt.button != 3) {
+     this.destroy();
+     return true;
+    } else {
       image_context_menu.popup(null, null, null, evt.button, evt.time);
-    return true;
+      return true;
+    }
+    return false;
   }
 
   [GtkCallback]
