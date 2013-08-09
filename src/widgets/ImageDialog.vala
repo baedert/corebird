@@ -16,13 +16,21 @@
 
 using Gtk;
 
+[GtkTemplate (ui = "/org/baedert/corebird/ui/image-dialog.ui")]
 class ImageDialog : Gtk.Window {
-  private ScrolledWindow scroller = new ScrolledWindow(null, null);
+  [GtkChild]
+  private ScrolledWindow scroller;
+  [GtkChild]
   private Image image;
-  private new Gtk.Menu popup_menu = new Gtk.Menu();
+  [GtkChild]
+  private Gtk.Menu image_context_menu;
+  [GtkChild]
+  private FileChooserDialog file_dialog;
 
+  private new string path;
 
   public ImageDialog(Window parent, string path) {
+    this.path = path;
 
     //Choose proper width/height
     Gdk.Pixbuf pixbuf = null;
@@ -31,8 +39,6 @@ class ImageDialog : Gtk.Window {
     } catch (GLib.Error e) {
       critical(e.message);
     }
-
-    image = new Gtk.Image();
     try {
       if(path.has_suffix("gif"))
         image.pixbuf_animation = new Gdk.PixbufAnimation.from_file(path);
@@ -41,21 +47,20 @@ class ImageDialog : Gtk.Window {
     } catch (GLib.Error e) {
       critical (e.message);
     }
-    var ebox = new EventBox();
-    ebox.add(image);
-    scroller.add_with_viewport(ebox);
-    this.add(scroller);
-
     int img_width = pixbuf.get_width();
     int img_height = pixbuf.get_height();
 
     int win_width  = 800;
     int win_height = 600;
-    if(img_width <= Gdk.Screen.width()*0.7)
+    if(img_width <= Gdk.Screen.width()*0.7) {
       win_width = img_width;
+      scroller.hscrollbar_policy = PolicyType.NEVER;
+    }
 
-    if(img_height <= Gdk.Screen.height()*0.7)
+    if(img_height <= Gdk.Screen.height()*0.7) {
       win_height = img_height;
+      scroller.vscrollbar_policy = PolicyType.NEVER;
+    }
 
     if(win_width < 800 && win_height == 600) {
       int add_width;
@@ -70,54 +75,46 @@ class ImageDialog : Gtk.Window {
     }
 
     scroller.set_size_request(win_width, win_height);
+    file_dialog.action = FileChooserAction.SAVE;
+    string filename = Utils.get_file_name(path);
+    file_dialog.set_current_name(filename);
+    file_dialog.set_transient_for (this);
 
-    Gtk.MenuItem save_item = new Gtk.MenuItem.with_label("Save As...");
-    save_item.activate.connect(() => {
-      var fc = new FileChooserDialog("Save Image", parent,
-                                     FileChooserAction.SAVE,
-                                     _("Cancel"), ResponseType.CANCEL,
-                                     _("Save"), ResponseType.ACCEPT);
-      string filename = Utils.get_file_name(path);
-      fc.set_current_name(filename);
 
-      int response = fc.run();
-      if(response == ResponseType.CANCEL)
-        fc.close();
-      else if(response == ResponseType.ACCEPT) {
-        File dest = File.new_for_uri(fc.get_uri());
-        message("Source: %s", path);
-        message("Destin: %s", fc.get_uri());
-        File source = File.new_for_path(path);
-        try {
-          source.copy(dest, FileCopyFlags.OVERWRITE);
-        } catch (GLib.Error e) {
-          critical (e.message);
-        }
-        fc.close();
-      }
-
-    });
-    popup_menu.add(save_item);
-    popup_menu.show_all();
-
-    // this.add(scroller);
-    this.set_decorated(false);
     this.set_transient_for(parent);
-    this.set_type_hint(Gdk.WindowTypeHint.DIALOG);
-    this.focus_out_event.connect(() => {
-      // this.destroy();
-      return true;
-    });
-    this.button_press_event.connect((evt) => {
-      if(evt.button != 3)
-        this.destroy();
-      else
-        popup_menu.popup(null, null, null, evt.button, evt.time);
-      return true;
-    });
-    this.key_press_event.connect(() => {
+  }
+
+  [GtkCallback]
+  private void save_item_activated_cb () {
+    int response = file_dialog.run ();
+    if (response == -1)
+      file_dialog.close ();
+    else if (response == 0) {
+      File dest = File.new_for_uri (file_dialog.get_uri ());
+      message ("Source: %s", path);
+      message ("Destin: %s", file_dialog.get_uri ());
+      File source = File.new_for_path (path);
+      try {
+        source.copy (dest, FileCopyFlags.OVERWRITE);
+      } catch (GLib.Error e) {
+        critical (e.message);
+      }
+      file_dialog.close ();
+    }
+  }
+
+  [GtkCallback]
+  private bool button_press_event_cb (Gdk.EventButton evt) {
+    if(evt.button != 3)
       this.destroy();
-      return true;
-    });
+    else
+      image_context_menu.popup(null, null, null, evt.button, evt.time);
+    return true;
+  }
+
+  [GtkCallback]
+  private bool key_press_event_cb () {
+    this.destroy ();
+    return true;
   }
 }

@@ -8,5 +8,6 @@
     <file compressed="true" preprocess="xml-stripblanks">ui/compose-window.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/tweet-list-entry.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/tweet-info-page.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">ui/image-dialog.ui</file>
   </gresource>
 </gresources>
