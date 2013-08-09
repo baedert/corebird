@@ -77,19 +77,20 @@ class Corebird : Gtk.Application {
     }
     message("Startup accounts: %d", startup_accounts.length);
 
-    if (!show_tweet_window){
-      if (startup_accounts.length == 1)
-        add_window (new MainWindow (this, Account.list_accounts().data));
-      else if(startup_accounts.length == 0)
+    if (!show_tweet_window) {
+      if (startup_accounts.length == 0) {
         this.lookup_action ("show-settings").activate (null);
-      else {
-        foreach (string a in startup_accounts)
-          add_window_for_screen_name (a);
+      } else {
+        foreach (string screen_name in startup_accounts) {
+          if (!is_window_open_for_screen_name (screen_name))
+            add_window (new MainWindow (this, Account.query_account (screen_name)));
+        }
       }
     } else {
-/*      add_window (new ComposeTweetWindow (null, null, this));*/
       critical ("Implement.");
     }
+
+
     /* First, create that log file */
     var now = new GLib.DateTime.now_local();
     File log_file = File.new_for_path(Utils.user_file("log/%s.txt".printf(now.to_string())));
@@ -219,7 +220,7 @@ class Corebird : Gtk.Application {
   }
 
   /**
-   * Adds a new MainWindow instance with the account that 
+   * Adds a new MainWindow instance with the account that
    * has the given screen name.
    * Note that this only works if the account is already properly
    * set up and won't warn or fail if if isn't.
@@ -239,7 +240,7 @@ class Corebird : Gtk.Application {
   }
 
   /**
-   * Checks if there's currently a MainWindow instance open that has a 
+   * Checks if there's currently a MainWindow instance open that has a
    * reference to the account with the given screen name.
    * (This makes a linear search over all open windows, with a text comparison
    * in each iteration)
@@ -247,6 +248,7 @@ class Corebird : Gtk.Application {
    * @param screen_name The screen name to search for
    * @return TRUE if a window with the account associated to the given
    *         screen name is open, FALSE otherwise.
+   * TODO: Add optional out parameter for the found account?
    */
   public bool is_window_open_for_screen_name (string screen_name) {
     unowned GLib.List<weak Window> windows = this.get_windows ();

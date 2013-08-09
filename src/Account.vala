@@ -84,7 +84,7 @@ class Account : GLib.Object {
    * Download the appropriate user info from the Twitter server,
    * updating the local information stored in this class' local variables.
    * (Means, you need to call save_info to actually save it persistently)
-   * 
+   *
    * @param screen_name The screen name to use for the API call.
    */
   public async void query_user_info_by_scren_name (string screen_name) {
@@ -118,7 +118,7 @@ class Account : GLib.Object {
    * Updates the account's avatar picture.
    * This means that the new avatar will be downloaded if necessary and
    * scaled appropriately.
-   * 
+   *
    * @param url The url of the (possibly) new avatar(optional).
    */
   public async void update_avatar (string url = "") {
@@ -126,9 +126,9 @@ class Account : GLib.Object {
       return;
 
     message ("Using %s to update the avatar", url);
-  
+
     if (url.length > 0) {
-      var session = new Soup.Session ();     
+      var session = new Soup.Session ();
       var msg = new Soup.Message ("GET", url);
       session.send_message (msg);
       var data_stream = new MemoryInputStream.from_data ((owned)msg.response_body.data, null);
@@ -159,7 +159,7 @@ class Account : GLib.Object {
       critical ("Not implemented yet");
     }
   }
-  
+
   /**
    * Saves the account info both in the account's database and in the
    * global one.
@@ -179,7 +179,7 @@ class Account : GLib.Object {
                                     ('$id','$screen_name','$name', '$avatar_url');");
       q.execute ();
     } catch (SQLHeavy.Error e) {
-      critical (e.message);  
+      critical (e.message);
     }
   }
 
@@ -222,9 +222,11 @@ class Account : GLib.Object {
       critical (e.message);
     }
   }
+
   public static void add_account (Account acc) {
     accounts.append (acc);
   }
+
   public static void remove_account (string screen_name) {
     foreach(Account a in accounts) {
       if(a.screen_name == screen_name){
@@ -234,4 +236,11 @@ class Account : GLib.Object {
     }
   }
 
+  public static Account? query_account (string screen_name) {
+    foreach (Account a in accounts) {
+      if (screen_name == a.screen_name)
+        return a;
+    }
+    return null;
+  }
 }
