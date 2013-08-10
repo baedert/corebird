@@ -245,7 +245,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
    * Retweets or un-retweets the tweet.
    */
   [GtkCallback]
-  private void retweet_button_toggled () {
+  private void retweet_button_toggled () { // {{{
     // You can't retweet your own tweets.
     if (account.id == this.tweet.user_id || !values_set)
       return;
@@ -288,10 +288,10 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       });
     }
 
-  }
+  } // }}}
 
   [GtkCallback]
-  private void favorite_button_toggled () {
+  private void favorite_button_toggled () { // {{{
     if (!values_set)
       return;
 
@@ -317,7 +317,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       WidgetReplacer.replace_tmp_back(favorite_button, true,
                                       favorite_button.active);
     });
-  }
+  } // }}}
 
 
   [GtkCallback]

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.15.2 on Tue Aug  6 11:43:30 2013 -->
+<!-- Generated with glade 3.15.2 on Sat Aug 10 23:00:39 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.10 -->
   <!-- interface-requires corebird 0.0 -->
   <template class="TweetListEntry" parent="GtkListBoxRow">
-    <property name="height_request">90</property>
+    <property name="height_request">80</property>
     <property name="visible">True</property>
     <property name="can_focus">True</property>
     <style>
@@ -44,6 +44,7 @@
                 </child>
                 <child>
                   <object class="GtkBox" id="box1">
+                    <property name="height_request">20</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="valign">start</property>
@@ -203,6 +204,7 @@
                     <property name="can_focus">False</property>
                     <child>
                       <object class="GtkLabel" id="text_label">
+                        <property name="height_request">30</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="margin_left">5</property>
