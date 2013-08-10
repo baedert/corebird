@@ -25,7 +25,6 @@ class InlineMediaDownloader {
     /*
       Support For:
         * yfrog
-        * ow.ly
         * lockerz.com
         * say.ly
           * <img src="contentImage" src="(.*?)"
@@ -42,7 +41,7 @@ class InlineMediaDownloader {
       two_step_load.begin(t, url, "<img class=\"photo\" src=\"(.*?)\"", 1);
     } else if(url.has_prefix("http://i.imgur.com")) {
       load_inline_media.begin(t, url);
-    } else if(url.has_prefix("http://d.pr/i/")) {
+    } else if(url.has_prefix("http://d.pr/i/") || url.has_prefix("http://ow.ly/i/")) {
       two_step_load.begin(t, url, "<meta property=\"og:image\" content=\"(.*?)\"",
                           1);
     } else if(url.has_prefix("http://pbs.twimg.com/media/")) {
@@ -50,9 +49,6 @@ class InlineMediaDownloader {
     } else if(url.has_prefix("http://twitpic.com/")) {
       two_step_load.begin(t, url,
                           "<meta name=\"twitter:image\" value=\"(.*?)\"", 1);
-    } else if(url.has_prefix("http://ow.ly/i/")) {
-      two_step_load.begin(t, url,
-                        "<meta name=\"twitter:image\" content=\"(.*?)\"", 1);
     }
   }
 
