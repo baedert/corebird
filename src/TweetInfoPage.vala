@@ -37,6 +37,8 @@ class TweetInfoPage : IPage , ScrollWidget {
   private Label favorites_label;
   [GtkChild]
   private ListBox bottom_list_box;
+  [GtkChild]
+  private Spinner progress_spinner;
 
 
 
@@ -92,8 +94,11 @@ class TweetInfoPage : IPage , ScrollWidget {
       if (!root_object.get_null_member ("place"))
         author_label.label += " in " + root_object.get_string_member ("place");
 
-      if (tweet.reply_id != 0)
+      if (tweet.reply_id != 0) {
+        progress_spinner.show();
+        progress_spinner.start ();
         load_replied_to_tweet (tweet.reply_id);
+      }
     });
 
   }
@@ -103,8 +108,11 @@ class TweetInfoPage : IPage , ScrollWidget {
    *
    */
   private void load_replied_to_tweet (int64 reply_id) {
-    if (reply_id == 0)
+    if (reply_id == 0) {
+      progress_spinner.stop ();
+      progress_spinner.hide ();
       return;
+    }
 
     bottom_list_box.show ();
     var call = account.proxy.new_call ();
