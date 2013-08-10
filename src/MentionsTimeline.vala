@@ -49,6 +49,14 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
 
     this.scrolled_to_start.connect(handle_scrolled_to_start);
     this.button_press_event.connect (button_pressed_event_cb);
+    tweet_list.activate_on_single_click = false;
+    tweet_list.row_activated.connect ((row) => {
+      main_window.switch_page (MainWindow.PAGE_TWEET_INFO,
+                               TweetInfoPage.BY_INSTANCE,
+                               ((TweetListEntry)row).tweet);
+    });
+
+
 
     this.vadjustment.notify["value"].connect(() => {
       mark_seen_on_scroll (vadjustment.value);
