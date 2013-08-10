@@ -16,10 +16,14 @@
 using Gtk;
 [GtkTemplate (ui = "/org/baedert/corebird/ui/tweet-info-page.ui")]
 class TweetInfoPage : IPage , Gtk.Box {
+  public static const uint BY_INSTANCE = 1;
+  public static const uint BY_ID       = 2;
+
   public int unread_count { get{return 0;} set {} }
   private int id;
   public unowned MainWindow main_window { get; set; }
   public unowned Account account { get; set; }
+  private int64 tweet_id;
 
   [GtkChild]
   private Label text_label;
@@ -36,37 +40,79 @@ class TweetInfoPage : IPage , Gtk.Box {
 
   public TweetInfoPage (int id) {
     this.id = id;
+    this.button_press_event.connect (button_pressed_event_cb);
   }
 
   public void on_join (int page_id, va_list args){
-    Tweet tweet = args.arg ();
-    if (tweet == null)
+    uint mode = args.arg ();
+
+    if (mode == 0)
       return;
 
-    GLib.DateTime created_at = new GLib.DateTime.from_unix_local (tweet.created_at);
+
+    if (mode == BY_INSTANCE) {
+      Tweet tweet = args.arg ();
+      this.tweet_id = tweet.id;
+
+      GLib.DateTime created_at = new GLib.DateTime.from_unix_local (tweet.created_at);
+      string time_format = created_at.format ("%x, %X");
+
+      set_tweet_data (tweet.get_formatted_text (), tweet.user_name, tweet.created_at,
+                      tweet.avatar, tweet.retweet_count, tweet.favorite_count);
+
+      if (tweet.reply_id != 0) {
+
+      }
+    } else if (mode == BY_ID) {
+      this.tweet_id = args.arg ();
+    }
+
+    query_tweet_info ();
+  }
+
+  private void query_tweet_info () {
+    var call = account.proxy.new_call ();
+    call.set_method ("GET");
+    call.set_function ("1.1/statuses/show.json");
+    call.add_param ("id", tweet_id.to_string ());
+    call.invoke_async.begin (null, (obj, res) => {
+      try{call.invoke_async.end (res);}catch(GLib.Error e){critical(e.message);return;}
+      var now = new GLib.DateTime.now_local ();
+      Tweet tweet = new Tweet ();
+      var parser = new Json.Parser ();
+      parser.load_from_data (call.get_payload ());
+      tweet.load_from_json (parser.get_root (), now);
+      set_tweet_data (tweet.get_formatted_text (), tweet.user_name,
+                      tweet.created_at, tweet.avatar, tweet.retweet_count,
+                      tweet.favorite_count);
+      Json.Object root_object = parser.get_root ().get_object ();
+      if (!root_object.get_null_member ("place"))
+        author_label.label += " in " + root_object.get_string_member ("place");
+    });
+
+  }
+
+  private void set_tweet_data (string text, string user_name, int64 time,
+                               Gdk.Pixbuf avatar, int retweet_count, int favorite_count) {
+    GLib.DateTime created_at = new GLib.DateTime.from_unix_local (time);
     string time_format = created_at.format ("%x, %X");
 
-    text_label.label = "<b><i><big><big><big>»"+tweet.get_formatted_text ()+"«</big></big></big></i></b>";
-    author_label.label = "- "+tweet.user_name + " at " + time_format;
-    avatar_image.pixbuf = tweet.avatar;
-    retweets_label.label = _("Retweets: ") + tweet.retweet_count.to_string ();
-    favorites_label.label = _("Favorites: ") + tweet.favorite_count.to_string ();
+    text_label.label = "<b><i><big><big><big>»"+text+"«</big></big></big></i></b>";
+    author_label.label = "- %s at %s".printf (user_name, time_format);
+    avatar_image.pixbuf = avatar;
+    retweets_label.label = _("Retweets: ") + retweet_count.to_string ();
+    favorites_label.label = _("Favorites: ") + favorite_count.to_string ();
 
-    if (tweet.reply_id != 0) {
 
-    }
-    this.button_press_event.connect (button_pressed_event_cb);
   }
 
   public int get_id () {
     return id;
   }
 
-  public void create_tool_button (Gtk.RadioToolButton? group) {
-  }
+  public void create_tool_button (Gtk.RadioToolButton? group) {}
 
   public Gtk.RadioToolButton? get_tool_button () {
     return null;
   }
-
 }
