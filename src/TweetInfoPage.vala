@@ -52,6 +52,7 @@ class TweetInfoPage : IPage , ScrollWidget {
       return;
 
     bottom_list_box.foreach ((w) => {bottom_list_box.remove (w);});
+    bottom_list_box.hide ();
 
 
     if (mode == BY_INSTANCE) {
@@ -105,6 +106,7 @@ class TweetInfoPage : IPage , ScrollWidget {
     if (reply_id == 0)
       return;
 
+    bottom_list_box.show ();
     var call = account.proxy.new_call ();
     call.set_function ("1.1/statuses/show.json");
     call.set_method ("GET");
