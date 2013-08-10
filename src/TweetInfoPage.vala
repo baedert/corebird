@@ -15,7 +15,7 @@
  */
 using Gtk;
 [GtkTemplate (ui = "/org/baedert/corebird/ui/tweet-info-page.ui")]
-class TweetInfoPage : IPage , Gtk.Box {
+class TweetInfoPage : IPage , ScrollWidget {
   public static const uint BY_INSTANCE = 1;
   public static const uint BY_ID       = 2;
 
@@ -35,6 +35,8 @@ class TweetInfoPage : IPage , Gtk.Box {
   private Label retweets_label;
   [GtkChild]
   private Label favorites_label;
+  [GtkChild]
+  private ListBox bottom_list_box;
 
 
 
@@ -49,20 +51,15 @@ class TweetInfoPage : IPage , Gtk.Box {
     if (mode == 0)
       return;
 
+    bottom_list_box.foreach ((w) => {bottom_list_box.remove (w);});
+
 
     if (mode == BY_INSTANCE) {
       Tweet tweet = args.arg ();
       this.tweet_id = tweet.id;
-
-      GLib.DateTime created_at = new GLib.DateTime.from_unix_local (tweet.created_at);
-      string time_format = created_at.format ("%x, %X");
-
       set_tweet_data (tweet.get_formatted_text (), tweet.user_name, tweet.created_at,
                       tweet.avatar, tweet.retweet_count, tweet.favorite_count);
 
-      if (tweet.reply_id != 0) {
-
-      }
     } else if (mode == BY_ID) {
       this.tweet_id = args.arg ();
     }
@@ -70,6 +67,11 @@ class TweetInfoPage : IPage , Gtk.Box {
     query_tweet_info ();
   }
 
+
+  /**
+   *
+   *
+   */
   private void query_tweet_info () {
     var call = account.proxy.new_call ();
     call.set_method ("GET");
@@ -88,8 +90,34 @@ class TweetInfoPage : IPage , Gtk.Box {
       Json.Object root_object = parser.get_root ().get_object ();
       if (!root_object.get_null_member ("place"))
         author_label.label += " in " + root_object.get_string_member ("place");
+
+      if (tweet.reply_id != 0)
+        load_replied_to_tweet (tweet.reply_id);
     });
 
+  }
+
+  /**
+   *
+   *
+   */
+  private void load_replied_to_tweet (int64 reply_id) {
+    if (reply_id == 0)
+      return;
+
+    var call = account.proxy.new_call ();
+    call.set_function ("1.1/statuses/show.json");
+    call.set_method ("GET");
+    call.add_param ("id", reply_id.to_string ());
+    call.invoke_async.begin (null, (obj, res) => {
+      try{call.invoke_async.end (res);}catch(GLib.Error e){critical(e.message);return;}
+      var parser = new Json.Parser ();
+      parser.load_from_data (call.get_payload ());
+      Tweet tweet = new Tweet ();
+      tweet.load_from_json (parser.get_root (), new GLib.DateTime.now_local ());
+      bottom_list_box.add (new TweetListEntry (tweet, main_window, account));
+      load_replied_to_tweet (tweet.reply_id);
+    });
   }
 
   private void set_tweet_data (string text, string user_name, int64 time,
@@ -102,16 +130,12 @@ class TweetInfoPage : IPage , Gtk.Box {
     avatar_image.pixbuf = avatar;
     retweets_label.label = _("Retweets: ") + retweet_count.to_string ();
     favorites_label.label = _("Favorites: ") + favorite_count.to_string ();
-
-
   }
 
   public int get_id () {
     return id;
   }
-
   public void create_tool_button (Gtk.RadioToolButton? group) {}
-
   public Gtk.RadioToolButton? get_tool_button () {
     return null;
   }
