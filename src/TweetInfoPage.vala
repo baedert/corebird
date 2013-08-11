@@ -55,6 +55,7 @@ class TweetInfoPage : IPage , ScrollWidget {
 
     bottom_list_box.foreach ((w) => {bottom_list_box.remove (w);});
     bottom_list_box.hide ();
+    progress_spinner.hide ();
 
 
     if (mode == BY_INSTANCE) {
@@ -72,8 +73,7 @@ class TweetInfoPage : IPage , ScrollWidget {
 
 
   /**
-   *
-   *
+   * Loads the data of the tweet with the id tweet_id from the Twitter server.
    */
   private void query_tweet_info () {
     var call = account.proxy.new_call ();
@@ -104,8 +104,10 @@ class TweetInfoPage : IPage , ScrollWidget {
   }
 
   /**
+   * Loads the tweet this tweet is a reply to.
+   * This will recursively call itself until the end of the chain is reached.
    *
-   *
+   * @param reply_id The id of the tweet the previous tweet was a reply to.
    */
   private void load_replied_to_tweet (int64 reply_id) {
     if (reply_id == 0) {
@@ -130,6 +132,9 @@ class TweetInfoPage : IPage , ScrollWidget {
     });
   }
 
+  /**
+   *
+   */
   private void set_tweet_data (string text, string user_name, int64 time,
                                Gdk.Pixbuf avatar, int retweet_count, int favorite_count) {
     GLib.DateTime created_at = new GLib.DateTime.from_unix_local (time);
