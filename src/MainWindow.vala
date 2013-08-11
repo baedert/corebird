@@ -215,6 +215,8 @@ class MainWindow : ApplicationWindow {
     IPage page = pages[page_id];
     if (page.get_tool_button () != null)
       page.get_tool_button().active = true;
+    else
+      dummy_button.active = true;
 
     page.on_join (page_id, va_list ());
     stack.set_visible_child_name ("%d".printf (page_id));
