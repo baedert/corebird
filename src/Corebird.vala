@@ -249,14 +249,16 @@ class Corebird : Gtk.Application {
    * @param screen_name The screen name to search for
    * @return TRUE if a window with the account associated to the given
    *         screen name is open, FALSE otherwise.
-   * TODO: Add optional out parameter for the found account?
    */
-  public bool is_window_open_for_screen_name (string screen_name) {
+  public bool is_window_open_for_screen_name (string screen_name,
+                                              out MainWindow window = null) {
     unowned GLib.List<weak Window> windows = this.get_windows ();
     foreach (Window win in windows) {
       if (win is MainWindow) {
-        if (((MainWindow)win).account.screen_name == screen_name)
+        if (((MainWindow)win).account.screen_name == screen_name) {
+          window = (MainWindow)win;
           return true;
+        }
       }
     }
     return false;
