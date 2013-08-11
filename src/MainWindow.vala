@@ -38,7 +38,7 @@ class MainWindow : ApplicationWindow {
   private RadioToolButton dummy_button     = new RadioToolButton(null);
   private IPage[] pages                    = new IPage[5];
   private IntHistory history               = new IntHistory (5);
-  private Button avatar_button             = new Button();
+  private Image avatar_image               = new Image ();
   private Button new_tweet_button          = new Button ();
   private Gtk.Stack stack                  = new Gtk.Stack();
   public unowned Account account {public get; private set;}
@@ -72,7 +72,7 @@ class MainWindow : ApplicationWindow {
     f.set_title ("Corebird");
     f.set_subtitle ("@"+account.screen_name);
     f.set_show_close_button (true);
-    f.pack_start (avatar_button);
+    f.pack_start (avatar_image);
     new_tweet_button.get_style_context ().add_class ("image_button");
     f.pack_start (new_tweet_button);
     this.set_titlebar(f);
@@ -137,13 +137,9 @@ class MainWindow : ApplicationWindow {
     left_toolbar.set_style (ToolbarStyle.ICONS);
 
     account.load_avatar ();
-    avatar_button.set_image (new Image.from_pixbuf (account.avatar_small));
-    avatar_button.relief = ReliefStyle.NONE;
+    avatar_image.pixbuf = account.avatar_small;
     account.notify["avatar_small"].connect(() => {
-      avatar_button.set_image (new Image.from_pixbuf (account.avatar_small));
-    });
-    avatar_button.clicked.connect( () => {
-        message("IMPLEMENT: Show account switcher");
+      avatar_image.pixbuf = account.avatar_small;
     });
 
     main_box.pack_start(left_toolbar, false, false);
