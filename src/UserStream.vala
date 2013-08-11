@@ -51,9 +51,9 @@ class UserStream : Object {
 
   public UserStream () {
     proxy = new Rest.OAuthProxy(
-          "0rvHLdbzRULZd5dz6X1TUA",           //Consumer Key
-          "oGrvd6654nWLhzLcJywSW3pltUfkhP4BnraPPVNhHtY",  //Consumer Secret
-          "https://userstream.twitter.com/",        //Url Format
+          Utils.decode (Utils.CONSUMER_KEY),
+          Utils.decode (Utils.CONSUMER_SECRET),
+          "https://userstream.twitter.com/", //Url Format
           false
         );
     //Register a new warning service

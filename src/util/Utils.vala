@@ -1,5 +1,4 @@
-/*  This file is part of corebird, a Gtk+ linux Twitter client.
- *  Copyright (C) 2013 Timm Bäder
+/*  This file is part of corebird, a Gtk+ linux Twitter client.  *  Copyright (C) 2013 Timm Bäder
  *
  *  corebird is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -17,7 +16,11 @@
 
 
 
-class Utils{
+class Utils {
+  public static const string CONSUMER_KEY = "MHJ2SExkYnpSVUxaZDVkejZYMVRVQQ==";
+  public static const string CONSUMER_SECRET = "b0dydmQ2NjU0bldMaHpMY0p5d1NXM3BsdFVma2hQNEJucmFQUFZOaEh0WQ==";
+
+
   // TODO: there's probably something for this in glib
   private static string[] MONTHS = {
     "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
@@ -151,10 +154,10 @@ class Utils{
   /**
    * download_file_async:
    * Downloads the given file asynchronously to the given location.
-   * 
+   *
    * @param url The URL of the file to download
    * @param path The filesystem path to save the file to
-   * 
+   *
    */
   public static async void download_file_async(string url, string path) {
     var session = new Soup.SessionAsync();
@@ -174,5 +177,11 @@ class Utils{
     yield;
   }
 
+  public static string encode (string source) {
+    return GLib.Base64.encode ((uchar[])source.data);
+  }
 
+  public static string decode (string source) {
+    return (string)GLib.Base64.decode (source);
+  }
 }
