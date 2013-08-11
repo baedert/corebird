@@ -20,7 +20,7 @@ using Gtk;
 [GtkTemplate (ui = "/org/baedert/corebird/ui/settings-dialog.ui")]
 class SettingsDialog : Gtk.Dialog {
   private static const string DUMMY_SCREEN_NAME = "<Unnamed>";
-  private MainWindow win;
+  private MainWindow main_window;
   [GtkChild]
   private ListBox account_list;
   [GtkChild]
@@ -44,8 +44,8 @@ class SettingsDialog : Gtk.Dialog {
   [GtkChild]
   private ComboBoxText on_new_tweets_combobox;
 
-  public SettingsDialog(MainWindow? win = null, Corebird? application = null){
-    this.win = win;
+  public SettingsDialog(MainWindow? main_window = null, Corebird? application = null){
+    this.main_window = main_window;
     this.application = application;
     this.title = "Corebird Settings";
 
@@ -56,7 +56,7 @@ class SettingsDialog : Gtk.Dialog {
     // Notifications Page
     Settings.get ().bind ("new-tweets-notify", on_new_tweets_combobox, "active-id",
                           SettingsBindFlags.DEFAULT);
-    Settings.get ().bind ("new-mentions-notify", on_new_mentions_switch, "active", 
+    Settings.get ().bind ("new-mentions-notify", on_new_mentions_switch, "active",
                           SettingsBindFlags.DEFAULT);
     Settings.get ().bind ("new-followers-notify", on_new_followers_switch, "active",
                           SettingsBindFlags.DEFAULT);
@@ -95,7 +95,7 @@ class SettingsDialog : Gtk.Dialog {
     row.show_all ();
     account_list.select_row (row);
 
-    add_account_button.sensitive = false;   
+    add_account_button.sensitive = false;
   }
 
   [GtkCallback]
@@ -106,8 +106,29 @@ class SettingsDialog : Gtk.Dialog {
       account_info_stack.remove (account_info_stack.get_visible_child ());
       Account.remove_account (DUMMY_SCREEN_NAME);
       add_account_button.sensitive = true;
-    } else 
-      message ("Implement removal of non-dummy accounts!");
+    } else {
+      // TODO: Show confirmation dialog
+      var acc_menu = (GLib.Menu)Corebird.account_menu;
+      int64 acc_id = entry.account.id;
+      FileUtils.remove (Utils.user_file ("accounts/$(acc_id).db"));
+      FileUtils.remove (Utils.user_file ("accounts/$(acc_id).png"));
+      FileUtils.remove (Utils.user_file ("accounts/$(acc_id)_small.png"));
+      Corebird.db.execute (@"DELETE FROM `accounts` WHERE `id`='$(acc_id)';");
+      account_list.remove (entry);
+      for (int i = 0; i < acc_menu.get_n_items (); i++){
+        Variant item_name = acc_menu.get_item_attribute_value (i,
+                                         "label", VariantType.STRING);
+        if (item_name.get_string () == "@"+entry.account.screen_name) {
+          acc_menu.remove (i);
+          break;
+        }
+      }
+      MainWindow acc_window;
+      if (((Corebird)this.application).is_window_open_for_screen_name (
+            entry.account.screen_name, out acc_window)) {
+        acc_window.close ();
+      }
+    }
   }
 
   [GtkCallback]
