@@ -36,6 +36,11 @@ class Account : GLib.Object {
     this.name = name;
   }
 
+  /**
+   * Initializes the database. All account databases are VersionedDatabases
+   * and are stored in accounts/ID.db.
+   *
+   */
   public void init_database () {
     if (db != null)
       return;
@@ -48,6 +53,12 @@ class Account : GLib.Object {
     }
   }
 
+  /**
+   * Initializes the RestProxy object.
+   *
+   * @param load_secrets If set to true, the token and token_secret will be loaded
+   *                     from the account's database.
+   */
   public void init_proxy (bool load_secrets = true) {
     if (proxy != null)
       return;
@@ -71,6 +82,11 @@ class Account : GLib.Object {
     }
   }
 
+  /**
+   * Loads the small and normally sized avatars from disk.
+   * Normal: accounts/ID.png
+   * Small:  accounts/ID_small.png
+   */
   public void load_avatar () {
     string small_path = Utils.user_file (@"accounts/$(id)_small.png");
     string path = Utils.user_file (@"accounts/$(id).png");
