@@ -1,5 +1,4 @@
-/*  This file is part of corebird, a Gtk+ linux Twitter client.
- *  Copyright (C) 2013 Timm Bäder
+/*  This file is part of corebird.
  *
  *  corebird is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -14,7 +13,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 using Gtk;
 
 
@@ -31,14 +29,19 @@ class AccountListEntry : Gtk.ListBoxRow {
   }
 
   private ulong avatar_change_id;
-  private unowned Account acc;
+  public unowned Account account {public get; private set;}
 
-  public AccountListEntry (Account acc) {
-    this.acc = acc;
-    screen_name_label.label = acc.screen_name;
-    avatar_image.pixbuf = acc.avatar_small;
-    avatar_change_id = acc.notify["avatar-small"].connect(() => {
-      avatar_image.pixbuf = acc.avatar_small;
+  public AccountListEntry (Account account) {
+    this.account = account;
+    screen_name_label.label = account.screen_name;
+    avatar_image.pixbuf = account.avatar_small;
+    avatar_change_id = account.notify["avatar-small"].connect(() => {
+      avatar_image.pixbuf = account.avatar_small;
     });
+  }
+
+  public override void destroy (){
+    base.destroy();
+    message("destructor");
   }
 }
