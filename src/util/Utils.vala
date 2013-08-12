@@ -23,7 +23,7 @@ class Utils {
 
 
   // TODO: there's probably something for this in glib
-  private static string[] MONTHS = {
+  private static const string[] MONTHS = {
     "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
   };
 
