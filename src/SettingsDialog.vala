@@ -108,15 +108,25 @@ class SettingsDialog : Gtk.Dialog {
       add_account_button.sensitive = true;
     } else {
       // TODO: Show confirmation dialog
-      // TODO: Remove AccountInfoWidget from the right if the account was selected AND the last one
-      // TODO: Remove the account from the startup accounts if it was in
       var acc_menu = (GLib.Menu)Corebird.account_menu;
       int64 acc_id = entry.account.id;
       FileUtils.remove (Utils.user_file ("accounts/$(acc_id).db"));
       FileUtils.remove (Utils.user_file ("accounts/$(acc_id).png"));
       FileUtils.remove (Utils.user_file ("accounts/$(acc_id)_small.png"));
       Corebird.db.execute (@"DELETE FROM `accounts` WHERE `id`='$(acc_id)';");
+      account_info_stack.remove (account_info_stack.get_visible_child ());
       account_list.remove (entry);
+      string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
+      for (int i = 0; i < startup_accounts.length; i++)
+        if (startup_accounts[i] == entry.account.screen_name) {
+          string[] sa_new = new string[startup_accounts.length - 1];
+          for (int x = 0; x < i; i++)
+            sa_new[x] = startup_accounts[x];
+          for (int x = i+1; x < startup_accounts.length; x++)
+            sa_new[x] = startup_accounts[x];
+          Settings.get ().set_strv ("startup-accounts", sa_new);
+        }
+
       for (int i = 0; i < acc_menu.get_n_items (); i++){
         Variant item_name = acc_menu.get_item_attribute_value (i,
                                          "label", VariantType.STRING);
