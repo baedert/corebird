@@ -108,6 +108,8 @@ class SettingsDialog : Gtk.Dialog {
       add_account_button.sensitive = true;
     } else {
       // TODO: Show confirmation dialog
+      // TODO: Remove AccountInfoWidget from the right if the account was selected AND the last one
+      // TODO: Remove the account from the startup accounts if it was in
       var acc_menu = (GLib.Menu)Corebird.account_menu;
       int64 acc_id = entry.account.id;
       FileUtils.remove (Utils.user_file ("accounts/$(acc_id).db"));
