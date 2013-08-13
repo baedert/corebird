@@ -28,8 +28,6 @@ class ImageDialog : Gtk.Window {
   private Gtk.Menu image_context_menu;
   [GtkChild]
   private FileChooserDialog file_dialog;
-  [GtkChild]
-  private EventBox event_box;
 
   private new string path;
   private double dnd_x;

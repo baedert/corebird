@@ -30,11 +30,6 @@ class Corebird : Gtk.Application {
     this.set_inactivity_timeout(500);
 
 
-    // If the user wants the dark theme, apply it
-    if(Settings.use_dark_theme()){
-      Gtk.Settings settings = Gtk.Settings.get_default();
-      settings.gtk_application_prefer_dark_theme = true;
-    }
   }
 
   public override int command_line(ApplicationCommandLine cmd){
@@ -109,6 +104,13 @@ class Corebird : Gtk.Application {
     GLib.Log.set_handler (null, LogLevelFlags.LEVEL_DEBUG,    print_to_log_file);
 
     NotificationManager.init ();
+
+    // If the user wants the dark theme, apply it
+    if(Settings.use_dark_theme()){
+      Gtk.Settings settings = Gtk.Settings.get_default();
+      settings.gtk_application_prefer_dark_theme = true;
+    }
+
 
     this.release();
     return 0;
