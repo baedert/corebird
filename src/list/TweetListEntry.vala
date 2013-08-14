@@ -232,6 +232,8 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       more_menu.attach_widget = more_button;
       Gtk.MenuItem info_item = new Gtk.MenuItem.with_label (_("Info"));
       more_menu.add (info_item);
+      Gtk.MenuItem reply_item = new Gtk.MenuItem.with_label (_("Reply"));
+      more_menu.add (reply_item);
       if (tweet.user_id == account.id) {
         Gtk.MenuItem delete_item = new Gtk.MenuItem.with_label (_("Delete"));
         delete_item.activate.connect(delete_tweet);
@@ -321,6 +323,11 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     });
   } // }}}
 
+  [GtkCallback]
+  private void name_button_clicked_cb () {
+    window.switch_page (MainWindow.PAGE_PROFILE,
+                        tweet.user_id);
+  }
 
   [GtkCallback]
   private void reply_send_button_clicked_cb () {

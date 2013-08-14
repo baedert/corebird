@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.15.2 on Sat Aug 10 23:00:39 2013 -->
+<!-- Generated with glade 3.15.2 on Wed Aug 14 18:48:29 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.10 -->
   <!-- interface-requires corebird 0.0 -->
@@ -135,6 +135,7 @@
                         <style>
                           <class name="text-button"/>
                         </style>
+                        <signal name="clicked" handler="name_button_clicked_cb" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
