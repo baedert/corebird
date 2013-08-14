@@ -4,10 +4,10 @@ pkgver=20130315
 pkgrel=1
 _realver=0.05
 pkgdesc="Gtk+ Twitter client"
-url="http://pango.com"
 arch=('i686' 'x86_64')
 license=('LGPL')
-depends=('gtk3>=3.10'
+url="https://bitbucket.org/baedert/corebird"
+depends=('gtk3>=3.9'
      'glib2>=2.38'
      'rest>=0.7' #media upload needs rest-git from the AUR
      'libgee'
@@ -23,7 +23,7 @@ _gitname="corebird"
 
 build() {
   cd $srcdir
-  msg "connecting to git.gnome.org GIT server"
+  msg "connecting to bitbucket GIT server"
 
   if [ -d $srcdir/$_gitname ] ; then
     cd $_gitname && git pull origin
@@ -40,7 +40,7 @@ build() {
   cd $srcdir/$_gitname-build
 
   msg "Starting build..."
-  ./compile-resources
+  ./compile-resources.sh
   cmake . -DCMAKE_INSTALL_PREFIX=/usr
   make
 }
