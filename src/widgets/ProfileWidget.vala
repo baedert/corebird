@@ -332,6 +332,7 @@ class ProfileWidget : Gtk.Box {
 
   private void toggle_follow() {
     // TODO: Don't automatically call this whenever the user opens a profile…
+    return;
     bool value = follow_button.active;
     var call = account.proxy.new_call();
     if(value)
@@ -340,10 +341,7 @@ class ProfileWidget : Gtk.Box {
       call.set_function("1.1/friendships/destroy.json");
     call.set_method("POST");
     call.add_param("follow", "true");
-    if(user_id != 0)
-      call.add_param("id", user_id.to_string());
-    else
-      call.add_param("screen_name", screen_name);
+    call.add_param("id", user_id.to_string());
     call.invoke_async.begin(null, (obj, res) => {
       try{
         call.invoke_async.end(res);
