@@ -30,6 +30,7 @@ class Tweet : GLib.Object {
 
 
   public int64 id;
+  /** If this tweet is a retweet, this is its id */
   public int64 rt_id;
   public bool retweeted = false;
   public bool favorited = false;
@@ -48,6 +49,8 @@ class Tweet : GLib.Object {
   public int64 created_at;
   public int64 rt_created_at;
   public bool verified = false;
+  /** If the user retweeted this tweet */
+  public int64 my_retweet;
 
   /** if 0, this tweet is NOT part of a conversation */
   public int64 reply_id = 0;
@@ -137,6 +140,9 @@ class Tweet : GLib.Object {
       if (!status.get_null_member("in_reply_to_status_id"))
         this.reply_id  = status.get_int_member("in_reply_to_status_id");
     }
+    if (status.has_member ("current_user_retweet"))
+      this.my_retweet    = status.get_object_member ("current_user_retweet").get_int_member ("id");
+
 
     this.avatar_name = Utils.get_avatar_name(this.avatar_url);
 

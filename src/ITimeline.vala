@@ -49,6 +49,7 @@ interface ITimeline : Gtk.Widget, IPage {
     call.set_method("GET");
     call.add_param("count", "20");
     call.add_param("contributor_details", "true");
+    call.add_param ("include_my_retweet", "true");
     if(greatest_id > 0)
       call.add_param("since_id", greatest_id.to_string());
 

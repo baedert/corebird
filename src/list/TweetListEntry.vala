@@ -254,6 +254,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     if (account.id == this.tweet.user_id || !values_set)
       return;
     var spinner = new Spinner();
+
     spinner.start ();
     WidgetReplacer.replace_tmp (retweet_button, spinner);
     TweetUtils.toggle_retweet_tweet.begin (account, tweet, !retweet_button.active, () => {

@@ -139,7 +139,7 @@ namespace TweetUtils {
     if (!unretweet)
       call.set_function (@"1.1/statuses/retweet/$(tweet.id).json");
     else
-      call.set_function (@"1.1/statuses/destroy/$(tweet.rt_id).json");
+      call.set_function (@"1.1/statuses/destroy/$(tweet.my_retweet).json");
 
     call.invoke_async.begin (null, (obj, res) => {
       try{
@@ -153,9 +153,9 @@ namespace TweetUtils {
         parser.load_from_data (back);
         if (!unretweet) {
           int64 new_id = parser.get_root ().get_object ().get_int_member ("id");
-          tweet.rt_id = new_id;
+          tweet.my_retweet = new_id;
         } else {
-          tweet.rt_id = 0;
+          tweet.my_retweet = 0;
         }
       } catch (GLib.Error e) {
         critical (e.message);
