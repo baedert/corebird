@@ -96,31 +96,23 @@ class Tweet : GLib.Object {
    * @param status The Json object to get the data from
    * @param now The current time
    */
-  public void load_from_json(Json.Node status_node, GLib.DateTime now){
+  public void load_from_json(Json.Node status_node, GLib.DateTime now) {
     Json.Object status = status_node.get_object ();
     Json.Object user = status.get_object_member("user");
-    this.text        = status.get_string_member("text");
+    Json.Object entities;
+    this.id          = status.get_int_member("id");
     this.favorited   = status.get_boolean_member("favorited");
     this.retweeted   = status.get_boolean_member("retweeted");
-    this.id          = status.get_int_member("id");
     this.retweet_count = (int)status.get_int_member ("retweet_count");
     this.favorite_count = (int)status.get_int_member ("favorite_count");
-    this.user_name   = user.get_string_member("name");
-    this.user_id     = user.get_int_member("id");
-    this.screen_name = user.get_string_member("screen_name");
     this.created_at  = Utils.parse_date(status.get_string_member("created_at"))
-                    .to_unix();
-    this.avatar_url  = user.get_string_member("profile_image_url");
-    this.verified    = user.get_boolean_member("verified");
-    if (!status.get_null_member("in_reply_to_status_id"))
-      this.reply_id  = status.get_int_member("in_reply_to_status_id");
+                      .to_unix();
 
-    var entities = status.get_object_member ("entities");
 
-    if (status.has_member("retweeted_status")){
+    if (status.has_member("retweeted_status")) {
       Json.Object rt      = status.get_object_member("retweeted_status");
       Json.Object rt_user = rt.get_object_member("user");
-      entities = rt.get_object_member ("entities");
+      entities           = rt.get_object_member ("entities");
       this.is_retweet    = true;
       this.rt_id         = rt.get_int_member("id");
       this.retweeted_by  = user.get_string_member("name");
@@ -134,7 +126,18 @@ class Tweet : GLib.Object {
       this.verified      = rt_user.get_boolean_member("verified");
       if (!rt.get_null_member("in_reply_to_status_id"))
         this.reply_id = rt.get_int_member("in_reply_to_status_id");
+    } else {
+      entities = status.get_object_member ("entities");
+      this.text        = status.get_string_member("text");
+      this.user_name   = user.get_string_member("name");
+      this.user_id     = user.get_int_member("id");
+      this.screen_name = user.get_string_member("screen_name");
+      this.avatar_url  = user.get_string_member("profile_image_url");
+      this.verified    = user.get_boolean_member("verified");
+      if (!status.get_null_member("in_reply_to_status_id"))
+        this.reply_id  = status.get_int_member("in_reply_to_status_id");
     }
+
     this.avatar_name = Utils.get_avatar_name(this.avatar_url);
 
 
