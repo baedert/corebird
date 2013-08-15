@@ -254,43 +254,11 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     if (account.id == this.tweet.user_id || !values_set)
       return;
     var spinner = new Spinner();
-    spinner.start();
-    WidgetReplacer.replace_tmp(retweet_button, spinner);
-
-    var call = account.proxy.new_call();
-    call.set_method("POST");
-    if(retweet_button.active) {
-      call.set_function(@"1.1/statuses/retweet/$(tweet.id).json");
-      call.invoke_async.begin(null, (obj, res) => {
-        try{
-          call.invoke_async.end(res);
-        } catch (GLib.Error e) {
-          Utils.show_error_dialog(e.message);
-        }
-        string back = call.get_payload();
-        var parser = new Json.Parser();
-        try{
-          parser.load_from_data(back);
-        } catch(GLib.Error e){
-          critical(e.message);
-          critical(back);
-        }
-        int64 new_id = parser.get_root().get_object().get_int_member("id");
-        tweet.rt_id = new_id;
-        WidgetReplacer.replace_tmp_back(retweet_button);
-      });
-    } else {
-      call.set_function(@"1.1/statuses/destroy/$(tweet.rt_id).json");
-      call.invoke_async.begin(null, (obj, res) => {
-        try {
-          call.invoke_async.end(res);
-        } catch (GLib.Error e) {
-          Utils.show_error_dialog(e.message);
-          critical(e.message);
-        }
-        WidgetReplacer.replace_tmp_back(retweet_button);
-      });
-    }
+    spinner.start ();
+    WidgetReplacer.replace_tmp (retweet_button, spinner);
+    TweetUtils.toggle_retweet_tweet.begin (account, tweet, !retweet_button.active, () => {
+      WidgetReplacer.replace_tmp_back(retweet_button);
+    });
 
   } // }}}
 
@@ -303,21 +271,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     spinner.start();
     WidgetReplacer.replace_tmp(favorite_button, spinner);
 
-    var call = account.proxy.new_call();
-    if (favorite_button.active) {
-      call.set_function("1.1/favorites/create.json");
-    } else {
-      call.set_function("1.1/favorites/destroy.json");
-    }
-
-    call.set_method("POST");
-    call.add_param("id", tweet.id.to_string());
-    call.invoke_async.begin(null, (obj, res) => {
-      try {
-        call.invoke_async.end(res);
-      } catch (GLib.Error e) {
-        critical(e.message);
-      }
+    TweetUtils.toggle_favorite_tweet.begin (account, tweet, favorite_button.active, () => {
       WidgetReplacer.replace_tmp_back(favorite_button, true,
                                       favorite_button.active);
     });
@@ -333,14 +287,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   private void reply_send_button_clicked_cb () {
     string text = reply_entry.text;
     if (text.strip().length > 0){
-      var call = account.proxy.new_call ();
-      call.set_function ("1.1/statuses/update.json");
-      call.set_method ("POST");
-      call.add_param ("in_reply_to_status_id", tweet.id.to_string ());
-      call.add_param ("status", text);
-      call.invoke_async.begin (null, () => {
-        reply_revealer.reveal_child = false;
-      });
+      TweetUtils.reply_to_tweet (account, tweet, text);
     }
 
     this.grab_focus ();
@@ -368,13 +315,8 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     if (tweet.user_id != account.id)
       return; // Nope.
     // TODO: Show confirmation dialog
-    var call = account.proxy.new_call ();
-    call.set_method ("POST");
-    call.set_function ("1.1/statuses/destroy/"+tweet.id.to_string ()+".json");
-    call.add_param ("id", tweet.id.to_string ());
-    call.invoke_async.begin (null, (obj, res) => {
-      try { call.invoke_async.end (res);} catch (GLib.Error e) { critical (e.message);}
-      this.sensitive = false;
+    TweetUtils.delete_tweet.begin (account, tweet, () => {
+        this.sensitive = false;
     });
   }
 

@@ -18,13 +18,6 @@
 
 using Gtk;
 
-struct Sequence {
-  int start;
-  int end;
-  string url;
-  string display_url;
-}
-
 class Tweet : GLib.Object {
 
   public static const int TYPE_NORMAL   = 1;
@@ -63,7 +56,7 @@ class Tweet : GLib.Object {
   public signal void inline_media_added(Gdk.Pixbuf? media);
   public bool has_inline_media = false;
   public int type = -1;
-  private GLib.SList<Sequence?> urls;
+  private GLib.SList<TweetUtils.Sequence?> urls;
   public int retweet_count;
   public int favorite_count;
 
@@ -150,14 +143,14 @@ class Tweet : GLib.Object {
     var urls = entities.get_array_member("urls");
     var hashtags = entities.get_array_member ("hashtags");
     var user_mentions = entities.get_array_member ("user_mentions");
-    this.urls = new GLib.SList<Sequence?>();
+    this.urls = new GLib.SList<TweetUtils.Sequence?>();
     urls.foreach_element((arr, index, node) => {
       var url = node.get_object();
       string expanded_url = url.get_string_member("expanded_url");
 
       Json.Array indices = url.get_array_member ("indices");
       expanded_url = expanded_url.replace("&", "&amp;");
-      this.urls.prepend(Sequence() {
+      this.urls.prepend(TweetUtils.Sequence() {
         start = (int)indices.get_int_element (0),
         end   = (int)indices.get_int_element (1) ,
         url   = expanded_url,
@@ -171,7 +164,7 @@ class Tweet : GLib.Object {
     hashtags.foreach_element ((arr, index, node) => {
       var hashtag = node.get_object ();
       Json.Array indices = hashtag.get_array_member ("indices");
-      this.urls.prepend(Sequence(){
+      this.urls.prepend(TweetUtils.Sequence(){
         start = (int)indices.get_int_element (0),
         end   = (int)indices.get_int_element (1),
         url   = "#"+hashtag.get_string_member ("text"),
@@ -183,7 +176,7 @@ class Tweet : GLib.Object {
       var mention = node.get_object ();
       Json.Array indices = mention.get_array_member ("indices");
 
-      this.urls.prepend(Sequence(){
+      this.urls.prepend(TweetUtils.Sequence(){
         start = (int)indices.get_int_element (0),
         end   = (int)indices.get_int_element (1),
         url   = "@"+mention.get_string_member ("id_str"),
@@ -200,7 +193,7 @@ class Tweet : GLib.Object {
         string expanded_url = url.get_string_member ("expanded_url");
         expanded_url = expanded_url.replace("&", "&amp;");
         Json.Array indices = url.get_array_member ("indices");
-        this.urls.prepend(Sequence(){
+        this.urls.prepend(TweetUtils.Sequence(){
           start = (int)indices.get_int_element (0),
           end   = (int)indices.get_int_element (1),
           url   = expanded_url,
@@ -253,23 +246,14 @@ class Tweet : GLib.Object {
 #endif
   }
 
+  /**
+   * Returns the text of this tweet in pango markup form,
+   * i.e. formatted with the html tags formatted by pango.
+   *
+   * @return The tweet's formatted text.
+   */
   public string get_formatted_text () {
-    string formatted_text = this.text;
-    int char_diff = 0;
-    urls.sort ((a, b) => {
-      if (a.start < b.start)
-      return -1;
-      else return 1;
-    });
-    foreach (Sequence s in urls) {
-      int length_before = formatted_text.char_count ();
-      int from = formatted_text.index_of_nth_char (s.start + char_diff);
-      int to   = formatted_text.index_of_nth_char (s.end + char_diff);
-      formatted_text = formatted_text.splice (from,
-                                              to,
-           "<a href='%s'>%s</a>".printf(s.url, s.display_url));
-      char_diff += formatted_text.char_count () - length_before;
-    }
-    return formatted_text;
+    return TweetUtils.get_formatted_text (this.text, urls);
   }
+
 }
