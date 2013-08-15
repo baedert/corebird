@@ -121,6 +121,7 @@ set (VALA_SOURCE
   src/util/Config.vala
   src/util/WidgetReplacer.vala
   src/util/IntHistory.vala
+  src/util/TweetUtils.vala
   src/resources.c
 )
 

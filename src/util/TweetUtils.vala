@@ -57,7 +57,12 @@ namespace TweetUtils {
     return formatted_text;
   }
 
-
+  /**
+   * Deletes the given tweet.
+   *
+   * @param account The account to delete the tweet from
+   * @param tweet the tweet to delete
+   */
   async void delete_tweet (Account account, Tweet tweet) {
     var call = account.proxy.new_call ();
     call.set_method ("POST");
@@ -70,6 +75,15 @@ namespace TweetUtils {
     yield;
   }
 
+
+  /**
+   * Replies to the given tweet. This intended for quick/easy replies, without any
+   * additional data such as media.
+   *
+   * @param account The account to reply from
+   * @param tweet The tweet to reply to
+   * @param text The text to reply
+   */
   async void reply_to_tweet (Account account, Tweet tweet, string text) {
     var call = account.proxy.new_call ();
     call.set_function ("1.1/statuses/update.json");
@@ -82,6 +96,15 @@ namespace TweetUtils {
     yield;
   }
 
+
+  /**
+   * (Un)favorites the given tweet.
+   *
+   * @param account The account to (un)favorite from
+   * @param tweet The tweet to (un)favorite
+   * @param unfavorite If set to true, this function will unfavorite the tiven tweet,
+   *                   else it will favorite it.
+   */
   async void toggle_favorite_tweet (Account account, Tweet tweet, bool unfavorite = false) {
     var call = account.proxy.new_call();
     if (!unfavorite)
@@ -102,6 +125,14 @@ namespace TweetUtils {
     yield;
   }
 
+  /**
+   * (Un)retweets the given tweet.
+   *
+   * @param account The account to (un)retweet from
+   * @param tweet The tweet to (un)retweet
+   * @param unretweet If set to true, this function will delete te retweet of #tweet,
+   *                  else it will retweet it.
+   */
   async void toggle_retweet_tweet (Account account, Tweet tweet, bool unretweet = false) {
   var call = account.proxy.new_call ();
     call.set_method ("POST");
@@ -117,13 +148,11 @@ namespace TweetUtils {
         Utils.show_error_dialog (e.message);
       }
       string back = call.get_payload();
-      stdout.printf (back+"\n");
       var parser = new Json.Parser ();
       try {
         parser.load_from_data (back);
         if (!unretweet) {
           int64 new_id = parser.get_root ().get_object ().get_int_member ("id");
-          message (new_id.to_string ());
           tweet.rt_id = new_id;
         } else {
           tweet.rt_id = 0;
