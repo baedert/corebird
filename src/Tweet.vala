@@ -165,8 +165,6 @@ class Tweet : GLib.Object {
         url   = expanded_url,
         display_url = url.get_string_member ("display_url")
       });
-
-      expanded_url = expanded_url.replace("&", "&amp;");
       InlineMediaDownloader.try_load_media.begin(this, expanded_url);
     });
 
