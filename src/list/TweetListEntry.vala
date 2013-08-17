@@ -334,6 +334,8 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
                  tweet.is_retweet ? tweet.rt_created_at : tweet.created_at);
     string link = "https://twitter.com/%s/status/%s".printf (tweet.screen_name,
                                                              tweet.id.to_string());
+    if (time_delta_label == null)
+      message ("label is null for > "+tweet.text);
     time_delta_label.label = "<small><a href='%s' title='Open in Browser'>%s</a></small>"
                   .printf (link, Utils.get_time_delta (then, now));
     return (int)(now.difference (then) / 1000.0 / 1000.0);

@@ -66,7 +66,7 @@ class Account : GLib.Object {
                                       Utils.decode (Utils.CONSUMER_SECRET),
                                       "https://api.twitter.com/",
                                       false);
-    this.user_stream = new UserStream ();
+    this.user_stream = new UserStream ("@"+screen_name);
     if (load_secrets) {
       init_database ();
       try {
@@ -229,10 +229,6 @@ class Account : GLib.Object {
                                    res.fetch_string (1),
                                    res.fetch_string (2));
         acc.avatar_url = res.fetch_string (3);
-        acc.init_proxy ();
-        acc.query_user_info_by_scren_name.begin (acc.screen_name, (obj, res) => {
-          acc.load_avatar ();
-        });
         accounts.append (acc);
         res.next();
       }

@@ -36,7 +36,7 @@ class ProfileWidget : Gtk.Box {
   private int active_page       = 0;
   private int64 user_id;
   private string screen_name;
-  private MainWindow window;
+  private unowned MainWindow window;
   private unowned Account account;
 
   public ProfileWidget(MainWindow window, Account account){

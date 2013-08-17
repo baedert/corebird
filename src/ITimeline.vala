@@ -55,7 +55,7 @@ interface ITimeline : Gtk.Widget, IPage {
 
     call.invoke_async.begin(null, () => {
       string back = call.get_payload();
-      stdout.printf(back+"\n");
+//      stdout.printf(back+"\n");
       var parser = new Json.Parser();
       try {
         parser.load_from_data(back);
