@@ -25,7 +25,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
   private int id;
   private BadgeRadioToolButton tool_button;
   private bool loading = false;
-  private int64 lowest_id {get; set; default = int64.MAX-2;}
+  public int64 lowest_id {get; set; default = int64.MAX-2;}
   protected uint tweet_remove_timeout{get;set;}
   private ProgressEntry progress_entry = new ProgressEntry(75);
   public DeltaUpdater delta_updater {get;set;}
