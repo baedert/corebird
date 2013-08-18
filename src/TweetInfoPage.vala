@@ -174,7 +174,7 @@ class TweetInfoPage : IPage , ScrollWidget {
     GLib.DateTime created_at = new GLib.DateTime.from_unix_local (tweet.created_at);
     string time_format = created_at.format ("%x, %X");
 
-    text_label.label = "<b><i><big><big><big>»"+tweet.text+"«</big></big></big></i></b>";
+    text_label.label = "<b><i><big><big><big>»"+tweet.get_formatted_text ()+"«</big></big></big></i></b>";
     author_label.label = "- %s at %s".printf (tweet.user_name, time_format);
     avatar_image.pixbuf = tweet.avatar;
     retweets_label.label = _("Retweets: ") + tweet.retweet_count.to_string ();
