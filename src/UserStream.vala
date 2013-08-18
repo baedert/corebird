@@ -103,17 +103,11 @@ class UserStream : Object {
    *
    */
   private bool timeout_cb() {
-    var builder = new UIBuilder(DATADIR+"/ui/connection-lost-dialog.ui");
-    var dialog = builder.get_dialog ("dialog1");
-    dialog.response.connect((id) => {
-      if(id == 0)
-        dialog.destroy();
-      else if(id == 1) {
-        error ("Implement reconnecting");
-      }
+    var dialog = new ConnectionLostDialog ();
+    dialog.reconnect_clicked.connect (() => {
+      message ("TODO: Implement reconnect");
     });
-
-    dialog.show_all();
+    dialog.show ();
     return false;
   }
 

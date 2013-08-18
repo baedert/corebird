@@ -99,6 +99,7 @@ set (VALA_SOURCE
   src/IMessageReceiver.vala
   src/ITwitterItem.vala
   src/Account.vala
+  src/ConnectionLostDialog.vala
   src/widgets/ImageDialog.vala
   src/widgets/ImageBox.vala
   src/widgets/ImageLabel.vala
