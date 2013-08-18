@@ -40,8 +40,7 @@ interface ITimeline : Gtk.Widget, IPage {
    * @param function The twitter function to use
    * @param tweet_type The type of tweets to load
    */
-  protected void load_newest_internal(string function, int tweet_type,
-                                      LoaderThread.EndLoadFunc? end_load_func = null)
+  protected async void load_newest_internal(string function, int tweet_type)
                                       throws SQLHeavy.Error {
     int64 greatest_id = 0;
 
@@ -66,11 +65,26 @@ interface ITimeline : Gtk.Widget, IPage {
         return;
       }
 
+
+      var now = new GLib.DateTime.now_local ();
       var root = parser.get_root().get_array();
-      var loader_thread = new LoaderThread(root, account, tweet_list, main_window,
-                                           delta_updater, tweet_type);
-      loader_thread.run(end_load_func);
+      root.foreach_element( (array, index, node) => {
+        Tweet t = new Tweet();
+        t.load_from_json(node, now);
+
+        if (tweet_type != -1){
+          t.type = tweet_type;
+        }
+
+        if(t.id < max_id)
+          max_id = t.id;
+
+        var entry  = new TweetListEntry(t, main_window, account);
+        tweet_list.add (entry);
+      });
+      load_newest_internal.callback ();
     });
+    yield;
   }
 
   /**
@@ -80,8 +94,7 @@ interface ITimeline : Gtk.Widget, IPage {
    * @param function The Twitter function to use
    * @param max_id The highest id of tweets to receive
    */
-  protected void load_older_internal(string function, int tweet_type,
-                                     LoaderThread.EndLoadFunc? end_load_func = null) {
+  protected async void load_older_internal(string function, int tweet_type) {
     var call = account.proxy.new_call();
     call.set_function(function);
     call.set_method("GET");
@@ -96,20 +109,32 @@ interface ITimeline : Gtk.Widget, IPage {
       }
 
       string back = call.get_payload();
-      stdout.printf(back+"\n");
+      debug(back+"\n");
       var parser = new Json.Parser();
       try{
         parser.load_from_data (back);
       } catch (GLib.Error e) {
         critical(e.message);
       }
-
+      var now = new GLib.DateTime.now_local ();
       var root = parser.get_root().get_array();
-      var loader_thread = new LoaderThread(root, account,
-                                           tweet_list, main_window,
-                                           delta_updater,tweet_type);
-      loader_thread.run(end_load_func);
+      root.foreach_element( (array, index, node) => {
+        Tweet t = new Tweet();
+        t.load_from_json(node, now);
+
+        if (tweet_type != -1){
+          t.type = tweet_type;
+        }
+
+        if(t.id < max_id)
+          max_id = t.id;
+
+        var entry  = new TweetListEntry(t, main_window, account);
+        tweet_list.add (entry);
+      });
+      load_older_internal.callback ();
     });
+    yield;
   }
 
   /**

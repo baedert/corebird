@@ -105,34 +105,17 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
   public void load_cached() {}
 
   public void load_newest() {
-    try {
-      this.load_newest_internal("1.1/statuses/home_timeline.json",
-                                Tweet.TYPE_NORMAL,
-            (count, lowest_id) => {
-            if(lowest_id < this.lowest_id)
-              this.lowest_id = lowest_id;
-
-            tweet_list.remove(progress_entry);
-            progress_entry = null;
-            });
-    } catch(SQLHeavy.Error e){
-      warning("SQL Error while loading newest tweets of timeline %d: %s",
-              this.id, e.message);
-    }
+    this.load_newest_internal.begin("1.1/statuses/home_timeline.json", Tweet.TYPE_NORMAL, () => {
+      tweet_list.remove(progress_entry);
+      progress_entry = null;
+    });
   }
 
   public void load_older() {
-    this.balance_next_upper_change(BOTTOM);
-    this.load_older_internal("1.1/statuses/home_timeline.json",
-                             Tweet.TYPE_NORMAL,
-        (count, lowest_id) => {
-          if(lowest_id < this.lowest_id){
-            this.lowest_id = lowest_id;
-            message("Setting lowest_id to new value(%s)", lowest_id.to_string());
-          }
-
-          this.loading = false;
-        });
+    this.balance_next_upper_change (BOTTOM);
+    this.load_older_internal.begin ("1.1/statuses/home_timeline.json", Tweet.TYPE_NORMAL, () => {
+      this.loading = false;
+    });
   }
 
 

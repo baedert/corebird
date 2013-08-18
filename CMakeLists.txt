@@ -88,7 +88,6 @@ set (VALA_SOURCE
   src/HomeTimeline.vala
   src/MentionsTimeline.vala
   src/SearchTimeline.vala
-  src/LoaderThread.vala
   src/IPage.vala
   src/ProfilePage.vala
   src/TweetInfoPage.vala

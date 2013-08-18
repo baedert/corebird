@@ -134,52 +134,37 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
   }
 
   public void load_cached() {
-    try {
-      SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db,
-        "SELECT `sort_factor`, `type`, `data`, `id` FROM cache WHERE `type`='%d';".printf(NewFollowerEntry.TYPE));
-      SQLHeavy.QueryResult result = q.execute();
-      while(!result.finished){
-        var entry = new NewFollowerEntry.from_data(result.fetch_int(3),
-                                                   result.fetch_string(2),
-                                                   result.fetch_int64(0));
-        tweet_list.add(entry);
-        entry.show_all();
-        result.next();
-      }
-    } catch (SQLHeavy.Error e) {
-      critical (e.message);
-    }
-//    tweet_list.resort();
-    this.vadjustment.set_upper(0);
+/*    try {*/
+      //SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db,
+        //"SELECT `sort_factor`, `type`, `data`, `id` FROM cache WHERE `type`='%d';".printf(NewFollowerEntry.TYPE));
+      //SQLHeavy.QueryResult result = q.execute();
+      //while(!result.finished){
+        //var entry = new NewFollowerEntry.from_data(result.fetch_int(3),
+                                                   //result.fetch_string(2),
+                                                   //result.fetch_int64(0));
+        //tweet_list.add(entry);
+        //entry.show_all();
+        //result.next();
+      //}
+    //} catch (SQLHeavy.Error e) {
+      //critical (e.message);
+    //}
+////    tweet_list.resort();
+    /*this.vadjustment.set_upper(0);*/
   }
 
   public void load_newest() {
-    try {
-      this.load_newest_internal("1.1/statuses/mentions_timeline.json",
-                                 Tweet.TYPE_MENTION,
-        (count, lowest_id) => {
-          if(lowest_id < this.lowest_id)
-            this.lowest_id = lowest_id;
-          tweet_list.remove(progress_entry);
-          progress_entry = null;
-        });
-    } catch (SQLHeavy.Error e) {
-      warning(e.message);
-    }
+    this.load_newest_internal.begin("1.1/statuses/mentions_timeline.json", Tweet.TYPE_MENTION, () => {
+      tweet_list.remove(progress_entry);
+      progress_entry = null;
+    });
   }
 
   public void load_older() {
-    this.balance_next_upper_change(BOTTOM);
-    this.load_older_internal("1.1/statuses/mentions_timeline.json",
-                             Tweet.TYPE_MENTION,
-        (count, lowest_id) => {
-          if(lowest_id < this.lowest_id){
-            this.lowest_id = lowest_id;
-            message("Setting lowest_id to new value(%s)", lowest_id.to_string());
-          }
-
-          this.loading = false;
-        });
+    this.balance_next_upper_change (BOTTOM);
+    this.load_older_internal.begin ("1.1/statuses/mentions_timeline.json", Tweet.TYPE_MENTION, () => {
+      this.loading = false;
+    });
 
   }
 

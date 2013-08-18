@@ -109,10 +109,9 @@ class SearchTimeline : IPage, Box {
         critical(" %s\nDATA:\n%s", e.message, back);
       }
       var statuses = parser.get_root().get_object().get_array_member("statuses");
-      LoaderThread loader_thread = new LoaderThread(statuses, account,
-                                                    tweet_list, main_window,
-                                                    delta_updater);
-      loader_thread.run();
+      statuses.foreach_element ((array, index, node) => {
+
+      });
     });
   }
 
