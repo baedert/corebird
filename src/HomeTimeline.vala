@@ -19,17 +19,13 @@ using Gtk;
 
 class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
   public int unread_count { get;set; }
-  protected int64 max_id {
-    get { return lowest_id; }
-    set { lowest_id = value; }
-  }
   public unowned MainWindow main_window {set; get;}
   protected Gtk.ListBox tweet_list {set; get;}
   public Account account {get; set;}
   private int id;
   private BadgeRadioToolButton tool_button;
   private bool loading = false;
-  private int64 lowest_id = int64.MAX-2;
+  private int64 lowest_id {get; set; default = int64.MAX-2;}
   protected uint tweet_remove_timeout{get;set;}
   private ProgressEntry progress_entry = new ProgressEntry(75);
   public DeltaUpdater delta_updater {get;set;}

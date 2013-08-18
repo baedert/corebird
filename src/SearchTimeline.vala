@@ -29,7 +29,7 @@ class SearchTimeline : IPage, Box {
   protected uint tweet_remove_timeout{get;set;}
   private Entry search_entry    = new Entry();
   public unowned MainWindow main_window{set;get;}
-  protected int64 max_id{get;set; default = int64.MAX-2;}
+  protected int64 lowest_id{get;set; default = int64.MAX-2;}
   protected Gtk.ListBox tweet_list{set;get;}
   private int id;
   private RadioToolButton tool_button;

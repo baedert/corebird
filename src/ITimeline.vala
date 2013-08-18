@@ -22,7 +22,8 @@
  */
 interface ITimeline : Gtk.Widget, IPage {
   public static const int REST = 25;
-  protected abstract int64 max_id            {get; set;}
+  /** The lowest id of any tweet in this timeline */
+  protected abstract int64 lowest_id         {get; set;}
   protected abstract Gtk.ListBox tweet_list  {get; set;}
   public    abstract int unread_count        {get; set;}
   public    abstract DeltaUpdater delta_updater {get;set;}
@@ -76,8 +77,8 @@ interface ITimeline : Gtk.Widget, IPage {
           t.type = tweet_type;
         }
 
-        if(t.id < max_id)
-          max_id = t.id;
+        if(t.id < lowest_id)
+          lowest_id = t.id;
 
         var entry  = new TweetListEntry(t, main_window, account);
         tweet_list.add (entry);
@@ -97,8 +98,8 @@ interface ITimeline : Gtk.Widget, IPage {
     var call = account.proxy.new_call();
     call.set_function(function);
     call.set_method("GET");
-    message(@"using max_id: $max_id");
-    call.add_param("max_id", (max_id - 1).to_string());
+    message(@"using lowest_id: $lowest_id");
+    call.add_param("max_id", (lowest_id - 1).to_string());
     call.invoke_async.begin(null, (obj, result) => {
       try{
         call.invoke_async.end(result);
@@ -125,8 +126,8 @@ interface ITimeline : Gtk.Widget, IPage {
           t.type = tweet_type;
         }
 
-        if(t.id < max_id)
-          max_id = t.id;
+        if(t.id < lowest_id)
+          lowest_id = t.id;
 
         var entry  = new TweetListEntry(t, main_window, account);
         tweet_list.add (entry);
