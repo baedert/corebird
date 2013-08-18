@@ -77,7 +77,9 @@ class Utils {
     GLib.TimeSpan diff = now.difference(time);
 
     int minutes = (int)(diff / 1000.0 / 1000.0 / 60.0);
-    if (minutes < 60)
+    if (minutes == 0)
+      return "Now";
+    else if (minutes < 60)
       return "%dm".printf(minutes);
 
     int hours = (int)(minutes / 60.0);
