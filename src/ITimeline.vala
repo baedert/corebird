@@ -88,11 +88,10 @@ interface ITimeline : Gtk.Widget, IPage {
   }
 
   /**
-   * Default implementation to load older tweets using
-   * the max_id method from the given function
+   * Default implementation to load older tweets.
    *
    * @param function The Twitter function to use
-   * @param max_id The highest id of tweets to receive
+   * @param tweet_type The type of tweets to load
    */
   protected async void load_older_internal(string function, int tweet_type) {
     var call = account.proxy.new_call();

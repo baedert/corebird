@@ -134,23 +134,22 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
   }
 
   public void load_cached() {
-/*    try {*/
-      //SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db,
-        //"SELECT `sort_factor`, `type`, `data`, `id` FROM cache WHERE `type`='%d';".printf(NewFollowerEntry.TYPE));
-      //SQLHeavy.QueryResult result = q.execute();
-      //while(!result.finished){
-        //var entry = new NewFollowerEntry.from_data(result.fetch_int(3),
-                                                   //result.fetch_string(2),
-                                                   //result.fetch_int64(0));
-        //tweet_list.add(entry);
-        //entry.show_all();
-        //result.next();
-      //}
-    //} catch (SQLHeavy.Error e) {
-      //critical (e.message);
-    //}
-////    tweet_list.resort();
-    /*this.vadjustment.set_upper(0);*/
+    try {
+      SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db,
+        "SELECT `sort_factor`, `type`, `data`, `id` FROM cache WHERE `type`='%d';".printf(NewFollowerEntry.TYPE));
+      SQLHeavy.QueryResult result = q.execute();
+      while(!result.finished){
+        var entry = new NewFollowerEntry.from_data(result.fetch_int(3),
+                                                   result.fetch_string(2),
+                                                   result.fetch_int64(0));
+        tweet_list.add(entry);
+        entry.show_all();
+        result.next();
+      }
+    } catch (SQLHeavy.Error e) {
+      critical (e.message);
+    }
+    this.vadjustment.set_upper(0);
   }
 
   public void load_newest() {
