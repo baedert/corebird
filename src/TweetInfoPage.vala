@@ -26,6 +26,8 @@ class TweetInfoPage : IPage , ScrollWidget {
   public unowned MainWindow main_window { get; set; }
   public unowned Account account { get; set; }
   private int64 tweet_id;
+  private bool values_set = false;
+  private Tweet tweet;
 
   [GtkChild]
   private Label text_label;
@@ -41,6 +43,10 @@ class TweetInfoPage : IPage , ScrollWidget {
   private ListBox bottom_list_box;
   [GtkChild]
   private Spinner progress_spinner;
+  [GtkChild]
+  private ToggleButton favorite_button;
+  [GtkChild]
+  private ToggleButton retweet_button;
 
 
 
@@ -55,16 +61,18 @@ class TweetInfoPage : IPage , ScrollWidget {
     if (mode == 0)
       return;
 
+    values_set = false;
+
+
     bottom_list_box.foreach ((w) => {bottom_list_box.remove (w);});
     bottom_list_box.hide ();
     progress_spinner.hide ();
 
 
     if (mode == BY_INSTANCE) {
-      Tweet tweet = args.arg ();
+      this.tweet = args.arg ();
       this.tweet_id = tweet.id;
-      set_tweet_data (tweet.get_formatted_text (), tweet.user_name, tweet.created_at,
-                      tweet.avatar, tweet.retweet_count, tweet.favorite_count);
+      set_tweet_data (tweet);
 
     } else if (mode == BY_ID) {
       this.tweet_id = args.arg ();
@@ -73,6 +81,32 @@ class TweetInfoPage : IPage , ScrollWidget {
     query_tweet_info ();
   }
 
+
+  [GtkCallback]
+  private void favorite_button_toggled_cb () {
+    if (!values_set)
+      return;
+
+    favorite_button.sensitive = false;
+    TweetUtils.toggle_favorite_tweet.begin (account, tweet, favorite_button.active, () => {
+        favorite_button.sensitive = true;
+    });
+  }
+
+  [GtkCallback]
+  private void retweet_button_toggled_cb () {
+    if (!values_set)
+      return;
+    retweet_button.sensitive = false;
+    TweetUtils.toggle_retweet_tweet.begin (account, tweet, !retweet_button.active, () => {
+      retweet_button.sensitive = true;
+    });
+  }
+
+  [GtkCallback]
+  private void reply_button_clicked_cb () {
+    message ("reply!");
+  }
 
   /**
    * Loads the data of the tweet with the id tweet_id from the Twitter server.
@@ -85,13 +119,11 @@ class TweetInfoPage : IPage , ScrollWidget {
     call.invoke_async.begin (null, (obj, res) => {
       try{call.invoke_async.end (res);}catch(GLib.Error e){critical(e.message);return;}
       var now = new GLib.DateTime.now_local ();
-      Tweet tweet = new Tweet ();
+      this.tweet = new Tweet ();
       var parser = new Json.Parser ();
       parser.load_from_data (call.get_payload ());
       tweet.load_from_json (parser.get_root (), now);
-      set_tweet_data (tweet.get_formatted_text (), tweet.user_name,
-                      tweet.created_at, tweet.avatar, tweet.retweet_count,
-                      tweet.favorite_count);
+      set_tweet_data (tweet);
       Json.Object root_object = parser.get_root ().get_object ();
       if (!root_object.get_null_member ("place"))
         author_label.label += " in " + root_object.get_string_member ("place");
@@ -101,6 +133,7 @@ class TweetInfoPage : IPage , ScrollWidget {
         progress_spinner.start ();
         load_replied_to_tweet (tweet.reply_id);
       }
+      values_set = true;
     });
 
   }
@@ -137,16 +170,17 @@ class TweetInfoPage : IPage , ScrollWidget {
   /**
    *
    */
-  private void set_tweet_data (string text, string user_name, int64 time,
-                               Gdk.Pixbuf avatar, int retweet_count, int favorite_count) {
-    GLib.DateTime created_at = new GLib.DateTime.from_unix_local (time);
+  private void set_tweet_data (Tweet tweet) {
+    GLib.DateTime created_at = new GLib.DateTime.from_unix_local (tweet.created_at);
     string time_format = created_at.format ("%x, %X");
 
-    text_label.label = "<b><i><big><big><big>»"+text+"«</big></big></big></i></b>";
-    author_label.label = "- %s at %s".printf (user_name, time_format);
-    avatar_image.pixbuf = avatar;
-    retweets_label.label = _("Retweets: ") + retweet_count.to_string ();
-    favorites_label.label = _("Favorites: ") + favorite_count.to_string ();
+    text_label.label = "<b><i><big><big><big>»"+tweet.text+"«</big></big></big></i></b>";
+    author_label.label = "- %s at %s".printf (tweet.user_name, time_format);
+    avatar_image.pixbuf = tweet.avatar;
+    retweets_label.label = _("Retweets: ") + tweet.retweet_count.to_string ();
+    favorites_label.label = _("Favorites: ") + tweet.favorite_count.to_string ();
+    retweet_button.active = tweet.retweeted;
+    favorite_button.active = tweet.favorited;
   }
 
   public int get_id () {
