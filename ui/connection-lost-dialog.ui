@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.15.2 on Sun Aug 18 12:57:01 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.6 -->
-  <object class="GtkDialog" id="dialog1">
+  <template class="ConnectionLostDialog" parent="GtkDialog">
     <property name="height_request">104</property>
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
@@ -21,6 +22,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <signal name="clicked" handler="cancel_button_clicked_cb" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -34,6 +36,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <signal name="clicked" handler="reconnect_button_clicked_cb" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -61,10 +64,10 @@
                 <property name="halign">start</property>
                 <property name="valign">center</property>
                 <property name="stock">gtk-dialog-warning</property>
-                <property name="icon-size">6</property>
+                <property name="icon_size">6</property>
               </object>
               <packing>
-                <property name="expand">True</property>
+                <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="position">0</property>
               </packing>
@@ -100,5 +103,5 @@ has been lost. Reconnect?
       <action-widget response="0">close_button</action-widget>
       <action-widget response="1">reconnect_button</action-widget>
     </action-widgets>
-  </object>
+  </template>
 </interface>
