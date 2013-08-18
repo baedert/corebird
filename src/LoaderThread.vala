@@ -26,15 +26,18 @@ class LoaderThread : GLib.Object {
   private int64 lowest_id = int64.MAX - 1;
   private unowned Account acc;
   private unowned MainWindow main_window;
+  private unowned DeltaUpdater delta_updater;
 
   public LoaderThread(Json.Array root, Account acc,
                       Gtk.ListBox list, MainWindow main_window,
+                      DeltaUpdater delta_updater,
                       int tweet_type = -1){
-    this.root        = root;
-    this.list        = list;
-    this.tweet_type  = tweet_type;
-    this.acc         = acc;
-    this.main_window = main_window;
+    this.root          = root;
+    this.list          = list;
+    this.tweet_type    = tweet_type;
+    this.acc           = acc;
+    this.main_window   = main_window;
+    this.delta_updater = delta_updater;
   }
 
   public void run(EndLoadFunc? finished = null){
@@ -63,8 +66,10 @@ class LoaderThread : GLib.Object {
 
     GLib.Idle.add( () => {
       message("Results: %d", entries.length);
-      for(int i = 0; i < entries.length; i++)
+      for(int i = 0; i < entries.length; i++) {
+        delta_updater.add(entries[i]);
         list.add(entries[i]);
+      }
       if (finished != null){
         finished(entries.length, lowest_id);
       }

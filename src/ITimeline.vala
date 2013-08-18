@@ -22,9 +22,10 @@
  */
 interface ITimeline : Gtk.Widget, IPage {
   public static const int REST = 25;
-  protected abstract int64 max_id           {get; set;}
-  protected abstract Gtk.ListBox tweet_list {get; set;}
-  public    abstract int unread_count       {get; set;}
+  protected abstract int64 max_id            {get; set;}
+  protected abstract Gtk.ListBox tweet_list  {get; set;}
+  public    abstract int unread_count        {get; set;}
+  public    abstract DeltaUpdater delta_updater {get;set;}
 
   public abstract void load_cached();
   public abstract void load_newest();
@@ -67,7 +68,7 @@ interface ITimeline : Gtk.Widget, IPage {
 
       var root = parser.get_root().get_array();
       var loader_thread = new LoaderThread(root, account, tweet_list, main_window,
-                                           tweet_type);
+                                           delta_updater, tweet_type);
       loader_thread.run(end_load_func);
     });
   }
@@ -106,7 +107,7 @@ interface ITimeline : Gtk.Widget, IPage {
       var root = parser.get_root().get_array();
       var loader_thread = new LoaderThread(root, account,
                                            tweet_list, main_window,
-                                           tweet_type);
+                                           delta_updater,tweet_type);
       loader_thread.run(end_load_func);
     });
   }

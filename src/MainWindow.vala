@@ -41,8 +41,10 @@ class MainWindow : ApplicationWindow {
   private Image avatar_image               = new Image ();
   private Button new_tweet_button          = new Button ();
   private Gtk.Stack stack                  = new Gtk.Stack();
+  private DeltaUpdater delta_updater       = new DeltaUpdater();
   public unowned Account account {public get; private set;}
   private WarningService warning_service;
+
 
   public MainWindow(Gtk.Application app, Account? account = null){
     GLib.Object (application: app);
@@ -118,7 +120,7 @@ class MainWindow : ApplicationWindow {
         continue;
 
       ITimeline tl = (ITimeline)page;
-
+      tl.delta_updater = delta_updater;
       tl.load_cached ();
       tl.load_newest ();
     }

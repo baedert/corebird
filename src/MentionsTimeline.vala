@@ -32,6 +32,7 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
   private int64 lowest_id = int64.MAX-2;
   protected uint tweet_remove_timeout{get;set;}
   private ProgressEntry progress_entry = new ProgressEntry(75);
+  public DeltaUpdater delta_updater {get;set;}
 
   public MentionsTimeline(int id){
     this.id = id;
@@ -82,7 +83,8 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
         var entry = new TweetListEntry(t, main_window, account);
         entry.seen = false;
 
-        tweet_list.add(entry);
+        delta_updater.add (entry);
+        tweet_list.add (entry);
 
         unread_count++;
         update_unread_count();

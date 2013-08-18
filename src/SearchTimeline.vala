@@ -33,6 +33,7 @@ class SearchTimeline : IPage, Box {
   protected Gtk.ListBox tweet_list{set;get;}
   private int id;
   private RadioToolButton tool_button;
+  private DeltaUpdater delta_updater;
 
 
   public SearchTimeline(int id) {
@@ -79,7 +80,7 @@ class SearchTimeline : IPage, Box {
     if(search_term.length == 0)
       return;
 
-    // tweet_list.clear();
+    // tweet_list.clear(); TODO: Remove all entries from the list
     // GLib.Idle.add( () => {
     //  tweet_list.show_spinner();
     //  return false;
@@ -109,7 +110,8 @@ class SearchTimeline : IPage, Box {
       }
       var statuses = parser.get_root().get_object().get_array_member("statuses");
       LoaderThread loader_thread = new LoaderThread(statuses, account,
-                                                    tweet_list, main_window);
+                                                    tweet_list, main_window,
+                                                    delta_updater);
       loader_thread.run();
     });
   }

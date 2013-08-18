@@ -17,19 +17,11 @@
 
 
 
-class DeltaUpdater {
-  private static DeltaUpdater instance;
-  public static new DeltaUpdater get() {
-    if(instance == null)
-      instance = new DeltaUpdater();
-    return instance;
-  }
-
+class DeltaUpdater : GLib.Object {
   private GLib.SList<weak TweetListEntry> minutely = new SList<weak TweetListEntry>();
   private GLib.SList<weak TweetListEntry> hourly   = new SList<weak TweetListEntry>();
 
-
-  private DeltaUpdater() {
+  public DeltaUpdater () {
     //TODO: Maybe use only one timeout?
     GLib.Timeout.add(60000, // All 60 seconds
     () => {
@@ -54,7 +46,7 @@ class DeltaUpdater {
 
 
 
-  public void add(TweetListEntry entry) {
+  public void add (TweetListEntry entry) {
     // TODO: This sucks
     GLib.DateTime now  = new GLib.DateTime.now_local();
     GLib.TimeSpan diff = now.difference(new GLib.DateTime.from_unix_local(

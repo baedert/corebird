@@ -32,6 +32,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
   private int64 lowest_id = int64.MAX-2;
   protected uint tweet_remove_timeout{get;set;}
   private ProgressEntry progress_entry = new ProgressEntry(75);
+  public DeltaUpdater delta_updater {get;set;}
 
   public HomeTimeline(int id) {
     this.id = id;
@@ -79,6 +80,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
       this.balance_next_upper_change(TOP);
       var entry = new TweetListEntry(t, main_window, account);
       entry.seen = false;
+      delta_updater.add (entry);
       tweet_list.add(entry);
 
       unread_count++;

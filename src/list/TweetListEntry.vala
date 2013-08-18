@@ -132,8 +132,6 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       conversation_button.show ();
     }
 
-    DeltaUpdater.get ().add (this);
-
     values_set = true;
 
     reply_entry.focus_in_event.connect(() => {
