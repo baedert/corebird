@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <!-- interface-requires gtk+ 3.6 -->
+  <object class="GtkAboutDialog" id="about-dialog">
+    <property name="can_focus">False</property>
+    <property name="border_width">5</property>
+    <property name="type_hint">dialog</property>
+    <property name="program_name">corebird</property>
+    <property name="website">http://corebird.baedert.org</property>
+  </object>
+</interface>

@@ -1,65 +1,53 @@
-
+/*  This file is part of corebird, a Gtk+ linux Twitter client.
+ *  Copyright (C) 2013 Timm Bäder
+ *
+ *  corebird is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  corebird is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 using Notify;
 
 
 class NotificationManager {
-	private static Notification notification;
-	private static bool is_persistent;
+
+  public static void init(){
+    Notify.init("Corebird");
+  }
 
 
+  public static void notify(string summary, string body="",
+                            Urgency urgency = Urgency.LOW,
+                            Gdk.Pixbuf? pixbuf = null){
 
-	public static void init(){
-		Notify.init("Corebird");
-		// unowned List<string> caps = Notify.get_server_caps();
-		// foreach(string s in caps){
-		// 	if (s == "persistence"){
-		// 		message("Not creating any tray icon");
-		// 		is_persistent = true;
-		// 		notification = new Notification("Corebird", "summary", null);
-		// 		try{
-		// 			notification.show();
-		// 		}catch(GLib.Error e){
-		// 			error("Error while showing the persistent notification: %s", e.message);
-		// 		}
-		// 		return;
-		// 	}
-		// }
-	}
+    Notification n = new Notification (summary, body, null);
+
+    n.set_urgency(urgency);
+    n.set_icon_from_pixbuf(pixbuf);
+
+    try{
+      n.show();
+    }catch(GLib.Error e){
+      message("Error while showing notification: %s", e.message);
+    }
+  }
 
 
-	public static void notify(string summary, string body="",
-	                          Urgency urgency = Urgency.LOW){
-		Notification n;
-		if (is_persistent){
-			n = notification;
-			n.update(summary, body, null);
-			n.set_urgency(urgency);
-		}else{
-			n = new Notification(summary, body, null);
-			n.set_urgency(urgency);
-		}
-		try{
-			n.show();
-		}catch(GLib.Error e){
-			message("Error while showing notification: %s", e.message);
-		}
-	}
-
-
-	/**
-	 * Uninitializes the notification manager
-	 * Should be called when the application gets closed completely.
-	 */
-	public static void uninit(){
-		if(is_persistent){
-			try{
-				notification.close();
-			}catch(GLib.Error e){
-				message("Closing the notification: %s", e.message);
-			}	
-		}
-		Notify.uninit();	
-	}
+  /**
+   * Uninitializes the notification manager
+   * Should be called when the application gets closed completely.
+   */
+  public static void uninit(){
+    Notify.uninit();
+  }
 
 }

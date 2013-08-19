@@ -1,3 +1,19 @@
+/*  This file is part of corebird, a Gtk+ linux Twitter client.
+ *  Copyright (C) 2013 Timm Bäder
+ *
+ *  corebird is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  corebird is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 
 using Gtk;
@@ -26,6 +42,14 @@ public class UIBuilder {
 		return builder.get_object(name) as Window;
 	}
 
+	public Dialog get_dialog(string name) {
+		return builder.get_object(name) as Dialog;
+	}
+
+	public Switch get_switch(string name) {
+		return builder.get_object(name) as Switch;
+	}
+
 	public Label get_label(string name){
 		return builder.get_object(name) as Label;
 	}
@@ -48,5 +72,16 @@ public class UIBuilder {
 
 	public Entry get_entry(string name){
 		return builder.get_object(name) as Entry;
+	}
+
+	public MenuModel get_menu_model(string name){
+		return builder.get_object(name) as MenuModel;
+	}
+	public SpinButton get_spin_button(string name) {
+		return builder.get_object(name) as SpinButton;
+	}
+
+	public ComboBox get_combobox(string name){
+		return builder.get_object(name) as ComboBox;
 	}
 }

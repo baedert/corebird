@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.15.2 on Fri Aug  9 16:50:13 2013 -->
+<interface>
+  <!-- interface-requires gtk+ 3.10 -->
+  <template class="ImageDialog" parent="GtkWindow">
+    <property name="can_focus">False</property>
+    <property name="type_hint">dialog</property>
+    <property name="decorated">False</property>
+    <signal name="button-press-event" handler="button_press_event_cb" swapped="no"/>
+    <signal name="key-press-event" handler="key_press_event_cb" swapped="no"/>
+    <child>
+      <object class="GtkScrolledWindow" id="scroller">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <child>
+          <object class="GtkViewport" id="viewport1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkEventBox" id="event_box">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="above_child">True</property>
+                <signal name="button-press-event" handler="event_box_button_press_cb" swapped="no"/>
+                <signal name="motion-notify-event" handler="event_box_motion_notify_cb" swapped="no"/>
+                <child>
+                  <object class="GtkImage" id="image">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="stock">gtk-missing-image</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+  <object class="GtkFileChooserDialog" id="file_dialog">
+    <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Save Image</property>
+    <property name="type_hint">dialog</property>
+    <child internal-child="vbox">
+      <object class="GtkBox" id="box">
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox" id="filechooserdialog-action_area1">
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton" id="button1">
+                <property name="label" translatable="yes">Cancel</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="button2">
+                <property name="label" translatable="yes">Save</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+    </child>
+    <action-widgets>
+      <action-widget response="-1">button1</action-widget>
+      <action-widget response="0">button2</action-widget>
+    </action-widgets>
+  </object>
+  <object class="GtkMenu" id="image_context_menu">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkMenuItem" id="open_original_item">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="tooltip_text" translatable="yes">	</property>
+        <property name="label" translatable="yes">Open Original</property>
+        <property name="use_underline">True</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="save_image_item">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Save Image</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="save_item_activated_cb" swapped="no"/>
+      </object>
+    </child>
+  </object>
+</interface>

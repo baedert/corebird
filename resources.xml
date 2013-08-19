@@ -1,0 +1,14 @@
+<gresources>
+  <gresource prefix="/org/baedert/corebird">
+    <file compressed="true" preprocess="xml-stripblanks">ui/settings-dialog.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">ui/account-list-entry.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">ui/account-create-widget.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">ui/account-info-widget.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">ui/menu.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">ui/compose-window.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">ui/tweet-list-entry.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">ui/tweet-info-page.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">ui/image-dialog.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">ui/connection-lost-dialog.ui</file>
+  </gresource>
+</gresources>
