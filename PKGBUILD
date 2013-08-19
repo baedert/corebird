@@ -40,7 +40,6 @@ build() {
   cd $srcdir/$_gitname-build
 
   msg "Starting build..."
-  ./compile-resources.sh
   cmake . -DCMAKE_INSTALL_PREFIX=/usr
   make
 }
