@@ -124,6 +124,7 @@ set (VALA_SOURCE
   src/util/IntHistory.vala
   src/util/TweetUtils.vala
   src/resources.c
+  src/sql/Database.vala
 )
 
 

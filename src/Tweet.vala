@@ -264,4 +264,3 @@ class Tweet : GLib.Object {
   }
 
 }
->>>>>>> master
