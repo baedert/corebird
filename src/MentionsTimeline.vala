@@ -19,19 +19,16 @@ using Gtk;
 
 class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
   public int unread_count {get;set;}
-  protected int64 max_id{
-    get {return lowest_id;}
-    set {lowest_id = value;}
-  }
   public unowned MainWindow main_window {set; get;}
   protected Gtk.ListBox tweet_list {set; get;}
   public Account account {get; set;}
   private int id;
   private BadgeRadioToolButton tool_button;
   private bool loading = false;
-  private int64 lowest_id = int64.MAX-2;
+  private int64 lowest_id {get;set; default = int64.MAX-2;}
   protected uint tweet_remove_timeout{get;set;}
   private ProgressEntry progress_entry = new ProgressEntry(75);
+  public DeltaUpdater delta_updater {get;set;}
 
   public MentionsTimeline(int id){
     this.id = id;
@@ -82,7 +79,8 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
         var entry = new TweetListEntry(t, main_window, account);
         entry.seen = false;
 
-        tweet_list.add(entry);
+        delta_updater.add (entry);
+        tweet_list.add (entry);
 
         unread_count++;
         update_unread_count();
@@ -147,37 +145,21 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
     } catch (SQLHeavy.Error e) {
       critical (e.message);
     }
-//    tweet_list.resort();
     this.vadjustment.set_upper(0);
   }
 
   public void load_newest() {
-    try {
-      this.load_newest_internal("1.1/statuses/mentions_timeline.json",
-                                 Tweet.TYPE_MENTION,
-        (count, lowest_id) => {
-          if(lowest_id < this.lowest_id)
-            this.lowest_id = lowest_id;
-          tweet_list.remove(progress_entry);
-          progress_entry = null;
-        });
-    } catch (SQLHeavy.Error e) {
-      warning(e.message);
-    }
+    this.load_newest_internal.begin("1.1/statuses/mentions_timeline.json", Tweet.TYPE_MENTION, () => {
+      tweet_list.remove(progress_entry);
+      progress_entry = null;
+    });
   }
 
   public void load_older() {
-    this.balance_next_upper_change(BOTTOM);
-    this.load_older_internal("1.1/statuses/mentions_timeline.json",
-                             Tweet.TYPE_MENTION,
-        (count, lowest_id) => {
-          if(lowest_id < this.lowest_id){
-            this.lowest_id = lowest_id;
-            message("Setting lowest_id to new value(%s)", lowest_id.to_string());
-          }
-
-          this.loading = false;
-        });
+    this.balance_next_upper_change (BOTTOM);
+    this.load_older_internal.begin ("1.1/statuses/mentions_timeline.json", Tweet.TYPE_MENTION, () => {
+      this.loading = false;
+    });
 
   }
 

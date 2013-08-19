@@ -41,7 +41,10 @@ class MainWindow : ApplicationWindow {
   private Image avatar_image               = new Image ();
   private Button new_tweet_button          = new Button ();
   private Gtk.Stack stack                  = new Gtk.Stack();
+  private DeltaUpdater delta_updater       = new DeltaUpdater();
   public unowned Account account {public get; private set;}
+  private WarningService warning_service;
+
 
   public MainWindow(Gtk.Application app, Account? account = null){
     GLib.Object (application: app);
@@ -51,6 +54,10 @@ class MainWindow : ApplicationWindow {
     this.account = account;
 
     if (account != null) {
+      account.init_proxy ();
+      account.query_user_info_by_scren_name.begin (account.screen_name, (obj, res) => {
+        account.load_avatar ();
+      });
       this.set_title ("Corebird(@%s)".printf (account.screen_name));
       this.set_role ("corebird-"+account.screen_name);
       var acc_menu = (GLib.Menu)Corebird.account_menu;
@@ -63,6 +70,8 @@ class MainWindow : ApplicationWindow {
         }
       }
       account.user_stream.start ();
+      warning_service = new WarningService (account.screen_name);
+      account.user_stream.register (warning_service);
     } else {
       warning ("account == NULL");
       return;
@@ -111,7 +120,7 @@ class MainWindow : ApplicationWindow {
         continue;
 
       ITimeline tl = (ITimeline)page;
-
+      tl.delta_updater = delta_updater;
       tl.load_cached ();
       tl.load_newest ();
     }
@@ -223,6 +232,8 @@ class MainWindow : ApplicationWindow {
     *
     */
   private void window_destroy_cb() {
+    account.user_stream.stop ();
+
     unowned GLib.List<weak Window> ws = this.application.get_windows ();
     message("Windows: %u", ws.length ());
 

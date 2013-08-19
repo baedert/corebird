@@ -22,9 +22,11 @@
  */
 interface ITimeline : Gtk.Widget, IPage {
   public static const int REST = 25;
-  protected abstract int64 max_id           {get; set;}
-  protected abstract Gtk.ListBox tweet_list {get; set;}
-  public    abstract int unread_count       {get; set;}
+  /** The lowest id of any tweet in this timeline */
+  protected abstract int64 lowest_id         {get; set;}
+  protected abstract Gtk.ListBox tweet_list  {get; set;}
+  public    abstract int unread_count        {get; set;}
+  public    abstract DeltaUpdater delta_updater {get;set;}
 
   public abstract void load_cached();
   public abstract void load_newest();
@@ -39,8 +41,7 @@ interface ITimeline : Gtk.Widget, IPage {
    * @param function The twitter function to use
    * @param tweet_type The type of tweets to load
    */
-  protected void load_newest_internal(string function, int tweet_type,
-                                      LoaderThread.EndLoadFunc? end_load_func = null)
+  protected async void load_newest_internal(string function, int tweet_type)
                                       throws SQLHeavy.Error {
     int64 greatest_id = 0;
 
@@ -49,12 +50,13 @@ interface ITimeline : Gtk.Widget, IPage {
     call.set_method("GET");
     call.add_param("count", "20");
     call.add_param("contributor_details", "true");
+    call.add_param ("include_my_retweet", "true");
     if(greatest_id > 0)
       call.add_param("since_id", greatest_id.to_string());
 
     call.invoke_async.begin(null, () => {
       string back = call.get_payload();
-      stdout.printf(back+"\n");
+//      stdout.printf(back+"\n");
       var parser = new Json.Parser();
       try {
         parser.load_from_data(back);
@@ -64,27 +66,40 @@ interface ITimeline : Gtk.Widget, IPage {
         return;
       }
 
+
+      var now = new GLib.DateTime.now_local ();
       var root = parser.get_root().get_array();
-      var loader_thread = new LoaderThread(root, account, tweet_list, main_window,
-                                           tweet_type);
-      loader_thread.run(end_load_func);
+      root.foreach_element( (array, index, node) => {
+        Tweet t = new Tweet();
+        t.load_from_json(node, now);
+
+        if (tweet_type != -1){
+          t.type = tweet_type;
+        }
+
+        if(t.id < lowest_id)
+          lowest_id = t.id;
+
+        var entry  = new TweetListEntry(t, main_window, account);
+        tweet_list.add (entry);
+      });
+      load_newest_internal.callback ();
     });
+    yield;
   }
 
   /**
-   * Default implementation to load older tweets using
-   * the max_id method from the given function
+   * Default implementation to load older tweets.
    *
    * @param function The Twitter function to use
-   * @param max_id The highest id of tweets to receive
+   * @param tweet_type The type of tweets to load
    */
-  protected void load_older_internal(string function, int tweet_type,
-                                     LoaderThread.EndLoadFunc? end_load_func = null) {
+  protected async void load_older_internal(string function, int tweet_type) {
     var call = account.proxy.new_call();
     call.set_function(function);
     call.set_method("GET");
-    message(@"using max_id: $max_id");
-    call.add_param("max_id", (max_id - 1).to_string());
+    message(@"using lowest_id: $lowest_id");
+    call.add_param("max_id", (lowest_id - 1).to_string());
     call.invoke_async.begin(null, (obj, result) => {
       try{
         call.invoke_async.end(result);
@@ -94,20 +109,32 @@ interface ITimeline : Gtk.Widget, IPage {
       }
 
       string back = call.get_payload();
-      stdout.printf(back+"\n");
+      debug(back+"\n");
       var parser = new Json.Parser();
       try{
         parser.load_from_data (back);
       } catch (GLib.Error e) {
         critical(e.message);
       }
-
+      var now = new GLib.DateTime.now_local ();
       var root = parser.get_root().get_array();
-      var loader_thread = new LoaderThread(root, account,
-                                           tweet_list, main_window,
-                                           tweet_type);
-      loader_thread.run(end_load_func);
+      root.foreach_element( (array, index, node) => {
+        Tweet t = new Tweet();
+        t.load_from_json(node, now);
+
+        if (tweet_type != -1){
+          t.type = tweet_type;
+        }
+
+        if(t.id < lowest_id)
+          lowest_id = t.id;
+
+        var entry  = new TweetListEntry(t, main_window, account);
+        tweet_list.add (entry);
+      });
+      load_older_internal.callback ();
     });
+    yield;
   }
 
   /**

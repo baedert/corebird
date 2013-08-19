@@ -35,11 +35,13 @@ enum StreamMessageType {
 //       recognized as mentions(and...tweets?)
 
 class UserStream : Object {
-  private static const int TIMEOUT_INTERVAL     = 45*1000;
+  private static const int TIMEOUT_INTERVAL         = 45*1000;
   private Rest.OAuthProxy proxy;
-  private StringBuilder data                    = new StringBuilder();
-  private SList<IMessageReceiver> receivers     = new SList<IMessageReceiver>();
+  private Rest.ProxyCall proxy_call;
+  private StringBuilder data                        = new StringBuilder();
+  private SList<unowned IMessageReceiver> receivers = new SList<unowned IMessageReceiver>();
   private uint timeout_id = -1;
+  private string account_name;
   public string token {
     set { proxy.token = value; }
   }
@@ -49,7 +51,9 @@ class UserStream : Object {
 
 
 
-  public UserStream () {
+  public UserStream (string account_name) {
+    this.account_name = account_name;
+    message ("CREATING USER STREAM FOR "+account_name);
     proxy = new Rest.OAuthProxy(
           Utils.decode (Utils.CONSUMER_KEY),
           Utils.decode (Utils.CONSUMER_SECRET),
@@ -57,7 +61,7 @@ class UserStream : Object {
           false
         );
     //Register a new warning service
-    receivers.append(new WarningService("UserStream"));
+//    receivers.append(new WarningService("UserStream"));
   }
 
 
@@ -67,33 +71,55 @@ class UserStream : Object {
 
 
 
-
+  /**
+   * Starts the UserStream
+   */
   public void start () {
-    var call = proxy.new_call ();
-    call.set_function ("1.1/user.json");
-    call.set_method ("GET");
-    try{
-      call.continuous (parse_data_cb, this);
+    proxy_call = proxy.new_call ();
+    proxy_call.set_function ("1.1/user.json");
+    proxy_call.set_method ("GET");
+    try {
+      proxy_call.continuous (parse_data_cb, this);
     } catch (GLib.Error e) {
       error (e.message);
     }
   }
 
-  private bool timeout_cb() {
-    var builder = new UIBuilder(DATADIR+"/ui/connection-lost-dialog.ui");
-    var dialog = builder.get_dialog ("dialog1");
-    dialog.response.connect((id) => {
-      if(id == 0)
-        dialog.destroy();
-      else if(id == 1) {
-        error ("Implement reconnecting");
-      }
-    });
+  ~UserStream () {
+    critical ("USERSTREAM DESTROYED");
+  }
 
-    dialog.show_all();
+  /**
+   * Stops the UserStream
+   */
+  public void stop () {
+    message ("STOPPING STREAM FOR " + account_name);
+    proxy_call.cancel ();
+  }
+
+  /**
+   * The timeout cb is called whenever we didn't get a heartbeat
+   * from Twitter for over TIMEOUT_INTERVAL seconds.
+   *
+   */
+  private bool timeout_cb() {
+    var dialog = new ConnectionLostDialog ();
+    dialog.reconnect_clicked.connect (() => {
+      message ("TODO: Implement reconnect");
+    });
+    dialog.show ();
     return false;
   }
 
+
+  /**
+   * Callback called by the Rest.ProxyCall whenever it receives data.
+   *
+   * @param call The Rest.ProxyCall created when the UserStream was started.
+   * @param buf The string received
+   * @param length The buffer's length
+   * @param error
+   */
   private void parse_data_cb(Rest.ProxyCall call, string? buf, size_t length,
                              Error? error) {
     if(buf == null) {

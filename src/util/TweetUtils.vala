@@ -50,7 +50,8 @@ namespace TweetUtils {
       int from = formatted_text.index_of_nth_char (s.start + char_diff);
       int to   = formatted_text.index_of_nth_char (s.end + char_diff);
       formatted_text = formatted_text.splice (from, to,
-           "<a href='%s'>%s</a>".printf(s.url, s.display_url));
+           "<a href='%s'>%s</a>".printf(s.url.replace ("&", "&amp;"),
+                                        s.display_url.replace ("&", "&amp;")));
       char_diff += formatted_text.char_count () - length_before;
     }
 
@@ -139,7 +140,7 @@ namespace TweetUtils {
     if (!unretweet)
       call.set_function (@"1.1/statuses/retweet/$(tweet.id).json");
     else
-      call.set_function (@"1.1/statuses/destroy/$(tweet.rt_id).json");
+      call.set_function (@"1.1/statuses/destroy/$(tweet.my_retweet).json");
 
     call.invoke_async.begin (null, (obj, res) => {
       try{
@@ -153,9 +154,9 @@ namespace TweetUtils {
         parser.load_from_data (back);
         if (!unretweet) {
           int64 new_id = parser.get_root ().get_object ().get_int_member ("id");
-          tweet.rt_id = new_id;
+          tweet.my_retweet = new_id;
         } else {
-          tweet.rt_id = 0;
+          tweet.my_retweet = 0;
         }
       } catch (GLib.Error e) {
         critical (e.message);

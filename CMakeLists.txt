@@ -21,7 +21,7 @@ if (DEBUG)
   #  set (CMAKE_VERBOSE_MAKEFILE ON)
 endif (DEBUG)
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fdiagnostics-show-option")
-set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcolor-diagnostics")
+#set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcolor-diagnostics")
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-value")
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-incompatible-pointer-types")
 set (CMAKE_F_FLAGS "${CMAKE_C_FLAGS} -Wno-incompatible-pointer-types-discards-qualifiers")
@@ -89,7 +89,6 @@ set (VALA_SOURCE
   src/HomeTimeline.vala
   src/MentionsTimeline.vala
   src/SearchTimeline.vala
-  src/LoaderThread.vala
   src/IPage.vala
   src/ProfilePage.vala
   src/TweetInfoPage.vala
@@ -100,6 +99,7 @@ set (VALA_SOURCE
   src/IMessageReceiver.vala
   src/ITwitterItem.vala
   src/Account.vala
+  src/ConnectionLostDialog.vala
   src/widgets/ImageDialog.vala
   src/widgets/ImageBox.vala
   src/widgets/ImageLabel.vala
