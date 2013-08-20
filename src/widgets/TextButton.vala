@@ -21,7 +21,7 @@ class TextButton : Button {
   public TextButton(string label=""){
     if(label != "")
       this.label= label;
-    this.get_style_context().add_class("text-button");
+    this.get_style_context().add_class("text-only-button");
   }
 
 

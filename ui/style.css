@@ -123,7 +123,7 @@
   -GtkWidget-link-color: #555;
 }
 
-.text-button{
+.text-only-button{
   font-weight: bold;
   background-image: none;
   background-color: transparent;
@@ -136,16 +136,16 @@
   padding: 0px;
   box-shadow: none;
 }
-.text-button:hover{
+.text-only-button:hover{
   text-shadow: 0px 0px 5px #444;
   background-image: none;
   border: none;
 }
-.text-button:active{
+.text-only-button:active{
   color: black;
   background-color: red;
 }
-.text-button:backdrop{
+.text-only-button:backdrop{
   background-color: transparent;
 }
 
