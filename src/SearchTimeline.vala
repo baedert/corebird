@@ -119,6 +119,7 @@ class SearchTimeline : IPage, Box {
 
   public void create_tool_button(RadioToolButton? group){
     tool_button = new RadioToolButton.with_stock_from_widget(group, "search");
+    tool_button.label = "Search";
   }
 
   public RadioToolButton? get_tool_button(){
