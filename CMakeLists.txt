@@ -43,7 +43,6 @@ configure_file (${CMAKE_SOURCE_DIR}/src/util/Config.vala.cmake ${CMAKE_BINARY_DI
 include (ValaVersion)
 include (ValaPrecompile)
 include (GSettings)
-include (GResources)
 
 find_package (Vala REQUIRED)
 ensure_vala_version ("0.20" MINIMUM) # TODO: Bump to 0.22
@@ -140,10 +139,6 @@ set (VALAC_OPTIONS
 if (DEBUG)
   set (VALAC_OPTIONS ${VALAC_OPTIONS} -D __DEV)
 endif (DEBUG)
-
-
-# Compile resurces
-compile_resources (resources.xml src/resources.c)
 
 
 vala_precompile (VALA_C
