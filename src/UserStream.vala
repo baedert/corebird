@@ -60,8 +60,6 @@ class UserStream : Object {
           "https://userstream.twitter.com/", //Url Format
           false
         );
-    //Register a new warning service
-//    receivers.append(new WarningService("UserStream"));
   }
 
 
@@ -95,6 +93,8 @@ class UserStream : Object {
   public void stop () {
     message ("STOPPING STREAM FOR " + account_name);
     proxy_call.cancel ();
+    if(timeout_id != -1)
+        GLib.Source.remove (timeout_id);
   }
 
   /**
