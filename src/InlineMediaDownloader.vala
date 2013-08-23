@@ -40,15 +40,16 @@ class InlineMediaDownloader {
 
     if(url.has_prefix("http://instagr.am") ||
        url.has_prefix("http://instagram.com/p/")) {
-      two_step_load.begin(t, url, "<img class=\"photo\" src=\"(.*?)\"", 1);
-    } else if(url.has_prefix("http://i.imgur.com")) {
+      two_step_load.begin(t, url, "<meta property=\"og:image\" content=\"(.*?)\"", 1);
+    } else if (url.has_prefix("http://i.imgur.com")) {
       load_inline_media.begin(t, url);
-    } else if(url.has_prefix("http://d.pr/i/") || url.has_prefix("http://ow.ly/i/")) {
+    } else if (url.has_prefix("http://d.pr/i/") || url.has_prefix("http://ow.ly/i/") ||
+               url.has_prefix("https://vine.co/v/")) {
       two_step_load.begin(t, url, "<meta property=\"og:image\" content=\"(.*?)\"",
                           1);
-    } else if(url.has_prefix("http://pbs.twimg.com/media/")) {
+    } else if (url.has_prefix("http://pbs.twimg.com/media/")) {
       load_inline_media.begin(t, url);
-    } else if(url.has_prefix("http://twitpic.com/")) {
+    } else if (url.has_prefix("http://twitpic.com/")) {
       two_step_load.begin(t, url,
                           "<meta name=\"twitter:image\" value=\"(.*?)\"", 1);
     }
