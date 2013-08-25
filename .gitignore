@@ -26,3 +26,4 @@ Corebird.sublime-workspace
 src/util/Config.vala
 session.vim
 *~
+po/_*.pot
