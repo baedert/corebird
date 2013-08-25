@@ -65,7 +65,6 @@ set (DEPS glib-2.0;
       libnotify;
       sqlite3;
       libsoup-2.4;
-      gmodule-2.0;
 )
 
 find_package (PkgConfig)
