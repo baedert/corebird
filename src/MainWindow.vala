@@ -24,9 +24,10 @@
 class MainWindow : ApplicationWindow {
   public static const int PAGE_STREAM     = 0;
   public static const int PAGE_MENTIONS   = 1;
-  public static const int PAGE_SEARCH     = 2;
-  public static const int PAGE_PROFILE    = 3;
-  public static const int PAGE_TWEET_INFO = 4;
+  public static const int PAGE_DMS        = 2;
+  public static const int PAGE_SEARCH     = 3;
+  public static const int PAGE_PROFILE    = 4;
+  public static const int PAGE_TWEET_INFO = 5;
 
   public static const int PAGE_PREVIOUS   = 1024;
   public static const int PAGE_NEXT       = 2048;
@@ -91,9 +92,10 @@ class MainWindow : ApplicationWindow {
 
     pages[0] = new HomeTimeline(PAGE_STREAM);
     pages[1] = new MentionsTimeline(PAGE_MENTIONS);
-    pages[2] = new SearchTimeline(PAGE_SEARCH);
-    pages[3] = new ProfilePage (PAGE_PROFILE, this, account);
-    pages[4] = new TweetInfoPage (PAGE_TWEET_INFO);
+    pages[2] = new DMTimeline(PAGE_DMS);
+    pages[3] = new SearchTimeline(PAGE_SEARCH);
+    pages[4] = new ProfilePage (PAGE_PROFILE, this, account);
+    pages[5] = new TweetInfoPage (PAGE_TWEET_INFO);
 
     /* Initialize all containers */
     for (int i = 0; i < pages.length; i++) {
