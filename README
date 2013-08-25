@@ -1,0 +1,21 @@
+
+Corebird
+-----------------------------------------
+
+
+
+
+DEPENDENCIES
+ - gtk+-3.0 >= 3.9  *
+ - glib-2.0 >= 2.38 *
+ - rest-0.7
+ - sqlheavy-0.2
+ - json-glib-1.0
+ - libnotify (optional)
+ - sqlite3
+ - libsoup-2.4
+ - vala >= 0.22 (makedep)
+ - cmake >= 2.6 (makedep)
+
+ * aka 'current git master'
+
