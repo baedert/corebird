@@ -29,7 +29,7 @@ class WidgetReplacer {
     replace(w1, w2, take_size, true);
   }
 
-  public static void replace_tmp_back(Widget w, bool take_size = true, 
+  public static void replace_tmp_back(Widget w, bool take_size = true,
                                       bool force_visible = false) {
     Widget w2 = tmp_widgets.get(w);
     replace(w2, w, take_size, force_visible);
@@ -62,26 +62,20 @@ class WidgetReplacer {
 
     if (parent is Gtk.Box) {
       Gtk.Box box_parent = (Box) parent;
-      bool expand;
-      bool fill;
-      uint padding;
-      PackType pack_type;
-
-      int pos = 0;
-      int i = 0;
-      box_parent.@foreach ((widget) => {
-        if (widget == w1) {
-          pos = i;
-        }
-        i++;
-      });
-
-      box_parent.query_child_packing (w1, out expand, out fill, out padding,
-                                      out pack_type);
+      bool expand, fill;
+      Gtk.PackType pack_type;
+      int padding, position;
+      box_parent.child_get (w1, "expand", out expand,
+                                "fill", out fill,
+                                "pack_type", out pack_type,
+                                "padding", out padding,
+                                "position", out position);
       box_parent.remove (w1);
-      box_parent.pack_start (w2, expand, fill, padding);
+      box_parent.add (w2);
+      box_parent.reorder_child (w2, position);
       box_parent.set_child_packing (w2, expand, fill, padding, pack_type);
-      box_parent.reorder_child (w2, pos);
+
+
     } else if (parent is Gtk.Bin) {
       Bin bin_parent = (Bin) parent;
       bin_parent.remove(w1);
