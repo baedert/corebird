@@ -154,7 +154,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   private void state_flags_changed_cb () {
     Gtk.StateFlags flags = this.get_state_flags ();
     bool buttons_visible = (bool)(flags & (StateFlags.PRELIGHT | StateFlags.SELECTED));
-    buttons_visible = buttons_visible || more_menu.visible;
+    buttons_visible = (buttons_visible || more_menu.visible) && !reply_revealer.reveal_child;
     if (buttons_visible) {
       hover_box.show();
       retweet_button.show();
@@ -204,7 +204,6 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
         delete_tweet ();
         return true;
       case Gdk.Key.Return:
-        message ("yoyo");
         ((ListBox)(this.parent)).row_activated (this);
         return true;
 #if __DEV
