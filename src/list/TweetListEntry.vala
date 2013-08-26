@@ -154,7 +154,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   private void state_flags_changed_cb () {
     Gtk.StateFlags flags = this.get_state_flags ();
     bool buttons_visible = (bool)(flags & (StateFlags.PRELIGHT | StateFlags.SELECTED));
-    buttons_visible = buttons_visible || more_menu.has_focus;
+    buttons_visible = buttons_visible || more_menu.visible;
     if (buttons_visible) {
       hover_box.show();
       retweet_button.show();
