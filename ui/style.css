@@ -26,13 +26,12 @@
 .favorite-button {
   font-family: FontAwesome;
   font-size: 11px;
-  font-weight: bold;
 }
 
 
 .favorite-button:hover,
 .favorite-button:active {
-  color: yellow;
+  color: shade(yellow, 0.9);
 }
 
 .conversation-label {
