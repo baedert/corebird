@@ -37,7 +37,7 @@ class MainWindow : ApplicationWindow {
   private Toolbar left_toolbar             = new Toolbar();
   private Box main_box                     = new Box(Orientation.HORIZONTAL, 0);
   private RadioToolButton dummy_button     = new RadioToolButton(null);
-  private IPage[] pages                    = new IPage[5];
+  private IPage[] pages                    = new IPage[6];
   private IntHistory history               = new IntHistory (5);
   private Image avatar_image               = new Image ();
   private Button new_tweet_button          = new Button ();

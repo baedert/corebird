@@ -1,4 +1,5 @@
 install (FILES corebird.desktop            DESTINATION ${PREFIX}/share/applications/)
+install (FILES fontawesome-webfont.ttf     DESTINATION ${PREFIX}/share/fonts/TTF/)
 
 if (CATALOG)
   message ("CATALOG: ON")

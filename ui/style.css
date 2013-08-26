@@ -4,94 +4,45 @@
 }
 
 
-.retweet-button {
-  background-color: transparent;
 
+.button-slim {
   -GtkButton-default-border: 0;
   -GtkButton-default-outside-border: 0;
   -GtkButton-inner-border: 0;
   -GtkWidget-focus-line-width: 0;
   -GtkWidget-focus-padding: 0;
-  box-shadow: none;
-  padding: 8px; /* Just to set the size here... */
-  border: none;
-  border-radius: 0px;
-  text-shadow: none;
-  background-image:url('../retweet-normal.png');
-  background-repeat: no-repeat;
+}
+
+.retweet-button,
+.favorite-button {
+  font-family: FontAwesome;
+  font-size: 11px;
 }
 .retweet-button:hover,
 .retweet-button:active {
-  background-image:url('../retweet.png');
+  color:green;
 }
 
 .favorite-button {
-  background-color: transparent;
-  -GtkButton-default-border: 0;
-  -GtkButton-default-outside-border: 0;
-  -GtkButton-inner-border: 0;
-  -GtkWidget-focus-line-width: 0;
-  -GtkWidget-focus-padding: 0;
-  box-shadow: none;
-  padding: 8px; /* Just to set the size here... */
-  border: none;
-  border-radius: 0px;
-  text-shadow: none;
-  background-image:url('../favorite-normal.png');
-  background-repeat: no-repeat;
+  font-family: FontAwesome;
+  font-size: 11px;
+  font-weight: bold;
 }
 
 
 .favorite-button:hover,
 .favorite-button:active {
-  background-image:url('../favorite.png');
+  color: yellow;
 }
 
-.conversation-button {
-  background-color: transparent;
-  -GtkButton-default-border: 0;
-  -GtkButton-default-outside-border: 0;
-  -GtkButton-inner-border: 0;
-  -GtkWidget-focus-line-width: 0;
-  -GtkWidget-focus-padding: 0;
-  box-shadow: none;
-  padding: 8px; /* Just to set the size here... */
-  border: none;
-  border-radius: 0px;
-  text-shadow: none;
-  background-image:url('../conversation-normal.png');
-  background-repeat: no-repeat;
+.conversation-label {
+  font-family: FontAwesome;
+  font-size: 10px;
 }
 
-.conversation-button:hover {
-  background-image: url('../conversation.png');
-}
-
-
-.more-button {
-  background-image: none;
-  background-color: transparent;
-  -GtkButton-default-border: 0;
-  -GtkButton-default-outside-border: 0;
-  -GtkButton-inner-border: 0;
-  -GtkWidget-focus-line-width: 0;
-  -GtkWidget-focus-padding: 0;
-  box-shadow: none;
-  padding: 8px; /* Just to set the size here... */
-  border: none;
-  border-radius: 0px;
-  text-shadow: none;
-  background-image:url('../more-normal.png');
-}
-
-.more-button:hover {
-  background-image: url('../more.png');
-}
 
 .favorite-button:backdrop,
-.retweet-button:backdrop,
-.conversation-button:backdrop,
-.more-button:backdrop {
+.retweet-button:backdrop {
   background-color: transparent;
 }
 
