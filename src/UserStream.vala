@@ -26,6 +26,7 @@ enum StreamMessageType {
   EVENT,
   WARNING,
   FOLLOW,
+  DIRECT_MESSAGE,
 
   TWEET,
 }
@@ -158,34 +159,36 @@ class UserStream : Object {
 
       StreamMessageType type = 0;
 
-      if(root.has_member("delete"))
+      if (root.has_member ("delete"))
         type = StreamMessageType.DELETE;
-      else if(root.has_member("scrub_geo"))
+      else if (root.has_member ("scrub_geo"))
         type = StreamMessageType.SCRUB_GEO;
-      else if(root.has_member("limit"))
+      else if (root.has_member ("limit"))
         type = StreamMessageType.LIMIT;
-      else if(root.has_member("disconnect"))
+      else if (root.has_member ("disconnect"))
         type = StreamMessageType.DISCONNECT;
-      else if(root.has_member("friends"))
+      else if (root.has_member ("friends"))
         type = StreamMessageType.FRIENDS;
-      else if(root.has_member("text"))
+      else if (root.has_member ("text"))
         type = StreamMessageType.TWEET;
-      else if(root.has_member("event")){
-        string evt_str = root.get_string_member("event");
-        if(evt_str == "follow")
+      else if (root.has_member ("event")){
+        string evt_str = root.get_string_member ("event");
+        if (evt_str == "follow")
           type = StreamMessageType.FOLLOW;
         else
           type = StreamMessageType.EVENT;
       }
-      else if(root.has_member("warning"))
+      else if (root.has_member ("warning"))
         type = StreamMessageType.WARNING;
+      else if (root.has_member ("direct_message"))
+        type = StreamMessageType.DIRECT_MESSAGE;
 
-      message("Message with type %s", type.to_string());
-      foreach(IMessageReceiver it in receivers)
-        it.stream_message_received(type, root_node);
+      message ("Message with type %s", type.to_string ());
+      foreach (IMessageReceiver it in receivers)
+        it.stream_message_received (type, root_node);
 
 
-      data.erase();
+      data.erase ();
     }
   }
 
