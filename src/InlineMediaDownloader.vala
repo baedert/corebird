@@ -110,6 +110,14 @@ class InlineMediaDownloader {
           ext = "png";
         ext = ext.down();
 
+        int qm_index;
+        if ((qm_index = ext.index_of_char ('?')) != -1) {
+          ext = ext.substring (0, qm_index);
+        }
+
+        if (ext == "jpg")
+          ext = "jpeg";
+
         Gdk.Pixbuf thumb = null;
         if(ext == "gif"){
           var file = File.new_for_path(path);
@@ -129,7 +137,7 @@ class InlineMediaDownloader {
         thumb.save(thumb_path, "png");
         fire_media_added(t, path, thumb, thumb_path);
       } catch (GLib.Error e) {
-        critical(e.message);
+        critical(e.message + "for MEDIA " + url);
       }
     });
   }
