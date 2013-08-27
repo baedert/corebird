@@ -82,8 +82,9 @@ class MainWindow : ApplicationWindow {
     f.set_title ("Corebird");
     f.set_subtitle ("@"+account.screen_name);
     f.set_show_close_button (true);
+    avatar_image.margin_left = 5;
     f.pack_start (avatar_image);
-    new_tweet_button.get_style_context ().add_class ("image_button");
+    new_tweet_button.get_style_context ().add_class ("image-button");
     f.pack_start (new_tweet_button);
     this.set_titlebar(f);
 
