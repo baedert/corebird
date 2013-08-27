@@ -14,7 +14,7 @@
    id="svg3943"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="stream.svg"
+   sodipodi:docname="dms.svg"
    inkscape:export-filename="/home/baedert/Code/Vala/Corebird/assets/icons/stream.png"
    inkscape:export-xdpi="2.8800001"
    inkscape:export-ydpi="2.8800001">
@@ -27,16 +27,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.63277949"
+     inkscape:zoom="2.1059692"
      inkscape:cx="215.41936"
-     inkscape:cy="197.61864"
+     inkscape:cy="307.78169"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1916"
-     inkscape:window-height="1040"
+     inkscape:window-height="1021"
      inkscape:window-x="0"
-     inkscape:window-y="38"
+     inkscape:window-y="27"
      inkscape:window-maximized="0"
      showguides="true"
      inkscape:guide-bbox="true" />
@@ -48,7 +48,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -82,34 +82,19 @@
        id="path3845"
        style="fill:#df8f87;fill-opacity:1;fill-rule:nonzero;stroke:none"
        sodipodi:type="star" />
-    <g
-       id="g3852"
-       transform="translate(-2.8125,30.083143)">
-      <path
-         sodipodi:nodetypes="cccccccc"
-         inkscape:connector-curvature="0"
-         id="rect3057"
-         transform="translate(0,552.36218)"
-         d="m 465.59375,55.1875 -107.6875,91.875 -105.09375,88.75 -108.5,-91.65625 -104.28125,-88.96875 0,330.34375 425.5625,0 z"
-         style="fill:#2e3436;fill-opacity:1;fill-rule:nonzero;stroke:none" />
-      <path
-         inkscape:transform-center-x="3.9205457e-05"
-         inkscape:transform-center-y="26.692389"
-         transform="matrix(2.2924831,0,0,1.1234799,-633.40019,436.2786)"
-         d="m 386.08298,301.21889 -43.9711,-75.78416 -42.26869,-73.58754 87.61656,-0.18801 84.86302,0.18801 -43.64546,75.97217 z"
-         inkscape:randomized="0"
-         inkscape:rounded="0"
-         inkscape:flatsided="false"
-         sodipodi:arg2="2.6455341"
-         sodipodi:arg1="1.5707963"
-         sodipodi:r2="49.997532"
-         sodipodi:r1="99.581131"
-         sodipodi:cy="201.63776"
-         sodipodi:cx="386.08298"
-         sodipodi:sides="3"
-         id="path3850"
-         style="fill:#2e3436;fill-opacity:1;fill-rule:nonzero;stroke:none"
-         sodipodi:type="star" />
-    </g>
+    <path
+       style="fill:#2e3436;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       d="m 462.78125,647.63282 -107.6875,91.875 L 250,828.25782 141.5,736.60157 37.21875,647.63282 l 0,320.34375 425.5625,0 z"
+       id="rect3057"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccccc" />
+    <path
+       style="fill:#2e3436;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       inkscape:transform-center-x="3.9205457e-05"
+       inkscape:transform-center-y="26.692389"
+       d="m 247.45149,803.99836 -94.803,-79.14198 -96.900255,-82.67413 194.859485,-0.21122 188.54703,0.21122 -100.05648,85.35321 z"
+       id="path3850"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccc" />
   </g>
 </svg>
