@@ -121,6 +121,7 @@ namespace TweetUtils {
       } catch (GLib.Error e) {
         critical(e.message);
       }
+      tweet.favorited = !unfavorite;
       toggle_favorite_tweet.callback ();
     });
     yield;
@@ -158,6 +159,7 @@ namespace TweetUtils {
         } else {
           tweet.my_retweet = 0;
         }
+        tweet.retweeted = !unretweet;
       } catch (GLib.Error e) {
         critical (e.message);
         critical (back);

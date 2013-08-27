@@ -286,6 +286,12 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   }
 
   [GtkCallback]
+  private void reply_button_clicked_cb () {
+    ComposeTweetWindow ctw = new ComposeTweetWindow(this.window, this.account, this.tweet);
+    ctw.show ();
+  }
+
+  [GtkCallback]
   private bool link_activated_cb (string uri) {
     uri = uri._strip();
     string term = uri.substring(1);

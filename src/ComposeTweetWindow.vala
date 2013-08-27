@@ -51,6 +51,11 @@ class ComposeTweetWindow : Gtk.Window {
       this.set_transient_for (parent);
     }
 
+    if (answer_to != null) {
+      TweetListEntry answer_entry = new TweetListEntry (answer_to, (MainWindow)parent, acc);
+      main_grid.attach (answer_entry, 0, 0, 4, 1);
+    }
+
     media_image.set_halign(Align.CENTER);
     media_image.set_valign(Align.START);
 
