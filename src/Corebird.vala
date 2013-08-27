@@ -177,10 +177,8 @@ class Corebird : Gtk.Application {
     add_action (settings_action);
     var about_dialog_action = new SimpleAction("show-about-dialog", null);
     about_dialog_action.activate.connect(() => {
-//      var b = new Gtk.Builder();
-//      b.add_from_file(DATADIR+"/ui/about-dialog.ui");
-//      Gtk.AboutDialog ad = b.get_object("about-dialog") as Gtk.AboutDialog;
-//      ad.show();
+        var ad = new AboutDialog ();
+        ad.show();
     });
     add_action(about_dialog_action);
     var quit_action = new SimpleAction("quit", null);

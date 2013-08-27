@@ -115,6 +115,7 @@ set (VALA_SOURCE
   src/list/NewFollowerEntry.vala
   src/list/ProgressEntry.vala
   src/list/AccountListEntry.vala
+  src/window/AboutDialog.vala
   src/util/UIBuilder.vala
   src/util/Utils.vala
   src/util/Benchmark.vala
