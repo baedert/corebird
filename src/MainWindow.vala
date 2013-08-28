@@ -124,8 +124,6 @@ class MainWindow : ApplicationWindow {
 
       ITimeline tl = (ITimeline)page;
       tl.delta_updater = delta_updater;
-//      tl.load_cached ();
-//      tl.load_newest ();
     }
 
     if (!Gtk.Settings.get_default ().gtk_shell_shows_app_menu) {

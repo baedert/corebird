@@ -49,6 +49,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       var call = account.proxy.new_call ();
       call.set_function ("1.1/direct_messages.json");
       call.set_method ("GET");
+      call.add_param ("skip_status", "true");
       call.invoke_async (null, () => {
         var parser = new Json.Parser ();
         parser.load_from_data (call.get_payload ());
