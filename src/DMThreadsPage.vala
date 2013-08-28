@@ -19,6 +19,7 @@ using Gtk;
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/dm-threads-page.ui")]
 class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
+  private bool initialized = false;
   public int unread_count { get;set; }
   public unowned MainWindow main_window {set; get;}
   protected Gtk.ListBox tweet_list {set; get;}
@@ -29,6 +30,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   protected uint tweet_remove_timeout{get;set;}
   private ProgressEntry progress_entry = new ProgressEntry(75);
   public DeltaUpdater delta_updater {get;set;}
+  private Gee.ArrayList<int64?> threads = new Gee.ArrayList<int64?>((a,b) => {return a == b;});
   [GtkChild]
   private Gtk.ListBox thread_list;
 
@@ -43,17 +45,40 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 
 
   public void on_join (int page_id, va_list arg_list) {
-    var call = account.proxy.new_call ();
-    call.set_function ("1.1/direct_messages.json");
-    call.set_method ("GET");
-    call.invoke_async (null, () => {
-      var parser = new Json.Parser ();
-      parser.load_from_data (call.get_payload ());
-      var gen = new Json.Generator ();
-      gen.root = parser.get_root ();
-      gen.pretty = true;
-      stdout.printf (gen.to_data(null)+"\n");
-    });
+    if (!initialized) {
+      var call = account.proxy.new_call ();
+      call.set_function ("1.1/direct_messages.json");
+      call.set_method ("GET");
+      call.invoke_async (null, () => {
+        var parser = new Json.Parser ();
+        parser.load_from_data (call.get_payload ());
+        var root_arr = parser.get_root ().get_array ();
+        root_arr.foreach_element ((arr, pos, node) => {
+          var obj = node.get_object ();
+          int64 sender_id = obj.get_int_member ("sender_id");
+          if (threads.contains (sender_id))
+            return;
+
+          DMThread thread = DMThread ();
+          thread.user_id = sender_id;
+          thread.screen_name = "<b><big>@%s</big></b>".printf(obj.get_string_member ("sender_screen_name"));
+          thread.last_message = obj.get_string_member ("text");
+          var thread_entry = new DMThreadEntry (thread);
+          thread_list.add(thread_entry);
+          threads.add (sender_id);
+          string avatar_url = obj.get_object_member ("sender").get_string_member ("profile_image_url");
+          Gdk.Pixbuf avatar = TweetUtils.load_avatar (avatar_url);
+          if (avatar == null) {
+            TweetUtils.download_avatar.begin (avatar_url, (obj, res) => {
+              avatar = TweetUtils.download_avatar.end (res);
+              TweetUtils.load_avatar (avatar_url, avatar);
+              thread_entry.avatar = avatar;
+            });
+          } else
+            thread_entry.avatar = avatar;
+        });
+      });
+    }
   }
 
   public void load_cached () {

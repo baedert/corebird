@@ -19,17 +19,31 @@
 using Gtk;
 
 
+struct DMThread {
+  string screen_name;
+  int64 user_id;
+  string last_message;
+  Gdk.Pixbuf avatar;
+}
+
+
+[GtkTemplate (ui = "/org/baedert/corebird/ui/dm-thread-entry.ui")]
 class DMThreadEntry : Gtk.ListBoxRow {
   [GtkChild]
   private Label screen_name_label;
   [GtkChild]
   private Label last_message_label;
+  [GtkChild]
+  private Image avatar_image;
 
-
-  public DMThreadEntry () {
-
+  public Gdk.Pixbuf avatar {
+    set { avatar_image.pixbuf = value;}
   }
 
 
+  public DMThreadEntry (DMThread thread) {
+    this.screen_name_label.label = thread.screen_name;
+    this.last_message_label.label = thread.last_message;
+  }
 }
 
