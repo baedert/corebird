@@ -40,45 +40,19 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   }
 
   public void stream_message_received (StreamMessageType type, Json.Node root) {
-
+    if (type == StreamMessageType.DIRECT_MESSAGE) {
+      unread_count ++;
+      var obj = root.get_object ().get_object_member ("direct_message");
+      add_new_thread (obj);
+      update_unread_count ();
+    }
   }
 
 
   public void on_join (int page_id, va_list arg_list) {
     if (!initialized) {
-      var call = account.proxy.new_call ();
-      call.set_function ("1.1/direct_messages.json");
-      call.set_method ("GET");
-      call.add_param ("skip_status", "true");
-      call.invoke_async (null, () => {
-        var parser = new Json.Parser ();
-        parser.load_from_data (call.get_payload ());
-        var root_arr = parser.get_root ().get_array ();
-        root_arr.foreach_element ((arr, pos, node) => {
-          var obj = node.get_object ();
-          int64 sender_id = obj.get_int_member ("sender_id");
-          if (threads.contains (sender_id))
-            return;
-
-          DMThread thread = DMThread ();
-          thread.user_id = sender_id;
-          thread.screen_name = "<b><big>@%s</big></b>".printf(obj.get_string_member ("sender_screen_name"));
-          thread.last_message = obj.get_string_member ("text");
-          var thread_entry = new DMThreadEntry (thread);
-          thread_list.add(thread_entry);
-          threads.add (sender_id);
-          string avatar_url = obj.get_object_member ("sender").get_string_member ("profile_image_url");
-          Gdk.Pixbuf avatar = TweetUtils.load_avatar (avatar_url);
-          if (avatar == null) {
-            TweetUtils.download_avatar.begin (avatar_url, (obj, res) => {
-              avatar = TweetUtils.download_avatar.end (res);
-              TweetUtils.load_avatar (avatar_url, avatar);
-              thread_entry.avatar = avatar;
-            });
-          } else
-            thread_entry.avatar = avatar;
-        });
-      });
+      load_newest ();
+      initialized = true;
     }
   }
 
@@ -87,7 +61,44 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   }
 
   public void load_newest () {
+    var call = account.proxy.new_call ();
+    call.set_function ("1.1/direct_messages.json");
+    call.set_method ("GET");
+    call.add_param ("skip_status", "true");
+    call.invoke_async (null, () => {
+      var parser = new Json.Parser ();
+      parser.load_from_data (call.get_payload ());
+      var root_arr = parser.get_root ().get_array ();
+      root_arr.foreach_element ((arr, pos, node) => {
+        add_new_thread (node.get_object ());
+      });
+    });
 
+  }
+
+  private void add_new_thread (Json.Object dm_obj) {
+    int64 sender_id = dm_obj.get_int_member ("sender_id");
+    if (threads.contains (sender_id)) {
+      // TODO: Update last_message_label
+      return;
+    }
+    DMThread thread = DMThread ();
+    thread.user_id = sender_id;
+    thread.screen_name = "<b><big>@%s</big></b>".printf(dm_obj.get_string_member ("sender_screen_name"));
+    thread.last_message = dm_obj.get_string_member ("text");
+    var thread_entry = new DMThreadEntry (thread);
+    thread_list.add(thread_entry);
+    threads.add (sender_id);
+    string avatar_url = dm_obj.get_object_member ("sender").get_string_member ("profile_image_url");
+    Gdk.Pixbuf avatar = TweetUtils.load_avatar (avatar_url);
+    if (avatar == null) {
+      TweetUtils.download_avatar.begin (avatar_url, (obj, res) => {
+        avatar = TweetUtils.download_avatar.end (res);
+        TweetUtils.load_avatar (avatar_url, avatar);
+        thread_entry.avatar = avatar;
+      });
+    } else
+      thread_entry.avatar = avatar;
   }
 
   public void load_older () {
@@ -100,7 +111,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 
   public void create_tool_button(RadioToolButton? group) {
     tool_button = new BadgeRadioToolButton(group, "dms");
-    tool_button.label = "Home";
+    tool_button.label = "Direct Messages";
   }
 
   public RadioToolButton? get_tool_button() {
