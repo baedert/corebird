@@ -68,28 +68,6 @@ class Tweet : GLib.Object {
     this.avatar = Twitter.no_avatar;
   }
 
-  public void load_avatar(Gdk.Pixbuf? pixbuf = null){
-    if(pixbuf != null){
-      Twitter.avatars.set(avatar_name, pixbuf);
-      this.avatar = pixbuf;
-      return;
-    }
-
-    if (Twitter.avatars.has_key(avatar_name)){
-      this.avatar = Twitter.avatars.get(avatar_name);
-     }else{
-      string path = Utils.user_file("assets/avatars/"+avatar_name);
-      if(FileUtils.test(path, FileTest.EXISTS)){
-        try{
-          Twitter.avatars.set(avatar_name, new Gdk.Pixbuf.from_file(path));
-        }catch(GLib.Error e){
-          warning("Error while loading avatar from database: %s", e.message);
-        }
-        this.avatar = Twitter.avatars.get(avatar_name);
-      }
-    }
-  }
-
   public bool has_avatar(){
     return this.avatar != Twitter.no_avatar;
   }
@@ -219,27 +197,14 @@ class Tweet : GLib.Object {
     this.time_delta  = Utils.get_time_delta(dt, now);
 
 
-    this.load_avatar();
-    if(!this.has_avatar()){
-      var session = new Soup.SessionAsync();
-      var msg     = new Soup.Message("GET", this.avatar_url);
-      session.queue_message(msg, (s, _msg) => {
-        string dest = Utils.user_file("assets/avatars/"+
-                                               this.avatar_name);
-        var memory_stream = new MemoryInputStream.from_data(
-                                           _msg.response_body.data,
-                                           null);
-        try {
-          var pixbuf = new Gdk.Pixbuf.from_stream_at_scale(memory_stream,
-                                                           48, 48,
-                                                           false);
-          pixbuf.save(dest, "png");
-          this.load_avatar(pixbuf);
-        } catch (GLib.Error e) {
-          critical (e.message);
-        }
-        debug("Loaded avatar for %s", screen_name);
-        debug("Dest: %s", dest);
+    //this.load_avatar();
+    this.avatar = TweetUtils.load_avatar (avatar_url);
+    if (this.avatar == null) {
+      message("LOADING AVATAR...");
+      TweetUtils.download_avatar.begin (avatar_url, (obj, res) => {
+        var avatar = TweetUtils.download_avatar.end (res);
+        TweetUtils.load_avatar (avatar_url, avatar);
+        message ("Loaded avatar");
       });
     }
 

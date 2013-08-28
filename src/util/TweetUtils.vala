@@ -168,4 +168,71 @@ namespace TweetUtils {
     });
     yield;
   }
+
+
+  /**
+   * Try to load the avatar with the given avatar url.
+   *
+   * @param url The url of the avatar to load
+   * @param pixbuf If the avatar is already loaded in the form of a GdkPixbuf,
+   *               simply pass it here to insert it into the list.
+   *
+   * @return The loaded avatar as Gdk.Pixbuf or null if the avatar could not be found.
+   */
+  Gdk.Pixbuf? load_avatar (string url, Gdk.Pixbuf? pixbuf = null) {
+    string avatar_name = Utils.get_avatar_name (url);
+    if (pixbuf != null) {
+      Twitter.avatars.set (avatar_name, pixbuf);
+      return pixbuf;
+    }
+
+    if (Twitter.avatars.has_key (avatar_name)) {
+      return Twitter.avatars.get (avatar_name);
+    } else {
+      string path = Utils.user_file ("assets/avatars/"+avatar_name);
+      if (FileUtils.test (path, FileTest.EXISTS)) {
+        try {
+          Twitter.avatars.set (avatar_name, new Gdk.Pixbuf.from_file (path));
+        } catch (GLib.Error e) {
+          warning ("Error while loading avatar from database: %s", e.message);
+        }
+        return Twitter.avatars.get (avatar_name);
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Downloads the avatar from the given url.
+   *
+   * @param avatar_url The avatar url to download
+   *
+   * @return The loaded avatar.
+   */
+  async Gdk.Pixbuf download_avatar (string avatar_url) {
+    string avatar_name = Utils.get_avatar_name (avatar_url);
+    Gdk.Pixbuf avatar = null;
+    var session = new Soup.SessionAsync ();
+    var msg     = new Soup.Message ("GET", avatar_url);
+    session.queue_message (msg, (s, _msg) => {
+      string dest = Utils.user_file ("assets/avatars/" + avatar_name);
+      var memory_stream = new MemoryInputStream.from_data(
+                                         _msg.response_body.data,
+                                         null);
+      try {
+        avatar = new Gdk.Pixbuf.from_stream_at_scale (memory_stream,
+                                                      48, 48,
+                                                      false);
+        avatar.save (dest, "png");
+        download_avatar.callback ();
+      } catch (GLib.Error e) {
+        critical (e.message);
+      }
+      debug ("Loaded avatar %s", avatar_url);
+      debug ("Dest: %s", dest);
+    });
+    yield;
+    return avatar;
+  }
+
 }
