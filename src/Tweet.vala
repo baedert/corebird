@@ -200,11 +200,9 @@ class Tweet : GLib.Object {
     //this.load_avatar();
     this.avatar = TweetUtils.load_avatar (avatar_url);
     if (this.avatar == null) {
-      message("LOADING AVATAR...");
       TweetUtils.download_avatar.begin (avatar_url, (obj, res) => {
         var avatar = TweetUtils.download_avatar.end (res);
-        TweetUtils.load_avatar (avatar_url, avatar);
-        message ("Loaded avatar");
+        this.avatar = TweetUtils.load_avatar (avatar_url, avatar);
       });
     }
 
