@@ -24,7 +24,7 @@
 class MainWindow : ApplicationWindow {
   public static const int PAGE_STREAM     = 0;
   public static const int PAGE_MENTIONS   = 1;
-  public static const int PAGE_DMS        = 2;
+  public static const int PAGE_DM_THREADS = 2;
   public static const int PAGE_SEARCH     = 3;
   public static const int PAGE_PROFILE    = 4;
   public static const int PAGE_TWEET_INFO = 5;
@@ -93,7 +93,7 @@ class MainWindow : ApplicationWindow {
 
     pages[0] = new HomeTimeline(PAGE_STREAM);
     pages[1] = new MentionsTimeline(PAGE_MENTIONS);
-    pages[2] = new DMTimeline(PAGE_DMS);
+    pages[2] = new DMThreadsPage(PAGE_DM_THREADS);
     pages[3] = new SearchTimeline(PAGE_SEARCH);
     pages[4] = new ProfilePage (PAGE_PROFILE, this, account);
     pages[5] = new TweetInfoPage (PAGE_TWEET_INFO);
@@ -124,8 +124,8 @@ class MainWindow : ApplicationWindow {
 
       ITimeline tl = (ITimeline)page;
       tl.delta_updater = delta_updater;
-      tl.load_cached ();
-      tl.load_newest ();
+//      tl.load_cached ();
+//      tl.load_newest ();
     }
 
     if (!Gtk.Settings.get_default ().gtk_shell_shows_app_menu) {

@@ -87,7 +87,7 @@ set (VALA_SOURCE
   src/HomeTimeline.vala
   src/MentionsTimeline.vala
   src/SearchTimeline.vala
-  src/DMTimeline.vala
+  src/DMThreadsPage.vala
   src/IPage.vala
   src/ProfilePage.vala
   src/TweetInfoPage.vala
@@ -115,6 +115,7 @@ set (VALA_SOURCE
   src/list/NewFollowerEntry.vala
   src/list/ProgressEntry.vala
   src/list/AccountListEntry.vala
+  src/list/DMThreadEntry.vala
   src/window/AboutDialog.vala
   src/util/UIBuilder.vala
   src/util/Utils.vala
