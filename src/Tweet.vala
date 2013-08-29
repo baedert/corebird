@@ -68,10 +68,6 @@ class Tweet : GLib.Object {
     this.avatar = Twitter.no_avatar;
   }
 
-  public bool has_avatar(){
-    return this.avatar != Twitter.no_avatar;
-  }
-
   /**
    * Fills all the data of this tweet from Json data.
    * @param status The Json object to get the data from
