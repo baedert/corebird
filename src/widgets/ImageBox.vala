@@ -21,69 +21,69 @@ using Gtk;
  * A normal box, but with an image as background.
  */
 class ImageBox : Gtk.Box  {
-	private static const float RATIO = (160f/320f);
-	public bool use_ratio {get; set; default=true;}
+  private static const float RATIO = (160f/320f);
+  public bool use_ratio {get; set; default=true;}
 
-	public ImageBox(Orientation orientation, int spacing){
-		GLib.Object(orientation: orientation, spacing: spacing);
-	}
+  public ImageBox(Orientation orientation, int spacing){
+    GLib.Object(orientation: orientation, spacing: spacing);
+  }
 
-	public override bool draw(Cairo.Context c){
+  public override bool draw(Cairo.Context c){
 
-		Allocation alloc;
-		this.get_allocation(out alloc);
-		var sc = this.get_style_context();
+    Allocation alloc;
+    this.get_allocation(out alloc);
+    var sc = this.get_style_context();
 
-		//Boxes do not draw any background! YAY
-		sc.render_background(c, 0, 0, alloc.width, alloc.height);
-		base.draw(c);
-		return false;
-	}
+    //Boxes do not draw any background! YAY
+    sc.render_background(c, 0, 0, alloc.width, alloc.height);
+    base.draw(c);
+    return false;
+  }
 
-	public override void get_preferred_height_for_width(int width, out int min_height,
-	                                                    out int natural_height){
+  public override void get_preferred_height_for_width(int width, out int min_height,
+                                                      out int natural_height){
 
-		int min, natural;
-		base.get_preferred_height_for_width(width, out min, out natural);
+    int min, natural;
+    base.get_preferred_height_for_width(width, out min, out natural);
 
-		if(!use_ratio){
-			min_height     = min;
-			natural_height = natural;
-			return;
-		}
-
-
-		int ratio_height = (int)(width * RATIO);
-
-		if(min > ratio_height) {
-			min_height = min;
-			natural_height = natural;
-		} else {
-			min_height = (int)(width * RATIO);
-			natural_height = (int)(width * RATIO);
-		}
+    if(!use_ratio){
+      min_height     = min;
+      natural_height = natural;
+      return;
+    }
 
 
-	}
+    int ratio_height = (int)(width * RATIO);
 
-	public override SizeRequestMode get_request_mode(){
-		return SizeRequestMode.HEIGHT_FOR_WIDTH;
-	}
+    if(min > ratio_height) {
+      min_height = min;
+      natural_height = natural;
+    } else {
+      min_height = (int)(width * RATIO);
+      natural_height = (int)(width * RATIO);
+    }
 
-	public void set_background(string path){
-		string banner_css = "*{
-		background-image: url('%s');
-		background-size: 100% 100%;
-		background-repeat: no-repeat;
-		}".printf(path);
 
-		try{
-			CssProvider prov = new CssProvider();
-			prov.load_from_data(banner_css, -1);
-			this.get_style_context().add_provider(prov,
-		                       	         STYLE_PROVIDER_PRIORITY_APPLICATION);
-		} catch (GLib.Error e){
-			warning(e.message);
-		}
-	}
+  }
+
+  public override SizeRequestMode get_request_mode(){
+    return SizeRequestMode.HEIGHT_FOR_WIDTH;
+  }
+
+  public void set_background(string path){
+    string banner_css = "*{
+    background-image: url('%s');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    }".printf(path);
+
+    try{
+      CssProvider prov = new CssProvider();
+      prov.load_from_data(banner_css, -1);
+      this.get_style_context().add_provider(prov,
+                                     STYLE_PROVIDER_PRIORITY_APPLICATION);
+    } catch (GLib.Error e){
+      warning(e.message);
+    }
+  }
 }
