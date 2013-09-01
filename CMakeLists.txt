@@ -99,7 +99,6 @@ set (VALA_SOURCE
   src/ITwitterItem.vala
   src/Account.vala
   src/ConnectionLostDialog.vala
-  src/widgets/ImageDialog.vala
   src/widgets/ImageBox.vala
   src/widgets/ImageLabel.vala
   src/widgets/PixbufButton.vala
@@ -117,6 +116,7 @@ set (VALA_SOURCE
   src/list/AccountListEntry.vala
   src/list/DMThreadEntry.vala
   src/window/AboutDialog.vala
+  src/window/ImageDialog.vala
   src/util/UIBuilder.vala
   src/util/Utils.vala
   src/util/Benchmark.vala
