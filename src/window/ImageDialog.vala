@@ -90,8 +90,7 @@ class ImageDialog : Gtk.Window {
 
   [GtkCallback]
   private bool event_box_motion_notify_cb (Gdk.EventMotion evt) {
-    //Srsly, don't ask me why 528.
-    if (evt.state == 528) {
+    if ((evt.state & Gdk.ModifierType.MODIFIER_MASK) == Gdk.ModifierType.BUTTON2_MASK) {
       double diff_x = dnd_x - evt.x;
       double diff_y = dnd_y - evt.y;
       scroller.vadjustment.value += diff_y;
@@ -103,6 +102,7 @@ class ImageDialog : Gtk.Window {
 
   [GtkCallback]
   private bool event_box_button_press_cb (Gdk.EventButton evt) {
+
     if (evt.button == 2) {
       this.dnd_x = evt.x;
       this.dnd_y = evt.y;
