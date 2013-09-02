@@ -33,7 +33,11 @@ class Database {
       foo = foo.next;
       pos++;
     }
-    q += ")
+    q += ")";
+
+    message(q);
   }
 }
+
+
 }

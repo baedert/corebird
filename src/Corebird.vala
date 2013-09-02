@@ -118,6 +118,12 @@ class Corebird : Gtk.Application {
 
   public override void startup () {
     base.startup();
+
+
+    var _db = new Sql.Database ("./test.db");
+
+
+
     message ("startup");
     // Load Database
     try {
