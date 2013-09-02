@@ -179,6 +179,10 @@ class MainWindow : ApplicationWindow {
         () => {switch_page (PAGE_PREVIOUS); return true;});
     ag.connect (Gdk.Key.Right, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
         () => {switch_page (PAGE_NEXT); return true;});
+    ag.connect (Gdk.Key.Back, 0, AccelFlags.LOCKED,
+        () => {switch_page (PAGE_PREVIOUS); return true;});
+    ag.connect (Gdk.Key.Forward, 0, AccelFlags.LOCKED,
+        () => {switch_page (PAGE_NEXT); return true;});
 
 
     this.add_accel_group(ag);
