@@ -56,14 +56,24 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   }
 
   public void load_cached () {
-    var query = new SQLHeavy.Query (account.db,
-        "SELECT user_id,screen_name,last_message,last_message_id FROM dm_thread_map");
-    var result = query.execute ();
-    while (!result.finished) {
-      int64 user_id = result.fetch_int64(0);
-      var entry = new DMThreadEntry (user_id);
+    try {
+      var query = new SQLHeavy.Query (account.db,
+          "SELECT user_id,screen_name,last_message,last_message_id
+           FROM dm_threads ORDER BY last_message_id");
+      var result = query.execute ();
+      while (!result.finished) {
+        int64 user_id = result.fetch_int64 (0);
+        var entry = new DMThreadEntry (user_id);
+        entry.screen_name = result.fetch_string (1);
+        entry.last_message = result.fetch_string (2);
+        entry.last_message_id = result.fetch_int64 (3);
+        thread_list.add (entry);
+        thread_map.set (user_id, entry);
+        result.next ();
+      }
+    } catch (SQLHeavy.Error e) {
+      critical(e.message);
     }
-
   }
 
   public void load_newest () {
@@ -87,19 +97,29 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   }
 
   private void add_new_thread (Json.Object dm_obj) {
-    int64 sender_id = dm_obj.get_int_member ("sender_id");
+    int64 sender_id  = dm_obj.get_int_member ("sender_id");
+    int64 message_id = dm_obj.get_int_member ("id");
     if (thread_map.has_key(sender_id)) {
       // TODO: Update last_message_label
       return;
     }
 
     var thread_entry = new DMThreadEntry (sender_id);
-    thread_entry.screen_name = dm_obj.get_string_member("sender_screen_name");
+    var author = dm_obj.get_string_member ("sender_screen_name");
+    thread_entry.screen_name = author;
     thread_entry.last_message = dm_obj.get_string_member("text");
+    thread_entry.last_message_id = message_id;
     thread_list.add(thread_entry);
     thread_map.set(sender_id, thread_entry);
     string avatar_url = dm_obj.get_object_member ("sender").get_string_member ("profile_image_url");
     Gdk.Pixbuf avatar = TweetUtils.load_avatar (avatar_url);
+    try {
+      account.db.execute(@"INSERT INTO `dm_threads`
+          (user_id, screen_name, last_message, last_message_id) VALUES
+          ('$sender_id', '$author', '$(thread_entry.last_message)', '$message_id');");
+    } catch (SQLHeavy.Error e) {
+      critical (e.message);
+    }
     if (avatar == null) {
       TweetUtils.download_avatar.begin (avatar_url, (obj, res) => {
         avatar = TweetUtils.download_avatar.end (res);

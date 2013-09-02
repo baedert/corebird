@@ -47,6 +47,7 @@ class DMThreadEntry : Gtk.ListBoxRow {
       last_message_label.label = value;
     }
   }
+  public int64 last_message_id {get; set;}
 
   public Gdk.Pixbuf avatar {
     set { avatar_image.pixbuf = value;}
