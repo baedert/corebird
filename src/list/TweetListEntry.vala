@@ -278,7 +278,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   private void reply_send_button_clicked_cb () {
     string text = reply_entry.text;
     if (text.strip().length > 0){
-      TweetUtils.reply_to_tweet (account, tweet, text);
+      TweetUtils.reply_to_tweet.begin (account, tweet, text);
     }
 
     this.grab_focus ();

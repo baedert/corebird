@@ -43,7 +43,7 @@ class MainWindow : ApplicationWindow {
   private Button new_tweet_button          = new Button ();
   private Gtk.Stack stack                  = new Gtk.Stack();
   private DeltaUpdater delta_updater       = new DeltaUpdater();
-  public unowned Account account {public get; private set;}
+  public unowned Account account           {public get; private set;}
   private WarningService warning_service;
 
 
@@ -162,6 +162,20 @@ class MainWindow : ApplicationWindow {
 
     // Activate the first timeline
     this.switch_page (0);
+
+
+    var call = account.proxy.new_call ();
+    call.set_function ("1.1/direct_messages.json");
+    call.set_method ("GET");
+    call.add_param ("skip_status", "true");
+    call.add_param ("sender_id", "993713617");
+    call.invoke_async.begin (null, () => {
+      stdout.printf (call.get_payload ()+"\n");
+    });
+
+
+
+
   }
 
   /**
@@ -196,7 +210,6 @@ class MainWindow : ApplicationWindow {
    * @param ... The parameters to pass to the page
    */
   public void switch_page (int page_id, ...) {
-    debug ("Switching from %d to %d", history.current, page_id);
     if (page_id == history.current)
      return;
 

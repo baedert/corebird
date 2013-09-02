@@ -26,10 +26,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   public Account account {get; set;}
   private int id;
   private BadgeRadioToolButton tool_button;
-  private bool loading = false;
   protected uint tweet_remove_timeout{get;set;}
-  private ProgressEntry progress_entry = new ProgressEntry(75);
-  public DeltaUpdater delta_updater {get;set;}
   private Gee.ArrayList<int64?> threads = new Gee.ArrayList<int64?>((a,b) => {return a == b;});
   [GtkChild]
   private Gtk.ListBox thread_list;
@@ -65,9 +62,13 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     call.set_function ("1.1/direct_messages.json");
     call.set_method ("GET");
     call.add_param ("skip_status", "true");
-    call.invoke_async (null, () => {
+    call.invoke_async.begin (null, () => {
       var parser = new Json.Parser ();
-      parser.load_from_data (call.get_payload ());
+      try {
+        parser.load_from_data (call.get_payload ());
+      } catch (GLib.Error e) {
+        critical (e.message);
+      }
       var root_arr = parser.get_root ().get_array ();
       root_arr.foreach_element ((arr, pos, node) => {
         add_new_thread (node.get_object ());
@@ -75,6 +76,11 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     });
 
   }
+
+  public void load_older () {
+
+  }
+
 
   private void add_new_thread (Json.Object dm_obj) {
     int64 sender_id = dm_obj.get_int_member ("sender_id");
@@ -100,12 +106,6 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     } else
       thread_entry.avatar = avatar;
   }
-
-  public void load_older () {
-
-  }
-
-
 
 
 
