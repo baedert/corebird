@@ -58,6 +58,11 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   public void load_cached () {
     var query = new SQLHeavy.Query (account.db,
         "SELECT user_id,screen_name,last_message,last_message_id FROM dm_thread_map");
+    var result = query.execute ();
+    while (!result.finished) {
+      int64 user_id = result.fetch_int64(0);
+      var entry = new DMThreadEntry (user_id);
+    }
 
   }
 
@@ -88,14 +93,11 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       return;
     }
 
-    DMThread thread = DMThread ();
-    thread.user_id = sender_id;
-    thread.screen_name = "<b><big>@%s</big></b>".printf(dm_obj.get_string_member ("sender_screen_name"));
-    thread.last_message = dm_obj.get_string_member ("text");
-    var thread_entry = new DMThreadEntry (thread);
+    var thread_entry = new DMThreadEntry (sender_id);
+    thread_entry.screen_name = dm_obj.get_string_member("sender_screen_name");
+    thread_entry.last_message = dm_obj.get_string_member("text");
     thread_list.add(thread_entry);
     thread_map.set(sender_id, thread_entry);
-    message(@"Add: $sender_id");
     string avatar_url = dm_obj.get_object_member ("sender").get_string_member ("profile_image_url");
     Gdk.Pixbuf avatar = TweetUtils.load_avatar (avatar_url);
     if (avatar == null) {
