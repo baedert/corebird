@@ -49,14 +49,15 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 
   public void on_join (int page_id, va_list arg_list) {
     if (!initialized) {
+      load_cached ();
       load_newest ();
       initialized = true;
     }
   }
 
   public void load_cached () {
-//    var query = new SQLHeavy.Query (account.db,
-//        "SELECT user_id,screen_name,last_message,last_message_id FROM dm_thread_map");
+    var query = new SQLHeavy.Query (account.db,
+        "SELECT user_id,screen_name,last_message,last_message_id FROM dm_thread_map");
 
   }
 
@@ -79,11 +80,6 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     });
 
   }
-
-  public void load_older () {
-
-  }
-
 
   private void add_new_thread (Json.Object dm_obj) {
     int64 sender_id = dm_obj.get_int_member ("sender_id");

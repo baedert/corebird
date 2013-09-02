@@ -162,20 +162,6 @@ class MainWindow : ApplicationWindow {
 
     // Activate the first timeline
     this.switch_page (0);
-
-
-    var call = account.proxy.new_call ();
-    call.set_function ("1.1/direct_messages.json");
-    call.set_method ("GET");
-    call.add_param ("skip_status", "true");
-    call.add_param ("sender_id", "993713617");
-    call.invoke_async.begin (null, () => {
-      stdout.printf (call.get_payload ()+"\n");
-    });
-
-
-
-
   }
 
   /**
