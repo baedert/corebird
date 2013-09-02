@@ -187,4 +187,22 @@ class Utils {
   public static string decode (string source) {
     return (string)GLib.Base64.decode (source);
   }
+
+  public static void load_custom_icons () {
+    try{
+      Gtk.IconSet micon = new Gtk.IconSet.from_pixbuf(new Gdk.Pixbuf.from_file(DATADIR+"/mentions.svg"));
+      Gtk.IconSet sicon = new Gtk.IconSet.from_pixbuf(new Gdk.Pixbuf.from_file(DATADIR+"/stream.svg"));
+      Gtk.IconSet search_icon = new Gtk.IconSet.from_pixbuf(new Gdk.Pixbuf.from_file(DATADIR+"/search.svg"));
+      Gtk.IconSet dms_icon = new Gtk.IconSet.from_pixbuf(new Gdk.Pixbuf.from_file(DATADIR+"/dms.svg"));
+      Gtk.IconFactory mfac = new Gtk.IconFactory();
+      mfac.add("mentions", micon);
+      mfac.add("stream-symbolic", sicon);
+      mfac.add("search", search_icon);
+      mfac.add("dms", dms_icon);
+      mfac.add_default();
+    } catch (GLib.Error e) {
+      critical (e.message);
+    }
+  }
+
 }

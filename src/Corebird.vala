@@ -201,20 +201,7 @@ class Corebird : Gtk.Application {
     Twitter.init ();
 
     // Load custom icons
-    try{
-      IconSet micon = new IconSet.from_pixbuf(new Gdk.Pixbuf.from_file(DATADIR+"/mentions.svg"));
-      IconSet sicon = new IconSet.from_pixbuf(new Gdk.Pixbuf.from_file(DATADIR+"/stream.svg"));
-      IconSet search_icon = new IconSet.from_pixbuf(new Gdk.Pixbuf.from_file(DATADIR+"/search.svg"));
-      IconSet dms_icon = new IconSet.from_pixbuf(new Gdk.Pixbuf.from_file(DATADIR+"/dms.svg"));
-      IconFactory mfac = new IconFactory();
-      mfac.add("mentions", micon);
-      mfac.add("stream", sicon);
-      mfac.add("search", search_icon);
-      mfac.add("dms", dms_icon);
-      mfac.add_default();
-    } catch (GLib.Error e) {
-      critical (e.message);
-    }
+    Utils.load_custom_icons ();
   }
 
   public override void shutdown () {
