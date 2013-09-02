@@ -17,7 +17,8 @@
 
 using Gtk;
 
-class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
+class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
+  private bool inited = false;
   public int unread_count {get;set;}
   public unowned MainWindow main_window {set; get;}
   protected Gtk.ListBox tweet_list {set; get;}
@@ -126,7 +127,11 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget{
    * see IPage#onJoin
    */
   public void on_join(int page_id, va_list arg_list){
-
+    if (!inited) {
+      load_cached ();
+      load_newest ();
+      inited = true;
+    }
   }
 
   public void load_cached() {

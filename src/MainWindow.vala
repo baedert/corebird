@@ -24,9 +24,10 @@
 class MainWindow : ApplicationWindow {
   public static const int PAGE_STREAM     = 0;
   public static const int PAGE_MENTIONS   = 1;
-  public static const int PAGE_SEARCH     = 2;
-  public static const int PAGE_PROFILE    = 3;
-  public static const int PAGE_TWEET_INFO = 4;
+  public static const int PAGE_DM_THREADS = 2;
+  public static const int PAGE_SEARCH     = 3;
+  public static const int PAGE_PROFILE    = 4;
+  public static const int PAGE_TWEET_INFO = 5;
 
   public static const int PAGE_PREVIOUS   = 1024;
   public static const int PAGE_NEXT       = 2048;
@@ -36,13 +37,13 @@ class MainWindow : ApplicationWindow {
   private Toolbar left_toolbar             = new Toolbar();
   private Box main_box                     = new Box(Orientation.HORIZONTAL, 0);
   private RadioToolButton dummy_button     = new RadioToolButton(null);
-  private IPage[] pages                    = new IPage[5];
+  private IPage[] pages                    = new IPage[6];
   private IntHistory history               = new IntHistory (5);
   private Image avatar_image               = new Image ();
   private Button new_tweet_button          = new Button ();
   private Gtk.Stack stack                  = new Gtk.Stack();
   private DeltaUpdater delta_updater       = new DeltaUpdater();
-  public unowned Account account {public get; private set;}
+  public unowned Account account           {public get; private set;}
   private WarningService warning_service;
 
 
@@ -81,8 +82,9 @@ class MainWindow : ApplicationWindow {
     f.set_title ("Corebird");
     f.set_subtitle ("@"+account.screen_name);
     f.set_show_close_button (true);
+    avatar_image.margin_left = 5;
     f.pack_start (avatar_image);
-    new_tweet_button.get_style_context ().add_class ("image_button");
+    new_tweet_button.get_style_context ().add_class ("image-button");
     f.pack_start (new_tweet_button);
     this.set_titlebar(f);
 
@@ -91,9 +93,10 @@ class MainWindow : ApplicationWindow {
 
     pages[0] = new HomeTimeline(PAGE_STREAM);
     pages[1] = new MentionsTimeline(PAGE_MENTIONS);
-    pages[2] = new SearchTimeline(PAGE_SEARCH);
-    pages[3] = new ProfilePage (PAGE_PROFILE, this, account);
-    pages[4] = new TweetInfoPage (PAGE_TWEET_INFO);
+    pages[2] = new DMThreadsPage(PAGE_DM_THREADS);
+    pages[3] = new SearchPage(PAGE_SEARCH);
+    pages[4] = new ProfilePage (PAGE_PROFILE, this, account);
+    pages[5] = new TweetInfoPage (PAGE_TWEET_INFO);
 
     /* Initialize all containers */
     for (int i = 0; i < pages.length; i++) {
@@ -121,8 +124,6 @@ class MainWindow : ApplicationWindow {
 
       ITimeline tl = (ITimeline)page;
       tl.delta_updater = delta_updater;
-      tl.load_cached ();
-      tl.load_newest ();
     }
 
     if (!Gtk.Settings.get_default ().gtk_shell_shows_app_menu) {
@@ -178,6 +179,10 @@ class MainWindow : ApplicationWindow {
         () => {switch_page (PAGE_PREVIOUS); return true;});
     ag.connect (Gdk.Key.Right, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
         () => {switch_page (PAGE_NEXT); return true;});
+    ag.connect (Gdk.Key.Back, 0, AccelFlags.LOCKED,
+        () => {switch_page (PAGE_PREVIOUS); return true;});
+    ag.connect (Gdk.Key.Forward, 0, AccelFlags.LOCKED,
+        () => {switch_page (PAGE_NEXT); return true;});
 
 
     this.add_accel_group(ag);
@@ -191,7 +196,6 @@ class MainWindow : ApplicationWindow {
    * @param ... The parameters to pass to the page
    */
   public void switch_page (int page_id, ...) {
-    debug ("Switching from %d to %d", history.current, page_id);
     if (page_id == history.current)
      return;
 

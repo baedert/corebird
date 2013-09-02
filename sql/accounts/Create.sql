@@ -14,3 +14,14 @@ CREATE TABLE IF NOT EXISTS `info`(
   screen_name VARCHAR(30),
   name VARCHAR(30)
 );
+
+
+CREATE TABLE IF NOT EXISTS `dm_threads`(
+  user_id NUMERIC(19,0),
+  user_name VARCHAR(40),
+  screen_name VARCHAR(30),
+  last_message VARCHAR(250),
+  last_message_id NUMERIC(19,0)
+);
+
+

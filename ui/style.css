@@ -4,94 +4,44 @@
 }
 
 
-.retweet-button {
-  background-color: transparent;
 
+.button-slim {
   -GtkButton-default-border: 0;
   -GtkButton-default-outside-border: 0;
   -GtkButton-inner-border: 0;
   -GtkWidget-focus-line-width: 0;
   -GtkWidget-focus-padding: 0;
-  box-shadow: none;
-  padding: 8px; /* Just to set the size here... */
-  border: none;
-  border-radius: 0px;
-  text-shadow: none;
-  background-image:url('../retweet-normal.png');
-  background-repeat: no-repeat;
+}
+
+.retweet-button,
+.favorite-button {
+  font-family: FontAwesome;
+  font-size: 11px;
 }
 .retweet-button:hover,
 .retweet-button:active {
-  background-image:url('../retweet.png');
+  color:green;
 }
 
 .favorite-button {
-  background-color: transparent;
-  -GtkButton-default-border: 0;
-  -GtkButton-default-outside-border: 0;
-  -GtkButton-inner-border: 0;
-  -GtkWidget-focus-line-width: 0;
-  -GtkWidget-focus-padding: 0;
-  box-shadow: none;
-  padding: 8px; /* Just to set the size here... */
-  border: none;
-  border-radius: 0px;
-  text-shadow: none;
-  background-image:url('../favorite-normal.png');
-  background-repeat: no-repeat;
+  font-family: FontAwesome;
+  font-size: 11px;
 }
 
 
 .favorite-button:hover,
 .favorite-button:active {
-  background-image:url('../favorite.png');
+  color: shade(yellow, 0.9);
 }
 
-.conversation-button {
-  background-color: transparent;
-  -GtkButton-default-border: 0;
-  -GtkButton-default-outside-border: 0;
-  -GtkButton-inner-border: 0;
-  -GtkWidget-focus-line-width: 0;
-  -GtkWidget-focus-padding: 0;
-  box-shadow: none;
-  padding: 8px; /* Just to set the size here... */
-  border: none;
-  border-radius: 0px;
-  text-shadow: none;
-  background-image:url('../conversation-normal.png');
-  background-repeat: no-repeat;
+.conversation-label {
+  font-family: FontAwesome;
+  font-size: 10px;
 }
 
-.conversation-button:hover {
-  background-image: url('../conversation.png');
-}
-
-
-.more-button {
-  background-image: none;
-  background-color: transparent;
-  -GtkButton-default-border: 0;
-  -GtkButton-default-outside-border: 0;
-  -GtkButton-inner-border: 0;
-  -GtkWidget-focus-line-width: 0;
-  -GtkWidget-focus-padding: 0;
-  box-shadow: none;
-  padding: 8px; /* Just to set the size here... */
-  border: none;
-  border-radius: 0px;
-  text-shadow: none;
-  background-image:url('../more-normal.png');
-}
-
-.more-button:hover {
-  background-image: url('../more.png');
-}
 
 .favorite-button:backdrop,
-.retweet-button:backdrop,
-.conversation-button:backdrop,
-.more-button:backdrop {
+.retweet-button:backdrop {
   background-color: transparent;
 }
 
@@ -123,7 +73,7 @@
   -GtkWidget-link-color: #555;
 }
 
-.text-button{
+.text-only-button{
   font-weight: bold;
   background-image: none;
   background-color: transparent;
@@ -136,16 +86,16 @@
   padding: 0px;
   box-shadow: none;
 }
-.text-button:hover{
+.text-only-button:hover{
   text-shadow: 0px 0px 5px #444;
   background-image: none;
   border: none;
 }
-.text-button:active{
+.text-only-button:active{
   color: black;
   background-color: red;
 }
-.text-button:backdrop{
+.text-only-button:backdrop{
   background-color: transparent;
 }
 

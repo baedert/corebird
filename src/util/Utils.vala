@@ -17,13 +17,13 @@
 
 
 
-class Utils {
-  public static const string CONSUMER_KEY = "MHJ2SExkYnpSVUxaZDVkejZYMVRVQQ==";
-  public static const string CONSUMER_SECRET = "b0dydmQ2NjU0bldMaHpMY0p5d1NXM3BsdFVma2hQNEJucmFQUFZOaEh0WQ==";
+namespace Utils {
+  const string CONSUMER_KEY = "MHJ2SExkYnpSVUxaZDVkejZYMVRVQQ==";
+  const string CONSUMER_SECRET = "b0dydmQ2NjU0bldMaHpMY0p5d1NXM3BsdFVma2hQNEJucmFQUFZOaEh0WQ==";
 
 
   // TODO: there's probably something for this in glib
-  private static const string[] MONTHS = {
+  private  const string[] MONTHS = {
     "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
   };
 
@@ -34,7 +34,7 @@ class Utils {
   *
   * @return The given date as GLib.DateTime in the current time zone.
   */
-  public static GLib.DateTime parse_date(string input){
+  GLib.DateTime parse_date(string input){
     if (input == ""){
       return new GLib.DateTime.now_local();
     }
@@ -72,7 +72,7 @@ class Utils {
    * time and now.
    * Example: "5m" or "3h" or "26m" or "16 Nov"
    */
-  public static string get_time_delta(GLib.DateTime time, GLib.DateTime now){
+  string get_time_delta(GLib.DateTime time, GLib.DateTime now){
     //diff is the time difference in microseconds
     GLib.TimeSpan diff = now.difference(time);
 
@@ -97,7 +97,7 @@ class Utils {
    *
    * @return The filename of the given path, and nothing else.
    */
-  public static string get_file_name(string path){
+  string get_file_name(string path){
     return path.substring(path.last_index_of_char('/') + 1);
   }
 
@@ -105,7 +105,7 @@ class Utils {
    * Extracts the file type from the given path.
    * E.g. for http://foo.org/bar/bla.png, this will just return "png"
    */
-  public static string get_file_type(string path){
+  string get_file_type(string path){
     string filename = get_file_name(path);
     if(filename.index_of_char('.') == -1)
       return "";
@@ -121,7 +121,7 @@ class Utils {
    *
    * @return the 'calculated' avatar name
    */
-  public static string get_avatar_name(string path){
+  string get_avatar_name(string path){
     string[] parts = path.split("/");
     return parts[parts.length - 2]+"_"+parts[parts.length - 1];
   }
@@ -132,7 +132,7 @@ class Utils {
    *
    * @param message The error message to show
    */
-  public static void show_error_dialog(string message){
+  void show_error_dialog(string message){
     var dialog = new Gtk.MessageDialog(null, Gtk.DialogFlags.DESTROY_WITH_PARENT,
                Gtk.MessageType.ERROR, Gtk.ButtonsType.OK,
                message);
@@ -150,7 +150,7 @@ class Utils {
    * TODO: Maybe use the XDG_CONFIG_DIR here?
    * @return a path to the file or folder ~/.corebird/file_name
    */
-  public static string user_file(string file_name){
+  string user_file(string file_name){
     return GLib.Environment.get_home_dir()+"/.corebird/"+file_name;
   }
 
@@ -162,7 +162,7 @@ class Utils {
    * @param path The filesystem path to save the file to
    *
    */
-  public static async void download_file_async(string url, string path) {
+  async void download_file_async(string url, string path) {
     var session = new Soup.SessionAsync();
     var msg = new Soup.Message("GET", url);
     GLib.SourceFunc cb = download_file_async.callback;
@@ -180,11 +180,36 @@ class Utils {
     yield;
   }
 
-  public static string encode (string source) {
+  string encode (string source) {
     return GLib.Base64.encode ((uchar[])source.data);
   }
 
-  public static string decode (string source) {
+  string decode (string source) {
     return (string)GLib.Base64.decode (source);
+  }
+
+  void load_custom_icons () {
+    try{
+      Gtk.IconSet micon = new Gtk.IconSet.from_pixbuf(new Gdk.Pixbuf.from_file(DATADIR+"/mentions.svg"));
+      Gtk.IconSet sicon = new Gtk.IconSet.from_pixbuf(new Gdk.Pixbuf.from_file(DATADIR+"/stream.svg"));
+      Gtk.IconSet search_icon = new Gtk.IconSet.from_pixbuf(new Gdk.Pixbuf.from_file(DATADIR+"/search.svg"));
+      Gtk.IconSet dms_icon = new Gtk.IconSet.from_pixbuf(new Gdk.Pixbuf.from_file(DATADIR+"/dms.svg"));
+      Gtk.IconFactory mfac = new Gtk.IconFactory();
+      mfac.add("mentions", micon);
+      mfac.add("stream-symbolic", sicon);
+      mfac.add("search", search_icon);
+      mfac.add("dms", dms_icon);
+      mfac.add_default();
+    } catch (GLib.Error e) {
+      critical (e.message);
+    }
+  }
+
+  uint int64_hash_func (int64? k) {
+    return (uint)k;
+  }
+
+  bool int64_equal_func (int64? a, int64? b) {
+    return a == b;
   }
 }

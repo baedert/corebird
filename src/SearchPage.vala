@@ -19,7 +19,7 @@
 using Gtk;
 
 // TODO: Add timeout that removes all entries after X seconds when switched away
-class SearchTimeline : IPage, Box {
+class SearchPage : IPage, Box {
   /** The unread count here is always zero */
   public int unread_count{
     get{return 0;}
@@ -36,7 +36,7 @@ class SearchTimeline : IPage, Box {
   private DeltaUpdater delta_updater;
 
 
-  public SearchTimeline(int id) {
+  public SearchPage(int id) {
     GLib.Object(orientation: Orientation.VERTICAL);
     this.id = id;
     search_entry.margin = 5;
@@ -119,6 +119,7 @@ class SearchTimeline : IPage, Box {
 
   public void create_tool_button(RadioToolButton? group){
     tool_button = new RadioToolButton.with_stock_from_widget(group, "search");
+    tool_button.label = "Search";
   }
 
   public RadioToolButton? get_tool_button(){

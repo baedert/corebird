@@ -1,11 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.15.2 on Tue Aug 27 23:59:37 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.6 -->
-  <object class="GtkAboutDialog" id="about-dialog">
+  <template class="AboutDialog" parent="GtkAboutDialog">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
+    <property name="title" translatable="yes">About Corebird</property>
     <property name="type_hint">dialog</property>
-    <property name="program_name">corebird</property>
+    <property name="program_name">Corebird</property>
+    <property name="version">0.0.1</property>
+    <property name="comments" translatable="yes">Using Font Awesome by Dave Gandy - http://fontawesome.io</property>
     <property name="website">http://corebird.baedert.org</property>
-  </object>
+    <property name="authors">
+</property>
+    <property name="logo_icon_name">corebird</property>
+    <property name="license_type">gpl-3-0</property>
+    <signal name="response" handler="response_cb" swapped="no"/>
+    <child internal-child="vbox">
+      <object class="GtkBox" id="aboutdialog-vbox1">
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox" id="aboutdialog-action_area1">
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </template>
 </interface>

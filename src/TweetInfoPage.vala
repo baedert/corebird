@@ -121,7 +121,12 @@ class TweetInfoPage : IPage , ScrollWidget {
       var now = new GLib.DateTime.now_local ();
       this.tweet = new Tweet ();
       var parser = new Json.Parser ();
-      parser.load_from_data (call.get_payload ());
+      try {
+        parser.load_from_data (call.get_payload ());
+      } catch (GLib.Error e) {
+        critical (e.message);
+        return;
+      }
       tweet.load_from_json (parser.get_root (), now);
       set_tweet_data (tweet);
       Json.Object root_object = parser.get_root ().get_object ();
@@ -159,7 +164,12 @@ class TweetInfoPage : IPage , ScrollWidget {
     call.invoke_async.begin (null, (obj, res) => {
       try{call.invoke_async.end (res);}catch(GLib.Error e){critical(e.message);return;}
       var parser = new Json.Parser ();
-      parser.load_from_data (call.get_payload ());
+      try {
+        parser.load_from_data (call.get_payload ());
+      } catch (GLib.Error e) {
+        critical (e.message);
+        return;
+      }
       Tweet tweet = new Tweet ();
       tweet.load_from_json (parser.get_root (), new GLib.DateTime.now_local ());
       bottom_list_box.add (new TweetListEntry (tweet, main_window, account));

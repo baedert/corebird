@@ -183,10 +183,8 @@ class Corebird : Gtk.Application {
     add_action (settings_action);
     var about_dialog_action = new SimpleAction("show-about-dialog", null);
     about_dialog_action.activate.connect(() => {
-//      var b = new Gtk.Builder();
-//      b.add_from_file(DATADIR+"/ui/about-dialog.ui");
-//      Gtk.AboutDialog ad = b.get_object("about-dialog") as Gtk.AboutDialog;
-//      ad.show();
+        var ad = new AboutDialog ();
+        ad.show();
     });
     add_action(about_dialog_action);
     var quit_action = new SimpleAction("quit", null);
@@ -209,18 +207,7 @@ class Corebird : Gtk.Application {
     Twitter.init ();
 
     // Load custom icons
-    try{
-      IconSet micon = new IconSet.from_pixbuf(new Gdk.Pixbuf.from_file(DATADIR+"/mentions.svg"));
-      IconSet sicon = new IconSet.from_pixbuf(new Gdk.Pixbuf.from_file(DATADIR+"/stream.svg"));
-      IconSet search_icon = new IconSet.from_pixbuf(new Gdk.Pixbuf.from_file(DATADIR+"/search.svg"));
-      IconFactory mfac = new IconFactory();
-      mfac.add("mentions", micon);
-      mfac.add("stream", sicon);
-      mfac.add("search", search_icon);
-      mfac.add_default();
-    } catch (GLib.Error e) {
-      critical (e.message);
-    }
+    Utils.load_custom_icons ();
   }
 
   public override void shutdown () {
@@ -259,7 +246,7 @@ class Corebird : Gtk.Application {
    *         screen name is open, FALSE otherwise.
    */
   public bool is_window_open_for_screen_name (string screen_name,
-                                              out MainWindow window = null) {
+                                              out MainWindow? window = null) {
     unowned GLib.List<weak Window> windows = this.get_windows ();
     foreach (Window win in windows) {
       if (win is MainWindow) {
@@ -317,7 +304,6 @@ int main (string[] args){
   try{
     //no initialisation of static fields :(
     Settings.init();
-    new Utils();
     new WidgetReplacer();
     var corebird = new Corebird();
     return corebird.run(args);

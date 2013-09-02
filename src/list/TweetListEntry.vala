@@ -28,12 +28,6 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   [GtkChild]
   private Label time_delta_label;
   [GtkChild]
-  private ToggleButton retweet_button;
-  [GtkChild]
-  private ToggleButton favorite_button;
-  [GtkChild]
-  private Button more_button;
-  [GtkChild]
   private Image avatar_image;
   [GtkChild]
   private Label text_label;
@@ -44,12 +38,21 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   [GtkChild]
   private Entry reply_entry;
   [GtkChild]
-  private Button conversation_button;
+  private Label conversation_label;
   [GtkChild]
   private Box text_box;
   [GtkChild]
-  private InvisibilityBin retweet_bin;
-
+  private Box hover_box;
+  [GtkChild]
+  private ToggleButton retweet_button;
+  [GtkChild]
+  private ToggleButton favorite_button;
+  [GtkChild]
+  private Button reply_button;
+  [GtkChild]
+  private MenuButton more_button;
+  [GtkChild]
+  private Gtk.Menu more_menu;
 
 
 
@@ -63,7 +66,6 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   private unowned Account account;
   private unowned MainWindow window;
   public Tweet tweet;
-  private Gtk.Menu more_menu;
   private bool values_set = false;
 
 
@@ -83,14 +85,16 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       rt_label.label = "RT by "+tweet.retweeted_by;
     }
 
+
+    retweet_button.visible = tweet.retweeted;
     if (tweet.retweeted) {
       retweet_button.active = true;
-      retweet_button.show ();
     }
 
+    favorite_button.visible = tweet.favorited;
     if (tweet.favorited) {
+      favorite_button.show();
       favorite_button.active = true;
-      favorite_button.show ();
     }
 
     // If the avatar gets loaded, we want to change it here immediately
@@ -129,7 +133,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     }
 
     if (tweet.reply_id != 0) {
-      conversation_button.show ();
+      conversation_label.show ();
     }
 
     values_set = true;
@@ -150,16 +154,25 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   private void state_flags_changed_cb () {
     Gtk.StateFlags flags = this.get_state_flags ();
     bool buttons_visible = (bool)(flags & (StateFlags.PRELIGHT | StateFlags.SELECTED));
+    buttons_visible = (buttons_visible || more_menu.visible) && !reply_revealer.reveal_child;
     if (buttons_visible) {
-      if (account.id != tweet.user_id){
-        retweet_bin.show_child ();
-        favorite_button.show ();
+      hover_box.show();
+      retweet_button.show();
+      favorite_button.show();
+      reply_button.show();
+      more_button.show();
+      if (account.id == tweet.user_id){
+        retweet_button.hide();
       }
-      more_button.show ();
     } else {
-      favorite_button.set_visible (favorite_button.active);
-      retweet_bin.set_child_visible (retweet_button.active);
-      more_button.hide ();
+      if (!tweet.favorited && !tweet.retweeted)
+        hover_box.hide();
+      else {
+        retweet_button.visible = tweet.retweeted;
+        favorite_button.visible = tweet.favorited;
+        reply_button.hide();
+        more_button.hide();
+      }
     }
   }
 
@@ -191,7 +204,6 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
         delete_tweet ();
         return true;
       case Gdk.Key.Return:
-        message ("yoyo");
         ((ListBox)(this.parent)).row_activated (this);
         return true;
 #if __DEV
@@ -221,26 +233,6 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
         return true;
     }
     return false;
-  }
-
-  [GtkCallback]
-  private void more_button_clicked_cb () {
-    if (more_menu == null) {
-      more_menu = new Gtk.Menu ();
-      more_menu.attach_widget = more_button;
-      Gtk.MenuItem info_item = new Gtk.MenuItem.with_label (_("Info"));
-      more_menu.add (info_item);
-      Gtk.MenuItem reply_item = new Gtk.MenuItem.with_label (_("Reply"));
-      more_menu.add (reply_item);
-      if (tweet.user_id == account.id) {
-        Gtk.MenuItem delete_item = new Gtk.MenuItem.with_label (_("Delete"));
-        delete_item.activate.connect(delete_tweet);
-        more_menu.add (delete_item);
-      }
-
-      more_menu.show_all ();
-    }
-    more_menu.popup (null, null, null, 0, 0);
   }
 
   /**
@@ -286,11 +278,17 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   private void reply_send_button_clicked_cb () {
     string text = reply_entry.text;
     if (text.strip().length > 0){
-      TweetUtils.reply_to_tweet (account, tweet, text);
+      TweetUtils.reply_to_tweet.begin (account, tweet, text);
     }
 
     this.grab_focus ();
     reply_revealer.reveal_child = false;
+  }
+
+  [GtkCallback]
+  private void reply_button_clicked_cb () {
+    ComposeTweetWindow ctw = new ComposeTweetWindow(this.window, this.account, this.tweet);
+    ctw.show ();
   }
 
   [GtkCallback]

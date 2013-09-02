@@ -10,5 +10,8 @@
     <file compressed="true" preprocess="xml-stripblanks">ui/tweet-info-page.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/image-dialog.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/connection-lost-dialog.ui</file>
-  </gresource>
+    <file compressed="true" preprocess="xml-stripblanks">ui/about-dialog.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">ui/dm-threads-page.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">ui/dm-thread-entry.ui</file>
+</gresource>
 </gresources>

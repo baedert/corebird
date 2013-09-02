@@ -43,7 +43,6 @@ configure_file (${CMAKE_SOURCE_DIR}/src/util/Config.vala.cmake ${CMAKE_BINARY_DI
 include (ValaVersion)
 include (ValaPrecompile)
 include (GSettings)
-include (GResources)
 
 find_package (Vala REQUIRED)
 ensure_vala_version ("0.20" MINIMUM) # TODO: Bump to 0.22
@@ -66,7 +65,6 @@ set (DEPS glib-2.0;
       libnotify;
       sqlite3;
       libsoup-2.4;
-      gmodule-2.0;
 )
 
 find_package (PkgConfig)
@@ -88,7 +86,8 @@ set (VALA_SOURCE
   src/ITimeline.vala
   src/HomeTimeline.vala
   src/MentionsTimeline.vala
-  src/SearchTimeline.vala
+  src/SearchPage.vala
+  src/DMThreadsPage.vala
   src/IPage.vala
   src/ProfilePage.vala
   src/TweetInfoPage.vala
@@ -100,7 +99,6 @@ set (VALA_SOURCE
   src/ITwitterItem.vala
   src/Account.vala
   src/ConnectionLostDialog.vala
-  src/widgets/ImageDialog.vala
   src/widgets/ImageBox.vala
   src/widgets/ImageLabel.vala
   src/widgets/PixbufButton.vala
@@ -116,6 +114,9 @@ set (VALA_SOURCE
   src/list/NewFollowerEntry.vala
   src/list/ProgressEntry.vala
   src/list/AccountListEntry.vala
+  src/list/DMThreadEntry.vala
+  src/window/AboutDialog.vala
+  src/window/ImageDialog.vala
   src/util/UIBuilder.vala
   src/util/Utils.vala
   src/util/Benchmark.vala
@@ -141,10 +142,6 @@ set (VALAC_OPTIONS
 if (DEBUG)
   set (VALAC_OPTIONS ${VALAC_OPTIONS} -D __DEV)
 endif (DEBUG)
-
-
-# Compile resurces
-compile_resources (resources.xml src/resources.c)
 
 
 vala_precompile (VALA_C
