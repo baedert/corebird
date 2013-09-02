@@ -29,12 +29,16 @@ struct DMThread {
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/dm-thread-entry.ui")]
 class DMThreadEntry : Gtk.ListBoxRow {
+  public static bool equal_func (DMThreadEntry a, DMThreadEntry b) {
+    return a.user_id == b.user_id;
+  }
   [GtkChild]
   private Label screen_name_label;
   [GtkChild]
   private Label last_message_label;
   [GtkChild]
   private Image avatar_image;
+  public int64 user_id {public get; private set;}
 
   public Gdk.Pixbuf avatar {
     set { avatar_image.pixbuf = value;}
@@ -44,6 +48,7 @@ class DMThreadEntry : Gtk.ListBoxRow {
   public DMThreadEntry (DMThread thread) {
     this.screen_name_label.label = thread.screen_name;
     this.last_message_label.label = thread.last_message;
+    this.user_id = user_id;
   }
 }
 

@@ -16,6 +16,7 @@
  */
 
 using Gtk;
+using Gee;
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/dm-threads-page.ui")]
 class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
@@ -23,11 +24,11 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   public int unread_count               {get; set;}
   public unowned MainWindow main_window {set; get;}
   protected Gtk.ListBox tweet_list      {set; get;}
-  public Account account                {get; set;}
+  public unowned Account account        {get; set;}
   private int id;
   private BadgeRadioToolButton tool_button;
-  protected uint tweet_remove_timeout   {get; set;}
-  private Gee.ArrayList<int64?> threads = new Gee.ArrayList<int64?>((a,b) => {return a == b;});
+  private HashMap<int64?, unowned DMThreadEntry> thread_map = new HashMap<int64?, unowned DMThreadEntry>
+                              (Utils.int64_hash_func, Utils.int64_equal_func, DMThreadEntry.equal_func);
   [GtkChild]
   private Gtk.ListBox thread_list;
 
@@ -54,6 +55,8 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   }
 
   public void load_cached () {
+//    var query = new SQLHeavy.Query (account.db,
+//        "SELECT user_id,screen_name,last_message,last_message_id FROM dm_thread_map");
 
   }
 
@@ -84,17 +87,19 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 
   private void add_new_thread (Json.Object dm_obj) {
     int64 sender_id = dm_obj.get_int_member ("sender_id");
-    if (threads.contains (sender_id)) {
+    if (thread_map.has_key(sender_id)) {
       // TODO: Update last_message_label
       return;
     }
+
     DMThread thread = DMThread ();
     thread.user_id = sender_id;
     thread.screen_name = "<b><big>@%s</big></b>".printf(dm_obj.get_string_member ("sender_screen_name"));
     thread.last_message = dm_obj.get_string_member ("text");
     var thread_entry = new DMThreadEntry (thread);
     thread_list.add(thread_entry);
-    threads.add (sender_id);
+    thread_map.set(sender_id, thread_entry);
+    message(@"Add: $sender_id");
     string avatar_url = dm_obj.get_object_member ("sender").get_string_member ("profile_image_url");
     Gdk.Pixbuf avatar = TweetUtils.load_avatar (avatar_url);
     if (avatar == null) {

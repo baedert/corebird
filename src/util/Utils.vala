@@ -205,4 +205,11 @@ class Utils {
     }
   }
 
+  public static uint int64_hash_func (int64? k) {
+    return (uint)k;
+  }
+
+  public static bool int64_equal_func (int64? a, int64? b) {
+    return a == b;
+  }
 }
