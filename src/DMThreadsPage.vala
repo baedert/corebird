@@ -20,13 +20,13 @@ using Gtk;
 [GtkTemplate (ui = "/org/baedert/corebird/ui/dm-threads-page.ui")]
 class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   private bool initialized = false;
-  public int unread_count { get;set; }
+  public int unread_count               {get; set;}
   public unowned MainWindow main_window {set; get;}
-  protected Gtk.ListBox tweet_list {set; get;}
-  public Account account {get; set;}
+  protected Gtk.ListBox tweet_list      {set; get;}
+  public Account account                {get; set;}
   private int id;
   private BadgeRadioToolButton tool_button;
-  protected uint tweet_remove_timeout{get;set;}
+  protected uint tweet_remove_timeout   {get; set;}
   private Gee.ArrayList<int64?> threads = new Gee.ArrayList<int64?>((a,b) => {return a == b;});
   [GtkChild]
   private Gtk.ListBox thread_list;
