@@ -2,16 +2,32 @@
 
 
 namespace Sql {
+  public const string COREBIRD_INIT_FILE = DATADIR + "";
+  public const string ACCOUNT_INIT_FILE  = DATADIR + "";
 
 class Database {
   private Sqlite.Database db;
 
 
-  public Database (string filename) {
+  public Database (string filename, string? init_file = null) {
     Sqlite.Database.open (filename, out db);
+    if (init_file != null) {
+      // TODO: Load file, execute query
+    }
   }
 
-  public void insert (string table_name, ...) {
+  public int64 exec_insert (string sql) {
+    db.exec(sql);
+    return db.last_insert_rowid ();
+  }
+
+  public void exec (string sql, Sqlite.Callback? callback = null) {
+    db.exec(sql, callback);
+  }
+
+/*  public void insert (string table_name, string first_col, string first_value, ...) {
+    var builder = new StringBuilder ("INSERT INTO `");
+    builder.append (table_name).append ("` (");
     string q = "INSERT INTO `"+table_name+"` (";
     GLib.List<string> items = new GLib.List<string> ();
     var list = va_list();
@@ -36,7 +52,7 @@ class Database {
     q += ")";
 
     message(q);
-  }
+  }*/
 }
 
 

@@ -20,7 +20,7 @@ using Gtk;
 class Corebird : Gtk.Application {
   // TODO: Is the static here needed?
 //  public  static SQLHeavy.VersionedDatabase db;
-  public static Sqlite.Database db;
+  public static Sql.Database db;
   private static GLib.OutputStream log_stream;
   public  static GLib.Menu account_menu;
 
@@ -123,7 +123,9 @@ class Corebird : Gtk.Application {
 
     message ("startup");
     // Load Database
-    Sqlite.Database.open (Utils.user_file ("Corebird.db"), out Corebird.db);
+//    Sqlite.Database.open (Utils.user_file ("Corebird.db"), out Corebird.db);
+    Corebird.db = new Sql.Database (Utils.user_file ("Corebird.db"),
+                                    Sql.COREBIRD_INIT_FILE);
 
     // Construct app menu
     Gtk.Builder builder = new Gtk.Builder ();
