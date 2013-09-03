@@ -29,12 +29,12 @@ class Database {
   }
 
   public int64 exec_insert (string sql) {
-    db.exec(sql);
+    db.exec (sql);
     return db.last_insert_rowid ();
   }
 
   public void exec (string sql, Sqlite.Callback? callback = null) {
-    db.exec(sql, callback);
+    db.exec (sql, callback);
   }
 
 }

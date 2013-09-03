@@ -147,9 +147,6 @@ class UserStream : Object {
       var parser = new Json.Parser();
       try{
         parser.load_from_data(data.str);
-#if __DEV
-        stdout.printf (data.str+"\n");
-#endif
       } catch (GLib.Error e) {
         critical(e.message);
       }
@@ -184,6 +181,10 @@ class UserStream : Object {
         type = StreamMessageType.DIRECT_MESSAGE;
 
       message ("Message with type %s", type.to_string ());
+#if __DEV
+      if (type != StreamMessageType.FRIENDS)
+        stdout.printf (data.str+"\n");
+#endif
       foreach (IMessageReceiver it in receivers)
         it.stream_message_received (type, root_node);
 
