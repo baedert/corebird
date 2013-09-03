@@ -54,7 +54,7 @@ class AccountCreateWidget : Gtk.Grid {
       result_received (false, acc);
       return;
     }
-    
+
     // The token and token secret have been successfully received
     // So, get some account information
     var call = acc.proxy.new_call ();
@@ -67,7 +67,7 @@ class AccountCreateWidget : Gtk.Grid {
         parser.load_from_data (call.get_payload ());
       } catch (GLib.Error e) {
         critical ("Problem with JSON Data: %s\n%s", e.message, call.get_payload ());
-      } 
+      }
       var root = parser.get_root ().get_object ();
       string screen_name = root.get_string_member ("screen_name");
 
@@ -84,13 +84,9 @@ class AccountCreateWidget : Gtk.Grid {
         message ("user info call");
         acc.init_database ();
         acc.save_info();
-        try {
-          acc.db.execute ("INSERT INTO `common`(token, token_secret) VALUES ('%s', '%s');"
-                          .printf (acc.proxy.token, acc.proxy.token_secret));
-          // TODO: Insert account into app menu
-        } catch (SQLHeavy.Error e) {
-          critical (e.message);
-        }
+        acc.db.exec ("INSERT INTO `common`(token, token_secret) VALUES ('%s', '%s');"
+                     .printf (acc.proxy.token, acc.proxy.token_secret));
+        // TODO: Insert account into app menu
         result_received (true, acc);
       });
     });

@@ -162,11 +162,11 @@ class NewFollowerEntry : Gtk.ListBoxRow, ITwitterItem {
 
     try {
       if(id == -1){
-        SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db,
-                    "INSERT"+param_string);
-        this.id = q.execute_insert();
+//        SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db,
+//                    "INSERT"+param_string);
+//        this.id = q.execute_insert();
       } else {
-        Corebird.db.execute(
+        Corebird.db.exec(
          @"INSERT OR REPLACE INTO `cache` (`id`, `sort_factor`, `type`, `data`) VALUES ('$id', '$date', '$TYPE', '$(data.str)');");
       }
     } catch (SQLHeavy.Error e) {

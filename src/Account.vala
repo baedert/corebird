@@ -20,15 +20,18 @@ using SQLHeavy;
 
 class Account : GLib.Object {
   public int64 id                 {public get; private set;}
+  private Sqlite.Database database;
   public string screen_name       {public get; private set;}
   public string name              {public get; private set;}
   public string avatar_url        {public get; public  set;}
   public Gdk.Pixbuf avatar_small  {public get; private set;}
   public Gdk.Pixbuf avatar        {public get; private set;}
-  public Database db              {public get; private set;}
+//  public Database db              {public get; private set;}
   public Rest.OAuthProxy proxy    {public get; private set;}
   public UserStream user_stream   {public get; private set;}
-
+  public Sqlite.Database db {
+    get {return database;}
+  }
 
   public Account (int64 id, string screen_name, string name) {
     this.id = id;
@@ -45,12 +48,7 @@ class Account : GLib.Object {
     if (db != null)
       return;
 
-    try {
-      this.db = new VersionedDatabase (Utils.user_file (@"accounts/$id.db"),
-                                       DATADIR+"/sql/accounts");
-    } catch (SQLHeavy.Error e) {
-      critical (e.message);
-    }
+    Sqlite.Database.open (Utils.user_file (@"accounts/$id.db"), out this.database);
   }
 
   /**
@@ -69,16 +67,12 @@ class Account : GLib.Object {
     this.user_stream = new UserStream ("@"+screen_name);
     if (load_secrets) {
       init_database ();
-      try {
-        var q = new Query (db, "SELECT token, token_secret FROM common;");
-        var result = q.execute ();
-        proxy.token = result.fetch_string (0);
-        proxy.token_secret = result.fetch_string (1);
-        user_stream.token = result.fetch_string (0);
-        user_stream.token_secret = result.fetch_string (1);
-      } catch (SQLHeavy.Error e) {
-        critical (e.message);
-      }
+      this.database.exec ("SELECT token, token_secret FROM common;",
+          (n_cols, vals) => {
+        proxy.token = user_stream.token = vals[0];
+        proxy.token_secret = user_stream.token_secret = vals[1];
+        return -1; //stop
+      });
     }
   }
 
@@ -168,11 +162,7 @@ class Account : GLib.Object {
         critical (e.message);
       }
       this.avatar_url = url;
-      try {
-        Corebird.db.execute (@"UPDATE `accounts` SET `avatar_url`='$url' WHERE `id`='$id';");
-      } catch (SQLHeavy.Error e) {
-        critical (e.message);
-      }
+      Corebird.db.exec (@"UPDATE `accounts` SET `avatar_url`='$url' WHERE `id`='$id';");
     } else {
       critical ("Not implemented yet");
     }
@@ -183,22 +173,10 @@ class Account : GLib.Object {
    * global one.
    */
   public void save_info () {
-    Query q;
-    try {
-      q = new Query (db, @"INSERT OR REPLACE INTO `info`(id,screen_name,name) VALUES
-                                 ('$id','$screen_name','$name');");
-      q.execute ();
-    } catch (SQLHeavy.Error e) {
-      critical (e.message);
-    }
-
-    try {
-      q = new Query (Corebird.db, @"INSERT OR REPLACE INTO `accounts`(id,screen_name,name,avatar_url) VALUES
-                                    ('$id','$screen_name','$name', '$avatar_url');");
-      q.execute ();
-    } catch (SQLHeavy.Error e) {
-      critical (e.message);
-    }
+    database.exec (@"INSERT OR REPLACE INTO `info`(id,screen_name,name) VALUES
+                   ('$id','$screen_name','$name');");
+    database.exec (@"INSERT OR REPLACE INTO `accounts`(id,screen_name,name,avatar_url) VALUES
+                   ('$id','$screen_name','$name', '$avatar_url');");
   }
 
   /** Static stuff ********************************************************************/
@@ -221,20 +199,14 @@ class Account : GLib.Object {
    */
   private static void lookup_accounts () {
     accounts = new GLib.SList<Account> ();
-    try {
-      Query q = new Query (Corebird.db, "SELECT id,screen_name,name,avatar_url FROM `accounts`;");
-      QueryResult res = q.execute ();
-      while (!res.finished) {
-        Account acc = new Account (res.fetch_int64 (0),
-                                   res.fetch_string (1),
-                                   res.fetch_string (2));
-        acc.avatar_url = res.fetch_string (3);
-        accounts.append (acc);
-        res.next();
-      }
-    } catch (SQLHeavy.Error e) {
-      critical (e.message);
-    }
+    Corebird.db.exec ("SELECT id, screen_name, name, avatar_url FROM accounts",
+        (n_cols, vals) => {
+        message("account: %s", vals[1]);
+      Account acc = new Account (int64.parse(vals[0]), vals[1], vals[2]);
+      acc.avatar_url = vals[3];
+      accounts.append (acc);
+      return 0; // go on
+    });
   }
 
   /**

@@ -19,7 +19,8 @@ using Gtk;
 
 class Corebird : Gtk.Application {
   // TODO: Is the static here needed?
-  public  static SQLHeavy.VersionedDatabase db;
+//  public  static SQLHeavy.VersionedDatabase db;
+  public static Sqlite.Database db;
   private static GLib.OutputStream log_stream;
   public  static GLib.Menu account_menu;
 
@@ -120,17 +121,14 @@ class Corebird : Gtk.Application {
     base.startup();
 
 
-    var _db = new Sql.Database ("./test.db");
-
-
-
     message ("startup");
     // Load Database
     try {
-     Corebird.db = new SQLHeavy.VersionedDatabase(Utils.user_file("Corebird.db"),
-                                                  DATADIR+"/sql/init/");
-      db.journal_mode = SQLHeavy.JournalMode.MEMORY;
-      db.temp_store   = SQLHeavy.TempStoreMode.MEMORY;
+//     Corebird.db = new SQLHeavy.VersionedDatabase(Utils.user_file("Corebird.db"),
+//                                                  DATADIR+"/sql/init/");
+      Sqlite.Database.open (Utils.user_file ("Corebird.db"), out Corebird.db);
+//      db.journal_mode = SQLHeavy.JournalMode.MEMORY;
+//      db.temp_store   = SQLHeavy.TempStoreMode.MEMORY;
     } catch (SQLHeavy.Error e) {
       warning (e.message);
     }
