@@ -16,8 +16,6 @@
  */
 
 
-using SQLHeavy;
-
 class Account : GLib.Object {
   public int64 id                 {public get; private set;}
   private Sqlite.Database database;
@@ -26,7 +24,6 @@ class Account : GLib.Object {
   public string avatar_url        {public get; public  set;}
   public Gdk.Pixbuf avatar_small  {public get; private set;}
   public Gdk.Pixbuf avatar        {public get; private set;}
-//  public Database db              {public get; private set;}
   public Rest.OAuthProxy proxy    {public get; private set;}
   public UserStream user_stream   {public get; private set;}
   public Sqlite.Database db {

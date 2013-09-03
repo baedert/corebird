@@ -123,15 +123,7 @@ class Corebird : Gtk.Application {
 
     message ("startup");
     // Load Database
-    try {
-//     Corebird.db = new SQLHeavy.VersionedDatabase(Utils.user_file("Corebird.db"),
-//                                                  DATADIR+"/sql/init/");
-      Sqlite.Database.open (Utils.user_file ("Corebird.db"), out Corebird.db);
-//      db.journal_mode = SQLHeavy.JournalMode.MEMORY;
-//      db.temp_store   = SQLHeavy.TempStoreMode.MEMORY;
-    } catch (SQLHeavy.Error e) {
-      warning (e.message);
-    }
+    Sqlite.Database.open (Utils.user_file ("Corebird.db"), out Corebird.db);
 
     // Construct app menu
     Gtk.Builder builder = new Gtk.Builder ();
