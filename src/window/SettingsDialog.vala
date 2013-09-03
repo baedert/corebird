@@ -117,11 +117,7 @@ class SettingsDialog : Gtk.Dialog {
       FileUtils.remove (Utils.user_file ("accounts/$(acc_id).db"));
       FileUtils.remove (Utils.user_file ("accounts/$(acc_id).png"));
       FileUtils.remove (Utils.user_file ("accounts/$(acc_id)_small.png"));
-      try {
-        Corebird.db.execute (@"DELETE FROM `accounts` WHERE `id`='$(acc_id)';");
-      } catch (SQLHeavy.Error e) {
-        critical (e.message);
-      }
+      Corebird.db.exec (@"DELETE FROM `accounts` WHERE `id`='$(acc_id)';");
       account_info_stack.remove (account_info_stack.get_visible_child ());
       account_list.remove (entry);
       string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");

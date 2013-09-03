@@ -135,21 +135,13 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
   }
 
   public void load_cached() {
-    try {
-      SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db,
-        "SELECT `sort_factor`, `type`, `data`, `id` FROM cache WHERE `type`='%d';".printf(NewFollowerEntry.TYPE));
-      SQLHeavy.QueryResult result = q.execute();
-      while(!result.finished){
-        var entry = new NewFollowerEntry.from_data(result.fetch_int(3),
-                                                   result.fetch_string(2),
-                                                   result.fetch_int64(0));
-        tweet_list.add(entry);
-        entry.show_all();
-        result.next();
-      }
-    } catch (SQLHeavy.Error e) {
-      critical (e.message);
-    }
+    Corebird.db.exec ("SELECT `sort_factor`, `type`, `data`, `id` FROM cache WHERE
+        `type`='%d';".printf(NewFollowerEntry.TYPE), (n_cols, vals) => {
+      var entry = new NewFollowerEntry.from_data (int.parse(vals[3]), vals[2], int64.parse(vals[0]));
+      tweet_list.add(entry);
+      entry.show_all();
+      return 0;
+    });
     this.vadjustment.set_upper(0);
   }
 

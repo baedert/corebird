@@ -120,43 +120,34 @@ class ProfileWidget : Gtk.Box {
            following, followers, avatar_name, banner_url,
            url, location, following, is_following, banner_name
            FROM profiles ";
-      query_string += @"WHERE id='$user_id';";
+    query_string += @"WHERE id='$user_id';";
 
-    try {
-      SQLHeavy.Query cache_query = new SQLHeavy.Query(Corebird.db,
-                              query_string);
-      SQLHeavy.QueryResult cache_result = cache_query.execute();
-      if (!cache_result.finished){
-        /* If we get inside this block, there is already some data in the
-          DB we can use. */
-        avatar_image.set_background(Utils.user_file(
-                     "/assets/avatars/"+cache_result.fetch_string(7)));
+    Corebird.db.exec (query_string, (n_cols, vals) => {
+      /* If we get inside this block, there is already some data in the
+        DB we can use. */
+      avatar_image.set_background (Utils.user_file ("/assets/avatars/"+vals[7]));
 
-        set_data(cache_result.fetch_string(2), cache_result.fetch_string(1),
-             cache_result.fetch_string(9), cache_result.fetch_string(10),
-             cache_result.fetch_string(3),
-             cache_result.fetch_int(4), cache_result.fetch_int(5),
-             cache_result.fetch_int(6));
-        follow_button.active = (cache_result.fetch_int(12) == 1);
-        string banner_name = cache_result.fetch_string(13);
-        debug("banner_name: %s", banner_name);
+      set_data(vals[2], vals[1], vals[9], vals[10], vals[3],
+               int.parse (vals[4]), int.parse (vals[5]), int.parse (vals[6]));
+      follow_button.active = bool.parse (vals[12]);
+      string banner_name = vals[13];
+      debug("banner_name: %s", banner_name);
 
-        if(banner_name != null &&
+      if (banner_name != null &&
           FileUtils.test(Utils.user_file("assets/banners/"+banner_name), FileTest.EXISTS)){
-          debug("Banner exists, set it directly...");
-          banner_box.set_background(Utils.user_file(
-                        "assets/banners/"+banner_name));
-        }else{
-          // If the cached banner does somehow not exist, load it again.
-          debug("Banner %s does not exist, load it first...", banner_name);
-          banner_box.set_background(DATADIR+"/no_banner.png");
-        }
-      }else {
+        debug("Banner exists, set it directly...");
+        banner_box.set_background(Utils.user_file(
+                      "assets/banners/"+banner_name));
+      } else {
+        // If the cached banner does somehow not exist, load it again.
+        debug("Banner %s does not exist, load it first...", banner_name);
         banner_box.set_background(DATADIR+"/no_banner.png");
       }
-    } catch (SQLHeavy.Error e) {
-      critical (e.message);
-    }
+      return -1;
+    });
+//    }else {
+//      banner_box.set_background(DATADIR+"/no_banner.png");
+//    }
   }
 
 
@@ -233,32 +224,16 @@ class ProfileWidget : Gtk.Box {
            following, followers);
       follow_button.active = is_following;
 
-      try{
-        SQLHeavy.Query update_query = new SQLHeavy.Query(Corebird.db,
-          "INSERT OR REPLACE INTO `profiles`(`id`, `screen_name`, `name`,
+
+      Corebird.db.exec (
+          @"INSERT OR REPLACE INTO `profiles`(`id`, `screen_name`, `name`,
              `followers`, `following`, `tweets`, `description`, `avatar_name`,
              `url`, `location`, `is_following`, `banner_name`)
            VALUES
-          (:id, :screen_name, :name, :followers, :following, :tweets,
-           :description, :avatar_name, :url, :location, :is_following,
-           :banner_name);");
-        update_query.set_int64(":id", id);
-        update_query.set_string(":screen_name", screen_name);
-        update_query.set_string(":name", name);
-        update_query.set_int(":followers", followers);
-        update_query.set_int(":following", following);
-        update_query.set_int(":tweets", tweets);
-        update_query.set_string(":description", description);
-        update_query.set_string(":avatar_name", avatar_name);
-        update_query.set_string(":url", display_url);
-        update_query.set_string(":location", location);
-        update_query.set_int(":is_following", is_following ? 1 : 0);
-        update_query.set_string(":banner_name", banner_name);
-        update_query.execute_async.begin();
-      }catch(SQLHeavy.Error e){
-        warning("Error while updating profile info for %s:%s", screen_name,
-            e.message);
-      }
+          ($id, $screen_name, $name, $followers, $following, $tweets,
+           $description, $avatar_name, $display_url, $location, $is_following,
+           $banner_name);");
+          // XXX is_following can only be 1 or 0
     });
   }
 
@@ -279,14 +254,10 @@ class ProfileWidget : Gtk.Box {
     if (!FileUtils.test (banner_on_disk, FileTest.EXISTS) || banner_url != saved_banner_url) {
       Utils.download_file_async .begin (banner_url, banner_on_disk,
           () => {banner_box.set_background (banner_on_disk);});
-      try{
         debug("Setting the banner name to %s", banner_name);
-        Corebird.db.execute(@"UPDATE `profiles` SET `banner_url`='$banner_url',
-            `banner_name`='$banner_name'
-            WHERE `id`='$user_id';");
-      } catch (GLib.Error ex) {
-        warning ("Error while setting banner: %s", ex.message);
-      }
+      Corebird.db.exec (@"UPDATE `profiles` SET `banner_url`='$banner_url',
+          `banner_name`='$banner_name'
+          WHERE `id`='$user_id';");
     } else {
       banner_box.set_background (banner_on_disk);
     }

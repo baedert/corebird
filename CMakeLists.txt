@@ -59,7 +59,6 @@ set (DEPS glib-2.0;
       gtk+-3.0;
       gio-2.0;
       rest-0.7;
-      sqlheavy-0.2;
       gee-0.8;
       json-glib-1.0;
       libnotify;
@@ -125,6 +124,7 @@ set (VALA_SOURCE
   src/util/IntHistory.vala
   src/util/TweetUtils.vala
   src/resources.c
+  src/sql/Database.vala
 )
 
 

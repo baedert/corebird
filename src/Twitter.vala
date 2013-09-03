@@ -51,30 +51,24 @@ class Twitter {
   public static async void update_config(){
     // Check when the last update was
     var now = new GLib.DateTime.now_local();
-    try{
-      SQLHeavy.Query time_query = new SQLHeavy.Query(Corebird.db,
-        "SELECT `update_config`, `characters_reserved_per_media`,
-        `max_media_per_upload`, `photo_size_limit`, `short_url_length`,
-        `short_url_length_https` FROM `common`;");
-      SQLHeavy.QueryResult time_result = time_query.execute();
-      int64 last_update = time_result.fetch_int64(0);
+    Corebird.db.exec (
+      "SELECT `update_config`, `characters_reserved_per_media`,
+     `max_media_per_upload`, `photo_size_limit`, `short_url_length`,
+      `short_url_length_https` FROM `common`;", (n_cols, vals) => {
+      int64 last_update = int64.parse (vals[0]);
       var then = new GLib.DateTime.from_unix_local(last_update);
 
       var diff = then.difference(now);
       if (diff < GLib.TimeSpan.DAY * 7){
-        Twitter.characters_reserved_per_media = time_result.fetch_int(1);
-        Twitter.max_media_per_upload          = time_result.fetch_int(2);
-        Twitter.photo_size_limit              = time_result.fetch_int(3);
-        Twitter.short_url_length              = time_result.fetch_int(4);
-        Twitter.short_url_length_https        = time_result.fetch_int(5);
-        return;
+        Twitter.characters_reserved_per_media = int.parse (vals[1]);
+        Twitter.max_media_per_upload          = int.parse (vals[2]);
+        Twitter.photo_size_limit              = int.parse (vals[3]);
+        Twitter.short_url_length              = int.parse (vals[4]);
+        Twitter.short_url_length_https        = int.parse (vals[5]);
+
       }
-    }catch(SQLHeavy.Error e){
-      warning("Error while querying config: %s", e.message);
-      return;
-    }
-
-
+      return -1; //stop
+    });
 
 /*    var call = Twi_tter.proxy.new_call();
     call.set_method("GET");

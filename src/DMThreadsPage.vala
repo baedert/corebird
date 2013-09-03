@@ -56,24 +56,18 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   }
 
   public void load_cached () {
-    try {
-      var query = new SQLHeavy.Query (account.db,
-          "SELECT user_id,screen_name,last_message,last_message_id
-           FROM dm_threads ORDER BY last_message_id");
-      var result = query.execute ();
-      while (!result.finished) {
-        int64 user_id = result.fetch_int64 (0);
-        var entry = new DMThreadEntry (user_id);
-        entry.screen_name = result.fetch_string (1);
-        entry.last_message = result.fetch_string (2);
-        entry.last_message_id = result.fetch_int64 (3);
-        thread_list.add (entry);
-        thread_map.set (user_id, entry);
-        result.next ();
-      }
-    } catch (SQLHeavy.Error e) {
-      critical(e.message);
-    }
+    account.db.exec ("SELECT user_id, screen_name, last_message, last_message_id
+                      FROM dm_threads ORDER BY last_message_id",
+                     (n_cols, vals) => {
+      int64 user_id = int64.parse (vals[0]);
+      var entry = new DMThreadEntry (user_id);
+      entry.screen_name =  vals[1];
+      entry.last_message = vals[2];
+      entry.last_message_id = int64.parse(vals[3]);
+      thread_list.add (entry);
+      thread_map.set (user_id, entry);
+      return 0; //go on
+    });
   }
 
   public void load_newest () {
@@ -113,13 +107,9 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     thread_map.set(sender_id, thread_entry);
     string avatar_url = dm_obj.get_object_member ("sender").get_string_member ("profile_image_url");
     Gdk.Pixbuf avatar = TweetUtils.load_avatar (avatar_url);
-    try {
-      account.db.execute(@"INSERT INTO `dm_threads`
-          (user_id, screen_name, last_message, last_message_id) VALUES
-          ('$sender_id', '$author', '$(thread_entry.last_message)', '$message_id');");
-    } catch (SQLHeavy.Error e) {
-      critical (e.message);
-    }
+    account.db.exec (@"INSERT INTO `dm_threads`
+                      (user_id, screen_name, last_message, last_message_id) VALUES
+                      ('$sender_id', '$author', '$(thread_entry.last_message)', '$message_id');");
     if (avatar == null) {
       TweetUtils.download_avatar.begin (avatar_url, (obj, res) => {
         avatar = TweetUtils.download_avatar.end (res);

@@ -158,19 +158,15 @@ class NewFollowerEntry : Gtk.ListBoxRow, ITwitterItem {
       data.append_c(',');
       data.append(followers[i]);
     }
-    string param_string = @" INTO `cache` (`sort_factor`, `type`, `data`) VALUES ('$date', '$TYPE', '$(data.str)');";
+    string param_string = @" INTO `cache` (`sort_factor`, `type`, `data`)
+            VALUES ('$date', '$TYPE', '$(data.str)');";
 
-    try {
-      if(id == -1){
-        SQLHeavy.Query q = new SQLHeavy.Query(Corebird.db,
-                    "INSERT"+param_string);
-        this.id = q.execute_insert();
-      } else {
-        Corebird.db.execute(
-         @"INSERT OR REPLACE INTO `cache` (`id`, `sort_factor`, `type`, `data`) VALUES ('$id', '$date', '$TYPE', '$(data.str)');");
-      }
-    } catch (SQLHeavy.Error e) {
-      critical (e.message);
+    if(id == -1){
+      this.id = Corebird.db.exec_insert ("INSERT" + param_string);
+    } else {
+      Corebird.db.exec(
+       @"INSERT OR REPLACE INTO `cache` (`id`, `sort_factor`, `type`, `data`)
+        VALUES ('$id', '$date', '$TYPE', '$(data.str)');");
     }
   }
 }

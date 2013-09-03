@@ -41,8 +41,7 @@ interface ITimeline : Gtk.Widget, IPage {
    * @param function The twitter function to use
    * @param tweet_type The type of tweets to load
    */
-  protected async void load_newest_internal(string function, int tweet_type)
-                                      throws SQLHeavy.Error {
+  protected async void load_newest_internal(string function, int tweet_type) {
     int64 greatest_id = 0;
 
     var call = account.proxy.new_call();
