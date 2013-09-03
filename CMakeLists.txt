@@ -80,7 +80,6 @@ set (VALA_SOURCE
   src/Settings.vala
   src/Twitter.vala
   src/ComposeTweetWindow.vala
-  src/SettingsDialog.vala
   src/NotificationManager.vala
   src/ITimeline.vala
   src/HomeTimeline.vala
@@ -116,6 +115,7 @@ set (VALA_SOURCE
   src/list/DMThreadEntry.vala
   src/window/AboutDialog.vala
   src/window/ImageDialog.vala
+  src/window/SettingsDialog.vala
   src/util/UIBuilder.vala
   src/util/Utils.vala
   src/util/Benchmark.vala
