@@ -22,7 +22,12 @@ class Database {
     var next_version_file = init_file.printf(user_version + 1);
     if (FileUtils.test (next_version_file, FileTest.EXISTS)) {
       string sql_content;
+      try {
       FileUtils.get_contents (next_version_file, out sql_content);
+      } catch (GLib.FileError e) {
+        critical (e.message);
+        return;
+      }
       db.exec (sql_content);
       message ("Executed init file %s", next_version_file);
     }
