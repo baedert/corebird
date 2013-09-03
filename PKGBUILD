@@ -14,7 +14,6 @@ depends=('gtk3>=3.9'
      'sqlite3'
      'libsoup>=2.4'
      'libnotify'
-     'sqlheavy-git'
      'json-glib')
 makedepends=('vala-git' 'git' 'cmake')
 
