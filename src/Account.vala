@@ -18,7 +18,7 @@
 
 class Account : GLib.Object {
   public int64 id                 {public get; private set;}
-  private Sqlite.Database database;
+  public Sql.Database db          {public get; private set;}
   public string screen_name       {public get; private set;}
   public string name              {public get; private set;}
   public string avatar_url        {public get; public  set;}
@@ -26,9 +26,6 @@ class Account : GLib.Object {
   public Gdk.Pixbuf avatar        {public get; private set;}
   public Rest.OAuthProxy proxy    {public get; private set;}
   public UserStream user_stream   {public get; private set;}
-  public Sqlite.Database db {
-    get {return database;}
-  }
 
   public Account (int64 id, string screen_name, string name) {
     this.id = id;
@@ -45,7 +42,8 @@ class Account : GLib.Object {
     if (db != null)
       return;
 
-    Sqlite.Database.open (Utils.user_file (@"accounts/$id.db"), out this.database);
+    this.db = new Sql.Database (Utils.user_file (@"accounts/$id.db"),
+                                Sql.ACCOUNTS_INIT_FILE);
   }
 
   /**
@@ -64,11 +62,11 @@ class Account : GLib.Object {
     this.user_stream = new UserStream ("@"+screen_name);
     if (load_secrets) {
       init_database ();
-      this.database.exec ("SELECT token, token_secret FROM common;",
+      this.db.exec ("SELECT token, token_secret FROM common;",
           (n_cols, vals) => {
         proxy.token = user_stream.token = vals[0];
         proxy.token_secret = user_stream.token_secret = vals[1];
-        return -1; //stop
+        return Sql.STOP; //stop
       });
     }
   }
@@ -170,10 +168,10 @@ class Account : GLib.Object {
    * global one.
    */
   public void save_info () {
-    database.exec (@"INSERT OR REPLACE INTO `info`(id,screen_name,name) VALUES
-                   ('$id','$screen_name','$name');");
-    database.exec (@"INSERT OR REPLACE INTO `accounts`(id,screen_name,name,avatar_url) VALUES
-                   ('$id','$screen_name','$name', '$avatar_url');");
+    db.exec (@"INSERT OR REPLACE INTO `info`(id,screen_name,name) VALUES
+              ('$id','$screen_name','$name');");
+    db.exec (@"INSERT OR REPLACE INTO `accounts`(id,screen_name,name,avatar_url) VALUES
+              ('$id','$screen_name','$name', '$avatar_url');");
   }
 
   /** Static stuff ********************************************************************/
