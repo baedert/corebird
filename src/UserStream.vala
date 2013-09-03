@@ -121,31 +121,31 @@ class UserStream : Object {
    * @param length The buffer's length
    * @param error
    */
-  private void parse_data_cb(Rest.ProxyCall call, string? buf, size_t length,
-                             Error? error) {
-    if(buf == null) {
+  private void parse_data_cb (Rest.ProxyCall call, string? buf, size_t length,
+                              Error? error) {
+    if (buf == null) {
       warning("buf == NULL");
       return;
     }
 
     string real = buf.substring(0, (int)length);
 
-    data.append(real);
+    data.append (real);
 
-    if(real.has_suffix("\r\n")) {
+    if (real.has_suffix("\r\n")) {
       //Reset the timeout
-      if(timeout_id != -1)
+      if (timeout_id != -1)
         GLib.Source.remove (timeout_id);
       timeout_id = GLib.Timeout.add (TIMEOUT_INTERVAL, timeout_cb);
 
-      if(real == "\r\n") {
+      if (real == "\r\n") {
         message("HEARTBEAT");
         data.erase();
         return;
       }
 
-      var parser = new Json.Parser();
-      try{
+      var parser = new Json.Parser ();
+      try {
         parser.load_from_data(data.str);
       } catch (GLib.Error e) {
         critical(e.message);
