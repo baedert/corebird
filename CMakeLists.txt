@@ -1,5 +1,4 @@
-# TODO: https://github.com/rcrowther/Vala_CMake
-
+# bla bla
 cmake_minimum_required (VERSION 2.6)
 project ("Corebrid" C)
 
@@ -40,9 +39,19 @@ message ("PREFIX: ${PREFIX}")
 
 configure_file (${CMAKE_SOURCE_DIR}/src/util/Config.vala.cmake ${CMAKE_BINARY_DIR}/src/util/Config.vala)
 
+set (ICON_SOURCE_DIR "assets/icons")
+set (ICON_DEST_DIR   "assets/icons/rendered")
+
 include (ValaVersion)
 include (ValaPrecompile)
 include (GSettings)
+include (RenderIcons)
+
+set (ICON_SIZES 16 32 64 128 512)
+
+render_icon("dms"
+  SIZES ${ICON_SIZES}
+)
 
 find_package (Vala REQUIRED)
 ensure_vala_version ("0.20" MINIMUM) # TODO: Bump to 0.22
