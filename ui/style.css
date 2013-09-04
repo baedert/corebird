@@ -87,13 +87,13 @@
   box-shadow: none;
 }
 .text-only-button:hover{
-  text-shadow: 0px 0px 5px #444;
+  text-shadow: 0px 0px 5px shade(currentColor, 1.1);
   background-image: none;
   border: none;
 }
 .text-only-button:active{
-  color: black;
-  background-color: red;
+  background-color: shade(currentColor, 0.2);
+  color: shade(currentColor, 2.8);
 }
 .text-only-button:backdrop{
   background-color: transparent;
