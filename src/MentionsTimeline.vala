@@ -112,9 +112,6 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
         update_unread_count();
       }
 
-      // TODO: Are all there resort calls actually needed?
-//      tweet_list.resort();
-
       // Show notification
       if(Settings.notify_new_followers()) {
 

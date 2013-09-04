@@ -167,12 +167,12 @@ class Tweet : GLib.Object {
 
 
     // The same with media
-    if(entities.has_member("media")){
-      var medias = entities.get_array_member("media");
-      medias.foreach_element((arr, index, node) => {
+    if (entities.has_member ("media")) {
+      var medias = entities.get_array_member ("media");
+      medias.foreach_element ((arr, index, node) => {
         var url = node.get_object();
         string expanded_url = url.get_string_member ("expanded_url");
-        expanded_url = expanded_url.replace("&", "&amp;");
+        expanded_url = expanded_url.replace ("&", "&amp;");
         Json.Array indices = url.get_array_member ("indices");
         this.urls.prepend(TweetUtils.Sequence(){
           start = (int)indices.get_int_element (0),
@@ -180,7 +180,6 @@ class Tweet : GLib.Object {
           url   = expanded_url,
           display_url = url.get_string_member ("display_url")
         });
-        //string expanded_url = "https://"+url.get_string_member("display_url");
         InlineMediaDownloader.try_load_media.begin(this,
                 url.get_string_member("media_url"));
       });
