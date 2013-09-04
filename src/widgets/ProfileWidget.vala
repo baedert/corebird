@@ -58,6 +58,7 @@ class ProfileWidget : Gtk.Box {
     name_label.get_style_context().add_class("data");
     name_label.set_alignment(0, 0.5f);
     name_label.margin_top = 8;
+    name_label.ellipsize = Pango.EllipsizeMode.END;
     data_box.pack_start(name_label, false, true);
     url_label.set_alignment(0, 0.5f);
     url_label.get_style_context().add_class("data");
