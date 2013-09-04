@@ -14,6 +14,7 @@ class Database {
 
   public Database (string filename, string? init_file = null) {
     Sqlite.Database.open (filename, out db);
+    this.exec ("PRAGMA journal_mode = MEMORY;");
     if (init_file == null)
       return;
 
@@ -42,5 +43,8 @@ class Database {
     db.exec (sql, callback);
   }
 
+  public void execf (string sql, string first_param, ...) {
+    db.exec (sql.printf (first_param, va_list ()));
+  }
 }
 }
