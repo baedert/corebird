@@ -130,8 +130,11 @@ class InlineMediaDownloader {
         } else {
           var pic = new Gdk.Pixbuf.from_stream(ms);
           pic.save(path, ext);
-          thumb = pic.scale_simple(THUMB_SIZE, THUMB_SIZE,
-                                     Gdk.InterpType.TILES);
+          int x, y, w, h;
+          calc_thumb_rect (pic.get_width (), pic.get_height (), out x, out y, out w, out h);
+          var big_thumb = new Gdk.Pixbuf (Gdk.Colorspace.RGB, true, 8, w, h);
+          pic.copy_area (x, y, w, h, big_thumb, 0, 0);
+          thumb = big_thumb.scale_simple (THUMB_SIZE, THUMB_SIZE, Gdk.InterpType.TILES);
         }
 
         thumb.save(thumb_path, "png");
@@ -161,5 +164,25 @@ class InlineMediaDownloader {
 
   private static string get_thumb_path (Tweet t, string url) {
     return Utils.user_file(@"assets/media/thumbs/$(t.id)_$(t.user_id).png");
+  }
+
+  private static void calc_thumb_rect (int img_width, int img_height,
+                                       out int x, out int y, out int width, out int height) {
+    float ratio = img_width / (float)img_height;
+    if (ratio >= 0.8 && ratio <= 1.2) {
+      // it's more or less squared, so...
+      x = y = 0;
+      width = img_width;
+      height = img_height;
+    } else if (ratio > 1.2) {
+      // The image is pretty wide but not really high
+      x = (img_width/2) - (img_height/2);
+      y = 0;
+      width = height = img_height;
+    } else {
+      x = 0;
+      y = (img_height/2) - (img_width/2);
+      width = height = img_width;
+    }
   }
 }
