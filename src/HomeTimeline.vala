@@ -121,7 +121,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
 
 
   public void create_tool_button(RadioToolButton? group) {
-    tool_button = new BadgeRadioToolButton(group, "stream-symbolic");
+    tool_button = new BadgeRadioToolButton(group, "corebird-stream-symbolic");
     tool_button.label = "Home";
   }
 

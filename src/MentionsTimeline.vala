@@ -158,7 +158,7 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
   }
 
   public void create_tool_button(RadioToolButton? group){
-    tool_button = new BadgeRadioToolButton(group, "mentions");
+    tool_button = new BadgeRadioToolButton(group, "corebird-mentions-symbolic");
     tool_button.label = "Connect";
   }
 

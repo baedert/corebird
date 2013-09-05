@@ -14,7 +14,7 @@
    id="svg3861"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="mentions.svg"
+   sodipodi:docname="corebird-mentions-symbolic.svg"
    inkscape:export-filename="/home/baedert/Code/Vala/Corebird/assets/icons/mentions.png"
    inkscape:export-xdpi="3.3882353"
    inkscape:export-ydpi="3.3882353">
@@ -27,9 +27,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.50902762"
-     inkscape:cx="649.55797"
-     inkscape:cy="410.73266"
+     inkscape:zoom="0.38574749"
+     inkscape:cx="846.94503"
+     inkscape:cy="224.34355"
      inkscape:document-units="px"
      inkscape:current-layer="layer2"
      showgrid="false"
@@ -66,16 +66,16 @@
     <g
        id="g3048"
        transform="translate(-166.42856,-201.6479)"
-       style="fill:#2e3436">
+       style="fill:#bebebe;fill-opacity:1">
       <path
          id="path3775"
          d="m 812.67857,818.6948 c -58.24416,59.6497 -139.54481,96.6875 -229.5,96.6875 -87.15553,0 -166.16001,-34.7719 -223.96875,-91.1875 -79.2234,41.4504 -145.98719,103.4752 -193.25,178.9375 l 850.93748,0 C 967.47687,924.225 896.69145,860.0605 812.67857,818.6948 z"
-         style="fill:#2e3436;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         style="fill:#bebebe;fill-opacity:1;fill-rule:nonzero;stroke:none"
          inkscape:connector-curvature="0" />
       <path
          id="path3782"
          d="m 591.42857,250.1635 c -166.43667,0 -301.375,134.9384 -301.375,301.375 0,166.4367 134.93833,301.3438 301.375,301.3438 166.43667,0 301.375,-134.9071 301.375,-301.3438 0,-166.4366 -134.93833,-301.375 -301.375,-301.375 z m -206.5,442.9063 413,0 c -44.1788,67.0904 -120.16335,111.375 -206.5,111.375 -86.33351,0 -162.32049,-44.2887 -206.5,-111.375 z"
-         style="fill:#2e3436;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         style="fill:#bebebe;fill-opacity:1;fill-rule:nonzero;stroke:none"
          inkscape:connector-curvature="0" />
     </g>
   </g>

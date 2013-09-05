@@ -23,7 +23,7 @@ class BadgeRadioToolButton : Gtk.RadioToolButton {
   public bool show_badge{ get; set; default = false;}
 
   public BadgeRadioToolButton(RadioToolButton group, string icon_name) {
-    GLib.Object(group: group, stock_id: icon_name);
+    GLib.Object(group: group, icon_name: icon_name);
   }
 
   public override bool draw(Cairo.Context c){

@@ -35,6 +35,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 
   public DMThreadsPage (int id) {
     this.id = id;
+    this.button_press_event.connect (button_pressed_event_cb);
   }
 
   public void stream_message_received (StreamMessageType type, Json.Node root) {
@@ -66,7 +67,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       entry.last_message_id = int64.parse(vals[3]);
       thread_list.add (entry);
       thread_map.set (user_id, entry);
-      return 0; //go on
+      return Sql.CONTINUE;
     });
   }
 
@@ -123,7 +124,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 
 
   public void create_tool_button(RadioToolButton? group) {
-    tool_button = new BadgeRadioToolButton(group, "dms");
+    tool_button = new BadgeRadioToolButton(group, "corebird-dms-symbolic");
     tool_button.label = "Direct Messages";
   }
 

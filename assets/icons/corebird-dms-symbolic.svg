@@ -14,7 +14,7 @@
    id="svg3943"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="dms.svg"
+   sodipodi:docname="corebird-dms-symbolic.svg"
    inkscape:export-filename="/home/baedert/Code/Vala/Corebird/assets/icons/stream.png"
    inkscape:export-xdpi="2.8800001"
    inkscape:export-ydpi="2.8800001">
@@ -27,9 +27,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.1059692"
-     inkscape:cx="215.41936"
-     inkscape:cy="307.78169"
+     inkscape:zoom="0.87611609"
+     inkscape:cx="337.05788"
+     inkscape:cy="135.35176"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -83,13 +83,13 @@
        style="fill:#df8f87;fill-opacity:1;fill-rule:nonzero;stroke:none"
        sodipodi:type="star" />
     <path
-       style="fill:#2e3436;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       style="fill:#bebebe;fill-opacity:1;fill-rule:nonzero;stroke:none"
        d="m 462.78125,647.63282 -107.6875,91.875 L 250,828.25782 141.5,736.60157 37.21875,647.63282 l 0,320.34375 425.5625,0 z"
        id="rect3057"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cccccccc" />
     <path
-       style="fill:#2e3436;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       style="fill:#bebebe;fill-opacity:1;fill-rule:nonzero;stroke:none"
        inkscape:transform-center-x="3.9205457e-05"
        inkscape:transform-center-y="26.692389"
        d="m 247.45149,803.99836 -94.803,-79.14198 -96.900255,-82.67413 194.859485,-0.21122 188.54703,0.21122 -100.05648,85.35321 z"
