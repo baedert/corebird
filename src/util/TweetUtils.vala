@@ -235,4 +235,22 @@ namespace TweetUtils {
     return avatar;
   }
 
+  int calc_tweet_length (string text) {
+    string[] words = text.split (" ");
+    int length = 0;
+
+    foreach (string s in words) {
+      if (s.has_prefix ("http://") || s.has_prefix ("www."))
+        length += 22; //TODO: Get this from Twitter
+      else if (s.has_prefix ("https://"))
+        length += 23; //TODO: Get this from Twitter
+      else
+        length += s.char_count ();
+    }
+
+    // Don't forget the n-1 whitespaces
+    length += words.length - 1;
+
+    return length;
+  }
 }

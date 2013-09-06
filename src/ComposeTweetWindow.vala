@@ -101,26 +101,14 @@ class ComposeTweetWindow : Gtk.Window {
     tweet_text.buffer.get_start_iter(out start);
     tweet_text.buffer.get_end_iter(out end);
     string text = tweet_text.buffer.get_text(start, end, true);
-    string[] words = text.split (" ");
-    int length = 0;
 
-    foreach (string s in words) {
-      if (s.has_prefix ("http://") || s.has_prefix ("www."))
-        length += 22; //TODO: Get this from Twitter
-      else if (s.has_prefix ("https://"))
-        length += 23; //TODO: Get this from Twitter
-      else
-        length += s.char_count ();
-    }
-    // Don't forget the n-1 whitespaces
-    length += words.length - 1;
+    int length = TweetUtils.calc_tweet_length (text);
 
     length_label.label = (MAX_TWEET_LENGTH - length).to_string ();
     if (length > 0 && length <= MAX_TWEET_LENGTH)
       send_button.sensitive = true;
     else
       send_button.sensitive = false;
-
 
   }
 

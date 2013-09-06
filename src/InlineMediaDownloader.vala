@@ -166,15 +166,22 @@ class InlineMediaDownloader {
     return Utils.user_file(@"assets/media/thumbs/$(t.id)_$(t.user_id).png");
   }
 
+  /**
+   * Calculates the region of the image the thumbnail should be composed of.
+   *
+   * @param img_width  The width of the original image
+   * @param img_height The height of the original image
+   *
+   */
   private static void calc_thumb_rect (int img_width, int img_height,
                                        out int x, out int y, out int width, out int height) {
     float ratio = img_width / (float)img_height;
-    if (ratio >= 0.8 && ratio <= 1.2) {
+    if (ratio >= 0.9 && ratio <= 1.1) {
       // it's more or less squared, so...
       x = y = 0;
       width = img_width;
       height = img_height;
-    } else if (ratio > 1.2) {
+    } else if (ratio > 1.1) {
       // The image is pretty wide but not really high
       x = (img_width/2) - (img_height/2);
       y = 0;
