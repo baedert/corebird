@@ -102,7 +102,6 @@ set (VALA_SOURCE
   src/widgets/PixbufButton.vala
   src/widgets/ScrollWidget.vala
   src/widgets/TextButton.vala
-  src/widgets/ProfileWidget.vala
   src/widgets/BadgeRadioToolButton.vala
   src/widgets/InvisibilityBin.vala
   src/widgets/ImageOverlay.vala
