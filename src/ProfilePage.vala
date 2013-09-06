@@ -54,7 +54,7 @@ class ProfilePage : ScrollWidget, IPage {
   private Gtk.Stack bottom_stack;
   private int active_page       = 0;
   private int64 user_id;
-  private string screen_name;
+  private string screen_name; //TODO: Remove
 
 
   public ProfilePage(int id, MainWindow window, Account account){

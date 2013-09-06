@@ -20,7 +20,7 @@
 
 
 
-
+[GtkTemplate (ui = "/org/baedert/corebird/ui/main-window.ui")]
 class MainWindow : ApplicationWindow {
   public static const int PAGE_STREAM     = 0;
   public static const int PAGE_MENTIONS   = 1;
@@ -33,15 +33,18 @@ class MainWindow : ApplicationWindow {
   public static const int PAGE_NEXT       = 2048;
 
 
-
-  private Toolbar left_toolbar             = new Toolbar();
-  private Box main_box                     = new Box(Orientation.HORIZONTAL, 0);
+  [GtkChild]
+  private Toolbar left_toolbar;
+  [GtkChild]
+  private HeaderBar headerbar;
   private RadioToolButton dummy_button     = new RadioToolButton(null);
   private IPage[] pages                    = new IPage[6];
   private IntHistory history               = new IntHistory (5);
-  private Image avatar_image               = new Image ();
+  [GtkChild]
+  private Image avatar_image;
   private Button new_tweet_button          = new Button ();
-  private Gtk.Stack stack                  = new Gtk.Stack();
+  [GtkChild]
+  private Gtk.Stack stack;
   private DeltaUpdater delta_updater       = new DeltaUpdater();
   public unowned Account account           {public get; private set;}
   private WarningService warning_service;
@@ -78,18 +81,13 @@ class MainWindow : ApplicationWindow {
       return;
     }
 
-    var f = new Gtk.HeaderBar ();
-    f.set_title ("Corebird");
-    f.set_subtitle ("@"+account.screen_name);
-    f.set_show_close_button (true);
-    avatar_image.margin_left = 5;
-    f.pack_start (avatar_image);
+    headerbar.set_subtitle ("@" + account.screen_name);
+    //TODO: Move new_tweet_button into the gtktemplate
     new_tweet_button.get_style_context ().add_class ("image-button");
-    f.pack_start (new_tweet_button);
-    this.set_titlebar(f);
+    headerbar.pack_start (new_tweet_button);
+    set_titlebar (headerbar);
 
     stack.transition_duration = Settings.get_animation_duration();
-    stack.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
 
     pages[0] = new HomeTimeline(PAGE_STREAM);
     pages[1] = new MentionsTimeline(PAGE_MENTIONS);
@@ -131,7 +129,7 @@ class MainWindow : ApplicationWindow {
       app_menu_button.image = new Gtk.Image.from_icon_name ("emblem-system-symbolic", IconSize.MENU);
       app_menu_button.get_style_context ().add_class ("image-button");
       app_menu_button.menu_model = this.application.app_menu;
-      f.pack_end (app_menu_button);
+      headerbar.pack_end (app_menu_button);
       this.show_menubar = false;
     }
 
@@ -143,21 +141,14 @@ class MainWindow : ApplicationWindow {
       cw.show();
     });
 
-    left_toolbar.orientation = Orientation.VERTICAL;
-    left_toolbar.set_style (ToolbarStyle.ICONS);
-
     account.load_avatar ();
     avatar_image.pixbuf = account.avatar_small;
     account.notify["avatar_small"].connect(() => {
       avatar_image.pixbuf = account.avatar_small;
     });
 
-    main_box.pack_start(left_toolbar, false, false);
-    main_box.pack_start (stack, true, true);
-
     add_accels();
 
-    this.add(main_box);
     this.show_all();
 
     // Activate the first timeline

@@ -14,5 +14,6 @@
     <file compressed="true" preprocess="xml-stripblanks">ui/dm-threads-page.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/dm-thread-entry.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/profile-page.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">ui/main-window.ui</file>
 </gresource>
 </gresources>
