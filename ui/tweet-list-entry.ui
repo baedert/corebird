@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.15.2 on Sat Aug 31 19:05:52 2013 -->
+<!-- Generated with glade 3.15.2 on Fri Sep  6 20:33:38 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.10 -->
   <!-- interface-requires corebird 0.0 -->
@@ -219,18 +219,6 @@
                       <class name="linked"/>
                     </style>
                     <child>
-                      <object class="GtkEntry" id="reply_entry">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <signal name="key-release-event" handler="reply_entry_key_released_cb" swapped="no"/>
-                      </object>
-                      <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
                       <object class="GtkToggleButton" id="reply_image_button">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
@@ -247,6 +235,18 @@
                       </object>
                       <packing>
                         <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkEntry" id="reply_entry">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <signal name="key-release-event" handler="reply_entry_key_released_cb" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
                         <property name="fill">True</property>
                         <property name="position">0</property>
                       </packing>
@@ -301,6 +301,7 @@
                 <style>
                   <class name="button-slim"/>
                   <class name="dim-label"/>
+                  <class name="image-button"/>
                 </style>
                 <child>
                   <placeholder/>
@@ -322,6 +323,7 @@
                 <style>
                   <class name="button-slim"/>
                   <class name="dim-label"/>
+                  <class name="image-button"/>
                 </style>
                 <signal name="clicked" handler="reply_button_clicked_cb" swapped="no"/>
               </object>
@@ -343,6 +345,7 @@
                   <class name="favorite-button"/>
                   <class name="button-slim"/>
                   <class name="dim-label"/>
+                  <class name="image-button"/>
                 </style>
                 <signal name="toggled" handler="favorite_button_toggled" swapped="no"/>
               </object>
@@ -364,6 +367,7 @@
                   <class name="retweet-button"/>
                   <class name="button-slim"/>
                   <class name="dim-label"/>
+                  <class name="image-button"/>
                 </style>
                 <signal name="toggled" handler="retweet_button_toggled" swapped="no"/>
               </object>

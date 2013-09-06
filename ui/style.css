@@ -144,7 +144,9 @@
 
 .profile-header .data-button {
   background-color: alpha(black, 0.55);
+  background-image: none;
   border-radius: 0px;
+  border: none;
   color: #EEE;
   text-shadow: none;
   padding-top: 3px;

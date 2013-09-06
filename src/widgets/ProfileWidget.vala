@@ -16,23 +16,35 @@
  */
 
 using Gtk;
+//TODO: move all this to ProfilePage
 
-class ProfileWidget : Gtk.Box {
+[GtkTemplate (ui = "/org/baedert/corebird/ui/profile-page.ui")]
+class ProfileWidget : ScrollWidget {
   private static const int PAGE_TWEETS     = 0;
   private static const int PAGE_FOLLOWING  = 1;
   private static const int PAGE_FOLLOWERS  = 2;
 
-  private ImageBox banner_box         = new ImageBox(Orientation.VERTICAL, 3);
-  private ImageBox avatar_image       = new ImageBox(Orientation.VERTICAL, 0);
-  private Label name_label            = new Label("");
-  private Label description_label     = new Label("");
-  private Label url_label             = new Label("");
-  private Label location_label        = new Label("");
-  private TextButton tweets_button    = new TextButton();
-  private TextButton following_button = new TextButton();
-  private TextButton followers_button = new TextButton();
+  [GtkChild]
+  private ImageBox banner_box;
+  [GtkChild]
+  private ImageBox avatar_image;
+  [GtkChild]
+  private Label name_label;
+  [GtkChild]
+  private Label description_label;
+  [GtkChild]
+  private Label url_label;
+  [GtkChild]
+  private Label location_label;
+  [GtkChild]
+  private TextButton tweets_button;
+  [GtkChild]
+  private TextButton following_button;
+  [GtkChild]
+  private TextButton followers_button;
   private ToggleButton follow_button  = new ToggleButton.with_label("Follow");
-  private Gtk.Stack bottom_stack      = new Gtk.Stack();
+  [GtkChild]
+  private Gtk.Stack bottom_stack;
   private int active_page       = 0;
   private int64 user_id;
   private string screen_name;
@@ -40,73 +52,22 @@ class ProfileWidget : Gtk.Box {
   private unowned Account account;
 
   public ProfileWidget(MainWindow window, Account account){
-    GLib.Object(orientation: Orientation.VERTICAL);
     this.window = window;
     this.account = account;
 
     bottom_stack.transition_duration = Settings.get_animation_duration();
 
-    banner_box.get_style_context().add_class("profile-header");
-    var top_banner_box = new Gtk.Box(Orientation.HORIZONTAL, 8);
-    avatar_image.set_size_request(100, 100);
-    avatar_image.margin_left = 8;
-    avatar_image.margin_top  = 8;
-    top_banner_box.pack_start(avatar_image, false, false);
-
-
-    var data_box = new Gtk.Box(Orientation.VERTICAL, 5);
-    name_label.get_style_context().add_class("data");
-    name_label.set_alignment(0, 0.5f);
-    name_label.margin_top = 8;
-    name_label.ellipsize = Pango.EllipsizeMode.END;
-    data_box.pack_start(name_label, false, true);
-    url_label.set_alignment(0, 0.5f);
-    url_label.get_style_context().add_class("data");
-    url_label.max_width_chars = 20;
-    url_label.set_ellipsize(Pango.EllipsizeMode.MIDDLE);
-    data_box.pack_start(url_label, false, true);
-    location_label.set_alignment(0, 0.5f);
-    location_label.get_style_context().add_class("data");
-    data_box.pack_start(location_label, false, true);
-    follow_button.set_halign(Align.START);
-    follow_button.toggled.connect(toggle_follow);
-    data_box.pack_start(follow_button, false, false);
-    top_banner_box.pack_start(data_box, true, true);
-
-    banner_box.pack_start(top_banner_box, false, false);
-
-    description_label.set_use_markup(true);
-    description_label.set_line_wrap(true);
-    description_label.get_style_context().add_class("description");
-    description_label.set_justify(Justification.CENTER);
     description_label.activate_link.connect(handle_uri);
-    description_label.margin_bottom = 5;
-    banner_box.pack_start(description_label, true, true);
 
-    var bottom_banner_box = new Gtk.Box(Orientation.HORIZONTAL, 0);
-    bottom_banner_box.homogeneous = true;
-
-    tweets_button.get_style_context().add_class("data-button");
     tweets_button.clicked.connect(() => {
       switch_page (PAGE_TWEETS);
     });
-    following_button.get_style_context().add_class("data-button");
     following_button.clicked.connect(() => {
       switch_page (PAGE_FOLLOWING);
     });
-    followers_button.get_style_context().add_class("data-button");
     followers_button.clicked.connect(() => {
       switch_page (PAGE_FOLLOWERS);
     });
-    bottom_banner_box.pack_start(tweets_button, false, true);
-    bottom_banner_box.pack_start(following_button, false, true);
-    bottom_banner_box.pack_start(followers_button, false, true);
-
-
-    banner_box.pack_start(bottom_banner_box, false, false);
-
-    this.pack_start(banner_box, false, false);
-    this.pack_start(bottom_stack, true, true);
   }
 
 
