@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.15.2 on Fri Sep  6 22:22:27 2013 -->
+<!-- Generated with glade 3.15.2 on Fri Sep  6 23:39:18 2013 -->
 <interface>
-  <!-- interface-requires corebird 0.0 -->
   <!-- interface-requires gtk+ 3.10 -->
-  <template class="ProfileWidget" parent="ScrollWidget">
+  <!-- interface-requires corebird 0.0 -->
+  <template class="ProfilePage" parent="ScrollWidget">
     <property name="visible">True</property>
     <property name="can_focus">True</property>
     <property name="shadow_type">in</property>
@@ -161,6 +161,7 @@
                   <object class="GtkBox" id="box3">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="valign">end</property>
                     <style>
                       <class name="profile-header"/>
                     </style>
@@ -170,6 +171,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <property name="valign">end</property>
                         <style>
                           <class name="data-button"/>
                         </style>
@@ -186,6 +188,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <property name="valign">end</property>
                         <style>
                           <class name="data-button"/>
                         </style>
@@ -202,6 +205,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <property name="valign">end</property>
                         <style>
                           <class name="data-button"/>
                         </style>
