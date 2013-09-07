@@ -49,7 +49,8 @@ class ProfilePage : ScrollWidget, IPage {
   private TextButton following_button;
   [GtkChild]
   private TextButton followers_button;
-  private ToggleButton follow_button  = new ToggleButton.with_label("Follow");
+  [GtkChild]
+  private ToggleButton follow_button;
   [GtkChild]
   private Gtk.Stack bottom_stack;
   private int active_page       = 0;
@@ -78,6 +79,10 @@ class ProfilePage : ScrollWidget, IPage {
 
     /* Load the profile data now, then - if available - set the cached data */
     load_profile_data.begin(user_id);
+
+    if (user_id  == account.id) {
+      follow_button.hide ();
+    }
 
     //Load cached data
     string query_string = "SELECT id, screen_name, name, description, tweets,
