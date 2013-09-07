@@ -50,9 +50,10 @@ class ProfilePage : ScrollWidget, IPage {
   [GtkChild]
   private TextButton followers_button;
   [GtkChild]
-  private ToggleButton follow_button;
+  private Button follow_button;
   [GtkChild]
   private Gtk.Stack bottom_stack;
+  private bool following;
   private int active_page       = 0;
   private int64 user_id;
   private string screen_name; //TODO: Remove
@@ -71,7 +72,6 @@ class ProfilePage : ScrollWidget, IPage {
     followers_button.clicked.connect(() => {
       switch_page (PAGE_FOLLOWERS);
     });
-
   }
 
   public void set_user_id(int64 user_id){
@@ -98,7 +98,8 @@ class ProfilePage : ScrollWidget, IPage {
 
       set_data(vals[2], vals[1], vals[9], vals[10], vals[3],
                int.parse (vals[4]), int.parse (vals[5]), int.parse (vals[6]));
-      follow_button.active = bool.parse (vals[12]);
+      //follow_button.active = bool.parse (vals[12]);
+      set_follow_button_state (bool.parse (vals[12]));
       string banner_name = vals[13];
       debug("banner_name: %s", banner_name);
 
@@ -191,8 +192,8 @@ class ProfilePage : ScrollWidget, IPage {
 
       set_data(name, screen_name, display_url, location, description, tweets,
            following, followers);
-      follow_button.active = is_following;
-
+ //     follow_button.active = is_following;
+      set_follow_button_state (is_following);
 
       Corebird.db.exec (
           @"INSERT OR REPLACE INTO `profiles`(`id`, `screen_name`, `name`,
@@ -269,24 +270,24 @@ class ProfilePage : ScrollWidget, IPage {
 
   }
 
-
-  private void toggle_follow() {
-    // TODO: Don't automatically call this whenever the user opens a profile…
-    return;
-    bool value = follow_button.active;
+  [GtkCallback]
+  private void follow_button_clicked_cb () {
     var call = account.proxy.new_call();
-    if(value)
-      call.set_function("1.1/friendships/create.json");
+    if (following)
+      call.set_function ("1.1/friendships/create.json");
     else
-      call.set_function("1.1/friendships/destroy.json");
-    call.set_method("POST");
-    call.add_param("follow", "true");
-    call.add_param("id", user_id.to_string());
-    call.invoke_async.begin(null, (obj, res) => {
-      try{
-        call.invoke_async.end(res);
+      call.set_function( "1.1/friendships/destroy.json");
+    message (@"User ID: $user_id");
+    message (user_id.to_string ());
+    call.set_method ("POST");
+    call.add_param ("follow", "true");
+    call.add_param ("id", user_id.to_string ());
+    call.invoke_async.begin (null, (obj, res) => {
+      try {
+      set_follow_button_state (!following);
+        call.invoke_async.end (res);
       } catch (GLib.Error e) {
-        critical(e.message);
+        critical (e.message);
       }
     });
   }
@@ -329,6 +330,22 @@ class ProfilePage : ScrollWidget, IPage {
 
     bottom_stack.set_visible_child_name("%d".printf(page));
   }
+
+
+  private void set_follow_button_state (bool following) {
+    var sc = follow_button.get_style_context ();
+    if (following) {
+      sc.remove_class ("suggested-action");
+      sc.add_class ("destructive-action");
+      follow_button.label = _("Unfollow");
+    } else {
+      sc.remove_class ("destructive-action");
+      sc.add_class ("suggested-action");
+      follow_button.label = _("Follow");
+    }
+    this.following = following;
+  }
+
 
 
   /**
