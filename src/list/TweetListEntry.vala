@@ -53,6 +53,8 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   private MenuButton more_button;
   [GtkChild]
   private Gtk.Menu more_menu;
+  [GtkChild]
+  private Gtk.MenuItem more_menu_delete_item;
 
 
 
@@ -136,6 +138,8 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       conversation_label.show ();
     }
 
+    more_menu_delete_item.visible = tweet.user_id == account.id;
+
     values_set = true;
 
     reply_entry.focus_in_event.connect(() => {
@@ -185,7 +189,6 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
 
   [GtkCallback]
   private bool key_released_cb (Gdk.EventKey evt) {
-    //TODO: Use Accels instead of this?
     switch(evt.keyval) {
       case Gdk.Key.r:
         reply_revealer.reveal_child = !reply_revealer.reveal_child;
@@ -289,6 +292,23 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   private void reply_button_clicked_cb () {
     ComposeTweetWindow ctw = new ComposeTweetWindow(this.window, this.account, this.tweet);
     ctw.show ();
+  }
+
+  [GtkCallback]
+  private void detail_item_activated_cb () {
+    window.switch_page (MainWindow.PAGE_TWEET_INFO,
+                        TweetInfoPage.BY_INSTANCE,
+                        tweet);
+  }
+
+  [GtkCallback]
+  private void quote_item_activated_cb () {
+
+  }
+
+  [GtkCallback]
+  private void delete_item_activated_cb () {
+    delete_tweet ();
   }
 
   [GtkCallback]

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.15.2 on Fri Sep  6 20:33:38 2013 -->
+<!-- Generated with glade 3.15.3 on Sat Sep  7 14:47:59 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.10 -->
   <!-- interface-requires corebird 0.0 -->
@@ -7,11 +7,30 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <child>
-      <object class="GtkMenuItem" id="delete_item">
+      <object class="GtkMenuItem" id="more_menu_quote_item">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Quote</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="quote_item_activated_cb" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="more_menu_detail_item">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Details</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="detail_item_activated_cb" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="more_menu_delete_item">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="label" translatable="yes">Delete</property>
         <property name="use_underline">True</property>
+        <signal name="activate" handler="delete_item_activated_cb" swapped="no"/>
       </object>
     </child>
   </object>
