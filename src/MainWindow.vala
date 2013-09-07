@@ -195,18 +195,21 @@ class MainWindow : ApplicationWindow {
     if (page_id == PAGE_PREVIOUS) {
       page_id = history.back ();
       push = false;
+      stack.transition_type = StackTransitionType.SLIDE_RIGHT;
     } else if (page_id == PAGE_NEXT) {
       page_id = history.forward ();
       push = false;
+      stack.transition_type = StackTransitionType.SLIDE_LEFT;
+    } else {
+      if (page_id > history.current)
+        stack.transition_type = StackTransitionType.SLIDE_LEFT;
+      else
+        stack.transition_type = StackTransitionType.SLIDE_RIGHT;
     }
+
 
     if (page_id == -1)
       return;
-
-    if (page_id > history.current)
-      stack.transition_type = StackTransitionType.SLIDE_LEFT;
-    else
-      stack.transition_type = StackTransitionType.SLIDE_RIGHT;
 
     if (push)
       history.push (page_id);
