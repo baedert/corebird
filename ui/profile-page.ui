@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.15.2 on Fri Sep  6 23:39:18 2013 -->
+<!-- Generated with glade 3.15.2 on Sat Sep  7 11:30:55 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.10 -->
   <!-- interface-requires corebird 0.0 -->
@@ -29,7 +29,6 @@
                   <object class="GtkGrid" id="grid1">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="row_spacing">5</property>
                     <property name="column_spacing">6</property>
                     <child>
                       <object class="GtkLabel" id="description_label">
@@ -59,6 +58,8 @@
                       <object class="GtkLabel" id="name_label">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="valign">start</property>
+                        <property name="margin_top">8</property>
                         <property name="hexpand">True</property>
                         <property name="xalign">0</property>
                         <property name="label" translatable="yes">name</property>
@@ -78,6 +79,7 @@
                       <object class="GtkLabel" id="url_label">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="valign">start</property>
                         <property name="hexpand">True</property>
                         <property name="xalign">0</property>
                         <property name="label" translatable="yes">url</property>
@@ -97,6 +99,7 @@
                       <object class="GtkLabel" id="location_label">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="valign">start</property>
                         <property name="hexpand">True</property>
                         <property name="xalign">0</property>
                         <property name="label" translatable="yes">location</property>
@@ -108,22 +111,6 @@
                       <packing>
                         <property name="left_attach">1</property>
                         <property name="top_attach">2</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkButton" id="button4">
-                        <property name="label" translatable="yes">button</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                        <property name="halign">start</property>
-                        <property name="valign">start</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="top_attach">3</property>
                         <property name="width">1</property>
                         <property name="height">1</property>
                       </packing>
@@ -148,6 +135,22 @@
                         <property name="top_attach">0</property>
                         <property name="width">1</property>
                         <property name="height">4</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkToggleButton" id="follow_button">
+                        <property name="label" translatable="yes">Follow</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="halign">start</property>
+                        <property name="valign">start</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="top_attach">3</property>
+                        <property name="width">1</property>
+                        <property name="height">1</property>
                       </packing>
                     </child>
                   </object>
