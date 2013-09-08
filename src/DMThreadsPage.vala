@@ -84,6 +84,8 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     });
 
     thread_list.row_activated.connect ((row) => {
+      main_window.switch_page (MainWindow.PAGE_DM,
+                               ((DMThreadEntry)row).user_id);
       message("YAY");
     });
   }
@@ -118,16 +120,13 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       Gdk.Pixbuf avatar = TweetUtils.load_avatar (vals[4]);
       if (avatar == null) {
         TweetUtils.download_avatar.begin (vals[4], (obj, res) => {
-          try {
-            avatar = TweetUtils.download_avatar.end (res);
-            TweetUtils.load_avatar (vals[4], avatar);
-            entry.avatar = avatar;
-          } catch (GLib.Error e) {
-            critical (e.message);
-          }
-         });
+          avatar = TweetUtils.download_avatar.end (res);
+          TweetUtils.load_avatar (vals[4], avatar);
+          entry.avatar = avatar;
+        });
       } else
         entry.avatar = avatar;
+
       thread_list.add (entry);
       thread_map.set (user_id, entry);
       return Sql.CONTINUE;

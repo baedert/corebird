@@ -18,7 +18,7 @@
 using Gtk;
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/dm-page.ui")]
-class DMPage : IPage, IMessageReceiver, ScrollWidget {
+class DMPage : IPage, IMessageReceiver, Box {
   private bool initialized = false;
   public int unread_count               {get; set;}
   public unowned MainWindow main_window {set; get;}
