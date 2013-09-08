@@ -51,13 +51,13 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   public void on_join (int page_id, va_list arg_list) {
     if (!initialized) {
       load_cached ();
-      load_newest ();
+//      load_newest ();
       initialized = true;
     }
   }
 
   public void load_cached () {
-    account.db.exec ("SELECT user_id, screen_name, last_message, last_message_id
+    account.db.exec ("SELECT user_id, screen_name, last_message, last_message_id, avatar_url
                       FROM dm_threads ORDER BY last_message_id",
                      (n_cols, vals) => {
       int64 user_id = int64.parse (vals[0]);
@@ -65,6 +65,19 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       entry.screen_name =  vals[1];
       entry.last_message = vals[2];
       entry.last_message_id = int64.parse(vals[3]);
+      Gdk.Pixbuf avatar = TweetUtils.load_avatar (vals[4]);
+      if (avatar == null) {
+        TweetUtils.download_avatar.begin (vals[4], (obj, res) => {
+          try {
+            avatar = TweetUtils.download_avatar.end (res);
+            TweetUtils.load_avatar (vals[4], avatar);
+            entry.avatar = avatar;
+          } catch (GLib.Error e) {
+            critical (e.message);
+          }
+         });
+      } else
+        entry.avatar = avatar;
       thread_list.add (entry);
       thread_map.set (user_id, entry);
       return Sql.CONTINUE;
@@ -107,10 +120,12 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     thread_list.add(thread_entry);
     thread_map.set(sender_id, thread_entry);
     string avatar_url = dm_obj.get_object_member ("sender").get_string_member ("profile_image_url");
-    Gdk.Pixbuf avatar = TweetUtils.load_avatar (avatar_url);
     account.db.exec (@"INSERT INTO `dm_threads`
-                      (user_id, screen_name, last_message, last_message_id) VALUES
-                      ('$sender_id', '$author', '$(thread_entry.last_message)', '$message_id');");
+        (user_id, screen_name, last_message, last_message_id, avatar_url) VALUES
+        ('$sender_id', '$author', '$(thread_entry.last_message)', '$message_id', '$avatar_url');");
+
+
+    Gdk.Pixbuf avatar = TweetUtils.load_avatar (avatar_url);
     if (avatar == null) {
       TweetUtils.download_avatar.begin (avatar_url, (obj, res) => {
         avatar = TweetUtils.download_avatar.end (res);
