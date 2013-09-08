@@ -82,6 +82,10 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
         row.set_header (header);
       }
     });
+
+    thread_list.row_activated.connect ((row) => {
+      message("YAY");
+    });
   }
 
   public void stream_message_received (StreamMessageType type, Json.Node root) {

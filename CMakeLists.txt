@@ -97,6 +97,7 @@ set (VALA_SOURCE
   src/ITwitterItem.vala
   src/Account.vala
   src/ConnectionLostDialog.vala
+  src/DMPage.vala
   src/widgets/ImageBox.vala
   src/widgets/ImageLabel.vala
   src/widgets/PixbufButton.vala

@@ -28,6 +28,7 @@ class MainWindow : ApplicationWindow {
   public static const int PAGE_SEARCH     = 3;
   public static const int PAGE_PROFILE    = 4;
   public static const int PAGE_TWEET_INFO = 5;
+  public static const int PAGE_DM         = 6;
 
   public static const int PAGE_PREVIOUS   = 1024;
   public static const int PAGE_NEXT       = 2048;
@@ -38,7 +39,7 @@ class MainWindow : ApplicationWindow {
   [GtkChild]
   private HeaderBar headerbar;
   private RadioToolButton dummy_button     = new RadioToolButton(null);
-  private IPage[] pages                    = new IPage[6];
+  private IPage[] pages                    = new IPage[7];
   private IntHistory history               = new IntHistory (5);
   [GtkChild]
   private Image avatar_image;
@@ -95,6 +96,7 @@ class MainWindow : ApplicationWindow {
     pages[3] = new SearchPage(PAGE_SEARCH);
     pages[4] = new ProfilePage (PAGE_PROFILE, this, account);
     pages[5] = new TweetInfoPage (PAGE_TWEET_INFO);
+    pages[6] = new DMPage (PAGE_DM);
 
     /* Initialize all containers */
     for (int i = 0; i < pages.length; i++) {
