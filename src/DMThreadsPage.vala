@@ -23,7 +23,6 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   private bool initialized = false;
   public int unread_count               {get; set;}
   public unowned MainWindow main_window {set; get;}
-  protected Gtk.ListBox tweet_list      {set; get;}
   public unowned Account account        {get; set;}
   private int id;
   private BadgeRadioToolButton tool_button;
@@ -36,6 +35,17 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   public DMThreadsPage (int id) {
     this.id = id;
     this.button_press_event.connect (button_pressed_event_cb);
+    thread_list.set_header_func ((row, row_before) => {
+      if (row_before == null)
+        return;
+
+      Widget header = row.get_header ();
+      if (header == null) {
+        header = new Gtk.Separator (Orientation.HORIZONTAL);
+        header.show ();
+        row.set_header (header);
+      }
+    });
   }
 
   public void stream_message_received (StreamMessageType type, Json.Node root) {
