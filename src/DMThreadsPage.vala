@@ -97,7 +97,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   public void on_join (int page_id, va_list arg_list) {
     if (!initialized) {
       load_cached ();
-//      load_newest ();
+      load_newest ();
       initialized = true;
     }
   }
