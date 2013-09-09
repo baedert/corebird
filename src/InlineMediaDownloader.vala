@@ -2,25 +2,25 @@
  *  Copyright (C) 2013 Timm Bäder
  *
  *  corebird is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
+ *  it under the terms of the GNU General License as published by
  *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
  *  corebird is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ *  GNU General License for more details.
  *
- *  You should have received a copy of the GNU General Public License
+ *  You should have received a copy of the GNU General License
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 
-class InlineMediaDownloader {
-  public static const int THUMB_SIZE = 40;
+namespace InlineMediaDownloader {
+  const int THUMB_SIZE = 40;
 
 
-  public static async void try_load_media(Tweet t, string url) {
+  async void try_load_media(Tweet t, string url) {
     if(!Settings.show_inline_media())
       return;
 
@@ -55,7 +55,7 @@ class InlineMediaDownloader {
     }
   }
 
-  private static async void two_step_load(Tweet t, string first_url, string regex_str,
+  private async void two_step_load(Tweet t, string first_url, string regex_str,
                                           int match_index) {
     var session = new Soup.SessionAsync();
     var msg     = new Soup.Message("GET", first_url);
@@ -76,7 +76,7 @@ class InlineMediaDownloader {
 
   }
 
-  private static async void load_inline_media(Tweet t, string url,
+  private async void load_inline_media(Tweet t, string url,
                                          Soup.Session? sess = null) {
 
     // First, check if the media already exists...
@@ -118,34 +118,54 @@ class InlineMediaDownloader {
         if (ext == "jpg")
           ext = "jpeg";
 
-        Gdk.Pixbuf thumb = null;
-        if(ext == "gif"){
-          var file = File.new_for_path(path);
-          var fout = file.create(FileCreateFlags.REPLACE_DESTINATION);
-          fout.write_all(_msg.response_body.data, null);
-          fout.flush();
-          var anim = new Gdk.PixbufAnimation.from_file(path);
-          thumb = anim.get_static_image().scale_simple(THUMB_SIZE, THUMB_SIZE,
-                        Gdk.InterpType.TILES);
-        } else {
-          var pic = new Gdk.Pixbuf.from_stream(ms);
-          pic.save(path, ext);
-          int x, y, w, h;
-          calc_thumb_rect (pic.get_width (), pic.get_height (), out x, out y, out w, out h);
-          var big_thumb = new Gdk.Pixbuf (Gdk.Colorspace.RGB, true, 8, w, h);
-          pic.copy_area (x, y, w, h, big_thumb, 0, 0);
-          thumb = big_thumb.scale_simple (THUMB_SIZE, THUMB_SIZE, Gdk.InterpType.TILES);
-        }
+        var media_out_stream = File.new_for_path (path).create (FileCreateFlags.REPLACE_DESTINATION);
+        var thumb_out_stream = File.new_for_path (thumb_path).create (FileCreateFlags.REPLACE_DESTINATION);
 
-        thumb.save(thumb_path, "png");
-        fire_media_added(t, path, thumb, thumb_path);
+        media_out_stream.write_async.begin (_msg.response_body.data);
+        if(ext == "gif"){
+          load_animation (t, ms, media_out_stream, thumb_out_stream, path, thumb_path);
+        } else {
+          load_normal_media (t, ms, media_out_stream, thumb_out_stream, path, thumb_path);
+        }
       } catch (GLib.Error e) {
         critical(e.message + "for MEDIA " + url);
       }
     });
   }
 
-  private static void fire_media_added(Tweet t, string path, Gdk.Pixbuf thumb,
+  private void load_animation (Tweet t,
+                               MemoryInputStream in_stream,
+                               OutputStream out_stream,
+                               OutputStream thumb_out_stream,
+                               string path, string thumb_path) {
+    pixbuf_animation_from_stream_async.begin (in_stream, null, (obj, res) => {
+      var anim = pixbuf_animation_from_stream_async.end (res);
+      var thumb = anim.get_static_image().scale_simple(THUMB_SIZE, THUMB_SIZE,
+                    Gdk.InterpType.TILES);
+      thumb.save_to_stream_async.begin (thumb_out_stream, "png",null, () => {});
+      fire_media_added(t, path, thumb, thumb_path);
+    });
+  }
+
+  private void load_normal_media (Tweet t,
+                                  MemoryInputStream in_stream,
+                                  OutputStream out_stream,
+                                  OutputStream thumb_out_stream,
+                                  string path, string thumb_path) {
+    pixbuf_from_stream_async.begin (in_stream, null, (obj, res) => {
+      var pic = pixbuf_from_stream_async.end (res);
+      int x, y, w, h;
+      calc_thumb_rect (pic.get_width (), pic.get_height (), out x, out y, out w, out h);
+      var big_thumb = new Gdk.Pixbuf (Gdk.Colorspace.RGB, true, 8, w, h);
+      pic.copy_area (x, y, w, h, big_thumb, 0, 0);
+      var thumb = big_thumb.scale_simple (THUMB_SIZE, THUMB_SIZE, Gdk.InterpType.TILES);
+      thumb.save_to_stream_async.begin (thumb_out_stream, "png",null, () => {});
+      fire_media_added(t, path, thumb, thumb_path);
+    });
+  }
+
+
+  private void fire_media_added(Tweet t, string path, Gdk.Pixbuf thumb,
                                        string thumb_path) {
     t.media = path;
     t.media_thumb = thumb_path;
@@ -153,7 +173,7 @@ class InlineMediaDownloader {
     t.has_inline_media = true;
   }
 
-  private static string get_media_path (Tweet t, string url) {
+  private string get_media_path (Tweet t, string url) {
     string ext = Utils.get_file_type (url);
     ext = ext.down();
     if(ext.length == 0)
@@ -162,7 +182,7 @@ class InlineMediaDownloader {
     return Utils.user_file(@"assets/media/$(t.id)_$(t.user_id).$(ext)");
   }
 
-  private static string get_thumb_path (Tweet t, string url) {
+  private string get_thumb_path (Tweet t, string url) {
     return Utils.user_file(@"assets/media/thumbs/$(t.id)_$(t.user_id).png");
   }
 
@@ -173,7 +193,7 @@ class InlineMediaDownloader {
    * @param img_height The height of the original image
    *
    */
-  private static void calc_thumb_rect (int img_width, int img_height,
+  private void calc_thumb_rect (int img_width, int img_height,
                                        out int x, out int y, out int width, out int height) {
     float ratio = img_width / (float)img_height;
     if (ratio >= 0.9 && ratio <= 1.1) {

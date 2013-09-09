@@ -15,6 +15,13 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+[CCode (cname = "gdk_pixbuf_new_from_stream_async", finish_name = "gdk_pixbuf_new_from_stream_finish")]
+extern async Gdk.Pixbuf pixbuf_from_stream_async (GLib.InputStream in_stream,
+                                                  GLib.Cancellable? cancellable = null) throws Error;
+[CCode (cname = "gdk_pixbuf_animation_new_from_stream_async", finish_name = "gdk_pixbuf_animation_new_from_stream_finish")]
+extern async Gdk.PixbufAnimation pixbuf_animation_from_stream_async (GLib.InputStream in_stream,
+                                                                    GLib.Cancellable? cancellable = null) throws Error;
+
 
 
 namespace Utils {
