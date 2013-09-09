@@ -97,7 +97,7 @@ class TweetInfoPage : IPage , ScrollWidget {
       return;
 
     favorite_button.sensitive = false;
-    TweetUtils.toggle_favorite_tweet.begin (account, tweet, favorite_button.active, () => {
+    TweetUtils.toggle_favorite_tweet.begin (account, tweet, !favorite_button.active, () => {
         favorite_button.sensitive = true;
     });
   }

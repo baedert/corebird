@@ -265,7 +265,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     spinner.start();
     WidgetReplacer.replace_tmp(favorite_button, spinner);
 
-    TweetUtils.toggle_favorite_tweet.begin (account, tweet, favorite_button.active, () => {
+    TweetUtils.toggle_favorite_tweet.begin (account, tweet, !favorite_button.active, () => {
       WidgetReplacer.replace_tmp_back(favorite_button, true,
                                       favorite_button.active);
     });
