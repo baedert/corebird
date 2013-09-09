@@ -194,7 +194,9 @@ class TweetInfoPage : IPage , ScrollWidget {
     call.set_method ("GET");
     call.add_param ("id", reply_id.to_string ());
     call.invoke_async.begin (null, (obj, res) => {
-      try{call.invoke_async.end (res);}catch(GLib.Error e){critical(e.message);return;}
+      try{call.invoke_async.end (res);message("code: %u", call.get_status_code ());}catch(GLib.Error e){
+      critical(e.message);progress_spinner.hide ();return;}
+
       var parser = new Json.Parser ();
       try {
         parser.load_from_data (call.get_payload ());
