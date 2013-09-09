@@ -168,6 +168,9 @@ class MainWindow : ApplicationWindow {
         () => {switch_page(1);return true;});
     ag.connect (Gdk.Key.@3, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
         () => {switch_page(2);return true;});
+    ag.connect (Gdk.Key.@4, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
+        () => {switch_page(3);return true;});
+
     ag.connect (Gdk.Key.Left, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
         () => {switch_page (PAGE_PREVIOUS); return true;});
     ag.connect (Gdk.Key.Right, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
