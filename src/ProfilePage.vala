@@ -116,9 +116,6 @@ class ProfilePage : ScrollWidget, IPage {
       }
       return Sql.STOP;
     });
-//    }else {
-//      banner_box.set_background(DATADIR+"/no_banner.png");
-//    }
   }
 
 
