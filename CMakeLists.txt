@@ -1,5 +1,4 @@
-# TODO: https://github.com/rcrowther/Vala_CMake
-
+# bla bla
 cmake_minimum_required (VERSION 2.6)
 project ("Corebrid" C)
 
@@ -18,7 +17,7 @@ if (DEBUG)
   message ("DEBUG: ON")
   set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g")
   set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0")
-  #  set (CMAKE_VERBOSE_MAKEFILE ON)
+  set (CMAKE_VERBOSE_MAKEFILE ON)
 endif (DEBUG)
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fdiagnostics-show-option")
 #set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcolor-diagnostics")
@@ -40,13 +39,28 @@ message ("PREFIX: ${PREFIX}")
 
 configure_file (${CMAKE_SOURCE_DIR}/src/util/Config.vala.cmake ${CMAKE_BINARY_DIR}/src/util/Config.vala)
 
+set (ICON_SOURCE_DIR "assets/")
+set (ICON_DEST_DIR   "assets/")
+
 include (ValaVersion)
 include (ValaPrecompile)
 include (GSettings)
+include (RenderIcons)
+include (GResources)
+
+set (ICON_SIZES 16 32 64 128 512)
+
+render_icon("corebird"
+  SIZES ${ICON_SIZES}
+)
 
 find_package (Vala REQUIRED)
 ensure_vala_version ("0.20" MINIMUM) # TODO: Bump to 0.22
 
+
+
+add_resources (resources.xml
+               src/resources.c)
 
 add_subdirectory (po)
 add_subdirectory (assets)
@@ -150,6 +164,8 @@ OPTIONS
 )
 
 add_executable (corebird ${VALA_C})
+add_dependencies (corebird src/resources.c)
+# add_dependencies (corebird icons)
 target_link_libraries (corebird ${DEPS_LIBRARIES})
 
 # GSettings
