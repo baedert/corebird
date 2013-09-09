@@ -84,6 +84,7 @@ class ProfilePage : ScrollWidget, IPage {
       follow_button.hide ();
     }
 
+    banner_box.set_background(DATADIR+"/no_banner.png");
     //Load cached data
     string query_string = "SELECT id, screen_name, name, description, tweets,
            following, followers, avatar_name, banner_url,
@@ -113,7 +114,7 @@ class ProfilePage : ScrollWidget, IPage {
         debug("Banner %s does not exist, load it first...", banner_name);
         banner_box.set_background(DATADIR+"/no_banner.png");
       }
-      return -1;
+      return Sql.STOP;
     });
 //    }else {
 //      banner_box.set_background(DATADIR+"/no_banner.png");
