@@ -15,6 +15,42 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
+/*
+  So, here's how we handle direct messages and their threads/conversations:
+
+  When the user opens the page for the very first time, we try to get as many
+  messages from twitter as possible in one api call(i.e. 300 + leonidas currently).
+  This gives us up to 300 RECEIVED messages. Whenever we encounter a sender_id we have
+  not yet seen, we create a new DMThreadEntry and append it to the thread_list.
+  When the sender_id WAS already seen, we just take the dm's ID and set it as the
+  last/first (depending on its value) message id of that conversation.
+  Note that this potentially means that we are NOT see ALL conversations, but whatever.
+
+  Now, if the user opens a thread, we probably have a few received messages from the
+  thread building, but we still need to get the ones he sent(if not cached). YAY.
+  So, we need to cache both of them and then make sure that they are properly sorted, etc.
+  Now when the user scrolls up, we need to either just load more cached messages from the
+  database OR make 2(TWO!) API calls to twitter(for sent and received messages), then
+  display them, cache them, etc.
+  Of course we also always need to update the first/last message id of the conversation
+  each and every single time we get a new message, update or query anything.
+  We can however use these ids to somewhat optimize the calls we make to twitter by
+  setting them as since_id and max_id parameter.
+
+  Now it gets interesting: Since both parties in a conversation can delete messages
+  of both parties and we cannot be sure that the user didn't delete some message on
+  another client, we cannot really cache anything and just need to rely on twitter
+  sending us the same shit every single time.
+  This is basically the same dilemma with tweets, but worse because of conversations
+  and the weird api.
+
+
+
+
+
+*/
+
 using Gtk;
 using Gee;
 
@@ -23,7 +59,6 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   private bool initialized = false;
   public int unread_count               {get; set;}
   public unowned MainWindow main_window {set; get;}
-  protected Gtk.ListBox tweet_list      {set; get;}
   public unowned Account account        {get; set;}
   private int id;
   private BadgeRadioToolButton tool_button;
@@ -36,6 +71,23 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   public DMThreadsPage (int id) {
     this.id = id;
     this.button_press_event.connect (button_pressed_event_cb);
+    thread_list.set_header_func ((row, row_before) => {
+      if (row_before == null)
+        return;
+
+      Widget header = row.get_header ();
+      if (header == null) {
+        header = new Gtk.Separator (Orientation.HORIZONTAL);
+        header.show ();
+        row.set_header (header);
+      }
+    });
+
+    thread_list.row_activated.connect ((row) => {
+      main_window.switch_page (MainWindow.PAGE_DM,
+                               ((DMThreadEntry)row).user_id);
+      message("YAY");
+    });
   }
 
   public void stream_message_received (StreamMessageType type, Json.Node root) {
@@ -57,7 +109,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   }
 
   public void load_cached () {
-    account.db.exec ("SELECT user_id, screen_name, last_message, last_message_id
+    account.db.exec ("SELECT user_id, screen_name, last_message, last_message_id, avatar_url
                       FROM dm_threads ORDER BY last_message_id",
                      (n_cols, vals) => {
       int64 user_id = int64.parse (vals[0]);
@@ -65,6 +117,16 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       entry.screen_name =  vals[1];
       entry.last_message = vals[2];
       entry.last_message_id = int64.parse(vals[3]);
+      Gdk.Pixbuf avatar = TweetUtils.load_avatar (vals[4]);
+      if (avatar == null) {
+        TweetUtils.download_avatar.begin (vals[4], (obj, res) => {
+          avatar = TweetUtils.download_avatar.end (res);
+          TweetUtils.load_avatar (vals[4], avatar);
+          entry.avatar = avatar;
+        });
+      } else
+        entry.avatar = avatar;
+
       thread_list.add (entry);
       thread_map.set (user_id, entry);
       return Sql.CONTINUE;
@@ -107,10 +169,12 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     thread_list.add(thread_entry);
     thread_map.set(sender_id, thread_entry);
     string avatar_url = dm_obj.get_object_member ("sender").get_string_member ("profile_image_url");
-    Gdk.Pixbuf avatar = TweetUtils.load_avatar (avatar_url);
     account.db.exec (@"INSERT INTO `dm_threads`
-                      (user_id, screen_name, last_message, last_message_id) VALUES
-                      ('$sender_id', '$author', '$(thread_entry.last_message)', '$message_id');");
+        (user_id, screen_name, last_message, last_message_id, avatar_url) VALUES
+        ('$sender_id', '$author', '$(thread_entry.last_message)', '$message_id', '$avatar_url');");
+
+
+    Gdk.Pixbuf avatar = TweetUtils.load_avatar (avatar_url);
     if (avatar == null) {
       TweetUtils.download_avatar.begin (avatar_url, (obj, res) => {
         avatar = TweetUtils.download_avatar.end (res);

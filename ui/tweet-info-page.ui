@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.15.2 on Sat Aug 17 18:02:38 2013 -->
+<!-- Generated with glade 3.15.2 on Sun Sep  8 13:29:10 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.10 -->
   <!-- interface-requires corebird 0.0 -->
@@ -22,33 +22,41 @@
         <property name="use_underline">True</property>
       </object>
     </child>
+    <child>
+      <object class="GtkMenuItem" id="delete_menu_item">
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Delete</property>
+        <property name="use_underline">True</property>
+      </object>
+    </child>
   </object>
   <template class="TweetInfoPage" parent="ScrollWidget">
     <property name="visible">True</property>
     <property name="can_focus">True</property>
     <property name="hscrollbar_policy">never</property>
     <child>
-      <object class="GtkViewport" id="viewport1">
+      <object class="GtkViewport" id="viewport2">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <child>
-          <object class="GtkBox" id="main_box">
+          <object class="GtkBox" id="box3">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="orientation">vertical</property>
             <child>
-              <object class="GtkBox" id="box1">
+              <object class="GtkBox" id="box4">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <child>
                   <object class="GtkImage" id="avatar_image">
+                    <property name="width_request">48</property>
+                    <property name="height_request">48</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="margin_left">5</property>
-                    <property name="margin_top">8</property>
-                    <property name="xalign">0</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
                     <property name="stock">gtk-missing-image</property>
-                    <property name="pixel_size">100</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -57,18 +65,21 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkBox" id="box2">
+                  <object class="GtkBox" id="box5">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="orientation">vertical</property>
                     <child>
-                      <object class="GtkLabel" id="retweets_label">
+                      <object class="GtkLabel" id="name_label">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="margin_left">6</property>
-                        <property name="margin_top">20</property>
+                        <property name="margin_top">5</property>
                         <property name="xalign">0</property>
-                        <property name="label" translatable="yes">Retweets: 18</property>
+                        <property name="label" translatable="yes">label</property>
+                        <attributes>
+                          <attribute name="weight" value="bold"/>
+                          <attribute name="size" value="15000"/>
+                        </attributes>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -77,12 +88,17 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="favorites_label">
+                      <object class="GtkLabel" id="screen_name_label">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="margin_left">6</property>
                         <property name="xalign">0</property>
-                        <property name="label" translatable="yes">Favorites: 764</property>
+                        <property name="label" translatable="yes">label</property>
+                        <style>
+                          <class name="dim-label"/>
+                        </style>
+                        <attributes>
+                          <attribute name="size" value="11000"/>
+                        </attributes>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -92,9 +108,43 @@
                     </child>
                   </object>
                   <packing>
-                    <property name="expand">False</property>
+                    <property name="expand">True</property>
                     <property name="fill">True</property>
                     <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="follow_button">
+                    <property name="label" translatable="yes">Follow</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="halign">end</property>
+                    <property name="valign">start</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">5</property>
+                    <signal name="clicked" handler="follow_button_clicked_cb" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="pack_type">end</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSpinner" id="progress_spinner">
+                    <property name="width_request">20</property>
+                    <property name="height_request">20</property>
+                    <property name="can_focus">False</property>
+                    <property name="valign">start</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_top">4</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">3</property>
                   </packing>
                 </child>
               </object>
@@ -106,20 +156,22 @@
             </child>
             <child>
               <object class="GtkLabel" id="text_label">
+                <property name="height_request">100</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="halign">start</property>
                 <property name="margin_left">5</property>
                 <property name="margin_right">5</property>
                 <property name="margin_top">5</property>
                 <property name="margin_bottom">5</property>
+                <property name="hexpand">True</property>
                 <property name="xalign">0</property>
                 <property name="yalign">0</property>
-                <property name="label" translatable="yes">Tweet Text</property>
+                <property name="label" translatable="yes">Some Random Tweet Text yay</property>
                 <property name="use_markup">True</property>
                 <property name="wrap">True</property>
                 <property name="wrap_mode">word-char</property>
                 <property name="selectable">True</property>
+                <property name="track_visited_links">False</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -128,11 +180,13 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="author_label">
+              <object class="GtkLabel" id="time_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="xalign">0.10000000149011612</property>
-                <property name="label" translatable="yes">Author &amp; Time</property>
+                <property name="margin_left">3</property>
+                <property name="xalign">0</property>
+                <property name="label" translatable="yes">label</property>
+                <property name="use_markup">True</property>
                 <style>
                   <class name="dim-label"/>
                 </style>
@@ -144,24 +198,21 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButtonBox" id="buttonbox1">
+              <object class="GtkBox" id="box6">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="valign">start</property>
-                <property name="margin_left">3</property>
-                <property name="margin_right">3</property>
-                <property name="margin_top">8</property>
-                <property name="layout_style">center</property>
-                <style>
-                  <class name="linked"/>
-                </style>
                 <child>
-                  <object class="GtkButton" id="reply_button">
-                    <property name="label" translatable="yes">Reply</property>
+                  <object class="GtkLabel" id="rt_fav_label">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <signal name="clicked" handler="reply_button_clicked_cb" swapped="no"/>
+                    <property name="can_focus">False</property>
+                    <property name="margin_left">3</property>
+                    <property name="hexpand">True</property>
+                    <property name="xalign">0</property>
+                    <property name="label" translatable="yes">label</property>
+                    <property name="use_markup">True</property>
+                    <style>
+                      <class name="dim-label"/>
+                    </style>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -171,10 +222,18 @@
                 </child>
                 <child>
                   <object class="GtkToggleButton" id="retweet_button">
-                    <property name="label" translatable="yes">Retweet</property>
+                    <property name="label" translatable="yes"></property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="valign">center</property>
+                    <property name="relief">none</property>
+                    <style>
+                      <class name="retweet-button"/>
+                      <class name="slim-button"/>
+                      <class name="dim-label"/>
+                      <class name="image-button"/>
+                    </style>
                     <signal name="toggled" handler="retweet_button_toggled_cb" swapped="no"/>
                   </object>
                   <packing>
@@ -185,10 +244,18 @@
                 </child>
                 <child>
                   <object class="GtkToggleButton" id="favorite_button">
-                    <property name="label" translatable="yes">Favorite</property>
+                    <property name="label" translatable="yes"></property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="valign">center</property>
+                    <property name="relief">none</property>
+                    <style>
+                      <class name="favorite-button"/>
+                      <class name="slim-button"/>
+                      <class name="dim-label"/>
+                      <class name="image-button"/>
+                    </style>
                     <signal name="toggled" handler="favorite_button_toggled_cb" swapped="no"/>
                   </object>
                   <packing>
@@ -198,14 +265,19 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkMenuButton" id="more_button">
+                  <object class="GtkButton" id="reply_button">
+                    <property name="label" translatable="yes"></property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="popup">more_menu</property>
-                    <child>
-                      <placeholder/>
-                    </child>
+                    <property name="valign">center</property>
+                    <property name="relief">none</property>
+                    <style>
+                      <class name="silm-button"/>
+                      <class name="dim-label"/>
+                      <class name="image-button"/>
+                    </style>
+                    <signal name="clicked" handler="reply_button_clicked_cb" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -214,13 +286,25 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkSpinner" id="progress_spinner">
-                    <property name="can_focus">False</property>
+                  <object class="GtkMenuButton" id="menubutton1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="valign">center</property>
+                    <property name="relief">none</property>
+                    <property name="popup">more_menu</property>
+                    <style>
+                      <class name="image-button"/>
+                      <class name="slim-button"/>
+                      <class name="dim-label"/>
+                    </style>
+                    <child>
+                      <placeholder/>
+                    </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="padding">9</property>
                     <property name="position">4</property>
                   </packing>
                 </child>
@@ -235,7 +319,7 @@
               <object class="GtkListBox" id="bottom_list_box">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="margin_top">8</property>
+                <property name="selection_mode">none</property>
                 <property name="activate_on_single_click">False</property>
               </object>
               <packing>

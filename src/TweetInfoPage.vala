@@ -28,17 +28,18 @@ class TweetInfoPage : IPage , ScrollWidget {
   private int64 tweet_id;
   private bool values_set = false;
   private Tweet tweet;
+  private bool following;
 
   [GtkChild]
   private Label text_label;
   [GtkChild]
-  private Label author_label;
+  private Label name_label;
+  [GtkChild]
+  private Label screen_name_label;
   [GtkChild]
   private Image avatar_image;
   [GtkChild]
-  private Label retweets_label;
-  [GtkChild]
-  private Label favorites_label;
+  private Label rt_fav_label;
   [GtkChild]
   private ListBox bottom_list_box;
   [GtkChild]
@@ -47,6 +48,16 @@ class TweetInfoPage : IPage , ScrollWidget {
   private ToggleButton favorite_button;
   [GtkChild]
   private ToggleButton retweet_button;
+  [GtkChild]
+  private Button follow_button;
+  [GtkChild]
+  private Label time_label;
+  [GtkChild]
+  private Gtk.MenuItem delete_menu_item;
+  [GtkChild]
+  private Gtk.MenuItem report_menu_item;
+  [GtkChild]
+  private Gtk.MenuItem block_menu_item;
 
 
 
@@ -108,6 +119,28 @@ class TweetInfoPage : IPage , ScrollWidget {
     message ("reply!");
   }
 
+  [GtkCallback]
+  private void follow_button_clicked_cb () {
+    var call = account.proxy.new_call();
+    if (following)
+      call.set_function ("1.1/friendships/create.json");
+    else
+      call.set_function( "1.1/friendships/destroy.json");
+    call.set_method ("POST");
+    call.add_param ("follow", "true");
+    call.add_param ("id", tweet.user_id.to_string ());
+    call.invoke_async.begin (null, (obj, res) => {
+      try {
+      set_follow_button_state (!following);
+        call.invoke_async.end (res);
+      } catch (GLib.Error e) {
+        critical (e.message);
+      }
+    });
+  }
+
+
+
   /**
    * Loads the data of the tweet with the id tweet_id from the Twitter server.
    */
@@ -128,10 +161,11 @@ class TweetInfoPage : IPage , ScrollWidget {
         return;
       }
       tweet.load_from_json (parser.get_root (), now);
-      set_tweet_data (tweet);
       Json.Object root_object = parser.get_root ().get_object ();
+      this.following = root_object.get_object_member ("user").get_boolean_member ("following");
+      set_tweet_data (tweet, following);
       if (!root_object.get_null_member ("place"))
-        author_label.label += " in " + root_object.get_string_member ("place");
+        screen_name_label.label += " in " + root_object.get_string_member ("place");
 
       if (tweet.reply_id != 0) {
         progress_spinner.show();
@@ -180,18 +214,49 @@ class TweetInfoPage : IPage , ScrollWidget {
   /**
    *
    */
-  private void set_tweet_data (Tweet tweet) {
+  private void set_tweet_data (Tweet tweet, bool following = false) {
     GLib.DateTime created_at = new GLib.DateTime.from_unix_local (tweet.created_at);
     string time_format = created_at.format ("%x, %X");
 
-    text_label.label = "<b><i><big><big><big>»"+tweet.get_formatted_text ()+"«</big></big></big></i></b>";
-    author_label.label = "- %s at %s".printf (tweet.user_name, time_format);
+    text_label.label = "<b><big><big><big>"+tweet.get_formatted_text ()+"</big></big></big></b>";
+    name_label.label = tweet.user_name;
+    screen_name_label.label = "@" + tweet.screen_name;
     avatar_image.pixbuf = tweet.avatar;
-    retweets_label.label = _("Retweets: ") + tweet.retweet_count.to_string ();
-    favorites_label.label = _("Favorites: ") + tweet.favorite_count.to_string ();
+    rt_fav_label.label = "<big><b>%'d</b></big> Retweets  <big><b>%'d</b></big> Favorites"
+                         .printf (tweet.retweet_count, tweet.favorite_count);
+    time_label.label = time_format;
     retweet_button.active = tweet.retweeted;
     favorite_button.active = tweet.favorited;
+    if (tweet.user_id == account.id) {
+      follow_button.hide ();
+      delete_menu_item.show ();
+      report_menu_item.hide ();
+      block_menu_item.hide ();
+    } else {
+      set_follow_button_state (following);
+      follow_button.show ();
+      delete_menu_item.hide ();
+      report_menu_item.show ();
+      block_menu_item.show ();
+    }
   }
+
+  private void set_follow_button_state (bool following) {
+    var sc = follow_button.get_style_context ();
+    if (following) {
+      sc.remove_class ("suggested-action");
+      sc.add_class ("destructive-action");
+      follow_button.label = _("Unfollow");
+    } else {
+      sc.remove_class ("destructive-action");
+      sc.add_class ("suggested-action");
+      follow_button.label = _("Follow");
+    }
+    this.following = following;
+  }
+
+
+
 
   public int get_id () {
     return id;
