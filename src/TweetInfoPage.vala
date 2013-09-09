@@ -84,11 +84,9 @@ class TweetInfoPage : IPage , ScrollWidget {
       this.tweet = args.arg ();
       this.tweet_id = tweet.id;
       set_tweet_data (tweet);
-
     } else if (mode == BY_ID) {
       this.tweet_id = args.arg ();
     }
-
     query_tweet_info ();
   }
 
@@ -232,12 +230,14 @@ class TweetInfoPage : IPage , ScrollWidget {
       delete_menu_item.show ();
       report_menu_item.hide ();
       block_menu_item.hide ();
+      retweet_button.hide ();
     } else {
       set_follow_button_state (following);
       follow_button.show ();
       delete_menu_item.hide ();
       report_menu_item.show ();
       block_menu_item.show ();
+      retweet_button.show ();
     }
   }
 
