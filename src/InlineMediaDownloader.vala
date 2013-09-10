@@ -121,14 +121,16 @@ namespace InlineMediaDownloader {
         var media_out_stream = File.new_for_path (path).create (FileCreateFlags.REPLACE_DESTINATION);
         var thumb_out_stream = File.new_for_path (thumb_path).create (FileCreateFlags.REPLACE_DESTINATION);
 
-        media_out_stream.write_async.begin (_msg.response_body.data);
+//        media_out_stream.write_async.begin (_msg.response_body.data);
+        // TODO: I guess this would be better if async
+        media_out_stream.write_all (_msg.response_body.data, null, null);
         if(ext == "gif"){
           load_animation (t, ms, media_out_stream, thumb_out_stream, path, thumb_path);
         } else {
           load_normal_media (t, ms, media_out_stream, thumb_out_stream, path, thumb_path);
         }
       } catch (GLib.Error e) {
-        critical(e.message + "for MEDIA " + url);
+        critical (e.message + "for MEDIA " + url);
       }
     });
   }
