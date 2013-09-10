@@ -161,7 +161,10 @@ class TweetInfoPage : IPage , ScrollWidget {
       tweet.load_from_json (parser.get_root (), now);
       Json.Object root_object = parser.get_root ().get_object ();
       this.following = root_object.get_object_member ("user").get_boolean_member ("following");
-      set_tweet_data (tweet, following);
+      string with = root_object.get_string_member ("source");
+      with = extract_source (with);
+      message("WITH: " + with);
+      set_tweet_data (tweet, following, with);
       if (!root_object.get_null_member ("place"))
         screen_name_label.label += " in " + root_object.get_string_member ("place");
 
@@ -214,9 +217,12 @@ class TweetInfoPage : IPage , ScrollWidget {
   /**
    *
    */
-  private void set_tweet_data (Tweet tweet, bool following = false) {
+  private void set_tweet_data (Tweet tweet, bool following = false, string? with = null) {
     GLib.DateTime created_at = new GLib.DateTime.from_unix_local (tweet.created_at);
     string time_format = created_at.format ("%x, %X");
+    if (with != null) {
+      time_format += " with " + with;
+    }
 
     text_label.label = "<b><big><big><big>"+tweet.get_formatted_text ()+"</big></big></big></b>";
     name_label.label = tweet.user_name;
@@ -257,6 +263,27 @@ class TweetInfoPage : IPage , ScrollWidget {
     this.following = following;
   }
 
+  /**
+   * Twitter's source parameter of tweets includes a 'rel' parameter
+   * that doesn't work as pango markup, so we just remove it here.
+   *
+   * Example string:
+   *   <a href=\"http://www.tweetdeck.com\" rel=\"nofollow\">TweetDeck</a>
+   *
+   * @param source_str The source string from twitter
+   *
+   * @return The #source_string without the rel parameter
+   */
+  private string extract_source (string source_str) {
+    int from, to;
+    int tmp = 0;
+    tmp = source_str.index_of_char ('"');
+    tmp = source_str.index_of_char ('"', tmp + 1);
+    from = source_str.index_of_char ('"', tmp + 1);
+    to = source_str.index_of_char ('"', from + 1);
+    message ("%d/%d", from, to);
+    return source_str.substring (0, from-5) + source_str.substring(to + 1);
+  }
 
 
 
