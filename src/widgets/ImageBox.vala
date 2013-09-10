@@ -23,6 +23,7 @@ using Gtk;
 class ImageBox : Gtk.Box  {
   private static const float RATIO = (160f/320f);
   public bool use_ratio {get; set; default=true;}
+  private Gtk.CssProvider css_provider;
 
   public ImageBox(Orientation orientation, int spacing){
     GLib.Object(orientation: orientation, spacing: spacing);
@@ -70,20 +71,25 @@ class ImageBox : Gtk.Box  {
     return SizeRequestMode.HEIGHT_FOR_WIDTH;
   }
 
-  public void set_background(string path){
+  public void set_background (string path) {
     string banner_css = "*{
     background-image: url('%s');
-    background-size: 100% 100%;
+    background-size: cover;
     background-repeat: no-repeat;
-    }".printf(path);
+    }".printf (path);
 
-    try{
-      CssProvider prov = new CssProvider();
-      prov.load_from_data(banner_css, -1);
-      this.get_style_context().add_provider(prov,
+    var style_context = this.get_style_context ();
+    try {
+
+      if (css_provider != null)
+        style_context.remove_provider (css_provider);
+
+      css_provider = new Gtk.CssProvider ();
+      css_provider.load_from_data(banner_css, -1);
+      this.get_style_context().add_provider (css_provider,
                                      STYLE_PROVIDER_PRIORITY_APPLICATION);
-    } catch (GLib.Error e){
-      warning(e.message);
+    } catch (GLib.Error e) {
+      warning (e.message);
     }
   }
 }

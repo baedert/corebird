@@ -34,7 +34,7 @@ class ProfilePage : ScrollWidget, IPage {
   [GtkChild]
   private ImageBox banner_box;
   [GtkChild]
-  private ImageBox avatar_image;
+  private Gtk.Image avatar_image;
   [GtkChild]
   private Label name_label;
   [GtkChild]
@@ -95,7 +95,7 @@ class ProfilePage : ScrollWidget, IPage {
     Corebird.db.exec (query_string, (n_cols, vals) => {
       /* If we get inside this block, there is already some data in the
         DB we can use. */
-      avatar_image.set_background (Utils.user_file ("/assets/avatars/"+vals[7]));
+        avatar_image.pixbuf = new Gdk.Pixbuf.from_file (Utils.user_file ("/assets/avatars/"+vals[7]));
 
       set_data(vals[2], vals[1], vals[9], vals[10], vals[3],
                int.parse (vals[4]), int.parse (vals[5]), int.parse (vals[6]));
@@ -150,9 +150,11 @@ class ProfilePage : ScrollWidget, IPage {
 
       if(!FileUtils.test(avatar_on_disk, FileTest.EXISTS)){
         Utils.download_file_async.begin(avatar_url, avatar_on_disk,
-          () => {avatar_image.set_background(avatar_on_disk);});
+          () => { avatar_image.pixbuf = new Gdk.Pixbuf.from_file (avatar_on_disk);
+          });
       }else
-        avatar_image.set_background(avatar_on_disk);
+        avatar_image.pixbuf = new Gdk.Pixbuf.from_file (avatar_on_disk);
+
       string name        = root.get_string_member("name");
              screen_name = root.get_string_member("screen_name");
       string description = root.get_string_member("description").replace("&", "&amp;");
