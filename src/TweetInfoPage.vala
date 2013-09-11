@@ -221,7 +221,7 @@ class TweetInfoPage : IPage , ScrollWidget {
     GLib.DateTime created_at = new GLib.DateTime.from_unix_local (tweet.created_at);
     string time_format = created_at.format ("%x, %X");
     if (with != null) {
-      time_format += " with " + with;
+      time_format += " via " + with;
     }
 
     text_label.label = "<b><big><big><big>"+tweet.get_formatted_text ()+"</big></big></big></b>";

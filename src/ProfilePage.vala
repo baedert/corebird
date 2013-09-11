@@ -119,16 +119,17 @@ class ProfilePage : ScrollWidget, IPage {
   }
 
 
-  private async void load_profile_data(int64 user_id){
-    var call = account.proxy.new_call();
-    call.set_method("GET");
-    call.set_function("1.1/users/show.json");
-    call.add_param("user_id", user_id.to_string());
-    call.invoke_async.begin(null, (obj, res) => {
-      try{
+  private async void load_profile_data (int64 user_id){
+    var call = account.proxy.new_call ();
+    call.set_method ("GET");
+    call.set_function ("1.1/users/show.json");
+    call.add_param ("user_id", user_id.to_string ());
+    call.add_param ("include_entities", "false");
+    call.invoke_async.begin (null, (obj, res) => {
+      try {
         call.invoke_async.end (res);
-      } catch (GLib.Error e){
-        warning("Error while ending call: %s", e.message);
+      } catch (GLib.Error e) {
+        warning ("Error while ending call: %s", e.message);
         return;
       }
       string back = call.get_payload();
@@ -171,10 +172,10 @@ class ProfilePage : ScrollWidget, IPage {
       }
 
       string display_url = null;
+      Json.Object entities = root.get_object_member ("entities");
       if(has_url) {
-        var urls_object = root.get_object_member("entities")
-          .get_object_member("url").get_array_member("urls").get_element(0)
-            .get_object();
+        var urls_object = entities.get_object_member("url").get_array_member("urls").
+          get_element(0).get_object();
 
         var url = urls_object.get_string_member("expanded_url");
         if (urls_object.has_member ("display_url")) {
@@ -190,8 +191,27 @@ class ProfilePage : ScrollWidget, IPage {
         location     = root.get_string_member("location");
       }
 
+      GLib.SList<TweetUtils.Sequence?> text_urls = null;
+      if (root.has_member ("description")) {
+        Json.Array urls = entities.get_object_member ("description").get_array_member ("urls");
+        text_urls = new GLib.SList<TweetUtils.Sequence?>();
+        urls.foreach_element ((arr, i, node) => {
+          var ent = node.get_object ();
+          string expanded_url = ent.get_string_member ("expanded_url");
+          expanded_url = expanded_url.replace ("&", "&amp;");
+          Json.Array indices = ent.get_array_member ("indices");
+          text_urls.prepend (TweetUtils.Sequence(){
+            start = (int)indices.get_int_element (0),
+            end   = (int)indices.get_int_element (1),
+            url   = expanded_url,
+            display_url = ent.get_string_member ("display_url")
+          });
+
+        });
+      }
+
       set_data(name, screen_name, display_url, location, description, tweets,
-           following, followers);
+           following, followers, text_urls);
  //     follow_button.active = is_following;
       set_follow_button_state (is_following);
 
@@ -234,15 +254,18 @@ class ProfilePage : ScrollWidget, IPage {
   }
 
 
-  private new void set_data(string name, string screen_name, string? url,
-                            string? location, string description, int tweets,
-                            int following, int followers) {
+  private new void set_data (string name, string screen_name, string? url,
+                             string? location, string description, int tweets,
+                             int following, int followers,
+                             GLib.SList<TweetUtils.Sequence?>? text_urls = null) {
 
     name_label.set_markup("<big><big><b>%s</b>  @%s</big></big>"
                           .printf(name, screen_name));
-//    string d = Tweet.replace_links(description);
-    string d = ""; // TODO: Use blablabla
-    description_label.set_markup("<big><big><big>%s</big></big></big>".printf(d));
+    string desc = description;
+    if (text_urls != null) {
+      desc = TweetUtils.get_formatted_text (description, text_urls);
+    }
+    description_label.set_markup("<big><big><big>%s</big></big></big>".printf(desc));
     tweets_button.set_markup(
       "<big><big><b>%'d</b></big></big>\nTweets"
       .printf(tweets));

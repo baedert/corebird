@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.15.2 on Tue Sep 10 12:07:52 2013 -->
+<!-- Generated with glade 3.15.2 on Thu Sep 12 00:36:28 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.10 -->
   <!-- interface-requires corebird 0.0 -->
   <template class="ProfilePage" parent="ScrollWidget">
     <property name="visible">True</property>
     <property name="can_focus">True</property>
-    <property name="shadow_type">in</property>
     <child>
       <object class="GtkViewport" id="viewport1">
         <property name="visible">True</property>
@@ -42,7 +41,6 @@
                         <property name="justify">center</property>
                         <property name="wrap">True</property>
                         <property name="wrap_mode">word-char</property>
-                        <property name="ellipsize">middle</property>
                         <style>
                           <class name="description"/>
                         </style>
