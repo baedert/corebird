@@ -94,7 +94,7 @@ class Tweet : GLib.Object {
       this.rt_id         = rt.get_int_member("id");
       this.retweeted_by  = user.get_string_member("name");
       this.text          = rt.get_string_member("text");
-      this.user_name     = rt_user.get_string_member ("name");
+      this.user_name     = rt_user.get_string_member ("name").replace ("&", "&amp;");
       this.avatar_url    = rt_user.get_string_member("profile_image_url");
       this.user_id       = rt_user.get_int_member("id");
       this.screen_name   = rt_user.get_string_member("screen_name");
@@ -108,7 +108,7 @@ class Tweet : GLib.Object {
       this.text        = status.get_string_member("text");
       this.user_name   = user.get_string_member("name");
       this.user_id     = user.get_int_member("id");
-      this.screen_name = user.get_string_member("screen_name");
+      this.screen_name = user.get_string_member("screen_name").replace ("&", "&amp;");
       this.avatar_url  = user.get_string_member("profile_image_url");
       this.verified    = user.get_boolean_member("verified");
       if (!status.get_null_member("in_reply_to_status_id"))
