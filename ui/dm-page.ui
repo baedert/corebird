@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.15.2 on Wed Sep 11 15:46:58 2013 -->
+<!-- Generated with glade 3.15.2 on Thu Sep 12 23:01:50 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.10 -->
   <!-- interface-requires corebird 0.0 -->
@@ -12,11 +12,11 @@
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="vscrollbar_policy">never</property>
-        <property name="shadow_type">in</property>
         <child>
           <object class="GtkViewport" id="viewport1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="shadow_type">none</property>
             <child>
               <object class="GtkListBox" id="message_list">
                 <property name="visible">True</property>
@@ -64,6 +64,7 @@
             <property name="margin_bottom">5</property>
             <style>
               <class name="suggested-action"/>
+              <class name="button-wide"/>
             </style>
             <signal name="clicked" handler="send_button_clicked_cb" swapped="no"/>
           </object>

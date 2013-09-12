@@ -13,6 +13,11 @@
   -GtkWidget-focus-padding: 0;
 }
 
+.button-wide {
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
 .retweet-button,
 .favorite-button {
   font-family: FontAwesome;
