@@ -1,5 +1,5 @@
 # bla bla
-cmake_minimum_required (VERSION 2.6)
+cmake_minimum_required (VERSION 2.8)
 project ("Corebrid" C)
 
 list (APPEND CMAKE_MODULE_PATH
@@ -17,7 +17,7 @@ if (DEBUG)
   message ("DEBUG: ON")
   set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g")
   set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0")
-  #  set (CMAKE_VERBOSE_MAKEFILE ON)
+  set (CMAKE_VERBOSE_MAKEFILE ON)
 endif (DEBUG)
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fdiagnostics-show-option")
 #set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcolor-diagnostics")
@@ -46,7 +46,7 @@ include (ValaVersion)
 include (ValaPrecompile)
 include (GSettings)
 include (RenderIcons)
-include (GResources)
+#include (GResources)
 
 set (ICON_SIZES 16 32 64 128 512)
 
@@ -59,14 +59,17 @@ ensure_vala_version ("0.20" MINIMUM) # TODO: Bump to 0.22
 
 
 
-add_resources (resources.xml
-               src/resources.c)
+#add_resources (resources.xml
+#               src/resources.c)
+
+
 
 add_subdirectory (po)
 add_subdirectory (assets)
 add_subdirectory (ui)
 add_subdirectory (sql)
 add_subdirectory (data)
+add_subdirectory (src)
 
 
 set (DEPS glib-2.0;
@@ -164,9 +167,9 @@ OPTIONS
   ${VALAC_OPTIONS}
 )
 
+set_source_files_properties (${CMAKE_CURRENT_SOURCE_DIR}/src/resources.c PROPERTIES GENERATED 1)
 add_executable (corebird ${VALA_C})
-add_dependencies (corebird src/resources.c)
-# add_dependencies (corebird icons)
+add_dependencies (corebird generated_resources)
 target_link_libraries (corebird ${DEPS_LIBRARIES})
 
 # GSettings
