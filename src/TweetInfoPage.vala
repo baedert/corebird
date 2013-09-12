@@ -163,7 +163,6 @@ class TweetInfoPage : IPage , ScrollWidget {
       this.following = root_object.get_object_member ("user").get_boolean_member ("following");
       string with = root_object.get_string_member ("source");
       with = extract_source (with);
-      message("WITH: " + with);
       set_tweet_data (tweet, following, with);
       if (!root_object.get_null_member ("place"))
         screen_name_label.label += " in " + root_object.get_string_member ("place");
@@ -281,7 +280,8 @@ class TweetInfoPage : IPage , ScrollWidget {
     tmp = source_str.index_of_char ('"', tmp + 1);
     from = source_str.index_of_char ('"', tmp + 1);
     to = source_str.index_of_char ('"', from + 1);
-    message ("%d/%d", from, to);
+    if (to == -1 || from == -1)
+      return source_str;
     return source_str.substring (0, from-5) + source_str.substring(to + 1);
   }
 
