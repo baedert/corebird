@@ -170,8 +170,8 @@ class Account : GLib.Object {
   public void save_info () {
     db.exec (@"INSERT OR REPLACE INTO `info`(id,screen_name,name) VALUES
               ('$id','$screen_name','$name');");
-    db.exec (@"INSERT OR REPLACE INTO `accounts`(id,screen_name,name,avatar_url) VALUES
-              ('$id','$screen_name','$name', '$avatar_url');");
+    Corebird.db.exec (@"INSERT OR REPLACE INTO `accounts`(id,screen_name,name,avatar_url) VALUES
+                      ('$id','$screen_name','$name', '$avatar_url');");
   }
 
   /** Static stuff ********************************************************************/

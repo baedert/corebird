@@ -19,7 +19,6 @@ using Gtk;
 
 class Corebird : Gtk.Application {
   // TODO: Is the static here needed?
-//  public  static SQLHeavy.VersionedDatabase db;
   public static Sql.Database db;
   private static GLib.OutputStream log_stream;
   public  static GLib.Menu account_menu;
