@@ -147,8 +147,17 @@ class SettingsDialog : Gtk.Dialog {
       account_list.remove (account_list.get_selected_row ());
       account_list.add (new AccountListEntry (acc));
     } else {
-      warning ("Wrong token!");
-      // TODO: Implement user feedback
+      // In this case, the account was already present so we just remove the item again
+      // the given accoun is then the already defined one.
+      account_info_stack.remove (account_info_stack.get_visible_child ());
+      account_list.remove (account_list.get_selected_row ());
+      GLib.List<weak Widget> entries = account_list.get_children ();
+      foreach (var entry in entries) {
+        if (((AccountListEntry)entry).screen_name == acc.screen_name) {
+          account_list.select_row ((Gtk.ListBoxRow)entry);
+          break;
+        }
+      }
     }
   }
 

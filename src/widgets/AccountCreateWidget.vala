@@ -21,7 +21,7 @@ using Gtk;
 // TODO: If the account is open in a MainWindow instance, either close that window or
 //       diable the remove button
 [GtkTemplate (ui = "/org/baedert/corebird/ui/account-create-widget.ui")]
-class AccountCreateWidget : Gtk.Overlay {
+class AccountCreateWidget : Gtk.Box {
   [GtkChild]
   private Entry pin_entry;
   [GtkChild]
@@ -55,6 +55,7 @@ class AccountCreateWidget : Gtk.Overlay {
       acc.proxy.access_token("oauth/access_token", pin_entry.get_text());
     } catch (GLib.Error e) {
       critical (e.message);
+      progress_spinner.hide ();
       result_received (false, acc);
       return;
     }
@@ -74,15 +75,14 @@ class AccountCreateWidget : Gtk.Overlay {
       }
       var root = parser.get_root ().get_object ();
       string screen_name = root.get_string_member ("screen_name");
-
+      message ("Checking for %s", screen_name);
       unowned GLib.SList<Account> current_accounts = Account.list_accounts ();
       foreach (var a in current_accounts) {
         if (a.screen_name == screen_name) {
-          break;
-        }
+          result_received (false, a);
           critical ("Account is already in use");
-          // TODO: Show a dialog here
-          //       Remove the used AccountCreateWidget again.
+          return;
+        }
       }
 
       acc.query_user_info_by_scren_name.begin (screen_name, (obj, res) => {

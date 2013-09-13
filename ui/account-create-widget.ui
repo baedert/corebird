@@ -1,62 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.15.2 on Fri Sep 13 21:59:02 2013 -->
+<!-- Generated with glade 3.15.3 on Sat Sep 14 01:26:47 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.10 -->
-  <template class="AccountCreateWidget" parent="GtkOverlay">
+  <template class="AccountCreateWidget" parent="GtkBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
+    <property name="orientation">vertical</property>
+    <property name="spacing">5</property>
     <child>
-      <object class="GtkGrid" id="grid1">
+      <object class="GtkBox" id="box2">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <child>
-          <object class="GtkLabel" id="label1">
+          <object class="GtkLabel" id="label4">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="hexpand">False</property>
-            <property name="vexpand">True</property>
-            <property name="xalign">0.94999998807907104</property>
+            <property name="halign">end</property>
+            <property name="margin_right">12</property>
+            <property name="hexpand">True</property>
             <property name="label" translatable="yes">PIN:</property>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">0</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
           </packing>
         </child>
         <child>
           <object class="GtkEntry" id="pin_entry">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="margin_right">10</property>
             <property name="hexpand">True</property>
-            <property name="vexpand">True</property>
           </object>
           <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">0</property>
-            <property name="width">2</property>
-            <property name="height">1</property>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
           </packing>
         </child>
         <child>
+          <object class="GtkSpinner" id="progress_spinner">
+            <property name="width_request">20</property>
+            <property name="can_focus">False</property>
+            <property name="halign">start</property>
+            <property name="margin_left">10</property>
+            <property name="margin_right">10</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkBox" id="box3">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
           <object class="GtkButton" id="request_pin_button">
-            <property name="label" translatable="yes">Request Pin</property>
+            <property name="label" translatable="yes">Request PIN</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <property name="valign">start</property>
-            <property name="margin_left">10</property>
-            <property name="margin_right">10</property>
-            <property name="vexpand">True</property>
+            <property name="halign">end</property>
+            <property name="margin_right">6</property>
+            <property name="hexpand">True</property>
             <signal name="clicked" handler="request_pin_button_clicked" swapped="no"/>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">1</property>
-            <property name="width">2</property>
-            <property name="height">1</property>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
           </packing>
         </child>
         <child>
@@ -65,29 +86,89 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <property name="valign">start</property>
-            <property name="margin_left">10</property>
-            <property name="margin_right">10</property>
-            <property name="vexpand">True</property>
+            <property name="halign">start</property>
+            <property name="margin_left">6</property>
+            <property name="hexpand">True</property>
             <signal name="clicked" handler="confirm_button_clicked" swapped="no"/>
           </object>
           <packing>
-            <property name="left_attach">2</property>
-            <property name="top_attach">1</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
           </packing>
         </child>
       </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">1</property>
+      </packing>
     </child>
-    <child type="overlay">
-      <object class="GtkSpinner" id="progress_spinner">
+    <child>
+      <object class="GtkInfoBar" id="infobar1">
+        <property name="app_paintable">True</property>
         <property name="can_focus">False</property>
-        <property name="margin_left">20</property>
-        <property name="margin_right">20</property>
-        <property name="margin_top">20</property>
-        <property name="margin_bottom">20</property>
+        <property name="valign">start</property>
+        <property name="message_type">error</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox" id="infobar-action_area2">
+            <property name="can_focus">False</property>
+            <property name="spacing">6</property>
+            <property name="layout_style">end</property>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child internal-child="content_area">
+          <object class="GtkBox" id="infobar-content_area2">
+            <property name="can_focus">False</property>
+            <property name="spacing">16</property>
+            <child>
+              <object class="GtkLabel" id="label5">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Wrong PIN. Try again.</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
       </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">2</property>
+      </packing>
     </child>
   </template>
 </interface>
