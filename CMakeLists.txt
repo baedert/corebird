@@ -133,6 +133,7 @@ set (VALA_SOURCE
   src/window/AboutDialog.vala
   src/window/ImageDialog.vala
   src/window/SettingsDialog.vala
+  src/window/RemoveAccountDialog.vala
   src/util/UIBuilder.vala
   src/util/Utils.vala
   src/util/Benchmark.vala

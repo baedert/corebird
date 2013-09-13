@@ -111,18 +111,12 @@ class SettingsDialog : Gtk.Dialog {
       Account.remove_account (DUMMY_SCREEN_NAME);
       add_account_button.sensitive = true;
     } else {
-      // TODO: Show confirmation dialog
-      var confirm_dialog = new Gtk.MessageDialog (this, DialogFlags.MODAL,
-                                                  MessageType.QUESTION,
-                                                  ButtonsType.YES_NO,
-                                       _("Do you really want to remove that account?"));
-      confirm_dialog.response.connect((id) => {
-        if (id == ResponseType.YES)
-          real_remove_account (entry);
-        else
-          confirm_dialog.destroy ();
+      var remove_dialog = new RemoveAccountDialog ();
+      remove_dialog.remove_clicked.connect (() => {
+        real_remove_account (entry);
+        remove_dialog.destroy ();
       });
-      confirm_dialog.show ();
+      remove_dialog.show ();
     }
   }
 
