@@ -31,7 +31,7 @@ class Database {
         return;
       }
       db.exec (sql_content);
-      debug ("Executed init file '%s' for database '%s'", next_version_file);
+      debug ("Executed init file '%s' for database '%s'", next_version_file, filename);
     } else {
       debug ("Tried to apply sql file '%s' for database '%s', but it does not exist.",
                 next_version_file, filename);
