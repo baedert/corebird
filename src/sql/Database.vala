@@ -6,7 +6,7 @@ namespace Sql {
   public const string ACCOUNTS_INIT_FILE = DATADIR + "/sql/accounts/Create.%d.sql";
 
   public const int STOP     = -1;
-  public const int CONTINUE = 0;
+  public const int CONTINUE =  0;
 
 class Database {
   private Sqlite.Database db;
@@ -24,13 +24,17 @@ class Database {
     if (FileUtils.test (next_version_file, FileTest.EXISTS)) {
       string sql_content;
       try {
-      FileUtils.get_contents (next_version_file, out sql_content);
+        message ("Applyling file '%s'", next_version_file);
+        FileUtils.get_contents (next_version_file, out sql_content);
       } catch (GLib.FileError e) {
         critical (e.message);
         return;
       }
       db.exec (sql_content);
-      message ("Executed init file %s", next_version_file);
+      debug ("Executed init file '%s' for database '%s'", next_version_file);
+    } else {
+      debug ("Tried to apply sql file '%s' for database '%s', but it does not exist.",
+                next_version_file, filename);
     }
   }
 

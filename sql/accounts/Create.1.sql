@@ -1,6 +1,6 @@
 
 
-PRAGMA user_version = 0;
+PRAGMA user_version = 1;
 
 -- SQL schema for an account database
 CREATE TABLE IF NOT EXISTS `common`(
