@@ -95,6 +95,7 @@ class AccountCreateWidget : Gtk.Box {
         acc.save_info();
         acc.db.exec ("INSERT INTO `common`(token, token_secret) VALUES ('%s', '%s');"
                      .printf (acc.proxy.token, acc.proxy.token_secret));
+        acc.init_proxy (true, true);
         // TODO: Insert account into app menua
         progress_spinner.hide ();
         result_received (true, acc);

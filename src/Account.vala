@@ -19,7 +19,7 @@
 class Account : GLib.Object {
   public int64 id                 {public get; private set;}
   public Sql.Database db          {public get; private set;}
-  public string screen_name       {public get; private set;}
+  public string screen_name       {public get; public  set;}
   public string name              {public get; private set;}
   public string avatar_url        {public get; public  set;}
   public Gdk.Pixbuf avatar_small  {public get; private set;}
@@ -51,9 +51,11 @@ class Account : GLib.Object {
    *
    * @param load_secrets If set to true, the token and token_secret will be loaded
    *                     from the account's database.
+   * @param force        If set to true, we will simply force to create a new
+   *                     RestProxy object.
    */
-  public void init_proxy (bool load_secrets = true) {
-    if (proxy != null)
+  public void init_proxy (bool load_secrets = true, bool force = false) {
+    if (proxy != null && !force)
       return;
     this.proxy = new Rest.OAuthProxy (Utils.decode (Utils.CONSUMER_KEY),
                                       Utils.decode (Utils.CONSUMER_SECRET),
@@ -112,6 +114,7 @@ class Account : GLib.Object {
       var root = parser.get_root ().get_object ();
       this.id = root.get_int_member ("id");
       this.name = root.get_string_member ("name");
+      this.screen_name = root.get_string_member ("screen_name");
       string avatar_url = root.get_string_member ("profile_image_url");
       update_avatar.begin (avatar_url);
       query_user_info_by_scren_name.callback();

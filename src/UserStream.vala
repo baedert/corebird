@@ -32,9 +32,6 @@ enum StreamMessageType {
 }
 
 
-// TODO: Retweets(other user retweet the user's tweet) are
-//       recognized as mentions(and...tweets?)
-
 class UserStream : Object {
   private static const int TIMEOUT_INTERVAL         = 45*1000;
   private Rest.OAuthProxy proxy;
