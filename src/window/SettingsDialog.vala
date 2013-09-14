@@ -146,19 +146,15 @@ class SettingsDialog : Gtk.Dialog {
       account_info_stack.add_named (acc_widget, acc.screen_name);
       account_info_stack.set_visible_child_name (acc.screen_name);
       account_list.remove (account_list.get_selected_row ());
-      account_list.add (new AccountListEntry (acc));
+      var new_entry = new AccountListEntry (acc);
+      account_list.add (new_entry);
+      account_list.select_row (new_entry);
     } else {
       // In this case, the account was already present so we just remove the item again
       // the given accoun is then the already defined one.
       account_info_stack.remove (account_info_stack.get_visible_child ());
       account_list.remove (account_list.get_selected_row ());
-      GLib.List<weak Widget> entries = account_list.get_children ();
-      foreach (var entry in entries) {
-        if (((AccountListEntry)entry).screen_name == acc.screen_name) {
-          account_list.select_row ((Gtk.ListBoxRow)entry);
-          break;
-        }
-      }
+      select_account (acc.screen_name);
     }
   }
 
@@ -197,5 +193,15 @@ class SettingsDialog : Gtk.Dialog {
       acc_window.close ();
     }
 
+  }
+
+  private void select_account (string screen_name) {
+    GLib.List<weak Widget> entries = account_list.get_children ();
+    foreach (var entry in entries) {
+      if (((AccountListEntry)entry).screen_name == screen_name) {
+        account_list.select_row ((Gtk.ListBoxRow)entry);
+        break;
+      }
+    }
   }
 }
