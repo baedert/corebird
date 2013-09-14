@@ -35,8 +35,7 @@ class AccountCreateWidget : Gtk.Box {
     this.acc = acc;
   }
 
-  [GtkCallback]
-  private void request_pin_button_clicked () {
+  public void open_pin_request_site () {
     acc.init_proxy (false);
     try {
       acc.proxy.request_token ("oauth/request_token", "oob");

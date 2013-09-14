@@ -98,6 +98,7 @@ class SettingsDialog : Gtk.Dialog {
     account_info_stack.add_named (create_widget, DUMMY_SCREEN_NAME);
     row.show_all ();
     account_list.select_row (row);
+    create_widget.open_pin_request_site ();
 
     add_account_button.sensitive = false;
   }
