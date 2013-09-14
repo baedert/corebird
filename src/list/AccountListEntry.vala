@@ -34,7 +34,10 @@ class AccountListEntry : Gtk.ListBoxRow {
   public AccountListEntry (Account account) {
     this.account = account;
     screen_name_label.label = account.screen_name;
-    avatar_image.pixbuf = account.avatar_small;
+    if (account.avatar_small == null)
+      avatar_image.pixbuf = Twitter.no_avatar;
+    else
+      avatar_image.pixbuf = account.avatar_small;
     avatar_change_id = account.notify["avatar-small"].connect(() => {
       avatar_image.pixbuf = account.avatar_small;
     });
