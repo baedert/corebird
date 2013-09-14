@@ -43,5 +43,7 @@ class AccountInfoWidget : Gtk.Grid {
   [GtkCallback]
   private void open_window_clicked () {
     ((Corebird)application).add_window_for_screen_name (account.screen_name);
+    open_window_button.sensitive = false;
+    //TODO: If the window gets closed, we should enable the button again.
   }
 }
