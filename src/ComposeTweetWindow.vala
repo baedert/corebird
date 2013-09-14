@@ -19,20 +19,24 @@
 using Gtk;
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/compose-window.ui")]
-class ComposeTweetWindow : Gtk.Window {
+class ComposeTweetWindow : Gtk.ApplicationWindow {
   private static const int MAX_TWEET_LENGTH = 140;
   [GtkChild]
   private Gtk.Image avatar_image;
   [GtkChild]
   private Gtk.Button add_image_button;
+//  [GtkChild]
+//  private Gtk.Grid main_grid;
   [GtkChild]
-  private Gtk.Grid main_grid;
+  private Gtk.Box content_box;
   [GtkChild]
   private Gtk.TextView tweet_text;
   [GtkChild]
   private Gtk.Label length_label;
   [GtkChild]
   private Gtk.Button send_button;
+  [GtkChild]
+  private Gtk.Box left_box;
   private PixbufButton media_image = new PixbufButton ();
   private string media_uri;
   private uint media_count = 0;
@@ -53,7 +57,7 @@ class ComposeTweetWindow : Gtk.Window {
 
     if (answer_to != null) {
       TweetListEntry answer_entry = new TweetListEntry (answer_to, (MainWindow)parent, acc);
-      main_grid.attach (answer_entry, 0, 0, 4, 1);
+      content_box.pack_start (answer_entry, false, true);
     }
 
     media_image.set_halign(Align.CENTER);
@@ -65,7 +69,8 @@ class ComposeTweetWindow : Gtk.Window {
       if(media_count <= Twitter.get_max_media_per_upload())
         add_image_button.set_sensitive(true);
     });
-    main_grid.attach (media_image, 0, 1, 1, 1);
+
+    left_box.pack_end (media_image, false, true);
 
     // Doesn't work at the moment
     add_image_button.sensitive = false;

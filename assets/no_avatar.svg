@@ -15,7 +15,10 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="no_avatar.svg">
+   sodipodi:docname="no_avatar.svg"
+   inkscape:export-filename="/home/baedert/Code/Vala/Corebird/assets/no_avatar.png"
+   inkscape:export-xdpi="3.2328427"
+   inkscape:export-ydpi="3.2328427">
   <defs
      id="defs4">
     <linearGradient
@@ -83,7 +86,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>

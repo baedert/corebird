@@ -114,7 +114,7 @@ class TweetInfoPage : IPage , ScrollWidget {
 
   [GtkCallback]
   private void reply_button_clicked_cb () {
-    message ("reply!");
+
   }
 
   [GtkCallback]
