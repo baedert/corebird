@@ -54,15 +54,12 @@ class MainWindow : ApplicationWindow {
   public MainWindow(Gtk.Application app, Account? account = null){
     GLib.Object (application: app);
     set_default_size (480, 700);
-    this.set_icon_name("corebird");
     this.destroy.connect (window_destroy_cb);
     this.account = account;
 
     if (account != null) {
       account.init_proxy ();
-      account.query_user_info_by_scren_name.begin (account.screen_name, (obj, res) => {
-        account.load_avatar ();
-      });
+      account.query_user_info_by_scren_name.begin (account.screen_name, account.load_avatar);
       this.set_title ("Corebird(@%s)".printf (account.screen_name));
       this.set_role ("corebird-"+account.screen_name);
       var acc_menu = (GLib.Menu)Corebird.account_menu;
