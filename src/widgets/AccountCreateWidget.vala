@@ -18,14 +18,16 @@
 
 using Gtk;
 
-// TODO: If the account is open in a MainWindow instance, either close that window or
-//       diable the remove button
 [GtkTemplate (ui = "/org/baedert/corebird/ui/account-create-widget.ui")]
 class AccountCreateWidget : Gtk.Box {
   [GtkChild]
   private Entry pin_entry;
   [GtkChild]
   private Spinner progress_spinner;
+  [GtkChild]
+  private Label error_label;
+  [GtkChild]
+  private InfoBar error_bar;
   private unowned Account acc;
   public signal void result_received (bool result, Account acc);
 
@@ -55,8 +57,10 @@ class AccountCreateWidget : Gtk.Box {
       acc.proxy.access_token("oauth/access_token", pin_entry.get_text());
     } catch (GLib.Error e) {
       critical (e.message);
+      // We just assume that it was the wrong code
       progress_spinner.hide ();
-      result_received (false, acc);
+      error_label.label = _("Wrong PIN");
+      error_bar.show ();
       return;
     }
 
