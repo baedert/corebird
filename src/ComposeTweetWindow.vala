@@ -116,6 +116,12 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     });
     //Let the text view immediately grab the keyboard focus
     tweet_text.grab_focus ();
+
+    AccelGroup ag = new AccelGroup ();
+    ag.connect (Gdk.Key.Escape, 0, AccelFlags.LOCKED,
+        () => {this.destroy (); return true;});
+
+    this.add_accel_group (ag);
   }
 
   private void recalc_tweet_length () {
