@@ -21,12 +21,15 @@ using Gtk;
 [GtkTemplate (ui = "/org/baedert/corebird/ui/compose-window.ui")]
 class ComposeTweetWindow : Gtk.ApplicationWindow {
   private static const int MAX_TWEET_LENGTH = 140;
+  public enum Mode {
+    NORMAL,
+    REPLY,
+    QUOTE
+  }
   [GtkChild]
   private Gtk.Image avatar_image;
   [GtkChild]
   private Gtk.Button add_image_button;
-//  [GtkChild]
-//  private Gtk.Grid main_grid;
   [GtkChild]
   private Gtk.Box content_box;
   [GtkChild]
@@ -44,20 +47,34 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   private unowned Tweet answer_to;
 
 
-  public ComposeTweetWindow(Window? parent, Account acc, Tweet? answer_to = null,
+  public ComposeTweetWindow(Window? parent, Account acc,
+                            Tweet? answer_to = null,
+                            Mode mode = Mode.NORMAL,
                             Gtk.Application? app = null) {
+    this.set_show_menubar (false);
     this.account = acc;
     this.answer_to = answer_to;
     avatar_image.set_from_pixbuf (acc.avatar);
     length_label.label = MAX_TWEET_LENGTH.to_string ();
+    tweet_text.buffer.changed.connect (recalc_tweet_length);
 
     if (parent != null) {
       this.set_transient_for (parent);
     }
 
-    if (answer_to != null) {
+    if (mode != Mode.NORMAL) {
       TweetListEntry answer_entry = new TweetListEntry (answer_to, (MainWindow)parent, acc);
       content_box.pack_start (answer_entry, false, true);
+    }
+
+    if (mode == Mode.REPLY) {
+      tweet_text.buffer.text = "@%s ".printf (answer_to.screen_name);
+    } else if (mode == Mode.QUOTE) {
+      tweet_text.buffer.text = " RT @%s \"%s\"".printf (answer_to.screen_name,
+                                                        answer_to.text);
+      TextIter start_iter;
+      tweet_text.buffer.get_start_iter (out start_iter);
+      tweet_text.buffer.place_cursor (start_iter);
     }
 
     media_image.set_halign(Align.CENTER);
@@ -96,9 +113,8 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
      message (lookback);
 
     });
-    tweet_text.buffer.changed.connect (recalc_tweet_length);
-
-
+    //Let the text view immediately grab the keyboard focus
+    tweet_text.grab_focus ();
   }
 
   private void recalc_tweet_length () {

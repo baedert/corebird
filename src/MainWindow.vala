@@ -136,7 +136,9 @@ class MainWindow : ApplicationWindow {
     new_tweet_button.relief = ReliefStyle.NONE;
     new_tweet_button.image = new Gtk.Image.from_icon_name ("document-new", IconSize.MENU);
     new_tweet_button.clicked.connect( () => {
-      var cw = new ComposeTweetWindow(this, account, null, get_application ());
+      var cw = new ComposeTweetWindow(this, account, null,
+                                      ComposeTweetWindow.Mode.NORMAL,
+                                      get_application ());
       cw.show();
     });
 
