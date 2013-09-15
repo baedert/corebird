@@ -271,9 +271,9 @@ namespace TweetUtils {
 
     foreach (string s in words) {
       if (s.has_prefix ("http://") || s.has_prefix ("www."))
-        length += 22; //TODO: Get this from Twitter
+        length += Twitter.short_url_length;
       else if (s.has_prefix ("https://"))
-        length += 23; //TODO: Get this from Twitter
+        length += Twitter.short_url_length_https;
       else
         length += s.char_count ();
     }

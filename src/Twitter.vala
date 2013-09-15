@@ -21,8 +21,8 @@ using Gee;
 class Twitter {
   private static int max_media_per_upload;
   private static int characters_reserved_per_media;
-  private static int short_url_length;
-  private static int short_url_length_https;
+  public static int short_url_length         { public get; private set; default = 22;}
+  public static int short_url_length_https   { public get; private set; default = 23;}
   private static int photo_size_limit;
   public static Gdk.Pixbuf no_avatar;
   public static Gdk.Pixbuf no_banner;
@@ -120,11 +120,5 @@ class Twitter {
   }
   public static int get_photo_size_limit(){
     return photo_size_limit;
-  }
-  public static int get_short_url_length(){
-    return short_url_length;
-  }
-  public static int get_short_url_length_https(){
-    return short_url_length_https;
   }
 }
