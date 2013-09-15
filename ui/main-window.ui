@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.15.3 on Sat Sep 14 12:48:29 2013 -->
+<!-- Generated with glade 3.15.3 on Sun Sep 15 02:18:52 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.10 -->
   <template class="MainWindow" parent="GtkApplicationWindow">
     <property name="can_focus">False</property>
+    <property name="icon_name">corebird</property>
     <child>
       <object class="GtkBox" id="box1">
         <property name="visible">True</property>
