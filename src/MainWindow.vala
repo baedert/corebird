@@ -85,12 +85,12 @@ class MainWindow : ApplicationWindow {
     headerbar.pack_start (new_tweet_button);
     set_titlebar (headerbar);
 
-    stack.transition_duration = Settings.get_animation_duration();
+    stack.transition_duration = Settings.get_animation_duration ();
 
-    pages[0] = new HomeTimeline(PAGE_STREAM);
-    pages[1] = new MentionsTimeline(PAGE_MENTIONS);
-    pages[2] = new DMThreadsPage(PAGE_DM_THREADS);
-    pages[3] = new SearchPage(PAGE_SEARCH);
+    pages[0] = new HomeTimeline (PAGE_STREAM);
+    pages[1] = new MentionsTimeline (PAGE_MENTIONS);
+    pages[2] = new DMThreadsPage (PAGE_DM_THREADS);
+    pages[3] = new SearchPage (PAGE_SEARCH);
     pages[4] = new ProfilePage (PAGE_PROFILE, this, account);
     pages[5] = new TweetInfoPage (PAGE_TWEET_INFO);
     pages[6] = new DMPage (PAGE_DM);
@@ -135,12 +135,7 @@ class MainWindow : ApplicationWindow {
     new_tweet_button.always_show_image = true;
     new_tweet_button.relief = ReliefStyle.NONE;
     new_tweet_button.image = new Gtk.Image.from_icon_name ("document-new", IconSize.MENU);
-    new_tweet_button.clicked.connect( () => {
-      var cw = new ComposeTweetWindow(this, account, null,
-                                      ComposeTweetWindow.Mode.NORMAL,
-                                      get_application ());
-      cw.show();
-    });
+    new_tweet_button.clicked.connect(show_compose_window);
 
     account.load_avatar ();
     avatar_image.pixbuf = account.avatar_small;
@@ -179,8 +174,18 @@ class MainWindow : ApplicationWindow {
     ag.connect (Gdk.Key.Forward, 0, AccelFlags.LOCKED,
         () => {switch_page (PAGE_NEXT); return true;});
 
+    ag.connect (Gdk.Key.t, Gdk.ModifierType.CONTROL_MASK, AccelFlags.LOCKED,
+        () => { show_compose_window (); return true;});
+
 
     this.add_accel_group(ag);
+  }
+
+  private void show_compose_window () {
+    var cw = new ComposeTweetWindow(this, account, null,
+                                    ComposeTweetWindow.Mode.NORMAL,
+                                    get_application ());
+    cw.show();
   }
 
   /**
