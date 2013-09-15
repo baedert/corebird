@@ -95,11 +95,14 @@ class ProfilePage : ScrollWidget, IPage {
     Corebird.db.exec (query_string, (n_cols, vals) => {
       /* If we get inside this block, there is already some data in the
         DB we can use. */
-        avatar_image.pixbuf = new Gdk.Pixbuf.from_file (Utils.user_file ("/assets/avatars/"+vals[7]));
+        try {
+          avatar_image.pixbuf = new Gdk.Pixbuf.from_file (Utils.user_file ("/assets/avatars/"+vals[7]));
+        } catch (GLib.Error e) {
+          warning (e.message);
+        }
 
       set_data(vals[2], vals[1], vals[9], vals[10], vals[3],
                int.parse (vals[4]), int.parse (vals[5]), int.parse (vals[6]));
-      //follow_button.active = bool.parse (vals[12]);
       set_follow_button_state (bool.parse (vals[12]));
       string banner_name = vals[13];
       debug("banner_name: %s", banner_name);
@@ -151,10 +154,20 @@ class ProfilePage : ScrollWidget, IPage {
 
       if(!FileUtils.test(avatar_on_disk, FileTest.EXISTS)){
         Utils.download_file_async.begin(avatar_url, avatar_on_disk,
-          () => { avatar_image.pixbuf = new Gdk.Pixbuf.from_file (avatar_on_disk);
+          () => {
+            try {
+              avatar_image.pixbuf = new Gdk.Pixbuf.from_file (avatar_on_disk);
+            } catch (GLib.Error e) {
+              warning (e.message);
+            }
           });
-      }else
-        avatar_image.pixbuf = new Gdk.Pixbuf.from_file (avatar_on_disk);
+      }else {
+        try {
+          avatar_image.pixbuf = new Gdk.Pixbuf.from_file (avatar_on_disk);
+        } catch (GLib.Error e) {
+          warning (e.message);
+        }
+      }
 
       string name        = root.get_string_member("name");
              screen_name = root.get_string_member("screen_name");

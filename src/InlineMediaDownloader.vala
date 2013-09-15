@@ -121,7 +121,6 @@ namespace InlineMediaDownloader {
         var media_out_stream = File.new_for_path (path).create (FileCreateFlags.REPLACE_DESTINATION);
         var thumb_out_stream = File.new_for_path (thumb_path).create (FileCreateFlags.REPLACE_DESTINATION);
 
-//        media_out_stream.write_async.begin (_msg.response_body.data);
         // TODO: I guess this would be better if async
         media_out_stream.write_all (_msg.response_body.data, null, null);
         if(ext == "gif"){
@@ -141,10 +140,16 @@ namespace InlineMediaDownloader {
                                OutputStream thumb_out_stream,
                                string path, string thumb_path) {
     pixbuf_animation_from_stream_async.begin (in_stream, null, (obj, res) => {
-      var anim = pixbuf_animation_from_stream_async.end (res);
+      Gdk.PixbufAnimation anim = null;
+      try {
+        pixbuf_animation_from_stream_async.end (res);
+      } catch (GLib.Error e) {
+        warning (e.message);
+        return;
+      }
       var thumb = anim.get_static_image().scale_simple(THUMB_SIZE, THUMB_SIZE,
                     Gdk.InterpType.TILES);
-      thumb.save_to_stream_async.begin (thumb_out_stream, "png",null, () => {});
+      thumb.save_to_stream_async.begin (thumb_out_stream, "png", null, () => {});
       fire_media_added(t, path, thumb, thumb_path);
     });
   }
@@ -155,7 +160,13 @@ namespace InlineMediaDownloader {
                                   OutputStream thumb_out_stream,
                                   string path, string thumb_path) {
     pixbuf_from_stream_async.begin (in_stream, null, (obj, res) => {
-      var pic = pixbuf_from_stream_async.end (res);
+      Gdk.Pixbuf pic = null;
+      try {
+        pic = pixbuf_from_stream_async.end (res);
+      } catch (GLib.Error e) {
+        warning (e.message);
+        return;
+      }
       int x, y, w, h;
       calc_thumb_rect (pic.get_width (), pic.get_height (), out x, out y, out w, out h);
       var big_thumb = new Gdk.Pixbuf (Gdk.Colorspace.RGB, true, 8, w, h);
