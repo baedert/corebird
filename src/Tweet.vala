@@ -221,4 +221,13 @@ class Tweet : GLib.Object {
     return TweetUtils.get_formatted_text (this.text, urls);
   }
 
+  /**
+   * Returns the text of this tweet, with its long urls.
+   * Twitter automatically shortens them.
+   *
+   * @return The tweet's text with long urls
+   */
+  public string get_real_text () {
+    return TweetUtils.get_real_text (this.text, urls);
+  }
 }
