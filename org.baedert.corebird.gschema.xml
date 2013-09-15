@@ -64,11 +64,5 @@
       <summary>-</summary>
       <description>-</description>
     </key>
-    <key name="play-gifs" type="b">
-      <default>true</default>
-      <summary>Whether animated gifs should be downloaded played</summary>
-      <description></description>
-    </key>
-
   </schema>
 </schemalist>
