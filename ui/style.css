@@ -139,6 +139,7 @@
   text-shadow: 1px 1px 1px #000,
          0px 0px 2px #000;
   -GtkWidget-link-color: #EEE;
+  font-size: 2.0em;
 }
 
 .profile-header .data {
