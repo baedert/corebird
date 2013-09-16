@@ -114,7 +114,9 @@ class TweetInfoPage : IPage , ScrollWidget {
 
   [GtkCallback]
   private void reply_button_clicked_cb () {
-
+    ComposeTweetWindow ctw = new ComposeTweetWindow(main_window, this.account, this.tweet,
+                                                    ComposeTweetWindow.Mode.REPLY);
+    ctw.show ();
   }
 
   [GtkCallback]
