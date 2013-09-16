@@ -52,7 +52,7 @@ class ProfilePage : ScrollWidget, IPage {
   [GtkChild]
   private Button follow_button;
   [GtkChild]
-  private Gtk.Stack bottom_stack;
+  private Gtk.ListBox tweet_list;
   private bool following;
   private int active_page       = 0;
   private int64 user_id;
@@ -323,41 +323,13 @@ class ProfilePage : ScrollWidget, IPage {
    * Returns the banner name for the given user by user_id and screen_name.
    * This is useful since both of them might be used for the banner name.
    */
-  private string get_banner_name(int64 user_id) {
+  private string get_banner_name (int64 user_id) {
     return user_id.to_string()+".png";
   }
 
-  private bool handle_uri(string uri){
-    uri = uri._strip();
-    string term = uri.substring(1);
-
-    if(uri.has_prefix("@")){
-      main_window.switch_page(MainWindow.PAGE_PROFILE,
-                         int64.parse (term));
-      return true;
-    }else if(uri.has_prefix("#")){
-      main_window.switch_page(MainWindow.PAGE_SEARCH, uri);
-      return true;
-    }
-    return false;
+  private bool handle_uri (string uri) {
+    return TweetUtils.activate_link (uri, main_window);
   }
-
-  /**
-   * Switch the page to the one with the given ID
-   * @param page The page to switch to
-   */
-  private void switch_page(int page) {
-    if(page == active_page)
-      return;
-
-    if(page > active_page)
-      bottom_stack.transition_type = StackTransitionType.SLIDE_LEFT;
-    else
-      bottom_stack.transition_type = StackTransitionType.SLIDE_RIGHT;
-
-    bottom_stack.set_visible_child_name("%d".printf(page));
-  }
-
 
   private void set_follow_button_state (bool following) {
     var sc = follow_button.get_style_context ();
