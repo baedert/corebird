@@ -20,7 +20,6 @@ using Gtk;
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/compose-window.ui")]
 class ComposeTweetWindow : Gtk.ApplicationWindow {
-  private static const int MAX_TWEET_LENGTH = 140;
   public enum Mode {
     NORMAL,
     REPLY,
@@ -55,7 +54,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     this.account = acc;
     this.answer_to = answer_to;
     avatar_image.set_from_pixbuf (acc.avatar);
-    length_label.label = MAX_TWEET_LENGTH.to_string ();
+    length_label.label = Tweet.MAX_LENGTH.to_string ();
     tweet_text.buffer.changed.connect (recalc_tweet_length);
 
     if (parent != null) {
@@ -132,8 +131,8 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
     int length = TweetUtils.calc_tweet_length (text);
 
-    length_label.label = (MAX_TWEET_LENGTH - length).to_string ();
-    if (length > 0 && length <= MAX_TWEET_LENGTH)
+    length_label.label = (Tweet.MAX_LENGTH - length).to_string ();
+    if (length > 0 && length <= Tweet.MAX_LENGTH)
       send_button.sensitive = true;
     else
       send_button.sensitive = false;
