@@ -19,6 +19,7 @@
 using Gtk;
 
 class Tweet : GLib.Object {
+  public static const int MAX_LENGTH = 140;
 
   public static const int TYPE_NORMAL   = 1;
   public static const int TYPE_MENTION  = 2;
