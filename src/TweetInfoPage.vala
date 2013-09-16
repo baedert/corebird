@@ -173,7 +173,12 @@ class TweetInfoPage : IPage , ScrollWidget {
       }
       tweet.load_from_json (parser.get_root (), now);
       Json.Object root_object = parser.get_root ().get_object ();
-      this.following = root_object.get_object_member ("user").get_boolean_member ("following");
+      if (root_object.has_member ("retweeted_status"))
+        this.following = root_object.get_object_member ("retweeted_status")
+                                    .get_object_member ("user").get_boolean_member ("following");
+      else
+        this.following = root_object.get_object_member ("user").get_boolean_member ("following");
+
       string with = root_object.get_string_member ("source");
       with = extract_source (with);
       set_tweet_data (tweet, following, with);
