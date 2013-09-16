@@ -44,11 +44,11 @@ class ProfilePage : ScrollWidget, IPage {
   [GtkChild]
   private Label location_label;
   [GtkChild]
-  private TextButton tweets_button;
+  private Label tweets_label;
   [GtkChild]
-  private TextButton following_button;
+  private Label following_label;
   [GtkChild]
-  private TextButton followers_button;
+  private Label followers_label;
   [GtkChild]
   private Button follow_button;
   [GtkChild]
@@ -63,15 +63,6 @@ class ProfilePage : ScrollWidget, IPage {
     this.main_window = window;
     this.id = id;
     this.button_press_event.connect (button_pressed_event_cb);
-    tweets_button.clicked.connect(() => {
-      switch_page (PAGE_TWEETS);
-    });
-    following_button.clicked.connect(() => {
-      switch_page (PAGE_FOLLOWING);
-    });
-    followers_button.clicked.connect(() => {
-      switch_page (PAGE_FOLLOWERS);
-    });
   }
 
   public void set_user_id(int64 user_id){
@@ -279,15 +270,15 @@ class ProfilePage : ScrollWidget, IPage {
       desc = TweetUtils.get_formatted_text (description, text_urls);
     }
     description_label.set_markup("<big><big><big>%s</big></big></big>".printf(desc));
-    tweets_button.set_markup(
+    tweets_label.set_markup(
       "<big><big><b>%'d</b></big></big>\nTweets"
       .printf(tweets));
 
-    following_button.set_markup(
+    following_label.set_markup(
       "<big><big><b>%'d</b></big></big>\nFollowing"
       .printf(following));
 
-    followers_button.set_markup(
+    followers_label.set_markup(
       "<big><big><b>%'d</b></big></big>\nFollowers"
       .printf(followers));
 

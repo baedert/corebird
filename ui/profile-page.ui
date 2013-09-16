@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.15.2 on Thu Sep 12 00:36:28 2013 -->
+<!-- Generated with glade 3.15.3 on Mon Sep 16 18:34:09 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.10 -->
   <!-- interface-requires corebird 0.0 -->
@@ -163,12 +163,11 @@
                       <class name="profile-header"/>
                     </style>
                     <child>
-                      <object class="TextButton" id="tweets_button">
-                        <property name="label" translatable="yes">button</property>
+                      <object class="GtkLabel" id="tweets_label">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                        <property name="valign">end</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">label</property>
+                        <property name="use_markup">True</property>
                         <style>
                           <class name="data-button"/>
                         </style>
@@ -180,12 +179,11 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="TextButton" id="following_button">
-                        <property name="label" translatable="yes">button</property>
+                      <object class="GtkLabel" id="followers_label">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                        <property name="valign">end</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">button</property>
+                        <property name="use_markup">True</property>
                         <style>
                           <class name="data-button"/>
                         </style>
@@ -197,12 +195,11 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="TextButton" id="followers_button">
-                        <property name="label" translatable="yes">button</property>
+                      <object class="GtkLabel" id="following_label">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                        <property name="valign">end</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">label</property>
+                        <property name="use_markup">True</property>
                         <style>
                           <class name="data-button"/>
                         </style>
