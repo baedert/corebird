@@ -55,6 +55,8 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   private Gtk.Menu more_menu;
   [GtkChild]
   private Gtk.MenuItem more_menu_delete_item;
+  [GtkChild]
+  private Button reply_send_button;
 
 
 
@@ -82,6 +84,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     text_label.label = tweet.get_formatted_text ();
     update_time_delta ();
     reply_entry.text = "@"+tweet.screen_name+" ";
+    reply_entry.max_length = Tweet.MAX_LENGTH;
     if (tweet.is_retweet) {
       rt_label.show ();
       rt_label.label = "RT by "+tweet.retweeted_by;
