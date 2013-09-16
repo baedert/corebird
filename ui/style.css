@@ -144,6 +144,7 @@
 .profile-header .data {
   color: #EEE;
   background-color: alpha(black, 0.55);
+  font-size: 1.8em;
   -GtkWidget-link-color: #EEE;
 }
 
@@ -158,12 +159,6 @@
   padding-right: 8px;
   padding-left: 8px;
 }
-.profile-header .data-button:hover {
-  text-shadow: 0px 1px 1px #FFF;
-  background-color: alpha(black, 0.8);
-}
-
-
 /* Progress-item showed when loading new tweets */
 .progress-item .button {
   background-image: none;

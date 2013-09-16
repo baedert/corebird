@@ -263,13 +263,13 @@ class ProfilePage : ScrollWidget, IPage {
                              int following, int followers,
                              GLib.SList<TweetUtils.Sequence?>? text_urls = null) {
 
-    name_label.set_markup("<big><big><b>%s</b>  @%s</big></big>"
+    name_label.set_markup("<b>%s</b>  @%s"
                           .printf(name, screen_name));
     string desc = description;
     if (text_urls != null) {
       desc = TweetUtils.get_formatted_text (description, text_urls);
     }
-    description_label.set_markup("<big><big><big>%s</big></big></big>".printf(desc));
+    description_label.label = desc;
     tweets_label.set_markup(
       "<big><big><b>%'d</b></big></big>\nTweets"
       .printf(tweets));
@@ -282,17 +282,16 @@ class ProfilePage : ScrollWidget, IPage {
       "<big><big><b>%'d</b></big></big>\nFollowers"
       .printf(followers));
 
-    if(location != null && location != ""){
+    if (location != null && location != "") {
       location_label.visible = true;
-      location_label.set_markup("<big><big>%s</big></big>".printf(location));
-    }else
+      location_label.label = location;
+    } else
       location_label.visible = false;
 
-    if(url != null && url != ""){
+    if (url != null && url != "") {
       url_label.visible = true;
-      url_label.set_markup("<big><big><a href='%s'>%s</a></big></big>"
-                         .printf(url, url));
-    }else
+      url_label.set_markup ("<a href='%s'>%s</a>".printf (url, url));
+    } else
       url_label.visible = false;
 
   }
@@ -327,7 +326,8 @@ class ProfilePage : ScrollWidget, IPage {
     return user_id.to_string()+".png";
   }
 
-  private bool handle_uri (string uri) {
+  [GtkCallback]
+  private bool activate_link (string uri) {
     return TweetUtils.activate_link (uri, main_window);
   }
 
