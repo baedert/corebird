@@ -114,8 +114,10 @@ class Tweet : GLib.Object {
       if (!status.get_null_member("in_reply_to_status_id"))
         this.reply_id  = status.get_int_member("in_reply_to_status_id");
     }
-    if (status.has_member ("current_user_retweet"))
-      this.my_retweet    = status.get_object_member ("current_user_retweet").get_int_member ("id");
+    if (status.has_member ("current_user_retweet")) {
+      this.my_retweet = status.get_object_member ("current_user_retweet").get_int_member ("id");
+      this.retweeted  = true;
+    }
 
 
     this.avatar_name = Utils.get_avatar_name(this.avatar_url);
