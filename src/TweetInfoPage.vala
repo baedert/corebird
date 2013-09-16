@@ -129,7 +129,7 @@ class TweetInfoPage : IPage , ScrollWidget {
     call.add_param ("id", tweet.user_id.to_string ());
     call.invoke_async.begin (null, (obj, res) => {
       try {
-      set_follow_button_state (!following);
+        set_follow_button_state (!following);
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
         critical (e.message);
@@ -137,6 +137,10 @@ class TweetInfoPage : IPage , ScrollWidget {
     });
   }
 
+  [GtkCallback]
+  private bool link_activated_cb (string uri) {
+    return TweetUtils.activate_link (uri, main_window);
+  }
 
 
   /**

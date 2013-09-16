@@ -320,18 +320,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
 
   [GtkCallback]
   private bool link_activated_cb (string uri) {
-    uri = uri._strip();
-    string term = uri.substring(1);
-
-    if(uri.has_prefix("@")){
-      window.switch_page(MainWindow.PAGE_PROFILE,
-                         int64.parse (term));
-      return true;
-    }else if(uri.has_prefix("#")){
-      window.switch_page(MainWindow.PAGE_SEARCH, uri);
-      return true;
-    }
-    return false;
+    return TweetUtils.activate_link (uri, window);
   }
 
 

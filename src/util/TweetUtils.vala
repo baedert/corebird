@@ -283,4 +283,20 @@ namespace TweetUtils {
 
     return length;
   }
+
+  bool activate_link (string uri, MainWindow window) {
+    uri = uri._strip();
+    string term = uri.substring(1);
+
+    if(uri.has_prefix("@")){
+      window.switch_page(MainWindow.PAGE_PROFILE,
+                         int64.parse (term));
+      return true;
+    }else if(uri.has_prefix("#")){
+      window.switch_page(MainWindow.PAGE_SEARCH, uri);
+      return true;
+    }
+    return false;
+
+  }
 }
