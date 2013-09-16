@@ -120,6 +120,13 @@ class TweetInfoPage : IPage , ScrollWidget {
   }
 
   [GtkCallback]
+  private void quote_item_activate_cb () {
+    ComposeTweetWindow ctw = new ComposeTweetWindow(main_window, this.account, this.tweet,
+                                                    ComposeTweetWindow.Mode.QUOTE);
+    ctw.show ();
+  }
+
+  [GtkCallback]
   private void follow_button_clicked_cb () {
     var call = account.proxy.new_call();
     if (following)
