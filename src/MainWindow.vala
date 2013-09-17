@@ -38,14 +38,14 @@ class MainWindow : ApplicationWindow {
   private Toolbar left_toolbar;
   [GtkChild]
   private HeaderBar headerbar;
+  [GtkChild]
+  private Gtk.Stack stack;
+  [GtkChild]
+  private Image avatar_image;
   private RadioToolButton dummy_button     = new RadioToolButton(null);
   private IPage[] pages                    = new IPage[7];
   private IntHistory history               = new IntHistory (5);
-  [GtkChild]
-  private Image avatar_image;
   private Button new_tweet_button          = new Button ();
-  [GtkChild]
-  private Gtk.Stack stack;
   private DeltaUpdater delta_updater       = new DeltaUpdater();
   public unowned Account account           {public get; private set;}
   private WarningService warning_service;
