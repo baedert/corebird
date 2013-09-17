@@ -27,6 +27,7 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
   private BadgeRadioToolButton tool_button;
   private bool loading = false;
   public int64 lowest_id {get;set; default = int64.MAX-2;}
+  protected int64 max_id { get; set; default = 0; }
   protected uint tweet_remove_timeout{get;set;}
   private ProgressEntry progress_entry = new ProgressEntry(75);
   public DeltaUpdater delta_updater {get;set;}
@@ -85,6 +86,7 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
 
         unread_count++;
         update_unread_count();
+        this.max_id =  t.id;
 
         if(Settings.notify_new_mentions()) {
           NotificationManager.notify(
@@ -95,6 +97,7 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
         }
       }
     } else if(type == StreamMessageType.FOLLOW) {
+      // XXX I HATE THIS
       NewFollowerEntry follower_entry;
       ITwitterItem first_entry = (ITwitterItem)tweet_list.get_children().first().data;
 

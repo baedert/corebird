@@ -28,6 +28,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
   private bool loading = false;
   public int64 lowest_id {get; set; default = int64.MAX-2;}
   protected uint tweet_remove_timeout{get;set;}
+  protected int64 max_id { get; set; default = 0; }
   private ProgressEntry progress_entry = new ProgressEntry(75);
   public DeltaUpdater delta_updater {get;set;}
 
@@ -82,6 +83,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
 
       unread_count++;
       update_unread_count();
+      this.max_id = t.id;
 
       int stack_size = Settings.get_tweet_stack_count();
       message ("Stack size: %d", stack_size);

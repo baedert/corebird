@@ -23,9 +23,10 @@
 interface ITimeline : Gtk.Widget, IPage {
   public static const int REST = 25;
   /** The lowest id of any tweet in this timeline */
-  protected abstract int64 lowest_id         {get; set;}
-  protected abstract Gtk.ListBox tweet_list  {get; set;}
-  public    abstract int unread_count        {get; set;}
+  protected abstract int64 lowest_id            {get; set;}
+  protected abstract  int64 max_id               {get; set; default = 0;}
+  protected abstract Gtk.ListBox tweet_list     {get; set;}
+  public    abstract int unread_count           {get; set;}
   public    abstract DeltaUpdater delta_updater {get;set;}
 
   public abstract void load_cached();
@@ -42,16 +43,14 @@ interface ITimeline : Gtk.Widget, IPage {
    * @param tweet_type The type of tweets to load
    */
   protected async void load_newest_internal(string function, int tweet_type) {
-    int64 greatest_id = 0;
-
     var call = account.proxy.new_call();
     call.set_function(function);
     call.set_method("GET");
-    call.add_param("count", "20");
-    call.add_param("contributor_details", "true");
+    call.add_param ("count", "20");
+    call.add_param ("contributor_details", "true");
     call.add_param ("include_my_retweet", "true");
-    if(greatest_id > 0)
-      call.add_param("since_id", greatest_id.to_string());
+    if (max_id > 0)
+      call.add_param ("max_id", (max_id - 1).to_string ());
 
     call.invoke_async.begin(null, () => {
       string back = call.get_payload();
