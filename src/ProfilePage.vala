@@ -155,6 +155,8 @@ class ProfilePage : ScrollWidget, IPage {
       }else {
         try {
           avatar_image.pixbuf = new Gdk.Pixbuf.from_file (avatar_on_disk);
+          message ("W/H: %d/%d", avatar_image.get_pixbuf ().get_width (),
+                                 avatar_image.get_pixbuf ().get_height ());
         } catch (GLib.Error e) {
           warning (e.message);
         }
