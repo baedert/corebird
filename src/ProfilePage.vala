@@ -59,6 +59,7 @@ class ProfilePage : ScrollWidget, IPage {
   private int active_page       = 0;
   private int64 user_id;
   private string screen_name; //TODO: Remove
+  private GLib.Cancellable data_cancellable = new GLib.Cancellable ();
 
 
   public ProfilePage(int id, MainWindow window, Account account){
@@ -335,7 +336,7 @@ class ProfilePage : ScrollWidget, IPage {
     return TweetUtils.activate_link (uri, main_window);
   }
 
-  private void set_follow_button_state (bool following) {
+  private void set_follow_button_state (bool following) { //{{{
     var sc = follow_button.get_style_context ();
     if (following) {
       sc.remove_class ("suggested-action");
@@ -347,7 +348,7 @@ class ProfilePage : ScrollWidget, IPage {
       follow_button.label = _("Follow");
     }
     this.following = following;
-  }
+  } //}}}
 
 
 
@@ -359,6 +360,10 @@ class ProfilePage : ScrollWidget, IPage {
     if (user_id == 0)
       return;
     set_user_id(user_id);
+  }
+
+  public void on_leave () {
+
   }
 
 

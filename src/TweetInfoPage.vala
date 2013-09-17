@@ -84,6 +84,10 @@ class TweetInfoPage : IPage , ScrollWidget {
     query_tweet_info ();
   }
 
+  public void on_leave () {
+
+  }
+
 
   [GtkCallback]
   private void favorite_button_toggled_cb () {

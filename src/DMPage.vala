@@ -54,6 +54,10 @@ class DMPage : IPage, IMessageReceiver, Box {
     }
   }
 
+  public void on_leave () {
+
+  }
+
 
   [GtkCallback]
   private void send_button_clicked_cb () {

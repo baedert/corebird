@@ -108,6 +108,10 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     }
   }
 
+  public void on_leave () {
+
+  }
+
   public void load_cached () {
     account.db.exec ("SELECT user_id, screen_name, last_message, last_message_id, avatar_url
                       FROM dm_threads ORDER BY last_message_id",

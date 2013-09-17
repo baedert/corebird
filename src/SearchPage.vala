@@ -70,10 +70,14 @@ class SearchPage : IPage, Box {
   /**
    * see IPage#onJoin
    */
-  public void on_join(int page_id, va_list arg_list){
+  public void on_join (int page_id, va_list arg_list) {
     string term = arg_list.arg<string>();
     if(term != null)
       search_for.begin(term, true);
+  }
+
+  public void on_leave () {
+
   }
 
   public async void search_for(string search_term, bool set_text = false){

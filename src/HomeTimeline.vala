@@ -98,11 +98,15 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
   /**
    * see IPage#onJoin
    */
-  public void on_join(int page_id, va_list arg_list){
+  public void on_join (int page_id, va_list arg_list) {
     if (!inited) {
       load_newest ();
       inited = true;
     }
+  }
+
+  public void on_leave () {
+
   }
 
   public void load_cached() {}

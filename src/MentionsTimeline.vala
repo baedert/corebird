@@ -134,6 +134,11 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
     }
   }
 
+
+  public void on_leave () {
+
+  }
+
   public void load_cached() {
     Corebird.db.exec ("SELECT `sort_factor`, `type`, `data`, `id` FROM cache WHERE
         `type`='%d';".printf(NewFollowerEntry.TYPE), (n_cols, vals) => {
