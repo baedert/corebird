@@ -220,6 +220,9 @@ class MainWindow : ApplicationWindow {
     if (page_id == -1)
       return;
 
+    if (history.current != -1)
+      pages[history.current].on_leave ();
+
     if (push)
       history.push (page_id);
 
