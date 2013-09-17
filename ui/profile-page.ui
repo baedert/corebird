@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.15.3 on Tue Sep 17 23:35:00 2013 -->
+<!-- Generated with glade 3.15.3 on Wed Sep 18 00:11:17 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.10 -->
   <!-- interface-requires corebird 0.0 -->
@@ -110,15 +110,38 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkButton" id="follow_button">
-                            <property name="label" translatable="yes">button</property>
+                          <object class="GtkBox" id="box2">
                             <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="receives_default">True</property>
-                            <property name="halign">start</property>
-                            <property name="valign">start</property>
-                            <property name="margin_top">2</property>
-                            <signal name="clicked" handler="follow_button_clicked_cb" swapped="no"/>
+                            <property name="can_focus">False</property>
+                            <child>
+                              <object class="GtkButton" id="follow_button">
+                                <property name="label" translatable="yes">button</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <property name="halign">start</property>
+                                <property name="valign">start</property>
+                                <property name="margin_top">2</property>
+                                <signal name="clicked" handler="follow_button_clicked_cb" swapped="no"/>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkSpinner" id="progress_spinner">
+                                <property name="width_request">18</property>
+                                <property name="can_focus">False</property>
+                                <property name="margin_left">5</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
                           </object>
                           <packing>
                             <property name="expand">False</property>

@@ -53,6 +53,8 @@ class ProfilePage : ScrollWidget, IPage {
   private Button follow_button;
   [GtkChild]
   private Gtk.ListBox tweet_list;
+  [GtkChild]
+  private Gtk.Spinner progress_spinner;
   private bool following;
   private int active_page       = 0;
   private int64 user_id;
