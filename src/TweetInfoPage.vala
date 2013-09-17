@@ -54,12 +54,6 @@ class TweetInfoPage : IPage , ScrollWidget {
   private Label time_label;
   [GtkChild]
   private Gtk.MenuItem delete_menu_item;
-  [GtkChild]
-  private Gtk.MenuItem report_menu_item;
-  [GtkChild]
-  private Gtk.MenuItem block_menu_item;
-
-
 
   public TweetInfoPage (int id) {
     this.id = id;
@@ -253,15 +247,11 @@ class TweetInfoPage : IPage , ScrollWidget {
     if (tweet.user_id == account.id) {
       follow_button.hide ();
       delete_menu_item.show ();
-      report_menu_item.hide ();
-      block_menu_item.hide ();
       retweet_button.hide ();
     } else {
       set_follow_button_state (following);
       follow_button.show ();
       delete_menu_item.hide ();
-      report_menu_item.show ();
-      block_menu_item.show ();
       retweet_button.show ();
     }
   }
