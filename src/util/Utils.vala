@@ -169,11 +169,14 @@ namespace Utils {
    * @param path The filesystem path to save the file to
    *
    */
-  async void download_file_async(string url, string path) {
+  async void download_file_async(string url, string path, GLib.Cancellable? cancellable = null) {
     var session = new Soup.SessionAsync();
     var msg = new Soup.Message("GET", url);
     GLib.SourceFunc cb = download_file_async.callback;
     session.queue_message(msg, (_s, _msg) => {
+      if (cancellable.is_cancelled ()) {
+        return;
+      }
       try {
         File out_file = File.new_for_path(path);
         var out_stream = out_file.replace(null, false,

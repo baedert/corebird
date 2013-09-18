@@ -96,7 +96,7 @@ class NewFollowerEntry : Gtk.ListBoxRow, ITwitterItem {
 
     PixbufButton avatar_button = new PixbufButton();
     avatar_box.pack_start(avatar_button, false, false);
-    Utils.download_file_async.begin(avatar_url,mini_thumb_path,
+    Utils.download_file_async.begin(avatar_url,mini_thumb_path, null,
     () => {
     // TODO: This sucks
       try {

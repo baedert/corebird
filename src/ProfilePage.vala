@@ -89,11 +89,11 @@ class ProfilePage : ScrollWidget, IPage {
     Corebird.db.exec (query_string, (n_cols, vals) => {
       /* If we get inside this block, there is already some data in the
         DB we can use. */
-        try {
-          avatar_image.pixbuf = new Gdk.Pixbuf.from_file (Utils.user_file ("/assets/avatars/"+vals[7]));
-        } catch (GLib.Error e) {
-          warning (e.message);
-        }
+      try {
+        avatar_image.pixbuf = new Gdk.Pixbuf.from_file (Utils.user_file ("/assets/avatars/"+vals[7]));
+      } catch (GLib.Error e) {
+        warning (e.message);
+      }
 
       set_data(vals[2], vals[1], vals[9], vals[10], vals[3],
                int.parse (vals[4]), int.parse (vals[5]), int.parse (vals[6]));
@@ -116,13 +116,13 @@ class ProfilePage : ScrollWidget, IPage {
   }
 
 
-  private async void load_profile_data (int64 user_id){
+  private async void load_profile_data (int64 user_id) { //{{{
     var call = account.proxy.new_call ();
     call.set_method ("GET");
     call.set_function ("1.1/users/show.json");
     call.add_param ("user_id", user_id.to_string ());
     call.add_param ("include_entities", "false");
-    call.invoke_async.begin (null, (obj, res) => {
+    call.invoke_async.begin (data_cancellable, (obj, res) => {
       try {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
@@ -147,19 +147,16 @@ class ProfilePage : ScrollWidget, IPage {
       string avatar_on_disk = Utils.user_file("assets/avatars/"+avatar_name);
 
       if(!FileUtils.test(avatar_on_disk, FileTest.EXISTS)){
-        Utils.download_file_async.begin(avatar_url, avatar_on_disk,
-          () => {
-            try {
-              avatar_image.pixbuf = new Gdk.Pixbuf.from_file (avatar_on_disk);
-            } catch (GLib.Error e) {
-              warning (e.message);
-            }
-          });
+        Utils.download_file_async.begin(avatar_url, avatar_on_disk, data_cancellable, () => {
+          try {
+            avatar_image.pixbuf = new Gdk.Pixbuf.from_file (avatar_on_disk);
+          } catch (GLib.Error e) {
+            warning (e.message);
+          }
+        });
       }else {
         try {
           avatar_image.pixbuf = new Gdk.Pixbuf.from_file (avatar_on_disk);
-          message ("W/H: %d/%d", avatar_image.get_pixbuf ().get_width (),
-                                 avatar_image.get_pixbuf ().get_height ());
         } catch (GLib.Error e) {
           warning (e.message);
         }
@@ -234,7 +231,7 @@ class ProfilePage : ScrollWidget, IPage {
            $banner_name);");
           // XXX is_following can only be 1 or 0
     });
-  }
+  } //}}}
 
 
   /**
@@ -251,7 +248,7 @@ class ProfilePage : ScrollWidget, IPage {
     string banner_name = get_banner_name (user_id);
     string banner_on_disk = Utils.user_file("assets/banners/"+banner_name);
     if (!FileUtils.test (banner_on_disk, FileTest.EXISTS) || banner_url != saved_banner_url) {
-      Utils.download_file_async .begin (banner_url, banner_on_disk,
+      Utils.download_file_async .begin (banner_url, banner_on_disk, data_cancellable,
           () => {banner_box.set_background (banner_on_disk);});
         debug("Setting the banner name to %s", banner_name);
       Corebird.db.exec (@"UPDATE `profiles` SET `banner_url`='$banner_url',
@@ -266,7 +263,7 @@ class ProfilePage : ScrollWidget, IPage {
   private new void set_data (string name, string screen_name, string? url,
                              string? location, string description, int tweets,
                              int following, int followers,
-                             GLib.SList<TweetUtils.Sequence?>? text_urls = null) {
+                             GLib.SList<TweetUtils.Sequence?>? text_urls = null) { //{{{
 
     name_label.set_markup("<b>%s</b>  @%s"
                           .printf(name, screen_name));
@@ -299,7 +296,7 @@ class ProfilePage : ScrollWidget, IPage {
     } else
       url_label.visible = false;
 
-  }
+  } //}}}
 
   [GtkCallback]
   private void follow_button_clicked_cb () {
@@ -359,11 +356,12 @@ class ProfilePage : ScrollWidget, IPage {
     int64 user_id = arg_list.arg();
     if (user_id == 0)
       return;
+    data_cancellable.reset ();
     set_user_id(user_id);
   }
 
   public void on_leave () {
-
+    data_cancellable.cancel ();
   }
 
 
