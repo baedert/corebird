@@ -179,9 +179,10 @@ namespace InlineMediaDownloader {
 
 
   private void fire_media_added(Tweet t, string path, Gdk.Pixbuf thumb,
-                                       string thumb_path) {
+                                string thumb_path) {
     t.media = path;
     t.media_thumb = thumb_path;
+    t.inline_media = thumb;
     t.inline_media_added(thumb);
     t.has_inline_media = true;
   }

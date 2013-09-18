@@ -41,6 +41,7 @@ class Tweet : GLib.Object {
   public string retweeted_by;
   public bool is_retweet;
   public unowned Gdk.Pixbuf avatar {get; set;}
+  public Gdk.Pixbuf inline_media;
   public string time_delta = "-1s";
   /** The avatar url on the server */
   public string avatar_url;

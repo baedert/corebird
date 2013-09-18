@@ -53,6 +53,8 @@ class TweetInfoPage : IPage , ScrollWidget {
   [GtkChild]
   private Label time_label;
   [GtkChild]
+  private PixbufButton media_button;
+  [GtkChild]
   private Gtk.MenuItem delete_menu_item;
 
   public TweetInfoPage (int id) {
@@ -72,6 +74,7 @@ class TweetInfoPage : IPage , ScrollWidget {
     bottom_list_box.foreach ((w) => {bottom_list_box.remove (w);});
     bottom_list_box.hide ();
     progress_spinner.hide ();
+    media_button.hide ();
 
 
     if (mode == BY_INSTANCE) {
@@ -232,7 +235,7 @@ class TweetInfoPage : IPage , ScrollWidget {
   /**
    *
    */
-  private void set_tweet_data (Tweet tweet, bool following = false, string? with = null) {
+  private void set_tweet_data (Tweet tweet, bool following = false, string? with = null) {//{{{
     GLib.DateTime created_at = new GLib.DateTime.from_unix_local (tweet.created_at);
     string time_format = created_at.format ("%x, %X");
     if (with != null) {
@@ -248,6 +251,17 @@ class TweetInfoPage : IPage , ScrollWidget {
     time_label.label = time_format;
     retweet_button.active = tweet.retweeted;
     favorite_button.active = tweet.favorited;
+
+    // TODO: Also do this on inline_media_added signal
+    if (tweet.has_inline_media) {
+      media_button.show ();
+      media_button.set_bg (tweet.inline_media);
+      media_button.clicked.connect (() => {
+        ImageDialog id = new ImageDialog (main_window, tweet.media);
+        id.show_all ();
+      });
+    }
+
     if (tweet.user_id == account.id) {
       follow_button.hide ();
       delete_menu_item.show ();
@@ -258,7 +272,7 @@ class TweetInfoPage : IPage , ScrollWidget {
       delete_menu_item.hide ();
       retweet_button.show ();
     }
-  }
+  } //}}}
 
   private void set_follow_button_state (bool following) {
     var sc = follow_button.get_style_context ();
