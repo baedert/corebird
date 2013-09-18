@@ -309,21 +309,26 @@ class ProfilePage : ScrollWidget, IPage {
   private void follow_button_clicked_cb () {
     var call = account.proxy.new_call();
     if (following)
-      call.set_function ("1.1/friendships/create.json");
-    else
       call.set_function( "1.1/friendships/destroy.json");
+    else
+      call.set_function ("1.1/friendships/create.json");
     message (@"User ID: $user_id");
     message (user_id.to_string ());
+    progress_spinner.show ();
+    progress_spinner.start ();
+    follow_button.sensitive = false;
     call.set_method ("POST");
     call.add_param ("follow", "true");
     call.add_param ("id", user_id.to_string ());
     call.invoke_async.begin (null, (obj, res) => {
       try {
-      set_follow_button_state (!following);
+        set_follow_button_state (!following);
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
         critical (e.message);
       }
+      follow_button.sensitive = true;
+      progress_spinner.hide ();
     });
   }
 
