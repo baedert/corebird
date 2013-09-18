@@ -103,7 +103,7 @@ class ProfilePage : ScrollWidget, IPage {
 
       if (banner_name != null &&
           FileUtils.test(Utils.user_file("assets/banners/"+banner_name), FileTest.EXISTS)){
-        debug("Banner exists, set it directly...");
+        message("Banner exists, set it directly...");
         banner_box.set_background(Utils.user_file(
                       "assets/banners/"+banner_name));
       } else {
@@ -117,6 +117,8 @@ class ProfilePage : ScrollWidget, IPage {
 
 
   private async void load_profile_data (int64 user_id) { //{{{
+    progress_spinner.show ();
+    progress_spinner.start ();
     var call = account.proxy.new_call ();
     call.set_method ("GET");
     call.set_function ("1.1/users/show.json");
@@ -153,6 +155,8 @@ class ProfilePage : ScrollWidget, IPage {
           } catch (GLib.Error e) {
             warning (e.message);
           }
+          progress_spinner.stop ();
+          progress_spinner.hide ();
         });
       }else {
         try {
@@ -160,9 +164,11 @@ class ProfilePage : ScrollWidget, IPage {
         } catch (GLib.Error e) {
           warning (e.message);
         }
+        progress_spinner.stop ();
+        progress_spinner.hide ();
       }
 
-      string name        = root.get_string_member("name");
+      string name        = root.get_string_member("name").replace ("&", "&amp;");
              screen_name = root.get_string_member("screen_name");
       string description = root.get_string_member("description").replace("&", "&amp;");
       int followers      = (int)root.get_int_member("followers_count");
@@ -177,7 +183,7 @@ class ProfilePage : ScrollWidget, IPage {
         load_profile_banner (banner_base_url, user_id, screen_name);
       }
 
-      string display_url = null;
+      string display_url = "";
       Json.Object entities = root.get_object_member ("entities");
       if(has_url) {
         var urls_object = entities.get_object_member("url").get_array_member("urls").
@@ -221,14 +227,15 @@ class ProfilePage : ScrollWidget, IPage {
  //     follow_button.active = is_following;
       set_follow_button_state (is_following);
 
+
       Corebird.db.exec (
           @"INSERT OR REPLACE INTO `profiles`(`id`, `screen_name`, `name`,
              `followers`, `following`, `tweets`, `description`, `avatar_name`,
              `url`, `location`, `is_following`, `banner_name`)
            VALUES
-          ($id, $screen_name, $name, $followers, $following, $tweets,
-           $description, $avatar_name, $display_url, $location, $is_following,
-           $banner_name);");
+          ('$id', '$screen_name', '$name', '$followers', '$following', '$tweets',
+           '$description', '$avatar_name', '$display_url', '$location', '$is_following',
+           '$banner_name');");
           // XXX is_following can only be 1 or 0
     });
   } //}}}
