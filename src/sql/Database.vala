@@ -44,7 +44,14 @@ class Database {
   }
 
   public void exec (string sql, Sqlite.Callback? callback = null) {
+#if __DEV
+    string err = "";
+    int val = db.exec (sql, callback, out err);
+    if (val != Sqlite.OK && val != 4)
+      critical ("SQL ERROR(%d): '%s' FOR QUERY '%s'", val, err, sql);
+#else
     db.exec (sql, callback);
+#endif
   }
 
   public void execf (string sql, string first_param, ...) {
