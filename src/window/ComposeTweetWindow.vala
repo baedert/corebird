@@ -40,8 +40,8 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   [GtkChild]
   private Gtk.Box left_box;
   private PixbufButton media_image = new PixbufButton ();
-  private string media_uri;
-  private uint media_count = 0;
+//  private string media_uri;
+//  private uint media_count = 0;
   private unowned Account account;
   private unowned Tweet answer_to;
 
@@ -82,9 +82,9 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
     media_image.clicked.connect (() => {
       media_image.set_visible(false);
-      media_count--;
-      if(media_count <= Twitter.get_max_media_per_upload())
-        add_image_button.set_sensitive(true);
+//      media_count--;
+//      if(media_count <= Twitter.get_max_media_per_upload())
+//        add_image_button.set_sensitive(true);
     });
 
     left_box.pack_end (media_image, false, true);
@@ -148,7 +148,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     if(text.strip() == "")
       return;
 
-    Rest.Param param;
+//    Rest.Param param;
     var call = account.proxy.new_call();
     call.set_method("POST");
     call.add_param("status", text);
