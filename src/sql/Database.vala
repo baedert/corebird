@@ -13,7 +13,11 @@ class Database {
 
 
   public Database (string filename, string? init_file = null) {
-    Sqlite.Database.open (filename, out db);
+    int err = Sqlite.Database.open (filename, out db);
+    if (err == 1) {
+      critical ("Error when opening the database '%s': %s",
+                filename, db.errmsg ());
+    }
     this.exec ("PRAGMA journal_mode = MEMORY;");
     if (init_file == null)
       return;

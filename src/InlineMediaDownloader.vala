@@ -87,7 +87,7 @@ namespace InlineMediaDownloader {
          If not, fuck you.*/
       try {
         var thumb = new Gdk.Pixbuf.from_file(thumb_path);
-        fire_media_added(t, path, thumb, thumb_path);
+      fire_media_added(t, path, thumb, thumb_path);
         return;
       } catch (GLib.Error e) {
         critical (e.message);
@@ -121,7 +121,6 @@ namespace InlineMediaDownloader {
         var media_out_stream = File.new_for_path (path).create (FileCreateFlags.REPLACE_DESTINATION);
         var thumb_out_stream = File.new_for_path (thumb_path).create (FileCreateFlags.REPLACE_DESTINATION);
 
-        // TODO: I guess this would be better if async
         media_out_stream.write_all (_msg.response_body.data, null, null);
         if(ext == "gif"){
           load_animation (t, ms, media_out_stream, thumb_out_stream, path, thumb_path);
@@ -129,7 +128,7 @@ namespace InlineMediaDownloader {
           load_normal_media (t, ms, media_out_stream, thumb_out_stream, path, thumb_path);
         }
       } catch (GLib.Error e) {
-        critical (e.message + "for MEDIA " + url);
+        critical (e.message + " for MEDIA " + url);
       }
     });
   }
@@ -147,10 +146,11 @@ namespace InlineMediaDownloader {
         warning (e.message);
         return;
       }
-      var thumb = anim.get_static_image().scale_simple(THUMB_SIZE, THUMB_SIZE,
-                    Gdk.InterpType.TILES);
-      thumb.save_to_stream_async.begin (thumb_out_stream, "png", null, () => {});
-      fire_media_added(t, path, thumb, thumb_path);
+      var pic = anim.get_static_image();
+      var thumb = slice_pixbuf (pic);
+      thumb.save_to_stream_async.begin (thumb_out_stream, "png", null, () => {
+        fire_media_added(t, path, thumb, thumb_path);
+      });
     });
   }
 
@@ -167,14 +167,27 @@ namespace InlineMediaDownloader {
         warning (e.message);
         return;
       }
-      int x, y, w, h;
-      calc_thumb_rect (pic.get_width (), pic.get_height (), out x, out y, out w, out h);
-      var big_thumb = new Gdk.Pixbuf (Gdk.Colorspace.RGB, true, 8, w, h);
-      pic.copy_area (x, y, w, h, big_thumb, 0, 0);
-      var thumb = big_thumb.scale_simple (THUMB_SIZE, THUMB_SIZE, Gdk.InterpType.TILES);
-      thumb.save_to_stream_async.begin (thumb_out_stream, "png",null, () => {});
-      fire_media_added(t, path, thumb, thumb_path);
+      var thumb = slice_pixbuf (pic);
+      thumb.save_to_stream_async.begin (thumb_out_stream, "png", null, () => {
+        fire_media_added(t, path, thumb, thumb_path);
+      });
     });
+  }
+
+  /**
+   * Slices the given pixbuf to a smaller thumbnail image.
+   *
+   * @param pic The Gdk.Pixbuf to use as base image
+   *
+   * @return The created thumbnail
+   */
+  private Gdk.Pixbuf slice_pixbuf (Gdk.Pixbuf pic) {
+    int x, y, w, h;
+    calc_thumb_rect (pic.get_width (), pic.get_height (), out x, out y, out w, out h);
+    var big_thumb = new Gdk.Pixbuf (Gdk.Colorspace.RGB, true, 8, w, h);
+    pic.copy_area (x, y, w, h, big_thumb, 0, 0);
+    var thumb = big_thumb.scale_simple (THUMB_SIZE, THUMB_SIZE, Gdk.InterpType.TILES);
+    return thumb;
   }
 
 
