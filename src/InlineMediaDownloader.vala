@@ -61,7 +61,7 @@ namespace InlineMediaDownloader {
     session.queue_message(msg, (_s, _msg) => {
     string back = (string)_msg.response_body.data;
       try{
-        var regex = new GLib.Regex(regex_str, RegexCompileFlags.OPTIMIZE);
+        var regex = new GLib.Regex(regex_str, 0);
         MatchInfo info;
         regex.match(back, 0, out info);
         string real_url = info.fetch(match_index);
