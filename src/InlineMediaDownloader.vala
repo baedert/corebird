@@ -25,7 +25,7 @@ namespace InlineMediaDownloader {
       return;
 
     /*
-      Support For:
+        TODO: Support For:
         * yfrog
         * lockerz.com
         * say.ly
@@ -34,7 +34,7 @@ namespace InlineMediaDownloader {
 
         * Youtube (Preview image with video indicator. Click on the video
                    opens/streams it in some video player)
-        * vine!
+        * vine! (thumbnails supported)
 
     */
 
