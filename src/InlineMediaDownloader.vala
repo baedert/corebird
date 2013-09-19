@@ -23,7 +23,6 @@ namespace InlineMediaDownloader {
   async void try_load_media(Tweet t, string url) {
     if(!Settings.show_inline_media())
       return;
-
     /*
         TODO: Support For:
         * yfrog
@@ -59,7 +58,6 @@ namespace InlineMediaDownloader {
                                           int match_index) {
     var session = new Soup.SessionAsync();
     var msg     = new Soup.Message("GET", first_url);
-    session.send_message(msg);
     session.queue_message(msg, (_s, _msg) => {
     string back = (string)_msg.response_body.data;
       try{
@@ -77,7 +75,7 @@ namespace InlineMediaDownloader {
   }
 
   private async void load_inline_media(Tweet t, string url,
-                                         Soup.Session? sess = null) {
+                                       Soup.Session? sess = null) {
 
     // First, check if the media already exists...
     string path = get_media_path (t, url);
