@@ -153,6 +153,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       reply_revealer.reveal_child = false;
       return false;
     });
+    hover_box.show ();
   }
 
 
@@ -163,23 +164,18 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     bool buttons_visible = (bool)(flags & (StateFlags.PRELIGHT | StateFlags.SELECTED));
     buttons_visible = (buttons_visible || more_menu.visible) && !reply_revealer.reveal_child;
     if (buttons_visible) {
-      hover_box.show();
       retweet_button.show();
       favorite_button.show();
       reply_button.show();
       more_button.show();
-      if (account.id == tweet.user_id){
+      if (account.id == tweet.user_id) {
         retweet_button.hide();
       }
     } else {
-      if (!tweet.favorited && !tweet.retweeted)
-        hover_box.hide();
-      else {
         retweet_button.visible = tweet.retweeted;
         favorite_button.visible = tweet.favorited;
         reply_button.hide();
         more_button.hide();
-      }
     }
   } //}}}
 
@@ -253,9 +249,10 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
 
     spinner.start ();
     WidgetReplacer.replace_tmp (retweet_button, spinner);
+    spinner.show ();
     TweetUtils.toggle_retweet_tweet.begin (account, tweet, !retweet_button.active, () => {
       WidgetReplacer.replace_tmp_back(retweet_button);
-      retweet_button.show ();
+      retweet_button.visible = retweet_button.active;
     });
 
   } // }}}
@@ -268,11 +265,11 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     var spinner = new Spinner();
     spinner.start();
     WidgetReplacer.replace_tmp(favorite_button, spinner);
-
+    spinner.show ();
     TweetUtils.toggle_favorite_tweet.begin (account, tweet, !favorite_button.active, () => {
       WidgetReplacer.replace_tmp_back(favorite_button, true,
                                       favorite_button.active);
-      favorite_button.show ();
+      favorite_button.visible = favorite_button.active;
     });
   } // }}}
 
