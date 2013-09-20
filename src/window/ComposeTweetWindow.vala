@@ -94,27 +94,6 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     // Doesn't work at the moment
     add_image_button.sensitive = false;
 
-    tweet_text.buffer.changed.connect (() => {
-      TextIter cursor_iter, back_iter, front_iter;
-      tweet_text.buffer.get_iter_at_offset (out cursor_iter, tweet_text.buffer.cursor_position);
-      tweet_text.buffer.get_iter_at_offset (out back_iter, tweet_text.buffer.cursor_position - 1);
-      tweet_text.buffer.get_iter_at_offset (out front_iter, tweet_text.buffer.cursor_position + 1);
-      string lookback;
-
-      while (true) {
-        lookback = tweet_text.buffer.get_slice (back_iter, cursor_iter, true);
-        if (lookback.has_prefix ("@") || lookback.has_prefix ("\n") ||
-            lookback.has_prefix (" "))
-          break;
-
-
-        bool start_not_reached = back_iter.backward_char ();
-        if (!start_not_reached)
-          break;
-     }
-     message (lookback);
-
-    });
     //Let the text view immediately grab the keyboard focus
     tweet_text.grab_focus ();
 
