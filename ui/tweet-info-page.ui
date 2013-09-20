@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.15.4 on Wed Sep 18 22:36:02 2013 -->
+<!-- Generated with glade 3.15.4 on Fri Sep 20 17:24:03 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.10 -->
   <!-- interface-requires corebird 0.0 -->
@@ -249,11 +249,9 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="valign">center</property>
                     <property name="relief">none</property>
                     <style>
                       <class name="retweet-button"/>
-                      <class name="slim-button"/>
                       <class name="dim-label"/>
                       <class name="image-button"/>
                     </style>
@@ -271,11 +269,9 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="valign">center</property>
                     <property name="relief">none</property>
                     <style>
                       <class name="favorite-button"/>
-                      <class name="slim-button"/>
                       <class name="dim-label"/>
                       <class name="image-button"/>
                     </style>
@@ -293,10 +289,9 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="valign">center</property>
                     <property name="relief">none</property>
                     <style>
-                      <class name="silm-button"/>
+                      <class name="reply-button"/>
                       <class name="dim-label"/>
                       <class name="image-button"/>
                     </style>
@@ -313,7 +308,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="valign">center</property>
+                    <property name="margin_right">5</property>
                     <property name="relief">none</property>
                     <property name="popup">more_menu</property>
                     <style>

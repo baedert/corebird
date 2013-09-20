@@ -19,29 +19,29 @@
 }
 
 .retweet-button,
-.favorite-button {
+.favorite-button,
+.reply-button{
   font-family: FontAwesome;
-  font-size: 11px;
+  font-size: 1.3em;
 }
 .retweet-button:hover,
 .retweet-button:active {
   color:green;
 }
 
-.favorite-button {
-  font-family: FontAwesome;
-  font-size: 11px;
-}
-
-
 .favorite-button:hover,
 .favorite-button:active {
   color: shade(yellow, 0.9);
 }
 
+.reply-button:hover {
+  color: blue;
+}
+
+
 .conversation-label {
   font-family: FontAwesome;
-  font-size: 10px;
+  font-size: 1em;
 }
 
 
