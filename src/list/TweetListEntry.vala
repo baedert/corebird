@@ -158,7 +158,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
 
 
   [GtkCallback]
-  private void state_flags_changed_cb () {
+  private void state_flags_changed_cb () { //{{{
     Gtk.StateFlags flags = this.get_state_flags ();
     bool buttons_visible = (bool)(flags & (StateFlags.PRELIGHT | StateFlags.SELECTED));
     buttons_visible = (buttons_visible || more_menu.visible) && !reply_revealer.reveal_child;
@@ -181,7 +181,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
         more_button.hide();
       }
     }
-  }
+  } //}}}
 
   [GtkCallback]
   private bool focus_out_cb (Gdk.EventFocus evt) {
@@ -255,6 +255,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     WidgetReplacer.replace_tmp (retweet_button, spinner);
     TweetUtils.toggle_retweet_tweet.begin (account, tweet, !retweet_button.active, () => {
       WidgetReplacer.replace_tmp_back(retweet_button);
+      retweet_button.show ();
     });
 
   } // }}}
@@ -271,6 +272,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     TweetUtils.toggle_favorite_tweet.begin (account, tweet, !favorite_button.active, () => {
       WidgetReplacer.replace_tmp_back(favorite_button, true,
                                       favorite_button.active);
+      favorite_button.show ();
     });
   } // }}}
 
@@ -340,7 +342,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
    * @return The seconds between the current time and
    *         the time the tweet was created
    */
-  public int update_time_delta () {
+  public int update_time_delta () { //{{{
     GLib.DateTime now  = new GLib.DateTime.now_local ();
     GLib.DateTime then = new GLib.DateTime.from_unix_local (
                  tweet.is_retweet ? tweet.rt_created_at : tweet.created_at);
@@ -351,9 +353,9 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     time_delta_label.label = "<small><a href='%s' title='Open in Browser'>%s</a></small>"
                   .printf (link, Utils.get_time_delta (then, now));
     return (int)(now.difference (then) / 1000.0 / 1000.0);
-  }
+  } //}}}
 
-  public override bool draw (Cairo.Context c) {
+  public override bool draw (Cairo.Context c) { //{{{
     var style = this.get_style_context();
     int w = get_allocated_width();
     int h = get_allocated_height();
@@ -370,7 +372,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
 
     base.draw(c);
     return false;
-  }
+  } //}}}
 
 }
 
