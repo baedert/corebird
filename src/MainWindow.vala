@@ -234,7 +234,7 @@ class MainWindow : ApplicationWindow {
       dummy_button.active = true;
 
     page.on_join (page_id, va_list ());
-    stack.set_visible_child_name ("%d".printf (page_id));
+    stack.set_visible_child_name (page_id.to_string ());
   }
 
   /**
