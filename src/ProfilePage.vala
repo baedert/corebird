@@ -368,7 +368,7 @@ class ProfilePage : ScrollWidget, IPage {
     int64 user_id = arg_list.arg();
     if (user_id == 0)
       return;
-    data_cancellable.reset ();
+    data_cancellable = new GLib.Cancellable ();
     set_user_id(user_id);
   }
 
