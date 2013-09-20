@@ -44,6 +44,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 //  private uint media_count = 0;
   private unowned Account account;
   private unowned Tweet answer_to;
+  private Mode mode;
 
 
   public ComposeTweetWindow(Window? parent, Account acc,
@@ -53,6 +54,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     this.set_show_menubar (false);
     this.account = acc;
     this.answer_to = answer_to;
+    this.mode = mode;
     avatar_image.set_from_pixbuf (acc.avatar);
     length_label.label = Tweet.MAX_LENGTH.to_string ();
     tweet_text.buffer.changed.connect (recalc_tweet_length);
@@ -152,7 +154,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     var call = account.proxy.new_call();
     call.set_method("POST");
     call.add_param("status", text);
-    if(this.answer_to != null) {
+    if (this.answer_to != null && mode == Mode.REPLY) {
       call.add_param("in_reply_to_status_id", answer_to.id.to_string());
     }
 
