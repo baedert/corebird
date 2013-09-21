@@ -80,7 +80,7 @@ class MainWindow : ApplicationWindow {
     }
 
     headerbar.set_subtitle ("@" + account.screen_name);
-    //TODO: Move new_tweet_button into the gtktemplate
+    //TODO: Move new_tweet_button into the gtktemplate(also, rename to compose_tweet_button)
     new_tweet_button.get_style_context ().add_class ("image-button");
     headerbar.pack_start (new_tweet_button);
     set_titlebar (headerbar);

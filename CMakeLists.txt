@@ -143,6 +143,7 @@ set (VALA_SOURCE
   src/util/TweetUtils.vala
   src/resources.c
   src/sql/Database.vala
+  src/sql/Statement.vala
 )
 
 
