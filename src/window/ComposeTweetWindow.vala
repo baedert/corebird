@@ -52,6 +52,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
                             Mode mode = Mode.NORMAL,
                             Gtk.Application? app = null) {
     this.set_show_menubar (false);
+    this.application = app;
     this.account = acc;
     this.answer_to = answer_to;
     this.mode = mode;

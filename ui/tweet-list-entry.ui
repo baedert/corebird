@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.15.3 on Tue Sep 17 23:06:24 2013 -->
+<!-- Generated with glade 3.15.4 on Sun Sep 22 00:43:29 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.10 -->
   <!-- interface-requires corebird 0.0 -->
@@ -343,6 +343,7 @@
                 <property name="receives_default">True</property>
                 <property name="relief">none</property>
                 <style>
+                  <class name="reply-button"/>
                   <class name="button-slim"/>
                   <class name="dim-label"/>
                   <class name="image-button"/>
