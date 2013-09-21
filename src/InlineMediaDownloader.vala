@@ -75,7 +75,7 @@ namespace InlineMediaDownloader {
   }
 
   private async void load_inline_media(Tweet t, string url,
-                                       Soup.Session? sess = null) {
+                                       Soup.Session? sess = null) { //{{{
 
     // First, check if the media already exists...
     string path = get_media_path (t, url);
@@ -129,7 +129,7 @@ namespace InlineMediaDownloader {
         critical (e.message + " for MEDIA " + url);
       }
     });
-  }
+  } //}}}
 
   private void load_animation (Tweet t,
                                MemoryInputStream in_stream,
