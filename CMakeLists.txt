@@ -125,7 +125,6 @@ set (VALA_SOURCE
   src/widgets/AccountCreateWidget.vala
   src/widgets/AccountInfoWidget.vala
   src/list/TweetListEntry.vala
-  src/list/NewFollowerEntry.vala
   src/list/ProgressEntry.vala
   src/list/AccountListEntry.vala
   src/list/DMThreadEntry.vala
