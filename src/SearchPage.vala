@@ -61,6 +61,11 @@ class SearchPage : IPage, Box {
     this.button_press_event.connect (button_pressed_event_cb);
   }
 
+  [GtkCallback]
+  private void search_entry_activate_cb () {
+    search_for (search_entry.get_text ());
+  }
+
   /**
    * see IPage#onJoin
    */
@@ -178,6 +183,7 @@ class SearchPage : IPage, Box {
       row.set_header (tweets_header);
     }
   }
+
 
 
 
