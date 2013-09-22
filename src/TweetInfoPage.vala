@@ -128,6 +128,12 @@ class TweetInfoPage : IPage , ScrollWidget {
   }
 
   [GtkCallback]
+  private void delete_item_activate_cb () {
+    error ("Show confirmation dialog, then delete tweet");
+//    TweetUtils.
+  }
+
+  [GtkCallback]
   private void follow_button_clicked_cb () {
     var call = account.proxy.new_call();
     if (following)
@@ -156,7 +162,7 @@ class TweetInfoPage : IPage , ScrollWidget {
   /**
    * Loads the data of the tweet with the id tweet_id from the Twitter server.
    */
-  private void query_tweet_info () {
+  private void query_tweet_info () { //{{{
     var call = account.proxy.new_call ();
     call.set_method ("GET");
     call.set_function ("1.1/statuses/show.json");
@@ -194,7 +200,7 @@ class TweetInfoPage : IPage , ScrollWidget {
       values_set = true;
     });
 
-  }
+  } //}}}
 
   /**
    * Loads the tweet this tweet is a reply to.
@@ -202,7 +208,7 @@ class TweetInfoPage : IPage , ScrollWidget {
    *
    * @param reply_id The id of the tweet the previous tweet was a reply to.
    */
-  private void load_replied_to_tweet (int64 reply_id) {
+  private void load_replied_to_tweet (int64 reply_id) { //{{{
     if (reply_id == 0) {
       progress_spinner.stop ();
       progress_spinner.hide ();
@@ -230,7 +236,7 @@ class TweetInfoPage : IPage , ScrollWidget {
       bottom_list_box.add (new TweetListEntry (tweet, main_window, account));
       load_replied_to_tweet (tweet.reply_id);
     });
-  }
+  } //}}}
 
   /**
    *
