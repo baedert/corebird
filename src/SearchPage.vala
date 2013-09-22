@@ -54,6 +54,7 @@ class SearchPage : IPage, Box {
     placeholder.show ();
     tweet_list.set_placeholder (placeholder);
     tweet_list.set_sort_func (sort_search_entries);
+    tweet_list.row_activated.connect (row_activated_cb);
     search_button.clicked.connect (() => {
       search_for (search_entry.get_text());
     });
@@ -71,19 +72,25 @@ class SearchPage : IPage, Box {
 
   public void on_leave () {}
 
-  public void search_for(string search_term, bool set_text = false){
+  public void search_for (string search_term, bool set_text = false) { //{{{
     if(search_term.length == 0)
       return;
+
+    // clear the list
+    tweet_list.foreach ((w) => {
+      tweet_list.remove (w);
+    });
+
 
     if (set_text)
       search_entry.set_text(search_term);
 
-//    search_term = GLib.Uri.escape_string (search_term);
+    string q = GLib.Uri.escape_string (search_term);
 
     var call = account.proxy.new_call ();
     call.set_function ("1.1/search/tweets.json");
     call.set_method ("GET");
-    call.add_param ("q", GLib.Uri.escape_string (search_term));
+    call.add_param ("q", q);
     call.invoke_async.begin (null, (obj, res) => {
       try{
         call.invoke_async.end (res);
@@ -112,10 +119,15 @@ class SearchPage : IPage, Box {
     var user_call = account.proxy.new_call ();
     user_call.set_method ("GET");
     user_call.set_function ("1.1/users/search.json");
-    user_call.add_param ("q", GLib.Uri.escape_string (search_term));
+    user_call.add_param ("q", q);
     user_call.add_param ("count", "5");
     user_call.invoke_async.begin (null, (obj, res) => {
-      user_call.invoke_async.end (res);
+      try {
+        user_call.invoke_async.end (res);
+      } catch (GLib.Error e) {
+        warning (e.message);
+        return;
+      }
 
       var parser = new Json.Parser ();
       try {
@@ -132,23 +144,25 @@ class SearchPage : IPage, Box {
         entry.screen_name = "@" + user_obj.get_string_member ("screen_name");
         entry.name = user_obj.get_string_member ("name");
         entry.avatar = user_obj.get_string_member ("profile_image_url");
+        entry.user_id = user_obj.get_int_member ("id");
         tweet_list.add (entry);
       });
     });
+  } //}}}
 
-
+  private void row_activated_cb (ListBoxRow row) {
+    if (row is UserListEntry) {
+      main_window.switch_page (MainWindow.PAGE_PROFILE,
+                               ((UserListEntry)row).user_id);
+    } else if (row is TweetListEntry) {
+      main_window.switch_page (MainWindow.PAGE_TWEET_INFO,
+                               TweetInfoPage.BY_INSTANCE,
+                               ((TweetListEntry)row).tweet);
+    }
   }
 
 
   private int sort_search_entries (ListBoxRow row1, ListBoxRow row2) {
-/*    int type1 = row1.get_data<int> ("type");
-    int type2 = row2.get_data<int> ("type");
-
-    if (type1 == TYPE_USER)
-      return 1;
-    else if (type2 == TYPE_USER)
-      return -1;
-    else*/
       return ITwitterItem.sort_func(row1, row2);
   }
 

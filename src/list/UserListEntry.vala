@@ -47,6 +47,8 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
     get{ return int64.MAX-1; }
   }
 
+  public int64 user_id { get; set; }
+
   private void real_set_avatar (string avatar_url) {
     Gdk.Pixbuf a = TweetUtils.load_avatar (avatar_url);
     if (a != null) {
