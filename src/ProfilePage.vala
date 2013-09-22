@@ -56,7 +56,6 @@ class ProfilePage : ScrollWidget, IPage {
   [GtkChild]
   private Gtk.Spinner progress_spinner;
   private bool following;
-  private int active_page       = 0;
   private int64 user_id;
   private string screen_name; //TODO: Remove
   private GLib.Cancellable data_cancellable = new GLib.Cancellable ();
