@@ -19,24 +19,28 @@
 using Gtk;
 
 // TODO: Add timeout that removes all entries after X seconds when switched away
+[GtkTemplate (ui = "/org/baedert/corebird/ui/search-page.ui")]
 class SearchPage : IPage, Box {
+  private int id;
   /** The unread count here is always zero */
   public int unread_count{
     get{return 0;}
     set{;}
   }
-  public Account account {get; set;}
-  protected uint tweet_remove_timeout{get;set;}
-  private Entry search_entry    = new Entry();
-  public unowned MainWindow main_window{set;get;}
-  protected int64 lowest_id{get;set; default = int64.MAX-2;}
-  protected Gtk.ListBox tweet_list{set;get;}
-  private int id;
+  public unowned Account account        { get; set; }
+  public unowned MainWindow main_window { set; get; }
+  [GtkChild]
+  private SearchEntry search_entry;
+  [GtkChild]
+  private Button search_button;
+  [GtkChild]
+  private ListBox tweet_list { get; set; } // TODO: Rename tweet_list
+  protected int64 lowest_id  { get; set; default = int64.MAX-2; }
   private RadioToolButton tool_button;
   private DeltaUpdater delta_updater;
 
 
-  public SearchPage(int id) {
+  public SearchPage (int id) {
     GLib.Object(orientation: Orientation.VERTICAL);
     this.id = id;
     search_entry.margin = 5;
@@ -44,21 +48,24 @@ class SearchPage : IPage, Box {
     search_entry.primary_icon_name = "find";
     search_entry.icon_press.connect( (pos) => {
       if (pos == EntryIconPosition.PRIMARY){
-        search_for.begin(search_entry.get_text());
+        search_for (search_entry.get_text ());
       }
-    });
-    search_entry.key_release_event.connect( (event) => {
-      if (event.keyval == Gdk.Key.Return){
-        // tweet_list.clear();
-        search_for.begin(search_entry.get_text());
-        return true;
-      }
-
-      return false;
     });
     this.pack_start(search_entry, false, true);
 
     tweet_list = new Gtk.ListBox();
+    tweet_list.set_header_func ((row, row_before) => {
+      if (row_before == null)
+        return;
+
+      Widget header = row.get_header ();
+      if (header == null) {
+        header = new Gtk.Separator (Orientation.HORIZONTAL);
+        header.show ();
+        row.set_header (header);
+      }
+
+    });
     var result_scroller = new ScrollWidget();
     result_scroller.add (tweet_list);
     this.pack_start(result_scroller, true, true);
@@ -73,43 +80,38 @@ class SearchPage : IPage, Box {
   public void on_join (int page_id, va_list arg_list) {
     string term = arg_list.arg<string>();
     if(term != null)
-      search_for.begin(term, true);
+      search_for (term, true);
   }
 
   public void on_leave () {
 
   }
 
-  public async void search_for(string search_term, bool set_text = false){
+  public void search_for(string search_term, bool set_text = false){
     if(search_term.length == 0)
       return;
-
-    // tweet_list.clear(); TODO: Remove all entries from the list
-    // GLib.Idle.add( () => {
-    //  tweet_list.show_spinner();
-    //  return false;
-    // });
 
     if (set_text)
       search_entry.set_text(search_term);
 
 
-    var call = account.proxy.new_call();
-    call.set_function("1.1/search/tweets.json");
-    call.set_method("GET");
-    call.add_param("q", GLib.Uri.escape_string(search_entry.get_text()));
-    call.invoke_async.begin(null, (obj, res) => {
+    var call = account.proxy.new_call ();
+    call.set_function ("1.1/search/tweets.json");
+    call.set_method ("GET");
+    call.add_param ("q", GLib.Uri.escape_string (search_entry.get_text ()));
+    call.invoke_async.begin (null, (obj, res) => {
       try{
-        call.invoke_async.end(res);
-      } catch (GLib.Error e){
-        warning("Error while ending search call: %s", e.message);
+        call.invoke_async.end (res);
+      } catch (GLib.Error e) {
+        warning ("Error while ending search call: %s", e.message);
         return;
       }
-      string back = call.get_payload();
-      Json.Parser parser = new Json.Parser();
-      try{
+      string back = call.get_payload ();
+      stdout.printf (back + "\n");
+      Json.Parser parser = new Json.Parser ();
+      try {
         parser.load_from_data(back);
-      } catch (GLib.Error e){
+      } catch (GLib.Error e) {
         critical(" %s\nDATA:\n%s", e.message, back);
       }
       var statuses = parser.get_root().get_object().get_array_member("statuses");

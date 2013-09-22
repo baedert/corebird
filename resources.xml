@@ -17,5 +17,6 @@
     <file compressed="true" preprocess="xml-stripblanks">ui/main-window.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/dm-page.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/remove-account-dialog.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">ui/search-page.ui</file>
 </gresource>
 </gresources>

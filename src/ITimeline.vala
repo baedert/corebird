@@ -24,10 +24,10 @@ interface ITimeline : Gtk.Widget, IPage {
   public static const int REST = 25;
   /** The lowest id of any tweet in this timeline */
   protected abstract int64 lowest_id            {get; set;}
-  protected abstract  int64 max_id              {get; set; default = 0;}
+  protected abstract int64 max_id              {get; set; default = 0;}
   protected abstract Gtk.ListBox tweet_list     {get; set;}
   public    abstract int unread_count           {get; set;}
-  public    abstract DeltaUpdater delta_updater {get;set;}
+  public    abstract DeltaUpdater delta_updater {get; set;}
 
   public abstract void load_cached();
   public abstract void load_newest();

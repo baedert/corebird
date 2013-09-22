@@ -88,7 +88,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
       int stack_size = Settings.get_tweet_stack_count();
       message ("Stack size: %d", stack_size);
       if(stack_size != 0 && unread_count % stack_size == 0) {
-        string summary = "%d new Tweets!".printf(unread_count);
+        string summary = _("%d new Tweets!").printf(unread_count);
         NotificationManager.notify(summary);
       }
     }
