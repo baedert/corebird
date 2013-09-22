@@ -128,6 +128,7 @@ set (VALA_SOURCE
   src/list/ProgressEntry.vala
   src/list/AccountListEntry.vala
   src/list/DMThreadEntry.vala
+  src/list/UserListEntry.vala
   src/window/AboutDialog.vala
   src/window/ImageDialog.vala
   src/window/SettingsDialog.vala

@@ -23,6 +23,6 @@ interface ITwitterItem : Gtk.Widget {
     return -1;
   }
 
-  public abstract int64 sort_factor {get;}
-  public abstract bool seen {get; set;}
+  public abstract int64 sort_factor { get;      }
+  public abstract bool seen         { get; set; }
 }

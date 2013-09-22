@@ -86,7 +86,6 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     thread_list.row_activated.connect ((row) => {
       main_window.switch_page (MainWindow.PAGE_DM,
                                ((DMThreadEntry)row).user_id);
-      message("YAY");
     });
   }
 
