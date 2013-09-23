@@ -21,8 +21,6 @@ using Gtk;
 // TODO: Add timeout that removes all entries after X seconds when switched away
 [GtkTemplate (ui = "/org/baedert/corebird/ui/search-page.ui")]
 class SearchPage : IPage, Box {
-  private static const int TYPE_TWEET = 1;
-  private static const int TYPE_USER  = 2;
   private int id;
   /** The unread count here is always zero */
   public int unread_count {
@@ -41,18 +39,16 @@ class SearchPage : IPage, Box {
   private Label users_header;
   [GtkChild]
   private Label tweets_header;
+  [GtkChild]
+  private Spinner placeholder;
   private RadioToolButton tool_button;
   private DeltaUpdater delta_updater;
-  private Gtk.Spinner placeholder = new Gtk.Spinner ();
 
 
   public SearchPage (int id) {
     this.id = id;
 
     tweet_list.set_header_func (header_func);
-    placeholder.start ();
-    placeholder.show ();
-    tweet_list.set_placeholder (placeholder);
     tweet_list.set_sort_func (sort_search_entries);
     tweet_list.row_activated.connect (row_activated_cb);
     search_button.clicked.connect (() => {
@@ -85,6 +81,9 @@ class SearchPage : IPage, Box {
     tweet_list.foreach ((w) => {
       tweet_list.remove (w);
     });
+    placeholder.show ();
+    placeholder.start ();
+    tweet_list.set_placeholder (placeholder);
 
 
     if (set_text)
@@ -125,7 +124,8 @@ class SearchPage : IPage, Box {
     user_call.set_method ("GET");
     user_call.set_function ("1.1/users/search.json");
     user_call.add_param ("q", q);
-    user_call.add_param ("count", "5");
+    user_call.add_param ("count", "3");
+    user_call.add_param ("include_entities", "false");
     user_call.invoke_async.begin (null, (obj, res) => {
       try {
         user_call.invoke_async.end (res);
