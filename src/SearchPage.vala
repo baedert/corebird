@@ -152,6 +152,7 @@ class SearchPage : IPage, Box {
         entry.user_id = user_obj.get_int_member ("id");
         tweet_list.add (entry);
       });
+      tweet_list.add (new LoadMoreEntry ());
     });
   } //}}}
 
@@ -199,5 +200,27 @@ class SearchPage : IPage, Box {
 
   public int get_id(){
     return id;
+  }
+}
+
+
+class LoadMoreEntry : Gtk.ListBoxRow, ITwitterItem {
+  private Gtk.Button load_more_button;
+  public int64 sort_factor {
+    get { return int64.MAX-2; }
+  }
+  public bool seen {
+    get { return true; }
+    set {}
+  }
+
+  public LoadMoreEntry () {
+    load_more_button = new Gtk.Button.with_label ("Load more");
+    load_more_button.halign = Gtk.Align.CENTER;
+    load_more_button.relief = Gtk.ReliefStyle.NONE;
+    load_more_button.get_style_context ().add_class ("dim-label");
+    load_more_button.get_style_context ().add_class ("button-wide");
+    this.add (load_more_button);
+    show_all ();
   }
 }
