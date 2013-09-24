@@ -124,6 +124,7 @@ set (VALA_SOURCE
   src/widgets/ImageOverlay.vala
   src/widgets/AccountCreateWidget.vala
   src/widgets/AccountInfoWidget.vala
+  src/widgets/ReplyEntry.vala
   src/list/TweetListEntry.vala
   src/list/ProgressEntry.vala
   src/list/AccountListEntry.vala
