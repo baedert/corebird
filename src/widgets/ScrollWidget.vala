@@ -29,8 +29,8 @@ class ScrollWidget : ScrolledWindow {
   private int balance = NONE;
   public double end_diff {get; set; default = 150;}
 
-  public ScrollWidget(){
-    GLib.Object(hadjustment: null, vadjustment: null);
+  construct {
+//    GLib.Object(hadjustment: null, vadjustment: null);
     vadjustment.notify["upper"].connect(keep_upper_func);
     vadjustment.notify["value"].connect(keep_value_func);
 
@@ -51,8 +51,9 @@ class ScrollWidget : ScrolledWindow {
 
   private void keep_value_func () {
     // Call the scrolled_to_top signal if necessary
-    if(vadjustment.value < 10)
+    if(vadjustment.value < 10.0) {
       scrolled_to_start(vadjustment.value);
+    }
 
     double max = vadjustment.upper - vadjustment.page_size;
     if(vadjustment.value >= max - end_diff)

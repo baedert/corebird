@@ -50,6 +50,7 @@ class SearchPage : IPage, Box {
   private string search_query;
   private int user_page = 1;
   private int64 lowest_tweet_id = int64.MAX-1;
+  private bool loading_tweets = false;
 
 
   public SearchPage (int id) {
@@ -65,12 +66,8 @@ class SearchPage : IPage, Box {
       user_page++;
       load_users ();
     });
-    //FIXME WTF WHY DOES THIS NOT WORK?!
     scroll_widget.scrolled_to_end.connect (() => {
-      message ("END");
-    });
-    scroll_widget.scrolled_to_start.connect (() => {
-      message ("START");
+      load_tweets ();
     });
     this.button_press_event.connect (button_pressed_event_cb);
   }
@@ -84,9 +81,13 @@ class SearchPage : IPage, Box {
    * see IPage#onJoin
    */
   public void on_join (int page_id, va_list arg_list) {
-    string term = arg_list.arg<string>();
-    if(term != null)
-      search_for (term, true);
+    string? term = arg_list.arg<string>();
+    if (term == null) {
+      warning ("No search term provided");
+      return;
+    }
+
+    search_for (term, true);
   }
 
   public void on_leave () {}
@@ -113,7 +114,7 @@ class SearchPage : IPage, Box {
     load_users ();
   } //}}}
 
-  private void row_activated_cb (ListBoxRow row) {
+  private void row_activated_cb (ListBoxRow row) { // {{{
     if (row is UserListEntry) {
       main_window.switch_page (MainWindow.PAGE_PROFILE,
                                ((UserListEntry)row).user_id);
@@ -122,8 +123,7 @@ class SearchPage : IPage, Box {
                                TweetInfoPage.BY_INSTANCE,
                                ((TweetListEntry)row).tweet);
     }
-  }
-
+  } //}}}
 
   private void header_func (ListBoxRow row, ListBoxRow? before) { //{{{
     Widget header = row.get_header ();
@@ -182,11 +182,15 @@ class SearchPage : IPage, Box {
   } // }}}
 
   private void load_tweets () { // {{{
+    if (loading_tweets)
+      return;
+
+    loading_tweets = true;
     var call = account.proxy.new_call ();
     call.set_function ("1.1/search/tweets.json");
     call.set_method ("GET");
     call.add_param ("q", this.search_query);
-    call.add_param ("max_id", lowest_tweet_id.to_string ());
+    call.add_param ("max_id", (lowest_tweet_id - 1).to_string ());
     call.add_param ("count", "35");
     call.invoke_async.begin (null, (obj, res) => {
       try{
@@ -213,6 +217,7 @@ class SearchPage : IPage, Box {
         delta_updater.add (entry);
         tweet_list.add (entry);
       });
+      loading_tweets = false;
     });
 
   } // }}}
