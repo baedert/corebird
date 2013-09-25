@@ -123,6 +123,9 @@ class MainWindow : ApplicationWindow {
       tl.delta_updater = delta_updater;
     }
 
+    // SearchPage still needs a delta updater
+    ((SearchPage)pages[PAGE_SEARCH]).delta_updater = this.delta_updater;
+
     if (!Gtk.Settings.get_default ().gtk_shell_shows_app_menu) {
       MenuButton app_menu_button = new MenuButton ();
       app_menu_button.image = new Gtk.Image.from_icon_name ("emblem-system-symbolic", IconSize.MENU);

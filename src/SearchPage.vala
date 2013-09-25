@@ -42,18 +42,21 @@ class SearchPage : IPage, Box {
   private Label tweets_header;
   [GtkChild]
   private Spinner placeholder;
+  [GtkChild]
+  private ScrollWidget scroll_widget;
   private RadioToolButton tool_button;
-  private DeltaUpdater delta_updater;
+  public DeltaUpdater delta_updater;
   private LoadMoreEntry load_more_entry = new LoadMoreEntry ();
   private string search_query;
   private int user_page = 1;
+  private int64 lowest_tweet_id = int64.MAX-1;
 
 
   public SearchPage (int id) {
     this.id = id;
 
     tweet_list.set_header_func (header_func);
-    tweet_list.set_sort_func (sort_search_entries);
+    tweet_list.set_sort_func (ITwitterItem.sort_func);
     tweet_list.row_activated.connect (row_activated_cb);
     search_button.clicked.connect (() => {
       search_for (search_entry.get_text());
@@ -61,6 +64,13 @@ class SearchPage : IPage, Box {
     load_more_entry.get_button ().clicked.connect (() => {
       user_page++;
       load_users ();
+    });
+    //FIXME WTF WHY DOES THIS NOT WORK?!
+    scroll_widget.scrolled_to_end.connect (() => {
+      message ("END");
+    });
+    scroll_widget.scrolled_to_start.connect (() => {
+      message ("START");
     });
     this.button_press_event.connect (button_pressed_event_cb);
   }
@@ -86,9 +96,7 @@ class SearchPage : IPage, Box {
       return;
 
     // clear the list
-    tweet_list.foreach ((w) => {
-      tweet_list.remove (w);
-    });
+    clear_list ();
     placeholder.show ();
     placeholder.start ();
     tweet_list.set_placeholder (placeholder);
@@ -97,8 +105,9 @@ class SearchPage : IPage, Box {
     if (set_text)
       search_entry.set_text(search_term);
 
-    this.search_query = GLib.Uri.escape_string (search_term);
-    this.user_page    = 1;
+    this.search_query    = GLib.Uri.escape_string (search_term);
+    this.user_page       = 1;
+    this.lowest_tweet_id = int64.MAX-1;
 
     load_tweets ();
     load_users ();
@@ -113,11 +122,6 @@ class SearchPage : IPage, Box {
                                TweetInfoPage.BY_INSTANCE,
                                ((TweetListEntry)row).tweet);
     }
-  }
-
-
-  private int sort_search_entries (ListBoxRow row1, ListBoxRow row2) {
-    return ITwitterItem.sort_func(row1, row2);
   }
 
 
@@ -182,6 +186,8 @@ class SearchPage : IPage, Box {
     call.set_function ("1.1/search/tweets.json");
     call.set_method ("GET");
     call.add_param ("q", this.search_query);
+    call.add_param ("max_id", lowest_tweet_id.to_string ());
+    call.add_param ("count", "35");
     call.invoke_async.begin (null, (obj, res) => {
       try{
         call.invoke_async.end (res);
@@ -201,12 +207,24 @@ class SearchPage : IPage, Box {
       statuses.foreach_element ((array, index, node) => {
         var tweet = new Tweet ();
         tweet.load_from_json (node, now);
+        if (tweet.id < lowest_tweet_id)
+          lowest_tweet_id = tweet.id;
         var entry = new TweetListEntry (tweet, main_window, account);
+        delta_updater.add (entry);
         tweet_list.add (entry);
       });
     });
 
   } // }}}
+
+  /**
+   * Deletes all rows from the list of search results
+   */
+  private void clear_list () {
+    tweet_list.foreach ((w) => {
+      tweet_list.remove (w);
+    });
+  }
 
   public void create_tool_button(RadioToolButton? group){
     tool_button = new RadioToolButton.from_widget (group);
