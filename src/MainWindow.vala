@@ -46,7 +46,7 @@ class MainWindow : ApplicationWindow {
   private IPage[] pages                    = new IPage[7];
   private IntHistory history               = new IntHistory (5);
   private Button new_tweet_button          = new Button ();
-  private DeltaUpdater delta_updater       = new DeltaUpdater();
+  private DeltaUpdater delta_updater       = new DeltaUpdater ();
   public unowned Account account           {public get; private set;}
   private WarningService warning_service;
 
