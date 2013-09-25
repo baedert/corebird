@@ -129,6 +129,7 @@ interface ITimeline : Gtk.Widget, IPage {
           lowest_id = t.id;
 
         var entry  = new TweetListEntry(t, main_window, account);
+        delta_updater.add (entry);
         tweet_list.add (entry);
       });
       load_older_internal.callback ();
