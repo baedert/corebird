@@ -21,6 +21,7 @@ using Gtk;
 // TODO: Add timeout that removes all entries after X seconds when switched away
 [GtkTemplate (ui = "/org/baedert/corebird/ui/search-page.ui")]
 class SearchPage : IPage, Box {
+  private static const int USER_COUNT = 3;
   private int id;
   /** The unread count here is always zero */
   public int unread_count {
@@ -43,6 +44,9 @@ class SearchPage : IPage, Box {
   private Spinner placeholder;
   private RadioToolButton tool_button;
   private DeltaUpdater delta_updater;
+  private LoadMoreEntry load_more_entry = new LoadMoreEntry ();
+  private string search_query;
+  private int user_page = 1;
 
 
   public SearchPage (int id) {
@@ -53,6 +57,10 @@ class SearchPage : IPage, Box {
     tweet_list.row_activated.connect (row_activated_cb);
     search_button.clicked.connect (() => {
       search_for (search_entry.get_text());
+    });
+    load_more_entry.get_button ().clicked.connect (() => {
+      user_page++;
+      load_users ();
     });
     this.button_press_event.connect (button_pressed_event_cb);
   }
@@ -89,43 +97,50 @@ class SearchPage : IPage, Box {
     if (set_text)
       search_entry.set_text(search_term);
 
-    string q = GLib.Uri.escape_string (search_term);
+    this.search_query = GLib.Uri.escape_string (search_term);
+    this.user_page    = 1;
 
-    var call = account.proxy.new_call ();
-    call.set_function ("1.1/search/tweets.json");
-    call.set_method ("GET");
-    call.add_param ("q", q);
-    call.invoke_async.begin (null, (obj, res) => {
-      try{
-        call.invoke_async.end (res);
-      } catch (GLib.Error e) {
-        warning (e.message);
-        return;
-      }
-      string back = call.get_payload ();
-      Json.Parser parser = new Json.Parser ();
-      try {
-        parser.load_from_data (back);
-      } catch (GLib.Error e) {
-        critical(" %s\nDATA:\n%s", e.message, back);
-      }
-      var now = new GLib.DateTime.now_local ();
-      var statuses = parser.get_root().get_object().get_array_member("statuses");
-      statuses.foreach_element ((array, index, node) => {
-        var tweet = new Tweet ();
-        tweet.load_from_json (node, now);
-        var entry = new TweetListEntry (tweet, main_window, account);
-        tweet_list.add (entry);
-      });
-    });
+    load_tweets ();
+    load_users ();
+  } //}}}
+
+  private void row_activated_cb (ListBoxRow row) {
+    if (row is UserListEntry) {
+      main_window.switch_page (MainWindow.PAGE_PROFILE,
+                               ((UserListEntry)row).user_id);
+    } else if (row is TweetListEntry) {
+      main_window.switch_page (MainWindow.PAGE_TWEET_INFO,
+                               TweetInfoPage.BY_INSTANCE,
+                               ((TweetListEntry)row).tweet);
+    }
+  }
 
 
+  private int sort_search_entries (ListBoxRow row1, ListBoxRow row2) {
+    return ITwitterItem.sort_func(row1, row2);
+  }
+
+
+  private void header_func (ListBoxRow row, ListBoxRow? before) { //{{{
+    Widget header = row.get_header ();
+    if (header != null)
+      return;
+
+    if (before == null && row is UserListEntry) {
+      row.set_header (users_header);
+    } else if (before is UserListEntry && row is TweetListEntry) {
+      row.set_header (tweets_header);
+    }
+  } //}}}
+
+  private void load_users () {  // {{{
     var user_call = account.proxy.new_call ();
     user_call.set_method ("GET");
     user_call.set_function ("1.1/users/search.json");
-    user_call.add_param ("q", q);
-    user_call.add_param ("count", "3");
+    user_call.add_param ("q", this.search_query);
+    user_call.add_param ("count", USER_COUNT.to_string ());
     user_call.add_param ("include_entities", "false");
+    user_call.add_param ("page", user_page.to_string ());
     user_call.invoke_async.begin (null, (obj, res) => {
       try {
         user_call.invoke_async.end (res);
@@ -152,41 +167,46 @@ class SearchPage : IPage, Box {
         entry.user_id = user_obj.get_int_member ("id");
         tweet_list.add (entry);
       });
-      tweet_list.add (new LoadMoreEntry ());
+      if (users.get_length () >= USER_COUNT) {
+        if (load_more_entry.parent == null)
+          tweet_list.add (load_more_entry);
+      } else {
+        load_more_entry.hide ();
+      }
     });
-  } //}}}
 
-  private void row_activated_cb (ListBoxRow row) {
-    if (row is UserListEntry) {
-      main_window.switch_page (MainWindow.PAGE_PROFILE,
-                               ((UserListEntry)row).user_id);
-    } else if (row is TweetListEntry) {
-      main_window.switch_page (MainWindow.PAGE_TWEET_INFO,
-                               TweetInfoPage.BY_INSTANCE,
-                               ((TweetListEntry)row).tweet);
-    }
-  }
+  } // }}}
 
+  private void load_tweets () { // {{{
+    var call = account.proxy.new_call ();
+    call.set_function ("1.1/search/tweets.json");
+    call.set_method ("GET");
+    call.add_param ("q", this.search_query);
+    call.invoke_async.begin (null, (obj, res) => {
+      try{
+        call.invoke_async.end (res);
+      } catch (GLib.Error e) {
+        warning (e.message);
+        return;
+      }
+      string back = call.get_payload ();
+      Json.Parser parser = new Json.Parser ();
+      try {
+        parser.load_from_data (back);
+      } catch (GLib.Error e) {
+        critical(" %s\nDATA:\n%s", e.message, back);
+      }
+      var now = new GLib.DateTime.now_local ();
+      var statuses = parser.get_root().get_object().get_array_member("statuses");
+      statuses.foreach_element ((array, index, node) => {
+        var tweet = new Tweet ();
+        tweet.load_from_json (node, now);
+        var entry = new TweetListEntry (tweet, main_window, account);
+        tweet_list.add (entry);
+      });
+    });
 
-  private int sort_search_entries (ListBoxRow row1, ListBoxRow row2) {
-      return ITwitterItem.sort_func(row1, row2);
-  }
-
-
-  private void header_func (ListBoxRow row, ListBoxRow? before) {
-    Widget header = row.get_header ();
-    if (header != null)
-      return;
-
-    if (before == null && row is UserListEntry) {
-      row.set_header (users_header);
-    } else if (before is UserListEntry && row is TweetListEntry) {
-      row.set_header (tweets_header);
-    }
-  }
-
-
-
+  } // }}}
 
   public void create_tool_button(RadioToolButton? group){
     tool_button = new RadioToolButton.from_widget (group);
@@ -203,9 +223,8 @@ class SearchPage : IPage, Box {
   }
 }
 
-
+[GtkTemplate (ui = "/org/baedert/corebird/ui/load-more-entry.ui")]
 class LoadMoreEntry : Gtk.ListBoxRow, ITwitterItem {
-  private Gtk.Button load_more_button;
   public int64 sort_factor {
     get { return int64.MAX-2; }
   }
@@ -213,14 +232,11 @@ class LoadMoreEntry : Gtk.ListBoxRow, ITwitterItem {
     get { return true; }
     set {}
   }
+  [GtkChild]
+  private Button load_more_button;
 
-  public LoadMoreEntry () {
-    load_more_button = new Gtk.Button.with_label ("Load more");
-    load_more_button.halign = Gtk.Align.CENTER;
-    load_more_button.relief = Gtk.ReliefStyle.NONE;
-    load_more_button.get_style_context ().add_class ("dim-label");
-    load_more_button.get_style_context ().add_class ("button-wide");
-    this.add (load_more_button);
-    show_all ();
+  public LoadMoreEntry () {}
+  public Button get_button () {
+    return load_more_button;
   }
 }
