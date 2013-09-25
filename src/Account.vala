@@ -198,12 +198,11 @@ class Account : GLib.Object {
   private static void lookup_accounts () {
     accounts = new GLib.SList<Account> ();
     Corebird.db.exec ("SELECT id, screen_name, name, avatar_url FROM accounts",
-        (n_cols, vals) => {
-        message("account: %s", vals[1]);
+    (n_cols, vals) => {
       Account acc = new Account (int64.parse(vals[0]), vals[1], vals[2]);
       acc.avatar_url = vals[3];
       accounts.append (acc);
-      return 0; // go on
+      return Sql.CONTINUE; // go on
     });
   }
 
