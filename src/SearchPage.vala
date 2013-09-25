@@ -128,7 +128,7 @@ class SearchPage : IPage, Box {
 
     if (before == null && row is UserListEntry) {
       row.set_header (users_header);
-    } else if (before is UserListEntry && row is TweetListEntry) {
+    } else if ((before is UserListEntry || before is LoadMoreEntry) && row is TweetListEntry) {
       row.set_header (tweets_header);
     }
   } //}}}
