@@ -64,7 +64,6 @@ class ProfilePage : ScrollWidget, IPage {
   public ProfilePage(int id, MainWindow window, Account account){
     this.main_window = window;
     this.id = id;
-    this.button_press_event.connect (button_pressed_event_cb);
   }
 
   public void set_user_id(int64 user_id){

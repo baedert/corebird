@@ -59,7 +59,6 @@ class TweetInfoPage : IPage , ScrollWidget {
 
   public TweetInfoPage (int id) {
     this.id = id;
-    this.button_press_event.connect (button_pressed_event_cb);
   }
 
   public void on_join (int page_id, va_list args){

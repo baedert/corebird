@@ -69,7 +69,6 @@ class SearchPage : IPage, Box {
     scroll_widget.scrolled_to_end.connect (() => {
       load_tweets ();
     });
-    this.button_press_event.connect (button_pressed_event_cb);
   }
 
   [GtkCallback]

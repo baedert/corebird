@@ -5,6 +5,7 @@
   <template class="MainWindow" parent="GtkApplicationWindow">
     <property name="can_focus">False</property>
     <property name="icon_name">corebird</property>
+    <signal name="button-press-event" handler="button_press_event_cb" />
     <child>
       <object class="GtkBox" id="box1">
         <property name="visible">True</property>

@@ -79,6 +79,7 @@ class MainWindow : ApplicationWindow {
       return;
     }
 
+
     headerbar.set_subtitle ("@" + account.screen_name);
     //TODO: Move new_tweet_button into the gtktemplate
     new_tweet_button.get_style_context ().add_class ("image-button");
@@ -182,6 +183,20 @@ class MainWindow : ApplicationWindow {
 
 
     this.add_accel_group(ag);
+  }
+
+  [GtkCallback]
+  private bool button_press_event_cb (Gdk.EventButton evt) {
+    if (evt.button == 9) {
+      // Forward thumb button
+      switch_page (MainWindow.PAGE_NEXT);
+      return true;
+    } else if (evt.button == 8) {
+      // backward thumb button
+      switch_page (MainWindow.PAGE_PREVIOUS);
+      return true;
+    }
+    return false;
   }
 
   private void show_compose_window () {

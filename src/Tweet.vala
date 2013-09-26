@@ -217,7 +217,7 @@ class Tweet : GLib.Object {
 
   /**
    * Returns the text of this tweet in pango markup form,
-   * i.e. formatted with the html tags formatted by pango.
+   * i.e. formatted with the html tags used by pango.
    *
    * @return The tweet's formatted text.
    */

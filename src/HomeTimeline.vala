@@ -48,7 +48,6 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
     });
 
     this.scrolled_to_start.connect (handle_scrolled_to_start);
-    this.button_press_event.connect (button_pressed_event_cb);
 
     this.vadjustment.notify["value"].connect (() => {
       mark_seen_on_scroll (vadjustment.value);

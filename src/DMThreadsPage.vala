@@ -70,7 +70,6 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 
   public DMThreadsPage (int id) {
     this.id = id;
-    this.button_press_event.connect (button_pressed_event_cb);
     thread_list.set_header_func ((row, row_before) => {
       if (row_before == null)
         return;

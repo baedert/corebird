@@ -34,7 +34,6 @@ class DMPage : IPage, IMessageReceiver, Box {
 
   public DMPage (int id) {
     this.id = id;
-    this.button_press_event.connect (button_pressed_event_cb);
   }
 
   public void stream_message_received (StreamMessageType type, Json.Node root) {
