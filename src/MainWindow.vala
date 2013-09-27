@@ -42,6 +42,9 @@ class MainWindow : ApplicationWindow {
   private Gtk.Stack stack;
   [GtkChild]
   private Image avatar_image;
+  [GtkChild]
+  private Spinner progress_spinner;
+  private uint progress_holders            = 0;
   private RadioToolButton dummy_button     = new RadioToolButton(null);
   private IPage[] pages                    = new IPage[7];
   private IntHistory history               = new IntHistory (5);
@@ -108,7 +111,7 @@ class MainWindow : ApplicationWindow {
       page.create_tool_button (dummy_button);
       stack.add_named (page, page.get_id ().to_string ());
       if (page.get_tool_button () != null) {
-        left_toolbar.add (page.get_tool_button ());
+        left_toolbar.insert (page.get_tool_button (), page.get_id ());
         page.get_tool_button ().toggled.connect (() => {
           if (page.get_tool_button ().active){
             switch_page (page.get_id ());
@@ -253,6 +256,21 @@ class MainWindow : ApplicationWindow {
 
     page.on_join (page_id, va_list ());
     stack.set_visible_child_name (page_id.to_string ());
+  }
+
+  /**
+   * Indicates that the caller is doing a long-running opertation.
+   *
+   */
+  public void start_progress () {
+    progress_holders ++;
+    progress_spinner.show ();
+  }
+
+  public void stop_progress () {
+    progress_holders --;
+    if (progress_holders == 0)
+      progress_spinner.hide ();
   }
 
   /**
