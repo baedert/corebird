@@ -21,7 +21,7 @@ using Gtk;
 class DMPage : IPage, IMessageReceiver, Box {
   private bool initialized = false;
   public int unread_count               {get; set;}
-  public unowned MainWindow main_window {set; get;}
+  public unowned MainWindow main_window {get; set;}
   public unowned Account account        {get; set;}
   private int id;
   [GtkChild]

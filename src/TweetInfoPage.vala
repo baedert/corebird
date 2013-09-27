@@ -162,6 +162,7 @@ class TweetInfoPage : IPage , ScrollWidget {
    * Loads the data of the tweet with the id tweet_id from the Twitter server.
    */
   private void query_tweet_info () { //{{{
+    follow_button.sensitive = false;
     var call = account.proxy.new_call ();
     call.set_method ("GET");
     call.set_function ("1.1/statuses/show.json");
@@ -281,6 +282,7 @@ class TweetInfoPage : IPage , ScrollWidget {
 
   private void set_follow_button_state (bool following) {
     var sc = follow_button.get_style_context ();
+    follow_button.sensitive = true;
     if (following) {
       sc.remove_class ("suggested-action");
       sc.add_class ("destructive-action");

@@ -117,6 +117,7 @@ class ProfilePage : ScrollWidget, IPage {
   private async void load_profile_data (int64 user_id) { //{{{
     progress_spinner.show ();
     progress_spinner.start ();
+    follow_button.sensitive = false;
     var call = account.proxy.new_call ();
     call.set_method ("GET");
     call.set_function ("1.1/users/show.json");
@@ -304,7 +305,7 @@ class ProfilePage : ScrollWidget, IPage {
   } //}}}
 
   [GtkCallback]
-  private void follow_button_clicked_cb () {
+  private void follow_button_clicked_cb () { //{{{
     var call = account.proxy.new_call();
     if (following)
       call.set_function( "1.1/friendships/destroy.json");
@@ -328,7 +329,7 @@ class ProfilePage : ScrollWidget, IPage {
       follow_button.sensitive = true;
       progress_spinner.hide ();
     });
-  }
+  } //}}}
 
   /*
    * Returns the banner name for the given user by user_id and screen_name.
@@ -345,6 +346,7 @@ class ProfilePage : ScrollWidget, IPage {
 
   private void set_follow_button_state (bool following) { //{{{
     var sc = follow_button.get_style_context ();
+    follow_button.sensitive = true;
     if (following) {
       sc.remove_class ("suggested-action");
       sc.add_class ("destructive-action");
