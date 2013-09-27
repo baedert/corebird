@@ -81,7 +81,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     });
     thread_list.add (start_conversation_entry);
     start_conversation_entry.clicked.connect (() => {
-      main_window.switch_page (MainWindow.PAGE_DM, -1);
+      main_window.switch_page (MainWindow.PAGE_DM, 0);
     });
   }
 
@@ -180,7 +180,6 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     } else
       thread_entry.avatar = avatar;
   } // }}}
-
 
   private void header_func (Gtk.ListBoxRow row, Gtk.ListBoxRow? row_before) { //{{{
     if (row_before == null)

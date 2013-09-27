@@ -25,4 +25,19 @@ CREATE TABLE IF NOT EXISTS `dm_threads`(
   avatar_url VARCHAR (250)
 );
 
+CREATE TABLE IF NOT EXISTS `dms` (
+  from_id NUMERIC(19,0),
+  to_id NUMERIC(19,0),
+  from_screen_name VARCHAR(30),
+  to_screen_name VARCHAR(40),
+  from_user_name VARCHAR(30),
+  to_user_name VARCHAR(30),
+  timestamp INTEGER(11),
+  avatar_url VARCHAR(250)
+);
 
+CREATE TABLE IF NOT EXISTS `following`(
+  id NUMERIC(19,0),
+  screen_name VARCHAR(30),
+  user_name VARCHAR (40)
+);

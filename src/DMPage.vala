@@ -30,6 +30,8 @@ class DMPage : IPage, IMessageReceiver, Box {
   private Entry text_entry;
   [GtkChild]
   private ListBox message_list;
+  [GtkChild]
+  private Entry recipient_entry;
 
 
   public DMPage (int id) {
@@ -41,11 +43,18 @@ class DMPage : IPage, IMessageReceiver, Box {
       unread_count ++;
       var obj = root.get_object ().get_object_member ("direct_message");
       update_unread_count ();
+//      account.db.execf ("INSERT INTO dms(`from_id`, `from_screen_name`, ) VALUES ();");
     }
   }
 
 
   public void on_join (int page_id, va_list arg_list) {
+    int64 recipient_id = arg_list.arg<int64> ();
+    if (recipient_id == 0)
+      recipient_entry.show ();
+    else
+      recipient_entry.hide ();
+
     if (!initialized) {
 //      load_cached ();
 //      load_newest ();
@@ -53,10 +62,7 @@ class DMPage : IPage, IMessageReceiver, Box {
     }
   }
 
-  public void on_leave () {
-
-  }
-
+  public void on_leave () {}
 
   [GtkCallback]
   private void send_button_clicked_cb () {

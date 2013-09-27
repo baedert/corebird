@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.15.2 on Thu Sep 12 23:01:50 2013 -->
+<!-- Generated with glade 3.16.0 on Fri Sep 27 23:32:08 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.10 -->
   <!-- interface-requires corebird 0.0 -->
@@ -18,12 +18,11 @@
             <property name="can_focus">False</property>
             <property name="shadow_type">none</property>
             <child>
-              <object class="GtkListBox" id="message_list">
+              <object class="GtkEntry" id="recipient_entry">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="hexpand">True</property>
-                <property name="vexpand">True</property>
-                <property name="selection_mode">none</property>
+                <property name="can_focus">True</property>
+                <property name="margin_left">5</property>
+                <property name="margin_right">5</property>
               </object>
             </child>
           </object>
@@ -33,6 +32,20 @@
         <property name="expand">False</property>
         <property name="fill">True</property>
         <property name="position">0</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkListBox" id="message_list">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="hexpand">True</property>
+        <property name="vexpand">True</property>
+        <property name="selection_mode">none</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">1</property>
       </packing>
     </child>
     <child>
@@ -46,6 +59,7 @@
             <property name="margin_right">5</property>
             <property name="margin_top">5</property>
             <property name="margin_bottom">5</property>
+            <signal name="activate" handler="send_button_clicked_cb" swapped="no"/>
           </object>
           <packing>
             <property name="expand">True</property>
@@ -78,7 +92,7 @@
       <packing>
         <property name="expand">False</property>
         <property name="fill">True</property>
-        <property name="position">1</property>
+        <property name="position">2</property>
       </packing>
     </child>
   </template>

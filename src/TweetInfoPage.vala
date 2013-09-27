@@ -86,9 +86,7 @@ class TweetInfoPage : IPage , ScrollWidget {
     query_tweet_info ();
   }
 
-  public void on_leave () {
-
-  }
+  public void on_leave () {}
 
 
   [GtkCallback]
