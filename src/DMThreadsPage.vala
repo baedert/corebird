@@ -64,6 +64,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   private BadgeRadioToolButton tool_button;
   private HashMap<int64?, unowned DMThreadEntry> thread_map = new HashMap<int64?, unowned DMThreadEntry>
                               (Utils.int64_hash_func, Utils.int64_equal_func, DMThreadEntry.equal_func);
+  private StartConversationEntry start_conversation_entry = new StartConversationEntry ();
   [GtkChild]
   private Gtk.ListBox thread_list;
 
@@ -73,8 +74,14 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     thread_list.set_header_func (header_func);
 
     thread_list.row_activated.connect ((row) => {
+      if (!(row is DMThreadEntry))
+        return;
       main_window.switch_page (MainWindow.PAGE_DM,
                                ((DMThreadEntry)row).user_id);
+    });
+    thread_list.add (start_conversation_entry);
+    start_conversation_entry.clicked.connect (() => {
+      main_window.switch_page (MainWindow.PAGE_DM, -1);
     });
   }
 
@@ -205,4 +212,16 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     tool_button.queue_draw();
   }
 
+}
+
+[GtkTemplate (ui = "/org/baedert/corebird/ui/start-conversation-entry.ui")]
+class StartConversationEntry : Gtk.ListBoxRow {
+  [GtkChild]
+  private Gtk.Button start_conversation_button;
+  public signal void clicked ();
+  construct {
+    start_conversation_button.clicked.connect (() => {
+      clicked ();
+    });
+  }
 }
