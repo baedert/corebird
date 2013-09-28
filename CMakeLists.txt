@@ -17,7 +17,7 @@ if (DEBUG)
   message ("DEBUG: ON")
   set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g")
   set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0")
-  set (CMAKE_VERBOSE_MAKEFILE ON)
+#  set (CMAKE_VERBOSE_MAKEFILE ON)
 endif (DEBUG)
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fdiagnostics-show-option")
 #set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcolor-diagnostics")
@@ -58,10 +58,8 @@ find_package (Vala REQUIRED)
 ensure_vala_version ("0.20" MINIMUM) # TODO: Bump to 0.22
 
 
-
-#add_resources (resources.xml
-#               src/resources.c)
-
+# GSettings
+add_schema ("org.baedert.corebird.gschema.xml")
 
 
 add_subdirectory (po)
@@ -142,9 +140,9 @@ set (VALA_SOURCE
   src/util/WidgetReplacer.vala
   src/util/IntHistory.vala
   src/util/TweetUtils.vala
-  src/resources.c
   src/sql/Database.vala
   src/sql/Statement.vala
+  src/resources.c
 )
 
 
@@ -171,13 +169,12 @@ OPTIONS
   ${VALAC_OPTIONS}
 )
 
+
 set_source_files_properties (${CMAKE_CURRENT_SOURCE_DIR}/src/resources.c PROPERTIES GENERATED 1)
 add_executable (corebird ${VALA_C})
 add_dependencies (corebird generated_resources)
 target_link_libraries (corebird ${DEPS_LIBRARIES})
 
-# GSettings
-add_schema ("org.baedert.corebird.gschema.xml")
 
 install (TARGETS corebird RUNTIME DESTINATION bin)
 

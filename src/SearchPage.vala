@@ -95,6 +95,8 @@ class SearchPage : IPage, Box {
     if(search_term.length == 0)
       return;
 
+    string q = search_term;
+
     // clear the list
     clear_list ();
     placeholder.show ();
@@ -105,7 +107,10 @@ class SearchPage : IPage, Box {
     if (set_text)
       search_entry.set_text(search_term);
 
-    this.search_query    = GLib.Uri.escape_string (search_term);
+    if (!Settings.get_bool ("search-show-retweets"))
+      q += " -rt";
+
+    this.search_query    = GLib.Uri.escape_string (q);
     this.user_page       = 1;
     this.lowest_tweet_id = int64.MAX-1;
 
