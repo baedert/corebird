@@ -48,7 +48,7 @@ class Twitter {
   /**
    * Updates the config
    */
-  public static async void update_config(){
+/*  public static async void update_config(){
     // Check when the last update was
     var now = new GLib.DateTime.now_local();
     Corebird.db.exec (
@@ -70,7 +70,7 @@ class Twitter {
       return -1; //stop
     });
 
-/*    var call = Twi_tter.proxy.new_call();
+    var call = Twi_tter.proxy.new_call();
     call.set_method("GET");
     call.set_function("1.1/help/configuration.json");
     call.invoke_async.begin(null, (obj, res) => {
@@ -96,21 +96,10 @@ class Twitter {
       Twitter.short_url_length       = (int)root.get_int_member("short_url_length");
       Twitter.short_url_length_https = (int)root.get_int_member("short_url_length_https");
 
-      //Update the stuff in the database
-      try{
-        Corebird.db.execute(@"UPDATE `common` SET
-        `update_config`='%d',
-        `characters_reserved_per_media`='$characters_reserved_per_media',
-        `photo_size_limit`='$photo_size_limit',
-        `short_url_length`='$short_url_length',
-        `short_url_length_https`='$short_url_length_https';".printf(now.to_unix()));
-      }catch(SQLHeavy.Error e){
-        error("Error while updating the twitter config: %s", e.message);
-      }
 
       message("Updated the twitter configuration");
-    });*/
-  }
+    });
+  } */
 
   public static int get_characters_reserved_by_media(){
     return characters_reserved_per_media;

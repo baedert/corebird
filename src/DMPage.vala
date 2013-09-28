@@ -43,7 +43,6 @@ class DMPage : IPage, IMessageReceiver, Box {
       unread_count ++;
       var obj = root.get_object ().get_object_member ("direct_message");
       update_unread_count ();
-//      account.db.execf ("INSERT INTO dms(`from_id`, `from_screen_name`, ) VALUES ();");
     }
   }
 

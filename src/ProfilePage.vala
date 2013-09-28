@@ -78,13 +78,10 @@ class ProfilePage : ScrollWidget, IPage {
 
     banner_box.set_background(DATADIR+"/no_banner.png");
     //Load cached data
-    string query_string = "SELECT id, screen_name, name, description, tweets,
-           following, followers, avatar_name, banner_url,
-           url, location, following, is_following, banner_name
-           FROM profiles ";
-    query_string += @"WHERE id='$user_id';";
-
-    Corebird.db.exec (query_string, (n_cols, vals) => {
+    Corebird.db.select ("profiles").cols ("id", "screen_name", "name", "description", "tweets",
+     "following", "followers", "avatar_name", "banner_url", "url", "location", "is_following",
+     "banner_name").where (@"id=$user_id")
+    .run ((vals) => {
       /* If we get inside this block, there is already some data in the
         DB we can use. */
       try {
@@ -95,8 +92,8 @@ class ProfilePage : ScrollWidget, IPage {
 
       set_data(vals[2], vals[1], vals[9], vals[10], vals[3],
                int.parse (vals[4]), int.parse (vals[5]), int.parse (vals[6]));
-      set_follow_button_state (bool.parse (vals[12]));
-      string banner_name = vals[13];
+      set_follow_button_state (bool.parse (vals[11]));
+      string banner_name = vals[12];
       debug("banner_name: %s", banner_name);
 
       if (banner_name != null &&
@@ -109,7 +106,7 @@ class ProfilePage : ScrollWidget, IPage {
         debug("Banner %s does not exist, load it first...", banner_name);
         banner_box.set_background(DATADIR+"/no_banner.png");
       }
-      return Sql.STOP;
+      return false;
     });
   }
 
@@ -223,19 +220,22 @@ class ProfilePage : ScrollWidget, IPage {
 
       set_data(name, screen_name, display_url, location, description, tweets,
            following, followers, text_urls);
- //     follow_button.active = is_following;
       set_follow_button_state (is_following);
+      Corebird.db.replace ("profiles")
+                 .vali64 ("id", id)
+                 .val ("screen_name", screen_name)
+                 .val ("name", name)
+                 .vali ("followers", followers)
+                 .vali ("following", following)
+                 .vali ("tweets", tweets)
+                 .val ("description", description)
+                 .val ("avatar_name", avatar_name)
+                 .val ("url", display_url)
+                 .val ("location", location)
+                 .valb ("is_following", is_following)
+                 .val ("banner_name", banner_name)
+                 .run ();
 
-
-      Corebird.db.exec (
-          @"INSERT OR REPLACE INTO `profiles`(`id`, `screen_name`, `name`,
-             `followers`, `following`, `tweets`, `description`, `avatar_name`,
-             `url`, `location`, `is_following`, `banner_name`)
-           VALUES
-          ('$id', '$screen_name', '$name', '$followers', '$following', '$tweets',
-           '$description', '$avatar_name', '$display_url', '$location', '$is_following',
-           '$banner_name');");
-          // XXX is_following can only be 1 or 0
     });
   } //}}}
 
@@ -248,7 +248,7 @@ class ProfilePage : ScrollWidget, IPage {
    * @param screen_name Bar
    */
   private void load_profile_banner (string base_url,
-                                    int64 user_id, string screen_name) {
+                                    int64 user_id, string screen_name) { // {{{
     string saved_banner_url = Utils.user_file ("assets/banners/"+get_banner_name (user_id));
     string banner_url  = base_url+"/mobile_retina";
     string banner_name = get_banner_name (user_id);
@@ -257,13 +257,15 @@ class ProfilePage : ScrollWidget, IPage {
       Utils.download_file_async .begin (banner_url, banner_on_disk, data_cancellable,
           () => {banner_box.set_background (banner_on_disk);});
         debug("Setting the banner name to %s", banner_name);
-      Corebird.db.exec (@"UPDATE `profiles` SET `banner_url`='$banner_url',
-          `banner_name`='$banner_name'
-          WHERE `id`='$user_id';");
+      Corebird.db.update ("profiles")
+                 .val ("banner_url", banner_url)
+                 .val ("banner_name", banner_name)
+                 .where_eqi ("id", user_id)
+                 .run ();
     } else {
       banner_box.set_background (banner_on_disk);
     }
-  }
+  } // }}}
 
 
   private new void set_data (string name, string screen_name, string? url,

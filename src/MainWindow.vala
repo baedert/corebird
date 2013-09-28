@@ -156,6 +156,8 @@ class MainWindow : ApplicationWindow {
 
     // Activate the first timeline
     this.switch_page (0);
+
+
   }
 
   /**

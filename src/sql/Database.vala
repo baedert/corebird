@@ -78,5 +78,31 @@ class Database {
   public void execf (string sql, string first_param, ...) {
     db.exec (sql.printf (first_param, va_list ()));
   }
+
+  public Sql.InsertStatement insert (string table_name) {
+    var stmt = new InsertStatement (table_name);
+    stmt.db = db;
+    return stmt;
+  }
+
+  public Sql.InsertStatement replace (string table_name) {
+    var stmt = new InsertStatement (table_name, true);
+    stmt.db = db;
+    return stmt;
+
+  }
+
+  public Sql.SelectStatement select (string table_name) {
+    var stmt = new SelectStatement (table_name);
+    stmt.db = db;
+    return stmt;
+  }
+
+  public Sql.UpdateStatement update (string table_name) {
+    var stmt = new UpdateStatement (table_name);
+    stmt.db = db;
+    return stmt;
+  }
+
 }
 }
