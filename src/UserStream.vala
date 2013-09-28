@@ -177,8 +177,8 @@ class UserStream : Object {
       else if (root.has_member ("direct_message"))
         type = StreamMessageType.DIRECT_MESSAGE;
 
-      message ("Message with type %s", type.to_string ());
 #if __DEV
+      message ("Message with type %s", type.to_string ());
       if (type != StreamMessageType.FRIENDS)
         stdout.printf (data.str+"\n");
 #endif

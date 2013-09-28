@@ -24,10 +24,10 @@ interface ITimeline : Gtk.Widget, IPage {
   public static const int REST = 25;
   /** The lowest id of any tweet in this timeline */
   protected abstract int64 lowest_id            {get; set;}
-  protected abstract  int64 max_id              {get; set; default = 0;}
+  protected abstract int64 max_id              {get; set; default = 0;}
   protected abstract Gtk.ListBox tweet_list     {get; set;}
   public    abstract int unread_count           {get; set;}
-  public    abstract DeltaUpdater delta_updater {get;set;}
+  public    abstract DeltaUpdater delta_updater {get; set;}
 
   public abstract void load_cached();
   public abstract void load_newest();
@@ -42,7 +42,7 @@ interface ITimeline : Gtk.Widget, IPage {
    * @param function The twitter function to use
    * @param tweet_type The type of tweets to load
    */
-  protected async void load_newest_internal(string function, int tweet_type) {
+  protected async void load_newest_internal(string function, int tweet_type) { //{{{
     var call = account.proxy.new_call();
     call.set_function(function);
     call.set_method("GET");
@@ -79,12 +79,13 @@ interface ITimeline : Gtk.Widget, IPage {
           lowest_id = t.id;
 
         var entry  = new TweetListEntry(t, main_window, account);
+        this.delta_updater.add (entry);
         tweet_list.add (entry);
       });
       load_newest_internal.callback ();
     });
     yield;
-  }
+  } //}}}
 
   /**
    * Default implementation to load older tweets.
@@ -92,7 +93,7 @@ interface ITimeline : Gtk.Widget, IPage {
    * @param function The Twitter function to use
    * @param tweet_type The type of tweets to load
    */
-  protected async void load_older_internal(string function, int tweet_type) {
+  protected async void load_older_internal(string function, int tweet_type) { //{{{
     var call = account.proxy.new_call();
     call.set_function(function);
     call.set_method("GET");
@@ -128,19 +129,20 @@ interface ITimeline : Gtk.Widget, IPage {
           lowest_id = t.id;
 
         var entry  = new TweetListEntry(t, main_window, account);
+        delta_updater.add (entry);
         tweet_list.add (entry);
       });
       load_older_internal.callback ();
     });
     yield;
-  }
+  } ///}}}
 
   /**
    * Mark the TweetListEntries the user has already seen.
    *
    * @param value The scrolling value as from Gtk.Adjustment
    */
-  protected void mark_seen_on_scroll(double value) {
+  protected void mark_seen_on_scroll(double value) { //{{{
     if (unread_count == 0)
       return;
 
@@ -157,8 +159,13 @@ interface ITimeline : Gtk.Widget, IPage {
       }
 
     });
-  }
+  } //}}}
 
+
+  /**
+   * Handle the case of the user scrolling to the start of the list,
+   * i.e. remove all the items except a few ones after a timeout.
+   */
   protected void handle_scrolled_to_start() {
     GLib.List<weak Gtk.Widget> entries = tweet_list.get_children ();
     uint item_count = entries.length ();

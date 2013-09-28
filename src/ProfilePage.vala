@@ -56,7 +56,6 @@ class ProfilePage : ScrollWidget, IPage {
   [GtkChild]
   private Gtk.Spinner progress_spinner;
   private bool following;
-  private int active_page       = 0;
   private int64 user_id;
   private string screen_name; //TODO: Remove
   private GLib.Cancellable data_cancellable = new GLib.Cancellable ();
@@ -65,7 +64,6 @@ class ProfilePage : ScrollWidget, IPage {
   public ProfilePage(int id, MainWindow window, Account account){
     this.main_window = window;
     this.id = id;
-    this.button_press_event.connect (button_pressed_event_cb);
   }
 
   public void set_user_id(int64 user_id){
@@ -119,6 +117,7 @@ class ProfilePage : ScrollWidget, IPage {
   private async void load_profile_data (int64 user_id) { //{{{
     progress_spinner.show ();
     progress_spinner.start ();
+    follow_button.sensitive = false;
     var call = account.proxy.new_call ();
     call.set_method ("GET");
     call.set_function ("1.1/users/show.json");
@@ -306,7 +305,7 @@ class ProfilePage : ScrollWidget, IPage {
   } //}}}
 
   [GtkCallback]
-  private void follow_button_clicked_cb () {
+  private void follow_button_clicked_cb () { //{{{
     var call = account.proxy.new_call();
     if (following)
       call.set_function( "1.1/friendships/destroy.json");
@@ -330,7 +329,7 @@ class ProfilePage : ScrollWidget, IPage {
       follow_button.sensitive = true;
       progress_spinner.hide ();
     });
-  }
+  } //}}}
 
   /*
    * Returns the banner name for the given user by user_id and screen_name.
@@ -347,6 +346,7 @@ class ProfilePage : ScrollWidget, IPage {
 
   private void set_follow_button_state (bool following) { //{{{
     var sc = follow_button.get_style_context ();
+    follow_button.sensitive = true;
     if (following) {
       sc.remove_class ("suggested-action");
       sc.add_class ("destructive-action");

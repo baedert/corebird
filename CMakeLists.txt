@@ -124,11 +124,12 @@ set (VALA_SOURCE
   src/widgets/ImageOverlay.vala
   src/widgets/AccountCreateWidget.vala
   src/widgets/AccountInfoWidget.vala
+  src/widgets/ReplyEntry.vala
   src/list/TweetListEntry.vala
-  src/list/NewFollowerEntry.vala
   src/list/ProgressEntry.vala
   src/list/AccountListEntry.vala
   src/list/DMThreadEntry.vala
+  src/list/UserListEntry.vala
   src/window/AboutDialog.vala
   src/window/ImageDialog.vala
   src/window/SettingsDialog.vala
@@ -154,6 +155,7 @@ set (VALAC_OPTIONS
   --gresources=resources.xml
   --target-glib=2.38
   --enable-checking
+  --vapidir=vapi/
 )
 
 if (DEBUG)

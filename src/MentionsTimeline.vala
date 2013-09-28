@@ -19,10 +19,10 @@ using Gtk;
 
 class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
   private bool inited = false;
-  public int unread_count {get;set;}
-  public unowned MainWindow main_window {set; get;}
-  protected Gtk.ListBox tweet_list {set; get;}
-  public Account account {get; set;}
+  public int unread_count                   { set; get; }
+  public unowned MainWindow main_window     { set; get; }
+  protected Gtk.ListBox tweet_list          { set; get; }
+  public Account account                    { set; get; }
   private int id;
   private BadgeRadioToolButton tool_button;
   private bool loading = false;
@@ -49,7 +49,6 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
     });
 
     this.scrolled_to_start.connect(handle_scrolled_to_start);
-    this.button_press_event.connect (button_pressed_event_cb);
     tweet_list.activate_on_single_click = false;
     tweet_list.row_activated.connect ((row) => {
       main_window.switch_page (MainWindow.PAGE_TWEET_INFO,
@@ -127,15 +126,17 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
 
   public void load_older() {
     this.balance_next_upper_change (BOTTOM);
+    main_window.start_progress ();
     this.load_older_internal.begin ("1.1/statuses/mentions_timeline.json", Tweet.TYPE_MENTION, () => {
       this.loading = false;
+      main_window.stop_progress ();
     });
 
   }
 
   public void create_tool_button(RadioToolButton? group){
     tool_button = new BadgeRadioToolButton(group, "corebird-mentions-symbolic");
-    tool_button.label = "Connect";
+    tool_button.label = "Mentions";
   }
 
   public RadioToolButton? get_tool_button(){

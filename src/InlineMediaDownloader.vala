@@ -43,7 +43,7 @@ namespace InlineMediaDownloader {
     } else if (url.has_prefix("http://i.imgur.com")) {
       load_inline_media.begin(t, url);
     } else if (url.has_prefix("http://d.pr/i/") || url.has_prefix("http://ow.ly/i/") ||
-               url.has_prefix("https://vine.co/v/")) {
+               url.has_prefix("https://vine.co/v/") || url.has_prefix("http://tmblr.co/")) {
       two_step_load.begin(t, url, "<meta property=\"og:image\" content=\"(.*?)\"",
                           1);
     } else if (url.has_prefix("http://pbs.twimg.com/media/")) {
@@ -75,7 +75,7 @@ namespace InlineMediaDownloader {
   }
 
   private async void load_inline_media(Tweet t, string url,
-                                       Soup.Session? sess = null) {
+                                       Soup.Session? sess = null) { //{{{
 
     // First, check if the media already exists...
     string path = get_media_path (t, url);
@@ -129,7 +129,7 @@ namespace InlineMediaDownloader {
         critical (e.message + " for MEDIA " + url);
       }
     });
-  }
+  } //}}}
 
   private void load_animation (Tweet t,
                                MemoryInputStream in_stream,

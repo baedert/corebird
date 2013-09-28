@@ -19,10 +19,10 @@ using Gtk;
 
 class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
   private bool inited = false;
-  public int unread_count { get;set; }
-  public unowned MainWindow main_window {set; get;}
-  protected Gtk.ListBox tweet_list {set; get;}
-  public Account account {get; set;}
+  public int unread_count                { get; set; }
+  public unowned MainWindow main_window  { set; get; }
+  protected Gtk.ListBox tweet_list       { set; get; }
+  public Account account                 { get; set; }
   private int id;
   private BadgeRadioToolButton tool_button;
   private bool loading = false;
@@ -48,7 +48,6 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
     });
 
     this.scrolled_to_start.connect (handle_scrolled_to_start);
-    this.button_press_event.connect (button_pressed_event_cb);
 
     this.vadjustment.notify["value"].connect (() => {
       mark_seen_on_scroll (vadjustment.value);
@@ -88,7 +87,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
       int stack_size = Settings.get_tweet_stack_count();
       message ("Stack size: %d", stack_size);
       if(stack_size != 0 && unread_count % stack_size == 0) {
-        string summary = "%d new Tweets!".printf(unread_count);
+        string summary = _("%d new Tweets!").printf(unread_count);
         NotificationManager.notify(summary);
       }
     }
@@ -120,8 +119,10 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
 
   public void load_older() {
     this.balance_next_upper_change (BOTTOM);
+    main_window.start_progress ();
     this.load_older_internal.begin ("1.1/statuses/home_timeline.json", Tweet.TYPE_NORMAL, () => {
       this.loading = false;
+      main_window.stop_progress ();
     });
   }
 

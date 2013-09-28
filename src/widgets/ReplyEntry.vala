@@ -15,14 +15,23 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-interface ITwitterItem : Gtk.Widget {
- public static int sort_func(Gtk.ListBoxRow a, Gtk.ListBoxRow b) {
-    if(((ITwitterItem)a).sort_factor <
-       ((ITwitterItem)b).sort_factor)
-      return 1;
-    return -1;
-  }
 
-  public abstract int64 sort_factor { get;      }
-  public abstract bool seen         { get; set; }
+
+
+using Gtk;
+
+class ReplyEntry : Gtk.Entry {
+  [Signal (action = true)]
+  public signal void cancelled ();
+
+
+
+
+  public ReplyEntry () {}
+
+  static construct {
+    unowned Gtk.BindingSet binding_set = BindingSet.by_class (typeof (ReplyEntry).class_ref ());
+
+    Gtk.BindingEntry.add_signal (binding_set, Gdk.Key.Escape, 0, "cancelled", 0, null);
+  }
 }

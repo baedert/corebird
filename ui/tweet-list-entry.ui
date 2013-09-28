@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.15.3 on Tue Sep 17 23:06:24 2013 -->
+<!-- Generated with glade 3.15.4 on Wed Sep 25 10:46:53 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.10 -->
   <!-- interface-requires corebird 0.0 -->
@@ -167,7 +167,7 @@
                         <property name="can_focus">False</property>
                         <child>
                           <object class="GtkLabel" id="text_label">
-                            <property name="height_request">30</property>
+                            <property name="height_request">45</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="margin_left">5</property>
@@ -262,13 +262,13 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkEntry" id="reply_entry">
+                      <object class="ReplyEntry" id="reply_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <signal name="key-release-event" handler="reply_entry_key_released_cb" swapped="no"/>
+                        <property name="hexpand">True</property>
                       </object>
                       <packing>
-                        <property name="expand">True</property>
+                        <property name="expand">False</property>
                         <property name="fill">True</property>
                         <property name="position">1</property>
                       </packing>
@@ -338,11 +338,12 @@
             </child>
             <child>
               <object class="GtkButton" id="reply_button">
-                <property name="label" translatable="yes"></property>
+                <property name="label"></property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="relief">none</property>
                 <style>
+                  <class name="reply-button"/>
                   <class name="button-slim"/>
                   <class name="dim-label"/>
                   <class name="image-button"/>
@@ -358,7 +359,7 @@
             </child>
             <child>
               <object class="GtkToggleButton" id="favorite_button">
-                <property name="label" translatable="yes"></property>
+                <property name="label"></property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -380,7 +381,7 @@
             </child>
             <child>
               <object class="GtkToggleButton" id="retweet_button">
-                <property name="label" translatable="yes"></property>
+                <property name="label"></property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>

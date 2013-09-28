@@ -256,7 +256,7 @@ namespace TweetUtils {
         avatar.save (dest, "png");
         download_avatar.callback ();
       } catch (GLib.Error e) {
-        critical (e.message);
+        critical (e.message + " for " + avatar_url);
       }
       debug ("Loaded avatar %s", avatar_url);
       debug ("Dest: %s", dest);
@@ -265,6 +265,15 @@ namespace TweetUtils {
     return avatar;
   }
 
+  /**
+   * Calculates the length of a tweet.
+   * See https://dev.twitter.com/docs/faq#5810 for details
+   *
+   * @param text The text to calculate the length for
+   *
+   * @return The length of the tweet, taking Twitter's rules for
+   *         tweet length into account.
+   */
   int calc_tweet_length (string text) {
     string[] words = text.split (" ");
     int length = 0;

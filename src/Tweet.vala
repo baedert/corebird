@@ -94,9 +94,9 @@ class Tweet : GLib.Object {
       entities           = rt.get_object_member ("entities");
       this.is_retweet    = true;
       this.rt_id         = rt.get_int_member("id");
-      this.retweeted_by  = user.get_string_member("name");
+      this.retweeted_by  = user.get_string_member("name").replace ("&", "&amp;");
       this.text          = rt.get_string_member("text");
-      this.user_name     = rt_user.get_string_member ("name").replace ("&", "&amp;");
+      this.user_name     = rt_user.get_string_member ("name");
       this.avatar_url    = rt_user.get_string_member("profile_image_url");
       this.user_id       = rt_user.get_int_member("id");
       this.screen_name   = rt_user.get_string_member("screen_name");
@@ -110,7 +110,7 @@ class Tweet : GLib.Object {
       this.text        = status.get_string_member("text");
       this.user_name   = user.get_string_member("name");
       this.user_id     = user.get_int_member("id");
-      this.screen_name = user.get_string_member("screen_name").replace ("&", "&amp;");
+      this.screen_name = user.get_string_member("screen_name");
       this.avatar_url  = user.get_string_member("profile_image_url");
       this.verified    = user.get_boolean_member("verified");
       if (!status.get_null_member("in_reply_to_status_id"))
@@ -121,7 +121,7 @@ class Tweet : GLib.Object {
       this.retweeted  = true;
     }
 
-
+    this.user_name = this.user_name.replace ("&", "&amp;");
     this.avatar_name = Utils.get_avatar_name(this.avatar_url);
 
 
@@ -217,7 +217,7 @@ class Tweet : GLib.Object {
 
   /**
    * Returns the text of this tweet in pango markup form,
-   * i.e. formatted with the html tags formatted by pango.
+   * i.e. formatted with the html tags used by pango.
    *
    * @return The tweet's formatted text.
    */

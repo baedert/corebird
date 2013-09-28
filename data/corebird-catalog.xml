@@ -17,8 +17,11 @@
     <glade-widget-class name="ScrollWidget" generic-name="scrollwidget"
           title="ScrollWidget" parent="GtkScrolledWindow" />
 
-    <glade-widget-class name="PixbufButton" genericname="pixbufbutton"
+    <glade-widget-class name="PixbufButton" generic-name="pixbufbutton"
           title="PixbufButton" parent="GtkButton" />
+
+    <glade-widget-class name="ReplyEntry" generic-name="replyentry"
+          title="ReplyEntry" parent="GtkEntry" />
   </glade-widget-classes>
 
 
@@ -32,5 +35,6 @@
     <glade-widget-class-ref name="ImageLabel" />
     <glade-widget-class-ref name="InvisibilityBin" />
     <glade-widget-class-ref name="ScrollWidget" />
+    <glade-widget-class-ref name="ReplyEntry" />
   </glade-widget-group>
 </glade-catalog>

@@ -59,7 +59,6 @@ class TweetInfoPage : IPage , ScrollWidget {
 
   public TweetInfoPage (int id) {
     this.id = id;
-    this.button_press_event.connect (button_pressed_event_cb);
   }
 
   public void on_join (int page_id, va_list args){
@@ -87,9 +86,7 @@ class TweetInfoPage : IPage , ScrollWidget {
     query_tweet_info ();
   }
 
-  public void on_leave () {
-
-  }
+  public void on_leave () {}
 
 
   [GtkCallback]
@@ -128,7 +125,7 @@ class TweetInfoPage : IPage , ScrollWidget {
   }
 
   [GtkCallback]
-  private void follow_button_clicked_cb () { //{{{
+  private void follow_button_clicked_cb () { // {{{
     var call = account.proxy.new_call();
     if (following)
       call.set_function ("1.1/friendships/create.json");
@@ -156,9 +153,8 @@ class TweetInfoPage : IPage , ScrollWidget {
   /**
    * Loads the data of the tweet with the id tweet_id from the Twitter server.
    */
-  private void query_tweet_info () {
-    progress_spinner.start ();
-    progress_spinner.show ();
+  private void query_tweet_info () { //{{{
+    follow_button.sensitive = false;
     var call = account.proxy.new_call ();
     call.set_method ("GET");
     call.set_function ("1.1/statuses/show.json");
@@ -196,7 +192,7 @@ class TweetInfoPage : IPage , ScrollWidget {
       values_set = true;
     });
 
-  }
+  } //}}}
 
   /**
    * Loads the tweet this tweet is a reply to.
@@ -204,7 +200,7 @@ class TweetInfoPage : IPage , ScrollWidget {
    *
    * @param reply_id The id of the tweet the previous tweet was a reply to.
    */
-  private void load_replied_to_tweet (int64 reply_id) { // {{{
+  private void load_replied_to_tweet (int64 reply_id) { //{{{
     if (reply_id == 0) {
       progress_spinner.stop ();
       progress_spinner.hide ();
@@ -278,6 +274,7 @@ class TweetInfoPage : IPage , ScrollWidget {
 
   private void set_follow_button_state (bool following) { //{{{
     var sc = follow_button.get_style_context ();
+    follow_button.sensitive = true;
     if (following) {
       sc.remove_class ("suggested-action");
       sc.add_class ("destructive-action");
