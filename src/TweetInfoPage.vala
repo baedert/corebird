@@ -125,6 +125,11 @@ class TweetInfoPage : IPage , ScrollWidget {
   }
 
   [GtkCallback]
+  private void delete_item_activate_cb () {
+    critical ("Implement");
+  }
+
+  [GtkCallback]
   private void follow_button_clicked_cb () { // {{{
     var call = account.proxy.new_call();
     if (following)
