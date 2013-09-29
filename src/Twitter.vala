@@ -19,11 +19,11 @@ using Rest;
 using Gee;
 
 class Twitter {
-  private static int max_media_per_upload;
-  private static int characters_reserved_per_media;
+//  private static int max_media_per_upload;
+//  private static int characters_reserved_per_media;
   public static int short_url_length         { public get; private set; default = 22;}
   public static int short_url_length_https   { public get; private set; default = 23;}
-  private static int photo_size_limit;
+//  private static int photo_size_limit;
   public static Gdk.Pixbuf no_avatar;
   public static Gdk.Pixbuf no_banner;
   public static Gdk.Pixbuf verified_icon;
@@ -100,14 +100,4 @@ class Twitter {
       message("Updated the twitter configuration");
     });
   } */
-
-  public static int get_characters_reserved_by_media(){
-    return characters_reserved_per_media;
-  }
-  public static int get_max_media_per_upload(){
-    return max_media_per_upload;
-  }
-  public static int get_photo_size_limit(){
-    return photo_size_limit;
-  }
 }
