@@ -74,15 +74,13 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     thread_list.set_header_func (header_func);
 
     thread_list.row_activated.connect ((row) => {
-      if (!(row is DMThreadEntry))
-        return;
-      main_window.switch_page (MainWindow.PAGE_DM,
-                               ((DMThreadEntry)row).user_id);
+      if (row is StartConversationEntry)
+        main_window.switch_page (MainWindow.PAGE_DM, 0);
+      else
+        main_window.switch_page (MainWindow.PAGE_DM,
+                                 ((DMThreadEntry)row).user_id);
     });
     thread_list.add (start_conversation_entry);
-    start_conversation_entry.clicked.connect (() => {
-      main_window.switch_page (MainWindow.PAGE_DM, 0);
-    });
   }
 
   public void stream_message_received (StreamMessageType type, Json.Node root) {
@@ -220,12 +218,4 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/start-conversation-entry.ui")]
 class StartConversationEntry : Gtk.ListBoxRow {
-  [GtkChild]
-  private Gtk.Button start_conversation_button;
-  public signal void clicked ();
-  construct {
-    start_conversation_button.clicked.connect (() => {
-      clicked ();
-    });
-  }
 }
