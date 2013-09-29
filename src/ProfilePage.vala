@@ -80,7 +80,7 @@ class ProfilePage : ScrollWidget, IPage {
     //Load cached data
     Corebird.db.select ("profiles").cols ("id", "screen_name", "name", "description", "tweets",
      "following", "followers", "avatar_name", "banner_url", "url", "location", "is_following",
-     "banner_name").where (@"id=$user_id")
+     "banner_name").where_eqi ("id", user_id)
     .run ((vals) => {
       /* If we get inside this block, there is already some data in the
         DB we can use. */
