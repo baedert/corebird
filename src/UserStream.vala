@@ -101,11 +101,8 @@ class UserStream : Object {
    *
    */
   private bool timeout_cb() {
-    var dialog = new ConnectionLostDialog ();
-    dialog.reconnect_clicked.connect (() => {
-      message ("TODO: Implement reconnect");
-    });
-    dialog.show ();
+    message ("Restarting...");
+//    start ();
     return false;
   }
 
