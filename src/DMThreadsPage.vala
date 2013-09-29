@@ -16,41 +16,6 @@
  */
 
 
-/*
-  So, here's how we handle direct messages and their threads/conversations:
-
-  When the user opens the page for the very first time, we try to get as many
-  messages from twitter as possible in one api call(i.e. 300 + leonidas currently).
-  This gives us up to 300 RECEIVED messages. Whenever we encounter a sender_id we have
-  not yet seen, we create a new DMThreadEntry and append it to the thread_list.
-  When the sender_id WAS already seen, we just take the dm's ID and set it as the
-  last/first (depending on its value) message id of that conversation.
-  Note that this potentially means that we are NOT see ALL conversations, but whatever.
-
-  Now, if the user opens a thread, we probably have a few received messages from the
-  thread building, but we still need to get the ones he sent(if not cached). YAY.
-  So, we need to cache both of them and then make sure that they are properly sorted, etc.
-  Now when the user scrolls up, we need to either just load more cached messages from the
-  database OR make 2(TWO!) API calls to twitter(for sent and received messages), then
-  display them, cache them, etc.
-  Of course we also always need to update the first/last message id of the conversation
-  each and every single time we get a new message, update or query anything.
-  We can however use these ids to somewhat optimize the calls we make to twitter by
-  setting them as since_id and max_id parameter.
-
-  Now it gets interesting: Since both parties in a conversation can delete messages
-  of both parties and we cannot be sure that the user didn't delete some message on
-  another client, we cannot really cache anything and just need to rely on twitter
-  sending us the same shit every single time.
-  This is basically the same dilemma with tweets, but worse because of conversations
-  and the weird api.
-
-
-
-
-
-*/
-
 using Gtk;
 using Gee;
 
@@ -64,7 +29,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   private BadgeRadioToolButton tool_button;
   private HashMap<int64?, unowned DMThreadEntry> thread_map = new HashMap<int64?, unowned DMThreadEntry>
                               (Utils.int64_hash_func, Utils.int64_equal_func, DMThreadEntry.equal_func);
-  private StartConversationEntry start_conversation_entry = new StartConversationEntry ();
+  private StartConversationEntry start_conversation_entry;
   [GtkChild]
   private Gtk.ListBox thread_list;
 
@@ -75,10 +40,15 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 
     thread_list.row_activated.connect ((row) => {
       if (row is StartConversationEntry)
-        main_window.switch_page (MainWindow.PAGE_DM, 0);
+        ((StartConversationEntry)row).reveal ();
       else
         main_window.switch_page (MainWindow.PAGE_DM,
                                  ((DMThreadEntry)row).user_id);
+    });
+    start_conversation_entry = new StartConversationEntry ();
+    start_conversation_entry.activated.connect (() => {
+      main_window.switch_page (MainWindow.PAGE_DM,
+                               5);
     });
     thread_list.add (start_conversation_entry);
   }
@@ -101,7 +71,9 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     }
   }
 
-  public void on_leave () {}
+  public void on_leave () {
+    start_conversation_entry.unreveal ();
+  }
 
   public void load_cached () { // {{{
     account.db.select ("dm_threads")
@@ -218,4 +190,31 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/start-conversation-entry.ui")]
 class StartConversationEntry : Gtk.ListBoxRow {
+  [GtkChild]
+  private Gtk.Revealer revealer;
+  [GtkChild]
+  private ReplyEntry name_entry;
+  public signal void activated ();
+
+  construct {
+    name_entry.cancelled.connect (() => {
+      unreveal ();
+      this.grab_focus ();
+    });
+  }
+
+  public void reveal () {
+    revealer.reveal_child = true;
+    name_entry.grab_focus ();
+  }
+
+  public void unreveal () {
+    revealer.reveal_child = false;
+  }
+
+  [GtkCallback]
+  private void go_button_clicked_cb () {
+    if (name_entry.text.length > 0)
+      activated ();
+  }
 }

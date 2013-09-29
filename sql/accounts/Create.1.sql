@@ -33,7 +33,8 @@ CREATE TABLE IF NOT EXISTS `dms` (
   from_user_name VARCHAR(30),
   to_user_name VARCHAR(30),
   timestamp INTEGER(11),
-  avatar_url VARCHAR(250)
+  avatar_url VARCHAR(250),
+  text TEXT
 );
 
 CREATE TABLE IF NOT EXISTS `following`(
