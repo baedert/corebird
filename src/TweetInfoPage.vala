@@ -59,7 +59,6 @@ class TweetInfoPage : IPage , ScrollWidget {
 
   public TweetInfoPage (int id) {
     this.id = id;
-    this.button_press_event.connect (button_pressed_event_cb);
   }
 
   public void on_join (int page_id, va_list args){
@@ -87,9 +86,7 @@ class TweetInfoPage : IPage , ScrollWidget {
     query_tweet_info ();
   }
 
-  public void on_leave () {
-
-  }
+  public void on_leave () {}
 
 
   [GtkCallback]
@@ -128,7 +125,12 @@ class TweetInfoPage : IPage , ScrollWidget {
   }
 
   [GtkCallback]
-  private void follow_button_clicked_cb () {
+  private void delete_item_activate_cb () {
+    critical ("Implement");
+  }
+
+  [GtkCallback]
+  private void follow_button_clicked_cb () { // {{{
     var call = account.proxy.new_call();
     if (following)
       call.set_function ("1.1/friendships/create.json");
@@ -145,7 +147,7 @@ class TweetInfoPage : IPage , ScrollWidget {
         critical (e.message);
       }
     });
-  }
+  } //}}}
 
   [GtkCallback]
   private bool link_activated_cb (string uri) {
@@ -156,7 +158,8 @@ class TweetInfoPage : IPage , ScrollWidget {
   /**
    * Loads the data of the tweet with the id tweet_id from the Twitter server.
    */
-  private void query_tweet_info () {
+  private void query_tweet_info () { //{{{
+    follow_button.sensitive = false;
     var call = account.proxy.new_call ();
     call.set_method ("GET");
     call.set_function ("1.1/statuses/show.json");
@@ -186,15 +189,15 @@ class TweetInfoPage : IPage , ScrollWidget {
       if (!root_object.get_null_member ("place"))
         screen_name_label.label += " in " + root_object.get_string_member ("place");
 
-      if (tweet.reply_id != 0) {
-        progress_spinner.show();
-        progress_spinner.start ();
+      if (tweet.reply_id == 0) {
+        progress_spinner.stop ();
         load_replied_to_tweet (tweet.reply_id);
-      }
+      } else
+        load_replied_to_tweet (tweet.reply_id);
       values_set = true;
     });
 
-  }
+  } //}}}
 
   /**
    * Loads the tweet this tweet is a reply to.
@@ -202,7 +205,7 @@ class TweetInfoPage : IPage , ScrollWidget {
    *
    * @param reply_id The id of the tweet the previous tweet was a reply to.
    */
-  private void load_replied_to_tweet (int64 reply_id) {
+  private void load_replied_to_tweet (int64 reply_id) { //{{{
     if (reply_id == 0) {
       progress_spinner.stop ();
       progress_spinner.hide ();
@@ -230,7 +233,7 @@ class TweetInfoPage : IPage , ScrollWidget {
       bottom_list_box.add (new TweetListEntry (tweet, main_window, account));
       load_replied_to_tweet (tweet.reply_id);
     });
-  }
+  } //}}}
 
   /**
    *
@@ -274,8 +277,9 @@ class TweetInfoPage : IPage , ScrollWidget {
     }
   } //}}}
 
-  private void set_follow_button_state (bool following) {
+  private void set_follow_button_state (bool following) { //{{{
     var sc = follow_button.get_style_context ();
+    follow_button.sensitive = true;
     if (following) {
       sc.remove_class ("suggested-action");
       sc.add_class ("destructive-action");
@@ -286,7 +290,7 @@ class TweetInfoPage : IPage , ScrollWidget {
       follow_button.label = _("Follow");
     }
     this.following = following;
-  }
+  } //}}}
 
   /**
    * Twitter's source parameter of tweets includes a 'rel' parameter
@@ -299,7 +303,7 @@ class TweetInfoPage : IPage , ScrollWidget {
    *
    * @return The #source_string without the rel parameter
    */
-  private string extract_source (string source_str) {
+  private string extract_source (string source_str) { //{{{
     int from, to;
     int tmp = 0;
     tmp = source_str.index_of_char ('"');
@@ -309,7 +313,7 @@ class TweetInfoPage : IPage , ScrollWidget {
     if (to == -1 || from == -1)
       return source_str;
     return source_str.substring (0, from-5) + source_str.substring(to + 1);
-  }
+  } //}}}
 
 
 

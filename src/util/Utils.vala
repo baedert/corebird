@@ -157,7 +157,7 @@ namespace Utils {
    * TODO: Maybe use the XDG_CONFIG_DIR here?
    * @return a path to the file or folder ~/.corebird/file_name
    */
-  string user_file(string file_name){
+  string user_file (string file_name) {
     return GLib.Environment.get_home_dir()+"/.corebird/"+file_name;
   }
 

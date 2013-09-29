@@ -18,28 +18,28 @@
 
 
 class DeltaUpdater : GLib.Object {
-  private GLib.SList<weak TweetListEntry> minutely = new SList<weak TweetListEntry>();
-  private GLib.SList<weak TweetListEntry> hourly   = new SList<weak TweetListEntry>();
+  private Gee.ArrayList<weak TweetListEntry> minutely = new Gee.ArrayList<weak TweetListEntry> ();
+  private Gee.ArrayList<weak TweetListEntry> hourly   = new Gee.ArrayList<weak TweetListEntry> ();
 
   public DeltaUpdater () {
     //TODO: Maybe use only one timeout?
-    GLib.Timeout.add(60000, // All 60 seconds
-    () => {
-      minutely.@foreach((item) => {
-        int seconds = item.update_time_delta();
-        if(seconds >= 3600){
-          minutely.remove(item);
-          hourly.append(item);
+    GLib.Timeout.add(60 * 1000, () => {
+      for (int i = 0, size = minutely.size; i < size; i++) {
+        var item = minutely.get (i);
+        int seconds = item.update_time_delta ();
+        if (seconds >= 3600) {
+          minutely.remove (item);
+          hourly.add (item);
+          size --;
         }
-      });
+      }
       return true;
     });
 
-    GLib.Timeout.add(3600000, // all 3600 seconds(one hour)
-    () => {
-      hourly.@foreach((item) => {
-        item.update_time_delta();
-      });
+    GLib.Timeout.add(60 * 60 * 1000, () => {
+      foreach (var item in hourly) {
+        item.update_time_delta ();
+      }
       return true;
     });
   }
@@ -55,10 +55,10 @@ class DeltaUpdater : GLib.Object {
 
     int seconds = (int)(diff / 1000.0 / 1000.0);
 
-    if(seconds  < 3600)
-      minutely.append(entry);
+    if (seconds  < 3600)
+      minutely.add (entry);
     else
-      hourly.append(entry);
+      hourly.add (entry);
   }
 
 }

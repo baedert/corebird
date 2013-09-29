@@ -1,27 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.15.4 on Sun Sep 22 22:26:52 2013 -->
+<!-- Generated with glade 3.15.4 on Wed Sep 25 21:09:19 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.10 -->
   <object class="GtkMenu" id="menu1">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <child>
-      <object class="GtkMenuItem" id="delete_confirmation_item">
+      <object class="GtkMenuItem" id="view_profile_menu_item">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Really?</property>
+        <property name="label" translatable="yes">View Profile</property>
+        <property name="use_underline">True</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="write_dm_menu_item">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Write direct message</property>
         <property name="use_underline">True</property>
       </object>
     </child>
   </object>
-  <template class="DMThreadEntry" parent="GtkListBoxRow">
+  <template class="UserListEntry" parent="GtkListBoxRow">
     <property name="visible">True</property>
     <property name="can_focus">True</property>
     <child>
       <object class="GtkBox" id="box1">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="spacing">10</property>
         <child>
           <object class="GtkImage" id="avatar_image">
             <property name="width_request">48</property>
@@ -29,10 +36,7 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="valign">center</property>
-            <property name="margin_left">4</property>
-            <property name="margin_top">4</property>
-            <property name="margin_bottom">4</property>
-            <property name="stock">gtk-missing-image</property>
+            <property name="margin_right">7</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -44,16 +48,17 @@
           <object class="GtkBox" id="box2">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="hexpand">True</property>
             <property name="orientation">vertical</property>
             <property name="homogeneous">True</property>
             <child>
-              <object class="GtkLabel" id="screen_name_label">
+              <object class="GtkLabel" id="name_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="valign">end</property>
-                <property name="xalign">0</property>
-                <property name="label" translatable="yes">@baedert</property>
-                <property name="use_markup">True</property>
+                <property name="halign">start</property>
+                <property name="margin_bottom">1</property>
+                <property name="yalign">1</property>
+                <property name="label" translatable="yes">User name</property>
                 <style>
                   <class name="list-username"/>
                 </style>
@@ -65,14 +70,13 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="last_message_label">
+              <object class="GtkLabel" id="screen_name_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="valign">start</property>
-                <property name="hexpand">True</property>
-                <property name="xalign">0</property>
-                <property name="label" translatable="yes">yeah let's meet tomorrow at 8 in the bar</property>
-                <property name="ellipsize">end</property>
+                <property name="halign">start</property>
+                <property name="margin_top">1</property>
+                <property name="yalign">0</property>
+                <property name="label" translatable="yes">screen_name</property>
                 <style>
                   <class name="dim-label"/>
                 </style>
@@ -91,22 +95,17 @@
           </packing>
         </child>
         <child>
-          <object class="GtkMenuButton" id="delete_button">
+          <object class="GtkMenuButton" id="more_button">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="halign">end</property>
             <property name="valign">center</property>
-            <property name="margin_right">10</property>
+            <property name="margin_right">5</property>
             <property name="relief">none</property>
             <property name="popup">menu1</property>
             <child>
-              <object class="GtkImage" id="image1">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="icon_name">list-remove-symbolic</property>
-                <property name="icon_size">1</property>
-              </object>
+              <placeholder/>
             </child>
           </object>
           <packing>

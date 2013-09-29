@@ -43,6 +43,8 @@ class SettingsDialog : Gtk.Dialog {
   private ComboBoxText upload_provider_combobox;
   [GtkChild]
   private ComboBoxText on_new_tweets_combobox;
+  [GtkChild]
+  private Switch search_show_retweets_switch;
 
   public SettingsDialog(MainWindow? main_window = null, Corebird? application = null){
     this.main_window = main_window;
@@ -72,6 +74,10 @@ class SettingsDialog : Gtk.Dialog {
         message ("aa");
         Gtk.Settings.get_default ().gtk_application_prefer_dark_theme = dark_theme_switch.active;
     });
+
+    // Behaviour page
+    Settings.get ().bind ("search-show-retweets", search_show_retweets_switch, "active",
+                          SettingsBindFlags.DEFAULT);
 
     // General Page
     Settings.get ().bind ("upload-provider", upload_provider_combobox, "active_id",

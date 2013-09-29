@@ -73,14 +73,6 @@ class Settings : GLib.Object {
     return settings.get_enum("upload-provider");
   }
 
-  public static bool refresh_streams_on_startup(){
-    return settings.get_boolean("refresh-streams-on-startup");
-  }
-
-  public static bool show_tray_icon(){
-    return settings.get_boolean("show-tray-icon");
-  }
-
   public static bool show_inline_media(){
     return settings.get_boolean("show-inline-media");
   }
@@ -106,6 +98,9 @@ class Settings : GLib.Object {
 
   public static string get_string(string key){
     return settings.get_string(key);
+  }
+  public static bool get_bool (string key) {
+    return settings.get_boolean (key);
   }
 
 

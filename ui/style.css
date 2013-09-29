@@ -3,6 +3,10 @@
   padding-top: 2px;
 }
 
+.list-username {
+  font-size: 1.35em;
+  font-weight: bold;
+}
 
 
 .button-slim {
@@ -62,7 +66,7 @@
 }
 
 .stream{
-  -GtkBox-spacing: 3;
+/*  -GtkBox-spacing: 3; */
 }
 
 .tweet {

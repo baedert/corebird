@@ -28,18 +28,4 @@ interface IPage : Gtk.Widget {
   public abstract unowned MainWindow main_window {get; set;}
   public abstract unowned Account account        {get; set;}
 
-  protected bool button_pressed_event_cb (Gdk.EventButton evt) {// {{{
-    if (evt.button == 9) {
-      // Forward thumb button
-      main_window.switch_page (MainWindow.PAGE_NEXT);
-
-      return true;
-    } else if (evt.button == 8) {
-      // backward thumb button
-      main_window.switch_page (MainWindow.PAGE_PREVIOUS);
-
-      return true;
-    }
-    return false;
-  }// }}}
 }

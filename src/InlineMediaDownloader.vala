@@ -43,7 +43,7 @@ namespace InlineMediaDownloader {
     } else if (url.has_prefix("http://i.imgur.com")) {
       load_inline_media.begin(t, url);
     } else if (url.has_prefix("http://d.pr/i/") || url.has_prefix("http://ow.ly/i/") ||
-               url.has_prefix("https://vine.co/v/")) {
+               url.has_prefix("https://vine.co/v/") || url.has_prefix("http://tmblr.co/")) {
       two_step_load.begin(t, url, "<meta property=\"og:image\" content=\"(.*?)\"",
                           1);
     } else if (url.has_prefix("http://pbs.twimg.com/media/")) {

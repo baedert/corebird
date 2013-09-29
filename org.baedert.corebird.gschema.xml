@@ -64,5 +64,10 @@
       <summary>-</summary>
       <description>-</description>
     </key>
+    <key name="search-show-retweets" type="b">
+      <default>false</default>
+      <summary>Whether or not to show retweets in the search results.</summary>
+      <description>blabla</description>
+    </key>
   </schema>
 </schemalist>

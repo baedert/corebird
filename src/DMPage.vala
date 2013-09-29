@@ -21,7 +21,7 @@ using Gtk;
 class DMPage : IPage, IMessageReceiver, Box {
   private bool initialized = false;
   public int unread_count               {get; set;}
-  public unowned MainWindow main_window {set; get;}
+  public unowned MainWindow main_window {get; set;}
   public unowned Account account        {get; set;}
   private int id;
   [GtkChild]
@@ -30,11 +30,12 @@ class DMPage : IPage, IMessageReceiver, Box {
   private Entry text_entry;
   [GtkChild]
   private ListBox message_list;
+  [GtkChild]
+  private Entry recipient_entry;
 
 
   public DMPage (int id) {
     this.id = id;
-    this.button_press_event.connect (button_pressed_event_cb);
   }
 
   public void stream_message_received (StreamMessageType type, Json.Node root) {
@@ -47,6 +48,12 @@ class DMPage : IPage, IMessageReceiver, Box {
 
 
   public void on_join (int page_id, va_list arg_list) {
+    int64 recipient_id = arg_list.arg<int64> ();
+    if (recipient_id == 0)
+      recipient_entry.show ();
+    else
+      recipient_entry.hide ();
+
     if (!initialized) {
 //      load_cached ();
 //      load_newest ();
@@ -54,10 +61,7 @@ class DMPage : IPage, IMessageReceiver, Box {
     }
   }
 
-  public void on_leave () {
-
-  }
-
+  public void on_leave () {}
 
   [GtkCallback]
   private void send_button_clicked_cb () {

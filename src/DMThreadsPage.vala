@@ -57,36 +57,31 @@ using Gee;
 [GtkTemplate (ui = "/org/baedert/corebird/ui/dm-threads-page.ui")]
 class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   private bool initialized = false;
-  public int unread_count               {get; set;}
-  public unowned MainWindow main_window {set; get;}
-  public unowned Account account        {get; set;}
+  public int unread_count               { get; set; }
+  public unowned MainWindow main_window { get; set; }
+  public unowned Account account        { get; set; }
   private int id;
   private BadgeRadioToolButton tool_button;
   private HashMap<int64?, unowned DMThreadEntry> thread_map = new HashMap<int64?, unowned DMThreadEntry>
                               (Utils.int64_hash_func, Utils.int64_equal_func, DMThreadEntry.equal_func);
+  private StartConversationEntry start_conversation_entry = new StartConversationEntry ();
   [GtkChild]
   private Gtk.ListBox thread_list;
 
 
   public DMThreadsPage (int id) {
     this.id = id;
-    this.button_press_event.connect (button_pressed_event_cb);
-    thread_list.set_header_func ((row, row_before) => {
-      if (row_before == null)
-        return;
-
-      Widget header = row.get_header ();
-      if (header == null) {
-        header = new Gtk.Separator (Orientation.HORIZONTAL);
-        header.show ();
-        row.set_header (header);
-      }
-    });
+    thread_list.set_header_func (header_func);
 
     thread_list.row_activated.connect ((row) => {
+      if (!(row is DMThreadEntry))
+        return;
       main_window.switch_page (MainWindow.PAGE_DM,
                                ((DMThreadEntry)row).user_id);
-      message("YAY");
+    });
+    thread_list.add (start_conversation_entry);
+    start_conversation_entry.clicked.connect (() => {
+      main_window.switch_page (MainWindow.PAGE_DM, 0);
     });
   }
 
@@ -108,14 +103,13 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     }
   }
 
-  public void on_leave () {
+  public void on_leave () {}
 
-  }
-
-  public void load_cached () {
-    account.db.exec ("SELECT user_id, screen_name, last_message, last_message_id, avatar_url
-                      FROM dm_threads ORDER BY last_message_id",
-                     (n_cols, vals) => {
+  public void load_cached () { // {{{
+    account.db.select ("dm_threads")
+              .cols ("user_id", "screen_name", "last_message", "last_message_id", "avatar_url")
+              .order ("last_message_id")
+              .run ((vals) => {
       int64 user_id = int64.parse (vals[0]);
       var entry = new DMThreadEntry (user_id);
       entry.screen_name =  vals[1];
@@ -133,11 +127,11 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 
       thread_list.add (entry);
       thread_map.set (user_id, entry);
-      return Sql.CONTINUE;
+      return true;
     });
-  }
+  } // }}}
 
-  public void load_newest () {
+  public void load_newest () { // {{{
     var call = account.proxy.new_call ();
     call.set_function ("1.1/direct_messages.json");
     call.set_method ("GET");
@@ -154,10 +148,9 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
         add_new_thread (node.get_object ());
       });
     });
+  } // }}}
 
-  }
-
-  private void add_new_thread (Json.Object dm_obj) {
+  private void add_new_thread (Json.Object dm_obj) { // {{{
     int64 sender_id  = dm_obj.get_int_member ("sender_id");
     int64 message_id = dm_obj.get_int_member ("id");
     if (thread_map.has_key(sender_id)) {
@@ -173,9 +166,13 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     thread_list.add(thread_entry);
     thread_map.set(sender_id, thread_entry);
     string avatar_url = dm_obj.get_object_member ("sender").get_string_member ("profile_image_url");
-    account.db.exec (@"INSERT INTO `dm_threads`
-        (user_id, screen_name, last_message, last_message_id, avatar_url) VALUES
-        ('$sender_id', '$author', '$(thread_entry.last_message)', '$message_id', '$avatar_url');");
+    account.db.insert( "dm_threads")
+              .vali64 ("user_id", sender_id)
+              .val ("screen_name", author)
+              .val ("last_message", thread_entry.last_message)
+              .vali64 ("last_message_id", message_id)
+              .val ("avatar_url", avatar_url)
+              .run ();
 
 
     Gdk.Pixbuf avatar = TweetUtils.load_avatar (avatar_url);
@@ -187,9 +184,19 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       });
     } else
       thread_entry.avatar = avatar;
-  }
+  } // }}}
 
+  private void header_func (Gtk.ListBoxRow row, Gtk.ListBoxRow? row_before) { //{{{
+    if (row_before == null)
+      return;
 
+    Widget header = row.get_header ();
+    if (header == null) {
+      header = new Gtk.Separator (Orientation.HORIZONTAL);
+      header.show ();
+      row.set_header (header);
+    }
+  } //}}}
 
   public void create_tool_button(RadioToolButton? group) {
     tool_button = new BadgeRadioToolButton(group, "corebird-dms-symbolic");
@@ -209,4 +216,16 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     tool_button.queue_draw();
   }
 
+}
+
+[GtkTemplate (ui = "/org/baedert/corebird/ui/start-conversation-entry.ui")]
+class StartConversationEntry : Gtk.ListBoxRow {
+  [GtkChild]
+  private Gtk.Button start_conversation_button;
+  public signal void clicked ();
+  construct {
+    start_conversation_button.clicked.connect (() => {
+      clicked ();
+    });
+  }
 }

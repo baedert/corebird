@@ -42,11 +42,14 @@ class MainWindow : ApplicationWindow {
   private Gtk.Stack stack;
   [GtkChild]
   private Image avatar_image;
+  [GtkChild]
+  private Spinner progress_spinner;
+  private uint progress_holders            = 0;
   private RadioToolButton dummy_button     = new RadioToolButton(null);
   private IPage[] pages                    = new IPage[7];
   private IntHistory history               = new IntHistory (5);
   private Button new_tweet_button          = new Button ();
-  private DeltaUpdater delta_updater       = new DeltaUpdater();
+  private DeltaUpdater delta_updater       = new DeltaUpdater ();
   public unowned Account account           {public get; private set;}
   private WarningService warning_service;
 
@@ -79,8 +82,9 @@ class MainWindow : ApplicationWindow {
       return;
     }
 
+
     headerbar.set_subtitle ("@" + account.screen_name);
-    //TODO: Move new_tweet_button into the gtktemplate
+    //TODO: Move new_tweet_button into the gtktemplate(also, rename to compose_tweet_button)
     new_tweet_button.get_style_context ().add_class ("image-button");
     headerbar.pack_start (new_tweet_button);
     set_titlebar (headerbar);
@@ -107,7 +111,7 @@ class MainWindow : ApplicationWindow {
       page.create_tool_button (dummy_button);
       stack.add_named (page, page.get_id ().to_string ());
       if (page.get_tool_button () != null) {
-        left_toolbar.add (page.get_tool_button ());
+        left_toolbar.insert (page.get_tool_button (), page.get_id ());
         page.get_tool_button ().toggled.connect (() => {
           if (page.get_tool_button ().active){
             switch_page (page.get_id ());
@@ -122,6 +126,9 @@ class MainWindow : ApplicationWindow {
       ITimeline tl = (ITimeline)page;
       tl.delta_updater = delta_updater;
     }
+
+    // SearchPage still needs a delta updater
+    ((SearchPage)pages[PAGE_SEARCH]).delta_updater = this.delta_updater;
 
     if (!Gtk.Settings.get_default ().gtk_shell_shows_app_menu) {
       MenuButton app_menu_button = new MenuButton ();
@@ -149,6 +156,8 @@ class MainWindow : ApplicationWindow {
 
     // Activate the first timeline
     this.switch_page (0);
+
+
   }
 
   /**
@@ -179,6 +188,20 @@ class MainWindow : ApplicationWindow {
 
 
     this.add_accel_group(ag);
+  }
+
+  [GtkCallback]
+  private bool button_press_event_cb (Gdk.EventButton evt) {
+    if (evt.button == 9) {
+      // Forward thumb button
+      switch_page (MainWindow.PAGE_NEXT);
+      return true;
+    } else if (evt.button == 8) {
+      // backward thumb button
+      switch_page (MainWindow.PAGE_PREVIOUS);
+      return true;
+    }
+    return false;
   }
 
   private void show_compose_window () {
@@ -238,6 +261,21 @@ class MainWindow : ApplicationWindow {
   }
 
   /**
+   * Indicates that the caller is doing a long-running opertation.
+   *
+   */
+  public void start_progress () {
+    progress_holders ++;
+    progress_spinner.show ();
+  }
+
+  public void stop_progress () {
+    progress_holders --;
+    if (progress_holders == 0)
+      progress_spinner.hide ();
+  }
+
+  /**
     *
     *
     */
@@ -250,8 +288,7 @@ class MainWindow : ApplicationWindow {
     // Enable the account's entry in the app menu again
     var acc_menu = (GLib.Menu)Corebird.account_menu;
     for (int i = 0; i < acc_menu.get_n_items (); i++){
-      Variant item_name = acc_menu.get_item_attribute_value (i,
-                                       "label", VariantType.STRING);
+      Variant item_name = acc_menu.get_item_attribute_value (i, "label", VariantType.STRING);
       if (item_name.get_string () == "@"+account.screen_name){
         ((SimpleAction)this.application.lookup_action("show-"+account.screen_name)).set_enabled(true);
         break;

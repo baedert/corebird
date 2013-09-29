@@ -36,7 +36,7 @@ class DMThreadEntry : Gtk.ListBoxRow {
       return screen_name_label.label;
     }
     set {
-      screen_name_label.label = "<b><big>@%s</big></b>".printf(value);
+      screen_name_label.label = "@" + value;
     }
   }
   public string last_message {

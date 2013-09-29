@@ -36,7 +36,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   [GtkChild]
   private Revealer reply_revealer;
   [GtkChild]
-  private Entry reply_entry;
+  private ReplyEntry reply_entry;
   [GtkChild]
   private Label conversation_label;
   [GtkChild]
@@ -55,11 +55,6 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   private Gtk.Menu more_menu;
   [GtkChild]
   private Gtk.MenuItem more_menu_delete_item;
-  [GtkChild]
-  private Button reply_send_button;
-
-
-
 
 
 
@@ -71,6 +66,16 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   private unowned MainWindow window;
   public Tweet tweet;
   private bool values_set = false;
+  [Signal (action = true)]
+  private signal void show_inline_reply ();
+  [Signal (action = true)]
+  private signal void hide_inline_reply ();
+  [Signal (action = true)]
+  private signal void favorite_tweet ();
+  [Signal (action = true)]
+  private signal void retweet_tweet ();
+  [Signal (action = true)]
+  private signal void delete_tweet ();
 
 
   public TweetListEntry(Tweet tweet, MainWindow? window, Account account){
@@ -154,9 +159,43 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       return false;
     });
     hover_box.show ();
+
+    reply_entry.cancelled.connect (() => {
+      reply_revealer.reveal_child = false;
+      this.grab_focus ();
+    });
+    reply_entry.activate.connect (reply_send_button_clicked_cb);
+    show_inline_reply.connect (() => {
+      reply_revealer.reveal_child = true;
+      reply_entry.grab_focus ();
+    });
+    delete_tweet.connect (() => {
+      if (tweet.user_id != account.id)
+        return; // Nope.
+      // TODO: Show confirmation dialog
+      TweetUtils.delete_tweet.begin (account, tweet, () => {
+          this.sensitive = false;
+      });
+    });
+    favorite_tweet.connect (() => {
+      if (favorite_button.parent != null)
+        favorite_button.active = !favorite_button.active;
+    });
+    retweet_tweet.connect (() => {
+      if (retweet_button.parent != null)
+        retweet_button.active = !retweet_button.active;
+    });
   }
 
+  static construct {
+    unowned BindingSet binding_set = Gtk.BindingSet.by_class (typeof (TweetListEntry).class_ref ());
 
+    Gtk.BindingEntry.add_signal (binding_set, Gdk.Key.r, 0,      "show-inline-reply", 0, null);
+    Gtk.BindingEntry.add_signal (binding_set, Gdk.Key.Return, 0, "activate", 0, null);
+    Gtk.BindingEntry.add_signal (binding_set, Gdk.Key.d, 0,      "delete-tweet", 0, null);
+    Gtk.BindingEntry.add_signal (binding_set, Gdk.Key.t, 0,      "retweet-tweet", 0, null);
+    Gtk.BindingEntry.add_signal (binding_set, Gdk.Key.f, 0,      "favorite-tweet", 0, null);
+  }
 
   [GtkCallback]
   private void state_flags_changed_cb () { //{{{
@@ -189,50 +228,11 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   [GtkCallback]
   private bool key_released_cb (Gdk.EventKey evt) {
     switch(evt.keyval) {
-      case Gdk.Key.r:
-        reply_revealer.reveal_child = !reply_revealer.reveal_child;
-        reply_entry.grab_focus ();
-        reply_entry.move_cursor (MovementStep.BUFFER_ENDS, 1, false);
-        return true;
-      case Gdk.Key.f:
-        if (favorite_button.parent != null)
-          favorite_button.active = !favorite_button.active;
-        return true;
-      case Gdk.Key.t:
-        if (retweet_button.parent != null)
-          retweet_button.active = !retweet_button.active;
-        return true;
-      case Gdk.Key.d:
-        delete_tweet ();
-        return true;
-      case Gdk.Key.Return:
-        ((ListBox)(this.parent)).row_activated (this);
-        return true;
 #if __DEV
       case Gdk.Key.k:
         stdout.printf (tweet.json_data+"\n");
         return true;
 #endif
-    }
-    return false;
-  }
-
-  [GtkCallback]
-  private bool reply_entry_key_released_cb (Gdk.EventKey evt) {
-    switch (evt.keyval) {
-      case Gdk.Key.Escape:
-        reply_revealer.reveal_child = false;
-        this.grab_focus ();
-        return true;
-      case Gdk.Key.r:
-      case Gdk.Key.k:
-      case Gdk.Key.f:
-      case Gdk.Key.d:
-      case Gdk.Key.t:
-        return true;
-      case Gdk.Key.Return:
-        reply_send_button_clicked_cb ();
-        return true;
     }
     return false;
   }
@@ -320,16 +320,6 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   [GtkCallback]
   private bool link_activated_cb (string uri) {
     return TweetUtils.activate_link (uri, window);
-  }
-
-
-  private void delete_tweet () {
-    if (tweet.user_id != account.id)
-      return; // Nope.
-    // TODO: Show confirmation dialog
-    TweetUtils.delete_tweet.begin (account, tweet, () => {
-        this.sensitive = false;
-    });
   }
 
 

@@ -64,11 +64,10 @@ class Account : GLib.Object {
     this.user_stream = new UserStream ("@"+screen_name);
     if (load_secrets) {
       init_database ();
-      this.db.exec ("SELECT token, token_secret FROM common;",
-          (n_cols, vals) => {
+      db.select ("common").cols ("token", "token_secret").run ((vals) => {
         proxy.token = user_stream.token = vals[0];
         proxy.token_secret = user_stream.token_secret = vals[1];
-        return Sql.STOP; //stop
+        return false; //stop
       });
     }
   }
@@ -160,7 +159,7 @@ class Account : GLib.Object {
         critical (e.message);
       }
       this.avatar_url = url;
-      Corebird.db.exec (@"UPDATE `accounts` SET `avatar_url`='$url' WHERE `id`='$id';");
+      Corebird.db.update ("accounts").val ("avatar_url", url).where_eqi ("id", id).run ();
     } else {
       critical ("Not implemented yet");
     }
@@ -171,10 +170,15 @@ class Account : GLib.Object {
    * global one.
    */
   public void save_info () {
-    db.exec (@"INSERT OR REPLACE INTO `info`(id,screen_name,name) VALUES
-              ('$id','$screen_name','$name');");
-    Corebird.db.exec (@"INSERT OR REPLACE INTO `accounts`(id,screen_name,name,avatar_url) VALUES
-                      ('$id','$screen_name','$name', '$avatar_url');");
+    db.replace ("info").vali64 ("id", id)
+                       .val ("screen_name", screen_name)
+                       .val ("name", name)
+                       .run ();
+    Corebird.db.replace ("accounts").vali64 ("id", id)
+                                    .val ("screen_name", screen_name)
+                                    .val ("name", name)
+                                    .val ("avatar_url", avatar_url)
+                                    .run ();
   }
 
   /** Static stuff ********************************************************************/
@@ -197,13 +201,11 @@ class Account : GLib.Object {
    */
   private static void lookup_accounts () {
     accounts = new GLib.SList<Account> ();
-    Corebird.db.exec ("SELECT id, screen_name, name, avatar_url FROM accounts",
-        (n_cols, vals) => {
-        message("account: %s", vals[1]);
+    Corebird.db.select ("accounts").cols ("id", "screen_name", "name", "avatar_url").run ((vals) => {
       Account acc = new Account (int64.parse(vals[0]), vals[1], vals[2]);
       acc.avatar_url = vals[3];
       accounts.append (acc);
-      return 0; // go on
+      return true;
     });
   }
 
