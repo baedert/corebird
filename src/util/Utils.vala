@@ -190,10 +190,6 @@ namespace Utils {
     yield;
   }
 
-  string encode (string source) {
-    return GLib.Base64.encode ((uchar[])source.data);
-  }
-
   string decode (string source) {
     return (string)GLib.Base64.decode (source);
   }
