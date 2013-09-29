@@ -25,7 +25,7 @@ namespace Sql {
   public const int STOP     = -1;
   public const int CONTINUE =  0;
 
-class Database {
+public class Database {
   private Sqlite.Database db;
 
 

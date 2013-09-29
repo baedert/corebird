@@ -19,12 +19,12 @@
 
 
 namespace Sql {
-  interface IStatement {
+  public interface IStatement {
       public abstract Sqlite.Database db { public set; protected get; }
   }
-  delegate bool SelectCallback (string[] vals);
+  public delegate bool SelectCallback (string[] vals);
 
-  class InsertStatement : IStatement {
+  public class InsertStatement : IStatement {
     public unowned Sqlite.Database db { public set; private get; }
     private StringBuilder query_builder  = new StringBuilder ();
     private Gee.ArrayList<string> bindings = new Gee.ArrayList<string>();
@@ -101,7 +101,7 @@ namespace Sql {
    *
    *
    */
-  class SelectStatement : IStatement {
+  public class SelectStatement : IStatement {
     public unowned Sqlite.Database db { public set; private get; }
     private StringBuilder query_builder = new StringBuilder ();
     private string table_name;
@@ -148,7 +148,7 @@ namespace Sql {
   }
 
 
-  class UpdateStatement : IStatement {
+  public class UpdateStatement : IStatement {
     public unowned Sqlite.Database db { public set; private get; }
     private StringBuilder query_builder  = new StringBuilder ();
     private Gee.ArrayList<string> bindings = new Gee.ArrayList<string>();
