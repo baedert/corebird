@@ -196,7 +196,7 @@ namespace Utils {
 
   void load_custom_icons () {
     var icon_theme  = Gtk.IconTheme.get_default ();
-    icon_theme.append_search_path ("/usr/share/corebird/scalable/");
+    icon_theme.append_search_path (DATADIR+"/scalable/");
   }
 
   uint int64_hash_func (int64? k) {
