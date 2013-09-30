@@ -30,6 +30,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   private HashMap<int64?, unowned DMThreadEntry> thread_map = new HashMap<int64?, unowned DMThreadEntry>
                               (Utils.int64_hash_func, Utils.int64_equal_func, DMThreadEntry.equal_func);
   private StartConversationEntry start_conversation_entry;
+  private int64 max_message_id = -1;
   [GtkChild]
   private Gtk.ListBox thread_list;
 
@@ -76,6 +77,9 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   }
 
   public void load_cached () { // {{{
+    //Load max message id
+    max_message_id = account.db.select ("dms").cols ("id").limit (1).once_i64 ();
+
     account.db.select ("dm_threads")
               .cols ("user_id", "screen_name", "last_message", "last_message_id", "avatar_url")
               .order ("last_message_id")
@@ -106,23 +110,44 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     call.set_function ("1.1/direct_messages.json");
     call.set_method ("GET");
     call.add_param ("skip_status", "true");
+    call.add_param ("since_id", max_message_id.to_string ());
     call.invoke_async.begin (null, () => {
       var parser = new Json.Parser ();
       try {
         parser.load_from_data (call.get_payload ());
       } catch (GLib.Error e) {
         critical (e.message);
+        return;
       }
       var root_arr = parser.get_root ().get_array ();
       root_arr.foreach_element ((arr, pos, node) => {
         add_new_thread (node.get_object ());
       });
     });
+
+/*    var rec_call = account.proxy.new_call ();
+    rec_call.set_function ("1.1/direct_messages/sent.json");
+    rec_call.set_method ("GET");
+    rec_call.invoke_async.begin (null, () => {
+      var parser = new Json.Parser ();
+      try {
+      stdout.printf (rec_call.get_payload ());
+        parser.load_from_data (rec_call.get_payload ());
+      } catch (GLib.Error e) {
+        critical (e.message);
+        return;
+      }
+      var root_arr = parser.get_root ().get_array ();
+      root_arr.foreach_element ((arr, pos, node) => {
+        add_new_thread (node.get_object ());
+      });
+    });*/
   } // }}}
 
   private void add_new_thread (Json.Object dm_obj) { // {{{
     int64 sender_id  = dm_obj.get_int_member ("sender_id");
     int64 message_id = dm_obj.get_int_member ("id");
+    save_message (dm_obj);
     if (thread_map.has_key(sender_id)) {
       // TODO: Update last_message_label
       return;
@@ -155,6 +180,10 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     } else
       thread_entry.avatar = avatar;
   } // }}}
+
+  private void save_message (Json.Object dm_obj) {
+
+  }
 
   private void header_func (Gtk.ListBoxRow row, Gtk.ListBoxRow? row_before) { //{{{
     if (row_before == null)

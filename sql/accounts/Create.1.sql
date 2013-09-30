@@ -34,6 +34,7 @@ CREATE TABLE IF NOT EXISTS `dms` (
   to_user_name VARCHAR(30),
   timestamp INTEGER(11),
   avatar_url VARCHAR(250),
+  id NUMERIC (19,0) PRIMARY KEY,
   text TEXT
 );
 
