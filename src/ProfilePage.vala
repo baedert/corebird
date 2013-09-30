@@ -58,7 +58,7 @@ class ProfilePage : ScrollWidget, IPage {
   private bool following;
   private int64 user_id;
   private string screen_name; //TODO: Remove
-  private GLib.Cancellable data_cancellable = new GLib.Cancellable ();
+  private GLib.Cancellable data_cancellable;
 
 
   public ProfilePage(int id, MainWindow window, Account account){
@@ -196,7 +196,7 @@ class ProfilePage : ScrollWidget, IPage {
 
       string location = null;
       if(root.has_member("location")){
-        location     = root.get_string_member("location");
+        location = root.get_string_member("location");
       }
 
       GLib.SList<TweetUtils.Sequence?> text_urls = null;
@@ -236,7 +236,7 @@ class ProfilePage : ScrollWidget, IPage {
                  .val ("banner_name", banner_name)
                  .run ();
 
-    });
+    }); // end of callback
   } //}}}
 
 
