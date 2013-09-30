@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS `info`(
 
 
 CREATE TABLE IF NOT EXISTS `dm_threads`(
-  user_id NUMERIC(19,0),
+  user_id NUMERIC(19,0) PRIMARY KEY,
   user_name VARCHAR(40),
   screen_name VARCHAR(30),
   last_message VARCHAR(250),
@@ -30,8 +30,8 @@ CREATE TABLE IF NOT EXISTS `dms` (
   to_id NUMERIC(19,0),
   from_screen_name VARCHAR(30),
   to_screen_name VARCHAR(40),
-  from_user_name VARCHAR(30),
-  to_user_name VARCHAR(30),
+  from_name VARCHAR(30),
+  to_name VARCHAR(30),
   timestamp INTEGER(11),
   avatar_url VARCHAR(250),
   id NUMERIC (19,0) PRIMARY KEY,

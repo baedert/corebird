@@ -78,8 +78,8 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 
   public void load_cached () { // {{{
     //Load max message id
-    max_message_id = account.db.select ("dms").cols ("id").limit (1).once_i64 ();
 
+    max_message_id = account.db.select ("dms").cols ("id").order ("id DESC").limit (1).once_i64 ();
     account.db.select ("dm_threads")
               .cols ("user_id", "screen_name", "last_message", "last_message_id", "avatar_url")
               .order ("last_message_id")
@@ -121,6 +121,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       }
       var root_arr = parser.get_root ().get_array ();
       root_arr.foreach_element ((arr, pos, node) => {
+      message ("======= MSG");
         add_new_thread (node.get_object ());
       });
     });
@@ -182,7 +183,19 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   } // }}}
 
   private void save_message (Json.Object dm_obj) {
-
+    Json.Object sender = dm_obj.get_object_member ("sender");
+    Json.Object recipient = dm_obj.get_object_member ("recipient");
+// TODO: Make this usable for DMS both TO and FROM the user
+    account.db.insert ("dms").vali64 ("id", dm_obj.get_int_member ("id"))
+              .vali64 ("from_id", dm_obj.get_int_member ("sender_id"))
+              .vali64 ("to_id", dm_obj.get_int_member ("recipient_id"))
+              .val ("from_screen_name", dm_obj.get_string_member ("sender_screen_name"))
+              .val ("to_screen_name", dm_obj.get_string_member ("recipient_screen_name"))
+              .val ("from_name", sender.get_string_member ("name"))
+              .val ("to_name", recipient.get_string_member ("name"))
+              .val ("avatar_url", sender.get_string_member ("profile_image_url"))
+              .val ("text", dm_obj.get_string_member ("text"))
+              .run ();
   }
 
   private void header_func (Gtk.ListBoxRow row, Gtk.ListBoxRow? row_before) { //{{{
