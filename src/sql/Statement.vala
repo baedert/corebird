@@ -124,6 +124,12 @@ namespace Sql {
       return this;
     }
 
+    public SelectStatement where_eqi (string col_name, int64 value) {
+      query_builder.append ("WHERE `").append (col_name).append ("`='")
+                   .append (value.to_string ()).append ("'");
+      return this;
+    }
+
     public SelectStatement order (string order_by) {
       query_builder.append ("ORDER BY ").append (order_by);
       return this;

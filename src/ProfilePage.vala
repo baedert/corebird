@@ -58,7 +58,7 @@ class ProfilePage : ScrollWidget, IPage {
   private bool following;
   private int64 user_id;
   private string screen_name; //TODO: Remove
-  private GLib.Cancellable data_cancellable = new GLib.Cancellable ();
+  private GLib.Cancellable data_cancellable;
 
 
   public ProfilePage(int id, MainWindow window, Account account){
@@ -80,7 +80,7 @@ class ProfilePage : ScrollWidget, IPage {
     //Load cached data
     Corebird.db.select ("profiles").cols ("id", "screen_name", "name", "description", "tweets",
      "following", "followers", "avatar_name", "banner_url", "url", "location", "is_following",
-     "banner_name").where (@"id=$user_id")
+     "banner_name").where_eqi ("id", user_id)
     .run ((vals) => {
       /* If we get inside this block, there is already some data in the
         DB we can use. */
@@ -196,7 +196,7 @@ class ProfilePage : ScrollWidget, IPage {
 
       string location = null;
       if(root.has_member("location")){
-        location     = root.get_string_member("location");
+        location = root.get_string_member("location");
       }
 
       GLib.SList<TweetUtils.Sequence?> text_urls = null;
@@ -236,7 +236,7 @@ class ProfilePage : ScrollWidget, IPage {
                  .val ("banner_name", banner_name)
                  .run ();
 
-    });
+    }); // end of callback
   } //}}}
 
 
