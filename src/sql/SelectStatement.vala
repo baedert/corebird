@@ -35,12 +35,12 @@ namespace Sql {
     }
 
     public SelectStatement where (string stmt) {
-      query_builder.append ("WHERE ").append (stmt);
+      query_builder.append (" WHERE ").append (stmt);
       return this;
     }
 
     public SelectStatement order (string order_by) {
-      query_builder.append ("ORDER BY ").append (order_by);
+      query_builder.append (" ORDER BY ").append (order_by);
       return this;
     }
 
@@ -54,6 +54,7 @@ namespace Sql {
       int ok = db.prepare_v2 (query_builder.str, -1, out stmt);
       if (ok != Sqlite.OK) {
         critical (db.errmsg ());
+        critical (query_builder.str);
         return;
       }
       bool next = true;
