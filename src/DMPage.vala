@@ -60,7 +60,7 @@ class DMPage : IPage, IMessageReceiver, Box {
     messages_list.foreach ((w) => {messages_list.remove (w);});
 
     // Load messages
-    account.db.select ("dms").cols ("from_id", "to_id", "text", "from_name", "from_screen_name")
+    account.db.select ("dms").cols ("from_id", "to_id", "text", "from_name", "from_screen_name", "avatar_url")
               .where (@"`from_id`='$user_id' OR `to_id`='$user_id'")
               .order ("timestamp")
               .run ((vals) => {
@@ -68,6 +68,8 @@ class DMPage : IPage, IMessageReceiver, Box {
       entry.text = vals[2];
       entry.name = vals[3];
       entry.screen_name = vals[4];
+      entry.avatar_url = vals[5];
+      entry.load_avatar ();
       messages_list.add (entry);
       return true;
     });
@@ -84,11 +86,15 @@ class DMPage : IPage, IMessageReceiver, Box {
 
   [GtkCallback]
   private void send_button_clicked_cb () {
+    if (text_entry.buffer.length == 0 || text_entry.buffer.length > 140)
+      return;
+
     // Just add the entry now
     DMListEntry entry = new DMListEntry ();
     entry.screen_name = account.screen_name;
     entry.text = text_entry.text;
     entry.name = account.name;
+    entry.avatar = account.avatar;
     messages_list.add (entry);
     var call = account.proxy.new_call ();
     call.set_function ("1.1/direct_messages/new.json");
@@ -110,7 +116,7 @@ class DMPage : IPage, IMessageReceiver, Box {
 
   private void recalc_length () {
     uint text_length = text_entry.buffer.length;
-    send_button.sensitive = text_length < 140;
+    send_button.sensitive = text_length > 0 && text_length < 140;
   }
 
 
