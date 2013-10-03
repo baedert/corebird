@@ -23,9 +23,19 @@ class DMListEntry : Gtk.ListBoxRow {
   private Gtk.Image avatar_image;
   [GtkChild]
   private Gtk.Label text_label;
+  [GtkChild]
+  private Gtk.Label screen_name_label;
+  [GtkChild]
+  private Gtk.Label name_label;
 
   public string text {
     set { text_label.label = value; }
+  }
+  public string screen_name {
+    set { screen_name_label.label = "@" + value; }
+  }
+  public new string name {
+    set { name_label.label = value; }
   }
 
   public int64 id;

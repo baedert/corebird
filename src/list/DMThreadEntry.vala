@@ -25,12 +25,22 @@ class DMThreadEntry : Gtk.ListBoxRow {
     return a.user_id == b.user_id;
   }
   [GtkChild]
+  private Label name_label;
+  [GtkChild]
   private Label screen_name_label;
   [GtkChild]
   private Label last_message_label;
   [GtkChild]
   private Image avatar_image;
   public int64 user_id {public get; private set;}
+  public new string name {
+    get {
+      return name_label.label;
+    }
+    set {
+      name_label.label = value;
+    }
+  }
   public string screen_name {
     get{
       return screen_name_label.label;

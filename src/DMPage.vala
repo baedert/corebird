@@ -29,9 +29,9 @@ class DMPage : IPage, IMessageReceiver, Box {
   [GtkChild]
   private Entry text_entry;
   [GtkChild]
-  private ListBox message_list;
-  [GtkChild]
-  private Entry recipient_entry;
+  private ListBox messages_list;
+
+  private int64 user_id;
 
 
   public DMPage (int id) {
@@ -48,11 +48,28 @@ class DMPage : IPage, IMessageReceiver, Box {
 
 
   public void on_join (int page_id, va_list arg_list) {
-    int64 recipient_id = arg_list.arg<int64> ();
-    if (recipient_id == 0)
-      recipient_entry.show ();
-    else
-      recipient_entry.hide ();
+    int64 user_id = arg_list.arg<int64> ();
+    if (user_id == this.user_id)
+      return;
+
+    this.user_id = user_id;
+
+    //Clear list
+    messages_list.foreach ((w) => {messages_list.remove (w);});
+
+    // Load messages
+    account.db.select ("dms").cols ("from_id", "to_id", "text", "from_name", "from_screen_name")
+              .where (@"`from_id`='$user_id' OR `to_id`='$user_id'")
+              .order ("timestamp")
+              .run ((vals) => {
+      var entry = new DMListEntry ();
+      entry.text = vals[2];
+      entry.name = vals[3];
+      entry.screen_name = vals[4];
+      messages_list.add (entry);
+      return true;
+    });
+
 
     if (!initialized) {
 //      load_cached ();

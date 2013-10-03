@@ -1,23 +1,23 @@
 
 pkgname=corebird-git
-pkgver=20130315
+pkgver=20130110
 pkgrel=1
-_realver=0.05
-pkgdesc="Gtk+ Twitter client"
+_realver=0.5
+pkgdesc="Native Gtk+ Twitter Client"
 arch=('i686' 'x86_64')
-license=('LGPL')
-url="https://bitbucket.org/baedert/corebird"
-depends=('gtk3>=3.9'
+license=('GPL')
+url="https://github.com/baedert/corebird"
+depends=('gtk3>=3.10'
      'glib2>=2.38'
-     'rest>=0.7' #media upload needs rest-git from the AUR
+     'rest>=0.7'
      'libgee'
      'sqlite3'
      'libsoup>=2.4'
      'libnotify'
      'json-glib')
-makedepends=('vala-git' 'git' 'cmake')
+makedepends=('vala>=0.21.1' 'git' 'cmake')
 
-_gitroot="https://bitbucket.org/baedert/corebird.git"
+_gitroot="https://github.com/baedert/corebird.git"
 _gitname="corebird"
 
 build() {

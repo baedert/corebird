@@ -34,7 +34,7 @@ class ScrollWidget : ScrolledWindow {
     vadjustment.notify["upper"].connect(keep_upper_func);
     vadjustment.notify["value"].connect(keep_value_func);
 
-    this.kinetic_scrolling = true;
+//    this.kinetic_scrolling = true;
   }
 
   private void keep_upper_func() {
