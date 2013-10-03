@@ -36,6 +36,8 @@ class DMPage : IPage, IMessageReceiver, Box {
 
   public DMPage (int id) {
     this.id = id;
+    text_entry.buffer.inserted_text.connect (recalc_length);
+    text_entry.buffer.deleted_text.connect (recalc_length);
   }
 
   public void stream_message_received (StreamMessageType type, Json.Node root) {
@@ -82,11 +84,17 @@ class DMPage : IPage, IMessageReceiver, Box {
 
   [GtkCallback]
   private void send_button_clicked_cb () {
+    // Just add the entry now
+    DMListEntry entry = new DMListEntry ();
+    entry.screen_name = account.screen_name;
+    entry.text = text_entry.text;
+    entry.name = account.name;
+    messages_list.add (entry);
     var call = account.proxy.new_call ();
     call.set_function ("1.1/direct_messages/new.json");
     call.set_method ("POST");
     call.add_param ("user_id", user_id.to_string ());
-    call.add_param ("text", GLib.Uri.escape_string (text_entry.text));
+    call.add_param ("text", text_entry.text);
     call.invoke_async.begin (null, (obj, res) => {
       try {
         call.invoke_async.end (res);
@@ -95,6 +103,14 @@ class DMPage : IPage, IMessageReceiver, Box {
         return;
       }
     });
+
+    // clear the text entry
+    text_entry.text = "";
+  }
+
+  private void recalc_length () {
+    uint text_length = text_entry.buffer.length;
+    send_button.sensitive = text_length < 140;
   }
 
 
