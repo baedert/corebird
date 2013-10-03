@@ -39,6 +39,11 @@ namespace Sql {
       return this;
     }
 
+    public SelectStatement where_eqi (string w, int64 v) {
+      query_builder.append (" WHERE `").append (w).append ("`='").append (v.to_string ()).append ("'");
+      return this;
+    }
+
     public SelectStatement order (string order_by) {
       query_builder.append (" ORDER BY ").append (order_by);
       return this;
