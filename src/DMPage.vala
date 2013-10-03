@@ -49,8 +49,8 @@ class DMPage : IPage, IMessageReceiver, Box {
 
   public void on_join (int page_id, va_list arg_list) {
     int64 user_id = arg_list.arg<int64> ();
-    if (user_id == this.user_id)
-      return;
+//    if (user_id == this.user_id)
+//      return;
 
     this.user_id = user_id;
 
@@ -82,7 +82,19 @@ class DMPage : IPage, IMessageReceiver, Box {
 
   [GtkCallback]
   private void send_button_clicked_cb () {
-    message ("SEND MESSAGE");
+    var call = account.proxy.new_call ();
+    call.set_function ("1.1/direct_messages/new.json");
+    call.set_method ("POST");
+    call.add_param ("user_id", user_id.to_string ());
+    call.add_param ("text", GLib.Uri.escape_string (text_entry.text));
+    call.invoke_async.begin (null, (obj, res) => {
+      try {
+        call.invoke_async.end (res);
+      } catch (GLib.Error e) {
+        critical (e.message);
+        return;
+      }
+    });
   }
 
 
