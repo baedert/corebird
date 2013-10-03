@@ -57,10 +57,12 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 
   public void stream_message_received (StreamMessageType type, Json.Node root) {
     if (type == StreamMessageType.DIRECT_MESSAGE) {
-      unread_count ++;
       var obj = root.get_object ().get_object_member ("direct_message");
       add_new_thread (obj);
-      update_unread_count ();
+      if (obj.get_int_member ("sender_id") != account.id) {
+        update_unread_count ();
+        unread_count ++;
+      }
     }
   }
 
