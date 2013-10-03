@@ -124,16 +124,15 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   [GtkCallback]
   private void send_tweet () {
     TextIter start, end;
-    tweet_text.buffer.get_start_iter(out start);
-    tweet_text.buffer.get_end_iter(out end);
-    string text = tweet_text.buffer.get_text(start, end, true);
+    tweet_text.buffer.get_start_iter (out start);
+    tweet_text.buffer.get_end_iter (out end);
+    string text = tweet_text.buffer.get_text (start, end, true);
     if(text.strip() == "")
       return;
-
 //    Rest.Param param;
-    var call = account.proxy.new_call();
-    call.set_method("POST");
-    call.add_param("status", text);
+    var call = account.proxy.new_call ();
+    call.set_method ("POST");
+    call.add_param ("status", text);
     if (this.answer_to != null && mode == Mode.REPLY) {
       call.add_param("in_reply_to_status_id", answer_to.id.to_string());
     }
