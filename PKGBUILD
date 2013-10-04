@@ -2,7 +2,7 @@
 pkgname=corebird-git
 pkgver=20130110
 pkgrel=1
-_realver=0.5
+_realver=0.3
 pkgdesc="Native Gtk+ Twitter Client"
 arch=('i686' 'x86_64')
 license=('GPL')
@@ -22,7 +22,7 @@ _gitname="corebird"
 
 build() {
   cd $srcdir
-  msg "connecting to bitbucket GIT server"
+  msg "connecting to GIT server"
 
   if [ -d $srcdir/$_gitname ] ; then
     cd $_gitname && git pull origin
