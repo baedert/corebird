@@ -87,7 +87,7 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
         update_unread_count();
         this.max_id =  t.id;
 
-        if(Settings.notify_new_mentions()) {
+        if (Settings.notify_new_mentions ()) {
           NotificationManager.notify(
             "New Mention from @"+t.screen_name,
             t.text,
@@ -101,7 +101,7 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
   /**
    * see IPage#onJoin
    */
-  public void on_join(int page_id, va_list arg_list){
+  public void on_join (int page_id, va_list arg_list) {
     if (!inited) {
       load_cached ();
       load_newest ();
