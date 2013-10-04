@@ -142,9 +142,11 @@ interface ITimeline : Gtk.Widget, IPage {
    *
    * @param value The scrolling value as from Gtk.Adjustment
    */
-  protected void mark_seen_on_scroll(double value) { //{{{
+  protected void mark_seen_on_scroll (double value) { //{{{
     if (unread_count == 0)
       return;
+
+    message ("Unread count: %d", unread_count);
 
     tweet_list.forall_internal (false, (w) => {
       ITwitterItem tle = (ITwitterItem)w;
@@ -166,7 +168,7 @@ interface ITimeline : Gtk.Widget, IPage {
    * Handle the case of the user scrolling to the start of the list,
    * i.e. remove all the items except a few ones after a timeout.
    */
-  protected void handle_scrolled_to_start() {
+  protected void handle_scrolled_to_start() { // {{{
     if (tweet_remove_timeout != 0)
       return;
 
@@ -187,5 +189,5 @@ interface ITimeline : Gtk.Widget, IPage {
       GLib.Source.remove (tweet_remove_timeout);
       tweet_remove_timeout = 0;
     }
-  }
+  } // }}}
 }

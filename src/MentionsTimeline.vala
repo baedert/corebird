@@ -106,6 +106,8 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
       load_cached ();
       load_newest ();
       inited = true;
+      unread_count = 0;
+      update_unread_count ();
     }
   }
 
