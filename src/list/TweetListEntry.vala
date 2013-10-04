@@ -18,7 +18,6 @@
 using Gtk;
 
 
-
 [GtkTemplate (ui = "/org/baedert/corebird/ui/tweet-list-entry.ui")]
 class TweetListEntry : ITwitterItem, ListBoxRow {
   [GtkChild]
@@ -62,8 +61,8 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     get{ return tweet.created_at;}
   }
   public bool seen {get; set; default = true;}
-  private unowned Account account;
-  private unowned MainWindow window;
+  private weak Account account;
+  private weak MainWindow window;
   public Tweet tweet;
   private bool values_set = false;
   [Signal (action = true)]
@@ -78,7 +77,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   private signal void delete_tweet ();
 
 
-  public TweetListEntry(Tweet tweet, MainWindow? window, Account account){
+  public TweetListEntry (owned Tweet tweet, MainWindow? window, Account account){
     this.account = account;
     this.tweet = tweet;
     this.window = window;
@@ -108,22 +107,9 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     }
 
     // If the avatar gets loaded, we want to change it here immediately
-    tweet.notify["avatar"].connect (() => {
-      avatar_image.pixbuf = tweet.avatar;
-      avatar_image.queue_draw ();
-    });
+    tweet.notify["avatar"].connect (avatar_changed);
 
-    tweet.inline_media_added.connect ((pic) => {
-      var inline_button = new PixbufButton ();
-      inline_button.set_bg (pic);
-      text_box.pack_end (inline_button, false, false);
-      inline_button.valign = Align.START;
-      inline_button.clicked.connect(() => {
-        ImageDialog id = new ImageDialog(window, tweet.media);
-        id.show_all();
-      });
-      inline_button.show ();
-    });
+    tweet.inline_media_added.connect (inline_media_added_cb);
 
     if (tweet.media_thumb != null) {
       var inline_button = new PixbufButton ();
@@ -135,10 +121,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       }
       text_box.pack_end (inline_button, false, false);
       inline_button.valign = Align.START;
-      inline_button.clicked.connect(() => {
-        ImageDialog id = new ImageDialog(window, tweet.media);
-        id.show_all();
-      });
+      inline_button.clicked.connect(new ImageDialog(window, tweet.media).show_all);
       inline_button.show ();
     }
 
@@ -148,7 +131,6 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
 
     more_menu_delete_item.visible = tweet.user_id == account.id;
 
-    values_set = true;
 
     reply_entry.focus_in_event.connect(() => {
       reply_revealer.reveal_child = true;
@@ -169,14 +151,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       reply_revealer.reveal_child = true;
       reply_entry.grab_focus ();
     });
-    delete_tweet.connect (() => {
-      if (tweet.user_id != account.id)
-        return; // Nope.
-      // TODO: Show confirmation dialog
-      TweetUtils.delete_tweet.begin (account, tweet, () => {
-          this.sensitive = false;
-      });
-    });
+    delete_tweet.connect (delete_tweet_activated);
     favorite_tweet.connect (() => {
       if (favorite_button.parent != null)
         favorite_button.active = !favorite_button.active;
@@ -185,6 +160,34 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       if (retweet_button.parent != null)
         retweet_button.active = !retweet_button.active;
     });
+
+    values_set = true;
+  }
+
+  private void delete_tweet_activated () {
+    if (tweet.user_id != account.id)
+      return; // Nope.
+    // TODO: Show confirmation dialog
+    TweetUtils.delete_tweet.begin (account, tweet, () => {
+        sensitive = false;
+   });
+  }
+
+  private void avatar_changed () {
+    avatar_image.pixbuf = tweet.avatar;
+    avatar_image.queue_draw ();
+  }
+
+  private void inline_media_added_cb (Gdk.Pixbuf? pic) {
+    var inline_button = new PixbufButton ();
+    inline_button.set_bg (pic);
+    text_box.pack_end (inline_button, false, false);
+    inline_button.valign = Align.START;
+    inline_button.clicked.connect(() => {
+      ImageDialog id = new ImageDialog(window, tweet.media);
+      id.show_all();
+    });
+    inline_button.show ();
   }
 
   static construct {
@@ -330,6 +333,8 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
    *         the time the tweet was created
    */
   public int update_time_delta () { //{{{
+  if (this == null)
+    message ("hihi");
     GLib.DateTime now  = new GLib.DateTime.now_local ();
     GLib.DateTime then = new GLib.DateTime.from_unix_local (
                  tweet.is_retweet ? tweet.rt_created_at : tweet.created_at);
@@ -362,4 +367,3 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   } //}}}
 
 }
-
