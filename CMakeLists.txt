@@ -141,6 +141,7 @@ set (VALA_SOURCE
   src/util/WidgetReplacer.vala
   src/util/IntHistory.vala
   src/util/TweetUtils.vala
+  src/util/WeakRef.vala
   src/sql/Database.vala
   src/sql/Statement.vala
   src/sql/SelectStatement.vala
