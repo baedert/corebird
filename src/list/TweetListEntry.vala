@@ -170,7 +170,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     // TODO: Show confirmation dialog
     TweetUtils.delete_tweet.begin (account, tweet, () => {
         sensitive = false;
-   });
+    });
   }
 
   private void avatar_changed () {
