@@ -94,65 +94,6 @@ namespace Sql {
 #endif
   }
 
-  /**
-   *
-   *
-   *
-   *
-   *
-   */
-  public class SelectStatement : IStatement {
-    public unowned Sqlite.Database db { public set; private get; }
-    private StringBuilder query_builder = new StringBuilder ();
-    private string table_name;
-
-    public SelectStatement (string table_name) {
-      this.table_name = table_name;
-    }
-    public SelectStatement cols (string first, ...) {
-      var arg_list = va_list ();
-      query_builder.append ("SELECT `").append (first).append ("`");
-      for (string? arg = arg_list.arg<string> (); arg != null; arg = arg_list.arg<string> ()) {
-        query_builder.append (", `").append (arg).append ("`");
-      }
-      query_builder.append (" FROM `").append (table_name).append ("`");
-      return this;
-    }
-
-    public SelectStatement where (string stmt) {
-      query_builder.append ("WHERE ").append (stmt);
-      return this;
-    }
-
-    public SelectStatement where_eqi (string col_name, int64 value) {
-      query_builder.append ("WHERE `").append (col_name).append ("`='")
-                   .append (value.to_string ()).append ("'");
-      return this;
-    }
-
-    public SelectStatement order (string order_by) {
-      query_builder.append ("ORDER BY ").append (order_by);
-      return this;
-    }
-
-    public void run (SelectCallback callback) {
-      Sqlite.Statement stmt;
-      int ok = db.prepare_v2 (query_builder.str, -1, out stmt);
-      if (ok != Sqlite.OK) {
-        critical (db.errmsg ());
-        return;
-      }
-      bool next = true;
-      int n_cols = stmt.column_count ();
-      while (stmt.step () == Sqlite.ROW && next) {
-        string[] vals = new string[n_cols];
-        for (int i = 0; i < n_cols; i++)
-          vals[i] = stmt.column_text (i);
-        next = callback (vals);
-      }
-    }
-  }
-
 
   public class UpdateStatement : IStatement {
     public unowned Sqlite.Database db { public set; private get; }

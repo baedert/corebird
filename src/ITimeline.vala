@@ -24,7 +24,7 @@ interface ITimeline : Gtk.Widget, IPage {
   public static const int REST = 25;
   /** The lowest id of any tweet in this timeline */
   protected abstract int64 lowest_id            {get; set;}
-  protected abstract int64 max_id              {get; set; default = 0;}
+  protected abstract int64 max_id               {get; set; default = 0;}
   protected abstract Gtk.ListBox tweet_list     {get; set;}
   public    abstract int unread_count           {get; set;}
   public    abstract DeltaUpdater delta_updater {get; set;}
@@ -33,7 +33,7 @@ interface ITimeline : Gtk.Widget, IPage {
   public abstract void load_newest();
   public abstract void load_older ();
 
-  protected abstract uint tweet_remove_timeout{get; set;}
+  protected abstract uint tweet_remove_timeout  { get; set; default = 0;}
 
   /**
    * Default implementation for loading the newest tweets
@@ -46,7 +46,7 @@ interface ITimeline : Gtk.Widget, IPage {
     var call = account.proxy.new_call();
     call.set_function(function);
     call.set_method("GET");
-    call.add_param ("count", "20");
+    call.add_param ("count", "28");
     call.add_param ("contributor_details", "true");
     call.add_param ("include_my_retweet", "true");
     if (max_id > 0)
@@ -167,8 +167,12 @@ interface ITimeline : Gtk.Widget, IPage {
    * i.e. remove all the items except a few ones after a timeout.
    */
   protected void handle_scrolled_to_start() {
+    if (tweet_remove_timeout != 0)
+      return;
+
     GLib.List<weak Gtk.Widget> entries = tweet_list.get_children ();
     uint item_count = entries.length ();
+    message ("items: %u", item_count);
     if (item_count > ITimeline.REST) {
       tweet_remove_timeout = GLib.Timeout.add (5000, () => {
         // TODO: This is obviously wrong.
@@ -176,6 +180,7 @@ interface ITimeline : Gtk.Widget, IPage {
           tweet_list.remove (tweet_list.get_row_at_index (ITimeline.REST));
           item_count--;
         }
+        tweet_remove_timeout = 0;
         return false;
       });
     } else if (tweet_remove_timeout != 0) {

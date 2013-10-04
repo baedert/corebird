@@ -29,13 +29,15 @@ class DMPage : IPage, IMessageReceiver, Box {
   [GtkChild]
   private Entry text_entry;
   [GtkChild]
-  private ListBox message_list;
-  [GtkChild]
-  private Entry recipient_entry;
+  private ListBox messages_list;
+
+  private int64 user_id;
 
 
   public DMPage (int id) {
     this.id = id;
+    text_entry.buffer.inserted_text.connect (recalc_length);
+    text_entry.buffer.deleted_text.connect (recalc_length);
   }
 
   public void stream_message_received (StreamMessageType type, Json.Node root) {
@@ -48,11 +50,30 @@ class DMPage : IPage, IMessageReceiver, Box {
 
 
   public void on_join (int page_id, va_list arg_list) {
-    int64 recipient_id = arg_list.arg<int64> ();
-    if (recipient_id == 0)
-      recipient_entry.show ();
-    else
-      recipient_entry.hide ();
+    int64 user_id = arg_list.arg<int64> ();
+//    if (user_id == this.user_id)
+//      return;
+
+    this.user_id = user_id;
+
+    //Clear list
+    messages_list.foreach ((w) => {messages_list.remove (w);});
+
+    // Load messages
+    account.db.select ("dms").cols ("from_id", "to_id", "text", "from_name", "from_screen_name", "avatar_url")
+              .where (@"`from_id`='$user_id' OR `to_id`='$user_id'")
+              .order ("timestamp")
+              .run ((vals) => {
+      var entry = new DMListEntry ();
+      entry.text = vals[2];
+      entry.name = vals[3];
+      entry.screen_name = vals[4];
+      entry.avatar_url = vals[5];
+      entry.load_avatar ();
+      messages_list.add (entry);
+      return true;
+    });
+
 
     if (!initialized) {
 //      load_cached ();
@@ -65,7 +86,37 @@ class DMPage : IPage, IMessageReceiver, Box {
 
   [GtkCallback]
   private void send_button_clicked_cb () {
-    message ("SEND MESSAGE");
+    if (text_entry.buffer.length == 0 || text_entry.buffer.length > 140)
+      return;
+
+    // Just add the entry now
+    DMListEntry entry = new DMListEntry ();
+    entry.screen_name = account.screen_name;
+    entry.text = text_entry.text;
+    entry.name = account.name;
+    entry.avatar = account.avatar;
+    messages_list.add (entry);
+    var call = account.proxy.new_call ();
+    call.set_function ("1.1/direct_messages/new.json");
+    call.set_method ("POST");
+    call.add_param ("user_id", user_id.to_string ());
+    call.add_param ("text", text_entry.text);
+    call.invoke_async.begin (null, (obj, res) => {
+      try {
+        call.invoke_async.end (res);
+      } catch (GLib.Error e) {
+        critical (e.message);
+        return;
+      }
+    });
+
+    // clear the text entry
+    text_entry.text = "";
+  }
+
+  private void recalc_length () {
+    uint text_length = text_entry.buffer.length;
+    send_button.sensitive = text_length > 0 && text_length < 140;
   }
 
 

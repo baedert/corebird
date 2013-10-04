@@ -55,7 +55,7 @@ render_icon("corebird"
 )
 
 find_package (Vala REQUIRED)
-ensure_vala_version ("0.20" MINIMUM) # TODO: Bump to 0.22
+ensure_vala_version ("0.21.1" MINIMUM) # TODO: Bump to 0.22
 
 
 # GSettings
@@ -128,6 +128,7 @@ set (VALA_SOURCE
   src/list/AccountListEntry.vala
   src/list/DMThreadEntry.vala
   src/list/UserListEntry.vala
+  src/list/DMListEntry.vala
   src/window/AboutDialog.vala
   src/window/ImageDialog.vala
   src/window/SettingsDialog.vala
@@ -140,8 +141,10 @@ set (VALA_SOURCE
   src/util/WidgetReplacer.vala
   src/util/IntHistory.vala
   src/util/TweetUtils.vala
+  src/util/WeakRef.vala
   src/sql/Database.vala
   src/sql/Statement.vala
+  src/sql/SelectStatement.vala
   src/resources.c
 )
 

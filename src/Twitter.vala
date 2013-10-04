@@ -19,11 +19,11 @@ using Rest;
 using Gee;
 
 class Twitter {
-  private static int max_media_per_upload;
-  private static int characters_reserved_per_media;
+//  private static int max_media_per_upload;
+//  private static int characters_reserved_per_media;
   public static int short_url_length         { public get; private set; default = 22;}
   public static int short_url_length_https   { public get; private set; default = 23;}
-  private static int photo_size_limit;
+//  private static int photo_size_limit;
   public static Gdk.Pixbuf no_avatar;
   public static Gdk.Pixbuf no_banner;
   public static Gdk.Pixbuf verified_icon;
@@ -45,69 +45,5 @@ class Twitter {
     Twitter.avatars = new HashMap<string, Gdk.Pixbuf>();
   }
 
-  /**
-   * Updates the config
-   */
-/*  public static async void update_config(){
-    // Check when the last update was
-    var now = new GLib.DateTime.now_local();
-    Corebird.db.exec (
-      "SELECT `update_config`, `characters_reserved_per_media`,
-     `max_media_per_upload`, `photo_size_limit`, `short_url_length`,
-      `short_url_length_https` FROM `common`;", (n_cols, vals) => {
-      int64 last_update = int64.parse (vals[0]);
-      var then = new GLib.DateTime.from_unix_local(last_update);
-
-      var diff = then.difference(now);
-      if (diff < GLib.TimeSpan.DAY * 7){
-        Twitter.characters_reserved_per_media = int.parse (vals[1]);
-        Twitter.max_media_per_upload          = int.parse (vals[2]);
-        Twitter.photo_size_limit              = int.parse (vals[3]);
-        Twitter.short_url_length              = int.parse (vals[4]);
-        Twitter.short_url_length_https        = int.parse (vals[5]);
-
-      }
-      return -1; //stop
-    });
-
-    var call = Twi_tter.proxy.new_call();
-    call.set_method("GET");
-    call.set_function("1.1/help/configuration.json");
-    call.invoke_async.begin(null, (obj, res) => {
-      try{
-        call.invoke_async.end(res);
-      } catch (GLib.Error e){
-        warning("Error while refreshing config: %s", e.message);
-      }
-      string back = call.get_payload();
-      Json.Parser parser = new Json.Parser();
-      try{
-        parser.load_from_data(back);
-      }catch(GLib.Error e){
-        warning("Error while parsing Json: %s\nData:%s", e.message, back);
-        return;
-      }
-
-      var root = parser.get_root().get_object();
-      Twitter.characters_reserved_per_media =
-        (int)root.get_int_member("characters_reserved_per_media");
-      Twitter.max_media_per_upload   = (int)root.get_int_member("max_media_per_upload");
-      Twitter.photo_size_limit       = (int)root.get_int_member("photo_size_limit");
-      Twitter.short_url_length       = (int)root.get_int_member("short_url_length");
-      Twitter.short_url_length_https = (int)root.get_int_member("short_url_length_https");
-
-
-      message("Updated the twitter configuration");
-    });
-  } */
-
-  public static int get_characters_reserved_by_media(){
-    return characters_reserved_per_media;
-  }
-  public static int get_max_media_per_upload(){
-    return max_media_per_upload;
-  }
-  public static int get_photo_size_limit(){
-    return photo_size_limit;
-  }
+  //TODO: Add method to update config
 }

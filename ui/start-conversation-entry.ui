@@ -1,30 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 on Fri Sep 27 22:33:25 2013 -->
+<!-- Generated with glade 3.16.0 on Sun Sep 29 18:03:43 2013 -->
 <interface>
+  <!-- interface-requires corebird 0.0 -->
   <!-- interface-requires gtk+ 3.10 -->
   <template class="StartConversationEntry" parent="GtkListBoxRow">
     <property name="visible">True</property>
     <property name="can_focus">True</property>
     <child>
-      <object class="GtkButton" id="start_conversation_button">
+      <object class="GtkBox" id="box1">
         <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="receives_default">True</property>
-        <property name="halign">center</property>
-        <property name="valign">center</property>
-        <property name="relief">none</property>
-        <property name="always_show_image">True</property>
-        <style>
-          <class name="button-wide"/>
-        </style>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
         <child>
-          <object class="GtkBox" id="box1">
+          <object class="GtkBox" id="box2">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="hexpand">False</property>
             <child>
               <object class="GtkImage" id="image1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="halign">end</property>
+                <property name="hexpand">True</property>
                 <property name="pixel_size">32</property>
                 <property name="icon_name">list-add-symbolic</property>
               </object>
@@ -38,6 +35,8 @@
               <object class="GtkLabel" id="label1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="hexpand">True</property>
                 <property name="label" translatable="yes">Start new conversation</property>
               </object>
               <packing>
@@ -47,6 +46,77 @@
               </packing>
             </child>
           </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkRevealer" id="revealer">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkBox" id="box4">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="margin_bottom">8</property>
+                <child>
+                  <object class="GtkLabel" id="label">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">end</property>
+                    <property name="margin_left">10</property>
+                    <property name="label" translatable="yes">With:</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="ReplyEntry" id="name_entry">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="margin_left">8</property>
+                    <property name="margin_right">8</property>
+                    <property name="hexpand">True</property>
+                    <signal name="activate" handler="go_button_clicked_cb" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="go_button">
+                    <property name="label" translatable="yes">Go</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="margin_right">10</property>
+                    <style>
+                      <class name="suggested-action"/>
+                      <class name="button-wide"/>
+                    </style>
+                    <signal name="clicked" handler="go_button_clicked_cb" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
         </child>
       </object>
     </child>

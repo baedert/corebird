@@ -16,41 +16,6 @@
  */
 
 
-/*
-  So, here's how we handle direct messages and their threads/conversations:
-
-  When the user opens the page for the very first time, we try to get as many
-  messages from twitter as possible in one api call(i.e. 300 + leonidas currently).
-  This gives us up to 300 RECEIVED messages. Whenever we encounter a sender_id we have
-  not yet seen, we create a new DMThreadEntry and append it to the thread_list.
-  When the sender_id WAS already seen, we just take the dm's ID and set it as the
-  last/first (depending on its value) message id of that conversation.
-  Note that this potentially means that we are NOT see ALL conversations, but whatever.
-
-  Now, if the user opens a thread, we probably have a few received messages from the
-  thread building, but we still need to get the ones he sent(if not cached). YAY.
-  So, we need to cache both of them and then make sure that they are properly sorted, etc.
-  Now when the user scrolls up, we need to either just load more cached messages from the
-  database OR make 2(TWO!) API calls to twitter(for sent and received messages), then
-  display them, cache them, etc.
-  Of course we also always need to update the first/last message id of the conversation
-  each and every single time we get a new message, update or query anything.
-  We can however use these ids to somewhat optimize the calls we make to twitter by
-  setting them as since_id and max_id parameter.
-
-  Now it gets interesting: Since both parties in a conversation can delete messages
-  of both parties and we cannot be sure that the user didn't delete some message on
-  another client, we cannot really cache anything and just need to rely on twitter
-  sending us the same shit every single time.
-  This is basically the same dilemma with tweets, but worse because of conversations
-  and the weird api.
-
-
-
-
-
-*/
-
 using Gtk;
 using Gee;
 
@@ -64,7 +29,9 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   private BadgeRadioToolButton tool_button;
   private HashMap<int64?, unowned DMThreadEntry> thread_map = new HashMap<int64?, unowned DMThreadEntry>
                               (Utils.int64_hash_func, Utils.int64_equal_func, DMThreadEntry.equal_func);
-  private StartConversationEntry start_conversation_entry = new StartConversationEntry ();
+  private StartConversationEntry start_conversation_entry;
+  private int64 max_received_id = -1;
+  private int64 max_sent_id = -1;
   [GtkChild]
   private Gtk.ListBox thread_list;
 
@@ -74,23 +41,28 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     thread_list.set_header_func (header_func);
 
     thread_list.row_activated.connect ((row) => {
-      if (!(row is DMThreadEntry))
-        return;
+      if (row is StartConversationEntry)
+        ((StartConversationEntry)row).reveal ();
+      else
+        main_window.switch_page (MainWindow.PAGE_DM,
+                                 ((DMThreadEntry)row).user_id);
+    });
+    start_conversation_entry = new StartConversationEntry ();
+    start_conversation_entry.activated.connect (() => {
       main_window.switch_page (MainWindow.PAGE_DM,
-                               ((DMThreadEntry)row).user_id);
+                               5);
     });
     thread_list.add (start_conversation_entry);
-    start_conversation_entry.clicked.connect (() => {
-      main_window.switch_page (MainWindow.PAGE_DM, 0);
-    });
   }
 
   public void stream_message_received (StreamMessageType type, Json.Node root) {
     if (type == StreamMessageType.DIRECT_MESSAGE) {
-      unread_count ++;
       var obj = root.get_object ().get_object_member ("direct_message");
       add_new_thread (obj);
-      update_unread_count ();
+      if (obj.get_int_member ("sender_id") != account.id) {
+        update_unread_count ();
+        unread_count ++;
+      }
     }
   }
 
@@ -103,16 +75,25 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     }
   }
 
-  public void on_leave () {}
+  public void on_leave () {
+    start_conversation_entry.unreveal ();
+  }
 
   public void load_cached () { // {{{
+    //Load max message id
+
+    max_received_id = account.db.select ("dms").cols ("id")
+                      .where_eqi ("to_id", account.id).order ("id DESC").limit (1).once_i64 ();
+    max_sent_id = account.db.select ("dms").cols ("id")
+                  .where_eqi ("from_id", account.id).order ("id DESC").limit (1).once_i64 ();
     account.db.select ("dm_threads")
-              .cols ("user_id", "screen_name", "last_message", "last_message_id", "avatar_url")
+              .cols ("user_id", "screen_name", "last_message", "last_message_id", "avatar_url", "name")
               .order ("last_message_id")
               .run ((vals) => {
       int64 user_id = int64.parse (vals[0]);
       var entry = new DMThreadEntry (user_id);
       entry.screen_name =  vals[1];
+      entry.name = vals[5];
       entry.last_message = vals[2];
       entry.last_message_id = int64.parse(vals[3]);
       Gdk.Pixbuf avatar = TweetUtils.load_avatar (vals[4]);
@@ -136,12 +117,34 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     call.set_function ("1.1/direct_messages.json");
     call.set_method ("GET");
     call.add_param ("skip_status", "true");
+    call.add_param ("since_id", max_received_id.to_string ());
     call.invoke_async.begin (null, () => {
       var parser = new Json.Parser ();
       try {
         parser.load_from_data (call.get_payload ());
       } catch (GLib.Error e) {
         critical (e.message);
+        return;
+      }
+      var root_arr = parser.get_root ().get_array ();
+      root_arr.foreach_element ((arr, pos, node) => {
+        add_new_thread (node.get_object ());
+      });
+    });
+
+    var rec_call = account.proxy.new_call ();
+    rec_call.set_function ("1.1/direct_messages/sent.json");
+    rec_call.add_param ("skip_status", "true");
+    rec_call.add_param ("since_id", max_sent_id.to_string ());
+    rec_call.set_method ("GET");
+    rec_call.invoke_async.begin (null, () => {
+      var parser = new Json.Parser ();
+      try {
+      stdout.printf (rec_call.get_payload ());
+        parser.load_from_data (rec_call.get_payload ());
+      } catch (GLib.Error e) {
+        critical (e.message);
+        return;
       }
       var root_arr = parser.get_root ().get_array ();
       root_arr.foreach_element ((arr, pos, node) => {
@@ -153,6 +156,9 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   private void add_new_thread (Json.Object dm_obj) { // {{{
     int64 sender_id  = dm_obj.get_int_member ("sender_id");
     int64 message_id = dm_obj.get_int_member ("id");
+    save_message (dm_obj);
+    if (sender_id == account.id)
+      return;
     if (thread_map.has_key(sender_id)) {
       // TODO: Update last_message_label
       return;
@@ -160,6 +166,8 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 
     var thread_entry = new DMThreadEntry (sender_id);
     var author = dm_obj.get_string_member ("sender_screen_name");
+    string sender_name = dm_obj.get_object_member ("sender").get_string_member ("name");
+    thread_entry.name = sender_name;
     thread_entry.screen_name = author;
     thread_entry.last_message = dm_obj.get_string_member("text");
     thread_entry.last_message_id = message_id;
@@ -168,6 +176,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     string avatar_url = dm_obj.get_object_member ("sender").get_string_member ("profile_image_url");
     account.db.insert( "dm_threads")
               .vali64 ("user_id", sender_id)
+              .val ("name", sender_name)
               .val ("screen_name", author)
               .val ("last_message", thread_entry.last_message)
               .vali64 ("last_message_id", message_id)
@@ -184,6 +193,22 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       });
     } else
       thread_entry.avatar = avatar;
+  } // }}}
+
+  private void save_message (Json.Object dm_obj) { // {{{
+    Json.Object sender = dm_obj.get_object_member ("sender");
+    Json.Object recipient = dm_obj.get_object_member ("recipient");
+    account.db.insert ("dms").vali64 ("id", dm_obj.get_int_member ("id"))
+              .vali64 ("from_id", dm_obj.get_int_member ("sender_id"))
+              .vali64 ("to_id", dm_obj.get_int_member ("recipient_id"))
+              .val ("from_screen_name", dm_obj.get_string_member ("sender_screen_name"))
+              .val ("to_screen_name", dm_obj.get_string_member ("recipient_screen_name"))
+              .val ("from_name", sender.get_string_member ("name"))
+              .val ("to_name", recipient.get_string_member ("name"))
+              .val ("avatar_url", sender.get_string_member ("profile_image_url"))
+              .vali64 ("timestamp", Utils.parse_date (dm_obj.get_string_member ("created_at")).to_unix ())
+              .val ("text", dm_obj.get_string_member ("text"))
+              .run ();
   } // }}}
 
   private void header_func (Gtk.ListBoxRow row, Gtk.ListBoxRow? row_before) { //{{{
@@ -221,11 +246,30 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 [GtkTemplate (ui = "/org/baedert/corebird/ui/start-conversation-entry.ui")]
 class StartConversationEntry : Gtk.ListBoxRow {
   [GtkChild]
-  private Gtk.Button start_conversation_button;
-  public signal void clicked ();
+  private Gtk.Revealer revealer;
+  [GtkChild]
+  private ReplyEntry name_entry;
+  public signal void activated ();
+
   construct {
-    start_conversation_button.clicked.connect (() => {
-      clicked ();
+    name_entry.cancelled.connect (() => {
+      unreveal ();
+      this.grab_focus ();
     });
+  }
+
+  public void reveal () {
+    revealer.reveal_child = true;
+    name_entry.grab_focus ();
+  }
+
+  public void unreveal () {
+    revealer.reveal_child = false;
+  }
+
+  [GtkCallback]
+  private void go_button_clicked_cb () {
+    if (name_entry.text.length > 0)
+      activated ();
   }
 }

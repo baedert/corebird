@@ -15,21 +15,26 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
+using Gee;
 
 class DeltaUpdater : GLib.Object {
-  private Gee.ArrayList<weak TweetListEntry> minutely = new Gee.ArrayList<weak TweetListEntry> ();
-  private Gee.ArrayList<weak TweetListEntry> hourly   = new Gee.ArrayList<weak TweetListEntry> ();
+  private ArrayList<WeakRef<TweetListEntry>> minutely = new ArrayList<WeakRef<TweetListEntry>> ();
+  private ArrayList<WeakRef<TweetListEntry>> hourly   = new ArrayList<WeakRef<TweetListEntry>> ();
 
   public DeltaUpdater () {
-    //TODO: Maybe use only one timeout?
     GLib.Timeout.add(60 * 1000, () => {
       for (int i = 0, size = minutely.size; i < size; i++) {
-        var item = minutely.get (i);
+        WeakRef<TweetListEntry> item_ref = minutely.get (i);
+        TweetListEntry item = minutely.get (i).get ();
+        if (item == null) {
+          minutely.remove (item_ref);
+          size --;
+          continue;
+        }
         int seconds = item.update_time_delta ();
         if (seconds >= 3600) {
-          minutely.remove (item);
-          hourly.add (item);
+          minutely.remove (item_ref);
+          hourly.add (item_ref);
           size --;
         }
       }
@@ -37,8 +42,14 @@ class DeltaUpdater : GLib.Object {
     });
 
     GLib.Timeout.add(60 * 60 * 1000, () => {
-      foreach (var item in hourly) {
-        item.update_time_delta ();
+      for (int i = 0, size = hourly.size; i < size; i++) {
+        WeakRef<TweetListEntry> item_ref = hourly.get (i);
+        if (item_ref.get () == null) {
+          hourly.remove (item_ref);
+          size --;
+          continue;
+        }
+        item_ref.get ().update_time_delta ();
       }
       return true;
     });
@@ -55,10 +66,11 @@ class DeltaUpdater : GLib.Object {
 
     int seconds = (int)(diff / 1000.0 / 1000.0);
 
+    WeakRef r = new WeakRef<TweetListEntry> (entry);
     if (seconds  < 3600)
-      minutely.add (entry);
+      minutely.add (r);
     else
-      hourly.add (entry);
+      hourly.add (r);
   }
 
 }
