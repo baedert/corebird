@@ -121,7 +121,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       }
       text_box.pack_end (inline_button, false, false);
       inline_button.valign = Align.START;
-      inline_button.clicked.connect(new ImageDialog(window, tweet.media).show_all);
+      inline_button.clicked.connect(inline_media_button_clicked_cb);
       inline_button.show ();
     }
 
@@ -183,11 +183,13 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     inline_button.set_bg (pic);
     text_box.pack_end (inline_button, false, false);
     inline_button.valign = Align.START;
-    inline_button.clicked.connect(() => {
-      ImageDialog id = new ImageDialog(window, tweet.media);
-      id.show_all();
-    });
+    inline_button.clicked.connect(inline_media_button_clicked_cb);
     inline_button.show ();
+  }
+
+  private void inline_media_button_clicked_cb () {
+    ImageDialog id = new ImageDialog(window, tweet.media);
+    id.show_all();
   }
 
   static construct {

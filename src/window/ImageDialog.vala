@@ -33,7 +33,7 @@ class ImageDialog : Gtk.Window {
   private double dnd_x;
   private double dnd_y;
 
-  public ImageDialog(Window parent, string path) {
+  public ImageDialog (Window parent, string path) {
     this.path = path;
 
     //Choose proper width/height
