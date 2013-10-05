@@ -19,8 +19,7 @@ using Gtk;
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/dm-page.ui")]
 class DMPage : IPage, IMessageReceiver, Box {
-  private bool initialized = false;
-  public int unread_count               {get; set;}
+  public int unread_count               {get { return 0;}}
   public unowned MainWindow main_window {get; set;}
   public unowned Account account        {get; set;}
   private int id;
@@ -42,9 +41,16 @@ class DMPage : IPage, IMessageReceiver, Box {
 
   public void stream_message_received (StreamMessageType type, Json.Node root) {
     if (type == StreamMessageType.DIRECT_MESSAGE) {
-      unread_count ++;
+      // Arriving new dms get already cached in the DMThreadsPage
       var obj = root.get_object ().get_object_member ("direct_message");
-      update_unread_count ();
+      var sender = obj.get_object_member ("sender");
+      var new_msg = new DMListEntry ();
+      new_msg.text = obj.get_string_member ("text");
+      new_msg.name = sender.get_string_member ("name");
+      new_msg.screen_name = sender.get_string_member ("screen_name");
+      new_msg.avatar_url = sender.get_string_member ("profile_image_url");
+      new_msg.load_avatar ();
+      messages_list.add (new_msg);
     }
   }
 
@@ -63,6 +69,7 @@ class DMPage : IPage, IMessageReceiver, Box {
     account.db.select ("dms").cols ("from_id", "to_id", "text", "from_name", "from_screen_name", "avatar_url")
               .where (@"`from_id`='$user_id' OR `to_id`='$user_id'")
               .order ("timestamp")
+              .limit (35)
               .run ((vals) => {
       var entry = new DMListEntry ();
       entry.text = vals[2];
@@ -74,12 +81,6 @@ class DMPage : IPage, IMessageReceiver, Box {
       return true;
     });
 
-
-    if (!initialized) {
-//      load_cached ();
-//      load_newest ();
-      initialized = true;
-    }
   }
 
   public void on_leave () {}
