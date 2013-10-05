@@ -28,13 +28,12 @@ class ScrollWidget : ScrolledWindow {
   private double value_cache;
   private int balance = NONE;
   public double end_diff {get; set; default = 150;}
+  private ulong scroll_down_id;
 
   construct {
 //    GLib.Object(hadjustment: null, vadjustment: null);
     vadjustment.notify["upper"].connect(keep_upper_func);
     vadjustment.notify["value"].connect(keep_value_func);
-
-//    this.kinetic_scrolling = true;
   }
 
   private void keep_upper_func() {
@@ -43,6 +42,7 @@ class ScrollWidget : ScrolledWindow {
       double inc = (upper - upper_cache);
 
       this.vadjustment.value += inc;
+      this.vadjustment.value_changed ();
       balance = NONE;
     }
     this.upper_cache = vadjustment.upper;
@@ -64,6 +64,7 @@ class ScrollWidget : ScrolledWindow {
       double inc = (upper - upper_cache);
 
       this.vadjustment.value -= inc;
+      this.vadjustment.value_changed ();
       balance = NONE;
     }
     this.upper_cache = vadjustment.upper;
@@ -74,4 +75,11 @@ class ScrollWidget : ScrolledWindow {
     balance = mode;
   }
 
+  public void scroll_down () {
+    scroll_down_id = this.size_allocate.connect (() => {
+      this.vadjustment.value = this.vadjustment.upper;
+      this.vadjustment.value_changed ();
+      this.disconnect (scroll_down_id);
+    });
+  }
 }
