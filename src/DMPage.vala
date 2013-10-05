@@ -56,6 +56,7 @@ class DMPage : IPage, IMessageReceiver, Box {
       new_msg.avatar_url = sender.get_string_member ("profile_image_url");
       new_msg.timestamp = Utils.parse_date (sender.get_string_member ("created_at")).to_unix ();
       new_msg.load_avatar ();
+      delta_updater.add (new_msg);
       messages_list.add (new_msg);
     }
   }
@@ -84,6 +85,7 @@ class DMPage : IPage, IMessageReceiver, Box {
       entry.avatar_url = vals[5];
       entry.load_avatar ();
       entry.update_time_delta (now);
+      delta_updater.add (entry);
       messages_list.add (entry);
       return true;
     });
@@ -99,9 +101,12 @@ class DMPage : IPage, IMessageReceiver, Box {
     // Just add the entry now
     DMListEntry entry = new DMListEntry ();
     entry.screen_name = account.screen_name;
+    entry.timestamp = new GLib.DateTime.now_local ().to_unix ();
     entry.text = text_entry.text;
     entry.name = account.name;
     entry.avatar = account.avatar;
+    entry.update_time_delta ();
+    delta_updater.add (entry);
     messages_list.add (entry);
     var call = account.proxy.new_call ();
     call.set_function ("1.1/direct_messages/new.json");
