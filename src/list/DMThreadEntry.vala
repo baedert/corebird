@@ -32,6 +32,8 @@ class DMThreadEntry : Gtk.ListBoxRow {
   private Label last_message_label;
   [GtkChild]
   private Image avatar_image;
+  [GtkChild]
+  private Label unread_count_label;
   public int64 user_id {public get; private set;}
   public new string name {
     get {
@@ -62,10 +64,21 @@ class DMThreadEntry : Gtk.ListBoxRow {
     set { avatar_image.pixbuf = value;}
   }
 
+  public int unread_count = 0;
 
 
   public DMThreadEntry (int64 user_id) {
     this.user_id = user_id;
+    update_unread_count ();
+  }
+
+  public void update_unread_count () {
+    if (unread_count == 0)
+      unread_count_label.hide ();
+    else {
+      unread_count_label.show ();
+      unread_count_label.label = _("(%d unread)").printf(unread_count);
+    }
   }
 }
 

@@ -94,7 +94,7 @@ class DMPage : IPage, IMessageReceiver, Box {
   public void on_leave () {}
 
   [GtkCallback]
-  private void send_button_clicked_cb () {
+  private void send_button_clicked_cb () { // {{{
     if (text_entry.buffer.length == 0 || text_entry.buffer.length > 140)
       return;
 
@@ -124,7 +124,7 @@ class DMPage : IPage, IMessageReceiver, Box {
 
     // clear the text entry
     text_entry.text = "";
-  }
+  } // }}}
 
   private void recalc_length () {
     uint text_length = text_entry.buffer.length;

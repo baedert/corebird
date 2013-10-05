@@ -44,9 +44,14 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     thread_list.row_activated.connect ((row) => {
       if (row is StartConversationEntry)
         ((StartConversationEntry)row).reveal ();
-      else
+      else {
+        var entry = (DMThreadEntry) row;
+        this.unread_count -= entry.unread_count;
+        entry.unread_count = 0;
+        entry.update_unread_count ();
         main_window.switch_page (MainWindow.PAGE_DM,
-                                 ((DMThreadEntry)row).user_id);
+                                 entry.user_id);
+      }
     });
     start_conversation_entry = new StartConversationEntry ();
     start_conversation_entry.activated.connect (() => {
@@ -161,7 +166,10 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     if (sender_id == account.id)
       return;
     if (thread_map.has_key(sender_id)) {
-      // TODO: Update last_message_label
+      var t_e = thread_map.get (sender_id);
+      t_e.unread_count ++;
+      t_e.update_unread_count ();
+      t_e.last_message = dm_obj.get_string_member ("text");
       return;
     }
 
