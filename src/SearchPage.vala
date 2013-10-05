@@ -268,4 +268,5 @@ class LoadMoreEntry : Gtk.ListBoxRow, ITwitterItem {
   public Button get_button () {
     return load_more_button;
   }
+  public int update_time_delta (GLib.DateTime? now = null) {return 0;}
 }

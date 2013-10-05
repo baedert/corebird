@@ -334,15 +334,20 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
    * @return The seconds between the current time and
    *         the time the tweet was created
    */
-  public int update_time_delta () { //{{{
-    GLib.DateTime now  = new GLib.DateTime.now_local ();
+  public int update_time_delta (GLib.DateTime? now = null) { //{{{
+    GLib.DateTime cur_time;
+    if (now == null)
+      cur_time = new GLib.DateTime.now_local ();
+    else
+      cur_time = now;
+
     GLib.DateTime then = new GLib.DateTime.from_unix_local (
                  tweet.is_retweet ? tweet.rt_created_at : tweet.created_at);
     string link = "https://twitter.com/%s/status/%s".printf (tweet.screen_name,
                                                              tweet.id.to_string());
     time_delta_label.label = "<small><a href='%s' title='Open in Browser'>%s</a></small>"
-                  .printf (link, Utils.get_time_delta (then, now));
-    return (int)(now.difference (then) / 1000.0 / 1000.0);
+                  .printf (link, Utils.get_time_delta (then, cur_time));
+    return (int)(cur_time.difference (then) / 1000.0 / 1000.0);
   } //}}}
 
   public override bool draw (Cairo.Context c) { //{{{

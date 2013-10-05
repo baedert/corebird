@@ -73,7 +73,7 @@ class DMListEntry : Gtk.ListBoxRow, ITwitterItem {
       avatar_image.pixbuf = avatar;
   }
 
-  public void update_time_delta (GLib.DateTime? now = null) {
+  public int update_time_delta (GLib.DateTime? now = null) {
     GLib.DateTime cur_time;
     if (now == null)
       cur_time = new GLib.DateTime.now_local ();
@@ -81,7 +81,8 @@ class DMListEntry : Gtk.ListBoxRow, ITwitterItem {
       cur_time = now;
 
     GLib.DateTime then = new GLib.DateTime.from_unix_local (timestamp);
-    time_delta_label.label = Utils.get_time_delta (then, cur_time);
+    time_delta_label.label = "<small>" + Utils.get_time_delta (then, cur_time) + "</small>";
+    return (int)(cur_time.difference (then) / 1000.0 / 1000.0);
   }
 }
 

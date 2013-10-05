@@ -62,4 +62,6 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
       avatar_image.pixbuf = pic;
     });
   }
+
+  public int update_time_delta (GLib.DateTime? now = null) {return 0;}
 }

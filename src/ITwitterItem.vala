@@ -17,19 +17,25 @@
 
 interface ITwitterItem : Gtk.Widget {
  public static int sort_func (Gtk.ListBoxRow a, Gtk.ListBoxRow b) {
-    if(((ITwitterItem)a).sort_factor <
-       ((ITwitterItem)b).sort_factor)
+    if(((ITwitterItem)a).sort_factor < ((ITwitterItem)b).sort_factor)
       return 1;
     return -1;
   }
 
   public static int sort_func_inv (Gtk.ListBoxRow a, Gtk.ListBoxRow b) {
-    if(((ITwitterItem)a).sort_factor <
-       ((ITwitterItem)b).sort_factor)
+    if(((ITwitterItem)a).sort_factor < ((ITwitterItem)b).sort_factor)
       return -1;
     return 1;
   }
-
   public abstract int64 sort_factor { get;      }
   public abstract bool seen         { get; set; }
+
+  /**
+   * Updates the time delta label found in various ITwitterItem subclasses.
+   *
+   * @param now The current time.
+   *
+   * @return The seconds between the creation time and now.
+   */
+  public abstract int update_time_delta (GLib.DateTime? now = null);
 }

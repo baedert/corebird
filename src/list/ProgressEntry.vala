@@ -33,4 +33,5 @@ class ProgressEntry : ListBoxRow, ITwitterItem {
     spinner.start ();
   }
 
+  public int update_time_delta (GLib.DateTime? now = null) {return 0;}
 }

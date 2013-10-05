@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 on Thu Oct  3 18:42:30 2013 -->
+<!-- Generated with glade 3.16.0 on Sat Oct  5 18:24:50 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.10 -->
   <template class="DMListEntry" parent="GtkListBoxRow">
@@ -73,6 +73,7 @@
                     <property name="halign">end</property>
                     <property name="hexpand">True</property>
                     <property name="label" translatable="yes">delta</property>
+                    <property name="use_markup">True</property>
                     <style>
                       <class name="dim-label"/>
                     </style>
