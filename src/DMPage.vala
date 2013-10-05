@@ -30,6 +30,8 @@ class DMPage : IPage, IMessageReceiver, Box {
   private Entry text_entry;
   [GtkChild]
   private ListBox messages_list;
+  [GtkChild]
+  private ScrollWidget scroll_widget;
 
   private int64 user_id;
 
@@ -89,6 +91,7 @@ class DMPage : IPage, IMessageReceiver, Box {
       messages_list.add (entry);
       return true;
     });
+    scroll_widget.scroll_down ();
   }
 
   public void on_leave () {}
