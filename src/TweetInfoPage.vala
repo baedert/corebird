@@ -138,15 +138,16 @@ class TweetInfoPage : IPage , ScrollWidget {
   private void follow_button_clicked_cb () { // {{{
     var call = account.proxy.new_call();
     if (following)
-      call.set_function ("1.1/friendships/create.json");
+      call.set_function ("1.1/friendships/destroy.json");
     else
-      call.set_function( "1.1/friendships/destroy.json");
+      call.set_function( "1.1/friendships/create.json");
     call.set_method ("POST");
     call.add_param ("follow", "true");
     call.add_param ("id", tweet.user_id.to_string ());
     call.invoke_async.begin (null, (obj, res) => {
       try {
         set_follow_button_state (!following);
+        following = !following;
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
         critical (e.message);
