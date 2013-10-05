@@ -19,9 +19,10 @@ using Gtk;
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/dm-page.ui")]
 class DMPage : IPage, IMessageReceiver, Box {
-  public int unread_count               {get { return 0;}}
-  public unowned MainWindow main_window {get; set;}
-  public unowned Account account        {get; set;}
+  public int unread_count                   { get { return 0; } }
+  public unowned MainWindow main_window     { get; set; }
+  public unowned Account account            { get; set; }
+  public unowned DeltaUpdater delta_updater { get; set; }
   private int id;
   [GtkChild]
   private Button send_button;
@@ -37,18 +38,23 @@ class DMPage : IPage, IMessageReceiver, Box {
     this.id = id;
     text_entry.buffer.inserted_text.connect (recalc_length);
     text_entry.buffer.deleted_text.connect (recalc_length);
+    messages_list.set_sort_func (ITwitterItem.sort_func_inv);
   }
 
   public void stream_message_received (StreamMessageType type, Json.Node root) {
     if (type == StreamMessageType.DIRECT_MESSAGE) {
       // Arriving new dms get already cached in the DMThreadsPage
       var obj = root.get_object ().get_object_member ("direct_message");
+      if (obj.get_int_member ("sender_id") != this.user_id)
+        return;
+
       var sender = obj.get_object_member ("sender");
       var new_msg = new DMListEntry ();
       new_msg.text = obj.get_string_member ("text");
       new_msg.name = sender.get_string_member ("name");
       new_msg.screen_name = sender.get_string_member ("screen_name");
       new_msg.avatar_url = sender.get_string_member ("profile_image_url");
+      new_msg.timestamp = Utils.parse_date (sender.get_string_member ("created_at")).to_unix ();
       new_msg.load_avatar ();
       messages_list.add (new_msg);
     }
@@ -57,30 +63,30 @@ class DMPage : IPage, IMessageReceiver, Box {
 
   public void on_join (int page_id, va_list arg_list) {
     int64 user_id = arg_list.arg<int64> ();
-//    if (user_id == this.user_id)
-//      return;
-
     this.user_id = user_id;
 
     //Clear list
     messages_list.foreach ((w) => {messages_list.remove (w);});
 
+    var now = new GLib.DateTime.now_local ();
     // Load messages
-    account.db.select ("dms").cols ("from_id", "to_id", "text", "from_name", "from_screen_name", "avatar_url")
+    account.db.select ("dms").cols ("from_id", "to_id", "text", "from_name", "from_screen_name",
+                                    "avatar_url", "timestamp")
               .where (@"`from_id`='$user_id' OR `to_id`='$user_id'")
               .order ("timestamp")
               .limit (35)
               .run ((vals) => {
       var entry = new DMListEntry ();
+      entry.timestamp = int64.parse (vals[6]);
       entry.text = vals[2];
       entry.name = vals[3];
       entry.screen_name = vals[4];
       entry.avatar_url = vals[5];
       entry.load_avatar ();
+      entry.update_time_delta (now);
       messages_list.add (entry);
       return true;
     });
-
   }
 
   public void on_leave () {}
@@ -119,8 +125,6 @@ class DMPage : IPage, IMessageReceiver, Box {
     uint text_length = text_entry.buffer.length;
     send_button.sensitive = text_length > 0 && text_length < 140;
   }
-
-
 
   public void create_tool_button(RadioToolButton? group) {}
   public RadioToolButton? get_tool_button() {return null;}

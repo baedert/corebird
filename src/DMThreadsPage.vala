@@ -22,9 +22,10 @@ using Gee;
 [GtkTemplate (ui = "/org/baedert/corebird/ui/dm-threads-page.ui")]
 class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   private bool initialized = false;
-  public int unread_count               { get; set; }
-  public unowned MainWindow main_window { get; set; }
-  public unowned Account account        { get; set; }
+  public int unread_count                   { get; set; }
+  public unowned MainWindow main_window     { get; set; }
+  public unowned Account account            { get; set; }
+  public unowned DeltaUpdater delta_updater { get; set; }
   private int id;
   private BadgeRadioToolButton tool_button;
   private HashMap<int64?, unowned DMThreadEntry> thread_map = new HashMap<int64?, unowned DMThreadEntry>

@@ -18,7 +18,7 @@
 using Gtk;
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/dm-list-entry.ui")]
-class DMListEntry : Gtk.ListBoxRow {
+class DMListEntry : Gtk.ListBoxRow, ITwitterItem {
   [GtkChild]
   private Gtk.Image avatar_image;
   [GtkChild]
@@ -27,6 +27,8 @@ class DMListEntry : Gtk.ListBoxRow {
   private Gtk.Label screen_name_label;
   [GtkChild]
   private Gtk.Label name_label;
+  [GtkChild]
+  private Gtk.Label time_delta_label;
 
   public string text {
     set { text_label.label = value; }
@@ -42,8 +44,17 @@ class DMListEntry : Gtk.ListBoxRow {
     set { avatar_image.pixbuf = value; }
   }
 
-  public string avatar_url;
+  public bool seen {
+    get { return true; }
+    set {}
+  }
 
+  public int64 sort_factor {
+    get { return timestamp; }
+  }
+
+  public string avatar_url;
+  public int64 timestamp;
   public int64 id;
 
   public DMListEntry () {
@@ -60,7 +71,17 @@ class DMListEntry : Gtk.ListBoxRow {
       });
     } else
       avatar_image.pixbuf = avatar;
+  }
 
+  public void update_time_delta (GLib.DateTime? now = null) {
+    GLib.DateTime cur_time;
+    if (now == null)
+      cur_time = new GLib.DateTime.now_local ();
+    else
+      cur_time = now;
+
+    GLib.DateTime then = new GLib.DateTime.from_unix_local (timestamp);
+    time_delta_label.label = Utils.get_time_delta (then, cur_time);
   }
 }
 

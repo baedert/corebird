@@ -127,8 +127,12 @@ class MainWindow : ApplicationWindow {
       tl.delta_updater = delta_updater;
     }
 
+    // TODO: Gnarf this sucks
     // SearchPage still needs a delta updater
     ((SearchPage)pages[PAGE_SEARCH]).delta_updater = this.delta_updater;
+    ((DMThreadsPage)pages[PAGE_DM_THREADS]).delta_updater = this.delta_updater;
+    ((DMPage)pages[PAGE_DM]).delta_updater = this.delta_updater;
+
 
     if (!Gtk.Settings.get_default ().gtk_shell_shows_app_menu) {
       MenuButton app_menu_button = new MenuButton ();
