@@ -18,14 +18,14 @@
 using Gee;
 
 class DeltaUpdater : GLib.Object {
-  private ArrayList<WeakRef<TweetListEntry>> minutely = new ArrayList<WeakRef<TweetListEntry>> ();
-  private ArrayList<WeakRef<TweetListEntry>> hourly   = new ArrayList<WeakRef<TweetListEntry>> ();
+  private ArrayList<WeakRef<ITwitterItem>> minutely = new ArrayList<WeakRef<ITwitterItem>> ();
+  private ArrayList<WeakRef<ITwitterItem>> hourly   = new ArrayList<WeakRef<ITwitterItem>> ();
 
   public DeltaUpdater () {
     GLib.Timeout.add(60 * 1000, () => {
       for (int i = 0, size = minutely.size; i < size; i++) {
-        WeakRef<TweetListEntry> item_ref = minutely.get (i);
-        TweetListEntry item = minutely.get (i).get ();
+        WeakRef<ITwitterItem> item_ref = minutely.get (i);
+        ITwitterItem item = minutely.get (i).get ();
         if (item == null) {
           minutely.remove (item_ref);
           size --;
@@ -43,7 +43,7 @@ class DeltaUpdater : GLib.Object {
 
     GLib.Timeout.add(60 * 60 * 1000, () => {
       for (int i = 0, size = hourly.size; i < size; i++) {
-        WeakRef<TweetListEntry> item_ref = hourly.get (i);
+        WeakRef<ITwitterItem> item_ref = hourly.get (i);
         if (item_ref.get () == null) {
           hourly.remove (item_ref);
           size --;
@@ -57,7 +57,7 @@ class DeltaUpdater : GLib.Object {
 
 
 
-  public void add (TweetListEntry entry) {
+  public void add (ITwitterItem entry) {
     // TODO: This sucks
     GLib.DateTime now  = new GLib.DateTime.now_local();
     GLib.TimeSpan diff = now.difference(new GLib.DateTime.from_unix_local(
@@ -66,7 +66,7 @@ class DeltaUpdater : GLib.Object {
 
     int seconds = (int)(diff / 1000.0 / 1000.0);
 
-    WeakRef r = new WeakRef<TweetListEntry> (entry);
+    WeakRef r = new WeakRef<ITwitterItem> (entry);
     if (seconds  < 3600)
       minutely.add (r);
     else
