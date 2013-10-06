@@ -29,6 +29,11 @@ class ScrollWidget : ScrolledWindow {
   private int balance = NONE;
   public double end_diff {get; set; default = 150;}
   private ulong scroll_down_id;
+  public bool scrolled_down {
+    get {
+      return vadjustment.value >= vadjustment.upper - vadjustment.page_size - 5;
+    }
+  }
 
   construct {
 //    GLib.Object(hadjustment: null, vadjustment: null);
@@ -77,7 +82,7 @@ class ScrollWidget : ScrolledWindow {
 
   public void scroll_down () {
     scroll_down_id = this.size_allocate.connect (() => {
-      this.vadjustment.value = this.vadjustment.upper;
+      this.vadjustment.value = this.vadjustment.upper - this.vadjustment.page_size;
       this.vadjustment.value_changed ();
       this.disconnect (scroll_down_id);
     });
