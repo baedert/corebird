@@ -60,11 +60,13 @@ class DMPage : IPage, IMessageReceiver, Box {
       new_msg.load_avatar ();
       delta_updater.add (new_msg);
       messages_list.add (new_msg);
+      if (scroll_widget.scrolled_down)
+        scroll_widget.scroll_down ();
     }
   }
 
 
-  public void on_join (int page_id, va_list arg_list) {
+  public void on_join (int page_id, va_list arg_list) { // {{{
     int64 user_id = arg_list.arg<int64> ();
     this.user_id = user_id;
 
@@ -92,7 +94,7 @@ class DMPage : IPage, IMessageReceiver, Box {
       return true;
     });
     scroll_widget.scroll_down ();
-  }
+  } // }}}
 
   public void on_leave () {}
 
@@ -127,6 +129,10 @@ class DMPage : IPage, IMessageReceiver, Box {
 
     // clear the text entry
     text_entry.text = "";
+
+    // Scroll down
+    if (scroll_widget.scrolled_down)
+      scroll_widget.scroll_down ();
   } // }}}
 
   private void recalc_length () {
