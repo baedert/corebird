@@ -14,7 +14,8 @@ depends=('gtk3>=3.10'
      'sqlite3'
      'libsoup>=2.4'
      'libnotify'
-     'json-glib')
+     'json-glib'
+     'intltool')
 makedepends=('vala>=0.21.1' 'git' 'cmake')
 install=corebird.install
 
