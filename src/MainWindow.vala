@@ -79,6 +79,7 @@ class MainWindow : ApplicationWindow {
       account.user_stream.register (warning_service);
     } else {
       warning ("account == NULL");
+      new SettingsDialog (null, (Corebird)app).show_all ();
       return;
     }
 
