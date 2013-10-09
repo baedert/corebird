@@ -37,8 +37,9 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   private Gtk.ListBox thread_list;
 
 
-  public DMThreadsPage (int id) {
+  public DMThreadsPage (int id, Account account) {
     this.id = id;
+    this.account = account;
     thread_list.set_header_func (header_func);
 
     thread_list.row_activated.connect ((row) => {
@@ -53,10 +54,10 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
                                  entry.user_id);
       }
     });
-    start_conversation_entry = new StartConversationEntry ();
+    start_conversation_entry = new StartConversationEntry (account);
     start_conversation_entry.activated.connect (() => {
-      main_window.switch_page (MainWindow.PAGE_DM,
-                               5);
+//      main_window.switch_page (MainWindow.PAGE_DM,
+//                               5);
     });
     thread_list.add (start_conversation_entry);
   }
@@ -258,7 +259,49 @@ class StartConversationEntry : Gtk.ListBoxRow {
   private Gtk.Revealer revealer;
   [GtkChild]
   private ReplyEntry name_entry;
+  private UserCompletion user_completion;
+  private Gtk.Window completion_window = new Gtk.Window (WindowType.POPUP);
+  private ListBox completion_list = new ListBox ();
   public signal void activated ();
+
+  public StartConversationEntry (Account account) {
+    completion_window.set_type_hint (Gdk.WindowTypeHint.COMBO);
+    completion_window.set_attached_to (name_entry);
+    ((Gtk.Window)name_entry.get_toplevel ()).get_group ().add_window (completion_window);
+    completion_window.set_screen (name_entry.get_screen ());
+
+    var popup_frame = new Gtk.Frame (null);
+    var scroller = new Gtk.ScrolledWindow (null, null);
+    popup_frame.add (scroller);
+    scroller.add (completion_list);
+    completion_window.add (popup_frame);
+
+    user_completion = new UserCompletion (account, 7);
+    user_completion.connect_to (name_entry.buffer, "text");
+    user_completion.start_completion.connect (() => {
+      message ("start completion");
+      completion_window.show_all ();
+      position_popup_window ();
+      completion_list.foreach ((w) => { completion_list.remove (w); });
+    });
+    user_completion.populate_completion.connect ((name) => {
+      var l = new Label (name);
+      l.show ();
+      completion_list.add (l);
+    });
+  }
+
+  private void position_popup_window () {
+    int x, y;
+    Gtk.Allocation alloc;
+    name_entry.get_allocation (out alloc);
+    name_entry.get_window ().get_origin (out x, out y);
+    x += alloc.x;
+    y += alloc.y + alloc.height;
+
+    completion_window.move (x, y);
+    completion_window.resize (alloc.width, 50);
+  }
 
   construct {
     name_entry.cancelled.connect (() => {
