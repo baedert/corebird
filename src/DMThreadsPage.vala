@@ -255,6 +255,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/start-conversation-entry.ui")]
 class StartConversationEntry : Gtk.ListBoxRow {
+  private static const int MAX_RESULTS = 7;
   [GtkChild]
   private Gtk.Revealer revealer;
   [GtkChild]
@@ -263,6 +264,7 @@ class StartConversationEntry : Gtk.ListBoxRow {
   private Gtk.Window completion_window = new Gtk.Window (WindowType.POPUP);
   private ListBox completion_list = new ListBox ();
   public signal void activated ();
+  private int current_match = -1;
 
   public StartConversationEntry (Account account) {
     completion_window.set_type_hint (Gdk.WindowTypeHint.COMBO);
@@ -276,10 +278,9 @@ class StartConversationEntry : Gtk.ListBoxRow {
     scroller.add (completion_list);
     completion_window.add (popup_frame);
 
-    user_completion = new UserCompletion (account, 7);
+    user_completion = new UserCompletion (account, MAX_RESULTS);
     user_completion.connect_to (name_entry.buffer, "text");
     user_completion.start_completion.connect (() => {
-      message ("start completion");
       completion_window.show_all ();
       position_popup_window ();
       completion_list.foreach ((w) => { completion_list.remove (w); });
@@ -289,6 +290,8 @@ class StartConversationEntry : Gtk.ListBoxRow {
       l.show ();
       completion_list.add (l);
     });
+
+    name_entry.key_press_event.connect (name_entry_key_pressed);
   }
 
   private void position_popup_window () {
@@ -301,6 +304,23 @@ class StartConversationEntry : Gtk.ListBoxRow {
 
     completion_window.move (x, y);
     completion_window.resize (alloc.width, 50);
+  }
+
+  private bool name_entry_key_pressed (Gdk.EventKey evt) {
+    uint num_results = completion_list.get_children ().length ();
+    if (evt.keyval == Gdk.Key.Down) {
+      current_match = (current_match + 1) % (int)num_results;
+      var row = completion_list.get_row_at_index (current_match);
+      completion_list.select_row (row);
+      return true;
+    } else if (evt.keyval == Gdk.Key.Up) {
+      current_match --;
+      if (current_match < 0) current_match = (int)num_results - 1;
+      var row = completion_list.get_row_at_index (current_match);
+      completion_list.select_row (row);
+      return true;
+    }
+    return false;
   }
 
   construct {
@@ -317,6 +337,7 @@ class StartConversationEntry : Gtk.ListBoxRow {
 
   public void unreveal () {
     revealer.reveal_child = false;
+    completion_window.hide ();
   }
 
   [GtkCallback]

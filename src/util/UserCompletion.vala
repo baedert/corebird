@@ -29,7 +29,7 @@ class UserCompletion : GLib.Object {
     obj.get (name_property_name, out name);
     start_completion ();
 
-    message ("Starting completion with %s", name);
-    populate_completion ("foo");
+    for (int i = 0; i < 5; i++)
+      populate_completion ("foo %d".printf (i));
   }
 }
