@@ -129,6 +129,7 @@ set (VALA_SOURCE
   src/list/DMThreadEntry.vala
   src/list/UserListEntry.vala
   src/list/DMListEntry.vala
+  src/list/StartConversationEntry.vala
   src/window/AboutDialog.vala
   src/window/ImageDialog.vala
   src/window/SettingsDialog.vala
