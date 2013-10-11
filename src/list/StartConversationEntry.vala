@@ -39,9 +39,9 @@ class StartConversationEntry : Gtk.ListBoxRow {
       position_popup_window ();
       completion_list.foreach ((w) => { completion_list.remove (w); });
     });
-    user_completion.populate_completion.connect ((name) => {
-      var l = new Label (name);
-      l.show ();
+    user_completion.populate_completion.connect ((name, screen_name) => {
+      var l = new CompletionListEntry (name, screen_name);
+      l.show_all ();
       completion_list.add (l);
     });
 
@@ -100,5 +100,23 @@ class StartConversationEntry : Gtk.ListBoxRow {
   private void go_button_clicked_cb () {
     if (name_entry.text.length > 0)
       activated ();
+  }
+}
+
+
+class CompletionListEntry : Gtk.ListBoxRow {
+  private Label name_label = new Label ("");
+  private Label screen_name_label = new Label ("");
+
+  public CompletionListEntry (string name, string screen_name) {
+    var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
+    name_label.label = name;
+    screen_name_label.label = "@" + screen_name;
+    name_label.set_valign (Gtk.Align.BASELINE);
+    screen_name_label.set_valign (Gtk.Align.BASELINE);
+    screen_name_label.get_style_context ().add_class ("dim-label");
+    box.pack_start (name_label, false, false);
+    box.pack_start (screen_name_label, false, false);
+    add (box);
   }
 }

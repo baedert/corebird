@@ -1,6 +1,13 @@
 
 # Corebird
 
+## Features
+ - Support for multiple accounts
+ - Direct Messages(in development)
+ - Inline media with support for various sites
+ - bla bla try it out.
+
+
 ## Dependencies
  - gtk+-3.0 >= 3.9
  - glib-2.0 >= 2.38
@@ -12,7 +19,7 @@
  - vala >= 0.22 (makedep)
  - cmake >= 2.6 (makedep)
 
-## Usage
+## Compilation
 
 ```
 cmake . -DCMAKE_INSTALL_PREFIX=/usr

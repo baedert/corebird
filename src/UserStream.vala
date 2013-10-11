@@ -75,7 +75,7 @@ class UserStream : Object {
     proxy_call.set_function ("1.1/user.json");
     proxy_call.set_method ("GET");
     try {
-      proxy_call.continuous (parse_data_cb, this);
+      proxy_call.continuous (parse_data_cb, proxy_call);
     } catch (GLib.Error e) {
       error (e.message);
     }

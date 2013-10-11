@@ -70,6 +70,8 @@ class Account : GLib.Object {
         return false; //stop
       });
     }
+
+    user_stream.register (new FriendService ());
   }
 
   /**
