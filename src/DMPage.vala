@@ -43,7 +43,7 @@ class DMPage : IPage, IMessageReceiver, Box {
     messages_list.set_sort_func (ITwitterItem.sort_func_inv);
   }
 
-  public void stream_message_received (StreamMessageType type, Json.Node root) {
+  public void stream_message_received (StreamMessageType type, Json.Node root) { // {{{
     if (type == StreamMessageType.DIRECT_MESSAGE) {
       // Arriving new dms get already cached in the DMThreadsPage
       var obj = root.get_object ().get_object_member ("direct_message");
@@ -63,7 +63,7 @@ class DMPage : IPage, IMessageReceiver, Box {
       if (scroll_widget.scrolled_down)
         scroll_widget.scroll_down ();
     }
-  }
+  } /// }}}
 
 
   public void on_join (int page_id, va_list arg_list) { // {{{
@@ -75,7 +75,7 @@ class DMPage : IPage, IMessageReceiver, Box {
 
     var now = new GLib.DateTime.now_local ();
     // Load messages
-    account.db.select ("dms").cols ("from_id", "to_id", "text", "from_name", "from_screen_name",
+    int msgs = account.db.select ("dms").cols ("from_id", "to_id", "text", "from_name", "from_screen_name",
                                     "avatar_url", "timestamp")
               .where (@"`from_id`='$user_id' OR `to_id`='$user_id'")
               .order ("timestamp")
@@ -93,6 +93,12 @@ class DMPage : IPage, IMessageReceiver, Box {
       messages_list.add (entry);
       return true;
     });
+
+    // If there are no messages with this user, we insert a placeholder widget
+    if (msgs == 0) {
+      
+    }
+
     scroll_widget.scroll_down ();
   } // }}}
 

@@ -54,22 +54,25 @@ namespace Sql {
       return this;
     }
 
-    public void run (SelectCallback callback) {
+    public int run (SelectCallback callback) {
       Sqlite.Statement stmt;
       int ok = db.prepare_v2 (query_builder.str, -1, out stmt);
       if (ok != Sqlite.OK) {
         critical (db.errmsg ());
         critical (query_builder.str);
-        return;
+        return 0;
       }
       bool next = true;
       int n_cols = stmt.column_count ();
+      int n_rows = 0;
       while (stmt.step () == Sqlite.ROW && next) {
         string[] vals = new string[n_cols];
         for (int i = 0; i < n_cols; i++)
           vals[i] = stmt.column_text (i);
         next = callback (vals);
+        n_rows ++;
       }
+      return n_rows;
     }
 
     public int64 once_i64 () {

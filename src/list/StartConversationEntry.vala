@@ -23,7 +23,6 @@ class StartConversationEntry : Gtk.ListBoxRow {
   public StartConversationEntry (Account account) {
     completion_window.set_type_hint (Gdk.WindowTypeHint.COMBO);
     completion_window.set_attached_to (name_entry);
-    ((Gtk.Window)name_entry.get_toplevel ()).get_group ().add_window (completion_window);
     completion_window.set_screen (name_entry.get_screen ());
 
     var popup_frame = new Gtk.Frame (null);
