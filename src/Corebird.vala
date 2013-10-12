@@ -119,10 +119,17 @@ class Corebird : Gtk.Application {
   public override void startup () {
     base.startup();
 
+    create_user_folder ("");
+    create_user_folder ("assets/");
+    create_user_folder ("assets/avatars/");
+    create_user_folder ("assets/banners/");
+    create_user_folder ("assets/user");
+    create_user_folder ("assets/media/");
+    create_user_folder ("assets/media/thumbs/");
+    create_user_folder ("log/");
+    create_user_folder ("accounts/");
 
     message ("startup");
-    // Load Database
-//    Sqlite.Database.open (Utils.user_file ("Corebird.db"), out Corebird.db);
     Corebird.db = new Sql.Database (Utils.user_file ("Corebird.db"),
                                     Sql.COREBIRD_INIT_FILE);
 
@@ -154,16 +161,6 @@ class Corebird : Gtk.Application {
     ((GLib.Menu)acc_menu).append_submenu ("Open Account", account_menu);
 
     this.set_app_menu (app_menu);
-
-    create_user_folder ("");
-    create_user_folder ("assets/");
-    create_user_folder ("assets/avatars/");
-    create_user_folder ("assets/banners/");
-    create_user_folder ("assets/user");
-    create_user_folder ("assets/media/");
-    create_user_folder ("assets/media/thumbs/");
-    create_user_folder ("log/");
-    create_user_folder ("accounts/");
 
     // Set up the actions
     var settings_action = new SimpleAction("show-settings", null);
