@@ -1,6 +1,7 @@
 
+
 pkgname=corebird-git
-pkgver=20130110
+pkgver=1136+gd5e5cf3
 pkgrel=1
 _realver=0.3
 pkgdesc="Native Gtk+ Twitter Client"
@@ -17,36 +18,22 @@ depends=('gtk3>=3.10'
      'json-glib'
      'intltool')
 makedepends=('vala>=0.21.1' 'git' 'cmake')
+source=(git+https://github.com/baedert/corebird.git)
+sha1sums=(SKIP)
 install=corebird.install
 
-_gitroot="https://github.com/baedert/corebird.git"
-_gitname="corebird"
+pkgver() {
+  cd corebird
+  echo $(git rev-list --count HEAD)+g$(git rev-parse --short HEAD)
+}
 
 build() {
-  cd $srcdir
-  msg "connecting to GIT server"
-
-  if [ -d $srcdir/$_gitname ] ; then
-    cd $_gitname && git pull origin
-    msg "the local files are updated"
-  else
-    git clone $_gitroot
-  fi
-
-  msg "GIT checkout done or server timeout"
-  msg "Starting make ..."
-
-  rm -rf "$srcdir/$_gitname-build"
-  git clone "$srcdir/$_gitname" "$srcdir/$_gitname-build"
-  cd $srcdir/$_gitname-build
-
-  msg "Starting build..."
+  cd corebird
   cmake . -DCMAKE_INSTALL_PREFIX=/usr
   make
 }
 
 package() {
-  cd "$srcdir/$_gitname-build"
+  cd corebird
   make DESTDIR=$pkgdir install
 }
-
