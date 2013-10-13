@@ -56,8 +56,8 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     });
     start_conversation_entry = new StartConversationEntry (account);
     start_conversation_entry.activated.connect (() => {
-//      main_window.switch_page (MainWindow.PAGE_DM,
-//                               5);
+      main_window.switch_page (MainWindow.PAGE_DM,
+                               5);
     });
     thread_list.add (start_conversation_entry);
   }

@@ -32,6 +32,7 @@ class DMPage : IPage, IMessageReceiver, Box {
   private ListBox messages_list;
   [GtkChild]
   private ScrollWidget scroll_widget;
+  private DMPlaceholderBox placeholder_box = new DMPlaceholderBox ();
 
   private int64 user_id;
 
@@ -41,6 +42,8 @@ class DMPage : IPage, IMessageReceiver, Box {
     text_entry.buffer.inserted_text.connect (recalc_length);
     text_entry.buffer.deleted_text.connect (recalc_length);
     messages_list.set_sort_func (ITwitterItem.sort_func_inv);
+    placeholder_box.show ();
+    messages_list.set_placeholder(placeholder_box);
   }
 
   public void stream_message_received (StreamMessageType type, Json.Node root) { // {{{
@@ -96,7 +99,7 @@ class DMPage : IPage, IMessageReceiver, Box {
 
     // If there are no messages with this user, we insert a placeholder widget
     if (msgs == 0) {
-      
+
     }
 
     scroll_widget.scroll_down ();
