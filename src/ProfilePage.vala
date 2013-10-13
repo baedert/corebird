@@ -60,11 +60,11 @@ class ProfilePage : ScrollWidget, IPage {
   private GLib.Cancellable data_cancellable;
 
 
-  public ProfilePage(int id) {
+  public ProfilePage (int id) {
     this.id = id;
   }
 
-  public void set_user_id(int64 user_id){
+  public void set_user_id (int64 user_id) { // {{{
     this.user_id = user_id;
 
     /* Load the profile data now, then - if available - set the cached data */
@@ -106,7 +106,7 @@ class ProfilePage : ScrollWidget, IPage {
       }
       return false;
     });
-  }
+  } // }}}
 
 
   private async void load_profile_data (int64 user_id) { //{{{
