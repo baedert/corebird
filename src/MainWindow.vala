@@ -96,7 +96,7 @@ class MainWindow : ApplicationWindow {
     pages[1] = new MentionsTimeline (PAGE_MENTIONS);
     pages[2] = new DMThreadsPage (PAGE_DM_THREADS);
     pages[3] = new SearchPage (PAGE_SEARCH);
-    pages[4] = new ProfilePage (PAGE_PROFILE, this, account);
+    pages[4] = new ProfilePage (PAGE_PROFILE);
     pages[5] = new TweetInfoPage (PAGE_TWEET_INFO);
     pages[6] = new DMPage (PAGE_DM);
 

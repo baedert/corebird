@@ -60,8 +60,7 @@ class ProfilePage : ScrollWidget, IPage {
   private GLib.Cancellable data_cancellable;
 
 
-  public ProfilePage(int id, MainWindow window, Account account){
-    this.main_window = window;
+  public ProfilePage(int id) {
     this.id = id;
   }
 
