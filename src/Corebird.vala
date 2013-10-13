@@ -72,7 +72,7 @@ class Corebird : Gtk.Application {
       settings.gtk_application_prefer_dark_theme = true;
     }
 
-
+    init_log_files ();
     this.release();
     return 0;
   }
