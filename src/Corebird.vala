@@ -207,9 +207,9 @@ class Corebird : Gtk.Application {
   } // }}}
 
   /**
-   * Initiates log files, e.g. creates the log/ folder and redirects the
+   * Initializes log files, i.e. creates the log/ folder and redirects the
    * appropriate handlers for all log levels(i.e. redirects g_message,
-   * g_critical, e.g. to also print to a file)
+   * g_critical, etc. to also print to a file)
    */
   private void init_log_files () { // {{{
     /* First, create that log file */
