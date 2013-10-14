@@ -79,7 +79,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
         // Check if the original tweet already exists in the timeline
         tweet_list.@foreach ((w) => {
           var tle = (TweetListEntry) w;
-          if (tle.tweet.id == t.id)
+          if (tle.tweet.id == t.rt_id || tle.tweet.rt_id == t.rt_id)
             rt_found = true;
         });
 
@@ -106,7 +106,8 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
         string summary = _("%d new Tweets!").printf(unread_count);
         NotificationManager.notify(summary);
       }
-    } else if (type == StreamMessageType.DELETE) {
+    }
+    /*else if (type == StreamMessageType.DELETE) {
       var now = new GLib.DateTime.now_local ();
       Tweet t = new Tweet ();
       t.load_from_json (root, now);
@@ -121,7 +122,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
             tle.sensitive = false;
         }
       });
-    }
+    }*/
   }
 
 
