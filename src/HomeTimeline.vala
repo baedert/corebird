@@ -109,9 +109,11 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
       tweet_list.forall ((w) => {
         var tle = (TweetListEntry) w;
         if (tle.tweet.id == t.id) {
-          if (!tle.seen)
+          if (!tle.seen) {
             tweet_list.remove (tle);
-          else
+            unread_count --;
+            update_unread_count ();
+          }else
             tle.sensitive = false;
         }
       });
