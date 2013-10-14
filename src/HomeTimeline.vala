@@ -77,7 +77,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
 
         bool rt_found = false;
         // Check if the original tweet already exists in the timeline
-        tweet_list.forall ((w) => {
+        tweet_list.@foreach ((w) => {
           var tle = (TweetListEntry) w;
           if (tle.tweet.id == t.id)
             rt_found = true;
@@ -85,6 +85,10 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
 
         if (rt_found) return;
       }
+
+      // Somebody retweeted the user
+      if (t.user_id == account.id)
+        return;
 
       this.balance_next_upper_change(TOP);
       var entry = new TweetListEntry(t, main_window, account);
