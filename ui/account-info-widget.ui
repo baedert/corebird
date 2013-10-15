@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 on Thu Oct  3 21:44:43 2013 -->
+<!-- Generated with glade 3.16.0 on Mon Oct 14 20:35:42 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.10 -->
   <template class="AccountInfoWidget" parent="GtkGrid">
@@ -13,18 +13,18 @@
       <object class="GtkLabel" id="screen_name_label">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="halign">end</property>
+        <property name="halign">start</property>
         <property name="valign">baseline</property>
         <property name="hexpand">True</property>
-        <property name="label" translatable="yes">@baedert</property>
-        <attributes>
-          <attribute name="scale" value="2.2999999999999998"/>
-        </attributes>
+        <property name="label">@screen_name</property>
+        <style>
+          <class name="dim-label"/>
+        </style>
       </object>
       <packing>
-        <property name="left_attach">0</property>
+        <property name="left_attach">1</property>
         <property name="top_attach">0</property>
-        <property name="width">1</property>
+        <property name="width">2</property>
         <property name="height">1</property>
       </packing>
     </child>
@@ -32,16 +32,19 @@
       <object class="GtkLabel" id="name_label">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="halign">start</property>
+        <property name="halign">end</property>
         <property name="valign">baseline</property>
-        <property name="margin_left">6</property>
+        <property name="margin_right">6</property>
         <property name="hexpand">True</property>
-        <property name="label" translatable="yes">label</property>
+        <property name="label">name</property>
+        <attributes>
+          <attribute name="scale" value="2"/>
+        </attributes>
       </object>
       <packing>
-        <property name="left_attach">1</property>
+        <property name="left_attach">0</property>
         <property name="top_attach">0</property>
-        <property name="width">2</property>
+        <property name="width">1</property>
         <property name="height">1</property>
       </packing>
     </child>
