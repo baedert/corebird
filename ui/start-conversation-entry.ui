@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 on Sun Sep 29 18:03:43 2013 -->
+<!-- Generated with glade 3.16.0 on Tue Oct 15 06:47:03 2013 -->
 <interface>
-  <!-- interface-requires corebird 0.0 -->
   <!-- interface-requires gtk+ 3.10 -->
+  <!-- interface-requires corebird 0.0 -->
   <template class="StartConversationEntry" parent="GtkListBoxRow">
     <property name="visible">True</property>
     <property name="can_focus">True</property>
@@ -82,6 +82,7 @@
                     <property name="margin_left">8</property>
                     <property name="margin_right">8</property>
                     <property name="hexpand">True</property>
+                    <property name="placeholder_text" translatable="yes">@screen_name</property>
                     <signal name="activate" handler="go_button_clicked_cb" swapped="no"/>
                   </object>
                   <packing>
@@ -91,17 +92,40 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="go_button">
-                    <property name="label" translatable="yes">Go</property>
+                  <object class="GtkStack" id="go_stack">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <property name="margin_right">10</property>
-                    <style>
-                      <class name="suggested-action"/>
-                      <class name="button-wide"/>
-                    </style>
-                    <signal name="clicked" handler="go_button_clicked_cb" swapped="no"/>
+                    <property name="can_focus">False</property>
+                    <property name="halign">end</property>
+                    <property name="margin_right">9</property>
+                    <property name="visible_child">go_button</property>
+                    <property name="transition_type">slide-up-down</property>
+                    <child>
+                      <object class="GtkButton" id="go_button">
+                        <property name="label" translatable="yes">Go</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="halign">start</property>
+                        <style>
+                          <class name="suggested-action"/>
+                          <class name="button-wide"/>
+                        </style>
+                        <signal name="clicked" handler="go_button_clicked_cb" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="name">button</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkSpinner" id="go_spinner">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                      <packing>
+                        <property name="name">spinner</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>

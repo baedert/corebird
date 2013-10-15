@@ -97,11 +97,6 @@ class DMPage : IPage, IMessageReceiver, Box {
       return true;
     });
 
-    // If there are no messages with this user, we insert a placeholder widget
-    if (msgs == 0) {
-
-    }
-
     scroll_widget.scroll_down ();
   } // }}}
 

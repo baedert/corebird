@@ -14,13 +14,20 @@ class StartConversationEntry : Gtk.ListBoxRow {
   private Gtk.Revealer revealer;
   [GtkChild]
   private ReplyEntry name_entry;
+  [GtkChild]
+  private Gtk.Stack go_stack;
+  [GtkChild]
+  private Gtk.Spinner go_spinner;
+
   private UserCompletion user_completion;
   private Gtk.Window completion_window = new Gtk.Window (WindowType.POPUP);
   private ListBox completion_list = new ListBox ();
-  public signal void activated ();
   private int current_match = -1;
+  public signal void start (int64 user_id);
+  private unowned Account account;
 
   public StartConversationEntry (Account account) {
+    this.account = account;
     completion_window.set_type_hint (Gdk.WindowTypeHint.COMBO);
     completion_window.set_attached_to (name_entry);
     completion_window.set_screen (name_entry.get_screen ());
@@ -32,8 +39,8 @@ class StartConversationEntry : Gtk.ListBoxRow {
     completion_window.add (popup_frame);
 
     user_completion = new UserCompletion (account, MAX_RESULTS);
-    user_completion.connect_to (name_entry.buffer, "text");
-    user_completion.start_completion.connect (() => {
+//    user_completion.connect_to (name_entry.buffer, "text");
+/*    user_completion.start_completion.connect (() => {
       completion_window.show_all ();
       position_popup_window ();
       completion_list.foreach ((w) => { completion_list.remove (w); });
@@ -42,9 +49,13 @@ class StartConversationEntry : Gtk.ListBoxRow {
       var l = new CompletionListEntry (name, screen_name);
       l.show_all ();
       completion_list.add (l);
-    });
+    });*/
 
     name_entry.key_press_event.connect (name_entry_key_pressed);
+    activate.connect (() => {
+      go_stack.visible_child_name = "spinner";
+      go_spinner.start ();
+    });
   }
 
   private void position_popup_window () {
@@ -73,7 +84,7 @@ class StartConversationEntry : Gtk.ListBoxRow {
       completion_list.select_row (row);
       return true;
     } else if (evt.keyval == Gdk.Key.Return) {
-      
+
     }
     return false;
   }
@@ -97,8 +108,15 @@ class StartConversationEntry : Gtk.ListBoxRow {
 
   [GtkCallback]
   private void go_button_clicked_cb () {
-    if (name_entry.text.length > 0)
-      activated ();
+//    if (name_entry.text.length > 0)
+//      activated ();
+    string screen_name = name_entry.text;
+    if (screen_name.has_prefix ("@"))
+      screen_name = screen_name.substring (1);
+
+    var call = account.proxy.new_call ();
+    call.invoke_async.begin (null, (obj, res) => {
+    });
   }
 }
 
