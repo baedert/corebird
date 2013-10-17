@@ -49,7 +49,7 @@
                 <property name="halign">start</property>
                 <property name="margin_bottom">1</property>
                 <property name="yalign">1</property>
-                <property name="label" translatable="yes">User name</property>
+                <property name="label" translatable="no">User name</property>
                 <style>
                   <class name="list-username"/>
                 </style>
