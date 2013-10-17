@@ -1,6 +1,36 @@
 
 # Corebird
 
+
+## Shortcuts
+
+| Key         | Description                                                                                                                               |
+| :-----:     | :-----------                                                                                                                              |
+| `Ctrl + t`  | Compose Tweet                                                                                                                             |
+| `Back`      | Go one page back(this can be triggered via tha back button on the keyboard, the back thumb button on the mouse or  `Alt + Left`           |
+| `Forward`   | Go one page forward(this can be triggered via tha forward button on the keyboard, the forward thumb button on the mouse or  `Alt + Right` |
+| `Alt + num` | Go to page `num`(between 1 and 4 at the moment)                                                                                           |
+
+
+  When a tweet is selected(via keynav):
+
+  - `r` - reply
+  - `t` - retweet
+  - `f` - favorite
+  - `d` - delete
+  - `Return` - Show tweet details
+
+
+## Will this work on distrubution XYZ?
+  I don't know. If you can satisfy all the dependencies, probably yes but
+  you'd most likely still have to compile and install it from source(that is,
+  if no one else makes packages).
+
+
+## But but... something is not right!
+  Open a bug. Writing about it somewhere else(especially in a language I do not understand) won't help.
+
+
 ## Dependencies
  - gtk+-3.0 >= 3.9
  - glib-2.0 >= 2.38
@@ -12,7 +42,10 @@
  - vala >= 0.22 (makedep)
  - cmake >= 2.6 (makedep)
 
-## Usage
+Not that someone told me, but I read *somewhere* that there is an additional dependency
+on librsvg-XXX on Fedora.
+
+## Compiling
 
 ```
 cmake . -DCMAKE_INSTALL_PREFIX=/usr
