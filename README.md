@@ -12,7 +12,7 @@
 | `Alt + num` | Go to page `num`(between 1 and 4 at the moment)                                                                                           |
 
 
-  When a tweet is selected(via keynav):
+  When a tweet is focused(via keynav):
 
   - `r` - reply
   - `t` - retweet
@@ -32,18 +32,18 @@
 
 
 ## Dependencies
- - gtk+-3.0 >= 3.9
- - glib-2.0 >= 2.38
- - rest-0.7
- - json-glib-1.0
- - libnotify
- - sqlite3
- - libsoup-2.4
- - vala >= 0.22 (makedep)
- - cmake >= 2.6 (makedep)
+ - `gtk+-3.0 >= 3.9`
+ - `glib-2.0 >= 2.38`
+ - `rest-0.7`
+ - `json-glib-1.0`
+ - `libnotify`
+ - `sqlite3`
+ - `libsoup-2.4`
+ - `vala >= 0.22` (makedep)
+ - `cmake >= 2.6` (makedep)
 
 Not that someone told me, but I read *somewhere* that there is an additional dependency
-on librsvg-XXX on Fedora.
+on `librsvg2-tools` on Fedora.
 
 ## Compiling
 
