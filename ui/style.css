@@ -42,6 +42,7 @@
 .retweet-button:active {
   background-image: none;
   background-color: transparent;
+  border: none;
 }
 
 .reply-button:hover {
