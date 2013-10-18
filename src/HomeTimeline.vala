@@ -87,7 +87,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
       }
 
       // Somebody retweeted the user
-      if (t.user_id == account.id)
+      if (t.user_id == account.id && t.is_retweet)
         return;
 
       this.balance_next_upper_change(TOP);
