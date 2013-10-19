@@ -38,6 +38,7 @@
   color: shade(yellow, 0.9);
 }
 
+/* Don't target :hover:active here */
 .favorite-button:active,
 .retweet-button:active {
   background-image: none;
