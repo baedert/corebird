@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 on Sun Oct 13 09:20:21 2013 -->
+<!-- Generated with glade 3.16.0 on Sat Oct 19 17:51:25 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.10 -->
   <template class="DMPlaceholderBox" parent="GtkBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="opacity">0.60000002384185791</property>
+    <property name="opacity">0.80000001192092896</property>
+    <property name="margin_top">60</property>
     <property name="orientation">vertical</property>
     <child>
       <object class="GtkImage" id="avatar_image">

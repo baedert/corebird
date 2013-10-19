@@ -70,8 +70,14 @@ class DMPage : IPage, IMessageReceiver, Box {
 
 
   public void on_join (int page_id, va_list arg_list) { // {{{
-    int64 user_id = arg_list.arg<int64> ();
-    this.user_id = user_id;
+    this.user_id = arg_list.arg<int64> ();
+    string screen_name;
+    if ((screen_name = arg_list.arg<string> ()) != null) {
+      placeholder_box.screen_name = screen_name;
+      placeholder_box.name = arg_list.arg<string> ();
+      placeholder_box.avatar_url = arg_list.arg<string> ();
+      placeholder_box.load_avatar ();
+    }
 
     //Clear list
     messages_list.foreach ((w) => {messages_list.remove (w);});

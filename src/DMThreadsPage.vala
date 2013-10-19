@@ -55,8 +55,9 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       }
     });
     start_conversation_entry = new StartConversationEntry (account);
-    start_conversation_entry.start.connect((user_id) => {
-
+    start_conversation_entry.start.connect((user_id, screen_name, name, avatar_url) => {
+      main_window.switch_page (MainWindow.PAGE_DM, user_id,
+                              screen_name, name, avatar_url);
     });
 //    start_conversation_entry.activated.connect (() => {
 //      main_window.switch_page (MainWindow.PAGE_DM,

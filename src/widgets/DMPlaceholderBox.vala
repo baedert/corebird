@@ -26,7 +26,7 @@ class DMPlaceholderBox : Gtk.Box {
   [GtkChild]
   private Gtk.Label screen_name_label;
 
-  public string name {
+  public new string name {
     set {
       name_label.label = value;
     }

@@ -35,7 +35,7 @@ class StartConversationEntry : Gtk.ListBoxRow {
   private Gtk.Window completion_window = new Gtk.Window (WindowType.POPUP);
   private ListBox completion_list = new ListBox ();
   private int current_match = -1;
-  public signal void start (int64 user_id);
+  public signal void start (int64 user_id, string screen_name, string name, string avatar_url);
   private unowned Account account;
 
   public StartConversationEntry (Account account) {
@@ -119,26 +119,50 @@ class StartConversationEntry : Gtk.ListBoxRow {
   }
 
   [GtkCallback]
-  private void go_button_clicked_cb () {
+  private void go_button_clicked_cb () { // {{{
 //    if (name_entry.text.length > 0)
 //      activated ();
     string screen_name = name_entry.text;
     if (screen_name.has_prefix ("@"))
       screen_name = screen_name.substring (1);
-
+    go_stack.visible_child_name = "spinner";
+    go_spinner.start();
     name_entry.sensitive = false;
+
     var call = account.proxy.new_call ();
+    call.set_function ("1.1/users/show.json");
+    call.set_method ("GET");
+    call.add_param ("include_entities", "false");
+    call.add_param ("screen_name", screen_name);
     call.invoke_async.begin (null, (obj, res) => {
       try {
-        call.invoke_async.end (res):
+        call.invoke_async.end (res);
       } catch (GLib.Error e) {
         critical (e.message);
+        go_stack.visible_child_name = "button";
+        name_entry.sensitive = true;
+        return;
       }
+      // do stuff
+      Json.Parser parser = new Json.Parser ();
+      try {
+        parser.load_from_data (call.get_payload ());
+      } catch (GLib.Error e) {
+        critical (e.message);
+        return;
+      }
+      var root = parser.get_root ().get_object ();
+      int64 user_id = root.get_int_member ("id");
+      string name = root.get_string_member ("name");
+      string avatar_url = root.get_string_member ("profile_image_url");
+
+      start (user_id, screen_name, name, avatar_url);
+
       name_entry.sensitive = true;
-      reply_stack.visible_child_name = "button";
+      go_stack.visible_child_name = "button";
     });
   }
-}
+} /// }}}
 
 
 class CompletionListEntry : Gtk.ListBoxRow {
