@@ -146,8 +146,6 @@ interface ITimeline : Gtk.Widget, IPage {
     if (unread_count == 0)
       return;
 
-    message ("Unread count: %d", unread_count);
-
     tweet_list.forall_internal (false, (w) => {
       ITwitterItem tle = (ITwitterItem)w;
       if (tle.seen)
@@ -174,7 +172,6 @@ interface ITimeline : Gtk.Widget, IPage {
 
     GLib.List<weak Gtk.Widget> entries = tweet_list.get_children ();
     uint item_count = entries.length ();
-    message ("items: %u", item_count);
     if (item_count > ITimeline.REST) {
       tweet_remove_timeout = GLib.Timeout.add (5000, () => {
         // TODO: This is obviously wrong.

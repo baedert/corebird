@@ -158,6 +158,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       }
       var root_arr = parser.get_root ().get_array ();
       root_arr.foreach_element ((arr, pos, node) => {
+        // This won't really add a new thread, but it'll call save_message
         add_new_thread (node.get_object ());
       });
     });

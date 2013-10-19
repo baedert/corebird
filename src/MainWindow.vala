@@ -85,7 +85,9 @@ class MainWindow : ApplicationWindow {
 
 
     headerbar.set_subtitle ("@" + account.screen_name);
-    //TODO: Move new_tweet_button into the gtktemplate(also, rename to compose_tweet_button)
+     var s = new Gtk.Separator (Gtk.Orientation.VERTICAL);
+    headerbar.pack_start (s);
+   //TODO: Move new_tweet_button into the gtktemplate(also, rename to compose_tweet_button)
     new_tweet_button.get_style_context ().add_class ("image-button");
     headerbar.pack_start (new_tweet_button);
     set_titlebar (headerbar);
@@ -96,7 +98,7 @@ class MainWindow : ApplicationWindow {
     pages[1] = new MentionsTimeline (PAGE_MENTIONS);
     pages[2] = new DMThreadsPage (PAGE_DM_THREADS, account);
     pages[3] = new SearchPage (PAGE_SEARCH);
-    pages[4] = new ProfilePage (PAGE_PROFILE, this, account);
+    pages[4] = new ProfilePage (PAGE_PROFILE);
     pages[5] = new TweetInfoPage (PAGE_TWEET_INFO);
     pages[6] = new DMPage (PAGE_DM);
 
@@ -140,6 +142,7 @@ class MainWindow : ApplicationWindow {
       app_menu_button.image = new Gtk.Image.from_icon_name ("emblem-system-symbolic", IconSize.MENU);
       app_menu_button.get_style_context ().add_class ("image-button");
       app_menu_button.menu_model = this.application.app_menu;
+      app_menu_button.set_relief (Gtk.ReliefStyle.NONE);
       headerbar.pack_end (app_menu_button);
       this.show_menubar = false;
     }

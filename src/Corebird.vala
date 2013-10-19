@@ -28,8 +28,6 @@ class Corebird : Gtk.Application {
                 flags:            ApplicationFlags.HANDLES_COMMAND_LINE,
                 register_session: true);
     this.set_inactivity_timeout(500);
-
-
   }
 
   public override int command_line(ApplicationCommandLine cmd){
@@ -63,45 +61,8 @@ class Corebird : Gtk.Application {
       return -1;
     }
 
-    string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
+    open_startup_windows (show_tweet_window);
 
-    if(startup_accounts.length == 1) {
-      if (startup_accounts[0] == "")
-        startup_accounts = new string[0];
-      message("Using account '@%s'", startup_accounts[0]);
-
-    }
-    message("Startup accounts: %d", startup_accounts.length);
-
-    if (!show_tweet_window) {
-      if (startup_accounts.length == 0) {
-        this.lookup_action ("show-settings").activate (null);
-      } else {
-        foreach (string screen_name in startup_accounts) {
-          if (!is_window_open_for_screen_name (screen_name))
-            add_window (new MainWindow (this, Account.query_account (screen_name)));
-        }
-      }
-    } else {
-      critical ("Implement.");
-    }
-
-
-    /* First, create that log file */
-    var now = new GLib.DateTime.now_local();
-    File log_file = File.new_for_path(Utils.user_file("log/%s.txt".printf(now.to_string())));
-    try {
-      log_stream = log_file.create(FileCreateFlags.REPLACE_DESTINATION);
-    } catch (GLib.Error e) {
-      warning ("Couldn't open log file: %s", e.message);
-    }
-    /* If we do not run on the command line, we simply redirect stdout
-       to a log file*/
-    GLib.Log.set_handler (null, LogLevelFlags.LEVEL_MESSAGE,  print_to_log_file);
-    GLib.Log.set_handler (null, LogLevelFlags.LEVEL_ERROR,    print_to_log_file);
-    GLib.Log.set_handler (null, LogLevelFlags.LEVEL_CRITICAL, print_to_log_file);
-    GLib.Log.set_handler (null, LogLevelFlags.LEVEL_WARNING,  print_to_log_file);
-    GLib.Log.set_handler (null, LogLevelFlags.LEVEL_DEBUG,    print_to_log_file);
 
     NotificationManager.init ();
 
@@ -111,18 +72,25 @@ class Corebird : Gtk.Application {
       settings.gtk_application_prefer_dark_theme = true;
     }
 
-
+    init_log_files ();
     this.release();
     return 0;
   }
 
-  public override void startup () {
+  public override void startup () { // {{{
     base.startup();
 
+    create_user_folder ("");
+    create_user_folder ("assets/");
+    create_user_folder ("assets/avatars/");
+    create_user_folder ("assets/banners/");
+    create_user_folder ("assets/user");
+    create_user_folder ("assets/media/");
+    create_user_folder ("assets/media/thumbs/");
+    create_user_folder ("log/");
+    create_user_folder ("accounts/");
 
     message ("startup");
-    // Load Database
-//    Sqlite.Database.open (Utils.user_file ("Corebird.db"), out Corebird.db);
     Corebird.db = new Sql.Database (Utils.user_file ("Corebird.db"),
                                     Sql.COREBIRD_INIT_FILE);
 
@@ -155,16 +123,6 @@ class Corebird : Gtk.Application {
 
     this.set_app_menu (app_menu);
 
-    create_user_folder ("");
-    create_user_folder ("assets/");
-    create_user_folder ("assets/avatars/");
-    create_user_folder ("assets/banners/");
-    create_user_folder ("assets/user");
-    create_user_folder ("assets/media/");
-    create_user_folder ("assets/media/thumbs/");
-    create_user_folder ("log/");
-    create_user_folder ("accounts/");
-
     // Set up the actions
     var settings_action = new SimpleAction("show-settings", null);
     settings_action.activate.connect(() => {
@@ -174,8 +132,8 @@ class Corebird : Gtk.Application {
     add_action (settings_action);
     var about_dialog_action = new SimpleAction("show-about-dialog", null);
     about_dialog_action.activate.connect(() => {
-        var ad = new AboutDialog ();
-        ad.show();
+      var ad = new AboutDialog ();
+      ad.show();
     });
     add_action(about_dialog_action);
     var quit_action = new SimpleAction("quit", null);
@@ -199,12 +157,77 @@ class Corebird : Gtk.Application {
 
     // Load custom icons
     Utils.load_custom_icons ();
-  }
+  } // }}}
 
   public override void shutdown () {
     NotificationManager.uninit ();
     base.shutdown();
   }
+
+
+  /**
+   *
+   *
+   *
+   */
+  private void open_startup_windows (bool show_tweet_window) { // {{{
+    string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
+
+    if(startup_accounts.length == 1) {
+      if (startup_accounts[0].length == 0) {
+        add_window (new SettingsDialog (null, this));
+        return;
+      }
+    }
+    message("Startup accounts: %d", startup_accounts.length);
+
+    if (!show_tweet_window) {
+      if (startup_accounts.length == 0) {
+        this.lookup_action ("show-settings").activate (null);
+      } else {
+        bool found_valid_account = false;
+        foreach (string screen_name in startup_accounts) {
+          if (!is_window_open_for_screen_name (screen_name)) {
+            var acc = Account.query_account (screen_name);
+            if (acc != null) {
+              add_window (new MainWindow (this, acc));
+              found_valid_account = true;
+            }
+          }
+        }
+
+        if (!found_valid_account) {
+          add_window (new SettingsDialog (null, this));
+        }
+
+      }
+    } else {
+      critical ("Implement.");
+    }
+  } // }}}
+
+  /**
+   * Initializes log files, i.e. creates the log/ folder and redirects the
+   * appropriate handlers for all log levels(i.e. redirects g_message,
+   * g_critical, etc. to also print to a file)
+   */
+  private void init_log_files () { // {{{
+    /* First, create that log file */
+    var now = new GLib.DateTime.now_local();
+    File log_file = File.new_for_path(Utils.user_file("log/%s.txt".printf(now.to_string())));
+    try {
+      log_stream = log_file.create(FileCreateFlags.REPLACE_DESTINATION);
+    } catch (GLib.Error e) {
+      warning ("Couldn't open log file: %s", e.message);
+    }
+    /* If we do not run on the command line, we simply redirect stdout
+       to a log file*/
+    GLib.Log.set_handler (null, LogLevelFlags.LEVEL_MESSAGE,  print_to_log_file);
+    GLib.Log.set_handler (null, LogLevelFlags.LEVEL_ERROR,    print_to_log_file);
+    GLib.Log.set_handler (null, LogLevelFlags.LEVEL_CRITICAL, print_to_log_file);
+    GLib.Log.set_handler (null, LogLevelFlags.LEVEL_WARNING,  print_to_log_file);
+    GLib.Log.set_handler (null, LogLevelFlags.LEVEL_DEBUG,    print_to_log_file);
+  } // }}}
 
   /**
    * Adds a new MainWindow instance with the account that

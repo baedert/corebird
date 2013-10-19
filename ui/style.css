@@ -26,7 +26,7 @@
 .favorite-button,
 .reply-button{
   font-family: FontAwesome;
-  font-size: 1.3em;
+  font-size: 1.0em;
 }
 .retweet-button:hover,
 .retweet-button:active {
@@ -36,6 +36,14 @@
 .favorite-button:hover,
 .favorite-button:active {
   color: shade(yellow, 0.9);
+}
+
+/* Don't target :hover:active here */
+.favorite-button:active,
+.retweet-button:active {
+  background-image: none;
+  background-color: transparent;
+  border: none;
 }
 
 .reply-button:hover {

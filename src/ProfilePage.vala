@@ -57,16 +57,14 @@ class ProfilePage : ScrollWidget, IPage {
   private Gtk.Spinner progress_spinner;
   private bool following;
   private int64 user_id;
-  private string screen_name; //TODO: Remove
   private GLib.Cancellable data_cancellable;
 
 
-  public ProfilePage(int id, MainWindow window, Account account){
-    this.main_window = window;
+  public ProfilePage (int id) {
     this.id = id;
   }
 
-  public void set_user_id(int64 user_id){
+  public void set_user_id (int64 user_id) { // {{{
     this.user_id = user_id;
 
     /* Load the profile data now, then - if available - set the cached data */
@@ -108,7 +106,7 @@ class ProfilePage : ScrollWidget, IPage {
       }
       return false;
     });
-  }
+  } // }}}
 
 
   private async void load_profile_data (int64 user_id) { //{{{
@@ -165,7 +163,7 @@ class ProfilePage : ScrollWidget, IPage {
       }
 
       string name        = root.get_string_member("name").replace ("&", "&amp;");
-             screen_name = root.get_string_member("screen_name");
+      string screen_name = root.get_string_member("screen_name");
       string description = root.get_string_member("description").replace("&", "&amp;");
       int followers      = (int)root.get_int_member("followers_count");
       int following      = (int)root.get_int_member("friends_count");
@@ -176,7 +174,7 @@ class ProfilePage : ScrollWidget, IPage {
 
       if (root.has_member ("profile_banner_url")) {
         string banner_base_url = root.get_string_member ("profile_banner_url");
-        load_profile_banner (banner_base_url, user_id, screen_name);
+        load_profile_banner (banner_base_url, user_id);
       }
 
       string display_url = "";
@@ -247,8 +245,7 @@ class ProfilePage : ScrollWidget, IPage {
    * @param user_id Foo
    * @param screen_name Bar
    */
-  private void load_profile_banner (string base_url,
-                                    int64 user_id, string screen_name) { // {{{
+  private void load_profile_banner (string base_url, int64 user_id) { // {{{
     string saved_banner_url = Utils.user_file ("assets/banners/"+get_banner_name (user_id));
     string banner_url  = base_url+"/mobile_retina";
     string banner_name = get_banner_name (user_id);

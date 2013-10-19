@@ -66,12 +66,28 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
   }
 
   private void stream_message_received (StreamMessageType type, Json.Node root) {
-    if(type == StreamMessageType.TWEET) {
-      GLib.DateTime now = new GLib.DateTime.now_local();
+    if (type == StreamMessageType.TWEET) {
+      GLib.DateTime now = new GLib.DateTime.now_local ();
       Tweet t = new Tweet();
-      t.load_from_json(root, now);
+      t.load_from_json (root, now);
 
-      if (t.is_retweet && t.retweeted_by == account.name)
+      if (t.is_retweet) {
+        if (t.retweeted_by == account.name)
+          return;
+
+        bool rt_found = false;
+        // Check if the original tweet already exists in the timeline
+        tweet_list.@foreach ((w) => {
+          var tle = (TweetListEntry) w;
+          if (tle.tweet.id == t.rt_id || tle.tweet.rt_id == t.rt_id)
+            rt_found = true;
+        });
+
+        if (rt_found) return;
+      }
+
+      // Somebody retweeted the user
+      if (t.user_id == account.id && t.is_retweet)
         return;
 
       this.balance_next_upper_change(TOP);
@@ -81,7 +97,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
       tweet_list.add(entry);
 
       unread_count++;
-      update_unread_count();
+      update_unread_count ();
       this.max_id = t.id;
 
       int stack_size = Settings.get_tweet_stack_count();
@@ -91,6 +107,22 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
         NotificationManager.notify(summary);
       }
     }
+    /*else if (type == StreamMessageType.DELETE) {
+      var now = new GLib.DateTime.now_local ();
+      Tweet t = new Tweet ();
+      t.load_from_json (root, now);
+      tweet_list.forall ((w) => {
+        var tle = (TweetListEntry) w;
+        if (tle.tweet.id == t.id) {
+          if (!tle.seen) {
+            tweet_list.remove (tle);
+            unread_count --;
+            update_unread_count ();
+          }else
+            tle.sensitive = false;
+        }
+      });
+    }*/
   }
 
 

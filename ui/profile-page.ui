@@ -59,7 +59,7 @@
                             <property name="margin_top">4</property>
                             <property name="hexpand">True</property>
                             <property name="xalign">0</property>
-                            <property name="label" translatable="yes">name</property>
+                            <property name="label" translatable="no">name</property>
                             <property name="ellipsize">end</property>
                             <style>
                               <class name="data"/>
@@ -78,7 +78,7 @@
                             <property name="valign">start</property>
                             <property name="hexpand">True</property>
                             <property name="xalign">0</property>
-                            <property name="label" translatable="yes">url</property>
+                            <property name="label" translatable="no">url</property>
                             <property name="ellipsize">middle</property>
                             <style>
                               <class name="data"/>
@@ -97,7 +97,7 @@
                             <property name="valign">start</property>
                             <property name="hexpand">True</property>
                             <property name="xalign">0</property>
-                            <property name="label" translatable="yes">location</property>
+                            <property name="label" translatable="no">location</property>
                             <property name="ellipsize">end</property>
                             <style>
                               <class name="data"/>
@@ -115,7 +115,7 @@
                             <property name="can_focus">False</property>
                             <child>
                               <object class="GtkButton" id="follow_button">
-                                <property name="label" translatable="yes">button</property>
+                                <property name="label" translatable="no">button</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -170,7 +170,7 @@
                     <property name="margin_bottom">8</property>
                     <property name="hexpand">True</property>
                     <property name="vexpand">True</property>
-                    <property name="label" translatable="yes">label</property>
+                    <property name="label" translatable="no">label</property>
                     <property name="use_markup">True</property>
                     <property name="justify">center</property>
                     <property name="wrap">True</property>
@@ -199,7 +199,7 @@
                       <object class="GtkLabel" id="tweets_label">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">label</property>
+                        <property name="label" translatable="no">label</property>
                         <property name="use_markup">True</property>
                         <property name="justify">center</property>
                         <style>
@@ -216,7 +216,7 @@
                       <object class="GtkLabel" id="followers_label">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">button</property>
+                        <property name="label" translatable="no">button</property>
                         <property name="use_markup">True</property>
                         <property name="justify">center</property>
                         <style>
@@ -233,7 +233,7 @@
                       <object class="GtkLabel" id="following_label">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">label</property>
+                        <property name="label" translatable="no">label</property>
                         <property name="use_markup">True</property>
                         <property name="justify">center</property>
                         <style>
