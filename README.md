@@ -41,8 +41,10 @@
  - `vala >= 0.22` (makedep)
  - `cmake >= 2.6` (makedep)
 
-Not that someone told me, but I read *somewhere* that there is an additional dependency
-on `librsvg2-tools` on Fedora.
+Additionally...
+
+ - `librsvg2-tools` on Fedora
+ - `librsvg2-bin` on Ubuntu
 
 ## Compiling
 
