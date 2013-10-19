@@ -112,7 +112,6 @@ set (VALA_SOURCE
   src/Account.vala
   src/ConnectionLostDialog.vala
   src/DMPage.vala
-  src/FriendService.vala
   src/widgets/ImageBox.vala
   src/widgets/ImageLabel.vala
   src/widgets/PixbufButton.vala

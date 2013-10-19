@@ -26,7 +26,6 @@ class Account : GLib.Object {
   public Gdk.Pixbuf avatar        {public get; private set;}
   public Rest.OAuthProxy proxy    {public get; private set;}
   public UserStream user_stream   {public get; private set;}
-  private FriendService friend_service;
 
   public Account (int64 id, string screen_name, string name) {
     this.id = id;
@@ -71,9 +70,6 @@ class Account : GLib.Object {
         return false; //stop
       });
     }
-
-    friend_service = new FriendService ();
-    user_stream.register (friend_service);
   }
 
   /**
