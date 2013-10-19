@@ -55,8 +55,13 @@ class ProfilePage : ScrollWidget, IPage {
   private Gtk.ListBox tweet_list;
   [GtkChild]
   private Gtk.Spinner progress_spinner;
+  [GtkChild]
+  private Gtk.MenuItem dm_menu_item;
   private bool following;
   private int64 user_id;
+  private new string name;
+  private string screen_name;
+  private string avatar_url;
   private GLib.Cancellable data_cancellable;
 
 
@@ -89,7 +94,8 @@ class ProfilePage : ScrollWidget, IPage {
       }
 
       set_data(vals[2], vals[1], vals[9], vals[10], vals[3],
-               int.parse (vals[4]), int.parse (vals[5]), int.parse (vals[6]));
+               int.parse (vals[4]), int.parse (vals[5]), int.parse (vals[6]),
+               null);
       set_follow_button_state (bool.parse (vals[11]));
       string banner_name = vals[12];
       debug("banner_name: %s", banner_name);
@@ -217,7 +223,7 @@ class ProfilePage : ScrollWidget, IPage {
       }
 
       set_data(name, screen_name, display_url, location, description, tweets,
-           following, followers, text_urls);
+           following, followers, avatar_url, text_urls);
       set_follow_button_state (is_following);
       Corebird.db.replace ("profiles")
                  .vali64 ("id", id)
@@ -267,7 +273,7 @@ class ProfilePage : ScrollWidget, IPage {
 
   private new void set_data (string name, string screen_name, string? url,
                              string? location, string description, int tweets,
-                             int following, int followers,
+                             int following, int followers, string avatar_url,
                              GLib.SList<TweetUtils.Sequence?>? text_urls = null) { //{{{
 
     name_label.set_markup("<b>%s</b>  @%s"
@@ -300,6 +306,10 @@ class ProfilePage : ScrollWidget, IPage {
       url_label.set_markup ("<a href='%s'>%s</a>".printf (url, url));
     } else
       url_label.visible = false;
+
+    this.name = name;
+    this.screen_name = screen_name;
+    this.avatar_url = avatar_url;
 
   } //}}}
 
@@ -343,6 +353,12 @@ class ProfilePage : ScrollWidget, IPage {
     return TweetUtils.activate_link (uri, main_window);
   }
 
+  [GtkCallback]
+  private void dm_menu_item_activate_cb () {
+    main_window.switch_page (MainWindow.PAGE_DM,
+                             user_id, screen_name, name, avatar_url);
+  }
+
   private void set_follow_button_state (bool following) { //{{{
     var sc = follow_button.get_style_context ();
     follow_button.sensitive = true;
@@ -356,6 +372,7 @@ class ProfilePage : ScrollWidget, IPage {
       follow_button.label = _("Follow");
     }
     this.following = following;
+    dm_menu_item.sensitive = following;
   } //}}}
 
 
