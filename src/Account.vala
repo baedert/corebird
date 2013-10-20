@@ -102,8 +102,12 @@ class Account : GLib.Object {
     call.set_method ("GET");
     call.add_param ("screen_name", screen_name);
     call.invoke_async.begin (null, (obj, res) => {
-      try{call.invoke_async.end (res);} catch (GLib.Error e)
-      { critical (e.message);return;}
+      try{call.invoke_async.end (res);} catch (GLib.Error e) {
+        if (e.message.down() == "unauthorized") {
+          Utils.show_error_dialog ("Unauthorized");
+        }
+        return;
+      }
       var parser = new Json.Parser ();
       try {
         parser.load_from_data (call.get_payload ());
