@@ -134,7 +134,7 @@ class Account : GLib.Object {
     if (url.length > 0 && url == this.avatar_url)
       return;
 
-    message ("Using %s to update the avatar", url);
+    message ("Using %s to update the avatar(old: %s)", url, this.avatar_url);
 
     if (url.length > 0) {
       var session = new Soup.Session ();
@@ -203,7 +203,7 @@ class Account : GLib.Object {
     accounts = new GLib.SList<Account> ();
     Corebird.db.select ("accounts").cols ("id", "screen_name", "name", "avatar_url").run ((vals) => {
       Account acc = new Account (int64.parse(vals[0]), vals[1], vals[2]);
-      acc.avatar_url = vals[3];
+      acc.avatar_url = vals[3]; // O(n^2)
       accounts.append (acc);
       return true;
     });
