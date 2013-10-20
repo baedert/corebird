@@ -139,7 +139,7 @@ namespace InlineMediaDownloader {
     pixbuf_animation_from_stream_async.begin (in_stream, null, (obj, res) => {
       Gdk.PixbufAnimation anim = null;
       try {
-        pixbuf_animation_from_stream_async.end (res);
+        anim = pixbuf_animation_from_stream_async.end (res);
       } catch (GLib.Error e) {
         warning (e.message);
         return;
