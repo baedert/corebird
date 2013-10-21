@@ -20,8 +20,6 @@ using Gtk;
 [GtkTemplate (ui = "/org/baedert/corebird/ui/account-info-widget.ui")]
 class AccountInfoWidget : Gtk.Grid {
   [GtkChild]
-  private Switch always_notify_switch;
-  [GtkChild]
   private Label screen_name_label;
   [GtkChild]
   private Label name_label;
@@ -34,7 +32,7 @@ class AccountInfoWidget : Gtk.Grid {
   public AccountInfoWidget (Account acc, Gtk.Application application) {
     this.account = acc;
     this.application = application;
-    screen_name_label.label = acc.screen_name;
+    screen_name_label.label = "@" + acc.screen_name;
     name_label.label = acc.name;
     if (((Corebird)application).is_window_open_for_screen_name (acc.screen_name))
       open_window_button.sensitive = false;
