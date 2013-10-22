@@ -19,9 +19,11 @@
 /*
   So, this is the plan:
   we wil just save every single time the user encounters another user.
-  We then save the first 500 or so results and load them on startup.
+  We then save the first 200 or so results and load them on startup.
   If the user types a name and no result is found, we try to search
   for that name via Twitter's search API.
+
+ XXX: Check if this works well with sqlite, if not move to a simple text file.
 */
 
 struct UserInfo {
@@ -31,11 +33,26 @@ struct UserInfo {
 }
 
 
+uint char_hash_func (char c) {
+  return (uint) c;
+}
+
+bool char_equal_func (char a, char b) {
+  return a == b;
+}
+
+bool user_info_equal_func (UserInfo a, UserInfo b) {
+    return a.id == b.id;
+}
+
 class UserCounter : GLib.Object {
   private string filename;
+  private Gee.HashMap<char, Gee.ArrayList<UserInfo?>> name_list = new Gee.HashMap<char,
+                                                                      Gee.ArrayList<UserInfo?>>
+                                                              (char_hash_func, char_equal_func);
+  private bool changed = false;
 
-  public UserCounter (string filename) {
-    this.filename = filename;
+  public UserCounter () {
   }
 
   public void user_seen (string name) {
@@ -44,22 +61,19 @@ class UserCounter : GLib.Object {
 
 
   public string[] query_by_prefix (string prefix, int max_results = -1) {
-
+    return null;
   }
 
-  public void load () {
-    var in_stream = new DataInputStream (new FileInputStream (filename));
-    string line;
-    while ((line = in_stream.read_line) != null) {
-      string[] splits = line.split(",");
-      if (splits.length != 3) {
-        warning ("'%s' is not a valid line", line);
-        continue;
-      }
-    }
+  public void load (Sql.Database db) {
+    db.select ("user_cache").cols ("id", "screen_name", "name", "score").order ("score").run ((vals) => {
+      UserInfo ui = {int64.parse(vals[0]), vals[1], vals[2]};
+      return true;
+    });
   }
 
   public void save () {
+    if (!changed)
+      return;
   }
 
 }

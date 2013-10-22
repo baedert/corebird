@@ -26,6 +26,7 @@ class Account : GLib.Object {
   public Gdk.Pixbuf avatar        {public get; private set;}
   public Rest.OAuthProxy proxy    {public get; private set;}
   public UserStream user_stream   {public get; private set;}
+  public UserCounter user_counter {public get; private set;}
 
   public Account (int64 id, string screen_name, string name) {
     this.id = id;
@@ -44,6 +45,7 @@ class Account : GLib.Object {
 
     this.db = new Sql.Database (Utils.user_file (@"accounts/$id.db"),
                                 Sql.ACCOUNTS_INIT_FILE);
+    user_counter = new UserCounter ();
   }
 
   /**
