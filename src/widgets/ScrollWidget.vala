@@ -152,8 +152,6 @@ class ScrollWidget : ScrolledWindow {
     t = ease_out_cubic (t);
 
     this.vadjustment.value = transition_start_value + (t) * transition_diff;
-    this.queue_draw ();
-
     if (this.vadjustment.value <= 0 || now >= end_time)
       return false;
 
