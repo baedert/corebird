@@ -106,6 +106,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
         string summary = _("%d new Tweets!").printf(unread_count);
         NotificationManager.notify(summary);
       }
+      this.scroll_up ();
     }
     /*else if (type == StreamMessageType.DELETE) {
       var now = new GLib.DateTime.now_local ();

@@ -22,6 +22,7 @@ const int BOTTOM = 2;
 const int NONE   = 0;
 
 class ScrollWidget : ScrolledWindow {
+  private static const int64 TRANSITION_DURATION = 1000;
   public signal void scrolled_to_start(double value);
   public signal void scrolled_to_end();
   private double upper_cache;
@@ -29,14 +30,18 @@ class ScrollWidget : ScrolledWindow {
   private int balance = NONE;
   public double end_diff {get; set; default = 150;}
   private ulong scroll_down_id;
+  private ulong scroll_up_id;
   public bool scrolled_down {
     get {
       return vadjustment.value >= vadjustment.upper - vadjustment.page_size - 5;
     }
   }
+  //Transition times
+  private int64 start_time;
+  private int64 end_time;
+  private double transition_diff;
 
   construct {
-//    GLib.Object(hadjustment: null, vadjustment: null);
     vadjustment.notify["upper"].connect(keep_upper_func);
     vadjustment.notify["value"].connect(keep_value_func);
   }
@@ -80,11 +85,53 @@ class ScrollWidget : ScrolledWindow {
     balance = mode;
   }
 
+  public void scroll_up () {
+    scroll_up_id = this.size_allocate.connect (() => {
+      if (Gtk.Settings.gtk_enable_animations) {
+        this.start_time = this.get_frame_clock ().get_frame_time ();
+        this.end_time = start_time + (TRANSITION_DURATION * 1000);
+        this.transition_diff = this.vadjustment.value;
+        this.add_tick_callback (scroll_up_tick_cb);
+      } else {
+        this.vadjustment.value = 0;
+        this.vadjustment.value_changed ();
+      }
+      this.disconnect (scroll_up_id);
+
+    });
+  }
+
   public void scroll_down () {
     scroll_down_id = this.size_allocate.connect (() => {
       this.vadjustment.value = this.vadjustment.upper - this.vadjustment.page_size;
       this.vadjustment.value_changed ();
       this.disconnect (scroll_down_id);
     });
+  }
+
+
+  private bool scroll_up_tick_cb (Gtk.Widget widget, Gdk.FrameClock frame_clock) {
+    if (!this.get_mapped ())
+      return false;
+    int64 now = frame_clock.get_frame_time ();
+
+    double t = 1.0;
+    if (now < this.end_time)
+      t = (now - start_time) / (double)(end_time  - start_time);
+
+    t = ease_out_cubic (t);
+
+    this.vadjustment.value = (1.0 - t) * transition_diff;
+    this.queue_draw ();
+
+    if (this.vadjustment.value <= 0 || now >= end_time)
+      return false;
+
+    return true;
+  }
+
+  private double ease_out_cubic (double t) {
+    double p = t - 1;
+    return p * p * p +1;
   }
 }
