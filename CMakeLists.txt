@@ -112,6 +112,7 @@ set (VALA_SOURCE
   src/Account.vala
   src/ConnectionLostDialog.vala
   src/DMPage.vala
+  src/UserCounter.vala
   src/widgets/ImageBox.vala
   src/widgets/ImageLabel.vala
   src/widgets/PixbufButton.vala
@@ -148,6 +149,7 @@ set (VALA_SOURCE
   src/sql/Database.vala
   src/sql/Statement.vala
   src/sql/SelectStatement.vala
+  src/sql/UpdateStatement.vala
   src/resources.c
 )
 

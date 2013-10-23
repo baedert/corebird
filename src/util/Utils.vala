@@ -139,10 +139,10 @@ namespace Utils {
    *
    * @param message The error message to show
    */
-  void show_error_dialog(string message){
-    var dialog = new Gtk.MessageDialog(null, Gtk.DialogFlags.DESTROY_WITH_PARENT,
-               Gtk.MessageType.ERROR, Gtk.ButtonsType.OK,
-               message);
+  void show_error_dialog (string message) {
+    var dialog = new Gtk.MessageDialog (null, Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                        Gtk.MessageType.ERROR, Gtk.ButtonsType.OK,
+                                        message);
 
     dialog.response.connect((id) => {
       if(id == Gtk.ResponseType.OK)

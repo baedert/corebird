@@ -1,3 +1,4 @@
+
 /*  This file is part of corebird, a Gtk+ linux Twitter client.
  *  Copyright (C) 2013 Timm Bäder
  *
@@ -18,81 +19,87 @@
 
 
 
-namespace Sql {
-  public interface IStatement {
-      public abstract Sqlite.Database db { public set; protected get; }
-  }
-  public delegate bool SelectCallback (string[] vals);
 
-  public class InsertStatement : IStatement {
+
+
+
+namespace Sql {
+
+  public class UpdateStatement : IStatement {
     public unowned Sqlite.Database db { public set; private get; }
     private StringBuilder query_builder  = new StringBuilder ();
     private Gee.ArrayList<string> bindings = new Gee.ArrayList<string>();
     private bool ran = false;
 
-    public InsertStatement (string table_name, bool replace = false) {
-      if (replace)
-        query_builder.append ("INSERT OR REPLACE INTO `");
-      else
-        query_builder.append ("INSERT INTO `");
-      query_builder.append (table_name).append ("` (");
+    public UpdateStatement (string table_name) {
+      query_builder.append ("UPDATE `").append (table_name).append ("` SET ");
     }
 
     public int64 run () {
-      query_builder.append (") VALUES (");
-      query_builder.append ("?");
-      for (int i = 0; i < bindings.size -1; i++)
-        query_builder.append (",?");
-      query_builder.append (");");
-
-
       Sqlite.Statement stmt;
+      query_builder.append(";");
       int ok = db.prepare_v2 (query_builder.str, -1, out stmt);
 
       if (ok != Sqlite.OK) {
         critical (db.errmsg ());
         return -1;
       }
-
       for (int i = 0; i < bindings.size; i++) {
         stmt.bind_text (i + 1, bindings.get (i));
       }
       ok = stmt.step ();
-      if (ok != Sqlite.DONE) {
+      if (ok == Sqlite.ERROR) {
         critical (db.errmsg ());
         critical (stmt.sql ());
+        return -1;
       }
       ran = true;
       return db.last_insert_rowid ();
     }
 
-    public InsertStatement val (string col_name, string col_value) {
+    public UpdateStatement where (string where) {
+      query_builder.append (" WHERE ").append (where);
+      return this;
+    }
+
+    public UpdateStatement where_eq (string col, string value) {
+      query_builder.append (" WHERE `").append (col).append ("`='").append (value).append ("'");
+      return this;
+    }
+
+    public UpdateStatement where_eqi (string col, int64 iv) {
+      return where_eq (col, iv.to_string ());
+    }
+
+    public UpdateStatement val (string col_name, string col_value) {
       if (bindings.size > 0)
         query_builder.append (", ");
-      query_builder.append ("`").append (col_name).append ("`");
+      query_builder.append ("`").append (col_name).append ("` = ?");
       bindings.add (col_value);
       return this;
     }
 
-    public InsertStatement vali (string col_name, int col_value) {
+    public UpdateStatement vali (string col_name, int col_value) {
       return val (col_name, col_value.to_string ());
     }
 
-    public InsertStatement vali64 (string col_name, int64 col_value) {
+    public UpdateStatement vali64 (string col_name, int64 col_value) {
       return val (col_name, col_value.to_string ());
     }
 
-    public InsertStatement valb (string col_name, bool col_value) {
+    public UpdateStatement valb (string col_name, bool col_value) {
       return val (col_name, col_value ? "1" : "0");
     }
-
 #if __DEV
-    ~InsertStatement () {
+    ~UpdateStatement () {
       if (!ran)
-        critical ("InsertStatement for %s did not run.", query_builder.str);
+        critical ("UpdateStatement for %s did not run.", query_builder.str);
     }
 #endif
+
+
   }
 
 }
+
 

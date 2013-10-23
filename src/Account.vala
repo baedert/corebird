@@ -26,6 +26,7 @@ class Account : GLib.Object {
   public Gdk.Pixbuf avatar        {public get; private set;}
   public Rest.OAuthProxy proxy    {public get; private set;}
   public UserStream user_stream   {public get; private set;}
+  public UserCounter user_counter {public get; private set;}
 
   public Account (int64 id, string screen_name, string name) {
     this.id = id;
@@ -44,6 +45,7 @@ class Account : GLib.Object {
 
     this.db = new Sql.Database (Utils.user_file (@"accounts/$id.db"),
                                 Sql.ACCOUNTS_INIT_FILE);
+    user_counter = new UserCounter ();
   }
 
   /**
@@ -102,8 +104,13 @@ class Account : GLib.Object {
     call.set_method ("GET");
     call.add_param ("screen_name", screen_name);
     call.invoke_async.begin (null, (obj, res) => {
-      try{call.invoke_async.end (res);} catch (GLib.Error e)
-      { critical (e.message);return;}
+      try{call.invoke_async.end (res);} catch (GLib.Error e) {
+        if (e.message.down() == "unauthorized") {
+          Utils.show_error_dialog ("Unauthorized");
+        }
+        critical (e.message);
+        return;
+      }
       var parser = new Json.Parser ();
       try {
         parser.load_from_data (call.get_payload ());
@@ -134,7 +141,7 @@ class Account : GLib.Object {
     if (url.length > 0 && url == this.avatar_url)
       return;
 
-    message ("Using %s to update the avatar", url);
+    message ("Using %s to update the avatar(old: %s)", url, this.avatar_url);
 
     if (url.length > 0) {
       var session = new Soup.Session ();
@@ -203,7 +210,7 @@ class Account : GLib.Object {
     accounts = new GLib.SList<Account> ();
     Corebird.db.select ("accounts").cols ("id", "screen_name", "name", "avatar_url").run ((vals) => {
       Account acc = new Account (int64.parse(vals[0]), vals[1], vals[2]);
-      acc.avatar_url = vals[3];
+      acc.avatar_url = vals[3]; // O(n^2)
       accounts.append (acc);
       return true;
     });

@@ -100,12 +100,14 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
       update_unread_count ();
       this.max_id = t.id;
 
-      int stack_size = Settings.get_tweet_stack_count();
+      int stack_size = Settings.get_tweet_stack_count ();
       message ("Stack size: %d", stack_size);
-      if(stack_size != 0 && unread_count % stack_size == 0) {
-        string summary = _("%d new Tweets!").printf(unread_count);
-        NotificationManager.notify(summary);
+      if (stack_size != 0 && unread_count % stack_size == 0) {
+        string summary = _("%d new Tweets!").printf (unread_count);
+        NotificationManager.notify (summary);
       }
+      if (this.scrolled_up && (t.user_id == account.id))
+        this.scroll_up_next ();
     }
     /*else if (type == StreamMessageType.DELETE) {
       var now = new GLib.DateTime.now_local ();
