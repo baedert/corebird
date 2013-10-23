@@ -108,6 +108,7 @@ class Account : GLib.Object {
         if (e.message.down() == "unauthorized") {
           Utils.show_error_dialog ("Unauthorized");
         }
+        critical (e.message);
         return;
       }
       var parser = new Json.Parser ();
