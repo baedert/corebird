@@ -22,7 +22,7 @@ const int BOTTOM = 2;
 const int NONE   = 0;
 
 class ScrollWidget : ScrolledWindow {
-  private static const int64 TRANSITION_DURATION = 1000;
+  private static const int64 TRANSITION_DURATION = 300;
   public signal void scrolled_to_start(double value);
   public signal void scrolled_to_end();
   private double upper_cache;
@@ -36,17 +36,23 @@ class ScrollWidget : ScrolledWindow {
       return vadjustment.value >= vadjustment.upper - vadjustment.page_size - 5;
     }
   }
+  public bool scrolled_up {
+    get {
+      return vadjustment.value <= 5;
+    }
+  }
   //Transition times
   private int64 start_time;
   private int64 end_time;
   private double transition_diff;
+  private double transition_start_value;
 
   construct {
     vadjustment.notify["upper"].connect(keep_upper_func);
     vadjustment.notify["value"].connect(keep_value_func);
   }
 
-  private void keep_upper_func() {
+  private void keep_upper_func() { // {{{
     double upper = vadjustment.upper;
     if (balance == TOP){
       double inc = (upper - upper_cache);
@@ -57,9 +63,9 @@ class ScrollWidget : ScrolledWindow {
     }
     this.upper_cache = vadjustment.upper;
     this.value_cache = vadjustment.value;
-  }
+  } // }}}
 
-  private void keep_value_func () {
+  private void keep_value_func () { // {{{
     // Call the scrolled_to_top signal if necessary
     if(vadjustment.value < 10.0) {
       scrolled_to_start(vadjustment.value);
@@ -79,18 +85,25 @@ class ScrollWidget : ScrolledWindow {
     }
     this.upper_cache = vadjustment.upper;
     this.value_cache = vadjustment.value;
-  }
+  } // }}}
 
   public void balance_next_upper_change(int mode){
     balance = mode;
   }
 
-  public void scroll_up () {
+  /**
+   * Scroll to the very top of the scrolled window once the next
+   * size_allocate occurs.
+   * This will use a transition if the correct Gtk+ settings is set
+   * to true.
+   */
+  public void scroll_up_next () { // {{{
     scroll_up_id = this.size_allocate.connect (() => {
-      if (Gtk.Settings.gtk_enable_animations) {
+      if (Gtk.Settings.get_default ().gtk_enable_animations) {
         this.start_time = this.get_frame_clock ().get_frame_time ();
         this.end_time = start_time + (TRANSITION_DURATION * 1000);
         this.transition_diff = this.vadjustment.value;
+        this.transition_start_value = vadjustment.value;
         this.add_tick_callback (scroll_up_tick_cb);
       } else {
         this.vadjustment.value = 0;
@@ -99,29 +112,46 @@ class ScrollWidget : ScrolledWindow {
       this.disconnect (scroll_up_id);
 
     });
-  }
+  } // }}}
 
-  public void scroll_down () {
+  /**
+   * Scroll to the very end of the scrolled window once the next
+   * size_alocate occurs.
+   * This will use a transition if the correct Gtk+ settings is set
+   * to true
+   */
+  public void scroll_down_next () { // {{{
     scroll_down_id = this.size_allocate.connect (() => {
-      this.vadjustment.value = this.vadjustment.upper - this.vadjustment.page_size;
-      this.vadjustment.value_changed ();
+      if (Gtk.Settings.get_default ().gtk_enable_animations) {
+        this.start_time = this.get_frame_clock ().get_frame_time ();
+        this.end_time = start_time + (TRANSITION_DURATION * 1000);
+        this.transition_diff = - (vadjustment.page_size - vadjustment.value);
+        this.transition_start_value = this.vadjustment.value;
+        this.add_tick_callback (scroll_up_tick_cb);
+      } else {
+        this.vadjustment.value = this.vadjustment.upper - this.vadjustment.page_size;
+        this.vadjustment.value_changed ();
+      }
       this.disconnect (scroll_down_id);
     });
-  }
+  } // }}}
 
 
+  /* This is essentially a straight-up vala port of the transition code in
+     GtkStack/GtkRevealer */
   private bool scroll_up_tick_cb (Gtk.Widget widget, Gdk.FrameClock frame_clock) {
     if (!this.get_mapped ())
       return false;
+
     int64 now = frame_clock.get_frame_time ();
 
     double t = 1.0;
     if (now < this.end_time)
-      t = (now - start_time) / (double)(end_time  - start_time);
+      t = (now - start_time) / (double)(end_time - start_time);
 
     t = ease_out_cubic (t);
 
-    this.vadjustment.value = (1.0 - t) * transition_diff;
+    this.vadjustment.value = transition_start_value + (1.0 - t) * transition_diff;
     this.queue_draw ();
 
     if (this.vadjustment.value <= 0 || now >= end_time)

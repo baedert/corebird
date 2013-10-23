@@ -64,7 +64,7 @@ class DMPage : IPage, IMessageReceiver, Box {
       delta_updater.add (new_msg);
       messages_list.add (new_msg);
       if (scroll_widget.scrolled_down)
-        scroll_widget.scroll_down ();
+        scroll_widget.scroll_down_next ();
     }
   } /// }}}
 
@@ -103,7 +103,7 @@ class DMPage : IPage, IMessageReceiver, Box {
       return true;
     });
 
-    scroll_widget.scroll_down ();
+    scroll_widget.scroll_down_next ();
   } // }}}
 
   public void on_leave () {}
@@ -142,7 +142,7 @@ class DMPage : IPage, IMessageReceiver, Box {
 
     // Scroll down
     if (scroll_widget.scrolled_down)
-      scroll_widget.scroll_down ();
+      scroll_widget.scroll_down_next ();
   } // }}}
 
   private void recalc_length () {
