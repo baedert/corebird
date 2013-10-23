@@ -97,12 +97,12 @@ class ScrollWidget : ScrolledWindow {
    * This will use a transition if the correct Gtk+ settings is set
    * to true.
    */
-  public void scroll_up_next () { // {{{
+  public void scroll_up_next (bool animate = true) { // {{{
     scroll_up_id = this.size_allocate.connect (() => {
-      if (Gtk.Settings.get_default ().gtk_enable_animations) {
+      if (Gtk.Settings.get_default ().gtk_enable_animations && animate) {
         this.start_time = this.get_frame_clock ().get_frame_time ();
         this.end_time = start_time + (TRANSITION_DURATION * 1000);
-        this.transition_diff = this.vadjustment.value;
+        this.transition_diff = - this.vadjustment.value;
         this.transition_start_value = vadjustment.value;
         this.add_tick_callback (scroll_up_tick_cb);
       } else {
@@ -120,12 +120,12 @@ class ScrollWidget : ScrolledWindow {
    * This will use a transition if the correct Gtk+ settings is set
    * to true
    */
-  public void scroll_down_next () { // {{{
+  public void scroll_down_next (bool animate = true) { // {{{
     scroll_down_id = this.size_allocate.connect (() => {
-      if (Gtk.Settings.get_default ().gtk_enable_animations) {
+      if (Gtk.Settings.get_default ().gtk_enable_animations && animate) {
         this.start_time = this.get_frame_clock ().get_frame_time ();
         this.end_time = start_time + (TRANSITION_DURATION * 1000);
-        this.transition_diff = - (vadjustment.page_size - vadjustment.value);
+        this.transition_diff = (vadjustment.upper - vadjustment.page_size - vadjustment.value);
         this.transition_start_value = this.vadjustment.value;
         this.add_tick_callback (scroll_up_tick_cb);
       } else {
@@ -151,7 +151,7 @@ class ScrollWidget : ScrolledWindow {
 
     t = ease_out_cubic (t);
 
-    this.vadjustment.value = transition_start_value + (1.0 - t) * transition_diff;
+    this.vadjustment.value = transition_start_value + (t) * transition_diff;
     this.queue_draw ();
 
     if (this.vadjustment.value <= 0 || now >= end_time)
