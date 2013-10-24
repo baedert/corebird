@@ -33,7 +33,6 @@ class MainWindow : ApplicationWindow {
   public static const int PAGE_PREVIOUS   = 1024;
   public static const int PAGE_NEXT       = 2048;
 
-
   [GtkChild]
   private Toolbar left_toolbar;
   [GtkChild]
@@ -44,6 +43,11 @@ class MainWindow : ApplicationWindow {
   private Image avatar_image;
   [GtkChild]
   private Spinner progress_spinner;
+  public int cur_page_id {
+    get {
+      return history.current;
+    }
+  }
   private uint progress_holders            = 0;
   private RadioToolButton dummy_button     = new RadioToolButton(null);
   private IPage[] pages                    = new IPage[7];
@@ -164,8 +168,6 @@ class MainWindow : ApplicationWindow {
 
     // Activate the first timeline
     this.switch_page (0);
-
-
   }
 
   /**
@@ -282,6 +284,7 @@ class MainWindow : ApplicationWindow {
     if (progress_holders == 0)
       progress_spinner.hide ();
   }
+
 
   /**
     *

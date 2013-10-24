@@ -63,6 +63,10 @@ class Settings : GLib.Object {
     return settings.get_boolean("show-inline-media");
   }
 
+  public static bool auto_scroll_on_new_tweets () {
+    return settings.get_boolean ("auto-scroll-on-new-tweets");
+  }
+
   public static int get_animation_duration() {
     return settings.get_int("animation-duration");
   }

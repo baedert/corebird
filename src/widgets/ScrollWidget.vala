@@ -98,6 +98,12 @@ class ScrollWidget : ScrolledWindow {
    * to true.
    */
   public void scroll_up_next (bool animate = true) { // {{{
+    if (!this.get_mapped ()) {
+      this.vadjustment.value = 0;
+      this.vadjustment.value_changed ();
+      return;
+    }
+
     scroll_up_id = this.size_allocate.connect (() => {
       if (Gtk.Settings.get_default ().gtk_enable_animations && animate) {
         this.start_time = this.get_frame_clock ().get_frame_time ();
@@ -121,6 +127,12 @@ class ScrollWidget : ScrolledWindow {
    * to true
    */
   public void scroll_down_next (bool animate = true) { // {{{
+    if (!this.get_mapped ()) {
+      this.vadjustment.value = this.vadjustment.upper - this.vadjustment.page_size;
+      this.vadjustment.value_changed ();
+      return;
+    }
+
     scroll_down_id = this.size_allocate.connect (() => {
       if (Gtk.Settings.get_default ().gtk_enable_animations && animate) {
         this.start_time = this.get_frame_clock ().get_frame_time ();
@@ -140,8 +152,10 @@ class ScrollWidget : ScrolledWindow {
   /* This is essentially a straight-up vala port of the transition code in
      GtkStack/GtkRevealer */
   private bool scroll_up_tick_cb (Gtk.Widget widget, Gdk.FrameClock frame_clock) {
-    if (!this.get_mapped ())
+    if (!this.get_mapped ()) {
+      vadjustment.value = transition_start_value + transition_diff;
       return false;
+    }
 
     int64 now = frame_clock.get_frame_time ();
 
@@ -151,7 +165,7 @@ class ScrollWidget : ScrolledWindow {
 
     t = ease_out_cubic (t);
 
-    this.vadjustment.value = transition_start_value + (t) * transition_diff;
+    this.vadjustment.value = transition_start_value + (t * transition_diff);
     if (this.vadjustment.value <= 0 || now >= end_time)
       return false;
 

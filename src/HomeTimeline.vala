@@ -90,14 +90,24 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
       if (t.user_id == account.id && t.is_retweet)
         return;
 
-      this.balance_next_upper_change(TOP);
+      this.balance_next_upper_change (TOP);
+      if (this.scrolled_up && (t.user_id == account.id ||
+          Settings.auto_scroll_on_new_tweets ())) {
+        this.scroll_up_next ();
+      }
+
+      if (main_window.cur_page_id != this.id ||
+          !Settings.auto_scroll_on_new_tweets ()) {
+        unread_count++;
+        update_unread_count ();
+      }
+
+
       var entry = new TweetListEntry(t, main_window, account);
       entry.seen = false;
       delta_updater.add (entry);
       tweet_list.add(entry);
 
-      unread_count++;
-      update_unread_count ();
       this.max_id = t.id;
 
       int stack_size = Settings.get_tweet_stack_count ();
@@ -106,8 +116,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
         string summary = _("%d new Tweets!").printf (unread_count);
         NotificationManager.notify (summary);
       }
-      if (this.scrolled_up && (t.user_id == account.id))
-        this.scroll_up_next ();
+
     }
     /*else if (type == StreamMessageType.DELETE) {
       var now = new GLib.DateTime.now_local ();
@@ -135,6 +144,11 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
     if (!inited) {
       load_newest ();
       inited = true;
+    }
+
+    if (Settings.auto_scroll_on_new_tweets ()) {
+      this.unread_count = 0;
+      update_unread_count ();
     }
   }
 
