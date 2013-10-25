@@ -45,6 +45,8 @@ class SettingsDialog : Gtk.Dialog {
   private ComboBoxText on_new_tweets_combobox;
   [GtkChild]
   private Switch search_show_retweets_switch;
+  [GtkChild]
+  private Switch auto_scroll_on_new_tweets_switch;
 
   public SettingsDialog(MainWindow? main_window = null, Corebird? application = null){
     this.main_window = main_window;
@@ -74,6 +76,8 @@ class SettingsDialog : Gtk.Dialog {
         message ("aa");
         Gtk.Settings.get_default ().gtk_application_prefer_dark_theme = dark_theme_switch.active;
     });
+    Settings.get ().bind ("auto-scroll-on-new-tweets", auto_scroll_on_new_tweets_switch, "active",
+                          SettingsBindFlags.DEFAULT);
 
     // Behaviour page
     Settings.get ().bind ("search-show-retweets", search_show_retweets_switch, "active",
