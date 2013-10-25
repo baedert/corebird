@@ -160,13 +160,16 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
   public void load_cached() {}
 
   public void load_newest() {
+    this.loading = true;
     this.load_newest_internal.begin("1.1/statuses/home_timeline.json", Tweet.TYPE_NORMAL, () => {
       tweet_list.remove(progress_entry);
       progress_entry = null;
+      this.loading = false;
     });
   }
 
   public void load_older() {
+    this.loading = true;
     this.balance_next_upper_change (BOTTOM);
     main_window.start_progress ();
     this.load_older_internal.begin ("1.1/statuses/home_timeline.json", Tweet.TYPE_NORMAL, () => {
