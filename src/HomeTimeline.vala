@@ -97,7 +97,8 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
       }
 
       if (main_window.cur_page_id != this.id ||
-          !Settings.auto_scroll_on_new_tweets ()) {
+          !Settings.auto_scroll_on_new_tweets () ||
+          !this.scrolled_up) {
         unread_count++;
         update_unread_count ();
       }
