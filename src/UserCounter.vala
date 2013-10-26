@@ -33,11 +33,11 @@ struct UserInfo {
 }
 
 
-uint char_hash_func (char c) {
+uint char_hash_func (unichar c) {
   return (uint) c;
 }
 
-bool char_equal_func (char a, char b) {
+bool char_equal_func (unichar a, unichar b) {
   return a == b;
 }
 
@@ -47,18 +47,29 @@ bool user_info_equal_func (UserInfo a, UserInfo b) {
 
 class UserCounter : GLib.Object {
   private string filename;
-  private Gee.HashMap<char, Gee.ArrayList<UserInfo?>> name_list = new Gee.HashMap<char,
-                                                                      Gee.ArrayList<UserInfo?>>
-                                                              (char_hash_func, char_equal_func);
   private bool changed = false;
+  private Gee.ArrayList<UserInfo?> names = new Gee.ArrayList<UserInfo?> ();
 
-  public UserCounter () {
-  }
+  public UserCounter () {}
 
-  public void user_seen (string name) {
+  public void user_seen (int64 id, string screen_name, string name) {
     // increase the user's seen-count by one
-  }
+    bool found = false;
+    foreach (var ui in names) {
+      if (ui.id ==id) {
+        found = true;
+        break;
+      }
+    }
 
+    if (!found) {
+      UserInfo ui = UserInfo();
+      ui.id = id;
+      ui.screen_name = screen_name;
+      ui.name = name;
+      names.add(ui);
+    }
+  }
 
   public string[] query_by_prefix (string prefix, int max_results = -1) {
     return null;
@@ -67,6 +78,8 @@ class UserCounter : GLib.Object {
   public void load (Sql.Database db) {
     db.select ("user_cache").cols ("id", "screen_name", "name", "score").order ("score").run ((vals) => {
       UserInfo ui = {int64.parse(vals[0]), vals[1], vals[2]};
+      names.add (ui);
+
       return true;
     });
   }

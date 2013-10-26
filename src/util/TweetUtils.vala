@@ -85,7 +85,6 @@ namespace TweetUtils {
     }
 
     return formatted_text;
-
   }
 
   /**

@@ -105,7 +105,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
 
 
       var entry = new TweetListEntry(t, main_window, account);
-      entry.seen = false;
+      entry.seen = Settings.auto_scroll_on_new_tweets ();
       delta_updater.add (entry);
       tweet_list.add(entry);
 
@@ -118,14 +118,12 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
         NotificationManager.notify (summary);
       }
 
-    }
-    /*else if (type == StreamMessageType.DELETE) {
-      var now = new GLib.DateTime.now_local ();
-      Tweet t = new Tweet ();
-      t.load_from_json (root, now);
+    } else if (type == StreamMessageType.DELETE) {
+      int64 id = root.get_object ().get_object_member ("delete")
+                     .get_object_member ("status").get_int_member ("id");
       tweet_list.forall ((w) => {
         var tle = (TweetListEntry) w;
-        if (tle.tweet.id == t.id) {
+        if (tle.tweet.id == id) {
           if (!tle.seen) {
             tweet_list.remove (tle);
             unread_count --;
@@ -134,7 +132,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
             tle.sensitive = false;
         }
       });
-    }*/
+    }
   } // }}}
 
 
