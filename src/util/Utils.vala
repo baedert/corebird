@@ -194,6 +194,14 @@ namespace Utils {
     return (string)GLib.Base64.decode (source);
   }
 
+  string unescape_html (string input) {
+    string back = input.replace ("&lt;", "<");
+    back = back.replace ("&gt;", ">");
+    back = back.replace ("&amp;", "&");
+    return back;
+  }
+
+
   void load_custom_icons () {
     var icon_theme  = Gtk.IconTheme.get_default ();
     icon_theme.append_search_path (DATADIR+"/scalable/");

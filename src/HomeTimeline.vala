@@ -65,7 +65,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
     tweet_list.add (progress_entry);
   }
 
-  private void stream_message_received (StreamMessageType type, Json.Node root) {
+  private void stream_message_received (StreamMessageType type, Json.Node root) { // {{{
     if (type == StreamMessageType.TWEET) {
       GLib.DateTime now = new GLib.DateTime.now_local ();
       Tweet t = new Tweet();
@@ -135,7 +135,7 @@ class HomeTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
         }
       });
     }*/
-  }
+  } // }}}
 
 
   /**
