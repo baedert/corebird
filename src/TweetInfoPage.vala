@@ -245,6 +245,7 @@ class TweetInfoPage : IPage , ScrollWidget {
    *
    */
   private void set_tweet_data (Tweet tweet, bool following = false, string? with = null) {//{{{
+    account.user_counter.user_seen (tweet.user_id, tweet.screen_name, tweet.user_name);
     GLib.DateTime created_at = new GLib.DateTime.from_unix_local (tweet.created_at);
     string time_format = created_at.format ("%x, %X");
     if (with != null) {

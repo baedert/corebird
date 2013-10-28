@@ -46,6 +46,7 @@ class Account : GLib.Object {
     this.db = new Sql.Database (Utils.user_file (@"accounts/$id.db"),
                                 Sql.ACCOUNTS_INIT_FILE);
     user_counter = new UserCounter ();
+    user_counter.load (db);
   }
 
   /**

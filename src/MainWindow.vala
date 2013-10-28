@@ -292,6 +292,7 @@ class MainWindow : ApplicationWindow {
     */
   private void window_destroy_cb() {
     account.user_stream.stop ();
+    account.user_counter.save (account.db);
 
     unowned GLib.List<weak Window> ws = this.application.get_windows ();
     message("Windows: %u", ws.length ());

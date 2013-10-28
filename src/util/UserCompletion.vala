@@ -41,16 +41,11 @@ class UserCompletion : GLib.Object {
     string name;
     obj.get (name_property_name, out name);
     start_completion ();
+    int n_results;
+    UserInfo[] names = account.user_counter.query_by_prefix (name, 10, out n_results);
 
-    account.db.select ("following").cols ("name", "screen_name")
-              .where ("`name` LIKE '%" + name + "' OR `name` LIKE '%" + name + "'")
-              .limit (num_results)
-              .run ((vals) => {
 
-      return false;
-     });
-
-    for (int i = 0; i < 5; i++)
-      populate_completion ("foo %d".printf (i), "bla");
+    for (int i = 0; i < n_results; i++)
+      populate_completion (names[i].screen_name, names[i].name);
   }
 }

@@ -222,6 +222,8 @@ class ProfilePage : ScrollWidget, IPage {
         });
       }
 
+      account.user_counter.user_seen (id, screen_name, name);
+
       set_data(name, screen_name, display_url, location, description, tweets,
            following, followers, avatar_url, text_urls);
       set_follow_button_state (is_following);
@@ -390,6 +392,7 @@ class ProfilePage : ScrollWidget, IPage {
 
   public void on_leave () {
     data_cancellable.cancel ();
+    account.user_counter.save (account.db);
   }
 
 

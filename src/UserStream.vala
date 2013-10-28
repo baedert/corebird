@@ -126,15 +126,15 @@ class UserStream : Object {
 
     data.append (real);
 
-    if (real.has_suffix("\r\n")) {
+    if (real.has_suffix ("\r\n") || real.has_suffix ("\r")) {
       //Reset the timeout
       if (timeout_id != -1)
         GLib.Source.remove (timeout_id);
       timeout_id = GLib.Timeout.add (TIMEOUT_INTERVAL, timeout_cb);
 
       if (real == "\r\n") {
-        message("HEARTBEAT");
-        data.erase();
+        message ("HEARTBEAT");
+        data.erase ();
         return;
       }
 

@@ -26,10 +26,12 @@
  XXX: Check if this works well with sqlite, if not move to a simple text file.
 */
 
-struct UserInfo {
-  int64 id;
-  string screen_name;
-  string name;
+class UserInfo {
+  public int64 id;
+  public string screen_name;
+  public string name;
+  public int score;
+  public bool changed;
 }
 
 
@@ -55,38 +57,70 @@ class UserCounter : GLib.Object {
   public void user_seen (int64 id, string screen_name, string name) {
     // increase the user's seen-count by one
     bool found = false;
+    this.changed = true;
     foreach (var ui in names) {
       if (ui.id ==id) {
         found = true;
+        ui.score ++;
+        message ("New score: %d", ui.score);
+        ui.changed = true;
         break;
       }
     }
 
     if (!found) {
-      UserInfo ui = UserInfo();
+      UserInfo ui = new UserInfo ();
       ui.id = id;
       ui.screen_name = screen_name;
       ui.name = name;
+      ui.changed = true;
+      ui.score = 1;
       names.add(ui);
     }
   }
 
-  public string[] query_by_prefix (string prefix, int max_results = -1) {
-    return null;
+  public UserInfo[] query_by_prefix (string prefix, int max_results, out int num_results) {
+    int n_results = 0;
+    string p = prefix.down ();
+    UserInfo[] results = new UserInfo[max_results];
+    foreach (var ui in names) {
+      if (ui.name.down ().has_prefix (p) || ui.screen_name.down ().has_prefix (p)) {
+        results[n_results] = ui;
+        n_results ++;
+      }
+    }
+    num_results = n_results;
+    return results;
   }
 
   public void load (Sql.Database db) {
-    db.select ("user_cache").cols ("id", "screen_name", "name", "score").order ("score").run ((vals) => {
-      UserInfo ui = {int64.parse(vals[0]), vals[1], vals[2]};
+    db.select ("user_cache").cols ("id", "screen_name", "user_name", "score").order ("score").run ((vals) => {
+      UserInfo ui = new UserInfo ();
+      ui.id = int64.parse (vals[0]);
+      ui.screen_name = vals[1];
+      ui.name = vals[2];
+      ui.changed = false;
+      ui.score = int.parse (vals[3]);
       names.add (ui);
-
       return true;
     });
   }
 
-  public void save () {
+  public void save (Sql.Database db) {
     if (!changed)
       return;
+
+    foreach (var ui in names) {
+      if (!ui.changed)
+        continue;
+      ui.changed = true;
+      db.replace ("user_cache").vali64 ("id", ui.id)
+                               .vali ("score", ui.score)
+                               .val ("screen_name", ui.screen_name)
+                               .val ("user_name", ui.name)
+                               .run();
+    }
+    changed = false;
   }
 
 }
