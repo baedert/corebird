@@ -62,6 +62,7 @@ class DMThreadEntry : Gtk.ListBoxRow {
   public int64 last_message_id {get; set;}
   public Gdk.Pixbuf avatar {
     set { avatar_image.pixbuf = value;}
+    owned get { return avatar_image.pixbuf; }
   }
 
   public int unread_count = 0;

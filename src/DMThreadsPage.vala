@@ -102,6 +102,9 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
               .order ("last_message_id")
               .run ((vals) => {
       int64 user_id = int64.parse (vals[0]);
+      if (thread_map.has_key (user_id))
+        return true;
+
       var entry = new DMThreadEntry (user_id);
       entry.screen_name =  vals[1];
       entry.name = vals[5];
@@ -183,11 +186,22 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     save_message (dm_obj);
     if (sender_id == account.id)
       return;
+
+    string text = dm_obj.get_string_member ("text");
+
+    if (!initialized) {
+      load_cached ();
+    }
+
     if (thread_map.has_key(sender_id)) {
       var t_e = thread_map.get (sender_id);
       t_e.unread_count ++;
       t_e.update_unread_count ();
-      t_e.last_message = dm_obj.get_string_member ("text");
+      t_e.last_message = text;
+      if (Settings.notify_new_dms ()) {
+        NotificationManager.notify( _("New direct message!"), text, Notify.Urgency.NORMAL,
+                                   t_e.avatar);
+      }
       return;
     }
 
@@ -196,7 +210,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     string sender_name = dm_obj.get_object_member ("sender").get_string_member ("name");
     thread_entry.name = sender_name;
     thread_entry.screen_name = author;
-    thread_entry.last_message = dm_obj.get_string_member("text");
+    thread_entry.last_message = text;
     thread_entry.last_message_id = message_id;
     thread_list.add(thread_entry);
     thread_map.set(sender_id, thread_entry);
