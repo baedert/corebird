@@ -64,6 +64,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 //                               5);
 //    });
     thread_list.add (start_conversation_entry);
+    load_cached ();
   }
 
   public void stream_message_received (StreamMessageType type, Json.Node root) {
@@ -80,7 +81,6 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 
   public void on_join (int page_id, va_list arg_list) {
     if (!initialized) {
-      load_cached ();
       load_newest ();
       initialized = true;
     }
@@ -102,8 +102,6 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
               .order ("last_message_id")
               .run ((vals) => {
       int64 user_id = int64.parse (vals[0]);
-      if (thread_map.has_key (user_id))
-        return true;
 
       var entry = new DMThreadEntry (user_id);
       entry.screen_name =  vals[1];
@@ -189,10 +187,6 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 
     string text = dm_obj.get_string_member ("text");
 
-    if (!initialized) {
-      load_cached ();
-    }
-
     if (thread_map.has_key(sender_id)) {
       var t_e = thread_map.get (sender_id);
       t_e.unread_count ++;
@@ -239,8 +233,10 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   private void save_message (Json.Object dm_obj) { // {{{
     Json.Object sender = dm_obj.get_object_member ("sender");
     Json.Object recipient = dm_obj.get_object_member ("recipient");
-    account.db.insert ("dms").vali64 ("id", dm_obj.get_int_member ("id"))
-              .vali64 ("from_id", dm_obj.get_int_member ("sender_id"))
+    int64 sender_id = dm_obj.get_int_member ("sender_id");
+    int64 dm_id  = dm_obj.get_int_member ("id");
+    account.db.insert ("dms").vali64 ("id", dm_id)
+              .vali64 ("from_id", sender_id)
               .vali64 ("to_id", dm_obj.get_int_member ("recipient_id"))
               .val ("from_screen_name", dm_obj.get_string_member ("sender_screen_name"))
               .val ("to_screen_name", dm_obj.get_string_member ("recipient_screen_name"))
@@ -250,6 +246,10 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
               .vali64 ("timestamp", Utils.parse_date (dm_obj.get_string_member ("created_at")).to_unix ())
               .val ("text", dm_obj.get_string_member ("text"))
               .run ();
+    if (sender_id != account.id)
+      max_received_id = dm_id;
+    else
+      max_sent_id = dm_id;
   } // }}}
 
   private void header_func (Gtk.ListBoxRow row, Gtk.ListBoxRow? row_before) { //{{{
