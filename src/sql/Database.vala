@@ -104,5 +104,12 @@ public class Database {
     return stmt;
   }
 
+  public void begin_transaction () {
+    db.exec ("BEGIN TRANSACTION;");
+  }
+
+  public void end_transaction () {
+    db.exec ("END TRANSACTION;");
+  }
 }
 }

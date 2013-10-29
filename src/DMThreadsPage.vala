@@ -71,10 +71,6 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     if (type == StreamMessageType.DIRECT_MESSAGE) {
       var obj = root.get_object ().get_object_member ("direct_message");
       add_new_thread (obj);
-      if (obj.get_int_member ("sender_id") != account.id) {
-        update_unread_count ();
-        unread_count ++;
-      }
     }
   }
 
@@ -108,6 +104,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       entry.name = vals[5];
       entry.last_message = vals[2];
       entry.last_message_id = int64.parse(vals[3]);
+      entry.unread_count = 0;
       Gdk.Pixbuf avatar = TweetUtils.load_avatar (vals[4]);
       if (avatar == null) {
         TweetUtils.download_avatar.begin (vals[4], (obj, res) => {
@@ -145,36 +142,41 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
         return;
       }
       var root_arr = parser.get_root ().get_array ();
+      message ("received: %u", root_arr.get_length ());
+      account.db.begin_transaction ();
       root_arr.foreach_element ((arr, pos, node) => {
         add_new_thread (node.get_object ());
       });
+      account.db.end_transaction ();
+      save_last_messages ();
     });
 
-    var rec_call = account.proxy.new_call ();
-    rec_call.set_function ("1.1/direct_messages/sent.json");
-    rec_call.add_param ("skip_status", "true");
-    rec_call.add_param ("since_id", max_sent_id.to_string ());
-    rec_call.set_method ("GET");
-    rec_call.invoke_async.begin (null, (obj, res) => {
+    var sent_call = account.proxy.new_call ();
+    sent_call.set_function ("1.1/direct_messages/sent.json");
+    sent_call.add_param ("skip_status", "true");
+    sent_call.add_param ("since_id", max_sent_id.to_string ());
+    sent_call.set_method ("GET");
+    sent_call.invoke_async.begin (null, (obj, res) => {
       try {
-        rec_call.invoke_async.end (res);
+        sent_call.invoke_async.end (res);
       } catch (GLib.Error e) {
         critical (e.message);
         return;
       }
       var parser = new Json.Parser ();
       try {
-      stdout.printf (rec_call.get_payload ());
-        parser.load_from_data (rec_call.get_payload ());
+        parser.load_from_data (sent_call.get_payload ());
       } catch (GLib.Error e) {
         critical (e.message);
         return;
       }
       var root_arr = parser.get_root ().get_array ();
+      message ("sent: %u", root_arr.get_length ());
+      account.db.begin_transaction ();
       root_arr.foreach_element ((arr, pos, node) => {
-        // This won't really add a new thread, but it'll call save_message
-        add_new_thread (node.get_object ());
+        save_message (node.get_object ());
       });
+      account.db.end_transaction ();
     });
   } // }}}
 
@@ -189,9 +191,14 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 
     if (thread_map.has_key(sender_id)) {
       var t_e = thread_map.get (sender_id);
+      if (t_e.last_message_id > message_id)
+        return;
+
       t_e.unread_count ++;
       t_e.update_unread_count ();
+      message ("Setting last_message to %s", text);
       t_e.last_message = text;
+      t_e.last_message_id = message_id;
       if (Settings.notify_new_dms ()) {
         NotificationManager.notify( _("New direct message!"), text, Notify.Urgency.NORMAL,
                                    t_e.avatar);
@@ -235,6 +242,8 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     Json.Object recipient = dm_obj.get_object_member ("recipient");
     int64 sender_id = dm_obj.get_int_member ("sender_id");
     int64 dm_id  = dm_obj.get_int_member ("id");
+    string text = dm_obj.get_string_member ("text");
+    // TODO: Update last_message
     account.db.insert ("dms").vali64 ("id", dm_id)
               .vali64 ("from_id", sender_id)
               .vali64 ("to_id", dm_obj.get_int_member ("recipient_id"))
@@ -244,13 +253,23 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
               .val ("to_name", recipient.get_string_member ("name"))
               .val ("avatar_url", sender.get_string_member ("profile_image_url"))
               .vali64 ("timestamp", Utils.parse_date (dm_obj.get_string_member ("created_at")).to_unix ())
-              .val ("text", dm_obj.get_string_member ("text"))
+              .val ("text", text)
               .run ();
     if (sender_id != account.id)
       max_received_id = dm_id;
     else
       max_sent_id = dm_id;
   } // }}}
+
+
+  private void save_last_messages () {
+    account.db.begin_transaction ();
+    foreach (var thread_entry in thread_map.values) {
+      account.db.update ("dm_threads").val ("last_message", thread_entry.last_message)
+                .where_eqi ("user_id", thread_entry.user_id).run ();
+    }
+    account.db.end_transaction ();
+  }
 
   private void header_func (Gtk.ListBoxRow row, Gtk.ListBoxRow? row_before) { //{{{
     if (row_before == null)
@@ -266,7 +285,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 
   public void create_tool_button(RadioToolButton? group) {
     tool_button = new BadgeRadioToolButton(group, "corebird-dms-symbolic");
-    tool_button.label = "Direct Messages";
+    tool_button.label = _("Direct Messages");
   }
 
   public RadioToolButton? get_tool_button() {

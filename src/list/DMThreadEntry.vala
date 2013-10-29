@@ -74,6 +74,7 @@ class DMThreadEntry : Gtk.ListBoxRow {
   }
 
   public void update_unread_count () {
+    message ("unread count: %d", unread_count);
     if (unread_count == 0)
       unread_count_label.hide ();
     else {
