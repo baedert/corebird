@@ -209,7 +209,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
               .vali64 ("last_message_id", message_id)
               .val ("avatar_url", avatar_url)
               .run ();
-
+    account.user_counter.user_seen (sender_id, author, sender_name);
 
     Gdk.Pixbuf avatar = TweetUtils.load_avatar (avatar_url);
     if (avatar == null) {
