@@ -70,7 +70,11 @@ class DMPage : IPage, IMessageReceiver, Box {
 
 
   public void on_join (int page_id, va_list arg_list) { // {{{
-    this.user_id = arg_list.arg<int64> ();
+    int64 user_id = arg_list.arg<int64> ();
+    if (user_id == 0)
+      return;
+
+    this.user_id = user_id;
     string screen_name;
     if ((screen_name = arg_list.arg<string> ()) != null) {
       placeholder_box.screen_name = screen_name;
