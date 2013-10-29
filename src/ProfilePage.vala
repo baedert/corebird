@@ -95,7 +95,7 @@ class ProfilePage : ScrollWidget, IPage {
 
       set_data(vals[2], vals[1], vals[9], vals[10], vals[3],
                int.parse (vals[4]), int.parse (vals[5]), int.parse (vals[6]),
-               null);
+               vals[8]);
       set_follow_button_state (bool.parse (vals[11]));
       string banner_name = vals[12];
       debug("banner_name: %s", banner_name);

@@ -35,20 +35,11 @@ class UserInfo {
 }
 
 
-uint char_hash_func (unichar c) {
-  return (uint) c;
-}
-
-bool char_equal_func (unichar a, unichar b) {
-  return a == b;
-}
-
 bool user_info_equal_func (UserInfo a, UserInfo b) {
     return a.id == b.id;
 }
 
 class UserCounter : GLib.Object {
-  private string filename;
   private bool changed = false;
   private Gee.ArrayList<UserInfo?> names = new Gee.ArrayList<UserInfo?> ();
 

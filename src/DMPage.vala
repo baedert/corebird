@@ -84,7 +84,7 @@ class DMPage : IPage, IMessageReceiver, Box {
 
     var now = new GLib.DateTime.now_local ();
     // Load messages
-    int msgs = account.db.select ("dms").cols ("from_id", "to_id", "text", "from_name", "from_screen_name",
+    account.db.select ("dms").cols ("from_id", "to_id", "text", "from_name", "from_screen_name",
                                     "avatar_url", "timestamp")
               .where (@"`from_id`='$user_id' OR `to_id`='$user_id'")
               .order ("timestamp")
