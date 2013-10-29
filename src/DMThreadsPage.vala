@@ -129,7 +129,13 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     call.set_method ("GET");
     call.add_param ("skip_status", "true");
     call.add_param ("since_id", max_received_id.to_string ());
-    call.invoke_async.begin (null, () => {
+    call.invoke_async.begin (null, (obj, res) => {
+      try {
+        call.invoke_async.end (res);
+      } catch (GLib.Error e) {
+        critical (e.message);
+        return;
+      }
       var parser = new Json.Parser ();
       try {
         parser.load_from_data (call.get_payload ());
@@ -148,7 +154,13 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     rec_call.add_param ("skip_status", "true");
     rec_call.add_param ("since_id", max_sent_id.to_string ());
     rec_call.set_method ("GET");
-    rec_call.invoke_async.begin (null, () => {
+    rec_call.invoke_async.begin (null, (obj, res) => {
+      try {
+        rec_call.invoke_async.end (res);
+      } catch (GLib.Error e) {
+        critical (e.message);
+        return;
+      }
       var parser = new Json.Parser ();
       try {
       stdout.printf (rec_call.get_payload ());
