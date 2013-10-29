@@ -107,7 +107,7 @@ class DMPage : IPage, IMessageReceiver, Box {
       return true;
     });
 
-    scroll_widget.scroll_down_next (false);
+    scroll_widget.scroll_down_next (false, true);
   } // }}}
 
   public void on_leave () {}

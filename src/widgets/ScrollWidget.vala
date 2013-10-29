@@ -96,9 +96,13 @@ class ScrollWidget : ScrolledWindow {
    * size_allocate occurs.
    * This will use a transition if the correct Gtk+ settings is set
    * to true.
+   *
+   * @param animate Whether to animate/transition the change or not (default: true)
+   * @param force_wait If this is set to true, we will wait for the next size_allocate
+   *                   event, even if the widget is unmapped (default: false).
    */
-  public void scroll_up_next (bool animate = true) { // {{{
-    if (!this.get_mapped ()) {
+  public void scroll_up_next (bool animate = true, bool force_wait = false) { // {{{
+    if (!this.get_mapped () && !force_wait) {
       this.vadjustment.value = 0;
       this.vadjustment.value_changed ();
       return;
@@ -125,9 +129,13 @@ class ScrollWidget : ScrolledWindow {
    * size_alocate occurs.
    * This will use a transition if the correct Gtk+ settings is set
    * to true
+   *
+   * @param animate Whether to animate/transition the change or not (default: true)
+   * @param force_wait If this is set to true, we will wait for the next size_allocate
+   *                   event, even if the widget is unmapped (default: false).
    */
-  public void scroll_down_next (bool animate = true) { // {{{
-    if (!this.get_mapped ()) {
+  public void scroll_down_next (bool animate = true, bool force_wait = false) { // {{{
+    if (!this.get_mapped () && !force_wait) {
       this.vadjustment.value = this.vadjustment.upper - this.vadjustment.page_size;
       this.vadjustment.value_changed ();
       return;
