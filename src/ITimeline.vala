@@ -33,8 +33,7 @@ interface ITimeline : Gtk.Widget, IPage {
   public abstract void load_newest();
   public abstract void load_older ();
 
-  protected abstract uint tweet_remove_timeout  { get; set; default = 0;}
-
+ 
   /**
    * Default implementation for loading the newest tweets
    * from the given function of the twitter api.

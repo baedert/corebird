@@ -17,16 +17,11 @@
 
 using Gtk;
 
-class HomeTimeline : DefaultTimeline, ITimeline, IMessageReceiver {
+class HomeTimeline : IMessageReceiver, DefaultTimeline {
   private ProgressEntry progress_entry = new ProgressEntry(75);
 
   public HomeTimeline(int id) {
     base (id);
-
-    this.vadjustment.notify["value"].connect (() => {
-      mark_seen_on_scroll (vadjustment.value);
-      update_unread_count ();
-    });
 
     tweet_list.activate_on_single_click = false;
     tweet_list.row_activated.connect ((row) => {
@@ -34,7 +29,6 @@ class HomeTimeline : DefaultTimeline, ITimeline, IMessageReceiver {
                                TweetInfoPage.BY_INSTANCE,
                                ((TweetListEntry)row).tweet);
     });
-
 
     tweet_list.add (progress_entry);
   }
@@ -109,8 +103,7 @@ class HomeTimeline : DefaultTimeline, ITimeline, IMessageReceiver {
     }
   } // }}}
 
-
-  public override void load_newest() {
+  public override void load_newest () {
     this.loading = true;
     this.load_newest_internal.begin("1.1/statuses/home_timeline.json", Tweet.TYPE_NORMAL, () => {
       tweet_list.remove(progress_entry);
@@ -119,8 +112,7 @@ class HomeTimeline : DefaultTimeline, ITimeline, IMessageReceiver {
     });
   }
 
-  public override void load_older() {
-    this.loading = true;
+  public override void load_older () {
     this.balance_next_upper_change (BOTTOM);
     main_window.start_progress ();
     this.load_older_internal.begin ("1.1/statuses/home_timeline.json", Tweet.TYPE_NORMAL, () => {

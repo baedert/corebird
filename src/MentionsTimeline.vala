@@ -17,7 +17,7 @@
 
 using Gtk;
 
-class MentionsTimeline : IPage, ITimeline, IMessageReceiver, DefaultTimeline {
+class MentionsTimeline : IMessageReceiver, DefaultTimeline {
   private ProgressEntry progress_entry = new ProgressEntry(75);
 
   public MentionsTimeline(int id){
@@ -30,17 +30,10 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, DefaultTimeline {
                                ((TweetListEntry)row).tweet);
     });
 
-
-
-    this.vadjustment.notify["value"].connect(() => {
-      mark_seen_on_scroll (vadjustment.value);
-      update_unread_count();
-    });
-
-    tweet_list.add(progress_entry);
+    tweet_list.add (progress_entry);
   }
 
-  private void stream_message_received(StreamMessageType type, Json.Node root_node){ // {{{
+  private void stream_message_received (StreamMessageType type, Json.Node root_node){ // {{{
     Json.Object root = root_node.get_object ();
     if(type == StreamMessageType.TWEET) {
       if(root.get_string_member("text").contains("@"+account.screen_name)) {
@@ -72,27 +65,25 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, DefaultTimeline {
     }
   } // }}}
 
-  public override void load_newest() {
+  public override void load_newest () {
     this.loading = true;
     this.load_newest_internal.begin("1.1/statuses/mentions_timeline.json", Tweet.TYPE_MENTION, () => {
       tweet_list.remove(progress_entry);
       progress_entry = null;
-      this.loading = true;
+      this.loading = false;
     });
   }
 
-  public override void load_older() {
-    this.loading = true;
+  public override void load_older () {
     this.balance_next_upper_change (BOTTOM);
     main_window.start_progress ();
     this.load_older_internal.begin ("1.1/statuses/mentions_timeline.json", Tweet.TYPE_MENTION, () => {
       this.loading = false;
       main_window.stop_progress ();
     });
-
   }
 
-  public override void create_tool_button(RadioToolButton? group) {
+  public override void create_tool_button (RadioToolButton? group) {
     tool_button = new BadgeRadioToolButton(group, "corebird-mentions-symbolic");
     tool_button.label = "Mentions";
   }
