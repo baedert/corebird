@@ -116,12 +116,12 @@ class MainWindow : ApplicationWindow {
         account.user_stream.register ((IMessageReceiver)page);
 
       page.create_tool_button (dummy_button);
-      stack.add_named (page, page.get_id ().to_string ());
+      stack.add_named (page, page.id.to_string ());
       if (page.get_tool_button () != null) {
-        left_toolbar.insert (page.get_tool_button (), page.get_id ());
+        left_toolbar.insert (page.get_tool_button (), page.id);
         page.get_tool_button ().toggled.connect (() => {
           if (page.get_tool_button ().active){
-            switch_page (page.get_id ());
+            switch_page (page.id);
           }
         });
       }

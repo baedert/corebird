@@ -113,6 +113,7 @@ set (VALA_SOURCE
   src/ConnectionLostDialog.vala
   src/DMPage.vala
   src/UserCounter.vala
+  src/DefaultTimeline.vala
   src/widgets/ImageBox.vala
   src/widgets/ImageLabel.vala
   src/widgets/PixbufButton.vala

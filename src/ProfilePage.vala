@@ -27,9 +27,9 @@ class ProfilePage : ScrollWidget, IPage {
     get{return 0;}
     set{}
   }
-  private int id;
   public unowned MainWindow main_window { get; set; }
   public unowned Account account { get; set; }
+  public int id { get; set; }
 
   [GtkChild]
   private ImageBox banner_box;
@@ -400,9 +400,5 @@ class ProfilePage : ScrollWidget, IPage {
 
   public RadioToolButton? get_tool_button(){
     return null;
-  }
-
-  public int get_id(){
-    return id;
   }
 }

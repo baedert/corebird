@@ -22,7 +22,7 @@ class TweetInfoPage : IPage , ScrollWidget {
   public static const uint BY_ID       = 2;
 
   public int unread_count { get{return 0;} set {} }
-  private int id;
+  public int id                         { get; set; }
   public unowned MainWindow main_window { get; set; }
   public unowned Account account { get; set; }
   private int64 tweet_id;
@@ -323,11 +323,6 @@ class TweetInfoPage : IPage , ScrollWidget {
     return source_str.substring (0, from-5) + source_str.substring(to + 1);
   } //}}}
 
-
-
-  public int get_id () {
-    return id;
-  }
   public void create_tool_button (Gtk.RadioToolButton? group) {}
   public Gtk.RadioToolButton? get_tool_button () {
     return null;

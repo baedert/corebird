@@ -22,8 +22,8 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
   public int unread_count                   { set; get; }
   public unowned MainWindow main_window     { set; get; }
   protected Gtk.ListBox tweet_list          { set; get; }
-  public Account account                    { set; get; }
-  private int id;
+  public unowned Account account            { set; get; }
+  public int id                             { set; get; }
   private BadgeRadioToolButton tool_button;
   private bool loading = false;
   public int64 lowest_id {get;set; default = int64.MAX-2;}
@@ -146,10 +146,6 @@ class MentionsTimeline : IPage, ITimeline, IMessageReceiver, ScrollWidget {
 
   public RadioToolButton? get_tool_button(){
     return tool_button;
-  }
-
-  public int get_id(){
-    return id;
   }
 
   private void update_unread_count() {

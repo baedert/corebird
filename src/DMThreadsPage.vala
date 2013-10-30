@@ -26,7 +26,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   public unowned MainWindow main_window     { get; set; }
   public unowned Account account            { get; set; }
   public unowned DeltaUpdater delta_updater { get; set; }
-  private int id;
+  public int id                             { get; set; }
   private BadgeRadioToolButton tool_button;
   private HashMap<int64?, unowned DMThreadEntry> thread_map = new HashMap<int64?, unowned DMThreadEntry>
                               (Utils.int64_hash_func, Utils.int64_equal_func, DMThreadEntry.equal_func);
@@ -290,10 +290,6 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 
   public RadioToolButton? get_tool_button() {
     return tool_button;
-  }
-
-  public int get_id() {
-    return id;
   }
 
   private void update_unread_count() {

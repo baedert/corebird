@@ -23,7 +23,7 @@ class DMPage : IPage, IMessageReceiver, Box {
   public unowned MainWindow main_window     { get; set; }
   public unowned Account account            { get; set; }
   public unowned DeltaUpdater delta_updater { get; set; }
-  private int id;
+  public int id                             { get; set; }
   [GtkChild]
   private Button send_button;
   [GtkChild]
@@ -157,8 +157,4 @@ class DMPage : IPage, IMessageReceiver, Box {
   public void create_tool_button(RadioToolButton? group) {}
   public RadioToolButton? get_tool_button() {return null;}
   private void update_unread_count() {}
-
-  public int get_id() {
-    return id;
-  }
 }

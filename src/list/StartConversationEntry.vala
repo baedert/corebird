@@ -73,10 +73,10 @@ class StartConversationEntry : Gtk.ListBoxRow {
     });
 
     name_entry.key_press_event.connect (name_entry_key_pressed);
-    activate.connect (() => {
-      go_stack.visible_child_name = "spinner";
-      go_spinner.start ();
-    });
+//    activate.connect (() => {
+//      go_stack.visible_child_name = "spinner";
+//      go_spinner.start ();
+//    });
   }
 
   private void position_popup_window () { // {{{
@@ -105,7 +105,7 @@ class StartConversationEntry : Gtk.ListBoxRow {
       completion_list.select_row (row);
       return true;
     } else if (evt.keyval == Gdk.Key.Return) {
-      
+
     }
     return false;
   }

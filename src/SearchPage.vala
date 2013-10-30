@@ -22,7 +22,6 @@ using Gtk;
 [GtkTemplate (ui = "/org/baedert/corebird/ui/search-page.ui")]
 class SearchPage : IPage, Box {
   private static const int USER_COUNT = 3;
-  private int id;
   /** The unread count here is always zero */
   public int unread_count {
     get { return 0; }
@@ -30,6 +29,7 @@ class SearchPage : IPage, Box {
   }
   public unowned Account account        { get; set; }
   public unowned MainWindow main_window { set; get; }
+  public int id                         { get; set; }
   [GtkChild]
   private SearchEntry search_entry;
   [GtkChild]
@@ -245,10 +245,6 @@ class SearchPage : IPage, Box {
 
   public RadioToolButton? get_tool_button(){
     return tool_button;
-  }
-
-  public int get_id(){
-    return id;
   }
 }
 

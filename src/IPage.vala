@@ -20,10 +20,10 @@
  * Page in a MainWindow(i.e. in the MainWindow's GtkStack).
  */
 interface IPage : Gtk.Widget {
+  public abstract int id { get; set; }
   public abstract void on_join(int page_id, va_list arg_list);
   public abstract void on_leave ();
   public abstract void create_tool_button(Gtk.RadioToolButton? group);
-  public abstract int get_id();
   public abstract Gtk.RadioToolButton? get_tool_button();
   public abstract unowned MainWindow main_window {get; set;}
   public abstract unowned Account account        {get; set;}
