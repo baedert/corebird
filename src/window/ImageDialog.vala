@@ -84,7 +84,7 @@ class ImageDialog : Gtk.Window {
     file_dialog.set_current_name(filename);
     file_dialog.set_transient_for (this);
 
-
+    this.set_modal(true);
     this.set_transient_for(parent);
   }
 
