@@ -17,27 +17,11 @@
 
 using Gtk;
 
-class HomeTimeline : DefaultTimeline, IMessageReceiver {
-  private bool inited = false;
-  private bool loading = false;
+class HomeTimeline : DefaultTimeline, ITimeline, IMessageReceiver {
   private ProgressEntry progress_entry = new ProgressEntry(75);
 
   public HomeTimeline(int id) {
-    this.id = id;
-    tweet_list = new Gtk.ListBox();
-    tweet_list.get_style_context().add_class("stream");
-    tweet_list.set_selection_mode(SelectionMode.NONE);
-    tweet_list.set_sort_func (ITwitterItem.sort_func);
-    this.add (tweet_list);
-
-    this.scrolled_to_end.connect (() => {
-      if (!loading) {
-        loading = true;
-        load_older();
-      }
-    });
-
-    this.scrolled_to_start.connect (handle_scrolled_to_start);
+    base (id);
 
     this.vadjustment.notify["value"].connect (() => {
       mark_seen_on_scroll (vadjustment.value);
@@ -126,21 +110,6 @@ class HomeTimeline : DefaultTimeline, IMessageReceiver {
   } // }}}
 
 
-  /**
-   * see IPage#onJoin
-   */
-  public override void on_join (int page_id, va_list arg_list) {
-    if (!inited) {
-      load_newest ();
-      inited = true;
-    }
-
-    if (Settings.auto_scroll_on_new_tweets ()) {
-      this.unread_count = 0;
-      update_unread_count ();
-    }
-  }
-
   public override void load_newest() {
     this.loading = true;
     this.load_newest_internal.begin("1.1/statuses/home_timeline.json", Tweet.TYPE_NORMAL, () => {
@@ -160,7 +129,7 @@ class HomeTimeline : DefaultTimeline, IMessageReceiver {
     });
   }
 
-  public void create_tool_button(RadioToolButton? group) {
+  public override void create_tool_button(RadioToolButton? group) {
     tool_button = new BadgeRadioToolButton(group, "corebird-stream-symbolic");
     tool_button.label = "Home";
   }

@@ -162,29 +162,4 @@ interface ITimeline : Gtk.Widget, IPage {
   } //}}}
 
 
-  /**
-   * Handle the case of the user scrolling to the start of the list,
-   * i.e. remove all the items except a few ones after a timeout.
-   */
-  protected void handle_scrolled_to_start() { // {{{
-    if (tweet_remove_timeout != 0)
-      return;
-
-    GLib.List<weak Gtk.Widget> entries = tweet_list.get_children ();
-    uint item_count = entries.length ();
-    if (item_count > ITimeline.REST) {
-      tweet_remove_timeout = GLib.Timeout.add (5000, () => {
-        // TODO: This is obviously wrong.
-        while (item_count > ITimeline.REST) {
-          tweet_list.remove (tweet_list.get_row_at_index (ITimeline.REST));
-          item_count--;
-        }
-        tweet_remove_timeout = 0;
-        return false;
-      });
-    } else if (tweet_remove_timeout != 0) {
-      GLib.Source.remove (tweet_remove_timeout);
-      tweet_remove_timeout = 0;
-    }
-  } // }}}
 }
