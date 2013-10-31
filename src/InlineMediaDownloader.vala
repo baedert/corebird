@@ -162,7 +162,7 @@ namespace InlineMediaDownloader {
       try {
         pic = pixbuf_from_stream_async.end (res);
       } catch (GLib.Error e) {
-        warning (e.message);
+        warning ("%s(%s)", e.message, path);
         return;
       }
       var thumb = slice_pixbuf (pic);

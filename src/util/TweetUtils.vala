@@ -26,6 +26,7 @@ namespace TweetUtils {
     int end;
     string url;
     string display_url;
+    bool visual_display_url;
   }
 
   /**
@@ -37,7 +38,7 @@ namespace TweetUtils {
    *
    * @return The formatted text
    */
-  string get_formatted_text (string tweet_text, GLib.SList<Sequence?> urls) {
+  string get_formatted_text (string tweet_text, GLib.SList<Sequence?> urls) { // {{{
     string formatted_text = tweet_text;
     int char_diff = 0;
     urls.sort ((a, b) => {
@@ -56,7 +57,7 @@ namespace TweetUtils {
     }
 
     return formatted_text;
-  }
+  } // }}}
 
 
   /**
@@ -77,6 +78,8 @@ namespace TweetUtils {
       return 1;
     });
     foreach (Sequence s in urls) {
+      if (s.visual_display_url)
+        continue;
       int length_before = formatted_text.char_count ();
       int from = formatted_text.index_of_nth_char (s.start + char_diff);
       int to   = formatted_text.index_of_nth_char (s.end + char_diff);

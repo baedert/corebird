@@ -141,7 +141,8 @@ class Tweet : GLib.Object {
         start = (int)indices.get_int_element (0),
         end   = (int)indices.get_int_element (1) ,
         url   = expanded_url,
-        display_url = url.get_string_member ("display_url")
+        display_url = url.get_string_member ("display_url"),
+        visual_display_url = false
       });
       InlineMediaDownloader.try_load_media.begin(this, expanded_url);
     });
@@ -153,7 +154,8 @@ class Tweet : GLib.Object {
         start = (int)indices.get_int_element (0),
         end   = (int)indices.get_int_element (1),
         url   = "#"+hashtag.get_string_member ("text"),
-        display_url = "#"+hashtag.get_string_member ("text")
+        display_url = "#"+hashtag.get_string_member ("text"),
+        visual_display_url=  false
       });
     });
 
@@ -165,7 +167,8 @@ class Tweet : GLib.Object {
         start = (int)indices.get_int_element (0),
         end   = (int)indices.get_int_element (1),
         url   = "@"+mention.get_string_member ("id_str"),
-        display_url = "@"+mention.get_string_member ("screen_name")
+        display_url = "@"+mention.get_string_member ("screen_name"),
+        visual_display_url = true
       });
     });
 
@@ -182,7 +185,8 @@ class Tweet : GLib.Object {
           start = (int)indices.get_int_element (0),
           end   = (int)indices.get_int_element (1),
           url   = expanded_url,
-          display_url = url.get_string_member ("display_url")
+          display_url = url.get_string_member ("display_url"),
+          visual_display_url = false
         });
         InlineMediaDownloader.try_load_media.begin(this,
                 url.get_string_member("media_url"));
