@@ -18,8 +18,6 @@
 using Gtk;
 
 class HomeTimeline : IMessageReceiver, DefaultTimeline {
-  private ProgressEntry progress_entry = new ProgressEntry(75);
-
   public HomeTimeline(int id) {
     base (id);
 
@@ -30,7 +28,11 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
                                ((TweetListEntry)row).tweet);
     });
 
-    tweet_list.add (progress_entry);
+    var spinner = new Gtk.Spinner ();
+    spinner.set_size_request (75, 75);
+    spinner.start ();
+    spinner.show_all ();
+    tweet_list.set_placeholder (spinner);
   }
 
   private void stream_message_received (StreamMessageType type, Json.Node root) { // {{{
@@ -106,8 +108,6 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
   public override void load_newest () {
     this.loading = true;
     this.load_newest_internal.begin("1.1/statuses/home_timeline.json", Tweet.TYPE_NORMAL, () => {
-      tweet_list.remove(progress_entry);
-      progress_entry = null;
       this.loading = false;
     });
   }

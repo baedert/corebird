@@ -18,7 +18,6 @@
 using Gtk;
 
 class MentionsTimeline : IMessageReceiver, DefaultTimeline {
-  private ProgressEntry progress_entry = new ProgressEntry(75);
 
   public MentionsTimeline(int id){
     base (id);
@@ -30,7 +29,11 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
                                ((TweetListEntry)row).tweet);
     });
 
-    tweet_list.add (progress_entry);
+    var spinner = new Spinner ();
+    spinner.set_size_request (75, 75);
+    spinner.start ();
+    spinner.show_all ();
+    tweet_list.set_placeholder (spinner);
   }
 
   private void stream_message_received (StreamMessageType type, Json.Node root_node){ // {{{
@@ -68,8 +71,6 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
   public override void load_newest () {
     this.loading = true;
     this.load_newest_internal.begin("1.1/statuses/mentions_timeline.json", Tweet.TYPE_MENTION, () => {
-      tweet_list.remove(progress_entry);
-      progress_entry = null;
       this.loading = false;
     });
   }
