@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 on Tue Oct 15 06:47:03 2013 -->
+<!-- Generated with glade 3.16.0 on Thu Oct 31 21:58:35 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.10 -->
   <!-- interface-requires corebird 0.0 -->
@@ -82,7 +82,7 @@
                     <property name="margin_left">8</property>
                     <property name="margin_right">8</property>
                     <property name="hexpand">True</property>
-                    <property name="placeholder_text" translatable="yes">@screen_name</property>
+                    <property name="placeholder_text">@screen_name</property>
                     <signal name="activate" handler="go_button_clicked_cb" swapped="no"/>
                   </object>
                   <packing>

@@ -9,6 +9,7 @@ if(XGETTEXT_FOUND)
     "src/widgets/*.vala"
     "src/list/*.vala"
     "src/util/*.vala"
+    "src/window/*.vala"
     GSETTINGSFILES
     "org.baedert.corebird.gschema.xml"
     GLADEFILES

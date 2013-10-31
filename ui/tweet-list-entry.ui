@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 on Mon Oct 14 17:39:24 2013 -->
+<!-- Generated with glade 3.16.0 on Thu Oct 31 21:59:45 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.10 -->
   <!-- interface-requires corebird 0.0 -->
@@ -85,7 +85,7 @@
                         <property name="can_focus">False</property>
                         <child>
                           <object class="TextButton" id="name_button">
-                            <property name="label" translatable="no">button</property>
+                            <property name="label">button</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
@@ -108,7 +108,7 @@
                             <property name="margin_left">7</property>
                             <property name="hexpand">True</property>
                             <property name="xalign">0</property>
-                            <property name="label" translatable="no">screen name</property>
+                            <property name="label">screen name</property>
                             <property name="lines">0</property>
                             <style>
                               <class name="dim-label"/>
@@ -141,7 +141,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="margin_left">9</property>
-                            <property name="label" translatable="no">label</property>
+                            <property name="label">label</property>
                             <property name="use_markup">True</property>
                             <property name="lines">0</property>
                             <style>
@@ -175,7 +175,7 @@
                             <property name="vexpand">True</property>
                             <property name="xalign">0</property>
                             <property name="yalign">0</property>
-                            <property name="label" translatable="no">TEXT</property>
+                            <property name="label">TEXT</property>
                             <property name="use_markup">True</property>
                             <property name="wrap">True</property>
                             <property name="wrap_mode">word-char</property>
@@ -201,7 +201,7 @@
                         <property name="margin_left">5</property>
                         <property name="margin_top">5</property>
                         <property name="xalign">0</property>
-                        <property name="label" translatable="yes">RT by foo</property>
+                        <property name="label">RT by foo</property>
                         <property name="lines">0</property>
                         <style>
                           <class name="dim-label"/>

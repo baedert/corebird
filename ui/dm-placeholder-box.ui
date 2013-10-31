@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 on Sat Oct 19 17:51:25 2013 -->
+<!-- Generated with glade 3.16.0 on Thu Oct 31 22:00:33 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.10 -->
   <template class="DMPlaceholderBox" parent="GtkBox">
@@ -27,7 +27,7 @@
       <object class="GtkLabel" id="name_label">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="label" translatable="yes">label</property>
+        <property name="label">label</property>
       </object>
       <packing>
         <property name="expand">False</property>
@@ -39,7 +39,7 @@
       <object class="GtkLabel" id="screen_name_label">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="label" translatable="yes">label</property>
+        <property name="label">label</property>
         <style>
           <class name="dim-label"/>
         </style>
