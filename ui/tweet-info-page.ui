@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 on Mon Oct 14 17:39:25 2013 -->
+<!-- Generated with glade 3.16.0 on Fri Nov  1 08:43:17 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.10 -->
   <!-- interface-requires corebird 0.0 -->
@@ -69,7 +69,7 @@
                         <property name="can_focus">False</property>
                         <property name="margin_top">5</property>
                         <property name="xalign">0</property>
-                        <property name="label" translatable="no">label</property>
+                        <property name="label">label</property>
                         <attributes>
                           <attribute name="weight" value="bold"/>
                           <attribute name="size" value="15000"/>
@@ -86,7 +86,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="xalign">0</property>
-                        <property name="label" translatable="no">label</property>
+                        <property name="label">label</property>
                         <style>
                           <class name="dim-label"/>
                         </style>
@@ -165,7 +165,7 @@
                     <property name="hexpand">True</property>
                     <property name="xalign">0</property>
                     <property name="yalign">0</property>
-                    <property name="label" translatable="no">Some Random Tweet Text yay</property>
+                    <property name="label">Some Random Tweet Text yay</property>
                     <property name="use_markup">True</property>
                     <property name="wrap">True</property>
                     <property name="wrap_mode">word-char</property>
@@ -209,7 +209,7 @@
                 <property name="can_focus">False</property>
                 <property name="margin_left">3</property>
                 <property name="xalign">0</property>
-                <property name="label" translatable="no">label</property>
+                <property name="label">label</property>
                 <property name="use_markup">True</property>
                 <style>
                   <class name="dim-label"/>
@@ -232,7 +232,7 @@
                     <property name="margin_left">3</property>
                     <property name="hexpand">True</property>
                     <property name="xalign">0</property>
-                    <property name="label" translatable="no">label</property>
+                    <property name="label">label</property>
                     <property name="use_markup">True</property>
                     <style>
                       <class name="dim-label"/>
@@ -255,6 +255,7 @@
                       <class name="retweet-button"/>
                       <class name="dim-label"/>
                       <class name="image-button"/>
+                      <class name="large-font"/>
                     </style>
                     <signal name="toggled" handler="retweet_button_toggled_cb" swapped="no"/>
                   </object>
@@ -275,6 +276,7 @@
                       <class name="favorite-button"/>
                       <class name="dim-label"/>
                       <class name="image-button"/>
+                      <class name="large-font"/>
                     </style>
                     <signal name="toggled" handler="favorite_button_toggled_cb" swapped="no"/>
                   </object>
@@ -295,6 +297,7 @@
                       <class name="reply-button"/>
                       <class name="dim-label"/>
                       <class name="image-button"/>
+                      <class name="large-font"/>
                     </style>
                     <signal name="clicked" handler="reply_button_clicked_cb" swapped="no"/>
                   </object>
@@ -316,6 +319,7 @@
                       <class name="image-button"/>
                       <class name="slim-button"/>
                       <class name="dim-label"/>
+                      <class name="large-font"/>
                     </style>
                     <child>
                       <placeholder/>

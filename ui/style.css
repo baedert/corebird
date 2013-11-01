@@ -33,6 +33,11 @@
   color:green;
 }
 
+
+.large-font {
+  font-size: 1.3em;
+}
+
 .favorite-button:hover,
 .favorite-button:active {
   color: shade(yellow, 0.9);
