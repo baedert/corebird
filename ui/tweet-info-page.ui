@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 on Fri Nov  1 08:43:17 2013 -->
+<!-- Generated with glade 3.16.0 on Fri Nov  1 11:14:21 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.10 -->
   <!-- interface-requires corebird 0.0 -->
@@ -319,7 +319,6 @@
                       <class name="image-button"/>
                       <class name="slim-button"/>
                       <class name="dim-label"/>
-                      <class name="large-font"/>
                     </style>
                     <child>
                       <placeholder/>
