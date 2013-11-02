@@ -39,20 +39,10 @@ message ("CATALOG: ${CATALOG}")
 
 
 
-set (ICON_SOURCE_DIR "assets/")
-set (ICON_DEST_DIR   "assets/")
-
 include (ValaVersion)
 include (ValaPrecompile)
 include (GSettings)
-include (RenderIcons)
 #include (GResources)
-
-set (ICON_SIZES 16 32 64 128 512)
-
-render_icon("corebird"
-  SIZES ${ICON_SIZES}
-)
 
 find_package (Vala REQUIRED)
 ensure_vala_version ("0.21.1" MINIMUM) # TODO: Bump to 0.22
