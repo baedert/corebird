@@ -39,6 +39,8 @@ class Tweet : GLib.Object {
   public int64 user_id;
   public string user_name;
   public string retweeted_by;
+  public string rt_by_screen_name;
+  public int64 rt_by_id;
   public bool is_retweet;
   public unowned Gdk.Pixbuf avatar {get; set;}
   public Gdk.Pixbuf inline_media;
@@ -95,6 +97,8 @@ class Tweet : GLib.Object {
       this.is_retweet    = true;
       this.rt_id         = rt.get_int_member("id");
       this.retweeted_by  = user.get_string_member("name").replace ("&", "&amp;");
+      this.rt_by_screen_name = user.get_string_member ("screen_name");
+      this.rt_by_id      = user.get_int_member ("id");
       this.text          = rt.get_string_member("text");
       this.user_name     = rt_user.get_string_member ("name");
       this.avatar_url    = rt_user.get_string_member("profile_image_url");

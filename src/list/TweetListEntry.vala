@@ -91,7 +91,8 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     reply_entry.max_length = Tweet.MAX_LENGTH;
     if (tweet.is_retweet) {
       rt_label.show ();
-      rt_label.label = "RT by "+tweet.retweeted_by;
+      rt_label.label = @"<b> </b> <a href=\"@$(tweet.rt_by_id)\"
+                         title=\"@$(tweet.rt_by_screen_name)\">$(tweet.retweeted_by)</a>";
     }
 
 
