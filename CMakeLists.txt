@@ -35,9 +35,9 @@ set (GETTEXT_PACKAGE  "corebird")
 set (VERSION          0.1)
 
 message ("PREFIX: ${PREFIX}")
+message ("CATALOG: ${CATALOG}")
 
 
-configure_file (${CMAKE_SOURCE_DIR}/src/util/Config.vala.cmake ${CMAKE_BINARY_DIR}/src/util/Config.vala)
 
 set (ICON_SOURCE_DIR "assets/")
 set (ICON_DEST_DIR   "assets/")
@@ -84,8 +84,17 @@ set (DEPS glib-2.0;
 find_package (PkgConfig)
 pkg_check_modules (DEPS REQUIRED ${DEPS})
 
+if (${DEPS_rest-0.7_VERSION} VERSION_GREATER "0.7.90")
+  set (HAVE_NEW_LIBREST "true")
+else()
+  set (HAVE_NEW_LIBREST "false")
+endif()
+
 add_definitions (${DEPS_CFLAGS} "-DGETTEXT_PACKAGE=\"${GETTEXT_PACKAGE}\"")
 link_directories (${DEPS_LIBRARY_DIRS})
+
+
+configure_file (${CMAKE_SOURCE_DIR}/src/util/Config.vala.cmake ${CMAKE_BINARY_DIR}/src/util/Config.vala)
 
 
 set (VALA_SOURCE

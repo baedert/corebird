@@ -18,3 +18,4 @@
 
 const string DATADIR = "@DATADIR@";
 const string GETTEXT_PACKAGE = "@GETTEXT_PACKAGE@";
+const bool HAVE_NEW_LIBREST = @HAVE_NEW_LIBREST@;
