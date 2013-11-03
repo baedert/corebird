@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 on Sun Oct 27 07:59:45 2013 -->
+<!-- Generated with glade 3.16.0 on Sun Nov  3 19:12:57 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.6 -->
   <template class="AboutDialog" parent="GtkAboutDialog">
@@ -8,7 +8,7 @@
     <property name="title" translatable="yes">About Corebird</property>
     <property name="type_hint">dialog</property>
     <property name="program_name">Corebird</property>
-    <property name="version">0.3</property>
+    <property name="version">0.4</property>
     <property name="comments" translatable="yes">Using Font Awesome by Dave Gandy - http://fontawesome.io</property>
     <property name="website">http://corebird.baedert.org</property>
     <property name="authors">
