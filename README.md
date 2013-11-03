@@ -41,11 +41,6 @@
  - `vala >= 0.22` (makedep)
  - `cmake >= 2.6` (makedep)
 
-Additionally...
-
- - `librsvg2-tools` on Fedora
- - `librsvg2-bin` on Ubuntu
-
 ## Compiling
 
 ```
