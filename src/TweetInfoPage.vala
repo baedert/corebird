@@ -42,6 +42,8 @@ class TweetInfoPage : IPage , ScrollWidget {
   [GtkChild]
   private Label rt_fav_label;
   [GtkChild]
+  private Label location_label;
+  [GtkChild]
   private ListBox bottom_list_box;
   [GtkChild]
   private Spinner progress_spinner;
