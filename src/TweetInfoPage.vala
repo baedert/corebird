@@ -194,8 +194,12 @@ class TweetInfoPage : IPage , ScrollWidget {
       string with = root_object.get_string_member ("source");
       with = extract_source (with);
       set_tweet_data (tweet, following, with);
-      if (!root_object.get_null_member ("place"))
-        screen_name_label.label += " in " + root_object.get_string_member ("place");
+      if (!root_object.get_null_member ("place")) {
+        var place = root_object.get_object_member ("place");
+        location_label.show ();
+        location_label.label = "<big><b></b></big> " + place.get_string_member ("name");
+      } else
+        location_label.hide ();
 
       if (tweet.reply_id == 0) {
         progress_spinner.stop ();

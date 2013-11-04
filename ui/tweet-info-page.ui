@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 on Mon Nov  4 08:56:31 2013 -->
+<!-- Generated with glade 3.16.0 on Mon Nov  4 11:41:54 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.10 -->
   <!-- interface-requires corebird 0.0 -->
@@ -339,12 +339,12 @@
             </child>
             <child>
               <object class="GtkLabel" id="location_label">
-                <property name="visible">False</property>
                 <property name="can_focus">False</property>
                 <property name="no_show_all">True</property>
                 <property name="margin_left">3</property>
                 <property name="xalign">0</property>
                 <property name="label">Location</property>
+                <property name="use_markup">True</property>
                 <style>
                   <class name="dim-label"/>
                 </style>
