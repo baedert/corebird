@@ -26,18 +26,26 @@ class NotificationManager {
 
 
   public static void notify(string summary, string body="",
-                            Urgency urgency = Urgency.LOW,
-                            Gdk.Pixbuf? pixbuf = null){
-
-    Notification n = new Notification (summary, body, null);
-
-    n.set_urgency(urgency);
-    n.set_icon_from_pixbuf(pixbuf);
-
-    try{
-      n.show();
-    }catch(GLib.Error e){
-      message("Error while showing notification: %s", e.message);
+                            Urgency urgency = Urgency.NORMAL,
+                            Gdk.Pixbuf? pixbuf = null, string media="", string avatar_name=""){
+    if (media == ""){
+      Notification n = new Notification (summary, body, null);
+      n.set_urgency(urgency);
+      n.set_icon_from_pixbuf(pixbuf);
+      try{
+        n.show();
+      }catch(GLib.Error e){
+        message("Error while showing notification: %s", e.message);
+      }
+    } else {
+      Notification n = new Notification (summary, body, Utils.user_file ("assets/avatars/" + avatar_name));
+      n.set_urgency(urgency);
+      n.set_hint("image-path", new GLib.Variant.string(media));
+      try{
+        n.show();
+      }catch(GLib.Error e){
+        message("Error while showing notification: %s", e.message);
+      }
     }
   }
 
