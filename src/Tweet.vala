@@ -64,7 +64,6 @@ class Tweet : GLib.Object {
   public bool has_inline_media = false;
 
   /** if the json from twitter has inline media **/
-  public bool tweet_has_inline_media = false;
   public int type = -1;
   private GLib.SList<TweetUtils.Sequence?> urls;
   public int retweet_count;
@@ -185,7 +184,7 @@ class Tweet : GLib.Object {
       var medias = entities.get_array_member ("media");
       medias.foreach_element ((arr, index, node) => {
         var url = node.get_object();
-        tweet_has_inline_media = true;
+        has_inline_media = true;
         string expanded_url = url.get_string_member ("expanded_url");
         expanded_url = expanded_url.replace ("&", "&amp;");
         Json.Array indices = url.get_array_member ("indices");

@@ -195,7 +195,6 @@ namespace InlineMediaDownloader {
     t.media_thumb = thumb_path;
     t.inline_media = thumb;
     t.inline_media_added(thumb);
-    t.has_inline_media = true;
   }
 
   private string get_media_path (Tweet t, string url) {
@@ -219,7 +218,7 @@ namespace InlineMediaDownloader {
    *
    */
   private void calc_thumb_rect (int img_width, int img_height,
-                                       out int x, out int y, out int width, out int height) {
+                                out int x, out int y, out int width, out int height) {
     float ratio = img_width / (float)img_height;
     if (ratio >= 0.9 && ratio <= 1.1) {
       // it's more or less squared, so...

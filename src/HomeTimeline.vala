@@ -35,6 +35,7 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
     tweet_list.set_placeholder (spinner);
   }
 
+  // TODO: This is huge, refactor it.
   private void stream_message_received (StreamMessageType type, Json.Node root) { // {{{
     if (type == StreamMessageType.TWEET) {
       GLib.DateTime now = new GLib.DateTime.now_local ();
@@ -83,30 +84,15 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
 
       int stack_size = Settings.get_tweet_stack_count ();
       message ("Stack size: %d", stack_size);
-      if (stack_size == 1 && unread_count % stack_size == 0) {
-        if (t.tweet_has_inline_media){
-          /*this has to be done in a callback otherwise the image has not been 
-            downloaded yet*/
-          t.inline_media_added.connect ((tw, pic) => {
-            string summary = "";
-            if (tw.is_retweet){
-              summary = _("%s retweeted %s").printf(tw.retweeted_by, tw.user_name);
-            } else {
-              summary = _("%s tweeted").printf(tw.user_name);
-            }
-            NotificationManager.notify (summary, tw.text, Notify.Urgency.NORMAL, tw.avatar, tw.media, tw.avatar_name);
-          });
+      if (stack_size == 1) {
+        if (t.has_inline_media){
+          t.inline_media_added.connect (tweet_inline_media_added_cb);
         } else {
-          string summary="";
-          if (t.is_retweet){
-            summary = _("%s retweeted %s").printf(t.retweeted_by, t.user_name);
-          } else {
-            summary = _("%s tweeted").printf(t.user_name);
-          }
-          NotificationManager.notify (summary, t.text, Notify.Urgency.NORMAL, t.avatar);
+          // calling this with image = null will just create the
+          // appropriate notification etc.
+          tweet_inline_media_added_cb (t, null);
         }
-      }
-      else if(stack_size != 0 && unread_count % stack_size == 0) {
+      } else if(stack_size != 0 && unread_count % stack_size == 0) {
         string summary = _("%d new Tweets!").printf (unread_count);
         NotificationManager.notify (summary);
       }
@@ -127,6 +113,20 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
       });
     }
   } // }}}
+
+  // Will be called once the inline media of a tweet has been loaded.
+  private void tweet_inline_media_added_cb (Tweet t, Gdk.Pixbuf? image) {
+    string summary = "";
+    if (t.is_retweet){
+      summary = _("%s retweeted %s").printf(t.retweeted_by, t.user_name);
+    } else {
+      summary = _("%s tweeted").printf(t.user_name);
+    }
+    NotificationManager.notify (summary, t.text, Notify.Urgency.NORMAL, t.avatar,
+                                t.media);
+
+  }
+
 
   public override void load_newest () {
     this.loading = true;
