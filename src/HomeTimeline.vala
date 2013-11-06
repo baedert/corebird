@@ -49,7 +49,7 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
         // Check if the original tweet already exists in the timeline
         tweet_list.@foreach ((w) => {
           if (w == null || !(w is TweetListEntry))
-            return
+            return;
 
           var tle = (TweetListEntry) w;
           if (tle.tweet.id == t.rt_id || tle.tweet.rt_id == t.rt_id)
@@ -95,6 +95,9 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
       int64 id = root.get_object ().get_object_member ("delete")
                      .get_object_member ("status").get_int_member ("id");
       tweet_list.forall ((w) => {
+        if (w == null || !(w is TweetListEntry))
+          return;
+
         var tle = (TweetListEntry) w;
         if (tle.tweet.id == id) {
           if (!tle.seen) {
