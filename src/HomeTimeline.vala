@@ -48,6 +48,9 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
         bool rt_found = false;
         // Check if the original tweet already exists in the timeline
         tweet_list.@foreach ((w) => {
+          if (w == null || !(w is TweetListEntry))
+            return
+
           var tle = (TweetListEntry) w;
           if (tle.tweet.id == t.rt_id || tle.tweet.rt_id == t.rt_id)
             rt_found = true;
@@ -115,6 +118,7 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
   public override void load_older () {
     this.balance_next_upper_change (BOTTOM);
     main_window.start_progress ();
+    this.loading = true;
     this.load_older_internal.begin ("1.1/statuses/home_timeline.json", Tweet.TYPE_NORMAL, () => {
       this.loading = false;
       main_window.stop_progress ();
