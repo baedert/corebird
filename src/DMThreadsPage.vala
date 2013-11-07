@@ -105,15 +105,10 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       entry.last_message = vals[2];
       entry.last_message_id = int64.parse(vals[3]);
       entry.unread_count = 0;
-      Gdk.Pixbuf avatar = TweetUtils.load_avatar (vals[4]);
-      if (avatar == null) {
-        TweetUtils.download_avatar.begin (vals[4], (obj, res) => {
-          avatar = TweetUtils.download_avatar.end (res);
-          TweetUtils.load_avatar (vals[4], avatar);
-          entry.avatar = avatar;
-        });
-      } else
-        entry.avatar = avatar;
+      entry.avatar = Twitter.get ().get_avatar (vals[4], (a) => {
+        entry.avatar = a;
+      });
+
 
       thread_list.add (entry);
       thread_map.set (user_id, entry);
@@ -226,15 +221,9 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
               .run ();
     account.user_counter.user_seen (sender_id, author, sender_name);
 
-    Gdk.Pixbuf avatar = TweetUtils.load_avatar (avatar_url);
-    if (avatar == null) {
-      TweetUtils.download_avatar.begin (avatar_url, (obj, res) => {
-        avatar = TweetUtils.download_avatar.end (res);
-        TweetUtils.load_avatar (avatar_url, avatar);
-        thread_entry.avatar = avatar;
-      });
-    } else
-      thread_entry.avatar = avatar;
+    thread_entry.avatar = Twitter.get ().get_avatar (avatar_url, (a) => {
+      thread_entry.avatar = a;
+    });
   } // }}}
 
   private void save_message (Json.Object dm_obj) { // {{{

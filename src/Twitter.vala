@@ -18,8 +18,18 @@
 using Rest;
 using Gee;
 
-class Twitter {
-  [CCode (has_target = false)]
+class Twitter : GLib.Object {
+  private static Twitter twitter;
+
+  public static Twitter get () {
+    if (twitter == null)
+      twitter = new Twitter ();
+
+    return twitter;
+  }
+
+  public Twitter () {}
+
   public delegate void AvatarDownloadedFunc(Gdk.Pixbuf avatar);
   [Signal (detailed = true)]
   private signal void avatar_downloaded (Gdk.Pixbuf avatar);
@@ -29,9 +39,9 @@ class Twitter {
   public static Gdk.Pixbuf no_avatar;
   public static Gdk.Pixbuf no_banner;
   public static Gdk.Pixbuf verified_icon;
-  public static HashMap<string, Gdk.Pixbuf?> avatars;
+  public HashMap<string, Gdk.Pixbuf?> avatars;
 
-  public static void init () {
+  public void init () {
     try {
       Twitter.no_avatar     = new Gdk.Pixbuf.from_file(
                                      DATADIR+"/no_avatar.png");
@@ -43,7 +53,7 @@ class Twitter {
       error ("Error while loading assets: %s", e.message);
     }
 
-    Twitter.avatars = new HashMap<string, Gdk.Pixbuf> ();
+    avatars = new HashMap<string, Gdk.Pixbuf> ();
   }
 
 
@@ -94,9 +104,10 @@ class Twitter {
     // Someone is already downloading the avatar
     if (has_key) {
       // wait until the avatar has finished downloading
-      // i.e. connect to a signal or something...
-      this.avatar_downloaded[url].connect((ava) => {
+      ulong handler_id = 0;
+      handler_id = this.avatar_downloaded[url].connect((ava) => {
         func (ava);
+        this.disconnect (handler_id);
       });
     } else {
       // download the avatar
@@ -111,7 +122,8 @@ class Twitter {
         }
         func (avatar);
         // signal all the other waiters in the queue
-        this.avatar_downloaded[url](avatar);
+        avatar_downloaded[url](avatar);
+        this.avatars.set (url, avatar);
       });
     }
 

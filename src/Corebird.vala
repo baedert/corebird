@@ -153,7 +153,7 @@ class Corebird : Gtk.Application {
     }catch(GLib.Error e){
       warning("Error while loading ui/style.css: %s", e.message);
     }
-    Twitter.init ();
+    Twitter.get ().init ();
 
     // Load custom icons
     Utils.load_custom_icons ();

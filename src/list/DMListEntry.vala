@@ -62,15 +62,9 @@ class DMListEntry : Gtk.ListBoxRow, ITwitterItem {
   }
 
   public void load_avatar () {
-    Gdk.Pixbuf avatar = TweetUtils.load_avatar (avatar_url);
-    if (avatar == null) {
-      TweetUtils.download_avatar.begin (avatar_url, (obj, res) => {
-        avatar = TweetUtils.download_avatar.end (res);
-        TweetUtils.load_avatar (avatar_url, avatar);
-        avatar_image.pixbuf = avatar;
-      });
-    } else
-      avatar_image.pixbuf = avatar;
+    avatar_image.pixbuf = Twitter.get ().get_avatar (avatar_url, (a) => {
+      avatar_image.pixbuf = a;
+    });
   }
 
   public int update_time_delta (GLib.DateTime? now = null) {
