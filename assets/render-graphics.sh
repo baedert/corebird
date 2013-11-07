@@ -1,8 +1,9 @@
 #!/bin/bash
 
-#Sizes needed by tango guidelines:
+# Following sizes are now based upon the tango guidelines
 sizes=(16 22 24 32 48 256 )
 
+# Render the corebird icon into different sizes
 for size in ${sizes[@]}
 do
   mkdir -p ${size}x${size}
@@ -10,6 +11,7 @@ do
                --format=png -o "./${size}x${size}/corebird_${size}.png"
 done
 
+# Render other images
 rsvg-convert ./no_avatar.svg --width="24" --height="24" \
                --format=png -o "./no_avatar.png"
               
