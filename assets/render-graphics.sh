@@ -10,7 +10,7 @@ do
                --format=png -o "./${size}x${size}/corebird_${size}.png"
 done
 
-rsvg-convert ./no_avatar.svg --width="22" --height="22" \
+rsvg-convert ./no_avatar.svg --width="24" --height="24" \
                --format=png -o "./no_avatar.png"
               
 rsvg-convert ./no_banner.svg --width="320" --height="160" \
