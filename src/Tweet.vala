@@ -204,18 +204,11 @@ class Tweet : GLib.Object {
     this.time_delta  = Utils.get_time_delta(dt, now);
 
 
-    //this.load_avatar();
-    this.avatar = TweetUtils.load_avatar (avatar_url);
-    if (this.avatar == null) {
-      TweetUtils.download_avatar.begin (avatar_url, (obj, res) => {
-        var avatar = TweetUtils.download_avatar.end (res);
-        this.avatar = TweetUtils.load_avatar (avatar_url, avatar);
-      });
-    }
+    this.avatar = Twitter.get ().get_avatar (avatar_url, (a) => {
+      this.avatar = a;
+    });
 
 #if __DEV
-  // This is pretty stupid because we're actually getting the json string
-  // from Twitter but meh...
   var gen = new Json.Generator ();
   gen.root = status_node;
   gen.pretty = true;

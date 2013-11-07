@@ -50,16 +50,8 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
   public int64 user_id { get; set; }
 
   private void real_set_avatar (string avatar_url) {
-    Gdk.Pixbuf a = TweetUtils.load_avatar (avatar_url);
-    if (a != null) {
+    avatar_image.pixbuf = Twitter.get ().get_avatar (avatar_url, (a) => {
       avatar_image.pixbuf = a;
-      return;
-    }
-
-    TweetUtils.download_avatar.begin (avatar_url, (obj, res) => {
-      var pic = TweetUtils.download_avatar.end (res);
-      TweetUtils.load_avatar (avatar_url, pic);
-      avatar_image.pixbuf = pic;
     });
   }
 

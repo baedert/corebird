@@ -35,10 +35,6 @@ class UserInfo {
 }
 
 
-bool user_info_equal_func (UserInfo a, UserInfo b) {
-    return a.id == b.id;
-}
-
 class UserCounter : GLib.Object {
   private bool changed = false;
   private Gee.ArrayList<UserInfo?> names = new Gee.ArrayList<UserInfo?> ();

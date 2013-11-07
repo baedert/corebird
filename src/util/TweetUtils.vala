@@ -214,21 +214,21 @@ namespace TweetUtils {
   Gdk.Pixbuf? load_avatar (string url, Gdk.Pixbuf? pixbuf = null) {
     string avatar_name = Utils.get_avatar_name (url);
     if (pixbuf != null) {
-      Twitter.avatars.set (avatar_name, pixbuf);
+      Twitter.get ().avatars.set (avatar_name, pixbuf);
       return pixbuf;
     }
 
-    if (Twitter.avatars.has_key (avatar_name)) {
-      return Twitter.avatars.get (avatar_name);
+    if (Twitter.get ().avatars.has_key (avatar_name)) {
+      return Twitter.get ().avatars.get (avatar_name);
     } else {
       string path = Utils.user_file ("assets/avatars/"+avatar_name);
       if (FileUtils.test (path, FileTest.EXISTS)) {
         try {
-          Twitter.avatars.set (avatar_name, new Gdk.Pixbuf.from_file (path));
+          Twitter.get ().avatars.set (avatar_name, new Gdk.Pixbuf.from_file (path));
         } catch (GLib.Error e) {
           warning ("Error while loading avatar from database: %s", e.message);
         }
-        return Twitter.avatars.get (avatar_name);
+        return Twitter.get ().avatars.get (avatar_name);
       }
     }
     return null;
