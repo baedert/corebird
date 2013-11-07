@@ -41,26 +41,7 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
       Tweet t = new Tweet();
       t.load_from_json (root, now);
 
-      if (t.is_retweet) {
-        if (t.retweeted_by == account.name)
-          return;
-
-        bool rt_found = false;
-        // Check if the original tweet already exists in the timeline
-        tweet_list.@foreach ((w) => {
-          if (w == null || !(w is TweetListEntry))
-            return;
-
-          var tle = (TweetListEntry) w;
-          if (tle.tweet.id == t.rt_id || tle.tweet.rt_id == t.rt_id)
-            rt_found = true;
-        });
-
-        if (rt_found) return;
-      }
-
-      // Somebody retweeted the user
-      if (t.user_id == account.id && t.is_retweet)
+      if (t.is_retweet && !should_display_retweet (root, t))
         return;
 
       this.balance_next_upper_change (TOP);
@@ -110,6 +91,48 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
       });
     }
   } // }}}
+
+
+  /**
+   *
+   *
+   *
+   *
+   *
+   */
+  private bool should_display_retweet (Json.Node root_node, Tweet t) { // {{{
+    // Don't show tweets the user retweeted again
+    if (t.retweeted_by == account.name)
+      return false;
+
+    // Don't show it if the user already follows the retweeted user
+//    if (root_node.get_object ().get_object_member ("retweeted_status").get_object_member ("user")
+//        .get_boolean_member ("following")) {
+//      return false;
+//    }
+    // XXX Fun: 'following' is just null if the tweet is a retweet, yay!
+
+    bool rt_found = false;
+    // Check if the original tweet already exists in the timeline
+    tweet_list.@foreach ((w) => {
+      if (w == null || !(w is TweetListEntry))
+        return;
+
+      var tle = (TweetListEntry) w;
+      if (tle.tweet.id == t.rt_id || tle.tweet.rt_id == t.rt_id)
+        rt_found = true;
+    });
+
+    if (rt_found) return false;
+
+    // Don't show if the user was retweeted
+    if (t.user_id == account.id)
+      return false;
+
+    return true;
+  } // }}}
+
+
 
   public override void load_newest () {
     this.loading = true;
