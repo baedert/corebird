@@ -17,8 +17,8 @@
    inkscape:version="0.48.4 r9939"
    sodipodi:docname="no_banner.svg"
    inkscape:export-filename="./no_banner.png"
-   inkscape:export-xdpi="101.25"
-   inkscape:export-ydpi="101.25">
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
   <defs
      id="defs3778">
     <linearGradient
@@ -41,7 +41,7 @@
        fx="160"
        fy="956.40686"
        r="160"
-       gradientTransform="matrix(2.1584299,-9.2320979e-8,2.5e-8,0.58449069,-185.3488,393.20752)"
+       gradientTransform="matrix(1.4760201,-9.7080847e-8,3.7499999e-8,0.5701511,-76.163242,406.92201)"
        gradientUnits="userSpaceOnUse" />
   </defs>
   <sodipodi:namedview
@@ -78,7 +78,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
