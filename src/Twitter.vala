@@ -21,7 +21,7 @@ using Gee;
 class Twitter : GLib.Object {
   private static Twitter twitter;
 
-  public static Twitter get () {
+  public static new Twitter get () {
     if (twitter == null)
       twitter = new Twitter ();
 
@@ -114,12 +114,7 @@ class Twitter : GLib.Object {
       avatars.set (url, null);
       TweetUtils.download_avatar.begin (url, (obj, res) => {
         Gdk.Pixbuf? avatar;
-        try {
-          avatar = TweetUtils.download_avatar.end (res);
-        } catch (GLib.Error e) {
-          critical (e.message);
-          return;
-        }
+        avatar = TweetUtils.download_avatar.end (res);
         func (avatar);
         // signal all the other waiters in the queue
         avatar_downloaded[url](avatar);
