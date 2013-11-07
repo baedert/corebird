@@ -11,7 +11,7 @@
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="320"
-   height="160"
+   height="180"
    id="svg3776"
    version="1.1"
    inkscape:version="0.48.4 r9939"
@@ -41,7 +41,7 @@
        fx="160"
        fy="956.40686"
        r="160"
-       gradientTransform="matrix(2.1584299,-9.2320977e-8,2.5e-8,0.58449066,-185.3488,393.20755)"
+       gradientTransform="matrix(2.1584299,-1.038611e-7,2.5e-8,0.65755201,-185.3488,310.8132)"
        gradientUnits="userSpaceOnUse" />
   </defs>
   <sodipodi:namedview
@@ -78,7 +78,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -86,13 +86,13 @@
      inkscape:label="Ebene 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-892.36218)">
+     transform="translate(0,-872.36218)">
     <rect
        style="fill:url(#radialGradient4302);fill-opacity:1;stroke:none"
        id="rect3784"
        width="320"
-       height="160"
+       height="180"
        x="0"
-       y="892.36218" />
+       y="872.36218" />
   </g>
 </svg>
