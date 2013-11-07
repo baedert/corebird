@@ -13,7 +13,7 @@ done
 rsvg-convert ./no_avatar.svg --width="22" --height="22" \
                --format=png -o "./no_avatar.png"
               
-rsvg-convert ./no_banner.svg --width="360" --height="180" \
+rsvg-convert ./no_banner.svg --width="320" --height="160" \
                --format=png -o "./no_banner.png"
                
 rsvg-convert ./verified.svg --width="16" --height="16" \
