@@ -201,39 +201,6 @@ namespace TweetUtils {
     yield;
   }
 
-
-  /**
-   * Try to load the avatar with the given avatar url.
-   *
-   * @param url The url of the avatar to load
-   * @param pixbuf If the avatar is already loaded in the form of a GdkPixbuf,
-   *               simply pass it here to insert it into the list.
-   *
-   * @return The loaded avatar as Gdk.Pixbuf or null if the avatar could not be found.
-   */
-  Gdk.Pixbuf? load_avatar (string url, Gdk.Pixbuf? pixbuf = null) {
-    string avatar_name = Utils.get_avatar_name (url);
-    if (pixbuf != null) {
-      Twitter.get ().avatars.set (avatar_name, pixbuf);
-      return pixbuf;
-    }
-
-    if (Twitter.get ().avatars.has_key (avatar_name)) {
-      return Twitter.get ().avatars.get (avatar_name);
-    } else {
-      string path = Utils.user_file ("assets/avatars/"+avatar_name);
-      if (FileUtils.test (path, FileTest.EXISTS)) {
-        try {
-          Twitter.get ().avatars.set (avatar_name, new Gdk.Pixbuf.from_file (path));
-        } catch (GLib.Error e) {
-          warning ("Error while loading avatar from database: %s", e.message);
-        }
-        return Twitter.get ().avatars.get (avatar_name);
-      }
-    }
-    return null;
-  }
-
   /**
    * Downloads the avatar from the given url.
    *
