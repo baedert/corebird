@@ -33,11 +33,13 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   [GtkChild]
   private Label rt_label;
   [GtkChild]
+  private Image rt_image;
+  [GtkChild]
   private Revealer reply_revealer;
   [GtkChild]
   private ReplyEntry reply_entry;
   [GtkChild]
-  private Label conversation_label;
+  private Image conversation_label; // TODO: Rename
   [GtkChild]
   private Box text_box;
   [GtkChild]
@@ -91,7 +93,8 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     reply_entry.max_length = Tweet.MAX_LENGTH;
     if (tweet.is_retweet) {
       rt_label.show ();
-      rt_label.label = @"<b> </b> <a href=\"@$(tweet.rt_by_id)\"
+      rt_image.show ();
+      rt_label.label = @"<a href=\"@$(tweet.rt_by_id)\"
                          title=\"@$(tweet.rt_by_screen_name)\">$(tweet.retweeted_by)</a>";
     }
 

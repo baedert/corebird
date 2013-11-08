@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 on Sat Nov  2 14:37:37 2013 -->
+<!-- Generated with glade 3.16.0 on Fri Nov  8 15:14:41 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.10 -->
   <!-- interface-requires corebird 0.0 -->
@@ -121,12 +121,11 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkLabel" id="conversation_label">
+                          <object class="GtkImage" id="conversation_label">
                             <property name="can_focus">False</property>
-                            <property name="label"></property>
-                            <property name="lines">0</property>
+                            <property name="pixel_size">12</property>
+                            <property name="icon_name">corebird-conversation-symbolic</property>
                             <style>
-                              <class name="conversation-label"/>
                               <class name="dim-label"/>
                             </style>
                           </object>
@@ -196,18 +195,46 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="rt_label">
+                      <object class="GtkBox" id="box2">
+                        <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="margin_left">5</property>
-                        <property name="margin_top">5</property>
-                        <property name="xalign">0</property>
-                        <property name="label">RT by foo</property>
-                        <property name="use_markup">True</property>
-                        <property name="lines">0</property>
-                        <style>
-                          <class name="dim-label"/>
-                        </style>
-                        <signal name="activate-link" handler="link_activated_cb" swapped="no"/>
+                        <child>
+                          <object class="GtkImage" id="rt_image">
+                            <property name="can_focus">False</property>
+                            <property name="valign">baseline</property>
+                            <property name="pixel_size">12</property>
+                            <property name="icon_name">corebird-retweet-symbolic</property>
+                            <style>
+                              <class name="dim-label"/>
+                            </style>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="rt_label">
+                            <property name="can_focus">False</property>
+                            <property name="valign">baseline</property>
+                            <property name="margin_left">5</property>
+                            <property name="margin_top">5</property>
+                            <property name="xalign">0</property>
+                            <property name="label">RT by foo</property>
+                            <property name="use_markup">True</property>
+                            <property name="lines">0</property>
+                            <style>
+                              <class name="dim-label"/>
+                            </style>
+                            <signal name="activate-link" handler="link_activated_cb" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -340,7 +367,6 @@
             </child>
             <child>
               <object class="GtkButton" id="reply_button">
-                <property name="label"></property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="relief">none</property>
@@ -351,6 +377,14 @@
                   <class name="image-button"/>
                 </style>
                 <signal name="clicked" handler="reply_button_clicked_cb" swapped="no"/>
+                <child>
+                  <object class="GtkImage" id="image1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="pixel_size">12</property>
+                    <property name="icon_name">corebird-reply-symbolic</property>
+                  </object>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -361,7 +395,6 @@
             </child>
             <child>
               <object class="GtkToggleButton" id="favorite_button">
-                <property name="label"></property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -373,6 +406,14 @@
                   <class name="image-button"/>
                 </style>
                 <signal name="toggled" handler="favorite_button_toggled" swapped="no"/>
+                <child>
+                  <object class="GtkImage" id="image3">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="pixel_size">12</property>
+                    <property name="icon_name">corebird-favorite-symbolic</property>
+                  </object>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -383,7 +424,6 @@
             </child>
             <child>
               <object class="GtkToggleButton" id="retweet_button">
-                <property name="label"></property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -395,6 +435,14 @@
                   <class name="image-button"/>
                 </style>
                 <signal name="toggled" handler="retweet_button_toggled" swapped="no"/>
+                <child>
+                  <object class="GtkImage" id="image2">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="pixel_size">12</property>
+                    <property name="icon_name">corebird-retweet-symbolic</property>
+                  </object>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
