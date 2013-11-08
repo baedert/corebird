@@ -45,5 +45,5 @@ elif [ "$1" = 'all' ]
                 render_no_banner
                 render_verified
 else
-        echo "Usage: ./render-graphics.sh [OPTION], where [OPTION] can be icon, avatar, banner, verified or all."
+        echo "Usage: ./render.sh [OPTION], where [OPTION] can be icon, avatar, banner, verified or all."
 fi
