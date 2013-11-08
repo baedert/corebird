@@ -401,9 +401,9 @@
      inkscape:snap-smooth-nodes="true"
      inkscape:snap-midpoints="true"
      inkscape:window-width="1596"
-     inkscape:window-height="852"
+     inkscape:window-height="861"
      inkscape:window-x="0"
-     inkscape:window-y="21"
+     inkscape:window-y="18"
      inkscape:window-maximized="0"
      inkscape:snap-object-midpoints="true"
      inkscape:snap-center="true" />
@@ -546,7 +546,7 @@
        d="m 18.937459,22.733679 c 0,2.506284 -2.235425,-0.05817 -4.992961,-0.05817 -2.757537,0 -4.9929621,2.56445 -4.9929621,0.05817 0,-2.506283 2.2354251,-4.538027 4.9929621,-4.538027 2.757536,0 4.992961,2.031744 4.992961,4.538027 z"
        style="fill:#2e3436;fill-opacity:1;stroke:none;stroke-width:2;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
     <path
-       style="fill:url(#radialGradient3845);fill-opacity:1;stroke:none;stroke-width:2;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;opacity:0.1"
+       style="opacity:0.1;fill:url(#radialGradient3845);fill-opacity:1;stroke:none"
        d="m 18.937459,22.733679 c 0,2.506284 -2.235425,-0.05817 -4.992961,-0.05817 -2.757537,0 -4.9929621,2.56445 -4.9929621,0.05817 0,-2.506283 2.2354251,-4.538027 4.9929621,-4.538027 2.757536,0 4.992961,2.031744 4.992961,4.538027 z"
        id="path3820"
        inkscape:connector-curvature="0"
