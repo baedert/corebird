@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function render_icons {
-        sizes=(16 22 24 32 48 256 )
+        sizes=(16 22 24 32 48 64 128 256 512)
 
         for size in ${sizes[@]}
         do
