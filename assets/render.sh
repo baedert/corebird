@@ -5,9 +5,14 @@ function render_icons {
 
         for size in ${sizes[@]}
         do
-          mkdir -p ${size}x${size}
-          rsvg-convert ./corebird.svg --width="${size}" --height="${size}" \
+	  mkdir -p ${size}x${size}
+	  if [ $size != 24 ]
+	    then
+	      rsvg-convert ./corebird.svg --width="${size}" --height="${size}" \
                        --format=png -o "./${size}x${size}/corebird_${size}.png"
+          else
+	    convert ./22x22/corebird_22.png -bordercolor none -border 1 ./24x24/corebird_24.png
+	  fi
         done
 }
 
@@ -17,8 +22,13 @@ function render_alternative {
         for size in ${sizes[@]}
         do
           mkdir -p ${size}x${size}
-          rsvg-convert ./corebird_alternative.svg --width="${size}" --height="${size}" \
+          if [ $size != 24 ]
+	    then
+	      rsvg-convert ./corebird_alternative.svg --width="${size}" --height="${size}" \
                        --format=png -o "./${size}x${size}/corebird_alternative_${size}.png"
+          else
+	    convert ./22x22/corebird_alternative_22.png -bordercolor none -border 1 ./24x24/corebird_alternative_24.png
+	  fi
         done
 }
 
