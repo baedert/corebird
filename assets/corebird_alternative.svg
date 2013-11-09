@@ -143,9 +143,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="16"
-     inkscape:cx="17.6218"
-     inkscape:cy="23.286717"
+     inkscape:zoom="1.0717735"
+     inkscape:cx="86.178173"
+     inkscape:cy="194.46378"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:grid-bbox="true"
@@ -162,7 +162,7 @@
      inkscape:snap-midpoints="true"
      inkscape:snap-object-midpoints="true"
      inkscape:snap-center="true"
-     inkscape:snap-global="true"
+     inkscape:snap-global="false"
      inkscape:window-width="1600"
      inkscape:window-height="859"
      inkscape:window-x="-2"
@@ -312,14 +312,14 @@
     <text
        xml:space="preserve"
        style="font-size:10.02380466px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu;-inkscape-font-specification:Ubuntu"
-       x="38.271954"
+       x="37.798439"
        y="11.741872"
        id="text3773"
        sodipodi:linespacing="125%"
        transform="scale(0.98993435,1.010168)"><tspan
          sodipodi:role="line"
          id="tspan3775"
-         x="38.271954"
+         x="37.798439"
          y="11.741872"
          style="font-weight:bold;-inkscape-font-specification:Ubuntu Bold">!</tspan></text>
   </g>
