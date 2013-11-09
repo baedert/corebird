@@ -143,9 +143,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.0717735"
-     inkscape:cx="86.178173"
-     inkscape:cy="194.46378"
+     inkscape:zoom="8.574188"
+     inkscape:cx="56.641213"
+     inkscape:cy="41.59842"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:grid-bbox="true"
@@ -162,7 +162,7 @@
      inkscape:snap-midpoints="true"
      inkscape:snap-object-midpoints="true"
      inkscape:snap-center="true"
-     inkscape:snap-global="false"
+     inkscape:snap-global="true"
      inkscape:window-width="1600"
      inkscape:window-height="859"
      inkscape:window-x="-2"
@@ -309,18 +309,23 @@
        sodipodi:rx="7"
        sodipodi:ry="7"
        d="m 28,41 a 7,7 0 1 1 -14,0 7,7 0 1 1 14,0 z" />
-    <text
-       xml:space="preserve"
-       style="font-size:10.02380466px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu;-inkscape-font-specification:Ubuntu"
-       x="37.798439"
-       y="11.741872"
-       id="text3773"
-       sodipodi:linespacing="125%"
-       transform="scale(0.98993435,1.010168)"><tspan
-         sodipodi:role="line"
-         id="tspan3775"
-         x="37.798439"
-         y="11.741872"
-         style="font-weight:bold;-inkscape-font-specification:Ubuntu Bold">!</tspan></text>
+    <g
+       id="g3850"
+       transform="translate(-0.30569839,0.13547134)">
+      <rect
+         y="3.9314954"
+         x="38.305698"
+         height="6"
+         width="2"
+         id="rect3024"
+         style="fill:#2e3436;fill-opacity:1;stroke:none" />
+      <rect
+         style="fill:#2e3436;fill-opacity:1;stroke:none"
+         id="rect3848"
+         width="2"
+         height="2"
+         x="38.305698"
+         y="10.864529" />
+    </g>
   </g>
 </svg>
