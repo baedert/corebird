@@ -59,10 +59,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       main_window.switch_page (MainWindow.PAGE_DM, user_id,
                               screen_name, name, avatar_url);
     });
-//    start_conversation_entry.activated.connect (() => {
-//      main_window.switch_page (MainWindow.PAGE_DM,
-//                               5);
-//    });
+
     thread_list.add (start_conversation_entry);
     load_cached ();
   }
@@ -71,6 +68,8 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     if (type == StreamMessageType.DIRECT_MESSAGE) {
       var obj = root.get_object ().get_object_member ("direct_message");
       add_new_thread (obj);
+      this.unread_count ++;
+      this.update_unread_count ();
     }
   }
 
@@ -122,6 +121,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     call.set_method ("GET");
     call.add_param ("skip_status", "true");
     call.add_param ("since_id", max_received_id.to_string ());
+    call.add_param ("count", "200");
     call.invoke_async.begin (null, (obj, res) => {
       try {
         call.invoke_async.end (res);
@@ -150,6 +150,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     sent_call.set_function ("1.1/direct_messages/sent.json");
     sent_call.add_param ("skip_status", "true");
     sent_call.add_param ("since_id", max_sent_id.to_string ());
+    sent_call.add_param ("count", "200");
     sent_call.set_method ("GET");
     sent_call.invoke_async.begin (null, (obj, res) => {
       try {
