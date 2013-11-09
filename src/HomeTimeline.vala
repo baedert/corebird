@@ -44,24 +44,25 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
       if (t.is_retweet && !should_display_retweet (root, t))
         return;
 
+      bool auto_scroll = Settings.auto_scroll_on_new_tweets ();
+
       this.balance_next_upper_change (TOP);
-      if (this.scrolled_up && (t.user_id == account.id ||
-          Settings.auto_scroll_on_new_tweets ())) {
-        this.scroll_up_next ();
+      if (this.scrolled_up && (t.user_id == account.id || auto_scroll)) {
+        this.scroll_up_next (true, true);
       }
 
-      if (main_window.cur_page_id != this.id ||
-          !Settings.auto_scroll_on_new_tweets () ||
-          !this.scrolled_up) {
-        unread_count++;
+      var entry = new TweetListEntry(t, main_window, account);
+      entry.seen = this.scrolled_up && auto_scroll &&
+                   main_window.cur_page_id == this.id;
+      delta_updater.add (entry);
+      tweet_list.add(entry);
+
+
+      if (!entry.seen) {
+        unread_count ++;
         update_unread_count ();
       }
 
-
-      var entry = new TweetListEntry(t, main_window, account);
-      entry.seen = Settings.auto_scroll_on_new_tweets ();
-      delta_updater.add (entry);
-      tweet_list.add(entry);
 
       this.max_id = t.id;
 
@@ -94,11 +95,14 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
 
 
   /**
+   * Determines whether the given tweet should be displayed.
+   * This is only important for retweets which should not be
+   * shown if, e.g., the user himself retweeted the original tweet, etc.
    *
+   * @param root_node The Json.Node representing the root node of the tweet's json data
+   * @param t The tweet object constructed from the given root_node
    *
-   *
-   *
-   *
+   * @return false if the (re)tweet should not be shown, true otherwise.
    */
   private bool should_display_retweet (Json.Node root_node, Tweet t) { // {{{
     // Don't show tweets the user retweeted again
