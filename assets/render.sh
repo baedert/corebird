@@ -11,6 +11,17 @@ function render_icons {
         done
 }
 
+function render_alternative {
+        sizes=(16 22 24 32 48 256 )
+
+        for size in ${sizes[@]}
+        do
+          mkdir -p ${size}x${size}
+          rsvg-convert ./corebird_alternative.svg --width="${size}" --height="${size}" \
+                       --format=png -o "./${size}x${size}/corebird_alternative_${size}.png"
+        done
+}
+
 function render_no_avatar {
         rsvg-convert ./no_avatar.svg --width="24" --height="24" \
                        --format=png -o "./no_avatar.png"
@@ -44,6 +55,9 @@ elif [ "$1" = 'all' ]
                 render_no_avatar
                 render_no_banner
                 render_verified
+elif [ "$1" = 'alternative' ]
+  then
+    render_alternative
 else
         echo "Usage: ./render.sh [OPTION], where [OPTION] can be icon, avatar, banner, verified or all."
 fi
