@@ -29,11 +29,7 @@ interface ITimeline : Gtk.Widget, IPage {
   public    abstract int unread_count           {get; set;}
   public    abstract DeltaUpdater delta_updater {get; set;}
 
-  public abstract void load_cached();
-  public abstract void load_newest();
-  public abstract void load_older ();
 
- 
   /**
    * Default implementation for loading the newest tweets
    * from the given function of the twitter api.

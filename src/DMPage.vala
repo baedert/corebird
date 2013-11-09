@@ -156,5 +156,4 @@ class DMPage : IPage, IMessageReceiver, Box {
 
   public void create_tool_button(RadioToolButton? group) {}
   public RadioToolButton? get_tool_button() {return null;}
-  private void update_unread_count() {}
 }
