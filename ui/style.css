@@ -49,6 +49,7 @@
   background-image: none;
   background-color: transparent;
   border: none;
+  box-shadow: none;
 }
 
 .reply-button:hover {
