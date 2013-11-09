@@ -11,7 +11,7 @@ function render_icons {
 	      rsvg-convert ./corebird.svg --width="${size}" --height="${size}" \
                        --format=png -o "./${size}x${size}/corebird.png"
           else
-	    convert ./22x22/corebird_22.png -bordercolor none -border 1 ./24x24/corebird_24.png
+	    convert ./22x22/corebird.png -bordercolor none -border 1 ./24x24/corebird_24.png
 	  fi
         done
 }
@@ -27,7 +27,7 @@ function render_alternative {
 	      rsvg-convert ./corebird_alternative.svg --width="${size}" --height="${size}" \
                        --format=png -o "./${size}x${size}/corebird_alternative.png"
           else
-	    convert ./22x22/corebird_alternative_22.png -bordercolor none -border 1 ./24x24/corebird_alternative_24.png
+	    convert ./22x22/corebird_alternative.png -bordercolor none -border 1 ./24x24/corebird_alternative_24.png
 	  fi
         done
 }
