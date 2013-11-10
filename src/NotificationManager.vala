@@ -15,9 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Notify;
-
-
 class NotificationManager {
 
   public static void init() {
@@ -26,13 +23,11 @@ class NotificationManager {
 
 
   public static void notify (string summary, string body = "",
-                             Urgency urgency = Urgency.NORMAL,
-                             Gdk.Pixbuf? icon = null, string? image = null) {
-    var n = new Notify.Notification (summary, body, null);
-    n.set_urgency (urgency);
+                             Notify.Urgency urgency = Notify.Urgency.NORMAL,
+                             string? icon = null, string? image = null) {
 
-    if (icon != null)
-      n.set_icon_from_pixbuf (icon);
+    var n = new Notify.Notification (summary, body, icon ?? "corebird");
+    n.set_urgency (urgency);
 
     if (image != null)
       n.set_hint("image-path", new GLib.Variant.string (image));
@@ -40,7 +35,19 @@ class NotificationManager {
     try {
       n.show ();
     } catch (GLib.Error e) {
-      warning ("Error while showing notificaiton: %s", e.message);
+      warning ("Error while showing notification: %s", e.message);
+    }
+  }
+
+  public static void notify_pixbuf (string summary, string body, Gdk.Pixbuf icon) {
+    var n = new Notify.Notification (summary, body, null);
+    n.set_urgency (Notify.Urgency.NORMAL); // Let's just assume this is always true
+    n.set_image_from_pixbuf (icon);
+
+    try {
+      n.show ();
+    } catch (GLib.Error e) {
+      warning ("Error while showing notification: %s", e.message);
     }
   }
 

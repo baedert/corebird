@@ -58,10 +58,9 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
         this.max_id =  t.id;
 
         if (Settings.notify_new_mentions ()) {
-          NotificationManager.notify(
+          NotificationManager.notify_pixbuf(
             "New Mention from @"+t.screen_name,
             t.text,
-            Notify.Urgency.NORMAL,
             t.avatar);
         }
       }
