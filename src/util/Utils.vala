@@ -30,6 +30,7 @@ namespace Utils {
 
 
   // TODO: there's probably something for this in glib
+  // TODO: Use GDateTime for this, it's not translatable the current way
   private  const string[] MONTHS = {
     "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
   };
