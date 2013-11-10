@@ -46,6 +46,8 @@ class TweetInfoPage : IPage , ScrollWidget {
   [GtkChild]
   private ListBox bottom_list_box;
   [GtkChild]
+  private ListBox top_list_box;
+  [GtkChild]
   private Spinner progress_spinner;
   [GtkChild]
   private ToggleButton favorite_button;
@@ -79,6 +81,8 @@ class TweetInfoPage : IPage , ScrollWidget {
 
     bottom_list_box.foreach ((w) => {bottom_list_box.remove (w);});
     bottom_list_box.hide ();
+    top_list_box.foreach ((w) => {top_list_box.remove (w);});
+    top_list_box.hide ();
     progress_spinner.hide ();
     media_button.hide ();
 
@@ -168,13 +172,14 @@ class TweetInfoPage : IPage , ScrollWidget {
    */
   private void query_tweet_info () { //{{{
     follow_button.sensitive = false;
+
+    var now = new GLib.DateTime.now_local ();
     var call = account.proxy.new_call ();
     call.set_method ("GET");
     call.set_function ("1.1/statuses/show.json");
     call.add_param ("id", tweet_id.to_string ());
     call.invoke_async.begin (null, (obj, res) => {
       try{call.invoke_async.end (res);}catch(GLib.Error e){critical(e.message);return;}
-      var now = new GLib.DateTime.now_local ();
       this.tweet = new Tweet ();
       var parser = new Json.Parser ();
       try {
@@ -208,6 +213,46 @@ class TweetInfoPage : IPage , ScrollWidget {
         load_replied_to_tweet (tweet.reply_id);
       values_set = true;
     });
+
+
+    //
+    var reply_call = account.proxy.new_call ();
+    reply_call.set_method ("GET");
+    reply_call.set_function ("1.1/search/tweets.json");
+    reply_call.add_param ("q", "to:" + tweet.screen_name);
+    reply_call.add_param ("since_id", tweet_id.to_string ());
+    reply_call.add_param ("count", "200");
+    reply_call.invoke_async.begin (null, (obj, res) => {
+      try { reply_call.invoke_async.end (res); }
+      catch (GLib.Error e) { warning (e.message); return; }
+
+      var parser = new Json.Parser ();
+      try {
+        parser.load_from_data (reply_call.get_payload ());
+      } catch (GLib.Error e) {
+        warning (e.message);
+        debug (reply_call.get_payload ());
+        return;
+      }
+      var statuses_node = parser.get_root ().get_object ().get_array_member ("statuses");
+      message ("Statuses: %u", statuses_node.get_length ());
+      statuses_node.foreach_element ((arr, index, node) => {
+        int64 reply_id = node.get_object ().get_int_member ("in_reply_to_status_id");
+        if (reply_id != tweet_id) {
+          message ("Wrong reply_to id");
+          return;
+        }
+
+        Tweet t = new Tweet ();
+        t.load_from_json (node, now);
+        var tle = new TweetListEntry (t, main_window, account);
+        top_list_box.add (tle);
+        top_list_box.show ();
+      });
+
+    });
+
+
 
   } //}}}
 
