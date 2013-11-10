@@ -17,7 +17,7 @@ function render_icons {
 }
 
 function render_alternative {
-        sizes=(16 22 24 32 48 256 )
+        sizes=(16 22 24 32 48 64 128 256 512)
 
         for size in ${sizes[@]}
         do
