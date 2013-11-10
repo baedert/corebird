@@ -68,7 +68,30 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
 
       int stack_size = Settings.get_tweet_stack_count ();
       message ("Stack size: %d", stack_size);
-      if (stack_size != 0 && unread_count % stack_size == 0) {
+      if (stack_size == 1 && unread_count % stack_size == 0) {
+        if (t.tweet_has_inline_media){
+          /*this has to be done in a callback otherwise the image has not been 
+            downloaded yet*/
+          t.inline_media_added.connect ((tw, pic) => {
+            string summary = "";
+            if (tw.is_retweet){
+              summary = _("%s retweeted %s").printf(tw.retweeted_by, tw.user_name);
+            } else {
+              summary = _("%s tweeted").printf(tw.user_name);
+            }
+            NotificationManager.notify (summary, tw.text, Notify.Urgency.NORMAL, tw.avatar, tw.media, tw.avatar_name);
+          });
+        } else {
+          string summary="";
+          if (t.is_retweet){
+            summary = _("%s retweeted %s").printf(t.retweeted_by, t.user_name);
+          } else {
+            summary = _("%s tweeted").printf(t.user_name);
+          }
+          NotificationManager.notify (summary, t.text, Notify.Urgency.NORMAL, t.avatar);
+        }
+      }
+      else if(stack_size != 0 && unread_count % stack_size == 0) {
         string summary = _("%d new Tweets!").printf (unread_count);
         NotificationManager.notify (summary);
       }
