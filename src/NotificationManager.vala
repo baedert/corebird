@@ -15,29 +15,39 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Notify;
-
-
 class NotificationManager {
 
-  public static void init(){
+  public static void init() {
     Notify.init("Corebird");
   }
 
 
-  public static void notify(string summary, string body="",
-                            Urgency urgency = Urgency.LOW,
-                            Gdk.Pixbuf? pixbuf = null){
+  public static void notify (string summary, string body = "",
+                             Notify.Urgency urgency = Notify.Urgency.NORMAL,
+                             string? icon = null, string? image = null) {
 
-    Notification n = new Notification (summary, body, null);
+    var n = new Notify.Notification (summary, body, icon ?? "corebird");
+    n.set_urgency (urgency);
 
-    n.set_urgency(urgency);
-    n.set_icon_from_pixbuf(pixbuf);
+    if (image != null)
+      n.set_hint("image-path", new GLib.Variant.string (image));
 
-    try{
-      n.show();
-    }catch(GLib.Error e){
-      message("Error while showing notification: %s", e.message);
+    try {
+      n.show ();
+    } catch (GLib.Error e) {
+      warning ("Error while showing notification: %s", e.message);
+    }
+  }
+
+  public static void notify_pixbuf (string summary, string body, Gdk.Pixbuf icon) {
+    var n = new Notify.Notification (summary, body, null);
+    n.set_urgency (Notify.Urgency.NORMAL); // Let's just assume this is always true
+    n.set_image_from_pixbuf (icon);
+
+    try {
+      n.show ();
+    } catch (GLib.Error e) {
+      warning ("Error while showing notification: %s", e.message);
     }
   }
 
@@ -46,7 +56,7 @@ class NotificationManager {
    * Uninitializes the notification manager
    * Should be called when the application gets closed completely.
    */
-  public static void uninit(){
+  public static void uninit() {
     Notify.uninit();
   }
 

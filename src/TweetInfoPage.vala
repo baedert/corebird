@@ -269,14 +269,10 @@ class TweetInfoPage : IPage , ScrollWidget {
     favorite_button.active = tweet.favorited;
 
     // TODO: Also do this on inline_media_added signal
-    if (tweet.has_inline_media) {
+    if (tweet.media != null) {
       tweet_media = tweet.media;
       media_button.show ();
       media_button.set_bg (tweet.inline_media);
-//      media_button.clicked.connect (() => {
-//        ImageDialog id = new ImageDialog (main_window, tweet.media);
-//        id.show_all ();
-//      });
     }
 
     if (tweet.user_id == account.id) {
