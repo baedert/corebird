@@ -122,6 +122,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       }
       text_box.pack_end (inline_button, false, false);
       inline_button.valign = Align.START;
+      inline_button.margin_top = 4;
       inline_button.clicked.connect(inline_media_button_clicked_cb);
       inline_button.show ();
     }
@@ -163,6 +164,14 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     });
 
     values_set = true;
+
+    var sc = this.get_style_context ();
+    Gdk.RGBA sel_bg = sc.get_background_color (Gtk.StateFlags.PRELIGHT);
+    message ("%f, %f, %f, %f", sel_bg.red, sel_bg.green, sel_bg.blue, sel_bg.alpha);
+    retweet_button.override_background_color (Gtk.StateFlags.NORMAL, sel_bg);
+    favorite_button.override_background_color (Gtk.StateFlags.NORMAL, sel_bg);
+    reply_button.override_background_color (Gtk.StateFlags.NORMAL, sel_bg);
+    more_button.override_background_color (Gtk.StateFlags.NORMAL, sel_bg);
   }
 
   private void delete_tweet_activated () {
@@ -184,6 +193,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     inline_button.set_bg (pic);
     text_box.pack_end (inline_button, false, false);
     inline_button.valign = Align.START;
+    inline_button.margin_top = 4;
     inline_button.clicked.connect(inline_media_button_clicked_cb);
     inline_button.show ();
   }
@@ -347,8 +357,9 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
                  tweet.is_retweet ? tweet.rt_created_at : tweet.created_at);
     string link = "https://twitter.com/%s/status/%s".printf (tweet.screen_name,
                                                              tweet.id.to_string());
-    time_delta_label.label = "<small><a href='%s' title='Open in Browser'>%s</a></small>"
-                  .printf (link, Utils.get_time_delta (then, cur_time));
+//    time_delta_label.label = "<small><a href='%s' title='Open in Browser'>%s</a></small>"
+//                  .printf (link, Utils.get_time_delta (then, cur_time));
+    time_delta_label.label = "<small>%s</small>".printf (Utils.get_time_delta (then, cur_time));
     return (int)(cur_time.difference (then) / 1000.0 / 1000.0);
   } //}}}
 
