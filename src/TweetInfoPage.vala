@@ -222,7 +222,7 @@ class TweetInfoPage : IPage , ScrollWidget {
     reply_call.add_param ("q", "to:" + tweet.screen_name);
     reply_call.add_param ("since_id", tweet_id.to_string ());
     reply_call.add_param ("count", "200");
-    reply_call.invoke_async.begin (null, (obj, res) => {
+    reply_call.invoke_async.begin (null, (o, res) => {
       try { reply_call.invoke_async.end (res); }
       catch (GLib.Error e) { warning (e.message); return; }
 
@@ -234,10 +234,19 @@ class TweetInfoPage : IPage , ScrollWidget {
         debug (reply_call.get_payload ());
         return;
       }
+      stdout.printf (reply_call.get_payload () + "\n");
       var statuses_node = parser.get_root ().get_object ().get_array_member ("statuses");
       message ("Statuses: %u", statuses_node.get_length ());
+      int n_replies = 0;
       statuses_node.foreach_element ((arr, index, node) => {
-        int64 reply_id = node.get_object ().get_int_member ("in_reply_to_status_id");
+        if (n_replies >= 5)
+          return;
+
+        var obj = node.get_object ();
+        if (!obj.has_member ("in_reply_to_status_id") || obj.get_null_member ("in_reply_to_status_id"))
+          return;
+
+        int64 reply_id = obj.get_int_member ("in_reply_to_status_id");
         if (reply_id != tweet_id) {
           message ("Wrong reply_to id");
           return;
@@ -248,6 +257,7 @@ class TweetInfoPage : IPage , ScrollWidget {
         var tle = new TweetListEntry (t, main_window, account);
         top_list_box.add (tle);
         top_list_box.show ();
+        n_replies ++;
       });
 
     });
