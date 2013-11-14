@@ -38,15 +38,32 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
 
   private void stream_message_received (StreamMessageType type, Json.Node root_node){ // {{{
     Json.Object root = root_node.get_object ();
-    if(type == StreamMessageType.TWEET) {
-      if(root.get_string_member("text").contains("@"+account.screen_name)) {
-        GLib.DateTime now = new GLib.DateTime.now_local();
+    if (type == StreamMessageType.TWEET) {
+      if (root.get_string_member("text").contains("@"+account.screen_name)) {
+        GLib.DateTime now = new GLib.DateTime.now_local ();
         Tweet t = new Tweet();
         t.load_from_json(root_node, now);
         if (t.user_id == account.id)
           return;
 
-        this.balance_next_upper_change(TOP);
+        // If the tweet is a tweet the user retweeted, check
+        // if it's already in the list. If so, mark it retweeted
+        if (t.retweeted_by == account.name) {
+          tweet_list.foreach ((w) => {
+            if (w == null || !(w is TweetListEntry))
+              return;
+
+            var tle = (TweetListEntry) w;
+            if (tle.tweet.id == t.rt_id) {
+              tle.tweet.retweeted = true;
+            }
+          });
+          return;
+        }
+
+
+
+        this.balance_next_upper_change (TOP);
         var entry = new TweetListEntry(t, main_window, account);
         entry.seen = false;
 
