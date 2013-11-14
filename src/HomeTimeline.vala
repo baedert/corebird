@@ -115,8 +115,24 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
    */
   private bool should_display_retweet (Json.Node root_node, Tweet t) { // {{{
     // Don't show tweets the user retweeted again
-    if (t.retweeted_by == account.name)
+
+    // If the tweet is a tweet the user retweeted, check
+    // if it's already in the list. If so, mark it retweeted
+    if (t.retweeted_by == account.name) {
+      message ("RETWEETED BY USER!");
+      tweet_list.foreach ((w) => {
+        if (w == null || !(w is TweetListEntry))
+          return;
+
+        var tle = (TweetListEntry) w;
+        if (tle.tweet.id == t.rt_id) {
+          tle.tweet.retweeted = true;
+          message ("FOUND!");
+        }
+      });
+
       return false;
+    }
 
     // Don't show it if the user already follows the retweeted user
 //    if (root_node.get_object ().get_object_member ("retweeted_status").get_object_member ("user")
