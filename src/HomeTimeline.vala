@@ -35,6 +35,7 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
     tweet_list.set_placeholder (spinner);
   }
 
+  // TODO: This is huge, refactor it.
   private void stream_message_received (StreamMessageType type, Json.Node root) { // {{{
     if (type == StreamMessageType.TWEET) {
       GLib.DateTime now = new GLib.DateTime.now_local ();
@@ -68,7 +69,15 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
 
       int stack_size = Settings.get_tweet_stack_count ();
       message ("Stack size: %d", stack_size);
-      if (stack_size != 0 && unread_count % stack_size == 0) {
+      if (stack_size == 1) {
+        if (t.has_inline_media){
+          t.inline_media_added.connect (tweet_inline_media_added_cb);
+        } else {
+          // calling this with image = null will just create the
+          // appropriate notification etc.
+          tweet_inline_media_added_cb (t, null);
+        }
+      } else if(stack_size != 0 && unread_count % stack_size == 0) {
         string summary = _("%d new Tweets!").printf (unread_count);
         NotificationManager.notify (summary);
       }
@@ -106,8 +115,22 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
    */
   private bool should_display_retweet (Json.Node root_node, Tweet t) { // {{{
     // Don't show tweets the user retweeted again
-    if (t.retweeted_by == account.name)
+
+    // If the tweet is a tweet the user retweeted, check
+    // if it's already in the list. If so, mark it retweeted
+    if (t.retweeted_by == account.name) {
+      tweet_list.foreach ((w) => {
+        if (w == null || !(w is TweetListEntry))
+          return;
+
+        var tle = (TweetListEntry) w;
+        if (tle.tweet.id == t.rt_id) {
+          tle.tweet.retweeted = true;
+        }
+      });
+
       return false;
+    }
 
     // Don't show it if the user already follows the retweeted user
 //    if (root_node.get_object ().get_object_member ("retweeted_status").get_object_member ("user")
@@ -136,6 +159,19 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
     return true;
   } // }}}
 
+  // Will be called once the inline media of a tweet has been loaded.
+  private void tweet_inline_media_added_cb (Tweet t, Gdk.Pixbuf? image) {
+    string summary = "";
+    if (t.is_retweet){
+      summary = _("%s retweeted %s").printf(t.retweeted_by, t.user_name);
+    } else {
+      summary = _("%s tweeted").printf(t.user_name);
+    }
+    NotificationManager.notify (summary, t.text, Notify.Urgency.NORMAL,
+                                Utils.user_file ("assets/avatars/" + t.avatar_name),
+                                t.media);
+
+  }
 
 
   public override void load_newest () {

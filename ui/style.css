@@ -93,7 +93,6 @@
 }
 
 .time-delta-label {
-  -GtkWidget-link-color: #555;
 }
 
 .text-only-button{
@@ -133,7 +132,7 @@
 
 .pixbuf-button:hover {
 /*  box-shadow: 0px 0px 10px alpha(black, 0.8);*/
-  border: 2px solid green;
+  border: 2px solid #4a90d9;
 }
 
 .pixbuf-button:active {

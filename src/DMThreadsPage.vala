@@ -201,8 +201,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       t_e.last_message = text;
       t_e.last_message_id = message_id;
       if (Settings.notify_new_dms ()) {
-        NotificationManager.notify( _("New direct message!"), text, Notify.Urgency.NORMAL,
-                                   t_e.avatar);
+        NotificationManager.notify_pixbuf( _("New direct message!"), text, t_e.avatar);
       }
       return;
     }

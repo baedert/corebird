@@ -211,7 +211,7 @@ namespace TweetUtils {
   async Gdk.Pixbuf download_avatar (string avatar_url) {
     string avatar_name = Utils.get_avatar_name (avatar_url);
     Gdk.Pixbuf avatar = null;
-    var session = new Soup.SessionAsync ();
+    var session = new Soup.Session ();
     var msg     = new Soup.Message ("GET", avatar_url);
     session.queue_message (msg, (s, _msg) => {
       string dest = Utils.user_file ("assets/avatars/" + avatar_name);

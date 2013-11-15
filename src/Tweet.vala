@@ -33,8 +33,8 @@ class Tweet : GLib.Object {
   public int64 id;
   /** If this tweet is a retweet, this is its id */
   public int64 rt_id = 0;
-  public bool retweeted = false;
-  public bool favorited = false;
+  public bool retweeted { get; set; default = false; }
+  public bool favorited { get; set; default = false; }
   public string text;
   public int64 user_id;
   public string user_name;
@@ -62,6 +62,8 @@ class Tweet : GLib.Object {
   public string media_thumb;
   public signal void inline_media_added(Gdk.Pixbuf? media);
   public bool has_inline_media = false;
+
+  /** if the json from twitter has inline media **/
   public int type = -1;
   private GLib.SList<TweetUtils.Sequence?> urls;
   public int retweet_count;
@@ -182,6 +184,7 @@ class Tweet : GLib.Object {
       var medias = entities.get_array_member ("media");
       medias.foreach_element ((arr, index, node) => {
         var url = node.get_object();
+        has_inline_media = true;
         string expanded_url = url.get_string_member ("expanded_url");
         expanded_url = expanded_url.replace ("&", "&amp;");
         Json.Array indices = url.get_array_member ("indices");
