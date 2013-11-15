@@ -26,8 +26,7 @@ class ImageDialog : Gtk.Window {
   private Image image;
   [GtkChild]
   private Gtk.Menu image_context_menu;
-  [GtkChild]
-  private FileChooserDialog file_dialog;
+  private new Gtk.Window parent;
 
   private new string path;
   private double dnd_x;
@@ -35,6 +34,7 @@ class ImageDialog : Gtk.Window {
 
   public ImageDialog (Window parent, string path) {
     this.path = path;
+    this.parent = parent;
 
     //Choose proper width/height
     Gdk.Pixbuf pixbuf = null;
@@ -79,11 +79,6 @@ class ImageDialog : Gtk.Window {
     }
 
     scroller.set_size_request(win_width, win_height);
-    file_dialog.action = FileChooserAction.SAVE;
-    string filename = Utils.get_file_name(path);
-    file_dialog.set_current_name(filename);
-    file_dialog.set_transient_for (this);
-
     this.set_modal(true);
     this.set_transient_for(parent);
   }
@@ -112,10 +107,18 @@ class ImageDialog : Gtk.Window {
 
   [GtkCallback]
   private void save_item_activated_cb () {
+     var file_dialog = new FileChooserDialog (_("Save image"), parent,
+                                              Gtk.FileChooserAction.SAVE,
+                                              _("Cancel"), Gtk.ResponseType.CANCEL,
+                                              _("Save"), Gtk.ResponseType.ACCEPT);
+    string filename = Utils.get_file_name(path);
+    file_dialog.set_current_name(filename);
+    file_dialog.set_transient_for (this);
+
+
     int response = file_dialog.run ();
-    if (response == -1)
-      file_dialog.close ();
-    else if (response == 0) {
+    message ("Response: %d", response);
+    if (response == Gtk.ResponseType.ACCEPT) {
       File dest = File.new_for_uri (file_dialog.get_uri ());
       message ("Source: %s", path);
       message ("Destin: %s", file_dialog.get_uri ());
@@ -125,8 +128,10 @@ class ImageDialog : Gtk.Window {
       } catch (GLib.Error e) {
         critical (e.message);
       }
+      file_dialog.destroy ();
+    } else if (response == -1)
       file_dialog.close ();
-    }
+
   }
 
   [GtkCallback]

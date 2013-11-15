@@ -56,7 +56,7 @@ namespace InlineMediaDownloader {
 
   private async void two_step_load(Tweet t, string first_url, string regex_str,
                                           int match_index) {
-    var session = new Soup.SessionAsync();
+    var session = new Soup.Session();
     var msg     = new Soup.Message("GET", first_url);
     session.queue_message(msg, (_s, _msg) => {
     string back = (string)_msg.response_body.data;
@@ -96,7 +96,7 @@ namespace InlineMediaDownloader {
     Soup.Session session = sess;
     debug("Directly Downloading %s", url);
     if(session == null)
-      session = new Soup.SessionAsync();
+      session = new Soup.Session();
 
     var msg = new Soup.Message("GET", url);
 

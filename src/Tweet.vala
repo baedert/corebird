@@ -33,8 +33,8 @@ class Tweet : GLib.Object {
   public int64 id;
   /** If this tweet is a retweet, this is its id */
   public int64 rt_id = 0;
-  public bool retweeted = false;
-  public bool favorited = false;
+  public bool retweeted { get; set; default = false; }
+  public bool favorited { get; set; default = false; }
   public string text;
   public int64 user_id;
   public string user_name;
