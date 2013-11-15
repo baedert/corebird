@@ -15,6 +15,7 @@
   -GtkButton-inner-border: 0;
   -GtkWidget-focus-line-width: 0;
   -GtkWidget-focus-padding: 0;
+  -GtkButton-image-spacing: 0;
 }
 
 .button-wide {
