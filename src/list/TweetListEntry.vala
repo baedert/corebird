@@ -212,18 +212,20 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     bool buttons_visible = (bool)(flags & (StateFlags.PRELIGHT | StateFlags.SELECTED));
     buttons_visible = (buttons_visible || more_menu.visible) && !reply_revealer.reveal_child;
     if (buttons_visible) {
-      retweet_button.show();
-      favorite_button.show();
-      reply_button.show();
-      more_button.show();
+      retweet_button.show ();
+      favorite_button.show ();
+      reply_button.show ();
+      more_button.show ();
+      conversation_label.hide ();
       if (account.id == tweet.user_id) {
-        retweet_button.hide();
+        retweet_button.hide ();
       }
     } else {
         retweet_button.visible = tweet.retweeted;
         favorite_button.visible = tweet.favorited;
-        reply_button.hide();
-        more_button.hide();
+        reply_button.hide ();
+        more_button.hide ();
+        conversation_label.visible = tweet.reply_id != 0;
     }
   } //}}}
 

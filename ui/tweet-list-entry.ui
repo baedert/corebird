@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 on Fri Nov 15 12:59:29 2013 -->
+<!-- Generated with glade 3.16.0 on Fri Nov 15 15:21:25 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.10 -->
   <!-- interface-requires corebird 0.0 -->
@@ -89,6 +89,7 @@
                         <property name="valign">start</property>
                         <property name="margin_top">2</property>
                         <property name="margin_bottom">6</property>
+                        <property name="yalign">0.50999999046325684</property>
                         <style>
                           <class name="text-only-button"/>
                         </style>
@@ -105,6 +106,8 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="valign">start</property>
+                        <property name="margin_left">6</property>
+                        <property name="margin_right">4</property>
                         <property name="margin_top">2</property>
                         <property name="hexpand">True</property>
                         <property name="xalign">0</property>
@@ -238,7 +241,7 @@
                     <child>
                       <object class="GtkLabel" id="conversation_label">
                         <property name="can_focus">False</property>
-                        <property name="valign">baseline</property>
+                        <property name="valign">center</property>
                         <property name="margin_left">4</property>
                         <property name="margin_right">4</property>
                         <property name="margin_top">2</property>
@@ -259,7 +262,7 @@
                       <object class="GtkLabel" id="time_delta_label">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="valign">baseline</property>
+                        <property name="valign">center</property>
                         <property name="margin_top">2</property>
                         <property name="label">label</property>
                         <property name="use_markup">True</property>
