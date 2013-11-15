@@ -26,7 +26,7 @@ class ImageDialog : Gtk.Window {
   private Image image;
   [GtkChild]
   private Gtk.Menu image_context_menu;
-  private Gtk.Window parent;
+  private new Gtk.Window parent;
 
   private new string path;
   private double dnd_x;
