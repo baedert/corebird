@@ -164,14 +164,6 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     });
 
     values_set = true;
-
-    var sc = this.get_style_context ();
-    Gdk.RGBA sel_bg = sc.get_background_color (Gtk.StateFlags.PRELIGHT);
-    message ("%f, %f, %f, %f", sel_bg.red, sel_bg.green, sel_bg.blue, sel_bg.alpha);
-    retweet_button.override_background_color (Gtk.StateFlags.NORMAL, sel_bg);
-    favorite_button.override_background_color (Gtk.StateFlags.NORMAL, sel_bg);
-    reply_button.override_background_color (Gtk.StateFlags.NORMAL, sel_bg);
-    more_button.override_background_color (Gtk.StateFlags.NORMAL, sel_bg);
   }
 
   private void delete_tweet_activated () {

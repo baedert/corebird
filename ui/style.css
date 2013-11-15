@@ -29,8 +29,6 @@
   font-family: FontAwesome;
   font-size: 1.0em;
   background-color: white;
-  border: none;
-  background-image: none;
 }
 .retweet-button:hover,
 .retweet-button:active {
