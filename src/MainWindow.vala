@@ -229,8 +229,10 @@ class MainWindow : ApplicationWindow {
    * @param ... The parameters to pass to the page
    */
   public void switch_page (int page_id, ...) {
-    if (page_id == history.current)
-     return;
+    if (page_id == history.current) {
+      pages[page_id].on_join (page_id, va_list ());
+      return;
+    }
 
     bool push = true;
 
