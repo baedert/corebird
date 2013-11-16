@@ -219,6 +219,23 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     bool buttons_visible = (bool)(flags & (StateFlags.PRELIGHT | StateFlags.SELECTED));
     buttons_visible = (buttons_visible || more_menu.visible) && !reply_revealer.reveal_child;
     if (buttons_visible) {
+      hover_box.margin_right = time_delta_label.get_allocated_width () + 6;
+      int x1, y1;
+      int w1 = screen_name_label.get_allocated_width ();
+      screen_name_label.translate_coordinates (this.window, 0, 0, out x1, out y1);
+      int x2, y2;
+      hover_box.translate_coordinates (this.window, 0, 0, out x2, out y2);
+
+      message ("x1: %d, w1: %d", x1, w1);
+      message ("x2: %d", x2);
+
+      if (x1 + (w1 * 2) > x2) {
+        message ("WHOA");
+        message ("Diff: %d", x2 - (x1 + (w1)));
+        screen_name_label.set_size_request (20, 40);
+        screen_name_label.queue_resize ();
+      }
+
       retweet_button.show ();
       favorite_button.show ();
       reply_button.show ();
