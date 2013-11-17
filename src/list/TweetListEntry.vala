@@ -170,6 +170,11 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
         retweet_button.active = !retweet_button.active;
     });
 
+    time_delta_label.size_allocate.connect (() => {
+
+      hover_box.margin_right = time_delta_label.get_allocated_width () + 6;
+    });
+
     values_set = true;
   }
 
@@ -219,23 +224,10 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     bool buttons_visible = (bool)(flags & (StateFlags.PRELIGHT | StateFlags.SELECTED));
     buttons_visible = (buttons_visible || more_menu.visible) && !reply_revealer.reveal_child;
     if (buttons_visible) {
-      hover_box.margin_right = time_delta_label.get_allocated_width () + 6;
-      int x1, y1;
-      int w1 = screen_name_label.get_allocated_width ();
-      screen_name_label.translate_coordinates (this.window, 0, 0, out x1, out y1);
-      int x2, y2;
-      hover_box.translate_coordinates (this.window, 0, 0, out x2, out y2);
-
-      message ("x1: %d, w1: %d", x1, w1);
-      message ("x2: %d", x2);
-
-      if (x1 + (w1 * 2) > x2) {
-        message ("WHOA");
-        message ("Diff: %d", x2 - (x1 + (w1)));
-        screen_name_label.set_size_request (20, 40);
-        screen_name_label.queue_resize ();
-      }
-
+      var ct = this.get_style_context ();
+      Gdk.RGBA hover_bg;
+      hover_box.override_background_color (Gtk.StateFlags.NORMAL,
+                                           ct.get_background_color (Gtk.StateFlags.PRELIGHT));
       retweet_button.show ();
       favorite_button.show ();
       reply_button.show ();
@@ -245,11 +237,15 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
         retweet_button.hide ();
       }
     } else {
-        retweet_button.visible = tweet.retweeted;
-        favorite_button.visible = tweet.favorited;
-        reply_button.hide ();
-        more_button.hide ();
-        conversation_label.visible = tweet.reply_id != 0;
+      var ct = this.get_style_context ();
+      Gdk.RGBA hover_bg;
+      hover_box.override_background_color (Gtk.StateFlags.NORMAL,
+                                           ct.get_background_color (Gtk.StateFlags.NORMAL));
+      retweet_button.visible = tweet.retweeted;
+      favorite_button.visible = tweet.favorited;
+      reply_button.hide ();
+      more_button.hide ();
+      conversation_label.visible = tweet.reply_id != 0;
     }
   } //}}}
 
