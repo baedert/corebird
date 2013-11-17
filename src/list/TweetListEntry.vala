@@ -255,13 +255,13 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
 
   [GtkCallback]
   private bool key_released_cb (Gdk.EventKey evt) {
-    switch(evt.keyval) {
 #if __DEV
+    switch(evt.keyval) {
       case Gdk.Key.k:
         stdout.printf (tweet.json_data+"\n");
         return true;
-#endif
     }
+#endif
     return false;
   }
 
@@ -370,7 +370,6 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
                                                              tweet.id.to_string());
     time_delta_label.label = "<small><a href='%s' title='Open in Browser'>%s</a></small>"
                              .printf (link, Utils.get_time_delta (then, cur_time));
-//    time_delta_label.label = "<small>%s</small>".printf (Utils.get_time_delta (then, cur_time));
     return (int)(cur_time.difference (then) / 1000.0 / 1000.0);
   } //}}}
 
