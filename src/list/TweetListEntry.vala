@@ -171,7 +171,6 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     });
 
     time_delta_label.size_allocate.connect (() => {
-
       hover_box.margin_right = time_delta_label.get_allocated_width () + 6;
     });
 
@@ -225,7 +224,6 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     buttons_visible = (buttons_visible || more_menu.visible) && !reply_revealer.reveal_child;
     if (buttons_visible) {
       var ct = this.get_style_context ();
-      Gdk.RGBA hover_bg;
       hover_box.override_background_color (Gtk.StateFlags.NORMAL,
                                            ct.get_background_color (Gtk.StateFlags.PRELIGHT));
       retweet_button.show ();
@@ -238,7 +236,6 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       }
     } else {
       var ct = this.get_style_context ();
-      Gdk.RGBA hover_bg;
       hover_box.override_background_color (Gtk.StateFlags.NORMAL,
                                            ct.get_background_color (Gtk.StateFlags.NORMAL));
       retweet_button.visible = tweet.retweeted;
@@ -371,9 +368,9 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
                  tweet.is_retweet ? tweet.rt_created_at : tweet.created_at);
     string link = "https://twitter.com/%s/status/%s".printf (tweet.screen_name,
                                                              tweet.id.to_string());
-//    time_delta_label.label = "<small><a href='%s' title='Open in Browser'>%s</a></small>"
-//                  .printf (link, Utils.get_time_delta (then, cur_time));
-    time_delta_label.label = "<small>%s</small>".printf (Utils.get_time_delta (then, cur_time));
+    time_delta_label.label = "<small><a href='%s' title='Open in Browser'>%s</a></small>"
+                             .printf (link, Utils.get_time_delta (then, cur_time));
+//    time_delta_label.label = "<small>%s</small>".printf (Utils.get_time_delta (then, cur_time));
     return (int)(cur_time.difference (then) / 1000.0 / 1000.0);
   } //}}}
 
