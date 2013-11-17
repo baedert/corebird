@@ -1,8 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 on Sun Nov 17 15:09:22 2013 -->
+<!-- Generated with glade 3.16.0 on Sun Nov 17 17:21:40 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.10 -->
   <!-- interface-requires corebird 0.0 -->
+  <object class="GtkMenu" id="more_menu">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkMenuItem" id="more_menu_quote_item">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Quote</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="quote_item_activated_cb" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="more_menu_detail_item">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Details</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="detail_item_activated_cb" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="more_menu_delete_item">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Delete</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="delete_item_activated_cb" swapped="no"/>
+      </object>
+    </child>
+  </object>
   <template class="TweetListEntry" parent="GtkListBoxRow">
     <property name="visible">True</property>
     <property name="can_focus">True</property>
@@ -60,7 +91,7 @@
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="valign">baseline</property>
-                            <property name="margin_bottom">8</property>
+                            <property name="margin_bottom">4</property>
                             <property name="yalign">0.50999999046325684</property>
                             <style>
                               <class name="text-only-button"/>
@@ -403,35 +434,4 @@
       </object>
     </child>
   </template>
-  <object class="GtkMenu" id="more_menu">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <child>
-      <object class="GtkMenuItem" id="more_menu_quote_item">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Quote</property>
-        <property name="use_underline">True</property>
-        <signal name="activate" handler="quote_item_activated_cb" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="more_menu_detail_item">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Details</property>
-        <property name="use_underline">True</property>
-        <signal name="activate" handler="detail_item_activated_cb" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="more_menu_delete_item">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Delete</property>
-        <property name="use_underline">True</property>
-        <signal name="activate" handler="delete_item_activated_cb" swapped="no"/>
-      </object>
-    </child>
-  </object>
 </interface>
