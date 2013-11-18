@@ -113,6 +113,7 @@ set (VALA_SOURCE
   src/DMPage.vala
   src/UserCounter.vala
   src/DefaultTimeline.vala
+  src/ListsPage.vala
   src/widgets/ImageBox.vala
   src/widgets/ImageLabel.vala
   src/widgets/PixbufButton.vala
