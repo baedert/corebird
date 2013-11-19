@@ -35,6 +35,7 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
     tweet_list.set_placeholder (spinner);
   }
 
+  // TODO: This is huge, refactor it.
   private void stream_message_received (StreamMessageType type, Json.Node root) { // {{{
     if (type == StreamMessageType.TWEET) {
       GLib.DateTime now = new GLib.DateTime.now_local ();
@@ -44,30 +45,39 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
       if (t.is_retweet && !should_display_retweet (root, t))
         return;
 
+      bool auto_scroll = Settings.auto_scroll_on_new_tweets ();
+
       this.balance_next_upper_change (TOP);
-      if (this.scrolled_up && (t.user_id == account.id ||
-          Settings.auto_scroll_on_new_tweets ())) {
-        this.scroll_up_next ();
+      if (this.scrolled_up && (t.user_id == account.id || auto_scroll)) {
+        this.scroll_up_next (true, true);
       }
 
-      if (main_window.cur_page_id != this.id ||
-          !Settings.auto_scroll_on_new_tweets () ||
-          !this.scrolled_up) {
-        unread_count++;
+      var entry = new TweetListEntry(t, main_window, account);
+      entry.seen = this.scrolled_up && auto_scroll &&
+                   main_window.cur_page_id == this.id;
+      delta_updater.add (entry);
+      tweet_list.add(entry);
+
+
+      if (!entry.seen) {
+        unread_count ++;
         update_unread_count ();
       }
 
-
-      var entry = new TweetListEntry(t, main_window, account);
-      entry.seen = Settings.auto_scroll_on_new_tweets ();
-      delta_updater.add (entry);
-      tweet_list.add(entry);
 
       this.max_id = t.id;
 
       int stack_size = Settings.get_tweet_stack_count ();
       message ("Stack size: %d", stack_size);
-      if (stack_size != 0 && unread_count % stack_size == 0) {
+      if (stack_size == 1) {
+        if (t.has_inline_media){
+          t.inline_media_added.connect (tweet_inline_media_added_cb);
+        } else {
+          // calling this with image = null will just create the
+          // appropriate notification etc.
+          tweet_inline_media_added_cb (t, null);
+        }
+      } else if(stack_size != 0 && unread_count % stack_size == 0) {
         string summary = _("%d new Tweets!").printf (unread_count);
         NotificationManager.notify (summary);
       }
@@ -94,16 +104,33 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
 
 
   /**
+   * Determines whether the given tweet should be displayed.
+   * This is only important for retweets which should not be
+   * shown if, e.g., the user himself retweeted the original tweet, etc.
    *
+   * @param root_node The Json.Node representing the root node of the tweet's json data
+   * @param t The tweet object constructed from the given root_node
    *
-   *
-   *
-   *
+   * @return false if the (re)tweet should not be shown, true otherwise.
    */
   private bool should_display_retweet (Json.Node root_node, Tweet t) { // {{{
     // Don't show tweets the user retweeted again
-    if (t.retweeted_by == account.name)
+
+    // If the tweet is a tweet the user retweeted, check
+    // if it's already in the list. If so, mark it retweeted
+    if (t.retweeted_by == account.name) {
+      tweet_list.foreach ((w) => {
+        if (w == null || !(w is TweetListEntry))
+          return;
+
+        var tle = (TweetListEntry) w;
+        if (tle.tweet.id == t.rt_id) {
+          tle.tweet.retweeted = true;
+        }
+      });
+
       return false;
+    }
 
     // Don't show it if the user already follows the retweeted user
 //    if (root_node.get_object ().get_object_member ("retweeted_status").get_object_member ("user")
@@ -132,6 +159,19 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
     return true;
   } // }}}
 
+  // Will be called once the inline media of a tweet has been loaded.
+  private void tweet_inline_media_added_cb (Tweet t, Gdk.Pixbuf? image) {
+    string summary = "";
+    if (t.is_retweet){
+      summary = _("%s retweeted %s").printf(t.retweeted_by, t.user_name);
+    } else {
+      summary = _("%s tweeted").printf(t.user_name);
+    }
+    NotificationManager.notify (summary, t.text, Notify.Urgency.NORMAL,
+                                Utils.user_file ("assets/avatars/" + t.avatar_name),
+                                t.media);
+
+  }
 
 
   public override void load_newest () {

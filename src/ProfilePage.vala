@@ -391,7 +391,9 @@ class ProfilePage : ScrollWidget, IPage {
   }
 
   public void on_leave () {
-    data_cancellable.cancel ();
+    // TODO: Reenable this once a new librest release is out;
+    //       We might otherwise overwrite the new user's data with that from the old one.
+//    data_cancellable.cancel ();
     account.user_counter.save (account.db);
   }
 

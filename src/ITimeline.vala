@@ -29,11 +29,7 @@ interface ITimeline : Gtk.Widget, IPage {
   public    abstract int unread_count           {get; set;}
   public    abstract DeltaUpdater delta_updater {get; set;}
 
-  public abstract void load_cached();
-  public abstract void load_newest();
-  public abstract void load_older ();
 
- 
   /**
    * Default implementation for loading the newest tweets
    * from the given function of the twitter api.
@@ -51,9 +47,16 @@ interface ITimeline : Gtk.Widget, IPage {
     if (max_id > 0)
       call.add_param ("max_id", (max_id - 1).to_string ());
 
-    call.invoke_async.begin(null, () => {
+    call.invoke_async.begin(null, (obj, res) => {
+      try {
+        call.invoke_async.end (res);
+      } catch (GLib.Error e) {
+        warning (e.message);
+        return;
+      }
+
       string back = call.get_payload();
-//      stdout.printf(back+"\n");
+
       var parser = new Json.Parser();
       try {
         parser.load_from_data(back);

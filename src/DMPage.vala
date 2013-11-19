@@ -35,7 +35,7 @@ class DMPage : IPage, IMessageReceiver, Box {
   private DMPlaceholderBox placeholder_box = new DMPlaceholderBox ();
 
   private int64 user_id;
-
+  private int64 lowest_id = int64.MAX;
 
   public DMPage (int id) {
     this.id = id;
@@ -44,6 +44,7 @@ class DMPage : IPage, IMessageReceiver, Box {
     messages_list.set_sort_func (ITwitterItem.sort_func_inv);
     placeholder_box.show ();
     messages_list.set_placeholder(placeholder_box);
+    scroll_widget.scrolled_to_start.connect (load_older);
   }
 
   public void stream_message_received (StreamMessageType type, Json.Node root) { // {{{
@@ -68,6 +69,36 @@ class DMPage : IPage, IMessageReceiver, Box {
     }
   } /// }}}
 
+  private void load_older () {
+    var now = new GLib.DateTime.now_local ();
+    scroll_widget.balance_next_upper_change (TOP);
+    // Load messages
+    // TODO: Fix code duplication
+    account.db.select ("dms").cols ("from_id", "to_id", "text", "from_name", "from_screen_name",
+                                    "avatar_url", "timestamp", "id")
+              .where (@"(`from_id`='$user_id' OR `to_id`='$user_id') AND `id` < '$lowest_id'")
+              .order ("timestamp DESC")
+              .limit (35)
+              .run ((vals) => {
+      int64 id = int64.parse (vals[7]);
+      if (id < lowest_id)
+        lowest_id = id;
+
+      var entry = new DMListEntry ();
+      entry.id = id;
+      entry.timestamp = int64.parse (vals[6]);
+      entry.text = vals[2];
+      entry.name = vals[3];
+      entry.screen_name = vals[4];
+      entry.avatar_url = vals[5];
+      entry.load_avatar ();
+      entry.update_time_delta (now);
+      delta_updater.add (entry);
+      messages_list.add (entry);
+      return true;
+    });
+
+  }
 
   public void on_join (int page_id, va_list arg_list) { // {{{
     int64 user_id = arg_list.arg<int64> ();
@@ -89,12 +120,17 @@ class DMPage : IPage, IMessageReceiver, Box {
     var now = new GLib.DateTime.now_local ();
     // Load messages
     account.db.select ("dms").cols ("from_id", "to_id", "text", "from_name", "from_screen_name",
-                                    "avatar_url", "timestamp")
+                                    "avatar_url", "timestamp", "id")
               .where (@"`from_id`='$user_id' OR `to_id`='$user_id'")
               .order ("timestamp DESC")
               .limit (35)
               .run ((vals) => {
+      int64 id = int64.parse (vals[7]);
+      if (id < lowest_id)
+        lowest_id = id;
+
       var entry = new DMListEntry ();
+      entry.id = id;
       entry.timestamp = int64.parse (vals[6]);
       entry.text = vals[2];
       entry.name = vals[3];
@@ -156,5 +192,4 @@ class DMPage : IPage, IMessageReceiver, Box {
 
   public void create_tool_button(RadioToolButton? group) {}
   public RadioToolButton? get_tool_button() {return null;}
-  private void update_unread_count() {}
 }

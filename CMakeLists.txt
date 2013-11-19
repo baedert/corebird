@@ -119,7 +119,6 @@ set (VALA_SOURCE
   src/widgets/ScrollWidget.vala
   src/widgets/TextButton.vala
   src/widgets/BadgeRadioToolButton.vala
-  src/widgets/InvisibilityBin.vala
   src/widgets/ImageOverlay.vala
   src/widgets/AccountCreateWidget.vala
   src/widgets/AccountInfoWidget.vala

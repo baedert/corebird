@@ -11,9 +11,6 @@
     <glade-widget-class name="ImageLabel" generic-name="imagelabel"
           title="ImageLabel" parent="GtkLabel" />
 
-    <glade-widget-class name="InvisibilityBin" generic-name="invisibilitybin"
-          title="InvisibilityBin" parent="GtkEventBox" />
-
     <glade-widget-class name="ScrollWidget" generic-name="scrollwidget"
           title="ScrollWidget" parent="GtkScrolledWindow" />
 

@@ -101,6 +101,8 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     AccelGroup ag = new AccelGroup ();
     ag.connect (Gdk.Key.Escape, 0, AccelFlags.LOCKED,
         () => {this.destroy (); return true;});
+    ag.connect (Gdk.Key.Return, Gdk.ModifierType.CONTROL_MASK, AccelFlags.LOCKED,
+        () => {send_tweet (); return true;});
 
     this.add_accel_group (ag);
   }
