@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 on Tue Nov 19 20:19:45 2013 -->
+<!-- Generated with glade 3.16.0 on Wed Nov 20 20:39:24 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.10 -->
   <!-- interface-requires corebird 0.0 -->
@@ -249,6 +249,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Retweet tweet</property>
                     <property name="relief">none</property>
                     <style>
                       <class name="retweet-button"/>
@@ -277,6 +278,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Favorite tweet</property>
                     <property name="relief">none</property>
                     <style>
                       <class name="favorite-button"/>
@@ -305,6 +307,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Reply to tweet</property>
                     <property name="relief">none</property>
                     <style>
                       <class name="reply-button"/>
