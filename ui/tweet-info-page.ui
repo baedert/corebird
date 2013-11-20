@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 on Mon Nov  4 11:41:54 2013 -->
+<!-- Generated with glade 3.16.0 on Tue Nov 19 20:19:45 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.10 -->
   <!-- interface-requires corebird 0.0 -->
@@ -246,7 +246,6 @@
                 </child>
                 <child>
                   <object class="GtkToggleButton" id="retweet_button">
-                    <property name="label"></property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -258,6 +257,14 @@
                       <class name="large-font"/>
                     </style>
                     <signal name="toggled" handler="retweet_button_toggled_cb" swapped="no"/>
+                    <child>
+                      <object class="GtkImage" id="image1">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="icon_name">corebird-retweet-symbolic</property>
+                        <property name="icon_size">1</property>
+                      </object>
+                    </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -267,7 +274,6 @@
                 </child>
                 <child>
                   <object class="GtkToggleButton" id="favorite_button">
-                    <property name="label"></property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -279,6 +285,14 @@
                       <class name="large-font"/>
                     </style>
                     <signal name="toggled" handler="favorite_button_toggled_cb" swapped="no"/>
+                    <child>
+                      <object class="GtkImage" id="image2">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="icon_name">corebird-favorite-symbolic</property>
+                        <property name="icon_size">1</property>
+                      </object>
+                    </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -288,7 +302,6 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="reply_button">
-                    <property name="label"></property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -300,6 +313,14 @@
                       <class name="large-font"/>
                     </style>
                     <signal name="clicked" handler="reply_button_clicked_cb" swapped="no"/>
+                    <child>
+                      <object class="GtkImage" id="image3">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="icon_name">corebird-reply-symbolic</property>
+                        <property name="icon_size">1</property>
+                      </object>
+                    </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -338,13 +359,12 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="location_label">
+              <object class="ImageLabel" id="location_label">
                 <property name="can_focus">False</property>
-                <property name="no_show_all">True</property>
-                <property name="margin_left">3</property>
                 <property name="xalign">0</property>
-                <property name="label">Location</property>
-                <property name="use_markup">True</property>
+                <property name="label" translatable="yes">label</property>
+                <property name="icon_name">corebird-location-symbolic</property>
+                <property name="icon_size">16</property>
                 <style>
                   <class name="dim-label"/>
                 </style>
