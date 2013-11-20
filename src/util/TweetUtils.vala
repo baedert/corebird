@@ -271,10 +271,13 @@ namespace TweetUtils {
                          int64.parse (term));
       return true;
     }else if(uri.has_prefix("#")){
-      window.switch_page(MainWindow.PAGE_SEARCH, uri);
+      if (window.PAGE_SEARCH == window.cur_page_id){
+        ((SearchPage)window.cur_page).search_for(term, true);
+      } else {
+        window.switch_page(MainWindow.PAGE_SEARCH, uri);
+      }
       return true;
     }
     return false;
-
   }
 }

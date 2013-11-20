@@ -48,6 +48,11 @@ class MainWindow : ApplicationWindow {
       return history.current;
     }
   }
+  public IPage cur_page {
+    get {
+      return pages[cur_page_id];
+    }
+  }
   private uint progress_holders            = 0;
   private RadioToolButton dummy_button     = new RadioToolButton(null);
   private IPage[] pages                    = new IPage[7];
