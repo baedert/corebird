@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 on Wed Nov 20 20:39:24 2013 -->
+<!-- Generated with glade 3.16.0 on Thu Nov 21 22:03:19 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.10 -->
   <!-- interface-requires corebird 0.0 -->
@@ -345,7 +345,12 @@
                       <class name="dim-label"/>
                     </style>
                     <child>
-                      <placeholder/>
+                      <object class="GtkImage" id="image4">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="icon_name">corebird-down-symbolic</property>
+                        <property name="icon_size">1</property>
+                      </object>
                     </child>
                   </object>
                   <packing>
