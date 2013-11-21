@@ -202,7 +202,21 @@ class Corebird : Gtk.Application {
 
       }
     } else {
-      critical ("Implement.");
+      Account? acc = Account.query_account (show_tweet_window);
+      if (acc == null) {
+        critical ("No account named `%s` is configured. Exiting.",
+                  show_tweet_window);
+        return;
+      }
+      // TODO: Handle the 'avatar not yet cached' case
+      acc.init_proxy ();
+      acc.load_avatar ();
+      acc.query_user_info_by_scren_name.begin (acc.screen_name, acc.load_avatar);
+      var cw = new ComposeTweetWindow (null, acc, null,
+                                       ComposeTweetWindow.Mode.NORMAL,
+                                       this);
+      cw.show();
+      this.add_window (cw);
     }
   } // }}}
 
