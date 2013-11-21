@@ -32,12 +32,12 @@ class Corebird : Gtk.Application {
 
   public override int command_line(ApplicationCommandLine cmd){
     this.hold();
-    string show_tweet_window = "";
+    string compose_screen_name = "";
     bool not_in_cmd = false;
 
 
     OptionEntry[] options = new OptionEntry[2];
-    options[0] = {"tweet", 't', 0, OptionArg.STRING, ref show_tweet_window,
+    options[0] = {"tweet", 't', 0, OptionArg.STRING, ref compose_screen_name,
             "Shows only the 'compose tweet' window, nothing else.", null};
     options[1] = {"mode", 'u', 0, OptionArg.NONE, ref not_in_cmd,
             "Use this flag to indicate that the application does NOT run on the command line",
@@ -61,7 +61,7 @@ class Corebird : Gtk.Application {
       return -1;
     }
 
-    open_startup_windows (show_tweet_window);
+    open_startup_windows (compose_screen_name);
 
 
     NotificationManager.init ();
@@ -170,7 +170,7 @@ class Corebird : Gtk.Application {
    *
    *
    */
-  private void open_startup_windows (string? show_tweet_window = null) { // {{{
+  private void open_startup_windows (string? compose_screen_name = null) { // {{{
     string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
 
     if(startup_accounts.length == 1) {
@@ -181,7 +181,7 @@ class Corebird : Gtk.Application {
     }
     message("Startup accounts: %d", startup_accounts.length);
 
-    if (show_tweet_window == null) {
+    if (compose_screen_name == null) {
       if (startup_accounts.length == 0) {
         this.lookup_action ("show-settings").activate (null);
       } else {
@@ -202,10 +202,10 @@ class Corebird : Gtk.Application {
 
       }
     } else {
-      Account? acc = Account.query_account (show_tweet_window);
+      Account? acc = Account.query_account (compose_screen_name);
       if (acc == null) {
         critical ("No account named `%s` is configured. Exiting.",
-                  show_tweet_window);
+                  compose_screen_name);
         return;
       }
       // TODO: Handle the 'avatar not yet cached' case
