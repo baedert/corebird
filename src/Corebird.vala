@@ -32,7 +32,7 @@ class Corebird : Gtk.Application {
 
   public override int command_line(ApplicationCommandLine cmd){
     this.hold();
-    string compose_screen_name = "";
+    string? compose_screen_name = null;
     bool not_in_cmd = false;
 
 
