@@ -52,9 +52,11 @@ class ImageLabel : Label {
   }
 
   public override bool draw (Cairo.Context c) {
+    int height = this.get_allocated_height ();
     StyleContext context = this.get_style_context ();
     if (icon_pos == PositionType.LEFT) {
-      context.render_icon (c, icon, 0, 0);
+      context.render_icon (c, icon, 0,
+                           (height / 2) - (icon_size / 2));
       c.translate (icon.width + GAP, 0);
       base.draw(c);
     } else {
