@@ -32,12 +32,12 @@ class Corebird : Gtk.Application {
 
   public override int command_line(ApplicationCommandLine cmd){
     this.hold();
-    bool show_tweet_window = false;
+    string show_tweet_window = "";
     bool not_in_cmd = false;
 
 
     OptionEntry[] options = new OptionEntry[2];
-    options[0] = {"tweet", 't', 0, OptionArg.NONE, ref show_tweet_window,
+    options[0] = {"tweet", 't', 0, OptionArg.STRING, ref show_tweet_window,
             "Shows only the 'compose tweet' window, nothing else.", null};
     options[1] = {"mode", 'u', 0, OptionArg.NONE, ref not_in_cmd,
             "Use this flag to indicate that the application does NOT run on the command line",
@@ -170,7 +170,7 @@ class Corebird : Gtk.Application {
    *
    *
    */
-  private void open_startup_windows (bool show_tweet_window) { // {{{
+  private void open_startup_windows (string? show_tweet_window = null) { // {{{
     string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
 
     if(startup_accounts.length == 1) {
@@ -181,7 +181,7 @@ class Corebird : Gtk.Application {
     }
     message("Startup accounts: %d", startup_accounts.length);
 
-    if (!show_tweet_window) {
+    if (show_tweet_window == null) {
       if (startup_accounts.length == 0) {
         this.lookup_action ("show-settings").activate (null);
       } else {
