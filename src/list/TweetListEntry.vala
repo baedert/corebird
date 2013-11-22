@@ -222,20 +222,22 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     Gtk.StateFlags flags = this.get_state_flags ();
     bool buttons_visible = (bool)(flags & (StateFlags.PRELIGHT | StateFlags.SELECTED));
     buttons_visible = (buttons_visible || more_menu.visible) && !reply_revealer.reveal_child;
+    var ct = this.get_style_context ();
     if (buttons_visible) {
-      var ct = this.get_style_context ();
       hover_box.override_background_color (Gtk.StateFlags.NORMAL,
                                            ct.get_background_color (Gtk.StateFlags.PRELIGHT));
-      retweet_button.show ();
+
+      retweet_button.visible = (account.id != tweet.user_id);
       favorite_button.show ();
       reply_button.show ();
       more_button.show ();
       conversation_label.hide ();
-      if (account.id == tweet.user_id) {
-        retweet_button.hide ();
+
+      int hover_margin_top = (screen_name_label.get_allocated_height () / 2) - 6;
+      if (hover_margin_top > 2) {
+        hover_box.margin_top = hover_margin_top;
       }
     } else {
-      var ct = this.get_style_context ();
       hover_box.override_background_color (Gtk.StateFlags.NORMAL,
                                            ct.get_background_color (Gtk.StateFlags.NORMAL));
       retweet_button.visible = tweet.retweeted;
