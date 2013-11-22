@@ -9,7 +9,20 @@
           title="ImageBox" parent="GtkBox" />
 
     <glade-widget-class name="ImageLabel" generic-name="imagelabel"
-          title="ImageLabel" parent="GtkLabel" />
+      title="ImageLabel" parent="GtkLabel">
+      <properties>
+        <property id="icon-name" name="Icon name" ignore="True">
+          <parameter-spec>
+            <type>GParamString</type>
+          </parameter-spec>
+        </property>
+        <property id="icon-size" name="Icon Size" ignore="True">
+          <parameter-spec>
+            <type>GParamInt</type>
+          </parameter-spec>
+        </property>
+      </properties>
+    </glade-widget-class>
 
     <glade-widget-class name="ScrollWidget" generic-name="scrollwidget"
           title="ScrollWidget" parent="GtkScrolledWindow" />
@@ -19,10 +32,11 @@
 
     <glade-widget-class name="ReplyEntry" generic-name="replyentry"
           title="ReplyEntry" parent="GtkEntry" />
+
+    <glade-widget-class name="BgBox" generic-name="bgbox"
+          title="BgBox" parent="GtkBox" />
+
   </glade-widget-classes>
-
-
-
 
 
   <glade-widget-group name="corebird-widgets" title="Corebird">
@@ -30,8 +44,8 @@
     <glade-widget-class-ref name="PixbufButton" />
     <glade-widget-class-ref name="ImageBox" />
     <glade-widget-class-ref name="ImageLabel" />
-    <glade-widget-class-ref name="InvisibilityBin" />
     <glade-widget-class-ref name="ScrollWidget" />
     <glade-widget-class-ref name="ReplyEntry" />
+    <glade-widget-class-ref name="BgBox" />
   </glade-widget-group>
 </glade-catalog>

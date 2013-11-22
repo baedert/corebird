@@ -9,12 +9,17 @@
 }
 
 
+.sidebar {
+  -GtkWidget-window-dragging: true;
+}
+
 .button-slim {
   -GtkButton-default-border: 0;
   -GtkButton-default-outside-border: 0;
   -GtkButton-inner-border: 0;
   -GtkWidget-focus-line-width: 0;
   -GtkWidget-focus-padding: 0;
+  -GtkButton-image-spacing: 0;
 }
 
 .button-wide {
@@ -24,9 +29,11 @@
 
 .retweet-button,
 .favorite-button,
-.reply-button{
+.reply-button,
+.more-button{
   font-family: FontAwesome;
   font-size: 1.0em;
+  background-color: white;
 }
 .retweet-button:hover,
 .retweet-button:active {

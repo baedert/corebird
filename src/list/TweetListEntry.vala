@@ -37,7 +37,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   [GtkChild]
   private ReplyEntry reply_entry;
   [GtkChild]
-  private Label conversation_label;
+  private Image conversation_label; // TODO: Rename
   [GtkChild]
   private Box text_box;
   [GtkChild]
@@ -91,7 +91,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     reply_entry.max_length = Tweet.MAX_LENGTH;
     if (tweet.is_retweet) {
       rt_label.show ();
-      rt_label.label = @"<b> </b> <a href=\"@$(tweet.rt_by_id)\"
+      rt_label.label = @"<a href=\"@$(tweet.rt_by_id)\"
                          title=\"@$(tweet.rt_by_screen_name)\">$(tweet.retweeted_by)</a>";
     }
 
@@ -129,6 +129,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       }
       text_box.pack_end (inline_button, false, false);
       inline_button.valign = Align.START;
+      inline_button.margin_top = 4;
       inline_button.clicked.connect(inline_media_button_clicked_cb);
       inline_button.show ();
     }
@@ -169,6 +170,10 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
         retweet_button.active = !retweet_button.active;
     });
 
+    time_delta_label.size_allocate.connect (() => {
+      hover_box.margin_right = time_delta_label.get_allocated_width () + 6;
+    });
+
     values_set = true;
   }
 
@@ -191,6 +196,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     inline_button.set_bg (pic);
     text_box.pack_end (inline_button, false, false);
     inline_button.valign = Align.START;
+    inline_button.margin_top = 4;
     inline_button.clicked.connect(inline_media_button_clicked_cb);
     inline_button.show ();
   }
@@ -216,19 +222,29 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     Gtk.StateFlags flags = this.get_state_flags ();
     bool buttons_visible = (bool)(flags & (StateFlags.PRELIGHT | StateFlags.SELECTED));
     buttons_visible = (buttons_visible || more_menu.visible) && !reply_revealer.reveal_child;
+    var ct = this.get_style_context ();
     if (buttons_visible) {
-      retweet_button.show();
-      favorite_button.show();
-      reply_button.show();
-      more_button.show();
-      if (account.id == tweet.user_id) {
-        retweet_button.hide();
+      hover_box.override_background_color (Gtk.StateFlags.NORMAL,
+                                           ct.get_background_color (Gtk.StateFlags.PRELIGHT));
+
+      retweet_button.visible = (account.id != tweet.user_id);
+      favorite_button.show ();
+      reply_button.show ();
+      more_button.show ();
+      conversation_label.hide ();
+
+      int hover_margin_top = (screen_name_label.get_allocated_height () / 2) - 6;
+      if (hover_margin_top > 2) {
+        hover_box.margin_top = hover_margin_top;
       }
     } else {
-        retweet_button.visible = tweet.retweeted;
-        favorite_button.visible = tweet.favorited;
-        reply_button.hide();
-        more_button.hide();
+      hover_box.override_background_color (Gtk.StateFlags.NORMAL,
+                                           ct.get_background_color (Gtk.StateFlags.NORMAL));
+      retweet_button.visible = tweet.retweeted;
+      favorite_button.visible = tweet.favorited;
+      reply_button.hide ();
+      more_button.hide ();
+      conversation_label.visible = tweet.reply_id != 0;
     }
   } //}}}
 
@@ -241,13 +257,13 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
 
   [GtkCallback]
   private bool key_released_cb (Gdk.EventKey evt) {
-    switch(evt.keyval) {
 #if __DEV
+    switch(evt.keyval) {
       case Gdk.Key.k:
         stdout.printf (tweet.json_data+"\n");
         return true;
-#endif
     }
+#endif
     return false;
   }
 
@@ -355,7 +371,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     string link = "https://twitter.com/%s/status/%s".printf (tweet.screen_name,
                                                              tweet.id.to_string());
     time_delta_label.label = "<small><a href='%s' title='Open in Browser'>%s</a></small>"
-                  .printf (link, Utils.get_time_delta (then, cur_time));
+                             .printf (link, Utils.get_time_delta (then, cur_time));
     return (int)(cur_time.difference (then) / 1000.0 / 1000.0);
   } //}}}
 
