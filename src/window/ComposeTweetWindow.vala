@@ -85,9 +85,9 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
     media_image.clicked.connect (() => {
       media_image.set_visible(false);
-//      media_count--;
-//      if(media_count <= Twitter.get_max_media_per_upload())
-//        add_image_button.set_sensitive(true);
+      media_count--;
+      if(media_count <= Twitter.max_media_per_upload)
+        add_image_button.set_sensitive (true);
     });
 
     left_box.pack_end (media_image, false, true);
