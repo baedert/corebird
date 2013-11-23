@@ -128,15 +128,15 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     string text = tweet_text.buffer.get_text (start, end, true);
     if(text.strip() == "")
       return;
-    Rest.Param param;
+
     var call = account.proxy.new_call ();
     call.set_method ("POST");
     call.add_param ("status", text);
     if (this.answer_to != null && mode == Mode.REPLY) {
-      call.add_param("in_reply_to_status_id", answer_to.id.to_string());
+      call.add_param("in_reply_to_status_id", answer_to.id.to_string ());
     }
 
-
+    Rest.Param param;
     if (media_count == 0) {
       call.set_function ("1.1/statuses/update.json");
     } else {
@@ -146,23 +146,24 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
         GLib.File media_file = GLib.File.new_for_path(media_uri);
         media_file.load_contents (null, out content, null);
       } catch (GLib.Error e) {
-        critical(e.message);
+        critical (e.message);
       }
 
-      param = new Rest.Param.full ("media[]", Rest.MemoryUse.COPY,
-                                   content, "multipart/form-data",
-                                   media_uri);
+      param  = new Rest.Param.full ("media[]", Rest.MemoryUse.COPY,
+                                    content, "multipart/form-data",
+                                    media_uri);
       call.add_param_full (param);
     }
 
-    call.invoke_async.begin(null, (obj, res) => {
-      try{
-        call.invoke_async.end(res);
-      } catch(GLib.Error e) {
-        critical(e.message);
-        Utils.show_error_dialog(e.message);
+    call.invoke_async.begin (null, (obj, res) => {
+      try {
+        call.invoke_async.end (res);
+      } catch (GLib.Error e) {
+        critical (e.message);
+        Utils.show_error_dialog (e.message);
+        message (call.get_payload ());
       } finally {
-        this.destroy();
+        this.destroy ();
       }
     });
     this.visible = false;
