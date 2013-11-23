@@ -177,7 +177,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   private void add_image_clicked () {
     FileChooserDialog fcd = new FileChooserDialog("Select Image", null, FileChooserAction.OPEN,
                                                   _("Cancel"), ResponseType.CANCEL,
-                                                  _("Save"),   ResponseType.ACCEPT);
+                                                  _("Choose"),   ResponseType.ACCEPT);
     fcd.set_modal (true);
     FileFilter filter = new FileFilter ();
     filter.add_mime_type ("image/png");
