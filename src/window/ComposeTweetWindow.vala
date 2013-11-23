@@ -160,8 +160,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
         critical (e.message);
-        Utils.show_error_dialog (e.message);
-        message (call.get_payload ());
+        Utils.show_error_object (call.get_payload (), e.message);
       } finally {
         this.destroy ();
       }
@@ -177,8 +176,8 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   [GtkCallback]
   private void add_image_clicked () {
     FileChooserDialog fcd = new FileChooserDialog("Select Image", null, FileChooserAction.OPEN,
-                                 Stock.CANCEL, ResponseType.CANCEL,
-                                 Stock.OPEN,   ResponseType.ACCEPT);
+                                                  _("Cancel"), ResponseType.CANCEL,
+                                                  _("Save"),   ResponseType.ACCEPT);
     fcd.set_modal (true);
     FileFilter filter = new FileFilter ();
     filter.add_mime_type ("image/png");
