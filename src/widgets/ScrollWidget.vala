@@ -91,6 +91,26 @@ class ScrollWidget : ScrolledWindow {
     balance = mode;
   }
 
+
+  /**
+   * Add some size on top of the ScrollWidget's current content,
+   * without visually scrolling anything.
+   *
+   * Yes, I don't like the name either.
+   *
+   * @param size The size to add
+   */
+  public void add_size_on_top (int size) {
+    vadjustment.upper += size;
+    vadjustment.value += size;
+    vadjustment.changed ();
+  }
+
+  public void reset () {
+    vadjustment.upper = 0;
+    vadjustment.value = 0;
+  }
+
   /**
    * Scroll to the very top of the scrolled window once the next
    * size_allocate occurs.

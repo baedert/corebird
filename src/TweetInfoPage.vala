@@ -234,7 +234,6 @@ class TweetInfoPage : IPage , ScrollWidget {
         debug (reply_call.get_payload ());
         return;
       }
-      stdout.printf (reply_call.get_payload () + "\n");
       var statuses_node = parser.get_root ().get_object ().get_array_member ("statuses");
       message ("Statuses: %u", statuses_node.get_length ());
       int n_replies = 0;
@@ -248,21 +247,42 @@ class TweetInfoPage : IPage , ScrollWidget {
 
         int64 reply_id = obj.get_int_member ("in_reply_to_status_id");
         if (reply_id != tweet_id) {
-          message ("Wrong reply_to id");
           return;
         }
 
         Tweet t = new Tweet ();
         t.load_from_json (node, now);
         var tle = new TweetListEntry (t, main_window, account);
+        tle.show_all ();
+/*        int n = 0;
+        ulong a = 0;
+        a = tle.size_allocate.connect (() => {
+          this.add_size_on_top (tle.get_allocated_height ());
+          message ("AAAA %d", tle.get_allocated_height ());
+          n++;
+//          if (n == 3)
+//            tle.disconnect(a);
+        });*/
         top_list_box.add (tle);
-        top_list_box.show ();
         n_replies ++;
       });
+      message ("Replies: %d", n_replies);
 
+
+     if (n_replies > 0) {
+       top_list_box.show ();
+//        this.queue_resize ();
+        ulong a = 0;
+        int c = 0;
+        a = top_list_box.size_allocate.connect (() => {
+          this.add_size_on_top (top_list_box.get_allocated_height ());
+          message ("ADDED HEIGHT: %d", top_list_box.get_allocated_height ());
+          c ++;
+          if (c == 3)
+            top_list_box.disconnect (a);
+        });
+      }
     });
-
-
 
   } //}}}
 
