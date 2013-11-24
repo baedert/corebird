@@ -268,20 +268,6 @@ class TweetInfoPage : IPage , ScrollWidget {
       });
       message ("Replies: %d", n_replies);
 
-
-     if (n_replies > 0) {
-       top_list_box.show ();
-//        this.queue_resize ();
-        ulong a = 0;
-        int c = 0;
-        a = top_list_box.size_allocate.connect (() => {
-          this.add_size_on_top (top_list_box.get_allocated_height ());
-          message ("ADDED HEIGHT: %d", top_list_box.get_allocated_height ());
-          c ++;
-          if (c == 3)
-            top_list_box.disconnect (a);
-        });
-      }
     });
 
   } //}}}

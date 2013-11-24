@@ -41,10 +41,10 @@ class ProfilePage : ScrollWidget, IPage {
   private Label screen_name_label;
   [GtkChild]
   private Label description_label;
-/*  [GtkChild]
+  [GtkChild]
   private Label url_label;
   [GtkChild]
-  private Label location_label;
+  private Label location_label; /*
   [GtkChild]
   private Label tweets_label;
   [GtkChild]
@@ -58,7 +58,7 @@ class ProfilePage : ScrollWidget, IPage {
   [GtkChild]
   private Gtk.Spinner progress_spinner;
 //  [GtkChild]
-  private Gtk.MenuItem dm_menu_item;
+//  private Gtk.MenuItem dm_menu_item;
   private bool following;
   private int64 user_id;
   private new string name;
@@ -105,12 +105,12 @@ class ProfilePage : ScrollWidget, IPage {
       if (banner_name != null &&
           FileUtils.test(Utils.user_file("assets/banners/"+banner_name), FileTest.EXISTS)){
         message("Banner exists, set it directly...");
-//        banner_image.set_background(Utils.user_file(
-//                      "assets/banners/"+banner_name));
+        banner_image.pixbuf = new Gdk.Pixbuf.from_file (Utils.user_file(
+                                                        "assets/banners/"+banner_name));
       } else {
         // If the cached banner does somehow not exist, load it again.
         debug("Banner %s does not exist, load it first...", banner_name);
-//        banner_image.set_background(DATADIR+"/no_banner.png");
+        banner_image.pixbuf = new Gdk.Pixbuf.from_file (DATADIR+"/no_banner.png");
       }
       return false;
     });
@@ -157,8 +157,8 @@ class ProfilePage : ScrollWidget, IPage {
           } catch (GLib.Error e) {
             warning (e.message);
           }
-//          progress_spinner.stop ();
-//          progress_spinner.hide ();
+          progress_spinner.stop ();
+          progress_spinner.hide ();
         });
       }else {
         try {
@@ -166,8 +166,8 @@ class ProfilePage : ScrollWidget, IPage {
         } catch (GLib.Error e) {
           warning (e.message);
         }
-//        progress_spinner.stop ();
-//        progress_spinner.hide ();
+        progress_spinner.stop ();
+        progress_spinner.hide ();
       }
 
       string name        = root.get_string_member("name").replace ("&", "&amp;");
@@ -287,7 +287,7 @@ class ProfilePage : ScrollWidget, IPage {
     if (text_urls != null) {
       desc = TweetUtils.get_formatted_text (description, text_urls);
     }
-    description_label.label = "<big>" + desc + "</big>";
+    description_label.label = "<big><big>" + desc + "</big></big>";
 /*    tweets_label.set_markup(
       "<big><big><b>%'d</b></big></big>\nTweets"
       .printf(tweets));
@@ -298,7 +298,7 @@ class ProfilePage : ScrollWidget, IPage {
 
     followers_label.set_markup(
       "<big><big><b>%'d</b></big></big>\nFollowers"
-      .printf(followers));
+      .printf(followers)); */
 
     if (location != null && location != "") {
       location_label.visible = true;
@@ -310,7 +310,7 @@ class ProfilePage : ScrollWidget, IPage {
       url_label.visible = true;
       url_label.set_markup ("<a href='%s'>%s</a>".printf (url, url));
     } else
-      url_label.visible = false;*/
+      url_label.visible = false;
 
     this.name = name;
     this.screen_name = screen_name;
@@ -318,7 +318,7 @@ class ProfilePage : ScrollWidget, IPage {
 
   } //}}}
 
-//  [GtkCallback]
+  [GtkCallback]
   private void follow_button_clicked_cb () { //{{{
     var call = account.proxy.new_call();
     if (following)
@@ -377,7 +377,7 @@ class ProfilePage : ScrollWidget, IPage {
       follow_button.label = _("Follow");
     }
     this.following = following;
-    dm_menu_item.sensitive = following;
+//    dm_menu_item.sensitive = following;
   } //}}}
 
 
