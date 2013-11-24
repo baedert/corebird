@@ -248,6 +248,50 @@ class ProfilePage : ScrollWidget, IPage {
   } //}}}
 
 
+  private void load_tweets () { // {{{
+    var call = account.proxy.new_call ();
+    call.set_function ("1.1/statuses/user_timeline.json");
+    call.set_method ("GET");
+    call.add_param ("user_id", this.user_id.to_string ());
+    call.add_param ("count", "35");
+    call.add_param ("contributor_details", "true");
+    call.add_param ("include_my_retweet", "true");
+
+    call.invoke_async.begin (null, (obj, res) => {
+      try {
+        call.invoke_async.end (res);
+      } catch (GLib.Error e) {
+        warning (e.message);
+        return;
+      }
+
+      var parser = new Json.Parser ();
+      try {
+        parser.load_from_data (call.get_payload ());
+      } catch (GLib.Error e) {
+        warning (e.message);
+        return;
+      }
+      var now = new GLib.DateTime.now_local ();
+      var root = parser.get_root().get_array();
+      root.foreach_element( (array, index, node) => {
+        Tweet t = new Tweet();
+        t.load_from_json(node, now);
+//        if (tweet_type != -1){
+//          t.type = tweet_type;
+//        }
+
+//        if(t.id < lowest_id)
+//          lowest_id = t.id;
+        var entry  = new TweetListEntry(t, main_window, account);
+//        this.delta_updater.add (entry);
+        tweet_list.add (entry);
+      });
+
+
+    });
+  } // }}}
+
   /**
    * Loads the user's banner image.
    *
@@ -391,6 +435,8 @@ class ProfilePage : ScrollWidget, IPage {
       return;
     data_cancellable = new GLib.Cancellable ();
     set_user_id(user_id);
+    tweet_list.@foreach ((w) => {tweet_list.remove (w);});
+    load_tweets ();
   }
 
   public void on_leave () {
