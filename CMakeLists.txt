@@ -125,6 +125,7 @@ set (VALA_SOURCE
   src/widgets/ReplyEntry.vala
   src/widgets/DMPlaceholderBox.vala
   src/widgets/BgBox.vala
+  src/widgets/AspectImage.vala
   src/list/TweetListEntry.vala
   src/list/ProgressEntry.vala
   src/list/AccountListEntry.vala

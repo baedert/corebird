@@ -36,6 +36,17 @@
     <glade-widget-class name="BgBox" generic-name="bgbox"
           title="BgBox" parent="GtkBox" />
 
+    <glade-widget-class name="AspectImage" generic-name="aspectimage"
+      title="AspectImage" parent="GtkImage">
+      <properties>
+        <property id="scale" name="Scale" ignore="True">
+          <parameter-spec>
+            <type>GParamDouble</type>
+          </parameter-spec>
+         </property>
+      </properties>
+    </glade-widget-class>
+
   </glade-widget-classes>
 
 
@@ -47,5 +58,6 @@
     <glade-widget-class-ref name="ScrollWidget" />
     <glade-widget-class-ref name="ReplyEntry" />
     <glade-widget-class-ref name="BgBox" />
+    <glade-widget-class-ref name="AspectImage" />
   </glade-widget-group>
 </glade-catalog>
