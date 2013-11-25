@@ -17,7 +17,7 @@
 
 using Gtk;
 
-[GtkTemplate (ui = "/org/baedert/corebird/ui/profile-page.ui")]
+[GtkTemplate (ui = "/org/baedert/corebird/ui/profile-page2.ui")]
 class ProfilePage : ScrollWidget, IPage {
   private static const int PAGE_TWEETS     = 0;
   private static const int PAGE_FOLLOWING  = 1;
@@ -32,31 +32,33 @@ class ProfilePage : ScrollWidget, IPage {
   public int id { get; set; }
 
   [GtkChild]
-  private ImageBox banner_box;
+  private AspectImage banner_image;
   [GtkChild]
   private Gtk.Image avatar_image;
   [GtkChild]
   private Label name_label;
   [GtkChild]
+  private Label screen_name_label;
+  [GtkChild]
   private Label description_label;
   [GtkChild]
   private Label url_label;
   [GtkChild]
-  private Label location_label;
+  private Label location_label; /*
   [GtkChild]
   private Label tweets_label;
   [GtkChild]
   private Label following_label;
   [GtkChild]
-  private Label followers_label;
+  private Label followers_label;*/
   [GtkChild]
   private Button follow_button;
-  [GtkChild]
-  private Gtk.ListBox tweet_list;
+/*  [GtkChild]
+  private Gtk.ListBox tweet_list; */
   [GtkChild]
   private Gtk.Spinner progress_spinner;
-  [GtkChild]
-  private Gtk.MenuItem dm_menu_item;
+//  [GtkChild]
+//  private Gtk.MenuItem dm_menu_item;
   private bool following;
   private int64 user_id;
   private new string name;
@@ -79,7 +81,7 @@ class ProfilePage : ScrollWidget, IPage {
       follow_button.hide ();
     }
 
-    banner_box.set_background(DATADIR+"/no_banner.png");
+    banner_image.pixbuf = new Gdk.Pixbuf.from_file (DATADIR + "/no_banner.png");
     //Load cached data
     Corebird.db.select ("profiles").cols ("id", "screen_name", "name", "description", "tweets",
      "following", "followers", "avatar_name", "banner_url", "url", "location", "is_following",
@@ -103,12 +105,12 @@ class ProfilePage : ScrollWidget, IPage {
       if (banner_name != null &&
           FileUtils.test(Utils.user_file("assets/banners/"+banner_name), FileTest.EXISTS)){
         message("Banner exists, set it directly...");
-        banner_box.set_background(Utils.user_file(
-                      "assets/banners/"+banner_name));
+        banner_image.pixbuf = new Gdk.Pixbuf.from_file (Utils.user_file(
+                                                        "assets/banners/"+banner_name));
       } else {
         // If the cached banner does somehow not exist, load it again.
         debug("Banner %s does not exist, load it first...", banner_name);
-        banner_box.set_background(DATADIR+"/no_banner.png");
+        banner_image.pixbuf = new Gdk.Pixbuf.from_file (DATADIR+"/no_banner.png");
       }
       return false;
     });
@@ -304,7 +306,7 @@ class ProfilePage : ScrollWidget, IPage {
     string banner_on_disk = Utils.user_file("assets/banners/"+banner_name);
     if (!FileUtils.test (banner_on_disk, FileTest.EXISTS) || banner_url != saved_banner_url) {
       Utils.download_file_async .begin (banner_url, banner_on_disk, data_cancellable,
-          () => {banner_box.set_background (banner_on_disk);});
+          () => {banner_image.pixbuf = new Gdk.Pixbuf.from_file (banner_on_disk);});
         debug("Setting the banner name to %s", banner_name);
       Corebird.db.update ("profiles")
                  .val ("banner_url", banner_url)
@@ -312,7 +314,7 @@ class ProfilePage : ScrollWidget, IPage {
                  .where_eqi ("id", user_id)
                  .run ();
     } else {
-      banner_box.set_background (banner_on_disk);
+      banner_image.pixbuf = new Gdk.Pixbuf.from_file (banner_on_disk);
     }
   } // }}}
 
@@ -322,14 +324,15 @@ class ProfilePage : ScrollWidget, IPage {
                              int following, int followers, string avatar_url,
                              GLib.SList<TweetUtils.Sequence?>? text_urls = null) { //{{{
 
-    name_label.set_markup("<b>%s</b>  @%s"
-                          .printf(name, screen_name));
+    name_label.set_markup("<b>%s</b>"
+                          .printf(name));
+    screen_name_label.set_label ("@" + screen_name);
     string desc = description;
     if (text_urls != null) {
       desc = TweetUtils.get_formatted_text (description, text_urls);
     }
-    description_label.label = desc;
-    tweets_label.set_markup(
+    description_label.label = "<big><big>" + desc + "</big></big>";
+/*    tweets_label.set_markup(
       "<big><big><b>%'d</b></big></big>\nTweets"
       .printf(tweets));
 
@@ -339,7 +342,7 @@ class ProfilePage : ScrollWidget, IPage {
 
     followers_label.set_markup(
       "<big><big><b>%'d</b></big></big>\nFollowers"
-      .printf(followers));
+      .printf(followers)); */
 
     if (location != null && location != "") {
       location_label.visible = true;
@@ -399,7 +402,7 @@ class ProfilePage : ScrollWidget, IPage {
     return TweetUtils.activate_link (uri, main_window);
   }
 
-  [GtkCallback]
+//  [GtkCallback]
   private void dm_menu_item_activate_cb () {
     main_window.switch_page (MainWindow.PAGE_DM,
                              user_id, screen_name, name, avatar_url);
@@ -418,7 +421,7 @@ class ProfilePage : ScrollWidget, IPage {
       follow_button.label = _("Follow");
     }
     this.following = following;
-    dm_menu_item.sensitive = following;
+//    dm_menu_item.sensitive = following;
   } //}}}
 
 
