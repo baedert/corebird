@@ -17,7 +17,7 @@
 
 using Gtk;
 
-[GtkTemplate (ui = "/org/baedert/corebird/ui/profile-page2.ui")]
+[GtkTemplate (ui = "/org/baedert/corebird/ui/profile-page.ui")]
 class ProfilePage : ScrollWidget, IPage {
   private static const int PAGE_TWEETS     = 0;
   private static const int PAGE_FOLLOWING  = 1;
