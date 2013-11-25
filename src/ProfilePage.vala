@@ -285,7 +285,7 @@ class ProfilePage : ScrollWidget, IPage {
 //          lowest_id = t.id;
         var entry  = new TweetListEntry(t, main_window, account);
 //        this.delta_updater.add (entry);
-        tweet_list.add (entry);
+//        tweet_list.add (entry);
       });
 
 
@@ -435,7 +435,7 @@ class ProfilePage : ScrollWidget, IPage {
       return;
     data_cancellable = new GLib.Cancellable ();
     set_user_id(user_id);
-    tweet_list.@foreach ((w) => {tweet_list.remove (w);});
+//    tweet_list.@foreach ((w) => {tweet_list.remove (w);});
     load_tweets ();
   }
 
