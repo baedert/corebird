@@ -38,7 +38,7 @@ class Corebird : Gtk.Application {
 
     OptionEntry[] options = new OptionEntry[2];
     options[0] = {"tweet", 't', 0, OptionArg.STRING, ref compose_screen_name,
-            "Shows only the 'compose tweet' window, nothing else.", null};
+            "Shows only the 'compose tweet' window for the given account, nothing else.", null};
     options[1] = {"mode", 'u', 0, OptionArg.NONE, ref not_in_cmd,
             "Use this flag to indicate that the application does NOT run on the command line",
             null};
