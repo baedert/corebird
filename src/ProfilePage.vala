@@ -66,9 +66,23 @@ class ProfilePage : ScrollWidget, IPage {
   private string avatar_url;
   private GLib.Cancellable data_cancellable;
 
-
   public ProfilePage (int id) {
     this.id = id;
+    this.scroll_event.connect ((evt) => {
+      if (evt.delta_y < 0 && this.vadjustment.value == -0) {
+        if (banner_image.scale >= 1.0) {
+          banner_image.scale = 1.0f;
+          return false;
+        }
+        banner_image.scale += 0.25f * (-evt.delta_y);
+        banner_image.queue_resize ();
+        return true;
+      } else if (evt.delta_y > 0) {
+        // DOWN
+      }
+
+      return false;
+    });
   }
 
   public void set_user_id (int64 user_id) { // {{{
@@ -444,6 +458,7 @@ class ProfilePage : ScrollWidget, IPage {
     //       We might otherwise overwrite the new user's data with that from the old one.
 //    data_cancellable.cancel ();
     account.user_counter.save (account.db);
+    banner_image.scale = 0.6;
   }
 
 

@@ -75,7 +75,7 @@ class AspectImage : Gtk.Widget {
       return;
     }
 
-    min_height = (int)(pixbuf.get_height () * scale * 0.5);
+    min_height = (int)(pixbuf.get_height () * scale);
     nat_height = (int)(pixbuf.get_height () * scale);
   }
 
