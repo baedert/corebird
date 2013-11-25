@@ -52,10 +52,13 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
                             Mode mode = Mode.NORMAL,
                             Gtk.Application? app = null) {
     this.set_show_menubar (false);
-    this.application = app;
     this.account = acc;
     this.answer_to = answer_to;
     this.mode = mode;
+    if (app == null && parent is Gtk.ApplicationWindow) {
+      this.application = ((Gtk.ApplicationWindow)parent).application;
+    } else
+      this.application = app;
     avatar_image.set_from_pixbuf (acc.avatar);
     length_label.label = Tweet.MAX_LENGTH.to_string ();
     tweet_text.buffer.changed.connect (recalc_tweet_length);
@@ -200,4 +203,9 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     fcd.close ();
   }
 
+
+
+  public void set_text (string text) {
+    tweet_text.buffer.text = text;
+  }
 }

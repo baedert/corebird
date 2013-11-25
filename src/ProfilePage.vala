@@ -431,6 +431,13 @@ class ProfilePage : ScrollWidget, IPage {
                              user_id, screen_name, name, avatar_url);
   }
 
+  [GtkCallback]
+  private void tweet_to_item_activate_cb () {
+    var cw = new ComposeTweetWindow (main_window, account, null);
+    cw.set_text ("@" + screen_name + " ");
+    cw.show_all ();
+  }
+
   private void set_follow_button_state (bool following) { //{{{
     var sc = follow_button.get_style_context ();
     follow_button.sensitive = true;
