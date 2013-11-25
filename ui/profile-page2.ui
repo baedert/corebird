@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 on Mon Nov 25 18:51:11 2013 -->
+<!-- Generated with glade 3.16.0 on Mon Nov 25 19:01:46 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.10 -->
   <!-- interface-requires corebird 0.0 -->
@@ -40,7 +40,7 @@
               <object class="AspectImage" id="banner_image">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="scale">0.3</property>
+                <property name="scale">0.30000001192092896</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -277,11 +277,4 @@
       </object>
     </child>
   </template>
-  <object class="GtkStack" id="placeholder">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <child>
-      <placeholder/>
-    </child>
-  </object>
 </interface>
