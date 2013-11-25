@@ -1,8 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 on Mon Nov 25 08:50:26 2013 -->
+<!-- Generated with glade 3.16.0 on Mon Nov 25 18:51:11 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.10 -->
   <!-- interface-requires corebird 0.0 -->
+  <object class="GtkMenu" id="menu1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkMenuItem" id="dm_menu_item">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Write Direct Message</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="dm_menu_item_activate_cb" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="tweet_to_menu_item">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label">Tweet to User</property>
+        <property name="use_underline">True</property>
+      </object>
+    </child>
+  </object>
   <template class="ProfilePage" parent="ScrollWidget">
     <property name="visible">True</property>
     <property name="can_focus">True</property>
@@ -19,7 +40,7 @@
               <object class="AspectImage" id="banner_image">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="scale">0.60000002384185791</property>
+                <property name="scale">0.3</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -136,16 +157,49 @@
                     <property name="can_focus">False</property>
                     <property name="orientation">vertical</property>
                     <child>
-                      <object class="GtkButton" id="follow_button">
-                        <property name="label">button</property>
+                      <object class="GtkBox" id="box4">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                        <property name="halign">end</property>
-                        <property name="valign">start</property>
-                        <property name="margin_right">3</property>
-                        <property name="margin_top">5</property>
-                        <signal name="clicked" handler="follow_button_clicked_cb" swapped="no"/>
+                        <property name="can_focus">False</property>
+                        <style>
+                          <class name="linked"/>
+                        </style>
+                        <child>
+                          <object class="GtkMenuButton" id="menubutton1">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="halign">end</property>
+                            <property name="valign">start</property>
+                            <property name="margin_top">5</property>
+                            <property name="popup">menu1</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="follow_button">
+                            <property name="label">button</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="halign">end</property>
+                            <property name="margin_end">3</property>
+                            <property name="margin_right">3</property>
+                            <property name="margin_top">5</property>
+                            <signal name="clicked" handler="follow_button_clicked_cb" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -159,6 +213,7 @@
                         <property name="height_request">30</property>
                         <property name="can_focus">False</property>
                         <property name="no_show_all">True</property>
+                        <property name="halign">end</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -206,11 +261,13 @@
               <object class="GtkListBox" id="tweet_list">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="hexpand">True</property>
+                <property name="vexpand">True</property>
                 <property name="selection_mode">none</property>
                 <property name="activate_on_single_click">False</property>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="fill">True</property>
                 <property name="position">3</property>
               </packing>

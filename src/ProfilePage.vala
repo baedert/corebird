@@ -57,8 +57,10 @@ class ProfilePage : ScrollWidget, IPage {
   private Gtk.ListBox tweet_list;
   [GtkChild]
   private Gtk.Spinner progress_spinner;
-//  [GtkChild]
-//  private Gtk.MenuItem dm_menu_item;
+  [GtkChild]
+  private Gtk.MenuItem dm_menu_item;
+  [GtkChild]
+  private Gtk.MenuItem tweet_to_menu_item;
   private bool following;
   private int64 user_id;
   private new string name;
@@ -83,6 +85,13 @@ class ProfilePage : ScrollWidget, IPage {
 
       return false;
     });
+
+    var spinner = new Gtk.Spinner ();
+    spinner.set_size_request (75, 75);
+    spinner.start ();
+    spinner.show_all ();
+    tweet_list.set_placeholder (spinner);
+
   }
 
   public void set_user_id (int64 user_id) { // {{{
@@ -338,9 +347,9 @@ class ProfilePage : ScrollWidget, IPage {
                              int following, int followers, string avatar_url,
                              GLib.SList<TweetUtils.Sequence?>? text_urls = null) { //{{{
 
-    name_label.set_markup("<b>%s</b>"
-                          .printf(name));
+    name_label.set_markup("<b>%s</b>".printf (name));
     screen_name_label.set_label ("@" + screen_name);
+    tweet_to_menu_item.label = _("Tweet to @%s").printf (screen_name);
     string desc = description;
     if (text_urls != null) {
       desc = TweetUtils.get_formatted_text (description, text_urls);
@@ -416,7 +425,7 @@ class ProfilePage : ScrollWidget, IPage {
     return TweetUtils.activate_link (uri, main_window);
   }
 
-//  [GtkCallback]
+  [GtkCallback]
   private void dm_menu_item_activate_cb () {
     main_window.switch_page (MainWindow.PAGE_DM,
                              user_id, screen_name, name, avatar_url);
@@ -435,7 +444,7 @@ class ProfilePage : ScrollWidget, IPage {
       follow_button.label = _("Follow");
     }
     this.following = following;
-//    dm_menu_item.sensitive = following;
+    dm_menu_item.sensitive = following;
   } //}}}
 
 
