@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 on Tue Nov 26 10:56:53 2013 -->
+<!-- Generated with glade 3.16.0 -->
 <interface>
-  <!-- interface-requires gtk+ 3.10 -->
+  <requires lib="gtk+" version="3.10"/>
   <!-- interface-requires corebird 0.0 -->
   <object class="GtkMenu" id="menu1">
     <property name="visible">True</property>
@@ -99,8 +99,8 @@
                         </child>
                         <child>
                           <object class="GtkImage" id="verified_image">
-                            <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="no_show_all">True</property>
                             <property name="margin_left">5</property>
                             <property name="stock">gtk-missing-image</property>
                           </object>
