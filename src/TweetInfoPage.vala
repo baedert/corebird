@@ -109,7 +109,9 @@ class TweetInfoPage : IPage , ScrollWidget {
     query_tweet_info ();
   }
 
-  public void on_leave () {}
+  public void on_leave () {
+    max_size_container.max_size = 0;
+  }
 
 
   [GtkCallback]
