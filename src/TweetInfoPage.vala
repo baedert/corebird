@@ -95,6 +95,9 @@ class TweetInfoPage : IPage , ScrollWidget {
     bottom_list_box.hide ();
     top_list_box.foreach ((w) => {top_list_box.remove (w);});
     top_list_box.hide ();
+    max_size_container.max_size = 0;
+    max_size_container.queue_resize ();
+
     progress_spinner.hide ();
     media_button.hide ();
 
@@ -110,7 +113,6 @@ class TweetInfoPage : IPage , ScrollWidget {
   }
 
   public void on_leave () {
-    max_size_container.max_size = 0;
   }
 
 

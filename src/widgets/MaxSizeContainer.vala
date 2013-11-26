@@ -26,7 +26,7 @@ class MaxSizeContainer : Gtk.Bin {
       min_height = max_size;
     }
 
-    message ("Min: %d, Nat: %d", min_height, nat_height);
+//    message ("Min: %d, Nat: %d", min_height, nat_height);
   }
 
   public override void size_allocate (Gtk.Allocation alloc) {
