@@ -61,12 +61,24 @@ class TweetInfoPage : IPage , ScrollWidget {
   private PixbufButton media_button;
   [GtkChild]
   private Gtk.MenuItem delete_menu_item;
+  [GtkChild]
+  private MaxSizeContainer max_size_container;
 
   public TweetInfoPage (int id) {
     this.id = id;
     media_button.clicked.connect (() => {
       ImageDialog img_dialog = new ImageDialog (main_window, tweet_media);
       img_dialog.show_all ();
+    });
+    this.scroll_event.connect ((evt) => {
+      if (evt.delta_y < 0 && this.vadjustment.value == 0) {
+        int inc = (int)(vadjustment.step_increment * (-evt.delta_y));
+        message ("Inc: %d", inc);
+        max_size_container.max_size += inc;
+        max_size_container.queue_resize ();
+        return false;
+      }
+      return true;
     });
   }
 
@@ -272,7 +284,7 @@ class TweetInfoPage : IPage , ScrollWidget {
      if (n_replies > 0) {
        top_list_box.show ();
 //        this.queue_resize ();
-        ulong a = 0;
+/*        ulong a = 0;
         int c = 0;
         a = top_list_box.size_allocate.connect (() => {
           this.add_size_on_top (top_list_box.get_allocated_height ());
@@ -280,7 +292,7 @@ class TweetInfoPage : IPage , ScrollWidget {
           c ++;
           if (c == 3)
             top_list_box.disconnect (a);
-        });
+        });*/
       }
     });
 
