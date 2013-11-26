@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 on Mon Nov 25 21:18:52 2013 -->
+<!-- Generated with glade 3.16.0 on Tue Nov 26 10:56:53 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.10 -->
   <!-- interface-requires corebird 0.0 -->
@@ -74,18 +74,42 @@
                     <property name="can_focus">False</property>
                     <property name="orientation">vertical</property>
                     <child>
-                      <object class="GtkLabel" id="name_label">
+                      <object class="GtkBox" id="box6">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="valign">end</property>
-                        <property name="margin_left">4</property>
-                        <property name="margin_top">5</property>
-                        <property name="margin_bottom">2</property>
-                        <property name="xalign">0</property>
-                        <property name="label">Name</property>
-                        <style>
-                          <class name="list-username"/>
-                        </style>
+                        <child>
+                          <object class="GtkLabel" id="name_label">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="valign">end</property>
+                            <property name="margin_left">4</property>
+                            <property name="margin_top">5</property>
+                            <property name="margin_bottom">2</property>
+                            <property name="xalign">0</property>
+                            <property name="label">Name</property>
+                            <style>
+                              <class name="list-username"/>
+                            </style>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkImage" id="verified_image">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="margin_left">5</property>
+                            <property name="stock">gtk-missing-image</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -191,7 +215,6 @@
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="halign">end</property>
-                            <property name="margin_end">3</property>
                             <property name="margin_right">3</property>
                             <property name="margin_top">5</property>
                             <signal name="clicked" handler="follow_button_clicked_cb" swapped="no"/>
