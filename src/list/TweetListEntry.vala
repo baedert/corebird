@@ -37,7 +37,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   [GtkChild]
   private ReplyEntry reply_entry;
   [GtkChild]
-  private Image conversation_label; // TODO: Rename
+  private Image conversation_image;
   [GtkChild]
   private Box text_box;
   [GtkChild]
@@ -135,7 +135,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     }
 
     if (tweet.reply_id != 0) {
-      conversation_label.show ();
+      conversation_image.show ();
     }
 
     more_menu_delete_item.visible = tweet.user_id == account.id;
@@ -231,7 +231,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       favorite_button.show ();
       reply_button.show ();
       more_button.show ();
-      conversation_label.hide ();
+      conversation_image.hide ();
 
       int hover_margin_top = (screen_name_label.get_allocated_height () / 2) - 6;
       if (hover_margin_top > 2) {
@@ -244,7 +244,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       favorite_button.visible = tweet.favorited;
       reply_button.hide ();
       more_button.hide ();
-      conversation_label.visible = tweet.reply_id != 0;
+      conversation_image.visible = tweet.reply_id != 0;
     }
   } //}}}
 

@@ -125,7 +125,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkImage" id="conversation_label">
+                          <object class="GtkImage" id="conversation_image">
                             <property name="can_focus">False</property>
                             <property name="valign">start</property>
                             <property name="margin_right">5</property>
