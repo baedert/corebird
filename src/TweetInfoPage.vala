@@ -79,6 +79,7 @@ class TweetInfoPage : IPage , ScrollWidget {
       }
       return true;
     });
+    top_list_box.set_sort_func (ITwitterItem.sort_func_inv);
   }
 
   public void on_join (int page_id, va_list args){
