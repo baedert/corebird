@@ -5,9 +5,6 @@
     <glade-widget-class name="TextButton" generic-name="textbutton"
           title="TextButton" parent="GtkButton" />
 
-    <glade-widget-class name="ImageBox" generic-name="imagebox"
-          title="ImageBox" parent="GtkBox" />
-
     <glade-widget-class name="ImageLabel" generic-name="imagelabel"
       title="ImageLabel" parent="GtkLabel">
       <properties>
