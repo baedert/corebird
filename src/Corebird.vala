@@ -280,6 +280,7 @@ class Corebird : Gtk.Application {
         }
       }
     }
+    window = null;
     return false;
   }
 
