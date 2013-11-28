@@ -91,6 +91,7 @@ class ScrollWidget : ScrolledWindow {
     balance = mode;
   }
 
+
   /**
    * Scroll to the very top of the scrolled window once the next
    * size_allocate occurs.
