@@ -61,6 +61,8 @@ class TweetInfoPage : IPage , ScrollWidget {
   private PixbufButton media_button;
   [GtkChild]
   private Gtk.MenuItem delete_menu_item;
+  [GtkChild]
+  private MaxSizeContainer max_size_container;
 
   public TweetInfoPage (int id) {
     this.id = id;
@@ -68,6 +70,16 @@ class TweetInfoPage : IPage , ScrollWidget {
       ImageDialog img_dialog = new ImageDialog (main_window, tweet_media);
       img_dialog.show_all ();
     });
+    this.scroll_event.connect ((evt) => {
+      if (evt.delta_y < 0 && this.vadjustment.value == 0) {
+        int inc = (int)(vadjustment.step_increment * (-evt.delta_y));
+        max_size_container.max_size += inc;
+        max_size_container.queue_resize ();
+        return false;
+      }
+      return true;
+    });
+    top_list_box.set_sort_func (ITwitterItem.sort_func_inv);
   }
 
   public void on_join (int page_id, va_list args){
@@ -83,6 +95,9 @@ class TweetInfoPage : IPage , ScrollWidget {
     bottom_list_box.hide ();
     top_list_box.foreach ((w) => {top_list_box.remove (w);});
     top_list_box.hide ();
+    max_size_container.max_size = 0;
+    max_size_container.queue_resize ();
+
     progress_spinner.hide ();
     media_button.hide ();
 
@@ -97,7 +112,8 @@ class TweetInfoPage : IPage , ScrollWidget {
     query_tweet_info ();
   }
 
-  public void on_leave () {}
+  public void on_leave () {
+  }
 
 
   [GtkCallback]
@@ -254,20 +270,14 @@ class TweetInfoPage : IPage , ScrollWidget {
         t.load_from_json (node, now);
         var tle = new TweetListEntry (t, main_window, account);
         tle.show_all ();
-/*        int n = 0;
-        ulong a = 0;
-        a = tle.size_allocate.connect (() => {
-          this.add_size_on_top (tle.get_allocated_height ());
-          message ("AAAA %d", tle.get_allocated_height ());
-          n++;
-//          if (n == 3)
-//            tle.disconnect(a);
-        });*/
         top_list_box.add (tle);
         n_replies ++;
       });
       message ("Replies: %d", n_replies);
 
+      if (n_replies > 0) {
+        top_list_box.show ();
+      }
     });
 
   } //}}}

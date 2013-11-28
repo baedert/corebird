@@ -31,7 +31,10 @@
           title="ReplyEntry" parent="GtkEntry" />
 
     <glade-widget-class name="BgBox" generic-name="bgbox"
-          title="BgBox" parent="GtkBox" />
+      title="BgBox" parent="GtkBox" />
+
+    <glade-widget-class name="MaxSizeContainer" generic-name="maxsize"
+      title="MaxSizeContainer" parent="GtkEventBox" />
 
     <glade-widget-class name="AspectImage" generic-name="aspectimage"
       title="AspectImage" parent="GtkImage">
@@ -56,5 +59,6 @@
     <glade-widget-class-ref name="ReplyEntry" />
     <glade-widget-class-ref name="BgBox" />
     <glade-widget-class-ref name="AspectImage" />
+    <glade-widget-class-ref name="MaxSizeContainer" />
   </glade-widget-group>
 </glade-catalog>

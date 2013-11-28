@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 on Mon Nov 25 19:20:18 2013 -->
+<!-- Generated with glade 3.16.0 -->
 <interface>
-  <!-- interface-requires gtk+ 3.10 -->
+  <requires lib="gtk+" version="3.10"/>
   <!-- interface-requires corebird 0.0 -->
   <object class="GtkMenu" id="more_menu">
     <property name="visible">True</property>
@@ -38,11 +38,17 @@
             <property name="can_focus">False</property>
             <property name="orientation">vertical</property>
             <child>
-              <object class="GtkListBox" id="top_list_box">
-                <property name="name">s</property>
+              <object class="MaxSizeContainer" id="max_size_container">
+                <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="selection_mode">none</property>
-                <property name="activate_on_single_click">False</property>
+                <child>
+                  <object class="GtkListBox" id="top_list_box">
+                    <property name="name">s</property>
+                    <property name="can_focus">False</property>
+                    <property name="selection_mode">none</property>
+                    <property name="activate_on_single_click">False</property>
+                  </object>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
