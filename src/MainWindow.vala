@@ -119,8 +119,8 @@ class MainWindow : ApplicationWindow {
       stack.add_named (page, page.id.to_string ());
       if (page.get_tool_button () != null) {
         left_toolbar.insert (page.get_tool_button (), page.id);
-        page.get_tool_button ().toggled.connect (() => {
-          if (page.get_tool_button ().active){
+        page.get_tool_button ().clicked.connect (() => {
+          if (page.get_tool_button ().active) {
             switch_page (page.id);
           }
         });
@@ -167,7 +167,7 @@ class MainWindow : ApplicationWindow {
     this.show_all();
 
     // Activate the first timeline
-    this.switch_page (0);
+    pages[0].get_tool_button ().active = true;
   }
 
   /**
@@ -230,7 +230,10 @@ class MainWindow : ApplicationWindow {
    */
   public void switch_page (int page_id, ...) {
     if (page_id == history.current) {
-      pages[page_id].on_join (page_id, va_list ());
+      if (pages[page_id].handles_double_open ())
+        pages[page_id].double_open ();
+      else
+        pages[page_id].on_join (page_id, va_list ());
       return;
     }
 
