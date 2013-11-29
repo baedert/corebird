@@ -246,6 +246,10 @@ class SearchPage : IPage, Box {
   public RadioToolButton? get_tool_button(){
     return tool_button;
   }
+
+  public bool handles_double_open () {
+    return true;
+  }
 }
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/load-more-entry.ui")]
