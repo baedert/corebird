@@ -32,23 +32,27 @@ class ProfilePage : ScrollWidget, IPage {
   public int id { get; set; }
 
   [GtkChild]
-  private ImageBox banner_box;
+  private Gtk.Image verified_image;
+  [GtkChild]
+  private AspectImage banner_image;
   [GtkChild]
   private Gtk.Image avatar_image;
   [GtkChild]
   private Label name_label;
   [GtkChild]
+  private Label screen_name_label;
+  [GtkChild]
   private Label description_label;
   [GtkChild]
   private Label url_label;
   [GtkChild]
-  private Label location_label;
+  private Label location_label; /*
   [GtkChild]
   private Label tweets_label;
   [GtkChild]
   private Label following_label;
   [GtkChild]
-  private Label followers_label;
+  private Label followers_label;*/
   [GtkChild]
   private Button follow_button;
   [GtkChild]
@@ -57,6 +61,8 @@ class ProfilePage : ScrollWidget, IPage {
   private Gtk.Spinner progress_spinner;
   [GtkChild]
   private Gtk.MenuItem dm_menu_item;
+  [GtkChild]
+  private Gtk.MenuItem tweet_to_menu_item;
   private bool following;
   private int64 user_id;
   private new string name;
@@ -64,9 +70,30 @@ class ProfilePage : ScrollWidget, IPage {
   private string avatar_url;
   private GLib.Cancellable data_cancellable;
 
-
   public ProfilePage (int id) {
     this.id = id;
+    this.scroll_event.connect ((evt) => {
+      if (evt.delta_y < 0 && this.vadjustment.value == -0) {
+        if (banner_image.scale >= 1.0) {
+          banner_image.scale = 1.0f;
+          return false;
+        }
+        banner_image.scale += 0.25f * (-evt.delta_y);
+        banner_image.queue_resize ();
+        return true;
+      } else if (evt.delta_y > 0) {
+        // DOWN
+      }
+
+      return false;
+    });
+
+    var spinner = new Gtk.Spinner ();
+    spinner.set_size_request (75, 75);
+    spinner.start ();
+    spinner.show_all ();
+    tweet_list.set_placeholder (spinner);
+
   }
 
   public void set_user_id (int64 user_id) { // {{{
@@ -79,7 +106,7 @@ class ProfilePage : ScrollWidget, IPage {
       follow_button.hide ();
     }
 
-    banner_box.set_background(DATADIR+"/no_banner.png");
+    load_banner (DATADIR + "/no_banner.png");
     //Load cached data
     Corebird.db.select ("profiles").cols ("id", "screen_name", "name", "description", "tweets",
      "following", "followers", "avatar_name", "banner_url", "url", "location", "is_following",
@@ -95,7 +122,7 @@ class ProfilePage : ScrollWidget, IPage {
 
       set_data(vals[2], vals[1], vals[9], vals[10], vals[3],
                int.parse (vals[4]), int.parse (vals[5]), int.parse (vals[6]),
-               vals[8]);
+               vals[8], false);
       set_follow_button_state (bool.parse (vals[11]));
       string banner_name = vals[12];
       debug("banner_name: %s", banner_name);
@@ -103,12 +130,12 @@ class ProfilePage : ScrollWidget, IPage {
       if (banner_name != null &&
           FileUtils.test(Utils.user_file("assets/banners/"+banner_name), FileTest.EXISTS)){
         message("Banner exists, set it directly...");
-        banner_box.set_background(Utils.user_file(
-                      "assets/banners/"+banner_name));
+        load_banner (Utils.user_file ("assets/banners/" + banner_name));
       } else {
+        // TODO: ???
         // If the cached banner does somehow not exist, load it again.
         debug("Banner %s does not exist, load it first...", banner_name);
-        banner_box.set_background(DATADIR+"/no_banner.png");
+        load_banner (DATADIR + "/no_banner.png");
       }
       return false;
     });
@@ -177,6 +204,7 @@ class ProfilePage : ScrollWidget, IPage {
       bool is_following  = root.get_boolean_member("following");
       bool has_url       = root.get_object_member("entities").has_member("url");
       string banner_name = get_banner_name(user_id);
+      bool verified      = root.get_boolean_member ("verified");
 
       if (root.has_member ("profile_banner_url")) {
         string banner_base_url = root.get_string_member ("profile_banner_url");
@@ -225,7 +253,7 @@ class ProfilePage : ScrollWidget, IPage {
       account.user_counter.user_seen (id, screen_name, name);
 
       set_data(name, screen_name, display_url, location, description, tweets,
-           following, followers, avatar_url, text_urls);
+           following, followers, avatar_url, verified, text_urls);
       set_follow_button_state (is_following);
       Corebird.db.replace ("profiles")
                  .vali64 ("id", id)
@@ -246,6 +274,50 @@ class ProfilePage : ScrollWidget, IPage {
   } //}}}
 
 
+  private void load_tweets () { // {{{
+    var call = account.proxy.new_call ();
+    call.set_function ("1.1/statuses/user_timeline.json");
+    call.set_method ("GET");
+    call.add_param ("user_id", this.user_id.to_string ());
+    call.add_param ("count", "35");
+    call.add_param ("contributor_details", "true");
+    call.add_param ("include_my_retweet", "true");
+
+    call.invoke_async.begin (null, (obj, res) => {
+      try {
+        call.invoke_async.end (res);
+      } catch (GLib.Error e) {
+        warning (e.message);
+        return;
+      }
+
+      var parser = new Json.Parser ();
+      try {
+        parser.load_from_data (call.get_payload ());
+      } catch (GLib.Error e) {
+        warning (e.message);
+        return;
+      }
+      var now = new GLib.DateTime.now_local ();
+      var root = parser.get_root().get_array();
+      root.foreach_element( (array, index, node) => {
+        Tweet t = new Tweet();
+        t.load_from_json(node, now);
+//        if (tweet_type != -1){
+//          t.type = tweet_type;
+//        }
+
+//        if(t.id < lowest_id)
+//          lowest_id = t.id;
+        var entry  = new TweetListEntry(t, main_window, account);
+//        this.delta_updater.add (entry);
+        tweet_list.add (entry);
+      });
+
+
+    });
+  } // }}}
+
   /**
    * Loads the user's banner image.
    *
@@ -260,7 +332,7 @@ class ProfilePage : ScrollWidget, IPage {
     string banner_on_disk = Utils.user_file("assets/banners/"+banner_name);
     if (!FileUtils.test (banner_on_disk, FileTest.EXISTS) || banner_url != saved_banner_url) {
       Utils.download_file_async .begin (banner_url, banner_on_disk, data_cancellable,
-          () => {banner_box.set_background (banner_on_disk);});
+          () => {load_banner (banner_on_disk);});
         debug("Setting the banner name to %s", banner_name);
       Corebird.db.update ("profiles")
                  .val ("banner_url", banner_url)
@@ -268,7 +340,7 @@ class ProfilePage : ScrollWidget, IPage {
                  .where_eqi ("id", user_id)
                  .run ();
     } else {
-      banner_box.set_background (banner_on_disk);
+      load_banner (banner_on_disk);
     }
   } // }}}
 
@@ -276,16 +348,19 @@ class ProfilePage : ScrollWidget, IPage {
   private new void set_data (string name, string screen_name, string? url,
                              string? location, string description, int tweets,
                              int following, int followers, string avatar_url,
-                             GLib.SList<TweetUtils.Sequence?>? text_urls = null) { //{{{
+                             bool verified,
+                             GLib.SList<TweetUtils.Sequence?>? text_urls = null
+                             ) { //{{{
 
-    name_label.set_markup("<b>%s</b>  @%s"
-                          .printf(name, screen_name));
+    name_label.set_markup("<b>%s</b>".printf (name));
+    screen_name_label.set_label ("@" + screen_name);
+    tweet_to_menu_item.label = _("Tweet to @%s").printf (screen_name);
     string desc = description;
     if (text_urls != null) {
       desc = TweetUtils.get_formatted_text (description, text_urls);
     }
-    description_label.label = desc;
-    tweets_label.set_markup(
+    description_label.label = "<big><big>" + desc + "</big></big>";
+/*    tweets_label.set_markup(
       "<big><big><b>%'d</b></big></big>\nTweets"
       .printf(tweets));
 
@@ -295,13 +370,26 @@ class ProfilePage : ScrollWidget, IPage {
 
     followers_label.set_markup(
       "<big><big><b>%'d</b></big></big>\nFollowers"
-      .printf(followers));
+      .printf(followers)); */
 
     if (location != null && location != "") {
       location_label.visible = true;
       location_label.label = location;
     } else
       location_label.visible = false;
+
+    if (verified) {
+      verified_image.show ();
+      if (verified_image.pixbuf == null) {
+        try {
+          verified_image.pixbuf = new Gdk.Pixbuf.from_file (DATADIR + "verified.png");
+        } catch (GLib.Error e) {
+          warning (e.message);
+        }
+      }
+    } else {
+      verified_image.hide ();
+    }
 
     if (url != null && url != "") {
       url_label.visible = true;
@@ -361,6 +449,13 @@ class ProfilePage : ScrollWidget, IPage {
                              user_id, screen_name, name, avatar_url);
   }
 
+  [GtkCallback]
+  private void tweet_to_item_activate_cb () {
+    var cw = new ComposeTweetWindow (main_window, account, null);
+    cw.set_text ("@" + screen_name + " ");
+    cw.show_all ();
+  }
+
   private void set_follow_button_state (bool following) { //{{{
     var sc = follow_button.get_style_context ();
     follow_button.sensitive = true;
@@ -378,6 +473,14 @@ class ProfilePage : ScrollWidget, IPage {
   } //}}}
 
 
+  private void load_banner (string path) {
+    try {
+      banner_image.pixbuf = new Gdk.Pixbuf.from_file (path);
+    } catch (GLib.Error e) {
+      warning (e.message);
+    }
+  }
+
 
   /**
    * see IPage#onJoin
@@ -388,6 +491,8 @@ class ProfilePage : ScrollWidget, IPage {
       return;
     data_cancellable = new GLib.Cancellable ();
     set_user_id(user_id);
+    tweet_list.@foreach ((w) => {tweet_list.remove (w);});
+    load_tweets ();
   }
 
   public void on_leave () {
@@ -395,6 +500,7 @@ class ProfilePage : ScrollWidget, IPage {
     //       We might otherwise overwrite the new user's data with that from the old one.
 //    data_cancellable.cancel ();
     account.user_counter.save (account.db);
+    banner_image.scale = 0.3;
   }
 
 

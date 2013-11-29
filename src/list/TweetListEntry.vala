@@ -37,7 +37,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   [GtkChild]
   private ReplyEntry reply_entry;
   [GtkChild]
-  private Label conversation_label;
+  private Image conversation_image;
   [GtkChild]
   private Box text_box;
   [GtkChild]
@@ -91,7 +91,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     reply_entry.max_length = Tweet.MAX_LENGTH;
     if (tweet.is_retweet) {
       rt_label.show ();
-      rt_label.label = @"<b> </b> <a href=\"@$(tweet.rt_by_id)\"
+      rt_label.label = @"<a href=\"@$(tweet.rt_by_id)\"
                          title=\"@$(tweet.rt_by_screen_name)\">$(tweet.retweeted_by)</a>";
     }
 
@@ -135,7 +135,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     }
 
     if (tweet.reply_id != 0) {
-      conversation_label.show ();
+      conversation_image.show ();
     }
 
     more_menu_delete_item.visible = tweet.user_id == account.id;
@@ -222,27 +222,29 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     Gtk.StateFlags flags = this.get_state_flags ();
     bool buttons_visible = (bool)(flags & (StateFlags.PRELIGHT | StateFlags.SELECTED));
     buttons_visible = (buttons_visible || more_menu.visible) && !reply_revealer.reveal_child;
+    var ct = this.get_style_context ();
     if (buttons_visible) {
-      var ct = this.get_style_context ();
       hover_box.override_background_color (Gtk.StateFlags.NORMAL,
                                            ct.get_background_color (Gtk.StateFlags.PRELIGHT));
-      retweet_button.show ();
+
+      retweet_button.visible = (account.id != tweet.user_id);
       favorite_button.show ();
       reply_button.show ();
       more_button.show ();
-      conversation_label.hide ();
-      if (account.id == tweet.user_id) {
-        retweet_button.hide ();
+      conversation_image.hide ();
+
+      int hover_margin_top = (screen_name_label.get_allocated_height () / 2) - 6;
+      if (hover_margin_top > 2) {
+        hover_box.margin_top = hover_margin_top;
       }
     } else {
-      var ct = this.get_style_context ();
       hover_box.override_background_color (Gtk.StateFlags.NORMAL,
                                            ct.get_background_color (Gtk.StateFlags.NORMAL));
       retweet_button.visible = tweet.retweeted;
       favorite_button.visible = tweet.favorited;
       reply_button.hide ();
       more_button.hide ();
-      conversation_label.visible = tweet.reply_id != 0;
+      conversation_image.visible = tweet.reply_id != 0;
     }
   } //}}}
 
@@ -321,7 +323,8 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   [GtkCallback]
   private void reply_button_clicked_cb () {
     ComposeTweetWindow ctw = new ComposeTweetWindow(this.window, this.account, this.tweet,
-                                                    ComposeTweetWindow.Mode.REPLY);
+                                                    ComposeTweetWindow.Mode.REPLY,
+                                                    this.window.get_application ());
     ctw.show ();
   }
 
@@ -335,7 +338,8 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   [GtkCallback]
   private void quote_item_activated_cb () {
     ComposeTweetWindow ctw = new ComposeTweetWindow(this.window, this.account, this.tweet,
-                                                    ComposeTweetWindow.Mode.QUOTE);
+                                                    ComposeTweetWindow.Mode.QUOTE,
+                                                    this.window.get_application ());
     ctw.show ();
 
   }

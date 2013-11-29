@@ -32,16 +32,12 @@ class Corebird : Gtk.Application {
 
   public override int command_line(ApplicationCommandLine cmd){
     this.hold();
-    bool show_tweet_window = false;
-    bool not_in_cmd = false;
+    string? compose_screen_name = null;
 
 
-    OptionEntry[] options = new OptionEntry[2];
-    options[0] = {"tweet", 't', 0, OptionArg.NONE, ref show_tweet_window,
-            "Shows only the 'compose tweet' window, nothing else.", null};
-    options[1] = {"mode", 'u', 0, OptionArg.NONE, ref not_in_cmd,
-            "Use this flag to indicate that the application does NOT run on the command line",
-            null};
+    OptionEntry[] options = new OptionEntry[1];
+    options[0] = {"tweet", 't', 0, OptionArg.STRING, ref compose_screen_name,
+            "Shows only the 'compose tweet' window for the given account, nothing else.", null};
 
     string[] args = cmd.get_arguments();
     string*[] _args = new string[args.length];
@@ -61,7 +57,7 @@ class Corebird : Gtk.Application {
       return -1;
     }
 
-    open_startup_windows (show_tweet_window);
+    open_startup_windows (compose_screen_name);
 
 
     NotificationManager.init ();
@@ -170,7 +166,7 @@ class Corebird : Gtk.Application {
    *
    *
    */
-  private void open_startup_windows (bool show_tweet_window) { // {{{
+  private void open_startup_windows (string? compose_screen_name = null) { // {{{
     string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
 
     if(startup_accounts.length == 1) {
@@ -181,7 +177,7 @@ class Corebird : Gtk.Application {
     }
     message("Startup accounts: %d", startup_accounts.length);
 
-    if (!show_tweet_window) {
+    if (compose_screen_name == null) {
       if (startup_accounts.length == 0) {
         this.lookup_action ("show-settings").activate (null);
       } else {
@@ -202,7 +198,21 @@ class Corebird : Gtk.Application {
 
       }
     } else {
-      critical ("Implement.");
+      Account? acc = Account.query_account (compose_screen_name);
+      if (acc == null) {
+        critical ("No account named `%s` is configured. Exiting.",
+                  compose_screen_name);
+        return;
+      }
+      // TODO: Handle the 'avatar not yet cached' case
+      acc.init_proxy ();
+      acc.load_avatar ();
+      acc.query_user_info_by_scren_name.begin (acc.screen_name, acc.load_avatar);
+      var cw = new ComposeTweetWindow (null, acc, null,
+                                       ComposeTweetWindow.Mode.NORMAL,
+                                       this);
+      cw.show();
+      this.add_window (cw);
     }
   } // }}}
 
@@ -270,6 +280,7 @@ class Corebird : Gtk.Application {
         }
       }
     }
+    window = null;
     return false;
   }
 

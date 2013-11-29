@@ -305,8 +305,8 @@ class MainWindow : ApplicationWindow {
     var acc_menu = (GLib.Menu)Corebird.account_menu;
     for (int i = 0; i < acc_menu.get_n_items (); i++){
       Variant item_name = acc_menu.get_item_attribute_value (i, "label", VariantType.STRING);
-      if (item_name.get_string () == "@"+account.screen_name){
-        ((SimpleAction)this.application.lookup_action("show-"+account.screen_name)).set_enabled(true);
+      if (item_name.get_string () == "@" + account.screen_name){
+        ((SimpleAction)this.application.lookup_action("show-" + account.screen_name)).set_enabled(true);
         break;
       }
     }

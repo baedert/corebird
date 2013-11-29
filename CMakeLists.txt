@@ -114,7 +114,6 @@ set (VALA_SOURCE
   src/UserCounter.vala
   src/DefaultTimeline.vala
   src/ListsPage.vala
-  src/widgets/ImageBox.vala
   src/widgets/ImageLabel.vala
   src/widgets/PixbufButton.vala
   src/widgets/ScrollWidget.vala
@@ -126,6 +125,8 @@ set (VALA_SOURCE
   src/widgets/ReplyEntry.vala
   src/widgets/DMPlaceholderBox.vala
   src/widgets/BgBox.vala
+  src/widgets/AspectImage.vala
+  src/widgets/MaxSizeContainer.vala
   src/list/TweetListEntry.vala
   src/list/ProgressEntry.vala
   src/list/AccountListEntry.vala

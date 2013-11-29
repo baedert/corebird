@@ -9,6 +9,10 @@
 }
 
 
+.sidebar {
+  -GtkWidget-window-dragging: true;
+}
+
 .button-slim {
   -GtkButton-default-border: 0;
   -GtkButton-default-outside-border: 0;
@@ -82,9 +86,6 @@
   background-color: transparent;
 }
 
-.stream{
-/*  -GtkBox-spacing: 3; */
-}
 
 .tweet {
   border-color: alpha(black, 0.2);
@@ -95,8 +96,6 @@
   /* TODO: Set a special background color or something */
 }
 
-.time-delta-label {
-}
 
 .text-only-button{
   font-weight: bold;
@@ -144,45 +143,4 @@
 .pixbuf-button:backdrop {
   background-color: transparent;
   background-image: none;
-}
-
-.tweet .author {
-
-}
-
-.tweet .screen-name {
-  /* Label containing the author's screen_name */
-}
-
-.profile-header .description {
-  color: #EEE;
-  text-shadow: 1px 1px 1px #000,
-               0px 0px 2px #000;
-  -GtkWidget-link-color: #EEE;
-  font-size: 2.0em;
-}
-
-.profile-header .data {
-  color: #EEE;
-  background-color: alpha(black, 0.55);
-  font-size: 1.8em;
-  -GtkWidget-link-color: #EEE;
-}
-
-.profile-header .data-button {
-  background-color: alpha(black, 0.55);
-  background-image: none;
-  border-radius: 0px;
-  border: none;
-  color: #EEE;
-  text-shadow: none;
-  padding-top: 3px;
-  padding-right: 8px;
-  padding-left: 8px;
-}
-/* Progress-item showed when loading new tweets */
-.progress-item .button {
-  background-image: none;
-  border: none;
-  background-color: transparent;
 }

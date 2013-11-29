@@ -5,11 +5,21 @@
     <glade-widget-class name="TextButton" generic-name="textbutton"
           title="TextButton" parent="GtkButton" />
 
-    <glade-widget-class name="ImageBox" generic-name="imagebox"
-          title="ImageBox" parent="GtkBox" />
-
     <glade-widget-class name="ImageLabel" generic-name="imagelabel"
-          title="ImageLabel" parent="GtkLabel" />
+      title="ImageLabel" parent="GtkLabel">
+      <properties>
+        <property id="icon-name" name="Icon name" ignore="True">
+          <parameter-spec>
+            <type>GParamString</type>
+          </parameter-spec>
+        </property>
+        <property id="icon-size" name="Icon Size" ignore="True">
+          <parameter-spec>
+            <type>GParamInt</type>
+          </parameter-spec>
+        </property>
+      </properties>
+    </glade-widget-class>
 
     <glade-widget-class name="ScrollWidget" generic-name="scrollwidget"
           title="ScrollWidget" parent="GtkScrolledWindow" />
@@ -21,7 +31,21 @@
           title="ReplyEntry" parent="GtkEntry" />
 
     <glade-widget-class name="BgBox" generic-name="bgbox"
-          title="BgBox" parent="GtkBox" />
+      title="BgBox" parent="GtkBox" />
+
+    <glade-widget-class name="MaxSizeContainer" generic-name="maxsize"
+      title="MaxSizeContainer" parent="GtkEventBox" />
+
+    <glade-widget-class name="AspectImage" generic-name="aspectimage"
+      title="AspectImage" parent="GtkImage">
+      <properties>
+        <property id="scale" name="Scale" ignore="True">
+          <parameter-spec>
+            <type>GParamDouble</type>
+          </parameter-spec>
+         </property>
+      </properties>
+    </glade-widget-class>
 
   </glade-widget-classes>
 
@@ -31,9 +55,10 @@
     <glade-widget-class-ref name="PixbufButton" />
     <glade-widget-class-ref name="ImageBox" />
     <glade-widget-class-ref name="ImageLabel" />
-    <glade-widget-class-ref name="InvisibilityBin" />
     <glade-widget-class-ref name="ScrollWidget" />
     <glade-widget-class-ref name="ReplyEntry" />
     <glade-widget-class-ref name="BgBox" />
+    <glade-widget-class-ref name="AspectImage" />
+    <glade-widget-class-ref name="MaxSizeContainer" />
   </glade-widget-group>
 </glade-catalog>

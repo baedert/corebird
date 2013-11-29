@@ -36,6 +36,7 @@ class Twitter : GLib.Object {
 
   public static int short_url_length         { public get; private set; default = 22;}
   public static int short_url_length_https   { public get; private set; default = 23;}
+  public static int max_media_per_upload     { public get; private set; default = 1; }
   public static Gdk.Pixbuf no_avatar;
   public static Gdk.Pixbuf no_banner;
   public static Gdk.Pixbuf verified_icon;

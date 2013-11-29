@@ -153,6 +153,46 @@ namespace Utils {
     dialog.show();
   }
 
+  /**
+   * Shows the given json error object in an error dialog.
+   * Example object data:
+   * {"errors":[{"message":"Could not authenticate you","code":32}]
+   *
+   * @param json_data The json data to show
+   * @param alternative If the given json data is not valid,
+   *                    show this alternative error message.
+   */
+  void show_error_object (string json_data, string alternative) {
+    var parser = new Json.Parser ();
+    string error_message = alternative;
+    try {
+      StringBuilder sb = new StringBuilder ();
+      parser.load_from_data (json_data);
+      var root = parser.get_root ().get_object ();
+      var errors = root.get_array_member ("errors");
+      if (errors.get_length () == 1) {
+        var err = errors.get_object_element (0);
+        sb.append (err.get_int_member ("code").to_string ()).append (": ")
+          .append (err.get_string_member ("message"));
+      } else {
+        sb.append ("<ul>");
+        errors.foreach_element ((arr, index, node) => {
+          var obj = node.get_object ();
+          sb.append ("<li>").append (obj.get_int_member ("code").to_string ())
+            .append (": ")
+            .append (obj.get_string_member ("message")).append ("</li>");
+        });
+        sb.append ("</ul>");
+      }
+      error_message = sb.str;
+    } catch (GLib.Error e) {
+      warning (e.message);
+    }
+
+    show_error_dialog (error_message);
+  }
+
+
 
   /**
    * TODO: Maybe use the XDG_CONFIG_DIR here?

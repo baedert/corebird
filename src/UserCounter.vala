@@ -26,7 +26,7 @@
  XXX: Check if this works well with sqlite, if not move to a simple text file.
 */
 
-class UserInfo {
+class UserInfo : GLib.Object {
   public int64 id;
   public string screen_name;
   public string name;
@@ -71,6 +71,9 @@ class UserCounter : GLib.Object {
     string p = prefix.down ();
     UserInfo[] results = new UserInfo[max_results];
     foreach (var ui in names) {
+      if (n_results >= max_results)
+        break;
+
       if (ui.name.down ().has_prefix (p) || ui.screen_name.down ().has_prefix (p)) {
         results[n_results] = ui;
         n_results ++;
