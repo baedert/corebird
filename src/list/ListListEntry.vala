@@ -20,5 +20,15 @@
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/list-list-entry.ui")]
 class ListListEntry : Gtk.ListBoxRow {
+  [GtkChild]
+  private Gtk.Label name_label;
 
+  public new string name {
+    set {
+      name_label.label = value;
+    }
+    get {
+      return name_label.label;
+    }
+  }
 }

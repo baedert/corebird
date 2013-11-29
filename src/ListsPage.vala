@@ -26,6 +26,18 @@ class ListsPage : IPage, ScrollWidget {
   public unowned DeltaUpdater delta_updater { get; set; }
   public int id                             { get; set; }
   private bool inited = false;
+  [GtkChild]
+  private Gtk.Label user_list_label;
+  [GtkChild]
+  private Gtk.ListBox user_list_box;
+  [GtkChild]
+  private Gtk.Frame user_list_frame;
+  [GtkChild]
+  private Gtk.Label subscribed_list_label;
+  [GtkChild]
+  private Gtk.ListBox subscribed_list_box;
+  [GtkChild]
+  private Gtk.Frame subscribed_list_frame;
 
   public ListsPage (int id) {
     this.id = id;
@@ -37,6 +49,7 @@ class ListsPage : IPage, ScrollWidget {
       return;
 
     inited = true;
+    load_newest ();
   }
 
   public void on_leave () {
@@ -48,10 +61,11 @@ class ListsPage : IPage, ScrollWidget {
     var call = account.proxy.new_call ();
     call.set_function ("1.1/lists/list.json");
     call.set_method ("GET");
-    call.invoke_async.begin (null, (obj, res) => {
+    call.invoke_async.begin (null, (o, res) => {
       try {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
+        Utils.show_error_object (call.get_payload (), e.message);
         warning (e.message);
         return;
       }
@@ -64,11 +78,30 @@ class ListsPage : IPage, ScrollWidget {
       }
 
       var arr = parser.get_root ().get_array ();
+      int n_user_lists = 0;
+      int n_subscribed_list = 0;
       arr.foreach_element ((array, index, node) => {
         var obj = node.get_object ();
-
+        var entry = new ListListEntry ();
+        entry.name = obj.get_string_member ("full_name");
+        if (obj.get_object_member ("user").get_int_member ("id") == account.id) {
+          user_list_box.add (entry);
+          n_user_lists ++;
+        } else {
+          subscribed_list_box.add (entry);
+          n_subscribed_list ++;
+        }
       });
-      stdout.printf (call.get_payload () + "\n");
+      if (n_user_lists == 0) {
+        user_list_frame.hide ();
+        user_list_label.hide ();
+      }
+
+      if (n_subscribed_list == 0) {
+        subscribed_list_frame.hide ();
+        subscribed_list_label.hide ();
+      }
+//      stdout.printf (call.get_payload () + "\n");
     });
 
   } // }}}

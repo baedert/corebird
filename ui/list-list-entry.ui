@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 on Tue Nov 19 16:07:16 2013 -->
+<!-- Generated with glade 3.16.0 -->
 <interface>
-  <!-- interface-requires gtk+ 3.10 -->
+  <requires lib="gtk+" version="3.10"/>
+  <object class="GtkMenu" id="menu1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+  </object>
   <template class="ListListEntry" parent="GtkListBoxRow">
     <property name="visible">True</property>
     <property name="can_focus">True</property>
@@ -68,6 +72,7 @@
             <property name="halign">end</property>
             <property name="valign">center</property>
             <property name="margin_right">5</property>
+            <property name="relief">none</property>
             <property name="popup">menu1</property>
             <child>
               <placeholder/>
@@ -82,8 +87,4 @@
       </object>
     </child>
   </template>
-  <object class="GtkMenu" id="menu1">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-  </object>
 </interface>
