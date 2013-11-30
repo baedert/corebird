@@ -18,11 +18,14 @@
 
 namespace InlineMediaDownloader {
   const int THUMB_SIZE = 40;
-
+  private Soup.Session session;
 
   async void try_load_media(Tweet t, string url) {
     if(!Settings.show_inline_media())
       return;
+
+    if (session == null)
+      session = new Soup.Session ();
     /*
         TODO: Support For:
         * yfrog
@@ -56,7 +59,6 @@ namespace InlineMediaDownloader {
 
   private async void two_step_load(Tweet t, string first_url, string regex_str,
                                           int match_index) {
-    var session = new Soup.Session();
     var msg     = new Soup.Message("GET", first_url);
     session.queue_message(msg, (_s, _msg) => {
     string back = (string)_msg.response_body.data;
@@ -66,7 +68,7 @@ namespace InlineMediaDownloader {
         regex.match(back, 0, out info);
         string real_url = info.fetch(match_index);
         if(real_url != null)
-          load_inline_media.begin(t, real_url, session);
+          load_inline_media.begin(t, real_url);
       } catch (GLib.RegexError e) {
         critical("Regex Error(%s): %s", regex_str, e.message);
       }
@@ -74,8 +76,7 @@ namespace InlineMediaDownloader {
 
   }
 
-  private async void load_inline_media(Tweet t, string url,
-                                       Soup.Session? sess = null) { //{{{
+  private async void load_inline_media(Tweet t, string url) { //{{{
 
     // First, check if the media already exists...
     string path = get_media_path (t, url);
@@ -93,11 +94,7 @@ namespace InlineMediaDownloader {
     }
 
 
-    Soup.Session session = sess;
     debug("Directly Downloading %s", url);
-    if(session == null)
-      session = new Soup.Session();
-
     var msg = new Soup.Message("GET", url);
 
     session.queue_message(msg, (s, _msg) => {
