@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 on Fri Oct 25 19:50:13 2013 -->
+<!-- Generated with glade 3.16.0 -->
 <interface>
-  <!-- interface-requires gtk+ 3.10 -->
+  <requires lib="gtk+" version="3.10"/>
+  <object class="GtkAdjustment" id="adjustment1">
+    <property name="upper">20</property>
+    <property name="value">2</property>
+    <property name="step_increment">0.10000000000000001</property>
+    <property name="page_increment">1</property>
+  </object>
   <template class="SettingsDialog" parent="GtkDialog">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -45,6 +51,7 @@
           <object class="GtkNotebook" id="main_notebook">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="enable_popup">True</property>
             <child>
               <object class="GtkGrid" id="accounts_grid">
                 <property name="visible">True</property>
@@ -348,6 +355,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="halign">end</property>
+                    <property name="valign">center</property>
                     <property name="label" translatable="yes">Auto scroll on new tweets:</property>
                   </object>
                   <packing>
@@ -366,6 +374,36 @@
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">3</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label18">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">end</property>
+                    <property name="label" translatable="yes">Maximum inline media size:</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">4</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSpinButton" id="max_media_size_spin_button">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="halign">start</property>
+                    <property name="adjustment">adjustment1</property>
+                    <property name="digits">1</property>
+                    <property name="numeric">True</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">4</property>
                     <property name="width">1</property>
                     <property name="height">1</property>
                   </packing>

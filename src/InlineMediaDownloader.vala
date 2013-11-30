@@ -86,7 +86,7 @@ namespace InlineMediaDownloader {
          If not, fuck you.*/
       try {
         var thumb = new Gdk.Pixbuf.from_file(thumb_path);
-      fire_media_added(t, path, thumb, thumb_path);
+        fire_media_added(t, path, thumb, thumb_path);
         return;
       } catch (GLib.Error e) {
         critical (e.message);
@@ -96,8 +96,20 @@ namespace InlineMediaDownloader {
 
     debug("Directly Downloading %s", url);
     var msg = new Soup.Message("GET", url);
+    msg.got_headers.connect (() => {
+      int64 content_length = msg.response_headers.get_content_length ();
+      double mb = content_length / 1024.0 / 1024.0;
+      double max = Settings.max_media_size ();
+      if (mb > max) {
+        message ("Image %s won't be downloaded,  %fMB > %fMB", url, mb, max);
+        session.cancel_message (msg, Soup.Status.CANCELLED);
+      }
+    });
 
     session.queue_message(msg, (s, _msg) => {
+      if (_msg.status_code == Soup.Status.CANCELLED)
+        return;
+
       try {
         var ms  = new MemoryInputStream.from_data(_msg.response_body.data, null);
         string ext = Utils.get_file_type(url);

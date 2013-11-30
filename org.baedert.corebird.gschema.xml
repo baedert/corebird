@@ -72,5 +72,9 @@
     <key name="auto-scroll-on-new-tweets" type="b">
       <default>false</default>
     </key>
+    <key name="max-media-size" type="d">
+      <default>2.0</default>
+      <summary>Maximum size of online media to download, in Megabyte.</summary>
+    </key>
   </schema>
 </schemalist>
