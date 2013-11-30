@@ -53,8 +53,10 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
       }
 
       var entry = new TweetListEntry(t, main_window, account);
-      entry.seen = this.scrolled_up && auto_scroll &&
-                   main_window.cur_page_id == this.id;
+      entry.seen = this.scrolled_up  &&
+                   main_window.cur_page_id == this.id &&
+                   (t.user_id == account.id || auto_scroll);
+
       delta_updater.add (entry);
       tweet_list.add(entry);
 
