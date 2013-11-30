@@ -80,6 +80,16 @@ class TweetInfoPage : IPage , ScrollWidget {
       return true;
     });
     top_list_box.set_sort_func (ITwitterItem.sort_func_inv);
+    bottom_list_box.row_activated.connect ((row) => {
+      main_window.switch_page (MainWindow.PAGE_TWEET_INFO,
+                               TweetInfoPage.BY_INSTANCE,
+                               ((TweetListEntry)row).tweet);
+    });
+    top_list_box.row_activated.connect ((row) => {
+      main_window.switch_page (MainWindow.PAGE_TWEET_INFO,
+                               TweetInfoPage.BY_INSTANCE,
+                               ((TweetListEntry)row).tweet);
+    });
   }
 
   public void on_join (int page_id, va_list args){

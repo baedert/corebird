@@ -93,6 +93,11 @@ class ProfilePage : ScrollWidget, IPage {
     spinner.start ();
     spinner.show_all ();
     tweet_list.set_placeholder (spinner);
+    tweet_list.row_activated.connect ((row) => {
+      main_window.switch_page (MainWindow.PAGE_TWEET_INFO,
+                               TweetInfoPage.BY_INSTANCE,
+                               ((TweetListEntry)row).tweet);
+    });
 
   }
 
