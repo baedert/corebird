@@ -33,6 +33,7 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   protected int64 max_id                 { get; set; default = 0; }
   public DeltaUpdater delta_updater      { get; set;}
   protected bool loading = false;
+  protected Gtk.Widget? last_focus_widget = null;
 
 
   public DefaultTimeline (int id) {
@@ -61,6 +62,7 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
       main_window.switch_page (MainWindow.PAGE_TWEET_INFO,
                                TweetInfoPage.BY_INSTANCE,
                                ((TweetListEntry)row).tweet);
+      last_focus_widget = row;
     });
 
     var spinner = new Spinner ();
@@ -84,6 +86,9 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
       update_unread_count ();
     }
 
+    if (last_focus_widget != null) {
+      last_focus_widget.grab_focus ();
+    }
   }
 
 
