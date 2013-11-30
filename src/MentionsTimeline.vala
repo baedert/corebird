@@ -21,19 +21,6 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
 
   public MentionsTimeline(int id){
     base (id);
-
-    tweet_list.activate_on_single_click = false;
-    tweet_list.row_activated.connect ((row) => {
-      main_window.switch_page (MainWindow.PAGE_TWEET_INFO,
-                               TweetInfoPage.BY_INSTANCE,
-                               ((TweetListEntry)row).tweet);
-    });
-
-    var spinner = new Spinner ();
-    spinner.set_size_request (75, 75);
-    spinner.start ();
-    spinner.show_all ();
-    tweet_list.set_placeholder (spinner);
   }
 
   private void stream_message_received (StreamMessageType type, Json.Node root_node){ // {{{

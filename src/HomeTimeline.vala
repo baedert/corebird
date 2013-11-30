@@ -18,21 +18,9 @@
 using Gtk;
 
 class HomeTimeline : IMessageReceiver, DefaultTimeline {
+
   public HomeTimeline(int id) {
     base (id);
-
-    tweet_list.activate_on_single_click = false;
-    tweet_list.row_activated.connect ((row) => {
-      main_window.switch_page (MainWindow.PAGE_TWEET_INFO,
-                               TweetInfoPage.BY_INSTANCE,
-                               ((TweetListEntry)row).tweet);
-    });
-
-    var spinner = new Gtk.Spinner ();
-    spinner.set_size_request (75, 75);
-    spinner.start ();
-    spinner.show_all ();
-    tweet_list.set_placeholder (spinner);
   }
 
   // TODO: This is huge, refactor it.

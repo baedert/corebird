@@ -55,6 +55,20 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     tweet_list.set_selection_mode(SelectionMode.NONE);
     tweet_list.set_sort_func(ITwitterItem.sort_func);
     this.add (tweet_list);
+
+    tweet_list.activate_on_single_click = false;
+    tweet_list.row_activated.connect ((row) => {
+      main_window.switch_page (MainWindow.PAGE_TWEET_INFO,
+                               TweetInfoPage.BY_INSTANCE,
+                               ((TweetListEntry)row).tweet);
+    });
+
+    var spinner = new Spinner ();
+    spinner.set_size_request (75, 75);
+    spinner.start ();
+    spinner.show_all ();
+    tweet_list.set_placeholder (spinner);
+
   }
 
   // TODO: Why is there a page_id parameter?
