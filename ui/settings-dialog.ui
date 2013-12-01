@@ -371,7 +371,7 @@
                     <property name="can_focus">False</property>
                     <property name="halign">end</property>
                     <property name="hexpand">True</property>
-                    <property name="label" translatable="yes">Auto scroll on</property>
+                    <property name="label" translatable="yes">Auto scroll on new tweets:</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
