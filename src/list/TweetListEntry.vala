@@ -177,7 +177,6 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       ulong id = 0;
       id = conversation_image.size_allocate.connect (() => {
         if (hover_box_margin_adjusted == 0) {
-          message ("adjusting size...");
           int marg = conversation_image.get_allocated_width () + 2;
           hover_box.margin_right += marg;
           hover_box_margin_adjusted = marg;
