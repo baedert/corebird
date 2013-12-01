@@ -51,6 +51,7 @@ interface ITimeline : Gtk.Widget, IPage {
       try {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
+        Utils.show_error_object (call.get_payload (), e.message);
         warning (e.message);
         return;
       }
@@ -105,6 +106,7 @@ interface ITimeline : Gtk.Widget, IPage {
       try{
         call.invoke_async.end(result);
       } catch (GLib.Error e) {
+        Utils.show_error_object (call.get_payload (), e.message);
         critical(e.message);
         critical("Code: %u", call.get_status_code());
       }
