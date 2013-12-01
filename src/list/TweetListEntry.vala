@@ -65,6 +65,9 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   private weak MainWindow window;
   public Tweet tweet;
   private bool values_set = false;
+  /* Horrible hack. If this is negative, the absolute value of it has already
+     been added to the margin_right of the hover_box. If not is will be added
+     ad the next hover-out. */
   private int hover_box_margin_adjusted = 0;
   [Signal (action = true)]
   private signal void show_inline_reply ();
@@ -171,11 +174,14 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       hover_box.margin_right = time_delta_label.get_allocated_width () + 6;
     });
     if (tweet.reply_id != 0) {
-      conversation_image.size_allocate.connect (() => {
+      ulong id = 0;
+      id = conversation_image.size_allocate.connect (() => {
         if (hover_box_margin_adjusted == 0) {
+          message ("adjusting size...");
           int marg = conversation_image.get_allocated_width () + 2;
           hover_box.margin_right += marg;
           hover_box_margin_adjusted = marg;
+          conversation_image.disconnect (id);
         }
       });
       conversation_image.show ();
@@ -233,28 +239,32 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     var ct = this.get_style_context ();
     reply_button.visible = buttons_visible;
     more_button.visible = buttons_visible;
+    favorite_button.visible = buttons_visible || tweet.favorited;
+
     if (buttons_visible) {
       hover_box.override_background_color (Gtk.StateFlags.NORMAL,
                                            ct.get_background_color (Gtk.StateFlags.PRELIGHT));
 
       retweet_button.visible = (account.id != tweet.user_id);
-      favorite_button.show ();
       conversation_image.hide ();
 
       int hover_margin_top = (screen_name_label.get_allocated_height () / 2) - 6;
       if (hover_margin_top > 2) {
         hover_box.margin_top = hover_margin_top;
       }
-      if (tweet.reply_id != 0)
+      if (tweet.reply_id != 0 && hover_box_margin_adjusted > 0) {
         hover_box.margin_right -= hover_box_margin_adjusted;
+        hover_box_margin_adjusted = -hover_box_margin_adjusted;
+      }
     } else {
       hover_box.override_background_color (Gtk.StateFlags.NORMAL,
                                            ct.get_background_color (Gtk.StateFlags.NORMAL));
       retweet_button.visible = tweet.retweeted;
-      favorite_button.visible = tweet.favorited;
       conversation_image.visible = tweet.reply_id != 0;
-      if (tweet.reply_id != 0)
+      if (tweet.reply_id != 0) {
+        hover_box_margin_adjusted = -hover_box_margin_adjusted;
         hover_box.margin_right += hover_box_margin_adjusted;
+      }
 
     }
   } //}}}
