@@ -195,6 +195,8 @@ class MainWindow : ApplicationWindow {
 
     ag.connect (Gdk.Key.t, Gdk.ModifierType.CONTROL_MASK, AccelFlags.LOCKED,
         () => { show_compose_window (); return true;});
+    ag.connect (Gdk.Key.n, Gdk.ModifierType.CONTROL_MASK, AccelFlags.LOCKED,
+        () => { show_compose_window (); return true;});
 
 
     this.add_accel_group(ag);
