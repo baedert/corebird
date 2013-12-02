@@ -51,6 +51,7 @@ class SearchPage : IPage, Box {
   private int user_page = 1;
   private int64 lowest_tweet_id = int64.MAX-1;
   private bool loading_tweets = false;
+  private Gtk.Widget last_focus_widget;
 
 
   public SearchPage (int id) {
@@ -82,7 +83,8 @@ class SearchPage : IPage, Box {
   public void on_join (int page_id, va_list arg_list) {
     string? term = arg_list.arg<string>();
     if (term == null) {
-      warning ("No search term provided");
+      if (last_focus_widget != null)
+        last_focus_widget.grab_focus ();
       return;
     }
 
@@ -119,6 +121,7 @@ class SearchPage : IPage, Box {
   } //}}}
 
   private void row_activated_cb (ListBoxRow row) { // {{{
+    this.last_focus_widget = row;
     if (row is UserListEntry) {
       main_window.switch_page (MainWindow.PAGE_PROFILE,
                                ((UserListEntry)row).user_id);
