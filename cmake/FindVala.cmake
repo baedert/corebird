@@ -45,7 +45,7 @@
 
 # Search for the valac executable in the usual system paths.
 find_program(VALA_EXECUTABLE
-  NAMES valac)
+  NAMES valac valac-0.22)
 
 # Handle the QUIETLY and REQUIRED arguments, which may be given to the find call.
 # Furthermore set VALA_FOUND to TRUE if Vala has been found (aka.
@@ -58,6 +58,7 @@ mark_as_advanced(VALA_EXECUTABLE)
 
 # Determine the valac version
 if(VALA_FOUND)
+    message("Found valac: ${VALA_EXECUTABLE}")
     execute_process(COMMAND ${VALA_EXECUTABLE} "--version" 
                     OUTPUT_VARIABLE "VALA_VERSION")
     string(REPLACE "Vala" "" "VALA_VERSION" ${VALA_VERSION})
