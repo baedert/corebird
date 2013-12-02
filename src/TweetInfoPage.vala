@@ -34,7 +34,7 @@ class TweetInfoPage : IPage , ScrollWidget {
   [GtkChild]
   private Label text_label;
   [GtkChild]
-  private Label name_label;
+  private TextButton name_button;
   [GtkChild]
   private Label screen_name_label;
   [GtkChild]
@@ -80,6 +80,16 @@ class TweetInfoPage : IPage , ScrollWidget {
       return true;
     });
     top_list_box.set_sort_func (ITwitterItem.sort_func_inv);
+    bottom_list_box.row_activated.connect ((row) => {
+      main_window.switch_page (MainWindow.PAGE_TWEET_INFO,
+                               TweetInfoPage.BY_INSTANCE,
+                               ((TweetListEntry)row).tweet);
+    });
+    top_list_box.row_activated.connect ((row) => {
+      main_window.switch_page (MainWindow.PAGE_TWEET_INFO,
+                               TweetInfoPage.BY_INSTANCE,
+                               ((TweetListEntry)row).tweet);
+    });
   }
 
   public void on_join (int page_id, va_list args){
@@ -182,6 +192,11 @@ class TweetInfoPage : IPage , ScrollWidget {
     return TweetUtils.activate_link (uri, main_window);
   }
 
+  [GtkCallback]
+  private void name_button_clicked_cb () {
+    main_window.switch_page (MainWindow.PAGE_PROFILE,
+                             tweet.user_id);
+  }
 
   /**
    * Loads the data of the tweet with the id tweet_id from the Twitter server.
@@ -330,7 +345,7 @@ class TweetInfoPage : IPage , ScrollWidget {
     }
 
     text_label.label = "<b><big><big><big>"+tweet.get_formatted_text ()+"</big></big></big></b>";
-    name_label.label = tweet.user_name;
+    name_button.label = tweet.user_name;
     screen_name_label.label = "@" + tweet.screen_name;
     avatar_image.pixbuf = tweet.avatar;
     rt_fav_label.label = "<big><b>%'d</b></big> Retweets  <big><b>%'d</b></big> Favorites"

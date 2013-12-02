@@ -47,6 +47,8 @@ class SettingsDialog : Gtk.Dialog {
   private Switch search_show_retweets_switch;
   [GtkChild]
   private Switch auto_scroll_on_new_tweets_switch;
+  [GtkChild]
+  private SpinButton max_media_size_spin_button;
 
   public SettingsDialog(MainWindow? main_window = null, Corebird? application = null){
     this.main_window = main_window;
@@ -77,6 +79,8 @@ class SettingsDialog : Gtk.Dialog {
         Gtk.Settings.get_default ().gtk_application_prefer_dark_theme = dark_theme_switch.active;
     });
     Settings.get ().bind ("auto-scroll-on-new-tweets", auto_scroll_on_new_tweets_switch, "active",
+                          SettingsBindFlags.DEFAULT);
+    Settings.get ().bind ("max-media-size", max_media_size_spin_button, "value",
                           SettingsBindFlags.DEFAULT);
 
     // Behaviour page

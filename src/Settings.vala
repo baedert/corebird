@@ -71,6 +71,10 @@ class Settings : GLib.Object {
     return settings.get_int("animation-duration");
   }
 
+  public static double max_media_size () {
+    return settings.get_double ("max-media-size");
+  }
+
   public static bool get_bool (string key) {
     return settings.get_boolean (key);
   }

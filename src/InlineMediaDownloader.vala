@@ -18,11 +18,14 @@
 
 namespace InlineMediaDownloader {
   const int THUMB_SIZE = 40;
-
+  private Soup.Session session;
 
   async void try_load_media(Tweet t, string url) {
     if(!Settings.show_inline_media())
       return;
+
+    if (session == null)
+      session = new Soup.Session ();
     /*
         TODO: Support For:
         * yfrog
@@ -56,7 +59,6 @@ namespace InlineMediaDownloader {
 
   private async void two_step_load(Tweet t, string first_url, string regex_str,
                                           int match_index) {
-    var session = new Soup.Session();
     var msg     = new Soup.Message("GET", first_url);
     session.queue_message(msg, (_s, _msg) => {
     string back = (string)_msg.response_body.data;
@@ -66,7 +68,7 @@ namespace InlineMediaDownloader {
         regex.match(back, 0, out info);
         string real_url = info.fetch(match_index);
         if(real_url != null)
-          load_inline_media.begin(t, real_url, session);
+          load_inline_media.begin(t, real_url);
       } catch (GLib.RegexError e) {
         critical("Regex Error(%s): %s", regex_str, e.message);
       }
@@ -74,8 +76,7 @@ namespace InlineMediaDownloader {
 
   }
 
-  private async void load_inline_media(Tweet t, string url,
-                                       Soup.Session? sess = null) { //{{{
+  private async void load_inline_media(Tweet t, string url) { //{{{
 
     // First, check if the media already exists...
     string path = get_media_path (t, url);
@@ -85,7 +86,7 @@ namespace InlineMediaDownloader {
          If not, fuck you.*/
       try {
         var thumb = new Gdk.Pixbuf.from_file(thumb_path);
-      fire_media_added(t, path, thumb, thumb_path);
+        fire_media_added(t, path, thumb, thumb_path);
         return;
       } catch (GLib.Error e) {
         critical (e.message);
@@ -93,14 +94,22 @@ namespace InlineMediaDownloader {
     }
 
 
-    Soup.Session session = sess;
     debug("Directly Downloading %s", url);
-    if(session == null)
-      session = new Soup.Session();
-
     var msg = new Soup.Message("GET", url);
+    msg.got_headers.connect (() => {
+      int64 content_length = msg.response_headers.get_content_length ();
+      double mb = content_length / 1024.0 / 1024.0;
+      double max = Settings.max_media_size ();
+      if (mb > max) {
+        message ("Image %s won't be downloaded,  %fMB > %fMB", url, mb, max);
+        session.cancel_message (msg, Soup.Status.CANCELLED);
+      }
+    });
 
     session.queue_message(msg, (s, _msg) => {
+      if (_msg.status_code == Soup.Status.CANCELLED)
+        return;
+
       try {
         var ms  = new MemoryInputStream.from_data(_msg.response_body.data, null);
         string ext = Utils.get_file_type(url);

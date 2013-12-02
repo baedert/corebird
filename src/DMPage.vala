@@ -105,6 +105,7 @@ class DMPage : IPage, IMessageReceiver, Box {
     if (user_id == 0)
       return;
 
+    this.lowest_id = int64.MAX;
     this.user_id = user_id;
     string screen_name;
     if ((screen_name = arg_list.arg<string> ()) != null) {

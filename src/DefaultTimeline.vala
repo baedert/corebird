@@ -33,6 +33,7 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   protected int64 max_id                 { get; set; default = 0; }
   public DeltaUpdater delta_updater      { get; set;}
   protected bool loading = false;
+  protected Gtk.Widget? last_focus_widget = null;
 
 
   public DefaultTimeline (int id) {
@@ -55,6 +56,21 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     tweet_list.set_selection_mode(SelectionMode.NONE);
     tweet_list.set_sort_func(ITwitterItem.sort_func);
     this.add (tweet_list);
+
+    tweet_list.activate_on_single_click = false;
+    tweet_list.row_activated.connect ((row) => {
+      main_window.switch_page (MainWindow.PAGE_TWEET_INFO,
+                               TweetInfoPage.BY_INSTANCE,
+                               ((TweetListEntry)row).tweet);
+      last_focus_widget = row;
+    });
+
+    var spinner = new Spinner ();
+    spinner.set_size_request (75, 75);
+    spinner.start ();
+    spinner.show_all ();
+    tweet_list.set_placeholder (spinner);
+
   }
 
   // TODO: Why is there a page_id parameter?
@@ -70,6 +86,18 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
       update_unread_count ();
     }
 
+    if (last_focus_widget != null) {
+      last_focus_widget.grab_focus ();
+    }
+  }
+
+
+  public bool handles_double_open () {
+    return true;
+  }
+
+  public void double_open () {
+    this.scroll_up_next (true, false, true);
   }
 
   public virtual  void on_leave () {}

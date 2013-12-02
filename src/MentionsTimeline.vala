@@ -21,24 +21,20 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
 
   public MentionsTimeline(int id){
     base (id);
-
-    tweet_list.activate_on_single_click = false;
-    tweet_list.row_activated.connect ((row) => {
-      main_window.switch_page (MainWindow.PAGE_TWEET_INFO,
-                               TweetInfoPage.BY_INSTANCE,
-                               ((TweetListEntry)row).tweet);
-    });
-
-    var spinner = new Spinner ();
-    spinner.set_size_request (75, 75);
-    spinner.start ();
-    spinner.show_all ();
-    tweet_list.set_placeholder (spinner);
   }
 
   private void stream_message_received (StreamMessageType type, Json.Node root_node){ // {{{
     Json.Object root = root_node.get_object ();
+
     if (type == StreamMessageType.TWEET) {
+      var author = root.get_object_member ("user");
+      if (author.get_int_member ("id") == account.id &&
+          !root.get_null_member ("in_reply_to_status_id")) {
+        mark_seen (root.get_int_member ("in_reply_to_status_id"));
+        return;
+      }
+
+
       if (root.get_string_member("text").contains("@"+account.screen_name)) {
         GLib.DateTime now = new GLib.DateTime.now_local ();
         Tweet t = new Tweet();
@@ -61,8 +57,6 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
           return;
         }
 
-
-
         this.balance_next_upper_change (TOP);
         var entry = new TweetListEntry(t, main_window, account);
         entry.seen = false;
@@ -84,6 +78,20 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
     }
   } // }}}
 
+  private void mark_seen (int64 id) {
+    // TODO: All these foreach loops don't allow for early exit.
+    tweet_list.@foreach ((w) => {
+      if (w == null || !(w is TweetListEntry))
+        return;
+      var tle = (TweetListEntry) w;
+      if (tle.tweet.id == id) {
+        tle.seen = true;
+        unread_count--;
+        update_unread_count ();
+      }
+    });
+  }
+
   public override void load_newest () {
     this.loading = true;
     this.load_newest_internal.begin("1.1/statuses/mentions_timeline.json", Tweet.TYPE_MENTION, () => {
@@ -99,6 +107,8 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
       main_window.stop_progress ();
     });
   }
+
+
 
   public override void create_tool_button (RadioToolButton? group) {
     tool_button = new BadgeRadioToolButton(group, "corebird-mentions-symbolic");

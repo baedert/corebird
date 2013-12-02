@@ -28,4 +28,10 @@ interface IPage : Gtk.Widget {
   public abstract unowned MainWindow main_window {get; set;}
   public abstract unowned Account account        {get; set;}
 
+
+  public virtual bool handles_double_open () {
+    return false;
+  }
+
+  public virtual void double_open () {}
 }

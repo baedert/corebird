@@ -102,14 +102,16 @@ class ScrollWidget : ScrolledWindow {
    * @param force_wait If this is set to true, we will wait for the next size_allocate
    *                   event, even if the widget is unmapped (default: false).
    */
-  public void scroll_up_next (bool animate = true, bool force_wait = false) { // {{{
+  public void scroll_up_next (bool animate = true, bool force_wait = false,
+                              bool force_start = false) { // {{{
     if (!this.get_mapped () && !force_wait) {
       this.vadjustment.value = 0;
       this.vadjustment.value_changed ();
       return;
     }
 
-    scroll_up_id = this.size_allocate.connect (() => {
+    // TODO: I really can't stand the duplication here
+    if (force_start) {
       if (Gtk.Settings.get_default ().gtk_enable_animations && animate) {
         this.start_time = this.get_frame_clock ().get_frame_time ();
         this.end_time = start_time + (TRANSITION_DURATION * 1000);
@@ -120,9 +122,21 @@ class ScrollWidget : ScrolledWindow {
         this.vadjustment.value = 0;
         this.vadjustment.value_changed ();
       }
-      this.disconnect (scroll_up_id);
-
-    });
+    } else {
+      scroll_up_id = this.size_allocate.connect (() => {
+        if (Gtk.Settings.get_default ().gtk_enable_animations && animate) {
+          this.start_time = this.get_frame_clock ().get_frame_time ();
+          this.end_time = start_time + (TRANSITION_DURATION * 1000);
+          this.transition_diff = - this.vadjustment.value;
+          this.transition_start_value = vadjustment.value;
+          this.add_tick_callback (scroll_up_tick_cb);
+        } else {
+          this.vadjustment.value = 0;
+          this.vadjustment.value_changed ();
+        }
+        this.disconnect (scroll_up_id);
+      });
+    }
   } // }}}
 
   /**
