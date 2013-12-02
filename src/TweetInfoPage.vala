@@ -266,7 +266,6 @@ class TweetInfoPage : IPage , ScrollWidget {
         return;
       }
       var statuses_node = parser.get_root ().get_object ().get_array_member ("statuses");
-      message ("Statuses: %u", statuses_node.get_length ());
       int n_replies = 0;
       statuses_node.foreach_element ((arr, index, node) => {
         if (n_replies >= 5)
@@ -288,7 +287,6 @@ class TweetInfoPage : IPage , ScrollWidget {
         top_list_box.add (tle);
         n_replies ++;
       });
-      message ("Replies: %d", n_replies);
 
       if (n_replies > 0) {
         top_list_box.show ();
@@ -316,7 +314,7 @@ class TweetInfoPage : IPage , ScrollWidget {
     call.set_method ("GET");
     call.add_param ("id", reply_id.to_string ());
     call.invoke_async.begin (null, (obj, res) => {
-      try{call.invoke_async.end (res);message("code: %u", call.get_status_code ());}catch(GLib.Error e){
+      try{call.invoke_async.end (res);}catch(GLib.Error e){
       critical(e.message);progress_spinner.hide ();return;}
 
       var parser = new Json.Parser ();
