@@ -41,6 +41,13 @@ class ListsPage : IPage, ScrollWidget {
 
   public ListsPage (int id) {
     this.id = id;
+    user_list_box.row_activated.connect ((row) => {
+
+    });
+
+    subscribed_list_box.row_activated.connect ((row) => {
+
+    });
   }
 
 

@@ -114,6 +114,7 @@ set (VALA_SOURCE
   src/UserCounter.vala
   src/DefaultTimeline.vala
   src/ListsPage.vala
+  src/ListStatusesPage.vala
   src/widgets/ImageLabel.vala
   src/widgets/PixbufButton.vala
   src/widgets/ScrollWidget.vala

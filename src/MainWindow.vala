@@ -22,14 +22,15 @@
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/main-window.ui")]
 class MainWindow : ApplicationWindow {
-  public static const int PAGE_STREAM     = 0;
-  public static const int PAGE_MENTIONS   = 1;
-  public static const int PAGE_DM_THREADS = 2;
-  public static const int PAGE_LISTS      = 3;
-  public static const int PAGE_SEARCH     = 4;
-  public static const int PAGE_PROFILE    = 5;
-  public static const int PAGE_TWEET_INFO = 6;
-  public static const int PAGE_DM         = 7;
+  public static const int PAGE_STREAM        = 0;
+  public static const int PAGE_MENTIONS      = 1;
+  public static const int PAGE_DM_THREADS    = 2;
+  public static const int PAGE_LISTS         = 3;
+  public static const int PAGE_SEARCH        = 4;
+  public static const int PAGE_PROFILE       = 5;
+  public static const int PAGE_TWEET_INFO    = 6;
+  public static const int PAGE_DM            = 7;
+  public static const int PAGE_LIST_STATUSES = 8;
 
   public static const int PAGE_PREVIOUS   = 1024;
   public static const int PAGE_NEXT       = 2048;
@@ -51,7 +52,7 @@ class MainWindow : ApplicationWindow {
   }
   private uint progress_holders            = 0;
   private RadioToolButton dummy_button     = new RadioToolButton(null);
-  private IPage[] pages                    = new IPage[8];
+  private IPage[] pages                    = new IPage[9];
   private IntHistory history               = new IntHistory (5);
   private Button new_tweet_button          = new Button ();
   private DeltaUpdater delta_updater       = new DeltaUpdater ();
@@ -107,6 +108,7 @@ class MainWindow : ApplicationWindow {
     pages[5] = new ProfilePage (PAGE_PROFILE);
     pages[6] = new TweetInfoPage (PAGE_TWEET_INFO);
     pages[7] = new DMPage (PAGE_DM);
+    pages[8] = new ListStatusesPage (PAGE_LIST_STATUSES);
 
     /* Initialize all containers */
     for (int i = 0; i < pages.length; i++) {
