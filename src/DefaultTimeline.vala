@@ -131,8 +131,10 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     uint item_count = entries.length ();
     if (item_count > ITimeline.REST) {
       tweet_remove_timeout = GLib.Timeout.add (5000, () => {
-        if (!scrolled_up)
+        if (!scrolled_up) {
+          tweet_remove_timeout = 0;
           return false;
+        }
 
         while (item_count > ITimeline.REST) {
           tweet_list.remove (tweet_list.get_row_at_index (ITimeline.REST));
