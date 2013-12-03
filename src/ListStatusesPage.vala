@@ -21,12 +21,14 @@ class ListStatusesPage : ScrollWidget, IPage {
   public int id                         { get; set; }
   public unowned MainWindow main_window { get; set; }
   public unowned Account account        { get; set; }
+  private int64 list_id;
 
   public ListStatusesPage (int id) {
     this.id = id;
   }
 
   public void on_join (int page_id, va_list args) {
+    int64 list_id = args.arg<int64> ();
 
   }
 
