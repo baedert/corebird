@@ -26,7 +26,7 @@ class DMListEntry : Gtk.ListBoxRow, ITwitterItem {
   [GtkChild]
   private Gtk.Label screen_name_label;
   [GtkChild]
-  private Gtk.Label name_label;
+  private TextButton name_button;
   [GtkChild]
   private Gtk.Label time_delta_label;
 
@@ -37,7 +37,7 @@ class DMListEntry : Gtk.ListBoxRow, ITwitterItem {
     set { screen_name_label.label = "@" + value; }
   }
   public new string name {
-    set { name_label.label = value; }
+    set { name_button.label = value; }
   }
 
   public Gdk.Pixbuf avatar {
@@ -56,9 +56,14 @@ class DMListEntry : Gtk.ListBoxRow, ITwitterItem {
   public string avatar_url;
   public int64 timestamp;
   public int64 id;
+  public int64 user_id;
+  public unowned MainWindow main_window;
 
   public DMListEntry () {
-
+    name_button.clicked.connect (() => {
+      main_window.switch_page (MainWindow.PAGE_PROFILE,
+                               user_id);
+    });
   }
 
   public void load_avatar () {
@@ -78,6 +83,8 @@ class DMListEntry : Gtk.ListBoxRow, ITwitterItem {
     time_delta_label.label = "<small>" + Utils.get_time_delta (then, cur_time) + "</small>";
     return (int)(cur_time.difference (then) / 1000.0 / 1000.0);
   }
+
+
 }
 
 

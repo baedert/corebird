@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 on Thu Nov 14 21:03:05 2013 -->
+<!-- Generated with glade 3.16.0 -->
 <interface>
-  <!-- interface-requires gtk+ 3.10 -->
+  <requires lib="gtk+" version="3.10"/>
+  <!-- interface-requires corebird 0.0 -->
   <template class="DMListEntry" parent="GtkListBoxRow">
     <property name="visible">True</property>
     <property name="can_focus">True</property>
@@ -35,14 +36,14 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <child>
-                  <object class="GtkLabel" id="name_label">
+                  <object class="TextButton" id="name_button">
+                    <property name="label" translatable="yes">button</property>
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="label">Name</property>
-                    <property name="ellipsize">start</property>
-                    <attributes>
-                      <attribute name="weight" value="bold"/>
-                    </attributes>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <style>
+                      <class name="text-only-button"/>
+                    </style>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -95,6 +96,7 @@
               <object class="GtkLabel" id="text_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="margin_top">1</property>
                 <property name="hexpand">True</property>
                 <property name="vexpand">True</property>
                 <property name="xalign">0</property>
