@@ -50,6 +50,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
         this.unread_count -= entry.unread_count;
         entry.unread_count = 0;
         entry.update_unread_count ();
+        this.update_unread_count ();
         main_window.switch_page (MainWindow.PAGE_DM,
                                  entry.user_id);
       }
@@ -73,8 +74,11 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     if (type == StreamMessageType.DIRECT_MESSAGE) {
       var obj = root.get_object ().get_object_member ("direct_message");
       add_new_thread (obj);
-      this.unread_count ++;
-      this.update_unread_count ();
+      if (obj.get_int_member ("sender_id") != account.id) {
+        this.unread_count ++;
+        this.update_unread_count ();
+        message ("Increasing global unread count by 1");
+      }
     }
   }
 
@@ -197,7 +201,6 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 
       t_e.unread_count ++;
       t_e.update_unread_count ();
-      message ("Setting last_message to %s", text);
       t_e.last_message = text;
       t_e.last_message_id = message_id;
       if (Settings.notify_new_dms ()) {
