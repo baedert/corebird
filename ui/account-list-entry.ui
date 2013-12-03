@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.15.2 on Sun Aug  4 17:54:57 2013 -->
+<!-- Generated with glade 3.16.0 -->
 <interface>
-  <!-- interface-requires gtk+ 3.10 -->
+  <requires lib="gtk+" version="3.10"/>
   <template class="AccountListEntry" parent="GtkListBoxRow">
     <property name="visible">True</property>
     <property name="can_focus">True</property>
+    <property name="margin_top">4</property>
     <child>
       <object class="GtkBox" id="box2">
         <property name="visible">True</property>
@@ -27,7 +28,7 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="xpad">8</property>
-            <property name="label" translatable="no">label</property>
+            <property name="label">label</property>
           </object>
           <packing>
             <property name="expand">False</property>
