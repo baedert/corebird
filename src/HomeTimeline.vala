@@ -49,7 +49,7 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
 
       this.balance_next_upper_change (TOP);
       if (this.scrolled_up && (t.user_id == account.id || auto_scroll)) {
-        this.scroll_up_next (true, true);
+        this.scroll_up_next (true);
       }
 
       var entry = new TweetListEntry(t, main_window, account);
