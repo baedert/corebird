@@ -124,6 +124,7 @@ set (VALA_SOURCE
   src/widgets/BgBox.vala
   src/widgets/AspectImage.vala
   src/widgets/MaxSizeContainer.vala
+  src/widgets/DoubleTapButton.vala
   src/list/TweetListEntry.vala
   src/list/ProgressEntry.vala
   src/list/AccountListEntry.vala

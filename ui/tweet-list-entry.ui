@@ -420,7 +420,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="retweet_button">
+              <object class="DoubleTapButton" id="retweet_button">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
