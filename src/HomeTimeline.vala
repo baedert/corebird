@@ -59,6 +59,10 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
       this.max_id = t.id;
 
       int stack_size = Settings.get_tweet_stack_count ();
+      bool show_notification = !(stack_size == 1 && t.text.contains("@" + account.screen_name));
+      if (!show_notification)
+        return;
+
       message ("Stack size: %d", stack_size);
       if (stack_size == 1) {
         if (t.has_inline_media){
