@@ -42,10 +42,13 @@ class ListsPage : IPage, ScrollWidget {
   public ListsPage (int id) {
     this.id = id;
     user_list_box.row_activated.connect ((row) => {
-
+      main_window.switch_page (MainWindow.PAGE_LIST_STATUSES,
+                               ((ListListEntry)row).id);
     });
 
     subscribed_list_box.row_activated.connect ((row) => {
+      main_window.switch_page (MainWindow.PAGE_LIST_STATUSES,
+                               ((ListListEntry)row).id);
 
     });
   }
@@ -91,6 +94,7 @@ class ListsPage : IPage, ScrollWidget {
         var obj = node.get_object ();
         var entry = new ListListEntry ();
         entry.name = obj.get_string_member ("full_name");
+        entry.id = obj.get_int_member ("id");
         if (obj.get_object_member ("user").get_int_member ("id") == account.id) {
           user_list_box.add (entry);
           n_user_lists ++;

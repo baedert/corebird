@@ -22,7 +22,6 @@
 class ListListEntry : Gtk.ListBoxRow {
   [GtkChild]
   private Gtk.Label name_label;
-
   public new string name {
     set {
       name_label.label = value;
@@ -31,4 +30,6 @@ class ListListEntry : Gtk.ListBoxRow {
       return name_label.label;
     }
   }
+
+  public int64 id;
 }
