@@ -75,9 +75,9 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
     } else if (type == StreamMessageType.DELETE) {
       int64 id = root.get_object ().get_object_member ("delete")
                      .get_object_member ("status").get_int_member ("id");
-      tweet_list.forall ((w) => {
+      foreach (Gtk.Widget w in tweet_list.get_children ()) {
         if (w == null || !(w is TweetListEntry))
-          return;
+          continue;
 
         var tle = (TweetListEntry) w;
         if (tle.tweet.id == id) {
@@ -87,8 +87,11 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
             update_unread_count ();
           }else
             tle.sensitive = false;
+
+          return;
         }
-      });
+      }
+
     }
   } // }}}
 
@@ -104,21 +107,26 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
    * @return false if the (re)tweet should not be shown, true otherwise.
    */
   private bool should_display_retweet (Json.Node root_node, Tweet t) { // {{{
+
+    // Don't show if the user was retweeted
+    if (t.user_id == account.id)
+      return false;
+
+
     // Don't show tweets the user retweeted again
 
     // If the tweet is a tweet the user retweeted, check
     // if it's already in the list. If so, mark it retweeted
     if (t.retweeted_by == account.name) {
-      tweet_list.foreach ((w) => {
+      foreach (Gtk.Widget w in tweet_list.get_children ()) {
         if (w == null || !(w is TweetListEntry))
-          return;
+          continue;
 
         var tle = (TweetListEntry) w;
         if (tle.tweet.id == t.rt_id) {
           tle.tweet.retweeted = true;
         }
-      });
-
+      }
       return false;
     }
 
@@ -129,22 +137,15 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
 //    }
     // XXX Fun: 'following' is just null if the tweet is a retweet, yay!
 
-    bool rt_found = false;
     // Check if the original tweet already exists in the timeline
-    tweet_list.@foreach ((w) => {
+    foreach (Gtk.Widget w in tweet_list.get_children ()) {
       if (w == null || !(w is TweetListEntry))
-        return;
+        continue;;
 
       var tle = (TweetListEntry) w;
       if (tle.tweet.id == t.rt_id || tle.tweet.rt_id == t.rt_id)
-        rt_found = true;
-    });
-
-    if (rt_found) return false;
-
-    // Don't show if the user was retweeted
-    if (t.user_id == account.id)
-      return false;
+        return false;
+    }
 
     return true;
   } // }}}
