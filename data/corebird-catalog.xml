@@ -37,7 +37,7 @@
       title="MaxSizeContainer" parent="GtkEventBox" />
 
     <glade-widget-class name="DoubleTapButton" generic-name="doubletap"
-      title="DoubleTapButton" parent="GtkButton" />
+      title="DoubleTapButton" parent="GtkToggleButton" />
 
     <glade-widget-class name="AspectImage" generic-name="aspectimage"
       title="AspectImage" parent="GtkImage">

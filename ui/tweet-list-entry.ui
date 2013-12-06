@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 -->
+<!-- Generated with glade 3.16.0 on Fri Dec  6 16:04:31 2013 -->
 <interface>
-  <requires lib="gtk+" version="3.10"/>
+  <!-- interface-requires gtk+ 3.10 -->
   <!-- interface-requires corebird 0.0 -->
   <object class="GtkMenu" id="more_menu">
     <property name="visible">True</property>
@@ -216,7 +216,6 @@
                         <property name="margin_top">4</property>
                         <property name="label">RT by foo</property>
                         <property name="use_markup">True</property>
-                        <property name="angle">0.039999999105930328</property>
                         <property name="icon_name">corebird-retweet-symbolic</property>
                         <style>
                           <class name="dim-label"/>

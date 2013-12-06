@@ -20,20 +20,25 @@
 using Gtk;
 
 
+
+
+
 class DoubleTapButton : Gtk.ToggleButton {
   private bool first_step = false;
 
-  public override void activate () {
-    if (!first_step) {
-      first_step = true;
-      this.label = "?";
-      this.queue_draw ();
-      return;
-    }
-    base.activate ();
-  }
 
   public void reset () {
+    first_step = false;
+  }
+
+  public void tap () {
+    message ("Tap");
+    if (!first_step) {
+      first_step = true;
+      return;
+    }
+    message ("Toggle");
+    this.active = !this.active;
     first_step = false;
   }
 }

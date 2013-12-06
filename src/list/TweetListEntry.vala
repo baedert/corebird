@@ -168,7 +168,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     });
     retweet_tweet.connect (() => {
       if (retweet_button.parent != null)
-        retweet_button.active = !retweet_button.active;
+      retweet_button.tap ();
     });
 
     time_delta_label.size_allocate.connect (() => {
