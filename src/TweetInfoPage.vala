@@ -75,9 +75,9 @@ class TweetInfoPage : IPage , ScrollWidget {
         int inc = (int)(vadjustment.step_increment * (-evt.delta_y));
         max_size_container.max_size += inc;
         max_size_container.queue_resize ();
-        return false;
+        return true;
       }
-      return true;
+      return false;
     });
     top_list_box.set_sort_func (ITwitterItem.sort_func_inv);
     bottom_list_box.row_activated.connect ((row) => {
