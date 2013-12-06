@@ -189,6 +189,7 @@ namespace Utils {
       warning (e.message);
     }
 
+    critical (json_data);
     show_error_dialog (error_message);
   }
 
