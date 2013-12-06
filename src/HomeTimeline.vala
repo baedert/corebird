@@ -64,6 +64,7 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
         return;
 
       message ("Stack size: %d", stack_size);
+      message ("Unread count: %d", unread_count);
       if (stack_size == 1) {
         if (t.has_inline_media){
           t.inline_media_added.connect (tweet_inline_media_added_cb);
@@ -72,7 +73,8 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
           // appropriate notification etc.
           tweet_inline_media_added_cb (t, null);
         }
-      } else if(stack_size != 0 && unread_count % stack_size == 0) {
+      } else if(stack_size != 0 && unread_count % stack_size == 0
+                && unread_count > 0) {
         string summary = _("%d new Tweets!").printf (unread_count);
         NotificationManager.notify (summary);
       }
