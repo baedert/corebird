@@ -31,11 +31,14 @@ class ListStatusesPage : ScrollWidget, IPage {
 
   public void on_join (int page_id, va_list args) {
     int64 list_id = args.arg<int64> ();
+    if (list_id == 0)
+      list_id = this.list_id;
 
     message (@"Showing list with id $list_id");
     if (list_id == this.list_id) {
       this.list_id = list_id;
     } else {
+      this.list_id = list_id;
       load_newest ();
     }
 
