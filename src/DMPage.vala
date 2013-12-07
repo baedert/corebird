@@ -61,6 +61,8 @@ class DMPage : IPage, IMessageReceiver, Box {
       new_msg.screen_name = sender.get_string_member ("screen_name");
       new_msg.avatar_url = sender.get_string_member ("profile_image_url");
       new_msg.timestamp = Utils.parse_date (sender.get_string_member ("created_at")).to_unix ();
+      new_msg.main_window = main_window;
+      new_msg.user_id = sender.get_int_member ("id");
       new_msg.load_avatar ();
       delta_updater.add (new_msg);
       messages_list.add (new_msg);
@@ -86,11 +88,13 @@ class DMPage : IPage, IMessageReceiver, Box {
 
       var entry = new DMListEntry ();
       entry.id = id;
+      entry.user_id = int64.parse (vals[0]);
       entry.timestamp = int64.parse (vals[6]);
       entry.text = vals[2];
       entry.name = vals[3];
       entry.screen_name = vals[4];
       entry.avatar_url = vals[5];
+      entry.main_window = main_window;
       entry.load_avatar ();
       entry.update_time_delta (now);
       delta_updater.add (entry);
@@ -132,11 +136,13 @@ class DMPage : IPage, IMessageReceiver, Box {
 
       var entry = new DMListEntry ();
       entry.id = id;
+      entry.user_id = int64.parse (vals[0]);
       entry.timestamp = int64.parse (vals[6]);
       entry.text = vals[2];
       entry.name = vals[3];
       entry.screen_name = vals[4];
       entry.avatar_url = vals[5];
+      entry.main_window = main_window;
       entry.load_avatar ();
       entry.update_time_delta (now);
       delta_updater.add (entry);

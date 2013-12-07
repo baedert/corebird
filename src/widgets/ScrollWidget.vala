@@ -93,6 +93,7 @@ class ScrollWidget : ScrolledWindow {
 
 
   /**
+   * TODO: Update scroll_down_next
    * Scroll to the very top of the scrolled window once the next
    * size_allocate occurs.
    * This will use a transition if the correct Gtk+ settings is set
@@ -107,11 +108,12 @@ class ScrollWidget : ScrolledWindow {
     if (!this.get_mapped () && !force_wait) {
       this.vadjustment.value = 0;
       this.vadjustment.value_changed ();
+      message ("Unmapped!");
       return;
     }
 
     // TODO: I really can't stand the duplication here
-    if (force_start) {
+    if (force_start || scroll_up_id != 0) {
       if (Gtk.Settings.get_default ().gtk_enable_animations && animate) {
         this.start_time = this.get_frame_clock ().get_frame_time ();
         this.end_time = start_time + (TRANSITION_DURATION * 1000);
@@ -135,6 +137,7 @@ class ScrollWidget : ScrolledWindow {
           this.vadjustment.value_changed ();
         }
         this.disconnect (scroll_up_id);
+        this.scroll_up_id = 0;
       });
     }
   } // }}}
