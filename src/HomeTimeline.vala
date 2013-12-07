@@ -58,6 +58,10 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
       delta_updater.add (entry);
       tweet_list.add(entry);
 
+      if (this.scrolled_up && (t.user_id == account.id || auto_scroll)) {
+        this.scroll_up_next (true, false,
+                             main_window.cur_page_id != this.id);
+      }
 
       if (!entry.seen) {
         unread_count ++;
