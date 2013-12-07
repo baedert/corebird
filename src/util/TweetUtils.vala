@@ -151,7 +151,7 @@ namespace TweetUtils {
       try {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
-        critical(e.message);
+        Utils.show_error_object (call.get_payload (), e.message);
       }
       tweet.favorited = !unfavorite;
       toggle_favorite_tweet.callback ();
@@ -179,7 +179,7 @@ namespace TweetUtils {
       try{
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
-        Utils.show_error_dialog (e.message);
+        Utils.show_error_object (call.get_payload (), e.message);
       }
       string back = call.get_payload();
       var parser = new Json.Parser ();

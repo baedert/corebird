@@ -183,6 +183,7 @@ class TweetInfoPage : IPage , ScrollWidget {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
         critical (e.message);
+        Utils.show_error_object (call.get_payload (), e.message);
       }
     });
   } //}}}
@@ -210,7 +211,13 @@ class TweetInfoPage : IPage , ScrollWidget {
     call.set_function ("1.1/statuses/show.json");
     call.add_param ("id", tweet_id.to_string ());
     call.invoke_async.begin (null, (obj, res) => {
-      try{call.invoke_async.end (res);}catch(GLib.Error e){critical(e.message);return;}
+      try {
+        call.invoke_async.end (res);
+      }catch (GLib.Error e) {
+        critical(e.message);
+        Utils.show_error_object (call.get_payload (), e.message);
+        return;
+      }
       this.tweet = new Tweet ();
       var parser = new Json.Parser ();
       try {
@@ -255,7 +262,11 @@ class TweetInfoPage : IPage , ScrollWidget {
     reply_call.add_param ("count", "200");
     reply_call.invoke_async.begin (null, (o, res) => {
       try { reply_call.invoke_async.end (res); }
-      catch (GLib.Error e) { warning (e.message); return; }
+      catch (GLib.Error e) {
+        warning (e.message);
+        Utils.show_error_object (reply_call.get_payload (), e.message);
+        return;
+      }
 
       var parser = new Json.Parser ();
       try {
@@ -314,8 +325,14 @@ class TweetInfoPage : IPage , ScrollWidget {
     call.set_method ("GET");
     call.add_param ("id", reply_id.to_string ());
     call.invoke_async.begin (null, (obj, res) => {
-      try{call.invoke_async.end (res);}catch(GLib.Error e){
-      critical(e.message);progress_spinner.hide ();return;}
+      try {
+        call.invoke_async.end (res);
+      }catch (GLib.Error e) {
+        critical(e.message);
+        Utils.show_error_object (call.get_payload (), e.message);
+        progress_spinner.hide ();
+        return;
+      }
 
       var parser = new Json.Parser ();
       try {
