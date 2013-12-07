@@ -57,12 +57,20 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
           return;
         }
 
+        bool auto_scroll = Settings.auto_scroll_on_new_tweets ();
+
         this.balance_next_upper_change (TOP);
         var entry = new TweetListEntry(t, main_window, account);
         entry.seen = false;
 
         delta_updater.add (entry);
         tweet_list.add (entry);
+        if (this.scrolled_up && (t.user_id == account.id || auto_scroll)) {
+          this.scroll_up_next (true, false,
+                               main_window.cur_page_id != this.id);
+        }
+
+
 
         unread_count++;
         update_unread_count();

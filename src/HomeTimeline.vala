@@ -36,10 +36,6 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
       bool auto_scroll = Settings.auto_scroll_on_new_tweets ();
 
       this.balance_next_upper_change (TOP);
-      if (this.scrolled_up && (t.user_id == account.id || auto_scroll)) {
-        this.scroll_up_next (true, false,
-                             main_window.cur_page_id != this.id);
-      }
 
       var entry = new TweetListEntry(t, main_window, account);
       entry.seen = this.scrolled_up  &&
@@ -49,6 +45,10 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
       delta_updater.add (entry);
       tweet_list.add(entry);
 
+      if (this.scrolled_up && (t.user_id == account.id || auto_scroll)) {
+        this.scroll_up_next (true, false,
+                             main_window.cur_page_id != this.id);
+      }
 
       if (!entry.seen) {
         unread_count ++;
