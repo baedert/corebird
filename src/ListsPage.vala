@@ -41,18 +41,9 @@ class ListsPage : IPage, ScrollWidget {
 
   public ListsPage (int id) {
     this.id = id;
-    user_list_box.row_activated.connect ((row) => {
-      main_window.switch_page (MainWindow.PAGE_LIST_STATUSES,
-                               ((ListListEntry)row).id);
-    });
-
-    subscribed_list_box.row_activated.connect ((row) => {
-      main_window.switch_page (MainWindow.PAGE_LIST_STATUSES,
-                               ((ListListEntry)row).id);
-
-    });
+    user_list_box.row_activated.connect (row_activated);
+    subscribed_list_box.row_activated.connect (row_activated);
   }
-
 
   public void on_join (int page_id, va_list arg_list) {
     if (inited)
@@ -62,9 +53,7 @@ class ListsPage : IPage, ScrollWidget {
     load_newest ();
   }
 
-  public void on_leave () {
-
-  }
+  public void on_leave () {}
 
 
   private void load_newest () { // {{{
@@ -94,8 +83,10 @@ class ListsPage : IPage, ScrollWidget {
         var obj = node.get_object ();
         var entry = new ListListEntry ();
         entry.name = obj.get_string_member ("full_name");
+        entry.description = obj.get_string_member ("description");
         entry.id = obj.get_int_member ("id");
         if (obj.get_object_member ("user").get_int_member ("id") == account.id) {
+          entry.user_list = true;
           user_list_box.add (entry);
           n_user_lists ++;
         } else {
@@ -117,7 +108,14 @@ class ListsPage : IPage, ScrollWidget {
 
   } // }}}
 
-
+  private void row_activated (Gtk.ListBoxRow row) {
+    var entry = (ListListEntry) row;
+    main_window.switch_page (MainWindow.PAGE_LIST_STATUSES,
+                             entry.id,
+                             entry.name,
+                             entry.user_list,
+                             entry.description);
+  }
 
   public void create_tool_button (RadioToolButton? group) {
     tool_button = new BadgeRadioToolButton (group, "corebird-stream-symbolic");

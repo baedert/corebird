@@ -16,23 +16,64 @@
  */
 
 
-
+[GtkTemplate (ui = "/org/baedert/corebird/ui/list-statuses-page.ui")]
 class ListStatusesPage : ScrollWidget, IPage {
   public int id                         { get; set; }
   public unowned MainWindow main_window { get; set; }
   public unowned Account account        { get; set; }
-  private Gtk.ListBox tweet_list = new Gtk.ListBox ();
   private int64 list_id;
+  [GtkChild]
+  private Gtk.ListBox tweet_list;
+  [GtkChild]
+  private MaxSizeContainer max_size_container;
+  [GtkChild]
+  private Gtk.Button delete_button;
+  [GtkChild]
+  private Gtk.Button edit_button;
+  [GtkChild]
+  private Gtk.Label description_label;
+  [GtkChild]
+  private Gtk.Label name_label;
+
 
   public ListStatusesPage (int id) {
     this.id = id;
-    this.add (tweet_list);
+    this.scroll_event.connect ((evt) => {
+      if (evt.delta_y < 0 && this.vadjustment.value == 0) {
+        int inc = (int)(vadjustment.step_increment * (-evt.delta_y));
+        max_size_container.max_size += inc;
+        max_size_container.queue_resize ();
+        return true;
+      }
+      return false;
+    });
+
   }
 
-  public void on_join (int page_id, va_list args) {
+  /**
+   *
+   *
+   * va_list params:
+   *  - int64 list_id - The id of the list to show
+   *  - string name - The lists's name
+   *  - bool user_list - true if the list belongs to the user, false otherwise
+   *  - string description - the lists's description
+   *
+   */
+  public void on_join (int page_id, va_list args) { // {{{
     int64 list_id = args.arg<int64> ();
     if (list_id == 0)
       list_id = this.list_id;
+
+    string list_name = args.arg<string> ();
+    bool user_list = args.arg<bool> ();
+    string description = args.arg<string> ();
+
+    delete_button.sensitive = user_list;
+    edit_button.sensitive = user_list;
+
+    name_label.label = list_name;
+    description_label.label = "<big><big>" + description + "</big></big>";
 
     message (@"Showing list with id $list_id");
     if (list_id == this.list_id) {
@@ -42,7 +83,7 @@ class ListStatusesPage : ScrollWidget, IPage {
       load_newest ();
     }
 
-  }
+  } // }}}
 
   public void on_leave () {
   }
@@ -72,7 +113,6 @@ class ListStatusesPage : ScrollWidget, IPage {
       var now = new GLib.DateTime.now_local ();
       var root_array = parser.get_root ().get_array ();
       root_array.foreach_element ((array, index, node) => {
-        message ("a");
         Tweet t = new Tweet ();
         t.load_from_json (node, now);
 

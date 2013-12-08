@@ -30,6 +30,17 @@ class ListListEntry : Gtk.ListBoxRow {
       return name_label.label;
     }
   }
+  [GtkChild]
+  private Gtk.Label description_label;
+  public string description {
+    set {
+      description_label.label = value;
+    }
+    get {
+      return description_label.label;
+    }
+  }
 
   public int64 id;
+  public bool user_list = false;
 }
