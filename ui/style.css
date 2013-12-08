@@ -31,7 +31,6 @@
 .favorite-button,
 .reply-button,
 .more-button{
-  font-family: FontAwesome;
   font-size: 1.0em;
   background-color: white;
 }
@@ -64,11 +63,6 @@
 }
 
 
-.conversation-label {
-  font-family: FontAwesome;
-  font-size: 1em;
-}
-
 
 .favorite-button:backdrop,
 .retweet-button:backdrop {
@@ -90,12 +84,6 @@
 .tweet {
   border-color: alpha(black, 0.2);
 }
-
-/** Tweets the user sent himself */
-.user-tweet {
-  /* TODO: Set a special background color or something */
-}
-
 
 .text-only-button{
   font-weight: bold;
