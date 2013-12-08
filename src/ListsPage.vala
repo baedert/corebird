@@ -86,7 +86,7 @@ class ListsPage : IPage, ScrollWidget {
         entry.name = obj.get_string_member ("full_name");
         entry.description = obj.get_string_member ("description");
         entry.id = obj.get_int_member ("id");
-        entry.creator_screen_name = user.get_string_member ("name");
+        entry.creator_screen_name = user.get_string_member ("screen_name");
         entry.n_subscribers = (int)obj.get_int_member ("subscriber_count");
         entry.n_members = (int)obj.get_int_member ("member_count");
         if (user.get_int_member ("id") == account.id) {
