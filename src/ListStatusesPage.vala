@@ -40,11 +40,18 @@ class ListStatusesPage : ScrollWidget, IPage {
   private Gtk.Label subscribers_label;
   [GtkChild]
   private Gtk.Label members_label;
+  [GtkChild]
+  private Gtk.Label created_at_label;
 
 
   public ListStatusesPage (int id) {
     this.id = id;
     this.scroll_event.connect (scroll_event_cb);
+    var spinner = new Gtk.Spinner ();
+    spinner.set_size_request (75, 75);
+    spinner.start ();
+    spinner.show_all ();
+    tweet_list.set_placeholder (spinner);
   }
 
   private bool scroll_event_cb (Gdk.EventScroll evt) {
@@ -67,6 +74,7 @@ class ListStatusesPage : ScrollWidget, IPage {
    *  - string creator
    *  - int subscribers_count
    *  - int memebers_count
+   *  - int64 created_at
    */
   public void on_join (int page_id, va_list args) { // {{{
     int64 list_id = args.arg<int64> ();
@@ -79,6 +87,7 @@ class ListStatusesPage : ScrollWidget, IPage {
     string creator = args.arg<string> ();
     int n_subscribers = args.arg<int> ();
     int n_members = args.arg<int> ();
+    int64 created_at = args.arg<int64> ();
 
     delete_button.sensitive = user_list;
     edit_button.sensitive = user_list;
@@ -88,6 +97,7 @@ class ListStatusesPage : ScrollWidget, IPage {
     creator_label.label = creator;
     members_label.label = "%'d".printf (n_members);
     subscribers_label.label = "%'d".printf (n_subscribers);
+    created_at_label.label = new GLib.DateTime.from_unix_local (created_at).format ("%x, %X");
 
 
     message (@"Showing list with id $list_id");

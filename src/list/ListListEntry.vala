@@ -46,4 +46,5 @@ class ListListEntry : Gtk.ListBoxRow {
   public string creator_screen_name;
   public int n_subscribers;
   public int n_members = 0;
+  public int64 created_at;
 }
