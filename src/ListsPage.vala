@@ -81,11 +81,15 @@ class ListsPage : IPage, ScrollWidget {
       int n_subscribed_list = 0;
       arr.foreach_element ((array, index, node) => {
         var obj = node.get_object ();
+        var user = obj.get_object_member ("user");
         var entry = new ListListEntry ();
         entry.name = obj.get_string_member ("full_name");
         entry.description = obj.get_string_member ("description");
         entry.id = obj.get_int_member ("id");
-        if (obj.get_object_member ("user").get_int_member ("id") == account.id) {
+        entry.creator_screen_name = user.get_string_member ("name");
+        entry.n_subscribers = (int)obj.get_int_member ("subscriber_count");
+        entry.n_members = (int)obj.get_int_member ("member_count");
+        if (user.get_int_member ("id") == account.id) {
           entry.user_list = true;
           user_list_box.add (entry);
           n_user_lists ++;
@@ -114,7 +118,10 @@ class ListsPage : IPage, ScrollWidget {
                              entry.id,
                              entry.name,
                              entry.user_list,
-                             entry.description);
+                             entry.description,
+                             entry.creator_screen_name,
+                             entry.n_subscribers,
+                             entry.n_members);
   }
 
   public void create_tool_button (RadioToolButton? group) {

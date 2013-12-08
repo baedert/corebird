@@ -34,22 +34,28 @@ class ListStatusesPage : ScrollWidget, IPage {
   private Gtk.Label description_label;
   [GtkChild]
   private Gtk.Label name_label;
+  [GtkChild]
+  private Gtk.Label creator_label;
+  [GtkChild]
+  private Gtk.Label subscribers_label;
+  [GtkChild]
+  private Gtk.Label members_label;
 
 
   public ListStatusesPage (int id) {
     this.id = id;
-    this.scroll_event.connect ((evt) => {
-      if (evt.delta_y < 0 && this.vadjustment.value == 0) {
-        int inc = (int)(vadjustment.step_increment * (-evt.delta_y));
-        max_size_container.max_size += inc;
-        max_size_container.queue_resize ();
-        return true;
-      }
-      return false;
-    });
-
+    this.scroll_event.connect (scroll_event_cb);
   }
 
+  private bool scroll_event_cb (Gdk.EventScroll evt) {
+    if (evt.delta_y < 0 && this.vadjustment.value == 0) {
+      int inc = (int)(vadjustment.step_increment * (-evt.delta_y));
+      max_size_container.max_size += inc;
+      max_size_container.queue_resize ();
+      return true;
+    }
+    return false;
+  }
   /**
    *
    *
@@ -58,7 +64,9 @@ class ListStatusesPage : ScrollWidget, IPage {
    *  - string name - The lists's name
    *  - bool user_list - true if the list belongs to the user, false otherwise
    *  - string description - the lists's description
-   *
+   *  - string creator
+   *  - int subscribers_count
+   *  - int memebers_count
    */
   public void on_join (int page_id, va_list args) { // {{{
     int64 list_id = args.arg<int64> ();
@@ -68,12 +76,19 @@ class ListStatusesPage : ScrollWidget, IPage {
     string list_name = args.arg<string> ();
     bool user_list = args.arg<bool> ();
     string description = args.arg<string> ();
+    string creator = args.arg<string> ();
+    int n_subscribers = args.arg<int> ();
+    int n_members = args.arg<int> ();
 
     delete_button.sensitive = user_list;
     edit_button.sensitive = user_list;
 
     name_label.label = list_name;
     description_label.label = "<big><big>" + description + "</big></big>";
+    creator_label.label = creator;
+    members_label.label = "%'d".printf (n_members);
+    subscribers_label.label = "%'d".printf (n_subscribers);
+
 
     message (@"Showing list with id $list_id");
     if (list_id == this.list_id) {

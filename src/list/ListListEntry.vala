@@ -43,4 +43,7 @@ class ListListEntry : Gtk.ListBoxRow {
 
   public int64 id;
   public bool user_list = false;
+  public string creator_screen_name;
+  public int n_subscribers;
+  public int n_members = 0;
 }
