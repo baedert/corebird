@@ -127,8 +127,8 @@ class ListsPage : IPage, ScrollWidget {
   }
 
   public void create_tool_button (RadioToolButton? group) {
-    tool_button = new BadgeRadioToolButton (group, "corebird-stream-symbolic");
-    tool_button.label = "Lists";
+    tool_button = new BadgeRadioToolButton (group, "corebird-lists-symbolic");
+    tool_button.label = _("Lists");
   }
 
   public RadioToolButton? get_tool_button () {

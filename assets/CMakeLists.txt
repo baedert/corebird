@@ -15,4 +15,5 @@ install (FILES icons/corebird-favorite-symbolic.svg     DESTINATION ${DATADIR}/s
 install (FILES icons/corebird-filter-symbolic.svg       DESTINATION ${DATADIR}/scalable/)
 install (FILES icons/corebird-location-symbolic.svg     DESTINATION ${DATADIR}/scalable/)
 install (FILES icons/corebird-down-symbolic.svg         DESTINATION ${DATADIR}/scalable/)
-install (FILES icons/corebird-reply-symbolic.svg         DESTINATION ${DATADIR}/scalable/)
+install (FILES icons/corebird-reply-symbolic.svg        DESTINATION ${DATADIR}/scalable/)
+install (FILES icons/corebird-lists-symbolic.svg        DESTINATION ${DATADIR}/scalable/)
