@@ -81,24 +81,25 @@ class ListStatusesPage : ScrollWidget, IPage {
     if (list_id == 0)
       list_id = this.list_id;
 
-    string list_name = args.arg<string> ();
-    bool user_list = args.arg<bool> ();
-    string description = args.arg<string> ();
-    string creator = args.arg<string> ();
-    int n_subscribers = args.arg<int> ();
-    int n_members = args.arg<int> ();
-    int64 created_at = args.arg<int64> ();
+    string? list_name = args.arg<string> ();
+    if (list_name != null) {
+      bool user_list = args.arg<bool> ();
+      string description = args.arg<string> ();
+      string creator = args.arg<string> ();
+      int n_subscribers = args.arg<int> ();
+      int n_members = args.arg<int> ();
+      int64 created_at = args.arg<int64> ();
 
-    delete_button.sensitive = user_list;
-    edit_button.sensitive = user_list;
+      delete_button.sensitive = user_list;
+      edit_button.sensitive = user_list;
 
-    name_label.label = list_name;
-    description_label.label = "<big><big>" + description + "</big></big>";
-    creator_label.label = creator;
-    members_label.label = "%'d".printf (n_members);
-    subscribers_label.label = "%'d".printf (n_subscribers);
-    created_at_label.label = new GLib.DateTime.from_unix_local (created_at).format ("%x, %X");
-
+      name_label.label = list_name;
+      description_label.label = "<big><big>" + description + "</big></big>";
+      creator_label.label = creator;
+      members_label.label = "%'d".printf (n_members);
+      subscribers_label.label = "%'d".printf (n_subscribers);
+      created_at_label.label = new GLib.DateTime.from_unix_local (created_at).format ("%x, %X");
+    }
 
     message (@"Showing list with id $list_id");
     if (list_id == this.list_id) {
