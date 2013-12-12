@@ -152,7 +152,6 @@ class ProfilePage : ScrollWidget, IPage {
         return;
       }
       var parser = new Json.Parser ();
-      stdout.printf (call.get_payload() + "\n");
       try {
         parser.load_from_data (call.get_payload ());
       } catch (GLib.Error e) {
