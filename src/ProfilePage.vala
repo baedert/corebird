@@ -46,19 +46,15 @@ class ProfilePage : ScrollWidget, IPage {
   [GtkChild]
   private Label url_label;
   [GtkChild]
-  private Label location_label; /*
-  [GtkChild]
-  private Label tweets_label;
-  [GtkChild]
-  private Label following_label;
-  [GtkChild]
-  private Label followers_label;*/
+  private Label location_label;
   [GtkChild]
   private Button follow_button;
   [GtkChild]
   private Gtk.ListBox tweet_list;
   [GtkChild]
   private Gtk.Spinner progress_spinner;
+  [GtkChild]
+  private Gtk.Label follows_you_label;
   [GtkChild]
   private Gtk.MenuItem dm_menu_item;
   [GtkChild]
@@ -73,7 +69,7 @@ class ProfilePage : ScrollWidget, IPage {
   public ProfilePage (int id) {
     this.id = id;
     this.scroll_event.connect ((evt) => {
-      if (evt.delta_y < 0 && this.vadjustment.value == -0) {
+      if (evt.delta_y < 0 && this.vadjustment.value == 0) {
         if (banner_image.scale >= 1.0) {
           banner_image.scale = 1.0f;
           return false;
@@ -81,10 +77,7 @@ class ProfilePage : ScrollWidget, IPage {
         banner_image.scale += 0.25f * (-evt.delta_y);
         banner_image.queue_resize ();
         return true;
-      } else if (evt.delta_y > 0) {
-        // DOWN
       }
-
       return false;
     });
 
@@ -101,17 +94,15 @@ class ProfilePage : ScrollWidget, IPage {
 
   }
 
-  public void set_user_id (int64 user_id) { // {{{
+  private void set_user_id (int64 user_id) { // {{{
     this.user_id = user_id;
 
     /* Load the profile data now, then - if available - set the cached data */
     load_profile_data.begin(user_id);
-
-    if (user_id  == account.id) {
-      follow_button.hide ();
-    }
+    follow_button.sensitive = (user_id != account.id);
 
     load_banner (DATADIR + "/no_banner.png");
+    load_friendship();
     //Load cached data
     Corebird.db.select ("profiles").cols ("id", "screen_name", "name", "description", "tweets",
      "following", "followers", "avatar_name", "banner_url", "url", "location", "is_following",
@@ -146,6 +137,32 @@ class ProfilePage : ScrollWidget, IPage {
     });
   } // }}}
 
+
+  private void load_friendship () {
+    var call = account.proxy.new_call ();
+    call.set_function ("1.1/friendships/show.json");
+    call.set_method ("GET");
+    call.add_param ("source_id", account.id.to_string ());
+    call.add_param ("target_id", user_id.to_string ());
+    call.invoke_async.begin (null, (o, res) => {
+      try {
+        call.invoke_async.end (res);
+      } catch (GLib.Error e) {
+        Utils.show_error_object (call.get_payload (), e.message);
+        return;
+      }
+      var parser = new Json.Parser ();
+      try {
+        parser.load_from_data (call.get_payload ());
+      } catch (GLib.Error e) {
+        critical ("%s:\n%s", e.message, call.get_payload ());
+        return;
+      }
+      bool followed_by = parser.get_root ().get_object ().get_object_member ("relationship")
+                               .get_object_member ("target").get_boolean_member ("following");
+      follows_you_label.visible = followed_by;
+    });
+  }
 
   private async void load_profile_data (int64 user_id) { //{{{
     progress_spinner.show ();
@@ -365,17 +382,6 @@ class ProfilePage : ScrollWidget, IPage {
       desc = TweetUtils.get_formatted_text (description, text_urls);
     }
     description_label.label = "<big><big>" + desc + "</big></big>";
-/*    tweets_label.set_markup(
-      "<big><big><b>%'d</b></big></big>\nTweets"
-      .printf(tweets));
-
-    following_label.set_markup(
-      "<big><big><b>%'d</b></big></big>\nFollowing"
-      .printf(following));
-
-    followers_label.set_markup(
-      "<big><big><b>%'d</b></big></big>\nFollowers"
-      .printf(followers)); */
 
     if (location != null && location != "") {
       location_label.visible = true;
@@ -463,7 +469,7 @@ class ProfilePage : ScrollWidget, IPage {
 
   private void set_follow_button_state (bool following) { //{{{
     var sc = follow_button.get_style_context ();
-    follow_button.sensitive = true;
+    follow_button.sensitive = (user_id != account.id);
     if (following) {
       sc.remove_class ("suggested-action");
       sc.add_class ("destructive-action");
