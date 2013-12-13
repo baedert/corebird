@@ -326,7 +326,9 @@
   <object class="GtkSizeGroup" id="sizegroup1">
     <widgets>
       <widget name="edit_button"/>
+      <widget name="save_button"/>
       <widget name="delete_button"/>
+      <widget name="cancel_button"/>
     </widgets>
   </object>
 </interface>
