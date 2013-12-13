@@ -2,7 +2,7 @@
 <!-- Generated with glade 3.16.0 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
-  <!-- interface-requires corebird 0.0 -->
+  <requires lib="corebird" version="0.0"/>
   <template class="ListStatusesPage" parent="ScrollWidget">
     <property name="visible">True</property>
     <property name="can_focus">True</property>
@@ -28,54 +28,6 @@
                     <property name="row_spacing">5</property>
                     <property name="column_spacing">10</property>
                     <property name="column_homogeneous">True</property>
-                    <child>
-                      <object class="GtkLabel" id="description_label">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label">List description</property>
-                        <property name="use_markup">True</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">0</property>
-                        <property name="width">2</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkButton" id="delete_button">
-                        <property name="label" translatable="yes">Delete</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                        <property name="halign">end</property>
-                        <property name="valign">start</property>
-                        <style>
-                          <class name="destructive-action"/>
-                        </style>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">5</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkButton" id="edit_button">
-                        <property name="label" translatable="yes">Edit</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                        <property name="halign">start</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="top_attach">5</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
                     <child>
                       <object class="GtkLabel" id="label2">
                         <property name="visible">True</property>
@@ -195,6 +147,116 @@
                         <property name="height">1</property>
                       </packing>
                     </child>
+                    <child>
+                      <object class="GtkStack" id="description_stack">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="visible_child">description_label</property>
+                        <property name="transition_type">slide-up-down</property>
+                        <child>
+                          <object class="GtkLabel" id="description_label">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label">List description</property>
+                            <property name="use_markup">True</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkTextView" id="description_text_view">
+                            <property name="height_request">30</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="accepts_tab">False</property>
+                          </object>
+                          <packing>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">0</property>
+                        <property name="width">2</property>
+                        <property name="height">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkStack" id="edit_stack">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="transition_type">slide-up-down</property>
+                        <child>
+                          <object class="GtkButton" id="edit_button">
+                            <property name="label" translatable="yes">Edit</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="halign">start</property>
+                            <signal name="clicked" handler="edit_button_clicked_cb" swapped="no"/>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="save_button">
+                            <property name="label" translatable="yes">Save</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="halign">start</property>
+                            <style>
+                              <class name="suggested-action"/>
+                            </style>
+                          </object>
+                          <packing>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="top_attach">5</property>
+                        <property name="width">1</property>
+                        <property name="height">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkStack" id="delete_stack">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="transition_type">slide-up-down</property>
+                        <child>
+                          <object class="GtkButton" id="delete_button">
+                            <property name="label" translatable="yes">Delete</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="halign">end</property>
+                            <property name="valign">start</property>
+                            <style>
+                              <class name="destructive-action"/>
+                            </style>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="cancel_button">
+                            <property name="label" translatable="yes">Cancel</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="halign">end</property>
+                            <signal name="clicked" handler="cancel_button_clicked_cb" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">5</property>
+                        <property name="width">1</property>
+                        <property name="height">1</property>
+                      </packing>
+                    </child>
                   </object>
                 </child>
               </object>
@@ -205,14 +267,36 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="name_label">
+              <object class="GtkStack" id="name_stack">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="halign">start</property>
-                <property name="label">List name</property>
-                <style>
-                  <class name="list-username"/>
-                </style>
+                <property name="margin_left">3</property>
+                <property name="margin_right">10</property>
+                <property name="margin_top">5</property>
+                <property name="visible_child">name_label</property>
+                <property name="transition_type">slide-up-down</property>
+                <child>
+                  <object class="GtkLabel" id="name_label">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">start</property>
+                    <property name="label">List name</property>
+                    <style>
+                      <class name="list-username"/>
+                    </style>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="name_entry">
+                    <property name="width_request">200</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="halign">start</property>
+                  </object>
+                  <packing>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -241,8 +325,8 @@
   </template>
   <object class="GtkSizeGroup" id="sizegroup1">
     <widgets>
-      <widget name="delete_button"/>
       <widget name="edit_button"/>
+      <widget name="delete_button"/>
     </widgets>
   </object>
 </interface>

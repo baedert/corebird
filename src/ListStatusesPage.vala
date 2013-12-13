@@ -42,6 +42,22 @@ class ListStatusesPage : ScrollWidget, IPage {
   private Gtk.Label members_label;
   [GtkChild]
   private Gtk.Label created_at_label;
+  [GtkChild]
+  private Gtk.Stack name_stack;
+  [GtkChild]
+  private Gtk.Entry name_entry;
+  [GtkChild]
+  private Gtk.Stack description_stack;
+  [GtkChild]
+  private Gtk.TextView description_text_view;
+  [GtkChild]
+  private Gtk.Stack delete_stack;
+  [GtkChild]
+  private Gtk.Button cancel_button;
+  [GtkChild]
+  private Gtk.Stack edit_stack;
+  [GtkChild]
+  private Gtk.Button save_button;
 
 
   public ListStatusesPage (int id) {
@@ -149,6 +165,24 @@ class ListStatusesPage : ScrollWidget, IPage {
   } // }}}
 
 
+
+
+  [GtkCallback]
+  private void edit_button_clicked_cb () {
+    name_stack.visible_child = name_entry;
+    description_stack.visible_child = description_text_view;
+    delete_stack.visible_child = cancel_button;
+    edit_stack.visible_child = save_button;
+    name_entry.text = name_label.label;
+  }
+
+  [GtkCallback]
+  private void cancel_button_clicked_cb () {
+    name_stack.visible_child = name_label;
+    description_stack.visible_child = description_label;
+    delete_stack.visible_child = delete_button;
+    edit_stack.visible_child = edit_button;
+  }
 
   public void create_tool_button (Gtk.RadioToolButton? group) {}
   public Gtk.RadioToolButton? get_tool_button () {return null;}
