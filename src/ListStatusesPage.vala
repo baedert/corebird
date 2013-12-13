@@ -111,8 +111,7 @@ class ListStatusesPage : ScrollWidget, IPage {
 
   } // }}}
 
-  public void on_leave () {
-  }
+  public void on_leave () {}
 
   private void load_newest () { // {{{
     var call = account.proxy.new_call ();

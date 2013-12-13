@@ -27,8 +27,6 @@ class ListsPage : IPage, ScrollWidget {
   public int id                             { get; set; }
   private bool inited = false;
   [GtkChild]
-  private Gtk.Label user_list_label;
-  [GtkChild]
   private Gtk.ListBox user_list_box;
   [GtkChild]
   private Gtk.Frame user_list_frame;
