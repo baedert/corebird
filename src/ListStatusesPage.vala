@@ -204,6 +204,7 @@ class ListStatusesPage : ScrollWidget, IPage {
     // Make everything go back to normal
     name_label.label = name_entry.get_text ();
     description_label.label = description_text_view.buffer.text;
+    mode_label.label = mode_combo_box.active_id;
     cancel_button_clicked_cb ();
     edit_button.sensitive = false;
     delete_button.sensitive = false;
@@ -212,7 +213,7 @@ class ListStatusesPage : ScrollWidget, IPage {
     call.set_method ("POST");
     call.add_param ("list_id", list_id.to_string ());
     call.add_param ("name", real_list_name ());
-    call.add_param ("mode", mode_label.label);
+    call.add_param ("mode", mode_label.label.down ());
     call.add_param ("description", description_label.label);
 
     call.invoke_async.begin (null, (o, res) => {
@@ -222,8 +223,7 @@ class ListStatusesPage : ScrollWidget, IPage {
         Utils.show_error_object (call.get_payload (), e.message);
       }
       edit_button.sensitive = true;
-      save_button.sensitive = true;
-
+      delete_button.sensitive = true;
     });
   }
 
