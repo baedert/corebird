@@ -47,4 +47,5 @@ class ListListEntry : Gtk.ListBoxRow {
   public int n_subscribers;
   public int n_members = 0;
   public int64 created_at;
+  public string mode;
 }

@@ -291,8 +291,8 @@
                             <property name="can_focus">False</property>
                             <property name="halign">start</property>
                             <items>
-                              <item id="private" translatable="yes">Private</item>
-                              <item id="public" translatable="yes">Public</item>
+                              <item id="Private" translatable="yes">Private</item>
+                              <item id="Public" translatable="yes">Public</item>
                             </items>
                           </object>
                           <packing>

@@ -262,6 +262,14 @@ namespace Utils {
     icon_theme.append_search_path (DATADIR+"/scalable/");
   }
 
+  string capitalize (string s) {
+    string back = s;
+    if (s.get_char (0).islower ()) {
+      back = s.get_char (0).toupper ().to_string () + s.substring (1);
+    }
+    return back;
+  }
+
   uint int64_hash_func (int64? k) {
     return (uint)k;
   }

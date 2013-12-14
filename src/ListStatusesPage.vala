@@ -97,6 +97,7 @@ class ListStatusesPage : ScrollWidget, IPage {
    *  - int subscribers_count
    *  - int memebers_count
    *  - int64 created_at
+   *  - string mode
    */
   public void on_join (int page_id, va_list args) { // {{{
     int64 list_id = args.arg<int64> ();
@@ -111,16 +112,18 @@ class ListStatusesPage : ScrollWidget, IPage {
       int n_subscribers = args.arg<int> ();
       int n_members = args.arg<int> ();
       int64 created_at = args.arg<int64> ();
+      string mode = args.arg<string> ();
 
       delete_button.sensitive = user_list;
       edit_button.sensitive = user_list;
 
       name_label.label = list_name;
-      description_label.label = "<big><big>" + description + "</big></big>";
+      description_label.label = description;
       creator_label.label = creator;
       members_label.label = "%'d".printf (n_members);
       subscribers_label.label = "%'d".printf (n_subscribers);
       created_at_label.label = new GLib.DateTime.from_unix_local (created_at).format ("%x, %X");
+      mode_label.label = Utils.capitalize (mode);
     }
 
     message (@"Showing list with id $list_id");
@@ -182,6 +185,8 @@ class ListStatusesPage : ScrollWidget, IPage {
     mode_stack.visible_child = mode_combo_box;
 
     name_entry.text = name_label.label;
+    description_text_view.buffer.text = description_label.label;
+    mode_combo_box.active_id = mode_label.label;
   }
 
   [GtkCallback]

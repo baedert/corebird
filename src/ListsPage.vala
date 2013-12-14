@@ -122,6 +122,7 @@ class ListsPage : IPage, ScrollWidget {
       entry.n_subscribers = (int)obj.get_int_member ("subscriber_count");
       entry.n_members = (int)obj.get_int_member ("member_count");
       entry.created_at = Utils.parse_date (obj.get_string_member ("created_at")).to_unix ();
+      entry.mode = obj.get_string_member ("mode");
       if (user.get_int_member ("id") == account.id)
         entry.user_list = true;
 
@@ -142,7 +143,8 @@ class ListsPage : IPage, ScrollWidget {
                              entry.creator_screen_name,
                              entry.n_subscribers,
                              entry.n_members,
-                             entry.created_at);
+                             entry.created_at,
+                             entry.mode);
   }
 
   public void create_tool_button (RadioToolButton? group) {
