@@ -27,7 +27,7 @@ class ListStatusesPage : ScrollWidget, IPage {
   [GtkChild]
   private MaxSizeContainer max_size_container;
   [GtkChild]
-  private Gtk.Button delete_button;
+  private Gtk.MenuButton delete_button;
   [GtkChild]
   private Gtk.Button edit_button;
   [GtkChild]
@@ -234,7 +234,7 @@ class ListStatusesPage : ScrollWidget, IPage {
   }
 
   [GtkCallback]
-  private void delete_button_clicked_cb () {
+  private void delete_confirmation_item_clicked_cb () {
     error("IMPLEMENT!");
   }
 

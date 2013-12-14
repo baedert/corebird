@@ -2,7 +2,21 @@
 <!-- Generated with glade 3.16.0 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
+  <requires lib="" version="3.10"/>
   <requires lib="corebird" version="0.0"/>
+  <object class="GtkMenu" id="delete_menu">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkMenuItem" id="delete_confirmation_item">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Confirm</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="delete_confirmation_item_clicked_cb" swapped="no"/>
+      </object>
+    </child>
+  </object>
   <template class="ListStatusesPage" parent="ScrollWidget">
     <property name="visible">True</property>
     <property name="can_focus">True</property>
@@ -194,17 +208,21 @@
                         <property name="halign">end</property>
                         <property name="transition_type">slide-up-down</property>
                         <child>
-                          <object class="GtkButton" id="delete_button">
-                            <property name="label" translatable="yes">Delete</property>
+                          <object class="GtkMenuButton" id="delete_button">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
-                            <property name="halign">end</property>
-                            <property name="valign">start</property>
+                            <property name="popup">delete_menu</property>
                             <style>
                               <class name="destructive-action"/>
                             </style>
-                            <signal name="clicked" handler="delete_button_clicked_cb" swapped="no"/>
+                            <child>
+                              <object class="GtkLabel" id="label4">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">Delete</property>
+                              </object>
+                            </child>
                           </object>
                         </child>
                         <child>
@@ -339,7 +357,7 @@
                     <property name="wrap">True</property>
                     <property name="wrap_mode">word-char</property>
                     <attributes>
-                      <attribute name="scale" value="1.1"/>
+                      <attribute name="scale" value="1.1000000000000001"/>
                     </attributes>
                   </object>
                 </child>
