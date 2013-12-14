@@ -213,7 +213,7 @@
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
-                        <property name="top_attach">5</property>
+                        <property name="top_attach">6</property>
                         <property name="width">1</property>
                         <property name="height">1</property>
                       </packing>
@@ -252,6 +252,56 @@
                       </object>
                       <packing>
                         <property name="left_attach">0</property>
+                        <property name="top_attach">6</property>
+                        <property name="width">1</property>
+                        <property name="height">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="label3">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="halign">end</property>
+                        <property name="label" translatable="yes">Mode:</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">5</property>
+                        <property name="width">1</property>
+                        <property name="height">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkStack" id="mode_stack">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="transition_type">slide-up-down</property>
+                        <child>
+                          <object class="GtkLabel" id="mode_label">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">start</property>
+                            <property name="label" translatable="yes">label</property>
+                            <property name="ellipsize">middle</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkComboBoxText" id="mode_combo_box">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">start</property>
+                            <items>
+                              <item id="private" translatable="yes">Private</item>
+                              <item id="public" translatable="yes">Public</item>
+                            </items>
+                          </object>
+                          <packing>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
                         <property name="top_attach">5</property>
                         <property name="width">1</property>
                         <property name="height">1</property>

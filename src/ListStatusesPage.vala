@@ -58,6 +58,12 @@ class ListStatusesPage : ScrollWidget, IPage {
   private Gtk.Stack edit_stack;
   [GtkChild]
   private Gtk.Button save_button;
+  [GtkChild]
+  private Gtk.Stack mode_stack;
+  [GtkChild]
+  private Gtk.Label mode_label;
+  [GtkChild]
+  private Gtk.ComboBoxText mode_combo_box;
 
 
   public ListStatusesPage (int id) {
@@ -173,6 +179,8 @@ class ListStatusesPage : ScrollWidget, IPage {
     description_stack.visible_child = description_text_view;
     delete_stack.visible_child = cancel_button;
     edit_stack.visible_child = save_button;
+    mode_stack.visible_child = mode_combo_box;
+
     name_entry.text = name_label.label;
   }
 
@@ -182,6 +190,7 @@ class ListStatusesPage : ScrollWidget, IPage {
     description_stack.visible_child = description_label;
     delete_stack.visible_child = delete_button;
     edit_stack.visible_child = edit_button;
+    mode_stack.visible_child = mode_label;
   }
 
   public void create_tool_button (Gtk.RadioToolButton? group) {}
