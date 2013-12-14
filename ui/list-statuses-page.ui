@@ -205,6 +205,7 @@
                             <style>
                               <class name="suggested-action"/>
                             </style>
+                            <signal name="clicked" handler="save_button_clicked_cb" swapped="no"/>
                           </object>
                           <packing>
                             <property name="position">1</property>
@@ -234,6 +235,7 @@
                             <style>
                               <class name="destructive-action"/>
                             </style>
+                            <signal name="clicked" handler="delete_button_clicked_cb" swapped="no"/>
                           </object>
                         </child>
                         <child>

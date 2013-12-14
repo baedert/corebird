@@ -131,6 +131,7 @@ class ListStatusesPage : ScrollWidget, IPage {
       this.list_id = list_id;
     } else {
       this.list_id = list_id;
+      tweet_list.foreach ((w) => {tweet_list.remove (w);});
       load_newest ();
     }
 
@@ -184,7 +185,7 @@ class ListStatusesPage : ScrollWidget, IPage {
     edit_stack.visible_child = save_button;
     mode_stack.visible_child = mode_combo_box;
 
-    name_entry.text = name_label.label;
+    name_entry.text = real_list_name ();
     description_text_view.buffer.text = description_label.label;
     mode_combo_box.active_id = mode_label.label;
   }
@@ -196,6 +197,45 @@ class ListStatusesPage : ScrollWidget, IPage {
     delete_stack.visible_child = delete_button;
     edit_stack.visible_child = edit_button;
     mode_stack.visible_child = mode_label;
+  }
+
+  [GtkCallback]
+  private void save_button_clicked_cb () {
+    // Make everything go back to normal
+    name_label.label = name_entry.get_text ();
+    description_label.label = description_text_view.buffer.text;
+    cancel_button_clicked_cb ();
+    edit_button.sensitive = false;
+    delete_button.sensitive = false;
+    var call = account.proxy.new_call ();
+    call.set_function ("1.1/lists/update.json");
+    call.set_method ("POST");
+    call.add_param ("list_id", list_id.to_string ());
+    call.add_param ("name", real_list_name ());
+    call.add_param ("mode", mode_label.label);
+    call.add_param ("description", description_label.label);
+
+    call.invoke_async.begin (null, (o, res) => {
+      try {
+        call.invoke_async.end (res);
+      } catch (GLib.Error e) {
+        Utils.show_error_object (call.get_payload (), e.message);
+      }
+      edit_button.sensitive = true;
+      save_button.sensitive = true;
+
+    });
+  }
+
+  private string real_list_name () {
+    string cur_name = name_label.label;
+    int slash_index = cur_name.index_of ("/");
+    return cur_name.substring (slash_index + 1);
+  }
+
+  [GtkCallback]
+  private void delete_button_clicked_cb () {
+    error("IMPLEMENT!");
   }
 
   public void create_tool_button (Gtk.RadioToolButton? group) {}
