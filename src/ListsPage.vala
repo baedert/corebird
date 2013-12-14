@@ -19,6 +19,8 @@ using Gtk;
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/lists-page.ui")]
 class ListsPage : IPage, ScrollWidget {
+  public static const int MODE_DELETE = 1;
+
   private BadgeRadioToolButton tool_button;
   public int unread_count                   { get; set; }
   public unowned MainWindow main_window     { get; set; }
@@ -55,11 +57,29 @@ class ListsPage : IPage, ScrollWidget {
   }
 
   public void on_join (int page_id, va_list arg_list) {
-    if (inited)
-      return;
+    int mode = arg_list.arg<int> ();
 
-    inited = true;
-    load_newest ();
+    if (mode == 0 && !inited) {
+      inited = true;
+      load_newest ();
+    } else if (mode  == MODE_DELETE) {
+      int64 list_id = arg_list.arg<int64> ();
+      message (@"Deleting list with id $list_id");
+      user_list_box.foreach ((w) => {
+        if (((ListListEntry)w).id == list_id) {
+          user_list_box.remove (w);
+        }
+      });
+      // XXX This isn't really possible...
+      subscribed_list_box.foreach ((w) => {
+        if (((ListListEntry)w).id == list_id) {
+          subscribed_list_box.remove (w);
+        }
+      });
+      if (subscribed_list_box.get_children ().length () == 0) {
+        subscribed_list_frame.hide ();
+      }
+    }
   }
 
   public void on_leave () {}

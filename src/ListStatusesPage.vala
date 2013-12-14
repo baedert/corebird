@@ -235,7 +235,20 @@ class ListStatusesPage : ScrollWidget, IPage {
 
   [GtkCallback]
   private void delete_confirmation_item_clicked_cb () {
-    error("IMPLEMENT!");
+    var call = account.proxy.new_call ();
+    call.set_function("1.1/lists/destroy.json");
+    call.add_param ("list_id", list_id.to_string ());
+    call.set_method ("POST");
+    call.invoke_async.begin (null, (o, res) => {
+      try {
+        call.invoke_async.end (res);
+      } catch (GLib.Error e) {
+        Utils.show_error_object (call.get_payload (), e.message);
+      }
+    });
+    // Go back to the ListsPage and tell it to remove this list
+    main_window.switch_page (MainWindow.PAGE_LISTS,
+                             ListsPage.MODE_DELETE, list_id);
   }
 
   public void create_tool_button (Gtk.RadioToolButton? group) {}
