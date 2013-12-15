@@ -24,8 +24,6 @@
 [GtkTemplate (ui = "/org/baedert/corebird/ui/new-list-entry.ui")]
 class NewListEntry : Gtk.ListBoxRow {
   [GtkChild]
-  private Gtk.Button create_list_button;
-  [GtkChild]
   private Gtk.Entry list_name_entry;
   [GtkChild]
   private Gtk.Revealer revealer;
