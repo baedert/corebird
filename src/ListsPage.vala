@@ -138,6 +138,10 @@ class ListsPage : IPage, ScrollWidget, IMessageReceiver {
       var obj = root.get_object ().get_object_member ("target_object");
       int64 list_id = obj.get_int_member ("id");
       remove_list (list_id);
+    } else if (type == StreamMessageType.EVENT_LIST_UPDATED) {
+      var obj = root.get_object ().get_object_member ("target_object");
+      int64 list_id = obj.get_int_member ("id");
+      update_list (list_id, obj);
     }
   } // }}}
 
@@ -199,6 +203,24 @@ class ListsPage : IPage, ScrollWidget, IMessageReceiver {
 
       if (((ListListEntry)w).id == list_id) {
         user_list_box.remove (w);
+      }
+    });
+  }
+
+  private void update_list (int64 list_id, Json.Object obj) {
+    string name = obj.get_string_member ("full_name");
+    string description = obj.get_string_member ("description");
+    string mode = obj.get_string_member ("mode");
+    user_list_box.foreach ((w) => {
+      if (!(w is ListListEntry))
+        return;
+
+      var lle = (ListListEntry) w;
+      if (lle.id == list_id) {
+        lle.name = name;
+        lle.description = description;
+        lle.mode = mode;
+        lle.queue_draw ();
       }
     });
   }

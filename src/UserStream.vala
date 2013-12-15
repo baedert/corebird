@@ -30,7 +30,8 @@ enum StreamMessageType {
 
   TWEET,
   EVENT_LIST_CREATED,
-  EVENT_LIST_DESTROYED
+  EVENT_LIST_DESTROYED,
+  EVENT_LIST_UPDATED
 }
 
 
@@ -172,6 +173,8 @@ class UserStream : Object {
           type = StreamMessageType.EVENT_LIST_CREATED;
         else if (evt_str == "list_destroyed")
           type = StreamMessageType.EVENT_LIST_DESTROYED;
+        else if (evt_str == "list_updated")
+          type = StreamMessageType.EVENT_LIST_UPDATED;
         else
           type = StreamMessageType.EVENT;
       }
