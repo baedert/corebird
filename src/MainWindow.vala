@@ -233,6 +233,8 @@ class MainWindow : ApplicationWindow {
    * @param page_id The id of the page to switch to.
    *                See the PAGE_* constants.
    * @param ... The parameters to pass to the page
+   *
+   * TODO: Refactor this.
    */
   public void switch_page (int page_id, ...) {
     if (page_id == history.current) {
