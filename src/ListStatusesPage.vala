@@ -202,7 +202,7 @@ class ListStatusesPage : ScrollWidget, IPage {
   [GtkCallback]
   private void save_button_clicked_cb () {
     // Make everything go back to normal
-    name_label.label = name_entry.get_text ();
+    name_label.label = "@%s/%s".printf(creator_label.label, name_entry.get_text ());
     description_label.label = description_text_view.buffer.text;
     mode_label.label = mode_combo_box.active_id;
     cancel_button_clicked_cb ();
