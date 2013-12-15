@@ -48,4 +48,20 @@ class ListListEntry : Gtk.ListBoxRow {
   public int n_members = 0;
   public int64 created_at;
   public string mode;
+
+
+  public ListListEntry.from_json_data (Json.Object obj, int64 acc_id) {
+    var user = obj.get_object_member ("user");
+    name = obj.get_string_member ("full_name");
+    description = obj.get_string_member ("description");
+    id = obj.get_int_member ("id");
+    creator_screen_name = user.get_string_member ("screen_name");
+    n_subscribers = (int)obj.get_int_member ("subscriber_count");
+    n_members = (int)obj.get_int_member ("member_count");
+    created_at = Utils.parse_date (obj.get_string_member ("created_at")).to_unix ();
+    mode = obj.get_string_member ("mode");
+    if (user.get_int_member ("id") == acc_id)
+      user_list = true;
+
+  }
 }

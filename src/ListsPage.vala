@@ -18,7 +18,7 @@
 using Gtk;
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/lists-page.ui")]
-class ListsPage : IPage, ScrollWidget {
+class ListsPage : IPage, ScrollWidget, IMessageReceiver {
   public static const int MODE_DELETE = 1;
 
   private BadgeRadioToolButton tool_button;
@@ -65,14 +65,7 @@ class ListsPage : IPage, ScrollWidget {
     } else if (mode  == MODE_DELETE) {
       int64 list_id = arg_list.arg<int64> ();
       message (@"Deleting list with id $list_id");
-      user_list_box.foreach ((w) => {
-        if (!(w is ListListEntry))
-          return;
-
-        if (((ListListEntry)w).id == list_id) {
-          user_list_box.remove (w);
-        }
-      });
+      remove_list (list_id);
     }
   }
 
@@ -129,24 +122,25 @@ class ListsPage : IPage, ScrollWidget {
     var arr = parser.get_root ().get_object ().get_array_member ("lists");
     arr.foreach_element ((array, index, node) => {
       var obj = node.get_object ();
-      var user = obj.get_object_member ("user");
-      var entry = new ListListEntry ();
-      entry.name = obj.get_string_member ("full_name");
-      entry.description = obj.get_string_member ("description");
-      entry.id = obj.get_int_member ("id");
-      entry.creator_screen_name = user.get_string_member ("screen_name");
-      entry.n_subscribers = (int)obj.get_int_member ("subscriber_count");
-      entry.n_members = (int)obj.get_int_member ("member_count");
-      entry.created_at = Utils.parse_date (obj.get_string_member ("created_at")).to_unix ();
-      entry.mode = obj.get_string_member ("mode");
-      if (user.get_int_member ("id") == account.id)
-        entry.user_list = true;
-
+      var entry = new ListListEntry.from_json_data (obj, account.id);
       list_box.add (entry);
-
     });
     return arr.get_length ();
   } // }}}
+
+
+  private void stream_message_received (StreamMessageType type, Json.Node root) { // {{{
+    if (type == StreamMessageType.EVENT_LIST_CREATED) {
+      var obj = root.get_object ().get_object_member ("target_object");
+      var entry = new ListListEntry.from_json_data (obj, account.id);
+      user_list_box.add (entry);
+    } else if (type == StreamMessageType.EVENT_LIST_DESTROYED) {
+      var obj = root.get_object ().get_object_member ("target_object");
+      int64 list_id = obj.get_int_member ("id");
+      remove_list (list_id);
+    }
+  } // }}}
+
 
 
   private void row_activated (Gtk.ListBoxRow row) {
@@ -197,6 +191,17 @@ class ListsPage : IPage, ScrollWidget {
     });
   } // }}}
 
+
+  private void remove_list (int64 list_id) {
+    user_list_box.foreach ((w) => {
+      if (!(w is ListListEntry))
+        return;
+
+      if (((ListListEntry)w).id == list_id) {
+        user_list_box.remove (w);
+      }
+    });
+  }
 
   public void create_tool_button (RadioToolButton? group) {
     tool_button = new BadgeRadioToolButton (group, "corebird-lists-symbolic");

@@ -29,6 +29,8 @@ enum StreamMessageType {
   DIRECT_MESSAGE,
 
   TWEET,
+  EVENT_LIST_CREATED,
+  EVENT_LIST_DESTROYED
 }
 
 
@@ -162,10 +164,14 @@ class UserStream : Object {
         type = StreamMessageType.FRIENDS;
       else if (root.has_member ("text"))
         type = StreamMessageType.TWEET;
-      else if (root.has_member ("event")){
+      else if (root.has_member ("event")) {
         string evt_str = root.get_string_member ("event");
         if (evt_str == "follow")
           type = StreamMessageType.FOLLOW;
+        else if (evt_str == "list_created")
+          type = StreamMessageType.EVENT_LIST_CREATED;
+        else if (evt_str == "list_destroyed")
+          type = StreamMessageType.EVENT_LIST_DESTROYED;
         else
           type = StreamMessageType.EVENT;
       }
