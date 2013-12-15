@@ -52,6 +52,7 @@ class ListsPage : IPage, ScrollWidget {
     subscribed_list_box.set_placeholder (spinner);
 
     user_list_box.set_header_func (header_func);
+    new_list_entry.create_activated.connect (new_list_create_activated_cb);
     user_list_box.add (new_list_entry);
   }
 
@@ -65,19 +66,13 @@ class ListsPage : IPage, ScrollWidget {
       int64 list_id = arg_list.arg<int64> ();
       message (@"Deleting list with id $list_id");
       user_list_box.foreach ((w) => {
+        if (!(w is ListListEntry))
+          return;
+
         if (((ListListEntry)w).id == list_id) {
           user_list_box.remove (w);
         }
       });
-      // XXX This isn't really possible...
-      subscribed_list_box.foreach ((w) => {
-        if (((ListListEntry)w).id == list_id) {
-          subscribed_list_box.remove (w);
-        }
-      });
-      if (subscribed_list_box.get_children ().length () == 0) {
-        subscribed_list_frame.hide ();
-      }
     }
   }
 
@@ -185,6 +180,22 @@ class ListsPage : IPage, ScrollWidget {
     }
   } //}}}
 
+  private void new_list_create_activated_cb (string list_name) { // {{{
+    new_list_entry.sensitive = false;
+    var call = account.proxy.new_call ();
+    call.set_function ("1.1/lists/create.json");
+    call.set_method ("POST");
+    call.add_param ("name", list_name);
+    call.invoke_async.begin (null, (o, res) => {
+      try {
+        call.invoke_async.end (res);
+      } catch (GLib.Error e) {
+        Utils.show_error_object (call.get_payload (), e.message);
+        return;
+      }
+      new_list_entry.sensitive = true;
+    });
+  } // }}}
 
 
   public void create_tool_button (RadioToolButton? group) {
