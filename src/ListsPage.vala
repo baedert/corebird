@@ -39,6 +39,8 @@ class ListsPage : IPage, ScrollWidget {
   [GtkChild]
   private Gtk.Frame subscribed_list_frame;
 
+  private NewListEntry new_list_entry = new NewListEntry ();
+
   public ListsPage (int id) {
     this.id = id;
     user_list_box.row_activated.connect (row_activated);
@@ -49,11 +51,8 @@ class ListsPage : IPage, ScrollWidget {
     spinner.show_all ();
     subscribed_list_box.set_placeholder (spinner);
 
-    var spinner2 = new Gtk.Spinner ();
-    spinner2.set_size_request (75, 75);
-    spinner2.start ();
-    spinner2.show_all ();
-    user_list_box.set_placeholder (spinner2);
+    user_list_box.set_header_func (header_func);
+    user_list_box.add (new_list_entry);
   }
 
   public void on_join (int page_id, va_list arg_list) {
@@ -82,7 +81,9 @@ class ListsPage : IPage, ScrollWidget {
     }
   }
 
-  public void on_leave () {}
+  public void on_leave () {
+    new_list_entry.unreveal ();
+  }
 
 
   private void load_newest () { // {{{
@@ -154,18 +155,37 @@ class ListsPage : IPage, ScrollWidget {
 
 
   private void row_activated (Gtk.ListBoxRow row) {
-    var entry = (ListListEntry) row;
-    main_window.switch_page (MainWindow.PAGE_LIST_STATUSES,
-                             entry.id,
-                             entry.name,
-                             entry.user_list,
-                             entry.description,
-                             entry.creator_screen_name,
-                             entry.n_subscribers,
-                             entry.n_members,
-                             entry.created_at,
-                             entry.mode);
+    if (row is NewListEntry) {
+      ((NewListEntry)row).reveal ();
+    } else {
+      var entry = (ListListEntry) row;
+      main_window.switch_page (MainWindow.PAGE_LIST_STATUSES,
+                               entry.id,
+                               entry.name,
+                               entry.user_list,
+                               entry.description,
+                               entry.creator_screen_name,
+                               entry.n_subscribers,
+                               entry.n_members,
+                               entry.created_at,
+                               entry.mode);
+    }
   }
+
+
+  private void header_func (Gtk.ListBoxRow row, Gtk.ListBoxRow? row_before) { //{{{
+    if (row_before == null)
+      return;
+
+    Widget header = row.get_header ();
+    if (header == null) {
+      header = new Gtk.Separator (Orientation.HORIZONTAL);
+      header.show ();
+      row.set_header (header);
+    }
+  } //}}}
+
+
 
   public void create_tool_button (RadioToolButton? group) {
     tool_button = new BadgeRadioToolButton (group, "corebird-lists-symbolic");

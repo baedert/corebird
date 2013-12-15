@@ -512,6 +512,7 @@ class ProfilePage : ScrollWidget, IPage {
 //    data_cancellable.cancel ();
     account.user_counter.save (account.db);
     banner_image.scale = 0.3;
+    message ("Reset scale...");
   }
 
 
