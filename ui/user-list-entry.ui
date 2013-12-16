@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 on Thu Oct 31 22:01:26 2013 -->
+<!-- Generated with glade 3.16.0 -->
 <interface>
-  <!-- interface-requires gtk+ 3.10 -->
+  <requires lib="gtk+" version="3.10"/>
   <object class="GtkMenu" id="menu1">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -87,12 +87,13 @@
         </child>
         <child>
           <object class="GtkMenuButton" id="more_button">
-            <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
+            <property name="no_show_all">True</property>
             <property name="halign">end</property>
             <property name="valign">center</property>
             <property name="margin_right">5</property>
+            <property name="resize_mode">immediate</property>
             <property name="relief">none</property>
             <property name="popup">menu1</property>
             <child>

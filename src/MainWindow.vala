@@ -242,10 +242,14 @@ class MainWindow : ApplicationWindow {
     bool push = true;
 
     if (page_id == PAGE_PREVIOUS) {
+      if (history.current != -1)
+        pages[history.current].on_leave ();
       page_id = history.back ();
       push = false;
       stack.transition_type = StackTransitionType.SLIDE_RIGHT;
     } else if (page_id == PAGE_NEXT) {
+      if (history.current != -1)
+        pages[history.current].on_leave ();
       page_id = history.forward ();
       push = false;
       stack.transition_type = StackTransitionType.SLIDE_LEFT;
@@ -254,14 +258,13 @@ class MainWindow : ApplicationWindow {
         stack.transition_type = StackTransitionType.SLIDE_LEFT;
       else
         stack.transition_type = StackTransitionType.SLIDE_RIGHT;
-    }
 
+      if (history.current != -1)
+        pages[history.current].on_leave ();
+    }
 
     if (page_id == -1)
       return;
-
-    if (history.current != -1)
-      pages[history.current].on_leave ();
 
     if (push)
       history.push (page_id);
