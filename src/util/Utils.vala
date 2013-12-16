@@ -164,18 +164,18 @@ namespace Utils {
    */
   void show_error_object (string json_data, string alternative) {
     var parser = new Json.Parser ();
-    string error_message = alternative;
+    string error_message = "Exception: " + alternative;
     try {
       StringBuilder sb = new StringBuilder ();
       try {
         parser.load_from_data (json_data);
       } catch (GLib.Error e) {
-        show_error_dialog (alternative);
+        show_error_dialog (error_message);
         return;
       }
 
       if (parser.get_root ().get_node_type () != Json.NodeType.OBJECT) {
-        show_error_dialog (alternative);
+        show_error_dialog (error_message);
         return;
       }
 
