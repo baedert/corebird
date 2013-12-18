@@ -50,6 +50,9 @@
       </properties>
     </glade-widget-class>
 
+    <glade-widget-class name="TweetListBox" generic-name="tweetlist"
+      title="TweetListBox" parent="GtkListBox">
+    </glade-widget-class>
   </glade-widget-classes>
 
 
@@ -63,6 +66,7 @@
     <glade-widget-class-ref name="BgBox" />
     <glade-widget-class-ref name="AspectImage" />
     <glade-widget-class-ref name="MaxSizeContainer" />
-    <glade-widget-class-red name="DoubleTapButton" />
+    <glade-widget-class-ref name="DoubleTapButton" />
+    <glade-widget-class-ref name="TweetListBox" />
   </glade-widget-group>
 </glade-catalog>

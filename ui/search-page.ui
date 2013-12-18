@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 on Sat Oct 19 14:04:53 2013 -->
+<!-- Generated with glade 3.16.0 -->
 <interface>
-  <!-- interface-requires gtk+ 3.10 -->
-  <!-- interface-requires corebird 0.0 -->
+  <requires lib="gtk+" version="3.10"/>
+  <requires lib="corebird" version="0.0"/>
   <template class="SearchPage" parent="GtkBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -68,10 +68,9 @@
             <property name="can_focus">False</property>
             <property name="shadow_type">none</property>
             <child>
-              <object class="GtkListBox" id="tweet_list">
+              <object class="TweetListBox" id="tweet_list">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="vexpand">False</property>
                 <property name="selection_mode">none</property>
                 <property name="activate_on_single_click">False</property>
               </object>
@@ -86,16 +85,6 @@
       </packing>
     </child>
   </template>
-  <object class="GtkSpinner" id="placeholder">
-    <property name="width_request">48</property>
-    <property name="height_request">48</property>
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="halign">center</property>
-    <property name="valign">center</property>
-    <property name="hexpand">True</property>
-    <property name="vexpand">True</property>
-  </object>
   <object class="GtkLabel" id="tweets_header">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -117,7 +106,7 @@
     <property name="label" translatable="yes">Users</property>
     <attributes>
       <attribute name="weight" value="bold"/>
-      <attribute name="scale" value="1.2" />
+      <attribute name="scale" value="1.2"/>
     </attributes>
   </object>
 </interface>

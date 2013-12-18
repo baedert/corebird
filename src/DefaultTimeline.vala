@@ -25,7 +25,7 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   public int id                          { get; set; }
   public int unread_count                { get; set; }
   public unowned MainWindow main_window  { set; get; }
-  protected Gtk.ListBox tweet_list       { set; get; default=new Gtk.ListBox();}
+  protected TweetListBox tweet_list      { set; get; default=new TweetListBox ();}
   public unowned Account account         { get; set; }
   protected BadgeRadioToolButton tool_button;
   public int64 lowest_id                 { get; set; default = int64.MAX-2; }
@@ -51,9 +51,6 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     });
 
 
-    tweet_list = new Gtk.ListBox();
-    tweet_list.get_style_context().add_class("stream");
-    tweet_list.set_selection_mode(SelectionMode.NONE);
     tweet_list.set_sort_func(ITwitterItem.sort_func);
     this.add (tweet_list);
 
@@ -64,12 +61,6 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
                                ((TweetListEntry)row).tweet);
       last_focus_widget = row;
     });
-
-    var spinner = new Spinner ();
-    spinner.set_size_request (75, 75);
-    spinner.start ();
-    spinner.show_all ();
-    tweet_list.set_placeholder (spinner);
 
   }
 
