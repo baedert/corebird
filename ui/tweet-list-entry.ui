@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 on Fri Nov 22 20:41:52 2013 -->
 <interface>
-  <!-- interface-requires gtk+ 3.10 -->
-  <!-- interface-requires corebird 0.0 -->
+  <requires lib="gtk+" version="3.10"/>
+  <requires lib="corebird" version="0.0"/>
   <object class="GtkMenu" id="more_menu">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -220,6 +219,7 @@
                         <style>
                           <class name="dim-label"/>
                         </style>
+                        <signal name="activate-link" handler="link_activated_cb" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
