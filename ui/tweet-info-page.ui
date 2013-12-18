@@ -373,6 +373,14 @@
                         <property name="icon_size">1</property>
                       </object>
                     </child>
+                    <accessibility>
+
+                    </accessibility>
+                    <child internal-child="accessible">
+                      <object class="AtkObject" id="a11y-menubutton">
+                        <property name="AtkObject::accessible_name" translatable="yes">More</property>
+                      </object>
+                    </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>
