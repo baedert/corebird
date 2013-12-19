@@ -22,7 +22,7 @@ using Gtk;
  * specified text. Helps to reduce the complexity of layouts.
  */
 class ImageLabel : Label {
-  private static const int GAP = 0;
+  private static const int GAP = 1;
   private int _icon_size = 14;
   private string _icon_name;
   public Gtk.PositionType icon_pos = Gtk.PositionType.LEFT;
@@ -58,7 +58,7 @@ class ImageLabel : Label {
       if (icon != null) {
         context.render_icon (c, icon, 0,
                              (height / 2) - (icon_size / 2));
-        c.translate (icon.width + GAP, 0);
+        c.translate (GAP, 0);
       }
       base.draw(c);
     } else {
@@ -75,6 +75,8 @@ class ImageLabel : Label {
 
   public override void size_allocate (Allocation allocation) {
       allocation.width += icon.width + GAP;
+      if (icon_pos == PositionType.LEFT)
+        allocation.width += icon.width + GAP;
       base.size_allocate (allocation);
   }
 

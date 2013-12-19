@@ -165,46 +165,42 @@ namespace Utils {
   void show_error_object (string json_data, string alternative) {
     var parser = new Json.Parser ();
     string error_message = "Exception: " + alternative;
+    StringBuilder sb = new StringBuilder ();
     try {
-      StringBuilder sb = new StringBuilder ();
-      try {
-        parser.load_from_data (json_data);
-      } catch (GLib.Error e) {
-        show_error_dialog (error_message);
-        return;
-      }
-
-      if (parser.get_root ().get_node_type () != Json.NodeType.OBJECT) {
-        show_error_dialog (error_message);
-        return;
-      }
-
-      var root = parser.get_root ().get_object ();
-      if (root.get_member ("errors").get_node_type () == Json.NodeType.VALUE) {
-        message (json_data);
-        show_error_dialog (root.get_member ("errors").get_string ());
-        return;
-      }
-
-      var errors = root.get_array_member ("errors");
-      if (errors.get_length () == 1) {
-        var err = errors.get_object_element (0);
-        sb.append (err.get_int_member ("code").to_string ()).append (": ")
-          .append (err.get_string_member ("message"));
-      } else {
-        sb.append ("<ul>");
-        errors.foreach_element ((arr, index, node) => {
-          var obj = node.get_object ();
-          sb.append ("<li>").append (obj.get_int_member ("code").to_string ())
-            .append (": ")
-            .append (obj.get_string_member ("message")).append ("</li>");
-        });
-        sb.append ("</ul>");
-      }
-      error_message = sb.str;
+      parser.load_from_data (json_data);
     } catch (GLib.Error e) {
-      warning (e.message);
+      show_error_dialog (error_message);
+      return;
     }
+
+    if (parser.get_root ().get_node_type () != Json.NodeType.OBJECT) {
+      show_error_dialog (error_message);
+      return;
+    }
+
+    var root = parser.get_root ().get_object ();
+    if (root.get_member ("errors").get_node_type () == Json.NodeType.VALUE) {
+      message (json_data);
+      show_error_dialog (root.get_member ("errors").get_string ());
+      return;
+    }
+
+    var errors = root.get_array_member ("errors");
+    if (errors.get_length () == 1) {
+      var err = errors.get_object_element (0);
+      sb.append (err.get_int_member ("code").to_string ()).append (": ")
+        .append (err.get_string_member ("message"));
+    } else {
+      sb.append ("<ul>");
+      errors.foreach_element ((arr, index, node) => {
+        var obj = node.get_object ();
+        sb.append ("<li>").append (obj.get_int_member ("code").to_string ())
+          .append (": ")
+          .append (obj.get_string_member ("message")).append ("</li>");
+      });
+      sb.append ("</ul>");
+    }
+    error_message = sb.str;
 
     show_error_dialog (error_message);
   }
