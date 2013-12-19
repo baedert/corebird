@@ -127,6 +127,7 @@
                         <child>
                           <object class="GtkImage" id="conversation_image">
                             <property name="can_focus">False</property>
+                            <property name="no_show_all">True</property>
                             <property name="valign">start</property>
                             <property name="margin_right">5</property>
                             <property name="pixel_size">12</property>
