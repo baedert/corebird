@@ -2,7 +2,7 @@
 <!-- Generated with glade 3.16.0 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
-  <!-- interface-requires corebird 0.0 -->
+  <requires lib="corebird" version="0.0"/>
   <object class="GtkMenu" id="menu1">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -301,16 +301,15 @@
               </packing>
             </child>
             <child>
-              <object class="GtkListBox" id="tweet_list">
+              <object class="TweetListBox" id="tweet_list">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="hexpand">True</property>
                 <property name="vexpand">True</property>
                 <property name="selection_mode">none</property>
                 <property name="activate_on_single_click">False</property>
               </object>
               <packing>
-                <property name="expand">True</property>
+                <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="position">3</property>
               </packing>

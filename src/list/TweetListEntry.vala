@@ -43,7 +43,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   [GtkChild]
   private Box hover_box;
   [GtkChild]
-  private ToggleButton retweet_button;
+  private DoubleTapButton retweet_button;
   [GtkChild]
   private ToggleButton favorite_button;
   [GtkChild]
@@ -147,6 +147,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     });
     reply_entry.focus_out_event.connect(() => {
       reply_revealer.reveal_child = false;
+      retweet_button.reset ();
       return false;
     });
     hover_box.show ();
@@ -167,7 +168,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     });
     retweet_tweet.connect (() => {
       if (retweet_button.parent != null)
-        retweet_button.active = !retweet_button.active;
+      retweet_button.tap ();
     });
 
     time_delta_label.size_allocate.connect (() => {

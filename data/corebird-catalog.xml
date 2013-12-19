@@ -36,6 +36,9 @@
     <glade-widget-class name="MaxSizeContainer" generic-name="maxsize"
       title="MaxSizeContainer" parent="GtkEventBox" />
 
+    <glade-widget-class name="DoubleTapButton" generic-name="doubletap"
+      title="DoubleTapButton" parent="GtkToggleButton" />
+
     <glade-widget-class name="AspectImage" generic-name="aspectimage"
       title="AspectImage" parent="GtkImage">
       <properties>
@@ -47,6 +50,9 @@
       </properties>
     </glade-widget-class>
 
+    <glade-widget-class name="TweetListBox" generic-name="tweetlist"
+      title="TweetListBox" parent="GtkListBox">
+    </glade-widget-class>
   </glade-widget-classes>
 
 
@@ -60,5 +66,7 @@
     <glade-widget-class-ref name="BgBox" />
     <glade-widget-class-ref name="AspectImage" />
     <glade-widget-class-ref name="MaxSizeContainer" />
+    <glade-widget-class-ref name="DoubleTapButton" />
+    <glade-widget-class-ref name="TweetListBox" />
   </glade-widget-group>
 </glade-catalog>

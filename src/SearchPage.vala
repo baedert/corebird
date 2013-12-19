@@ -35,13 +35,11 @@ class SearchPage : IPage, Box {
   [GtkChild]
   private Button search_button;
   [GtkChild]
-  private ListBox tweet_list; // TODO: Rename tweet_list
+  private TweetListBox tweet_list;
   [GtkChild]
   private Label users_header;
   [GtkChild]
   private Label tweets_header;
-  [GtkChild]
-  private Spinner placeholder;
   [GtkChild]
   private ScrollWidget scroll_widget;
   private RadioToolButton tool_button;
@@ -52,6 +50,7 @@ class SearchPage : IPage, Box {
   private int64 lowest_tweet_id = int64.MAX-1;
   private bool loading_tweets = false;
   private Gtk.Widget last_focus_widget;
+  private int n_results = 0;
 
 
   public SearchPage (int id) {
@@ -70,6 +69,7 @@ class SearchPage : IPage, Box {
     scroll_widget.scrolled_to_end.connect (() => {
       load_tweets ();
     });
+    tweet_list.get_placeholder ().hide ();
   }
 
   [GtkCallback]
@@ -97,13 +97,13 @@ class SearchPage : IPage, Box {
     if(search_term.length == 0)
       return;
 
+    n_results = 0;
     string q = search_term;
 
     // clear the list
-    clear_list ();
-    placeholder.show ();
-    placeholder.start ();
-    tweet_list.set_placeholder (placeholder);
+    tweet_list.remove_all ();
+    tweet_list.set_unempty ();
+    tweet_list.get_placeholder ().show ();
 
 
     if (set_text)
@@ -169,6 +169,15 @@ class SearchPage : IPage, Box {
       }
 
       var users = parser.get_root ().get_array ();
+      if (users.get_length () == 0 && n_results <= 0)
+        n_results = -1;
+      else
+        n_results += (int)users.get_length ();
+
+      if (n_results <= 0) {
+        tweet_list.set_empty ();
+      }
+
       users.foreach_element ((array, index, node) => {
         var user_obj = node.get_object ();
         var entry = new UserListEntry ();
@@ -216,6 +225,15 @@ class SearchPage : IPage, Box {
       }
       var now = new GLib.DateTime.now_local ();
       var statuses = parser.get_root().get_object().get_array_member("statuses");
+      if (statuses.get_length () == 0 && n_results <= 0)
+        n_results = -1;
+      else
+        n_results += (int)statuses.get_length ();
+
+      if (n_results <= 0)
+        tweet_list.set_empty ();
+
+
       statuses.foreach_element ((array, index, node) => {
         var tweet = new Tweet ();
         tweet.load_from_json (node, now);
@@ -230,15 +248,6 @@ class SearchPage : IPage, Box {
     });
 
   } // }}}
-
-  /**
-   * Deletes all rows from the list of search results
-   */
-  private void clear_list () {
-    tweet_list.foreach ((w) => {
-      tweet_list.remove (w);
-    });
-  }
 
   public void create_tool_button(RadioToolButton? group){
     tool_button = new RadioToolButton.from_widget (group);

@@ -13,10 +13,10 @@
 
   When a tweet is focused(via keynav):
 
-  - `r` - reply
-  - `t` - retweet
-  - `f` - favorite
-  - `d` - delete
+  - `r`  - reply
+  - `tt` - retweet
+  - `f`  - favorite
+  - `d`  - delete
   - `Return` - Show tweet details
 
 

@@ -20,9 +20,7 @@ if (DEBUG)
 #  set (CMAKE_VERBOSE_MAKEFILE ON)
 endif (DEBUG)
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fdiagnostics-show-option")
-#set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcolor-diagnostics")
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-value")
-set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-incompatible-pointer-types")
 set (CMAKE_F_FLAGS "${CMAKE_C_FLAGS} -Wno-incompatible-pointer-types-discards-qualifiers")
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-function")
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-variable")
@@ -34,8 +32,8 @@ set (DATADIR          "${PREFIX}/share/corebird/")
 set (GETTEXT_PACKAGE  "corebird")
 set (VERSION          0.1)
 
-message ("PREFIX: ${PREFIX}")
-message ("CATALOG: ${CATALOG}")
+message (STATUS "PREFIX: ${PREFIX}")
+message (STATUS "CATALOG: ${CATALOG}")
 
 
 
@@ -128,6 +126,8 @@ set (VALA_SOURCE
   src/widgets/BgBox.vala
   src/widgets/AspectImage.vala
   src/widgets/MaxSizeContainer.vala
+  src/widgets/DoubleTapButton.vala
+  src/widgets/TweetListBox.vala
   src/list/TweetListEntry.vala
   src/list/ProgressEntry.vala
   src/list/AccountListEntry.vala
