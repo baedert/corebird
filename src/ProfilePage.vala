@@ -50,7 +50,7 @@ class ProfilePage : ScrollWidget, IPage {
   [GtkChild]
   private Button follow_button;
   [GtkChild]
-  private Gtk.ListBox tweet_list;
+  private TweetListBox tweet_list;
   [GtkChild]
   private Gtk.Spinner progress_spinner;
   [GtkChild]
@@ -81,11 +81,6 @@ class ProfilePage : ScrollWidget, IPage {
       return false;
     });
 
-    var spinner = new Gtk.Spinner ();
-    spinner.set_size_request (75, 75);
-    spinner.start ();
-    spinner.show_all ();
-    tweet_list.set_placeholder (spinner);
     tweet_list.row_activated.connect ((row) => {
       main_window.switch_page (MainWindow.PAGE_TWEET_INFO,
                                TweetInfoPage.BY_INSTANCE,
@@ -297,6 +292,7 @@ class ProfilePage : ScrollWidget, IPage {
 
 
   private void load_tweets () { // {{{
+    tweet_list.set_unempty ();
     var call = account.proxy.new_call ();
     call.set_function ("1.1/statuses/user_timeline.json");
     call.set_method ("GET");
@@ -322,6 +318,10 @@ class ProfilePage : ScrollWidget, IPage {
       }
       var now = new GLib.DateTime.now_local ();
       var root = parser.get_root().get_array();
+      if (root.get_length () == 0) {
+        tweet_list.set_empty ();
+        return;
+      }
       root.foreach_element( (array, index, node) => {
         Tweet t = new Tweet();
         t.load_from_json(node, now);
