@@ -1,7 +1,6 @@
-
 [Desktop Entry]
 Name=Corebird
 Exec=corebird
 Type=Application
 Icon=corebird
-Categories=Network;Application;
+Categories=Network;GNOME;
