@@ -385,7 +385,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkListBox" id="tweet_list">
+              <object class="TweetListBox" id="tweet_list">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="vexpand">True</property>

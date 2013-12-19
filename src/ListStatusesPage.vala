@@ -23,7 +23,7 @@ class ListStatusesPage : ScrollWidget, IPage {
   public unowned Account account        { get; set; }
   private int64 list_id;
   [GtkChild]
-  private Gtk.ListBox tweet_list;
+  private TweetListBox tweet_list;
   [GtkChild]
   private MaxSizeContainer max_size_container;
   [GtkChild]
@@ -69,11 +69,6 @@ class ListStatusesPage : ScrollWidget, IPage {
   public ListStatusesPage (int id) {
     this.id = id;
     this.scroll_event.connect (scroll_event_cb);
-    var spinner = new Gtk.Spinner ();
-    spinner.set_size_request (75, 75);
-    spinner.start ();
-    spinner.show_all ();
-    tweet_list.set_placeholder (spinner);
   }
 
   private bool scroll_event_cb (Gdk.EventScroll evt) {
@@ -131,7 +126,7 @@ class ListStatusesPage : ScrollWidget, IPage {
       this.list_id = list_id;
     } else {
       this.list_id = list_id;
-      tweet_list.foreach ((w) => {tweet_list.remove (w);});
+      tweet_list.remove_all ();
       load_newest ();
     }
 
@@ -140,6 +135,7 @@ class ListStatusesPage : ScrollWidget, IPage {
   public void on_leave () {}
 
   private void load_newest () { // {{{
+    tweet_list.set_unempty ();
     var call = account.proxy.new_call ();
     call.set_function ("1.1/lists/statuses.json");
     call.set_method ("GET");
@@ -162,6 +158,10 @@ class ListStatusesPage : ScrollWidget, IPage {
 
       var now = new GLib.DateTime.now_local ();
       var root_array = parser.get_root ().get_array ();
+      if (root_array.get_length () == 0) {
+        tweet_list.set_empty ();
+        return;
+      }
       root_array.foreach_element ((array, index, node) => {
         Tweet t = new Tweet ();
         t.load_from_json (node, now);
