@@ -52,7 +52,6 @@ class MainWindow : ApplicationWindow {
   private RadioToolButton dummy_button     = new RadioToolButton(null);
   private IPage[] pages                    = new IPage[7];
   private IntHistory history               = new IntHistory (5);
-  private Button new_tweet_button          = new Button ();
   private DeltaUpdater delta_updater       = new DeltaUpdater ();
   public unowned Account account           {public get; private set;}
   private WarningService warning_service;
@@ -86,15 +85,7 @@ class MainWindow : ApplicationWindow {
       new SettingsDialog (null, (Corebird)app).show_all ();
       return;
     }
-
-
     headerbar.set_subtitle ("@" + account.screen_name);
-    var s = new Gtk.Separator (Gtk.Orientation.VERTICAL);
-    headerbar.pack_start (s);
-   //TODO: Move new_tweet_button into the gtktemplate(also, rename to compose_tweet_button)
-    new_tweet_button.get_style_context ().add_class ("image-button");
-    headerbar.pack_start (new_tweet_button);
-    set_titlebar (headerbar);
 
     stack.transition_duration = Settings.get_animation_duration ();
 
@@ -150,11 +141,6 @@ class MainWindow : ApplicationWindow {
       headerbar.pack_end (app_menu_button);
       this.show_menubar = false;
     }
-
-    new_tweet_button.always_show_image = true;
-    new_tweet_button.relief = ReliefStyle.NONE;
-    new_tweet_button.image = new Gtk.Image.from_icon_name ("document-new", IconSize.MENU);
-    new_tweet_button.clicked.connect(show_compose_window);
 
     account.load_avatar ();
     avatar_image.pixbuf = account.avatar_small;
@@ -216,6 +202,7 @@ class MainWindow : ApplicationWindow {
     return false;
   }
 
+  [GtkCallback]
   private void show_compose_window () {
     var cw = new ComposeTweetWindow(this, account, null,
                                     ComposeTweetWindow.Mode.NORMAL,
