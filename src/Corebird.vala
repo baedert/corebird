@@ -37,11 +37,11 @@ class Corebird : Gtk.Application {
 
     OptionEntry[] options = new OptionEntry[1];
     options[0] = {"tweet", 't', 0, OptionArg.STRING, ref compose_screen_name,
-            "Shows only the 'compose tweet' window for the given account, nothing else.", null};
+            "Shows only the 'compose tweet' window for the given account, nothing else.", "SCREEN_NAME"};
 
     string[] args = cmd.get_arguments ();
     string*[] _args = new string[args.length];
-    for(int i = 0; i < args.length; i++){
+    for (int i = 0; i < args.length; i++) {
       _args[i] = args[i];
     }
 
