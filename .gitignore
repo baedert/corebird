@@ -6,6 +6,12 @@ src/widgets/*.c
 src/containers/*.c
 src/util/*.c
 *.c
+*.o
+.dirstamp
+*.stamp
+.deps
+Makefile.in
+m4/
 src/sql/*.c
 CMakeCache.txt
 CMakeFiles
