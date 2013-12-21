@@ -24,6 +24,15 @@
         <signal name="activate" handler="tweet_to_item_activate_cb" swapped="no"/>
       </object>
     </child>
+    <child>
+      <object class="GtkMenuItem" id="menuitem1">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Lists</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="list_menu_item_activated" swapped="no"/>
+      </object>
+    </child>
   </object>
   <template class="ProfilePage" parent="ScrollWidget">
     <property name="visible">True</property>

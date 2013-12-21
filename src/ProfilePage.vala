@@ -467,6 +467,12 @@ class ProfilePage : ScrollWidget, IPage {
     cw.show_all ();
   }
 
+  [GtkCallback]
+  private void  list_menu_item_activated () {
+    var uld = new UserListDialog (main_window, account);
+    uld.show_all ();
+  }
+
   private void set_follow_button_state (bool following) { //{{{
     var sc = follow_button.get_style_context ();
     follow_button.sensitive = (user_id != account.id);
@@ -502,7 +508,7 @@ class ProfilePage : ScrollWidget, IPage {
       return;
     data_cancellable = new GLib.Cancellable ();
     set_user_id(user_id);
-    tweet_list.@foreach ((w) => {tweet_list.remove (w);});
+    tweet_list.remove_all ();
     load_tweets ();
   }
 
