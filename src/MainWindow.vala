@@ -275,7 +275,6 @@ class MainWindow : ApplicationWindow {
 
   /**
    * Indicates that the caller is doing a long-running opertation.
-   *
    */
   public void start_progress () {
     progress_holders ++;
@@ -288,6 +287,10 @@ class MainWindow : ApplicationWindow {
       progress_spinner.hide ();
   }
 
+
+  public void get_page (int page_id) {
+    return pages[page_id];
+  }
 
   /**
     *
