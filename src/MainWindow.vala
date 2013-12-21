@@ -288,7 +288,7 @@ class MainWindow : ApplicationWindow {
   }
 
 
-  public void get_page (int page_id) {
+  public IPage get_page (int page_id) {
     return pages[page_id];
   }
 
