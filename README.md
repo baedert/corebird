@@ -16,7 +16,7 @@
   - `r`  - reply
   - `tt` - retweet
   - `f`  - favorite
-  - `d`  - delete
+  - `dd` - delete
   - `Return` - Show tweet details
 
 
