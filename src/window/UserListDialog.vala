@@ -20,6 +20,8 @@ class UserListDialog : Gtk.Dialog {
     var scroller = new Gtk.ScrolledWindow (null, null);
     scroller.add (list_list_box);
     content_box.pack_start (scroller, true, true);
+
+    var lists_page = (ListsPage)parent.get_page (MainWindow.PAGE_LISTS);
   }
 
 
