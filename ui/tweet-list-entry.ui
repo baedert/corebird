@@ -214,7 +214,6 @@
                         <property name="no_show_all">True</property>
                         <property name="halign">start</property>
                         <property name="margin_top">4</property>
-                        <property name="label">RT by foo</property>
                         <property name="use_markup">True</property>
                         <property name="angle">0.039999999105930328</property>
                         <property name="icon_name">corebird-retweet-symbolic</property>
