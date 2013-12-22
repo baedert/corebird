@@ -42,6 +42,8 @@ class MainWindow : ApplicationWindow {
   [GtkChild]
   private Image avatar_image;
   [GtkChild]
+  private EventBox avatar_image_eventbox;
+  [GtkChild]
   private Spinner progress_spinner;
   public int cur_page_id {
     get {
@@ -186,6 +188,15 @@ class MainWindow : ApplicationWindow {
 
 
     this.add_accel_group(ag);
+  }
+  
+  [GtkCallback]
+  private bool avatar_image_eventbox_cb(Gdk.EventButton evt){
+    if (evt.button == 1) {
+      switch_page(PAGE_PROFILE, account.id);
+      return true;
+    }
+    return false;
   }
 
   [GtkCallback]
