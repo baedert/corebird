@@ -61,7 +61,7 @@ class ListsPage : IPage, ScrollWidget, IMessageReceiver {
 
     if (mode == 0 && !inited) {
       inited = true;
-      load_newest ();
+      load_newest.begin ();
     } else if (mode  == MODE_DELETE) {
       int64 list_id = arg_list.arg<int64> ();
       message (@"Deleting list with id $list_id");
@@ -74,7 +74,7 @@ class ListsPage : IPage, ScrollWidget, IMessageReceiver {
   }
 
 
-  private void load_newest () { // {{{
+  private async void load_newest () { // {{{
     var call = account.proxy.new_call ();
     call.set_function ("1.1/lists/subscriptions.json");
     call.set_method ("GET");
@@ -99,7 +99,10 @@ class ListsPage : IPage, ScrollWidget, IMessageReceiver {
         user_list_box.hide ();
         user_list_frame.hide ();
       }
+      load_newest.callback ();
     });
+    inited = true;
+    yield;
   } // }}}
 
   private uint lists_received_cb (GLib.Object ?o, GLib.AsyncResult res,
@@ -223,6 +226,26 @@ class ListsPage : IPage, ScrollWidget, IMessageReceiver {
         lle.queue_draw ();
       }
     });
+  }
+
+  public async TwitterList[] get_user_lists () {
+    if (!inited)
+      yield load_newest ();
+
+    GLib.List<weak Gtk.Widget> children = user_list_box.get_children ();
+    TwitterList[] lists = new TwitterList[children.length () - 1];
+    int i = 0;
+    foreach (Gtk.Widget w in children) {
+      if (!(w is ListListEntry))
+        continue;
+
+      var lle = (ListListEntry) w;
+      lists[i].name = lle.name;
+      lists[i].description = lle.description;
+      lists[i].mode = lle.mode;
+      i ++;
+    }
+    return lists;
   }
 
   public void create_tool_button (RadioToolButton? group) {

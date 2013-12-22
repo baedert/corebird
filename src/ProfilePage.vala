@@ -470,6 +470,7 @@ class ProfilePage : ScrollWidget, IPage {
   [GtkCallback]
   private void  list_menu_item_activated () {
     var uld = new UserListDialog (main_window, account);
+    uld.load_lists ();
     uld.show_all ();
   }
 
