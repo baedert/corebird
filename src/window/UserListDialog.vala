@@ -35,12 +35,14 @@ class UserListDialog : Gtk.Dialog {
     this.main_window = parent;
     set_modal (true);
     set_transient_for (parent);
+    set_default_size (250, 300);
     add_button ("Cancel", CANCEL_RESPONSE);
     add_button ("Save", SAVE_RESPONSE);
 
 
     var content_box = get_content_area ();
     var scroller = new Gtk.ScrolledWindow (null, null);
+    list_list_box.selection_mode = Gtk.SelectionMode.NONE;
     scroller.add (list_list_box);
     content_box.pack_start (scroller, true, true);
   }
@@ -50,7 +52,7 @@ class UserListDialog : Gtk.Dialog {
     lists_page.get_user_lists.begin ((obj, res) => {
       TwitterList[] lists = lists_page.get_user_lists.end (res);
       foreach (var list in lists) {
-        var l = new Gtk.Label (list.name);
+        var l = new ListUserEntry (list.name, list.description);
         list_list_box.add (l);
       }
      this.show_all ();
@@ -66,3 +68,25 @@ class UserListDialog : Gtk.Dialog {
     }
   }
 }
+
+class ListUserEntry : Gtk.ListBoxRow {
+  private Gtk.CheckButton added_checkbox = new Gtk.CheckButton ();
+
+  public ListUserEntry (string list_name, string description) {
+    var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 5);
+    box.pack_start (added_checkbox, false, false);
+    var box2 = new Gtk.Box (Gtk.Orientation.VERTICAL, 3);
+    var label = new Gtk.Label (list_name);
+    label.justify = Gtk.Justification.LEFT;
+    label.get_style_context ().add_class ("list-username");
+    box2.pack_start (label, true, false);
+    var desc_label = new Gtk.Label (description);
+    desc_label.get_style_context ().add_class ("dim-label");
+    desc_label.justify = Gtk.Justification.LEFT;
+    desc_label.ellipsize = Pango.EllipsizeMode.END;
+    box2.pack_start (desc_label, true, false);
+    box.pack_start (box2, true, true);
+    add (box);
+  }
+}
+
