@@ -207,16 +207,12 @@ namespace Utils {
 
 
 
-  /**
-   * TODO: Maybe use the XDG_CONFIG_DIR here?
-   * @return a path to the file or folder ~/.corebird/file_name
-   */
   private string config_home = null;
   string user_file (string file_name) {
     if (config_home == null) {
-      config_home = GLib.Environment.get_variable ("XDG_CONFIG_HOME") + "/corebird/";
-      if (config_home == null || config_home == "") {
-        config_home = GLib.Environment.get_home_dir () + "/.corebird/";
+      config_home = GLib.Environment.get_home_dir () + "/.corebird/";
+      if (!GLib.FileUtils.test (config_home, GLib.FileTest.EXISTS)) {
+        config_home = GLib.Environment.get_user_config_dir () + "/corebird/";
       }
     }
     return config_home + file_name;
