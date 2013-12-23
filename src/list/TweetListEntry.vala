@@ -147,7 +147,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       return false;
     });
     reply_entry.focus_out_event.connect(() => {
-      reply_revealer.reveal_child = false;
+      //reply_revealer.reveal_child = false;
       return false;
     });
     hover_box.show ();
