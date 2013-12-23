@@ -148,7 +148,6 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     });
     reply_entry.focus_out_event.connect(() => {
       reply_revealer.reveal_child = false;
-      retweet_button.reset ();
       return false;
     });
     hover_box.show ();
@@ -277,6 +276,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   private bool focus_out_cb (Gdk.EventFocus evt) {
     reply_revealer.reveal_child = false;
     delete_first_activated = false;
+    retweet_button.reset ();
     return false;
   }
 
