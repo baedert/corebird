@@ -240,6 +240,7 @@ class ListsPage : IPage, ScrollWidget, IMessageReceiver {
         continue;
 
       var lle = (ListListEntry) w;
+      lists[i].id = lle.id;
       lists[i].name = lle.name;
       lists[i].description = lle.description;
       lists[i].mode = lle.mode;
