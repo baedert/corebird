@@ -159,7 +159,7 @@ class MainWindow : ApplicationWindow {
   /**
    * Adds the accelerators to the GtkWindow
    */
-  private void add_accels() {
+  private void add_accels() { // {{{
     AccelGroup ag = new AccelGroup();
     ag.connect (Gdk.Key.@1, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
         () => {switch_page(0);return true;});
@@ -186,7 +186,7 @@ class MainWindow : ApplicationWindow {
 
 
     this.add_accel_group(ag);
-  }
+  } // }}}
 
   [GtkCallback]
   private bool button_press_event_cb (Gdk.EventButton evt) {
@@ -217,12 +217,13 @@ class MainWindow : ApplicationWindow {
    *                See the PAGE_* constants.
    * @param ... The parameters to pass to the page
    */
-  public void switch_page (int page_id, ...) {
+  public void switch_page (int page_id, ...) { // {{{
     if (page_id == history.current) {
       if (pages[page_id].handles_double_open ())
         pages[page_id].double_open ();
       else
         pages[page_id].on_join (page_id, va_list ());
+
       return;
     }
 
@@ -257,19 +258,22 @@ class MainWindow : ApplicationWindow {
       history.push (page_id);
 
 
+    /* XXX The following will cause switch_page to be called twice
+       because setting the active property of the button will cause
+       the clicked event to be emitted, which will call switch_page. */
     IPage page = pages[page_id];
-    if (page.get_tool_button () != null)
-      page.get_tool_button().active = true;
+    Gtk.RadioToolButton button = page.get_tool_button ();
+    if (button != null)
+      button.active = true;
     else
       dummy_button.active = true;
 
     page.on_join (page_id, va_list ());
     stack.set_visible_child_name (page_id.to_string ());
-  }
+  } // }}}
 
   /**
-   * Indicates that the caller is doing a long-running opertation.
-   *
+   * Indicates that the caller is doing a long-running operation.
    */
   public void start_progress () {
     progress_holders ++;
