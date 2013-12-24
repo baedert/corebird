@@ -210,17 +210,47 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="ImageLabel" id="rt_label">
+                      <object class="GtkBox" id="rt_box">
                         <property name="can_focus">False</property>
                         <property name="no_show_all">True</property>
-                        <property name="halign">start</property>
-                        <property name="margin_top">4</property>
-                        <property name="use_markup">True</property>
-                        <property name="icon_name">corebird-retweet-symbolic</property>
-                        <style>
-                          <class name="dim-label"/>
-                        </style>
-                        <signal name="activate-link" handler="link_activated_cb" swapped="no"/>
+                        <child>
+                          <object class="GtkImage" id="image7">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="no_show_all">True</property>
+                            <property name="valign">baseline</property>
+                            <property name="margin_right">3</property>
+                            <property name="pixel_size">13</property>
+                            <property name="icon_name">corebird-retweet-symbolic</property>
+                            <style>
+                              <class name="dim-label"/>
+                            </style>
+                            <property name="icon_size">1</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="rt_label">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="no_show_all">True</property>
+                            <property name="halign">start</property>
+                            <property name="valign">baseline</property>
+                            <property name="use_markup">True</property>
+                            <style>
+                              <class name="dim-label"/>
+                            </style>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
                       </object>
                       <packing>
                         <property name="expand">False</property>

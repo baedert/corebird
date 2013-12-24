@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Generated with glade 3.16.0 -->
 <interface>
-  <!-- interface-requires corebird 0.0 -->
   <requires lib="gtk+" version="3.10"/>
+  <requires lib="" version="3.10"/>
+  <requires lib="corebird" version="0.0"/>
   <object class="GtkMenu" id="more_menu">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -388,16 +389,41 @@
               </packing>
             </child>
             <child>
-              <object class="ImageLabel" id="location_label">
+              <object class="GtkBox" id="box2">
+                <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="no_show_all">True</property>
-                <property name="xalign">0</property>
-                <property name="label">label</property>
-                <property name="icon_name">corebird-location-symbolic</property>
-                <property name="icon_size">16</property>
-                <style>
-                  <class name="dim-label"/>
-                </style>
+                <child>
+                  <object class="GtkImage" id="image5">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">baseline</property>
+                    <property name="icon_name">corebird-location-symbolic</property>
+                    <style>
+                      <class name="dim-label"/>
+                    </style>
+                    <property name="icon_size">1</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="location_label">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">baseline</property>
+                    <style>
+                      <class name="dim-label"/>
+                    </style>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>

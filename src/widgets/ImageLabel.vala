@@ -17,15 +17,11 @@
 
 using Gtk;
 
-/**
- * Displays an icon on the left/right side of the
- * specified text. Helps to reduce the complexity of layouts.
- */
-class ImageLabel : Label {
-  private static const int GAP = 1;
+class ImageLabel : Gtk.Label {
+  private static const int GAP = 2;
   private int _icon_size = 14;
   private string _icon_name;
-  public Gtk.PositionType icon_pos = Gtk.PositionType.LEFT;
+  public Gtk.PositionType icon_pos = Gtk.PositionType.RIGHT;
   public string icon_name {
     set {
       _icon_name = value;
@@ -58,15 +54,14 @@ class ImageLabel : Label {
       if (icon != null) {
         context.render_icon (c, icon, 0,
                              (height / 2) - (icon_size / 2));
-        c.translate (GAP, 0);
       }
+      c.translate (icon_size, 0);
       base.draw(c);
     } else {
-      base.draw(c);
       if (icon != null) {
-        c.translate (base.get_allocated_width() - icon.width, 0);
-        context.render_icon (c, icon, 0, 0);
+        context.render_icon (c, icon, get_allocated_width () - icon.width, 0);
       }
+      base.draw(c);
     }
 
 
@@ -74,10 +69,8 @@ class ImageLabel : Label {
   }
 
   public override void size_allocate (Allocation allocation) {
-      allocation.width += icon.width + GAP;
-      if (icon_pos == PositionType.LEFT)
-        allocation.width += icon.width + GAP;
-      base.size_allocate (allocation);
+    allocation.width += _icon_size + GAP;
+    base.size_allocate (allocation);
   }
 
   private void load_icon () {
