@@ -315,6 +315,7 @@ class MainWindow : ApplicationWindow {
       Settings.get ().set_strv ("startup-accounts", startup_accounts);
       message ("Saving the account %s", ((MainWindow)ws.nth_data (0)).account.screen_name);
     }
-
   }
+
+
 }
