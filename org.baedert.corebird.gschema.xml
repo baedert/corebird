@@ -74,7 +74,7 @@
     </key>
     <key name="max-media-size" type="d">
       <default>2.0</default>
-      <summary>Maximum size of online media to download, in Megabyte.</summary>
+      <summary>Maximum size of inline media to download, in Megabytes.</summary>
     </key>
   </schema>
 </schemalist>
