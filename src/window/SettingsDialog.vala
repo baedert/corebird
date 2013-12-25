@@ -49,6 +49,8 @@ class SettingsDialog : Gtk.Dialog {
   private Switch auto_scroll_on_new_tweets_switch;
   [GtkChild]
   private SpinButton max_media_size_spin_button;
+  [GtkChild]
+  private Gtk.ComboBoxText long_tweets_combobox;
 
   public SettingsDialog(MainWindow? main_window = null, Corebird? application = null){
     this.main_window = main_window;
@@ -83,13 +85,15 @@ class SettingsDialog : Gtk.Dialog {
     Settings.get ().bind ("max-media-size", max_media_size_spin_button, "value",
                           SettingsBindFlags.DEFAULT);
 
-    // Behaviour page
-    Settings.get ().bind ("search-show-retweets", search_show_retweets_switch, "active",
-                          SettingsBindFlags.DEFAULT);
 
     // General Page
     Settings.get ().bind ("upload-provider", upload_provider_combobox, "active_id",
                           SettingsBindFlags.DEFAULT);
+    Settings.get ().bind ("long-tweet-method", long_tweets_combobox, "active_id",
+                          SettingsBindFlags.DEFAULT);
+    Settings.get ().bind ("search-show-retweets", search_show_retweets_switch, "active",
+                          SettingsBindFlags.DEFAULT);
+
 
     unowned SList<Account> accs = Account.list_accounts ();
     foreach (Account a in accs) {

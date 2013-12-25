@@ -12,9 +12,9 @@
     <value nick="Twitter"  value="0" />
   </enum>
 
-  <enum id="org.baedert.corebird.long-tweets-method">
-    <value nick="TwitLonger" value="twitlonger" />
-    <value nick="Split" value="split" />
+  <enum id="org.baedert.corebird.long-tweet-method">
+    <value nick="Split"      value="0" />
+    <value nick="TwitLonger" value="1" />
   </enum>
 
   <schema id="org.baedert.corebird"
@@ -81,9 +81,9 @@
       <default>2.0</default>
       <summary>Maximum size of online media to download, in Megabyte.</summary>
     </key>
-    <key name="long-tweet-method" type="org.baedert.corebird.long-tweet-method">
-      <default>split</default>
-      <summary>Method to use if tweets exceed Twitter's 140 characters.</summary>
+    <key name="long-tweet-method" enum="org.baedert.corebird.long-tweet-method">
+      <default>"Split"</default>
+      <summary>Method to use if tweets exceed Twitter's 140 character limit.</summary>
     </key>
   </schema>
 </schemalist>
