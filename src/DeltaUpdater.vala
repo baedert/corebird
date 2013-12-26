@@ -25,7 +25,7 @@ class DeltaUpdater : GLib.Object {
     GLib.Timeout.add(60 * 1000, () => {
       for (int i = 0, size = minutely.size; i < size; i++) {
         WeakRef<ITwitterItem> item_ref = minutely.get (i);
-        ITwitterItem item = minutely.get (i).get ();
+        ITwitterItem item = item_ref.get ();
         if (item == null) {
           minutely.remove (item_ref);
           size --;

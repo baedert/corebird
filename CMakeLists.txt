@@ -148,6 +148,7 @@ set (VALA_SOURCE
   src/sql/Statement.vala
   src/sql/SelectStatement.vala
   src/sql/UpdateStatement.vala
+  src/services/TweetSplit.vala
   src/resources.c
 )
 

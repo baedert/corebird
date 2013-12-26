@@ -115,10 +115,14 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
     int length = TweetUtils.calc_tweet_length (text);
 
-    if (Settings.long_tweet_method () == 0)
-      length_label.label = "blah";
-    else
+
+    int n_tweets = length / Tweet.MAX_LENGTH;
+    if (Settings.long_tweet_method () == 0 && n_tweets > 0) {
+      length_label.label = "%d(%d)".printf (Tweet.MAX_LENGTH - (length - (n_tweets * Tweet.MAX_LENGTH)),
+                                            n_tweets + 1);
+    } else {
       length_label.label = (Tweet.MAX_LENGTH - length).to_string ();
+    }
 
     if (length > 0 /*&& length <= Tweet.MAX_LENGTH*/)
       send_button.sensitive = true;
@@ -140,10 +144,16 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     if (answer_to != null)
       reply_id = answer_to.id;
 
-    TweetUtils.send_tweet (account,
-                           text,
-                           reply_id,
-                           media_uri);
+    int tweet_length = TweetUtils.calc_tweet_length (text);
+    // TODO: We are leaking dialogs here. destroy it after the tweet has been sent.
+    if (tweet_length <= Tweet.MAX_LENGTH) {
+      TweetUtils.send_tweet.begin (account,
+                                   text,
+                                   reply_id,
+                                   media_uri);
+    } else {
+      TweetSplit.split_and_send.begin (account, text, reply_id, media_uri);
+    }
     this.visible = false;
   }
 
