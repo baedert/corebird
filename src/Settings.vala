@@ -79,4 +79,8 @@ class Settings : GLib.Object {
     return settings.get_boolean (key);
   }
 
+  public static int long_tweet_method () {
+    return settings.get_enum ("long-tweet-method");
+  }
+
 }

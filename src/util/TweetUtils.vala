@@ -234,6 +234,55 @@ namespace TweetUtils {
     return avatar;
   }
 
+
+  /**
+   * Creates a new tweet.
+   *
+   * @param text The text of the tweet. Must not exceed 140 characters.
+   * @param reply_id The id of the tweet this new tweet is a reply to, or -1
+   *                 if this tweet it not a reply.
+   * @param media_uri The image to upload alongside this tweet or "" if no image
+   *                  should be uploaded.
+   */
+  async void send_tweet (Account account,
+                         string  text,
+                         int64   reply_id = -1,
+                         string  media_uri = "") {
+    var call = account.proxy.new_call ();
+    call.set_method ("POST");
+    call.add_param ("status", text);
+
+    Rest.Param media_param;
+    if (media_uri == "" || media_uri == null)
+      call.set_function ("1.1/statuses/update.json");
+    else {
+      call.set_function ("1.1/statuses/update_with_media.json");
+      uint8[] media_content;
+      var media_file = GLib.File.new_for_path (media_uri);
+      try {
+        yield media_file.load_contents_async (null, out media_content, null);
+      } catch (GLib.Error e) {
+        critical (e.message);
+        return;
+      }
+      media_param = new Rest.Param.full ("media[]", Rest.MemoryUse.COPY,
+                                         media_content, "multipart/form-data",
+                                         media_uri);
+      call.add_param_full (media_param);
+    }
+
+    if (reply_id != -1) {
+      call.add_param ("in_reply_to_status_id", reply_id.to_string ());
+    }
+
+    try {
+      yield call.invoke_async (null);
+    } catch (GLib.Error e) {
+      Utils.show_error_object (call.get_payload (), e.message);
+    }
+  }
+
+
   /**
    * Calculates the length of a tweet.
    * See https://dev.twitter.com/docs/faq#5810 for details

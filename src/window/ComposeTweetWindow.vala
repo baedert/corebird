@@ -115,8 +115,12 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
     int length = TweetUtils.calc_tweet_length (text);
 
-    length_label.label = (Tweet.MAX_LENGTH - length).to_string ();
-    if (length > 0 && length <= Tweet.MAX_LENGTH)
+    if (Settings.long_tweet_method () == 0)
+      length_label.label = "blah";
+    else
+      length_label.label = (Tweet.MAX_LENGTH - length).to_string ();
+
+    if (length > 0 /*&& length <= Tweet.MAX_LENGTH*/)
       send_button.sensitive = true;
     else
       send_button.sensitive = false;
@@ -132,41 +136,14 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     if(text.strip() == "")
       return;
 
-    var call = account.proxy.new_call ();
-    call.set_method ("POST");
-    call.add_param ("status", text);
-    if (this.answer_to != null && mode == Mode.REPLY) {
-      call.add_param("in_reply_to_status_id", answer_to.id.to_string ());
-    }
+    int64 reply_id = -1;
+    if (answer_to != null)
+      reply_id = answer_to.id;
 
-    Rest.Param param;
-    if (media_count == 0) {
-      call.set_function ("1.1/statuses/update.json");
-    } else {
-      call.set_function ("1.1/statuses/update_with_media.json");
-      uint8[] content;
-      try {
-        GLib.File media_file = GLib.File.new_for_path(media_uri);
-        media_file.load_contents (null, out content, null);
-      } catch (GLib.Error e) {
-        critical (e.message);
-      }
-
-      param  = new Rest.Param.full ("media[]", Rest.MemoryUse.COPY,
-                                    content, "multipart/form-data",
-                                    media_uri);
-      call.add_param_full (param);
-    }
-
-    call.invoke_async.begin (null, (obj, res) => {
-      try {
-        call.invoke_async.end (res);
-      } catch (GLib.Error e) {
-        Utils.show_error_object (call.get_payload (), e.message);
-      } finally {
-        this.destroy ();
-      }
-    });
+    TweetUtils.send_tweet (account,
+                           text,
+                           reply_id,
+                           media_uri);
     this.visible = false;
   }
 
