@@ -276,7 +276,6 @@
                     <items>
                       <item id="Forbid" translatable="yes">Forbid</item>
                       <item id="Split" translatable="yes">Split</item>
-                      <item id="TwitLonger" translatable="yes">TwitLonger</item>
                     </items>
                   </object>
                   <packing>
