@@ -107,7 +107,7 @@ class UserListDialog : Gtk.Dialog {
 
 class ListUserEntry : Gtk.ListBoxRow {
   public int64 id;
-  public bool changed = false;
+  public new bool changed = false;
   private Gtk.CheckButton added_checkbox = new Gtk.CheckButton ();
 
   public ListUserEntry (string list_name, string description) {
