@@ -75,12 +75,6 @@ set (DEPS glib-2.0;
 find_package (PkgConfig)
 pkg_check_modules (DEPS REQUIRED ${DEPS})
 
-if (${DEPS_rest-0.7_VERSION} VERSION_GREATER "0.7.90")
-  set (HAVE_NEW_LIBREST "true")
-else()
-  set (HAVE_NEW_LIBREST "false")
-endif()
-
 add_definitions (${DEPS_CFLAGS} "-DGETTEXT_PACKAGE=\"${GETTEXT_PACKAGE}\"")
 link_directories (${DEPS_LIBRARY_DIRS})
 
