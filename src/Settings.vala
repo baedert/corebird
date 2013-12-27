@@ -19,6 +19,11 @@
 class Settings : GLib.Object {
   private static GLib.Settings settings;
 
+  public enum LongTweetMethod {
+    FORBID = 0,
+    SPLIT  = 1
+  }
+
   public static void init(){
     settings = new GLib.Settings("org.baedert.corebird");
   }

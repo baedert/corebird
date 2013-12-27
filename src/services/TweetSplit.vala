@@ -21,21 +21,34 @@ namespace TweetSplit {
   async void split_and_send (Account account,
                              string  text,
                              int64   reply_id = -1,
+                             string  reply_screen_name = "",
                              string  media_uri = "") {
 
     string[] splits = text.split(" ");
+    string reply_nick = null;
+    if (reply_id != 0 && splits[0].has_prefix("@"))
+      reply_nick = "@" + reply_screen_name + " ";
+
     int cur_length = 0;
     int split_pos = 0;
     int cur_split_count = 0; // #splits in the current tweet
     int num_tweets = 0;
     var cur_tweet = new StringBuilder ();
-    message ("First split: %s", splits[0]);
 
     while (split_pos < splits.length) {
+      if (num_tweets > 0)
+        media_uri = null;
+
       if (cur_length + splits[split_pos].length >= Tweet.MAX_LENGTH - 2) {
-        if (cur_split_count == 0)
-          ; // TODO: HARD BREAK
-        else {
+        if (cur_split_count == 0) {
+          cur_tweet.append (splits[split_pos].substring(0, Tweet.MAX_LENGTH-2))
+                   .append ("…");
+          yield TweetUtils.send_tweet (account, cur_tweet.str, reply_id, media_uri);
+          cur_tweet.erase ();
+          num_tweets ++;
+          splits[split_pos] = splits[split_pos].substring(Tweet.MAX_LENGTH-2);
+          cur_tweet.append (reply_nick).append ("…");
+        } else {
           // The tweet will be too long, so just append the ellipsis now and send it
           cur_tweet.append ("…");
           yield TweetUtils.send_tweet (account, cur_tweet.str, reply_id, media_uri);
@@ -43,10 +56,8 @@ namespace TweetSplit {
           cur_tweet.erase ();
           cur_length = 0;
           cur_split_count = 0;
-          if (num_tweets > 0)
-            cur_tweet.append ("…");
+          cur_tweet.append (reply_nick).append ("…");
           // Leave split_pos how it is
-
         }
       } else {
         cur_tweet.append (splits[split_pos]).append (" ");

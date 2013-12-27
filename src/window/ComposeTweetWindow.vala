@@ -50,7 +50,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   public ComposeTweetWindow(Window? parent, Account acc,
                             Tweet? answer_to = null,
                             Mode mode = Mode.NORMAL,
-                            Gtk.Application? app = null) {
+                             Gtk.Application? app = null) { // {{{
     this.set_show_menubar (false);
     this.account = acc;
     this.answer_to = answer_to;
@@ -105,7 +105,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
         () => {send_tweet (); return true;});
 
     this.add_accel_group (ag);
-  }
+  } // }}}
 
   private void recalc_tweet_length () {
     TextIter start, end;
@@ -115,19 +115,20 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
     int length = TweetUtils.calc_tweet_length (text);
 
-
     int n_tweets = length / Tweet.MAX_LENGTH;
-    if (Settings.long_tweet_method () == 0 && n_tweets > 0) {
+    if (Settings.long_tweet_method () == Settings.LongTweetMethod.SPLIT
+        && n_tweets > 0) {
       length_label.label = "%d(%d)".printf (Tweet.MAX_LENGTH - (length - (n_tweets * Tweet.MAX_LENGTH)),
                                             n_tweets + 1);
     } else {
       length_label.label = (Tweet.MAX_LENGTH - length).to_string ();
     }
 
-    if (length > 0 /*&& length <= Tweet.MAX_LENGTH*/)
-      send_button.sensitive = true;
-    else
+    if (length > Tweet.MAX_LENGTH &&
+        Settings.long_tweet_method () == Settings.LongTweetMethod.FORBID) {
       send_button.sensitive = false;
+    } else if (length > 0)
+      send_button.sensitive = true;
 
   }
 
@@ -137,7 +138,8 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     tweet_text.buffer.get_start_iter (out start);
     tweet_text.buffer.get_end_iter (out end);
     string text = tweet_text.buffer.get_text (start, end, true);
-    if(text.strip() == "")
+
+    if(text.strip() == "" || !send_button.sensitive)
       return;
 
     int64 reply_id = -1;
@@ -152,7 +154,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
                                    reply_id,
                                    media_uri);
     } else {
-      TweetSplit.split_and_send.begin (account, text, reply_id, media_uri);
+      TweetSplit.split_and_send.begin (account, text, reply_id, answer_to.screen_name, media_uri);
     }
     this.visible = false;
   }
@@ -163,7 +165,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   }
 
   [GtkCallback]
-  private void add_image_clicked () {
+  private void add_image_clicked () { // {{{
     FileChooserDialog fcd = new FileChooserDialog("Select Image", null, FileChooserAction.OPEN,
                                                   _("Cancel"), ResponseType.CANCEL,
                                                   _("Choose"),   ResponseType.ACCEPT);
@@ -187,7 +189,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       }
     }
     fcd.close ();
-  }
+  } // }}}
 
 
 
