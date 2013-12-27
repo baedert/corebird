@@ -146,8 +146,11 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     this.visible = false;
 
     int64 reply_id = -1;
-    if (answer_to != null)
+    string reply_nick = "";
+    if (answer_to != null) {
       reply_id = answer_to.id;
+      reply_nick = answer_to.screen_name;
+    }
 
     int tweet_length = TweetUtils.calc_tweet_length (text);
 
@@ -157,7 +160,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
                                    reply_id,
                                    media_uri);
     } else {
-      yield TweetSplit.split_and_send (account, text, reply_id, answer_to.screen_name, media_uri);
+      yield TweetSplit.split_and_send (account, text, reply_id, reply_nick, media_uri);
     }
 
     this.destroy ();
