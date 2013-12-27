@@ -389,9 +389,9 @@
               </packing>
             </child>
             <child>
-              <object class="GtkBox" id="box2">
-                <property name="visible">True</property>
+              <object class="GtkBox" id="location_box">
                 <property name="can_focus">False</property>
+                <property name="no_show_all">True</property>
                 <child>
                   <object class="GtkImage" id="image5">
                     <property name="visible">True</property>
