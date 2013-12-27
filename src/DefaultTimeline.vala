@@ -88,7 +88,8 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   }
 
   public void double_open () {
-    this.scroll_up_next (true, false, true);
+    if (!loading)
+      this.scroll_up_next (true, false, true);
   }
 
   public virtual  void on_leave () {}

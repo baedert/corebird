@@ -108,8 +108,12 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
   }
 
   public override void load_older () {
+    if (!initialized)
+      return;
+
     this.balance_next_upper_change (BOTTOM);
     main_window.start_progress ();
+    this.loading = true;
     this.load_older_internal.begin ("1.1/statuses/mentions_timeline.json", Tweet.TYPE_MENTION, () => {
       this.loading = false;
       main_window.stop_progress ();

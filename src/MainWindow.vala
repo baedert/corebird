@@ -57,6 +57,7 @@ class MainWindow : ApplicationWindow {
   private DeltaUpdater delta_updater       = new DeltaUpdater ();
   public unowned Account account           {public get; private set;}
   private WarningService warning_service;
+  private bool page_switch_lock = false;
 
 
   public MainWindow(Gtk.Application app, Account? account = null){
@@ -115,7 +116,7 @@ class MainWindow : ApplicationWindow {
       if (page.get_tool_button () != null) {
         left_toolbar.insert (page.get_tool_button (), page.id);
         page.get_tool_button ().clicked.connect (() => {
-          if (page.get_tool_button ().active) {
+          if (page.get_tool_button ().active && !page_switch_lock) {
             switch_page (page.id);
           }
         });
@@ -163,7 +164,7 @@ class MainWindow : ApplicationWindow {
   /**
    * Adds the accelerators to the GtkWindow
    */
-  private void add_accels() {
+  private void add_accels() { // {{{
     AccelGroup ag = new AccelGroup();
     ag.connect (Gdk.Key.@1, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
         () => {switch_page(0);return true;});
@@ -190,7 +191,7 @@ class MainWindow : ApplicationWindow {
 
 
     this.add_accel_group(ag);
-  }
+  } // }}}
 
   [GtkCallback]
   private bool button_press_event_cb (Gdk.EventButton evt) {
@@ -223,37 +224,34 @@ class MainWindow : ApplicationWindow {
    *
    * TODO: Refactor this.
    */
-  public void switch_page (int page_id, ...) {
+  public void switch_page (int page_id, ...) { // {{{
     if (page_id == history.current) {
       if (pages[page_id].handles_double_open ())
         pages[page_id].double_open ();
       else
         pages[page_id].on_join (page_id, va_list ());
+
       return;
     }
 
     bool push = true;
 
-    if (page_id == PAGE_PREVIOUS) {
-      if (history.current != -1)
-        pages[history.current].on_leave ();
-      page_id = history.back ();
-      push = false;
-      stack.transition_type = StackTransitionType.SLIDE_RIGHT;
-    } else if (page_id == PAGE_NEXT) {
-      if (history.current != -1)
-        pages[history.current].on_leave ();
-      page_id = history.forward ();
-      push = false;
-      stack.transition_type = StackTransitionType.SLIDE_LEFT;
-    } else {
-      if (page_id > history.current)
-        stack.transition_type = StackTransitionType.SLIDE_LEFT;
-      else
-        stack.transition_type = StackTransitionType.SLIDE_RIGHT;
+    if (history.current != -1)
+      pages[history.current].on_leave ();
 
-      if (history.current != -1)
-        pages[history.current].on_leave ();
+    // Set the correct transition type
+    if (page_id == PAGE_PREVIOUS || page_id < history.current)
+      stack.transition_type = StackTransitionType.SLIDE_RIGHT;
+    else if (page_id == PAGE_NEXT || page_id > history.current)
+      stack.transition_type = StackTransitionType.SLIDE_LEFT;
+
+    // If we go forward/back, we don't need to update the history.
+    if (page_id == PAGE_PREVIOUS) {
+      push = false;
+      page_id = history.back ();
+    } else if (page_id == PAGE_NEXT) {
+      push = false;
+      page_id = history.forward ();
     }
 
     if (page_id == -1)
@@ -263,18 +261,24 @@ class MainWindow : ApplicationWindow {
       history.push (page_id);
 
 
+    /* XXX The following will cause switch_page to be called twice
+       because setting the active property of the button will cause
+       the clicked event to be emitted, which will call switch_page. */
     IPage page = pages[page_id];
-    if (page.get_tool_button () != null)
-      page.get_tool_button().active = true;
+    Gtk.RadioToolButton button = page.get_tool_button ();
+    page_switch_lock = true;
+    if (button != null)
+      button.active = true;
     else
       dummy_button.active = true;
 
     page.on_join (page_id, va_list ());
     stack.set_visible_child_name (page_id.to_string ());
-  }
+    page_switch_lock = false;
+  } // }}}
 
   /**
-   * Indicates that the caller is doing a long-running opertation.
+   * Indicates that the caller is doing a long-running operation.
    */
   public void start_progress () {
     progress_holders ++;
@@ -320,6 +324,7 @@ class MainWindow : ApplicationWindow {
       Settings.get ().set_strv ("startup-accounts", startup_accounts);
       message ("Saving the account %s", ((MainWindow)ws.nth_data (0)).account.screen_name);
     }
-
   }
+
+
 }

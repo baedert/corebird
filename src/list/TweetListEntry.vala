@@ -33,6 +33,8 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   [GtkChild]
   private Label rt_label;
   [GtkChild]
+  private Gtk.Box rt_box;
+  [GtkChild]
   private Revealer reply_revealer;
   [GtkChild]
   private ReplyEntry reply_entry;
@@ -95,7 +97,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     reply_entry.text = "@"+tweet.screen_name+" ";
     reply_entry.max_length = Tweet.MAX_LENGTH;
     if (tweet.is_retweet) {
-      rt_label.show ();
+      rt_box.show ();
       rt_label.label = @"<a href=\"@$(tweet.rt_by_id)\"
                          title=\"@$(tweet.rt_by_screen_name)\">$(tweet.retweeted_by)</a>";
     }
@@ -147,8 +149,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       return false;
     });
     reply_entry.focus_out_event.connect(() => {
-      reply_revealer.reveal_child = false;
-      retweet_button.reset ();
+      //reply_revealer.reveal_child = false;
       return false;
     });
     hover_box.show ();
@@ -277,6 +278,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   private bool focus_out_cb (Gdk.EventFocus evt) {
     reply_revealer.reveal_child = false;
     delete_first_activated = false;
+    retweet_button.reset ();
     return false;
   }
 

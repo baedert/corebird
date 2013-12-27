@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 on Tue Nov 12 20:18:26 2013 -->
 <interface>
-  <!-- interface-requires gtk+ 3.10 -->
   <object class="GtkMenu" id="menu1">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -123,7 +121,6 @@
                     <property name="valign">start</property>
                     <property name="margin_left">12</property>
                     <property name="margin_right">12</property>
-                    <property name="label">(X unread)</property>
                     <style>
                       <class name="dim-label"/>
                     </style>

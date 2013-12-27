@@ -5,22 +5,6 @@
     <glade-widget-class name="TextButton" generic-name="textbutton"
           title="TextButton" parent="GtkButton" />
 
-    <glade-widget-class name="ImageLabel" generic-name="imagelabel"
-      title="ImageLabel" parent="GtkLabel">
-      <properties>
-        <property id="icon-name" name="Icon name" ignore="True">
-          <parameter-spec>
-            <type>GParamString</type>
-          </parameter-spec>
-        </property>
-        <property id="icon-size" name="Icon Size" ignore="True">
-          <parameter-spec>
-            <type>GParamInt</type>
-          </parameter-spec>
-        </property>
-      </properties>
-    </glade-widget-class>
-
     <glade-widget-class name="ScrollWidget" generic-name="scrollwidget"
           title="ScrollWidget" parent="GtkScrolledWindow" />
 
