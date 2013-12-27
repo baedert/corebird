@@ -133,7 +133,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   }
 
   [GtkCallback]
-  private void send_tweet () {
+  private async void send_tweet () {
     TextIter start, end;
     tweet_text.buffer.get_start_iter (out start);
     tweet_text.buffer.get_end_iter (out end);
@@ -142,21 +142,25 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     if(text.strip() == "" || !send_button.sensitive)
       return;
 
+    // Just hide it now
+    this.visible = false;
+
     int64 reply_id = -1;
     if (answer_to != null)
       reply_id = answer_to.id;
 
     int tweet_length = TweetUtils.calc_tweet_length (text);
-    // TODO: We are leaking dialogs here. destroy it after the tweet has been sent.
+
     if (tweet_length <= Tweet.MAX_LENGTH) {
-      TweetUtils.send_tweet.begin (account,
+      yield TweetUtils.send_tweet (account,
                                    text,
                                    reply_id,
                                    media_uri);
     } else {
-      TweetSplit.split_and_send.begin (account, text, reply_id, answer_to.screen_name, media_uri);
+      yield TweetSplit.split_and_send (account, text, reply_id, answer_to.screen_name, media_uri);
     }
-    this.visible = false;
+
+    this.destroy ();
   }
 
   [GtkCallback]
