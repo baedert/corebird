@@ -41,8 +41,8 @@ class UserListDialog : Gtk.Dialog {
     set_modal (true);
     set_transient_for (parent);
     set_default_size (250, 200);
-    add_button ("Cancel", CANCEL_RESPONSE);
-    add_button ("Save", SAVE_RESPONSE);
+    add_button (_("Cancel"), CANCEL_RESPONSE);
+    add_button (_("Save"), SAVE_RESPONSE);
 
 
     var content_box = get_content_area ();
@@ -97,18 +97,71 @@ class UserListDialog : Gtk.Dialog {
 
 
   public override void response (int response_id) {
+    message ("Response: %d", response_id);
     if (response_id == CANCEL_RESPONSE) {
       this.destroy ();
     } else if (response_id == SAVE_RESPONSE) {
+      var list_entries = list_list_box.get_children ();
+      foreach (Gtk.Widget w in list_entries) {
+        var lue = (ListUserEntry) w;
+        if (lue.changed) {
+          message ("VALUE CHANGED");
+          if (lue.active) {
+            // Add user to the list
+            add_user (lue.id);
+          } else {
+            // Remove user from the list
+            remove_user (lue.id);
+          }
+        }
+      }
       this.destroy ();
     }
   }
+
+  // TODO: Extra bonus for not allowing the user to add someone to a list which has already 500 members
+  private void add_user (int64 list_id) {
+    var call = account.proxy.new_call ();
+    call.set_function ("1.1/lists/members/create.json");
+    call.set_method ("POST");
+    call.add_param ("list_id", list_id.to_string ());
+    call.add_param ("user_id", user_id.to_string ());
+    call.invoke_async.begin (null, (o, res) => {
+      try {
+        call.invoke_async.end (res);
+      } catch (GLib.Error e) {
+        Utils.show_error_object (call.get_payload (), e.message);
+      }
+    });
+  }
+
+  private void remove_user (int64 list_id) {
+    var call = account.proxy.new_call ();
+    call.set_function ("1.1/lists/members/destroy.json");
+    call.set_method ("POST");
+    call.add_param ("list_id", list_id.to_string ());
+    call.add_param ("user_id", user_id.to_string ());
+    call.invoke_async.begin (null, (o, res) => {
+      try {
+        call.invoke_async.end (res);
+      } catch (GLib.Error e) {
+        Utils.show_error_object (call.get_payload (), e.message);
+      }
+    });
+  }
 }
+
+
 
 class ListUserEntry : Gtk.ListBoxRow {
   public int64 id;
   public new bool changed = false;
   private Gtk.CheckButton added_checkbox = new Gtk.CheckButton ();
+  public bool active {
+    get {
+      return added_checkbox.active;
+    }
+  }
 
   public ListUserEntry (string list_name, string description) {
     var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 5);
@@ -125,13 +178,14 @@ class ListUserEntry : Gtk.ListBoxRow {
     box2.pack_start (desc_label, true, false);
     box.pack_start (box2, true, true);
     add (box);
+    added_checkbox.toggled.connect (() => {
+      changed = !changed;
+    });
   }
 
   public void check () {
     added_checkbox.active = true;
-    added_checkbox.toggled.connect (() => {
-      changed = !changed;
-    });
+    changed = false;
   }
 }
 
