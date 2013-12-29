@@ -25,7 +25,7 @@ interface ITimeline : Gtk.Widget, IPage {
   /** The lowest id of any tweet in this timeline */
   protected abstract int64 lowest_id            {get; set;}
   protected abstract int64 max_id               {get; set; default = 0;}
-  protected abstract Gtk.ListBox tweet_list     {get; set;}
+  protected abstract TweetListBox tweet_list    {get; set;}
   public    abstract int unread_count           {get; set;}
   public    abstract DeltaUpdater delta_updater {get; set;}
 
@@ -70,6 +70,11 @@ interface ITimeline : Gtk.Widget, IPage {
 
       var now = new GLib.DateTime.now_local ();
       var root = parser.get_root().get_array();
+      if (root.get_length () == 0) {
+        tweet_list.set_empty ();
+        load_newest_internal.callback ();
+        return;
+      }
       root.foreach_element( (array, index, node) => {
         Tweet t = new Tweet();
         t.load_from_json(node, now);
@@ -121,6 +126,11 @@ interface ITimeline : Gtk.Widget, IPage {
       }
       var now = new GLib.DateTime.now_local ();
       var root = parser.get_root().get_array();
+      if (root.get_length () == 0) {
+        tweet_list.set_empty ();
+        load_older_internal.callback ();
+        return;
+      }
       root.foreach_element( (array, index, node) => {
         Tweet t = new Tweet();
         t.load_from_json(node, now);

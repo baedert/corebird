@@ -52,7 +52,6 @@ class MainWindow : ApplicationWindow {
   private RadioToolButton dummy_button     = new RadioToolButton(null);
   private IPage[] pages                    = new IPage[7];
   private IntHistory history               = new IntHistory (5);
-  private Button new_tweet_button          = new Button ();
   private DeltaUpdater delta_updater       = new DeltaUpdater ();
   public unowned Account account           {public get; private set;}
   private WarningService warning_service;
@@ -86,15 +85,7 @@ class MainWindow : ApplicationWindow {
       new SettingsDialog (null, (Corebird)app).show_all ();
       return;
     }
-
-
     headerbar.set_subtitle ("@" + account.screen_name);
-    var s = new Gtk.Separator (Gtk.Orientation.VERTICAL);
-    headerbar.pack_start (s);
-   //TODO: Move new_tweet_button into the gtktemplate(also, rename to compose_tweet_button)
-    new_tweet_button.get_style_context ().add_class ("image-button");
-    headerbar.pack_start (new_tweet_button);
-    set_titlebar (headerbar);
 
     stack.transition_duration = Settings.get_animation_duration ();
 
@@ -151,11 +142,6 @@ class MainWindow : ApplicationWindow {
       this.show_menubar = false;
     }
 
-    new_tweet_button.always_show_image = true;
-    new_tweet_button.relief = ReliefStyle.NONE;
-    new_tweet_button.image = new Gtk.Image.from_icon_name ("document-new", IconSize.MENU);
-    new_tweet_button.clicked.connect(show_compose_window);
-
     account.load_avatar ();
     avatar_image.pixbuf = account.avatar_small;
     account.notify["avatar_small"].connect(() => {
@@ -173,7 +159,7 @@ class MainWindow : ApplicationWindow {
   /**
    * Adds the accelerators to the GtkWindow
    */
-  private void add_accels() {
+  private void add_accels() { // {{{
     AccelGroup ag = new AccelGroup();
     ag.connect (Gdk.Key.@1, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
         () => {switch_page(0);return true;});
@@ -200,7 +186,7 @@ class MainWindow : ApplicationWindow {
 
 
     this.add_accel_group(ag);
-  }
+  } // }}}
 
   [GtkCallback]
   private bool button_press_event_cb (Gdk.EventButton evt) {
@@ -216,6 +202,7 @@ class MainWindow : ApplicationWindow {
     return false;
   }
 
+  [GtkCallback]
   private void show_compose_window () {
     var cw = new ComposeTweetWindow(this, account, null,
                                     ComposeTweetWindow.Mode.NORMAL,
@@ -230,12 +217,13 @@ class MainWindow : ApplicationWindow {
    *                See the PAGE_* constants.
    * @param ... The parameters to pass to the page
    */
-  public void switch_page (int page_id, ...) {
+  public void switch_page (int page_id, ...) { // {{{
     if (page_id == history.current) {
       if (pages[page_id].handles_double_open ())
         pages[page_id].double_open ();
       else
         pages[page_id].on_join (page_id, va_list ());
+
       return;
     }
 
@@ -270,19 +258,22 @@ class MainWindow : ApplicationWindow {
       history.push (page_id);
 
 
+    /* XXX The following will cause switch_page to be called twice
+       because setting the active property of the button will cause
+       the clicked event to be emitted, which will call switch_page. */
     IPage page = pages[page_id];
-    if (page.get_tool_button () != null)
-      page.get_tool_button().active = true;
+    Gtk.RadioToolButton button = page.get_tool_button ();
+    if (button != null)
+      button.active = true;
     else
       dummy_button.active = true;
 
     page.on_join (page_id, va_list ());
     stack.set_visible_child_name (page_id.to_string ());
-  }
+  } // }}}
 
   /**
-   * Indicates that the caller is doing a long-running opertation.
-   *
+   * Indicates that the caller is doing a long-running operation.
    */
   public void start_progress () {
     progress_holders ++;

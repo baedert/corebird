@@ -108,7 +108,6 @@ class ScrollWidget : ScrolledWindow {
     if (!this.get_mapped () && !force_wait) {
       this.vadjustment.value = 0;
       this.vadjustment.value_changed ();
-      message ("Unmapped!");
       return;
     }
 

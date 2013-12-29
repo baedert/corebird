@@ -35,22 +35,23 @@ class Corebird : Gtk.Application {
     string? compose_screen_name = null;
 
 
-    OptionEntry[] options = new OptionEntry[1];
+    OptionEntry[] options = new OptionEntry[2];
     options[0] = {"tweet", 't', 0, OptionArg.STRING, ref compose_screen_name,
-            "Shows only the 'compose tweet' window for the given account, nothing else.", null};
+            "Shows only the 'compose tweet' window for the given account, nothing else.", "SCREEN_NAME"};
+    options[1] = {null};
 
-    string[] args = cmd.get_arguments();
+    string[] args = cmd.get_arguments ();
     string*[] _args = new string[args.length];
-    for(int i = 0; i < args.length; i++){
+    for (int i = 0; i < args.length; i++) {
       _args[i] = args[i];
     }
 
-    try{
-      var opt_context = new OptionContext("");
-      opt_context.set_help_enabled(true);
-      opt_context.add_main_entries(options, null);
+    try {
+      var opt_context = new OptionContext ("");
+      opt_context.set_help_enabled (true);
+      opt_context.add_main_entries (options, GETTEXT_PACKAGE);
       unowned string[] tmp = _args;
-      opt_context.parse(ref tmp);
+      opt_context.parse (ref tmp);
     } catch (GLib.OptionError e) {
       cmd.print("Use --help to see available options\n");
       quit();

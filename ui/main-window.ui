@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 on Fri Sep 27 19:05:43 2013 -->
 <interface>
-  <!-- interface-requires gtk+ 3.10 -->
   <template class="MainWindow" parent="GtkApplicationWindow">
     <property name="can_focus">False</property>
     <property name="icon_name">corebird</property>
@@ -73,19 +71,46 @@
         </child>
       </object>
     </child>
-  </template>
-  <object class="GtkHeaderBar" id="headerbar">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="title">Corebird</property>
-    <property name="show_close_button">True</property>
-    <child>
-      <object class="GtkImage" id="avatar_image">
+    <child type="titlebar">
+      <object class="GtkHeaderBar" id="headerbar">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="margin_left">5</property>
-        <property name="stock">gtk-missing-image</property>
+        <property name="title">Corebird</property>
+        <property name="show_close_button">True</property>
+        <child>
+          <object class="GtkImage" id="avatar_image">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_left">5</property>
+            <property name="stock">gtk-missing-image</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkSeparator" id="sep">
+            <property name="orientation">vertical</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="compose_tweet_button">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="always-show-image">True</property>
+            <property name="relief">none</property>
+            <style>
+              <class name="image-button" />
+            </style>
+            <signal name="clicked" handler="show_compose_window" swapped="no" />
+            <child>
+              <object class="GtkImage" id="img">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="icon_name">document-new</property>
+                <property name="icon_size">1</property>
+              </object>
+            </child>
+          </object>
+        </child>
       </object>
     </child>
-  </object>
+  </template>
 </interface>

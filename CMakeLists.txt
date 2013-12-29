@@ -125,6 +125,7 @@ set (VALA_SOURCE
   src/widgets/AspectImage.vala
   src/widgets/MaxSizeContainer.vala
   src/widgets/DoubleTapButton.vala
+  src/widgets/TweetListBox.vala
   src/list/TweetListEntry.vala
   src/list/ProgressEntry.vala
   src/list/AccountListEntry.vala
@@ -137,9 +138,7 @@ set (VALA_SOURCE
   src/window/SettingsDialog.vala
   src/window/RemoveAccountDialog.vala
   src/window/ComposeTweetWindow.vala
-  src/util/UIBuilder.vala
   src/util/Utils.vala
-  src/util/Benchmark.vala
   src/util/Config.vala
   src/util/WidgetReplacer.vala
   src/util/IntHistory.vala

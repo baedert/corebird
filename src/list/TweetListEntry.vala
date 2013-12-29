@@ -65,6 +65,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   private weak MainWindow window;
   public Tweet tweet;
   private bool values_set = false;
+  private bool delete_first_activated = false;
   /* Horrible hack. If this is negative, the absolute value of it has already
      been added to the margin_right of the hover_box. If not is will be added
      ad the next hover-out. */
@@ -146,8 +147,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       return false;
     });
     reply_entry.focus_out_event.connect(() => {
-      reply_revealer.reveal_child = false;
-      retweet_button.reset ();
+      //reply_revealer.reveal_child = false;
       return false;
     });
     hover_box.show ();
@@ -194,10 +194,13 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   private void delete_tweet_activated () {
     if (tweet.user_id != account.id)
       return; // Nope.
-    // TODO: Show confirmation dialog
-    TweetUtils.delete_tweet.begin (account, tweet, () => {
+
+    if (delete_first_activated) {
+      TweetUtils.delete_tweet.begin (account, tweet, () => {
         sensitive = false;
-    });
+      });
+    } else
+      delete_first_activated = true;
   }
 
   private void avatar_changed () {
@@ -272,6 +275,8 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   [GtkCallback]
   private bool focus_out_cb (Gdk.EventFocus evt) {
     reply_revealer.reveal_child = false;
+    delete_first_activated = false;
+    retweet_button.reset ();
     return false;
   }
 
