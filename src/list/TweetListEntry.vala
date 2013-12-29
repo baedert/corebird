@@ -33,6 +33,8 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   [GtkChild]
   private Label rt_label;
   [GtkChild]
+  private Gtk.Box rt_box;
+  [GtkChild]
   private Revealer reply_revealer;
   [GtkChild]
   private ReplyEntry reply_entry;
@@ -95,7 +97,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     reply_entry.text = "@"+tweet.screen_name+" ";
     reply_entry.max_length = Tweet.MAX_LENGTH;
     if (tweet.is_retweet) {
-      rt_label.show ();
+      rt_box.show ();
       rt_label.label = @"<a href=\"@$(tweet.rt_by_id)\"
                          title=\"@$(tweet.rt_by_screen_name)\">$(tweet.retweeted_by)</a>";
     }

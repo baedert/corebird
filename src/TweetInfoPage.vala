@@ -44,6 +44,8 @@ class TweetInfoPage : IPage , ScrollWidget {
   [GtkChild]
   private Label location_label;
   [GtkChild]
+  private Gtk.Box location_box;
+  [GtkChild]
   private ListBox bottom_list_box;
   [GtkChild]
   private ListBox top_list_box;
@@ -239,10 +241,10 @@ class TweetInfoPage : IPage , ScrollWidget {
       set_tweet_data (tweet, following, with);
       if (!root_object.get_null_member ("place")) {
         var place = root_object.get_object_member ("place");
-        location_label.show ();
+        location_box.show ();
         location_label.label = place.get_string_member ("name");
       } else
-        location_label.hide ();
+        location_box.hide ();
 
       if (tweet.reply_id == 0) {
         progress_spinner.stop ();
