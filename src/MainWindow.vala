@@ -45,6 +45,8 @@ class MainWindow : ApplicationWindow {
   private Image avatar_image;
   [GtkChild]
   private Spinner progress_spinner;
+  [GtkChild]
+  private Gtk.Revealer sidebar_revealer;
   public int cur_page_id {
     get {
       return history.current;
@@ -155,6 +157,9 @@ class MainWindow : ApplicationWindow {
 
     add_accels();
 
+    Settings.get ().bind ("sidebar-visible", sidebar_revealer, "reveal-child",
+                          SettingsBindFlags.DEFAULT);
+
     this.show_all();
 
     // Activate the first timeline
@@ -188,6 +193,9 @@ class MainWindow : ApplicationWindow {
         () => { show_compose_window (); return true;});
     ag.connect (Gdk.Key.n, Gdk.ModifierType.CONTROL_MASK, AccelFlags.LOCKED,
         () => { show_compose_window (); return true;});
+
+    ag.connect (Gdk.Key.s, Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.SHIFT_MASK,
+                AccelFlags.LOCKED, () => { Settings.toggle_sidebar_visible ();return true;});
 
 
     this.add_accel_group(ag);
