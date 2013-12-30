@@ -35,6 +35,7 @@
               <object class="MaxSizeContainer" id="max_size_container">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="margin_top">4</property>
                 <child>
                   <object class="GtkGrid" id="grid1">
                     <property name="visible">True</property>
@@ -349,6 +350,7 @@
                 <property name="can_focus">False</property>
                 <property name="visible_child">description_label</property>
                 <property name="transition_type">slide-up-down</property>
+                <property name="margin_bottom">3</property>
                 <child>
                   <object class="GtkLabel" id="description_label">
                     <property name="visible">True</property>
@@ -416,5 +418,12 @@
       </object>
     </child>
   </object>
-  <object class="GtkSizeGroup" id="sizegroup1"/>
+  <object class="GtkSizeGroup" id="sizegroup1">
+    <widgets>
+      <widget name="edit_button" />
+      <widget name="save_button" />
+      <widget name="cancel_button" />
+      <widget name="delete_button" />
+    </widgets>
+  </object>
 </interface>
