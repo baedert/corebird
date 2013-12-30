@@ -168,12 +168,12 @@ class ListUserEntry : Gtk.ListBoxRow {
     box.pack_start (added_checkbox, false, false);
     var box2 = new Gtk.Box (Gtk.Orientation.VERTICAL, 3);
     var label = new Gtk.Label (list_name);
-    label.justify = Gtk.Justification.LEFT;
     label.get_style_context ().add_class ("list-username");
+    label.halign = Gtk.Align.START;
     box2.pack_start (label, true, false);
     var desc_label = new Gtk.Label (description);
     desc_label.get_style_context ().add_class ("dim-label");
-    desc_label.justify = Gtk.Justification.LEFT;
+    desc_label.halign = Gtk.Align.START;
     desc_label.ellipsize = Pango.EllipsizeMode.END;
     box2.pack_start (desc_label, true, false);
     box.pack_start (box2, true, true);
