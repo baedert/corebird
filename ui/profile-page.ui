@@ -322,19 +322,41 @@
               </packing>
             </child>
             <child>
-              <object class="TweetListBox" id="tweet_list">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="vexpand">True</property>
-                <property name="selection_mode">none</property>
-                <property name="activate_on_single_click">False</property>
+              <object class="GtkStackSwitcher" id="page_switcher">
+                <property name="stack">user_stack</property>
+                <property name="halign">center</property>
+                <property name="margin_top">4</property>
+                <property name="margin_bottom">4</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkStack" id="user_stack">
+                <child>
+                  <object class="TweetListBox" id="tweet_list">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="vexpand">True</property>
+                    <property name="selection_mode">none</property>
+                    <property name="activate_on_single_click">False</property>
+                  </object>
+                  <packing>
+                    <property name="title">Tweets</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="aaa">
+                  </object>
+                  <packing>
+                    <property name="title">Lists</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">3</property>
+                <property name="position">4</property>
               </packing>
-            </child>
+            </child> <!-- user_stack -->
           </object>
         </child>
       </object>
