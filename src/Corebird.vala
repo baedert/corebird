@@ -26,7 +26,7 @@ class Corebird : Gtk.Application {
   public Corebird() throws GLib.Error{
     GLib.Object(application_id:   "org.baedert.corebird",
                 flags:            ApplicationFlags.HANDLES_COMMAND_LINE,
-                register_session: true);
+                register_session: false);
     this.set_inactivity_timeout(500);
   }
 
