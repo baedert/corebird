@@ -147,6 +147,15 @@ class UserListsWidget : Gtk.Box {
   }
 
   public void add_list (ListListEntry entry) {
+    // Avoid duplicates
+    var user_lists = user_list_box.get_children ();
+    foreach (Gtk.Widget w in user_lists) {
+      if (!(w is ListListEntry))
+        continue;
+
+      if (((ListListEntry)w).id == entry.id)
+        return;
+    }
     user_list_box.add (entry);
   }
 
@@ -165,7 +174,7 @@ class UserListsWidget : Gtk.Box {
     });
   }
 
-  public TwitterList[] get_user_lists () {
+  public TwitterList[] get_user_lists () { // {{{
     GLib.List<weak Gtk.Widget> children = user_list_box.get_children ();
     TwitterList[] lists = new TwitterList[children.length () - 1];
     int i = 0;
@@ -181,7 +190,7 @@ class UserListsWidget : Gtk.Box {
       i ++;
     }
     return lists;
-  }
+  } // }}}
 
   public void clear_lists () {
     user_list_box.foreach ((w) => { user_list_box.remove (w);});
@@ -214,6 +223,27 @@ class UserListsWidget : Gtk.Box {
         Utils.show_error_object (call.get_payload (), e.message);
         return;
       }
+      var parser = new Json.Parser ();
+      try {
+        parser.load_from_data (call.get_payload ());
+      } catch (GLib.Error e) {
+        critical (e.message);
+        return;
+      }
+      var root = parser.get_root ().get_object ();
+      var entry = new ListListEntry.from_json_data (root, account.id);
+      add_list (entry);
+
+      main_window.switch_page (MainWindow.PAGE_LIST_STATUSES,
+                               entry.id,
+                               entry.name,
+                               true,
+                               entry.description,
+                               entry.creator_screen_name,
+                               entry.n_subscribers,
+                               entry.n_members,
+                               entry.created_at,
+                               entry.mode);
       new_list_entry.sensitive = true;
     });
   } // }}}
