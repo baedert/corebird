@@ -331,6 +331,8 @@
             </child>
             <child>
               <object class="GtkStack" id="user_stack">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <child>
                   <object class="TweetListBox" id="tweet_list">
                     <property name="visible">True</property>
@@ -344,7 +346,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="aaa">
+                  <object class="ListsPage" id="lists_page">
                   </object>
                   <packing>
                     <property name="title">Lists</property>

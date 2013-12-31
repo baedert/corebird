@@ -22,38 +22,42 @@ class ListsPage : IPage, ScrollWidget, IMessageReceiver {
   public static const int MODE_DELETE = 1;
 
   private BadgeRadioToolButton tool_button;
+  private unowned Account _account;
+  private unowned MainWindow _main_window;
   public int unread_count                   { get; set; }
-  public unowned MainWindow main_window     { get; set; }
-  public unowned Account account            { get; set; }
+  public unowned MainWindow main_window {
+    get {
+      return _main_window;
+    }
+    set {
+      user_lists_widget.main_window = value;
+      this._main_window = value;
+    }
+  }
+  public unowned Account account {
+    get {
+      return _account;
+    }
+    set {
+      user_lists_widget.account = value;
+      this._account = value;
+    }
+  }
   public unowned DeltaUpdater delta_updater { get; set; }
   public int id                             { get; set; }
   private bool inited = false;
+  private int64 user_id;
   [GtkChild]
-  private Gtk.ListBox user_list_box;
-  [GtkChild]
-  private Gtk.Frame user_list_frame;
-  [GtkChild]
-  private Gtk.Label subscribed_list_label;
-  [GtkChild]
-  private Gtk.ListBox subscribed_list_box;
-  [GtkChild]
-  private Gtk.Frame subscribed_list_frame;
+  private UserListsWidget user_lists_widget;
 
-  private NewListEntry new_list_entry = new NewListEntry ();
 
   public ListsPage (int id) {
     this.id = id;
-    user_list_box.row_activated.connect (row_activated);
-    subscribed_list_box.row_activated.connect (row_activated);
     var spinner = new Gtk.Spinner ();
     spinner.set_size_request (75, 75);
     spinner.start ();
     spinner.show_all ();
-    subscribed_list_box.set_placeholder (spinner);
-
-    user_list_box.set_header_func (header_func);
-    new_list_entry.create_activated.connect (new_list_create_activated_cb);
-    user_list_box.add (new_list_entry);
+    //subscribed_list_box.set_placeholder (spinner);
   }
 
   public void on_join (int page_id, va_list arg_list) {
@@ -61,86 +65,35 @@ class ListsPage : IPage, ScrollWidget, IMessageReceiver {
 
     if (mode == 0 && !inited) {
       inited = true;
+      this.user_id = account.id;
       load_newest.begin ();
     } else if (mode  == MODE_DELETE) {
       int64 list_id = arg_list.arg<int64> ();
       message (@"Deleting list with id $list_id");
-      remove_list (list_id);
+      user_lists_widget.remove_list (list_id);
     }
   }
 
   public void on_leave () {
-    new_list_entry.unreveal ();
+    user_lists_widget.unreveal ();
   }
 
 
-  private async void load_newest () { // {{{
-    var call = account.proxy.new_call ();
-    call.set_function ("1.1/lists/subscriptions.json");
-    call.set_method ("GET");
-    call.add_param ("user_id", account.id.to_string ());
-    call.invoke_async.begin (null, (obj, res) => {
-      uint n_subscribed_list = lists_received_cb (obj, res, subscribed_list_box);
-      if (n_subscribed_list == 0) {
-        subscribed_list_box.hide ();
-        subscribed_list_frame.hide ();
-        subscribed_list_label.hide ();
-      }
-    });
+  private async void load_newest () {
+    yield user_lists_widget.load_lists (user_id);
+  }
 
-
-    var user_call = account.proxy.new_call ();
-    user_call.set_function ("1.1/lists/ownerships.json");
-    user_call.set_method ("GET");
-    user_call.add_param ("user_id", account.id.to_string ());
-    user_call.invoke_async.begin (null, (obj, res) => {
-      uint n_user_list = lists_received_cb (obj, res, user_list_box);
-      if (n_user_list == 0) {
-        user_list_box.hide ();
-        user_list_frame.hide ();
-      }
-      load_newest.callback ();
-    });
-    inited = true;
-    yield;
-  } // }}}
-
-  private uint lists_received_cb (GLib.Object ?o, GLib.AsyncResult res,
-                                 Gtk.ListBox list_box) { // {{{
-    var call = (Rest.ProxyCall) o;
-    try {
-      call.invoke_async.end (res);
-    } catch (GLib.Error e) {
-      Utils.show_error_object (call.get_payload (), e.message);
-      return 0;
-    }
-    var parser = new Json.Parser ();
-    try {
-      parser.load_from_data (call.get_payload ());
-    } catch (GLib.Error e) {
-      warning (e.message);
-      return 0;
-    }
-
-    var arr = parser.get_root ().get_object ().get_array_member ("lists");
-    arr.foreach_element ((array, index, node) => {
-      var obj = node.get_object ();
-      var entry = new ListListEntry.from_json_data (obj, account.id);
-      list_box.add (entry);
-    });
-    return arr.get_length ();
-  } // }}}
 
 
   private void stream_message_received (StreamMessageType type, Json.Node root) { // {{{
     if (type == StreamMessageType.EVENT_LIST_CREATED) {
       var obj = root.get_object ().get_object_member ("target_object");
       var entry = new ListListEntry.from_json_data (obj, account.id);
-      user_list_box.add (entry);
+      user_lists_widget.add_list (entry);
     } else if (type == StreamMessageType.EVENT_LIST_DESTROYED) {
       var obj = root.get_object ().get_object_member ("target_object");
       int64 list_id = obj.get_int_member ("id");
-      remove_list (list_id);
+      user_lists_widget.remove_list (list_id);
     } else if (type == StreamMessageType.EVENT_LIST_UPDATED) {
       var obj = root.get_object ().get_object_member ("target_object");
       int64 list_id = obj.get_int_member ("id");
@@ -149,105 +102,22 @@ class ListsPage : IPage, ScrollWidget, IMessageReceiver {
   } // }}}
 
 
-
-  private void row_activated (Gtk.ListBoxRow row) {
-    if (row is NewListEntry) {
-      ((NewListEntry)row).reveal ();
-    } else {
-      var entry = (ListListEntry) row;
-      main_window.switch_page (MainWindow.PAGE_LIST_STATUSES,
-                               entry.id,
-                               entry.name,
-                               entry.user_list,
-                               entry.description,
-                               entry.creator_screen_name,
-                               entry.n_subscribers,
-                               entry.n_members,
-                               entry.created_at,
-                               entry.mode);
+  public async TwitterList[] get_user_lists () {
+    if (!inited) {
+      inited = true;
+      yield user_lists_widget.load_lists (user_id);
     }
-  }
 
-
-  private void header_func (Gtk.ListBoxRow row, Gtk.ListBoxRow? row_before) { //{{{
-    if (row_before == null)
-      return;
-
-    Widget header = row.get_header ();
-    if (header == null) {
-      header = new Gtk.Separator (Orientation.HORIZONTAL);
-      header.show ();
-      row.set_header (header);
-    }
-  } //}}}
-
-  private void new_list_create_activated_cb (string list_name) { // {{{
-    new_list_entry.sensitive = false;
-    var call = account.proxy.new_call ();
-    call.set_function ("1.1/lists/create.json");
-    call.set_method ("POST");
-    call.add_param ("name", list_name);
-    call.invoke_async.begin (null, (o, res) => {
-      try {
-        call.invoke_async.end (res);
-      } catch (GLib.Error e) {
-        Utils.show_error_object (call.get_payload (), e.message);
-        return;
-      }
-      new_list_entry.sensitive = true;
-    });
-  } // }}}
-
-
-  private void remove_list (int64 list_id) {
-    user_list_box.foreach ((w) => {
-      if (!(w is ListListEntry))
-        return;
-
-      if (((ListListEntry)w).id == list_id) {
-        user_list_box.remove (w);
-      }
-    });
+    return user_lists_widget.get_user_lists ();
   }
 
   private void update_list (int64 list_id, Json.Object obj) {
     string name = obj.get_string_member ("full_name");
     string description = obj.get_string_member ("description");
     string mode = obj.get_string_member ("mode");
-    user_list_box.foreach ((w) => {
-      if (!(w is ListListEntry))
-        return;
-
-      var lle = (ListListEntry) w;
-      if (lle.id == list_id) {
-        lle.name = name;
-        lle.description = description;
-        lle.mode = mode;
-        lle.queue_draw ();
-      }
-    });
+    user_lists_widget.update_list (list_id, name, description, mode);
   }
 
-  public async TwitterList[] get_user_lists () {
-    if (!inited)
-      yield load_newest ();
-
-    GLib.List<weak Gtk.Widget> children = user_list_box.get_children ();
-    TwitterList[] lists = new TwitterList[children.length () - 1];
-    int i = 0;
-    foreach (Gtk.Widget w in children) {
-      if (!(w is ListListEntry))
-        continue;
-
-      var lle = (ListListEntry) w;
-      lists[i].id = lle.id;
-      lists[i].name = lle.name;
-      lists[i].description = lle.description;
-      lists[i].mode = lle.mode;
-      i ++;
-    }
-    return lists;
-  }
 
   public void create_tool_button (RadioToolButton? group) {
     tool_button = new BadgeRadioToolButton (group, "corebird-lists-symbolic");

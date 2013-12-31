@@ -59,12 +59,17 @@ class ProfilePage : ScrollWidget, IPage {
   private Gtk.MenuItem dm_menu_item;
   [GtkChild]
   private Gtk.MenuItem tweet_to_menu_item;
+  [GtkChild]
+  private ListsPage lists_page;
+  [GtkChild]
+  private Gtk.Stack user_stack;
   private bool following;
   private int64 user_id;
   private new string name;
   private string screen_name;
   private string avatar_url;
   private GLib.Cancellable data_cancellable;
+  private bool lists_page_inited = false;
 
   public ProfilePage (int id) {
     this.id = id;
@@ -87,6 +92,12 @@ class ProfilePage : ScrollWidget, IPage {
                                ((TweetListEntry)row).tweet);
     });
 
+    user_stack.notify["visible-child"].connect (() => {
+      if (user_stack.visible_child == lists_page && !lists_page_inited) {
+        //lists_page.on_join (
+        lists_page_inited = true;
+      }
+    });
   }
 
   private void set_user_id (int64 user_id) { // {{{

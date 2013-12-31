@@ -130,6 +130,7 @@ set (VALA_SOURCE
   src/widgets/MaxSizeContainer.vala
   src/widgets/DoubleTapButton.vala
   src/widgets/TweetListBox.vala
+  src/widgets/UserListsWidget.vala
   src/list/TweetListEntry.vala
   src/list/ProgressEntry.vala
   src/list/AccountListEntry.vala
