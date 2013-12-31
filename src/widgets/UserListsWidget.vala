@@ -128,7 +128,7 @@ class UserListsWidget : Gtk.Box {
     var arr = parser.get_root ().get_object ().get_array_member ("lists");
     arr.foreach_element ((array, index, node) => {
       var obj = node.get_object ();
-      var entry = new ListListEntry.from_json_data (obj, account.id);
+      var entry = new ListListEntry.from_json_data (obj, account);
       list_box.add (entry);
     });
     return arr.get_length ();
@@ -231,7 +231,7 @@ class UserListsWidget : Gtk.Box {
         return;
       }
       var root = parser.get_root ().get_object ();
-      var entry = new ListListEntry.from_json_data (root, account.id);
+      var entry = new ListListEntry.from_json_data (root, account);
       add_list (entry);
 
       main_window.switch_page (MainWindow.PAGE_LIST_STATUSES,

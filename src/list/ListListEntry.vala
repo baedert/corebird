@@ -52,9 +52,10 @@ class ListListEntry : Gtk.ListBoxRow {
   public int n_members = 0;
   public int64 created_at;
   public string mode;
+  private unowned Account account;
 
-
-  public ListListEntry.from_json_data (Json.Object obj, int64 acc_id) {
+  public ListListEntry.from_json_data (Json.Object obj, Account account) {
+    this.account = account;
     var user = obj.get_object_member ("user");
     name = obj.get_string_member ("full_name");
     description = obj.get_string_member ("description");
@@ -64,11 +65,20 @@ class ListListEntry : Gtk.ListBoxRow {
     n_members = (int)obj.get_int_member ("member_count");
     created_at = Utils.parse_date (obj.get_string_member ("created_at")).to_unix ();
     mode = obj.get_string_member ("mode");
-    if (user.get_int_member ("id") == acc_id) {
+    if (user.get_int_member ("id") == account.id) {
       user_list = true;
       unsubscribe_list_item.hide ();
     } else
       delete_list_item.hide ();
+  }
 
+  [GtkCallback]
+  private void delete_list_cb () {
+    this.sensitive = false;
+  }
+
+  [GtkCallback]
+  private void unsubscribe_list_cb () {
+    this.sensitive = false;
   }
 }

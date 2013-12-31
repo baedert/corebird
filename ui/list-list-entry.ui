@@ -21,6 +21,7 @@
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Confirm</property>
                 <property name="use_underline">True</property>
+                <signal name="activate" handler="delete_list_cb" swapped="no" />
               </object>
             </child>
           </object>
@@ -43,6 +44,7 @@
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Confirm</property>
                 <property name="use_underline">True</property>
+                <signal name="activate" handler="unsubscribe_list_cb" swapped="no" />
               </object>
             </child>
           </object>
