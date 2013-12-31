@@ -78,6 +78,10 @@ class UserListsWidget : Gtk.Box {
         subscribed_list_box.hide ();
         subscribed_list_frame.hide ();
         subscribed_list_label.hide ();
+      } else {
+        subscribed_list_box.show ();
+        subscribed_list_frame.show ();
+        subscribed_list_label.show ();
       }
     });
 
@@ -91,6 +95,9 @@ class UserListsWidget : Gtk.Box {
       if (n_user_list == 0) {
         user_list_box.hide ();
         user_list_frame.hide ();
+      } else {
+        user_list_box.show ();
+        user_list_frame.show ();
       }
       load_lists.callback ();
     });
