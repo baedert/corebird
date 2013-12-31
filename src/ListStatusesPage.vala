@@ -73,6 +73,7 @@ class ListStatusesPage : ScrollWidget, IPage {
     this.id = id;
     this.scroll_event.connect (scroll_event_cb);
     this.scrolled_to_end.connect (load_older);
+    tweet_list.set_sort_func (ITwitterItem.sort_func);
   }
 
   private bool scroll_event_cb (Gdk.EventScroll evt) {

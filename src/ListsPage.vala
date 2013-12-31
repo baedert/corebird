@@ -53,11 +53,6 @@ class ListsPage : IPage, ScrollWidget, IMessageReceiver {
 
   public ListsPage (int id) {
     this.id = id;
-    var spinner = new Gtk.Spinner ();
-    spinner.set_size_request (75, 75);
-    spinner.start ();
-    spinner.show_all ();
-    //subscribed_list_box.set_placeholder (spinner);
   }
 
   public void on_join (int page_id, va_list arg_list) {

@@ -551,6 +551,7 @@ class ProfilePage : ScrollWidget, IPage {
     account.user_counter.save (account.db);
     banner_image.scale = 0.3;
     user_stack.visible_child = tweet_list;
+    user_lists.clear_lists ();
   }
 
 

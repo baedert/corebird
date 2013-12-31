@@ -76,7 +76,6 @@ class UserListsWidget : Gtk.Box {
     call.add_param ("user_id", user_id.to_string ());
     call.invoke_async.begin (null, (obj, res) => {
       uint n_subscribed_list = lists_received_cb (obj, res, subscribed_list_box);
-      message ("subscribed lists: %u", n_subscribed_list);
       if (n_subscribed_list == 0) {
         subscribed_list_box.hide ();
         subscribed_list_frame.hide ();
@@ -185,7 +184,8 @@ class UserListsWidget : Gtk.Box {
   }
 
   public void clear_lists () {
-
+    user_list_box.foreach ((w) => { user_list_box.remove (w);});
+    subscribed_list_box.foreach ((w) => {subscribed_list_box.remove (w);});
   }
 
   private void header_func (Gtk.ListBoxRow row, Gtk.ListBoxRow? row_before) { //{{{
@@ -202,20 +202,20 @@ class UserListsWidget : Gtk.Box {
 
   [GtkCallback]
   private void new_list_create_activated_cb (string list_name) { // {{{
-    //new_list_entry.sensitive = false;
-    //var call = account.proxy.new_call ();
-    //call.set_function ("1.1/lists/create.json");
-    //call.set_method ("POST");
-    //call.add_param ("name", list_name);
-    //call.invoke_async.begin (null, (o, res) => {
-      //try {
-        //call.invoke_async.end (res);
-      //} catch (GLib.Error e) {
-        //Utils.show_error_object (call.get_payload (), e.message);
-        //return;
-      //}
-      //new_list_entry.sensitive = true;
-    //});
+    new_list_entry.sensitive = false;
+    var call = account.proxy.new_call ();
+    call.set_function ("1.1/lists/create.json");
+    call.set_method ("POST");
+    call.add_param ("name", list_name);
+    call.invoke_async.begin (null, (o, res) => {
+      try {
+        call.invoke_async.end (res);
+      } catch (GLib.Error e) {
+        Utils.show_error_object (call.get_payload (), e.message);
+        return;
+      }
+      new_list_entry.sensitive = true;
+    });
   } // }}}
 
   public void unreveal () {
