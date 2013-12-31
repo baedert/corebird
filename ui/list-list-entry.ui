@@ -5,6 +5,50 @@
   <object class="GtkMenu" id="menu1">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
+    <child>
+      <object class="GtkMenuItem" id="delete_list_item">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Delete</property>
+        <property name="use_underline">True</property>
+        <child type="submenu">
+          <object class="GtkMenu" id="menu2">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkMenuItem" id="confirm_delete_item">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Confirm</property>
+                <property name="use_underline">True</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="unsubscribe_list_item">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Unsubscribe</property>
+        <property name="use_underline">True</property>
+        <child type="submenu">
+          <object class="GtkMenu" id="menu3">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkMenuItem" id="confirm_unsubscribe_item">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Confirm</property>
+                <property name="use_underline">True</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
   </object>
   <template class="ListListEntry" parent="GtkListBoxRow">
     <property name="visible">True</property>

@@ -40,6 +40,10 @@ class ListListEntry : Gtk.ListBoxRow {
       return description_label.label;
     }
   }
+  [GtkChild]
+  private Gtk.MenuItem delete_list_item;
+  [GtkChild]
+  private Gtk.MenuItem unsubscribe_list_item;
 
   public int64 id;
   public bool user_list = false;
@@ -60,8 +64,11 @@ class ListListEntry : Gtk.ListBoxRow {
     n_members = (int)obj.get_int_member ("member_count");
     created_at = Utils.parse_date (obj.get_string_member ("created_at")).to_unix ();
     mode = obj.get_string_member ("mode");
-    if (user.get_int_member ("id") == acc_id)
+    if (user.get_int_member ("id") == acc_id) {
       user_list = true;
+      unsubscribe_list_item.hide ();
+    } else
+      delete_list_item.hide ();
 
   }
 }
