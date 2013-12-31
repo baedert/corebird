@@ -346,7 +346,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="ListsPage" id="lists_page">
+                  <object class="UserListsWidget" id="user_lists">
                   </object>
                   <packing>
                     <property name="title">Lists</property>

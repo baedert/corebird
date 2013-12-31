@@ -38,10 +38,13 @@ class UserListsWidget : Gtk.Box {
 
 
   public UserListsWidget () {
-
     user_list_box.set_header_func (header_func);
   }
 
+  public void hide_user_list_entry () {
+    new_list_entry.hide ();
+    new_list_entry.no_show_all = true;
+  }
 
   [GtkCallback]
   private void row_activated (Gtk.ListBoxRow row) {
@@ -91,7 +94,6 @@ class UserListsWidget : Gtk.Box {
       }
       load_lists.callback ();
     });
-    //inited = true;
     yield;
   } // }}}
 

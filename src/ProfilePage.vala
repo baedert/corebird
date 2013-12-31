@@ -60,7 +60,7 @@ class ProfilePage : ScrollWidget, IPage {
   [GtkChild]
   private Gtk.MenuItem tweet_to_menu_item;
   [GtkChild]
-  private ListsPage lists_page;
+  private UserListsWidget user_lists;
   [GtkChild]
   private Gtk.Stack user_stack;
   private bool following;
@@ -92,8 +92,9 @@ class ProfilePage : ScrollWidget, IPage {
                                ((TweetListEntry)row).tweet);
     });
 
+    user_lists.hide_user_list_entry ();
     user_stack.notify["visible-child"].connect (() => {
-      if (user_stack.visible_child == lists_page && !lists_page_inited) {
+      if (user_stack.visible_child == user_lists && !lists_page_inited) {
         //lists_page.on_join (
         lists_page_inited = true;
       }
