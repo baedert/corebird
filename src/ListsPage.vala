@@ -78,8 +78,6 @@ class ListsPage : IPage, ScrollWidget, IMessageReceiver {
     yield user_lists_widget.load_lists (user_id);
   }
 
-
-
   private void stream_message_received (StreamMessageType type, Json.Node root) { // {{{
     if (type == StreamMessageType.EVENT_LIST_CREATED) {
       var obj = root.get_object ().get_object_member ("target_object");

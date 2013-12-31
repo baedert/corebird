@@ -39,7 +39,7 @@ class UserListsWidget : Gtk.Box {
   public unowned Account account        { get; set; }
 
 
-  public UserListsWidget () {
+  construct {
     user_list_box.set_header_func (header_func);
     subscribed_list_box.set_header_func (header_func);
   }
