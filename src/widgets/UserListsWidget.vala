@@ -21,6 +21,8 @@
 [GtkTemplate (ui = "/org/baedert/corebird/ui/user-lists-widget.ui")]
 class UserListsWidget : Gtk.Box {
   [GtkChild]
+  private Gtk.Label user_list_label;
+  [GtkChild]
   private Gtk.ListBox user_list_box;
   [GtkChild]
   private Gtk.Frame user_list_frame;
@@ -93,9 +95,11 @@ class UserListsWidget : Gtk.Box {
     user_call.invoke_async.begin (null, (obj, res) => {
       uint n_user_list = lists_received_cb (obj, res, user_list_box);
       if (n_user_list == 0) {
+        user_list_label.hide ();
         user_list_box.hide ();
         user_list_frame.hide ();
       } else {
+        user_list_label.show ();
         user_list_box.show ();
         user_list_frame.show ();
       }
