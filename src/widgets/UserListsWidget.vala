@@ -172,6 +172,10 @@ class UserListsWidget : Gtk.Box {
     return lists;
   }
 
+  public void clear_lists () {
+
+  }
+
   private void header_func (Gtk.ListBoxRow row, Gtk.ListBoxRow? row_before) { //{{{
     if (row_before == null)
       return;

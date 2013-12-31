@@ -27,8 +27,26 @@ class ProfilePage : ScrollWidget, IPage {
     get{return 0;}
     set{}
   }
-  public unowned MainWindow main_window { get; set; }
-  public unowned Account account { get; set; }
+  private unowned MainWindow _main_window;
+  private unowned Account _account;
+  public unowned MainWindow main_window {
+    get {
+      return _main_window;
+    }
+    set {
+      this._main_window = value;
+      user_lists.main_window = value;
+    }
+  }
+  public unowned Account account {
+    get {
+      return _account;
+    }
+    set {
+      this._account = value;
+      user_lists.account = value;
+    }
+  }
   public int id { get; set; }
 
   [GtkChild]
@@ -95,7 +113,7 @@ class ProfilePage : ScrollWidget, IPage {
     user_lists.hide_user_list_entry ();
     user_stack.notify["visible-child"].connect (() => {
       if (user_stack.visible_child == user_lists && !lists_page_inited) {
-        //lists_page.on_join (
+        user_lists.load_lists.begin (user_id);
         lists_page_inited = true;
       }
     });
@@ -529,6 +547,7 @@ class ProfilePage : ScrollWidget, IPage {
     // TODO: Reenable this once a new librest release is out;
     //       We might otherwise overwrite the new user's data with that from the old one.
 //    data_cancellable.cancel ();
+    lists_page_inited = false;
     account.user_counter.save (account.db);
     banner_image.scale = 0.3;
   }
