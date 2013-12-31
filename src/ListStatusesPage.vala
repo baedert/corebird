@@ -22,6 +22,8 @@ class ListStatusesPage : ScrollWidget, IPage {
   public unowned MainWindow main_window { get; set; }
   public unowned Account account        { get; set; }
   private int64 list_id;
+  private int64 lowest_id = int64.MAX;
+  private int64 max_id = 0;
   [GtkChild]
   private TweetListBox tweet_list;
   [GtkChild]
@@ -64,11 +66,13 @@ class ListStatusesPage : ScrollWidget, IPage {
   private Gtk.Label mode_label;
   [GtkChild]
   private Gtk.ComboBoxText mode_combo_box;
+  private bool loading = false;
 
 
   public ListStatusesPage (int id) {
     this.id = id;
     this.scroll_event.connect (scroll_event_cb);
+    this.scrolled_to_end.connect (load_older);
   }
 
   private bool scroll_event_cb (Gdk.EventScroll evt) {
@@ -143,6 +147,7 @@ class ListStatusesPage : ScrollWidget, IPage {
     call.set_function ("1.1/lists/statuses.json");
     call.set_method ("GET");
     call.add_param ("list_id", list_id.to_string ());
+    call.add_param ("count", "25");
     call.invoke_async.begin (null, (o, res) => {
       try {
         call.invoke_async.end (res);
@@ -168,6 +173,8 @@ class ListStatusesPage : ScrollWidget, IPage {
       root_array.foreach_element ((array, index, node) => {
         Tweet t = new Tweet ();
         t.load_from_json (node, now);
+        if (t.id < lowest_id)
+          lowest_id = t.id;
 
         TweetListEntry entry = new TweetListEntry (t, main_window, account);
         entry.show_all ();
@@ -177,6 +184,52 @@ class ListStatusesPage : ScrollWidget, IPage {
 
   } // }}}
 
+  private void load_older () { // {{{
+    if (loading)
+      return;
+
+    main_window.start_progress ();
+    loading = true;
+    message ("Loading older statuses...");
+    var call = account.proxy.new_call ();
+    call.set_function ("1.1/lists/statuses.json");
+    call.set_method ("GET");
+    call.add_param ("list_id", list_id.to_string ());
+    message (@"Using lowest_id: $lowest_id");
+    call.add_param ("max_id", (lowest_id -1).to_string ());
+    call.add_param ("count", "25");
+    call.invoke_async.begin (null, (o, res) => {
+      try {
+        call.invoke_async.end (res);
+      } catch (GLib.Error e) {
+        Utils.show_error_object (call.get_payload (), e.message);
+        loading = false;
+      }
+
+      var parser = new Json.Parser ();
+      try {
+        parser.load_from_data (call.get_payload ());
+      } catch (GLib.Error e) {
+        critical (e.message);
+        return;
+      }
+
+      var now = new GLib.DateTime.now_local ();
+      var root_array = parser.get_root ().get_array ();
+      root_array.foreach_element ((array, index, node) => {
+        Tweet t = new Tweet ();
+        t.load_from_json (node, now);
+        if (t.id < lowest_id)
+          lowest_id = t.id;
+
+        TweetListEntry entry = new TweetListEntry (t, main_window, account);
+        entry.show_all ();
+        tweet_list.add (entry);
+      });
+      loading = false;
+      main_window.stop_progress ();
+    });
+  } // }}}
 
 
 
