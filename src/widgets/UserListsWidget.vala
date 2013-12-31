@@ -41,6 +41,7 @@ class UserListsWidget : Gtk.Box {
 
   public UserListsWidget () {
     user_list_box.set_header_func (header_func);
+    subscribed_list_box.set_header_func (header_func);
   }
 
   public void hide_user_list_entry () {
