@@ -24,6 +24,7 @@ class ListStatusesPage : ScrollWidget, IPage {
   private int64 list_id;
   private int64 lowest_id = int64.MAX;
   private int64 max_id = 0;
+  private uint tweet_remove_timeout = 0;
   [GtkChild]
   private TweetListBox tweet_list;
   [GtkChild]
@@ -75,6 +76,7 @@ class ListStatusesPage : ScrollWidget, IPage {
     this.id = id;
     this.scroll_event.connect (scroll_event_cb);
     this.scrolled_to_end.connect (load_older);
+    this.scrolled_to_start.connect (handle_scrolled_to_start);
     tweet_list.set_sort_func (ITwitterItem.sort_func);
   }
 
@@ -334,7 +336,7 @@ class ListStatusesPage : ScrollWidget, IPage {
   }
 
   [GtkCallback]
-  private void refresh_button_clicked_cb () {
+  private void refresh_button_clicked_cb () { // {{{
     if (max_id == 0)
       return;
 
@@ -376,7 +378,36 @@ class ListStatusesPage : ScrollWidget, IPage {
 
       refresh_button.sensitive = true;
     });
-  }
+  } // }}}
+
+  protected void handle_scrolled_to_start() { // {{{
+    if (tweet_remove_timeout != 0)
+      return;
+
+    GLib.List<weak Gtk.Widget> entries = tweet_list.get_children ();
+    uint item_count = entries.length ();
+    if (item_count > ITimeline.REST) {
+      tweet_remove_timeout = GLib.Timeout.add (5000, () => {
+        if (!scrolled_up) {
+          tweet_remove_timeout = 0;
+          return false;
+        }
+
+        while (item_count > ITimeline.REST) {
+          tweet_list.remove (tweet_list.get_row_at_index (ITimeline.REST));
+          item_count--;
+        }
+        tweet_remove_timeout = 0;
+        lowest_id = ((TweetListEntry)tweet_list.get_row_at_index (ITimeline.REST -1)).tweet.id;
+        return false;
+      });
+    } else if (tweet_remove_timeout != 0) {
+      GLib.Source.remove (tweet_remove_timeout);
+      tweet_remove_timeout = 0;
+    }
+  } // }}}
+
+
 
   public void create_tool_button (Gtk.RadioToolButton? group) {}
   public Gtk.RadioToolButton? get_tool_button () {return null;}
