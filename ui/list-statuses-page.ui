@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
   <requires lib="" version="3.10"/>
@@ -307,83 +306,118 @@
               </packing>
             </child>
             <child>
-              <object class="GtkStack" id="name_stack">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="margin_left">3</property>
-                <property name="margin_right">10</property>
-                <property name="margin_top">5</property>
-                <property name="visible_child">name_label</property>
-                <property name="transition_type">slide-up-down</property>
+              <object class="GtkBox" id="box4">
+                <property name="orientation">horizontal</property>
                 <child>
-                  <object class="GtkLabel" id="name_label">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="halign">start</property>
-                    <property name="label">List name</property>
-                    <style>
-                      <class name="list-username"/>
-                    </style>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkEntry" id="name_entry">
-                    <property name="width_request">200</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="halign">start</property>
+                  <object class="GtkBox" id="box5">
+                    <property name="orientation">vertical</property>
+                  <child>
+                    <object class="GtkStack" id="name_stack">
+                      <property name="visible">True</property>
+                      <property name="can_focus">False</property>
+                      <property name="margin_left">3</property>
+                      <property name="margin_right">10</property>
+                      <property name="margin_top">5</property>
+                      <property name="visible_child">name_label</property>
+                      <property name="transition_type">slide-up-down</property>
+                      <child>
+                        <object class="GtkLabel" id="name_label">
+                          <property name="visible">True</property>
+                          <property name="can_focus">False</property>
+                          <property name="halign">start</property>
+                          <property name="label">List name</property>
+                          <style>
+                            <class name="list-username"/>
+                          </style>
+                        </object>
+                      </child>
+                      <child>
+                        <object class="GtkEntry" id="name_entry">
+                          <property name="width_request">200</property>
+                          <property name="visible">True</property>
+                          <property name="can_focus">True</property>
+                          <property name="halign">start</property>
+                        </object>
+                        <packing>
+                          <property name="position">2</property>
+                        </packing>
+                      </child>
+                    </object>
+                    <packing>
+                      <property name="expand">False</property>
+                      <property name="fill">True</property>
+                      <property name="position">1</property>
+                    </packing>
+                  </child>
+                  <child>
+                    <object class="GtkStack" id="description_stack">
+                      <property name="visible">True</property>
+                      <property name="can_focus">False</property>
+                      <property name="visible_child">description_label</property>
+                      <property name="transition_type">slide-up-down</property>
+                      <property name="margin_bottom">3</property>
+                      <child>
+                        <object class="GtkLabel" id="description_label">
+                          <property name="visible">True</property>
+                          <property name="can_focus">False</property>
+                          <property name="label">List description</property>
+                          <property name="wrap">True</property>
+                          <property name="wrap_mode">word-char</property>
+                          <attributes>
+                            <attribute name="scale" value="1.1"/>
+                          </attributes>
+                        </object>
+                      </child>
+                      <child>
+                        <object class="GtkTextView" id="description_text_view">
+                          <property name="visible">True</property>
+                          <property name="can_focus">True</property>
+                          <property name="accepts_tab">False</property>
+                        </object>
+                        <packing>
+                          <property name="position">1</property>
+                        </packing>
+                      </child>
+                    </object>
+                    <packing>
+                      <property name="expand">False</property>
+                      <property name="fill">True</property>
+                      <property name="position">2</property>
+                    </packing>
+                  </child>
                   </object>
                   <packing>
-                    <property name="position">2</property>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
                   </packing>
                 </child>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkStack" id="description_stack">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="visible_child">description_label</property>
-                <property name="transition_type">slide-up-down</property>
-                <property name="margin_bottom">3</property>
                 <child>
-                  <object class="GtkLabel" id="description_label">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="label">List description</property>
-                    <property name="wrap">True</property>
-                    <property name="wrap_mode">word-char</property>
-                    <attributes>
-                      <attribute name="scale" value="1.1000000000000001"/>
-                    </attributes>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkTextView" id="description_text_view">
-                    <property name="visible">True</property>
+                  <object class="GtkButton" id="refresh_button">
+                    <property name="margin_right">5</property>
                     <property name="can_focus">True</property>
-                    <property name="accepts_tab">False</property>
+                    <property name="valign">center</property>
+                    <style>
+                      <class name="image-button" />
+                    </style>
+                    <child>
+                      <object class="GtkImage" id="image1">
+                        <property name="icon_name">view-refresh</property>
+                        <property name="icon_size">1</property>
+                      </object>
+                    </child>
                   </object>
                   <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">2</property>
+                <property name="position">3</property>
               </packing>
             </child>
             <child>

@@ -66,6 +66,8 @@ class ListStatusesPage : ScrollWidget, IPage {
   private Gtk.Label mode_label;
   [GtkChild]
   private Gtk.ComboBoxText mode_combo_box;
+  [GtkChild]
+  private Gtk.Button refresh_button;
   private bool loading = false;
 
 
