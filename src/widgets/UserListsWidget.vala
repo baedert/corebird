@@ -144,6 +144,20 @@ class UserListsWidget : Gtk.Box {
         user_list_box.remove (w);
       }
     });
+
+    subscribed_list_box.foreach ((w) => {
+      if (!(w is ListListEntry))
+        return;
+
+      if (((ListListEntry)w).id == list_id) {
+        subscribed_list_box.remove (w);
+      }
+    });
+
+    if (subscribed_list_box.get_children ().length () == 0) {
+      subscribed_list_label.hide ();
+      subscribed_list_frame.hide ();
+    }
   }
 
   public void add_list (ListListEntry entry) {

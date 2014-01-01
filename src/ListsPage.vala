@@ -83,7 +83,8 @@ class ListsPage : IPage, ScrollWidget, IMessageReceiver {
       var obj = root.get_object ().get_object_member ("target_object");
       var entry = new ListListEntry.from_json_data (obj, account);
       user_lists_widget.add_list (entry);
-    } else if (type == StreamMessageType.EVENT_LIST_DESTROYED) {
+    } else if (type == StreamMessageType.EVENT_LIST_DESTROYED ||
+               type == StreamMessageType.EVENT_LIST_UNSUBSCRIBED) {
       var obj = root.get_object ().get_object_member ("target_object");
       int64 list_id = obj.get_int_member ("id");
       user_lists_widget.remove_list (list_id);
@@ -93,7 +94,6 @@ class ListsPage : IPage, ScrollWidget, IMessageReceiver {
       update_list (list_id, obj);
     }
   } // }}}
-
 
   public async TwitterList[] get_user_lists () {
     if (!inited) {

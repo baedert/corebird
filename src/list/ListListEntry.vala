@@ -93,5 +93,19 @@ class ListListEntry : Gtk.ListBoxRow {
   [GtkCallback]
   private void unsubscribe_list_cb () {
     this.sensitive = false;
+    var call = account.proxy.new_call ();
+    call.set_function ("1.1/lists/subscribers/destroy.json");
+    call.set_method ("POST");
+    call.add_param ("list_id", id.to_string ());
+    call.invoke_async.begin (null, (o, res) => {
+      try {
+        call.invoke_async.end (res);
+      } catch (GLib.Error e) {
+        Utils.show_error_object (call.get_payload (), e.message);
+        return;
+      }
+
+    });
+
   }
 }
