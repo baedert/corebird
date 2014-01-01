@@ -78,6 +78,8 @@ class ProfilePage : ScrollWidget, IPage {
   [GtkChild]
   private Gtk.MenuItem tweet_to_menu_item;
   [GtkChild]
+  private Gtk.MenuItem lists_menu_item;
+  [GtkChild]
   private UserListsWidget user_lists;
   [GtkChild]
   private Gtk.Stack user_stack;
@@ -125,6 +127,7 @@ class ProfilePage : ScrollWidget, IPage {
     /* Load the profile data now, then - if available - set the cached data */
     load_profile_data.begin(user_id);
     follow_button.sensitive = (user_id != account.id);
+    lists_menu_item.sensitive = (user_id != account.id);
 
     load_banner (DATADIR + "/no_banner.png");
     load_friendship();
