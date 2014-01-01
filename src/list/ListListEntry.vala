@@ -68,7 +68,8 @@ class ListListEntry : Gtk.ListBoxRow {
     created_at = Utils.parse_date (obj.get_string_member ("created_at")).to_unix ();
     mode = obj.get_string_member ("mode");
     bool following = obj.get_boolean_member ("following");
-    if (following) {
+
+    if (following || user.get_int_member ("id") == account.id) {
       unsubscribe_list_item.show ();
       subscribe_list_item.hide ();
     } else {
