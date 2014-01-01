@@ -37,6 +37,7 @@ class UserListsWidget : Gtk.Box {
 
   public unowned MainWindow main_window { get; set; }
   public unowned Account account        { get; set; }
+  private bool show_create_entry = true;
 
 
   construct {
@@ -47,6 +48,7 @@ class UserListsWidget : Gtk.Box {
   public void hide_user_list_entry () {
     new_list_entry.hide ();
     new_list_entry.no_show_all = true;
+    show_create_entry = false;
   }
 
   [GtkCallback]
@@ -94,7 +96,7 @@ class UserListsWidget : Gtk.Box {
     user_call.add_param ("user_id", user_id.to_string ());
     user_call.invoke_async.begin (null, (obj, res) => {
       uint n_user_list = lists_received_cb (obj, res, user_list_box);
-      if (n_user_list == 0) {
+      if (n_user_list == 0 && !show_create_entry) {
         user_list_label.hide ();
         user_list_box.hide ();
         user_list_frame.hide ();
