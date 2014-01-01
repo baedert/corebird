@@ -79,7 +79,8 @@ class ListsPage : IPage, ScrollWidget, IMessageReceiver {
   }
 
   private void stream_message_received (StreamMessageType type, Json.Node root) { // {{{
-    if (type == StreamMessageType.EVENT_LIST_CREATED) {
+    if (type == StreamMessageType.EVENT_LIST_CREATED ||
+        type == StreamMessageType.EVENT_LIST_SUBSCRIBED) {
       var obj = root.get_object ().get_object_member ("target_object");
       var entry = new ListListEntry.from_json_data (obj, account);
       user_lists_widget.add_list (entry);

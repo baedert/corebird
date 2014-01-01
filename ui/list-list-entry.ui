@@ -21,7 +21,7 @@
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Confirm</property>
                 <property name="use_underline">True</property>
-                <signal name="activate" handler="delete_list_cb" swapped="no" />
+                <signal name="activate" handler="delete_list_cb" swapped="no"/>
               </object>
             </child>
           </object>
@@ -44,11 +44,20 @@
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Confirm</property>
                 <property name="use_underline">True</property>
-                <signal name="activate" handler="unsubscribe_list_cb" swapped="no" />
+                <signal name="activate" handler="unsubscribe_list_cb" swapped="no"/>
               </object>
             </child>
           </object>
         </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="subscribe_list_item">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Subscribe</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="subscribe_list_cb" />
       </object>
     </child>
   </object>

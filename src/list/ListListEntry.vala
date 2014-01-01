@@ -44,6 +44,8 @@ class ListListEntry : Gtk.ListBoxRow {
   private Gtk.MenuItem delete_list_item;
   [GtkChild]
   private Gtk.MenuItem unsubscribe_list_item;
+  [GtkChild]
+  private Gtk.MenuItem subscribe_list_item;
 
   public int64 id;
   public bool user_list = false;
@@ -65,6 +67,15 @@ class ListListEntry : Gtk.ListBoxRow {
     n_members = (int)obj.get_int_member ("member_count");
     created_at = Utils.parse_date (obj.get_string_member ("created_at")).to_unix ();
     mode = obj.get_string_member ("mode");
+    bool following = obj.get_boolean_member ("following");
+    if (following) {
+      unsubscribe_list_item.show ();
+      subscribe_list_item.hide ();
+    } else {
+      unsubscribe_list_item.hide ();
+      subscribe_list_item.show ();
+    }
+
     if (user.get_int_member ("id") == account.id) {
       user_list = true;
       unsubscribe_list_item.hide ();
@@ -106,6 +117,23 @@ class ListListEntry : Gtk.ListBoxRow {
       }
 
     });
+  }
 
+  [GtkCallback]
+  private void subscribe_list_cb () {
+    var call = account.proxy.new_call ();
+    call.set_function ("1.1/lists/subscribers/create.json");
+    call.set_method ("POST");
+    call.add_param ("list_id", id.to_string ());
+    call.invoke_async.begin (null, (o, res) => {
+      try {
+        call.invoke_async.end (res);
+      } catch (GLib.Error e) {
+        Utils.show_error_object (call.get_payload (), e.message);
+        return;
+      }
+      subscribe_list_item.hide ();
+      unsubscribe_list_item.show ();
+    });
   }
 }

@@ -161,16 +161,32 @@ class UserListsWidget : Gtk.Box {
   }
 
   public void add_list (ListListEntry entry) {
-    // Avoid duplicates
-    var user_lists = user_list_box.get_children ();
-    foreach (Gtk.Widget w in user_lists) {
-      if (!(w is ListListEntry))
-        continue;
+    if (entry.user_list) {
+      // Avoid duplicates
+      var user_lists = user_list_box.get_children ();
+      foreach (Gtk.Widget w in user_lists) {
+        if (!(w is ListListEntry))
+          continue;
 
-      if (((ListListEntry)w).id == entry.id)
-        return;
+        if (((ListListEntry)w).id == entry.id)
+          return;
+      }
+      user_list_box.add (entry);
+    } else {
+      // Avoid duplicates
+      var subscribed_lists = subscribed_list_box.get_children ();
+      foreach (Gtk.Widget w in subscribed_lists) {
+        if (!(w is ListListEntry))
+          continue;
+
+        if (((ListListEntry)w).id == entry.id)
+          return;
+      }
+      subscribed_list_box.add (entry);
+      subscribed_list_frame.show ();
+      subscribed_list_box.show ();
+      subscribed_list_label.show ();
     }
-    user_list_box.add (entry);
   }
 
   public void update_list (int64 list_id, string name, string description, string mode) {
