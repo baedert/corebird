@@ -24,7 +24,7 @@ class ListListEntry : Gtk.ListBoxRow {
   private Gtk.Label name_label;
   public new string name {
     set {
-      name_label.label = value;
+      name_label.label = normalize_name (value);
     }
     get {
       return name_label.label;
@@ -59,7 +59,7 @@ class ListListEntry : Gtk.ListBoxRow {
   public ListListEntry.from_json_data (Json.Object obj, Account account) {
     this.account = account;
     var user = obj.get_object_member ("user");
-    name = obj.get_string_member ("full_name");
+    name = normalize_name (obj.get_string_member ("full_name"));
     description = obj.get_string_member ("description");
     id = obj.get_int_member ("id");
     creator_screen_name = user.get_string_member ("screen_name");
@@ -82,6 +82,13 @@ class ListListEntry : Gtk.ListBoxRow {
       unsubscribe_list_item.hide ();
     } else
       delete_list_item.hide ();
+  }
+
+  private string normalize_name (string name) {
+    if (name.contains ("/lists/")) {
+      return name.replace ("/lists/", "/");
+    }
+    return name;
   }
 
   [GtkCallback]

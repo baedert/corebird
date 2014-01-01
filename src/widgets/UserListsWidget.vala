@@ -71,7 +71,6 @@ class UserListsWidget : Gtk.Box {
   }
 
   public async void load_lists (int64 user_id) { // {{{
-    message (@"Using id $(user_id)");
     var call = account.proxy.new_call ();
     call.set_function ("1.1/lists/subscriptions.json");
     call.set_method ("GET");
