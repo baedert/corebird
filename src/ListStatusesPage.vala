@@ -334,7 +334,44 @@ class ListStatusesPage : ScrollWidget, IPage {
 
   [GtkCallback]
   private void refresh_button_clicked_cb () {
+    refresh_button.sensitive = false;
+    var call = account.proxy.new_call ();
+    call.set_function ("1.1/lists/statuses.json");
+    call.set_method ("GET");
+    call.add_param ("list_id", list_id.to_string ());
+    call.add_param ("since_id", max_id.to_string ());
+    call.invoke_async.begin (null, (o, res) => {
+      try {
+        call.invoke_async.end (res);
+      } catch (GLib.Error e) {
+        Utils.show_error_object (call.get_payload (), e.message);
+        return;
+      }
 
+      var parser = new Json.Parser ();
+      try {
+        parser.load_from_data (call.get_payload ());
+      } catch (GLib.Error e) {
+        critical (e.message);
+        return;
+      }
+      var root_arr = parser.get_root ().get_array ();
+      message ("%u new tweets!", root_arr.get_length ());
+      var now = new GLib.DateTime.now_local ();
+      root_arr.foreach_element ((array, index, node) => {
+        Tweet t = new Tweet ();
+        t.load_from_json (node, now);
+
+        if (t.id > max_id)
+          max_id = t.id;
+
+        TweetListEntry entry = new TweetListEntry (t, main_window, account);
+        entry.show_all ();
+        tweet_list.add (entry);
+      });
+
+      refresh_button.sensitive = true;
+    });
   }
 
   public void create_tool_button (Gtk.RadioToolButton? group) {}
