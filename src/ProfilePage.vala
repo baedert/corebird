@@ -540,6 +540,8 @@ class ProfilePage : ScrollWidget, IPage {
     data_cancellable = new GLib.Cancellable ();
     set_user_id(user_id);
     tweet_list.remove_all ();
+    user_stack.visible_child = tweet_list;
+    user_lists.clear_lists ();
     load_tweets ();
   }
 
@@ -550,8 +552,6 @@ class ProfilePage : ScrollWidget, IPage {
     lists_page_inited = false;
     account.user_counter.save (account.db);
     banner_image.scale = 0.3;
-    user_stack.visible_child = tweet_list;
-    user_lists.clear_lists ();
   }
 
 
