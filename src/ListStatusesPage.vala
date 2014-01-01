@@ -334,6 +334,9 @@ class ListStatusesPage : ScrollWidget, IPage {
 
   [GtkCallback]
   private void refresh_button_clicked_cb () {
+    if (max_id == 0)
+      return;
+
     refresh_button.sensitive = false;
     var call = account.proxy.new_call ();
     call.set_function ("1.1/lists/statuses.json");
