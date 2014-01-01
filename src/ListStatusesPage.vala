@@ -332,6 +332,11 @@ class ListStatusesPage : ScrollWidget, IPage {
                              ListsPage.MODE_DELETE, list_id);
   }
 
+  [GtkCallback]
+  private void refresh_button_clicked_cb () {
+
+  }
+
   public void create_tool_button (Gtk.RadioToolButton? group) {}
   public Gtk.RadioToolButton? get_tool_button () {return null;}
 }

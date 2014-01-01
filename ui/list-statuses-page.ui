@@ -397,6 +397,7 @@
                     <property name="margin_right">5</property>
                     <property name="can_focus">True</property>
                     <property name="valign">center</property>
+                    <signal name="clicked" handler="refresh_button_clicked_cb" swapped="false" />
                     <style>
                       <class name="image-button" />
                     </style>
