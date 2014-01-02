@@ -23,5 +23,10 @@
     <file compressed="true" preprocess="xml-stripblanks">ui/start-conversation-entry.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/dm-list-entry.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/dm-placeholder-box.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">ui/lists-page.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">ui/list-statuses-page.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">ui/list-list-entry.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">ui/new-list-entry.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">ui/user-lists-widget.ui</file>
   </gresource>
 </gresources>

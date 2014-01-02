@@ -1,0 +1,125 @@
+/*  This file is part of corebird, a Gtk+ linux Twitter client.
+ *  Copyright (C) 2013 Timm Bäder
+ *
+ *  corebird is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  corebird is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+using Gtk;
+
+[GtkTemplate (ui = "/org/baedert/corebird/ui/lists-page.ui")]
+class ListsPage : IPage, ScrollWidget, IMessageReceiver {
+  public static const int MODE_DELETE = 1;
+
+  private BadgeRadioToolButton tool_button;
+  private unowned Account _account;
+  private unowned MainWindow _main_window;
+  public int unread_count                   { get; set; }
+  public unowned MainWindow main_window {
+    get {
+      return _main_window;
+    }
+    set {
+      user_lists_widget.main_window = value;
+      this._main_window = value;
+    }
+  }
+  public unowned Account account {
+    get {
+      return _account;
+    }
+    set {
+      user_lists_widget.account = value;
+      this._account = value;
+    }
+  }
+  public unowned DeltaUpdater delta_updater { get; set; }
+  public int id                             { get; set; }
+  private bool inited = false;
+  private int64 user_id;
+  [GtkChild]
+  private UserListsWidget user_lists_widget;
+
+
+  public ListsPage (int id) {
+    this.id = id;
+  }
+
+  public void on_join (int page_id, va_list arg_list) {
+    int mode = arg_list.arg<int> ();
+
+    if (mode == 0 && !inited) {
+      inited = true;
+      this.user_id = account.id;
+      load_newest.begin ();
+    } else if (mode  == MODE_DELETE) {
+      int64 list_id = arg_list.arg<int64> ();
+      message (@"Deleting list with id $list_id");
+      user_lists_widget.remove_list (list_id);
+    }
+  }
+
+  public void on_leave () {
+    user_lists_widget.unreveal ();
+  }
+
+
+  private async void load_newest () {
+    yield user_lists_widget.load_lists (user_id);
+  }
+
+  private void stream_message_received (StreamMessageType type, Json.Node root) { // {{{
+    if (type == StreamMessageType.EVENT_LIST_CREATED ||
+        type == StreamMessageType.EVENT_LIST_SUBSCRIBED) {
+      var obj = root.get_object ().get_object_member ("target_object");
+      var entry = new ListListEntry.from_json_data (obj, account);
+      user_lists_widget.add_list (entry);
+    } else if (type == StreamMessageType.EVENT_LIST_DESTROYED ||
+               type == StreamMessageType.EVENT_LIST_UNSUBSCRIBED) {
+      var obj = root.get_object ().get_object_member ("target_object");
+      int64 list_id = obj.get_int_member ("id");
+      user_lists_widget.remove_list (list_id);
+    } else if (type == StreamMessageType.EVENT_LIST_UPDATED) {
+      var obj = root.get_object ().get_object_member ("target_object");
+      int64 list_id = obj.get_int_member ("id");
+      update_list (list_id, obj);
+    }
+  } // }}}
+
+  public async TwitterList[] get_user_lists () {
+    if (!inited) {
+      inited = true;
+      yield user_lists_widget.load_lists (user_id);
+    }
+
+    return user_lists_widget.get_user_lists ();
+  }
+
+  private void update_list (int64 list_id, Json.Object obj) {
+    string name = obj.get_string_member ("full_name");
+    string description = obj.get_string_member ("description");
+    string mode = obj.get_string_member ("mode");
+    user_lists_widget.update_list (list_id, name, description, mode);
+  }
+
+
+  public void create_tool_button (RadioToolButton? group) {
+    tool_button = new BadgeRadioToolButton (group, "corebird-lists-symbolic");
+    tool_button.label = _("Lists");
+  }
+
+  public RadioToolButton? get_tool_button () {
+    return tool_button;
+  }
+
+}

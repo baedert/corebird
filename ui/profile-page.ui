@@ -34,6 +34,15 @@
         <signal name="activate" handler="tweet_to_item_activate_cb" swapped="no"/>
       </object>
     </child>
+    <child>
+      <object class="GtkMenuItem" id="lists_menu_item">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Add to/Remove from List</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="list_menu_item_activated" swapped="no"/>
+      </object>
+    </child>
   </object>
   <template class="ProfilePage" parent="ScrollWidget">
     <property name="visible">True</property>
@@ -72,6 +81,7 @@
                     <property name="height_request">73</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="margin_left">4</property>
                     <property name="margin_top">5</property>
                   </object>
                   <packing>
@@ -204,7 +214,6 @@
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="halign">end</property>
-                            <property name="valign">start</property>
                             <property name="margin_top">5</property>
                             <property name="popup">menu1</property>
                             <child>
@@ -313,19 +322,43 @@
               </packing>
             </child>
             <child>
-              <object class="TweetListBox" id="tweet_list">
+              <object class="GtkStackSwitcher" id="page_switcher">
+                <property name="stack">user_stack</property>
+                <property name="halign">center</property>
+                <property name="margin_top">4</property>
+                <property name="margin_bottom">4</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkStack" id="user_stack">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="vexpand">True</property>
-                <property name="selection_mode">none</property>
-                <property name="activate_on_single_click">False</property>
+                <child>
+                  <object class="TweetListBox" id="tweet_list">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="vexpand">True</property>
+                    <property name="selection_mode">none</property>
+                    <property name="activate_on_single_click">False</property>
+                  </object>
+                  <packing>
+                    <property name="title">Tweets</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="UserListsWidget" id="user_lists">
+                  </object>
+                  <packing>
+                    <property name="title">Lists</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">3</property>
+                <property name="position">4</property>
               </packing>
-            </child>
+            </child> <!-- user_stack -->
           </object>
         </child>
       </object>

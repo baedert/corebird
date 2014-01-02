@@ -202,6 +202,7 @@ namespace Utils {
     }
     error_message = sb.str;
 
+    critical (json_data);
     show_error_dialog (error_message);
   }
 
@@ -262,6 +263,14 @@ namespace Utils {
   void load_custom_icons () {
     var icon_theme  = Gtk.IconTheme.get_default ();
     icon_theme.append_search_path (DATADIR+"/scalable/");
+  }
+
+  string capitalize (string s) {
+    string back = s;
+    if (s.get_char (0).islower ()) {
+      back = s.get_char (0).toupper ().to_string () + s.substring (1);
+    }
+    return back;
   }
 
   uint int64_hash_func (int64? k) {
