@@ -243,24 +243,6 @@ class ListStatusesPage : ScrollWidget, IPage {
     });
   } // }}}
 
-  private void load_newer () {
-    var call = account.proxy.new_call ();
-    call.set_function ("1.1/lists/statuses.json");
-    call.set_method ("GET");
-    call.add_param ("list_id", list_id.to_string ());
-    message (@"Using lowest_id: $lowest_id");
-    call.add_param ("since_id", (max_id + 1).to_string ());
-    call.add_param ("count", "25");
-    call.invoke_async.begin (null, (o, res) => {
-      try {
-        call.invoke_async.end (res);
-      } catch (GLib.Error e) {
-        Utils.show_error_object (call.get_payload (), e.message);
-      }
-    });
-  }
-
-
   [GtkCallback]
   private void edit_button_clicked_cb () {
     name_stack.visible_child = name_entry;
