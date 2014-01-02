@@ -137,6 +137,7 @@ class MainWindow : ApplicationWindow {
     ((SearchPage)pages[PAGE_SEARCH]).delta_updater = this.delta_updater;
     ((DMThreadsPage)pages[PAGE_DM_THREADS]).delta_updater = this.delta_updater;
     ((DMPage)pages[PAGE_DM]).delta_updater = this.delta_updater;
+    ((ProfilePage)pages[PAGE_PROFILE]).delta_updater = this.delta_updater;
     ((ListStatusesPage)pages[PAGE_LIST_STATUSES]).delta_updater = this.delta_updater;
 
 
