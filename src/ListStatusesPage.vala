@@ -18,9 +18,10 @@
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/list-statuses-page.ui")]
 class ListStatusesPage : ScrollWidget, IPage {
-  public int id                         { get; set; }
-  public unowned MainWindow main_window { get; set; }
-  public unowned Account account        { get; set; }
+  public int id                             { get; set; }
+  public unowned MainWindow main_window     { get; set; }
+  public unowned Account account            { get; set; }
+  public unowned DeltaUpdater delta_updater { get; set; }
   private int64 list_id;
   private int64 lowest_id = int64.MAX;
   private int64 max_id = 0;
@@ -139,14 +140,14 @@ class ListStatusesPage : ScrollWidget, IPage {
       max_size_container.max_size = 0;
       this.list_id = list_id;
       tweet_list.remove_all ();
-      load_newest ();
+      load_newest.begin ();
     }
 
   } // }}}
 
   public void on_leave () {}
 
-  private void load_newest () { // {{{
+  private async void load_newest () { // {{{
     tweet_list.set_unempty ();
     var call = account.proxy.new_call ();
     call.set_function ("1.1/lists/statuses.json");
@@ -154,46 +155,34 @@ class ListStatusesPage : ScrollWidget, IPage {
     message ("USING LIST ID %s", list_id.to_string ());
     call.add_param ("list_id", list_id.to_string ());
     call.add_param ("count", "25");
-    call.invoke_async.begin (null, (o, res) => {
-      try {
-        call.invoke_async.end (res);
-      } catch (GLib.Error e) {
-        Utils.show_error_object (call.get_payload (), e.message);
-        return;
-      }
+    try {
+      yield call.invoke_async (null);
+    } catch (GLib.Error e) {
+      Utils.show_error_object (call.get_payload (), e.message);
+      return;
+    }
+    var parser = new Json.Parser ();
+    try {
+      parser.load_from_data (call.get_payload ());
+    } catch (GLib.Error e) {
+      critical (e.message);
+      return;
+    }
 
-      var parser = new Json.Parser ();
-      try {
-        parser.load_from_data (call.get_payload ());
-      } catch (GLib.Error e) {
-        critical (e.message);
-        return;
-      }
+    var root_array = parser.get_root ().get_array ();
+    if (root_array.get_length () == 0) {
+      tweet_list.set_empty ();
+      return;
+    }
+    var res = yield TweetUtils.work_array (root_array, delta_updater, tweet_list, main_window, account);
+    if (res.max_id > max_id)
+      max_id = res.max_id;
 
-      var now = new GLib.DateTime.now_local ();
-      var root_array = parser.get_root ().get_array ();
-      if (root_array.get_length () == 0) {
-        tweet_list.set_empty ();
-        return;
-      }
-      root_array.foreach_element ((array, index, node) => {
-        Tweet t = new Tweet ();
-        t.load_from_json (node, now);
-        if (t.id < lowest_id)
-          lowest_id = t.id;
-
-        if (t.id > max_id)
-          max_id = t.id;
-
-        TweetListEntry entry = new TweetListEntry (t, main_window, account);
-        entry.show_all ();
-        tweet_list.add (entry);
-      });
-    });
-
+    if (res.min_id < lowest_id)
+      lowest_id = res.min_id;
   } // }}}
 
-  private void load_older () { // {{{
+  private async void load_older () { // {{{
     if (loading)
       return;
 
@@ -204,62 +193,34 @@ class ListStatusesPage : ScrollWidget, IPage {
     call.set_function ("1.1/lists/statuses.json");
     call.set_method ("GET");
     call.add_param ("list_id", list_id.to_string ());
-    message (@"Using lowest_id: $lowest_id");
     call.add_param ("max_id", (lowest_id -1).to_string ());
     call.add_param ("count", "25");
-    call.invoke_async.begin (null, (o, res) => {
-      try {
-        call.invoke_async.end (res);
-      } catch (GLib.Error e) {
-        Utils.show_error_object (call.get_payload (), e.message);
-        loading = false;
-      }
-
-      var parser = new Json.Parser ();
-      try {
-        parser.load_from_data (call.get_payload ());
-      } catch (GLib.Error e) {
-        critical (e.message);
-        return;
-      }
-
-      var now = new GLib.DateTime.now_local ();
-      var root_array = parser.get_root ().get_array ();
-      root_array.foreach_element ((array, index, node) => {
-        Tweet t = new Tweet ();
-        t.load_from_json (node, now);
-        if (t.id < lowest_id)
-          lowest_id = t.id;
-
-        if (t.id > max_id)
-          max_id = t.id;
-
-        TweetListEntry entry = new TweetListEntry (t, main_window, account);
-        entry.show_all ();
-        tweet_list.add (entry);
-      });
+    try {
+      yield call.invoke_async (null);
+    } catch (GLib.Error e) {
+      Utils.show_error_object (call.get_payload (), e.message);
       loading = false;
-      main_window.stop_progress ();
-    });
+      return;
+    }
+    var parser = new Json.Parser ();
+    try {
+      parser.load_from_data (call.get_payload ());
+    } catch (GLib.Error e) {
+      critical (e.message);
+      return;
+    }
+
+    var root_array = parser.get_root ().get_array ();
+    var res = yield TweetUtils.work_array (root_array, delta_updater, tweet_list, main_window, account);
+    if (res.max_id > max_id)
+      max_id = res.max_id;
+
+    if (res.min_id < lowest_id)
+      lowest_id = res.min_id;
+
+    loading = false;
+    main_window.stop_progress ();
   } // }}}
-
-  private void load_newer () {
-    var call = account.proxy.new_call ();
-    call.set_function ("1.1/lists/statuses.json");
-    call.set_method ("GET");
-    call.add_param ("list_id", list_id.to_string ());
-    message (@"Using lowest_id: $lowest_id");
-    call.add_param ("since_id", (max_id + 1).to_string ());
-    call.add_param ("count", "25");
-    call.invoke_async.begin (null, (o, res) => {
-      try {
-        call.invoke_async.end (res);
-      } catch (GLib.Error e) {
-        Utils.show_error_object (call.get_payload (), e.message);
-      }
-    });
-  }
-
 
   [GtkCallback]
   private void edit_button_clicked_cb () {

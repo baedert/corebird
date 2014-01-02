@@ -275,6 +275,49 @@ namespace TweetUtils {
       return true;
     }
     return false;
-
   }
+
+
+  struct WorkerResult {
+    int64 max_id;
+    int64 min_id;
+  }
+
+  async WorkerResult work_array (Json.Array json_array,
+                                 DeltaUpdater delta_updater,
+                                 Gtk.ListBox tweet_list,
+                                 MainWindow main_window,
+                                 Account account) {
+    int64 max = 0;
+    int64 min = int64.MAX;
+    new Thread<void*> ("TweetWorker", () => {
+      var entry_list = new GLib.List<TweetListEntry> ();
+      var now = new GLib.DateTime.now_local ();
+      json_array.foreach_element( (array, index, node) => {
+        Tweet t = new Tweet();
+        t.load_from_json(node, now);
+        if (t.id > max)
+          max = t.id;
+
+        if (t.id < min)
+          min = t.id;
+
+        var entry  = new TweetListEntry(t, main_window, account);
+        delta_updater.add (entry);
+        entry_list.append (entry);
+      });
+
+      GLib.Idle.add (() => {
+        foreach (var e in entry_list)
+          tweet_list.add (e);
+        work_array.callback ();
+        return false;
+      });
+      return null;
+    });
+    yield;
+    return {max, min};
+  }
+
+
 }

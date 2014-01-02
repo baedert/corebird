@@ -48,6 +48,7 @@ class ProfilePage : ScrollWidget, IPage {
     }
   }
   public int id { get; set; }
+  public unowned DeltaUpdater delta_updater { get; set; }
 
   [GtkChild]
   private Gtk.Image verified_image;
@@ -329,7 +330,7 @@ class ProfilePage : ScrollWidget, IPage {
   } //}}}
 
 
-  private void load_tweets () { // {{{
+  private async void load_tweets () { // {{{
     tweet_list.set_unempty ();
     var call = account.proxy.new_call ();
     call.set_function ("1.1/statuses/user_timeline.json");
@@ -339,43 +340,24 @@ class ProfilePage : ScrollWidget, IPage {
     call.add_param ("contributor_details", "true");
     call.add_param ("include_my_retweet", "true");
 
-    call.invoke_async.begin (null, (obj, res) => {
-      try {
-        call.invoke_async.end (res);
-      } catch (GLib.Error e) {
-        warning (e.message);
-        return;
-      }
-
-      var parser = new Json.Parser ();
-      try {
-        parser.load_from_data (call.get_payload ());
-      } catch (GLib.Error e) {
-        warning (e.message);
-        return;
-      }
-      var now = new GLib.DateTime.now_local ();
-      var root = parser.get_root().get_array();
-      if (root.get_length () == 0) {
-        tweet_list.set_empty ();
-        return;
-      }
-      root.foreach_element( (array, index, node) => {
-        Tweet t = new Tweet();
-        t.load_from_json(node, now);
-//        if (tweet_type != -1){
-//          t.type = tweet_type;
-//        }
-
-//        if(t.id < lowest_id)
-//          lowest_id = t.id;
-        var entry  = new TweetListEntry(t, main_window, account);
-//        this.delta_updater.add (entry);
-        tweet_list.add (entry);
-      });
-
-
-    });
+    try {
+      yield call.invoke_async (null);
+    } catch (GLib.Error e) {
+      Utils.show_error_object (call.get_payload (), e.message);
+    }
+    var parser = new Json.Parser ();
+    try {
+      parser.load_from_data (call.get_payload ());
+    } catch (GLib.Error e) {
+      warning (e.message);
+      return;
+    }
+    var root = parser.get_root().get_array();
+    if (root.get_length () == 0) {
+      tweet_list.set_empty ();
+      return;
+    }
+    yield TweetUtils.work_array (root, delta_updater, tweet_list, main_window, account);
   } // }}}
 
   /**
@@ -550,7 +532,7 @@ class ProfilePage : ScrollWidget, IPage {
     tweet_list.remove_all ();
     user_stack.visible_child = tweet_list;
     user_lists.clear_lists ();
-    load_tweets ();
+    load_tweets.begin ();
   }
 
   public void on_leave () {
