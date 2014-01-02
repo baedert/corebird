@@ -290,7 +290,7 @@ namespace TweetUtils {
                          Account account) {
     int64 max = 0;
     int64 min = int64.MAX;
-    Thread<void*> thread = new Thread<void*> ("TweetWorker", () => {
+    new Thread<void*> ("TweetWorker", () => {
       var entry_list = new GLib.List<TweetListEntry> ();
       var now = new GLib.DateTime.now_local ();
       json_array.foreach_element( (array, index, node) => {
