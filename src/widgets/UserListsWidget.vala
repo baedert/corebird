@@ -113,8 +113,8 @@ class UserListsWidget : Gtk.Box {
     yield;
   } // }}}
 
-  private uint lists_received_cb (GLib.Object ?o, GLib.AsyncResult res,
-                                 Gtk.ListBox list_box) { // {{{
+  private uint lists_received_cb (GLib.Object? o, GLib.AsyncResult res,
+                                  Gtk.ListBox list_box) { // {{{
     var call = (Rest.ProxyCall) o;
     try {
       call.invoke_async.end (res);

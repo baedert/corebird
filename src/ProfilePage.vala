@@ -90,6 +90,7 @@ class ProfilePage : ScrollWidget, IPage {
   private string avatar_url;
   private GLib.Cancellable data_cancellable;
   private bool lists_page_inited = false;
+  private ulong page_change_signal = 0;
 
   public ProfilePage (int id) {
     this.id = id;
@@ -113,11 +114,15 @@ class ProfilePage : ScrollWidget, IPage {
     });
 
     user_lists.hide_user_list_entry ();
-    user_stack.notify["visible-child"].connect (() => {
+    page_change_signal = user_stack.notify["visible-child"].connect (() => {
       if (user_stack.visible_child == user_lists && !lists_page_inited) {
         user_lists.load_lists.begin (user_id);
         lists_page_inited = true;
       }
+    });
+
+    this.destroy.connect (() => {
+      user_stack.disconnect (page_change_signal);
     });
   }
 
