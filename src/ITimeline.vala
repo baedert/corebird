@@ -35,9 +35,8 @@ interface ITimeline : Gtk.Widget, IPage {
    * from the given function of the twitter api.
    *
    * @param function The twitter function to use
-   * @param tweet_type The type of tweets to load
    */
-  protected async void load_newest_internal (string function, int tweet_type) { //{{{
+  protected async void load_newest_internal (string function) { //{{{
     var call = account.proxy.new_call();
     call.set_function(function);
     call.set_method("GET");
@@ -78,7 +77,7 @@ interface ITimeline : Gtk.Widget, IPage {
    * @param function The Twitter function to use
    * @param tweet_type The type of tweets to load
    */
-  protected async void load_older_internal(string function, int tweet_type) { //{{{
+  protected async void load_older_internal(string function) { //{{{
     var call = account.proxy.new_call();
     call.set_function(function);
     call.set_method("GET");

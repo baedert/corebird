@@ -174,7 +174,7 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
 
   public override void load_newest () {
     this.loading = true;
-    this.load_newest_internal.begin ("1.1/statuses/home_timeline.json", Tweet.TYPE_NORMAL, () => {
+    this.load_newest_internal.begin ("1.1/statuses/home_timeline.json",  () => {
       this.loading = false;
     });
   }
@@ -183,7 +183,7 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
     this.balance_next_upper_change (BOTTOM);
     main_window.start_progress ();
     this.loading = true;
-    this.load_older_internal.begin ("1.1/statuses/home_timeline.json", Tweet.TYPE_NORMAL, () => {
+    this.load_older_internal.begin ("1.1/statuses/home_timeline.json", () => {
       this.loading = false;
       main_window.stop_progress ();
     });
