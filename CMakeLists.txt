@@ -147,6 +147,7 @@ set (VALA_SOURCE
   src/util/TweetUtils.vala
   src/util/WeakRef.vala
   src/util/UserCompletion.vala
+  src/util/Benchmark.vala
   src/sql/Database.vala
   src/sql/Statement.vala
   src/sql/SelectStatement.vala

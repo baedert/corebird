@@ -174,7 +174,7 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
 
   public override void load_newest () {
     this.loading = true;
-    this.load_newest_internal.begin("1.1/statuses/home_timeline.json", Tweet.TYPE_NORMAL, () => {
+    this.load_newest_internal.begin ("1.1/statuses/home_timeline.json", Tweet.TYPE_NORMAL, () => {
       this.loading = false;
     });
   }
