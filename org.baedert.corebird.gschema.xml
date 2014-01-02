@@ -80,7 +80,11 @@
     </key>
     <key name="max-media-size" type="d">
       <default>2.0</default>
-      <summary>Maximum size of online media to download, in Megabyte.</summary>
+      <summary>Maximum size of inline media to download, in Megabytes.</summary>
+    </key>
+    <key name="sidebar-visible" type="b">
+      <default>true</default>
+      <summary>Whether to show the sidebar or not</summary>
     </key>
     <key name="long-tweet-method" enum="org.baedert.corebird.long-tweet-method">
       <default>"Forbid"</default>
