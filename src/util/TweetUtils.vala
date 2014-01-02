@@ -284,10 +284,10 @@ namespace TweetUtils {
   }
 
   async WorkerResult work_array (Json.Array json_array,
-                         DeltaUpdater delta_updater,
-                         Gtk.ListBox tweet_list,
-                         MainWindow main_window,
-                         Account account) {
+                                 DeltaUpdater delta_updater,
+                                 Gtk.ListBox tweet_list,
+                                 MainWindow main_window,
+                                 Account account) {
     int64 max = 0;
     int64 min = int64.MAX;
     new Thread<void*> ("TweetWorker", () => {
