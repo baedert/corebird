@@ -108,6 +108,8 @@ set (VALA_SOURCE
   src/DMPage.vala
   src/UserCounter.vala
   src/DefaultTimeline.vala
+  src/ListsPage.vala
+  src/ListStatusesPage.vala
   src/widgets/PixbufButton.vala
   src/widgets/ScrollWidget.vala
   src/widgets/TextButton.vala
@@ -122,6 +124,7 @@ set (VALA_SOURCE
   src/widgets/MaxSizeContainer.vala
   src/widgets/DoubleTapButton.vala
   src/widgets/TweetListBox.vala
+  src/widgets/UserListsWidget.vala
   src/list/TweetListEntry.vala
   src/list/ProgressEntry.vala
   src/list/AccountListEntry.vala
@@ -129,11 +132,14 @@ set (VALA_SOURCE
   src/list/UserListEntry.vala
   src/list/DMListEntry.vala
   src/list/StartConversationEntry.vala
+  src/list/ListListEntry.vala
+  src/list/NewListEntry.vala
   src/window/AboutDialog.vala
   src/window/ImageDialog.vala
   src/window/SettingsDialog.vala
   src/window/RemoveAccountDialog.vala
   src/window/ComposeTweetWindow.vala
+  src/window/UserListDialog.vala
   src/util/Utils.vala
   src/util/Config.vala
   src/util/WidgetReplacer.vala
@@ -141,6 +147,7 @@ set (VALA_SOURCE
   src/util/TweetUtils.vala
   src/util/WeakRef.vala
   src/util/UserCompletion.vala
+  src/util/Benchmark.vala
   src/sql/Database.vala
   src/sql/Statement.vala
   src/sql/SelectStatement.vala

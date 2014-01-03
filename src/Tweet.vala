@@ -21,10 +21,6 @@ using Gtk;
 class Tweet : GLib.Object {
   public static const int MAX_LENGTH = 140;
 
-  public static const int TYPE_NORMAL   = 1;
-  public static const int TYPE_MENTION  = 2;
-  public static const int TYPE_FAVORITE = 3;
-
 #if __DEV
   public string json_data;
 #endif
@@ -64,7 +60,6 @@ class Tweet : GLib.Object {
   public bool has_inline_media = false;
 
   /** if the json from twitter has inline media **/
-  public int type = -1;
   private GLib.SList<TweetUtils.Sequence?> urls;
   public int retweet_count;
   public int favorite_count;

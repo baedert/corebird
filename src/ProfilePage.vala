@@ -27,9 +27,28 @@ class ProfilePage : ScrollWidget, IPage {
     get{return 0;}
     set{}
   }
-  public unowned MainWindow main_window { get; set; }
-  public unowned Account account { get; set; }
+  private unowned MainWindow _main_window;
+  private unowned Account _account;
+  public unowned MainWindow main_window {
+    get {
+      return _main_window;
+    }
+    set {
+      this._main_window = value;
+      user_lists.main_window = value;
+    }
+  }
+  public unowned Account account {
+    get {
+      return _account;
+    }
+    set {
+      this._account = value;
+      user_lists.account = value;
+    }
+  }
   public int id { get; set; }
+  public unowned DeltaUpdater delta_updater { get; set; }
 
   [GtkChild]
   private Gtk.Image verified_image;
@@ -59,12 +78,20 @@ class ProfilePage : ScrollWidget, IPage {
   private Gtk.MenuItem dm_menu_item;
   [GtkChild]
   private Gtk.MenuItem tweet_to_menu_item;
+  [GtkChild]
+  private Gtk.MenuItem lists_menu_item;
+  [GtkChild]
+  private UserListsWidget user_lists;
+  [GtkChild]
+  private Gtk.Stack user_stack;
   private bool following;
   private int64 user_id;
   private new string name;
   private string screen_name;
   private string avatar_url;
   private GLib.Cancellable data_cancellable;
+  private bool lists_page_inited = false;
+  private ulong page_change_signal = 0;
 
   public ProfilePage (int id) {
     this.id = id;
@@ -87,6 +114,17 @@ class ProfilePage : ScrollWidget, IPage {
                                ((TweetListEntry)row).tweet);
     });
 
+    user_lists.hide_user_list_entry ();
+    page_change_signal = user_stack.notify["visible-child"].connect (() => {
+      if (user_stack.visible_child == user_lists && !lists_page_inited) {
+        user_lists.load_lists.begin (user_id);
+        lists_page_inited = true;
+      }
+    });
+
+    this.destroy.connect (() => {
+      user_stack.disconnect (page_change_signal);
+    });
   }
 
   private void set_user_id (int64 user_id) { // {{{
@@ -95,6 +133,7 @@ class ProfilePage : ScrollWidget, IPage {
     /* Load the profile data now, then - if available - set the cached data */
     load_profile_data.begin(user_id);
     follow_button.sensitive = (user_id != account.id);
+    lists_menu_item.sensitive = (user_id != account.id);
 
     load_banner (DATADIR + "/no_banner.png");
     load_friendship();
@@ -113,7 +152,7 @@ class ProfilePage : ScrollWidget, IPage {
 
       set_data(vals[2], vals[1], vals[9], vals[10], vals[3],
                int.parse (vals[4]), int.parse (vals[5]), int.parse (vals[6]),
-               vals[8], false);
+               vals[7], false);
       set_follow_button_state (bool.parse (vals[11]));
       string banner_name = vals[12];
       debug("banner_name: %s", banner_name);
@@ -291,7 +330,7 @@ class ProfilePage : ScrollWidget, IPage {
   } //}}}
 
 
-  private void load_tweets () { // {{{
+  private async void load_tweets () { // {{{
     tweet_list.set_unempty ();
     var call = account.proxy.new_call ();
     call.set_function ("1.1/statuses/user_timeline.json");
@@ -301,43 +340,24 @@ class ProfilePage : ScrollWidget, IPage {
     call.add_param ("contributor_details", "true");
     call.add_param ("include_my_retweet", "true");
 
-    call.invoke_async.begin (null, (obj, res) => {
-      try {
-        call.invoke_async.end (res);
-      } catch (GLib.Error e) {
-        warning (e.message);
-        return;
-      }
-
-      var parser = new Json.Parser ();
-      try {
-        parser.load_from_data (call.get_payload ());
-      } catch (GLib.Error e) {
-        warning (e.message);
-        return;
-      }
-      var now = new GLib.DateTime.now_local ();
-      var root = parser.get_root().get_array();
-      if (root.get_length () == 0) {
-        tweet_list.set_empty ();
-        return;
-      }
-      root.foreach_element( (array, index, node) => {
-        Tweet t = new Tweet();
-        t.load_from_json(node, now);
-//        if (tweet_type != -1){
-//          t.type = tweet_type;
-//        }
-
-//        if(t.id < lowest_id)
-//          lowest_id = t.id;
-        var entry  = new TweetListEntry(t, main_window, account);
-//        this.delta_updater.add (entry);
-        tweet_list.add (entry);
-      });
-
-
-    });
+    try {
+      yield call.invoke_async (null);
+    } catch (GLib.Error e) {
+      Utils.show_error_object (call.get_payload (), e.message);
+    }
+    var parser = new Json.Parser ();
+    try {
+      parser.load_from_data (call.get_payload ());
+    } catch (GLib.Error e) {
+      warning (e.message);
+      return;
+    }
+    var root = parser.get_root().get_array();
+    if (root.get_length () == 0) {
+      tweet_list.set_empty ();
+      return;
+    }
+    yield TweetUtils.work_array (root, delta_updater, tweet_list, main_window, account);
   } // }}}
 
   /**
@@ -467,6 +487,13 @@ class ProfilePage : ScrollWidget, IPage {
     cw.show_all ();
   }
 
+  [GtkCallback]
+  private void  list_menu_item_activated () {
+    var uld = new UserListDialog (main_window, account, user_id);
+    uld.load_lists ();
+    uld.show_all ();
+  }
+
   private void set_follow_button_state (bool following) { //{{{
     var sc = follow_button.get_style_context ();
     follow_button.sensitive = (user_id != account.id);
@@ -502,14 +529,17 @@ class ProfilePage : ScrollWidget, IPage {
       return;
     data_cancellable = new GLib.Cancellable ();
     set_user_id(user_id);
-    tweet_list.@foreach ((w) => {tweet_list.remove (w);});
-    load_tweets ();
+    tweet_list.remove_all ();
+    user_stack.visible_child = tweet_list;
+    user_lists.clear_lists ();
+    load_tweets.begin ();
   }
 
   public void on_leave () {
     // TODO: Reenable this once a new librest release is out;
     //       We might otherwise overwrite the new user's data with that from the old one.
 //    data_cancellable.cancel ();
+    lists_page_inited = false;
     account.user_counter.save (account.db);
     banner_image.scale = 0.3;
   }

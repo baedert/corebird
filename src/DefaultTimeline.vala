@@ -40,8 +40,9 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     this.id = id;
     this.scrolled_to_start.connect(handle_scrolled_to_start);
     this.scrolled_to_end.connect(() => {
+        message ("scrol");
       if(!loading) {
-        loading = true;
+        message ("in");
         load_older();
       }
     });
@@ -133,6 +134,7 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
           item_count--;
         }
         tweet_remove_timeout = 0;
+        lowest_id = ((TweetListEntry)tweet_list.get_row_at_index (ITimeline.REST -1)).tweet.id;
         return false;
       });
     } else if (tweet_remove_timeout != 0) {
