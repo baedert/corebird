@@ -527,6 +527,8 @@ class ProfilePage : ScrollWidget, IPage {
     int64 user_id = arg_list.arg();
     if (user_id == 0)
       return;
+    else
+      lists_page_inited = false;
     data_cancellable = new GLib.Cancellable ();
     set_user_id(user_id);
     tweet_list.remove_all ();
@@ -539,7 +541,6 @@ class ProfilePage : ScrollWidget, IPage {
     // TODO: Reenable this once a new librest release is out;
     //       We might otherwise overwrite the new user's data with that from the old one.
 //    data_cancellable.cancel ();
-    lists_page_inited = false;
     account.user_counter.save (account.db);
     banner_image.scale = 0.3;
   }
