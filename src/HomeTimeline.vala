@@ -23,85 +23,90 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
     base (id);
   }
 
-  // TODO: This is huge, refactor it.
   private void stream_message_received (StreamMessageType type, Json.Node root) { // {{{
     if (type == StreamMessageType.TWEET) {
-      GLib.DateTime now = new GLib.DateTime.now_local ();
-      Tweet t = new Tweet();
-      t.load_from_json (root, now);
-
-      if (t.is_retweet && !should_display_retweet (root, t))
-        return;
-
-      bool auto_scroll = Settings.auto_scroll_on_new_tweets ();
-
-      this.balance_next_upper_change (TOP);
-
-      var entry = new TweetListEntry(t, main_window, account);
-      entry.seen = this.scrolled_up  &&
-                   main_window.cur_page_id == this.id &&
-                   (t.user_id == account.id || auto_scroll);
-
-      delta_updater.add (entry);
-      tweet_list.add(entry);
-
-      if (this.scrolled_up && (t.user_id == account.id || auto_scroll)) {
-        this.scroll_up_next (true, false,
-                             main_window.cur_page_id != this.id);
-      }
-
-      if (!entry.seen) {
-        unread_count ++;
-        update_unread_count ();
-      }
-
-
-      this.max_id = t.id;
-
-      int stack_size = Settings.get_tweet_stack_count ();
-      bool show_notification = !(stack_size == 1 && t.text.contains("@" + account.screen_name));
-      if (!show_notification)
-        return;
-
-      message ("Stack size: %d", stack_size);
-      message ("Unread count: %d", unread_count);
-      if (stack_size == 1) {
-        if (t.has_inline_media){
-          t.inline_media_added.connect (tweet_inline_media_added_cb);
-        } else {
-          // calling this with image = null will just create the
-          // appropriate notification etc.
-          tweet_inline_media_added_cb (t, null);
-        }
-      } else if(stack_size != 0 && unread_count % stack_size == 0
-                && unread_count > 0) {
-        string summary = _("%d new Tweets!").printf (unread_count);
-        NotificationManager.notify (summary);
-      }
-
+      add_tweet (root);
     } else if (type == StreamMessageType.DELETE) {
       int64 id = root.get_object ().get_object_member ("delete")
                      .get_object_member ("status").get_int_member ("id");
-      foreach (Gtk.Widget w in tweet_list.get_children ()) {
-        if (w == null || !(w is TweetListEntry))
-          continue;
-
-        var tle = (TweetListEntry) w;
-        if (tle.tweet.id == id) {
-          if (!tle.seen) {
-            tweet_list.remove (tle);
-            unread_count --;
-            update_unread_count ();
-          }else
-            tle.sensitive = false;
-
-          return;
-        }
-      }
-
+      delete_tweet (id);
     }
   } // }}}
 
+  private void delete_tweet (int64 tweet_id) {
+    foreach (Gtk.Widget w in tweet_list.get_children ()) {
+      if (w == null || !(w is TweetListEntry))
+        continue;
+
+      var tle = (TweetListEntry) w;
+      if (tle.tweet.id == tweet_id) {
+        if (!tle.seen) {
+          tweet_list.remove (tle);
+          unread_count --;
+          update_unread_count ();
+        }else
+          tle.sensitive = false;
+
+        return;
+      }
+    }
+  }
+
+
+  private void add_tweet (Json.Node obj) {
+    GLib.DateTime now = new GLib.DateTime.now_local ();
+    Tweet t = new Tweet();
+    t.load_from_json (obj, now);
+
+    if (t.is_retweet && !should_display_retweet (obj, t))
+      return;
+
+    bool auto_scroll = Settings.auto_scroll_on_new_tweets ();
+
+    this.balance_next_upper_change (TOP);
+
+    var entry = new TweetListEntry(t, main_window, account);
+    entry.seen = this.scrolled_up  &&
+                 main_window.cur_page_id == this.id &&
+                 (t.user_id == account.id || auto_scroll);
+
+    delta_updater.add (entry);
+    tweet_list.add(entry);
+
+    if (this.scrolled_up && (t.user_id == account.id || auto_scroll)) {
+      this.scroll_up_next (true, false,
+                           main_window.cur_page_id != this.id);
+    }
+
+    if (!entry.seen) {
+      unread_count ++;
+      update_unread_count ();
+    }
+
+
+    this.max_id = t.id;
+
+    int stack_size = Settings.get_tweet_stack_count ();
+    bool show_notification = !(stack_size == 1 && t.text.contains("@" + account.screen_name));
+    if (!show_notification)
+      return;
+
+    message ("Stack size: %d", stack_size);
+    message ("Unread count: %d", unread_count);
+    if (stack_size == 1) {
+      if (t.has_inline_media){
+        t.inline_media_added.connect (tweet_inline_media_added_cb);
+      } else {
+        // calling this with image = null will just create the
+        // appropriate notification etc.
+        tweet_inline_media_added_cb (t, null);
+      }
+    } else if(stack_size != 0 && unread_count % stack_size == 0
+              && unread_count > 0) {
+      string summary = _("%d new Tweets!").printf (unread_count);
+      NotificationManager.notify (summary);
+    }
+  }
 
   /**
    * Determines whether the given tweet should be displayed.
