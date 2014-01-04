@@ -299,9 +299,6 @@ class ListStatusesPage : ScrollWidget, IPage {
 
   [GtkCallback]
   private void refresh_button_clicked_cb () { // {{{
-    if (max_id == 0)
-      return;
-
     refresh_button.sensitive = false;
     load_newer.begin (() => {
       refresh_button.sensitive = true;
@@ -309,6 +306,12 @@ class ListStatusesPage : ScrollWidget, IPage {
   } // }}}
 
   private async void load_newer () {
+    if (max_id == 0) {
+      yield load_newest ();
+      return;
+    }
+
+
     message ("load newer");
     var call = account.proxy.new_call ();
     call.set_function ("1.1/lists/statuses.json");
