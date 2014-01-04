@@ -33,7 +33,8 @@ enum StreamMessageType {
   EVENT_LIST_DESTROYED,
   EVENT_LIST_UPDATED,
   EVENT_LIST_UNSUBSCRIBED,
-  EVENT_LIST_SUBSCRIBED
+  EVENT_LIST_SUBSCRIBED,
+  EVENT_LIST_MEMBER_ADDED
 }
 
 
@@ -155,6 +156,8 @@ class UserStream : Object {
 
       StreamMessageType type = 0;
 
+
+      // TODO: This could probably use some refactoring...
       if (root.has_member ("delete"))
         type = StreamMessageType.DELETE;
       else if (root.has_member ("scrub_geo"))
@@ -181,6 +184,8 @@ class UserStream : Object {
           type = StreamMessageType.EVENT_LIST_UNSUBSCRIBED;
         else if (evt_str == "list_user_subscribed")
           type = StreamMessageType.EVENT_LIST_SUBSCRIBED;
+        else if (evt_str == "list_member_added")
+          type = StreamMessageType.EVENT_LIST_MEMBER_ADDED;
         else
           type = StreamMessageType.EVENT;
       }
