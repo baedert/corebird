@@ -123,7 +123,7 @@ class ProfilePage : ScrollWidget, IPage {
     });
 
     this.destroy.connect (() => {
-      //user_stack.disconnect (page_change_signal);
+      user_stack.disconnect (page_change_signal);
     });
   }
 
