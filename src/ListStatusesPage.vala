@@ -108,7 +108,7 @@ class ListStatusesPage : ScrollWidget, IPage {
     int64 list_id = args.arg<int64> ();
     if (list_id == 0) {
       list_id = this.list_id;
-      return;
+      // Continue
     }
 
     string? list_name = args.arg<string> ();
