@@ -34,7 +34,8 @@ enum StreamMessageType {
   EVENT_LIST_UPDATED,
   EVENT_LIST_UNSUBSCRIBED,
   EVENT_LIST_SUBSCRIBED,
-  EVENT_LIST_MEMBER_ADDED
+  EVENT_LIST_MEMBER_ADDED,
+  EVENT_LIST_MEMBER_REMOVED
 }
 
 
@@ -186,6 +187,8 @@ class UserStream : Object {
           type = StreamMessageType.EVENT_LIST_SUBSCRIBED;
         else if (evt_str == "list_member_added")
           type = StreamMessageType.EVENT_LIST_MEMBER_ADDED;
+        else if (evt_str == "list_member_removed")
+          type = StreamMessageType.EVENT_LIST_MEMBER_REMOVED;
         else
           type = StreamMessageType.EVENT;
       }
