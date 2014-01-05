@@ -131,12 +131,12 @@ class ProfilePage : ScrollWidget, IPage {
     this.user_id = user_id;
 
     /* Load the profile data now, then - if available - set the cached data */
-    load_profile_data.begin(user_id);
+    load_profile_data.begin (user_id);
     follow_button.sensitive = (user_id != account.id);
     lists_menu_item.sensitive = (user_id != account.id);
 
     load_banner (DATADIR + "/no_banner.png");
-    load_friendship();
+    load_friendship.begin ();
     //Load cached data
     Corebird.db.select ("profiles").cols ("id", "screen_name", "name", "description", "tweets",
      "following", "followers", "avatar_name", "banner_url", "url", "location", "is_following",
@@ -172,30 +172,28 @@ class ProfilePage : ScrollWidget, IPage {
   } // }}}
 
 
-  private void load_friendship () {
+  private async void load_friendship () {
     var call = account.proxy.new_call ();
     call.set_function ("1.1/friendships/show.json");
     call.set_method ("GET");
     call.add_param ("source_id", account.id.to_string ());
     call.add_param ("target_id", user_id.to_string ());
-    call.invoke_async.begin (null, (o, res) => {
-      try {
-        call.invoke_async.end (res);
-      } catch (GLib.Error e) {
-        Utils.show_error_object (call.get_payload (), e.message);
-        return;
-      }
-      var parser = new Json.Parser ();
-      try {
-        parser.load_from_data (call.get_payload ());
-      } catch (GLib.Error e) {
-        critical ("%s:\n%s", e.message, call.get_payload ());
-        return;
-      }
-      bool followed_by = parser.get_root ().get_object ().get_object_member ("relationship")
-                               .get_object_member ("target").get_boolean_member ("following");
-      follows_you_label.visible = followed_by;
-    });
+    try {
+      yield call.invoke_async (null);
+    } catch (GLib.Error e) {
+      Utils.show_error_object (call.get_payload (), e.message);
+      return;
+    }
+    var parser = new Json.Parser ();
+    try {
+      parser.load_from_data (call.get_payload ());
+    } catch (GLib.Error e) {
+      critical ("%s:\n%s", e.message, call.get_payload ());
+      return;
+    }
+    bool followed_by = parser.get_root ().get_object ().get_object_member ("relationship")
+                             .get_object_member ("target").get_boolean_member ("following");
+    follows_you_label.visible = followed_by;
   }
 
   private async void load_profile_data (int64 user_id) { //{{{
@@ -527,6 +525,8 @@ class ProfilePage : ScrollWidget, IPage {
     int64 user_id = arg_list.arg();
     if (user_id == 0)
       return;
+    else
+      lists_page_inited = false;
     data_cancellable = new GLib.Cancellable ();
     set_user_id(user_id);
     tweet_list.remove_all ();
@@ -539,7 +539,6 @@ class ProfilePage : ScrollWidget, IPage {
     // TODO: Reenable this once a new librest release is out;
     //       We might otherwise overwrite the new user's data with that from the old one.
 //    data_cancellable.cancel ();
-    lists_page_inited = false;
     account.user_counter.save (account.db);
     banner_image.scale = 0.3;
   }

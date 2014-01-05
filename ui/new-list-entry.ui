@@ -80,6 +80,7 @@
                     <property name="can_focus">True</property>
                     <property name="valign">baseline</property>
                     <property name="hexpand">True</property>
+                    <signal name="activate" handler="create_list_button_clicked_cb" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>

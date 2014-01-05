@@ -108,7 +108,7 @@ class ListStatusesPage : ScrollWidget, IPage {
     int64 list_id = args.arg<int64> ();
     if (list_id == 0) {
       list_id = this.list_id;
-      return;
+      // Continue
     }
 
     string? list_name = args.arg<string> ();
@@ -136,6 +136,7 @@ class ListStatusesPage : ScrollWidget, IPage {
     message (@"Showing list with id $list_id");
     if (list_id == this.list_id) {
       this.list_id = list_id;
+      load_newer.begin ();
     } else {
       max_size_container.max_size = 0;
       this.list_id = list_id;
@@ -298,48 +299,54 @@ class ListStatusesPage : ScrollWidget, IPage {
 
   [GtkCallback]
   private void refresh_button_clicked_cb () { // {{{
-    if (max_id == 0)
-      return;
-
     refresh_button.sensitive = false;
+    load_newer.begin (() => {
+      refresh_button.sensitive = true;
+     });
+  } // }}}
+
+  private async void load_newer () {
+    if (max_id == 0) {
+      yield load_newest ();
+      return;
+    }
+
+
+    message ("load newer");
     var call = account.proxy.new_call ();
     call.set_function ("1.1/lists/statuses.json");
     call.set_method ("GET");
     call.add_param ("list_id", list_id.to_string ());
     call.add_param ("since_id", max_id.to_string ());
-    call.invoke_async.begin (null, (o, res) => {
-      try {
-        call.invoke_async.end (res);
-      } catch (GLib.Error e) {
-        Utils.show_error_object (call.get_payload (), e.message);
-        return;
-      }
+    message (@"Using max_id $max_id");
+    try {
+      yield call.invoke_async (null);
+    } catch (GLib.Error e) {
+      Utils.show_error_object (call.get_payload (), e.message);
+      return;
+    }
 
-      var parser = new Json.Parser ();
-      try {
-        parser.load_from_data (call.get_payload ());
-      } catch (GLib.Error e) {
-        critical (e.message);
-        return;
-      }
-      var root_arr = parser.get_root ().get_array ();
-      message ("%u new tweets!", root_arr.get_length ());
-      var now = new GLib.DateTime.now_local ();
-      root_arr.foreach_element ((array, index, node) => {
-        Tweet t = new Tweet ();
-        t.load_from_json (node, now);
+    var parser = new Json.Parser ();
+    try {
+      parser.load_from_data (call.get_payload ());
+    } catch (GLib.Error e) {
+      critical (e.message);
+      return;
+    }
+    var root_arr = parser.get_root ().get_array ();
+    var now = new GLib.DateTime.now_local ();
+    root_arr.foreach_element ((array, index, node) => {
+      Tweet t = new Tweet ();
+      t.load_from_json (node, now);
 
-        if (t.id > max_id)
-          max_id = t.id;
+      if (t.id > max_id)
+        max_id = t.id;
 
-        TweetListEntry entry = new TweetListEntry (t, main_window, account);
-        entry.show_all ();
-        tweet_list.add (entry);
-      });
-
-      refresh_button.sensitive = true;
+      TweetListEntry entry = new TweetListEntry (t, main_window, account);
+      entry.show_all ();
+      tweet_list.add (entry);
     });
-  } // }}}
+  }
 
   protected void handle_scrolled_to_start() { // {{{
     if (tweet_remove_timeout != 0)

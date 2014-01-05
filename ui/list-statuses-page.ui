@@ -395,6 +395,7 @@
                 <child>
                   <object class="GtkButton" id="refresh_button">
                     <property name="margin_right">5</property>
+                    <property name="margin_left">5</property>
                     <property name="can_focus">True</property>
                     <property name="valign">center</property>
                     <signal name="clicked" handler="refresh_button_clicked_cb" swapped="false" />

@@ -209,6 +209,20 @@ class UserListsWidget : Gtk.Box {
     });
   }
 
+  public void update_member_count (int64 list_id, int increase) {
+    var lists = user_list_box.get_children ();
+    foreach (var list in lists) {
+      if (!(list is ListListEntry))
+        continue;
+
+      var lle = (ListListEntry) list;
+      if (lle.id == list_id) {
+        lle.n_members += increase;
+        break;
+      }
+    }
+  }
+
   public TwitterList[] get_user_lists () { // {{{
     GLib.List<weak Gtk.Widget> children = user_list_box.get_children ();
     TwitterList[] lists = new TwitterList[children.length () - 1];
@@ -256,6 +270,7 @@ class UserListsWidget : Gtk.Box {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
         Utils.show_error_object (call.get_payload (), e.message);
+        new_list_entry.sensitive = true;
         return;
       }
       var parser = new Json.Parser ();
