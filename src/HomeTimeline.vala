@@ -53,7 +53,7 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
   }
 
 
-  private void add_tweet (Json.Node obj) {
+  private void add_tweet (Json.Node obj) { // {{{
     GLib.DateTime now = new GLib.DateTime.now_local ();
     Tweet t = new Tweet();
     t.load_from_json (obj, now);
@@ -88,7 +88,7 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
 
     int stack_size = Settings.get_tweet_stack_count ();
     bool show_notification = !(stack_size == 1 && t.text.contains("@" + account.screen_name));
-    if (!show_notification)
+    if (!show_notification || t.user_id == account.id)
       return;
 
     message ("Stack size: %d", stack_size);
@@ -106,7 +106,7 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
       string summary = _("%d new Tweets!").printf (unread_count);
       NotificationManager.notify (summary);
     }
-  }
+  } // }}}
 
   /**
    * Determines whether the given tweet should be displayed.
