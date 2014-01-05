@@ -8,7 +8,7 @@
 | `Ctrl + t`,`Ctrl + n` | Compose Tweet                                                                                                                              |
 | `Back`                | Go one page back(this can be triggered via tha back button on the keyboard, the back thumb button on the mouse or  `Alt + Left`)           |
 | `Forward`             | Go one page forward(this can be triggered via tha forward button on the keyboard, the forward thumb button on the mouse or  `Alt + Right`) |
-| `Alt + num`           | Go to page `num`(between 1 and 4 at the moment)                                                                                            |
+| `Alt + num`           | Go to page `num`(between 1 and 5 at the moment)                                                                                            |
 | `Ctrl + Shift + s`    | Show/Hide sidebar                                                                                                                          |
 
 
