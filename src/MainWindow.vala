@@ -63,7 +63,6 @@ class MainWindow : ApplicationWindow {
   private IntHistory history               = new IntHistory (5);
   private DeltaUpdater delta_updater       = new DeltaUpdater ();
   public unowned Account account           {public get; private set;}
-  private WarningService warning_service;
   private bool page_switch_lock = false;
 
 
@@ -85,8 +84,6 @@ class MainWindow : ApplicationWindow {
         }
       }
       account.user_stream.start ();
-      warning_service = new WarningService (account.screen_name);
-      account.user_stream.register (warning_service);
     } else {
       warning ("account == NULL");
       new SettingsDialog (null, (Corebird)app).show_all ();
