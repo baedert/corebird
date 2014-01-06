@@ -23,8 +23,9 @@
 [GtkTemplate (ui = "/org/baedert/corebird/ui/main-window.ui")]
 class MainWindow : ApplicationWindow {
   private const GLib.ActionEntry[] win_entries = {
-    {"compose_tweet", show_compose_window},
-    {"toggle_sidebar", Settings.toggle_sidebar_visible}
+    {"compose_tweet",  show_compose_window},
+    {"toggle_sidebar", Settings.toggle_sidebar_visible},
+    {"switch_page",    simple_switch_page, "i"}
   };
   public static const int PAGE_STREAM        = 0;
   public static const int PAGE_MENTIONS      = 1;
@@ -180,17 +181,6 @@ class MainWindow : ApplicationWindow {
    */
   private void add_accels() { // {{{
     AccelGroup ag = new AccelGroup();
-    ag.connect (Gdk.Key.@1, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
-        () => {switch_page(0);return true;});
-    ag.connect (Gdk.Key.@2, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
-        () => {switch_page(1);return true;});
-    ag.connect (Gdk.Key.@3, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
-        () => {switch_page(2);return true;});
-    ag.connect (Gdk.Key.@4, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
-        () => {switch_page(3);return true;});
-    ag.connect (Gdk.Key.@5, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
-        () => {switch_page(4);return true;});
-
 
     ag.connect (Gdk.Key.Left, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
         () => {switch_page (PAGE_PREVIOUS); return true;});
@@ -286,6 +276,14 @@ class MainWindow : ApplicationWindow {
     stack.set_visible_child_name (page_id.to_string ());
     page_switch_lock = false;
   } // }}}
+
+  /**
+   * GSimpleActionActivateCallback version of switch_page, used
+   * for keyboard accelerators.
+   */
+  private void simple_switch_page (GLib.SimpleAction a, GLib.Variant? param) {
+    switch_page (param.get_int32 ());
+  }
 
   /**
    * Indicates that the caller is doing a long-running operation.
