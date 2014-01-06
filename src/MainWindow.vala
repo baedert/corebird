@@ -22,6 +22,10 @@
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/main-window.ui")]
 class MainWindow : ApplicationWindow {
+  private const GLib.ActionEntry[] win_entries = {
+    {"compose_tweet", show_compose_window},
+    {"toggle_sidebar", Settings.toggle_sidebar_visible}
+  };
   public static const int PAGE_STREAM        = 0;
   public static const int PAGE_MENTIONS      = 1;
   public static const int PAGE_DM_THREADS    = 2;
@@ -164,6 +168,9 @@ class MainWindow : ApplicationWindow {
 
     this.show_all();
 
+    this.add_action_entries (win_entries, this);
+
+
     // Activate the first timeline
     pages[0].get_tool_button ().active = true;
   }
@@ -194,15 +201,6 @@ class MainWindow : ApplicationWindow {
     ag.connect (Gdk.Key.Forward, 0, AccelFlags.LOCKED,
         () => {switch_page (PAGE_NEXT); return true;});
 
-    ag.connect (Gdk.Key.t, Gdk.ModifierType.CONTROL_MASK, AccelFlags.LOCKED,
-        () => { show_compose_window (); return true;});
-    ag.connect (Gdk.Key.n, Gdk.ModifierType.CONTROL_MASK, AccelFlags.LOCKED,
-        () => { show_compose_window (); return true;});
-
-    ag.connect (Gdk.Key.s, Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.SHIFT_MASK,
-                AccelFlags.LOCKED, () => { Settings.toggle_sidebar_visible ();return true;});
-
-
     this.add_accel_group(ag);
   } // }}}
 
@@ -220,7 +218,6 @@ class MainWindow : ApplicationWindow {
     return false;
   }
 
-  [GtkCallback]
   private void show_compose_window () {
     var cw = new ComposeTweetWindow(this, account, null,
                                     ComposeTweetWindow.Mode.NORMAL,

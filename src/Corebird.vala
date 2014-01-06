@@ -58,9 +58,12 @@ class Corebird : Gtk.Application {
       return -1;
     }
 
+
+    this.add_accelerator (Settings.get_accel ("compose-tweet"), "win.compose_tweet", null);
+    this.add_accelerator (Settings.get_accel ("toggle-sidebar"), "win.toggle_sidebar", null);
+
+
     open_startup_windows (compose_screen_name);
-
-
     NotificationManager.init ();
 
     // If the user wants the dark theme, apply it

@@ -67,6 +67,10 @@ class Settings : GLib.Object {
     return settings.get_boolean ("auto-scroll-on-new-tweets");
   }
 
+  public static string get_accel (string accel_name) {
+    return settings.get_string ("accel-" + accel_name);
+  }
+
   public static int get_animation_duration() {
     return settings.get_int("animation-duration");
   }

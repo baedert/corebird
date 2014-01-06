@@ -101,10 +101,10 @@
             <property name="can_focus">True</property>
             <property name="always-show-image">True</property>
             <property name="relief">none</property>
+            <property name="action_name">win.compose_tweet</property>
             <style>
               <class name="image-button" />
             </style>
-            <signal name="clicked" handler="show_compose_window" swapped="no" />
             <child>
               <object class="GtkImage" id="img">
                 <property name="visible">True</property>
