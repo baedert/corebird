@@ -70,14 +70,11 @@ class MainWindow : ApplicationWindow {
   public MainWindow(Gtk.Application app, Account? account = null){
     GLib.Object (application: app);
     set_default_size (480, 700);
-    this.destroy.connect (window_destroy_cb);
     this.account = account;
 
     if (account != null) {
       account.init_proxy ();
       account.query_user_info_by_scren_name.begin (account.screen_name, account.load_avatar);
-      this.set_title ("Corebird(@%s)".printf (account.screen_name));
-      this.set_role ("corebird-"+account.screen_name);
       var acc_menu = (GLib.Menu)Corebird.account_menu;
       for (int i = 0; i < acc_menu.get_n_items (); i++){
         Variant item_name = acc_menu.get_item_attribute_value (i,
@@ -304,10 +301,7 @@ class MainWindow : ApplicationWindow {
     return pages[page_id];
   }
 
-  /**
-    *
-    *
-    */
+  [GtkCallback]
   private void window_destroy_cb() {
     account.user_stream.stop ();
     account.user_counter.save (account.db);
