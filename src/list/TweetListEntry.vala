@@ -35,10 +35,6 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   [GtkChild]
   private Gtk.Box rt_box;
   [GtkChild]
-  private Revealer reply_revealer;
-  [GtkChild]
-  private ReplyEntry reply_entry;
-  [GtkChild]
   private Image conversation_image;
   [GtkChild]
   private Box text_box;
@@ -48,8 +44,6 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   private DoubleTapButton retweet_button;
   [GtkChild]
   private ToggleButton favorite_button;
-  [GtkChild]
-  private Button reply_button;
   [GtkChild]
   private MenuButton more_button;
   [GtkChild]
@@ -73,9 +67,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
      ad the next hover-out. */
   private int hover_box_margin_adjusted = 0;
   [Signal (action = true)]
-  private signal void show_inline_reply ();
-  [Signal (action = true)]
-  private signal void hide_inline_reply ();
+  private signal void reply_tweet ();
   [Signal (action = true)]
   private signal void favorite_tweet ();
   [Signal (action = true)]
@@ -94,8 +86,6 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     avatar_image.pixbuf = tweet.avatar;
     text_label.label = tweet.get_formatted_text ();
     update_time_delta ();
-    reply_entry.text = "@"+tweet.screen_name+" ";
-    reply_entry.max_length = Tweet.MAX_LENGTH;
     if (tweet.is_retweet) {
       rt_box.show ();
       rt_label.label = @"<a href=\"@$(tweet.rt_by_id)\"
@@ -144,25 +134,9 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     more_menu_delete_item.visible = tweet.user_id == account.id;
 
 
-    reply_entry.focus_in_event.connect(() => {
-      reply_revealer.reveal_child = true;
-      return false;
-    });
-    reply_entry.focus_out_event.connect(() => {
-      //reply_revealer.reveal_child = false;
-      return false;
-    });
     hover_box.show ();
 
-    reply_entry.cancelled.connect (() => {
-      reply_revealer.reveal_child = false;
-      this.grab_focus ();
-    });
-    reply_entry.activate.connect (reply_send_button_clicked_cb);
-    show_inline_reply.connect (() => {
-      reply_revealer.reveal_child = true;
-      reply_entry.grab_focus ();
-    });
+    reply_tweet.connect (reply_button_clicked_cb);
     delete_tweet.connect (delete_tweet_activated);
     favorite_tweet.connect (() => {
       if (favorite_button.parent != null)
@@ -228,7 +202,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   static construct {
     unowned BindingSet binding_set = Gtk.BindingSet.by_class (typeof (TweetListEntry).class_ref ());
 
-    Gtk.BindingEntry.add_signal (binding_set, Gdk.Key.r, 0,      "show-inline-reply", 0, null);
+    Gtk.BindingEntry.add_signal (binding_set, Gdk.Key.r, 0,      "reply-tweet", 0, null);
     Gtk.BindingEntry.add_signal (binding_set, Gdk.Key.Return, 0, "activate", 0, null);
     Gtk.BindingEntry.add_signal (binding_set, Gdk.Key.d, 0,      "delete-tweet", 0, null);
     Gtk.BindingEntry.add_signal (binding_set, Gdk.Key.t, 0,      "retweet-tweet", 0, null);
@@ -240,9 +214,8 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   private void state_flags_changed_cb () { //{{{
     Gtk.StateFlags flags = this.get_state_flags ();
     bool buttons_visible = (bool)(flags & (StateFlags.PRELIGHT | StateFlags.SELECTED));
-    buttons_visible = (buttons_visible || more_menu.visible) && !reply_revealer.reveal_child;
+    buttons_visible = (buttons_visible || more_menu.visible);
     var ct = this.get_style_context ();
-    reply_button.visible = buttons_visible;
     more_button.visible = buttons_visible;
     favorite_button.visible = buttons_visible || tweet.favorited;
 
@@ -276,7 +249,6 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
 
   [GtkCallback]
   private bool focus_out_cb (Gdk.EventFocus evt) {
-    reply_revealer.reveal_child = false;
     delete_first_activated = false;
     retweet_button.reset ();
     return false;
@@ -336,18 +308,6 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     window.switch_page (MainWindow.PAGE_PROFILE,
                         tweet.user_id);
   }
-
-  [GtkCallback]
-  private void reply_send_button_clicked_cb () {
-    string text = reply_entry.text;
-    if (text.strip().length > 0){
-      TweetUtils.reply_to_tweet.begin (account, tweet, text);
-    }
-
-    this.grab_focus ();
-    reply_revealer.reveal_child = false;
-  }
-
   [GtkCallback]
   private void reply_button_clicked_cb () {
     ComposeTweetWindow ctw = new ComposeTweetWindow(this.window, this.account, this.tweet,
