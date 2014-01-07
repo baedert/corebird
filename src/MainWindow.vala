@@ -22,6 +22,11 @@
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/main-window.ui")]
 class MainWindow : ApplicationWindow {
+  private const GLib.ActionEntry[] win_entries = {
+    {"compose_tweet",  show_compose_window},
+    {"toggle_sidebar", Settings.toggle_sidebar_visible},
+    {"switch_page",    simple_switch_page, "i"}
+  };
   public static const int PAGE_STREAM        = 0;
   public static const int PAGE_MENTIONS      = 1;
   public static const int PAGE_DM_THREADS    = 2;
@@ -58,21 +63,17 @@ class MainWindow : ApplicationWindow {
   private IntHistory history               = new IntHistory (5);
   private DeltaUpdater delta_updater       = new DeltaUpdater ();
   public unowned Account account           {public get; private set;}
-  private WarningService warning_service;
   private bool page_switch_lock = false;
 
 
   public MainWindow(Gtk.Application app, Account? account = null){
     GLib.Object (application: app);
     set_default_size (480, 700);
-    this.destroy.connect (window_destroy_cb);
     this.account = account;
 
     if (account != null) {
       account.init_proxy ();
       account.query_user_info_by_scren_name.begin (account.screen_name, account.load_avatar);
-      this.set_title ("Corebird(@%s)".printf (account.screen_name));
-      this.set_role ("corebird-"+account.screen_name);
       var acc_menu = (GLib.Menu)Corebird.account_menu;
       for (int i = 0; i < acc_menu.get_n_items (); i++){
         Variant item_name = acc_menu.get_item_attribute_value (i,
@@ -83,8 +84,6 @@ class MainWindow : ApplicationWindow {
         }
       }
       account.user_stream.start ();
-      warning_service = new WarningService (account.screen_name);
-      account.user_stream.register (warning_service);
     } else {
       warning ("account == NULL");
       new SettingsDialog (null, (Corebird)app).show_all ();
@@ -164,6 +163,9 @@ class MainWindow : ApplicationWindow {
 
     this.show_all();
 
+    this.add_action_entries (win_entries, this);
+
+
     // Activate the first timeline
     pages[0].get_tool_button ().active = true;
   }
@@ -173,17 +175,6 @@ class MainWindow : ApplicationWindow {
    */
   private void add_accels() { // {{{
     AccelGroup ag = new AccelGroup();
-    ag.connect (Gdk.Key.@1, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
-        () => {switch_page(0);return true;});
-    ag.connect (Gdk.Key.@2, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
-        () => {switch_page(1);return true;});
-    ag.connect (Gdk.Key.@3, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
-        () => {switch_page(2);return true;});
-    ag.connect (Gdk.Key.@4, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
-        () => {switch_page(3);return true;});
-    ag.connect (Gdk.Key.@5, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
-        () => {switch_page(4);return true;});
-
 
     ag.connect (Gdk.Key.Left, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
         () => {switch_page (PAGE_PREVIOUS); return true;});
@@ -193,15 +184,6 @@ class MainWindow : ApplicationWindow {
         () => {switch_page (PAGE_PREVIOUS); return true;});
     ag.connect (Gdk.Key.Forward, 0, AccelFlags.LOCKED,
         () => {switch_page (PAGE_NEXT); return true;});
-
-    ag.connect (Gdk.Key.t, Gdk.ModifierType.CONTROL_MASK, AccelFlags.LOCKED,
-        () => { show_compose_window (); return true;});
-    ag.connect (Gdk.Key.n, Gdk.ModifierType.CONTROL_MASK, AccelFlags.LOCKED,
-        () => { show_compose_window (); return true;});
-
-    ag.connect (Gdk.Key.s, Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.SHIFT_MASK,
-                AccelFlags.LOCKED, () => { Settings.toggle_sidebar_visible ();return true;});
-
 
     this.add_accel_group(ag);
   } // }}}
@@ -220,7 +202,6 @@ class MainWindow : ApplicationWindow {
     return false;
   }
 
-  [GtkCallback]
   private void show_compose_window () {
     var cw = new ComposeTweetWindow(this, account, null,
                                     ComposeTweetWindow.Mode.NORMAL,
@@ -291,6 +272,14 @@ class MainWindow : ApplicationWindow {
   } // }}}
 
   /**
+   * GSimpleActionActivateCallback version of switch_page, used
+   * for keyboard accelerators.
+   */
+  private void simple_switch_page (GLib.SimpleAction a, GLib.Variant? param) {
+    switch_page (param.get_int32 ());
+  }
+
+  /**
    * Indicates that the caller is doing a long-running operation.
    */
   public void start_progress () {
@@ -309,10 +298,7 @@ class MainWindow : ApplicationWindow {
     return pages[page_id];
   }
 
-  /**
-    *
-    *
-    */
+  [GtkCallback]
   private void window_destroy_cb() {
     account.user_stream.stop ();
     account.user_counter.save (account.db);

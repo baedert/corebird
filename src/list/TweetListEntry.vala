@@ -45,6 +45,8 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   [GtkChild]
   private ToggleButton favorite_button;
   [GtkChild]
+  private Button reply_button;
+  [GtkChild]
   private MenuButton more_button;
   [GtkChild]
   private Gtk.Menu more_menu;
@@ -218,6 +220,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     var ct = this.get_style_context ();
     more_button.visible = buttons_visible;
     favorite_button.visible = buttons_visible || tweet.favorited;
+    reply_button.visible = buttons_visible;
 
     if (buttons_visible) {
       hover_box.override_background_color (Gtk.StateFlags.NORMAL,

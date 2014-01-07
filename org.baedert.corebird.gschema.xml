@@ -80,5 +80,15 @@
       <default>true</default>
       <summary>Whether to show the sidebar or not</summary>
     </key>
-  </schema>
+    <key name="accel-compose-tweet" type="s">
+      <default>"&lt;Control&gt;T"</default>
+        <summary>The accelerator to press in ordner to bring the ComposeTweetWindow up.
+                 Muse be parseable with gtk_accelerator_parse
+        </summary>
+    </key>
+     <key name="accel-toggle-sidebar" type="s">
+       <default>"&lt;Control&gt;&lt;Shift&gt;S"</default>
+       <summary>Accelerator to press in ordner to show/hide the sidebar</summary>
+    </key>
+   </schema>
 </schemalist>
