@@ -196,6 +196,7 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
 
   public override void create_tool_button(RadioToolButton? group) {
     tool_button = new BadgeRadioToolButton(group, "corebird-stream-symbolic");
-    tool_button.label = "Home";
+    tool_button.tooltip_text = _("Home");
+    tool_button.label = _("Home");
   }
 }

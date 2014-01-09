@@ -252,7 +252,8 @@ class SearchPage : IPage, Box {
   public void create_tool_button(RadioToolButton? group){
     tool_button = new RadioToolButton.from_widget (group);
     tool_button.icon_name = "corebird-search-symbolic";
-    tool_button.label = "Search";
+    tool_button.label = _("Search");
+    tool_button.tooltip_text = _("Search");
   }
 
   public RadioToolButton? get_tool_button(){
