@@ -31,7 +31,7 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
     } else if (type == StreamMessageType.EVENT_FAVORITE) {
       toggle_favorite (root_node, true);
     } else if (type == StreamMessageType.EVENT_UNFAVORITE) {
-      toggle_favorite (root_node, true);
+      toggle_favorite (root_node, false);
     }
   }
 
@@ -95,7 +95,7 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
     }
   } // }}}
 
-  private void delete_tweet (Json.Node root_node) {
+  private void delete_tweet (Json.Node root_node) { // {{{
     int64 tweet_id = root_node.get_object ().get_object_member ("delete")
                      .get_object_member ("status").get_int_member ("id");
     foreach (Gtk.Widget w in tweet_list.get_children ()) {
@@ -116,11 +116,12 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
         return;
       }
     }
-  }
+  } // }}}
 
   private void toggle_favorite (Json.Node root_node, bool mode) { // {{{
     int64 id = root_node.get_object ().get_object_member ("target_object").get_int_member ("id");
     var tweets = tweet_list.get_children ();
+
     foreach (var w in tweets) {
       if (!(w is TweetListEntry))
         continue;
