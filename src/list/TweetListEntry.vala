@@ -128,8 +128,8 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       inline_button.clicked.connect(inline_media_button_clicked_cb);
       inline_button.show ();
     }
-
-    more_menu_delete_item.visible = tweet.user_id == account.id;
+    if (tweet.user_id != account.id)
+      more_menu.remove (more_menu_delete_item);
 
 
     hover_box.show ();
