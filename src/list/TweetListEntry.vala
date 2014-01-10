@@ -39,7 +39,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   [GtkChild]
   private Box text_box;
   [GtkChild]
-  private Box hover_box;
+  private BgBox hover_box;
   [GtkChild]
   private DoubleTapButton retweet_button;
   [GtkChild]
@@ -92,6 +92,15 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       rt_box.unparent ();
 
 
+    if (tweet.retweeted || tweet.favorited) {
+      ulong id = 0;
+      id = time_delta_label.size_allocate.connect (() => {
+        hover_box.margin_top = (time_delta_label.get_allocated_height () / 2) - 6;
+        hover_box.margin_right = time_delta_label.get_allocated_width ();
+        time_delta_label.disconnect (id);
+      });
+    }
+
     retweet_button.visible = tweet.retweeted;
     retweet_button.active = tweet.retweeted;
     tweet.notify["retweeted"].connect (() => {
@@ -104,6 +113,9 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     // TODO: Also use notify["favorited"]
     favorite_button.visible = tweet.favorited;
     favorite_button.active = tweet.favorited;
+
+    if (tweet.reply_id == 0)
+      conversation_image.unparent ();
 
     // If the avatar gets loaded, we want to change it here immediately
     tweet.notify["avatar"].connect (avatar_changed);
@@ -190,29 +202,24 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   [GtkCallback]
   private void state_flags_changed_cb () { //{{{
     Gtk.StateFlags flags = this.get_state_flags ();
+    var ct = this.get_style_context ();
     bool buttons_visible = (bool)(flags & (StateFlags.PRELIGHT | StateFlags.SELECTED));
     buttons_visible = (buttons_visible || more_menu.visible);
-    var ct = this.get_style_context ();
     more_button.visible = buttons_visible;
     favorite_button.visible = buttons_visible || tweet.favorited;
     reply_button.visible = buttons_visible;
 
     if (buttons_visible) {
+      hover_box.margin_right = 0;
+      hover_box.margin_top = (time_delta_label.get_allocated_height () / 2) - 6;
       hover_box.override_background_color (Gtk.StateFlags.NORMAL,
                                            ct.get_background_color (Gtk.StateFlags.PRELIGHT));
-
       retweet_button.visible = (account.id != tweet.user_id);
-      conversation_image.hide ();
-
-      int hover_margin_top = (screen_name_label.get_allocated_height () / 2) - 6;
-      if (hover_margin_top > 2) {
-        //hover_box.margin_top = hover_margin_top;
-      }
     } else {
       hover_box.override_background_color (Gtk.StateFlags.NORMAL,
                                            ct.get_background_color (Gtk.StateFlags.NORMAL));
       retweet_button.visible = tweet.retweeted;
-      conversation_image.visible = tweet.reply_id != 0;
+      hover_box.margin_right = time_delta_label.get_allocated_width () + 4;
     }
   } //}}}
 

@@ -110,7 +110,6 @@
                             <property name="halign">end</property>
                             <property name="valign">baseline</property>
                             <property name="label">label</property>
-                            <property name="use_markup">True</property>
                             <property name="lines">0</property>
                             <style>
                               <class name="dim-label"/>
