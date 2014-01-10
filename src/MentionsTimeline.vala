@@ -23,68 +23,116 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
     base (id);
   }
 
-  private void stream_message_received (StreamMessageType type, Json.Node root_node){ // {{{
-    Json.Object root = root_node.get_object ();
-
+  private void stream_message_received (StreamMessageType type, Json.Node root_node){
     if (type == StreamMessageType.TWEET) {
-      var author = root.get_object_member ("user");
-      if (author.get_int_member ("id") == account.id &&
-          !root.get_null_member ("in_reply_to_status_id")) {
-        mark_seen (root.get_int_member ("in_reply_to_status_id"));
+      add_tweet (root_node);
+    } else if (type == StreamMessageType.DELETE) {
+      delete_tweet (root_node);
+    } else if (type == StreamMessageType.EVENT_FAVORITE) {
+      toggle_favorite (root_node, true);
+    } else if (type == StreamMessageType.EVENT_UNFAVORITE) {
+      toggle_favorite (root_node, true);
+    }
+  }
+
+  private void add_tweet (Json.Node root_node) { // {{{
+    var root = root_node.get_object ();
+    var author = root.get_object_member ("user");
+    if (author.get_int_member ("id") == account.id &&
+        !root.get_null_member ("in_reply_to_status_id")) {
+      mark_seen (root.get_int_member ("in_reply_to_status_id"));
+      return;
+    }
+
+
+    if (root.get_string_member("text").contains("@"+account.screen_name)) {
+      GLib.DateTime now = new GLib.DateTime.now_local ();
+      Tweet t = new Tweet();
+      t.load_from_json(root_node, now);
+      if (t.user_id == account.id)
+        return;
+
+      // If the tweet is a tweet the user retweeted, check
+      // if it's already in the list. If so, mark it retweeted
+      if (t.retweeted_by == account.name) {
+        tweet_list.foreach ((w) => {
+          if (w == null || !(w is TweetListEntry))
+            return;
+
+          var tle = (TweetListEntry) w;
+          if (tle.tweet.id == t.rt_id) {
+            tle.tweet.retweeted = true;
+          }
+        });
         return;
       }
 
+      bool auto_scroll = Settings.auto_scroll_on_new_tweets ();
 
-      if (root.get_string_member("text").contains("@"+account.screen_name)) {
-        GLib.DateTime now = new GLib.DateTime.now_local ();
-        Tweet t = new Tweet();
-        t.load_from_json(root_node, now);
-        if (t.user_id == account.id)
-          return;
+      this.balance_next_upper_change (TOP);
+      var entry = new TweetListEntry(t, main_window, account);
+      entry.seen = false;
 
-        // If the tweet is a tweet the user retweeted, check
-        // if it's already in the list. If so, mark it retweeted
-        if (t.retweeted_by == account.name) {
-          tweet_list.foreach ((w) => {
-            if (w == null || !(w is TweetListEntry))
-              return;
-
-            var tle = (TweetListEntry) w;
-            if (tle.tweet.id == t.rt_id) {
-              tle.tweet.retweeted = true;
-            }
-          });
-          return;
-        }
-
-        bool auto_scroll = Settings.auto_scroll_on_new_tweets ();
-
-        this.balance_next_upper_change (TOP);
-        var entry = new TweetListEntry(t, main_window, account);
-        entry.seen = false;
-
-        delta_updater.add (entry);
-        tweet_list.add (entry);
-        if (this.scrolled_up && (t.user_id == account.id || auto_scroll)) {
-          this.scroll_up_next (true, false,
-                               main_window.cur_page_id != this.id);
-        }
+      delta_updater.add (entry);
+      tweet_list.add (entry);
+      if (this.scrolled_up && (t.user_id == account.id || auto_scroll)) {
+        this.scroll_up_next (true, false,
+                             main_window.cur_page_id != this.id);
+      }
 
 
 
-        unread_count++;
-        update_unread_count();
-        this.max_id =  t.id;
+      unread_count++;
+      update_unread_count();
+      this.max_id =  t.id;
 
-        if (Settings.notify_new_mentions ()) {
-          NotificationManager.notify_pixbuf(
-            "New Mention from @"+t.screen_name,
-            t.text,
-            t.avatar);
-        }
+      if (Settings.notify_new_mentions ()) {
+        NotificationManager.notify_pixbuf(
+          "New Mention from @"+t.screen_name,
+          t.text,
+          t.avatar);
       }
     }
   } // }}}
+
+  private void delete_tweet (Json.Node root_node) {
+    int64 tweet_id = root_node.get_object ().get_object_member ("delete")
+                     .get_object_member ("status").get_int_member ("id");
+    foreach (Gtk.Widget w in tweet_list.get_children ()) {
+      if (w == null || !(w is TweetListEntry))
+        continue;
+
+      var tle = (TweetListEntry) w;
+      if (tle.tweet.id == tweet_id) {
+        if (!tle.seen) {
+          tweet_list.remove (tle);
+          unread_count --;
+          update_unread_count ();
+        }else
+          tle.sensitive = false;
+        return;
+      } else if (tle.tweet.retweeted && tle.tweet.my_retweet == tweet_id) {
+        tle.tweet.retweeted = false;
+        return;
+      }
+    }
+  }
+
+  private void toggle_favorite (Json.Node root_node, bool mode) { // {{{
+    int64 id = root_node.get_object ().get_object_member ("target_object").get_int_member ("id");
+    var tweets = tweet_list.get_children ();
+    foreach (var w in tweets) {
+      if (!(w is TweetListEntry))
+        continue;
+      var t = ((TweetListEntry)w).tweet;
+      if (t.id == id) {
+        t.favorited = mode;
+        break;
+      }
+    }
+  } // }}}
+
+
 
   private void mark_seen (int64 id) {
     // TODO: All these foreach loops don't allow for early exit.

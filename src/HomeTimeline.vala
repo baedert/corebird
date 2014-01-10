@@ -39,7 +39,7 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
     }
   } // }}}
 
-  private void delete_tweet (int64 tweet_id) {
+  private void delete_tweet (int64 tweet_id) { // {{{
     foreach (Gtk.Widget w in tweet_list.get_children ()) {
       if (w == null || !(w is TweetListEntry))
         continue;
@@ -58,7 +58,7 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
         return;
       }
     }
-  }
+  } // }}}
 
   private void toggle_favorite (int64 id, bool mode) {
     var tweets = tweet_list.get_children ();
