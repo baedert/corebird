@@ -52,7 +52,9 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
           update_unread_count ();
         }else
           tle.sensitive = false;
-
+        return;
+      } else if (tle.tweet.retweeted && tle.tweet.my_retweet == tweet_id) {
+        tle.tweet.retweeted = false;
         return;
       }
     }
