@@ -93,12 +93,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
 
 
     if (tweet.retweeted || tweet.favorited) {
-      ulong id = 0;
-      id = time_delta_label.size_allocate.connect (() => {
-        hover_box.margin_top = (time_delta_label.get_allocated_height () / 2) - 6;
-        hover_box.margin_right = time_delta_label.get_allocated_width ();
-        time_delta_label.disconnect (id);
-      });
+      adjust_hover_box ();
     }
 
     retweet_button.visible = tweet.retweeted;
@@ -107,6 +102,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       values_set = false;
       retweet_button.active = tweet.retweeted;
       retweet_button.visible = tweet.retweeted;
+      adjust_hover_box ();
       values_set = true;
     });
 
@@ -210,7 +206,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     reply_button.visible = buttons_visible;
 
     if (buttons_visible) {
-      hover_box.margin_right = 0;
+      hover_box.margin_right = 1;
       hover_box.margin_top = (time_delta_label.get_allocated_height () / 2) - 6;
       hover_box.override_background_color (Gtk.StateFlags.NORMAL,
                                            ct.get_background_color (Gtk.StateFlags.PRELIGHT));
@@ -318,6 +314,25 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     return TweetUtils.activate_link (uri, window);
   }
 
+
+  private void adjust_hover_box () {
+    // Only do this if the hover_box has not been 'adjusted' yet
+    if (hover_box.margin_right > 0) {
+      return;
+    }
+
+    if (time_delta_label.get_allocated_width () > 1) {
+      hover_box.margin_top = (time_delta_label.get_allocated_height () / 2) - 6;
+      hover_box.margin_right = time_delta_label.get_allocated_width ();
+    }
+
+    ulong id = 0;
+    id = time_delta_label.size_allocate.connect (() => {
+      hover_box.margin_top = (time_delta_label.get_allocated_height () / 2) - 6;
+      hover_box.margin_right = time_delta_label.get_allocated_width ();
+      time_delta_label.disconnect (id);
+    });
+  }
 
   /**
    * Updates the time delta label in the upper right
