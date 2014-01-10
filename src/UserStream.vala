@@ -140,7 +140,7 @@ class UserStream : Object {
       timeout_id = GLib.Timeout.add (TIMEOUT_INTERVAL, timeout_cb);
 
       if (real == "\r\n") {
-        message ("HEARTBEAT");
+        message ("HEARTBEAT(%s)", account_name);
         data.erase ();
         return;
       }
