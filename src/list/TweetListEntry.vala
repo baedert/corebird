@@ -92,7 +92,8 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       rt_box.show ();
       rt_label.label = @"<a href=\"@$(tweet.rt_by_id)\"
                          title=\"@$(tweet.rt_by_screen_name)\">$(tweet.retweeted_by)</a>";
-    }
+    } else
+      rt_box.unparent ();
 
 
     retweet_button.visible = tweet.retweeted;
@@ -146,7 +147,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     });
     retweet_tweet.connect (() => {
       if (retweet_button.parent != null)
-      retweet_button.tap ();
+        retweet_button.tap ();
     });
 
     time_delta_label.size_allocate.connect (() => {
