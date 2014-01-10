@@ -64,10 +64,6 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   public Tweet tweet;
   private bool values_set = false;
   private bool delete_first_activated = false;
-  /* Horrible hack. If this is negative, the absolute value of it has already
-     been added to the margin_right of the hover_box. If not is will be added
-     ad the next hover-out. */
-  private int hover_box_margin_adjusted = 0;
   [Signal (action = true)]
   private signal void reply_tweet ();
   [Signal (action = true)]
@@ -145,23 +141,6 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
         retweet_button.tap ();
     });
 
-    time_delta_label.size_allocate.connect (() => {
-      hover_box.margin_right = time_delta_label.get_allocated_width () + 6;
-    });
-    if (tweet.reply_id != 0) {
-      ulong id = 0;
-      id = conversation_image.size_allocate.connect (() => {
-        if (hover_box_margin_adjusted == 0) {
-          int marg = conversation_image.get_allocated_width () + 2;
-          hover_box.margin_right += marg;
-          hover_box_margin_adjusted = marg;
-          conversation_image.disconnect (id);
-        }
-      });
-      conversation_image.show ();
-    }
-
-
     values_set = true;
   }
 
@@ -227,22 +206,13 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
 
       int hover_margin_top = (screen_name_label.get_allocated_height () / 2) - 6;
       if (hover_margin_top > 2) {
-        hover_box.margin_top = hover_margin_top;
-      }
-      if (tweet.reply_id != 0 && hover_box_margin_adjusted > 0) {
-        hover_box.margin_right -= hover_box_margin_adjusted;
-        hover_box_margin_adjusted = -hover_box_margin_adjusted;
+        //hover_box.margin_top = hover_margin_top;
       }
     } else {
       hover_box.override_background_color (Gtk.StateFlags.NORMAL,
                                            ct.get_background_color (Gtk.StateFlags.NORMAL));
       retweet_button.visible = tweet.retweeted;
       conversation_image.visible = tweet.reply_id != 0;
-      if (tweet.reply_id != 0) {
-        hover_box_margin_adjusted = -hover_box_margin_adjusted;
-        hover_box.margin_right += hover_box_margin_adjusted;
-      }
-
     }
   } //}}}
 
