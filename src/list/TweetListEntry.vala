@@ -97,9 +97,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
 
 
     retweet_button.visible = tweet.retweeted;
-    if (tweet.retweeted) {
-      retweet_button.active = true;
-    }
+    retweet_button.active = tweet.retweeted;
     tweet.notify["retweeted"].connect (() => {
       values_set = false;
       retweet_button.active = tweet.retweeted;
@@ -107,12 +105,9 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       values_set = true;
     });
 
-    favorite_button.visible = tweet.favorited;
-    if (tweet.favorited) {
-      favorite_button.show();
-      favorite_button.active = true;
-    }
     // TODO: Also use notify["favorited"]
+    favorite_button.visible = tweet.favorited;
+    favorite_button.active = tweet.favorited;
 
     // If the avatar gets loaded, we want to change it here immediately
     tweet.notify["avatar"].connect (avatar_changed);
