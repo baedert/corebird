@@ -106,9 +106,15 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       values_set = true;
     });
 
-    // TODO: Also use notify["favorited"]
     favorite_button.visible = tweet.favorited;
     favorite_button.active = tweet.favorited;
+    tweet.notify["favorited"].connect (() => {
+      values_set = false;
+      favorite_button.active = tweet.favorited;
+      favorite_button.visible = tweet.favorited;
+      adjust_hover_box ();
+      values_set = true;
+    });
 
     if (tweet.reply_id == 0)
       conversation_image.unparent ();
