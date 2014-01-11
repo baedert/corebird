@@ -92,7 +92,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       rt_box.unparent ();
 
 
-    if (tweet.retweeted || tweet.favorited) {
+    if (tweet.retweeted || tweet.favorited || tweet.reply_id != 0) {
       adjust_hover_box ();
     }
 
@@ -118,8 +118,9 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
 
     if (tweet.reply_id == 0)
       conversation_image.unparent ();
-    else
+    else {
       conversation_image.show ();
+    }
 
     // If the avatar gets loaded, we want to change it here immediately
     tweet.notify["avatar"].connect (avatar_changed);
@@ -223,7 +224,11 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       hover_box.override_background_color (Gtk.StateFlags.NORMAL,
                                            ct.get_background_color (Gtk.StateFlags.NORMAL));
       retweet_button.visible = tweet.retweeted;
-      hover_box.margin_right = time_delta_label.get_allocated_width () + 4;
+      hover_box.margin_right = time_delta_label.get_allocated_width () + 3;
+      if (tweet.reply_id != 0)
+        hover_box.margin_right += conversation_image.get_allocated_width ();
+
+          message ("Compl margin: %d", hover_box.margin_right);
     }
   } //}}}
 
@@ -329,22 +334,37 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       return;
     }
 
-    if (time_delta_label.get_allocated_width () > 1) {
+    // XXX Keep this in sync with the version below
+    if (time_delta_label.get_allocated_width () > 1 && conversation_image.get_allocated_width () > 1) {
       hover_box.margin_top = (time_delta_label.get_allocated_height () / 2) - 6;
-      hover_box.margin_right = time_delta_label.get_allocated_width ();
-      if (tweet.reply_id != 0)
+      hover_box.margin_right = time_delta_label.get_allocated_width () + 3;
+      if (tweet.reply_id != 0) {
+        conversation_image.margin_top = (time_delta_label.get_allocated_height () / 2) - 6;
         hover_box.margin_right += conversation_image.get_allocated_width ();
-
+      }
+      return;
     }
+
 
     ulong id = 0;
     id = time_delta_label.size_allocate.connect (() => {
       hover_box.margin_top = (time_delta_label.get_allocated_height () / 2) - 6;
-      hover_box.margin_right = time_delta_label.get_allocated_width ();
-      if (tweet.reply_id != 0)
-        hover_box.margin_right += conversation_image.get_allocated_width ();
+      hover_box.margin_right += time_delta_label.get_allocated_width () + 3;
+      if (tweet.reply_id != 0) {
+        conversation_image.margin_top = (time_delta_label.get_allocated_height () / 2) - 6;
+      }
       time_delta_label.disconnect (id);
     });
+
+    if (tweet.reply_id == 0)
+      return;
+
+    ulong id2 = 0;
+    id2 = conversation_image.size_allocate.connect (() => {
+      hover_box.margin_right += conversation_image.get_allocated_width ();
+      conversation_image.disconnect (id2);
+    });
+
   }
 
   /**
