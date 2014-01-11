@@ -159,8 +159,6 @@ class UserStream : Object {
 
       StreamMessageType type = 0;
 
-
-      // TODO: This could probably use some refactoring...
       if (root.has_member ("delete"))
         type = StreamMessageType.DELETE;
       else if (root.has_member ("scrub_geo"))
@@ -175,28 +173,7 @@ class UserStream : Object {
         type = StreamMessageType.TWEET;
       else if (root.has_member ("event")) {
         string evt_str = root.get_string_member ("event");
-        if (evt_str == "follow")
-          type = StreamMessageType.FOLLOW;
-        else if (evt_str == "list_created")
-          type = StreamMessageType.EVENT_LIST_CREATED;
-        else if (evt_str == "list_destroyed")
-          type = StreamMessageType.EVENT_LIST_DESTROYED;
-        else if (evt_str == "list_updated")
-          type = StreamMessageType.EVENT_LIST_UPDATED;
-        else if (evt_str == "list_user_unsubscribed")
-          type = StreamMessageType.EVENT_LIST_UNSUBSCRIBED;
-        else if (evt_str == "list_user_subscribed")
-          type = StreamMessageType.EVENT_LIST_SUBSCRIBED;
-        else if (evt_str == "list_member_added")
-          type = StreamMessageType.EVENT_LIST_MEMBER_ADDED;
-        else if (evt_str == "list_member_removed")
-          type = StreamMessageType.EVENT_LIST_MEMBER_REMOVED;
-        else if (evt_str == "favorite")
-          type = StreamMessageType.EVENT_FAVORITE;
-        else if (evt_str == "unfavorite")
-          type = StreamMessageType.EVENT_UNFAVORITE;
-        else
-          type = StreamMessageType.EVENT;
+        type = get_event_type (evt_str);
       }
       else if (root.has_member ("warning"))
         type = StreamMessageType.WARNING;
@@ -216,6 +193,33 @@ class UserStream : Object {
     }
   }
 
+
+  private StreamMessageType get_event_type (string evt_str) {
+    switch (evt_str) {
+      case "follow":
+        return StreamMessageType.FOLLOW;
+      case "list_created":
+        return StreamMessageType.EVENT_LIST_CREATED;
+      case "list_destroyed":
+        return StreamMessageType.EVENT_LIST_DESTROYED;
+      case "list_updated":
+        return StreamMessageType.EVENT_LIST_UPDATED;
+      case "list_user_unsubscribed":
+        return StreamMessageType.EVENT_LIST_UNSUBSCRIBED;
+      case "list_user_subscribed":
+        return StreamMessageType.EVENT_LIST_SUBSCRIBED;
+      case "list_member_added":
+        return StreamMessageType.EVENT_LIST_MEMBER_ADDED;
+      case "list_member_removed":
+        return StreamMessageType.EVENT_LIST_MEMBER_REMOVED;
+      case "favorite":
+        return StreamMessageType.EVENT_FAVORITE;
+      case "unfavorite":
+        return StreamMessageType.EVENT_UNFAVORITE;
+    }
+
+    return 0;
+  }
 }
 
 
