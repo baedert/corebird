@@ -118,6 +118,8 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
 
     if (tweet.reply_id == 0)
       conversation_image.unparent ();
+    else
+      conversation_image.show ();
 
     // If the avatar gets loaded, we want to change it here immediately
     tweet.notify["avatar"].connect (avatar_changed);
@@ -330,12 +332,17 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     if (time_delta_label.get_allocated_width () > 1) {
       hover_box.margin_top = (time_delta_label.get_allocated_height () / 2) - 6;
       hover_box.margin_right = time_delta_label.get_allocated_width ();
+      if (tweet.reply_id != 0)
+        hover_box.margin_right += conversation_image.get_allocated_width ();
+
     }
 
     ulong id = 0;
     id = time_delta_label.size_allocate.connect (() => {
       hover_box.margin_top = (time_delta_label.get_allocated_height () / 2) - 6;
       hover_box.margin_right = time_delta_label.get_allocated_width ();
+      if (tweet.reply_id != 0)
+        hover_box.margin_right += conversation_image.get_allocated_width ();
       time_delta_label.disconnect (id);
     });
   }
