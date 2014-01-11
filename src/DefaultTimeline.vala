@@ -97,7 +97,10 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   public abstract void load_newest ();
   public abstract void load_older ();
 
-
+  public override void destroy () {
+    if (tweet_remove_timeout > 0)
+      GLib.Source.remove (tweet_remove_timeout);
+  }
 
   public virtual void create_tool_button(RadioToolButton? group){}
 

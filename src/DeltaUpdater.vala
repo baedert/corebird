@@ -20,9 +20,11 @@ using Gee;
 class DeltaUpdater : GLib.Object {
   private ArrayList<WeakRef<ITwitterItem>> minutely = new ArrayList<WeakRef<ITwitterItem>> ();
   private ArrayList<WeakRef<ITwitterItem>> hourly   = new ArrayList<WeakRef<ITwitterItem>> ();
+  private uint minutely_id;
+  private uint hourly_id;
 
   public DeltaUpdater () {
-    GLib.Timeout.add(60 * 1000, () => {
+    minutely_id = GLib.Timeout.add(60 * 1000, () => {
       for (int i = 0, size = minutely.size; i < size; i++) {
         WeakRef<ITwitterItem> item_ref = minutely.get (i);
         ITwitterItem item = minutely.get (i).get ();
@@ -41,7 +43,7 @@ class DeltaUpdater : GLib.Object {
       return true;
     });
 
-    GLib.Timeout.add(60 * 60 * 1000, () => {
+    hourly_id = GLib.Timeout.add(60 * 60 * 1000, () => {
       for (int i = 0, size = hourly.size; i < size; i++) {
         WeakRef<ITwitterItem> item_ref = hourly.get (i);
         if (item_ref.get () == null) {
@@ -53,6 +55,11 @@ class DeltaUpdater : GLib.Object {
       }
       return true;
     });
+  }
+
+  ~DeltaUpdater() {
+    GLib.Source.remove (minutely_id);
+    GLib.Source.remove (hourly_id);
   }
 
 
@@ -69,7 +76,7 @@ class DeltaUpdater : GLib.Object {
     WeakRef r = new WeakRef<ITwitterItem> (entry);
     if (seconds  < 3600)
       minutely.add (r);
-    else
+    else if (seconds < 60 * 60 * 24)
       hourly.add (r);
   }
 
