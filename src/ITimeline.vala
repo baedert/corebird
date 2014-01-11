@@ -62,7 +62,6 @@ interface ITimeline : Gtk.Widget, IPage {
     var root = parser.get_root().get_array();
     if (root.get_length () == 0) {
       tweet_list.set_empty ();
-      load_newest_internal.callback ();
       return;
     }
     var res = yield TweetUtils.work_array (root, delta_updater, tweet_list, main_window, account);
@@ -77,26 +76,29 @@ interface ITimeline : Gtk.Widget, IPage {
    * @param function The Twitter function to use
    * @param tweet_type The type of tweets to load
    */
-  protected async void load_older_internal(string function) { //{{{
-    var call = account.proxy.new_call();
-    call.set_function(function);
-    call.set_method("GET");
-    call.add_param("max_id", (lowest_id - 1).to_string());
+  protected async void load_older_internal (string function) { //{{{
+    var call = account.proxy.new_call ();
+    call.set_function (function);
+    call.set_method ("GET");
+    call.add_param ("count", "28");
+    call.add_param ("include_my_retweet", "true");
+    call.add_param ("max_id", (lowest_id - 1).to_string ());
     try {
-    yield call.invoke_async (null);
+      yield call.invoke_async (null);
     } catch (GLib.Error e) {
       Utils.show_error_object (call.get_payload (), e.message);
+      return;
     }
     var parser = new Json.Parser();
-    try{
+    try {
       parser.load_from_data (call.get_payload ());
     } catch (GLib.Error e) {
       critical(e.message);
+      return;
     }
-    var root = parser.get_root().get_array();
+    var root = parser.get_root ().get_array ();
     if (root.get_length () == 0) {
       tweet_list.set_empty ();
-      load_older_internal.callback ();
       return;
     }
     var res = yield TweetUtils.work_array (root, delta_updater, tweet_list, main_window, account);
