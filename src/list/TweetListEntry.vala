@@ -227,8 +227,6 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       hover_box.margin_right = time_delta_label.get_allocated_width () + 3;
       if (tweet.reply_id != 0)
         hover_box.margin_right += conversation_image.get_allocated_width ();
-
-          message ("Compl margin: %d", hover_box.margin_right);
     }
   } //}}}
 
