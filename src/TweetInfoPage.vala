@@ -60,6 +60,8 @@ class TweetInfoPage : IPage , ScrollWidget {
   [GtkChild]
   private Label time_label;
   [GtkChild]
+  private Gtk.Label source_label;
+  [GtkChild]
   private PixbufButton media_button;
   [GtkChild]
   private Gtk.MenuItem delete_menu_item;
@@ -118,9 +120,11 @@ class TweetInfoPage : IPage , ScrollWidget {
       this.tweet = args.arg ();
       this.tweet_id = tweet.id;
       set_tweet_data (tweet);
+      set_source_link (tweet.id, tweet.screen_name);
     } else if (mode == BY_ID) {
       this.tweet_id = args.arg ();
     }
+
     query_tweet_info ();
   }
 
@@ -371,6 +375,8 @@ class TweetInfoPage : IPage , ScrollWidget {
     retweet_button.active = tweet.retweeted;
     favorite_button.active = tweet.favorited;
 
+    set_source_link (tweet.id, tweet.screen_name);
+
     // TODO: Also do this on inline_media_added signal
     if (tweet.media != null) {
       tweet_media = tweet.media;
@@ -404,6 +410,13 @@ class TweetInfoPage : IPage , ScrollWidget {
     }
     this.following = following;
   } //}}}
+
+
+  private void set_source_link (int64 id, string screen_name) {
+    var link = "https://twitter.com/%s/status/%s".printf (screen_name,
+                                                          id.to_string());
+    source_label.label = "<a href='%s' title='Open in Browser'>Source</a>".printf (link);
+  }
 
   /**
    * Twitter's source parameter of tweets includes a 'rel' parameter
