@@ -148,8 +148,8 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
 
     // Don't show tweets the user retweeted again
 
-    // If the tweet is a tweet the user retweeted, check
-    // if it's already in the list. If so, mark it retweeted
+    /* If the tweet is a tweet the user retweeted, check
+       if it's already in the list. If so, mark it retweeted */
     if (t.retweeted_by == account.name) {
       foreach (Gtk.Widget w in tweet_list.get_children ()) {
         if (w == null || !(w is TweetListEntry))
@@ -158,6 +158,7 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
         var tle = (TweetListEntry) w;
         if (tle.tweet.id == t.rt_id) {
           tle.tweet.retweeted = true;
+          tle.tweet.my_retweet = t.id;
         }
       }
       return false;

@@ -35,6 +35,10 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
     }
   }
 
+
+/* TODO: All the following functions should probably go into DefaultTimeline
+         so we can avoid the code duplication in MentionsTimeline and HomeTimeline */
+
   private void add_tweet (Json.Node root_node) { // {{{
     var root = root_node.get_object ();
     var author = root.get_object_member ("user");
@@ -62,6 +66,7 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
           var tle = (TweetListEntry) w;
           if (tle.tweet.id == t.rt_id) {
             tle.tweet.retweeted = true;
+            tle.tweet.my_retweet = t.id;
           }
         });
         return;
