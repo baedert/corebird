@@ -80,7 +80,11 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
 
       unread_count++;
       update_unread_count();
-      this.max_id =  t.id;
+      this.max_id = t.id;
+
+      // This is for example the case if the timeline has not been initialized yet, but a tweet arrived.
+      if (t.id < lowest_id)
+        lowest_id = t.id;
 
       if (Settings.notify_new_mentions ()) {
         NotificationManager.notify_pixbuf (_("New Mention from %s").printf ("@" + t.screen_name),
