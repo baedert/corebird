@@ -60,21 +60,8 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
       if (t.user_id == account.id)
         return;
 
-      // If the tweet is a tweet the user retweeted, check
-      // if it's already in the list. If so, mark it retweeted
-      if (t.retweeted_by == account.name) {
-        tweet_list.foreach ((w) => {
-          if (w == null || !(w is TweetListEntry))
-            return;
-
-          var tle = (TweetListEntry) w;
-          if (tle.tweet.id == t.rt_id) {
-            tle.tweet.retweeted = true;
-            tle.tweet.my_retweet = t.id;
-          }
-        });
+      if (t.is_retweet && !should_display_retweet (t))
         return;
-      }
 
       bool auto_scroll = Settings.auto_scroll_on_new_tweets ();
 

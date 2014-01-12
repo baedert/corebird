@@ -144,7 +144,7 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     }
   } // }}}
 
-  public void delete_tweet (int64 tweet_id) {
+  public void delete_tweet (int64 tweet_id) { // {{{
     foreach (Gtk.Widget w in tweet_list.get_children ()) {
       if (w == null || !(w is TweetListEntry))
         continue;
@@ -163,9 +163,9 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
         return;
       }
     }
-  }
+  } // }}}
 
-  public void toggle_favorite (int64 id, bool mode) {
+  public void toggle_favorite (int64 id, bool mode) { // {{{
     var tweets = tweet_list.get_children ();
 
     foreach (var w in tweets) {
@@ -177,6 +177,36 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
         break;
       }
     }
-  }
+  } // }}}
 
+
+  /**
+   * So, we don't want to display a retweet in the following situations:
+   *   - If the original tweet was a tweet by the authenticated user
+   *   - In any case, if the original tweet already exists in the timline,
+   *     we don't display the retweet but instead just mark the original tweet
+   *     as retweeted.
+   */
+  protected bool should_display_retweet (Tweet t) {
+    // First case
+    if (t.user_id == account.id)
+      return false;
+
+    // Second case
+    foreach (Gtk.Widget w in tweet_list.get_children ()) {
+      if (w == null || !(w is TweetListEntry))
+        continue;;
+
+      var tle = (TweetListEntry) w;
+      if (tle.tweet.id == t.rt_id || tle.tweet.rt_id == t.rt_id) {
+        if (t.rt_by_id == account.id) {
+          tle.tweet.retweeted = true;
+          tle.tweet.my_retweet = t.id;
+        }
+        return false;
+      }
+    }
+
+    return true;
+  }
 }
