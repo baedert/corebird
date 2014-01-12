@@ -39,27 +39,6 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
     }
   } // }}}
 
-  private void delete_tweet (int64 tweet_id) { // {{{
-    foreach (Gtk.Widget w in tweet_list.get_children ()) {
-      if (w == null || !(w is TweetListEntry))
-        continue;
-
-      var tle = (TweetListEntry) w;
-      if (tle.tweet.id == tweet_id) {
-        if (!tle.seen) {
-          tweet_list.remove (tle);
-          unread_count --;
-          update_unread_count ();
-        }else
-          tle.sensitive = false;
-        return;
-      } else if (tle.tweet.retweeted && tle.tweet.my_retweet == tweet_id) {
-        tle.tweet.retweeted = false;
-        return;
-      }
-    }
-  } // }}}
-
   private void toggle_favorite (int64 id, bool mode) {
     var tweets = tweet_list.get_children ();
 

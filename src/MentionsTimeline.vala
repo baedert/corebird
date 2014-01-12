@@ -27,7 +27,9 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
     if (type == StreamMessageType.TWEET) {
       add_tweet (root_node);
     } else if (type == StreamMessageType.DELETE) {
-      delete_tweet (root_node);
+      int64 id = root_node.get_object ().get_object_member ("delete")
+                     .get_object_member ("status").get_int_member ("id");
+      delete_tweet (id);
     } else if (type == StreamMessageType.EVENT_FAVORITE) {
       toggle_favorite (root_node, true);
     } else if (type == StreamMessageType.EVENT_UNFAVORITE) {
@@ -92,33 +94,9 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
       this.max_id =  t.id;
 
       if (Settings.notify_new_mentions ()) {
-        NotificationManager.notify_pixbuf(
-          "New Mention from @"+t.screen_name,
-          t.text,
-          t.avatar);
-      }
-    }
-  } // }}}
-
-  private void delete_tweet (Json.Node root_node) { // {{{
-    int64 tweet_id = root_node.get_object ().get_object_member ("delete")
-                     .get_object_member ("status").get_int_member ("id");
-    foreach (Gtk.Widget w in tweet_list.get_children ()) {
-      if (w == null || !(w is TweetListEntry))
-        continue;
-
-      var tle = (TweetListEntry) w;
-      if (tle.tweet.id == tweet_id) {
-        if (!tle.seen) {
-          tweet_list.remove (tle);
-          unread_count --;
-          update_unread_count ();
-        }else
-          tle.sensitive = false;
-        return;
-      } else if (tle.tweet.retweeted && tle.tweet.my_retweet == tweet_id) {
-        tle.tweet.retweeted = false;
-        return;
+        NotificationManager.notify_pixbuf (_("New Mention from %s").printf ("@" + t.screen_name),
+                                           t.text,
+                                           t.avatar);
       }
     }
   } // }}}
