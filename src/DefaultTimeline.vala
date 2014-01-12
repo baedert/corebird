@@ -163,8 +163,20 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
         return;
       }
     }
-
   }
 
+  public void toggle_favorite (int64 id, bool mode) {
+    var tweets = tweet_list.get_children ();
+
+    foreach (var w in tweets) {
+      if (!(w is TweetListEntry))
+        continue;
+      var t = ((TweetListEntry)w).tweet;
+      if (t.id == id) {
+        t.favorited = mode;
+        break;
+      }
+    }
+  }
 
 }

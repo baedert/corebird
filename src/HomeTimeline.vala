@@ -39,19 +39,6 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
     }
   } // }}}
 
-  private void toggle_favorite (int64 id, bool mode) {
-    var tweets = tweet_list.get_children ();
-
-    foreach (var w in tweets) {
-      if (!(w is TweetListEntry))
-        continue;
-      var t = ((TweetListEntry)w).tweet;
-      if (t.id == id) {
-        t.favorited = mode;
-        break;
-      }
-    }
-  }
 
   private void add_tweet (Json.Node obj) { // {{{
     GLib.DateTime now = new GLib.DateTime.now_local ();

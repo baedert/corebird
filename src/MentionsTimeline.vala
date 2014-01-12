@@ -23,17 +23,19 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
     base (id);
   }
 
-  private void stream_message_received (StreamMessageType type, Json.Node root_node){
+  private void stream_message_received (StreamMessageType type, Json.Node root){
     if (type == StreamMessageType.TWEET) {
-      add_tweet (root_node);
+      add_tweet (root);
     } else if (type == StreamMessageType.DELETE) {
-      int64 id = root_node.get_object ().get_object_member ("delete")
+      int64 id = root.get_object ().get_object_member ("delete")
                      .get_object_member ("status").get_int_member ("id");
       delete_tweet (id);
     } else if (type == StreamMessageType.EVENT_FAVORITE) {
-      toggle_favorite (root_node, true);
+      int64 id = root.get_object ().get_object_member ("target_object").get_int_member ("id");
+      toggle_favorite (id, true);
     } else if (type == StreamMessageType.EVENT_UNFAVORITE) {
-      toggle_favorite (root_node, false);
+      int64 id = root.get_object ().get_object_member ("target_object").get_int_member ("id");
+      toggle_favorite (id, false);
     }
   }
 
@@ -100,22 +102,6 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
       }
     }
   } // }}}
-
-  private void toggle_favorite (Json.Node root_node, bool mode) { // {{{
-    int64 id = root_node.get_object ().get_object_member ("target_object").get_int_member ("id");
-    var tweets = tweet_list.get_children ();
-
-    foreach (var w in tweets) {
-      if (!(w is TweetListEntry))
-        continue;
-      var t = ((TweetListEntry)w).tweet;
-      if (t.id == id) {
-        t.favorited = mode;
-        break;
-      }
-    }
-  } // }}}
-
 
 
   private void mark_seen (int64 id) {
