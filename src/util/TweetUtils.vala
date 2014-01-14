@@ -50,9 +50,11 @@ namespace TweetUtils {
       int length_before = formatted_text.char_count ();
       int from = formatted_text.index_of_nth_char (s.start + char_diff);
       int to   = formatted_text.index_of_nth_char (s.end + char_diff);
+      var html_url = s.url.replace("&", "&amp;");
       formatted_text = formatted_text.splice (from, to,
-           "<a href=\"%s\">%s</a>".printf(s.url.replace ("&", "&amp;"),
-                                        s.display_url.replace ("&", "&amp;")));
+           "<a href=\"%s\" title=\"%s\">%s</a>".printf(html_url,
+                                                       html_url,
+                                                       s.display_url.replace ("&", "&amp;")));
       char_diff += formatted_text.char_count () - length_before;
     }
 
