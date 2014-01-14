@@ -40,9 +40,7 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     this.id = id;
     this.scrolled_to_start.connect(handle_scrolled_to_start);
     this.scrolled_to_end.connect(() => {
-        message ("scrol");
       if(!loading) {
-        message ("in");
         load_older();
       }
     });
@@ -99,7 +97,10 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   public abstract void load_newest ();
   public abstract void load_older ();
 
-
+  public override void destroy () {
+    if (tweet_remove_timeout > 0)
+      GLib.Source.remove (tweet_remove_timeout);
+  }
 
   public virtual void create_tool_button(RadioToolButton? group){}
 
@@ -143,4 +144,69 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     }
   } // }}}
 
+  public void delete_tweet (int64 tweet_id) { // {{{
+    foreach (Gtk.Widget w in tweet_list.get_children ()) {
+      if (w == null || !(w is TweetListEntry))
+        continue;
+
+      var tle = (TweetListEntry) w;
+      if (tle.tweet.id == tweet_id) {
+        if (!tle.seen) {
+          tweet_list.remove (tle);
+          unread_count --;
+          update_unread_count ();
+        }else
+          tle.sensitive = false;
+        return;
+      } else if (tle.tweet.retweeted && tle.tweet.my_retweet == tweet_id) {
+        tle.tweet.retweeted = false;
+        return;
+      }
+    }
+  } // }}}
+
+  public void toggle_favorite (int64 id, bool mode) { // {{{
+    var tweets = tweet_list.get_children ();
+
+    foreach (var w in tweets) {
+      if (!(w is TweetListEntry))
+        continue;
+      var t = ((TweetListEntry)w).tweet;
+      if (t.id == id) {
+        t.favorited = mode;
+        break;
+      }
+    }
+  } // }}}
+
+
+  /**
+   * So, we don't want to display a retweet in the following situations:
+   *   - If the original tweet was a tweet by the authenticated user
+   *   - In any case, if the original tweet already exists in the timline,
+   *     we don't display the retweet but instead just mark the original tweet
+   *     as retweeted.
+   */
+  protected bool should_display_retweet (Tweet t) {
+    // First case
+    if (t.user_id == account.id)
+      return false;
+
+    // Second case
+    foreach (Gtk.Widget w in tweet_list.get_children ()) {
+      if (w == null || !(w is TweetListEntry))
+        continue;;
+
+      var tle = (TweetListEntry) w;
+      if (tle.tweet.id == t.rt_id || tle.tweet.rt_id == t.rt_id) {
+        if (t.rt_by_id == account.id) {
+          tle.tweet.retweeted = true;
+          tle.tweet.my_retweet = t.id;
+        }
+        return false;
+      }
+    }
+
+    return true;
+  }
 }

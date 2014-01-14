@@ -30,27 +30,14 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
       int64 id = root.get_object ().get_object_member ("delete")
                      .get_object_member ("status").get_int_member ("id");
       delete_tweet (id);
+    } else if (type == StreamMessageType.EVENT_FAVORITE) {
+      int64 id = root.get_object ().get_object_member ("target_object").get_int_member ("id");
+      toggle_favorite (id, true);
+    } else if (type == StreamMessageType.EVENT_UNFAVORITE) {
+      int64 id = root.get_object ().get_object_member ("target_object").get_int_member ("id");
+      toggle_favorite (id, false);
     }
   } // }}}
-
-  private void delete_tweet (int64 tweet_id) {
-    foreach (Gtk.Widget w in tweet_list.get_children ()) {
-      if (w == null || !(w is TweetListEntry))
-        continue;
-
-      var tle = (TweetListEntry) w;
-      if (tle.tweet.id == tweet_id) {
-        if (!tle.seen) {
-          tweet_list.remove (tle);
-          unread_count --;
-          update_unread_count ();
-        }else
-          tle.sensitive = false;
-
-        return;
-      }
-    }
-  }
 
 
   private void add_tweet (Json.Node obj) { // {{{
@@ -58,7 +45,7 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
     Tweet t = new Tweet();
     t.load_from_json (obj, now);
 
-    if (t.is_retweet && !should_display_retweet (obj, t))
+    if (t.is_retweet && !should_display_retweet (t))
       return;
 
     bool auto_scroll = Settings.auto_scroll_on_new_tweets ();
@@ -108,59 +95,6 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
     }
   } // }}}
 
-  /**
-   * Determines whether the given tweet should be displayed.
-   * This is only important for retweets which should not be
-   * shown if, e.g., the user himself retweeted the original tweet, etc.
-   *
-   * @param root_node The Json.Node representing the root node of the tweet's json data
-   * @param t The tweet object constructed from the given root_node
-   *
-   * @return false if the (re)tweet should not be shown, true otherwise.
-   */
-  private bool should_display_retweet (Json.Node root_node, Tweet t) { // {{{
-
-    // Don't show if the user was retweeted
-    if (t.user_id == account.id)
-      return false;
-
-
-    // Don't show tweets the user retweeted again
-
-    // If the tweet is a tweet the user retweeted, check
-    // if it's already in the list. If so, mark it retweeted
-    if (t.retweeted_by == account.name) {
-      foreach (Gtk.Widget w in tweet_list.get_children ()) {
-        if (w == null || !(w is TweetListEntry))
-          continue;
-
-        var tle = (TweetListEntry) w;
-        if (tle.tweet.id == t.rt_id) {
-          tle.tweet.retweeted = true;
-        }
-      }
-      return false;
-    }
-
-    // Don't show it if the user already follows the retweeted user
-//    if (root_node.get_object ().get_object_member ("retweeted_status").get_object_member ("user")
-//        .get_boolean_member ("following")) {
-//      return false;
-//    }
-    // XXX Fun: 'following' is just null if the tweet is a retweet, yay!
-
-    // Check if the original tweet already exists in the timeline
-    foreach (Gtk.Widget w in tweet_list.get_children ()) {
-      if (w == null || !(w is TweetListEntry))
-        continue;;
-
-      var tle = (TweetListEntry) w;
-      if (tle.tweet.id == t.rt_id || tle.tweet.rt_id == t.rt_id)
-        return false;
-    }
-
-    return true;
-  } // }}}
 
   // Will be called once the inline media of a tweet has been loaded.
   private void tweet_inline_media_added_cb (Tweet t, Gdk.Pixbuf? image) {

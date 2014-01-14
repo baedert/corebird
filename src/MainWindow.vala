@@ -304,7 +304,7 @@ class MainWindow : ApplicationWindow {
     account.user_counter.save (account.db);
 
     unowned GLib.List<weak Window> ws = this.application.get_windows ();
-    message("Windows: %u", ws.length ());
+    debug("Windows: %u", ws.length ());
 
     // Enable the account's entry in the app menu again
     var acc_menu = (GLib.Menu)Corebird.account_menu;
@@ -321,7 +321,7 @@ class MainWindow : ApplicationWindow {
       string[] startup_accounts = new string[1];
       startup_accounts[0] = ((MainWindow)ws.nth_data (0)).account.screen_name;
       Settings.get ().set_strv ("startup-accounts", startup_accounts);
-      message ("Saving the account %s", ((MainWindow)ws.nth_data (0)).account.screen_name);
+      debug ("Saving the account %s", ((MainWindow)ws.nth_data (0)).account.screen_name);
     }
   }
 
