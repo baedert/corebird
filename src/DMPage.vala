@@ -158,7 +158,7 @@ class DMPage : IPage, IMessageReceiver, Box {
 
   [GtkCallback]
   private void send_button_clicked_cb () { // {{{
-    if (text_entry.buffer.length == 0 || text_entry.buffer.length > 140)
+    if (text_entry.buffer.length == 0 || text_entry.buffer.length > Tweet.MAX_LENGTH)
       return;
 
     // Just add the entry now
@@ -180,7 +180,7 @@ class DMPage : IPage, IMessageReceiver, Box {
       try {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
-        critical (e.message);
+        Utils.show_error_object (call.get_payload (), e.message);
         return;
       }
     });
