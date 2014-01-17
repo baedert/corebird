@@ -64,6 +64,7 @@ class DMPage : IPage, IMessageReceiver, Box {
       new_msg.main_window = main_window;
       new_msg.user_id = sender.get_int_member ("id");
       new_msg.load_avatar ();
+      new_msg.update_time_delta ();
       delta_updater.add (new_msg);
       messages_list.add (new_msg);
       if (scroll_widget.scrolled_down)
