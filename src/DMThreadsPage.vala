@@ -35,6 +35,8 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   private int64 max_sent_id = -1;
   [GtkChild]
   private Gtk.ListBox thread_list;
+  private Gtk.Spinner progress_spinner;
+  private bool dms_received { get; set; default = false;}
 
 
   public DMThreadsPage (int id, Account account) {
@@ -81,7 +83,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
           this.unread_count ++;
           this.update_unread_count ();
         }
-        message ("Increasing global unread count by 1");
+        debug ("Increasing global unread count by 1");
       }
     }
   }
@@ -105,7 +107,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
                       .where_eqi ("to_id", account.id).order ("id DESC").limit (1).once_i64 ();
     max_sent_id = account.db.select ("dms").cols ("id")
                   .where_eqi ("from_id", account.id).order ("id DESC").limit (1).once_i64 ();
-    account.db.select ("dm_threads")
+    int n_rows = account.db.select ("dm_threads")
               .cols ("user_id", "screen_name", "last_message", "last_message_id", "avatar_url", "name")
               .order ("last_message_id")
               .run ((vals) => {
@@ -126,6 +128,12 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       thread_map.set (user_id, entry);
       return true;
     });
+    if (n_rows == 0) {
+      progress_spinner = new Gtk.Spinner ();
+      progress_spinner.set_size_request (60, 60);
+      progress_spinner.start ();
+      thread_list.add (progress_spinner);
+    }
   } // }}}
 
   public void load_newest () { // {{{
@@ -135,7 +143,20 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     call.add_param ("skip_status", "true");
     call.add_param ("since_id", max_received_id.to_string ());
     call.add_param ("count", "200");
-    call.invoke_async.begin (null, on_dm_result);
+    call.invoke_async.begin (null, (obj, res) => {
+      if (!dms_received) {
+      // we are the first one to receive the results
+        dms_received = true;
+        this.notify["dms_received"].connect (() => {
+          on_dm_result (obj, res);
+        });
+      } else {
+        on_dm_result (obj, res);
+        //notify so the other callback gets executed
+        dms_received = false;
+        remove_spinner ();
+      }
+    });
 
     var sent_call = account.proxy.new_call ();
     sent_call.set_function ("1.1/direct_messages/sent.json");
@@ -143,7 +164,21 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     sent_call.add_param ("since_id", max_sent_id.to_string ());
     sent_call.add_param ("count", "200");
     sent_call.set_method ("GET");
-    sent_call.invoke_async.begin (null, on_dm_result);
+    sent_call.invoke_async.begin (null, (obj, res) => {
+      if (!dms_received) {
+      // we are the first one to receive the results
+        dms_received = true;
+        this.notify["dms_received"].connect (() => {
+          on_dm_result (obj, res);
+        });
+      } else {
+        on_dm_result (obj, res);
+        //notify so the other callback gets executed
+        dms_received = false;
+        remove_spinner ();
+      }
+
+    });
   } // }}}
 
 
@@ -291,6 +326,13 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       row.set_header (header);
     }
   } //}}}
+
+  private void remove_spinner () {
+    if (progress_spinner != null && progress_spinner.parent != null) {
+      thread_list.remove (thread_list.get_row_at_index (1));
+      progress_spinner = null;
+    }
+  }
 
   public void create_tool_button(RadioToolButton? group) {
     tool_button = new BadgeRadioToolButton(group, "corebird-dms-symbolic");
