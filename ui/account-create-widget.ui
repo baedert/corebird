@@ -19,6 +19,9 @@
             <property name="margin_right">12</property>
             <property name="hexpand">True</property>
             <property name="label" translatable="yes">PIN:</property>
+            <accessibility>
+              <relation type="label-for" target="pin_entry"/>
+            </accessibility>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -34,6 +37,9 @@
             <property name="margin_top">7</property>
             <property name="hexpand">True</property>
             <property name="input_purpose">digits</property>
+            <accessibility>
+              <relation type="labelled-by" target="label4"/>
+            </accessibility>
           </object>
           <packing>
             <property name="expand">False</property>

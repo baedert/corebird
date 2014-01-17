@@ -115,6 +115,14 @@
                 <property name="icon_size">1</property>
               </object>
             </child>
+            <accessibility>
+
+            </accessibility>
+            <child internal-child="accessible">
+              <object class="AtkObject" id="a11y-compose_tweet_button1">
+                <property name="AtkObject::accessible_name" translatable="yes">New tweet</property>
+                </object>
+            </child>
           </object>
         </child>
       </object>

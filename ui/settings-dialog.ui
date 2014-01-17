@@ -183,6 +183,9 @@
                     <property name="hexpand">True</property>
                     <property name="xalign">1</property>
                     <property name="label" translatable="yes">Upload Provider:</property>
+                    <accessibility>
+                      <relation type="label-for" target="upload_provider_combobox"/>
+                    </accessibility>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -200,6 +203,9 @@
                     <items>
                       <item id="Twitter" translatable="yes">Twitter</item>
                     </items>
+                    <accessibility>
+                      <relation type="labelled-by" target="label8"/>
+                    </accessibility>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -233,6 +239,9 @@
                     <property name="halign">end</property>
                     <property name="valign">center</property>
                     <property name="label" translatable="yes">Show retweets:</property>
+                    <accessibility>
+                      <relation type="label-for" target="search_show_retweets_switch"/>
+                    </accessibility>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -246,6 +255,9 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="halign">start</property>
+                    <accessibility>
+                      <relation type="labelled-by" target="label10"/>
+                    </accessibility>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -285,6 +297,9 @@
                     <property name="halign">end</property>
                     <property name="hexpand">True</property>
                     <property name="label" translatable="yes">Show Inline Media:</property>
+                    <accessibility>
+                      <relation type="label-for" target="inline_media_switch"/>
+                    </accessibility>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -300,6 +315,9 @@
                     <property name="halign">end</property>
                     <property name="hexpand">True</property>
                     <property name="label" translatable="yes">Use Dark Theme:</property>
+                    <accessibility>
+                      <relation type="label-for" target="dark_theme_switch"/>
+                    </accessibility>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -314,6 +332,9 @@
                     <property name="can_focus">True</property>
                     <property name="halign">start</property>
                     <property name="hexpand">True</property>
+                    <accessibility>
+                      <relation type="labelled-by" target="label16"/>
+                    </accessibility>
                   </object>
                   <packing>
                     <property name="left_attach">2</property>
@@ -328,6 +349,9 @@
                     <property name="can_focus">True</property>
                     <property name="halign">start</property>
                     <property name="hexpand">True</property>
+                    <accessibility>
+                      <relation type="labelled-by" target="label17"/>
+                    </accessibility>
                   </object>
                   <packing>
                     <property name="left_attach">2</property>
@@ -342,6 +366,9 @@
                     <property name="can_focus">True</property>
                     <property name="halign">start</property>
                     <property name="hexpand">True</property>
+                    <accessibility>
+                      <relation type="labelled-by" target="label2"/>
+                    </accessibility>
                   </object>
                   <packing>
                     <property name="left_attach">2</property>
@@ -357,6 +384,9 @@
                     <property name="halign">end</property>
                     <property name="hexpand">True</property>
                     <property name="label" translatable="yes">Maximum media size:</property>
+                    <accessibility>
+                      <relation type="label-for" target="max_media_size_spin_button"/>
+                    </accessibility>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -372,6 +402,9 @@
                     <property name="halign">end</property>
                     <property name="hexpand">True</property>
                     <property name="label" translatable="yes">Auto scroll on new tweets:</property>
+                    <accessibility>
+                      <relation type="label-for" target="auto_scroll_on_new_tweets_switch"/>
+                    </accessibility>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -390,6 +423,9 @@
                     <property name="climb_rate">0.10000000000000001</property>
                     <property name="digits">1</property>
                     <property name="value">2</property>
+                    <accessibility>
+                      <relation type="labelled-by" target="label18"/>
+                    </accessibility>
                   </object>
                   <packing>
                     <property name="left_attach">2</property>
@@ -461,6 +497,9 @@
                     <property name="halign">end</property>
                     <property name="xalign">1</property>
                     <property name="label" translatable="yes">On New Tweets:</property>
+                    <accessibility>
+                      <relation type="label-for" target="on_new_tweets_combobox"/>
+                    </accessibility>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -492,6 +531,9 @@
                     <property name="can_focus">False</property>
                     <property name="xalign">1</property>
                     <property name="label" translatable="yes">On New Mentions:</property>
+                    <accessibility>
+                      <relation type="label-for" target="on_new_mentions_switch"/>
+                    </accessibility>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -506,6 +548,9 @@
                     <property name="can_focus">False</property>
                     <property name="xalign">1</property>
                     <property name="label" translatable="yes">On New Messages:</property>
+                    <accessibility>
+                      <relation type="label-for" target="on_new_dms_switch"/>
+                    </accessibility>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -519,6 +564,9 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="halign">start</property>
+                    <accessibility>
+                      <relation type="labelled-by" target="label14"/>
+                    </accessibility>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -532,6 +580,9 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="halign">start</property>
+                    <accessibility>
+                      <relation type="labelled-by" target="label15"/>
+                    </accessibility>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -554,6 +605,9 @@
                       <item id="Stack 25" translatable="yes">Stack 25</item>
                       <item id="Stack 50" translatable="yes">Stack 50</item>
                     </items>
+                    <accessibility>
+                      <relation type="labelled-by" target="label6"/>
+                    </accessibility>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -568,6 +622,9 @@
                     <property name="can_focus">False</property>
                     <property name="xalign">1</property>
                     <property name="label" translatable="yes">On New Followers:</property>
+                    <accessibility>
+                      <relation type="label-for" target="on_new_followers_switch"/>
+                    </accessibility>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -581,6 +638,9 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="halign">start</property>
+                    <accessibility>
+                      <relation type="labelled-by" target="label5"/>
+                    </accessibility>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
