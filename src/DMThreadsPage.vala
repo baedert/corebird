@@ -74,9 +74,13 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     if (type == StreamMessageType.DIRECT_MESSAGE) {
       var obj = root.get_object ().get_object_member ("direct_message");
       add_new_thread (obj);
-      if (obj.get_int_member ("sender_id") != account.id) {
-        this.unread_count ++;
-        this.update_unread_count ();
+      int64 sender_id = obj.get_int_member ("sender_id");
+      if (sender_id != account.id) {
+        if (main_window.cur_page_id != MainWindow.PAGE_DM ||
+            ((DMPage)main_window.get_page (MainWindow.PAGE_DM)).user_id != sender_id) {
+          this.unread_count ++;
+          this.update_unread_count ();
+        }
         message ("Increasing global unread count by 1");
       }
     }

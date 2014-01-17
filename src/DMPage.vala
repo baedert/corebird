@@ -34,7 +34,7 @@ class DMPage : IPage, IMessageReceiver, Box {
   private ScrollWidget scroll_widget;
   private DMPlaceholderBox placeholder_box = new DMPlaceholderBox ();
 
-  private int64 user_id;
+  public int64 user_id;
   private int64 lowest_id = int64.MAX;
 
   public DMPage (int id) {
