@@ -104,6 +104,7 @@
                 <property name="label">TEXT!</property>
                 <property name="wrap">True</property>
                 <property name="wrap_mode">word-char</property>
+                <property name="use_markup">True</property>
               </object>
               <packing>
                 <property name="expand">False</property>

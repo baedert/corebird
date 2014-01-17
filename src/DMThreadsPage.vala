@@ -74,9 +74,13 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     if (type == StreamMessageType.DIRECT_MESSAGE) {
       var obj = root.get_object ().get_object_member ("direct_message");
       add_new_thread (obj);
-      if (obj.get_int_member ("sender_id") != account.id) {
-        this.unread_count ++;
-        this.update_unread_count ();
+      int64 sender_id = obj.get_int_member ("sender_id");
+      if (sender_id != account.id) {
+        if (main_window.cur_page_id != MainWindow.PAGE_DM ||
+            ((DMPage)main_window.get_page (MainWindow.PAGE_DM)).user_id != sender_id) {
+          this.unread_count ++;
+          this.update_unread_count ();
+        }
         message ("Increasing global unread count by 1");
       }
     }
@@ -240,6 +244,26 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     int64 sender_id = dm_obj.get_int_member ("sender_id");
     int64 dm_id  = dm_obj.get_int_member ("id");
     string text = dm_obj.get_string_member ("text");
+    if (dm_obj.has_member ("entities")) {
+      var urls = dm_obj.get_object_member ("entities").get_array_member ("urls");
+      var url_list = new GLib.SList<TweetUtils.Sequence?> ();
+      urls.foreach_element((arr, index, node) => {
+        var url = node.get_object();
+        string expanded_url = url.get_string_member("expanded_url");
+
+        Json.Array indices = url.get_array_member ("indices");
+        expanded_url = expanded_url.replace("&", "&amp;");
+        url_list.prepend(TweetUtils.Sequence() {
+          start = (int)indices.get_int_element (0),
+          end   = (int)indices.get_int_element (1) ,
+          url   = expanded_url,
+          display_url = url.get_string_member ("display_url"),
+          visual_display_url = false
+        });
+      });
+      text = TweetUtils.get_formatted_text (text, url_list);
+    }
+
     // TODO: Update last_message
     account.db.insert ("dms").vali64 ("id", dm_id)
               .vali64 ("from_id", sender_id)
