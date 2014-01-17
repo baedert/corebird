@@ -135,29 +135,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     call.add_param ("skip_status", "true");
     call.add_param ("since_id", max_received_id.to_string ());
     call.add_param ("count", "200");
-    call.invoke_async.begin (null, (obj, res) => {
-      try {
-        call.invoke_async.end (res);
-      } catch (GLib.Error e) {
-        critical (e.message);
-        return;
-      }
-      var parser = new Json.Parser ();
-      try {
-        parser.load_from_data (call.get_payload ());
-      } catch (GLib.Error e) {
-        critical (e.message);
-        return;
-      }
-      var root_arr = parser.get_root ().get_array ();
-      message ("received: %u", root_arr.get_length ());
-      account.db.begin_transaction ();
-      root_arr.foreach_element ((arr, pos, node) => {
-        add_new_thread (node.get_object ());
-      });
-      account.db.end_transaction ();
-      save_last_messages ();
-    });
+    call.invoke_async.begin (null, on_dm_result);
 
     var sent_call = account.proxy.new_call ();
     sent_call.set_function ("1.1/direct_messages/sent.json");
@@ -165,29 +143,39 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     sent_call.add_param ("since_id", max_sent_id.to_string ());
     sent_call.add_param ("count", "200");
     sent_call.set_method ("GET");
-    sent_call.invoke_async.begin (null, (obj, res) => {
-      try {
-        sent_call.invoke_async.end (res);
-      } catch (GLib.Error e) {
-        critical (e.message);
-        return;
-      }
-      var parser = new Json.Parser ();
-      try {
-        parser.load_from_data (sent_call.get_payload ());
-      } catch (GLib.Error e) {
-        critical (e.message);
-        return;
-      }
-      var root_arr = parser.get_root ().get_array ();
-      message ("sent: %u", root_arr.get_length ());
-      account.db.begin_transaction ();
-      root_arr.foreach_element ((arr, pos, node) => {
-        save_message (node.get_object ());
-      });
-      account.db.end_transaction ();
-    });
+    sent_call.invoke_async.begin (null, on_dm_result);
   } // }}}
+
+
+  private void on_dm_result (GLib.Object? object, GLib.AsyncResult res) {
+    var call = (Rest.ProxyCall) object;
+    try {
+      call.invoke_async.end (res);
+    } catch (GLib.Error e) {
+      critical (e.message);
+      return;
+    }
+    var parser = new Json.Parser ();
+    try {
+      parser.load_from_data (call.get_payload ());
+    } catch (GLib.Error e) {
+      critical (e.message);
+      return;
+    }
+    var root_arr = parser.get_root ().get_array ();
+    message ("sent: %u", root_arr.get_length ());
+    account.db.begin_transaction ();
+    root_arr.foreach_element ((arr, pos, node) => {
+      var dm_obj = node.get_object ();
+      if (dm_obj.get_int_member ("sender_id") == account.id)
+        save_message (dm_obj);
+      else
+        add_new_thread (dm_obj);
+    });
+    account.db.end_transaction ();
+    save_last_messages ();
+  }
+
 
   private void add_new_thread (Json.Object dm_obj) { // {{{
     int64 sender_id  = dm_obj.get_int_member ("sender_id");
