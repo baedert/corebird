@@ -60,7 +60,7 @@ class DMPage : IPage, IMessageReceiver, Box {
       new_msg.name = sender.get_string_member ("name");
       new_msg.screen_name = sender.get_string_member ("screen_name");
       new_msg.avatar_url = sender.get_string_member ("profile_image_url");
-      new_msg.timestamp = Utils.parse_date (sender.get_string_member ("created_at")).to_unix ();
+      new_msg.timestamp = Utils.parse_date (obj.get_string_member ("created_at")).to_unix ();
       new_msg.main_window = main_window;
       new_msg.user_id = sender.get_int_member ("id");
       new_msg.load_avatar ();
@@ -71,7 +71,7 @@ class DMPage : IPage, IMessageReceiver, Box {
     }
   } /// }}}
 
-  private void load_older () {
+  private void load_older () { // {{{
     var now = new GLib.DateTime.now_local ();
     scroll_widget.balance_next_upper_change (TOP);
     // Load messages
@@ -102,7 +102,7 @@ class DMPage : IPage, IMessageReceiver, Box {
       return true;
     });
 
-  }
+  } // }}}
 
   public void on_join (int page_id, va_list arg_list) { // {{{
     int64 user_id = arg_list.arg<int64> ();
