@@ -17,6 +17,7 @@
 
 class TweetListBox : Gtk.ListBox {
   private Gtk.Stack placeholder = null;
+  private Gtk.Label no_entries_label;
 
   public TweetListBox (bool show_placeholder = true) {
     if (show_placeholder) {
@@ -40,9 +41,9 @@ class TweetListBox : Gtk.ListBox {
     spinner.start ();
     spinner.show_all ();
     placeholder.add_named (spinner, "spinner");
-    var label = new Gtk.Label (_("No entries found"));
-    label.get_style_context ().add_class ("dim-label");
-    placeholder.add_named (label, "no-entries");
+    no_entries_label  = new Gtk.Label (_("No entries found"));
+    no_entries_label.get_style_context ().add_class ("dim-label");
+    placeholder.add_named (no_entries_label, "no-entries");
     placeholder.visible_child_name = "spinner";
     placeholder.show_all ();
     placeholder.set_valign (Gtk.Align.CENTER);
@@ -67,5 +68,13 @@ class TweetListBox : Gtk.ListBox {
     this.foreach ((w) => {
       remove (w);
     });
+  }
+
+  public void set_placeholder_text (string text) {
+    no_entries_label.label = text;
+  }
+
+  public void reset_placeholder_text () {
+    no_entries_label.label = _("No entries found");
   }
 }
