@@ -205,41 +205,31 @@ class ProfilePage : ScrollWidget, IPage {
     call.set_function ("1.1/users/show.json");
     call.add_param ("user_id", user_id.to_string ());
     call.add_param ("include_entities", "false");
-    call.invoke_async.begin (data_cancellable, (obj, res) => {
-      try {
-        call.invoke_async.end (res);
-      } catch (GLib.Error e) {
-        warning ("Error while ending call: %s", e.message);
-        return;
-      }
-      string back = call.get_payload();
-      Json.Parser parser = new Json.Parser();
-      try{
-        parser.load_from_data(back);
-      } catch (GLib.Error e){
-        warning ("Error while loading profile data: %s", e.message);
-        return;
-      }
+    try {
+      yield call.invoke_async (data_cancellable);
+    } catch (GLib.Error e) {
+      warning ("Error while ending call: %s", e.message);
+      return;
+    }
+    string back = call.get_payload();
+    Json.Parser parser = new Json.Parser();
+    try{
+      parser.load_from_data (back);
+    } catch (GLib.Error e){
+      warning ("Error while loading profile data: %s", e.message);
+      return;
+    }
 
-      var root = parser.get_root().get_object();
-      int64 id = root.get_int_member ("id");
+    var root = parser.get_root().get_object();
+    int64 id = root.get_int_member ("id");
 
-      string avatar_url = root.get_string_member("profile_image_url");
-      avatar_url = avatar_url.replace("_normal", "_bigger");
-      string avatar_name = Utils.get_avatar_name(avatar_url);
-      string avatar_on_disk = Utils.user_file("assets/avatars/"+avatar_name);
+    string avatar_url = root.get_string_member("profile_image_url");
+    avatar_url = avatar_url.replace("_normal", "_bigger");
+    string avatar_name = Utils.get_avatar_name(avatar_url);
+    string avatar_on_disk = Utils.user_file("assets/avatars/"+avatar_name);
 
-      if(!FileUtils.test(avatar_on_disk, FileTest.EXISTS)){
-        Utils.download_file_async.begin(avatar_url, avatar_on_disk, data_cancellable, () => {
-          try {
-            avatar_image.pixbuf = new Gdk.Pixbuf.from_file (avatar_on_disk);
-          } catch (GLib.Error e) {
-            warning (e.message);
-          }
-          progress_spinner.stop ();
-          progress_spinner.hide ();
-        });
-      }else {
+    if(!FileUtils.test(avatar_on_disk, FileTest.EXISTS)){
+      Utils.download_file_async.begin(avatar_url, avatar_on_disk, data_cancellable, () => {
         try {
           avatar_image.pixbuf = new Gdk.Pixbuf.from_file (avatar_on_disk);
         } catch (GLib.Error e) {
@@ -247,84 +237,96 @@ class ProfilePage : ScrollWidget, IPage {
         }
         progress_spinner.stop ();
         progress_spinner.hide ();
+      });
+    }else {
+      try {
+        avatar_image.pixbuf = new Gdk.Pixbuf.from_file (avatar_on_disk);
+      } catch (GLib.Error e) {
+        warning (e.message);
       }
+      progress_spinner.stop ();
+      progress_spinner.hide ();
+    }
 
-      string name        = root.get_string_member("name").replace ("&", "&amp;");
-      string screen_name = root.get_string_member("screen_name");
-      string description = root.get_string_member("description").replace("&", "&amp;");
-      int followers      = (int)root.get_int_member("followers_count");
-      int following      = (int)root.get_int_member("friends_count");
-      int tweets         = (int)root.get_int_member("statuses_count");
-      bool is_following  = root.get_boolean_member("following");
-      bool has_url       = root.get_object_member("entities").has_member("url");
-      string banner_name = get_banner_name(user_id);
-      bool verified      = root.get_boolean_member ("verified");
+    string name        = root.get_string_member("name").replace ("&", "&amp;");
+    string screen_name = root.get_string_member("screen_name");
+    string description = root.get_string_member("description").replace("&", "&amp;");
+    int followers      = (int)root.get_int_member("followers_count");
+    int following      = (int)root.get_int_member("friends_count");
+    int tweets         = (int)root.get_int_member("statuses_count");
+    bool is_following  = root.get_boolean_member("following");
+    bool has_url       = root.get_object_member("entities").has_member("url");
+    string banner_name = get_banner_name(user_id);
+    bool verified      = root.get_boolean_member ("verified");
+    bool protected_user = root.get_boolean_member ("protected");
+    if (protected_user) {
+      tweet_list.set_placeholder_text (_("Protected profile"));
+    }
 
-      if (root.has_member ("profile_banner_url")) {
-        string banner_base_url = root.get_string_member ("profile_banner_url");
-        load_profile_banner (banner_base_url, user_id);
+    if (root.has_member ("profile_banner_url")) {
+      string banner_base_url = root.get_string_member ("profile_banner_url");
+      load_profile_banner (banner_base_url, user_id);
+    }
+
+    string display_url = "";
+    Json.Object entities = root.get_object_member ("entities");
+    if(has_url) {
+      var urls_object = entities.get_object_member("url").get_array_member("urls").
+        get_element(0).get_object();
+
+      var url = urls_object.get_string_member("expanded_url");
+      if (urls_object.has_member ("display_url")) {
+        display_url = urls_object.get_string_member("expanded_url");
+      } else {
+        url = urls_object.get_string_member("url");
+        display_url = url;
       }
+    }
 
-      string display_url = "";
-      Json.Object entities = root.get_object_member ("entities");
-      if(has_url) {
-        var urls_object = entities.get_object_member("url").get_array_member("urls").
-          get_element(0).get_object();
+    string location = null;
+    if(root.has_member("location")){
+      location = root.get_string_member("location");
+    }
 
-        var url = urls_object.get_string_member("expanded_url");
-        if (urls_object.has_member ("display_url")) {
-          display_url = urls_object.get_string_member("expanded_url");
-        } else {
-          url = urls_object.get_string_member("url");
-          display_url = url;
-        }
-      }
-
-      string location = null;
-      if(root.has_member("location")){
-        location = root.get_string_member("location");
-      }
-
-      GLib.SList<TweetUtils.Sequence?> text_urls = null;
-      if (root.has_member ("description")) {
-        Json.Array urls = entities.get_object_member ("description").get_array_member ("urls");
-        text_urls = new GLib.SList<TweetUtils.Sequence?>();
-        urls.foreach_element ((arr, i, node) => {
-          var ent = node.get_object ();
-          string expanded_url = ent.get_string_member ("expanded_url");
-          expanded_url = expanded_url.replace ("&", "&amp;");
-          Json.Array indices = ent.get_array_member ("indices");
-          text_urls.prepend (TweetUtils.Sequence(){
-            start = (int)indices.get_int_element (0),
-            end   = (int)indices.get_int_element (1),
-            url   = expanded_url,
-            display_url = ent.get_string_member ("display_url")
-          });
-
+    GLib.SList<TweetUtils.Sequence?> text_urls = null;
+    if (root.has_member ("description")) {
+      Json.Array urls = entities.get_object_member ("description").get_array_member ("urls");
+      text_urls = new GLib.SList<TweetUtils.Sequence?>();
+      urls.foreach_element ((arr, i, node) => {
+        var ent = node.get_object ();
+        string expanded_url = ent.get_string_member ("expanded_url");
+        expanded_url = expanded_url.replace ("&", "&amp;");
+        Json.Array indices = ent.get_array_member ("indices");
+        text_urls.prepend (TweetUtils.Sequence(){
+          start = (int)indices.get_int_element (0),
+          end   = (int)indices.get_int_element (1),
+          url   = expanded_url,
+          display_url = ent.get_string_member ("display_url")
         });
-      }
 
-      account.user_counter.user_seen (id, screen_name, name);
+      });
+    }
 
-      set_data(name, screen_name, display_url, location, description, tweets,
-           following, followers, avatar_url, verified, text_urls);
-      set_follow_button_state (is_following);
-      Corebird.db.replace ("profiles")
-                 .vali64 ("id", id)
-                 .val ("screen_name", screen_name)
-                 .val ("name", name)
-                 .vali ("followers", followers)
-                 .vali ("following", following)
-                 .vali ("tweets", tweets)
-                 .val ("description", description)
-                 .val ("avatar_name", avatar_name)
-                 .val ("url", display_url)
-                 .val ("location", location)
-                 .valb ("is_following", is_following)
-                 .val ("banner_name", banner_name)
-                 .run ();
+    account.user_counter.user_seen (id, screen_name, name);
 
-    }); // end of callback
+    set_data(name, screen_name, display_url, location, description, tweets,
+         following, followers, avatar_url, verified, text_urls);
+    set_follow_button_state (is_following);
+    Corebird.db.replace ("profiles")
+               .vali64 ("id", id)
+               .val ("screen_name", screen_name)
+               .val ("name", name)
+               .vali ("followers", followers)
+               .vali ("following", following)
+               .vali ("tweets", tweets)
+               .val ("description", description)
+               .val ("avatar_name", avatar_name)
+               .val ("url", display_url)
+               .val ("location", location)
+               .valb ("is_following", is_following)
+               .val ("banner_name", banner_name)
+               .run ();
+
   } //}}}
 
 
@@ -341,7 +343,10 @@ class ProfilePage : ScrollWidget, IPage {
     try {
       yield call.invoke_async (null);
     } catch (GLib.Error e) {
-      Utils.show_error_object (call.get_payload (), e.message);
+      //Utils.show_error_object (call.get_payload (), e.message);
+      // Silently cancel since the user is probably protected.
+      tweet_list.set_empty ();
+      return;
     }
     var parser = new Json.Parser ();
     try {
@@ -530,6 +535,7 @@ class ProfilePage : ScrollWidget, IPage {
     data_cancellable = new GLib.Cancellable ();
     set_user_id(user_id);
     tweet_list.remove_all ();
+    tweet_list.reset_placeholder_text ();
     user_stack.visible_child = tweet_list;
     user_lists.clear_lists ();
     load_tweets.begin ();
