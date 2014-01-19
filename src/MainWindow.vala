@@ -168,6 +168,7 @@ class MainWindow : ApplicationWindow {
 
     // Activate the first timeline
     pages[0].get_tool_button ().active = true;
+    load_geometry ();
   }
 
   /**
@@ -323,7 +324,57 @@ class MainWindow : ApplicationWindow {
       Settings.get ().set_strv ("startup-accounts", startup_accounts);
       debug ("Saving the account %s", ((MainWindow)ws.nth_data (0)).account.screen_name);
     }
+    save_geometry ();
   }
 
+  /**
+   *
+   *
+   *
+   *
+   */
+  private void load_geometry () {
+    if (account == null) {
+      debug ("Could not load geometry, account == null");
+      return;
+    }
+    GLib.Variant win_geom = Settings.get ().get_value ("window-geometry");
+    int x = 0,
+        y = 0,
+        w = 0,
+        h = 0;
+    win_geom.lookup (account.screen_name, "(iiii)", &x, &y, &w, &h);
+    move (x, y);
+    resize (w, h);
+  }
 
+  /**
+   *
+   *
+   *
+   *
+   */
+  private void save_geometry () {
+    GLib.Variant win_geom = Settings.get ().get_value ("window-geometry");
+    GLib.Variant new_geom;
+    GLib.VariantBuilder builder = new GLib.VariantBuilder (new GLib.VariantType("a{s(iiii)}"));
+    var iter = win_geom.iterator ();
+    string key = "";
+    int x = 0,
+        y = 0,
+        w = 0,
+        h = 0;
+    while (iter.next ("{s(iiii)}", &key, &x, &y, &w, &h)) {
+      if (key != account.screen_name) {
+        builder.add ("{s(iiii)}", account.screen_name, x, y, w, h);
+      }
+    }
+    /* Finally, add this window */
+    get_position (out x, out y);
+    get_size (out w, out h);
+    builder.add ("{s(iiii)}", account.screen_name, x, y, w, h);
+    new_geom = builder.end ();
+
+    Settings.get ().set_value ("window-geometry", new_geom);
+  }
 }
