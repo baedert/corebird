@@ -161,6 +161,7 @@ class MainWindow : ApplicationWindow {
     Settings.get ().bind ("sidebar-visible", sidebar_revealer, "reveal-child",
                           SettingsBindFlags.DEFAULT);
 
+    load_geometry ();
     this.show_all();
 
     this.add_action_entries (win_entries, this);
@@ -168,6 +169,14 @@ class MainWindow : ApplicationWindow {
 
     // Activate the first timeline
     pages[0].get_tool_button ().active = true;
+    //this.size_allocate.connect (() => {
+      //Gtk.Allocation a;
+      //get_allocation (out a);
+      //get_position (out a.x, out a.y);
+      //message ("%d, %d, %d, %d", a.x, a.y, a.width, a.height);
+      //return false;
+    //});
+
   }
 
   /**
@@ -299,7 +308,7 @@ class MainWindow : ApplicationWindow {
   }
 
   [GtkCallback]
-  private void window_destroy_cb() {
+  private bool window_destroy_cb (Gdk.EventAny evt) {
     account.user_stream.stop ();
     account.user_counter.save (account.db);
 
@@ -323,7 +332,56 @@ class MainWindow : ApplicationWindow {
       Settings.get ().set_strv ("startup-accounts", startup_accounts);
       debug ("Saving the account %s", ((MainWindow)ws.nth_data (0)).account.screen_name);
     }
+    save_geometry ();
+    return false;
   }
 
+  /**
+   *
+   */
+  private void load_geometry () {
+    if (account == null) {
+      debug ("Could not load geometry, account == null");
+      return;
+    }
+    GLib.Variant win_geom = Settings.get ().get_value ("window-geometry");
+    int x = 0,
+        y = 0,
+        w = 0,
+        h = 0;
+    win_geom.lookup (account.screen_name, "(iiii)", &x, &y, &w, &h);
+    if (w == 0 || h == 0)
+      return;
 
+    move (x, y);
+    resize (w, h);
+  }
+
+  /**
+   * Saves this window's geometry in the window-geometry gsettings key.
+   */
+  private void save_geometry () {
+    GLib.Variant win_geom = Settings.get ().get_value ("window-geometry");
+    GLib.Variant new_geom;
+    GLib.VariantBuilder builder = new GLib.VariantBuilder (new GLib.VariantType("a{s(iiii)}"));
+    var iter = win_geom.iterator ();
+    string key = "";
+    int x = 0,
+        y = 0,
+        w = 0,
+        h = 0;
+    while (iter.next ("{s(iiii)}", &key, &x, &y, &w, &h)) {
+      if (key != account.screen_name) {
+        builder.add ("{s(iiii)}", key, x, y, w, h);
+      }
+    }
+    /* Finally, add this window */
+    get_position (out x, out y);
+    w = get_allocated_width ();
+    h = get_allocated_height ();
+    builder.add ("{s(iiii)}", account.screen_name, x, y, w, h);
+    new_geom = builder.end ();
+
+    Settings.get ().set_value ("window-geometry", new_geom);
+  }
 }

@@ -90,5 +90,9 @@
        <default>"&lt;Control&gt;&lt;Shift&gt;S"</default>
        <summary>Accelerator to press in ordner to show/hide the sidebar</summary>
     </key>
-   </schema>
+    <key name="window-geometry" type="a{s(iiii)}">
+      <default>{}</default>
+      <summary></summary>
+    </key>
+  </schema>
 </schemalist>
