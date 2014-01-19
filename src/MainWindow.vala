@@ -161,6 +161,7 @@ class MainWindow : ApplicationWindow {
     Settings.get ().bind ("sidebar-visible", sidebar_revealer, "reveal-child",
                           SettingsBindFlags.DEFAULT);
 
+    load_geometry ();
     this.show_all();
 
     this.add_action_entries (win_entries, this);
@@ -168,7 +169,14 @@ class MainWindow : ApplicationWindow {
 
     // Activate the first timeline
     pages[0].get_tool_button ().active = true;
-    load_geometry ();
+    //this.size_allocate.connect (() => {
+      //Gtk.Allocation a;
+      //get_allocation (out a);
+      //get_position (out a.x, out a.y);
+      //message ("%d, %d, %d, %d", a.x, a.y, a.width, a.height);
+      //return false;
+    //});
+
   }
 
   /**
@@ -300,7 +308,7 @@ class MainWindow : ApplicationWindow {
   }
 
   [GtkCallback]
-  private void window_destroy_cb() {
+  private bool window_destroy_cb (Gdk.EventAny evt) {
     account.user_stream.stop ();
     account.user_counter.save (account.db);
 
@@ -325,6 +333,7 @@ class MainWindow : ApplicationWindow {
       debug ("Saving the account %s", ((MainWindow)ws.nth_data (0)).account.screen_name);
     }
     save_geometry ();
+    return false;
   }
 
   /**
@@ -344,6 +353,9 @@ class MainWindow : ApplicationWindow {
         w = 0,
         h = 0;
     win_geom.lookup (account.screen_name, "(iiii)", &x, &y, &w, &h);
+    if (w == 0 || h == 0)
+      return;
+
     move (x, y);
     resize (w, h);
   }
@@ -366,12 +378,13 @@ class MainWindow : ApplicationWindow {
         h = 0;
     while (iter.next ("{s(iiii)}", &key, &x, &y, &w, &h)) {
       if (key != account.screen_name) {
-        builder.add ("{s(iiii)}", account.screen_name, x, y, w, h);
+        builder.add ("{s(iiii)}", key, x, y, w, h);
       }
     }
     /* Finally, add this window */
     get_position (out x, out y);
-    get_size (out w, out h);
+    w = get_allocated_width ();
+    h = get_allocated_height ();
     builder.add ("{s(iiii)}", account.screen_name, x, y, w, h);
     new_geom = builder.end ();
 
