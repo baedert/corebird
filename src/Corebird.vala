@@ -227,7 +227,7 @@ class Corebird : Gtk.Application {
   private void init_log_files () { // {{{
     /* First, create that log file */
     var now = new GLib.DateTime.now_local ();
-    File log_file = File.new_for_path (Dirs.data ("log/%s.txt".printf (now.to_string())));
+    File log_file = File.new_for_path (Dirs.data ("logs/%s.txt".printf (now.to_string())));
     try {
       log_stream = log_file.create(FileCreateFlags.REPLACE_DESTINATION);
     } catch (GLib.Error e) {

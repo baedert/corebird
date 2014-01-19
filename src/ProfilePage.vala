@@ -145,7 +145,7 @@ class ProfilePage : ScrollWidget, IPage {
       /* If we get inside this block, there is already some data in the
         DB we can use. */
       try {
-        avatar_image.pixbuf = new Gdk.Pixbuf.from_file (Utils.user_file ("/assets/avatars/"+vals[7]));
+        avatar_image.pixbuf = new Gdk.Pixbuf.from_file (Dirs.cache ("/assets/avatars/"+vals[7]));
       } catch (GLib.Error e) {
         warning (e.message);
       }
@@ -158,9 +158,9 @@ class ProfilePage : ScrollWidget, IPage {
       debug("banner_name: %s", banner_name);
 
       if (banner_name != null &&
-          FileUtils.test(Utils.user_file("assets/banners/"+banner_name), FileTest.EXISTS)){
+          FileUtils.test(Dirs.cache("assets/banners/"+banner_name), FileTest.EXISTS)){
         message("Banner exists, set it directly...");
-        load_banner (Utils.user_file ("assets/banners/" + banner_name));
+        load_banner (Dirs.cache ("assets/banners/" + banner_name));
       } else {
         // TODO: ???
         // If the cached banner does somehow not exist, load it again.
@@ -226,7 +226,7 @@ class ProfilePage : ScrollWidget, IPage {
     string avatar_url = root.get_string_member("profile_image_url");
     avatar_url = avatar_url.replace("_normal", "_bigger");
     string avatar_name = Utils.get_avatar_name(avatar_url);
-    string avatar_on_disk = Utils.user_file("assets/avatars/"+avatar_name);
+    string avatar_on_disk = Dirs.cache("assets/avatars/"+avatar_name);
 
     if(!FileUtils.test(avatar_on_disk, FileTest.EXISTS)){
       Utils.download_file_async.begin(avatar_url, avatar_on_disk, data_cancellable, () => {
@@ -371,10 +371,10 @@ class ProfilePage : ScrollWidget, IPage {
    * @param screen_name Bar
    */
   private void load_profile_banner (string base_url, int64 user_id) { // {{{
-    string saved_banner_url = Utils.user_file ("assets/banners/"+get_banner_name (user_id));
+    string saved_banner_url = Dirs.cache ("assets/banners/"+get_banner_name (user_id));
     string banner_url  = base_url+"/mobile_retina";
     string banner_name = get_banner_name (user_id);
-    string banner_on_disk = Utils.user_file("assets/banners/"+banner_name);
+    string banner_on_disk = Dirs.cache("assets/banners/"+banner_name);
     if (!FileUtils.test (banner_on_disk, FileTest.EXISTS) || banner_url != saved_banner_url) {
       Utils.download_file_async .begin (banner_url, banner_on_disk, data_cancellable,
           () => {load_banner (banner_on_disk);});

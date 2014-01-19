@@ -208,17 +208,6 @@ namespace Utils {
 
 
 
-  private string config_home = null;
-  string user_file (string file_name) {
-    if (config_home == null) {
-      config_home = GLib.Environment.get_home_dir () + "/.corebird/";
-      if (!GLib.FileUtils.test (config_home, GLib.FileTest.EXISTS)) {
-        config_home = GLib.Environment.get_user_config_dir () + "/corebird/";
-      }
-    }
-    return config_home + file_name;
-  }
-
   /**
    * download_file_async:
    * Downloads the given file asynchronously to the given location.
