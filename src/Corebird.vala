@@ -90,7 +90,7 @@ class Corebird : Gtk.Application {
 
     Dirs.create_dirs ();
     message ("startup");
-    Corebird.db = new Sql.Database (Utils.user_file ("Corebird.db"),
+    Corebird.db = new Sql.Database (Dirs.config ("Corebird.db"),
                                     Sql.COREBIRD_INIT_FILE);
 
     // Construct app menu
@@ -141,10 +141,10 @@ class Corebird : Gtk.Application {
 
     // Load custom CSS stuff
     try{
-      CssProvider provider = new CssProvider();
-      string style = Utils.user_file("style.css");
-      if(!FileUtils.test(style, FileTest.EXISTS))
-        style = DATADIR+"/ui/style.css";
+      CssProvider provider = new CssProvider ();
+      string style = Dirs.config ("style.css");
+      if (!FileUtils.test(style, FileTest.EXISTS))
+        style = DATADIR + "/ui/style.css";
 
       provider.load_from_file(File.new_for_path(style));
       Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(), provider,
@@ -226,8 +226,8 @@ class Corebird : Gtk.Application {
    */
   private void init_log_files () { // {{{
     /* First, create that log file */
-    var now = new GLib.DateTime.now_local();
-    File log_file = File.new_for_path(Utils.user_file("log/%s.txt".printf(now.to_string())));
+    var now = new GLib.DateTime.now_local ();
+    File log_file = File.new_for_path (Dirs.data ("log/%s.txt".printf (now.to_string())));
     try {
       log_stream = log_file.create(FileCreateFlags.REPLACE_DESTINATION);
     } catch (GLib.Error e) {
