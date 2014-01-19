@@ -52,7 +52,10 @@ namespace Dirs {
 
   string config (string path) {
     if (config_dir == null) {
-      config_dir = GLib.Environment.get_user_config_dir () + "/corebird/";
+      config_dir = GLib.Environment.get_home_dir () + "/.corebird/";
+      if (!GLib.FileUtils.test (config_dir, GLib.FileTest.EXISTS)) {
+        config_dir = GLib.Environment.get_user_config_dir () + "/corebird/";
+      }
     }
     return config_dir + path;
   }
