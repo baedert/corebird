@@ -148,6 +148,7 @@ set (VALA_SOURCE
   src/util/WeakRef.vala
   src/util/UserCompletion.vala
   src/util/Benchmark.vala
+  src/util/Dirs.vala
   src/sql/Database.vala
   src/sql/Statement.vala
   src/sql/SelectStatement.vala

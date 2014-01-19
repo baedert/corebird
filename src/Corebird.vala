@@ -88,16 +88,7 @@ class Corebird : Gtk.Application {
   public override void startup () { // {{{
     base.startup();
 
-    create_user_folder ("");
-    create_user_folder ("assets/");
-    create_user_folder ("assets/avatars/");
-    create_user_folder ("assets/banners/");
-    create_user_folder ("assets/user");
-    create_user_folder ("assets/media/");
-    create_user_folder ("assets/media/thumbs/");
-    create_user_folder ("log/");
-    create_user_folder ("accounts/");
-
+    Dirs.create_dirs ();
     message ("startup");
     Corebird.db = new Sql.Database (Utils.user_file ("Corebird.db"),
                                     Sql.COREBIRD_INIT_FILE);
@@ -295,21 +286,6 @@ class Corebird : Gtk.Application {
     window = null;
     return false;
   }
-
-  private void create_user_folder(string name) {
-    if (FileUtils.test (Utils.user_file (name), FileTest.EXISTS))
-      return;
-
-    try {
-      bool success = File.new_for_path(Utils.user_file(name))
-                     .make_directory();
-      if(!success)
-        critical("Couldn't create user folder %s", name);
-    } catch (GLib.Error e) {
-      critical("%s(%s)", e.message, name);
-    }
-  }
-
   /**
    * Log handler in case the application is not
    * started from the command line.
