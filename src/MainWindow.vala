@@ -338,9 +338,6 @@ class MainWindow : ApplicationWindow {
 
   /**
    *
-   *
-   *
-   *
    */
   private void load_geometry () {
     if (account == null) {
@@ -361,10 +358,7 @@ class MainWindow : ApplicationWindow {
   }
 
   /**
-   *
-   *
-   *
-   *
+   * Saves this window's geometry in the window-geometry gsettings key.
    */
   private void save_geometry () {
     GLib.Variant win_geom = Settings.get ().get_value ("window-geometry");
