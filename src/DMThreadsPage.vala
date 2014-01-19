@@ -36,7 +36,8 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   [GtkChild]
   private Gtk.ListBox thread_list;
   private Gtk.Spinner progress_spinner;
-  private bool dms_received { get; set; default = false;}
+  private bool dms_received = false;
+  private signal void dm_download_complete ();
 
 
   public DMThreadsPage (int id, Account account) {
@@ -145,15 +146,14 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     call.add_param ("count", "200");
     call.invoke_async.begin (null, (obj, res) => {
       if (!dms_received) {
-      // we are the first one to receive the results
+        // we are the first one to receive the results
         dms_received = true;
-        this.notify["dms_received"].connect (() => {
+        dm_download_complete.connect (() => {
           on_dm_result (obj, res);
         });
       } else {
         on_dm_result (obj, res);
-        //notify so the other callback gets executed
-        dms_received = false;
+        dm_download_complete ();
         remove_spinner ();
       }
     });
@@ -166,18 +166,16 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     sent_call.set_method ("GET");
     sent_call.invoke_async.begin (null, (obj, res) => {
       if (!dms_received) {
-      // we are the first one to receive the results
+        // we are the first one to receive the results
         dms_received = true;
-        this.notify["dms_received"].connect (() => {
+        dm_download_complete.connect (() => {
           on_dm_result (obj, res);
         });
       } else {
         on_dm_result (obj, res);
-        //notify so the other callback gets executed
-        dms_received = false;
+        dm_download_complete ();
         remove_spinner ();
       }
-
     });
   } // }}}
 
