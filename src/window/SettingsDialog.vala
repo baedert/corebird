@@ -175,9 +175,9 @@ class SettingsDialog : Gtk.Dialog {
   private void real_remove_account (AccountListEntry entry) {
     var acc_menu = (GLib.Menu)Corebird.account_menu;
     int64 acc_id = entry.account.id;
-    FileUtils.remove (Utils.user_file ("accounts/$(acc_id).db"));
-    FileUtils.remove (Utils.user_file ("accounts/$(acc_id).png"));
-    FileUtils.remove (Utils.user_file ("accounts/$(acc_id)_small.png"));
+    FileUtils.remove (Dirs.config ("accounts/$(acc_id).db"));
+    FileUtils.remove (Dirs.config ("accounts/$(acc_id).png"));
+    FileUtils.remove (Dirs.config ("accounts/$(acc_id)_small.png"));
     Corebird.db.exec (@"DELETE FROM `accounts` WHERE `id`='$(acc_id)';");
     account_info_stack.remove (account_info_stack.get_visible_child ());
     account_list.remove (entry);

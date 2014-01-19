@@ -17,7 +17,7 @@
 
 
 namespace Dirs {
-  static string user_dir  = null;
+  static string config_dir  = null;
   static string cache_dir = null;
   static string data_dir  = null;
 
@@ -30,8 +30,8 @@ namespace Dirs {
     create_folder (cache ("assets/user/"));
     create_folder (cache ("assets/media/"));
     create_folder (cache ("assets/media/thumbs/"));
-    create_folder (user (""));
-    create_folder (user ("accounts/"));
+    create_folder (config (""));
+    create_folder (config ("accounts/"));
     create_folder (data (""));
     create_folder (data ("logs/"));
   }
@@ -50,11 +50,11 @@ namespace Dirs {
     return data_dir + path;
   }
 
-  string user (string path) {
-    if (user_dir == null) {
-      user_dir = GLib.Environment.get_user_config_dir () + "/corebird/";
+  string config (string path) {
+    if (config_dir == null) {
+      config_dir = GLib.Environment.get_user_config_dir () + "/corebird/";
     }
-    return user_dir + path;
+    return config_dir + path;
   }
 
   private void create_folder (string path) {
