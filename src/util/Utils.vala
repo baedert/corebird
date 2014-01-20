@@ -20,7 +20,7 @@ extern async Gdk.Pixbuf pixbuf_from_stream_async (GLib.InputStream in_stream,
                                                   GLib.Cancellable? cancellable = null) throws Error;
 [CCode (cname = "gdk_pixbuf_animation_new_from_stream_async", finish_name = "gdk_pixbuf_animation_new_from_stream_finish")]
 extern async Gdk.PixbufAnimation pixbuf_animation_from_stream_async (GLib.InputStream in_stream,
-                                                                    GLib.Cancellable? cancellable = null) throws Error;
+                                                                     GLib.Cancellable? cancellable = null) throws Error;
 
 
 
@@ -29,30 +29,23 @@ namespace Utils {
   const string CONSUMER_SECRET = "b0dydmQ2NjU0bldMaHpMY0p5d1NXM3BsdFVma2hQNEJucmFQUFZOaEh0WQ==";
 
 
-  // TODO: there's probably something for this in glib
-  // TODO: Use GDateTime for this, it's not translatable the current way
-  private  const string[] MONTHS = {
-    "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-  };
-
-
   /**
   * Parses a date given by Twitter in the form 'Wed Jun 20 19:01:28 +0000 2012'
   * and creates a GLib.DateTime in the local time zone to work with.
   *
   * @return The given date as GLib.DateTime in the current time zone.
   */
-  GLib.DateTime parse_date(string input){
-    if (input == ""){
-      return new GLib.DateTime.now_local();
+  GLib.DateTime parse_date (string input) {
+    if (input == "") {
+      return new GLib.DateTime.now_local ();
     }
-    string month_str = input.substring(4, 3);
-    int day          = int.parse(input.substring(8, 2));
-    int year         = int.parse(input.substring(input.length-4));
-    string timezone  = input.substring(20, 5);
+    string month_str = input.substring (4, 3);
+    int day          = int.parse (input.substring (8, 2));
+    int year         = int.parse (input.substring (input.length-4));
+    string timezone  = input.substring (20, 5);
 
     int month = -1;
-    switch(month_str){
+    switch (month_str) {
       case "Jan": month = 1;  break;
       case "Feb": month = 2;  break;
       case "Mar": month = 3;  break;
@@ -67,12 +60,12 @@ namespace Utils {
       case "Dec": month = 12; break;
     }
 
-    int hour   = int.parse(input.substring(11, 2));
-    int minute = int.parse(input.substring(14, 2));
-    int second = int.parse(input.substring(17, 2));
-    GLib.DateTime dt = new GLib.DateTime(new GLib.TimeZone(timezone),
-                                         year, month, day, hour, minute, second);
-    return dt.to_timezone(new TimeZone.local());
+    int hour   = int.parse (input.substring (11, 2));
+    int minute = int.parse (input.substring (14, 2));
+    int second = int.parse (input.substring (17, 2));
+    GLib.DateTime dt = new GLib.DateTime (new GLib.TimeZone(timezone),
+                                          year, month, day, hour, minute, second);
+    return dt.to_timezone (new TimeZone.local ());
   }
 
   /**
@@ -80,22 +73,23 @@ namespace Utils {
    * time and now.
    * Example: "5m" or "3h" or "26m" or "16 Nov"
    */
-  string get_time_delta(GLib.DateTime time, GLib.DateTime now){
+  string get_time_delta (GLib.DateTime time, GLib.DateTime now) {
     //diff is the time difference in microseconds
-    GLib.TimeSpan diff = now.difference(time);
+    GLib.TimeSpan diff = now.difference (time);
 
     int minutes = (int)(diff / 1000.0 / 1000.0 / 60.0);
     if (minutes == 0)
-      return "Now";
+      return _("Now");
     else if (minutes < 60)
-      return "%dm".printf(minutes);
+      return _("%dm").printf (minutes);
 
     int hours = (int)(minutes / 60.0);
     if (hours < 24)
-      return "%dh".printf(hours);
+      return _("%dh").printf (hours);
 
+    string month = time.format ("%b");
     //If 'time' was over 24 hours ago, we just return that
-    return "%d %s".printf(time.get_day_of_month(), MONTHS[time.get_month()-1]);
+    return "%d %s".printf (time.get_day_of_month (), month);
   }
 
 
