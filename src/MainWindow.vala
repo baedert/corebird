@@ -308,7 +308,7 @@ class MainWindow : ApplicationWindow {
   }
 
   [GtkCallback]
-  private bool window_destroy_cb (Gdk.EventAny evt) {
+  private bool window_delete_cb (Gdk.EventAny evt) {
     account.user_stream.stop ();
     account.user_counter.save (account.db);
 
