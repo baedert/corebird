@@ -347,10 +347,16 @@ class TweetInfoPage : IPage , ScrollWidget {
         critical (e.message);
         return;
       }
-      Tweet tweet = new Tweet ();
-      tweet.load_from_json (parser.get_root (), new GLib.DateTime.now_local ());
-      bottom_list_box.add (new TweetListEntry (tweet, main_window, account));
-      load_replied_to_tweet (tweet.reply_id);
+      bool user_protected = parser.get_root ().get_object ().get_object_member ("user")
+                                                            .get_boolean_member ("protected");
+      if (user_protected) {
+        load_replied_to_tweet (parser.get_root ().get_object ().get_int_member ("in_reply_to_status_id"));
+      } else {
+        Tweet tweet = new Tweet ();
+        tweet.load_from_json (parser.get_root (), new GLib.DateTime.now_local ());
+        bottom_list_box.add (new TweetListEntry (tweet, main_window, account));
+        load_replied_to_tweet (tweet.reply_id);
+      }
     });
   } //}}}
 
