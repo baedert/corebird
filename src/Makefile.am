@@ -35,9 +35,10 @@ corebird_SOURCES = \
 			Twitter.vala \
 			ProfilePage.vala \
 			TweetInfoPage.vala \
+			ListStatusesPage.vala \
+			ListsPage.vala \
 			widgets/TweetListBox.vala \
 			widgets/MaxSizeContainer.vala \
-			widgets/ImageLabel.vala \
 			widgets/ScrollWidget.vala \
 			widgets/TextButton.vala \
 			widgets/DoubleTapButton.vala \
@@ -49,6 +50,7 @@ corebird_SOURCES = \
 			widgets/AccountInfoWidget.vala \
 			widgets/AspectImage.vala \
 			widgets/BgBox.vala \
+			widgets/UserListsWidget.vala \
 			util/TweetUtils.vala \
 			util/Utils.vala \
 			util/IntHistory.vala \
@@ -56,16 +58,20 @@ corebird_SOURCES = \
 			util/WidgetReplacer.vala \
 			util/Config.vala \
 			util/WeakRef.vala \
+			util/Dirs.vala \
 			list/TweetListEntry.vala \
 			list/DMListEntry.vala \
 			list/UserListEntry.vala \
 			list/AccountListEntry.vala \
 		  list/DMThreadEntry.vala \
 			list/StartConversationEntry.vala \
+			list/ListListEntry.vala \
+			list/NewListEntry.vala \
 			window/ComposeTweetWindow.vala \
 			window/SettingsDialog.vala \
 			window/ImageDialog.vala \
 			window/RemoveAccountDialog.vala \
+			window/UserListDialog.vala \
 			sql/Database.vala \
 			sql/Statement.vala \
 			sql/UpdateStatement.vala \
