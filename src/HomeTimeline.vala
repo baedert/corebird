@@ -39,7 +39,6 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
     }
   } // }}}
 
-
   private void add_tweet (Json.Node obj) { // {{{
     GLib.DateTime now = new GLib.DateTime.now_local ();
     Tweet t = new Tweet();

@@ -270,7 +270,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="halign">start</property>
-                            <property name="label" translatable="yes">label</property>
+                            <property name="label">Mode</property>
                             <property name="ellipsize">middle</property>
                           </object>
                         </child>
