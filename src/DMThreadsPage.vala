@@ -44,6 +44,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     this.id = id;
     this.account = account;
     thread_list.set_header_func (header_func);
+    thread_list.set_sort_func (dm_thread_entry_sort_func);
 
     thread_list.row_activated.connect ((row) => {
       if (row is StartConversationEntry)
@@ -151,9 +152,9 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
           on_dm_result (obj, res);
         });
       } else {
+        remove_spinner ();
         on_dm_result (obj, res);
         dm_download_complete ();
-        remove_spinner ();
       }
     });
 
@@ -171,9 +172,9 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
           on_dm_result (obj, res);
         });
       } else {
+        remove_spinner ();
         on_dm_result (obj, res);
         dm_download_complete ();
-        remove_spinner ();
       }
     });
   } // }}}
