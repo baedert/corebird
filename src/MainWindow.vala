@@ -315,7 +315,7 @@ class MainWindow : ApplicationWindow {
     unowned GLib.List<weak Window> ws = this.application.get_windows ();
     debug("Windows: %u", ws.length ());
 
-    // Enable the account's entry in the app menu again
+     // Enable the account's entry in the app menu again
     var acc_menu = (GLib.Menu)Corebird.account_menu;
     for (int i = 0; i < acc_menu.get_n_items (); i++){
       Variant item_name = acc_menu.get_item_attribute_value (i, "label", VariantType.STRING);

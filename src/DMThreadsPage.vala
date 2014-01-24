@@ -79,8 +79,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       add_new_thread (obj);
       int64 sender_id = obj.get_int_member ("sender_id");
       if (sender_id != account.id) {
-        if (main_window.cur_page_id != MainWindow.PAGE_DM ||
-            ((DMPage)main_window.get_page (MainWindow.PAGE_DM)).user_id != sender_id) {
+        if (!user_id_visible (sender_id)) {
           this.unread_count ++;
           this.update_unread_count ();
         }
@@ -224,8 +223,10 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       if (t_e.last_message_id > message_id)
         return;
 
-      t_e.unread_count ++;
-      t_e.update_unread_count ();
+      if (!user_id_visible (t_e.user_id)) {
+        t_e.unread_count ++;
+        t_e.update_unread_count ();
+      }
       t_e.last_message = text;
       t_e.last_message_id = message_id;
       if (Settings.notify_new_dms ()) {
@@ -340,6 +341,11 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 
   public RadioToolButton? get_tool_button() {
     return tool_button;
+  }
+
+  private bool user_id_visible (int64 sender_id) {
+    return (main_window.cur_page_id == MainWindow.PAGE_DM &&
+            ((DMPage)main_window.get_page (MainWindow.PAGE_DM)).user_id == sender_id);
   }
 
   private void update_unread_count() {
