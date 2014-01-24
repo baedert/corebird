@@ -10,7 +10,7 @@ AUTOMAKE_OPTIONS = subdir-objects
 
 bin_PROGRAMS = corebird
 
-corebird_SOURCES = \
+corebird_VALASOURCES = \
 			Corebird.vala \
 			MainWindow.vala \
 			Account.vala \
@@ -75,13 +75,18 @@ corebird_SOURCES = \
 			sql/Database.vala \
 			sql/Statement.vala \
 			sql/UpdateStatement.vala \
-			sql/SelectStatement.vala \
+			sql/SelectStatement.vala
+
+corebird_SOURCES =  \
+			$(corebird_VALASOURCES) \
 			resources.c
 
 corebird_LDADD = $(CB_LIBS)
 corebird_VALAFLAGS = @CB_VALA_FLAGS@
 
+
 resources.c: ../resources.xml
 	glib-compile-resources ../resources.xml --target=resources.c --generate-source --sourcedir=../
 
-CLEANFILES = *.h *.c *.stamp
+CLEANFILES = *.h *.c *.stamp resources.c
+EXTRA_DIST = $(cb_resources_deps)

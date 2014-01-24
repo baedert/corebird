@@ -23,11 +23,22 @@ pkg_modules="gtk+-3.0 >= 3.10
              libnotify
              sqlite3"
 PKG_CHECK_MODULES(CB, [$pkg_modules])
-CB_VALA_FLAGS="--pkg gtk+-3.0 --pkg json-glib-1.0 --pkg rest-0.7 --pkg libnotify --pkg gee-0.8 --pkg sqlite3 --pkg libsoup-2.4 --target-glib=2.38 --gresources ../resources.xml"
+CB_VALA_FLAGS=" \
+  --pkg gtk+-3.0 \
+  --pkg json-glib-1.0 \
+  --pkg rest-0.7 \
+  --pkg libnotify \
+  --pkg gee-0.8 \
+  --pkg sqlite3 \
+  --pkg libsoup-2.4 \
+  --target-glib=2.38 \
+  --gresources ../resources.xml"
 
 AC_SUBST(CB_CFLAGS)
 AC_SUBST(CB_LIBS)
 AC_SUBST(CB_VALA_FLAGS)
+
+AC_PATH_PROG(GLIB_COMPILE_RESOURCES, glib-compile-resources)
 
 
 AC_ARG_ENABLE(catalog, AC_HELP_STRING([--disable-catalog], [Whether to install the corebird glade catalog]), enable_catalog=$enableval, catalog=no)
