@@ -33,15 +33,13 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   [GtkChild]
   private Label rt_label;
   [GtkChild]
-  private Revealer reply_revealer;
-  [GtkChild]
-  private ReplyEntry reply_entry;
+  private Gtk.Box rt_box;
   [GtkChild]
   private Image conversation_image;
   [GtkChild]
   private Box text_box;
   [GtkChild]
-  private Box hover_box;
+  private BgBox hover_box;
   [GtkChild]
   private DoubleTapButton retweet_button;
   [GtkChild]
@@ -65,14 +63,9 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   private weak MainWindow window;
   public Tweet tweet;
   private bool values_set = false;
-  /* Horrible hack. If this is negative, the absolute value of it has already
-     been added to the margin_right of the hover_box. If not is will be added
-     ad the next hover-out. */
-  private int hover_box_margin_adjusted = 0;
+  private bool delete_first_activated = false;
   [Signal (action = true)]
-  private signal void show_inline_reply ();
-  [Signal (action = true)]
-  private signal void hide_inline_reply ();
+  private signal void reply_tweet ();
   [Signal (action = true)]
   private signal void favorite_tweet ();
   [Signal (action = true)]
@@ -91,32 +84,43 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     avatar_image.pixbuf = tweet.avatar;
     text_label.label = tweet.get_formatted_text ();
     update_time_delta ();
-    reply_entry.text = "@"+tweet.screen_name+" ";
-    reply_entry.max_length = Tweet.MAX_LENGTH;
     if (tweet.is_retweet) {
-      rt_label.show ();
+      rt_box.show ();
       rt_label.label = @"<a href=\"@$(tweet.rt_by_id)\"
                          title=\"@$(tweet.rt_by_screen_name)\">$(tweet.retweeted_by)</a>";
-    }
+    } else
+      rt_box.unparent ();
 
+
+    if (tweet.retweeted || tweet.favorited || tweet.reply_id != 0) {
+      adjust_hover_box ();
+    }
 
     retweet_button.visible = tweet.retweeted;
-    if (tweet.retweeted) {
-      retweet_button.active = true;
-    }
+    retweet_button.active = tweet.retweeted;
     tweet.notify["retweeted"].connect (() => {
       values_set = false;
       retweet_button.active = tweet.retweeted;
       retweet_button.visible = tweet.retweeted;
+      adjust_hover_box ();
       values_set = true;
     });
 
     favorite_button.visible = tweet.favorited;
-    if (tweet.favorited) {
-      favorite_button.show();
-      favorite_button.active = true;
+    favorite_button.active = tweet.favorited;
+    tweet.notify["favorited"].connect (() => {
+      values_set = false;
+      favorite_button.active = tweet.favorited;
+      favorite_button.visible = tweet.favorited;
+      adjust_hover_box ();
+      values_set = true;
+    });
+
+    if (tweet.reply_id == 0)
+      conversation_image.unparent ();
+    else {
+      conversation_image.show ();
     }
-    // TODO: Also use notify["favorited"]
 
     // If the avatar gets loaded, we want to change it here immediately
     tweet.notify["avatar"].connect (avatar_changed);
@@ -137,30 +141,13 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       inline_button.clicked.connect(inline_media_button_clicked_cb);
       inline_button.show ();
     }
+    if (tweet.user_id != account.id)
+      more_menu.remove (more_menu_delete_item);
 
-    more_menu_delete_item.visible = tweet.user_id == account.id;
 
-
-    reply_entry.focus_in_event.connect(() => {
-      reply_revealer.reveal_child = true;
-      return false;
-    });
-    reply_entry.focus_out_event.connect(() => {
-      reply_revealer.reveal_child = false;
-      retweet_button.reset ();
-      return false;
-    });
     hover_box.show ();
 
-    reply_entry.cancelled.connect (() => {
-      reply_revealer.reveal_child = false;
-      this.grab_focus ();
-    });
-    reply_entry.activate.connect (reply_send_button_clicked_cb);
-    show_inline_reply.connect (() => {
-      reply_revealer.reveal_child = true;
-      reply_entry.grab_focus ();
-    });
+    reply_tweet.connect (reply_button_clicked_cb);
     delete_tweet.connect (delete_tweet_activated);
     favorite_tweet.connect (() => {
       if (favorite_button.parent != null)
@@ -168,25 +155,8 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     });
     retweet_tweet.connect (() => {
       if (retweet_button.parent != null)
-      retweet_button.tap ();
+        retweet_button.tap ();
     });
-
-    time_delta_label.size_allocate.connect (() => {
-      hover_box.margin_right = time_delta_label.get_allocated_width () + 6;
-    });
-    if (tweet.reply_id != 0) {
-      ulong id = 0;
-      id = conversation_image.size_allocate.connect (() => {
-        if (hover_box_margin_adjusted == 0) {
-          int marg = conversation_image.get_allocated_width () + 2;
-          hover_box.margin_right += marg;
-          hover_box_margin_adjusted = marg;
-          conversation_image.disconnect (id);
-        }
-      });
-      conversation_image.show ();
-    }
-
 
     values_set = true;
   }
@@ -194,10 +164,13 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   private void delete_tweet_activated () {
     if (tweet.user_id != account.id)
       return; // Nope.
-    // TODO: Show confirmation dialog
-    TweetUtils.delete_tweet.begin (account, tweet, () => {
+
+    if (delete_first_activated) {
+      TweetUtils.delete_tweet.begin (account, tweet, () => {
         sensitive = false;
-    });
+      });
+    } else
+      delete_first_activated = true;
   }
 
   private void avatar_changed () {
@@ -223,7 +196,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   static construct {
     unowned BindingSet binding_set = Gtk.BindingSet.by_class (typeof (TweetListEntry).class_ref ());
 
-    Gtk.BindingEntry.add_signal (binding_set, Gdk.Key.r, 0,      "show-inline-reply", 0, null);
+    Gtk.BindingEntry.add_signal (binding_set, Gdk.Key.r, 0,      "reply-tweet", 0, null);
     Gtk.BindingEntry.add_signal (binding_set, Gdk.Key.Return, 0, "activate", 0, null);
     Gtk.BindingEntry.add_signal (binding_set, Gdk.Key.d, 0,      "delete-tweet", 0, null);
     Gtk.BindingEntry.add_signal (binding_set, Gdk.Key.t, 0,      "retweet-tweet", 0, null);
@@ -234,44 +207,33 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   [GtkCallback]
   private void state_flags_changed_cb () { //{{{
     Gtk.StateFlags flags = this.get_state_flags ();
-    bool buttons_visible = (bool)(flags & (StateFlags.PRELIGHT | StateFlags.SELECTED));
-    buttons_visible = (buttons_visible || more_menu.visible) && !reply_revealer.reveal_child;
     var ct = this.get_style_context ();
-    reply_button.visible = buttons_visible;
+    bool buttons_visible = (bool)(flags & (StateFlags.PRELIGHT | StateFlags.SELECTED));
+    buttons_visible = (buttons_visible || more_menu.visible);
     more_button.visible = buttons_visible;
     favorite_button.visible = buttons_visible || tweet.favorited;
+    reply_button.visible = buttons_visible;
 
     if (buttons_visible) {
+      hover_box.margin_right = 1;
+      hover_box.margin_top = (time_delta_label.get_allocated_height () / 2) - 6;
       hover_box.override_background_color (Gtk.StateFlags.NORMAL,
                                            ct.get_background_color (Gtk.StateFlags.PRELIGHT));
-
       retweet_button.visible = (account.id != tweet.user_id);
-      conversation_image.hide ();
-
-      int hover_margin_top = (screen_name_label.get_allocated_height () / 2) - 6;
-      if (hover_margin_top > 2) {
-        hover_box.margin_top = hover_margin_top;
-      }
-      if (tweet.reply_id != 0 && hover_box_margin_adjusted > 0) {
-        hover_box.margin_right -= hover_box_margin_adjusted;
-        hover_box_margin_adjusted = -hover_box_margin_adjusted;
-      }
     } else {
       hover_box.override_background_color (Gtk.StateFlags.NORMAL,
                                            ct.get_background_color (Gtk.StateFlags.NORMAL));
       retweet_button.visible = tweet.retweeted;
-      conversation_image.visible = tweet.reply_id != 0;
-      if (tweet.reply_id != 0) {
-        hover_box_margin_adjusted = -hover_box_margin_adjusted;
-        hover_box.margin_right += hover_box_margin_adjusted;
-      }
-
+      hover_box.margin_right = time_delta_label.get_allocated_width () + 3;
+      if (tweet.reply_id != 0)
+        hover_box.margin_right += conversation_image.get_allocated_width ();
     }
   } //}}}
 
   [GtkCallback]
   private bool focus_out_cb (Gdk.EventFocus evt) {
-    reply_revealer.reveal_child = false;
+    delete_first_activated = false;
+    retweet_button.reset ();
     return false;
   }
 
@@ -329,18 +291,6 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     window.switch_page (MainWindow.PAGE_PROFILE,
                         tweet.user_id);
   }
-
-  [GtkCallback]
-  private void reply_send_button_clicked_cb () {
-    string text = reply_entry.text;
-    if (text.strip().length > 0){
-      TweetUtils.reply_to_tweet.begin (account, tweet, text);
-    }
-
-    this.grab_focus ();
-    reply_revealer.reveal_child = false;
-  }
-
   [GtkCallback]
   private void reply_button_clicked_cb () {
     ComposeTweetWindow ctw = new ComposeTweetWindow(this.window, this.account, this.tweet,
@@ -376,6 +326,45 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   }
 
 
+  private void adjust_hover_box () {
+    // Only do this if the hover_box has not been 'adjusted' yet
+    if (hover_box.margin_right > 0) {
+      return;
+    }
+
+    // XXX Keep this in sync with the version below
+    if (time_delta_label.get_allocated_width () > 1 && conversation_image.get_allocated_width () > 1) {
+      hover_box.margin_top = (time_delta_label.get_allocated_height () / 2) - 6;
+      hover_box.margin_right = time_delta_label.get_allocated_width () + 3;
+      if (tweet.reply_id != 0) {
+        conversation_image.margin_top = (time_delta_label.get_allocated_height () / 2) - 6;
+        hover_box.margin_right += conversation_image.get_allocated_width ();
+      }
+      return;
+    }
+
+
+    ulong id = 0;
+    id = time_delta_label.size_allocate.connect (() => {
+      hover_box.margin_top = (time_delta_label.get_allocated_height () / 2) - 6;
+      hover_box.margin_right += time_delta_label.get_allocated_width () + 3;
+      if (tweet.reply_id != 0) {
+        conversation_image.margin_top = (time_delta_label.get_allocated_height () / 2) - 6;
+      }
+      time_delta_label.disconnect (id);
+    });
+
+    if (tweet.reply_id == 0)
+      return;
+
+    ulong id2 = 0;
+    id2 = conversation_image.size_allocate.connect (() => {
+      hover_box.margin_right += conversation_image.get_allocated_width ();
+      conversation_image.disconnect (id2);
+    });
+
+  }
+
   /**
    * Updates the time delta label in the upper right
    *
@@ -391,10 +380,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
 
     GLib.DateTime then = new GLib.DateTime.from_unix_local (
                  tweet.is_retweet ? tweet.rt_created_at : tweet.created_at);
-    string link = "https://twitter.com/%s/status/%s".printf (tweet.screen_name,
-                                                             tweet.id.to_string());
-    time_delta_label.label = "<small><a href='%s' title='Open in Browser'>%s</a></small>"
-                             .printf (link, Utils.get_time_delta (then, cur_time));
+    time_delta_label.label = Utils.get_time_delta (then, cur_time);
     return (int)(cur_time.difference (then) / 1000.0 / 1000.0);
   } //}}}
 

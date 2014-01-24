@@ -44,9 +44,10 @@ class AccountCreateWidget : Gtk.Box {
       GLib.AppInfo.launch_default_for_uri(uri, null);
     } catch (GLib.Error e) {
       if (e.message.down() == "unauthorized") {
-        Utils.show_error_dialog (_("Unauthorized. Most of the time, this means that" +
-                                   "there's something wrong with the Twitter servers" +
-                                   "and you shuld try again later"));
+        // TODO: gettext only recognizes the first line here
+        Utils.show_error_dialog (_("""Unauthorized. Most of the time, this means that
+                                   there's something wrong with the Twitter servers
+                                   and you shuld try again later"""));
       } else
         Utils.show_error_dialog (e.message);
       critical (e.message);

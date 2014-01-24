@@ -212,11 +212,11 @@ namespace InlineMediaDownloader {
     if(ext.length == 0)
       ext = "png";
 
-    return Utils.user_file(@"assets/media/$(t.id)_$(t.user_id).$(ext)");
+    return Dirs.cache (@"assets/media/$(t.id)_$(t.user_id).$(ext)");
   }
 
   private string get_thumb_path (Tweet t, string url) {
-    return Utils.user_file(@"assets/media/thumbs/$(t.id)_$(t.user_id).png");
+    return Dirs.cache (@"assets/media/thumbs/$(t.id)_$(t.user_id).png");
   }
 
   /**

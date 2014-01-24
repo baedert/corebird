@@ -44,6 +44,8 @@ class TweetInfoPage : IPage , ScrollWidget {
   [GtkChild]
   private Label location_label;
   [GtkChild]
+  private Gtk.Box location_box;
+  [GtkChild]
   private ListBox bottom_list_box;
   [GtkChild]
   private ListBox top_list_box;
@@ -57,6 +59,8 @@ class TweetInfoPage : IPage , ScrollWidget {
   private Button follow_button;
   [GtkChild]
   private Label time_label;
+  [GtkChild]
+  private Gtk.Label source_label;
   [GtkChild]
   private PixbufButton media_button;
   [GtkChild]
@@ -116,9 +120,11 @@ class TweetInfoPage : IPage , ScrollWidget {
       this.tweet = args.arg ();
       this.tweet_id = tweet.id;
       set_tweet_data (tweet);
+      set_source_link (tweet.id, tweet.screen_name);
     } else if (mode == BY_ID) {
       this.tweet_id = args.arg ();
     }
+
     query_tweet_info ();
   }
 
@@ -239,10 +245,10 @@ class TweetInfoPage : IPage , ScrollWidget {
       set_tweet_data (tweet, following, with);
       if (!root_object.get_null_member ("place")) {
         var place = root_object.get_object_member ("place");
-        location_label.show ();
+        location_box.show ();
         location_label.label = place.get_string_member ("name");
       } else
-        location_label.hide ();
+        location_box.hide ();
 
       if (tweet.reply_id == 0) {
         progress_spinner.stop ();
@@ -341,10 +347,16 @@ class TweetInfoPage : IPage , ScrollWidget {
         critical (e.message);
         return;
       }
-      Tweet tweet = new Tweet ();
-      tweet.load_from_json (parser.get_root (), new GLib.DateTime.now_local ());
-      bottom_list_box.add (new TweetListEntry (tweet, main_window, account));
-      load_replied_to_tweet (tweet.reply_id);
+      bool user_protected = parser.get_root ().get_object ().get_object_member ("user")
+                                                            .get_boolean_member ("protected");
+      if (user_protected) {
+        load_replied_to_tweet (parser.get_root ().get_object ().get_int_member ("in_reply_to_status_id"));
+      } else {
+        Tweet tweet = new Tweet ();
+        tweet.load_from_json (parser.get_root (), new GLib.DateTime.now_local ());
+        bottom_list_box.add (new TweetListEntry (tweet, main_window, account));
+        load_replied_to_tweet (tweet.reply_id);
+      }
     });
   } //}}}
 
@@ -368,6 +380,8 @@ class TweetInfoPage : IPage , ScrollWidget {
     time_label.label = time_format;
     retweet_button.active = tweet.retweeted;
     favorite_button.active = tweet.favorited;
+
+    set_source_link (tweet.id, tweet.screen_name);
 
     // TODO: Also do this on inline_media_added signal
     if (tweet.media != null) {
@@ -402,6 +416,13 @@ class TweetInfoPage : IPage , ScrollWidget {
     }
     this.following = following;
   } //}}}
+
+
+  private void set_source_link (int64 id, string screen_name) {
+    var link = "https://twitter.com/%s/status/%s".printf (screen_name,
+                                                          id.to_string());
+    source_label.label = "<a href='%s' title='Open in Browser'>Source</a>".printf (link);
+  }
 
   /**
    * Twitter's source parameter of tweets includes a 'rel' parameter

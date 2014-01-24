@@ -35,64 +35,40 @@ interface ITimeline : Gtk.Widget, IPage {
    * from the given function of the twitter api.
    *
    * @param function The twitter function to use
-   * @param tweet_type The type of tweets to load
    */
-  protected async void load_newest_internal(string function, int tweet_type) { //{{{
+  protected async void load_newest_internal (string function) { //{{{
     var call = account.proxy.new_call();
     call.set_function(function);
     call.set_method("GET");
     call.add_param ("count", "28");
     call.add_param ("contributor_details", "true");
     call.add_param ("include_my_retweet", "true");
-    if (max_id > 0)
-      call.add_param ("max_id", (max_id - 1).to_string ());
+    call.add_param ("max_id", (lowest_id - 1).to_string ());
 
-    call.invoke_async.begin(null, (obj, res) => {
-      try {
-        call.invoke_async.end (res);
-      } catch (GLib.Error e) {
-        Utils.show_error_object (call.get_payload (), e.message);
-        warning (e.message);
-        return;
-      }
+    try {
+      yield call.invoke_async (null);
+    } catch (GLib.Error e) {
+      Utils.show_error_object (call.get_payload (), e.message);
+      return;
+    }
 
-      string back = call.get_payload();
+    var parser = new Json.Parser ();
+    try {
+      parser.load_from_data (call.get_payload ());
+    } catch(GLib.Error e) {
+      critical (e.message);
+      return;
+    }
 
-      var parser = new Json.Parser();
-      try {
-        parser.load_from_data(back);
-      } catch(GLib.Error e) {
-        stdout.printf(back+"\n");
-        critical("Problem with json data from twitter: %s", e.message);
-        return;
-      }
+    var root = parser.get_root().get_array();
+    if (root.get_length () == 0) {
+      tweet_list.set_empty ();
+      return;
+    }
+    var res = yield TweetUtils.work_array (root, delta_updater, tweet_list, main_window, account);
 
-
-      var now = new GLib.DateTime.now_local ();
-      var root = parser.get_root().get_array();
-      if (root.get_length () == 0) {
-        tweet_list.set_empty ();
-        load_newest_internal.callback ();
-        return;
-      }
-      root.foreach_element( (array, index, node) => {
-        Tweet t = new Tweet();
-        t.load_from_json(node, now);
-
-        if (tweet_type != -1){
-          t.type = tweet_type;
-        }
-
-        if(t.id < lowest_id)
-          lowest_id = t.id;
-
-        var entry  = new TweetListEntry(t, main_window, account);
-        this.delta_updater.add (entry);
-        tweet_list.add (entry);
-      });
-      load_newest_internal.callback ();
-    });
-    yield;
+    if (res.min_id < this.lowest_id)
+      this.lowest_id = res.min_id;
   } //}}}
 
   /**
@@ -101,54 +77,34 @@ interface ITimeline : Gtk.Widget, IPage {
    * @param function The Twitter function to use
    * @param tweet_type The type of tweets to load
    */
-  protected async void load_older_internal(string function, int tweet_type) { //{{{
-    var call = account.proxy.new_call();
-    call.set_function(function);
-    call.set_method("GET");
-    message(@"using lowest_id: $lowest_id");
-    call.add_param("max_id", (lowest_id - 1).to_string());
-    call.invoke_async.begin(null, (obj, result) => {
-      try{
-        call.invoke_async.end(result);
-      } catch (GLib.Error e) {
-        Utils.show_error_object (call.get_payload (), e.message);
-        critical(e.message);
-        critical("Code: %u", call.get_status_code());
-      }
-
-      string back = call.get_payload();
-      debug(back+"\n");
-      var parser = new Json.Parser();
-      try{
-        parser.load_from_data (back);
-      } catch (GLib.Error e) {
-        critical(e.message);
-      }
-      var now = new GLib.DateTime.now_local ();
-      var root = parser.get_root().get_array();
-      if (root.get_length () == 0) {
-        tweet_list.set_empty ();
-        load_older_internal.callback ();
-        return;
-      }
-      root.foreach_element( (array, index, node) => {
-        Tweet t = new Tweet();
-        t.load_from_json(node, now);
-
-        if (tweet_type != -1){
-          t.type = tweet_type;
-        }
-
-        if(t.id < lowest_id)
-          lowest_id = t.id;
-
-        var entry  = new TweetListEntry(t, main_window, account);
-        delta_updater.add (entry);
-        tweet_list.add (entry);
-      });
-      load_older_internal.callback ();
-    });
-    yield;
+  protected async void load_older_internal (string function) { //{{{
+    var call = account.proxy.new_call ();
+    call.set_function (function);
+    call.set_method ("GET");
+    call.add_param ("count", "28");
+    call.add_param ("include_my_retweet", "true");
+    call.add_param ("max_id", (lowest_id - 1).to_string ());
+    try {
+      yield call.invoke_async (null);
+    } catch (GLib.Error e) {
+      Utils.show_error_object (call.get_payload (), e.message);
+      return;
+    }
+    var parser = new Json.Parser();
+    try {
+      parser.load_from_data (call.get_payload ());
+    } catch (GLib.Error e) {
+      critical(e.message);
+      return;
+    }
+    var root = parser.get_root ().get_array ();
+    if (root.get_length () == 0) {
+      tweet_list.set_empty ();
+      return;
+    }
+    var res = yield TweetUtils.work_array (root, delta_updater, tweet_list, main_window, account);
+    if (res.min_id < lowest_id)
+      lowest_id = res.min_id;
   } ///}}}
 
   /**

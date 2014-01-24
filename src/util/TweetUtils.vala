@@ -50,9 +50,11 @@ namespace TweetUtils {
       int length_before = formatted_text.char_count ();
       int from = formatted_text.index_of_nth_char (s.start + char_diff);
       int to   = formatted_text.index_of_nth_char (s.end + char_diff);
+      var html_url = s.url.replace("&", "&amp;");
       formatted_text = formatted_text.splice (from, to,
-           "<a href=\"%s\">%s</a>".printf(s.url.replace ("&", "&amp;"),
-                                        s.display_url.replace ("&", "&amp;")));
+           "<a href=\"%s\" title=\"%s\">%s</a>".printf(html_url,
+                                                       html_url,
+                                                       s.display_url.replace ("&", "&amp;")));
       char_diff += formatted_text.char_count () - length_before;
     }
 
@@ -214,7 +216,7 @@ namespace TweetUtils {
     var session = new Soup.Session ();
     var msg     = new Soup.Message ("GET", avatar_url);
     session.queue_message (msg, (s, _msg) => {
-      string dest = Utils.user_file ("assets/avatars/" + avatar_name);
+      string dest = Dirs.cache ("assets/avatars/" + avatar_name);
       var memory_stream = new MemoryInputStream.from_data(
                                          _msg.response_body.data,
                                          null);
@@ -263,18 +265,61 @@ namespace TweetUtils {
   }
 
   bool activate_link (string uri, MainWindow window) {
-    uri = uri._strip();
-    string term = uri.substring(1);
+    uri = uri._strip ();
+    string term = uri.substring (1);
 
-    if(uri.has_prefix("@")){
+    if (uri.has_prefix ("@")) {
       window.switch_page(MainWindow.PAGE_PROFILE,
                          int64.parse (term));
       return true;
-    }else if(uri.has_prefix("#")){
-      window.switch_page(MainWindow.PAGE_SEARCH, uri);
+    } else if(uri.has_prefix ("#")) {
+      window.switch_page (MainWindow.PAGE_SEARCH, uri);
       return true;
     }
     return false;
-
   }
+
+
+  struct WorkerResult {
+    int64 max_id;
+    int64 min_id;
+  }
+
+  async WorkerResult work_array (Json.Array json_array,
+                                 DeltaUpdater delta_updater,
+                                 Gtk.ListBox tweet_list,
+                                 MainWindow main_window,
+                                 Account account) {
+    int64 max = 0;
+    int64 min = int64.MAX;
+    new Thread<void*> ("TweetWorker", () => {
+      var entry_list = new GLib.List<TweetListEntry> ();
+      var now = new GLib.DateTime.now_local ();
+      json_array.foreach_element( (array, index, node) => {
+        Tweet t = new Tweet();
+        t.load_from_json(node, now);
+        if (t.id > max)
+          max = t.id;
+
+        if (t.id < min)
+          min = t.id;
+
+        var entry  = new TweetListEntry(t, main_window, account);
+        delta_updater.add (entry);
+        entry_list.append (entry);
+      });
+
+      GLib.Idle.add (() => {
+        foreach (var e in entry_list)
+          tweet_list.add (e);
+        work_array.callback ();
+        return false;
+      });
+      return null;
+    });
+    yield;
+    return {max, min};
+  }
+
+
 }

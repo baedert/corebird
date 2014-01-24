@@ -89,7 +89,7 @@ class Twitter : GLib.Object {
     }
 
     string avatar_name = Utils.get_avatar_name (url);
-    string avatar_dest = Utils.user_file ("assets/avatars/" + avatar_name);
+    string avatar_dest = Dirs.cache ("assets/avatars/" + avatar_name);
     // If the image already exists but is not loaded in ram yet,
     // just load it and return it.
     if (FileUtils.test (avatar_dest, FileTest.EXISTS)) {

@@ -18,6 +18,22 @@
 
 using Gtk;
 
+int dm_thread_entry_sort_func (Gtk.ListBoxRow r1,
+                               Gtk.ListBoxRow r2) {
+  if (r1 is StartConversationEntry)
+    return -1;
+  else if (r2 is StartConversationEntry)
+    return 1;
+
+  if (!(r1 is DMThreadEntry))
+    return 1;
+
+  if (((DMThreadEntry)r1).last_message_id >
+      ((DMThreadEntry)r2).last_message_id)
+    return -1;
+  return 1;
+}
+
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/dm-thread-entry.ui")]
 class DMThreadEntry : Gtk.ListBoxRow {

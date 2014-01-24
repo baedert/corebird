@@ -1,42 +1,27 @@
-/*  This file is part of corebird, a Gtk+ linux Twitter client.
- *  Copyright (C) 2013 Timm Bäder
- *
- *  corebird is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  corebird is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
- */
 
 
-public class Benchmark {
-  private static GLib.Timer timer;
-  private static string action_name;
 
 
-  public static void start (string name) {
-    if (timer == null) {
-      timer = new GLib.Timer ();
+
+
+namespace Benchmark {
+  public class Bench {
+    public string name;
+    public GLib.DateTime first;
+    public void stop () {
+      var ts = new GLib.DateTime.now_local ().difference (first);
+      int64 ms = (ts / 1000);
+
+      message (@"$(this.name) took $ms ms");
     }
-
-    timer.start ();
-    action_name = name;
-  }
-
-  public static void stop () {
-    timer.stop();
-    ulong microseconds;
-    timer.elapsed(out microseconds);
-    float s = microseconds / 1000000.0f;
-    message ("%s took %fs", action_name, s);
   }
 
 
+  public Bench start (string name) {
+    var b = new Bench ();
+
+    b.name = name;
+    b.first = new GLib.DateTime.now_local ();
+    return b;
+  }
 }

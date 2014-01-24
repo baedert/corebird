@@ -25,8 +25,8 @@ class Corebird : Gtk.Application {
 
   public Corebird() throws GLib.Error{
     GLib.Object(application_id:   "org.baedert.corebird",
-                flags:            ApplicationFlags.HANDLES_COMMAND_LINE,
-                register_session: true);
+                flags:            ApplicationFlags.HANDLES_COMMAND_LINE);
+                //register_session: true);
     this.set_inactivity_timeout(500);
   }
 
@@ -35,31 +35,43 @@ class Corebird : Gtk.Application {
     string? compose_screen_name = null;
 
 
-    OptionEntry[] options = new OptionEntry[1];
+    OptionEntry[] options = new OptionEntry[2];
     options[0] = {"tweet", 't', 0, OptionArg.STRING, ref compose_screen_name,
-            "Shows only the 'compose tweet' window for the given account, nothing else.", null};
+            "Shows only the 'compose tweet' window for the given account, nothing else.", "SCREEN_NAME"};
+    options[1] = {null};
 
-    string[] args = cmd.get_arguments();
+    string[] args = cmd.get_arguments ();
     string*[] _args = new string[args.length];
-    for(int i = 0; i < args.length; i++){
+    for (int i = 0; i < args.length; i++) {
       _args[i] = args[i];
     }
 
-    try{
-      var opt_context = new OptionContext("");
-      opt_context.set_help_enabled(true);
-      opt_context.add_main_entries(options, null);
+    try {
+      var opt_context = new OptionContext ("");
+      opt_context.set_help_enabled (true);
+      opt_context.add_main_entries (options, GETTEXT_PACKAGE);
       unowned string[] tmp = _args;
-      opt_context.parse(ref tmp);
+      opt_context.parse (ref tmp);
     } catch (GLib.OptionError e) {
       cmd.print("Use --help to see available options\n");
       quit();
       return -1;
     }
 
+
+    // TODO: The switch-page accelerators could also be in a loop...
+    this.add_accelerator (Settings.get_accel ("compose-tweet"), "win.compose_tweet", null);
+    this.add_accelerator (Settings.get_accel ("toggle-sidebar"), "win.toggle_sidebar", null);
+    this.add_accelerator ("<Alt>1", "win.switch_page", new GLib.Variant.int32(0));
+    this.add_accelerator ("<Alt>2", "win.switch_page", new GLib.Variant.int32(1));
+    this.add_accelerator ("<Alt>3", "win.switch_page", new GLib.Variant.int32(2));
+    this.add_accelerator ("<Alt>4", "win.switch_page", new GLib.Variant.int32(3));
+    this.add_accelerator ("<Alt>5", "win.switch_page", new GLib.Variant.int32(4));
+    this.add_accelerator ("<Control>P", "app.show-settings", null);
+    this.add_accelerator ("<Control><Shift>Q", "app.quit", null);
+
+
     open_startup_windows (compose_screen_name);
-
-
     NotificationManager.init ();
 
     // If the user wants the dark theme, apply it
@@ -76,18 +88,9 @@ class Corebird : Gtk.Application {
   public override void startup () { // {{{
     base.startup();
 
-    create_user_folder ("");
-    create_user_folder ("assets/");
-    create_user_folder ("assets/avatars/");
-    create_user_folder ("assets/banners/");
-    create_user_folder ("assets/user");
-    create_user_folder ("assets/media/");
-    create_user_folder ("assets/media/thumbs/");
-    create_user_folder ("log/");
-    create_user_folder ("accounts/");
-
+    Dirs.create_dirs ();
     message ("startup");
-    Corebird.db = new Sql.Database (Utils.user_file ("Corebird.db"),
+    Corebird.db = new Sql.Database (Dirs.config ("Corebird.db"),
                                     Sql.COREBIRD_INIT_FILE);
 
     // Construct app menu
@@ -138,10 +141,10 @@ class Corebird : Gtk.Application {
 
     // Load custom CSS stuff
     try{
-      CssProvider provider = new CssProvider();
-      string style = Utils.user_file("style.css");
-      if(!FileUtils.test(style, FileTest.EXISTS))
-        style = DATADIR+"/ui/style.css";
+      CssProvider provider = new CssProvider ();
+      string style = Dirs.config ("style.css");
+      if (!FileUtils.test(style, FileTest.EXISTS))
+        style = DATADIR + "/ui/style.css";
 
       provider.load_from_file(File.new_for_path(style));
       Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(), provider,
@@ -223,8 +226,8 @@ class Corebird : Gtk.Application {
    */
   private void init_log_files () { // {{{
     /* First, create that log file */
-    var now = new GLib.DateTime.now_local();
-    File log_file = File.new_for_path(Utils.user_file("log/%s.txt".printf(now.to_string())));
+    var now = new GLib.DateTime.now_local ();
+    File log_file = File.new_for_path (Dirs.data ("logs/%s.txt".printf (now.to_string())));
     try {
       log_stream = log_file.create(FileCreateFlags.REPLACE_DESTINATION);
     } catch (GLib.Error e) {
@@ -283,21 +286,6 @@ class Corebird : Gtk.Application {
     window = null;
     return false;
   }
-
-  private void create_user_folder(string name) {
-    if (FileUtils.test (Utils.user_file (name), FileTest.EXISTS))
-      return;
-
-    try {
-      bool success = File.new_for_path(Utils.user_file(name))
-                     .make_directory();
-      if(!success)
-        critical("Couldn't create user folder %s", name);
-    } catch (GLib.Error e) {
-      critical("%s(%s)", e.message, name);
-    }
-  }
-
   /**
    * Log handler in case the application is not
    * started from the command line.

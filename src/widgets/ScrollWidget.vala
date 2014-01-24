@@ -99,7 +99,7 @@ class ScrollWidget : ScrolledWindow {
    * This will use a transition if the correct Gtk+ settings is set
    * to true.
    *
-   * @param animate Whether to animate/transition the change or not (default: true)
+   * @param animate    Whether to animate/transition the change or not (default: true)
    * @param force_wait If this is set to true, we will wait for the next size_allocate
    *                   event, even if the widget is unmapped (default: false).
    */
@@ -108,12 +108,11 @@ class ScrollWidget : ScrolledWindow {
     if (!this.get_mapped () && !force_wait) {
       this.vadjustment.value = 0;
       this.vadjustment.value_changed ();
-      message ("Unmapped!");
       return;
     }
 
     // TODO: I really can't stand the duplication here
-    if (force_start || scroll_up_id != 0) {
+    if (force_start) {
       if (Gtk.Settings.get_default ().gtk_enable_animations && animate) {
         this.start_time = this.get_frame_clock ().get_frame_time ();
         this.end_time = start_time + (TRANSITION_DURATION * 1000);
@@ -125,6 +124,11 @@ class ScrollWidget : ScrolledWindow {
         this.vadjustment.value_changed ();
       }
     } else {
+      if (scroll_up_id != 0) {
+        this.transition_diff = -this.vadjustment.value;
+        this.transition_start_value = this.vadjustment.value;
+        return;
+      }
       scroll_up_id = this.size_allocate.connect (() => {
         if (Gtk.Settings.get_default ().gtk_enable_animations && animate) {
           this.start_time = this.get_frame_clock ().get_frame_time ();

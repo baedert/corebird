@@ -9,73 +9,59 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="850"
-   height="850"
-   id="svg3861"
+   width="500"
+   height="500"
+   id="svg3943"
    version="1.1"
    inkscape:version="0.48.4 r9939"
    sodipodi:docname="corebird-mentions-symbolic.svg"
-   inkscape:export-filename="/home/baedert/Code/Vala/Corebird/assets/icons/mentions.png"
-   inkscape:export-xdpi="3.3882353"
-   inkscape:export-ydpi="3.3882353">
+   inkscape:export-filename="/home/baedert/Code/Vala/Corebird/assets/icons/stream.png"
+   inkscape:export-xdpi="2.8800001"
+   inkscape:export-ydpi="2.8800001">
   <defs
-     id="defs3863" />
+     id="defs3945" />
   <sodipodi:namedview
      id="base"
-     pagecolor="#ffffff"
+     pagecolor="#3a3b39"
      bordercolor="#666666"
      borderopacity="1.0"
-     inkscape:pageopacity="0.0"
+     inkscape:pageopacity="1"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.38574749"
-     inkscape:cx="846.94503"
-     inkscape:cy="224.34355"
+     inkscape:zoom="1.0318373"
+     inkscape:cx="176.17702"
+     inkscape:cy="230.32633"
      inkscape:document-units="px"
-     inkscape:current-layer="layer2"
+     inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1372"
-     inkscape:window-height="945"
-     inkscape:window-x="498"
-     inkscape:window-y="27"
-     inkscape:window-maximized="0"
-     fit-margin-top="0"
-     fit-margin-left="0"
-     fit-margin-right="0"
-     fit-margin-bottom="0" />
+     inkscape:window-width="1096"
+     inkscape:window-height="742"
+     inkscape:window-x="592"
+     inkscape:window-y="147"
+     inkscape:window-maximized="0" />
   <metadata
-     id="metadata3866">
+     id="metadata3948">
     <rdf:RDF>
       <cc:Work
          rdf:about="">
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <g
-     inkscape:label="status"
+     inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-165.95982,-157.13231)" />
-  <g
-     inkscape:groupmode="layer"
-     id="layer2"
-     inkscape:label="actions">
+     transform="translate(0,-552.36218)">
     <g
-       id="g3048"
-       transform="translate(-166.42856,-201.6479)"
-       style="fill:#bebebe;fill-opacity:1">
+       style="font-size:457.36331177px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#bebebe;fill-opacity:1;stroke:none;font-family:GLYPHICONS Halflings;-inkscape-font-specification:GLYPHICONS Halflings"
+       id="text3074"
+       transform="translate(3.2684464,3.0812537)">
       <path
-         id="path3775"
-         d="m 812.67857,818.6948 c -58.24416,59.6497 -139.54481,96.6875 -229.5,96.6875 -87.15553,0 -166.16001,-34.7719 -223.96875,-91.1875 -79.2234,41.4504 -145.98719,103.4752 -193.25,178.9375 l 850.93748,0 C 967.47687,924.225 896.69145,860.0605 812.67857,818.6948 z"
-         style="fill:#bebebe;fill-opacity:1;fill-rule:nonzero;stroke:none"
-         inkscape:connector-curvature="0" />
-      <path
-         id="path3782"
-         d="m 591.42857,250.1635 c -166.43667,0 -301.375,134.9384 -301.375,301.375 0,166.4367 134.93833,301.3438 301.375,301.3438 166.43667,0 301.375,-134.9071 301.375,-301.3438 0,-166.4366 -134.93833,-301.375 -301.375,-301.375 z m -206.5,442.9063 413,0 c -44.1788,67.0904 -120.16335,111.375 -206.5,111.375 -86.33351,0 -162.32049,-44.2887 -206.5,-111.375 z"
-         style="fill:#bebebe;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         d="m 248.09375,592.56684 c -85.03925,0.5662 -168.005776,57.82029 -194.28125,139.46875 -26.385643,77.08818 -4.271285,170.1226 57.75,223.4375 71.5361,63.07071 187.5421,67.93271 263.557,10.01395 3.95802,-2.85952 7.8838,-5.7933 11.78675,-8.63895 C 377.81774,945.3059 368.83514,933.6168 358.9375,922.72309 297.0884,976.75368 193.68644,975.3655 135.09375,917.19184 80.884419,865.56728 69.934907,773.90742 111.8125,711.41059 c 29.69537,-46.78007 84.43826,-75.08219 139.65617,-74.73109 53.16862,-0.7165 108.46344,23.98417 136.25008,70.51234 22.25853,37.07386 26.50542,86.94443 3.7083,124.77807 -9.64067,15.19202 -25.32808,26.35689 -42.9583,30.22193 0.60842,-54.46704 0.079,-108.93761 0.25,-163.40625 -14.60417,0 -29.20833,0 -43.8125,0 -0.0136,6.12718 -0.22329,12.25411 -0.9375,18.34375 -34.82469,-30.45426 -93.46727,-31.77829 -126.40625,2.125 -29.80739,30.16034 -35.96152,76.94244 -26.1875,116.78125 8.48679,33.99359 36.09414,64.61576 71.59375,69.9375 28.67886,5.3986 59.39617,-3.06788 81.625,-21.8125 0.21804,7.92173 0.44017,16.0667 0.0625,23.875 43.8287,1.59441 90.24777,-13.26515 118.40781,-48.15438 32.54632,-42.0112 34.50913,-101.4827 14.93955,-149.43035 -28.26506,-70.16353 -102.58103,-117.55999 -177.90976,-117.86685 -4.00013,-0.0761 -8.00027,-0.0358 -12.0001,-0.0172 z m 0.46875,145.59375 c 29.67588,-0.7063 54.3001,27.8755 52.84375,56.875 2.21437,23.7388 -6.33282,50.74935 -28.0625,62.8125 -25.78795,13.86925 -63.43065,2.25199 -72.875,-26.4375 -10.95333,-27.77994 -6.98703,-63.52517 16.75,-83.4375 9.0684,-6.48008 20.22728,-9.70347 31.34375,-9.8125 z"
+         id="path3107"
          inkscape:connector-curvature="0" />
     </g>
   </g>

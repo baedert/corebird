@@ -35,12 +35,16 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   private int64 max_sent_id = -1;
   [GtkChild]
   private Gtk.ListBox thread_list;
+  private Gtk.Spinner progress_spinner;
+  private bool dms_received = false;
+  private signal void dm_download_complete ();
 
 
   public DMThreadsPage (int id, Account account) {
     this.id = id;
     this.account = account;
     thread_list.set_header_func (header_func);
+    thread_list.set_sort_func (dm_thread_entry_sort_func);
 
     thread_list.row_activated.connect ((row) => {
       if (row is StartConversationEntry)
@@ -74,10 +78,13 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     if (type == StreamMessageType.DIRECT_MESSAGE) {
       var obj = root.get_object ().get_object_member ("direct_message");
       add_new_thread (obj);
-      if (obj.get_int_member ("sender_id") != account.id) {
-        this.unread_count ++;
-        this.update_unread_count ();
-        message ("Increasing global unread count by 1");
+      int64 sender_id = obj.get_int_member ("sender_id");
+      if (sender_id != account.id) {
+        if (!user_id_visible (sender_id)) {
+          this.unread_count ++;
+          this.update_unread_count ();
+        }
+        debug ("Increasing global unread count by 1");
       }
     }
   }
@@ -101,7 +108,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
                       .where_eqi ("to_id", account.id).order ("id DESC").limit (1).once_i64 ();
     max_sent_id = account.db.select ("dms").cols ("id")
                   .where_eqi ("from_id", account.id).order ("id DESC").limit (1).once_i64 ();
-    account.db.select ("dm_threads")
+    int n_rows = account.db.select ("dm_threads")
               .cols ("user_id", "screen_name", "last_message", "last_message_id", "avatar_url", "name")
               .order ("last_message_id")
               .run ((vals) => {
@@ -122,6 +129,12 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       thread_map.set (user_id, entry);
       return true;
     });
+    if (n_rows == 0) {
+      progress_spinner = new Gtk.Spinner ();
+      progress_spinner.set_size_request (60, 60);
+      progress_spinner.start ();
+      thread_list.add (progress_spinner);
+    }
   } // }}}
 
   public void load_newest () { // {{{
@@ -132,27 +145,17 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     call.add_param ("since_id", max_received_id.to_string ());
     call.add_param ("count", "200");
     call.invoke_async.begin (null, (obj, res) => {
-      try {
-        call.invoke_async.end (res);
-      } catch (GLib.Error e) {
-        critical (e.message);
-        return;
+      if (!dms_received) {
+        // we are the first one to receive the results
+        dms_received = true;
+        dm_download_complete.connect (() => {
+          on_dm_result (obj, res);
+        });
+      } else {
+        remove_spinner ();
+        on_dm_result (obj, res);
+        dm_download_complete ();
       }
-      var parser = new Json.Parser ();
-      try {
-        parser.load_from_data (call.get_payload ());
-      } catch (GLib.Error e) {
-        critical (e.message);
-        return;
-      }
-      var root_arr = parser.get_root ().get_array ();
-      message ("received: %u", root_arr.get_length ());
-      account.db.begin_transaction ();
-      root_arr.foreach_element ((arr, pos, node) => {
-        add_new_thread (node.get_object ());
-      });
-      account.db.end_transaction ();
-      save_last_messages ();
     });
 
     var sent_call = account.proxy.new_call ();
@@ -162,28 +165,50 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     sent_call.add_param ("count", "200");
     sent_call.set_method ("GET");
     sent_call.invoke_async.begin (null, (obj, res) => {
-      try {
-        sent_call.invoke_async.end (res);
-      } catch (GLib.Error e) {
-        critical (e.message);
-        return;
+      if (!dms_received) {
+        // we are the first one to receive the results
+        dms_received = true;
+        dm_download_complete.connect (() => {
+          on_dm_result (obj, res);
+        });
+      } else {
+        remove_spinner ();
+        on_dm_result (obj, res);
+        dm_download_complete ();
       }
-      var parser = new Json.Parser ();
-      try {
-        parser.load_from_data (sent_call.get_payload ());
-      } catch (GLib.Error e) {
-        critical (e.message);
-        return;
-      }
-      var root_arr = parser.get_root ().get_array ();
-      message ("sent: %u", root_arr.get_length ());
-      account.db.begin_transaction ();
-      root_arr.foreach_element ((arr, pos, node) => {
-        save_message (node.get_object ());
-      });
-      account.db.end_transaction ();
     });
   } // }}}
+
+
+  private void on_dm_result (GLib.Object? object, GLib.AsyncResult res) {
+    var call = (Rest.ProxyCall) object;
+    try {
+      call.invoke_async.end (res);
+    } catch (GLib.Error e) {
+      critical (e.message);
+      return;
+    }
+    var parser = new Json.Parser ();
+    try {
+      parser.load_from_data (call.get_payload ());
+    } catch (GLib.Error e) {
+      critical (e.message);
+      return;
+    }
+    var root_arr = parser.get_root ().get_array ();
+    message ("sent: %u", root_arr.get_length ());
+    account.db.begin_transaction ();
+    root_arr.foreach_element ((arr, pos, node) => {
+      var dm_obj = node.get_object ();
+      if (dm_obj.get_int_member ("sender_id") == account.id)
+        save_message (dm_obj);
+      else
+        add_new_thread (dm_obj);
+    });
+    account.db.end_transaction ();
+    save_last_messages ();
+  }
+
 
   private void add_new_thread (Json.Object dm_obj) { // {{{
     int64 sender_id  = dm_obj.get_int_member ("sender_id");
@@ -199,8 +224,10 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       if (t_e.last_message_id > message_id)
         return;
 
-      t_e.unread_count ++;
-      t_e.update_unread_count ();
+      if (!user_id_visible (t_e.user_id)) {
+        t_e.unread_count ++;
+        t_e.update_unread_count ();
+      }
       t_e.last_message = text;
       t_e.last_message_id = message_id;
       if (Settings.notify_new_dms ()) {
@@ -240,6 +267,26 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     int64 sender_id = dm_obj.get_int_member ("sender_id");
     int64 dm_id  = dm_obj.get_int_member ("id");
     string text = dm_obj.get_string_member ("text");
+    if (dm_obj.has_member ("entities")) {
+      var urls = dm_obj.get_object_member ("entities").get_array_member ("urls");
+      var url_list = new GLib.SList<TweetUtils.Sequence?> ();
+      urls.foreach_element((arr, index, node) => {
+        var url = node.get_object();
+        string expanded_url = url.get_string_member("expanded_url");
+
+        Json.Array indices = url.get_array_member ("indices");
+        expanded_url = expanded_url.replace("&", "&amp;");
+        url_list.prepend(TweetUtils.Sequence() {
+          start = (int)indices.get_int_element (0),
+          end   = (int)indices.get_int_element (1) ,
+          url   = expanded_url,
+          display_url = url.get_string_member ("display_url"),
+          visual_display_url = false
+        });
+      });
+      text = TweetUtils.get_formatted_text (text, url_list);
+    }
+
     // TODO: Update last_message
     account.db.insert ("dms").vali64 ("id", dm_id)
               .vali64 ("from_id", sender_id)
@@ -280,13 +327,26 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     }
   } //}}}
 
+  private void remove_spinner () {
+    if (progress_spinner != null && progress_spinner.parent != null) {
+      thread_list.remove (thread_list.get_row_at_index (1));
+      progress_spinner = null;
+    }
+  }
+
   public void create_tool_button(RadioToolButton? group) {
     tool_button = new BadgeRadioToolButton(group, "corebird-dms-symbolic");
     tool_button.label = _("Direct Messages");
+    tool_button.tooltip_text = _("Direct Messages");
   }
 
   public RadioToolButton? get_tool_button() {
     return tool_button;
+  }
+
+  private bool user_id_visible (int64 sender_id) {
+    return (main_window.cur_page_id == MainWindow.PAGE_DM &&
+            ((DMPage)main_window.get_page (MainWindow.PAGE_DM)).user_id == sender_id);
   }
 
   private void update_unread_count() {

@@ -43,7 +43,7 @@ class Account : GLib.Object {
     if (db != null)
       return;
 
-    this.db = new Sql.Database (Utils.user_file (@"accounts/$id.db"),
+    this.db = new Sql.Database (Dirs.config (@"accounts/$id.db"),
                                 Sql.ACCOUNTS_INIT_FILE);
     user_counter = new UserCounter ();
     user_counter.load (db);
@@ -81,8 +81,8 @@ class Account : GLib.Object {
    * Small:  accounts/ID_small.png
    */
   public void load_avatar () {
-    string small_path = Utils.user_file (@"accounts/$(id)_small.png");
-    string path = Utils.user_file (@"accounts/$(id).png");
+    string small_path = Dirs.config (@"accounts/$(id)_small.png");
+    string path = Dirs.config (@"accounts/$(id).png");
     try {
       this.avatar_small = new Gdk.Pixbuf.from_file (small_path);
       this.avatar = new Gdk.Pixbuf.from_file (path);
@@ -150,8 +150,8 @@ class Account : GLib.Object {
       session.send_message (msg);
       var data_stream = new MemoryInputStream.from_data ((owned)msg.response_body.data, null);
       string type = Utils.get_file_type (url);
-      string dest_path = Utils.user_file(@"accounts/$(id)_small.png");
-      string big_dest  = Utils.user_file(@"accounts/$(id).png");
+      string dest_path = Dirs.config (@"accounts/$(id)_small.png");
+      string big_dest  = Dirs.config (@"accounts/$(id).png");
       Gdk.Pixbuf pixbuf;
       try {
         pixbuf = new Gdk.Pixbuf.from_stream(data_stream);

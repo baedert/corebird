@@ -29,6 +29,15 @@ enum StreamMessageType {
   DIRECT_MESSAGE,
 
   TWEET,
+  EVENT_LIST_CREATED,
+  EVENT_LIST_DESTROYED,
+  EVENT_LIST_UPDATED,
+  EVENT_LIST_UNSUBSCRIBED,
+  EVENT_LIST_SUBSCRIBED,
+  EVENT_LIST_MEMBER_ADDED,
+  EVENT_LIST_MEMBER_REMOVED,
+  EVENT_FAVORITE,
+  EVENT_UNFAVORITE
 }
 
 
@@ -133,7 +142,7 @@ class UserStream : Object {
       timeout_id = GLib.Timeout.add (TIMEOUT_INTERVAL, timeout_cb);
 
       if (real == "\r\n") {
-        message ("HEARTBEAT");
+        message ("HEARTBEAT(%s)", account_name);
         data.erase ();
         return;
       }
@@ -162,12 +171,9 @@ class UserStream : Object {
         type = StreamMessageType.FRIENDS;
       else if (root.has_member ("text"))
         type = StreamMessageType.TWEET;
-      else if (root.has_member ("event")){
+      else if (root.has_member ("event")) {
         string evt_str = root.get_string_member ("event");
-        if (evt_str == "follow")
-          type = StreamMessageType.FOLLOW;
-        else
-          type = StreamMessageType.EVENT;
+        type = get_event_type (evt_str);
       }
       else if (root.has_member ("warning"))
         type = StreamMessageType.WARNING;
@@ -187,6 +193,33 @@ class UserStream : Object {
     }
   }
 
+
+  private StreamMessageType get_event_type (string evt_str) {
+    switch (evt_str) {
+      case "follow":
+        return StreamMessageType.FOLLOW;
+      case "list_created":
+        return StreamMessageType.EVENT_LIST_CREATED;
+      case "list_destroyed":
+        return StreamMessageType.EVENT_LIST_DESTROYED;
+      case "list_updated":
+        return StreamMessageType.EVENT_LIST_UPDATED;
+      case "list_user_unsubscribed":
+        return StreamMessageType.EVENT_LIST_UNSUBSCRIBED;
+      case "list_user_subscribed":
+        return StreamMessageType.EVENT_LIST_SUBSCRIBED;
+      case "list_member_added":
+        return StreamMessageType.EVENT_LIST_MEMBER_ADDED;
+      case "list_member_removed":
+        return StreamMessageType.EVENT_LIST_MEMBER_REMOVED;
+      case "favorite":
+        return StreamMessageType.EVENT_FAVORITE;
+      case "unfavorite":
+        return StreamMessageType.EVENT_UNFAVORITE;
+    }
+
+    return 0;
+  }
 }
 
 

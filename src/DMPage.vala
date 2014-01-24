@@ -34,7 +34,7 @@ class DMPage : IPage, IMessageReceiver, Box {
   private ScrollWidget scroll_widget;
   private DMPlaceholderBox placeholder_box = new DMPlaceholderBox ();
 
-  private int64 user_id;
+  public int64 user_id;
   private int64 lowest_id = int64.MAX;
 
   public DMPage (int id) {
@@ -54,16 +54,38 @@ class DMPage : IPage, IMessageReceiver, Box {
       if (obj.get_int_member ("sender_id") != this.user_id)
         return;
 
+      var text = obj.get_string_member ("text");
+      if (obj.has_member ("entities")) {
+        var urls = obj.get_object_member ("entities").get_array_member ("urls");
+        var url_list = new GLib.SList<TweetUtils.Sequence?> ();
+        urls.foreach_element((arr, index, node) => {
+          var url = node.get_object();
+          string expanded_url = url.get_string_member("expanded_url");
+
+          Json.Array indices = url.get_array_member ("indices");
+          expanded_url = expanded_url.replace("&", "&amp;");
+          url_list.prepend(TweetUtils.Sequence() {
+            start = (int)indices.get_int_element (0),
+            end   = (int)indices.get_int_element (1) ,
+            url   = expanded_url,
+            display_url = url.get_string_member ("display_url"),
+            visual_display_url = false
+          });
+        });
+        text = TweetUtils.get_formatted_text (text, url_list);
+      }
+
       var sender = obj.get_object_member ("sender");
       var new_msg = new DMListEntry ();
       new_msg.text = obj.get_string_member ("text");
       new_msg.name = sender.get_string_member ("name");
       new_msg.screen_name = sender.get_string_member ("screen_name");
       new_msg.avatar_url = sender.get_string_member ("profile_image_url");
-      new_msg.timestamp = Utils.parse_date (sender.get_string_member ("created_at")).to_unix ();
+      new_msg.timestamp = Utils.parse_date (obj.get_string_member ("created_at")).to_unix ();
       new_msg.main_window = main_window;
       new_msg.user_id = sender.get_int_member ("id");
       new_msg.load_avatar ();
+      new_msg.update_time_delta ();
       delta_updater.add (new_msg);
       messages_list.add (new_msg);
       if (scroll_widget.scrolled_down)
@@ -71,7 +93,7 @@ class DMPage : IPage, IMessageReceiver, Box {
     }
   } /// }}}
 
-  private void load_older () {
+  private void load_older () { // {{{
     var now = new GLib.DateTime.now_local ();
     scroll_widget.balance_next_upper_change (TOP);
     // Load messages
@@ -102,7 +124,7 @@ class DMPage : IPage, IMessageReceiver, Box {
       return true;
     });
 
-  }
+  } // }}}
 
   public void on_join (int page_id, va_list arg_list) { // {{{
     int64 user_id = arg_list.arg<int64> ();
@@ -157,7 +179,7 @@ class DMPage : IPage, IMessageReceiver, Box {
 
   [GtkCallback]
   private void send_button_clicked_cb () { // {{{
-    if (text_entry.buffer.length == 0 || text_entry.buffer.length > 140)
+    if (text_entry.buffer.length == 0 || text_entry.buffer.length > Tweet.MAX_LENGTH)
       return;
 
     // Just add the entry now
@@ -179,7 +201,7 @@ class DMPage : IPage, IMessageReceiver, Box {
       try {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
-        critical (e.message);
+        Utils.show_error_object (call.get_payload (), e.message);
         return;
       }
     });

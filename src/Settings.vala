@@ -67,6 +67,10 @@ class Settings : GLib.Object {
     return settings.get_boolean ("auto-scroll-on-new-tweets");
   }
 
+  public static string get_accel (string accel_name) {
+    return settings.get_string ("accel-" + accel_name);
+  }
+
   public static int get_animation_duration() {
     return settings.get_int("animation-duration");
   }
@@ -74,6 +78,11 @@ class Settings : GLib.Object {
   public static double max_media_size () {
     return settings.get_double ("max-media-size");
   }
+
+  public static void toggle_sidebar_visible () {
+    settings.set_boolean ("sidebar-visible", !settings.get_boolean ("sidebar-visible"));
+  }
+
 
   public static bool get_bool (string key) {
     return settings.get_boolean (key);

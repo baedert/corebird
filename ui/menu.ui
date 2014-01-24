@@ -7,7 +7,6 @@
       <item>
         <attribute name="label">Settings</attribute>
         <attribute name="action">app.show-settings</attribute>
-        <attribute name="accel">&lt;Control&gt;p</attribute>
       </item>
       <item>
         <attribute name="label">About</attribute>
@@ -16,7 +15,6 @@
       <item>
         <attribute name="label">Quit</attribute>
         <attribute name="action">app.quit</attribute>
-        <attribute name="accel">&lt;Control&gt;&lt;Shift&gt;q</attribute>
       </item>
     </section>
   </menu>

@@ -22,13 +22,20 @@
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/main-window.ui")]
 class MainWindow : ApplicationWindow {
-  public static const int PAGE_STREAM     = 0;
-  public static const int PAGE_MENTIONS   = 1;
-  public static const int PAGE_DM_THREADS = 2;
-  public static const int PAGE_SEARCH     = 3;
-  public static const int PAGE_PROFILE    = 4;
-  public static const int PAGE_TWEET_INFO = 5;
-  public static const int PAGE_DM         = 6;
+  private const GLib.ActionEntry[] win_entries = {
+    {"compose_tweet",  show_compose_window},
+    {"toggle_sidebar", Settings.toggle_sidebar_visible},
+    {"switch_page",    simple_switch_page, "i"}
+  };
+  public static const int PAGE_STREAM        = 0;
+  public static const int PAGE_MENTIONS      = 1;
+  public static const int PAGE_DM_THREADS    = 2;
+  public static const int PAGE_LISTS         = 3;
+  public static const int PAGE_SEARCH        = 4;
+  public static const int PAGE_PROFILE       = 5;
+  public static const int PAGE_TWEET_INFO    = 6;
+  public static const int PAGE_DM            = 7;
+  public static const int PAGE_LIST_STATUSES = 8;
 
   public static const int PAGE_PREVIOUS   = 1024;
   public static const int PAGE_NEXT       = 2048;
@@ -43,6 +50,8 @@ class MainWindow : ApplicationWindow {
   private Image avatar_image;
   [GtkChild]
   private Spinner progress_spinner;
+  [GtkChild]
+  private Gtk.Revealer sidebar_revealer;
   public int cur_page_id {
     get {
       return history.current;
@@ -50,25 +59,21 @@ class MainWindow : ApplicationWindow {
   }
   private uint progress_holders            = 0;
   private RadioToolButton dummy_button     = new RadioToolButton(null);
-  private IPage[] pages                    = new IPage[7];
+  private IPage[] pages                    = new IPage[9];
   private IntHistory history               = new IntHistory (5);
-  private Button new_tweet_button          = new Button ();
   private DeltaUpdater delta_updater       = new DeltaUpdater ();
   public unowned Account account           {public get; private set;}
-  private WarningService warning_service;
+  private bool page_switch_lock = false;
 
 
   public MainWindow(Gtk.Application app, Account? account = null){
     GLib.Object (application: app);
     set_default_size (480, 700);
-    this.destroy.connect (window_destroy_cb);
     this.account = account;
 
     if (account != null) {
       account.init_proxy ();
       account.query_user_info_by_scren_name.begin (account.screen_name, account.load_avatar);
-      this.set_title ("Corebird(@%s)".printf (account.screen_name));
-      this.set_role ("corebird-"+account.screen_name);
       var acc_menu = (GLib.Menu)Corebird.account_menu;
       for (int i = 0; i < acc_menu.get_n_items (); i++){
         Variant item_name = acc_menu.get_item_attribute_value (i,
@@ -79,32 +84,24 @@ class MainWindow : ApplicationWindow {
         }
       }
       account.user_stream.start ();
-      warning_service = new WarningService (account.screen_name);
-      account.user_stream.register (warning_service);
     } else {
       warning ("account == NULL");
       new SettingsDialog (null, (Corebird)app).show_all ();
       return;
     }
-
-
     headerbar.set_subtitle ("@" + account.screen_name);
-    var s = new Gtk.Separator (Gtk.Orientation.VERTICAL);
-    headerbar.pack_start (s);
-   //TODO: Move new_tweet_button into the gtktemplate(also, rename to compose_tweet_button)
-    new_tweet_button.get_style_context ().add_class ("image-button");
-    headerbar.pack_start (new_tweet_button);
-    set_titlebar (headerbar);
 
     stack.transition_duration = Settings.get_animation_duration ();
 
     pages[0] = new HomeTimeline (PAGE_STREAM);
     pages[1] = new MentionsTimeline (PAGE_MENTIONS);
     pages[2] = new DMThreadsPage (PAGE_DM_THREADS, account);
-    pages[3] = new SearchPage (PAGE_SEARCH);
-    pages[4] = new ProfilePage (PAGE_PROFILE);
-    pages[5] = new TweetInfoPage (PAGE_TWEET_INFO);
-    pages[6] = new DMPage (PAGE_DM);
+    pages[3] = new ListsPage (PAGE_LISTS);
+    pages[4] = new SearchPage (PAGE_SEARCH);
+    pages[5] = new ProfilePage (PAGE_PROFILE);
+    pages[6] = new TweetInfoPage (PAGE_TWEET_INFO);
+    pages[7] = new DMPage (PAGE_DM);
+    pages[8] = new ListStatusesPage (PAGE_LIST_STATUSES);
 
     /* Initialize all containers */
     for (int i = 0; i < pages.length; i++) {
@@ -120,7 +117,7 @@ class MainWindow : ApplicationWindow {
       if (page.get_tool_button () != null) {
         left_toolbar.insert (page.get_tool_button (), page.id);
         page.get_tool_button ().clicked.connect (() => {
-          if (page.get_tool_button ().active) {
+          if (page.get_tool_button ().active && !page_switch_lock) {
             switch_page (page.id);
           }
         });
@@ -139,6 +136,8 @@ class MainWindow : ApplicationWindow {
     ((SearchPage)pages[PAGE_SEARCH]).delta_updater = this.delta_updater;
     ((DMThreadsPage)pages[PAGE_DM_THREADS]).delta_updater = this.delta_updater;
     ((DMPage)pages[PAGE_DM]).delta_updater = this.delta_updater;
+    ((ProfilePage)pages[PAGE_PROFILE]).delta_updater = this.delta_updater;
+    ((ListStatusesPage)pages[PAGE_LIST_STATUSES]).delta_updater = this.delta_updater;
 
 
     if (!Gtk.Settings.get_default ().gtk_shell_shows_app_menu) {
@@ -151,11 +150,6 @@ class MainWindow : ApplicationWindow {
       this.show_menubar = false;
     }
 
-    new_tweet_button.always_show_image = true;
-    new_tweet_button.relief = ReliefStyle.NONE;
-    new_tweet_button.image = new Gtk.Image.from_icon_name ("document-new", IconSize.MENU);
-    new_tweet_button.clicked.connect(show_compose_window);
-
     account.load_avatar ();
     avatar_image.pixbuf = account.avatar_small;
     account.notify["avatar_small"].connect(() => {
@@ -164,25 +158,32 @@ class MainWindow : ApplicationWindow {
 
     add_accels();
 
+    Settings.get ().bind ("sidebar-visible", sidebar_revealer, "reveal-child",
+                          SettingsBindFlags.DEFAULT);
+
+    load_geometry ();
     this.show_all();
+
+    this.add_action_entries (win_entries, this);
+
 
     // Activate the first timeline
     pages[0].get_tool_button ().active = true;
+    //this.size_allocate.connect (() => {
+      //Gtk.Allocation a;
+      //get_allocation (out a);
+      //get_position (out a.x, out a.y);
+      //message ("%d, %d, %d, %d", a.x, a.y, a.width, a.height);
+      //return false;
+    //});
+
   }
 
   /**
    * Adds the accelerators to the GtkWindow
    */
-  private void add_accels() {
+  private void add_accels() { // {{{
     AccelGroup ag = new AccelGroup();
-    ag.connect (Gdk.Key.@1, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
-        () => {switch_page(0);return true;});
-    ag.connect (Gdk.Key.@2, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
-        () => {switch_page(1);return true;});
-    ag.connect (Gdk.Key.@3, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
-        () => {switch_page(2);return true;});
-    ag.connect (Gdk.Key.@4, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
-        () => {switch_page(3);return true;});
 
     ag.connect (Gdk.Key.Left, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
         () => {switch_page (PAGE_PREVIOUS); return true;});
@@ -193,14 +194,8 @@ class MainWindow : ApplicationWindow {
     ag.connect (Gdk.Key.Forward, 0, AccelFlags.LOCKED,
         () => {switch_page (PAGE_NEXT); return true;});
 
-    ag.connect (Gdk.Key.t, Gdk.ModifierType.CONTROL_MASK, AccelFlags.LOCKED,
-        () => { show_compose_window (); return true;});
-    ag.connect (Gdk.Key.n, Gdk.ModifierType.CONTROL_MASK, AccelFlags.LOCKED,
-        () => { show_compose_window (); return true;});
-
-
     this.add_accel_group(ag);
-  }
+  } // }}}
 
   [GtkCallback]
   private bool button_press_event_cb (Gdk.EventButton evt) {
@@ -229,38 +224,37 @@ class MainWindow : ApplicationWindow {
    * @param page_id The id of the page to switch to.
    *                See the PAGE_* constants.
    * @param ... The parameters to pass to the page
+   *
+   * TODO: Refactor this.
    */
-  public void switch_page (int page_id, ...) {
+  public void switch_page (int page_id, ...) { // {{{
     if (page_id == history.current) {
       if (pages[page_id].handles_double_open ())
         pages[page_id].double_open ();
       else
         pages[page_id].on_join (page_id, va_list ());
+
       return;
     }
 
     bool push = true;
 
-    if (page_id == PAGE_PREVIOUS) {
-      if (history.current != -1)
-        pages[history.current].on_leave ();
-      page_id = history.back ();
-      push = false;
-      stack.transition_type = StackTransitionType.SLIDE_RIGHT;
-    } else if (page_id == PAGE_NEXT) {
-      if (history.current != -1)
-        pages[history.current].on_leave ();
-      page_id = history.forward ();
-      push = false;
-      stack.transition_type = StackTransitionType.SLIDE_LEFT;
-    } else {
-      if (page_id > history.current)
-        stack.transition_type = StackTransitionType.SLIDE_LEFT;
-      else
-        stack.transition_type = StackTransitionType.SLIDE_RIGHT;
+    if (history.current != -1)
+      pages[history.current].on_leave ();
 
-      if (history.current != -1)
-        pages[history.current].on_leave ();
+    // Set the correct transition type
+    if (page_id == PAGE_PREVIOUS || page_id < history.current)
+      stack.transition_type = StackTransitionType.SLIDE_RIGHT;
+    else if (page_id == PAGE_NEXT || page_id > history.current)
+      stack.transition_type = StackTransitionType.SLIDE_LEFT;
+
+    // If we go forward/back, we don't need to update the history.
+    if (page_id == PAGE_PREVIOUS) {
+      push = false;
+      page_id = history.back ();
+    } else if (page_id == PAGE_NEXT) {
+      push = false;
+      page_id = history.forward ();
     }
 
     if (page_id == -1)
@@ -270,19 +264,32 @@ class MainWindow : ApplicationWindow {
       history.push (page_id);
 
 
+    /* XXX The following will cause switch_page to be called twice
+       because setting the active property of the button will cause
+       the clicked event to be emitted, which will call switch_page. */
     IPage page = pages[page_id];
-    if (page.get_tool_button () != null)
-      page.get_tool_button().active = true;
+    Gtk.RadioToolButton button = page.get_tool_button ();
+    page_switch_lock = true;
+    if (button != null)
+      button.active = true;
     else
       dummy_button.active = true;
 
     page.on_join (page_id, va_list ());
     stack.set_visible_child_name (page_id.to_string ());
+    page_switch_lock = false;
+  } // }}}
+
+  /**
+   * GSimpleActionActivateCallback version of switch_page, used
+   * for keyboard accelerators.
+   */
+  private void simple_switch_page (GLib.SimpleAction a, GLib.Variant? param) {
+    switch_page (param.get_int32 ());
   }
 
   /**
-   * Indicates that the caller is doing a long-running opertation.
-   *
+   * Indicates that the caller is doing a long-running operation.
    */
   public void start_progress () {
     progress_holders ++;
@@ -296,18 +303,19 @@ class MainWindow : ApplicationWindow {
   }
 
 
-  /**
-    *
-    *
-    */
-  private void window_destroy_cb() {
+  public IPage get_page (int page_id) {
+    return pages[page_id];
+  }
+
+  [GtkCallback]
+  private bool window_delete_cb (Gdk.EventAny evt) {
     account.user_stream.stop ();
     account.user_counter.save (account.db);
 
     unowned GLib.List<weak Window> ws = this.application.get_windows ();
-    message("Windows: %u", ws.length ());
+    debug("Windows: %u", ws.length ());
 
-    // Enable the account's entry in the app menu again
+     // Enable the account's entry in the app menu again
     var acc_menu = (GLib.Menu)Corebird.account_menu;
     for (int i = 0; i < acc_menu.get_n_items (); i++){
       Variant item_name = acc_menu.get_item_attribute_value (i, "label", VariantType.STRING);
@@ -322,8 +330,58 @@ class MainWindow : ApplicationWindow {
       string[] startup_accounts = new string[1];
       startup_accounts[0] = ((MainWindow)ws.nth_data (0)).account.screen_name;
       Settings.get ().set_strv ("startup-accounts", startup_accounts);
-      message ("Saving the account %s", ((MainWindow)ws.nth_data (0)).account.screen_name);
+      debug ("Saving the account %s", ((MainWindow)ws.nth_data (0)).account.screen_name);
     }
+    save_geometry ();
+    return false;
+  }
 
+  /**
+   *
+   */
+  private void load_geometry () {
+    if (account == null) {
+      debug ("Could not load geometry, account == null");
+      return;
+    }
+    GLib.Variant win_geom = Settings.get ().get_value ("window-geometry");
+    int x = 0,
+        y = 0,
+        w = 0,
+        h = 0;
+    win_geom.lookup (account.screen_name, "(iiii)", &x, &y, &w, &h);
+    if (w == 0 || h == 0)
+      return;
+
+    move (x, y);
+    resize (w, h);
+  }
+
+  /**
+   * Saves this window's geometry in the window-geometry gsettings key.
+   */
+  private void save_geometry () {
+    GLib.Variant win_geom = Settings.get ().get_value ("window-geometry");
+    GLib.Variant new_geom;
+    GLib.VariantBuilder builder = new GLib.VariantBuilder (new GLib.VariantType("a{s(iiii)}"));
+    var iter = win_geom.iterator ();
+    string key = "";
+    int x = 0,
+        y = 0,
+        w = 0,
+        h = 0;
+    while (iter.next ("{s(iiii)}", &key, &x, &y, &w, &h)) {
+      if (key != account.screen_name) {
+        builder.add ("{s(iiii)}", key, x, y, w, h);
+      }
+    }
+    /* Finally, add this window */
+    get_position (out x, out y);
+    w = get_allocated_width ();
+    h = get_allocated_height ();
+    builder.add ("{s(iiii)}", account.screen_name, x, y, w, h);
+    new_geom = builder.end ();
+
+    Settings.get ().set_value ("window-geometry", new_geom);
   }
 }
