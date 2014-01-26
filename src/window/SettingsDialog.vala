@@ -75,7 +75,6 @@ class SettingsDialog : Gtk.Dialog {
     Settings.get ().bind ("use-dark-theme", dark_theme_switch, "active",
                           SettingsBindFlags.DEFAULT);
     dark_theme_switch.notify["active"].connect (() => {
-        message ("aa");
         Gtk.Settings.get_default ().gtk_application_prefer_dark_theme = dark_theme_switch.active;
     });
     Settings.get ().bind ("auto-scroll-on-new-tweets", auto_scroll_on_new_tweets_switch, "active",
