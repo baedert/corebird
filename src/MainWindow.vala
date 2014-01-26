@@ -92,6 +92,7 @@ class MainWindow : ApplicationWindow {
     headerbar.set_subtitle ("@" + account.screen_name);
 
     stack.transition_duration = Settings.get_animation_duration ();
+    this.add_action_entries (win_entries, this);
 
     pages[0] = new HomeTimeline (PAGE_STREAM);
     pages[1] = new MentionsTimeline (PAGE_MENTIONS);
@@ -163,7 +164,6 @@ class MainWindow : ApplicationWindow {
 
     load_geometry ();
 
-    this.add_action_entries (win_entries, this);
     this.show_all();
 
 
