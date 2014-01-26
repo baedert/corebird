@@ -53,7 +53,7 @@ class SettingsDialog : Gtk.Dialog {
   public SettingsDialog(MainWindow? main_window = null, Corebird? application = null){
     this.main_window = main_window;
     this.application = application;
-    this.title = "Corebird Settings";
+    this.title = _("Corebird Settings");
 
     // General Page
     Settings.get ().bind ("upload-provider", upload_provider_combobox, "active-id",
@@ -76,6 +76,9 @@ class SettingsDialog : Gtk.Dialog {
                           SettingsBindFlags.DEFAULT);
     dark_theme_switch.notify["active"].connect (() => {
         Gtk.Settings.get_default ().gtk_application_prefer_dark_theme = dark_theme_switch.active;
+    });
+    auto_scroll_on_new_tweets_switch.notify["active"].connect (() => {
+      on_new_tweets_combobox.sensitive = !auto_scroll_on_new_tweets_switch.active;
     });
     Settings.get ().bind ("auto-scroll-on-new-tweets", auto_scroll_on_new_tweets_switch, "active",
                           SettingsBindFlags.DEFAULT);
