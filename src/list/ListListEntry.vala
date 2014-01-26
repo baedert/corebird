@@ -20,6 +20,14 @@
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/list-list-entry.ui")]
 class ListListEntry : Gtk.ListBoxRow {
+  public static int sort_func (Gtk.ListBoxRow r1,
+                               Gtk.ListBoxRow r2) {
+    if (!(r1 is ListListEntry))
+      return -1;
+
+    return ((ListListEntry)r1).name.ascii_casecmp (((ListListEntry)r2).name);
+  }
+
   [GtkChild]
   private Gtk.Label name_label;
   public new string name {
