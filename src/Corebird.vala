@@ -23,6 +23,13 @@ class Corebird : Gtk.Application {
   private static GLib.OutputStream log_stream;
   public  static GLib.Menu account_menu;
 
+  const GLib.ActionEntry app_entries[] = {
+    {"show-settings", show_settings_activated},
+    {"quit", quit},
+    {"show-about-dialog", about_activated}
+  };
+
+
   public Corebird() throws GLib.Error{
     GLib.Object(application_id:   "org.baedert.corebird",
                 flags:            ApplicationFlags.HANDLES_COMMAND_LINE);
@@ -70,6 +77,7 @@ class Corebird : Gtk.Application {
     this.add_accelerator ("<Control>P", "app.show-settings", null);
     this.add_accelerator ("<Control><Shift>Q", "app.quit", null);
 
+    this.add_action_entries (app_entries, this);
 
     open_startup_windows (compose_screen_name);
     NotificationManager.init ();
@@ -83,6 +91,16 @@ class Corebird : Gtk.Application {
     init_log_files ();
     this.release();
     return 0;
+  }
+
+  private void show_settings_activated () {
+    var dialog = new SettingsDialog(null, this);
+    dialog.show_all ();
+  }
+
+  private void about_activated () {
+    var ad = new AboutDialog ();
+    ad.show();
   }
 
   public override void startup () { // {{{
@@ -112,8 +130,6 @@ class Corebird : Gtk.Application {
       });
       add_action(show_win_action);
 
-
-
       var mi = new GLib.MenuItem ("@"+acc.screen_name, "app.show-"+acc.screen_name);
       mi.set_action_and_target_value ("app.show-"+acc.screen_name, null);
       account_menu.append_item (mi);
@@ -121,23 +137,6 @@ class Corebird : Gtk.Application {
     ((GLib.Menu)acc_menu).append_submenu ("Open Account", account_menu);
 
     this.set_app_menu (app_menu);
-
-    // Set up the actions
-    var settings_action = new SimpleAction("show-settings", null);
-    settings_action.activate.connect(() => {
-      var dialog = new SettingsDialog(null, this);
-      dialog.show_all ();
-    });
-    add_action (settings_action);
-    var about_dialog_action = new SimpleAction("show-about-dialog", null);
-    about_dialog_action.activate.connect(() => {
-      var ad = new AboutDialog ();
-      ad.show();
-    });
-    add_action(about_dialog_action);
-    var quit_action = new SimpleAction("quit", null);
-    quit_action.activate.connect(quit);
-    add_action(quit_action);
 
     // Load custom CSS stuff
     try{

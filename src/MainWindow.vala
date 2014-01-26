@@ -162,21 +162,14 @@ class MainWindow : ApplicationWindow {
                           SettingsBindFlags.DEFAULT);
 
     load_geometry ();
-    this.show_all();
 
     this.add_action_entries (win_entries, this);
+    this.show_all();
+
 
 
     // Activate the first timeline
     pages[0].get_tool_button ().active = true;
-    //this.size_allocate.connect (() => {
-      //Gtk.Allocation a;
-      //get_allocation (out a);
-      //get_position (out a.x, out a.y);
-      //message ("%d, %d, %d, %d", a.x, a.y, a.width, a.height);
-      //return false;
-    //});
-
   }
 
   /**
