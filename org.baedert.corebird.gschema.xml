@@ -8,10 +8,6 @@
     <value nick="Stack 50" value="50" />
   </enum>
 
-  <enum id="org.baedert.corebird.upload-providers">
-    <value nick="Twitter"  value="0" />
-  </enum>
-
   <schema id="org.baedert.corebird"
       path="/org/baedert/corebird/"
       gettext-domain="corebird">
@@ -48,12 +44,6 @@
       <summary>Whether inline media should be downloaded/shown directly.</summary>
       <description>Disable this to save some bandwidth</description>
     </key>
-    <key name="upload-provider" enum="org.baedert.corebird.upload-providers">
-      <default>"Twitter"</default>
-      <summary>The image upload service to use</summary>
-      <description>
-      </description>
-    </key>
     <key name="animation-duration" type="i">
       <default>300</default>
       <summary>Duration of slide animations[ms]</summary>
@@ -62,11 +52,6 @@
     <key name="startup-accounts" type="as">
       <default>[""]</default>
       <summary>List of accounts which will be opened when Corebird is started.</summary>
-      <description></description>
-    </key>
-    <key name="search-show-retweets" type="b">
-      <default>false</default>
-      <summary>Whether or not to show retweets in the search results</summary>
       <description></description>
     </key>
     <key name="auto-scroll-on-new-tweets" type="b">

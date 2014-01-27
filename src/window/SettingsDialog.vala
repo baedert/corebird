@@ -44,8 +44,6 @@ class SettingsDialog : Gtk.Dialog {
   [GtkChild]
   private ComboBoxText on_new_tweets_combobox;
   [GtkChild]
-  private Switch search_show_retweets_switch;
-  [GtkChild]
   private Switch auto_scroll_on_new_tweets_switch;
   [GtkChild]
   private SpinButton max_media_size_spin_button;
@@ -54,10 +52,6 @@ class SettingsDialog : Gtk.Dialog {
     this.main_window = main_window;
     this.application = application;
     this.title = _("Corebird Settings");
-
-    // General Page
-    Settings.get ().bind ("upload-provider", upload_provider_combobox, "active-id",
-                          SettingsBindFlags.DEFAULT);
 
     // Notifications Page
     Settings.get ().bind ("new-tweets-notify", on_new_tweets_combobox, "active-id",
@@ -86,12 +80,6 @@ class SettingsDialog : Gtk.Dialog {
                           SettingsBindFlags.DEFAULT);
 
     // Behaviour page
-    Settings.get ().bind ("search-show-retweets", search_show_retweets_switch, "active",
-                          SettingsBindFlags.DEFAULT);
-
-    // General Page
-    Settings.get ().bind ("upload-provider", upload_provider_combobox, "active_id",
-                          SettingsBindFlags.DEFAULT);
 
     unowned SList<Account> accs = Account.list_accounts ();
     foreach (Account a in accs) {
