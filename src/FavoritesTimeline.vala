@@ -1,0 +1,135 @@
+/*  This file is part of corebird, a Gtk+ linux Twitter client.
+ *  Copyright (C) 2013 Timm Bäder
+ *
+ *  corebird is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  corebird is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+using Gtk;
+
+class FavoritesTimeline : IMessageReceiver, DefaultTimeline {
+
+  public FavoritesTimeline(int id) {
+    base (id);
+  }
+
+  private void stream_message_received (StreamMessageType type, Json.Node root) { // {{{
+    if (type == StreamMessageType.TWEET) {
+      add_tweet (root);
+    } else if (type == StreamMessageType.DELETE) {
+      int64 id = root.get_object ().get_object_member ("delete")
+                     .get_object_member ("status").get_int_member ("id");
+      delete_tweet (id);
+    } else if (type == StreamMessageType.EVENT_FAVORITE) {
+      int64 id = root.get_object ().get_object_member ("target_object").get_int_member ("id");
+      toggle_favorite (id, true);
+    } else if (type == StreamMessageType.EVENT_UNFAVORITE) {
+      int64 id = root.get_object ().get_object_member ("target_object").get_int_member ("id");
+      toggle_favorite (id, false);
+    }
+  } // }}}
+
+  private void add_tweet (Json.Node obj) { // {{{
+    GLib.DateTime now = new GLib.DateTime.now_local ();
+    Tweet t = new Tweet();
+    t.load_from_json (obj, now);
+
+    if (t.is_retweet && !should_display_retweet (t))
+      return;
+
+    bool auto_scroll = Settings.auto_scroll_on_new_tweets ();
+
+    this.balance_next_upper_change (TOP);
+
+    var entry = new TweetListEntry(t, main_window, account);
+    entry.seen = this.scrolled_up  &&
+                 main_window.cur_page_id == this.id &&
+                 (t.user_id == account.id || auto_scroll);
+
+    delta_updater.add (entry);
+    tweet_list.add(entry);
+
+    if (this.scrolled_up && (t.user_id == account.id || auto_scroll)) {
+      this.scroll_up_next (true, false,
+                           main_window.cur_page_id != this.id);
+    }
+
+    if (!entry.seen) {
+      unread_count ++;
+      update_unread_count ();
+    }
+
+
+    this.max_id = t.id;
+
+    int stack_size = Settings.get_tweet_stack_count ();
+    bool show_notification = !(stack_size == 1 && t.text.contains("@" + account.screen_name));
+    if (!show_notification || t.user_id == account.id)
+      return;
+
+    debug ("Stack size: %d", stack_size);
+    debug ("Unread count: %d", unread_count);
+    if (stack_size == 1) {
+      if (t.has_inline_media){
+        t.inline_media_added.connect (tweet_inline_media_added_cb);
+      } else {
+        // calling this with image = null will just create the
+        // appropriate notification etc.
+        tweet_inline_media_added_cb (t, null);
+      }
+    } else if(stack_size != 0 && unread_count % stack_size == 0
+              && unread_count > 0) {
+      string summary = _("%d new Tweets!").printf (unread_count);
+      NotificationManager.notify (summary);
+    }
+  } // }}}
+
+
+  // Will be called once the inline media of a tweet has been loaded.
+  private void tweet_inline_media_added_cb (Tweet t, Gdk.Pixbuf? image) {
+    string summary = "";
+    if (t.is_retweet){
+      summary = _("%s retweeted %s").printf(t.retweeted_by, t.user_name);
+    } else {
+      summary = _("%s tweeted").printf(t.user_name);
+    }
+    NotificationManager.notify (summary, t.get_real_text (), Notify.Urgency.NORMAL,
+                                Dirs.cache ("assets/avatars/" + t.avatar_name),
+                                t.media);
+
+  }
+
+
+  public override void load_newest () {
+    this.loading = true;
+    this.load_newest_internal.begin ("1.1/statuses/home_timeline.json",  () => {
+      this.loading = false;
+    });
+  }
+
+  public override void load_older () {
+    this.balance_next_upper_change (BOTTOM);
+    main_window.start_progress ();
+    this.loading = true;
+    this.load_older_internal.begin ("1.1/statuses/home_timeline.json", () => {
+      this.loading = false;
+      main_window.stop_progress ();
+    });
+  }
+
+  public override void create_tool_button(RadioToolButton? group) {
+    tool_button = new BadgeRadioToolButton(group, "corebird-stream-symbolic");
+    tool_button.tooltip_text = _("Home");
+    tool_button.label = _("Home");
+  }
+}
