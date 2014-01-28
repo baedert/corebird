@@ -18,7 +18,7 @@
 using Gtk;
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/settings-dialog.ui")]
-class SettingsDialog : Gtk.Dialog {
+class SettingsDialog : Gtk.Window {
   private static const string DUMMY_SCREEN_NAME = "<Unnamed>";
   private MainWindow main_window;
   [GtkChild]
@@ -39,8 +39,6 @@ class SettingsDialog : Gtk.Dialog {
   private Switch inline_media_switch;
   [GtkChild]
   private Switch dark_theme_switch;
-  [GtkChild]
-  private ComboBoxText upload_provider_combobox;
   [GtkChild]
   private ComboBoxText on_new_tweets_combobox;
   [GtkChild]
@@ -69,7 +67,7 @@ class SettingsDialog : Gtk.Dialog {
     Settings.get ().bind ("use-dark-theme", dark_theme_switch, "active",
                           SettingsBindFlags.DEFAULT);
     dark_theme_switch.notify["active"].connect (() => {
-        Gtk.Settings.get_default ().gtk_application_prefer_dark_theme = dark_theme_switch.active;
+      Gtk.Settings.get_default ().gtk_application_prefer_dark_theme = dark_theme_switch.active;
     });
     auto_scroll_on_new_tweets_switch.notify["active"].connect (() => {
       on_new_tweets_combobox.sensitive = !auto_scroll_on_new_tweets_switch.active;
@@ -78,8 +76,6 @@ class SettingsDialog : Gtk.Dialog {
                           SettingsBindFlags.DEFAULT);
     Settings.get ().bind ("max-media-size", max_media_size_spin_button, "value",
                           SettingsBindFlags.DEFAULT);
-
-    // Behaviour page
 
     unowned SList<Account> accs = Account.list_accounts ();
     foreach (Account a in accs) {
@@ -138,7 +134,7 @@ class SettingsDialog : Gtk.Dialog {
   }
 
   [GtkCallback]
-  private void close_button_clicked () {
+  private void window_destroy_cb () {
     Account.remove_account (DUMMY_SCREEN_NAME);
     destroy();
   }
@@ -154,8 +150,8 @@ class SettingsDialog : Gtk.Dialog {
       account_list.add (new_entry);
       account_list.select_row (new_entry);
     } else {
-      // In this case, the account was already present so we just remove the item again
-      // the given accoun is then the already defined one.
+       //In this case, the account was already present so we just remove the item again
+       //the given accoun is then the already defined one.
       account_info_stack.remove (account_info_stack.get_visible_child ());
       account_list.remove (account_list.get_selected_row ());
       select_account (acc.screen_name);

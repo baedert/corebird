@@ -109,8 +109,7 @@ class SearchPage : IPage, Box {
     if (set_text)
       search_entry.set_text(search_term);
 
-    if (!Settings.get_bool ("search-show-retweets"))
-      q += " -rt";
+    q += " -rt";
 
     this.search_query    = GLib.Uri.escape_string (q);
     this.user_page       = 1;

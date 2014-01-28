@@ -55,10 +55,6 @@ class Settings : GLib.Object {
     return settings.get_boolean("new-followers-notify");
   }
 
-  public static int upload_provider(){
-    return settings.get_enum("upload-provider");
-  }
-
   public static bool show_inline_media(){
     return settings.get_boolean("show-inline-media");
   }
