@@ -26,10 +26,9 @@ class FavoritesTimeline : IMessageReceiver, DefaultTimeline {
   private void stream_message_received (StreamMessageType type, Json.Node root) { // {{{
     if (type == StreamMessageType.EVENT_FAVORITE) {
       int64 id = root.get_object ().get_object_member ("target_object").get_int_member ("id");
-      toggle_favorite (id, true);
     } else if (type == StreamMessageType.EVENT_UNFAVORITE) {
       int64 id = root.get_object ().get_object_member ("target_object").get_int_member ("id");
-      toggle_favorite (id, false);
+      delete_tweet (id);
     }
   } // }}}
 
