@@ -30,15 +30,15 @@ class Corebird : Gtk.Application {
   };
 
 
-  public Corebird() throws GLib.Error{
+  public Corebird () throws GLib.Error {
     GLib.Object(application_id:   "org.baedert.corebird",
                 flags:            ApplicationFlags.HANDLES_COMMAND_LINE);
                 //register_session: true);
     this.set_inactivity_timeout(500);
   }
 
-  public override int command_line(ApplicationCommandLine cmd){
-    this.hold();
+  public override int command_line (ApplicationCommandLine cmd) {
+    this.hold ();
     string? compose_screen_name = null;
 
 
@@ -60,8 +60,8 @@ class Corebird : Gtk.Application {
       unowned string[] tmp = _args;
       opt_context.parse (ref tmp);
     } catch (GLib.OptionError e) {
-      cmd.print("Use --help to see available options\n");
-      quit();
+      cmd.print ("Use --help to see available options\n");
+      quit ();
       return -1;
     }
 
@@ -84,13 +84,13 @@ class Corebird : Gtk.Application {
     NotificationManager.init ();
 
     // If the user wants the dark theme, apply it
-    if(Settings.use_dark_theme()){
-      Gtk.Settings settings = Gtk.Settings.get_default();
+    if (Settings.use_dark_theme ()) {
+      Gtk.Settings settings = Gtk.Settings.get_default ();
       settings.gtk_application_prefer_dark_theme = true;
     }
 
     init_log_files ();
-    this.release();
+    this.release ();
     return 0;
   }
 
@@ -290,8 +290,8 @@ class Corebird : Gtk.Application {
    * Log handler in case the application is not
    * started from the command line.
    */
-  public static void print_to_log_file(string? log_domain, LogLevelFlags flags,
-                                       string msg) {
+  public static void print_to_log_file (string? log_domain, LogLevelFlags flags,
+                                        string msg) {
     string out_string;
     if(log_domain == null)
       out_string = msg+"\n";
@@ -308,19 +308,19 @@ class Corebird : Gtk.Application {
     }
 
     if (flags != LogLevelFlags.LEVEL_DEBUG)
-      stdout.printf(out_string);
+      stdout.printf (out_string);
   }
 }
 
 
-int main (string[] args){
-  try{
+int main (string[] args) {
+  try {
     //no initialisation of static fields :(
     Settings.init();
-    new WidgetReplacer();
-    var corebird = new Corebird();
-    return corebird.run(args);
-  } catch(GLib.Error e){
-    error(e.message);
+    new WidgetReplacer ();
+    var corebird = new Corebird ();
+    return corebird.run (args);
+  } catch (GLib.Error e) {
+    error (e.message);
   }
 }
