@@ -7,6 +7,7 @@ AC_CONFIG_FILES([Makefile
                  ui/Makefile
                  data/Makefile
                  assets/Makefile
+                 assets/icons/Makefile
                  src/util/Config.vala])
 
 
