@@ -156,9 +156,14 @@ namespace Utils {
    * @param alternative If the given json data is not valid,
    *                    show this alternative error message.
    */
-  void show_error_object (string json_data, string alternative) {
-    var parser = new Json.Parser ();
+  void show_error_object (string? json_data, string alternative) {
     string error_message = "Exception: " + alternative;
+    if (json_data == null) {
+      show_error_dialog (error_message);
+      return;
+    }
+
+    var parser = new Json.Parser ();
     StringBuilder sb = new StringBuilder ();
     try {
       parser.load_from_data (json_data);

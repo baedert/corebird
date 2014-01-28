@@ -92,6 +92,7 @@ set (VALA_SOURCE
   src/ITimeline.vala
   src/HomeTimeline.vala
   src/MentionsTimeline.vala
+  src/FavoritesTimeline.vala
   src/SearchPage.vala
   src/DMThreadsPage.vala
   src/IPage.vala
