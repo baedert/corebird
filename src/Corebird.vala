@@ -317,6 +317,17 @@ int main (string[] args){
     //no initialisation of static fields :(
     Settings.init();
     new WidgetReplacer();
+    new MaxSizeContainer ();
+    new DoubleTapButton ();
+    new AspectImage ();
+    new TextButton ();
+    new ReplyEntry ();
+    new BgBox ();
+    new ScrollWidget ();
+    new PixbufButton ();
+    new NewListEntry ();
+    new UserListsWidget ();
+
     var corebird = new Corebird();
     return corebird.run(args);
   } catch(GLib.Error e){

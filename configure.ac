@@ -1,5 +1,5 @@
 AC_PREREQ([2.65])
-AC_INIT([corebird],[0.5],[mail@baedert.org])
+AC_INIT([corebird],[0.6],[mail@baedert.org])
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([foreign])
 AC_CONFIG_FILES([Makefile
@@ -14,6 +14,7 @@ AC_CONFIG_FILES([Makefile
 LT_INIT
 AC_PROG_CC
 AM_PROG_VALAC
+AM_MAINTAINER_MODE
 
 pkg_modules="gtk+-3.0 >= 3.10
              glib-2.0 >= 2.38
@@ -32,8 +33,9 @@ CB_VALA_FLAGS=" \
   --pkg gee-0.8 \
   --pkg sqlite3 \
   --pkg libsoup-2.4 \
+  --pkg glib-2.0 \
   --target-glib=2.38 \
-  --gresources ../resources.xml"
+  --gresources=../resources.xml"
 
 AC_SUBST(CB_CFLAGS)
 AC_SUBST(CB_LIBS)
@@ -55,3 +57,11 @@ AM_GLIB_GNU_GETTEXT
 
 
 AC_OUTPUT
+
+
+echo "
+             Corebird  $VERSION
+               Prefix: ${prefix}
+        Vala Compiler: ${VALAC}
+           C Compiler: ${CC}
+"

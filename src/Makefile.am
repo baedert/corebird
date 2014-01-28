@@ -8,7 +8,6 @@ AM_CPPFLAGS = $(CB_CFLAGS) \
 
 AUTOMAKE_OPTIONS = subdir-objects
 
-bin_PROGRAMS = corebird
 
 corebird_VALASOURCES = \
 			Corebird.vala \
@@ -85,8 +84,10 @@ corebird_LDADD = $(CB_LIBS)
 corebird_VALAFLAGS = @CB_VALA_FLAGS@
 
 
-resources.c: ../resources.xml
-	glib-compile-resources ../resources.xml --target=resources.c --generate-source --sourcedir=../
+bin_PROGRAMS = corebird
 
-CLEANFILES = *.h *.c *.stamp resources.c
-EXTRA_DIST = $(cb_resources_deps)
+resources.c: ../resources.xml ../ui/*.ui
+	$(GLIB_COMPILE_RESOURCES) ../resources.xml --target=resources.c --generate-source --sourcedir=../
+
+CLEANFILES = *.h *.c *.o *.stamp resources.c
+#EXTRA_DIST = $(cb_resources_deps)
