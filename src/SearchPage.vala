@@ -156,7 +156,13 @@ class SearchPage : IPage, Box {
       try {
         user_call.invoke_async.end (res);
       } catch (GLib.Error e) {
-        warning (e.message);
+        if (user_call.get_payload () != null) {
+          Utils.show_error_object (user_call.get_payload (), e.message);
+        } else {
+          tweet_list.set_placeholder_text (e.message);
+        }
+        tweet_list.set_empty ();
+
         return;
       }
 
