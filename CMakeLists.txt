@@ -105,7 +105,6 @@ set (VALA_SOURCE
   src/IMessageReceiver.vala
   src/ITwitterItem.vala
   src/Account.vala
-  src/ConnectionLostDialog.vala
   src/DMPage.vala
   src/UserCounter.vala
   src/DefaultTimeline.vala
