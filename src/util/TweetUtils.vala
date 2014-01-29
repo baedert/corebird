@@ -309,11 +309,12 @@ namespace TweetUtils {
         entry_list.append (entry);
       });
 
+
+      unowned GLib.List<TweetListEntry> l = entry_list;
       GLib.Idle.add (() => {
-        foreach (var e in entry_list)
-          tweet_list.add (e);
-        work_array.callback ();
-        return false;
+        tweet_list.add (l.data);
+        l = l.next;
+        return l != null;
       });
       return null;
     });
