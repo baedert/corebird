@@ -49,7 +49,8 @@ class SettingsDialog : Gtk.Window {
   public SettingsDialog(MainWindow? main_window = null, Corebird? application = null){
     this.main_window = main_window;
     this.application = application;
-    this.title = _("Corebird Settings");
+    this.type_hint   = Gdk.WindowTypeHint.DIALOG;
+
 
     // Notifications Page
     Settings.get ().bind ("new-tweets-notify", on_new_tweets_combobox, "active-id",
