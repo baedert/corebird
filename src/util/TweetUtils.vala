@@ -314,7 +314,11 @@ namespace TweetUtils {
       GLib.Idle.add (() => {
         tweet_list.add (l.data);
         l = l.next;
-        return l != null;
+        if (l == null) {
+          work_array.callback ();
+          return false;
+        }
+        return true;
       });
       return null;
     });
