@@ -101,6 +101,19 @@
                 <property name="hexpand">True</property>
                 <property name="vexpand">True</property>
                 <property name="transition_type">crossfade</property>
+                <child>
+                  <object class="GtkLabel" id="no_account_label">
+                    <property name="label" translatable="yes">You have not yet configured any account. To do so, click on the appropriate button on the left.</property>
+                    <property name="wrap">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="margin_left">20</property>
+                    <property name="margin_right">20</property>
+                    <style>
+                      <class name="dim-label" />
+                    </style>
+                  </object>
+                </child>
               </object>
               <packing>
                 <property name="left_attach">1</property>
