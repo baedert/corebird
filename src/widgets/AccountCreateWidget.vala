@@ -39,15 +39,12 @@ class AccountCreateWidget : Gtk.Box {
     acc.init_proxy (false);
     try {
       acc.proxy.request_token ("oauth/request_token", "oob");
-      string uri = "http://twitter.com/oauth/authorize?oauth_token="+acc.proxy.get_token();
+      string uri = "http://twitter.com/oauth/authorize?oauth_token=" + acc.proxy.get_token();
       message ("Trying to open %s", uri);
-      GLib.AppInfo.launch_default_for_uri(uri, null);
+      GLib.AppInfo.launch_default_for_uri (uri, null);
     } catch (GLib.Error e) {
       if (e.message.down() == "unauthorized") {
-        // TODO: gettext only recognizes the first line here
-        Utils.show_error_dialog (_("""Unauthorized. Most of the time, this means that
-                                   there's something wrong with the Twitter servers
-                                   and you shuld try again later"""));
+        Utils.show_error_dialog (_("Unauthorized. Most of the time, this means that there's something wrong with the Twitter servers and you shuld try again later"));
       } else
         Utils.show_error_dialog (e.message);
       critical (e.message);
