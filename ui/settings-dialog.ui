@@ -43,9 +43,10 @@
                   <object class="GtkToolButton" id="add_account_button">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Add account</property>
+                    <property name="label" translatable="yes">Add new account</property>
                     <property name="use_underline">True</property>
                     <property name="icon_name">list-add-symbolic</property>
+                    <property name="tooltip_text" translatable="yes">Add new account</property>
                     <signal name="clicked" handler="add_account_clicked" swapped="no"/>
                   </object>
                   <packing>
@@ -61,6 +62,7 @@
                     <property name="label" translatable="yes">Remove selected account</property>
                     <property name="use_underline">True</property>
                     <property name="icon_name">list-remove-symbolic</property>
+                    <property name="tooltip_text" translatable="yes">Remove selected account</property>
                     <signal name="clicked" handler="remove_account_clicked" swapped="no"/>
                   </object>
                   <packing>
@@ -114,7 +116,7 @@
         </child>
 
 
-        <!-- -->
+        <!-- Interface page-->
         <child>
           <object class="GtkGrid" id="interface_grid">
           <property name="visible">True</property>
