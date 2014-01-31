@@ -182,7 +182,7 @@ class Corebird : Gtk.Application {
 
     if (compose_screen_name == null) {
       if (startup_accounts.length == 0) {
-        this.lookup_action ("show-settings").activate (null);
+        add_window (new SettingsDialog (null, this));
       } else {
         bool found_valid_account = false;
         foreach (string screen_name in startup_accounts) {
