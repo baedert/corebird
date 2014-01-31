@@ -101,6 +101,8 @@ class SettingsDialog : Gtk.Dialog {
     }
     if (accs.length() > 0)
       account_list.select_row (account_list.get_row_at_index (0));
+
+    show_all ();
   }
 
   [GtkCallback]
