@@ -80,7 +80,7 @@
             </child>
             <child>
               <object class="GtkListBox" id="account_list">
-                <property name="width_request">77</property>
+                <property name="width_request">100</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="halign">start</property>
