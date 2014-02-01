@@ -85,6 +85,8 @@ class SearchPage : IPage, Box {
     if (term == null) {
       if (last_focus_widget != null)
         last_focus_widget.grab_focus ();
+      else
+        search_entry.grab_focus ();
       return;
     }
 
