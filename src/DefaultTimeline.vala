@@ -35,7 +35,6 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   protected bool loading = false;
   protected Gtk.Widget? last_focus_widget = null;
 
-
   public DefaultTimeline (int id) {
     this.id = id;
     this.scrolled_to_start.connect(handle_scrolled_to_start);
@@ -68,6 +67,7 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     if (!initialized) {
       load_cached ();
       load_newest ();
+      connect_stream_signals ();
       initialized = true;
     }
 
@@ -79,6 +79,16 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     if (last_focus_widget != null) {
       last_focus_widget.grab_focus ();
     }
+  }
+
+  private void connect_stream_signals () {
+    account.user_stream.interrupted.connect (() => {
+      message ("INTERRUPTED");
+    });
+
+    account.user_stream.resumed.connect (() => {
+      message ("RESUMED");
+    });
   }
 
 
@@ -195,7 +205,7 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     // Second case
     foreach (Gtk.Widget w in tweet_list.get_children ()) {
       if (w == null || !(w is TweetListEntry))
-        continue;;
+       continue;
 
       var tle = (TweetListEntry) w;
       if (tle.tweet.id == t.rt_id || tle.tweet.rt_id == t.rt_id) {
