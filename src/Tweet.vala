@@ -167,9 +167,10 @@ class Tweet : GLib.Object {
       this.urls.prepend(TweetUtils.Sequence(){
         start = (int)indices.get_int_element (0),
         end   = (int)indices.get_int_element (1),
-        url   = "@"+mention.get_string_member ("id_str"),
-        display_url = "@"+mention.get_string_member ("screen_name"),
-        visual_display_url = true
+        url   = "@" + mention.get_string_member ("id_str"),
+        display_url = "@" + mention.get_string_member ("screen_name"),
+        visual_display_url = true,
+        title = mention.get_string_member ("name")
       });
     });
 

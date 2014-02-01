@@ -27,6 +27,7 @@ namespace TweetUtils {
     string url;
     string display_url;
     bool visual_display_url;
+    string title;
   }
 
   /**
@@ -51,9 +52,10 @@ namespace TweetUtils {
       int from = formatted_text.index_of_nth_char (s.start + char_diff);
       int to   = formatted_text.index_of_nth_char (s.end + char_diff);
       var html_url = s.url.replace("&", "&amp;");
+      var title = s.title ?? html_url;
       formatted_text = formatted_text.splice (from, to,
            "<a href=\"%s\" title=\"%s\">%s</a>".printf(html_url,
-                                                       html_url,
+                                                       title,
                                                        s.display_url.replace ("&", "&amp;")));
       char_diff += formatted_text.char_count () - length_before;
     }
