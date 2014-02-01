@@ -79,13 +79,13 @@ namespace Utils {
 
     int minutes = (int)(diff / 1000.0 / 1000.0 / 60.0);
     if (minutes == 0)
-      return _("Now");
+      return ("Now");
     else if (minutes < 60)
-      return _("%dm").printf (minutes);
+      return ("%dm").printf (minutes);
 
     int hours = (int)(minutes / 60.0);
     if (hours < 24)
-      return _("%dh").printf (hours);
+      return ("%dh").printf (hours);
 
     string month = time.format ("%b");
     //If 'time' was over 24 hours ago, we just return that
