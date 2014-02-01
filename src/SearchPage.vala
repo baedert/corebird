@@ -66,9 +66,7 @@ class SearchPage : IPage, Box {
       user_page++;
       load_users ();
     });
-    scroll_widget.scrolled_to_end.connect (() => {
-      load_tweets ();
-    });
+    scroll_widget.scrolled_to_end.connect (load_tweets);
     tweet_list.get_placeholder ().hide ();
   }
 
