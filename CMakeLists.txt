@@ -134,6 +134,7 @@ set (VALA_SOURCE
   src/list/StartConversationEntry.vala
   src/list/ListListEntry.vala
   src/list/NewListEntry.vala
+  src/list/MissingListEntry.vala
   src/window/AboutDialog.vala
   src/window/ImageDialog.vala
   src/window/SettingsDialog.vala
