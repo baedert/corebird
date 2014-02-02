@@ -52,7 +52,12 @@ namespace TweetUtils {
       int from = formatted_text.index_of_nth_char (s.start + char_diff);
       int to   = formatted_text.index_of_nth_char (s.end + char_diff);
       var html_url = s.url.replace("&", "&amp;");
-      var title = s.title ?? html_url;
+      string? title = null;
+      if (s.title != null) {
+        title = s.title.replace ("&", "&amp;amp;");
+      } else
+        title = html_url;
+
       formatted_text = formatted_text.splice (from, to,
            "<a href=\"%s\" title=\"%s\">%s</a>".printf(html_url,
                                                        title,
