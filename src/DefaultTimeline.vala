@@ -17,28 +17,6 @@
 
 using Gtk;
 
-
-class ConnectionLostItem : Gtk.ListBoxRow, ITwitterItem {
-  private Gtk.Label label;
-  public bool seen {get; set; default = true;}
-  public int64 sort_factor {
-    get {
-      return int64.MAX;
-    }
-  }
-
-  public ConnectionLostItem () {
-    label = new Gtk.Label ("Connection Lost");
-    add (label);
-  }
-
-  public int update_time_delta (GLib.DateTime? now = null) {
-    return 0;
-  }
-}
-
-
-
 abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   protected bool initialized = false;
   public int id                          { get; set; }
@@ -103,8 +81,8 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   private void connect_stream_signals () {
     account.user_stream.interrupted.connect (() => {
       message ("INTERRUPTED");
-      tweet_list.add (new ConnectionLostItem ());
-      tweet_list.show_all ();
+      var missing_entry = new MissingListEntry (max_id + 1);
+      tweet_list.add (missing_entry);
     });
 
     account.user_stream.resumed.connect (() => {

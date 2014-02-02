@@ -17,6 +17,29 @@
 
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/missing-list-entry.ui")]
-class MissingListEntry : Gtk.ListBoxRow {
+class MissingListEntry : Gtk.ListBoxRow, ITwitterItem {
+  public bool seen {get; set; default = true;}
+  public int64 id;
+  public int64 sort_factor {
+    get { return id; }
+  }
+  [GtkChild]
+  private Gtk.Stack stack;
 
+
+  public MissingListEntry (int64 id) {
+    this.id = id;
+  }
+
+
+
+  public void set_resumed () {
+    stack.visible_child_name = "resumed";
+  }
+
+  public void set_interrupted () {
+    stack.visible_child_name = "interrupted";
+  }
+
+  public int update_time_delta (GLib.DateTime? now = null) {return 0;}
 }

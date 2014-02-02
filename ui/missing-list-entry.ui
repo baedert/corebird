@@ -7,10 +7,15 @@
     <child>
       <object class="GtkStack" id="stack">
         <property name="transition_type">slide-up-down</property>
+        <property name="visible">True</property>
         <child>
           <object class="GtkLabel" id="interrupted_label">
+            <property name="visible">True</property>
             <property name="label">FOOOOOO</property>
           </object>
+          <packing>
+            <property name="name">interrupted</property>
+          </packing>
         </child>
 
         <child>
@@ -56,6 +61,9 @@
               </child>
             </object>
           </child>
+          <packing>
+            <property name="name">resumed</property>
+          </packing>
         </child>
       </object>
     </child>
