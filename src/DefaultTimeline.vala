@@ -15,10 +15,29 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-
-
 using Gtk;
+
+
+class ConnectionLostItem : Gtk.ListBoxRow, ITwitterItem {
+  private Gtk.Label label;
+  public bool seen {get; set; default = true;}
+  public int64 sort_factor {
+    get {
+      return int64.MAX;
+    }
+  }
+
+  public ConnectionLostItem () {
+    label = new Gtk.Label ("Connection Lost");
+    add (label);
+  }
+
+  public int update_time_delta (GLib.DateTime? now = null) {
+    return 0;
+  }
+}
+
+
 
 abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   protected bool initialized = false;
@@ -84,6 +103,8 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   private void connect_stream_signals () {
     account.user_stream.interrupted.connect (() => {
       message ("INTERRUPTED");
+      tweet_list.add (new ConnectionLostItem ());
+      tweet_list.show_all ();
     });
 
     account.user_stream.resumed.connect (() => {
