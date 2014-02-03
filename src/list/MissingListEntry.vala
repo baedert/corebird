@@ -25,6 +25,8 @@ class MissingListEntry : Gtk.ListBoxRow, ITwitterItem {
   }
   [GtkChild]
   private Gtk.Stack stack;
+  [GtkChild]
+  private Gtk.Label error_label;
 
 
   public MissingListEntry (int64 id) {
@@ -39,6 +41,17 @@ class MissingListEntry : Gtk.ListBoxRow, ITwitterItem {
 
   public void set_interrupted () {
     stack.visible_child_name = "interrupted";
+  }
+
+  public void set_loading () {
+    stack.visible_child_name = "loading";
+  }
+
+  public void set_error (string? msg = null) {
+    if (msg != null) {
+      error_label.label = msg;
+    }
+    stack.visible_child_name = "error";
   }
 
   public int update_time_delta (GLib.DateTime? now = null) {return 0;}

@@ -65,6 +65,49 @@
             <property name="name">resumed</property>
           </packing>
         </child>
+
+        <child>
+          <object class="GtkBox" id="loading_box">
+            <property name="visible">True</property>
+            <property name="orientation">horizontal</property>
+          <child>
+            <object class="GtkSpinner" id="loading_spinner">
+              <property name="visible">True</property>
+            </object>
+            <packing>
+            </packing>
+          </child>
+          <child>
+            <object class="GtkLabel" id="loading_label">
+              <property name="visible">True</property>
+              <property name="wrap">True</property>
+              <property name="label" translatable="yes">Loading...</property>
+              <property name="valign">center</property>
+              <style>
+                <class name="dim-label" />
+              </style>
+            </object>
+            <packing>
+
+            </packing>
+          </child>
+          </object>
+          <packing>
+            <property name="name">loading</property>
+          </packing>
+        </child>
+
+        <child>
+          <object class="GtkLabel" id="error_label">
+            <property name="visible">True</property>
+            <style>
+              <class name="dim-label" />
+            </style>
+          </object>
+          <packing>
+            <property name="name">error</property>
+          </packing>
+        </child>
       </object>
     </child>
   </template>
