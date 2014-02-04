@@ -1,6 +1,6 @@
 # TODO: Move this stuff into tests/
 cmake_minimum_required (VERSION 2.8)
-project("widget-tests" C)
+project("tests" C)
 list (APPEND CMAKE_MODULE_PATH
   ${CMAKE_SOURCE_DIR}/../../cmake/
 )
@@ -21,7 +21,7 @@ set (DEPS glib-2.0;
       libsoup-2.4;
 )
 set (VALA_SOURCE
-  widgets.vala
+  missing-list-entry.vala
   ../../src/resources.c
 )
 
@@ -57,7 +57,6 @@ OPTIONS
 
 set (BIN_NAME missing-list-entry)
 add_executable (${BIN_NAME} ${VALA_C})
-#add_dependencies (widgets generated_resources)
 target_link_libraries (${BIN_NAME} ${DEPS_LIBRARIES})
 target_link_libraries (${BIN_NAME} ${CMAKE_SOURCE_DIR}/../../libcorebird_t.a)
 
