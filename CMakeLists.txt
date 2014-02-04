@@ -166,6 +166,9 @@ set (VALAC_OPTIONS
   --target-glib=2.38
   --enable-checking
   --vapidir=vapi/
+  --library=libcorebird_t
+  #--use-header
+  --header=corebird.h
 )
 
 if (DEBUG)
@@ -186,6 +189,8 @@ set_source_files_properties (${CMAKE_CURRENT_SOURCE_DIR}/src/resources.c PROPERT
 add_executable (corebird ${VALA_C})
 add_dependencies (corebird generated_resources)
 target_link_libraries (corebird ${DEPS_LIBRARIES})
+
+add_library (corebird_t ${VALA_C})
 
 
 install (TARGETS corebird RUNTIME DESTINATION bin)

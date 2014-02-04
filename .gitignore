@@ -27,3 +27,6 @@ src/util/Config.vala
 session.vim
 *~
 po/_*.pot
+libcorebird_t.a
+libcorebird_t.vapi
+corebird.h

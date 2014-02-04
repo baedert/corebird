@@ -17,7 +17,7 @@
 
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/missing-list-entry.ui")]
-class MissingListEntry : Gtk.ListBoxRow, ITwitterItem {
+public class MissingListEntry : Gtk.ListBoxRow, ITwitterItem {
   public bool seen {get; set; default = true;}
   public int64 id;
   public int64 sort_factor {
