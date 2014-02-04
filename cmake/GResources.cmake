@@ -21,8 +21,8 @@
 macro (resource_deps RESOURCE_FILE)
   execute_process (COMMAND "glib-compile-resources" "--generate-dependencies" "${RESOURCE_FILE}"
                    OUTPUT_VARIABLE "RESOURCES_DEPS"
-                   RESULT_VARIABLE res_res)
+                   OUTPUT_STRIP_TRAILING_WHITESPACE)
   # *EVIL LAUGH*
-  string (REPLACE "ui/" "../ui/" "RESOURCES_DEPS" ${RESOURCES_DEPS})
-  message ("${RESOURCES_DEPS}")
+  #string (REPLACE "ui/" "../ui/" "RESOURCES_DEPS" ${RESOURCES_DEPS})
+  string (REGEX REPLACE "\n" ";" RESOURCES_DEPS "${RESOURCES_DEPS}")
 endmacro (resource_deps)
