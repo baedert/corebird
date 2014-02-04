@@ -6,8 +6,6 @@ list (APPEND CMAKE_MODULE_PATH
 )
 
 
-set (CMAKE_VERBOSE_MAKEFILE ON)
-
 include (ValaVersion)
 include (ValaPrecompile)
 include (GSettings)
@@ -26,8 +24,6 @@ set (VALA_SOURCE
   widgets.vala
   ../../src/resources.c
 )
-
-#include_directories (${CMAKE_SOURCE_DIR}/../../)
 
 set (VALAC_OPTIONS
   -g
@@ -59,8 +55,9 @@ OPTIONS
 )
 
 
-add_executable (widgets ${VALA_C})
+set (BIN_NAME missing-list-entry)
+add_executable (${BIN_NAME} ${VALA_C})
 #add_dependencies (widgets generated_resources)
-target_link_libraries (widgets ${DEPS_LIBRARIES})
-target_link_libraries (widgets ${CMAKE_SOURCE_DIR}/../../libcorebird_t.a)
+target_link_libraries (${BIN_NAME} ${DEPS_LIBRARIES})
+target_link_libraries (${BIN_NAME} ${CMAKE_SOURCE_DIR}/../../libcorebird_t.a)
 
