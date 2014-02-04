@@ -30,3 +30,4 @@ po/_*.pot
 libcorebird_t.a
 libcorebird_t.vapi
 corebird.h
+tests/widgets/widgets
