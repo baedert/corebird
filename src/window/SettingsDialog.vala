@@ -116,6 +116,8 @@ class SettingsDialog : Gtk.Window {
       add_account_button.sensitive = true;
     } else {
       var remove_dialog = new RemoveAccountDialog ();
+      remove_dialog.transient_for = this;
+      remove_dialog.modal = true;
       remove_dialog.remove_clicked.connect (() => {
         real_remove_account (entry);
         remove_dialog.destroy ();
