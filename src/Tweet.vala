@@ -208,10 +208,10 @@ class Tweet : GLib.Object {
     });
 
 #if __DEV
-  var gen = new Json.Generator ();
-  gen.root = status_node;
-  gen.pretty = true;
-  this.json_data = gen.to_data (null);
+    var gen = new Json.Generator ();
+    gen.root = status_node;
+    gen.pretty = true;
+    this.json_data = gen.to_data (null);
 #endif
   }
 
