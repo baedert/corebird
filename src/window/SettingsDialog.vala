@@ -87,6 +87,7 @@ class SettingsDialog : Gtk.Window {
     if (accs.length() > 0)
       account_list.select_row (account_list.get_row_at_index (0));
 
+    load_geometry ();
     show_all ();
   }
 
@@ -137,9 +138,11 @@ class SettingsDialog : Gtk.Window {
   }
 
   [GtkCallback]
-  private void window_destroy_cb () {
+  private bool window_destroy_cb () {
     Account.remove_account (DUMMY_SCREEN_NAME);
-    destroy();
+    save_geometry ();
+//    destroy();
+    return false;
   }
 
   private void on_account_access (bool result, Account acc) {
@@ -206,5 +209,39 @@ class SettingsDialog : Gtk.Window {
         break;
       }
     }
+  }
+
+  private void load_geometry () {
+    GLib.Variant geom = Settings.get ().get_value ("settings-geometry");
+    int x = 0,
+        y = 0,
+        w = 0,
+        h = 0;
+    x = geom.get_child_value (0).get_int32 ();
+    y = geom.get_child_value (1).get_int32 ();
+    w = geom.get_child_value (2).get_int32 ();
+    h = geom.get_child_value (3).get_int32 ();
+    if (w == 0 || h == 0)
+      return;
+
+    move (x, y);
+    resize (w, h);
+  }
+
+  private void save_geometry () {
+    GLib.Variant geom = Settings.get ().get_value ("settings-geometry");
+    var builder = new GLib.VariantBuilder (GLib.VariantType.TUPLE);
+    int x = 0,
+        y = 0,
+        w = 0,
+        h = 0;
+    get_position (out x, out y);
+    w = get_allocated_width ();
+    h = get_allocated_height ();
+    builder.add_value (new GLib.Variant.int32(x));
+    builder.add_value (new GLib.Variant.int32(y));
+    builder.add_value (new GLib.Variant.int32(w));
+    builder.add_value (new GLib.Variant.int32(h));
+    Settings.get ().set_value ("settings-geometry", builder.end ());
   }
 }
