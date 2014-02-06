@@ -224,9 +224,8 @@ namespace TweetUtils {
     var msg     = new Soup.Message ("GET", avatar_url);
     session.queue_message (msg, (s, _msg) => {
       string dest = Dirs.cache ("assets/avatars/" + avatar_name);
-      var memory_stream = new MemoryInputStream.from_data(
-                                         _msg.response_body.data,
-                                         null);
+      var memory_stream = new MemoryInputStream.from_data(_msg.response_body.data,
+                                                          null);
       try {
         avatar = new Gdk.Pixbuf.from_stream_at_scale (memory_stream,
                                                       48, 48,
