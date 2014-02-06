@@ -229,7 +229,6 @@ class SettingsDialog : Gtk.Window {
   }
 
   private void save_geometry () {
-    GLib.Variant geom = Settings.get ().get_value ("settings-geometry");
     var builder = new GLib.VariantBuilder (GLib.VariantType.TUPLE);
     int x = 0,
         y = 0,
