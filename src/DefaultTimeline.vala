@@ -82,6 +82,8 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     account.user_stream.interrupted.connect (() => {
       message ("INTERRUPTED");
       var missing_entry = new MissingListEntry (max_id + 1);
+      missing_entry.show_all ();
+      missing_entry.set_interrupted ();
       tweet_list.add (missing_entry);
     });
 
