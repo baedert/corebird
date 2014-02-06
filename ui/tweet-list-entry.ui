@@ -240,6 +240,7 @@
                             <property name="valign">baseline</property>
                             <property name="use_markup">True</property>
                             <property name="margin_top">4</property>
+                            <signal name="activate-link" handler="link_activated_cb" swapped="no" />
                             <style>
                               <class name="dim-label"/>
                             </style>
