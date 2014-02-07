@@ -19,7 +19,7 @@
 using Gtk;
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/image-dialog.ui")]
-class ImageDialog : Gtk.Window {
+public class ImageDialog : Gtk.Window {
   [GtkChild]
   private ScrolledWindow scroller;
   [GtkChild]
@@ -111,8 +111,8 @@ class ImageDialog : Gtk.Window {
                                               Gtk.FileChooserAction.SAVE,
                                               _("Cancel"), Gtk.ResponseType.CANCEL,
                                               _("Save"), Gtk.ResponseType.ACCEPT);
-    string filename = Utils.get_file_name(path);
-    file_dialog.set_current_name(filename);
+    string filename = Utils.get_file_name (path);
+    file_dialog.set_current_name (filename);
     file_dialog.set_transient_for (this);
 
 
@@ -129,8 +129,8 @@ class ImageDialog : Gtk.Window {
         critical (e.message);
       }
       file_dialog.destroy ();
-    } else if (response == -1)
-      file_dialog.close ();
+    } else if (response == Gtk.ResponseType.CANCEL)
+      file_dialog.destroy ();
 
   }
 
