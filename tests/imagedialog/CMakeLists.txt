@@ -1,5 +1,5 @@
 set (VALA_SOURCE
-  missing-list-entry.vala
+  imagedialog.vala
   ../../src/resources.c
 )
 
@@ -12,7 +12,7 @@ OPTIONS
   ${VALAC_OPTIONS}
 )
 
-set (BIN_NAME missing-list-entry)
+set (BIN_NAME image-dialog)
 add_executable (${BIN_NAME} ${VALA_C})
 target_link_libraries (${BIN_NAME} ${DEPS_LIBRARIES})
 target_link_libraries (${BIN_NAME} ${CMAKE_SOURCE_DIR}/../libcorebird_t.a)
