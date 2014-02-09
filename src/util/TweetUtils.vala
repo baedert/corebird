@@ -217,12 +217,15 @@ namespace TweetUtils {
    *
    * @return The loaded avatar.
    */
+  private Soup.Session avatar_session = null;
   async Gdk.Pixbuf download_avatar (string avatar_url) {
+    if (avatar_session == null) {
+      avatar_session = new Soup.Session ();
+    }
     string avatar_name = Utils.get_avatar_name (avatar_url);
     Gdk.Pixbuf avatar = null;
-    var session = new Soup.Session ();
     var msg     = new Soup.Message ("GET", avatar_url);
-    session.queue_message (msg, (s, _msg) => {
+    avatar_session.queue_message (msg, (s, _msg) => {
       string dest = Dirs.cache ("assets/avatars/" + avatar_name);
       var memory_stream = new MemoryInputStream.from_data(_msg.response_body.data,
                                                           null);
