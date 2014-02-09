@@ -74,6 +74,9 @@ interface ITimeline : Gtk.Widget, IPage {
 
     if (res.min_id < this.lowest_id)
       this.lowest_id = res.min_id;
+
+    if (res.max_id > this.max_id)
+      this.max_id = res.max_id;
   } //}}}
 
   /**
