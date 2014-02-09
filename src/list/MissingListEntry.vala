@@ -16,12 +16,27 @@
  */
 
 
+/**
+ * MissingListEntry represents a list item in a stream to tell the
+ * user that his connection to the Twitter server is interrupted.
+ * It therefore saves 2 tweet ids, lower_id and upper_id(which can be
+ * set once the connection has been established again) to save what
+ * portion of the stream is lost.
+ * It has 4 states:
+ *  - interrupted: If the stream has been interrupted
+ *  - resumed: If the stream was once interrupted but is not resumed
+ *  - loading: If the user pressed 'load missing tweets' in
+ *             the resumed state and we now load those
+ *  - error: If anything went wrong at any point
+ *
+ */
 [GtkTemplate (ui = "/org/baedert/corebird/ui/missing-list-entry.ui")]
-class MissingListEntry : Gtk.ListBoxRow, ITwitterItem {
-  public bool seen {get; set; default = true;}
-  public int64 id;
+public class MissingListEntry : Gtk.ListBoxRow, ITwitterItem {
+  public bool seen      { get; set; default = true; }
+  public int64 lower_id { get; set; }
+  public int64 upper_id { get; set; }
   public int64 sort_factor {
-    get { return id; }
+    get { return lower_id; }
   }
   [GtkChild]
   private Gtk.Stack stack;
@@ -29,9 +44,7 @@ class MissingListEntry : Gtk.ListBoxRow, ITwitterItem {
   private Gtk.Label error_label;
 
 
-  public MissingListEntry (int64 id) {
-    this.id = id;
-  }
+  public MissingListEntry () {}
 
 
 
@@ -53,6 +66,7 @@ class MissingListEntry : Gtk.ListBoxRow, ITwitterItem {
     }
     stack.visible_child_name = "error";
   }
+
 
   public int update_time_delta (GLib.DateTime? now = null) {return 0;}
 }

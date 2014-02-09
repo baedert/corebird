@@ -59,7 +59,7 @@ mark_as_advanced(VALA_EXECUTABLE)
 # Determine the valac version
 if(VALA_FOUND)
     message("Found valac: ${VALA_EXECUTABLE}")
-    execute_process(COMMAND ${VALA_EXECUTABLE} "--version" 
+    execute_process(COMMAND ${VALA_EXECUTABLE} "--version"
                     OUTPUT_VARIABLE "VALA_VERSION")
     string(REPLACE "Vala" "" "VALA_VERSION" ${VALA_VERSION})
     string(STRIP ${VALA_VERSION} "VALA_VERSION")

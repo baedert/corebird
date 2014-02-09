@@ -290,7 +290,8 @@ class Corebird : Gtk.Application {
    * Log handler in case the application is not
    * started from the command line.
    */
-  public static void print_to_log_file (string? log_domain, LogLevelFlags flags,
+  public static void print_to_log_file (string? log_domain,
+                                        LogLevelFlags flags,
                                         string msg) {
     string out_string;
     if (log_domain == null)
@@ -307,8 +308,12 @@ class Corebird : Gtk.Application {
       }
     }
 
+#if !__DEV
     if (flags != LogLevelFlags.LEVEL_DEBUG)
       stdout.printf (out_string);
+#else
+    stdout.printf (out_string);
+#endif
   }
 }
 

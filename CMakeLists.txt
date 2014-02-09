@@ -9,16 +9,25 @@ list (APPEND CMAKE_MODULE_PATH
 
 option (DEBUG   "enable debugging stuff" OFF)
 option (CATALOG "install corebird's glade catalog" OFF)
+option (TESTS   "Build tests" OFF)
 
 # Enable coloring
 set (CMAKE_COLOR_MAKEFILE ON)
 
 if (DEBUG)
-  message ("DEBUG: ON")
+  message (STATUS "Debugging: ON")
   set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g")
   set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0")
-#  set (CMAKE_VERBOSE_MAKEFILE ON)
+else (DEBUG)
+  message (STATUS "Debugging: OFF")
 endif (DEBUG)
+
+if (TESTS)
+  message (STATUS "Tests: ON")
+else (TESTS)
+  message (STATUS "Tests: OFF")
+endif (TESTS)
+
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fdiagnostics-show-option")
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-value")
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-incompatible-pointer-types-discards-qualifiers")
@@ -43,7 +52,7 @@ message (STATUS "CATALOG: ${CATALOG}")
 include (ValaVersion)
 include (ValaPrecompile)
 include (GSettings)
-#include (GResources)
+include (GResources)
 
 find_package (Vala REQUIRED)
 ensure_vala_version ("0.21.1" MINIMUM) # TODO: Bump to 0.22
@@ -172,6 +181,10 @@ if (DEBUG)
   set (VALAC_OPTIONS ${VALAC_OPTIONS} -D __DEV)
 endif (DEBUG)
 
+if (TESTS)
+  set (VALAC_OPTIONS ${VALAC_OPTIONS} --library=libcorebird_t --header=corebird.h)
+endif (TESTS)
+
 
 vala_precompile (VALA_C
   ${VALA_SOURCE}
@@ -186,6 +199,10 @@ set_source_files_properties (${CMAKE_CURRENT_SOURCE_DIR}/src/resources.c PROPERT
 add_executable (corebird ${VALA_C})
 add_dependencies (corebird generated_resources)
 target_link_libraries (corebird ${DEPS_LIBRARIES})
+
+if (TESTS)
+  add_library (corebird_t ${VALA_C})
+endif (TESTS)
 
 
 install (TARGETS corebird RUNTIME DESTINATION bin)

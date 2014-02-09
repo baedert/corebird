@@ -18,23 +18,11 @@
 # Old command:
 # glib-compile-resources resources.xml --target=src/resources.c --generate-source
 
-
-
-
-macro (add_resources RESOURCE_FILE DST)
-  #  if(NOT EXISTS ${RESOURCE_FILE})
-  #    message (FATAL_ERROR "Resource file '${RESOURCE_FILE}'does not exist")
-  #  else()
-  #    message ("Add GResource ${RESOURCE_FILE}")
-  #    message ("Writing resouces to ${DST}")
-
-    add_custom_command (OUTPUT ${DST}
-                        COMMAND "glib-compile-resources"
-                        ARGS
-                          "${RESOURCE_FILE}"
-                          "--target=${CMAKE_CURRENT_SOURCE_DIR}/${DST}"
-                          "--generate-source"
-                          DEPENDS ${RESOURCE_FILE})
-                        #    add_custom_target (gresources DEPENDS ${RESOURCE_FILE})
-                        #  endif()
-endmacro (add_resources)
+macro (resource_deps RESOURCE_FILE)
+  execute_process (COMMAND "glib-compile-resources" "--generate-dependencies" "${RESOURCE_FILE}"
+                   OUTPUT_VARIABLE "RESOURCES_DEPS"
+                   OUTPUT_STRIP_TRAILING_WHITESPACE)
+  # *EVIL LAUGH*
+  #string (REPLACE "ui/" "../ui/" "RESOURCES_DEPS" ${RESOURCES_DEPS})
+  string (REGEX REPLACE "\n" ";" RESOURCES_DEPS "${RESOURCES_DEPS}")
+endmacro (resource_deps)
