@@ -31,6 +31,7 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   public DeltaUpdater delta_updater      { get; set;}
   protected bool loading = false;
   protected Gtk.Widget? last_focus_widget = null;
+  protected MissingListEntry missing_entry = new MissingListEntry ();
 
   public DefaultTimeline (int id) {
     this.id = id;
@@ -81,7 +82,9 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   private void connect_stream_signals () {
     account.user_stream.interrupted.connect (() => {
       message ("INTERRUPTED");
-      var missing_entry = new MissingListEntry (max_id + 1);
+      missing_entry.lower_id = max_id + 1;
+      missing_entry.set_interrupted ();
+      missing_entry.show_all ();
       tweet_list.add (missing_entry);
     });
 
