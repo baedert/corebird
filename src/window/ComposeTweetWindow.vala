@@ -73,7 +73,12 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     }
 
     if (mode == Mode.REPLY) {
-      tweet_text.buffer.text = "@%s ".printf (answer_to.screen_name);
+      StringBuilder mention_builder = new StringBuilder ();
+      mention_builder.append ("@").append (answer_to.screen_name);
+      foreach (string s in answer_to.mentions) {
+        mention_builder.append (" ").append (s);
+      }
+      tweet_text.buffer.text = mention_builder.str;
     } else if (mode == Mode.QUOTE) {
       tweet_text.buffer.text = " RT @%s “%s“".printf (answer_to.screen_name,
                                              Utils.unescape_html (answer_to.get_real_text ()));

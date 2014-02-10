@@ -64,6 +64,9 @@ class Tweet : GLib.Object {
   public int retweet_count;
   public int favorite_count;
 
+  /** List of users mentioned in this tweet */
+  public string[] mentions;
+
 
   public Tweet(){
     this.avatar = Twitter.no_avatar;
@@ -131,6 +134,7 @@ class Tweet : GLib.Object {
     var urls = entities.get_array_member("urls");
     var hashtags = entities.get_array_member ("hashtags");
     var user_mentions = entities.get_array_member ("user_mentions");
+    this.mentions = new string[user_mentions.get_length ()];
     this.urls = new GLib.SList<TweetUtils.Sequence?>();
     urls.foreach_element((arr, index, node) => {
       var url = node.get_object();
@@ -164,11 +168,13 @@ class Tweet : GLib.Object {
       var mention = node.get_object ();
       Json.Array indices = mention.get_array_member ("indices");
 
+      string screen_name = "@" + mention.get_string_member ("screen_name");
+      this.mentions[index] = screen_name;
       this.urls.prepend(TweetUtils.Sequence(){
         start = (int)indices.get_int_element (0),
         end   = (int)indices.get_int_element (1),
         url   = "@" + mention.get_string_member ("id_str"),
-        display_url = "@" + mention.get_string_member ("screen_name"),
+        display_url = screen_name,
         visual_display_url = true,
         title = mention.get_string_member ("name")
       });
