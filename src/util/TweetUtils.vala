@@ -306,7 +306,7 @@ namespace TweetUtils {
       var now = new GLib.DateTime.now_local ();
       json_array.foreach_element( (array, index, node) => {
         Tweet t = new Tweet();
-        t.load_from_json(node, now);
+        t.load_from_json(node, now, account);
         if (t.id > max)
           max = t.id;
 

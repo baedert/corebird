@@ -42,7 +42,7 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
   private void add_tweet (Json.Node obj) { // {{{
     GLib.DateTime now = new GLib.DateTime.now_local ();
     Tweet t = new Tweet();
-    t.load_from_json (obj, now);
+    t.load_from_json (obj, now, account);
 
     if (t.is_retweet && !should_display_retweet (t))
       return;

@@ -232,7 +232,7 @@ class TweetInfoPage : IPage , ScrollWidget {
         critical (e.message);
         return;
       }
-      tweet.load_from_json (parser.get_root (), now);
+      tweet.load_from_json (parser.get_root (), now, account);
       Json.Object root_object = parser.get_root ().get_object ();
       if (root_object.has_member ("retweeted_status"))
         this.following = root_object.get_object_member ("retweeted_status")
@@ -298,7 +298,7 @@ class TweetInfoPage : IPage , ScrollWidget {
         }
 
         Tweet t = new Tweet ();
-        t.load_from_json (node, now);
+        t.load_from_json (node, now, account);
         var tle = new TweetListEntry (t, main_window, account);
         tle.show_all ();
         top_list_box.add (tle);
@@ -353,7 +353,7 @@ class TweetInfoPage : IPage , ScrollWidget {
         load_replied_to_tweet (parser.get_root ().get_object ().get_int_member ("in_reply_to_status_id"));
       } else {
         Tweet tweet = new Tweet ();
-        tweet.load_from_json (parser.get_root (), new GLib.DateTime.now_local ());
+        tweet.load_from_json (parser.get_root (), new GLib.DateTime.now_local (), account);
         bottom_list_box.add (new TweetListEntry (tweet, main_window, account));
         load_replied_to_tweet (tweet.reply_id);
       }
