@@ -54,6 +54,7 @@
                 <property name="halign">center</property>
                 <property name="valign">start</property>
                 <property name="relief">none</property>
+                <signal name="clicked" handler="load_button_clicked_cb" swapped="false" />
               </object>
               <packing>
                 <property name="expand">False</property>

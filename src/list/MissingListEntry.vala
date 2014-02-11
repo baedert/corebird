@@ -42,11 +42,12 @@ public class MissingListEntry : Gtk.ListBoxRow, ITwitterItem {
   private Gtk.Stack stack;
   [GtkChild]
   private Gtk.Label error_label;
+  [GtkChild]
+  private Gtk.Button load_missing_button;
+  public signal void load_clicked ();
 
 
   public MissingListEntry () {}
-
-
 
   public void set_resumed () {
     stack.visible_child_name = "resumed";
@@ -67,6 +68,10 @@ public class MissingListEntry : Gtk.ListBoxRow, ITwitterItem {
     stack.visible_child_name = "error";
   }
 
+  [GtkCallback]
+  private void load_button_clicked_cb () {
+    load_clicked ();
+  }
 
   public int update_time_delta (GLib.DateTime? now = null) {return 0;}
 }

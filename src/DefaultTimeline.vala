@@ -81,8 +81,6 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
 
   private void connect_stream_signals () {
     account.user_stream.interrupted.connect (() => {
-      //message ("INTERRUPTED");
-      message (@"Using max_id: $max_id");
       missing_entry.lower_id = max_id;
       missing_entry.set_interrupted ();
       missing_entry.show_all ();
@@ -90,7 +88,7 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     });
 
     account.user_stream.resumed.connect (() => {
-      message ("RESUMED");
+      missing_entry.set_resumed ();
     });
   }
 
