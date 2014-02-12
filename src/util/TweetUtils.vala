@@ -302,7 +302,7 @@ namespace TweetUtils {
     int64 max = 0;
     int64 min = int64.MAX;
     new Thread<void*> ("TweetWorker", () => {
-      var entry_list = new GLib.List<TweetListEntry> ();
+      TweetListEntry[] entry_array = new TweetListEntry[json_array.get_length ()];
       var now = new GLib.DateTime.now_local ();
       json_array.foreach_element( (array, index, node) => {
         Tweet t = new Tweet();
@@ -315,15 +315,15 @@ namespace TweetUtils {
 
         var entry  = new TweetListEntry(t, main_window, account);
         delta_updater.add (entry);
-        entry_list.append (entry);
+        entry_array[index] = entry;
       });
 
 
-      unowned GLib.List<TweetListEntry> l = entry_list;
+      int index = 0;
       GLib.Idle.add (() => {
-        tweet_list.add (l.data);
-        l = l.next;
-        if (l == null) {
+        tweet_list.add (entry_array[index]);
+        index ++;
+        if (index == entry_array.length) {
           work_array.callback ();
           return false;
         }
