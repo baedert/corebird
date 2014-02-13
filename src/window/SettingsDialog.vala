@@ -40,6 +40,8 @@ class SettingsDialog : Gtk.Window {
   [GtkChild]
   private Switch dark_theme_switch;
   [GtkChild]
+  private Switch minimize_when_close_switch;
+  [GtkChild]
   private ComboBoxText on_new_tweets_combobox;
   [GtkChild]
   private Switch auto_scroll_on_new_tweets_switch;
@@ -73,6 +75,8 @@ class SettingsDialog : Gtk.Window {
     auto_scroll_on_new_tweets_switch.notify["active"].connect (() => {
       on_new_tweets_combobox.sensitive = !auto_scroll_on_new_tweets_switch.active;
     });
+    Settings.get ().bind ("minimize-when-close", minimize_when_close_switch, "active",
+                          SettingsBindFlags.DEFAULT);
     Settings.get ().bind ("auto-scroll-on-new-tweets", auto_scroll_on_new_tweets_switch, "active",
                           SettingsBindFlags.DEFAULT);
     Settings.get ().bind ("max-media-size", max_media_size_spin_button, "value",

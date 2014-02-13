@@ -307,7 +307,6 @@ class Corebird : Gtk.Application {
       }
     }
 
-    if (flags != LogLevelFlags.LEVEL_DEBUG)
       stdout.printf (out_string);
   }
 }
