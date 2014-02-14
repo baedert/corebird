@@ -45,13 +45,15 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   [GtkChild]
   private Button reply_button;
   [GtkChild]
-  private MenuButton more_button;
+  private Button more_button;
   [GtkChild]
   private Gtk.Menu more_menu;
   [GtkChild]
   private Gtk.MenuItem more_menu_delete_item;
   [GtkChild]
   private Gtk.Popover info_popover;
+  [GtkChild]
+  private Gtk.Revealer info_revealer;
 
 
   public int64 sort_factor{
@@ -80,6 +82,11 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
 
     avatar_image.clicked.connect (() => {
       info_popover.show_all ();
+    });
+
+
+    more_button.clicked.connect (() => {
+      info_revealer.reveal_child = true;
     });
 
     name_button.set_markup (tweet.user_name);
@@ -202,17 +209,6 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   }
 
   [GtkCallback]
-  private void state_flags_changed_cb () { //{{{
-    Gtk.StateFlags flags = this.get_state_flags ();
-    var ct = this.get_style_context ();
-    bool buttons_visible = (bool)(flags & (StateFlags.PRELIGHT | StateFlags.SELECTED));
-    buttons_visible = (buttons_visible || more_menu.visible);
-    //more_button.visible = buttons_visible;
-    //favorite_button.visible = buttons_visible || tweet.favorited;
-    //reply_button.visible = buttons_visible;
-  } //}}}
-
-  [GtkCallback]
   private bool focus_out_cb (Gdk.EventFocus evt) {
     delete_first_activated = false;
     retweet_button.reset ();
@@ -247,7 +243,6 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     spinner.show ();
     TweetUtils.toggle_retweet_tweet.begin (account, tweet, !retweet_button.active, () => {
       WidgetReplacer.replace_tmp_back(retweet_button);
-      retweet_button.visible = retweet_button.active;
     });
 
   } // }}}
@@ -264,7 +259,6 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     TweetUtils.toggle_favorite_tweet.begin (account, tweet, !favorite_button.active, () => {
       WidgetReplacer.replace_tmp_back(favorite_button, true,
                                       favorite_button.active);
-      favorite_button.visible = favorite_button.active;
     });
   } // }}}
 

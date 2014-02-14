@@ -38,47 +38,68 @@
     <property name="relative_to">avatar_image</property>
     <child>
       <object class="GtkBox">
-        <property name="orientation">horizontal</property>
+        <property name="orientation">vertical</property>
         <property name="spacing">0</property>
-        <style>
-          <class name="linked" />
-        </style>
+        <property name="margin_top">1</property>
         <child>
-          <object class="DoubleTapButton" id="retweet_button">
-            <signal name="toggled" handler="retweet_button_toggled" swapped="false" />
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <property name="spacing">0</property>
             <child>
-              <object class="GtkImage">
-                <property name="icon_name">corebird-retweet-symbolic</property>
+              <object class="DoubleTapButton" id="retweet_button">
+                <signal name="toggled" handler="retweet_button_toggled" swapped="false" />
+                <property name="relief">none</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="icon_name">corebird-retweet-symbolic</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkToggleButton" id="favorite_button">
+                <signal name="toggled" handler="favorite_button_toggled" swapped="false" />
+                <property name="relief">none</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="icon_name">corebird-favorite-symbolic</property>
+                  </object>
+                </child>            
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="reply_button">
+                <signal name="clicked" handler="reply_button_clicked_cb" swapped="false" />
+                <property name="relief">none</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="icon_name">corebird-reply-symbolic</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="more_button">
+                <property name="relief">none</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="icon_name">corebird-down-symbolic</property>
+                  </object>
+                </child>
               </object>
             </child>
           </object>
         </child>
         <child>
-          <object class="GtkToggleButton" id="favorite_button">
-            <signal name="toggled" handler="favorite_button_toggled" swapped="false" />
+          <object class="GtkRevealer" id="info_revealer">
+            <property name="transition_type">slide-down</property>
             <child>
-              <object class="GtkImage">
-                <property name="icon_name">corebird-favorite-symbolic</property>
-              </object>
-            </child>            
-          </object>
-        </child>
-        <child>
-          <object class="GtkButton" id="reply_button">
-            <signal name="clicked" handler="reply_button_clicked_cb" swapped="false" />
-            <child>
-              <object class="GtkImage">
-                <property name="icon_name">corebird-reply-symbolic</property>
-              </object>
-            </child>
-          </object>
-        </child>
-        <child>
-          <object class="GtkMenuButton" id="more_button">
-            <property name="popup">more_menu</property>
-            <child>
-              <object class="GtkImage">
-                <property name="icon_name">corebird-down-symbolic</property>
+              <object class="GtkBox">
+                <child>
+                  <object class="GtkButton" id="quote_button">
+                    <property name="label">Quote</property>
+                  </object>
+                </child>
               </object>
             </child>
           </object>
@@ -95,7 +116,6 @@
     </style>
     <signal name="focus-out-event" handler="focus_out_cb" swapped="no"/>
     <signal name="key-release-event" handler="key_released_cb" swapped="no"/>
-    <signal name="state-flags-changed" handler="state_flags_changed_cb" swapped="no"/>
     <child>
       <object class="GtkOverlay" id="overlay1">
         <property name="visible">True</property>
@@ -106,7 +126,6 @@
             <property name="can_focus">False</property>
             <property name="margin_top">4</property>
             <property name="orientation">vertical</property>
-            <signal name="state-flags-changed" handler="state_flags_changed_cb" swapped="no"/>
             <child>
               <object class="GtkBox" id="box4">
                 <property name="visible">True</property>
@@ -120,7 +139,6 @@
                     <property name="valign">start</property>
                     <property name="margin_right">4</property>
                     <property name="margin_top">2</property>
-                    <!--<property name="stock">gtk-missing-image</property>-->
                   </object>
                   <packing>
                     <property name="expand">False</property>
