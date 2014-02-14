@@ -26,6 +26,9 @@ class PixbufButton : Button {
 
   public PixbufButton(){
     this.border_width = 0;
+  }
+
+  construct {
     get_style_context().add_class("pixbuf-button");
   }
 

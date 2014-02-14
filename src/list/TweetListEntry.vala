@@ -27,7 +27,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   [GtkChild]
   private Label time_delta_label;
   [GtkChild]
-  private Image avatar_image;
+  private PixbufButton avatar_image;
   [GtkChild]
   private Label text_label;
   [GtkChild]
@@ -38,8 +38,6 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   private Image conversation_image;
   [GtkChild]
   private Box text_box;
-  [GtkChild]
-  private BgBox hover_box;
   [GtkChild]
   private DoubleTapButton retweet_button;
   [GtkChild]
@@ -52,15 +50,16 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   private Gtk.Menu more_menu;
   [GtkChild]
   private Gtk.MenuItem more_menu_delete_item;
-
+  [GtkChild]
+  private Gtk.Popover info_popover;
 
 
   public int64 sort_factor{
     get{ return tweet.created_at;}
   }
   public bool seen {get; set; default = true;}
-  private weak Account account;
-  private weak MainWindow window;
+  private unowned Account account;
+  private unowned MainWindow window;
   public Tweet tweet;
   private bool values_set = false;
   private bool delete_first_activated = false;
@@ -73,15 +72,19 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   [Signal (action = true)]
   private signal void delete_tweet ();
 
-
   public TweetListEntry (owned Tweet tweet, MainWindow? window, Account account){
     this.account = account;
     this.tweet = tweet;
     this.window = window;
 
+
+    avatar_image.clicked.connect (() => {
+      info_popover.show_all ();
+    });
+
     name_button.set_markup (tweet.user_name);
     screen_name_label.label = "@"+tweet.screen_name;
-    avatar_image.pixbuf = tweet.avatar;
+    avatar_image.set_bg (tweet.avatar);
     text_label.label = tweet.get_formatted_text ();
     update_time_delta ();
     if (tweet.is_retweet) {
@@ -92,27 +95,21 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       rt_box.unparent ();
 
 
-    if (tweet.retweeted || tweet.favorited || tweet.reply_id != 0) {
-      adjust_hover_box ();
-    }
-
-    retweet_button.visible = tweet.retweeted;
+    //retweet_button.visible = tweet.retweeted;
     retweet_button.active = tweet.retweeted;
     tweet.notify["retweeted"].connect (() => {
       values_set = false;
-      retweet_button.active = tweet.retweeted;
+      //retweet_button.active = tweet.retweeted;
       retweet_button.visible = tweet.retweeted;
-      adjust_hover_box ();
       values_set = true;
     });
 
-    favorite_button.visible = tweet.favorited;
+    //favorite_button.visible = tweet.favorited;
     favorite_button.active = tweet.favorited;
     tweet.notify["favorited"].connect (() => {
       values_set = false;
       favorite_button.active = tweet.favorited;
-      favorite_button.visible = tweet.favorited;
-      adjust_hover_box ();
+      //favorite_button.visible = tweet.favorited;
       values_set = true;
     });
 
@@ -145,7 +142,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       more_menu.remove (more_menu_delete_item);
 
 
-    hover_box.show ();
+    //hover_box.show ();
 
     reply_tweet.connect (reply_button_clicked_cb);
     delete_tweet.connect (delete_tweet_activated);
@@ -174,7 +171,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   }
 
   private void avatar_changed () {
-    avatar_image.pixbuf = tweet.avatar;
+    avatar_image.set_bg (tweet.avatar);
     avatar_image.queue_draw ();
   }
 
@@ -210,24 +207,9 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     var ct = this.get_style_context ();
     bool buttons_visible = (bool)(flags & (StateFlags.PRELIGHT | StateFlags.SELECTED));
     buttons_visible = (buttons_visible || more_menu.visible);
-    more_button.visible = buttons_visible;
-    favorite_button.visible = buttons_visible || tweet.favorited;
-    reply_button.visible = buttons_visible;
-
-    if (buttons_visible) {
-      hover_box.margin_right = 1;
-      hover_box.margin_top = (time_delta_label.get_allocated_height () / 2) - 6;
-      hover_box.override_background_color (Gtk.StateFlags.NORMAL,
-                                           ct.get_background_color (Gtk.StateFlags.PRELIGHT));
-      retweet_button.visible = (account.id != tweet.user_id);
-    } else {
-      hover_box.override_background_color (Gtk.StateFlags.NORMAL,
-                                           ct.get_background_color (Gtk.StateFlags.NORMAL));
-      retweet_button.visible = tweet.retweeted;
-      hover_box.margin_right = time_delta_label.get_allocated_width () + 3;
-      if (tweet.reply_id != 0)
-        hover_box.margin_right += conversation_image.get_allocated_width ();
-    }
+    //more_button.visible = buttons_visible;
+    //favorite_button.visible = buttons_visible || tweet.favorited;
+    //reply_button.visible = buttons_visible;
   } //}}}
 
   [GtkCallback]
@@ -323,46 +305,6 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   [GtkCallback]
   private bool link_activated_cb (string uri) {
     return TweetUtils.activate_link (uri, window);
-  }
-
-
-  private void adjust_hover_box () {
-    // Only do this if the hover_box has not been 'adjusted' yet
-    if (hover_box.margin_right > 0) {
-      return;
-    }
-
-    // XXX Keep this in sync with the version below
-    if (time_delta_label.get_allocated_width () > 1 && conversation_image.get_allocated_width () > 1) {
-      hover_box.margin_top = (time_delta_label.get_allocated_height () / 2) - 6;
-      hover_box.margin_right = time_delta_label.get_allocated_width () + 3;
-      if (tweet.reply_id != 0) {
-        conversation_image.margin_top = (time_delta_label.get_allocated_height () / 2) - 6;
-        hover_box.margin_right += conversation_image.get_allocated_width ();
-      }
-      return;
-    }
-
-
-    ulong id = 0;
-    id = time_delta_label.size_allocate.connect (() => {
-      hover_box.margin_top = (time_delta_label.get_allocated_height () / 2) - 6;
-      hover_box.margin_right += time_delta_label.get_allocated_width () + 3;
-      if (tweet.reply_id != 0) {
-        conversation_image.margin_top = (time_delta_label.get_allocated_height () / 2) - 6;
-      }
-      time_delta_label.disconnect (id);
-    });
-
-    if (tweet.reply_id == 0)
-      return;
-
-    ulong id2 = 0;
-    id2 = conversation_image.size_allocate.connect (() => {
-      hover_box.margin_right += conversation_image.get_allocated_width ();
-      conversation_image.disconnect (id2);
-    });
-
   }
 
   /**
