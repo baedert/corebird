@@ -93,6 +93,7 @@ class UserStream : Object {
     } catch (GLib.Error e) {
       error (e.message);
     }
+    timeout_id = GLib.Timeout.add (TIMEOUT_INTERVAL, timeout_cb);
   }
 
   ~UserStream () {
