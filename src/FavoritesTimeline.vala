@@ -34,6 +34,19 @@ class FavoritesTimeline : IMessageReceiver, DefaultTimeline {
   } // }}}
 
 
+  public override void on_leave () {
+    GLib.List<unowned Gtk.Widget> children = tweet_list.get_children ();
+    foreach (Gtk.Widget w in children) {
+      if (!(w is TweetListEntry))
+        continue;
+
+      if (!((TweetListEntry)w).tweet.favorited) {
+        GLib.Idle.add(() => {tweet_list.remove (w); return false;});
+      }
+    }
+  }
+
+
   public override void load_newest () {
     this.loading = true;
     this.load_newest_internal.begin ("1.1/favorites/list.json",  () => {
