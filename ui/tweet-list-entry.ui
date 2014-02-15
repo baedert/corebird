@@ -2,38 +2,7 @@
 <interface>
   <requires lib="gtk+" version="3.10"/>
   <requires lib="corebird" version="0.0"/>
-  <object class="GtkMenu" id="more_menu">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <child>
-      <object class="GtkMenuItem" id="more_menu_quote_item">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Quote</property>
-        <property name="use_underline">True</property>
-        <signal name="activate" handler="quote_item_activated_cb" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="more_menu_detail_item">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Details</property>
-        <property name="use_underline">True</property>
-        <signal name="activate" handler="detail_item_activated_cb" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="more_menu_delete_item">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Delete</property>
-        <property name="use_underline">True</property>
-        <signal name="activate" handler="delete_item_activated_cb" swapped="no"/>
-      </object>
-    </child>
-  </object>
-  <object class="GtkPopover" id="info_popover">
+   <object class="GtkPopover" id="info_popover">
     <property name="position">right</property>
     <property name="relative_to">avatar_image</property>
     <child>
@@ -46,11 +15,14 @@
             <property name="orientation">horizontal</property>
             <property name="spacing">0</property>
             <property name="visible">True</property>
+            <style>
+              <class name="linked" />
+            </style>
             <child>
               <object class="DoubleTapButton" id="retweet_button">
                 <signal name="toggled" handler="retweet_button_toggled" swapped="false" />
-                <property name="relief">none</property>
                 <property name="visible">True</property>
+                <property name="vexpand">True</property>
                 <child>
                   <object class="GtkImage">
                     <property name="icon_name">corebird-retweet-symbolic</property>
@@ -62,7 +34,6 @@
             <child>
               <object class="GtkToggleButton" id="favorite_button">
                 <signal name="toggled" handler="favorite_button_toggled" swapped="false" />
-                <property name="relief">none</property>
                 <property name="visible">True</property>
                 <child>
                   <object class="GtkImage">
@@ -74,7 +45,6 @@
             <child>
               <object class="GtkButton" id="reply_button">
                 <signal name="clicked" handler="reply_button_clicked_cb" swapped="false" />
-                <property name="relief">none</property>
                 <property name="visible">True</property>
                 <child>
                   <object class="GtkImage">
@@ -86,8 +56,8 @@
             </child>
             <child>
               <object class="GtkButton" id="more_button">
-                <property name="relief">none</property>
                 <property name="visible">True</property>
+                <property name="hexpand">True</property>
                 <child>
                   <object class="GtkImage">
                     <property name="icon_name">corebird-down-symbolic</property>
@@ -95,20 +65,36 @@
                   </object>
                 </child>
               </object>
+                <packing>
+                  <property name="fill">True</property>
+                  <property name="expand">True</property>
+                </packing>
             </child>
           </object>
+          <packing>
+            <property name="fill">True</property>
+            <property name="expand">True</property>
+          </packing>
         </child>
         <child>
           <object class="GtkRevealer" id="info_revealer">
             <property name="transition_type">slide-down</property>
             <property name="visible">False</property>
-            <property name="visible">True</property>
+            <property name="hexpand">True</property>
             <child>
               <object class="GtkBox">
                 <child>
                   <object class="GtkButton" id="quote_button">
                     <property name="label">Quote</property>
                     <property name="visible">True</property>
+                    <property name="hexpand">True</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkButton" id="delete_button">
+                    <property name="label">Delete</property>
+                    <property name="visible">True</property>
+                    <property name="hexpand">True</property>
                   </object>
                 </child>
               </object>
