@@ -44,6 +44,9 @@ class PixbufButton : Button {
   }
 
   public void set_bg(Gdk.Pixbuf bg){
+    if (bg == null) {
+      return;
+    }
     this.bg = bg;
     this.set_size_request(bg.get_width(), bg.get_height());
     this.queue_draw();
