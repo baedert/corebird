@@ -24,31 +24,31 @@ class PixbufButton : Button {
   private Gdk.Pixbuf bg;
 
 
-  public PixbufButton(){
+  public PixbufButton () {
     this.border_width = 0;
   }
 
   construct {
-    get_style_context().add_class("pixbuf-button");
+    get_style_context().add_class ("pixbuf-button");
   }
 
-  public override bool draw(Cairo.Context c){
-    if(bg != null){
-      StyleContext context = this.get_style_context();
-      context.render_icon(c, bg, 0, 0);
+  public override bool draw (Cairo.Context c) {
+    if (bg != null) {
+      StyleContext context = this.get_style_context ();
+      context.render_icon (c, bg, 0, 0);
     }
 
     // The css-styled background should be transparent.
-    base.draw(c);
+    base.draw (c);
     return false;
   }
 
-  public void set_bg(Gdk.Pixbuf bg){
+  public void set_bg (Gdk.Pixbuf bg) {
     if (bg == null) {
       return;
     }
     this.bg = bg;
-    this.set_size_request(bg.get_width(), bg.get_height());
-    this.queue_draw();
+    this.set_size_request (bg.get_width (), bg.get_height ());
+    this.queue_draw ();
   }
 }
