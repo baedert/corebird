@@ -23,6 +23,9 @@
                 <signal name="toggled" handler="retweet_button_toggled" swapped="false" />
                 <property name="visible">True</property>
                 <property name="vexpand">True</property>
+                <style>
+                  <class name="retweet-button" />
+                </style>
                 <child>
                   <object class="GtkImage">
                     <property name="icon_name">corebird-retweet-symbolic</property>
@@ -35,6 +38,9 @@
               <object class="GtkToggleButton" id="favorite_button">
                 <signal name="toggled" handler="favorite_button_toggled" swapped="false" />
                 <property name="visible">True</property>
+                <style>
+                  <class name="favorite-button" />
+                </style>
                 <child>
                   <object class="GtkImage">
                     <property name="icon_name">corebird-favorite-symbolic</property><property name="visible">True</property>
@@ -46,6 +52,9 @@
               <object class="GtkButton" id="reply_button">
                 <signal name="clicked" handler="reply_button_clicked_cb" swapped="false" />
                 <property name="visible">True</property>
+                <style>
+                  <class name="reply-button" />
+                </style>
                 <child>
                   <object class="GtkImage">
                     <property name="icon_name">corebird-reply-symbolic</property>
@@ -82,12 +91,16 @@
             <property name="visible">False</property>
             <property name="hexpand">True</property>
             <child>
-              <object class="GtkBox">
+              <object class="GtkBox" id="more_box">
+                <style>
+                  <class name="linked" />
+                </style>
                 <child>
                   <object class="GtkButton" id="quote_button">
                     <property name="label">Quote</property>
                     <property name="visible">True</property>
                     <property name="hexpand">True</property>
+                    <signal name="clicked" handler="quote_clicked_cb" swapped="False" />
                   </object>
                 </child>
                 <child>
@@ -95,6 +108,7 @@
                     <property name="label">Delete</property>
                     <property name="visible">True</property>
                     <property name="hexpand">True</property>
+                    <signal name="clicked" handler="delete_clicked_cb" swapped="False" />
                   </object>
                 </child>
               </object>

@@ -43,17 +43,15 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   [GtkChild]
   private ToggleButton favorite_button;
   [GtkChild]
-  private Button reply_button;
-  [GtkChild]
   private Button more_button;
-  //[GtkChild]
-  //private Gtk.Menu more_menu;
-  //[GtkChild]
-  //private Gtk.MenuItem more_menu_delete_item;
   [GtkChild]
   private Gtk.Popover info_popover;
   [GtkChild]
   private Gtk.Revealer info_revealer;
+  [GtkChild]
+  private Gtk.Box more_box;
+  [GtkChild]
+  private Gtk.Button delete_button;
 
 
   public int64 sort_factor{
@@ -85,7 +83,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     });
 
     more_button.clicked.connect (() => {
-      info_revealer.reveal_child = true;
+      info_revealer.reveal_child = !info_revealer.reveal_child;
     });
 
     name_button.set_markup (tweet.user_name);
@@ -140,8 +138,10 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       inline_button.clicked.connect(inline_media_button_clicked_cb);
       inline_button.show ();
     }
-    //if (tweet.user_id != account.id)
-      //more_menu.remove (more_menu_delete_item);
+
+    if (tweet.user_id != account.id) {
+      more_box.remove (delete_button);
+    }
 
     reply_tweet.connect (reply_button_clicked_cb);
     delete_tweet.connect (delete_tweet_activated);
@@ -275,19 +275,20 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
                         //tweet);
   //}
 
-  //[GtkCallback]
-  //private void quote_item_activated_cb () {
-    //ComposeTweetWindow ctw = new ComposeTweetWindow(this.window, this.account, this.tweet,
-                                                    //ComposeTweetWindow.Mode.QUOTE,
-                                                    //this.window.get_application ());
-    //ctw.show ();
+  [GtkCallback]
+  private void quote_clicked_cb () {
+    ComposeTweetWindow ctw = new ComposeTweetWindow(this.window, this.account, this.tweet,
+                                                    ComposeTweetWindow.Mode.QUOTE,
+                                                    this.window.get_application ());
+    ctw.show ();
+    info_popover.hide ();
+  }
 
-  //}
-
-  //[GtkCallback]
-  //private void delete_item_activated_cb () {
-    //delete_tweet ();
-  //}
+  [GtkCallback]
+  private void delete_clicked_cb () {
+    delete_tweet ();
+    info_popover.hide ();
+  }
 
   [GtkCallback]
   private bool link_activated_cb (string uri) {
