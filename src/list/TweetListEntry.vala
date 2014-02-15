@@ -84,7 +84,6 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       info_popover.show_all ();
     });
 
-
     more_button.clicked.connect (() => {
       info_revealer.reveal_child = true;
     });
@@ -102,21 +101,17 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       rt_box.unparent ();
 
 
-    //retweet_button.visible = tweet.retweeted;
     retweet_button.active = tweet.retweeted;
     tweet.notify["retweeted"].connect (() => {
       values_set = false;
-      //retweet_button.active = tweet.retweeted;
       retweet_button.visible = tweet.retweeted;
       values_set = true;
     });
 
-    //favorite_button.visible = tweet.favorited;
     favorite_button.active = tweet.favorited;
     tweet.notify["favorited"].connect (() => {
       values_set = false;
       favorite_button.active = tweet.favorited;
-      //favorite_button.visible = tweet.favorited;
       values_set = true;
     });
 
@@ -147,9 +142,6 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     }
     if (tweet.user_id != account.id)
       more_menu.remove (more_menu_delete_item);
-
-
-    //hover_box.show ();
 
     reply_tweet.connect (reply_button_clicked_cb);
     delete_tweet.connect (delete_tweet_activated);
@@ -273,6 +265,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
                                                     ComposeTweetWindow.Mode.REPLY,
                                                     this.window.get_application ());
     ctw.show ();
+    info_popover.hide ();
   }
 
   [GtkCallback]
@@ -324,18 +317,43 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     var style = this.get_style_context();
     int w = get_allocated_width();
     int h = get_allocated_height();
-    style.render_background(c, 0, 0, w, h);
+
+    base.draw(c);
 
     var border_color = style.get_border_color(get_state_flags());
     c.set_source_rgba(border_color.red, border_color.green, border_color.blue,
                       border_color.alpha);
 
     // The line here is 50% of the width
-    c.move_to(w*0.25, h);
-    c.line_to(w*0.75, h);
-    c.stroke();
+    c.move_to (w * 0.25, h);
+    c.line_to (w * 0.75, h);
+    c.stroke ();
 
-    base.draw(c);
+    c.set_line_width (2);
+    if (tweet.favorited) {
+      style.save();
+      style.add_class ("favorite");
+      border_color = style.get_border_color (get_state_flags ());
+      c.set_source_rgba(border_color.red, border_color.green, border_color.blue,
+                        border_color.alpha);
+      c.move_to (0, 2);
+      c.line_to (0, h - 2);
+      c.stroke ();
+      style.restore();
+    }
+
+    if (tweet.retweeted) {
+      style.save();
+      style.add_class ("retweet");
+      border_color = style.get_border_color (get_state_flags ());
+      c.set_source_rgba(border_color.red, border_color.green, border_color.blue,
+                        border_color.alpha);
+      c.move_to (2, 2);
+      c.line_to (2, h - 2);
+      c.stroke ();
+      style.restore();
+    }
+
     return false;
   } //}}}
 

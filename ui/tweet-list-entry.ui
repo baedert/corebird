@@ -40,18 +40,21 @@
       <object class="GtkBox">
         <property name="orientation">vertical</property>
         <property name="spacing">0</property>
-        <property name="margin_top">1</property>
+        <property name="visible">True</property>
         <child>
           <object class="GtkBox">
             <property name="orientation">horizontal</property>
             <property name="spacing">0</property>
+            <property name="visible">True</property>
             <child>
               <object class="DoubleTapButton" id="retweet_button">
                 <signal name="toggled" handler="retweet_button_toggled" swapped="false" />
                 <property name="relief">none</property>
+                <property name="visible">True</property>
                 <child>
                   <object class="GtkImage">
                     <property name="icon_name">corebird-retweet-symbolic</property>
+                    <property name="visible">True</property>
                   </object>
                 </child>
               </object>
@@ -60,9 +63,10 @@
               <object class="GtkToggleButton" id="favorite_button">
                 <signal name="toggled" handler="favorite_button_toggled" swapped="false" />
                 <property name="relief">none</property>
+                <property name="visible">True</property>
                 <child>
                   <object class="GtkImage">
-                    <property name="icon_name">corebird-favorite-symbolic</property>
+                    <property name="icon_name">corebird-favorite-symbolic</property><property name="visible">True</property>
                   </object>
                 </child>            
               </object>
@@ -71,9 +75,11 @@
               <object class="GtkButton" id="reply_button">
                 <signal name="clicked" handler="reply_button_clicked_cb" swapped="false" />
                 <property name="relief">none</property>
+                <property name="visible">True</property>
                 <child>
                   <object class="GtkImage">
                     <property name="icon_name">corebird-reply-symbolic</property>
+                    <property name="visible">True</property>
                   </object>
                 </child>
               </object>
@@ -81,9 +87,11 @@
             <child>
               <object class="GtkButton" id="more_button">
                 <property name="relief">none</property>
+                <property name="visible">True</property>
                 <child>
                   <object class="GtkImage">
                     <property name="icon_name">corebird-down-symbolic</property>
+                    <property name="visible">True</property>
                   </object>
                 </child>
               </object>
@@ -93,11 +101,14 @@
         <child>
           <object class="GtkRevealer" id="info_revealer">
             <property name="transition_type">slide-down</property>
+            <property name="visible">False</property>
+            <property name="visible">True</property>
             <child>
               <object class="GtkBox">
                 <child>
                   <object class="GtkButton" id="quote_button">
                     <property name="label">Quote</property>
+                    <property name="visible">True</property>
                   </object>
                 </child>
               </object>

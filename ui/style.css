@@ -8,7 +8,6 @@
   font-weight: bold;
 }
 
-
 .sidebar {
   -GtkWidget-window-dragging: true;
 }
@@ -84,6 +83,15 @@
 .tweet {
   border-color: alpha(black, 0.2);
 }
+
+.favorite {
+  border-color: yellow;
+}
+
+.retweet {
+  border-color: green;
+}
+
 
 .text-only-button{
   font-weight: bold;
