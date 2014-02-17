@@ -32,6 +32,7 @@ set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-deprecated-declarations")
 # Just use PREFIX instead of CMAKE_INSTALL_PREFIX(but CMAKE_INSTALL_PREFIX will work too)
 set (PREFIX           "${CMAKE_INSTALL_PREFIX}")
 set (DATADIR          "${PREFIX}/share/corebird/")
+set (LOCALEDIR        "${PREFIX}/share/locale")
 set (GETTEXT_PACKAGE  "corebird")
 set (VERSION          0.1)
 
