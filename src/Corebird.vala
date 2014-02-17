@@ -112,6 +112,12 @@ class Corebird : Gtk.Application {
     Corebird.db = new Sql.Database (Dirs.config ("Corebird.db"),
                                     Sql.COREBIRD_INIT_FILE);
 
+    // Setup gettext
+    GLib.Intl.setlocale(GLib.LocaleCategory.ALL, LOCALEDIR);
+    GLib.Intl.bindtextdomain (GETTEXT_PACKAGE, null);
+    GLib.Intl.bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
+    GLib.Intl.textdomain(GETTEXT_PACKAGE);
+
     // Construct app menu
     Gtk.Builder builder = new Gtk.Builder ();
     try {
