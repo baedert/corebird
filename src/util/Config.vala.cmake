@@ -17,4 +17,5 @@
 
 
 const string DATADIR = "@DATADIR@";
+const string LOCALEDIR = "@LOCALEDIR@";
 const string GETTEXT_PACKAGE = "@GETTEXT_PACKAGE@";
