@@ -18,6 +18,7 @@
 
 // See https://dev.twitter.com/docs/streaming-apis/messages
 enum StreamMessageType {
+  UNSUPPORTED,
   DELETE,
   SCRUB_GEO,
   LIMIT,
@@ -210,6 +211,8 @@ class UserStream : Object {
         type = StreamMessageType.WARNING;
       else if (root.has_member ("direct_message"))
         type = StreamMessageType.DIRECT_MESSAGE;
+      else if (root.has_member ("status_withheld"))
+        type = StreamMessageType.UNSUPPORTED;
 
 #if __DEV
       message ("Message with type %s", type.to_string ());

@@ -217,12 +217,15 @@ namespace TweetUtils {
    *
    * @return The loaded avatar.
    */
+  private Soup.Session avatar_session = null;
   async Gdk.Pixbuf download_avatar (string avatar_url) {
+    if (avatar_session == null) {
+      avatar_session = new Soup.Session ();
+    }
     string avatar_name = Utils.get_avatar_name (avatar_url);
     Gdk.Pixbuf avatar = null;
-    var session = new Soup.Session ();
     var msg     = new Soup.Message ("GET", avatar_url);
-    session.queue_message (msg, (s, _msg) => {
+    avatar_session.queue_message (msg, (s, _msg) => {
       string dest = Dirs.cache ("assets/avatars/" + avatar_name);
       var memory_stream = new MemoryInputStream.from_data (_msg.response_body.data,
                                                            null);
@@ -299,11 +302,11 @@ namespace TweetUtils {
     int64 max = 0;
     int64 min = int64.MAX;
     new Thread<void*> ("TweetWorker", () => {
-      var entry_list = new GLib.List<TweetListEntry> ();
+      TweetListEntry[] entry_array = new TweetListEntry[json_array.get_length ()];
       var now = new GLib.DateTime.now_local ();
       json_array.foreach_element( (array, index, node) => {
         Tweet t = new Tweet();
-        t.load_from_json(node, now);
+        t.load_from_json(node, now, account);
         if (t.id > max)
           max = t.id;
 
@@ -312,15 +315,15 @@ namespace TweetUtils {
 
         var entry  = new TweetListEntry(t, main_window, account);
         delta_updater.add (entry);
-        entry_list.append (entry);
+        entry_array[index] = entry;
       });
 
 
-      unowned GLib.List<TweetListEntry> l = entry_list;
+      int index = 0;
       GLib.Idle.add (() => {
-        tweet_list.add (l.data);
-        l = l.next;
-        if (l == null) {
+        tweet_list.add (entry_array[index]);
+        index ++;
+        if (index == entry_array.length) {
           work_array.callback ();
           return false;
         }

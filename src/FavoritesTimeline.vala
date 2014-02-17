@@ -26,11 +26,25 @@ class FavoritesTimeline : IMessageReceiver, DefaultTimeline {
   private void stream_message_received (StreamMessageType type, Json.Node root) { // {{{
     if (type == StreamMessageType.EVENT_FAVORITE) {
       int64 id = root.get_object ().get_object_member ("target_object").get_int_member ("id");
+      // TODO: add new tweet to the timeline
     } else if (type == StreamMessageType.EVENT_UNFAVORITE) {
       int64 id = root.get_object ().get_object_member ("target_object").get_int_member ("id");
-      delete_tweet (id);
+      toggle_favorite (id, false);
     }
   } // }}}
+
+
+  public override void on_leave () {
+    GLib.List<unowned Gtk.Widget> children = tweet_list.get_children ();
+    foreach (Gtk.Widget w in children) {
+      if (!(w is TweetListEntry))
+        continue;
+
+      if (!((TweetListEntry)w).tweet.favorited) {
+        GLib.Idle.add(() => {tweet_list.remove (w); return false;});
+      }
+    }
+  }
 
 
   public override void load_newest () {

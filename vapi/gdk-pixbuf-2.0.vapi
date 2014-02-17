@@ -33,8 +33,6 @@ namespace Gdk {
 		public Pixbuf.from_resource_at_scale (string resource_path, int width, int height, bool preserve_aspect_ratio) throws GLib.Error;
 		[CCode (has_construct_function = false)]
 		public Pixbuf.from_stream (GLib.InputStream stream, GLib.Cancellable? cancellable = null) throws GLib.Error;
-		[CCode (cname = "gdk_pixbuf_new_from_stream_async", has_construct_function = false)]
-		public static async Pixbuf.from_stream_async (GLib.InputStream stream, GLib.Cancellable? cancellable) throws GLib.Error;
 		[CCode (has_construct_function = false)]
 		public Pixbuf.from_stream_at_scale (GLib.InputStream stream, int width, int height, bool preserve_aspect_ratio, GLib.Cancellable? cancellable = null) throws GLib.Error;
 		[CCode (cname = "gdk_pixbuf_new_from_stream_at_scale_async", finish_name = "gdk_pixbuf_new_from_stream_finish")]
@@ -56,9 +54,6 @@ namespace Gdk {
 		public unowned uint8[] get_pixels_with_length ();
 		public int get_rowstride ();
 		public int get_width ();
-		[CCode (cname = "gdk_pixbuf_new_from_stream_async", finish_name = "gdk_pixbuf_new_from_stream_finish")]
-		[Deprecated (replacement = "Pixbuf.from_stream_async", since = "vala-0.18")]
-		public static async Gdk.Pixbuf new_from_stream_async (GLib.InputStream stream, GLib.Cancellable? cancellable = null) throws GLib.Error;
 		[CCode (cname = "gdk_pixbuf_new_from_stream_at_scale_async", finish_name = "gdk_pixbuf_new_from_stream_finish")]
 		[Deprecated (replacement = "Pixbuf.from_stream_at_scale_async", since = "vala-0.18")]
 		public static async Gdk.Pixbuf new_from_stream_at_scale_async (GLib.InputStream stream, int width, int height, bool preserve_aspect_ratio, GLib.Cancellable? cancellable = null) throws GLib.Error;
@@ -110,8 +105,6 @@ namespace Gdk {
 		public PixbufAnimation.from_resource (string resource_path) throws GLib.Error;
 		[CCode (has_construct_function = false)]
 		public PixbufAnimation.from_stream (GLib.InputStream stream, GLib.Cancellable? cancellable = null) throws GLib.Error;
-		[CCode (cname = "gdk_pixbuf_animation_new_from_stream_async", has_construct_function = false)]
-		public async PixbufAnimation.from_stream_async (GLib.InputStream stream, GLib.Cancellable? cancellable) throws GLib.Error;
 		public int get_height ();
 		public Gdk.PixbufAnimationIter get_iter (GLib.TimeVal? start_time);
 		public unowned Gdk.Pixbuf get_static_image ();

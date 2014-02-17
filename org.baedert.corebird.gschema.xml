@@ -79,5 +79,9 @@
       <default>{}</default>
       <summary></summary>
     </key>
+    <key name="settings-geometry" type="(iiii)">
+      <default>(0,0,500,300)</default>
+      <summary>Size and position of the settings dialog</summary>
+    </key>
   </schema>
 </schemalist>
