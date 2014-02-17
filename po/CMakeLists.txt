@@ -10,8 +10,6 @@ if(XGETTEXT_FOUND)
     "src/list/*.vala"
     "src/util/*.vala"
     "src/window/*.vala"
-    GSETTINGSFILES
-    "org.baedert.corebird.gschema.xml"
     GLADEFILES
     "ui/*.ui"
     WORKING_DIRECTORY
@@ -23,5 +21,9 @@ if(XGETTEXT_FOUND)
   else()
     set(NOUPDATE "NOUPDATE")
   endif()
-  gettext_create_translations("${potfile}" ALL ${NOUPDATE})
+  gettext_create_translations("${potfile}"
+    ALL
+    ${NOUPDATE}
+    POFILES
+    "de.po")
 endif()
