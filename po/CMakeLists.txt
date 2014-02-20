@@ -12,6 +12,8 @@ if(XGETTEXT_FOUND)
     "src/window/*.vala"
     GLADEFILES
     "ui/*.ui"
+    GSETTINGSFILES
+    "org.baedert.corebird.gschema.xml"
     WORKING_DIRECTORY
     "../"
     )
