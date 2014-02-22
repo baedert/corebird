@@ -24,18 +24,28 @@ class FilterPage : Gtk.ScrolledWindow, IPage {
   public int id { get; set; }
   public unowned MainWindow main_window {get; set;}
   public unowned Account account        {get; set;}
-
   private Gtk.RadioToolButton tool_button;
+  [GtkChild]
+  private Gtk.ListBox filter_list;
 
 
   public FilterPage (int id) {
     this.id = id;
+    filter_list.add (new FilterListEntry ());
   }
-  public void on_join (int page_id, va_list arg_list) {
-  }
-  public void on_leave () {
 
-  }
+
+
+
+
+
+
+
+
+
+
+  public void on_join (int page_id, va_list arg_list) {}
+  public void on_leave () {}
   public void create_tool_button(Gtk.RadioToolButton? group) {
     tool_button = new BadgeRadioToolButton(group, "corebird-filter-symbolic");
     tool_button.tooltip_text = _("Filters");
