@@ -111,6 +111,7 @@ set (VALA_SOURCE
   src/DefaultTimeline.vala
   src/ListsPage.vala
   src/ListStatusesPage.vala
+  src/FilterPage.vala
   src/widgets/PixbufButton.vala
   src/widgets/ScrollWidget.vala
   src/widgets/TextButton.vala

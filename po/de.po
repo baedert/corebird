@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: corebird 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-17 20:17+0100\n"
+"POT-Creation-Date: 2014-02-20 17:20+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -52,7 +52,7 @@ msgid "About Corebird"
 msgstr ""
 
 #: ../org.baedert.corebird.gschema.xml.h:13
-msgid "Accelerator to press in ordner to show/hide the sidebar"
+msgid "Accelerator to press in order to show/hide the sidebar"
 msgstr ""
 
 #: ../ui/settings-dialog.ui:377
@@ -228,10 +228,6 @@ msgstr ""
 msgid "New Mention from %s"
 msgstr ""
 
-#: ../src/MainWindow.vala:75
-msgid "New Tweet"
-msgstr "Neuer Tweet"
-
 #: ../src/DMThreadsPage.vala:234
 msgid "New direct message!"
 msgstr ""
@@ -383,7 +379,7 @@ msgstr ""
 
 #: ../org.baedert.corebird.gschema.xml.h:12
 msgid ""
-"The accelerator to press in ordner to bring the ComposeTweetWindow up. Muse "
+"The accelerator to press in order to bring the ComposeTweetWindow up. Must "
 "be parseable with gtk_accelerator_parse"
 msgstr ""
 
@@ -399,7 +395,7 @@ msgstr ""
 #: ../src/widgets/AccountCreateWidget.vala:47
 msgid ""
 "Unauthorized. Most of the time, this means that there's something wrong with "
-"the Twitter servers and you shuld try again later"
+"the Twitter servers and you should try again later"
 msgstr ""
 
 #: ../src/ProfilePage.vala:506 ../src/TweetInfoPage.vala:411
@@ -428,17 +424,18 @@ msgstr ""
 
 #: ../org.baedert.corebird.gschema.xml.h:3
 msgid ""
-"Whether the user should be notified when another user mentions him in a tweet"
+"Whether the user should be notified when another user mentions them in a "
+"tweet"
 msgstr ""
 
 #: ../org.baedert.corebird.gschema.xml.h:5
 msgid ""
-"Whether the user should be notified when another user starts following him"
+"Whether the user should be notified when another user starts following them"
 msgstr ""
 
 #: ../org.baedert.corebird.gschema.xml.h:4
 msgid ""
-"Whether the user should be notified when another user writes him a direct "
+"Whether the user should be notified when another user writes them a direct "
 "message"
 msgstr ""
 
@@ -467,3 +464,6 @@ msgid ""
 "You have not yet configured any account. To do so, click on the appropriate "
 "button on the left."
 msgstr ""
+
+#~ msgid "New Tweet"
+#~ msgstr "Neuer Tweet"
