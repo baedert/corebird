@@ -14,26 +14,26 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="New document 1">
+   sodipodi:docname="corebird-filter-symbolic.svg">
   <defs
      id="defs4" />
   <sodipodi:namedview
      id="base"
-     pagecolor="#ffffff"
+     pagecolor="#3a3b39"
      bordercolor="#666666"
      borderopacity="1.0"
-     inkscape:pageopacity="0.0"
+     inkscape:pageopacity="1"
      inkscape:pageshadow="2"
-     inkscape:zoom="6.209333"
-     inkscape:cx="53.213081"
-     inkscape:cy="31.59518"
+     inkscape:zoom="1.695677"
+     inkscape:cx="-53.345901"
+     inkscape:cy="32.563353"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="995"
-     inkscape:window-height="579"
-     inkscape:window-x="837"
-     inkscape:window-y="264"
+     inkscape:window-width="783"
+     inkscape:window-height="1056"
+     inkscape:window-x="2251"
+     inkscape:window-y="20"
      inkscape:window-maximized="0" />
   <metadata
      id="metadata7">
@@ -43,7 +43,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -54,7 +54,7 @@
      transform="translate(0,-988.36218)">
     <text
        xml:space="preserve"
-       style="font-size:80.03224182px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#bebebe;fill-opacity:0.94117647;stroke:none;font-family:FontAwesome;-inkscape-font-specification:FontAwesome"
+       style="font-size:80.03224181999999587px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#bebebe;fill-opacity:1;stroke:none;font-family:FontAwesome;-inkscape-font-specification:FontAwesome"
        x="0.53593045"
        y="1046.8153"
        id="text2985"
