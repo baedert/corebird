@@ -14,9 +14,26 @@
  *  You should have received a copy of the GNU General Public License
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 [GtkTemplate (ui = "/org/baedert/corebird/ui/filter-list-entry.ui")]
 class FilterListEntry : Gtk.ListBoxRow {
+  [GtkChild]
+  private Gtk.Label content_label;
+  [GtkChild]
+  private Gtk.Button delete_button;
+  public string content {
+    set {
+      content_label.label = value;
+    }
+    get {
+      return content_label.label;
+    }
+  }
 
+  public FilterListEntry () {}
+
+
+  [GtkCallback]
+  private void delete_button_clicked_cb () {
+    message ("Close pressed!");
+  }
 }

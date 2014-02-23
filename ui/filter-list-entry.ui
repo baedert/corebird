@@ -2,6 +2,11 @@
 <interface>
   <requires lib="gtk+" version="3.10"/>
   <requires lib="corebird" version="0.0"/>
+
+  <object class="GtkPopover" id="confirmation_popover">
+    <property name="relative_to">delete_button</property>
+  </object>
+
   <template class="FilterListEntry" parent="GtkListBoxRow">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -13,6 +18,12 @@
             <property name="visible">True</property>
             <property name="valign">center</property>
             <property name="halign">start</property>
+            <property name="margin_left">5</property>
+            <property name="margin_right">5</property>
+            <property name="ellipsize">end</property>
+            <style>
+              <class name="list-username" />
+            </style>
           </object>
           <packing>
             <property name="fill">True</property>
@@ -25,6 +36,7 @@
               <property name="halign">center</property>
               <property name="valign">center</property>
               <property name="relief">none</property>
+              <signal name="clicked" handler="delete_button_clicked_cb" swapped="false" />
               <style>
                 <class name="image-button" />
               </style>

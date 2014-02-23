@@ -27,24 +27,29 @@ class FilterPage : Gtk.ScrolledWindow, IPage {
   private Gtk.RadioToolButton tool_button;
   [GtkChild]
   private Gtk.ListBox filter_list;
-
+  private bool inited = false;
 
   public FilterPage (int id) {
     this.id = id;
     filter_list.add (new FilterListEntry ());
   }
 
+  public void on_join (int page_id, va_list arg_list) {
+    if (inited)
+      return;
+
+
+    account.db.select ("filters").cols ("content", "block_count", "id")
+              .order ("id").run ((cols) => {
+      message (cols[0]);
+      return true;
+     });
+    inited = true;
+  }
 
 
 
 
-
-
-
-
-
-
-  public void on_join (int page_id, va_list arg_list) {}
   public void on_leave () {}
   public void create_tool_button(Gtk.RadioToolButton? group) {
     tool_button = new BadgeRadioToolButton(group, "corebird-filter-symbolic");
