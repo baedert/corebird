@@ -14,11 +14,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
-
-
-
 [GtkTemplate (ui = "/org/baedert/corebird/ui/filter-page.ui")]
 class FilterPage : Gtk.ScrolledWindow, IPage {
   public int id { get; set; }
@@ -41,7 +36,9 @@ class FilterPage : Gtk.ScrolledWindow, IPage {
 
     account.db.select ("filters").cols ("content", "block_count", "id")
               .order ("id").run ((cols) => {
-      message (cols[0]);
+      var entry = new FilterListEntry ();
+      entry.content = cols[0];
+      entry.block_count = int.parse(cols[1]);
       return true;
      });
     inited = true;

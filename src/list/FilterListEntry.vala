@@ -28,9 +28,9 @@ class FilterListEntry : Gtk.ListBoxRow {
       return content_label.label;
     }
   }
+  public int block_count = 0;
 
   public FilterListEntry () {}
-
 
   [GtkCallback]
   private void delete_button_clicked_cb () {
