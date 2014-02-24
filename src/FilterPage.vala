@@ -26,7 +26,14 @@ class FilterPage : Gtk.ScrolledWindow, IPage {
 
   public FilterPage (int id) {
     this.id = id;
-    filter_list.add (new FilterListEntry ());
+    filter_list.add (new AddFilterEntry ());
+    filter_list.row_activated.connect ((row) => {
+      if (row is AddFilterEntry) {
+
+      } else if (row is FilterListEntry) {
+
+      }
+    });
   }
 
   public void on_join (int page_id, va_list arg_list) {
@@ -55,3 +62,28 @@ class FilterPage : Gtk.ScrolledWindow, IPage {
   }
   public Gtk.RadioToolButton? get_tool_button() { return tool_button; }
 }
+
+
+
+
+class AddFilterEntry : Gtk.ListBoxRow {
+
+
+  public AddFilterEntry () {
+    var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 5);
+    var img = new Gtk.Image.from_icon_name ("list-add-symbolic", Gtk.IconSize.DIALOG);
+    img.pixel_size = 32;
+    img.margin_left = 10;
+    img.hexpand = true;
+    img.halign = Gtk.Align.END;
+    box.pack_start (img);
+    var l = new Gtk.Label (_("Add new Filter"));
+    l.hexpand = true;
+    l.halign = Gtk.Align.START;
+    box.pack_start (l);
+    add (box);
+  }
+
+
+}
+

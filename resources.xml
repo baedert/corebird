@@ -29,5 +29,6 @@
     <file compressed="true" preprocess="xml-stripblanks">ui/user-lists-widget.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/filter-page.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/filter-list-entry.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">ui/add-filter-dialog.ui</file>
   </gresource>
 </gresources>

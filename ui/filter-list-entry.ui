@@ -10,9 +10,11 @@
   <template class="FilterListEntry" parent="GtkListBoxRow">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
+    <property name="tooltip_text" translatable="Yes">Click to edit</property>
     <child>
       <object class="GtkBox" id="box">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <child>
           <object class="GtkLabel" id="content_label">
             <property name="visible">True</property>
@@ -21,6 +23,7 @@
             <property name="margin_left">5</property>
             <property name="margin_right">5</property>
             <property name="ellipsize">end</property>
+            <property name="can_focus">False</property>
             <style>
               <class name="list-username" />
             </style>
@@ -36,6 +39,7 @@
               <property name="halign">center</property>
               <property name="valign">center</property>
               <property name="relief">none</property>
+              <property name="can_focus">True</property>
               <signal name="clicked" handler="delete_button_clicked_cb" swapped="false" />
               <style>
                 <class name="image-button" />
