@@ -60,7 +60,7 @@ class Tweet : GLib.Object {
   public bool has_inline_media = false;
 
   /** if the json from twitter has inline media **/
-  private GLib.SList<TweetUtils.Sequence?> urls;
+  private TweetUtils.Sequence?[] urls;
   public int retweet_count;
   public int favorite_count;
 
@@ -130,37 +130,45 @@ class Tweet : GLib.Object {
     this.avatar_name = Utils.get_avatar_name(this.avatar_url);
 
     // 'Resolve' the used URLs
+    uint media_count = 0;
+    if (entities.has_member ("media")) {
+      media_count = entities.get_array_member ("media").get_length ();
+    }
     var urls = entities.get_array_member("urls");
     var hashtags = entities.get_array_member ("hashtags");
     var user_mentions = entities.get_array_member ("user_mentions");
+    this.urls = new TweetUtils.Sequence?[urls.get_length () + hashtags.get_length () +
+                                         user_mentions.get_length () + media_count];
+    int real_urls = 0;
     this.mentions = new string[user_mentions.get_length ()];
-    this.urls = new GLib.SList<TweetUtils.Sequence?>();
     urls.foreach_element((arr, index, node) => {
       var url = node.get_object();
       string expanded_url = url.get_string_member("expanded_url");
 
       Json.Array indices = url.get_array_member ("indices");
       expanded_url = expanded_url.replace("&", "&amp;");
-      this.urls.prepend(TweetUtils.Sequence() {
+      this.urls[real_urls] = TweetUtils.Sequence() {
         start = (int)indices.get_int_element (0),
         end   = (int)indices.get_int_element (1) ,
         url   = expanded_url,
         display_url = url.get_string_member ("display_url"),
         visual_display_url = false
-      });
+      };
+      real_urls ++;
       InlineMediaDownloader.try_load_media.begin(this, expanded_url);
     });
 
     hashtags.foreach_element ((arr, index, node) => {
       var hashtag = node.get_object ();
       Json.Array indices = hashtag.get_array_member ("indices");
-      this.urls.prepend(TweetUtils.Sequence(){
+      this.urls[real_urls] = TweetUtils.Sequence(){
         start = (int)indices.get_int_element (0),
         end   = (int)indices.get_int_element (1),
         url   = "#"+hashtag.get_string_member ("text"),
         display_url = "#"+hashtag.get_string_member ("text"),
         visual_display_url=  false
-      });
+      };
+      real_urls ++;
     });
 
 
@@ -176,20 +184,21 @@ class Tweet : GLib.Object {
         this.mentions[real_mentions] = "@" + screen_name;
         real_mentions ++;
       }
-      this.urls.prepend(TweetUtils.Sequence(){
+      this.urls[real_urls] = TweetUtils.Sequence(){
         start = (int)indices.get_int_element (0),
         end   = (int)indices.get_int_element (1),
         url   = "@" + mention.get_string_member ("id_str"),
         display_url = "@" + screen_name,
         visual_display_url = true,
         title = mention.get_string_member ("name")
-      });
+      };
+      real_urls ++;
     });
     this.mentions.resize (real_mentions);
 
 
     // The same with media
-    if (entities.has_member ("media")) {
+    if (media_count > 0) {
       var medias = entities.get_array_member ("media");
       medias.foreach_element ((arr, index, node) => {
         var url = node.get_object();
@@ -197,20 +206,23 @@ class Tweet : GLib.Object {
         string expanded_url = url.get_string_member ("expanded_url");
         expanded_url = expanded_url.replace ("&", "&amp;");
         Json.Array indices = url.get_array_member ("indices");
-        this.urls.prepend(TweetUtils.Sequence(){
+        this.urls[real_urls] = TweetUtils.Sequence(){
           start = (int)indices.get_int_element (0),
           end   = (int)indices.get_int_element (1),
           url   = expanded_url,
           display_url = url.get_string_member ("display_url"),
           visual_display_url = false
-        });
-        InlineMediaDownloader.try_load_media.begin(this,
-                url.get_string_member("media_url"));
+        };
+        InlineMediaDownloader.try_load_media.begin(this, url.get_string_member("media_url"));
+        real_urls ++;
       });
     }
-
-
-
+    this.urls.resize (real_urls);
+    GLib.qsort_with_data<TweetUtils.Sequence?> (this.urls, sizeof (TweetUtils.Sequence?), (a, b) => {
+      if (a.start < b.start)
+        return -1;
+      return 1;
+    });
 
     var dt = new DateTime.from_unix_local(is_retweet ? rt_created_at : created_at);
     this.time_delta  = Utils.get_time_delta(dt, now);
@@ -235,7 +247,7 @@ class Tweet : GLib.Object {
    * @return The tweet's formatted text.
    */
   public string get_formatted_text () {
-    return TweetUtils.get_formatted_text (this.text, urls);
+    return TweetUtils.get_formatted_text (this.text, urls, true);
   }
 
   /**
@@ -245,6 +257,6 @@ class Tweet : GLib.Object {
    * @return The tweet's text with long urls
    */
   public string get_real_text () {
-    return TweetUtils.get_real_text (this.text, urls);
+    return TweetUtils.get_real_text (this.text, urls, true);
   }
 }
