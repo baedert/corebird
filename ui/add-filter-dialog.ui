@@ -1,14 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="3.10"/>
-  <template class="AddFilterDialog" parent="GtkDialog">
+  <template class="AddFilterDialog" parent="GtkWindow">
     <property name="modal">True</property>
     <property name="title" translatable="Yes">Add New Filter</property>
     <property name="visible">True</property>
     <property name="border_width">5</property>
-    <child internal-child="vbox">
+    <child>
       <object class="GtkBox">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkButtonBox">
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton" id="cancel_button">
+                <property name="visible">True</property>
+                <property name="label" translatable="Yes">Cancel</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+          </object>
+        </child>
       </object>
     </child>
   </template>

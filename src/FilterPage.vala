@@ -29,7 +29,8 @@ class FilterPage : Gtk.ScrolledWindow, IPage {
     filter_list.add (new AddFilterEntry ());
     filter_list.row_activated.connect ((row) => {
       if (row is AddFilterEntry) {
-
+        var dialog = new AddFilterDialog (main_window);
+        //dialog.show_all ();
       } else if (row is FilterListEntry) {
 
       }
