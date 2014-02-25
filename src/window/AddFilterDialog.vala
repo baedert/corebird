@@ -15,11 +15,30 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 [GtkTemplate (ui = "/org/baedert/corebird/ui/add-filter-dialog.ui")]
-class AddFilterDialog : Gtk.Window {
+class AddFilterDialog : Gtk.ApplicationWindow {
+  [GtkChild]
+  private Gtk.Button save_button;
 
-
-  public AddFilterDialog (Gtk.Window parent) {
-    this.set_type_hint (Gdk.WindowTypeHint.DIALOG);
+  public AddFilterDialog (Gtk.ApplicationWindow parent) {
+    this.set_show_menubar (false);
     this.set_transient_for (parent);
+    this.application = parent.get_application ();
+  }
+
+
+  [GtkCallback]
+  private void cancel_button_clicked_cb () {
+    this.destroy ();
+  }
+
+
+  [GtkCallback]
+  private void save_button_clicked_cb () {
+    this.destroy ();
+  }
+
+  [GtkCallback]
+  private void content_entry_changed_cb () {
+
   }
 }
