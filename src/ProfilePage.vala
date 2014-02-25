@@ -441,15 +441,16 @@ class ProfilePage : ScrollWidget, IPage {
     var call = account.proxy.new_call();
     if (following)
       call.set_function( "1.1/friendships/destroy.json");
-    else
+    else {
       call.set_function ("1.1/friendships/create.json");
+      call.add_param ("follow", "false");
+    }
     message (@"User ID: $user_id");
     message (user_id.to_string ());
     progress_spinner.show ();
     progress_spinner.start ();
     follow_button.sensitive = false;
     call.set_method ("POST");
-    call.add_param ("follow", "true");
     call.add_param ("id", user_id.to_string ());
     call.invoke_async.begin (null, (obj, res) => {
       try {
