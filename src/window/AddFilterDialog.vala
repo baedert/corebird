@@ -18,6 +18,8 @@
 class AddFilterDialog : Gtk.ApplicationWindow {
   [GtkChild]
   private Gtk.Button save_button;
+  [GtkChild]
+  private Gtk.Entry content_entry;
 
   public AddFilterDialog (Gtk.ApplicationWindow parent) {
     this.set_show_menubar (false);
@@ -39,6 +41,6 @@ class AddFilterDialog : Gtk.ApplicationWindow {
 
   [GtkCallback]
   private void content_entry_changed_cb () {
-
+    message ("Entry content changed");
   }
 }
