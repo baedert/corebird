@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: corebird 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-26 21:49+0100\n"
+"POT-Creation-Date: 2014-02-26 22:11+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -95,6 +95,10 @@ msgstr ""
 
 #: ../src/util/Utils.vala:82
 msgid "Now"
+msgstr ""
+
+#: ../src/Corebird.vala:144
+msgid "Open Account"
 msgstr ""
 
 #: ../src/TweetInfoPage.vala:424
