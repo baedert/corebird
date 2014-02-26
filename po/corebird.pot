@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: corebird 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-20 17:20+0100\n"
+"POT-Creation-Date: 2014-02-26 18:47+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -64,7 +64,7 @@ msgstr ""
 msgid "Favorites"
 msgstr ""
 
-#: ../src/ProfilePage.vala:510 ../src/TweetInfoPage.vala:415
+#: ../src/ProfilePage.vala:511 ../src/TweetInfoPage.vala:415
 msgid "Follow"
 msgstr ""
 
@@ -124,12 +124,16 @@ msgid ""
 "the Twitter servers and you should try again later"
 msgstr ""
 
-#: ../src/ProfilePage.vala:506 ../src/TweetInfoPage.vala:411
+#: ../src/ProfilePage.vala:507 ../src/TweetInfoPage.vala:411
 msgid "Unfollow"
 msgstr ""
 
 #: ../src/widgets/AccountCreateWidget.vala:64
 msgid "Wrong PIN"
+msgstr ""
+
+#: ../ui/menu.ui:12
+msgid "About"
 msgstr ""
 
 #: ../ui/about-dialog.ui:8
@@ -181,9 +185,8 @@ msgstr ""
 msgid "Creator:"
 msgstr ""
 
-#: ../ui/tweet-list-entry.ui:30 ../ui/dm-thread-entry.ui:173
-#: ../ui/tweet-info-page.ui:32 ../ui/list-list-entry.ui:12
-#: ../ui/list-statuses-page.ui:223
+#: ../ui/tweet-list-entry.ui:30 ../ui/tweet-info-page.ui:32
+#: ../ui/list-list-entry.ui:12 ../ui/list-statuses-page.ui:223
 msgid "Delete"
 msgstr ""
 
@@ -287,12 +290,12 @@ msgstr ""
 msgid "Public"
 msgstr ""
 
-#: ../ui/tweet-list-entry.ui:12 ../ui/tweet-info-page.ui:24
-msgid "Quote"
+#: ../ui/menu.ui:16
+msgid "Quit"
 msgstr ""
 
-#: ../ui/dm-thread-entry.ui:10
-msgid "Really?"
+#: ../ui/tweet-list-entry.ui:12 ../ui/tweet-info-page.ui:24
+msgid "Quote"
 msgstr ""
 
 #: ../ui/remove-account-dialog.ui:33
@@ -321,6 +324,10 @@ msgstr ""
 
 #: ../ui/dm-page.ui:69 ../ui/compose-window.ui:160
 msgid "Send"
+msgstr ""
+
+#: ../ui/settings-dialog.ui:20 ../ui/menu.ui:8
+msgid "Settings"
 msgstr ""
 
 #: ../ui/settings-dialog.ui:218
