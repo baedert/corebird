@@ -342,14 +342,14 @@
                     <property name="activate_on_single_click">False</property>
                   </object>
                   <packing>
-                    <property name="title">Tweets</property>
+                    <property name="title" translatable="yes">Tweets</property>
                   </packing>
                 </child>
                 <child>
                   <object class="UserListsWidget" id="user_lists">
                   </object>
                   <packing>
-                    <property name="title">Lists</property>
+                    <property name="title" translatable="yes">Lists</property>
                   </packing>
                 </child>
               </object>
