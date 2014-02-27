@@ -12,7 +12,6 @@ AC_CONFIG_FILES([Makefile
                  src/util/Config.vala])
 
 
-LT_INIT
 AC_PROG_CC
 AM_PROG_VALAC
 AM_MAINTAINER_MODE
@@ -45,12 +44,20 @@ AC_SUBST(CB_VALA_FLAGS)
 AC_PATH_PROG(GLIB_COMPILE_RESOURCES, glib-compile-resources)
 
 
-AC_ARG_ENABLE(catalog, AC_HELP_STRING([--enable-catalog], [Whether to install the corebird glade catalog]), enable_catalog=$enableval, catalog=no)
+# Libtool
+#LT_PREREQ([2.2])
+#LT_INIT([disable-static])
+#IT_PROG_INTLTOOL(0.40.0)
+
+
+
+# --enable-catalog
+AC_ARG_ENABLE(catalog, AC_HELP_STRING([--enable-catalog], [Install Glade catalog]),, enable_catalog=no)
 AM_CONDITIONAL([ENABLE_CATALOG], [ test "$enable_catalog" = "yes" ])
 
-AC_ARG_ENABLE(catalog, AC_HELP_STRING([--enable-tests], [Whether to build test cases]), enable_tests=$enableval, tests=no)
+# --enable-tests
+AC_ARG_ENABLE(tests, AS_HELP_STRING([--enable-tests], [Build tests]),, enable_tests=no)
 AM_CONDITIONAL([ENABLE_TESTS], [ test "$enable_tests" = "yes" ])
-
 
 # Gettext stuff
 GETTEXT_PACKAGE=corebird
@@ -68,5 +75,6 @@ echo "
                Prefix: ${prefix}
         Vala Compiler: ${VALAC}
            C Compiler: ${CC}
+                Tests: $enable_tests
+              Catalog: $enable_catalog
 "
-# TODO: Also print if catalog and tests are (dis/en)abled
