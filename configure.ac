@@ -7,6 +7,7 @@ AC_CONFIG_FILES([Makefile
                  ui/Makefile
                  data/Makefile
                  assets/Makefile
+                 tests/Makefile
                  assets/icons/Makefile
                  src/util/Config.vala])
 
@@ -62,10 +63,10 @@ AM_GLIB_GNU_GETTEXT
 
 AC_OUTPUT
 
-
 echo "
              Corebird  $VERSION
                Prefix: ${prefix}
         Vala Compiler: ${VALAC}
            C Compiler: ${CC}
 "
+# TODO: Also print if catalog and tests are (dis/en)abled
