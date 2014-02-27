@@ -375,8 +375,8 @@ class TweetInfoPage : IPage , ScrollWidget {
     name_button.label = tweet.user_name;
     screen_name_label.label = "@" + tweet.screen_name;
     avatar_image.pixbuf = tweet.avatar;
-    rt_fav_label.label = "<big><b>%'d</b></big> Retweets  <big><b>%'d</b></big> Favorites"
-                         .printf (tweet.retweet_count, tweet.favorite_count);
+    rt_fav_label.label = "<big><b>%'d</b></big> %s  <big><b>%'d</b></big> %s"
+                         .printf (tweet.retweet_count, _("Retweets"), tweet.favorite_count, _("Favorites"));
     time_label.label = time_format;
     retweet_button.active = tweet.retweeted;
     favorite_button.active = tweet.favorited;
