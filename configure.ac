@@ -44,8 +44,12 @@ AC_SUBST(CB_VALA_FLAGS)
 AC_PATH_PROG(GLIB_COMPILE_RESOURCES, glib-compile-resources)
 
 
-AC_ARG_ENABLE(catalog, AC_HELP_STRING([--disable-catalog], [Whether to install the corebird glade catalog]), enable_catalog=$enableval, catalog=no)
+AC_ARG_ENABLE(catalog, AC_HELP_STRING([--enable-catalog], [Whether to install the corebird glade catalog]), enable_catalog=$enableval, catalog=no)
 AM_CONDITIONAL([ENABLE_CATALOG], [ test "$enable_catalog" = "yes" ])
+
+AC_ARG_ENABLE(catalog, AC_HELP_STRING([--enable-tests], [Whether to build test cases]), enable_tests=$enableval, tests=no)
+AM_CONDITIONAL([ENABLE_TESTS], [ test "$enable_tests" = "yes" ])
+
 
 # Gettext stuff
 GETTEXT_PACKAGE=corebird
