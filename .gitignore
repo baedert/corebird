@@ -25,7 +25,6 @@ assets/avatars/*
 assets/banners/*
 assets/user/*
 stats
-Corebird.sublime-workspace
 *.swp
 *.ninja
 .ninja_log
@@ -33,6 +32,9 @@ src/util/Config.vala
 session.vim
 *~
 po/_*.pot
+po/*.gmo
+po/stamp-it
+po/Makefile.in.in
 aclocal.m4
 compile
 config.guess
@@ -47,4 +49,7 @@ ltmain.sh
 missing
 libtool
 ChangeLog
-
+INSTALL
+intltool-extract.in
+intltool-merge.in
+intltool-update.in

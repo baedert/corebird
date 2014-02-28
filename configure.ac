@@ -1,22 +1,19 @@
-AC_PREREQ([2.65])
-AC_INIT([corebird],[0.6],[mail@baedert.org])
+AC_INIT([corebird],[0.6.1],[mail@baedert.org])
 AC_CONFIG_MACRO_DIR([m4])
-AM_INIT_AUTOMAKE([foreign])
+AM_INIT_AUTOMAKE([foreign no-dist-gzip dist-bzip2])
 
+m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
+
+#AM_MAINTAINER_MODE
 
 AC_PROG_CC
-AM_PROG_VALAC
-AM_MAINTAINER_MODE
-AM_SILENT_RULES([yes])
+AC_PROG_CC_STDC
+AM_PROG_VALAC([0.21])
+AC_PROG_INSTALL
+IT_PROG_INTLTOOL([0.40])
 
 
-# Libtool
-LT_PREREQ([2.2])
-LT_INIT([disable-static])
-IT_PROG_INTLTOOL(0.40.0)
-
-
-
+# Vala Packages {{{
 pkg_modules="gtk+-3.0 >= 3.10
              glib-2.0 >= 2.38
              rest-0.7
@@ -37,6 +34,7 @@ CB_VALA_FLAGS=" \
   --pkg glib-2.0 \
   --target-glib=2.38 \
   --gresources=../resources.xml"
+# }}}
 
 AC_SUBST(CB_CFLAGS)
 AC_SUBST(CB_LIBS)
@@ -58,7 +56,8 @@ AM_CONDITIONAL([ENABLE_TESTS], [ test "$enable_tests" = "yes" ])
 GETTEXT_PACKAGE=corebird
 AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE], ["$GETTEXT_PACKAGE"], [Gettext Package])
 AC_SUBST(GETTEXT_PACKAGE)
-#AM_GNU_GETTEXT_VERSION([1.11])
+AM_GNU_GETTEXT([external])
+AM_GNU_GETTEXT_VERSION([0.18.3])
 AM_GLIB_GNU_GETTEXT
 
 
@@ -68,9 +67,8 @@ AC_CONFIG_FILES([Makefile
                  ui/Makefile
                  data/Makefile
                  assets/Makefile
-                 tests/Makefile
-                 po/Makefile.in
                  assets/icons/Makefile
+                 po/Makefile.in
                  src/util/Config.vala])
 
 

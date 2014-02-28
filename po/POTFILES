@@ -1,1 +1,7 @@
-	../[type: gettext/glade]ui/main-window.ui
+	../ui/main-window.ui \
+	../src/MainWindow.vala \
+	../src/DefaultTimeline.vala \
+	../src/*.vala \
+	../src/window/*.vala \
+	../src/utils/*.vala \
+	../src/list/*.vala
