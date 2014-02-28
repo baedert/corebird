@@ -36,6 +36,7 @@ corebird_VALASOURCES = \
 			TweetInfoPage.vala \
 			ListStatusesPage.vala \
 			ListsPage.vala \
+			FavoritesTimeline.vala \
 			widgets/TweetListBox.vala \
 			widgets/MaxSizeContainer.vala \
 			widgets/ScrollWidget.vala \
