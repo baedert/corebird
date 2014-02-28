@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-28 12:52+0100\n"
+"POT-Creation-Date: 2014-02-28 13:04+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -426,68 +426,12 @@ msgstr ""
 msgid "Public"
 msgstr ""
 
-#: ../org.baedert.corebird.gschema.xml.h:1
-msgid ""
-"Specifies if Corebird should request to use the dark variant of the gtk theme"
-msgstr ""
-
-#: ../org.baedert.corebird.gschema.xml.h:2
-msgid "If/when the user should be notified about new tweets"
-msgstr ""
-
-#: ../org.baedert.corebird.gschema.xml.h:3
-msgid ""
-"Whether the user should be notified when another user mentions them in a "
-"tweet"
-msgstr ""
-
-#: ../org.baedert.corebird.gschema.xml.h:4
-msgid ""
-"Whether the user should be notified when another user writes them a direct "
-"message"
-msgstr ""
-
-#: ../org.baedert.corebird.gschema.xml.h:5
-msgid ""
-"Whether the user should be notified when another user starts following them"
-msgstr ""
-
-#: ../org.baedert.corebird.gschema.xml.h:6
+#: ../data/org.baedert.corebird.gschema.xml.in.h:1
 msgid "Whether inline media should be downloaded/shown directly."
 msgstr ""
 
-#: ../org.baedert.corebird.gschema.xml.h:7
+#: ../data/org.baedert.corebird.gschema.xml.in.h:2
 msgid "Disable this to save some bandwidth"
-msgstr ""
-
-#: ../org.baedert.corebird.gschema.xml.h:8
-msgid "Duration of slide animations[ms]"
-msgstr ""
-
-#: ../org.baedert.corebird.gschema.xml.h:9
-msgid "List of accounts which will be opened when Corebird is started."
-msgstr ""
-
-#: ../org.baedert.corebird.gschema.xml.h:10
-msgid "Maximum size of inline media to download, in Megabytes."
-msgstr ""
-
-#: ../org.baedert.corebird.gschema.xml.h:11
-msgid "Whether to show the sidebar or not"
-msgstr ""
-
-#: ../org.baedert.corebird.gschema.xml.h:12
-msgid ""
-"The accelerator to press in order to bring the ComposeTweetWindow up. Must "
-"be parseable with gtk_accelerator_parse"
-msgstr ""
-
-#: ../org.baedert.corebird.gschema.xml.h:13
-msgid "Accelerator to press in order to show/hide the sidebar"
-msgstr ""
-
-#: ../org.baedert.corebird.gschema.xml.h:14
-msgid "Size and position of the settings dialog"
 msgstr ""
 
 #: ../data/corebird.desktop.in.in.h:1

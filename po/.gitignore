@@ -3,3 +3,4 @@ _*.pot
 stamp-it
 Makefile.in.in
 .intltool-merge-cache
+POTFILES

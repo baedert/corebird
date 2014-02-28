@@ -10,16 +10,19 @@ appdata_DATA = $(appdata_in_files:.xml.in=.xml)
 @INTLTOOL_XML_RULE@
 
 if ENABLE_CATALOG
-catalogdir = $(prefix)/share/glade/catalogs/
-catalog_DATA = corebird-catalog.xml
+  catalogdir = $(prefix)/share/glade/catalogs/
+  catalog_DATA = corebird-catalog.xml
 endif
+
+gsettings_SCHEMAS = org.baedert.corebird.gschema.xml
 
 
 
 EXTRA_DIST = \
 						 corebird.desktop.in \
 						 $(desktop_in_files) \
-						 $(appdata_in_files)
+						 $(appdata_in_files) \
+						 org.baedert.corebird.gschema.xml 
 
 
 
