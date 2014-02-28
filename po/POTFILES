@@ -36,4 +36,6 @@
 	../ui/list-list-entry.ui \
 	../ui/start-conversation-entry.ui \
 	../ui/list-statuses-page.ui \
-	../org.baedert.corebird.gschema.xml
+	../org.baedert.corebird.gschema.xml \
+	../data/corebird.desktop.in.in \
+	../data/corebird.appdata.xml.in

@@ -10,7 +10,8 @@ EXTRA_DIST = config.rpath  \
 DISTCLEANFILES = \
 								 intltool-extract \
 								 intltool-merge \
-								 intltool-update
+								 intltool-update \
+								 po/.intltool-merge-cache
 
 AUTOMAKE_OPTIONS = subdir-objects
 

@@ -31,10 +31,6 @@ stats
 src/util/Config.vala
 session.vim
 *~
-po/_*.pot
-po/*.gmo
-po/stamp-it
-po/Makefile.in.in
 aclocal.m4
 compile
 config.guess
@@ -54,3 +50,4 @@ intltool-extract.in
 intltool-merge.in
 intltool-update.in
 config.rpath
+data/corebird.desktop.in

@@ -66,6 +66,7 @@ AC_CONFIG_FILES([Makefile
                  src/Makefile
                  ui/Makefile
                  data/Makefile
+                 data/corebird.desktop.in
                  assets/Makefile
                  assets/icons/Makefile
                  po/Makefile.in

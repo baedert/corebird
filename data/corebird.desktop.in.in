@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Corebird
-GenericName=Twitter Client
-Keywords=twitter;
+_GenericName=Twitter Client
+_Keywords=twitter;
 Exec=corebird
 Type=Application
 Icon=corebird

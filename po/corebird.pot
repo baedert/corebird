@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-28 12:12+0100\n"
+"POT-Creation-Date: 2014-02-28 12:52+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -488,4 +488,24 @@ msgstr ""
 
 #: ../org.baedert.corebird.gschema.xml.h:14
 msgid "Size and position of the settings dialog"
+msgstr ""
+
+#: ../data/corebird.desktop.in.in.h:1
+msgid "Twitter Client"
+msgstr ""
+
+#: ../data/corebird.desktop.in.in.h:2
+msgid "twitter;"
+msgstr ""
+
+#: ../data/corebird.appdata.xml.in.h:1
+msgid ""
+"Corebird is a native GTK+ twitter client that provides vital features such "
+"as Direct Messages (DMs), tweet notifications, conversation views."
+msgstr ""
+
+#: ../data/corebird.appdata.xml.in.h:2
+msgid ""
+"Additional features include the abilty to change to the GTK+ dark theme, "
+"searching and media uploads."
 msgstr ""
