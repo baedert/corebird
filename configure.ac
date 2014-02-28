@@ -67,8 +67,8 @@ AC_CONFIG_FILES([Makefile
                  ui/Makefile
                  data/Makefile
                  data/corebird.desktop.in
+                 data/symbolics/Makefile
                  assets/Makefile
-                 assets/icons/Makefile
                  po/Makefile.in
                  src/util/Config.vala])
 
