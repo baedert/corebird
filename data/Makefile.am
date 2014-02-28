@@ -1,4 +1,6 @@
 
+SUBDIRS = symbolics
+
 desktopdir = $(prefix)/share/applications
 desktop_in_files = corebird.desktop.in
 desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
