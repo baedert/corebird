@@ -76,12 +76,12 @@ corebird_VALASOURCES = \
 			sql/UpdateStatement.vala \
 			sql/SelectStatement.vala
 
-corebird_SOURCES =  \
+corebird_a_SOURCES =  \
 			$(corebird_VALASOURCES) \
 			resources.c
 
-corebird_LDADD = $(CB_LIBS)
-corebird_VALAFLAGS = @CB_VALA_FLAGS@
+corebird_a_LDADD = $(CB_LIBS)
+corebird_a_VALAFLAGS = @CB_VALA_FLAGS@
 
 
 bin_PROGRAMS = corebird

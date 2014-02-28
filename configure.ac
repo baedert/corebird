@@ -2,19 +2,20 @@ AC_PREREQ([2.65])
 AC_INIT([corebird],[0.6],[mail@baedert.org])
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([foreign])
-AC_CONFIG_FILES([Makefile
-                 src/Makefile
-                 ui/Makefile
-                 data/Makefile
-                 assets/Makefile
-                 tests/Makefile
-                 assets/icons/Makefile
-                 src/util/Config.vala])
 
 
 AC_PROG_CC
 AM_PROG_VALAC
 AM_MAINTAINER_MODE
+AM_SILENT_RULES([yes])
+
+
+# Libtool
+LT_PREREQ([2.2])
+LT_INIT([disable-static])
+IT_PROG_INTLTOOL(0.40.0)
+
+
 
 pkg_modules="gtk+-3.0 >= 3.10
              glib-2.0 >= 2.38
@@ -44,12 +45,6 @@ AC_SUBST(CB_VALA_FLAGS)
 AC_PATH_PROG(GLIB_COMPILE_RESOURCES, glib-compile-resources)
 
 
-# Libtool
-#LT_PREREQ([2.2])
-#LT_INIT([disable-static])
-#IT_PROG_INTLTOOL(0.40.0)
-
-
 
 # --enable-catalog
 AC_ARG_ENABLE(catalog, AC_HELP_STRING([--enable-catalog], [Install Glade catalog]),, enable_catalog=no)
@@ -68,13 +63,24 @@ AM_GLIB_GNU_GETTEXT
 
 
 
+AC_CONFIG_FILES([Makefile
+                 src/Makefile
+                 ui/Makefile
+                 data/Makefile
+                 assets/Makefile
+                 tests/Makefile
+                 po/Makefile.in
+                 assets/icons/Makefile
+                 src/util/Config.vala])
+
+
 AC_OUTPUT
 
 echo "
              Corebird  $VERSION
                Prefix: ${prefix}
         Vala Compiler: ${VALAC}
-           C Compiler: ${CC}
+           C Compiler: ${CC} ${CFLAGS}
                 Tests: $enable_tests
               Catalog: $enable_catalog
 "
