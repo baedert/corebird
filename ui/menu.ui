@@ -5,15 +5,15 @@
     </section>
     <section>
       <item>
-        <attribute name="label">Settings</attribute>
+        <attribute name="label" translatable="yes">Settings</attribute>
         <attribute name="action">app.show-settings</attribute>
       </item>
       <item>
-        <attribute name="label">About</attribute>
+        <attribute name="label" translatable="yes">About</attribute>
         <attribute name="action">app.show-about-dialog</attribute>
       </item>
       <item>
-        <attribute name="label">Quit</attribute>
+        <attribute name="label" translatable="yes">Quit</attribute>
         <attribute name="action">app.quit</attribute>
       </item>
     </section>

@@ -64,6 +64,9 @@ class Tweet : GLib.Object {
   public int retweet_count;
   public int favorite_count;
 
+  /** List of users mentioned in this tweet */
+  public string[] mentions;
+
 
   public Tweet(){
     this.avatar = Twitter.no_avatar;
@@ -74,7 +77,8 @@ class Tweet : GLib.Object {
    * @param status The Json object to get the data from
    * @param now The current time
    */
-  public void load_from_json(Json.Node status_node, GLib.DateTime now) {
+  public void load_from_json (Json.Node status_node, GLib.DateTime now,
+                              Account account) {
     Json.Object status = status_node.get_object ();
     Json.Object user = status.get_object_member("user");
     Json.Object entities;
@@ -125,12 +129,11 @@ class Tweet : GLib.Object {
     this.user_name = this.user_name.replace ("&", "&amp;");
     this.avatar_name = Utils.get_avatar_name(this.avatar_url);
 
-
-
     // 'Resolve' the used URLs
     var urls = entities.get_array_member("urls");
     var hashtags = entities.get_array_member ("hashtags");
     var user_mentions = entities.get_array_member ("user_mentions");
+    this.mentions = new string[user_mentions.get_length ()];
     this.urls = new GLib.SList<TweetUtils.Sequence?>();
     urls.foreach_element((arr, index, node) => {
       var url = node.get_object();
@@ -160,18 +163,29 @@ class Tweet : GLib.Object {
       });
     });
 
+
+    int real_mentions = 0;
     user_mentions.foreach_element ((arr, index, node) => {
       var mention = node.get_object ();
       Json.Array indices = mention.get_array_member ("indices");
 
+      string screen_name = mention.get_string_member ("screen_name");
+      // Avoid duplicate mentions
+      if (!(screen_name in this.mentions) && screen_name != account.screen_name
+          && screen_name != this.screen_name) {
+        this.mentions[real_mentions] = "@" + screen_name;
+        real_mentions ++;
+      }
       this.urls.prepend(TweetUtils.Sequence(){
         start = (int)indices.get_int_element (0),
         end   = (int)indices.get_int_element (1),
-        url   = "@"+mention.get_string_member ("id_str"),
-        display_url = "@"+mention.get_string_member ("screen_name"),
-        visual_display_url = true
+        url   = "@" + mention.get_string_member ("id_str"),
+        display_url = "@" + screen_name,
+        visual_display_url = true,
+        title = mention.get_string_member ("name")
       });
     });
+    this.mentions.resize (real_mentions);
 
 
     // The same with media
@@ -207,10 +221,10 @@ class Tweet : GLib.Object {
     });
 
 #if __DEV
-  var gen = new Json.Generator ();
-  gen.root = status_node;
-  gen.pretty = true;
-  this.json_data = gen.to_data (null);
+    var gen = new Json.Generator ();
+    gen.root = status_node;
+    gen.pretty = true;
+    this.json_data = gen.to_data (null);
 #endif
   }
 

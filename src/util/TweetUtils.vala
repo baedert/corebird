@@ -27,6 +27,7 @@ namespace TweetUtils {
     string url;
     string display_url;
     bool visual_display_url;
+    string title;
   }
 
   /**
@@ -51,9 +52,15 @@ namespace TweetUtils {
       int from = formatted_text.index_of_nth_char (s.start + char_diff);
       int to   = formatted_text.index_of_nth_char (s.end + char_diff);
       var html_url = s.url.replace("&", "&amp;");
+      string? title = null;
+      if (s.title != null) {
+        title = s.title.replace ("&", "&amp;amp;");
+      } else
+        title = html_url;
+
       formatted_text = formatted_text.splice (from, to,
            "<a href=\"%s\" title=\"%s\">%s</a>".printf(html_url,
-                                                       html_url,
+                                                       title,
                                                        s.display_url.replace ("&", "&amp;")));
       char_diff += formatted_text.char_count () - length_before;
     }
@@ -210,16 +217,18 @@ namespace TweetUtils {
    *
    * @return The loaded avatar.
    */
+  private Soup.Session avatar_session = null;
   async Gdk.Pixbuf download_avatar (string avatar_url) {
+    if (avatar_session == null) {
+      avatar_session = new Soup.Session ();
+    }
     string avatar_name = Utils.get_avatar_name (avatar_url);
     Gdk.Pixbuf avatar = null;
-    var session = new Soup.Session ();
     var msg     = new Soup.Message ("GET", avatar_url);
-    session.queue_message (msg, (s, _msg) => {
+    avatar_session.queue_message (msg, (s, _msg) => {
       string dest = Dirs.cache ("assets/avatars/" + avatar_name);
-      var memory_stream = new MemoryInputStream.from_data(
-                                         _msg.response_body.data,
-                                         null);
+      var memory_stream = new MemoryInputStream.from_data(_msg.response_body.data,
+                                                          null);
       try {
         avatar = new Gdk.Pixbuf.from_stream_at_scale (memory_stream,
                                                       48, 48,
@@ -293,11 +302,11 @@ namespace TweetUtils {
     int64 max = 0;
     int64 min = int64.MAX;
     new Thread<void*> ("TweetWorker", () => {
-      var entry_list = new GLib.List<TweetListEntry> ();
+      TweetListEntry[] entry_array = new TweetListEntry[json_array.get_length ()];
       var now = new GLib.DateTime.now_local ();
       json_array.foreach_element( (array, index, node) => {
         Tweet t = new Tweet();
-        t.load_from_json(node, now);
+        t.load_from_json(node, now, account);
         if (t.id > max)
           max = t.id;
 
@@ -306,14 +315,19 @@ namespace TweetUtils {
 
         var entry  = new TweetListEntry(t, main_window, account);
         delta_updater.add (entry);
-        entry_list.append (entry);
+        entry_array[index] = entry;
       });
 
+
+      int index = 0;
       GLib.Idle.add (() => {
-        foreach (var e in entry_list)
-          tweet_list.add (e);
-        work_array.callback ();
-        return false;
+        tweet_list.add (entry_array[index]);
+        index ++;
+        if (index == entry_array.length) {
+          work_array.callback ();
+          return false;
+        }
+        return true;
       });
       return null;
     });

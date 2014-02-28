@@ -18,7 +18,7 @@
 using Gtk;
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/settings-dialog.ui")]
-class SettingsDialog : Gtk.Dialog {
+class SettingsDialog : Gtk.Window {
   private static const string DUMMY_SCREEN_NAME = "<Unnamed>";
   private MainWindow main_window;
   [GtkChild]
@@ -40,11 +40,7 @@ class SettingsDialog : Gtk.Dialog {
   [GtkChild]
   private Switch dark_theme_switch;
   [GtkChild]
-  private ComboBoxText upload_provider_combobox;
-  [GtkChild]
   private ComboBoxText on_new_tweets_combobox;
-  [GtkChild]
-  private Switch search_show_retweets_switch;
   [GtkChild]
   private Switch auto_scroll_on_new_tweets_switch;
   [GtkChild]
@@ -53,11 +49,8 @@ class SettingsDialog : Gtk.Dialog {
   public SettingsDialog(MainWindow? main_window = null, Corebird? application = null){
     this.main_window = main_window;
     this.application = application;
-    this.title = _("Corebird Settings");
+    this.type_hint   = Gdk.WindowTypeHint.DIALOG;
 
-    // General Page
-    Settings.get ().bind ("upload-provider", upload_provider_combobox, "active-id",
-                          SettingsBindFlags.DEFAULT);
 
     // Notifications Page
     Settings.get ().bind ("new-tweets-notify", on_new_tweets_combobox, "active-id",
@@ -75,7 +68,7 @@ class SettingsDialog : Gtk.Dialog {
     Settings.get ().bind ("use-dark-theme", dark_theme_switch, "active",
                           SettingsBindFlags.DEFAULT);
     dark_theme_switch.notify["active"].connect (() => {
-        Gtk.Settings.get_default ().gtk_application_prefer_dark_theme = dark_theme_switch.active;
+      Gtk.Settings.get_default ().gtk_application_prefer_dark_theme = dark_theme_switch.active;
     });
     auto_scroll_on_new_tweets_switch.notify["active"].connect (() => {
       on_new_tweets_combobox.sensitive = !auto_scroll_on_new_tweets_switch.active;
@@ -83,14 +76,6 @@ class SettingsDialog : Gtk.Dialog {
     Settings.get ().bind ("auto-scroll-on-new-tweets", auto_scroll_on_new_tweets_switch, "active",
                           SettingsBindFlags.DEFAULT);
     Settings.get ().bind ("max-media-size", max_media_size_spin_button, "value",
-                          SettingsBindFlags.DEFAULT);
-
-    // Behaviour page
-    Settings.get ().bind ("search-show-retweets", search_show_retweets_switch, "active",
-                          SettingsBindFlags.DEFAULT);
-
-    // General Page
-    Settings.get ().bind ("upload-provider", upload_provider_combobox, "active_id",
                           SettingsBindFlags.DEFAULT);
 
     unowned SList<Account> accs = Account.list_accounts ();
@@ -101,6 +86,9 @@ class SettingsDialog : Gtk.Dialog {
     }
     if (accs.length() > 0)
       account_list.select_row (account_list.get_row_at_index (0));
+
+    load_geometry ();
+    show_all ();
   }
 
   [GtkCallback]
@@ -150,9 +138,11 @@ class SettingsDialog : Gtk.Dialog {
   }
 
   [GtkCallback]
-  private void close_button_clicked () {
+  private bool window_destroy_cb () {
     Account.remove_account (DUMMY_SCREEN_NAME);
-    destroy();
+    save_geometry ();
+//    destroy();
+    return false;
   }
 
   private void on_account_access (bool result, Account acc) {
@@ -166,8 +156,8 @@ class SettingsDialog : Gtk.Dialog {
       account_list.add (new_entry);
       account_list.select_row (new_entry);
     } else {
-      // In this case, the account was already present so we just remove the item again
-      // the given accoun is then the already defined one.
+       //In this case, the account was already present so we just remove the item again
+       //the given accoun is then the already defined one.
       account_info_stack.remove (account_info_stack.get_visible_child ());
       account_list.remove (account_list.get_selected_row ());
       select_account (acc.screen_name);
@@ -219,5 +209,38 @@ class SettingsDialog : Gtk.Dialog {
         break;
       }
     }
+  }
+
+  private void load_geometry () {
+    GLib.Variant geom = Settings.get ().get_value ("settings-geometry");
+    int x = 0,
+        y = 0,
+        w = 0,
+        h = 0;
+    x = geom.get_child_value (0).get_int32 ();
+    y = geom.get_child_value (1).get_int32 ();
+    w = geom.get_child_value (2).get_int32 ();
+    h = geom.get_child_value (3).get_int32 ();
+    if (w == 0 || h == 0)
+      return;
+
+    move (x, y);
+    resize (w, h);
+  }
+
+  private void save_geometry () {
+    var builder = new GLib.VariantBuilder (GLib.VariantType.TUPLE);
+    int x = 0,
+        y = 0,
+        w = 0,
+        h = 0;
+    get_position (out x, out y);
+    w = get_allocated_width ();
+    h = get_allocated_height ();
+    builder.add_value (new GLib.Variant.int32(x));
+    builder.add_value (new GLib.Variant.int32(y));
+    builder.add_value (new GLib.Variant.int32(w));
+    builder.add_value (new GLib.Variant.int32(h));
+    Settings.get ().set_value ("settings-geometry", builder.end ());
   }
 }
