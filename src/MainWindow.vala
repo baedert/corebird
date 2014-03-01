@@ -61,7 +61,7 @@ class MainWindow : ApplicationWindow {
   }
   private uint progress_holders            = 0;
   private RadioToolButton dummy_button     = new RadioToolButton(null);
-  private IPage[] pages                    = new IPage[10];
+  private IPage[] pages                    = new IPage[11];
   private IntHistory history               = new IntHistory (5);
   private DeltaUpdater delta_updater       = new DeltaUpdater ();
   public unowned Account account           {public get; private set;}
