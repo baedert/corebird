@@ -67,10 +67,6 @@ class Settings : GLib.Object {
     return settings.get_string ("accel-" + accel_name);
   }
 
-  public static int get_animation_duration() {
-    return settings.get_int("animation-duration");
-  }
-
   public static double max_media_size () {
     return settings.get_double ("max-media-size");
   }
