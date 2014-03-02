@@ -69,7 +69,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="halign">start</property>
-                <property name="label">Regular Expression:</property>
+                <property name="label" translatable="Yes">Regular Expression:</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
