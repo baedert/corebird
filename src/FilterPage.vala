@@ -26,6 +26,7 @@ class FilterPage : Gtk.ScrolledWindow, IPage {
 
   public FilterPage (int id) {
     this.id = id;
+    filter_list.set_header_func (header_func);
     filter_list.add (new AddFilterEntry ());
     filter_list.row_activated.connect ((row) => {
       if (row is AddFilterEntry) {
@@ -33,7 +34,9 @@ class FilterPage : Gtk.ScrolledWindow, IPage {
         dialog.filter_added.connect (filter_added_cb);
         dialog.show_all ();
       } else if (row is FilterListEntry) {
-
+        var filter_row = (FilterListEntry) row;
+        var dialog = new ModifyFilterDialog (main_window, account, filter_row.filter);
+        dialog.show_all ();
       }
     });
   }
@@ -42,15 +45,11 @@ class FilterPage : Gtk.ScrolledWindow, IPage {
     if (inited)
       return;
 
-
-    account.db.select ("filters").cols ("content", "block_count", "id")
-              .order ("id").run ((cols) => {
-      var entry = new FilterListEntry ();
-      entry.content = cols[0];
-      entry.block_count = int.parse(cols[1]);
+    foreach (Filter f in account.filters) {
+      var entry = new FilterListEntry (f);
       filter_list.add (entry);
-      return true;
-     });
+    }
+
     inited = true;
   }
 
@@ -58,12 +57,27 @@ class FilterPage : Gtk.ScrolledWindow, IPage {
    * Called when the user adds a new Filter via the AddFilterDialog
    *
    **/
-  private void filter_added_cb (string name) {
-    var entry = new FilterListEntry ();
-    entry.content = name;
-    entry.block_count = 0;
-    filter_list.add (entry);
+  private void filter_added_cb (Filter f, bool created) {
+    if (created) {
+      var entry = new FilterListEntry (f);
+      filter_list.add (entry);
+    } else {
+
+    }
   }
+
+  private void header_func (Gtk.ListBoxRow row, Gtk.ListBoxRow? row_before) { //{{{
+    if (row_before == null)
+      return;
+
+    Gtk.Widget header = row.get_header ();
+    if (header == null) {
+      header = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
+      header.show ();
+      row.set_header (header);
+    }
+  } //}}}
+
 
 
   public void on_leave () {}
