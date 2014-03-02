@@ -23,21 +23,33 @@ class AddFilterDialog : Gtk.Dialog {
   private Gtk.Entry regex_entry;
   [GtkChild]
   private Gtk.Label regex_status_label;
+  [GtkChild]
+  private Gtk.TextView regex_test_text;
+  [GtkChild]
+  private Gtk.Button save_button;
 
   private GLib.Regex regex;
+  private unowned Account account;
 
-  public AddFilterDialog (Gtk.ApplicationWindow parent) {
+  public signal void filter_added (string content);
+
+  public AddFilterDialog (Gtk.ApplicationWindow parent, Account account) {
     this.set_transient_for (parent);
     this.application = parent.get_application ();
+    this.account = account;
+  }
+
+  construct {
+    regex_test_text.buffer.changed.connect (regex_entry_changed_cb);
   }
 
 
   public override void response (int response_id) {
     if (response_id == RESPONSE_CANCEL) {
       this.destroy ();
-      return;
     } else if (response_id == RESPONSE_SAVE) {
-
+      save_filter ();
+      this.destroy ();
     }
   }
 
@@ -47,6 +59,22 @@ class AddFilterDialog : Gtk.Dialog {
       regex = new GLib.Regex (regex_entry.text);
     } catch (GLib.RegexError e) {
       regex_status_label.label = e.message;
+      save_button.sensitive = false;
+      return;
     }
+    bool matches = regex.match (regex_test_text.buffer.text);
+    if (matches) {
+      regex_status_label.label = _("Matches");
+    } else {
+      regex_status_label.label = _("Doesn't match");
+    }
+    save_button.sensitive = (regex_entry.text.length != 0);
+  }
+
+  private void save_filter () {
+    string content = regex_entry.text;
+    account.db.insert ("filters").val ("content", content)
+                                 .val ("block_count", "0").run();
+    filter_added (content);
   }
 }

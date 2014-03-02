@@ -29,7 +29,8 @@ class FilterPage : Gtk.ScrolledWindow, IPage {
     filter_list.add (new AddFilterEntry ());
     filter_list.row_activated.connect ((row) => {
       if (row is AddFilterEntry) {
-        var dialog = new AddFilterDialog (main_window);
+        var dialog = new AddFilterDialog (main_window, account);
+        dialog.filter_added.connect (filter_added_cb);
         dialog.show_all ();
       } else if (row is FilterListEntry) {
 
@@ -47,12 +48,22 @@ class FilterPage : Gtk.ScrolledWindow, IPage {
       var entry = new FilterListEntry ();
       entry.content = cols[0];
       entry.block_count = int.parse(cols[1]);
+      filter_list.add (entry);
       return true;
      });
     inited = true;
   }
 
-
+  /**
+   * Called when the user adds a new Filter via the AddFilterDialog
+   *
+   **/
+  private void filter_added_cb (string name) {
+    var entry = new FilterListEntry ();
+    entry.content = name;
+    entry.block_count = 0;
+    filter_list.add (entry);
+  }
 
 
   public void on_leave () {}
@@ -68,8 +79,6 @@ class FilterPage : Gtk.ScrolledWindow, IPage {
 
 
 class AddFilterEntry : Gtk.ListBoxRow {
-
-
   public AddFilterEntry () {
     var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 5);
     var img = new Gtk.Image.from_icon_name ("list-add-symbolic", Gtk.IconSize.DIALOG);
@@ -84,7 +93,5 @@ class AddFilterEntry : Gtk.ListBoxRow {
     box.pack_start (l);
     add (box);
   }
-
-
 }
 
