@@ -23,10 +23,30 @@ class Filter : GLib.Object {
 
   public Filter (string expression) {
     this.content = expression;
-    this.regex = new GLib.Regex (expression);
+    try {
+      this.regex = new GLib.Regex (expression);
+    } catch (GLib.RegexError e) {
+      warning ("Regex error for `%s`: %s", expression, e.message);
+    }
+  }
+
+  /**
+   * (Re)Set the Filter's regular expression to the given one.
+   *
+   * @param expression The new expression.
+   */
+  public void reset (string expression) {
+    try {
+      this.regex = new GLib.Regex (expression);
+    } catch (GLib.RegexError e) {
+      warning ("Regex error for `%s`: %s", expression, e.message);
+    }
   }
 
   public bool matches (string test_text) {
+    if (regex == null) {
+      return false;
+    }
     return false;
   }
 }
