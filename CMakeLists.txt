@@ -144,7 +144,7 @@ set (VALA_SOURCE
   src/window/RemoveAccountDialog.vala
   src/window/ComposeTweetWindow.vala
   src/window/UserListDialog.vala
-  src/window/AddFilterDialog.vala
+  src/window/ModifyFilterDialog.vala
   src/util/Utils.vala
   src/util/Config.vala
   src/util/WidgetReplacer.vala
