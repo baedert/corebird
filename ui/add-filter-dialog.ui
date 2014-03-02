@@ -1,51 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="3.10"/>
-  <template class="AddFilterDialog" parent="GtkApplicationWindow">
-    <property name="modal">True</property>
-    <property name="title" translatable="Yes">Add New Filter</property>
+  <template class="AddFilterDialog" parent="GtkDialog">
     <property name="visible">True</property>
-    <property name="border_width">5</property>
-    <property name="type_hint">dialog</property>
-    <property name="destroy_with_parent">True</property>
     <property name="can_focus">False</property>
-    <property name="show_menubar">False</property>
-    <child>
-      <object class="GtkBox">
+    <property name="border_width">5</property>
+    <property name="title">Add New Filter</property>
+    <property name="modal">True</property>
+    <property name="destroy_with_parent">True</property>
+    <property name="type_hint">dialog</property>
+    <child internal-child="vbox">
+      <object class="GtkBox" id="box1">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
         <property name="spacing">10</property>
-        <child>
-          <object class="GtkLabel">
-            <property name="label" translatable="True">Filter:</property>
-          </object>
-        </child>
-        <child>
-          <object class="GtkEntry" id="content_entry">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="placeholder_text" translatable="True">Regular Expression</property>
-            <signal name="changed" handler="content_entry_changed_cb" swapped="false" />
-          </object>
-        </child>
-        <child>
-          <object class="GtkInfoBar" id="info_bar">
-            <property name="visible">False</property>
-            <property name="no_show_all">True</property>
-            <property name="can_focus">False</property>
-          </object>
-        </child>
-        <child>
-          <object class="GtkButtonBox">
+        <child internal-child="action_area">
+          <object class="GtkButtonBox" id="dialog-action_area1">
             <property name="can_focus">False</property>
             <property name="layout_style">end</property>
-            <property name="spacing">5</property>
             <child>
               <object class="GtkButton" id="cancel_button">
+                <property name="label" translatable="yes">Cancel</property>
                 <property name="visible">True</property>
-                <property name="label" translatable="Yes">Cancel</property>
-                <signal name="clicked" handler="cancel_button_clicked_cb" swapped="false" />
+                <property name="can_focus">True</property>
+                <property name="receives_default">False</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -55,12 +34,10 @@
             </child>
             <child>
               <object class="GtkButton" id="save_button">
-                <property name="label" translatable="true">Save</property>
+                <property name="label" translatable="yes">Save</property>
                 <property name="visible">True</property>
-                <signal name="clicked" handler="save_button_clicked_cb" swapped="false" />
-                <style>
-                  <class name="suggested-action" />
-                </style>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -69,8 +46,183 @@
               </packing>
             </child>
           </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkStackSwitcher" id="type_switcher">
+            <property name="visible">True</property>
+            <property name="stack">stack</property>
+            <property name="halign">center</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkStack" id="stack">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="transition_type">slide-left-right</property>
+            <child>
+              <object class="GtkGrid" id="regex_grid">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="row_spacing">4</property>
+                <property name="column_spacing">6</property>
+                <child>
+                  <object class="GtkLabel" id="label1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">start</property>
+                    <property name="label">Regular Expression:</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">0</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="regex_entry">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="hexpand">True</property>
+                    <signal name="changed" handler="regex_entry_changed_cb" swapped="false" />
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">1</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkScrolledWindow" id="scroller">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkTextView" id="regex_text">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">2</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="regex_status_label">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="wrap">True</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">3</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="title">Simple</property>
+              </packing>
+            </child>
+
+
+            <child>
+              <object class="GtkGrid" id="simple_grid">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="row_spacing">4</property>
+                <property name="column_spacing">6</property>
+                <child>
+                  <object class="GtkLabel" id="label2">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">end</property>
+                    <property name="label">Match:</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">0</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkComboBoxText" id="simple_type">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="hexpand">True</property>
+                    <items>
+                      <item>Text</item>
+                      <item>Client</item>
+                    </items>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">0</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label3">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">end</property>
+                    <property name="label">With:</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">1</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="simple_content_entry">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">1</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="title">Regex</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
         </child>
       </object>
     </child>
+    <action-widgets>
+      <action-widget response="0">cancel_button</action-widget>
+      <action-widget response="1">save_button</action-widget>
+    </action-widgets>
   </template>
 </interface>

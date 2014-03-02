@@ -15,32 +15,38 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 [GtkTemplate (ui = "/org/baedert/corebird/ui/add-filter-dialog.ui")]
-class AddFilterDialog : Gtk.ApplicationWindow {
+class AddFilterDialog : Gtk.Dialog {
+  private static const int RESPONSE_CANCEL = 0;
+  private static const int RESPONSE_SAVE   = 1;
+
   [GtkChild]
-  private Gtk.Button save_button;
+  private Gtk.Entry regex_entry;
   [GtkChild]
-  private Gtk.Entry content_entry;
+  private Gtk.Label regex_status_label;
+
+  private GLib.Regex regex;
 
   public AddFilterDialog (Gtk.ApplicationWindow parent) {
-    this.set_show_menubar (false);
     this.set_transient_for (parent);
     this.application = parent.get_application ();
   }
 
 
-  [GtkCallback]
-  private void cancel_button_clicked_cb () {
-    this.destroy ();
+  public override void response (int response_id) {
+    if (response_id == RESPONSE_CANCEL) {
+      this.destroy ();
+      return;
+    } else if (response_id == RESPONSE_SAVE) {
+
+    }
   }
 
-
   [GtkCallback]
-  private void save_button_clicked_cb () {
-    this.destroy ();
-  }
-
-  [GtkCallback]
-  private void content_entry_changed_cb () {
-    message ("Entry content changed");
+  private void regex_entry_changed_cb () {
+    try {
+      regex = new GLib.Regex (regex_entry.text);
+    } catch (GLib.RegexError e) {
+      regex_status_label.label = e.message;
+    }
   }
 }
