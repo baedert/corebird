@@ -124,7 +124,7 @@
             </child>
           </object>
           <packing>
-            <property name="title">Accounts</property>
+            <property name="title" translatable="yes">Accounts</property>
           </packing>
         </child>
 
@@ -336,7 +336,7 @@
 
         </object>
         <packing>
-          <property name="title">Interface</property>
+          <property name="title" translatable="yes">Interface</property>
         </packing>
       </child>
 
@@ -512,7 +512,7 @@
             </child>
           </object>
           <packing>
-            <property name="title">Notifications</property>
+            <property name="title" translatable="yes">Notifications</property>
           </packing>
         </child>
       </object>
