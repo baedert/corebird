@@ -20,6 +20,16 @@ class FilterListEntry : Gtk.ListBoxRow {
   private Gtk.Label content_label;
   [GtkChild]
   private Gtk.Button delete_button;
+  private unowned Filter _filter;
+  public unowned Filter filter {
+    set {
+      content_label.label = value.content;
+      _filter = value;
+    }
+    get {
+      return _filter;
+    }
+  }
   public string content {
     set {
       content_label.label = value;
@@ -30,7 +40,9 @@ class FilterListEntry : Gtk.ListBoxRow {
   }
   public int block_count = 0;
 
-  public FilterListEntry () {}
+  public FilterListEntry (Filter f) {
+    this.filter = f;
+  }
 
   [GtkCallback]
   private void delete_button_clicked_cb () {
