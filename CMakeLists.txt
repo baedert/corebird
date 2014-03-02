@@ -112,6 +112,7 @@ set (VALA_SOURCE
   src/ListsPage.vala
   src/ListStatusesPage.vala
   src/FilterPage.vala
+  src/Filter.vala
   src/widgets/PixbufButton.vala
   src/widgets/ScrollWidget.vala
   src/widgets/TextButton.vala
