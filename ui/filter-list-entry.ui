@@ -41,13 +41,14 @@
               <property name="relief">none</property>
               <property name="can_focus">True</property>
               <signal name="clicked" handler="delete_button_clicked_cb" swapped="false" />
+              <property name="tooltip_text" translatable="Yes">Remove this Filter</property>
               <style>
                 <class name="image-button" />
               </style>
               <child>
                 <object class="GtkImage" id="aa">
                   <property name="visible">True</property>
-                  <property name="icon_name">window-close-symbolic</property>
+                  <property name="icon_name">list-remove-symbolic</property>
                 </object>
               </child>
             </object>
