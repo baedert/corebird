@@ -16,6 +16,6 @@
  */
 
 
-const string DATADIR = "@prefix@/share/corebird/";
-const string LOCALEDIR = "@prefix@/share/locale";
+const string DATADIR = "@datadir@/corebird/";
+const string LOCALEDIR = "@localedir@";
 const string GETTEXT_PACKAGE = "@GETTEXT_PACKAGE@";
