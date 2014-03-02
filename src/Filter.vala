@@ -17,6 +17,7 @@
 class Filter : GLib.Object {
   public int block_count  { get; set; }
   public string content   { get; set; }
+  public int id           { get; set; }
 
   private GLib.Regex regex;
 
