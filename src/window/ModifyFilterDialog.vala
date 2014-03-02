@@ -30,13 +30,19 @@ class ModifyFilterDialog : Gtk.Dialog {
 
   private GLib.Regex regex;
   private unowned Account account;
+  private Filter filter;
 
-  public signal void filter_added (string content);
+  /** created will be true if the filter has just been created by the user(i.e. not modified) */
+  public signal void filter_added (Filter filter, bool created);
 
-  public ModifyFilterDialog (Gtk.ApplicationWindow parent, Account account) {
+  public ModifyFilterDialog (Gtk.ApplicationWindow parent, Account account,
+                             Filter? filter = null) {
     this.set_transient_for (parent);
     this.application = parent.get_application ();
     this.account = account;
+    if (filter != null) {
+      regex_entry.text = filter.content;
+    }
   }
 
   construct {
@@ -73,8 +79,20 @@ class ModifyFilterDialog : Gtk.Dialog {
 
   private void save_filter () {
     string content = regex_entry.text;
-    account.db.insert ("filters").val ("content", content)
-                                 .val ("block_count", "0").run();
-    filter_added (content);
+      if (this.filter == null) {
+      int id = (int)account.db.insert ("filters")
+                               .val ("content", content)
+                               .val ("block_count", "0")
+                               .run();
+      Filter f = new Filter (content);
+      f.id = id;
+      account.add_filter (f);
+      filter_added (f, true);
+    } else {
+      /* We update the existing filter */
+      account.db.update ("filters").val ("content", content)
+                                   .where_eq ("id", filter.id.to_string ())
+                                   .run ();
+    }
   }
 }
