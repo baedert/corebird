@@ -27,11 +27,13 @@ class Account : GLib.Object {
   public Rest.OAuthProxy proxy    {public get; private set;}
   public UserStream user_stream   {public get; private set;}
   public UserCounter user_counter {public get; private set;}
+  public Gee.ArrayList<Filter> filters;
 
   public Account (int64 id, string screen_name, string name) {
     this.id = id;
     this.screen_name = screen_name;
     this.name = name;
+    this.filters = new Gee.ArrayList<Filter> ();
   }
 
   /**
@@ -47,6 +49,7 @@ class Account : GLib.Object {
                                 Sql.ACCOUNTS_INIT_FILE);
     user_counter = new UserCounter ();
     user_counter.load (db);
+    this.load_filters ();
   }
 
   /**
@@ -188,6 +191,13 @@ class Account : GLib.Object {
                                     .val ("name", name)
                                     .val ("avatar_url", avatar_url)
                                     .run ();
+  }
+
+  /**
+   * Load all the filters from the database.
+   */
+  private void load_filters () {
+
   }
 
   /** Static stuff ********************************************************************/
