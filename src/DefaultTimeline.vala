@@ -40,8 +40,8 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     this.id = id;
     this.scrolled_to_start.connect(handle_scrolled_to_start);
     this.scrolled_to_end.connect(() => {
-      if(!loading) {
-        load_older();
+      if (!loading) {
+        load_older ();
       }
     });
     this.vadjustment.notify["value"].connect (() => {

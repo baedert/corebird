@@ -48,7 +48,12 @@ interface ITimeline : Gtk.Widget, IPage {
     try {
       yield call.invoke_async (null);
     } catch (GLib.Error e) {
-      Utils.show_error_object (call.get_payload (), e.message);
+      if (call.get_payload () != null) {
+        Utils.show_error_object (call.get_payload (), e.message);
+      } else {
+        tweet_list.set_placeholder_text (e.message);
+      }
+      tweet_list.set_empty ();
       return;
     }
 

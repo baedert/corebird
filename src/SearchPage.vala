@@ -66,9 +66,7 @@ class SearchPage : IPage, Box {
       user_page++;
       load_users ();
     });
-    scroll_widget.scrolled_to_end.connect (() => {
-      load_tweets ();
-    });
+    scroll_widget.scrolled_to_end.connect (load_tweets);
     tweet_list.get_placeholder ().hide ();
   }
 
@@ -85,6 +83,8 @@ class SearchPage : IPage, Box {
     if (term == null) {
       if (last_focus_widget != null)
         last_focus_widget.grab_focus ();
+      else
+        search_entry.grab_focus ();
       return;
     }
 
@@ -109,8 +109,7 @@ class SearchPage : IPage, Box {
     if (set_text)
       search_entry.set_text(search_term);
 
-    if (!Settings.get_bool ("search-show-retweets"))
-      q += " -rt";
+    q += " -rt";
 
     this.search_query    = GLib.Uri.escape_string (q);
     this.user_page       = 1;
@@ -156,7 +155,13 @@ class SearchPage : IPage, Box {
       try {
         user_call.invoke_async.end (res);
       } catch (GLib.Error e) {
-        warning (e.message);
+        if (user_call.get_payload () != null) {
+          Utils.show_error_object (user_call.get_payload (), e.message);
+        } else {
+          tweet_list.set_placeholder_text (e.message);
+        }
+        tweet_list.set_empty ();
+
         return;
       }
 
@@ -236,7 +241,7 @@ class SearchPage : IPage, Box {
 
       statuses.foreach_element ((array, index, node) => {
         var tweet = new Tweet ();
-        tweet.load_from_json (node, now);
+        tweet.load_from_json (node, now, account);
         if (tweet.id < lowest_tweet_id)
           lowest_tweet_id = tweet.id;
         var entry = new TweetListEntry (tweet, main_window, account);

@@ -55,10 +55,6 @@ class Settings : GLib.Object {
     return settings.get_boolean("new-followers-notify");
   }
 
-  public static int upload_provider(){
-    return settings.get_enum("upload-provider");
-  }
-
   public static bool show_inline_media(){
     return settings.get_boolean("show-inline-media");
   }
@@ -69,10 +65,6 @@ class Settings : GLib.Object {
 
   public static string get_accel (string accel_name) {
     return settings.get_string ("accel-" + accel_name);
-  }
-
-  public static int get_animation_duration() {
-    return settings.get_int("animation-duration");
   }
 
   public static double max_media_size () {

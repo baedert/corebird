@@ -337,7 +337,7 @@ class ListStatusesPage : ScrollWidget, IPage {
     var now = new GLib.DateTime.now_local ();
     root_arr.foreach_element ((array, index, node) => {
       Tweet t = new Tweet ();
-      t.load_from_json (node, now);
+      t.load_from_json (node, now, account);
 
       if (t.id > max_id)
         max_id = t.id;
