@@ -134,9 +134,11 @@ class DMPage : IPage, IMessageReceiver, Box {
     this.lowest_id = int64.MAX;
     this.user_id = user_id;
     string screen_name;
+    string name = null;
     if ((screen_name = arg_list.arg<string> ()) != null) {
+      name = arg_list.arg<string> ();
       placeholder_box.screen_name = screen_name;
-      placeholder_box.name = arg_list.arg<string> ();
+      placeholder_box.name = name;
       placeholder_box.avatar_url = arg_list.arg<string> ();
       placeholder_box.load_avatar ();
     }
@@ -171,6 +173,8 @@ class DMPage : IPage, IMessageReceiver, Box {
       messages_list.add (entry);
       return true;
     });
+
+    account.user_counter.user_seen (user_id, screen_name, name);
 
     scroll_widget.scroll_down_next (false, true);
   } // }}}

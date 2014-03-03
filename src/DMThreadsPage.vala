@@ -62,10 +62,9 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     start_conversation_entry = new StartConversationEntry (account);
     start_conversation_entry.start.connect((user_id, screen_name, name, avatar_url) => {
       var thread_entry = thread_map.get (user_id);
-      if (thread_entry == null) {
-        return;
+      if (thread_entry != null) {
+        this.unread_count -= thread_entry.unread_count;
       }
-      this.unread_count -= thread_entry.unread_count;
       main_window.switch_page (MainWindow.PAGE_DM, user_id,
                               screen_name, name, avatar_url);
     });
