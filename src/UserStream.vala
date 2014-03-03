@@ -61,7 +61,7 @@ class UserStream : Object {
 
   public UserStream (string account_name) {
     this.account_name = account_name;
-    message ("CREATING USER STREAM FOR "+account_name);
+    debug ("CREATING USER STREAM FOR "+account_name);
     proxy = new Rest.OAuthProxy(
           Utils.decode (Utils.CONSUMER_KEY),
           Utils.decode (Utils.CONSUMER_SECRET),
@@ -99,7 +99,7 @@ class UserStream : Object {
    * Stops the UserStream
    */
   public void stop () {
-    message ("STOPPING STREAM FOR " + account_name);
+    debug ("STOPPING STREAM FOR " + account_name);
     proxy_call.cancel ();
     if(timeout_id != -1)
         GLib.Source.remove (timeout_id);
@@ -143,7 +143,7 @@ class UserStream : Object {
       timeout_id = GLib.Timeout.add (TIMEOUT_INTERVAL, timeout_cb);
 
       if (real == "\r\n") {
-        message ("HEARTBEAT(%s)", account_name);
+        debug ("HEARTBEAT(%s)", account_name);
         data.erase ();
         return;
       }
