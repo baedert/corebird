@@ -41,8 +41,8 @@
     </key>
     <key name="show-inline-media" type="b">
       <default>true</default>
-      <summary>Whether inline media should be downloaded/shown directly.</summary>
-      <description>Disable this to save some bandwidth</description>
+      <_summary>Whether inline media should be downloaded/shown directly.</_summary>
+      <_description>Disable this to save some bandwidth</_description>
     </key>
     <key name="startup-accounts" type="as">
       <default>[""]</default>

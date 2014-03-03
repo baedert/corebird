@@ -1,1 +1,41 @@
+src/window/ComposeTweetWindow.vala
+src/window/UserListDialog.vala
+src/window/ImageDialog.vala
+src/widgets/TweetListBox.vala
+src/widgets/AccountCreateWidget.vala
+src/HomeTimeline.vala
+src/DMThreadsPage.vala
+src/resources.c
+src/list/DMThreadEntry.vala
+src/ListsPage.vala
+src/ProfilePage.vala
+src/TweetInfoPage.vala
+src/util/Utils.vala
+src/SearchPage.vala
+src/Corebird.vala
+src/MentionsTimeline.vala
+src/FavoritesTimeline.vala
+[type: gettext/glade]ui/settings-dialog.ui
+[type: gettext/glade]ui/menu.ui
+[type: gettext/glade]ui/user-lists-widget.ui
+[type: gettext/glade]ui/about-dialog.ui
+[type: gettext/glade]ui/account-info-widget.ui
+[type: gettext/glade]ui/dm-page.ui
+[type: gettext/glade]ui/load-more-entry.ui
+[type: gettext/glade]ui/tweet-list-entry.ui
+[type: gettext/glade]ui/user-list-entry.ui
+[type: gettext/glade]ui/image-dialog.ui
+[type: gettext/glade]ui/new-list-entry.ui
+[type: gettext/glade]ui/search-page.ui
+[type: gettext/glade]ui/compose-window.ui
+[type: gettext/glade]ui/profile-page.ui
 [type: gettext/glade]ui/main-window.ui
+[type: gettext/glade]ui/account-create-widget.ui
+[type: gettext/glade]ui/tweet-info-page.ui
+[type: gettext/glade]ui/remove-account-dialog.ui
+[type: gettext/glade]ui/list-list-entry.ui
+[type: gettext/glade]ui/start-conversation-entry.ui
+[type: gettext/glade]ui/list-statuses-page.ui
+data/org.baedert.corebird.gschema.xml.in
+data/corebird.desktop.in.in
+data/corebird.appdata.xml.in

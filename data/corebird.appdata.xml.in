@@ -4,12 +4,12 @@
  <id type="desktop">corebird.desktop</id>
  <licence>CC0</licence>
  <description>
-  <p>
+  <_p>
    Corebird is a native GTK+ twitter client that provides vital features such as Direct Messages (DMs), tweet notifications, conversation views.
-  </p>
-  <p>
+  </_p>
+  <_p>
    Additional features include the abilty to change to the GTK+ dark theme, searching and media uploads.
-  </p>
+  </_p>
  </description>
  <url type="homepage">http://corebird.baedert.org/</url>
  <screenshots>

@@ -1,5 +1,3 @@
-SUBDIRS = icons
-
 assetsdir = $(prefix)/share/corebird
 assets_DATA = no_avatar.png \
 							verified.png \
