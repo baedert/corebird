@@ -42,11 +42,11 @@ public class Database {
     int user_version = -1;
     this.exec ("pragma user_version;", (n_cols, vals) => {user_version = int.parse(vals[0]); return STOP;});
     var next_version_file = init_file.printf(user_version + 1);
-    message ("%s User version: %d", filename, user_version);
+    debug ("%s User version: %d", filename, user_version);
     if (FileUtils.test (next_version_file, FileTest.EXISTS)) {
       string sql_content;
       try {
-        message ("Applyling file '%s'", next_version_file);
+        debug ("Applyling file '%s'", next_version_file);
         FileUtils.get_contents (next_version_file, out sql_content);
       } catch (GLib.FileError e) {
         critical (e.message);

@@ -109,7 +109,7 @@ class Corebird : Gtk.Application {
     base.startup ();
 
     Dirs.create_dirs ();
-    message ("startup");
+    debug ("startup");
     Corebird.db = new Sql.Database (Dirs.config ("Corebird.db"),
                                     Sql.COREBIRD_INIT_FILE);
 
@@ -185,7 +185,7 @@ class Corebird : Gtk.Application {
         return;
       }
     }
-    message("Startup accounts: %d", startup_accounts.length);
+    debug ("Startup accounts: %d", startup_accounts.length);
 
     if (compose_screen_name == null) {
       if (startup_accounts.length == 0) {

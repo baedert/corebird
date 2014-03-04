@@ -128,7 +128,7 @@ class Account : GLib.Object {
       string avatar_url = root.get_string_member ("profile_image_url");
       update_avatar.begin (avatar_url);
       query_user_info_by_scren_name.callback();
-      message("Name: %s", name);
+      debug ("Name: %s", name);
     });
 
     yield;
