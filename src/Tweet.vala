@@ -248,7 +248,4 @@ class Tweet : GLib.Object {
     return TweetUtils.get_real_text (this.text, urls);
   }
 
-  public unowned TweetUtils.Sequence?[] get_urls () {
-    return urls;
-  }
 }
