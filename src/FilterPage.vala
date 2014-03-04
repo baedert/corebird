@@ -36,6 +36,7 @@ class FilterPage : Gtk.ScrolledWindow, IPage {
       } else if (row is FilterListEntry) {
         var filter_row = (FilterListEntry) row;
         var dialog = new ModifyFilterDialog (main_window, account, filter_row.filter);
+        dialog.filter_added.connect (filter_added_cb);
         dialog.show_all ();
       }
     });
@@ -62,7 +63,17 @@ class FilterPage : Gtk.ScrolledWindow, IPage {
       var entry = new FilterListEntry (f);
       filter_list.add (entry);
     } else {
+      var children = filter_list.get_children ();
+      foreach (Gtk.Widget w in children) {
+        if (!(w is FilterListEntry))
+          continue;
 
+        var le = (FilterListEntry) w;
+        if (le.filter.id == f.id) {
+          le.content = f.content;
+          break;
+        }
+      }
     }
   }
 

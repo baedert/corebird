@@ -41,6 +41,7 @@ class Filter : GLib.Object {
     } catch (GLib.RegexError e) {
       warning ("Regex error for `%s`: %s", expression, e.message);
     }
+    this.content = expression;
   }
 
   public bool matches (string test_text) {

@@ -81,7 +81,6 @@ class ModifyFilterDialog : Gtk.Dialog {
   private void save_filter () {
     string content = regex_entry.text;
     if (this.filter == null) {
-      message ("CREATING NEW FILTER");
       int id = (int)account.db.insert ("filters")
                                .val ("content", content)
                                .val ("block_count", "0")
@@ -95,6 +94,13 @@ class ModifyFilterDialog : Gtk.Dialog {
       account.db.update ("filters").val ("content", content)
                                    .where_eq ("id", filter.id.to_string ())
                                    .run ();
+      foreach (var f in account.filters) {
+        if (f.id == this.filter.id) {
+          f.reset (content);
+          filter_added (f, false);
+          break;
+        }
+      }
     }
   }
 }

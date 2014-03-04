@@ -44,7 +44,7 @@ class FilterListEntry : Gtk.ListBoxRow {
     this.filter = f;
   }
 
-  [GtkCallback]
+  //[GtkCallback]
   private void delete_button_clicked_cb () {
     message ("Close pressed!");
   }
