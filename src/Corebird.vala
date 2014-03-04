@@ -142,7 +142,7 @@ class Corebird : Gtk.Application {
       mi.set_action_and_target_value ("app.show-" + acc.screen_name, null);
       account_menu.append_item (mi);
     }
-    ((GLib.Menu)acc_menu).append_submenu ("Open Account", account_menu);
+    ((GLib.Menu)acc_menu).append_submenu (_("Open Account"), account_menu);
 
     this.set_app_menu (app_menu);
 

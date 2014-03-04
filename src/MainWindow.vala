@@ -93,7 +93,6 @@ class MainWindow : ApplicationWindow {
     }
     headerbar.set_subtitle ("@" + account.screen_name);
 
-    stack.transition_duration = Settings.get_animation_duration ();
     this.add_action_entries (win_entries, this);
 
     pages[0]  = new HomeTimeline (PAGE_STREAM);

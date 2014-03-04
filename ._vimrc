@@ -1,1 +1,1 @@
-set wildignore+=*.c,*\~,CMakeFiles,Makefile
+set wildignore+=*.c,*\~,CMakeFiles,Makefile,*.ui
