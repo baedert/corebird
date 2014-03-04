@@ -288,21 +288,22 @@ class ProfilePage : ScrollWidget, IPage {
       location = root.get_string_member("location");
     }
 
-    TweetUtils.Sequence?[] text_urls = null;
+    GLib.SList<TweetUtils.Sequence?> text_urls = null;
     if (root.has_member ("description")) {
       Json.Array urls = entities.get_object_member ("description").get_array_member ("urls");
-      text_urls = new TweetUtils.Sequence?[urls.get_length ()];
-      urls.foreach_element ((arr, index, node) => {
+      text_urls = new GLib.SList<TweetUtils.Sequence?>();
+      urls.foreach_element ((arr, i, node) => {
         var ent = node.get_object ();
         string expanded_url = ent.get_string_member ("expanded_url");
         expanded_url = expanded_url.replace ("&", "&amp;");
         Json.Array indices = ent.get_array_member ("indices");
-        text_urls[index] =  TweetUtils.Sequence(){
+        text_urls.prepend (TweetUtils.Sequence(){
           start = (int)indices.get_int_element (0),
           end   = (int)indices.get_int_element (1),
           url   = expanded_url,
           display_url = ent.get_string_member ("display_url")
-        };
+        });
+
       });
     }
 
@@ -393,7 +394,7 @@ class ProfilePage : ScrollWidget, IPage {
                              string? location, string description, int tweets,
                              int following, int followers, string avatar_url,
                              bool verified,
-                             TweetUtils.Sequence?[]? text_urls = null
+                             GLib.SList<TweetUtils.Sequence?>? text_urls = null
                              ) { //{{{
 
     name_label.set_markup("<b>%s</b>".printf (name));

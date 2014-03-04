@@ -57,20 +57,20 @@ class DMPage : IPage, IMessageReceiver, Box {
       var text = obj.get_string_member ("text");
       if (obj.has_member ("entities")) {
         var urls = obj.get_object_member ("entities").get_array_member ("urls");
-        var url_list = new TweetUtils.Sequence?[urls.get_length ()];
+        var url_list = new GLib.SList<TweetUtils.Sequence?> ();
         urls.foreach_element((arr, index, node) => {
           var url = node.get_object();
           string expanded_url = url.get_string_member("expanded_url");
 
           Json.Array indices = url.get_array_member ("indices");
           expanded_url = expanded_url.replace("&", "&amp;");
-          url_list[index] = TweetUtils.Sequence() {
+          url_list.prepend(TweetUtils.Sequence() {
             start = (int)indices.get_int_element (0),
             end   = (int)indices.get_int_element (1) ,
             url   = expanded_url,
             display_url = url.get_string_member ("display_url"),
             visual_display_url = false
-          };
+          });
         });
         text = TweetUtils.get_formatted_text (text, url_list);
       }

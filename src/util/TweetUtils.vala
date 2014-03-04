@@ -39,17 +39,15 @@ namespace TweetUtils {
    *
    * @return The formatted text
    */
-  string get_formatted_text (string tweet_text, Sequence?[] urls, bool sorted = false) { // {{{
+  string get_formatted_text (string tweet_text, GLib.SList<Sequence?> urls) { // {{{
     string formatted_text = tweet_text;
     int char_diff = 0;
-    if (!sorted) {
-      GLib.qsort_with_data<Sequence?> (urls, sizeof (Sequence?), (a, b) => {
-        if (a.start < b.start)
-          return -1;
-        return 1;
-      });
-    }
-    foreach (Sequence? s in urls) {
+    urls.sort ((a, b) => {
+      if (a.start < b.start)
+        return -1;
+      return 1;
+    });
+    foreach (Sequence s in urls) {
       int length_before = formatted_text.char_count ();
       int from = formatted_text.index_of_nth_char (s.start + char_diff);
       int to   = formatted_text.index_of_nth_char (s.end + char_diff);
@@ -80,17 +78,15 @@ namespace TweetUtils {
    *
    * @return The formatted text
    */
-  string get_real_text (string tweet_text, Sequence?[] urls, bool sorted = false) {
+  string get_real_text (string tweet_text, GLib.SList<Sequence?> urls) {
     string formatted_text = tweet_text;
     int char_diff = 0;
-    if (!sorted) {
-      GLib.qsort_with_data<Sequence?> (urls, sizeof (Sequence?), (a, b) => {
-        if (a.start < b.start)
-          return -1;
-        return 1;
-      });
-    }
-    foreach (Sequence? s in urls) {
+    urls.sort ((a, b) => {
+      if (a.start < b.start)
+        return -1;
+      return 1;
+    });
+    foreach (Sequence s in urls) {
       if (s.visual_display_url)
         continue;
       int length_before = formatted_text.char_count ();
