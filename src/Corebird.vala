@@ -66,7 +66,6 @@ class Corebird : Gtk.Application {
     }
 
 
-    // TODO: The switch-page accelerators could also be in a loop...
     this.add_accelerator (Settings.get_accel ("compose-tweet"), "win.compose_tweet", null);
     this.add_accelerator (Settings.get_accel ("toggle-sidebar"), "win.toggle_sidebar", null);
     this.add_accelerator ("<Alt>1", "win.switch_page", new GLib.Variant.int32(0));
