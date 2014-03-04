@@ -79,9 +79,4 @@ class Settings : GLib.Object {
     settings.set_boolean ("sidebar-visible", !settings.get_boolean ("sidebar-visible"));
   }
 
-
-  public static bool get_bool (string key) {
-    return settings.get_boolean (key);
-  }
-
 }
