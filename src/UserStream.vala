@@ -92,7 +92,7 @@ class UserStream : Object {
   }
 
   ~UserStream () {
-    critical ("USERSTREAM DESTROYED");
+    debug ("USERSTREAM for %s DESTROYED", account_name);
   }
 
   /**
