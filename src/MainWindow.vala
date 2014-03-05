@@ -95,6 +95,7 @@ class MainWindow : ApplicationWindow {
 
     this.add_action_entries (win_entries, this);
 
+    // TODO: Just always pass the account instance to the constructor.
     pages[0]  = new HomeTimeline (PAGE_STREAM);
     pages[1]  = new MentionsTimeline (PAGE_MENTIONS);
     pages[2]  = new FavoritesTimeline (PAGE_FAVORITES);

@@ -210,6 +210,16 @@ class Account : GLib.Object {
     this.filters.add (f);
   }
 
+  public bool filter_matches (string text) {
+    foreach (Filter f in filters) {
+      if (f.matches (text)) {
+        f.block_count ++;
+        return true;
+      }
+    }
+    return false;
+  }
+
   /** Static stuff ********************************************************************/
   private static GLib.SList<Account> accounts = null;
 

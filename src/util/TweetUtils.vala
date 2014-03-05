@@ -307,6 +307,9 @@ namespace TweetUtils {
       json_array.foreach_element( (array, index, node) => {
         Tweet t = new Tweet();
         t.load_from_json(node, now, account);
+        if (account.filter_matches (t.text)) {
+          return;
+        }
         if (t.id > max)
           max = t.id;
 

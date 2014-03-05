@@ -6,7 +6,7 @@
  *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
- *  corebird is distributed in the hope that it will be useful,
+    *  corebird is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
@@ -47,11 +47,24 @@ class FilterPage : Gtk.ScrolledWindow, IPage {
       return;
 
     foreach (Filter f in account.filters) {
-      var entry = new FilterListEntry (f);
+      var entry = new FilterListEntry (f, account);
+      entry.removed.connect (remove_filter);
       filter_list.add (entry);
     }
 
     inited = true;
+  }
+
+  private void remove_filter (Filter f) {
+    foreach (Gtk.Widget row in filter_list.get_children ()) {
+      if (!(row is FilterListEntry)) {
+        continue;
+      }
+      if (((FilterListEntry)row).filter.id == f.id) {
+        filter_list.remove (row);
+        return;
+      }
+    }
   }
 
   /**
@@ -60,7 +73,7 @@ class FilterPage : Gtk.ScrolledWindow, IPage {
    **/
   private void filter_added_cb (Filter f, bool created) {
     if (created) {
-      var entry = new FilterListEntry (f);
+      var entry = new FilterListEntry (f, account);
       filter_list.add (entry);
     } else {
       var children = filter_list.get_children ();

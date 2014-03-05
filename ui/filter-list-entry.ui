@@ -15,6 +15,7 @@
         <property name="can_focus">False</property>
         <property name="label" translatable="yes">Confirm</property>
         <property name="use_underline">True</property>
+        <signal name="activate" handler="delete_item_activated_cb" swapped="false" />
       </object>
     </child>
   </object>

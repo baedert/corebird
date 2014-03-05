@@ -39,13 +39,23 @@ class FilterListEntry : Gtk.ListBoxRow {
     }
   }
   public int block_count = 0;
+  private unowned Account account = null;
+  public signal void removed (Filter f);
 
-  public FilterListEntry (Filter f) {
+  public FilterListEntry (Filter f, Account account) {
     this.filter = f;
+    this.account = account;
   }
 
-  //[GtkCallback]
-  private void delete_button_clicked_cb () {
-    message ("Close pressed!");
+  [GtkCallback]
+  private void delete_item_activated_cb () {
+    foreach (Filter f in account.filters) {
+      if (f.id == this.filter.id) {
+        account.filters.remove (f);
+        account.db.exec ("DELETE FROM `filters` WHERE `id`='%d'".printf (f.id));
+        removed (f);
+        return;
+      }
+    }
   }
 }
