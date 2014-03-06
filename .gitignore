@@ -7,6 +7,8 @@ src/containers/*.c
 src/util/*.c
 *.c
 *.o
+*.lo
+*.la
 .dirstamp
 *.stamp
 .deps
@@ -50,3 +52,7 @@ intltool-extract.in
 intltool-merge.in
 intltool-update.in
 config.rpath
+test-driver
+.libs
+src/corebird.h
+src/corebird.vapi
