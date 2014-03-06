@@ -254,7 +254,7 @@ namespace TweetUtils {
    * @return The length of the tweet, taking Twitter's rules for
    *         tweet length into account.
    */
-  int calc_tweet_length (string text) {
+  public int calc_tweet_length (string text) {
     string[] words = text.split (" ");
     int length = 0;
 
