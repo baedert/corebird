@@ -16,7 +16,7 @@
  */
 
 
-class Account : GLib.Object {
+public class Account : GLib.Object {
   public int64 id                 {public get; private set;}
   public Sql.Database db          {public get; private set;}
   public string screen_name       {public get; private set;}

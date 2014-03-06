@@ -17,7 +17,7 @@
 
 using Gtk;
 
-class WidgetReplacer {
+public class WidgetReplacer {
   private static Gee.HashMap<Gtk.Widget, Gtk.Widget> tmp_widgets =
                   new Gee.HashMap<Gtk.Widget, Gtk.Widget>();
 

@@ -26,7 +26,7 @@
  XXX: Check if this works well with sqlite, if not move to a simple text file.
 */
 
-class UserInfo : GLib.Object {
+public class UserInfo : GLib.Object {
   public int64 id;
   public string screen_name;
   public string name;
@@ -35,7 +35,7 @@ class UserInfo : GLib.Object {
 }
 
 
-class UserCounter : GLib.Object {
+public class UserCounter : GLib.Object {
   private bool changed = false;
   private Gee.ArrayList<UserInfo?> names = new Gee.ArrayList<UserInfo?> ();
 

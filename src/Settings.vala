@@ -16,7 +16,7 @@
  */
 
 
-class Settings : GLib.Object {
+public class Settings : GLib.Object {
   private static GLib.Settings settings;
 
   public static void init(){

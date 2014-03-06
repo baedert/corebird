@@ -21,7 +21,7 @@
 
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/main-window.ui")]
-class MainWindow : ApplicationWindow {
+public class MainWindow : ApplicationWindow {
   private const GLib.ActionEntry[] win_entries = {
     {"compose_tweet",  show_compose_window},
     {"toggle_sidebar", Settings.toggle_sidebar_visible},
