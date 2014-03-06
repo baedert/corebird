@@ -1,11 +1,11 @@
 AM_CPPFLAGS = $(CB_CFLAGS) -I$(top_srcdir)/src
 
-TESTS = check_test
+TESTS = tweet_length
 check_PROGRAMS = $(TESTS)
 
-check_test_SOURCES = check_test.vala
-check_test_LDADD = $(top_builddir)/src/libcorebird.la
-check_test_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
+tweet_length_SOURCES = tweet_length.vala
+tweet_length_LDADD = $(top_builddir)/src/libcorebird.la
+tweet_length_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
 
 
 CLEANFILES = *.c
