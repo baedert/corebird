@@ -6,6 +6,7 @@ m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 
 #AM_MAINTAINER_MODE
 
+LT_INIT
 AC_PROG_CC
 AC_PROG_CC_STDC
 AM_PROG_VALAC([0.21])
@@ -70,6 +71,7 @@ AC_CONFIG_FILES([Makefile
                  data/symbolics/Makefile
                  assets/Makefile
                  po/Makefile.in
+                 tests/Makefile
                  src/util/Config.vala])
 
 

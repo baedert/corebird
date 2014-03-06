@@ -15,4 +15,4 @@ src/widgets/TweetListBox.c
 src/window/ComposeTweetWindow.c
 src/window/ImageDialog.c
 src/window/UserListDialog.c
-
+data/corebird.desktop.in

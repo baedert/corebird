@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-28 13:04+0100\n"
+"POT-Creation-Date: 2014-03-06 12:54+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -71,11 +71,11 @@ msgstr ""
 msgid "Home"
 msgstr ""
 
-#: ../src/DMThreadsPage.vala:234
+#: ../src/DMThreadsPage.vala:233
 msgid "New direct message!"
 msgstr ""
 
-#: ../src/DMThreadsPage.vala:339 ../src/DMThreadsPage.vala:340
+#: ../src/DMThreadsPage.vala:338 ../src/DMThreadsPage.vala:339
 msgid "Direct Messages"
 msgstr ""
 
@@ -85,6 +85,7 @@ msgid "(%d unread)"
 msgstr ""
 
 #: ../src/ListsPage.vala:127 ../src/ListsPage.vala:128
+#: ../ui/profile-page.ui.h:5
 msgid "Lists"
 msgstr ""
 
@@ -104,6 +105,15 @@ msgstr ""
 #: ../src/ProfilePage.vala:511 ../src/TweetInfoPage.vala:415
 #: ../ui/tweet-info-page.ui.h:3
 msgid "Follow"
+msgstr ""
+
+#: ../src/TweetInfoPage.vala:379
+msgid "Retweets"
+msgstr ""
+
+#: ../src/TweetInfoPage.vala:379 ../src/FavoritesTimeline.vala:69
+#: ../src/FavoritesTimeline.vala:70
+msgid "Favorites"
 msgstr ""
 
 #: ../src/TweetInfoPage.vala:424
@@ -146,10 +156,6 @@ msgstr ""
 msgid "Mentions"
 msgstr ""
 
-#: ../src/FavoritesTimeline.vala:69 ../src/FavoritesTimeline.vala:70
-msgid "Favorites"
-msgstr ""
-
 #: ../ui/settings-dialog.ui.h:1 ../ui/menu.ui.h:1
 msgid "Settings"
 msgstr ""
@@ -169,71 +175,83 @@ msgid ""
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:5
-msgid "Main Window"
+msgid "Accounts"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:6
-msgid "Use Dark Theme:"
+msgid "Main Window"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:7
-msgid "Show Inline Media:"
+msgid "Use Dark Theme:"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:8
-msgid "Maximum media size:"
+msgid "Show Inline Media:"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:9
-msgid "Megabytes"
+msgid "Maximum media size:"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:10
-msgid "Auto scroll on new tweets:"
+msgid "Megabytes"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:11
-msgid "On New Tweets:"
+msgid "Auto scroll on new tweets:"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:12
-msgid "Actions"
+msgid "Interface"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:13
-msgid "On New Mentions:"
+msgid "On New Tweets:"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:14
-msgid "On New Messages:"
+msgid "Actions"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:15
-msgid "Never"
+msgid "On New Mentions:"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:16
-msgid "Every"
+msgid "On New Messages:"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:17
-msgid "Stack 5"
+msgid "Never"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:18
-msgid "Stack 10"
+msgid "Every"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:19
-msgid "Stack 25"
+msgid "Stack 5"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:20
-msgid "Stack 50"
+msgid "Stack 10"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:21
+msgid "Stack 25"
+msgstr ""
+
+#: ../ui/settings-dialog.ui.h:22
+msgid "Stack 50"
+msgstr ""
+
+#: ../ui/settings-dialog.ui.h:23
 msgid "On New Followers:"
+msgstr ""
+
+#: ../ui/settings-dialog.ui.h:24
+msgid "Notifications"
 msgstr ""
 
 #: ../ui/menu.ui.h:2
@@ -321,7 +339,7 @@ msgstr ""
 msgid "Create"
 msgstr ""
 
-#: ../ui/search-page.ui.h:2
+#: ../ui/search-page.ui.h:2 ../ui/profile-page.ui.h:4
 msgid "Tweets"
 msgstr ""
 

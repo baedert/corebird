@@ -9,7 +9,11 @@ AM_CPPFLAGS = $(CB_CFLAGS) \
 AUTOMAKE_OPTIONS = subdir-objects
 
 
-corebird_VALASOURCES = \
+bin_PROGRAMS = corebird
+noinst_LTLIBRARIES = libcorebird.la
+
+
+libcorebird_la_VALASOURCES = \
 			Corebird.vala \
 			MainWindow.vala \
 			Account.vala \
@@ -77,15 +81,17 @@ corebird_VALASOURCES = \
 			sql/UpdateStatement.vala \
 			sql/SelectStatement.vala
 
-corebird_SOURCES =  \
-			$(corebird_VALASOURCES) \
+libcorebird_la_SOURCES =  \
+			$(libcorebird_la_VALASOURCES) \
 			resources.c
 
-corebird_LDADD = $(CB_LIBS)
-corebird_VALAFLAGS = @CB_VALA_FLAGS@
+libcorebird_la_LIBADD = @CB_LIBS@
+libcorebird_la_VALAFLAGS = --vapi=corebird.vapi --header corebird.h @CB_VALA_FLAGS@
 
+corebird_SOURCES = main.vala
+corebird_LDADD = libcorebird.la @CB_LIBS@
+corebird_VALAFLAGS = corebird.vapi @CB_VALA_FLAGS@
 
-bin_PROGRAMS = corebird
 
 resources.c: ../resources.xml ../ui/*.ui
 	$(GLIB_COMPILE_RESOURCES) ../resources.xml --target=resources.c --generate-source --sourcedir=../
