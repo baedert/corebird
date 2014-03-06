@@ -17,7 +17,7 @@
 
 using Gtk;
 
-class Corebird : Gtk.Application {
+public class Corebird : Gtk.Application {
   // TODO: Is the static here needed?
   public static Sql.Database db;
   private static GLib.OutputStream log_stream;
@@ -315,18 +315,5 @@ class Corebird : Gtk.Application {
 
     if (flags != LogLevelFlags.LEVEL_DEBUG)
       stdout.printf (out_string);
-  }
-}
-
-
-int main (string[] args) {
-  try {
-    //no initialisation of static fields :(
-    Settings.init ();
-    new WidgetReplacer ();
-    var corebird = new Corebird ();
-    return corebird.run (args);
-  } catch (GLib.Error e) {
-    error (e.message);
   }
 }
