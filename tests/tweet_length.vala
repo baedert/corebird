@@ -9,6 +9,7 @@ void normal () {
 void empty () {
   int l = TweetUtils.calc_tweet_length ("");
   message ("empty length %d", l);
+  assert (l == 0);
 }
 
 void http_link () {
