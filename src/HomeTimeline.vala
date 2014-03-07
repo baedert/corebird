@@ -44,7 +44,10 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
     Tweet t = new Tweet();
     t.load_from_json (obj, now, account);
 
-    if (t.is_retweet && !should_display_retweet (t) && account.filter_matches (t.text))
+    if (t.is_retweet && !should_display_retweet (t))
+      return;
+
+    if (account.filter_matches (t.text))
       return;
 
     bool auto_scroll = Settings.auto_scroll_on_new_tweets ();

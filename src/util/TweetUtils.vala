@@ -307,9 +307,6 @@ namespace TweetUtils {
       json_array.foreach_element( (array, index, node) => {
         Tweet t = new Tweet();
         t.load_from_json(node, now, account);
-        if (account.filter_matches (t.text)) {
-          return;
-        }
         if (t.id > max)
           max = t.id;
 
@@ -324,7 +321,9 @@ namespace TweetUtils {
 
       int index = 0;
       GLib.Idle.add (() => {
-        tweet_list.add (entry_array[index]);
+        if (!account.filter_matches (entry_array[index].tweet.text)) {
+          tweet_list.add (entry_array[index]);
+        }
         index ++;
         if (index == entry_array.length) {
           work_array.callback ();
