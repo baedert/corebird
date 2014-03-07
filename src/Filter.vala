@@ -48,6 +48,6 @@ class Filter : GLib.Object {
     if (regex == null) {
       return false;
     }
-    return false;
+    return regex.match (test_text);
   }
 }
