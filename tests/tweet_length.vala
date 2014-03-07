@@ -12,8 +12,10 @@ void empty () {
 }
 
 void http_link () {
-  string text = "https://foobar.org";
-  assert (TweetUtils.calc_tweet_length (text) == 22);
+  string text = "http://foobar.org";
+  int l = TweetUtils.calc_tweet_length (text);
+  message ("Link length: %d", l);
+  assert (l == 22);
 }
 
 int main (string[] args) {
