@@ -36,7 +36,7 @@ namespace Dirs {
     create_folder (data ("logs/"));
   }
 
-  string cache (string path) {
+  public string cache (string path) {
     if (cache_dir == null) {
       cache_dir = GLib.Environment.get_user_cache_dir () + "/corebird/";
     }

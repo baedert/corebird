@@ -57,7 +57,7 @@ namespace InlineMediaDownloader {
     }
   }
 
-  private async void two_step_load(Tweet t, string first_url, string regex_str,
+  public async void two_step_load(Tweet t, string first_url, string regex_str,
                                           int match_index) {
     var msg     = new Soup.Message("GET", first_url);
     session.queue_message(msg, (_s, _msg) => {
@@ -76,7 +76,7 @@ namespace InlineMediaDownloader {
 
   }
 
-  private async void load_inline_media(Tweet t, string url) { //{{{
+  public async void load_inline_media(Tweet t, string url) { //{{{
 
     // First, check if the media already exists...
     string path = get_media_path (t, url);
@@ -206,7 +206,7 @@ namespace InlineMediaDownloader {
     t.inline_media_added(thumb);
   }
 
-  private string get_media_path (Tweet t, string url) {
+  public string get_media_path (Tweet t, string url) {
     string ext = Utils.get_file_type (url);
     ext = ext.down();
     if(ext.length == 0)
