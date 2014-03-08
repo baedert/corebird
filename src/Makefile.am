@@ -82,13 +82,12 @@ libcorebird_la_VALASOURCES = \
 			sql/SelectStatement.vala
 
 libcorebird_la_SOURCES =  \
-			$(libcorebird_la_VALASOURCES) \
-			resources.c
+			$(libcorebird_la_VALASOURCES)
 
 libcorebird_la_LIBADD = @CB_LIBS@
 libcorebird_la_VALAFLAGS = --vapi=corebird.vapi --header corebird.h @CB_VALA_FLAGS@
 
-corebird_SOURCES = main.vala
+corebird_SOURCES = main.vala resources.c
 corebird_LDADD = libcorebird.la @CB_LIBS@
 corebird_VALAFLAGS = corebird.vapi @CB_VALA_FLAGS@
 
