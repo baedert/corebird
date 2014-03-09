@@ -128,7 +128,7 @@ class UserStream : Object {
   private void parse_data_cb (Rest.ProxyCall call, string? buf, size_t length,
                               Error? error) {
     if (buf == null) {
-      warning("buf == NULL");
+      debug ("buf == NULL");
       return;
     }
 
@@ -184,7 +184,7 @@ class UserStream : Object {
         type = StreamMessageType.UNSUPPORTED;
 
 #if __DEV
-      message ("Message with type %s", type.to_string ());
+      debug ("Message with type %s", type.to_string ());
       if (type != StreamMessageType.FRIENDS)
         stdout.printf (data.str+"\n");
 #endif
