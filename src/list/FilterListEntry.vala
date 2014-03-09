@@ -36,7 +36,6 @@ class FilterListEntry : Gtk.ListBoxRow {
       return content_label.label;
     }
   }
-  public int block_count = 0;
   private unowned Account account = null;
   public signal void removed (Filter f);
 
