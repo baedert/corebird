@@ -270,6 +270,9 @@ namespace TweetUtils {
     // Don't forget the n-1 whitespaces
     length += words.length - 1;
 
+    if (length < 0) {
+      return 0;
+    }
     return length;
   }
 
