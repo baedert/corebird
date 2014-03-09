@@ -210,9 +210,13 @@ class Account : GLib.Object {
     this.filters.add (f);
   }
 
-  public bool filter_matches (string text) {
+  public bool filter_matches (Tweet t) {
+    if (t.user_id == this.id)
+      return false;
+
+
     foreach (Filter f in filters) {
-      if (f.matches (text)) {
+      if (f.matches (t.text)) {
         f.block_count ++;
         return true;
       }

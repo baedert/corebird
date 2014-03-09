@@ -321,7 +321,7 @@ namespace TweetUtils {
 
       int index = 0;
       GLib.Idle.add (() => {
-        if (!account.filter_matches (entry_array[index].tweet.text)) {
+        if (!account.filter_matches (entry_array[index].tweet)) {
           tweet_list.add (entry_array[index]);
         }
         index ++;
