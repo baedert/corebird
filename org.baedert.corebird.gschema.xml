@@ -18,6 +18,12 @@
       <description></description>
     </key>
 
+    <key name="minimize-when-close" type="b">
+      <default>true</default>
+      <summary>Minimizes the window to the tray instead of closing the app</summary>
+      <description></description>
+    </key>
+
     <key name="new-tweets-notify" enum="org.baedert.corebird.tweet-stack">
       <default>"Never"</default>
       <summary>If/when the user should be notified about new tweets</summary>

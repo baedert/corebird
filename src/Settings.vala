@@ -43,6 +43,10 @@ class Settings : GLib.Object {
     return settings.get_boolean("use-dark-theme");
   }
 
+  public static bool minimize_when_close() {
+    return settings.get_boolean("minimize-when-close");
+  }
+
   public static bool notify_new_mentions(){
     return settings.get_boolean("new-mentions-notify");
   }
@@ -74,7 +78,6 @@ class Settings : GLib.Object {
   public static void toggle_sidebar_visible () {
     settings.set_boolean ("sidebar-visible", !settings.get_boolean ("sidebar-visible"));
   }
-
 
   public static bool get_bool (string key) {
     return settings.get_boolean (key);

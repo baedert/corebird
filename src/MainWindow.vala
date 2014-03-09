@@ -303,13 +303,29 @@ class MainWindow : ApplicationWindow {
 
   [GtkCallback]
   private bool window_delete_cb (Gdk.EventAny evt) {
+    // Override close button if we just want to minimize to tray
+    if (true) { //Settings.minimize_when_close ()) {
+      unowned GLib.List<weak Window> ws1 = this.application.get_windows ();
+      debug("Windows: %u", ws1.length ());
+      ((MainWindow)ws1.nth_data(0)).iconify();
+
+      StatusIcon si = new Gtk.StatusIcon();
+      si.set_from_stock(Gtk.STOCK_HOME);
+      si.set_name("Hola name");
+      si.set_title("Hola title");
+      si.set_tooltip_text("Hola tooltip");
+      si.set_visible(true);
+
+      return true;
+    }
+
     account.user_stream.stop ();
     account.user_counter.save (account.db);
 
     unowned GLib.List<weak Window> ws = this.application.get_windows ();
     debug("Windows: %u", ws.length ());
 
-     // Enable the account's entry in the app menu again
+    // Enable the account's entry in the app menu again
     var acc_menu = (GLib.Menu)Corebird.account_menu;
     for (int i = 0; i < acc_menu.get_n_items (); i++){
       Variant item_name = acc_menu.get_item_attribute_value (i, "label", VariantType.STRING);
