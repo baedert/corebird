@@ -18,8 +18,6 @@
 class FilterListEntry : Gtk.ListBoxRow {
   [GtkChild]
   private Gtk.Label content_label;
-  [GtkChild]
-  private Gtk.Button delete_button;
   private unowned Filter _filter;
   public unowned Filter filter {
     set {
