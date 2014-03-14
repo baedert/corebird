@@ -11,33 +11,85 @@
         <property name="can_focus">False</property>
         <property name="shadow_type">none</property>
         <child>
-          <object class="GtkFrame" id="frame2">
-            <property name="visible">True</property>
+          <object class="GtkBox" id="box">
             <property name="can_focus">False</property>
-            <property name="valign">start</property>
-            <property name="margin_left">25</property>
-            <property name="margin_right">25</property>
-            <property name="margin_top">25</property>
-            <property name="margin_bottom">20</property>
-            <property name="label_xalign">0</property>
-            <property name="shadow_type">in</property>
+            <property name="visible">True</property>
+            <property name="orientation">vertical</property>
             <child>
-              <object class="GtkAlignment" id="alignment2">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <child>
-                  <object class="GtkListBox" id="filter_list">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="valign">start</property>
-                    <property name="selection_mode">none</property>
-                  </object>
-                </child>
-              </object>
+            <object class="GtkFrame" id="frame2">
+              <property name="visible">True</property>
+              <property name="can_focus">False</property>
+              <property name="valign">start</property>
+              <property name="margin_left">25</property>
+              <property name="margin_right">25</property>
+              <property name="margin_top">25</property>
+              <property name="label_xalign">0</property>
+              <property name="shadow_type">in</property>
+              <child>
+                <object class="GtkAlignment" id="alignment2">
+                  <property name="visible">True</property>
+                  <property name="can_focus">False</property>
+                  <child>
+                    <object class="GtkListBox" id="filter_list">
+                      <property name="visible">True</property>
+                      <property name="can_focus">False</property>
+                      <property name="valign">start</property>
+                      <property name="selection_mode">none</property>
+                    </object>
+                  </child>
+                </object>
+              </child>
+            </object>
+          </child>
+          <child>
+            <object class="GtkLabel" id="aaa">
+              <property name="can_focus">False</property>
+              <property name="visible">True</property>
+              <property name="label" translatable="Yes">Users:</property>
+              <property name="margin_top">25</property>
+              <property name="margin_left">25</property>
+              <property name="justify">left</property>
+              <property name="halign">start</property>
+            </object>
+          </child>
+          <child>
+            <object class="GtkFrame" id="frame3">
+              <property name="visible">True</property>
+              <property name="can_focus">False</property>
+              <property name="valign">start</property>
+              <property name="margin_left">25</property>
+              <property name="margin_right">25</property>
+              <property name="margin_bottom">20</property>
+              <property name="label_xalign">0</property>
+              <property name="shadow_type">in</property>
+              <child>
+                <object class="GtkAlignment" id="alignment3">
+                  <property name="visible">True</property>
+                  <property name="can_focus">False</property>
+                  <child>
+                    <object class="GtkListBox" id="user_list">
+                      <property name="visible">True</property>
+                      <property name="can_focus">False</property>
+                      <property name="valign">start</property>
+                      <property name="selection_mode">none</property>
+                    </object>
+                  </child>
+                </object>
+              </child>
+            </object>
             </child>
           </object>
         </child>
       </object>
      </child>
   </template>
+  <object class="GtkLabel" id="users_header">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="label" translatable="yes">Users</property>
+    <attributes>
+      <attribute name="weight" value="bold"/>
+      <attribute name="scale" value="1.2"/>
+    </attributes>
+  </object>
 </interface>

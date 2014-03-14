@@ -30,5 +30,6 @@
     <file compressed="true" preprocess="xml-stripblanks">ui/filter-page.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/filter-list-entry.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/modify-filter-dialog.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">ui/user-filter-entry.ui</file>
   </gresource>
 </gresources>

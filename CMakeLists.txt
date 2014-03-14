@@ -138,6 +138,7 @@ set (VALA_SOURCE
   src/list/ListListEntry.vala
   src/list/NewListEntry.vala
   src/list/FilterListEntry.vala
+  src/list/UserFilterEntry.vala
   src/window/AboutDialog.vala
   src/window/ImageDialog.vala
   src/window/SettingsDialog.vala

@@ -498,6 +498,26 @@ class ProfilePage : ScrollWidget, IPage {
     uld.show_all ();
   }
 
+  [GtkCallback]
+  private async void block_item_toggled_cb (Gtk.CheckMenuItem source) {
+    var call = account.proxy.new_call ();
+    call.set_method ("POST");
+    if (source.active) {
+      call.set_function ("1.1/blocks/create.json");
+    } else {
+      call.set_function ("1.1/blocks/destroy.json");
+    }
+    call.add_param ("user_id", this.user_id.to_string ());
+    try {
+      yield call.invoke_async (null);
+    } catch (GLib.Error e) {
+      Utils.show_error_object (call.get_payload (), e.message);
+      return;
+    }
+    stdout.printf (call.get_payload () + "\n");
+
+  }
+
   private void set_follow_button_state (bool following) { //{{{
     var sc = follow_button.get_style_context ();
     follow_button.sensitive = (user_id != account.id);

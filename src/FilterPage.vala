@@ -22,6 +22,8 @@ class FilterPage : Gtk.ScrolledWindow, IPage {
   private Gtk.RadioToolButton tool_button;
   [GtkChild]
   private Gtk.ListBox filter_list;
+  [GtkChild]
+  private Gtk.ListBox user_list;
   private bool inited = false;
 
   public FilterPage (int id) {
@@ -42,7 +44,7 @@ class FilterPage : Gtk.ScrolledWindow, IPage {
     });
   }
 
-  public void on_join (int page_id, va_list arg_list) {
+  public void on_join (int page_id, va_list arg_list) { // {{{
     if (inited)
       return;
 
@@ -52,8 +54,44 @@ class FilterPage : Gtk.ScrolledWindow, IPage {
       filter_list.add (entry);
     }
 
+    var call = account.proxy.new_call ();
+    call.set_method ("GET");
+    call.set_function ("1.1/blocks/list.json");
+    call.add_param ("include_entities", "false");
+    call.add_param ("skip_status", "false");
+    call.invoke_async.begin (null, (o, res) => {
+      try {
+        call.invoke_async.end (res);
+      } catch (GLib.Error e) {
+        warning (e.message);
+        Utils.show_error_object (call.get_payload (), e.message);
+      }
+
+      var parser = new Json.Parser ();
+      try {
+        parser.load_from_data (call.get_payload ());
+      } catch (GLib.Error e) {
+        critical (e.message);
+        Utils.show_error_object (call.get_payload (), e.message);
+        return;
+      }
+      Json.Array users = parser.get_root ().get_object ().get_array_member ("users");
+      users.foreach_element ((arr, index, node) => {
+        var obj = node.get_object ();
+        var entry = new UserFilterEntry ();
+        entry.name = obj.get_string_member ("name");
+        entry.screen_name = obj.get_string_member ("screen_name");
+        entry.avatar = obj.get_string_member ("profile_image_url");
+        user_list.add (entry);
+      });
+
+      stdout.printf (call.get_payload () + "\n");
+
+    });
+
+
     inited = true;
-  }
+  } // }}}
 
   private void remove_filter (Filter f) {
     foreach (Gtk.Widget row in filter_list.get_children ()) {
@@ -94,12 +132,13 @@ class FilterPage : Gtk.ScrolledWindow, IPage {
     if (row_before == null)
       return;
 
-    Gtk.Widget header = row.get_header ();
-    if (header == null) {
-      header = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
-      header.show ();
-      row.set_header (header);
-    }
+    Gtk.Widget? header = row.get_header ();
+    if (header != null)
+      return;
+    header = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
+    header.show ();
+    row.set_header (header);
+
   } //}}}
 
 
