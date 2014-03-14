@@ -15,7 +15,7 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 [GtkTemplate (ui = "/org/baedert/corebird/ui/filter-page.ui")]
-class FilterPage : Gtk.ScrolledWindow, IPage {
+class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
   public int id { get; set; }
   public unowned MainWindow main_window {get; set;}
   public unowned Account account        {get; set;}
@@ -78,15 +78,8 @@ class FilterPage : Gtk.ScrolledWindow, IPage {
       Json.Array users = parser.get_root ().get_object ().get_array_member ("users");
       users.foreach_element ((arr, index, node) => {
         var obj = node.get_object ();
-        var entry = new UserFilterEntry ();
-        entry.name = obj.get_string_member ("name");
-        entry.screen_name = obj.get_string_member ("screen_name");
-        entry.avatar = obj.get_string_member ("profile_image_url");
-        user_list.add (entry);
+        add_user (obj);
       });
-
-      stdout.printf (call.get_payload () + "\n");
-
     });
 
 
@@ -141,6 +134,23 @@ class FilterPage : Gtk.ScrolledWindow, IPage {
 
   } //}}}
 
+
+
+  public void stream_message_received (StreamMessageType type, Json.Node root_node) {
+    if (type == StreamMessageType.EVENT_BLOCK) {
+      var obj = root_node.get_object ().get_object_member ("target");
+      add_user (obj);
+    } else if (type == StreamMessageType.EVENT_BLOCK) {
+    }
+  }
+
+  private void add_user (Json.Object user_obj) {
+    var entry = new UserFilterEntry ();
+    entry.name = user_obj.get_string_member ("name");
+    entry.screen_name = user_obj.get_string_member ("screen_name");
+    entry.avatar = user_obj.get_string_member ("profile_image_url");
+    user_list.add (entry);
+  }
 
 
   public void on_leave () {}
