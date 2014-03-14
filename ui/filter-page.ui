@@ -59,7 +59,7 @@
               <property name="valign">start</property>
               <property name="margin_left">25</property>
               <property name="margin_right">25</property>
-              <property name="margin_bottom">20</property>
+              <property name="margin_bottom">10</property>
               <property name="label_xalign">0</property>
               <property name="shadow_type">in</property>
               <child>
@@ -77,6 +77,20 @@
                 </object>
               </child>
             </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="bbb">
+                <property name="can_focus">False</property>
+                <property name="visible">True</property>
+                <property name="label" translatable="Yes">You can block users in their profile</property>
+                <property name="wrap">True</property>
+                <property name="justify">center</property>
+                <property name="margin_left">25</property>
+                <property name="margin_right">25</property>
+                <style>
+                  <class name="dim-label" />
+                </style>
+              </object>
             </child>
           </object>
         </child>
