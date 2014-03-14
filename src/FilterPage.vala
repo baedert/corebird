@@ -140,18 +140,31 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
     if (type == StreamMessageType.EVENT_BLOCK) {
       var obj = root_node.get_object ().get_object_member ("target");
       add_user (obj);
-    } else if (type == StreamMessageType.EVENT_BLOCK) {
+    } else if (type == StreamMessageType.EVENT_UNBLOCK) {
+      var obj = root_node.get_object ().get_object_member ("target");
+      int64 user_id = obj.get_int_member ("id");
+      remove_user (user_id);
     }
   }
 
   private void add_user (Json.Object user_obj) {
     var entry = new UserFilterEntry ();
+    entry.user_id = user_obj.get_int_member ("id");
     entry.name = user_obj.get_string_member ("name");
     entry.screen_name = user_obj.get_string_member ("screen_name");
     entry.avatar = user_obj.get_string_member ("profile_image_url");
     user_list.add (entry);
   }
 
+  private void remove_user (int64 id) {
+    foreach (Gtk.Widget w in user_list.get_children ()) {
+      if (!(w is UserFilterEntry))
+        continue;
+
+      if (((UserFilterEntry)w).user_id == id)
+        user_list.remove (w);
+    }
+  }
 
   public void on_leave () {}
   public void create_tool_button(Gtk.RadioToolButton? group) {
