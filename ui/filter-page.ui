@@ -42,9 +42,10 @@
             </object>
           </child>
           <child>
-            <object class="GtkLabel" id="aaa">
+            <object class="GtkLabel" id="user_list_label">
               <property name="can_focus">False</property>
-              <property name="visible">True</property>
+              <property name="visible">False</property>
+              <property name="no_show_all">True</property>
               <property name="label" translatable="Yes">Users:</property>
               <property name="margin_top">25</property>
               <property name="margin_left">25</property>
@@ -53,13 +54,13 @@
             </object>
           </child>
           <child>
-            <object class="GtkFrame" id="frame3">
-              <property name="visible">True</property>
+            <object class="GtkFrame" id="user_list_frame">
+              <property name="visible">False</property>
+              <property name="no_show_all">True</property>
               <property name="can_focus">False</property>
               <property name="valign">start</property>
               <property name="margin_left">25</property>
               <property name="margin_right">25</property>
-              <property name="margin_bottom">10</property>
               <property name="label_xalign">0</property>
               <property name="shadow_type">in</property>
               <child>
@@ -79,7 +80,8 @@
             </object>
             </child>
             <child>
-              <object class="GtkLabel" id="bbb">
+              <object class="GtkLabel" id="aaaaaa">
+                <property name="no_show_all">True</property>
                 <property name="can_focus">False</property>
                 <property name="visible">True</property>
                 <property name="label" translatable="Yes">You can block users in their profile</property>
@@ -87,6 +89,7 @@
                 <property name="justify">center</property>
                 <property name="margin_left">25</property>
                 <property name="margin_right">25</property>
+                <property name="margin_top">10</property>
                 <style>
                   <class name="dim-label" />
                 </style>
