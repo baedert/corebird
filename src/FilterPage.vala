@@ -24,6 +24,10 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
   private Gtk.ListBox filter_list;
   [GtkChild]
   private Gtk.ListBox user_list;
+  [GtkChild]
+  private Gtk.Label user_list_label;
+  [GtkChild]
+  private Gtk.Frame user_list_frame;
   private bool inited = false;
 
   public FilterPage (int id) {
@@ -76,10 +80,15 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
         return;
       }
       Json.Array users = parser.get_root ().get_object ().get_array_member ("users");
+      uint n_users = users.get_length ();
       users.foreach_element ((arr, index, node) => {
         var obj = node.get_object ();
         add_user (obj);
       });
+      if (n_users > 0) {
+        user_list_frame.show ();
+        user_list_label.show ();
+      }
     });
 
 
@@ -148,12 +157,17 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
   }
 
   private void add_user (Json.Object user_obj) {
+    int64 id = user_obj.get_int_member ("id");
+    // make sure the user does not yet exist in the list
+    remove_user (id);
     var entry = new UserFilterEntry ();
-    entry.user_id = user_obj.get_int_member ("id");
+    entry.user_id = id;
     entry.name = user_obj.get_string_member ("name");
     entry.screen_name = user_obj.get_string_member ("screen_name");
     entry.avatar = user_obj.get_string_member ("profile_image_url");
     user_list.add (entry);
+    user_list_frame.show ();
+    user_list_label.show ();
   }
 
   private void remove_user (int64 id) {
