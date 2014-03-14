@@ -94,6 +94,7 @@ class ProfilePage : ScrollWidget, IPage {
   private GLib.Cancellable data_cancellable;
   private bool lists_page_inited = false;
   private ulong page_change_signal = 0;
+  private bool block_item_blocked = false;
 
   public ProfilePage (int id) {
     this.id = id;
@@ -196,7 +197,9 @@ class ProfilePage : ScrollWidget, IPage {
     var relationship = parser.get_root ().get_object ().get_object_member ("relationship");
     bool followed_by = relationship.get_object_member ("target").get_boolean_member ("following");
     follows_you_label.visible = followed_by;
+    block_item_blocked = true;
     block_menu_item.active = relationship.get_object_member ("source").get_boolean_member ("blocking");
+    block_item_blocked = false;
   }
 
   private async void load_profile_data (int64 user_id) { //{{{
@@ -503,10 +506,14 @@ class ProfilePage : ScrollWidget, IPage {
 
   [GtkCallback]
   private async void block_item_toggled_cb (Gtk.CheckMenuItem source) {
+    if (block_item_blocked)
+      return;
+
     var call = account.proxy.new_call ();
     call.set_method ("POST");
     if (source.active) {
       call.set_function ("1.1/blocks/create.json");
+      //set_follow_button_state (false);
     } else {
       call.set_function ("1.1/blocks/destroy.json");
     }
@@ -517,8 +524,6 @@ class ProfilePage : ScrollWidget, IPage {
       Utils.show_error_object (call.get_payload (), e.message);
       return;
     }
-    stdout.printf (call.get_payload () + "\n");
-
   }
 
   private void set_follow_button_state (bool following) { //{{{
