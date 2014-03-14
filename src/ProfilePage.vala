@@ -336,7 +336,7 @@ class ProfilePage : ScrollWidget, IPage {
     call.set_function ("1.1/statuses/user_timeline.json");
     call.set_method ("GET");
     call.add_param ("user_id", this.user_id.to_string ());
-    call.add_param ("count", "35");
+    call.add_param ("count", "20");
     call.add_param ("contributor_details", "true");
     call.add_param ("include_my_retweet", "true");
 
