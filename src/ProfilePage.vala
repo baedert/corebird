@@ -451,6 +451,9 @@ class ProfilePage : ScrollWidget, IPage {
     else {
       call.set_function ("1.1/friendships/create.json");
       call.add_param ("follow", "false");
+      block_item_blocked = true;
+      block_menu_item.active = false;
+      block_item_blocked = false;
     }
     message (@"User ID: $user_id");
     message (user_id.to_string ());
