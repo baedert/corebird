@@ -40,7 +40,8 @@ enum StreamMessageType {
   EVENT_FAVORITE,
   EVENT_UNFAVORITE,
   EVENT_UNFOLLOW,
-  EVENT_BLOCK
+  EVENT_BLOCK,
+  EVENT_UNBLOCK
 }
 
 
@@ -225,6 +226,8 @@ class UserStream : Object {
         return StreamMessageType.EVENT_UNFOLLOW;
       case "block":
         return StreamMessageType.EVENT_BLOCK;
+      case "unblock":
+        return StreamMessageType.EVENT_UNBLOCK;
     }
 
     return 0;
