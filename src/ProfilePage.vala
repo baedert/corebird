@@ -513,7 +513,7 @@ class ProfilePage : ScrollWidget, IPage {
     call.set_method ("POST");
     if (source.active) {
       call.set_function ("1.1/blocks/create.json");
-      //set_follow_button_state (false);
+      set_follow_button_state (false);
     } else {
       call.set_function ("1.1/blocks/destroy.json");
     }
