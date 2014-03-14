@@ -84,6 +84,8 @@ class ProfilePage : ScrollWidget, IPage {
   private UserListsWidget user_lists;
   [GtkChild]
   private Gtk.Stack user_stack;
+  [GtkChild]
+  private Gtk.CheckMenuItem block_menu_item;
   private bool following;
   private int64 user_id;
   private new string name;
@@ -191,9 +193,10 @@ class ProfilePage : ScrollWidget, IPage {
       critical ("%s:\n%s", e.message, call.get_payload ());
       return;
     }
-    bool followed_by = parser.get_root ().get_object ().get_object_member ("relationship")
-                             .get_object_member ("target").get_boolean_member ("following");
+    var relationship = parser.get_root ().get_object ().get_object_member ("relationship");
+    bool followed_by = relationship.get_object_member ("target").get_boolean_member ("following");
     follows_you_label.visible = followed_by;
+    block_menu_item.active = relationship.get_object_member ("source").get_boolean_member ("blocking");
   }
 
   private async void load_profile_data (int64 user_id) { //{{{
