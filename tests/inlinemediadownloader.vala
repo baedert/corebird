@@ -24,7 +24,7 @@ void media_name () {
   assert (path == Dirs.cache ("assets/media/0_1.png"));
 
   path = InlineMediaDownloader.get_media_path (t, "http://bla.com/foobar.png");
-  message ("pat: %s", path);
+  message ("path: %s", path);
   assert (path == Dirs.cache ("assets/media/0_1.png"));
 }
 
