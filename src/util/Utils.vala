@@ -99,21 +99,21 @@ namespace Utils {
    *
    * @return The filename of the given path, and nothing else.
    */
-  string get_file_name(string path){
-    return path.substring(path.last_index_of_char('/') + 1);
+  string get_file_name (string path) {
+    return path.substring (path.last_index_of_char ('/') + 1);
   }
 
   /**
    * Extracts the file type from the given path.
    * E.g. for http://foo.org/bar/bla.png, this will just return "png"
    */
-  string get_file_type(string path){
-    string filename = get_file_name(path);
-    if(filename.index_of_char('.') == -1)
+  string get_file_type (string path) {
+    string filename = get_file_name (path);
+    if (filename.index_of_char ('.') == -1)
       return "";
-    string type = filename.substring(filename.last_index_of_char('.') + 1);
-    type = type.down();
-    if(type == "jpg")
+    string type = filename.substring (filename.last_index_of_char ('.') + 1);
+    type = type.down ();
+    if (type == "jpg")
       return "jpeg";
     return type;
   }
@@ -123,8 +123,8 @@ namespace Utils {
    *
    * @return the 'calculated' avatar name
    */
-  string get_avatar_name(string path){
-    string[] parts = path.split("/");
+  string get_avatar_name (string path) {
+    string[] parts = path.split ("/");
     return parts[parts.length - 2]+"_"+parts[parts.length - 1];
   }
 
