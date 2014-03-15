@@ -183,7 +183,7 @@ public class UserStream : Object {
       else if (root.has_member ("status_withheld"))
         type = StreamMessageType.UNSUPPORTED;
 
-#if __DEV
+#if DEBUG
       debug ("Message with type %s", type.to_string ());
       if (type != StreamMessageType.FRIENDS)
         stdout.printf (data.str+"\n");

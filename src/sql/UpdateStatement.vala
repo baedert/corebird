@@ -90,7 +90,7 @@ namespace Sql {
     public UpdateStatement valb (string col_name, bool col_value) {
       return val (col_name, col_value ? "1" : "0");
     }
-#if __DEV
+#if DEBUG
     ~UpdateStatement () {
       if (!ran)
         critical ("UpdateStatement for %s did not run.", query_builder.str);

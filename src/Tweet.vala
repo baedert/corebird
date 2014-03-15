@@ -21,7 +21,7 @@ using Gtk;
 public class Tweet : GLib.Object {
   public static const int MAX_LENGTH = 140;
 
-#if __DEV
+#if DEBUG
   public string json_data;
 #endif
 
@@ -220,7 +220,7 @@ public class Tweet : GLib.Object {
       this.avatar = a;
     });
 
-#if __DEV
+#if DEBUG
     var gen = new Json.Generator ();
     gen.root = status_node;
     gen.pretty = true;

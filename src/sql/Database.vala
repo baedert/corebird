@@ -65,7 +65,7 @@ public class Database {
   }
 
   public void exec (string sql, Sqlite.Callback? callback = null) {
-#if __DEV
+#if DEBUG
     string err = "";
     int val = db.exec (sql, callback, out err);
     if (val != Sqlite.OK && val != 4)

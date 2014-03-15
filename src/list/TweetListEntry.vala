@@ -240,7 +240,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
 
   [GtkCallback]
   private bool key_released_cb (Gdk.EventKey evt) {
-#if __DEV
+#if DEBUG
     switch(evt.keyval) {
       case Gdk.Key.k:
         stdout.printf (tweet.json_data+"\n");

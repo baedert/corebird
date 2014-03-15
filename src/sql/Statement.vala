@@ -86,7 +86,7 @@ namespace Sql {
       return val (col_name, col_value ? "1" : "0");
     }
 
-#if __DEV
+#if DEBUG
     ~InsertStatement () {
       if (!ran)
         critical ("InsertStatement for %s did not run.", query_builder.str);
