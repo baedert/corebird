@@ -49,6 +49,8 @@ class UserFilterEntry : Gtk.ListBoxRow, ITwitterItem {
 
   public int64 user_id { get; set; }
 
+  public signal void deleted (int64 id);
+
   private void real_set_avatar (string avatar_url) {
     avatar_image.pixbuf = Twitter.get ().get_avatar (avatar_url, (a) => {
       avatar_image.pixbuf = a;
@@ -56,4 +58,9 @@ class UserFilterEntry : Gtk.ListBoxRow, ITwitterItem {
   }
 
   public int update_time_delta (GLib.DateTime? now = null) {return 0;}
+
+  [GtkCallback]
+  private void delete_activated_cb () {
+    deleted (user_id);
+  }
 }

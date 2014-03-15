@@ -165,6 +165,7 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
     entry.name = user_obj.get_string_member ("name");
     entry.screen_name = user_obj.get_string_member ("screen_name");
     entry.avatar = user_obj.get_string_member ("profile_image_url");
+    entry.deleted.connect ((id) => { unblock_user (id);});
     user_list.add (entry);
     user_list_frame.show ();
     user_list_label.show ();
@@ -178,6 +179,25 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
       if (((UserFilterEntry)w).user_id == id)
         user_list.remove (w);
     }
+  }
+
+  private void unblock_user (int64 id) {
+    var call = account.proxy.new_call ();
+    call.set_method ("POST");
+    call.set_function ("1.1/blocks/destroy.json");
+    call.add_param ("include_entities", "false");
+    call.add_param ("skip_status", "true");
+    call.add_param ("user_id", id.to_string ());
+    call.invoke_async.begin (null, (o, res) => {
+      try {
+        call.invoke_async.end (res);
+      } catch (GLib.Error e) {
+        Utils.show_error_object (call.get_payload (), e.message);
+        warning (e.message);
+        return;
+      }
+    });
+    remove_user (id);
   }
 
   public void on_leave () {}
