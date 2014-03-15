@@ -58,7 +58,7 @@ AC_ARG_ENABLE(debug, AS_HELP_STRING([--enable-debug], [Enable debugging]),, enab
 AM_CONDITIONAL([ENABLE_DEBUG], [ test "$enable_debug" = "yes"])
 
 if test "$enable_debug" = "yes"; then
-  CB_VALA_FLAGS = "-D DEBUG"
+  CB_VALA_FLAGS="$CB_VALA_FLAGS -D DEBUG"
 fi
 
 
