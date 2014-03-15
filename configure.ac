@@ -53,6 +53,15 @@ AM_CONDITIONAL([ENABLE_CATALOG], [ test "$enable_catalog" = "yes" ])
 AC_ARG_ENABLE(tests, AS_HELP_STRING([--enable-tests], [Build tests]),, enable_tests=no)
 AM_CONDITIONAL([ENABLE_TESTS], [ test "$enable_tests" = "yes" ])
 
+# --enable-debug
+AC_ARG_ENABLE(debug, AS_HELP_STRING([--enable-debug], [Enable debugging]),, enable_debug=no)
+AM_CONDITIONAL([ENABLE_DEBUG], [ test "$enable_debug" = "yes"])
+
+if test "$enable_debug" = "yes"; then
+  CB_VALA_FLAGS = "-D DEBUG"
+fi
+
+
 # Gettext stuff
 GETTEXT_PACKAGE=corebird
 AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE], ["$GETTEXT_PACKAGE"], [Gettext Package])
@@ -84,4 +93,5 @@ echo "
            C Compiler: ${CC} ${CFLAGS}
                 Tests: $enable_tests
               Catalog: $enable_catalog
+            Debugging: $enable_debug
 "
