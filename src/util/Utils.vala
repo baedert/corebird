@@ -73,7 +73,7 @@ namespace Utils {
    * time and now.
    * Example: "5m" or "3h" or "26m" or "16 Nov"
    */
-  string get_time_delta (GLib.DateTime time, GLib.DateTime now) {
+  public string get_time_delta (GLib.DateTime time, GLib.DateTime now) {
     //diff is the time difference in microseconds
     GLib.TimeSpan diff = now.difference (time);
 
