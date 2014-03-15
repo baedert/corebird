@@ -179,6 +179,11 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
       if (((UserFilterEntry)w).user_id == id)
         user_list.remove (w);
     }
+
+    if (user_list.get_children ().length () == 0) {
+      user_list_frame.hide ();
+      user_list_label.hide ();
+    }
   }
 
   private void unblock_user (int64 id) {
