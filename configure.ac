@@ -49,10 +49,6 @@ AC_PATH_PROG(GLIB_COMPILE_RESOURCES, glib-compile-resources)
 AC_ARG_ENABLE(catalog, AC_HELP_STRING([--enable-catalog], [Install Glade catalog]),, enable_catalog=no)
 AM_CONDITIONAL([ENABLE_CATALOG], [ test "$enable_catalog" = "yes" ])
 
-# --enable-tests
-AC_ARG_ENABLE(tests, AS_HELP_STRING([--enable-tests], [Build tests]),, enable_tests=no)
-AM_CONDITIONAL([ENABLE_TESTS], [ test "$enable_tests" = "yes" ])
-
 # --enable-debug
 AC_ARG_ENABLE(debug, AS_HELP_STRING([--enable-debug], [Enable debugging]),, enable_debug=no)
 AM_CONDITIONAL([ENABLE_DEBUG], [ test "$enable_debug" = "yes"])
@@ -91,7 +87,6 @@ echo "
                Prefix: ${prefix}
         Vala Compiler: ${VALAC}
            C Compiler: ${CC} ${CFLAGS}
-                Tests: $enable_tests
               Catalog: $enable_catalog
             Debugging: $enable_debug
 "
