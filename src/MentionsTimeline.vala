@@ -95,20 +95,6 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
   } // }}}
 
 
-  private void mark_seen (int64 id) {
-    // TODO: All these foreach loops don't allow for early exit.
-    tweet_list.@foreach ((w) => {
-      if (w == null || !(w is TweetListEntry))
-        return;
-      var tle = (TweetListEntry) w;
-      if (tle.tweet.id == id) {
-        tle.seen = true;
-        unread_count--;
-        update_unread_count ();
-      }
-    });
-  }
-
   public override void load_newest () {
     this.loading = true;
     this.load_newest_internal.begin("1.1/statuses/mentions_timeline.json", () => {
