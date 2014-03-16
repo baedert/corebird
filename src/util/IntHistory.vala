@@ -17,7 +17,7 @@
 
 
 
-class IntHistory {
+public class IntHistory {
   private int[] elements;
   private int pos = -1;
 
