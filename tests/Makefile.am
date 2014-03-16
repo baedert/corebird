@@ -1,6 +1,6 @@
 AM_CPPFLAGS = $(CB_CFLAGS) -I$(top_srcdir)/src
 
-TESTS = tweet_length media utils inthistory
+TESTS = tweet_length media utils inthistory usercounter
 check_PROGRAMS = $(TESTS)
 
 tweet_length_SOURCES = tweet_length.vala
@@ -21,6 +21,10 @@ utils_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
 inthistory_SOURCES = inthistory.vala
 inthistory_LDADD = $(top_builddir)/src/libcorebird.la
 inthistory_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
+
+usercounter_SOURCES = usercounter.vala
+usercounter_LDADD = $(top_builddir)/src/libcorebird.la
+usercounter_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
 
 
 CLEANFILES = *.c
