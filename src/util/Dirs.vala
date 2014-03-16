@@ -50,7 +50,7 @@ namespace Dirs {
     return data_dir + path;
   }
 
-  string config (string path) {
+  public string config (string path) {
     if (config_dir == null) {
       config_dir = GLib.Environment.get_home_dir () + "/.corebird/";
       if (!GLib.FileUtils.test (config_dir, GLib.FileTest.EXISTS)) {
