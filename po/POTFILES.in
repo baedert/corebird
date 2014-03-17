@@ -37,5 +37,5 @@ src/FavoritesTimeline.vala
 [type: gettext/glade]ui/start-conversation-entry.ui
 [type: gettext/glade]ui/list-statuses-page.ui
 data/org.baedert.corebird.gschema.xml.in
-data/corebird.desktop.in.in
+data/org.baedert.corebird.desktop.in.in
 data/corebird.appdata.xml.in

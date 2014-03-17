@@ -15,7 +15,7 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-interface ITwitterItem : Gtk.Widget {
+public interface ITwitterItem : Gtk.Widget {
  public static int sort_func (Gtk.ListBoxRow a, Gtk.ListBoxRow b) {
     if(((ITwitterItem)a).sort_factor < ((ITwitterItem)b).sort_factor)
       return 1;

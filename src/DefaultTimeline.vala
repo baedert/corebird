@@ -20,7 +20,7 @@
 
 using Gtk;
 
-abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
+public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   protected bool initialized = false;
   public int id                          { get; set; }
   public int unread_count                { get; set; }

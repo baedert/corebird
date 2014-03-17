@@ -15,7 +15,7 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class TweetListBox : Gtk.ListBox {
+public class TweetListBox : Gtk.ListBox {
   private Gtk.Stack placeholder = null;
   private Gtk.Label no_entries_label;
 

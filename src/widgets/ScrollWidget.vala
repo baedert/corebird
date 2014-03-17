@@ -21,7 +21,7 @@ const int TOP    = 1;
 const int BOTTOM = 2;
 const int NONE   = 0;
 
-class ScrollWidget : ScrolledWindow {
+public class ScrollWidget : ScrolledWindow {
   private static const int64 TRANSITION_DURATION = 300;
   public signal void scrolled_to_start(double value);
   public signal void scrolled_to_end();

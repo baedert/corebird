@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2013 Ryan Lerch <ryanlerch@fedoraproject.org> -->
 <application>
- <id type="desktop">corebird.desktop</id>
+ <id type="desktop">org.baedert.corebird.desktop</id>
  <licence>CC0</licence>
  <description>
   <_p>
