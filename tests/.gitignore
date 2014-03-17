@@ -1,7 +1,9 @@
+*.log
+*.trs
+
 tweet_length
 media
 utils
 inthistory
 usercounter
-*.log
-*.trs
+hometimeline
