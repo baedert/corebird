@@ -27,7 +27,7 @@ usercounter_LDADD = $(top_builddir)/src/libcorebird.la
 usercounter_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
 
 
-hometimeline_SOURCES = hometimeliner.vala
+hometimeline_SOURCES = hometimeline.vala
 hometimeline_LDADD = $(top_builddir)/src/libcorebird.la
 hometimeline_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
 
