@@ -2,7 +2,7 @@
 SUBDIRS = symbolics
 
 desktopdir = $(prefix)/share/applications
-desktop_in_files = corebird.desktop.in
+desktop_in_files = org.baedert.corebird.desktop.in
 desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
 @INTLTOOL_DESKTOP_RULE@
 
@@ -24,10 +24,10 @@ gsettings_SCHEMAS = org.baedert.corebird.gschema.xml
 
 
 EXTRA_DIST = \
-						 corebird.desktop.in \
+						 org.baedert.corebird.desktop.in \
 						 $(desktop_in_files) \
 						 $(appdata_in_files) \
-						 org.baedert.corebird.gschema.xml 
+						 org.baedert.corebird.gschema.xml
 
 
 
