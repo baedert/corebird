@@ -72,7 +72,7 @@ AC_CONFIG_FILES([Makefile
                  src/Makefile
                  ui/Makefile
                  data/Makefile
-                 data/corebird.desktop.in
+                 data/org.baedert.corebird.desktop.in
                  data/symbolics/Makefile
                  assets/Makefile
                  po/Makefile.in
