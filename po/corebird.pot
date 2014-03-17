@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: corebird 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-17 20:17+0100\n"
+"POT-Creation-Date: 2014-02-26 22:11+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -64,7 +64,7 @@ msgstr ""
 msgid "Favorites"
 msgstr ""
 
-#: ../src/ProfilePage.vala:510 ../src/TweetInfoPage.vala:415
+#: ../src/ProfilePage.vala:511 ../src/TweetInfoPage.vala:415
 msgid "Follow"
 msgstr ""
 
@@ -85,10 +85,6 @@ msgstr ""
 msgid "New Mention from %s"
 msgstr ""
 
-#: ../src/MainWindow.vala:75
-msgid "New Tweet"
-msgstr ""
-
 #: ../src/DMThreadsPage.vala:234
 msgid "New direct message!"
 msgstr ""
@@ -99,6 +95,14 @@ msgstr ""
 
 #: ../src/util/Utils.vala:82
 msgid "Now"
+msgstr ""
+
+#: ../src/Corebird.vala:144
+msgid "Open Account"
+msgstr ""
+
+#: ../src/TweetInfoPage.vala:424
+msgid "Open in Browser"
 msgstr ""
 
 #: ../src/ProfilePage.vala:263
@@ -117,6 +121,10 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
+#: ../src/TweetInfoPage.vala:424
+msgid "Source"
+msgstr ""
+
 #: ../src/ProfilePage.vala:402
 #, c-format
 msgid "Tweet to @%s"
@@ -125,15 +133,19 @@ msgstr ""
 #: ../src/widgets/AccountCreateWidget.vala:47
 msgid ""
 "Unauthorized. Most of the time, this means that there's something wrong with "
-"the Twitter servers and you shuld try again later"
+"the Twitter servers and you should try again later"
 msgstr ""
 
-#: ../src/ProfilePage.vala:506 ../src/TweetInfoPage.vala:411
+#: ../src/ProfilePage.vala:507 ../src/TweetInfoPage.vala:411
 msgid "Unfollow"
 msgstr ""
 
 #: ../src/widgets/AccountCreateWidget.vala:64
 msgid "Wrong PIN"
+msgstr ""
+
+#: ../ui/menu.ui:12
+msgid "About"
 msgstr ""
 
 #: ../ui/about-dialog.ui:8
@@ -185,9 +197,8 @@ msgstr ""
 msgid "Creator:"
 msgstr ""
 
-#: ../ui/tweet-list-entry.ui:30 ../ui/dm-thread-entry.ui:173
-#: ../ui/tweet-info-page.ui:32 ../ui/list-list-entry.ui:12
-#: ../ui/list-statuses-page.ui:223
+#: ../ui/tweet-list-entry.ui:30 ../ui/tweet-info-page.ui:32
+#: ../ui/list-list-entry.ui:12 ../ui/list-statuses-page.ui:223
 msgid "Delete"
 msgstr ""
 
@@ -291,12 +302,12 @@ msgstr ""
 msgid "Public"
 msgstr ""
 
-#: ../ui/tweet-list-entry.ui:12 ../ui/tweet-info-page.ui:24
-msgid "Quote"
+#: ../ui/menu.ui:16
+msgid "Quit"
 msgstr ""
 
-#: ../ui/dm-thread-entry.ui:10
-msgid "Really?"
+#: ../ui/tweet-list-entry.ui:12 ../ui/tweet-info-page.ui:24
+msgid "Quote"
 msgstr ""
 
 #: ../ui/remove-account-dialog.ui:33
@@ -325,6 +336,10 @@ msgstr ""
 
 #: ../ui/dm-page.ui:69 ../ui/compose-window.ui:160
 msgid "Send"
+msgstr ""
+
+#: ../ui/settings-dialog.ui:20 ../ui/menu.ui:8
+msgid "Settings"
 msgstr ""
 
 #: ../ui/settings-dialog.ui:218
@@ -406,7 +421,7 @@ msgid ""
 msgstr ""
 
 #: ../org.baedert.corebird.gschema.xml.h:13
-msgid "Accelerator to press in ordner to show/hide the sidebar"
+msgid "Accelerator to press in order to show/hide the sidebar"
 msgstr ""
 
 #: ../org.baedert.corebird.gschema.xml.h:7
@@ -440,7 +455,7 @@ msgstr ""
 
 #: ../org.baedert.corebird.gschema.xml.h:12
 msgid ""
-"The accelerator to press in ordner to bring the ComposeTweetWindow up. Muse "
+"The accelerator to press in order to bring the ComposeTweetWindow up. Must "
 "be parseable with gtk_accelerator_parse"
 msgstr ""
 
@@ -450,17 +465,18 @@ msgstr ""
 
 #: ../org.baedert.corebird.gschema.xml.h:3
 msgid ""
-"Whether the user should be notified when another user mentions him in a tweet"
+"Whether the user should be notified when another user mentions them in a "
+"tweet"
 msgstr ""
 
 #: ../org.baedert.corebird.gschema.xml.h:5
 msgid ""
-"Whether the user should be notified when another user starts following him"
+"Whether the user should be notified when another user starts following them"
 msgstr ""
 
 #: ../org.baedert.corebird.gschema.xml.h:4
 msgid ""
-"Whether the user should be notified when another user writes him a direct "
+"Whether the user should be notified when another user writes them a direct "
 "message"
 msgstr ""
 

@@ -209,4 +209,20 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
 
     return true;
   }
+
+  protected void mark_seen (int64 id) {
+    foreach (Gtk.Widget w in tweet_list.get_children ()) {
+       if (w == null || !(w is TweetListEntry))
+        continue;
+      var tle = (TweetListEntry) w;
+      if (tle.tweet.id == id) {
+        tle.seen = true;
+        unread_count--;
+        update_unread_count ();
+        break;
+      }
+    }
+  }
+
+
 }

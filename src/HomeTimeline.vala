@@ -39,6 +39,7 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
     }
   } // }}}
 
+  // TODO: Split this logic out and make it unit-testable
   private void add_tweet (Json.Node obj) { // {{{
     GLib.DateTime now = new GLib.DateTime.now_local ();
     Tweet t = new Tweet();
@@ -79,7 +80,7 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
 
     debug ("Stack size: %d", stack_size);
     debug ("Unread count: %d", unread_count);
-    if (stack_size == 1) {
+    if (stack_size == 1 && !auto_scroll) {
       if (t.has_inline_media){
         t.inline_media_added.connect (tweet_inline_media_added_cb);
       } else {

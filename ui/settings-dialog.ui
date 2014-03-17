@@ -17,7 +17,7 @@
     <signal name="delete_event" handler="window_destroy_cb" swapped="no" />
     <child type="titlebar">
       <object class="GtkHeaderBar" id="header_bar">
-        <property name="title">Settings</property>
+        <property name="title" translatable="yes">Settings</property>
         <property name="custom_title">custom_title</property>
         <property name="show_close_button">true</property>
       </object>
@@ -124,7 +124,7 @@
             </child>
           </object>
           <packing>
-            <property name="title">Accounts</property>
+            <property name="title" translatable="yes">Accounts</property>
           </packing>
         </child>
 
@@ -336,7 +336,7 @@
 
         </object>
         <packing>
-          <property name="title">Interface</property>
+          <property name="title" translatable="yes">Interface</property>
         </packing>
       </child>
 
@@ -512,7 +512,7 @@
             </child>
           </object>
           <packing>
-            <property name="title">Notifications</property>
+            <property name="title" translatable="yes">Notifications</property>
           </packing>
         </child>
       </object>

@@ -59,6 +59,8 @@ class StartConversationEntry : Gtk.ListBoxRow {
     scroller.add (completion_list);
     completion_window.add (popup_frame);
 
+    completion_list.activate_on_single_click = false;
+    completion_list.row_activated.connect (go_button_clicked_cb);
     user_completion = new UserCompletion (account, MAX_RESULTS);
     user_completion.connect_to (name_entry.buffer, "text");
     user_completion.start_completion.connect (() => {
@@ -133,9 +135,10 @@ class StartConversationEntry : Gtk.ListBoxRow {
 //      activated ();
     string screen_name;
 
-    if (completion_list.get_selected_row () != null)
+    if (completion_list.get_selected_row () != null) {
       screen_name = ((CompletionListEntry)completion_list.get_selected_row ()).get_screen_name ();
-    else
+      name_entry.text = screen_name;
+    } else
       screen_name = name_entry.text;
 
     if (screen_name.has_prefix ("@"))
@@ -170,7 +173,6 @@ class StartConversationEntry : Gtk.ListBoxRow {
       int64 user_id = root.get_int_member ("id");
       string name = root.get_string_member ("name");
       string avatar_url = root.get_string_member ("profile_image_url");
-
       start (user_id, screen_name, name, avatar_url);
 
       name_entry.sensitive = true;
