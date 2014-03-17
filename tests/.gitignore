@@ -1,5 +1,6 @@
 *.log
 *.trs
+*.stamp-t
 
 tweet_length
 media
