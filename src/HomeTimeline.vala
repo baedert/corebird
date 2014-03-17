@@ -23,7 +23,7 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
     base (id);
   }
 
-  private void stream_message_received (StreamMessageType type, Json.Node root) { // {{{
+  public void stream_message_received (StreamMessageType type, Json.Node root) { // {{{
     if (type == StreamMessageType.TWEET) {
       add_tweet (root);
     } else if (type == StreamMessageType.DELETE) {
