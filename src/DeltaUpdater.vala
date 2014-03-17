@@ -17,7 +17,7 @@
 
 using Gee;
 
-class DeltaUpdater : GLib.Object {
+public class DeltaUpdater : GLib.Object {
   private ArrayList<WeakRef<ITwitterItem>> minutely = new ArrayList<WeakRef<ITwitterItem>> ();
   private ArrayList<WeakRef<ITwitterItem>> hourly   = new ArrayList<WeakRef<ITwitterItem>> ();
   private uint minutely_id;

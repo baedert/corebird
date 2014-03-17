@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-06 12:54+0100\n"
+"POT-Creation-Date: 2014-03-17 13:20+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -52,22 +52,22 @@ msgstr ""
 msgid "Wrong PIN"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:92
+#: ../src/HomeTimeline.vala:93
 #, c-format
 msgid "%d new Tweets!"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:102
+#: ../src/HomeTimeline.vala:103
 #, c-format
 msgid "%s retweeted %s"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:104
+#: ../src/HomeTimeline.vala:105
 #, c-format
 msgid "%s tweeted"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:132 ../src/HomeTimeline.vala:133
+#: ../src/HomeTimeline.vala:133 ../src/HomeTimeline.vala:134
 msgid "Home"
 msgstr ""
 
@@ -152,7 +152,7 @@ msgstr ""
 msgid "New Mention from %s"
 msgstr ""
 
-#: ../src/MentionsTimeline.vala:136 ../src/MentionsTimeline.vala:137
+#: ../src/MentionsTimeline.vala:122 ../src/MentionsTimeline.vala:123
 msgid "Mentions"
 msgstr ""
 
@@ -452,11 +452,11 @@ msgstr ""
 msgid "Disable this to save some bandwidth"
 msgstr ""
 
-#: ../data/corebird.desktop.in.in.h:1
+#: ../data/org.baedert.corebird.desktop.in.in.h:1
 msgid "Twitter Client"
 msgstr ""
 
-#: ../data/corebird.desktop.in.in.h:2
+#: ../data/org.baedert.corebird.desktop.in.in.h:2
 msgid "twitter;"
 msgstr ""
 

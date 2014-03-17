@@ -17,7 +17,7 @@
 
 using Gtk;
 
-class HomeTimeline : IMessageReceiver, DefaultTimeline {
+public class HomeTimeline : IMessageReceiver, DefaultTimeline {
 
   public HomeTimeline(int id) {
     base (id);

@@ -20,7 +20,7 @@
  * Describes everything a timeline should provide, in an abstract way.
  * Default implementations are given through the *_internal methods.
  */
-interface ITimeline : Gtk.Widget, IPage {
+public interface ITimeline : Gtk.Widget, IPage {
   public static const int REST = 25;
   /** The lowest id of any tweet in this timeline */
   protected abstract int64 lowest_id            {get; set;}

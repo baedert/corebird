@@ -18,7 +18,7 @@
 using Gtk;
 
 
-class BadgeRadioToolButton : Gtk.RadioToolButton {
+public class BadgeRadioToolButton : Gtk.RadioToolButton {
   private static const int BADGE_SIZE = 10;
   public bool show_badge{ get; set; default = false;}
 
