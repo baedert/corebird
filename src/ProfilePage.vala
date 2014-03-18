@@ -433,7 +433,7 @@ class ProfilePage : ScrollWidget, IPage {
 
     if (url != null && url != "") {
       url_label.visible = true;
-      url_label.set_markup ("<a href='%s'>%s</a>".printf (url, url));
+      url_label.set_markup ("<span underline='none'><a href='%s'>%s</a></span>".printf (url, url));
     } else
       url_label.visible = false;
 

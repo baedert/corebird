@@ -421,7 +421,8 @@ class TweetInfoPage : IPage , ScrollWidget {
   private void set_source_link (int64 id, string screen_name) {
     var link = "https://twitter.com/%s/status/%s".printf (screen_name,
                                                           id.to_string());
-    source_label.label = "<a href='%s' title='%s'>%s</a>".printf (link, _("Open in Browser"), _("Source"));
+    source_label.label = "<span underline='none'><a href='%s' title='%s'>%s</a></span>"
+                         .printf (link, _("Open in Browser"), _("Source"));
   }
 
   /**

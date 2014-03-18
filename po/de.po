@@ -47,6 +47,10 @@ msgstr ""
 msgid "(%d unread)"
 msgstr "(%d ungelesen)"
 
+#: ../ui/menu.ui:12
+msgid "About"
+msgstr ""
+
 #: ../ui/about-dialog.ui:8
 msgid "About Corebird"
 msgstr ""
@@ -109,9 +113,8 @@ msgstr ""
 msgid "Creator:"
 msgstr ""
 
-#: ../ui/tweet-list-entry.ui:30 ../ui/dm-thread-entry.ui:173
-#: ../ui/tweet-info-page.ui:32 ../ui/list-list-entry.ui:12
-#: ../ui/list-statuses-page.ui:223
+#: ../ui/tweet-list-entry.ui:30 ../ui/tweet-info-page.ui:32
+#: ../ui/list-list-entry.ui:12 ../ui/list-statuses-page.ui:223
 msgid "Delete"
 msgstr ""
 
@@ -151,7 +154,7 @@ msgstr ""
 msgid "Favorites"
 msgstr "Favoriten"
 
-#: ../src/ProfilePage.vala:510 ../src/TweetInfoPage.vala:415
+#: ../src/ProfilePage.vala:511 ../src/TweetInfoPage.vala:415
 msgid "Follow"
 msgstr "Folgen"
 
@@ -260,8 +263,16 @@ msgstr ""
 msgid "On New Tweets:"
 msgstr ""
 
+#: ../src/Corebird.vala:144
+msgid "Open Account"
+msgstr ""
+
 #: ../ui/account-info-widget.ui:35
 msgid "Open Window"
+msgstr ""
+
+#: ../src/TweetInfoPage.vala:424
+msgid "Open in Browser"
 msgstr ""
 
 #: ../ui/account-create-widget.ui:21
@@ -280,12 +291,12 @@ msgstr ""
 msgid "Public"
 msgstr ""
 
-#: ../ui/tweet-list-entry.ui:12 ../ui/tweet-info-page.ui:24
-msgid "Quote"
+#: ../ui/menu.ui:16
+msgid "Quit"
 msgstr ""
 
-#: ../ui/dm-thread-entry.ui:10
-msgid "Really?"
+#: ../ui/tweet-list-entry.ui:12 ../ui/tweet-info-page.ui:24
+msgid "Quote"
 msgstr ""
 
 #: ../ui/remove-account-dialog.ui:33
@@ -328,6 +339,10 @@ msgstr ""
 msgid "Send"
 msgstr ""
 
+#: ../ui/settings-dialog.ui:20 ../ui/menu.ui:8
+msgid "Settings"
+msgstr ""
+
 #: ../ui/settings-dialog.ui:218
 msgid "Show Inline Media:"
 msgstr ""
@@ -338,6 +353,10 @@ msgstr ""
 
 #: ../org.baedert.corebird.gschema.xml.h:14
 msgid "Size and position of the settings dialog"
+msgstr ""
+
+#: ../src/TweetInfoPage.vala:424
+msgid "Source"
 msgstr ""
 
 #: ../org.baedert.corebird.gschema.xml.h:1
@@ -398,7 +417,7 @@ msgid ""
 "the Twitter servers and you should try again later"
 msgstr ""
 
-#: ../src/ProfilePage.vala:506 ../src/TweetInfoPage.vala:411
+#: ../src/ProfilePage.vala:507 ../src/TweetInfoPage.vala:411
 msgid "Unfollow"
 msgstr ""
 
