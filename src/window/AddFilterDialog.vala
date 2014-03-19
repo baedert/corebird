@@ -73,8 +73,7 @@ class AddFilterDialog : Gtk.Dialog {
 
   private void save_filter () {
     string content = regex_entry.text;
-    account.db.insert ("filters").val ("content", content)
-                                 .val ("block_count", "0").run();
+    account.db.insert ("filters").val ("content", content).run ();
     filter_added (content);
   }
 }

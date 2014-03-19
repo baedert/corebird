@@ -197,7 +197,7 @@ class Account : GLib.Object {
    * Load all the filters from the database.
    */
   private void load_filters () {
-    this.db.select ("filters").cols ("content", "block_count", "id")
+    this.db.select ("filters").cols ("content", "id")
               .order ("id").run ((cols) => {
       Filter f = new Filter (cols[0]);
       f.id = int.parse (cols[2]);
@@ -217,7 +217,6 @@ class Account : GLib.Object {
 
     foreach (Filter f in filters) {
       if (f.matches (t.text)) {
-        f.block_count ++;
         return true;
       }
     }

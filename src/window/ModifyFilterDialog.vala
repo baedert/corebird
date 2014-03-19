@@ -83,7 +83,6 @@ class ModifyFilterDialog : Gtk.Dialog {
     if (this.filter == null) {
       int id = (int)account.db.insert ("filters")
                                .val ("content", content)
-                               .val ("block_count", "0")
                                .run();
       Filter f = new Filter (content);
       f.id = id;
