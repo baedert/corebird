@@ -53,12 +53,17 @@ class UserStream : Object {
   private uint restart_id                           = -1;
   private bool stream_interrupted                   = false;
   private string account_name;
+  private unowned GLib.NetworkMonitor network_monitor;
+  private bool was_network_available;
   public string token {
     set { proxy.token = value; }
   }
   public string token_secret {
     set { proxy.token_secret = value; }
   }
+
+
+
   public signal void interrupted ();
   public signal void resumed ();
 
@@ -73,11 +78,28 @@ class UserStream : Object {
           "https://userstream.twitter.com/", //Url Format
           false
         );
+    this.network_monitor = GLib.NetworkMonitor.get_default ();
+    this.network_monitor.network_changed.connect (network_changed_cb);
+    this.was_network_available = network_monitor.network_available;
   }
 
 
   public void register (IMessageReceiver receiver) {
     receivers.append(receiver);
+  }
+
+  private void network_changed_cb (bool available) {
+    if (available == this.was_network_available)
+      return;
+
+    if (available) {
+      resumed ();
+    } else {
+      interrupted ();
+    }
+
+
+    this.was_network_available = available;
   }
 
 
@@ -94,7 +116,7 @@ class UserStream : Object {
     } catch (GLib.Error e) {
       error (e.message);
     }
-    timeout_id = GLib.Timeout.add (TIMEOUT_INTERVAL, timeout_cb);
+    //timeout_id = GLib.Timeout.add (TIMEOUT_INTERVAL, timeout_cb);
   }
 
   ~UserStream () {
@@ -107,8 +129,8 @@ class UserStream : Object {
   public void stop () {
     message ("STOPPING STREAM FOR " + account_name);
     proxy_call.cancel ();
-    if(timeout_id != -1)
-        GLib.Source.remove (timeout_id);
+    //if(timeout_id != -1)
+        //GLib.Source.remove (timeout_id);
   }
 
   /**
@@ -121,7 +143,7 @@ class UserStream : Object {
     interrupted();
     // We not start another timeout to regularly check if a connection is available
     stream_interrupted = true;
-    restart_id = GLib.Timeout.add (RESTART_INTERVAL, restart_cb);
+    //restart_id = GLib.Timeout.add (RESTART_INTERVAL, restart_cb);
     return false;
   }
 
@@ -154,8 +176,8 @@ class UserStream : Object {
          isn't anymore */
       stream_interrupted = false;
       if (restart_id != -1) {
-        GLib.Source.remove (restart_id);
-        GLib.Source.remove (timeout_id);
+        //GLib.Source.remove (restart_id);
+        //GLib.Source.remove (timeout_id);
       }
       resumed ();
     }
@@ -167,10 +189,10 @@ class UserStream : Object {
     if (real.has_suffix ("\r\n") || real.has_suffix ("\r")) {
       //Reset the timeout
       if (timeout_id != -1) {
-        GLib.Source.remove (timeout_id);
+        //GLib.Source.remove (timeout_id);
       }
-      timeout_id = GLib.Timeout.add (TIMEOUT_INTERVAL, timeout_cb);
-      message ("Timeout created: %u", timeout_id);
+      //timeout_id = GLib.Timeout.add (TIMEOUT_INTERVAL, timeout_cb);
+      //message ("Timeout created: %u", timeout_id);
 
       if (real == "\r\n") {
         message ("HEARTBEAT(%s)", account_name);
