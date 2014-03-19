@@ -145,7 +145,7 @@ class Account : GLib.Object {
     if (url.length > 0 && url == this.avatar_url)
       return;
 
-    message ("Using %s to update the avatar(old: %s)", url, this.avatar_url);
+    debug ("Using %s to update the avatar(old: %s)", url, this.avatar_url);
 
     if (url.length > 0) {
       var session = new Soup.Session ();
@@ -165,7 +165,7 @@ class Account : GLib.Object {
                                            pixbuf.has_alpha, 8, 24, 24);
         pixbuf.scale(scaled_pixbuf, 0, 0, 24, 24, 0, 0, scale_x, scale_y, Gdk.InterpType.HYPER);
         scaled_pixbuf.save(dest_path, type);
-        message ("saving to %s", dest_path);
+        debug ("saving to %s", dest_path);
         this.avatar_small = scaled_pixbuf;
       } catch (GLib.Error e) {
         critical (e.message);
