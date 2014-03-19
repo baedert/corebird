@@ -15,4 +15,5 @@ src/widgets/TweetListBox.c
 src/window/ComposeTweetWindow.c
 src/window/ImageDialog.c
 src/window/UserListDialog.c
+src/window/ModifyFilterDialog.c
 data/org.baedert.corebird.desktop.in

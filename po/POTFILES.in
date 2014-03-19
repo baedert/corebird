@@ -1,6 +1,7 @@
 src/window/ComposeTweetWindow.vala
 src/window/UserListDialog.vala
 src/window/ImageDialog.vala
+src/window/ModifyFilterDialog.vala
 src/widgets/TweetListBox.vala
 src/widgets/AccountCreateWidget.vala
 src/HomeTimeline.vala
@@ -36,6 +37,10 @@ src/FavoritesTimeline.vala
 [type: gettext/glade]ui/list-list-entry.ui
 [type: gettext/glade]ui/start-conversation-entry.ui
 [type: gettext/glade]ui/list-statuses-page.ui
+[type: gettext/glade]ui/filter-list-entry.ui
+[type: gettext/glade]ui/filter-page.ui
+[type: gettext/glade]ui/modify-filter-dialog.ui
+[type: gettext/glade]ui/user-filter-entry.ui
 data/org.baedert.corebird.gschema.xml.in
 data/org.baedert.corebird.desktop.in.in
 data/corebird.appdata.xml.in
