@@ -115,6 +115,9 @@ class SettingsDialog : Gtk.Window {
       account_info_stack.remove (account_info_stack.get_visible_child ());
       Account.remove_account (DUMMY_SCREEN_NAME);
       add_account_button.sensitive = true;
+      // Select another account. We just take the first one
+      if (account_list.get_children () != null)
+        account_list.select_row ((Gtk.ListBoxRow)account_list.get_children ().data);
     } else {
       var remove_dialog = new RemoveAccountDialog ();
       remove_dialog.transient_for = this;
@@ -201,6 +204,9 @@ class SettingsDialog : Gtk.Window {
       acc_window.close ();
     }
 
+    // Select another account. We just take the first one
+    if (account_list.get_children () != null)
+      account_list.select_row ((Gtk.ListBoxRow)account_list.get_children ().data);
   }
 
   private void select_account (string screen_name) {

@@ -66,7 +66,6 @@ class Corebird : Gtk.Application {
     }
 
 
-    // TODO: The switch-page accelerators could also be in a loop...
     this.add_accelerator (Settings.get_accel ("compose-tweet"), "win.compose_tweet", null);
     this.add_accelerator (Settings.get_accel ("toggle-sidebar"), "win.toggle_sidebar", null);
     this.add_accelerator ("<Alt>1", "win.switch_page", new GLib.Variant.int32(0));
@@ -75,6 +74,7 @@ class Corebird : Gtk.Application {
     this.add_accelerator ("<Alt>4", "win.switch_page", new GLib.Variant.int32(3));
     this.add_accelerator ("<Alt>5", "win.switch_page", new GLib.Variant.int32(4));
     this.add_accelerator ("<Alt>6", "win.switch_page", new GLib.Variant.int32(5));
+    this.add_accelerator ("<Alt>7", "win.switch_page", new GLib.Variant.int32(6));
     this.add_accelerator ("<Control>P", "app.show-settings", null);
     this.add_accelerator ("<Control><Shift>Q", "app.quit", null);
 
@@ -108,9 +108,15 @@ class Corebird : Gtk.Application {
     base.startup ();
 
     Dirs.create_dirs ();
-    message ("startup");
+    debug ("startup");
     Corebird.db = new Sql.Database (Dirs.config ("Corebird.db"),
                                     Sql.COREBIRD_INIT_FILE);
+
+    // Setup gettext
+    GLib.Intl.setlocale(GLib.LocaleCategory.ALL, LOCALEDIR);
+    GLib.Intl.bindtextdomain (GETTEXT_PACKAGE, null);
+    GLib.Intl.bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
+    GLib.Intl.textdomain(GETTEXT_PACKAGE);
 
     // Construct app menu
     Gtk.Builder builder = new Gtk.Builder ();
@@ -135,7 +141,7 @@ class Corebird : Gtk.Application {
       mi.set_action_and_target_value ("app.show-" + acc.screen_name, null);
       account_menu.append_item (mi);
     }
-    ((GLib.Menu)acc_menu).append_submenu ("Open Account", account_menu);
+    ((GLib.Menu)acc_menu).append_submenu (_("Open Account"), account_menu);
 
     this.set_app_menu (app_menu);
 
@@ -178,7 +184,7 @@ class Corebird : Gtk.Application {
         return;
       }
     }
-    message("Startup accounts: %d", startup_accounts.length);
+    debug ("Startup accounts: %d", startup_accounts.length);
 
     if (compose_screen_name == null) {
       if (startup_accounts.length == 0) {
@@ -310,6 +316,7 @@ class Corebird : Gtk.Application {
 
 #if !__DEV
     if (flags != LogLevelFlags.LEVEL_DEBUG)
+#endif
       stdout.printf (out_string);
 #else
     stdout.printf (out_string);

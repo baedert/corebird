@@ -30,6 +30,9 @@
 ## But but... something is not right!
   Open a bug. Writing about it somewhere else(especially in a language I do not understand) won't help.
 
+## Translations
+  Since February 2014, there's a [Corebird project on Transifex](https://www.transifex.com/organization/corebird/dashboard/corebird)
+
 
 ## Dependencies
  - `gtk+-3.0 >= 3.9`

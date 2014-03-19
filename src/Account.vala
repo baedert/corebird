@@ -27,11 +27,13 @@ class Account : GLib.Object {
   public Rest.OAuthProxy proxy    {public get; private set;}
   public UserStream user_stream   {public get; private set;}
   public UserCounter user_counter {public get; private set;}
+  public Gee.ArrayList<Filter> filters;
 
   public Account (int64 id, string screen_name, string name) {
     this.id = id;
     this.screen_name = screen_name;
     this.name = name;
+    this.filters = new Gee.ArrayList<Filter> ();
   }
 
   /**
@@ -47,6 +49,7 @@ class Account : GLib.Object {
                                 Sql.ACCOUNTS_INIT_FILE);
     user_counter = new UserCounter ();
     user_counter.load (db);
+    this.load_filters ();
   }
 
   /**
@@ -125,7 +128,7 @@ class Account : GLib.Object {
       string avatar_url = root.get_string_member ("profile_image_url");
       update_avatar.begin (avatar_url);
       query_user_info_by_scren_name.callback();
-      message("Name: %s", name);
+      debug ("Name: %s", name);
     });
 
     yield;
@@ -142,7 +145,7 @@ class Account : GLib.Object {
     if (url.length > 0 && url == this.avatar_url)
       return;
 
-    message ("Using %s to update the avatar(old: %s)", url, this.avatar_url);
+    debug ("Using %s to update the avatar(old: %s)", url, this.avatar_url);
 
     if (url.length > 0) {
       var session = new Soup.Session ();
@@ -162,7 +165,7 @@ class Account : GLib.Object {
                                            pixbuf.has_alpha, 8, 24, 24);
         pixbuf.scale(scaled_pixbuf, 0, 0, 24, 24, 0, 0, scale_x, scale_y, Gdk.InterpType.HYPER);
         scaled_pixbuf.save(dest_path, type);
-        message ("saving to %s", dest_path);
+        debug ("saving to %s", dest_path);
         this.avatar_small = scaled_pixbuf;
       } catch (GLib.Error e) {
         critical (e.message);
@@ -188,6 +191,36 @@ class Account : GLib.Object {
                                     .val ("name", name)
                                     .val ("avatar_url", avatar_url)
                                     .run ();
+  }
+
+  /**
+   * Load all the filters from the database.
+   */
+  private void load_filters () {
+    this.db.select ("filters").cols ("content", "id")
+              .order ("id").run ((cols) => {
+      Filter f = new Filter (cols[0]);
+      f.id = int.parse (cols[2]);
+      filters.add (f);
+      return true;
+     });
+  }
+
+  public void add_filter (owned Filter f) {
+    this.filters.add (f);
+  }
+
+  public bool filter_matches (Tweet t) {
+    if (t.user_id == this.id)
+      return false;
+
+
+    foreach (Filter f in filters) {
+      if (f.matches (t.text)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /** Static stuff ********************************************************************/

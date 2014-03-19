@@ -67,21 +67,12 @@ class Settings : GLib.Object {
     return settings.get_string ("accel-" + accel_name);
   }
 
-  public static int get_animation_duration() {
-    return settings.get_int("animation-duration");
-  }
-
   public static double max_media_size () {
     return settings.get_double ("max-media-size");
   }
 
   public static void toggle_sidebar_visible () {
     settings.set_boolean ("sidebar-visible", !settings.get_boolean ("sidebar-visible"));
-  }
-
-
-  public static bool get_bool (string key) {
-    return settings.get_boolean (key);
   }
 
 }

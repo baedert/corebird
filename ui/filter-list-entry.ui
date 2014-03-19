@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk+" version="3.10"/>
+  <requires lib="corebird" version="0.0"/>
+
+  <object class="GtkMenu" id="delete_menu">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkMenuItem" id="delete_menu_item">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Confirm</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="delete_item_activated_cb" swapped="false" />
+      </object>
+    </child>
+  </object>
+
+  <template class="FilterListEntry" parent="GtkListBoxRow">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="tooltip_text" translatable="Yes">Click to edit</property>
+    <child>
+      <object class="GtkBox" id="box">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkLabel" id="content_label">
+            <property name="visible">True</property>
+            <property name="valign">center</property>
+            <property name="halign">start</property>
+            <property name="margin_left">5</property>
+            <property name="margin_right">5</property>
+            <property name="ellipsize">end</property>
+            <property name="can_focus">False</property>
+            <style>
+              <class name="list-username" />
+            </style>
+          </object>
+          <packing>
+            <property name="fill">True</property>
+            <property name="expand">True</property>
+          </packing>
+         </child>
+         <child>
+            <object class="GtkMenuButton" id="delete_button">
+              <property name="visible">True</property>
+              <property name="halign">center</property>
+              <property name="valign">center</property>
+              <property name="relief">none</property>
+              <property name="can_focus">True</property>
+              <property name="tooltip_text" translatable="Yes">Remove this Filter</property>
+              <property name="popup">delete_menu</property>
+              <child>
+                <object class="GtkImage" id="aa">
+                  <property name="visible">True</property>
+                  <property name="icon_name">list-remove-symbolic</property>
+                  <property name="icon_size">0</property>
+                </object>
+              </child>
+            </object>
+         </child>
+      </object>
+    </child>
+  </template>
+</interface>

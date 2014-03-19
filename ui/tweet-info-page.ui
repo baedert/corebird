@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
   <requires lib="" version="3.10"/>
@@ -103,6 +102,7 @@
                         <property name="receives_default">True</property>
                         <property name="halign">start</property>
                         <property name="margin_top">5</property>
+                        <property name="margin_bottom">2</property>
                         <signal name="clicked" handler="name_button_clicked_cb" swapped="no"/>
                         <style>
                           <class name="text-only-button"/>
@@ -119,11 +119,10 @@
                       <object class="GtkLabel" id="screen_name_label">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="margin_top">2</property>
+                        <property name="margin_bottom">2</property>
                         <property name="xalign">0</property>
                         <property name="label">label</property>
-                        <attributes>
-                          <attribute name="size" value="11000"/>
-                        </attributes>
                         <style>
                           <class name="dim-label"/>
                         </style>
@@ -239,6 +238,7 @@
             </child>
             <child>
               <object class="GtkBox" id="boxbox">
+                <property name="can_focus">False</property>
                 <child>
                   <object class="GtkLabel" id="time_label">
                     <property name="visible">True</property>
@@ -253,27 +253,30 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
+                    <property name="position">0</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="source_label">
-                    <property name="visible">False</property>
-                    <property name="use_markup">True</property>
+                    <property name="can_focus">False</property>
                     <property name="margin_right">4</property>
+                    <property name="use_markup">True</property>
                     <style>
-                      <class name="dim-label" />
+                      <class name="dim-label"/>
                     </style>
                   </object>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
                     <property name="pack_type">end</property>
+                    <property name="position">1</property>
                   </packing>
                 </child>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
+                <property name="position">3</property>
               </packing>
             </child>
             <child>
@@ -402,12 +405,9 @@
                         <property name="icon_size">1</property>
                       </object>
                     </child>
-                    <accessibility>
-
-                    </accessibility>
                     <child internal-child="accessible">
-                      <object class="AtkObject" id="a11y-menubutton">
-                        <property name="AtkObject::accessible_name" translatable="yes">More</property>
+                      <object class="AtkObject" id="menubutton1-atkobject">
+                        <property name="AtkObject::accessible-name" translatable="yes">More</property>
                       </object>
                     </child>
                     <style>

@@ -38,7 +38,10 @@ enum StreamMessageType {
   EVENT_LIST_MEMBER_ADDED,
   EVENT_LIST_MEMBER_REMOVED,
   EVENT_FAVORITE,
-  EVENT_UNFAVORITE
+  EVENT_UNFAVORITE,
+  EVENT_UNFOLLOW,
+  EVENT_BLOCK,
+  EVENT_UNBLOCK
 }
 
 
@@ -63,7 +66,7 @@ class UserStream : Object {
 
   public UserStream (string account_name) {
     this.account_name = account_name;
-    message ("CREATING USER STREAM FOR " + account_name);
+    debug ("CREATING USER STREAM FOR "+account_name);
     proxy = new Rest.OAuthProxy(
           Utils.decode (Utils.CONSUMER_KEY),
           Utils.decode (Utils.CONSUMER_SECRET),
@@ -111,7 +114,7 @@ class UserStream : Object {
   }
 
   ~UserStream () {
-    critical ("USERSTREAM DESTROYED");
+    debug ("USERSTREAM for %s DESTROYED", account_name);
   }
 
   /**
@@ -133,7 +136,7 @@ class UserStream : Object {
   private void parse_data_cb (Rest.ProxyCall call, string? buf, size_t length,
                               Error? error) {
     if (buf == null) {
-      warning("buf == NULL");
+      debug ("buf == NULL");
       return;
     }
 
@@ -143,7 +146,7 @@ class UserStream : Object {
 
     if (real.has_suffix ("\r\n") || real.has_suffix ("\r")) {
       if (real == "\r\n") {
-        message ("HEARTBEAT(%s)", account_name);
+        debug ("HEARTBEAT(%s)", account_name);
         data.erase ();
         return;
       }
@@ -185,7 +188,7 @@ class UserStream : Object {
         type = StreamMessageType.UNSUPPORTED;
 
 #if __DEV
-      message ("Message with type %s", type.to_string ());
+      debug ("Message with type %s", type.to_string ());
       if (type != StreamMessageType.FRIENDS)
         stdout.printf (data.str+"\n");
 #endif
@@ -220,6 +223,12 @@ class UserStream : Object {
         return StreamMessageType.EVENT_FAVORITE;
       case "unfavorite":
         return StreamMessageType.EVENT_UNFAVORITE;
+      case "unfollow":
+        return StreamMessageType.EVENT_UNFOLLOW;
+      case "block":
+        return StreamMessageType.EVENT_BLOCK;
+      case "unblock":
+        return StreamMessageType.EVENT_UNBLOCK;
     }
 
     return 0;

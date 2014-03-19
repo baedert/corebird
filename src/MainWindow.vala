@@ -32,11 +32,12 @@ class MainWindow : ApplicationWindow {
   public static const int PAGE_FAVORITES     = 2;
   public static const int PAGE_DM_THREADS    = 3;
   public static const int PAGE_LISTS         = 4;
-  public static const int PAGE_SEARCH        = 5;
-  public static const int PAGE_PROFILE       = 6;
-  public static const int PAGE_TWEET_INFO    = 7;
-  public static const int PAGE_DM            = 8;
-  public static const int PAGE_LIST_STATUSES = 9;
+  public static const int PAGE_FILTERS       = 5;
+  public static const int PAGE_SEARCH        = 6;
+  public static const int PAGE_PROFILE       = 7;
+  public static const int PAGE_TWEET_INFO    = 8;
+  public static const int PAGE_DM            = 9;
+  public static const int PAGE_LIST_STATUSES = 10;
 
   public static const int PAGE_PREVIOUS   = 1024;
   public static const int PAGE_NEXT       = 2048;
@@ -60,7 +61,7 @@ class MainWindow : ApplicationWindow {
   }
   private uint progress_holders            = 0;
   private RadioToolButton dummy_button     = new RadioToolButton(null);
-  private IPage[] pages                    = new IPage[10];
+  private IPage[] pages                    = new IPage[11];
   private IntHistory history               = new IntHistory (5);
   private DeltaUpdater delta_updater       = new DeltaUpdater ();
   public unowned Account account           {public get; private set;}
@@ -92,19 +93,20 @@ class MainWindow : ApplicationWindow {
     }
     headerbar.set_subtitle ("@" + account.screen_name);
 
-    stack.transition_duration = Settings.get_animation_duration ();
     this.add_action_entries (win_entries, this);
 
-    pages[0] = new HomeTimeline (PAGE_STREAM);
-    pages[1] = new MentionsTimeline (PAGE_MENTIONS);
-    pages[2] = new FavoritesTimeline (PAGE_FAVORITES);
-    pages[3] = new DMThreadsPage (PAGE_DM_THREADS, account);
-    pages[4] = new ListsPage (PAGE_LISTS);
-    pages[5] = new SearchPage (PAGE_SEARCH);
-    pages[6] = new ProfilePage (PAGE_PROFILE);
-    pages[7] = new TweetInfoPage (PAGE_TWEET_INFO);
-    pages[8] = new DMPage (PAGE_DM);
-    pages[9] = new ListStatusesPage (PAGE_LIST_STATUSES);
+    // TODO: Just always pass the account instance to the constructor.
+    pages[0]  = new HomeTimeline (PAGE_STREAM);
+    pages[1]  = new MentionsTimeline (PAGE_MENTIONS);
+    pages[2]  = new FavoritesTimeline (PAGE_FAVORITES);
+    pages[3]  = new DMThreadsPage (PAGE_DM_THREADS, account);
+    pages[4]  = new ListsPage (PAGE_LISTS);
+    pages[5]  = new FilterPage (PAGE_FILTERS);
+    pages[6]  = new SearchPage (PAGE_SEARCH);
+    pages[7]  = new ProfilePage (PAGE_PROFILE);
+    pages[8]  = new TweetInfoPage (PAGE_TWEET_INFO);
+    pages[9]  = new DMPage (PAGE_DM);
+    pages[10] = new ListStatusesPage (PAGE_LIST_STATUSES);
 
     /* Initialize all containers */
     for (int i = 0; i < pages.length; i++) {

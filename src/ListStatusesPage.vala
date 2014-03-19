@@ -153,7 +153,7 @@ class ListStatusesPage : ScrollWidget, IPage {
     var call = account.proxy.new_call ();
     call.set_function ("1.1/lists/statuses.json");
     call.set_method ("GET");
-    message ("USING LIST ID %s", list_id.to_string ());
+    debug ("USING LIST ID %s", list_id.to_string ());
     call.add_param ("list_id", list_id.to_string ());
     call.add_param ("count", "25");
     try {
@@ -311,8 +311,6 @@ class ListStatusesPage : ScrollWidget, IPage {
       return;
     }
 
-
-    message ("load newer");
     var call = account.proxy.new_call ();
     call.set_function ("1.1/lists/statuses.json");
     call.set_method ("GET");

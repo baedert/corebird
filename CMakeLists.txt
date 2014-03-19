@@ -41,6 +41,7 @@ set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-deprecated-declarations")
 # Just use PREFIX instead of CMAKE_INSTALL_PREFIX(but CMAKE_INSTALL_PREFIX will work too)
 set (PREFIX           "${CMAKE_INSTALL_PREFIX}")
 set (DATADIR          "${PREFIX}/share/corebird/")
+set (LOCALEDIR        "${PREFIX}/share/locale")
 set (GETTEXT_PACKAGE  "corebird")
 set (VERSION          0.1)
 
@@ -119,6 +120,8 @@ set (VALA_SOURCE
   src/DefaultTimeline.vala
   src/ListsPage.vala
   src/ListStatusesPage.vala
+  src/FilterPage.vala
+  src/Filter.vala
   src/widgets/PixbufButton.vala
   src/widgets/ScrollWidget.vala
   src/widgets/TextButton.vala
@@ -144,12 +147,15 @@ set (VALA_SOURCE
   src/list/ListListEntry.vala
   src/list/NewListEntry.vala
   src/list/MissingListEntry.vala
+  src/list/FilterListEntry.vala
+  src/list/UserFilterEntry.vala
   src/window/AboutDialog.vala
   src/window/ImageDialog.vala
   src/window/SettingsDialog.vala
   src/window/RemoveAccountDialog.vala
   src/window/ComposeTweetWindow.vala
   src/window/UserListDialog.vala
+  src/window/ModifyFilterDialog.vala
   src/util/Utils.vala
   src/util/Config.vala
   src/util/WidgetReplacer.vala

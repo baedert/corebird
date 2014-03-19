@@ -26,28 +26,23 @@
     </key>
     <key name="new-mentions-notify" type="b">
       <default>true</default>
-      <summary>Whether the user should be notified when another user mentions him in a tweet</summary>
+      <summary>Whether the user should be notified when another user mentions them in a tweet</summary>
       <description></description>
     </key>
     <key name="new-dms-notify" type="b">
       <default>true</default>
-      <summary>Whether the user should be notified when another user writes him a direct message</summary>
+      <summary>Whether the user should be notified when another user writes them a direct message</summary>
       <description></description>
     </key>
     <key name="new-followers-notify" type="b">
       <default>true</default>
-      <summary>Whether the user should be notified when another user starts following him</summary>
+      <summary>Whether the user should be notified when another user starts following them</summary>
       <description></description>
     </key>
     <key name="show-inline-media" type="b">
       <default>true</default>
       <summary>Whether inline media should be downloaded/shown directly.</summary>
       <description>Disable this to save some bandwidth</description>
-    </key>
-    <key name="animation-duration" type="i">
-      <default>300</default>
-      <summary>Duration of slide animations[ms]</summary>
-      <description></description>
     </key>
     <key name="startup-accounts" type="as">
       <default>[""]</default>
@@ -67,13 +62,13 @@
     </key>
     <key name="accel-compose-tweet" type="s">
       <default>"&lt;Control&gt;T"</default>
-        <summary>The accelerator to press in ordner to bring the ComposeTweetWindow up.
-                 Muse be parseable with gtk_accelerator_parse
+        <summary>The accelerator to press in order to bring the ComposeTweetWindow up.
+                 Must be parseable with gtk_accelerator_parse
         </summary>
     </key>
      <key name="accel-toggle-sidebar" type="s">
        <default>"&lt;Control&gt;&lt;Shift&gt;S"</default>
-       <summary>Accelerator to press in ordner to show/hide the sidebar</summary>
+       <summary>Accelerator to press in order to show/hide the sidebar</summary>
     </key>
     <key name="window-geometry" type="a{s(iiii)}">
       <default>{}</default>

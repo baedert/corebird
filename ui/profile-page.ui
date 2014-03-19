@@ -43,6 +43,21 @@
         <signal name="activate" handler="list_menu_item_activated" swapped="no"/>
       </object>
     </child>
+    <child>
+      <object class="GtkSeparatorMenuItem" id="menuitem1">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkCheckMenuItem" id="block_menu_item">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Blocked</property>
+        <property name="use_underline">True</property>
+        <signal name="toggled" handler="block_item_toggled_cb" swapped="no" />
+      </object>
+    </child>
   </object>
   <template class="ProfilePage" parent="ScrollWidget">
     <property name="visible">True</property>
@@ -255,8 +270,8 @@
                     </child>
                     <child>
                       <object class="GtkSpinner" id="progress_spinner">
-                        <property name="width_request">30</property>
-                        <property name="height_request">30</property>
+                        <property name="width_request">20</property>
+                        <property name="height_request">20</property>
                         <property name="can_focus">False</property>
                         <property name="no_show_all">True</property>
                         <property name="halign">end</property>
@@ -328,6 +343,11 @@
                 <property name="margin_top">4</property>
                 <property name="margin_bottom">4</property>
               </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">3</property>
+              </packing>
             </child>
             <child>
               <object class="GtkStack" id="user_stack">
@@ -342,14 +362,14 @@
                     <property name="activate_on_single_click">False</property>
                   </object>
                   <packing>
-                    <property name="title">Tweets</property>
+                    <property name="title" translatable="yes">Tweets</property>
                   </packing>
                 </child>
                 <child>
                   <object class="UserListsWidget" id="user_lists">
                   </object>
                   <packing>
-                    <property name="title">Lists</property>
+                    <property name="title" translatable="yes">Lists</property>
                   </packing>
                 </child>
               </object>
@@ -358,7 +378,7 @@
                 <property name="fill">True</property>
                 <property name="position">4</property>
               </packing>
-            </child> <!-- user_stack -->
+            </child>
           </object>
         </child>
       </object>
