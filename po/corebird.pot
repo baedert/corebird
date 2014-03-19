@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-17 13:20+0100\n"
+"POT-Creation-Date: 2014-03-18 10:18+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -454,10 +454,6 @@ msgstr ""
 
 #: ../data/org.baedert.corebird.desktop.in.in.h:1
 msgid "Twitter Client"
-msgstr ""
-
-#: ../data/org.baedert.corebird.desktop.in.in.h:2
-msgid "twitter;"
 msgstr ""
 
 #: ../data/corebird.appdata.xml.in.h:1

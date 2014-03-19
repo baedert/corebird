@@ -21,7 +21,7 @@
 
 namespace TweetUtils {
   /* A 'sequence' in a text. Name sucks */
-  struct Sequence {
+  public struct Sequence {
     int start;
     int end;
     string url;
@@ -78,7 +78,7 @@ namespace TweetUtils {
    *
    * @return The formatted text
    */
-  string get_real_text (string tweet_text, GLib.SList<Sequence?> urls) {
+  public string get_real_text (string tweet_text, GLib.SList<Sequence?> urls) {
     string formatted_text = tweet_text;
     int char_diff = 0;
     urls.sort ((a, b) => {
