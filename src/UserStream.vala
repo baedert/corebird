@@ -43,15 +43,10 @@ enum StreamMessageType {
 
 
 class UserStream : Object {
-  private static const int TIMEOUT_INTERVAL         = 45 * 1000; // XXX Change
-  private static const int RESTART_INTERVAL         = 30 * 1000; // XXX Change
   private Rest.OAuthProxy proxy;
   private Rest.ProxyCall proxy_call;
   private StringBuilder data                        = new StringBuilder ();
   private SList<unowned IMessageReceiver> receivers = new SList<unowned IMessageReceiver> ();
-  private uint timeout_id                           = -1;
-  private uint restart_id                           = -1;
-  private bool stream_interrupted                   = false;
   private string account_name;
   private unowned GLib.NetworkMonitor network_monitor;
   private bool was_network_available;
@@ -61,9 +56,6 @@ class UserStream : Object {
   public string token_secret {
     set { proxy.token_secret = value; }
   }
-
-
-
   public signal void interrupted ();
   public signal void resumed ();
 
@@ -116,7 +108,6 @@ class UserStream : Object {
     } catch (GLib.Error e) {
       error (e.message);
     }
-    //timeout_id = GLib.Timeout.add (TIMEOUT_INTERVAL, timeout_cb);
   }
 
   ~UserStream () {
@@ -127,32 +118,8 @@ class UserStream : Object {
    * Stops the UserStream
    */
   public void stop () {
-    message ("STOPPING STREAM FOR " + account_name);
+    debug ("STOPPING STREAM FOR " + account_name);
     proxy_call.cancel ();
-    //if(timeout_id != -1)
-        //GLib.Source.remove (timeout_id);
-  }
-
-  /**
-   * The timeout cb is called whenever we didn't get a heartbeat
-   * from Twitter for over TIMEOUT_INTERVAL seconds.
-   *
-   */
-  private bool timeout_cb() {
-    message ("We have not received a heartbeat from the server in %dms.", TIMEOUT_INTERVAL);
-    interrupted();
-    // We not start another timeout to regularly check if a connection is available
-    stream_interrupted = true;
-    //restart_id = GLib.Timeout.add (RESTART_INTERVAL, restart_cb);
-    return false;
-  }
-
-
-  private bool restart_cb () {
-    message ("Restarting...");
-    stop ();
-    start ();
-    return true; // Continue
   }
 
   /**
@@ -170,30 +137,11 @@ class UserStream : Object {
       return;
     }
 
-    if (stream_interrupted) {
-      /* The stream is currently marked as interrupted,
-         but since we just got new data, it obviously
-         isn't anymore */
-      stream_interrupted = false;
-      if (restart_id != -1) {
-        //GLib.Source.remove (restart_id);
-        //GLib.Source.remove (timeout_id);
-      }
-      resumed ();
-    }
-
     string real = buf.substring(0, (int)length);
 
     data.append (real);
 
     if (real.has_suffix ("\r\n") || real.has_suffix ("\r")) {
-      //Reset the timeout
-      if (timeout_id != -1) {
-        //GLib.Source.remove (timeout_id);
-      }
-      //timeout_id = GLib.Timeout.add (TIMEOUT_INTERVAL, timeout_cb);
-      //message ("Timeout created: %u", timeout_id);
-
       if (real == "\r\n") {
         message ("HEARTBEAT(%s)", account_name);
         data.erase ();
