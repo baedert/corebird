@@ -316,7 +316,6 @@ class Corebird : Gtk.Application {
 
 #if !__DEV
     if (flags != LogLevelFlags.LEVEL_DEBUG)
-#endif
       stdout.printf (out_string);
 #else
     stdout.printf (out_string);
