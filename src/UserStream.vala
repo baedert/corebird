@@ -85,6 +85,8 @@ class UserStream : Object {
       return;
 
     if (available) {
+      stop ();
+      start ();
       resumed ();
     } else {
       interrupted ();
