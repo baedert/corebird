@@ -84,13 +84,19 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   private void connect_stream_signals () {
     account.user_stream.interrupted.connect (() => {
       missing_entry.lower_id = max_id;
+      missing_entry.timestamp = new GLib.DateTime.now_local ().to_unix ();
       missing_entry.set_interrupted ();
       missing_entry.show_all ();
       tweet_list.add (missing_entry);
+      tweet_list.invalidate_sort ();
     });
 
     account.user_stream.resumed.connect (() => {
       missing_entry.set_resumed ();
+    });
+    missing_entry.load_clicked.connect (() => {
+      tweet_list.remove (missing_entry);
+      missing_entry.set_interrupted (); // reset state
     });
   }
 
