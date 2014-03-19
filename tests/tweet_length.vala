@@ -19,6 +19,13 @@ void http_link () {
   assert (l == 22);
 }
 
+void https_link () {
+  string text = "https://foobar.org/thisissolong/itsnotevenfunnyanymore";
+  int  l = TweetUtils.calc_tweet_length (text);
+  message ("Https link length: %d", l);
+  assert (l == 23);
+}
+
 int main (string[] args) {
   GLib.Test.init (ref args);
   GLib.Test.add_func ("/tweet-length/normal", normal);
