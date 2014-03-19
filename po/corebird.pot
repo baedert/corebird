@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: corebird 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-26 22:11+0100\n"
+"POT-Creation-Date: 2014-03-19 09:08+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/HomeTimeline.vala:92
+#: ../src/HomeTimeline.vala:96
 #, c-format
 msgid "%d new Tweets!"
 msgstr ""
@@ -32,12 +32,12 @@ msgstr ""
 msgid "%dm"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:102
+#: ../src/HomeTimeline.vala:106
 #, c-format
 msgid "%s retweeted %s"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:104
+#: ../src/HomeTimeline.vala:108
 #, c-format
 msgid "%s tweeted"
 msgstr ""
@@ -45,6 +45,10 @@ msgstr ""
 #: ../src/list/DMThreadEntry.vala:97
 #, c-format
 msgid "(%d unread)"
+msgstr ""
+
+#: ../src/FilterPage.vala:229
+msgid "Add new Filter"
 msgstr ""
 
 #: ../src/window/ComposeTweetWindow.vala:188
@@ -56,19 +60,29 @@ msgstr ""
 msgid "Choose"
 msgstr ""
 
-#: ../src/DMThreadsPage.vala:339 ../src/DMThreadsPage.vala:340
+#: ../src/DMThreadsPage.vala:338 ../src/DMThreadsPage.vala:339
 msgid "Direct Messages"
 msgstr ""
 
-#: ../src/FavoritesTimeline.vala:69 ../src/FavoritesTimeline.vala:70
+#: ../src/window/AddFilterDialog.vala:69
+#: ../src/window/ModifyFilterDialog.vala:76
+msgid "Doesn't match"
+msgstr ""
+
+#: ../src/TweetInfoPage.vala:379 ../src/FavoritesTimeline.vala:69
+#: ../src/FavoritesTimeline.vala:70
 msgid "Favorites"
 msgstr ""
 
-#: ../src/ProfilePage.vala:511 ../src/TweetInfoPage.vala:415
+#: ../src/FilterPage.vala:211 ../src/FilterPage.vala:212
+msgid "Filters"
+msgstr ""
+
+#: ../src/ProfilePage.vala:542 ../src/TweetInfoPage.vala:415
 msgid "Follow"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:132 ../src/HomeTimeline.vala:133
+#: ../src/HomeTimeline.vala:136 ../src/HomeTimeline.vala:137
 msgid "Home"
 msgstr ""
 
@@ -76,16 +90,21 @@ msgstr ""
 msgid "Lists"
 msgstr ""
 
-#: ../src/MentionsTimeline.vala:136 ../src/MentionsTimeline.vala:137
+#: ../src/window/AddFilterDialog.vala:67
+#: ../src/window/ModifyFilterDialog.vala:74
+msgid "Matches"
+msgstr ""
+
+#: ../src/MentionsTimeline.vala:126 ../src/MentionsTimeline.vala:127
 msgid "Mentions"
 msgstr ""
 
-#: ../src/MentionsTimeline.vala:90
+#: ../src/MentionsTimeline.vala:94
 #, c-format
 msgid "New Mention from %s"
 msgstr ""
 
-#: ../src/DMThreadsPage.vala:234
+#: ../src/DMThreadsPage.vala:233
 msgid "New direct message!"
 msgstr ""
 
@@ -101,12 +120,16 @@ msgstr ""
 msgid "Open Account"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:424
+#: ../src/TweetInfoPage.vala:425
 msgid "Open in Browser"
 msgstr ""
 
-#: ../src/ProfilePage.vala:263
+#: ../src/ProfilePage.vala:269
 msgid "Protected profile"
+msgstr ""
+
+#: ../src/TweetInfoPage.vala:379
+msgid "Retweets"
 msgstr ""
 
 #: ../src/window/UserListDialog.vala:45 ../src/window/ImageDialog.vala:113
@@ -121,11 +144,11 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:424
+#: ../src/TweetInfoPage.vala:425
 msgid "Source"
 msgstr ""
 
-#: ../src/ProfilePage.vala:402
+#: ../src/ProfilePage.vala:408
 #, c-format
 msgid "Tweet to @%s"
 msgstr ""
@@ -136,7 +159,7 @@ msgid ""
 "the Twitter servers and you should try again later"
 msgstr ""
 
-#: ../src/ProfilePage.vala:507 ../src/TweetInfoPage.vala:411
+#: ../src/ProfilePage.vala:538 ../src/TweetInfoPage.vala:411
 msgid "Unfollow"
 msgstr ""
 
@@ -150,6 +173,10 @@ msgstr ""
 
 #: ../ui/about-dialog.ui:8
 msgid "About Corebird"
+msgstr ""
+
+#: ../ui/settings-dialog.ui:127
+msgid "Accounts"
 msgstr ""
 
 #: ../ui/settings-dialog.ui:377
@@ -168,12 +195,17 @@ msgstr ""
 msgid "Auto scroll on new tweets:"
 msgstr ""
 
+#: ../ui/profile-page.ui:56
+msgid "Blocked"
+msgstr ""
+
 #: ../ui/compose-window.ui:7
 msgid "Compose Tweet"
 msgstr ""
 
-#: ../ui/account-create-widget.ui:73 ../ui/list-list-entry.ui:22
-#: ../ui/list-list-entry.ui:45 ../ui/list-statuses-page.ui:451
+#: ../ui/user-filter-entry.ui:11 ../ui/account-create-widget.ui:73
+#: ../ui/list-list-entry.ui:22 ../ui/list-list-entry.ui:45
+#: ../ui/filter-list-entry.ui:13 ../ui/list-statuses-page.ui:451
 msgid "Confirm"
 msgstr ""
 
@@ -197,7 +229,7 @@ msgstr ""
 msgid "Creator:"
 msgstr ""
 
-#: ../ui/tweet-list-entry.ui:30 ../ui/tweet-info-page.ui:32
+#: ../ui/tweet-list-entry.ui:30 ../ui/tweet-info-page.ui:31
 #: ../ui/list-list-entry.ui:12 ../ui/list-statuses-page.ui:223
 msgid "Delete"
 msgstr ""
@@ -218,16 +250,20 @@ msgstr ""
 msgid "Every"
 msgstr ""
 
-#: ../ui/tweet-list-entry.ui:352 ../ui/tweet-info-page.ui:336
+#: ../ui/tweet-list-entry.ui:352 ../ui/tweet-info-page.ui:339
 msgid "Favorite tweet"
 msgstr ""
 
-#: ../ui/profile-page.ui:277
+#: ../ui/profile-page.ui:292
 msgid "Follows you"
 msgstr ""
 
 #: ../ui/start-conversation-entry.ui:104
 msgid "Go"
+msgstr ""
+
+#: ../ui/settings-dialog.ui:339
+msgid "Interface"
 msgstr ""
 
 #: ../ui/load-more-entry.ui:14
@@ -266,8 +302,12 @@ msgstr ""
 msgid "Never"
 msgstr ""
 
-#: ../ui/main-window.ui:123
+#: ../ui/main-window.ui:122
 msgid "New tweet"
+msgstr ""
+
+#: ../ui/settings-dialog.ui:515
+msgid "Notifications"
 msgstr ""
 
 #: ../ui/settings-dialog.ui:485
@@ -306,7 +346,7 @@ msgstr ""
 msgid "Quit"
 msgstr ""
 
-#: ../ui/tweet-list-entry.ui:12 ../ui/tweet-info-page.ui:24
+#: ../ui/tweet-list-entry.ui:12 ../ui/tweet-info-page.ui:23
 msgid "Quote"
 msgstr ""
 
@@ -318,11 +358,11 @@ msgstr ""
 msgid "Remove selected account"
 msgstr ""
 
-#: ../ui/tweet-list-entry.ui:321 ../ui/tweet-info-page.ui:365
+#: ../ui/tweet-list-entry.ui:321 ../ui/tweet-info-page.ui:368
 msgid "Reply to tweet"
 msgstr ""
 
-#: ../ui/tweet-list-entry.ui:383 ../ui/tweet-info-page.ui:307
+#: ../ui/tweet-list-entry.ui:383 ../ui/tweet-info-page.ui:310
 msgid "Retweet tweet"
 msgstr ""
 
@@ -382,7 +422,7 @@ msgstr ""
 msgid "Subscribers:"
 msgstr ""
 
-#: ../ui/search-page.ui:106
+#: ../ui/search-page.ui:106 ../ui/profile-page.ui:365
 msgid "Tweets"
 msgstr ""
 
@@ -394,7 +434,7 @@ msgstr ""
 msgid "Use Dark Theme:"
 msgstr ""
 
-#: ../ui/search-page.ui:118
+#: ../ui/search-page.ui:118 ../ui/filter-page.ui:120
 msgid "Users"
 msgstr ""
 
@@ -420,7 +460,7 @@ msgid ""
 "button on the left."
 msgstr ""
 
-#: ../org.baedert.corebird.gschema.xml.h:13
+#: ../org.baedert.corebird.gschema.xml.h:12
 msgid "Accelerator to press in order to show/hide the sidebar"
 msgstr ""
 
@@ -428,23 +468,19 @@ msgstr ""
 msgid "Disable this to save some bandwidth"
 msgstr ""
 
-#: ../org.baedert.corebird.gschema.xml.h:8
-msgid "Duration of slide animations[ms]"
-msgstr ""
-
 #: ../org.baedert.corebird.gschema.xml.h:2
 msgid "If/when the user should be notified about new tweets"
 msgstr ""
 
-#: ../org.baedert.corebird.gschema.xml.h:9
+#: ../org.baedert.corebird.gschema.xml.h:8
 msgid "List of accounts which will be opened when Corebird is started."
 msgstr ""
 
-#: ../org.baedert.corebird.gschema.xml.h:10
+#: ../org.baedert.corebird.gschema.xml.h:9
 msgid "Maximum size of inline media to download, in Megabytes."
 msgstr ""
 
-#: ../org.baedert.corebird.gschema.xml.h:14
+#: ../org.baedert.corebird.gschema.xml.h:13
 msgid "Size and position of the settings dialog"
 msgstr ""
 
@@ -453,7 +489,7 @@ msgid ""
 "Specifies if Corebird should request to use the dark variant of the gtk theme"
 msgstr ""
 
-#: ../org.baedert.corebird.gschema.xml.h:12
+#: ../org.baedert.corebird.gschema.xml.h:11
 msgid ""
 "The accelerator to press in order to bring the ComposeTweetWindow up. Must "
 "be parseable with gtk_accelerator_parse"
@@ -480,6 +516,6 @@ msgid ""
 "message"
 msgstr ""
 
-#: ../org.baedert.corebird.gschema.xml.h:11
+#: ../org.baedert.corebird.gschema.xml.h:10
 msgid "Whether to show the sidebar or not"
 msgstr ""
