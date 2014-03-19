@@ -48,6 +48,9 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
     if (t.is_retweet && !should_display_retweet (t))
       return;
 
+    if (account.filter_matches (t))
+      return;
+
     bool auto_scroll = Settings.auto_scroll_on_new_tweets ();
 
     this.balance_next_upper_change (TOP);

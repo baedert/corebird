@@ -38,7 +38,10 @@ public enum StreamMessageType {
   EVENT_LIST_MEMBER_ADDED,
   EVENT_LIST_MEMBER_REMOVED,
   EVENT_FAVORITE,
-  EVENT_UNFAVORITE
+  EVENT_UNFAVORITE,
+  EVENT_UNFOLLOW,
+  EVENT_BLOCK,
+  EVENT_UNBLOCK
 }
 
 
@@ -92,7 +95,7 @@ public class UserStream : Object {
   }
 
   ~UserStream () {
-    critical ("USERSTREAM DESTROYED");
+    debug ("USERSTREAM for %s DESTROYED", account_name);
   }
 
   /**
@@ -219,6 +222,12 @@ public class UserStream : Object {
         return StreamMessageType.EVENT_FAVORITE;
       case "unfavorite":
         return StreamMessageType.EVENT_UNFAVORITE;
+      case "unfollow":
+        return StreamMessageType.EVENT_UNFOLLOW;
+      case "block":
+        return StreamMessageType.EVENT_BLOCK;
+      case "unblock":
+        return StreamMessageType.EVENT_UNBLOCK;
     }
 
     return 0;

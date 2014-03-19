@@ -84,6 +84,8 @@ class ProfilePage : ScrollWidget, IPage {
   private UserListsWidget user_lists;
   [GtkChild]
   private Gtk.Stack user_stack;
+  [GtkChild]
+  private Gtk.CheckMenuItem block_menu_item;
   private bool following;
   private int64 user_id;
   private new string name;
@@ -92,6 +94,7 @@ class ProfilePage : ScrollWidget, IPage {
   private GLib.Cancellable data_cancellable;
   private bool lists_page_inited = false;
   private ulong page_change_signal = 0;
+  private bool block_item_blocked = false;
 
   public ProfilePage (int id) {
     this.id = id;
@@ -191,9 +194,12 @@ class ProfilePage : ScrollWidget, IPage {
       critical ("%s:\n%s", e.message, call.get_payload ());
       return;
     }
-    bool followed_by = parser.get_root ().get_object ().get_object_member ("relationship")
-                             .get_object_member ("target").get_boolean_member ("following");
+    var relationship = parser.get_root ().get_object ().get_object_member ("relationship");
+    bool followed_by = relationship.get_object_member ("target").get_boolean_member ("following");
     follows_you_label.visible = followed_by;
+    block_item_blocked = true;
+    block_menu_item.active = relationship.get_object_member ("source").get_boolean_member ("blocking");
+    block_item_blocked = false;
   }
 
   private async void load_profile_data (int64 user_id) { //{{{
@@ -336,7 +342,7 @@ class ProfilePage : ScrollWidget, IPage {
     call.set_function ("1.1/statuses/user_timeline.json");
     call.set_method ("GET");
     call.add_param ("user_id", this.user_id.to_string ());
-    call.add_param ("count", "35");
+    call.add_param ("count", "20");
     call.add_param ("contributor_details", "true");
     call.add_param ("include_my_retweet", "true");
 
@@ -427,7 +433,7 @@ class ProfilePage : ScrollWidget, IPage {
 
     if (url != null && url != "") {
       url_label.visible = true;
-      url_label.set_markup ("<a href='%s'>%s</a>".printf (url, url));
+      url_label.set_markup ("<span underline='none'><a href='%s'>%s</a></span>".printf (url, url));
     } else
       url_label.visible = false;
 
@@ -445,6 +451,9 @@ class ProfilePage : ScrollWidget, IPage {
     else {
       call.set_function ("1.1/friendships/create.json");
       call.add_param ("follow", "false");
+      block_item_blocked = true;
+      block_menu_item.active = false;
+      block_item_blocked = false;
     }
     message (@"User ID: $user_id");
     message (user_id.to_string ());
@@ -496,6 +505,28 @@ class ProfilePage : ScrollWidget, IPage {
     var uld = new UserListDialog (main_window, account, user_id);
     uld.load_lists ();
     uld.show_all ();
+  }
+
+  [GtkCallback]
+  private async void block_item_toggled_cb (Gtk.CheckMenuItem source) {
+    if (block_item_blocked)
+      return;
+
+    var call = account.proxy.new_call ();
+    call.set_method ("POST");
+    if (source.active) {
+      call.set_function ("1.1/blocks/create.json");
+      set_follow_button_state (false);
+    } else {
+      call.set_function ("1.1/blocks/destroy.json");
+    }
+    call.add_param ("user_id", this.user_id.to_string ());
+    try {
+      yield call.invoke_async (null);
+    } catch (GLib.Error e) {
+      Utils.show_error_object (call.get_payload (), e.message);
+      return;
+    }
   }
 
   private void set_follow_button_state (bool following) { //{{{

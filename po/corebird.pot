@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-18 10:18+0100\n"
+"POT-Creation-Date: 2014-03-19 18:21+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -52,30 +52,30 @@ msgstr ""
 msgid "Wrong PIN"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:93
+#: ../src/HomeTimeline.vala:96
 #, c-format
 msgid "%d new Tweets!"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:103
+#: ../src/HomeTimeline.vala:106
 #, c-format
 msgid "%s retweeted %s"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:105
+#: ../src/HomeTimeline.vala:108
 #, c-format
 msgid "%s tweeted"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:133 ../src/HomeTimeline.vala:134
+#: ../src/HomeTimeline.vala:136 ../src/HomeTimeline.vala:137
 msgid "Home"
 msgstr ""
 
-#: ../src/DMThreadsPage.vala:233
+#: ../src/DMThreadsPage.vala:235
 msgid "New direct message!"
 msgstr ""
 
-#: ../src/DMThreadsPage.vala:338 ../src/DMThreadsPage.vala:339
+#: ../src/DMThreadsPage.vala:356 ../src/DMThreadsPage.vala:357
 msgid "Direct Messages"
 msgstr ""
 
@@ -85,24 +85,24 @@ msgid "(%d unread)"
 msgstr ""
 
 #: ../src/ListsPage.vala:127 ../src/ListsPage.vala:128
-#: ../ui/profile-page.ui.h:5
+#: ../ui/profile-page.ui.h:6
 msgid "Lists"
 msgstr ""
 
-#: ../src/ProfilePage.vala:263
+#: ../src/ProfilePage.vala:269
 msgid "Protected profile"
 msgstr ""
 
-#: ../src/ProfilePage.vala:402
+#: ../src/ProfilePage.vala:408
 #, c-format
 msgid "Tweet to @%s"
 msgstr ""
 
-#: ../src/ProfilePage.vala:507 ../src/TweetInfoPage.vala:411
+#: ../src/ProfilePage.vala:538 ../src/TweetInfoPage.vala:411
 msgid "Unfollow"
 msgstr ""
 
-#: ../src/ProfilePage.vala:511 ../src/TweetInfoPage.vala:415
+#: ../src/ProfilePage.vala:542 ../src/TweetInfoPage.vala:415
 #: ../ui/tweet-info-page.ui.h:3
 msgid "Follow"
 msgstr ""
@@ -116,11 +116,11 @@ msgstr ""
 msgid "Favorites"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:424
+#: ../src/TweetInfoPage.vala:425
 msgid "Open in Browser"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:424
+#: ../src/TweetInfoPage.vala:425
 msgid "Source"
 msgstr ""
 
@@ -147,12 +147,12 @@ msgstr ""
 msgid "Open Account"
 msgstr ""
 
-#: ../src/MentionsTimeline.vala:90
+#: ../src/MentionsTimeline.vala:94
 #, c-format
 msgid "New Mention from %s"
 msgstr ""
 
-#: ../src/MentionsTimeline.vala:122 ../src/MentionsTimeline.vala:123
+#: ../src/MentionsTimeline.vala:126 ../src/MentionsTimeline.vala:127
 msgid "Mentions"
 msgstr ""
 
@@ -339,7 +339,7 @@ msgstr ""
 msgid "Create"
 msgstr ""
 
-#: ../ui/search-page.ui.h:2 ../ui/profile-page.ui.h:4
+#: ../ui/search-page.ui.h:2 ../ui/profile-page.ui.h:5
 msgid "Tweets"
 msgstr ""
 
@@ -360,6 +360,10 @@ msgid "Add to/Remove from List"
 msgstr ""
 
 #: ../ui/profile-page.ui.h:3
+msgid "Blocked"
+msgstr ""
+
+#: ../ui/profile-page.ui.h:4
 msgid "Follows you"
 msgstr ""
 

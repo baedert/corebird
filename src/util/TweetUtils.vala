@@ -59,7 +59,7 @@ namespace TweetUtils {
         title = html_url;
 
       formatted_text = formatted_text.splice (from, to,
-           "<a href=\"%s\" title=\"%s\">%s</a>".printf(html_url,
+           "<span underline='none'><a href=\"%s\" title=\"%s\">%s</a></span>".printf(html_url,
                                                        title,
                                                        s.display_url.replace ("&", "&amp;")));
       char_diff += formatted_text.char_count () - length_before;
@@ -324,7 +324,9 @@ namespace TweetUtils {
 
       int index = 0;
       GLib.Idle.add (() => {
-        tweet_list.add (entry_array[index]);
+        if (!account.filter_matches (entry_array[index].tweet)) {
+          tweet_list.add (entry_array[index]);
+        }
         index ++;
         if (index == entry_array.length) {
           work_array.callback ();

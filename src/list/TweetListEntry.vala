@@ -86,8 +86,8 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     update_time_delta ();
     if (tweet.is_retweet) {
       rt_box.show ();
-      rt_label.label = @"<a href=\"@$(tweet.rt_by_id)\"
-                         title=\"@$(tweet.rt_by_screen_name)\">$(tweet.retweeted_by)</a>";
+      rt_label.label = @"<span underline='none'><a href=\"@$(tweet.rt_by_id)\"
+                         title=\"@$(tweet.rt_by_screen_name)\">$(tweet.retweeted_by)</a></span>";
     } else
       rt_box.unparent ();
 

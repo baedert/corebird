@@ -27,11 +27,13 @@ public class Account : GLib.Object {
   public Rest.OAuthProxy proxy    {public get; private set;}
   public UserStream user_stream   {public get; private set;}
   public UserCounter user_counter {public get; private set;}
+  public Gee.ArrayList<Filter> filters;
 
   public Account (int64 id, string screen_name, string name) {
     this.id = id;
     this.screen_name = screen_name;
     this.name = name;
+    this.filters = new Gee.ArrayList<Filter> ();
   }
 
   /**
@@ -47,6 +49,7 @@ public class Account : GLib.Object {
                                 Sql.ACCOUNTS_INIT_FILE);
     user_counter = new UserCounter ();
     user_counter.load (db);
+    this.load_filters ();
   }
 
   /**
@@ -125,7 +128,7 @@ public class Account : GLib.Object {
       string avatar_url = root.get_string_member ("profile_image_url");
       update_avatar.begin (avatar_url);
       query_user_info_by_scren_name.callback();
-      message("Name: %s", name);
+      debug ("Name: %s", name);
     });
 
     yield;
@@ -188,6 +191,36 @@ public class Account : GLib.Object {
                                     .val ("name", name)
                                     .val ("avatar_url", avatar_url)
                                     .run ();
+  }
+
+  /**
+   * Load all the filters from the database.
+   */
+  private void load_filters () {
+    this.db.select ("filters").cols ("content", "id")
+              .order ("id").run ((cols) => {
+      Filter f = new Filter (cols[0]);
+      f.id = int.parse (cols[2]);
+      filters.add (f);
+      return true;
+     });
+  }
+
+  public void add_filter (owned Filter f) {
+    this.filters.add (f);
+  }
+
+  public bool filter_matches (Tweet t) {
+    if (t.user_id == this.id)
+      return false;
+
+
+    foreach (Filter f in filters) {
+      if (f.matches (t.text)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /** Static stuff ********************************************************************/

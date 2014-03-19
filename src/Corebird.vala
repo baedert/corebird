@@ -66,7 +66,6 @@ public class Corebird : Gtk.Application {
     }
 
 
-    // TODO: The switch-page accelerators could also be in a loop...
     this.add_accelerator (Settings.get_accel ("compose-tweet"), "win.compose_tweet", null);
     this.add_accelerator (Settings.get_accel ("toggle-sidebar"), "win.toggle_sidebar", null);
     this.add_accelerator ("<Alt>1", "win.switch_page", new GLib.Variant.int32(0));
@@ -75,6 +74,7 @@ public class Corebird : Gtk.Application {
     this.add_accelerator ("<Alt>4", "win.switch_page", new GLib.Variant.int32(3));
     this.add_accelerator ("<Alt>5", "win.switch_page", new GLib.Variant.int32(4));
     this.add_accelerator ("<Alt>6", "win.switch_page", new GLib.Variant.int32(5));
+    this.add_accelerator ("<Alt>7", "win.switch_page", new GLib.Variant.int32(6));
     this.add_accelerator ("<Control>P", "app.show-settings", null);
     this.add_accelerator ("<Control><Shift>Q", "app.quit", null);
 
@@ -108,7 +108,7 @@ public class Corebird : Gtk.Application {
     base.startup ();
 
     Dirs.create_dirs ();
-    message ("startup");
+    debug ("startup");
     Corebird.db = new Sql.Database (Dirs.config ("Corebird.db"),
                                     Sql.COREBIRD_INIT_FILE);
 
@@ -184,7 +184,7 @@ public class Corebird : Gtk.Application {
         return;
       }
     }
-    message("Startup accounts: %d", startup_accounts.length);
+    debug ("Startup accounts: %d", startup_accounts.length);
 
     if (compose_screen_name == null) {
       if (startup_accounts.length == 0) {
@@ -313,7 +313,9 @@ public class Corebird : Gtk.Application {
       }
     }
 
+#if !__DEV
     if (flags != LogLevelFlags.LEVEL_DEBUG)
+#endif
       stdout.printf (out_string);
   }
 }

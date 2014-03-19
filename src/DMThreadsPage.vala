@@ -130,7 +130,9 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     });
     if (n_rows == 0) {
       progress_spinner = new Gtk.Spinner ();
-      progress_spinner.set_size_request (60, 60);
+      progress_spinner.set_size_request (30, 30);
+      progress_spinner.margin_top = 10;
+      progress_spinner.margin_bottom = 10;
       progress_spinner.start ();
       thread_list.add (progress_spinner);
     }
@@ -235,12 +237,28 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       return;
     }
 
+    var urls = dm_obj.get_object_member ("entities").get_array_member ("urls");
+    var url_list = new GLib.SList<TweetUtils.Sequence?> ();
+    urls.foreach_element((arr, index, node) => {
+      var url = node.get_object();
+      string expanded_url = url.get_string_member("expanded_url");
+
+      Json.Array indices = url.get_array_member ("indices");
+      expanded_url = expanded_url.replace("&", "&amp;");
+      url_list.prepend(TweetUtils.Sequence() {
+        start = (int)indices.get_int_element (0),
+        end   = (int)indices.get_int_element (1) ,
+        url   = url.get_string_member ("display_url"),
+        visual_display_url = false
+      });
+    });
+
     var thread_entry = new DMThreadEntry (sender_id);
     var author = dm_obj.get_string_member ("sender_screen_name");
     string sender_name = dm_obj.get_object_member ("sender").get_string_member ("name");
     thread_entry.name = sender_name;
     thread_entry.screen_name = author;
-    thread_entry.last_message = text;
+    thread_entry.last_message = TweetUtils.get_real_text (text, url_list);
     thread_entry.last_message_id = message_id;
     thread_list.add(thread_entry);
     thread_map.set(sender_id, thread_entry);
