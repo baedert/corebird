@@ -52,6 +52,8 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
 
     tweet_list.activate_on_single_click = false;
     tweet_list.row_activated.connect ((row) => {
+      if (!(row is TweetListEntry))
+        return;
       main_window.switch_page (MainWindow.PAGE_TWEET_INFO,
                                TweetInfoPage.BY_INSTANCE,
                                ((TweetListEntry)row).tweet);
@@ -82,13 +84,19 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   private void connect_stream_signals () {
     account.user_stream.interrupted.connect (() => {
       missing_entry.lower_id = max_id;
+      missing_entry.timestamp = new GLib.DateTime.now_local ().to_unix ();
       missing_entry.set_interrupted ();
       missing_entry.show_all ();
       tweet_list.add (missing_entry);
+      tweet_list.invalidate_sort ();
     });
 
     account.user_stream.resumed.connect (() => {
       missing_entry.set_resumed ();
+    });
+    missing_entry.load_clicked.connect (() => {
+      tweet_list.remove (missing_entry);
+      missing_entry.set_interrupted (); // reset state
     });
   }
 

@@ -33,10 +33,11 @@
 [GtkTemplate (ui = "/org/baedert/corebird/ui/missing-list-entry.ui")]
 public class MissingListEntry : Gtk.ListBoxRow, ITwitterItem {
   public bool  seen     { get; set; default = true; }
-  public int64 lower_id { get; set; }
-  public int64 upper_id { get; set; }
+  public int64 lower_id;
+  public int64 upper_id;
+  public int64 timestamp;
   public int64 sort_factor {
-    get { return lower_id + 1; }
+    get { return timestamp; }
   }
   [GtkChild]
   private Gtk.Stack stack;
