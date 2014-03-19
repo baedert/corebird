@@ -43,10 +43,10 @@ public class Database {
     this.exec ("pragma user_version;", (n_cols, vals) => {user_version = int.parse(vals[0]); return STOP;});
     var next_version_file = init_file.printf(user_version + 1);
     debug ("%s User version: %d", filename, user_version);
-    if (FileUtils.test (next_version_file, FileTest.EXISTS)) {
+    while (FileUtils.test (next_version_file, FileTest.EXISTS)) {
       string sql_content;
       try {
-        debug ("Applyling file '%s'", next_version_file);
+        message ("Applyling file '%s'", next_version_file);
         FileUtils.get_contents (next_version_file, out sql_content);
       } catch (GLib.FileError e) {
         critical (e.message);
@@ -54,9 +54,8 @@ public class Database {
       }
       db.exec (sql_content);
       debug ("Executed init file '%s' for database '%s'", next_version_file, filename);
-    } else {
-      debug ("Tried to apply sql file '%s' for database '%s', but it does not exist.",
-                next_version_file, filename);
+      this.exec ("pragma user_version;", (n_cols, vals) => {user_version = int.parse(vals[0]); return STOP;});
+      next_version_file = init_file.printf (user_version + 1);
     }
   }
 
