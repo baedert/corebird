@@ -41,6 +41,8 @@ libcorebird_la_VALASOURCES = \
 			ListStatusesPage.vala \
 			ListsPage.vala \
 			FavoritesTimeline.vala \
+			Filter.vala \
+			FilterPage.vala \
 			widgets/TweetListBox.vala \
 			widgets/MaxSizeContainer.vala \
 			widgets/ScrollWidget.vala \
@@ -71,11 +73,14 @@ libcorebird_la_VALASOURCES = \
 			list/StartConversationEntry.vala \
 			list/ListListEntry.vala \
 			list/NewListEntry.vala \
+			list/FilterListEntry.vala \
+			list/UserFilterEntry.vala \
 			window/ComposeTweetWindow.vala \
 			window/SettingsDialog.vala \
 			window/ImageDialog.vala \
 			window/RemoveAccountDialog.vala \
 			window/UserListDialog.vala \
+			window/ModifyFilterDialog.vala \
 			sql/Database.vala \
 			sql/Statement.vala \
 			sql/UpdateStatement.vala \
