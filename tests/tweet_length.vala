@@ -31,7 +31,7 @@ int main (string[] args) {
   GLib.Test.add_func ("/tweet-length/normal", normal);
   GLib.Test.add_func ("/tweet-length/empty", empty);
   GLib.Test.add_func ("/tweet-length/http-link", http_link);
-  GLib.Test.add_func ("/tweet-length/https-link", http_link);
+  GLib.Test.add_func ("/tweet-length/https-link", https_link);
 
 
   return GLib.Test.run ();
