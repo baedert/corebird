@@ -63,7 +63,6 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
 
   }
 
-  // TODO: Why is there a page_id parameter?
   public virtual void on_join (int page_id, va_list args) {
     if (!initialized) {
       load_cached ();
