@@ -20,9 +20,10 @@ namespace InlineMediaDownloader {
   const int THUMB_SIZE = 40;
   private Soup.Session session;
 
-  async void try_load_media(Tweet t, string url) {
-    if(!Settings.show_inline_media())
+  public async void try_load_media (Tweet t, string url) {
+    if (!Settings.show_inline_media ()) {
       return;
+    }
 
     if (session == null)
       session = new Soup.Session ();
@@ -42,17 +43,16 @@ namespace InlineMediaDownloader {
 
     if(url.has_prefix("http://instagr.am") ||
        url.has_prefix("http://instagram.com/p/")) {
-      two_step_load.begin(t, url, "<meta property=\"og:image\" content=\"(.*?)\"", 1);
+      yield two_step_load (t, url, "<meta property=\"og:image\" content=\"(.*?)\"", 1);
     } else if (url.has_prefix("http://i.imgur.com")) {
-      load_inline_media.begin(t, url);
+      yield load_inline_media (t, url);
     } else if (url.has_prefix("http://d.pr/i/") || url.has_prefix("http://ow.ly/i/") ||
                url.has_prefix("https://vine.co/v/") || url.has_prefix("http://tmblr.co/")) {
-      two_step_load.begin(t, url, "<meta property=\"og:image\" content=\"(.*?)\"",
-                          1);
+      yield two_step_load (t, url, "<meta property=\"og:image\" content=\"(.*?)\"", 1);
     } else if (url.has_prefix("http://pbs.twimg.com/media/")) {
-      load_inline_media.begin(t, url);
+      yield load_inline_media (t, url);
     } else if (url.has_prefix("http://twitpic.com/")) {
-      two_step_load.begin(t, url,
+      yield two_step_load (t, url,
                           "<meta name=\"twitter:image\" value=\"(.*?)\"", 1);
     }
   }
@@ -76,8 +76,13 @@ namespace InlineMediaDownloader {
 
   }
 
+<<<<<<< HEAD
   private async void load_inline_media(Tweet t, string url) { //{{{
 
+=======
+  public async void load_inline_media (Tweet t, string url) { //{{{
+    GLib.SourceFunc callback = load_inline_media.callback;
+>>>>>>> 66bc67e... InlineMediaDownloader: Fix callbacks
     // First, check if the media already exists...
     string path = get_media_path (t, url);
     string thumb_path = get_thumb_path (t, url);
@@ -94,21 +99,24 @@ namespace InlineMediaDownloader {
     }
 
 
-    debug("Directly Downloading %s", url);
+
     var msg = new Soup.Message("GET", url);
     msg.got_headers.connect (() => {
       int64 content_length = msg.response_headers.get_content_length ();
       double mb = content_length / 1024.0 / 1024.0;
       double max = Settings.max_media_size ();
       if (mb > max) {
-        message ("Image %s won't be downloaded,  %fMB > %fMB", url, mb, max);
+        debug ("Image %s won't be downloaded,  %fMB > %fMB", url, mb, max);
         session.cancel_message (msg, Soup.Status.CANCELLED);
       }
     });
 
+
     session.queue_message(msg, (s, _msg) => {
-      if (_msg.status_code == Soup.Status.CANCELLED)
+      if (_msg.status_code == Soup.Status.CANCELLED) {
+        callback ();
         return;
+      }
 
       try {
         var ms  = new MemoryInputStream.from_data(_msg.response_body.data, null);
@@ -130,21 +138,30 @@ namespace InlineMediaDownloader {
 
         media_out_stream.write_all (_msg.response_body.data, null, null);
         if(ext == "gif"){
-          load_animation (t, ms, media_out_stream, thumb_out_stream, path, thumb_path);
+          load_animation (t, ms, media_out_stream, thumb_out_stream, path, thumb_path, () => {
+            callback ();
+          });
+          yield;
         } else {
-          load_normal_media (t, ms, media_out_stream, thumb_out_stream, path, thumb_path);
+          load_normal_media.begin (t, ms, media_out_stream, thumb_out_stream, path, thumb_path, () => {
+            callback ();
+          });
+          yield;
         }
       } catch (GLib.Error e) {
         critical (e.message + " for MEDIA " + url);
+        callback ();
       }
     });
+    yield;
   } //}}}
 
-  private void load_animation (Tweet t,
-                               MemoryInputStream in_stream,
-                               OutputStream out_stream,
-                               OutputStream thumb_out_stream,
-                               string path, string thumb_path) {
+  private async void load_animation (Tweet t,
+                                     MemoryInputStream in_stream,
+                                     OutputStream out_stream,
+                                     OutputStream thumb_out_stream,
+                                     string path, string thumb_path) {
+    GLib.SourceFunc callback = load_animation.callback;
     pixbuf_animation_from_stream_async.begin (in_stream, null, (obj, res) => {
       Gdk.PixbufAnimation anim = null;
       try {
@@ -157,28 +174,30 @@ namespace InlineMediaDownloader {
       var thumb = slice_pixbuf (pic);
       thumb.save_to_stream_async.begin (thumb_out_stream, "png", null, () => {
         fire_media_added(t, path, thumb, thumb_path);
+        callback ();
       });
     });
   }
 
-  private void load_normal_media (Tweet t,
-                                  MemoryInputStream in_stream,
-                                  OutputStream out_stream,
-                                  OutputStream thumb_out_stream,
-                                  string path, string thumb_path) {
-    pixbuf_from_stream_async.begin (in_stream, null, (obj, res) => {
-      Gdk.Pixbuf pic = null;
-      try {
-        pic = pixbuf_from_stream_async.end (res);
-      } catch (GLib.Error e) {
-        warning ("%s(%s)", e.message, path);
-        return;
-      }
-      var thumb = slice_pixbuf (pic);
-      thumb.save_to_stream_async.begin (thumb_out_stream, "png", null, () => {
-        fire_media_added(t, path, thumb, thumb_path);
-      });
+  private async void load_normal_media (Tweet t,
+                                        MemoryInputStream in_stream,
+                                        OutputStream out_stream,
+                                        OutputStream thumb_out_stream,
+                                        string path, string thumb_path) {
+    Gdk.Pixbuf pic = null;
+    try {
+      pic = yield pixbuf_from_stream_async (in_stream, null);
+    } catch (GLib.Error e) {
+      warning ("%s(%s)", e.message, path);
+      return;
+    }
+    GLib.SourceFunc callback = load_normal_media.callback;
+    var thumb = slice_pixbuf (pic);
+    thumb.save_to_stream_async.begin (thumb_out_stream, "png", null, () => {
+      fire_media_added(t, path, thumb, thumb_path);
+      callback ();
     });
+    yield;
   }
 
   /**
