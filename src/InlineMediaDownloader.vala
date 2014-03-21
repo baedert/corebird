@@ -17,10 +17,10 @@
 
 
 namespace InlineMediaDownloader {
-  const int THUMB_SIZE = 40;
+  public const int THUMB_SIZE = 40;
   private Soup.Session session;
 
-  async void try_load_media(Tweet t, string url) {
+  public async void try_load_media(Tweet t, string url) {
     if(!Settings.show_inline_media())
       return;
 
