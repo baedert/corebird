@@ -16,16 +16,19 @@ void delete_file (string filename) {
 
 
 void no_download () {
+  var url = "https://google.com";
   Tweet t = new Tweet ();
   t.id = 0;
   t.user_id = 1;
-  InlineMediaDownloader.try_load_media.begin (t, "https://google.de", () => {
+  var media_path = InlineMediaDownloader.get_media_path (t, url);
+  delete_file (media_path);
+  InlineMediaDownloader.try_load_media.begin (t, url, () => {
     // No media should have been added
     assert (t.media == null);
     assert (t.media_thumb == null);
     assert (t.inline_media == null);
     assert (!t.has_inline_media);
-    // TODO: Delete file first, then check that it does not exist.
+    assert (!FileUtils.test (media_path, FileTest.EXISTS));
   });
 }
 
