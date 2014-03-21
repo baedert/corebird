@@ -34,7 +34,8 @@ CB_VALA_FLAGS=" \
   --pkg libsoup-2.4 \
   --pkg glib-2.0 \
   --target-glib=2.38 \
-  --gresources=../resources.xml"
+  --gresources=../resources.xml \
+  --vapidir=vapi/"
 # }}}
 
 AC_SUBST(CB_CFLAGS)
