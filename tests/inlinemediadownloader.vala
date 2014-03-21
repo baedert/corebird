@@ -1,4 +1,18 @@
 
+// UTIL {{{
+
+void delete_file (string filename) {
+  if (FileUtils.test (filename, FileTest.EXISTS)) {
+    try {
+      var f = GLib.File.new_for_path (filename);
+      f.delete ();
+    } catch (GLib.Error e) {
+      warning (e.message);
+    }
+  }
+}
+
+// }}}
 
 
 void no_download () {
@@ -42,28 +56,10 @@ void normal_download () {
   t.user_id = 1;
   var media_path = InlineMediaDownloader.get_media_path (t, url);
   // first delete the file if it does exist
-  {
-    var media_file = GLib.File.new_for_path (media_path);
-    if (media_file.query_exists ()) {
-      try {
-        media_file.delete ();
-      } catch (GLib.Error e) {
-        critical (e.message);
-      }
-    }
-
-    media_file = GLib.File.new_for_path (Dirs.cache ("assets/media/thumbs/0_1.png"));
-    if (media_file.query_exists ()) {
-      try {
-        media_file.delete ();
-      } catch (GLib.Error e) {
-        critical (e.message);
-      }
-    }
-  }
+  delete_file (media_path);
+  delete_file (Dirs.cache ("assets/media/thumbs/0_1.png"));
 
   InlineMediaDownloader.try_load_media.begin (t, url, (o, res) => {
-      //error ("try_load_media callback");
     assert (t.media != null);
     assert (t.media_thumb != null);
     assert (t.inline_media != null);
