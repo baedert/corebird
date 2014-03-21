@@ -64,6 +64,7 @@ void normal_download () {
     assert (t.media_thumb != null);
     assert (t.inline_media != null);
     assert (GLib.FileUtils.test (t.media, GLib.FileTest.EXISTS));
+    assert (t.media == media_path);
     main_loop.quit ();
   });
 
