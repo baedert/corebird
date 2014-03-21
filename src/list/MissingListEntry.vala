@@ -43,8 +43,6 @@ public class MissingListEntry : Gtk.ListBoxRow, ITwitterItem {
   private Gtk.Stack stack;
   [GtkChild]
   private Gtk.Label error_label;
-  [GtkChild]
-  private Gtk.Button load_missing_button;
   public signal void load_clicked ();
 
 
