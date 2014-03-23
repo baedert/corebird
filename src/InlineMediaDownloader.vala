@@ -81,18 +81,60 @@ namespace InlineMediaDownloader {
     // First, check if the media already exists...
     string path = get_media_path (t, url);
     string thumb_path = get_thumb_path (t, url);
-    if(FileUtils.test(path, FileTest.EXISTS)) {
-      /* If the media already exists, the thumbnail also exists.
-         If not, fuck you.*/
-      try {
-        var thumb = new Gdk.Pixbuf.from_file(thumb_path);
-        fire_media_added(t, path, thumb, thumb_path);
+    string ext = Utils.get_file_type(url);
+    {
+      if(ext.length == 0)
+        ext = "png";
+
+      ext = ext.down();
+      int qm_index;
+      if ((qm_index = ext.index_of_char ('?')) != -1) {
+        ext = ext.substring (0, qm_index);
+      }
+
+      if (ext == "jpg")
+        ext = "jpeg";
+    }
+
+    GLib.OutputStream thumb_out_stream = null;
+    GLib.OutputStream media_out_stream = null;
+
+    bool main_file_exists = false;
+    try {
+      media_out_stream = File.new_for_path (path).create (FileCreateFlags.NONE);
+    } catch (GLib.Error e) {
+      if (e is GLib.IOError.EXISTS)
+        main_file_exists = true;
+      else {
+        warning (e.message);
         return;
-      } catch (GLib.Error e) {
-        critical (e.message);
       }
     }
 
+    try {
+      thumb_out_stream = File.new_for_path (thumb_path).create (FileCreateFlags.NONE);
+      // If we came to this point, the above operation did not throw a GError, so
+      // the thumbnail does not exist, right?
+      if (main_file_exists) {
+        var in_stream = GLib.File.new_for_path (path).read ();
+        yield load_normal_media (t, in_stream, thumb_out_stream, path, thumb_path);
+        return;
+      }
+    } catch (GLib.Error e) {
+      if (e is GLib.IOError.EXISTS) {
+        if (main_file_exists) {
+          var thumb = new Gdk.Pixbuf.from_file (thumb_path);
+          fire_media_added (t, path, thumb, thumb_path);
+          return;
+        } else  {
+          // We just delete the old thumbnail and proceed
+          GLib.FileUtils.remove (thumb_path);
+        }
+      } else {
+        warning (e.message);
+        return;
+      }
+    }
 
 
     var msg = new Soup.Message("GET", url);
@@ -108,36 +150,20 @@ namespace InlineMediaDownloader {
 
 
     session.queue_message(msg, (s, _msg) => {
-      if (_msg.status_code == Soup.Status.CANCELLED) {
+      if (_msg.status_code != Soup.Status.OK) {
         callback ();
         return;
       }
 
       try {
         var ms  = new MemoryInputStream.from_data(_msg.response_body.data, null);
-        string ext = Utils.get_file_type(url);
-        if(ext.length == 0)
-          ext = "png";
-        ext = ext.down();
-
-        int qm_index;
-        if ((qm_index = ext.index_of_char ('?')) != -1) {
-          ext = ext.substring (0, qm_index);
-        }
-
-        if (ext == "jpg")
-          ext = "jpeg";
-
-        var media_out_stream = File.new_for_path (path).create (FileCreateFlags.REPLACE_DESTINATION);
-        var thumb_out_stream = File.new_for_path (thumb_path).create (FileCreateFlags.REPLACE_DESTINATION);
-
         media_out_stream.write_all (_msg.response_body.data, null, null);
         if(ext == "gif"){
-          load_animation.begin (t, ms, media_out_stream, thumb_out_stream, path, thumb_path, () => {
+          load_animation.begin (t, ms, thumb_out_stream, path, thumb_path, () => {
             callback ();
           });
         } else {
-          load_normal_media.begin (t, ms, media_out_stream, thumb_out_stream, path, thumb_path, () => {
+          load_normal_media.begin (t, ms, thumb_out_stream, path, thumb_path, () => {
             callback ();
           });
         }
@@ -152,7 +178,6 @@ namespace InlineMediaDownloader {
 
   private async void load_animation (Tweet t,
                                      MemoryInputStream in_stream,
-                                     OutputStream out_stream,
                                      OutputStream thumb_out_stream,
                                      string path, string thumb_path) {
     Gdk.PixbufAnimation anim;
@@ -169,8 +194,7 @@ namespace InlineMediaDownloader {
   }
 
   private async void load_normal_media (Tweet t,
-                                        MemoryInputStream in_stream,
-                                        OutputStream out_stream,
+                                        GLib.InputStream in_stream,
                                         OutputStream thumb_out_stream,
                                         string path, string thumb_path) {
     Gdk.Pixbuf pic = null;
