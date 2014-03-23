@@ -20,3 +20,15 @@ foreach(file ${files})
     message(STATUS "File $ENV{DESTDIR}${file} does not exist.")
   endif(IS_SYMLINK "$ENV{DESTDIR}${file}" OR EXISTS "$ENV{DESTDIR}${file}")
 endforeach(file)
+
+if ("@GSETTINGS_COMPILE@" STREQUAL "ON")
+  message(STATUS "Compiling GSettings schemas")
+  exec_program(
+    "glib-compile-schemas" ARGS "@GSETTINGS_DIR@"
+    OUTPUT_VARIABLE comp_schemas_out
+    RETURN_VALUE comp_schemas_retval)
+  if (NOT "${comp_schemas_retval}" STREQUAL 0)
+    message(FATAL_ERROR "Problem when trying to compile schemas\n"
+      "glib-compile-schemas: ${comp_schemas_out}")
+  endif()
+endif()
