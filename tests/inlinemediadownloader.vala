@@ -38,15 +38,12 @@ void media_name () {
   t.id = 0;
   t.user_id = 1;
   string path = InlineMediaDownloader.get_media_path (t, "http://foobar.com/nanana.jpg");
-  message ("path: %s", path);
   assert (path == Dirs.cache ("assets/media/0_1.jpeg"));
 
   path = InlineMediaDownloader.get_media_path (t, "http://bla.com/nanana");
-  message ("path: %s", path);
   assert (path == Dirs.cache ("assets/media/0_1.png"));
 
   path = InlineMediaDownloader.get_media_path (t, "http://bla.com/foobar.png");
-  message ("path: %s", path);
   assert (path == Dirs.cache ("assets/media/0_1.png"));
 }
 
@@ -75,6 +72,27 @@ void normal_download () {
 }
 
 
+void animation_download () {
+  var main_loop = new GLib.MainLoop ();
+  var url = "http://i.imgur.com/rgF0Czu.gif";
+  Tweet t = new Tweet ();
+  t.id = 100;
+  t.user_id = 20;
+  var media_path = InlineMediaDownloader.get_media_path (t, url);
+  delete_file (media_path);
+  delete_file (Dirs.cache ("assets/media/thumbs/100_20.png"));
+  InlineMediaDownloader.try_load_media.begin (t, url, () => {
+    assert (t.media != null);
+    assert (t.media_thumb != null);
+    assert (t.inline_media != null);
+    assert (GLib.FileUtils.test (t.media, GLib.FileTest.EXISTS));
+    assert (t.media == media_path);
+
+    main_loop.quit ();
+  });
+  main_loop.run ();
+}
+
 
 int main (string[] args) {
   GLib.Test.init (ref args);
@@ -83,5 +101,6 @@ int main (string[] args) {
   GLib.Test.add_func ("/media/no-download", no_download);
   GLib.Test.add_func ("/media/name", media_name);
   GLib.Test.add_func ("/media/normal-download", normal_download);
+  GLib.Test.add_func ("/media/animation-download", animation_download);
   return GLib.Test.run ();
 }
