@@ -133,16 +133,15 @@ namespace InlineMediaDownloader {
 
         media_out_stream.write_all (_msg.response_body.data, null, null);
         if(ext == "gif"){
-          load_animation (t, ms, media_out_stream, thumb_out_stream, path, thumb_path, () => {
+          load_animation.begin (t, ms, media_out_stream, thumb_out_stream, path, thumb_path, () => {
             callback ();
           });
-          yield;
         } else {
           load_normal_media.begin (t, ms, media_out_stream, thumb_out_stream, path, thumb_path, () => {
             callback ();
           });
-          yield;
         }
+        yield;
       } catch (GLib.Error e) {
         critical (e.message + " for MEDIA " + url);
         callback ();
@@ -156,22 +155,17 @@ namespace InlineMediaDownloader {
                                      OutputStream out_stream,
                                      OutputStream thumb_out_stream,
                                      string path, string thumb_path) {
-    GLib.SourceFunc callback = load_animation.callback;
-    pixbuf_animation_from_stream_async.begin (in_stream, null, (obj, res) => {
-      Gdk.PixbufAnimation anim = null;
-      try {
-        anim = pixbuf_animation_from_stream_async.end (res);
-      } catch (GLib.Error e) {
-        warning (e.message);
-        return;
-      }
-      var pic = anim.get_static_image();
-      var thumb = slice_pixbuf (pic);
-      thumb.save_to_stream_async.begin (thumb_out_stream, "png", null, () => {
-        fire_media_added(t, path, thumb, thumb_path);
-        callback ();
-      });
-    });
+    Gdk.PixbufAnimation anim;
+    try {
+      anim = yield new Gdk.PixbufAnimation.from_stream_async (in_stream, null);
+    } catch (GLib.Error e) {
+      warning (e.message);
+      return;
+    }
+    var pic = anim.get_static_image ();
+    var thumb = slice_pixbuf (pic);
+    yield Utils.write_pixbuf_async (thumb, thumb_out_stream, "png");
+    fire_media_added (t, path, thumb, thumb_path);
   }
 
   private async void load_normal_media (Tweet t,
@@ -181,18 +175,14 @@ namespace InlineMediaDownloader {
                                         string path, string thumb_path) {
     Gdk.Pixbuf pic = null;
     try {
-      pic = yield pixbuf_from_stream_async (in_stream, null);
+      pic = yield new Gdk.Pixbuf.from_stream_async (in_stream, null);
     } catch (GLib.Error e) {
       warning ("%s(%s)", e.message, path);
       return;
     }
-    GLib.SourceFunc callback = load_normal_media.callback;
     var thumb = slice_pixbuf (pic);
-    thumb.save_to_stream_async.begin (thumb_out_stream, "png", null, () => {
-      fire_media_added(t, path, thumb, thumb_path);
-      callback ();
-    });
-    yield;
+    yield Utils.write_pixbuf_async (thumb, thumb_out_stream, "png");
+    fire_media_added (t, path, thumb, thumb_path);
   }
 
   /**
