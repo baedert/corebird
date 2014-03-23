@@ -93,6 +93,33 @@ void animation_download () {
   main_loop.run ();
 }
 
+void download_twice () {
+  var main_loop = new GLib.MainLoop ();
+  var url = "http://pbs.twimg.com/media/BiHRjmFCYAAEKFg.png";
+  var t = new Tweet ();
+  t.id = 300;
+  t.user_id = 5;
+  var media_path = InlineMediaDownloader.get_media_path (t, url);
+  delete_file (media_path);
+  delete_file (Dirs.cache ("assets/media/thumbs/300_5.png"));
+  InlineMediaDownloader.try_load_media.begin (t, url, () => {
+    assert (t.media != null);
+    assert (t.media == media_path);
+    assert (GLib.FileUtils.test (t.media, GLib.FileTest.EXISTS));
+    // Download second time
+    // NOTE: We are *not* deleting the just downloaded media here.
+    InlineMediaDownloader.try_load_media.begin (t, url, () => {
+      // Nothing should have changed
+      assert (t.media != null);
+      assert (t.media == media_path);
+      assert (t.inline_media != null);
+      assert (GLib.FileUtils.test (t.media, GLib.FileTest.EXISTS));
+      main_loop.quit ();
+    });
+  });
+  main_loop.run ();
+}
+
 
 int main (string[] args) {
   GLib.Test.init (ref args);
@@ -102,5 +129,6 @@ int main (string[] args) {
   GLib.Test.add_func ("/media/name", media_name);
   GLib.Test.add_func ("/media/normal-download", normal_download);
   GLib.Test.add_func ("/media/animation-download", animation_download);
+  GLib.Test.add_func ("/media/download-twice", download_twice);
   return GLib.Test.run ();
 }
