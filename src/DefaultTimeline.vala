@@ -91,7 +91,7 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     });
 
     account.user_stream.resumed.connect (() => {
-      load_missing_tweets.begin (0, 100, (o, res) => {
+      load_missing_tweets.begin (this.max_id + 1, -1, (o, res) => {
         uint count = load_missing_tweets.end (res);
         if (count > 0) {
           missing_entry.set_resumed ();
