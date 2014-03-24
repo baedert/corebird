@@ -108,7 +108,7 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   private async uint load_missing_tweets (int64 lower_id, int64 upper_id) {
     var call = account.proxy.new_call ();
     call.set_method ("GET");
-    call.set_function ("1.1/statuses/home_timeline.json");
+    call.set_function (get_function ());
     call.add_param ("count", "1");
     call.add_param ("contributor_details", "false");
     call.add_param ("trim_user", "true");
