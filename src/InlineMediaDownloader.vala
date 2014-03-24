@@ -59,9 +59,9 @@ namespace InlineMediaDownloader {
 
   private async void two_step_load(Tweet t, string first_url, string regex_str,
                                           int match_index) {
-    var msg     = new Soup.Message("GET", first_url);
+    var msg = new Soup.Message("GET", first_url);
     session.queue_message(msg, (_s, _msg) => {
-    string back = (string)_msg.response_body.data;
+      string back = (string)_msg.response_body.data;
       try{
         var regex = new GLib.Regex(regex_str, 0);
         MatchInfo info;
