@@ -17,7 +17,7 @@
 
 
 // See https://dev.twitter.com/docs/streaming-apis/messages
-enum StreamMessageType {
+public enum StreamMessageType {
   UNSUPPORTED,
   DELETE,
   SCRUB_GEO,
@@ -45,7 +45,7 @@ enum StreamMessageType {
 }
 
 
-class UserStream : Object {
+public class UserStream : Object {
   private static const int TIMEOUT_INTERVAL         = 45*1000;
   private Rest.OAuthProxy proxy;
   private Rest.ProxyCall proxy_call;
