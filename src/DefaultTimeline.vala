@@ -38,6 +38,7 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
 
   public DefaultTimeline (int id) {
     this.id = id;
+    this.vscrollbar_policy = Gtk.PolicyType.ALWAYS;
     this.scrolled_to_start.connect(handle_scrolled_to_start);
     this.scrolled_to_end.connect(() => {
       if (!loading) {
