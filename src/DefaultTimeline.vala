@@ -88,16 +88,49 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
       missing_entry.set_interrupted ();
       missing_entry.show_all ();
       tweet_list.add (missing_entry);
-      tweet_list.invalidate_sort ();
     });
 
     account.user_stream.resumed.connect (() => {
-      missing_entry.set_resumed ();
+      load_missing_tweets.begin (0, 100, (o, res) => {
+        uint count = load_missing_tweets.end (res);
+        if (count > 0) {
+          missing_entry.set_resumed ();
+        } else {
+          tweet_list.remove (missing_entry);
+        }
+      });
     });
     missing_entry.load_clicked.connect (() => {
       tweet_list.remove (missing_entry);
       missing_entry.set_interrupted (); // reset state
     });
+  }
+
+  private async uint load_missing_tweets (int64 lower_id, int64 upper_id) {
+    var call = account.proxy.new_call ();
+    call.set_method ("GET");
+    call.set_function ("1.1/statuses/home_timeline.json");
+    call.add_param ("count", "1");
+    call.add_param ("contributor_details", "false");
+    call.add_param ("trim_user", "true");
+    call.add_param ("include_entities", "false");
+    if (upper_id != -1)
+      call.add_param ("max_id", upper_id.to_string ());
+    call.add_param ("since_id", lower_id.to_string ());
+    try {
+      yield call.invoke_async (null);
+    } catch (GLib.Error e) {
+      warning (e.message);
+      return 0;
+    }
+    var parser = new Json.Parser ();
+    try  {
+      parser.load_from_data (call.get_payload ());
+    } catch (GLib.Error e) {
+      warning (e.message);
+      return 0;
+    }
+    return parser.get_root ().get_array ().get_length ();
   }
 
 
