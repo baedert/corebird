@@ -18,7 +18,7 @@
 
 using Gtk;
 
-class Tweet : GLib.Object {
+public class Tweet : GLib.Object {
   public static const int MAX_LENGTH = 140;
 
 #if __DEV

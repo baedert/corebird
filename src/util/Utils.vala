@@ -236,6 +236,18 @@ namespace Utils {
     yield;
   }
 
+  public async void write_pixbuf_async (Gdk.Pixbuf pixbuf, GLib.OutputStream out_stream, string type) {
+    new Thread<void*> ("write_pixbuf", () => {
+      pixbuf.save_to_stream (out_stream, type);
+      GLib.Idle.add (() => {
+        write_pixbuf_async.callback ();
+        return false;
+      });
+      return null;
+    });
+    yield;
+  }
+
   string decode (string source) {
     return (string)GLib.Base64.decode (source);
   }

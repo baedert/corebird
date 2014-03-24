@@ -16,7 +16,7 @@
  */
 
 
-class Account : GLib.Object {
+public class Account : GLib.Object {
   public int64 id                 {public get; private set;}
   public Sql.Database db          {public get; private set;}
   public string screen_name       {public get; private set;}
@@ -200,7 +200,7 @@ class Account : GLib.Object {
     this.db.select ("filters").cols ("content", "id")
               .order ("id").run ((cols) => {
       Filter f = new Filter (cols[0]);
-      f.id = int.parse (cols[2]);
+      f.id = int.parse (cols[1]);
       filters.add (f);
       return true;
      });
