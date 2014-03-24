@@ -59,23 +59,22 @@ namespace InlineMediaDownloader {
     }
   }
 
-  public async void two_step_load(Tweet t, string first_url, string regex_str,
-                                          int match_index) {
-    var msg = new Soup.Message("GET", first_url);
-    session.queue_message(msg, (_s, _msg) => {
+  public async void two_step_load (Tweet t, string first_url, string regex_str,
+                                   int match_index) {
+    var msg = new Soup.Message ("GET", first_url);
+    session.queue_message (msg, (_s, _msg) => {
       string back = (string)_msg.response_body.data;
-      try{
-        var regex = new GLib.Regex(regex_str, 0);
+      try {
+        var regex = new GLib.Regex (regex_str, 0);
         MatchInfo info;
-        regex.match(back, 0, out info);
-        string real_url = info.fetch(match_index);
+        regex.match (back, 0, out info);
+        string real_url = info.fetch (match_index);
         if(real_url != null)
-          load_inline_media.begin(t, real_url);
+          load_inline_media.begin (t, real_url);
       } catch (GLib.RegexError e) {
-        critical("Regex Error(%s): %s", regex_str, e.message);
+        critical ("Regex Error(%s): %s", regex_str, e.message);
       }
     });
-
   }
 
   public async void load_inline_media (Tweet t, string url) { //{{{
