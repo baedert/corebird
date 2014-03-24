@@ -128,12 +128,22 @@ namespace InlineMediaDownloader {
     } catch (GLib.Error e) {
       if (e is GLib.IOError.EXISTS) {
         if (main_file_exists) {
-          var thumb = new Gdk.Pixbuf.from_file (thumb_path);
-          fire_media_added (t, path, thumb, thumb_path);
+          try {
+            var thumb = new Gdk.Pixbuf.from_file (thumb_path);
+            fire_media_added (t, path, thumb, thumb_path);
+          } catch (GLib.Error e) {
+            critical (e.message);
+          }
           return;
         } else  {
           // We just delete the old thumbnail and proceed
           GLib.FileUtils.remove (thumb_path);
+          try {
+            thumb_out_stream = File.new_for_path (thumb_path).create (FileCreateFlags.NONE);
+          } catch (GLib.Error e) {
+            critical (e.message);
+            return;
+          }
         }
       } else {
         warning (e.message);
