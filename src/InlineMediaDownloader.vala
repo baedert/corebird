@@ -54,6 +54,8 @@ namespace InlineMediaDownloader {
     } else if (url.has_prefix("http://twitpic.com/")) {
       yield two_step_load (t, url,
                           "<meta name=\"twitter:image\" value=\"(.*?)\"", 1);
+    } else {
+      debug ("Not downloadable media: %s", url);
     }
   }
 
