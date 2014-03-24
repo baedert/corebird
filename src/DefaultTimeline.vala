@@ -147,6 +147,7 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   public virtual  void load_cached () {}
   public abstract void load_newest ();
   public abstract void load_older ();
+  protected abstract string get_function ();
 
   public override void destroy () {
     if (tweet_remove_timeout > 0)

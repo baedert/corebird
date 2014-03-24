@@ -69,4 +69,8 @@ class FavoritesTimeline : IMessageReceiver, DefaultTimeline {
     tool_button.tooltip_text = _("Favorites");
     tool_button.label = _("Favorites");
   }
+
+  protected override string get_function () {
+    return "1.1/favorites/list.json";
+  }
 }

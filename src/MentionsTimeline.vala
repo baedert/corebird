@@ -127,4 +127,8 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
     tool_button.label = _("Mentions");
   }
 
+
+  protected override string get_function () {
+    return "1.1/statuses/mentions_timeline.json";
+  }
 }

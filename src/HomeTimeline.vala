@@ -136,4 +136,8 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
     tool_button.tooltip_text = _("Home");
     tool_button.label = _("Home");
   }
+
+  protected override string get_function () {
+    return "1.1/statuses/home_timeline.json";
+  }
 }
