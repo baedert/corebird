@@ -34,7 +34,7 @@
 public class MissingListEntry : Gtk.ListBoxRow, ITwitterItem {
   public bool  seen     { get; set; default = true; }
   public int64 lower_id;
-  public int64 upper_id;
+  public int64 upper_id = -1;
   public int64 timestamp;
   public int64 sort_factor {
     get { return timestamp; }

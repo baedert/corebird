@@ -90,7 +90,7 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     });
 
     account.user_stream.resumed.connect (() => {
-      load_missing_tweets.begin (this.max_id + 1, -1, (o, res) => {
+      load_missing_tweets.begin (this.max_id + 1, -1, true, (o, res) => {
         uint count = load_missing_tweets.end (res);
         if (count > 0) {
           missing_entry.set_resumed ();
@@ -102,10 +102,19 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     missing_entry.load_clicked.connect (() => {
       tweet_list.remove (missing_entry);
       missing_entry.set_interrupted (); // reset state
+      load_missing_tweets.begin (missing_entry.lower_id,
+                                 missing_entry.upper_id,
+                                 false,
+                                 () => {
+        tweet_list.remove (missing_entry);
+        missing_entry.upper_id = -1;
+        missing_entry.lower_id = -1;
+      });
     });
   }
 
-  private async uint load_missing_tweets (int64 lower_id, int64 upper_id) {
+  private async uint load_missing_tweets (int64 lower_id, int64 upper_id,
+                                          bool insert = false) {
     var call = account.proxy.new_call ();
     call.set_method ("GET");
     call.set_function (get_function ());
@@ -129,7 +138,15 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
       warning (e.message);
       return 0;
     }
-    return parser.get_root ().get_array ().get_length ();
+    var root_arr = parser.get_root ().get_array ();
+    if (insert) {
+      yield TweetUtils.work_array (root_arr,
+                                   delta_updater,
+                                   tweet_list,
+                                   main_window,
+                                   account);
+    }
+    return root_arr.get_length ();
   }
 
 
@@ -276,5 +293,28 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     }
   }
 
+  protected void update_tweet_ids () {
+    if (missing_entry.parent == null) {
+      debug ("Tried to update tweet ids but the MLE is not active");
+      return;
+    }
+
+    if (missing_entry.upper_id != -1)
+      return;
+
+    unowned Gtk.Widget last = null;
+    foreach (var w in tweet_list.get_children ()) {
+      if (w is MissingListEntry) {
+        break;
+      }
+      last = w;
+    }
+
+    if (last != null) {
+      missing_entry.upper_id = ((TweetListEntry)last).tweet.id;
+    } else
+      debug ("last == null");
+
+  }
 
 }

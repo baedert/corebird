@@ -96,6 +96,8 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
       string summary = _("%d new Tweets!").printf (unread_count);
       NotificationManager.notify (summary);
     }
+
+    base.update_tweet_ids ();
   } // }}}
 
 

@@ -95,6 +95,7 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
                                            t.text,
                                            t.avatar);
       }
+      base.update_tweet_ids ();
     }
   } // }}}
 
