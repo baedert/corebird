@@ -122,8 +122,10 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     call.set_function (get_function ());
     call.add_param ("count", "1");
     call.add_param ("contributor_details", "false");
-    call.add_param ("trim_user", "true");
-    call.add_param ("include_entities", "false");
+    if (!insert) {
+      call.add_param ("trim_user", "true");
+      call.add_param ("include_entities", "false");
+    }
     if (upper_id != -1)
       call.add_param ("max_id", upper_id.to_string ());
     call.add_param ("since_id", lower_id.to_string ());
