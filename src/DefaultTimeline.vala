@@ -141,6 +141,7 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
       parser.load_from_data (call.get_payload ());
     } catch (GLib.Error e) {
       warning (e.message);
+      missing_entry.set_error (e.message);
       return 0;
     }
     var root_arr = parser.get_root ().get_array ();
