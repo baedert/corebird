@@ -88,9 +88,9 @@ public class UserStream : Object {
       return;
 
     if (available) {
-      debug ("STREAM CONTINUED");
       stop ();
       start ();
+      debug ("STREAM CONTINUED");
       resumed ();
     } else {
       debug ("STREAM INTERRUPTED");
