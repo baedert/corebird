@@ -131,6 +131,7 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
       yield call.invoke_async (null);
     } catch (GLib.Error e) {
       warning (e.message);
+      missing_entry.set_error (e.message);
       return 0;
     }
     var parser = new Json.Parser ();
