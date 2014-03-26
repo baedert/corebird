@@ -35,7 +35,6 @@ class FavoritesTimeline : IMessageReceiver, DefaultTimeline {
 
 
   private void add_tweet (Json.Node root_node) {
-
     GLib.DateTime now = new GLib.DateTime.now_local ();
     Tweet t = new Tweet();
     t.load_from_json(root_node, now, account);
@@ -44,11 +43,11 @@ class FavoritesTimeline : IMessageReceiver, DefaultTimeline {
 
     this.balance_next_upper_change (TOP);
     var entry = new TweetListEntry(t, main_window, account);
-    entry.seen = false;
+    entry.seen = true;
 
     delta_updater.add (entry);
     tweet_list.add (entry);
-    if (this.scrolled_up && (t.user_id == account.id || auto_scroll)) {
+    if (this.scrolled_up &&  auto_scroll) {
       this.scroll_up_next (true, false,
                            main_window.cur_page_id != this.id);
     }
@@ -56,7 +55,7 @@ class FavoritesTimeline : IMessageReceiver, DefaultTimeline {
     this.max_id = t.id;
 
     /* This is for example the case if the timeline=
-    has not been initialized yet, but a tweet arrived. */
+       has not been initialized yet, but a tweet arrived. */
     if (t.id < lowest_id)
       lowest_id = t.id;
 
