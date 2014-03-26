@@ -26,7 +26,7 @@ class FavoritesTimeline : IMessageReceiver, DefaultTimeline {
   private void stream_message_received (StreamMessageType type, Json.Node root) { // {{{
     if (type == StreamMessageType.EVENT_FAVORITE) {
       // TODO: add new tweet to the timeline
-      add_tweet (root.get_object ());
+      add_tweet (root);
     } else if (type == StreamMessageType.EVENT_UNFAVORITE) {
       int64 id = root.get_object ().get_object_member ("target_object").get_int_member ("id");
       toggle_favorite (id, false);
@@ -34,7 +34,31 @@ class FavoritesTimeline : IMessageReceiver, DefaultTimeline {
   } // }}}
 
 
-  private void add_tweet (Json.Object obj) {
+  private void add_tweet (Json.Node root_node) {
+
+    GLib.DateTime now = new GLib.DateTime.now_local ();
+    Tweet t = new Tweet();
+    t.load_from_json(root_node, now, account);
+
+    bool auto_scroll = Settings.auto_scroll_on_new_tweets ();
+
+    this.balance_next_upper_change (TOP);
+    var entry = new TweetListEntry(t, main_window, account);
+    entry.seen = false;
+
+    delta_updater.add (entry);
+    tweet_list.add (entry);
+    if (this.scrolled_up && (t.user_id == account.id || auto_scroll)) {
+      this.scroll_up_next (true, false,
+                           main_window.cur_page_id != this.id);
+    }
+
+    this.max_id = t.id;
+
+    /* This is for example the case if the timeline=
+    has not been initialized yet, but a tweet arrived. */
+    if (t.id < lowest_id)
+      lowest_id = t.id;
 
     base.update_tweet_ids ();
   }
