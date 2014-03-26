@@ -101,11 +101,13 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     });
     missing_entry.load_clicked.connect (() => {
       tweet_list.remove (missing_entry);
-      missing_entry.set_interrupted (); // reset state
+      missing_entry.set_loading ();
       load_missing_tweets.begin (missing_entry.lower_id,
                                  missing_entry.upper_id,
                                  false,
                                  () => {
+
+        missing_entry.set_interrupted (); // reset state
         tweet_list.remove (missing_entry);
         missing_entry.upper_id = -1;
         missing_entry.lower_id = -1;
