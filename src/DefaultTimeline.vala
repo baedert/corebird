@@ -216,9 +216,11 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
         continue;
       var tle = (TweetListEntry) w;
       if (tle.tweet.id == id) {
+        if (!tle.seen) {
+          unread_count--;
+          update_unread_count ();
+        }
         tle.seen = true;
-        unread_count--;
-        update_unread_count ();
         break;
       }
     }
