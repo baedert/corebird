@@ -44,6 +44,7 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
          so we can avoid the code duplication in MentionsTimeline and HomeTimeline */
 
   private void add_tweet (Json.Node root_node) { // {{{
+    /* Mark tweets as seen the user has already replied to */
     var root = root_node.get_object ();
     var author = root.get_object_member ("user");
     if (author.get_int_member ("id") == account.id &&
@@ -54,7 +55,7 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
 
 
 
-    if (root.get_string_member("text").contains("@"+account.screen_name)) {
+    if (root.get_string_member ("text").contains ("@" + account.screen_name)) {
       GLib.DateTime now = new GLib.DateTime.now_local ();
       Tweet t = new Tweet();
       t.load_from_json(root_node, now, account);
