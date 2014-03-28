@@ -66,9 +66,9 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
     base.scroll_up (t);
     base.postprocess_tweet (entry);
 
+    // We never show any notifications if auto-scroll-on-new-tweet is enabled
     int stack_size = Settings.get_tweet_stack_count ();
-    bool show_notification = !(stack_size == 1 && t.text.contains("@" + account.screen_name));
-    if (!show_notification || t.user_id == account.id)
+    if (t.user_id == account.id || auto_scroll)
       return;
 
     if (stack_size == 1 && !auto_scroll) {
