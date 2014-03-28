@@ -63,10 +63,7 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
     delta_updater.add (entry);
     tweet_list.add(entry);
 
-    if (this.scrolled_up && (t.user_id == account.id || auto_scroll)) {
-      this.scroll_up_next (true, false,
-                           main_window.cur_page_id != this.id);
-    }
+    base.scroll_up (t);
 
     if (!entry.seen) {
       unread_count ++;
@@ -81,8 +78,6 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
     if (!show_notification || t.user_id == account.id)
       return;
 
-    debug ("Stack size: %d", stack_size);
-    debug ("Unread count: %d", unread_count);
     if (stack_size == 1 && !auto_scroll) {
       if (t.has_inline_media){
         t.inline_media_added.connect (tweet_inline_media_added_cb);
