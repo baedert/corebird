@@ -49,7 +49,7 @@ public class UserCounter : GLib.Object {
       if (ui.id ==id) {
         found = true;
         ui.score ++;
-        message ("New score: %d", ui.score);
+        debug ("New score: %d", ui.score);
         ui.changed = true;
         break;
       }
