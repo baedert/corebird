@@ -235,4 +235,17 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     }
 
   }
+
+  protected void postprocess_tweet (TweetListEntry tle) {
+    var t = tle.tweet;
+    if (t.id < lowest_id)
+      lowest_id = t.id;
+    else if (t.id > max_id)
+      max_id = t.id;
+
+    if (!tle.seen) {
+      this.unread_count ++;
+      this.update_unread_count ();
+    }
+  }
 }

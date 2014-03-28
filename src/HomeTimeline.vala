@@ -64,14 +64,7 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
     tweet_list.add(entry);
 
     base.scroll_up (t);
-
-    if (!entry.seen) {
-      unread_count ++;
-      update_unread_count ();
-    }
-
-
-    this.max_id = t.id;
+    base.postprocess_tweet (entry);
 
     int stack_size = Settings.get_tweet_stack_count ();
     bool show_notification = !(stack_size == 1 && t.text.contains("@" + account.screen_name));
