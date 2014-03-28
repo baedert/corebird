@@ -25,7 +25,7 @@ class Corebird : Gtk.Application {
 
   const GLib.ActionEntry app_entries[] = {
     {"show-settings", show_settings_activated},
-    {"quit", quit},
+    {"quit", quit_application},
     {"show-about-dialog", about_activated}
   };
 
@@ -292,6 +292,29 @@ class Corebird : Gtk.Application {
     window = null;
     return false;
   }
+
+  /**
+   * Quits the application, saving all open windows and their geometries.
+   */
+  private void quit_application () {
+    unowned GLib.List<weak Gtk.Window> windows = this.get_windows ();
+    string[] account_names = new string[windows.length ()];
+    int index = 0;
+    foreach (var win in windows) {
+      if (!(win is MainWindow))
+        continue;
+      var mw = (MainWindow)win;
+      string screen_name = mw.account.screen_name;
+      mw.save_geometry ();
+      account_names[index] = screen_name;
+      index ++;
+    }
+    account_names.resize (index + 1);
+    Settings.get ().set_strv ("startup-accounts", account_names);
+    quit();
+  }
+
+
   /**
    * Log handler in case the application is not
    * started from the command line.

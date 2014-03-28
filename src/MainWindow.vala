@@ -357,7 +357,7 @@ class MainWindow : ApplicationWindow {
   /**
    * Saves this window's geometry in the window-geometry gsettings key.
    */
-  private void save_geometry () {
+  public void save_geometry () {
     GLib.Variant win_geom = Settings.get ().get_value ("window-geometry");
     GLib.Variant new_geom;
     GLib.VariantBuilder builder = new GLib.VariantBuilder (new GLib.VariantType("a{s(iiii)}"));
