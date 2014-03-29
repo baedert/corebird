@@ -324,8 +324,12 @@ namespace TweetUtils {
 
       int index = 0;
       GLib.Idle.add (() => {
-        if (!account.filter_matches (entry_array[index].tweet)) {
-          tweet_list.add (entry_array[index]);
+        var entry = entry_array[index];
+        if (!account.filter_matches (entry.tweet)) {
+          account.user_counter.user_seen (entry.tweet.user_id,
+                                          entry.tweet.screen_name,
+                                          entry.tweet.user_name);
+          tweet_list.add (entry);
         }
         index ++;
         if (index == entry_array.length) {
