@@ -49,7 +49,7 @@ public class UserCounter : GLib.Object {
       if (ui.id ==id) {
         found = true;
         ui.score ++;
-        debug ("New score: %d", ui.score);
+        //debug ("New score: %d", ui.score);
         ui.changed = true;
         break;
       }
@@ -96,10 +96,12 @@ public class UserCounter : GLib.Object {
     });
   }
 
+  // XXX This gets pretty slow if a lot of users need to be written
   public void save (Sql.Database db) {
     if (!changed)
       return;
 
+    int i = 0;
     foreach (var ui in names) {
       if (!ui.changed)
         continue;
@@ -109,8 +111,10 @@ public class UserCounter : GLib.Object {
                                .val ("screen_name", ui.screen_name)
                                .val ("user_name", ui.name)
                                .run();
+      i ++;
     }
     changed = false;
+    debug ("Changed count: %d", i);
   }
 
 }
