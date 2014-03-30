@@ -96,21 +96,30 @@ public class UserCounter : GLib.Object {
     });
   }
 
-  public void save (Sql.Database db) {
+  /**
+   * Saves all the changed user counts into the database.
+   *
+   * @return The number of changes users.
+   */
+  public int save (Sql.Database db) {
     if (!changed)
-      return;
+      return 0;
 
+    int count = 0;
     foreach (var ui in names) {
       if (!ui.changed)
         continue;
+
       ui.changed = true;
       db.replace ("user_cache").vali64 ("id", ui.id)
                                .vali ("score", ui.score)
                                .val ("screen_name", ui.screen_name)
                                .val ("user_name", ui.name)
                                .run();
+      count ++;
     }
     changed = false;
+    return count;
   }
 
 }
