@@ -46,7 +46,7 @@ public class UserCounter : GLib.Object {
     bool found = false;
     this.changed = true;
     foreach (var ui in names) {
-      if (ui.id ==id) {
+      if (ui.id == id) {
         found = true;
         ui.score ++;
         message ("New score: %d", ui.score);
@@ -110,7 +110,7 @@ public class UserCounter : GLib.Object {
       if (!ui.changed)
         continue;
 
-      ui.changed = true;
+      ui.changed = false;
       db.replace ("user_cache").vali64 ("id", ui.id)
                                .vali ("score", ui.score)
                                .val ("screen_name", ui.screen_name)
