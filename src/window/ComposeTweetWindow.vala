@@ -38,8 +38,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   [GtkChild]
   private Gtk.Button send_button;
   [GtkChild]
-  private Gtk.Box left_box;
-  private PixbufButton media_image = new PixbufButton ();
+  private PixbufButton media_image;
   private string media_uri;
   private uint media_count = 0;
   private unowned Account account;
@@ -88,18 +87,6 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       tweet_text.buffer.get_start_iter (out start_iter);
       tweet_text.buffer.place_cursor (start_iter);
     }
-
-    media_image.set_halign(Align.CENTER);
-    media_image.set_valign(Align.START);
-
-    media_image.clicked.connect (() => {
-      media_image.set_visible(false);
-      media_count--;
-      if(media_count <= Twitter.max_media_per_upload)
-        add_image_button.set_sensitive (true);
-    });
-
-    left_box.pack_end (media_image, false, true);
 
     //Let the text view immediately grab the keyboard focus
     tweet_text.grab_focus ();
@@ -209,6 +196,13 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     fcd.close ();
   }
 
+  [GtkCallback]
+  private void media_image_clicked_cb () {
+    media_image.set_visible(false);
+    media_count--;
+    if(media_count <= Twitter.max_media_per_upload)
+      add_image_button.set_sensitive (true);
+  }
 
 
   public void set_text (string text) {
