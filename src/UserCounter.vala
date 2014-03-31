@@ -97,24 +97,26 @@ public class UserCounter : GLib.Object {
   }
 
   // XXX This gets pretty slow if a lot of users need to be written
-  public void save (Sql.Database db) {
+  public int save (Sql.Database db) {
     if (!changed)
-      return;
+      return 0;
 
-    int i = 0;
+    int saved = 0;
+    db.begin_transaction ();
     foreach (var ui in names) {
       if (!ui.changed)
         continue;
-      ui.changed = true;
+      ui.changed = false;
       db.replace ("user_cache").vali64 ("id", ui.id)
                                .vali ("score", ui.score)
                                .val ("screen_name", ui.screen_name)
                                .val ("user_name", ui.name)
                                .run();
-      i ++;
+      saved ++;
     }
+    db.end_transaction ();
     changed = false;
-    debug ("Changed count: %d", i);
+    return saved;
   }
 
 }
