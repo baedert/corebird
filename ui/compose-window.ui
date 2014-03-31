@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
+  <object class="GtkWindow" id="completion_window">
+    <property name="type">popup</property>
+    <property name="type_hint">combo</property>
+    <signal name="focus_out_event" handler="completion_window_focus_out_cb" swapped="false" />
+
+    <child>
+      <object class="GtkScrolledWindow" id="scroller">
+        <property name="visible">True</property>
+        <property name="can_focus">false</property>
+        <child>
+          <object class="GtkListBox" id="completion_list">
+            <property name="visible">true</property>
+            <property name="can_focus">true</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+
+
   <template class="ComposeTweetWindow" parent="GtkApplicationWindow">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Compose Tweet</property>
@@ -74,6 +94,7 @@
                     <property name="vexpand">True</property>
                     <property name="wrap_mode">word-char</property>
                     <property name="accepts_tab">False</property>
+                    <signal name="key_press_event" handler="tweet_text_key_pressed_cb" swapped="no" />
                     <accessibility>
                       <relation type="labelled-by" target="length_label"/>
                     </accessibility>
