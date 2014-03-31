@@ -102,6 +102,7 @@ public class UserCounter : GLib.Object {
       return 0;
 
     int saved = 0;
+    db.begin_transaction ();
     foreach (var ui in names) {
       if (!ui.changed)
         continue;
@@ -113,6 +114,7 @@ public class UserCounter : GLib.Object {
                                .run();
       saved ++;
     }
+    db.end_transaction ();
     changed = false;
     return saved;
   }
