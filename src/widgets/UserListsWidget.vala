@@ -262,6 +262,9 @@ class UserListsWidget : Gtk.Box {
 
   [GtkCallback]
   private void new_list_create_activated_cb (string list_name) { // {{{
+    if (list_name.strip ().length <= 0)
+      return;
+
     new_list_entry.sensitive = false;
     var call = account.proxy.new_call ();
     call.set_function ("1.1/lists/create.json");
