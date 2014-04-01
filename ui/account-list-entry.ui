@@ -5,7 +5,6 @@
   <template class="AccountListEntry" parent="GtkListBoxRow">
     <property name="visible">True</property>
     <property name="can_focus">True</property>
-    <property name="margin_top">4</property>
     <child>
       <object class="GtkBox" id="box2">
         <property name="visible">True</property>

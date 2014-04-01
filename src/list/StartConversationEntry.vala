@@ -18,7 +18,7 @@
 
 using Gtk;
 
-
+// TODO: If the user starts a screen name with @, ignore the @
 [GtkTemplate (ui = "/org/baedert/corebird/ui/start-conversation-entry.ui")]
 class StartConversationEntry : Gtk.ListBoxRow {
   private static const int MAX_RESULTS = 7;
@@ -143,6 +143,10 @@ class StartConversationEntry : Gtk.ListBoxRow {
 
     if (screen_name.has_prefix ("@"))
       screen_name = screen_name.substring (1);
+
+    if (screen_name.length <= 0)
+      return;
+
     go_stack.visible_child_name = "spinner";
     go_spinner.start();
     name_entry.sensitive = false;
