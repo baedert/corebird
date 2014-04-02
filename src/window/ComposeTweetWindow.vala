@@ -66,6 +66,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     avatar_image.set_from_pixbuf (acc.avatar);
     length_label.label = Tweet.MAX_LENGTH.to_string ();
     tweet_text.buffer.notify["cursor-position"].connect (buffer_changed_cb);
+    tweet_text.focus_out_event.connect (completion_window_focus_out_cb);
 
     if (parent != null) {
       this.set_transient_for (parent);
@@ -254,7 +255,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   [GtkCallback]
   private bool completion_window_focus_out_cb () {
     completion_window.hide ();
-    return true;
+    return false;
   }
 
   [GtkCallback]
