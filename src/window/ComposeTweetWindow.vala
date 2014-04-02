@@ -65,7 +65,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       this.application = app;
     avatar_image.set_from_pixbuf (acc.avatar);
     length_label.label = Tweet.MAX_LENGTH.to_string ();
-    tweet_text.buffer.changed.connect (buffer_changed_cb);
+    tweet_text.buffer.notify["cursor-position"].connect (buffer_changed_cb);
 
     if (parent != null) {
       this.set_transient_for (parent);
