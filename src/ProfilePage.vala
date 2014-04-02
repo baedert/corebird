@@ -95,6 +95,8 @@ class ProfilePage : ScrollWidget, IPage {
   private bool lists_page_inited = false;
   private ulong page_change_signal = 0;
   private bool block_item_blocked = false;
+  private bool tweets_loading = false;
+  private int64 lowest_tweet_id = int64.MAX;
 
   public ProfilePage (int id) {
     this.id = id;
@@ -109,6 +111,9 @@ class ProfilePage : ScrollWidget, IPage {
         return true;
       }
       return false;
+    });
+    this.scrolled_to_end.connect (() => {
+      load_older_tweets.begin ();
     });
 
     tweet_list.row_activated.connect ((row) => {
@@ -338,6 +343,7 @@ class ProfilePage : ScrollWidget, IPage {
 
   private async void load_tweets () { // {{{
     tweet_list.set_unempty ();
+    tweets_loading = true;
     var call = account.proxy.new_call ();
     call.set_function ("1.1/statuses/user_timeline.json");
     call.set_method ("GET");
@@ -366,7 +372,49 @@ class ProfilePage : ScrollWidget, IPage {
       tweet_list.set_empty ();
       return;
     }
-    yield TweetUtils.work_array (root, delta_updater, tweet_list, main_window, account);
+    var result = yield TweetUtils.work_array (root, delta_updater, tweet_list,
+                                              main_window, account);
+    lowest_tweet_id = result.min_id;
+    tweets_loading = false;
+  } // }}}
+
+  private async void load_older_tweets () { // {{{
+    if (tweets_loading)
+      return;
+
+    if (user_stack.visible_child != tweet_list)
+      return;
+
+    main_window.start_progress ();
+    tweets_loading = true;
+    var call = account.proxy.new_call ();
+    call.set_function ("1.1/statuses/user_timeline.json");
+    call.set_method ("GET");
+    call.add_param ("user_id", this.user_id.to_string ());
+    call.add_param ("count", "15");
+    call.add_param ("contributor_details", "true");
+    call.add_param ("include_my_retweet", "true");
+    call.add_param ("max_id", (lowest_tweet_id - 1).to_string ());
+
+    try {
+      yield call.invoke_async (null);
+    } catch (GLib.Error e) {
+      warning (e.message);
+      return;
+    }
+    var parser = new Json.Parser ();
+    try {
+      parser.load_from_data (call.get_payload ());
+    } catch (GLib.Error e) {
+      warning ("%s FOR DATA %s", e.message, call.get_payload ());
+      return;
+    }
+    var root_arr = parser.get_root ().get_array ();
+    var result = yield TweetUtils.work_array (root_arr, delta_updater,
+                                              tweet_list, main_window, account);
+    lowest_tweet_id = result.min_id;
+    tweets_loading = false;
+    main_window.stop_progress ();
   } // }}}
 
   /**
@@ -579,6 +627,7 @@ class ProfilePage : ScrollWidget, IPage {
 //    data_cancellable.cancel ();
     account.user_counter.save (account.db);
     banner_image.scale = 0.3;
+    lowest_tweet_id = int64.MAX;
   }
 
 
