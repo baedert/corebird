@@ -131,7 +131,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     string cur_word = "";
     string[] words = text.split (" ");
 
-    int cur_pos = 0;
+    int cur_pos = -1;
     foreach (string s in words) {
       cur_pos += s.length + 1;
       if (cur_pos >= cursor_position) {
@@ -140,7 +140,12 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       }
     }
 
-    if (!cur_word.has_prefix ("@")) {
+    char end_char = cur_word.get (cur_word.char_count () - 1);
+    bool word_has_alpha_end = (end_char.isalpha () || end_char.isdigit ()) &&
+                              end_char.isgraph () || end_char == '@';
+    message ("c: %s, alpha: %s word: '%s'", end_char.to_string (), end_char.isalpha ().to_string (),
+        cur_word);
+    if (!cur_word.has_prefix ("@") || !word_has_alpha_end) {
       completion_window.hide ();
       return;
     }
@@ -298,6 +303,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   }
 
   private void insert_completion (string compl) {
+    tweet_text.buffer.freeze_notify ();
     Gtk.TextMark cursor_mark = tweet_text.buffer.get_insert ();
     Gtk.TextIter cursor_iter;
     tweet_text.buffer.get_iter_at_mark (out cursor_iter, cursor_mark);
@@ -328,6 +334,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     cursor_mark = tweet_text.buffer.get_insert ();
     tweet_text.buffer.get_iter_at_mark (out cursor_iter, cursor_mark);
     tweet_text.buffer.insert_text (ref cursor_iter, "@" + compl + " ", compl.length + 2);
+    tweet_text.buffer.thaw_notify ();
   }
 
 
