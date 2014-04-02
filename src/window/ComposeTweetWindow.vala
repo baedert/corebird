@@ -301,15 +301,30 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     Gtk.TextMark cursor_mark = tweet_text.buffer.get_insert ();
     Gtk.TextIter cursor_iter;
     tweet_text.buffer.get_iter_at_mark (out cursor_iter, cursor_mark);
-    cursor_iter.backward_word_start ();
-    cursor_iter.backward_char ();
 
     Gtk.TextIter end_word_iter = Gtk.TextIter();
     end_word_iter.assign (cursor_iter);
-    end_word_iter.forward_word_end ();
 
-    message (tweet_text.buffer.get_text (cursor_iter, end_word_iter, false));
+    /* Check if the current "word" is just "@" */
+    var test_iter = Gtk.TextIter ();
+    test_iter.assign (cursor_iter);
+    test_iter.backward_char ();
+    if (tweet_text.buffer.get_text (test_iter, cursor_iter, false) != "@") {
+      // Go to the word start and one char back(i.e. the @)
+      cursor_iter.backward_word_start ();
+      cursor_iter.backward_char ();
+
+      // Go to the end of the word
+      end_word_iter.forward_word_end ();
+    } else {
+      end_word_iter.assign (cursor_iter);
+      cursor_iter.backward_char ();
+    }
+
+    string word_to_delete = tweet_text.buffer.get_text (cursor_iter, end_word_iter, false);
+    message ("Delete word: %s", word_to_delete);
     tweet_text.buffer.delete_range (cursor_iter, end_word_iter);
+
     cursor_mark = tweet_text.buffer.get_insert ();
     tweet_text.buffer.get_iter_at_mark (out cursor_iter, cursor_mark);
     tweet_text.buffer.insert_text (ref cursor_iter, "@" + compl + " ", compl.length + 2);
