@@ -68,6 +68,9 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     tweet_text.buffer.notify["cursor-position"].connect (buffer_changed_cb);
     tweet_text.focus_out_event.connect (completion_window_focus_out_cb);
 
+    completion_window.set_attached_to (tweet_text);
+    completion_window.set_screen (tweet_text.get_screen ());
+
     if (parent != null) {
       this.set_transient_for (parent);
     }
