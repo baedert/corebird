@@ -40,6 +40,8 @@ class UserCompletion : GLib.Object {
   private void prop_changed () {
     string name;
     obj.get (name_property_name, out name);
+    if (name.has_prefix ("@"))
+      name = name.substring (1);
     start_completion ();
     int n_results;
     UserInfo[] names = account.user_counter.query_by_prefix (name, 10, out n_results);
