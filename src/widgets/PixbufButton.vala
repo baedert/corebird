@@ -23,8 +23,7 @@ using Gtk;
 class PixbufButton : Button {
   private Gdk.Pixbuf bg;
 
-
-  public PixbufButton(){
+  construct {
     this.border_width = 0;
     get_style_context().add_class("pixbuf-button");
   }

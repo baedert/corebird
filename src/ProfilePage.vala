@@ -167,7 +167,7 @@ class ProfilePage : ScrollWidget, IPage {
 
       if (banner_name != null &&
           FileUtils.test(Dirs.cache("assets/banners/"+banner_name), FileTest.EXISTS)){
-        message("Banner exists, set it directly...");
+        debug ("Banner exists, set it directly...");
         load_banner (Dirs.cache ("assets/banners/" + banner_name));
       } else {
         // TODO: ???
@@ -503,8 +503,7 @@ class ProfilePage : ScrollWidget, IPage {
       block_menu_item.active = false;
       block_item_blocked = false;
     }
-    message (@"User ID: $user_id");
-    message (user_id.to_string ());
+    debug  (@"User ID: $user_id");
     progress_spinner.show ();
     progress_spinner.start ();
     follow_button.sensitive = false;

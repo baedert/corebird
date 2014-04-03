@@ -38,13 +38,17 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   [GtkChild]
   private Gtk.Button send_button;
   [GtkChild]
-  private Gtk.Box left_box;
-  private PixbufButton media_image = new PixbufButton ();
+  private PixbufButton media_image;
+  [GtkChild]
+  private Gtk.Window completion_window;
+  [GtkChild]
+  private Gtk.ListBox completion_list;
   private string media_uri;
   private uint media_count = 0;
   private unowned Account account;
   private unowned Tweet answer_to;
   private Mode mode;
+  private int current_match = -1;
 
 
   public ComposeTweetWindow(Window? parent, Account acc,
@@ -61,7 +65,11 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       this.application = app;
     avatar_image.set_from_pixbuf (acc.avatar);
     length_label.label = Tweet.MAX_LENGTH.to_string ();
-    tweet_text.buffer.changed.connect (recalc_tweet_length);
+    tweet_text.buffer.notify["cursor-position"].connect (buffer_changed_cb);
+    tweet_text.focus_out_event.connect (completion_window_focus_out_cb);
+
+    completion_window.set_attached_to (tweet_text);
+    completion_window.set_screen (tweet_text.get_screen ());
 
     if (parent != null) {
       this.set_transient_for (parent);
@@ -89,28 +97,20 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       tweet_text.buffer.place_cursor (start_iter);
     }
 
-    media_image.set_halign(Align.CENTER);
-    media_image.set_valign(Align.START);
-
-    media_image.clicked.connect (() => {
-      media_image.set_visible(false);
-      media_count--;
-      if(media_count <= Twitter.max_media_per_upload)
-        add_image_button.set_sensitive (true);
-    });
-
-    left_box.pack_end (media_image, false, true);
-
     //Let the text view immediately grab the keyboard focus
     tweet_text.grab_focus ();
 
     AccelGroup ag = new AccelGroup ();
-    ag.connect (Gdk.Key.Escape, 0, AccelFlags.LOCKED,
-        () => {this.destroy (); return true;});
+    ag.connect (Gdk.Key.Escape, 0, AccelFlags.LOCKED, escape_pressed_cb);
     ag.connect (Gdk.Key.Return, Gdk.ModifierType.CONTROL_MASK, AccelFlags.LOCKED,
         () => {send_tweet (); return true;});
 
     this.add_accel_group (ag);
+  }
+
+  private void buffer_changed_cb () {
+    recalc_tweet_length ();
+    update_completion ();
   }
 
   private void recalc_tweet_length () {
@@ -126,6 +126,36 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       send_button.sensitive = true;
     else
       send_button.sensitive = false;
+  }
+
+  private void update_completion () {
+    string cur_word = get_cursor_word (null, null);
+
+    /* Check if the word ends with a 'special' character like ?!_ */
+    char end_char = cur_word.get (cur_word.char_count () - 1);
+    bool word_has_alpha_end = (end_char.isalpha () || end_char.isdigit ()) &&
+                              end_char.isgraph () || end_char == '@';
+    if (!cur_word.has_prefix ("@") || !word_has_alpha_end) {
+      completion_window.hide ();
+      return;
+    }
+    show_completion_window ();
+
+    // Strip off the @
+    cur_word = cur_word.substring (1);
+
+    int corpus_size = 0;
+    var corpus = account.user_counter.query_by_prefix (cur_word, 10, out corpus_size);
+
+    for (int i = 0; i < corpus_size; i++) {
+      var l = new Gtk.Label ("@" + corpus[i].screen_name);
+      l.halign = Gtk.Align.START;
+      completion_list.add (l);
+    }
+    if (current_match == -1 && corpus_size > 0) {
+      completion_list.select_row (completion_list.get_row_at_index (0));
+    }
+    completion_list.show_all ();
 
   }
 
@@ -184,7 +214,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
   [GtkCallback]
   private void add_image_clicked () {
-    FileChooserDialog fcd = new FileChooserDialog("Select Image", null, FileChooserAction.OPEN,
+    FileChooserDialog fcd = new FileChooserDialog(_("Select Image"), null, FileChooserAction.OPEN,
                                                   _("Cancel"), ResponseType.CANCEL,
                                                   _("Choose"),   ResponseType.ACCEPT);
     fcd.set_modal (true);
@@ -209,9 +239,133 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     fcd.close ();
   }
 
+  [GtkCallback]
+  private void media_image_clicked_cb () {
+    media_image.set_visible(false);
+    media_count--;
+    if(media_count <= Twitter.max_media_per_upload)
+      add_image_button.set_sensitive (true);
+  }
 
+  [GtkCallback]
+  private bool completion_window_focus_out_cb () {
+    completion_window.hide ();
+    return false;
+  }
+
+  [GtkCallback]
+  private bool tweet_text_key_pressed_cb (Gdk.EventKey evt) {
+    /* If we are not in 'completion mode' atm, just back out. */
+    if (!completion_window.visible)
+      return false;
+
+
+    int n_results = (int)completion_list.get_children ().length ();
+
+    if (evt.keyval == Gdk.Key.Down) {
+      this.current_match = (current_match + 1) % n_results;
+      var row = completion_list.get_row_at_index (current_match);
+      completion_list.select_row (row);
+
+      return true;
+    } else if (evt.keyval == Gdk.Key.Up) {
+      current_match --;
+      if (current_match < 0) current_match = n_results - 1;
+      var row = completion_list.get_row_at_index (current_match);
+      completion_list.select_row (row);
+
+      return true;
+    } else if (evt.keyval == Gdk.Key.Return) {
+      if (current_match == -1)
+        current_match =0;
+      var row = completion_list.get_row_at_index (current_match);
+      string compl = ((Gtk.Label)(((Gtk.ListBoxRow)row).get_child ())).label;
+      insert_completion (compl.substring (1));
+      current_match = -1;
+      completion_window.hide ();
+      return true;
+    } else if (evt.keyval == Gdk.Key.Escape) {
+      completion_window.hide ();
+      return true;
+    }
+
+    return false;
+  }
+
+  private void insert_completion (string compl) {
+    tweet_text.buffer.freeze_notify ();
+    Gtk.TextIter start_word_iter;
+    Gtk.TextIter end_word_iter;
+    string word_to_delete = get_cursor_word (out start_word_iter,
+                                             out end_word_iter);
+    debug ("Delete word: %s", word_to_delete);
+    tweet_text.buffer.delete_range (start_word_iter, end_word_iter);
+
+    Gtk.TextMark cursor_mark = tweet_text.buffer.get_insert ();
+    tweet_text.buffer.get_iter_at_mark (out start_word_iter, cursor_mark);
+
+    tweet_text.buffer.insert_text (ref start_word_iter, "@" + compl + " ", compl.length + 2);
+    tweet_text.buffer.thaw_notify ();
+  }
+
+
+  private void show_completion_window () {
+    int x, y;
+    Gtk.Allocation alloc;
+    tweet_text.get_allocation (out alloc);
+    tweet_text.get_window (Gtk.TextWindowType.WIDGET).get_origin (out x, out y);
+    x += alloc.x;
+    y += alloc.y + alloc.height;
+
+    completion_window.move (x, y);
+    completion_window.resize (alloc.width, 50);
+    completion_list.foreach ((w) => { completion_list.remove (w);});
+    completion_window.show_all ();
+  }
+
+
+  private bool escape_pressed_cb () {
+    if (completion_window.visible)
+      completion_window.hide ();
+    else
+      this.destroy ();
+    return true;
+  }
 
   public void set_text (string text) {
     tweet_text.buffer.text = text;
+  }
+
+  private string get_cursor_word (out Gtk.TextIter start_iter,
+                                  out Gtk.TextIter end_iter) {
+
+    Gtk.TextMark cursor_mark = tweet_text.buffer.get_insert ();
+    Gtk.TextIter cursor_iter;
+    tweet_text.buffer.get_iter_at_mark (out cursor_iter, cursor_mark);
+
+    Gtk.TextIter end_word_iter = Gtk.TextIter();
+    end_word_iter.assign (cursor_iter);
+
+
+    /* Check if the current "word" is just "@" */
+    var test_iter = Gtk.TextIter ();
+    test_iter.assign (cursor_iter);
+    test_iter.backward_char ();
+    if (tweet_text.buffer.get_text (test_iter, cursor_iter, false) != "@") {
+      // Go to the word start and one char back(i.e. the @)
+      cursor_iter.backward_word_start ();
+      cursor_iter.backward_char ();
+
+      // Go to the end of the word
+      end_word_iter.forward_word_end ();
+    } else {
+      end_word_iter.assign (cursor_iter);
+      cursor_iter.backward_char ();
+    }
+    start_iter = cursor_iter;
+    start_iter.assign (cursor_iter);
+    end_iter = end_word_iter;
+    end_iter.assign (end_word_iter);
+    return tweet_text.buffer.get_text (cursor_iter, end_word_iter, false);
   }
 }
