@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: corebird 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-19 09:08+0100\n"
+"POT-Creation-Date: 2014-04-03 17:59+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/HomeTimeline.vala:96
+#: ../src/HomeTimeline.vala:84
 #, c-format
 msgid "%d new Tweets!"
 msgstr ""
@@ -32,12 +32,12 @@ msgstr ""
 msgid "%dm"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:106
+#: ../src/HomeTimeline.vala:94
 #, c-format
 msgid "%s retweeted %s"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:108
+#: ../src/HomeTimeline.vala:96
 #, c-format
 msgid "%s tweeted"
 msgstr ""
@@ -51,16 +51,16 @@ msgstr ""
 msgid "Add new Filter"
 msgstr ""
 
-#: ../src/window/ComposeTweetWindow.vala:188
+#: ../src/window/ComposeTweetWindow.vala:218
 #: ../src/window/UserListDialog.vala:44 ../src/window/ImageDialog.vala:112
 msgid "Cancel"
 msgstr ""
 
-#: ../src/window/ComposeTweetWindow.vala:189
+#: ../src/window/ComposeTweetWindow.vala:219
 msgid "Choose"
 msgstr ""
 
-#: ../src/DMThreadsPage.vala:338 ../src/DMThreadsPage.vala:339
+#: ../src/DMThreadsPage.vala:356 ../src/DMThreadsPage.vala:357
 msgid "Direct Messages"
 msgstr ""
 
@@ -78,11 +78,11 @@ msgstr ""
 msgid "Filters"
 msgstr ""
 
-#: ../src/ProfilePage.vala:542 ../src/TweetInfoPage.vala:415
+#: ../src/ProfilePage.vala:589 ../src/TweetInfoPage.vala:415
 msgid "Follow"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:136 ../src/HomeTimeline.vala:137
+#: ../src/HomeTimeline.vala:124 ../src/HomeTimeline.vala:125
 msgid "Home"
 msgstr ""
 
@@ -95,16 +95,16 @@ msgstr ""
 msgid "Matches"
 msgstr ""
 
-#: ../src/MentionsTimeline.vala:126 ../src/MentionsTimeline.vala:127
+#: ../src/MentionsTimeline.vala:114 ../src/MentionsTimeline.vala:115
 msgid "Mentions"
 msgstr ""
 
-#: ../src/MentionsTimeline.vala:94
+#: ../src/MentionsTimeline.vala:82
 #, c-format
 msgid "New Mention from %s"
 msgstr ""
 
-#: ../src/DMThreadsPage.vala:233
+#: ../src/DMThreadsPage.vala:235
 msgid "New direct message!"
 msgstr ""
 
@@ -124,7 +124,7 @@ msgstr ""
 msgid "Open in Browser"
 msgstr ""
 
-#: ../src/ProfilePage.vala:269
+#: ../src/ProfilePage.vala:274
 msgid "Protected profile"
 msgstr ""
 
@@ -144,11 +144,15 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
+#: ../src/window/ComposeTweetWindow.vala:217
+msgid "Select Image"
+msgstr ""
+
 #: ../src/TweetInfoPage.vala:425
 msgid "Source"
 msgstr ""
 
-#: ../src/ProfilePage.vala:408
+#: ../src/ProfilePage.vala:456
 #, c-format
 msgid "Tweet to @%s"
 msgstr ""
@@ -159,7 +163,7 @@ msgid ""
 "the Twitter servers and you should try again later"
 msgstr ""
 
-#: ../src/ProfilePage.vala:538 ../src/TweetInfoPage.vala:411
+#: ../src/ProfilePage.vala:585 ../src/TweetInfoPage.vala:411
 msgid "Unfollow"
 msgstr ""
 
@@ -191,6 +195,10 @@ msgstr ""
 msgid "Add to/Remove from List"
 msgstr ""
 
+#: ../ui/compose-window.ui:132
+msgid "Attach Image"
+msgstr ""
+
 #: ../ui/settings-dialog.ui:307
 msgid "Auto scroll on new tweets:"
 msgstr ""
@@ -199,7 +207,7 @@ msgstr ""
 msgid "Blocked"
 msgstr ""
 
-#: ../ui/compose-window.ui:7
+#: ../ui/compose-window.ui:25
 msgid "Compose Tweet"
 msgstr ""
 
@@ -302,7 +310,7 @@ msgstr ""
 msgid "Never"
 msgstr ""
 
-#: ../ui/main-window.ui:122
+#: ../ui/main-window.ui:127
 msgid "New tweet"
 msgstr ""
 
@@ -370,11 +378,7 @@ msgstr ""
 msgid "Save Image"
 msgstr ""
 
-#: ../ui/compose-window.ui:127
-msgid "Select Image"
-msgstr ""
-
-#: ../ui/dm-page.ui:69 ../ui/compose-window.ui:160
+#: ../ui/dm-page.ui:69 ../ui/compose-window.ui:184
 msgid "Send"
 msgstr ""
 
@@ -422,7 +426,7 @@ msgstr ""
 msgid "Subscribers:"
 msgstr ""
 
-#: ../ui/search-page.ui:106 ../ui/profile-page.ui:365
+#: ../ui/search-page.ui:106 ../ui/profile-page.ui:366
 msgid "Tweets"
 msgstr ""
 
