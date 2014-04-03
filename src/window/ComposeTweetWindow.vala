@@ -126,19 +126,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   }
 
   private void update_completion () {
-    string text = tweet_text.buffer.text;
-    int cursor_position = tweet_text.buffer.cursor_position;
-    string cur_word = "";
-    string[] words = text.split (" ");
-
-    int cur_pos = -1;
-    foreach (string s in words) {
-      cur_pos += s.length + 1;
-      if (cur_pos >= cursor_position) {
-        cur_word = s;
-        break;
-      }
-    }
+    string cur_word = get_cursor_word (null, null);
 
     /* Check if the word ends with a 'special' character like ?!_ */
     char end_char = cur_word.get (cur_word.char_count () - 1);
