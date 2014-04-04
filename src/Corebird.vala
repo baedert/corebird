@@ -81,7 +81,7 @@ class Corebird : Gtk.Application {
     this.add_action_entries (app_entries, this);
 
     open_startup_windows (compose_screen_name);
-    NotificationManager.init ();
+
 
     // If the user wants the dark theme, apply it
     if (Settings.use_dark_theme ()) {
@@ -165,7 +165,6 @@ class Corebird : Gtk.Application {
   } // }}}
 
   public override void shutdown () {
-    NotificationManager.uninit ();
     base.shutdown();
   }
 

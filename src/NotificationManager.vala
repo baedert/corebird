@@ -16,27 +16,15 @@
  */
 
 class NotificationManager {
-
-  public static void init() {
-    Notify.init("Corebird");
-  }
-
-
   public static void notify (string summary, string body = "",
                              Notify.Urgency urgency = Notify.Urgency.NORMAL,
                              string? icon = null, string? image = null) {
 
-    var n = new Notify.Notification (summary, body, icon ?? "corebird");
-    n.set_urgency (urgency);
-
-    if (image != null)
-      n.set_hint("image-path", new GLib.Variant.string (image));
-
-    try {
-      n.show ();
-    } catch (GLib.Error e) {
-      warning ("Error while showing notification: %s", e.message);
-    }
+    var n = new GLib.Notification (summary);
+    n.set_body (body);
+    var gicon = GLib.Icon.new_for_string (icon);
+    n.set_icon (gicon);
+    GLib.Application.get_default ().send_notification (null, n);
   }
 
   public static void notify_pixbuf (string summary, string body, Gdk.Pixbuf icon) {
@@ -50,14 +38,4 @@ class NotificationManager {
       warning ("Error while showing notification: %s", e.message);
     }
   }
-
-
-  /**
-   * Uninitializes the notification manager
-   * Should be called when the application gets closed completely.
-   */
-  public static void uninit() {
-    Notify.uninit();
-  }
-
 }
