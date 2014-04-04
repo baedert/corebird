@@ -15,8 +15,8 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class NotificationManager {
-  public static void notify (string summary, string body = "",
+namespace NotificationManager {
+  public void notify (string summary, string body = "",
                              string? icon = null) {
 
     var n = new GLib.Notification (summary);
