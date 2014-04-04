@@ -17,7 +17,7 @@
 
 class NotificationManager {
   public static void notify (string summary, string body = "",
-                             string? icon = null, string? image = null) {
+                             string? icon = null) {
 
     var n = new GLib.Notification (summary);
     n.set_body (body);

@@ -96,8 +96,7 @@ class HomeTimeline : IMessageReceiver, DefaultTimeline {
       summary = _("%s tweeted").printf(t.user_name);
     }
     NotificationManager.notify (summary, t.get_real_text (),
-                                Dirs.cache ("assets/avatars/" + t.avatar_name),
-                                t.media);
+                                Dirs.cache ("assets/avatars/" + t.avatar_name));
 
   }
 
