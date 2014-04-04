@@ -21,8 +21,12 @@ class NotificationManager {
 
     var n = new GLib.Notification (summary);
     n.set_body (body);
-    var gicon = GLib.Icon.new_for_string (icon);
-    n.set_icon (gicon);
+    try {
+      var gicon = GLib.Icon.new_for_string (icon);
+      n.set_icon (gicon);
+    } catch (GLib.Error e) {
+      warning (e.message);
+    }
     GLib.Application.get_default ().send_notification (null, n);
   }
 
