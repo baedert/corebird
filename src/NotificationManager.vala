@@ -17,7 +17,6 @@
 
 class NotificationManager {
   public static void notify (string summary, string body = "",
-                             Notify.Urgency urgency = Notify.Urgency.NORMAL,
                              string? icon = null, string? image = null) {
 
     var n = new GLib.Notification (summary);
