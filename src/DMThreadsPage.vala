@@ -119,6 +119,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       entry.last_message = vals[2];
       entry.last_message_id = int64.parse(vals[3]);
       entry.unread_count = 0;
+      entry.avatar_path = Dirs.cache ("assets/avatars/" + Utils.get_avatar_name (vals[4]));
       entry.avatar = Twitter.get ().get_avatar (vals[4], (a) => {
         entry.avatar = a;
       });
