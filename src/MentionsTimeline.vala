@@ -79,9 +79,9 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
       base.postprocess_tweet (entry);
 
       if (Settings.notify_new_mentions ()) {
-        NotificationManager.notify_pixbuf (_("New Mention from %s").printf ("@" + t.screen_name),
-                                           t.text,
-                                           t.avatar);
+        NotificationManager.notify(_("New Mention from @%s").printf (t.screen_name),
+                                   t.text,
+                                   Dirs.cache ("assets/avatars/" + t.avatar_name));
       }
     }
   } // }}}

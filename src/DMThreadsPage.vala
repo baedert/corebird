@@ -232,7 +232,8 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       t_e.last_message = text;
       t_e.last_message_id = message_id;
       if (Settings.notify_new_dms ()) {
-        NotificationManager.notify_pixbuf( _("New direct message!"), text, t_e.avatar);
+        NotificationManager.notify( _("New direct message!"), text,
+                                   t_e.avatar_path);
       }
       return;
     }
@@ -263,6 +264,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     thread_list.add(thread_entry);
     thread_map.set(sender_id, thread_entry);
     string avatar_url = dm_obj.get_object_member ("sender").get_string_member ("profile_image_url");
+    thread_entry.avatar_path = Dirs.cache ("assets/avatars/" + Utils.get_avatar_name (avatar_url));
     account.db.insert( "dm_threads")
               .vali64 ("user_id", sender_id)
               .val ("name", sender_name)

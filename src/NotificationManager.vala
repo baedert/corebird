@@ -29,16 +29,4 @@ class NotificationManager {
     }
     GLib.Application.get_default ().send_notification (null, n);
   }
-
-  public static void notify_pixbuf (string summary, string body, Gdk.Pixbuf icon) {
-    var n = new Notify.Notification (summary, body, null);
-    n.set_urgency (Notify.Urgency.NORMAL); // Let's just assume this is always true
-    n.set_image_from_pixbuf (icon);
-
-    try {
-      n.show ();
-    } catch (GLib.Error e) {
-      warning ("Error while showing notification: %s", e.message);
-    }
-  }
 }
