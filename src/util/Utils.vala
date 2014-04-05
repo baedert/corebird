@@ -238,7 +238,12 @@ namespace Utils {
 
   public async void write_pixbuf_async (Gdk.Pixbuf pixbuf, GLib.OutputStream out_stream, string type) {
     new Thread<void*> ("write_pixbuf", () => {
-      pixbuf.save_to_stream (out_stream, type);
+      try {
+        pixbuf.save_to_stream (out_stream, type);
+      } catch (GLib.Error e) {
+        warning (e.message);
+        return null;
+      }
       GLib.Idle.add (() => {
         write_pixbuf_async.callback ();
         return false;
