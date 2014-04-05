@@ -39,11 +39,11 @@
  - `glib-2.0 >= 2.38`
  - `rest-0.7`
  - `json-glib-1.0`
- - `libnotify`
  - `sqlite3`
  - `libsoup-2.4`
+ - `intltool >= 0.40`
  - `vala >= 0.22` (makedep)
- - `cmake >= 2.6` (makedep)
+ - `automake >= 1.14` (makedep)
 
 ## Compiling
 
