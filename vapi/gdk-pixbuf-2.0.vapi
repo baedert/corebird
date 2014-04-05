@@ -71,8 +71,19 @@ namespace Gdk {
 		public bool save_to_callbackv ([CCode (delegate_target_pos = 1.5)] Gdk.PixbufSaveFunc save_func, string type, [CCode (array_length = false, array_null_terminated = true)] string[] option_keys, [CCode (array_length = false, array_null_terminated = true)] string[] option_values) throws GLib.Error;
 		public bool save_to_stream (GLib.OutputStream stream, string type, GLib.Cancellable? cancellable = null,
         ...) throws GLib.Error;
-		//[CCode (finish_name = "gdk_pixbuf_save_to_stream_finish")]
-		//public async bool save_to_stream_async (GLib.OutputStream stream, string type, GLib.Cancellable? cancellable = null) throws GLib.Error;
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+		[CCode (cname="gdk_pixbuf_save_to_stream_async", finish_name = "gdk_pixbuf_save_to_stream_finish")]
+		private static async bool _save_to_stream_async (Gdk.Pixbuf self, GLib.OutputStream stream, string type,
+					GLib.Cancellable? cancellable = null, ...) throws GLib.Error;
+		[CCode (cname = "vala_gdk_pixbuf_save_to_stream_finish")]
+		public async bool save_to_stream_async (GLib.OutputStream stream, string type, GLib.Cancellable?
+				cancellable = null) throws GLib.Error {
+			return yield _save_to_stream_async (this, stream, type, cancellable, null);
+		}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 		public bool savev (string filename, string type, [CCode (array_length = false, array_null_terminated = true)] string[] option_keys, [CCode (array_length = false, array_null_terminated = true)] string[] option_values) throws GLib.Error;
 		public void scale (Gdk.Pixbuf dest, int dest_x, int dest_y, int dest_width, int dest_height, double offset_x, double offset_y, double scale_x, double scale_y, Gdk.InterpType interp_type);
 		public Gdk.Pixbuf scale_simple (int dest_width, int dest_height, Gdk.InterpType interp_type);
@@ -88,16 +99,6 @@ namespace Gdk {
 		public void* pixels { get; construct; }
 		public int rowstride { get; construct; }
 		public int width { get; construct; }
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
-    [CCode (cname="gdk_pixbuf_save_to_stream_async", finish_name = "gdk_pixbuf_save_to_stream_finish")]
-    private static async bool _save_to_stream_async (Gdk.Pixbuf self, GLib.OutputStream stream, string type,
-          GLib.Cancellable? cancellable = null, ...) throws GLib.Error;
-    [CCode (cname = "vala_gdk_pixbuf_save_to_stream_finish")]
-    public async bool save_to_stream_async (GLib.OutputStream stream, string type, GLib.Cancellable?
-        cancellable = null) throws GLib.Error {
-      return yield _save_to_stream_async (this, stream, type, cancellable, null);
-    }
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 	}

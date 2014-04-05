@@ -19,7 +19,7 @@ using Gtk;
 
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/tweet-list-entry.ui")]
-class TweetListEntry : ITwitterItem, ListBoxRow {
+public class TweetListEntry : ITwitterItem, ListBoxRow {
   [GtkChild]
   private Label screen_name_label;
   [GtkChild]

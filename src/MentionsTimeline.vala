@@ -44,6 +44,7 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
          so we can avoid the code duplication in MentionsTimeline and HomeTimeline */
 
   private void add_tweet (Json.Node root_node) { // {{{
+    /* Mark tweets as seen the user has already replied to */
     var root = root_node.get_object ();
     var author = root.get_object_member ("user");
     if (author.get_int_member ("id") == account.id &&
@@ -54,7 +55,7 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
 
 
 
-    if (root.get_string_member("text").contains("@"+account.screen_name)) {
+    if (root.get_string_member ("text").contains ("@" + account.screen_name)) {
       GLib.DateTime now = new GLib.DateTime.now_local ();
       Tweet t = new Tweet();
       t.load_from_json(root_node, now, account);
@@ -67,33 +68,20 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
       if (account.filter_matches (t))
         return;
 
-      bool auto_scroll = Settings.auto_scroll_on_new_tweets ();
-
       this.balance_next_upper_change (TOP);
       var entry = new TweetListEntry(t, main_window, account);
       entry.seen = false;
 
       delta_updater.add (entry);
       tweet_list.add (entry);
-      if (this.scrolled_up && (t.user_id == account.id || auto_scroll)) {
-        this.scroll_up_next (true, false,
-                             main_window.cur_page_id != this.id);
-      }
 
-
-
-      unread_count++;
-      update_unread_count();
-      this.max_id = t.id;
-
-      // This is for example the case if the timeline has not been initialized yet, but a tweet arrived.
-      if (t.id < lowest_id)
-        lowest_id = t.id;
+      base.scroll_up (t);
+      base.postprocess_tweet (entry);
 
       if (Settings.notify_new_mentions ()) {
-        NotificationManager.notify_pixbuf (_("New Mention from %s").printf ("@" + t.screen_name),
-                                           t.text,
-                                           t.avatar);
+        NotificationManager.notify(_("New Mention from @%s").printf (t.screen_name),
+                                   t.text,
+                                   Dirs.cache ("assets/avatars/" + t.avatar_name));
       }
     }
   } // }}}

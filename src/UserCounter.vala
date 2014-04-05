@@ -49,7 +49,7 @@ public class UserCounter : GLib.Object {
       if (ui.id == id) {
         found = true;
         ui.score ++;
-        message ("New score: %d", ui.score);
+        //debug ("New score: %d", ui.score);
         ui.changed = true;
         break;
       }
@@ -105,21 +105,22 @@ public class UserCounter : GLib.Object {
     if (!changed)
       return 0;
 
-    int count = 0;
+    int saved = 0;
+    db.begin_transaction ();
     foreach (var ui in names) {
       if (!ui.changed)
         continue;
-
       ui.changed = false;
       db.replace ("user_cache").vali64 ("id", ui.id)
                                .vali ("score", ui.score)
                                .val ("screen_name", ui.screen_name)
                                .val ("user_name", ui.name)
                                .run();
-      count ++;
+      saved ++;
     }
+    db.end_transaction ();
     changed = false;
-    return count;
+    return saved;
   }
 
 }

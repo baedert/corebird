@@ -164,7 +164,9 @@ class DMPage : IPage, IMessageReceiver, Box {
       entry.timestamp = int64.parse (vals[6]);
       entry.text = vals[2];
       entry.name = vals[3];
+      name = vals[3];
       entry.screen_name = vals[4];
+      screen_name = vals[4];
       entry.avatar_url = vals[5];
       entry.main_window = main_window;
       entry.load_avatar ();

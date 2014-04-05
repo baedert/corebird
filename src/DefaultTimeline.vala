@@ -38,6 +38,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
 
   public DefaultTimeline (int id) {
     this.id = id;
+    this.vscrollbar_policy = Gtk.PolicyType.ALWAYS;
     this.scrolled_to_start.connect(handle_scrolled_to_start);
     this.scrolled_to_end.connect(() => {
       if (!loading) {
@@ -63,7 +64,6 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
 
   }
 
-  // TODO: Why is there a page_id parameter?
   public virtual void on_join (int page_id, va_list args) {
     if (!initialized) {
       load_cached ();
@@ -216,13 +216,36 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
         continue;
       var tle = (TweetListEntry) w;
       if (tle.tweet.id == id) {
+        if (!tle.seen) {
+          unread_count--;
+          update_unread_count ();
+        }
         tle.seen = true;
-        unread_count--;
-        update_unread_count ();
         break;
       }
     }
   }
 
 
+  protected void scroll_up (Tweet t) {
+    bool auto_scroll = Settings.auto_scroll_on_new_tweets ();
+    if (this.scrolled_up && (t.user_id == account.id || auto_scroll)) {
+      this.scroll_up_next (true, false,
+                           main_window.cur_page_id != this.id);
+    }
+
+  }
+
+  protected void postprocess_tweet (TweetListEntry tle) {
+    var t = tle.tweet;
+    if (t.id < lowest_id)
+      lowest_id = t.id;
+    else if (t.id > max_id)
+      max_id = t.id;
+
+    if (!tle.seen) {
+      this.unread_count ++;
+      this.update_unread_count ();
+    }
+  }
 }

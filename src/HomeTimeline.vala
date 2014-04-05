@@ -63,26 +63,14 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
     delta_updater.add (entry);
     tweet_list.add(entry);
 
-    if (this.scrolled_up && (t.user_id == account.id || auto_scroll)) {
-      this.scroll_up_next (true, false,
-                           main_window.cur_page_id != this.id);
-    }
+    base.scroll_up (t);
+    base.postprocess_tweet (entry);
 
-    if (!entry.seen) {
-      unread_count ++;
-      update_unread_count ();
-    }
-
-
-    this.max_id = t.id;
-
+    // We never show any notifications if auto-scroll-on-new-tweet is enabled
     int stack_size = Settings.get_tweet_stack_count ();
-    bool show_notification = !(stack_size == 1 && t.text.contains("@" + account.screen_name));
-    if (!show_notification || t.user_id == account.id)
+    if (t.user_id == account.id || auto_scroll)
       return;
 
-    debug ("Stack size: %d", stack_size);
-    debug ("Unread count: %d", unread_count);
     if (stack_size == 1 && !auto_scroll) {
       if (t.has_inline_media){
         t.inline_media_added.connect (tweet_inline_media_added_cb);
@@ -107,9 +95,8 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
     } else {
       summary = _("%s tweeted").printf(t.user_name);
     }
-    NotificationManager.notify (summary, t.get_real_text (), Notify.Urgency.NORMAL,
-                                Dirs.cache ("assets/avatars/" + t.avatar_name),
-                                t.media);
+    NotificationManager.notify (summary, t.get_real_text (),
+                                Dirs.cache ("assets/avatars/" + t.avatar_name));
 
   }
 
