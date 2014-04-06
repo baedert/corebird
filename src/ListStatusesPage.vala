@@ -108,6 +108,7 @@ class ListStatusesPage : ScrollWidget, IPage {
     int64 list_id = args.arg<int64> ();
     if (list_id == 0) {
       list_id = this.list_id;
+      return;
       // Continue
     }
 
@@ -133,7 +134,7 @@ class ListStatusesPage : ScrollWidget, IPage {
       mode_label.label = Utils.capitalize (mode);
     }
 
-    message (@"Showing list with id $list_id");
+    debug (@"Showing list with id $list_id");
     if (list_id == this.list_id) {
       this.list_id = list_id;
       load_newer.begin ();
