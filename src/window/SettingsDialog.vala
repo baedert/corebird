@@ -197,8 +197,8 @@ class SettingsDialog : Gtk.Window {
     }
     Account.remove_account (entry.account.screen_name);
     MainWindow acc_window;
-    if (((Corebird)this.application).is_window_open_for_screen_name (
-          entry.account.screen_name, out acc_window)) {
+    if (((Corebird)this.application).is_window_open_for_screen_name (entry.account.screen_name,
+                                                                     out acc_window)) {
       acc_window.close ();
     }
 
