@@ -625,7 +625,6 @@ class ProfilePage : ScrollWidget, IPage {
     // TODO: Reenable this once a new librest release is out;
     //       We might otherwise overwrite the new user's data with that from the old one.
 //    data_cancellable.cancel ();
-    account.user_counter.save (account.db);
     banner_image.scale = 0.3;
     lowest_tweet_id = int64.MAX;
   }
