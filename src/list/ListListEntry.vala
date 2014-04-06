@@ -56,6 +56,8 @@ class ListListEntry : Gtk.ListBoxRow {
   private Gtk.Button unsubscribe_button;
   [GtkChild]
   private Gtk.Button delete_button;
+  [GtkChild]
+  private Gtk.Button cancel_button;
 
 
   public int64 id;
@@ -123,6 +125,8 @@ class ListListEntry : Gtk.ListBoxRow {
 
   [GtkCallback]
   private void subscribe_button_clicked_cb () {
+    subscribe_button.sensitive = false;
+    cancel_button.sensitive = false;
     var call = account.proxy.new_call ();
     call.set_function ("1.1/lists/subscribers/create.json");
     call.set_method ("POST");
@@ -133,6 +137,9 @@ class ListListEntry : Gtk.ListBoxRow {
       } catch (GLib.Error e) {
         Utils.show_error_object (call.get_payload (), e.message);
         return;
+      } finally {
+        subscribe_button.sensitive = true;
+        cancel_button.sensitive = true;
       }
       subscribe_button.hide ();
       unsubscribe_button.show ();
@@ -154,7 +161,6 @@ class ListListEntry : Gtk.ListBoxRow {
         Utils.show_error_object (call.get_payload (), e.message);
         return;
       }
-
     });
   }
 
