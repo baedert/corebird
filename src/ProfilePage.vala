@@ -612,7 +612,8 @@ class ProfilePage : ScrollWidget, IPage {
     else
       lists_page_inited = false;
     data_cancellable = new GLib.Cancellable ();
-    set_user_id(user_id);
+    reset_data ();
+    set_user_id (user_id);
     tweet_list.remove_all ();
     tweet_list.reset_placeholder_text ();
     user_stack.visible_child = tweet_list;
@@ -629,6 +630,14 @@ class ProfilePage : ScrollWidget, IPage {
     lowest_tweet_id = int64.MAX;
   }
 
+  private void reset_data () {
+    name_label.label = " ";
+    screen_name_label.label = " ";
+    description_label.label = " ";
+    url_label.label = " ";
+    location_label.label = " ";
+    avatar_image.pixbuf = null;
+  }
 
   public void create_tool_button(RadioToolButton? group) {}
 
