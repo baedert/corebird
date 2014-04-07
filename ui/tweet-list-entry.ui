@@ -188,7 +188,7 @@
                 <property name="valign">baseline</property>
                 <property name="margin_right">3</property>
                 <property name="halign">end</property>
-                <property name="pixel_size">13</property>
+                <property name="pixel_size">14</property>
                 <property name="icon_name">corebird-retweet-symbolic</property>
                 <style>
                   <class name="dim-label"/>
