@@ -2,78 +2,18 @@
 <!-- Generated with glade 3.16.0 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
-  <object class="GtkMenu" id="menu1">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <child>
-      <object class="GtkMenuItem" id="delete_list_item">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Delete</property>
-        <property name="use_underline">True</property>
-        <child type="submenu">
-          <object class="GtkMenu" id="menu2">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <child>
-              <object class="GtkMenuItem" id="confirm_delete_item">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Confirm</property>
-                <property name="use_underline">True</property>
-                <signal name="activate" handler="delete_list_cb" swapped="no"/>
-              </object>
-            </child>
-          </object>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="unsubscribe_list_item">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Unsubscribe</property>
-        <property name="use_underline">True</property>
-        <child type="submenu">
-          <object class="GtkMenu" id="menu3">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <child>
-              <object class="GtkMenuItem" id="confirm_unsubscribe_item">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Confirm</property>
-                <property name="use_underline">True</property>
-                <signal name="activate" handler="unsubscribe_list_cb" swapped="no"/>
-              </object>
-            </child>
-          </object>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="subscribe_list_item">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Subscribe</property>
-        <property name="use_underline">True</property>
-        <signal name="activate" handler="subscribe_list_cb" />
-      </object>
-    </child>
-  </object>
   <template class="ListListEntry" parent="GtkListBoxRow">
     <property name="visible">True</property>
     <property name="can_focus">True</property>
     <child>
-      <object class="GtkBox" id="box1">
+      <object class="GtkStack" id="stack">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="transition_type">slide-up-down</property>
         <child>
-          <object class="GtkBox" id="box2">
+          <object class="GtkGrid" id="grid1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="orientation">vertical</property>
-            <property name="homogeneous">True</property>
             <child>
               <object class="GtkLabel" id="name_label">
                 <property name="visible">True</property>
@@ -85,16 +25,18 @@
                 <property name="margin_bottom">3</property>
                 <property name="label">Name</property>
                 <property name="ellipsize">middle</property>
+                <property name="hexpand">True</property>
                 <style>
                   <class name="list-username"/>
                 </style>
               </object>
               <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
+                <property name="left_attach">0</property>
+                <property name="top_attach">0</property>
               </packing>
             </child>
+
+
             <child>
               <object class="GtkLabel" id="description_label">
                 <property name="visible">True</property>
@@ -109,41 +51,121 @@
                 <style>
                   <class name="dim-label"/>
                 </style>
-              </object>
+              </object>          
               <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
+                <property name="left_attach">0</property>
+                <property name="top_attach">1</property>
+              </packing>
+            </child>
+
+
+            <child>
+              <object class="GtkButton" id="more_button">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="relief">none</property>
+                <property name="valign">center</property>
+                <signal name="clicked" handler="more_button_clicked_cb" swapped="no" />
+                <style>
+                  <class name="image-button" />
+                </style>
+                <child>
+                  <object class="GtkImage" id="image1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="icon_name">view-more-symbolic</property>
+                  </object>
+                </child>
+              </object>         
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">0</property>
+                <property name="height">2</property>
               </packing>
             </child>
           </object>
           <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
+            <property name="name">default</property>
           </packing>
-        </child>
+        </child> 
+
         <child>
-          <object class="GtkMenuButton" id="menubutton1">
+          <object class="GtkBox" id="box2">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="halign">end</property>
-            <property name="valign">center</property>
-            <property name="margin_right">5</property>
-            <property name="relief">none</property>
-            <property name="popup">menu1</property>
+            <property name="can_focus">False</property>
+            <property name="spacing">5</property>
+            <property name="homogeneous">True</property>
+
             <child>
-              <placeholder/>
+              <object class="GtkButton" id="cancel_button">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="label" translatable="yes">Cancel</property>
+                <property name="valign">center</property>
+                <property name="halign">end</property>
+                <signal name="clicked" handler="cancel_button_clicked_cb" swapped="no" />
+              </object>
+              <packing>
+
+              </packing>
             </child>
+
+            <child>
+              <object class="GtkButton" id="subscribe_button">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="valign">center</property>
+                <property name="label" translatable="yes">Subscribe</property>
+                <property name="halign">start</property>
+                <signal name="clicked" handler="subscribe_button_clicked_cb" swapped="no" />
+                <style>
+                  <class name="suggested-action" />
+                </style>
+              </object>
+              <packing>
+
+              </packing>
+            </child>
+
+            <child>
+              <object class="GtkButton" id="unsubscribe_button">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="valign">center</property>
+                <property name="label" translatable="yes">Unsubscribe</property>
+                <property name="halign">start</property>
+                <signal name="clicked" handler="unsubscribe_button_clicked_cb" swapped="no" />
+              </object>
+              <packing>
+
+              </packing>
+            </child>
+
+            <child>
+              <object class="GtkButton" id="delete_button">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="valign">center</property>
+                <property name="label" translatable="yes">Delete</property>
+                <property name="halign">start</property>
+                <signal name="clicked" handler="delete_button_clicked_cb" swapped="no" />
+                <style>
+                  <class name="destructive-action" />
+                </style>
+              </object>
+              <packing>
+
+              </packing>
+            </child>
+
           </object>
           <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
+            <property name="name">more</property>
           </packing>
         </child>
+
       </object>
     </child>
+
   </template>
 </interface>

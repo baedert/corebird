@@ -53,7 +53,7 @@ class ListStatusesPage : ScrollWidget, IPage {
   [GtkChild]
   private Gtk.Stack description_stack;
   [GtkChild]
-  private Gtk.TextView description_text_view;
+  private Gtk.Entry description_entry;
   [GtkChild]
   private Gtk.Stack delete_stack;
   [GtkChild]
@@ -108,6 +108,7 @@ class ListStatusesPage : ScrollWidget, IPage {
     int64 list_id = args.arg<int64> ();
     if (list_id == 0) {
       list_id = this.list_id;
+      return;
       // Continue
     }
 
@@ -133,7 +134,7 @@ class ListStatusesPage : ScrollWidget, IPage {
       mode_label.label = Utils.capitalize (mode);
     }
 
-    message (@"Showing list with id $list_id");
+    debug (@"Showing list with id $list_id");
     if (list_id == this.list_id) {
       this.list_id = list_id;
       load_newer.begin ();
@@ -226,13 +227,13 @@ class ListStatusesPage : ScrollWidget, IPage {
   [GtkCallback]
   private void edit_button_clicked_cb () {
     name_stack.visible_child = name_entry;
-    description_stack.visible_child = description_text_view;
+    description_stack.visible_child = description_entry;
     delete_stack.visible_child = cancel_button;
     edit_stack.visible_child = save_button;
     mode_stack.visible_child = mode_combo_box;
 
     name_entry.text = real_list_name ();
-    description_text_view.buffer.text = description_label.label;
+    description_entry.text = description_label.label;
     mode_combo_box.active_id = mode_label.label;
   }
 
@@ -249,7 +250,7 @@ class ListStatusesPage : ScrollWidget, IPage {
   private void save_button_clicked_cb () {
     // Make everything go back to normal
     name_label.label = "@%s/%s".printf(creator_label.label, name_entry.get_text ());
-    description_label.label = description_text_view.buffer.text;
+    description_label.label = description_entry.text;
     mode_label.label = mode_combo_box.active_id;
     cancel_button_clicked_cb ();
     edit_button.sensitive = false;

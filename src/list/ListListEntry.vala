@@ -49,11 +49,16 @@ class ListListEntry : Gtk.ListBoxRow {
     }
   }
   [GtkChild]
-  private Gtk.MenuItem delete_list_item;
+  private Gtk.Stack stack;
   [GtkChild]
-  private Gtk.MenuItem unsubscribe_list_item;
+  private Gtk.Button subscribe_button;
   [GtkChild]
-  private Gtk.MenuItem subscribe_list_item;
+  private Gtk.Button unsubscribe_button;
+  [GtkChild]
+  private Gtk.Button delete_button;
+  [GtkChild]
+  private Gtk.Button cancel_button;
+
 
   public int64 id;
   public bool user_list = false;
@@ -78,18 +83,19 @@ class ListListEntry : Gtk.ListBoxRow {
     bool following = obj.get_boolean_member ("following");
 
     if (following || user.get_int_member ("id") == account.id) {
-      unsubscribe_list_item.show ();
-      subscribe_list_item.hide ();
+      unsubscribe_button.show ();
+      subscribe_button.hide ();
     } else {
-      unsubscribe_list_item.hide ();
-      subscribe_list_item.show ();
+      unsubscribe_button.hide ();
+      subscribe_button.show ();
     }
 
     if (user.get_int_member ("id") == account.id) {
       user_list = true;
-      unsubscribe_list_item.hide ();
-    } else
-      delete_list_item.hide ();
+      unsubscribe_button.hide ();
+    } else {
+      delete_button.hide ();
+    }
   }
 
   private string normalize_name (string name) {
@@ -100,7 +106,7 @@ class ListListEntry : Gtk.ListBoxRow {
   }
 
   [GtkCallback]
-  private void delete_list_cb () {
+  private void delete_button_clicked_cb () {
     this.sensitive = false;
     var call = account.proxy.new_call ();
     call.set_function ("1.1/lists/destroy.json");
@@ -118,7 +124,31 @@ class ListListEntry : Gtk.ListBoxRow {
   }
 
   [GtkCallback]
-  private void unsubscribe_list_cb () {
+  private void subscribe_button_clicked_cb () {
+    subscribe_button.sensitive = false;
+    cancel_button.sensitive = false;
+    var call = account.proxy.new_call ();
+    call.set_function ("1.1/lists/subscribers/create.json");
+    call.set_method ("POST");
+    call.add_param ("list_id", id.to_string ());
+    call.invoke_async.begin (null, (o, res) => {
+      try {
+        call.invoke_async.end (res);
+      } catch (GLib.Error e) {
+        Utils.show_error_object (call.get_payload (), e.message);
+        return;
+      } finally {
+        subscribe_button.sensitive = true;
+        cancel_button.sensitive = true;
+      }
+      subscribe_button.hide ();
+      unsubscribe_button.show ();
+    });
+
+  }
+
+  [GtkCallback]
+  private void unsubscribe_button_clicked_cb () {
     this.sensitive = false;
     var call = account.proxy.new_call ();
     call.set_function ("1.1/lists/subscribers/destroy.json");
@@ -131,25 +161,17 @@ class ListListEntry : Gtk.ListBoxRow {
         Utils.show_error_object (call.get_payload (), e.message);
         return;
       }
-
     });
   }
 
+
   [GtkCallback]
-  private void subscribe_list_cb () {
-    var call = account.proxy.new_call ();
-    call.set_function ("1.1/lists/subscribers/create.json");
-    call.set_method ("POST");
-    call.add_param ("list_id", id.to_string ());
-    call.invoke_async.begin (null, (o, res) => {
-      try {
-        call.invoke_async.end (res);
-      } catch (GLib.Error e) {
-        Utils.show_error_object (call.get_payload (), e.message);
-        return;
-      }
-      subscribe_list_item.hide ();
-      unsubscribe_list_item.show ();
-    });
+  private void more_button_clicked_cb () {
+    stack.visible_child_name = "more";
+  }
+
+  [GtkCallback]
+  private void cancel_button_clicked_cb () {
+    stack.visible_child_name = "default";
   }
 }

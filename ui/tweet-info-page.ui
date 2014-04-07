@@ -259,7 +259,7 @@
                 <child>
                   <object class="GtkLabel" id="source_label">
                     <property name="can_focus">False</property>
-                    <property name="margin_right">4</property>
+                    <property name="margin_right">5</property>
                     <property name="use_markup">True</property>
                     <style>
                       <class name="dim-label"/>

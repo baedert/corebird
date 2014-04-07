@@ -95,6 +95,8 @@ class ProfilePage : ScrollWidget, IPage {
   private bool lists_page_inited = false;
   private ulong page_change_signal = 0;
   private bool block_item_blocked = false;
+  private bool tweets_loading = false;
+  private int64 lowest_tweet_id = int64.MAX;
 
   public ProfilePage (int id) {
     this.id = id;
@@ -109,6 +111,9 @@ class ProfilePage : ScrollWidget, IPage {
         return true;
       }
       return false;
+    });
+    this.scrolled_to_end.connect (() => {
+      load_older_tweets.begin ();
     });
 
     tweet_list.row_activated.connect ((row) => {
@@ -162,7 +167,7 @@ class ProfilePage : ScrollWidget, IPage {
 
       if (banner_name != null &&
           FileUtils.test(Dirs.cache("assets/banners/"+banner_name), FileTest.EXISTS)){
-        message("Banner exists, set it directly...");
+        debug ("Banner exists, set it directly...");
         load_banner (Dirs.cache ("assets/banners/" + banner_name));
       } else {
         // TODO: ???
@@ -338,6 +343,7 @@ class ProfilePage : ScrollWidget, IPage {
 
   private async void load_tweets () { // {{{
     tweet_list.set_unempty ();
+    tweets_loading = true;
     var call = account.proxy.new_call ();
     call.set_function ("1.1/statuses/user_timeline.json");
     call.set_method ("GET");
@@ -366,7 +372,49 @@ class ProfilePage : ScrollWidget, IPage {
       tweet_list.set_empty ();
       return;
     }
-    yield TweetUtils.work_array (root, delta_updater, tweet_list, main_window, account);
+    var result = yield TweetUtils.work_array (root, delta_updater, tweet_list,
+                                              main_window, account);
+    lowest_tweet_id = result.min_id;
+    tweets_loading = false;
+  } // }}}
+
+  private async void load_older_tweets () { // {{{
+    if (tweets_loading)
+      return;
+
+    if (user_stack.visible_child != tweet_list)
+      return;
+
+    main_window.start_progress ();
+    tweets_loading = true;
+    var call = account.proxy.new_call ();
+    call.set_function ("1.1/statuses/user_timeline.json");
+    call.set_method ("GET");
+    call.add_param ("user_id", this.user_id.to_string ());
+    call.add_param ("count", "15");
+    call.add_param ("contributor_details", "true");
+    call.add_param ("include_my_retweet", "true");
+    call.add_param ("max_id", (lowest_tweet_id - 1).to_string ());
+
+    try {
+      yield call.invoke_async (null);
+    } catch (GLib.Error e) {
+      warning (e.message);
+      return;
+    }
+    var parser = new Json.Parser ();
+    try {
+      parser.load_from_data (call.get_payload ());
+    } catch (GLib.Error e) {
+      warning ("%s FOR DATA %s", e.message, call.get_payload ());
+      return;
+    }
+    var root_arr = parser.get_root ().get_array ();
+    var result = yield TweetUtils.work_array (root_arr, delta_updater,
+                                              tweet_list, main_window, account);
+    lowest_tweet_id = result.min_id;
+    tweets_loading = false;
+    main_window.stop_progress ();
   } // }}}
 
   /**
@@ -455,8 +503,7 @@ class ProfilePage : ScrollWidget, IPage {
       block_menu_item.active = false;
       block_item_blocked = false;
     }
-    message (@"User ID: $user_id");
-    message (user_id.to_string ());
+    debug  (@"User ID: $user_id");
     progress_spinner.show ();
     progress_spinner.start ();
     follow_button.sensitive = false;
@@ -565,7 +612,8 @@ class ProfilePage : ScrollWidget, IPage {
     else
       lists_page_inited = false;
     data_cancellable = new GLib.Cancellable ();
-    set_user_id(user_id);
+    reset_data ();
+    set_user_id (user_id);
     tweet_list.remove_all ();
     tweet_list.reset_placeholder_text ();
     user_stack.visible_child = tweet_list;
@@ -577,10 +625,18 @@ class ProfilePage : ScrollWidget, IPage {
     // TODO: Reenable this once a new librest release is out;
     //       We might otherwise overwrite the new user's data with that from the old one.
 //    data_cancellable.cancel ();
-    account.user_counter.save (account.db);
     banner_image.scale = 0.3;
+    lowest_tweet_id = int64.MAX;
   }
 
+  private void reset_data () {
+    name_label.label = " ";
+    screen_name_label.label = " ";
+    description_label.label = " ";
+    url_label.label = " ";
+    location_label.label = " ";
+    avatar_image.pixbuf = null;
+  }
 
   public void create_tool_button(RadioToolButton? group) {}
 

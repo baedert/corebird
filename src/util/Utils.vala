@@ -233,6 +233,7 @@ namespace Utils {
         pixbuf.save_to_stream (out_stream, type);
       } catch (GLib.Error e) {
         warning (e.message);
+        return null;
       }
       GLib.Idle.add (() => {
         write_pixbuf_async.callback ();

@@ -65,7 +65,11 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       this.application = app;
     avatar_image.set_from_pixbuf (acc.avatar);
     length_label.label = Tweet.MAX_LENGTH.to_string ();
-    tweet_text.buffer.changed.connect (buffer_changed_cb);
+    tweet_text.buffer.notify["cursor-position"].connect (buffer_changed_cb);
+    tweet_text.focus_out_event.connect (completion_window_focus_out_cb);
+
+    completion_window.set_attached_to (tweet_text);
+    completion_window.set_screen (tweet_text.get_screen ());
 
     if (parent != null) {
       this.set_transient_for (parent);
@@ -125,21 +129,13 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   }
 
   private void update_completion () {
-    string text = tweet_text.buffer.text;
-    int cursor_position = tweet_text.buffer.cursor_position;
-    string cur_word = "";
-    string[] words = text.split (" ");
+    string cur_word = get_cursor_word (null, null);
 
-    int cur_pos = 0;
-    foreach (string s in words) {
-      cur_pos += s.length + 1;
-      if (cur_pos >= cursor_position) {
-        cur_word = s;
-        break;
-      }
-    }
-
-    if (!cur_word.has_prefix ("@")) {
+    /* Check if the word ends with a 'special' character like ?!_ */
+    char end_char = cur_word.get (cur_word.char_count () - 1);
+    bool word_has_alpha_end = (end_char.isalpha () || end_char.isdigit ()) &&
+                              end_char.isgraph () || end_char == '@';
+    if (!cur_word.has_prefix ("@") || !word_has_alpha_end) {
       completion_window.hide ();
       return;
     }
@@ -254,7 +250,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   [GtkCallback]
   private bool completion_window_focus_out_cb () {
     completion_window.hide ();
-    return true;
+    return false;
   }
 
   [GtkCallback]
@@ -297,21 +293,19 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   }
 
   private void insert_completion (string compl) {
+    tweet_text.buffer.freeze_notify ();
+    Gtk.TextIter start_word_iter;
+    Gtk.TextIter end_word_iter;
+    string word_to_delete = get_cursor_word (out start_word_iter,
+                                             out end_word_iter);
+    debug ("Delete word: %s", word_to_delete);
+    tweet_text.buffer.delete_range (start_word_iter, end_word_iter);
+
     Gtk.TextMark cursor_mark = tweet_text.buffer.get_insert ();
-    Gtk.TextIter cursor_iter;
-    tweet_text.buffer.get_iter_at_mark (out cursor_iter, cursor_mark);
-    cursor_iter.backward_word_start ();
-    cursor_iter.backward_char ();
+    tweet_text.buffer.get_iter_at_mark (out start_word_iter, cursor_mark);
 
-    Gtk.TextIter end_word_iter = Gtk.TextIter();
-    end_word_iter.assign (cursor_iter);
-    end_word_iter.forward_word_end ();
-
-    message (tweet_text.buffer.get_text (cursor_iter, end_word_iter, false));
-    tweet_text.buffer.delete_range (cursor_iter, end_word_iter);
-    cursor_mark = tweet_text.buffer.get_insert ();
-    tweet_text.buffer.get_iter_at_mark (out cursor_iter, cursor_mark);
-    tweet_text.buffer.insert_text (ref cursor_iter, "@" + compl + " ", compl.length + 2);
+    tweet_text.buffer.insert_text (ref start_word_iter, "@" + compl + " ", compl.length + 2);
+    tweet_text.buffer.thaw_notify ();
   }
 
 
@@ -340,5 +334,38 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
   public void set_text (string text) {
     tweet_text.buffer.text = text;
+  }
+
+  private string get_cursor_word (out Gtk.TextIter start_iter,
+                                  out Gtk.TextIter end_iter) {
+
+    Gtk.TextMark cursor_mark = tweet_text.buffer.get_insert ();
+    Gtk.TextIter cursor_iter;
+    tweet_text.buffer.get_iter_at_mark (out cursor_iter, cursor_mark);
+
+    Gtk.TextIter end_word_iter = Gtk.TextIter();
+    end_word_iter.assign (cursor_iter);
+
+
+    /* Check if the current "word" is just "@" */
+    var test_iter = Gtk.TextIter ();
+    test_iter.assign (cursor_iter);
+    test_iter.backward_char ();
+    if (tweet_text.buffer.get_text (test_iter, cursor_iter, false) != "@") {
+      // Go to the word start and one char back(i.e. the @)
+      cursor_iter.backward_word_start ();
+      cursor_iter.backward_char ();
+
+      // Go to the end of the word
+      end_word_iter.forward_word_end ();
+    } else {
+      end_word_iter.assign (cursor_iter);
+      cursor_iter.backward_char ();
+    }
+    start_iter = cursor_iter;
+    start_iter.assign (cursor_iter);
+    end_iter = end_word_iter;
+    end_iter.assign (end_word_iter);
+    return tweet_text.buffer.get_text (cursor_iter, end_word_iter, false);
   }
 }

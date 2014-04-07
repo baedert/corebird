@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-19 18:21+0100\n"
+"POT-Creation-Date: 2014-04-07 20:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,24 +17,37 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/window/ComposeTweetWindow.vala:188
+#: ../src/window/ComposeTweetWindow.vala:217 ../ui/compose-window.ui.h:3
+msgid "Select Image"
+msgstr ""
+
+#: ../src/window/ComposeTweetWindow.vala:218
 #: ../src/window/UserListDialog.vala:44 ../src/window/ImageDialog.vala:112
-#: ../ui/compose-window.ui.h:3 ../ui/remove-account-dialog.ui.h:1
-#: ../ui/list-statuses-page.ui.h:8
+#: ../ui/compose-window.ui.h:4 ../ui/remove-account-dialog.ui.h:1
+#: ../ui/list-list-entry.ui.h:1 ../ui/list-statuses-page.ui.h:8
+#: ../ui/modify-filter-dialog.ui.h:1
 msgid "Cancel"
 msgstr ""
 
-#: ../src/window/ComposeTweetWindow.vala:189
+#: ../src/window/ComposeTweetWindow.vala:219
 msgid "Choose"
 msgstr ""
 
 #: ../src/window/UserListDialog.vala:45 ../src/window/ImageDialog.vala:113
-#: ../ui/list-statuses-page.ui.h:6
+#: ../ui/list-statuses-page.ui.h:6 ../ui/modify-filter-dialog.ui.h:2
 msgid "Save"
 msgstr ""
 
 #: ../src/window/ImageDialog.vala:110
 msgid "Save image"
+msgstr ""
+
+#: ../src/window/ModifyFilterDialog.vala:74
+msgid "Matches"
+msgstr ""
+
+#: ../src/window/ModifyFilterDialog.vala:76
+msgid "Doesn't match"
 msgstr ""
 
 #: ../src/widgets/TweetListBox.vala:44 ../src/widgets/TweetListBox.vala:78
@@ -52,34 +65,34 @@ msgstr ""
 msgid "Wrong PIN"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:96
+#: ../src/HomeTimeline.vala:84
 #, c-format
 msgid "%d new Tweets!"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:106
+#: ../src/HomeTimeline.vala:94
 #, c-format
 msgid "%s retweeted %s"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:108
+#: ../src/HomeTimeline.vala:96
 #, c-format
 msgid "%s tweeted"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:136 ../src/HomeTimeline.vala:137
+#: ../src/HomeTimeline.vala:123 ../src/HomeTimeline.vala:124
 msgid "Home"
 msgstr ""
 
-#: ../src/DMThreadsPage.vala:235
+#: ../src/DMThreadsPage.vala:236
 msgid "New direct message!"
 msgstr ""
 
-#: ../src/DMThreadsPage.vala:356 ../src/DMThreadsPage.vala:357
+#: ../src/DMThreadsPage.vala:359 ../src/DMThreadsPage.vala:360
 msgid "Direct Messages"
 msgstr ""
 
-#: ../src/list/DMThreadEntry.vala:97
+#: ../src/list/DMThreadEntry.vala:98
 #, c-format
 msgid "(%d unread)"
 msgstr ""
@@ -89,20 +102,20 @@ msgstr ""
 msgid "Lists"
 msgstr ""
 
-#: ../src/ProfilePage.vala:269
+#: ../src/ProfilePage.vala:274
 msgid "Protected profile"
 msgstr ""
 
-#: ../src/ProfilePage.vala:408
+#: ../src/ProfilePage.vala:456
 #, c-format
 msgid "Tweet to @%s"
 msgstr ""
 
-#: ../src/ProfilePage.vala:538 ../src/TweetInfoPage.vala:411
+#: ../src/ProfilePage.vala:585 ../src/TweetInfoPage.vala:411
 msgid "Unfollow"
 msgstr ""
 
-#: ../src/ProfilePage.vala:542 ../src/TweetInfoPage.vala:415
+#: ../src/ProfilePage.vala:589 ../src/TweetInfoPage.vala:415
 #: ../ui/tweet-info-page.ui.h:3
 msgid "Follow"
 msgstr ""
@@ -124,16 +137,16 @@ msgstr ""
 msgid "Source"
 msgstr ""
 
-#: ../src/util/Utils.vala:82
+#: ../src/util/Utils.vala:73
 msgid "Now"
 msgstr ""
 
-#: ../src/util/Utils.vala:84
+#: ../src/util/Utils.vala:75
 #, c-format
 msgid "%dm"
 msgstr ""
 
-#: ../src/util/Utils.vala:88
+#: ../src/util/Utils.vala:79
 #, c-format
 msgid "%dh"
 msgstr ""
@@ -143,16 +156,16 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: ../src/Corebird.vala:144
+#: ../src/Corebird.vala:148
 msgid "Open Account"
 msgstr ""
 
-#: ../src/MentionsTimeline.vala:94
+#: ../src/MentionsTimeline.vala:82
 #, c-format
-msgid "New Mention from %s"
+msgid "New Mention from @%s"
 msgstr ""
 
-#: ../src/MentionsTimeline.vala:126 ../src/MentionsTimeline.vala:127
+#: ../src/MentionsTimeline.vala:114 ../src/MentionsTimeline.vala:115
 msgid "Mentions"
 msgstr ""
 
@@ -282,7 +295,7 @@ msgstr ""
 msgid "Open Window"
 msgstr ""
 
-#: ../ui/dm-page.ui.h:1 ../ui/compose-window.ui.h:4
+#: ../ui/dm-page.ui.h:1 ../ui/compose-window.ui.h:5
 msgid "Send"
 msgstr ""
 
@@ -299,7 +312,7 @@ msgid "Details"
 msgstr ""
 
 #: ../ui/tweet-list-entry.ui.h:3 ../ui/tweet-info-page.ui.h:2
-#: ../ui/list-list-entry.ui.h:1 ../ui/list-statuses-page.ui.h:7
+#: ../ui/list-list-entry.ui.h:4 ../ui/list-statuses-page.ui.h:7
 msgid "Delete"
 msgstr ""
 
@@ -343,7 +356,7 @@ msgstr ""
 msgid "Tweets"
 msgstr ""
 
-#: ../ui/search-page.ui.h:3
+#: ../ui/search-page.ui.h:3 ../ui/filter-page.ui.h:1
 msgid "Users"
 msgstr ""
 
@@ -352,7 +365,7 @@ msgid "Compose Tweet"
 msgstr ""
 
 #: ../ui/compose-window.ui.h:2
-msgid "Select Image"
+msgid "Attach Image"
 msgstr ""
 
 #: ../ui/profile-page.ui.h:2
@@ -375,8 +388,8 @@ msgstr ""
 msgid "PIN:"
 msgstr ""
 
-#: ../ui/account-create-widget.ui.h:2 ../ui/list-list-entry.ui.h:2
-#: ../ui/list-statuses-page.ui.h:12
+#: ../ui/account-create-widget.ui.h:2 ../ui/list-statuses-page.ui.h:12
+#: ../ui/filter-list-entry.ui.h:1 ../ui/user-filter-entry.ui.h:1
 msgid "Confirm"
 msgstr ""
 
@@ -396,12 +409,12 @@ msgstr ""
 msgid "Do you really want to remove the account?"
 msgstr ""
 
-#: ../ui/list-list-entry.ui.h:3
-msgid "Unsubscribe"
+#: ../ui/list-list-entry.ui.h:2
+msgid "Subscribe"
 msgstr ""
 
-#: ../ui/list-list-entry.ui.h:4
-msgid "Subscribe"
+#: ../ui/list-list-entry.ui.h:3
+msgid "Unsubscribe"
 msgstr ""
 
 #: ../ui/start-conversation-entry.ui.h:1
