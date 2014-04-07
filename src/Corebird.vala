@@ -84,9 +84,13 @@ class Corebird : Gtk.Application {
     NotificationManager.init ();
 
     // If the user wants the dark theme, apply it
+    var gtk_s = Gtk.Settings.get_default ();
     if (Settings.use_dark_theme ()) {
-      Gtk.Settings settings = Gtk.Settings.get_default ();
-      settings.gtk_application_prefer_dark_theme = true;
+      gtk_s.gtk_application_prefer_dark_theme = true;
+    }
+
+    if (gtk_s.gtk_decoration_layout.contains ("menu")) {
+      gtk_s.gtk_decoration_layout = gtk_s.gtk_decoration_layout.replace ("menu", "");
     }
 
     init_log_files ();
