@@ -33,11 +33,9 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   [GtkChild]
   private Label rt_label;
   [GtkChild]
-  private Gtk.Box rt_box;
+  private Gtk.Image rt_image;
   [GtkChild]
   private Image conversation_image;
-  [GtkChild]
-  private Box text_box;
   [GtkChild]
   private BgBox hover_box;
   [GtkChild]
@@ -52,6 +50,8 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   private Gtk.Menu more_menu;
   [GtkChild]
   private Gtk.MenuItem more_menu_delete_item;
+  [GtkChild]
+  private Gtk.Grid grid;
 
 
 
@@ -85,11 +85,14 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
     text_label.label = tweet.get_formatted_text ();
     update_time_delta ();
     if (tweet.is_retweet) {
-      rt_box.show ();
+      rt_label.show ();
+      rt_image.show ();
       rt_label.label = @"<span underline='none'><a href=\"@$(tweet.rt_by_id)\"
                          title=\"@$(tweet.rt_by_screen_name)\">$(tweet.retweeted_by)</a></span>";
-    } else
-      rt_box.unparent ();
+    } else {
+      grid.remove (rt_image);
+      grid.remove (rt_label);
+    }
 
 
     if (tweet.retweeted || tweet.favorited || tweet.reply_id != 0) {
@@ -135,7 +138,8 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
         warning (e.message);
         return;
       }
-      text_box.pack_end (inline_button, false, false);
+      grid.attach_next_to (inline_button, text_label,  Gtk.PositionType.RIGHT, 1, 1);
+
       inline_button.valign = Align.START;
       inline_button.margin_top = 4;
       inline_button.clicked.connect(inline_media_button_clicked_cb);
@@ -181,7 +185,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   private void inline_media_added_cb (Gdk.Pixbuf? pic) {
     var inline_button = new PixbufButton ();
     inline_button.set_bg (pic);
-    text_box.pack_end (inline_button, false, false);
+    grid.attach_next_to (inline_button, text_label, Gtk.PositionType.RIGHT, 1, 1);
     inline_button.valign = Align.START;
     inline_button.margin_top = 4;
     inline_button.clicked.connect(inline_media_button_clicked_cb);

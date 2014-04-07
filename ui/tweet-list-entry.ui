@@ -42,238 +42,191 @@
     <signal name="focus-out-event" handler="focus_out_cb" swapped="no"/>
     <signal name="key-release-event" handler="key_released_cb" swapped="no"/>
     <signal name="state-flags-changed" handler="state_flags_changed_cb" swapped="no"/>
+
     <child>
-      <object class="GtkOverlay" id="overlay1">
+      <object class="GtkOverlay" id="overlay">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <child>
-          <object class="GtkBox" id="main_box">
+          <object class="GtkGrid" id="grid">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="margin_top">4</property>
-            <property name="orientation">vertical</property>
-            <signal name="state-flags-changed" handler="state_flags_changed_cb" swapped="no"/>
+
             <child>
-              <object class="GtkBox" id="box4">
+              <object class="GtkImage" id="avatar_image">
+                <property name="width_request">48</property>
+                <property name="height_request">48</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <child>
-                  <object class="GtkImage" id="avatar_image">
-                    <property name="width_request">48</property>
-                    <property name="height_request">48</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="valign">start</property>
-                    <property name="margin_right">4</property>
-                    <property name="margin_top">2</property>
-                    <property name="stock">gtk-missing-image</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkBox" id="box5">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="orientation">vertical</property>
-                    <child>
-                      <object class="GtkBox" id="box6">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <child>
-                          <object class="TextButton" id="name_button">
-                            <property name="label">button</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="receives_default">True</property>
-                            <property name="valign">baseline</property>
-                            <property name="margin_bottom">1</property>
-                            <property name="yalign">0.50999999046325684</property>
-                            <style>
-                              <class name="text-only-button"/>
-                            </style>
-                            <signal name="clicked" handler="name_button_clicked_cb" swapped="no"/>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="time_delta_label">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="halign">end</property>
-                            <property name="valign">baseline</property>
-                            <property name="label">label</property>
-                            <property name="lines">0</property>
-                            <style>
-                              <class name="dim-label"/>
-                            </style>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="pack_type">end</property>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkImage" id="conversation_image">
-                            <property name="can_focus">False</property>
-                            <property name="no_show_all">True</property>
-                            <property name="valign">start</property>
-                            <property name="margin_right">5</property>
-                            <property name="pixel_size">12</property>
-                            <property name="icon_name">corebird-conversation-symbolic</property>
-                            <style>
-                              <class name="dim-label"/>
-                            </style>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="pack_type">end</property>
-                            <property name="position">2</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="screen_name_label">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="halign">start</property>
-                            <property name="valign">baseline</property>
-                            <property name="margin_left">6</property>
-                            <property name="margin_right">4</property>
-                            <property name="xalign">0</property>
-                            <property name="label">screen name</property>
-                            <property name="ellipsize">end</property>
-                            <property name="lines">0</property>
-                            <style>
-                              <class name="dim-label"/>
-                            </style>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">3</property>
-                          </packing>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkBox" id="text_box">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <child>
-                          <object class="GtkLabel" id="text_label">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="margin_right">5</property>
-                            <property name="margin_bottom">3</property>
-                            <property name="hexpand">True</property>
-                            <property name="vexpand">True</property>
-                            <property name="xalign">0</property>
-                            <property name="yalign">0</property>
-                            <property name="label">TEXT</property>
-                            <property name="use_markup">True</property>
-                            <property name="wrap">True</property>
-                            <property name="wrap_mode">word-char</property>
-                            <property name="lines">0</property>
-                            <signal name="activate-link" handler="link_activated_cb" swapped="no"/>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkBox" id="rt_box">
-                        <property name="can_focus">False</property>
-                        <property name="no_show_all">True</property>
-                        <child>
-                          <object class="GtkImage" id="image7">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="no_show_all">True</property>
-                            <property name="valign">baseline</property>
-                            <property name="margin_right">3</property>
-                            <property name="pixel_size">13</property>
-                            <property name="icon_name">corebird-retweet-symbolic</property>
-                            <style>
-                              <class name="dim-label"/>
-                            </style>
-                            <property name="icon_size">1</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="rt_label">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="no_show_all">True</property>
-                            <property name="halign">start</property>
-                            <property name="valign">baseline</property>
-                            <property name="use_markup">True</property>
-                            <property name="margin_top">4</property>
-                            <signal name="activate-link" handler="link_activated_cb" swapped="no" />
-                            <style>
-                              <class name="dim-label"/>
-                            </style>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">2</property>
-                      </packing>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
+                <property name="valign">start</property>
+                <property name="margin_right">4</property>
+                <property name="margin_top">2</property>
+                <property name="stock">gtk-missing-image</property>
               </object>
               <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
+                <property name="left_attach">0</property>
+                <property name="top_attach">0</property>
+                <property name="height">2</property>
+              </packing>
+            </child>
+
+
+            <child>
+              <object class="TextButton" id="name_button">
+                <property name="label">button</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="valign">baseline</property>
+                <property name="margin_bottom">1</property>
+                <property name="yalign">0.5</property>
+                <property name="halign">start</property>
+                <style>
+                  <class name="text-only-button"/>
+                </style>
+                <signal name="clicked" handler="name_button_clicked_cb" swapped="no"/>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">0</property>
+              </packing>
+            </child>
+
+
+            <child>
+              <object class="GtkLabel" id="screen_name_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="valign">baseline</property>
+                <property name="margin_left">6</property>
+                <property name="margin_right">4</property>
+                <property name="xalign">0</property>
+                <property name="label">screen name</property>
+                <property name="ellipsize">end</property>
+                <property name="hexpand">True</property>
+                <style>
+                  <class name="dim-label"/>
+                </style>
+              </object>
+              <packing>
+                <property name="left_attach">2</property>
+                <property name="top_attach">0</property>
+              </packing>
+            </child>
+
+
+            <child>
+              <object class="GtkImage" id="conversation_image">
+                <property name="can_focus">False</property>
+                <property name="no_show_all">True</property>
+                <property name="valign">start</property>
+                <property name="margin_right">5</property>
+                <property name="pixel_size">12</property>
+                <property name="icon_name">corebird-conversation-symbolic</property>
+                <style>
+                  <class name="dim-label"/>
+                </style>
+              </object>
+              <packing>
+                <property name="left_attach">3</property>
+                <property name="top_attach">0</property>
+              </packing>
+            </child>
+
+
+            <child>
+              <object class="GtkLabel" id="time_delta_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">end</property>
+                <property name="valign">baseline</property>
+                <property name="label">label</property>
+                <property name="lines">0</property>
+                <style>
+                  <class name="dim-label"/>
+                </style>
+              </object>
+              <packing>
+                <property name="left_attach">4</property>
+                <property name="top_attach">0</property>
+                <property name="width">2</property>
+              </packing>
+            </child>
+
+
+            <child>
+              <object class="GtkLabel" id="text_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="margin_right">5</property>
+                <property name="margin_bottom">3</property>
+                <property name="hexpand">True</property>
+                <property name="vexpand">True</property>
+                <property name="xalign">0</property>
+                <property name="yalign">0</property>
+                <property name="label">TEXT</property>
+                <property name="use_markup">True</property>
+                <property name="wrap">True</property>
+                <property name="wrap_mode">word-char</property>
+                <property name="lines">0</property>
+                <signal name="activate-link" handler="link_activated_cb" swapped="no"/>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">1</property>
+                <property name="width">4</property>
+              </packing>
+            </child>
+
+
+            <child>
+              <object class="GtkImage" id="rt_image">
+                <property name="visible">False</property>
+                <property name="can_focus">False</property>
+                <property name="no_show_all">True</property>
+                <property name="valign">baseline</property>
+                <property name="margin_right">3</property>
+                <property name="halign">end</property>
+                <property name="pixel_size">13</property>
+                <property name="icon_name">corebird-retweet-symbolic</property>
+                <style>
+                  <class name="dim-label"/>
+                </style>
+                <property name="icon_size">1</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">3</property>
+              </packing>
+            </child>
+
+
+            <child>
+              <object class="GtkLabel" id="rt_label">
+                <property name="visible">False</property>
+                <property name="can_focus">False</property>
+                <property name="no_show_all">True</property>
+                <property name="halign">start</property>
+                <property name="valign">baseline</property>
+                <property name="use_markup">True</property>
+                <property name="margin_top">4</property>
+                <signal name="activate-link" handler="link_activated_cb" swapped="no" />
+                <style>
+                  <class name="dim-label"/>
+                </style>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">3</property>
+                <property name="width">3</property>
               </packing>
             </child>
           </object>
         </child>
+
+
+
         <child type="overlay">
           <object class="BgBox" id="hover_box">
             <property name="visible">True</property>
@@ -406,7 +359,11 @@
             </child>
           </object>
         </child>
+
+
       </object>
     </child>
+
+
   </template>
 </interface>
