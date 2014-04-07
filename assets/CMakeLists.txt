@@ -1,6 +1,13 @@
+
+install (FILES 16x16/corebird.png                       DESTINATION ${PREFIX}/share/icons/hicolor/16x16/apps/)
+install (FILES 24x24/corebird.png                       DESTINATION ${PREFIX}/share/icons/hicolor/24x24/apps/)
+install (FILES 32x32/corebird.png                       DESTINATION ${PREFIX}/share/icons/hicolor/32x32/apps/)
+install (FILES 48x48/corebird.png                       DESTINATION ${PREFIX}/share/icons/hicolor/48x48/apps/)
 install (FILES 64x64/corebird.png                       DESTINATION ${PREFIX}/share/icons/hicolor/64x64/apps/)
+install (FILES 96x96/corebird.png                       DESTINATION ${PREFIX}/share/icons/hicolor/96x96/apps/)
 install (FILES 128x128/corebird.png                     DESTINATION ${PREFIX}/share/icons/hicolor/128x128/apps/)
 install (FILES 512x512/corebird.png                     DESTINATION ${PREFIX}/share/icons/hicolor/512x512/apps/)
+install (FILES corebird.svg                             DESTINATION ${PREFIX}/share/icons/hicolor/scalable/apps/)
 install (FILES no_avatar.png                            DESTINATION ${DATADIR})
 install (FILES no_banner.png                            DESTINATION ${DATADIR})
 install (FILES verified.png                             DESTINATION ${DATADIR})
