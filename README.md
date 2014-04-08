@@ -41,7 +41,7 @@
  - `json-glib-1.0`
  - `libnotify`
  - `sqlite3`
- - `libsoup-2.4`
+ - `libsoup >= 2.42`
  - `libgee-0.8`
  - `vala >= 0.22` (makedep)
  - `cmake >= 2.6` (makedep)
