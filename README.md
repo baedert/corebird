@@ -42,6 +42,7 @@
  - `libnotify`
  - `sqlite3`
  - `libsoup-2.4`
+ - `libgee-0.8`
  - `vala >= 0.22` (makedep)
  - `cmake >= 2.6` (makedep)
 
