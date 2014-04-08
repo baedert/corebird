@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
+
+  <object class="GtkSizeGroup" id="size_group">
+    <property name="ignore_hidden">False</property>
+    <widgets>
+      <widget name="subscribe_button" />
+      <widget name="unsubscribe_button" />
+      <widget name="delete_button" />
+      <widget name="cancel_button" />
+    </widgets>
+  </object>
+
+
   <template class="ListListEntry" parent="GtkListBoxRow">
     <property name="visible">True</property>
     <property name="can_focus">True</property>
+    <signal name="focus_out_event" handler="focus_out_cb" swapped="false" />
     <child>
       <object class="GtkStack" id="stack">
         <property name="visible">True</property>
@@ -51,7 +63,7 @@
                 <style>
                   <class name="dim-label"/>
                 </style>
-              </object>          
+              </object>
               <packing>
                 <property name="left_attach">0</property>
                 <property name="top_attach">1</property>
@@ -76,7 +88,7 @@
                     <property name="icon_name">view-more-symbolic</property>
                   </object>
                 </child>
-              </object>         
+              </object>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="top_attach">0</property>
@@ -87,7 +99,7 @@
           <packing>
             <property name="name">default</property>
           </packing>
-        </child> 
+        </child>
 
         <child>
           <object class="GtkBox" id="box2">
