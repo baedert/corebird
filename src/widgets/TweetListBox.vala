@@ -43,6 +43,7 @@ class TweetListBox : Gtk.ListBox {
     placeholder.add_named (spinner, "spinner");
     no_entries_label  = new Gtk.Label (_("No entries found"));
     no_entries_label.get_style_context ().add_class ("dim-label");
+    no_entries_label.wrap_mode = Pango.WrapMode.WORD_CHAR;
     placeholder.add_named (no_entries_label, "no-entries");
     placeholder.visible_child_name = "spinner";
     placeholder.show_all ();
