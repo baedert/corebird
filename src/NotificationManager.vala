@@ -17,15 +17,17 @@
 
 namespace NotificationManager {
   public void notify (string summary, string body = "",
-                             string? icon = null) {
+                      string? icon = null) {
 
     var n = new GLib.Notification (summary);
     n.set_body (body);
-    try {
-      var gicon = GLib.Icon.new_for_string (icon);
-      n.set_icon (gicon);
-    } catch (GLib.Error e) {
-      warning (e.message);
+    if (icon != null) {
+      try {
+        var gicon = GLib.Icon.new_for_string (icon);
+        n.set_icon (gicon);
+      } catch (GLib.Error e) {
+        warning (e.message);
+      }
     }
     GLib.Application.get_default ().send_notification (null, n);
   }

@@ -232,10 +232,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       }
       t_e.last_message = text;
       t_e.last_message_id = message_id;
-      if (Settings.notify_new_dms ()) {
-        NotificationManager.notify( _("New direct message!"), text,
-                                   t_e.avatar_path);
-      }
+      notify_new_dm (sender_id, t_e.screen_name, text, t_e.avatar_path);
       return;
     }
 
@@ -352,6 +349,28 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       thread_list.remove (thread_list.get_row_at_index (1));
       progress_spinner = null;
     }
+  }
+
+  private void notify_new_dm (int64  sender_id,
+                              string sender_screen_name,
+                              string text,
+                              string avatar_path) {
+    if (!Settings.notify_new_dms ())
+      return;
+
+    var n = new GLib.Notification (_("New direct message from %s")
+                                   .printf (sender_screen_name));
+    n.set_body (text);
+    //try {
+      //n.set_icon (new GLib.Icon.from_file (avatar_path));
+    //} catch (GLib.Error e) {
+      //warning (e.message);
+    //}
+    var value = new GLib.Variant.tuple ({new GLib.Variant.string (account.screen_name),
+                                        new GLib.Variant.int64 (sender_id)});
+    n.set_default_action_and_target_value ("app.show-dm-thread", value);
+
+    GLib.Application.get_default ().send_notification ("new-dm", n);
   }
 
   public void create_tool_button(RadioToolButton? group) {

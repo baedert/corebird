@@ -23,10 +23,11 @@ public class Corebird : Gtk.Application {
   private static GLib.OutputStream log_stream;
   public  static GLib.Menu account_menu;
 
-  const GLib.ActionEntry app_entries[] = {
-    {"show-settings", show_settings_activated},
-    {"quit", quit_application},
-    {"show-about-dialog", about_activated}
+  const GLib.ActionEntry[] app_entries = {
+    {"show-settings",     show_settings_activated         },
+    {"quit",              quit_application                },
+    {"show-about-dialog", about_activated                 },
+    {"show-dm-thread",    show_dm_thread,          "(sx)" }
   };
 
 
@@ -344,4 +345,19 @@ public class Corebird : Gtk.Application {
 #endif
       stdout.printf (out_string);
   }
+
+  /********************************************************/
+
+  private void show_dm_thread (GLib.SimpleAction a, GLib.Variant? value) {
+    // Values: Account screen_name, sender_id
+    string account_screen_name = value.get_child_value (0).get_string ();
+    int64 sender_id = value.get_child_value (1).get_int64 ();
+    MainWindow main_window;
+    if (is_window_open_for_screen_name (account_screen_name, out main_window)) {
+      main_window.switch_page (MainWindow.PAGE_DM, sender_id);
+    } else
+      warning ("Window for Account %s is not open, abort.", account_screen_name);
+  }
+
+
 }
