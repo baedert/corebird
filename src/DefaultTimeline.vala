@@ -31,7 +31,8 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   public int64 lowest_id                 { get; set; default = int64.MAX-2; }
   protected uint tweet_remove_timeout    { get; set; }
   protected int64 max_id                 { get; set; default = 0; }
-  public DeltaUpdater delta_updater      { get; set;}
+  public DeltaUpdater delta_updater      { get; set; }
+  protected abstract string function     { get;      }
   protected bool loading = false;
   protected Gtk.Widget? last_focus_widget = null;
 
@@ -62,12 +63,15 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
       last_focus_widget = row;
     });
 
+
+
   }
 
   public virtual void on_join (int page_id, va_list args) {
     if (!initialized) {
       load_cached ();
       load_newest ();
+      account.user_stream.resumed.connect (stream_resumed_cb);
       initialized = true;
     }
 
@@ -247,5 +251,46 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
       this.unread_count ++;
       this.update_unread_count ();
     }
+  }
+
+  private void stream_resumed_cb () {
+    var call = account.proxy.new_call ();
+    call.set_function (this.function);
+    call.set_method ("GET");
+    call.add_param ("count", "1");
+    call.add_param ("since_id", (this.max_id + 1).to_string ());
+    call.add_param ("trim_user", "true");
+    call.add_param ("contributor_details", "false");
+    call.add_param ("include_entities", "false");
+    call.invoke_async.begin (null, (o, res) => {
+      try {
+        call.invoke_async.end (res);
+      } catch (GLib.Error e) {
+        tweet_list.remove_all ();
+        max_id = 0;
+        load_newest ();
+        warning (e.message);
+        return;
+      }
+
+      var parser = new Json.Parser ();
+      try {
+        parser.load_from_data (call.get_payload ());
+      } catch (GLib.Error e) {
+        tweet_list.remove_all ();
+        max_id = 0;
+        load_newest ();
+        warning (e.message);
+        return;
+      }
+
+      var root_arr = parser.get_root ().get_array ();
+      if (root_arr.get_length () > 0) {
+        tweet_list.remove_all ();
+        max_id = 0;
+        load_newest ();
+      }
+
+    });
   }
 }

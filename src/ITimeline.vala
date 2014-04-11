@@ -28,6 +28,7 @@ interface ITimeline : Gtk.Widget, IPage {
   protected abstract TweetListBox tweet_list    {get; set;}
   public    abstract int unread_count           {get; set;}
   public    abstract DeltaUpdater delta_updater {get; set;}
+  protected abstract string function            {get;}
 
 
   /**
@@ -74,6 +75,9 @@ interface ITimeline : Gtk.Widget, IPage {
 
     if (res.min_id < this.lowest_id)
       this.lowest_id = res.min_id;
+
+    if (res.max_id > this.max_id)
+      this.max_id = res.max_id;
   } //}}}
 
   /**
