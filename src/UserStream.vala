@@ -51,7 +51,8 @@ public class UserStream : Object {
   private Rest.ProxyCall proxy_call;
   private StringBuilder data                        = new StringBuilder();
   private SList<unowned IMessageReceiver> receivers = new SList<unowned IMessageReceiver>();
-  private uint timeout_id = -1;
+  private GLib.NetworkMonitor network_monitor;
+  private bool network_available;
   private string account_name;
   public string token {
     set { proxy.token = value; }
@@ -59,6 +60,10 @@ public class UserStream : Object {
   public string token_secret {
     set { proxy.token_secret = value; }
   }
+
+  // Signals
+  public signal void interrupted ();
+  public signal void resumed ();
 
 
 
@@ -71,11 +76,28 @@ public class UserStream : Object {
           "https://userstream.twitter.com/", //Url Format
           false
         );
+    network_monitor = GLib.NetworkMonitor.get_default ();
+    network_available = network_monitor.get_network_available ();
+    network_monitor.network_changed.connect (network_changed_cb);
   }
 
 
   public void register (IMessageReceiver receiver) {
     receivers.append(receiver);
+  }
+
+
+  private void network_changed_cb (bool available) {
+    if (available == this.network_available)
+      return;
+
+    this.network_available = available;
+
+    if (network_available) {
+      resumed ();
+    } else {
+      interrupted ();
+    }
   }
 
 
@@ -104,21 +126,7 @@ public class UserStream : Object {
   public void stop () {
     debug ("STOPPING STREAM FOR " + account_name);
     proxy_call.cancel ();
-    if(timeout_id != -1)
-        GLib.Source.remove (timeout_id);
   }
-
-  /**
-   * The timeout cb is called whenever we didn't get a heartbeat
-   * from Twitter for over TIMEOUT_INTERVAL seconds.
-   *
-   */
-  private bool timeout_cb() {
-    message ("Restarting...");
-//    start ();
-    return false;
-  }
-
 
   /**
    * Callback called by the Rest.ProxyCall whenever it receives data.
@@ -140,10 +148,6 @@ public class UserStream : Object {
     data.append (real);
 
     if (real.has_suffix ("\r\n") || real.has_suffix ("\r")) {
-      //Reset the timeout
-      if (timeout_id != -1)
-        GLib.Source.remove (timeout_id);
-      timeout_id = GLib.Timeout.add (TIMEOUT_INTERVAL, timeout_cb);
 
       if (real == "\r\n") {
         debug ("HEARTBEAT(%s)", account_name);
