@@ -37,7 +37,7 @@
 ## Dependencies
  - `gtk+-3.0 >= 3.9`
  - `glib-2.0 >= 2.38`
- - `rest-0.7`
+ - `rest-0.7` (`>= 0.7.91` for image uploads)
  - `json-glib-1.0`
  - `libnotify`
  - `sqlite3`
