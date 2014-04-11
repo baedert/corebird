@@ -28,6 +28,7 @@ interface ITimeline : Gtk.Widget, IPage {
   protected abstract TweetListBox tweet_list    {get; set;}
   public    abstract int unread_count           {get; set;}
   public    abstract DeltaUpdater delta_updater {get; set;}
+  protected abstract string function            {get;}
 
 
   /**
@@ -43,7 +44,6 @@ interface ITimeline : Gtk.Widget, IPage {
     call.add_param ("count", "28");
     call.add_param ("contributor_details", "true");
     call.add_param ("include_my_retweet", "true");
-    call.add_param ("max_id", (lowest_id - 1).to_string ());
 
     try {
       yield call.invoke_async (null);
