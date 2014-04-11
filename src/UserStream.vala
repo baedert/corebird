@@ -53,6 +53,8 @@ public class UserStream : Object {
   private SList<unowned IMessageReceiver> receivers = new SList<unowned IMessageReceiver>();
   private GLib.NetworkMonitor network_monitor;
   private bool network_available;
+  private uint network_timeout_id = -1;
+  private bool running = false;
   private string account_name;
   public string token {
     set { proxy.token = value; }
@@ -64,6 +66,7 @@ public class UserStream : Object {
   // Signals
   public signal void interrupted ();
   public signal void resumed ();
+
 
 
 
@@ -79,6 +82,8 @@ public class UserStream : Object {
     network_monitor = GLib.NetworkMonitor.get_default ();
     network_available = network_monitor.get_network_available ();
     network_monitor.network_changed.connect (network_changed_cb);
+    if (!network_available)
+      start_timeout ();
   }
 
 
@@ -94,9 +99,11 @@ public class UserStream : Object {
     this.network_available = available;
 
     if (network_available) {
+      restart ();
       resumed ();
     } else {
       interrupted ();
+      start_timeout ();
     }
   }
 
@@ -106,6 +113,7 @@ public class UserStream : Object {
    * Starts the UserStream
    */
   public void start () {
+    running = true;
     proxy_call = proxy.new_call ();
     proxy_call.set_function ("1.1/user.json");
     proxy_call.set_method ("GET");
@@ -116,18 +124,38 @@ public class UserStream : Object {
     }
   }
 
-  ~UserStream () {
-    debug ("USERSTREAM for %s DESTROYED", account_name);
-  }
-
   /**
    * Stops the UserStream
    */
   public void stop () {
+    running = false;
     debug ("STOPPING STREAM FOR " + account_name);
     proxy_call.cancel ();
   }
 
+  private void restart () {
+    stop ();
+    start ();
+  }
+
+  private void start_timeout () {
+    network_timeout_id = GLib.Timeout.add (30 * 1000, () => {
+      if (running)
+        return false;
+
+      var available = network_monitor.get_network_available ();
+      if (available) {
+        restart ();
+        return false;
+      }
+      return true;
+    });
+  }
+
+
+  ~UserStream () {
+    debug ("USERSTREAM for %s DESTROYED", account_name);
+  }
   /**
    * Callback called by the Rest.ProxyCall whenever it receives data.
    *
