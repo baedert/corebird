@@ -103,6 +103,7 @@ public class UserStream : Object {
       restart ();
       resumed ();
     } else {
+      debug ("Connection lost (%s) Reason: network unavailable", account_name);
       interrupted ();
       start_network_timeout ();
     }
@@ -159,6 +160,7 @@ public class UserStream : Object {
     heartbeat_timeout_id = GLib.Timeout.add (TIMEOUT_INTERVAL, () => {
       // If we get here, we need to restart the stream.
       running = false;
+      debug ("Connection lost (%s) Reason: heartbeat", account_name);
       restart ();
       return false;
     });
