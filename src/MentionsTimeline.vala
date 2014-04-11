@@ -18,6 +18,11 @@
 using Gtk;
 
 class MentionsTimeline : IMessageReceiver, DefaultTimeline {
+  protected override string function {
+    get {
+      return "1.1/statuses/mentions_timeline.json";
+    }
+  }
 
   public MentionsTimeline(int id){
     base (id);

@@ -18,6 +18,11 @@
 using Gtk;
 
 class FavoritesTimeline : IMessageReceiver, DefaultTimeline {
+  protected override string function {
+    get {
+      return "1.1/favorites/list.json";
+    }
+  }
 
   public FavoritesTimeline(int id) {
     base (id);
