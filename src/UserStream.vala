@@ -53,7 +53,8 @@ public class UserStream : Object {
   private SList<unowned IMessageReceiver> receivers = new SList<unowned IMessageReceiver>();
   private GLib.NetworkMonitor network_monitor;
   private bool network_available;
-  private uint network_timeout_id = -1;
+  private uint network_timeout_id   = 0;
+  private uint heartbeat_timeout_id = 0;
   private bool running = false;
   private string account_name;
   public string token {
@@ -83,7 +84,7 @@ public class UserStream : Object {
     network_available = network_monitor.get_network_available ();
     network_monitor.network_changed.connect (network_changed_cb);
     if (!network_available)
-      start_timeout ();
+      start_network_timeout ();
   }
 
 
@@ -103,7 +104,7 @@ public class UserStream : Object {
       resumed ();
     } else {
       interrupted ();
-      start_timeout ();
+      start_network_timeout ();
     }
   }
 
@@ -113,7 +114,11 @@ public class UserStream : Object {
    * Starts the UserStream
    */
   public void start () {
+    // Reset state of the stream
     running = true;
+    if (network_timeout_id != -1) {
+      GLib.Source.remove (network_timeout_id);
+    }
     proxy_call = proxy.new_call ();
     proxy_call.set_function ("1.1/user.json");
     proxy_call.set_method ("GET");
@@ -138,7 +143,7 @@ public class UserStream : Object {
     start ();
   }
 
-  private void start_timeout () {
+  private void start_network_timeout () {
     network_timeout_id = GLib.Timeout.add (30 * 1000, () => {
       if (running)
         return false;
@@ -152,10 +157,20 @@ public class UserStream : Object {
     });
   }
 
+  private void start_heartbeat_timeout () {
+    heartbeat_timeout_id = GLib.Timeout.add (TIMEOUT_INTERVAL, () => {
+      // If we get here, we need to restart the stream.
+      running = false;
+      restart ();
+      return false;
+    });
+  }
+
 
   ~UserStream () {
     debug ("USERSTREAM for %s DESTROYED", account_name);
   }
+
   /**
    * Callback called by the Rest.ProxyCall whenever it receives data.
    *
@@ -180,6 +195,10 @@ public class UserStream : Object {
       if (real == "\r\n") {
         debug ("HEARTBEAT(%s)", account_name);
         data.erase ();
+        if (heartbeat_timeout_id != 0)
+          GLib.Source.remove (heartbeat_timeout_id);
+
+        start_heartbeat_timeout ();
         return;
       }
 
