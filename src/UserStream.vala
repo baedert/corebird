@@ -116,9 +116,6 @@ public class UserStream : Object {
   public void start () {
     // Reset state of the stream
     running = true;
-    if (network_timeout_id != -1) {
-      GLib.Source.remove (network_timeout_id);
-    }
     proxy_call = proxy.new_call ();
     proxy_call.set_function ("1.1/user.json");
     proxy_call.set_method ("GET");
@@ -139,6 +136,7 @@ public class UserStream : Object {
   }
 
   private void restart () {
+    debug ("Restarting the stream...");
     stop ();
     start ();
   }
