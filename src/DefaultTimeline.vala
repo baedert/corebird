@@ -62,6 +62,12 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
       last_focus_widget = row;
     });
 
+
+    account.user_stream.resumed.connect (() => {
+      tweet_list.remove_all ();
+      load_newest ();
+    });
+
   }
 
   public virtual void on_join (int page_id, va_list args) {
