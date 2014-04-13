@@ -223,6 +223,34 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     filter.add_mime_type ("image/jpeg");
     filter.add_mime_type ("image/gif");
     fcd.set_filter (filter);
+    var preview_widget = new Gtk.Image ();
+    fcd.set_preview_widget (preview_widget);
+    fcd.update_preview.connect (() => {
+      string? uri = fcd.get_preview_uri ();
+      if (uri != null && uri.has_prefix ("file://")) {
+        try {
+          int final_size = 130;
+          var p = new Gdk.Pixbuf.from_file (uri.substring (7));
+          int w = p.get_width ();
+          int h = p.get_height ();
+          if (w > h) {
+            double ratio = final_size / (double) w;
+            w = final_size;
+            h = (int)(h * ratio);
+          } else {
+            double ratio = final_size / (double) h;
+            w = (int)(w * ratio);
+            h = final_size;
+          }
+          var scaled = p.scale_simple (w, h, Gdk.InterpType.BILINEAR);
+          preview_widget.set_from_pixbuf (scaled);
+          preview_widget.show ();
+        } catch (GLib.Error e) {
+          preview_widget.hide ();
+        }
+      } else
+        preview_widget.hide ();
+    });
     if (fcd.run () == ResponseType.ACCEPT) {
       string file = fcd.get_filename ();
       this.media_uri = file;
