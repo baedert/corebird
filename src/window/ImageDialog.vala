@@ -117,11 +117,10 @@ public class ImageDialog : Gtk.Window {
 
 
     int response = file_dialog.run ();
-    message ("Response: %d", response);
     if (response == Gtk.ResponseType.ACCEPT) {
       File dest = File.new_for_uri (file_dialog.get_uri ());
-      message ("Source: %s", path);
-      message ("Destin: %s", file_dialog.get_uri ());
+      debug ("Source: %s", path);
+      debug ("Destin: %s", file_dialog.get_uri ());
       File source = File.new_for_path (path);
       try {
         source.copy (dest, FileCopyFlags.OVERWRITE);
