@@ -254,6 +254,7 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   }
 
   private void stream_resumed_cb () {
+    // XXX If load_newest failed, the list still gets cleared...
     var call = account.proxy.new_call ();
     call.set_function (this.function);
     call.set_method ("GET");
@@ -267,7 +268,7 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
         tweet_list.remove_all ();
-        max_id = 0;
+        lowest_id = int64.MAX - 2;
         load_newest ();
         warning (e.message);
         return;
@@ -278,7 +279,7 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
         parser.load_from_data (call.get_payload ());
       } catch (GLib.Error e) {
         tweet_list.remove_all ();
-        max_id = 0;
+        lowest_id = int64.MAX - 2;
         load_newest ();
         warning (e.message);
         return;
@@ -287,7 +288,7 @@ abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
       var root_arr = parser.get_root ().get_array ();
       if (root_arr.get_length () > 0) {
         tweet_list.remove_all ();
-        max_id = 0;
+        lowest_id = int64.MAX - 2;
         load_newest ();
       }
 
