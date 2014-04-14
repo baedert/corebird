@@ -100,6 +100,7 @@ public class UserStream : Object {
     this.network_available = available;
 
     if (network_available) {
+      debug ("Restarting stream (reason: Network available (callback))");
       restart ();
       resumed ();
     } else {
@@ -137,7 +138,6 @@ public class UserStream : Object {
   }
 
   private void restart () {
-    debug ("Restarting the stream...");
     stop ();
     start ();
   }
@@ -149,6 +149,7 @@ public class UserStream : Object {
 
       var available = network_monitor.get_network_available ();
       if (available) {
+        debug ("Restarting stream (reason: network available (timeout))");
         restart ();
         return false;
       }
@@ -160,7 +161,7 @@ public class UserStream : Object {
     heartbeat_timeout_id = GLib.Timeout.add (TIMEOUT_INTERVAL, () => {
       // If we get here, we need to restart the stream.
       running = false;
-      debug ("Connection lost (%s) Reason: heartbeat", account_name);
+      debug ("Connection lost (%s) Reason: heartbeat. Restarting...", account_name);
       restart ();
       return false;
     });
