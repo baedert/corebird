@@ -65,7 +65,7 @@
                 <property name="left_attach">0</property>
                 <property name="top_attach">0</property>
                 <property name="width">7</property>
-              </packing>              
+              </packing>
             </child>
 
 
@@ -109,6 +109,7 @@
               <packing>
                 <property name="left_attach">1</property>
                 <property name="top_attach">1</property>
+                <property name="width">2</property>
               </packing>
             </child>
 
@@ -130,6 +131,7 @@
               <packing>
                 <property name="left_attach">1</property>
                 <property name="top_attach">2</property>
+                <property name="width">2</property>
               </packing>
             </child>
 
@@ -215,7 +217,7 @@
               <packing>
                 <property name="left_attach">0</property>
                 <property name="top_attach">4</property>
-                <property name="width">4</property>
+                <property name="width">5</property>
               </packing>
             </child>
 
@@ -238,14 +240,15 @@
 
 
             <child>
-              <object class="GtkLabel" id="rt_fav_label">
+              <object class="GtkLabel" id="rt_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="margin_left">3</property>
-                <property name="hexpand">True</property>
+                <property name="margin_left">4</property>
                 <property name="xalign">0</property>
                 <property name="label">label</property>
                 <property name="use_markup">True</property>
+                <property name="halign">start</property>
                 <style>
                   <class name="dim-label"/>
                 </style>
@@ -256,6 +259,27 @@
                 <property name="width">2</property>
               </packing>
             </child>
+
+            <child>
+              <object class="GtkLabel" id="fav_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="margin_left">3</property>
+                <property name="xalign">0</property>
+                <property name="label">label</property>
+                <property name="use_markup">True</property>
+                <property name="halign">start</property>
+                <property name="hexpand">true</property>
+                <style>
+                  <class name="dim-label"/>
+                </style>
+              </object>
+              <packing>
+                <property name="left_attach">2</property>
+                <property name="top_attach">5</property>
+              </packing>
+            </child>
+
 
 
             <child>
