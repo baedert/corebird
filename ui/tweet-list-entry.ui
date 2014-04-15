@@ -120,11 +120,10 @@
               <object class="GtkImage" id="conversation_image">
                 <property name="can_focus">False</property>
                 <property name="no_show_all">True</property>
-                <property name="valign">start</property>
+                <property name="valign">baseline</property>
                 <property name="margin_right">5</property>
                 <property name="pixel_size">12</property>
                 <property name="icon_name">corebird-conversation-symbolic</property>
-                <property name="margin_top">4</property>
                 <style>
                   <class name="dim-label"/>
                 </style>
