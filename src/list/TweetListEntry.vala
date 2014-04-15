@@ -230,7 +230,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       retweet_button.visible = tweet.retweeted;
       hover_box.margin_right = time_delta_label.get_allocated_width () + 3;
       if (tweet.reply_id != 0)
-        hover_box.margin_right += conversation_image.get_allocated_width ();
+        hover_box.margin_right += conversation_image.get_allocated_width () + 4;
     }
   } //}}}
 
@@ -342,7 +342,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
       hover_box.margin_right = time_delta_label.get_allocated_width () + 3;
       if (tweet.reply_id != 0) {
         conversation_image.margin_top = (time_delta_label.get_allocated_height () / 2) - 6;
-        hover_box.margin_right += conversation_image.get_allocated_width ();
+        hover_box.margin_right += conversation_image.get_allocated_width () + 4;
       }
       return;
     }
@@ -363,7 +363,7 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
 
     ulong id2 = 0;
     id2 = conversation_image.size_allocate.connect (() => {
-      hover_box.margin_right += conversation_image.get_allocated_width ();
+      hover_box.margin_right += conversation_image.get_allocated_width () + 4;
       conversation_image.disconnect (id2);
     });
 
