@@ -138,9 +138,10 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
         warning (e.message);
         return;
       }
-      grid.attach_next_to (inline_button, text_label,  Gtk.PositionType.RIGHT, 1, 1);
+      grid.attach (inline_button, 5, 1, 2, 1);
 
       inline_button.valign = Align.START;
+      inline_button.halign = Align.END;
       inline_button.margin_top = 4;
       inline_button.clicked.connect(inline_media_button_clicked_cb);
       inline_button.show ();
@@ -185,8 +186,9 @@ class TweetListEntry : ITwitterItem, ListBoxRow {
   private void inline_media_added_cb (Gdk.Pixbuf? pic) {
     var inline_button = new PixbufButton ();
     inline_button.set_bg (pic);
-    grid.attach_next_to (inline_button, text_label, Gtk.PositionType.RIGHT, 1, 1);
+    grid.attach (inline_button, 5, 1, 2, 1);
     inline_button.valign = Align.START;
+    inline_button.halign = Align.END;
     inline_button.margin_top = 4;
     inline_button.clicked.connect(inline_media_button_clicked_cb);
     inline_button.show ();

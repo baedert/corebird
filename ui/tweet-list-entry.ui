@@ -51,7 +51,6 @@
           <object class="GtkGrid" id="grid">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-
             <child>
               <object class="GtkImage" id="avatar_image">
                 <property name="width_request">48</property>
@@ -69,30 +68,27 @@
                 <property name="height">2</property>
               </packing>
             </child>
-
-
             <child>
               <object class="TextButton" id="name_button">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="valign">baseline</property>
-                <property name="margin_bottom">1</property>
-                <property name="yalign">0.5</property>
                 <property name="halign">start</property>
+                <property name="valign">baseline</property>
                 <property name="margin_top">4</property>
+                <property name="margin_bottom">1</property>
+                <signal name="clicked" handler="name_button_clicked_cb" swapped="no"/>
                 <style>
                   <class name="text-only-button"/>
                 </style>
-                <signal name="clicked" handler="name_button_clicked_cb" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="top_attach">0</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
               </packing>
             </child>
-
-
             <child>
               <object class="GtkLabel" id="screen_name_label">
                 <property name="visible">True</property>
@@ -101,10 +97,10 @@
                 <property name="valign">baseline</property>
                 <property name="margin_left">6</property>
                 <property name="margin_right">4</property>
+                <property name="margin_top">4</property>
+                <property name="hexpand">True</property>
                 <property name="xalign">0</property>
                 <property name="ellipsize">end</property>
-                <property name="hexpand">True</property>
-                <property name="margin_top">4</property>
                 <style>
                   <class name="dim-label"/>
                 </style>
@@ -114,14 +110,14 @@
                 <property name="top_attach">0</property>
               </packing>
             </child>
-
-
             <child>
               <object class="GtkImage" id="conversation_image">
                 <property name="can_focus">False</property>
                 <property name="no_show_all">True</property>
+                <property name="halign">end</property>
                 <property name="valign">baseline</property>
                 <property name="margin_right">5</property>
+                <property name="hexpand">True</property>
                 <property name="pixel_size">12</property>
                 <property name="icon_name">corebird-conversation-symbolic</property>
                 <style>
@@ -129,32 +125,27 @@
                 </style>
               </object>
               <packing>
-                <property name="left_attach">3</property>
+                <property name="left_attach">5</property>
                 <property name="top_attach">0</property>
               </packing>
             </child>
-
-
             <child>
               <object class="GtkLabel" id="time_delta_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="halign">end</property>
                 <property name="valign">baseline</property>
-                <property name="lines">0</property>
                 <property name="margin_top">4</property>
+                <property name="lines">0</property>
                 <style>
                   <class name="dim-label"/>
                 </style>
               </object>
               <packing>
-                <property name="left_attach">4</property>
+                <property name="left_attach">6</property>
                 <property name="top_attach">0</property>
-                <property name="width">2</property>
               </packing>
             </child>
-
-
             <child>
               <object class="GtkLabel" id="text_label">
                 <property name="visible">True</property>
@@ -177,55 +168,46 @@
                 <property name="width">4</property>
               </packing>
             </child>
-
-
             <child>
               <object class="GtkImage" id="rt_image">
-                <property name="visible">False</property>
                 <property name="can_focus">False</property>
                 <property name="no_show_all">True</property>
+                <property name="halign">end</property>
                 <property name="valign">baseline</property>
                 <property name="margin_right">3</property>
-                <property name="halign">end</property>
                 <property name="pixel_size">14</property>
                 <property name="icon_name">corebird-retweet-symbolic</property>
+                <property name="icon_size">1</property>
                 <style>
                   <class name="dim-label"/>
                 </style>
-                <property name="icon_size">1</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
-                <property name="top_attach">3</property>
+                <property name="top_attach">2</property>
               </packing>
             </child>
-
-
             <child>
               <object class="GtkLabel" id="rt_label">
-                <property name="visible">False</property>
                 <property name="can_focus">False</property>
                 <property name="no_show_all">True</property>
                 <property name="halign">start</property>
                 <property name="valign">baseline</property>
-                <property name="use_markup">True</property>
                 <property name="margin_top">4</property>
-                <signal name="activate-link" handler="link_activated_cb" swapped="no" />
+                <property name="use_markup">True</property>
+                <signal name="activate-link" handler="link_activated_cb" swapped="no"/>
                 <style>
                   <class name="dim-label"/>
                 </style>
               </object>
               <packing>
                 <property name="left_attach">1</property>
-                <property name="top_attach">3</property>
-                <property name="width">3</property>
+                <property name="top_attach">2</property>
+                <property name="width">5</property>
               </packing>
             </child>
           </object>
         </child>
-
-
-
         <child type="overlay">
           <object class="BgBox" id="hover_box">
             <property name="visible">True</property>
@@ -237,17 +219,11 @@
               <object class="GtkMenuButton" id="more_button">
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes">Show more actions</property>
                 <property name="halign">end</property>
                 <property name="valign">start</property>
                 <property name="relief">none</property>
                 <property name="popup">more_menu</property>
-                <property name="tooltip_text" translatable="yes">Show more actions</property>
-                <style>
-                  <class name="button-slim"/>
-                  <class name="dim-label"/>
-                  <class name="image-button"/>
-                  <class name="more-button"/>
-                </style>
                 <child>
                   <object class="GtkImage" id="image6">
                     <property name="visible">True</property>
@@ -256,6 +232,12 @@
                     <property name="icon_name">corebird-down-symbolic</property>
                   </object>
                 </child>
+                <style>
+                  <class name="button-slim"/>
+                  <class name="dim-label"/>
+                  <class name="image-button"/>
+                  <class name="more-button"/>
+                </style>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -268,15 +250,9 @@
               <object class="GtkButton" id="reply_button">
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes">Reply to tweet</property>
                 <property name="halign">end</property>
                 <property name="relief">none</property>
-                <property name="tooltip_text" translatable="yes">Reply to tweet</property>
-                <style>
-                  <class name="reply-button"/>
-                  <class name="button-slim"/>
-                  <class name="dim-label"/>
-                  <class name="image-button"/>
-                </style>
                 <signal name="clicked" handler="reply_button_clicked_cb" swapped="no"/>
                 <child>
                   <object class="GtkImage" id="image1">
@@ -286,6 +262,12 @@
                     <property name="icon_name">corebird-reply-symbolic</property>
                   </object>
                 </child>
+                <style>
+                  <class name="reply-button"/>
+                  <class name="button-slim"/>
+                  <class name="dim-label"/>
+                  <class name="image-button"/>
+                </style>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -299,15 +281,9 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes">Favorite tweet</property>
                 <property name="halign">end</property>
                 <property name="relief">none</property>
-                <property name="tooltip_text" translatable="yes">Favorite tweet</property>
-                <style>
-                  <class name="favorite-button"/>
-                  <class name="button-slim"/>
-                  <class name="dim-label"/>
-                  <class name="image-button"/>
-                </style>
                 <signal name="toggled" handler="favorite_button_toggled" swapped="no"/>
                 <child>
                   <object class="GtkImage" id="image3">
@@ -317,6 +293,12 @@
                     <property name="icon_name">corebird-favorite-symbolic</property>
                   </object>
                 </child>
+                <style>
+                  <class name="favorite-button"/>
+                  <class name="button-slim"/>
+                  <class name="dim-label"/>
+                  <class name="image-button"/>
+                </style>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -330,15 +312,9 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes">Retweet tweet</property>
                 <property name="halign">end</property>
                 <property name="relief">none</property>
-                <property name="tooltip_text" translatable="yes">Retweet tweet</property>
-                <style>
-                  <class name="retweet-button"/>
-                  <class name="button-slim"/>
-                  <class name="dim-label"/>
-                  <class name="image-button"/>
-                </style>
                 <signal name="toggled" handler="retweet_button_toggled" swapped="no"/>
                 <child>
                   <object class="GtkImage" id="image2">
@@ -348,6 +324,12 @@
                     <property name="icon_name">corebird-retweet-symbolic</property>
                   </object>
                 </child>
+                <style>
+                  <class name="retweet-button"/>
+                  <class name="button-slim"/>
+                  <class name="dim-label"/>
+                  <class name="image-button"/>
+                </style>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -358,11 +340,7 @@
             </child>
           </object>
         </child>
-
-
       </object>
     </child>
-
-
   </template>
 </interface>
