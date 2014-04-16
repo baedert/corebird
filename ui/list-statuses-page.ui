@@ -356,6 +356,7 @@
                       <property name="visible_child">description_label</property>
                       <property name="transition_type">slide-up-down</property>
                       <property name="margin_bottom">3</property>
+                      <property name="margin_left">3</property>
                       <child>
                         <object class="GtkLabel" id="description_label">
                           <property name="visible">True</property>

@@ -138,9 +138,10 @@ public class TweetListEntry : ITwitterItem, ListBoxRow {
         warning (e.message);
         return;
       }
-      grid.attach_next_to (inline_button, text_label,  Gtk.PositionType.RIGHT, 1, 1);
+      grid.attach (inline_button, 5, 1, 2, 1);
 
       inline_button.valign = Align.START;
+      inline_button.halign = Align.END;
       inline_button.margin_top = 4;
       inline_button.clicked.connect(inline_media_button_clicked_cb);
       inline_button.show ();
@@ -185,8 +186,9 @@ public class TweetListEntry : ITwitterItem, ListBoxRow {
   private void inline_media_added_cb (Gdk.Pixbuf? pic) {
     var inline_button = new PixbufButton ();
     inline_button.set_bg (pic);
-    grid.attach_next_to (inline_button, text_label, Gtk.PositionType.RIGHT, 1, 1);
+    grid.attach (inline_button, 5, 1, 2, 1);
     inline_button.valign = Align.START;
+    inline_button.halign = Align.END;
     inline_button.margin_top = 4;
     inline_button.clicked.connect(inline_media_button_clicked_cb);
     inline_button.show ();
@@ -230,7 +232,7 @@ public class TweetListEntry : ITwitterItem, ListBoxRow {
       retweet_button.visible = tweet.retweeted;
       hover_box.margin_right = time_delta_label.get_allocated_width () + 3;
       if (tweet.reply_id != 0)
-        hover_box.margin_right += conversation_image.get_allocated_width ();
+        hover_box.margin_right += conversation_image.get_allocated_width () + 4;
     }
   } //}}}
 
@@ -342,7 +344,7 @@ public class TweetListEntry : ITwitterItem, ListBoxRow {
       hover_box.margin_right = time_delta_label.get_allocated_width () + 3;
       if (tweet.reply_id != 0) {
         conversation_image.margin_top = (time_delta_label.get_allocated_height () / 2) - 6;
-        hover_box.margin_right += conversation_image.get_allocated_width ();
+        hover_box.margin_right += conversation_image.get_allocated_width () + 4;
       }
       return;
     }
@@ -363,7 +365,7 @@ public class TweetListEntry : ITwitterItem, ListBoxRow {
 
     ulong id2 = 0;
     id2 = conversation_image.size_allocate.connect (() => {
-      hover_box.margin_right += conversation_image.get_allocated_width ();
+      hover_box.margin_right += conversation_image.get_allocated_width () + 4;
       conversation_image.disconnect (id2);
     });
 

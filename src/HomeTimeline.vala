@@ -18,6 +18,11 @@
 using Gtk;
 
 public class HomeTimeline : IMessageReceiver, DefaultTimeline {
+  protected override string function {
+    get {
+      return "1.1/statuses/home_timeline.json";
+    }
+  }
 
   public HomeTimeline(int id) {
     base (id);

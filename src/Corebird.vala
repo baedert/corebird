@@ -20,7 +20,7 @@ using Gtk;
 public class Corebird : Gtk.Application {
   // TODO: Is the static here needed?
   public static Sql.Database db;
-  private static GLib.OutputStream log_stream;
+  //private static GLib.OutputStream log_stream;
   public  static GLib.Menu account_menu;
 
   const GLib.ActionEntry[] app_entries = {
@@ -90,9 +90,9 @@ public class Corebird : Gtk.Application {
       gtk_s.gtk_application_prefer_dark_theme = true;
     }
 
-    if (gtk_s.gtk_decoration_layout.contains ("menu")) {
-      gtk_s.gtk_decoration_layout = gtk_s.gtk_decoration_layout.replace ("menu", "");
-    }
+    //if (gtk_s.gtk_decoration_layout.contains ("menu")) {
+      //gtk_s.gtk_decoration_layout = gtk_s.gtk_decoration_layout.replace ("menu", "");
+    //}
 
     init_log_files ();
     this.release ();
@@ -237,12 +237,12 @@ public class Corebird : Gtk.Application {
   private void init_log_files () { // {{{
     /* First, create that log file */
     var now = new GLib.DateTime.now_local ();
-    File log_file = File.new_for_path (Dirs.data ("logs/%s.txt".printf (now.to_string())));
-    try {
-      log_stream = log_file.create(FileCreateFlags.REPLACE_DESTINATION);
-    } catch (GLib.Error e) {
-      warning ("Couldn't open log file: %s", e.message);
-    }
+    //File log_file = File.new_for_path (Dirs.data ("logs/%s.txt".printf (now.to_string())));
+    //try {
+      //log_stream = log_file.create(FileCreateFlags.REPLACE_DESTINATION);
+    //} catch (GLib.Error e) {
+      //warning ("Couldn't open log file: %s", e.message);
+    //}
     /* If we do not run on the command line, we simply redirect stdout
        to a log file*/
     GLib.Log.set_handler (null, LogLevelFlags.LEVEL_MESSAGE,  print_to_log_file);
@@ -331,14 +331,14 @@ public class Corebird : Gtk.Application {
     else
       out_string = "(%s) %s".printf (log_domain, msg);
 
-    if (log_stream != null) {
-      try {
-        log_stream.write_all (out_string.data, null);
-        log_stream.flush ();
-      } catch (GLib.Error e) {
-        warning (e.message);
-      }
-    }
+    //if (log_stream != null) {
+      //try {
+        //log_stream.write_all (out_string.data, null);
+        //log_stream.flush ();
+      //} catch (GLib.Error e) {
+        //warning (e.message);
+      //}
+    //}
 
 #if !__DEV
     if (flags != LogLevelFlags.LEVEL_DEBUG)

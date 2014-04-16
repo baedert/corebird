@@ -40,17 +40,17 @@ class TweetInfoPage : IPage , ScrollWidget {
   [GtkChild]
   private Image avatar_image;
   [GtkChild]
-  private Label rt_fav_label;
+  private Label rt_label;
+  [GtkChild]
+  private Gtk.Label fav_label;
   [GtkChild]
   private Label location_label;
   [GtkChild]
-  private Gtk.Box location_box;
+  private Gtk.Image location_image;
   [GtkChild]
   private ListBox bottom_list_box;
   [GtkChild]
   private ListBox top_list_box;
-  [GtkChild]
-  private Spinner progress_spinner;
   [GtkChild]
   private ToggleButton favorite_button;
   [GtkChild]
@@ -112,7 +112,6 @@ class TweetInfoPage : IPage , ScrollWidget {
     max_size_container.max_size = 0;
     max_size_container.queue_resize ();
 
-    progress_spinner.hide ();
     media_button.hide ();
 
 
@@ -245,13 +244,15 @@ class TweetInfoPage : IPage , ScrollWidget {
       set_tweet_data (tweet, following, with);
       if (!root_object.get_null_member ("place")) {
         var place = root_object.get_object_member ("place");
-        location_box.show ();
+        location_label.show ();
+        location_image.show ();
         location_label.label = place.get_string_member ("name");
-      } else
-        location_box.hide ();
+      } else {
+        location_label.hide ();
+        location_image.hide ();
+      }
 
       if (tweet.reply_id == 0) {
-        progress_spinner.stop ();
         load_replied_to_tweet (tweet.reply_id);
       } else
         load_replied_to_tweet (tweet.reply_id);
@@ -320,8 +321,6 @@ class TweetInfoPage : IPage , ScrollWidget {
    */
   private void load_replied_to_tweet (int64 reply_id) { //{{{
     if (reply_id == 0) {
-      progress_spinner.stop ();
-      progress_spinner.hide ();
       return;
     }
 
@@ -336,7 +335,6 @@ class TweetInfoPage : IPage , ScrollWidget {
       }catch (GLib.Error e) {
         critical(e.message);
         Utils.show_error_object (call.get_payload (), e.message);
-        progress_spinner.hide ();
         return;
       }
 
@@ -375,8 +373,8 @@ class TweetInfoPage : IPage , ScrollWidget {
     name_button.label = tweet.user_name;
     screen_name_label.label = "@" + tweet.screen_name;
     avatar_image.pixbuf = tweet.avatar;
-    rt_fav_label.label = "<big><b>%'d</b></big> %s  <big><b>%'d</b></big> %s"
-                         .printf (tweet.retweet_count, _("Retweets"), tweet.favorite_count, _("Favorites"));
+    rt_label.label = "<big><b>%'d</b></big> %s".printf (tweet.retweet_count, _("Retweets"));
+    fav_label.label = "<big><b>%'d</b></big> %s".printf (tweet.favorite_count, _("Favorites"));
     time_label.label = time_format;
     retweet_button.active = tweet.retweeted;
     favorite_button.active = tweet.favorited;

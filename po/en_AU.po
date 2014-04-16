@@ -1,0 +1,540 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Translators:
+# ryanlerch <ryanlerch@gmail.com>, 2014
+# ryanlerch <ryanlerch@gmail.com>, 2014
+msgid ""
+msgstr ""
+"Project-Id-Version: Corebird\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-04-03 17:59+0200\n"
+"PO-Revision-Date: 2014-04-04 09:35+0000\n"
+"Last-Translator: ryanlerch <ryanlerch@gmail.com>\n"
+"Language-Team: English (Australia) (http://www.transifex.com/projects/p/"
+"corebird/language/en_AU/)\n"
+"Language: en_AU\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../src/HomeTimeline.vala:84
+#, c-format
+msgid "%d new Tweets!"
+msgstr "%d new Tweets!"
+
+#: ../src/util/Utils.vala:88
+#, c-format
+msgid "%dh"
+msgstr "%dh"
+
+#: ../src/util/Utils.vala:84
+#, c-format
+msgid "%dm"
+msgstr "%dm"
+
+#: ../src/HomeTimeline.vala:94
+#, c-format
+msgid "%s retweeted %s"
+msgstr "%s retweeted %s"
+
+#: ../src/HomeTimeline.vala:96
+#, c-format
+msgid "%s tweeted"
+msgstr "%s tweeted"
+
+#: ../src/list/DMThreadEntry.vala:97
+#, c-format
+msgid "(%d unread)"
+msgstr "(%d unread)"
+
+#: ../ui/menu.ui:12
+msgid "About"
+msgstr "About"
+
+#: ../ui/about-dialog.ui:8
+msgid "About Corebird"
+msgstr "About Corebird"
+
+#: ../org.baedert.corebird.gschema.xml.h:12
+msgid "Accelerator to press in order to show/hide the sidebar"
+msgstr "Accelerator to press in order to show/hide the sidebar"
+
+#: ../ui/settings-dialog.ui:127
+msgid "Accounts"
+msgstr ""
+
+#: ../ui/settings-dialog.ui:377
+msgid "Actions"
+msgstr "Actions"
+
+#: ../src/FilterPage.vala:229
+msgid "Add new Filter"
+msgstr ""
+
+#: ../ui/settings-dialog.ui:46 ../ui/settings-dialog.ui:49
+msgid "Add new account"
+msgstr "Add new account"
+
+#: ../ui/profile-page.ui:41
+msgid "Add to/Remove from List"
+msgstr "Add to/Remove from List"
+
+#: ../ui/compose-window.ui:132
+msgid "Attach Image"
+msgstr ""
+
+#: ../ui/settings-dialog.ui:307
+msgid "Auto scroll on new tweets:"
+msgstr "Auto scroll on new tweets:"
+
+#: ../ui/profile-page.ui:56
+msgid "Blocked"
+msgstr ""
+
+#: ../src/window/ComposeTweetWindow.vala:218
+#: ../src/window/UserListDialog.vala:44 ../src/window/ImageDialog.vala:112
+msgid "Cancel"
+msgstr "Cancel"
+
+#: ../src/window/ComposeTweetWindow.vala:219
+msgid "Choose"
+msgstr "Choose"
+
+#: ../ui/compose-window.ui:25
+msgid "Compose Tweet"
+msgstr "Compose Tweet"
+
+#: ../ui/user-filter-entry.ui:11 ../ui/account-create-widget.ui:73
+#: ../ui/list-list-entry.ui:22 ../ui/list-list-entry.ui:45
+#: ../ui/filter-list-entry.ui:13 ../ui/list-statuses-page.ui:451
+msgid "Confirm"
+msgstr "Confirm"
+
+#: ../ui/new-list-entry.ui:93
+msgid "Create"
+msgstr "Create"
+
+#: ../ui/new-list-entry.ui:39
+msgid "Create New List"
+msgstr "Create New List"
+
+#: ../ui/user-lists-widget.ui:15
+msgid "Created"
+msgstr "Created"
+
+#: ../ui/list-statuses-page.ui:126
+msgid "Created at:"
+msgstr "Created at:"
+
+#: ../ui/list-statuses-page.ui:111
+msgid "Creator:"
+msgstr "Creator:"
+
+#: ../ui/tweet-list-entry.ui:30 ../ui/tweet-info-page.ui:31
+#: ../ui/list-list-entry.ui:12 ../ui/list-statuses-page.ui:223
+msgid "Delete"
+msgstr "Delete"
+
+#: ../ui/tweet-list-entry.ui:21
+msgid "Details"
+msgstr "Details"
+
+#: ../src/DMThreadsPage.vala:356 ../src/DMThreadsPage.vala:357
+msgid "Direct Messages"
+msgstr "Direct Messages"
+
+#: ../org.baedert.corebird.gschema.xml.h:7
+msgid "Disable this to save some bandwidth"
+msgstr "Disable this to save some bandwidth"
+
+#: ../ui/remove-account-dialog.ui:79
+msgid "Do you really want to remove the account?"
+msgstr "Do you really want to remove the account?"
+
+#: ../src/window/AddFilterDialog.vala:69
+#: ../src/window/ModifyFilterDialog.vala:76
+msgid "Doesn't match"
+msgstr ""
+
+#: ../ui/list-statuses-page.ui:172
+msgid "Edit"
+msgstr "Edit"
+
+#: ../ui/settings-dialog.ui:463
+msgid "Every"
+msgstr "Every"
+
+#: ../ui/tweet-list-entry.ui:352 ../ui/tweet-info-page.ui:339
+msgid "Favorite tweet"
+msgstr "Favorite tweet"
+
+#: ../src/TweetInfoPage.vala:379 ../src/FavoritesTimeline.vala:69
+#: ../src/FavoritesTimeline.vala:70
+msgid "Favorites"
+msgstr "Favourites"
+
+#: ../src/FilterPage.vala:211 ../src/FilterPage.vala:212
+msgid "Filters"
+msgstr ""
+
+#: ../src/ProfilePage.vala:589 ../src/TweetInfoPage.vala:415
+msgid "Follow"
+msgstr "Follow"
+
+#: ../ui/profile-page.ui:292
+msgid "Follows you"
+msgstr "Follows you"
+
+#: ../ui/start-conversation-entry.ui:104
+msgid "Go"
+msgstr "Go"
+
+#: ../src/HomeTimeline.vala:124 ../src/HomeTimeline.vala:125
+msgid "Home"
+msgstr "Home"
+
+#: ../org.baedert.corebird.gschema.xml.h:2
+msgid "If/when the user should be notified about new tweets"
+msgstr "If/when the user should be notified about new tweets"
+
+#: ../ui/settings-dialog.ui:339
+msgid "Interface"
+msgstr ""
+
+#: ../org.baedert.corebird.gschema.xml.h:8
+msgid "List of accounts which will be opened when Corebird is started."
+msgstr "List of accounts which will be opened when Corebird is started."
+
+#: ../src/ListsPage.vala:127 ../src/ListsPage.vala:128
+msgid "Lists"
+msgstr "Lists"
+
+#: ../ui/load-more-entry.ui:14
+msgid "Load more"
+msgstr "Load more"
+
+#: ../ui/settings-dialog.ui:145
+msgid "Main Window"
+msgstr "Main Window"
+
+#: ../src/window/AddFilterDialog.vala:67
+#: ../src/window/ModifyFilterDialog.vala:74
+msgid "Matches"
+msgstr ""
+
+#: ../ui/settings-dialog.ui:253
+msgid "Maximum media size:"
+msgstr "Maximum media size:"
+
+#: ../org.baedert.corebird.gschema.xml.h:9
+msgid "Maximum size of inline media to download, in Megabytes."
+msgstr "Maximum size of inline media to download, in Megabytes."
+
+#: ../ui/settings-dialog.ui:292
+msgid "Megabytes"
+msgstr "Megabytes"
+
+#: ../ui/list-statuses-page.ui:81
+msgid "Members:"
+msgstr "Members:"
+
+#: ../src/MentionsTimeline.vala:114 ../src/MentionsTimeline.vala:115
+msgid "Mentions"
+msgstr "Mentions"
+
+#: ../ui/list-statuses-page.ui:254
+msgid "Mode:"
+msgstr "Mode:"
+
+#: ../ui/tweet-info-page.ui:410
+msgid "More"
+msgstr "More"
+
+#: ../ui/new-list-entry.ui:69
+msgid "Name:"
+msgstr "Name:"
+
+#: ../ui/settings-dialog.ui:462
+msgid "Never"
+msgstr "Never"
+
+#: ../src/MentionsTimeline.vala:82
+#, c-format
+msgid "New Mention from %s"
+msgstr "New Mention from %s"
+
+#: ../src/DMThreadsPage.vala:235
+msgid "New direct message!"
+msgstr "New direct message!"
+
+#: ../ui/main-window.ui:127
+msgid "New tweet"
+msgstr "New tweet"
+
+#: ../src/widgets/TweetListBox.vala:44 ../src/widgets/TweetListBox.vala:78
+msgid "No entries found"
+msgstr "No entries found"
+
+#: ../ui/settings-dialog.ui:515
+msgid "Notifications"
+msgstr ""
+
+#: ../src/util/Utils.vala:82
+msgid "Now"
+msgstr "Now"
+
+#: ../ui/settings-dialog.ui:485
+msgid "On New Followers:"
+msgstr "On New Followers:"
+
+#: ../ui/settings-dialog.ui:394
+msgid "On New Mentions:"
+msgstr "On New Mentions:"
+
+#: ../ui/settings-dialog.ui:411
+msgid "On New Messages:"
+msgstr "On New Messages:"
+
+#: ../ui/settings-dialog.ui:360
+msgid "On New Tweets:"
+msgstr "On New Tweets:"
+
+#: ../src/Corebird.vala:144
+msgid "Open Account"
+msgstr "Open Account"
+
+#: ../ui/account-info-widget.ui:35
+msgid "Open Window"
+msgstr "Open Window"
+
+#: ../src/TweetInfoPage.vala:425
+msgid "Open in Browser"
+msgstr "Open in Browser"
+
+#: ../ui/account-create-widget.ui:21
+msgid "PIN:"
+msgstr "PIN:"
+
+#: ../ui/list-statuses-page.ui:283
+msgid "Private"
+msgstr "Private"
+
+#: ../src/ProfilePage.vala:274
+msgid "Protected profile"
+msgstr "Protected profile"
+
+#: ../ui/list-statuses-page.ui:284
+msgid "Public"
+msgstr "Public"
+
+#: ../ui/menu.ui:16
+msgid "Quit"
+msgstr "Quit"
+
+#: ../ui/tweet-list-entry.ui:12 ../ui/tweet-info-page.ui:23
+msgid "Quote"
+msgstr "Quote"
+
+#: ../ui/remove-account-dialog.ui:33
+msgid "Remove"
+msgstr "Remove"
+
+#: ../ui/settings-dialog.ui:62 ../ui/settings-dialog.ui:65
+msgid "Remove selected account"
+msgstr "Remove selected account"
+
+#: ../ui/tweet-list-entry.ui:321 ../ui/tweet-info-page.ui:368
+msgid "Reply to tweet"
+msgstr "Reply to tweet"
+
+#: ../ui/tweet-list-entry.ui:383 ../ui/tweet-info-page.ui:310
+msgid "Retweet tweet"
+msgstr "Retweet tweet"
+
+#: ../src/TweetInfoPage.vala:379
+msgid "Retweets"
+msgstr ""
+
+#: ../src/window/UserListDialog.vala:45 ../src/window/ImageDialog.vala:113
+msgid "Save"
+msgstr "Save"
+
+#: ../ui/image-dialog.ui:47
+msgid "Save Image"
+msgstr "Save Image"
+
+#: ../src/window/ImageDialog.vala:110
+msgid "Save image"
+msgstr "Save image"
+
+#: ../src/SearchPage.vala:260 ../src/SearchPage.vala:261
+msgid "Search"
+msgstr "Search"
+
+#: ../src/window/ComposeTweetWindow.vala:217
+msgid "Select Image"
+msgstr "Select Image"
+
+#: ../ui/dm-page.ui:69 ../ui/compose-window.ui:184
+msgid "Send"
+msgstr "Send"
+
+#: ../ui/settings-dialog.ui:20 ../ui/menu.ui:8
+msgid "Settings"
+msgstr "Settings"
+
+#: ../ui/settings-dialog.ui:218
+msgid "Show Inline Media:"
+msgstr "Show Inline Media:"
+
+#: ../ui/tweet-list-entry.ui:292
+msgid "Show more actions"
+msgstr "Show more actions"
+
+#: ../org.baedert.corebird.gschema.xml.h:13
+msgid "Size and position of the settings dialog"
+msgstr "Size and position of the settings dialog"
+
+#: ../src/TweetInfoPage.vala:425
+msgid "Source"
+msgstr "Source"
+
+#: ../org.baedert.corebird.gschema.xml.h:1
+msgid ""
+"Specifies if Corebird should request to use the dark variant of the gtk theme"
+msgstr ""
+"Specifies if Corebird should request to use the dark variant of the gtk theme"
+
+#: ../ui/settings-dialog.ui:465
+msgid "Stack 10"
+msgstr "Stack 10"
+
+#: ../ui/settings-dialog.ui:466
+msgid "Stack 25"
+msgstr "Stack 25"
+
+#: ../ui/settings-dialog.ui:464
+msgid "Stack 5"
+msgstr "Stack 5"
+
+#: ../ui/settings-dialog.ui:467
+msgid "Stack 50"
+msgstr "Stack 50"
+
+#: ../ui/start-conversation-entry.ui:40
+msgid "Start new conversation"
+msgstr "Start new conversation"
+
+#: ../ui/list-list-entry.ui:58
+msgid "Subscribe"
+msgstr "Subscribe"
+
+#: ../ui/user-lists-widget.ui:64
+msgid "Subscribed to"
+msgstr "Subscribed to"
+
+#: ../ui/list-statuses-page.ui:51
+msgid "Subscribers:"
+msgstr "Subscribers:"
+
+#: ../org.baedert.corebird.gschema.xml.h:11
+msgid ""
+"The accelerator to press in order to bring the ComposeTweetWindow up. Must "
+"be parseable with gtk_accelerator_parse"
+msgstr ""
+"The accelerator to press in order to bring the ComposeTweetWindow up. Must "
+"be parseable with gtk_accelerator_parse"
+
+#: ../src/ProfilePage.vala:456
+#, c-format
+msgid "Tweet to @%s"
+msgstr "Tweet to @%s"
+
+#: ../ui/search-page.ui:106 ../ui/profile-page.ui:366
+msgid "Tweets"
+msgstr "Tweets"
+
+#: ../src/widgets/AccountCreateWidget.vala:47
+msgid ""
+"Unauthorized. Most of the time, this means that there's something wrong with "
+"the Twitter servers and you should try again later"
+msgstr ""
+"Unauthorised. Most of the time, this means that there's something wrong with "
+"the Twitter servers and you should try again later"
+
+#: ../src/ProfilePage.vala:585 ../src/TweetInfoPage.vala:411
+msgid "Unfollow"
+msgstr "Unfollow"
+
+#: ../ui/list-list-entry.ui:35
+msgid "Unsubscribe"
+msgstr "Unsubscribe"
+
+#: ../ui/settings-dialog.ui:163
+msgid "Use Dark Theme:"
+msgstr "Use Dark Theme:"
+
+#: ../ui/search-page.ui:118 ../ui/filter-page.ui:120
+msgid "Users"
+msgstr "Users"
+
+#: ../ui/about-dialog.ui:12
+msgid "Using Font Awesome by Dave Gandy - http://fontawesome.io"
+msgstr "Using Font Awesome by Dave Gandy - http://fontawesome.io"
+
+#: ../org.baedert.corebird.gschema.xml.h:6
+msgid "Whether inline media should be downloaded/shown directly."
+msgstr "Whether inline media should be downloaded/shown directly."
+
+#: ../org.baedert.corebird.gschema.xml.h:3
+msgid ""
+"Whether the user should be notified when another user mentions them in a "
+"tweet"
+msgstr ""
+"Whether the user should be notified when another user mentions them in a "
+"tweet"
+
+#: ../org.baedert.corebird.gschema.xml.h:5
+msgid ""
+"Whether the user should be notified when another user starts following them"
+msgstr ""
+"Whether the user should be notified when another user starts following them"
+
+#: ../org.baedert.corebird.gschema.xml.h:4
+msgid ""
+"Whether the user should be notified when another user writes them a direct "
+"message"
+msgstr ""
+"Whether the user should be notified when another user writes them a direct "
+"message"
+
+#: ../org.baedert.corebird.gschema.xml.h:10
+msgid "Whether to show the sidebar or not"
+msgstr "Whether to show the sidebar or not"
+
+#: ../ui/start-conversation-entry.ui:70
+msgid "With:"
+msgstr "With:"
+
+#: ../ui/user-list-entry.ui:11 ../ui/profile-page.ui:23
+msgid "Write Direct Message"
+msgstr "Write Direct Message"
+
+#: ../src/widgets/AccountCreateWidget.vala:64
+msgid "Wrong PIN"
+msgstr "Wrong PIN"
+
+#: ../ui/account-create-widget.ui:125
+msgid "Wrong PIN. Try again."
+msgstr "Wrong PIN. Try again."
+
+#: ../ui/settings-dialog.ui:106
+msgid ""
+"You have not yet configured any account. To do so, click on the appropriate "
+"button on the left."
+msgstr ""
+"You have not yet configured any account. To do so, click on the appropriate "
+"button on the left."

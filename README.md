@@ -37,11 +37,12 @@
 ## Dependencies
  - `gtk+-3.0 >= 3.9`
  - `glib-2.0 >= 2.38`
- - `rest-0.7`
+ - `rest-0.7` (`>= 0.7.91` for image uploads)
  - `json-glib-1.0`
  - `sqlite3`
  - `libsoup-2.4`
  - `intltool >= 0.40`
+ - `libgee-0.8`
  - `vala >= 0.22` (makedep)
  - `automake >= 1.14` (makedep)
 

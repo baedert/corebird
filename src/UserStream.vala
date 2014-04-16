@@ -51,7 +51,11 @@ public class UserStream : Object {
   private Rest.ProxyCall proxy_call;
   private StringBuilder data                        = new StringBuilder();
   private SList<unowned IMessageReceiver> receivers = new SList<unowned IMessageReceiver>();
-  private uint timeout_id = -1;
+  private GLib.NetworkMonitor network_monitor;
+  private bool network_available;
+  private uint network_timeout_id   = 0;
+  private uint heartbeat_timeout_id = 0;
+  private bool running = false;
   private string account_name;
   public string token {
     set { proxy.token = value; }
@@ -59,6 +63,11 @@ public class UserStream : Object {
   public string token_secret {
     set { proxy.token_secret = value; }
   }
+
+  // Signals
+  public signal void interrupted ();
+  public signal void resumed ();
+
 
 
 
@@ -71,6 +80,11 @@ public class UserStream : Object {
           "https://userstream.twitter.com/", //Url Format
           false
         );
+    network_monitor = GLib.NetworkMonitor.get_default ();
+    network_available = network_monitor.get_network_available ();
+    network_monitor.network_changed.connect (network_changed_cb);
+    if (!network_available)
+      start_network_timeout ();
   }
 
 
@@ -79,11 +93,31 @@ public class UserStream : Object {
   }
 
 
+  private void network_changed_cb (bool available) {
+    if (available == this.network_available)
+      return;
+
+    this.network_available = available;
+
+    if (network_available) {
+      debug ("Restarting stream (reason: Network available (callback))");
+      restart ();
+      resumed ();
+    } else {
+      debug ("Connection lost (%s) Reason: network unavailable", account_name);
+      interrupted ();
+      start_network_timeout ();
+    }
+  }
+
+
 
   /**
    * Starts the UserStream
    */
   public void start () {
+    // Reset state of the stream
+    running = true;
     proxy_call = proxy.new_call ();
     proxy_call.set_function ("1.1/user.json");
     proxy_call.set_method ("GET");
@@ -94,31 +128,49 @@ public class UserStream : Object {
     }
   }
 
-  ~UserStream () {
-    debug ("USERSTREAM for %s DESTROYED", account_name);
-  }
-
   /**
    * Stops the UserStream
    */
   public void stop () {
+    running = false;
     debug ("STOPPING STREAM FOR " + account_name);
     proxy_call.cancel ();
-    if(timeout_id != -1)
-        GLib.Source.remove (timeout_id);
   }
 
-  /**
-   * The timeout cb is called whenever we didn't get a heartbeat
-   * from Twitter for over TIMEOUT_INTERVAL seconds.
-   *
-   */
-  private bool timeout_cb() {
-    message ("Restarting...");
-//    start ();
-    return false;
+  private void restart () {
+    stop ();
+    start ();
   }
 
+  private void start_network_timeout () {
+    network_timeout_id = GLib.Timeout.add (30 * 1000, () => {
+      if (running)
+        return false;
+
+      var available = network_monitor.get_network_available ();
+      if (available) {
+        debug ("Restarting stream (reason: network available (timeout))");
+        restart ();
+        return false;
+      }
+      return true;
+    });
+  }
+
+  private void start_heartbeat_timeout () {
+    heartbeat_timeout_id = GLib.Timeout.add (TIMEOUT_INTERVAL, () => {
+      // If we get here, we need to restart the stream.
+      running = false;
+      debug ("Connection lost (%s) Reason: heartbeat. Restarting...", account_name);
+      restart ();
+      return false;
+    });
+  }
+
+
+  ~UserStream () {
+    debug ("USERSTREAM for %s DESTROYED", account_name);
+  }
 
   /**
    * Callback called by the Rest.ProxyCall whenever it receives data.
@@ -140,14 +192,14 @@ public class UserStream : Object {
     data.append (real);
 
     if (real.has_suffix ("\r\n") || real.has_suffix ("\r")) {
-      //Reset the timeout
-      if (timeout_id != -1)
-        GLib.Source.remove (timeout_id);
-      timeout_id = GLib.Timeout.add (TIMEOUT_INTERVAL, timeout_cb);
 
       if (real == "\r\n") {
         debug ("HEARTBEAT(%s)", account_name);
         data.erase ();
+        if (heartbeat_timeout_id != 0)
+          GLib.Source.remove (heartbeat_timeout_id);
+
+        start_heartbeat_timeout ();
         return;
       }
 

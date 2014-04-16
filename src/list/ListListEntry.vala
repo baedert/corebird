@@ -174,4 +174,10 @@ class ListListEntry : Gtk.ListBoxRow {
   private void cancel_button_clicked_cb () {
     stack.visible_child_name = "default";
   }
+
+  [GtkCallback]
+  private bool focus_out_cb () {
+    stack.visible_child_name = "default";
+    return false;
+  }
 }
