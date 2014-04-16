@@ -27,5 +27,9 @@ if(XGETTEXT_FOUND)
     ALL
     ${NOUPDATE}
     POFILES
-    "de.po")
+    "de.po"
+    "en_AU.po"
+    "es.po"
+    "nl.po"
+    "zh_CN.po")
 endif()
