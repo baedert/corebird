@@ -136,6 +136,7 @@ set (VALA_SOURCE
   src/widgets/DoubleTapButton.vala
   src/widgets/TweetListBox.vala
   src/widgets/UserListsWidget.vala
+  src/widgets/ReplyIndicator.vala
   src/list/TweetListEntry.vala
   src/list/ProgressEntry.vala
   src/list/AccountListEntry.vala

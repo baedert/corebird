@@ -67,6 +67,8 @@ class TweetInfoPage : IPage , ScrollWidget {
   private Gtk.MenuItem delete_menu_item;
   [GtkChild]
   private MaxSizeContainer max_size_container;
+  [GtkChild]
+  private ReplyIndicator reply_indicator;
 
   public TweetInfoPage (int id) {
     this.id = id;
@@ -308,6 +310,10 @@ class TweetInfoPage : IPage , ScrollWidget {
 
       if (n_replies > 0) {
         top_list_box.show ();
+        reply_indicator.replies_available = true;
+      } else {
+        top_list_box.hide ();
+        reply_indicator.replies_available = false;
       }
     });
 
