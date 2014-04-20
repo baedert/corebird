@@ -58,7 +58,7 @@
 
             <child>
               <object class="ReplyIndicator" id="reply_indicator">
-                <property name="visible">false</property>
+                <property name="visible">true</property>
                 <property name="can_focus">false</property>
               </object>
               <packing>

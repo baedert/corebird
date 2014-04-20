@@ -16,14 +16,16 @@
  */
 
 public class ReplyIndicator : Gtk.Widget {
-  private static const int HEIGHT = 3;
+  private static const int FINAL_HEIGHT = 5;
+  private double height = 0;
   private bool replies = false;
   public bool replies_available {
     set {
       this.replies = value;
-      this.queue_draw ();
+      this.on_replies_available ();
     }
   }
+  private int64 start_time;
 
   construct {
     set_has_window (false);
@@ -38,9 +40,46 @@ public class ReplyIndicator : Gtk.Widget {
   public override void get_preferred_height_for_width (int     width,
                                                        out int min_height,
                                                        out int nat_height) {
-    min_height = HEIGHT;
-    nat_height = HEIGHT;
+    min_height = FINAL_HEIGHT;
+    nat_height = FINAL_HEIGHT;
   }
+
+  private void on_replies_available () {
+    start_time = this.get_frame_clock ().get_frame_time ();
+    this.add_tick_callback (tick_callback);
+  }
+
+  private bool tick_callback (Gtk.Widget widget, Gdk.FrameClock frame_clock) {
+    if (!this.get_mapped ()) {
+      height = FINAL_HEIGHT;
+      this.queue_draw ();
+      return false;
+    }
+
+    int64 now = frame_clock.get_frame_time ();
+    int64 end_time = this.start_time + (750 * 1000); /* .75s */
+    double t = 1.0;
+    if (now < end_time)
+      t = (now - start_time) / (double)(end_time - start_time);
+
+    t = ease_out_cubic (t);
+
+    height = t * FINAL_HEIGHT;
+    if (height >= FINAL_HEIGHT) {
+      height = FINAL_HEIGHT;
+      this.queue_draw ();
+      return false;
+    }
+
+    this.queue_draw ();
+    return true;
+  }
+
+  private double ease_out_cubic (double t) {
+    double p = t - 1;
+    return p * p * p +1;
+  }
+
 
   public override bool draw (Cairo.Context ct) {
     if (!replies) {
@@ -49,7 +88,7 @@ public class ReplyIndicator : Gtk.Widget {
     var style_context = this.get_style_context ();
     int width = this.get_allocated_width ();
 
-    style_context.render_background (ct, 0, 0, width, HEIGHT);
+    style_context.render_background (ct, 0, 0, width, height);
 
     return false;
   }
