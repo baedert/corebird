@@ -8,7 +8,7 @@
 | `Ctrl + t`         | Compose Tweet                                                                                                                              |
 | `Back`             | Go one page back(this can be triggered via tha back button on the keyboard, the back thumb button on the mouse or  `Alt + Left`)           |
 | `Forward`          | Go one page forward(this can be triggered via tha forward button on the keyboard, the forward thumb button on the mouse or  `Alt + Right`) |
-| `Alt + num`        | Go to page `num`(between 1 and 5 at the moment)                                                                                            |
+| `Alt + num`        | Go to page `num`(between 1 and 7 at the moment)                                                                                            |
 | `Ctrl + Shift + s` | Show/Hide sidebar                                                                                                                          |
 
 
@@ -35,8 +35,8 @@
 
 
 ## Dependencies
- - `gtk+-3.0 >= 3.9`
- - `glib-2.0 >= 2.38`
+ - `gtk+-3.0 >= 3.12`
+ - `glib-2.0 >= 2.40`
  - `rest-0.7` (`>= 0.7.91` for image uploads)
  - `json-glib-1.0`
  - `sqlite3`
@@ -49,7 +49,7 @@
 ## Compiling
 
 ```
-cmake . -DCMAKE_INSTALL_PREFIX=/usr
+./autogen.sh --prefix=/usr
 make
 make install
 ```
