@@ -224,7 +224,7 @@ class AddFilterEntry : Gtk.ListBoxRow {
     var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 5);
     var img = new Gtk.Image.from_icon_name ("list-add-symbolic", Gtk.IconSize.DIALOG);
     img.pixel_size = 32;
-    img.margin_left = 10;
+    img.margin_start = 10;
     img.hexpand = true;
     img.halign = Gtk.Align.END;
     box.pack_start (img);
