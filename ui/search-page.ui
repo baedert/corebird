@@ -27,7 +27,6 @@
             <property name="can_focus">True</property>
             <property name="margin_left">5</property>
             <property name="margin_top">5</property>
-            <property name="margin_bottom">5</property>
             <property name="hexpand">True</property>
             <property name="primary_icon_name">edit-find-symbolic</property>
             <property name="primary_icon_activatable">False</property>
@@ -49,7 +48,6 @@
             <property name="margin_left">5</property>
             <property name="margin_right">5</property>
             <property name="margin_top">4</property>
-            <property name="margin_bottom">5</property>
             <style>
               <class name="suggested-action"/>
             </style>
@@ -74,6 +72,7 @@
         <property name="vexpand">True</property>
         <property name="hadjustment">adjustment1</property>
         <property name="vadjustment">adjustment2</property>
+        <property name="margin_top">5</property>
         <child>
           <object class="GtkViewport" id="viewport1">
             <property name="visible">True</property>

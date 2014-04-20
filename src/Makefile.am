@@ -57,6 +57,7 @@ libcorebird_la_VALASOURCES = \
 			widgets/AspectImage.vala \
 			widgets/BgBox.vala \
 			widgets/UserListsWidget.vala \
+			widgets/ReplyIndicator.vala \
 			util/TweetUtils.vala \
 			util/Utils.vala \
 			util/IntHistory.vala \

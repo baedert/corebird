@@ -40,7 +40,7 @@ class AccountCreateWidget : Gtk.Box {
     try {
       acc.proxy.request_token ("oauth/request_token", "oob");
       string uri = "http://twitter.com/oauth/authorize?oauth_token=" + acc.proxy.get_token();
-      message ("Trying to open %s", uri);
+      debug ("Trying to open %s", uri);
       GLib.AppInfo.launch_default_for_uri (uri, null);
     } catch (GLib.Error e) {
       if (e.message.down() == "unauthorized") {
@@ -72,7 +72,7 @@ class AccountCreateWidget : Gtk.Box {
     call.set_function ("1.1/account/settings.json");
     call.set_method ("GET");
     call.invoke_async.begin (null, (obj, res) => {
-      message ("settings call");
+      debug ("settings call");
       var parser = new Json.Parser ();
       try {
         parser.load_from_data (call.get_payload ());
@@ -81,7 +81,7 @@ class AccountCreateWidget : Gtk.Box {
       }
       var root = parser.get_root ().get_object ();
       string screen_name = root.get_string_member ("screen_name");
-      message ("Checking for %s", screen_name);
+      debug ("Checking for %s", screen_name);
       unowned GLib.SList<Account> current_accounts = Account.list_accounts ();
       foreach (var a in current_accounts) {
         if (a.screen_name == screen_name) {
@@ -93,7 +93,7 @@ class AccountCreateWidget : Gtk.Box {
 
       acc.query_user_info_by_scren_name.begin (screen_name, (obj, res) => {
         acc.query_user_info_by_scren_name.end (res);
-        message ("user info call");
+        debug ("user info call");
         acc.init_database ();
         acc.save_info();
         acc.db.insert ("common")
@@ -101,7 +101,7 @@ class AccountCreateWidget : Gtk.Box {
               .val ("token_secret", acc.proxy.token_secret)
               .run ();
         acc.init_proxy (true, true);
-        // TODO: Insert account into app menua
+        // TODO: Insert account into app menu
         progress_spinner.hide ();
         result_received (true, acc);
       });
