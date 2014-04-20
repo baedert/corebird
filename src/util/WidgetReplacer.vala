@@ -56,8 +56,8 @@ public class WidgetReplacer {
       w2.hexpand       = w1.hexpand;
       w2.vexpand       = w1.vexpand;
       w2.margin_top    = w1.margin_top;
-      w2.margin_left   = w1.margin_left;
-      w2.margin_right  = w1.margin_right;
+      w2.margin_start  = w1.margin_start;
+      w2.margin_end    = w1.margin_end;
       w2.margin_bottom = w1.margin_bottom;
 
     if (parent is Gtk.Box) {
