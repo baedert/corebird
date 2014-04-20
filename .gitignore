@@ -1,7 +1,7 @@
-Corebird
 corebird
 Corebird.db
 src/*.c
+Corebird
 src/widgets/*.c
 src/containers/*.c
 src/util/*.c
@@ -15,12 +15,8 @@ src/util/*.c
 Makefile.in
 m4/
 src/sql/*.c
-CMakeCache.txt
 CMakeFiles
 Makefile
-*.cmake
-install_manifest.txt
-src/CMakeFiles
 src/Makefile
 src/*.cmake
 assets/avatars/*
@@ -28,8 +24,6 @@ assets/banners/*
 assets/user/*
 stats
 *.swp
-*.ninja
-.ninja_log
 src/util/Config.vala
 session.vim
 *~
