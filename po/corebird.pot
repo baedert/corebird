@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-07 20:36+0200\n"
+"POT-Creation-Date: 2014-04-20 22:06+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -50,7 +50,7 @@ msgstr ""
 msgid "Doesn't match"
 msgstr ""
 
-#: ../src/widgets/TweetListBox.vala:44 ../src/widgets/TweetListBox.vala:78
+#: ../src/widgets/TweetListBox.vala:44 ../src/widgets/TweetListBox.vala:79
 msgid "No entries found"
 msgstr ""
 
@@ -65,30 +65,31 @@ msgstr ""
 msgid "Wrong PIN"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:84
+#: ../src/HomeTimeline.vala:89
 #, c-format
 msgid "%d new Tweets!"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:94
+#: ../src/HomeTimeline.vala:99
 #, c-format
 msgid "%s retweeted %s"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:96
+#: ../src/HomeTimeline.vala:101
 #, c-format
 msgid "%s tweeted"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:123 ../src/HomeTimeline.vala:124
+#: ../src/HomeTimeline.vala:128 ../src/HomeTimeline.vala:129
 msgid "Home"
 msgstr ""
 
-#: ../src/DMThreadsPage.vala:236
-msgid "New direct message!"
+#: ../src/DMThreadsPage.vala:361
+#, c-format
+msgid "New direct message from %s"
 msgstr ""
 
-#: ../src/DMThreadsPage.vala:359 ../src/DMThreadsPage.vala:360
+#: ../src/DMThreadsPage.vala:378 ../src/DMThreadsPage.vala:379
 msgid "Direct Messages"
 msgstr ""
 
@@ -111,29 +112,29 @@ msgstr ""
 msgid "Tweet to @%s"
 msgstr ""
 
-#: ../src/ProfilePage.vala:585 ../src/TweetInfoPage.vala:411
+#: ../src/ProfilePage.vala:585 ../src/TweetInfoPage.vala:416
 msgid "Unfollow"
 msgstr ""
 
-#: ../src/ProfilePage.vala:589 ../src/TweetInfoPage.vala:415
+#: ../src/ProfilePage.vala:589 ../src/TweetInfoPage.vala:420
 #: ../ui/tweet-info-page.ui.h:3
 msgid "Follow"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:379
+#: ../src/TweetInfoPage.vala:383
 msgid "Retweets"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:379 ../src/FavoritesTimeline.vala:69
-#: ../src/FavoritesTimeline.vala:70
+#: ../src/TweetInfoPage.vala:384 ../src/FavoritesTimeline.vala:74
+#: ../src/FavoritesTimeline.vala:75
 msgid "Favorites"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:425
+#: ../src/TweetInfoPage.vala:430
 msgid "Open in Browser"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:425
+#: ../src/TweetInfoPage.vala:430
 msgid "Source"
 msgstr ""
 
@@ -156,16 +157,16 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: ../src/Corebird.vala:148
+#: ../src/Corebird.vala:149
 msgid "Open Account"
 msgstr ""
 
-#: ../src/MentionsTimeline.vala:82
+#: ../src/MentionsTimeline.vala:87
 #, c-format
 msgid "New Mention from @%s"
 msgstr ""
 
-#: ../src/MentionsTimeline.vala:114 ../src/MentionsTimeline.vala:115
+#: ../src/MentionsTimeline.vala:119 ../src/MentionsTimeline.vala:120
 msgid "Mentions"
 msgstr ""
 
