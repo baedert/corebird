@@ -24,6 +24,7 @@ public class ReplyIndicator : Gtk.Widget {
       this.replies = value;
       this.on_replies_available ();
     }
+    get { return replies; }
   }
   private int64 start_time;
 
@@ -45,6 +46,9 @@ public class ReplyIndicator : Gtk.Widget {
   }
 
   private void on_replies_available () {
+    if (!replies) {
+      height = 0.0;
+    }
     start_time = this.get_frame_clock ().get_frame_time ();
     this.add_tick_callback (tick_callback);
   }

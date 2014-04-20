@@ -77,7 +77,7 @@ class TweetInfoPage : IPage , ScrollWidget {
       img_dialog.show_all ();
     });
     this.scroll_event.connect ((evt) => {
-      if (evt.delta_y < 0 && this.vadjustment.value == 0) {
+      if (evt.delta_y < 0 && this.vadjustment.value == 0 && reply_indicator.replies_available) {
         int inc = (int)(vadjustment.step_increment * (-evt.delta_y));
         max_size_container.max_size += inc;
         max_size_container.queue_resize ();
@@ -111,6 +111,7 @@ class TweetInfoPage : IPage , ScrollWidget {
     bottom_list_box.hide ();
     top_list_box.foreach ((w) => {top_list_box.remove (w);});
     top_list_box.hide ();
+    reply_indicator.replies_available = false;
     max_size_container.max_size = 0;
     max_size_container.queue_resize ();
 
