@@ -221,7 +221,7 @@ public class TweetListEntry : ITwitterItem, ListBoxRow {
     reply_button.visible = buttons_visible;
 
     if (buttons_visible) {
-      hover_box.margin_right = 1;
+      hover_box.margin_end = 1;
       hover_box.margin_top = (time_delta_label.get_allocated_height () / 2) - 6;
       hover_box.override_background_color (Gtk.StateFlags.NORMAL,
                                            ct.get_background_color (Gtk.StateFlags.PRELIGHT));
@@ -230,9 +230,9 @@ public class TweetListEntry : ITwitterItem, ListBoxRow {
       hover_box.override_background_color (Gtk.StateFlags.NORMAL,
                                            ct.get_background_color (Gtk.StateFlags.NORMAL));
       retweet_button.visible = tweet.retweeted;
-      hover_box.margin_right = time_delta_label.get_allocated_width () + 3;
+      hover_box.margin_end = time_delta_label.get_allocated_width () + 3;
       if (tweet.reply_id != 0)
-        hover_box.margin_right += conversation_image.get_allocated_width () + 4;
+        hover_box.margin_end += conversation_image.get_allocated_width () + 4;
     }
   } //}}}
 
@@ -334,17 +334,17 @@ public class TweetListEntry : ITwitterItem, ListBoxRow {
 
   private void adjust_hover_box () {
     // Only do this if the hover_box has not been 'adjusted' yet
-    if (hover_box.margin_right > 0) {
+    if (hover_box.margin_end > 0) {
       return;
     }
 
     // XXX Keep this in sync with the version below
     if (time_delta_label.get_allocated_width () > 1 && conversation_image.get_allocated_width () > 1) {
       hover_box.margin_top = (time_delta_label.get_allocated_height () / 2) - 6;
-      hover_box.margin_right = time_delta_label.get_allocated_width () + 3;
+      hover_box.margin_end = time_delta_label.get_allocated_width () + 3;
       if (tweet.reply_id != 0) {
         conversation_image.margin_top = (time_delta_label.get_allocated_height () / 2) - 6;
-        hover_box.margin_right += conversation_image.get_allocated_width () + 4;
+        hover_box.margin_end += conversation_image.get_allocated_width () + 4;
       }
       return;
     }
@@ -353,7 +353,7 @@ public class TweetListEntry : ITwitterItem, ListBoxRow {
     ulong id = 0;
     id = time_delta_label.size_allocate.connect (() => {
       hover_box.margin_top = (time_delta_label.get_allocated_height () / 2) - 6;
-      hover_box.margin_right += time_delta_label.get_allocated_width () + 3;
+      hover_box.margin_end += time_delta_label.get_allocated_width () + 3;
       if (tweet.reply_id != 0) {
         conversation_image.margin_top = (time_delta_label.get_allocated_height () / 2) - 6;
       }
@@ -365,7 +365,7 @@ public class TweetListEntry : ITwitterItem, ListBoxRow {
 
     ulong id2 = 0;
     id2 = conversation_image.size_allocate.connect (() => {
-      hover_box.margin_right += conversation_image.get_allocated_width () + 4;
+      hover_box.margin_end += conversation_image.get_allocated_width () + 4;
       conversation_image.disconnect (id2);
     });
 
