@@ -20,8 +20,8 @@ if ENABLE_CATALOG
 endif
 
 gsettings_SCHEMAS = org.baedert.corebird.gschema.xml
-
-
+@INTLTOOL_XML_NOMERGE_RULE@
+@GSETTINGS_RULES@
 
 EXTRA_DIST = \
 						 org.baedert.corebird.desktop.in \

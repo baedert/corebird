@@ -61,6 +61,9 @@ if test "$enable_debug" = "yes"; then
 fi
 
 
+GLIB_GSETTINGS
+
+
 # Gettext stuff
 GETTEXT_PACKAGE=corebird
 AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE], ["$GETTEXT_PACKAGE"], [Gettext Package])
