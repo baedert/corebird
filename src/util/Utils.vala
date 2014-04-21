@@ -258,7 +258,7 @@ namespace Utils {
 
   void load_custom_icons () {
     var icon_theme  = Gtk.IconTheme.get_default ();
-    icon_theme.append_search_path (DATADIR+"/scalable/");
+    icon_theme.append_search_path (DATADIR+"/assets/");
   }
 
   string capitalize (string s) {

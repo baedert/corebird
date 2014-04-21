@@ -13,4 +13,6 @@ symbolics_DATA = \
 								corebird-retweet-symbolic.svg      \
 								corebird-search-symbolic.svg       \
 								corebird-stream-symbolic.svg       \
-								corebird-filter-symbolic.svg
+								corebird-filter-symbolic.svg       \
+								corebird-favorite-symbolic.svg     \
+								corebird-down-symbolic.svg

@@ -78,6 +78,13 @@ AC_CONFIG_FILES([Makefile
                  data/org.baedert.corebird.desktop.in
                  data/symbolics/Makefile
                  assets/Makefile
+                 assets/128x128/Makefile
+                 assets/96x96/Makefile
+                 assets/64x64/Makefile
+                 assets/48x48/Makefile
+                 assets/32x32/Makefile
+                 assets/24x24/Makefile
+                 assets/16x16/Makefile
                  po/Makefile.in
                  tests/Makefile
                  src/util/Config.vala])
