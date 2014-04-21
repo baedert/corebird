@@ -405,43 +405,6 @@
               </packing>
             </child>
 
-
-            <child>
-              <object class="GtkImage" id="location_image">
-                <property name="visible">false</property>
-                <property name="can_focus">False</property>
-                <property name="halign">baseline</property>
-                <property name="icon_name">corebird-location-symbolic</property>
-                <property name="icon_size">1</property>
-                <property name="no_show_all">True</property>
-                <style>
-                  <class name="dim-label"/>
-                </style>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">7</property>
-              </packing>
-            </child>
-
-            <child>
-              <object class="GtkLabel" id="location_label">
-                <property name="visible">false</property>
-                <property name="can_focus">False</property>
-                <property name="halign">baseline</property>
-                <property name="no_show_all">True</property>
-                <style>
-                  <class name="dim-label"/>
-                </style>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">6</property>
-                <property name="width">6</property>
-              </packing>
-            </child>
-
-
             <child>
               <object class="GtkListBox" id="bottom_list_box">
                 <property name="visible">True</property>

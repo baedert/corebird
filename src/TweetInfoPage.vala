@@ -44,10 +44,6 @@ class TweetInfoPage : IPage , ScrollWidget {
   [GtkChild]
   private Gtk.Label fav_label;
   [GtkChild]
-  private Label location_label;
-  [GtkChild]
-  private Gtk.Image location_image;
-  [GtkChild]
   private ListBox bottom_list_box;
   [GtkChild]
   private ListBox top_list_box;
@@ -245,15 +241,6 @@ class TweetInfoPage : IPage , ScrollWidget {
       string with = root_object.get_string_member ("source");
       with = extract_source (with);
       set_tweet_data (tweet, following, with);
-      if (!root_object.get_null_member ("place")) {
-        var place = root_object.get_object_member ("place");
-        location_label.show ();
-        location_image.show ();
-        location_label.label = place.get_string_member ("name");
-      } else {
-        location_label.hide ();
-        location_image.hide ();
-      }
 
       if (tweet.reply_id == 0) {
         load_replied_to_tweet (tweet.reply_id);
