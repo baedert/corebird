@@ -142,6 +142,7 @@ class ProfilePage : ScrollWidget, IPage {
     load_profile_data.begin (user_id);
     follow_button.sensitive = (user_id != account.id);
     lists_menu_item.sensitive = (user_id != account.id);
+    block_menu_item.sensitive = (user_id != account.id);
 
     load_banner (DATADIR + "/no_banner.png");
     load_friendship.begin ();
