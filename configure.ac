@@ -21,14 +21,12 @@ pkg_modules="gtk+-3.0 >= 3.10
              libsoup-2.4
              gee-0.8
              json-glib-1.0
-             libnotify
              sqlite3"
 PKG_CHECK_MODULES(CB, [$pkg_modules])
 CB_VALA_FLAGS=" \
   --pkg gtk+-3.0 \
   --pkg json-glib-1.0 \
   --pkg rest-0.7 \
-  --pkg libnotify \
   --pkg gee-0.8 \
   --pkg sqlite3 \
   --pkg libsoup-2.4 \
