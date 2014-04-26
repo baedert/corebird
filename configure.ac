@@ -9,14 +9,14 @@ m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 LT_INIT
 AC_PROG_CC
 AC_PROG_CC_STDC
-AM_PROG_VALAC([0.21])
+AM_PROG_VALAC([0.24])
 AC_PROG_INSTALL
 IT_PROG_INTLTOOL([0.40])
 
 
 # Vala Packages {{{
 pkg_modules="gtk+-3.0 >= 3.10
-             glib-2.0 >= 2.38
+             glib-2.0 >= 2.40
              rest-0.7
              libsoup-2.4
              gee-0.8
