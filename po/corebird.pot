@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-20 22:06+0200\n"
+"POT-Creation-Date: 2014-04-26 07:57+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -103,38 +103,38 @@ msgstr ""
 msgid "Lists"
 msgstr ""
 
-#: ../src/ProfilePage.vala:274
+#: ../src/ProfilePage.vala:275
 msgid "Protected profile"
 msgstr ""
 
-#: ../src/ProfilePage.vala:456
+#: ../src/ProfilePage.vala:457
 #, c-format
 msgid "Tweet to @%s"
 msgstr ""
 
-#: ../src/ProfilePage.vala:585 ../src/TweetInfoPage.vala:416
+#: ../src/ProfilePage.vala:586 ../src/TweetInfoPage.vala:403
 msgid "Unfollow"
 msgstr ""
 
-#: ../src/ProfilePage.vala:589 ../src/TweetInfoPage.vala:420
+#: ../src/ProfilePage.vala:590 ../src/TweetInfoPage.vala:407
 #: ../ui/tweet-info-page.ui.h:3
 msgid "Follow"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:383
+#: ../src/TweetInfoPage.vala:370
 msgid "Retweets"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:384 ../src/FavoritesTimeline.vala:74
+#: ../src/TweetInfoPage.vala:371 ../src/FavoritesTimeline.vala:74
 #: ../src/FavoritesTimeline.vala:75
 msgid "Favorites"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:430
+#: ../src/TweetInfoPage.vala:417
 msgid "Open in Browser"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:430
+#: ../src/TweetInfoPage.vala:417
 msgid "Source"
 msgstr ""
 
