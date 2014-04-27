@@ -91,17 +91,23 @@ libcorebird_la_SOURCES =  \
 			$(libcorebird_la_VALASOURCES)
 
 corebird.vapi: libcorebird.la
+	touch Corebird.vala
+
+corebird.h: libcorebird.la
+	touch Corebird.vala
 
 libcorebird_la_LIBADD = @CB_LIBS@
+EXTRA_libcorebird_la_SOURCES = corebird.vapi corebird.h
 libcorebird_la_VALAFLAGS = --vapi=corebird.vapi --header corebird.h @CB_VALA_FLAGS@
 
-corebird${EXEEXT}: corebird.vapi
+
 corebird_SOURCES = main.vala resources.c
 corebird_LDADD = libcorebird.la @CB_LIBS@
+EXTRA_corebird_SOURCES = corebird.vapi
 corebird_VALAFLAGS = corebird.vapi @CB_VALA_FLAGS@
 
 resources.c: ../resources.xml ../ui/*.ui
 	$(GLIB_COMPILE_RESOURCES) ../resources.xml --target=resources.c --generate-source --sourcedir=../
 
-CLEANFILES = *.h *.c *.o *.stamp resources.c libcorebird.la corebird corebird.vapi
+CLEANFILES = *.h *.c *.o *.stamp resources.c libcorebird.la corebird corebird.vapi corebird.h
 #EXTRA_DIST = $(cb_resources_deps)
