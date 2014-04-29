@@ -63,8 +63,9 @@ public class Account : GLib.Object {
   public void init_proxy (bool load_secrets = true, bool force = false) {
     if (proxy != null && !force)
       return;
-    this.proxy = new Rest.OAuthProxy (Utils.decode (Utils.CONSUMER_KEY),
-                                      Utils.decode (Utils.CONSUMER_SECRET),
+
+    this.proxy = new Rest.OAuthProxy (Settings.get_consumer_key (),
+                                      Settings.get_consumer_secret (),
                                       "https://api.twitter.com/",
                                       false);
     this.user_stream = new UserStream ("@"+screen_name);

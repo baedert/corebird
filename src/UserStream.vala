@@ -75,8 +75,8 @@ public class UserStream : Object {
     this.account_name = account_name;
     debug ("CREATING USER STREAM FOR "+account_name);
     proxy = new Rest.OAuthProxy(
-          Utils.decode (Utils.CONSUMER_KEY),
-          Utils.decode (Utils.CONSUMER_SECRET),
+          Settings.get_consumer_key (),
+          Settings.get_consumer_secret (),
           "https://userstream.twitter.com/", //Url Format
           false
         );

@@ -16,10 +16,6 @@
  */
 
 namespace Utils {
-  const string CONSUMER_KEY = "MHJ2SExkYnpSVUxaZDVkejZYMVRVQQ==";
-  const string CONSUMER_SECRET = "b0dydmQ2NjU0bldMaHpMY0p5d1NXM3BsdFVma2hQNEJucmFQUFZOaEh0WQ==";
-
-
   /**
   * Parses a date given by Twitter in the form 'Wed Jun 20 19:01:28 +0000 2012'
   * and creates a GLib.DateTime in the local time zone to work with.
@@ -242,10 +238,6 @@ namespace Utils {
       return null;
     });
     yield;
-  }
-
-  string decode (string source) {
-    return (string)GLib.Base64.decode (source);
   }
 
   string unescape_html (string input) {

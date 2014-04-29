@@ -75,4 +75,12 @@ public class Settings : GLib.Object {
     settings.set_boolean ("sidebar-visible", !settings.get_boolean ("sidebar-visible"));
   }
 
+
+  public static string get_consumer_key () {
+    return settings.get_string ("consumer-key");
+  }
+
+  public static string get_consumer_secret () {
+    return settings.get_string ("consumer-secret");
+  }
 }
