@@ -7,13 +7,13 @@ AM_CPPFLAGS = $(CB_CFLAGS) \
 
 
 AUTOMAKE_OPTIONS = subdir-objects
-
+BUILT_SOURCES = libcorebird_la_vala.stamp
 
 bin_PROGRAMS = corebird
 noinst_LTLIBRARIES = libcorebird.la
 
-
-libcorebird_la_VALASOURCES = \
+# Sources {{{
+cb_sources = \
 			Corebird.vala \
 			MainWindow.vala \
 			Account.vala \
@@ -86,28 +86,26 @@ libcorebird_la_VALASOURCES = \
 			sql/Statement.vala \
 			sql/UpdateStatement.vala \
 			sql/SelectStatement.vala
+# }}}
 
-libcorebird_la_SOURCES =  \
-			$(libcorebird_la_VALASOURCES)
+corebird.vapi libcorebird_la_vala.stamp corebird.h: $(cb_sources)
+	@$(VALAC) $^ --vapi=corebird.vapi -C --header corebird.h @CB_VALA_FLAGS@
+	touch $@
 
-corebird.vapi: libcorebird.la
-	touch Corebird.vala
-
-corebird.h: libcorebird.la
-	touch Corebird.vala
+#corebird.h corebird.vapi: libcorebird_la_vala.stamp
 
 libcorebird_la_LIBADD = @CB_LIBS@
-EXTRA_libcorebird_la_SOURCES = corebird.vapi corebird.h
-libcorebird_la_VALAFLAGS = --vapi=corebird.vapi --header corebird.h @CB_VALA_FLAGS@
-
+libcorebird_la_VALASOURCES = $(cb_sources)
+libcorebird_la_SOURCES = libcorebird_la_vala.stamp \
+												 $(cb_sources:.vala=.c)
 
 corebird_SOURCES = main.vala resources.c
 corebird_LDADD = libcorebird.la @CB_LIBS@
-EXTRA_corebird_SOURCES = corebird.vapi
 corebird_VALAFLAGS = corebird.vapi @CB_VALA_FLAGS@
+main.vala: corebird.vapi corebird.h
+
 
 resources.c: ../resources.xml ../ui/*.ui
 	$(GLIB_COMPILE_RESOURCES) ../resources.xml --target=resources.c --generate-source --sourcedir=../
 
 CLEANFILES = *.h *.c *.o *.stamp resources.c libcorebird.la corebird corebird.vapi corebird.h
-#EXTRA_DIST = $(cb_resources_deps)

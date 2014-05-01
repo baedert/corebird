@@ -11,6 +11,7 @@ src/util/*.c
 *.la
 .dirstamp
 *.stamp
+*.stamp-t
 .deps
 Makefile.in
 m4/
