@@ -78,5 +78,14 @@
       <default>(0,0,500,300)</default>
       <summary>Size and position of the settings dialog</summary>
     </key>
+    <key type="s" name="consumer-key">
+      <default>"0rvHLdbzRULZd5dz6X1TUA"</default>
+      <summary>The application's oauth consumer key.</summary>
+    </key>
+    <key type="s" name="consumer-secret">
+      <default>"oGrvd6654nWLhzLcJywSW3pltUfkhP4BnraPPVNhHtY"</default>
+      <summary>The application's oauth consumer secret</summary>
+    </key>
+
   </schema>
 </schemalist>
