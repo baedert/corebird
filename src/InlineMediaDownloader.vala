@@ -229,7 +229,7 @@ namespace InlineMediaDownloader {
    */
   private Gdk.Pixbuf slice_pixbuf (Gdk.Pixbuf pic) {
     int x, y, w, h;
-    calc_thumb_rect (pic.get_width (), pic.get_height (), out x, out y, out w, out h);
+    Utils.calc_thumb_rect (pic.get_width (), pic.get_height (), out x, out y, out w, out h);
     var big_thumb = new Gdk.Pixbuf (Gdk.Colorspace.RGB, true, 8, w, h);
     pic.copy_area (x, y, w, h, big_thumb, 0, 0);
     var thumb = big_thumb.scale_simple (THUMB_SIZE, THUMB_SIZE, Gdk.InterpType.TILES);
@@ -258,30 +258,4 @@ namespace InlineMediaDownloader {
     return Dirs.cache (@"assets/media/thumbs/$(t.id)_$(t.user_id).png");
   }
 
-  /**
-   * Calculates the region of the image the thumbnail should be composed of.
-   *
-   * @param img_width  The width of the original image
-   * @param img_height The height of the original image
-   *
-   */
-  private void calc_thumb_rect (int img_width, int img_height,
-                                out int x, out int y, out int width, out int height) {
-    float ratio = img_width / (float)img_height;
-    if (ratio >= 0.9 && ratio <= 1.1) {
-      // it's more or less squared, so...
-      x = y = 0;
-      width = img_width;
-      height = img_height;
-    } else if (ratio > 1.1) {
-      // The image is pretty wide but not really high
-      x = (img_width/2) - (img_height/2);
-      y = 0;
-      width = height = img_height;
-    } else {
-      x = 0;
-      y = (img_height/2) - (img_width/2);
-      width = height = img_width;
-    }
-  }
 }
