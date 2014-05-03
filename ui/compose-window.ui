@@ -67,6 +67,9 @@
                   <object class="PixbufButton" id="media_image">
                     <property name="halign">center</property>
                     <property name="valign">start</property>
+                    <property name="width_request">48</property>
+                    <property name="height_request">48</property>
+                    <property name="margin_left">5</property>
                     <signal name="clicked" handler="media_image_clicked_cb" swapped="no" />
                   </object>
                 </child>
