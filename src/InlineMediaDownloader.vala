@@ -199,7 +199,7 @@ namespace InlineMediaDownloader {
       return;
     }
     var pic = anim.get_static_image ();
-    var thumb = slice_pixbuf (pic);
+    var thumb = Utils.slice_pixbuf (pic, THUMB_SIZE);
     yield Utils.write_pixbuf_async (thumb, thumb_out_stream, "png");
     fire_media_added (t, path, thumb, thumb_path);
   }
@@ -215,27 +215,10 @@ namespace InlineMediaDownloader {
       warning ("%s(%s)", e.message, path);
       return;
     }
-    var thumb = slice_pixbuf (pic);
+    var thumb = Utils.slice_pixbuf (pic, THUMB_SIZE);
     yield Utils.write_pixbuf_async (thumb, thumb_out_stream, "png");
     fire_media_added (t, path, thumb, thumb_path);
   }
-
-  /**
-   * Slices the given pixbuf to a smaller thumbnail image.
-   *
-   * @param pic The Gdk.Pixbuf to use as base image
-   *
-   * @return The created thumbnail
-   */
-  private Gdk.Pixbuf slice_pixbuf (Gdk.Pixbuf pic) {
-    int x, y, w, h;
-    Utils.calc_thumb_rect (pic.get_width (), pic.get_height (), out x, out y, out w, out h);
-    var big_thumb = new Gdk.Pixbuf (Gdk.Colorspace.RGB, true, 8, w, h);
-    pic.copy_area (x, y, w, h, big_thumb, 0, 0);
-    var thumb = big_thumb.scale_simple (THUMB_SIZE, THUMB_SIZE, Gdk.InterpType.TILES);
-    return thumb;
-  }
-
 
   private void fire_media_added(Tweet t, string path, Gdk.Pixbuf thumb,
                                 string thumb_path) {

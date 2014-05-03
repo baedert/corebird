@@ -276,8 +276,8 @@ namespace Utils {
    * @param img_height The height of the original image
    *
    */
-  private void calc_thumb_rect (int img_width, int img_height,
-                                out int x, out int y, out int width, out int height) {
+  public void calc_thumb_rect (int img_width, int img_height,
+                               out int x, out int y, out int width, out int height) {
     float ratio = img_width / (float)img_height;
     if (ratio >= 0.9 && ratio <= 1.1) {
       // it's more or less squared, so...
@@ -294,6 +294,21 @@ namespace Utils {
       y = (img_height/2) - (img_width/2);
       width = height = img_width;
     }
+  }
+  /**
+   * Slices the given pixbuf to a smaller thumbnail image.
+   *
+   * @param pic The Gdk.Pixbuf to use as base image
+   *
+   * @return The created thumbnail
+   */
+  public Gdk.Pixbuf slice_pixbuf (Gdk.Pixbuf pic, int thumb_size) {
+    int x, y, w, h;
+    Utils.calc_thumb_rect (pic.get_width (), pic.get_height (), out x, out y, out w, out h);
+    var big_thumb = new Gdk.Pixbuf (Gdk.Colorspace.RGB, true, 8, w, h);
+    pic.copy_area (x, y, w, h, big_thumb, 0, 0);
+    var thumb = big_thumb.scale_simple (thumb_size, thumb_size, Gdk.InterpType.TILES);
+    return thumb;
   }
 
 }
