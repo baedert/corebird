@@ -20,6 +20,9 @@ using Gtk;
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/compose-window.ui")]
 class ComposeTweetWindow : Gtk.ApplicationWindow {
+  private static const uint TARGET_STRING   = 1;
+  private static const uint TARGET_URI_LIST = 2;
+  private static const uint TARGET_IMAGE    = 3;
   public enum Mode {
     NORMAL,
     REPLY,
@@ -106,6 +109,65 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
         () => {send_tweet (); return true;});
 
     this.add_accel_group (ag);
+
+
+    // DND stuff
+    const Gtk.TargetEntry[] target_entries = {
+      {"STRING",          0,   TARGET_STRING},
+      {"text/plain",      0,   TARGET_STRING},
+      {"text/uri-list",   0,   TARGET_URI_LIST},
+      {"image/png",       0,   TARGET_IMAGE},
+      {"image/jpeg",      0,   TARGET_IMAGE},
+    };
+    Gtk.drag_dest_set (this, Gtk.DestDefaults.ALL, target_entries,
+                       Gdk.DragAction.COPY);
+    this.drag_data_received.connect (drag_data_received_cb);
+  }
+
+  private void drag_data_received_cb (Gdk.DragContext context, int x, int y,
+                                      Gtk.SelectionData selection_data,
+                                      uint info, uint time) {
+
+    if (media_count > Twitter.max_media_per_upload)
+      return;
+
+    if (info == TARGET_STRING) {
+      var uri = selection_data.get_text ().strip ();
+      message ("uri: %s", uri);
+      var file = GLib.File.new_for_uri (uri);
+      load_inline_media (file.get_path ());
+    } else if (info == TARGET_IMAGE) {
+      var pixbuf = selection_data.get_pixbuf ();
+      var thumb = Utils.slice_pixbuf (pixbuf, 48);
+      load_inline_media ("whyisthisevenneeded", false);
+      media_image.set_bg (thumb);
+    } else if (info == TARGET_URI_LIST) {
+      var uris = selection_data.get_uris ();
+      message ("uri: %s", uris[0]);
+      // TODO: Would be fun to allow using external images (drag a remot image
+      //       from your browser directly into your twitter client)
+      var file = GLib.File.new_for_uri (uris[0]);
+      if (file.get_uri_scheme () == "file")
+        load_inline_media (file.get_path ());
+    }
+  }
+
+  private void load_inline_media (string path, bool load = true) {
+    this.media_uri = path;
+    if (load) {
+      try {
+        var pixbuf = new Gdk.Pixbuf.from_file (path);
+        var thumb = Utils.slice_pixbuf (pixbuf, 48);
+        media_image.set_bg (thumb);
+      } catch (GLib.Error e){critical ("Loading scaled image: %s", e.message);}
+    }
+
+    media_count++;
+    media_image.set_visible (true);
+
+    if (media_count >= Twitter.max_media_per_upload) {
+      add_image_button.set_sensitive (false);
+    }
   }
 
   private void buffer_changed_cb () {
@@ -253,16 +315,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     });
     if (fcd.run () == ResponseType.ACCEPT) {
       string file = fcd.get_filename ();
-      this.media_uri = file;
-      try {
-        media_image.set_bg(new Gdk.Pixbuf.from_file_at_size (file, 40, 40));
-        media_count++;
-        media_image.set_visible(true);
-      } catch (GLib.Error e){critical ("Loading scaled image: %s", e.message);}
-
-      if (media_count >= Twitter.max_media_per_upload){
-        add_image_button.set_sensitive (false);
-      }
+      load_inline_media (file);
     }
     fcd.close ();
   }
