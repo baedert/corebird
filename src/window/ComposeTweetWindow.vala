@@ -133,7 +133,6 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
     if (info == TARGET_STRING) {
       var uri = selection_data.get_text ().strip ();
-      message ("uri: %s", uri);
       var file = GLib.File.new_for_uri (uri);
       load_inline_media (file.get_path ());
     } else if (info == TARGET_IMAGE) {
@@ -143,7 +142,6 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       media_image.set_bg (thumb);
     } else if (info == TARGET_URI_LIST) {
       var uris = selection_data.get_uris ();
-      message ("uri: %s", uris[0]);
       // TODO: Would be fun to allow using external images (drag a remot image
       //       from your browser directly into your twitter client)
       var file = GLib.File.new_for_uri (uris[0]);
