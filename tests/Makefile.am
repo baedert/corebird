@@ -6,7 +6,8 @@ TESTS = \
 				inthistory     \
 				usercounter    \
 				tweet_entities \
-				filters
+				filters        \
+				sql
 check_PROGRAMS = $(TESTS)
 
 tweet_length_SOURCES = tweet_length.vala
@@ -40,5 +41,10 @@ tweet_entities_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
 filters_SOURCES = filters.vala
 filters_LDADD = $(top_builddir)/src/libcorebird.la
 filters_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
+
+sql_SOURCES = sql.vala
+sql_LDADD = $(top_builddir)/src/libcorebird.la
+sql_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
+
 
 CLEANFILES = *.c
