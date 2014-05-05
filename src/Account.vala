@@ -217,7 +217,7 @@ public class Account : GLib.Object {
 
 
     foreach (Filter f in filters) {
-      if (f.matches (t.text)) {
+      if (f.matches (t.get_real_text ())) {
         return true;
       }
     }
