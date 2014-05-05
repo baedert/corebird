@@ -2,7 +2,7 @@
 *.trs
 *.stamp-t
 
-test.db
+_test.db
 
 tweet_length
 media
