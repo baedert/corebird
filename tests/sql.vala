@@ -1,8 +1,10 @@
 
 
+const string DB = "./_test.db";
+
 void normal () {
-  GLib.FileUtils.remove("./test.db");
-  var db = new Sql.Database ("./test.db", "./sql_init%d.sql");
+  GLib.FileUtils.remove(DB);
+  var db = new Sql.Database (DB, "./sql_init%d.sql");
   int user_version = 0;
   db.exec ("pragma user_version;", (n_cols, vals) => {
     user_version = int.parse(vals[0]);
@@ -14,8 +16,8 @@ void normal () {
 }
 
 void init_file_gap () {
-  GLib.FileUtils.remove("./test.db");
-  var db = new Sql.Database ("./test.db", "./_sql_init%d.sql");
+  GLib.FileUtils.remove(DB);
+  var db = new Sql.Database (DB, "./_sql_init%d.sql");
   int user_version = 0;
   db.exec ("pragma user_version;", (n_cols, vals) => {
     user_version = int.parse(vals[0]);
