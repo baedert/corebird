@@ -204,7 +204,7 @@ public class Account : GLib.Object {
       f.id = int.parse (cols[1]);
       filters.add (f);
       return true;
-     });
+    });
   }
 
   public void add_filter (owned Filter f) {
