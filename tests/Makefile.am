@@ -3,6 +3,7 @@ AM_CPPFLAGS = $(CB_CFLAGS) -I$(top_srcdir)/src
 TESTS = \
 				tweet_length   \
 				utils          \
+				media          \
 				inthistory     \
 				usercounter    \
 				tweet_entities \
