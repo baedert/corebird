@@ -1,8 +1,6 @@
 
 
 // {{{
-
-// TODO: Get tweet data. Real text + display text
 const string TD1 = """
 {
   "created_at" : "Mon May 05 06:48:32 +0000 2014",
@@ -287,6 +285,11 @@ void links () {
   // This should never match since we should be using the
   // 'real' url instead of the t.co shortened one.
   assert (!acc.filter_matches (tweet));
+
+  // ... which is also why it should match now
+  message (tweet.get_real_text ());
+  acc.add_filter (new Filter ("tmblr"));
+  assert (acc.filter_matches (tweet));
 }
 
 
