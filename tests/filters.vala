@@ -65,7 +65,7 @@ void links () {
   var parser = new Json.Parser ();
   var now = new GLib.DateTime.now_local ();
   try {
-    parser.load_from_data (TD);
+    parser.load_from_data (TD1);
   } catch (GLib.Error e) {
     critical (e.message);
     return;
