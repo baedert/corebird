@@ -18,7 +18,7 @@
 using Rest;
 using Gee;
 
-class Twitter : GLib.Object {
+public class Twitter : GLib.Object {
   private static Twitter twitter;
 
   public static new Twitter get () {

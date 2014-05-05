@@ -2,6 +2,8 @@
 *.trs
 *.stamp-t
 
+_test.db
+
 tweet_length
 media
 utils
@@ -9,3 +11,5 @@ inthistory
 usercounter
 hometimeline
 tweet_entities
+filters
+sql
