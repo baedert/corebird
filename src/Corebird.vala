@@ -27,7 +27,8 @@ public class Corebird : Gtk.Application {
     {"show-settings",     show_settings_activated         },
     {"quit",              quit_application                },
     {"show-about-dialog", about_activated                 },
-    {"show-dm-thread",    show_dm_thread,          "(sx)" }
+    {"show-dm-thread",    show_dm_thread,          "(sx)" },
+    {"mark-seen",         mark_seen,               "(sx)" }
   };
 
 
@@ -358,5 +359,13 @@ public class Corebird : Gtk.Application {
       warning ("Window for Account %s is not open, abort.", account_screen_name);
   }
 
+  private void mark_seen (GLib.SimpleAction a, GLib.Variant? value) {
+    string screen_name = value.get_child_value (0).get_string ();
+    int64 tweet_id = value.get_child_value (0).get_int64 ();
+    MainWindow main_window;
+    if (is_window_open_for_screen_name (screen_name, out main_window)) {
 
+    } else
+      warning ("No window for Account %s found", screen_name);
+  }
 }
