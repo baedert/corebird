@@ -63,7 +63,7 @@ class FavoritesTimeline : IMessageReceiver, DefaultTimeline {
     this.balance_next_upper_change (BOTTOM);
     main_window.start_progress ();
     this.loading = true;
-    this.load_older_internal.begin ("1.1/favorites/list.json", () => {
+    this.load_older_internal.begin (() => {
       this.loading = false;
       main_window.stop_progress ();
     });
