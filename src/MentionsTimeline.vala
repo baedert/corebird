@@ -94,7 +94,7 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
 
   public override void load_newest () {
     this.loading = true;
-    this.load_newest_internal.begin("1.1/statuses/mentions_timeline.json", () => {
+    this.load_newest_internal.begin (() => {
       this.loading = false;
     });
   }
