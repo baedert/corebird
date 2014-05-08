@@ -15,7 +15,7 @@ IT_PROG_INTLTOOL([0.40])
 
 
 # Vala Packages {{{
-pkg_modules="gtk+-3.0 >= 3.10
+pkg_modules="gtk+-3.0 >= 3.12
              glib-2.0 >= 2.40
              rest-0.7
              libsoup-2.4

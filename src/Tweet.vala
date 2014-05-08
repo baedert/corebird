@@ -141,7 +141,7 @@ public class Tweet : GLib.Object {
 
       Json.Array indices = url.get_array_member ("indices");
       expanded_url = expanded_url.replace("&", "&amp;");
-      this.urls.prepend(TweetUtils.Sequence() {
+      this.urls.prepend (TweetUtils.Sequence() {
         start = (int)indices.get_int_element (0),
         end   = (int)indices.get_int_element (1) ,
         url   = expanded_url,
@@ -210,7 +210,11 @@ public class Tweet : GLib.Object {
     }
 
 
-
+    this.urls.sort ((a, b) => {
+      if (a.start < b.start)
+        return -1;
+      return 1;
+    });
 
     var dt = new DateTime.from_unix_local(is_retweet ? rt_created_at : created_at);
     this.time_delta  = Utils.get_time_delta(dt, now);

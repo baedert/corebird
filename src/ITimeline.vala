@@ -37,9 +37,9 @@ public interface ITimeline : Gtk.Widget, IPage {
    *
    * @param function The twitter function to use
    */
-  protected async void load_newest_internal (string function) { //{{{
-    var call = account.proxy.new_call();
-    call.set_function(function);
+  protected async void load_newest_internal () { //{{{
+    var call = account.proxy.new_call ();
+    call.set_function (this.function);
     call.set_method("GET");
     call.add_param ("count", "28");
     call.add_param ("contributor_details", "true");
@@ -86,9 +86,9 @@ public interface ITimeline : Gtk.Widget, IPage {
    * @param function The Twitter function to use
    * @param tweet_type The type of tweets to load
    */
-  protected async void load_older_internal (string function) { //{{{
+  protected async void load_older_internal () { //{{{
     var call = account.proxy.new_call ();
-    call.set_function (function);
+    call.set_function (this.function);
     call.set_method ("GET");
     call.add_param ("count", "28");
     call.add_param ("include_my_retweet", "true");

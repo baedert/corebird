@@ -42,24 +42,19 @@ namespace TweetUtils {
   string get_formatted_text (string tweet_text, GLib.SList<Sequence?> urls) { // {{{
     string formatted_text = tweet_text;
     int char_diff = 0;
-    urls.sort ((a, b) => {
-      if (a.start < b.start)
-        return -1;
-      return 1;
-    });
+
     foreach (Sequence s in urls) {
       int length_before = formatted_text.char_count ();
       int from = formatted_text.index_of_nth_char (s.start + char_diff);
       int to   = formatted_text.index_of_nth_char (s.end + char_diff);
-      var html_url = s.url.replace("&", "&amp;");
       string? title = null;
       if (s.title != null) {
         title = s.title.replace ("&", "&amp;amp;");
       } else
-        title = html_url;
+        title = s.url.replace ("&", "&amp;");
 
       formatted_text = formatted_text.splice (from, to,
-           "<span underline='none'><a href=\"%s\" title=\"%s\">%s</a></span>".printf(html_url,
+           "<span underline='none'><a href=\"%s\" title=\"%s\">%s</a></span>".printf(s.url,
                                                        title,
                                                        s.display_url.replace ("&", "&amp;")));
       char_diff += formatted_text.char_count () - length_before;
@@ -81,11 +76,7 @@ namespace TweetUtils {
   public string get_real_text (string tweet_text, GLib.SList<Sequence?> urls) {
     string formatted_text = tweet_text;
     int char_diff = 0;
-    urls.sort ((a, b) => {
-      if (a.start < b.start)
-        return -1;
-      return 1;
-    });
+
     foreach (Sequence s in urls) {
       if (s.visual_display_url)
         continue;

@@ -363,7 +363,7 @@ class TweetInfoPage : IPage , ScrollWidget {
       time_format += " via " + with;
     }
 
-    text_label.label = "<b><big><big><big>"+tweet.get_formatted_text ()+"</big></big></big></b>";
+    text_label.label = tweet.get_formatted_text ();
     name_button.label = tweet.user_name;
     screen_name_label.label = "@" + tweet.screen_name;
     avatar_image.pixbuf = tweet.avatar;

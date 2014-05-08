@@ -60,10 +60,11 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
 
     this.balance_next_upper_change (TOP);
 
-    var entry = new TweetListEntry(t, main_window, account);
-    entry.seen = this.scrolled_up  &&
-                 main_window.cur_page_id == this.id &&
-                 (t.user_id == account.id || auto_scroll);
+    var entry = new TweetListEntry (t, main_window, account);
+    entry.seen =  t.user_id == account.id ||
+                  (this.scrolled_up  &&
+                   main_window.cur_page_id == this.id &&
+                   auto_scroll);
 
     delta_updater.add (entry);
     tweet_list.add(entry);
@@ -108,7 +109,7 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
 
   public override void load_newest () {
     this.loading = true;
-    this.load_newest_internal.begin ("1.1/statuses/home_timeline.json",  () => {
+    this.load_newest_internal.begin (() => {
       this.loading = false;
     });
   }
@@ -117,7 +118,7 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
     this.balance_next_upper_change (BOTTOM);
     main_window.start_progress ();
     this.loading = true;
-    this.load_older_internal.begin ("1.1/statuses/home_timeline.json", () => {
+    this.load_older_internal.begin (() => {
       this.loading = false;
       main_window.stop_progress ();
     });
