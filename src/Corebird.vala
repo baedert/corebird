@@ -67,6 +67,7 @@ public class Corebird : Gtk.Application {
       return -1;
     }
 
+    init_log_files ();
 
     this.add_accelerator (Settings.get_accel ("compose-tweet"), "win.compose_tweet", null);
     this.add_accelerator (Settings.get_accel ("toggle-sidebar"), "win.toggle_sidebar", null);
@@ -95,7 +96,6 @@ public class Corebird : Gtk.Application {
       //gtk_s.gtk_decoration_layout = gtk_s.gtk_decoration_layout.replace ("menu", "");
     //}
 
-    init_log_files ();
     this.release ();
     return 0;
   }
@@ -340,7 +340,7 @@ public class Corebird : Gtk.Application {
       //}
     //}
 
-#if !__DEV
+#if !DEBUG
     if (flags != LogLevelFlags.LEVEL_DEBUG)
 #endif
       stdout.printf (out_string);
@@ -361,10 +361,10 @@ public class Corebird : Gtk.Application {
 
   private void mark_seen (GLib.SimpleAction a, GLib.Variant? value) {
     string screen_name = value.get_child_value (0).get_string ();
-    int64 tweet_id = value.get_child_value (0).get_int64 ();
+    int64 tweet_id = value.get_child_value (1).get_int64 ();
     MainWindow main_window;
     if (is_window_open_for_screen_name (screen_name, out main_window)) {
-
+      message ("Mark as read...");
     } else
       warning ("No window for Account %s found", screen_name);
   }
