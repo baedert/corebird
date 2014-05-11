@@ -96,9 +96,9 @@
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="margin_top">5</property>
-                <property name="margin_bottom">2</property>
+                <property name="margin_bottom">0</property>
                 <property name="halign">start</property>
-                <property name="valign">start</property>
+                <property name="valign">end</property>
                 <property name="hexpand">True</property>
                 <signal name="clicked" handler="name_button_clicked_cb" swapped="no"/>
                 <style>
@@ -118,12 +118,12 @@
               <object class="GtkLabel" id="screen_name_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="margin_top">2</property>
+                <property name="margin_top">0</property>
                 <property name="margin_bottom">2</property>
                 <property name="xalign">0</property>
                 <property name="label">label</property>
                 <property name="halign">start</property>
-                <property name="valign">start</property>
+                <property name="valign">fill</property>
                 <style>
                   <class name="dim-label"/>
                 </style>
@@ -221,7 +221,7 @@
               <packing>
                 <property name="left_attach">0</property>
                 <property name="top_attach">5</property>
-                <property name="width">5</property>
+                <property name="width">6</property>
               </packing>
             </child>
 
