@@ -28,7 +28,8 @@ public class Corebird : Gtk.Application {
     {"quit",              quit_application                },
     {"show-about-dialog", about_activated                 },
     {"show-dm-thread",    show_dm_thread,          "(sx)" },
-    {"mark-seen",         mark_seen,               "(sx)" }
+    {"mark-seen",         mark_seen,               "(sx)" },
+    {"show-window",       show_window,             "s"    }
   };
 
 
@@ -367,5 +368,14 @@ public class Corebird : Gtk.Application {
       message ("Mark as read...");
     } else
       warning ("No window for Account %s found", screen_name);
+  }
+
+  private void show_window (GLib.SimpleAction a, GLib.Variant? value) {
+    string screen_name = value.get_string ();
+    MainWindow main_window;
+    if (is_window_open_for_screen_name (screen_name, out main_window))
+      main_window.present ();
+    else
+      warning ("TODO: Implement");
   }
 }

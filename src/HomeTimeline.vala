@@ -88,7 +88,7 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
     } else if(stack_size != 0 && unread_count % stack_size == 0
               && unread_count > 0) {
       string summary = _("%d new Tweets!").printf (unread_count);
-      NotificationManager.notify (summary);
+      NotificationManager.notify (account, summary);
     }
   } // }}}
 
@@ -101,7 +101,7 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
     } else {
       summary = _("%s tweeted").printf(t.user_name);
     }
-    NotificationManager.notify (summary, t.get_real_text (),
+    NotificationManager.notify (account, summary, t.get_real_text (),
                                 Dirs.cache ("assets/avatars/" + t.avatar_name));
 
   }
