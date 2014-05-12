@@ -16,7 +16,9 @@
  */
 
 namespace NotificationManager {
-  public void notify (string summary, string body = "",
+  public void notify (Account acc,
+                      string  summary,
+                      string  body = "",
                       string? icon = null) {
 
     var n = new GLib.Notification (summary);
@@ -29,6 +31,9 @@ namespace NotificationManager {
         warning (e.message);
       }
     }
+    /* Default action: just bring the appropriate window
+       to front */
+    n.set_default_action_and_target_value ("app.show-window", acc.screen_name);
     GLib.Application.get_default ().send_notification (null, n);
   }
 }
