@@ -179,7 +179,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     tweet_text.buffer.get_end_iter(out end);
     string text = tweet_text.buffer.get_text(start, end, true);
 
-    int length = TweetUtils.calc_tweet_length (text);
+    int length = TweetUtils.calc_tweet_length (text, (int)media_count);
 
     length_label.label = (Tweet.MAX_LENGTH - length).to_string ();
     if (length > 0 && length <= Tweet.MAX_LENGTH)

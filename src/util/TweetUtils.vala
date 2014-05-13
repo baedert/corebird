@@ -245,9 +245,10 @@ namespace TweetUtils {
    * @return The length of the tweet, taking Twitter's rules for
    *         tweet length into account.
    */
-  public int calc_tweet_length (string text) {
+  public int calc_tweet_length (string text, int media_count = 0) {
     string[] words = text.split (" ");
     int length = 0;
+
 
     foreach (string s in words) {
       if (s.has_prefix ("http://") || s.has_prefix ("www."))
@@ -261,9 +262,13 @@ namespace TweetUtils {
     // Don't forget the n-1 whitespaces
     length += words.length - 1;
 
+
     if (length < 0) {
-      return 0;
+      return Twitter.short_url_length_https * media_count;
     }
+
+    length += Twitter.short_url_length_https * media_count;
+
     return length;
   }
 

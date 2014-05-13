@@ -26,12 +26,31 @@ void https_link () {
   assert (l == 23);
 }
 
+
+void media () {
+  string text = "";
+  int l = TweetUtils.calc_tweet_length (text, 1);
+  message ("media length: %d", l);
+  assert (l == Twitter.short_url_length_https);
+}
+
+
+void media_text () {
+  string text = "0123456789 012345678";
+  int l = TweetUtils.calc_tweet_length (text, 1);
+  message ("media length: %d", l);
+  assert (l == Twitter.short_url_length_https + 20);
+}
+
+
 int main (string[] args) {
   GLib.Test.init (ref args);
   GLib.Test.add_func ("/tweet-length/normal", normal);
   GLib.Test.add_func ("/tweet-length/empty", empty);
   GLib.Test.add_func ("/tweet-length/http-link", http_link);
   GLib.Test.add_func ("/tweet-length/https-link", https_link);
+  GLib.Test.add_func ("/tweet-length/media", media);
+  GLib.Test.add_func ("/tweet-length/media-text", media_text);
 
 
   return GLib.Test.run ();
