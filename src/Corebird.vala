@@ -93,9 +93,9 @@ public class Corebird : Gtk.Application {
       gtk_s.gtk_application_prefer_dark_theme = true;
     }
 
-    //if (gtk_s.gtk_decoration_layout.contains ("menu")) {
-      //gtk_s.gtk_decoration_layout = gtk_s.gtk_decoration_layout.replace ("menu", "");
-    //}
+    if (gtk_s.gtk_decoration_layout.contains ("menu")) {
+      gtk_s.gtk_decoration_layout = gtk_s.gtk_decoration_layout.replace ("menu", "");
+    }
 
     this.release ();
     return 0;
