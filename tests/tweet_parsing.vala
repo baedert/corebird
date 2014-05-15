@@ -243,6 +243,12 @@ void retweet () {
   assert (t.mentions.length == 0);
   assert (t.rt_by_screen_name == "Frozenbyte");
   assert (t.user_name == "Black Forest Games");
+  assert (!t.favorited);
+  assert (!t.retweeted);
+  assert (!t.verified);
+  assert (t.reply_id == 0);
+  assert (t.my_retweet == 0);
+  assert (!t.has_inline_media);
 }
 
 
