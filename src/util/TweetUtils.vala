@@ -249,19 +249,12 @@ namespace TweetUtils {
     string[] words = text.split (" ");
     int length = 0;
 
-
     foreach (string s in words) {
-      if (s.has_prefix ("http://") || s.has_prefix ("www."))
-        length += Twitter.short_url_length;
-      else if (s.has_prefix ("https://"))
-        length += Twitter.short_url_length_https;
-      else
-        length += s.char_count ();
+      length += get_word_length (s);
     }
 
     // Don't forget the n-1 whitespaces
     length += words.length - 1;
-
 
     if (length < 0) {
       return Twitter.short_url_length_https * media_count;
@@ -270,6 +263,23 @@ namespace TweetUtils {
     length += Twitter.short_url_length_https * media_count;
 
     return length;
+  }
+
+  private int get_word_length (string s) {
+    if (s.has_prefix ("www.") || s.has_prefix ("http://"))
+      return Twitter.short_url_length;
+
+    if (s.has_prefix ("https://"))
+      return Twitter.short_url_length_https;
+
+    if (s.has_suffix (".com") ||
+        s.has_suffix (".org") ||
+        s.has_suffix (".net") ||
+        s.has_suffix (".xxx") ||
+        s.has_suffix (".sexy"))
+      return Twitter.short_url_length; // Default to HTTP
+
+    return s.length;
   }
 
   bool activate_link (string uri, MainWindow window) {

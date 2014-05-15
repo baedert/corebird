@@ -43,6 +43,14 @@ void media_text () {
 }
 
 
+
+void tld1 () {
+  string text = "google.com";
+  int l = TweetUtils.calc_tweet_length (text);
+  message ("tld1 length: %d", l);
+  assert (l == Twitter.short_url_length);
+}
+
 int main (string[] args) {
   GLib.Test.init (ref args);
   GLib.Test.add_func ("/tweet-length/normal", normal);
@@ -51,6 +59,7 @@ int main (string[] args) {
   GLib.Test.add_func ("/tweet-length/https-link", https_link);
   GLib.Test.add_func ("/tweet-length/media", media);
   GLib.Test.add_func ("/tweet-length/media-text", media_text);
+  GLib.Test.add_func ("/tweet-length/tld1", tld1);
 
 
   return GLib.Test.run ();
