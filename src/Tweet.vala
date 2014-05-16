@@ -58,6 +58,7 @@ public class Tweet : GLib.Object {
   public string media_thumb;
   public signal void inline_media_added(Gdk.Pixbuf? media);
   public bool has_inline_media = false;
+  public string original_media_url;
 
   /** if the json from twitter has inline media **/
   private GLib.SList<TweetUtils.Sequence?> urls;

@@ -118,7 +118,7 @@ namespace InlineMediaDownloader {
       // the thumbnail does not exist, right?
       if (main_file_exists) {
         var in_stream = GLib.File.new_for_path (path).read ();
-        yield load_normal_media (t, in_stream, thumb_out_stream, path, thumb_path);
+        yield load_normal_media (t, in_stream, thumb_out_stream, path, thumb_path, url);
         return;
       }
     } catch (GLib.Error e) {
@@ -126,7 +126,7 @@ namespace InlineMediaDownloader {
         if (main_file_exists) {
           try {
             var thumb = new Gdk.Pixbuf.from_file (thumb_path);
-            fire_media_added (t, path, thumb, thumb_path);
+            fire_media_added (t, path, thumb, thumb_path, url);
           } catch (GLib.Error e) {
             critical (e.message);
           }
@@ -170,11 +170,11 @@ namespace InlineMediaDownloader {
         var ms  = new MemoryInputStream.from_data(_msg.response_body.data, null);
         media_out_stream.write_all (_msg.response_body.data, null, null);
         if(ext == "gif"){
-          load_animation.begin (t, ms, thumb_out_stream, path, thumb_path, () => {
+          load_animation.begin (t, ms, thumb_out_stream, path, thumb_path, url, () => {
             callback ();
           });
         } else {
-          load_normal_media.begin (t, ms, thumb_out_stream, path, thumb_path, () => {
+          load_normal_media.begin (t, ms, thumb_out_stream, path, thumb_path, url, () => {
             callback ();
           });
         }
@@ -190,7 +190,7 @@ namespace InlineMediaDownloader {
   private async void load_animation (Tweet t,
                                      MemoryInputStream in_stream,
                                      OutputStream thumb_out_stream,
-                                     string path, string thumb_path) {
+                                     string path, string thumb_path, string url) {
     Gdk.PixbufAnimation anim;
     try {
       anim = yield new Gdk.PixbufAnimation.from_stream_async (in_stream, null);
@@ -201,13 +201,13 @@ namespace InlineMediaDownloader {
     var pic = anim.get_static_image ();
     var thumb = Utils.slice_pixbuf (pic, THUMB_SIZE);
     yield Utils.write_pixbuf_async (thumb, thumb_out_stream, "png");
-    fire_media_added (t, path, thumb, thumb_path);
+    fire_media_added (t, path, thumb, thumb_path, url);
   }
 
   private async void load_normal_media (Tweet t,
                                         GLib.InputStream in_stream,
                                         OutputStream thumb_out_stream,
-                                        string path, string thumb_path) {
+                                        string path, string thumb_path, string url) {
     Gdk.Pixbuf pic = null;
     try {
       pic = yield new Gdk.Pixbuf.from_stream_async (in_stream, null);
@@ -217,15 +217,16 @@ namespace InlineMediaDownloader {
     }
     var thumb = Utils.slice_pixbuf (pic, THUMB_SIZE);
     yield Utils.write_pixbuf_async (thumb, thumb_out_stream, "png");
-    fire_media_added (t, path, thumb, thumb_path);
+    fire_media_added (t, path, thumb, thumb_path, url);
   }
 
   private void fire_media_added(Tweet t, string path, Gdk.Pixbuf thumb,
-                                string thumb_path) {
+                                string thumb_path, string media_url) {
     t.media = path;
     t.media_thumb = thumb_path;
     t.inline_media = thumb;
     t.inline_media_added(thumb);
+    t.original_media_url = media_url;
   }
 
   public string get_media_path (Tweet t, string url) {

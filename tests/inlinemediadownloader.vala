@@ -65,6 +65,7 @@ void normal_download () {
     assert (t.inline_media != null);
     assert (GLib.FileUtils.test (t.media, GLib.FileTest.EXISTS));
     assert (t.media == media_path);
+    assert (t.original_media_url == url);
     main_loop.quit ();
   });
 
@@ -87,6 +88,7 @@ void animation_download () {
     assert (t.inline_media != null);
     assert (GLib.FileUtils.test (t.media, GLib.FileTest.EXISTS));
     assert (t.media == media_path);
+    assert (t.original_media_url == url);
 
     main_loop.quit ();
   });
