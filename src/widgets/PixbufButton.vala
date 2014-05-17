@@ -15,33 +15,59 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
-
 /**
  * A button with the given pixbuf as background.
  */
-class PixbufButton : Button {
+class PixbufButton : Gtk.Button {
   private Gdk.Pixbuf bg;
+  private Gtk.Menu menu;
+  private string menu_string;
 
   construct {
     this.border_width = 0;
-    get_style_context().add_class("pixbuf-button");
+    get_style_context ().add_class ("pixbuf-button");
   }
 
-  public override bool draw(Cairo.Context c){
-    if(bg != null){
-      StyleContext context = this.get_style_context();
-      context.render_icon(c, bg, 0, 0);
+  public PixbufButton (bool show_menu = false, string? menu_string = null) {
+    if (show_menu) {
+      this.button_press_event.connect (button_release_cb);
+      this.menu_string = menu_string;
     }
+  }
 
-    // The css-styled background should be transparent.
-    base.draw(c);
+  private bool button_release_cb (Gdk.EventButton evt) {
+    if (evt.button == Gdk.BUTTON_SECONDARY) {
+      menu = new Gtk.Menu ();
+      var source_link_item = new Gtk.MenuItem.with_label (_("Copy link"));
+      source_link_item.activate.connect (source_link_item_activate_cb);
+      menu.add (source_link_item);
+      menu.show_all ();
+      menu.popup (null, null, null, evt.button, evt.time);
+      return true;
+    }
     return false;
   }
 
-  public void set_bg(Gdk.Pixbuf bg){
+  private void source_link_item_activate_cb () {
+    Gtk.Clipboard clipboard = Gtk.Clipboard.get_for_display (Gdk.Display.get_default (),
+                                                             Gdk.SELECTION_CLIPBOARD);
+    clipboard.set_text (menu_string, -1);
+  }
+
+  public override bool draw (Cairo.Context c) {
+    if (bg != null) {
+      Gtk.StyleContext context = this.get_style_context ();
+      context.render_icon (c, bg, 0, 0);
+    }
+
+    // The css-styled background should be transparent.
+    base.draw (c);
+    return false;
+  }
+
+  public void set_bg (Gdk.Pixbuf bg){
     this.bg = bg;
-    this.set_size_request(bg.get_width(), bg.get_height());
-    this.queue_draw();
+    this.set_size_request (bg.get_width(), bg.get_height());
+    this.queue_draw ();
   }
 }

@@ -131,7 +131,7 @@ public class TweetListEntry : ITwitterItem, ListBoxRow {
     tweet.inline_media_added.connect (inline_media_added_cb);
 
     if (tweet.media_thumb != null) {
-      var inline_button = new PixbufButton ();
+      var inline_button = new PixbufButton (true, tweet.original_media_url);
       try {
         inline_button.set_bg (new Gdk.Pixbuf.from_file (tweet.media_thumb));
       } catch (GLib.Error e) {
@@ -184,7 +184,7 @@ public class TweetListEntry : ITwitterItem, ListBoxRow {
   }
 
   private void inline_media_added_cb (Gdk.Pixbuf? pic) {
-    var inline_button = new PixbufButton ();
+    var inline_button = new PixbufButton (true, tweet.original_media_url);
     inline_button.set_bg (pic);
     grid.attach (inline_button, 5, 1, 2, 1);
     inline_button.valign = Align.START;
