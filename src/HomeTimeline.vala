@@ -37,10 +37,14 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
       delete_tweet (id);
     } else if (type == StreamMessageType.EVENT_FAVORITE) {
       int64 id = root.get_object ().get_object_member ("target_object").get_int_member ("id");
-      toggle_favorite (id, true);
+      int64 source_id = root.get_object ().get_object_member ("source").get_int_member ("id");
+      if (source_id == account.id)
+        toggle_favorite (id, true);
     } else if (type == StreamMessageType.EVENT_UNFAVORITE) {
       int64 id = root.get_object ().get_object_member ("target_object").get_int_member ("id");
-      toggle_favorite (id, false);
+      int64 source_id = root.get_object ().get_object_member ("source").get_int_member ("id");
+      if (source_id == account.id)
+        toggle_favorite (id, false);
     }
   } // }}}
 
