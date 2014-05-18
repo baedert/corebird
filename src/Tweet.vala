@@ -177,6 +177,9 @@ public class Tweet : GLib.Object {
         this.mentions[real_mentions] = "@" + screen_name;
         real_mentions ++;
       }
+      string name = mention.get_string_member ("name");
+      int64 id = mention.get_int_member ("id");
+      account.user_counter.user_seen (id, screen_name, name);
       this.urls.prepend(TweetUtils.Sequence(){
         start = (int)indices.get_int_element (0),
         end   = (int)indices.get_int_element (1),
