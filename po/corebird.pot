@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-26 07:57+0200\n"
+"POT-Creation-Date: 2014-05-18 10:12+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,11 +17,11 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/window/ComposeTweetWindow.vala:217 ../ui/compose-window.ui.h:3
+#: ../src/window/ComposeTweetWindow.vala:278 ../ui/compose-window.ui.h:3
 msgid "Select Image"
 msgstr ""
 
-#: ../src/window/ComposeTweetWindow.vala:218
+#: ../src/window/ComposeTweetWindow.vala:279
 #: ../src/window/UserListDialog.vala:44 ../src/window/ImageDialog.vala:112
 #: ../ui/compose-window.ui.h:4 ../ui/remove-account-dialog.ui.h:1
 #: ../ui/list-list-entry.ui.h:1 ../ui/list-statuses-page.ui.h:8
@@ -29,7 +29,7 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: ../src/window/ComposeTweetWindow.vala:219
+#: ../src/window/ComposeTweetWindow.vala:280
 msgid "Choose"
 msgstr ""
 
@@ -65,22 +65,26 @@ msgstr ""
 msgid "Wrong PIN"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:89
+#: ../src/widgets/PixbufButton.vala:41
+msgid "Copy link"
+msgstr ""
+
+#: ../src/HomeTimeline.vala:94
 #, c-format
 msgid "%d new Tweets!"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:99
+#: ../src/HomeTimeline.vala:104
 #, c-format
 msgid "%s retweeted %s"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:101
+#: ../src/HomeTimeline.vala:106
 #, c-format
 msgid "%s tweeted"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:128 ../src/HomeTimeline.vala:129
+#: ../src/HomeTimeline.vala:133 ../src/HomeTimeline.vala:134
 msgid "Home"
 msgstr ""
 
@@ -138,16 +142,16 @@ msgstr ""
 msgid "Source"
 msgstr ""
 
-#: ../src/util/Utils.vala:73
+#: ../src/util/Utils.vala:69
 msgid "Now"
 msgstr ""
 
-#: ../src/util/Utils.vala:75
+#: ../src/util/Utils.vala:71
 #, c-format
 msgid "%dm"
 msgstr ""
 
-#: ../src/util/Utils.vala:79
+#: ../src/util/Utils.vala:75
 #, c-format
 msgid "%dh"
 msgstr ""
@@ -157,16 +161,16 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: ../src/Corebird.vala:149
+#: ../src/Corebird.vala:151
 msgid "Open Account"
 msgstr ""
 
-#: ../src/MentionsTimeline.vala:87
+#: ../src/MentionsTimeline.vala:94
 #, c-format
 msgid "New Mention from @%s"
 msgstr ""
 
-#: ../src/MentionsTimeline.vala:119 ../src/MentionsTimeline.vala:120
+#: ../src/MentionsTimeline.vala:129 ../src/MentionsTimeline.vala:130
 msgid "Mentions"
 msgstr ""
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-20 22:06+0200\n"
+"POT-Creation-Date: 2014-05-18 10:12+0200\n"
 "PO-Revision-Date: 2014-04-05 07:28+0000\n"
 "Last-Translator: Keops1984 <nosfe1984@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/corebird/"
@@ -19,11 +19,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../src/window/ComposeTweetWindow.vala:217 ../ui/compose-window.ui.h:3
+#: ../src/window/ComposeTweetWindow.vala:278 ../ui/compose-window.ui.h:3
 msgid "Select Image"
 msgstr "Seleccionar Imagen"
 
-#: ../src/window/ComposeTweetWindow.vala:218
+#: ../src/window/ComposeTweetWindow.vala:279
 #: ../src/window/UserListDialog.vala:44 ../src/window/ImageDialog.vala:112
 #: ../ui/compose-window.ui.h:4 ../ui/remove-account-dialog.ui.h:1
 #: ../ui/list-list-entry.ui.h:1 ../ui/list-statuses-page.ui.h:8
@@ -31,7 +31,7 @@ msgstr "Seleccionar Imagen"
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: ../src/window/ComposeTweetWindow.vala:219
+#: ../src/window/ComposeTweetWindow.vala:280
 msgid "Choose"
 msgstr "Elegir"
 
@@ -67,22 +67,26 @@ msgstr ""
 msgid "Wrong PIN"
 msgstr "Pin Erroneo"
 
-#: ../src/HomeTimeline.vala:89
+#: ../src/widgets/PixbufButton.vala:41
+msgid "Copy link"
+msgstr ""
+
+#: ../src/HomeTimeline.vala:94
 #, c-format
 msgid "%d new Tweets!"
 msgstr "%d Nuevos Tuits"
 
-#: ../src/HomeTimeline.vala:99
+#: ../src/HomeTimeline.vala:104
 #, c-format
 msgid "%s retweeted %s"
 msgstr "%s retuiteado %s"
 
-#: ../src/HomeTimeline.vala:101
+#: ../src/HomeTimeline.vala:106
 #, c-format
 msgid "%s tweeted"
 msgstr "%s tuiteado"
 
-#: ../src/HomeTimeline.vala:128 ../src/HomeTimeline.vala:129
+#: ../src/HomeTimeline.vala:133 ../src/HomeTimeline.vala:134
 msgid "Home"
 msgstr "Inicio"
 
@@ -105,51 +109,51 @@ msgstr "(%d sin leer)"
 msgid "Lists"
 msgstr "Listas"
 
-#: ../src/ProfilePage.vala:274
+#: ../src/ProfilePage.vala:275
 msgid "Protected profile"
 msgstr "perfil protegido"
 
-#: ../src/ProfilePage.vala:456
+#: ../src/ProfilePage.vala:457
 #, c-format
 msgid "Tweet to @%s"
 msgstr ""
 
-#: ../src/ProfilePage.vala:585 ../src/TweetInfoPage.vala:416
+#: ../src/ProfilePage.vala:586 ../src/TweetInfoPage.vala:403
 msgid "Unfollow"
 msgstr "Dejar de seguir"
 
-#: ../src/ProfilePage.vala:589 ../src/TweetInfoPage.vala:420
+#: ../src/ProfilePage.vala:590 ../src/TweetInfoPage.vala:407
 #: ../ui/tweet-info-page.ui.h:3
 msgid "Follow"
 msgstr "Seguir"
 
-#: ../src/TweetInfoPage.vala:383
+#: ../src/TweetInfoPage.vala:370
 msgid "Retweets"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:384 ../src/FavoritesTimeline.vala:74
+#: ../src/TweetInfoPage.vala:371 ../src/FavoritesTimeline.vala:74
 #: ../src/FavoritesTimeline.vala:75
 msgid "Favorites"
 msgstr "Favoritos"
 
-#: ../src/TweetInfoPage.vala:430
+#: ../src/TweetInfoPage.vala:417
 msgid "Open in Browser"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:430
+#: ../src/TweetInfoPage.vala:417
 msgid "Source"
 msgstr ""
 
-#: ../src/util/Utils.vala:73
+#: ../src/util/Utils.vala:69
 msgid "Now"
 msgstr "Ahora"
 
-#: ../src/util/Utils.vala:75
+#: ../src/util/Utils.vala:71
 #, c-format
 msgid "%dm"
 msgstr "%dm"
 
-#: ../src/util/Utils.vala:79
+#: ../src/util/Utils.vala:75
 #, c-format
 msgid "%dh"
 msgstr "%dh"
@@ -159,16 +163,16 @@ msgstr "%dh"
 msgid "Search"
 msgstr "Buscar"
 
-#: ../src/Corebird.vala:149
+#: ../src/Corebird.vala:151
 msgid "Open Account"
 msgstr ""
 
-#: ../src/MentionsTimeline.vala:87
+#: ../src/MentionsTimeline.vala:94
 #, c-format
 msgid "New Mention from @%s"
 msgstr ""
 
-#: ../src/MentionsTimeline.vala:119 ../src/MentionsTimeline.vala:120
+#: ../src/MentionsTimeline.vala:129 ../src/MentionsTimeline.vala:130
 msgid "Mentions"
 msgstr "Menciones"
 
