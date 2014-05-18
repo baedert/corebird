@@ -27,7 +27,7 @@ EXTRA_DIST = \
 						 org.baedert.corebird.desktop.in \
 						 $(desktop_in_files) \
 						 $(appdata_in_files) \
-						 org.baedert.corebird.gschema.xml \
+						 org.baedert.corebird.gschema.xml.in \
 						 $(manpage_DATA)
 
 DISTCLEANFILES = \
