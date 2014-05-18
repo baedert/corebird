@@ -109,4 +109,5 @@ resources.c: $(top_srcdir)/resources.xml $(top_srcdir)/ui/*.ui
 	$(GLIB_COMPILE_RESOURCES) $(top_srcdir)/resources.xml --target=resources.c --generate-source --sourcedir=$(top_srcdir)
 
 CLEANFILES = *.h *.c *.o *.stamp resources.c libcorebird.la corebird corebird.vapi corebird.h
-EXTRA_DIST = $(cb_sources)
+EXTRA_DIST = $(cb_sources) \
+						 corebird.h
