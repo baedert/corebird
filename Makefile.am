@@ -1,7 +1,6 @@
 ACLOCAL_AMFLAGS = -I m4 ${ACLOCAL_FLAGS}
 
 SUBDIRS = src ui data assets po tests sql
-DIST_SUBDIRS = data assets
 EXTRA_DIST = config.rpath  \
 						 intltool-extract.in \
 						 intltool-merge.in \
@@ -14,7 +13,4 @@ DISTCLEANFILES = \
 								 po/.intltool-merge-cache
 
 AUTOMAKE_OPTIONS = subdir-objects
-
-
-
-
+EXTRA_DIST = resources.xml

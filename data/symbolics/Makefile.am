@@ -16,3 +16,4 @@ symbolics_DATA = \
 								corebird-filter-symbolic.svg       \
 								corebird-favorite-symbolic.svg     \
 								corebird-down-symbolic.svg
+EXTRA_DIST = $(symbolics_DATA)

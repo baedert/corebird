@@ -32,8 +32,8 @@ CB_VALA_FLAGS=" \
   --pkg libsoup-2.4 \
   --pkg glib-2.0 \
   --target-glib=2.38 \
-  --gresources=../resources.xml \
-  --vapidir=../vapi/ \
+  --gresources=\$(top_srcdir)/resources.xml \
+  --vapidir=\$(top_srcdir)/vapi/ \
   --thread \
   --enable-checking"
 # }}}
