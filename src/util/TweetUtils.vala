@@ -20,6 +20,13 @@
 
 
 namespace TweetUtils {
+  private static const string[] DOMAINS = {
+     ".com",  ".net",  ".org",    ".xxx",  ".sexy", ".pro",
+     ".biz",  ".name", ".info",   ".arpa", ".gov",  ".aero",
+     ".asia", ".cat",  ".coop",   ".edu",  ".int",  ".jobs",
+     ".mil",  ".mobi", ".museum", ".post", ".tel",  ".travel"
+  };
+
   /* A 'sequence' in a text. Name sucks */
   public struct Sequence {
     int start;
@@ -272,12 +279,10 @@ namespace TweetUtils {
     if (s.has_prefix ("https://"))
       return Twitter.short_url_length_https;
 
-    if (s.has_suffix (".com") ||
-        s.has_suffix (".org") ||
-        s.has_suffix (".net") ||
-        s.has_suffix (".xxx") ||
-        s.has_suffix (".sexy"))
-      return Twitter.short_url_length; // Default to HTTP
+    foreach (string tld in DOMAINS) {
+      if (s.has_suffix (tld))
+        return Twitter.short_url_length; // Default to HTTP
+    }
 
     return s.length;
   }
