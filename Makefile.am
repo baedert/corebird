@@ -13,7 +13,4 @@ DISTCLEANFILES = \
 								 po/.intltool-merge-cache
 
 AUTOMAKE_OPTIONS = subdir-objects
-
-
-
-
+EXTRA_DIST = resources.xml
