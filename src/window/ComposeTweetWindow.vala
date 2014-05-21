@@ -356,8 +356,10 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
       return true;
     } else if (evt.keyval == Gdk.Key.Return) {
+      if (n_results == 0)
+        return false;
       if (current_match == -1)
-        current_match =0;
+        current_match = 0;
       var row = completion_list.get_row_at_index (current_match);
       string compl = ((Gtk.Label)(((Gtk.ListBoxRow)row).get_child ())).label;
       insert_completion (compl.substring (1));
