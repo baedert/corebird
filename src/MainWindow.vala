@@ -15,22 +15,17 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
- using Gtk;
-
-
-
 [GtkTemplate (ui = "/org/baedert/corebird/ui/main-window.ui")]
-public class MainWindow : ApplicationWindow {
+public class MainWindow : Gtk.ApplicationWindow {
   private const GLib.ActionEntry[] win_entries = {
     {"compose_tweet",  show_compose_window},
     {"toggle_sidebar", Settings.toggle_sidebar_visible},
     {"switch_page",    simple_switch_page, "i"}
   };
   [GtkChild]
-  private HeaderBar headerbar;
+  private Gtk.HeaderBar headerbar;
   [GtkChild]
-  private Image avatar_image;
+  private Gtk.Image avatar_image;
 
   private MainWidget main_widget;
   public unowned Account account  {public get; private set;}
@@ -51,7 +46,6 @@ public class MainWindow : ApplicationWindow {
     if (account != null) {
       main_widget = new MainWidget (account, this, (Corebird)app);
       this.add (main_widget);
-
       headerbar.set_subtitle ("@" + account.screen_name);
     } else
       error ("F");
@@ -59,8 +53,8 @@ public class MainWindow : ApplicationWindow {
     this.add_action_entries (win_entries, this);
 
     if (!Gtk.Settings.get_default ().gtk_shell_shows_app_menu) {
-      MenuButton app_menu_button = new MenuButton ();
-      app_menu_button.image = new Gtk.Image.from_icon_name ("emblem-system-symbolic", IconSize.MENU);
+      Gtk.MenuButton app_menu_button = new Gtk.MenuButton ();
+      app_menu_button.image = new Gtk.Image.from_icon_name ("emblem-system-symbolic", Gtk.IconSize.MENU);
       app_menu_button.get_style_context ().add_class ("image-button");
       app_menu_button.menu_model = this.application.app_menu;
       app_menu_button.set_relief (Gtk.ReliefStyle.NONE);
@@ -79,24 +73,21 @@ public class MainWindow : ApplicationWindow {
     load_geometry ();
 
     this.show_all();
-
-
-
   }
 
   /**
    * Adds the accelerators to the GtkWindow
    */
   private void add_accels() { // {{{
-    AccelGroup ag = new AccelGroup();
+    Gtk.AccelGroup ag = new Gtk.AccelGroup();
 
-    ag.connect (Gdk.Key.Left, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
+    ag.connect (Gdk.Key.Left, Gdk.ModifierType.MOD1_MASK, Gtk.AccelFlags.LOCKED,
         () => {main_widget.switch_page (Page.PREVIOUS); return true;});
-    ag.connect (Gdk.Key.Right, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
+    ag.connect (Gdk.Key.Right, Gdk.ModifierType.MOD1_MASK, Gtk.AccelFlags.LOCKED,
         () => {main_widget.switch_page (Page.NEXT); return true;});
-    ag.connect (Gdk.Key.Back, 0, AccelFlags.LOCKED,
+    ag.connect (Gdk.Key.Back, 0, Gtk.AccelFlags.LOCKED,
         () => {main_widget.switch_page (Page.PREVIOUS); return true;});
-    ag.connect (Gdk.Key.Forward, 0, AccelFlags.LOCKED,
+    ag.connect (Gdk.Key.Forward, 0, Gtk.AccelFlags.LOCKED,
         () => {main_widget.switch_page (Page.NEXT); return true;});
 
     this.add_accel_group(ag);
@@ -149,7 +140,6 @@ public class MainWindow : ApplicationWindow {
   }
 
   public void switch_page (int page_id, ...) {
-    // XXX ?
     main_widget.switch_page (page_id, va_list ());
   }
 
@@ -160,7 +150,7 @@ public class MainWindow : ApplicationWindow {
     account.user_stream.stop ();
     account.user_counter.save (account.db);
 
-    unowned GLib.List<weak Window> ws = this.application.get_windows ();
+    unowned GLib.List<weak Gtk.Window> ws = this.application.get_windows ();
     debug("Windows: %u", ws.length ());
 
      // Enable the account's entry in the app menu again
