@@ -118,7 +118,6 @@ class MainWidget : Gtk.Box {
 
       // Activate the first timeline
     pages[0].get_tool_button ().active = true;
-
   }
 
   /**
@@ -198,7 +197,7 @@ class MainWidget : Gtk.Box {
       progress_spinner.hide ();
   }
 
-
-
-
+  public IPage get_page (int page_id) {
+    return pages[page_id];
+  }
 }

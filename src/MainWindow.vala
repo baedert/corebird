@@ -33,7 +33,7 @@ public class MainWindow : ApplicationWindow {
   private Image avatar_image;
 
   private MainWidget main_widget;
-  public unowned Account account           {public get; private set;}
+  public unowned Account account  {public get; private set;}
 
   public int cur_page_id {
     get {
@@ -145,7 +145,7 @@ public class MainWindow : ApplicationWindow {
 
 
   public IPage get_page (int page_id) {
-    return null;
+    return main_widget.get_page (page_id);
   }
 
   public void switch_page (int page_id, ...) {
