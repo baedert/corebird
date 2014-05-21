@@ -27,45 +27,20 @@ public class MainWindow : ApplicationWindow {
     {"toggle_sidebar", Settings.toggle_sidebar_visible},
     {"switch_page",    simple_switch_page, "i"}
   };
-  public static const int PAGE_STREAM        = 0;
-  public static const int PAGE_MENTIONS      = 1;
-  public static const int PAGE_FAVORITES     = 2;
-  public static const int PAGE_DM_THREADS    = 3;
-  public static const int PAGE_LISTS         = 4;
-  public static const int PAGE_FILTERS       = 5;
-  public static const int PAGE_SEARCH        = 6;
-  public static const int PAGE_PROFILE       = 7;
-  public static const int PAGE_TWEET_INFO    = 8;
-  public static const int PAGE_DM            = 9;
-  public static const int PAGE_LIST_STATUSES = 10;
-
-  public static const int PAGE_PREVIOUS   = 1024;
-  public static const int PAGE_NEXT       = 2048;
-
-  [GtkChild]
-  private Toolbar left_toolbar;
   [GtkChild]
   private HeaderBar headerbar;
   [GtkChild]
-  private Gtk.Stack stack;
-  [GtkChild]
   private Image avatar_image;
-  [GtkChild]
-  private Spinner progress_spinner;
-  [GtkChild]
-  private Gtk.Revealer sidebar_revealer;
+
+  private MainWidget main_widget;
+  public unowned Account account           {public get; private set;}
+
   public int cur_page_id {
     get {
-      return history.current;
+      return main_widget.cur_page_id;
     }
   }
-  private uint progress_holders            = 0;
-  private RadioToolButton dummy_button     = new RadioToolButton(null);
-  private IPage[] pages                    = new IPage[11];
-  private IntHistory history               = new IntHistory (5);
-  private DeltaUpdater delta_updater       = new DeltaUpdater ();
-  public unowned Account account           {public get; private set;}
-  private bool page_switch_lock = false;
+
 
 
   public MainWindow(Gtk.Application app, Account? account = null){
@@ -74,76 +49,14 @@ public class MainWindow : ApplicationWindow {
     this.account = account;
 
     if (account != null) {
-      account.init_proxy ();
-      account.query_user_info_by_scren_name.begin (account.screen_name, account.load_avatar);
-      var acc_menu = (GLib.Menu)Corebird.account_menu;
-      for (int i = 0; i < acc_menu.get_n_items (); i++){
-        Variant item_name = acc_menu.get_item_attribute_value (i,
-                                         "label", VariantType.STRING);
-        if (item_name.get_string () == "@"+account.screen_name){
-          ((SimpleAction)app.lookup_action("show-"+account.screen_name)).set_enabled(false);
-          break;
-        }
-      }
-      account.user_stream.start ();
-    } else {
-      warning ("account == NULL");
-      new SettingsDialog (null, (Corebird)app).show_all ();
-      return;
-    }
-    headerbar.set_subtitle ("@" + account.screen_name);
+      main_widget = new MainWidget (account, this, (Corebird)app);
+      this.add (main_widget);
+
+      headerbar.set_subtitle ("@" + account.screen_name);
+    } else
+      error ("F");
 
     this.add_action_entries (win_entries, this);
-
-    // TODO: Just always pass the account instance to the constructor.
-    pages[0]  = new HomeTimeline (PAGE_STREAM);
-    pages[1]  = new MentionsTimeline (PAGE_MENTIONS);
-    pages[2]  = new FavoritesTimeline (PAGE_FAVORITES);
-    pages[3]  = new DMThreadsPage (PAGE_DM_THREADS, account);
-    pages[4]  = new ListsPage (PAGE_LISTS);
-    pages[5]  = new FilterPage (PAGE_FILTERS);
-    pages[6]  = new SearchPage (PAGE_SEARCH);
-    pages[7]  = new ProfilePage (PAGE_PROFILE);
-    pages[8]  = new TweetInfoPage (PAGE_TWEET_INFO);
-    pages[9]  = new DMPage (PAGE_DM);
-    pages[10] = new ListStatusesPage (PAGE_LIST_STATUSES);
-
-    /* Initialize all containers */
-    for (int i = 0; i < pages.length; i++) {
-      IPage page = pages[i];
-      page.main_window = this;
-      page.account = account;
-
-      if (page is IMessageReceiver)
-        account.user_stream.register ((IMessageReceiver)page);
-
-      page.create_tool_button (dummy_button);
-      stack.add_named (page, page.id.to_string ());
-      if (page.get_tool_button () != null) {
-        left_toolbar.insert (page.get_tool_button (), page.id);
-        page.get_tool_button ().clicked.connect (() => {
-          if (page.get_tool_button ().active && !page_switch_lock) {
-            switch_page (page.id);
-          }
-        });
-      }
-
-
-      if (!(page is ITimeline))
-        continue;
-
-      ITimeline tl = (ITimeline)page;
-      tl.delta_updater = delta_updater;
-    }
-
-    // TODO: Gnarf this sucks
-    // SearchPage still needs a delta updater
-    ((SearchPage)pages[PAGE_SEARCH]).delta_updater = this.delta_updater;
-    ((DMThreadsPage)pages[PAGE_DM_THREADS]).delta_updater = this.delta_updater;
-    ((DMPage)pages[PAGE_DM]).delta_updater = this.delta_updater;
-    ((ProfilePage)pages[PAGE_PROFILE]).delta_updater = this.delta_updater;
-    ((ListStatusesPage)pages[PAGE_LIST_STATUSES]).delta_updater = this.delta_updater;
-
 
     if (!Gtk.Settings.get_default ().gtk_shell_shows_app_menu) {
       MenuButton app_menu_button = new MenuButton ();
@@ -163,17 +76,12 @@ public class MainWindow : ApplicationWindow {
 
     add_accels();
 
-    Settings.get ().bind ("sidebar-visible", sidebar_revealer, "reveal-child",
-                          SettingsBindFlags.DEFAULT);
-
     load_geometry ();
 
     this.show_all();
 
 
 
-    // Activate the first timeline
-    pages[0].get_tool_button ().active = true;
   }
 
   /**
@@ -183,13 +91,13 @@ public class MainWindow : ApplicationWindow {
     AccelGroup ag = new AccelGroup();
 
     ag.connect (Gdk.Key.Left, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
-        () => {switch_page (PAGE_PREVIOUS); return true;});
+        () => {main_widget.switch_page (Page.PREVIOUS); return true;});
     ag.connect (Gdk.Key.Right, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
-        () => {switch_page (PAGE_NEXT); return true;});
+        () => {main_widget.switch_page (Page.NEXT); return true;});
     ag.connect (Gdk.Key.Back, 0, AccelFlags.LOCKED,
-        () => {switch_page (PAGE_PREVIOUS); return true;});
+        () => {main_widget.switch_page (Page.PREVIOUS); return true;});
     ag.connect (Gdk.Key.Forward, 0, AccelFlags.LOCKED,
-        () => {switch_page (PAGE_NEXT); return true;});
+        () => {main_widget.switch_page (Page.NEXT); return true;});
 
     this.add_accel_group(ag);
   } // }}}
@@ -198,11 +106,11 @@ public class MainWindow : ApplicationWindow {
   private bool button_press_event_cb (Gdk.EventButton evt) {
     if (evt.button == 9) {
       // Forward thumb button
-      switch_page (MainWindow.PAGE_NEXT);
+      main_widget.switch_page (Page.NEXT);
       return true;
     } else if (evt.button == 8) {
       // backward thumb button
-      switch_page (MainWindow.PAGE_PREVIOUS);
+      main_widget.switch_page (Page.PREVIOUS);
       return true;
     }
     return false;
@@ -215,94 +123,37 @@ public class MainWindow : ApplicationWindow {
     cw.show();
   }
 
-  /**
-   * Switches the window's main notebook to the given page.
-   *
-   * @param page_id The id of the page to switch to.
-   *                See the PAGE_* constants.
-   * @param ... The parameters to pass to the page
-   *
-   * TODO: Refactor this.
-   */
-  public void switch_page (int page_id, ...) { // {{{
-    if (page_id == history.current) {
-      if (pages[page_id].handles_double_open ())
-        pages[page_id].double_open ();
-      else
-        pages[page_id].on_join (page_id, va_list ());
-
-      return;
-    }
-
-    bool push = true;
-
-    if (history.current != -1)
-      pages[history.current].on_leave ();
-
-    // Set the correct transition type
-    if (page_id == PAGE_PREVIOUS || page_id < history.current)
-      stack.transition_type = StackTransitionType.SLIDE_RIGHT;
-    else if (page_id == PAGE_NEXT || page_id > history.current)
-      stack.transition_type = StackTransitionType.SLIDE_LEFT;
-
-    // If we go forward/back, we don't need to update the history.
-    if (page_id == PAGE_PREVIOUS) {
-      push = false;
-      page_id = history.back ();
-    } else if (page_id == PAGE_NEXT) {
-      push = false;
-      page_id = history.forward ();
-    }
-
-    if (page_id == -1)
-      return;
-
-    if (push)
-      history.push (page_id);
-
-
-    /* XXX The following will cause switch_page to be called twice
-       because setting the active property of the button will cause
-       the clicked event to be emitted, which will call switch_page. */
-    IPage page = pages[page_id];
-    Gtk.RadioToolButton button = page.get_tool_button ();
-    page_switch_lock = true;
-    if (button != null)
-      button.active = true;
-    else
-      dummy_button.active = true;
-
-    page.on_join (page_id, va_list ());
-    stack.set_visible_child_name (page_id.to_string ());
-    page_switch_lock = false;
-  } // }}}
 
   /**
    * GSimpleActionActivateCallback version of switch_page, used
    * for keyboard accelerators.
    */
   private void simple_switch_page (GLib.SimpleAction a, GLib.Variant? param) {
-    switch_page (param.get_int32 ());
+    main_widget.switch_page (param.get_int32 ());
   }
 
   /**
    * Indicates that the caller is doing a long-running operation.
    */
   public void start_progress () {
-    progress_holders ++;
-    progress_spinner.show ();
+    main_widget.start_progress ();
   }
 
   public void stop_progress () {
-    progress_holders --;
-    if (progress_holders == 0)
-      progress_spinner.hide ();
+    main_widget.stop_progress ();
   }
 
 
   public IPage get_page (int page_id) {
-    return pages[page_id];
+    return null;
   }
+
+  public void switch_page (int page_id, ...) {
+    // XXX ?
+    main_widget.switch_page (page_id, va_list ());
+  }
+
+
 
   [GtkCallback]
   private bool window_delete_cb (Gdk.EventAny evt) {

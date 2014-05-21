@@ -55,7 +55,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
         entry.unread_count = 0;
         entry.update_unread_count ();
         this.update_unread_count ();
-        main_window.switch_page (MainWindow.PAGE_DM,
+        main_window.switch_page (Page.DM,
                                  entry.user_id);
       }
     });
@@ -65,7 +65,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       if (thread_entry != null) {
         this.unread_count -= thread_entry.unread_count;
       }
-      main_window.switch_page (MainWindow.PAGE_DM, user_id,
+      main_window.switch_page (Page.DM, user_id,
                               screen_name, name, avatar_url);
     });
 
@@ -384,8 +384,8 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   }
 
   private bool user_id_visible (int64 sender_id) {
-    return (main_window.cur_page_id == MainWindow.PAGE_DM &&
-            ((DMPage)main_window.get_page (MainWindow.PAGE_DM)).user_id == sender_id);
+    return (main_window.cur_page_id == Page.DM &&
+            ((DMPage)main_window.get_page (Page.DM)).user_id == sender_id);
   }
 
   private void update_unread_count() {

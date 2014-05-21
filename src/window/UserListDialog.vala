@@ -53,7 +53,7 @@ class UserListDialog : Gtk.Dialog {
   }
 
   public void load_lists () {
-    var lists_page = (ListsPage)main_window.get_page (MainWindow.PAGE_LISTS);
+    var lists_page = (ListsPage)main_window.get_page (Page.LISTS);
     lists_page.get_user_lists.begin ((obj, res) => {
       TwitterList[] lists = lists_page.get_user_lists.end (res);
       foreach (var list in lists) {

@@ -16,6 +16,7 @@ noinst_LTLIBRARIES = libcorebird.la
 cb_sources = \
 			Corebird.vala \
 			MainWindow.vala \
+			MainWidget.vala \
 			Account.vala \
 			HomeTimeline.vala \
 			MentionsTimeline.vala \

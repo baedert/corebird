@@ -61,7 +61,7 @@ class DMListEntry : Gtk.ListBoxRow, ITwitterItem {
 
   public DMListEntry () {
     name_button.clicked.connect (() => {
-      main_window.switch_page (MainWindow.PAGE_PROFILE,
+      main_window.switch_page (Page.PROFILE,
                                user_id);
     });
   }

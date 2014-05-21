@@ -57,7 +57,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
 
     tweet_list.activate_on_single_click = false;
     tweet_list.row_activated.connect ((row) => {
-      main_window.switch_page (MainWindow.PAGE_TWEET_INFO,
+      main_window.switch_page (Page.TWEET_INFO,
                                TweetInfoPage.BY_INSTANCE,
                                ((TweetListEntry)row).tweet);
       last_focus_widget = row;

@@ -292,11 +292,11 @@ namespace TweetUtils {
     string term = uri.substring (1);
 
     if (uri.has_prefix ("@")) {
-      window.switch_page(MainWindow.PAGE_PROFILE,
+      window.switch_page(Page.PROFILE,
                          int64.parse (term));
       return true;
     } else if(uri.has_prefix ("#")) {
-      window.switch_page (MainWindow.PAGE_SEARCH, uri);
+      window.switch_page (Page.SEARCH, uri);
       return true;
     }
     return false;

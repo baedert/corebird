@@ -122,10 +122,10 @@ class SearchPage : IPage, Box {
   private void row_activated_cb (ListBoxRow row) { // {{{
     this.last_focus_widget = row;
     if (row is UserListEntry) {
-      main_window.switch_page (MainWindow.PAGE_PROFILE,
+      main_window.switch_page (Page.PROFILE,
                                ((UserListEntry)row).user_id);
     } else if (row is TweetListEntry) {
-      main_window.switch_page (MainWindow.PAGE_TWEET_INFO,
+      main_window.switch_page (Page.TWEET_INFO,
                                TweetInfoPage.BY_INSTANCE,
                                ((TweetListEntry)row).tweet);
     }

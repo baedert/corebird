@@ -59,7 +59,7 @@ class UserListsWidget : Gtk.Box {
       ((NewListEntry)row).reveal ();
     } else {
       var entry = (ListListEntry) row;
-      main_window.switch_page (MainWindow.PAGE_LIST_STATUSES,
+      main_window.switch_page (Page.LIST_STATUSES,
                                entry.id,
                                entry.name,
                                entry.user_list,
@@ -289,7 +289,7 @@ class UserListsWidget : Gtk.Box {
       var entry = new ListListEntry.from_json_data (root, account);
       add_list (entry);
 
-      main_window.switch_page (MainWindow.PAGE_LIST_STATUSES,
+      main_window.switch_page (Page.LIST_STATUSES,
                                entry.id,
                                entry.name,
                                true,

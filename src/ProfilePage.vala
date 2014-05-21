@@ -117,7 +117,7 @@ class ProfilePage : ScrollWidget, IPage {
     });
 
     tweet_list.row_activated.connect ((row) => {
-      main_window.switch_page (MainWindow.PAGE_TWEET_INFO,
+      main_window.switch_page (Page.TWEET_INFO,
                                TweetInfoPage.BY_INSTANCE,
                                ((TweetListEntry)row).tweet);
     });
@@ -537,7 +537,7 @@ class ProfilePage : ScrollWidget, IPage {
 
   [GtkCallback]
   private void dm_menu_item_activate_cb () {
-    main_window.switch_page (MainWindow.PAGE_DM,
+    main_window.switch_page (Page.DM,
                              user_id, screen_name, name, avatar_url);
   }
 
