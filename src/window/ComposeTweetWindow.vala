@@ -343,6 +343,8 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     int n_results = (int)completion_list.get_children ().length ();
 
     if (evt.keyval == Gdk.Key.Down) {
+      if (n_results == 0)
+        return false;
       this.current_match = (current_match + 1) % n_results;
       var row = completion_list.get_row_at_index (current_match);
       completion_list.select_row (row);
