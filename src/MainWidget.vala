@@ -41,7 +41,7 @@ class MainWidget : Gtk.Box {
       return history.current;
     }
   }
-  private uint progress_holders            = 0;
+  private uint progress_holders = 0;
 
 
 
@@ -53,10 +53,9 @@ class MainWidget : Gtk.Box {
     account.query_user_info_by_scren_name.begin (account.screen_name, account.load_avatar);
     var acc_menu = (GLib.Menu)Corebird.account_menu;
     for (int i = 0; i < acc_menu.get_n_items (); i++){
-      Variant item_name = acc_menu.get_item_attribute_value (i,
-                                       "label", VariantType.STRING);
-      if (item_name.get_string () == "@"+account.screen_name){
-        ((SimpleAction)app.lookup_action("show-"+account.screen_name)).set_enabled(false);
+      Variant item_name = acc_menu.get_item_attribute_value (i, "label", VariantType.STRING);
+      if (item_name.get_string () == "@" + account.screen_name) {
+        ((SimpleAction)app.lookup_action ("show-"+account.screen_name)).set_enabled (false);
         break;
       }
     }
@@ -86,7 +85,7 @@ class MainWidget : Gtk.Box {
         account.user_stream.register ((IMessageReceiver)page);
 
       page.create_tool_button (dummy_button);
-      stack.add_named (page, page.id.to_string ());
+      stack.add (page);
       if (page.get_tool_button () != null) {
         left_toolbar.insert (page.get_tool_button (), page.id);
         page.get_tool_button ().clicked.connect (() => {
@@ -116,7 +115,7 @@ class MainWidget : Gtk.Box {
                           SettingsBindFlags.DEFAULT);
 
 
-      // Activate the first timeline
+    // Activate the first timeline
     pages[0].get_tool_button ().active = true;
   }
 
@@ -178,7 +177,7 @@ class MainWidget : Gtk.Box {
       dummy_button.active = true;
 
     page.on_join (page_id, va_list ());
-    stack.set_visible_child_name (page_id.to_string ());
+    stack.set_visible_child (pages[page_id]);
     page_switch_lock = false;
   } // }}}
 
