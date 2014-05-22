@@ -9,7 +9,6 @@
     <property name="page_increment">10</property>
   </object>
   <template class="ListsPage" parent="ScrollWidget">
-    <property name="visible">True</property>
     <property name="can_focus">True</property>
     <property name="hadjustment">adjustment1</property>
     <property name="vadjustment">adjustment1</property>

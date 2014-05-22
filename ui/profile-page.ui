@@ -50,7 +50,6 @@
     </child>
   </object>
   <template class="ProfilePage" parent="ScrollWidget">
-    <property name="visible">True</property>
     <property name="can_focus">True</property>
     <property name="vscrollbar_policy">always</property>
     <child>
