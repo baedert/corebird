@@ -27,7 +27,7 @@ public class MainWindow : Gtk.ApplicationWindow {
   [GtkChild]
   private Gtk.Image avatar_image;
 
-  private MainWidget main_widget;
+  public MainWidget main_widget;
   public unowned Account account  {public get; private set;}
 
   public int cur_page_id {
@@ -139,9 +139,9 @@ public class MainWindow : Gtk.ApplicationWindow {
     return main_widget.get_page (page_id);
   }
 
-  public void switch_page (int page_id, ...) {
-    main_widget.switch_page (page_id, va_list ());
-  }
+  //public void switch_page (int page_id, ...) {
+    //main_widget.switch_page (page_id, va_list ());
+  //}
 
 
 
@@ -158,7 +158,7 @@ public class MainWindow : Gtk.ApplicationWindow {
     for (int i = 0; i < acc_menu.get_n_items (); i++){
       Variant item_name = acc_menu.get_item_attribute_value (i, "label", VariantType.STRING);
       if (item_name.get_string () == "@" + account.screen_name){
-        ((SimpleAction)this.application.lookup_action("show-" + account.screen_name)).set_enabled(true);
+        ((SimpleAction)this.application.lookup_action ("show-" + account.screen_name)).set_enabled (true);
         break;
       }
     }

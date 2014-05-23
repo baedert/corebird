@@ -59,16 +59,16 @@ class UserListsWidget : Gtk.Box {
       ((NewListEntry)row).reveal ();
     } else {
       var entry = (ListListEntry) row;
-      main_window.switch_page (Page.LIST_STATUSES,
-                               entry.id,
-                               entry.name,
-                               entry.user_list,
-                               entry.description,
-                               entry.creator_screen_name,
-                               entry.n_subscribers,
-                               entry.n_members,
-                               entry.created_at,
-                               entry.mode);
+      main_window.main_widget.switch_page (Page.LIST_STATUSES,
+                                           entry.id,
+                                           entry.name,
+                                           entry.user_list,
+                                           entry.description,
+                                           entry.creator_screen_name,
+                                           entry.n_subscribers,
+                                           entry.n_members,
+                                           entry.created_at,
+                                           entry.mode);
     }
   }
 
@@ -289,16 +289,16 @@ class UserListsWidget : Gtk.Box {
       var entry = new ListListEntry.from_json_data (root, account);
       add_list (entry);
 
-      main_window.switch_page (Page.LIST_STATUSES,
-                               entry.id,
-                               entry.name,
-                               true,
-                               entry.description,
-                               entry.creator_screen_name,
-                               entry.n_subscribers,
-                               entry.n_members,
-                               entry.created_at,
-                               entry.mode);
+      main_window.main_widget.switch_page (Page.LIST_STATUSES,
+                                           entry.id,
+                                           entry.name,
+                                           true,
+                                           entry.description,
+                                           entry.creator_screen_name,
+                                           entry.n_subscribers,
+                                           entry.n_members,
+                                           entry.created_at,
+                                           entry.mode);
       new_list_entry.sensitive = true;
     });
   } // }}}

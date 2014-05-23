@@ -83,14 +83,14 @@ class TweetInfoPage : IPage , ScrollWidget {
     });
     top_list_box.set_sort_func (ITwitterItem.sort_func_inv);
     bottom_list_box.row_activated.connect ((row) => {
-      main_window.switch_page (Page.TWEET_INFO,
-                               TweetInfoPage.BY_INSTANCE,
-                               ((TweetListEntry)row).tweet);
+      main_window.main_widget.switch_page (Page.TWEET_INFO,
+                                           TweetInfoPage.BY_INSTANCE,
+                                           ((TweetListEntry)row).tweet);
     });
     top_list_box.row_activated.connect ((row) => {
-      main_window.switch_page (Page.TWEET_INFO,
-                               TweetInfoPage.BY_INSTANCE,
-                               ((TweetListEntry)row).tweet);
+      main_window.main_widget.switch_page (Page.TWEET_INFO,
+                                           TweetInfoPage.BY_INSTANCE,
+                                           ((TweetListEntry)row).tweet);
     });
   }
 
@@ -199,8 +199,8 @@ class TweetInfoPage : IPage , ScrollWidget {
 
   [GtkCallback]
   private void name_button_clicked_cb () {
-    main_window.switch_page (Page.PROFILE,
-                             tweet.user_id);
+    main_window.main_widget.switch_page (Page.PROFILE,
+                                         tweet.user_id);
   }
 
   /**

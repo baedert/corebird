@@ -294,8 +294,8 @@ public class TweetListEntry : ITwitterItem, ListBoxRow {
 
   [GtkCallback]
   private void name_button_clicked_cb () {
-    window.switch_page (Page.PROFILE,
-                        tweet.user_id);
+    window.main_widget.switch_page (Page.PROFILE,
+                                    tweet.user_id);
   }
   [GtkCallback]
   private void reply_button_clicked_cb () {
@@ -307,9 +307,9 @@ public class TweetListEntry : ITwitterItem, ListBoxRow {
 
   [GtkCallback]
   private void detail_item_activated_cb () {
-    window.switch_page (Page.TWEET_INFO,
-                        TweetInfoPage.BY_INSTANCE,
-                        tweet);
+    window.main_widget.switch_page (Page.TWEET_INFO,
+                                    TweetInfoPage.BY_INSTANCE,
+                                    tweet);
   }
 
   [GtkCallback]

@@ -294,8 +294,8 @@ class ListStatusesPage : ScrollWidget, IPage {
       }
     });
     // Go back to the ListsPage and tell it to remove this list
-    main_window.switch_page (Page.LISTS,
-                             ListsPage.MODE_DELETE, list_id);
+    main_window.main_widget.switch_page (Page.LISTS,
+                                         ListsPage.MODE_DELETE, list_id);
   }
 
   [GtkCallback]

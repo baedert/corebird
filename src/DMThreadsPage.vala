@@ -55,8 +55,8 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
         entry.unread_count = 0;
         entry.update_unread_count ();
         this.update_unread_count ();
-        main_window.switch_page (Page.DM,
-                                 entry.user_id);
+        main_window.main_widget.switch_page (Page.DM,
+                                             entry.user_id);
       }
     });
     start_conversation_entry = new StartConversationEntry (account);
@@ -65,8 +65,8 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       if (thread_entry != null) {
         this.unread_count -= thread_entry.unread_count;
       }
-      main_window.switch_page (Page.DM, user_id,
-                              screen_name, name, avatar_url);
+      main_window.main_widget.switch_page (Page.DM, user_id,
+                                           screen_name, name, avatar_url);
     });
 
     thread_list.add (start_conversation_entry);

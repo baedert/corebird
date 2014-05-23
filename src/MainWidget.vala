@@ -17,7 +17,7 @@
 
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/main-widget.ui")]
-class MainWidget : Gtk.Box {
+public class MainWidget : Gtk.Box {
   private unowned Account account;
   private unowned Corebird app;
 
@@ -79,7 +79,7 @@ class MainWidget : Gtk.Box {
     for (int i = 0; i < pages.length; i++) {
       IPage page = pages[i];
       page.main_window = parent;
-      page.account = account;
+      page.account = this.account;
 
       if (page is IMessageReceiver)
         account.user_stream.register ((IMessageReceiver)page);
