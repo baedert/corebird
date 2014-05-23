@@ -41,14 +41,12 @@ public class MainWindow : Gtk.ApplicationWindow {
   public MainWindow(Gtk.Application app, Account? account = null){
     GLib.Object (application: app);
     set_default_size (480, 700);
-    this.account = account;
 
     if (account != null) {
-      main_widget = new MainWidget (account, this, (Corebird)app);
-      this.add (main_widget);
-      headerbar.set_subtitle ("@" + account.screen_name);
-    } else
-      error ("F");
+      change_account (account);
+    } else {
+
+    }
 
     this.add_action_entries (win_entries, this);
 
@@ -92,6 +90,20 @@ public class MainWindow : Gtk.ApplicationWindow {
 
     this.add_accel_group(ag);
   } // }}}
+
+
+
+  private void change_account (Account account) {
+    this.account = account;
+
+    if (main_widget != null)
+      this.remove (main_widget);
+
+    main_widget = new MainWidget (account, this, (Corebird)this.application);
+    this.add (main_widget);
+    headerbar.set_subtitle ("@" + account.screen_name);
+  }
+
 
   [GtkCallback]
   private bool button_press_event_cb (Gdk.EventButton evt) {
