@@ -139,12 +139,6 @@ public class MainWindow : Gtk.ApplicationWindow {
     return main_widget.get_page (page_id);
   }
 
-  //public void switch_page (int page_id, ...) {
-    //main_widget.switch_page (page_id, va_list ());
-  //}
-
-
-
   [GtkCallback]
   private bool window_delete_cb (Gdk.EventAny evt) {
     account.user_stream.stop ();
