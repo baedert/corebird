@@ -194,7 +194,7 @@ public class Corebird : Gtk.Application {
 
     if (compose_screen_name == null) {
       if (startup_accounts.length == 0) {
-        add_window (new SettingsDialog (null, this));
+        add_window (new MainWindow (this, null));
       } else {
         bool found_valid_account = false;
         foreach (string screen_name in startup_accounts) {
@@ -208,7 +208,7 @@ public class Corebird : Gtk.Application {
         }
 
         if (!found_valid_account) {
-          add_window (new SettingsDialog (null, this));
+          add_window (new MainWindow (this, null));
         }
 
       }

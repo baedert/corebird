@@ -40,6 +40,7 @@
             <property name="visible">true</property>
             <property name="can_focus">false</property>
             <property name="spacing">6</property>
+            <property name="no_show_all">true</property>
             <child>
               <object class="GtkButton" id="account_button">
                 <property name="visible">true</property>

@@ -18,16 +18,16 @@
 
 using Gtk;
 
-[GtkTemplate (ui = "/org/baedert/corebird/ui/account-create-widget.ui")]
+[GtkTemplate (ui = "/org/baedert/corebird/ui/account-create-widget2.ui")]
 class AccountCreateWidget : Gtk.Box {
   [GtkChild]
   private Entry pin_entry;
   [GtkChild]
-  private Spinner progress_spinner;
+  private Gtk.Label error_label;
   [GtkChild]
-  private Label error_label;
+  private Gtk.Button confirm_button;
   [GtkChild]
-  private InfoBar error_bar;
+  private Gtk.Button request_pin_button;
   private unowned Account acc;
   public signal void result_received (bool result, Account acc);
 
@@ -52,17 +52,24 @@ class AccountCreateWidget : Gtk.Box {
   }
 
   [GtkCallback]
-  private void confirm_button_clicked () {
-    progress_spinner.show ();
-    progress_spinner.start ();
+  private void request_pin_clicked_cb () {
+    open_pin_request_site ();
+  }
+
+  [GtkCallback]
+  private void confirm_button_clicked_cb () {
+    pin_entry.sensitive = false;
+    confirm_button.sensitive = false;
+    request_pin_button.sensitive = false;
     try {
       acc.proxy.access_token("oauth/access_token", pin_entry.get_text());
     } catch (GLib.Error e) {
       critical (e.message);
       // We just assume that it was the wrong code
-      progress_spinner.hide ();
       error_label.label = _("Wrong PIN");
-      error_bar.show ();
+      pin_entry.sensitive = true;
+      confirm_button.sensitive = true;
+      request_pin_button.sensitive = true;
       return;
     }
 
@@ -72,7 +79,6 @@ class AccountCreateWidget : Gtk.Box {
     call.set_function ("1.1/account/settings.json");
     call.set_method ("GET");
     call.invoke_async.begin (null, (obj, res) => {
-      debug ("settings call");
       var parser = new Json.Parser ();
       try {
         parser.load_from_data (call.get_payload ());
@@ -87,6 +93,7 @@ class AccountCreateWidget : Gtk.Box {
         if (a.screen_name == screen_name) {
           result_received (false, a);
           critical ("Account is already in use");
+          error_label.label = _("Account already in use");
           return;
         }
       }
@@ -102,7 +109,6 @@ class AccountCreateWidget : Gtk.Box {
               .run ();
         acc.init_proxy (true, true);
         // TODO: Insert account into app menu
-        progress_spinner.hide ();
         result_received (true, acc);
       });
     });

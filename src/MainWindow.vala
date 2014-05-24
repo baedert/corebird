@@ -30,6 +30,8 @@ public class MainWindow : Gtk.ApplicationWindow {
   private Gtk.ListBox account_list;
   [GtkChild]
   private Gtk.Popover account_popover;
+  [GtkChild]
+  private Gtk.Box header_box;
 
   public MainWidget main_widget;
   public unowned Account account  {public get; private set;}
@@ -46,10 +48,24 @@ public class MainWindow : Gtk.ApplicationWindow {
     GLib.Object (application: app);
     set_default_size (480, 700);
 
+
     if (account != null) {
       change_account (account);
     } else {
-
+      header_box.hide ();
+      Account acc_ = new Account (0, "screen_name", "name");
+      Account.add_account (acc_);
+      var create_widget = new AccountCreateWidget (acc_);
+      create_widget.margin_top = 50;
+      create_widget.margin_bottom = 20;
+      create_widget.result_received.connect ((result, acc) => {
+        if (result) {
+          change_account (acc);
+        } else {
+          //Account.remove ("screen_name");
+        }
+      });
+      this.add (create_widget);
     }
 
     foreach (Account acc in Account.list_accounts ()) {
@@ -75,10 +91,8 @@ public class MainWindow : Gtk.ApplicationWindow {
     }
 
     add_accels();
-
     load_geometry ();
-
-    this.show_all();
+    show_all ();
   }
 
   /**
@@ -106,7 +120,14 @@ public class MainWindow : Gtk.ApplicationWindow {
 
     if (main_widget != null) {
       main_widget.stop ();
-      this.remove (main_widget);
+    }
+
+    if (get_child () != null) {
+      remove (get_child ());
+    }
+
+    if (!header_box.visible) {
+      header_box.visible = true;
     }
 
     main_widget = new MainWidget (account, this, (Corebird)this.application);
@@ -193,6 +214,8 @@ public class MainWindow : Gtk.ApplicationWindow {
     if (main_widget != null)
       main_widget.stop ();
 
+    Account.remove_account ("screen_name");
+
     unowned GLib.List<weak Gtk.Window> ws = this.application.get_windows ();
     debug("Windows: %u", ws.length ());
 
@@ -242,6 +265,7 @@ public class MainWindow : Gtk.ApplicationWindow {
    * Saves this window's geometry in the window-geometry gsettings key.
    */
   public void save_geometry () {
+
     GLib.Variant win_geom = Settings.get ().get_value ("window-geometry");
     GLib.Variant new_geom;
     GLib.VariantBuilder builder = new GLib.VariantBuilder (new GLib.VariantType("a{s(iiii)}"));
@@ -262,6 +286,7 @@ public class MainWindow : Gtk.ApplicationWindow {
     h = get_allocated_height ();
     builder.add ("{s(iiii)}", account.screen_name, x, y, w, h);
     new_geom = builder.end ();
+    debug ("Saving geomentry for %s: %d,%d,%d,%d", account.screen_name, x, y, w, h);
 
     Settings.get ().set_value ("window-geometry", new_geom);
   }
