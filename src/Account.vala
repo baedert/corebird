@@ -246,7 +246,8 @@ public class Account : GLib.Object {
     accounts = new GLib.SList<Account> ();
     Corebird.db.select ("accounts").cols ("id", "screen_name", "name", "avatar_url").run ((vals) => {
       Account acc = new Account (int64.parse(vals[0]), vals[1], vals[2]);
-      acc.avatar_url = vals[3]; // O(n^2)
+      acc.avatar_url = vals[3];
+      acc.load_avatar ();
       accounts.append (acc);
       return true;
     });

@@ -119,6 +119,7 @@ public class MainWidget : Gtk.Box {
     pages[0].get_tool_button ().active = true;
   }
 
+
   /**
    * Switches the window's main notebook to the given page.
    *
@@ -198,5 +199,10 @@ public class MainWidget : Gtk.Box {
 
   public IPage get_page (int page_id) {
     return pages[page_id];
+  }
+
+  public void stop () {
+    account.user_stream.stop ();
+    account.user_counter.save (account.db);
   }
 }

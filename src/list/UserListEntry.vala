@@ -32,10 +32,15 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
 
   public string screen_name {
     set { screen_name_label.label = value; }
+    get { return screen_name_label.label; }
   }
 
   public string avatar {
     set { real_set_avatar (value); }
+  }
+
+  public Gdk.Pixbuf avatar_pixbuf {
+    set { avatar_image.pixbuf = value; }
   }
 
   public bool seen {

@@ -1,5 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
+
+  <object class="GtkPopover" id="account_popover">
+    <property name="modal">true</property>
+    <property name="position">bottom</property>
+    <property name="relative_to">account_button</property>
+    <child>
+      <object class="GtkFrame">
+        <property name="visible">true</property>
+        <property name="shadow_type">none</property>
+        <child>
+          <object class="GtkListBox" id="account_list">
+            <property name="visible">true</property>
+            <property name="margin">8</property>
+            <property name="activate_on_single_click">true</property>
+            <property name="selection_mode">none</property>
+            <signal name="row_activated" handler="account_row_activated_cb" swapped="no" />
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+
+
   <template class="MainWindow" parent="GtkApplicationWindow">
     <property name="can_focus">False</property>
     <property name="title">Corebird</property>
@@ -18,11 +41,20 @@
             <property name="can_focus">false</property>
             <property name="spacing">6</property>
             <child>
-              <object class="GtkImage" id="avatar_image">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="margin_left">5</property>
-                <property name="stock">gtk-missing-image</property>
+              <object class="GtkButton" id="account_button">
+                <property name="visible">true</property>
+                <property name="relief">none</property>
+                <signal name="clicked" handler="account_button_clicked_cb" swapped="no" />
+                <style>
+                  <class name="image-button" />
+                  <class name="account-button" />
+                </style>
+                <child>
+                  <object class="GtkImage" id="avatar_image">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                  </object>
+                </child>
               </object>
             </child>
             <child>

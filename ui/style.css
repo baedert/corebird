@@ -9,6 +9,10 @@
 }
 
 
+.account-button {
+  padding: 2px;
+}
+
 .sidebar {
   -GtkWidget-window-dragging: true;
 }

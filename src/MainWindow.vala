@@ -26,6 +26,10 @@ public class MainWindow : Gtk.ApplicationWindow {
   private Gtk.HeaderBar headerbar;
   [GtkChild]
   private Gtk.Image avatar_image;
+  [GtkChild]
+  private Gtk.ListBox account_list;
+  [GtkChild]
+  private Gtk.Popover account_popover;
 
   public MainWidget main_widget;
   public unowned Account account  {public get; private set;}
@@ -48,6 +52,16 @@ public class MainWindow : Gtk.ApplicationWindow {
 
     }
 
+    foreach (Account acc in Account.list_accounts ()) {
+      //acc.load_avatar ();
+      var e = new UserListEntry ();
+      e.name = acc.name;
+      e.screen_name = "@" + acc.screen_name;
+      e.avatar_pixbuf = acc.avatar;
+      account_list.add (e);
+    }
+
+
     this.add_action_entries (win_entries, this);
 
     if (!Gtk.Settings.get_default ().gtk_shell_shows_app_menu) {
@@ -59,12 +73,6 @@ public class MainWindow : Gtk.ApplicationWindow {
       headerbar.pack_end (app_menu_button);
       this.show_menubar = false;
     }
-
-    account.load_avatar ();
-    avatar_image.pixbuf = account.avatar_small;
-    account.notify["avatar_small"].connect(() => {
-      avatar_image.pixbuf = account.avatar_small;
-    });
 
     add_accels();
 
@@ -96,12 +104,36 @@ public class MainWindow : Gtk.ApplicationWindow {
   private void change_account (Account account) {
     this.account = account;
 
-    if (main_widget != null)
+    if (main_widget != null) {
+      main_widget.stop ();
       this.remove (main_widget);
+    }
 
     main_widget = new MainWidget (account, this, (Corebird)this.application);
+    main_widget.show_all ();
     this.add (main_widget);
     headerbar.set_subtitle ("@" + account.screen_name);
+    avatar_image.pixbuf = account.avatar_small;
+    account.notify["avatar_small"].connect(() => {
+      avatar_image.pixbuf = account.avatar_small;
+    });
+  }
+
+  [GtkCallback]
+  private void account_row_activated_cb (Gtk.ListBoxRow row) {
+    var e = (UserListEntry)row;
+    string screen_name = e.screen_name.substring(1);
+
+    if (screen_name == this.account.screen_name) {
+      account_popover.hide ();
+      return;
+    }
+
+    Account? acc = Account.query_account (screen_name);
+    if (acc != null) {
+      change_account (acc);
+      account_popover.hide ();
+    }
   }
 
 
@@ -152,9 +184,14 @@ public class MainWindow : Gtk.ApplicationWindow {
   }
 
   [GtkCallback]
+  private void account_button_clicked_cb () {
+    account_popover.show ();
+  }
+
+  [GtkCallback]
   private bool window_delete_cb (Gdk.EventAny evt) {
-    account.user_stream.stop ();
-    account.user_counter.save (account.db);
+    if (main_widget != null)
+      main_widget.stop ();
 
     unowned GLib.List<weak Gtk.Window> ws = this.application.get_windows ();
     debug("Windows: %u", ws.length ());
