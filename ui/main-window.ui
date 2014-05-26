@@ -61,6 +61,7 @@
             <child>
               <object class="GtkSeparator" id="sep">
                 <property name="orientation">vertical</property>
+                <property name="visible">True</property>
               </object>
             </child>
             <child>
