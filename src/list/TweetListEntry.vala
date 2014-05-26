@@ -323,6 +323,7 @@ public class TweetListEntry : ITwitterItem, ListBoxRow {
 
   [GtkCallback]
   private void delete_item_activated_cb () {
+    delete_first_activated = true;
     delete_tweet ();
   }
 
