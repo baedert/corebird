@@ -186,7 +186,7 @@ public class Corebird : Gtk.Application {
 
     if(startup_accounts.length == 1) {
       if (startup_accounts[0].length == 0) {
-        add_window (new SettingsDialog (null, this));
+        add_window (new MainWindow (this, null));
         return;
       }
     }
