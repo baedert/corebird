@@ -225,9 +225,6 @@ public class MainWindow : Gtk.ApplicationWindow {
     if (main_widget != null)
       main_widget.stop ();
 
-    // Just in case
-    Account.remove_account (Account.DUMMY);
-
     if (account == null)
       return false;
 

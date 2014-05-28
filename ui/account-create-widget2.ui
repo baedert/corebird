@@ -5,6 +5,7 @@
     <property name="can_focus">False</property>
     <property name="halign">center</property>
     <property name="orientation">vertical</property>
+    <signal name="delete_event" handler="delete_event_cb" swapped="no" />
     <child>
       <object class="GtkLabel" id="label1">
         <property name="visible">True</property>

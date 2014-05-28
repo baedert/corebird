@@ -123,4 +123,9 @@ class AccountCreateWidget : Gtk.Box {
     error_label.visible = true;
     error_label.label = err;
   }
+  [GtkCallback]
+  private bool delete_event_cb () {
+    Account.remove_account (Account.DUMMY);
+    return false;
+  }
 }
