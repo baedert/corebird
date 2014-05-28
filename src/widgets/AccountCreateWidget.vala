@@ -18,7 +18,7 @@
 
 using Gtk;
 
-[GtkTemplate (ui = "/org/baedert/corebird/ui/account-create-widget2.ui")]
+[GtkTemplate (ui = "/org/baedert/corebird/ui/account-create-widget.ui")]
 class AccountCreateWidget : Gtk.Box {
   [GtkChild]
   private Entry pin_entry;
