@@ -49,12 +49,19 @@ public class MainWindow : Gtk.ApplicationWindow {
     GLib.Object (application: app);
     set_default_size (480, 700);
 
-
-    if (account != null) {
+    if (account != null && account.screen_name != Account.DUMMY) {
       change_account (account);
     } else {
       header_box.hide ();
-      Account acc_ = new Account (0, "screen_name", "name");
+      if (app_menu_button != null)
+        app_menu_button.hide ();
+
+      Account acc_;
+      if (account == null)
+        acc_ = new Account (0, Account.DUMMY, "name");
+      else
+        acc_ = account;
+
       Account.add_account (acc_);
       var create_widget = new AccountCreateWidget (acc_);
       create_widget.margin_top = 50;
@@ -70,7 +77,6 @@ public class MainWindow : Gtk.ApplicationWindow {
     }
 
     foreach (Account acc in Account.list_accounts ()) {
-      //acc.load_avatar ();
       var e = new UserListEntry ();
       e.name = acc.name;
       e.screen_name = "@" + acc.screen_name;
@@ -88,6 +94,7 @@ public class MainWindow : Gtk.ApplicationWindow {
 
   /**
    * Adds the accelerators to the GtkWindow
+   * XXX We can't use gtk_application_set_accels_for_action because the binding is broken in vala-0.24
    */
   private void add_accels() { // {{{
     Gtk.AccelGroup ag = new Gtk.AccelGroup();

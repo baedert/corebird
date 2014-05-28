@@ -93,18 +93,18 @@ class SettingsDialog : Gtk.Window {
 
   [GtkCallback]
   private void add_account_clicked () {
-    Account dummy_acc = new Account(0, DUMMY_SCREEN_NAME, "<__>");
-    Account.add_account (dummy_acc);
-    var row = new AccountListEntry (dummy_acc);
-    account_list.add (row);
-    var create_widget = new AccountCreateWidget (dummy_acc);
-    create_widget.result_received.connect (on_account_access);
-    account_info_stack.add_named (create_widget, DUMMY_SCREEN_NAME);
-    row.show_all ();
-    account_list.select_row (row);
-    create_widget.open_pin_request_site ();
-
-    add_account_button.sensitive = false;
+    Account dummy_acc = new Account (0, Account.DUMMY, "name");
+    dummy_acc.info_changed.connect ((screen_name, name, avatar, avatar_small) => {
+      var acc_widget = new AccountInfoWidget (dummy_acc, this.application);
+      account_info_stack.add_named (acc_widget, screen_name);
+      account_info_stack.set_visible_child_name (screen_name);
+      //account_list.remove (account_list.get_selected_row ());
+      var new_entry = new AccountListEntry (dummy_acc);
+      account_list.add (new_entry);
+      account_list.select_row (new_entry);
+      account_list.show_all ();
+    });
+    application.add_window (new MainWindow (application, dummy_acc));
   }
 
   [GtkCallback]
@@ -144,7 +144,6 @@ class SettingsDialog : Gtk.Window {
   private bool window_destroy_cb () {
     Account.remove_account (DUMMY_SCREEN_NAME);
     save_geometry ();
-//    destroy();
     return false;
   }
 

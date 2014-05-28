@@ -50,6 +50,7 @@ public class MainWidget : Gtk.Box {
     this.app = app;
 
     account.init_proxy ();
+    // XXX This line causes the user info to be queried twice when creating a new account
     account.query_user_info_by_scren_name.begin (account.screen_name, account.load_avatar);
     var acc_menu = (GLib.Menu)Corebird.account_menu;
     for (int i = 0; i < acc_menu.get_n_items (); i++){

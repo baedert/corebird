@@ -35,7 +35,8 @@ class AccountCreateWidget : Gtk.Box {
 
   public AccountCreateWidget (Account acc) {
     this.acc = acc;
-    info_label.label = "%s <a href=\"http://twitter.com/signup\">%s</a>.".printf (_("Don't have an account yet?"), _("Create one"));
+    info_label.label = "%s <a href=\"http://twitter.com/signup\">%s</a>."
+                       .printf (_("Don't have an account yet?"), _("Create one"));
   }
 
   public void open_pin_request_site () {
