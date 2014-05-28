@@ -19,7 +19,6 @@ using Gtk;
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/settings-dialog.ui")]
 class SettingsDialog : Gtk.Window {
-  private static const string DUMMY_SCREEN_NAME = "<Unnamed>";
   private MainWindow main_window;
   [GtkChild]
   private ListBox account_list;
@@ -108,10 +107,10 @@ class SettingsDialog : Gtk.Window {
   [GtkCallback]
   private void remove_account_clicked () {
     AccountListEntry entry = (AccountListEntry)account_list.get_selected_row ();
-    if (entry.screen_name == DUMMY_SCREEN_NAME) {
+    if (entry.screen_name == Account.DUMMY) {
       account_list.remove (entry);
       account_info_stack.remove (account_info_stack.get_visible_child ());
-      Account.remove_account (DUMMY_SCREEN_NAME);
+      Account.remove_account (Account.DUMMY);
       add_account_button.sensitive = true;
       // Select another account. We just take the first one
       if (account_list.get_children () != null)
@@ -140,7 +139,7 @@ class SettingsDialog : Gtk.Window {
 
   [GtkCallback]
   private bool window_destroy_cb () {
-    Account.remove_account (DUMMY_SCREEN_NAME);
+    Account.remove_account (Account.DUMMY);
     save_geometry ();
     return false;
   }
