@@ -46,8 +46,7 @@ class SettingsDialog : Gtk.Window {
   [GtkChild]
   private SpinButton max_media_size_spin_button;
 
-  public SettingsDialog(MainWindow? main_window = null, Corebird? application = null){
-    this.main_window = main_window;
+  public SettingsDialog (Corebird application) {
     this.application = application;
     this.type_hint   = Gdk.WindowTypeHint.DIALOG;
 
@@ -144,25 +143,6 @@ class SettingsDialog : Gtk.Window {
     Account.remove_account (DUMMY_SCREEN_NAME);
     save_geometry ();
     return false;
-  }
-
-  private void on_account_access (bool result, Account acc) {
-    if (result) {
-      account_info_stack.remove (account_info_stack.get_visible_child ());
-      var acc_widget = new AccountInfoWidget (acc, this.application);
-      account_info_stack.add_named (acc_widget, acc.screen_name);
-      account_info_stack.set_visible_child_name (acc.screen_name);
-      account_list.remove (account_list.get_selected_row ());
-      var new_entry = new AccountListEntry (acc);
-      account_list.add (new_entry);
-      account_list.select_row (new_entry);
-    } else {
-       //In this case, the account was already present so we just remove the item again
-       //the given accoun is then the already defined one.
-      account_info_stack.remove (account_info_stack.get_visible_child ());
-      account_list.remove (account_list.get_selected_row ());
-      select_account (acc.screen_name);
-    }
   }
 
   private void real_remove_account (AccountListEntry entry) {
