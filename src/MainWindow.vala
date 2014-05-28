@@ -225,7 +225,11 @@ public class MainWindow : Gtk.ApplicationWindow {
     if (main_widget != null)
       main_widget.stop ();
 
-    Account.remove_account ("screen_name");
+    // Just in case
+    Account.remove_account (Account.DUMMY);
+
+    if (account == null)
+      return false;
 
     unowned GLib.List<weak Gtk.Window> ws = this.application.get_windows ();
     debug("Windows: %u", ws.length ());
