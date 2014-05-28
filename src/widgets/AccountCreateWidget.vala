@@ -28,11 +28,14 @@ class AccountCreateWidget : Gtk.Box {
   private Gtk.Button confirm_button;
   [GtkChild]
   private Gtk.Button request_pin_button;
+  [GtkChild]
+  private Gtk.Label info_label;
   private unowned Account acc;
   public signal void result_received (bool result, Account acc);
 
-  public AccountCreateWidget (Account acc){
+  public AccountCreateWidget (Account acc) {
     this.acc = acc;
+    info_label.label = "%s <a href=\"http://twitter.com/signup\">%s</a>.".printf (_("Don't have an account yet?"), _("Create one"));
   }
 
   public void open_pin_request_site () {
@@ -66,7 +69,7 @@ class AccountCreateWidget : Gtk.Box {
     } catch (GLib.Error e) {
       critical (e.message);
       // We just assume that it was the wrong code
-      error_label.label = _("Wrong PIN");
+      show_error (_("Wrong PIN"));
       pin_entry.sensitive = true;
       confirm_button.sensitive = true;
       request_pin_button.sensitive = true;
@@ -93,7 +96,7 @@ class AccountCreateWidget : Gtk.Box {
         if (a.screen_name == screen_name) {
           result_received (false, a);
           critical ("Account is already in use");
-          error_label.label = _("Account already in use");
+          show_error (_("Account already in use"));
           return;
         }
       }
@@ -114,4 +117,9 @@ class AccountCreateWidget : Gtk.Box {
     });
   }
 
+  private void show_error (string err) {
+    info_label.visible = false;
+    error_label.visible = true;
+    error_label.label = err;
+  }
 }
