@@ -95,6 +95,7 @@ class SettingsDialog : Gtk.Window {
   private void add_account_clicked () {
     Account dummy_acc = new Account (0, Account.DUMMY, "name");
     dummy_acc.info_changed.connect ((screen_name, name, avatar, avatar_small) => {
+      message ("Account added: %s, %s", screen_name, name);
       var acc_widget = new AccountInfoWidget (dummy_acc, this.application);
       account_info_stack.add_named (acc_widget, screen_name);
       account_info_stack.set_visible_child_name (screen_name);

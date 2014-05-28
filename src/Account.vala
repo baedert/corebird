@@ -178,7 +178,7 @@ public class Account : GLib.Object {
       }
       this.avatar_url = url;
       Corebird.db.update ("accounts").val ("avatar_url", url).where_eqi ("id", id).run ();
-      info_changed (name, screen_name, avatar, avatar_small);
+      info_changed (screen_name, name, avatar, avatar_small);
     } else {
       critical ("Not implemented yet");
     }
