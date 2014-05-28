@@ -19,7 +19,6 @@ using Gtk;
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/settings-dialog.ui")]
 class SettingsDialog : Gtk.Window {
-  private MainWindow main_window;
   [GtkChild]
   private ListBox account_list;
   [GtkChild]
@@ -48,7 +47,6 @@ class SettingsDialog : Gtk.Window {
   public SettingsDialog (Corebird application) {
     this.application = application;
     this.type_hint   = Gdk.WindowTypeHint.DIALOG;
-
 
     // Notifications Page
     Settings.get ().bind ("new-tweets-notify", on_new_tweets_combobox, "active-id",
@@ -182,16 +180,6 @@ class SettingsDialog : Gtk.Window {
     // Select another account. We just take the first one
     if (account_list.get_children () != null)
       account_list.select_row ((Gtk.ListBoxRow)account_list.get_children ().data);
-  }
-
-  private void select_account (string screen_name) {
-    GLib.List<weak Widget> entries = account_list.get_children ();
-    foreach (var entry in entries) {
-      if (((AccountListEntry)entry).screen_name == screen_name) {
-        account_list.select_row ((Gtk.ListBoxRow)entry);
-        break;
-      }
-    }
   }
 
   private void load_geometry () {
