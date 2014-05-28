@@ -33,6 +33,7 @@ public class MainWindow : Gtk.ApplicationWindow {
   [GtkChild]
   private Gtk.Box header_box;
 
+  private Gtk.MenuButton app_menu_button = null;
   public MainWidget main_widget;
   public unowned Account account  {public get; private set;}
 
@@ -79,16 +80,6 @@ public class MainWindow : Gtk.ApplicationWindow {
 
 
     this.add_action_entries (win_entries, this);
-
-    if (!Gtk.Settings.get_default ().gtk_shell_shows_app_menu) {
-      Gtk.MenuButton app_menu_button = new Gtk.MenuButton ();
-      app_menu_button.image = new Gtk.Image.from_icon_name ("emblem-system-symbolic", Gtk.IconSize.MENU);
-      app_menu_button.get_style_context ().add_class ("image-button");
-      app_menu_button.menu_model = this.application.app_menu;
-      app_menu_button.set_relief (Gtk.ReliefStyle.NONE);
-      headerbar.pack_end (app_menu_button);
-      this.show_menubar = false;
-    }
 
     add_accels();
     load_geometry ();
@@ -138,6 +129,19 @@ public class MainWindow : Gtk.ApplicationWindow {
     account.notify["avatar_small"].connect(() => {
       avatar_image.pixbuf = account.avatar_small;
     });
+
+    if (!Gtk.Settings.get_default ().gtk_shell_shows_app_menu) {
+      if (app_menu_button == null) {
+        app_menu_button = new Gtk.MenuButton ();
+        app_menu_button.image = new Gtk.Image.from_icon_name ("emblem-system-symbolic", Gtk.IconSize.MENU);
+        app_menu_button.get_style_context ().add_class ("image-button");
+        app_menu_button.menu_model = this.application.app_menu;
+        app_menu_button.set_relief (Gtk.ReliefStyle.NONE);
+        headerbar.pack_end (app_menu_button);
+      } else
+        app_menu_button.show ();
+    }
+
   }
 
   [GtkCallback]
