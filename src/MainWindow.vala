@@ -77,10 +77,7 @@ public class MainWindow : Gtk.ApplicationWindow {
     }
 
     foreach (Account acc in Account.list_accounts ()) {
-      var e = new UserListEntry ();
-      e.name = acc.name;
-      e.screen_name = "@" + acc.screen_name;
-      e.avatar_pixbuf = acc.avatar;
+      var e = new UserListEntry.from_account (acc);
       account_list.add (e);
     }
 
