@@ -63,7 +63,7 @@ public class MainWindow : Gtk.ApplicationWindow {
         acc_ = account;
 
       Account.add_account (acc_);
-      var create_widget = new AccountCreateWidget (acc_);
+      var create_widget = new AccountCreateWidget (acc_, (Corebird) app);
       create_widget.margin_top = 50;
       create_widget.margin_bottom = 20;
       create_widget.result_received.connect ((result, acc) => {
@@ -81,6 +81,16 @@ public class MainWindow : Gtk.ApplicationWindow {
       account_list.add (e);
     }
 
+    ((Corebird)app).account_added.connect ((new_acc) => {
+      var entries = account_list.get_children ();
+      foreach (Gtk.Widget ule in entries)
+        if (new_acc.screen_name == ((UserListEntry)ule).screen_name)
+          return;
+
+      var ule = new UserListEntry.from_account (new_acc);
+      account_list.add (ule);
+      ule.show ();
+    });
 
     this.add_action_entries (win_entries, this);
 

@@ -20,8 +20,8 @@ using Gtk;
 public class Corebird : Gtk.Application {
   // TODO: Is the static here needed?
   public static Sql.Database db;
-  //private static GLib.OutputStream log_stream;
-  public  static GLib.Menu account_menu;
+  public static GLib.Menu account_menu;
+  public signal void account_added (Account acc);
 
   const GLib.ActionEntry[] app_entries = {
     {"show-settings",     show_settings_activated         },
@@ -102,7 +102,7 @@ public class Corebird : Gtk.Application {
   }
 
   private void show_settings_activated () {
-    var dialog = new SettingsDialog(null, this);
+    var dialog = new SettingsDialog (this);
     dialog.show_all ();
   }
 

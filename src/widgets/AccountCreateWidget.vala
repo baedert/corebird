@@ -31,10 +31,12 @@ class AccountCreateWidget : Gtk.Box {
   [GtkChild]
   private Gtk.Label info_label;
   private unowned Account acc;
+  private unowned Corebird corebird;
   public signal void result_received (bool result, Account acc);
 
-  public AccountCreateWidget (Account acc) {
+  public AccountCreateWidget (Account acc, Corebird corebird) {
     this.acc = acc;
+    this.corebird = corebird;
     info_label.label = "%s <a href=\"http://twitter.com/signup\">%s</a>."
                        .printf (_("Don't have an account yet?"), _("Create one"));
   }
@@ -114,6 +116,7 @@ class AccountCreateWidget : Gtk.Box {
         acc.init_proxy (true, true);
         // TODO: Insert account into app menu
         result_received (true, acc);
+        corebird.account_added (acc);
       });
     });
   }
