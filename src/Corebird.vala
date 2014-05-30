@@ -102,7 +102,10 @@ public class Corebird : Gtk.Application {
   }
 
   private void show_settings_activated () {
+    var cur_window = get_active_window ();
     var dialog = new SettingsDialog (this);
+    dialog.set_modal (true);
+    dialog.set_transient_for (cur_window);
     dialog.show_all ();
   }
 
