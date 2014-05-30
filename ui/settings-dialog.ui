@@ -10,6 +10,8 @@
   <template class="SettingsDialog" parent="GtkDialog">
     <property name="default_width">500</property>
     <property name="default_height">300</property>
+    <property name="title" translatable="yes">Settings</property>
+    <property name="border_width">0</property>
 
     <signal name="delete_event" handler="window_destroy_cb" swapped="no" />
     <child internal-child="vbox">
@@ -18,6 +20,14 @@
           <object class="GtkButtonBox">
             <property name="visible">true</property>
             <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton" id="close_button">
+                <property name="visible">true</property>
+                <property name="can_focus">true</property>
+                <property name="label" translatable="yes">Close</property>
+                <signal name="clicked" handler="close_button_clicked_cb" swapped="no" />
+              </object>
+            </child>
           </object>
         </child>
         <child>

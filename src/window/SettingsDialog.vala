@@ -142,6 +142,11 @@ class SettingsDialog : Gtk.Dialog {
     return false;
   }
 
+  [GtkCallback]
+  private void close_button_clicked_cb () {
+    this.destroy ();
+  }
+
   private void real_remove_account (AccountListEntry entry) {
     var acc_menu = (GLib.Menu)Corebird.account_menu;
     int64 acc_id = entry.account.id;
