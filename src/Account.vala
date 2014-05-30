@@ -274,8 +274,8 @@ public class Account : GLib.Object {
    * @param screen_name The screen name of the account to remove.
    */
   public static void remove_account (string screen_name) {
-    foreach(Account a in accounts) {
-      if(a.screen_name == screen_name){
+    foreach (Account a in accounts) {
+      if (a.screen_name == screen_name) {
         accounts.remove (a);
         return;
       }

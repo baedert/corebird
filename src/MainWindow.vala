@@ -92,6 +92,16 @@ public class MainWindow : Gtk.ApplicationWindow {
       ule.show ();
     });
 
+    ((Corebird)app).account_removed.connect ((acc) => {
+      var entries = account_list.get_children ();
+      foreach (Gtk.Widget ule in entries)
+        if (acc.screen_name == ((UserListEntry)ule).screen_name) {
+          account_list.remove (ule);
+          break;
+        }
+    });
+
+
     this.add_action_entries (win_entries, this);
 
     add_accels();

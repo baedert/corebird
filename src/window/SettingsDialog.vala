@@ -175,6 +175,8 @@ class SettingsDialog : Gtk.Dialog {
         break;
       }
     }
+    Account acc_to_remove = Account.query_account (entry.account.screen_name);
+    ((Corebird)this.application).account_removed (acc_to_remove);
     Account.remove_account (entry.account.screen_name);
     MainWindow acc_window;
     if (((Corebird)this.application).is_window_open_for_screen_name (entry.account.screen_name,
