@@ -18,7 +18,7 @@
 using Gtk;
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/settings-dialog.ui")]
-class SettingsDialog : Gtk.Window {
+class SettingsDialog : Gtk.Dialog {
   [GtkChild]
   private ListBox account_list;
   [GtkChild]
@@ -46,7 +46,7 @@ class SettingsDialog : Gtk.Window {
 
   public SettingsDialog (Corebird application) {
     this.application = application;
-    this.type_hint   = Gdk.WindowTypeHint.DIALOG;
+    //this.type_hint   = Gdk.WindowTypeHint.DIALOG;
 
     // Notifications Page
     Settings.get ().bind ("new-tweets-notify", on_new_tweets_combobox, "active-id",
@@ -142,6 +142,11 @@ class SettingsDialog : Gtk.Window {
     return false;
   }
 
+  [GtkCallback]
+  private void close_button_clicked_cb () {
+    this.destroy ();
+  }
+
   private void real_remove_account (AccountListEntry entry) {
     var acc_menu = (GLib.Menu)Corebird.account_menu;
     int64 acc_id = entry.account.id;
@@ -170,6 +175,8 @@ class SettingsDialog : Gtk.Window {
         break;
       }
     }
+    Account acc_to_remove = Account.query_account (entry.account.screen_name);
+    ((Corebird)this.application).account_removed (acc_to_remove);
     Account.remove_account (entry.account.screen_name);
     MainWindow acc_window;
     if (((Corebird)this.application).is_window_open_for_screen_name (entry.account.screen_name,

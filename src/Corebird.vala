@@ -22,6 +22,7 @@ public class Corebird : Gtk.Application {
   public static Sql.Database db;
   public static GLib.Menu account_menu;
   public signal void account_added (Account acc);
+  public signal void account_removed (Account acc);
 
   const GLib.ActionEntry[] app_entries = {
     {"show-settings",     show_settings_activated         },
@@ -102,7 +103,10 @@ public class Corebird : Gtk.Application {
   }
 
   private void show_settings_activated () {
+    var cur_window = get_active_window ();
     var dialog = new SettingsDialog (this);
+    dialog.set_modal (true);
+    dialog.set_transient_for (cur_window);
     dialog.show_all ();
   }
 
