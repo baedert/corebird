@@ -7,33 +7,27 @@
     <property name="step_increment">0.1</property>
     <property name="page_increment">1</property>
   </object>
-  <template class="SettingsDialog" parent="GtkDialog">
+  <object class="GtkStackSwitcher" id="custom_title">
+    <property name="stack">stack</property>
+  </object>
+  <template class="SettingsDialog" parent="GtkWindow">
     <property name="default_width">500</property>
     <property name="default_height">300</property>
     <property name="title" translatable="yes">Settings</property>
     <property name="border_width">0</property>
 
     <signal name="delete_event" handler="window_destroy_cb" swapped="no" />
-    <child internal-child="vbox">
-      <object class="GtkBox">
-        <child internal-child="action_area">
-          <object class="GtkButtonBox">
-            <property name="visible">true</property>
-            <property name="layout_style">end</property>
-            <child>
-              <object class="GtkButton" id="close_button">
-                <property name="visible">true</property>
-                <property name="can_focus">true</property>
-                <property name="label" translatable="yes">Close</property>
-                <signal name="clicked" handler="close_button_clicked_cb" swapped="no" />
-              </object>
-            </child>
-          </object>
-        </child>
-        <child>
-      <object class="GtkNotebook" id="stack">
-        <property name="visible">true</property>
-        <property name="can_focus">true</property>
+
+    <child type="titlebar">
+      <object class="GtkHeaderBar" id="header_bar">
+        <property name="title" translatable="yes">Settings</property>
+        <property name="custom_title">custom_title</property>
+        <property name="show_close_button">true</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkStack" id="stack">
+
         <!-- Accounts page -->
         <child>
           <object class="GtkGrid" id="accounts_grid">
@@ -134,233 +128,222 @@
             </child>
           </object>
           <packing>
+            <property name="title" translatable="yes">Accounts</property>
           </packing>
-        </child>
-        <child type="tab">
-          <object class="GtkLabel">
-            <property name="visible">true</property>
-            <property name="can_focus">false</property>
-            <property name="label" translatable="yes">Accounts</property>
-          </object>
         </child>
 
 
         <!-- Interface page -->
         <child>
           <object class="GtkGrid" id="interface_grid">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="border_width">10</property>
-            <property name="row_spacing">3</property>
-            <property name="column_spacing">8</property>
-            <child>
-              <object class="GtkLabel" id="main_window_category_label">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="halign">start</property>
-                <property name="label" translatable="yes">Main Window</property>
-                <attributes>
-                  <attribute name="weight" value="bold"/>
-                </attributes>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">0</property>
-                <property name="width">4</property>
-                <property name="height">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="dark_theme_label">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="halign">end</property>
-                <property name="hexpand">True</property>
-                <property name="label" translatable="yes">Use Dark Theme:</property>
-                <accessibility>
-                  <relation type="label-for" target="dark_theme_switch"/>
-                </accessibility>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">1</property>
-                <property name="width">2</property>
-                <property name="height">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkSwitch" id="dark_theme_switch">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="halign">start</property>
-                <property name="hexpand">True</property>
-                <accessibility>
-                  <relation type="labelled-by" target="dark_theme_label"/>
-                </accessibility>
-              </object>
-              <packing>
-                <property name="left_attach">2</property>
-                <property name="top_attach">1</property>
-                <property name="width">2</property>
-                <property name="height">1</property>
-              </packing>
-            </child>
+          <property name="visible">True</property>
+          <property name="can_focus">False</property>
+          <property name="border_width">10</property>
+          <property name="row_spacing">3</property>
+          <property name="column_spacing">8</property>
+          <child>
+            <object class="GtkLabel" id="main_window_category_label">
+              <property name="visible">True</property>
+              <property name="can_focus">False</property>
+              <property name="halign">start</property>
+              <property name="label" translatable="yes">Main Window</property>
+              <attributes>
+                <attribute name="weight" value="bold"/>
+              </attributes>
+            </object>
+            <packing>
+              <property name="left_attach">0</property>
+              <property name="top_attach">0</property>
+              <property name="width">4</property>
+              <property name="height">1</property>
+            </packing>
+          </child>
+          <child>
+            <object class="GtkLabel" id="dark_theme_label">
+              <property name="visible">True</property>
+              <property name="can_focus">False</property>
+              <property name="halign">end</property>
+              <property name="hexpand">True</property>
+              <property name="label" translatable="yes">Use Dark Theme:</property>
+              <accessibility>
+                <relation type="label-for" target="dark_theme_switch"/>
+              </accessibility>
+            </object>
+            <packing>
+              <property name="left_attach">0</property>
+              <property name="top_attach">1</property>
+              <property name="width">2</property>
+              <property name="height">1</property>
+            </packing>
+          </child>
+          <child>
+            <object class="GtkSwitch" id="dark_theme_switch">
+              <property name="visible">True</property>
+              <property name="can_focus">True</property>
+              <property name="halign">start</property>
+              <property name="hexpand">True</property>
+              <accessibility>
+                <relation type="labelled-by" target="dark_theme_label"/>
+              </accessibility>
+            </object>
+            <packing>
+              <property name="left_attach">2</property>
+              <property name="top_attach">1</property>
+              <property name="width">2</property>
+              <property name="height">1</property>
+            </packing>
+          </child>
 
-            <child>
-              <object class="GtkLabel" id="timeline_category_label">
-                <property name="visible">True</property>
-                <property name="label" translatable="Yes">Timelines</property>
-                <property name="halign">start</property>
-                <property name="can_focus">False</property>
-                <attributes>
-                  <attribute name="weight" value="bold"/>
-                </attributes>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">2</property>
-                <property name="width">4</property>
-                <property name="height">1</property>
-              </packing>
-            </child>
+          <child>
+            <object class="GtkLabel" id="timeline_category_label">
+              <property name="visible">True</property>
+              <property name="label" translatable="Yes">Timelines</property>
+              <property name="halign">start</property>
+              <property name="can_focus">False</property>
+              <attributes>
+                <attribute name="weight" value="bold"/>
+              </attributes>
+            </object>
+            <packing>
+              <property name="left_attach">0</property>
+              <property name="top_attach">2</property>
+              <property name="width">4</property>
+              <property name="height">1</property>
+            </packing>
+          </child>
 
 
-            <child>
-              <object class="GtkLabel" id="inline_media_label">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="halign">end</property>
-                <property name="hexpand">True</property>
-                <property name="label" translatable="yes">Show Inline Media:</property>
-                <accessibility>
-                  <relation type="label-for" target="inline_media_switch"/>
-                </accessibility>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">3</property>
-                <property name="width">2</property>
-                <property name="height">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkSwitch" id="inline_media_switch">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="halign">start</property>
-                <property name="hexpand">True</property>
-                <accessibility>
-                  <relation type="labelled-by" target="inline_media_label"/>
-                </accessibility>
-              </object>
-              <packing>
-                <property name="left_attach">2</property>
-                <property name="top_attach">3</property>
-                <property name="width">2</property>
-                <property name="height">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="max_media_size_label">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="halign">end</property>
-                <property name="hexpand">True</property>
-                <property name="label" translatable="yes">Maximum media size:</property>
-                <accessibility>
-                  <relation type="label-for" target="max_media_size_spin_button"/>
-                </accessibility>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">4</property>
-                <property name="width">2</property>
-                <property name="height">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkSpinButton" id="max_media_size_spin_button">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="halign">start</property>
-                <property name="vexpand">False</property>
-                <property name="adjustment">adjustment1</property>
-                <property name="climb_rate">0.1</property>
-                <property name="digits">1</property>
-                <property name="value">2</property>
-                <accessibility>
-                  <relation type="labelled-by" target="max_media_size_label"/>
-                </accessibility>
-              </object>
-              <packing>
-                <property name="left_attach">2</property>
-                <property name="top_attach">4</property>
-                <property name="width">1</property>
-                <property name="height">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="mb_label">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="halign">start</property>
-                <property name="hexpand">True</property>
-                <property name="label" translatable="yes">Megabytes</property>
-              </object>
-              <packing>
-                <property name="left_attach">3</property>
-                <property name="top_attach">4</property>
-                <property name="width">1</property>
-                <property name="height">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="auto_scroll_label">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="halign">end</property>
-                <property name="hexpand">True</property>
-                <property name="label" translatable="yes">Auto scroll on new tweets:</property>
-                <accessibility>
-                  <relation type="label-for" target="auto_scroll_on_new_tweets_switch"/>
-                </accessibility>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">5</property>
-                <property name="width">2</property>
-                <property name="height">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkSwitch" id="auto_scroll_on_new_tweets_switch">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="halign">start</property>
-                <property name="hexpand">True</property>
-                <accessibility>
-                  <relation type="labelled-by" target="auto_scroll_label"/>
-                </accessibility>
-              </object>
-              <packing>
-                <property name="left_attach">2</property>
-                <property name="top_attach">5</property>
-                <property name="width">2</property>
-                <property name="height">1</property>
-              </packing>
-            </child>
+          <child>
+            <object class="GtkLabel" id="inline_media_label">
+              <property name="visible">True</property>
+              <property name="can_focus">False</property>
+              <property name="halign">end</property>
+              <property name="hexpand">True</property>
+              <property name="label" translatable="yes">Show Inline Media:</property>
+              <accessibility>
+                <relation type="label-for" target="inline_media_switch"/>
+              </accessibility>
+            </object>
+            <packing>
+              <property name="left_attach">0</property>
+              <property name="top_attach">3</property>
+              <property name="width">2</property>
+              <property name="height">1</property>
+            </packing>
+          </child>
+          <child>
+            <object class="GtkSwitch" id="inline_media_switch">
+              <property name="visible">True</property>
+              <property name="can_focus">True</property>
+              <property name="halign">start</property>
+              <property name="hexpand">True</property>
+              <accessibility>
+                <relation type="labelled-by" target="inline_media_label"/>
+              </accessibility>
+            </object>
+            <packing>
+              <property name="left_attach">2</property>
+              <property name="top_attach">3</property>
+              <property name="width">2</property>
+              <property name="height">1</property>
+            </packing>
+          </child>
+          <child>
+            <object class="GtkLabel" id="max_media_size_label">
+              <property name="visible">True</property>
+              <property name="can_focus">False</property>
+              <property name="halign">end</property>
+              <property name="hexpand">True</property>
+              <property name="label" translatable="yes">Maximum media size:</property>
+              <accessibility>
+                <relation type="label-for" target="max_media_size_spin_button"/>
+              </accessibility>
+            </object>
+            <packing>
+              <property name="left_attach">0</property>
+              <property name="top_attach">4</property>
+              <property name="width">2</property>
+              <property name="height">1</property>
+            </packing>
+          </child>
+          <child>
+            <object class="GtkSpinButton" id="max_media_size_spin_button">
+              <property name="visible">True</property>
+              <property name="can_focus">True</property>
+              <property name="halign">start</property>
+              <property name="vexpand">False</property>
+              <property name="adjustment">adjustment1</property>
+              <property name="climb_rate">0.1</property>
+              <property name="digits">1</property>
+              <property name="value">2</property>
+              <accessibility>
+                <relation type="labelled-by" target="max_media_size_label"/>
+              </accessibility>
+            </object>
+            <packing>
+              <property name="left_attach">2</property>
+              <property name="top_attach">4</property>
+              <property name="width">1</property>
+              <property name="height">1</property>
+            </packing>
+          </child>
+          <child>
+            <object class="GtkLabel" id="mb_label">
+              <property name="visible">True</property>
+              <property name="can_focus">False</property>
+              <property name="halign">start</property>
+              <property name="hexpand">True</property>
+              <property name="label" translatable="yes">Megabytes</property>
+            </object>
+            <packing>
+              <property name="left_attach">3</property>
+              <property name="top_attach">4</property>
+              <property name="width">1</property>
+              <property name="height">1</property>
+            </packing>
+          </child>
+          <child>
+            <object class="GtkLabel" id="auto_scroll_label">
+              <property name="visible">True</property>
+              <property name="can_focus">False</property>
+              <property name="halign">end</property>
+              <property name="hexpand">True</property>
+              <property name="label" translatable="yes">Auto scroll on new tweets:</property>
+              <accessibility>
+                <relation type="label-for" target="auto_scroll_on_new_tweets_switch"/>
+              </accessibility>
+            </object>
+            <packing>
+              <property name="left_attach">0</property>
+              <property name="top_attach">5</property>
+              <property name="width">2</property>
+              <property name="height">1</property>
+            </packing>
+          </child>
+          <child>
+            <object class="GtkSwitch" id="auto_scroll_on_new_tweets_switch">
+              <property name="visible">True</property>
+              <property name="can_focus">True</property>
+              <property name="halign">start</property>
+              <property name="hexpand">True</property>
+              <accessibility>
+                <relation type="labelled-by" target="auto_scroll_label"/>
+              </accessibility>
+            </object>
+            <packing>
+              <property name="left_attach">2</property>
+              <property name="top_attach">5</property>
+              <property name="width">2</property>
+              <property name="height">1</property>
+            </packing>
+          </child>
 
-          </object>
-          <packing>
-          </packing>
-        </child>
-        <child type="tab">
-          <object class="GtkLabel">
-            <property name="visible">true</property>
-            <property name="can_focus">false</property>
-            <property name="label" translatable="yes">Interface</property>
-          </object>
-        </child>
+        </object>
+        <packing>
+          <property name="title" translatable="yes">Interface</property>
+        </packing>
+      </child>
+
 
 
         <!-- Notification page -->
@@ -533,17 +516,8 @@
             </child>
           </object>
           <packing>
+            <property name="title" translatable="yes">Notifications</property>
           </packing>
-        </child>
-        <child type="tab">
-          <object class="GtkLabel">
-            <property name="visible">true</property>
-            <property name="can_focus">false</property>
-            <property name="label" translatable="yes">Notifications</property>
-          </object>
-        </child>
-
-      </object>
         </child>
       </object>
     </child>

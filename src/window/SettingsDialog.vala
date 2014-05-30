@@ -18,7 +18,9 @@
 using Gtk;
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/settings-dialog.ui")]
-class SettingsDialog : Gtk.Dialog {
+class SettingsDialog : Gtk.Window {
+  private static const string DUMMY_SCREEN_NAME = "<Unnamed>";
+  private MainWindow main_window;
   [GtkChild]
   private ListBox account_list;
   [GtkChild]
@@ -46,7 +48,7 @@ class SettingsDialog : Gtk.Dialog {
 
   public SettingsDialog (Corebird application) {
     this.application = application;
-    //this.type_hint   = Gdk.WindowTypeHint.DIALOG;
+    this.type_hint   = Gdk.WindowTypeHint.DIALOG;
 
     // Notifications Page
     Settings.get ().bind ("new-tweets-notify", on_new_tweets_combobox, "active-id",
