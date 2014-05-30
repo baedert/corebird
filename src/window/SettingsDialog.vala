@@ -18,7 +18,7 @@
 using Gtk;
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/settings-dialog.ui")]
-class SettingsDialog : Gtk.Window {
+class SettingsDialog : Gtk.Dialog {
   private static const string DUMMY_SCREEN_NAME = "<Unnamed>";
   private MainWindow main_window;
   [GtkChild]
@@ -49,7 +49,7 @@ class SettingsDialog : Gtk.Window {
   public SettingsDialog(MainWindow? main_window = null, Corebird? application = null){
     this.main_window = main_window;
     this.application = application;
-    this.type_hint   = Gdk.WindowTypeHint.DIALOG;
+    //this.type_hint   = Gdk.WindowTypeHint.DIALOG;
 
 
     // Notifications Page
