@@ -18,7 +18,7 @@
 
 using Gtk;
 
-[GtkTemplate (ui = "/org/baedert/corebird/ui/account-create-widget2.ui")]
+[GtkTemplate (ui = "/org/baedert/corebird/ui/account-create-widget.ui")]
 class AccountCreateWidget : Gtk.Box {
   [GtkChild]
   private Entry pin_entry;
@@ -31,11 +31,14 @@ class AccountCreateWidget : Gtk.Box {
   [GtkChild]
   private Gtk.Label info_label;
   private unowned Account acc;
+  private unowned Corebird corebird;
   public signal void result_received (bool result, Account acc);
 
-  public AccountCreateWidget (Account acc) {
+  public AccountCreateWidget (Account acc, Corebird corebird) {
     this.acc = acc;
-    info_label.label = "%s <a href=\"http://twitter.com/signup\">%s</a>.".printf (_("Don't have an account yet?"), _("Create one"));
+    this.corebird = corebird;
+    info_label.label = "%s <a href=\"http://twitter.com/signup\">%s</a>."
+                       .printf (_("Don't have an account yet?"), _("Create one"));
   }
 
   public void open_pin_request_site () {
@@ -113,6 +116,7 @@ class AccountCreateWidget : Gtk.Box {
         acc.init_proxy (true, true);
         // TODO: Insert account into app menu
         result_received (true, acc);
+        corebird.account_added (acc);
       });
     });
   }
@@ -121,5 +125,10 @@ class AccountCreateWidget : Gtk.Box {
     info_label.visible = false;
     error_label.visible = true;
     error_label.label = err;
+  }
+  [GtkCallback]
+  private bool delete_event_cb () {
+    Account.remove_account (Account.DUMMY);
+    return false;
   }
 }

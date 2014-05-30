@@ -33,6 +33,7 @@ public class MainWindow : Gtk.ApplicationWindow {
   [GtkChild]
   private Gtk.Box header_box;
 
+  private Gtk.MenuButton app_menu_button = null;
   public MainWidget main_widget;
   public unowned Account account  {public get; private set;}
 
@@ -48,14 +49,21 @@ public class MainWindow : Gtk.ApplicationWindow {
     GLib.Object (application: app);
     set_default_size (480, 700);
 
-
-    if (account != null) {
+    if (account != null && account.screen_name != Account.DUMMY) {
       change_account (account);
     } else {
       header_box.hide ();
-      Account acc_ = new Account (0, "screen_name", "name");
+      if (app_menu_button != null)
+        app_menu_button.hide ();
+
+      Account acc_;
+      if (account == null)
+        acc_ = new Account (0, Account.DUMMY, "name");
+      else
+        acc_ = account;
+
       Account.add_account (acc_);
-      var create_widget = new AccountCreateWidget (acc_);
+      var create_widget = new AccountCreateWidget (acc_, (Corebird) app);
       create_widget.margin_top = 50;
       create_widget.margin_bottom = 20;
       create_widget.result_received.connect ((result, acc) => {
@@ -69,26 +77,22 @@ public class MainWindow : Gtk.ApplicationWindow {
     }
 
     foreach (Account acc in Account.list_accounts ()) {
-      //acc.load_avatar ();
-      var e = new UserListEntry ();
-      e.name = acc.name;
-      e.screen_name = "@" + acc.screen_name;
-      e.avatar_pixbuf = acc.avatar;
+      var e = new UserListEntry.from_account (acc);
       account_list.add (e);
     }
 
+    ((Corebird)app).account_added.connect ((new_acc) => {
+      var entries = account_list.get_children ();
+      foreach (Gtk.Widget ule in entries)
+        if (new_acc.screen_name == ((UserListEntry)ule).screen_name)
+          return;
+
+      var ule = new UserListEntry.from_account (new_acc);
+      account_list.add (ule);
+      ule.show ();
+    });
 
     this.add_action_entries (win_entries, this);
-
-    if (!Gtk.Settings.get_default ().gtk_shell_shows_app_menu) {
-      Gtk.MenuButton app_menu_button = new Gtk.MenuButton ();
-      app_menu_button.image = new Gtk.Image.from_icon_name ("emblem-system-symbolic", Gtk.IconSize.MENU);
-      app_menu_button.get_style_context ().add_class ("image-button");
-      app_menu_button.menu_model = this.application.app_menu;
-      app_menu_button.set_relief (Gtk.ReliefStyle.NONE);
-      headerbar.pack_end (app_menu_button);
-      this.show_menubar = false;
-    }
 
     add_accels();
     load_geometry ();
@@ -97,6 +101,7 @@ public class MainWindow : Gtk.ApplicationWindow {
 
   /**
    * Adds the accelerators to the GtkWindow
+   * XXX We can't use gtk_application_set_accels_for_action because the binding is broken in vala-0.24
    */
   private void add_accels() { // {{{
     Gtk.AccelGroup ag = new Gtk.AccelGroup();
@@ -138,6 +143,19 @@ public class MainWindow : Gtk.ApplicationWindow {
     account.notify["avatar_small"].connect(() => {
       avatar_image.pixbuf = account.avatar_small;
     });
+
+    if (!Gtk.Settings.get_default ().gtk_shell_shows_app_menu) {
+      if (app_menu_button == null) {
+        app_menu_button = new Gtk.MenuButton ();
+        app_menu_button.image = new Gtk.Image.from_icon_name ("emblem-system-symbolic", Gtk.IconSize.MENU);
+        app_menu_button.get_style_context ().add_class ("image-button");
+        app_menu_button.menu_model = this.application.app_menu;
+        app_menu_button.set_relief (Gtk.ReliefStyle.NONE);
+        headerbar.pack_end (app_menu_button);
+      } else
+        app_menu_button.show ();
+    }
+
   }
 
   [GtkCallback]
@@ -214,7 +232,8 @@ public class MainWindow : Gtk.ApplicationWindow {
     if (main_widget != null)
       main_widget.stop ();
 
-    Account.remove_account ("screen_name");
+    if (account == null)
+      return false;
 
     unowned GLib.List<weak Gtk.Window> ws = this.application.get_windows ();
     debug("Windows: %u", ws.length ());

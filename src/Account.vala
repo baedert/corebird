@@ -17,6 +17,7 @@
 
 
 public class Account : GLib.Object {
+  public static const string DUMMY = "screen_name";
   public int64 id                 {public get; private set;}
   public Sql.Database db          {public get; private set;}
   public string screen_name       {public get; private set;}
@@ -28,6 +29,8 @@ public class Account : GLib.Object {
   public UserStream user_stream   {public get; private set;}
   public UserCounter user_counter {public get; private set;}
   public Gee.ArrayList<Filter> filters;
+  public signal void info_changed (string screen_name, string name,
+                                   Gdk.Pixbuf avatar_small, Gdk.Pixbuf avatar);
 
   public Account (int64 id, string screen_name, string name) {
     this.id = id;
@@ -90,6 +93,7 @@ public class Account : GLib.Object {
     try {
       this.avatar_small = new Gdk.Pixbuf.from_file (small_path);
       this.avatar = new Gdk.Pixbuf.from_file (path);
+      info_changed (screen_name, name, avatar, avatar_small);
     } catch (GLib.Error e) {
       warning (e.message);
     }
@@ -142,7 +146,7 @@ public class Account : GLib.Object {
    *
    * @param url The url of the (possibly) new avatar(optional).
    */
-  public async void update_avatar (string url = "") {
+  private async void update_avatar (string url = "") {
     if (url.length > 0 && url == this.avatar_url)
       return;
 
@@ -168,11 +172,13 @@ public class Account : GLib.Object {
         scaled_pixbuf.save(dest_path, type);
         debug ("saving to %s", dest_path);
         this.avatar_small = scaled_pixbuf;
+        this.avatar = pixbuf;
       } catch (GLib.Error e) {
         critical (e.message);
       }
       this.avatar_url = url;
       Corebird.db.update ("accounts").val ("avatar_url", url).where_eqi ("id", id).run ();
+      info_changed (screen_name, name, avatar, avatar_small);
     } else {
       critical ("Not implemented yet");
     }

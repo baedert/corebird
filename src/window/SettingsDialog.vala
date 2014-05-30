@@ -19,8 +19,6 @@ using Gtk;
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/settings-dialog.ui")]
 class SettingsDialog : Gtk.Dialog {
-  private static const string DUMMY_SCREEN_NAME = "<Unnamed>";
-  private MainWindow main_window;
   [GtkChild]
   private ListBox account_list;
   [GtkChild]
@@ -46,11 +44,9 @@ class SettingsDialog : Gtk.Dialog {
   [GtkChild]
   private SpinButton max_media_size_spin_button;
 
-  public SettingsDialog(MainWindow? main_window = null, Corebird? application = null){
-    this.main_window = main_window;
+  public SettingsDialog (Corebird application) {
     this.application = application;
     //this.type_hint   = Gdk.WindowTypeHint.DIALOG;
-
 
     // Notifications Page
     Settings.get ().bind ("new-tweets-notify", on_new_tweets_combobox, "active-id",
@@ -93,27 +89,26 @@ class SettingsDialog : Gtk.Dialog {
 
   [GtkCallback]
   private void add_account_clicked () {
-    Account dummy_acc = new Account(0, DUMMY_SCREEN_NAME, "<__>");
-    Account.add_account (dummy_acc);
-    var row = new AccountListEntry (dummy_acc);
-    account_list.add (row);
-    var create_widget = new AccountCreateWidget (dummy_acc);
-    create_widget.result_received.connect (on_account_access);
-    account_info_stack.add_named (create_widget, DUMMY_SCREEN_NAME);
-    row.show_all ();
-    account_list.select_row (row);
-    create_widget.open_pin_request_site ();
-
-    add_account_button.sensitive = false;
+    Account dummy_acc = new Account (0, Account.DUMMY, "name");
+    dummy_acc.info_changed.connect ((screen_name, name, avatar, avatar_small) => {
+      var acc_widget = new AccountInfoWidget (dummy_acc, this.application);
+      account_info_stack.add_named (acc_widget, screen_name);
+      account_info_stack.set_visible_child_name (screen_name);
+      var new_entry = new AccountListEntry (dummy_acc);
+      account_list.add (new_entry);
+      account_list.select_row (new_entry);
+      account_list.show_all ();
+    });
+    application.add_window (new MainWindow (application, dummy_acc));
   }
 
   [GtkCallback]
   private void remove_account_clicked () {
     AccountListEntry entry = (AccountListEntry)account_list.get_selected_row ();
-    if (entry.screen_name == DUMMY_SCREEN_NAME) {
+    if (entry.screen_name == Account.DUMMY) {
       account_list.remove (entry);
       account_info_stack.remove (account_info_stack.get_visible_child ());
-      Account.remove_account (DUMMY_SCREEN_NAME);
+      Account.remove_account (Account.DUMMY);
       add_account_button.sensitive = true;
       // Select another account. We just take the first one
       if (account_list.get_children () != null)
@@ -142,29 +137,9 @@ class SettingsDialog : Gtk.Dialog {
 
   [GtkCallback]
   private bool window_destroy_cb () {
-    Account.remove_account (DUMMY_SCREEN_NAME);
+    Account.remove_account (Account.DUMMY);
     save_geometry ();
-//    destroy();
     return false;
-  }
-
-  private void on_account_access (bool result, Account acc) {
-    if (result) {
-      account_info_stack.remove (account_info_stack.get_visible_child ());
-      var acc_widget = new AccountInfoWidget (acc, this.application);
-      account_info_stack.add_named (acc_widget, acc.screen_name);
-      account_info_stack.set_visible_child_name (acc.screen_name);
-      account_list.remove (account_list.get_selected_row ());
-      var new_entry = new AccountListEntry (acc);
-      account_list.add (new_entry);
-      account_list.select_row (new_entry);
-    } else {
-       //In this case, the account was already present so we just remove the item again
-       //the given accoun is then the already defined one.
-      account_info_stack.remove (account_info_stack.get_visible_child ());
-      account_list.remove (account_list.get_selected_row ());
-      select_account (acc.screen_name);
-    }
   }
 
   private void real_remove_account (AccountListEntry entry) {
@@ -205,16 +180,6 @@ class SettingsDialog : Gtk.Dialog {
     // Select another account. We just take the first one
     if (account_list.get_children () != null)
       account_list.select_row ((Gtk.ListBoxRow)account_list.get_children ().data);
-  }
-
-  private void select_account (string screen_name) {
-    GLib.List<weak Widget> entries = account_list.get_children ();
-    foreach (var entry in entries) {
-      if (((AccountListEntry)entry).screen_name == screen_name) {
-        account_list.select_row ((Gtk.ListBoxRow)entry);
-        break;
-      }
-    }
   }
 
   private void load_geometry () {
