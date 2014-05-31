@@ -19,8 +19,6 @@ using Gtk;
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/settings-dialog.ui")]
 class SettingsDialog : Gtk.Window {
-  private static const string DUMMY_SCREEN_NAME = "<Unnamed>";
-  private MainWindow main_window;
   [GtkChild]
   private ListBox account_list;
   [GtkChild]
@@ -142,11 +140,6 @@ class SettingsDialog : Gtk.Window {
     Account.remove_account (Account.DUMMY);
     save_geometry ();
     return false;
-  }
-
-  [GtkCallback]
-  private void close_button_clicked_cb () {
-    this.destroy ();
   }
 
   private void real_remove_account (AccountListEntry entry) {
