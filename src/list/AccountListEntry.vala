@@ -38,13 +38,10 @@ class AccountListEntry : Gtk.ListBoxRow {
       avatar_image.pixbuf = Twitter.no_avatar;
     else
       avatar_image.pixbuf = account.avatar_small;
-    avatar_change_id = account.notify["avatar-small"].connect(() => {
+
+    avatar_change_id = account.notify["avatar_small"].connect(() => {
       avatar_image.pixbuf = account.avatar_small;
     });
   }
 
-  public override void destroy (){
-    base.destroy();
-    message("destructor");
-  }
 }
