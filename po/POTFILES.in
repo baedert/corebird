@@ -17,6 +17,8 @@ src/SearchPage.vala
 src/Corebird.vala
 src/MentionsTimeline.vala
 src/FavoritesTimeline.vala
+src/DMPage.vala
+src/ListStatusesPage.vala
 [type: gettext/glade]ui/settings-dialog.ui
 [type: gettext/glade]ui/menu.ui
 [type: gettext/glade]ui/user-lists-widget.ui
