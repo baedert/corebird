@@ -183,7 +183,7 @@ public class Tweet : GLib.Object {
       this.urls.prepend(TweetUtils.Sequence(){
         start = (int)indices.get_int_element (0),
         end   = (int)indices.get_int_element (1),
-        url   = "@" + mention.get_string_member ("id_str"),
+        url   = "@" + mention.get_string_member ("id_str") + "/" + screen_name,
         display_url = "@" + screen_name,
         visual_display_url = true,
         title = mention.get_string_member ("name")

@@ -69,6 +69,12 @@ class FavoritesTimeline : IMessageReceiver, DefaultTimeline {
     });
   }
 
+
+
+  public override string? get_title () {
+    return _("Favorites");
+  }
+
   public override void create_tool_button(RadioToolButton? group) {
     tool_button = new BadgeRadioToolButton(group, "corebird-favorite-symbolic");
     tool_button.tooltip_text = _("Favorites");

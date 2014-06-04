@@ -213,6 +213,11 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
     tool_button.tooltip_text = _("Filters");
     tool_button.label = _("Filters");
   }
+
+  public string? get_title () {
+    return _("Filters");
+  }
+
   public Gtk.RadioToolButton? get_tool_button() { return tool_button; }
 }
 

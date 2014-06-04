@@ -91,7 +91,6 @@ public class MainWindow : ApplicationWindow {
       new SettingsDialog (null, (Corebird)app).show_all ();
       return;
     }
-    headerbar.set_subtitle ("@" + account.screen_name);
 
     this.add_action_entries (win_entries, this);
 
@@ -274,6 +273,8 @@ public class MainWindow : ApplicationWindow {
 
     page.on_join (page_id, va_list ());
     stack.set_visible_child_name (page_id.to_string ());
+    if (page.get_title () != null)
+      this.set_title (page.get_title ());
     page_switch_lock = false;
   } // }}}
 

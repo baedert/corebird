@@ -607,11 +607,18 @@ class ProfilePage : ScrollWidget, IPage {
    * see IPage#onJoin
    */
   public void on_join(int page_id, va_list arg_list) {
-    int64 user_id = arg_list.arg();
+    int64 user_id = arg_list.arg ();
     if (user_id == 0)
       return;
     else
       lists_page_inited = false;
+
+    string? screen_name = arg_list.arg ();
+    if (screen_name != null) {
+      this.screen_name = screen_name;
+    }
+
+
     data_cancellable = new GLib.Cancellable ();
     reset_data ();
     set_user_id (user_id);
@@ -640,6 +647,11 @@ class ProfilePage : ScrollWidget, IPage {
   }
 
   public void create_tool_button(RadioToolButton? group) {}
+
+
+  public string? get_title () {
+    return "@" + screen_name;
+  }
 
   public RadioToolButton? get_tool_button(){
     return null;

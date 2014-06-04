@@ -55,7 +55,7 @@ namespace InlineMediaDownloader {
       yield two_step_load (t, url,
                           "<meta name=\"twitter:image\" value=\"(.*?)\"", 1);
     } else {
-      debug ("Not downloadable media: %s", url);
+      //debug ("Not downloadable media: %s", url);
     }
   }
 

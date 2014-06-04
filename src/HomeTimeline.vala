@@ -110,6 +110,9 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
 
   }
 
+  public override string? get_title () {
+    return "@" + account.screen_name;
+  }
 
   public override void load_newest () {
     this.loading = true;

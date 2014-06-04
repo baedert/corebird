@@ -375,6 +375,9 @@ class ListStatusesPage : ScrollWidget, IPage {
   } // }}}
 
 
+  public string? get_title () {
+    return "Foobar";
+  }
 
   public void create_tool_button (Gtk.RadioToolButton? group) {}
   public Gtk.RadioToolButton? get_tool_button () {return null;}

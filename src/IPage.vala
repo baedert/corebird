@@ -25,6 +25,7 @@ public interface IPage : Gtk.Widget {
   public abstract void on_leave ();
   public abstract void create_tool_button(Gtk.RadioToolButton? group);
   public abstract Gtk.RadioToolButton? get_tool_button();
+  public abstract string? get_title ();
   public abstract unowned MainWindow main_window {get; set;}
   public abstract unowned Account account        {get; set;}
 

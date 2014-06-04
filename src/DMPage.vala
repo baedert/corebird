@@ -225,6 +225,11 @@ class DMPage : IPage, IMessageReceiver, Box {
     send_button.sensitive = text_length > 0 && text_length < 140;
   }
 
+
+  public string? get_title () {
+    return "Foobar";
+  }
+
   public void create_tool_button(RadioToolButton? group) {}
   public RadioToolButton? get_tool_button() {return null;}
 }
