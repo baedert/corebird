@@ -376,7 +376,7 @@ class ListStatusesPage : ScrollWidget, IPage {
 
 
   public string? get_title () {
-    return "Foobar";
+    return _("List");
   }
 
   public void create_tool_button (Gtk.RadioToolButton? group) {}
