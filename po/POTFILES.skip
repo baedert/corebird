@@ -10,6 +10,8 @@ src/SearchPage.c
 src/TweetInfoPage.c
 src/list/DMThreadEntry.c
 src/util/Utils.c
+src/DMPage.c
+src/ListStatusesPage.c
 src/widgets/AccountCreateWidget.c
 src/widgets/TweetListBox.c
 src/widgets/PixbufButton.c

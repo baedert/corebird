@@ -388,6 +388,11 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
             ((DMPage)main_window.get_page (Page.DM)).user_id == sender_id);
   }
 
+
+  public string? get_title () {
+    return _("Direct Messages");
+  }
+
   private void update_unread_count() {
     tool_button.show_badge = (unread_count > 0);
     tool_button.queue_draw();

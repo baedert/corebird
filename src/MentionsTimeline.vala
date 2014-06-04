@@ -122,6 +122,10 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
     });
   }
 
+ 
+  public override string? get_title () {
+    return _("Mentions");
+  }
 
 
   public override void create_tool_button (RadioToolButton? group) {

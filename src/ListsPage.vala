@@ -128,6 +128,11 @@ class ListsPage : IPage, ScrollWidget, IMessageReceiver {
     tool_button.tooltip_text = _("Lists");
   }
 
+
+  public string? get_title () {
+    return _("Lists");
+  }
+
   public RadioToolButton? get_tool_button () {
     return tool_button;
   }

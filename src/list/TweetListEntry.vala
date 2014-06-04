@@ -295,7 +295,8 @@ public class TweetListEntry : ITwitterItem, ListBoxRow {
   [GtkCallback]
   private void name_button_clicked_cb () {
     window.main_widget.switch_page (Page.PROFILE,
-                                    tweet.user_id);
+                                    tweet.user_id,
+                                    tweet.screen_name);
   }
   [GtkCallback]
   private void reply_button_clicked_cb () {

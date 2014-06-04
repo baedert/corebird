@@ -32,7 +32,9 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
 
   public string screen_name {
     set { screen_name_label.label = value; }
-    get { return screen_name_label.label; }
+    owned get {
+      return screen_name_label.label.substring (1);
+    }
   }
 
   public string avatar {

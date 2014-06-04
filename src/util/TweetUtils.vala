@@ -292,10 +292,17 @@ namespace TweetUtils {
     string term = uri.substring (1);
 
     if (uri.has_prefix ("@")) {
-      window.main_widget.switch_page(Page.PROFILE,
-                                     int64.parse (term));
+      int slash_index = uri.index_of ("/");
+      if (slash_index == -1) {
+        window.main_widget.switch_page (Page.PROFILE,
+                                         int64.parse (term));
+      } else {
+        window.main_widget.switch_page (Page.PROFILE,
+                                        int64.parse (term.substring (0, slash_index - 1)),
+                                        term.substring (slash_index + 1, term.length - slash_index - 1));
+      }
       return true;
-    } else if(uri.has_prefix ("#")) {
+    } else if (uri.has_prefix ("#")) {
       window.main_widget.switch_page (Page.SEARCH, uri);
       return true;
     }

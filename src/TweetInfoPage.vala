@@ -200,7 +200,8 @@ class TweetInfoPage : IPage , ScrollWidget {
   [GtkCallback]
   private void name_button_clicked_cb () {
     main_window.main_widget.switch_page (Page.PROFILE,
-                                         tweet.user_id);
+                                         tweet.user_id,
+                                         tweet.screen_name);
   }
 
   /**
@@ -415,6 +416,11 @@ class TweetInfoPage : IPage , ScrollWidget {
                                                           id.to_string());
     source_label.label = "<span underline='none'><a href='%s' title='%s'>%s</a></span>"
                          .printf (link, _("Open in Browser"), _("Source"));
+  }
+
+
+  public string? get_title () {
+    return _("Tweet Details");
   }
 
   /**

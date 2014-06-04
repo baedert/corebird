@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-18 10:12+0200\n"
+"POT-Creation-Date: 2014-06-04 18:39+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -84,7 +84,7 @@ msgstr ""
 msgid "%s tweeted"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:133 ../src/HomeTimeline.vala:134
+#: ../src/HomeTimeline.vala:136 ../src/HomeTimeline.vala:137
 msgid "Home"
 msgstr ""
 
@@ -94,6 +94,7 @@ msgid "New direct message from %s"
 msgstr ""
 
 #: ../src/DMThreadsPage.vala:378 ../src/DMThreadsPage.vala:379
+#: ../src/DMThreadsPage.vala:393
 msgid "Direct Messages"
 msgstr ""
 
@@ -103,7 +104,7 @@ msgid "(%d unread)"
 msgstr ""
 
 #: ../src/ListsPage.vala:127 ../src/ListsPage.vala:128
-#: ../ui/profile-page.ui.h:6
+#: ../src/ListsPage.vala:133 ../ui/profile-page.ui.h:6
 msgid "Lists"
 msgstr ""
 
@@ -116,30 +117,34 @@ msgstr ""
 msgid "Tweet to @%s"
 msgstr ""
 
-#: ../src/ProfilePage.vala:586 ../src/TweetInfoPage.vala:403
+#: ../src/ProfilePage.vala:586 ../src/TweetInfoPage.vala:404
 msgid "Unfollow"
 msgstr ""
 
-#: ../src/ProfilePage.vala:590 ../src/TweetInfoPage.vala:407
+#: ../src/ProfilePage.vala:590 ../src/TweetInfoPage.vala:408
 #: ../ui/tweet-info-page.ui.h:3
 msgid "Follow"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:370
+#: ../src/TweetInfoPage.vala:371
 msgid "Retweets"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:371 ../src/FavoritesTimeline.vala:74
-#: ../src/FavoritesTimeline.vala:75
+#: ../src/TweetInfoPage.vala:372 ../src/FavoritesTimeline.vala:75
+#: ../src/FavoritesTimeline.vala:80 ../src/FavoritesTimeline.vala:81
 msgid "Favorites"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:417
+#: ../src/TweetInfoPage.vala:418
 msgid "Open in Browser"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:417
+#: ../src/TweetInfoPage.vala:418
 msgid "Source"
+msgstr ""
+
+#: ../src/TweetInfoPage.vala:423
+msgid "Tweet Details"
 msgstr ""
 
 #: ../src/util/Utils.vala:69
@@ -156,8 +161,8 @@ msgstr ""
 msgid "%dh"
 msgstr ""
 
-#: ../src/SearchPage.vala:260 ../src/SearchPage.vala:261
-#: ../ui/search-page.ui.h:1
+#: ../src/SearchPage.vala:261 ../src/SearchPage.vala:262
+#: ../src/SearchPage.vala:271 ../ui/search-page.ui.h:1
 msgid "Search"
 msgstr ""
 
@@ -170,7 +175,8 @@ msgstr ""
 msgid "New Mention from @%s"
 msgstr ""
 
-#: ../src/MentionsTimeline.vala:129 ../src/MentionsTimeline.vala:130
+#: ../src/MentionsTimeline.vala:127 ../src/MentionsTimeline.vala:133
+#: ../src/MentionsTimeline.vala:134
 msgid "Mentions"
 msgstr ""
 

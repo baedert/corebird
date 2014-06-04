@@ -123,7 +123,8 @@ class SearchPage : IPage, Box {
     this.last_focus_widget = row;
     if (row is UserListEntry) {
       main_window.main_widget.switch_page (Page.PROFILE,
-                                           ((UserListEntry)row).user_id);
+                                           ((UserListEntry)row).user_id,
+                                           ((UserListEntry)row).screen_name);
     } else if (row is TweetListEntry) {
       main_window.main_widget.switch_page (Page.TWEET_INFO,
                                            TweetInfoPage.BY_INSTANCE,
@@ -263,6 +264,11 @@ class SearchPage : IPage, Box {
 
   public RadioToolButton? get_tool_button(){
     return tool_button;
+  }
+
+
+  public string? get_title () {
+    return _("Search");
   }
 
   public bool handles_double_open () {

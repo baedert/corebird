@@ -148,7 +148,6 @@ public class MainWindow : Gtk.ApplicationWindow {
     main_widget = new MainWidget (account, this, (Corebird)this.application);
     main_widget.show_all ();
     this.add (main_widget);
-    headerbar.set_subtitle ("@" + account.screen_name);
     avatar_image.pixbuf = account.avatar_small;
     account.notify["avatar_small"].connect(() => {
       avatar_image.pixbuf = account.avatar_small;
@@ -206,7 +205,6 @@ public class MainWindow : Gtk.ApplicationWindow {
                                     get_application ());
     cw.show();
   }
-
 
   /**
    * GSimpleActionActivateCallback version of switch_page, used
