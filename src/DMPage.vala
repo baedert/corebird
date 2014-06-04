@@ -227,7 +227,7 @@ class DMPage : IPage, IMessageReceiver, Box {
 
 
   public string? get_title () {
-    return "Foobar";
+    return _("Direct Conversation");
   }
 
   public void create_tool_button(RadioToolButton? group) {}
