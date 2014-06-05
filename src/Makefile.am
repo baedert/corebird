@@ -1,9 +1,7 @@
 
 AM_CPPFLAGS = $(CB_CFLAGS) \
-							-Wno-incompatible-pointer-types-discards-qualifiers \
 							-Wno-format-security \
-							-Wno-unused-value \
-							-Wno-incompatible-pointer-types
+							-Wno-unused-value
 
 
 AUTOMAKE_OPTIONS = subdir-objects

@@ -45,6 +45,11 @@ AC_SUBST(CB_VALA_FLAGS)
 AC_PATH_PROG(GLIB_COMPILE_RESOURCES, glib-compile-resources)
 
 
+if test "${CC}" = "clang"; then
+  CB_CFLAGS="$CB_CFLAGS -Wno-incompatible-pointer-types -Wno-incompatible-pointer-types-discards-qualifiers"
+fi
+
+
 
 # --enable-catalog
 AC_ARG_ENABLE(catalog, AC_HELP_STRING([--enable-catalog], [Install Glade catalog]),, enable_catalog=no)
