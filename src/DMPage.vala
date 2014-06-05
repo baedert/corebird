@@ -179,6 +179,9 @@ class DMPage : IPage, IMessageReceiver, Box {
     account.user_counter.user_seen (user_id, screen_name, name);
 
     scroll_widget.scroll_down_next (false, true);
+
+    // Focus the text entry
+    text_entry.grab_focus ();
   } // }}}
 
   public void on_leave () {}
