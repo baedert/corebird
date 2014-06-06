@@ -81,18 +81,13 @@ class ProfilePage : ScrollWidget, IPage {
   private Gtk.Spinner progress_spinner;
   [GtkChild]
   private Gtk.Label follows_you_label;
-  //[GtkChild]
-  //private Gtk.MenuItem dm_menu_item;
-  //[GtkChild]
-  //private Gtk.MenuItem tweet_to_menu_item;
-  //[GtkChild]
-  //private Gtk.MenuItem lists_menu_item;
   [GtkChild]
   private UserListsWidget user_lists;
   [GtkChild]
   private Gtk.Stack user_stack;
-  //[GtkChild]
-  //private Gtk.CheckMenuItem block_menu_item;
+  [GtkChild]
+  private Gtk.MenuButton more_button;
+  private GLib.MenuModel more_menu;
   private bool following;
   private int64 user_id;
   private new string name;
@@ -104,6 +99,7 @@ class ProfilePage : ScrollWidget, IPage {
   private bool block_item_blocked = false;
   private bool tweets_loading = false;
   private int64 lowest_tweet_id = int64.MAX;
+  private GLib.SimpleActionGroup actions;
 
   public ProfilePage (int id) {
     this.id = id;
@@ -141,9 +137,11 @@ class ProfilePage : ScrollWidget, IPage {
       user_stack.disconnect (page_change_signal);
     });
 
-    var action_group = new GLib.SimpleActionGroup ();
-    action_group.add_action_entries (action_entries, this);
-    this.insert_action_group ("user", action_group);
+    actions = new GLib.SimpleActionGroup ();
+    actions.add_action_entries (action_entries, this);
+    this.insert_action_group ("user", actions);
+
+    this.more_menu = more_button.menu_model;
   }
 
   private void set_user_id (int64 user_id) { // {{{
@@ -152,8 +150,9 @@ class ProfilePage : ScrollWidget, IPage {
     /* Load the profile data now, then - if available - set the cached data */
     load_profile_data.begin (user_id);
     follow_button.sensitive = (user_id != account.id);
-    //lists_menu_item.sensitive = (user_id != account.id);
-    //block_menu_item.sensitive = (user_id != account.id);
+    ((SimpleAction)actions.lookup_action ("toggle-blocked")).set_enabled (user_id != account.id);
+    ((SimpleAction)actions.lookup_action ("add-remove-list")).set_enabled (user_id != account.id);
+    ((SimpleAction)actions.lookup_action ("write-dm")).set_enabled (user_id != account.id);
 
     load_banner (DATADIR + "/no_banner.png");
     load_friendship.begin ();
@@ -463,6 +462,13 @@ class ProfilePage : ScrollWidget, IPage {
                              bool verified,
                              GLib.SList<TweetUtils.Sequence?>? text_urls = null
                              ) { //{{{
+
+
+    var section = (GLib.Menu)more_menu.get_item_link (0, GLib.Menu.LINK_SECTION);
+    var user_item = new GLib.MenuItem (_("Tweet to @%s").printf (screen_name),
+                                       "user.tweet-to");
+    section.remove (1);
+    section.insert_item (1, user_item);
 
     name_label.set_markup("<b>%s</b>".printf (name));
     screen_name_label.set_label ("@" + screen_name);

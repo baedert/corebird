@@ -10,7 +10,7 @@
         <attribute name="action">user.write-dm</attribute>
       </item>
       <item>
-        <attribute name="label" translatable="yes">Tweet to @foobar</attribute>
+        <attribute name="label">Tweet to @foobar</attribute>
         <attribute name="action">user.tweet-to</attribute>
       </item>
       <item>
@@ -192,13 +192,12 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <child>
-                          <object class="GtkMenuButton" id="menubutton1">
+                          <object class="GtkMenuButton" id="more_button">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="halign">end</property>
                             <property name="margin_top">5</property>
-                            <!-- <property name="popup">menu1</property> -->
                             <property name="menu_model">more_menu</property>
                             <child>
                               <placeholder/>
