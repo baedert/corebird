@@ -62,7 +62,7 @@
                     <property name="height_request">73</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="margin_left">4</property>
+                    <property name="margin_start">4</property>
                     <property name="margin_top">5</property>
                   </object>
                   <packing>
@@ -85,7 +85,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="valign">end</property>
-                            <property name="margin_left">4</property>
+                            <property name="margin_start">4</property>
                             <property name="margin_top">5</property>
                             <property name="margin_bottom">2</property>
                             <property name="xalign">0</property>
@@ -105,8 +105,8 @@
                           <object class="GtkImage" id="verified_image">
                             <property name="can_focus">False</property>
                             <property name="no_show_all">True</property>
-                            <property name="margin_left">5</property>
-                            <property name="margin_right">5</property>
+                            <property name="margin_start">5</property>
+                            <property name="margin_end">5</property>
                             <property name="stock">gtk-missing-image</property>
                           </object>
                           <packing>
@@ -127,7 +127,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="valign">start</property>
-                        <property name="margin_left">4</property>
+                        <property name="margin_start">4</property>
                         <property name="margin_top">2</property>
                         <property name="margin_bottom">2</property>
                         <property name="xalign">0</property>
@@ -146,7 +146,7 @@
                       <object class="GtkLabel" id="location_label">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="margin_left">4</property>
+                        <property name="margin_start">4</property>
                         <property name="margin_top">2</property>
                         <property name="margin_bottom">2</property>
                         <property name="xalign">0</property>
@@ -162,7 +162,7 @@
                       <object class="GtkLabel" id="url_label">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="margin_left">4</property>
+                        <property name="margin_start">4</property>
                         <property name="margin_top">2</property>
                         <property name="xalign">0</property>
                         <property name="label"> </property>
@@ -216,7 +216,7 @@
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="halign">end</property>
-                            <property name="margin_right">3</property>
+                            <property name="margin_end">3</property>
                             <property name="margin_top">5</property>
                             <signal name="clicked" handler="follow_button_clicked_cb" swapped="no"/>
                           </object>
@@ -255,7 +255,7 @@
                         <property name="can_focus">False</property>
                         <property name="no_show_all">True</property>
                         <property name="halign">end</property>
-                        <property name="margin_right">3</property>
+                        <property name="margin_end">3</property>
                         <property name="margin_top">4</property>
                         <property name="label" translatable="yes">Follows you</property>
                         <style>
@@ -287,8 +287,8 @@
               <object class="GtkLabel" id="description_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="margin_left">5</property>
-                <property name="margin_right">5</property>
+                <property name="margin_start">5</property>
+                <property name="margin_end">5</property>
                 <property name="margin_top">3</property>
                 <property name="margin_bottom">3</property>
                 <property name="yalign">0</property>

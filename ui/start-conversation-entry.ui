@@ -66,7 +66,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="halign">end</property>
-                    <property name="margin_left">10</property>
+                    <property name="margin_start">10</property>
                     <property name="label" translatable="yes">With:</property>
                   </object>
                   <packing>
@@ -79,8 +79,8 @@
                   <object class="ReplyEntry" id="name_entry">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="margin_left">8</property>
-                    <property name="margin_right">8</property>
+                    <property name="margin_start">8</property>
+                    <property name="margin_end">8</property>
                     <property name="hexpand">True</property>
                     <property name="placeholder_text">@screen_name</property>
                     <signal name="activate" handler="go_button_clicked_cb" swapped="no"/>
@@ -96,7 +96,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="halign">end</property>
-                    <property name="margin_right">9</property>
+                    <property name="margin_end">9</property>
                     <property name="visible_child">go_button</property>
                     <property name="transition_type">slide-up-down</property>
                     <child>
