@@ -1,54 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
   <requires lib="corebird" version="0.0"/>
-  <object class="GtkMenu" id="menu1">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <child>
-      <object class="GtkMenuItem" id="dm_menu_item">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Write Direct Message</property>
-        <property name="use_underline">True</property>
-        <signal name="activate" handler="dm_menu_item_activate_cb" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="tweet_to_menu_item">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label">Tweet to User</property>
-        <property name="use_underline">True</property>
-        <signal name="activate" handler="tweet_to_item_activate_cb" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="lists_menu_item">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Add to/Remove from List</property>
-        <property name="use_underline">True</property>
-        <signal name="activate" handler="list_menu_item_activated" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkSeparatorMenuItem" id="menuitem1">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkCheckMenuItem" id="block_menu_item">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Blocked</property>
-        <property name="use_underline">True</property>
-        <signal name="toggled" handler="block_item_toggled_cb" swapped="no" />
-      </object>
-    </child>
-  </object>
+
+  <menu id="more_menu">
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">Write Direct Message</attribute>
+        <attribute name="action">user.write-dm</attribute>
+      </item>
+      <item>
+        <attribute name="label">Tweet to @foobar</attribute>
+        <attribute name="action">user.tweet-to</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">Add to/Remove from List</attribute>
+        <attribute name="action">user.add-remove-list</attribute>
+      </item>
+    </section>
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">Blocked</attribute>
+        <attribute name="action">user.toggle-blocked</attribute>
+      </item>
+    </section>
+  </menu>
+
+
   <template class="ProfilePage" parent="ScrollWidget">
     <property name="visible">True</property>
     <property name="can_focus">True</property>
@@ -214,13 +192,13 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <child>
-                          <object class="GtkMenuButton" id="menubutton1">
+                          <object class="GtkMenuButton" id="more_button">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="halign">end</property>
                             <property name="margin_top">5</property>
-                            <property name="popup">menu1</property>
+                            <property name="menu_model">more_menu</property>
                             <child>
                               <placeholder/>
                             </child>
