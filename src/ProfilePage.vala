@@ -27,7 +27,6 @@ class ProfilePage : ScrollWidget, IPage {
     {"write-dm", write_dm_activated},
     {"tweet-to", tweet_to_activated},
     {"add-remove-list", add_remove_list_activated},
-    {"toggle-blocked", toggle_blocked_activated}
   };
 
   public int unread_count {
@@ -100,6 +99,16 @@ class ProfilePage : ScrollWidget, IPage {
   private bool tweets_loading = false;
   private int64 lowest_tweet_id = int64.MAX;
   private GLib.SimpleActionGroup actions;
+  private bool _user_blocked = false;
+  public bool user_blocked {
+    get {
+      return _user_blocked;
+    }
+    set {
+      _user_blocked = value;
+      user_blocked_changed ();
+    }
+  }
 
   public ProfilePage (int id) {
     this.id = id;
@@ -140,6 +149,7 @@ class ProfilePage : ScrollWidget, IPage {
     actions = new GLib.SimpleActionGroup ();
     actions.add_action_entries (action_entries, this);
     this.insert_action_group ("user", actions);
+    actions.add_action (new PropertyAction ("toggle-blocked", this, "user_blocked"));
 
     this.more_menu = more_button.menu_model;
   }
@@ -150,7 +160,6 @@ class ProfilePage : ScrollWidget, IPage {
     /* Load the profile data now, then - if available - set the cached data */
     load_profile_data.begin (user_id);
     follow_button.sensitive = (user_id != account.id);
-    ((SimpleAction)actions.lookup_action ("toggle-blocked")).set_enabled (user_id != account.id);
     ((SimpleAction)actions.lookup_action ("add-remove-list")).set_enabled (user_id != account.id);
     ((SimpleAction)actions.lookup_action ("write-dm")).set_enabled (user_id != account.id);
 
@@ -214,7 +223,7 @@ class ProfilePage : ScrollWidget, IPage {
     bool followed_by = relationship.get_object_member ("target").get_boolean_member ("following");
     follows_you_label.visible = followed_by;
     block_item_blocked = true;
-    //block_menu_item.active = relationship.get_object_member ("source").get_boolean_member ("blocking");
+    user_blocked = relationship.get_object_member ("source").get_boolean_member ("blocking");
     block_item_blocked = false;
   }
 
@@ -519,7 +528,7 @@ class ProfilePage : ScrollWidget, IPage {
       call.set_function ("1.1/friendships/create.json");
       call.add_param ("follow", "false");
       block_item_blocked = true;
-      //block_menu_item.active = false;
+      user_blocked = false;
       block_item_blocked = false;
     }
     debug  (@"User ID: $user_id");
@@ -651,13 +660,13 @@ class ProfilePage : ScrollWidget, IPage {
   }
 
 
-  private void toggle_blocked_activated (GLib.SimpleAction action, GLib.Variant? v) {
+  private void user_blocked_changed () {
     if (block_item_blocked)
       return;
 
     var call = account.proxy.new_call ();
     call.set_method ("POST");
-    if (action.enabled) { // XXX
+    if (user_blocked) {
       call.set_function ("1.1/blocks/create.json");
       set_follow_button_state (false);
     } else {
