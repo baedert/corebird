@@ -253,6 +253,23 @@ namespace Utils {
     icon_theme.append_search_path (DATADIR+"/assets/");
   }
 
+  void load_custom_css () {
+    try {
+      var provider = new Gtk.CssProvider ();
+      string style = Dirs.config ("style.css");
+      if (!FileUtils.test (style, FileTest.EXISTS))
+        style = DATADIR + "/ui/style.css";
+
+      provider.load_from_file(File.new_for_path (style));
+      Gtk.StyleContext.add_provider_for_screen (Gdk.Screen.get_default (),
+                                                provider,
+                                                Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+    }catch (GLib.Error e) {
+      warning ("Error while loading ui/style.css: %s", e.message);
+    }
+
+  }
+
   string capitalize (string s) {
     string back = s;
     if (s.get_char (0).islower ()) {

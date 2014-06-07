@@ -153,22 +153,12 @@ public class Corebird : Gtk.Application {
     this.set_app_menu (app_menu);
 
     // Load custom CSS stuff
-    try{
-      CssProvider provider = new CssProvider ();
-      string style = Dirs.config ("style.css");
-      if (!FileUtils.test (style, FileTest.EXISTS))
-        style = DATADIR + "/ui/style.css";
-
-      provider.load_from_file(File.new_for_path (style));
-      Gtk.StyleContext.add_provider_for_screen (Gdk.Screen.get_default(), provider,
-                                                STYLE_PROVIDER_PRIORITY_APPLICATION);
-    }catch (GLib.Error e) {
-      warning ("Error while loading ui/style.css: %s", e.message);
-    }
-    Twitter.get ().init ();
-
+    Utils.load_custom_css ();
     // Load custom icons
     Utils.load_custom_icons ();
+
+
+    Twitter.get ().init ();
   } // }}}
 
   public override void shutdown () {
