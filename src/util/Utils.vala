@@ -248,12 +248,12 @@ namespace Utils {
   }
 
 
-  void load_custom_icons () {
+  public void load_custom_icons () {
     var icon_theme  = Gtk.IconTheme.get_default ();
     icon_theme.append_search_path (DATADIR+"/assets/");
   }
 
-  void load_custom_css () {
+  public void load_custom_css () {
     try {
       var provider = new Gtk.CssProvider ();
       string style = Dirs.config ("style.css");
