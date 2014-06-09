@@ -241,7 +241,6 @@ void main (string[] args) {
   var list = new Gtk.ListBox ();
   list.selection_mode = Gtk.SelectionMode.NONE;
   var window = new Gtk.Window ();
-  //var mw = new MainWindow (null, account);
   window.add (list);
 
 

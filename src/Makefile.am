@@ -56,6 +56,7 @@ cb_sources = \
 			widgets/BgBox.vala \
 			widgets/UserListsWidget.vala \
 			widgets/ReplyIndicator.vala \
+			widgets/MultiMediaWidget.vala \
 			util/TweetUtils.vala \
 			util/Utils.vala \
 			util/IntHistory.vala \
