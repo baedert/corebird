@@ -41,6 +41,7 @@ cb_sources = \
 			FavoritesTimeline.vala \
 			Filter.vala \
 			FilterPage.vala \
+			Media.vala \
 			widgets/TweetListBox.vala \
 			widgets/MaxSizeContainer.vala \
 			widgets/ScrollWidget.vala \
