@@ -152,7 +152,7 @@ public class Tweet : GLib.Object {
         display_url = url.get_string_member ("display_url"),
         visual_display_url = false
       });
-      InlineMediaDownloader.try_load_media.begin(this, expanded_url);
+      //InlineMediaDownloader.try_load_media.begin(this, expanded_url);
     });
 
     hashtags.foreach_element ((arr, index, node) => {
@@ -211,8 +211,8 @@ public class Tweet : GLib.Object {
           display_url = url.get_string_member ("display_url"),
           visual_display_url = false
         });
-        InlineMediaDownloader.try_load_media.begin(this,
-                url.get_string_member("media_url"));
+        //InlineMediaDownloader.try_load_media.begin(this,
+                //url.get_string_member("media_url"));
       });
     }
 

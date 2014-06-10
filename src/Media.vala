@@ -27,7 +27,7 @@ public class Media {
   public string thumb_path;
   public string url;
   public MediaType type;
-  public Gdk.Pixbuf thumbnail;
+  public Gdk.Pixbuf thumbnail = null;
   /** If this media if fully downloaded and thumb is available */
   public bool loaded = false;
 
