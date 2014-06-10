@@ -27,19 +27,7 @@ namespace InlineMediaDownloader {
 
     if (session == null)
       session = new Soup.Session ();
-    /*
-        TODO: Support For:
-        * yfrog
-        * lockerz.com
-        * say.ly
-          * <img src="contentImage" src="(.*?)"
-        * moby.tv
 
-        * Youtube (Preview image with video indicator. Click on the video
-                   opens/streams it in some video player)
-        * vine! (thumbnails supported)
-
-    */
 
     if(url.has_prefix("http://instagr.am") ||
        url.has_prefix("http://instagram.com/p/")) {
@@ -59,6 +47,10 @@ namespace InlineMediaDownloader {
     }
   }
 
+  public async void load_media (Tweet t, Media media) {
+    yield load_inline_media2 (t, media);
+  }
+
   public async void two_step_load (Tweet t, string first_url, string regex_str,
                                    int match_index) {
     var msg = new Soup.Message ("GET", first_url);
@@ -75,6 +67,118 @@ namespace InlineMediaDownloader {
         critical ("Regex Error(%s): %s", regex_str, e.message);
       }
     });
+  }
+
+  private async void load_inline_media2 (Tweet t, Media media) {
+    GLib.SourceFunc callback = load_inline_media2.callback;
+
+    media.path = get_media_path (t, media.url);
+    media.thumb_path = get_thumb_path (t, media.url);
+    string ext = Utils.get_file_type (media.url);
+    {
+      if(ext.length == 0)
+        ext = "png";
+
+      ext = ext.down();
+      int qm_index;
+      if ((qm_index = ext.index_of_char ('?')) != -1) {
+        ext = ext.substring (0, qm_index);
+      }
+
+      if (ext == "jpg")
+        ext = "jpeg";
+    }
+
+
+    GLib.OutputStream thumb_out_stream = null;
+    GLib.OutputStream media_out_stream = null;
+
+    bool main_file_exists = false;
+    try {
+      media_out_stream = File.new_for_path (media.path).create (FileCreateFlags.NONE);
+    } catch (GLib.Error e) {
+      if (e is GLib.IOError.EXISTS)
+        main_file_exists = true;
+      else {
+        warning (e.message);
+        return;
+      }
+    }
+
+    try {
+      thumb_out_stream = File.new_for_path (media.thumb_path).create (FileCreateFlags.NONE);
+      // If we came to this point, the above operation did not throw a GError, so
+      // the thumbnail does not exist, right?
+      if (main_file_exists) {
+        var in_stream = GLib.File.new_for_path (media.path).read ();
+        yield load_normal_media2 (t, in_stream, thumb_out_stream, media);
+        return;
+      }
+    } catch (GLib.Error e) {
+      if (e is GLib.IOError.EXISTS) {
+        if (main_file_exists) {
+          try {
+            var thumb = new Gdk.Pixbuf.from_file (media.thumb_path);
+            fire_media_added (t, media.path, thumb, media.thumb_path, media.url);
+          } catch (GLib.Error e) {
+            critical (e.message);
+          }
+          return;
+        } else  {
+          // We just delete the old thumbnail and proceed
+          GLib.FileUtils.remove (media.thumb_path);
+          try {
+            thumb_out_stream = File.new_for_path (media.thumb_path).create (FileCreateFlags.NONE);
+          } catch (GLib.Error e) {
+            critical (e.message);
+            return;
+          }
+        }
+      } else {
+        warning (e.message);
+        return;
+      }
+    }
+
+
+    var msg = new Soup.Message ("GET", media.url);
+    msg.got_headers.connect (() => {
+      int64 content_length = msg.response_headers.get_content_length ();
+      double mb = content_length / 1024.0 / 1024.0;
+      double max = Settings.max_media_size ();
+      if (mb > max) {
+        debug ("Image %s won't be downloaded,  %fMB > %fMB", media.url, mb, max);
+        session.cancel_message (msg, Soup.Status.CANCELLED);
+      }
+    });
+
+
+    session.queue_message(msg, (s, _msg) => {
+      if (_msg.status_code != Soup.Status.OK) {
+        callback ();
+        return;
+      }
+
+      try {
+        var ms  = new MemoryInputStream.from_data(_msg.response_body.data, null);
+        media_out_stream.write_all (_msg.response_body.data, null, null);
+        if(ext == "gif"){
+          load_animation2.begin (t, ms, thumb_out_stream, media, () => {
+            callback ();
+          });
+        } else {
+          load_normal_media2.begin (t, ms, thumb_out_stream, media, () => {
+            callback ();
+          });
+        }
+        yield;
+      } catch (GLib.Error e) {
+        critical (e.message + " for MEDIA " + media.url);
+        callback ();
+      }
+    });
+    yield;
+
   }
 
   public async void load_inline_media (Tweet t, string url) { //{{{
@@ -186,6 +290,44 @@ namespace InlineMediaDownloader {
     });
     yield;
   } //}}}
+
+
+  private async void load_animation2 (Tweet t,
+                                      GLib.MemoryInputStream in_stream,
+                                      GLib.OutputStream thumb_out_stream,
+                                      Media media) {
+    Gdk.PixbufAnimation anim;
+    try {
+      anim = yield new Gdk.PixbufAnimation.from_stream_async (in_stream, null);
+    } catch (GLib.Error e) {
+      warning (e.message);
+      return;
+    }
+    var pic = anim.get_static_image ();
+    var thumb = Utils.slice_pixbuf (pic, THUMB_SIZE);
+    yield Utils.write_pixbuf_async (thumb, thumb_out_stream, "png");
+    media.thumbnail = thumb;
+    media.loaded = true;
+    media.finished_loading ();
+  }
+
+  private async void load_normal_media2 (Tweet t,
+                                         GLib.InputStream in_stream,
+                                         GLib.OutputStream thumb_out_stream,
+                                         Media media) {
+    Gdk.Pixbuf pic = null;
+    try {
+      pic = yield new Gdk.Pixbuf.from_stream_async (in_stream, null);
+    } catch (GLib.Error e) {
+      warning ("%s(%s)", e.message, media.path);
+      return;
+    }
+    var thumb = Utils.slice_pixbuf (pic, THUMB_SIZE);
+    yield Utils.write_pixbuf_async (thumb, thumb_out_stream, "png");
+    media.thumbnail = thumb;
+    media.loaded = true;
+    media.finished_loading ();
+  }
 
   private async void load_animation (Tweet t,
                                      MemoryInputStream in_stream,

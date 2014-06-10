@@ -68,6 +68,9 @@ public class Tweet : GLib.Object {
   /** List of users mentioned in this tweet */
   public string[] mentions;
 
+  /** List of all the used media **/
+  public Media[] medias;
+
 
   public Tweet(){
     this.avatar = Twitter.no_avatar;
@@ -211,6 +214,24 @@ public class Tweet : GLib.Object {
         InlineMediaDownloader.try_load_media.begin(this,
                 url.get_string_member("media_url"));
       });
+    }
+
+    if (status.has_member ("extended_entities")) {
+      var extended_entities = status.get_object_member ("extended_entities");
+      var extended_media = extended_entities.get_array_member ("media");
+      this.medias = new Media[extended_media.get_length ()];
+      int real_media_count = 0;
+      extended_media.foreach_element ((arr, index, node) => {
+        var media_obj = node.get_object ();
+        var m = new Media ();
+        m.url = media_obj.get_string_member ("media_url");
+        m.id = media_obj.get_int_member ("id");
+        m.type = Media.type_from_string (media_obj.get_string_member ("type"));
+        this.medias[real_media_count] = m;
+        real_media_count ++;
+        InlineMediaDownloader.load_media.begin (this, m);
+      });
+      this.medias.resize (real_media_count);
     }
 
 

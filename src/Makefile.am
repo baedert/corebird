@@ -90,7 +90,7 @@ cb_sources = \
 
 corebird.vapi libcorebird_la_vala.stamp corebird.h: $(cb_sources)
 	@$(VALAC) $^ --vapi=corebird.vapi -C --header corebird.h @CB_VALA_FLAGS@
-	touch $@
+	touch corebird.vapi libcorebird_la_vala.stamp corebird.h
 
 #corebird.h corebird.vapi: libcorebird_la_vala.stamp
 

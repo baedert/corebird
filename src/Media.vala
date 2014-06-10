@@ -15,12 +15,28 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-enum MediaType {
-  IMAGE
+public enum MediaType {
+  IMAGE,
+
+  UNKNOWN
 }
 
-class Media {
+public class Media {
+  public int64 id;
   public string path;
-  public string URL;
+  public string thumb_path;
+  public string url;
   public MediaType type;
+  public Gdk.Pixbuf thumbnail;
+  /** If this media if fully downloaded and thumb is available */
+  public bool loaded = false;
+
+  public signal void finished_loading ();
+
+  public static MediaType type_from_string (string s) {
+    if (s == "photo")
+      return MediaType.IMAGE;
+
+    return MediaType.UNKNOWN;
+  }
 }
