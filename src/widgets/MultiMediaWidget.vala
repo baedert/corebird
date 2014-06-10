@@ -44,23 +44,35 @@ public class MultiMediaWidget : Gtk.Widget {
     int widget_width = get_allocated_width ();
     int widget_height = get_allocated_height ();
 
-    ct.set_source_rgb (1, 0, 0);
-    ct.rectangle (0, 0, widget_width, widget_height);
-    ct.fill ();
+    //ct.save ();
+    //ct.set_source_rgb (1, 0, 0);
+    //ct.rectangle (10, 10, widget_width - 20, widget_height - 20);
+    //ct.fill ();
+    //ct.restore ();
+
+    //ct.save ();
+    //ct.set_source_rgb (0, 0, 0);
+    //ct.move_to (widget_width / 2.0f, 0);
+    //ct.line_to (widget_width / 2.0f, widget_height);
+    //ct.stroke();
+    //ct.restore();
 
 
     float media_width = (float)widget_width / media_count;
 
-    double media_x = 0;
+    //double media_x = 0;
     for (int i = 0; i < media_count; i ++) {
       double scale = (double)media_width / medias[i].get_width ();
       ct.save ();
-      ct.rectangle (media_x * scale, 0, medias[i].get_width (), medias[i].get_height ());
+      ct.translate (media_width * i, 0);
+      ct.rectangle (0, 0, media_width, widget_height);
       ct.scale (scale, 1);
-      Gdk.cairo_set_source_pixbuf (ct, medias[i], media_x, 0);
+      //if (i > 0)
+      Gdk.cairo_set_source_pixbuf (ct, medias[i],0, 0);
+
       ct.fill ();
       ct.restore ();
-      media_x += medias[i].get_width ();
+      //media_x += medias[i].get_width ();
     }
     return true;
   }
