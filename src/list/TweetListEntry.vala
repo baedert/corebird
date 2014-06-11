@@ -52,6 +52,8 @@ public class TweetListEntry : ITwitterItem, ListBoxRow {
   private Gtk.MenuItem more_menu_delete_item;
   [GtkChild]
   private Gtk.Grid grid;
+  [GtkChild]
+  private MultiMediaWidget mm_widget;
 
 
 
@@ -148,8 +150,9 @@ public class TweetListEntry : ITwitterItem, ListBoxRow {
     //}
 
     if (tweet.has_inline_media) {
-
-    }
+      mm_widget.set_all_media (tweet.medias);
+    } else
+      grid.remove (mm_widget);
 
 
     if (tweet.user_id != account.id)

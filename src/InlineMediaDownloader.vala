@@ -122,6 +122,9 @@ namespace InlineMediaDownloader {
         if (main_file_exists) {
           try {
             var thumb = new Gdk.Pixbuf.from_file (media.thumb_path);
+            media.thumbnail = thumb;
+            media.loaded = true;
+            media.finished_loading ();
           } catch (GLib.Error e) {
             critical (e.message);
           }
@@ -149,6 +152,7 @@ namespace InlineMediaDownloader {
       double max = Settings.max_media_size ();
       if (mb > max) {
         debug ("Image %s won't be downloaded,  %fMB > %fMB", media.url, mb, max);
+        media.invalid = true;
         session.cancel_message (msg, Soup.Status.CANCELLED);
       }
     });
@@ -161,7 +165,7 @@ namespace InlineMediaDownloader {
       }
 
       try {
-        var ms  = new MemoryInputStream.from_data(_msg.response_body.data, null);
+        var ms = new MemoryInputStream.from_data(_msg.response_body.data, null);
         media_out_stream.write_all (_msg.response_body.data, null, null);
         if(ext == "gif"){
           load_animation2.begin (t, ms, thumb_out_stream, media, () => {

@@ -248,7 +248,7 @@ void retweet () {
   assert (!t.verified);
   assert (t.reply_id == 0);
   assert (t.my_retweet == 0);
-  assert (!t.has_inline_media);
+  //assert (!t.has_inline_media);
 }
 
 

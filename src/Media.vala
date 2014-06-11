@@ -30,6 +30,7 @@ public class Media {
   public Gdk.Pixbuf thumbnail = null;
   /** If this media if fully downloaded and thumb is available */
   public bool loaded = false;
+  public bool invalid = false;
 
   public signal void finished_loading ();
 
