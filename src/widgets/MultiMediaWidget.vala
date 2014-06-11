@@ -17,9 +17,9 @@ public class MultiMediaWidget : Gtk.Widget {
     set_has_window (false);
   }
 
-  public void set_media (int index, Gdk.Pixbuf pixbuf) {
+  public void set_media (int index, Media media) {
     assert (index < media_count);
-    medias[index] = pixbuf;
+    medias[index] = media.thumbnail;
   }
 
   /* Widget Implementation {{{ */

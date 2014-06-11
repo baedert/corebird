@@ -54,11 +54,12 @@ public class Tweet : GLib.Object {
 
   /** if 0, this tweet is NOT part of a conversation */
   public int64 reply_id = 0;
-  public string media;
-  public string media_thumb;
-  public signal void inline_media_added(Gdk.Pixbuf? media);
-  public bool has_inline_media = false;
-  public string original_media_url;
+
+  /** List of all the used media **/
+  public Media[] medias;
+  public bool has_inline_media {
+    get { return medias != null && medias.length > 0; }
+  }
 
   /** if the json from twitter has inline media **/
   private GLib.SList<TweetUtils.Sequence?> urls;
@@ -67,9 +68,6 @@ public class Tweet : GLib.Object {
 
   /** List of users mentioned in this tweet */
   public string[] mentions;
-
-  /** List of all the used media **/
-  public Media[] medias;
 
 
   public Tweet(){
@@ -200,7 +198,6 @@ public class Tweet : GLib.Object {
       var medias = entities.get_array_member ("media");
       medias.foreach_element ((arr, index, node) => {
         var url = node.get_object();
-        has_inline_media = true;
         string expanded_url = url.get_string_member ("expanded_url");
         expanded_url = expanded_url.replace ("&", "&amp;");
         Json.Array indices = url.get_array_member ("indices");

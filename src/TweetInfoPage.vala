@@ -377,11 +377,12 @@ class TweetInfoPage : IPage , ScrollWidget {
     set_source_link (tweet.id, tweet.screen_name);
 
     // TODO: Also do this on inline_media_added signal
-    if (tweet.media != null) {
-      tweet_media = tweet.media;
-      media_button.show ();
-      media_button.set_bg (tweet.inline_media);
-    }
+    // XXX
+    //if (tweet.media != null) {
+      //tweet_media = tweet.media;
+      //media_button.show ();
+      //media_button.set_bg (tweet.inline_media);
+    //}
 
     if (tweet.user_id == account.id) {
       follow_button.hide ();

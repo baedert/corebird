@@ -83,7 +83,7 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
 
     if (stack_size == 1 && !auto_scroll) {
       if (t.has_inline_media){
-        t.inline_media_added.connect (tweet_inline_media_added_cb);
+        //t.inline_media_added.connect (tweet_inline_media_added_cb);
       } else {
         // calling this with image = null will just create the
         // appropriate notification etc.
