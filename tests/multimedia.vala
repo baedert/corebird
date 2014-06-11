@@ -123,17 +123,17 @@ const string TD1 = """
 
 
 void normal () {
-  //Tweet t = new Tweet ();
-  //Json.Parser parser = new Json.Parser ();
-  //GLib.DateTime now = new GLib.DateTime.now_local ();
-  //Account acc = new Account (1234, "foobar", "Foo Bar");
-  //try {
-    //parser.load_from_data (TD1);
-  //} catch (GLib.Error e) {
-    //critical (e.message);
-  //}
-  //t.load_from_json (parser.get_root (), now, acc);
-  //assert (t.medias.length == 2);
+  Tweet t = new Tweet ();
+  Json.Parser parser = new Json.Parser ();
+  GLib.DateTime now = new GLib.DateTime.now_local ();
+  Account acc = new Account (1234, "foobar", "Foo Bar");
+  try {
+    parser.load_from_data (TD1);
+  } catch (GLib.Error e) {
+    critical (e.message);
+  }
+  t.load_from_json (parser.get_root (), now, acc);
+  assert (t.medias.length == 2);
 
 }
 
