@@ -75,8 +75,8 @@ namespace InlineMediaDownloader {
   private async void load_inline_media2 (Tweet t, Media media) {
     GLib.SourceFunc callback = load_inline_media2.callback;
 
-    media.path = get_media_path (t, media.url);
-    media.thumb_path = get_thumb_path (t, media.url);
+    media.path = get_media_path (t, media);
+    media.thumb_path = get_thumb_path (t, media);
     string ext = Utils.get_file_type (media.url);
     {
       if(ext.length == 0)
@@ -219,17 +219,17 @@ namespace InlineMediaDownloader {
     media.finished_loading ();
   }
 
-  public string get_media_path (Tweet t, string url) {
-    string ext = Utils.get_file_type (url);
+  public string get_media_path (Tweet t, Media media) {
+    string ext = Utils.get_file_type (media.url);
     ext = ext.down();
     if(ext.length == 0)
       ext = "png";
 
-    return Dirs.cache (@"assets/media/$(t.id)_$(t.user_id).$(ext)");
+    return Dirs.cache (@"assets/media/$(t.id)_$(t.user_id)_$(media.id).$(ext)");
   }
 
-  private string get_thumb_path (Tweet t, string url) {
-    return Dirs.cache (@"assets/media/thumbs/$(t.id)_$(t.user_id).png");
+  public string get_thumb_path (Tweet t, Media media) {
+    return Dirs.cache (@"assets/media/thumbs/$(t.id)_$(t.user_id)_$(media.id).png");
   }
 
 }
