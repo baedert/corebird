@@ -51,7 +51,7 @@ namespace InlineMediaDownloader {
     if (session == null)
       session = new Soup.Session ();
 
-    yield load_inline_media2 (t, media);
+    yield load_inline_media (t, media);
   }
 
   //public async void two_step_load (Tweet t, string first_url, string regex_str,
@@ -72,8 +72,8 @@ namespace InlineMediaDownloader {
     //});
   //}
 
-  private async void load_inline_media2 (Tweet t, Media media) {
-    GLib.SourceFunc callback = load_inline_media2.callback;
+  private async void load_inline_media (Tweet t, Media media) {
+    GLib.SourceFunc callback = load_inline_media.callback;
 
     media.path = get_media_path (t, media);
     media.thumb_path = get_thumb_path (t, media);
@@ -114,7 +114,7 @@ namespace InlineMediaDownloader {
       // the thumbnail does not exist, right?
       if (main_file_exists) {
         var in_stream = GLib.File.new_for_path (media.path).read ();
-        yield load_normal_media2 (t, in_stream, thumb_out_stream, media);
+        yield load_normal_media (t, in_stream, thumb_out_stream, media);
         return;
       }
     } catch (GLib.Error e) {
@@ -168,11 +168,11 @@ namespace InlineMediaDownloader {
         var ms = new MemoryInputStream.from_data(_msg.response_body.data, null);
         media_out_stream.write_all (_msg.response_body.data, null, null);
         if(ext == "gif"){
-          load_animation2.begin (t, ms, thumb_out_stream, media, () => {
+          load_animation.begin (t, ms, thumb_out_stream, media, () => {
             callback ();
           });
         } else {
-          load_normal_media2.begin (t, ms, thumb_out_stream, media, () => {
+          load_normal_media.begin (t, ms, thumb_out_stream, media, () => {
             callback ();
           });
         }
@@ -186,10 +186,10 @@ namespace InlineMediaDownloader {
 
   }
 
-  private async void load_animation2 (Tweet t,
-                                      GLib.MemoryInputStream in_stream,
-                                      GLib.OutputStream thumb_out_stream,
-                                      Media media) {
+  private async void load_animation (Tweet t,
+                                     GLib.MemoryInputStream in_stream,
+                                     GLib.OutputStream thumb_out_stream,
+                                     Media media) {
     Gdk.PixbufAnimation anim;
     try {
       anim = yield new Gdk.PixbufAnimation.from_stream_async (in_stream, null);
@@ -205,10 +205,10 @@ namespace InlineMediaDownloader {
     media.finished_loading ();
   }
 
-  private async void load_normal_media2 (Tweet t,
-                                         GLib.InputStream in_stream,
-                                         GLib.OutputStream thumb_out_stream,
-                                         Media media) {
+  private async void load_normal_media (Tweet t,
+                                        GLib.InputStream in_stream,
+                                        GLib.OutputStream thumb_out_stream,
+                                        Media media) {
     Gdk.Pixbuf pic = null;
     try {
       pic = yield new Gdk.Pixbuf.from_stream_async (in_stream, null);
