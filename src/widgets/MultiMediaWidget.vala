@@ -50,8 +50,12 @@ public class MultiMediaWidget : Gtk.Widget {
     }
   }
 
-  private void media_loaded_cb () {
-    message ("MEDIA LOADED!");
+  private void media_loaded_cb (Media source) {
+    for (int i = 0; i < media_count; i ++) {
+      if (medias[i] == null) {
+        medias[i] = source.thumbnail;
+      }
+    }
 
   }
 
