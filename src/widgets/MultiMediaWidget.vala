@@ -54,6 +54,7 @@ public class MultiMediaWidget : Gtk.Widget {
     for (int i = 0; i < media_count; i ++) {
       if (medias[i] == null) {
         medias[i] = source.thumbnail;
+        break;
       }
     }
     this.queue_draw ();
