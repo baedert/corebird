@@ -294,6 +294,7 @@ namespace Utils {
    *
    */
   public void calc_thumb_rect (int img_width, int img_height,
+                               float thumb_ratio,
                                out int x, out int y, out int width, out int height) {
     float ratio = img_width / (float)img_height;
     if (ratio >= 0.9 && ratio <= 1.1) {
@@ -319,12 +320,18 @@ namespace Utils {
    *
    * @return The created thumbnail
    */
-  public Gdk.Pixbuf slice_pixbuf (Gdk.Pixbuf pic, int thumb_size) {
+  public Gdk.Pixbuf slice_pixbuf (Gdk.Pixbuf pic, int thumb_width, int thumb_height = -1) {
     int x, y, w, h;
-    Utils.calc_thumb_rect (pic.get_width (), pic.get_height (), out x, out y, out w, out h);
+    if (thumb_height == -1)
+      thumb_height = thumb_width;
+
+    float thumb_ratio = (float)thumb_width / (float)thumb_height;
+    Utils.calc_thumb_rect (pic.get_width (), pic.get_height (),
+                           thumb_ratio,
+                           out x, out y, out w, out h);
     var big_thumb = new Gdk.Pixbuf (Gdk.Colorspace.RGB, true, 8, w, h);
     pic.copy_area (x, y, w, h, big_thumb, 0, 0);
-    var thumb = big_thumb.scale_simple (thumb_size, thumb_size, Gdk.InterpType.TILES);
+    var thumb = big_thumb.scale_simple (thumb_width, thumb_height, Gdk.InterpType.TILES);
     return thumb;
   }
 

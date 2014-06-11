@@ -16,7 +16,7 @@
  */
 
 public class MultiMediaWidget : Gtk.Widget {
-  private static const int HEIGHT = 150;
+  public static const int HEIGHT = 30;
   public int media_count { public get; private set; default = 0;}
   private Gdk.Pixbuf[] medias;
 
