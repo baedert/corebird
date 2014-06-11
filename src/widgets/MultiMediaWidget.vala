@@ -56,7 +56,7 @@ public class MultiMediaWidget : Gtk.Widget {
         medias[i] = source.thumbnail;
       }
     }
-
+    this.queue_draw ();
   }
 
   /* Widget Implementation {{{ */
