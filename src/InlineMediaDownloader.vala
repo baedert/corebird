@@ -17,7 +17,7 @@
 
 
 namespace InlineMediaDownloader {
-  public const int THUMB_SIZE = 40;
+  public const int THUMB_SIZE = 250;
   private Soup.Session session;
 
   //public async void try_load_media (Tweet t, string url) {
@@ -198,7 +198,8 @@ namespace InlineMediaDownloader {
       return;
     }
     var pic = anim.get_static_image ();
-    var thumb = Utils.slice_pixbuf (pic, THUMB_SIZE);
+    int thumb_width = (int)(600 / (float)t.medias.length);
+    var thumb = Utils.slice_pixbuf (pic, thumb_width, MultiMediaWidget.HEIGHT);
     yield Utils.write_pixbuf_async (thumb, thumb_out_stream, "png");
     media.thumbnail = thumb;
     media.loaded = true;
@@ -216,7 +217,9 @@ namespace InlineMediaDownloader {
       warning ("%s(%s)", e.message, media.path);
       return;
     }
-    var thumb = Utils.slice_pixbuf (pic, THUMB_SIZE);
+
+    int thumb_width = (int)(600 / (float)t.medias.length);
+    var thumb = Utils.slice_pixbuf (pic, thumb_width, MultiMediaWidget.HEIGHT);
     yield Utils.write_pixbuf_async (thumb, thumb_out_stream, "png");
     media.thumbnail = thumb;
     media.loaded = true;
