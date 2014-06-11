@@ -46,7 +46,6 @@ void media_name () {
 
   m.url = "http://bla.com/nananana";
   path = InlineMediaDownloader.get_media_path (t, m);
-  message ("");
   assert (path == Dirs.cache ("assets/media/0_1_5.png"));
 
   m.url = "http://bla.com/foobar.png";
@@ -224,9 +223,39 @@ void not_reachable () {
   main_loop.run ();
 }
 
+void too_big () {
+  var main_loop = new GLib.MainLoop ();
+  Settings.get ().set_double ("max-media-size", 0.0);
+  var url = "http://pbs.twimg.com/media/BiHRjmFCYAAEKFg.png";
+  var media = new Media ();
+  media.url = url;
+
+  Tweet t = new Tweet ();
+  t.id = 0;
+  t.user_id = 1;
+  var media_path = InlineMediaDownloader.get_media_path (t, media);
+  var thumb_path = InlineMediaDownloader.get_thumb_path (t, media);
+  // first delete the file if it does exist
+  delete_file (media_path);
+  delete_file (thumb_path);
+
+  InlineMediaDownloader.load_media.begin (t, media, () => {
+    // gets set anyway
+    assert (media.path == media_path);
+    assert (media.thumb_path == thumb_path);
+    assert (media.thumbnail == null);
+    // should be marked invalid
+    assert (media.invalid);
+    main_loop.quit ();
+    Settings.get ().revert ();
+  });
+
+  main_loop.run ();
+}
+
 int main (string[] args) {
   GLib.Test.init (ref args);
-  //GLib.Environment.set_variable ("G_SETTINGS_BACKEND", "memory", true);
+  GLib.Environment.set_variable ("GSETTINGS_BACKEND", "memory", true);
   Settings.init ();
   //GLib.Test.add_func ("/media/no-download", no_download);
   GLib.Test.add_func ("/media/name", media_name);
@@ -236,5 +265,7 @@ int main (string[] args) {
   GLib.Test.add_func ("/media/no-thumbnail", no_thumbnail);
   GLib.Test.add_func ("/media/no-media", no_media);
   GLib.Test.add_func ("/media/not-reachable", not_reachable);
+  GLib.Test.add_func ("/media/too_big", too_big);
+
   return GLib.Test.run ();
 }
