@@ -120,7 +120,7 @@ namespace InlineMediaDownloader {
             media.loaded = true;
             media.finished_loading ();
           } catch (GLib.Error e) {
-            critical (e.message);
+            critical ("%s (error code %d)", e.message, e.code);
           }
           return;
         } else  {

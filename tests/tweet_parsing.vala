@@ -215,6 +215,226 @@ const string TD1 = """
   "lang" : "en"
 }""";
 
+
+const string TD2 =
+"""
+{
+  "created_at": "Tue Apr 29 00:50:10 +0000 2014",
+  "id": 460944092554227713,
+  "id_str": "460944092554227713",
+  "text": "Combined. http:\/\/t.co\/fFJqqT1A4j",
+  "source": "\u003ca href=\"http:\/\/twitter.com\/geekculturejam\" rel=\"nofollow\"\u003eCultureJam\u003c\/a\u003e",
+  "truncated": false,
+  "in_reply_to_status_id": null,
+  "in_reply_to_status_id_str": null,
+  "in_reply_to_user_id": null,
+  "in_reply_to_user_id_str": null,
+  "in_reply_to_screen_name": null,
+  "user": {
+    "id": 657693,
+    "id_str": "657693",
+    "screen_name": "FOOBAR",
+    "name": "Foo Bar",
+    "profile_image_url" : "http://pbs.twimg.com/profile_images/3694489354/ed399e59260bf71b10235dcd7eb56fe5_normal.png",
+    "verified" : false
+  },
+  "geo": null,
+  "coordinates": null,
+  "place": null,
+  "contributors": null,
+  "retweet_count": 0,
+  "favorite_count": 0,
+  "entities": {
+    "hashtags": [],
+    "symbols": [],
+    "urls": [],
+    "user_mentions": [],
+    "media": []
+  },
+  "extended_entities": {
+    "media": [
+      {
+        "id": 460938773744717825,
+        "id_str": "460938773744717825",
+        "indices": [
+          10,
+          32
+        ],
+        "media_url": "http:\/\/pbs.twimg.com\/media\/BmWVX2BCEAEx4MK.jpg",
+        "media_url_https": "https:\/\/pbs.twimg.com\/media\/BmWVX2BCEAEx4MK.jpg",
+        "url": "http:\/\/t.co\/fFJqqT1A4j",
+        "display_url": "pic.twitter.com\/fFJqqT1A4j",
+        "expanded_url": "http:\/\/twitter.com\/froginthevalley\/status\/460944092554227713\/photo\/1",
+        "type": "photo",
+        "sizes": {
+          "medium": {
+            "w": 599,
+            "h": 397,
+            "resize": "fit"
+          },
+          "thumb": {
+            "w": 150,
+            "h": 150,
+            "resize": "crop"
+          },
+          "small": {
+            "w": 340,
+            "h": 225,
+            "resize": "fit"
+          },
+          "large": {
+            "w": 1023,
+            "h": 678,
+            "resize": "fit"
+          }
+        }
+      },
+      {
+        "id": 460938635315916,
+        "indices": [
+          10,
+          32
+        ],
+        "media_url": "http:\/\/pbs.twimg.com\/media\/BmWVPyVCMAAeAwI.jpg",
+        "media_url_https": "https:\/\/pbs.twimg.com\/media\/BmWVPyVCMAAeAwI.jpg",
+        "url": "http:\/\/t.co\/fFJqqT1A4j",
+        "display_url": "pic.twitter.com\/fFJqqT1A4j",
+        "expanded_url": "http:\/\/twitter.com\/froginthevalley\/status\/460944092554227713\/photo\/1",
+        "type": "photo",
+        "sizes": {
+          "medium": {
+            "w": 600,
+            "h": 600,
+            "resize": "fit"
+          },
+          "thumb": {
+            "w": 150,
+            "h": 150,
+            "resize": "crop"
+          },
+          "large": {
+            "w": 1024,
+            "h": 1024,
+            "resize": "fit"
+          },
+          "small": {
+            "w": 340,
+            "h": 340,
+            "resize": "fit"
+          }
+        }
+      }
+    ]
+  },
+  "favorited": false,
+  "retweeted": false,
+  "possibly_sensitive": false,
+  "lang": "en"
+}
+""";
+
+const string TD3 =
+"""
+{
+  "created_at" : "Thu Jun 12 19:34:16 +0000 2014",
+  "id" : 477172048427765760,
+  "id_str" : "477172048427765760",
+  "text" : "http://t.co/ZGX7b9YGiU http://t.co/6hfxg0TPyt",
+  "source" : "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>",
+  "truncated" : false,
+  "in_reply_to_status_id" : null,
+  "in_reply_to_status_id_str" : null,
+  "in_reply_to_user_id" : null,
+  "in_reply_to_user_id_str" : null,
+  "in_reply_to_screen_name" : null,
+  "user" : {
+    "id" : 993713617,
+    "id_str" : "993713617",
+    "name" : "Core Bird",
+    "screen_name" : "corebirdgtk",
+    "location" : "",
+    "description" : "",
+    "url" : null,
+    "entities" : {
+      "description" : {
+        "urls" : [
+        ]
+      }
+    },
+    "protected" : true,
+    "followers_count" : 1,
+    "friends_count" : 6,
+    "listed_count" : 0,
+    "created_at" : "Thu Dec 06 19:47:16 +0000 2012",
+    "favourites_count" : 12,
+    "utc_offset" : 7200,
+    "time_zone" : "Amsterdam",
+    "geo_enabled" : false,
+    "verified" : false,
+    "statuses_count" : 537,
+    "lang" : "en",
+    "contributors_enabled" : false,
+    "is_translator" : false,
+    "is_translation_enabled" : false,
+    "profile_background_color" : "C0DEED",
+    "profile_background_image_url" : "http://abs.twimg.com/images/themes/theme1/bg.png",
+    "profile_background_image_url_https" : "https://abs.twimg.com/images/themes/theme1/bg.png",
+    "profile_background_tile" : false,
+    "profile_image_url" : "http://abs.twimg.com/sticky/default_profile_images/default_profile_1_normal.png",
+    "profile_image_url_https" : "https://abs.twimg.com/sticky/default_profile_images/default_profile_1_normal.png",
+    "profile_link_color" : "0084B4",
+    "profile_sidebar_border_color" : "C0DEED",
+    "profile_sidebar_fill_color" : "DDEEF6",
+    "profile_text_color" : "333333",
+    "profile_use_background_image" : true,
+    "default_profile" : true,
+    "default_profile_image" : true,
+    "following" : true,
+    "follow_request_sent" : false,
+    "notifications" : false
+  },
+  "geo" : null,
+  "coordinates" : null,
+  "place" : null,
+  "contributors" : null,
+  "retweet_count" : 0,
+  "favorite_count" : 0,
+  "entities" : {
+    "hashtags" : [
+    ],
+    "symbols" : [
+    ],
+    "urls" : [
+      {
+        "url" : "http://t.co/ZGX7b9YGiU",
+        "expanded_url" : "http://i.imgur.com/kgrtCf0.png",
+        "display_url" : "i.imgur.com/kgrtCf0.png",
+        "indices" : [
+          0,
+          22
+        ]
+      },
+      {
+        "url" : "http://t.co/6hfxg0TPyt",
+        "expanded_url" : "http://i.imgur.com/xqmzPar.gif",
+        "display_url" : "i.imgur.com/xqmzPar.gif",
+        "indices" : [
+          23,
+          45
+        ]
+      }
+    ],
+    "user_mentions" : [
+    ]
+  },
+  "favorited" : false,
+  "retweeted" : false,
+  "possibly_sensitive" : false,
+  "lang" : "und"
+}
+""";
+
+// """
 // }}}
 
 
@@ -252,11 +472,33 @@ void retweet () {
 }
 
 
+
+void media_count () {
+  var acc = new Account (12345, "foobar", "Foo Bar");
+  var now = new GLib.DateTime.now_local ();
+  Tweet t = new Tweet ();
+
+  var parser = new Json.Parser ();
+  try {
+    parser.load_from_data (TD3);
+  } catch (GLib.Error e) {
+    critical (e.message);
+  }
+  var root = parser.get_root ();
+
+  t.load_from_json (root, now, acc);
+  assert (t.screen_name == "corebirdgtk");
+  message ("Media count: %d", t.medias.length);
+  assert (t.medias.length == 2);
+}
+
+
 int main (string[] args) {
   GLib.Test.init (ref args);
   Settings.init ();
   Twitter.get ().init ();
   GLib.Test.add_func ("/tweet-parsing/retweet", retweet);
+  GLib.Test.add_func ("/tweet-parsing/media-count", media_count);
 
   return GLib.Test.run ();
 }
