@@ -20,33 +20,6 @@ namespace InlineMediaDownloader {
   public const int THUMB_SIZE = 250;
   private Soup.Session session;
 
-  //public async void try_load_media (Tweet t, string url) {
-    //if (!Settings.show_inline_media ()) {
-      //return;
-    //}
-
-    //if (session == null)
-      //session = new Soup.Session ();
-
-
-    //if(url.has_prefix("http://instagr.am") ||
-       //url.has_prefix("http://instagram.com/p/")) {
-      //yield two_step_load (t, url, "<meta property=\"og:image\" content=\"(.*?)\"", 1);
-    //} else if (url.has_prefix("http://i.imgur.com")) {
-      //yield load_inline_media (t, url);
-    //} else if (url.has_prefix("http://d.pr/i/") || url.has_prefix("http://ow.ly/i/") ||
-               //url.has_prefix("https://vine.co/v/") || url.has_prefix("http://tmblr.co/")) {
-      //yield two_step_load (t, url, "<meta property=\"og:image\" content=\"(.*?)\"", 1);
-    //} else if (url.has_prefix("http://pbs.twimg.com/media/")) {
-      //yield load_inline_media (t, url);
-    //} else if (url.has_prefix("http://twitpic.com/")) {
-      //yield two_step_load (t, url,
-                          //"<meta name=\"twitter:image\" value=\"(.*?)\"", 1);
-    //} else {
-      //debug ("Not downloadable media: %s", url);
-    //}
-  //}
-
   public async void load_media (Tweet t, Media media) {
     if (session == null)
       session = new Soup.Session ();
