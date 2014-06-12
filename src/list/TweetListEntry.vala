@@ -130,27 +130,9 @@ public class TweetListEntry : ITwitterItem, ListBoxRow {
     // If the avatar gets loaded, we want to change it here immediately
     tweet.notify["avatar"].connect (avatar_changed);
 
-    //tweet.inline_media_added.connect (inline_media_added_cb);
-
-    //if (tweet.media_thumb != null) {
-      //var inline_button = new PixbufButton (true, tweet.original_media_url);
-      //try {
-        //inline_button.set_bg (new Gdk.Pixbuf.from_file (tweet.media_thumb));
-      //} catch (GLib.Error e) {
-        //warning (e.message);
-        //return;
-      //}
-      //grid.attach (inline_button, 5, 1, 2, 1);
-
-      //inline_button.valign = Align.START;
-      //inline_button.halign = Align.END;
-      //inline_button.margin_top = 4;
-      //inline_button.clicked.connect(inline_media_button_clicked_cb);
-      //inline_button.show ();
-    //}
-
     if (tweet.has_inline_media) {
       mm_widget.set_all_media (tweet.medias);
+      mm_widget.media_clicked.connect (media_button_clicked_cb);
     } else
       grid.remove (mm_widget);
 
@@ -192,21 +174,11 @@ public class TweetListEntry : ITwitterItem, ListBoxRow {
     avatar_image.queue_draw ();
   }
 
-  private void inline_media_added_cb (Gdk.Pixbuf? pic) {
-    //var inline_button = new PixbufButton (true, tweet.original_media_url);
-    //inline_button.set_bg (pic);
-    //grid.attach (inline_button, 5, 1, 2, 1);
-    //inline_button.valign = Align.START;
-    //inline_button.halign = Align.END;
-    //inline_button.margin_top = 4;
-    //inline_button.clicked.connect(inline_media_button_clicked_cb);
-    //inline_button.show ();
-  }
-
-  private void inline_media_button_clicked_cb () {
-    //ImageDialog id = new ImageDialog(window, tweet.media);
-    //id.show_all();
-    // XXX
+  private void media_button_clicked_cb (Media media) {
+    if (media.type == MediaType.IMAGE) {
+      var id = new ImageDialog (window, media.path);
+      id.show_all ();
+    }
   }
 
   static construct {
