@@ -165,7 +165,7 @@
               <packing>
                 <property name="left_attach">1</property>
                 <property name="top_attach">1</property>
-                <property name="width">4</property>
+                <property name="width">6</property>
               </packing>
             </child>
             <child>
