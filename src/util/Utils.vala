@@ -293,9 +293,8 @@ namespace Utils {
    * @param img_height The height of the original image
    *
    */
-  public void calc_thumb_rect (int img_width, int img_height,
-                               float thumb_ratio,
-                               out int x, out int y, out int width, out int height) {
+  private void calc_thumb_square (int img_width, int img_height,
+                                 out int x, out int y, out int width, out int height) {
     float ratio = img_width / (float)img_height;
     if (ratio >= 0.9 && ratio <= 1.1) {
       // it's more or less squared, so...
@@ -313,6 +312,23 @@ namespace Utils {
       width = height = img_width;
     }
   }
+
+
+  private void calc_thumb_rect (int img_width, int img_height,
+                                int thumb_width, int thumb_height,
+                                out int x, out int y,
+                                out int w, out int h) {
+    float f = (float)img_width / (float)thumb_width;
+
+
+    w = img_width;
+    h = (int)(thumb_height * f);
+
+    x = 0;
+    y = (img_height / 2) - (h / 2);
+  }
+
+
   /**
    * Slices the given pixbuf to a smaller thumbnail image.
    *
@@ -321,17 +337,23 @@ namespace Utils {
    * @return The created thumbnail
    */
   public Gdk.Pixbuf slice_pixbuf (Gdk.Pixbuf pic, int thumb_width, int thumb_height = -1) {
-    int x, y, w, h;
+    int x = 0,
+        y = 0,
+        w = 0,
+        h = 0;
     if (thumb_height == -1)
       thumb_height = thumb_width;
 
-    float thumb_ratio = (float)thumb_width / (float)thumb_height;
-    Utils.calc_thumb_rect (pic.get_width (), pic.get_height (),
-                           thumb_ratio,
-                           out x, out y, out w, out h);
+    if (thumb_width == thumb_height) {
+      Utils.calc_thumb_square (pic.get_width (), pic.get_height (),
+                               out x, out y, out w, out h);
+    } else {
+      Utils.calc_thumb_rect (pic.get_width (), pic.get_height (),
+                             thumb_width, thumb_height,
+                             out x, out y, out w, out h);
+    }
     var big_thumb = new Gdk.Pixbuf (Gdk.Colorspace.RGB, true, 8, w, h);
     pic.copy_area (x, y, w, h, big_thumb, 0, 0);
-    message ("thumb width: %d", thumb_width);
     var thumb = big_thumb.scale_simple (thumb_width, thumb_height, Gdk.InterpType.TILES);
     return thumb;
   }
