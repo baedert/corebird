@@ -332,6 +332,109 @@ const string TD2 =
   "lang": "en"
 }
 """;
+
+const string TD3 =
+"""
+{
+  "created_at" : "Thu Jun 12 19:34:16 +0000 2014",
+  "id" : 477172048427765760,
+  "id_str" : "477172048427765760",
+  "text" : "http://t.co/ZGX7b9YGiU http://t.co/6hfxg0TPyt",
+  "source" : "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>",
+  "truncated" : false,
+  "in_reply_to_status_id" : null,
+  "in_reply_to_status_id_str" : null,
+  "in_reply_to_user_id" : null,
+  "in_reply_to_user_id_str" : null,
+  "in_reply_to_screen_name" : null,
+  "user" : {
+    "id" : 993713617,
+    "id_str" : "993713617",
+    "name" : "Core Bird",
+    "screen_name" : "corebirdgtk",
+    "location" : "",
+    "description" : "",
+    "url" : null,
+    "entities" : {
+      "description" : {
+        "urls" : [
+        ]
+      }
+    },
+    "protected" : true,
+    "followers_count" : 1,
+    "friends_count" : 6,
+    "listed_count" : 0,
+    "created_at" : "Thu Dec 06 19:47:16 +0000 2012",
+    "favourites_count" : 12,
+    "utc_offset" : 7200,
+    "time_zone" : "Amsterdam",
+    "geo_enabled" : false,
+    "verified" : false,
+    "statuses_count" : 537,
+    "lang" : "en",
+    "contributors_enabled" : false,
+    "is_translator" : false,
+    "is_translation_enabled" : false,
+    "profile_background_color" : "C0DEED",
+    "profile_background_image_url" : "http://abs.twimg.com/images/themes/theme1/bg.png",
+    "profile_background_image_url_https" : "https://abs.twimg.com/images/themes/theme1/bg.png",
+    "profile_background_tile" : false,
+    "profile_image_url" : "http://abs.twimg.com/sticky/default_profile_images/default_profile_1_normal.png",
+    "profile_image_url_https" : "https://abs.twimg.com/sticky/default_profile_images/default_profile_1_normal.png",
+    "profile_link_color" : "0084B4",
+    "profile_sidebar_border_color" : "C0DEED",
+    "profile_sidebar_fill_color" : "DDEEF6",
+    "profile_text_color" : "333333",
+    "profile_use_background_image" : true,
+    "default_profile" : true,
+    "default_profile_image" : true,
+    "following" : true,
+    "follow_request_sent" : false,
+    "notifications" : false
+  },
+  "geo" : null,
+  "coordinates" : null,
+  "place" : null,
+  "contributors" : null,
+  "retweet_count" : 0,
+  "favorite_count" : 0,
+  "entities" : {
+    "hashtags" : [
+    ],
+    "symbols" : [
+    ],
+    "urls" : [
+      {
+        "url" : "http://t.co/ZGX7b9YGiU",
+        "expanded_url" : "http://i.imgur.com/kgrtCf0.png",
+        "display_url" : "i.imgur.com/kgrtCf0.png",
+        "indices" : [
+          0,
+          22
+        ]
+      },
+      {
+        "url" : "http://t.co/6hfxg0TPyt",
+        "expanded_url" : "http://i.imgur.com/xqmzPar.gif",
+        "display_url" : "i.imgur.com/xqmzPar.gif",
+        "indices" : [
+          23,
+          45
+        ]
+      }
+    ],
+    "user_mentions" : [
+    ]
+  },
+  "favorited" : false,
+  "retweeted" : false,
+  "possibly_sensitive" : false,
+  "lang" : "und"
+}
+""";
+
+// """
 // }}}
 
 
@@ -342,7 +445,7 @@ void main (string[] args) {
   var now = new GLib.DateTime.now_local ();
   var parser = new Json.Parser ();
   try {
-    parser.load_from_data (TD2);
+    parser.load_from_data (TD3);
   } catch (GLib.Error e) {
     critical (e.message);
   }
