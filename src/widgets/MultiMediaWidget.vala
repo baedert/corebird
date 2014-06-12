@@ -85,9 +85,17 @@ public class MultiMediaWidget : Gtk.Box {
       media.finished_loading.connect (media_loaded_cb);
     }
     button.visible = true;
+    button.clicked.connect (button_clicked_cb);
     this.pack_start (button, true, true);
     this.queue_draw ();
   }
+
+  private void button_clicked_cb (Gtk.Button source) {
+    var mb = (MediaButton)source;
+    if (mb.media != null)
+      media_clicked (((MediaButton)source).media);
+  }
+
 
   private void media_loaded_cb (Media source) {
     for (int i = 0; i < media_count; i ++) {
