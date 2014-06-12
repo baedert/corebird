@@ -284,7 +284,7 @@ namespace TweetUtils {
         return Twitter.short_url_length; // Default to HTTP
     }
 
-    return s.length;
+    return s.char_count();
   }
 
   bool activate_link (string uri, MainWindow window) {
