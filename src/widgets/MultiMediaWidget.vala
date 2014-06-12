@@ -15,68 +15,14 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-public class MultiMediaWidget : Gtk.Widget {
-  public static const int HEIGHT = 30;
-  public int media_count { public get; private set; default = 0;}
-  private Media[] medias;
 
-  public signal void media_clicked (Media m);
+private class MediaButton : Gtk.Button {
+  public unowned Media? media;
 
-  public MultiMediaWidget (int media_count) {
-    this.media_count = media_count;
-    this.medias = new Media[media_count];
-  }
-  construct {
-    set_has_window (false);
-  }
-
-  public void set_all_media (Media[] medias) {
-    this.medias = new Media [medias.length];
-    this.media_count = medias.length;
-    for (int i = 0; i < medias.length; i++)
-      set_media (i, medias[i]);
-  }
-
-
-
-  public void set_media (int index, Media media) {
-    assert (index < media_count);
-
-    if (media.loaded) {
-      medias[index] = media;
-      //message ("MEDIA ALREADY LOADED");
-    } else {
-      media.finished_loading.connect (media_loaded_cb);
-      //message ("MEDIA NOT LOADED");
-    }
-  }
-
-  private void media_loaded_cb (Media source) {
-    for (int i = 0; i < media_count; i ++) {
-      if (medias[i] == null) {
-        medias[i] = source;
-        break;
-      }
-    }
-    this.queue_draw ();
-  }
-
-  /* Widget Implementation {{{ */
-  public override Gtk.SizeRequestMode get_request_mode () {
-    return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
-  }
-
-  public override void get_preferred_height_for_width (int width,
-                                                   out int min_height,
-                                                   out int nat_height) {
-    min_height = HEIGHT;
-    nat_height = HEIGHT;
-  }
-
-  public override void get_preferred_width (out int min_width,
-                                            out int nat_width) {
-    min_width = media_count * 30;
-    nat_width = media_count * 30;
+  public MediaButton (Media? media) {
+    this.media = media;
+    this.set_size_request (-1, MultiMediaWidget.HEIGHT);
+    this.get_style_context ().add_class ("inline-media");
   }
 
   public override bool draw (Cairo.Context ct) {
@@ -89,37 +35,68 @@ public class MultiMediaWidget : Gtk.Widget {
     ct.fill ();
     ct.restore ();
 
-    //ct.save ();
-    //ct.set_source_rgb (0, 0, 0);
-    //ct.move_to (widget_width / 2.0f, 0);
-    //ct.line_to (widget_width / 2.0f, widget_height);
-    //ct.stroke();
-    //ct.restore();
+    ct.save ();
+    ct.rectangle (0, 0, widget_width, widget_height);
 
-
-    float media_width = (float)widget_width / media_count;
-
-    for (int i = 0; i < media_count; i ++) {
-      ct.save ();
-      ct.translate (media_width * i, 0);
-      ct.rectangle (0, 0, media_width, widget_height);
-
-      if (medias[i] != null) {
-        Gdk.Pixbuf? pixbuf = medias[i].thumbnail;
-        if (pixbuf != null) {
-          double scale = (double)media_width / pixbuf.get_width ();
-          ct.scale (scale, 1);
-          Gdk.cairo_set_source_pixbuf (ct, pixbuf, 0, 0);
-        }
-      }
-
-      ct.fill ();
-      ct.restore ();
+    if (media != null && media.thumbnail != null && media.loaded) {
+      double scale = (double)widget_width / media.thumbnail.get_width ();
+      ct.scale (scale, 1);
+      Gdk.cairo_set_source_pixbuf (ct, media.thumbnail, 0, 0);
     }
-    return true;
+
+    ct.fill ();
+    ct.restore ();
+    return base.draw (ct);
+  }
+}
+
+
+public class MultiMediaWidget : Gtk.Box {
+  public static const int HEIGHT = 40;
+  public int media_count { public get; private set; default = 0;}
+  private MediaButton[] media_buttons;
+
+  public signal void media_clicked (Media m);
+
+
+  public MultiMediaWidget (int media_count) {
+    this.media_count = media_count;
+    this.media_buttons = new MediaButton[media_count];
+  }
+  public void set_all_media (Media[] medias) {
+    this.media_buttons = new MediaButton[medias.length];
+    this.media_count = medias.length;
+    for (int i = 0; i < medias.length; i++) {
+      assert (medias[i] != null);
+      set_media (i, medias[i]);
+    }
   }
 
-  /* }}} */
 
+  public void set_media (int index, Media media) {
+    assert (index < media_count);
 
+    var button = new MediaButton (null);
+    media_buttons[index] = button;
+
+    if (media.loaded) {
+      media_buttons[index].media = media;
+    } else {
+      media.finished_loading.connect (media_loaded_cb);
+    }
+    button.visible = true;
+    this.pack_start (button, true, true);
+    this.queue_draw ();
+  }
+
+  private void media_loaded_cb (Media source) {
+    for (int i = 0; i < media_count; i ++) {
+      if (media_buttons[i].media == null) {
+        media_buttons[i].media = source;
+        media_buttons[i].queue_draw ();
+        break;
+      }
+    }
+  }
 }
+
