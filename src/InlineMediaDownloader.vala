@@ -212,7 +212,6 @@ namespace InlineMediaDownloader {
       return;
     }
 
-    message ("Medias: %d", t.medias.length);
     int thumb_width = (int)(600.0 / (float)t.medias.length);
     var thumb = Utils.slice_pixbuf (pic, thumb_width, MultiMediaWidget.HEIGHT);
     yield Utils.write_pixbuf_async (thumb, thumb_out_stream, "png");
