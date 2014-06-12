@@ -236,7 +236,6 @@ public class Tweet : GLib.Object {
         m.type = Media.type_from_string (media_obj.get_string_member ("type"));
         this.medias[real_media_count] = m;
         real_media_count ++;
-        //InlineMediaDownloader.load_media.begin (this, m);
       });
     }
 
