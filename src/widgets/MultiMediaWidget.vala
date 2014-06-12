@@ -18,19 +18,20 @@
 public class MultiMediaWidget : Gtk.Widget {
   public static const int HEIGHT = 30;
   public int media_count { public get; private set; default = 0;}
-  private Gdk.Pixbuf[] medias;
+  private Media[] medias;
 
+  public signal void media_clicked (Media m);
 
   public MultiMediaWidget (int media_count) {
     this.media_count = media_count;
-    this.medias = new Gdk.Pixbuf[media_count];
+    this.medias = new Media[media_count];
   }
   construct {
     set_has_window (false);
   }
 
   public void set_all_media (Media[] medias) {
-    this.medias = new Gdk.Pixbuf [medias.length];
+    this.medias = new Media [medias.length];
     this.media_count = medias.length;
     for (int i = 0; i < medias.length; i++)
       set_media (i, medias[i]);
@@ -42,18 +43,18 @@ public class MultiMediaWidget : Gtk.Widget {
     assert (index < media_count);
 
     if (media.loaded) {
-      medias[index] = media.thumbnail;
-      message ("MEDIA ALREADY LOADED");
+      medias[index] = media;
+      //message ("MEDIA ALREADY LOADED");
     } else {
       media.finished_loading.connect (media_loaded_cb);
-      message ("MEDIA NOT LOADED");
+      //message ("MEDIA NOT LOADED");
     }
   }
 
   private void media_loaded_cb (Media source) {
     for (int i = 0; i < media_count; i ++) {
       if (medias[i] == null) {
-        medias[i] = source.thumbnail;
+        medias[i] = source;
         break;
       }
     }
@@ -98,16 +99,18 @@ public class MultiMediaWidget : Gtk.Widget {
 
     float media_width = (float)widget_width / media_count;
 
-    //double media_x = 0;
     for (int i = 0; i < media_count; i ++) {
-      Gdk.Pixbuf? pixbuf = medias[i];
       ct.save ();
       ct.translate (media_width * i, 0);
       ct.rectangle (0, 0, media_width, widget_height);
-      if (pixbuf != null) {
-        double scale = (double)media_width / medias[i].get_width ();
-        ct.scale (scale, 1);
-        Gdk.cairo_set_source_pixbuf (ct, medias[i],0, 0);
+
+      if (medias[i] != null) {
+        Gdk.Pixbuf? pixbuf = medias[i].thumbnail;
+        if (pixbuf != null) {
+          double scale = (double)media_width / pixbuf.get_width ();
+          ct.scale (scale, 1);
+          Gdk.cairo_set_source_pixbuf (ct, pixbuf, 0, 0);
+        }
       }
 
       ct.fill ();
