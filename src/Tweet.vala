@@ -193,6 +193,13 @@ public class Tweet : GLib.Object {
     this.mentions.resize (real_mentions);
 
 
+    int media_count = Utils.get_json_array_size (entities, "media");
+    if (status.has_member ("extended_entities"))
+      media_count += Utils.get_json_array_size (status.get_object_member ("extended_entities"), "media");
+
+    this.medias = new Media[media_count];
+    int real_media_count = 0;
+
     // The same with media
     if (entities.has_member ("media")) {
       var medias = entities.get_array_member ("media");
@@ -208,16 +215,19 @@ public class Tweet : GLib.Object {
           display_url = url.get_string_member ("display_url"),
           visual_display_url = false
         });
-        //InlineMediaDownloader.try_load_media.begin(this,
-                //url.get_string_member("media_url"));
+        string media_url = url.get_string_member ("media_url");
+        if (InlineMediaDownloader.is_media_candidate (media_url)) {
+          var m = new Media ();
+          m.url = media_url;
+          this.medias[real_media_count] = m;
+          real_media_count ++;
+        }
       });
     }
 
     if (status.has_member ("extended_entities")) {
       var extended_entities = status.get_object_member ("extended_entities");
       var extended_media = extended_entities.get_array_member ("media");
-      this.medias = new Media[extended_media.get_length ()];
-      int real_media_count = 0;
       extended_media.foreach_element ((arr, index, node) => {
         var media_obj = node.get_object ();
         var m = new Media ();
@@ -226,10 +236,14 @@ public class Tweet : GLib.Object {
         m.type = Media.type_from_string (media_obj.get_string_member ("type"));
         this.medias[real_media_count] = m;
         real_media_count ++;
-        InlineMediaDownloader.load_media.begin (this, m);
+        //InlineMediaDownloader.load_media.begin (this, m);
       });
-      this.medias.resize (real_media_count);
     }
+
+    InlineMediaDownloader.load_all_media (this, this.medias);
+
+
+    this.medias.resize (real_media_count);
 
 
     this.urls.sort ((a, b) => {

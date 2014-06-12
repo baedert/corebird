@@ -62,6 +62,8 @@ void normal_download () {
   Tweet t = new Tweet ();
   t.id = 0;
   t.user_id = 1;
+  t.medias = new Media[1];
+  t.medias[0] = media;
   var media_path = InlineMediaDownloader.get_media_path (t, media);
   var thumb_path = InlineMediaDownloader.get_thumb_path (t, media);
   // first delete the file if it does exist
@@ -87,6 +89,9 @@ void animation_download () {
   Tweet t = new Tweet ();
   t.id = 100;
   t.user_id = 20;
+  t.medias = new Media[1];
+  t.medias[0] = media;
+
   var media_path = InlineMediaDownloader.get_media_path (t, media);
   var thumb_path = InlineMediaDownloader.get_thumb_path (t, media);
   delete_file (media_path);
@@ -111,6 +116,9 @@ void download_twice () {
   var t = new Tweet ();
   t.id = 300;
   t.user_id = 5;
+  t.medias = new Media[1];
+  t.medias[0] = media;
+
   var media_path = InlineMediaDownloader.get_media_path (t, media);
   var thumb_path = InlineMediaDownloader.get_thumb_path (t, media);
   delete_file (media_path);
@@ -139,6 +147,10 @@ void no_thumbnail () {
   var t = new Tweet ();
   t.id = 300;
   t.user_id = 5;
+
+  t.medias = new Media[1];
+  t.medias[0] = media;
+
   var media_path = InlineMediaDownloader.get_media_path (t, media);
   var thumb_path = InlineMediaDownloader.get_thumb_path (t, media);
   delete_file (media_path);
@@ -172,6 +184,10 @@ void no_media () {
   var t = new Tweet ();
   t.id = 300;
   t.user_id = 5;
+  t.medias = new Media[1];
+  t.medias[0] = media;
+
+
   var media_path = InlineMediaDownloader.get_media_path (t, media);
   var thumb_path = InlineMediaDownloader.get_thumb_path (t, media);
   delete_file (media_path);
@@ -207,6 +223,10 @@ void not_reachable () {
   Tweet t = new Tweet ();
   t.id = 0;
   t.user_id = 1;
+  t.medias = new Media[1];
+  t.medias[0] = media;
+
+
   var media_path = InlineMediaDownloader.get_media_path (t, media);
   var thumb_path = InlineMediaDownloader.get_thumb_path (t, media);
   // first delete the file if it does exist
@@ -233,6 +253,9 @@ void too_big () {
   Tweet t = new Tweet ();
   t.id = 0;
   t.user_id = 1;
+  t.medias = new Media[1];
+  t.medias[0] = media;
+
   var media_path = InlineMediaDownloader.get_media_path (t, media);
   var thumb_path = InlineMediaDownloader.get_thumb_path (t, media);
   // first delete the file if it does exist

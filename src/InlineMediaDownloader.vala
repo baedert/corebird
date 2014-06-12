@@ -54,6 +54,27 @@ namespace InlineMediaDownloader {
     yield load_inline_media (t, media);
   }
 
+  public void load_all_media (Tweet t, Media[] medias) {
+    if (session == null)
+      session = new Soup.Session ();
+
+    foreach (Media m in medias) {
+      load_inline_media.begin (t, m);
+    }
+  }
+
+  public bool is_media_candidate (string url) {
+    return url.has_prefix ("http://instagra.am") ||
+           url.has_prefix ("http://instagram.com/p/") ||
+           url.has_prefix ("http://i.imgur.com") ||
+           url.has_prefix ("http://d.pr/i/") ||
+           url.has_prefix ("http://ow.ly/i/") ||
+           url.has_prefix ("https://vine.co/b/") ||
+           url.has_prefix ("http://pbs.twimg.com/media/") ||
+           url.has_prefix ("http://twitpic.com/")
+    ;
+  }
+
   //public async void two_step_load (Tweet t, string first_url, string regex_str,
                                    //int match_index) {
     //var msg = new Soup.Message ("GET", first_url);
@@ -198,7 +219,7 @@ namespace InlineMediaDownloader {
       return;
     }
     var pic = anim.get_static_image ();
-    int thumb_width = (int)(600 / (float)t.medias.length);
+    int thumb_width = (int)(600.0 / (float)t.medias.length);
     var thumb = Utils.slice_pixbuf (pic, thumb_width, MultiMediaWidget.HEIGHT);
     yield Utils.write_pixbuf_async (thumb, thumb_out_stream, "png");
     media.thumbnail = thumb;
@@ -218,7 +239,8 @@ namespace InlineMediaDownloader {
       return;
     }
 
-    int thumb_width = (int)(600 / (float)t.medias.length);
+    message ("Medias: %d", t.medias.length);
+    int thumb_width = (int)(600.0 / (float)t.medias.length);
     var thumb = Utils.slice_pixbuf (pic, thumb_width, MultiMediaWidget.HEIGHT);
     yield Utils.write_pixbuf_async (thumb, thumb_out_stream, "png");
     media.thumbnail = thumb;

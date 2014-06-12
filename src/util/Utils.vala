@@ -331,8 +331,16 @@ namespace Utils {
                            out x, out y, out w, out h);
     var big_thumb = new Gdk.Pixbuf (Gdk.Colorspace.RGB, true, 8, w, h);
     pic.copy_area (x, y, w, h, big_thumb, 0, 0);
+    message ("thumb width: %d", thumb_width);
     var thumb = big_thumb.scale_simple (thumb_width, thumb_height, Gdk.InterpType.TILES);
     return thumb;
   }
 
+
+  public int get_json_array_size (Json.Object node, string object_name) {
+    if (!node.has_member (object_name))
+      return 0;
+
+    return (int)node.get_array_member (object_name).get_length ();
+  }
 }
