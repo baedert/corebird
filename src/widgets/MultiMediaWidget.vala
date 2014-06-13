@@ -18,11 +18,32 @@
 
 private class MediaButton : Gtk.Button {
   public unowned Media? media;
+  private GLib.Menu menu_model;
+  private Gtk.Menu menu;
+  private GLib.SimpleActionGroup actions;
+  private const GLib.ActionEntry[] action_entries = {
+    {"copy-url",      copy_url_activated},
+    {"save-original", save_original_activated},
+  };
+
 
   public MediaButton (Media? media) {
     this.media = media;
     this.set_size_request (-1, MultiMediaWidget.HEIGHT);
     this.get_style_context ().add_class ("inline-media");
+    actions = new GLib.SimpleActionGroup ();
+    actions.add_action_entries (action_entries, this);
+    this.insert_action_group ("media", actions);
+
+    this.menu_model = new GLib.Menu ();
+    var s = new GLib.Menu ();
+    s.append (_("Copy URL"), "media.copy-url");
+    s.append (_("Save Original"), "media.save-original");
+    menu_model.append_section (null, s);
+    this.menu = new Gtk.Menu.from_model (menu_model);
+    this.menu.attach_to_widget (this, null);
+
+    this.button_press_event.connect (button_clicked_cb);
   }
 
   public override bool draw (Cairo.Context ct) {
@@ -48,6 +69,24 @@ private class MediaButton : Gtk.Button {
     ct.restore ();
     return base.draw (ct);
   }
+
+  private bool button_clicked_cb (Gdk.EventButton evt) {
+    if (evt.button == Gdk.BUTTON_SECONDARY) {
+      menu.show_all ();
+      menu.popup (null, null, null, evt.button, evt.time);
+      return true;
+    }
+    return false;
+  }
+
+  private void copy_url_activated (GLib.SimpleAction a, GLib.Variant? v) {
+    message ("copy url");
+  }
+
+  private void save_original_activated (GLib.SimpleAction a, GLib.Variant? v) {
+    message ("save_original");
+  }
+
 }
 
 
