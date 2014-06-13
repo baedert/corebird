@@ -80,7 +80,9 @@ private class MediaButton : Gtk.Button {
   }
 
   private void copy_url_activated (GLib.SimpleAction a, GLib.Variant? v) {
-    message ("copy url");
+    Gtk.Clipboard clipboard = Gtk.Clipboard.get_for_display (Gdk.Display.get_default (),
+                                                             Gdk.SELECTION_CLIPBOARD);
+    clipboard.set_text (media.url, -1);
   }
 
   private void save_original_activated (GLib.SimpleAction a, GLib.Variant? v) {
