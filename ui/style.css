@@ -36,7 +36,8 @@
 }
 
 .inline-media:hover {
-  border: 2px solid #4a90d9;
+  border-top: 2px solid #4a90d9;
+  border-bottom: 2px solid #4a90d9;
 }
 
 
