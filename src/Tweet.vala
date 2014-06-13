@@ -137,9 +137,28 @@ public class Tweet : GLib.Object {
     var user_mentions = entities.get_array_member ("user_mentions");
     this.mentions = new string[user_mentions.get_length ()];
     this.urls = new GLib.SList<TweetUtils.Sequence?>();
+
+    int media_count = Utils.get_json_array_size (entities, "media");
+    if (status.has_member ("extended_entities"))
+      media_count += Utils.get_json_array_size (status.get_object_member ("extended_entities"), "media");
+
+    media_count += (int)urls.get_length ();
+
+    this.medias = new Media[media_count];
+    int real_media_count = 0;
+
+
     urls.foreach_element((arr, index, node) => {
       var url = node.get_object();
       string expanded_url = url.get_string_member("expanded_url");
+
+      if (InlineMediaDownloader.is_media_candidate (expanded_url)) {
+        var m = new Media ();
+        m.url = expanded_url;
+        m.id = real_media_count;
+        this.medias[real_media_count] = m;
+        real_media_count ++;
+      }
 
       Json.Array indices = url.get_array_member ("indices");
       expanded_url = expanded_url.replace("&", "&amp;");
@@ -150,7 +169,6 @@ public class Tweet : GLib.Object {
         display_url = url.get_string_member ("display_url"),
         visual_display_url = false
       });
-      //InlineMediaDownloader.try_load_media.begin(this, expanded_url);
     });
 
     hashtags.foreach_element ((arr, index, node) => {
@@ -192,14 +210,6 @@ public class Tweet : GLib.Object {
     });
     this.mentions.resize (real_mentions);
 
-
-    int media_count = Utils.get_json_array_size (entities, "media");
-    if (status.has_member ("extended_entities"))
-      media_count += Utils.get_json_array_size (status.get_object_member ("extended_entities"), "media");
-
-    this.medias = new Media[media_count];
-    int real_media_count = 0;
-
     // The same with media
     if (entities.has_member ("media")) {
       var medias = entities.get_array_member ("media");
@@ -239,11 +249,8 @@ public class Tweet : GLib.Object {
       });
     }
 
-    InlineMediaDownloader.load_all_media (this, this.medias);
-
-
     this.medias.resize (real_media_count);
-
+    InlineMediaDownloader.load_all_media (this, this.medias);
 
     this.urls.sort ((a, b) => {
       if (a.start < b.start)
