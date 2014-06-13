@@ -179,7 +179,7 @@ public class Tweet : GLib.Object {
         end   = (int)indices.get_int_element (1),
         url   = "#"+hashtag.get_string_member ("text"),
         display_url = "#"+hashtag.get_string_member ("text"),
-        visual_display_url=  false
+        visual_display_url = false
       });
     });
 
