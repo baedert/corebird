@@ -91,7 +91,7 @@ private class MediaButton : Gtk.Button {
 
 
 public class MultiMediaWidget : Gtk.Box {
-  public static const int HEIGHT = 40;
+  public static const int HEIGHT = 60;
   public int media_count { public get; private set; default = 0;}
   private MediaButton[] media_buttons;
 
