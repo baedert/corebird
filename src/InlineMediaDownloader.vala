@@ -24,24 +24,7 @@ namespace InlineMediaDownloader {
     if (session == null)
       session = new Soup.Session ();
 
-    string url = media.url;
-
-    if(url.has_prefix("http://instagr.am") ||
-       url.has_prefix("http://instagram.com/p/")) {
-      yield two_step_load (t, media, "<meta property=\"og:image\" content=\"(.*?)\"", 1);
-    } else if (url.has_prefix("http://i.imgur.com")) {
-      yield load_inline_media (t, media);
-    } else if (url.has_prefix("http://ow.ly/i/") ||
-               url.has_prefix("https://vine.co/v/")) {
-      yield two_step_load (t, media, "<meta property=\"og:image\" content=\"(.*?)\"", 1);
-    } else if (url.has_prefix("http://pbs.twimg.com/media/")) {
-      yield load_inline_media (t, media);
-    } else if (url.has_prefix("http://twitpic.com/")) {
-      yield two_step_load (t, media,
-                          "<meta name=\"twitter:image\" value=\"(.*?)\"", 1);
-    } else {
-      yield load_inline_media (t, media);
-    }
+    yield load_inline_media (t, media);
   }
 
   public void load_all_media (Tweet t, Media[] medias) {
@@ -74,13 +57,13 @@ namespace InlineMediaDownloader {
         string real_url = info.fetch (match_index);
         if(real_url != null) {
           media.url = real_url;
-          message ("new url: %s", real_url);
-          load_inline_media.begin (t, media);
+          two_step_load.callback ();
         }
       } catch (GLib.RegexError e) {
         critical ("Regex Error(%s): %s", regex_str, e.message);
       }
     });
+    yield;
   }
 
   private async void load_inline_media (Tweet t, Media media) {
@@ -156,7 +139,21 @@ namespace InlineMediaDownloader {
       }
     }
 
-    message ("Loading %s", media.url);
+    /* If we get to this point, the image was not cached on disk and we
+       *really* need to download it. */
+    string url = media.url;
+    if(url.has_prefix("http://instagr.am") ||
+       url.has_prefix("http://instagram.com/p/")) {
+      yield two_step_load (t, media, "<meta property=\"og:image\" content=\"(.*?)\"", 1);
+    } else if (url.has_prefix("http://ow.ly/i/") ||
+               url.has_prefix("https://vine.co/v/")) {
+      yield two_step_load (t, media, "<meta property=\"og:image\" content=\"(.*?)\"", 1);
+    } else if (url.has_prefix("http://twitpic.com/")) {
+      yield two_step_load (t, media,
+                          "<meta name=\"twitter:image\" value=\"(.*?)\"", 1);
+    }
+
+
     var msg = new Soup.Message ("GET", media.url);
     msg.got_headers.connect (() => {
       int64 content_length = msg.response_headers.get_content_length ();
