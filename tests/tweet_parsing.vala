@@ -567,13 +567,11 @@ const string TD4 =
 
 /* UTILS {{{ */
 void rm_dir (string path) {
-  message ("Deleting dir %s", path);
   try {
     var directory = File.new_for_path (path);
     var enumerator = directory.enumerate_children (FileAttribute.STANDARD_NAME, 0);
     FileInfo file_info;
     while ((file_info = enumerator.next_file ()) != null) {
-        message ("Deleting %s", file_info.get_name ());
       if (file_info.get_file_type () != GLib.FileType.DIRECTORY) {
         GLib.FileUtils.remove (path + "/" + file_info.get_name ());
       }
