@@ -36,10 +36,8 @@ private class MediaButton : Gtk.Button {
     this.insert_action_group ("media", actions);
 
     this.menu_model = new GLib.Menu ();
-    var s = new GLib.Menu ();
-    s.append (_("Copy URL"), "media.copy-url");
-    s.append (_("Save Original"), "media.save-original");
-    menu_model.append_section (null, s);
+    menu_model.append (_("Copy URL"), "media.copy-url");
+    menu_model.append (_("Save Original"), "media.save-original");
     this.menu = new Gtk.Menu.from_model (menu_model);
     this.menu.attach_to_widget (this, null);
 
