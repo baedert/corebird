@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-04 18:39+0200\n"
+"POT-Creation-Date: 2014-06-13 09:32+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -108,20 +108,20 @@ msgstr ""
 msgid "Lists"
 msgstr ""
 
-#: ../src/ProfilePage.vala:275
+#: ../src/ProfilePage.vala:295
 msgid "Protected profile"
 msgstr ""
 
-#: ../src/ProfilePage.vala:457
+#: ../src/ProfilePage.vala:477
 #, c-format
 msgid "Tweet to @%s"
 msgstr ""
 
-#: ../src/ProfilePage.vala:586 ../src/TweetInfoPage.vala:404
+#: ../src/ProfilePage.vala:571 ../src/TweetInfoPage.vala:405
 msgid "Unfollow"
 msgstr ""
 
-#: ../src/ProfilePage.vala:590 ../src/TweetInfoPage.vala:408
+#: ../src/ProfilePage.vala:575 ../src/TweetInfoPage.vala:409
 #: ../ui/tweet-info-page.ui.h:3
 msgid "Follow"
 msgstr ""
@@ -135,15 +135,15 @@ msgstr ""
 msgid "Favorites"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:418
+#: ../src/TweetInfoPage.vala:419
 msgid "Open in Browser"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:418
+#: ../src/TweetInfoPage.vala:419
 msgid "Source"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:423
+#: ../src/TweetInfoPage.vala:424
 msgid "Tweet Details"
 msgstr ""
 
@@ -178,6 +178,14 @@ msgstr ""
 #: ../src/MentionsTimeline.vala:127 ../src/MentionsTimeline.vala:133
 #: ../src/MentionsTimeline.vala:134
 msgid "Mentions"
+msgstr ""
+
+#: ../src/DMPage.vala:233
+msgid "Direct Conversation"
+msgstr ""
+
+#: ../src/ListStatusesPage.vala:379
+msgid "List"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:1 ../ui/menu.ui.h:1
