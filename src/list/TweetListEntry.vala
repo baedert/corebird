@@ -133,6 +133,7 @@ public class TweetListEntry : ITwitterItem, ListBoxRow {
     if (tweet.has_inline_media) {
       mm_widget.set_all_media (tweet.medias);
       mm_widget.media_clicked.connect (media_button_clicked_cb);
+      mm_widget.window = window;
     } else
       grid.remove (mm_widget);
 

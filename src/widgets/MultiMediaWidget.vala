@@ -15,9 +15,10 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
+// TODO: Allow D'n'D out of the button
 private class MediaButton : Gtk.Button {
   public unowned Media? media;
+  public unowned Gtk.Window window;
   private GLib.Menu menu_model;
   private Gtk.Menu menu;
   private GLib.SimpleActionGroup actions;
@@ -84,7 +85,27 @@ private class MediaButton : Gtk.Button {
   }
 
   private void save_original_activated (GLib.SimpleAction a, GLib.Variant? v) {
-    message ("save_original");
+     var file_dialog = new Gtk.FileChooserDialog (_("Save image"), window,
+                                                  Gtk.FileChooserAction.SAVE,
+                                                  _("Cancel"), Gtk.ResponseType.CANCEL,
+                                                  _("Save"), Gtk.ResponseType.ACCEPT);
+    string filename = Utils.get_file_name (media.path);
+    file_dialog.set_current_name (filename);
+    file_dialog.set_transient_for (window);
+
+
+    int response = file_dialog.run ();
+    if (response == Gtk.ResponseType.ACCEPT) {
+      File dest = File.new_for_uri (file_dialog.get_uri ());
+      File source = File.new_for_path (media.path);
+      try {
+        source.copy (dest, FileCopyFlags.OVERWRITE);
+      } catch (GLib.Error e) {
+        critical (e.message);
+      }
+      file_dialog.destroy ();
+    } else if (response == Gtk.ResponseType.CANCEL)
+      file_dialog.destroy ();
   }
 
 }
@@ -93,6 +114,7 @@ private class MediaButton : Gtk.Button {
 public class MultiMediaWidget : Gtk.Box {
   public static const int HEIGHT = 60;
   public int media_count { public get; private set; default = 0;}
+  public unowned Gtk.Window window;
   private MediaButton[] media_buttons;
 
   public signal void media_clicked (Media m);
@@ -116,6 +138,7 @@ public class MultiMediaWidget : Gtk.Box {
     assert (index < media_count);
 
     var button = new MediaButton (null);
+    button.window = this.window;
     media_buttons[index] = button;
 
     if (media.loaded) {
