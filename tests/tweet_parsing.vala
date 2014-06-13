@@ -565,6 +565,27 @@ const string TD4 =
 // }}}
 
 
+/* UTILS {{{ */
+void rm_dir (string path) {
+  message ("Deleting dir %s", path);
+  try {
+    var directory = File.new_for_path (path);
+    var enumerator = directory.enumerate_children (FileAttribute.STANDARD_NAME, 0);
+    FileInfo file_info;
+    while ((file_info = enumerator.next_file ()) != null) {
+        message ("Deleting %s", file_info.get_name ());
+      if (file_info.get_file_type () != GLib.FileType.DIRECTORY) {
+        GLib.FileUtils.remove (path + "/" + file_info.get_name ());
+      }
+    }
+  } catch (Error e) {
+    critical (e.message);
+  }
+}
+
+/* }}} */
+
+
 void retweet () {
   var acc = new Account (12345, "foobar", "Foo Bar");
   var now = new GLib.DateTime.now_local ();
@@ -605,6 +626,10 @@ void media_count () {
   var now = new GLib.DateTime.now_local ();
   Tweet t = new Tweet ();
 
+  rm_dir (Dirs.cache ("assets/media"));
+  rm_dir (Dirs.cache ("assets/media/thumbs"));
+
+
   var parser = new Json.Parser ();
   try {
     parser.load_from_data (TD3);
@@ -624,6 +649,9 @@ void media_count2 () {
   var acc = new Account (12345, "foobar", "Foo Bar");
   var now = new GLib.DateTime.now_local ();
   Tweet t = new Tweet ();
+
+  rm_dir (Dirs.cache ("assets/media"));
+  rm_dir (Dirs.cache ("assets/media/thumbs"));
 
   var parser = new Json.Parser ();
   try {
