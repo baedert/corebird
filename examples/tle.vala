@@ -536,6 +536,97 @@ const string TD4 =
 }
 """;
 
+const string TD5 =
+"""
+{
+  "created_at" : "Sat Jun 14 12:15:18 +0000 2014",
+  "id" : 477786356329234433,
+  "id_str" : "477786356329234433",
+  "text" : "OMG! https://t.co/OOwbJTApub",
+  "source" : "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>",
+  "truncated" : false,
+  "in_reply_to_status_id" : null,
+  "in_reply_to_status_id_str" : null,
+  "in_reply_to_user_id" : null,
+  "in_reply_to_user_id_str" : null,
+  "in_reply_to_screen_name" : null,
+  "user" : {
+    "id" : 993713617,
+    "id_str" : "993713617",
+    "name" : "Core Bird",
+    "screen_name" : "corebirdgtk",
+    "location" : "",
+    "description" : "",
+    "url" : null,
+    "entities" : {
+      "description" : {
+        "urls" : [
+        ]
+      }
+    },
+    "protected" : true,
+    "followers_count" : 1,
+    "friends_count" : 5,
+    "listed_count" : 0,
+    "created_at" : "Thu Dec 06 19:47:16 +0000 2012",
+    "favourites_count" : 12,
+    "utc_offset" : 7200,
+    "time_zone" : "Amsterdam",
+    "geo_enabled" : false,
+    "verified" : false,
+    "statuses_count" : 540,
+    "lang" : "en",
+    "contributors_enabled" : false,
+    "is_translator" : false,
+    "is_translation_enabled" : false,
+    "profile_background_color" : "C0DEED",
+    "profile_background_image_url" : "http://abs.twimg.com/images/themes/theme1/bg.png",
+    "profile_background_image_url_https" : "https://abs.twimg.com/images/themes/theme1/bg.png",
+    "profile_background_tile" : false,
+    "profile_image_url" : "http://abs.twimg.com/sticky/default_profile_images/default_profile_1_normal.png",
+    "profile_image_url_https" : "https://abs.twimg.com/sticky/default_profile_images/default_profile_1_normal.png",
+    "profile_link_color" : "0084B4",
+    "profile_sidebar_border_color" : "C0DEED",
+    "profile_sidebar_fill_color" : "DDEEF6",
+    "profile_text_color" : "333333",
+    "profile_use_background_image" : true,
+    "default_profile" : true,
+    "default_profile_image" : true,
+    "following" : true,
+    "follow_request_sent" : false,
+    "notifications" : false
+  },
+  "geo" : null,
+  "coordinates" : null,
+  "place" : null,
+  "contributors" : null,
+  "retweet_count" : 0,
+  "favorite_count" : 0,
+  "entities" : {
+    "hashtags" : [
+    ],
+    "symbols" : [
+    ],
+    "urls" : [
+      {
+        "url" : "https://t.co/OOwbJTApub",
+        "expanded_url" : "https://vine.co/v/MjVgq596Bgb",
+        "display_url" : "vine.co/v/MjVgq596Bgb",
+        "indices" : [
+          5,
+          28
+        ]
+      }
+    ],
+    "user_mentions" : [
+    ]
+  },
+  "favorited" : false,
+  "retweeted" : false,
+  "possibly_sensitive" : false,
+  "lang" : "und"
+}
+""";
 
 // """
 // }}}
@@ -548,7 +639,7 @@ void main (string[] args) {
   var now = new GLib.DateTime.now_local ();
   var parser = new Json.Parser ();
   try {
-    parser.load_from_data (TD4);
+    parser.load_from_data (TD5);
   } catch (GLib.Error e) {
     critical (e.message);
   }
