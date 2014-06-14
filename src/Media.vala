@@ -61,7 +61,7 @@ public class Media {
    * @return The media type
    */
   public static MediaType type_from_url (string url) {
-    if (url.has_prefix ("https://vine.co/b/"))
+    if (url.has_prefix ("https://vine.co/v/"))
       return MediaType.VINE;
 
     return MediaType.IMAGE;
