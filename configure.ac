@@ -14,6 +14,25 @@ AC_PROG_INSTALL
 IT_PROG_INTLTOOL([0.40])
 
 
+
+
+
+
+# --enable-catalog
+AC_ARG_ENABLE(catalog, AC_HELP_STRING([--enable-catalog], [Install Glade catalog]),, enable_catalog=no)
+AM_CONDITIONAL([ENABLE_CATALOG], [ test "$enable_catalog" = "yes" ])
+
+# --enable-debug
+AC_ARG_ENABLE(debug, AS_HELP_STRING([--enable-debug], [Enable debugging]),, enable_debug=no)
+AM_CONDITIONAL([ENABLE_DEBUG], [ test "$enable_debug" = "yes"])
+
+# --disable-vine
+AC_ARG_ENABLE(vine, AS_HELP_STRING([--disable-vine], [Disable vine support]),, disable_vine=no)
+AM_CONDITIONAL([DISABLE_VINE], [ test "$disable_vine" = "yes"])
+
+
+
+
 # Vala Packages {{{
 pkg_modules="gtk+-3.0 >= 3.12
              glib-2.0 >= 2.40
@@ -22,7 +41,14 @@ pkg_modules="gtk+-3.0 >= 3.12
              gee-0.8
              json-glib-1.0
              sqlite3"
+
+if test "$disable_vine" = "no"; then
+  pkg_modules="$pkg_modules gstreamer-0.10 gstreamer-interfaces-0.10"
+fi
+
 PKG_CHECK_MODULES(CB, [$pkg_modules])
+
+
 CB_VALA_FLAGS=" \
   --pkg gtk+-3.0 \
   --pkg json-glib-1.0 \
@@ -36,6 +62,8 @@ CB_VALA_FLAGS=" \
   --vapidir=\$(top_srcdir)/vapi/ \
   --thread \
   --enable-checking"
+
+
 # }}}
 
 AC_SUBST(CB_CFLAGS)
@@ -49,15 +77,13 @@ if test "${CC}" = "clang"; then
   CB_CFLAGS="$CB_CFLAGS -Wno-incompatible-pointer-types -Wno-incompatible-pointer-types-discards-qualifiers"
 fi
 
-
-
-# --enable-catalog
-AC_ARG_ENABLE(catalog, AC_HELP_STRING([--enable-catalog], [Install Glade catalog]),, enable_catalog=no)
-AM_CONDITIONAL([ENABLE_CATALOG], [ test "$enable_catalog" = "yes" ])
-
-# --enable-debug
-AC_ARG_ENABLE(debug, AS_HELP_STRING([--enable-debug], [Enable debugging]),, enable_debug=no)
-AM_CONDITIONAL([ENABLE_DEBUG], [ test "$enable_debug" = "yes"])
+if test "$disable_vine" = "no"; then
+  CB_VALA_FLAGS="$CB_VALA_FLAGS \
+                 -D VINE \
+                 --pkg gstreamer-0.10 \
+                 --pkg gstreamer-interfaces-0.10 \
+                 --pkg gdk-x11-3.0"
+fi
 
 if test "$enable_debug" = "yes"; then
   CB_VALA_FLAGS="$CB_VALA_FLAGS -D DEBUG"
@@ -109,4 +135,5 @@ echo "
            C Compiler: ${CC} ${CFLAGS}
               Catalog: $enable_catalog
             Debugging: $enable_debug
+                 Vine: $disable_vine
 "
