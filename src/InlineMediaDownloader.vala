@@ -39,28 +39,36 @@ namespace InlineMediaDownloader {
            url.has_prefix ("http://i.imgur.com") ||
            url.has_prefix ("http://d.pr/i/") ||
            url.has_prefix ("http://ow.ly/i/") ||
-           url.has_prefix ("https://vine.co/b/") ||
+           url.has_prefix ("https://vine.co/v/") ||
            url.has_prefix ("http://pbs.twimg.com/media/") ||
            url.has_prefix ("http://twitpic.com/")
     ;
   }
 
-  private async void two_step_load (Tweet t, Media media, string regex_str,
-                                   int match_index) {
+  // XXX Rename
+  private async void two_step_load (Tweet t, Media media,
+                                    string regex_str1, int match_index1,
+                                    string? regex_str2 = null, int match_index2 = 0) {
     var msg = new Soup.Message ("GET", media.url);
     session.queue_message (msg, (_s, _msg) => {
       string back = (string)_msg.response_body.data;
       try {
-        var regex = new GLib.Regex (regex_str, 0);
+        var regex = new GLib.Regex (regex_str1, 0);
         MatchInfo info;
         regex.match (back, 0, out info);
-        string real_url = info.fetch (match_index);
-        if(real_url != null) {
+        string real_url = info.fetch (match_index1);
+        if (regex_str2 != null) {
+          regex = new GLib.Regex (regex_str2, 0);
+          regex.match (back, 0, out info);
+          string thumb_url = info.fetch (match_index2);
+          media.url = thumb_url;
+          media.thumb_url = real_url;
+        } else
           media.url = real_url;
-          two_step_load.callback ();
-        }
+
+        two_step_load.callback ();
       } catch (GLib.RegexError e) {
-        critical ("Regex Error(%s): %s", regex_str, e.message);
+        critical ("Regex Error(%s): %s", regex_str1, e.message);
       }
     });
     yield;
@@ -145,22 +153,25 @@ namespace InlineMediaDownloader {
     if(url.has_prefix("http://instagr.am") ||
        url.has_prefix("http://instagram.com/p/")) {
       yield two_step_load (t, media, "<meta property=\"og:image\" content=\"(.*?)\"", 1);
-    } else if (url.has_prefix("http://ow.ly/i/") ||
-               url.has_prefix("https://vine.co/v/")) {
+    } else if (url.has_prefix("http://ow.ly/i/")) {
       yield two_step_load (t, media, "<meta property=\"og:image\" content=\"(.*?)\"", 1);
     } else if (url.has_prefix("http://twitpic.com/")) {
       yield two_step_load (t, media,
                           "<meta name=\"twitter:image\" value=\"(.*?)\"", 1);
+    } else if (url.has_prefix ("https://vine.co/v/")) {
+      yield two_step_load (t, media, "<meta property=\"og:image\" content=\"(.*?)\"", 1,
+                                     "<meta property=\"twitter:player:stream\" content=\"(.*?)\"", 1);
+
     }
 
 
-    var msg = new Soup.Message ("GET", media.url);
+    var msg = new Soup.Message ("GET", media.thumb_url);
     msg.got_headers.connect (() => {
       int64 content_length = msg.response_headers.get_content_length ();
       double mb = content_length / 1024.0 / 1024.0;
       double max = Settings.max_media_size ();
       if (mb > max) {
-        debug ("Image %s won't be downloaded,  %fMB > %fMB", media.url, mb, max);
+        debug ("Image %s won't be downloaded,  %fMB > %fMB", media.thumb_url, mb, max);
         media.invalid = true;
         session.cancel_message (msg, Soup.Status.CANCELLED);
       }
@@ -187,7 +198,7 @@ namespace InlineMediaDownloader {
         }
         yield;
       } catch (GLib.Error e) {
-        critical (e.message + " for MEDIA " + media.url);
+        critical (e.message + " for MEDIA " + media.thumb_url);
         callback ();
       }
     });
@@ -236,7 +247,7 @@ namespace InlineMediaDownloader {
   }
 
   public string get_media_path (Tweet t, Media media) {
-    string ext = Utils.get_file_type (media.url);
+    string ext = Utils.get_file_type (media.thumb_url);
     ext = ext.down();
     if(ext.length == 0)
       ext = "png";

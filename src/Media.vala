@@ -17,6 +17,7 @@
 
 public enum MediaType {
   IMAGE,
+  VINE,
 
   UNKNOWN
 }
@@ -26,6 +27,15 @@ public class Media {
   public string path;
   public string thumb_path;
   public string url;
+  private string? _thumb_url = null;
+  public string thumb_url {
+    get {
+      return _thumb_url ?? url;
+    }
+    set {
+      _thumb_url = value;
+    }
+  }
   public MediaType type;
   public Gdk.Pixbuf thumbnail = null;
   /** If this media if fully downloaded and thumb is available */
@@ -39,5 +49,21 @@ public class Media {
       return MediaType.IMAGE;
 
     return MediaType.UNKNOWN;
+  }
+
+  /**
+   * Returns the type of a media based on its URL.
+   * Do not call this unless you used InlineMediaDownloader.is_media_candidate
+   * before.
+   *
+   * @param url The url to check
+   *
+   * @return The media type
+   */
+  public static MediaType type_from_url (string url) {
+    if (url.has_prefix ("https://vine.co/b/"))
+      return MediaType.VINE;
+
+    return MediaType.IMAGE;
   }
 }

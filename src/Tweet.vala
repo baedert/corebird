@@ -156,6 +156,7 @@ public class Tweet : GLib.Object {
         var m = new Media ();
         m.url = expanded_url;
         m.id = real_media_count;
+        m.type = Media.type_from_url (expanded_url);
         this.medias[real_media_count] = m;
         real_media_count ++;
       }
