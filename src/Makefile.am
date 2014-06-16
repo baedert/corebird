@@ -82,6 +82,7 @@ cb_sources = \
 			window/RemoveAccountDialog.vala \
 			window/UserListDialog.vala \
 			window/ModifyFilterDialog.vala \
+			window/AboutDialog.vala \
 			sql/Database.vala \
 			sql/Statement.vala \
 			sql/UpdateStatement.vala \

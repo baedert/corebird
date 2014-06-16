@@ -15,7 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
 
 public class Corebird : Gtk.Application {
   // TODO: Is the static here needed?
@@ -107,7 +106,7 @@ public class Corebird : Gtk.Application {
   }
 
   private void about_activated () {
-    var ad = new AboutDialog ();
+    var ad = new Gtk.AboutDialog ();
     ad.show();
   }
 
@@ -275,8 +274,8 @@ public class Corebird : Gtk.Application {
    */
   public bool is_window_open_for_screen_name (string screen_name,
                                               out MainWindow? window = null) {
-    unowned GLib.List<weak Window> windows = this.get_windows ();
-    foreach (Window win in windows) {
+    unowned GLib.List<weak Gtk.Window> windows = this.get_windows ();
+    foreach (Gtk.Window win in windows) {
       if (win is MainWindow) {
         if (((MainWindow)win).account.screen_name == screen_name) {
           window = (MainWindow)win;
