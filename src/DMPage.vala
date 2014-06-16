@@ -15,21 +15,20 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/dm-page.ui")]
-class DMPage : IPage, IMessageReceiver, Box {
+class DMPage : IPage, IMessageReceiver, Gtk.Box {
   public int unread_count                   { get { return 0; } }
   public unowned MainWindow main_window     { get; set; }
   public unowned Account account            { get; set; }
   public unowned DeltaUpdater delta_updater { get; set; }
   public int id                             { get; set; }
   [GtkChild]
-  private Button send_button;
+  private Gtk.Button send_button;
   [GtkChild]
-  private Entry text_entry;
+  private Gtk.Entry text_entry;
   [GtkChild]
-  private ListBox messages_list;
+  private Gtk.ListBox messages_list;
   [GtkChild]
   private ScrollWidget scroll_widget;
   private DMPlaceholderBox placeholder_box = new DMPlaceholderBox ();
@@ -233,6 +232,6 @@ class DMPage : IPage, IMessageReceiver, Box {
     return _("Direct Conversation");
   }
 
-  public void create_tool_button(RadioToolButton? group) {}
-  public RadioToolButton? get_tool_button() {return null;}
+  public void create_tool_button (Gtk.RadioToolButton? group) {}
+  public Gtk.RadioToolButton? get_tool_button() {return null;}
 }
