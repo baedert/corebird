@@ -15,9 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Rest;
-using Gee;
-
 public class Twitter : GLib.Object {
   private static Twitter twitter;
 
@@ -40,7 +37,7 @@ public class Twitter : GLib.Object {
   public static Gdk.Pixbuf no_avatar;
   public static Gdk.Pixbuf no_banner;
   public static Gdk.Pixbuf verified_icon;
-  public HashMap<string, Gdk.Pixbuf?> avatars;
+  public Gee.HashMap<string, Gdk.Pixbuf?> avatars;
 
   public void init () {
     try {
@@ -51,7 +48,7 @@ public class Twitter : GLib.Object {
       error ("Error while loading assets: %s", e.message);
     }
 
-    avatars = new HashMap<string, Gdk.Pixbuf> ();
+    avatars = new Gee.HashMap<string, Gdk.Pixbuf> ();
   }
 
 
