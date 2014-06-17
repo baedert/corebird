@@ -17,7 +17,6 @@
 
 
 namespace InlineMediaDownloader {
-  public const int THUMB_SIZE = 250;
   private Soup.Session session;
 
   public async void load_media (Tweet t, Media media) {
@@ -39,7 +38,9 @@ namespace InlineMediaDownloader {
            url.has_prefix ("http://i.imgur.com") ||
            url.has_prefix ("http://d.pr/i/") ||
            url.has_prefix ("http://ow.ly/i/") ||
+#if VINE
            url.has_prefix ("https://vine.co/v/") ||
+#endif
            url.has_prefix ("http://pbs.twimg.com/media/") ||
            url.has_prefix ("http://twitpic.com/")
     ;
@@ -47,8 +48,7 @@ namespace InlineMediaDownloader {
 
   // XXX Rename
   private async void two_step_load (Tweet t, Media media,
-                                    string regex_str1, int match_index1,
-                                    string? regex_str2 = null, int match_index2 = 0) {
+                                    string regex_str1, int match_index1) {
     var msg = new Soup.Message ("GET", media.url);
     session.queue_message (msg, (_s, _msg) => {
       string back = (string)_msg.response_body.data;
@@ -57,14 +57,7 @@ namespace InlineMediaDownloader {
         MatchInfo info;
         regex.match (back, 0, out info);
         string real_url = info.fetch (match_index1);
-        if (regex_str2 != null) {
-          regex = new GLib.Regex (regex_str2, 0);
-          regex.match (back, 0, out info);
-          string thumb_url = info.fetch (match_index2);
-          media.url = thumb_url;
-          media.thumb_url = real_url;
-        } else
-          media.url = real_url;
+        media.thumb_url = real_url;
 
         two_step_load.callback ();
       } catch (GLib.RegexError e) {
@@ -159,9 +152,7 @@ namespace InlineMediaDownloader {
       yield two_step_load (t, media,
                           "<meta name=\"twitter:image\" value=\"(.*?)\"", 1);
     } else if (url.has_prefix ("https://vine.co/v/")) {
-      yield two_step_load (t, media, "<meta property=\"og:image\" content=\"(.*?)\"", 1,
-                                     "<meta property=\"twitter:player:stream\" content=\"(.*?)\"", 1);
-
+      yield two_step_load (t, media, "<meta property=\"og:image\" content=\"(.*?)\"", 1);
     }
 
 

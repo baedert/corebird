@@ -43,7 +43,7 @@ pkg_modules="gtk+-3.0 >= 3.12
              sqlite3"
 
 if test "$disable_vine" = "no"; then
-  pkg_modules="$pkg_modules gstreamer-0.10 gstreamer-interfaces-0.10"
+  pkg_modules="$pkg_modules gstreamer-video-1.0 gdk-x11-3.0"
 fi
 
 PKG_CHECK_MODULES(CB, [$pkg_modules])
@@ -80,8 +80,7 @@ fi
 if test "$disable_vine" = "no"; then
   CB_VALA_FLAGS="$CB_VALA_FLAGS \
                  -D VINE \
-                 --pkg gstreamer-0.10 \
-                 --pkg gstreamer-interfaces-0.10 \
+                 --pkg gstreamer-video-1.0 \
                  --pkg gdk-x11-3.0"
 fi
 
@@ -135,5 +134,5 @@ echo "
            C Compiler: ${CC} ${CFLAGS}
               Catalog: $enable_catalog
             Debugging: $enable_debug
-                 Vine: $disable_vine
+        Vine disabled: $disable_vine
 "

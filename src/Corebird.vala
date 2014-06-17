@@ -59,6 +59,9 @@ public class Corebird : Gtk.Application {
       var opt_context = new OptionContext ("");
       opt_context.set_help_enabled (true);
       opt_context.add_main_entries (options, GETTEXT_PACKAGE);
+#if VINE
+      opt_context.add_group (Gst.init_get_option_group ());
+#endif
       unowned string[] tmp = _args;
       opt_context.parse (ref tmp);
     } catch (GLib.OptionError e) {

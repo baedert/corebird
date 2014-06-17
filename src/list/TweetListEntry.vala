@@ -180,7 +180,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     } else if (media.type == MediaType.VINE) {
       message (media.url);
       var vd = new VideoDialog (window, media.url);
-      //vd.show_all ();
+      vd.show_all ();
     }
   }
 
