@@ -16,8 +16,6 @@
  */
 
 
-using Gtk;
-
 public class Tweet : GLib.Object {
   public static const int MAX_LENGTH = 140;
 
@@ -157,6 +155,7 @@ public class Tweet : GLib.Object {
         m.url = expanded_url;
         m.id = real_media_count;
         m.type = Media.type_from_url (expanded_url);
+        message ("Media Type: %s", m.type.to_string ());
         this.medias[real_media_count] = m;
         real_media_count ++;
       }
