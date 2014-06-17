@@ -16,9 +16,6 @@
  */
 
 
-using Gtk;
-using Gee;
-
 [GtkTemplate (ui = "/org/baedert/corebird/ui/dm-threads-page.ui")]
 class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   private bool initialized = false;
@@ -28,7 +25,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   public unowned DeltaUpdater delta_updater { get; set; }
   public int id                             { get; set; }
   private BadgeRadioToolButton tool_button;
-  private HashMap<int64?, unowned DMThreadEntry> thread_map = new HashMap<int64?, unowned DMThreadEntry>
+  private Gee.HashMap<int64?, unowned DMThreadEntry> thread_map = new Gee.HashMap<int64?, unowned DMThreadEntry>
                               (Utils.int64_hash_func, Utils.int64_equal_func, DMThreadEntry.equal_func);
   private StartConversationEntry start_conversation_entry;
   private int64 max_received_id = -1;
@@ -336,9 +333,9 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     if (row_before == null)
       return;
 
-    Widget header = row.get_header ();
+    Gtk.Widget header = row.get_header ();
     if (header == null) {
-      header = new Gtk.Separator (Orientation.HORIZONTAL);
+      header = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
       header.show ();
       row.set_header (header);
     }
@@ -373,13 +370,13 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     GLib.Application.get_default ().send_notification ("new-dm", n);
   }
 
-  public void create_tool_button(RadioToolButton? group) {
+  public void create_tool_button(Gtk.RadioToolButton? group) {
     tool_button = new BadgeRadioToolButton(group, "corebird-dms-symbolic");
     tool_button.label = _("Direct Messages");
     tool_button.tooltip_text = _("Direct Messages");
   }
 
-  public RadioToolButton? get_tool_button() {
+  public Gtk.RadioToolButton? get_tool_button() {
     return tool_button;
   }
 
