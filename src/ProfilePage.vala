@@ -15,8 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
-
 [GtkTemplate (ui = "/org/baedert/corebird/ui/profile-page.ui")]
 class ProfilePage : ScrollWidget, IPage {
   private static const int PAGE_TWEETS     = 0;
@@ -63,17 +61,17 @@ class ProfilePage : ScrollWidget, IPage {
   [GtkChild]
   private Gtk.Image avatar_image;
   [GtkChild]
-  private Label name_label;
+  private Gtk.Label name_label;
   [GtkChild]
-  private Label screen_name_label;
+  private Gtk.Label screen_name_label;
   [GtkChild]
-  private Label description_label;
+  private Gtk.Label description_label;
   [GtkChild]
-  private Label url_label;
+  private Gtk.Label url_label;
   [GtkChild]
-  private Label location_label;
+  private Gtk.Label location_label;
   [GtkChild]
-  private Button follow_button;
+  private Gtk.Button follow_button;
   [GtkChild]
   private TweetListBox tweet_list;
   [GtkChild]
@@ -631,14 +629,14 @@ class ProfilePage : ScrollWidget, IPage {
     avatar_image.pixbuf = null;
   }
 
-  public void create_tool_button(RadioToolButton? group) {}
+  public void create_tool_button (Gtk.RadioToolButton? group) {}
 
 
   public string? get_title () {
     return "@" + screen_name;
   }
 
-  public RadioToolButton? get_tool_button(){
+  public Gtk.RadioToolButton? get_tool_button(){
     return null;
   }
 
