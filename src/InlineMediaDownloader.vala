@@ -164,6 +164,7 @@ namespace InlineMediaDownloader {
       if (mb > max) {
         debug ("Image %s won't be downloaded,  %fMB > %fMB", media.thumb_url, mb, max);
         media.invalid = true;
+        media.finished_loading ();
         session.cancel_message (msg, Soup.Status.CANCELLED);
       }
     });
