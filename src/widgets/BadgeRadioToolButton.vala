@@ -15,14 +15,12 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
-
 
 public class BadgeRadioToolButton : Gtk.RadioToolButton {
   private static const int BADGE_SIZE = 10;
   public bool show_badge{ get; set; default = false;}
 
-  public BadgeRadioToolButton(RadioToolButton group, string icon_name) {
+  public BadgeRadioToolButton (Gtk.RadioToolButton group, string icon_name) {
     GLib.Object(group: group, icon_name: icon_name);
   }
 
