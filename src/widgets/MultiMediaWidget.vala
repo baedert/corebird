@@ -17,14 +17,27 @@
 
 // TODO: Allow D'n'D out of the button
 private class MediaButton : Gtk.Button {
-  public unowned Media? media;
+  private unowned Media? _media;
+  public unowned Media? media {
+    get {
+      return _media;
+    }
+    set {
+      _media = value;
+      if (value != null && value.type == MediaType.IMAGE) {
+        menu_model.append (_("Copy URL"), "media.copy-url");
+        menu_model.append (_("Save Original"), "media.save-original");
+      }
+    }
+  }
   public unowned Gtk.Window window;
   private GLib.Menu menu_model;
   private Gtk.Menu menu;
   private GLib.SimpleActionGroup actions;
   private const GLib.ActionEntry[] action_entries = {
-    {"copy-url",      copy_url_activated},
-    {"save-original", save_original_activated},
+    {"copy-url",        copy_url_activated},
+    {"save-original",   save_original_activated},
+    {"open-in-browser", open_in_browser_activated}
   };
 
 
@@ -37,8 +50,7 @@ private class MediaButton : Gtk.Button {
     this.insert_action_group ("media", actions);
 
     this.menu_model = new GLib.Menu ();
-    menu_model.append (_("Copy URL"), "media.copy-url");
-    menu_model.append (_("Save Original"), "media.save-original");
+    menu_model.append (_("Open in Browser"), "media.open-in-browser");
     this.menu = new Gtk.Menu.from_model (menu_model);
     this.menu.attach_to_widget (this, null);
 
@@ -70,7 +82,7 @@ private class MediaButton : Gtk.Button {
   }
 
   private bool button_clicked_cb (Gdk.EventButton evt) {
-    if (evt.button == Gdk.BUTTON_SECONDARY && media.type == MediaType.IMAGE) {
+    if (evt.button == Gdk.BUTTON_SECONDARY) {
       menu.show_all ();
       menu.popup (null, null, null, evt.button, evt.time);
       return true;
@@ -82,6 +94,13 @@ private class MediaButton : Gtk.Button {
     Gtk.Clipboard clipboard = Gtk.Clipboard.get_for_display (Gdk.Display.get_default (),
                                                              Gdk.SELECTION_CLIPBOARD);
     clipboard.set_text (media.url, -1);
+  }
+
+  private void open_in_browser_activated (GLib.SimpleAction a, GLib.Variant? v) {
+    message ("Open in browser! %s", media.url);
+    Gtk.show_uri (Gdk.Screen.get_default (),
+                  media.url,
+                  Gtk.get_current_event_time ());
   }
 
   private void save_original_activated (GLib.SimpleAction a, GLib.Variant? v) {
