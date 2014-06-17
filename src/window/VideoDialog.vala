@@ -104,7 +104,6 @@ class VideoDialog : Gtk.Window {
         MatchInfo info;
         regex.match (back, 0, out info);
         string real_url = info.fetch (1);
-        message ("Real url: %s", real_url);
         real_set_url (real_url);
 
 #if VINE

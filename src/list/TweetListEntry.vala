@@ -178,7 +178,6 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       var id = new ImageDialog (window, media.path);
       id.show_all ();
     } else if (media.type == MediaType.VINE) {
-      message (media.url);
       var vd = new VideoDialog (window, media.url);
       vd.show_all ();
     }
