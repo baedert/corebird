@@ -15,8 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
-
 [GtkTemplate (ui = "/org/baedert/corebird/ui/dm-placeholder-box.ui")]
 class DMPlaceholderBox : Gtk.Box {
   [GtkChild]
