@@ -41,6 +41,19 @@ class VideoDialog : Gtk.Window {
 #endif
     drawing_area.set_size_request (435, 435);
     this.add (drawing_area);
+    this.button_press_event.connect (button_press_event_cb);
+    this.key_press_event.connect (key_press_event_cb);
+  }
+
+
+  private bool button_press_event_cb (Gdk.EventButton evt) {
+    this.destroy ();
+    return true;
+  }
+
+  private bool key_press_event_cb (Gdk.EventKey evt) {
+    this.destroy ();
+    return true;
   }
 
 #if VINE
