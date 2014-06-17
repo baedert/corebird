@@ -179,8 +179,17 @@ public class MultiMediaWidget : Gtk.Box {
 
 
   private void media_loaded_cb (Media source) {
+    if (source.invalid) {
+      for (int i = 0; i < media_count; i ++) {
+        if (media_buttons[i] != null && media_buttons[i].media == null) {
+          this.remove (media_buttons[i]);
+          media_buttons[i] = null;
+          return;
+        }
+      }
+    }
     for (int i = 0; i < media_count; i ++) {
-      if (media_buttons[i].media == null) {
+      if (media_buttons[i] != null && media_buttons[i].media == null) {
         media_buttons[i].media = source;
         media_buttons[i].queue_draw ();
         break;
