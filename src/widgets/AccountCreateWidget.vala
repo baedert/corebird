@@ -16,18 +16,16 @@
  */
 
 
-using Gtk;
-
 [GtkTemplate (ui = "/org/baedert/corebird/ui/account-create-widget.ui")]
 class AccountCreateWidget : Gtk.Box {
   [GtkChild]
-  private Entry pin_entry;
+  private Gtk.Entry pin_entry;
   [GtkChild]
-  private Spinner progress_spinner;
+  private Gtk.Spinner progress_spinner;
   [GtkChild]
-  private Label error_label;
+  private Gtk.Label error_label;
   [GtkChild]
-  private InfoBar error_bar;
+  private Gtk.InfoBar error_bar;
   private unowned Account acc;
   public signal void result_received (bool result, Account acc);
 
