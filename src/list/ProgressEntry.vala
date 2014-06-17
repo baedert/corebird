@@ -15,16 +15,14 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
-
-class ProgressEntry : ListBoxRow, ITwitterItem {
+class ProgressEntry : Gtk.ListBoxRow, ITwitterItem {
   public int64 sort_factor{
     get{ return 0;}
   }
   public bool seen{get; set; default = true;}
-  private Spinner spinner     = new Spinner();
+  private Gtk.Spinner spinner     = new Gtk.Spinner();
 
-  public ProgressEntry(int size = 25){
+  public ProgressEntry (int size = 25) {
     this.get_style_context().add_class("progress-item");
     this.border_width = 5;
     spinner.set_size_request(size, size);
