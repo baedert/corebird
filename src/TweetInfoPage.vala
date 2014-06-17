@@ -15,7 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
 [GtkTemplate (ui = "/org/baedert/corebird/ui/tweet-info-page.ui")]
 class TweetInfoPage : IPage , ScrollWidget {
   public static const uint BY_INSTANCE = 1;
@@ -32,29 +31,29 @@ class TweetInfoPage : IPage , ScrollWidget {
   private string tweet_media;
 
   [GtkChild]
-  private Label text_label;
+  private Gtk.Label text_label;
   [GtkChild]
   private TextButton name_button;
   [GtkChild]
-  private Label screen_name_label;
+  private Gtk.Label screen_name_label;
   [GtkChild]
-  private Image avatar_image;
+  private Gtk.Image avatar_image;
   [GtkChild]
-  private Label rt_label;
+  private Gtk.Label rt_label;
   [GtkChild]
   private Gtk.Label fav_label;
   [GtkChild]
-  private ListBox bottom_list_box;
+  private Gtk.ListBox bottom_list_box;
   [GtkChild]
-  private ListBox top_list_box;
+  private Gtk.ListBox top_list_box;
   [GtkChild]
-  private ToggleButton favorite_button;
+  private Gtk.ToggleButton favorite_button;
   [GtkChild]
-  private ToggleButton retweet_button;
+  private Gtk.ToggleButton retweet_button;
   [GtkChild]
-  private Button follow_button;
+  private Gtk.Button follow_button;
   [GtkChild]
-  private Label time_label;
+  private Gtk.Label time_label;
   [GtkChild]
   private Gtk.Label source_label;
   [GtkChild]
