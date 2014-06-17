@@ -15,37 +15,35 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
-
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/tweet-list-entry.ui")]
-public class TweetListEntry : ITwitterItem, ListBoxRow {
+public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   [GtkChild]
-  private Label screen_name_label;
+  private Gtk.Label screen_name_label;
   [GtkChild]
   private TextButton name_button;
   [GtkChild]
-  private Label time_delta_label;
+  private Gtk.Label time_delta_label;
   [GtkChild]
-  private Image avatar_image;
+  private Gtk.Image avatar_image;
   [GtkChild]
-  private Label text_label;
+  private Gtk.Label text_label;
   [GtkChild]
-  private Label rt_label;
+  private Gtk.Label rt_label;
   [GtkChild]
   private Gtk.Image rt_image;
   [GtkChild]
-  private Image conversation_image;
+  private Gtk.Image conversation_image;
   [GtkChild]
   private BgBox hover_box;
   [GtkChild]
   private DoubleTapButton retweet_button;
   [GtkChild]
-  private ToggleButton favorite_button;
+  private Gtk.ToggleButton favorite_button;
   [GtkChild]
-  private Button reply_button;
+  private Gtk.Button reply_button;
   [GtkChild]
-  private MenuButton more_button;
+  private Gtk.MenuButton more_button;
   [GtkChild]
   private Gtk.Menu more_menu;
   [GtkChild]
@@ -179,11 +177,15 @@ public class TweetListEntry : ITwitterItem, ListBoxRow {
     if (media.type == MediaType.IMAGE) {
       var id = new ImageDialog (window, media.path);
       id.show_all ();
+    } else if (media.type == MediaType.VINE) {
+      message (media.url);
+      var vd = new VideoDialog (window, media.url);
+      //vd.show_all ();
     }
   }
 
   static construct {
-    unowned BindingSet binding_set = Gtk.BindingSet.by_class (typeof (TweetListEntry).class_ref ());
+    unowned Gtk.BindingSet binding_set = Gtk.BindingSet.by_class (typeof (TweetListEntry).class_ref ());
 
     Gtk.BindingEntry.add_signal (binding_set, Gdk.Key.r, 0,      "reply-tweet", 0, null);
     Gtk.BindingEntry.add_signal (binding_set, Gdk.Key.Return, 0, "activate", 0, null);
@@ -197,7 +199,7 @@ public class TweetListEntry : ITwitterItem, ListBoxRow {
   private void state_flags_changed_cb () { //{{{
     Gtk.StateFlags flags = this.get_state_flags ();
     var ct = this.get_style_context ();
-    bool buttons_visible = (bool)(flags & (StateFlags.PRELIGHT | StateFlags.SELECTED));
+    bool buttons_visible = (bool)(flags & (Gtk.StateFlags.PRELIGHT | Gtk.StateFlags.SELECTED));
     buttons_visible = (buttons_visible || more_menu.visible);
     more_button.visible = buttons_visible;
     favorite_button.visible = buttons_visible || tweet.favorited;
@@ -247,7 +249,7 @@ public class TweetListEntry : ITwitterItem, ListBoxRow {
     // You can't retweet your own tweets.
     if (account.id == this.tweet.user_id || !values_set)
       return;
-    var spinner = new Spinner();
+    var spinner = new Gtk.Spinner();
 
     spinner.start ();
     WidgetReplacer.replace_tmp (retweet_button, spinner);
@@ -264,7 +266,7 @@ public class TweetListEntry : ITwitterItem, ListBoxRow {
     if (!values_set)
       return;
 
-    var spinner = new Spinner();
+    var spinner = new Gtk.Spinner();
     spinner.start();
     WidgetReplacer.replace_tmp(favorite_button, spinner);
     spinner.show ();
