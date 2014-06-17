@@ -16,7 +16,6 @@
  */
 
 
-using Gtk;
 
 int dm_thread_entry_sort_func (Gtk.ListBoxRow r1,
                                Gtk.ListBoxRow r2) {
@@ -41,15 +40,15 @@ class DMThreadEntry : Gtk.ListBoxRow {
     return a.user_id == b.user_id;
   }
   [GtkChild]
-  private Label name_label;
+  private Gtk.Label name_label;
   [GtkChild]
-  private Label screen_name_label;
+  private Gtk.Label screen_name_label;
   [GtkChild]
-  private Label last_message_label;
+  private Gtk.Label last_message_label;
   [GtkChild]
-  private Image avatar_image;
+  private Gtk.Image avatar_image;
   [GtkChild]
-  private Label unread_count_label;
+  private Gtk.Label unread_count_label;
   public int64 user_id {public get; private set;}
   public new string name {
     get {
