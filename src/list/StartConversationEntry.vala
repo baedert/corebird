@@ -16,9 +16,6 @@
  */
 
 
-using Gtk;
-
-// TODO: If the user starts a screen name with @, ignore the @
 [GtkTemplate (ui = "/org/baedert/corebird/ui/start-conversation-entry.ui")]
 class StartConversationEntry : Gtk.ListBoxRow {
   private static const int MAX_RESULTS = 7;
@@ -32,8 +29,8 @@ class StartConversationEntry : Gtk.ListBoxRow {
   private Gtk.Spinner go_spinner;
 
   private UserCompletion user_completion;
-  private Gtk.Window completion_window = new Gtk.Window (WindowType.POPUP);
-  private ListBox completion_list = new ListBox ();
+  private Gtk.Window completion_window = new Gtk.Window (Gtk.WindowType.POPUP);
+  private Gtk.ListBox completion_list = new Gtk.ListBox ();
   private int current_match = -1;
   public signal void start (int64 user_id, string screen_name, string name, string avatar_url);
   private unowned Account account;
@@ -187,8 +184,8 @@ class StartConversationEntry : Gtk.ListBoxRow {
 
 
 class CompletionListEntry : Gtk.ListBoxRow {
-  private Label name_label = new Label ("");
-  private Label screen_name_label = new Label ("");
+  private Gtk.Label name_label = new Gtk.Label ("");
+  private Gtk.Label screen_name_label = new Gtk.Label ("");
 
   public CompletionListEntry (string screen_name, string name) {
     var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
