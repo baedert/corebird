@@ -66,7 +66,7 @@
               <object class="AspectImage" id="banner_image">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="scale">0.30000001192092896</property>
+                <property name="scale">0.3</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -356,7 +356,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="hexpand">True</property>
-                    <property name="label" translatable="yes">--</property>
+                    <property name="label">--</property>
                     <property name="justify">center</property>
                   </object>
                   <packing>
@@ -385,7 +385,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="hexpand">True</property>
-                    <property name="label" translatable="yes">--</property>
+                    <property name="label">--</property>
                     <property name="justify">center</property>
                   </object>
                   <packing>
@@ -414,7 +414,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="hexpand">True</property>
-                    <property name="label" translatable="yes">--</property>
+                    <property name="label">--</property>
                     <property name="justify">center</property>
                   </object>
                   <packing>

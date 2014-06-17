@@ -466,9 +466,9 @@ class ProfilePage : ScrollWidget, IPage {
       desc = TweetUtils.get_formatted_text (description, text_urls);
     }
     description_label.label = "<big>" + desc + "</big>";
-    tweets_label.label = tweets.to_string();
-    followers_label.label = followers.to_string();
-    following_label.label = following.to_string();
+    tweets_label.label = "%'d".printf(tweets);
+    followers_label.label = "%'d".printf(followers);
+    following_label.label = "%'d".printf(following);
 
     if (location != null && location != "") {
       location_label.visible = true;
