@@ -406,15 +406,6 @@ const string TD3 =
     ],
     "urls" : [
       {
-        "url" : "http://t.co/ZGX7b9YGiU",
-        "expanded_url" : "http://i.imgur.com/kgrtCf0.png",
-        "display_url" : "i.imgur.com/kgrtCf0.png",
-        "indices" : [
-          0,
-          22
-        ]
-      },
-      {
         "url" : "http://t.co/6hfxg0TPyt",
         "expanded_url" : "http://i.imgur.com/xqmzPar.gif",
         "display_url" : "i.imgur.com/xqmzPar.gif",
@@ -639,7 +630,7 @@ void main (string[] args) {
   var now = new GLib.DateTime.now_local ();
   var parser = new Json.Parser ();
   try {
-    parser.load_from_data (TD5);
+    parser.load_from_data (TD3);
   } catch (GLib.Error e) {
     critical (e.message);
   }

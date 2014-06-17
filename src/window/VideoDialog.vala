@@ -47,13 +47,20 @@ class VideoDialog : Gtk.Window {
 
 
   private bool button_press_event_cb (Gdk.EventButton evt) {
-    this.destroy ();
+    stop ();
     return true;
   }
 
   private bool key_press_event_cb (Gdk.EventKey evt) {
-    this.destroy ();
+    stop ();
     return true;
+  }
+
+  private void stop () {
+#if VINE
+    src.set_state (Gst.State.NULL);
+#endif
+    this.destroy ();
   }
 
 #if VINE
@@ -71,11 +78,9 @@ class VideoDialog : Gtk.Window {
   private bool watch_cb (Gst.Bus bus, Gst.Message msg) {
   if (msg.type == Gst.MessageType.EOS) {
       // LOOP
-      //src.seek_simple (Gst.Format.TIME, Gst.SeekFlags.FLUSH, 0);
       src.seek (1.0, Gst.Format.TIME, Gst.SeekFlags.FLUSH,
                 Gst.SeekType.SET, 0,
                 Gst.SeekType.NONE, -1);
-      message ("SEEKING TO START");
     }
     return true;
   }
