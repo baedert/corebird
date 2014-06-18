@@ -40,6 +40,7 @@ namespace InlineMediaDownloader {
            url.has_prefix ("http://ow.ly/i/") ||
 #if VINE
            url.has_prefix ("https://vine.co/v/") ||
+           url.has_suffix ("/photo/1") ||
 #endif
            url.has_prefix ("http://pbs.twimg.com/media/") ||
            url.has_prefix ("http://twitpic.com/")
@@ -153,6 +154,8 @@ namespace InlineMediaDownloader {
                           "<meta name=\"twitter:image\" value=\"(.*?)\"", 1);
     } else if (url.has_prefix ("https://vine.co/v/")) {
       yield two_step_load (t, media, "<meta property=\"og:image\" content=\"(.*?)\"", 1);
+    } else if (url.has_suffix ("/photo/1")) {
+      yield two_step_load (t, media, "<img src=\"(.*?)\" class=\"animated-gif-thumbnail", 1);
     }
 
 

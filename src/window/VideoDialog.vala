@@ -24,7 +24,7 @@ class VideoDialog : Gtk.Window {
   private Gtk.DrawingArea drawing_area = new Gtk.DrawingArea ();
 
 
-  public VideoDialog (Gtk.Window parent, string uri) {
+  public VideoDialog (Gtk.Window parent, Media media) {
     this.set_decorated (false);
     this.set_modal (true);
     this.set_transient_for (parent);
@@ -37,7 +37,12 @@ class VideoDialog : Gtk.Window {
     var bus = src.get_bus ();
     bus.set_sync_handler (bus_sync_handler);
     bus.add_watch (GLib.Priority.DEFAULT, watch_cb);
-    fetch_real_url.begin (uri);
+    if (media.type == MediaType.VINE)
+      fetch_real_url.begin (media.url, "<meta property=\"twitter:player:stream\" content=\"(.*?)\"");
+    else if (media.type == MediaType.ANIMATED_GIF)
+      fetch_real_url.begin (media.url, "<source src=\"(.*?)\" type=\"video/mp4\"");
+    else
+      critical ("Unknown video media type: %d", media.type);
 #endif
     drawing_area.set_size_request (435, 435);
     this.add (drawing_area);
@@ -94,13 +99,13 @@ class VideoDialog : Gtk.Window {
 #endif
   }
 
-  private async void fetch_real_url (string first_url) { // {{{
+  private async void fetch_real_url (string first_url, string regex_str) { // {{{
     var session = new Soup.Session ();
     var msg = new Soup.Message ("GET", first_url);
     session.queue_message (msg, (s, _msg) => {
       string back = (string)_msg.response_body.data;
       try {
-        var regex = new GLib.Regex ("<meta property=\"twitter:player:stream\" content=\"(.*?)\"", 0);
+        var regex = new GLib.Regex (regex_str, 0);
         MatchInfo info;
         regex.match (back, 0, out info);
         string real_url = info.fetch (1);

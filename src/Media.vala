@@ -18,6 +18,7 @@
 public enum MediaType {
   IMAGE,
   VINE,
+  ANIMATED_GIF,
 
   UNKNOWN
 }
@@ -63,6 +64,9 @@ public class Media {
   public static MediaType type_from_url (string url) {
     if (url.has_prefix ("https://vine.co/v/"))
       return MediaType.VINE;
+
+    if (url.has_suffix ("/photo/1"))
+      return MediaType.ANIMATED_GIF;
 
     return MediaType.IMAGE;
   }

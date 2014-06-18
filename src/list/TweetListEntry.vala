@@ -177,8 +177,9 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     if (media.type == MediaType.IMAGE) {
       var id = new ImageDialog (window, media.path);
       id.show_all ();
-    } else if (media.type == MediaType.VINE) {
-      var vd = new VideoDialog (window, media.url);
+    } else if (media.type == MediaType.VINE ||
+               media.type == MediaType.ANIMATED_GIF) {
+      var vd = new VideoDialog (window, media);
       vd.show_all ();
     }
   }
