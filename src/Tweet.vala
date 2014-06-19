@@ -239,8 +239,13 @@ public class Tweet : GLib.Object {
       var extended_media = extended_entities.get_array_member ("media");
       extended_media.foreach_element ((arr, index, node) => {
         var media_obj = node.get_object ();
+        string url = media_obj.get_string_member ("media_url");
+        foreach (Media m in this.medias) {
+          if (m != null && m.url == url)
+            return;
+        }
         var m = new Media ();
-        m.url = media_obj.get_string_member ("media_url");
+        m.url = url;
         m.id = media_obj.get_int_member ("id");
         m.type = Media.type_from_string (media_obj.get_string_member ("type"));
         this.medias[real_media_count] = m;
