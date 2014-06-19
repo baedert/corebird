@@ -33,11 +33,13 @@
   -GtkWidget-focus-padding: 0;
   padding: 0px;
   box-shadow: none;
+  opacity: 0.8;
 }
 
 .inline-media:hover {
   border-top: 2px solid #4a90d9;
   border-bottom: 2px solid #4a90d9;
+  opacity: 1.0;
 }
 
 
