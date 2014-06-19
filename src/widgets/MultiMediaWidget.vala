@@ -18,6 +18,7 @@
 // TODO: Allow D'n'D out of the button
 private class MediaButton : Gtk.Button {
   private unowned Media? _media;
+  private Gdk.Pixbuf? play_icon = null;
   public unowned Media? media {
     get {
       return _media;
@@ -27,6 +28,9 @@ private class MediaButton : Gtk.Button {
       if (value != null && value.type == MediaType.IMAGE) {
         menu_model.append (_("Copy URL"), "media.copy-url");
         menu_model.append (_("Save Original"), "media.save-original");
+      } else if (value != null && (value.type == MediaType.VINE ||
+                                   value.type == MediaType.ANIMATED_GIF)) {
+        play_icon = new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/assets/play.png");
       }
     }
   }
@@ -78,6 +82,18 @@ private class MediaButton : Gtk.Button {
 
     ct.fill ();
     ct.restore ();
+
+
+   if (media != null && (this.media.type == MediaType.VINE ||
+       this.media.type == MediaType.ANIMATED_GIF)) {
+     int x = (widget_width  / 2) - (play_icon.get_width ()  / 2);
+     int y = (widget_height / 2) - (play_icon.get_height () / 2);
+     ct.rectangle (x, y,
+                   play_icon.get_width (), play_icon.get_height ());
+     Gdk.cairo_set_source_pixbuf (ct, play_icon, x, y);
+     ct.fill ();
+   }
+
     return base.draw (ct);
   }
 
