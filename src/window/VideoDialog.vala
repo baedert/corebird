@@ -21,7 +21,11 @@ class VideoDialog : Gtk.Window {
   private Gst.Element sink;
   private uint *xid;
 #endif
+  private Gtk.Stack stack = new Gtk.Stack ();
+  private Gtk.ProgressBar progress_bar = new Gtk.ProgressBar ();
   private Gtk.DrawingArea drawing_area = new Gtk.DrawingArea ();
+  private int64 file_content_length = -1;
+  private int64 current_content_length = 0;
 
 
   public VideoDialog (Gtk.Window parent, Media media) {
@@ -45,7 +49,14 @@ class VideoDialog : Gtk.Window {
       critical ("Unknown video media type: %d", media.type);
 #endif
     drawing_area.set_size_request (435, 435);
-    this.add (drawing_area);
+
+    progress_bar.valign = Gtk.Align.CENTER;
+    progress_bar.margin = 20;
+    progress_bar.show_text = true;
+    stack.add_named (progress_bar, "progress");
+    stack.add_named (drawing_area, "video");
+    stack.visible_child = progress_bar;
+    this.add (stack);
     this.button_press_event.connect (button_press_event_cb);
     this.key_press_event.connect (key_press_event_cb);
   }
@@ -110,11 +121,7 @@ class VideoDialog : Gtk.Window {
         regex.match (back, 0, out info);
         string real_url = info.fetch (1);
         real_set_url (real_url);
-
-#if VINE
-        src.set_state (Gst.State.PLAYING);
-#endif
-
+        download_video.begin (real_url);
       } catch (GLib.RegexError e) {
         warning ("Regex error: %s", e.message);
       }
@@ -123,9 +130,41 @@ class VideoDialog : Gtk.Window {
     yield;
   } // }}}
 
+
+
+  private async void download_video (string url) {
+    var session = new Soup.Session ();
+    var msg = new Soup.Message ("GET", url);
+    msg.got_headers.connect (() => {
+      file_content_length = msg.response_headers.get_content_length ();
+    });
+    msg.got_chunk.connect ((buffer) => {
+      current_content_length += buffer.length;
+      double fraction = (double) current_content_length / (double) file_content_length;
+      progress_bar.fraction = fraction;
+      progress_bar.text = "%d%%".printf ((int)(fraction * 100));
+    });
+    session.queue_message (msg, (s, _msg) => {
+      string b64 =   GLib.Base64.encode ((uchar[])msg.response_body.data);
+#if VINE
+      var sa = "data:;base64," + b64;
+      this.src.set ("uri", sa);
+      stack.visible_child_name = "video";
+      src.set_state (Gst.State.PLAYING);
+#endif
+
+    });
+  }
+
+
+
   private void real_set_url (string url) {
 #if VINE
-    this.src.set ("uri", url, null);
+    //this.src.set ("uri", url, null);
+    var pad = src.get_static_pad ("video-sink");
+    //Gst.Video.Info info = Gst.Video.Info();
+    //info.from_caps (pad.caps);
+    //message ("W: %d, H: %d", info.width, info.height);
 #endif
   }
 }
