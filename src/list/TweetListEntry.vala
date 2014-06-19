@@ -387,12 +387,12 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     c.set_source_rgba(border_color.red, border_color.green, border_color.blue,
                       border_color.alpha);
 
+    base.draw(c);
     // The line here is 50% of the width
     c.move_to(w*0.25, h);
     c.line_to(w*0.75, h);
     c.stroke();
 
-    base.draw(c);
     return false;
   } //}}}
 
