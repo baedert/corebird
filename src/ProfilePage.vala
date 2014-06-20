@@ -65,6 +65,12 @@ class ProfilePage : ScrollWidget, IPage {
   [GtkChild]
   private Label url_label;
   [GtkChild]
+  private Label tweets_label;
+  [GtkChild]
+  private Label following_label;
+  [GtkChild]
+  private Label followers_label;
+  [GtkChild]
   private Label location_label;
   [GtkChild]
   private Button follow_button;
@@ -459,7 +465,10 @@ class ProfilePage : ScrollWidget, IPage {
     if (text_urls != null) {
       desc = TweetUtils.get_formatted_text (description, text_urls);
     }
-    description_label.label = "<big><big>" + desc + "</big></big>";
+    description_label.label = "<big>" + desc + "</big>";
+    tweets_label.label = "%'d".printf(tweets);
+    followers_label.label = "%'d".printf(followers);
+    following_label.label = "%'d".printf(following);
 
     if (location != null && location != "") {
       location_label.visible = true;
@@ -643,6 +652,9 @@ class ProfilePage : ScrollWidget, IPage {
     description_label.label = " ";
     url_label.label = " ";
     location_label.label = " ";
+    tweets_label.label = " ";
+    following_label.label = " ";
+    followers_label.label = " ";
     avatar_image.pixbuf = null;
   }
 
