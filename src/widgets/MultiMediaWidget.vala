@@ -66,12 +66,6 @@ private class MediaButton : Gtk.Button {
     int widget_height = get_allocated_height ();
 
     ct.save ();
-    ct.set_source_rgb (1, 0, 0);
-    ct.rectangle (10, 10, widget_width - 20, widget_height - 20);
-    ct.fill ();
-    ct.restore ();
-
-    ct.save ();
     ct.rectangle (0, 0, widget_width, widget_height);
 
     if (media != null && media.thumbnail != null && media.loaded) {
