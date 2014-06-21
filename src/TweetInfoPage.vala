@@ -115,9 +115,6 @@ class TweetInfoPage : IPage , ScrollWidget {
     max_size_container.max_size = 0;
     max_size_container.queue_resize ();
 
-    //media_button.hide ();
-
-
     if (mode == BY_INSTANCE) {
       this.tweet = args.arg ();
       this.tweet_id = tweet.id;
@@ -130,8 +127,7 @@ class TweetInfoPage : IPage , ScrollWidget {
     query_tweet_info ();
   }
 
-  public void on_leave () {
-  }
+  public void on_leave () {}
 
 
   [GtkCallback]
