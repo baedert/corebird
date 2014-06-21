@@ -160,13 +160,22 @@ public class MultiMediaWidget : Gtk.Box {
     this.media_count = media_count;
     this.media_buttons = new MediaButton[media_count];
   }
+
+
   public void set_all_media (Media[] medias) {
+    this.remove_all ();
     this.media_buttons = new MediaButton[medias.length];
     this.media_count = medias.length;
     for (int i = 0; i < medias.length; i++) {
       assert (medias[i] != null);
       set_media (i, medias[i]);
     }
+  }
+
+  private void remove_all () {
+    this.get_children ().foreach ((w) => {
+      this.remove (w);
+    });
   }
 
 
