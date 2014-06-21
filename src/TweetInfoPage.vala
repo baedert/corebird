@@ -28,8 +28,9 @@ class TweetInfoPage : IPage , ScrollWidget {
   private bool values_set = false;
   private Tweet tweet;
   private bool following;
-  private string tweet_media;
 
+  [GtkChild]
+  private MultiMediaWidget mm_widget;
   [GtkChild]
   private Gtk.Label text_label;
   [GtkChild]
@@ -57,8 +58,6 @@ class TweetInfoPage : IPage , ScrollWidget {
   [GtkChild]
   private Gtk.Label source_label;
   [GtkChild]
-  private PixbufButton media_button;
-  [GtkChild]
   private Gtk.MenuItem delete_menu_item;
   [GtkChild]
   private MaxSizeContainer max_size_container;
@@ -67,9 +66,15 @@ class TweetInfoPage : IPage , ScrollWidget {
 
   public TweetInfoPage (int id) {
     this.id = id;
-    media_button.clicked.connect (() => {
-      ImageDialog img_dialog = new ImageDialog (main_window, tweet_media);
-      img_dialog.show_all ();
+    mm_widget.media_clicked.connect ((media) => {
+      if (media.type == MediaType.IMAGE) {
+        var imd = new ImageDialog (main_window, media.path);
+        imd.show_all ();
+      } else if (media.type == MediaType.VINE ||
+                 media.type == MediaType.ANIMATED_GIF) {
+        var vd = new VideoDialog (main_window, media);
+        vd.show_all ();
+      }
     });
     this.scroll_event.connect ((evt) => {
       if (evt.delta_y < 0 && this.vadjustment.value == 0 && reply_indicator.replies_available) {
@@ -110,7 +115,7 @@ class TweetInfoPage : IPage , ScrollWidget {
     max_size_container.max_size = 0;
     max_size_container.queue_resize ();
 
-    media_button.hide ();
+    //media_button.hide ();
 
 
     if (mode == BY_INSTANCE) {
@@ -375,13 +380,11 @@ class TweetInfoPage : IPage , ScrollWidget {
 
     set_source_link (tweet.id, tweet.screen_name);
 
-    // TODO: Also do this on inline_media_added signal
-    // XXX
-    //if (tweet.media != null) {
-      //tweet_media = tweet.media;
-      //media_button.show ();
-      //media_button.set_bg (tweet.inline_media);
-    //}
+    if (tweet.has_inline_media) {
+      mm_widget.set_all_media (tweet.medias);
+    } else {
+      mm_widget.hide ();
+    }
 
     if (tweet.user_id == account.id) {
       follow_button.hide ();
