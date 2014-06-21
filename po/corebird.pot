@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-13 14:38+0200\n"
+"POT-Creation-Date: 2014-06-21 09:46+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,28 +17,29 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/window/ComposeTweetWindow.vala:278 ../ui/compose-window.ui.h:3
+#: ../src/window/ComposeTweetWindow.vala:277 ../ui/compose-window.ui.h:3
 msgid "Select Image"
 msgstr ""
 
-#: ../src/window/ComposeTweetWindow.vala:279
-#: ../src/window/UserListDialog.vala:44 ../src/window/ImageDialog.vala:112
-#: ../ui/compose-window.ui.h:4 ../ui/remove-account-dialog.ui.h:1
-#: ../ui/list-list-entry.ui.h:1 ../ui/list-statuses-page.ui.h:8
-#: ../ui/modify-filter-dialog.ui.h:1
+#: ../src/window/ComposeTweetWindow.vala:278
+#: ../src/window/UserListDialog.vala:44 ../src/window/ImageDialog.vala:111
+#: ../src/widgets/MultiMediaWidget.vala:119 ../ui/compose-window.ui.h:4
+#: ../ui/remove-account-dialog.ui.h:1 ../ui/list-list-entry.ui.h:1
+#: ../ui/list-statuses-page.ui.h:8 ../ui/modify-filter-dialog.ui.h:1
 msgid "Cancel"
 msgstr ""
 
-#: ../src/window/ComposeTweetWindow.vala:280
+#: ../src/window/ComposeTweetWindow.vala:279
 msgid "Choose"
 msgstr ""
 
-#: ../src/window/UserListDialog.vala:45 ../src/window/ImageDialog.vala:113
-#: ../ui/list-statuses-page.ui.h:6 ../ui/modify-filter-dialog.ui.h:2
+#: ../src/window/UserListDialog.vala:45 ../src/window/ImageDialog.vala:112
+#: ../src/widgets/MultiMediaWidget.vala:120 ../ui/list-statuses-page.ui.h:6
+#: ../ui/modify-filter-dialog.ui.h:2
 msgid "Save"
 msgstr ""
 
-#: ../src/window/ImageDialog.vala:110
+#: ../src/window/ImageDialog.vala:109 ../src/widgets/MultiMediaWidget.vala:117
 msgid "Save image"
 msgstr ""
 
@@ -54,14 +55,14 @@ msgstr ""
 msgid "No entries found"
 msgstr ""
 
-#: ../src/widgets/AccountCreateWidget.vala:47
+#: ../src/widgets/AccountCreateWidget.vala:45
 msgid ""
 "Unauthorized. Most of the time, this means that there's something wrong with "
 "the Twitter servers and you should try again later"
 msgstr ""
 
 #. We just assume that it was the wrong code
-#: ../src/widgets/AccountCreateWidget.vala:64
+#: ../src/widgets/AccountCreateWidget.vala:62
 msgid "Wrong PIN"
 msgstr ""
 
@@ -69,89 +70,89 @@ msgstr ""
 msgid "Copy link"
 msgstr ""
 
-#: ../src/widgets/MultiMediaWidget.vala:39
+#: ../src/widgets/MultiMediaWidget.vala:29
 msgid "Copy URL"
 msgstr ""
 
-#: ../src/widgets/MultiMediaWidget.vala:40
+#: ../src/widgets/MultiMediaWidget.vala:30
 msgid "Save Original"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:94
+#: ../src/widgets/MultiMediaWidget.vala:57 ../src/TweetInfoPage.vala:418
+msgid "Open in Browser"
+msgstr ""
+
+#: ../src/HomeTimeline.vala:92
 #, c-format
 msgid "%d new Tweets!"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:104
+#: ../src/HomeTimeline.vala:102
 #, c-format
 msgid "%s retweeted %s"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:106
+#: ../src/HomeTimeline.vala:104
 #, c-format
 msgid "%s tweeted"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:136 ../src/HomeTimeline.vala:137
+#: ../src/HomeTimeline.vala:134 ../src/HomeTimeline.vala:135
 msgid "Home"
 msgstr ""
 
-#: ../src/DMThreadsPage.vala:361
+#: ../src/DMThreadsPage.vala:358
 #, c-format
 msgid "New direct message from %s"
 msgstr ""
 
-#: ../src/DMThreadsPage.vala:378 ../src/DMThreadsPage.vala:379
-#: ../src/DMThreadsPage.vala:393
+#: ../src/DMThreadsPage.vala:375 ../src/DMThreadsPage.vala:376
+#: ../src/DMThreadsPage.vala:390
 msgid "Direct Messages"
 msgstr ""
 
-#: ../src/list/DMThreadEntry.vala:98
+#: ../src/list/DMThreadEntry.vala:97
 #, c-format
 msgid "(%d unread)"
 msgstr ""
 
-#: ../src/ListsPage.vala:127 ../src/ListsPage.vala:128
-#: ../src/ListsPage.vala:133 ../ui/profile-page.ui.h:6
+#: ../src/ListsPage.vala:125 ../src/ListsPage.vala:126
+#: ../src/ListsPage.vala:131 ../ui/profile-page.ui.h:6
 msgid "Lists"
 msgstr ""
 
-#: ../src/ProfilePage.vala:295
+#: ../src/ProfilePage.vala:293
 msgid "Protected profile"
 msgstr ""
 
-#: ../src/ProfilePage.vala:477
+#: ../src/ProfilePage.vala:475
 #, c-format
 msgid "Tweet to @%s"
 msgstr ""
 
-#: ../src/ProfilePage.vala:571 ../src/TweetInfoPage.vala:405
+#: ../src/ProfilePage.vala:569 ../src/TweetInfoPage.vala:404
 msgid "Unfollow"
 msgstr ""
 
-#: ../src/ProfilePage.vala:575 ../src/TweetInfoPage.vala:409
+#: ../src/ProfilePage.vala:573 ../src/TweetInfoPage.vala:408
 #: ../ui/tweet-info-page.ui.h:3
 msgid "Follow"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:371
+#: ../src/TweetInfoPage.vala:370
 msgid "Retweets"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:372 ../src/FavoritesTimeline.vala:75
-#: ../src/FavoritesTimeline.vala:80 ../src/FavoritesTimeline.vala:81
+#: ../src/TweetInfoPage.vala:371 ../src/FavoritesTimeline.vala:73
+#: ../src/FavoritesTimeline.vala:78 ../src/FavoritesTimeline.vala:79
 msgid "Favorites"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:419
-msgid "Open in Browser"
-msgstr ""
-
-#: ../src/TweetInfoPage.vala:419
+#: ../src/TweetInfoPage.vala:418
 msgid "Source"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:424
+#: ../src/TweetInfoPage.vala:423
 msgid "Tweet Details"
 msgstr ""
 
@@ -169,26 +170,26 @@ msgstr ""
 msgid "%dh"
 msgstr ""
 
-#: ../src/SearchPage.vala:261 ../src/SearchPage.vala:262
-#: ../src/SearchPage.vala:271 ../ui/search-page.ui.h:1
+#: ../src/SearchPage.vala:259 ../src/SearchPage.vala:260
+#: ../src/SearchPage.vala:269 ../ui/search-page.ui.h:1
 msgid "Search"
 msgstr ""
 
-#: ../src/Corebird.vala:151
+#: ../src/Corebird.vala:153
 msgid "Open Account"
 msgstr ""
 
-#: ../src/MentionsTimeline.vala:94
+#: ../src/MentionsTimeline.vala:92
 #, c-format
 msgid "New Mention from @%s"
 msgstr ""
 
-#: ../src/MentionsTimeline.vala:127 ../src/MentionsTimeline.vala:133
-#: ../src/MentionsTimeline.vala:134
+#: ../src/MentionsTimeline.vala:125 ../src/MentionsTimeline.vala:131
+#: ../src/MentionsTimeline.vala:132
 msgid "Mentions"
 msgstr ""
 
-#: ../src/DMPage.vala:233
+#: ../src/DMPage.vala:232
 msgid "Direct Conversation"
 msgstr ""
 
