@@ -30,7 +30,11 @@ private class MediaButton : Gtk.Button {
         menu_model.append (_("Save Original"), "media.save-original");
       } else if (value != null && (value.type == MediaType.VINE ||
                                    value.type == MediaType.ANIMATED_GIF)) {
-        play_icon = new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/assets/play.png");
+        try {
+          play_icon = new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/assets/play.png");
+        } catch (GLib.Error e) {
+          critical (e.message);
+        }
       }
     }
   }
@@ -107,10 +111,13 @@ private class MediaButton : Gtk.Button {
   }
 
   private void open_in_browser_activated (GLib.SimpleAction a, GLib.Variant? v) {
-    message ("Open in browser! %s", media.url);
-    Gtk.show_uri (Gdk.Screen.get_default (),
-                  media.url,
-                  Gtk.get_current_event_time ());
+    try {
+      Gtk.show_uri (Gdk.Screen.get_default (),
+                    media.url,
+                    Gtk.get_current_event_time ());
+    } catch (GLib.Error e) {
+      critical (e.message);
+    }
   }
 
   private void save_original_activated (GLib.SimpleAction a, GLib.Variant? v) {
