@@ -48,7 +48,7 @@ namespace InlineMediaDownloader {
   }
 
   // XXX Rename
-  private async void two_step_load (Tweet t, Media media,
+  private async void load_real_url (Tweet t, Media media,
                                     string regex_str1, int match_index1) {
     var msg = new Soup.Message ("GET", media.url);
     session.queue_message (msg, (_s, _msg) => {
@@ -60,7 +60,7 @@ namespace InlineMediaDownloader {
         string real_url = info.fetch (match_index1);
         media.thumb_url = real_url;
 
-        two_step_load.callback ();
+        load_real_url.callback ();
       } catch (GLib.RegexError e) {
         critical ("Regex Error(%s): %s", regex_str1, e.message);
       }
@@ -146,16 +146,16 @@ namespace InlineMediaDownloader {
     string url = media.url;
     if(url.has_prefix("http://instagr.am") ||
        url.has_prefix("http://instagram.com/p/")) {
-      yield two_step_load (t, media, "<meta property=\"og:image\" content=\"(.*?)\"", 1);
+      yield load_real_url (t, media, "<meta property=\"og:image\" content=\"(.*?)\"", 1);
     } else if (url.has_prefix("http://ow.ly/i/")) {
-      yield two_step_load (t, media, "<meta property=\"og:image\" content=\"(.*?)\"", 1);
+      yield load_real_url (t, media, "<meta property=\"og:image\" content=\"(.*?)\"", 1);
     } else if (url.has_prefix("http://twitpic.com/")) {
-      yield two_step_load (t, media,
+      yield load_real_url (t, media,
                           "<meta name=\"twitter:image\" value=\"(.*?)\"", 1);
     } else if (url.has_prefix ("https://vine.co/v/")) {
-      yield two_step_load (t, media, "<meta property=\"og:image\" content=\"(.*?)\"", 1);
+      yield load_real_url (t, media, "<meta property=\"og:image\" content=\"(.*?)\"", 1);
     } else if (url.has_suffix ("/photo/1")) {
-      yield two_step_load (t, media, "<img src=\"(.*?)\" class=\"animated-gif-thumbnail", 1);
+      yield load_real_url (t, media, "<img src=\"(.*?)\" class=\"animated-gif-thumbnail", 1);
     }
 
 
