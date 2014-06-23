@@ -109,8 +109,8 @@ public class Corebird : Gtk.Application {
   }
 
   private void about_activated () {
-    var ad = new Gtk.AboutDialog ();
-    ad.show();
+    var ad = new AboutDialog ();
+    ad.show_all ();
   }
 
   public override void startup () { // {{{

@@ -7,7 +7,7 @@
  - Resize the window/GtkDrawingArea to the video's size. This
    is especially interesting for "animated gifs" since we don't
    know their real size
- - Stop download/play when the window gets closed while downloading
+ - [x] Stop download/play when the window gets closed while downloading
  - [x] Media preview in tweet info page
  - Multiple media in compose window
 
