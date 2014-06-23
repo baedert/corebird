@@ -61,7 +61,8 @@ CB_VALA_FLAGS=" \
   --gresources=\$(top_srcdir)/resources.xml \
   --vapidir=\$(top_srcdir)/vapi/ \
   --thread \
-  --enable-checking"
+  --enable-checking \
+  --enable-experimental"
 
 
 # }}}

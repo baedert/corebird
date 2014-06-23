@@ -26,6 +26,7 @@ class VideoDialog : Gtk.Window {
   private Gtk.DrawingArea drawing_area = new Gtk.DrawingArea ();
   private int64 file_content_length = -1;
   private int64 current_content_length = 0;
+  private GLib.Cancellable cancellable;
 
 
   public VideoDialog (Gtk.Window parent, Media media) {
@@ -33,6 +34,7 @@ class VideoDialog : Gtk.Window {
     this.set_modal (true);
     this.set_transient_for (parent);
     this.set_type_hint (Gdk.WindowTypeHint.DIALOG);
+    this.cancellable = new GLib.Cancellable ();
     drawing_area.realize.connect (realize_cb);
 #if VINE
     this.src  = Gst.ElementFactory.make ("playbin", "video");
@@ -59,6 +61,7 @@ class VideoDialog : Gtk.Window {
     this.add (stack);
     this.button_press_event.connect (button_press_event_cb);
     this.key_press_event.connect (key_press_event_cb);
+
   }
 
 
@@ -73,6 +76,7 @@ class VideoDialog : Gtk.Window {
   }
 
   private void stop () {
+    cancellable.cancel ();
 #if VINE
     src.set_state (Gst.State.NULL);
 #endif
@@ -113,14 +117,21 @@ class VideoDialog : Gtk.Window {
   private async void fetch_real_url (string first_url, string regex_str) { // {{{
     var session = new Soup.Session ();
     var msg = new Soup.Message ("GET", first_url);
+    cancellable.cancelled.connect (() => {
+      session.cancel_message (msg, Soup.Status.CANCELLED);
+    });
     session.queue_message (msg, (s, _msg) => {
+      if (_msg.status_code != Soup.Status.OK) {
+        warning ("Status Code %u", _msg.status_code);
+        fetch_real_url.callback ();
+        return;
+      }
       string back = (string)_msg.response_body.data;
       try {
         var regex = new GLib.Regex (regex_str, 0);
         MatchInfo info;
         regex.match (back, 0, out info);
         string real_url = info.fetch (1);
-        real_set_url (real_url);
         download_video.begin (real_url);
       } catch (GLib.RegexError e) {
         warning ("Regex error: %s", e.message);
@@ -138,6 +149,9 @@ class VideoDialog : Gtk.Window {
     msg.got_headers.connect (() => {
       file_content_length = msg.response_headers.get_content_length ();
     });
+    cancellable.cancelled.connect (() => {
+      session.cancel_message (msg, Soup.Status.CANCELLED);
+    });
     msg.got_chunk.connect ((buffer) => {
       current_content_length += buffer.length;
       double fraction = (double) current_content_length / (double) file_content_length;
@@ -145,25 +159,33 @@ class VideoDialog : Gtk.Window {
       progress_bar.text = "%d%%".printf ((int)(fraction * 100));
     });
     session.queue_message (msg, (s, _msg) => {
-      string b64 =   GLib.Base64.encode ((uchar[])msg.response_body.data);
+      if (_msg.status_code != Soup.Status.OK) {
+        warning ("Status Code %u", _msg.status_code);
+        download_video.callback ();
+        return;
+      }
+
+      string b64 = GLib.Base64.encode ((uchar[])msg.response_body.data);
 #if VINE
       var sa = "data:;base64," + b64;
       this.src.set ("uri", sa);
       stack.visible_child_name = "video";
       src.set_state (Gst.State.PLAYING);
 #endif
-
+      download_video.callback ();
     });
+    yield;
   }
 
 
 
   private void real_set_url (string url) {
-#if VINE
+//#if VINE
+    //this.src.set ("uri", url, null);
     //var pad = src.get_static_pad ("video-sink");
     //Gst.Video.Info info = Gst.Video.Info();
     //info.from_caps (pad.caps);
     //message ("W: %d, H: %d", info.width, info.height);
-#endif
+//#endif
   }
 }
