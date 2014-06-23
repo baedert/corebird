@@ -229,6 +229,9 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       }
       t_e.last_message = text;
       t_e.last_message_id = message_id;
+      account.db.update ("dm_threads").val ("last_message", text)
+                                      .vali64 ( "last_message_id", message_id)
+                                      .where_eqi ("user_id", sender_id).run ();
       notify_new_dm (sender_id, t_e.screen_name, Utils.unescape_html (text), t_e.avatar_path);
       return;
     }
