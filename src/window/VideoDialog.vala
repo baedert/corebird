@@ -106,7 +106,7 @@ class VideoDialog : Gtk.Window {
 
   private void realize_cb () {
 #if VINE
-    this.xid = (uint *)Gdk.X11Window.get_xid (drawing_area.get_window ());
+    this.xid = (uint *)(((Gdk.X11.Window)drawing_area.get_window ()).get_xid ());
 #endif
   }
 
@@ -160,8 +160,7 @@ class VideoDialog : Gtk.Window {
 
   private void real_set_url (string url) {
 #if VINE
-    //this.src.set ("uri", url, null);
-    var pad = src.get_static_pad ("video-sink");
+    //var pad = src.get_static_pad ("video-sink");
     //Gst.Video.Info info = Gst.Video.Info();
     //info.from_caps (pad.caps);
     //message ("W: %d, H: %d", info.width, info.height);
