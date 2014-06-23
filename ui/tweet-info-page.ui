@@ -183,29 +183,9 @@
               <packing>
                 <property name="left_attach">0</property>
                 <property name="top_attach">4</property>
-                <property name="width">6</property>
+                <property name="width">8</property>
               </packing>
             </child>
-
-            <child>
-              <object class="PixbufButton" id="media_button">
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="halign">end</property>
-                <property name="valign">start</property>
-                <property name="margin_end">5</property>
-                <property name="margin_top">5</property>
-                <style>
-                  <class name="pixbuf-button"/>
-                </style>
-              </object>
-              <packing>
-                <property name="left_attach">6</property>
-                <property name="top_attach">4</property>
-                <property name="width">2</property>
-              </packing>
-            </child>
-
 
             <child>
               <object class="GtkLabel" id="time_label">
@@ -408,6 +388,20 @@
               </packing>
             </child>
 
+
+            <child>
+              <object class="MultiMediaWidget" id="mm_widget">
+                <property name="visible">true</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">7</property>
+                <property name="width">8</property>
+              </packing>
+            </child>
+
+
+
             <child>
               <object class="GtkListBox" id="bottom_list_box">
                 <property name="visible">True</property>
@@ -417,7 +411,7 @@
               </object>
               <packing>
                 <property name="left_attach">0</property>
-                <property name="top_attach">7</property>
+                <property name="top_attach">8</property>
                 <property name="width">8</property>
               </packing>
             </child>

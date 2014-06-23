@@ -2,7 +2,7 @@ AUTOMAKE_OPTIONS = subdir-objects
 
 AM_CPPFLAGS = $(CB_CFLAGS) -I$(top_srcdir)/src
 
-bin_PROGRAMS = tle mm_widget
+noinst_PROGRAMS = tle mm_widget
 
 
 tle_SOURCES = tle.vala $(top_srcdir)/src/resources.c
