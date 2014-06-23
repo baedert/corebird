@@ -229,7 +229,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       }
       t_e.last_message = text;
       t_e.last_message_id = message_id;
-      notify_new_dm (sender_id, t_e.screen_name, text, t_e.avatar_path);
+      notify_new_dm (sender_id, t_e.screen_name, Utils.unescape_html (text), t_e.avatar_path);
       return;
     }
 
