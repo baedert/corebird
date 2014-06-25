@@ -43,7 +43,7 @@
  - `libsoup-2.4`
  - `intltool >= 0.40`
  - `libgee-0.8`
- - `vala >= 0.22` (makedep)
+ - `vala >= 0.24` (makedep)
  - `automake >= 1.14` (makedep)
  - `gstreamer` (disable via --disable-video, default enabled)
  - `gst-plugins-bad` (disable via --disable-video, default enabled)
