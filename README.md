@@ -45,10 +45,13 @@
  - `libgee-0.8`
  - `vala >= 0.22` (makedep)
  - `automake >= 1.14` (makedep)
- - `gstreamer` (disable via --disable-video)
- - `gst-plugins-bad` (disable via --disable-video)
+ - `gstreamer` (disable via --disable-video, default enabled)
+ - `gst-plugins-bad` (disable via --disable-video, default enabled)
+ - `gst-libav` (disable via --disable-video, default enabled)
 
-If you pass`--disable-video`
+Note that the above packages are just rough estimations, the actual package names on your distribution may vary.
+
+If you pass`--disable-video` to the configure script, you don't need any gstreamer dependency but  won't be able to view any videos (i.e. no vines and no twitter gifs).
 
 ## Compiling
 
