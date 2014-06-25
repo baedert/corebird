@@ -87,7 +87,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     if (tweet.is_retweet) {
       rt_label.show ();
       rt_image.show ();
-      rt_label.label = @"<span underline='none'><a href=\"@$(tweet.rt_by_id)\"
+      rt_label.label = @"<span underline='none'><a href=\"@$(tweet.rt_by_id)/$(tweet.rt_by_screen_name)\"
                          title=\"@$(tweet.rt_by_screen_name)\">$(tweet.retweeted_by)</a></span>";
     } else {
       grid.remove (rt_image);

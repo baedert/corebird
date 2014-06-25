@@ -297,7 +297,6 @@ namespace TweetUtils {
         window.switch_page (MainWindow.PAGE_PROFILE,
                             int64.parse (term));
       } else {
-        message (term.substring (0, slash_index));
         window.switch_page (MainWindow.PAGE_PROFILE,
                             int64.parse (term.substring (0, slash_index - 1)),
                             term.substring (slash_index + 1, term.length - slash_index - 1));
