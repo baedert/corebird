@@ -16,7 +16,7 @@
  */
 
 class VideoDialog : Gtk.Window {
-#if VINE
+#if VIDEO
   private Gst.Element src;
   private Gst.Element sink;
   private uint *xid;
@@ -27,6 +27,7 @@ class VideoDialog : Gtk.Window {
   private int64 file_content_length = -1;
   private int64 current_content_length = 0;
   private GLib.Cancellable cancellable;
+  private Gtk.Label error_label = new Gtk.Label ("");
 
 
   public VideoDialog (Gtk.Window parent, Media media) {
@@ -36,7 +37,7 @@ class VideoDialog : Gtk.Window {
     this.set_type_hint (Gdk.WindowTypeHint.DIALOG);
     this.cancellable = new GLib.Cancellable ();
     drawing_area.realize.connect (realize_cb);
-#if VINE
+#if VIDEO
     this.src  = Gst.ElementFactory.make ("playbin", "video");
     this.sink = Gst.ElementFactory.make ("xvimagesink", "sink");
     this.src.set ("video-sink", sink, null);
@@ -55,13 +56,26 @@ class VideoDialog : Gtk.Window {
     progress_bar.valign = Gtk.Align.CENTER;
     progress_bar.margin = 20;
     progress_bar.show_text = true;
+
+    /* set up error label */
+    error_label.margin = 20;
+    error_label.wrap = true;
+    error_label.selectable = true;
+
     stack.add_named (progress_bar, "progress");
     stack.add_named (drawing_area, "video");
+    stack.add_named (error_label, "error");
+
     stack.visible_child = progress_bar;
     this.add (stack);
     this.button_press_event.connect (button_press_event_cb);
     this.key_press_event.connect (key_press_event_cb);
 
+  }
+
+  private void show_error (string error_message) {
+    error_label.label = error_message;
+    stack.visible_child_name = "error";
   }
 
 
@@ -77,13 +91,13 @@ class VideoDialog : Gtk.Window {
 
   private void stop () {
     cancellable.cancel ();
-#if VINE
+#if VIDEO
     src.set_state (Gst.State.NULL);
 #endif
     this.destroy ();
   }
 
-#if VINE
+#if VIDEO
   private Gst.BusSyncReply bus_sync_handler (Gst.Bus bus, Gst.Message msg) {
     if (!Gst.Video.is_video_overlay_prepare_window_handle_message (msg))
       return Gst.BusSyncReply.PASS;
@@ -109,7 +123,7 @@ class VideoDialog : Gtk.Window {
 
 
   private void realize_cb () {
-#if VINE
+#if VIDEO
     this.xid = (uint *)(((Gdk.X11.Window)drawing_area.get_window ()).get_xid ());
 #endif
   }
@@ -131,10 +145,14 @@ class VideoDialog : Gtk.Window {
         var regex = new GLib.Regex (regex_str, 0);
         MatchInfo info;
         regex.match (back, 0, out info);
-        string real_url = info.fetch (1);
-        download_video.begin (real_url);
+        string? real_url = info.fetch (1);
+        if (real_url == null) {
+          show_error ("Error: Could not get real URL");
+        } else
+          download_video.begin (real_url);
       } catch (GLib.RegexError e) {
         warning ("Regex error: %s", e.message);
+        show_error ("Regex error: %s".printf (e.message));
       }
       fetch_real_url.callback ();
     });
@@ -166,7 +184,7 @@ class VideoDialog : Gtk.Window {
       }
 
       string b64 = GLib.Base64.encode ((uchar[])msg.response_body.data);
-#if VINE
+#if VIDEO
       var sa = "data:;base64," + b64;
       this.src.set ("uri", sa);
       stack.visible_child_name = "video";
