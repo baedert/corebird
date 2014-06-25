@@ -27,6 +27,7 @@ class VideoDialog : Gtk.Window {
   private int64 file_content_length = -1;
   private int64 current_content_length = 0;
   private GLib.Cancellable cancellable;
+  private Gtk.Label error_label = new Gtk.Label ("");
 
 
   public VideoDialog (Gtk.Window parent, Media media) {
@@ -55,13 +56,26 @@ class VideoDialog : Gtk.Window {
     progress_bar.valign = Gtk.Align.CENTER;
     progress_bar.margin = 20;
     progress_bar.show_text = true;
+
+    /* set up error label */
+    error_label.margin = 20;
+    error_label.wrap = true;
+    error_label.selectable = true;
+
     stack.add_named (progress_bar, "progress");
     stack.add_named (drawing_area, "video");
+    stack.add_named (error_label, "error");
+
     stack.visible_child = progress_bar;
     this.add (stack);
     this.button_press_event.connect (button_press_event_cb);
     this.key_press_event.connect (key_press_event_cb);
 
+  }
+
+  private void show_error (string error_message) {
+    error_label.label = error_message;
+    stack.visible_child_name = "error";
   }
 
 
@@ -131,10 +145,14 @@ class VideoDialog : Gtk.Window {
         var regex = new GLib.Regex (regex_str, 0);
         MatchInfo info;
         regex.match (back, 0, out info);
-        string real_url = info.fetch (1);
-        download_video.begin (real_url);
+        string? real_url = info.fetch (1);
+        if (real_url == null) {
+          show_error ("Error: Could not get real URL");
+        } else
+          download_video.begin (real_url);
       } catch (GLib.RegexError e) {
         warning ("Regex error: %s", e.message);
+        show_error ("Regex error: %s".printf (e.message));
       }
       fetch_real_url.callback ();
     });
