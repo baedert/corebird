@@ -38,7 +38,7 @@ namespace InlineMediaDownloader {
            url.has_prefix ("http://i.imgur.com") ||
            url.has_prefix ("http://d.pr/i/") ||
            url.has_prefix ("http://ow.ly/i/") ||
-#if VINE
+#if VIDEO
            url.has_prefix ("https://vine.co/v/") ||
            url.has_suffix ("/photo/1") ||
 #endif

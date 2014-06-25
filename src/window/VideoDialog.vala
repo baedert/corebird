@@ -16,7 +16,7 @@
  */
 
 class VideoDialog : Gtk.Window {
-#if VINE
+#if VIDEO
   private Gst.Element src;
   private Gst.Element sink;
   private uint *xid;
@@ -37,7 +37,7 @@ class VideoDialog : Gtk.Window {
     this.set_type_hint (Gdk.WindowTypeHint.DIALOG);
     this.cancellable = new GLib.Cancellable ();
     drawing_area.realize.connect (realize_cb);
-#if VINE
+#if VIDEO
     this.src  = Gst.ElementFactory.make ("playbin", "video");
     this.sink = Gst.ElementFactory.make ("xvimagesink", "sink");
     this.src.set ("video-sink", sink, null);
@@ -91,13 +91,13 @@ class VideoDialog : Gtk.Window {
 
   private void stop () {
     cancellable.cancel ();
-#if VINE
+#if VIDEO
     src.set_state (Gst.State.NULL);
 #endif
     this.destroy ();
   }
 
-#if VINE
+#if VIDEO
   private Gst.BusSyncReply bus_sync_handler (Gst.Bus bus, Gst.Message msg) {
     if (!Gst.Video.is_video_overlay_prepare_window_handle_message (msg))
       return Gst.BusSyncReply.PASS;
@@ -123,7 +123,7 @@ class VideoDialog : Gtk.Window {
 
 
   private void realize_cb () {
-#if VINE
+#if VIDEO
     this.xid = (uint *)(((Gdk.X11.Window)drawing_area.get_window ()).get_xid ());
 #endif
   }
@@ -184,7 +184,7 @@ class VideoDialog : Gtk.Window {
       }
 
       string b64 = GLib.Base64.encode ((uchar[])msg.response_body.data);
-#if VINE
+#if VIDEO
       var sa = "data:;base64," + b64;
       this.src.set ("uri", sa);
       stack.visible_child_name = "video";

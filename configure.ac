@@ -26,9 +26,9 @@ AM_CONDITIONAL([ENABLE_CATALOG], [ test "$enable_catalog" = "yes" ])
 AC_ARG_ENABLE(debug, AS_HELP_STRING([--enable-debug], [Enable debugging]),, enable_debug=no)
 AM_CONDITIONAL([ENABLE_DEBUG], [ test "$enable_debug" = "yes"])
 
-# --disable-vine
-AC_ARG_ENABLE(vine, AS_HELP_STRING([--disable-vine], [Disable vine support]),, disable_vine=no)
-AM_CONDITIONAL([DISABLE_VINE], [ test "$disable_vine" = "yes"])
+# --disable-video
+AC_ARG_ENABLE(video, AS_HELP_STRING([--disable-video], [Disable video support]),, disable_video=no)
+AM_CONDITIONAL([DISABLE_VIDEO], [ test "$disable_video" = "yes"])
 
 
 
@@ -42,7 +42,7 @@ pkg_modules="gtk+-3.0 >= 3.12
              json-glib-1.0
              sqlite3"
 
-if test "$disable_vine" = "no"; then
+if test "$disable_video" = "no"; then
   pkg_modules="$pkg_modules gstreamer-video-1.0 gdk-x11-3.0"
 fi
 
@@ -78,9 +78,9 @@ if test "${CC}" = "clang"; then
   CB_CFLAGS="$CB_CFLAGS -Wno-incompatible-pointer-types -Wno-incompatible-pointer-types-discards-qualifiers"
 fi
 
-if test "$disable_vine" = "no"; then
+if test "$disable_video" = "no"; then
   CB_VALA_FLAGS="$CB_VALA_FLAGS \
-                 -D VINE \
+                 -D VIDEO \
                  --pkg gstreamer-video-1.0 \
                  --pkg gdk-x11-3.0"
 fi
@@ -135,5 +135,5 @@ echo "
            C Compiler: ${CC} ${CFLAGS}
               Catalog: $enable_catalog
             Debugging: $enable_debug
-        Vine disabled: $disable_vine
+       Video disabled: $disable_video
 "
