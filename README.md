@@ -45,7 +45,10 @@
  - `libgee-0.8`
  - `vala >= 0.22` (makedep)
  - `automake >= 1.14` (makedep)
- - `gstreamer-video-1.0` (disable via --disable-vine)
+ - `gstreamer` (disable via --disable-video)
+ - `gst-plugins-bad` (disable via --disable-video)
+
+If you pass`--disable-video`
 
 ## Compiling
 
