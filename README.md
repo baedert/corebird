@@ -47,6 +47,7 @@
  - `automake >= 1.14` (makedep)
  - `gstreamer` (disable via --disable-video, default enabled)
  - `gst-plugins-bad` (disable via --disable-video, default enabled)
+ - `gst-plugins-good` (disable via --disable-video, default enabled)
  - `gst-libav` (disable via --disable-video, default enabled)
 
 Note that the above packages are just rough estimations, the actual package names on your distribution may vary.
