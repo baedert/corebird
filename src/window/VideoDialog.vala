@@ -46,7 +46,7 @@ class VideoDialog : Gtk.Window {
     if (media.type == MediaType.VINE)
       fetch_real_url.begin (media.url, "<meta property=\"twitter:player:stream\" content=\"(.*?)\"");
     else if (media.type == MediaType.ANIMATED_GIF)
-      fetch_real_url.begin (media.url, "<source src=\"(.*?)\" type=\"video/mp4\"");
+      fetch_real_url.begin (media.url, "<source video-src=\"(.*?)\" type=\"video/mp4\"");
     else
       critical ("Unknown video media type: %d", media.type);
 #endif
@@ -110,7 +110,7 @@ class VideoDialog : Gtk.Window {
 
   private void realize_cb () {
 #if VINE
-    this.xid = (uint *)Gdk.X11Window.get_xid (drawing_area.get_window ());
+    this.xid = (uint *)(((Gdk.X11.Window)drawing_area.get_window ()).get_xid ());
 #endif
   }
 

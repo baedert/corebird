@@ -36,7 +36,6 @@
             <property name="can_focus">False</property>
             <property name="valign">baseline</property>
             <property name="xalign">0</property>
-            <property name="label">@baedert</property>
             <property name="use_markup">True</property>
             <property name="ellipsize">end</property>
             <style>
@@ -76,9 +75,9 @@
             <property name="can_focus">False</property>
             <property name="valign">start</property>
             <property name="xalign">0</property>
-            <property name="label">yeah let's meet tomorrow at 8 in the bar</property>
             <property name="ellipsize">end</property>
             <property name="hexpand">True</property>
+            <property name="use_markup">true</property>
             <style>
               <class name="dim-label"/>
             </style>

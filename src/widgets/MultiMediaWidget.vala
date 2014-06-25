@@ -96,7 +96,7 @@ private class MediaButton : Gtk.Button {
   }
 
   private bool button_clicked_cb (Gdk.EventButton evt) {
-    if (evt.button == Gdk.BUTTON_SECONDARY) {
+    if (evt.button == Gdk.BUTTON_SECONDARY && this.media != null) {
       menu.show_all ();
       menu.popup (null, null, null, evt.button, evt.time);
       return true;
