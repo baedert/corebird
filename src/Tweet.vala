@@ -16,8 +16,6 @@
  */
 
 
-using Gtk;
-
 public class Tweet : GLib.Object {
   public static const int MAX_LENGTH = 140;
 
@@ -54,11 +52,12 @@ public class Tweet : GLib.Object {
 
   /** if 0, this tweet is NOT part of a conversation */
   public int64 reply_id = 0;
-  public string media;
-  public string media_thumb;
-  public signal void inline_media_added(Gdk.Pixbuf? media);
-  public bool has_inline_media = false;
-  public string original_media_url;
+
+  /** List of all the used media **/
+  public Media[] medias;
+  public bool has_inline_media {
+    get { return medias != null && medias.length > 0; }
+  }
 
   /** if the json from twitter has inline media **/
   private GLib.SList<TweetUtils.Sequence?> urls;
@@ -136,9 +135,29 @@ public class Tweet : GLib.Object {
     var user_mentions = entities.get_array_member ("user_mentions");
     this.mentions = new string[user_mentions.get_length ()];
     this.urls = new GLib.SList<TweetUtils.Sequence?>();
+
+    int media_count = Utils.get_json_array_size (entities, "media");
+    if (status.has_member ("extended_entities"))
+      media_count += Utils.get_json_array_size (status.get_object_member ("extended_entities"), "media");
+
+    media_count += (int)urls.get_length ();
+
+    this.medias = new Media[media_count];
+    int real_media_count = 0;
+
+
     urls.foreach_element((arr, index, node) => {
       var url = node.get_object();
       string expanded_url = url.get_string_member("expanded_url");
+
+      if (InlineMediaDownloader.is_media_candidate (expanded_url)) {
+        var m = new Media ();
+        m.url = expanded_url;
+        m.id = real_media_count;
+        m.type = Media.type_from_url (expanded_url);
+        this.medias[real_media_count] = m;
+        real_media_count ++;
+      }
 
       Json.Array indices = url.get_array_member ("indices");
       expanded_url = expanded_url.replace("&", "&amp;");
@@ -149,7 +168,6 @@ public class Tweet : GLib.Object {
         display_url = url.get_string_member ("display_url"),
         visual_display_url = false
       });
-      InlineMediaDownloader.try_load_media.begin(this, expanded_url);
     });
 
     hashtags.foreach_element ((arr, index, node) => {
@@ -160,7 +178,7 @@ public class Tweet : GLib.Object {
         end   = (int)indices.get_int_element (1),
         url   = "#"+hashtag.get_string_member ("text"),
         display_url = "#"+hashtag.get_string_member ("text"),
-        visual_display_url=  false
+        visual_display_url = false
       });
     });
 
@@ -191,13 +209,11 @@ public class Tweet : GLib.Object {
     });
     this.mentions.resize (real_mentions);
 
-
     // The same with media
     if (entities.has_member ("media")) {
       var medias = entities.get_array_member ("media");
       medias.foreach_element ((arr, index, node) => {
         var url = node.get_object();
-        has_inline_media = true;
         string expanded_url = url.get_string_member ("expanded_url");
         expanded_url = expanded_url.replace ("&", "&amp;");
         Json.Array indices = url.get_array_member ("indices");
@@ -208,11 +224,37 @@ public class Tweet : GLib.Object {
           display_url = url.get_string_member ("display_url"),
           visual_display_url = false
         });
-        InlineMediaDownloader.try_load_media.begin(this,
-                url.get_string_member("media_url"));
+        string media_url = url.get_string_member ("media_url");
+        if (InlineMediaDownloader.is_media_candidate (media_url)) {
+          var m = new Media ();
+          m.url = media_url;
+          this.medias[real_media_count] = m;
+          real_media_count ++;
+        }
       });
     }
 
+    if (status.has_member ("extended_entities")) {
+      var extended_entities = status.get_object_member ("extended_entities");
+      var extended_media = extended_entities.get_array_member ("media");
+      extended_media.foreach_element ((arr, index, node) => {
+        var media_obj = node.get_object ();
+        string url = media_obj.get_string_member ("media_url");
+        foreach (Media m in this.medias) {
+          if (m != null && m.url == url)
+            return;
+        }
+        var m = new Media ();
+        m.url = url;
+        m.id = media_obj.get_int_member ("id");
+        m.type = Media.type_from_string (media_obj.get_string_member ("type"));
+        this.medias[real_media_count] = m;
+        real_media_count ++;
+      });
+    }
+
+    this.medias.resize (real_media_count);
+    InlineMediaDownloader.load_all_media (this, this.medias);
 
     this.urls.sort ((a, b) => {
       if (a.start < b.start)

@@ -15,8 +15,7 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
-class TextButton : Button {
+class TextButton : Gtk.Button {
 
   public TextButton(string label=""){
     if(label != "")
@@ -32,25 +31,25 @@ class TextButton : Button {
    *
    * @param text The markup to use(see pango markup)
    */
-  public void set_markup(string text) {
-    Label label = null;
-    Widget child = get_child();
-    if(child != null){
-      if(child is Label) {
-        label = (Label)child;
-        label.set_markup(text);
-      }else{
-        this.remove(child);
-        label = new Label(text);
+  public void set_markup (string text) {
+    Gtk.Label label = null;
+    Gtk.Widget child = get_child ();
+    if (child != null) {
+      if (child is Gtk.Label) {
+        label = (Gtk.Label)child;
+        label.set_markup (text);
+      } else {
+        this.remove (child);
+        label = new Gtk.Label (text);
       }
-    }else{
-      label = new Label(text);
+    } else {
+      label = new Gtk.Label (text);
     }
-    label.set_use_markup(true);
-    label.set_justify(Justification.CENTER);
+    label.set_use_markup (true);
+    label.set_justify (Gtk.Justification.CENTER);
 
     label.visible = true;
     if(label.parent == null)
-      this.add(label);
+      this.add (label);
   }
 }

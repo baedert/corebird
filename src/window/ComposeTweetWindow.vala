@@ -16,7 +16,6 @@
  */
 
 
-using Gtk;
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/compose-window.ui")]
 class ComposeTweetWindow : Gtk.ApplicationWindow {
@@ -54,10 +53,10 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   private int current_match = -1;
 
 
-  public ComposeTweetWindow(Window? parent, Account acc,
-                            Tweet? answer_to = null,
-                            Mode mode = Mode.NORMAL,
-                            Gtk.Application? app = null) {
+  public ComposeTweetWindow (Gtk.Window? parent, Account acc,
+                             Tweet? answer_to = null,
+                             Mode mode = Mode.NORMAL,
+                             Gtk.Application? app = null) {
     this.set_show_menubar (false);
     this.account = acc;
     this.answer_to = answer_to;
@@ -95,7 +94,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       tweet_text.buffer.text = " RT @%s “%s“".printf (answer_to.screen_name,
                                              Utils.unescape_html (answer_to.get_real_text ()));
 
-      TextIter start_iter;
+      Gtk.TextIter start_iter;
       tweet_text.buffer.get_start_iter (out start_iter);
       tweet_text.buffer.place_cursor (start_iter);
     }
@@ -103,9 +102,9 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     //Let the text view immediately grab the keyboard focus
     tweet_text.grab_focus ();
 
-    AccelGroup ag = new AccelGroup ();
-    ag.connect (Gdk.Key.Escape, 0, AccelFlags.LOCKED, escape_pressed_cb);
-    ag.connect (Gdk.Key.Return, Gdk.ModifierType.CONTROL_MASK, AccelFlags.LOCKED,
+    Gtk.AccelGroup ag = new Gtk.AccelGroup ();
+    ag.connect (Gdk.Key.Escape, 0, Gtk.AccelFlags.LOCKED, escape_pressed_cb);
+    ag.connect (Gdk.Key.Return, Gdk.ModifierType.CONTROL_MASK, Gtk.AccelFlags.LOCKED,
         () => {send_tweet (); return true;});
 
     this.add_accel_group (ag);
@@ -174,7 +173,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   }
 
   private void recalc_tweet_length () {
-    TextIter start, end;
+    Gtk.TextIter start, end;
     tweet_text.buffer.get_start_iter(out start);
     tweet_text.buffer.get_end_iter(out end);
     string text = tweet_text.buffer.get_text(start, end, true);
@@ -222,7 +221,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
   [GtkCallback]
   private void send_tweet () {
-    TextIter start, end;
+    Gtk.TextIter start, end;
     tweet_text.buffer.get_start_iter (out start);
     tweet_text.buffer.get_end_iter (out end);
     string text = tweet_text.buffer.get_text (start, end, true);
@@ -275,11 +274,11 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
   [GtkCallback]
   private void add_image_clicked () {
-    FileChooserDialog fcd = new FileChooserDialog(_("Select Image"), null, FileChooserAction.OPEN,
-                                                  _("Cancel"), ResponseType.CANCEL,
-                                                  _("Choose"),   ResponseType.ACCEPT);
+    var fcd = new Gtk.FileChooserDialog(_("Select Image"), null, Gtk.FileChooserAction.OPEN,
+                                        _("Cancel"), Gtk.ResponseType.CANCEL,
+                                        _("Choose"), Gtk.ResponseType.ACCEPT);
     fcd.set_modal (true);
-    FileFilter filter = new FileFilter ();
+    var filter = new Gtk.FileFilter ();
     filter.add_mime_type ("image/png");
     filter.add_mime_type ("image/jpeg");
     filter.add_mime_type ("image/gif");
@@ -312,7 +311,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       } else
         preview_widget.hide ();
     });
-    if (fcd.run () == ResponseType.ACCEPT) {
+    if (fcd.run () == Gtk.ResponseType.ACCEPT) {
       string file = fcd.get_filename ();
       load_inline_media (file);
     }

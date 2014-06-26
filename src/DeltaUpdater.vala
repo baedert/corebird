@@ -15,11 +15,9 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gee;
-
 public class DeltaUpdater : GLib.Object {
-  private ArrayList<WeakRef<ITwitterItem>> minutely = new ArrayList<WeakRef<ITwitterItem>> ();
-  private ArrayList<WeakRef<ITwitterItem>> hourly   = new ArrayList<WeakRef<ITwitterItem>> ();
+  private Gee.ArrayList<WeakRef<ITwitterItem>> minutely = new Gee.ArrayList<WeakRef<ITwitterItem>> ();
+  private Gee.ArrayList<WeakRef<ITwitterItem>> hourly   = new Gee.ArrayList<WeakRef<ITwitterItem>> ();
   private uint minutely_id;
   private uint hourly_id;
 

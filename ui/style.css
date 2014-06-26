@@ -22,6 +22,27 @@
   -GtkButton-image-spacing: 0;
 }
 
+.inline-media {
+  background: none;
+  border-radius: 0px;
+  border: none;
+  -GtkButton-default-border: 0;
+  -GtkButton-default-outside-border: 0;
+  -GtkButton-inner-border: 0;
+  -GtkWidget-focus-line-width: 0;
+  -GtkWidget-focus-padding: 0;
+  padding: 0px;
+  box-shadow: none;
+  opacity: 0.8;
+}
+
+.inline-media:hover {
+  border-top: 2px solid #4a90d9;
+  border-bottom: 2px solid #4a90d9;
+  opacity: 1.0;
+}
+
+
 .button-wide {
   padding-left: 12px;
   padding-right: 12px;

@@ -15,7 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
 
 public class Corebird : Gtk.Application {
   // TODO: Is the static here needed?
@@ -60,6 +59,9 @@ public class Corebird : Gtk.Application {
       var opt_context = new OptionContext ("");
       opt_context.set_help_enabled (true);
       opt_context.add_main_entries (options, GETTEXT_PACKAGE);
+#if VIDEO
+      opt_context.add_group (Gst.init_get_option_group ());
+#endif
       unowned string[] tmp = _args;
       opt_context.parse (ref tmp);
     } catch (GLib.OptionError e) {
@@ -108,7 +110,7 @@ public class Corebird : Gtk.Application {
 
   private void about_activated () {
     var ad = new AboutDialog ();
-    ad.show();
+    ad.show_all ();
   }
 
   public override void startup () { // {{{
@@ -153,22 +155,12 @@ public class Corebird : Gtk.Application {
     this.set_app_menu (app_menu);
 
     // Load custom CSS stuff
-    try{
-      CssProvider provider = new CssProvider ();
-      string style = Dirs.config ("style.css");
-      if (!FileUtils.test (style, FileTest.EXISTS))
-        style = DATADIR + "/ui/style.css";
-
-      provider.load_from_file(File.new_for_path (style));
-      Gtk.StyleContext.add_provider_for_screen (Gdk.Screen.get_default(), provider,
-                                                STYLE_PROVIDER_PRIORITY_APPLICATION);
-    }catch (GLib.Error e) {
-      warning ("Error while loading ui/style.css: %s", e.message);
-    }
-    Twitter.get ().init ();
-
+    Utils.load_custom_css ();
     // Load custom icons
     Utils.load_custom_icons ();
+
+
+    Twitter.get ().init ();
   } // }}}
 
   public override void shutdown () {
@@ -285,8 +277,8 @@ public class Corebird : Gtk.Application {
    */
   public bool is_window_open_for_screen_name (string screen_name,
                                               out MainWindow? window = null) {
-    unowned GLib.List<weak Window> windows = this.get_windows ();
-    foreach (Window win in windows) {
+    unowned GLib.List<weak Gtk.Window> windows = this.get_windows ();
+    foreach (Gtk.Window win in windows) {
       if (win is MainWindow) {
         if (((MainWindow)win).account.screen_name == screen_name) {
           window = (MainWindow)win;

@@ -15,13 +15,11 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
-
 const int TOP    = 1;
 const int BOTTOM = 2;
 const int NONE   = 0;
 
-public class ScrollWidget : ScrolledWindow {
+public class ScrollWidget : Gtk.ScrolledWindow {
   private static const int64 TRANSITION_DURATION = 300;
   public signal void scrolled_to_start(double value);
   public signal void scrolled_to_end();

@@ -21,8 +21,8 @@
               <property name="visible">True</property>
               <property name="can_focus">False</property>
               <property name="valign">start</property>
-              <property name="margin_left">25</property>
-              <property name="margin_right">25</property>
+              <property name="margin_start">25</property>
+              <property name="margin_end">25</property>
               <property name="margin_top">25</property>
               <property name="label_xalign">0</property>
               <property name="shadow_type">in</property>
@@ -49,7 +49,7 @@
               <property name="no_show_all">True</property>
               <property name="label" translatable="Yes">Users:</property>
               <property name="margin_top">25</property>
-              <property name="margin_left">25</property>
+              <property name="margin_start">25</property>
               <property name="justify">left</property>
               <property name="halign">start</property>
             </object>
@@ -60,8 +60,8 @@
               <property name="no_show_all">True</property>
               <property name="can_focus">False</property>
               <property name="valign">start</property>
-              <property name="margin_left">25</property>
-              <property name="margin_right">25</property>
+              <property name="margin_start">25</property>
+              <property name="margin_end">25</property>
               <property name="label_xalign">0</property>
               <property name="shadow_type">in</property>
               <child>
@@ -88,8 +88,8 @@
                 <property name="label" translatable="Yes">You can block users in their profile</property>
                 <property name="wrap">True</property>
                 <property name="justify">center</property>
-                <property name="margin_left">25</property>
-                <property name="margin_right">25</property>
+                <property name="margin_start">25</property>
+                <property name="margin_end">25</property>
                 <property name="margin_top">10</property>
                 <style>
                   <class name="dim-label" />

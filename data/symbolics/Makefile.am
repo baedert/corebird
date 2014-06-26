@@ -1,7 +1,7 @@
 
 
 
-symbolicsdir = $(prefix)/share/corebird/assets/
+symbolicsdir = $(prefix)/share/corebird/assets/scalable/
 
 symbolics_DATA = \
 								corebird-conversation-symbolic.svg \

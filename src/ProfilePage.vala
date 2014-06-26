@@ -15,13 +15,17 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
-
 [GtkTemplate (ui = "/org/baedert/corebird/ui/profile-page.ui")]
 class ProfilePage : ScrollWidget, IPage {
   private static const int PAGE_TWEETS     = 0;
   private static const int PAGE_FOLLOWING  = 1;
   private static const int PAGE_FOLLOWERS  = 2;
+
+  private const GLib.ActionEntry[] action_entries = {
+    {"write-dm", write_dm_activated},
+    {"tweet-to", tweet_to_activated},
+    {"add-remove-list", add_remove_list_activated},
+  };
 
   public int unread_count {
     get{return 0;}
@@ -57,23 +61,23 @@ class ProfilePage : ScrollWidget, IPage {
   [GtkChild]
   private Gtk.Image avatar_image;
   [GtkChild]
-  private Label name_label;
+  private Gtk.Label name_label;
   [GtkChild]
-  private Label screen_name_label;
+  private Gtk.Label screen_name_label;
   [GtkChild]
-  private Label description_label;
+  private Gtk.Label description_label;
   [GtkChild]
-  private Label url_label;
+  private Gtk.Label url_label;
   [GtkChild]
-  private Label tweets_label;
+  private Gtk.Label tweets_label;
   [GtkChild]
-  private Label following_label;
+  private Gtk.Label following_label;
   [GtkChild]
-  private Label followers_label;
+  private Gtk.Label followers_label;
   [GtkChild]
-  private Label location_label;
+  private Gtk.Label location_label;
   [GtkChild]
-  private Button follow_button;
+  private Gtk.Button follow_button;
   [GtkChild]
   private TweetListBox tweet_list;
   [GtkChild]
@@ -81,17 +85,12 @@ class ProfilePage : ScrollWidget, IPage {
   [GtkChild]
   private Gtk.Label follows_you_label;
   [GtkChild]
-  private Gtk.MenuItem dm_menu_item;
-  [GtkChild]
-  private Gtk.MenuItem tweet_to_menu_item;
-  [GtkChild]
-  private Gtk.MenuItem lists_menu_item;
-  [GtkChild]
   private UserListsWidget user_lists;
   [GtkChild]
   private Gtk.Stack user_stack;
   [GtkChild]
-  private Gtk.CheckMenuItem block_menu_item;
+  private Gtk.MenuButton more_button;
+  private GLib.MenuModel more_menu;
   private bool following;
   private int64 user_id;
   private new string name;
@@ -103,6 +102,17 @@ class ProfilePage : ScrollWidget, IPage {
   private bool block_item_blocked = false;
   private bool tweets_loading = false;
   private int64 lowest_tweet_id = int64.MAX;
+  private GLib.SimpleActionGroup actions;
+  private bool _user_blocked = false;
+  public bool user_blocked {
+    get {
+      return _user_blocked;
+    }
+    set {
+      _user_blocked = value;
+      user_blocked_changed ();
+    }
+  }
 
   public ProfilePage (int id) {
     this.id = id;
@@ -139,6 +149,13 @@ class ProfilePage : ScrollWidget, IPage {
     this.destroy.connect (() => {
       user_stack.disconnect (page_change_signal);
     });
+
+    actions = new GLib.SimpleActionGroup ();
+    actions.add_action_entries (action_entries, this);
+    this.insert_action_group ("user", actions);
+    actions.add_action (new PropertyAction ("toggle-blocked", this, "user_blocked"));
+
+    this.more_menu = more_button.menu_model;
   }
 
   private void set_user_id (int64 user_id) { // {{{
@@ -147,8 +164,8 @@ class ProfilePage : ScrollWidget, IPage {
     /* Load the profile data now, then - if available - set the cached data */
     load_profile_data.begin (user_id);
     follow_button.sensitive = (user_id != account.id);
-    lists_menu_item.sensitive = (user_id != account.id);
-    block_menu_item.sensitive = (user_id != account.id);
+    ((SimpleAction)actions.lookup_action ("add-remove-list")).set_enabled (user_id != account.id);
+    ((SimpleAction)actions.lookup_action ("write-dm")).set_enabled (user_id != account.id);
 
     load_banner (DATADIR + "/no_banner.png");
     load_friendship.begin ();
@@ -210,7 +227,7 @@ class ProfilePage : ScrollWidget, IPage {
     bool followed_by = relationship.get_object_member ("target").get_boolean_member ("following");
     follows_you_label.visible = followed_by;
     block_item_blocked = true;
-    block_menu_item.active = relationship.get_object_member ("source").get_boolean_member ("blocking");
+    user_blocked = relationship.get_object_member ("source").get_boolean_member ("blocking");
     block_item_blocked = false;
   }
 
@@ -230,6 +247,7 @@ class ProfilePage : ScrollWidget, IPage {
       return;
     }
     string back = call.get_payload();
+    stdout.printf (back + "\n");
     Json.Parser parser = new Json.Parser();
     try{
       parser.load_from_data (back);
@@ -337,7 +355,7 @@ class ProfilePage : ScrollWidget, IPage {
                .vali ("followers", followers)
                .vali ("following", following)
                .vali ("tweets", tweets)
-               .val ("description", description)
+               .val ("description", TweetUtils.get_formatted_text (description, text_urls))
                .val ("avatar_name", avatar_name)
                .val ("url", display_url)
                .val ("location", location)
@@ -458,9 +476,16 @@ class ProfilePage : ScrollWidget, IPage {
                              GLib.SList<TweetUtils.Sequence?>? text_urls = null
                              ) { //{{{
 
+
+    var section = (GLib.Menu)more_menu.get_item_link (0, GLib.Menu.LINK_SECTION);
+    var user_item = new GLib.MenuItem (_("Tweet to @%s").printf (screen_name),
+                                       "user.tweet-to");
+    section.remove (1);
+    section.insert_item (1, user_item);
+
     name_label.set_markup("<b>%s</b>".printf (name));
     screen_name_label.set_label ("@" + screen_name);
-    tweet_to_menu_item.label = _("Tweet to @%s").printf (screen_name);
+    //tweet_to_menu_item.label = _("Tweet to @%s").printf (screen_name);
     string desc = description;
     if (text_urls != null) {
       desc = TweetUtils.get_formatted_text (description, text_urls);
@@ -510,7 +535,7 @@ class ProfilePage : ScrollWidget, IPage {
       call.set_function ("1.1/friendships/create.json");
       call.add_param ("follow", "false");
       block_item_blocked = true;
-      block_menu_item.active = false;
+      user_blocked = false;
       block_item_blocked = false;
     }
     debug  (@"User ID: $user_id");
@@ -544,48 +569,6 @@ class ProfilePage : ScrollWidget, IPage {
     return TweetUtils.activate_link (uri, main_window);
   }
 
-  [GtkCallback]
-  private void dm_menu_item_activate_cb () {
-    main_window.switch_page (MainWindow.PAGE_DM,
-                             user_id, screen_name, name, avatar_url);
-  }
-
-  [GtkCallback]
-  private void tweet_to_item_activate_cb () {
-    var cw = new ComposeTweetWindow (main_window, account, null);
-    cw.set_text ("@" + screen_name + " ");
-    cw.show_all ();
-  }
-
-  [GtkCallback]
-  private void  list_menu_item_activated () {
-    var uld = new UserListDialog (main_window, account, user_id);
-    uld.load_lists ();
-    uld.show_all ();
-  }
-
-  [GtkCallback]
-  private async void block_item_toggled_cb (Gtk.CheckMenuItem source) {
-    if (block_item_blocked)
-      return;
-
-    var call = account.proxy.new_call ();
-    call.set_method ("POST");
-    if (source.active) {
-      call.set_function ("1.1/blocks/create.json");
-      set_follow_button_state (false);
-    } else {
-      call.set_function ("1.1/blocks/destroy.json");
-    }
-    call.add_param ("user_id", this.user_id.to_string ());
-    try {
-      yield call.invoke_async (null);
-    } catch (GLib.Error e) {
-      Utils.show_error_object (call.get_payload (), e.message);
-      return;
-    }
-  }
-
   private void set_follow_button_state (bool following) { //{{{
     var sc = follow_button.get_style_context ();
     follow_button.sensitive = (user_id != account.id);
@@ -599,7 +582,7 @@ class ProfilePage : ScrollWidget, IPage {
       follow_button.label = _("Follow");
     }
     this.following = following;
-    dm_menu_item.sensitive = following;
+    //dm_menu_item.sensitive = following;
   } //}}}
 
 
@@ -658,14 +641,54 @@ class ProfilePage : ScrollWidget, IPage {
     avatar_image.pixbuf = null;
   }
 
-  public void create_tool_button(RadioToolButton? group) {}
+  public void create_tool_button (Gtk.RadioToolButton? group) {}
 
 
   public string? get_title () {
     return "@" + screen_name;
   }
 
-  public RadioToolButton? get_tool_button(){
+  public Gtk.RadioToolButton? get_tool_button(){
     return null;
+  }
+
+  private void write_dm_activated (GLib.SimpleAction a, GLib.Variant? v) {
+     main_window.switch_page (MainWindow.PAGE_DM,
+                              user_id, screen_name, name, avatar_url);
+  }
+
+  private void tweet_to_activated (GLib.SimpleAction a, GLib.Variant? v) {
+    var cw = new ComposeTweetWindow (main_window, account, null);
+    cw.set_text ("@" + screen_name + " ");
+    cw.show_all ();
+  }
+
+  private void add_remove_list_activated (GLib.SimpleAction a, GLib.Variant? v) {
+    var uld = new UserListDialog (main_window, account, user_id);
+    uld.load_lists ();
+    uld.show_all ();
+  }
+
+
+  private void user_blocked_changed () {
+    if (block_item_blocked)
+      return;
+
+    var call = account.proxy.new_call ();
+    call.set_method ("POST");
+    if (user_blocked) {
+      call.set_function ("1.1/blocks/create.json");
+      set_follow_button_state (false);
+    } else {
+      call.set_function ("1.1/blocks/destroy.json");
+    }
+    call.add_param ("user_id", this.user_id.to_string ());
+    call.invoke_async.begin (null, (obj, res) => {
+      try {
+        call.invoke_async.end (res);
+      } catch (GLib.Error e) {
+        Utils.show_error_object (call.get_payload (), e.message);
+      }
+    });
   }
 }

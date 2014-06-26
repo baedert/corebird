@@ -15,43 +15,43 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
-
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/tweet-list-entry.ui")]
-public class TweetListEntry : ITwitterItem, ListBoxRow {
+public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   [GtkChild]
-  private Label screen_name_label;
+  private Gtk.Label screen_name_label;
   [GtkChild]
   private TextButton name_button;
   [GtkChild]
-  private Label time_delta_label;
+  private Gtk.Label time_delta_label;
   [GtkChild]
-  private Image avatar_image;
+  private Gtk.Image avatar_image;
   [GtkChild]
-  private Label text_label;
+  private Gtk.Label text_label;
   [GtkChild]
-  private Label rt_label;
+  private Gtk.Label rt_label;
   [GtkChild]
   private Gtk.Image rt_image;
   [GtkChild]
-  private Image conversation_image;
+  private Gtk.Image conversation_image;
   [GtkChild]
   private BgBox hover_box;
   [GtkChild]
   private DoubleTapButton retweet_button;
   [GtkChild]
-  private ToggleButton favorite_button;
+  private Gtk.ToggleButton favorite_button;
   [GtkChild]
-  private Button reply_button;
+  private Gtk.Button reply_button;
   [GtkChild]
-  private MenuButton more_button;
+  private Gtk.MenuButton more_button;
   [GtkChild]
   private Gtk.Menu more_menu;
   [GtkChild]
   private Gtk.MenuItem more_menu_delete_item;
   [GtkChild]
   private Gtk.Grid grid;
+  [GtkChild]
+  private MultiMediaWidget mm_widget;
 
 
 
@@ -87,7 +87,7 @@ public class TweetListEntry : ITwitterItem, ListBoxRow {
     if (tweet.is_retweet) {
       rt_label.show ();
       rt_image.show ();
-      rt_label.label = @"<span underline='none'><a href=\"@$(tweet.rt_by_id)\"
+      rt_label.label = @"<span underline='none'><a href=\"@$(tweet.rt_by_id)/$(tweet.rt_by_screen_name)\"
                          title=\"@$(tweet.rt_by_screen_name)\">$(tweet.retweeted_by)</a></span>";
     } else {
       grid.remove (rt_image);
@@ -128,24 +128,14 @@ public class TweetListEntry : ITwitterItem, ListBoxRow {
     // If the avatar gets loaded, we want to change it here immediately
     tweet.notify["avatar"].connect (avatar_changed);
 
-    tweet.inline_media_added.connect (inline_media_added_cb);
+    if (tweet.has_inline_media) {
+      mm_widget.set_all_media (tweet.medias);
+      mm_widget.media_clicked.connect (media_button_clicked_cb);
+      mm_widget.window = window;
+    } else
+      grid.remove (mm_widget);
 
-    if (tweet.media_thumb != null) {
-      var inline_button = new PixbufButton (true, tweet.original_media_url);
-      try {
-        inline_button.set_bg (new Gdk.Pixbuf.from_file (tweet.media_thumb));
-      } catch (GLib.Error e) {
-        warning (e.message);
-        return;
-      }
-      grid.attach (inline_button, 5, 1, 2, 1);
 
-      inline_button.valign = Align.START;
-      inline_button.halign = Align.END;
-      inline_button.margin_top = 4;
-      inline_button.clicked.connect(inline_media_button_clicked_cb);
-      inline_button.show ();
-    }
     if (tweet.user_id != account.id)
       more_menu.remove (more_menu_delete_item);
 
@@ -183,24 +173,22 @@ public class TweetListEntry : ITwitterItem, ListBoxRow {
     avatar_image.queue_draw ();
   }
 
-  private void inline_media_added_cb (Gdk.Pixbuf? pic) {
-    var inline_button = new PixbufButton (true, tweet.original_media_url);
-    inline_button.set_bg (pic);
-    grid.attach (inline_button, 5, 1, 2, 1);
-    inline_button.valign = Align.START;
-    inline_button.halign = Align.END;
-    inline_button.margin_top = 4;
-    inline_button.clicked.connect(inline_media_button_clicked_cb);
-    inline_button.show ();
-  }
-
-  private void inline_media_button_clicked_cb () {
-    ImageDialog id = new ImageDialog(window, tweet.media);
-    id.show_all();
+  private void media_button_clicked_cb (Media media) {
+    if (media.type == MediaType.IMAGE ||
+        media.type == MediaType.GIF) {
+      var id = new ImageDialog (window, media.path);
+      id.show_all ();
+    } else if (media.type == MediaType.VINE ||
+               media.type == MediaType.ANIMATED_GIF) {
+      var vd = new VideoDialog (window, media);
+      vd.show_all ();
+    } else {
+      warning ("Unknown media type: %d", media.type);
+    }
   }
 
   static construct {
-    unowned BindingSet binding_set = Gtk.BindingSet.by_class (typeof (TweetListEntry).class_ref ());
+    unowned Gtk.BindingSet binding_set = Gtk.BindingSet.by_class (typeof (TweetListEntry).class_ref ());
 
     Gtk.BindingEntry.add_signal (binding_set, Gdk.Key.r, 0,      "reply-tweet", 0, null);
     Gtk.BindingEntry.add_signal (binding_set, Gdk.Key.Return, 0, "activate", 0, null);
@@ -214,7 +202,7 @@ public class TweetListEntry : ITwitterItem, ListBoxRow {
   private void state_flags_changed_cb () { //{{{
     Gtk.StateFlags flags = this.get_state_flags ();
     var ct = this.get_style_context ();
-    bool buttons_visible = (bool)(flags & (StateFlags.PRELIGHT | StateFlags.SELECTED));
+    bool buttons_visible = (bool)(flags & (Gtk.StateFlags.PRELIGHT | Gtk.StateFlags.SELECTED));
     buttons_visible = (buttons_visible || more_menu.visible);
     more_button.visible = buttons_visible;
     favorite_button.visible = buttons_visible || tweet.favorited;
@@ -264,7 +252,7 @@ public class TweetListEntry : ITwitterItem, ListBoxRow {
     // You can't retweet your own tweets.
     if (account.id == this.tweet.user_id || !values_set)
       return;
-    var spinner = new Spinner();
+    var spinner = new Gtk.Spinner();
 
     spinner.start ();
     WidgetReplacer.replace_tmp (retweet_button, spinner);
@@ -281,7 +269,7 @@ public class TweetListEntry : ITwitterItem, ListBoxRow {
     if (!values_set)
       return;
 
-    var spinner = new Spinner();
+    var spinner = new Gtk.Spinner();
     spinner.start();
     WidgetReplacer.replace_tmp(favorite_button, spinner);
     spinner.show ();
@@ -402,12 +390,12 @@ public class TweetListEntry : ITwitterItem, ListBoxRow {
     c.set_source_rgba(border_color.red, border_color.green, border_color.blue,
                       border_color.alpha);
 
+    base.draw(c);
     // The line here is 50% of the width
     c.move_to(w*0.25, h);
     c.line_to(w*0.75, h);
     c.stroke();
 
-    base.draw(c);
     return false;
   } //}}}
 

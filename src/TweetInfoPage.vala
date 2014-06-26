@@ -15,7 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
 [GtkTemplate (ui = "/org/baedert/corebird/ui/tweet-info-page.ui")]
 class TweetInfoPage : IPage , ScrollWidget {
   public static const uint BY_INSTANCE = 1;
@@ -29,36 +28,35 @@ class TweetInfoPage : IPage , ScrollWidget {
   private bool values_set = false;
   private Tweet tweet;
   private bool following;
-  private string tweet_media;
 
   [GtkChild]
-  private Label text_label;
+  private MultiMediaWidget mm_widget;
+  [GtkChild]
+  private Gtk.Label text_label;
   [GtkChild]
   private TextButton name_button;
   [GtkChild]
-  private Label screen_name_label;
+  private Gtk.Label screen_name_label;
   [GtkChild]
-  private Image avatar_image;
+  private Gtk.Image avatar_image;
   [GtkChild]
-  private Label rt_label;
+  private Gtk.Label rt_label;
   [GtkChild]
   private Gtk.Label fav_label;
   [GtkChild]
-  private ListBox bottom_list_box;
+  private Gtk.ListBox bottom_list_box;
   [GtkChild]
-  private ListBox top_list_box;
+  private Gtk.ListBox top_list_box;
   [GtkChild]
-  private ToggleButton favorite_button;
+  private Gtk.ToggleButton favorite_button;
   [GtkChild]
-  private ToggleButton retweet_button;
+  private Gtk.ToggleButton retweet_button;
   [GtkChild]
-  private Button follow_button;
+  private Gtk.Button follow_button;
   [GtkChild]
-  private Label time_label;
+  private Gtk.Label time_label;
   [GtkChild]
   private Gtk.Label source_label;
-  [GtkChild]
-  private PixbufButton media_button;
   [GtkChild]
   private Gtk.MenuItem delete_menu_item;
   [GtkChild]
@@ -68,9 +66,15 @@ class TweetInfoPage : IPage , ScrollWidget {
 
   public TweetInfoPage (int id) {
     this.id = id;
-    media_button.clicked.connect (() => {
-      ImageDialog img_dialog = new ImageDialog (main_window, tweet_media);
-      img_dialog.show_all ();
+    mm_widget.media_clicked.connect ((media) => {
+      if (media.type == MediaType.IMAGE) {
+        var imd = new ImageDialog (main_window, media.path);
+        imd.show_all ();
+      } else if (media.type == MediaType.VINE ||
+                 media.type == MediaType.ANIMATED_GIF) {
+        var vd = new VideoDialog (main_window, media);
+        vd.show_all ();
+      }
     });
     this.scroll_event.connect ((evt) => {
       if (evt.delta_y < 0 && this.vadjustment.value == 0 && reply_indicator.replies_available) {
@@ -111,9 +115,6 @@ class TweetInfoPage : IPage , ScrollWidget {
     max_size_container.max_size = 0;
     max_size_container.queue_resize ();
 
-    media_button.hide ();
-
-
     if (mode == BY_INSTANCE) {
       this.tweet = args.arg ();
       this.tweet_id = tweet.id;
@@ -126,8 +127,7 @@ class TweetInfoPage : IPage , ScrollWidget {
     query_tweet_info ();
   }
 
-  public void on_leave () {
-  }
+  public void on_leave () {}
 
 
   [GtkCallback]
@@ -376,11 +376,10 @@ class TweetInfoPage : IPage , ScrollWidget {
 
     set_source_link (tweet.id, tweet.screen_name);
 
-    // TODO: Also do this on inline_media_added signal
-    if (tweet.media != null) {
-      tweet_media = tweet.media;
-      media_button.show ();
-      media_button.set_bg (tweet.inline_media);
+    if (tweet.has_inline_media) {
+      mm_widget.set_all_media (tweet.medias);
+    } else {
+      mm_widget.hide ();
     }
 
     if (tweet.user_id == account.id) {

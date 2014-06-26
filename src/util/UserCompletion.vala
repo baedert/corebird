@@ -16,8 +16,6 @@
  */
 
 
-using Gtk;
-
 class UserCompletion : GLib.Object {
   public signal void start_completion ();
   public signal void populate_completion (string name, string screen_name);

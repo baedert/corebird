@@ -15,16 +15,14 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
-
 [GtkTemplate (ui = "/org/baedert/corebird/ui/user-list-entry.ui")]
 class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
   [GtkChild]
-  private Label name_label;
+  private Gtk.Label name_label;
   [GtkChild]
-  private Label screen_name_label;
+  private Gtk.Label screen_name_label;
   [GtkChild]
-  private Image avatar_image;
+  private Gtk.Image avatar_image;
 
   public new string name {
     set { name_label.label = value; }

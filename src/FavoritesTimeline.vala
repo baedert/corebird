@@ -15,8 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
-
 class FavoritesTimeline : IMessageReceiver, DefaultTimeline {
   protected override string function {
     get {
@@ -75,7 +73,7 @@ class FavoritesTimeline : IMessageReceiver, DefaultTimeline {
     return _("Favorites");
   }
 
-  public override void create_tool_button(RadioToolButton? group) {
+  public override void create_tool_button (Gtk.RadioToolButton? group) {
     tool_button = new BadgeRadioToolButton(group, "corebird-favorite-symbolic");
     tool_button.tooltip_text = _("Favorites");
     tool_button.label = _("Favorites");

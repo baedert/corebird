@@ -15,8 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
-
 [GtkTemplate (ui = "/org/baedert/corebird/ui/lists-page.ui")]
 class ListsPage : IPage, ScrollWidget, IMessageReceiver {
   public static const int MODE_DELETE = 1;
@@ -122,7 +120,7 @@ class ListsPage : IPage, ScrollWidget, IMessageReceiver {
   }
 
 
-  public void create_tool_button (RadioToolButton? group) {
+  public void create_tool_button (Gtk.RadioToolButton? group) {
     tool_button = new BadgeRadioToolButton (group, "corebird-lists-symbolic");
     tool_button.label = _("Lists");
     tool_button.tooltip_text = _("Lists");
@@ -133,7 +131,7 @@ class ListsPage : IPage, ScrollWidget, IMessageReceiver {
     return _("Lists");
   }
 
-  public RadioToolButton? get_tool_button () {
+  public Gtk.RadioToolButton? get_tool_button () {
     return tool_button;
   }
 
