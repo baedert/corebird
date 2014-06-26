@@ -183,8 +183,8 @@ class VideoDialog : Gtk.Window {
         return;
       }
 
-      string b64 = GLib.Base64.encode ((uchar[])msg.response_body.data);
 #if VIDEO
+      string b64 = GLib.Base64.encode ((uchar[])msg.response_body.data);
       var sa = "data:;base64," + b64;
       this.src.set ("uri", sa);
       stack.visible_child_name = "video";
