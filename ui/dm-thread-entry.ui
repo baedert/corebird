@@ -20,7 +20,6 @@
             <property name="margin_top">4</property>
             <property name="margin_bottom">4</property>
             <property name="margin_end">4</property>
-            <property name="stock">gtk-missing-image</property>
           </object>
           <packing>
             <property name="left_attach">0</property>

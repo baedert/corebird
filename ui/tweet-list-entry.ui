@@ -60,7 +60,6 @@
                 <property name="valign">start</property>
                 <property name="margin_end">4</property>
                 <property name="margin_top">2</property>
-                <property name="stock">gtk-missing-image</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>

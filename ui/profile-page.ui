@@ -108,7 +108,6 @@
                             <property name="no_show_all">True</property>
                             <property name="margin_start">5</property>
                             <property name="margin_end">5</property>
-                            <property name="stock">gtk-missing-image</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
