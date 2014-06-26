@@ -174,13 +174,16 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   }
 
   private void media_button_clicked_cb (Media media) {
-    if (media.type == MediaType.IMAGE) {
+    if (media.type == MediaType.IMAGE ||
+        media.type == MediaType.GIF) {
       var id = new ImageDialog (window, media.path);
       id.show_all ();
     } else if (media.type == MediaType.VINE ||
                media.type == MediaType.ANIMATED_GIF) {
       var vd = new VideoDialog (window, media);
       vd.show_all ();
+    } else {
+      warning ("Unknown media type: %d", media.type);
     }
   }
 

@@ -25,11 +25,15 @@ private class MediaButton : Gtk.Button {
     }
     set {
       _media = value;
-      if (value != null && value.type == MediaType.IMAGE) {
+      if (value != null && (value.type == MediaType.IMAGE ||
+                            value.type == MediaType.GIF)) {
         menu_model.append (_("Copy URL"), "media.copy-url");
         menu_model.append (_("Save Original"), "media.save-original");
-      } else if (value != null && (value.type == MediaType.VINE ||
-                                   value.type == MediaType.ANIMATED_GIF)) {
+      }
+
+      if (value != null && (value.type == MediaType.VINE ||
+                            value.type == MediaType.ANIMATED_GIF ||
+                            value.type == MediaType.GIF)) {
         try {
           play_icon = new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/assets/play.png");
         } catch (GLib.Error e) {
@@ -83,7 +87,8 @@ private class MediaButton : Gtk.Button {
 
 
    if (media != null && (this.media.type == MediaType.VINE ||
-       this.media.type == MediaType.ANIMATED_GIF)) {
+                         this.media.type == MediaType.ANIMATED_GIF ||
+                         this.media.type == MediaType.GIF)) {
      int x = (widget_width  / 2) - (play_icon.get_width ()  / 2);
      int y = (widget_height / 2) - (play_icon.get_height () / 2);
      ct.rectangle (x, y,

@@ -18,6 +18,7 @@
 public enum MediaType {
   IMAGE,
   VINE,
+  GIF,
   ANIMATED_GIF,
 
   UNKNOWN
@@ -67,6 +68,9 @@ public class Media {
 
     if (url.has_suffix ("/photo/1"))
       return MediaType.ANIMATED_GIF;
+
+    if (url.down ().has_suffix (".gif"))
+      return MediaType.GIF;
 
     return MediaType.IMAGE;
   }
