@@ -9,11 +9,11 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="500"
-   height="500"
+   width="128"
+   height="128"
    id="svg3943"
    version="1.1"
-   inkscape:version="0.48.4 r9939"
+   inkscape:version="0.48.5 r10040"
    sodipodi:docname="corebird-filter-symbolic.svg"
    inkscape:export-filename="/home/baedert/Code/Vala/Corebird/assets/icons/stream.png"
    inkscape:export-xdpi="2.8800001"
@@ -27,9 +27,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="1"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.028877"
-     inkscape:cx="211.9989"
-     inkscape:cy="216.0846"
+     inkscape:zoom="1.7307159"
+     inkscape:cx="84.902071"
+     inkscape:cy="58.944639"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -46,7 +46,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -54,14 +54,15 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-552.36218)">
+     transform="translate(0,-924.36218)">
     <g
        style="font-size:609.02282715px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#bebebe;fill-opacity:1;stroke:none;font-family:FontAwesome;-inkscape-font-specification:FontAwesome"
-       id="text3032">
+       id="text3032"
+       transform="matrix(0.25503076,0,0,0.25503076,0.24235186,783.73515)">
       <path
          d="m 487.55969,576.3576 c 3.85122,9.28983 2.26523,17.2198 -4.758,23.78996 l -167.54924,167.54925 0,252.17349 c -3.1e-4,9.516 -4.41844,16.1998 -13.25441,20.0516 -2.94571,1.1328 -5.77784,1.6992 -8.49641,1.6992 -6.11769,0 -11.21553,-2.1524 -15.29354,-6.4572 l -87.00326,-87.0033 c -4.30503,-4.30479 -6.45745,-9.40263 -6.45728,-15.29354 l 0,-165.17025 L 17.198306,600.14756 c -7.0237,-6.57016 -8.6096957,-14.50013 -4.757991,-23.78996 3.851701,-8.83583 10.535539,-13.25396 20.051533,-13.2544 l 435.016302,0 c 9.51552,4.4e-4 16.19936,4.41857 20.05154,13.2544"
-         style=""
-         id="path3895" />
+         id="path3895"
+         inkscape:connector-curvature="0" />
     </g>
   </g>
 </svg>

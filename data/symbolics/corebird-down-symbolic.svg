@@ -9,11 +9,11 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="64"
-   height="64"
+   width="128"
+   height="128"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.4 r9939"
+   inkscape:version="0.48.5 r10040"
    sodipodi:docname="corebird-down-symbolic.svg">
   <defs
      id="defs4" />
@@ -24,14 +24,14 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.9743191"
-     inkscape:cx="30.379646"
-     inkscape:cy="28.749353"
+     inkscape:zoom="4.0380551"
+     inkscape:cx="68.671917"
+     inkscape:cy="53.762033"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1148"
-     inkscape:window-height="391"
+     inkscape:window-width="908"
+     inkscape:window-height="639"
      inkscape:window-x="707"
      inkscape:window-y="62"
      inkscape:window-maximized="0" />
@@ -43,7 +43,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -51,14 +51,15 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-2040.7244)">
+     transform="translate(0,-1976.7244)">
     <g
        style="font-size:73.61231995px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#bebebe;fill-opacity:1;stroke:none;font-family:FontAwesome;-inkscape-font-specification:FontAwesome"
-       id="text2985">
+       id="text2985"
+       transform="matrix(2.0000001,0,0,2.0000001,-2.7071391e-6,-2104.7247)">
       <path
          d="m 63.999998,2060.8939 c -6.6e-5,1.4515 -0.506698,2.6838 -1.519897,3.697 l -26.741975,26.742 c -1.040688,1.0407 -2.286728,1.561 -3.738126,1.561 -1.478852,0 -2.7112,-0.5203 -3.697047,-1.561 L 1.560977,2064.5909 C 0.52032399,2063.6051 -6.7000407e-7,2062.3727 1.507146e-6,2060.8939 -6.7000407e-7,2059.4425 0.52032399,2058.1965 1.560977,2057.1558 l 3.0397945,-3.0809 c 1.068028,-1.0132 2.3140687,-1.5199 3.7381256,-1.5199 1.4514215,0 2.6837689,0.5067 3.6970469,1.5199 L 32,2074.039 51.964055,2054.0749 c 1.01321,-1.0132 2.245558,-1.5199 3.697048,-1.5199 1.423988,0 2.670029,0.5067 3.738125,1.5199 l 3.080873,3.0809 c 1.013199,1.068 1.519831,2.3141 1.519897,3.7381"
-         style=""
-         id="path3777" />
+         id="path3777"
+         inkscape:connector-curvature="0" />
     </g>
   </g>
 </svg>

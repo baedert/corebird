@@ -9,12 +9,12 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="64"
-   height="64"
+   width="128"
+   height="128"
    id="svg4396"
    version="1.1"
-   inkscape:version="0.48.4 r9939"
-   sodipodi:docname="New document 9">
+   inkscape:version="0.48.5 r10040"
+   sodipodi:docname="corebird-reply-symbolic.svg">
   <defs
      id="defs4398" />
   <sodipodi:namedview
@@ -24,16 +24,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="4.5372632"
-     inkscape:cx="45.87824"
-     inkscape:cy="17.360064"
+     inkscape:zoom="2.8712369"
+     inkscape:cx="43.409795"
+     inkscape:cy="0.57737398"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1053"
      inkscape:window-height="781"
      inkscape:window-x="837"
-     inkscape:window-y="276"
+     inkscape:window-y="267"
      inkscape:window-maximized="0" />
   <metadata
      id="metadata4401">
@@ -43,7 +43,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -51,11 +51,11 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-988.36218)">
+     transform="translate(0,-924.36218)">
     <g
        style="font-size:40px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#bebebe;fill-opacity:1;stroke:none;font-family:FontAwesome;-inkscape-font-specification:FontAwesome"
        id="text2993"
-       transform="matrix(1.6,0,0,1.6034475,-516.44874,301.71196)">
+       transform="matrix(3.2,0,0,3.206895,-1032.8975,-448.93825)">
       <path
          d="m 362.78046,453.90496 c -4e-5,2.47024 -0.94498,5.8259 -2.83482,10.06696 -0.0447,0.10417 -0.12653,0.28274 -0.24554,0.53572 -0.1042,0.25297 -0.20093,0.47619 -0.29018,0.66964 -0.0893,0.19345 -0.18605,0.35714 -0.29018,0.49107 -0.17861,0.25298 -0.38694,0.37946 -0.625,0.37947 -0.22325,-10e-6 -0.40182,-0.0744 -0.53571,-0.22322 -0.11908,-0.14881 -0.17861,-0.33482 -0.17857,-0.55803 -4e-5,-0.13393 0.0148,-0.33483 0.0446,-0.60268 0.0446,-0.25298 0.0669,-0.42411 0.067,-0.51339 0.0744,-1.01191 0.11158,-1.92709 0.11161,-2.74554 -3e-5,-1.50297 -0.13396,-2.8497 -0.40178,-4.04018 -0.25302,-1.19047 -0.61016,-2.21725 -1.07143,-3.08036 -0.46135,-0.87796 -1.05658,-1.62945 -1.78572,-2.25446 -0.7292,-0.63987 -1.51789,-1.1607 -2.36607,-1.5625 -0.83336,-0.40177 -1.82294,-0.71427 -2.96875,-0.9375 -1.13098,-0.23808 -2.27681,-0.40177 -3.4375,-0.49107 -1.14585,-0.0893 -2.44794,-0.13392 -3.90625,-0.13393 l -5,0 0,5.71429 c -10e-6,0.38691 -0.14138,0.72173 -0.42411,1.00446 -0.28275,0.28274 -0.61757,0.42411 -1.00446,0.42411 -0.38692,0 -0.72174,-0.14137 -1.00446,-0.42411 l -11.42858,-11.42857 c -0.28273,-0.28272 -0.4241,-0.61754 -0.4241,-1.00447 0,-0.38688 0.14137,-0.7217 0.4241,-1.00446 l 11.42858,-11.42857 c 0.28272,-0.28271 0.61754,-0.42408 1.00446,-0.42411 0.38689,3e-5 0.72171,0.1414 1.00446,0.42411 0.28273,0.28277 0.4241,0.61759 0.42411,1.00446 l 0,5.71429 5,0 c 10.61009,2e-5 17.1205,2.99853 19.53125,8.99553 0.78865,1.99407 1.183,4.47174 1.18304,7.43304"
          style="fill:#bebebe;fill-opacity:1"
