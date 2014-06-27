@@ -9,11 +9,11 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="500"
-   height="500"
+   width="128"
+   height="128"
    id="svg3943"
    version="1.1"
-   inkscape:version="0.48.4 r9939"
+   inkscape:version="0.48.5 r10040"
    sodipodi:docname="corebird-stream-symbolic.svg"
    inkscape:export-filename="/home/baedert/Code/Vala/Corebird/assets/icons/stream.png"
    inkscape:export-xdpi="2.8800001"
@@ -27,16 +27,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="1"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.86642274"
-     inkscape:cx="185.28715"
-     inkscape:cy="216.85707"
+     inkscape:zoom="4.1222769"
+     inkscape:cx="63.78075"
+     inkscape:cy="62.594097"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1096"
      inkscape:window-height="742"
-     inkscape:window-x="818"
-     inkscape:window-y="147"
+     inkscape:window-x="517"
+     inkscape:window-y="92"
      inkscape:window-maximized="0" />
   <metadata
      id="metadata3948">
@@ -54,15 +54,15 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-552.36218)">
+     transform="translate(0,-924.36218)">
     <g
-       transform="scale(-1,1)"
+       transform="matrix(-0.2768007,0,0,0.28493171,-5.2001754,759.80596)"
        style="font-size:462.42657471px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#bebebe;fill-opacity:1;stroke:none;font-family:FontAwesome;-inkscape-font-specification:FontAwesome"
        id="text2985">
       <path
          d="m -49.752778,686.23944 c 20.643591,25.28918 30.965603,52.90056 30.966065,82.83423 -4.62e-4,29.93399 -10.322474,57.63139 -30.966065,83.09227 -20.644454,25.28901 -48.685919,45.33092 -84.124482,60.12578 -35.43925,14.62287 -74.14679,21.93429 -116.12274,21.93429 -12.04258,0 -24.51501,-0.68813 -37.41733,-2.0644 -34.06283,30.10587 -73.63054,50.92192 -118.70325,62.44823 -8.42972,2.40841 -18.23563,4.30078 -29.41776,5.67716 -2.92462,0.344 -5.59114,-0.4302 -7.99957,-2.3225 -2.23647,-1.89243 -3.69876,-4.38692 -4.38686,-7.48347 l 0,-0.25805 c -0.51613,-0.68819 -0.60215,-1.72039 -0.25805,-3.09661 0.51607,-1.37632 0.6881,-2.23648 0.5161,-2.5805 -3e-5,-0.34412 0.43005,-1.20429 1.29026,-2.58051 0.86013,-1.20428 1.37623,-1.97843 1.5483,-2.32245 0.172,-0.17208 0.77411,-0.86021 1.80635,-2.06441 1.03217,-1.20427 1.7203,-1.97842 2.06441,-2.32245 1.20419,-1.37631 3.87071,-4.3869 7.99956,-9.03177 4.12876,-4.4729 7.05333,-7.74154 8.77372,-9.80592 1.89231,-1.89239 4.55883,-5.24704 7.99957,-10.06397 3.61264,-4.81695 6.45119,-9.20381 8.51567,-13.16058 2.06433,-3.95677 4.38678,-9.03176 6.96736,-15.22498 2.58042,-6.19319 4.81686,-12.73047 6.70932,-19.61184 -27.00935,-15.31095 -48.34151,-34.23464 -63.99654,-56.77112 -15.48304,-22.5363 -23.22455,-46.70701 -23.22455,-72.5122 0,-22.3642 6.10719,-43.69635 18.32159,-63.99654 12.21436,-20.47176 28.64356,-38.1052 49.28766,-52.90036 20.64395,-14.7946 45.24474,-26.49288 73.80245,-35.09488 28.55742,-8.77339 58.49126,-13.16024 89.80159,-13.16057 41.97595,3.3e-4 80.68349,7.39777 116.12274,22.19234 35.438563,14.62316 63.480028,34.66507 84.124482,60.12578"
-         style=""
-         id="path3819" />
+         id="path3819"
+         inkscape:connector-curvature="0" />
     </g>
   </g>
 </svg>
