@@ -14,6 +14,25 @@ AC_PROG_INSTALL
 IT_PROG_INTLTOOL([0.40])
 
 
+
+
+
+
+# --enable-catalog
+AC_ARG_ENABLE(catalog, AC_HELP_STRING([--enable-catalog], [Install Glade catalog]),, enable_catalog=no)
+AM_CONDITIONAL([ENABLE_CATALOG], [ test "$enable_catalog" = "yes" ])
+
+# --enable-debug
+AC_ARG_ENABLE(debug, AS_HELP_STRING([--enable-debug], [Enable debugging]),, enable_debug=no)
+AM_CONDITIONAL([ENABLE_DEBUG], [ test "$enable_debug" = "yes"])
+
+# --disable-video
+AC_ARG_ENABLE(video, AS_HELP_STRING([--disable-video], [Disable video support]),, disable_video=no)
+AM_CONDITIONAL([DISABLE_VIDEO], [ test "$disable_video" = "yes"])
+
+
+
+
 # Vala Packages {{{
 pkg_modules="gtk+-3.0 >= 3.12
              glib-2.0 >= 2.40
@@ -22,7 +41,14 @@ pkg_modules="gtk+-3.0 >= 3.12
              gee-0.8
              json-glib-1.0
              sqlite3"
+
+if test "$disable_video" = "no"; then
+  pkg_modules="$pkg_modules gstreamer-video-1.0 gdk-x11-3.0"
+fi
+
 PKG_CHECK_MODULES(CB, [$pkg_modules])
+
+
 CB_VALA_FLAGS=" \
   --pkg gtk+-3.0 \
   --pkg json-glib-1.0 \
@@ -35,7 +61,10 @@ CB_VALA_FLAGS=" \
   --gresources=\$(top_srcdir)/resources.xml \
   --vapidir=\$(top_srcdir)/vapi/ \
   --thread \
-  --enable-checking"
+  --enable-checking \
+  --enable-experimental"
+
+
 # }}}
 
 AC_SUBST(CB_CFLAGS)
@@ -45,14 +74,16 @@ AC_SUBST(CB_VALA_FLAGS)
 AC_PATH_PROG(GLIB_COMPILE_RESOURCES, glib-compile-resources)
 
 
+if test "${CC}" = "clang"; then
+  CB_CFLAGS="$CB_CFLAGS -Wno-incompatible-pointer-types -Wno-incompatible-pointer-types-discards-qualifiers"
+fi
 
-# --enable-catalog
-AC_ARG_ENABLE(catalog, AC_HELP_STRING([--enable-catalog], [Install Glade catalog]),, enable_catalog=no)
-AM_CONDITIONAL([ENABLE_CATALOG], [ test "$enable_catalog" = "yes" ])
-
-# --enable-debug
-AC_ARG_ENABLE(debug, AS_HELP_STRING([--enable-debug], [Enable debugging]),, enable_debug=no)
-AM_CONDITIONAL([ENABLE_DEBUG], [ test "$enable_debug" = "yes"])
+if test "$disable_video" = "no"; then
+  CB_VALA_FLAGS="$CB_VALA_FLAGS \
+                 -D VIDEO \
+                 --pkg gstreamer-video-1.0 \
+                 --pkg gdk-x11-3.0"
+fi
 
 if test "$enable_debug" = "yes"; then
   CB_VALA_FLAGS="$CB_VALA_FLAGS -D DEBUG"
@@ -78,6 +109,7 @@ AC_CONFIG_FILES([Makefile
                  data/Makefile
                  data/org.baedert.corebird.desktop.in
                  data/symbolics/Makefile
+                 examples/Makefile
                  assets/Makefile
                  assets/128x128/Makefile
                  assets/96x96/Makefile
@@ -103,4 +135,5 @@ echo "
            C Compiler: ${CC} ${CFLAGS}
               Catalog: $enable_catalog
             Debugging: $enable_debug
+       Video disabled: $disable_video
 "

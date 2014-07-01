@@ -15,8 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
-
 class MentionsTimeline : IMessageReceiver, DefaultTimeline {
   protected override string function {
     get {
@@ -122,13 +120,13 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
     });
   }
 
- 
+
   public override string? get_title () {
     return _("Mentions");
   }
 
 
-  public override void create_tool_button (RadioToolButton? group) {
+  public override void create_tool_button (Gtk.RadioToolButton? group) {
     tool_button = new BadgeRadioToolButton(group, "corebird-mentions-symbolic");
     tool_button.tooltip_text = _("Mentions");
     tool_button.label = _("Mentions");

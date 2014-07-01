@@ -9,12 +9,12 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="64"
-   height="64"
+   width="128"
+   height="128"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.4 r9939"
-   sodipodi:docname="New document 1">
+   inkscape:version="0.48.5 r10040"
+   sodipodi:docname="corebird-retweet-symbolic.svg">
   <defs
      id="defs4" />
   <sodipodi:namedview
@@ -24,17 +24,17 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="4.2360349"
-     inkscape:cx="72.151628"
-     inkscape:cy="36.979218"
+     inkscape:zoom="1.3480489"
+     inkscape:cx="13.387059"
+     inkscape:cy="14.943311"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      showborder="true"
-     inkscape:window-width="1340"
-     inkscape:window-height="939"
-     inkscape:window-x="1"
-     inkscape:window-y="58"
+     inkscape:window-width="878"
+     inkscape:window-height="587"
+     inkscape:window-x="800"
+     inkscape:window-y="156"
      inkscape:window-maximized="0" />
   <metadata
      id="metadata7">
@@ -44,7 +44,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -52,11 +52,11 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-988.36218)">
+     transform="translate(0,-924.36218)">
     <g
        style="font-size:40px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:FontAwesome;-inkscape-font-specification:FontAwesome"
        id="text2989"
-       transform="matrix(1.4933327,0,0,1.506763,-370.22512,333.02674)">
+       transform="matrix(2.9866655,0,0,3.0135261,-740.45026,-386.30875)">
       <path
          d="m 276.49015,468.30973 c -3e-5,0.19345 -0.0744,0.36459 -0.22322,0.51339 -0.13396,0.13393 -0.29765,0.2009 -0.49107,0.2009 l -21.42857,0 c -0.11906,0 -0.22322,-0.0149 -0.3125,-0.0446 -0.0744,-0.0298 -0.14138,-0.0818 -0.20089,-0.15625 -0.0446,-0.0744 -0.0819,-0.13392 -0.11161,-0.17857 -0.0298,-0.0446 -0.0521,-0.12648 -0.067,-0.24553 -0.0149,-0.13393 -0.0223,-0.22322 -0.0223,-0.26786 0,-0.0446 0,-0.14137 0,-0.29018 0,-0.14881 0,-0.23065 0,-0.24553 l 0,-3.57143 0,-9.28572 -4.28571,0 c -0.38691,2e-5 -0.72173,-0.14135 -1.00447,-0.4241 -0.28273,-0.28273 -0.4241,-0.61755 -0.4241,-1.00447 0,-0.35713 0.1116,-0.66218 0.33482,-0.91518 l 7.14286,-8.57143 c 0.28273,-0.32735 0.64731,-0.49104 1.09375,-0.49107 0.44641,3e-5 0.811,0.16372 1.09375,0.49107 l 7.14285,8.57143 c 0.2232,0.253 0.33481,0.55805 0.33482,0.91518 -10e-6,0.38692 -0.14138,0.72174 -0.4241,1.00447 -0.28276,0.28275 -0.61758,0.42412 -1.00447,0.4241 l -4.28571,0 0,8.57143 12.85714,0 c 0.23807,1e-5 0.42408,0.0818 0.55804,0.24554 l 3.57143,4.28571 c 0.10413,0.16369 0.15622,0.31994 0.15625,0.46875 m 14.28571,-9.28571 c -4e-5,0.35715 -0.11165,0.66221 -0.33482,0.91518 l -7.14286,8.57142 c -0.29765,0.34227 -0.66224,0.5134 -1.09375,0.5134 -0.43158,0 -0.79616,-0.17113 -1.09375,-0.5134 l -7.14286,-8.57142 c -0.22324,-0.25297 -0.33484,-0.55803 -0.33482,-0.91518 -2e-5,-0.3869 0.14135,-0.72172 0.42411,-1.00447 0.28271,-0.28272 0.61753,-0.42409 1.00446,-0.4241 l 4.28572,0 0,-8.57143 -12.85714,0 c -0.23812,2e-5 -0.42413,-0.0893 -0.55804,-0.26786 l -3.57143,-4.28571 c -0.10418,-0.13391 -0.15626,-0.28272 -0.15625,-0.44643 -1e-5,-0.19343 0.067,-0.35712 0.20089,-0.49107 0.1488,-0.14879 0.31993,-0.22319 0.5134,-0.22322 l 21.42857,0 c 0.11901,3e-5 0.21574,0.0149 0.29018,0.0446 0.0892,0.0298 0.15621,0.0819 0.20089,0.15625 0.0595,0.0744 0.10413,0.13396 0.13393,0.17858 0.0297,0.0447 0.052,0.13395 0.067,0.26785 0.0149,0.11908 0.0223,0.20092 0.0223,0.24554 -3e-5,0.0447 -3e-5,0.14139 0,0.29018 -3e-5,0.14883 -3e-5,0.23068 0,0.24553 l 0,3.57143 0,9.28572 4.28572,0 c 0.38686,10e-6 0.72168,0.14138 1.00446,0.4241 0.2827,0.28275 0.42407,0.61757 0.42411,1.00447"
          style="fill:#bebebe;fill-opacity:1"

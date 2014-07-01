@@ -15,11 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-
-
-using Gtk;
-
 class ReplyEntry : Gtk.Entry {
   [Signal (action = true)]
   public signal void cancelled ();
@@ -30,7 +25,7 @@ class ReplyEntry : Gtk.Entry {
   public ReplyEntry () {}
 
   static construct {
-    unowned Gtk.BindingSet binding_set = BindingSet.by_class (typeof (ReplyEntry).class_ref ());
+    unowned Gtk.BindingSet binding_set = Gtk.BindingSet.by_class (typeof (ReplyEntry).class_ref ());
 
     Gtk.BindingEntry.add_signal (binding_set, Gdk.Key.Escape, 0, "cancelled", 0, null);
   }

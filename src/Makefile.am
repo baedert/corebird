@@ -1,9 +1,7 @@
 
 AM_CPPFLAGS = $(CB_CFLAGS) \
-							-Wno-incompatible-pointer-types-discards-qualifiers \
 							-Wno-format-security \
-							-Wno-unused-value \
-							-Wno-incompatible-pointer-types
+							-Wno-unused-value
 
 
 AUTOMAKE_OPTIONS = subdir-objects
@@ -44,6 +42,7 @@ cb_sources = \
 			FavoritesTimeline.vala \
 			Filter.vala \
 			FilterPage.vala \
+			Media.vala \
 			widgets/TweetListBox.vala \
 			widgets/MaxSizeContainer.vala \
 			widgets/ScrollWidget.vala \
@@ -59,6 +58,7 @@ cb_sources = \
 			widgets/BgBox.vala \
 			widgets/UserListsWidget.vala \
 			widgets/ReplyIndicator.vala \
+			widgets/MultiMediaWidget.vala \
 			util/TweetUtils.vala \
 			util/Utils.vala \
 			util/IntHistory.vala \
@@ -83,6 +83,8 @@ cb_sources = \
 			window/RemoveAccountDialog.vala \
 			window/UserListDialog.vala \
 			window/ModifyFilterDialog.vala \
+			window/VideoDialog.vala \
+			window/AboutDialog.vala \
 			sql/Database.vala \
 			sql/Statement.vala \
 			sql/UpdateStatement.vala \

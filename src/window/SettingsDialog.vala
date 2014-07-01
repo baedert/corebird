@@ -15,34 +15,32 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
-
 [GtkTemplate (ui = "/org/baedert/corebird/ui/settings-dialog.ui")]
 class SettingsDialog : Gtk.Window {
   [GtkChild]
-  private ListBox account_list;
+  private Gtk.ListBox account_list;
   [GtkChild]
-  private ToolButton add_account_button;
+  private Gtk.ToolButton add_account_button;
   [GtkChild]
-  private ToolButton remove_account_button;
+  private Gtk.ToolButton remove_account_button;
   [GtkChild]
   private Gtk.Stack account_info_stack;
   [GtkChild]
-  private Switch on_new_mentions_switch;
+  private Gtk.Switch on_new_mentions_switch;
   [GtkChild]
-  private Switch on_new_followers_switch;
+  private Gtk.Switch on_new_followers_switch;
   [GtkChild]
-  private Switch on_new_dms_switch;
+  private Gtk.Switch on_new_dms_switch;
   [GtkChild]
-  private Switch inline_media_switch;
+  private Gtk.Switch inline_media_switch;
   [GtkChild]
-  private Switch dark_theme_switch;
+  private Gtk.Switch dark_theme_switch;
   [GtkChild]
-  private ComboBoxText on_new_tweets_combobox;
+  private Gtk.ComboBoxText on_new_tweets_combobox;
   [GtkChild]
-  private Switch auto_scroll_on_new_tweets_switch;
+  private Gtk.Switch auto_scroll_on_new_tweets_switch;
   [GtkChild]
-  private SpinButton max_media_size_spin_button;
+  private Gtk.SpinButton max_media_size_spin_button;
 
   public SettingsDialog (Corebird application) {
     this.application = application;
@@ -125,7 +123,7 @@ class SettingsDialog : Gtk.Window {
 
   [GtkCallback]
   private void account_list_selected () {
-    ListBoxRow row = account_list.get_selected_row ();
+    Gtk.ListBoxRow row = account_list.get_selected_row ();
     if (row == null) {
       remove_account_button.sensitive = false;
       return;

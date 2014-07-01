@@ -15,7 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
 
 class AspectImage : Gtk.Widget {
   private Gdk.Pixbuf _pixbuf;

@@ -58,9 +58,8 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="valign">start</property>
-                <property name="margin_right">4</property>
+                <property name="margin_end">4</property>
                 <property name="margin_top">2</property>
-                <property name="stock">gtk-missing-image</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -95,8 +94,8 @@
                 <property name="can_focus">False</property>
                 <property name="halign">start</property>
                 <property name="valign">baseline</property>
-                <property name="margin_left">6</property>
-                <property name="margin_right">4</property>
+                <property name="margin_start">6</property>
+                <property name="margin_end">4</property>
                 <property name="margin_top">4</property>
                 <property name="hexpand">True</property>
                 <property name="xalign">0</property>
@@ -116,7 +115,7 @@
                 <property name="no_show_all">True</property>
                 <property name="halign">end</property>
                 <property name="valign">baseline</property>
-                <property name="margin_right">5</property>
+                <property name="margin_end">5</property>
                 <property name="hexpand">True</property>
                 <property name="pixel_size">12</property>
                 <property name="icon_name">corebird-conversation-symbolic</property>
@@ -150,7 +149,7 @@
               <object class="GtkLabel" id="text_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="margin_right">5</property>
+                <property name="margin_end">5</property>
                 <property name="margin_bottom">3</property>
                 <property name="hexpand">True</property>
                 <property name="vexpand">True</property>
@@ -165,7 +164,7 @@
               <packing>
                 <property name="left_attach">1</property>
                 <property name="top_attach">1</property>
-                <property name="width">4</property>
+                <property name="width">6</property>
               </packing>
             </child>
             <child>
@@ -174,7 +173,7 @@
                 <property name="no_show_all">True</property>
                 <property name="halign">end</property>
                 <property name="valign">baseline</property>
-                <property name="margin_right">3</property>
+                <property name="margin_end">3</property>
                 <property name="pixel_size">14</property>
                 <property name="icon_name">corebird-retweet-symbolic</property>
                 <property name="icon_size">1</property>
@@ -204,6 +203,17 @@
                 <property name="left_attach">1</property>
                 <property name="top_attach">2</property>
                 <property name="width">5</property>
+              </packing>
+            </child>
+            <child>
+              <object class="MultiMediaWidget" id="mm_widget">
+                <property name="visible">true</property>
+                <property name="margin_top">5</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">3</property>
+                <property name="width">7</property>
               </packing>
             </child>
           </object>

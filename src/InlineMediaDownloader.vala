@@ -17,72 +17,63 @@
 
 
 namespace InlineMediaDownloader {
-  public const int THUMB_SIZE = 40;
   private Soup.Session session;
 
-  public async void try_load_media (Tweet t, string url) {
-    if (!Settings.show_inline_media ()) {
-      return;
-    }
-
+  public async void load_media (Tweet t, Media media) {
     if (session == null)
       session = new Soup.Session ();
-    /*
-        TODO: Support For:
-        * yfrog
-        * lockerz.com
-        * say.ly
-          * <img src="contentImage" src="(.*?)"
-        * moby.tv
 
-        * Youtube (Preview image with video indicator. Click on the video
-                   opens/streams it in some video player)
-        * vine! (thumbnails supported)
+    yield load_inline_media (t, media);
+  }
 
-    */
-
-    if(url.has_prefix("http://instagr.am") ||
-       url.has_prefix("http://instagram.com/p/")) {
-      yield two_step_load (t, url, "<meta property=\"og:image\" content=\"(.*?)\"", 1);
-    } else if (url.has_prefix("http://i.imgur.com")) {
-      yield load_inline_media (t, url);
-    } else if (url.has_prefix("http://d.pr/i/") || url.has_prefix("http://ow.ly/i/") ||
-               url.has_prefix("https://vine.co/v/") || url.has_prefix("http://tmblr.co/")) {
-      yield two_step_load (t, url, "<meta property=\"og:image\" content=\"(.*?)\"", 1);
-    } else if (url.has_prefix("http://pbs.twimg.com/media/")) {
-      yield load_inline_media (t, url);
-    } else if (url.has_prefix("http://twitpic.com/")) {
-      yield two_step_load (t, url,
-                          "<meta name=\"twitter:image\" value=\"(.*?)\"", 1);
-    } else {
-      //debug ("Not downloadable media: %s", url);
+  public void load_all_media (Tweet t, Media[] medias) {
+    foreach (Media m in medias) {
+      load_media.begin (t, m);
     }
   }
 
-  public async void two_step_load (Tweet t, string first_url, string regex_str,
-                                   int match_index) {
-    var msg = new Soup.Message ("GET", first_url);
+  public bool is_media_candidate (string url) {
+    return url.has_prefix ("http://instagra.am") ||
+           url.has_prefix ("http://instagram.com/p/") ||
+           url.has_prefix ("http://i.imgur.com") ||
+           url.has_prefix ("http://d.pr/i/") ||
+           url.has_prefix ("http://ow.ly/i/") ||
+#if VIDEO
+           url.has_prefix ("https://vine.co/v/") ||
+           url.has_suffix ("/photo/1") ||
+#endif
+           url.has_prefix ("http://pbs.twimg.com/media/") ||
+           url.has_prefix ("http://twitpic.com/")
+    ;
+  }
+
+  // XXX Rename
+  private async void load_real_url (Tweet t, Media media,
+                                    string regex_str1, int match_index1) {
+    var msg = new Soup.Message ("GET", media.url);
     session.queue_message (msg, (_s, _msg) => {
       string back = (string)_msg.response_body.data;
       try {
-        var regex = new GLib.Regex (regex_str, 0);
+        var regex = new GLib.Regex (regex_str1, 0);
         MatchInfo info;
         regex.match (back, 0, out info);
-        string real_url = info.fetch (match_index);
-        if(real_url != null)
-          load_inline_media.begin (t, real_url);
+        string real_url = info.fetch (match_index1);
+        media.thumb_url = real_url;
+
+        load_real_url.callback ();
       } catch (GLib.RegexError e) {
-        critical ("Regex Error(%s): %s", regex_str, e.message);
+        critical ("Regex Error(%s): %s", regex_str1, e.message);
       }
     });
+    yield;
   }
 
-  public async void load_inline_media (Tweet t, string url) { //{{{
+  private async void load_inline_media (Tweet t, Media media) {
     GLib.SourceFunc callback = load_inline_media.callback;
-    // First, check if the media already exists...
-    string path = get_media_path (t, url);
-    string thumb_path = get_thumb_path (t, url);
-    string ext = Utils.get_file_type(url);
+
+    media.path = get_media_path (t, media);
+    media.thumb_path = get_thumb_path (t, media);
+    string ext = Utils.get_file_type (media.url);
     {
       if(ext.length == 0)
         ext = "png";
@@ -97,12 +88,13 @@ namespace InlineMediaDownloader {
         ext = "jpeg";
     }
 
+
     GLib.OutputStream thumb_out_stream = null;
     GLib.OutputStream media_out_stream = null;
 
     bool main_file_exists = false;
     try {
-      media_out_stream = File.new_for_path (path).create (FileCreateFlags.NONE);
+      media_out_stream = File.new_for_path (media.path).create (FileCreateFlags.NONE);
     } catch (GLib.Error e) {
       if (e is GLib.IOError.EXISTS)
         main_file_exists = true;
@@ -113,29 +105,31 @@ namespace InlineMediaDownloader {
     }
 
     try {
-      thumb_out_stream = File.new_for_path (thumb_path).create (FileCreateFlags.NONE);
+      thumb_out_stream = File.new_for_path (media.thumb_path).create (FileCreateFlags.NONE);
       // If we came to this point, the above operation did not throw a GError, so
       // the thumbnail does not exist, right?
       if (main_file_exists) {
-        var in_stream = GLib.File.new_for_path (path).read ();
-        yield load_normal_media (t, in_stream, thumb_out_stream, path, thumb_path, url);
+        var in_stream = GLib.File.new_for_path (media.path).read ();
+        yield load_normal_media (t, in_stream, thumb_out_stream, media);
         return;
       }
     } catch (GLib.Error e) {
       if (e is GLib.IOError.EXISTS) {
         if (main_file_exists) {
           try {
-            var thumb = new Gdk.Pixbuf.from_file (thumb_path);
-            fire_media_added (t, path, thumb, thumb_path, url);
+            var thumb = new Gdk.Pixbuf.from_file (media.thumb_path);
+            media.thumbnail = thumb;
+            media.loaded = true;
+            media.finished_loading ();
           } catch (GLib.Error e) {
-            critical (e.message);
+            critical ("%s (error code %d)", e.message, e.code);
           }
           return;
         } else  {
           // We just delete the old thumbnail and proceed
-          GLib.FileUtils.remove (thumb_path);
+          GLib.FileUtils.remove (media.thumb_path);
           try {
-            thumb_out_stream = File.new_for_path (thumb_path).create (FileCreateFlags.NONE);
+            thumb_out_stream = File.new_for_path (media.thumb_path).create (FileCreateFlags.NONE);
           } catch (GLib.Error e) {
             critical (e.message);
             return;
@@ -147,14 +141,33 @@ namespace InlineMediaDownloader {
       }
     }
 
+    /* If we get to this point, the image was not cached on disk and we
+       *really* need to download it. */
+    string url = media.url;
+    if(url.has_prefix("http://instagr.am") ||
+       url.has_prefix("http://instagram.com/p/")) {
+      yield load_real_url (t, media, "<meta property=\"og:image\" content=\"(.*?)\"", 1);
+    } else if (url.has_prefix("http://ow.ly/i/")) {
+      yield load_real_url (t, media, "<meta property=\"og:image\" content=\"(.*?)\"", 1);
+    } else if (url.has_prefix("http://twitpic.com/")) {
+      yield load_real_url (t, media,
+                          "<meta name=\"twitter:image\" value=\"(.*?)\"", 1);
+    } else if (url.has_prefix ("https://vine.co/v/")) {
+      yield load_real_url (t, media, "<meta property=\"og:image\" content=\"(.*?)\"", 1);
+    } else if (url.has_suffix ("/photo/1")) {
+      yield load_real_url (t, media, "<img src=\"(.*?)\" class=\"animated-gif-thumbnail", 1);
+    }
 
-    var msg = new Soup.Message("GET", url);
+
+    var msg = new Soup.Message ("GET", media.thumb_url);
     msg.got_headers.connect (() => {
       int64 content_length = msg.response_headers.get_content_length ();
       double mb = content_length / 1024.0 / 1024.0;
       double max = Settings.max_media_size ();
       if (mb > max) {
-        debug ("Image %s won't be downloaded,  %fMB > %fMB", url, mb, max);
+        debug ("Image %s won't be downloaded,  %fMB > %fMB", media.thumb_url, mb, max);
+        media.invalid = true;
+        media.finished_loading ();
         session.cancel_message (msg, Soup.Status.CANCELLED);
       }
     });
@@ -167,30 +180,31 @@ namespace InlineMediaDownloader {
       }
 
       try {
-        var ms  = new MemoryInputStream.from_data(_msg.response_body.data, null);
+        var ms = new MemoryInputStream.from_data(_msg.response_body.data, null);
         media_out_stream.write_all (_msg.response_body.data, null, null);
         if(ext == "gif"){
-          load_animation.begin (t, ms, thumb_out_stream, path, thumb_path, url, () => {
+          load_animation.begin (t, ms, thumb_out_stream, media, () => {
             callback ();
           });
         } else {
-          load_normal_media.begin (t, ms, thumb_out_stream, path, thumb_path, url, () => {
+          load_normal_media.begin (t, ms, thumb_out_stream, media, () => {
             callback ();
           });
         }
         yield;
       } catch (GLib.Error e) {
-        critical (e.message + " for MEDIA " + url);
+        critical (e.message + " for MEDIA " + media.thumb_url);
         callback ();
       }
     });
     yield;
-  } //}}}
+
+  }
 
   private async void load_animation (Tweet t,
-                                     MemoryInputStream in_stream,
-                                     OutputStream thumb_out_stream,
-                                     string path, string thumb_path, string url) {
+                                     GLib.MemoryInputStream in_stream,
+                                     GLib.OutputStream thumb_out_stream,
+                                     Media media) {
     Gdk.PixbufAnimation anim;
     try {
       anim = yield new Gdk.PixbufAnimation.from_stream_async (in_stream, null);
@@ -199,47 +213,45 @@ namespace InlineMediaDownloader {
       return;
     }
     var pic = anim.get_static_image ();
-    var thumb = Utils.slice_pixbuf (pic, THUMB_SIZE);
+    int thumb_width = (int)(600.0 / (float)t.medias.length);
+    var thumb = Utils.slice_pixbuf (pic, thumb_width, MultiMediaWidget.HEIGHT);
     yield Utils.write_pixbuf_async (thumb, thumb_out_stream, "png");
-    fire_media_added (t, path, thumb, thumb_path, url);
+    media.thumbnail = thumb;
+    media.loaded = true;
+    media.finished_loading ();
   }
 
   private async void load_normal_media (Tweet t,
                                         GLib.InputStream in_stream,
-                                        OutputStream thumb_out_stream,
-                                        string path, string thumb_path, string url) {
+                                        GLib.OutputStream thumb_out_stream,
+                                        Media media) {
     Gdk.Pixbuf pic = null;
     try {
       pic = yield new Gdk.Pixbuf.from_stream_async (in_stream, null);
     } catch (GLib.Error e) {
-      warning ("%s(%s)", e.message, path);
+      warning ("%s(%s)", e.message, media.path);
       return;
     }
-    var thumb = Utils.slice_pixbuf (pic, THUMB_SIZE);
+
+    int thumb_width = (int)(600.0 / (float)t.medias.length);
+    var thumb = Utils.slice_pixbuf (pic, thumb_width, MultiMediaWidget.HEIGHT);
     yield Utils.write_pixbuf_async (thumb, thumb_out_stream, "png");
-    fire_media_added (t, path, thumb, thumb_path, url);
+    media.thumbnail = thumb;
+    media.loaded = true;
+    media.finished_loading ();
   }
 
-  private void fire_media_added(Tweet t, string path, Gdk.Pixbuf thumb,
-                                string thumb_path, string media_url) {
-    t.media = path;
-    t.media_thumb = thumb_path;
-    t.inline_media = thumb;
-    t.inline_media_added(thumb);
-    t.original_media_url = media_url;
-  }
-
-  public string get_media_path (Tweet t, string url) {
-    string ext = Utils.get_file_type (url);
+  public string get_media_path (Tweet t, Media media) {
+    string ext = Utils.get_file_type (media.thumb_url);
     ext = ext.down();
     if(ext.length == 0)
       ext = "png";
 
-    return Dirs.cache (@"assets/media/$(t.id)_$(t.user_id).$(ext)");
+    return Dirs.cache (@"assets/media/$(t.id)_$(t.user_id)_$(media.id).$(ext)");
   }
 
-  private string get_thumb_path (Tweet t, string url) {
-    return Dirs.cache (@"assets/media/thumbs/$(t.id)_$(t.user_id).png");
+  public string get_thumb_path (Tweet t, Media media) {
+    return Dirs.cache (@"assets/media/thumbs/$(t.id)_$(t.user_id)_$(media.id).png");
   }
 
 }

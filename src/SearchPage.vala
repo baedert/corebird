@@ -16,11 +16,9 @@
  */
 
 
-using Gtk;
-
 // TODO: Add timeout that removes all entries after X seconds when switched away
 [GtkTemplate (ui = "/org/baedert/corebird/ui/search-page.ui")]
-class SearchPage : IPage, Box {
+class SearchPage : IPage, Gtk.Box {
   private static const int USER_COUNT = 3;
   /** The unread count here is always zero */
   public int unread_count {
@@ -31,18 +29,18 @@ class SearchPage : IPage, Box {
   public unowned MainWindow main_window { set; get; }
   public int id                         { get; set; }
   [GtkChild]
-  private SearchEntry search_entry;
+  private Gtk.SearchEntry search_entry;
   [GtkChild]
-  private Button search_button;
+  private Gtk.Button search_button;
   [GtkChild]
   private TweetListBox tweet_list;
   [GtkChild]
-  private Label users_header;
+  private Gtk.Label users_header;
   [GtkChild]
-  private Label tweets_header;
+  private Gtk.Label tweets_header;
   [GtkChild]
   private ScrollWidget scroll_widget;
-  private RadioToolButton tool_button;
+  private Gtk.RadioToolButton tool_button;
   public DeltaUpdater delta_updater;
   private LoadMoreEntry load_more_entry = new LoadMoreEntry ();
   private string search_query;
@@ -119,7 +117,7 @@ class SearchPage : IPage, Box {
     load_users ();
   } //}}}
 
-  private void row_activated_cb (ListBoxRow row) { // {{{
+  private void row_activated_cb (Gtk.ListBoxRow row) { // {{{
     this.last_focus_widget = row;
     if (row is UserListEntry) {
       main_window.main_widget.switch_page (Page.PROFILE,
@@ -132,8 +130,8 @@ class SearchPage : IPage, Box {
     }
   } //}}}
 
-  private void header_func (ListBoxRow row, ListBoxRow? before) { //{{{
-    Widget header = row.get_header ();
+  private void header_func (Gtk.ListBoxRow row, Gtk.ListBoxRow? before) { //{{{
+    Gtk.Widget header = row.get_header ();
     if (header != null)
       return;
 
@@ -255,14 +253,14 @@ class SearchPage : IPage, Box {
 
   } // }}}
 
-  public void create_tool_button(RadioToolButton? group){
-    tool_button = new RadioToolButton.from_widget (group);
+  public void create_tool_button (Gtk.RadioToolButton? group){
+    tool_button = new Gtk.RadioToolButton.from_widget (group);
     tool_button.icon_name = "corebird-search-symbolic";
     tool_button.label = _("Search");
     tool_button.tooltip_text = _("Search");
   }
 
-  public RadioToolButton? get_tool_button(){
+  public Gtk.RadioToolButton? get_tool_button(){
     return tool_button;
   }
 
@@ -286,10 +284,10 @@ class LoadMoreEntry : Gtk.ListBoxRow, ITwitterItem {
     set {}
   }
   [GtkChild]
-  private Button load_more_button;
+  private Gtk.Button load_more_button;
 
   public LoadMoreEntry () {}
-  public Button get_button () {
+  public Gtk.Button get_button () {
     return load_more_button;
   }
   public int update_time_delta (GLib.DateTime? now = null) {return 0;}

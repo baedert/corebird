@@ -284,7 +284,7 @@ namespace TweetUtils {
         return Twitter.short_url_length; // Default to HTTP
     }
 
-    return s.length;
+    return s.char_count();
   }
 
   bool activate_link (string uri, MainWindow window) {
@@ -323,7 +323,7 @@ namespace TweetUtils {
     int64 max = 0;
     int64 min = int64.MAX;
     new Thread<void*> ("TweetWorker", () => {
-      TweetListEntry[] entry_array = new TweetListEntry[json_array.get_length ()];
+      Tweet[] tweet_array = new Tweet[json_array.get_length ()];
       var now = new GLib.DateTime.now_local ();
       json_array.foreach_element( (array, index, node) => {
         Tweet t = new Tweet();
@@ -334,23 +334,23 @@ namespace TweetUtils {
         if (t.id < min)
           min = t.id;
 
-        var entry  = new TweetListEntry(t, main_window, account);
-        delta_updater.add (entry);
-        entry_array[index] = entry;
+        tweet_array[index] = t;
       });
 
 
       int index = 0;
       GLib.Idle.add (() => {
-        var entry = entry_array[index];
+        Tweet tweet = tweet_array[index];
+        var entry = new TweetListEntry (tweet, main_window, account);
         if (!account.filter_matches (entry.tweet)) {
           account.user_counter.user_seen (entry.tweet.user_id,
                                           entry.tweet.screen_name,
                                           entry.tweet.user_name);
+          delta_updater.add (entry);
           tweet_list.add (entry);
         }
         index ++;
-        if (index == entry_array.length) {
+        if (index == tweet_array.length) {
           work_array.callback ();
           return false;
         }

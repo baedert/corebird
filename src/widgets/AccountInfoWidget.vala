@@ -15,16 +15,15 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/account-info-widget.ui")]
 class AccountInfoWidget : Gtk.Grid {
   [GtkChild]
-  private Label screen_name_label;
+  private Gtk.Label screen_name_label;
   [GtkChild]
-  private Label name_label;
+  private Gtk.Label name_label;
   [GtkChild]
-  private Button open_window_button;
+  private Gtk.Button open_window_button;
 
   private unowned Account account;
   private unowned Gtk.Application application;

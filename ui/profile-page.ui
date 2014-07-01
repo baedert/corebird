@@ -1,54 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
   <requires lib="corebird" version="0.0"/>
-  <object class="GtkMenu" id="menu1">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <child>
-      <object class="GtkMenuItem" id="dm_menu_item">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Write Direct Message</property>
-        <property name="use_underline">True</property>
-        <signal name="activate" handler="dm_menu_item_activate_cb" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="tweet_to_menu_item">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label">Tweet to User</property>
-        <property name="use_underline">True</property>
-        <signal name="activate" handler="tweet_to_item_activate_cb" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="lists_menu_item">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Add to/Remove from List</property>
-        <property name="use_underline">True</property>
-        <signal name="activate" handler="list_menu_item_activated" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkSeparatorMenuItem" id="menuitem1">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkCheckMenuItem" id="block_menu_item">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Blocked</property>
-        <property name="use_underline">True</property>
-        <signal name="toggled" handler="block_item_toggled_cb" swapped="no" />
-      </object>
-    </child>
-  </object>
+
+  <menu id="more_menu">
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">Write Direct Message</attribute>
+        <attribute name="action">user.write-dm</attribute>
+      </item>
+      <item>
+        <attribute name="label">Tweet to @foobar</attribute>
+        <attribute name="action">user.tweet-to</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">Add to/Remove from List</attribute>
+        <attribute name="action">user.add-remove-list</attribute>
+      </item>
+    </section>
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">Blocked</attribute>
+        <attribute name="action">user.toggle-blocked</attribute>
+      </item>
+    </section>
+  </menu>
+
+
   <template class="ProfilePage" parent="ScrollWidget">
     <property name="can_focus">True</property>
     <property name="vscrollbar_policy">always</property>
@@ -83,8 +61,9 @@
                     <property name="height_request">73</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="margin_left">4</property>
+                    <property name="margin_start">4</property>
                     <property name="margin_top">5</property>
+                    <property name="valign">start</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -106,7 +85,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="valign">end</property>
-                            <property name="margin_left">4</property>
+                            <property name="margin_start">4</property>
                             <property name="margin_top">5</property>
                             <property name="margin_bottom">2</property>
                             <property name="xalign">0</property>
@@ -126,9 +105,8 @@
                           <object class="GtkImage" id="verified_image">
                             <property name="can_focus">False</property>
                             <property name="no_show_all">True</property>
-                            <property name="margin_left">5</property>
-                            <property name="margin_right">5</property>
-                            <property name="stock">gtk-missing-image</property>
+                            <property name="margin_start">5</property>
+                            <property name="margin_end">5</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -148,7 +126,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="valign">start</property>
-                        <property name="margin_left">4</property>
+                        <property name="margin_start">4</property>
                         <property name="margin_top">2</property>
                         <property name="margin_bottom">2</property>
                         <property name="xalign">0</property>
@@ -167,7 +145,7 @@
                       <object class="GtkLabel" id="location_label">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="margin_left">4</property>
+                        <property name="margin_start">4</property>
                         <property name="margin_top">2</property>
                         <property name="margin_bottom">2</property>
                         <property name="xalign">0</property>
@@ -179,23 +157,7 @@
                         <property name="position">2</property>
                       </packing>
                     </child>
-                    <child>
-                      <object class="GtkLabel" id="url_label">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="margin_left">4</property>
-                        <property name="margin_top">2</property>
-                        <property name="xalign">0</property>
-                        <property name="label"> </property>
-                        <property name="use_markup">True</property>
-                        <property name="ellipsize">end</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">3</property>
-                      </packing>
-                    </child>
+
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -213,13 +175,13 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <child>
-                          <object class="GtkMenuButton" id="menubutton1">
+                          <object class="GtkMenuButton" id="more_button">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="halign">end</property>
                             <property name="margin_top">5</property>
-                            <property name="popup">menu1</property>
+                            <property name="menu_model">more_menu</property>
                             <child>
                               <placeholder/>
                             </child>
@@ -237,7 +199,7 @@
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="halign">end</property>
-                            <property name="margin_right">3</property>
+                            <property name="margin_end">3</property>
                             <property name="margin_top">5</property>
                             <signal name="clicked" handler="follow_button_clicked_cb" swapped="no"/>
                           </object>
@@ -276,7 +238,7 @@
                         <property name="can_focus">False</property>
                         <property name="no_show_all">True</property>
                         <property name="halign">end</property>
-                        <property name="margin_right">3</property>
+                        <property name="margin_end">3</property>
                         <property name="margin_top">4</property>
                         <property name="label" translatable="yes">Follows you</property>
                         <style>
@@ -308,14 +270,14 @@
               <object class="GtkLabel" id="description_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="margin_left">5</property>
-                <property name="margin_right">5</property>
+                <property name="margin_start">5</property>
+                <property name="margin_end">5</property>
                 <property name="margin_top">3</property>
                 <property name="margin_bottom">3</property>
                 <property name="yalign">0</property>
                 <property name="label"> </property>
-                <property name="justify">center</property>
                 <property name="use_markup">True</property>
+                <property name="justify">center</property>
                 <property name="wrap">True</property>
                 <property name="wrap_mode">word-char</property>
                 <signal name="activate-link" handler="activate_link" swapped="no"/>
@@ -324,6 +286,153 @@
                 <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="url_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">center</property>
+                <property name="margin_start">4</property>
+                <property name="margin_top">2</property>
+                <property name="xalign">0</property>
+                <property name="label"> </property>
+                <property name="use_markup">True</property>
+                <property name="justify">center</property>
+                <property name="ellipsize">end</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">3</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkGrid" id="grid1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="margin_top">5</property>
+                <property name="margin_bottom">5</property>
+                <child>
+                  <object class="GtkLabel" id="label1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="hexpand">True</property>
+                    <property name="label" translatable="yes">Tweets</property>
+                    <property name="justify">center</property>
+                    <attributes>
+                      <attribute name="weight" value="bold"/>
+                    </attributes>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="tweets_label">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="hexpand">True</property>
+                    <property name="label">--</property>
+                    <property name="justify">center</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label3">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="hexpand">True</property>
+                    <property name="label" translatable="yes">Followers</property>
+                    <property name="justify">center</property>
+                    <attributes>
+                      <attribute name="weight" value="bold"/>
+                    </attributes>
+                  </object>
+                  <packing>
+                    <property name="left_attach">2</property>
+                    <property name="top_attach">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="followers_label">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="hexpand">True</property>
+                    <property name="label">--</property>
+                    <property name="justify">center</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">2</property>
+                    <property name="top_attach">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label5">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="hexpand">True</property>
+                    <property name="label" translatable="yes">Following</property>
+                    <property name="justify">center</property>
+                    <attributes>
+                      <attribute name="weight" value="bold"/>
+                    </attributes>
+                  </object>
+                  <packing>
+                    <property name="left_attach">4</property>
+                    <property name="top_attach">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="following_label">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="hexpand">True</property>
+                    <property name="label">--</property>
+                    <property name="justify">center</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">4</property>
+                    <property name="top_attach">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSeparator" id="separator1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="margin_start">5</property>
+                    <property name="margin_end">5</property>
+                    <property name="orientation">vertical</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">0</property>
+                    <property name="height">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSeparator" id="separator2">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="margin_start">5</property>
+                    <property name="margin_end">5</property>
+                    <property name="orientation">vertical</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">3</property>
+                    <property name="top_attach">0</property>
+                    <property name="height">2</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">4</property>
               </packing>
             </child>
             <child>
@@ -336,7 +445,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">3</property>
+                <property name="position">5</property>
               </packing>
             </child>
             <child>
@@ -366,7 +475,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">4</property>
+                <property name="position">6</property>
               </packing>
             </child>
           </object>

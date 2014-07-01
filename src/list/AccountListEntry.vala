@@ -13,16 +13,14 @@
  *  You should have received a copy of the GNU General Public License
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
-using Gtk;
-
 
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/account-list-entry.ui")]
 class AccountListEntry : Gtk.ListBoxRow {
   [GtkChild]
-  private Label screen_name_label;
+  private Gtk.Label screen_name_label;
   [GtkChild]
-  private Image avatar_image;
+  private Gtk.Image avatar_image;
 
   public string screen_name{
     get { return screen_name_label.label; }

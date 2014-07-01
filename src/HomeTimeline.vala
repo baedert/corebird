@@ -15,8 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
-
 public class HomeTimeline : IMessageReceiver, DefaultTimeline {
   protected override string function {
     get {
@@ -83,7 +81,7 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
 
     if (stack_size == 1 && !auto_scroll) {
       if (t.has_inline_media){
-        t.inline_media_added.connect (tweet_inline_media_added_cb);
+        //t.inline_media_added.connect (tweet_inline_media_added_cb);
       } else {
         // calling this with image = null will just create the
         // appropriate notification etc.
@@ -131,7 +129,7 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
     });
   }
 
-  public override void create_tool_button(RadioToolButton? group) {
+  public override void create_tool_button (Gtk.RadioToolButton? group) {
     tool_button = new BadgeRadioToolButton(group, "corebird-stream-symbolic");
     tool_button.tooltip_text = _("Home");
     tool_button.label = _("Home");

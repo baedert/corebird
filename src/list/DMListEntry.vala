@@ -15,7 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/dm-list-entry.ui")]
 class DMListEntry : Gtk.ListBoxRow, ITwitterItem {
@@ -81,7 +80,7 @@ class DMListEntry : Gtk.ListBoxRow, ITwitterItem {
       cur_time = now;
 
     GLib.DateTime then = new GLib.DateTime.from_unix_local (timestamp);
-    time_delta_label.label = "<small>" + Utils.get_time_delta (then, cur_time) + "</small>";
+    time_delta_label.label = Utils.get_time_delta (then, cur_time);
     return (int)(cur_time.difference (then) / 1000.0 / 1000.0);
   }
 

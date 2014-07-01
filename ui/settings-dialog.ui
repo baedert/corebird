@@ -111,8 +111,8 @@
                     <property name="wrap">True</property>
                     <property name="halign">center</property>
                     <property name="valign">center</property>
-                    <property name="margin_left">20</property>
-                    <property name="margin_right">20</property>
+                    <property name="margin_start">20</property>
+                    <property name="margin_end">20</property>
                     <style>
                       <class name="dim-label" />
                     </style>

@@ -1,0 +1,77 @@
+/*  This file is part of corebird, a Gtk+ linux Twitter client.
+ *  Copyright (C) 2013 Timm Bäder
+ *
+ *  corebird is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  corebird is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+public enum MediaType {
+  IMAGE,
+  VINE,
+  GIF,
+  ANIMATED_GIF,
+
+  UNKNOWN
+}
+
+public class Media {
+  public int64 id;
+  public string path;
+  public string thumb_path;
+  public string url;
+  private string? _thumb_url = null;
+  public string thumb_url {
+    get {
+      return _thumb_url ?? url;
+    }
+    set {
+      _thumb_url = value;
+    }
+  }
+  public MediaType type;
+  public Gdk.Pixbuf thumbnail = null;
+  /** If this media if fully downloaded and thumb is available */
+  public bool loaded = false;
+  public bool invalid = false;
+
+  public signal void finished_loading ();
+
+  public static MediaType type_from_string (string s) {
+    if (s == "photo")
+      return MediaType.IMAGE;
+
+    return MediaType.UNKNOWN;
+  }
+
+  /**
+   * Returns the type of a media based on its URL.
+   * Do not call this unless you used InlineMediaDownloader.is_media_candidate
+   * before.
+   *
+   * @param url The url to check
+   *
+   * @return The media type
+   */
+  public static MediaType type_from_url (string url) {
+    if (url.has_prefix ("https://vine.co/v/"))
+      return MediaType.VINE;
+
+    if (url.has_suffix ("/photo/1"))
+      return MediaType.ANIMATED_GIF;
+
+    if (url.down ().has_suffix (".gif"))
+      return MediaType.GIF;
+
+    return MediaType.IMAGE;
+  }
+}

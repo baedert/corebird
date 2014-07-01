@@ -16,14 +16,13 @@
  */
 
 
-using Gtk;
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/image-dialog.ui")]
 public class ImageDialog : Gtk.Window {
   [GtkChild]
-  private ScrolledWindow scroller;
+  private Gtk.ScrolledWindow scroller;
   [GtkChild]
-  private Image image;
+  private Gtk.Image image;
   [GtkChild]
   private Gtk.Menu image_context_menu;
   private new Gtk.Window parent;
@@ -32,7 +31,7 @@ public class ImageDialog : Gtk.Window {
   private double dnd_x;
   private double dnd_y;
 
-  public ImageDialog (Window parent, string path) {
+  public ImageDialog (Gtk.Window parent, string path) {
     this.path = path;
     this.parent = parent;
 
@@ -58,12 +57,12 @@ public class ImageDialog : Gtk.Window {
     int win_height = 600;
     if(img_width <= Gdk.Screen.width()*0.7) {
       win_width = img_width;
-      scroller.hscrollbar_policy = PolicyType.NEVER;
+      scroller.hscrollbar_policy = Gtk.PolicyType.NEVER;
     }
 
     if(img_height <= Gdk.Screen.height()*0.7) {
       win_height = img_height;
-      scroller.vscrollbar_policy = PolicyType.NEVER;
+      scroller.vscrollbar_policy = Gtk.PolicyType.NEVER;
     }
 
     if(win_width < 800 && win_height == 600) {
@@ -107,10 +106,10 @@ public class ImageDialog : Gtk.Window {
 
   [GtkCallback]
   private void save_item_activated_cb () {
-     var file_dialog = new FileChooserDialog (_("Save image"), parent,
-                                              Gtk.FileChooserAction.SAVE,
-                                              _("Cancel"), Gtk.ResponseType.CANCEL,
-                                              _("Save"), Gtk.ResponseType.ACCEPT);
+     var file_dialog = new Gtk.FileChooserDialog (_("Save image"), parent,
+                                                  Gtk.FileChooserAction.SAVE,
+                                                  _("Cancel"), Gtk.ResponseType.CANCEL,
+                                                  _("Save"), Gtk.ResponseType.ACCEPT);
     string filename = Utils.get_file_name (path);
     file_dialog.set_current_name (filename);
     file_dialog.set_transient_for (this);

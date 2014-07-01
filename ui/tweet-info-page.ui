@@ -74,10 +74,9 @@
                 <property name="height_request">48</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="margin_left">5</property>
+                <property name="margin_start">5</property>
                 <property name="margin_top">5</property>
                 <property name="halign">start</property>
-                <property name="stock">gtk-missing-image</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -143,7 +142,7 @@
                 <property name="receives_default">True</property>
                 <property name="halign">end</property>
                 <property name="valign">start</property>
-                <property name="margin_right">5</property>
+                <property name="margin_end">5</property>
                 <property name="margin_top">5</property>
                 <signal name="clicked" handler="follow_button_clicked_cb" swapped="no"/>
               </object>
@@ -161,8 +160,8 @@
                 <property name="height_request">100</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="margin_left">5</property>
-                <property name="margin_right">5</property>
+                <property name="margin_start">5</property>
+                <property name="margin_end">5</property>
                 <property name="margin_top">5</property>
                 <property name="margin_bottom">15</property>
                 <property name="hexpand">True</property>
@@ -182,35 +181,15 @@
               <packing>
                 <property name="left_attach">0</property>
                 <property name="top_attach">4</property>
-                <property name="width">6</property>
+                <property name="width">8</property>
               </packing>
             </child>
-
-            <child>
-              <object class="PixbufButton" id="media_button">
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="halign">end</property>
-                <property name="valign">start</property>
-                <property name="margin_right">5</property>
-                <property name="margin_top">5</property>
-                <style>
-                  <class name="pixbuf-button"/>
-                </style>
-              </object>
-              <packing>
-                <property name="left_attach">6</property>
-                <property name="top_attach">4</property>
-                <property name="width">2</property>
-              </packing>
-            </child>
-
 
             <child>
               <object class="GtkLabel" id="time_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="margin_left">3</property>
+                <property name="margin_start">3</property>
                 <property name="xalign">0</property>
                 <property name="use_markup">True</property>
                 <style>
@@ -227,7 +206,7 @@
             <child>
               <object class="GtkLabel" id="source_label">
                 <property name="can_focus">False</property>
-                <property name="margin_right">5</property>
+                <property name="margin_end">5</property>
                 <property name="use_markup">True</property>
                 <property name="halign">end</property>
                 <style>
@@ -246,8 +225,8 @@
               <object class="GtkLabel" id="rt_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="margin_left">4</property>
-                <property name="margin_right">8</property>
+                <property name="margin_start">4</property>
+                <property name="margin_end">8</property>
                 <property name="xalign">0</property>
                 <property name="label">label</property>
                 <property name="use_markup">True</property>
@@ -379,7 +358,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="margin_right">5</property>
+                <property name="margin_end">5</property>
                 <property name="relief">none</property>
                 <property name="popup">more_menu</property>
                 <child>
@@ -407,6 +386,20 @@
               </packing>
             </child>
 
+
+            <child>
+              <object class="MultiMediaWidget" id="mm_widget">
+                <property name="visible">true</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">7</property>
+                <property name="width">8</property>
+              </packing>
+            </child>
+
+
+
             <child>
               <object class="GtkListBox" id="bottom_list_box">
                 <property name="visible">True</property>
@@ -416,7 +409,7 @@
               </object>
               <packing>
                 <property name="left_attach">0</property>
-                <property name="top_attach">7</property>
+                <property name="top_attach">8</property>
                 <property name="width">8</property>
               </packing>
             </child>
