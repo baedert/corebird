@@ -67,13 +67,16 @@ class TweetInfoPage : IPage , ScrollWidget {
   public TweetInfoPage (int id) {
     this.id = id;
     mm_widget.media_clicked.connect ((media) => {
-      if (media.type == MediaType.IMAGE) {
-        var imd = new ImageDialog (main_window, media.path);
-        imd.show_all ();
+      if (media.type == MediaType.IMAGE ||
+          media.type == MediaType.GIF) {
+        var img_dialog = new ImageDialog (main_window, media.path);
+        img_dialog.show_all ();
       } else if (media.type == MediaType.VINE ||
                  media.type == MediaType.ANIMATED_GIF) {
         var vd = new VideoDialog (main_window, media);
         vd.show_all ();
+      } else {
+        warning ("Unknown media type: %d", media.type);
       }
     });
     this.scroll_event.connect ((evt) => {
