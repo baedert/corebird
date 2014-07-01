@@ -15,6 +15,22 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 class AvatarWidget : Gtk.Image {
+  private bool _round = true;
+  public bool make_round {
+    get {
+      return _round;
+    }
+    set {
+      this._round = value;
+      this.queue_draw ();
+    }
+  }
+
+  construct {
+    Settings.get ().bind ("round-avatars", this, "make_round",
+                          GLib.SettingsBindFlags.DEFAULT);
+  }
+
 
   public override bool draw (Cairo.Context ctx) {
     if (this.pixbuf == null) {
@@ -36,18 +52,20 @@ class AvatarWidget : Gtk.Image {
     Gdk.cairo_set_source_pixbuf (ct, this.pixbuf, 0, 0);
     ct.fill();
 
-    // make it round
-    ct.set_operator (Cairo.Operator.DEST_IN);
-    ct.translate (width / 2, height / 2);
-    ct.arc (0, 0, width / 2, 0, 2 * Math.PI);
-    ct.fill ();
+    if (_round) {
+      // make it round
+      ct.set_operator (Cairo.Operator.DEST_IN);
+      ct.translate (width / 2, height / 2);
+      ct.arc (0, 0, width / 2, 0, 2 * Math.PI);
+      ct.fill ();
 
-    // draw outline
-    ct.set_operator (Cairo.Operator.OVER);
-    ct.arc (0, 0, (width /2) - 1, 0, 2 * Math.PI);
-    ct.set_line_width (1.0);
-    ct.set_source_rgba (0.4, 0.4, 0.4, 1);
-    ct.stroke ();
+      // draw outline
+      ct.set_operator (Cairo.Operator.OVER);
+      ct.arc (0, 0, (width /2) - 1, 0, 2 * Math.PI);
+      ct.set_line_width (1.0);
+      ct.set_source_rgba (0.4, 0.4, 0.4, 1);
+      ct.stroke ();
+    }
 
     ctx.rectangle (0, 0, width, height);
     ctx.set_source_surface (surface, 0, 0);
