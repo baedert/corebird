@@ -8,6 +8,9 @@
   font-weight: bold;
 }
 
+.avatar {
+  border-color: grey;
+}
 
 .sidebar {
   -GtkWidget-window-dragging: true;
