@@ -82,7 +82,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     name_button.set_markup (tweet.user_name);
     screen_name_label.label = "@"+tweet.screen_name;
     avatar_image.pixbuf = tweet.avatar;
-    text_label.label = tweet.get_formatted_text ();
+    text_label.label = tweet.get_trimmed_text ();
     update_time_delta ();
     if (tweet.is_retweet) {
       rt_label.show ();

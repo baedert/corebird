@@ -71,6 +71,43 @@ namespace TweetUtils {
   } // }}}
 
 
+
+
+  /**
+   * Basically the same as get_formatted_text *BUT* it removes pic.twitter.com links.
+   */
+  string get_trimmed_text (string tweet_text, GLib.SList<Sequence?> urls) { // {{{
+    string formatted_text = tweet_text;
+    int char_diff = 0;
+
+    foreach (Sequence s in urls) {
+      int length_before = formatted_text.char_count ();
+      int from = formatted_text.index_of_nth_char (s.start + char_diff);
+      int to   = formatted_text.index_of_nth_char (s.end + char_diff);
+
+      if (s.display_url.has_prefix ("pic.twitter.com/")) {
+        formatted_text = formatted_text.splice (from, to, "");
+      } else {
+        string? title = null;
+        if (s.title != null) {
+          title = s.title.replace ("&", "&amp;amp;");
+        } else
+          title = s.url.replace ("&", "&amp;");
+
+        formatted_text = formatted_text.splice (from, to,
+             "<span underline='none'><a href=\"%s\" title=\"%s\">%s</a></span>".printf(s.url,
+                                                         title,
+                                                         s.display_url.replace ("&", "&amp;")));
+      }
+      char_diff += formatted_text.char_count () - length_before;
+    }
+
+    return formatted_text;
+  } // }}}
+
+
+
+
   /**
    * Formats the given Tweet, using the given url list to insert
    * links(the real urls, protocol etc. included).
