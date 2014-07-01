@@ -49,7 +49,7 @@ public class MainWindow : ApplicationWindow {
   [GtkChild]
   private Gtk.Stack stack;
   [GtkChild]
-  private Image avatar_image;
+  private AvatarWidget avatar_image;
   [GtkChild]
   private Spinner progress_spinner;
   [GtkChild]
