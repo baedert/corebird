@@ -27,6 +27,8 @@ class ModifyFilterDialog : Gtk.Dialog {
   private Gtk.TextView regex_test_text;
   [GtkChild]
   private Gtk.Button save_button;
+  [GtkChild]
+  private Gtk.CheckButton sensitive_checkbutton;
 
   private GLib.Regex regex;
   private unowned Account account;
@@ -42,12 +44,14 @@ class ModifyFilterDialog : Gtk.Dialog {
     this.account = account;
     if (filter != null) {
       regex_entry.text = filter.content;
+      sensitive_checkbutton.active = filter.sensitive;
     }
     this.filter = filter;
   }
 
   construct {
     regex_test_text.buffer.changed.connect (regex_entry_changed_cb);
+    sensitive_checkbutton.toggled.connect (regex_entry_changed_cb);
   }
 
 
@@ -63,7 +67,8 @@ class ModifyFilterDialog : Gtk.Dialog {
   [GtkCallback]
   private void regex_entry_changed_cb () {
     try {
-      regex = new GLib.Regex (regex_entry.text);
+      string sensitivity = (!sensitive_checkbutton.active) ? "(?i)" : "";
+      regex = new GLib.Regex (sensitivity.concat(regex_entry.text));
     } catch (GLib.RegexError e) {
       regex_status_label.label = e.message;
       save_button.sensitive = false;
@@ -83,14 +88,16 @@ class ModifyFilterDialog : Gtk.Dialog {
     if (this.filter == null) {
       int id = (int)account.db.insert ("filters")
                                .val ("content", content)
+                               .val ("sensitive", sensitive_checkbutton.active.to_string())
                                .run();
-      Filter f = new Filter (content);
+      Filter f = new Filter (content, sensitive_checkbutton.active);
       f.id = id;
       account.add_filter (f);
       filter_added (f, true);
     } else {
       /* We update the existing filter */
       account.db.update ("filters").val ("content", content)
+                                   .val ("sensitive", sensitive_checkbutton.active.to_string())
                                    .where_eq ("id", filter.id.to_string ())
                                    .run ();
       foreach (var f in account.filters) {
