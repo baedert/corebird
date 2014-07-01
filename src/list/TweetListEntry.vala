@@ -25,7 +25,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   [GtkChild]
   private Gtk.Label time_delta_label;
   [GtkChild]
-  private Gtk.Image avatar_image;
+  private AvatarWidget avatar_image;
   [GtkChild]
   private Gtk.Label text_label;
   [GtkChild]
