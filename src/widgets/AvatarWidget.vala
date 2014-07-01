@@ -29,16 +29,18 @@ class AvatarWidget : Gtk.Image {
   construct {
     Settings.get ().bind ("round-avatars", this, "make_round",
                           GLib.SettingsBindFlags.DEFAULT);
+    get_style_context ().add_class ("avatar");
   }
 
 
   public override bool draw (Cairo.Context ctx) {
+    int width  = this.get_allocated_width ();
+    int height = this.get_allocated_height ();
+
     if (this.pixbuf == null) {
       return false;
     }
 
-    int width = this.get_allocated_width ();
-    int height = this.get_allocated_height ();
     if (width != height) {
       warning ("Avatar with mapped with width %d and height %d", width, height);
     }
@@ -53,6 +55,7 @@ class AvatarWidget : Gtk.Image {
     ct.fill();
 
     if (_round) {
+      var sc     = this.get_style_context ();
       // make it round
       ct.set_operator (Cairo.Operator.DEST_IN);
       ct.translate (width / 2, height / 2);
@@ -61,9 +64,11 @@ class AvatarWidget : Gtk.Image {
 
       // draw outline
       ct.set_operator (Cairo.Operator.OVER);
-      ct.arc (0, 0, (width /2) - 1, 0, 2 * Math.PI);
-      ct.set_line_width (1.0);
-      ct.set_source_rgba (0.4, 0.4, 0.4, 1);
+      Gdk.RGBA border_color = sc.get_border_color (this.get_state_flags ());
+      ct.arc (0, 0, (width /2) - 0.5, 0, 2 * Math.PI);
+      ct.set_line_width (0.5);
+      ct.set_source_rgba (border_color.red, border_color.green, border_color.blue,
+                          border_color.alpha);
       ct.stroke ();
     }
 
