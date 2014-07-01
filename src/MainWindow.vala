@@ -14,14 +14,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
- using Gtk;
-
-
-
 [GtkTemplate (ui = "/org/baedert/corebird/ui/main-window.ui")]
-public class MainWindow : ApplicationWindow {
+public class MainWindow : Gtk.ApplicationWindow {
   private const GLib.ActionEntry[] win_entries = {
     {"compose_tweet",  show_compose_window},
     {"toggle_sidebar", Settings.toggle_sidebar_visible},
@@ -43,15 +37,15 @@ public class MainWindow : ApplicationWindow {
   public static const int PAGE_NEXT       = 2048;
 
   [GtkChild]
-  private Toolbar left_toolbar;
+  private Gtk.Toolbar left_toolbar;
   [GtkChild]
-  private HeaderBar headerbar;
+  private Gtk.HeaderBar headerbar;
   [GtkChild]
   private Gtk.Stack stack;
   [GtkChild]
   private AvatarWidget avatar_image;
   [GtkChild]
-  private Spinner progress_spinner;
+  private Gtk.Spinner progress_spinner;
   [GtkChild]
   private Gtk.Revealer sidebar_revealer;
   public int cur_page_id {
@@ -60,7 +54,7 @@ public class MainWindow : ApplicationWindow {
     }
   }
   private uint progress_holders            = 0;
-  private RadioToolButton dummy_button     = new RadioToolButton(null);
+  private Gtk.RadioToolButton dummy_button = new Gtk.RadioToolButton(null);
   private IPage[] pages                    = new IPage[11];
   private IntHistory history               = new IntHistory (5);
   private DeltaUpdater delta_updater       = new DeltaUpdater ();
@@ -145,8 +139,8 @@ public class MainWindow : ApplicationWindow {
 
 
     if (!Gtk.Settings.get_default ().gtk_shell_shows_app_menu) {
-      MenuButton app_menu_button = new MenuButton ();
-      app_menu_button.image = new Gtk.Image.from_icon_name ("emblem-system-symbolic", IconSize.MENU);
+      Gtk.MenuButton app_menu_button = new Gtk.MenuButton ();
+      app_menu_button.image = new Gtk.Image.from_icon_name ("emblem-system-symbolic", Gtk.IconSize.MENU);
       app_menu_button.get_style_context ().add_class ("image-button");
       app_menu_button.menu_model = this.application.app_menu;
       app_menu_button.set_relief (Gtk.ReliefStyle.NONE);
@@ -179,15 +173,15 @@ public class MainWindow : ApplicationWindow {
    * Adds the accelerators to the GtkWindow
    */
   private void add_accels() { // {{{
-    AccelGroup ag = new AccelGroup();
+    Gtk.AccelGroup ag = new Gtk.AccelGroup();
 
-    ag.connect (Gdk.Key.Left, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
+    ag.connect (Gdk.Key.Left, Gdk.ModifierType.MOD1_MASK, Gtk.AccelFlags.LOCKED,
         () => {switch_page (PAGE_PREVIOUS); return true;});
-    ag.connect (Gdk.Key.Right, Gdk.ModifierType.MOD1_MASK, AccelFlags.LOCKED,
+    ag.connect (Gdk.Key.Right, Gdk.ModifierType.MOD1_MASK, Gtk.AccelFlags.LOCKED,
         () => {switch_page (PAGE_NEXT); return true;});
-    ag.connect (Gdk.Key.Back, 0, AccelFlags.LOCKED,
+    ag.connect (Gdk.Key.Back, 0, Gtk.AccelFlags.LOCKED,
         () => {switch_page (PAGE_PREVIOUS); return true;});
-    ag.connect (Gdk.Key.Forward, 0, AccelFlags.LOCKED,
+    ag.connect (Gdk.Key.Forward, 0, Gtk.AccelFlags.LOCKED,
         () => {switch_page (PAGE_NEXT); return true;});
 
     this.add_accel_group(ag);
@@ -240,9 +234,9 @@ public class MainWindow : ApplicationWindow {
 
     // Set the correct transition type
     if (page_id == PAGE_PREVIOUS || page_id < history.current)
-      stack.transition_type = StackTransitionType.SLIDE_RIGHT;
+      stack.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
     else if (page_id == PAGE_NEXT || page_id > history.current)
-      stack.transition_type = StackTransitionType.SLIDE_LEFT;
+      stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
 
     // If we go forward/back, we don't need to update the history.
     if (page_id == PAGE_PREVIOUS) {
@@ -310,7 +304,7 @@ public class MainWindow : ApplicationWindow {
     account.user_stream.stop ();
     account.user_counter.save (account.db);
 
-    unowned GLib.List<weak Window> ws = this.application.get_windows ();
+    unowned GLib.List<weak Gtk.Window> ws = this.application.get_windows ();
     debug("Windows: %u", ws.length ());
 
      // Enable the account's entry in the app menu again
