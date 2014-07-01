@@ -45,7 +45,7 @@
                 <property name="margin_bottom">5</property>
                 <property name="orientation">vertical</property>
                 <child>
-                  <object class="GtkImage" id="avatar_image">
+                  <object class="AvatarWidget" id="avatar_image">
                     <property name="width_request">48</property>
                     <property name="height_request">48</property>
                     <property name="visible">True</property>
