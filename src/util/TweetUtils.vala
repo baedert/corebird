@@ -222,30 +222,15 @@ namespace TweetUtils {
     }
     string avatar_name = Utils.get_avatar_name (avatar_url);
     Gdk.Pixbuf avatar = null;
-    var msg = new Soup.Message ("GET", avatar_url);
+    var msg     = new Soup.Message ("GET", avatar_url);
     avatar_session.queue_message (msg, (s, _msg) => {
       string dest = Dirs.cache ("assets/avatars/" + avatar_name);
       var memory_stream = new MemoryInputStream.from_data(_msg.response_body.data,
                                                           null);
-      var mask = new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/data/avatar-mask.png");
       try {
         avatar = new Gdk.Pixbuf.from_stream_at_scale (memory_stream,
                                                       48, 48,
                                                       false);
-        var format = Cairo.Format.RGB24;
-        var surface = new Cairo.ImageSurface.for_data (avatar.get_pixels (),
-                                                       format,
-                                                       avatar.get_width (),
-                                                       avatar.get_height (),
-                                                       format.stride_for_width (avatar.get_width ()));
-        var ct = new Cairo.Context (surface);
-        //ct.set_operator (Cairo.Operator.CLEAR);
-        //Gdk.cairo_set_source_pixbuf (ct, mask, 0, 0);
-        //ct.rectangle(0, 0, 48, 48);
-        //ct.fill();
-        //surface.write_to_png (dest);
-        avatar = Gdk.pixbuf_get_from_surface (surface, 0, 0, 48, 48);
-
         avatar.save (dest, "png");
         download_avatar.callback ();
       } catch (GLib.Error e) {
