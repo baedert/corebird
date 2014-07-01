@@ -38,7 +38,7 @@ class TweetInfoPage : IPage , ScrollWidget {
   [GtkChild]
   private Gtk.Label screen_name_label;
   [GtkChild]
-  private Gtk.Image avatar_image;
+  private AvatarWidget avatar_image;
   [GtkChild]
   private Gtk.Label rt_label;
   [GtkChild]
