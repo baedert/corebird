@@ -32,5 +32,6 @@
     <file compressed="true" preprocess="xml-stripblanks">ui/modify-filter-dialog.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/user-filter-entry.ui</file>
     <file>assets/play.png</file>
+    <file>data/avatar-mask.png</file>
   </gresource>
 </gresources>
