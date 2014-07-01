@@ -57,7 +57,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <child>
-                  <object class="GtkImage" id="avatar_image">
+                  <object class="AvatarWidget" id="avatar_image">
                     <property name="width_request">73</property>
                     <property name="height_request">73</property>
                     <property name="visible">True</property>

@@ -59,7 +59,7 @@ class ProfilePage : ScrollWidget, IPage {
   [GtkChild]
   private AspectImage banner_image;
   [GtkChild]
-  private Gtk.Image avatar_image;
+  private AvatarWidget avatar_image;
   [GtkChild]
   private Gtk.Label name_label;
   [GtkChild]
