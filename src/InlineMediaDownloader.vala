@@ -247,11 +247,19 @@ namespace InlineMediaDownloader {
     if(ext.length == 0)
       ext = "png";
 
-    return Dirs.cache (@"assets/media/$(t.id)_$(t.user_id)_$(media.id).$(ext)");
+    int64 id = t.id;
+    if (t.is_retweet)
+      id = t.rt_id;
+
+    return Dirs.cache (@"assets/media/$(id)_$(t.user_id)_$(media.id).$(ext)");
   }
 
   public string get_thumb_path (Tweet t, Media media) {
-    return Dirs.cache (@"assets/media/thumbs/$(t.id)_$(t.user_id)_$(media.id).png");
+    int64 id = t.id;
+    if (t.is_retweet)
+      id = t.rt_id;
+
+    return Dirs.cache (@"assets/media/thumbs/$(id)_$(t.user_id)_$(media.id).png");
   }
 
 }
