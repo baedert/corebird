@@ -299,7 +299,7 @@ public class Tweet : GLib.Object {
   }
 
   public string get_trimmed_text () {
-    return TweetUtils.get_trimmed_text (this.text, urls);
+    return TweetUtils.get_trimmed_text (this.text, urls, this.medias.length);
   }
 
 }

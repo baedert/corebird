@@ -76,7 +76,7 @@ namespace TweetUtils {
   /**
    * Basically the same as get_formatted_text *BUT* it removes pic.twitter.com links.
    */
-  string get_trimmed_text (string tweet_text, GLib.SList<Sequence?> urls) { // {{{
+  string get_trimmed_text (string tweet_text, GLib.SList<Sequence?> urls, int media_count) { // {{{
     string formatted_text = tweet_text;
     int char_diff = 0;
 
@@ -85,7 +85,8 @@ namespace TweetUtils {
       int from = formatted_text.index_of_nth_char (s.start + char_diff);
       int to   = formatted_text.index_of_nth_char (s.end + char_diff);
 
-      if (s.display_url.has_prefix ("pic.twitter.com/")) {
+      if (s.display_url.has_prefix ("pic.twitter.com/") ||
+          (media_count == 1 && InlineMediaDownloader.is_media_candidate (s.url))) {
         formatted_text = formatted_text.splice (from, to, "");
       } else {
         string? title = null;
