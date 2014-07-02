@@ -66,19 +66,7 @@ class TweetInfoPage : IPage , ScrollWidget {
 
   public TweetInfoPage (int id) {
     this.id = id;
-    mm_widget.media_clicked.connect ((media) => {
-      if (media.type == MediaType.IMAGE ||
-          media.type == MediaType.GIF) {
-        var img_dialog = new ImageDialog (main_window, media.path);
-        img_dialog.show_all ();
-      } else if (media.type == MediaType.VINE ||
-                 media.type == MediaType.ANIMATED_GIF) {
-        var vd = new VideoDialog (main_window, media);
-        vd.show_all ();
-      } else {
-        warning ("Unknown media type: %d", media.type);
-      }
-    });
+    mm_widget.media_clicked.connect ((m) => TweetUtils.handle_media_click (m, main_window));
     this.scroll_event.connect ((evt) => {
       if (evt.delta_y < 0 && this.vadjustment.value == 0 && reply_indicator.replies_available) {
         int inc = (int)(vadjustment.step_increment * (-evt.delta_y));

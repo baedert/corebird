@@ -130,7 +130,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
     if (tweet.has_inline_media) {
       mm_widget.set_all_media (tweet.medias);
-      mm_widget.media_clicked.connect (media_button_clicked_cb);
+      mm_widget.media_clicked.connect ((m) => TweetUtils.handle_media_click (m, window));
       mm_widget.window = window;
     } else
       grid.remove (mm_widget);
@@ -171,20 +171,6 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   private void avatar_changed () {
     avatar_image.pixbuf = tweet.avatar;
     avatar_image.queue_draw ();
-  }
-
-  private void media_button_clicked_cb (Media media) {
-    if (media.type == MediaType.IMAGE ||
-        media.type == MediaType.GIF) {
-      var id = new ImageDialog (window, media.path);
-      id.show_all ();
-    } else if (media.type == MediaType.VINE ||
-               media.type == MediaType.ANIMATED_GIF) {
-      var vd = new VideoDialog (window, media);
-      vd.show_all ();
-    } else {
-      warning ("Unknown media type: %d", media.type);
-    }
   }
 
   static construct {
