@@ -11,7 +11,7 @@
         <property name="can_focus">False</property>
 
         <child>
-          <object class="GtkImage" id="avatar_image">
+          <object class="AvatarWidget" id="avatar_image">
             <property name="width_request">48</property>
             <property name="height_request">48</property>
             <property name="visible">True</property>
@@ -82,7 +82,9 @@
           <object class="GtkLabel" id="text_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="margin_top">1</property>
+            <property name="margin_end">6</property>
+            <property name="margin_bottom">4</property>
+            <property name="margin_top">4</property>
             <property name="hexpand">True</property>
             <property name="vexpand">True</property>
             <property name="xalign">0</property>
