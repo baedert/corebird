@@ -20,7 +20,7 @@ class AccountListEntry : Gtk.ListBoxRow {
   [GtkChild]
   private Gtk.Label screen_name_label;
   [GtkChild]
-  private Gtk.Image avatar_image;
+  private AvatarWidget avatar_image;
 
   public string screen_name{
     get { return screen_name_label.label; }
