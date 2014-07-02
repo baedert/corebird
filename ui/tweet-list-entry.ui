@@ -60,7 +60,7 @@
                 <property name="valign">start</property>
                 <property name="margin_end">8</property>
                 <property name="margin_top">4</property>
-                <property name="margin_start">8</property>
+                <property name="margin_start">4</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
