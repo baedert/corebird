@@ -167,7 +167,7 @@ public class MainWindow : Gtk.ApplicationWindow {
   [GtkCallback]
   private void account_row_activated_cb (Gtk.ListBoxRow row) {
     var e = (UserListEntry)row;
-    string screen_name = e.screen_name.substring(1);
+    string screen_name = e.screen_name;
 
     if (screen_name == this.account.screen_name) {
       account_popover.hide ();
@@ -178,7 +178,8 @@ public class MainWindow : Gtk.ApplicationWindow {
     if (acc != null) {
       change_account (acc);
       account_popover.hide ();
-    }
+    } else
+      warning ("account == null");
   }
 
 

@@ -55,7 +55,7 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
   public int64 user_id { get; set; }
 
   public UserListEntry.from_account (Account acc) {
-    this.screen_name = acc.screen_name;
+    this.screen_name = "@" + acc.screen_name;
     this.name = acc.name;
     this.avatar_pixbuf = acc.avatar;
     acc.info_changed.connect ((screen_name, name, avatar) => {
