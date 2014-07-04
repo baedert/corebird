@@ -214,14 +214,14 @@
 
 
           <child>
-            <object class="GtkLabel" id="inline_media_label">
+            <object class="GtkLabel" id="round_avatar_label">
               <property name="visible">True</property>
               <property name="can_focus">False</property>
               <property name="halign">end</property>
               <property name="hexpand">True</property>
-              <property name="label" translatable="yes">Show Inline Media:</property>
+              <property name="label" translatable="yes">Round Avatars:</property>
               <accessibility>
-                <relation type="label-for" target="inline_media_switch"/>
+                <relation type="label-for" target="round_avatar_switch"/>
               </accessibility>
             </object>
             <packing>
@@ -232,13 +232,13 @@
             </packing>
           </child>
           <child>
-            <object class="GtkSwitch" id="inline_media_switch">
+            <object class="GtkSwitch" id="round_avatar_switch">
               <property name="visible">True</property>
               <property name="can_focus">True</property>
               <property name="halign">start</property>
               <property name="hexpand">True</property>
               <accessibility>
-                <relation type="labelled-by" target="inline_media_label"/>
+                <relation type="labelled-by" target="round_avatar_label"/>
               </accessibility>
             </object>
             <packing>

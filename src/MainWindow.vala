@@ -14,7 +14,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 [GtkTemplate (ui = "/org/baedert/corebird/ui/main-window.ui")]
 public class MainWindow : Gtk.ApplicationWindow {
   private const GLib.ActionEntry[] win_entries = {
@@ -25,7 +24,7 @@ public class MainWindow : Gtk.ApplicationWindow {
   [GtkChild]
   private Gtk.HeaderBar headerbar;
   [GtkChild]
-  private Gtk.Image avatar_image;
+  private AvatarWidget avatar_image;
   [GtkChild]
   private Gtk.ListBox account_list;
   [GtkChild]
@@ -42,8 +41,6 @@ public class MainWindow : Gtk.ApplicationWindow {
       return main_widget.cur_page_id;
     }
   }
-
-
 
   public MainWindow(Gtk.Application app, Account? account = null){
     GLib.Object (application: app);

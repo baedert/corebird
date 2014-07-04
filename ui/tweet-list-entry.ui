@@ -52,14 +52,15 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkImage" id="avatar_image">
+              <object class="AvatarWidget" id="avatar_image">
                 <property name="width_request">48</property>
                 <property name="height_request">48</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="valign">start</property>
-                <property name="margin_end">4</property>
-                <property name="margin_top">2</property>
+                <property name="margin_end">8</property>
+                <property name="margin_top">4</property>
+                <property name="margin_start">4</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -149,8 +150,9 @@
               <object class="GtkLabel" id="text_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="margin_end">5</property>
-                <property name="margin_bottom">3</property>
+                <property name="margin_end">6</property>
+                <property name="margin_bottom">4</property>
+                <property name="margin_top">4</property>
                 <property name="hexpand">True</property>
                 <property name="vexpand">True</property>
                 <property name="xalign">0</property>
@@ -173,7 +175,7 @@
                 <property name="no_show_all">True</property>
                 <property name="halign">end</property>
                 <property name="valign">baseline</property>
-                <property name="margin_end">3</property>
+                <property name="margin_end">8</property>
                 <property name="pixel_size">14</property>
                 <property name="icon_name">corebird-retweet-symbolic</property>
                 <property name="icon_size">1</property>

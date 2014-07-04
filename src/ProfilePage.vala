@@ -59,7 +59,7 @@ class ProfilePage : ScrollWidget, IPage {
   [GtkChild]
   private AspectImage banner_image;
   [GtkChild]
-  private Gtk.Image avatar_image;
+  private AvatarWidget avatar_image;
   [GtkChild]
   private Gtk.Label name_label;
   [GtkChild]
@@ -488,6 +488,11 @@ class ProfilePage : ScrollWidget, IPage {
     //tweet_to_menu_item.label = _("Tweet to @%s").printf (screen_name);
     string desc = description;
     if (text_urls != null) {
+      text_urls.sort ((a, b) => {
+        if (a.start < b.start)
+          return -1;
+        return 1;
+      });
       desc = TweetUtils.get_formatted_text (description, text_urls);
     }
     description_label.label = "<big>" + desc + "</big>";

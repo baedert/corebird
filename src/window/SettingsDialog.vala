@@ -28,11 +28,11 @@ class SettingsDialog : Gtk.Window {
   [GtkChild]
   private Gtk.Switch on_new_mentions_switch;
   [GtkChild]
+  private Gtk.Switch round_avatar_switch;
+  [GtkChild]
   private Gtk.Switch on_new_followers_switch;
   [GtkChild]
   private Gtk.Switch on_new_dms_switch;
-  [GtkChild]
-  private Gtk.Switch inline_media_switch;
   [GtkChild]
   private Gtk.Switch dark_theme_switch;
   [GtkChild]
@@ -47,6 +47,8 @@ class SettingsDialog : Gtk.Window {
     this.type_hint   = Gdk.WindowTypeHint.DIALOG;
 
     // Notifications Page
+    Settings.get ().bind ("round-avatars", round_avatar_switch, "active",
+                          SettingsBindFlags.DEFAULT);
     Settings.get ().bind ("new-tweets-notify", on_new_tweets_combobox, "active-id",
                           SettingsBindFlags.DEFAULT);
     Settings.get ().bind ("new-mentions-notify", on_new_mentions_switch, "active",
@@ -57,8 +59,6 @@ class SettingsDialog : Gtk.Window {
                           SettingsBindFlags.DEFAULT);
 
     // Interface page
-    Settings.get ().bind ("show-inline-media", inline_media_switch, "active",
-                          SettingsBindFlags.DEFAULT);
     Settings.get ().bind ("use-dark-theme", dark_theme_switch, "active",
                           SettingsBindFlags.DEFAULT);
     dark_theme_switch.notify["active"].connect (() => {

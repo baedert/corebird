@@ -147,7 +147,7 @@ class SearchPage : IPage, Gtk.Box {
     user_call.set_method ("GET");
     user_call.set_function ("1.1/users/search.json");
     user_call.add_param ("q", this.search_query);
-    user_call.add_param ("count", USER_COUNT.to_string ());
+    user_call.add_param ("count", (USER_COUNT + 1).to_string ());
     user_call.add_param ("include_entities", "false");
     user_call.add_param ("page", user_page.to_string ());
     user_call.invoke_async.begin (null, (obj, res) => {
@@ -191,7 +191,7 @@ class SearchPage : IPage, Gtk.Box {
         entry.user_id = user_obj.get_int_member ("id");
         tweet_list.add (entry);
       });
-      if (users.get_length () >= USER_COUNT) {
+      if (users.get_length () > USER_COUNT) {
         if (load_more_entry.parent == null)
           tweet_list.add (load_more_entry);
       } else {

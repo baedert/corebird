@@ -46,7 +46,7 @@ class DMThreadEntry : Gtk.ListBoxRow {
   [GtkChild]
   private Gtk.Label last_message_label;
   [GtkChild]
-  private Gtk.Image avatar_image;
+  private AvatarWidget avatar_image;
   [GtkChild]
   private Gtk.Label unread_count_label;
   public int64 user_id {public get; private set;}

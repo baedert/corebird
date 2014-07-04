@@ -39,11 +39,6 @@
       <summary>Whether the user should be notified when another user starts following them</summary>
       <description></description>
     </key>
-    <key name="show-inline-media" type="b">
-      <default>true</default>
-      <_summary>Whether inline media should be downloaded/shown directly.</_summary>
-      <_description>Disable this to save some bandwidth</_description>
-    </key>
     <key name="startup-accounts" type="as">
       <default>[""]</default>
       <summary>List of accounts which will be opened when Corebird is started.</summary>
@@ -86,6 +81,8 @@
       <default>"oGrvd6654nWLhzLcJywSW3pltUfkhP4BnraPPVNhHtY"</default>
       <summary>The application's oauth consumer secret</summary>
     </key>
-
+    <key type="b" name="round-avatars">
+      <default>true</default>
+    </key>
   </schema>
 </schemalist>

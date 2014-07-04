@@ -8,6 +8,9 @@
   font-weight: bold;
 }
 
+.avatar {
+  border-color: grey;
+}
 
 .account-button {
   padding: 2px;

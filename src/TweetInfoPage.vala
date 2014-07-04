@@ -38,7 +38,7 @@ class TweetInfoPage : IPage , ScrollWidget {
   [GtkChild]
   private Gtk.Label screen_name_label;
   [GtkChild]
-  private Gtk.Image avatar_image;
+  private AvatarWidget avatar_image;
   [GtkChild]
   private Gtk.Label rt_label;
   [GtkChild]
@@ -66,16 +66,7 @@ class TweetInfoPage : IPage , ScrollWidget {
 
   public TweetInfoPage (int id) {
     this.id = id;
-    mm_widget.media_clicked.connect ((media) => {
-      if (media.type == MediaType.IMAGE) {
-        var imd = new ImageDialog (main_window, media.path);
-        imd.show_all ();
-      } else if (media.type == MediaType.VINE ||
-                 media.type == MediaType.ANIMATED_GIF) {
-        var vd = new VideoDialog (main_window, media);
-        vd.show_all ();
-      }
-    });
+    mm_widget.media_clicked.connect ((m) => TweetUtils.handle_media_click (m, main_window));
     this.scroll_event.connect ((evt) => {
       if (evt.delta_y < 0 && this.vadjustment.value == 0 && reply_indicator.replies_available) {
         int inc = (int)(vadjustment.step_increment * (-evt.delta_y));

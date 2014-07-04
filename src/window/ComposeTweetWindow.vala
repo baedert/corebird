@@ -28,7 +28,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     QUOTE
   }
   [GtkChild]
-  private Gtk.Image avatar_image;
+  private AvatarWidget avatar_image;
   [GtkChild]
   private Gtk.Button add_image_button;
   [GtkChild]

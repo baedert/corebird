@@ -59,6 +59,7 @@ cb_sources = \
 			widgets/UserListsWidget.vala \
 			widgets/ReplyIndicator.vala \
 			widgets/MultiMediaWidget.vala \
+			widgets/AvatarWidget.vala \
 			util/TweetUtils.vala \
 			util/Utils.vala \
 			util/IntHistory.vala \
@@ -108,7 +109,9 @@ corebird_VALAFLAGS = corebird.vapi @CB_VALA_FLAGS@
 main.vala: corebird.vapi corebird.h
 
 
-resources.c: $(top_srcdir)/resources.xml $(top_srcdir)/ui/*.ui
+GRESDEPS = $(top_srcdir)/$1 $(shell $(GLIB_COMPILE_RESOURCES) --generate-dependencies --sourcedir=$(top_srcdir) $(top_srcdir)/$1)
+resource_deps = $(call GRESDEPS,resources.xml)
+resources.c: $(resource_deps)
 	$(GLIB_COMPILE_RESOURCES) $(top_srcdir)/resources.xml --target=resources.c --generate-source --sourcedir=$(top_srcdir)
 
 CLEANFILES = *.h *.c *.o *.stamp resources.c libcorebird.la corebird corebird.vapi corebird.h

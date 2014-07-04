@@ -25,7 +25,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   [GtkChild]
   private Gtk.Label time_delta_label;
   [GtkChild]
-  private Gtk.Image avatar_image;
+  private AvatarWidget avatar_image;
   [GtkChild]
   private Gtk.Label text_label;
   [GtkChild]
@@ -82,7 +82,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     name_button.set_markup (tweet.user_name);
     screen_name_label.label = "@"+tweet.screen_name;
     avatar_image.pixbuf = tweet.avatar;
-    text_label.label = tweet.get_formatted_text ();
+    text_label.label = tweet.get_trimmed_text ();
     update_time_delta ();
     if (tweet.is_retweet) {
       rt_label.show ();
@@ -130,7 +130,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
     if (tweet.has_inline_media) {
       mm_widget.set_all_media (tweet.medias);
-      mm_widget.media_clicked.connect (media_button_clicked_cb);
+      mm_widget.media_clicked.connect ((m) => TweetUtils.handle_media_click (m, window));
       mm_widget.window = window;
     } else
       grid.remove (mm_widget);
@@ -171,20 +171,6 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   private void avatar_changed () {
     avatar_image.pixbuf = tweet.avatar;
     avatar_image.queue_draw ();
-  }
-
-  private void media_button_clicked_cb (Media media) {
-    if (media.type == MediaType.IMAGE ||
-        media.type == MediaType.GIF) {
-      var id = new ImageDialog (window, media.path);
-      id.show_all ();
-    } else if (media.type == MediaType.VINE ||
-               media.type == MediaType.ANIMATED_GIF) {
-      var vd = new VideoDialog (window, media);
-      vd.show_all ();
-    } else {
-      warning ("Unknown media type: %d", media.type);
-    }
   }
 
   static construct {

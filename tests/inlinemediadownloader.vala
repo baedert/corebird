@@ -51,6 +51,11 @@ void media_name () {
   m.url = "http://bla.com/foobar.png";
   path = InlineMediaDownloader.get_media_path (t, m);
   assert (path == Dirs.cache ("assets/media/0_1_5.png"));
+
+  t.is_retweet = true;
+  t.rt_id = 10;
+  path = InlineMediaDownloader.get_media_path (t, m);
+  assert (path == Dirs.cache ("assets/media/10_1_5.png"));
 }
 
 

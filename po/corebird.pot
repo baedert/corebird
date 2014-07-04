@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-21 09:46+0200\n"
+"POT-Creation-Date: 2014-07-02 10:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,9 +23,9 @@ msgstr ""
 
 #: ../src/window/ComposeTweetWindow.vala:278
 #: ../src/window/UserListDialog.vala:44 ../src/window/ImageDialog.vala:111
-#: ../src/widgets/MultiMediaWidget.vala:119 ../ui/compose-window.ui.h:4
+#: ../src/widgets/MultiMediaWidget.vala:131 ../ui/compose-window.ui.h:4
 #: ../ui/remove-account-dialog.ui.h:1 ../ui/list-list-entry.ui.h:1
-#: ../ui/list-statuses-page.ui.h:8 ../ui/modify-filter-dialog.ui.h:1
+#: ../ui/list-statuses-page.ui.h:8 ../ui/modify-filter-dialog.ui.h:2
 msgid "Cancel"
 msgstr ""
 
@@ -34,12 +34,12 @@ msgid "Choose"
 msgstr ""
 
 #: ../src/window/UserListDialog.vala:45 ../src/window/ImageDialog.vala:112
-#: ../src/widgets/MultiMediaWidget.vala:120 ../ui/list-statuses-page.ui.h:6
-#: ../ui/modify-filter-dialog.ui.h:2
+#: ../src/widgets/MultiMediaWidget.vala:132 ../ui/list-statuses-page.ui.h:6
+#: ../ui/modify-filter-dialog.ui.h:3
 msgid "Save"
 msgstr ""
 
-#: ../src/window/ImageDialog.vala:109 ../src/widgets/MultiMediaWidget.vala:117
+#: ../src/window/ImageDialog.vala:109 ../src/widgets/MultiMediaWidget.vala:129
 msgid "Save image"
 msgstr ""
 
@@ -70,15 +70,15 @@ msgstr ""
 msgid "Copy link"
 msgstr ""
 
-#: ../src/widgets/MultiMediaWidget.vala:29
+#: ../src/widgets/MultiMediaWidget.vala:30
 msgid "Copy URL"
 msgstr ""
 
-#: ../src/widgets/MultiMediaWidget.vala:30
+#: ../src/widgets/MultiMediaWidget.vala:31
 msgid "Save Original"
 msgstr ""
 
-#: ../src/widgets/MultiMediaWidget.vala:57 ../src/TweetInfoPage.vala:418
+#: ../src/widgets/MultiMediaWidget.vala:65 ../src/TweetInfoPage.vala:408
 msgid "Open in Browser"
 msgstr ""
 
@@ -101,13 +101,13 @@ msgstr ""
 msgid "Home"
 msgstr ""
 
-#: ../src/DMThreadsPage.vala:358
+#: ../src/DMThreadsPage.vala:361
 #, c-format
 msgid "New direct message from %s"
 msgstr ""
 
-#: ../src/DMThreadsPage.vala:375 ../src/DMThreadsPage.vala:376
-#: ../src/DMThreadsPage.vala:390
+#: ../src/DMThreadsPage.vala:378 ../src/DMThreadsPage.vala:379
+#: ../src/DMThreadsPage.vala:393
 msgid "Direct Messages"
 msgstr ""
 
@@ -117,42 +117,42 @@ msgid "(%d unread)"
 msgstr ""
 
 #: ../src/ListsPage.vala:125 ../src/ListsPage.vala:126
-#: ../src/ListsPage.vala:131 ../ui/profile-page.ui.h:6
+#: ../src/ListsPage.vala:131 ../ui/profile-page.ui.h:8
 msgid "Lists"
 msgstr ""
 
-#: ../src/ProfilePage.vala:293
+#: ../src/ProfilePage.vala:299
 msgid "Protected profile"
 msgstr ""
 
-#: ../src/ProfilePage.vala:475
+#: ../src/ProfilePage.vala:481
 #, c-format
 msgid "Tweet to @%s"
 msgstr ""
 
-#: ../src/ProfilePage.vala:569 ../src/TweetInfoPage.vala:404
+#: ../src/ProfilePage.vala:578 ../src/TweetInfoPage.vala:394
 msgid "Unfollow"
 msgstr ""
 
-#: ../src/ProfilePage.vala:573 ../src/TweetInfoPage.vala:408
+#: ../src/ProfilePage.vala:582 ../src/TweetInfoPage.vala:398
 #: ../ui/tweet-info-page.ui.h:3
 msgid "Follow"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:370
+#: ../src/TweetInfoPage.vala:362
 msgid "Retweets"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:371 ../src/FavoritesTimeline.vala:73
+#: ../src/TweetInfoPage.vala:363 ../src/FavoritesTimeline.vala:73
 #: ../src/FavoritesTimeline.vala:78 ../src/FavoritesTimeline.vala:79
 msgid "Favorites"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:418
+#: ../src/TweetInfoPage.vala:408
 msgid "Source"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:423
+#: ../src/TweetInfoPage.vala:413
 msgid "Tweet Details"
 msgstr ""
 
@@ -228,7 +228,7 @@ msgid "Use Dark Theme:"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:8
-msgid "Show Inline Media:"
+msgid "Round Avatars:"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:9
@@ -408,6 +408,14 @@ msgstr ""
 msgid "Follows you"
 msgstr ""
 
+#: ../ui/profile-page.ui.h:6
+msgid "Followers"
+msgstr ""
+
+#: ../ui/profile-page.ui.h:7
+msgid "Following"
+msgstr ""
+
 #: ../ui/main-window.ui.h:1
 msgid "New tweet"
 msgstr ""
@@ -489,12 +497,8 @@ msgstr ""
 msgid "Public"
 msgstr ""
 
-#: ../data/org.baedert.corebird.gschema.xml.in.h:1
-msgid "Whether inline media should be downloaded/shown directly."
-msgstr ""
-
-#: ../data/org.baedert.corebird.gschema.xml.in.h:2
-msgid "Disable this to save some bandwidth"
+#: ../ui/modify-filter-dialog.ui.h:1
+msgid "Add New Filter"
 msgstr ""
 
 #: ../data/org.baedert.corebird.desktop.in.in.h:1
