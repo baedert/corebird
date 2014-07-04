@@ -175,7 +175,7 @@
                 <property name="no_show_all">True</property>
                 <property name="halign">end</property>
                 <property name="valign">baseline</property>
-                <property name="margin_end">3</property>
+                <property name="margin_end">8</property>
                 <property name="pixel_size">14</property>
                 <property name="icon_name">corebird-retweet-symbolic</property>
                 <property name="icon_size">1</property>
