@@ -67,8 +67,10 @@ class ModifyFilterDialog : Gtk.Dialog {
   [GtkCallback]
   private void regex_entry_changed_cb () {
     try {
-      string sensitivity = (!sensitive_checkbutton.active) ? "(?i)" : "";
-      regex = new GLib.Regex (sensitivity.concat(regex_entry.text));
+      if(!sensitive_checkbutton.active)
+        this.regex = new GLib.Regex (expression, GLib.RegexCompileFlags.CASELESS);
+      else
+        this.regex = new GLib.Regex (expression);
     } catch (GLib.RegexError e) {
       regex_status_label.label = e.message;
       save_button.sensitive = false;

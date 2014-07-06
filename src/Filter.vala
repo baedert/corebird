@@ -26,8 +26,10 @@ public class Filter : GLib.Object {
     this.content = expression;
     this.sensitive = sensitive;
     try {
-      string sensitivity = (!sensitive) ? "(?i)" : "";
-      this.regex = new GLib.Regex (sensitivity.concat(expression));
+      if(!sensitive)
+        this.regex = new GLib.Regex (expression, GLib.RegexCompileFlags.CASELESS);
+      else
+        this.regex = new GLib.Regex (expression);
     } catch (GLib.RegexError e) {
       warning ("Regex error for `%s`: %s", expression, e.message);
     }
@@ -40,8 +42,10 @@ public class Filter : GLib.Object {
    */
   public void reset (string expression) {
     try {
-      string sensitivity = (!sensitive) ? "(?i)" : "";
-      this.regex = new GLib.Regex (sensitivity.concat(expression));
+      if(!sensitive)
+        this.regex = new GLib.Regex (expression, GLib.RegexCompileFlags.CASELESS);
+      else
+        this.regex = new GLib.Regex (expression);
     } catch (GLib.RegexError e) {
       warning ("Regex error for `%s`: %s", expression, e.message);
     }
