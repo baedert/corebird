@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-02 10:08+0200\n"
+"POT-Creation-Date: 2014-07-06 20:11+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,7 +23,7 @@ msgstr ""
 
 #: ../src/window/ComposeTweetWindow.vala:278
 #: ../src/window/UserListDialog.vala:44 ../src/window/ImageDialog.vala:111
-#: ../src/widgets/MultiMediaWidget.vala:131 ../ui/compose-window.ui.h:4
+#: ../src/widgets/MultiMediaWidget.vala:148 ../ui/compose-window.ui.h:4
 #: ../ui/remove-account-dialog.ui.h:1 ../ui/list-list-entry.ui.h:1
 #: ../ui/list-statuses-page.ui.h:8 ../ui/modify-filter-dialog.ui.h:2
 msgid "Cancel"
@@ -34,12 +34,12 @@ msgid "Choose"
 msgstr ""
 
 #: ../src/window/UserListDialog.vala:45 ../src/window/ImageDialog.vala:112
-#: ../src/widgets/MultiMediaWidget.vala:132 ../ui/list-statuses-page.ui.h:6
+#: ../src/widgets/MultiMediaWidget.vala:149 ../ui/list-statuses-page.ui.h:6
 #: ../ui/modify-filter-dialog.ui.h:3
 msgid "Save"
 msgstr ""
 
-#: ../src/window/ImageDialog.vala:109 ../src/widgets/MultiMediaWidget.vala:129
+#: ../src/window/ImageDialog.vala:109 ../src/widgets/MultiMediaWidget.vala:146
 msgid "Save image"
 msgstr ""
 
@@ -70,15 +70,15 @@ msgstr ""
 msgid "Copy link"
 msgstr ""
 
-#: ../src/widgets/MultiMediaWidget.vala:30
+#: ../src/widgets/MultiMediaWidget.vala:33
 msgid "Copy URL"
 msgstr ""
 
-#: ../src/widgets/MultiMediaWidget.vala:31
+#: ../src/widgets/MultiMediaWidget.vala:34
 msgid "Save Original"
 msgstr ""
 
-#: ../src/widgets/MultiMediaWidget.vala:65 ../src/TweetInfoPage.vala:408
+#: ../src/widgets/MultiMediaWidget.vala:70 ../src/TweetInfoPage.vala:408
 msgid "Open in Browser"
 msgstr ""
 
@@ -130,11 +130,11 @@ msgstr ""
 msgid "Tweet to @%s"
 msgstr ""
 
-#: ../src/ProfilePage.vala:578 ../src/TweetInfoPage.vala:394
+#: ../src/ProfilePage.vala:583 ../src/TweetInfoPage.vala:394
 msgid "Unfollow"
 msgstr ""
 
-#: ../src/ProfilePage.vala:582 ../src/TweetInfoPage.vala:398
+#: ../src/ProfilePage.vala:587 ../src/TweetInfoPage.vala:398
 #: ../ui/tweet-info-page.ui.h:3
 msgid "Follow"
 msgstr ""
