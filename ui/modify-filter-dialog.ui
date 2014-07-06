@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
   <template class="ModifyFilterDialog" parent="GtkDialog">
@@ -6,9 +7,9 @@
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Add New Filter</property>
     <property name="modal">True</property>
-    <property name="type_hint">dialog</property>
-    <property name="destroy_with_parent">True</property>
     <property name="default_width">300</property>
+    <property name="destroy_with_parent">True</property>
+    <property name="type_hint">dialog</property>
     <child internal-child="vbox">
       <object class="GtkBox" id="box1">
         <property name="visible">True</property>
@@ -36,11 +37,11 @@
               <object class="GtkButton" id="save_button">
                 <property name="label" translatable="yes">Save</property>
                 <property name="visible">True</property>
+                <property name="sensitive">False</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="sensitive">False</property>
                 <style>
-                  <class name="suggested-action" />
+                  <class name="suggested-action"/>
                 </style>
               </object>
               <packing>
@@ -57,7 +58,6 @@
             <property name="position">0</property>
           </packing>
         </child>
-
         <child>
           <object class="GtkGrid" id="regex_grid">
             <property name="visible">True</property>
@@ -69,13 +69,11 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="Yes">Regular Expression:</property>
+                <property name="label">Keyword or Regex:</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
                 <property name="top_attach">0</property>
-                <property name="width">1</property>
-                <property name="height">1</property>
               </packing>
             </child>
             <child>
@@ -83,36 +81,32 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="hexpand">True</property>
-                <signal name="changed" handler="regex_entry_changed_cb" swapped="false" />
+                <signal name="changed" handler="regex_entry_changed_cb" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">0</property>
                 <property name="top_attach">1</property>
-                <property name="width">1</property>
-                <property name="height">1</property>
               </packing>
             </child>
             <child>
               <object class="GtkLabel" id="label3">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="margin_top">6</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="Yes">Test:</property>
+                <property name="margin_top">6</property>
+                <property name="label">Test:</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
-                <property name="top_attach">2</property>
-                <property name="width">1</property>
-                <property name="height">1</property>
+                <property name="top_attach">3</property>
               </packing>
             </child>
             <child>
               <object class="GtkScrolledWindow" id="scroller">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="shadow_type">in</property>
                 <property name="vexpand">True</property>
+                <property name="shadow_type">in</property>
                 <child>
                   <object class="GtkTextView" id="regex_test_text">
                     <property name="visible">True</property>
@@ -123,9 +117,7 @@
               </object>
               <packing>
                 <property name="left_attach">0</property>
-                <property name="top_attach">3</property>
-                <property name="width">1</property>
-                <property name="height">1</property>
+                <property name="top_attach">4</property>
               </packing>
             </child>
             <child>
@@ -136,12 +128,30 @@
               </object>
               <packing>
                 <property name="left_attach">0</property>
-                <property name="top_attach">4</property>
-                <property name="width">1</property>
-                <property name="height">1</property>
+                <property name="top_attach">5</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkCheckButton" id="sensitive_checkbutton">
+                <property name="label" translatable="yes">Case sensitive</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">False</property>
+                <property name="tooltip_text" translatable="yes">Check if you want this filter to be Case Sensitive.</property>
+                <property name="xalign">0</property>
+                <property name="draw_indicator">True</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">2</property>
               </packing>
             </child>
           </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
         </child>
       </object>
     </child>
