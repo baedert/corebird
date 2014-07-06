@@ -22,7 +22,7 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
   [GtkChild]
   private Gtk.Label screen_name_label;
   [GtkChild]
-  private Gtk.Image avatar_image;
+  private AvatarWidget avatar_image;
 
   public new string name {
     set { name_label.label = value; }

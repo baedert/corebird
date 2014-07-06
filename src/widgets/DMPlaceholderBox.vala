@@ -18,7 +18,7 @@
 [GtkTemplate (ui = "/org/baedert/corebird/ui/dm-placeholder-box.ui")]
 class DMPlaceholderBox : Gtk.Box {
   [GtkChild]
-  private Gtk.Image avatar_image;
+  private AvatarWidget avatar_image;
   [GtkChild]
   private Gtk.Label name_label;
   [GtkChild]
