@@ -145,6 +145,7 @@ public class MainWindow : Gtk.ApplicationWindow {
     main_widget = new MainWidget (account, this, (Corebird)this.application);
     main_widget.show_all ();
     this.add (main_widget);
+    this.set_title (main_widget.get_page (0).get_title ());
     avatar_image.pixbuf = account.avatar_small;
     account.notify["avatar_small"].connect(() => {
       avatar_image.pixbuf = account.avatar_small;
