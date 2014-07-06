@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 on Thu Oct 31 22:00:33 2013 -->
 <interface>
-  <!-- interface-requires gtk+ 3.10 -->
   <template class="DMPlaceholderBox" parent="GtkBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -9,7 +7,7 @@
     <property name="margin_top">60</property>
     <property name="orientation">vertical</property>
     <child>
-      <object class="GtkImage" id="avatar_image">
+      <object class="AvatarWidget" id="avatar_image">
         <property name="width_request">48</property>
         <property name="height_request">48</property>
         <property name="visible">True</property>
