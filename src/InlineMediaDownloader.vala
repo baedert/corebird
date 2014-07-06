@@ -169,7 +169,14 @@ namespace InlineMediaDownloader {
         media.invalid = true;
         media.finished_loading ();
         session.cancel_message (msg, Soup.Status.CANCELLED);
+      } else {
+        media.length = content_length;
       }
+    });
+
+    msg.got_chunk.connect ((buf) => {
+      double percent = (double) buf.length / (double) media.length;
+      media.percent_loaded += percent;
     });
 
 
