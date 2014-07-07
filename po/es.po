@@ -1,46 +1,46 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
-# Keops1984 <nosfe1984@gmail.com>, 2014
+# Jose Manuel Calero Gonzalez <nosfe1984@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-18 10:12+0200\n"
-"PO-Revision-Date: 2014-04-05 07:28+0000\n"
-"Last-Translator: Keops1984 <nosfe1984@gmail.com>\n"
-"Language-Team: Spanish (http://www.transifex.com/projects/p/corebird/"
-"language/es/)\n"
-"Language: es\n"
+"POT-Creation-Date: 2014-07-02 10:08+0200\n"
+"PO-Revision-Date: 2014-07-02 09:00+0000\n"
+"Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
+"Language-Team: Spanish (http://www.transifex.com/projects/p/corebird/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../src/window/ComposeTweetWindow.vala:278 ../ui/compose-window.ui.h:3
+#: ../src/window/ComposeTweetWindow.vala:277 ../ui/compose-window.ui.h:3
 msgid "Select Image"
 msgstr "Seleccionar Imagen"
 
-#: ../src/window/ComposeTweetWindow.vala:279
-#: ../src/window/UserListDialog.vala:44 ../src/window/ImageDialog.vala:112
-#: ../ui/compose-window.ui.h:4 ../ui/remove-account-dialog.ui.h:1
-#: ../ui/list-list-entry.ui.h:1 ../ui/list-statuses-page.ui.h:8
-#: ../ui/modify-filter-dialog.ui.h:1
+#: ../src/window/ComposeTweetWindow.vala:278
+#: ../src/window/UserListDialog.vala:44 ../src/window/ImageDialog.vala:111
+#: ../src/widgets/MultiMediaWidget.vala:131 ../ui/compose-window.ui.h:4
+#: ../ui/remove-account-dialog.ui.h:1 ../ui/list-list-entry.ui.h:1
+#: ../ui/list-statuses-page.ui.h:8 ../ui/modify-filter-dialog.ui.h:2
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: ../src/window/ComposeTweetWindow.vala:280
+#: ../src/window/ComposeTweetWindow.vala:279
 msgid "Choose"
 msgstr "Elegir"
 
-#: ../src/window/UserListDialog.vala:45 ../src/window/ImageDialog.vala:113
-#: ../ui/list-statuses-page.ui.h:6 ../ui/modify-filter-dialog.ui.h:2
+#: ../src/window/UserListDialog.vala:45 ../src/window/ImageDialog.vala:112
+#: ../src/widgets/MultiMediaWidget.vala:132 ../ui/list-statuses-page.ui.h:6
+#: ../ui/modify-filter-dialog.ui.h:3
 msgid "Save"
 msgstr "Guardar"
 
-#: ../src/window/ImageDialog.vala:110
+#: ../src/window/ImageDialog.vala:109 ../src/widgets/MultiMediaWidget.vala:129
 msgid "Save image"
 msgstr "Guardar imagen"
 
@@ -56,14 +56,14 @@ msgstr ""
 msgid "No entries found"
 msgstr "No se han encontrado entradas"
 
-#: ../src/widgets/AccountCreateWidget.vala:47
+#: ../src/widgets/AccountCreateWidget.vala:45
 msgid ""
-"Unauthorized. Most of the time, this means that there's something wrong with "
-"the Twitter servers and you should try again later"
+"Unauthorized. Most of the time, this means that there's something wrong with"
+" the Twitter servers and you should try again later"
 msgstr ""
 
 #. We just assume that it was the wrong code
-#: ../src/widgets/AccountCreateWidget.vala:64
+#: ../src/widgets/AccountCreateWidget.vala:62
 msgid "Wrong PIN"
 msgstr "Pin Erroneo"
 
@@ -71,77 +71,90 @@ msgstr "Pin Erroneo"
 msgid "Copy link"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:94
+#: ../src/widgets/MultiMediaWidget.vala:30
+msgid "Copy URL"
+msgstr ""
+
+#: ../src/widgets/MultiMediaWidget.vala:31
+msgid "Save Original"
+msgstr ""
+
+#: ../src/widgets/MultiMediaWidget.vala:65 ../src/TweetInfoPage.vala:408
+msgid "Open in Browser"
+msgstr "Abrir en navegador"
+
+#: ../src/HomeTimeline.vala:92
 #, c-format
 msgid "%d new Tweets!"
 msgstr "%d Nuevos Tuits"
 
-#: ../src/HomeTimeline.vala:104
+#: ../src/HomeTimeline.vala:102
 #, c-format
 msgid "%s retweeted %s"
 msgstr "%s retuiteado %s"
 
-#: ../src/HomeTimeline.vala:106
+#: ../src/HomeTimeline.vala:104
 #, c-format
 msgid "%s tweeted"
 msgstr "%s tuiteado"
 
-#: ../src/HomeTimeline.vala:133 ../src/HomeTimeline.vala:134
+#: ../src/HomeTimeline.vala:134 ../src/HomeTimeline.vala:135
 msgid "Home"
 msgstr "Inicio"
 
 #: ../src/DMThreadsPage.vala:361
-#, fuzzy, c-format
+#, c-format
 msgid "New direct message from %s"
-msgstr "Nuevo mensaje directo!"
+msgstr ""
 
 #: ../src/DMThreadsPage.vala:378 ../src/DMThreadsPage.vala:379
+#: ../src/DMThreadsPage.vala:393
 msgid "Direct Messages"
 msgstr "Mensajes directos"
 
-#: ../src/list/DMThreadEntry.vala:98
+#: ../src/list/DMThreadEntry.vala:97
 #, c-format
 msgid "(%d unread)"
 msgstr "(%d sin leer)"
 
-#: ../src/ListsPage.vala:127 ../src/ListsPage.vala:128
-#: ../ui/profile-page.ui.h:6
+#: ../src/ListsPage.vala:125 ../src/ListsPage.vala:126
+#: ../src/ListsPage.vala:131 ../ui/profile-page.ui.h:8
 msgid "Lists"
 msgstr "Listas"
 
-#: ../src/ProfilePage.vala:275
+#: ../src/ProfilePage.vala:299
 msgid "Protected profile"
 msgstr "perfil protegido"
 
-#: ../src/ProfilePage.vala:457
+#: ../src/ProfilePage.vala:481
 #, c-format
 msgid "Tweet to @%s"
 msgstr ""
 
-#: ../src/ProfilePage.vala:586 ../src/TweetInfoPage.vala:403
+#: ../src/ProfilePage.vala:578 ../src/TweetInfoPage.vala:394
 msgid "Unfollow"
 msgstr "Dejar de seguir"
 
-#: ../src/ProfilePage.vala:590 ../src/TweetInfoPage.vala:407
+#: ../src/ProfilePage.vala:582 ../src/TweetInfoPage.vala:398
 #: ../ui/tweet-info-page.ui.h:3
 msgid "Follow"
 msgstr "Seguir"
 
-#: ../src/TweetInfoPage.vala:370
+#: ../src/TweetInfoPage.vala:362
 msgid "Retweets"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:371 ../src/FavoritesTimeline.vala:74
-#: ../src/FavoritesTimeline.vala:75
+#: ../src/TweetInfoPage.vala:363 ../src/FavoritesTimeline.vala:73
+#: ../src/FavoritesTimeline.vala:78 ../src/FavoritesTimeline.vala:79
 msgid "Favorites"
 msgstr "Favoritos"
 
-#: ../src/TweetInfoPage.vala:417
-msgid "Open in Browser"
+#: ../src/TweetInfoPage.vala:408
+msgid "Source"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:417
-msgid "Source"
+#: ../src/TweetInfoPage.vala:413
+msgid "Tweet Details"
 msgstr ""
 
 #: ../src/util/Utils.vala:69
@@ -158,27 +171,36 @@ msgstr "%dm"
 msgid "%dh"
 msgstr "%dh"
 
-#: ../src/SearchPage.vala:260 ../src/SearchPage.vala:261
-#: ../ui/search-page.ui.h:1
+#: ../src/SearchPage.vala:259 ../src/SearchPage.vala:260
+#: ../src/SearchPage.vala:269 ../ui/search-page.ui.h:1
 msgid "Search"
 msgstr "Buscar"
 
-#: ../src/Corebird.vala:151
+#: ../src/Corebird.vala:153
 msgid "Open Account"
-msgstr ""
+msgstr "Abrir Cuenta"
 
-#: ../src/MentionsTimeline.vala:94
+#: ../src/MentionsTimeline.vala:92
 #, c-format
 msgid "New Mention from @%s"
 msgstr ""
 
-#: ../src/MentionsTimeline.vala:129 ../src/MentionsTimeline.vala:130
+#: ../src/MentionsTimeline.vala:125 ../src/MentionsTimeline.vala:131
+#: ../src/MentionsTimeline.vala:132
 msgid "Mentions"
 msgstr "Menciones"
 
+#: ../src/DMPage.vala:232
+msgid "Direct Conversation"
+msgstr ""
+
+#: ../src/ListStatusesPage.vala:379
+msgid "List"
+msgstr ""
+
 #: ../ui/settings-dialog.ui.h:1 ../ui/menu.ui.h:1
 msgid "Settings"
-msgstr ""
+msgstr "Preferencias"
 
 #: ../ui/settings-dialog.ui.h:2
 msgid "Add new account"
@@ -196,7 +218,7 @@ msgstr ""
 
 #: ../ui/settings-dialog.ui.h:5
 msgid "Accounts"
-msgstr ""
+msgstr "Cuentas"
 
 #: ../ui/settings-dialog.ui.h:6
 msgid "Main Window"
@@ -204,10 +226,10 @@ msgstr ""
 
 #: ../ui/settings-dialog.ui.h:7
 msgid "Use Dark Theme:"
-msgstr ""
+msgstr "Usar Tema Oscuro"
 
 #: ../ui/settings-dialog.ui.h:8
-msgid "Show Inline Media:"
+msgid "Round Avatars:"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:9
@@ -224,7 +246,7 @@ msgstr ""
 
 #: ../ui/settings-dialog.ui.h:12
 msgid "Interface"
-msgstr ""
+msgstr "Interfaz"
 
 #: ../ui/settings-dialog.ui.h:13
 msgid "On New Tweets:"
@@ -272,15 +294,15 @@ msgstr ""
 
 #: ../ui/settings-dialog.ui.h:24
 msgid "Notifications"
-msgstr ""
+msgstr "Notificaciones"
 
 #: ../ui/menu.ui.h:2
 msgid "About"
-msgstr ""
+msgstr "Acerca de"
 
 #: ../ui/menu.ui.h:3
 msgid "Quit"
-msgstr ""
+msgstr "Salir"
 
 #: ../ui/user-lists-widget.ui.h:1
 msgid "Created"
@@ -361,7 +383,7 @@ msgstr "Crear"
 
 #: ../ui/search-page.ui.h:2 ../ui/profile-page.ui.h:5
 msgid "Tweets"
-msgstr ""
+msgstr "Tuits"
 
 #: ../ui/search-page.ui.h:3 ../ui/filter-page.ui.h:1
 msgid "Users"
@@ -373,7 +395,7 @@ msgstr ""
 
 #: ../ui/compose-window.ui.h:2
 msgid "Attach Image"
-msgstr ""
+msgstr "Añadir imagen"
 
 #: ../ui/profile-page.ui.h:2
 msgid "Add to/Remove from List"
@@ -385,6 +407,14 @@ msgstr ""
 
 #: ../ui/profile-page.ui.h:4
 msgid "Follows you"
+msgstr ""
+
+#: ../ui/profile-page.ui.h:6
+msgid "Followers"
+msgstr ""
+
+#: ../ui/profile-page.ui.h:7
+msgid "Following"
 msgstr ""
 
 #: ../ui/main-window.ui.h:1
@@ -468,17 +498,13 @@ msgstr "Privado"
 msgid "Public"
 msgstr "Publico"
 
-#: ../data/org.baedert.corebird.gschema.xml.in.h:1
-msgid "Whether inline media should be downloaded/shown directly."
-msgstr ""
-
-#: ../data/org.baedert.corebird.gschema.xml.in.h:2
-msgid "Disable this to save some bandwidth"
+#: ../ui/modify-filter-dialog.ui.h:1
+msgid "Add New Filter"
 msgstr ""
 
 #: ../data/org.baedert.corebird.desktop.in.in.h:1
 msgid "Twitter Client"
-msgstr ""
+msgstr "Cliente Twitter"
 
 #: ../data/corebird.appdata.xml.in.h:1
 msgid ""
