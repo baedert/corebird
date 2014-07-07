@@ -1,152 +1,163 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # baedert <mail@baedert.org>, 2014
-# Nothing4You <mail@w.tf-w.tf>, 2014
+# Richard Schwab <mail@w.tf-w.tf>, 2014
 # encbladexp <service+transifex@stefan-betz.net>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-18 10:12+0200\n"
-"PO-Revision-Date: 2014-04-04 20:24+0000\n"
+"POT-Creation-Date: 2014-07-02 10:08+0200\n"
+"PO-Revision-Date: 2014-07-07 08:27+0000\n"
 "Last-Translator: baedert <mail@baedert.org>\n"
-"Language-Team: German (http://www.transifex.com/projects/p/corebird/language/"
-"de/)\n"
-"Language: de\n"
+"Language-Team: German (http://www.transifex.com/projects/p/corebird/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../src/window/ComposeTweetWindow.vala:278 ../ui/compose-window.ui.h:3
+#: ../src/window/ComposeTweetWindow.vala:277 ../ui/compose-window.ui.h:3
 msgid "Select Image"
 msgstr "Bild auswählen"
 
-#: ../src/window/ComposeTweetWindow.vala:279
-#: ../src/window/UserListDialog.vala:44 ../src/window/ImageDialog.vala:112
-#: ../ui/compose-window.ui.h:4 ../ui/remove-account-dialog.ui.h:1
-#: ../ui/list-list-entry.ui.h:1 ../ui/list-statuses-page.ui.h:8
-#: ../ui/modify-filter-dialog.ui.h:1
+#: ../src/window/ComposeTweetWindow.vala:278
+#: ../src/window/UserListDialog.vala:44 ../src/window/ImageDialog.vala:111
+#: ../src/widgets/MultiMediaWidget.vala:131 ../ui/compose-window.ui.h:4
+#: ../ui/remove-account-dialog.ui.h:1 ../ui/list-list-entry.ui.h:1
+#: ../ui/list-statuses-page.ui.h:8 ../ui/modify-filter-dialog.ui.h:2
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: ../src/window/ComposeTweetWindow.vala:280
+#: ../src/window/ComposeTweetWindow.vala:279
 msgid "Choose"
 msgstr "Auswählen"
 
-#: ../src/window/UserListDialog.vala:45 ../src/window/ImageDialog.vala:113
-#: ../ui/list-statuses-page.ui.h:6 ../ui/modify-filter-dialog.ui.h:2
+#: ../src/window/UserListDialog.vala:45 ../src/window/ImageDialog.vala:112
+#: ../src/widgets/MultiMediaWidget.vala:132 ../ui/list-statuses-page.ui.h:6
+#: ../ui/modify-filter-dialog.ui.h:3
 msgid "Save"
 msgstr "Speichern"
 
-#: ../src/window/ImageDialog.vala:110
+#: ../src/window/ImageDialog.vala:109 ../src/widgets/MultiMediaWidget.vala:129
 msgid "Save image"
 msgstr "Bild speichern"
 
 #: ../src/window/ModifyFilterDialog.vala:74
 msgid "Matches"
-msgstr ""
+msgstr "Passt"
 
 #: ../src/window/ModifyFilterDialog.vala:76
 msgid "Doesn't match"
-msgstr ""
+msgstr "Passt nicht"
 
 #: ../src/widgets/TweetListBox.vala:44 ../src/widgets/TweetListBox.vala:79
 msgid "No entries found"
 msgstr "Keine Einträge gefunden"
 
-#: ../src/widgets/AccountCreateWidget.vala:47
+#: ../src/widgets/AccountCreateWidget.vala:45
 msgid ""
-"Unauthorized. Most of the time, this means that there's something wrong with "
-"the Twitter servers and you should try again later"
-msgstr ""
-"Unautorisiert. Meinstens bedeutet dies dass es ein Problem mit den Twitter "
-"servern gibt und es später erneut versucht werden sollte."
+"Unauthorized. Most of the time, this means that there's something wrong with"
+" the Twitter servers and you should try again later"
+msgstr "Unautorisiert. Meinstens bedeutet dies dass es ein Problem mit den Twitter servern gibt und es später erneut versucht werden sollte."
 
 #. We just assume that it was the wrong code
-#: ../src/widgets/AccountCreateWidget.vala:64
+#: ../src/widgets/AccountCreateWidget.vala:62
 msgid "Wrong PIN"
 msgstr "Falsche PIN"
 
 #: ../src/widgets/PixbufButton.vala:41
 msgid "Copy link"
-msgstr ""
+msgstr "Kopiere Link"
 
-#: ../src/HomeTimeline.vala:94
+#: ../src/widgets/MultiMediaWidget.vala:30
+msgid "Copy URL"
+msgstr "Kopiere URL"
+
+#: ../src/widgets/MultiMediaWidget.vala:31
+msgid "Save Original"
+msgstr "Speichere Original"
+
+#: ../src/widgets/MultiMediaWidget.vala:65 ../src/TweetInfoPage.vala:408
+msgid "Open in Browser"
+msgstr "Im Browser öffnen"
+
+#: ../src/HomeTimeline.vala:92
 #, c-format
 msgid "%d new Tweets!"
 msgstr "%d neue Tweets!"
 
-#: ../src/HomeTimeline.vala:104
+#: ../src/HomeTimeline.vala:102
 #, c-format
 msgid "%s retweeted %s"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:106
+#: ../src/HomeTimeline.vala:104
 #, c-format
 msgid "%s tweeted"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:133 ../src/HomeTimeline.vala:134
+#: ../src/HomeTimeline.vala:134 ../src/HomeTimeline.vala:135
 msgid "Home"
 msgstr "Timeline"
 
 #: ../src/DMThreadsPage.vala:361
-#, fuzzy, c-format
+#, c-format
 msgid "New direct message from %s"
-msgstr "Neue Direktnachricht!"
+msgstr "Neue Direktnachricht von %s"
 
 #: ../src/DMThreadsPage.vala:378 ../src/DMThreadsPage.vala:379
+#: ../src/DMThreadsPage.vala:393
 msgid "Direct Messages"
 msgstr "Direktnachrichten"
 
-#: ../src/list/DMThreadEntry.vala:98
+#: ../src/list/DMThreadEntry.vala:97
 #, c-format
 msgid "(%d unread)"
 msgstr "(%d ungelesen)"
 
-#: ../src/ListsPage.vala:127 ../src/ListsPage.vala:128
-#: ../ui/profile-page.ui.h:6
+#: ../src/ListsPage.vala:125 ../src/ListsPage.vala:126
+#: ../src/ListsPage.vala:131 ../ui/profile-page.ui.h:8
 msgid "Lists"
 msgstr "Listen"
 
-#: ../src/ProfilePage.vala:275
+#: ../src/ProfilePage.vala:299
 msgid "Protected profile"
 msgstr "Geschütztes Profil"
 
-#: ../src/ProfilePage.vala:457
+#: ../src/ProfilePage.vala:481
 #, c-format
 msgid "Tweet to @%s"
 msgstr "Tweet an @%s"
 
-#: ../src/ProfilePage.vala:586 ../src/TweetInfoPage.vala:403
+#: ../src/ProfilePage.vala:578 ../src/TweetInfoPage.vala:394
 msgid "Unfollow"
 msgstr "Entfolgen"
 
-#: ../src/ProfilePage.vala:590 ../src/TweetInfoPage.vala:407
+#: ../src/ProfilePage.vala:582 ../src/TweetInfoPage.vala:398
 #: ../ui/tweet-info-page.ui.h:3
 msgid "Follow"
 msgstr "Folgen"
 
-#: ../src/TweetInfoPage.vala:370
+#: ../src/TweetInfoPage.vala:362
 msgid "Retweets"
 msgstr "Retweets"
 
-#: ../src/TweetInfoPage.vala:371 ../src/FavoritesTimeline.vala:74
-#: ../src/FavoritesTimeline.vala:75
+#: ../src/TweetInfoPage.vala:363 ../src/FavoritesTimeline.vala:73
+#: ../src/FavoritesTimeline.vala:78 ../src/FavoritesTimeline.vala:79
 msgid "Favorites"
 msgstr "Favoriten"
 
-#: ../src/TweetInfoPage.vala:417
-msgid "Open in Browser"
-msgstr "Im Browser öffnen"
-
-#: ../src/TweetInfoPage.vala:417
+#: ../src/TweetInfoPage.vala:408
 msgid "Source"
 msgstr "Quelle"
+
+#: ../src/TweetInfoPage.vala:413
+msgid "Tweet Details"
+msgstr "Tweet Details"
 
 #: ../src/util/Utils.vala:69
 msgid "Now"
@@ -162,23 +173,32 @@ msgstr "%dM"
 msgid "%dh"
 msgstr "%dS"
 
-#: ../src/SearchPage.vala:260 ../src/SearchPage.vala:261
-#: ../ui/search-page.ui.h:1
+#: ../src/SearchPage.vala:259 ../src/SearchPage.vala:260
+#: ../src/SearchPage.vala:269 ../ui/search-page.ui.h:1
 msgid "Search"
 msgstr "Suchen"
 
-#: ../src/Corebird.vala:151
+#: ../src/Corebird.vala:153
 msgid "Open Account"
 msgstr "Account öffnen"
 
-#: ../src/MentionsTimeline.vala:94
-#, fuzzy, c-format
+#: ../src/MentionsTimeline.vala:92
+#, c-format
 msgid "New Mention from @%s"
 msgstr "Neue Erwähnung von %s"
 
-#: ../src/MentionsTimeline.vala:129 ../src/MentionsTimeline.vala:130
+#: ../src/MentionsTimeline.vala:125 ../src/MentionsTimeline.vala:131
+#: ../src/MentionsTimeline.vala:132
 msgid "Mentions"
 msgstr "Erwähnungen"
+
+#: ../src/DMPage.vala:232
+msgid "Direct Conversation"
+msgstr "Konversation"
+
+#: ../src/ListStatusesPage.vala:379
+msgid "List"
+msgstr "Liste"
 
 #: ../ui/settings-dialog.ui.h:1 ../ui/menu.ui.h:1
 msgid "Settings"
@@ -196,9 +216,7 @@ msgstr "Ausgewählten Account entfernen"
 msgid ""
 "You have not yet configured any account. To do so, click on the appropriate "
 "button on the left."
-msgstr ""
-"Du hast noch keinen Account konfiguriert. Klicke links auf den "
-"entsprechenden Button um dies zu tun."
+msgstr "Du hast noch keinen Account konfiguriert. Klicke links auf den entsprechenden Button um dies zu tun."
 
 #: ../ui/settings-dialog.ui.h:5
 msgid "Accounts"
@@ -213,8 +231,8 @@ msgid "Use Dark Theme:"
 msgstr "Dunkles Thema nutzen:"
 
 #: ../ui/settings-dialog.ui.h:8
-msgid "Show Inline Media:"
-msgstr "Inlinemedien anzeigen:"
+msgid "Round Avatars:"
+msgstr "Runde Avatare:"
 
 #: ../ui/settings-dialog.ui.h:9
 msgid "Maximum media size:"
@@ -393,6 +411,14 @@ msgstr "Blockiert"
 msgid "Follows you"
 msgstr "Folgt dir"
 
+#: ../ui/profile-page.ui.h:6
+msgid "Followers"
+msgstr "Followers"
+
+#: ../ui/profile-page.ui.h:7
+msgid "Following"
+msgstr "Folgt"
+
 #: ../ui/main-window.ui.h:1
 msgid "New tweet"
 msgstr "Neuer Tweet"
@@ -474,17 +500,13 @@ msgstr "Privat"
 msgid "Public"
 msgstr "Öffentlich"
 
-#: ../data/org.baedert.corebird.gschema.xml.in.h:1
-msgid "Whether inline media should be downloaded/shown directly."
-msgstr "Integrierte Medien herunterladen oder direkt anzeigen."
-
-#: ../data/org.baedert.corebird.gschema.xml.in.h:2
-msgid "Disable this to save some bandwidth"
-msgstr "Deaktivieren um etwas Bandbreite zu sparen"
+#: ../ui/modify-filter-dialog.ui.h:1
+msgid "Add New Filter"
+msgstr "Neuen Filter Hinzufügen"
 
 #: ../data/org.baedert.corebird.desktop.in.in.h:1
 msgid "Twitter Client"
-msgstr ""
+msgstr "Twitter Client"
 
 #: ../data/corebird.appdata.xml.in.h:1
 msgid ""
@@ -497,55 +519,3 @@ msgid ""
 "Additional features include the abilty to change to the GTK+ dark theme, "
 "searching and media uploads."
 msgstr ""
-
-#~ msgid "Accelerator to press in order to show/hide the sidebar"
-#~ msgstr "Tastenkombination um die Seitenleiste ein-/auszublenden"
-
-#~ msgid "Add new Filter"
-#~ msgstr "Neuen Filter hinzufügen"
-
-#~ msgid "Filters"
-#~ msgstr "Filter"
-
-#~ msgid "If/when the user should be notified about new tweets"
-#~ msgstr "Ob/wann der Benutzer über neue Tweets benachrichtigt werden soll"
-
-#~ msgid "List of accounts which will be opened when Corebird is started."
-#~ msgstr "Liste der Accounts, die beim Start von Corebird geöffnet werden."
-
-#~ msgid "Maximum size of inline media to download, in Megabytes."
-#~ msgstr "Maximalgröße der zu herunterladenden Inlinemedien, in Megabyte."
-
-#~ msgid "Size and position of the settings dialog"
-#~ msgstr "Größe und Position des Einstellungsdialogs"
-
-#~ msgid ""
-#~ "Specifies if Corebird should request to use the dark variant of the gtk "
-#~ "theme"
-#~ msgstr ""
-#~ "Gibt an ob Corebird die dunkle Variante vom GTK Thema verwenden soll."
-
-#~ msgid ""
-#~ "The accelerator to press in order to bring the ComposeTweetWindow up. "
-#~ "Must be parseable with gtk_accelerator_parse"
-#~ msgstr ""
-#~ "Tastenkombination um einen neuen Tweet zu erstellen. Wird mit "
-#~ "gtk_accelerator_parse geparst."
-
-#~ msgid ""
-#~ "Whether the user should be notified when another user mentions them in a "
-#~ "tweet"
-#~ msgstr "Benachrichtigung wenn dieser Account in einem Tweet erwähnt wird."
-
-#~ msgid ""
-#~ "Whether the user should be notified when another user starts following "
-#~ "them"
-#~ msgstr "Benachrichtigung bei neuen Followern."
-
-#~ msgid ""
-#~ "Whether the user should be notified when another user writes them a "
-#~ "direct message"
-#~ msgstr "Benachrichtigung bei neuen Direktnachrichten."
-
-#~ msgid "Whether to show the sidebar or not"
-#~ msgstr "Sidebar anzeigen"
