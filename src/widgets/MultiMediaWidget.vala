@@ -82,14 +82,27 @@ private class MediaButton : Gtk.Button {
 
 
     /* Draw thumbnail */
-    if (media != null && media.thumbnail != null && media.loaded) {    ct.save ();
-    ct.rectangle (0, 0, widget_width, widget_height);
+    if (media != null && media.thumbnail != null && media.loaded) {
+      ct.save ();
+      ct.rectangle (0, 0, widget_width, widget_height);
 
       double scale = (double)widget_width / media.thumbnail.get_width ();
       ct.scale (scale, 1);
-      Gdk.cairo_set_source_pixbuf (ct, media.thumbnail, 0, 0);    ct.fill ();
-    ct.restore ();
+      Gdk.cairo_set_source_pixbuf (ct, media.thumbnail, 0, 0);
+      ct.fill ();
+      ct.restore ();
 
+      /* Draw play indicator */
+      if (media.type == MediaType.VINE ||
+          media.type == MediaType.ANIMATED_GIF ||
+          media.type == MediaType.GIF) {
+       int x = (widget_width  / 2) - (play_icon.get_width ()  / 2);
+       int y = (widget_height / 2) - (play_icon.get_height () / 2);
+       ct.rectangle (x, y,
+                     play_icon.get_width (), play_icon.get_height ());
+       Gdk.cairo_set_source_pixbuf (ct, play_icon, x, y);
+       ct.fill ();
+      }
     } else {
       var sc = this.get_style_context ();
       double layout_x, layout_y;
@@ -100,19 +113,6 @@ private class MediaButton : Gtk.Button {
       layout_y = (widget_height / 2.0) - (layout_h / Pango.SCALE / 2.0);
       sc.render_layout (ct, layout_x, layout_y, layout);
     }
-
-
-   /* Draw play indicator */
-   if (media != null && (this.media.type == MediaType.VINE ||
-                         this.media.type == MediaType.ANIMATED_GIF ||
-                         this.media.type == MediaType.GIF)) {
-     int x = (widget_width  / 2) - (play_icon.get_width ()  / 2);
-     int y = (widget_height / 2) - (play_icon.get_height () / 2);
-     ct.rectangle (x, y,
-                   play_icon.get_width (), play_icon.get_height ());
-     Gdk.cairo_set_source_pixbuf (ct, play_icon, x, y);
-     ct.fill ();
-   }
 
     return base.draw (ct);
   }
