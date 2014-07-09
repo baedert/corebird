@@ -34,11 +34,6 @@
       <summary>Whether the user should be notified when another user writes them a direct message</summary>
       <description></description>
     </key>
-    <key name="new-followers-notify" type="b">
-      <default>true</default>
-      <summary>Whether the user should be notified when another user starts following them</summary>
-      <description></description>
-    </key>
     <key name="startup-accounts" type="as">
       <default>[""]</default>
       <summary>List of accounts which will be opened when Corebird is started.</summary>
