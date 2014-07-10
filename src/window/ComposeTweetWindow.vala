@@ -70,15 +70,20 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     tweet_text.buffer.notify["cursor-position"].connect (cursor_changed_cb);
     tweet_text.buffer.changed.connect (buffer_changed_cb);
     tweet_text.focus_out_event.connect (completion_window_focus_out_cb);
+
+    /* Your theme uses a wildcard for :link, right? */
+    var style_context = this.get_style_context ();
+    Gdk.RGBA link_color = style_context.get_color (Gtk.StateFlags.LINK);
+
     tweet_text.buffer.create_tag ("link",
-                                  "foreground",
-                                  "blue", null);
+                                  "foreground_rgba",
+                                  link_color, null);
     tweet_text.buffer.create_tag ("mention",
-                                  "foreground",
-                                  "blue", null);
+                                  "foreground_rgba",
+                                  link_color, null);
     tweet_text.buffer.create_tag ("hashtag",
-                                  "foreground",
-                                  "blue", null);
+                                  "foreground_rgba",
+                                  link_color, null);
 
     completion_window.set_attached_to (tweet_text);
     completion_window.set_screen (tweet_text.get_screen ());
