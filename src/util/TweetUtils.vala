@@ -432,7 +432,79 @@ namespace TweetUtils {
     return false;
   }
 
+  public bool is_mention (string word) {
+    return word.has_prefix ("@") && word.length > 1;
+  }
+
+  public bool is_hashtag (string word) {
+    return word.has_prefix ("#") && word.length > 1;
+  }
 
 
+  private void highlight_link (Gtk.TextBuffer buffer,
+                               Gtk.TextIter? word_start,
+                               Gtk.TextIter? word_end) {
+    buffer.apply_tag_by_name ("link", word_start, word_end);
+  }
+
+  private void highlight_mention (Gtk.TextBuffer buffer,
+                                  Gtk.TextIter? word_start,
+                                  Gtk.TextIter? word_end) {
+    buffer.apply_tag_by_name ("mention", word_start, word_end);
+  }
+
+  private void highlight_hashtag (Gtk.TextBuffer buffer,
+                                  Gtk.TextIter? word_start,
+                                  Gtk.TextIter? word_end) {
+    buffer.apply_tag_by_name ("hashtag", word_start, word_end);
+  }
+
+
+  public void annotate_text (Gtk.TextBuffer buffer) {
+    Gtk.TextIter? start_iter;
+    Gtk.TextIter? cur_iter;
+    Gtk.TextIter? word_start_iter;
+    Gtk.TextIter? next_iter;
+
+
+    buffer.get_start_iter (out start_iter);
+
+
+    cur_iter = start_iter;
+    word_start_iter = cur_iter;
+
+    while (true) {
+      /* If we are at a space, we just drag the start_iter with us */
+      if (cur_iter.get_char ().isspace()) {
+        word_start_iter = cur_iter;
+        word_start_iter.forward_char ();
+      }
+
+      next_iter = cur_iter;
+      bool done = !next_iter.forward_char ();
+
+      bool word_end = done || (next_iter.get_char ().isspace() &&
+                               !cur_iter.get_char ().isspace());
+
+
+      if (word_end) {
+        // We are at the end of a word so highlight it accordingly
+        string w = buffer.get_text (word_start_iter, next_iter, false);
+        message ("Word: %s", w);
+        if (is_link (w))
+          highlight_link (buffer, word_start_iter, next_iter);
+        else if (is_mention (w))
+          highlight_mention (buffer, word_start_iter, next_iter);
+        else if (is_hashtag (w))
+          highlight_hashtag (buffer, word_start_iter, next_iter);
+      }
+
+      if (done)
+        break;
+
+      cur_iter = next_iter;
+    }
+    message ("---------------");
+  }
 
 }
