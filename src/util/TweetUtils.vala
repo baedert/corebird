@@ -490,7 +490,6 @@ namespace TweetUtils {
       if (word_end) {
         // We are at the end of a word so highlight it accordingly
         string w = buffer.get_text (word_start_iter, next_iter, false);
-        message ("Word: %s", w);
         if (is_link (w))
           highlight_link (buffer, word_start_iter, next_iter);
         else if (is_mention (w))
@@ -504,7 +503,6 @@ namespace TweetUtils {
 
       cur_iter = next_iter;
     }
-    message ("---------------");
   }
 
 }
