@@ -414,4 +414,25 @@ namespace TweetUtils {
       warning ("Unknown media type: %d", media.type);
     }
   }
+
+
+
+  public bool is_link (string word) {
+    if (word.has_prefix ("http://") && word.length > 7)
+      return true;
+
+    if (word.has_prefix ("https://") && word.length > 8)
+      return true;
+
+    foreach (string tld in DOMAINS)
+      if (word.has_suffix (tld))
+          return true;
+
+
+    return false;
+  }
+
+
+
+
 }
