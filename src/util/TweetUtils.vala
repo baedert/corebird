@@ -433,11 +433,11 @@ namespace TweetUtils {
   }
 
   public bool is_mention (string word) {
-    return word.has_prefix ("@") && word.length > 1;
+    return word[0] == '@' && word.length > 1;
   }
 
   public bool is_hashtag (string word) {
-    return word.has_prefix ("#") && word.length > 1;
+    return word[0] == '#' && word.length > 1;
   }
 
 
@@ -447,16 +447,34 @@ namespace TweetUtils {
     buffer.apply_tag_by_name ("link", word_start, word_end);
   }
 
+  /** Invariant: The word passed to this function starts with a @ */
   private void highlight_mention (Gtk.TextBuffer buffer,
                                   Gtk.TextIter? word_start,
                                   Gtk.TextIter? word_end) {
     buffer.apply_tag_by_name ("mention", word_start, word_end);
   }
 
+
+  /** Invariant: the word passed to this function starts with a # */
   private void highlight_hashtag (Gtk.TextBuffer buffer,
                                   Gtk.TextIter? word_start,
                                   Gtk.TextIter? word_end) {
-    buffer.apply_tag_by_name ("hashtag", word_start, word_end);
+    Gtk.TextIter? iter1 = word_start;
+    Gtk.TextIter? iter2 = word_start;
+    iter1.forward_char ();
+    iter2.forward_chars (2);
+
+    while (iter1.compare (word_end) < 0) {
+      string t = buffer.get_text (iter1, iter2, false);
+      char c = t[0];
+      if (c.ispunct () && c != '_') {
+        break;
+      }
+      iter1.forward_char ();
+      iter2.forward_char ();
+
+    }
+    buffer.apply_tag_by_name ("hashtag", word_start, iter1);
   }
 
 
