@@ -30,8 +30,6 @@ class SettingsDialog : Gtk.Window {
   [GtkChild]
   private Gtk.Switch round_avatar_switch;
   [GtkChild]
-  private Gtk.Switch on_new_followers_switch;
-  [GtkChild]
   private Gtk.Switch on_new_dms_switch;
   [GtkChild]
   private Gtk.Switch dark_theme_switch;
@@ -52,8 +50,6 @@ class SettingsDialog : Gtk.Window {
     Settings.get ().bind ("new-tweets-notify", on_new_tweets_combobox, "active-id",
                           SettingsBindFlags.DEFAULT);
     Settings.get ().bind ("new-mentions-notify", on_new_mentions_switch, "active",
-                          SettingsBindFlags.DEFAULT);
-    Settings.get ().bind ("new-followers-notify", on_new_followers_switch, "active",
                           SettingsBindFlags.DEFAULT);
     Settings.get ().bind ("new-dms-notify", on_new_dms_switch, "active",
                           SettingsBindFlags.DEFAULT);

@@ -481,39 +481,6 @@
                 <property name="height">1</property>
               </packing>
             </child>
-            <child>
-              <object class="GtkLabel" id="label5">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="xalign">1</property>
-                <property name="label" translatable="yes">On New Followers:</property>
-                <accessibility>
-                  <relation type="label-for" target="on_new_followers_switch"/>
-                </accessibility>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">4</property>
-                <property name="width">1</property>
-                <property name="height">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkSwitch" id="on_new_followers_switch">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="halign">start</property>
-                <accessibility>
-                  <relation type="labelled-by" target="label5"/>
-                </accessibility>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">4</property>
-                <property name="width">1</property>
-                <property name="height">1</property>
-              </packing>
-            </child>
           </object>
           <packing>
             <property name="title" translatable="yes">Notifications</property>

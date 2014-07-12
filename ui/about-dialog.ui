@@ -8,10 +8,10 @@
     <property name="title" translatable="yes">About Corebird</property>
     <property name="type_hint">dialog</property>
     <property name="program_name">Corebird</property>
-    <property name="version">0.7</property>
+    <property name="version">0.8</property>
     <property name="comments" translatable="yes">Using Font Awesome by Dave Gandy - http://fontawesome.io</property>
     <property name="website">http://corebird.baedert.org</property>
-    <property name="authors">Timm Bäder&lt;mail@baedert.org&gt;
+    <property name="authors">Timm Bäder&lt;mail@baedert.org&gt; (Bugs go here)
 </property>
     <property name="logo_icon_name">corebird</property>
     <property name="license_type">gpl-3-0</property>

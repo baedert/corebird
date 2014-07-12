@@ -77,6 +77,7 @@
                 <property name="margin_start">5</property>
                 <property name="margin_top">5</property>
                 <property name="halign">start</property>
+                <property name="valign">center</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>

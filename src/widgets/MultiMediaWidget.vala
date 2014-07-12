@@ -25,6 +25,9 @@ private class MediaButton : Gtk.Button {
     }
     set {
       _media = value;
+      if (value != null) {
+          _media.notify["percent-loaded"].connect (this.queue_draw);
+      }
       if (value != null && (value.type == MediaType.IMAGE ||
                             value.type == MediaType.GIF)) {
         menu_model.append (_("Copy URL"), "media.copy-url");
@@ -51,12 +54,14 @@ private class MediaButton : Gtk.Button {
     {"save-original",   save_original_activated},
     {"open-in-browser", open_in_browser_activated}
   };
+  private Pango.Layout layout;
 
 
   public MediaButton (Media? media) {
     this.media = media;
     this.set_size_request (-1, MultiMediaWidget.HEIGHT);
     this.get_style_context ().add_class ("inline-media");
+    this.get_style_context ().add_class ("dim-label");
     actions = new GLib.SimpleActionGroup ();
     actions.add_action_entries (action_entries, this);
     this.insert_action_group ("media", actions);
@@ -66,6 +71,8 @@ private class MediaButton : Gtk.Button {
     this.menu = new Gtk.Menu.from_model (menu_model);
     this.menu.attach_to_widget (this, null);
 
+    this.layout = this.create_pango_layout ("0%");
+
     this.button_press_event.connect (button_clicked_cb);
   }
 
@@ -73,29 +80,39 @@ private class MediaButton : Gtk.Button {
     int widget_width = get_allocated_width ();
     int widget_height = get_allocated_height ();
 
-    ct.save ();
-    ct.rectangle (0, 0, widget_width, widget_height);
 
+    /* Draw thumbnail */
     if (media != null && media.thumbnail != null && media.loaded) {
+      ct.save ();
+      ct.rectangle (0, 0, widget_width, widget_height);
+
       double scale = (double)widget_width / media.thumbnail.get_width ();
       ct.scale (scale, 1);
       Gdk.cairo_set_source_pixbuf (ct, media.thumbnail, 0, 0);
+      ct.fill ();
+      ct.restore ();
+
+      /* Draw play indicator */
+      if (media.type == MediaType.VINE ||
+          media.type == MediaType.ANIMATED_GIF ||
+          media.type == MediaType.GIF) {
+       int x = (widget_width  / 2) - (play_icon.get_width ()  / 2);
+       int y = (widget_height / 2) - (play_icon.get_height () / 2);
+       ct.rectangle (x, y,
+                     play_icon.get_width (), play_icon.get_height ());
+       Gdk.cairo_set_source_pixbuf (ct, play_icon, x, y);
+       ct.fill ();
+      }
+    } else {
+      var sc = this.get_style_context ();
+      double layout_x, layout_y;
+      int layout_w, layout_h;
+      layout.set_text ("%d%%".printf ((int)(media.percent_loaded * 100)), -1);
+      layout.get_size (out layout_w, out layout_h);
+      layout_x = (widget_width / 2.0) - (layout_w / Pango.SCALE / 2.0);
+      layout_y = (widget_height / 2.0) - (layout_h / Pango.SCALE / 2.0);
+      sc.render_layout (ct, layout_x, layout_y, layout);
     }
-
-    ct.fill ();
-    ct.restore ();
-
-
-   if (media != null && (this.media.type == MediaType.VINE ||
-                         this.media.type == MediaType.ANIMATED_GIF ||
-                         this.media.type == MediaType.GIF)) {
-     int x = (widget_width  / 2) - (play_icon.get_width ()  / 2);
-     int y = (widget_height / 2) - (play_icon.get_height () / 2);
-     ct.rectangle (x, y,
-                   play_icon.get_width (), play_icon.get_height ());
-     Gdk.cairo_set_source_pixbuf (ct, play_icon, x, y);
-     ct.fill ();
-   }
 
     return base.draw (ct);
   }
@@ -194,6 +211,7 @@ public class MultiMediaWidget : Gtk.Box {
     if (media.loaded) {
       media_buttons[index].media = media;
     } else {
+      media_buttons[index].media = media;
       media.finished_loading.connect (media_loaded_cb);
     }
     button.visible = true;
@@ -212,16 +230,16 @@ public class MultiMediaWidget : Gtk.Box {
   private void media_loaded_cb (Media source) {
     if (source.invalid) {
       for (int i = 0; i < media_count; i ++) {
-        if (media_buttons[i] != null && media_buttons[i].media == null) {
+        if (media_buttons[i] != null && media_buttons[i].media == source) {
           this.remove (media_buttons[i]);
           media_buttons[i] = null;
           return;
         }
       }
     }
+
     for (int i = 0; i < media_count; i ++) {
-      if (media_buttons[i] != null && media_buttons[i].media == null) {
-        media_buttons[i].media = source;
+      if (media_buttons[i] != null && media_buttons[i].media == source) {
         media_buttons[i].queue_draw ();
         break;
       }

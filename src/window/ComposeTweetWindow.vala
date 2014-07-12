@@ -67,8 +67,23 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       this.application = app;
     avatar_image.set_from_pixbuf (acc.avatar);
     length_label.label = Tweet.MAX_LENGTH.to_string ();
-    tweet_text.buffer.notify["cursor-position"].connect (buffer_changed_cb);
+    tweet_text.buffer.notify["cursor-position"].connect (cursor_changed_cb);
+    tweet_text.buffer.changed.connect (buffer_changed_cb);
     tweet_text.focus_out_event.connect (completion_window_focus_out_cb);
+
+    /* Your theme uses a wildcard for :link, right? */
+    var style_context = this.get_style_context ();
+    Gdk.RGBA link_color = style_context.get_color (Gtk.StateFlags.LINK);
+
+    tweet_text.buffer.create_tag ("link",
+                                  "foreground_rgba",
+                                  link_color, null);
+    tweet_text.buffer.create_tag ("mention",
+                                  "foreground_rgba",
+                                  link_color, null);
+    tweet_text.buffer.create_tag ("hashtag",
+                                  "foreground_rgba",
+                                  link_color, null);
 
     completion_window.set_attached_to (tweet_text);
     completion_window.set_screen (tweet_text.get_screen ());
@@ -167,9 +182,18 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     }
   }
 
-  private void buffer_changed_cb () {
-    recalc_tweet_length ();
+  private void cursor_changed_cb () {
     update_completion ();
+  }
+
+  private void buffer_changed_cb () {
+    Gtk.TextIter? start_iter;
+    Gtk.TextIter? end_iter;
+    tweet_text.buffer.get_start_iter (out start_iter);
+    tweet_text.buffer.get_end_iter (out end_iter);
+    recalc_tweet_length ();
+    tweet_text.buffer.remove_all_tags (start_iter, end_iter);
+    TweetUtils.annotate_text (tweet_text.buffer);
   }
 
   private void recalc_tweet_length () {

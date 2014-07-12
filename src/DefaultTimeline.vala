@@ -89,11 +89,25 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   }
 
   public void double_open () {
-    if (!loading)
+    if (!loading) {
       this.scroll_up_next (true, false, true);
+      tweet_list.get_row_at_index (0).grab_focus ();
+    }
   }
 
-  public virtual  void on_leave () {}
+  public virtual  void on_leave () {
+    Gtk.Widget? focus_widget = main_window.get_focus ();
+    if (focus_widget == null)
+      return;
+
+    GLib.List<weak Gtk.Widget> list_rows = tweet_list.get_children ();
+    foreach (Gtk.Widget w in list_rows) {
+      if (w == focus_widget) {
+        last_focus_widget = w;
+        break;
+      }
+    }
+  }
 
   public virtual  void load_cached () {}
   public abstract void load_newest ();

@@ -24,7 +24,7 @@ public enum MediaType {
   UNKNOWN
 }
 
-public class Media {
+public class Media : GLib.Object{
   public int64 id;
   public string path;
   public string thumb_path;
@@ -38,6 +38,8 @@ public class Media {
       _thumb_url = value;
     }
   }
+  public int64 length { get; set; default = 0; }
+  public double percent_loaded { get; set; default = 0; }
   public MediaType type;
   public Gdk.Pixbuf thumbnail = null;
   /** If this media if fully downloaded and thumb is available */

@@ -1,6 +1,10 @@
 
 # Corebird
 
+
+This is the readme for the current *development version*. If you're looking for one of the stable releases, check the "releases" link at the top of this page.
+
+
 ## Shortcuts
 
 | Key                | Description                                                                                                                                |
@@ -25,10 +29,6 @@
   I don't know. If you can satisfy all the dependencies, probably yes but
   you'd most likely still have to compile and install it from source(that is,
   if no one else makes packages).
-
-
-## But but... something is not right!
-  Open a bug. Writing about it somewhere else(especially in a language I do not understand) won't help.
 
 ## Translations
   Since February 2014, there's a [Corebird project on Transifex](https://www.transifex.com/organization/corebird/dashboard/corebird)

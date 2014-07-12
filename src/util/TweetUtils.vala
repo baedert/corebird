@@ -414,4 +414,130 @@ namespace TweetUtils {
       warning ("Unknown media type: %d", media.type);
     }
   }
+
+
+
+  public bool is_link (string word) {
+    if (word.has_prefix ("http://") && word.length > 7)
+      return true;
+
+    if (word.has_prefix ("https://") && word.length > 8)
+      return true;
+
+    foreach (string tld in DOMAINS)
+      if (word.has_suffix (tld))
+          return true;
+
+
+    return false;
+  }
+
+  public bool is_mention (string word) {
+    return word[0] == '@' && word.length > 1;
+  }
+
+  public bool is_hashtag (string word) {
+    return word[0] == '#' && word.length > 1;
+  }
+
+
+  private void highlight_link (Gtk.TextBuffer buffer,
+                               Gtk.TextIter? word_start,
+                               Gtk.TextIter? word_end) {
+    Gtk.TextIter? iter1 = word_start;
+    Gtk.TextIter? iter2 = word_start;
+    iter1.forward_char ();
+    iter2.forward_chars (2);
+
+    while (iter1.compare (word_end) < 0) {
+      string t = buffer.get_text (iter1, iter2, false);
+      unichar c = t.get_char (0);
+
+      if (c == '"' || c == '“') {
+        break;
+      }
+      iter1.forward_char ();
+      iter2.forward_char ();
+
+    }
+    message ("Link: %s", buffer.get_text (word_start, iter1, false));
+    buffer.apply_tag_by_name ("link", word_start, iter1);
+  }
+
+  /** Invariant: The word passed to this function starts with a @ */
+  private void highlight_mention (Gtk.TextBuffer buffer,
+                                  Gtk.TextIter? word_start,
+                                  Gtk.TextIter? word_end) {
+    buffer.apply_tag_by_name ("mention", word_start, word_end);
+  }
+
+
+  /** Invariant: the word passed to this function starts with a # */
+  private void highlight_hashtag (Gtk.TextBuffer buffer,
+                                  Gtk.TextIter? word_start,
+                                  Gtk.TextIter? word_end) {
+    Gtk.TextIter? iter1 = word_start;
+    Gtk.TextIter? iter2 = word_start;
+    iter1.forward_char ();
+    iter2.forward_chars (2);
+
+    while (iter1.compare (word_end) < 0) {
+      string t = buffer.get_text (iter1, iter2, false);
+      char c = t[0];
+      if (c.ispunct () && c != '_') {
+        break;
+      }
+      iter1.forward_char ();
+      iter2.forward_char ();
+
+    }
+    buffer.apply_tag_by_name ("hashtag", word_start, iter1);
+  }
+
+
+  public void annotate_text (Gtk.TextBuffer buffer) {
+    Gtk.TextIter? start_iter;
+    Gtk.TextIter? cur_iter;
+    Gtk.TextIter? word_start_iter;
+    Gtk.TextIter? next_iter;
+
+
+    buffer.get_start_iter (out start_iter);
+
+
+    cur_iter = start_iter;
+    word_start_iter = cur_iter;
+
+    while (true) {
+      /* If we are at a space, we just drag the start_iter with us */
+      if (cur_iter.get_char ().isspace()) {
+        word_start_iter = cur_iter;
+        word_start_iter.forward_char ();
+      }
+
+      next_iter = cur_iter;
+      bool done = !next_iter.forward_char ();
+
+      bool word_end = done || (next_iter.get_char ().isspace() &&
+                               !cur_iter.get_char ().isspace());
+
+
+      if (word_end) {
+        // We are at the end of a word so highlight it accordingly
+        string w = buffer.get_text (word_start_iter, next_iter, false);
+        if (is_link (w))
+          highlight_link (buffer, word_start_iter, next_iter);
+        else if (is_mention (w))
+          highlight_mention (buffer, word_start_iter, next_iter);
+        else if (is_hashtag (w))
+          highlight_hashtag (buffer, word_start_iter, next_iter);
+      }
+
+      if (done)
+        break;
+
+      cur_iter = next_iter;
+    }
+  }
+
 }

@@ -1,46 +1,47 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # Dianjin Wang <1132321739qq@gmail.com>, 2014
+# Tong Hui <tonghuix@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-18 10:12+0200\n"
-"PO-Revision-Date: 2014-04-04 09:35+0000\n"
-"Last-Translator: ryanlerch <ryanlerch@gmail.com>\n"
-"Language-Team: Chinese (China) (http://www.transifex.com/projects/p/corebird/"
-"language/zh_CN/)\n"
-"Language: zh_CN\n"
+"POT-Creation-Date: 2014-07-02 10:08+0200\n"
+"PO-Revision-Date: 2014-07-02 09:00+0000\n"
+"Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
+"Language-Team: Chinese (China) (http://www.transifex.com/projects/p/corebird/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../src/window/ComposeTweetWindow.vala:278 ../ui/compose-window.ui.h:3
+#: ../src/window/ComposeTweetWindow.vala:277 ../ui/compose-window.ui.h:3
 msgid "Select Image"
 msgstr "选择图像"
 
-#: ../src/window/ComposeTweetWindow.vala:279
-#: ../src/window/UserListDialog.vala:44 ../src/window/ImageDialog.vala:112
-#: ../ui/compose-window.ui.h:4 ../ui/remove-account-dialog.ui.h:1
-#: ../ui/list-list-entry.ui.h:1 ../ui/list-statuses-page.ui.h:8
-#: ../ui/modify-filter-dialog.ui.h:1
+#: ../src/window/ComposeTweetWindow.vala:278
+#: ../src/window/UserListDialog.vala:44 ../src/window/ImageDialog.vala:111
+#: ../src/widgets/MultiMediaWidget.vala:131 ../ui/compose-window.ui.h:4
+#: ../ui/remove-account-dialog.ui.h:1 ../ui/list-list-entry.ui.h:1
+#: ../ui/list-statuses-page.ui.h:8 ../ui/modify-filter-dialog.ui.h:2
 msgid "Cancel"
 msgstr "取消"
 
-#: ../src/window/ComposeTweetWindow.vala:280
+#: ../src/window/ComposeTweetWindow.vala:279
 msgid "Choose"
 msgstr "选择"
 
-#: ../src/window/UserListDialog.vala:45 ../src/window/ImageDialog.vala:113
-#: ../ui/list-statuses-page.ui.h:6 ../ui/modify-filter-dialog.ui.h:2
+#: ../src/window/UserListDialog.vala:45 ../src/window/ImageDialog.vala:112
+#: ../src/widgets/MultiMediaWidget.vala:132 ../ui/list-statuses-page.ui.h:6
+#: ../ui/modify-filter-dialog.ui.h:3
 msgid "Save"
 msgstr "保存"
 
-#: ../src/window/ImageDialog.vala:110
+#: ../src/window/ImageDialog.vala:109 ../src/widgets/MultiMediaWidget.vala:129
 msgid "Save image"
 msgstr "保存图像"
 
@@ -56,14 +57,14 @@ msgstr ""
 msgid "No entries found"
 msgstr "未找到条目"
 
-#: ../src/widgets/AccountCreateWidget.vala:47
+#: ../src/widgets/AccountCreateWidget.vala:45
 msgid ""
-"Unauthorized. Most of the time, this means that there's something wrong with "
-"the Twitter servers and you should try again later"
+"Unauthorized. Most of the time, this means that there's something wrong with"
+" the Twitter servers and you should try again later"
 msgstr ""
 
 #. We just assume that it was the wrong code
-#: ../src/widgets/AccountCreateWidget.vala:64
+#: ../src/widgets/AccountCreateWidget.vala:62
 msgid "Wrong PIN"
 msgstr "PIN 码错误"
 
@@ -71,78 +72,91 @@ msgstr "PIN 码错误"
 msgid "Copy link"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:94
+#: ../src/widgets/MultiMediaWidget.vala:30
+msgid "Copy URL"
+msgstr ""
+
+#: ../src/widgets/MultiMediaWidget.vala:31
+msgid "Save Original"
+msgstr ""
+
+#: ../src/widgets/MultiMediaWidget.vala:65 ../src/TweetInfoPage.vala:408
+msgid "Open in Browser"
+msgstr "在浏览器中打开"
+
+#: ../src/HomeTimeline.vala:92
 #, c-format
 msgid "%d new Tweets!"
 msgstr "%d 条新推文！"
 
-#: ../src/HomeTimeline.vala:104
+#: ../src/HomeTimeline.vala:102
 #, c-format
 msgid "%s retweeted %s"
 msgstr "%s转推了%s"
 
-#: ../src/HomeTimeline.vala:106
+#: ../src/HomeTimeline.vala:104
 #, c-format
 msgid "%s tweeted"
 msgstr "%s 已发推"
 
-#: ../src/HomeTimeline.vala:133 ../src/HomeTimeline.vala:134
+#: ../src/HomeTimeline.vala:134 ../src/HomeTimeline.vala:135
 msgid "Home"
 msgstr "主页"
 
 #: ../src/DMThreadsPage.vala:361
-#, fuzzy, c-format
+#, c-format
 msgid "New direct message from %s"
-msgstr "直接消息"
+msgstr ""
 
 #: ../src/DMThreadsPage.vala:378 ../src/DMThreadsPage.vala:379
+#: ../src/DMThreadsPage.vala:393
 msgid "Direct Messages"
 msgstr "直接消息"
 
-#: ../src/list/DMThreadEntry.vala:98
+#: ../src/list/DMThreadEntry.vala:97
 #, c-format
 msgid "(%d unread)"
 msgstr "(未读 %d)"
 
-#: ../src/ListsPage.vala:127 ../src/ListsPage.vala:128
-#: ../ui/profile-page.ui.h:6
+#: ../src/ListsPage.vala:125 ../src/ListsPage.vala:126
+#: ../src/ListsPage.vala:131 ../ui/profile-page.ui.h:8
 msgid "Lists"
 msgstr "列表"
 
-#: ../src/ProfilePage.vala:275
+#: ../src/ProfilePage.vala:299
 msgid "Protected profile"
 msgstr "受保护的个人资料"
 
-#: ../src/ProfilePage.vala:457
+#: ../src/ProfilePage.vala:481
 #, c-format
 msgid "Tweet to @%s"
 msgstr ""
 
-#: ../src/ProfilePage.vala:586 ../src/TweetInfoPage.vala:403
+#: ../src/ProfilePage.vala:578 ../src/TweetInfoPage.vala:394
 msgid "Unfollow"
 msgstr "取消关注"
 
-#: ../src/ProfilePage.vala:590 ../src/TweetInfoPage.vala:407
+#: ../src/ProfilePage.vala:582 ../src/TweetInfoPage.vala:398
 #: ../ui/tweet-info-page.ui.h:3
 msgid "Follow"
 msgstr "关注"
 
-#: ../src/TweetInfoPage.vala:370
+#: ../src/TweetInfoPage.vala:362
 msgid "Retweets"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:371 ../src/FavoritesTimeline.vala:74
-#: ../src/FavoritesTimeline.vala:75
+#: ../src/TweetInfoPage.vala:363 ../src/FavoritesTimeline.vala:73
+#: ../src/FavoritesTimeline.vala:78 ../src/FavoritesTimeline.vala:79
 msgid "Favorites"
 msgstr "收藏"
 
-#: ../src/TweetInfoPage.vala:417
-msgid "Open in Browser"
-msgstr "在浏览器中打开"
-
-#: ../src/TweetInfoPage.vala:417
+#: ../src/TweetInfoPage.vala:408
 msgid "Source"
 msgstr "来源"
+
+#: ../src/TweetInfoPage.vala:413
+msgid "Tweet Details"
+msgstr ""
 
 #: ../src/util/Utils.vala:69
 msgid "Now"
@@ -158,23 +172,32 @@ msgstr "%d分钟"
 msgid "%dh"
 msgstr "%d小时"
 
-#: ../src/SearchPage.vala:260 ../src/SearchPage.vala:261
-#: ../ui/search-page.ui.h:1
+#: ../src/SearchPage.vala:259 ../src/SearchPage.vala:260
+#: ../src/SearchPage.vala:269 ../ui/search-page.ui.h:1
 msgid "Search"
 msgstr "搜索"
 
-#: ../src/Corebird.vala:151
+#: ../src/Corebird.vala:153
 msgid "Open Account"
 msgstr "打开帐号"
 
-#: ../src/MentionsTimeline.vala:94
-#, fuzzy, c-format
+#: ../src/MentionsTimeline.vala:92
+#, c-format
 msgid "New Mention from @%s"
-msgstr "%s 有新消息"
+msgstr ""
 
-#: ../src/MentionsTimeline.vala:129 ../src/MentionsTimeline.vala:130
+#: ../src/MentionsTimeline.vala:125 ../src/MentionsTimeline.vala:131
+#: ../src/MentionsTimeline.vala:132
 msgid "Mentions"
 msgstr "提及我的"
+
+#: ../src/DMPage.vala:232
+msgid "Direct Conversation"
+msgstr ""
+
+#: ../src/ListStatusesPage.vala:379
+msgid "List"
+msgstr ""
 
 #: ../ui/settings-dialog.ui.h:1 ../ui/menu.ui.h:1
 msgid "Settings"
@@ -207,7 +230,7 @@ msgid "Use Dark Theme:"
 msgstr "使用黑色主题："
 
 #: ../ui/settings-dialog.ui.h:8
-msgid "Show Inline Media:"
+msgid "Round Avatars:"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:9
@@ -220,7 +243,7 @@ msgstr "MB"
 
 #: ../ui/settings-dialog.ui.h:11
 msgid "Auto scroll on new tweets:"
-msgstr ""
+msgstr "有新推时自动滚动: "
 
 #: ../ui/settings-dialog.ui.h:12
 msgid "Interface"
@@ -387,6 +410,14 @@ msgstr ""
 msgid "Follows you"
 msgstr "关注您"
 
+#: ../ui/profile-page.ui.h:6
+msgid "Followers"
+msgstr ""
+
+#: ../ui/profile-page.ui.h:7
+msgid "Following"
+msgstr ""
+
 #: ../ui/main-window.ui.h:1
 msgid "New tweet"
 msgstr "新推文"
@@ -414,7 +445,7 @@ msgstr "删除"
 
 #: ../ui/remove-account-dialog.ui.h:3
 msgid "Do you really want to remove the account?"
-msgstr ""
+msgstr "你真的希望移除此账户？"
 
 #: ../ui/list-list-entry.ui.h:2
 msgid "Subscribe"
@@ -468,13 +499,9 @@ msgstr "私人"
 msgid "Public"
 msgstr "公开"
 
-#: ../data/org.baedert.corebird.gschema.xml.in.h:1
-msgid "Whether inline media should be downloaded/shown directly."
+#: ../ui/modify-filter-dialog.ui.h:1
+msgid "Add New Filter"
 msgstr ""
-
-#: ../data/org.baedert.corebird.gschema.xml.in.h:2
-msgid "Disable this to save some bandwidth"
-msgstr "禁用该项以节约带宽"
 
 #: ../data/org.baedert.corebird.desktop.in.in.h:1
 msgid "Twitter Client"

@@ -6,3 +6,4 @@ Exec=corebird
 Type=Application
 Icon=corebird
 Categories=Network;GTK;
+_Comment=Use Twitter from within a normal desktop application
