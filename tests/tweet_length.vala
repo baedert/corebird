@@ -52,11 +52,10 @@ void tld1 () {
 }
 
 void real_text1 () {
-  string text = "That @humble Bundle we're doing? Finishes in 1:40hrs so if you still want to get 7 great
-    fantasy games dirt cheap...humblebundle.com/weekly";
+  string text = "That @humble Bundle we're doing? Finishes in 1:40hrs so if you still want to get 7 great fantasy games dirt cheap... humblebundle.com/weekly";
   int l = TweetUtils.calc_tweet_length (text);
   message ("real text 1 length: %d", l);
-  assert (l == 1); // according to Twitter's web interface
+  assert (l == 139); // according to Twitter's web interface
 }
 
 int main (string[] args) {
