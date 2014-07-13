@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-11 11:46+0200\n"
+"POT-Creation-Date: 2014-07-12 23:20+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -55,15 +55,27 @@ msgstr ""
 msgid "No entries found"
 msgstr ""
 
-#: ../src/widgets/AccountCreateWidget.vala:45
+#: ../src/widgets/AccountCreateWidget.vala:39
+msgid "Don't have an account yet?"
+msgstr ""
+
+#: ../src/widgets/AccountCreateWidget.vala:39
+msgid "Create one"
+msgstr ""
+
+#: ../src/widgets/AccountCreateWidget.vala:51
 msgid ""
 "Unauthorized. Most of the time, this means that there's something wrong with "
 "the Twitter servers and you should try again later"
 msgstr ""
 
 #. We just assume that it was the wrong code
-#: ../src/widgets/AccountCreateWidget.vala:62
+#: ../src/widgets/AccountCreateWidget.vala:73
 msgid "Wrong PIN"
+msgstr ""
+
+#: ../src/widgets/AccountCreateWidget.vala:100
+msgid "Account already in use"
 msgstr ""
 
 #: ../src/widgets/PixbufButton.vala:41
@@ -156,16 +168,16 @@ msgstr ""
 msgid "Tweet Details"
 msgstr ""
 
-#: ../src/util/Utils.vala:69
+#: ../src/util/Utils.vala:88
 msgid "Now"
 msgstr ""
 
-#: ../src/util/Utils.vala:71
+#: ../src/util/Utils.vala:90
 #, c-format
 msgid "%dm"
 msgstr ""
 
-#: ../src/util/Utils.vala:75
+#: ../src/util/Utils.vala:94
 #, c-format
 msgid "%dh"
 msgstr ""
@@ -175,7 +187,7 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: ../src/Corebird.vala:153
+#: ../src/Corebird.vala:156
 msgid "Open Account"
 msgstr ""
 
@@ -417,16 +429,20 @@ msgid "New tweet"
 msgstr ""
 
 #: ../ui/account-create-widget.ui.h:1
+msgid "New Account"
+msgstr ""
+
+#: ../ui/account-create-widget.ui.h:2
 msgid "PIN:"
 msgstr ""
 
-#: ../ui/account-create-widget.ui.h:2 ../ui/list-statuses-page.ui.h:12
-#: ../ui/filter-list-entry.ui.h:1 ../ui/user-filter-entry.ui.h:1
-msgid "Confirm"
+#: ../ui/account-create-widget.ui.h:3
+msgid "Request PIN"
 msgstr ""
 
-#: ../ui/account-create-widget.ui.h:3
-msgid "Wrong PIN. Try again."
+#: ../ui/account-create-widget.ui.h:4 ../ui/list-statuses-page.ui.h:12
+#: ../ui/filter-list-entry.ui.h:1 ../ui/user-filter-entry.ui.h:1
+msgid "Confirm"
 msgstr ""
 
 #: ../ui/tweet-info-page.ui.h:7
@@ -499,6 +515,10 @@ msgstr ""
 
 #: ../data/org.baedert.corebird.desktop.in.in.h:1
 msgid "Twitter Client"
+msgstr ""
+
+#: ../data/org.baedert.corebird.desktop.in.in.h:2
+msgid "Use Twitter from within a normal desktop application"
 msgstr ""
 
 #: ../data/corebird.appdata.xml.in.h:1
