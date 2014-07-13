@@ -139,7 +139,7 @@
       <object class="GtkLabel" id="info_label">
         <property name="visible">true</property>
         <property name="can_focus">false</property>
-        <property name="margin_top">8</property>
+        <property name="margin_top">20</property>
         <property name="use_markup">true</property>
         <style>
           <class name="dim-label" />
