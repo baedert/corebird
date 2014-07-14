@@ -22,7 +22,7 @@ namespace Dirs {
   static string data_dir  = null;
 
 
-  void create_dirs () {
+  public void create_dirs () {
     create_folder (cache (""));
     create_folder (cache ("assets"));
     create_folder (cache ("assets/banners/"));
