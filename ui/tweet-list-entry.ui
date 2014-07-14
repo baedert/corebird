@@ -210,7 +210,7 @@
             <child>
               <object class="MultiMediaWidget" id="mm_widget">
                 <property name="visible">true</property>
-                <property name="margin_top">5</property>
+                <property name="margin_top">6</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>

@@ -39,7 +39,7 @@
                 <property name="can_focus">False</property>
                 <property name="halign">end</property>
                 <property name="valign">baseline</property>
-                <property name="margin_right">8</property>
+                <property name="margin_end">8</property>
                 <property name="hexpand">True</property>
                 <property name="label" translatable="yes">PIN:</property>
               </object>
@@ -56,6 +56,7 @@
                 <property name="halign">fill</property>
                 <property name="valign">baseline</property>
                 <property name="hexpand">True</property>
+
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -75,12 +76,12 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkButton" id="confirm_button">
+              <object class="GtkButton" id="request_pin_button">
                 <property name="label" translatable="yes">Request PIN</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="margin_right">8</property>
+                <property name="margin_end">8</property>
                 <property name="hexpand">False</property>
                 <signal name="clicked" handler="request_pin_clicked_cb" swapped="no"/>
               </object>
@@ -91,12 +92,13 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="request_pin_button">
+              <object class="GtkButton" id="confirm_button">
                 <property name="label" translatable="yes">Confirm</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="hexpand">True</property>
+                <property name="sensitive">false</property>
                 <signal name="clicked" handler="confirm_button_clicked_cb" swapped="no"/>
                 <style>
                   <class name="suggested-action"/>

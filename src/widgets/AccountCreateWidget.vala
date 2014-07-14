@@ -35,8 +35,10 @@ class AccountCreateWidget : Gtk.Box {
   public AccountCreateWidget (Account acc, Corebird corebird) {
     this.acc = acc;
     this.corebird = corebird;
-    info_label.label = "%s <a href=\"http://twitter.com/signup\">%s</a>."
+    info_label.label = "%s <a href=\"http://twitter.com/signup\">%s</a>"
                        .printf (_("Don't have an account yet?"), _("Create one"));
+    pin_entry.buffer.deleted_text.connect (pin_changed_cb);
+    pin_entry.buffer.inserted_text.connect (pin_changed_cb);
   }
 
   public void open_pin_request_site () {
@@ -124,6 +126,12 @@ class AccountCreateWidget : Gtk.Box {
     error_label.visible = true;
     error_label.label = err;
   }
+
+  private void pin_changed_cb () {
+    string text = pin_entry.get_text ();
+    confirm_button.sensitive = text.length > 0;
+  }
+
   [GtkCallback]
   private bool delete_event_cb () {
     Account.remove_account (Account.DUMMY);
