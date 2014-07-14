@@ -299,6 +299,7 @@ int main (string[] args) {
   GLib.Test.init (ref args);
   Settings.init ();
   Twitter.get ().init ();
+  Dirs.create_dirs ();
   GLib.Test.add_func ("/filters/matches", matches);
   GLib.Test.add_func ("/filters/matches-tweet", matches_tweet);
   GLib.Test.add_func ("/filters/same-user", same_user);
