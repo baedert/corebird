@@ -66,7 +66,7 @@ class AvatarWidget : Gtk.Image {
       ct.set_operator (Cairo.Operator.OVER);
       Gdk.RGBA border_color = sc.get_border_color (this.get_state_flags ());
       ct.arc (0, 0, (width /2) - 0.5, 0, 2 * Math.PI);
-      ct.set_line_width (0.5);
+      ct.set_line_width (1.0);
       ct.set_source_rgba (border_color.red, border_color.green, border_color.blue,
                           border_color.alpha);
       ct.stroke ();
