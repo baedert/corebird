@@ -254,7 +254,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 
     var thread_entry = new DMThreadEntry (sender_id);
     var author = dm_obj.get_string_member ("sender_screen_name");
-    string sender_name = dm_obj.get_object_member ("sender").get_string_member ("name");
+    string sender_name = dm_obj.get_object_member ("sender").get_string_member ("name").strip ();
     thread_entry.name = sender_name;
     thread_entry.screen_name = author;
     thread_entry.last_message = TweetUtils.get_real_text (text, url_list);

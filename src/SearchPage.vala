@@ -186,7 +186,7 @@ class SearchPage : IPage, Gtk.Box {
         var user_obj = node.get_object ();
         var entry = new UserListEntry ();
         entry.screen_name = "@" + user_obj.get_string_member ("screen_name");
-        entry.name = user_obj.get_string_member ("name");
+        entry.name = user_obj.get_string_member ("name").strip ();
         entry.avatar = user_obj.get_string_member ("profile_image_url");
         entry.user_id = user_obj.get_int_member ("id");
         tweet_list.add (entry);

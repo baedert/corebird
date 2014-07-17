@@ -284,7 +284,7 @@ class ProfilePage : ScrollWidget, IPage {
       progress_spinner.hide ();
     }
 
-    string name        = root.get_string_member("name").replace ("&", "&amp;");
+    string name        = root.get_string_member("name").replace ("&", "&amp;").strip ();
     string screen_name = root.get_string_member("screen_name");
     string description = root.get_string_member("description").replace("&", "&amp;");
     int followers      = (int)root.get_int_member("followers_count");
@@ -483,7 +483,7 @@ class ProfilePage : ScrollWidget, IPage {
     section.remove (1);
     section.insert_item (1, user_item);
 
-    name_label.set_markup("<b>%s</b>".printf (name));
+    name_label.set_markup("<b>%s</b>".printf (name.strip ()));
     screen_name_label.set_label ("@" + screen_name);
     //tweet_to_menu_item.label = _("Tweet to @%s").printf (screen_name);
     string desc = description;
