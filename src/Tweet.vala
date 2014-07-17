@@ -126,7 +126,7 @@ public class Tweet : GLib.Object {
       this.retweeted  = true;
     }
 
-    this.user_name = this.user_name.replace ("&", "&amp;");
+    this.user_name = this.user_name.replace ("&", "&amp;").strip();
     this.avatar_name = Utils.get_avatar_name(this.avatar_url);
 
     // 'Resolve' the used URLs
