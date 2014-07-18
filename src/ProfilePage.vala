@@ -90,6 +90,8 @@ class ProfilePage : ScrollWidget, IPage {
   private Gtk.Stack user_stack;
   [GtkChild]
   private Gtk.MenuButton more_button;
+  [GtkChild]
+  private Gtk.Stack loading_stack;
   private GLib.MenuModel more_menu;
   private bool following;
   private int64 user_id;
@@ -232,7 +234,8 @@ class ProfilePage : ScrollWidget, IPage {
   }
 
   private async void load_profile_data (int64 user_id) { //{{{
-    progress_spinner.show ();
+    loading_stack.visible_child_name = "progress";
+    //progress_spinner.show ();
     progress_spinner.start ();
     follow_button.sensitive = false;
     var call = account.proxy.new_call ();
@@ -272,7 +275,8 @@ class ProfilePage : ScrollWidget, IPage {
           warning (e.message);
         }
         progress_spinner.stop ();
-        progress_spinner.hide ();
+        //progress_spinner.hide ();
+        loading_stack.visible_child_name = "data";
       });
     }else {
       try {
@@ -281,7 +285,8 @@ class ProfilePage : ScrollWidget, IPage {
         warning (e.message);
       }
       progress_spinner.stop ();
-      progress_spinner.hide ();
+      //progress_spinner.hide ();
+      loading_stack.visible_child_name = "data";
     }
 
     string name        = root.get_string_member("name").replace ("&", "&amp;").strip ();
@@ -544,8 +549,9 @@ class ProfilePage : ScrollWidget, IPage {
       block_item_blocked = false;
     }
     debug  (@"User ID: $user_id");
-    progress_spinner.show ();
+    //progress_spinner.show ();
     progress_spinner.start ();
+    loading_stack.visible_child_name = "progress";
     follow_button.sensitive = false;
     call.set_method ("POST");
     call.add_param ("id", user_id.to_string ());
@@ -557,7 +563,8 @@ class ProfilePage : ScrollWidget, IPage {
         critical (e.message);
       }
       follow_button.sensitive = true;
-      progress_spinner.hide ();
+      //progress_spinner.hide ();
+      loading_stack.visible_child_name = "data";
     });
   } //}}}
 

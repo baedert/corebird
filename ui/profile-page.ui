@@ -39,6 +39,8 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="orientation">vertical</property>
+
+
             <child>
               <object class="AspectImage" id="banner_image">
                 <property name="visible">True</property>
@@ -51,390 +53,403 @@
                 <property name="position">0</property>
               </packing>
             </child>
+
+
             <child>
-              <object class="GtkBox" id="box2">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
+              <object class="GtkStack" id="loading_stack">
+                <property name="visible">true</property>
+                <property name="transition_type">crossfade</property>
+                <property name="can_focus">false</property>
+
+
                 <child>
-                  <object class="AvatarWidget" id="avatar_image">
-                    <property name="width_request">73</property>
-                    <property name="height_request">73</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="margin_start">4</property>
-                    <property name="margin_top">5</property>
-                    <property name="valign">start</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkBox" id="box3">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="orientation">vertical</property>
+                  <object class="GtkGrid">
+                    <property name="visible">true</property>
+                    <property name="can_focus">false</property>
                     <child>
-                      <object class="GtkBox" id="box6">
+                      <object class="AvatarWidget" id="avatar_image">
+                        <property name="width_request">73</property>
+                        <property name="height_request">73</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="margin_start">4</property>
+                        <property name="margin_top">5</property>
+                        <property name="valign">start</property>
+                        <property name="halign">start</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">0</property>
+                      </packing>
+                    </child>
+
+
+                    <child>
+                      <object class="GtkBox">
+                        <property name="visible">true</property>
+                        <property name="can_focus">true</property>
+                        <property name="orientation">vertical</property>
                         <child>
                           <object class="GtkLabel" id="name_label">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="valign">end</property>
+                            <property name="valign">start</property>
                             <property name="margin_start">4</property>
                             <property name="margin_top">5</property>
                             <property name="margin_bottom">2</property>
                             <property name="xalign">0</property>
                             <property name="label"> </property>
                             <property name="ellipsize">end</property>
+                            <property name="hexpand">true</property>
                             <style>
                               <class name="list-username"/>
                             </style>
                           </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">0</property>
-                          </packing>
                         </child>
+
+
                         <child>
-                          <object class="GtkImage" id="verified_image">
+                          <object class="GtkLabel" id="screen_name_label">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="valign">start</property>
+                            <property name="margin_start">4</property>
+                            <property name="margin_top">2</property>
+                            <property name="margin_bottom">2</property>
+                            <property name="xalign">0</property>
+                            <property name="label"> </property>
+                            <style>
+                              <class name="dim-label"/>
+                            </style>
+                          </object>
+                        </child>
+
+
+                        <child>
+                          <object class="GtkLabel" id="location_label">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="margin_start">4</property>
+                            <property name="margin_top">2</property>
+                            <property name="margin_bottom">2</property>
+                            <property name="xalign">0</property>
+                            <property name="valign">start</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="top_attach">0</property>
+                      </packing>
+                    </child> <!-- Info box -->
+
+
+
+                    <child>
+                      <object class="GtkBox">
+                        <property name="visible">true</property>
+                        <property name="can_focus">false</property>
+                        <property name="orientation">vertical</property>
+
+                        <child>
+                          <object class="GtkBox">
+                            <property name="orientation">horizontal</property>
+                            <property name="has_focus">false</property>
+                            <property name="valign">start</property>
+                            <property name="halign">end</property>
+                            <style>
+                              <class name="linked" />
+                            </style>
+                            <child>
+                              <object class="GtkMenuButton" id="more_button">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="halign">end</property>
+                                <property name="valign">start</property>
+                                <property name="margin_top">5</property>
+                                <property name="menu_model">more_menu</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="follow_button">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="halign">end</property>
+                                <property name="valign">fill</property>
+                                <property name="margin_end">3</property>
+                                <property name="margin_top">5</property>
+                                <signal name="clicked" handler="follow_button_clicked_cb" swapped="no"/>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+
+                          </object>
+                        </child>
+
+                        <child>
+                          <object class="GtkLabel" id="follows_you_label">
                             <property name="can_focus">False</property>
                             <property name="no_show_all">True</property>
-                            <property name="margin_start">5</property>
-                            <property name="margin_end">5</property>
+                            <property name="halign">end</property>
+                            <property name="margin_end">3</property>
+                            <property name="margin_top">4</property>
+                            <property name="label" translatable="yes">Follows you</property>
+                            <property name="hexpand">true</property>
+                            <style>
+                              <class name="dim-label"/>
+                            </style>
                           </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">1</property>
-                          </packing>
                         </child>
+
                       </object>
                       <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="screen_name_label">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="valign">start</property>
-                        <property name="margin_start">4</property>
-                        <property name="margin_top">2</property>
-                        <property name="margin_bottom">2</property>
-                        <property name="xalign">0</property>
-                        <property name="label"> </property>
-                        <style>
-                          <class name="dim-label"/>
-                        </style>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="location_label">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="margin_start">4</property>
-                        <property name="margin_top">2</property>
-                        <property name="margin_bottom">2</property>
-                        <property name="xalign">0</property>
-                        <property name="label"> </property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">2</property>
+                        <property name="left_attach">2</property>
+                        <property name="top_attach">0</property>
                       </packing>
                     </child>
 
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkBox" id="box5">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="orientation">vertical</property>
+
+
+
+
+
+
+
                     <child>
-                      <object class="GtkBox" id="box4">
+                      <object class="GtkLabel" id="description_label">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="margin_start">5</property>
+                        <property name="margin_end">5</property>
+                        <property name="margin_top">3</property>
+                        <property name="margin_bottom">3</property>
+                        <property name="yalign">0</property>
+                        <property name="use_markup">True</property>
+                        <property name="justify">center</property>
+                        <property name="wrap">True</property>
+                        <property name="wrap_mode">word-char</property>
+                        <signal name="activate-link" handler="activate_link" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">5</property>
+                        <property name="width">4</property>
+                      </packing>
+                    </child>
+
+
+
+                    <child>
+                      <object class="GtkImage" id="verified_image">
+                        <property name="can_focus">False</property>
+                        <property name="no_show_all">True</property>
+                        <property name="margin_start">5</property>
+                        <property name="margin_end">5</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">4</property>
+                        <property name="width">5</property>
+                      </packing>
+                    </child>
+
+
+                    <child>
+                      <object class="GtkLabel" id="url_label">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="halign">center</property>
+                        <property name="margin_start">4</property>
+                        <property name="margin_top">2</property>
+                        <property name="xalign">0</property>
+                        <property name="label"> </property>
+                        <property name="use_markup">True</property>
+                        <property name="justify">center</property>
+                        <property name="ellipsize">end</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">6</property>
+                        <property name="width">5</property>
+                      </packing>
+                    </child>
+
+
+
+                    <child>
+                      <object class="GtkGrid" id="grid1">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="margin_top">5</property>
+                        <property name="margin_bottom">5</property>
                         <child>
-                          <object class="GtkMenuButton" id="more_button">
+                          <object class="GtkLabel" id="label1">
                             <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="receives_default">True</property>
-                            <property name="halign">end</property>
-                            <property name="margin_top">5</property>
-                            <property name="menu_model">more_menu</property>
-                            <child>
-                              <placeholder/>
-                            </child>
+                            <property name="can_focus">False</property>
+                            <property name="hexpand">True</property>
+                            <property name="label" translatable="yes">Tweets</property>
+                            <property name="justify">center</property>
+                            <attributes>
+                              <attribute name="weight" value="bold"/>
+                            </attributes>
                           </object>
                           <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">0</property>
+                            <property name="left_attach">0</property>
+                            <property name="top_attach">0</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkButton" id="follow_button">
-                            <property name="label"> </property>
+                          <object class="GtkLabel" id="tweets_label">
                             <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="receives_default">True</property>
-                            <property name="halign">end</property>
-                            <property name="margin_end">3</property>
-                            <property name="margin_top">5</property>
-                            <signal name="clicked" handler="follow_button_clicked_cb" swapped="no"/>
+                            <property name="can_focus">False</property>
+                            <property name="hexpand">True</property>
+                            <property name="label">--</property>
+                            <property name="justify">center</property>
                           </object>
                           <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">1</property>
+                            <property name="left_attach">0</property>
+                            <property name="top_attach">1</property>
                           </packing>
                         </child>
-                        <style>
-                          <class name="linked"/>
-                        </style>
+                        <child>
+                          <object class="GtkLabel" id="label3">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="hexpand">True</property>
+                            <property name="label" translatable="yes">Followers</property>
+                            <property name="justify">center</property>
+                            <attributes>
+                              <attribute name="weight" value="bold"/>
+                            </attributes>
+                          </object>
+                          <packing>
+                            <property name="left_attach">2</property>
+                            <property name="top_attach">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="followers_label">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="hexpand">True</property>
+                            <property name="label">--</property>
+                            <property name="justify">center</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">2</property>
+                            <property name="top_attach">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="label5">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="hexpand">True</property>
+                            <property name="label" translatable="yes">Following</property>
+                            <property name="justify">center</property>
+                            <attributes>
+                              <attribute name="weight" value="bold"/>
+                            </attributes>
+                          </object>
+                          <packing>
+                            <property name="left_attach">4</property>
+                            <property name="top_attach">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="following_label">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="hexpand">True</property>
+                            <property name="label">--</property>
+                            <property name="justify">center</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">4</property>
+                            <property name="top_attach">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkSeparator" id="separator1">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="margin_start">5</property>
+                            <property name="margin_end">5</property>
+                            <property name="orientation">vertical</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">0</property>
+                            <property name="height">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkSeparator" id="separator2">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="margin_start">5</property>
+                            <property name="margin_end">5</property>
+                            <property name="orientation">vertical</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">3</property>
+                            <property name="top_attach">0</property>
+                            <property name="height">2</property>
+                          </packing>
+                        </child>
                       </object>
                       <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">7</property>
+                        <property name="width">5</property>
                       </packing>
                     </child>
-                    <child>
-                      <object class="GtkSpinner" id="progress_spinner">
-                        <property name="width_request">20</property>
-                        <property name="height_request">20</property>
-                        <property name="can_focus">False</property>
-                        <property name="no_show_all">True</property>
-                        <property name="halign">end</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="follows_you_label">
-                        <property name="can_focus">False</property>
-                        <property name="no_show_all">True</property>
-                        <property name="halign">end</property>
-                        <property name="margin_end">3</property>
-                        <property name="margin_top">4</property>
-                        <property name="label" translatable="yes">Follows you</property>
-                        <style>
-                          <class name="dim-label"/>
-                        </style>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">2</property>
-                      </packing>
-                    </child>
+
+
+
+
+
                   </object>
                   <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="pack_type">end</property>
-                    <property name="position">2</property>
+                    <property name="name">data</property>
+                  </packing>
+                </child> <!-- End of Grid -->
+                <child>
+                  <object class="GtkSpinner" id="progress_spinner">
+                    <property name="width_request">16</property>
+                    <property name="height_request">16</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="visible">true</property>
+                  </object>
+                  <packing>
+                    <property name="name">progress</property>
                   </packing>
                 </child>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
             </child>
-            <child>
-              <object class="GtkLabel" id="description_label">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="margin_start">5</property>
-                <property name="margin_end">5</property>
-                <property name="margin_top">3</property>
-                <property name="margin_bottom">3</property>
-                <property name="yalign">0</property>
-                <property name="label"> </property>
-                <property name="use_markup">True</property>
-                <property name="justify">center</property>
-                <property name="wrap">True</property>
-                <property name="wrap_mode">word-char</property>
-                <signal name="activate-link" handler="activate_link" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="url_label">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="halign">center</property>
-                <property name="margin_start">4</property>
-                <property name="margin_top">2</property>
-                <property name="xalign">0</property>
-                <property name="label"> </property>
-                <property name="use_markup">True</property>
-                <property name="justify">center</property>
-                <property name="ellipsize">end</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">3</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkGrid" id="grid1">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="margin_top">5</property>
-                <property name="margin_bottom">5</property>
-                <child>
-                  <object class="GtkLabel" id="label1">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="hexpand">True</property>
-                    <property name="label" translatable="yes">Tweets</property>
-                    <property name="justify">center</property>
-                    <attributes>
-                      <attribute name="weight" value="bold"/>
-                    </attributes>
-                  </object>
-                  <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="tweets_label">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="hexpand">True</property>
-                    <property name="label">--</property>
-                    <property name="justify">center</property>
-                  </object>
-                  <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="label3">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="hexpand">True</property>
-                    <property name="label" translatable="yes">Followers</property>
-                    <property name="justify">center</property>
-                    <attributes>
-                      <attribute name="weight" value="bold"/>
-                    </attributes>
-                  </object>
-                  <packing>
-                    <property name="left_attach">2</property>
-                    <property name="top_attach">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="followers_label">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="hexpand">True</property>
-                    <property name="label">--</property>
-                    <property name="justify">center</property>
-                  </object>
-                  <packing>
-                    <property name="left_attach">2</property>
-                    <property name="top_attach">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="label5">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="hexpand">True</property>
-                    <property name="label" translatable="yes">Following</property>
-                    <property name="justify">center</property>
-                    <attributes>
-                      <attribute name="weight" value="bold"/>
-                    </attributes>
-                  </object>
-                  <packing>
-                    <property name="left_attach">4</property>
-                    <property name="top_attach">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="following_label">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="hexpand">True</property>
-                    <property name="label">--</property>
-                    <property name="justify">center</property>
-                  </object>
-                  <packing>
-                    <property name="left_attach">4</property>
-                    <property name="top_attach">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkSeparator" id="separator1">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="margin_start">5</property>
-                    <property name="margin_end">5</property>
-                    <property name="orientation">vertical</property>
-                  </object>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">0</property>
-                    <property name="height">2</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkSeparator" id="separator2">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="margin_start">5</property>
-                    <property name="margin_end">5</property>
-                    <property name="orientation">vertical</property>
-                  </object>
-                  <packing>
-                    <property name="left_attach">3</property>
-                    <property name="top_attach">0</property>
-                    <property name="height">2</property>
-                  </packing>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">4</property>
-              </packing>
-            </child>
+
+
+
+
+
+
+
+
+
+
+
+
             <child>
               <object class="GtkStackSwitcher" id="page_switcher">
                 <property name="stack">user_stack</property>
