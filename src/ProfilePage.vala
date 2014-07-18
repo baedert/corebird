@@ -163,14 +163,13 @@ class ProfilePage : ScrollWidget, IPage {
   private void set_user_id (int64 user_id) { // {{{
     this.user_id = user_id;
 
-    /* Load the profile data now, then - if available - set the cached data */
-    load_profile_data.begin (user_id);
     follow_button.sensitive = (user_id != account.id);
     ((SimpleAction)actions.lookup_action ("add-remove-list")).set_enabled (user_id != account.id);
     ((SimpleAction)actions.lookup_action ("write-dm")).set_enabled (user_id != account.id);
 
     load_banner (DATADIR + "/no_banner.png");
     load_friendship.begin ();
+    bool data_in_db = false;
     //Load cached data
     Corebird.db.select ("profiles").cols ("id", "screen_name", "name", "description", "tweets",
      "following", "followers", "avatar_name", "banner_url", "url", "location", "is_following",
@@ -201,8 +200,12 @@ class ProfilePage : ScrollWidget, IPage {
         debug("Banner %s does not exist, load it first...", banner_name);
         load_banner (DATADIR + "/no_banner.png");
       }
+      data_in_db = true;
       return false;
     });
+
+    /* Load the profile data now, then - if available - set the cached data */
+    load_profile_data.begin (user_id, !data_in_db);
   } // }}}
 
 
@@ -233,10 +236,11 @@ class ProfilePage : ScrollWidget, IPage {
     block_item_blocked = false;
   }
 
-  private async void load_profile_data (int64 user_id) { //{{{
-    loading_stack.visible_child_name = "progress";
-    //progress_spinner.show ();
-    progress_spinner.start ();
+  private async void load_profile_data (int64 user_id, bool show_spinner) { //{{{
+    if (show_spinner) {
+      loading_stack.visible_child_name = "progress";
+      progress_spinner.start ();
+    }
     follow_button.sensitive = false;
     var call = account.proxy.new_call ();
     call.set_method ("GET");
@@ -274,9 +278,10 @@ class ProfilePage : ScrollWidget, IPage {
         } catch (GLib.Error e) {
           warning (e.message);
         }
-        progress_spinner.stop ();
-        //progress_spinner.hide ();
-        loading_stack.visible_child_name = "data";
+        if (show_spinner) {
+          progress_spinner.stop ();
+          loading_stack.visible_child_name = "data";
+        }
       });
     }else {
       try {
@@ -284,9 +289,10 @@ class ProfilePage : ScrollWidget, IPage {
       } catch (GLib.Error e) {
         warning (e.message);
       }
-      progress_spinner.stop ();
-      //progress_spinner.hide ();
-      loading_stack.visible_child_name = "data";
+      if (show_spinner) {
+        progress_spinner.stop ();
+        loading_stack.visible_child_name = "data";
+      }
     }
 
     string name        = root.get_string_member("name").replace ("&", "&amp;").strip ();
@@ -549,7 +555,6 @@ class ProfilePage : ScrollWidget, IPage {
       block_item_blocked = false;
     }
     debug  (@"User ID: $user_id");
-    //progress_spinner.show ();
     progress_spinner.start ();
     loading_stack.visible_child_name = "progress";
     follow_button.sensitive = false;
@@ -563,7 +568,6 @@ class ProfilePage : ScrollWidget, IPage {
         critical (e.message);
       }
       follow_button.sensitive = true;
-      //progress_spinner.hide ();
       loading_stack.visible_child_name = "data";
     });
   } //}}}
