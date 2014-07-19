@@ -108,7 +108,10 @@ class TweetInfoPage : IPage , ScrollWidget {
 
     if (mode == BY_INSTANCE) {
       this.tweet = args.arg ();
-      this.tweet_id = tweet.id;
+      if (tweet.is_retweet)
+        this.tweet_id = tweet.rt_id;
+      else
+        this.tweet_id = tweet.id;
       set_tweet_data (tweet);
       set_source_link (tweet.id, tweet.screen_name);
     } else if (mode == BY_ID) {
