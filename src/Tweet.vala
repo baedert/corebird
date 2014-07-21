@@ -244,12 +244,14 @@ public class Tweet : GLib.Object {
           if (m != null && m.url == url)
             return;
         }
-        var m = new Media ();
-        m.url = url;
-        m.id = media_obj.get_int_member ("id");
-        m.type = Media.type_from_string (media_obj.get_string_member ("type"));
-        this.medias[real_media_count] = m;
-        real_media_count ++;
+        if (InlineMediaDownloader.is_media_candidate (url)) {
+          var m = new Media ();
+          m.url = url;
+          m.id = media_obj.get_int_member ("id");
+          m.type = Media.type_from_string (media_obj.get_string_member ("type"));
+          this.medias[real_media_count] = m;
+          real_media_count ++;
+        }
       });
     }
 
