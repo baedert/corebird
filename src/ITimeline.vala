@@ -50,7 +50,8 @@ public interface ITimeline : Gtk.Widget, IPage {
       yield call.invoke_async (null);
     } catch (GLib.Error e) {
       if (call.get_payload () != null) {
-        Utils.show_error_object (call.get_payload (), e.message);
+        Utils.show_error_object (call.get_payload (), e.message,
+                                 GLib.Log.LINE, GLib.Log.FILE);
       } else {
         tweet_list.set_placeholder_text (e.message);
       }
@@ -96,7 +97,8 @@ public interface ITimeline : Gtk.Widget, IPage {
     try {
       yield call.invoke_async (null);
     } catch (GLib.Error e) {
-      Utils.show_error_object (call.get_payload (), e.message);
+      Utils.show_error_object (call.get_payload (), e.message,
+                               GLib.Log.LINE, GLib.Log.FILE);
       return;
     }
     var parser = new Json.Parser();

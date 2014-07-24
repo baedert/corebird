@@ -218,7 +218,8 @@ class ProfilePage : ScrollWidget, IPage {
     try {
       yield call.invoke_async (null);
     } catch (GLib.Error e) {
-      Utils.show_error_object (call.get_payload (), e.message);
+      Utils.show_error_object (call.get_payload (), e.message,
+                               GLib.Log.LINE, GLib.Log.FILE);
       return;
     }
     var parser = new Json.Parser ();
@@ -703,7 +704,8 @@ class ProfilePage : ScrollWidget, IPage {
       try {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
-        Utils.show_error_object (call.get_payload (), e.message);
+        Utils.show_error_object (call.get_payload (), e.message,
+                                 GLib.Log.LINE, GLib.Log.FILE);
       }
     });
   }

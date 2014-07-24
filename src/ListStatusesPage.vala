@@ -160,7 +160,8 @@ class ListStatusesPage : ScrollWidget, IPage {
     try {
       yield call.invoke_async (null);
     } catch (GLib.Error e) {
-      Utils.show_error_object (call.get_payload (), e.message);
+      Utils.show_error_object (call.get_payload (), e.message,
+                               GLib.Log.LINE, GLib.Log.FILE);
       return;
     }
     var parser = new Json.Parser ();
@@ -200,7 +201,8 @@ class ListStatusesPage : ScrollWidget, IPage {
     try {
       yield call.invoke_async (null);
     } catch (GLib.Error e) {
-      Utils.show_error_object (call.get_payload (), e.message);
+      Utils.show_error_object (call.get_payload (), e.message,
+                               GLib.Log.LINE, GLib.Log.FILE);
       loading = false;
       return;
     }
@@ -267,7 +269,8 @@ class ListStatusesPage : ScrollWidget, IPage {
       try {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
-        Utils.show_error_object (call.get_payload (), e.message);
+        Utils.show_error_object (call.get_payload (), e.message,
+                                 GLib.Log.LINE, GLib.Log.FILE);
       }
       edit_button.sensitive = true;
       delete_button.sensitive = true;
@@ -290,7 +293,8 @@ class ListStatusesPage : ScrollWidget, IPage {
       try {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
-        Utils.show_error_object (call.get_payload (), e.message);
+        Utils.show_error_object (call.get_payload (), e.message,
+                                 GLib.Log.LINE, GLib.Log.FILE);
       }
     });
     // Go back to the ListsPage and tell it to remove this list
@@ -321,7 +325,8 @@ class ListStatusesPage : ScrollWidget, IPage {
     try {
       yield call.invoke_async (null);
     } catch (GLib.Error e) {
-      Utils.show_error_object (call.get_payload (), e.message);
+      Utils.show_error_object (call.get_payload (), e.message,
+                               GLib.Log.LINE, GLib.Log.FILE);
       return;
     }
 

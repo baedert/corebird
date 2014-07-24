@@ -181,7 +181,8 @@ class TweetInfoPage : IPage , ScrollWidget {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
         critical (e.message);
-        Utils.show_error_object (call.get_payload (), e.message);
+        Utils.show_error_object (call.get_payload (), e.message,
+                                 GLib.Log.LINE, GLib.Log.FILE);
       }
     });
   } //}}}
@@ -214,7 +215,8 @@ class TweetInfoPage : IPage , ScrollWidget {
         call.invoke_async.end (res);
       }catch (GLib.Error e) {
         critical(e.message);
-        Utils.show_error_object (call.get_payload (), e.message);
+        Utils.show_error_object (call.get_payload (), e.message,
+                                 GLib.Log.LINE, GLib.Log.FILE);
         return;
       }
       this.tweet = new Tweet ();
@@ -256,7 +258,8 @@ class TweetInfoPage : IPage , ScrollWidget {
       try { reply_call.invoke_async.end (res); }
       catch (GLib.Error e) {
         warning (e.message);
-        Utils.show_error_object (reply_call.get_payload (), e.message);
+        Utils.show_error_object (reply_call.get_payload (), e.message,
+                                 GLib.Log.LINE, GLib.Log.FILE);
         return;
       }
 
@@ -323,7 +326,8 @@ class TweetInfoPage : IPage , ScrollWidget {
         call.invoke_async.end (res);
       }catch (GLib.Error e) {
         critical(e.message);
-        Utils.show_error_object (call.get_payload (), e.message);
+        Utils.show_error_object (call.get_payload (), e.message,
+                                 GLib.Log.LINE, GLib.Log.FILE);
         return;
       }
 

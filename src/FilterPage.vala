@@ -70,7 +70,8 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
         warning (e.message);
-        Utils.show_error_object (call.get_payload (), e.message);
+        Utils.show_error_object (call.get_payload (), e.message,
+                                 GLib.Log.LINE, GLib.Log.FILE);
       }
 
       var parser = new Json.Parser ();
@@ -78,7 +79,8 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
         parser.load_from_data (call.get_payload ());
       } catch (GLib.Error e) {
         critical (e.message);
-        Utils.show_error_object (call.get_payload (), e.message);
+        Utils.show_error_object (call.get_payload (), e.message,
+                                 GLib.Log.LINE, GLib.Log.FILE);
         return;
       }
       Json.Array users = parser.get_root ().get_object ().get_array_member ("users");
@@ -199,7 +201,8 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
       try {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
-        Utils.show_error_object (call.get_payload (), e.message);
+        Utils.show_error_object (call.get_payload (), e.message,
+                                 GLib.Log.LINE, GLib.Log.FILE);
         warning (e.message);
         return;
       }

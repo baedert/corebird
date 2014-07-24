@@ -283,7 +283,8 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
         critical (e.message);
-        Utils.show_error_object (call.get_payload (), e.message);
+        Utils.show_error_object (call.get_payload (), e.message,
+                                 GLib.Log.LINE, GLib.Log.FILE);
       } finally {
         this.destroy ();
       }
