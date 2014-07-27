@@ -36,7 +36,7 @@ class WarningService : IMessageReceiver, GLib.Object {
 
     var dialog = new Gtk.MessageDialog(null, Gtk.DialogFlags.DESTROY_WITH_PARENT,
                Gtk.MessageType.WARNING, Gtk.ButtonsType.OK,
-               message);
+               "%s", message);
 
     dialog.response.connect((id) => {
       if(id == Gtk.ResponseType.OK)
