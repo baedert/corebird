@@ -11,8 +11,7 @@ appdata_in_files = corebird.appdata.xml.in
 appdata_DATA = $(appdata_in_files:.xml.in=.xml)
 @INTLTOOL_XML_RULE@
 
-manpagedir = $(mandir)
-manpage_DATA = corebird.1
+man_MANS = corebird.1
 
 if ENABLE_CATALOG
   catalogdir = $(prefix)/share/glade/catalogs/
