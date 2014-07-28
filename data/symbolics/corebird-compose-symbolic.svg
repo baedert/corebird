@@ -14,7 +14,7 @@
    id="svg15935"
    version="1.1"
    inkscape:version="0.48.5 r10040"
-   sodipodi:docname="corebird-conversation-symbolic.svg">
+   sodipodi:docname="corebird-compose-symbolic.svg">
   <defs
      id="defs15937" />
   <sodipodi:namedview
@@ -22,11 +22,11 @@
      pagecolor="#3a3b39"
      bordercolor="#666666"
      borderopacity="1.0"
-     inkscape:pageopacity="0"
+     inkscape:pageopacity="1"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.9999999"
-     inkscape:cx="-64.622832"
-     inkscape:cy="-44.943191"
+     inkscape:zoom="2"
+     inkscape:cx="19.853618"
+     inkscape:cy="28.369321"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -63,17 +63,25 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(0,-924.3622)">
-    <path
-       style="fill:#bebebe;fill-opacity:1;stroke:none"
-       d="m 79,1012.3622 -43,0 c -11.996,0 -20,-8.92 -20,-20 l 0,-43.5 c -9.13008,1.8592 -16,9.8048 -16,19.5 l 0,32 c 0,9.6952 6.86992,17.6416 16,19.5 l 0,32.5 25,-32 43,0 z"
-       id="path16638"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="csscssccccc" />
-    <path
-       style="fill:#bebebe;fill-opacity:1;stroke:none"
-       d="m 20,948.3622 c -11.08,0 -20,8.92 -20,20 l 0,32 c 0,11.08 8.92,20 20,20 l 43.004,0 25,32 0,-32.5 c 9.13008,-1.8584 16,-9.8048 16,-19.5 l 0,-32 c 0,-11.08 -8.92,-20 -20,-20 z"
-       id="path16636"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="sssscccssss" />
+    <g
+       id="g16552"
+       transform="matrix(6.4705958,6.4705471,-6.4705959,6.470547,6766.6454,-5811.2911)">
+      <path
+         sodipodi:nodetypes="cccc"
+         inkscape:connector-curvature="0"
+         id="path16529"
+         d="m 7.5000643,1051.8622 -1.5000643,-3 3,0 z"
+         inkscape:transform-center-y="0.0668605"
+         inkscape:transform-center-x="0.13329701"
+         style="color:#000000;fill:#bebebe;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+      <rect
+         transform="matrix(0,-1,1,0,0,0)"
+         y="6"
+         x="-1047.2654"
+         height="3"
+         width="10.903225"
+         id="rect16531"
+         style="color:#000000;fill:#bebebe;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    </g>
   </g>
 </svg>

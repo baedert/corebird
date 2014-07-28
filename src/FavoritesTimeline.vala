@@ -74,7 +74,7 @@ class FavoritesTimeline : IMessageReceiver, DefaultTimeline {
   }
 
   public override void create_tool_button (Gtk.RadioToolButton? group) {
-    tool_button = new BadgeRadioToolButton(group, "corebird-favorite-symbolic");
+    tool_button = new BadgeRadioToolButton(group, "starred-symbolic");
     tool_button.tooltip_text = _("Favorites");
     tool_button.label = _("Favorites");
   }
