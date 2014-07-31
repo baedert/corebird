@@ -106,7 +106,7 @@
 
 
 .tweet {
-  border-color: alpha(black, 0.2);
+  border-bottom: solid 1px #ddd;
 }
 
 .text-only-button{
