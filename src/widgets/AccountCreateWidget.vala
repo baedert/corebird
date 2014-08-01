@@ -100,6 +100,9 @@ class AccountCreateWidget : Gtk.Box {
           result_received (false, a);
           critical ("Account is already in use");
           show_error (_("Account already in use"));
+          pin_entry.sensitive = true;
+          pin_entry.text = "";
+          request_pin_button.sensitive = true;
           return;
         }
       }
