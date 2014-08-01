@@ -42,7 +42,7 @@ class AccountCreateWidget : Gtk.Box {
   }
 
   public void open_pin_request_site () {
-    acc.init_proxy (false);
+    acc.init_proxy (false, true);
     try {
       acc.proxy.request_token ("oauth/request_token", "oob");
       string uri = "http://twitter.com/oauth/authorize?oauth_token=" + acc.proxy.get_token();
