@@ -73,9 +73,13 @@ public class MainWindow : Gtk.ApplicationWindow {
       this.add (create_widget);
     }
 
+    var add_entry = new AddListEntry (_("Add new Account"));
+    add_entry.show_all ();
+    account_list.add (add_entry);
+
     foreach (Account acc in Account.list_accounts ()) {
       var e = new UserListEntry.from_account (acc);
-      account_list.add (e);
+      account_list.prepend (e);
     }
 
     ((Corebird)app).account_added.connect ((new_acc) => {
@@ -167,6 +171,12 @@ public class MainWindow : Gtk.ApplicationWindow {
 
   [GtkCallback]
   private void account_row_activated_cb (Gtk.ListBoxRow row) {
+    if (row is AddListEntry) {
+      account_popover.hide ();
+      Account dummy_acc = new Account (0, Account.DUMMY, "name");
+      get_application ().add_window (new MainWindow (application, dummy_acc));
+      return;
+    }
     var e = (UserListEntry)row;
     string screen_name = e.screen_name;
 
