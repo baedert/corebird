@@ -34,8 +34,6 @@ class SettingsDialog : Gtk.Window {
   [GtkChild]
   private Gtk.Switch on_new_dms_switch;
   [GtkChild]
-  private Gtk.Switch dark_theme_switch;
-  [GtkChild]
   private Gtk.ComboBoxText on_new_tweets_combobox;
   [GtkChild]
   private Gtk.Switch auto_scroll_on_new_tweets_switch;
@@ -59,11 +57,6 @@ class SettingsDialog : Gtk.Window {
                           SettingsBindFlags.DEFAULT);
 
     // Interface page
-    Settings.get ().bind ("use-dark-theme", dark_theme_switch, "active",
-                          SettingsBindFlags.DEFAULT);
-    dark_theme_switch.notify["active"].connect (() => {
-      Gtk.Settings.get_default ().gtk_application_prefer_dark_theme = dark_theme_switch.active;
-    });
     auto_scroll_on_new_tweets_switch.notify["active"].connect (() => {
       on_new_tweets_combobox.sensitive = !auto_scroll_on_new_tweets_switch.active;
     });

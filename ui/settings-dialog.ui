@@ -137,58 +137,6 @@
           <property name="border_width">10</property>
           <property name="row_spacing">3</property>
           <property name="column_spacing">8</property>
-          <child>
-            <object class="GtkLabel" id="main_window_category_label">
-              <property name="visible">True</property>
-              <property name="can_focus">False</property>
-              <property name="halign">start</property>
-              <property name="label" translatable="yes">Main Window</property>
-              <attributes>
-                <attribute name="weight" value="bold"/>
-              </attributes>
-            </object>
-            <packing>
-              <property name="left_attach">0</property>
-              <property name="top_attach">0</property>
-              <property name="width">4</property>
-              <property name="height">1</property>
-            </packing>
-          </child>
-          <child>
-            <object class="GtkLabel" id="dark_theme_label">
-              <property name="visible">True</property>
-              <property name="can_focus">False</property>
-              <property name="halign">end</property>
-              <property name="hexpand">True</property>
-              <property name="label" translatable="yes">Use Dark Theme:</property>
-              <accessibility>
-                <relation type="label-for" target="dark_theme_switch"/>
-              </accessibility>
-            </object>
-            <packing>
-              <property name="left_attach">0</property>
-              <property name="top_attach">1</property>
-              <property name="width">2</property>
-              <property name="height">1</property>
-            </packing>
-          </child>
-          <child>
-            <object class="GtkSwitch" id="dark_theme_switch">
-              <property name="visible">True</property>
-              <property name="can_focus">True</property>
-              <property name="halign">start</property>
-              <property name="hexpand">True</property>
-              <accessibility>
-                <relation type="labelled-by" target="dark_theme_label"/>
-              </accessibility>
-            </object>
-            <packing>
-              <property name="left_attach">2</property>
-              <property name="top_attach">1</property>
-              <property name="width">2</property>
-              <property name="height">1</property>
-            </packing>
-          </child>
 
           <child>
             <object class="GtkLabel" id="timeline_category_label">
@@ -207,7 +155,6 @@
               <property name="height">1</property>
             </packing>
           </child>
-
 
           <child>
             <object class="GtkLabel" id="round_avatar_label">
