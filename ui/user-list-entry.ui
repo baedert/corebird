@@ -43,7 +43,7 @@
             <property name="can_focus">False</property>
             <property name="halign">start</property>
             <property name="margin_bottom">1</property>
-            <property name="margin_right">20</property>
+            <property name="margin_end">20</property>
             <property name="yalign">1</property>
             <style>
               <class name="list-username"/>
