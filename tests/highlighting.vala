@@ -20,6 +20,7 @@ void normal () {
   buffer.apply_tag.connect ((tag, start, end) => {
     string mention = buffer.get_text (start, end, false);
     assert (mention == "@blabla");
+    assert (tag.name == "mention");
   });
 
   TweetUtils.annotate_text (buffer);
