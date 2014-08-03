@@ -25,6 +25,7 @@ class AvatarWidget : Gtk.Image {
       this.queue_draw ();
     }
   }
+  public bool verified { get; set; default = false; }
 
   construct {
     Settings.get ().bind ("round-avatars", this, "make_round",
@@ -55,7 +56,7 @@ class AvatarWidget : Gtk.Image {
     ct.fill();
 
     if (_round) {
-      var sc     = this.get_style_context ();
+      var sc = this.get_style_context ();
       // make it round
       ct.set_operator (Cairo.Operator.DEST_IN);
       ct.translate (width / 2, height / 2);
@@ -76,6 +77,16 @@ class AvatarWidget : Gtk.Image {
     ctx.set_source_surface (surface, 0, 0);
     ctx.fill ();
 
+
+    /* Draw verification indicator */
+    if (verified) {
+      ctx.rectangle (0, 0, width, height);
+      Gdk.cairo_set_source_pixbuf (ctx,
+                                   Twitter.verified_icon,
+                                   width - Twitter.verified_icon.get_width (),
+                                   0);
+      ctx.fill ();
+    }
 
     return false;
   }
