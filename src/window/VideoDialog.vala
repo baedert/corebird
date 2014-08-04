@@ -137,6 +137,7 @@ class VideoDialog : Gtk.Window {
     session.queue_message (msg, (s, _msg) => {
       if (_msg.status_code != Soup.Status.OK) {
         warning ("Status Code %u", _msg.status_code);
+        show_error ("%u %s".printf (_msg.status_code, Soup.Status.get_phrase (_msg.status_code)));
         fetch_real_url.callback ();
         return;
       }
@@ -179,6 +180,7 @@ class VideoDialog : Gtk.Window {
     session.queue_message (msg, (s, _msg) => {
       if (_msg.status_code != Soup.Status.OK) {
         warning ("Status Code %u", _msg.status_code);
+        show_error ("%u %s".printf (_msg.status_code, Soup.Status.get_phrase (_msg.status_code)));
         download_video.callback ();
         return;
       }
