@@ -112,10 +112,6 @@ public class MainWidget : Gtk.Box {
 
     Settings.get ().bind ("sidebar-visible", sidebar_revealer, "reveal-child",
                           SettingsBindFlags.DEFAULT);
-
-
-    // Activate the first timeline
-    pages[0].get_tool_button ().active = true;
   }
 
 
