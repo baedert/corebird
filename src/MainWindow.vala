@@ -61,8 +61,6 @@ public class MainWindow : Gtk.ApplicationWindow {
 
       Account.add_account (acc_);
       var create_widget = new AccountCreateWidget (acc_, (Corebird) app);
-      create_widget.margin_top = 50;
-      create_widget.margin_bottom = 20;
       create_widget.result_received.connect ((result, acc) => {
         if (result) {
           change_account (acc);

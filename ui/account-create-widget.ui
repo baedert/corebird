@@ -5,6 +5,8 @@
     <property name="can_focus">False</property>
     <property name="halign">center</property>
     <property name="orientation">vertical</property>
+    <property name="margin_top">50</property>
+    <property name="margin_bottom">20</property>
     <signal name="delete_event" handler="delete_event_cb" swapped="no" />
     <child>
       <object class="GtkLabel" id="label1">
@@ -154,7 +156,7 @@
       </packing>
     </child>
   </template>
-  <object class="GtkSizeGroup" id="sizegroup1">
+  <object class="GtkSizeGroup">
     <widgets>
       <widget name="confirm_button"/>
       <widget name="request_pin_button"/>
