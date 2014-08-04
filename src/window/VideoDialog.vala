@@ -174,7 +174,7 @@ class VideoDialog : Gtk.Window {
       current_content_length += buffer.length;
       double fraction = (double) current_content_length / (double) file_content_length;
       progress_bar.fraction = fraction;
-      progress_bar.text = "%d%%".printf ((int)(fraction * 100));
+      progress_bar.text = "%d %%".printf ((int)(fraction * 100));
     });
     session.queue_message (msg, (s, _msg) => {
       if (_msg.status_code != Soup.Status.OK) {
