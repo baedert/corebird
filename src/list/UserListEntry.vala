@@ -23,6 +23,8 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
   private Gtk.Label screen_name_label;
   [GtkChild]
   private AvatarWidget avatar_image;
+  [GtkChild]
+  private Gtk.Button settings_button;
 
   public new string name {
     set { name_label.label = value; }
@@ -50,6 +52,12 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
 
   public int64 sort_factor {
     get{ return int64.MAX-1; }
+  }
+
+  public bool show_settings_button {
+    set {
+      settings_button.visible = value;
+    }
   }
 
   public int64 user_id { get; set; }

@@ -73,6 +73,33 @@
           </packing>
         </child>
 
+
+        <child>
+          <object class="GtkButton" id="settings_button">
+            <property name="visible">true</property>
+            <property name="valign">center</property>
+            <property name="halign">end</property>
+            <property name="relief">none</property>
+            <signal name="clicked" handler="settings_button_clicked_cb" />
+            <child>
+              <object class="GtkImage">
+                <property name="visible">true</property>
+                <property name="icon_name">emblem-system-symbolic</property>
+                <property name="can_focus">false</property>
+              </object>
+            </child>
+            <style>
+              <class name="image-button" />
+            </style>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">0</property>
+            <property name="height">2</property>
+          </packing>
+        </child>
+
+
       </object>
     </child>
   </template>

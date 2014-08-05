@@ -189,6 +189,7 @@ class SearchPage : IPage, Gtk.Box {
         entry.name = user_obj.get_string_member ("name").strip ();
         entry.avatar = user_obj.get_string_member ("profile_image_url");
         entry.user_id = user_obj.get_int_member ("id");
+        entry.show_settings_button = false;
         tweet_list.add (entry);
       });
       if (users.get_length () > USER_COUNT) {
