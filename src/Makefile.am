@@ -87,6 +87,7 @@ cb_sources = \
 			window/ModifyFilterDialog.vala \
 			window/VideoDialog.vala \
 			window/AboutDialog.vala \
+			window/AccountDialog.vala \
 			sql/Database.vala \
 			sql/Statement.vala \
 			sql/UpdateStatement.vala \

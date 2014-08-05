@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="AccountDialog" parent="GtkDialog">
+    <property name="visible">true</property>
+    <property name="can_focus">false</property>
+    <property name="title" translatable="yes">Account Settings</property>
+    <child internal-child="vbox">
+      <object class="GtkBox">
+        <property name="visible">true</property>
+        <property name="orientation">vertical</property>
+        <property name="can_focus">false</property>
+
+
+        <!-- Avatar -->
+        <child>
+          <object class="AvatarWidget" id="avatar_image">
+            <property name="visible">true</property>
+            <property name="valign">center</property>
+            <property name="halign">center</property>
+          </object>
+        </child>
+
+      </object>
+    </child>
+  </template>
+</interface>
+
