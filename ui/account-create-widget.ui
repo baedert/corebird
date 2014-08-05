@@ -7,6 +7,8 @@
     <property name="orientation">vertical</property>
     <property name="margin_top">50</property>
     <property name="margin_bottom">20</property>
+    <property name="margin_start">20</property>
+    <property name="margin_end">20</property>
     <signal name="delete_event" handler="delete_event_cb" swapped="no" />
     <child>
       <object class="GtkLabel" id="label1">
