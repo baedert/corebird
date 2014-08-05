@@ -28,111 +28,6 @@
     <child>
       <object class="GtkStack" id="stack">
 
-        <!-- Accounts page -->
-        <child>
-          <object class="GtkGrid" id="accounts_grid">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <child>
-              <object class="GtkToolbar" id="toolbar1">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="valign">end</property>
-                <property name="toolbar_style">icons</property>
-                <style>
-                  <class name="inline-toolbar"/>
-                </style>
-                <property name="icon_size">1</property>
-                <child>
-                  <object class="GtkToolButton" id="add_account_button">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Add new account</property>
-                    <property name="use_underline">True</property>
-                    <property name="icon_name">list-add-symbolic</property>
-                    <property name="tooltip_text" translatable="yes">Add new account</property>
-                    <signal name="clicked" handler="add_account_clicked" swapped="no"/>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="homogeneous">True</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkToolButton" id="remove_account_button">
-                    <property name="visible">True</property>
-                    <property name="sensitive">False</property>
-                    <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Remove selected account</property>
-                    <property name="use_underline">True</property>
-                    <property name="icon_name">list-remove-symbolic</property>
-                    <property name="tooltip_text" translatable="yes">Remove selected account</property>
-                    <signal name="clicked" handler="remove_account_clicked" swapped="no"/>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="homogeneous">True</property>
-                  </packing>
-                </child>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">1</property>
-                <property name="width">1</property>
-                <property name="height">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkListBox" id="account_list">
-                <property name="width_request">100</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="halign">start</property>
-                <property name="vexpand">True</property>
-                <signal name="row-selected" handler="account_list_selected" swapped="no"/>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">0</property>
-                <property name="width">1</property>
-                <property name="height">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkStack" id="account_info_stack">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="hexpand">True</property>
-                <property name="vexpand">True</property>
-                <property name="transition_type">crossfade</property>
-                <child>
-                  <object class="GtkLabel" id="no_account_label">
-                    <property name="label" translatable="yes">You have not yet configured any account. To do so, click on the appropriate button on the left.</property>
-                    <property name="wrap">True</property>
-                    <property name="halign">center</property>
-                    <property name="valign">center</property>
-                    <property name="margin_start">20</property>
-                    <property name="margin_end">20</property>
-                    <style>
-                      <class name="dim-label" />
-                    </style>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">0</property>
-                <property name="width">1</property>
-                <property name="height">2</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="title" translatable="yes">Accounts</property>
-          </packing>
-        </child>
-
-
         <!-- Interface page -->
         <child>
           <object class="GtkGrid" id="interface_grid">
@@ -343,7 +238,6 @@
           <property name="title" translatable="yes">Interface</property>
         </packing>
       </child>
-
 
 
         <!-- Notification page -->
