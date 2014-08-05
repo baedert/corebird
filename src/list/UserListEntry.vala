@@ -80,4 +80,13 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
   }
 
   public int update_time_delta (GLib.DateTime? now = null) {return 0;}
+
+  [GtkCallback]
+  private void settings_button_clicked_cb () {
+    var active_window = ((Gtk.Application)GLib.Application.get_default ()).active_window;
+    var dialog = new AccountDialog ();
+    dialog.set_transient_for (active_window);
+    dialog.modal = true;
+    dialog.show_all ();
+  }
 }
