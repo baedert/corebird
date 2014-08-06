@@ -143,7 +143,6 @@ public class MainWindow : Gtk.ApplicationWindow {
       app_menu_button.image = new Gtk.Image.from_icon_name ("emblem-system-symbolic", Gtk.IconSize.MENU);
       app_menu_button.get_style_context ().add_class ("image-button");
       app_menu_button.menu_model = this.application.app_menu;
-      app_menu_button.set_relief (Gtk.ReliefStyle.NONE);
       headerbar.pack_end (app_menu_button);
       this.show_menubar = false;
     }
