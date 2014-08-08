@@ -94,7 +94,8 @@ public class MainWindow : Gtk.ApplicationWindow {
     ((Corebird)app).account_removed.connect ((acc) => {
       var entries = account_list.get_children ();
       foreach (Gtk.Widget ule in entries)
-        if (acc.screen_name == ((UserListEntry)ule).screen_name) {
+        if (ule is UserListEntry && 
+            acc.screen_name == ((UserListEntry)ule).screen_name) {
           account_list.remove (ule);
           break;
         }
