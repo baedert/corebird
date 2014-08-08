@@ -43,8 +43,52 @@ class AccountDialog : Gtk.Dialog {
     /*
        - Close open window of that account
        - Remove the account from the db, disk, etc.
+       - Remove the account from the app menu
        - If this would close the last opened window,
          set the account of that window to NULL
+       - XXX Confirmation?
      */
+    var acc_menu = (GLib.Menu) Corebird.account_menu;
+    int64 acc_id = account.id;
+    FileUtils.remove (Dirs.config (@"accounts/$(acc_id).db"));
+    FileUtils.remove (Dirs.config (@"accounts/$(acc_id).png"));
+    FileUtils.remove (Dirs.config (@"accounts/$(acc_id)_small.png"));
+    Corebird.db.exec (@"DELETE FROM `accounts` WHERE `id`='$(acc_id)';");
+
+    /* Remove account from startup accounts, if it's in there */
+    // XXX Is there a better way do do this?
+    string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
+    for (int i = 0; i < startup_accounts.length; i++)
+      if (startup_accounts[i] == account.screen_name) {
+        string[] sa_new = new string[startup_accounts.length - 1];
+        for (int x = 0; x < i; i++)
+          sa_new[x] = startup_accounts[x];
+        for (int x = i+1; x < startup_accounts.length; x++)
+          sa_new[x] = startup_accounts[x];
+        Settings.get ().set_strv ("startup-accounts", sa_new);
+      }
+
+    /* Remove account from account app menu */
+    for (int i = 0; i < acc_menu.get_n_items (); i++){
+      Variant item_name = acc_menu.get_item_attribute_value (i,
+                                       "label", VariantType.STRING);
+      if (item_name.get_string () == "@"+account.screen_name) {
+        acc_menu.remove (i);
+        break;
+      }
+    }
+
+    /* Handle windows, i.e. if this MainWindow is the last open one,
+       we want to use it to show the "new account" UI, otherwise we
+       just close it. */
+
+
+    /* Remove the accoun from the global list of accounts */
+    Corebird cb = (Corebird) GLib.Application.get_default ();
+    Account acc_to_remove = Account.query_account (account.screen_name);
+    cb.account_removed (acc_to_remove);
+    Account.remove_account (account.screen_name);
+
+
   }
 }
