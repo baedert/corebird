@@ -55,7 +55,8 @@ public class MainWindow : Gtk.ApplicationWindow {
 
     foreach (Account acc in Account.list_accounts ()) {
       var e = new UserListEntry.from_account (acc);
-      account_list.prepend (e);
+      e.settings_clicked.connect (() => { account_popover.hide ();});
+      account_list.add (e);
     }
 
     ((Corebird)app).account_added.connect ((new_acc) => {
@@ -65,6 +66,7 @@ public class MainWindow : Gtk.ApplicationWindow {
           return;
 
       var ule = new UserListEntry.from_account (new_acc);
+      ule.settings_clicked.connect (() => { account_popover.hide ();});
       account_list.add (ule);
       ule.show ();
     });
@@ -72,7 +74,7 @@ public class MainWindow : Gtk.ApplicationWindow {
     ((Corebird)app).account_removed.connect ((acc) => {
       var entries = account_list.get_children ();
       foreach (Gtk.Widget ule in entries)
-        if (ule is UserListEntry && 
+        if (ule is UserListEntry &&
             acc.screen_name == ((UserListEntry)ule).screen_name) {
           account_list.remove (ule);
           break;

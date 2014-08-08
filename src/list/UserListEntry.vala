@@ -62,6 +62,8 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
 
   public int64 user_id { get; set; }
 
+  public signal void settings_clicked ();
+
   private unowned Account account;
 
   public UserListEntry.from_account (Account acc) {
@@ -86,6 +88,7 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
 
   [GtkCallback]
   private void settings_button_clicked_cb () {
+    settings_clicked ();
     var active_window = ((Gtk.Application)GLib.Application.get_default ()).active_window;
     var dialog = new AccountDialog (this.account);
     dialog.set_transient_for (active_window);
