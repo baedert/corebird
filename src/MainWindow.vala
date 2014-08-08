@@ -46,30 +46,8 @@ public class MainWindow : Gtk.ApplicationWindow {
     GLib.Object (application: app);
     set_default_size (480, 700);
 
-    if (account != null && account.screen_name != Account.DUMMY) {
-      change_account (account);
-    } else {
-      header_box.hide ();
-      if (app_menu_button != null)
-        app_menu_button.hide ();
+    change_account (account);
 
-      Account acc_;
-      if (account == null)
-        acc_ = new Account (0, Account.DUMMY, "name");
-      else
-        acc_ = account;
-
-      Account.add_account (acc_);
-      var create_widget = new AccountCreateWidget (acc_, (Corebird) app);
-      create_widget.result_received.connect ((result, acc) => {
-        if (result) {
-          change_account (acc);
-        } else {
-          //Account.remove ("screen_name");
-        }
-      });
-      this.add (create_widget);
-    }
 
     var add_entry = new AddListEntry (_("Add new Account"));
     add_entry.show_all ();
@@ -130,7 +108,7 @@ public class MainWindow : Gtk.ApplicationWindow {
 
 
 
-  public void change_account (Account account) {
+  public void change_account (Account? account) {
     this.account = account;
 
     if (main_widget != null) {
@@ -145,26 +123,49 @@ public class MainWindow : Gtk.ApplicationWindow {
       header_box.visible = true;
     }
 
-    main_widget = new MainWidget (account, this, (Corebird)this.application);
-    main_widget.show_all ();
-    this.add (main_widget);
-    main_widget.switch_page (0);
-    this.set_title (main_widget.get_page (0).get_title ());
-    avatar_image.pixbuf = account.avatar_small;
-    account.notify["avatar_small"].connect(() => {
+    if (account != null && account.screen_name != Account.DUMMY) {
+      main_widget = new MainWidget (account, this, (Corebird)this.application);
+      main_widget.show_all ();
+      this.add (main_widget);
+      main_widget.switch_page (0);
+      this.set_title (main_widget.get_page (0).get_title ());
       avatar_image.pixbuf = account.avatar_small;
-    });
+      account.notify["avatar_small"].connect(() => {
+        avatar_image.pixbuf = account.avatar_small;
+      });
 
-    if (!Gtk.Settings.get_default ().gtk_shell_shows_app_menu) {
-      if (app_menu_button == null) {
-        app_menu_button = new Gtk.MenuButton ();
-        app_menu_button.image = new Gtk.Image.from_icon_name ("emblem-system-symbolic", Gtk.IconSize.MENU);
-        app_menu_button.get_style_context ().add_class ("image-button");
-        app_menu_button.menu_model = this.application.app_menu;
-        app_menu_button.set_relief (Gtk.ReliefStyle.NONE);
-        headerbar.pack_end (app_menu_button);
-      } else
-        app_menu_button.show ();
+      if (!Gtk.Settings.get_default ().gtk_shell_shows_app_menu) {
+        if (app_menu_button == null) {
+          app_menu_button = new Gtk.MenuButton ();
+          app_menu_button.image = new Gtk.Image.from_icon_name ("emblem-system-symbolic", Gtk.IconSize.MENU);
+          app_menu_button.get_style_context ().add_class ("image-button");
+          app_menu_button.menu_model = this.application.app_menu;
+          app_menu_button.set_relief (Gtk.ReliefStyle.NONE);
+          headerbar.pack_end (app_menu_button);
+        } else
+          app_menu_button.show ();
+      }
+    } else {
+      header_box.hide ();
+      if (app_menu_button != null)
+        app_menu_button.hide ();
+
+      Account acc_;
+      if (account == null)
+        acc_ = new Account (0, Account.DUMMY, "name");
+      else
+        acc_ = account;
+
+      Account.add_account (acc_);
+      var create_widget = new AccountCreateWidget (acc_, (Corebird) this.application);
+      create_widget.result_received.connect ((result, acc) => {
+        if (result) {
+          change_account (acc);
+        } else {
+          //Account.remove ("screen_name");
+        }
+      });
+      this.add (create_widget);
     }
 
   }
