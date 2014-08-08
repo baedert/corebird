@@ -4,6 +4,7 @@
     <property name="visible">true</property>
     <property name="can_focus">false</property>
     <property name="title" translatable="yes">Account Settings</property>
+    <property name="border_width">6</property>
     <child internal-child="vbox">
       <object class="GtkBox">
         <property name="visible">true</property>
@@ -11,17 +12,110 @@
         <property name="can_focus">false</property>
 
 
-        <!-- Avatar -->
         <child>
-          <object class="AvatarWidget" id="avatar_image">
+          <object class="GtkGrid">
             <property name="visible">true</property>
-            <property name="valign">center</property>
+            <property name="can_focus">false</property>
             <property name="halign">center</property>
+            <property name="valign">start</property>
+            <property name="row_spacing">6</property>
+            <property name="column_spacing">6</property>
+            <property name="margin_end">12</property>
+            <property name="margin_start">12</property>
+            <property name="margin_bottom">12</property>
+
+            <!-- Avatar -->
+            <child>
+              <object class="AvatarWidget" id="avatar_image">
+                <property name="visible">true</property>
+                <property name="valign">center</property>
+                <property name="halign">center</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">0</property>
+                <property name="width">2</property>
+              </packing>
+            </child>
+
+            <!-- screen_name -->
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">true</property>
+                <property name="can_focus">false</property>
+                <property name="label" translatable="yes">Username:</property>
+                <property name="margin_end">6</property>
+                <property name="halign">end</property>
+                <property name="valign">baseline</property>
+                <style>
+                  <class name="dim-label" />
+                </style>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">1</property>
+              </packing>
+            </child>
+
+            <child>
+              <object class="GtkEntry" id="screen_name_entry">
+                <property name="visible">true</property>
+                <property name="can_focus">true</property>
+                <property name="margin_end">6</property>
+                <property name="halign">start</property>
+                <property name="valign">baseline</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">1</property>
+              </packing>
+            </child>
+
+            <!-- Real Name -->
+
+
+            <!-- Delete Button -->
+            <child>
+              <object class="GtkButton" id="delete_button">
+                <property name="visible">true</property>
+                <property name="can_focus">true</property>
+                <property name="label" translatable="yes">Delete</property>
+                <property name="halign">fill</property>
+                <signal name="clicked" handler="delete_button_clicked_cb" />
+                <style>
+                  <class name="destructive-action" />
+                </style>
+              </object>
+              <packing>
+                <property name="top_attach">3</property>
+                <property name="left_attach">0</property>
+                <property name="width">2</property>
+              </packing>
+            </child>
+
+          </object>
+        </child>
+
+        <child internal-child="action_area">
+          <object class="GtkButtonBox">
+            <property name="can_focus">false</property>
+            <property name="visible">true</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton" id="close_button">
+                <property name="can_focus">true</property>
+                <property name="visible">true</property>
+                <property name="label" translatable="yes">Close</property>
+              </object>
+            </child>
           </object>
         </child>
 
       </object>
     </child>
+    <action-widgets>
+      <action-widget response="0">close_button</action-widget>
+    </action-widgets>
   </template>
 </interface>
 

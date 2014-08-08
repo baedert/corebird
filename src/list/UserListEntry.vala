@@ -62,10 +62,13 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
 
   public int64 user_id { get; set; }
 
+  private unowned Account account;
+
   public UserListEntry.from_account (Account acc) {
     this.screen_name = "@" + acc.screen_name;
     this.name = acc.name;
     this.avatar_pixbuf = acc.avatar;
+    this.account = acc;
     acc.info_changed.connect ((screen_name, name, avatar) => {
       this.screen_name = screen_name;
       this.name = name;
@@ -84,7 +87,7 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
   [GtkCallback]
   private void settings_button_clicked_cb () {
     var active_window = ((Gtk.Application)GLib.Application.get_default ()).active_window;
-    var dialog = new AccountDialog ();
+    var dialog = new AccountDialog (this.account);
     dialog.set_transient_for (active_window);
     dialog.modal = true;
     dialog.show_all ();

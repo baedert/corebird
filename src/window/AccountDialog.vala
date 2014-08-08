@@ -16,7 +16,35 @@
  */
 [GtkTemplate (ui = "/org/baedert/corebird/ui/account-dialog.ui")]
 class AccountDialog : Gtk.Dialog {
+  private static const int RESPONSE_CLOSE = 0;
+  [GtkChild]
+  private Gtk.Entry screen_name_entry;
+  [GtkChild]
+  private AvatarWidget avatar_image;
+
+  private unowned Account account;
 
 
 
+  public AccountDialog (Account account) {
+    this.account = account;
+    avatar_image.pixbuf = account.avatar;
+    screen_name_entry.text = account.screen_name;
+  }
+
+  public override void response (int response_id) {
+    if (response_id == RESPONSE_CLOSE) {
+      this.destroy ();
+    }
+  }
+
+  [GtkCallback]
+  private void delete_button_clicked_cb () {
+    /*
+       - Close open window of that account
+       - Remove the account from the db, disk, etc.
+       - If this would close the last opened window,
+         set the account of that window to NULL
+     */
+  }
 }
