@@ -69,6 +69,8 @@
             <property name="valign">center</property>
             <property name="halign">end</property>
             <property name="relief">none</property>
+            <property name="margin_start">6</property>
+            <property name="margin_end">6</property>
             <signal name="clicked" handler="settings_button_clicked_cb" />
             <child>
               <object class="GtkImage">
