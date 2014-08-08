@@ -78,17 +78,40 @@ class AccountDialog : Gtk.Dialog {
       }
     }
 
+
+    Corebird cb = (Corebird) GLib.Application.get_default ();
+
     /* Handle windows, i.e. if this MainWindow is the last open one,
        we want to use it to show the "new account" UI, otherwise we
        just close it. */
+    unowned GLib.List<Gtk.Window> windows = cb.get_windows ();
+    Gtk.Window? account_window = null;
+    int n_main_windows = 0;
+    foreach (Gtk.Window win in windows) {
+      if (win is MainWindow) {
+        n_main_windows ++;
+        if (((MainWindow)win).account.id == this.account.id) {
+          account_window = win;
+        }
+      }
+    }
+    debug ("Open main windows: %d", n_main_windows);
+
+    if (account_window != null) {
+      if (n_main_windows > 1)
+        account_window.destroy ();
+      else
+        ((MainWindow)account_window).change_account (null);
+    }
 
 
-    /* Remove the accoun from the global list of accounts */
-    Corebird cb = (Corebird) GLib.Application.get_default ();
+    /* Remove the account from the global list of accounts */
     Account acc_to_remove = Account.query_account (account.screen_name);
     cb.account_removed (acc_to_remove);
     Account.remove_account (account.screen_name);
 
 
+    /* Close this dialog */
+    this.destroy ();
   }
 }

@@ -130,7 +130,7 @@ public class MainWindow : Gtk.ApplicationWindow {
 
 
 
-  private void change_account (Account account) {
+  public void change_account (Account account) {
     this.account = account;
 
     if (main_widget != null) {
