@@ -341,4 +341,19 @@ public class MainWindow : Gtk.ApplicationWindow {
 
     return 1;
   }
+
+  private void header_func (Gtk.ListBoxRow row, Gtk.ListBoxRow? row_before) {
+    if (row_before == null)
+      return;
+
+    Gtk.Widget? header = row.get_header ();
+    if (header != null)
+      return;
+    header = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
+    header.show ();
+    row.set_header (header);
+
+  }
+
 }
+    account_list.set_header_func (header_func);
