@@ -51,8 +51,9 @@ class AccountCreateWidget : Gtk.Box {
     } catch (GLib.Error e) {
       if (e.message.down() == "unauthorized") {
         Utils.show_error_dialog (_("Unauthorized. Most of the time, this means that there's something wrong with the Twitter servers and you should try again later"));
-      } else
+      } else {
         Utils.show_error_dialog (e.message);
+      }
       critical (e.message);
     }
   }
@@ -118,8 +119,8 @@ class AccountCreateWidget : Gtk.Box {
               .run ();
         acc.init_proxy (true, true);
         // TODO: Insert account into app menu
-        result_received (true, acc);
         corebird.account_added (acc);
+        result_received (true, acc);
       });
     });
   }
