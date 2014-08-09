@@ -48,7 +48,7 @@ public class MainWindow : Gtk.ApplicationWindow {
 
     change_account (account);
 
-
+    account_list.set_sort_func (account_sort_func);
     var add_entry = new AddListEntry (_("Add new Account"));
     add_entry.show_all ();
     account_list.add (add_entry);
@@ -62,7 +62,8 @@ public class MainWindow : Gtk.ApplicationWindow {
     ((Corebird)app).account_added.connect ((new_acc) => {
       var entries = account_list.get_children ();
       foreach (Gtk.Widget ule in entries)
-        if (new_acc.screen_name == ((UserListEntry)ule).screen_name)
+        if (ule is UserListEntry &&
+            new_acc.screen_name == ((UserListEntry)ule).screen_name)
           return;
 
       var ule = new UserListEntry.from_account (new_acc);
@@ -328,5 +329,16 @@ public class MainWindow : Gtk.ApplicationWindow {
     debug ("Saving geomentry for %s: %d,%d,%d,%d", account.screen_name, x, y, w, h);
 
     Settings.get ().set_value ("window-geometry", new_geom);
+  }
+
+  private int account_sort_func (Gtk.ListBoxRow a,
+                                 Gtk.ListBoxRow b) {
+    if (a is AddListEntry)
+      return 1;
+
+    if (((UserListEntry)a).user_id < ((UserListEntry)b).user_id)
+      return -1;
+
+    return 1;
   }
 }
