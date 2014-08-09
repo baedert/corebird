@@ -49,11 +49,14 @@ public class MainWindow : Gtk.ApplicationWindow {
     change_account (account);
 
     account_list.set_sort_func (account_sort_func);
+    account_list.set_header_func (header_func);
     var add_entry = new AddListEntry (_("Add new Account"));
     add_entry.show_all ();
     account_list.add (add_entry);
 
     foreach (Account acc in Account.list_accounts ()) {
+      if (acc.screen_name == Account.DUMMY)
+          continue;
       var e = new UserListEntry.from_account (acc);
       e.settings_clicked.connect (() => { account_popover.hide ();});
       account_list.add (e);
@@ -158,6 +161,8 @@ public class MainWindow : Gtk.ApplicationWindow {
         acc_ = new Account (0, Account.DUMMY, "name");
       else
         acc_ = account;
+
+      this.account = acc_;
 
       Account.add_account (acc_);
       var create_widget = new AccountCreateWidget (acc_, (Corebird) this.application);
@@ -356,4 +361,3 @@ public class MainWindow : Gtk.ApplicationWindow {
   }
 
 }
-    account_list.set_header_func (header_func);
