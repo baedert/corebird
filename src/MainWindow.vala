@@ -59,7 +59,7 @@ public class MainWindow : Gtk.ApplicationWindow {
           continue;
       var e = new UserListEntry.from_account (acc);
       e.show_settings = true;
-      e.settings_clicked.connect (() => { account_popover.hide ();});
+      e.action_clicked.connect (() => { account_popover.hide ();});
       account_list.add (e);
     }
 
@@ -72,7 +72,7 @@ public class MainWindow : Gtk.ApplicationWindow {
 
       var ule = new UserListEntry.from_account (new_acc);
       ule.show_settings = true;
-      ule.settings_clicked.connect (() => { account_popover.hide ();});
+      ule.action_clicked.connect (() => { account_popover.hide ();});
       account_list.add (ule);
       ule.show ();
     });
