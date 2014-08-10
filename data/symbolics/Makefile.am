@@ -15,5 +15,6 @@ symbolics_DATA = \
 								corebird-stream-symbolic.svg       \
 								corebird-filter-symbolic.svg       \
 								corebird-favorite-symbolic.svg     \
-								corebird-down-symbolic.svg
+								corebird-down-symbolic.svg         \
+								corebird-new-window-symbolic.svg
 EXTRA_DIST = $(symbolics_DATA)
