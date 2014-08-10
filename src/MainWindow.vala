@@ -91,7 +91,6 @@ public class MainWindow : Gtk.ApplicationWindow {
 
     add_accels();
     load_geometry ();
-    show_all ();
   }
 
   /**
@@ -184,7 +183,9 @@ public class MainWindow : Gtk.ApplicationWindow {
     if (row is AddListEntry) {
       account_popover.hide ();
       Account dummy_acc = new Account (0, Account.DUMMY, "name");
-      get_application ().add_window (new MainWindow (application, dummy_acc));
+      var window = new MainWindow (application, dummy_acc);
+      get_application ().add_window (window);
+      window.show_all ();
       return;
     }
     var e = (UserListEntry)row;

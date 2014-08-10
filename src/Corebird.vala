@@ -181,10 +181,13 @@ public class Corebird : Gtk.Application {
    */
   private void  open_startup_windows (string? compose_screen_name = null) { // {{{
     string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
+    Gtk.Window window;
 
     if(startup_accounts.length == 1) {
       if (startup_accounts[0].length == 0) {
-        add_window (new MainWindow (this, null));
+        window = new MainWindow (this, null);
+        add_window (window);
+        window.show_all ();
         return;
       }
     }
@@ -192,21 +195,27 @@ public class Corebird : Gtk.Application {
 
     if (compose_screen_name == null) {
       if (startup_accounts.length == 0) {
-        add_window (new MainWindow (this, null));
+        window = new MainWindow (this, null);
+        add_window (window);
+        window.show_all ();
       } else {
         bool found_valid_account = false;
         foreach (string screen_name in startup_accounts) {
           if (!is_window_open_for_screen_name (screen_name)) {
             var acc = Account.query_account (screen_name);
             if (acc != null) {
-              add_window (new MainWindow (this, acc));
+              window = new MainWindow (this, acc);
+              add_window (window);
+              window.show_all ();
               found_valid_account = true;
             }
           }
         }
 
         if (!found_valid_account) {
-          add_window (new MainWindow (this, null));
+          window = new MainWindow (this, null);
+          add_window (window);
+          window.show_all ();
         }
 
       }
@@ -265,7 +274,9 @@ public class Corebird : Gtk.Application {
     unowned GLib.SList<Account> accs = Account.list_accounts ();
     foreach (Account a in accs) {
       if (a.screen_name == screen_name) {
-        add_window (new MainWindow (this, a));
+        var window = new MainWindow (this, a);
+        add_window (window);
+        window.show_all ();
         return;
       }
     }
