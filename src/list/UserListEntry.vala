@@ -25,6 +25,8 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
   private AvatarWidget avatar_image;
   [GtkChild]
   private Gtk.Button settings_button;
+  [GtkChild]
+  private Gtk.Button new_window_button;
 
   public new string name {
     set { name_label.label = value; }
@@ -57,6 +59,7 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
   public bool show_settings {
     set {
       settings_button.visible = value;
+      new_window_button.visible = value;
     }
   }
 
@@ -64,7 +67,7 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
 
   public signal void action_clicked ();
 
-  private unowned Account account;
+  private Account account;
 
   public UserListEntry.from_account (Account acc) {
     this.screen_name = "@" + acc.screen_name;
@@ -76,6 +79,18 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
       this.name = name;
       this.avatar_pixbuf = avatar;
     });
+    var cb = (Corebird) GLib.Application.get_default ();
+    cb.window_added.connect ((window) => {
+      if (window is MainWindow) {
+        update_window_button_sensitivity (window, false);
+      }
+    });
+
+    cb.window_removed.connect ((window) => {
+      if (window is MainWindow) {
+        update_window_button_sensitivity (window, true);
+      }
+    });
   }
 
   private void real_set_avatar (string avatar_url) {
@@ -85,6 +100,12 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
   }
 
   public int update_time_delta (GLib.DateTime? now = null) {return 0;}
+
+  private void update_window_button_sensitivity (Gtk.Window window, bool new_value) {
+    if (((MainWindow)window).account.screen_name == this.account.screen_name) {
+      new_window_button.sensitive = new_value;
+    }
+  }
 
   [GtkCallback]
   private void settings_button_clicked_cb () {
@@ -98,6 +119,10 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
 
   [GtkCallback]
   private void new_window_button_clicked_cb () {
+    var cb = (Corebird) GLib.Application.get_default ();
+    var window = new MainWindow (cb, this.account);
+    cb.add_window (window);
+    window.show_all ();
     action_clicked ();
   }
 }
