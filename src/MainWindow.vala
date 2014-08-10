@@ -58,6 +58,7 @@ public class MainWindow : Gtk.ApplicationWindow {
       if (acc.screen_name == Account.DUMMY)
           continue;
       var e = new UserListEntry.from_account (acc);
+      e.show_settings = true;
       e.settings_clicked.connect (() => { account_popover.hide ();});
       account_list.add (e);
     }
@@ -70,6 +71,7 @@ public class MainWindow : Gtk.ApplicationWindow {
           return;
 
       var ule = new UserListEntry.from_account (new_acc);
+      ule.show_settings = true;
       ule.settings_clicked.connect (() => { account_popover.hide ();});
       account_list.add (ule);
       ule.show ();
@@ -315,7 +317,7 @@ public class MainWindow : Gtk.ApplicationWindow {
     GLib.Variant new_geom;
     GLib.VariantBuilder builder = new GLib.VariantBuilder (new GLib.VariantType("a{s(iiii)}"));
     var iter = win_geom.iterator ();
-    string key = "";
+    string key = null;
     int x = 0,
         y = 0,
         w = 0,

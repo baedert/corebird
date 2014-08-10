@@ -54,7 +54,7 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
     get{ return int64.MAX-1; }
   }
 
-  public bool show_settings_button {
+  public bool show_settings {
     set {
       settings_button.visible = value;
     }
