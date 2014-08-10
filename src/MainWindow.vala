@@ -42,11 +42,10 @@ public class MainWindow : Gtk.ApplicationWindow {
     }
   }
 
-  public MainWindow(Gtk.Application app, Account? account = null){
-    GLib.Object (application: app);
+  public MainWindow (Gtk.Application app, Account? account = null){
     set_default_size (480, 700);
 
-    change_account (account);
+    change_account (account, app);
 
     account_list.set_sort_func (account_sort_func);
     account_list.set_header_func (header_func);
@@ -116,7 +115,7 @@ public class MainWindow : Gtk.ApplicationWindow {
 
 
 
-  public void change_account (Account? account) {
+  public void change_account (Account? account, GLib.Application app = GLib.Application.get_default ()) {
     this.account = account;
 
     if (main_widget != null) {
@@ -132,7 +131,7 @@ public class MainWindow : Gtk.ApplicationWindow {
     }
 
     if (account != null && account.screen_name != Account.DUMMY) {
-      main_widget = new MainWidget (account, this, (Corebird)this.application);
+      main_widget = new MainWidget (account, this, (Corebird) app);
       main_widget.show_all ();
       this.add (main_widget);
       main_widget.switch_page (0);
@@ -147,7 +146,7 @@ public class MainWindow : Gtk.ApplicationWindow {
           app_menu_button = new Gtk.MenuButton ();
           app_menu_button.image = new Gtk.Image.from_icon_name ("emblem-system-symbolic", Gtk.IconSize.MENU);
           app_menu_button.get_style_context ().add_class ("image-button");
-          app_menu_button.menu_model = this.application.app_menu;
+          app_menu_button.menu_model = ((Gtk.Application)app).app_menu;
           app_menu_button.set_relief (Gtk.ReliefStyle.NONE);
           headerbar.pack_end (app_menu_button);
         } else
@@ -167,7 +166,7 @@ public class MainWindow : Gtk.ApplicationWindow {
       this.account = acc_;
 
       Account.add_account (acc_);
-      var create_widget = new AccountCreateWidget (acc_, (Corebird) this.application);
+      var create_widget = new AccountCreateWidget (acc_, (Corebird) app);
       create_widget.result_received.connect ((result, acc) => {
         if (result) {
           change_account (acc);
