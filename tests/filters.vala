@@ -81,7 +81,8 @@ const string TD1 = """
     "created_at" : "Tue Apr 29 11:00:25 +0000 2014",
     "id" : 461097667775725569,
     "id_str" : "461097667775725569",
-    "text" : "DIESELSTÖRMERS Kickstarter is live! - Go and check it out right now!... http://t.co/ZVmefc0w5e",
+    "text" : "DIESELSTÖRMERS Kickstarter is live! - Go and check it out right now!... http://t.co/ZVmefc0w5e
+#foobar",
     "source" : "<a href=\"http://www.tumblr.com/\" rel=\"nofollow\">Tumblr</a>",
     "truncated" : false,
     "in_reply_to_status_id" : null,
@@ -293,6 +294,25 @@ void links () {
 }
 
 
+void hashtags () {
+  var acc = new Account (12345, "foobar", "Foo Bar");
+  var filter = new Filter ("#foobar");
+  acc.add_filter (filter);
+  var tweet = new Tweet ();
+  var parser = new Json.Parser ();
+  var now = new GLib.DateTime.now_local ();
+  try {
+    parser.load_from_data (TD1);
+  } catch (GLib.Error e) {
+    critical (e.message);
+    return;
+  }
+  tweet.load_from_json (parser.get_root (), now, acc);
+
+  // This should never match since we should be using the
+  // 'real' url instead of the t.co shortened one.
+  assert (acc.filter_matches (tweet));
+}
 
 
 int main (string[] args) {
@@ -304,6 +324,7 @@ int main (string[] args) {
   GLib.Test.add_func ("/filters/matches-tweet", matches_tweet);
   GLib.Test.add_func ("/filters/same-user", same_user);
   GLib.Test.add_func ("/filters/links", links);
+  GLib.Test.add_func ("/filters/hashtags", hashtags);
 
   return GLib.Test.run ();
 }
