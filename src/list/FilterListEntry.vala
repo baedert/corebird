@@ -20,6 +20,13 @@ class FilterListEntry : Gtk.ListBoxRow {
   private Gtk.Label content_label;
   [GtkChild]
   private Gtk.Revealer revealer;
+  [GtkChild]
+  private Gtk.Stack stack;
+  [GtkChild]
+  private Gtk.Box normal_box;
+  [GtkChild]
+  private Gtk.Box delete_box;
+
   private unowned Filter _filter;
   public unowned Filter filter {
     set {
@@ -55,7 +62,17 @@ class FilterListEntry : Gtk.ListBoxRow {
   }
 
   [GtkCallback]
-  private void delete_item_activated_cb () {
+  private void menu_button_clicked_cb () {
+    stack.visible_child = delete_box;
+  }
+
+  [GtkCallback]
+  private void cancel_button_clicked_cb () {
+    stack.visible_child = normal_box;
+  }
+
+  [GtkCallback]
+  private void delete_button_clicked_cb () {
     foreach (Filter f in account.filters) {
       if (f.id == this.filter.id) {
         account.filters.remove (f);
@@ -66,4 +83,5 @@ class FilterListEntry : Gtk.ListBoxRow {
       }
     }
   }
+
 }
