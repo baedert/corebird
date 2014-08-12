@@ -19,7 +19,7 @@
 
   <template class="FilterListEntry" parent="GtkListBoxRow">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
+    <property name="can_focus">true</property>
     <property name="tooltip_text" translatable="Yes">Click to edit</property>
     <child>
       <object class="GtkBox" id="box">
