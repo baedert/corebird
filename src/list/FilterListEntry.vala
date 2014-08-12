@@ -18,6 +18,8 @@
 class FilterListEntry : Gtk.ListBoxRow {
   [GtkChild]
   private Gtk.Label content_label;
+  [GtkChild]
+  private Gtk.Revealer revealer;
   private unowned Filter _filter;
   public unowned Filter filter {
     set {
@@ -44,13 +46,22 @@ class FilterListEntry : Gtk.ListBoxRow {
     this.account = account;
   }
 
+  construct {
+    revealer.notify["child-revealed"].connect (() => {
+      if (!revealer.child_revealed) {
+        ((Gtk.Container)this.get_parent ()).remove (this);
+      }
+    });
+  }
+
   [GtkCallback]
   private void delete_item_activated_cb () {
     foreach (Filter f in account.filters) {
       if (f.id == this.filter.id) {
         account.filters.remove (f);
         account.db.exec ("DELETE FROM `filters` WHERE `id`='%d'".printf (f.id));
-        removed (f);
+        //removed (f);
+        revealer.reveal_child = false;
         return;
       }
     }
