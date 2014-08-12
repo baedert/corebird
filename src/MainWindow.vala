@@ -312,6 +312,8 @@ public class MainWindow : Gtk.ApplicationWindow {
    * Saves this window's geometry in the window-geometry gsettings key.
    */
   public void save_geometry () {
+    if (account == null || account.screen_name == Account.DUMMY)
+      return;
 
     GLib.Variant win_geom = Settings.get ().get_value ("window-geometry");
     GLib.Variant new_geom;
