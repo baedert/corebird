@@ -121,7 +121,7 @@ class ListsPage : IPage, ScrollWidget, IMessageReceiver {
 
 
   public void create_tool_button (Gtk.RadioToolButton? group) {
-    tool_button = new BadgeRadioToolButton (group, "view-list-symbolic");
+    tool_button = new BadgeRadioToolButton (group, "corebird-lists-symbolic");
     tool_button.label = _("Lists");
     tool_button.tooltip_text = _("Lists");
   }

@@ -307,7 +307,7 @@
                   <object class="GtkImage" id="image2">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="icon_name">starred-symbolic</property>
+                    <property name="icon_name">corebird-favorite-symbolic</property>
                     <property name="icon_size">1</property>
                   </object>
                 </child>
@@ -337,7 +337,7 @@
                   <object class="GtkImage" id="image3">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="icon_name">mail-replied-symbolic</property>
+                    <property name="icon_name">corebird-reply-symbolic</property>
                     <property name="icon_size">1</property>
                   </object>
                 </child>
@@ -367,7 +367,7 @@
                   <object class="GtkImage" id="image4">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="icon_name">open-menu-symbolic</property>
+                    <property name="icon_name">corebird-down-symbolic</property>
                     <property name="icon_size">1</property>
                   </object>
                 </child>
