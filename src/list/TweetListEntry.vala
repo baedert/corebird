@@ -366,4 +366,23 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     return (int)(cur_time.difference (then) / 1000.0 / 1000.0);
   } //}}}
 
+  public override bool draw (Cairo.Context c) { //{{{
+    var style = this.get_style_context();
+    int w = get_allocated_width();
+    int h = get_allocated_height();
+    style.render_background(c, 0, 0, w, h);
+
+    var border_color = style.get_border_color(get_state_flags());
+    c.set_source_rgba(border_color.red, border_color.green, border_color.blue,
+                      border_color.alpha);
+
+    base.draw(c);
+    // The line here is 50% of the width
+    c.move_to(w*0.25, h);
+    c.line_to(w*0.75, h);
+    c.stroke();
+
+    return false;
+  } //}}}
+
 }
