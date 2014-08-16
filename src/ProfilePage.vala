@@ -303,7 +303,7 @@ class ProfilePage : ScrollWidget, IPage {
     int tweets         = (int)root.get_int_member("statuses_count");
     bool is_following  = root.get_boolean_member("following");
     bool has_url       = root.get_object_member("entities").has_member("url");
-    string banner_name = get_banner_name(user_id);
+    string banner_name = Utils.get_banner_name(user_id);
     bool verified      = root.get_boolean_member ("verified");
     bool protected_user = root.get_boolean_member ("protected");
     if (protected_user) {
@@ -461,9 +461,9 @@ class ProfilePage : ScrollWidget, IPage {
    * @param screen_name Bar
    */
   private void load_profile_banner (string base_url, int64 user_id) { // {{{
-    string saved_banner_url = Dirs.cache ("assets/banners/"+get_banner_name (user_id));
+    string saved_banner_url = Dirs.cache ("assets/banners/"+Utils.get_banner_name (user_id));
     string banner_url  = base_url+"/mobile_retina";
-    string banner_name = get_banner_name (user_id);
+    string banner_name = Utils.get_banner_name (user_id);
     string banner_on_disk = Dirs.cache("assets/banners/"+banner_name);
     if (!FileUtils.test (banner_on_disk, FileTest.EXISTS) || banner_url != saved_banner_url) {
       Utils.download_file_async .begin (banner_url, banner_on_disk, data_cancellable,
@@ -571,14 +571,6 @@ class ProfilePage : ScrollWidget, IPage {
       loading_stack.visible_child_name = "data";
     });
   } //}}}
-
-  /*
-   * Returns the banner name for the given user by user_id and screen_name.
-   * This is useful since both of them might be used for the banner name.
-   */
-  private string get_banner_name (int64 user_id) {
-    return user_id.to_string()+".png";
-  }
 
   [GtkCallback]
   private bool activate_link (string uri) {

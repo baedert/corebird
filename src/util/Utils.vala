@@ -384,4 +384,8 @@ namespace Utils {
 
     return (int)node.get_array_member (object_name).get_length ();
   }
+
+  public string get_banner_name (int64 user_id) {
+    return user_id.to_string () + ".png";
+  }
 }
