@@ -18,10 +18,6 @@ IT_PROG_INTLTOOL([0.40])
 
 
 
-# --enable-catalog
-AC_ARG_ENABLE(catalog, AC_HELP_STRING([--enable-catalog], [Install Glade catalog]),, enable_catalog=no)
-AM_CONDITIONAL([ENABLE_CATALOG], [ test "$enable_catalog" = "yes" ])
-
 # --enable-debug
 AC_ARG_ENABLE(debug, AS_HELP_STRING([--enable-debug], [Enable debugging]),, enable_debug=no)
 AM_CONDITIONAL([ENABLE_DEBUG], [ test "$enable_debug" = "yes"])
@@ -133,7 +129,6 @@ echo "
                Prefix: ${prefix}
         Vala Compiler: ${VALAC}
            C Compiler: ${CC} ${CFLAGS}
-              Catalog: $enable_catalog
             Debugging: $enable_debug
        Video disabled: $disable_video
 "

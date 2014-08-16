@@ -14,11 +14,6 @@ appdata_DATA = $(appdata_in_files:.xml.in=.xml)
 manpagedir = $(mandir)
 manpage_DATA = corebird.1
 
-if ENABLE_CATALOG
-  catalogdir = $(prefix)/share/glade/catalogs/
-  catalog_DATA = corebird-catalog.xml
-endif
-
 gsettings_SCHEMAS = org.baedert.corebird.gschema.xml
 @INTLTOOL_XML_NOMERGE_RULE@
 @GSETTINGS_RULES@
