@@ -60,6 +60,7 @@ cb_sources = \
 			widgets/ReplyIndicator.vala \
 			widgets/MultiMediaWidget.vala \
 			widgets/AvatarWidget.vala \
+			widgets/AvatarBannerWidget.vala \
 			util/TweetUtils.vala \
 			util/Utils.vala \
 			util/IntHistory.vala \
