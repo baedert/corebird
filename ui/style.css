@@ -154,7 +154,7 @@
 }
 
 .pixbuf-button:active {
-  box-shadow: 0px 0px 10px alpha(black, 0.95);
+  box-shadow: inset 0px 0px 10px alpha(black, 0.95);
 }
 .pixbuf-button:backdrop {
   background-color: transparent;

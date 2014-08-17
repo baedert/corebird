@@ -155,7 +155,8 @@ class SearchPage : IPage, Gtk.Box {
         user_call.invoke_async.end (res);
       } catch (GLib.Error e) {
         if (user_call.get_payload () != null) {
-          Utils.show_error_object (user_call.get_payload (), e.message);
+          Utils.show_error_object (user_call.get_payload (), e.message,
+                                   GLib.Log.LINE, GLib.Log.FILE);
         } else {
           tweet_list.set_placeholder_text (e.message);
         }

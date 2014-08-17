@@ -60,7 +60,12 @@ namespace Sql {
       ok = stmt.step ();
       if (ok != Sqlite.DONE) {
         critical (db.errmsg ());
-        critical (stmt.sql ());
+        StringBuilder err_msg = new StringBuilder ();
+        err_msg.append (stmt.sql ()).append (" --- ");
+        for (int i = 0; i < bindings.size; i++) {
+          err_msg.append (bindings.get (i)).append (", ");
+        }
+        critical (err_msg.str);
       }
       ran = true;
       return db.last_insert_rowid ();

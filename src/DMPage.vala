@@ -209,7 +209,8 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
       try {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
-        Utils.show_error_object (call.get_payload (), e.message);
+        Utils.show_error_object (call.get_payload (), e.message,
+                                 GLib.Log.LINE, GLib.Log.FILE);
         return;
       }
     });

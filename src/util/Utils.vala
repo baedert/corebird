@@ -143,7 +143,7 @@ namespace Utils {
   void show_error_dialog (string message) {
     var dialog = new Gtk.MessageDialog (null, Gtk.DialogFlags.DESTROY_WITH_PARENT,
                                         Gtk.MessageType.ERROR, Gtk.ButtonsType.OK,
-                                        message);
+                                        "%s", message);
 
     dialog.response.connect((id) => {
       if(id == Gtk.ResponseType.OK)
@@ -162,8 +162,11 @@ namespace Utils {
    * @param alternative If the given json data is not valid,
    *                    show this alternative error message.
    */
-  void show_error_object (string? json_data, string alternative) {
-    string error_message = "Exception: " + alternative;
+  void show_error_object (string? json_data,
+                          string alternative,
+                          int line,
+                          string file) {
+    string error_message = "Exception: %s in %s:%d".printf (alternative, file, line);
     if (json_data == null) {
       show_error_dialog (error_message);
       return;

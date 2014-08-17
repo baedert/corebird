@@ -2,8 +2,9 @@
 <!-- Copyright 2013 Ryan Lerch <ryanlerch@fedoraproject.org> -->
 <application>
  <id type="desktop">org.baedert.corebird.desktop</id>
- <licence>CC0</licence>
- <description>
+ <summary>twitter client</summary>
+	<metadata_license>CC0-1.0</metadata_license> 
+	<description>
   <_p>
    Corebird is a native GTK+ twitter client that provides vital features such as Direct Messages (DMs), tweet notifications, conversation views.
   </_p>

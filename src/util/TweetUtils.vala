@@ -196,7 +196,8 @@ namespace TweetUtils {
       try {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
-        Utils.show_error_object (call.get_payload (), e.message);
+        Utils.show_error_object (call.get_payload (), e.message,
+                                 GLib.Log.LINE, GLib.Log.FILE);
       }
       tweet.favorited = !unfavorite;
       toggle_favorite_tweet.callback ();
@@ -224,7 +225,8 @@ namespace TweetUtils {
       try{
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
-        Utils.show_error_object (call.get_payload (), e.message);
+        Utils.show_error_object (call.get_payload (), e.message,
+                                 GLib.Log.LINE, GLib.Log.FILE);
       }
       string back = call.get_payload();
       var parser = new Json.Parser ();

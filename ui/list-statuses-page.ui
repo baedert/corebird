@@ -404,7 +404,7 @@
                     </style>
                     <child>
                       <object class="GtkImage" id="image1">
-                        <property name="icon_name">view-refresh</property>
+                        <property name="icon_name">view-refresh-symbolic</property>
                         <property name="icon_size">1</property>
                       </object>
                     </child>

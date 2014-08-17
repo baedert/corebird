@@ -33,6 +33,9 @@ namespace InlineMediaDownloader {
   }
 
   public bool is_media_candidate (string url) {
+    if (Settings.max_media_size () < 0.001)
+      return false;
+
     return url.has_prefix ("http://instagra.am") ||
            url.has_prefix ("http://instagram.com/p/") ||
            url.has_prefix ("http://i.imgur.com") ||
