@@ -91,6 +91,8 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
         update_window_button_sensitivity (window, true);
       }
     });
+    // Set initial sensitivitiy of new_window_button
+    new_window_button.sensitive = !(cb.is_window_open_for_screen_name (acc.screen_name));
   }
 
   private void real_set_avatar (string avatar_url) {
