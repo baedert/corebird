@@ -17,9 +17,9 @@
 [GtkTemplate (ui = "/org/baedert/corebird/ui/main-window.ui")]
 public class MainWindow : Gtk.ApplicationWindow {
   private const GLib.ActionEntry[] win_entries = {
-    {"compose_tweet",  show_compose_window},
-    {"toggle_sidebar", Settings.toggle_sidebar_visible},
-    {"switch_page",    simple_switch_page, "i"}
+    {"compose-tweet",  show_compose_window},
+    {"toggle-sidebar", Settings.toggle_sidebar_visible},
+    {"switch-page",    simple_switch_page, "i"}
   };
   [GtkChild]
   private Gtk.HeaderBar headerbar;
