@@ -276,7 +276,15 @@ public class MainWindow : Gtk.ApplicationWindow {
       }
     }
 
-    if (ws.length () == 1) {
+    int n_main_windows = 0;
+    foreach (Gtk.Window win in ws)
+      if (win is MainWindow &&
+          ((MainWindow) win).account != null &&
+          ((MainWindow) win).account.screen_name != Account.DUMMY)
+        n_main_windows ++;
+
+
+    if (n_main_windows == 1) {
       // This is the last window so we save this one anyways...
       string[] startup_accounts = new string[1];
       startup_accounts[0] = ((MainWindow)ws.nth_data (0)).account.screen_name;
