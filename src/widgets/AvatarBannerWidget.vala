@@ -20,12 +20,27 @@ public class AvatarBannerWidget : Gtk.Widget {
   private Gdk.Pixbuf? avatar;
   public int avatar_size { get; set; default = 48; }
 
-  public AvatarBannerWidget (Account account) {
-    this.avatar = account.avatar;
+  private bool _round = true;
+  public bool make_round {
+    get {
+      return _round;
+    }
+    set {
+      this._round = value;
+      this.queue_draw ();
+    }
   }
+
 
   construct {
     this.set_has_window (false);
+    Settings.get ().bind ("round-avatars", this, "make_round",
+                          GLib.SettingsBindFlags.DEFAULT);
+    get_style_context ().add_class ("avatar");
+  }
+
+  public void set_account (Account account) {
+    this.avatar = account.avatar;
   }
 
   private async void load_banner () {
@@ -33,8 +48,57 @@ public class AvatarBannerWidget : Gtk.Widget {
   }
 
   public override bool draw (Cairo.Context ct) {
+    int widget_width  = this.get_allocated_width ();
+    int widget_height = this.get_allocated_height ();
+
+
+    draw_avatar (ct, widget_width, widget_height);
+
+      //int x = (widget_width / 2) - (avatar.get_width () / 2);
+      //int y = 0;
+      //Gdk.cairo_set_source_pixbuf (ct, avatar, x, y);
+      //ct.rectangle (x, y, avatar_size, avatar_size);
+      //ct.fill ();
 
     return true;
+  }
+
+  private void draw_avatar (Cairo.Context ct, int widget_width, int widget_height) {
+    if (avatar == null)
+      return;
+
+
+    var surface = new Cairo.Surface.similar (ct.get_target (),
+                                             Cairo.Content.COLOR_ALPHA,
+                                             widget_width, widget_height);
+    var surf_ct = new Cairo.Context (surface);
+
+    surf_ct.rectangle (0, 0, widget_width, widget_height);
+    Gdk.cairo_set_source_pixbuf (ct, this.avatar, 0, 0);
+    surf_ct.fill();
+
+    if (_round) {
+      var sc = this.get_style_context ();
+      // make it round
+      surf_ct.set_operator (Cairo.Operator.DEST_IN);
+      surf_ct.translate (widget_width / 2, widget_height / 2);
+      surf_ct.arc (0, 0, widget_width / 2, 0, 2 * Math.PI);
+      surf_ct.fill ();
+
+      // draw outline
+      surf_ct.set_operator (Cairo.Operator.OVER);
+      Gdk.RGBA border_color = sc.get_border_color (this.get_state_flags ());
+      surf_ct.arc (0, 0, (widget_width / 2) - 0.5, 0, 2 * Math.PI);
+      surf_ct.set_line_width (1.0);
+      surf_ct.set_source_rgba (border_color.red, border_color.green, border_color.blue,
+                          border_color.alpha);
+      surf_ct.stroke ();
+    }
+
+    ct.rectangle (0, 0, widget_width, widget_height);
+    ct.set_source_surface (surface, 0, 0);
+    ct.fill ();
+
   }
 
   public override Gtk.SizeRequestMode get_request_mode () {
@@ -55,7 +119,7 @@ public class AvatarBannerWidget : Gtk.Widget {
 
   public override void get_preferred_height_for_width (int width,
                                                    out int min,
-                                                   out int nat){
+                                                   out int nat) {
     if (banner != null) {
       double ratio = (double) banner.get_width () / (double) banner.get_height ();
       nat = (int)(banner.get_height () * ratio);
