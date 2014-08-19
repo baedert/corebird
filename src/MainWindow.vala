@@ -17,9 +17,10 @@
 [GtkTemplate (ui = "/org/baedert/corebird/ui/main-window.ui")]
 public class MainWindow : Gtk.ApplicationWindow {
   private const GLib.ActionEntry[] win_entries = {
-    {"compose-tweet",  show_compose_window},
-    {"toggle-sidebar", Settings.toggle_sidebar_visible},
-    {"switch-page",    simple_switch_page, "i"}
+    {"compose-tweet",       show_compose_window},
+    {"toggle-sidebar",      Settings.toggle_sidebar_visible},
+    {"switch-page",         simple_switch_page, "i"},
+    {"show-account-dialog", show_account_dialog}
   };
   [GtkChild]
   private Gtk.HeaderBar headerbar;
@@ -232,6 +233,17 @@ public class MainWindow : Gtk.ApplicationWindow {
    */
   private void simple_switch_page (GLib.SimpleAction a, GLib.Variant? param) {
     main_widget.switch_page (param.get_int32 ());
+  }
+
+  private void show_account_dialog () {
+    if (this.account == null ||
+        this.account.screen_name == Account.DUMMY)
+      return;
+
+    var dialog = new AccountDialog (this.account);
+    dialog.set_transient_for (this);
+    dialog.modal = true;
+    dialog.show_all ();
   }
 
   /**
