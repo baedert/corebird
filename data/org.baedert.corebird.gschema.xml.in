@@ -52,13 +52,17 @@
     </key>
     <key name="accel-compose-tweet" type="s">
       <default>"&lt;Control&gt;T"</default>
-        <summary>The accelerator to press in order to bring the ComposeTweetWindow up.
-                 Must be parseable with gtk_accelerator_parse
-        </summary>
+      <summary>The accelerator to press in order to bring the ComposeTweetWindow up.
+               Must be parseable with gtk_accelerator_parse
+      </summary>
     </key>
-     <key name="accel-toggle-sidebar" type="s">
-       <default>"&lt;Control&gt;&lt;Shift&gt;S"</default>
-       <summary>Accelerator to press in order to show/hide the sidebar</summary>
+    <key name="accel-toggle-sidebar" type="s">
+      <default>"&lt;Control&gt;&lt;Shift&gt;S"</default>
+      <summary>Accelerator to press in order to show/hide the sidebar</summary>
+    </key>
+    <key name="accel-show-settings" type="s">
+      <default>"&lt;Control&gt;&lt;Shift&gt;P"</default>
+      <summary>Accelerator to show the settings window</summary>
     </key>
     <key name="window-geometry" type="a{s(iiii)}">
       <default>{}</default>
