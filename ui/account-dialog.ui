@@ -11,6 +11,14 @@
         <property name="orientation">vertical</property>
         <property name="can_focus">false</property>
 
+        <!-- Avatar -->
+        <child>
+          <object class="AvatarBannerWidget" id="avatar_banner_widget">
+            <property name="visible">true</property>
+            <property name="can_focus">false</property>
+            <property name="hexpand">true</property>
+          </object>
+        </child>
 
         <child>
           <object class="GtkGrid">
@@ -23,20 +31,6 @@
             <property name="margin_end">12</property>
             <property name="margin_start">12</property>
             <property name="margin_bottom">12</property>
-
-            <!-- Avatar -->
-            <child>
-              <object class="AvatarWidget" id="avatar_image">
-                <property name="visible">true</property>
-                <property name="valign">center</property>
-                <property name="halign">center</property>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">0</property>
-                <property name="width">2</property>
-              </packing>
-            </child>
 
             <!-- screen_name -->
             <child>
