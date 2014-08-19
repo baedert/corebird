@@ -20,6 +20,8 @@ class AccountDialog : Gtk.Dialog {
   [GtkChild]
   private Gtk.Entry screen_name_entry;
   [GtkChild]
+  private Gtk.Entry name_entry;
+  [GtkChild]
   private AvatarWidget avatar_image;
 
   private unowned Account account;
@@ -30,6 +32,7 @@ class AccountDialog : Gtk.Dialog {
     this.account = account;
     avatar_image.pixbuf = account.avatar;
     screen_name_entry.text = account.screen_name;
+    name_entry.text = account.name;
   }
 
   public override void response (int response_id) {
