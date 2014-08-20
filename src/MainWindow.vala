@@ -243,7 +243,7 @@ public class MainWindow : Gtk.ApplicationWindow {
     var dialog = new AccountDialog (this.account);
     dialog.set_transient_for (this);
     dialog.modal = true;
-    dialog.show_all ();
+    dialog.show ();
   }
 
   /**

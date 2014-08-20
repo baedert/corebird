@@ -116,7 +116,7 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
     var dialog = new AccountDialog (this.account);
     dialog.set_transient_for (active_window);
     dialog.modal = true;
-    dialog.show_all ();
+    dialog.show ();
   }
 
   [GtkCallback]

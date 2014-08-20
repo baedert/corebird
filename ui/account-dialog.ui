@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <template class="AccountDialog" parent="GtkDialog">
-    <property name="visible">true</property>
     <property name="can_focus">false</property>
     <property name="title" translatable="yes">Account Settings</property>
-    <property name="border_width">6</property>
+    <property name="border_width">0</property>
+    <property name="destroy_with_parent">true</property>
+    <property name="modal">true</property>
+    <property name="type_hint">dialog</property>
+
     <child internal-child="vbox">
       <object class="GtkBox">
         <property name="visible">true</property>
         <property name="orientation">vertical</property>
         <property name="can_focus">false</property>
+        <property name="margin">0</property>
 
         <!-- Avatar -->
         <child>
