@@ -79,9 +79,18 @@ public class AvatarBannerWidget : Gtk.Widget {
     if (banner == null)
       return;
 
-    ct.rectangle (0, 0, widget_width, widget_height);
+    int banner_height = widget_height - (avatar_size / 2);
+
+    ct.save ();
+    ct.rectangle (0, 0, widget_width, banner_height);
+    double scale_x = widget_width / (double)this.banner.get_width ();
+    double scale_y = banner_height / (double) this.banner.get_height ();
+    ct.scale (scale_x, scale_y);
+
     Gdk.cairo_set_source_pixbuf (ct, this.banner, 0, 0);
     ct.fill ();
+
+    ct.restore ();
   }
 
   private void draw_avatar (Cairo.Context ct, int widget_width, int widget_height) {
@@ -144,9 +153,9 @@ public class AvatarBannerWidget : Gtk.Widget {
                                                    out int min,
                                                    out int nat) {
     if (banner != null) {
-      double ratio = (double) banner.get_width () / (double) banner.get_height ();
-      nat = (int)(banner.get_height () * ratio);
-      min = (int)(banner.get_height () * ratio);
+      double ratio = (double) banner.get_height () / (double) banner.get_width ();
+      nat = (int)(width * ratio);
+      min = (int)(width * ratio);
     } else {
       nat = avatar_size;
       min = avatar_size;
