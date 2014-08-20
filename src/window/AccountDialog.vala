@@ -33,6 +33,7 @@ class AccountDialog : Gtk.Dialog {
     screen_name_entry.text = account.screen_name;
     name_entry.text = account.name;
     avatar_banner_widget.set_account (account);
+    this.set_default_size (350, 450);
   }
 
   public override void response (int response_id) {
