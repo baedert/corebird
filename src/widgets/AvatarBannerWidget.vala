@@ -30,6 +30,7 @@ public class AvatarBannerWidget : Gtk.Widget {
       this.queue_draw ();
     }
   }
+  private unowned Account account;
 
 
   construct {
@@ -40,21 +41,47 @@ public class AvatarBannerWidget : Gtk.Widget {
   }
 
   public void set_account (Account account) {
+    this.account = account;
     this.avatar = account.avatar;
+    load_banner.begin ();
     this.queue_draw ();
   }
 
   private async void load_banner () {
-
+    string banner_name = Utils.get_banner_name (account.id);
+    string banner_path = Dirs.cache ("assets/banners/" + banner_name);
+    /* Try to load the banner */
+    try {
+      var stream = GLib.File.new_for_path (banner_path).read ();
+      this.banner = yield new Gdk.Pixbuf.from_stream_async (stream, null);
+      this.queue_draw ();
+    } catch (GLib.Error e) {
+      if (e is GLib.IOError.NOT_FOUND) {
+        /* Banner does not exist locally so we need to fetch it */
+        yield fetch_banner (banner_path);
+      } else {
+        warning (e.message);
+      }
+    }
   }
 
   public override bool draw (Cairo.Context ct) {
     int widget_width  = this.get_allocated_width ();
     int widget_height = this.get_allocated_height ();
 
+    draw_banner (ct, widget_width, widget_height);
     draw_avatar (ct, widget_width, widget_height);
 
     return true;
+  }
+
+  private void draw_banner (Cairo.Context ct, int widget_width, int widget_height) {
+    if (banner == null)
+      return;
+
+    ct.rectangle (0, 0, widget_width, widget_height);
+    Gdk.cairo_set_source_pixbuf (ct, this.banner, 0, 0);
+    ct.fill ();
   }
 
   private void draw_avatar (Cairo.Context ct, int widget_width, int widget_height) {
@@ -123,6 +150,21 @@ public class AvatarBannerWidget : Gtk.Widget {
     } else {
       nat = avatar_size;
       min = avatar_size;
+    }
+  }
+
+  private async void fetch_banner (string banner_path) {
+    if (account.banner_url == null) {
+      this.banner = Twitter.no_banner;
+      return;
+    }
+
+    yield Utils.download_file_async (account.banner_url, banner_path);
+    try {
+      this.banner = new Gdk.Pixbuf.from_file (banner_path);
+      this.queue_draw ();
+    } catch (GLib.Error e) {
+      warning (e.message);
     }
   }
 }

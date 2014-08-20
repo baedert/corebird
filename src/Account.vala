@@ -23,6 +23,7 @@ public class Account : GLib.Object {
   public string screen_name       {public get; private set;}
   public string name              {public get; private set;}
   public string avatar_url        {public get; public  set;}
+  public string banner_url        {public get; private set;}
   public Gdk.Pixbuf avatar_small  {public get; private set;}
   public Gdk.Pixbuf avatar        {public get; private set;}
   public Rest.OAuthProxy proxy    {public get; private set;}
@@ -130,6 +131,8 @@ public class Account : GLib.Object {
       this.id = root.get_int_member ("id");
       this.name = root.get_string_member ("name");
       this.screen_name = root.get_string_member ("screen_name");
+      if (root.has_member ("profile_banner_url"))
+        this.banner_url = root.get_string_member ("profile_banner_url");
       string avatar_url = root.get_string_member ("profile_image_url");
       update_avatar.begin (avatar_url);
       query_user_info_by_scren_name.callback();
