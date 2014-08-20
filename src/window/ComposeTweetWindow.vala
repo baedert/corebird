@@ -315,7 +315,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       if (uri != null && uri.has_prefix ("file://")) {
         try {
           int final_size = 130;
-          var p = new Gdk.Pixbuf.from_file (uri.substring (7));
+          var p = new Gdk.Pixbuf.from_file (GLib.File.new_for_uri (uri).get_path ());
           int w = p.get_width ();
           int h = p.get_height ();
           if (w > h) {
