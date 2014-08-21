@@ -79,7 +79,7 @@ public class AvatarBannerWidget : Gtk.Widget {
     if (banner == null)
       return;
 
-    int banner_height = widget_height - (avatar_size / 2);
+    int banner_height = widget_height - (avatar_size / 3);
 
     ct.save ();
     ct.rectangle (0, 0, widget_width, banner_height);

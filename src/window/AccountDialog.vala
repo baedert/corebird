@@ -16,13 +16,22 @@
  */
 [GtkTemplate (ui = "/org/baedert/corebird/ui/account-dialog.ui")]
 class AccountDialog : Gtk.Dialog {
-  private static const int RESPONSE_CLOSE = 0;
+  private static const int RESPONSE_CLOSE  = 0;
+  private static const int RESPONSE_DELETE = 1;
+  private static const string PAGE_NORMAL = "normal";
+  private static const string PAGE_DELETE = "delete";
   [GtkChild]
   private Gtk.Entry screen_name_entry;
   [GtkChild]
   private Gtk.Entry name_entry;
   [GtkChild]
   private AvatarBannerWidget avatar_banner_widget;
+  [GtkChild]
+  private Gtk.Stack delete_stack;
+  [GtkChild]
+  private Gtk.Label delete_label;
+  [GtkChild]
+  private Gtk.Button delete_button;
 
   private unowned Account account;
 
@@ -39,18 +48,20 @@ class AccountDialog : Gtk.Dialog {
   public override void response (int response_id) {
     if (response_id == RESPONSE_CLOSE) {
       this.destroy ();
+    } else if (response_id == RESPONSE_DELETE) {
+      delete_stack.visible_child_name = PAGE_DELETE;
+      delete_button.hide ();
     }
   }
 
   [GtkCallback]
-  private void delete_button_clicked_cb () {
+  private void delete_confirm_button_clicked_cb () {
     /*
        - Close open window of that account
        - Remove the account from the db, disk, etc.
        - Remove the account from the app menu
        - If this would close the last opened window,
          set the account of that window to NULL
-       - XXX Confirmation?
      */
     var acc_menu = (GLib.Menu) Corebird.account_menu;
     int64 acc_id = account.id;
@@ -117,5 +128,11 @@ class AccountDialog : Gtk.Dialog {
 
     /* Close this dialog */
     this.destroy ();
+  }
+
+  [GtkCallback]
+  private void delete_cancel_button_clicked_cb () {
+    delete_stack.visible_child_name = PAGE_NORMAL;
+    delete_button.show ();
   }
 }
