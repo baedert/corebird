@@ -18,13 +18,18 @@ public class Filter : GLib.Object {
   public int block_count  { get; set; }
   public string content   { get; set; }
   public int id           { get; set; }
+  public bool sensitive   { get; set; }
 
   private GLib.Regex regex;
 
-  public Filter (string expression) {
+  public Filter (string expression, bool sensitive) {
     this.content = expression;
+    this.sensitive = sensitive;
     try {
-      this.regex = new GLib.Regex (expression);
+      if(!sensitive)
+        this.regex = new GLib.Regex (expression, GLib.RegexCompileFlags.CASELESS);
+      else
+        this.regex = new GLib.Regex (expression);
     } catch (GLib.RegexError e) {
       warning ("Regex error for `%s`: %s", expression, e.message);
     }
@@ -37,7 +42,10 @@ public class Filter : GLib.Object {
    */
   public void reset (string expression) {
     try {
-      this.regex = new GLib.Regex (expression);
+   if(!sensitive)
+        this.regex = new GLib.Regex (expression, GLib.RegexCompileFlags.CASELESS);
+      else
+        this.regex = new GLib.Regex (expression);
     } catch (GLib.RegexError e) {
       warning ("Regex error for `%s`: %s", expression, e.message);
     }

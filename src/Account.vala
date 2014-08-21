@@ -198,9 +198,9 @@ public class Account : GLib.Object {
    * Load all the filters from the database.
    */
   private void load_filters () {
-    this.db.select ("filters").cols ("content", "id")
+    this.db.select ("filters").cols ("content", "sensitive", "id")
               .order ("id").run ((cols) => {
-      Filter f = new Filter (cols[0]);
+      Filter f = new Filter (cols[0], bool.parse(cols[2]));
       f.id = int.parse (cols[1]);
       filters.add (f);
       return true;
