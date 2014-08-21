@@ -56,7 +56,7 @@
 .reply-button,
 .more-button{
   font-size: 1.0em;
-  background-color: white;
+  background-color: transparent;
 }
 .retweet-button:hover,
 .retweet-button:active {
