@@ -205,7 +205,7 @@
               <packing>
                 <property name="left_attach">1</property>
                 <property name="top_attach">2</property>
-                <property name="width">5</property>
+                <property name="width">6</property>
               </packing>
             </child>
             <child>
