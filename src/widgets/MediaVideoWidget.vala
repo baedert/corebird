@@ -15,13 +15,12 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class VideoDialog : Gtk.Window {
+class MediaVideoWidget : Gtk.Stack {
 #if VIDEO
   private Gst.Element src;
   private Gst.Element sink;
   private uint *xid;
 #endif
-  private Gtk.Stack stack = new Gtk.Stack ();
   private Gtk.ProgressBar progress_bar = new Gtk.ProgressBar ();
   private Gtk.DrawingArea drawing_area = new Gtk.DrawingArea ();
   private int64 file_content_length = -1;
@@ -30,11 +29,7 @@ class VideoDialog : Gtk.Window {
   private Gtk.Label error_label = new Gtk.Label ("");
 
 
-  public VideoDialog (Gtk.Window parent, Media media) {
-    this.set_decorated (false);
-    this.set_modal (true);
-    this.set_transient_for (parent);
-    this.set_type_hint (Gdk.WindowTypeHint.DIALOG);
+  public MediaVideoWidget (Media media) {
     this.cancellable = new GLib.Cancellable ();
     drawing_area.realize.connect (realize_cb);
 #if VIDEO
@@ -62,20 +57,18 @@ class VideoDialog : Gtk.Window {
     error_label.wrap = true;
     error_label.selectable = true;
 
-    stack.add_named (progress_bar, "progress");
-    stack.add_named (drawing_area, "video");
-    stack.add_named (error_label, "error");
+    this.add_named (progress_bar, "progress");
+    this.add_named (drawing_area, "video");
+    this.add_named (error_label, "error");
 
-    stack.visible_child = progress_bar;
-    this.add (stack);
+    this.visible_child = progress_bar;
     this.button_press_event.connect (button_press_event_cb);
     this.key_press_event.connect (key_press_event_cb);
-
   }
 
   private void show_error (string error_message) {
     error_label.label = error_message;
-    stack.visible_child_name = "error";
+    this.visible_child_name = "error";
   }
 
 
@@ -189,7 +182,7 @@ class VideoDialog : Gtk.Window {
       string b64 = GLib.Base64.encode ((uchar[])msg.response_body.data);
       var sa = "data:;base64," + b64;
       this.src.set ("uri", sa);
-      stack.visible_child_name = "video";
+      this.visible_child_name = "video";
       src.set_state (Gst.State.PLAYING);
 #endif
       download_video.callback ();

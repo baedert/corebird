@@ -62,6 +62,7 @@ cb_sources = \
 			widgets/AvatarWidget.vala \
 			widgets/AvatarBannerWidget.vala \
 			widgets/MediaImageWidget.vala \
+			widgets/MediaVideoWidget.vala \
 			util/TweetUtils.vala \
 			util/Utils.vala \
 			util/IntHistory.vala \
@@ -86,7 +87,6 @@ cb_sources = \
 			window/RemoveAccountDialog.vala \
 			window/UserListDialog.vala \
 			window/ModifyFilterDialog.vala \
-			window/VideoDialog.vala \
 			window/AboutDialog.vala \
 			window/AccountDialog.vala \
 			window/MediaDialog.vala \

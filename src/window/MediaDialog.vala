@@ -19,9 +19,17 @@
 class MediaDialog : Gtk.Window {
   [GtkChild]
   private Gtk.Overlay overlay;
+  [GtkChild]
+  private Gtk.Button next_button;
+  [GtkChild]
+  private Gtk.Button back_button;
+  private unowned Tweet tweet;
+  private int cur_index = 0;
 
   public MediaDialog (Tweet tweet, int start_media_index) {
     Media cur_media = tweet.medias[start_media_index];
+    this.tweet = tweet;
+    this.cur_index = start_media_index;
     change_media (cur_media);
   }
 
@@ -35,7 +43,20 @@ class MediaDialog : Gtk.Window {
       var widget = new MediaImageWidget (media.path);
       overlay.add (widget);
       widget.show_all ();
-    }
+    } else if (media.type == MediaType.VINE ||
+               media.type == MediaType.ANIMATED_GIF) {
+      var widget = new MediaVideoWidget (media);
+      overlay.add (widget);
+      widget.show_all ();
+    } else
+      critical ("Unknown media type %d", media.type);
+
+    if (cur_index >= tweet.medias.length - 1)
+      next_button.hide ();
+
+    if (cur_index <= 0)
+      back_button.hide ();
+
   }
 
 

@@ -40,7 +40,7 @@
             </child>
 
             <child>
-              <object class="GtkButton" id="forward_button">
+              <object class="GtkButton" id="next_button">
                 <property name="visible">true</property>
                 <property name="can_focus">true</property>
                 <property name="valign">center</property>
