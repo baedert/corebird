@@ -7,7 +7,7 @@
     <signal name="key-press-event" handler="key_press_event_cb" />
     <signal name="button-press-event" handler="button_press_event_cb" />
     <child>
-      <object class="GtkOverlay">
+      <object class="GtkOverlay" id="overlay">
         <property name="visible">true</property>
         <property name="can_focus">false</property>
         <child type="overlay">

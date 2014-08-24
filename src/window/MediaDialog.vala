@@ -17,7 +17,8 @@
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/media-dialog.ui")]
 class MediaDialog : Gtk.Window {
-
+  [GtkChild]
+  private Gtk.Overlay overlay;
 
   public MediaDialog (Tweet tweet, int start_media_index) {
     Media cur_media = tweet.medias[start_media_index];
@@ -27,12 +28,12 @@ class MediaDialog : Gtk.Window {
   private void change_media (Media media) {
     /* XXX The individual widgets could also just support changing their contents... */
     /* Remove the current child */
-    if (this.get_child () != null)
-      this.remove (this.get_child ());
+    if (overlay.get_child () != null)
+      overlay.remove (overlay.get_child ());
 
     if (media.type == MediaType.IMAGE || media.type == MediaType.GIF) {
       var widget = new MediaImageWidget (media.path);
-      this.add (widget);
+      overlay.add (widget);
       widget.show_all ();
     }
   }
