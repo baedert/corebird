@@ -408,17 +408,6 @@ namespace TweetUtils {
     media_dialog.set_transient_for (window);
     media_dialog.set_modal (true);
     media_dialog.show ();
-    //if (media.type == MediaType.IMAGE ||
-        //media.type == MediaType.GIF) {
-      //var id = new ImageDialog (window, media.path);
-      //id.show_all ();
-    //} else if (media.type == MediaType.VINE ||
-               //media.type == MediaType.ANIMATED_GIF) {
-      //var vd = new VideoDialog (window, media);
-      //vd.show_all ();
-    //} else {
-      //warning ("Unknown media type: %d", media.type);
-    //}
   }
 
 
