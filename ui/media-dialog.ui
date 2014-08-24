@@ -22,6 +22,7 @@
                 <property name="can_focus">true</property>
                 <property name="valign">center</property>
                 <property name="margin_start">6</property>
+                <signal name="clicked" handler="back_button_clicked_cb" />
                 <style>
                   <class name="image-button" />
                   <class name="osd" />
@@ -45,6 +46,7 @@
                 <property name="can_focus">true</property>
                 <property name="valign">center</property>
                 <property name="margin_end">6</property>
+                <signal name="clicked" handler="next_button_clicked_cb" />
                 <style>
                   <class name="image-button" />
                   <class name="osd" />

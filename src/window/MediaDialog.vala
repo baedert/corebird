@@ -36,8 +36,9 @@ class MediaDialog : Gtk.Window {
   private void change_media (Media media) {
     /* XXX The individual widgets could also just support changing their contents... */
     /* Remove the current child */
+    var cur_child = overlay.get_child ();
     if (overlay.get_child () != null)
-      overlay.remove (overlay.get_child ());
+      overlay.remove (cur_child);
 
     if (media.type == MediaType.IMAGE || media.type == MediaType.GIF) {
       var widget = new MediaImageWidget (media.path);
@@ -53,10 +54,29 @@ class MediaDialog : Gtk.Window {
 
     if (cur_index >= tweet.medias.length - 1)
       next_button.hide ();
+    else
+      next_button.show ();
 
     if (cur_index <= 0)
       back_button.hide ();
+    else
+      back_button.show ();
+  }
 
+  [GtkCallback]
+  private void next_button_clicked_cb () {
+    if (cur_index < tweet.medias.length - 1) {
+      cur_index ++;
+      change_media (tweet.medias[cur_index]);
+    }
+  }
+
+  [GtkCallback]
+  private void back_button_clicked_cb () {
+    if (cur_index > 0) {
+      cur_index --;
+      change_media (tweet.medias[cur_index]);
+    }
   }
 
 
