@@ -131,7 +131,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
     if (tweet.has_inline_media) {
       mm_widget.set_all_media (tweet.medias);
-      mm_widget.media_clicked.connect ((m) => TweetUtils.handle_media_click (m, window));
+      mm_widget.media_clicked.connect ((m, i) => TweetUtils.handle_media_click (tweet, window, i));
       mm_widget.window = window;
     } else
       grid.remove (mm_widget);

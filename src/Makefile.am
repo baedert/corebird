@@ -61,6 +61,7 @@ cb_sources = \
 			widgets/MultiMediaWidget.vala \
 			widgets/AvatarWidget.vala \
 			widgets/AvatarBannerWidget.vala \
+			widgets/MediaImageWidget.vala \
 			util/TweetUtils.vala \
 			util/Utils.vala \
 			util/IntHistory.vala \
@@ -82,13 +83,13 @@ cb_sources = \
 			list/AddListEntry.vala \
 			window/ComposeTweetWindow.vala \
 			window/SettingsDialog.vala \
-			window/ImageDialog.vala \
 			window/RemoveAccountDialog.vala \
 			window/UserListDialog.vala \
 			window/ModifyFilterDialog.vala \
 			window/VideoDialog.vala \
 			window/AboutDialog.vala \
 			window/AccountDialog.vala \
+			window/MediaDialog.vala \
 			sql/Database.vala \
 			sql/Statement.vala \
 			sql/UpdateStatement.vala \

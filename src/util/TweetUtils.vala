@@ -403,18 +403,22 @@ namespace TweetUtils {
   }
 
 
-  public void handle_media_click (Media media, MainWindow window) {
-    if (media.type == MediaType.IMAGE ||
-        media.type == MediaType.GIF) {
-      var id = new ImageDialog (window, media.path);
-      id.show_all ();
-    } else if (media.type == MediaType.VINE ||
-               media.type == MediaType.ANIMATED_GIF) {
-      var vd = new VideoDialog (window, media);
-      vd.show_all ();
-    } else {
-      warning ("Unknown media type: %d", media.type);
-    }
+  public void handle_media_click (Tweet t, MainWindow window, int index) {
+    MediaDialog media_dialog = new MediaDialog (t, index);
+    media_dialog.set_transient_for (window);
+    media_dialog.set_modal (true);
+    media_dialog.show ();
+    //if (media.type == MediaType.IMAGE ||
+        //media.type == MediaType.GIF) {
+      //var id = new ImageDialog (window, media.path);
+      //id.show_all ();
+    //} else if (media.type == MediaType.VINE ||
+               //media.type == MediaType.ANIMATED_GIF) {
+      //var vd = new VideoDialog (window, media);
+      //vd.show_all ();
+    //} else {
+      //warning ("Unknown media type: %d", media.type);
+    //}
   }
 
 

@@ -17,23 +17,31 @@
 
 
 
-[GtkTemplate (ui = "/org/baedert/corebird/ui/image-dialog.ui")]
-public class ImageDialog : Gtk.Window {
-  [GtkChild]
-  private Gtk.ScrolledWindow scroller;
-  [GtkChild]
+public class MediaImageWidget : Gtk.ScrolledWindow {
   private Gtk.Image image;
-  [GtkChild]
   private Gtk.Menu image_context_menu;
-  private new Gtk.Window parent;
 
   private new string path;
   private double dnd_x;
   private double dnd_y;
 
-  public ImageDialog (Gtk.Window parent, string path) {
+  public MediaImageWidget (string path) {
     this.path = path;
-    this.parent = parent;
+
+    this.button_press_event.connect (button_press_event_cb);
+    this.image = new Gtk.Image ();
+    Gtk.EventBox event_box = new Gtk.EventBox ();
+    event_box.add (this.image);
+    event_box.motion_notify_event.connect (event_box_motion_notify_cb);
+    event_box.button_press_event.connect (event_box_button_press_cb);
+    this.add (event_box);
+
+    image_context_menu = new Gtk.Menu ();
+    var save_as_item = new Gtk.MenuItem ();
+    save_as_item.label = _("Save Image");
+    save_as_item.activate.connect (save_item_activated_cb);
+    save_as_item.show ();
+    image_context_menu.add (save_as_item);
 
     //Choose proper width/height
     Gdk.Pixbuf pixbuf = null;
@@ -57,44 +65,40 @@ public class ImageDialog : Gtk.Window {
     int win_height = 600;
     if(img_width <= Gdk.Screen.width()*0.7) {
       win_width = img_width;
-      scroller.hscrollbar_policy = Gtk.PolicyType.NEVER;
+      this.hscrollbar_policy = Gtk.PolicyType.NEVER;
     }
 
     if(img_height <= Gdk.Screen.height()*0.7) {
       win_height = img_height;
-      scroller.vscrollbar_policy = Gtk.PolicyType.NEVER;
+      this.vscrollbar_policy = Gtk.PolicyType.NEVER;
     }
 
     if(win_width < 800 && win_height == 600) {
       int add_width;
-      scroller.get_vscrollbar().get_preferred_width(null, out add_width);
+      this.get_vscrollbar().get_preferred_width(null, out add_width);
       win_width += add_width;
     }
 
     if(win_width == 800 && win_height < 600) {
       int add_height;
-      scroller.get_hscrollbar().get_preferred_width(null, out add_height);
+      this.get_hscrollbar().get_preferred_width(null, out add_height);
       win_height += add_height;
     }
 
-    scroller.set_size_request(win_width, win_height);
-    this.set_modal(true);
-    this.set_transient_for(parent);
+    this.set_size_request(win_width, win_height);
   }
 
-  [GtkCallback]
   private bool event_box_motion_notify_cb (Gdk.EventMotion evt) {
     if ((evt.state & Gdk.ModifierType.MODIFIER_MASK) >= Gdk.ModifierType.BUTTON2_MASK) {
       double diff_x = dnd_x - evt.x;
       double diff_y = dnd_y - evt.y;
-      scroller.vadjustment.value += diff_y;
-      scroller.hadjustment.value += diff_x;
+      this.vadjustment.value += diff_y;
+      this.hadjustment.value += diff_x;
       return true;
     }
     return false;
   }
 
-  [GtkCallback]
   private bool event_box_button_press_cb (Gdk.EventButton evt) {
     if (evt.button == 2) {
       this.dnd_x = evt.x;
@@ -104,15 +108,14 @@ public class ImageDialog : Gtk.Window {
     return false;
   }
 
-  [GtkCallback]
   private void save_item_activated_cb () {
-     var file_dialog = new Gtk.FileChooserDialog (_("Save image"), parent,
+     var file_dialog = new Gtk.FileChooserDialog (_("Save image"), null,
                                                   Gtk.FileChooserAction.SAVE,
                                                   _("Cancel"), Gtk.ResponseType.CANCEL,
                                                   _("Save"), Gtk.ResponseType.ACCEPT);
     string filename = Utils.get_file_name (path);
     file_dialog.set_current_name (filename);
-    file_dialog.set_transient_for (this);
+    //file_dialog.set_transient_for (this);
 
 
     int response = file_dialog.run ();
@@ -132,19 +135,13 @@ public class ImageDialog : Gtk.Window {
 
   }
 
-  [GtkCallback]
   private bool button_press_event_cb (Gdk.EventButton evt) {
-    if (evt.button == 3)
+    if (evt.button == 3) {
       image_context_menu.popup (null, null, null, evt.button, evt.time);
-    else
-      this.destroy ();
+      return true;
+    }
 
-    return true;
+    return false;
   }
 
-  [GtkCallback]
-  private bool key_press_event_cb () {
-    this.destroy ();
-    return true;
-  }
 }

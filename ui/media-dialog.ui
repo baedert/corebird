@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="MediaDialog" parent="GtkWindow">
+    <property name="can_focus">False</property>
+    <property name="type_hint">dialog</property>
+    <property name="decorated">False</property>
+    <signal name="key-press-event" handler="key_press_event_cb" />
+    <signal name="button-press-event" handler="button_press_event_cb" />
+    <child>
+      <object class="GtkOverlay">
+        <property name="visible">true</property>
+        <property name="can_focus">false</property>
+        <child type="overlay">
+          <object class="GtkBox">
+            <property name="visible">true</property>
+            <property name="can_focus">false</property>
+            <property name="orientation">horizontal</property>
+            <property name="hexpand">true</property>
+            <child>
+              <object class="GtkButton" id="back_button">
+                <property name="visible">true</property>
+                <property name="can_focus">true</property>
+                <property name="valign">center</property>
+                <property name="margin_start">6</property>
+                <style>
+                  <class name="image-button" />
+                  <class name="osd" />
+                </style>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">true</property>
+                    <property name="can_focus">false</property>
+                    <property name="icon_name">go-previous-symbolic</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="pack_type">start</property>
+              </packing>
+            </child>
+
+            <child>
+              <object class="GtkButton" id="forward_button">
+                <property name="visible">true</property>
+                <property name="can_focus">true</property>
+                <property name="valign">center</property>
+                <property name="margin_end">6</property>
+                <style>
+                  <class name="image-button" />
+                  <class name="osd" />
+                </style>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">true</property>
+                    <property name="can_focus">false</property>
+                    <property name="icon_name">go-next-symbolic</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="pack_type">end</property>
+              </packing>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>
+
