@@ -34,23 +34,36 @@ class MediaDialog : Gtk.Window {
   }
 
   private void change_media (Media media) {
-    /* XXX The individual widgets could also just support changing their contents... */
     /* Remove the current child */
     var cur_child = overlay.get_child ();
+    int cur_width, cur_height,
+        new_width, new_height;
+    cur_child.get_size_request (out cur_width, out cur_height);
+
+
     if (overlay.get_child () != null)
       overlay.remove (cur_child);
 
+    Gtk.Widget new_widget = null;
     if (media.type == MediaType.IMAGE || media.type == MediaType.GIF) {
-      var widget = new MediaImageWidget (media.path);
-      overlay.add (widget);
-      widget.show_all ();
+      new_widget = new MediaImageWidget (media.path);
     } else if (media.type == MediaType.VINE ||
                media.type == MediaType.ANIMATED_GIF) {
-      var widget = new MediaVideoWidget (media);
-      overlay.add (widget);
-      widget.show_all ();
-    } else
+      new_widget = new MediaVideoWidget (media);
+    } else {
       critical ("Unknown media type %d", media.type);
+      return;
+    }
+
+    overlay.add (new_widget);
+    new_widget.show_all ();
+
+    new_widget.get_size_request (out new_width, out new_height);
+    if (new_width != cur_width ||
+        new_height != cur_height) {
+      this.resize (new_width, new_height);
+    }
+
 
     if (cur_index >= tweet.medias.length - 1)
       next_button.hide ();
