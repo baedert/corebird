@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 -->
 <interface>
-  <requires lib="gtk+" version="3.10"/>
   <template class="ImageDialog" parent="GtkWindow">
     <property name="can_focus">False</property>
     <property name="type_hint">dialog</property>
@@ -9,27 +7,87 @@
     <signal name="button-press-event" handler="button_press_event_cb" swapped="no"/>
     <signal name="key-press-event" handler="key_press_event_cb" swapped="no"/>
     <child>
-      <object class="GtkScrolledWindow" id="scroller">
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
+      <object class="GtkOverlay">
+        <property name="visible">true</property>
+        <property name="can_focus">false</property>
         <child>
-          <object class="GtkViewport" id="viewport1">
+          <object class="GtkScrolledWindow" id="scroller">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can_focus">True</property>
             <child>
-              <object class="GtkEventBox" id="event_box">
+              <object class="GtkViewport" id="viewport1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="above_child">True</property>
-                <signal name="button-press-event" handler="event_box_button_press_cb" swapped="no"/>
-                <signal name="motion-notify-event" handler="event_box_motion_notify_cb" swapped="no"/>
                 <child>
-                  <object class="GtkImage" id="image">
+                  <object class="GtkEventBox" id="event_box">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="above_child">True</property>
+                    <signal name="button-press-event" handler="event_box_button_press_cb" swapped="no"/>
+                    <signal name="motion-notify-event" handler="event_box_motion_notify_cb" swapped="no"/>
+                    <child>
+                      <object class="GtkImage" id="image">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>
+            </child>
+          </object>
+        </child>
+
+        <child type="overlay">
+          <object class="GtkBox">
+            <property name="visible">true</property>
+            <property name="can_focus">false</property>
+            <property name="orientation">horizontal</property>
+            <property name="hexpand">true</property>
+            <child>
+              <object class="GtkButton" id="back_button">
+                <property name="visible">true</property>
+                <property name="can_focus">true</property>
+                <property name="valign">center</property>
+                <property name="margin_start">6</property>
+                <style>
+                  <class name="image-button" />
+                  <class name="osd" />
+                </style>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">true</property>
+                    <property name="can_focus">false</property>
+                    <property name="icon_name">go-previous-symbolic</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="pack_type">start</property>
+              </packing>
+            </child>
+
+            <child>
+              <object class="GtkButton" id="forward_button">
+                <property name="visible">true</property>
+                <property name="can_focus">true</property>
+                <property name="valign">center</property>
+                <property name="margin_end">6</property>
+                <style>
+                  <class name="image-button" />
+                  <class name="osd" />
+                </style>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">true</property>
+                    <property name="can_focus">false</property>
+                    <property name="icon_name">go-next-symbolic</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="pack_type">end</property>
+              </packing>
             </child>
           </object>
         </child>
