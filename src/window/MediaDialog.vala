@@ -36,13 +36,14 @@ class MediaDialog : Gtk.Window {
   private void change_media (Media media) {
     /* Remove the current child */
     var cur_child = overlay.get_child ();
-    int cur_width, cur_height,
+    int cur_width = 0, cur_height = 0,
         new_width, new_height;
-    cur_child.get_size_request (out cur_width, out cur_height);
 
 
-    if (overlay.get_child () != null)
+    if (overlay.get_child () != null) {
       overlay.remove (cur_child);
+      cur_child.get_size_request (out cur_width, out cur_height);
+    }
 
     Gtk.Widget new_widget = null;
     if (media.type == MediaType.IMAGE || media.type == MediaType.GIF) {
