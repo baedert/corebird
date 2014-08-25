@@ -11,11 +11,12 @@
         <property name="visible">true</property>
         <property name="can_focus">false</property>
         <child type="overlay">
-          <object class="GtkBox">
+          <object class="GtkBox" id="osd_box">
             <property name="visible">true</property>
             <property name="can_focus">false</property>
             <property name="orientation">horizontal</property>
             <property name="hexpand">true</property>
+            <property name="valign">center</property>
             <child>
               <object class="GtkButton" id="back_button">
                 <property name="visible">true</property>
