@@ -246,22 +246,6 @@
                     </child>
 
 
-
-                    <child>
-                      <object class="GtkImage" id="verified_image">
-                        <property name="can_focus">False</property>
-                        <property name="no_show_all">True</property>
-                        <property name="margin_start">5</property>
-                        <property name="margin_end">5</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">4</property>
-                        <property name="width">5</property>
-                      </packing>
-                    </child>
-
-
                     <child>
                       <object class="GtkLabel" id="url_label">
                         <property name="visible">True</property>
