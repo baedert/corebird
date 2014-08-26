@@ -176,51 +176,13 @@ public class Corebird : Gtk.Application {
 
 
   /**
-   *
-   *
-   *
+   * Open startup windows.
+   * Semantics: Open a window for every account in the startup-accounts array.
+   * If that array is empty, look at all the account and if there is one, open that one.
+   * If there is none, open a MainWindow with a null account.
    */
   private void  open_startup_windows (string? compose_screen_name = null) { // {{{
-    string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
-    Gtk.Window window;
-
-    if(startup_accounts.length == 1) {
-      if (startup_accounts[0].length == 0) {
-        window = new MainWindow (this, null);
-        add_window (window);
-        window.show_all ();
-        return;
-      }
-    }
-    debug ("Startup accounts: %d", startup_accounts.length);
-
-    if (compose_screen_name == null) {
-      if (startup_accounts.length == 0) {
-        window = new MainWindow (this, null);
-        add_window (window);
-        window.show_all ();
-      } else {
-        bool found_valid_account = false;
-        foreach (string screen_name in startup_accounts) {
-          if (!is_window_open_for_screen_name (screen_name)) {
-            var acc = Account.query_account (screen_name);
-            if (acc != null) {
-              window = new MainWindow (this, acc);
-              add_window (window);
-              window.show_all ();
-              found_valid_account = true;
-            }
-          }
-        }
-
-        if (!found_valid_account) {
-          window = new MainWindow (this, null);
-          add_window (window);
-          window.show_all ();
-        }
-
-      }
-    } else {
+    if (compose_screen_name != null) {
       Account? acc = Account.query_account (compose_screen_name);
       if (acc == null) {
         critical ("No account named `%s` is configured. Exiting.",
@@ -236,6 +198,30 @@ public class Corebird : Gtk.Application {
                                        this);
       cw.show();
       this.add_window (cw);
+      return;
+    }
+
+
+
+    string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
+    if (startup_accounts.length == 0) {
+      uint n_accounts = Account.list_accounts ().length ();
+      if (n_accounts == 1) {
+        add_window_for_screen_name (Account.list_accounts ().nth_data (0).screen_name);
+      } else if (n_accounts == 0) {
+        var window = new MainWindow (this, null);
+        add_window (window);
+        window.show_all ();
+      } else {
+        /* We have multiple configured accounts but still none in autostart.
+           This should never happen but we handle the case anyway by just opening
+           the first one. */
+        add_window_for_screen_name (Account.list_accounts ().nth_data (0).screen_name);
+      }
+    } else {
+      foreach (string account in startup_accounts) {
+        add_window_for_screen_name (account);
+      }
     }
   } // }}}
 
@@ -341,15 +327,6 @@ public class Corebird : Gtk.Application {
       out_string = msg + "\n";
     else
       out_string = "(%s) %s".printf (log_domain, msg);
-
-    //if (log_stream != null) {
-      //try {
-        //log_stream.write_all (out_string.data, null);
-        //log_stream.flush ();
-      //} catch (GLib.Error e) {
-        //warning (e.message);
-      //}
-    //}
 
 #if !DEBUG
     if (flags != LogLevelFlags.LEVEL_DEBUG)
