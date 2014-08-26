@@ -288,6 +288,14 @@ public class MainWindow : Gtk.ApplicationWindow {
       }
     }
 
+
+    string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
+    if (startup_accounts.length == 1 && startup_accounts[0] == "")
+      startup_accounts.resize (0);
+
+    if (startup_accounts.length > 0)
+      return false;
+
     int n_main_windows = 0;
     foreach (Gtk.Window win in ws)
       if (win is MainWindow &&
@@ -298,9 +306,9 @@ public class MainWindow : Gtk.ApplicationWindow {
 
     if (n_main_windows == 1) {
       // This is the last window so we save this one anyways...
-      string[] startup_accounts = new string[1];
-      startup_accounts[0] = ((MainWindow)ws.nth_data (0)).account.screen_name;
-      Settings.get ().set_strv ("startup-accounts", startup_accounts);
+      string[] new_startup_accounts = new string[1];
+      new_startup_accounts[0] = ((MainWindow)ws.nth_data (0)).account.screen_name;
+      Settings.get ().set_strv ("startup-accounts", new_startup_accounts);
       debug ("Saving the account %s", ((MainWindow)ws.nth_data (0)).account.screen_name);
     }
     save_geometry ();

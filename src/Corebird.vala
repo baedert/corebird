@@ -202,8 +202,11 @@ public class Corebird : Gtk.Application {
     }
 
 
-
     string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
+    /* Handle the stupid case where only one item is in the array but it's empty */
+    if (startup_accounts.length == 1 && startup_accounts[0] == "")
+      startup_accounts.resize (0);
+
     if (startup_accounts.length == 0) {
       uint n_accounts = Account.list_accounts ().length ();
       if (n_accounts == 1) {
@@ -267,6 +270,7 @@ public class Corebird : Gtk.Application {
         return;
       }
     }
+    warning ("Could not add window for account '%s'", screen_name);
   }
 
   /**
@@ -299,6 +303,16 @@ public class Corebird : Gtk.Application {
    */
   private void quit_application () {
     unowned GLib.List<weak Gtk.Window> windows = this.get_windows ();
+    string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
+    if (startup_accounts.length == 1 && startup_accounts[0] == "")
+      startup_accounts.resize (0);
+
+
+    if (startup_accounts.length != 0) {
+      base.quit ();
+      return;
+    }
+
     string[] account_names = new string[windows.length ()];
     int index = 0;
     foreach (var win in windows) {
@@ -312,7 +326,7 @@ public class Corebird : Gtk.Application {
     }
     account_names.resize (index + 1);
     Settings.get ().set_strv ("startup-accounts", account_names);
-    quit();
+    base.quit ();
   }
 
 
