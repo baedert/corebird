@@ -201,7 +201,6 @@ public class Corebird : Gtk.Application {
       return;
     }
 
-
     string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
     /* Handle the stupid case where only one item is in the array but it's empty */
     if (startup_accounts.length == 1 && startup_accounts[0] == "")

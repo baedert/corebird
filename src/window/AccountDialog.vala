@@ -79,16 +79,16 @@ class AccountDialog : Gtk.Dialog {
 
     /* Remove account from startup accounts, if it's in there */
     // XXX Is there a better way do do this?
-    string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
-    for (int i = 0; i < startup_accounts.length; i++)
-      if (startup_accounts[i] == account.screen_name) {
-        string[] sa_new = new string[startup_accounts.length - 1];
-        for (int x = 0; x < i; i++)
-          sa_new[x] = startup_accounts[x];
-        for (int x = i+1; x < startup_accounts.length; x++)
-          sa_new[x] = startup_accounts[x];
-        Settings.get ().set_strv ("startup-accounts", sa_new);
-      }
+    //string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
+    //for (int i = 0; i < startup_accounts.length; i++)
+      //if (startup_accounts[i] == account.screen_name) {
+        //string[] sa_new = new string[startup_accounts.length - 1];
+        //for (int x = 0; x < i; i++)
+          //sa_new[x] = startup_accounts[x];
+        //for (int x = i+1; x < startup_accounts.length; x++)
+          //sa_new[x] = startup_accounts[x];
+        //Settings.get ().set_strv ("startup-accounts", sa_new);
+      //}
 
     /* Remove account from account app menu */
     for (int i = 0; i < acc_menu.get_n_items (); i++){
@@ -154,15 +154,19 @@ class AccountDialog : Gtk.Dialog {
         }
       }
 
-      startup_accounts.resize (startup_accounts.length + 1);
-      startup_accounts[startup_accounts.length - 1] = this.account.screen_name;
-
-    }  else {
+      string[] new_startup_accounts = new string[startup_accounts.length + 1];
+      int i = 0;
+      foreach (string s in startup_accounts) {
+        new_startup_accounts[i] = s;
+      }
+      new_startup_accounts[new_startup_accounts.length - 1] = this.account.screen_name;
+      Settings.get ().set_strv ("startup-accounts", new_startup_accounts);
+    } else {
       string[] new_startup_accounts = new string[startup_accounts.length - 1];
       int i = 0;
       foreach (string acc in startup_accounts) {
         if (acc != this.account.screen_name) {
-          new_startup_accounts[i] = this.account.screen_name;
+          new_startup_accounts[i] = acc;
           i ++;
         }
       }
