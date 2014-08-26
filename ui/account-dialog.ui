@@ -149,9 +149,10 @@
                 <child>
                   <object class="GtkSwitch" id="autostart_switch">
                     <property name="visible">true</property>
-                    <property name="can_focus">false</property>
+                    <property name="can_focus">true</property>
                     <property name="halign">start</property>
                     <property name="valign">baseline</property>
+                    <signal name="notify::active" handler="autostart_switch_activate_cb" />
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
