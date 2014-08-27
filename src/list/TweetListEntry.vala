@@ -102,23 +102,10 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
     retweet_button.visible = tweet.retweeted;
     retweet_button.active = tweet.retweeted;
-    tweet.notify["retweeted"].connect (() => {
-      values_set = false;
-      retweet_button.active = tweet.retweeted;
-      retweet_button.visible = tweet.retweeted;
-      adjust_hover_box ();
-      values_set = true;
-    });
 
     favorite_button.visible = tweet.favorited;
     favorite_button.active = tweet.favorited;
-    tweet.notify["favorited"].connect (() => {
-      values_set = false;
-      favorite_button.active = tweet.favorited;
-      favorite_button.visible = tweet.favorited;
-      adjust_hover_box ();
-      values_set = true;
-    });
+    tweet.notify["favorited"].connect (favorited_cb);
 
     if (tweet.reply_id == 0)
       conversation_image.unparent ();
@@ -131,7 +118,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
     if (tweet.has_inline_media) {
       mm_widget.set_all_media (tweet.medias);
-      mm_widget.media_clicked.connect ((m) => TweetUtils.handle_media_click (m, window));
+      mm_widget.media_clicked.connect (media_clicked_cb);
       mm_widget.window = window;
     } else
       grid.remove (mm_widget);
@@ -155,6 +142,26 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     });
 
     values_set = true;
+  }
+
+  private void favorited_cb () {
+    values_set = false;
+    favorite_button.active = tweet.favorited;
+    favorite_button.visible = tweet.favorited;
+    adjust_hover_box ();
+    values_set = true;
+  }
+
+  private void retweeted_cb () {
+    values_set = false;
+    retweet_button.active = tweet.retweeted;
+    retweet_button.visible = tweet.retweeted;
+    adjust_hover_box ();
+    values_set = true;
+  }
+
+  private void media_clicked_cb (Media m) {
+    TweetUtils.handle_media_click (m, this.window);
   }
 
   private void delete_tweet_activated () {
