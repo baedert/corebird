@@ -23,6 +23,10 @@ class MediaDialog : Gtk.Window {
   private Gtk.Button next_button;
   [GtkChild]
   private Gtk.Button back_button;
+  [GtkChild]
+  private Gtk.Revealer back_revealer;
+  [GtkChild]
+  private Gtk.Revealer next_revealer;
   private unowned Tweet tweet;
   private int cur_index = 0;
 
@@ -104,6 +108,20 @@ class MediaDialog : Gtk.Window {
   [GtkCallback]
   private bool button_press_event_cb () {
     this.destroy ();
+    return true;
+  }
+
+  [GtkCallback]
+  private bool leave_notify_cb () {
+    back_revealer.reveal_child= false;
+    next_revealer.reveal_child= false;
+    return true;
+  }
+
+  [GtkCallback]
+  private bool enter_notify_cb () {
+    back_revealer.reveal_child= true;
+    next_revealer.reveal_child= true;
     return true;
   }
 }
