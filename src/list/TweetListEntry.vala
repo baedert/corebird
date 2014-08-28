@@ -102,6 +102,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
     retweet_button.visible = tweet.retweeted;
     retweet_button.active = tweet.retweeted;
+    tweet.notify["retweeted"].connect (retweeted_cb);
 
     favorite_button.visible = tweet.favorited;
     favorite_button.active = tweet.favorited;
