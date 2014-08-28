@@ -81,27 +81,40 @@ class MediaDialog : Gtk.Window {
       back_button.show ();
   }
 
-  [GtkCallback]
-  private void next_button_clicked_cb () {
+  private void next_media () {
     if (cur_index < tweet.medias.length - 1) {
       cur_index ++;
       change_media (tweet.medias[cur_index]);
     }
   }
 
-  [GtkCallback]
-  private void back_button_clicked_cb () {
+  private void previous_media () {
     if (cur_index > 0) {
       cur_index --;
       change_media (tweet.medias[cur_index]);
     }
   }
 
+  [GtkCallback]
+  private void next_button_clicked_cb () {
+    next_media ();
+  }
+
+  [GtkCallback]
+  private void back_button_clicked_cb () {
+    previous_media ();
+  }
 
 
   [GtkCallback]
-  private bool key_press_event_cb () {
-    this.destroy ();
+  private bool key_press_event_cb (Gdk.EventKey evt) {
+    if (evt.keyval == Gdk.Key.Left)
+      previous_media ();
+    else if (evt.keyval == Gdk.Key.Right)
+      next_media ();
+    else
+      this.destroy ();
+
     return true;
   }
 
