@@ -90,6 +90,11 @@ class MediaVideoWidget : Gtk.Stack {
     this.destroy ();
   }
 
+  public override void destroy () {
+    stop ();
+    base.destroy ();
+  }
+
 #if VIDEO
   private Gst.BusSyncReply bus_sync_handler (Gst.Bus bus, Gst.Message msg) {
     if (!Gst.Video.is_video_overlay_prepare_window_handle_message (msg))
@@ -129,8 +134,10 @@ class MediaVideoWidget : Gtk.Stack {
     });
     session.queue_message (msg, (s, _msg) => {
       if (_msg.status_code != Soup.Status.OK) {
-        warning ("Status Code %u", _msg.status_code);
-        show_error ("%u %s".printf (_msg.status_code, Soup.Status.get_phrase (_msg.status_code)));
+        if (_msg.status_code != Soup.Status.CANCELLED) {
+          warning ("Status Code %u", _msg.status_code);
+          show_error ("%u %s".printf (_msg.status_code, Soup.Status.get_phrase (_msg.status_code)));
+        }
         fetch_real_url.callback ();
         return;
       }
@@ -172,8 +179,10 @@ class MediaVideoWidget : Gtk.Stack {
     });
     session.queue_message (msg, (s, _msg) => {
       if (_msg.status_code != Soup.Status.OK) {
-        warning ("Status Code %u", _msg.status_code);
-        show_error ("%u %s".printf (_msg.status_code, Soup.Status.get_phrase (_msg.status_code)));
+        if (_msg.status_code != Soup.Status.CANCELLED) {
+          warning ("Status Code %u", _msg.status_code);
+          show_error ("%u %s".printf (_msg.status_code, Soup.Status.get_phrase (_msg.status_code)));
+        }
         download_video.callback ();
         return;
       }
