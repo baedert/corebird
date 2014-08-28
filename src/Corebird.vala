@@ -84,7 +84,7 @@ public class Corebird : Gtk.Application {
     this.add_accelerator ("<Alt>7", "win.switch-page", new GLib.Variant.int32(6));
     this.add_accelerator (Settings.get_accel ("show-settings"), "app.show-settings", null);
     this.add_accelerator ("<Control>Q", "app.quit", null);
-    this.add_accelerator ("<Control>P", "win.show-account-dialog", null);
+    this.add_accelerator (Settings.get_accel ("show-account-dialog"), "win.show-account-dialog", null);
 
     this.add_action_entries (app_entries, this);
 

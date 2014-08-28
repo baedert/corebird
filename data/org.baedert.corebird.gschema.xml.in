@@ -64,6 +64,10 @@
       <default>"&lt;Control&gt;&lt;Shift&gt;P"</default>
       <summary>Accelerator to show the settings window</summary>
     </key>
+    <key name="accel-show-account-dialog" type="s">
+      <default>"&lt;Control&gt;P"</default>
+      <summary>Accelerator to show the account dialog</summary>
+    </key>
     <key name="window-geometry" type="a{s(iiii)}">
       <default>{}</default>
       <summary></summary>
