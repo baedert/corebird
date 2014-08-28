@@ -118,10 +118,18 @@
 
                  <!-- Description -->
                  <child>
-                  <object class="GtkTextView" id="description_text_view">
+                  <object class="GtkFrame">
                     <property name="visible">true</property>
-                    <property name="can_focus">true</property>
-                    <property name="height_request">40</property>
+                    <property name="can_focus">false</property>
+                    <child>
+                      <object class="GtkTextView" id="description_text_view">
+                        <property name="visible">true</property>
+                        <property name="can_focus">true</property>
+                        <property name="height_request">60</property>
+                        <property name="accepts_tab">false</property>
+                        <property name="wrap_mode">word-char</property>
+                      </object>
+                    </child>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
