@@ -113,8 +113,32 @@
                     <property name="left_attach">1</property>
                     <property name="top_attach">2</property>
                   </packing>
-                </child>
+                 </child>
 
+
+                 <!-- Description -->
+                 <child>
+                  <object class="GtkFrame">
+                    <property name="visible">true</property>
+                    <property name="can_focus">false</property>
+                    <child>
+                      <object class="GtkTextView" id="description_text_view">
+                        <property name="visible">true</property>
+                        <property name="can_focus">true</property>
+                        <property name="height_request">60</property>
+                        <property name="accepts_tab">false</property>
+                        <property name="wrap_mode">word-char</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">3</property>
+                    <property name="width">2</property>
+                  </packing>
+                 </child>
+
+                <!-- Separator -->
                 <child>
                   <object class="GtkSeparator">
                     <property name="visible">true</property>
@@ -123,7 +147,7 @@
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">3</property>
+                    <property name="top_attach">4</property>
                     <property name="width">2</property>
                   </packing>
                 </child>
@@ -142,20 +166,21 @@
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">4</property>
+                    <property name="top_attach">5</property>
                   </packing>
                 </child>
 
                 <child>
                   <object class="GtkSwitch" id="autostart_switch">
                     <property name="visible">true</property>
-                    <property name="can_focus">false</property>
+                    <property name="can_focus">true</property>
                     <property name="halign">start</property>
                     <property name="valign">baseline</property>
+                    <signal name="notify::active" handler="autostart_switch_activate_cb" />
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="top_attach">4</property>
+                    <property name="top_attach">5</property>
                   </packing>
                 </child>
 
@@ -184,7 +209,7 @@
                     <property name="margin_top">12</property>
                     <property name="margin_start">6</property>
                     <property name="margin_end">6</property>
-                    <property name="label" translatable="yes">Do your really want to delete this account?</property>
+                    <property name="label" translatable="yes">Do you really want to delete this account?</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>

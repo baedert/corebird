@@ -6,6 +6,8 @@
     <property name="decorated">False</property>
     <signal name="key-press-event" handler="key_press_event_cb" />
     <signal name="button-press-event" handler="button_press_event_cb" />
+    <signal name="enter_notify_event" handler="enter_notify_cb" />
+    <signal name="leave_notify_event" handler="leave_notify_cb" />
     <child>
       <object class="GtkOverlay" id="overlay">
         <property name="visible">true</property>
@@ -18,21 +20,28 @@
             <property name="hexpand">true</property>
             <property name="valign">center</property>
             <child>
-              <object class="GtkButton" id="back_button">
+              <object class="GtkRevealer" id="back_revealer">
                 <property name="visible">true</property>
-                <property name="can_focus">true</property>
-                <property name="valign">center</property>
-                <property name="margin_start">6</property>
-                <signal name="clicked" handler="back_button_clicked_cb" />
-                <style>
-                  <class name="image-button" />
-                  <class name="osd" />
-                </style>
+                <property name="can_focus">false</property>
+                <property name="transition_type">slide-left</property>
                 <child>
-                  <object class="GtkImage">
+                  <object class="GtkButton" id="back_button">
                     <property name="visible">true</property>
-                    <property name="can_focus">false</property>
-                    <property name="icon_name">go-previous-symbolic</property>
+                    <property name="can_focus">true</property>
+                    <property name="valign">center</property>
+                    <property name="margin_start">6</property>
+                    <signal name="clicked" handler="back_button_clicked_cb" />
+                    <style>
+                      <class name="image-button" />
+                      <class name="osd" />
+                    </style>
+                    <child>
+                      <object class="GtkImage">
+                        <property name="visible">true</property>
+                        <property name="can_focus">false</property>
+                        <property name="icon_name">go-previous-symbolic</property>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>
@@ -42,21 +51,28 @@
             </child>
 
             <child>
-              <object class="GtkButton" id="next_button">
+              <object class="GtkRevealer" id="next_revealer">
                 <property name="visible">true</property>
-                <property name="can_focus">true</property>
-                <property name="valign">center</property>
-                <property name="margin_end">6</property>
-                <signal name="clicked" handler="next_button_clicked_cb" />
-                <style>
-                  <class name="image-button" />
-                  <class name="osd" />
-                </style>
+                <property name="can_focus">false</property>
+                <property name="transition_type">slide-right</property>
                 <child>
-                  <object class="GtkImage">
+                  <object class="GtkButton" id="next_button">
                     <property name="visible">true</property>
-                    <property name="can_focus">false</property>
-                    <property name="icon_name">go-next-symbolic</property>
+                    <property name="can_focus">true</property>
+                    <property name="valign">center</property>
+                    <property name="margin_end">6</property>
+                    <signal name="clicked" handler="next_button_clicked_cb" />
+                    <style>
+                      <class name="image-button" />
+                      <class name="osd" />
+                    </style>
+                    <child>
+                      <object class="GtkImage">
+                        <property name="visible">true</property>
+                        <property name="can_focus">false</property>
+                        <property name="icon_name">go-next-symbolic</property>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>

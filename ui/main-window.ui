@@ -46,6 +46,7 @@
                 <property name="visible">true</property>
                 <property name="relief">none</property>
                 <property name="margin_start">6</property>
+                <property name="tooltip_text" translatable="yes">Show configured accounts</property>
                 <signal name="clicked" handler="account_button_clicked_cb" swapped="no" />
                 <style>
                   <class name="image-button" />
