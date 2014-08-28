@@ -55,8 +55,6 @@ class ProfilePage : ScrollWidget, IPage {
   public unowned DeltaUpdater delta_updater { get; set; }
 
   [GtkChild]
-  private Gtk.Image verified_image;
-  [GtkChild]
   private AspectImage banner_image;
   [GtkChild]
   private AvatarWidget avatar_image;
@@ -518,18 +516,7 @@ class ProfilePage : ScrollWidget, IPage {
     } else
       location_label.visible = false;
 
-    if (verified) {
-      verified_image.show ();
-      if (verified_image.pixbuf == null) {
-        try {
-          verified_image.pixbuf = new Gdk.Pixbuf.from_file (DATADIR + "verified.png");
-        } catch (GLib.Error e) {
-          warning (e.message);
-        }
-      }
-    } else {
-      verified_image.hide ();
-    }
+    avatar_image.verified = verified;
 
     if (url != null && url != "") {
       url_label.visible = true;

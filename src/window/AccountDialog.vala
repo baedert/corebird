@@ -29,9 +29,9 @@ class AccountDialog : Gtk.Dialog {
   [GtkChild]
   private Gtk.Stack delete_stack;
   [GtkChild]
-  private Gtk.Label delete_label;
-  [GtkChild]
   private Gtk.Button delete_button;
+  [GtkChild]
+  private Gtk.Switch autostart_switch;
 
   private unowned Account account;
 
@@ -42,6 +42,13 @@ class AccountDialog : Gtk.Dialog {
     screen_name_entry.text = account.screen_name;
     name_entry.text = account.name;
     avatar_banner_widget.set_account (account);
+    autostart_switch.freeze_notify ();
+    string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
+    foreach (string acc in startup_accounts) {
+      if (acc == this.account.screen_name)
+        autostart_switch.active = true;
+    }
+    autostart_switch.thaw_notify ();
     this.set_default_size (350, 450);
   }
 
@@ -134,5 +141,36 @@ class AccountDialog : Gtk.Dialog {
   private void delete_cancel_button_clicked_cb () {
     delete_stack.visible_child_name = PAGE_NORMAL;
     delete_button.show ();
+  }
+
+  [GtkCallback]
+  private void autostart_switch_activate_cb () {
+    bool active = autostart_switch.active;
+    string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
+    if (active) {
+      foreach (string acc in startup_accounts) {
+        if (acc == this.account.screen_name) {
+          return;
+        }
+      }
+
+      string[] new_startup_accounts = new string[startup_accounts.length + 1];
+      int i = 0;
+      foreach (string s in startup_accounts) {
+        new_startup_accounts[i] = s;
+      }
+      new_startup_accounts[new_startup_accounts.length - 1] = this.account.screen_name;
+      Settings.get ().set_strv ("startup-accounts", new_startup_accounts);
+    } else {
+      string[] new_startup_accounts = new string[startup_accounts.length - 1];
+      int i = 0;
+      foreach (string acc in startup_accounts) {
+        if (acc != this.account.screen_name) {
+          new_startup_accounts[i] = acc;
+          i ++;
+        }
+      }
+      Settings.get ().set_strv ("startup-accounts", new_startup_accounts);
+    }
   }
 }

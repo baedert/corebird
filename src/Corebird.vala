@@ -84,7 +84,7 @@ public class Corebird : Gtk.Application {
     this.add_accelerator ("<Alt>7", "win.switch-page", new GLib.Variant.int32(6));
     this.add_accelerator (Settings.get_accel ("show-settings"), "app.show-settings", null);
     this.add_accelerator ("<Control>Q", "app.quit", null);
-    this.add_accelerator ("<Control>P", "win.show-account-dialog", null);
+    this.add_accelerator (Settings.get_accel ("show-account-dialog"), "win.show-account-dialog", null);
 
     this.add_action_entries (app_entries, this);
 
@@ -176,51 +176,13 @@ public class Corebird : Gtk.Application {
 
 
   /**
-   *
-   *
-   *
+   * Open startup windows.
+   * Semantics: Open a window for every account in the startup-accounts array.
+   * If that array is empty, look at all the account and if there is one, open that one.
+   * If there is none, open a MainWindow with a null account.
    */
   private void  open_startup_windows (string? compose_screen_name = null) { // {{{
-    string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
-    Gtk.Window window;
-
-    if(startup_accounts.length == 1) {
-      if (startup_accounts[0].length == 0) {
-        window = new MainWindow (this, null);
-        add_window (window);
-        window.show_all ();
-        return;
-      }
-    }
-    debug ("Startup accounts: %d", startup_accounts.length);
-
-    if (compose_screen_name == null) {
-      if (startup_accounts.length == 0) {
-        window = new MainWindow (this, null);
-        add_window (window);
-        window.show_all ();
-      } else {
-        bool found_valid_account = false;
-        foreach (string screen_name in startup_accounts) {
-          if (!is_window_open_for_screen_name (screen_name)) {
-            var acc = Account.query_account (screen_name);
-            if (acc != null) {
-              window = new MainWindow (this, acc);
-              add_window (window);
-              window.show_all ();
-              found_valid_account = true;
-            }
-          }
-        }
-
-        if (!found_valid_account) {
-          window = new MainWindow (this, null);
-          add_window (window);
-          window.show_all ();
-        }
-
-      }
-    } else {
+    if (compose_screen_name != null) {
       Account? acc = Account.query_account (compose_screen_name);
       if (acc == null) {
         critical ("No account named `%s` is configured. Exiting.",
@@ -236,6 +198,32 @@ public class Corebird : Gtk.Application {
                                        this);
       cw.show();
       this.add_window (cw);
+      return;
+    }
+
+    string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
+    /* Handle the stupid case where only one item is in the array but it's empty */
+    if (startup_accounts.length == 1 && startup_accounts[0] == "")
+      startup_accounts.resize (0);
+
+    if (startup_accounts.length == 0) {
+      uint n_accounts = Account.list_accounts ().length ();
+      if (n_accounts == 1) {
+        add_window_for_screen_name (Account.list_accounts ().nth_data (0).screen_name);
+      } else if (n_accounts == 0) {
+        var window = new MainWindow (this, null);
+        add_window (window);
+        window.show_all ();
+      } else {
+        /* We have multiple configured accounts but still none in autostart.
+           This should never happen but we handle the case anyway by just opening
+           the first one. */
+        add_window_for_screen_name (Account.list_accounts ().nth_data (0).screen_name);
+      }
+    } else {
+      foreach (string account in startup_accounts) {
+        add_window_for_screen_name (account);
+      }
     }
   } // }}}
 
@@ -281,6 +269,7 @@ public class Corebird : Gtk.Application {
         return;
       }
     }
+    warning ("Could not add window for account '%s'", screen_name);
   }
 
   /**
@@ -313,6 +302,16 @@ public class Corebird : Gtk.Application {
    */
   private void quit_application () {
     unowned GLib.List<weak Gtk.Window> windows = this.get_windows ();
+    string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
+    if (startup_accounts.length == 1 && startup_accounts[0] == "")
+      startup_accounts.resize (0);
+
+
+    if (startup_accounts.length != 0) {
+      base.quit ();
+      return;
+    }
+
     string[] account_names = new string[windows.length ()];
     int index = 0;
     foreach (var win in windows) {
@@ -326,7 +325,7 @@ public class Corebird : Gtk.Application {
     }
     account_names.resize (index + 1);
     Settings.get ().set_strv ("startup-accounts", account_names);
-    quit();
+    base.quit ();
   }
 
 
@@ -341,15 +340,6 @@ public class Corebird : Gtk.Application {
       out_string = msg + "\n";
     else
       out_string = "(%s) %s".printf (log_domain, msg);
-
-    //if (log_stream != null) {
-      //try {
-        //log_stream.write_all (out_string.data, null);
-        //log_stream.flush ();
-      //} catch (GLib.Error e) {
-        //warning (e.message);
-      //}
-    //}
 
 #if !DEBUG
     if (flags != LogLevelFlags.LEVEL_DEBUG)
