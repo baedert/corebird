@@ -16,6 +16,7 @@
  */
 
 public class AvatarBannerWidget : Gtk.Widget {
+  private static const double BANNER_RATIO = 0.5; /* 320/640 */
   private Gdk.Pixbuf? banner;
   private Gdk.Pixbuf? avatar;
   public int avatar_size { get; set; default = 48; }
@@ -152,14 +153,8 @@ public class AvatarBannerWidget : Gtk.Widget {
   public override void get_preferred_height_for_width (int width,
                                                    out int min,
                                                    out int nat) {
-    if (banner != null) {
-      double ratio = (double) banner.get_height () / (double) banner.get_width ();
-      nat = (int)(width * ratio);
-      min = (int)(width * ratio);
-    } else {
-      nat = avatar_size;
-      min = avatar_size;
-    }
+    nat = (int)(width * BANNER_RATIO);
+    min = (int)(width * BANNER_RATIO);
   }
 
   private async void fetch_banner (string banner_path) {
