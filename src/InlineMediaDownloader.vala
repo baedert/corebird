@@ -56,7 +56,16 @@ namespace InlineMediaDownloader {
                                     string regex_str1, int match_index1) {
     var msg = new Soup.Message ("GET", media.url);
     session.queue_message (msg, (_s, _msg) => {
-      string back = (string)_msg.response_body.data;
+      string? back = (string)_msg.response_body.data;
+      if (msg.status_code != Soup.Status.OK)
+        warning ("Message status: %s", msg.status_code.to_string ());
+
+      if (back == null) {
+        warning ("Url '%s' returned null", media.url);
+        media.invalid = true;
+        media.finished_loading ();
+        return;
+      }
       try {
         var regex = new GLib.Regex (regex_str1, 0);
         MatchInfo info;
