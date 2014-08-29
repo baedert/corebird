@@ -41,6 +41,7 @@ namespace InlineMediaDownloader {
            url.has_prefix ("http://i.imgur.com") ||
            url.has_prefix ("http://d.pr/i/") ||
            url.has_prefix ("http://ow.ly/i/") ||
+           url.has_prefix ("http://www.flickr.com/photos/") ||
 #if VIDEO
            url.has_prefix ("https://vine.co/v/") ||
            url.has_suffix ("/photo/1") ||
@@ -147,10 +148,10 @@ namespace InlineMediaDownloader {
     /* If we get to this point, the image was not cached on disk and we
        *really* need to download it. */
     string url = media.url;
-    if(url.has_prefix("http://instagr.am") ||
-       url.has_prefix("http://instagram.com/p/")) {
-      yield load_real_url (t, media, "<meta property=\"og:image\" content=\"(.*?)\"", 1);
-    } else if (url.has_prefix("http://ow.ly/i/")) {
+    if (url.has_prefix ("http://instagr.am") ||
+        url.has_prefix ("http://instagram.com/p/") ||
+        url.has_prefix ("http://ow.ly/i/") ||
+        url.has_prefix ("http://www.flickr.com/photos/")) {
       yield load_real_url (t, media, "<meta property=\"og:image\" content=\"(.*?)\"", 1);
     } else if (url.has_prefix("http://twitpic.com/")) {
       yield load_real_url (t, media,
