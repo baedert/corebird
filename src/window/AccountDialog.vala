@@ -32,6 +32,8 @@ class AccountDialog : Gtk.Dialog {
   private Gtk.Button delete_button;
   [GtkChild]
   private Gtk.Switch autostart_switch;
+  [GtkChild]
+  private Gtk.Entry website_entry;
 
   private unowned Account account;
 
@@ -42,6 +44,7 @@ class AccountDialog : Gtk.Dialog {
     screen_name_entry.text = account.screen_name;
     name_entry.text = account.name;
     avatar_banner_widget.set_account (account);
+    website_entry.text = account.website;
     autostart_switch.freeze_notify ();
     string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
     foreach (string acc in startup_accounts) {
