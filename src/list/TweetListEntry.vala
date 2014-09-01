@@ -196,7 +196,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
     if (buttons_visible) {
       hover_box.margin_end = 1;
-      hover_box.margin_top = (time_delta_label.get_allocated_height () / 2) - 6;
+      hover_box.margin_top = (time_delta_label.get_allocated_height () / 2);
       hover_box.override_background_color (Gtk.StateFlags.NORMAL,
                                            ct.get_background_color (Gtk.StateFlags.PRELIGHT));
       retweet_button.visible = (account.id != tweet.user_id);
@@ -316,7 +316,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
     // XXX Keep this in sync with the version below
     if (time_delta_label.get_allocated_width () > 1 && conversation_image.get_allocated_width () > 1) {
-      hover_box.margin_top = (time_delta_label.get_allocated_height () / 2) - 6;
+      hover_box.margin_top = (time_delta_label.get_allocated_height () / 2);
       hover_box.margin_end = time_delta_label.get_allocated_width () + 6;
       if (tweet.reply_id != 0) {
         conversation_image.margin_top = (time_delta_label.get_allocated_height () / 2) - 6;
@@ -328,7 +328,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
     ulong id = 0;
     id = time_delta_label.size_allocate.connect (() => {
-      hover_box.margin_top = (time_delta_label.get_allocated_height () / 2) - 6;
+      hover_box.margin_top = (time_delta_label.get_allocated_height () / 2);
       hover_box.margin_end += time_delta_label.get_allocated_width () + 6;
       if (tweet.reply_id != 0) {
         conversation_image.margin_top = (time_delta_label.get_allocated_height () / 2) - 6;
