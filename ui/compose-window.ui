@@ -42,7 +42,7 @@
               <object class="GtkBox" id="left_box">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="margin_bottom">5</property>
+                <property name="margin_bottom">6</property>
                 <property name="orientation">vertical</property>
                 <child>
                   <object class="AvatarWidget" id="avatar_image">
@@ -52,9 +52,9 @@
                     <property name="can_focus">False</property>
                     <property name="halign">start</property>
                     <property name="valign">start</property>
-                    <property name="margin_start">5</property>
-                    <property name="margin_top">5</property>
-                    <property name="margin_bottom">5</property>
+                    <property name="margin_start">10</property>
+                    <property name="margin_top">6</property>
+                    <property name="margin_bottom">6</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -83,10 +83,10 @@
               <object class="GtkScrolledWindow" id="scrolledwindow1">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="margin_start">10</property>
-                <property name="margin_end">5</property>
-                <property name="margin_top">5</property>
-                <property name="margin_bottom">5</property>
+                <property name="margin_start">12</property>
+                <property name="margin_end">6</property>
+                <property name="margin_top">6</property>
+                <property name="margin_bottom">6</property>
                 <property name="shadow_type">in</property>
                 <child>
                   <object class="GtkTextView" id="tweet_text">
