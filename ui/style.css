@@ -23,6 +23,7 @@
   -GtkWidget-focus-line-width: 0;
   -GtkWidget-focus-padding: 0;
   -GtkButton-image-spacing: 0;
+  padding: 4px;
 }
 
 .inline-media {
