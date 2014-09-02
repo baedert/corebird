@@ -56,7 +56,6 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
 
     foreach (Filter f in account.filters) {
       var entry = new FilterListEntry (f, account);
-      entry.removed.connect (remove_filter);
       filter_list.add (entry);
     }
 
@@ -98,18 +97,6 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
 
     inited = true;
   } // }}}
-
-  private void remove_filter (Filter f) {
-    foreach (Gtk.Widget row in filter_list.get_children ()) {
-      if (!(row is FilterListEntry)) {
-        continue;
-      }
-      if (((FilterListEntry)row).filter.id == f.id) {
-        filter_list.remove (row);
-        return;
-      }
-    }
-  }
 
   /**
    * Called when the user adds a new Filter via the AddFilterDialog

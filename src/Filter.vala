@@ -24,7 +24,7 @@ public class Filter : GLib.Object {
   public Filter (string expression) {
     this.content = expression;
     try {
-      this.regex = new GLib.Regex (expression);
+      this.regex = new GLib.Regex (expression, GLib.RegexCompileFlags.CASELESS);
     } catch (GLib.RegexError e) {
       warning ("Regex error for `%s`: %s", expression, e.message);
     }
@@ -37,7 +37,7 @@ public class Filter : GLib.Object {
    */
   public void reset (string expression) {
     try {
-      this.regex = new GLib.Regex (expression);
+      this.regex = new GLib.Regex (expression, GLib.RegexCompileFlags.CASELESS);
     } catch (GLib.RegexError e) {
       warning ("Regex error for `%s`: %s", expression, e.message);
     }

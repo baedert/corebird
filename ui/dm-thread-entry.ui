@@ -18,6 +18,7 @@
             <property name="valign">center</property>
             <property name="margin_end">8</property>
             <property name="margin_top">4</property>
+            <property name="margin_bottom">4</property>
             <property name="margin_start">4</property>
           </object>
           <packing>
