@@ -244,7 +244,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="pixel_size">12</property>
-                    <property name="icon_name">open-menu-symbolic</property>
+                    <property name="icon_name">go-down-symbolic</property>
                   </object>
                 </child>
                 <style>
