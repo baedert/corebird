@@ -190,9 +190,10 @@ namespace InlineMediaDownloader {
       }
 
       try {
-        var ms = new MemoryInputStream.from_data(_msg.response_body.data, null);
+        var ms = new MemoryInputStream.from_data (_msg.response_body.data, null);
         media_out_stream.write_all (_msg.response_body.data, null, null);
-        if(ext == "gif"){
+        media_out_stream.close ();
+        if (ext == "gif") {
           load_animation.begin (t, ms, thumb_out_stream, media, () => {
             callback ();
           });
@@ -249,6 +250,12 @@ namespace InlineMediaDownloader {
     media.thumbnail = thumb;
     media.loaded = true;
     media.finished_loading ();
+    try {
+      in_stream.close ();
+      thumb_out_stream.close ();
+    } catch (GLib.Error e) {
+      warning (e.message);
+    }
   }
 
   public string get_media_path (Tweet t, Media media) {
