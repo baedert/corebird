@@ -637,14 +637,14 @@ class ProfilePage : ScrollWidget, IPage {
     avatar_image.pixbuf = null;
   }
 
-  public void create_tool_button (Gtk.RadioToolButton? group) {}
+  public void create_tool_button (Gtk.RadioButton? group) {}
 
 
   public string? get_title () {
     return "@" + screen_name;
   }
 
-  public Gtk.RadioToolButton? get_tool_button(){
+  public Gtk.RadioButton? get_tool_button(){
     return null;
   }
 

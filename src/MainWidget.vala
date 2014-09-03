@@ -21,19 +21,19 @@ public class MainWidget : Gtk.Box {
   private unowned Account account;
   private unowned Corebird app;
 
-  private Gtk.RadioToolButton dummy_button = new Gtk.RadioToolButton(null);
-  private IPage[] pages                    = new IPage[11];
-  private IntHistory history               = new IntHistory (5);
-  private DeltaUpdater delta_updater       = new DeltaUpdater ();
-  private bool page_switch_lock            = false;
+  private Gtk.RadioButton dummy_button = new Gtk.RadioButton (null);
+  private IPage[] pages                = new IPage[11];
+  private IntHistory history           = new IntHistory (5);
+  private DeltaUpdater delta_updater   = new DeltaUpdater ();
+  private bool page_switch_lock        = false;
 
 
   [GtkChild]
-  private Gtk.Toolbar left_toolbar;
+  private Gtk.Box left_box;
   [GtkChild]
   private Gtk.Stack stack;
-  [GtkChild]
-  private Gtk.Spinner progress_spinner;
+  //[GtkChild]
+  //private Gtk.Spinner progress_spinner;
   [GtkChild]
   private Gtk.Revealer sidebar_revealer;
   public int cur_page_id {
@@ -87,7 +87,8 @@ public class MainWidget : Gtk.Box {
       page.create_tool_button (dummy_button);
       stack.add (page);
       if (page.get_tool_button () != null) {
-        left_toolbar.insert (page.get_tool_button (), page.id);
+        //left_toolbar.insert (page.get_tool_button (), page.id);
+        left_box.add (page.get_tool_button ());
         page.get_tool_button ().clicked.connect (() => {
           if (page.get_tool_button ().active && !page_switch_lock) {
             switch_page (page.id);
@@ -166,7 +167,7 @@ public class MainWidget : Gtk.Box {
        because setting the active property of the button will cause
        the clicked event to be emitted, which will call switch_page. */
     IPage page = pages[page_id];
-    Gtk.RadioToolButton button = page.get_tool_button ();
+    Gtk.ToggleButton button = page.get_tool_button ();
     page_switch_lock = true;
     if (button != null)
       button.active = true;
@@ -187,13 +188,13 @@ public class MainWidget : Gtk.Box {
    */
   public void start_progress () {
     progress_holders ++;
-    progress_spinner.show ();
+    //progress_spinner.show ();
   }
 
   public void stop_progress () {
     progress_holders --;
-    if (progress_holders == 0)
-      progress_spinner.hide ();
+    //if (progress_holders == 0)
+      //progress_spinner.hide ();
   }
 
   public IPage get_page (int page_id) {

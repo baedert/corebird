@@ -129,9 +129,8 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
     });
   }
 
-  public override void create_tool_button (Gtk.RadioToolButton? group) {
+  public override void create_tool_button (Gtk.RadioButton? group) {
     tool_button = new BadgeRadioToolButton(group, "corebird-stream-symbolic");
     tool_button.tooltip_text = _("Home");
-    tool_button.label = _("Home");
   }
 }

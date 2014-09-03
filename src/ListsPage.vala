@@ -120,9 +120,8 @@ class ListsPage : IPage, ScrollWidget, IMessageReceiver {
   }
 
 
-  public void create_tool_button (Gtk.RadioToolButton? group) {
+  public void create_tool_button (Gtk.RadioButton? group) {
     tool_button = new BadgeRadioToolButton (group, "corebird-lists-symbolic");
-    tool_button.label = _("Lists");
     tool_button.tooltip_text = _("Lists");
   }
 
@@ -131,7 +130,7 @@ class ListsPage : IPage, ScrollWidget, IMessageReceiver {
     return _("Lists");
   }
 
-  public Gtk.RadioToolButton? get_tool_button () {
+  public Gtk.RadioButton? get_tool_button () {
     return tool_button;
   }
 

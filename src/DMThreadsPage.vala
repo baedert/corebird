@@ -373,13 +373,12 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     GLib.Application.get_default ().send_notification ("new-dm", n);
   }
 
-  public void create_tool_button(Gtk.RadioToolButton? group) {
+  public void create_tool_button(Gtk.RadioButton? group) {
     tool_button = new BadgeRadioToolButton(group, "corebird-dms-symbolic");
-    tool_button.label = _("Direct Messages");
     tool_button.tooltip_text = _("Direct Messages");
   }
 
-  public Gtk.RadioToolButton? get_tool_button() {
+  public Gtk.RadioButton? get_tool_button() {
     return tool_button;
   }
 

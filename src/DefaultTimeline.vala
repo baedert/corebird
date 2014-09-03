@@ -119,9 +119,9 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
       GLib.Source.remove (tweet_remove_timeout);
   }
 
-  public virtual void create_tool_button(Gtk.RadioToolButton? group){}
+  public virtual void create_tool_button(Gtk.RadioButton? group){}
 
-  public Gtk.RadioToolButton? get_tool_button() {
+  public Gtk.RadioButton? get_tool_button() {
     return tool_button;
   }
 

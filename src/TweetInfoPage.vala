@@ -443,8 +443,8 @@ class TweetInfoPage : IPage , ScrollWidget {
     return source_str.substring (0, from-5) + source_str.substring(to + 1);
   } //}}}
 
-  public void create_tool_button (Gtk.RadioToolButton? group) {}
-  public Gtk.RadioToolButton? get_tool_button () {
+  public void create_tool_button (Gtk.RadioButton? group) {}
+  public Gtk.RadioButton? get_tool_button () {
     return null;
   }
 }

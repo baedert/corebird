@@ -114,6 +114,10 @@
   border-color: alpha(black, 0.2);
 }
 
+.linked.vertical .button {
+  background-image: none;
+}
+
 .text-only-button{
   font-weight: bold;
   background-image: none;
