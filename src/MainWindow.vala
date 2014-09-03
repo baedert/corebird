@@ -246,18 +246,6 @@ public class MainWindow : Gtk.ApplicationWindow {
     dialog.show ();
   }
 
-  /**
-   * Indicates that the caller is doing a long-running operation.
-   */
-  public void start_progress () {
-    main_widget.start_progress ();
-  }
-
-  public void stop_progress () {
-    main_widget.stop_progress ();
-  }
-
-
   public IPage get_page (int page_id) {
     return main_widget.get_page (page_id);
   }

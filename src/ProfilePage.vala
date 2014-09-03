@@ -420,7 +420,6 @@ class ProfilePage : ScrollWidget, IPage {
     if (user_stack.visible_child != tweet_list)
       return;
 
-    main_window.start_progress ();
     tweets_loading = true;
     var call = account.proxy.new_call ();
     call.set_function ("1.1/statuses/user_timeline.json");
@@ -449,7 +448,6 @@ class ProfilePage : ScrollWidget, IPage {
                                               tweet_list, main_window, account);
     lowest_tweet_id = result.min_id;
     tweets_loading = false;
-    main_window.stop_progress ();
   } // }}}
 
   /**

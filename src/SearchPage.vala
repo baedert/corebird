@@ -208,7 +208,6 @@ class SearchPage : IPage, Gtk.Box {
       return;
 
     loading_tweets = true;
-    main_window.start_progress ();
     var call = account.proxy.new_call ();
     call.set_function ("1.1/search/tweets.json");
     call.set_method ("GET");
@@ -250,7 +249,6 @@ class SearchPage : IPage, Gtk.Box {
         tweet_list.add (entry);
       });
       loading_tweets = false;
-      main_window.stop_progress ();
     });
 
   } // }}}

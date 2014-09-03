@@ -189,7 +189,6 @@ class ListStatusesPage : ScrollWidget, IPage {
     if (loading)
       return;
 
-    main_window.start_progress ();
     loading = true;
     message ("Loading older statuses...");
     var call = account.proxy.new_call ();
@@ -223,7 +222,6 @@ class ListStatusesPage : ScrollWidget, IPage {
       lowest_id = res.min_id;
 
     loading = false;
-    main_window.stop_progress ();
   } // }}}
 
   [GtkCallback]
