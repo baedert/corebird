@@ -391,6 +391,9 @@ namespace TweetUtils {
         }
         index ++;
         if (index == tweet_array.length) {
+          if (tweet_list is TweetListBox) {
+            ((TweetListBox)tweet_list).add_progress_entry ();
+          }
           work_array.callback ();
           return false;
         }
