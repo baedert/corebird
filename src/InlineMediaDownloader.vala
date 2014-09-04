@@ -240,6 +240,13 @@ namespace InlineMediaDownloader {
     media.thumbnail = thumb;
     media.loaded = true;
     media.finished_loading ();
+    try {
+      in_stream.close ();
+      thumb_out_stream.close ();
+    } catch (GLib.Error e) {
+      warning (e.message);
+    }
+
   }
 
   private async void load_normal_media (Tweet t,
