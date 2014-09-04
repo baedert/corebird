@@ -146,9 +146,36 @@
                   </packing>
                 </child>
 
+                <!-- Protected -->
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">true</property>
+                    <property name="can_focus">false</property>
+                    <property name="label" translatable="yes">Protected</property>
+                    <style>
+                      <class name="dim-label" />
+                    </style>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">4</property>
+                  </packing>
+                </child>
+
+                <child>
+                  <object class="GtkSwitch" id="protected_switch">
+                    <property name="visible">true</property>
+                    <property name="can_focus">true</property>
+                    <property name="halign">start</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">4</property>
+                  </packing>
+                </child>
 
 
-                 <!-- Description -->
+                <!-- Description -->
                  <child>
                   <object class="GtkFrame">
                     <property name="visible">true</property>
@@ -165,7 +192,7 @@
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">4</property>
+                    <property name="top_attach">5</property>
                     <property name="width">2</property>
                   </packing>
                  </child>
@@ -179,7 +206,7 @@
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">5</property>
+                    <property name="top_attach">6</property>
                     <property name="width">2</property>
                   </packing>
                 </child>
@@ -198,7 +225,7 @@
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">6</property>
+                    <property name="top_attach">7</property>
                   </packing>
                 </child>
 
@@ -212,7 +239,7 @@
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="top_attach">6</property>
+                    <property name="top_attach">7</property>
                   </packing>
                 </child>
 
