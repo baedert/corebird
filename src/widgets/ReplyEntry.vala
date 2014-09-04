@@ -25,7 +25,7 @@ class ReplyEntry : Gtk.Entry {
   public ReplyEntry () {}
 
   static construct {
-    unowned Gtk.BindingSet binding_set = Gtk.BindingSet.by_class (typeof (ReplyEntry).class_ref ());
+    unowned Gtk.BindingSet binding_set = Gtk.BindingSet.by_class ((GLib.ObjectClass)typeof (ReplyEntry).class_ref ());
 
     Gtk.BindingEntry.add_signal (binding_set, Gdk.Key.Escape, 0, "cancelled", 0, null);
   }

@@ -183,12 +183,12 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   }
 
   static construct {
-    unowned Gtk.BindingSet binding_set = Gtk.BindingSet.by_class (typeof (TweetListEntry).class_ref ());
+    unowned Gtk.BindingSet binding_set = Gtk.BindingSet.by_class ((GLib.ObjectClass)typeof (TweetListEntry).class_ref ());
 
-    Gtk.BindingEntry.add_signal (binding_set, Gdk.Key.r, 0,      "reply-tweet", 0, null);
-    Gtk.BindingEntry.add_signal (binding_set, Gdk.Key.d, 0,      "delete-tweet", 0, null);
-    Gtk.BindingEntry.add_signal (binding_set, Gdk.Key.t, 0,      "retweet-tweet", 0, null);
-    Gtk.BindingEntry.add_signal (binding_set, Gdk.Key.f, 0,      "favorite-tweet", 0, null);
+    Gtk.BindingEntry.add_signal (binding_set, Gdk.Key.r, 0, "reply-tweet", 0, null);
+    Gtk.BindingEntry.add_signal (binding_set, Gdk.Key.d, 0, "delete-tweet", 0, null);
+    Gtk.BindingEntry.add_signal (binding_set, Gdk.Key.t, 0, "retweet-tweet", 0, null);
+    Gtk.BindingEntry.add_signal (binding_set, Gdk.Key.f, 0, "favorite-tweet", 0, null);
   }
 
   [GtkCallback]
