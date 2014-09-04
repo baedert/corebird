@@ -317,7 +317,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     // XXX Keep this in sync with the version below
     if (time_delta_label.get_allocated_width () > 1 && conversation_image.get_allocated_width () > 1) {
       hover_box.margin_top = (time_delta_label.get_allocated_height () / 2);
-      hover_box.margin_end = time_delta_label.get_allocated_width () + 6;
+      hover_box.margin_end = time_delta_label.get_allocated_width () + 4;
       if (tweet.reply_id != 0) {
         conversation_image.margin_top = (time_delta_label.get_allocated_height () / 2) - 6;
         hover_box.margin_end += conversation_image.get_allocated_width () + 4;
@@ -329,7 +329,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     ulong id = 0;
     id = time_delta_label.size_allocate.connect (() => {
       hover_box.margin_top = (time_delta_label.get_allocated_height () / 2);
-      hover_box.margin_end += time_delta_label.get_allocated_width () + 6;
+      hover_box.margin_end += time_delta_label.get_allocated_width () + 4;
       if (tweet.reply_id != 0) {
         conversation_image.margin_top = (time_delta_label.get_allocated_height () / 2) - 6;
       }

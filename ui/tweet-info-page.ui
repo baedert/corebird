@@ -194,7 +194,7 @@
               <object class="GtkLabel" id="time_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="margin_start">3</property>
+                <property name="margin_start">10</property>
                 <property name="xalign">0</property>
                 <property name="valign">baseline</property>
                 <property name="use_markup">True</property>
@@ -212,7 +212,7 @@
             <child>
               <object class="GtkLabel" id="source_label">
                 <property name="can_focus">False</property>
-                <property name="margin_end">5</property>
+                <property name="margin_end">10</property>
                 <property name="valign">baseline</property>
                 <property name="use_markup">True</property>
                 <property name="halign">end</property>
@@ -232,7 +232,7 @@
               <object class="GtkLabel" id="rt_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="margin_start">4</property>
+                <property name="margin_start">10</property>
                 <property name="margin_end">8</property>
                 <property name="xalign">0</property>
                 <property name="use_markup">True</property>
@@ -367,7 +367,7 @@
                 <property name="can_focus">True</property>
                 <property name="valign">baseline</property>
                 <property name="receives_default">True</property>
-                <property name="margin_end">6</property>
+                <property name="margin_end">10</property>
                 <property name="relief">none</property>
                 <property name="popup">more_menu</property>
                 <child>
@@ -400,6 +400,8 @@
               <object class="MultiMediaWidget" id="mm_widget">
                 <property name="visible">true</property>
                 <property name="margin_top">6</property>
+                <property name="margin_start">10</property>
+                <property name="margin_end">10</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>

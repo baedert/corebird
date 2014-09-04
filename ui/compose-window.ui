@@ -53,7 +53,7 @@
                     <property name="halign">start</property>
                     <property name="valign">start</property>
                     <property name="margin_start">10</property>
-                    <property name="margin_top">6</property>
+                    <property name="margin_top">10</property>
                     <property name="margin_bottom">6</property>
                   </object>
                   <packing>
@@ -83,9 +83,9 @@
               <object class="GtkScrolledWindow" id="scrolledwindow1">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="margin_start">12</property>
-                <property name="margin_end">6</property>
-                <property name="margin_top">6</property>
+                <property name="margin_start">10</property>
+                <property name="margin_end">10</property>
+                <property name="margin_top">10</property>
                 <property name="margin_bottom">6</property>
                 <property name="shadow_type">in</property>
                 <child>
@@ -126,10 +126,10 @@
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="halign">start</property>
-                <property name="valign">end</property>
-                <property name="margin_start">5</property>
-                <property name="margin_top">5</property>
-                <property name="margin_bottom">5</property>
+                <property name="valign">baseline</property>
+                <property name="margin_start">10</property>
+                <property name="margin_top">6</property>
+                <property name="margin_bottom">6</property>
                 <property name="always_show_image">True</property>
                 <property name="tooltip_text" translatable="yes">Attach Image</property>
                 <signal name="clicked" handler="add_image_clicked" swapped="no"/>
@@ -164,7 +164,7 @@
               <object class="GtkButtonBox" id="buttonbox2">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="spacing">9</property>
+                <property name="spacing">10</property>
                 <property name="layout_style">end</property>
                 <child>
                   <object class="GtkButton" id="cancel_button">
@@ -172,7 +172,8 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="margin_bottom">5</property>
+                    <property name="margin_bottom">6</property>
+                    <property name="valign">baseline</property>
                     <signal name="clicked" handler="cancel_clicked" swapped="no"/>
                   </object>
                   <packing>
@@ -188,8 +189,9 @@
                     <property name="sensitive">False</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="margin_end">5</property>
-                    <property name="margin_bottom">5</property>
+                    <property name="valign">baseline</property>
+                    <property name="margin_end">10</property>
+                    <property name="margin_bottom">6</property>
                     <style>
                       <class name="suggested-action"/>
                     </style>
@@ -217,7 +219,7 @@
                 <property name="margin_end">12</property>
                 <property name="margin_top">5</property>
                 <property name="margin_bottom">5</property>
-                <property name="label"></property>
+                <property name="valign">baseline</property>
                 <accessibility>
                   <relation type="label-for" target="tweet_text"/>
                 </accessibility>
