@@ -7,7 +7,7 @@
     <property name="page_increment">1</property>
   </object>
   <object class="GtkStackSwitcher" id="custom_title">
-    <property name="stack">stack</property>
+    <property name="stack">main_stack</property>
   </object>
   <template class="SettingsDialog" parent="GtkWindow">
     <property name="default_width">500</property>
@@ -22,7 +22,7 @@
       </object>
     </child>
     <child>
-      <object class="GtkStack" id="stack">
+      <object class="GtkStack" id="main_stack">
         <!-- Accounts page -->
         <child>
           <object class="GtkGrid" id="accounts_grid">
@@ -124,6 +124,7 @@
           </object>
           <packing>
             <property name="title" translatable="yes">Accounts</property>
+            <property name="name">accounts</property>
           </packing>
         </child>
 
@@ -283,6 +284,7 @@
         </object>
         <packing>
           <property name="title" translatable="yes">Interface</property>
+          <property name="name">interface</property>
         </packing>
       </child>
 
@@ -426,6 +428,7 @@
           </object>
           <packing>
             <property name="title" translatable="yes">Notifications</property>
+            <property name="name">notifications</property>
           </packing>
         </child>
       </object>

@@ -20,6 +20,8 @@ class SettingsDialog : Gtk.Window {
   private static const string DUMMY_SCREEN_NAME = "<Unnamed>";
   private MainWindow main_window;
   [GtkChild]
+  private Gtk.Stack main_stack;
+  [GtkChild]
   private Gtk.ListBox account_list;
   [GtkChild]
   private Gtk.ToolButton add_account_button;
@@ -74,6 +76,7 @@ class SettingsDialog : Gtk.Window {
     if (accs.length() > 0)
       account_list.select_row (account_list.get_row_at_index (0));
 
+    add_accels ();
     load_geometry ();
     show_all ();
   }
@@ -235,5 +238,20 @@ class SettingsDialog : Gtk.Window {
     builder.add_value (new GLib.Variant.int32(w));
     builder.add_value (new GLib.Variant.int32(h));
     Settings.get ().set_value ("settings-geometry", builder.end ());
+  }
+
+  private void add_accels () {
+    Gtk.AccelGroup ag = new Gtk.AccelGroup();
+
+    ag.connect (Gdk.Key.Escape, 0, Gtk.AccelFlags.LOCKED,
+        () => {this.destroy (); return true;});
+    ag.connect (Gdk.Key.@1, Gdk.ModifierType.MOD1_MASK, Gtk.AccelFlags.LOCKED,
+        () => {main_stack.visible_child_name = "accounts"; return true;});
+    ag.connect (Gdk.Key.@2, Gdk.ModifierType.MOD1_MASK, Gtk.AccelFlags.LOCKED,
+        () => {main_stack.visible_child_name = "interface"; return true;});
+    ag.connect (Gdk.Key.@3, Gdk.ModifierType.MOD1_MASK, Gtk.AccelFlags.LOCKED,
+        () => {main_stack.visible_child_name = "notifications"; return true;});
+
+    this.add_accel_group(ag);
   }
 }
