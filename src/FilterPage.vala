@@ -53,9 +53,6 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
 
   public void on_join (int page_id, va_list arg_list) { // {{{
 
-
-
-
     if (!filters_loaded) {
       foreach (Filter f in account.filters) {
         var entry = new FilterListEntry (f, account);
