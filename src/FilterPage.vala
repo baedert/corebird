@@ -28,7 +28,8 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
   private Gtk.Label user_list_label;
   [GtkChild]
   private Gtk.Frame user_list_frame;
-  private bool inited = false;
+  private bool filters_loaded = false;
+  private bool users_loaded = false;
 
   public FilterPage (int id) {
     this.id = id;
@@ -51,13 +52,20 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
   }
 
   public void on_join (int page_id, va_list arg_list) { // {{{
-    if (inited)
-      return;
 
-    foreach (Filter f in account.filters) {
-      var entry = new FilterListEntry (f, account);
-      filter_list.add (entry);
+
+
+
+    if (!filters_loaded) {
+      foreach (Filter f in account.filters) {
+        var entry = new FilterListEntry (f, account);
+        filter_list.add (entry);
+      }
+      filters_loaded = true;
     }
+
+    if (!GLib.NetworkMonitor.get_default ().get_network_available ())
+      return;
 
     var call = account.proxy.new_call ();
     call.set_method ("GET");
@@ -93,9 +101,9 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
         user_list_label.show ();
       }
     });
+    users_loaded = true;
 
 
-    inited = true;
   } // }}}
 
   /**
