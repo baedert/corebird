@@ -87,6 +87,10 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 
 
   public void on_join (int page_id, va_list arg_list) {
+    if (!GLib.NetworkMonitor.get_default ().get_network_available ())
+      return;
+
+
     if (!initialized) {
       load_newest ();
       initialized = true;
