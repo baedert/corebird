@@ -71,7 +71,7 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
     call.set_method ("GET");
     call.set_function ("1.1/blocks/list.json");
     call.add_param ("include_entities", "false");
-    call.add_param ("skip_status", "false");
+    call.add_param ("skip_status", "true");
     call.invoke_async.begin (null, (o, res) => {
       try {
         call.invoke_async.end (res);
