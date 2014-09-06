@@ -24,11 +24,10 @@ public class BadgeRadioToolButton : Gtk.RadioButton {
     GLib.Object (group: group);
     this.get_style_context ().add_class ("image-button");
     var i = new Gtk.Image.from_icon_name (icon_name, Gtk.IconSize.BUTTON);
-    i.pixel_size = 24;
-    //this.add (new Gtk.Image.from_icon_name (icon_name, Gtk.IconSize.BUTTON));
     this.add (i);
     this.set_mode (false);
-    //this.set_relief (Gtk.ReliefStyle.NONE);
+    this.margin_start = 6;
+    this.margin_end = 6;
   }
 
   public override bool draw (Cairo.Context c){
@@ -39,9 +38,11 @@ public class BadgeRadioToolButton : Gtk.RadioButton {
 
 
     int width = get_allocated_width ();
+    c.save ();
     context.add_class ("badge");
     context.render_background (c, width - BADGE_SIZE, 0, BADGE_SIZE, BADGE_SIZE);
     context.render_frame (c, width - BADGE_SIZE, 0, BADGE_SIZE, BADGE_SIZE);
+    c.restore ();
     return false;
   }
 }

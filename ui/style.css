@@ -13,7 +13,7 @@
 }
 
 .account-button {
-  padding: 2px;
+  padding: 2px 4px;
 }
 
 .sidebar {
@@ -112,10 +112,6 @@
 
 .tweet {
   border-color: alpha(black, 0.2);
-}
-
-.linked.vertical .button {
-  background-image: none;
 }
 
 .text-only-button{
