@@ -206,6 +206,8 @@ public class Corebird : Gtk.Application {
     if (startup_accounts.length == 1 && startup_accounts[0] == "")
       startup_accounts.resize (0);
 
+
+
     if (startup_accounts.length == 0) {
       uint n_accounts = Account.list_accounts ().length ();
       if (n_accounts == 1) {
@@ -221,8 +223,26 @@ public class Corebird : Gtk.Application {
         add_window_for_screen_name (Account.list_accounts ().nth_data (0).screen_name);
       }
     } else {
+      bool opened_window = false;
       foreach (string account in startup_accounts) {
-        add_window_for_screen_name (account);
+        if (!is_window_open_for_screen_name (account, null)) {
+          opened_window = true;
+          add_window_for_screen_name (account);
+        }
+      }
+      /* If we did not open any window at all since all windows for every account
+         in the startups-account array were already open, just open a new windwo with a null account */
+      if (!opened_window) {
+        message ("No window opened");
+        foreach (Gtk.Window w in this.get_windows ())
+          if (((MainWindow)w).account.screen_name == Account.DUMMY) {
+            message ("aaa");
+            return;
+          }
+
+        var m = new MainWindow (this, null);
+        add_window (m);
+        m.show_all ();
       }
     }
   } // }}}
