@@ -33,7 +33,7 @@ public class ProgressEntry : Gtk.ListBoxRow, ITwitterItem {
     l.set_halign (Gtk.Align.START);
     l.hexpand = true;
 
-    spinner.set_size_request (32, 32);
+    spinner.set_size_request (16, 16);
     spinner.set_halign (Gtk.Align.END);
     spinner.set_valign (Gtk.Align.CENTER);
     spinner.margin_top = 12;
