@@ -24,14 +24,14 @@ public class TweetListBox : Gtk.ListBox {
     if (show_placeholder) {
       add_placeholder ();
     }
-    progress_entry = new ProgressEntry ();
-    this.get_style_context ().add_class ("stream");
-    this.set_selection_mode (Gtk.SelectionMode.NONE);
   }
 
 
   construct {
     add_placeholder ();
+    progress_entry = new ProgressEntry ();
+    this.get_style_context ().add_class ("stream");
+    this.set_selection_mode (Gtk.SelectionMode.NONE);
   }
 
 
