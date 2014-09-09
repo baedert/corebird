@@ -137,6 +137,7 @@ class ProfilePage : ScrollWidget, IPage {
                                            TweetInfoPage.BY_INSTANCE,
                                            ((TweetListEntry)row).tweet);
     });
+    tweet_list.set_sort_func (ITwitterItem.sort_func);
 
     user_lists.hide_user_list_entry ();
     page_change_signal = user_stack.notify["visible-child"].connect (() => {
