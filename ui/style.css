@@ -113,7 +113,7 @@
 
 
 .tweet {
-  border-bottom: solid 1px #ddd;
+  border-bottom: solid 1px alpha (@borders, 0.4);
 }
 
 .text-only-button{
