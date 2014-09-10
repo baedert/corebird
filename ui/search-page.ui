@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 -->
 <interface>
-  <requires lib="gtk+" version="3.10"/>
-  <requires lib="corebird" version="0.0"/>
   <template class="SearchPage" parent="GtkBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -15,8 +12,8 @@
           <object class="GtkSearchEntry" id="search_entry">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="margin_start">5</property>
-            <property name="margin_top">5</property>
+            <property name="margin_start">6</property>
+            <property name="margin_top">6</property>
             <property name="hexpand">True</property>
             <property name="primary_icon_name">edit-find-symbolic</property>
             <property name="primary_icon_activatable">False</property>
@@ -35,9 +32,9 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <property name="margin_start">5</property>
-            <property name="margin_end">5</property>
-            <property name="margin_top">4</property>
+            <property name="margin_start">6</property>
+            <property name="margin_end">6</property>
+            <property name="margin_top">6</property>
             <style>
               <class name="suggested-action"/>
             </style>
@@ -87,7 +84,7 @@
   <object class="GtkLabel" id="tweets_header">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="margin_start">5</property>
+    <property name="margin_start">6</property>
     <property name="hexpand">True</property>
     <property name="xalign">0</property>
     <property name="label" translatable="yes">Tweets</property>
@@ -99,7 +96,7 @@
   <object class="GtkLabel" id="users_header">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="margin_start">5</property>
+    <property name="margin_start">6</property>
     <property name="hexpand">True</property>
     <property name="xalign">0</property>
     <property name="label" translatable="yes">Users</property>
