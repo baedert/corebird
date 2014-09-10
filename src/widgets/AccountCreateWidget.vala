@@ -133,7 +133,8 @@ class AccountCreateWidget : Gtk.Box {
 
   private void pin_changed_cb () {
     string text = pin_entry.get_text ();
-    confirm_button.sensitive = text.length > 0;
+    bool confirm_possible = text.length > 0 && acc.proxy != null;
+    confirm_button.sensitive = confirm_possible;
   }
 
   [GtkCallback]
