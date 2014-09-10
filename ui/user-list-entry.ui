@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk+" version="3.10"/>
   <object class="GtkMenu" id="menu1">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -29,8 +28,7 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="valign">center</property>
-            <property name="margin_end">10</property>
-            <property name="margin_start">4</property>
+            <property name="margin_end">6</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -47,9 +45,9 @@
             <property name="margin_bottom">1</property>
             <property name="yalign">1</property>
             <property name="label">User name</property>
-            <style>
-              <class name="list-username"/>
-            </style>
+            <attributes>
+              <attribute name="weight" value="bold" />
+            </attributes>
           </object>
           <packing>
             <property name="left_attach">1</property>
