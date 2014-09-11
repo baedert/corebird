@@ -72,7 +72,7 @@
                 </child>
 
                 <child>
-                  <object class="GtkEntry" id="screen_name_entry">
+                  <object class="GtkLabel" id="screen_name_label">
                     <property name="visible">true</property>
                     <property name="can_focus">true</property>
                     <property name="halign">start</property>
