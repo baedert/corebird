@@ -72,7 +72,7 @@
                 </child>
 
                 <child>
-                  <object class="GtkEntry" id="screen_name_entry">
+                  <object class="GtkLabel" id="screen_name_label">
                     <property name="visible">true</property>
                     <property name="can_focus">true</property>
                     <property name="halign">start</property>
@@ -145,35 +145,6 @@
                     <property name="top_attach">3</property>
                   </packing>
                 </child>
-
-                <!-- Protected -->
-                <child>
-                  <object class="GtkLabel">
-                    <property name="visible">true</property>
-                    <property name="can_focus">false</property>
-                    <property name="label" translatable="yes">Protected</property>
-                    <style>
-                      <class name="dim-label" />
-                    </style>
-                  </object>
-                  <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">4</property>
-                  </packing>
-                </child>
-
-                <child>
-                  <object class="GtkSwitch" id="protected_switch">
-                    <property name="visible">true</property>
-                    <property name="can_focus">true</property>
-                    <property name="halign">start</property>
-                  </object>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">4</property>
-                  </packing>
-                </child>
-
 
                 <!-- Description -->
                  <child>
