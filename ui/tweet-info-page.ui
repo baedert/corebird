@@ -72,10 +72,10 @@
                 <property name="height_request">48</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="margin_start">10</property>
+                <property name="margin_start">8</property>
                 <property name="margin_top">6</property>
                 <property name="margin_bottom">6</property>
-                <property name="margin_end">10</property>
+                <property name="margin_end">6</property>
                 <property name="halign">start</property>
                 <property name="valign">center</property>
               </object>
@@ -158,11 +158,10 @@
 
             <child>
               <object class="GtkLabel" id="text_label">
-                <!--<property name="height_request">100</property>-->
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="margin_start">0</property>
-                <property name="margin_end">0</property>
+                <property name="margin_start">8</property>
+                <property name="margin_end">6</property>
                 <property name="margin_top">2</property>
                 <property name="margin_bottom">12</property>
                 <property name="hexpand">True</property>
@@ -178,10 +177,6 @@
                   <attribute name="weight" value="bold" />
                   <attribute name="scale" value="1.6" />
                 </attributes>
-                <style>
-                  <class name="view" />
-                  <class name="tweet-large" />
-                </style>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -194,7 +189,7 @@
               <object class="GtkLabel" id="time_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="margin_start">10</property>
+                <property name="margin_start">8</property>
                 <property name="xalign">0</property>
                 <property name="valign">baseline</property>
                 <property name="use_markup">True</property>
@@ -232,7 +227,7 @@
               <object class="GtkLabel" id="rt_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="margin_start">10</property>
+                <property name="margin_start">8</property>
                 <property name="margin_end">8</property>
                 <property name="xalign">0</property>
                 <property name="use_markup">True</property>
