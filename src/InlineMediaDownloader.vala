@@ -41,6 +41,7 @@ namespace InlineMediaDownloader {
            url.has_prefix ("http://i.imgur.com") ||
            url.has_prefix ("http://d.pr/i/") ||
            url.has_prefix ("http://ow.ly/i/") ||
+           url.has_prefix ("http://www.flickr.com/photos/") ||
 #if VIDEO
            url.has_prefix ("https://vine.co/v/") ||
            url.has_suffix ("/photo/1") ||
@@ -55,7 +56,16 @@ namespace InlineMediaDownloader {
                                     string regex_str1, int match_index1) {
     var msg = new Soup.Message ("GET", media.url);
     session.queue_message (msg, (_s, _msg) => {
-      string back = (string)_msg.response_body.data;
+      string? back = (string)_msg.response_body.data;
+      if (msg.status_code != Soup.Status.OK)
+        warning ("Message status: %s", msg.status_code.to_string ());
+
+      if (back == null) {
+        warning ("Url '%s' returned null", media.url);
+        media.invalid = true;
+        media.finished_loading ();
+        return;
+      }
       try {
         var regex = new GLib.Regex (regex_str1, 0);
         MatchInfo info;
@@ -147,10 +157,10 @@ namespace InlineMediaDownloader {
     /* If we get to this point, the image was not cached on disk and we
        *really* need to download it. */
     string url = media.url;
-    if(url.has_prefix("http://instagr.am") ||
-       url.has_prefix("http://instagram.com/p/")) {
-      yield load_real_url (t, media, "<meta property=\"og:image\" content=\"(.*?)\"", 1);
-    } else if (url.has_prefix("http://ow.ly/i/")) {
+    if (url.has_prefix ("http://instagr.am") ||
+        url.has_prefix ("http://instagram.com/p/") ||
+        url.has_prefix ("http://ow.ly/i/") ||
+        url.has_prefix ("http://www.flickr.com/photos/")) {
       yield load_real_url (t, media, "<meta property=\"og:image\" content=\"(.*?)\"", 1);
     } else if (url.has_prefix("http://twitpic.com/")) {
       yield load_real_url (t, media,
@@ -190,9 +200,10 @@ namespace InlineMediaDownloader {
       }
 
       try {
-        var ms = new MemoryInputStream.from_data(_msg.response_body.data, null);
+        var ms = new MemoryInputStream.from_data (_msg.response_body.data, null);
         media_out_stream.write_all (_msg.response_body.data, null, null);
-        if(ext == "gif"){
+        media_out_stream.close ();
+        if (ext == "gif") {
           load_animation.begin (t, ms, thumb_out_stream, media, () => {
             callback ();
           });
@@ -229,6 +240,13 @@ namespace InlineMediaDownloader {
     media.thumbnail = thumb;
     media.loaded = true;
     media.finished_loading ();
+    try {
+      in_stream.close ();
+      thumb_out_stream.close ();
+    } catch (GLib.Error e) {
+      warning (e.message);
+    }
+
   }
 
   private async void load_normal_media (Tweet t,
@@ -249,6 +267,12 @@ namespace InlineMediaDownloader {
     media.thumbnail = thumb;
     media.loaded = true;
     media.finished_loading ();
+    try {
+      in_stream.close ();
+      thumb_out_stream.close ();
+    } catch (GLib.Error e) {
+      warning (e.message);
+    }
   }
 
   public string get_media_path (Tweet t, Media media) {
