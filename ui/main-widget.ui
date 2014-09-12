@@ -21,6 +21,16 @@
           </child>
         </object>
       </child>
+
+      <child>
+        <object class="GtkSeparator">
+          <property name="visible">true</property>
+          <property name="can_focus">false</property>
+          <property name="orientation">vertical</property>
+          <property name="vexpand">true</property>
+        </object>
+      </child>
+
       <child>
         <object class="GtkStack" id="stack">
           <property name="visible">True</property>
@@ -29,7 +39,6 @@
         <packing>
           <property name="expand">False</property>
           <property name="fill">True</property>
-          <property name="position">1</property>
         </packing>
       </child>
   </template>
