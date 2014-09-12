@@ -77,7 +77,7 @@
                 <property name="can_focus">True</property>
                 <property name="relief">none</property>
                 <property name="valign">center</property>
-                <property name="margin_end">6</property>
+                <property name="margin">6</property>
                 <signal name="clicked" handler="more_button_clicked_cb" swapped="no" />
                 <style>
                   <class name="image-button" />
