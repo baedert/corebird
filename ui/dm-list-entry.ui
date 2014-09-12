@@ -3,6 +3,9 @@
   <template class="DMListEntry" parent="GtkListBoxRow">
     <property name="visible">True</property>
     <property name="can_focus">True</property>
+    <style>
+      <class name="tweet" />
+    </style>
 
     <child>
       <object class="GtkGrid" id="grid">
