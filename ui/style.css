@@ -26,12 +26,6 @@
   padding: 4px;
 }
 
-.tweet-large {
-  padding: 6px;
-  border-top: 1px solid @borders;
-  border-bottom: 1px solid @borders;
-}
-
 .inline-media {
   background: none;
   border-radius: 0px;
