@@ -254,7 +254,7 @@ class SearchPage : IPage, Gtk.Box {
   } // }}}
 
   public void create_tool_button (Gtk.RadioButton? group){
-    tool_button = new BadgeRadioToolButton (group, "corebird-search-symbolic");
+    tool_button = new BadgeRadioToolButton (group, "edit-find-symbolic");
     tool_button.tooltip_text = _("Search");
   }
 

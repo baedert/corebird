@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk+" version="3.10"/>
 
   <object class="GtkSizeGroup" id="size_group">
     <property name="ignore_hidden">False</property>
@@ -32,14 +31,14 @@
                 <property name="can_focus">False</property>
                 <property name="halign">start</property>
                 <property name="valign">end</property>
-                <property name="margin_start">5</property>
-                <property name="margin_top">4</property>
+                <property name="margin_start">6</property>
+                <property name="margin_top">3</property>
                 <property name="margin_bottom">3</property>
                 <property name="ellipsize">middle</property>
                 <property name="hexpand">True</property>
-                <style>
-                  <class name="list-username"/>
-                </style>
+                <attributes>
+                  <attribute name="weight" value="bold" />
+                </attributes>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -55,7 +54,7 @@
                 <property name="halign">start</property>
                 <property name="valign">start</property>
                 <property name="xalign">0</property>
-                <property name="margin_start">5</property>
+                <property name="margin_start">6</property>
                 <property name="margin_top">3</property>
                 <property name="margin_bottom">4</property>
                 <property name="ellipsize">end</property>
@@ -76,6 +75,7 @@
                 <property name="can_focus">True</property>
                 <property name="relief">none</property>
                 <property name="valign">center</property>
+                <property name="margin">6</property>
                 <signal name="clicked" handler="more_button_clicked_cb" swapped="no" />
                 <style>
                   <class name="image-button" />

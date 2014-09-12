@@ -386,7 +386,7 @@ class TweetInfoPage : IPage , ScrollWidget {
       retweet_button.hide ();
     } else {
       set_follow_button_state (following);
-      follow_button.show ();
+      //follow_button.show ();
       delete_menu_item.hide ();
       retweet_button.show ();
     }

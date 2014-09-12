@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk+" version="3.10"/>
   <object class="GtkAdjustment" id="adjustment1">
     <property name="upper">20</property>
     <property name="value">2</property>
@@ -8,7 +7,7 @@
     <property name="page_increment">1</property>
   </object>
   <object class="GtkStackSwitcher" id="custom_title">
-    <property name="stack">stack</property>
+    <property name="stack">main_stack</property>
   </object>
   <template class="SettingsDialog" parent="GtkWindow">
     <property name="default_width">500</property>
@@ -26,68 +25,15 @@
       </object>
     </child>
     <child>
-      <object class="GtkStack" id="stack">
-
+      <object class="GtkStack" id="main_stack">
         <!-- Interface page -->
         <child>
           <object class="GtkGrid" id="interface_grid">
           <property name="visible">True</property>
           <property name="can_focus">False</property>
           <property name="border_width">10</property>
-          <property name="row_spacing">3</property>
-          <property name="column_spacing">8</property>
-          <child>
-            <object class="GtkLabel" id="main_window_category_label">
-              <property name="visible">True</property>
-              <property name="can_focus">False</property>
-              <property name="halign">start</property>
-              <property name="label" translatable="yes">Main Window</property>
-              <attributes>
-                <attribute name="weight" value="bold"/>
-              </attributes>
-            </object>
-            <packing>
-              <property name="left_attach">0</property>
-              <property name="top_attach">0</property>
-              <property name="width">4</property>
-              <property name="height">1</property>
-            </packing>
-          </child>
-          <child>
-            <object class="GtkLabel" id="dark_theme_label">
-              <property name="visible">True</property>
-              <property name="can_focus">False</property>
-              <property name="halign">end</property>
-              <property name="hexpand">True</property>
-              <property name="label" translatable="yes">Use Dark Theme:</property>
-              <accessibility>
-                <relation type="label-for" target="dark_theme_switch"/>
-              </accessibility>
-            </object>
-            <packing>
-              <property name="left_attach">0</property>
-              <property name="top_attach">1</property>
-              <property name="width">2</property>
-              <property name="height">1</property>
-            </packing>
-          </child>
-          <child>
-            <object class="GtkSwitch" id="dark_theme_switch">
-              <property name="visible">True</property>
-              <property name="can_focus">True</property>
-              <property name="halign">start</property>
-              <property name="hexpand">True</property>
-              <accessibility>
-                <relation type="labelled-by" target="dark_theme_label"/>
-              </accessibility>
-            </object>
-            <packing>
-              <property name="left_attach">2</property>
-              <property name="top_attach">1</property>
-              <property name="width">2</property>
-              <property name="height">1</property>
-            </packing>
-          </child>
+          <property name="row_spacing">6</property>
+          <property name="column_spacing">12</property>
 
           <child>
             <object class="GtkLabel" id="timeline_category_label">
@@ -106,7 +52,6 @@
               <property name="height">1</property>
             </packing>
           </child>
-
 
           <child>
             <object class="GtkLabel" id="round_avatar_label">
@@ -236,6 +181,7 @@
         </object>
         <packing>
           <property name="title" translatable="yes">Interface</property>
+          <property name="name">interface</property>
         </packing>
       </child>
 
@@ -246,8 +192,8 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="border_width">10</property>
-            <property name="row_spacing">3</property>
-            <property name="column_spacing">8</property>
+            <property name="row_spacing">6</property>
+            <property name="column_spacing">12</property>
             <property name="column_homogeneous">True</property>
             <child>
               <object class="GtkLabel" id="label6">
@@ -378,6 +324,7 @@
           </object>
           <packing>
             <property name="title" translatable="yes">Notifications</property>
+            <property name="name">notifications</property>
           </packing>
         </child>
       </object>

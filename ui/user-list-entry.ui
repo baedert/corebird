@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk+" version="3.10"/>
   <template class="UserListEntry" parent="GtkListBoxRow">
     <property name="visible">True</property>
     <property name="can_focus">True</property>
@@ -9,6 +8,7 @@
       <object class="GtkGrid" id="grid">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="margin">6</property>
 
         <child>
           <object class="AvatarWidget" id="avatar_image">
@@ -17,7 +17,7 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="valign">center</property>
-            <property name="margin_end">7</property>
+            <property name="margin_end">8</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -34,9 +34,9 @@
             <property name="margin_bottom">1</property>
             <property name="margin_end">20</property>
             <property name="yalign">1</property>
-            <style>
-              <class name="list-username"/>
-            </style>
+            <attributes>
+              <attribute name="weight" value="bold" />
+            </attributes>
           </object>
           <packing>
             <property name="left_attach">1</property>

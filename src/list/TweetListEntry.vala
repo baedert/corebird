@@ -203,7 +203,6 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
     if (buttons_visible) {
       hover_box.margin_end = 1;
-      hover_box.margin_top = (time_delta_label.get_allocated_height () / 2) - 6;
       hover_box.override_background_color (Gtk.StateFlags.NORMAL,
                                            ct.get_background_color (Gtk.StateFlags.PRELIGHT));
       retweet_button.visible = (account.id != tweet.user_id);
@@ -323,11 +322,10 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
     // XXX Keep this in sync with the version below
     if (time_delta_label.get_allocated_width () > 1 && conversation_image.get_allocated_width () > 1) {
-      hover_box.margin_top = (time_delta_label.get_allocated_height () / 2) - 6;
-      hover_box.margin_end = time_delta_label.get_allocated_width () + 6;
+      hover_box.margin_end = time_delta_label.get_allocated_width ();
       if (tweet.reply_id != 0) {
         conversation_image.margin_top = (time_delta_label.get_allocated_height () / 2) - 6;
-        hover_box.margin_end += conversation_image.get_allocated_width () + 4;
+        hover_box.margin_end += conversation_image.get_allocated_width ();
       }
       return;
     }
@@ -335,8 +333,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
     ulong id = 0;
     id = time_delta_label.size_allocate.connect (() => {
-      hover_box.margin_top = (time_delta_label.get_allocated_height () / 2) - 6;
-      hover_box.margin_end += time_delta_label.get_allocated_width () + 6;
+      hover_box.margin_end += time_delta_label.get_allocated_width ();
       if (tweet.reply_id != 0) {
         conversation_image.margin_top = (time_delta_label.get_allocated_height () / 2) - 6;
       }
@@ -348,7 +345,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
     ulong id2 = 0;
     id2 = conversation_image.size_allocate.connect (() => {
-      hover_box.margin_end += conversation_image.get_allocated_width () + 4;
+      hover_box.margin_end += conversation_image.get_allocated_width ();
       conversation_image.disconnect (id2);
     });
 
@@ -371,25 +368,6 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
                  tweet.is_retweet ? tweet.rt_created_at : tweet.created_at);
     time_delta_label.label = Utils.get_time_delta (then, cur_time);
     return (int)(cur_time.difference (then) / 1000.0 / 1000.0);
-  } //}}}
-
-  public override bool draw (Cairo.Context c) { //{{{
-    var style = this.get_style_context();
-    int w = get_allocated_width();
-    int h = get_allocated_height();
-    style.render_background(c, 0, 0, w, h);
-
-    var border_color = style.get_border_color(get_state_flags());
-    c.set_source_rgba(border_color.red, border_color.green, border_color.blue,
-                      border_color.alpha);
-
-    base.draw(c);
-    // The line here is 50% of the width
-    c.move_to(w*0.25, h);
-    c.line_to(w*0.75, h);
-    c.stroke();
-
-    return false;
   } //}}}
 
 }

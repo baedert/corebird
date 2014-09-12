@@ -24,13 +24,13 @@ class SettingsDialog : Gtk.Window {
   [GtkChild]
   private Gtk.Switch on_new_dms_switch;
   [GtkChild]
-  private Gtk.Switch dark_theme_switch;
-  [GtkChild]
   private Gtk.ComboBoxText on_new_tweets_combobox;
   [GtkChild]
   private Gtk.Switch auto_scroll_on_new_tweets_switch;
   [GtkChild]
   private Gtk.SpinButton max_media_size_spin_button;
+  [GtkChild]
+  private Gtk.Stack main_stack;
 
   public SettingsDialog (Corebird application) {
     this.application = application;
@@ -47,11 +47,6 @@ class SettingsDialog : Gtk.Window {
                           SettingsBindFlags.DEFAULT);
 
     // Interface page
-    Settings.get ().bind ("use-dark-theme", dark_theme_switch, "active",
-                          SettingsBindFlags.DEFAULT);
-    dark_theme_switch.notify["active"].connect (() => {
-      Gtk.Settings.get_default ().gtk_application_prefer_dark_theme = dark_theme_switch.active;
-    });
     auto_scroll_on_new_tweets_switch.notify["active"].connect (() => {
       on_new_tweets_combobox.sensitive = !auto_scroll_on_new_tweets_switch.active;
     });
@@ -60,6 +55,7 @@ class SettingsDialog : Gtk.Window {
     Settings.get ().bind ("max-media-size", max_media_size_spin_button, "value",
                           SettingsBindFlags.DEFAULT);
 
+    add_accels ();
     load_geometry ();
     show_all ();
   }
@@ -101,5 +97,20 @@ class SettingsDialog : Gtk.Window {
     builder.add_value (new GLib.Variant.int32(w));
     builder.add_value (new GLib.Variant.int32(h));
     Settings.get ().set_value ("settings-geometry", builder.end ());
+  }
+
+  private void add_accels () {
+    Gtk.AccelGroup ag = new Gtk.AccelGroup();
+
+    ag.connect (Gdk.Key.Escape, 0, Gtk.AccelFlags.LOCKED,
+        () => {this.destroy (); return true;});
+    ag.connect (Gdk.Key.@1, Gdk.ModifierType.MOD1_MASK, Gtk.AccelFlags.LOCKED,
+        () => {main_stack.visible_child_name = "accounts"; return true;});
+    ag.connect (Gdk.Key.@2, Gdk.ModifierType.MOD1_MASK, Gtk.AccelFlags.LOCKED,
+        () => {main_stack.visible_child_name = "interface"; return true;});
+    ag.connect (Gdk.Key.@3, Gdk.ModifierType.MOD1_MASK, Gtk.AccelFlags.LOCKED,
+        () => {main_stack.visible_child_name = "notifications"; return true;});
+
+    this.add_accel_group(ag);
   }
 }

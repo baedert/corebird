@@ -87,6 +87,10 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 
 
   public void on_join (int page_id, va_list arg_list) {
+    if (!GLib.NetworkMonitor.get_default ().get_network_available ())
+      return;
+
+
     if (!initialized) {
       load_newest ();
       initialized = true;
@@ -374,7 +378,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   }
 
   public void create_tool_button(Gtk.RadioButton? group) {
-    tool_button = new BadgeRadioToolButton(group, "corebird-dms-symbolic");
+    tool_button = new BadgeRadioToolButton(group, "mail-unread-symbolic");
     tool_button.tooltip_text = _("Direct Messages");
   }
 

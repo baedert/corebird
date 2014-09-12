@@ -23,7 +23,7 @@ class FilterListEntry : Gtk.ListBoxRow {
   [GtkChild]
   private Gtk.Stack stack;
   [GtkChild]
-  private Gtk.Box normal_box;
+  private Gtk.Grid normal_box;
   [GtkChild]
   private Gtk.Box delete_box;
 

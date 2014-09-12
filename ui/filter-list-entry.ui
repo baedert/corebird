@@ -25,29 +25,30 @@
             <property name="visible">true</property>
             <property name="can_focus">false</property>
             <property name="transition_type">slide-up-down</property>
+            <property name="margin">3</property>
             <child>
-              <object class="GtkBox" id="normal_box">
+              <object class="GtkGrid" id="normal_box">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="column_spacing">6</property>
+                <property name="row_spacing">3</property>
                 <child>
                   <object class="GtkLabel" id="content_label">
                     <property name="visible">True</property>
                     <property name="valign">center</property>
                     <property name="halign">start</property>
-                    <property name="margin_start">6</property>
-                    <property name="margin_end">6</property>
-                    <property name="margin_top">6</property>
-                    <property name="margin_bottom">6</property>
+                    <property name="hexpand">true</property>
+                    <property name="margin">6</property>
                     <property name="ellipsize">end</property>
                     <property name="can_focus">False</property>
                     <property name="xalign">0</property>
-                    <style>
-                      <class name="list-username" />
-                    </style>
+                    <attributes>
+                      <attribute name="weight" value="bold" />
+                    </attributes>
                   </object>
                   <packing>
-                    <property name="fill">True</property>
-                    <property name="expand">True</property>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">0</property>
                   </packing>
                  </child>
                  <child>
@@ -58,6 +59,9 @@
                       <property name="relief">none</property>
                       <property name="can_focus">True</property>
                       <property name="tooltip_text" translatable="Yes">Remove this Filter</property>
+                      <style>
+                        <class name="image-button" />
+                      </style>
                       <signal name="clicked" handler="menu_button_clicked_cb" />1
                       <child>
                         <object class="GtkImage">
@@ -67,6 +71,10 @@
                         </object>
                       </child>
                     </object>
+                    <packing>
+                      <property name="left_attach">1</property>
+                      <property name="top_attach">0</property>
+                    </packing>
                  </child>
               </object>
             </child>
