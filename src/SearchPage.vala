@@ -256,6 +256,7 @@ class SearchPage : IPage, Gtk.Box {
   public void create_tool_button (Gtk.RadioButton? group){
     tool_button = new BadgeRadioToolButton (group, "edit-find-symbolic");
     tool_button.tooltip_text = _("Search");
+    tool_button.margin_bottom = 6;
   }
 
   public Gtk.RadioButton? get_tool_button() {
