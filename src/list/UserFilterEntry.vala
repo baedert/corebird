@@ -24,6 +24,14 @@ class UserFilterEntry : Gtk.ListBoxRow, ITwitterItem {
   private Gtk.Label screen_name_label;
   [GtkChild]
   private AvatarWidget avatar_image;
+  [GtkChild]
+  private Gtk.Stack stack;
+  [GtkChild]
+  private Gtk.Box delete_box;
+  [GtkChild]
+  private Gtk.Grid grid;
+  [GtkChild]
+  private Gtk.Revealer revealer;
 
   public new string name {
     set { name_label.label = value; }
@@ -59,7 +67,20 @@ class UserFilterEntry : Gtk.ListBoxRow, ITwitterItem {
   public int update_time_delta (GLib.DateTime? now = null) {return 0;}
 
   [GtkCallback]
-  private void delete_activated_cb () {
-    deleted (user_id);
+  private void menu_button_clicked_cb () {
+    stack.visible_child = delete_box;
+  }
+
+  [GtkCallback]
+  private void cancel_button_clicked_cb () {
+    stack.visible_child = grid;
+  }
+
+  [GtkCallback]
+  private void delete_button_clicked_cb () {
+    revealer.reveal_child = false;
+    revealer.notify["child-revealed"].connect (() => {
+      deleted (user_id);
+    });
   }
 }
