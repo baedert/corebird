@@ -48,10 +48,6 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
         ((StartConversationEntry)row).reveal ();
       else {
         var entry = (DMThreadEntry) row;
-        this.unread_count -= entry.unread_count;
-        entry.unread_count = 0;
-        entry.update_unread_count ();
-        this.update_unread_count ();
         main_window.switch_page (MainWindow.PAGE_DM,
                                  entry.user_id);
       }
@@ -79,8 +75,8 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
         if (!user_id_visible (sender_id)) {
           this.unread_count ++;
           this.update_unread_count ();
+          debug ("Increasing global unread count by 1");
         }
-        debug ("Increasing global unread count by 1");
       }
     }
   }
@@ -400,5 +396,16 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   private void update_unread_count() {
     tool_button.show_badge = (unread_count > 0);
     tool_button.queue_draw();
+  }
+
+  public void adjust_unread_count_for_user_id (int64 user_id) {
+    DMThreadEntry? user_entry = thread_map.get (user_id);
+    if (user_entry == null)
+      return;
+
+    this.unread_count -= user_entry.unread_count;
+    user_entry.unread_count = 0;
+    update_unread_count ();
+    user_entry.update_unread_count ();
   }
 }

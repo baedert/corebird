@@ -142,8 +142,12 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
       placeholder_box.load_avatar ();
     }
 
-    //Clear list
+    // Clear list
     messages_list.foreach ((w) => {messages_list.remove (w);});
+
+    // Update unread count
+    DMThreadsPage threads_page = ((DMThreadsPage)main_window.get_page (MainWindow.PAGE_DM_THREADS));
+    threads_page.adjust_unread_count_for_user_id (user_id);
 
     var now = new GLib.DateTime.now_local ();
     // Load messages
