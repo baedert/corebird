@@ -161,7 +161,7 @@
                 <property name="use_markup">True</property>
                 <property name="wrap">True</property>
                 <property name="wrap_mode">word-char</property>
-                <property name="lines">0</property>
+                <property name="track_visited_links">false</property>
                 <signal name="activate-link" handler="link_activated_cb" swapped="no"/>
               </object>
               <packing>
@@ -197,6 +197,7 @@
                 <property name="valign">baseline</property>
                 <property name="margin_top">4</property>
                 <property name="use_markup">True</property>
+                <property name="track_visited_links">false</property>
                 <signal name="activate-link" handler="link_activated_cb" swapped="no"/>
                 <style>
                   <class name="dim-label"/>
