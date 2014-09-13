@@ -364,10 +364,21 @@ namespace TweetUtils {
     int64 min = int64.MAX;
     new Thread<void*> ("TweetWorker", () => {
       Tweet[] tweet_array = new Tweet[json_array.get_length ()];
+
+      /* If the request returned no results at all, we don't
+         need to do all the later stuff */
+      if (tweet_array.length == 0) {
+        GLib.Idle.add (() => {
+          work_array.callback ();
+          return false;
+        });
+        return null;
+      }
+
       var now = new GLib.DateTime.now_local ();
-      json_array.foreach_element( (array, index, node) => {
-        Tweet t = new Tweet();
-        t.load_from_json(node, now, account);
+      json_array.foreach_element ((array, index, node) => {
+        Tweet t = new Tweet ();
+        t.load_from_json (node, now, account);
         if (t.id > max)
           max = t.id;
 
