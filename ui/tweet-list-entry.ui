@@ -47,6 +47,7 @@
       <object class="GtkOverlay" id="overlay">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="margin">6</property>
         <child>
           <object class="GtkGrid" id="grid">
             <property name="visible">True</property>
@@ -60,7 +61,8 @@
                 <property name="valign">start</property>
                 <property name="margin_end">8</property>
                 <property name="margin_top">4</property>
-                <property name="margin_start">4</property>
+                <property name="margin_bottom">4</property>
+                <!--<property name="margin_start">4</property>-->
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -116,7 +118,7 @@
                 <property name="no_show_all">True</property>
                 <property name="halign">end</property>
                 <property name="valign">baseline</property>
-                <property name="margin_end">5</property>
+                <property name="margin_end">6</property>
                 <property name="hexpand">True</property>
                 <property name="pixel_size">12</property>
                 <property name="icon_name">corebird-conversation-symbolic</property>
@@ -151,7 +153,7 @@
               <object class="GtkLabel" id="text_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="margin_end">6</property>
+                <property name="margin_end">0</property>
                 <property name="margin_bottom">4</property>
                 <property name="margin_top">4</property>
                 <property name="hexpand">True</property>
@@ -161,7 +163,7 @@
                 <property name="use_markup">True</property>
                 <property name="wrap">True</property>
                 <property name="wrap_mode">word-char</property>
-                <property name="lines">0</property>
+                <property name="track_visited_links">false</property>
                 <signal name="activate-link" handler="link_activated_cb" swapped="no"/>
               </object>
               <packing>
@@ -176,7 +178,7 @@
                 <property name="no_show_all">True</property>
                 <property name="halign">end</property>
                 <property name="valign">baseline</property>
-                <property name="margin_end">8</property>
+                <property name="margin_end">6</property>
                 <property name="pixel_size">14</property>
                 <property name="icon_name">corebird-retweet-symbolic</property>
                 <property name="icon_size">1</property>
@@ -197,6 +199,7 @@
                 <property name="valign">baseline</property>
                 <property name="margin_top">4</property>
                 <property name="use_markup">True</property>
+                <property name="track_visited_links">false</property>
                 <signal name="activate-link" handler="link_activated_cb" swapped="no"/>
                 <style>
                   <class name="dim-label"/>
@@ -211,6 +214,7 @@
             <child>
               <object class="MultiMediaWidget" id="mm_widget">
                 <property name="visible">true</property>
+                <property name="can_focus">true</property>
                 <property name="margin_top">6</property>
               </object>
               <packing>
@@ -242,7 +246,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="pixel_size">12</property>
-                    <property name="icon_name">corebird-down-symbolic</property>
+                    <property name="icon_name">go-down-symbolic</property>
                   </object>
                 </child>
                 <style>
@@ -272,7 +276,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="pixel_size">12</property>
-                    <property name="icon_name">corebird-reply-symbolic</property>
+                    <property name="icon_name">mail-replied-symbolic</property>
                   </object>
                 </child>
                 <style>
@@ -303,7 +307,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="pixel_size">12</property>
-                    <property name="icon_name">corebird-favorite-symbolic</property>
+                    <property name="icon_name">starred-symbolic</property>
                   </object>
                 </child>
                 <style>

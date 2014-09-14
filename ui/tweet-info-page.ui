@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk+" version="3.10"/>
-  <requires lib="" version="3.10"/>
-  <requires lib="corebird" version="0.0"/>
   <object class="GtkMenu" id="more_menu">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -74,8 +71,10 @@
                 <property name="height_request">48</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="margin_start">5</property>
-                <property name="margin_top">5</property>
+                <property name="margin_start">8</property>
+                <property name="margin_top">6</property>
+                <property name="margin_bottom">6</property>
+                <property name="margin_end">6</property>
                 <property name="halign">start</property>
                 <property name="valign">center</property>
               </object>
@@ -90,15 +89,14 @@
 
             <child>
               <object class="TextButton" id="name_button">
-                <property name="label">button</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="margin_top">5</property>
                 <property name="margin_bottom">0</property>
                 <property name="halign">start</property>
                 <property name="valign">end</property>
                 <property name="hexpand">True</property>
+                <property name="xalign">0</property>
                 <signal name="clicked" handler="name_button_clicked_cb" swapped="no"/>
                 <style>
                   <class name="text-only-button"/>
@@ -120,9 +118,9 @@
                 <property name="margin_top">0</property>
                 <property name="margin_bottom">2</property>
                 <property name="xalign">0</property>
-                <property name="label">label</property>
                 <property name="halign">start</property>
-                <property name="valign">fill</property>
+                <property name="valign">start</property>
+                <property name="hexpand">true</property>
                 <style>
                   <class name="dim-label"/>
                 </style>
@@ -138,7 +136,8 @@
             <child>
               <object class="GtkButton" id="follow_button">
                 <property name="label" translatable="yes">Follow</property>
-                <property name="visible">True</property>
+                <property name="visible">false</property>
+                <property name="no_show_all">true</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="halign">end</property>
@@ -158,13 +157,12 @@
 
             <child>
               <object class="GtkLabel" id="text_label">
-                <property name="height_request">100</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="margin_start">5</property>
-                <property name="margin_end">5</property>
-                <property name="margin_top">5</property>
-                <property name="margin_bottom">15</property>
+                <property name="margin_start">8</property>
+                <property name="margin_end">6</property>
+                <property name="margin_top">2</property>
+                <property name="margin_bottom">12</property>
                 <property name="hexpand">True</property>
                 <property name="xalign">0</property>
                 <property name="yalign">0</property>
@@ -190,8 +188,9 @@
               <object class="GtkLabel" id="time_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="margin_start">3</property>
+                <property name="margin_start">8</property>
                 <property name="xalign">0</property>
+                <property name="valign">baseline</property>
                 <property name="use_markup">True</property>
                 <style>
                   <class name="dim-label"/>
@@ -207,7 +206,8 @@
             <child>
               <object class="GtkLabel" id="source_label">
                 <property name="can_focus">False</property>
-                <property name="margin_end">5</property>
+                <property name="margin_end">10</property>
+                <property name="valign">baseline</property>
                 <property name="use_markup">True</property>
                 <property name="halign">end</property>
                 <style>
@@ -226,10 +226,9 @@
               <object class="GtkLabel" id="rt_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="margin_start">4</property>
+                <property name="margin_start">8</property>
                 <property name="margin_end">8</property>
                 <property name="xalign">0</property>
-                <property name="label">label</property>
                 <property name="use_markup">True</property>
                 <property name="halign">start</property>
                 <style>
@@ -248,7 +247,6 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="xalign">0</property>
-                <property name="label">label</property>
                 <property name="use_markup">True</property>
                 <property name="halign">start</property>
                 <property name="hexpand">true</property>
@@ -268,6 +266,7 @@
               <object class="GtkToggleButton" id="retweet_button">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="valign">baseline</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_text" translatable="yes">Retweet tweet</property>
                 <property name="relief">none</property>
@@ -298,6 +297,7 @@
               <object class="GtkToggleButton" id="favorite_button">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="valign">baseline</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_text" translatable="yes">Favorite tweet</property>
                 <property name="relief">none</property>
@@ -306,7 +306,7 @@
                   <object class="GtkImage" id="image2">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="icon_name">corebird-favorite-symbolic</property>
+                    <property name="icon_name">starred-symbolic</property>
                     <property name="icon_size">1</property>
                   </object>
                 </child>
@@ -328,6 +328,7 @@
               <object class="GtkButton" id="reply_button">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="valign">baseline</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_text" translatable="yes">Reply to tweet</property>
                 <property name="relief">none</property>
@@ -336,7 +337,7 @@
                   <object class="GtkImage" id="image3">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="icon_name">corebird-reply-symbolic</property>
+                    <property name="icon_name">mail-replied-symbolic</property>
                     <property name="icon_size">1</property>
                   </object>
                 </child>
@@ -355,18 +356,19 @@
 
 
             <child>
-              <object class="GtkMenuButton" id="menubutton1">
+              <object class="GtkMenuButton">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="valign">baseline</property>
                 <property name="receives_default">True</property>
-                <property name="margin_end">5</property>
+                <property name="margin_end">10</property>
                 <property name="relief">none</property>
                 <property name="popup">more_menu</property>
                 <child>
                   <object class="GtkImage" id="image4">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="icon_name">corebird-down-symbolic</property>
+                    <property name="icon_name">go-down-symbolic</property>
                     <property name="icon_size">1</property>
                   </object>
                 </child>
@@ -391,6 +393,9 @@
             <child>
               <object class="MultiMediaWidget" id="mm_widget">
                 <property name="visible">true</property>
+                <property name="margin_top">6</property>
+                <property name="margin_start">10</property>
+                <property name="margin_end">10</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>

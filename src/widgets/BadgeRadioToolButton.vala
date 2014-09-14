@@ -16,25 +16,33 @@
  */
 
 
-public class BadgeRadioToolButton : Gtk.RadioToolButton {
+public class BadgeRadioToolButton : Gtk.RadioButton {
   private static const int BADGE_SIZE = 10;
   public bool show_badge{ get; set; default = false;}
 
-  public BadgeRadioToolButton (Gtk.RadioToolButton group, string icon_name) {
-    GLib.Object(group: group, icon_name: icon_name);
+  public BadgeRadioToolButton (Gtk.RadioButton group, string icon_name) {
+    GLib.Object (group: group);
+    this.get_style_context ().add_class ("image-button");
+    var i = new Gtk.Image.from_icon_name (icon_name, Gtk.IconSize.BUTTON);
+    this.add (i);
+    this.set_mode (false);
+    this.margin_start = 6;
+    this.margin_end = 6;
   }
 
-  public override bool draw(Cairo.Context c){
-    var context = this.get_style_context();
-    base.draw(c);
-    if(!show_badge)
+  public override bool draw (Cairo.Context c){
+    var context = this.get_style_context ();
+    base.draw (c);
+    if (!show_badge)
       return false;
 
 
-    int width = get_allocated_width();
-    context.add_class("badge");
-    context.render_background(c, width - BADGE_SIZE, 0, BADGE_SIZE, BADGE_SIZE);
-    context.render_frame(c, width - BADGE_SIZE, 0, BADGE_SIZE, BADGE_SIZE);
+    int width = get_allocated_width ();
+    c.save ();
+    context.add_class ("badge");
+    context.render_background (c, width - BADGE_SIZE, 0, BADGE_SIZE, BADGE_SIZE);
+    context.render_frame (c, width - BADGE_SIZE, 0, BADGE_SIZE, BADGE_SIZE);
+    c.restore ();
     return false;
   }
 }

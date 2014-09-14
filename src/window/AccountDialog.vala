@@ -21,7 +21,7 @@ class AccountDialog : Gtk.Dialog {
   private static const string PAGE_NORMAL = "normal";
   private static const string PAGE_DELETE = "delete";
   [GtkChild]
-  private Gtk.Entry screen_name_entry;
+  private Gtk.Label screen_name_label;
   [GtkChild]
   private Gtk.Entry name_entry;
   [GtkChild]
@@ -32,6 +32,10 @@ class AccountDialog : Gtk.Dialog {
   private Gtk.Button delete_button;
   [GtkChild]
   private Gtk.Switch autostart_switch;
+  [GtkChild]
+  private Gtk.Entry website_entry;
+  [GtkChild]
+  private Gtk.TextView description_text_view;
 
   private unowned Account account;
 
@@ -39,9 +43,17 @@ class AccountDialog : Gtk.Dialog {
 
   public AccountDialog (Account account) {
     this.account = account;
-    screen_name_entry.text = account.screen_name;
+    screen_name_label.label = account.screen_name;
     name_entry.text = account.name;
     avatar_banner_widget.set_account (account);
+    if (account.website != null) {
+      website_entry.text = account.website;
+    }
+    if (account.description != null) {
+      description_text_view.get_buffer ().set_text (account.description);
+    }
+
+
     autostart_switch.freeze_notify ();
     string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
     foreach (string acc in startup_accounts) {
@@ -78,7 +90,6 @@ class AccountDialog : Gtk.Dialog {
     Corebird.db.exec (@"DELETE FROM `accounts` WHERE `id`='$(acc_id)';");
 
     /* Remove account from startup accounts, if it's in there */
-    // XXX Is there a better way do do this?
     string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
     for (int i = 0; i < startup_accounts.length; i++)
       if (startup_accounts[i] == account.screen_name) {

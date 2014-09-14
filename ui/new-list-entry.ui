@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 -->
 <interface>
-  <requires lib="gtk+" version="3.10"/>
   <template class="NewListEntry" parent="GtkListBoxRow">
     <property name="visible">True</property>
     <property name="can_focus">True</property>
@@ -30,11 +28,11 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="label1">
+              <object class="GtkLabel">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="halign">start</property>
-                <property name="margin_start">5</property>
+                <property name="margin_start">6</property>
                 <property name="hexpand">True</property>
                 <property name="label" translatable="yes">Create New List</property>
               </object>
@@ -59,14 +57,14 @@
               <object class="GtkBox" id="box3">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="spacing">5</property>
-                <property name="margin_bottom">8</property>
+                <property name="spacing">6</property>
+                <property name="margin_bottom">6</property>
                 <child>
                   <object class="GtkLabel" id="label2">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="valign">baseline</property>
-                    <property name="margin_start">3</property>
+                    <property name="margin_start">6</property>
                     <property name="label" translatable="yes">Name:</property>
                   </object>
                   <packing>
@@ -96,7 +94,7 @@
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="valign">baseline</property>
-                    <property name="margin_end">3</property>
+                    <property name="margin_end">6</property>
                     <style>
                       <class name="suggested-action"/>
                     </style>

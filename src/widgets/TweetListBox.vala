@@ -18,18 +18,20 @@
 public class TweetListBox : Gtk.ListBox {
   private Gtk.Stack placeholder = null;
   private Gtk.Label no_entries_label;
+  private ProgressEntry progress_entry;
 
   public TweetListBox (bool show_placeholder = true) {
     if (show_placeholder) {
       add_placeholder ();
     }
-    this.get_style_context ().add_class ("stream");
-    this.set_selection_mode (Gtk.SelectionMode.NONE);
   }
 
 
   construct {
     add_placeholder ();
+    progress_entry = new ProgressEntry ();
+    this.get_style_context ().add_class ("stream");
+    this.set_selection_mode (Gtk.SelectionMode.NONE);
   }
 
 
@@ -77,5 +79,12 @@ public class TweetListBox : Gtk.ListBox {
 
   public void reset_placeholder_text () {
     no_entries_label.label = _("No entries found");
+  }
+
+  public void add_progress_entry () {
+    if (progress_entry.parent == null) {
+      progress_entry.show_all ();
+      this.add (progress_entry);
+    }
   }
 }

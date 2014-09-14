@@ -40,7 +40,7 @@ class SearchPage : IPage, Gtk.Box {
   private Gtk.Label tweets_header;
   [GtkChild]
   private ScrollWidget scroll_widget;
-  private Gtk.RadioToolButton tool_button;
+  private Gtk.RadioButton tool_button;
   public DeltaUpdater delta_updater;
   private LoadMoreEntry load_more_entry = new LoadMoreEntry ();
   private string search_query;
@@ -208,7 +208,6 @@ class SearchPage : IPage, Gtk.Box {
       return;
 
     loading_tweets = true;
-    main_window.start_progress ();
     var call = account.proxy.new_call ();
     call.set_function ("1.1/search/tweets.json");
     call.set_method ("GET");
@@ -250,19 +249,17 @@ class SearchPage : IPage, Gtk.Box {
         tweet_list.add (entry);
       });
       loading_tweets = false;
-      main_window.stop_progress ();
     });
 
   } // }}}
 
-  public void create_tool_button (Gtk.RadioToolButton? group){
-    tool_button = new Gtk.RadioToolButton.from_widget (group);
-    tool_button.icon_name = "corebird-search-symbolic";
-    tool_button.label = _("Search");
+  public void create_tool_button (Gtk.RadioButton? group){
+    tool_button = new BadgeRadioToolButton (group, "edit-find-symbolic");
     tool_button.tooltip_text = _("Search");
+    tool_button.margin_bottom = 6;
   }
 
-  public Gtk.RadioToolButton? get_tool_button(){
+  public Gtk.RadioButton? get_tool_button() {
     return tool_button;
   }
 

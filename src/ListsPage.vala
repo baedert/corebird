@@ -56,6 +56,9 @@ class ListsPage : IPage, ScrollWidget, IMessageReceiver {
   public void on_join (int page_id, va_list arg_list) {
     int mode = arg_list.arg<int> ();
 
+    if (!GLib.NetworkMonitor.get_default ().get_network_available ())
+      return;
+
     if (mode == 0 && !inited) {
       inited = true;
       this.user_id = account.id;
@@ -120,9 +123,8 @@ class ListsPage : IPage, ScrollWidget, IMessageReceiver {
   }
 
 
-  public void create_tool_button (Gtk.RadioToolButton? group) {
-    tool_button = new BadgeRadioToolButton (group, "corebird-lists-symbolic");
-    tool_button.label = _("Lists");
+  public void create_tool_button (Gtk.RadioButton? group) {
+    tool_button = new BadgeRadioToolButton (group, "view-list-symbolic");
     tool_button.tooltip_text = _("Lists");
   }
 
@@ -131,7 +133,7 @@ class ListsPage : IPage, ScrollWidget, IMessageReceiver {
     return _("Lists");
   }
 
-  public Gtk.RadioToolButton? get_tool_button () {
+  public Gtk.RadioButton? get_tool_button () {
     return tool_button;
   }
 

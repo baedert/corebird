@@ -112,11 +112,9 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
       return;
 
     this.balance_next_upper_change (BOTTOM);
-    main_window.start_progress ();
     this.loading = true;
     this.load_older_internal.begin (() => {
       this.loading = false;
-      main_window.stop_progress ();
     });
   }
 
@@ -126,10 +124,9 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
   }
 
 
-  public override void create_tool_button (Gtk.RadioToolButton? group) {
+  public override void create_tool_button (Gtk.RadioButton? group) {
     tool_button = new BadgeRadioToolButton(group, "corebird-mentions-symbolic");
     tool_button.tooltip_text = _("Mentions");
-    tool_button.label = _("Mentions");
   }
 
 }

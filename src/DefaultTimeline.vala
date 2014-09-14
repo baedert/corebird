@@ -55,13 +55,13 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
 
     tweet_list.activate_on_single_click = false;
     tweet_list.row_activated.connect ((row) => {
-      main_window.main_widget.switch_page (Page.TWEET_INFO,
-                                           TweetInfoPage.BY_INSTANCE,
-                                           ((TweetListEntry)row).tweet);
+      if (row is TweetListEntry) {
+        main_window.main_widget.switch_page (Page.TWEET_INFO,
+                                             TweetInfoPage.BY_INSTANCE,
+                                             ((TweetListEntry)row).tweet);
+      }
       last_focus_widget = row;
     });
-
-
 
   }
 
@@ -119,9 +119,9 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
       GLib.Source.remove (tweet_remove_timeout);
   }
 
-  public virtual void create_tool_button(Gtk.RadioToolButton? group){}
+  public virtual void create_tool_button(Gtk.RadioButton? group){}
 
-  public Gtk.RadioToolButton? get_tool_button() {
+  public Gtk.RadioButton? get_tool_button() {
     return tool_button;
   }
 

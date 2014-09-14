@@ -24,6 +24,8 @@ public class Account : GLib.Object {
   public string name              {public get; private set;}
   public string avatar_url        {public get; public  set;}
   public string banner_url        {public get; private set;}
+  public string? website          {public get; public  set;}
+  public string? description      {public get; public  set;}
   public Gdk.Pixbuf avatar_small  {public get; private set;}
   public Gdk.Pixbuf avatar        {public get; private set;}
   public Rest.OAuthProxy proxy    {public get; private set;}
@@ -113,6 +115,7 @@ public class Account : GLib.Object {
     call.set_function ("1.1/users/show.json");
     call.set_method ("GET");
     call.add_param ("screen_name", screen_name);
+    call.add_param ("skip_status", "true");
     call.invoke_async.begin (null, (obj, res) => {
       try{call.invoke_async.end (res);} catch (GLib.Error e) {
         if (e.message.down() == "unauthorized") {
@@ -127,16 +130,23 @@ public class Account : GLib.Object {
       } catch (GLib.Error e) {
         critical (e.message);
       }
+      stdout.printf (call.get_payload () + "\n");
       var root = parser.get_root ().get_object ();
       this.id = root.get_int_member ("id");
       this.name = root.get_string_member ("name");
       this.screen_name = root.get_string_member ("screen_name");
+      this.description = root.get_string_member ("description"); // TODO Replace URLS
       if (root.has_member ("profile_banner_url"))
         this.banner_url = root.get_string_member ("profile_banner_url");
+      /* Website URL */
+      if (root.get_object_member ("entities").has_member ("url")) {
+        this.website = root.get_object_member ("entities").get_object_member ("url")
+                       .get_array_member ("urls").get_object_element (0).get_string_member ("expanded_url");
+      }
+
       string avatar_url = root.get_string_member ("profile_image_url");
       update_avatar.begin (avatar_url);
       query_user_info_by_scren_name.callback();
-      debug ("Name: %s", name);
     });
 
     yield;

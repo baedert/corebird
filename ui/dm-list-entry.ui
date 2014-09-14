@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk+" version="3.10"/>
   <template class="DMListEntry" parent="GtkListBoxRow">
     <property name="visible">True</property>
     <property name="can_focus">True</property>
+    <style>
+      <class name="tweet" />
+    </style>
 
     <child>
       <object class="GtkGrid" id="grid">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="margin">6</property>
 
         <child>
           <object class="AvatarWidget" id="avatar_image">
@@ -17,7 +20,7 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="valign">start</property>
-            <property name="margin_end">5</property>
+            <property name="margin_end">6</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -32,6 +35,7 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
+            <property name="valign">baseline</property>
             <style>
               <class name="text-only-button"/>
             </style>
@@ -47,7 +51,8 @@
           <object class="GtkLabel" id="screen_name_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="margin_start">5</property>
+            <property name="margin_start">6</property>
+            <property name="valign">baseline</property>
             <style>
               <class name="dim-label"/>
             </style>
@@ -64,6 +69,7 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="halign">end</property>
+            <property name="valign">baseline</property>
             <property name="hexpand">True</property>
             <property name="label">delta</property>
             <property name="use_markup">True</property>
@@ -83,8 +89,8 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="margin_end">6</property>
-            <property name="margin_bottom">4</property>
-            <property name="margin_top">4</property>
+            <property name="margin_bottom">6</property>
+            <property name="margin_top">6</property>
             <property name="hexpand">True</property>
             <property name="vexpand">True</property>
             <property name="xalign">0</property>
@@ -92,6 +98,7 @@
             <property name="wrap">True</property>
             <property name="wrap_mode">word-char</property>
             <property name="use_markup">True</property>
+            <property name="track_visited_links">false</property>
           </object>
           <packing>
             <property name="left_attach">1</property>

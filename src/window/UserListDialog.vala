@@ -168,10 +168,11 @@ class ListUserEntry : Gtk.ListBoxRow {
 
   public ListUserEntry (string list_name, string description) {
     var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 5);
+    added_checkbox.valign = Gtk.Align.CENTER;
     box.pack_start (added_checkbox, false, false);
     var box2 = new Gtk.Box (Gtk.Orientation.VERTICAL, 3);
-    var label = new Gtk.Label (list_name);
-    label.get_style_context ().add_class ("list-username");
+    var label = new Gtk.Label ("<b>" + list_name + "</b>");
+    label.use_markup = true;
     label.halign = Gtk.Align.START;
     box2.pack_start (label, true, false);
     var desc_label = new Gtk.Label (description);

@@ -87,6 +87,17 @@ public class MainWindow : Gtk.ApplicationWindow {
         }
     });
 
+if (!Gtk.Settings.get_default ().gtk_shell_shows_app_menu) {
+      Gtk.MenuButton app_menu_button = new Gtk.MenuButton ();
+      app_menu_button.image = new Gtk.Image.from_icon_name ("emblem-system-symbolic", Gtk.IconSize.MENU);
+      app_menu_button.get_style_context ().add_class ("image-button");
+      app_menu_button.menu_model = this.application.app_menu;
+      headerbar.pack_end (app_menu_button);
+      this.show_menubar = false;
+    }
+
+
+
 
     this.add_action_entries (win_entries, this);
 
@@ -245,18 +256,6 @@ public class MainWindow : Gtk.ApplicationWindow {
     dialog.modal = true;
     dialog.show ();
   }
-
-  /**
-   * Indicates that the caller is doing a long-running operation.
-   */
-  public void start_progress () {
-    main_widget.start_progress ();
-  }
-
-  public void stop_progress () {
-    main_widget.stop_progress ();
-  }
-
 
   public IPage get_page (int page_id) {
     return main_widget.get_page (page_id);

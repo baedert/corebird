@@ -72,7 +72,7 @@
                 </child>
 
                 <child>
-                  <object class="GtkEntry" id="screen_name_entry">
+                  <object class="GtkLabel" id="screen_name_label">
                     <property name="visible">true</property>
                     <property name="can_focus">true</property>
                     <property name="halign">start</property>
@@ -113,10 +113,40 @@
                     <property name="left_attach">1</property>
                     <property name="top_attach">2</property>
                   </packing>
-                 </child>
+                </child>
 
+                <!-- URL -->
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">true</property>
+                    <property name="can_focus">false</property>
+                    <property name="label" translatable="yes">Website</property>
+                    <property name="halign">end</property>
+                    <property name="valign">baseline</property>
+                    <style>
+                      <class name="dim-label" />
+                    </style>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">3</property>
+                  </packing>
+                </child>
 
-                 <!-- Description -->
+                <child>
+                  <object class="GtkEntry" id="website_entry">
+                    <property name="visible">true</property>
+                    <property name="can_focus">true</property>
+                    <property name="halign">start</property>
+                    <property name="valign">baseline</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">3</property>
+                  </packing>
+                </child>
+
+                <!-- Description -->
                  <child>
                   <object class="GtkFrame">
                     <property name="visible">true</property>
@@ -133,7 +163,7 @@
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">3</property>
+                    <property name="top_attach">5</property>
                     <property name="width">2</property>
                   </packing>
                  </child>
@@ -147,7 +177,7 @@
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">4</property>
+                    <property name="top_attach">6</property>
                     <property name="width">2</property>
                   </packing>
                 </child>
@@ -166,7 +196,7 @@
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">5</property>
+                    <property name="top_attach">7</property>
                   </packing>
                 </child>
 
@@ -180,7 +210,7 @@
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="top_attach">5</property>
+                    <property name="top_attach">7</property>
                   </packing>
                 </child>
 
@@ -261,10 +291,10 @@
         </child>
 
         <child internal-child="action_area">
-          <object class="GtkButtonBox">
+          <object class="GtkGrid">
             <property name="can_focus">false</property>
             <property name="visible">true</property>
-            <property name="layout_style">end</property>
+            <property name="margin">6</property>
 
             <child>
               <object class="GtkButton" id="delete_button">
@@ -275,6 +305,9 @@
                   <class name="destructive-action" />
                 </style>
               </object>
+              <packing>
+                <property name="secondary">true</property>
+              </packing>
             </child>
 
 

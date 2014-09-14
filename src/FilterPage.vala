@@ -19,7 +19,7 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
   public int id { get; set; }
   public unowned MainWindow main_window {get; set;}
   public unowned Account account        {get; set;}
-  private Gtk.RadioToolButton tool_button;
+  private BadgeRadioToolButton tool_button;
   [GtkChild]
   private Gtk.ListBox filter_list;
   [GtkChild]
@@ -28,7 +28,8 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
   private Gtk.Label user_list_label;
   [GtkChild]
   private Gtk.Frame user_list_frame;
-  private bool inited = false;
+  private bool filters_loaded = false;
+  private bool users_loaded = false;
 
   public FilterPage (int id) {
     this.id = id;
@@ -51,19 +52,23 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
   }
 
   public void on_join (int page_id, va_list arg_list) { // {{{
-    if (inited)
-      return;
 
-    foreach (Filter f in account.filters) {
-      var entry = new FilterListEntry (f, account);
-      filter_list.add (entry);
+    if (!filters_loaded) {
+      foreach (Filter f in account.filters) {
+        var entry = new FilterListEntry (f, account);
+        filter_list.add (entry);
+      }
+      filters_loaded = true;
     }
+
+    if (!GLib.NetworkMonitor.get_default ().get_network_available ())
+      return;
 
     var call = account.proxy.new_call ();
     call.set_method ("GET");
     call.set_function ("1.1/blocks/list.json");
     call.add_param ("include_entities", "false");
-    call.add_param ("skip_status", "false");
+    call.add_param ("skip_status", "true");
     call.invoke_async.begin (null, (o, res) => {
       try {
         call.invoke_async.end (res);
@@ -93,9 +98,9 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
         user_list_label.show ();
       }
     });
+    users_loaded = true;
 
 
-    inited = true;
   } // }}}
 
   /**
@@ -198,15 +203,14 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
   }
 
   public void on_leave () {}
-  public void create_tool_button(Gtk.RadioToolButton? group) {
+  public void create_tool_button (Gtk.RadioButton? group) {
     tool_button = new BadgeRadioToolButton(group, "corebird-filter-symbolic");
     tool_button.tooltip_text = _("Filters");
-    tool_button.label = _("Filters");
   }
+  public Gtk.RadioButton? get_tool_button() { return tool_button; }
 
   public string? get_title () {
     return _("Filters");
   }
 
-  public Gtk.RadioToolButton? get_tool_button() { return tool_button; }
 }

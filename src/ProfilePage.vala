@@ -137,6 +137,7 @@ class ProfilePage : ScrollWidget, IPage {
                                            TweetInfoPage.BY_INSTANCE,
                                            ((TweetListEntry)row).tweet);
     });
+    tweet_list.set_sort_func (ITwitterItem.sort_func);
 
     user_lists.hide_user_list_entry ();
     page_change_signal = user_stack.notify["visible-child"].connect (() => {
@@ -420,7 +421,6 @@ class ProfilePage : ScrollWidget, IPage {
     if (user_stack.visible_child != tweet_list)
       return;
 
-    main_window.start_progress ();
     tweets_loading = true;
     var call = account.proxy.new_call ();
     call.set_function ("1.1/statuses/user_timeline.json");
@@ -449,7 +449,6 @@ class ProfilePage : ScrollWidget, IPage {
                                               tweet_list, main_window, account);
     lowest_tweet_id = result.min_id;
     tweets_loading = false;
-    main_window.stop_progress ();
   } // }}}
 
   /**
@@ -637,14 +636,14 @@ class ProfilePage : ScrollWidget, IPage {
     avatar_image.pixbuf = null;
   }
 
-  public void create_tool_button (Gtk.RadioToolButton? group) {}
+  public void create_tool_button (Gtk.RadioButton? group) {}
 
 
   public string? get_title () {
     return "@" + screen_name;
   }
 
-  public Gtk.RadioToolButton? get_tool_button(){
+  public Gtk.RadioButton? get_tool_button(){
     return null;
   }
 
