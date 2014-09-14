@@ -19,14 +19,14 @@
 class MediaDialog : Gtk.Window {
   [GtkChild]
   private Gtk.Overlay overlay;
-  [GtkChild]
-  private Gtk.Button next_button;
-  [GtkChild]
-  private Gtk.Button back_button;
-  [GtkChild]
-  private Gtk.Revealer back_revealer;
-  [GtkChild]
-  private Gtk.Revealer next_revealer;
+  //[GtkChild]
+  //private Gtk.Button next_button;
+  //[GtkChild]
+  //private Gtk.Button back_button;
+  //[GtkChild]
+  //private Gtk.Revealer back_revealer;
+  //[GtkChild]
+  //private Gtk.Revealer next_revealer;
   private unowned Tweet tweet;
   private int cur_index = 0;
 
@@ -71,15 +71,15 @@ class MediaDialog : Gtk.Window {
     this.queue_resize ();
     this.queue_draw ();
 
-    if (cur_index >= tweet.medias.length - 1)
-      next_button.hide ();
-    else
-      next_button.show ();
+    //if (cur_index >= tweet.medias.length - 1)
+      //next_button.hide ();
+    //else
+      //next_button.show ();
 
-    if (cur_index <= 0)
-      back_button.hide ();
-    else
-      back_button.show ();
+    //if (cur_index <= 0)
+      //back_button.hide ();
+    //else
+      //back_button.show ();
   }
 
   private void next_media () {
@@ -96,15 +96,15 @@ class MediaDialog : Gtk.Window {
     }
   }
 
-  [GtkCallback]
-  private void next_button_clicked_cb () {
-    next_media ();
-  }
+  //[GtkCallback]
+  //private void next_button_clicked_cb () {
+    //next_media ();
+  //}
 
-  [GtkCallback]
-  private void back_button_clicked_cb () {
-    previous_media ();
-  }
+  //[GtkCallback]
+  //private void back_button_clicked_cb () {
+    //previous_media ();
+  //}
 
 
   [GtkCallback]
@@ -127,15 +127,15 @@ class MediaDialog : Gtk.Window {
 
   [GtkCallback]
   private bool leave_notify_cb () {
-    back_revealer.reveal_child= false;
-    next_revealer.reveal_child= false;
+    //back_revealer.reveal_child= false;
+    //next_revealer.reveal_child= false;
     return true;
   }
 
   [GtkCallback]
   private bool enter_notify_cb () {
-    back_revealer.reveal_child= true;
-    next_revealer.reveal_child= true;
+    //back_revealer.reveal_child= true;
+    //next_revealer.reveal_child= true;
     return true;
   }
 
