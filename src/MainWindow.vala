@@ -292,6 +292,8 @@ if (!Gtk.Settings.get_default ().gtk_shell_shows_app_menu) {
     if (startup_accounts.length == 1 && startup_accounts[0] == "")
       startup_accounts.resize (0);
 
+    save_geometry ();
+
     if (startup_accounts.length > 0)
       return false;
 
@@ -310,7 +312,6 @@ if (!Gtk.Settings.get_default ().gtk_shell_shows_app_menu) {
       Settings.get ().set_strv ("startup-accounts", new_startup_accounts);
       debug ("Saving the account %s", ((MainWindow)ws.nth_data (0)).account.screen_name);
     }
-    save_geometry ();
     return false;
   }
 
