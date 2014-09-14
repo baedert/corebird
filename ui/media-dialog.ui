@@ -12,14 +12,14 @@
       <object class="GtkOverlay" id="overlay">
         <property name="visible">true</property>
         <property name="can_focus">false</property>
-        <child type="overlay">
-          <object class="GtkEventBox">
-            <property name="visible">true</property>
-            <property name="can_focus">false</property>
-            <property name="valign">center</property>
-            <property name="events">GDK_SCROLL_MASK</property>
-            <signal name="button-press-event" handler="fake_button_press_cb" />
-            <signal name="scroll-event" handler="fake_scroll_event_cb" />
+        <!--<child type="overlay">-->
+          <!--<object class="GtkEventBox">-->
+            <!--<property name="visible">true</property>-->
+            <!--<property name="can_focus">false</property>-->
+            <!--<property name="valign">center</property>-->
+            <!--<property name="events">GDK_SCROLL_MASK</property>-->
+            <!--<signal name="button-press-event" handler="fake_button_press_cb" />-->
+            <!--<signal name="scroll-event" handler="fake_scroll_event_cb" />-->
             <!--<child>-->
               <!--<object class="GtkBox" id="osd_box">-->
                 <!--<property name="visible">true</property>-->
@@ -90,8 +90,8 @@
                 <!--</child>-->
               <!--</object>-->
             <!--</child>-->
-          </object>
-        </child>
+          <!--</object>-->
+        <!--</child>-->
       </object>
     </child>
   </template>
