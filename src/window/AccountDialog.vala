@@ -57,8 +57,10 @@ class AccountDialog : Gtk.Dialog {
     autostart_switch.freeze_notify ();
     string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
     foreach (string acc in startup_accounts) {
-      if (acc == this.account.screen_name)
+      if (acc == this.account.screen_name) {
         autostart_switch.active = true;
+        break;
+      }
     }
     autostart_switch.thaw_notify ();
     this.set_default_size (350, 450);
