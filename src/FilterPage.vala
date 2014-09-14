@@ -64,6 +64,9 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
     if (!GLib.NetworkMonitor.get_default ().get_network_available ())
       return;
 
+    if (users_loaded)
+      return;
+
     var call = account.proxy.new_call ();
     call.set_method ("GET");
     call.set_function ("1.1/blocks/list.json");
@@ -76,6 +79,8 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
         warning (e.message);
         Utils.show_error_object (call.get_payload (), e.message,
                                  GLib.Log.LINE, GLib.Log.FILE);
+        users_loaded = false;
+        return;
       }
 
       var parser = new Json.Parser ();
