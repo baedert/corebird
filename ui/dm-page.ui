@@ -31,17 +31,25 @@
       </packing>
     </child>
     <child>
-      <object class="GtkBox" id="box2">
+      <object class="GtkBox">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="orientation">horizontal</property>
         <child>
-          <object class="GtkEntry" id="text_entry">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="margin_end">5</property>
-            <property name="margin_top">5</property>
-            <property name="margin_bottom">5</property>
-            <signal name="activate" handler="send_button_clicked_cb" swapped="no"/>
+          <object class="GtkFrame">
+            <property name="visible">true</property>
+            <property name="can_focus">false</property>
+            <property name="margin_end">6</property>
+            <property name="margin_top">6</property>
+            <property name="margin_bottom">6</property>
+
+            <child>
+              <object class="GtkTextView" id="text_view">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <signal name="key_press_event" handler="text_view_key_press_cb" />
+              </object>
+            </child>
           </object>
           <packing>
             <property name="expand">True</property>
@@ -55,9 +63,10 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <property name="margin_end">5</property>
-            <property name="margin_top">5</property>
-            <property name="margin_bottom">5</property>
+            <property name="margin_end">6</property>
+            <property name="margin_top">6</property>
+            <property name="margin_bottom">6</property>
+            <property name="valign">start</property>
             <signal name="clicked" handler="send_button_clicked_cb" swapped="no"/>
             <style>
               <class name="suggested-action"/>
