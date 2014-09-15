@@ -57,6 +57,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       var thread_entry = thread_map.get (user_id);
       if (thread_entry != null) {
         this.unread_count -= thread_entry.unread_count;
+        update_unread_count ();
       }
       main_window.switch_page (MainWindow.PAGE_DM, user_id,
                               screen_name, name, avatar_url);
