@@ -238,6 +238,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     }
     if (current_match == -1 && corpus_size > 0) {
       completion_list.select_row (completion_list.get_row_at_index (0));
+      current_match = 0;
     }
     completion_list.show_all ();
 
@@ -369,6 +370,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     if (evt.keyval == Gdk.Key.Down) {
       if (n_results == 0)
         return false;
+
       this.current_match = (current_match + 1) % n_results;
       var row = completion_list.get_row_at_index (current_match);
       completion_list.select_row (row);
