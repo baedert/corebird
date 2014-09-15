@@ -38,9 +38,7 @@
           <object class="GtkFrame">
             <property name="visible">true</property>
             <property name="can_focus">false</property>
-            <property name="margin_end">6</property>
-            <property name="margin_top">6</property>
-            <property name="margin_bottom">6</property>
+            <property name="margin">6</property>
 
             <child>
               <object class="GtkTextView" id="text_view">
