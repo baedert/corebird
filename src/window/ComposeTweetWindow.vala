@@ -422,8 +422,8 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     Gtk.Allocation alloc;
     tweet_text.get_allocation (out alloc);
     tweet_text.get_window (Gtk.TextWindowType.WIDGET).get_origin (out x, out y);
-    x += alloc.x;
-    y += alloc.y + alloc.height;
+    //x += alloc.x;
+    y += alloc.height;
 
     completion_window.move (x, y);
     completion_window.resize (alloc.width, 50);
