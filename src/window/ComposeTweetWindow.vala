@@ -236,7 +236,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       l.halign = Gtk.Align.START;
       completion_list.add (l);
     }
-    if (current_match == -1 && corpus_size > 0) {
+    if (corpus_size > 0) {
       completion_list.select_row (completion_list.get_row_at_index (0));
       current_match = 0;
     }
@@ -420,6 +420,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
 
   private void show_completion_window () {
+    debug ("show_completion_window");
     int x, y;
     Gtk.Allocation alloc;
     tweet_text.get_allocation (out alloc);
