@@ -57,6 +57,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       var thread_entry = thread_map.get (user_id);
       if (thread_entry != null) {
         this.unread_count -= thread_entry.unread_count;
+        update_unread_count ();
       }
       main_window.main_widget.switch_page (Page.DM, user_id,
                                            screen_name, name, avatar_url);
@@ -361,13 +362,8 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     var n = new GLib.Notification (_("New direct message from %s")
                                    .printf (sender_screen_name));
     n.set_body (text);
-    //try {
-      //n.set_icon (new GLib.Icon.from_file (avatar_path));
-    //} catch (GLib.Error e) {
-      //warning (e.message);
-    //}
     var value = new GLib.Variant.tuple ({new GLib.Variant.string (account.screen_name),
-                                        new GLib.Variant.int64 (sender_id)});
+                                         new GLib.Variant.int64 (sender_id)});
     n.set_default_action_and_target_value ("app.show-dm-thread", value);
 
     GLib.Application.get_default ().send_notification ("new-dm", n);

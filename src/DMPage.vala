@@ -26,7 +26,7 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
   [GtkChild]
   private Gtk.Button send_button;
   [GtkChild]
-  private Gtk.Entry text_entry;
+  private Gtk.TextView text_view;
   [GtkChild]
   private Gtk.ListBox messages_list;
   [GtkChild]
@@ -38,8 +38,9 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
 
   public DMPage (int id) {
     this.id = id;
-    text_entry.buffer.inserted_text.connect (recalc_length);
-    text_entry.buffer.deleted_text.connect (recalc_length);
+    //text_entry.buffer.inserted_text.connect (recalc_length);
+    //text_entry.buffer.deleted_text.connect (recalc_length);
+    text_view.buffer.changed.connect (recalc_length);
     messages_list.set_sort_func (ITwitterItem.sort_func_inv);
     placeholder_box.show ();
     messages_list.set_placeholder(placeholder_box);
@@ -184,21 +185,22 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
     scroll_widget.scroll_down_next (false, true);
 
     // Focus the text entry
-    text_entry.grab_focus ();
+    text_view.grab_focus ();
   } // }}}
 
   public void on_leave () {}
 
   [GtkCallback]
   private void send_button_clicked_cb () { // {{{
-    if (text_entry.buffer.length == 0 || text_entry.buffer.length > Tweet.MAX_LENGTH)
+    if (text_view.buffer.text.length == 0 ||
+        text_view.buffer.text.length > Tweet.MAX_LENGTH)
       return;
 
     // Just add the entry now
     DMListEntry entry = new DMListEntry ();
     entry.screen_name = account.screen_name;
     entry.timestamp = new GLib.DateTime.now_local ().to_unix ();
-    entry.text = text_entry.text;
+    entry.text = text_view.buffer.text;
     entry.name = account.name;
     entry.avatar = account.avatar;
     entry.update_time_delta ();
@@ -208,7 +210,7 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
     call.set_function ("1.1/direct_messages/new.json");
     call.set_method ("POST");
     call.add_param ("user_id", user_id.to_string ());
-    call.add_param ("text", text_entry.text);
+    call.add_param ("text", text_view.buffer.text);
     call.invoke_async.begin (null, (obj, res) => {
       try {
         call.invoke_async.end (res);
@@ -220,15 +222,26 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
     });
 
     // clear the text entry
-    text_entry.text = "";
+    text_view.buffer.text = "";
 
     // Scroll down
     if (scroll_widget.scrolled_down)
       scroll_widget.scroll_down_next ();
   } // }}}
 
+  [GtkCallback]
+  private bool text_view_key_press_cb (Gdk.EventKey evt) {
+    if (evt.keyval == Gdk.Key.Return &&
+        (evt.state & Gdk.ModifierType.CONTROL_MASK) == Gdk.ModifierType.CONTROL_MASK) {
+      send_button_clicked_cb ();
+      return true;
+    }
+
+    return false;
+  }
+
   private void recalc_length () {
-    uint text_length = text_entry.buffer.length;
+    uint text_length = text_view.buffer.text.length;
     send_button.sensitive = text_length > 0 && text_length < 140;
   }
 
