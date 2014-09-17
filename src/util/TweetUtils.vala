@@ -473,7 +473,7 @@ namespace TweetUtils {
       iter2.forward_char ();
 
     }
-    message ("Link: %s", buffer.get_text (word_start, iter1, false));
+    debug ("Link: %s", buffer.get_text (word_start, iter1, false));
     buffer.apply_tag_by_name ("link", word_start, iter1);
   }
 
