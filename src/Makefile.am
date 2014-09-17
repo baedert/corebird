@@ -14,6 +14,7 @@ noinst_LTLIBRARIES = libcorebird.la
 cb_sources = \
 			Corebird.vala \
 			MainWindow.vala \
+			MainWidget.vala \
 			Account.vala \
 			HomeTimeline.vala \
 			MentionsTimeline.vala \
@@ -59,6 +60,7 @@ cb_sources = \
 			widgets/ReplyIndicator.vala \
 			widgets/MultiMediaWidget.vala \
 			widgets/AvatarWidget.vala \
+			widgets/AvatarBannerWidget.vala \
 			util/TweetUtils.vala \
 			util/Utils.vala \
 			util/IntHistory.vala \
@@ -77,6 +79,8 @@ cb_sources = \
 			list/NewListEntry.vala \
 			list/FilterListEntry.vala \
 			list/UserFilterEntry.vala \
+			list/AddListEntry.vala \
+			list/ProgressEntry.vala \
 			window/ComposeTweetWindow.vala \
 			window/SettingsDialog.vala \
 			window/ImageDialog.vala \
@@ -85,6 +89,7 @@ cb_sources = \
 			window/ModifyFilterDialog.vala \
 			window/VideoDialog.vala \
 			window/AboutDialog.vala \
+			window/AccountDialog.vala \
 			sql/Database.vala \
 			sql/Statement.vala \
 			sql/UpdateStatement.vala \

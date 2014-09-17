@@ -17,17 +17,23 @@
 
 
 public class Account : GLib.Object {
+  public static const string DUMMY = "screen_name";
   public int64 id                 {public get; private set;}
   public Sql.Database db          {public get; private set;}
   public string screen_name       {public get; private set;}
   public string name              {public get; private set;}
   public string avatar_url        {public get; public  set;}
+  public string banner_url        {public get; private set;}
+  public string? website          {public get; public  set;}
+  public string? description      {public get; public  set;}
   public Gdk.Pixbuf avatar_small  {public get; private set;}
   public Gdk.Pixbuf avatar        {public get; private set;}
   public Rest.OAuthProxy proxy    {public get; private set;}
   public UserStream user_stream   {public get; private set;}
   public UserCounter user_counter {public get; private set;}
   public Gee.ArrayList<Filter> filters;
+  public signal void info_changed (string screen_name, string name,
+                                   Gdk.Pixbuf avatar_small, Gdk.Pixbuf avatar);
 
   public Account (int64 id, string screen_name, string name) {
     this.id = id;
@@ -90,6 +96,7 @@ public class Account : GLib.Object {
     try {
       this.avatar_small = new Gdk.Pixbuf.from_file (small_path);
       this.avatar = new Gdk.Pixbuf.from_file (path);
+      info_changed (screen_name, name, avatar, avatar_small);
     } catch (GLib.Error e) {
       warning (e.message);
     }
@@ -108,6 +115,7 @@ public class Account : GLib.Object {
     call.set_function ("1.1/users/show.json");
     call.set_method ("GET");
     call.add_param ("screen_name", screen_name);
+    call.add_param ("skip_status", "true");
     call.invoke_async.begin (null, (obj, res) => {
       try{call.invoke_async.end (res);} catch (GLib.Error e) {
         if (e.message.down() == "unauthorized") {
@@ -122,14 +130,23 @@ public class Account : GLib.Object {
       } catch (GLib.Error e) {
         critical (e.message);
       }
+      stdout.printf (call.get_payload () + "\n");
       var root = parser.get_root ().get_object ();
       this.id = root.get_int_member ("id");
       this.name = root.get_string_member ("name");
       this.screen_name = root.get_string_member ("screen_name");
+      this.description = root.get_string_member ("description"); // TODO Replace URLS
+      if (root.has_member ("profile_banner_url"))
+        this.banner_url = root.get_string_member ("profile_banner_url");
+      /* Website URL */
+      if (root.get_object_member ("entities").has_member ("url")) {
+        this.website = root.get_object_member ("entities").get_object_member ("url")
+                       .get_array_member ("urls").get_object_element (0).get_string_member ("expanded_url");
+      }
+
       string avatar_url = root.get_string_member ("profile_image_url");
       update_avatar.begin (avatar_url);
       query_user_info_by_scren_name.callback();
-      debug ("Name: %s", name);
     });
 
     yield;
@@ -142,7 +159,7 @@ public class Account : GLib.Object {
    *
    * @param url The url of the (possibly) new avatar(optional).
    */
-  public async void update_avatar (string url = "") {
+  private async void update_avatar (string url = "") {
     if (url.length > 0 && url == this.avatar_url)
       return;
 
@@ -168,11 +185,13 @@ public class Account : GLib.Object {
         scaled_pixbuf.save(dest_path, type);
         debug ("saving to %s", dest_path);
         this.avatar_small = scaled_pixbuf;
+        this.avatar = pixbuf;
       } catch (GLib.Error e) {
         critical (e.message);
       }
       this.avatar_url = url;
       Corebird.db.update ("accounts").val ("avatar_url", url).where_eqi ("id", id).run ();
+      info_changed (screen_name, name, avatar, avatar_small);
     } else {
       critical ("Not implemented yet");
     }
@@ -246,7 +265,8 @@ public class Account : GLib.Object {
     accounts = new GLib.SList<Account> ();
     Corebird.db.select ("accounts").cols ("id", "screen_name", "name", "avatar_url").run ((vals) => {
       Account acc = new Account (int64.parse(vals[0]), vals[1], vals[2]);
-      acc.avatar_url = vals[3]; // O(n^2)
+      acc.avatar_url = vals[3];
+      acc.load_avatar ();
       accounts.append (acc);
       return true;
     });
@@ -267,8 +287,8 @@ public class Account : GLib.Object {
    * @param screen_name The screen name of the account to remove.
    */
   public static void remove_account (string screen_name) {
-    foreach(Account a in accounts) {
-      if(a.screen_name == screen_name){
+    foreach (Account a in accounts) {
+      if (a.screen_name == screen_name) {
         accounts.remove (a);
         return;
       }

@@ -22,7 +22,6 @@
     </child>
   </object>
   <template class="TweetInfoPage" parent="ScrollWidget">
-    <property name="visible">True</property>
     <property name="can_focus">True</property>
     <property name="hscrollbar_policy">never</property>
     <child>
@@ -150,7 +149,7 @@
               <packing>
                 <property name="left_attach">6</property>
                 <property name="top_attach">2</property>
-                <property name="width">2</property>
+                <property name="width">4</property>
                 <property name="height">2</property>
               </packing>
             </child>

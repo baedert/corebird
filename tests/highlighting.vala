@@ -26,11 +26,25 @@ void underline () {
   TweetUtils.annotate_text (buffer);
 }
 
+void normal () {
+  Gtk.TextBuffer buffer = create_buffer ();
+  buffer.set_text ("foobar @blabla");
+
+  buffer.apply_tag.connect ((tag, start, end) => {
+    string mention = buffer.get_text (start, end, false);
+    assert (mention == "@blabla");
+    assert (tag.name == "mention");
+  });
+
+  TweetUtils.annotate_text (buffer);
+}
+
+
 void main (string[] args) {
   GLib.Test.init (ref args);
-  Gtk.init (ref args);
-  GLib.Test.add_func ("/highlighting/mention", mention);
+  GLib.Test.add_func ("/highlighting/normal", normal);
   GLib.Test.add_func ("/highlighting/underline", underline);
+  GLib.Test.add_func ("/highlighting/mention", mention);
 
   GLib.Test.run ();
 }

@@ -236,8 +236,9 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       l.halign = Gtk.Align.START;
       completion_list.add (l);
     }
-    if (current_match == -1 && corpus_size > 0) {
+    if (corpus_size > 0) {
       completion_list.select_row (completion_list.get_row_at_index (0));
+      current_match = 0;
     }
     completion_list.show_all ();
 
@@ -315,7 +316,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       if (uri != null && uri.has_prefix ("file://")) {
         try {
           int final_size = 130;
-          var p = new Gdk.Pixbuf.from_file (uri.substring (7));
+          var p = new Gdk.Pixbuf.from_file (GLib.File.new_for_uri (uri).get_path ());
           int w = p.get_width ();
           int h = p.get_height ();
           if (w > h) {
@@ -369,6 +370,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     if (evt.keyval == Gdk.Key.Down) {
       if (n_results == 0)
         return false;
+
       this.current_match = (current_match + 1) % n_results;
       var row = completion_list.get_row_at_index (current_match);
       completion_list.select_row (row);
@@ -418,12 +420,13 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
 
   private void show_completion_window () {
+    debug ("show_completion_window");
     int x, y;
     Gtk.Allocation alloc;
     tweet_text.get_allocation (out alloc);
     tweet_text.get_window (Gtk.TextWindowType.WIDGET).get_origin (out x, out y);
-    x += alloc.x;
-    y += alloc.y + alloc.height;
+    //x += alloc.x;
+    y += alloc.height;
 
     completion_window.move (x, y);
     completion_window.resize (alloc.width, 50);

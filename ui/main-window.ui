@@ -1,84 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
+  <object class="GtkPopover" id="account_popover">
+    <property name="modal">true</property>
+    <property name="position">bottom</property>
+    <property name="relative_to">account_button</property>
+    <child>
+      <object class="GtkFrame">
+        <property name="visible">true</property>
+        <property name="shadow_type">in</property>
+        <property name="margin">8</property>
+        <child>
+          <object class="GtkListBox" id="account_list">
+            <property name="visible">true</property>
+            <property name="activate_on_single_click">true</property>
+            <property name="selection_mode">none</property>
+            <signal name="row_activated" handler="account_row_activated_cb" swapped="no" />
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+
+
   <template class="MainWindow" parent="GtkApplicationWindow">
     <property name="can_focus">False</property>
     <property name="title">Corebird</property>
     <property name="icon_name">corebird</property>
+    <property name="show_menubar">false</property>
     <signal name="button-press-event" handler="button_press_event_cb" swapped="no"/>
     <signal name="delete_event" handler="window_delete_cb" swapped="no" />
-    <child>
-      <object class="GtkBox" id="box1">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <child>
-          <object class="GtkRevealer" id="sidebar_revealer">
-            <property name="visible">True</property>
-            <property name="reveal_child">True</property>
-            <property name="can_focus">False</property>
-            <property name="transition_type">slide-right</property>
-            <child>
-              <object class="GtkToolbar" id="left_toolbar">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="orientation">vertical</property>
-                <property name="toolbar_style">icons</property>
-                <property name="show_arrow">False</property>
-                <property name="valign">fill</property>
-                <property name="border-width">1</property>
-                <style>
-                  <class name="sidebar"/>
-                </style>
-                <child>
-                  <object class="GtkSeparatorToolItem" id="toolbutton2">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="draw">False</property>
-                  </object>
-                  <packing>
-                    <property name="expand">True</property>
-                    <property name="homogeneous">True</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkToolItem" id="toolbutton1">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <child>
-                      <object class="GtkSpinner" id="progress_spinner">
-                        <property name="can_focus">False</property>
-                        <property name="no_show_all">True</property>
-                        <property name="margin_start">6</property>
-                        <property name="margin_end">5</property>
-                        <property name="active">True</property>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="homogeneous">True</property>
-                  </packing>
-                </child>
-              </object>
-            </child>
-
-          </object>
-        </child>
-        <child>
-          <object class="GtkStack" id="stack">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <child>
-              <placeholder/>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-      </object>
-    </child>
     <child type="titlebar">
       <object class="GtkHeaderBar" id="headerbar">
         <property name="visible">True</property>
@@ -90,17 +40,31 @@
             <property name="visible">true</property>
             <property name="can_focus">false</property>
             <property name="spacing">6</property>
+            <property name="no_show_all">true</property>
             <child>
-              <object class="AvatarWidget" id="avatar_image">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="margin_start">5</property>
-                <property name="valign">center</property>
+              <object class="GtkButton" id="account_button">
+                <property name="visible">true</property>
+                <!--<property name="relief">none</property>-->
+                <!--<property name="margin_start">6</property>-->
+                <property name="tooltip_text" translatable="yes">Show configured accounts</property>
+                <signal name="clicked" handler="account_button_clicked_cb" swapped="no" />
+                <style>
+                  <class name="image-button" />
+                  <class name="account-button" />
+                </style>
+                <child>
+                <object class="AvatarWidget" id="avatar_image">
+                  <property name="visible">True</property>
+                  <property name="can_focus">False</property>
+                  <property name="valign">center</property>
+                  </object>
+                </child>
               </object>
             </child>
             <child>
               <object class="GtkSeparator" id="sep">
                 <property name="orientation">vertical</property>
+                <property name="visible">True</property>
               </object>
             </child>
             <child>
@@ -108,7 +72,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="always-show-image">True</property>
-                <property name="action_name">win.compose_tweet</property>
+                <property name="action_name">win.compose-tweet</property>
                 <style>
                   <class name="image-button" />
                 </style>

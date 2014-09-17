@@ -42,6 +42,7 @@ namespace InlineMediaDownloader {
            url.has_prefix ("http://d.pr/i/") ||
            url.has_prefix ("http://ow.ly/i/") ||
            url.has_prefix ("http://www.flickr.com/photos/") ||
+           url.has_prefix ("https://www.flickr.com/photos/") ||
 #if VIDEO
            url.has_prefix ("https://vine.co/v/") ||
            url.has_suffix ("/photo/1") ||
@@ -160,7 +161,8 @@ namespace InlineMediaDownloader {
     if (url.has_prefix ("http://instagr.am") ||
         url.has_prefix ("http://instagram.com/p/") ||
         url.has_prefix ("http://ow.ly/i/") ||
-        url.has_prefix ("http://www.flickr.com/photos/")) {
+        url.has_prefix ("http://www.flickr.com/photos/") ||
+        url.has_prefix ("https://www.flickr.com/photos/")) {
       yield load_real_url (t, media, "<meta property=\"og:image\" content=\"(.*?)\"", 1);
     } else if (url.has_prefix("http://twitpic.com/")) {
       yield load_real_url (t, media,

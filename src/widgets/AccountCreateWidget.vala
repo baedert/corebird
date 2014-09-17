@@ -21,20 +21,28 @@ class AccountCreateWidget : Gtk.Box {
   [GtkChild]
   private Gtk.Entry pin_entry;
   [GtkChild]
-  private Gtk.Spinner progress_spinner;
-  [GtkChild]
   private Gtk.Label error_label;
   [GtkChild]
-  private Gtk.InfoBar error_bar;
+  private Gtk.Button confirm_button;
+  [GtkChild]
+  private Gtk.Button request_pin_button;
+  [GtkChild]
+  private Gtk.Label info_label;
   private unowned Account acc;
+  private unowned Corebird corebird;
   public signal void result_received (bool result, Account acc);
 
-  public AccountCreateWidget (Account acc){
+  public AccountCreateWidget (Account acc, Corebird corebird) {
     this.acc = acc;
+    this.corebird = corebird;
+    info_label.label = "%s <a href=\"http://twitter.com/signup\">%s</a>"
+                       .printf (_("Don't have an account yet?"), _("Create one"));
+    pin_entry.buffer.deleted_text.connect (pin_changed_cb);
+    pin_entry.buffer.inserted_text.connect (pin_changed_cb);
   }
 
   public void open_pin_request_site () {
-    acc.init_proxy (false);
+    acc.init_proxy (false, true);
     try {
       acc.proxy.request_token ("oauth/request_token", "oob");
       string uri = "http://twitter.com/oauth/authorize?oauth_token=" + acc.proxy.get_token();
@@ -43,24 +51,32 @@ class AccountCreateWidget : Gtk.Box {
     } catch (GLib.Error e) {
       if (e.message.down() == "unauthorized") {
         Utils.show_error_dialog (_("Unauthorized. Most of the time, this means that there's something wrong with the Twitter servers and you should try again later"));
-      } else
+      } else {
         Utils.show_error_dialog (e.message);
+      }
       critical (e.message);
     }
   }
 
   [GtkCallback]
-  private void confirm_button_clicked () {
-    progress_spinner.show ();
-    progress_spinner.start ();
+  private void request_pin_clicked_cb () {
+    open_pin_request_site ();
+  }
+
+  [GtkCallback]
+  private void confirm_button_clicked_cb () {
+    pin_entry.sensitive = false;
+    confirm_button.sensitive = false;
+    request_pin_button.sensitive = false;
     try {
       acc.proxy.access_token("oauth/access_token", pin_entry.get_text());
     } catch (GLib.Error e) {
       critical (e.message);
       // We just assume that it was the wrong code
-      progress_spinner.hide ();
-      error_label.label = _("Wrong PIN");
-      error_bar.show ();
+      show_error (_("Wrong PIN"));
+      pin_entry.sensitive = true;
+      confirm_button.sensitive = true;
+      request_pin_button.sensitive = true;
       return;
     }
 
@@ -70,7 +86,6 @@ class AccountCreateWidget : Gtk.Box {
     call.set_function ("1.1/account/settings.json");
     call.set_method ("GET");
     call.invoke_async.begin (null, (obj, res) => {
-      debug ("settings call");
       var parser = new Json.Parser ();
       try {
         parser.load_from_data (call.get_payload ());
@@ -85,6 +100,10 @@ class AccountCreateWidget : Gtk.Box {
         if (a.screen_name == screen_name) {
           result_received (false, a);
           critical ("Account is already in use");
+          show_error (_("Account already in use"));
+          pin_entry.sensitive = true;
+          pin_entry.text = "";
+          request_pin_button.sensitive = true;
           return;
         }
       }
@@ -100,10 +119,27 @@ class AccountCreateWidget : Gtk.Box {
               .run ();
         acc.init_proxy (true, true);
         // TODO: Insert account into app menu
-        progress_spinner.hide ();
+        corebird.account_added (acc);
         result_received (true, acc);
       });
     });
   }
 
+  private void show_error (string err) {
+    info_label.visible = false;
+    error_label.visible = true;
+    error_label.label = err;
+  }
+
+  private void pin_changed_cb () {
+    string text = pin_entry.get_text ();
+    bool confirm_possible = text.length > 0 && acc.proxy != null;
+    confirm_button.sensitive = confirm_possible;
+  }
+
+  [GtkCallback]
+  private bool delete_event_cb () {
+    Account.remove_account (Account.DUMMY);
+    return false;
+  }
 }

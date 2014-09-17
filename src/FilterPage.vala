@@ -6,7 +6,7 @@
  *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
-    *  corebird is distributed in the hope that it will be useful,
+ *  corebird is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
@@ -19,7 +19,7 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
   public int id { get; set; }
   public unowned MainWindow main_window {get; set;}
   public unowned Account account        {get; set;}
-  private Gtk.RadioToolButton tool_button;
+  private BadgeRadioToolButton tool_button;
   [GtkChild]
   private Gtk.ListBox filter_list;
   [GtkChild]
@@ -34,9 +34,9 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
   public FilterPage (int id) {
     this.id = id;
     filter_list.set_header_func (header_func);
-    filter_list.add (new AddFilterEntry ());
+    filter_list.add (new AddListEntry (_("Add new Filter")));
     filter_list.row_activated.connect ((row) => {
-      if (row is AddFilterEntry) {
+      if (row is AddListEntry) {
         var dialog = new ModifyFilterDialog (main_window, account);
         dialog.filter_added.connect (filter_added_cb);
         dialog.show_all ();
@@ -208,36 +208,14 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
   }
 
   public void on_leave () {}
-  public void create_tool_button(Gtk.RadioToolButton? group) {
+  public void create_tool_button (Gtk.RadioButton? group) {
     tool_button = new BadgeRadioToolButton(group, "corebird-filter-symbolic");
     tool_button.tooltip_text = _("Filters");
-    tool_button.label = _("Filters");
   }
+  public Gtk.RadioButton? get_tool_button() { return tool_button; }
 
   public string? get_title () {
     return _("Filters");
   }
 
-  public Gtk.RadioToolButton? get_tool_button() { return tool_button; }
 }
-
-
-
-
-class AddFilterEntry : Gtk.ListBoxRow {
-  public AddFilterEntry () {
-    var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 5);
-    var img = new Gtk.Image.from_icon_name ("list-add-symbolic", Gtk.IconSize.DIALOG);
-    img.pixel_size = 32;
-    img.margin_start = 10;
-    img.hexpand = true;
-    img.halign = Gtk.Align.END;
-    box.pack_start (img);
-    var l = new Gtk.Label (_("Add new Filter"));
-    l.hexpand = true;
-    l.halign = Gtk.Align.START;
-    box.pack_start (l);
-    add (box);
-  }
-}
-

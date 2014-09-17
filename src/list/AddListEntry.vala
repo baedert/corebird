@@ -14,25 +14,19 @@
  *  You should have received a copy of the GNU General Public License
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
-/**
- * Page in a MainWindow(i.e. in the MainWindow's GtkStack).
- */
-public interface IPage : Gtk.Widget {
-  public abstract int id { get; set; }
-  public abstract void on_join(int page_id, va_list arg_list);
-  public abstract void on_leave ();
-  public abstract void create_tool_button(Gtk.RadioButton? group);
-  public abstract Gtk.RadioButton? get_tool_button();
-  public abstract string? get_title ();
-  public abstract unowned MainWindow main_window {get; set;}
-  public abstract unowned Account account        {get; set;}
-
-
-  public virtual bool handles_double_open () {
-    return false;
+class AddListEntry : Gtk.ListBoxRow {
+  public AddListEntry (string label) {
+    var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 5);
+    var img = new Gtk.Image.from_icon_name ("list-add-symbolic", Gtk.IconSize.DIALOG);
+    img.pixel_size = 32;
+    img.margin_start = 10;
+    img.hexpand = true;
+    img.halign = Gtk.Align.END;
+    box.pack_start (img);
+    var l = new Gtk.Label (label);
+    l.hexpand = true;
+    l.halign = Gtk.Align.START;
+    box.pack_start (l);
+    add (box);
   }
-
-  public virtual void double_open () {}
 }

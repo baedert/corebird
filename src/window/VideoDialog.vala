@@ -137,6 +137,7 @@ class VideoDialog : Gtk.Window {
     session.queue_message (msg, (s, _msg) => {
       if (_msg.status_code != Soup.Status.OK) {
         warning ("Status Code %u", _msg.status_code);
+        show_error ("%u %s".printf (_msg.status_code, Soup.Status.get_phrase (_msg.status_code)));
         fetch_real_url.callback ();
         return;
       }
@@ -174,11 +175,12 @@ class VideoDialog : Gtk.Window {
       current_content_length += buffer.length;
       double fraction = (double) current_content_length / (double) file_content_length;
       progress_bar.fraction = fraction;
-      progress_bar.text = "%d%%".printf ((int)(fraction * 100));
+      progress_bar.text = "%d %%".printf ((int)(fraction * 100));
     });
     session.queue_message (msg, (s, _msg) => {
       if (_msg.status_code != Soup.Status.OK) {
         warning ("Status Code %u", _msg.status_code);
+        show_error ("%u %s".printf (_msg.status_code, Soup.Status.get_phrase (_msg.status_code)));
         download_video.callback ();
         return;
       }

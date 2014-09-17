@@ -60,9 +60,9 @@ class DMListEntry : Gtk.ListBoxRow, ITwitterItem {
 
   public DMListEntry () {
     name_button.clicked.connect (() => {
-      main_window.switch_page (MainWindow.PAGE_PROFILE,
-                               user_id,
-                               screen_name_label.label.substring (1));
+      main_window.main_widget.switch_page (Page.PROFILE,
+                                           user_id,
+                                           screen_name_label.label.substring (1));
     });
   }
 

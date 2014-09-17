@@ -58,6 +58,9 @@ multimedia_SOURCES = multimedia.vala
 multimedia_LDADD = $(top_builddir)/src/libcorebird.la
 multimedia_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
 
+highlighting_SOURCES = highlighting.vala
+highlighting_LDADD = $(top_builddir)/src/libcorebird.la
+highlighting_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
 
 highlighting_SOURCES = highlighting.vala
 highlighting_LDADD = $(top_builddir)/src/libcorebird.la

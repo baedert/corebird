@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+
+  <object class="GtkSizeGroup">
+    <widgets>
+      <widget name="delete_button" />
+      <widget name="delete_cancel_button" />
+    </widgets>
+  </object>
+
+
+  <template class="AccountDialog" parent="GtkDialog">
+    <property name="can_focus">false</property>
+    <property name="title" translatable="yes">Account Settings</property>
+    <property name="border_width">0</property>
+    <property name="destroy_with_parent">true</property>
+    <property name="modal">true</property>
+    <property name="type_hint">dialog</property>
+
+    <child internal-child="vbox">
+      <object class="GtkBox">
+        <property name="visible">true</property>
+        <property name="orientation">vertical</property>
+        <property name="can_focus">false</property>
+        <property name="margin">0</property>
+
+        <!-- Avatar -->
+        <child>
+          <object class="AvatarBannerWidget" id="avatar_banner_widget">
+            <property name="visible">true</property>
+            <property name="can_focus">false</property>
+            <property name="hexpand">true</property>
+            <property name="margin_bottom">12</property>
+          </object>
+        </child>
+
+        <!-- Main stack -->
+        <child>
+          <object class="GtkStack" id="delete_stack">
+            <property name="visible">true</property>
+            <property name="can_focus">false</property>
+            <property name="transition_type">crossfade</property>
+            <!-- Data grid -->
+            <child>
+              <object class="GtkGrid">
+                <property name="visible">true</property>
+                <property name="can_focus">false</property>
+                <property name="halign">center</property>
+                <property name="valign">start</property>
+                <property name="row_spacing">6</property>
+                <property name="column_spacing">12</property>
+                <property name="margin_end">12</property>
+                <property name="margin_start">12</property>
+                <property name="margin_bottom">12</property>
+
+                <!-- screen_name -->
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">true</property>
+                    <property name="can_focus">false</property>
+                    <property name="label" translatable="yes">Username</property>
+                    <property name="halign">end</property>
+                    <property name="valign">baseline</property>
+                    <style>
+                      <class name="dim-label" />
+                    </style>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">1</property>
+                  </packing>
+                </child>
+
+                <child>
+                  <object class="GtkLabel" id="screen_name_label">
+                    <property name="visible">true</property>
+                    <property name="can_focus">true</property>
+                    <property name="halign">start</property>
+                    <property name="valign">baseline</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">1</property>
+                  </packing>
+                </child>
+
+                <!-- Real Name -->
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">true</property>
+                    <property name="can_focus">false</property>
+                    <property name="label" translatable="yes">Name</property>
+                    <property name="halign">end</property>
+                    <property name="valign">baseline</property>
+                    <style>
+                      <class name="dim-label" />
+                    </style>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">2</property>
+                  </packing>
+                </child>
+
+                <child>
+                  <object class="GtkEntry" id="name_entry">
+                    <property name="visible">true</property>
+                    <property name="can_focus">true</property>
+                    <property name="halign">start</property>
+                    <property name="valign">baseline</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">2</property>
+                  </packing>
+                </child>
+
+                <!-- URL -->
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">true</property>
+                    <property name="can_focus">false</property>
+                    <property name="label" translatable="yes">Website</property>
+                    <property name="halign">end</property>
+                    <property name="valign">baseline</property>
+                    <style>
+                      <class name="dim-label" />
+                    </style>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">3</property>
+                  </packing>
+                </child>
+
+                <child>
+                  <object class="GtkEntry" id="website_entry">
+                    <property name="visible">true</property>
+                    <property name="can_focus">true</property>
+                    <property name="halign">start</property>
+                    <property name="valign">baseline</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">3</property>
+                  </packing>
+                </child>
+
+                <!-- Description -->
+                 <child>
+                  <object class="GtkFrame">
+                    <property name="visible">true</property>
+                    <property name="can_focus">false</property>
+                    <child>
+                      <object class="GtkTextView" id="description_text_view">
+                        <property name="visible">true</property>
+                        <property name="can_focus">true</property>
+                        <property name="height_request">60</property>
+                        <property name="accepts_tab">false</property>
+                        <property name="wrap_mode">word-char</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">5</property>
+                    <property name="width">2</property>
+                  </packing>
+                 </child>
+
+                <!-- Separator -->
+                <child>
+                  <object class="GtkSeparator">
+                    <property name="visible">true</property>
+                    <property name="can_focus">false</property>
+                    <property name="margin">6</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">6</property>
+                    <property name="width">2</property>
+                  </packing>
+                </child>
+
+                <!-- Autostart switch -->
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">true</property>
+                    <property name="can_focus">false</property>
+                    <property name="label" translatable="yes">Autostart</property>
+                    <property name="halign">end</property>
+                    <property name="valign">baseline</property>
+                    <style>
+                      <class name="dim-label" />
+                    </style>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">7</property>
+                  </packing>
+                </child>
+
+                <child>
+                  <object class="GtkSwitch" id="autostart_switch">
+                    <property name="visible">true</property>
+                    <property name="can_focus">true</property>
+                    <property name="halign">start</property>
+                    <property name="valign">baseline</property>
+                    <signal name="notify::active" handler="autostart_switch_activate_cb" />
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">7</property>
+                  </packing>
+                </child>
+
+
+              </object>
+
+              <packing>
+                <property name="name">normal</property>
+              </packing>
+            </child>
+            <!-- Delete Grid -->
+            <child>
+              <object class="GtkGrid">
+                <property name="visible">true</property>
+                <property name="can_focus">false</property>
+                <property name="column_spacing">12</property>
+                <property name="column_homogeneous">true</property>
+                <property name="halign">center</property>
+
+                <child>
+                  <object class="GtkLabel" id="delete_label">
+                    <property name="visible">true</property>
+                    <property name="can_focus">false</property>
+                    <property name="halign">center</property>
+                    <property name="margin_bottom">12</property>
+                    <property name="margin_top">12</property>
+                    <property name="margin_start">6</property>
+                    <property name="margin_end">6</property>
+                    <property name="label" translatable="yes">Do you really want to delete this account?</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">0</property>
+                    <property name="width">2</property>
+                  </packing>
+                </child>
+
+                <child>
+                  <object class="GtkButton" id="delete_cancel_button">
+                    <property name="visible">true</property>
+                    <property name="can_focus">true</property>
+                    <property name="label" translatable="yes">Cancel</property>
+                    <property name="halign">end</property>
+                    <signal name="clicked" handler="delete_cancel_button_clicked_cb" />
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">1</property>
+                  </packing>
+                </child>
+
+                <child>
+                  <object class="GtkButton" id="delete_confirm_button">
+                    <property name="visible">true</property>
+                    <property name="can_focus">true</property>
+                    <property name="label" translatable="yes">Delete</property>
+                    <property name="halign">start</property>
+                    <signal name="clicked" handler="delete_confirm_button_clicked_cb" />
+                    <style>
+                      <class name="destructive-action" />
+                    </style>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">1</property>
+                  </packing>
+                </child>
+
+
+              </object>
+              <packing>
+                <property name="name">delete</property>
+              </packing>
+            </child>
+
+          </object>
+
+        </child>
+
+        <child internal-child="action_area">
+          <object class="GtkGrid">
+            <property name="can_focus">false</property>
+            <property name="visible">true</property>
+            <property name="margin">6</property>
+
+            <child>
+              <object class="GtkButton" id="delete_button">
+                <property name="can_focus">true</property>
+                <property name="visible">true</property>
+                <property name="label" translatable="yes">Delete</property>
+                <style>
+                  <class name="destructive-action" />
+                </style>
+              </object>
+              <packing>
+                <property name="secondary">true</property>
+              </packing>
+            </child>
+
+
+            <child>
+              <object class="GtkButton" id="close_button">
+                <property name="can_focus">true</property>
+                <property name="visible">true</property>
+                <property name="label" translatable="yes">Close</property>
+              </object>
+            </child>
+
+          </object>
+        </child>
+
+      </object>
+    </child>
+    <action-widgets>
+      <action-widget response="1">delete_button</action-widget>
+      <action-widget response="0">close_button</action-widget>
+    </action-widgets>
+  </template>
+</interface>
+

@@ -90,6 +90,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     name_button.set_markup (tweet.user_name);
     screen_name_label.label = "@"+tweet.screen_name;
     avatar_image.pixbuf = tweet.avatar;
+    avatar_image.verified = tweet.verified;
     text_label.label = tweet.get_trimmed_text ();
     update_time_delta ();
     if (tweet.is_retweet) {
@@ -109,23 +110,11 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
     retweet_button.visible = tweet.retweeted;
     retweet_button.active = tweet.retweeted;
-    tweet.notify["retweeted"].connect (() => {
-      values_set = false;
-      retweet_button.active = tweet.retweeted;
-      retweet_button.visible = tweet.retweeted;
-      adjust_hover_box ();
-      values_set = true;
-    });
+    tweet.notify["retweeted"].connect (retweeted_cb);
 
     favorite_button.visible = tweet.favorited;
     favorite_button.active = tweet.favorited;
-    tweet.notify["favorited"].connect (() => {
-      values_set = false;
-      favorite_button.active = tweet.favorited;
-      favorite_button.visible = tweet.favorited;
-      adjust_hover_box ();
-      values_set = true;
-    });
+    tweet.notify["favorited"].connect (favorited_cb);
 
     if (tweet.reply_id == 0)
       conversation_image.unparent ();
@@ -138,7 +127,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
     if (tweet.has_inline_media) {
       mm_widget.set_all_media (tweet.medias);
-      mm_widget.media_clicked.connect ((m) => TweetUtils.handle_media_click (m, window));
+      mm_widget.media_clicked.connect (media_clicked_cb);
       mm_widget.window = window;
     } else
       grid.remove (mm_widget);
@@ -162,6 +151,26 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     });
 
     values_set = true;
+  }
+
+  private void favorited_cb () {
+    values_set = false;
+    favorite_button.active = tweet.favorited;
+    favorite_button.visible = tweet.favorited;
+    adjust_hover_box ();
+    values_set = true;
+  }
+
+  private void retweeted_cb () {
+    values_set = false;
+    retweet_button.active = tweet.retweeted;
+    retweet_button.visible = tweet.retweeted;
+    adjust_hover_box ();
+    values_set = true;
+  }
+
+  private void media_clicked_cb (Media m) {
+    TweetUtils.handle_media_click (m, this.window);
   }
 
   private void delete_tweet_activated () {
@@ -188,7 +197,6 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     Gtk.BindingEntry.add_signal (binding_set, Gdk.Key.d, 0, "delete-tweet", 0, null);
     Gtk.BindingEntry.add_signal (binding_set, Gdk.Key.t, 0, "retweet-tweet", 0, null);
     Gtk.BindingEntry.add_signal (binding_set, Gdk.Key.f, 0, "favorite-tweet", 0, null);
-    // TODO: Add q shortcut
   }
 
   [GtkCallback]
@@ -274,9 +282,9 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
   [GtkCallback]
   private void name_button_clicked_cb () {
-    window.switch_page (MainWindow.PAGE_PROFILE,
-                        tweet.user_id,
-                        tweet.screen_name);
+    window.main_widget.switch_page (Page.PROFILE,
+                                    tweet.user_id,
+                                    tweet.screen_name);
   }
   [GtkCallback]
   private void reply_button_clicked_cb () {
@@ -288,9 +296,9 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
   [GtkCallback]
   private void detail_item_activated_cb () {
-    window.switch_page (MainWindow.PAGE_TWEET_INFO,
-                        TweetInfoPage.BY_INSTANCE,
-                        tweet);
+    window.main_widget.switch_page (Page.TWEET_INFO,
+                                    TweetInfoPage.BY_INSTANCE,
+                                    tweet);
   }
 
   [GtkCallback]

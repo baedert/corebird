@@ -31,6 +31,8 @@
     <file compressed="true" preprocess="xml-stripblanks">ui/filter-list-entry.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/modify-filter-dialog.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/user-filter-entry.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">ui/main-widget.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">ui/account-dialog.ui</file>
     <file>assets/play.png</file>
   </gresource>
 </gresources>

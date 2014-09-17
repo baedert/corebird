@@ -147,7 +147,7 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
     messages_list.foreach ((w) => {messages_list.remove (w);});
 
     // Update unread count
-    DMThreadsPage threads_page = ((DMThreadsPage)main_window.get_page (MainWindow.PAGE_DM_THREADS));
+    DMThreadsPage threads_page = ((DMThreadsPage)main_window.get_page (Page.DM_THREADS));
     threads_page.adjust_unread_count_for_user_id (user_id);
 
     var now = new GLib.DateTime.now_local ();
@@ -250,6 +250,6 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
     return _("Direct Conversation");
   }
 
-  public void create_tool_button (Gtk.RadioToolButton? group) {}
-  public Gtk.RadioToolButton? get_tool_button() {return null;}
+  public void create_tool_button (Gtk.RadioButton? group) {}
+  public Gtk.RadioButton? get_tool_button() {return null;}
 }

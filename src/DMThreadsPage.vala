@@ -48,8 +48,8 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
         ((StartConversationEntry)row).reveal ();
       else {
         var entry = (DMThreadEntry) row;
-        main_window.switch_page (MainWindow.PAGE_DM,
-                                 entry.user_id);
+        main_window.main_widget.switch_page (Page.DM,
+                                             entry.user_id);
       }
     });
     start_conversation_entry = new StartConversationEntry (account);
@@ -59,8 +59,8 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
         this.unread_count -= thread_entry.unread_count;
         update_unread_count ();
       }
-      main_window.switch_page (MainWindow.PAGE_DM, user_id,
-                              screen_name, name, avatar_url);
+      main_window.main_widget.switch_page (Page.DM, user_id,
+                                           screen_name, name, avatar_url);
     });
 
     thread_list.add (start_conversation_entry);
@@ -369,19 +369,18 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     GLib.Application.get_default ().send_notification ("new-dm", n);
   }
 
-  public void create_tool_button(Gtk.RadioToolButton? group) {
+  public void create_tool_button(Gtk.RadioButton? group) {
     tool_button = new BadgeRadioToolButton(group, "mail-unread-symbolic");
-    tool_button.label = _("Direct Messages");
     tool_button.tooltip_text = _("Direct Messages");
   }
 
-  public Gtk.RadioToolButton? get_tool_button() {
+  public Gtk.RadioButton? get_tool_button() {
     return tool_button;
   }
 
   private bool user_id_visible (int64 sender_id) {
-    return (main_window.cur_page_id == MainWindow.PAGE_DM &&
-            ((DMPage)main_window.get_page (MainWindow.PAGE_DM)).user_id == sender_id);
+    return (main_window.cur_page_id == Page.DM &&
+            ((DMPage)main_window.get_page (Page.DM)).user_id == sender_id);
   }
 
 

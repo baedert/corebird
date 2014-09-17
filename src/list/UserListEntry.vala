@@ -23,6 +23,10 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
   private Gtk.Label screen_name_label;
   [GtkChild]
   private AvatarWidget avatar_image;
+  [GtkChild]
+  private Gtk.Button settings_button;
+  [GtkChild]
+  private Gtk.Button new_window_button;
 
   public new string name {
     set { name_label.label = value; }
@@ -39,6 +43,10 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
     set { real_set_avatar (value); }
   }
 
+  public Gdk.Pixbuf avatar_pixbuf {
+    set { avatar_image.pixbuf = value; }
+  }
+
   public bool seen {
     get { return true; }
     set {}
@@ -48,7 +56,44 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
     get{ return int64.MAX-1; }
   }
 
+  public bool show_settings {
+    set {
+      settings_button.visible = value;
+      new_window_button.visible = value;
+    }
+  }
+
   public int64 user_id { get; set; }
+
+  public signal void action_clicked ();
+
+  private Account account;
+
+  public UserListEntry.from_account (Account acc) {
+    this.screen_name = "@" + acc.screen_name;
+    this.name = acc.name;
+    this.avatar_pixbuf = acc.avatar;
+    this.account = acc;
+    acc.info_changed.connect ((screen_name, name, avatar) => {
+      this.screen_name = screen_name;
+      this.name = name;
+      this.avatar_pixbuf = avatar;
+    });
+    var cb = (Corebird) GLib.Application.get_default ();
+    cb.window_added.connect ((window) => {
+      if (window is MainWindow) {
+        update_window_button_sensitivity (window, false);
+      }
+    });
+
+    cb.window_removed.connect ((window) => {
+      if (window is MainWindow) {
+        update_window_button_sensitivity (window, true);
+      }
+    });
+    // Set initial sensitivitiy of new_window_button
+    new_window_button.sensitive = !(cb.is_window_open_for_screen_name (acc.screen_name));
+  }
 
   private void real_set_avatar (string avatar_url) {
     avatar_image.pixbuf = Twitter.get ().get_avatar (avatar_url, (a) => {
@@ -57,4 +102,29 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
   }
 
   public int update_time_delta (GLib.DateTime? now = null) {return 0;}
+
+  private void update_window_button_sensitivity (Gtk.Window window, bool new_value) {
+    if (((MainWindow)window).account.screen_name == this.account.screen_name) {
+      new_window_button.sensitive = new_value;
+    }
+  }
+
+  [GtkCallback]
+  private void settings_button_clicked_cb () {
+    action_clicked ();
+    var active_window = ((Gtk.Application)GLib.Application.get_default ()).active_window;
+    var dialog = new AccountDialog (this.account);
+    dialog.set_transient_for (active_window);
+    dialog.modal = true;
+    dialog.show ();
+  }
+
+  [GtkCallback]
+  private void new_window_button_clicked_cb () {
+    var cb = (Corebird) GLib.Application.get_default ();
+    var window = new MainWindow (cb, this.account);
+    cb.add_window (window);
+    window.show_all ();
+    action_clicked ();
+  }
 }

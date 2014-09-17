@@ -121,17 +121,15 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
 
   public override void load_older () {
     this.balance_next_upper_change (BOTTOM);
-    main_window.start_progress ();
     this.loading = true;
     this.load_older_internal.begin (() => {
       this.loading = false;
-      main_window.stop_progress ();
     });
   }
 
-  public override void create_tool_button (Gtk.RadioToolButton? group) {
+  public override void create_tool_button (Gtk.RadioButton? group) {
     tool_button = new BadgeRadioToolButton(group, "user-home-symbolic");
+    tool_button.margin_top = 6;
     tool_button.tooltip_text = _("Home");
-    tool_button.label = _("Home");
   }
 }

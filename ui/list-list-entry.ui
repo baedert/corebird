@@ -34,7 +34,6 @@
                 <property name="margin_start">6</property>
                 <property name="margin_top">3</property>
                 <property name="margin_bottom">3</property>
-                <property name="label">Name</property>
                 <property name="ellipsize">middle</property>
                 <property name="hexpand">True</property>
                 <attributes>
@@ -57,8 +56,7 @@
                 <property name="xalign">0</property>
                 <property name="margin_start">6</property>
                 <property name="margin_top">3</property>
-                <property name="margin_bottom">6</property>
-                <property name="label">Description</property>
+                <property name="margin_bottom">4</property>
                 <property name="ellipsize">end</property>
                 <style>
                   <class name="dim-label"/>

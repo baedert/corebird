@@ -15,6 +15,25 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
+enum Page {
+  STREAM = 0,
+  MENTIONS,
+  FAVORITES,
+  DM_THREADS,
+  LISTS,
+  FILTERS,
+  SEARCH,
+  PROFILE,
+  TWEET_INFO,
+  DM,
+  LIST_STATUSES,
+
+  PREVIOUS = 1024,
+  NEXT = 2048
+}
+
+
 namespace Utils {
   /**
   * Parses a date given by Twitter in the form 'Wed Jun 20 19:01:28 +0000 2012'
@@ -367,5 +386,9 @@ namespace Utils {
       return 0;
 
     return (int)node.get_array_member (object_name).get_length ();
+  }
+
+  public string get_banner_name (int64 user_id) {
+    return user_id.to_string () + ".png";
   }
 }

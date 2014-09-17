@@ -189,7 +189,6 @@ class ListStatusesPage : ScrollWidget, IPage {
     if (loading)
       return;
 
-    main_window.start_progress ();
     loading = true;
     message ("Loading older statuses...");
     var call = account.proxy.new_call ();
@@ -223,7 +222,6 @@ class ListStatusesPage : ScrollWidget, IPage {
       lowest_id = res.min_id;
 
     loading = false;
-    main_window.stop_progress ();
   } // }}}
 
   [GtkCallback]
@@ -298,8 +296,8 @@ class ListStatusesPage : ScrollWidget, IPage {
       }
     });
     // Go back to the ListsPage and tell it to remove this list
-    main_window.switch_page (MainWindow.PAGE_LISTS,
-                             ListsPage.MODE_DELETE, list_id);
+    main_window.main_widget.switch_page (Page.LISTS,
+                                         ListsPage.MODE_DELETE, list_id);
   }
 
   [GtkCallback]
@@ -384,6 +382,6 @@ class ListStatusesPage : ScrollWidget, IPage {
     return _("List");
   }
 
-  public void create_tool_button (Gtk.RadioToolButton? group) {}
-  public Gtk.RadioToolButton? get_tool_button () {return null;}
+  public void create_tool_button (Gtk.RadioButton? group) {}
+  public Gtk.RadioButton? get_tool_button () {return null;}
 }

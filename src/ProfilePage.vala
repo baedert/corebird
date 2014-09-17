@@ -55,8 +55,6 @@ class ProfilePage : ScrollWidget, IPage {
   public unowned DeltaUpdater delta_updater { get; set; }
 
   [GtkChild]
-  private Gtk.Image verified_image;
-  [GtkChild]
   private AspectImage banner_image;
   [GtkChild]
   private AvatarWidget avatar_image;
@@ -135,10 +133,11 @@ class ProfilePage : ScrollWidget, IPage {
     });
 
     tweet_list.row_activated.connect ((row) => {
-      main_window.switch_page (MainWindow.PAGE_TWEET_INFO,
-                               TweetInfoPage.BY_INSTANCE,
-                               ((TweetListEntry)row).tweet);
+      main_window.main_widget.switch_page (Page.TWEET_INFO,
+                                           TweetInfoPage.BY_INSTANCE,
+                                           ((TweetListEntry)row).tweet);
     });
+    tweet_list.set_sort_func (ITwitterItem.sort_func);
 
     user_lists.hide_user_list_entry ();
     page_change_signal = user_stack.notify["visible-child"].connect (() => {
@@ -304,7 +303,7 @@ class ProfilePage : ScrollWidget, IPage {
     int tweets         = (int)root.get_int_member("statuses_count");
     bool is_following  = root.get_boolean_member("following");
     bool has_url       = root.get_object_member("entities").has_member("url");
-    string banner_name = get_banner_name(user_id);
+    string banner_name = Utils.get_banner_name(user_id);
     bool verified      = root.get_boolean_member ("verified");
     bool protected_user = root.get_boolean_member ("protected");
     if (protected_user) {
@@ -422,7 +421,6 @@ class ProfilePage : ScrollWidget, IPage {
     if (user_stack.visible_child != tweet_list)
       return;
 
-    main_window.start_progress ();
     tweets_loading = true;
     var call = account.proxy.new_call ();
     call.set_function ("1.1/statuses/user_timeline.json");
@@ -451,7 +449,6 @@ class ProfilePage : ScrollWidget, IPage {
                                               tweet_list, main_window, account);
     lowest_tweet_id = result.min_id;
     tweets_loading = false;
-    main_window.stop_progress ();
   } // }}}
 
   /**
@@ -462,9 +459,9 @@ class ProfilePage : ScrollWidget, IPage {
    * @param screen_name Bar
    */
   private void load_profile_banner (string base_url, int64 user_id) { // {{{
-    string saved_banner_url = Dirs.cache ("assets/banners/"+get_banner_name (user_id));
+    string saved_banner_url = Dirs.cache ("assets/banners/"+Utils.get_banner_name (user_id));
     string banner_url  = base_url+"/mobile_retina";
-    string banner_name = get_banner_name (user_id);
+    string banner_name = Utils.get_banner_name (user_id);
     string banner_on_disk = Dirs.cache("assets/banners/"+banner_name);
     if (!FileUtils.test (banner_on_disk, FileTest.EXISTS) || banner_url != saved_banner_url) {
       Utils.download_file_async .begin (banner_url, banner_on_disk, data_cancellable,
@@ -518,18 +515,7 @@ class ProfilePage : ScrollWidget, IPage {
     } else
       location_label.visible = false;
 
-    if (verified) {
-      verified_image.show ();
-      if (verified_image.pixbuf == null) {
-        try {
-          verified_image.pixbuf = new Gdk.Pixbuf.from_file (DATADIR + "verified.png");
-        } catch (GLib.Error e) {
-          warning (e.message);
-        }
-      }
-    } else {
-      verified_image.hide ();
-    }
+    avatar_image.verified = verified;
 
     if (url != null && url != "") {
       url_label.visible = true;
@@ -572,14 +558,6 @@ class ProfilePage : ScrollWidget, IPage {
       loading_stack.visible_child_name = "data";
     });
   } //}}}
-
-  /*
-   * Returns the banner name for the given user by user_id and screen_name.
-   * This is useful since both of them might be used for the banner name.
-   */
-  private string get_banner_name (int64 user_id) {
-    return user_id.to_string()+".png";
-  }
 
   [GtkCallback]
   private bool activate_link (string uri) {
@@ -658,20 +636,20 @@ class ProfilePage : ScrollWidget, IPage {
     avatar_image.pixbuf = null;
   }
 
-  public void create_tool_button (Gtk.RadioToolButton? group) {}
+  public void create_tool_button (Gtk.RadioButton? group) {}
 
 
   public string? get_title () {
     return "@" + screen_name;
   }
 
-  public Gtk.RadioToolButton? get_tool_button(){
+  public Gtk.RadioButton? get_tool_button(){
     return null;
   }
 
   private void write_dm_activated (GLib.SimpleAction a, GLib.Variant? v) {
-     main_window.switch_page (MainWindow.PAGE_DM,
-                              user_id, screen_name, name, avatar_url);
+     main_window.main_widget.switch_page (Page.DM,
+                                          user_id, screen_name, name, avatar_url);
   }
 
   private void tweet_to_activated (GLib.SimpleAction a, GLib.Variant? v) {

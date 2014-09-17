@@ -1,66 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 on Sun Sep 29 18:10:44 2013 -->
 <interface>
-  <!-- interface-requires gtk+ 3.10 -->
   <template class="AccountCreateWidget" parent="GtkBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
+    <property name="halign">center</property>
     <property name="orientation">vertical</property>
-    <property name="spacing">5</property>
+    <property name="margin_top">50</property>
+    <property name="margin_bottom">20</property>
+    <property name="margin_start">20</property>
+    <property name="margin_end">20</property>
+    <signal name="delete_event" handler="delete_event_cb" swapped="no" />
     <child>
-      <object class="GtkBox" id="box2">
+      <object class="GtkLabel" id="label1">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <child>
-          <object class="GtkLabel" id="label4">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="halign">end</property>
-            <property name="margin_end">12</property>
-            <property name="hexpand">True</property>
-            <property name="label" translatable="yes">PIN:</property>
-            <accessibility>
-              <relation type="label-for" target="pin_entry"/>
-            </accessibility>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkEntry" id="pin_entry">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="margin_end">7</property>
-            <property name="margin_top">7</property>
-            <property name="hexpand">True</property>
-            <property name="input_purpose">digits</property>
-            <accessibility>
-              <relation type="labelled-by" target="label4"/>
-            </accessibility>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkSpinner" id="progress_spinner">
-            <property name="width_request">20</property>
-            <property name="can_focus">False</property>
-            <property name="halign">start</property>
-            <property name="margin_start">10</property>
-            <property name="margin_end">10</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">2</property>
-          </packing>
-        </child>
+        <property name="label" translatable="yes">New Account</property>
+        <attributes>
+          <attribute name="scale" value="3"/>
+        </attributes>
       </object>
       <packing>
         <property name="expand">False</property>
@@ -69,60 +26,26 @@
       </packing>
     </child>
     <child>
-      <object class="GtkButton" id="confirm_button">
-        <property name="label" translatable="yes">Confirm</property>
+      <object class="GtkBox" id="box2">
         <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="receives_default">True</property>
-        <property name="halign">center</property>
-        <property name="hexpand">True</property>
-        <style>
-          <class name="button-wide"/>
-        </style>
-        <signal name="clicked" handler="confirm_button_clicked" swapped="no"/>
-      </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">1</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkInfoBar" id="error_bar">
-        <property name="app_paintable">True</property>
         <property name="can_focus">False</property>
-        <property name="valign">start</property>
-        <property name="message_type">error</property>
-        <child internal-child="action_area">
-          <object class="GtkButtonBox" id="infobar-action_area2">
+        <property name="halign">center</property>
+        <property name="margin_top">35</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">6</property>
+        <child>
+          <object class="GtkBox" id="box3">
+            <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="spacing">6</property>
-            <property name="layout_style">end</property>
             <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child internal-child="content_area">
-          <object class="GtkBox" id="infobar-content_area2">
-            <property name="can_focus">False</property>
-            <property name="spacing">16</property>
-            <child>
-              <object class="GtkLabel" id="error_label">
+              <object class="GtkLabel" id="label2">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Wrong PIN. Try again.</property>
+                <property name="halign">end</property>
+                <property name="valign">baseline</property>
+                <property name="margin_end">8</property>
+                <property name="hexpand">True</property>
+                <property name="label" translatable="yes">PIN:</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -131,21 +54,86 @@
               </packing>
             </child>
             <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
+              <object class="GtkEntry" id="pin_entry">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="halign">fill</property>
+                <property name="valign">baseline</property>
+                <property name="hexpand">True</property>
+
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
             </child>
           </object>
           <packing>
             <property name="expand">False</property>
-            <property name="fill">False</property>
+            <property name="fill">True</property>
             <property name="position">0</property>
           </packing>
         </child>
         <child>
-          <placeholder/>
+          <object class="GtkBox" id="box4">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkButton" id="request_pin_button">
+                <property name="label" translatable="yes">Request PIN</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="margin_end">8</property>
+                <property name="hexpand">False</property>
+                <signal name="clicked" handler="request_pin_clicked_cb" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="confirm_button">
+                <property name="label" translatable="yes">Confirm</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="hexpand">True</property>
+                <property name="sensitive">false</property>
+                <signal name="clicked" handler="confirm_button_clicked_cb" swapped="no"/>
+                <style>
+                  <class name="suggested-action"/>
+                </style>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
         </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">1</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="error_label">
+        <property name="visible">false</property>
+        <property name="no_show_all">true</property>
+        <property name="can_focus">False</property>
+        <property name="margin_top">8</property>
       </object>
       <packing>
         <property name="expand">False</property>
@@ -153,5 +141,27 @@
         <property name="position">2</property>
       </packing>
     </child>
+    <child>
+      <object class="GtkLabel" id="info_label">
+        <property name="visible">true</property>
+        <property name="can_focus">false</property>
+        <property name="margin_top">20</property>
+        <property name="use_markup">true</property>
+        <style>
+          <class name="dim-label" />
+        </style>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">3</property>
+      </packing>
+    </child>
   </template>
+  <object class="GtkSizeGroup">
+    <widgets>
+      <widget name="confirm_button"/>
+      <widget name="request_pin_button"/>
+    </widgets>
+  </object>
 </interface>

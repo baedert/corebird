@@ -12,6 +12,10 @@
   border-color: grey;
 }
 
+.account-button {
+  padding: 2px 4px;
+}
+
 .sidebar {
   -GtkWidget-window-dragging: true;
 }

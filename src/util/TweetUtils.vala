@@ -334,16 +334,16 @@ namespace TweetUtils {
     if (uri.has_prefix ("@")) {
       int slash_index = uri.index_of ("/");
       if (slash_index == -1) {
-        window.switch_page (MainWindow.PAGE_PROFILE,
-                            int64.parse (term));
+        window.main_widget.switch_page (Page.PROFILE,
+                                         int64.parse (term));
       } else {
-        window.switch_page (MainWindow.PAGE_PROFILE,
-                            int64.parse (term.substring (0, slash_index - 1)),
-                            term.substring (slash_index + 1, term.length - slash_index - 1));
+        window.main_widget.switch_page (Page.PROFILE,
+                                        int64.parse (term.substring (0, slash_index - 1)),
+                                        term.substring (slash_index + 1, term.length - slash_index - 1));
       }
       return true;
     } else if (uri.has_prefix ("#")) {
-      window.switch_page (MainWindow.PAGE_SEARCH, uri);
+      window.main_widget.switch_page (Page.SEARCH, uri);
       return true;
     }
     return false;
@@ -402,6 +402,9 @@ namespace TweetUtils {
         }
         index ++;
         if (index == tweet_array.length) {
+          if (tweet_list is TweetListBox) {
+            ((TweetListBox)tweet_list).add_progress_entry ();
+          }
           work_array.callback ();
           return false;
         }
@@ -473,7 +476,6 @@ namespace TweetUtils {
       iter2.forward_char ();
 
     }
-    debug ("Link: %s", buffer.get_text (word_start, iter1, false));
     buffer.apply_tag_by_name ("link", word_start, iter1);
   }
 
@@ -481,7 +483,23 @@ namespace TweetUtils {
   private void highlight_mention (Gtk.TextBuffer buffer,
                                   Gtk.TextIter? word_start,
                                   Gtk.TextIter? word_end) {
-    buffer.apply_tag_by_name ("mention", word_start, word_end);
+    Gtk.TextIter? iter1 = word_start;
+    Gtk.TextIter? iter2 = word_start;
+    iter1.forward_char ();
+    iter2.forward_chars (2);
+
+    while (iter1.compare (word_end) < 0) {
+      string t = buffer.get_text (iter1, iter2, false);
+      unichar c = t.get_char (0);
+
+      if (c.ispunct () || c == '"' || c == '“') {
+        break;
+      }
+      iter1.forward_char ();
+      iter2.forward_char ();
+
+    }
+    buffer.apply_tag_by_name ("mention", word_start, iter1);
   }
 
 
@@ -496,8 +514,8 @@ namespace TweetUtils {
 
     while (iter1.compare (word_end) < 0) {
       string t = buffer.get_text (iter1, iter2, false);
-      char c = t[0];
-      if (c.ispunct () && c != '_') {
+      unichar c = t.get_char (0);
+      if ((c.ispunct () && c != '_') || c == '”') {
         break;
       }
       iter1.forward_char ();

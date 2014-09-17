@@ -17,128 +17,77 @@
 [GtkTemplate (ui = "/org/baedert/corebird/ui/main-window.ui")]
 public class MainWindow : Gtk.ApplicationWindow {
   private const GLib.ActionEntry[] win_entries = {
-    {"compose_tweet",  show_compose_window},
-    {"toggle_sidebar", Settings.toggle_sidebar_visible},
-    {"switch_page",    simple_switch_page, "i"}
+    {"compose-tweet",       show_compose_window},
+    {"toggle-sidebar",      Settings.toggle_sidebar_visible},
+    {"switch-page",         simple_switch_page, "i"},
+    {"show-account-dialog", show_account_dialog}
   };
-  public static const int PAGE_STREAM        = 0;
-  public static const int PAGE_MENTIONS      = 1;
-  public static const int PAGE_FAVORITES     = 2;
-  public static const int PAGE_DM_THREADS    = 3;
-  public static const int PAGE_LISTS         = 4;
-  public static const int PAGE_FILTERS       = 5;
-  public static const int PAGE_SEARCH        = 6;
-  public static const int PAGE_PROFILE       = 7;
-  public static const int PAGE_TWEET_INFO    = 8;
-  public static const int PAGE_DM            = 9;
-  public static const int PAGE_LIST_STATUSES = 10;
-
-  public static const int PAGE_PREVIOUS   = 1024;
-  public static const int PAGE_NEXT       = 2048;
-
-  [GtkChild]
-  private Gtk.Toolbar left_toolbar;
   [GtkChild]
   private Gtk.HeaderBar headerbar;
   [GtkChild]
-  private Gtk.Stack stack;
-  [GtkChild]
   private AvatarWidget avatar_image;
   [GtkChild]
-  private Gtk.Spinner progress_spinner;
+  private Gtk.ListBox account_list;
   [GtkChild]
-  private Gtk.Revealer sidebar_revealer;
+  private Gtk.Popover account_popover;
+  [GtkChild]
+  private Gtk.Box header_box;
+
+  private Gtk.MenuButton app_menu_button = null;
+  public MainWidget main_widget;
+  public unowned Account account  {public get; private set;}
+
   public int cur_page_id {
     get {
-      return history.current;
+      return main_widget.cur_page_id;
     }
   }
-  private uint progress_holders            = 0;
-  private Gtk.RadioToolButton dummy_button = new Gtk.RadioToolButton(null);
-  private IPage[] pages                    = new IPage[11];
-  private IntHistory history               = new IntHistory (5);
-  private DeltaUpdater delta_updater       = new DeltaUpdater ();
-  public unowned Account account           {public get; private set;}
-  private bool page_switch_lock = false;
 
-
-  public MainWindow(Gtk.Application app, Account? account = null){
-    GLib.Object (application: app);
+  public MainWindow (Gtk.Application app, Account? account = null){
     set_default_size (480, 700);
-    this.account = account;
 
-    if (account != null) {
-      account.init_proxy ();
-      account.query_user_info_by_scren_name.begin (account.screen_name, account.load_avatar);
-      var acc_menu = (GLib.Menu)Corebird.account_menu;
-      for (int i = 0; i < acc_menu.get_n_items (); i++){
-        Variant item_name = acc_menu.get_item_attribute_value (i,
-                                         "label", VariantType.STRING);
-        if (item_name.get_string () == "@"+account.screen_name){
-          ((SimpleAction)app.lookup_action("show-"+account.screen_name)).set_enabled(false);
+    change_account (account, app);
+
+    account_list.set_sort_func (account_sort_func);
+    account_list.set_header_func (header_func);
+    var add_entry = new AddListEntry (_("Add new Account"));
+    add_entry.show_all ();
+    account_list.add (add_entry);
+
+    foreach (Account acc in Account.list_accounts ()) {
+      if (acc.screen_name == Account.DUMMY)
+          continue;
+      var e = new UserListEntry.from_account (acc);
+      e.show_settings = true;
+      e.action_clicked.connect (() => { account_popover.hide ();});
+      account_list.add (e);
+    }
+
+    ((Corebird)app).account_added.connect ((new_acc) => {
+      var entries = account_list.get_children ();
+      foreach (Gtk.Widget ule in entries)
+        if (ule is UserListEntry &&
+            new_acc.screen_name == ((UserListEntry)ule).screen_name)
+          return;
+
+      var ule = new UserListEntry.from_account (new_acc);
+      ule.show_settings = true;
+      ule.action_clicked.connect (() => { account_popover.hide ();});
+      account_list.add (ule);
+      ule.show ();
+    });
+
+    ((Corebird)app).account_removed.connect ((acc) => {
+      var entries = account_list.get_children ();
+      foreach (Gtk.Widget ule in entries)
+        if (ule is UserListEntry &&
+            acc.screen_name == ((UserListEntry)ule).screen_name) {
+          account_list.remove (ule);
           break;
         }
-      }
-      account.user_stream.start ();
-    } else {
-      warning ("account == NULL");
-      new SettingsDialog (null, (Corebird)app).show_all ();
-      return;
-    }
+    });
 
-    this.add_action_entries (win_entries, this);
-
-    // TODO: Just always pass the account instance to the constructor.
-    pages[0]  = new HomeTimeline (PAGE_STREAM);
-    pages[1]  = new MentionsTimeline (PAGE_MENTIONS);
-    pages[2]  = new FavoritesTimeline (PAGE_FAVORITES);
-    pages[3]  = new DMThreadsPage (PAGE_DM_THREADS, account);
-    pages[4]  = new ListsPage (PAGE_LISTS);
-    pages[5]  = new FilterPage (PAGE_FILTERS);
-    pages[6]  = new SearchPage (PAGE_SEARCH);
-    pages[7]  = new ProfilePage (PAGE_PROFILE);
-    pages[8]  = new TweetInfoPage (PAGE_TWEET_INFO);
-    pages[9]  = new DMPage (PAGE_DM);
-    pages[10] = new ListStatusesPage (PAGE_LIST_STATUSES);
-
-    /* Initialize all containers */
-    for (int i = 0; i < pages.length; i++) {
-      IPage page = pages[i];
-      page.main_window = this;
-      page.account = account;
-
-      if (page is IMessageReceiver)
-        account.user_stream.register ((IMessageReceiver)page);
-
-      page.create_tool_button (dummy_button);
-      stack.add_named (page, page.id.to_string ());
-      if (page.get_tool_button () != null) {
-        left_toolbar.insert (page.get_tool_button (), page.id);
-        page.get_tool_button ().clicked.connect (() => {
-          if (page.get_tool_button ().active && !page_switch_lock) {
-            switch_page (page.id);
-          }
-        });
-      }
-
-
-      if (!(page is ITimeline))
-        continue;
-
-      ITimeline tl = (ITimeline)page;
-      tl.delta_updater = delta_updater;
-    }
-
-    // TODO: Gnarf this sucks
-    // SearchPage still needs a delta updater
-    ((SearchPage)pages[PAGE_SEARCH]).delta_updater = this.delta_updater;
-    ((DMThreadsPage)pages[PAGE_DM_THREADS]).delta_updater = this.delta_updater;
-    ((DMPage)pages[PAGE_DM]).delta_updater = this.delta_updater;
-    ((ProfilePage)pages[PAGE_PROFILE]).delta_updater = this.delta_updater;
-    ((ListStatusesPage)pages[PAGE_LIST_STATUSES]).delta_updater = this.delta_updater;
-
-
-    if (!Gtk.Settings.get_default ().gtk_shell_shows_app_menu) {
+if (!Gtk.Settings.get_default ().gtk_shell_shows_app_menu) {
       Gtk.MenuButton app_menu_button = new Gtk.MenuButton ();
       app_menu_button.image = new Gtk.Image.from_icon_name ("emblem-system-symbolic", Gtk.IconSize.MENU);
       app_menu_button.get_style_context ().add_class ("image-button");
@@ -147,54 +96,136 @@ public class MainWindow : Gtk.ApplicationWindow {
       this.show_menubar = false;
     }
 
-    account.load_avatar ();
-    avatar_image.pixbuf = account.avatar_small;
-    account.notify["avatar_small"].connect(() => {
-      avatar_image.pixbuf = account.avatar_small;
-    });
+
+
+
+    this.add_action_entries (win_entries, this);
 
     add_accels();
-
-    Settings.get ().bind ("sidebar-visible", sidebar_revealer, "reveal-child",
-                          SettingsBindFlags.DEFAULT);
-
     load_geometry ();
-
-    this.show_all();
-
-
-
-    // Activate the first timeline
-    pages[0].get_tool_button ().active = true;
   }
 
   /**
    * Adds the accelerators to the GtkWindow
+   * XXX We can't use gtk_application_set_accels_for_action because the binding is broken in vala-0.24
    */
   private void add_accels() { // {{{
     Gtk.AccelGroup ag = new Gtk.AccelGroup();
 
     ag.connect (Gdk.Key.Left, Gdk.ModifierType.MOD1_MASK, Gtk.AccelFlags.LOCKED,
-        () => {switch_page (PAGE_PREVIOUS); return true;});
+        () => {main_widget.switch_page (Page.PREVIOUS); return true;});
     ag.connect (Gdk.Key.Right, Gdk.ModifierType.MOD1_MASK, Gtk.AccelFlags.LOCKED,
-        () => {switch_page (PAGE_NEXT); return true;});
+        () => {main_widget.switch_page (Page.NEXT); return true;});
     ag.connect (Gdk.Key.Back, 0, Gtk.AccelFlags.LOCKED,
-        () => {switch_page (PAGE_PREVIOUS); return true;});
+        () => {main_widget.switch_page (Page.PREVIOUS); return true;});
     ag.connect (Gdk.Key.Forward, 0, Gtk.AccelFlags.LOCKED,
-        () => {switch_page (PAGE_NEXT); return true;});
+        () => {main_widget.switch_page (Page.NEXT); return true;});
 
     this.add_accel_group(ag);
   } // }}}
+
+
+
+  public void change_account (Account? account, GLib.Application app = GLib.Application.get_default ()) {
+    this.account = account;
+
+    if (main_widget != null) {
+      main_widget.stop ();
+    }
+
+    if (get_child () != null) {
+      remove (get_child ());
+    }
+
+    if (!header_box.visible) {
+      header_box.visible = true;
+    }
+
+    if (account != null && account.screen_name != Account.DUMMY) {
+      main_widget = new MainWidget (account, this, (Corebird) app);
+      main_widget.show_all ();
+      this.add (main_widget);
+      main_widget.switch_page (0);
+      this.set_title (main_widget.get_page (0).get_title ());
+      avatar_image.pixbuf = account.avatar_small;
+      account.notify["avatar_small"].connect(() => {
+        avatar_image.pixbuf = account.avatar_small;
+      });
+
+      if (!Gtk.Settings.get_default ().gtk_shell_shows_app_menu) {
+        if (app_menu_button == null) {
+          app_menu_button = new Gtk.MenuButton ();
+          app_menu_button.image = new Gtk.Image.from_icon_name ("emblem-system-symbolic", Gtk.IconSize.MENU);
+          app_menu_button.get_style_context ().add_class ("image-button");
+          app_menu_button.menu_model = ((Gtk.Application)app).app_menu;
+          app_menu_button.set_relief (Gtk.ReliefStyle.NONE);
+          headerbar.pack_end (app_menu_button);
+        } else
+          app_menu_button.show ();
+      }
+    } else {
+      header_box.hide ();
+      if (app_menu_button != null)
+        app_menu_button.hide ();
+
+      Account acc_;
+      if (account == null)
+        acc_ = new Account (0, Account.DUMMY, "name");
+      else
+        acc_ = account;
+
+      this.account = acc_;
+
+      Account.add_account (acc_);
+      var create_widget = new AccountCreateWidget (acc_, (Corebird) app);
+      create_widget.result_received.connect ((result, acc) => {
+        if (result) {
+          change_account (acc);
+        } else {
+          //Account.remove ("screen_name");
+        }
+      });
+      this.add (create_widget);
+    }
+
+  }
+
+  [GtkCallback]
+  private void account_row_activated_cb (Gtk.ListBoxRow row) {
+    if (row is AddListEntry) {
+      account_popover.hide ();
+      Account dummy_acc = new Account (0, Account.DUMMY, "name");
+      var window = new MainWindow (application, dummy_acc);
+      get_application ().add_window (window);
+      window.show_all ();
+      return;
+    }
+    var e = (UserListEntry)row;
+    string screen_name = e.screen_name;
+
+    if (screen_name == this.account.screen_name) {
+      account_popover.hide ();
+      return;
+    }
+
+    Account? acc = Account.query_account (screen_name);
+    if (acc != null) {
+      change_account (acc);
+      account_popover.hide ();
+    } else
+      warning ("account == null");
+  }
+
 
   [GtkCallback]
   private bool button_press_event_cb (Gdk.EventButton evt) {
     if (evt.button == 9) {
       // Forward thumb button
-      switch_page (MainWindow.PAGE_NEXT);
+      main_widget.switch_page (Page.NEXT);
       return true;
     } else if (evt.button == 8) {
       // backward thumb button
-      switch_page (MainWindow.PAGE_PREVIOUS);
+      main_widget.switch_page (Page.PREVIOUS);
       return true;
     }
     return false;
@@ -208,100 +239,40 @@ public class MainWindow : Gtk.ApplicationWindow {
   }
 
   /**
-   * Switches the window's main notebook to the given page.
-   *
-   * @param page_id The id of the page to switch to.
-   *                See the PAGE_* constants.
-   * @param ... The parameters to pass to the page
-   *
-   * TODO: Refactor this.
-   */
-  public void switch_page (int page_id, ...) { // {{{
-    if (page_id == history.current) {
-      if (pages[page_id].handles_double_open ())
-        pages[page_id].double_open ();
-      else
-        pages[page_id].on_join (page_id, va_list ());
-
-      return;
-    }
-
-    bool push = true;
-
-    if (history.current != -1)
-      pages[history.current].on_leave ();
-
-    // Set the correct transition type
-    if (page_id == PAGE_PREVIOUS || page_id < history.current)
-      stack.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
-    else if (page_id == PAGE_NEXT || page_id > history.current)
-      stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
-
-    // If we go forward/back, we don't need to update the history.
-    if (page_id == PAGE_PREVIOUS) {
-      push = false;
-      page_id = history.back ();
-    } else if (page_id == PAGE_NEXT) {
-      push = false;
-      page_id = history.forward ();
-    }
-
-    if (page_id == -1)
-      return;
-
-    if (push)
-      history.push (page_id);
-
-
-    /* XXX The following will cause switch_page to be called twice
-       because setting the active property of the button will cause
-       the clicked event to be emitted, which will call switch_page. */
-    IPage page = pages[page_id];
-    Gtk.RadioToolButton button = page.get_tool_button ();
-    page_switch_lock = true;
-    if (button != null)
-      button.active = true;
-    else
-      dummy_button.active = true;
-
-    page.on_join (page_id, va_list ());
-    stack.set_visible_child_name (page_id.to_string ());
-    if (page.get_title () != null)
-      this.set_title (page.get_title ());
-    page_switch_lock = false;
-  } // }}}
-
-  /**
    * GSimpleActionActivateCallback version of switch_page, used
    * for keyboard accelerators.
    */
   private void simple_switch_page (GLib.SimpleAction a, GLib.Variant? param) {
-    switch_page (param.get_int32 ());
+    main_widget.switch_page (param.get_int32 ());
   }
 
-  /**
-   * Indicates that the caller is doing a long-running operation.
-   */
-  public void start_progress () {
-    progress_holders ++;
-    progress_spinner.show ();
-  }
+  private void show_account_dialog () {
+    if (this.account == null ||
+        this.account.screen_name == Account.DUMMY)
+      return;
 
-  public void stop_progress () {
-    progress_holders --;
-    if (progress_holders == 0)
-      progress_spinner.hide ();
+    var dialog = new AccountDialog (this.account);
+    dialog.set_transient_for (this);
+    dialog.modal = true;
+    dialog.show ();
   }
-
 
   public IPage get_page (int page_id) {
-    return pages[page_id];
+    return main_widget.get_page (page_id);
+  }
+
+  [GtkCallback]
+  private void account_button_clicked_cb () {
+    account_popover.show ();
   }
 
   [GtkCallback]
   private bool window_delete_cb (Gdk.EventAny evt) {
-    account.user_stream.stop ();
-    account.user_counter.save (account.db);
+    if (main_widget != null)
+      main_widget.stop ();
+
+    if (account == null)
+      return false;
 
     unowned GLib.List<weak Gtk.Window> ws = this.application.get_windows ();
     debug("Windows: %u", ws.length ());
@@ -311,19 +282,36 @@ public class MainWindow : Gtk.ApplicationWindow {
     for (int i = 0; i < acc_menu.get_n_items (); i++){
       Variant item_name = acc_menu.get_item_attribute_value (i, "label", VariantType.STRING);
       if (item_name.get_string () == "@" + account.screen_name){
-        ((SimpleAction)this.application.lookup_action("show-" + account.screen_name)).set_enabled(true);
+        ((SimpleAction)this.application.lookup_action ("show-" + account.screen_name)).set_enabled (true);
         break;
       }
     }
 
-    if (ws.length () == 1) {
+
+    string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
+    if (startup_accounts.length == 1 && startup_accounts[0] == "")
+      startup_accounts.resize (0);
+
+    save_geometry ();
+
+    if (startup_accounts.length > 0)
+      return false;
+
+    int n_main_windows = 0;
+    foreach (Gtk.Window win in ws)
+      if (win is MainWindow &&
+          ((MainWindow) win).account != null &&
+          ((MainWindow) win).account.screen_name != Account.DUMMY)
+        n_main_windows ++;
+
+
+    if (n_main_windows == 1) {
       // This is the last window so we save this one anyways...
-      string[] startup_accounts = new string[1];
-      startup_accounts[0] = ((MainWindow)ws.nth_data (0)).account.screen_name;
-      Settings.get ().set_strv ("startup-accounts", startup_accounts);
+      string[] new_startup_accounts = new string[1];
+      new_startup_accounts[0] = ((MainWindow)ws.nth_data (0)).account.screen_name;
+      Settings.get ().set_strv ("startup-accounts", new_startup_accounts);
       debug ("Saving the account %s", ((MainWindow)ws.nth_data (0)).account.screen_name);
     }
-    save_geometry ();
     return false;
   }
 
@@ -352,11 +340,14 @@ public class MainWindow : Gtk.ApplicationWindow {
    * Saves this window's geometry in the window-geometry gsettings key.
    */
   public void save_geometry () {
+    if (account == null || account.screen_name == Account.DUMMY)
+      return;
+
     GLib.Variant win_geom = Settings.get ().get_value ("window-geometry");
     GLib.Variant new_geom;
     GLib.VariantBuilder builder = new GLib.VariantBuilder (new GLib.VariantType("a{s(iiii)}"));
     var iter = win_geom.iterator ();
-    string key = "";
+    string key = null;
     int x = 0,
         y = 0,
         w = 0,
@@ -372,7 +363,33 @@ public class MainWindow : Gtk.ApplicationWindow {
     h = get_allocated_height ();
     builder.add ("{s(iiii)}", account.screen_name, x, y, w, h);
     new_geom = builder.end ();
+    debug ("Saving geomentry for %s: %d,%d,%d,%d", account.screen_name, x, y, w, h);
 
     Settings.get ().set_value ("window-geometry", new_geom);
   }
+
+  private int account_sort_func (Gtk.ListBoxRow a,
+                                 Gtk.ListBoxRow b) {
+    if (a is AddListEntry)
+      return 1;
+
+    if (((UserListEntry)a).user_id < ((UserListEntry)b).user_id)
+      return -1;
+
+    return 1;
+  }
+
+  private void header_func (Gtk.ListBoxRow row, Gtk.ListBoxRow? row_before) {
+    if (row_before == null)
+      return;
+
+    Gtk.Widget? header = row.get_header ();
+    if (header != null)
+      return;
+    header = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
+    header.show ();
+    row.set_header (header);
+
+  }
+
 }
