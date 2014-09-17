@@ -175,7 +175,7 @@ public class MultiMediaWidget : Gtk.Box {
   public unowned Gtk.Window window;
   private MediaButton[] media_buttons;
 
-  public signal void media_clicked (Media m);
+  public signal void media_clicked (Media m, int index);
 
 
   public MultiMediaWidget (int media_count) {
@@ -205,6 +205,7 @@ public class MultiMediaWidget : Gtk.Box {
     assert (index < media_count);
 
     var button = new MediaButton (null);
+    button.set_data ("pos", index);
     button.window = this.window;
     media_buttons[index] = button;
 
@@ -222,8 +223,10 @@ public class MultiMediaWidget : Gtk.Box {
 
   private void button_clicked_cb (Gtk.Button source) {
     var mb = (MediaButton)source;
-    if (mb.media != null)
-      media_clicked (((MediaButton)source).media);
+    if (mb.media != null && mb.media.loaded) {
+      int index = mb.get_data ("pos");
+      media_clicked (mb.media, index);
+    }
   }
 
 

@@ -169,8 +169,8 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     values_set = true;
   }
 
-  private void media_clicked_cb (Media m) {
-    TweetUtils.handle_media_click (m, this.window);
+  private void media_clicked_cb (Media m, int index) {
+    TweetUtils.handle_media_click (this.tweet, this.window, index);
   }
 
   private void delete_tweet_activated () {

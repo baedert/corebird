@@ -59,7 +59,7 @@
               <property name="can_focus">False</property>
               <property name="halign">end</property>
               <property name="hexpand">True</property>
-              <property name="label" translatable="yes">Round Avatars:</property>
+              <property name="label" translatable="yes">Round Avatars</property>
               <accessibility>
                 <relation type="label-for" target="round_avatar_switch"/>
               </accessibility>
@@ -94,7 +94,7 @@
               <property name="can_focus">False</property>
               <property name="halign">end</property>
               <property name="hexpand">True</property>
-              <property name="label" translatable="yes">Maximum media size:</property>
+              <property name="label" translatable="yes">Maximum media size</property>
               <accessibility>
                 <relation type="label-for" target="max_media_size_spin_button"/>
               </accessibility>
@@ -148,7 +148,7 @@
               <property name="can_focus">False</property>
               <property name="halign">end</property>
               <property name="hexpand">True</property>
-              <property name="label" translatable="yes">Auto scroll on new tweets:</property>
+              <property name="label" translatable="yes">Auto scroll on new tweets</property>
               <accessibility>
                 <relation type="label-for" target="auto_scroll_on_new_tweets_switch"/>
               </accessibility>
@@ -201,7 +201,7 @@
                 <property name="can_focus">False</property>
                 <property name="halign">end</property>
                 <property name="xalign">1</property>
-                <property name="label" translatable="yes">On New Tweets:</property>
+                <property name="label" translatable="yes">On New Tweets</property>
                 <accessibility>
                   <relation type="label-for" target="on_new_tweets_combobox"/>
                 </accessibility>
@@ -235,7 +235,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="xalign">1</property>
-                <property name="label" translatable="yes">On New Mentions:</property>
+                <property name="label" translatable="yes">On New Mentions</property>
                 <accessibility>
                   <relation type="label-for" target="on_new_mentions_switch"/>
                 </accessibility>
@@ -252,7 +252,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="xalign">1</property>
-                <property name="label" translatable="yes">On New Messages:</property>
+                <property name="label" translatable="yes">On New Messages</property>
                 <accessibility>
                   <relation type="label-for" target="on_new_dms_switch"/>
                 </accessibility>

@@ -66,7 +66,7 @@ class TweetInfoPage : IPage , ScrollWidget {
 
   public TweetInfoPage (int id) {
     this.id = id;
-    mm_widget.media_clicked.connect ((m) => TweetUtils.handle_media_click (m, main_window));
+    mm_widget.media_clicked.connect ((m, i) => TweetUtils.handle_media_click (tweet, main_window, i));
     this.scroll_event.connect ((evt) => {
       if (evt.delta_y < 0 && this.vadjustment.value == 0 && reply_indicator.replies_available) {
         int inc = (int)(vadjustment.step_increment * (-evt.delta_y));

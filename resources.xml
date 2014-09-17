@@ -8,7 +8,6 @@
     <file compressed="true" preprocess="xml-stripblanks">ui/compose-window.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/tweet-list-entry.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/tweet-info-page.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">ui/image-dialog.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/about-dialog.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/dm-threads-page.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/dm-thread-entry.ui</file>
@@ -33,6 +32,7 @@
     <file compressed="true" preprocess="xml-stripblanks">ui/user-filter-entry.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/main-widget.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/account-dialog.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">ui/media-dialog.ui</file>
     <file>assets/play.png</file>
   </gresource>
 </gresources>
