@@ -492,7 +492,7 @@ namespace TweetUtils {
       string t = buffer.get_text (iter1, iter2, false);
       unichar c = t.get_char (0);
 
-      if (c.ispunct () || c == '"' || c == '“') {
+      if ((c.ispunct () && c != '_') || c == '"' || c == '“') {
         break;
       }
       iter1.forward_char ();
