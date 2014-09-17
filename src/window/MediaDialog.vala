@@ -142,14 +142,14 @@ class MediaDialog : Gtk.Window {
 
   /* Fake handlers to route events from the overlay box down to
      the actual child of the GtkOverlay */
-  [GtkCallback]
-  private bool fake_button_press_cb (Gdk.EventButton e) {
-    return overlay.get_child ().event (e);
-  }
+  //[GtkCallback]
+  //private bool fake_button_press_cb (Gdk.EventButton e) {
+    //return overlay.get_child ().event (e);
+  //}
 
-  [GtkCallback]
-  private bool fake_scroll_event_cb (Gdk.EventScroll e) {
-    return overlay.get_child ().event (e);
-  }
+  //[GtkCallback]
+  //private bool fake_scroll_event_cb (Gdk.EventScroll e) {
+    //return overlay.get_child ().event (e);
+  //}
 
 }

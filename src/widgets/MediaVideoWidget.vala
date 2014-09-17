@@ -74,7 +74,7 @@ class MediaVideoWidget : Gtk.Stack {
 
   private bool button_press_event_cb (Gdk.EventButton evt) {
     stop ();
-    return true;
+    return false;
   }
 
   private bool key_press_event_cb (Gdk.EventKey evt) {
@@ -87,7 +87,6 @@ class MediaVideoWidget : Gtk.Stack {
 #if VIDEO
     src.set_state (Gst.State.NULL);
 #endif
-    this.destroy ();
   }
 
   public override void destroy () {
