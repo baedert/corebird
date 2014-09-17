@@ -32,8 +32,6 @@ public class MainWidget : Gtk.Box {
   private Gtk.Box left_box;
   [GtkChild]
   private Gtk.Stack stack;
-  //[GtkChild]
-  //private Gtk.Spinner progress_spinner;
   [GtkChild]
   private Gtk.Revealer sidebar_revealer;
   public int cur_page_id {
@@ -41,7 +39,6 @@ public class MainWidget : Gtk.Box {
       return history.current;
     }
   }
-  private uint progress_holders = 0;
 
 
 
@@ -181,21 +178,6 @@ public class MainWidget : Gtk.Box {
 
     page_switch_lock = false;
   } // }}}
-
-
-  /**
-   * Indicates that the caller is doing a long-running operation.
-   */
-  public void start_progress () {
-    progress_holders ++;
-    //progress_spinner.show ();
-  }
-
-  public void stop_progress () {
-    progress_holders --;
-    //if (progress_holders == 0)
-      //progress_spinner.hide ();
-  }
 
   public IPage get_page (int page_id) {
     return pages[page_id];
