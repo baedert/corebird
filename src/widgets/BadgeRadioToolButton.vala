@@ -38,11 +38,11 @@ public class BadgeRadioToolButton : Gtk.RadioButton {
 
 
     int width = get_allocated_width ();
-    c.save ();
+    context.save ();
     context.add_class ("badge");
     context.render_background (c, width - BADGE_SIZE, 0, BADGE_SIZE, BADGE_SIZE);
     context.render_frame (c, width - BADGE_SIZE, 0, BADGE_SIZE, BADGE_SIZE);
-    c.restore ();
+    context.restore ();
     return false;
   }
 }

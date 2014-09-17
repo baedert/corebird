@@ -100,6 +100,7 @@
 
 .badge{
   background-color: shade(blue, 1.4);
+  background-image: none;
   text-shadow: 0px 1px 1px #FFF;
   border-radius: 20px;
   border: 1px solid white;
