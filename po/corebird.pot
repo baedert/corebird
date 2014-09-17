@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-29 15:26+0200\n"
+"POT-Creation-Date: 2014-09-17 18:39+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,19 +17,21 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/window/ComposeTweetWindow.vala:302 ../ui/compose-window.ui.h:3
+#: ../src/window/ComposeTweetWindow.vala:303 ../ui/compose-window.ui.h:3
 msgid "Select Image"
 msgstr ""
 
-#: ../src/window/ComposeTweetWindow.vala:303
+#: ../src/window/ComposeTweetWindow.vala:304
 #: ../src/window/UserListDialog.vala:44 ../src/window/ImageDialog.vala:111
 #: ../src/widgets/MultiMediaWidget.vala:148 ../ui/compose-window.ui.h:4
 #: ../ui/remove-account-dialog.ui.h:1 ../ui/list-list-entry.ui.h:1
-#: ../ui/list-statuses-page.ui.h:8 ../ui/modify-filter-dialog.ui.h:2
+#: ../ui/list-statuses-page.ui.h:8 ../ui/filter-list-entry.ui.h:1
+#: ../ui/modify-filter-dialog.ui.h:2 ../ui/user-filter-entry.ui.h:1
+#: ../ui/account-dialog.ui.h:7
 msgid "Cancel"
 msgstr ""
 
-#: ../src/window/ComposeTweetWindow.vala:304
+#: ../src/window/ComposeTweetWindow.vala:305
 msgid "Choose"
 msgstr ""
 
@@ -51,7 +53,7 @@ msgstr ""
 msgid "Doesn't match"
 msgstr ""
 
-#: ../src/widgets/TweetListBox.vala:44 ../src/widgets/TweetListBox.vala:79
+#: ../src/widgets/TweetListBox.vala:46 ../src/widgets/TweetListBox.vala:81
 msgid "No entries found"
 msgstr ""
 
@@ -63,18 +65,18 @@ msgstr ""
 msgid "Create one"
 msgstr ""
 
-#: ../src/widgets/AccountCreateWidget.vala:51
+#: ../src/widgets/AccountCreateWidget.vala:53
 msgid ""
 "Unauthorized. Most of the time, this means that there's something wrong with "
 "the Twitter servers and you should try again later"
 msgstr ""
 
 #. We just assume that it was the wrong code
-#: ../src/widgets/AccountCreateWidget.vala:73
+#: ../src/widgets/AccountCreateWidget.vala:76
 msgid "Wrong PIN"
 msgstr ""
 
-#: ../src/widgets/AccountCreateWidget.vala:100
+#: ../src/widgets/AccountCreateWidget.vala:103
 msgid "Account already in use"
 msgstr ""
 
@@ -109,17 +111,16 @@ msgstr ""
 msgid "%s tweeted"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:134 ../src/HomeTimeline.vala:135
+#: ../src/HomeTimeline.vala:133
 msgid "Home"
 msgstr ""
 
-#: ../src/DMThreadsPage.vala:361
+#: ../src/DMThreadsPage.vala:362
 #, c-format
 msgid "New direct message from %s"
 msgstr ""
 
-#: ../src/DMThreadsPage.vala:378 ../src/DMThreadsPage.vala:379
-#: ../src/DMThreadsPage.vala:393
+#: ../src/DMThreadsPage.vala:374 ../src/DMThreadsPage.vala:388
 msgid "Direct Messages"
 msgstr ""
 
@@ -128,25 +129,25 @@ msgstr ""
 msgid "(%d unread)"
 msgstr ""
 
-#: ../src/ListsPage.vala:125 ../src/ListsPage.vala:126
-#: ../src/ListsPage.vala:131 ../ui/profile-page.ui.h:8
+#: ../src/ListsPage.vala:128 ../src/ListsPage.vala:133
+#: ../ui/profile-page.ui.h:8
 msgid "Lists"
 msgstr ""
 
-#: ../src/ProfilePage.vala:311
+#: ../src/ProfilePage.vala:310
 msgid "Protected profile"
 msgstr ""
 
-#: ../src/ProfilePage.vala:493
+#: ../src/ProfilePage.vala:490
 #, c-format
 msgid "Tweet to @%s"
 msgstr ""
 
-#: ../src/ProfilePage.vala:595 ../src/TweetInfoPage.vala:401
+#: ../src/ProfilePage.vala:573 ../src/TweetInfoPage.vala:401
 msgid "Unfollow"
 msgstr ""
 
-#: ../src/ProfilePage.vala:599 ../src/TweetInfoPage.vala:405
+#: ../src/ProfilePage.vala:577 ../src/TweetInfoPage.vala:405
 #: ../ui/tweet-info-page.ui.h:3
 msgid "Follow"
 msgstr ""
@@ -155,8 +156,8 @@ msgstr ""
 msgid "Retweets"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:370 ../src/FavoritesTimeline.vala:73
-#: ../src/FavoritesTimeline.vala:78 ../src/FavoritesTimeline.vala:79
+#: ../src/TweetInfoPage.vala:370 ../src/FavoritesTimeline.vala:71
+#: ../src/FavoritesTimeline.vala:76
 msgid "Favorites"
 msgstr ""
 
@@ -182,12 +183,12 @@ msgstr ""
 msgid "%dh"
 msgstr ""
 
-#: ../src/SearchPage.vala:260 ../src/SearchPage.vala:261
-#: ../src/SearchPage.vala:270 ../ui/search-page.ui.h:1
+#: ../src/SearchPage.vala:258 ../src/SearchPage.vala:268
+#: ../ui/search-page.ui.h:1
 msgid "Search"
 msgstr ""
 
-#: ../src/Corebird.vala:156
+#: ../src/Corebird.vala:160
 msgid "Open Account"
 msgstr ""
 
@@ -196,16 +197,15 @@ msgstr ""
 msgid "New Mention from @%s"
 msgstr ""
 
-#: ../src/MentionsTimeline.vala:125 ../src/MentionsTimeline.vala:131
-#: ../src/MentionsTimeline.vala:132
+#: ../src/MentionsTimeline.vala:123 ../src/MentionsTimeline.vala:129
 msgid "Mentions"
 msgstr ""
 
-#: ../src/DMPage.vala:233
+#: ../src/DMPage.vala:250
 msgid "Direct Conversation"
 msgstr ""
 
-#: ../src/ListStatusesPage.vala:384
+#: ../src/ListStatusesPage.vala:382
 msgid "List"
 msgstr ""
 
@@ -214,92 +214,66 @@ msgid "Settings"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:2
-msgid "Add new account"
-msgstr ""
-
-#: ../ui/settings-dialog.ui.h:3
-msgid "Remove selected account"
-msgstr ""
-
-#: ../ui/settings-dialog.ui.h:4
-msgid ""
-"You have not yet configured any account. To do so, click on the appropriate "
-"button on the left."
-msgstr ""
-
-#: ../ui/settings-dialog.ui.h:5
-msgid "Accounts"
-msgstr ""
-
-#: ../ui/settings-dialog.ui.h:6
-msgid "Main Window"
-msgstr ""
-
-#: ../ui/settings-dialog.ui.h:7
-msgid "Use Dark Theme:"
-msgstr ""
-
-#: ../ui/settings-dialog.ui.h:8
 msgid "Round Avatars:"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:9
+#: ../ui/settings-dialog.ui.h:3
 msgid "Maximum media size:"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:10
+#: ../ui/settings-dialog.ui.h:4
 msgid "Megabytes"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:11
+#: ../ui/settings-dialog.ui.h:5
 msgid "Auto scroll on new tweets:"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:12
+#: ../ui/settings-dialog.ui.h:6
 msgid "Interface"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:13
+#: ../ui/settings-dialog.ui.h:7
 msgid "On New Tweets:"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:14
+#: ../ui/settings-dialog.ui.h:8
 msgid "Actions"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:15
+#: ../ui/settings-dialog.ui.h:9
 msgid "On New Mentions:"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:16
+#: ../ui/settings-dialog.ui.h:10
 msgid "On New Messages:"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:17
+#: ../ui/settings-dialog.ui.h:11
 msgid "Never"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:18
+#: ../ui/settings-dialog.ui.h:12
 msgid "Every"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:19
+#: ../ui/settings-dialog.ui.h:13
 msgid "Stack 5"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:20
+#: ../ui/settings-dialog.ui.h:14
 msgid "Stack 10"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:21
+#: ../ui/settings-dialog.ui.h:15
 msgid "Stack 25"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:22
+#: ../ui/settings-dialog.ui.h:16
 msgid "Stack 50"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:23
+#: ../ui/settings-dialog.ui.h:17
 msgid "Notifications"
 msgstr ""
 
@@ -349,6 +323,8 @@ msgstr ""
 
 #: ../ui/tweet-list-entry.ui.h:3 ../ui/tweet-info-page.ui.h:2
 #: ../ui/list-list-entry.ui.h:4 ../ui/list-statuses-page.ui.h:7
+#: ../ui/filter-list-entry.ui.h:2 ../ui/user-filter-entry.ui.h:2
+#: ../ui/account-dialog.ui.h:8
 msgid "Delete"
 msgstr ""
 
@@ -368,8 +344,12 @@ msgstr ""
 msgid "Retweet tweet"
 msgstr ""
 
-#: ../ui/user-list-entry.ui.h:1 ../ui/profile-page.ui.h:1
-msgid "Write Direct Message"
+#: ../ui/user-list-entry.ui.h:1
+msgid "Show settings of this account"
+msgstr ""
+
+#: ../ui/user-list-entry.ui.h:2
+msgid "Open in new window"
 msgstr ""
 
 #: ../ui/image-dialog.ui.h:1
@@ -404,6 +384,10 @@ msgstr ""
 msgid "Attach Image"
 msgstr ""
 
+#: ../ui/profile-page.ui.h:1
+msgid "Write Direct Message"
+msgstr ""
+
 #: ../ui/profile-page.ui.h:2
 msgid "Add to/Remove from List"
 msgstr ""
@@ -425,6 +409,10 @@ msgid "Following"
 msgstr ""
 
 #: ../ui/main-window.ui.h:1
+msgid "Show configured accounts"
+msgstr ""
+
+#: ../ui/main-window.ui.h:2
 msgid "New tweet"
 msgstr ""
 
@@ -441,7 +429,6 @@ msgid "Request PIN"
 msgstr ""
 
 #: ../ui/account-create-widget.ui.h:4 ../ui/list-statuses-page.ui.h:12
-#: ../ui/filter-list-entry.ui.h:1 ../ui/user-filter-entry.ui.h:1
 msgid "Confirm"
 msgstr ""
 
@@ -513,22 +500,50 @@ msgstr ""
 msgid "Add New Filter"
 msgstr ""
 
+#: ../ui/account-dialog.ui.h:1
+msgid "Account Settings"
+msgstr ""
+
+#: ../ui/account-dialog.ui.h:2
+msgid "Username"
+msgstr ""
+
+#: ../ui/account-dialog.ui.h:3
+msgid "Name"
+msgstr ""
+
+#: ../ui/account-dialog.ui.h:4
+msgid "Website"
+msgstr ""
+
+#: ../ui/account-dialog.ui.h:5
+msgid "Autostart"
+msgstr ""
+
+#: ../ui/account-dialog.ui.h:6
+msgid "Do you really want to delete this account?"
+msgstr ""
+
+#: ../ui/account-dialog.ui.h:9
+msgid "Close"
+msgstr ""
+
+#: ../data/org.baedert.corebird.appdata.xml.in.h:1
+msgid ""
+"Corebird is a native GTK+ twitter client that provides vital features such "
+"as Direct Messages (DMs), tweet notifications, conversation views."
+msgstr ""
+
+#: ../data/org.baedert.corebird.appdata.xml.in.h:2
+msgid ""
+"Additional features include the abilty to change to the GTK+ dark theme, "
+"searching and media uploads."
+msgstr ""
+
 #: ../data/org.baedert.corebird.desktop.in.in.h:1
 msgid "Twitter Client"
 msgstr ""
 
 #: ../data/org.baedert.corebird.desktop.in.in.h:2
 msgid "Use Twitter from within a normal desktop application"
-msgstr ""
-
-#: ../data/corebird.appdata.xml.in.h:1
-msgid ""
-"Corebird is a native GTK+ twitter client that provides vital features such "
-"as Direct Messages (DMs), tweet notifications, conversation views."
-msgstr ""
-
-#: ../data/corebird.appdata.xml.in.h:2
-msgid ""
-"Additional features include the abilty to change to the GTK+ dark theme, "
-"searching and media uploads."
 msgstr ""
