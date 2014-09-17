@@ -8,7 +8,7 @@
       <object class="GtkFrame">
         <property name="visible">true</property>
         <property name="shadow_type">in</property>
-        <property name="margin">8</property>
+        <property name="margin">6</property>
         <child>
           <object class="GtkListBox" id="account_list">
             <property name="visible">true</property>
