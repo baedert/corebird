@@ -26,8 +26,6 @@ public class BadgeRadioToolButton : Gtk.RadioButton {
     var i = new Gtk.Image.from_icon_name (icon_name, Gtk.IconSize.BUTTON);
     this.add (i);
     this.set_mode (false);
-    this.margin_start = 6;
-    this.margin_end = 6;
   }
 
   public override bool draw (Cairo.Context c){

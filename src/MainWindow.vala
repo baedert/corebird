@@ -32,6 +32,8 @@ public class MainWindow : Gtk.ApplicationWindow {
   private Gtk.Popover account_popover;
   [GtkChild]
   private Gtk.Box header_box;
+  [GtkChild]
+  private Gtk.Button account_button;
 
   private Gtk.MenuButton app_menu_button = null;
   public MainWidget main_widget;
@@ -131,6 +133,7 @@ public class MainWindow : Gtk.ApplicationWindow {
 
     if (account != null && account.screen_name != Account.DUMMY) {
       main_widget = new MainWidget (account, this, (Corebird) app);
+      main_widget.sidebar_size_group.add_widget (account_button);
       main_widget.show_all ();
       this.add (main_widget);
       main_widget.switch_page (0);

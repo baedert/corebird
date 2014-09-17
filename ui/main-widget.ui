@@ -14,6 +14,7 @@
               <property name="visible">true</property>
               <property name="can_focus">false</property>
               <property name="orientation">vertical</property>
+              <property name="margin">6</property>
               <style>
                 <class name="linked" />
               </style>
