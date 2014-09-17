@@ -58,7 +58,15 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   public int64 sort_factor{
     get{ return tweet.created_at;}
   }
-  public bool seen {get; set; default = true;}
+  private bool _seen = true;
+  public bool seen {
+    get {
+      return _seen;
+    }
+    set {
+      _seen = value;
+    }
+  }
   private weak Account account;
   private weak MainWindow window;
   public Tweet tweet;
