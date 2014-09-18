@@ -17,9 +17,9 @@
 
 
 namespace Dirs {
-  static string config_dir  = null;
-  static string cache_dir = null;
-  static string data_dir  = null;
+  static string? config_dir  = null;
+  static string? cache_dir = null;
+  static string? data_dir  = null;
 
 
   public void create_dirs () {
