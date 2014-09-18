@@ -457,7 +457,9 @@ class ProfilePage : ScrollWidget, IPage {
                                               tweet_list,
                                               main_window,
                                               account);
-    lowest_tweet_id = result.min_id;
+    if (result.min_id < lowest_tweet_id)
+        lowest_tweet_id = result.min_id;
+
     tweets_loading = false;
   } // }}}
 
