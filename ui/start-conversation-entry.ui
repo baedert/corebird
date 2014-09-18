@@ -117,6 +117,11 @@
                       <object class="GtkSpinner" id="go_spinner">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="valign">center</property>
+                        <property name="halign">center</property>
+                        <property name="width_request">16</property>
+                        <property name="height_request">16</property>
+
                       </object>
                       <packing>
                         <property name="name">spinner</property>
