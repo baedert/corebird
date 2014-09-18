@@ -380,11 +380,12 @@ class ProfilePage : ScrollWidget, IPage {
   private async void load_tweets () { // {{{
     tweet_list.set_unempty ();
     tweets_loading = true;
+    int requested_tweet_count = 20;
     var call = account.proxy.new_call ();
     call.set_function ("1.1/statuses/user_timeline.json");
     call.set_method ("GET");
     call.add_param ("user_id", this.user_id.to_string ());
-    call.add_param ("count", "20");
+    call.add_param ("count", requested_tweet_count.to_string ());
     call.add_param ("contributor_details", "true");
     call.add_param ("include_my_retweet", "true");
 
@@ -408,8 +409,12 @@ class ProfilePage : ScrollWidget, IPage {
       tweet_list.set_empty ();
       return;
     }
-    var result = yield TweetUtils.work_array (root, delta_updater, tweet_list,
-                                              main_window, account);
+    var result = yield TweetUtils.work_array (root,
+                                              requested_tweet_count,
+                                              delta_updater,
+                                              tweet_list,
+                                              main_window,
+                                              account);
     lowest_tweet_id = result.min_id;
     tweets_loading = false;
   } // }}}
@@ -422,11 +427,12 @@ class ProfilePage : ScrollWidget, IPage {
       return;
 
     tweets_loading = true;
+    int requested_tweet_count = 15;
     var call = account.proxy.new_call ();
     call.set_function ("1.1/statuses/user_timeline.json");
     call.set_method ("GET");
     call.add_param ("user_id", this.user_id.to_string ());
-    call.add_param ("count", "15");
+    call.add_param ("count", requested_tweet_count.to_string ());
     call.add_param ("contributor_details", "true");
     call.add_param ("include_my_retweet", "true");
     call.add_param ("max_id", (lowest_tweet_id - 1).to_string ());
@@ -445,8 +451,12 @@ class ProfilePage : ScrollWidget, IPage {
       return;
     }
     var root_arr = parser.get_root ().get_array ();
-    var result = yield TweetUtils.work_array (root_arr, delta_updater,
-                                              tweet_list, main_window, account);
+    var result = yield TweetUtils.work_array (root_arr,
+                                              requested_tweet_count,
+                                              delta_updater,
+                                              tweet_list,
+                                              main_window,
+                                              account);
     lowest_tweet_id = result.min_id;
     tweets_loading = false;
   } // }}}

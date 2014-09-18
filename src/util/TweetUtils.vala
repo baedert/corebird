@@ -356,8 +356,9 @@ namespace TweetUtils {
   }
 
   async WorkerResult work_array (Json.Array json_array,
+                                 uint requested_tweet_count,
                                  DeltaUpdater delta_updater,
-                                 Gtk.ListBox tweet_list,
+                                 TweetListBox tweet_list,
                                  MainWindow main_window,
                                  Account account) {
     int64 max = 0;
@@ -369,6 +370,7 @@ namespace TweetUtils {
          need to do all the later stuff */
       if (tweet_array.length == 0) {
         GLib.Idle.add (() => {
+          tweet_list.remove_progress_entry ();
           work_array.callback ();
           return false;
         });
@@ -402,9 +404,10 @@ namespace TweetUtils {
         }
         index ++;
         if (index == tweet_array.length) {
-          if (tweet_list is TweetListBox) {
-            ((TweetListBox)tweet_list).add_progress_entry ();
-          }
+          if (tweet_array.length < requested_tweet_count)
+            tweet_list.remove_progress_entry ();
+          else
+            tweet_list.add_progress_entry ();
           work_array.callback ();
           return false;
         }

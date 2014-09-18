@@ -151,12 +151,13 @@ class ListStatusesPage : ScrollWidget, IPage {
 
   private async void load_newest () { // {{{
     tweet_list.set_unempty ();
+    uint requested_tweet_count = 25;
     var call = account.proxy.new_call ();
     call.set_function ("1.1/lists/statuses.json");
     call.set_method ("GET");
     debug ("USING LIST ID %s", list_id.to_string ());
     call.add_param ("list_id", list_id.to_string ());
-    call.add_param ("count", "25");
+    call.add_param ("count", requested_tweet_count.to_string ());
     try {
       yield call.invoke_async (null);
     } catch (GLib.Error e) {
@@ -177,7 +178,12 @@ class ListStatusesPage : ScrollWidget, IPage {
       tweet_list.set_empty ();
       return;
     }
-    var res = yield TweetUtils.work_array (root_array, delta_updater, tweet_list, main_window, account);
+    var res = yield TweetUtils.work_array (root_array,
+                                           requested_tweet_count,
+                                           delta_updater,
+                                           tweet_list,
+                                           main_window,
+                                           account);
     if (res.max_id > max_id)
       max_id = res.max_id;
 
@@ -190,13 +196,13 @@ class ListStatusesPage : ScrollWidget, IPage {
       return;
 
     loading = true;
-    message ("Loading older statuses...");
+    uint requested_tweet_count = 25;
     var call = account.proxy.new_call ();
     call.set_function ("1.1/lists/statuses.json");
     call.set_method ("GET");
     call.add_param ("list_id", list_id.to_string ());
     call.add_param ("max_id", (lowest_id -1).to_string ());
-    call.add_param ("count", "25");
+    call.add_param ("count", requested_tweet_count.to_string ());
     try {
       yield call.invoke_async (null);
     } catch (GLib.Error e) {
@@ -214,7 +220,12 @@ class ListStatusesPage : ScrollWidget, IPage {
     }
 
     var root_array = parser.get_root ().get_array ();
-    var res = yield TweetUtils.work_array (root_array, delta_updater, tweet_list, main_window, account);
+    var res = yield TweetUtils.work_array (root_array,
+                                           requested_tweet_count,
+                                           delta_updater,
+                                           tweet_list,
+                                           main_window,
+                                           account);
     if (res.max_id > max_id)
       max_id = res.max_id;
 

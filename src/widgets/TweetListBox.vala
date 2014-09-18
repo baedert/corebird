@@ -87,4 +87,10 @@ public class TweetListBox : Gtk.ListBox {
       this.add (progress_entry);
     }
   }
+
+  public void remove_progress_entry () {
+    if (progress_entry.parent != null) {
+      this.remove (progress_entry);
+    }
+  }
 }

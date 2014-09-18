@@ -38,10 +38,11 @@ public interface ITimeline : Gtk.Widget, IPage {
    * @param function The twitter function to use
    */
   protected async void load_newest_internal () { //{{{
+    int requested_tweet_count = 28;
     var call = account.proxy.new_call ();
     call.set_function (this.function);
     call.set_method("GET");
-    call.add_param ("count", "28");
+    call.add_param ("count", requested_tweet_count.to_string ());
     call.add_param ("contributor_details", "true");
     call.add_param ("include_my_retweet", "true");
     call.add_param ("max_id", (lowest_id - 1).to_string ());
@@ -72,7 +73,12 @@ public interface ITimeline : Gtk.Widget, IPage {
       tweet_list.set_empty ();
       return;
     }
-    var res = yield TweetUtils.work_array (root, delta_updater, tweet_list, main_window, account);
+    var res = yield TweetUtils.work_array (root,
+                                           requested_tweet_count,
+                                           delta_updater,
+                                           tweet_list,
+                                           main_window,
+                                           account);
 
     if (res.min_id < this.lowest_id)
       this.lowest_id = res.min_id;
@@ -88,10 +94,11 @@ public interface ITimeline : Gtk.Widget, IPage {
    * @param tweet_type The type of tweets to load
    */
   protected async void load_older_internal () { //{{{
+    int requested_tweet_count = 28;
     var call = account.proxy.new_call ();
     call.set_function (this.function);
     call.set_method ("GET");
-    call.add_param ("count", "28");
+    call.add_param ("count", requested_tweet_count.to_string ());
     call.add_param ("include_my_retweet", "true");
     call.add_param ("max_id", (lowest_id - 1).to_string ());
     try {
@@ -113,7 +120,12 @@ public interface ITimeline : Gtk.Widget, IPage {
       tweet_list.set_empty ();
       return;
     }
-    var res = yield TweetUtils.work_array (root, delta_updater, tweet_list, main_window, account);
+    var res = yield TweetUtils.work_array (root,
+                                           requested_tweet_count,
+                                           delta_updater,
+                                           tweet_list,
+                                           main_window,
+                                           account);
     if (res.min_id < lowest_id)
       lowest_id = res.min_id;
   } ///}}}
