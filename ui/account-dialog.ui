@@ -315,7 +315,7 @@
               <object class="GtkButton" id="close_button">
                 <property name="can_focus">true</property>
                 <property name="visible">true</property>
-                <property name="label" translatable="yes">Close</property>
+                <property name="label" translatable="yes">Save</property>
               </object>
             </child>
 

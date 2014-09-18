@@ -21,7 +21,7 @@ public class Account : GLib.Object {
   public int64 id                 {public get; private set;}
   public Sql.Database db          {public get; private set;}
   public string screen_name       {public get; private set;}
-  public string name              {public get; private set;}
+  public string name              {public get; public  set;}
   public string avatar_url        {public get; public  set;}
   public string banner_url        {public get; private set;}
   public string? website          {public get; public  set;}

@@ -38,6 +38,9 @@ class AccountDialog : Gtk.Dialog {
   private Gtk.TextView description_text_view;
 
   private unowned Account account;
+  private string old_user_name;
+  private string old_description;
+  private string old_website;
 
 
 
@@ -46,9 +49,9 @@ class AccountDialog : Gtk.Dialog {
     screen_name_label.label = account.screen_name;
     name_entry.text = account.name;
     avatar_banner_widget.set_account (account);
-    if (account.website != null) {
-      website_entry.text = account.website;
-    }
+    website_entry.text = account.website ?? "";
+    old_website = account.website ?? "";
+    old_description = account.description ?? "";
     if (account.description != null) {
       description_text_view.get_buffer ().set_text (account.description);
     }
@@ -68,11 +71,42 @@ class AccountDialog : Gtk.Dialog {
 
   public override void response (int response_id) {
     if (response_id == RESPONSE_CLOSE) {
+      save_data ();
       this.destroy ();
     } else if (response_id == RESPONSE_DELETE) {
       delete_stack.visible_child_name = PAGE_DELETE;
       delete_button.hide ();
     }
+  }
+
+  private void save_data () {
+    bool needs_save = (old_user_name != name_entry.text) ||
+                      (old_description != description_text_view.buffer.text) ||
+                      (old_website != website_entry.text);
+
+    if (!needs_save)
+      return;
+
+    var call = account.proxy.new_call ();
+    call.set_function ("1.1/account/update_profile.json");
+    call.set_method ("POST");
+    call.add_param ("url", website_entry.text);
+    call.add_param ("name", name_entry.text);
+    call.add_param ("description", description_text_view.buffer.text);
+    call.invoke_async.begin (null, (obj, res) => {
+      try {
+        call.invoke_async.end (res);
+      } catch (GLib.Error e) {
+        warning (e.message);
+        Utils.show_error_object (call.get_payload (), "Could not update profile",
+                                 GLib.Log.LINE, GLib.Log.FILE);
+      }
+    });
+
+    /* Update local user data */
+    account.name = name_entry.text;
+    account.description = description_text_view.buffer.text;
+    account.website = website_entry.text;
   }
 
   [GtkCallback]
