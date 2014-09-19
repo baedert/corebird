@@ -23,7 +23,7 @@ public class Account : GLib.Object {
   public string screen_name       {public get; private set;}
   public string name              {public get; public  set;}
   public string avatar_url        {public get; public  set;}
-  public string banner_url        {public get; private set;}
+  public string? banner_url       {public get; private set;}
   public string? website          {public get; public  set;}
   public string? description      {public get; public  set;}
   public Gdk.Pixbuf avatar_small  {public get; private set;}
