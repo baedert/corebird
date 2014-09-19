@@ -395,13 +395,17 @@ namespace TweetUtils {
       GLib.Idle.add (() => {
         Tweet tweet = tweet_array[index];
         var entry = new TweetListEntry (tweet, main_window, account);
-        if (!account.filter_matches (entry.tweet)) {
-          account.user_counter.user_seen (entry.tweet.user_id,
-                                          entry.tweet.screen_name,
-                                          entry.tweet.user_name);
-          delta_updater.add (entry);
-          tweet_list.add (entry);
-        }
+        account.user_counter.user_seen (tweet.user_id,
+                                        tweet.screen_name,
+                                        tweet.user_name);
+        delta_updater.add (entry);
+        tweet_list.add (entry);
+
+        if (account.filter_matches (entry.tweet))
+          entry.hide ();
+        else
+          entry.show ();
+
         index ++;
         if (index == tweet_array.length) {
           if (tweet_array.length < requested_tweet_count)
