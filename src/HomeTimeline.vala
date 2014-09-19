@@ -108,6 +108,20 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
 
   }
 
+  public void remove_tweets_from (int64 user_id) {
+    GLib.List<unowned Gtk.Widget> children = tweet_list.get_children ();
+    foreach (Gtk.Widget w in children) {
+      if (!(w is TweetListEntry))
+        continue;
+
+      TweetListEntry tle = (TweetListEntry) w;
+      if (tle.tweet.user_id == user_id) {
+        tweet_list.remove (w);
+      }
+
+    }
+  }
+
   public override string? get_title () {
     return "@" + account.screen_name;
   }
