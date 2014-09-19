@@ -154,5 +154,17 @@ public interface ITimeline : Gtk.Widget, IPage {
     });
   } //}}}
 
+  public void rerun_filters () {
+    GLib.List<unowned Gtk.Widget> children = tweet_list.get_children ();
+    foreach (Gtk.Widget w in children) {
+      if (!(w is TweetListEntry))
+        continue;
 
+      TweetListEntry tle = (TweetListEntry) w;
+      if (account.filter_matches (tle.tweet))
+        tle.hide ();
+      else
+        tle.show ();
+    }
+  }
 }
