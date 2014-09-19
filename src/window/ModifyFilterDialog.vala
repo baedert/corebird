@@ -31,12 +31,14 @@ class ModifyFilterDialog : Gtk.Dialog {
   private GLib.Regex regex;
   private unowned Account account;
   private unowned Filter filter;
+  private unowned MainWindow main_window;
 
   /** created will be true if the filter has just been created by the user(i.e. not modified) */
   public signal void filter_added (Filter filter, bool created);
 
-  public ModifyFilterDialog (Gtk.ApplicationWindow parent, Account account,
-                             Filter? filter = null) {
+  public ModifyFilterDialog (MainWindow parent,
+                             Account    account,
+                             Filter?    filter = null) {
     this.set_transient_for (parent);
     this.application = parent.get_application ();
     this.account = account;
@@ -44,6 +46,7 @@ class ModifyFilterDialog : Gtk.Dialog {
       regex_entry.text = filter.content;
     }
     this.filter = filter;
+    this.main_window = parent;
   }
 
   construct {
@@ -101,5 +104,8 @@ class ModifyFilterDialog : Gtk.Dialog {
         }
       }
     }
+
+    /* Update timelines */
+    main_window.rerun_filters ();
   }
 }
