@@ -55,7 +55,7 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
 
     if (!filters_loaded) {
       foreach (Filter f in account.filters) {
-        var entry = new FilterListEntry (f, account);
+        var entry = new FilterListEntry (f, account, main_window);
         filter_list.add (entry);
       }
       filters_loaded = true;
@@ -114,7 +114,7 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
    **/
   private void filter_added_cb (Filter f, bool created) {
     if (created) {
-      var entry = new FilterListEntry (f, account);
+      var entry = new FilterListEntry (f, account, main_window);
       filter_list.add (entry);
     } else {
       var children = filter_list.get_children ();

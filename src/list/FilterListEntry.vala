@@ -45,12 +45,16 @@ class FilterListEntry : Gtk.ListBoxRow {
       return content_label.label;
     }
   }
-  private unowned Account account = null;
+  private unowned Account account;
+  private unowned MainWindow main_window;
   public signal void removed (Filter f);
 
-  public FilterListEntry (Filter f, Account account) {
+  public FilterListEntry (Filter     f,
+                          Account    account,
+                          MainWindow main_window) {
     this.filter = f;
     this.account = account;
+    this.main_window = main_window;
   }
 
   construct {
@@ -79,6 +83,7 @@ class FilterListEntry : Gtk.ListBoxRow {
         account.db.exec ("DELETE FROM `filters` WHERE `id`='%d'".printf (f.id));
         //removed (f);
         revealer.reveal_child = false;
+        main_window.rerun_filters ();
         return;
       }
     }
