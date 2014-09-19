@@ -383,4 +383,9 @@ public class MainWindow : Gtk.ApplicationWindow {
 
   }
 
+  public void rerun_filters () {
+    /* We only do this for stream + mentions at the moment */
+    ((ITimeline)get_page (Page.STREAM)).rerun_filters ();
+    ((ITimeline)get_page (Page.MENTIONS)).rerun_filters ();
+  }
 }
