@@ -148,8 +148,12 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
         }
 
         while (item_count > ITimeline.REST) {
-          tweet_list.remove (tweet_list.get_row_at_index (ITimeline.REST));
-          item_count--;
+          Gtk.Widget? w = tweet_list.get_row_at_index (ITimeline.REST);
+          if (w == null || w.visible)
+            item_count --;
+
+          if (w != null)
+            tweet_list.remove (w);
         }
         tweet_remove_timeout = 0;
         lowest_id = ((TweetListEntry)tweet_list.get_row_at_index (ITimeline.REST -1)).tweet.id;
