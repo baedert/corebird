@@ -24,10 +24,7 @@ void mention () {
   TweetUtils.annotate_text (buffer);
 }
 
-
-
-
-void underline () {
+void underline_mention () {
   Gtk.TextBuffer buffer = create_buffer ();
   buffer.apply_tag.connect ((buffer, tag, start, end) => {
     string s = buffer.get_text (start, end, false);
@@ -52,12 +49,26 @@ void normal () {
 }
 
 
+void hashtag () {
+  Gtk.TextBuffer buffer = create_buffer ();
+  buffer.set_text ("foobar #hash.");
+
+  buffer.apply_tag.connect ((buffer, tag, start, end) => {
+    string mention = buffer.get_text (start, end, false);
+    assert (mention == "#hash");
+    assert (tag.name == "hashtag");
+  });
+
+  TweetUtils.annotate_text (buffer);
+}
+
 void main (string[] args) {
   GLib.Test.init (ref args);
   Gtk.init (ref args);
   GLib.Test.add_func ("/highlighting/normal", normal);
-  GLib.Test.add_func ("/highlighting/underline", underline);
+  GLib.Test.add_func ("/highlighting/underline", underline_mention);
   GLib.Test.add_func ("/highlighting/mention", mention);
+  GLib.Test.add_func ("/highlighting/hashtag", hashtag);
 
   GLib.Test.run ();
 }
