@@ -1,6 +1,5 @@
 src/window/ComposeTweetWindow.vala
 src/window/UserListDialog.vala
-src/window/ImageDialog.vala
 src/window/ModifyFilterDialog.vala
 src/widgets/TweetListBox.vala
 src/widgets/AccountCreateWidget.vala
@@ -29,7 +28,6 @@ src/ListStatusesPage.vala
 [type: gettext/glade]ui/load-more-entry.ui
 [type: gettext/glade]ui/tweet-list-entry.ui
 [type: gettext/glade]ui/user-list-entry.ui
-[type: gettext/glade]ui/image-dialog.ui
 [type: gettext/glade]ui/new-list-entry.ui
 [type: gettext/glade]ui/search-page.ui
 [type: gettext/glade]ui/compose-window.ui
