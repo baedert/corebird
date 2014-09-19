@@ -34,8 +34,6 @@ public interface ITimeline : Gtk.Widget, IPage {
   /**
    * Default implementation for loading the newest tweets
    * from the given function of the twitter api.
-   *
-   * @param function The twitter function to use
    */
   protected async void load_newest_internal () { //{{{
     int requested_tweet_count = 28;
@@ -90,8 +88,6 @@ public interface ITimeline : Gtk.Widget, IPage {
   /**
    * Default implementation to load older tweets.
    *
-   * @param function The Twitter function to use
-   * @param tweet_type The type of tweets to load
    */
   protected async void load_older_internal () { //{{{
     int requested_tweet_count = 28;
