@@ -72,7 +72,7 @@
                         <property name="height_request">73</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="margin_start">4</property>
+                        <property name="margin_start">6</property>
                         <property name="margin_top">5</property>
                         <property name="margin_end">8</property>
                         <property name="valign">start</property>
@@ -95,7 +95,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="valign">start</property>
-                            <property name="margin_top">5</property>
+                            <property name="margin_top">6</property>
                             <property name="margin_bottom">2</property>
                             <property name="xalign">0</property>
                             <property name="label"> </property>
@@ -163,8 +163,8 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="halign">end</property>
-                                <property name="valign">start</property>
-                                <property name="margin_top">5</property>
+                                <property name="valign">fill</property>
+                                <property name="margin_top">6</property>
                                 <property name="menu_model">more_menu</property>
                               </object>
                               <packing>
@@ -180,7 +180,7 @@
                                 <property name="halign">end</property>
                                 <property name="valign">fill</property>
                                 <property name="margin_end">3</property>
-                                <property name="margin_top">5</property>
+                                <property name="margin_top">6</property>
                                 <signal name="clicked" handler="follow_button_clicked_cb" swapped="no"/>
                               </object>
                               <packing>
@@ -199,7 +199,7 @@
                             <property name="no_show_all">True</property>
                             <property name="halign">end</property>
                             <property name="margin_end">3</property>
-                            <property name="margin_top">4</property>
+                            <property name="margin_top">6</property>
                             <property name="label" translatable="yes">Follows you</property>
                             <property name="hexpand">true</property>
                             <style>
