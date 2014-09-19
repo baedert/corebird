@@ -53,7 +53,6 @@ cb_sources = \
 			widgets/BadgeRadioToolButton.vala \
 			widgets/DMPlaceholderBox.vala \
 			widgets/AccountCreateWidget.vala \
-			widgets/AccountInfoWidget.vala \
 			widgets/AspectImage.vala \
 			widgets/BgBox.vala \
 			widgets/UserListsWidget.vala \
