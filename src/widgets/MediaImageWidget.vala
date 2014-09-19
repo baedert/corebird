@@ -44,7 +44,7 @@ public class MediaImageWidget : Gtk.ScrolledWindow {
     image_context_menu.add (save_as_item);
 
     //Choose proper width/height
-    Gdk.Pixbuf pixbuf = null;
+    Gdk.Pixbuf? pixbuf = null;
     try {
       pixbuf = new Gdk.Pixbuf.from_file(path);
     } catch (GLib.Error e) {
@@ -57,8 +57,10 @@ public class MediaImageWidget : Gtk.ScrolledWindow {
         image.pixbuf = new Gdk.Pixbuf.from_file(path);
     } catch (GLib.Error e) {
       critical (e.message);
+      return;
     }
-    int img_width = pixbuf.get_width();
+
+    int img_width  = pixbuf.get_width();
     int img_height = pixbuf.get_height();
 
     int win_width  = 800;

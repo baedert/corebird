@@ -230,6 +230,14 @@ public class Account : GLib.Object {
     this.filters.add (f);
   }
 
+  /**
+   * Checks if any of the filters associated to this acount match
+   * the given tweet.
+   *
+   * @param t The tweet to check for
+   *
+   * @return true iff at least one of the filters match, false otherwise.
+   */
   public bool filter_matches (Tweet t) {
     if (t.user_id == this.id)
       return false;

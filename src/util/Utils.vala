@@ -283,7 +283,7 @@ namespace Utils {
         style = DATADIR + "/ui/style.css";
 
       provider.load_from_file(File.new_for_path (style));
-      Gtk.StyleContext.add_provider_for_screen (Gdk.Screen.get_default (),
+      Gtk.StyleContext.add_provider_for_screen ((!)Gdk.Screen.get_default (),
                                                 provider,
                                                 Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
     }catch (GLib.Error e) {
