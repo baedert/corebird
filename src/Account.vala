@@ -177,6 +177,7 @@ public class Account : GLib.Object {
       try {
         pixbuf = new Gdk.Pixbuf.from_stream(data_stream);
         pixbuf.save(big_dest, type);
+        data_stream.close ();
         double scale_x = 24.0 / pixbuf.get_width();
         double scale_y = 24.0 / pixbuf.get_height();
         var scaled_pixbuf = new Gdk.Pixbuf(Gdk.Colorspace.RGB,
