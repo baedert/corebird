@@ -15,19 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
-  XXX XXX XXX XXX XXX
-
-  Plan:
-   - Find out how to arbitrarily position buttons/other widgets
-   - connect to the mouse move event, do hover detection ourselves
-   - hide/show change buttons depending on what (banner/avatar) is hovered
-
-
-  XXX XXX XXX XXX XXX
-*/
-
-
 public class AvatarBannerWidget : Gtk.Container {
   private static const double BANNER_RATIO = 0.5; /* 320/640 */
   public int avatar_size { get; set; default = 48; }
@@ -37,6 +24,8 @@ public class AvatarBannerWidget : Gtk.Container {
   private PixbufButton set_banner_button;
   private PixbufButton set_avatar_button;
 
+  public signal void avatar_changed ();
+  public signal void banner_changed ();
 
   construct {
     this.set_has_window (false);
@@ -45,11 +34,13 @@ public class AvatarBannerWidget : Gtk.Container {
     /* set_banner_button */
     this.set_banner_button = new PixbufButton ();
     set_banner_button.show_all ();
+    set_banner_button.clicked.connect (banner_clicked_cb);
     this.add (set_banner_button);
 
     /* set_avatar_button */
     this.set_avatar_button = new PixbufButton ();
     set_avatar_button.show_all ();
+    set_avatar_button.clicked.connect (avatar_clicked_cb);
     this.add (set_avatar_button);
     Settings.get ().bind ("round-avatars", set_avatar_button, "round",
                           GLib.SettingsBindFlags.DEFAULT);
@@ -161,5 +152,29 @@ public class AvatarBannerWidget : Gtk.Container {
   public override void forall_internal (bool include_internals, Gtk.Callback cb) {
     cb (set_banner_button);
     cb (set_avatar_button);
+  }
+
+  private void banner_clicked_cb () {
+    Gtk.FileChooserDialog dialog = new Gtk.FileChooserDialog (_("Choose new Banner"),
+                                                              (Gtk.Window)this.get_toplevel (),
+                                                              Gtk.FileChooserAction.OPEN,
+                                                              _("Cancel"), Gtk.ResponseType.CANCEL,
+                                                              _("Choose"), Gtk.ResponseType.ACCEPT);
+    dialog.set_modal (true);
+    if (dialog.run () == Gtk.ResponseType.ACCEPT) {
+
+    }
+  }
+
+  private void avatar_clicked_cb () {
+    Gtk.FileChooserDialog dialog = new Gtk.FileChooserDialog (_("Choose new Banner"),
+                                                              (Gtk.Window)this.get_toplevel (),
+                                                              Gtk.FileChooserAction.OPEN,
+                                                              _("Cancel"), Gtk.ResponseType.CANCEL,
+                                                              _("Choose"), Gtk.ResponseType.ACCEPT);
+    dialog.set_modal (true);
+    if (dialog.run () == Gtk.ResponseType.ACCEPT) {
+
+    }
   }
 }

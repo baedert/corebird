@@ -67,7 +67,8 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
 
   public signal void action_clicked ();
 
-  private Account account;
+
+  private unowned Account account;
 
   public UserListEntry.from_account (Account acc) {
     this.screen_name = "@" + acc.screen_name;

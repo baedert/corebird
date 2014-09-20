@@ -237,6 +237,7 @@ public class MainWindow : Gtk.ApplicationWindow {
     main_widget.switch_page (param.get_int32 ());
   }
 
+  /* result of the show-account-dialog GAction */
   private void show_account_dialog () {
     if (this.account == null ||
         this.account.screen_name == Account.DUMMY)
