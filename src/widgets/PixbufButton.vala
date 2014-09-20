@@ -54,14 +54,23 @@ class PixbufButton : Gtk.Button {
     clipboard.set_text (menu_string, -1);
   }
 
-  public override bool draw (Cairo.Context c) {
+  public override bool draw (Cairo.Context ct) {
     if (bg != null) {
-      Gtk.StyleContext context = this.get_style_context ();
-      context.render_icon (c, bg, 0, 0);
+      int widget_width = this.get_allocated_width ();
+      int widget_height = this.get_allocated_height ();
+      ct.save ();
+      ct.rectangle (0, 0, widget_width, widget_height);
+
+      double scale_x = (double)widget_width / bg.get_width ();
+      double scale_y = (double)widget_height / bg.get_height ();
+      ct.scale (scale_x, scale_y);
+      Gdk.cairo_set_source_pixbuf (ct, bg, 0, 0);
+      ct.fill ();
+      ct.restore ();
     }
 
     // The css-styled background should be transparent.
-    base.draw (c);
+    base.draw (ct);
     return false;
   }
 
