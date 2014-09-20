@@ -22,6 +22,20 @@ class PixbufButton : Gtk.Button {
   private Gdk.Pixbuf bg;
   private Gtk.Menu menu;
   private string menu_string;
+  private bool _round = false;
+  public bool round {
+    get {
+      return _round;
+    }
+    set {
+      if (value) {
+        this.get_style_context ().add_class ("pixbuf-button-round");
+      } else {
+        this.get_style_context ().remove_class ("pixbuf-button-round");
+      }
+      _round = value;
+    }
+  }
 
   construct {
     this.border_width = 0;
@@ -55,18 +69,49 @@ class PixbufButton : Gtk.Button {
   }
 
   public override bool draw (Cairo.Context ct) {
+    var sc = this.get_style_context ();
+    int widget_width = this.get_allocated_width ();
+    int widget_height = this.get_allocated_height ();
+
+
     if (bg != null) {
-      int widget_width = this.get_allocated_width ();
-      int widget_height = this.get_allocated_height ();
-      ct.save ();
-      ct.rectangle (0, 0, widget_width, widget_height);
+
+      var surface = new Cairo.Surface.similar (ct.get_target (),
+                                               Cairo.Content.COLOR_ALPHA,
+                                               widget_width, widget_height);
+      var ctx = new Cairo.Context (surface);
+
+      ctx.rectangle (0, 0, widget_width, widget_height);
 
       double scale_x = (double)widget_width / bg.get_width ();
       double scale_y = (double)widget_height / bg.get_height ();
-      ct.scale (scale_x, scale_y);
-      Gdk.cairo_set_source_pixbuf (ct, bg, 0, 0);
+      ctx.scale (scale_x, scale_y);
+      Gdk.cairo_set_source_pixbuf (ctx, bg, 0, 0);
+      ctx.fill ();
+
+
+
+      if (_round) {
+        // make it round
+        ctx.set_operator (Cairo.Operator.DEST_IN);
+        ctx.translate (widget_width / 2, widget_height / 2);
+        ctx.arc (0, 0, widget_width / 2, 0, 2 * Math.PI);
+        ctx.fill ();
+
+        // draw outline
+        ctx.set_operator (Cairo.Operator.OVER);
+        Gdk.RGBA border_color = sc.get_border_color (this.get_state_flags ());
+        ctx.arc (0, 0, (widget_width /2) - 0.5, 0, 2 * Math.PI);
+        ctx.set_line_width (1.0);
+        ctx.set_source_rgba (border_color.red, border_color.green, border_color.blue,
+                            border_color.alpha);
+        ctx.stroke ();
+
+      }
+
+      ct.rectangle (0, 0, widget_width, widget_height);
+      ct.set_source_surface (surface, 0, 0);
       ct.fill ();
-      ct.restore ();
     }
 
     // The css-styled background should be transparent.
