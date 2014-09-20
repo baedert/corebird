@@ -32,16 +32,6 @@ public class AvatarBannerWidget : Gtk.Container {
   private static const double BANNER_RATIO = 0.5; /* 320/640 */
   public int avatar_size { get; set; default = 48; }
 
-  private bool _round = true;
-  public bool make_round {
-    get {
-      return _round;
-    }
-    set {
-      this._round = value;
-      this.queue_draw ();
-    }
-  }
   private unowned Account account;
 
   private PixbufButton set_banner_button;
@@ -92,12 +82,8 @@ public class AvatarBannerWidget : Gtk.Container {
   }
 
   public override bool draw (Cairo.Context ct) {
-    int widget_width  = this.get_allocated_width ();
-    int widget_height = this.get_allocated_height ();
-
     this.propagate_draw (set_banner_button, ct);
     this.propagate_draw (set_avatar_button, ct);
-
     return true;
   }
 
