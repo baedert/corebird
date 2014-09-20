@@ -149,6 +149,10 @@
   transition: box-shadow 0.25s ease-in-out;
 }
 
+.pixbuf-button-round {
+  border-radius: 48px;
+}
+
 .pixbuf-button:hover {
 /*  box-shadow: 0px 0px 10px alpha(black, 0.8);*/
   border: 2px solid #4a90d9;
