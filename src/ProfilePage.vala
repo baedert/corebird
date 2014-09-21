@@ -544,9 +544,11 @@ class ProfilePage : ScrollWidget, IPage {
   [GtkCallback]
   private void follow_button_clicked_cb () { //{{{
     var call = account.proxy.new_call();
-    if (following)
+    if (following) {
       call.set_function( "1.1/friendships/destroy.json");
-    else {
+      HomeTimeline ht = (HomeTimeline) main_window.get_page (Page.STREAM);
+      ht.remove_tweets_from (this.user_id);
+    } else {
       call.set_function ("1.1/friendships/create.json");
       call.add_param ("follow", "false");
       block_item_blocked = true;
