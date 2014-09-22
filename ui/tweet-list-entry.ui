@@ -48,37 +48,93 @@
         <property name="visible">true</property>
         <property name="can_focus">false</property>
         <property name="visible_child">grid</property>
+        <property name="transition_type">crossfade</property>
 
         <child>
           <object class="GtkBox" id="action_box">
             <property name="visible">true</property>
             <property name="spacing">12</property>
+            <property name="halign">center</property>
 
             <child>
               <object class="GtkToggleButton" id="favorite_button">
                 <property name="visible">true</property>
+                <property name="relief">none</property>
+                <property name="valign">center</property>
                 <signal name="toggled" handler="favorite_button_toggled_cb" />
+                <style>
+                  <class name="dim-label" />
+                  <class name="favorite-button" />
+                  <class name="image-button" />
+                </style>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">true</property>
+                    <property name="pixel_size">32</property>
+                    <property name="icon_name">starred-symbolic</property>
+                  </object>
+                </child>
               </object>
             </child>
 
             <child>
               <object class="DoubleTapButton" id="retweet_button">
                 <property name="visible">true</property>
+                <property name="relief">none</property>
+                <property name="valign">center</property>
                 <signal name="toggled" handler="retweet_button_toggled_cb" />
+                <style>
+                  <class name="dim-label" />
+                  <class name="retweet-button" />
+                  <class name="image-button" />
+                </style>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">true</property>
+                    <property name="pixel_size">32</property>
+                    <property name="icon_name">corebird-retweet-symbolic</property>
+                  </object>
+                </child>
               </object>
             </child>
 
             <child>
               <object class="GtkButton" id="reply_button">
                 <property name="visible">true</property>
+                <property name="relief">none</property>
+                <property name="valign">center</property>
                 <signal name="clicked" handler="reply_button_clicked_cb" />
+                <style>
+                  <class name="dim-label" />
+                  <class name="reply-button" />
+                  <class name="image-button" />
+                </style>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">true</property>
+                    <property name="pixel_size">32</property>
+                    <property name="icon_name">mail-replied-symbolic</property>
+                  </object>
+                </child>
               </object>
             </child>
 
             <child>
               <object class="GtkMenuButton" id="more_button">
                 <property name="visible">true</property>
+                <property name="relief">none</property>
                 <property name="popup">more_menu</property>
+                <property name="valign">center</property>
+                <style>
+                  <class name="dim-label" />
+                </style>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">true</property>
+                    <property name="pixel_size">32</property>
+                    <property name="icon_name">go-down-symbolic</property>
+                  </object>
+                </child>
               </object>
             </child>
 

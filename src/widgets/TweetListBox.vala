@@ -32,6 +32,27 @@ public class TweetListBox : Gtk.ListBox {
     progress_entry = new ProgressEntry ();
     this.get_style_context ().add_class ("stream");
     this.set_selection_mode (Gtk.SelectionMode.NONE);
+    this.button_press_event.connect (button_press_cb);
+  }
+
+  private bool button_press_cb (Gdk.EventButton evt) {
+    if (evt.button == 3) {
+      /* From gtklistbox.c */
+      Gdk.Window? event_window = evt.window;
+      Gdk.Window window = this.get_window ();
+      double relative_y = evt.y;
+      double parent_y;
+
+      while ((event_window != null) && (event_window != window)) {
+        event_window.coords_to_parent (0, relative_y, null, out parent_y);
+        relative_y = parent_y;
+        event_window = event_window.get_effective_parent ();
+      }
+      var row = (TweetListEntry) get_row_at_y ((int)relative_y);
+      row.toggle_mode ();
+      return true;
+    }
+    return false;
   }
 
 

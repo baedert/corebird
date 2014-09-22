@@ -46,6 +46,10 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   private Gtk.Grid grid;
   [GtkChild]
   private MultiMediaWidget mm_widget;
+  [GtkChild]
+  private Gtk.Stack stack;
+  [GtkChild]
+  private Gtk.Box action_box;
 
 
 
@@ -297,4 +301,11 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     return (int)(cur_time.difference (then) / 1000.0 / 1000.0);
   } //}}}
 
+
+  public void toggle_mode () {
+    if (stack.visible_child == action_box)
+      stack.visible_child = grid;
+    else
+      stack.visible_child = action_box;
+  }
 }
