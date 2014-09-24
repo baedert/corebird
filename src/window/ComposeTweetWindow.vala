@@ -103,12 +103,21 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
         mention_builder.append ("@").append (answer_to.screen_name);
       }
       if (answer_to.is_retweet) {
-        mention_builder.append (" @").append (answer_to.rt_by_screen_name);
+        if (mention_builder.len > 0)
+          mention_builder.append (" ");
+
+        mention_builder.append ("@").append (answer_to.rt_by_screen_name);
       }
       foreach (string s in answer_to.mentions) {
-        mention_builder.append (" ").append (s);
+        if (mention_builder.len > 0)
+          mention_builder.append (" ");
+
+        mention_builder.append (s);
       }
-      mention_builder.append (" ");
+      /* Only add a space if we actually added some screen names */
+      if (mention_builder.len > 0)
+        mention_builder.append (" ");
+
       tweet_text.buffer.text = mention_builder.str;
     } else if (mode == Mode.QUOTE) {
       tweet_text.buffer.text = " RT @%s “%s“".printf (answer_to.screen_name,
