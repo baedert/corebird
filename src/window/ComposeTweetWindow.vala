@@ -99,7 +99,9 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
     if (mode == Mode.REPLY) {
       StringBuilder mention_builder = new StringBuilder ();
-      mention_builder.append ("@").append (answer_to.screen_name);
+      if (answer_to.screen_name != account.screen_name) {
+        mention_builder.append ("@").append (answer_to.screen_name);
+      }
       if (answer_to.is_retweet) {
         mention_builder.append (" @").append (answer_to.rt_by_screen_name);
       }
