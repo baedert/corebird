@@ -338,10 +338,12 @@ class TweetInfoPage : IPage , ScrollWidget {
         critical (e.message);
         return;
       }
-      bool user_protected = parser.get_root ().get_object ().get_object_member ("user")
-                                                            .get_boolean_member ("protected");
-      if (user_protected) {
-        load_replied_to_tweet (parser.get_root ().get_object ().get_int_member ("in_reply_to_status_id"));
+      var root = parser.get_root ().get_object ();
+      bool user_protected = root.get_object_member ("user")
+                                .get_boolean_member ("protected");
+      int64 from_id = root.get_object_member ("user").get_int_member ("id");
+      if (user_protected && from_id != account.id) {
+        load_replied_to_tweet (root.get_int_member ("in_reply_to_status_id"));
       } else {
         Tweet tweet = new Tweet ();
         tweet.load_from_json (parser.get_root (), new GLib.DateTime.now_local (), account);
