@@ -23,4 +23,6 @@ src/window/ComposeTweetWindow.c
 src/window/ImageDialog.c
 src/window/UserListDialog.c
 src/window/ModifyFilterDialog.c
+src/widgets/AvatarBannerWidget.c
+src/window/ImageCropDialog.c
 data/org.baedert.corebird.desktop.in
