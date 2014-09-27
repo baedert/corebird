@@ -129,9 +129,8 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     });
     if (n_rows == 0 && GLib.NetworkMonitor.get_default ().get_network_available ()) {
       progress_spinner = new Gtk.Spinner ();
-      progress_spinner.set_size_request (30, 30);
-      progress_spinner.margin_top = 10;
-      progress_spinner.margin_bottom = 10;
+      progress_spinner.set_size_request (16, 16);
+      progress_spinner.margin = 12;
       progress_spinner.start ();
       thread_list.add (progress_spinner);
     }
