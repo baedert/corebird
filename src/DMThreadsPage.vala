@@ -46,7 +46,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     thread_list.row_activated.connect ((row) => {
       if (row is StartConversationEntry)
         ((StartConversationEntry)row).reveal ();
-      else {
+      else if (row is DMThreadEntry) {
         var entry = (DMThreadEntry) row;
         main_window.main_widget.switch_page (Page.DM,
                                              entry.user_id);
