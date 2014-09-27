@@ -408,8 +408,9 @@ namespace TweetUtils {
 
         index ++;
         if (index == tweet_array.length) {
-          if (tweet_array.length < requested_tweet_count) {
-            debug ("Removing progress entry...");
+          if (tweet_array.length < requested_tweet_count - 1) {
+            debug ("Removing progress entry. Requested: %u, Got: %d", requested_tweet_count,
+                                                                      tweet_array.length);
             tweet_list.remove_progress_entry ();
           } else
             tweet_list.add_progress_entry ();
