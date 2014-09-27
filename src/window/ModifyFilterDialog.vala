@@ -44,6 +44,7 @@ class ModifyFilterDialog : Gtk.Dialog {
     this.account = account;
     if (filter != null) {
       regex_entry.text = filter.content;
+      this.title = _("Modify Filter");
     }
     this.filter = filter;
     this.main_window = parent;
