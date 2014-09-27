@@ -30,6 +30,8 @@ public interface IPage : Gtk.Widget {
   public abstract unowned Account account        {get; set;}
 
 
+
+
   public virtual bool handles_double_open () {
     return false;
   }
