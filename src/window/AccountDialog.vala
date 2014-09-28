@@ -18,6 +18,7 @@
 class AccountDialog : Gtk.Dialog {
   private static const int RESPONSE_CLOSE  = 0;
   private static const int RESPONSE_DELETE = 1;
+  private static const int RESPONSE_CANCEL = 2;
   private static const string PAGE_NORMAL = "normal";
   private static const string PAGE_DELETE = "delete";
   [GtkChild]
@@ -76,6 +77,8 @@ class AccountDialog : Gtk.Dialog {
     } else if (response_id == RESPONSE_DELETE) {
       delete_stack.visible_child_name = PAGE_DELETE;
       delete_button.hide ();
+    } else if (response_id == RESPONSE_CANCEL) {
+      this.destroy ();
     }
   }
 
