@@ -87,6 +87,8 @@ class AccountDialog : Gtk.Dialog {
     if (!needs_save)
       return;
 
+    debug ("Saving data...");
+
     var call = account.proxy.new_call ();
     call.set_function ("1.1/account/update_profile.json");
     call.set_method ("POST");

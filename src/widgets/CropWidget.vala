@@ -55,6 +55,7 @@ class CropWidget : Gtk.DrawingArea {
     this.selection_rect = Gdk.Rectangle ();
   }
 
+
   private bool mouse_motion_cb (Gdk.EventMotion evt) {
     double x = evt.x;
     double y = evt.y;
@@ -185,7 +186,7 @@ class CropWidget : Gtk.DrawingArea {
       return;
 
     int max_width = MIN (image_rect.width,
-                         MIN ((int)(image_rect.width / desired_aspect_ratio),
+                         MIN ((int)(image_rect.width),
                               (int)(image_rect.height * desired_aspect_ratio)));
 
     int new_width  = (int)x - selection_rect.x - resize_diff_x;
@@ -196,6 +197,8 @@ class CropWidget : Gtk.DrawingArea {
       selection_rect.height = new_height;
     } else {
       selection_rect.width = max_width;
+      message ("%d", selection_rect.width);
+      message ("%f", image_rect.width / desired_aspect_ratio);
       selection_rect.height = (int)(max_width / desired_aspect_ratio);
     }
 
@@ -233,7 +236,6 @@ class CropWidget : Gtk.DrawingArea {
       selection_rect.height = (int)(n / desired_aspect_ratio);
       selection_rect.y = image_rect.y + ((image_rect.height - selection_rect.height) / 2);
     }
-    message ("selection_rect.width: %d", selection_rect.width);
     this.queue_draw ();
   }
 
@@ -310,7 +312,6 @@ class CropWidget : Gtk.DrawingArea {
     int widget_height = this.get_allocated_height ();
 
     if (this.image == null) {
-      warning ("calculate_image_rect called but image == null");
       return;
     }
 
@@ -327,9 +328,6 @@ class CropWidget : Gtk.DrawingArea {
     if (image.get_height () * current_scale > widget_height)
       current_scale = (double) widget_height / image.get_height ();
 
-    message ("Scale: %f", current_scale);
-    message ("%d/%d | %d/%d", widget_width, widget_height, image.get_width (), image.get_height ());
-
     /* Cap at 1.0 */
     if (current_scale > 1.0)
       current_scale = 1.0;
@@ -340,11 +338,6 @@ class CropWidget : Gtk.DrawingArea {
     this.image_rect.x      = (widget_width - image_rect.width) / 2;
     this.image_rect.y      = (widget_height - image_rect.height) / 2;
   }
-
-  private inline bool between (double value, double lower, double upper) {
-    return value >= lower && value <= upper;
-  }
-
   private bool over_resize_area (double x, double y) {
 
     if (x > selection_rect.x + selection_rect.width  - 15 &&
@@ -363,9 +356,27 @@ class CropWidget : Gtk.DrawingArea {
     return b;
   }
 
-  private inline int MAX (int a, int b) {
-    if (a > b)
-      return a;
-    return b;
+  public Gdk.Pixbuf get_cropped_image () {
+    int absolute_x = (int)((selection_rect.x - image_rect.x) / current_scale);
+    int absolute_y = (int)((selection_rect.y - image_rect.y) / current_scale);
+    int absolute_w = (int)(selection_rect.width / current_scale);
+    int absolute_h = (int)(selection_rect.height / current_scale);
+
+    Gdk.Pixbuf final_image = new Gdk.Pixbuf (Gdk.Colorspace.RGB,
+                                             this.image.get_has_alpha (),
+                                             8,
+                                             absolute_w,
+                                             absolute_h);
+
+    this.image.copy_area (absolute_x,
+                          absolute_y,
+                          absolute_w,
+                          absolute_h,
+                          final_image,
+                          0,
+                          0);
+
+    return final_image;
   }
+
 }

@@ -155,26 +155,16 @@ public class AvatarBannerWidget : Gtk.Container {
   }
 
   private void banner_clicked_cb () {
-    Gtk.FileChooserDialog dialog = new Gtk.FileChooserDialog (_("Choose new Banner"),
-                                                              (Gtk.Window)this.get_toplevel (),
-                                                              Gtk.FileChooserAction.OPEN,
-                                                              _("Cancel"), Gtk.ResponseType.CANCEL,
-                                                              _("Choose"), Gtk.ResponseType.ACCEPT);
+    ImageCropDialog dialog = new ImageCropDialog (2.0);
     dialog.set_modal (true);
-    if (dialog.run () == Gtk.ResponseType.ACCEPT) {
-
-    }
+    dialog.set_transient_for ((Gtk.Window)this.get_toplevel ());
+    dialog.image_cropped.connect ((img) => {
+      set_banner_button.set_bg (img);
+    });
+    dialog.show_all ();
   }
 
   private void avatar_clicked_cb () {
-    Gtk.FileChooserDialog dialog = new Gtk.FileChooserDialog (_("Choose new Banner"),
-                                                              (Gtk.Window)this.get_toplevel (),
-                                                              Gtk.FileChooserAction.OPEN,
-                                                              _("Cancel"), Gtk.ResponseType.CANCEL,
-                                                              _("Choose"), Gtk.ResponseType.ACCEPT);
-    dialog.set_modal (true);
-    if (dialog.run () == Gtk.ResponseType.ACCEPT) {
 
-    }
   }
 }
