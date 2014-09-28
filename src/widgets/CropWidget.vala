@@ -87,7 +87,7 @@ class CropWidget : Gtk.DrawingArea {
       return true;
     }
 
-    if (over_resize_area (x, y)) {
+    if (over_resize_area (x, y) || resize_area_grabbed) {
       resize_area_hovered = true;
       set_cursor (resize_cursor);
       this.queue_draw ();
@@ -140,11 +140,13 @@ class CropWidget : Gtk.DrawingArea {
   private bool button_release_cb (Gdk.EventButton evt) {
     if (selection_grabbed) {
       selection_grabbed = false;
+      set_cursor (default_cursor);
       return true;
     }
 
     if (resize_area_grabbed) {
       resize_area_grabbed = false;
+      set_cursor (default_cursor);
       return true;
     }
     return false;
@@ -247,15 +249,11 @@ class CropWidget : Gtk.DrawingArea {
     int widget_width  = get_allocated_width ();
     int widget_height = get_allocated_height ();
 
+    ct.set_line_width (1.0);
+
     /* Draw dark background */
     ct.rectangle (0, 0, widget_width, widget_height);
     ct.set_source_rgba (0.3, 0.3, 0.3, 1.0);
-    ct.fill ();
-
-    /* Draw white background for the image */
-    ct.rectangle (image_rect.x, image_rect.y,
-                  image_rect.width, image_rect.height);
-    ct.set_source_rgba (1.0, 1.0, 1.0, 1.0);
     ct.fill ();
 
     /* Draw image */
@@ -278,10 +276,10 @@ class CropWidget : Gtk.DrawingArea {
     /* Draw resize quad */
     ct.rectangle (selection_rect.x + selection_rect.width - 15,
                   selection_rect.y + selection_rect.height - 15,
-                  15,
-                  15);
+                  14.5,
+                  14.5);
     if (resize_area_hovered || resize_area_grabbed)
-      ct.set_source_rgba (0.0, 0.0, 1.0, 0.7);
+      ct.set_source_rgba (0.0, 0.0, 0.6, 0.7);
     else
       ct.set_source_rgba (1.0, 1.0, 1.0, 0.7);
     ct.fill ();
