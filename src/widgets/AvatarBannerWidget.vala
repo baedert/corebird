@@ -24,8 +24,8 @@ public class AvatarBannerWidget : Gtk.Container {
   private PixbufButton set_banner_button;
   private PixbufButton set_avatar_button;
 
-  public signal void avatar_changed ();
-  public signal void banner_changed ();
+  public signal void avatar_changed (Gdk.Pixbuf new_avatar);
+  public signal void banner_changed (Gdk.Pixbuf new_banner);
 
   construct {
     this.set_has_window (false);
@@ -160,6 +160,7 @@ public class AvatarBannerWidget : Gtk.Container {
     dialog.set_transient_for ((Gtk.Window)this.get_toplevel ());
     dialog.image_cropped.connect ((img) => {
       set_banner_button.set_bg (img);
+      banner_changed (img);
     });
     dialog.show_all ();
   }
@@ -170,6 +171,7 @@ public class AvatarBannerWidget : Gtk.Container {
     dialog.set_transient_for ((Gtk.Window)this.get_toplevel ());
     dialog.image_cropped.connect ((img) => {
       set_avatar_button.set_bg (img);
+      avatar_changed (img);
     });
     dialog.show_all ();
   }
