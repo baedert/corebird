@@ -197,8 +197,8 @@ class CropWidget : Gtk.DrawingArea {
       selection_rect.height = new_height;
     } else {
       selection_rect.width = max_width;
-      message ("%d", selection_rect.width);
-      message ("%f", image_rect.width / desired_aspect_ratio);
+      //message ("%d", selection_rect.width);
+      //message ("%f", image_rect.width / desired_aspect_ratio);
       selection_rect.height = (int)(max_width / desired_aspect_ratio);
     }
 
@@ -223,19 +223,19 @@ class CropWidget : Gtk.DrawingArea {
 
     /* Place the selection rect initially, using the maximum size
        given the desired_aspect_ratio */
-    if (image.get_width () > image.get_height ()) {
-      int n =  image_rect.height;
-      selection_rect.height = n;
-      selection_rect.width = (int)(n * desired_aspect_ratio);
-      selection_rect.y = image_rect.y;
-      selection_rect.x = image_rect.x + (image_rect.width - selection_rect.width) / 2;
-    } else {
-      int n = image_rect.width;
-      selection_rect.x = image_rect.x;
-      selection_rect.width = n;
-      selection_rect.height = (int)(n / desired_aspect_ratio);
-      selection_rect.y = image_rect.y + ((image_rect.height - selection_rect.height) / 2);
+
+    selection_rect.width = image_rect.width;
+    selection_rect.height = (int)(selection_rect.width / desired_aspect_ratio);
+
+    if (selection_rect.height > image_rect.height) {
+      selection_rect.height = image_rect.height;
+      selection_rect.width = (int)(selection_rect.height * desired_aspect_ratio);
     }
+
+    selection_rect.x = image_rect.x + ((image_rect.width - selection_rect.width) / 2);
+    selection_rect.y = image_rect.y + ((image_rect.height - selection_rect.height) / 2);
+
+    restrict_selection_size ();
     this.queue_draw ();
   }
 
