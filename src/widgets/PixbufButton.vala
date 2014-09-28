@@ -85,9 +85,11 @@ class PixbufButton : Gtk.Button {
 
       double scale_x = (double)widget_width / bg.get_width ();
       double scale_y = (double)widget_height / bg.get_height ();
+      ctx.save ();
       ctx.scale (scale_x, scale_y);
       Gdk.cairo_set_source_pixbuf (ctx, bg, 0, 0);
       ctx.fill ();
+      ctx.restore ();
 
 
 
