@@ -49,6 +49,15 @@
       <object class="GtkBox">
         <property name="visible">true</property>
         <property name="orientation">horizontal</property>
+
+        <child>
+          <object class="GtkButton">
+            <property name="visible">true</property>
+            <property name="label" translatable="yes">Cancel</property>
+            <signal name="clicked" handler="cancel_button_clicked_cb" />
+          </object>
+        </child>
+
         <child>
           <object class="GtkButton" id="back_button">
             <property name="visible">true</property>

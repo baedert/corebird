@@ -82,6 +82,9 @@ public class ImageCropDialog : Gtk.Dialog {
     }
   }
 
-  //public
+  [GtkCallback]
+  private void cancel_button_clicked_cb () {
+    this.destroy ();
+  }
 
 }
