@@ -51,6 +51,7 @@ class AccountDialog : Gtk.Dialog {
     name_entry.text = account.name;
     avatar_banner_widget.set_account (account);
     website_entry.text = account.website ?? "";
+    old_user_name = account.name;
     old_website = account.website ?? "";
     old_description = account.description ?? "";
     if (account.description != null) {
