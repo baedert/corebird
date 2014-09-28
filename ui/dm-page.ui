@@ -44,6 +44,7 @@
               <object class="GtkTextView" id="text_view">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="wrap-mode">word-char</property>
                 <signal name="key_press_event" handler="text_view_key_press_cb" />
               </object>
             </child>
