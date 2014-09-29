@@ -158,7 +158,7 @@ class SearchPage : IPage, Gtk.Box {
           Utils.show_error_object (user_call.get_payload (), e.message,
                                    GLib.Log.LINE, GLib.Log.FILE);
         } else {
-          tweet_list.set_placeholder_text (e.message);
+          tweet_list.set_error (e.message);
         }
         tweet_list.set_empty ();
 
