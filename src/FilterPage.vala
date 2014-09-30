@@ -209,9 +209,9 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
 
   public void on_leave () {}
   public void create_tool_button (Gtk.RadioButton? group) {
-    tool_button = new BadgeRadioToolButton(group, "corebird-filter-symbolic");
-    tool_button.tooltip_text = _("Filters");
+    tool_button = new BadgeRadioToolButton(group, "corebird-filter-symbolic", _("Filters"));
   }
+
   public Gtk.RadioButton? get_tool_button() { return tool_button; }
 
   public string? get_title () {

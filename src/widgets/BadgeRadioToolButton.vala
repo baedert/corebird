@@ -20,12 +20,18 @@ public class BadgeRadioToolButton : Gtk.RadioButton {
   private static const int BADGE_SIZE = 10;
   public bool show_badge{ get; set; default = false;}
 
-  public BadgeRadioToolButton (Gtk.RadioButton group, string icon_name) {
+  public BadgeRadioToolButton (Gtk.RadioButton group, string icon_name, string text="") {
     GLib.Object (group: group);
     this.get_style_context ().add_class ("image-button");
     var i = new Gtk.Image.from_icon_name (icon_name, Gtk.IconSize.BUTTON);
     this.add (i);
     this.set_mode (false);
+
+    if(text != "") {
+      this.tooltip_text = text;
+      Atk.Object accessible = this.get_accessible();
+      accessible.set_name(text);
+    }
   }
 
   public override bool draw (Cairo.Context c){
