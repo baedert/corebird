@@ -124,8 +124,7 @@ class ListsPage : IPage, ScrollWidget, IMessageReceiver {
 
 
   public void create_tool_button (Gtk.RadioButton? group) {
-    tool_button = new BadgeRadioToolButton (group, "view-list-symbolic");
-    tool_button.tooltip_text = _("Lists");
+    tool_button = new BadgeRadioToolButton (group, "view-list-symbolic", _("Lists"));
   }
 
 

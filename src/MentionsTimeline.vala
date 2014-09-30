@@ -125,8 +125,7 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
 
 
   public override void create_tool_button (Gtk.RadioButton? group) {
-    tool_button = new BadgeRadioToolButton(group, "corebird-mentions-symbolic");
-    tool_button.tooltip_text = _("Mentions");
+    tool_button = new BadgeRadioToolButton(group, "corebird-mentions-symbolic", _("Mentions"));
   }
 
 }
