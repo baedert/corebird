@@ -27,7 +27,6 @@ class TweetInfoPage : IPage , ScrollWidget {
   private int64 tweet_id;
   private bool values_set = false;
   private Tweet tweet;
-  private bool following;
 
   [GtkChild]
   private MultiMediaWidget mm_widget;
@@ -51,8 +50,6 @@ class TweetInfoPage : IPage , ScrollWidget {
   private Gtk.ToggleButton favorite_button;
   [GtkChild]
   private Gtk.ToggleButton retweet_button;
-  [GtkChild]
-  private Gtk.Button follow_button;
   [GtkChild]
   private Gtk.Label time_label;
   [GtkChild]
@@ -165,29 +162,6 @@ class TweetInfoPage : IPage , ScrollWidget {
   }
 
   [GtkCallback]
-  private void follow_button_clicked_cb () { // {{{
-    var call = account.proxy.new_call();
-    if (following)
-      call.set_function ("1.1/friendships/destroy.json");
-    else
-      call.set_function( "1.1/friendships/create.json");
-    call.set_method ("POST");
-    call.add_param ("follow", "true");
-    call.add_param ("id", tweet.user_id.to_string ());
-    call.invoke_async.begin (null, (obj, res) => {
-      try {
-        set_follow_button_state (!following);
-        following = !following;
-        call.invoke_async.end (res);
-      } catch (GLib.Error e) {
-        critical (e.message);
-        Utils.show_error_object (call.get_payload (), e.message,
-                                 GLib.Log.LINE, GLib.Log.FILE);
-      }
-    });
-  } //}}}
-
-  [GtkCallback]
   private bool link_activated_cb (string uri) {
     return TweetUtils.activate_link (uri, main_window);
   }
@@ -203,7 +177,6 @@ class TweetInfoPage : IPage , ScrollWidget {
    * Loads the data of the tweet with the id tweet_id from the Twitter server.
    */
   private void query_tweet_info () { //{{{
-    follow_button.sensitive = false;
 
     var now = new GLib.DateTime.now_local ();
     var call = account.proxy.new_call ();
@@ -229,15 +202,10 @@ class TweetInfoPage : IPage , ScrollWidget {
       }
       tweet.load_from_json (parser.get_root (), now, account);
       Json.Object root_object = parser.get_root ().get_object ();
-      if (root_object.has_member ("retweeted_status"))
-        this.following = root_object.get_object_member ("retweeted_status")
-                                    .get_object_member ("user").get_boolean_member ("following");
-      else
-        this.following = root_object.get_object_member ("user").get_boolean_member ("following");
 
       string with = root_object.get_string_member ("source");
       with = extract_source (with);
-      set_tweet_data (tweet, following, with);
+      set_tweet_data (tweet, with);
 
       if (tweet.reply_id == 0) {
         load_replied_to_tweet (tweet.reply_id);
@@ -356,7 +324,7 @@ class TweetInfoPage : IPage , ScrollWidget {
   /**
    *
    */
-  private void set_tweet_data (Tweet tweet, bool following = false, string? with = null) {//{{{
+  private void set_tweet_data (Tweet tweet, string? with = null) {//{{{
     account.user_counter.user_seen (tweet.user_id, tweet.screen_name, tweet.user_name);
     GLib.DateTime created_at = new GLib.DateTime.from_unix_local (tweet.created_at);
     string time_format = created_at.format ("%x, %X");
@@ -383,32 +351,13 @@ class TweetInfoPage : IPage , ScrollWidget {
     }
 
     if (tweet.user_id == account.id) {
-      follow_button.hide ();
       delete_menu_item.show ();
       retweet_button.hide ();
     } else {
-      set_follow_button_state (following);
-      //follow_button.show ();
       delete_menu_item.hide ();
       retweet_button.show ();
     }
   } //}}}
-
-  private void set_follow_button_state (bool following) { //{{{
-    var sc = follow_button.get_style_context ();
-    follow_button.sensitive = true;
-    if (following) {
-      sc.remove_class ("suggested-action");
-      sc.add_class ("destructive-action");
-      follow_button.label = _("Unfollow");
-    } else {
-      sc.remove_class ("destructive-action");
-      sc.add_class ("suggested-action");
-      follow_button.label = _("Follow");
-    }
-    this.following = following;
-  } //}}}
-
 
   private void set_source_link (int64 id, string screen_name) {
     var link = "https://twitter.com/%s/status/%s".printf (screen_name,
