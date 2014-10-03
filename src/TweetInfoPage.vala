@@ -296,6 +296,7 @@ class TweetInfoPage : IPage , ScrollWidget {
         critical(e.message);
         Utils.show_error_object (call.get_payload (), e.message,
                                  GLib.Log.LINE, GLib.Log.FILE);
+        bottom_list_box.visible = (bottom_list_box.get_children ().length () > 0);
         return;
       }
 
