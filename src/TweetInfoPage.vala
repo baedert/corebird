@@ -310,7 +310,8 @@ class TweetInfoPage : IPage , ScrollWidget {
       bool user_protected = root.get_object_member ("user")
                                 .get_boolean_member ("protected");
       int64 from_id = root.get_object_member ("user").get_int_member ("id");
-      if (user_protected && from_id != account.id) {
+      if (user_protected && from_id != account.id
+          && Utils.usable_json_value (root, "in_reply_to_status_id")) {
         load_replied_to_tweet (root.get_int_member ("in_reply_to_status_id"));
       } else {
         Tweet tweet = new Tweet ();
