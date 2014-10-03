@@ -389,6 +389,18 @@ namespace Utils {
     return (int)node.get_array_member (object_name).get_length ();
   }
 
+  /**
+   * Checks if @value is existing in @node and if it is, non-null.
+   *
+   * Returns TRUE if the @value does both exist and is non-null.
+   */
+  public bool usable_json_value (Json.Object node, string value_name) {
+    if (node.get_null_member (value_name))
+      return false;
+
+    return node.has_member (value_name);
+  }
+
   public string get_banner_name (int64 user_id) {
     return user_id.to_string () + ".png";
   }
