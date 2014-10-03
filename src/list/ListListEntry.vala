@@ -58,7 +58,8 @@ public class ListListEntry : Gtk.ListBoxRow {
   private Gtk.Button delete_button;
   [GtkChild]
   private Gtk.Button cancel_button;
-
+  [GtkChild]
+  private Gtk.Button show_info_button;
 
   public int64 id;
   public bool user_list = false;
@@ -183,4 +184,21 @@ public class ListListEntry : Gtk.ListBoxRow {
     stack.visible_child_name = "default";
     return false;
   }
+
+  [GtkCallback]
+  private void show_info_button_clicked_cb () {
+    ListInfoPopover p = new ListInfoPopover (this.id,
+                                             this.name,
+                                             this.user_list,
+                                             this.description,
+                                             this.creator_screen_name,
+                                             this.n_subscribers,
+                                             this.n_members,
+                                             this.created_at,
+                                             this.mode);
+    p.set_relative_to (show_info_button);
+    p.set_modal (true);
+    p.show ();
+  }
+
 }

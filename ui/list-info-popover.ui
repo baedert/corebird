@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="ListInfoPopover" parent="GtkPopover">
+
+    <child>
+      <object class="GtkBox">
+        <property name="visible">true</property>
+        <property name="orientation">vertical</property>
+        <property name="margin">6</property>
+        <property name="spacing">6</property>
+
+        <child>
+          <object class="GtkStack" id="name_stack">
+            <property name="visible">true</property>
+            <child>
+              <object class="GtkLabel" id="name_label">
+                <property name="visible">true</property>
+                <property name="valign">baseline</property>
+                <attributes>
+                  <attribute name="weight" value="bold" />
+                </attributes>
+              </object>
+            </child>
+            <child>
+              <object class="GtkEntry" id="name_entry">
+                <property name="visible">true</property>
+                <property name="valign">baseline</property>
+              </object>
+            </child>
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkStack" id="description_stack">
+            <property name="visible">true</property>
+            <child>
+              <object class="GtkLabel" id="description_label">
+                <property name="visible">true</property>
+                <property name="wrap_mode">word-char</property>
+                <property name="wrap">true</property>
+                <property name="max_width_chars">20</property>
+                <style>
+                  <class name="dim-label" />
+                </style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkFrame" id="description_frame">
+                <property name="visible">true</property>
+                <child>
+                  <object class="GtkTextView" id="description_text_view">
+                    <property name="visible">true</property>
+                    <property name="wrap_mode">word-char</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkSeparator">
+            <property name="visible">true</property>
+            <property name="orientation">horizontal</property>
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkGrid">
+            <property name="visible">true</property>
+            <property name="row_homogeneous">true</property>
+            <property name="column_homogeneous">true</property>
+            <property name="column_spacing">12</property>
+            <property name="row_spacing">6</property>
+
+            <!-- Creator -->
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">true</property>
+                <property name="label" translatable="yes">Creator:</property>
+                <property name="halign">end</property>
+                <property name="valign">baseline</property>
+                <style>
+                  <class name="dim-label" />
+                </style>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">0</property>
+              </packing>
+            </child>
+
+            <child>
+              <object class="GtkLabel" id="creator_label">
+                <property name="visible">true</property>
+                <property name="halign">start</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">0</property>
+              </packing>
+            </child>
+
+            <!-- Created at -->
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">true</property>
+                <property name="label" translatable="yes">Created at:</property>
+                <property name="halign">end</property>
+                <property name="valign">baseline</property>
+                <style>
+                  <class name="dim-label" />
+                </style>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">1</property>
+              </packing>
+            </child>
+
+            <child>
+              <object class="GtkLabel" id="created_at_label">
+                <property name="visible">true</property>
+                <property name="halign">start</property>
+                <property name="valign">baseline</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">1</property>
+              </packing>
+            </child>
+
+            <!-- Members -->
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">true</property>
+                <property name="label" translatable="yes">Members:</property>
+                <property name="halign">end</property>
+                <property name="valign">baseline</property>
+                <style>
+                  <class name="dim-label" />
+                </style>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">2</property>
+              </packing>
+            </child>
+
+            <child>
+              <object class="GtkLabel" id="members_label">
+                <property name="visible">true</property>
+                <property name="halign">start</property>
+                <property name="valign">baseline</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">2</property>
+              </packing>
+            </child>
+
+            <!-- Subscribers -->
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">true</property>
+                <property name="label" translatable="yes">Subscribers:</property>
+                <property name="halign">end</property>
+                <property name="valign">baseline</property>
+                <style>
+                  <class name="dim-label" />
+                </style>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">3</property>
+              </packing>
+            </child>
+
+            <child>
+              <object class="GtkLabel" id="subscribers_label">
+                <property name="visible">true</property>
+                <property name="halign">start</property>
+                <property name="valign">baseline</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">3</property>
+              </packing>
+            </child>
+
+
+            <!-- Mode -->
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">true</property>
+                <property name="label" translatable="yes">Mode:</property>
+                <property name="halign">end</property>
+                <property name="valign">baseline</property>
+                <style>
+                  <class name="dim-label" />
+                </style>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">4</property>
+              </packing>
+            </child>
+
+            <child>
+              <object class="GtkStack" id="mode_stack">
+                <property name="visible">true</property>
+                <property name="visible_child">mode_label</property>
+                <property name="valign">baseline</property>
+                <child>
+                  <object class="GtkLabel" id="mode_label">
+                    <property name="visible">true</property>
+                    <property name="halign">start</property>
+                    <property name="valign">baseline</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkComboBoxText" id="mode_combo_box">
+                    <property name="visible">True</property>
+                    <property name="halign">fill</property>
+                    <property name="valign">baseline</property>
+                    <items>
+                      <item id="Private" translatable="yes">Private</item>
+                      <item id="Public" translatable="yes">Public</item>
+                    </items>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">4</property>
+              </packing>
+            </child>
+
+            <!-- Delete stack -->
+            <child>
+              <object class="GtkStack" id="delete_stack">
+                <property name="visible">true</property>
+                <property name="transition_type">crossfade</property>
+                <child>
+                  <object class="GtkButton" id="delete_button">
+                    <property name="visible">true</property>
+                    <property name="label" translatable="yes">Delete</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkButton" id="cancel_button">
+                    <property name="visible">true</property>
+                    <property name="label" translatable="yes">Cancel</property>
+                    <signal name="clicked" handler="cancel_button_clicked_cb" />
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">5</property>
+              </packing>
+            </child>
+
+            <!-- Edit stack -->
+            <child>
+              <object class="GtkStack" id="edit_stack">
+                <property name="visible">true</property>
+                <property name="transition_type">crossfade</property>
+                <child>
+                  <object class="GtkButton" id="edit_button">
+                    <property name="visible">true</property>
+                    <property name="label" translatable="yes">Edit</property>
+                    <signal name="clicked" handler="edit_button_clicked_cb" />
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkButton" id="save_button">
+                    <property name="visible">true</property>
+                    <property name="label" translatable="yes">Save</property>
+                  </object>
+                </child>
+
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">5</property>
+              </packing>
+            </child>
+
+
+          </object>
+        </child>
+
+
+      </object>
+    </child>
+
+  </template>
+</interface>
