@@ -11,6 +11,8 @@ void main (string[] args) {
   var lle = new ListListEntry ();
   lle.name = "Test List";
   lle.description = "Some test description that is very long, much too long for the row width";
+  lle.creator_screen_name = "baedert";
+  lle.mode = "public";
   list_box.add (lle);
 
 
