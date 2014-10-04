@@ -20,7 +20,10 @@ public class Settings : GLib.Object {
   private static GLib.Settings settings;
 
   public static void init(){
-    settings = new GLib.Settings("org.baedert.corebird");
+    SettingsSchemaSource sss = new SettingsSchemaSource.from_directory(
+      GSETTINGSDIR, null, false);
+    SettingsSchema schema = sss.lookup("org.baedert.corebird", false);
+    settings = new GLib.Settings.full(schema, null, null);
   }
 
   public static new GLib.Settings get () {
