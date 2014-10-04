@@ -94,6 +94,19 @@ class TweetInfoPage : IPage , ScrollWidget {
 
     values_set = false;
 
+    if (mode == BY_INSTANCE) {
+      Tweet tweet = args.arg<Tweet> ();
+
+      if (tweet.is_retweet)
+        this.tweet_id = tweet.rt_id;
+      else
+        this.tweet_id = tweet.id;
+      set_tweet_data (tweet);
+      set_source_link (tweet.id, tweet.screen_name);
+      this.tweet = tweet;
+    } else if (mode == BY_ID) {
+      this.tweet_id = args.arg ();
+    }
 
     bottom_list_box.foreach ((w) => {bottom_list_box.remove (w);});
     bottom_list_box.hide ();
@@ -103,17 +116,6 @@ class TweetInfoPage : IPage , ScrollWidget {
     max_size_container.max_size = 0;
     max_size_container.queue_resize ();
 
-    if (mode == BY_INSTANCE) {
-      this.tweet = args.arg ();
-      if (tweet.is_retweet)
-        this.tweet_id = tweet.rt_id;
-      else
-        this.tweet_id = tweet.id;
-      set_tweet_data (tweet);
-      set_source_link (tweet.id, tweet.screen_name);
-    } else if (mode == BY_ID) {
-      this.tweet_id = args.arg ();
-    }
 
     query_tweet_info ();
   }
