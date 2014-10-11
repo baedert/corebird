@@ -5,7 +5,7 @@ AM_CPPFLAGS = $(CB_CFLAGS) \
 
 
 AUTOMAKE_OPTIONS = subdir-objects
-BUILT_SOURCES = libcorebird_la_vala.stamp
+BUILT_SOURCES = libcorebird_la_vala.stamp $(top_srcdir)/librest/rest/librest.la
 
 bin_PROGRAMS = corebird
 noinst_LTLIBRARIES = libcorebird.la
@@ -104,12 +104,14 @@ corebird.vapi libcorebird_la_vala.stamp corebird.h: $(cb_sources)
 #corebird.h corebird.vapi: libcorebird_la_vala.stamp
 
 libcorebird_la_LIBADD = @CB_LIBS@
+#libcorebird_la_LDFLAGS = -static
+#libcorebird_la_LDADD = lib/rest/rest/librest.la @CB_LIBS@
 libcorebird_la_VALASOURCES = $(cb_sources)
 libcorebird_la_SOURCES = libcorebird_la_vala.stamp \
 												 $(cb_sources:.vala=.c)
 
 corebird_SOURCES = main.vala resources.c
-corebird_LDADD = libcorebird.la @CB_LIBS@
+corebird_LDADD = libcorebird.la $(top_srcdir)/librest/rest/librest.la @CB_LIBS@
 corebird_VALAFLAGS = corebird.vapi @CB_VALA_FLAGS@
 main.vala: corebird.vapi corebird.h
 

@@ -1,6 +1,7 @@
 
 AM_CPPFLAGS = $(CB_CFLAGS) -I$(top_srcdir)/src
 
+AUTOMAKE_OPTIONS = subdir-objects
 noinst_PROGRAMS = tle mm_widget ab_widget crop_dialog lle
 
 

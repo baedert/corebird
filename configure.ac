@@ -85,10 +85,6 @@ if test "$enable_debug" = "yes"; then
   CB_VALA_FLAGS="$CB_VALA_FLAGS -D DEBUG"
 fi
 
-
-GLIB_GSETTINGS
-
-
 # Gettext stuff
 GETTEXT_PACKAGE=corebird
 AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE], ["$GETTEXT_PACKAGE"], [Gettext Package])
@@ -98,9 +94,21 @@ AM_GNU_GETTEXT_VERSION([0.18.3])
 AM_GLIB_GNU_GETTEXT
 
 
+GLIB_GSETTINGS
+PKG_CHECK_MODULES(GLIB, glib-2.0 >= 2.24)
+PKG_CHECK_MODULES(SOUP, libsoup-2.4)
+PKG_CHECK_MODULES(GTHREAD, gthread-2.0)
+AC_PATH_PROG([GLIB_MKENUMS],[glib-mkenums])
+
+
+
 
 AC_CONFIG_FILES([Makefile
+                 librest/Makefile
+                 librest/rest/Makefile
+                 librest/rest.pc
                  src/Makefile
+                 src/util/Config.vala
                  ui/Makefile
                  data/Makefile
                  data/org.baedert.corebird.desktop.in
@@ -118,8 +126,7 @@ AC_CONFIG_FILES([Makefile
                  sql/Makefile
                  sql/accounts/Makefile
                  sql/init/Makefile
-                 tests/Makefile
-                 src/util/Config.vala])
+                 tests/Makefile])
 
 
 AC_OUTPUT
