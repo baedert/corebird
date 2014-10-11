@@ -20,7 +20,7 @@
  *
  */
 
-#include <config.h>
+/*#include <config.h>*/
 #include <glib-object.h>
 #include "rest-params.h"
 
