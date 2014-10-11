@@ -1,11 +1,13 @@
 corebird
 Corebird.db
-src/*.c
 Corebird
+src/*.c
+src/window/*.c
 src/widgets/*.c
 src/containers/*.c
 src/util/*.c
-*.c
+src/list/*.c
+
 *.o
 *.lo
 *.la
