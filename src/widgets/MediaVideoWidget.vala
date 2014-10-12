@@ -198,15 +198,4 @@ class MediaVideoWidget : Gtk.Stack {
     yield;
   }
 
-
-
-  private void real_set_url (string url) {
-//#if VINE
-    //this.src.set ("uri", url, null);
-    //var pad = src.get_static_pad ("video-sink");
-    //Gst.Video.Info info = Gst.Video.Info();
-    //info.from_caps (pad.caps);
-    //message ("W: %d, H: %d", info.width, info.height);
-//#endif
-  }
 }
