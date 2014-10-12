@@ -127,7 +127,12 @@ class AccountDialog : Gtk.Dialog {
     if (new_avatar != null) {
       debug ("Updating avatar...");
       uint8[] buffer;
-      new_avatar.save_to_buffer (out buffer, "png", null);
+      try {
+        new_avatar.save_to_buffer (out buffer, "png", null);
+      } catch (GLib.Error e) {
+        warning (e.message);
+        return;
+      }
       string b64 = GLib.Base64.encode (buffer);
 
       var call = account.proxy.new_call ();
@@ -146,14 +151,23 @@ class AccountDialog : Gtk.Dialog {
         }
 
         /* Locally set new avatar */
-        account.set_new_avatar (new_avatar);
+        try {
+          account.set_new_avatar (new_avatar);
+        } catch (GLib.Error e) {
+          warning (e.message);
+        }
       });
     }
 
     if (new_banner != null) {
       debug ("Updating banner...");
       uint8[] buffer;
-      new_banner.save_to_buffer (out buffer, "png", null);
+      try {
+        new_banner.save_to_buffer (out buffer, "png", null);
+      } catch (GLib.Error e) {
+        warning (e.message);
+        return;
+      }
       string b64 = GLib.Base64.encode (buffer);
 
       var call = account.proxy.new_call ();
