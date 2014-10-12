@@ -42,7 +42,8 @@ class AccountDialog : Gtk.Dialog {
   private string old_user_name;
   private string old_description;
   private string old_website;
-  private Gdk.Pixbuf new_avatar = null;
+  private Gdk.Pixbuf? new_avatar = null;
+  private Gdk.Pixbuf? new_banner = null;
 
 
 
@@ -72,6 +73,10 @@ class AccountDialog : Gtk.Dialog {
 
     avatar_banner_widget.avatar_changed.connect ((p) => {
        new_avatar = p;
+    });
+
+    avatar_banner_widget.banner_changed.connect ((b) => {
+      new_banner = b;
     });
 
     this.set_default_size (350, 450);
@@ -123,13 +128,13 @@ class AccountDialog : Gtk.Dialog {
       debug ("Updating avatar...");
       uint8[] buffer;
       new_avatar.save_to_buffer (out buffer, "png", null);
+      string b64 = GLib.Base64.encode (buffer);
 
       var call = account.proxy.new_call ();
       call.set_function ("1.1/account/update_profile_image.json");
       call.set_method ("POST");
       call.add_param ("skip_status", "true");
       call.add_param ("include_entities", "false");
-      string b64 = GLib.Base64.encode (buffer);
       call.add_param ("image", b64);
       call.invoke_async.begin (null, (obj, res) => {
         try {
@@ -142,6 +147,27 @@ class AccountDialog : Gtk.Dialog {
 
         /* Locally set new avatar */
         account.set_new_avatar (new_avatar);
+      });
+    }
+
+    if (new_banner != null) {
+      debug ("Updating banner...");
+      uint8[] buffer;
+      new_banner.save_to_buffer (out buffer, "png", null);
+      string b64 = GLib.Base64.encode (buffer);
+
+      var call = account.proxy.new_call ();
+      call.set_function ("1.1/account/update_profile_banner.json");
+      call.set_method ("POST");
+
+      call.add_param ("banner", b64);
+      call.invoke_async.begin (null, (obj, res) => {
+        try {
+          call.invoke_async.end (res);
+        } catch (GLib.Error e) {
+          Utils.show_error_object (call.get_payload (), "Could not update your avatar",
+                                   GLib.Log.LINE, GLib.Log.FILE);
+        }
       });
     }
   }
