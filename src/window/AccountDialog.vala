@@ -99,6 +99,12 @@ class AccountDialog : Gtk.Dialog {
                       (old_description != description_text_view.buffer.text) ||
                       (old_website != website_entry.text);
 
+    bool needs_init = needs_save || (new_avatar != null) || (new_banner != null);
+
+    if (needs_init && account.proxy == null) {
+      account.init_proxy ();
+    }
+
 
     if (needs_save) {
       debug ("Saving data...");
