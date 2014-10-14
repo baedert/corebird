@@ -146,7 +146,12 @@
   background-color: transparent;
   border: none;
   border-radius: 0px;
+  box-shadow: none;
   transition: box-shadow 0.25s ease-in-out;
+}
+
+.pixbuf-button-round {
+  border-radius: 48px;
 }
 
 .pixbuf-button:hover {

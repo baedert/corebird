@@ -19,7 +19,7 @@
 
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/list-list-entry.ui")]
-class ListListEntry : Gtk.ListBoxRow {
+public class ListListEntry : Gtk.ListBoxRow {
   public static int sort_func (Gtk.ListBoxRow r1,
                                Gtk.ListBoxRow r2) {
     if (!(r1 is ListListEntry))

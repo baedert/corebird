@@ -80,13 +80,15 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
       return;
 
     if (stack_size == 1 && !auto_scroll) {
-      if (t.has_inline_media){
-        //t.inline_media_added.connect (tweet_inline_media_added_cb);
+      string summary = "";
+      if (t.is_retweet){
+        summary = _("%s retweeted %s").printf(t.retweeted_by, t.user_name);
       } else {
-        // calling this with image = null will just create the
-        // appropriate notification etc.
-        tweet_inline_media_added_cb (t, null);
+        summary = _("%s tweeted").printf(t.user_name);
       }
+      NotificationManager.notify (account, summary, t.get_real_text (),
+                                  Dirs.cache ("assets/avatars/" + t.avatar_name));
+
     } else if(stack_size != 0 && unread_count % stack_size == 0
               && unread_count > 0) {
       string summary = _("%d new Tweets!").printf (unread_count);
@@ -94,19 +96,6 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
     }
   } // }}}
 
-
-  // Will be called once the inline media of a tweet has been loaded.
-  private void tweet_inline_media_added_cb (Tweet t, Gdk.Pixbuf? image) {
-    string summary = "";
-    if (t.is_retweet){
-      summary = _("%s retweeted %s").printf(t.retweeted_by, t.user_name);
-    } else {
-      summary = _("%s tweeted").printf(t.user_name);
-    }
-    NotificationManager.notify (account, summary, t.get_real_text (),
-                                Dirs.cache ("assets/avatars/" + t.avatar_name));
-
-  }
 
   public void remove_tweets_from (int64 user_id) {
     GLib.List<unowned Gtk.Widget> children = tweet_list.get_children ();
@@ -142,7 +131,6 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
   }
 
   public override void create_tool_button (Gtk.RadioButton? group) {
-    tool_button = new BadgeRadioToolButton(group, "user-home-symbolic");
-    tool_button.tooltip_text = _("Home");
+    tool_button = new BadgeRadioToolButton(group, "user-home-symbolic", _("Home"));
   }
 }

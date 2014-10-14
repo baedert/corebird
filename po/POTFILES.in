@@ -19,11 +19,12 @@ src/MentionsTimeline.vala
 src/FavoritesTimeline.vala
 src/DMPage.vala
 src/ListStatusesPage.vala
+src/widgets/AvatarBannerWidget.vala
+src/window/ImageCropDialog.vala
 [type: gettext/glade]ui/settings-dialog.ui
 [type: gettext/glade]ui/menu.ui
 [type: gettext/glade]ui/user-lists-widget.ui
 [type: gettext/glade]ui/about-dialog.ui
-[type: gettext/glade]ui/account-info-widget.ui
 [type: gettext/glade]ui/dm-page.ui
 [type: gettext/glade]ui/load-more-entry.ui
 [type: gettext/glade]ui/tweet-list-entry.ui
@@ -44,6 +45,7 @@ src/ListStatusesPage.vala
 [type: gettext/glade]ui/modify-filter-dialog.ui
 [type: gettext/glade]ui/user-filter-entry.ui
 [type: gettext/glade]ui/account-dialog.ui
+[type: gettext/glade]ui/image-crop-dialog.ui
 data/org.baedert.corebird.appdata.xml.in
 data/org.baedert.corebird.gschema.xml.in
 data/org.baedert.corebird.desktop.in.in

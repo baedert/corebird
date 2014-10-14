@@ -158,7 +158,7 @@ class SearchPage : IPage, Gtk.Box {
           Utils.show_error_object (user_call.get_payload (), e.message,
                                    GLib.Log.LINE, GLib.Log.FILE);
         } else {
-          tweet_list.set_placeholder_text (e.message);
+          tweet_list.set_error (e.message);
         }
         tweet_list.set_empty ();
 
@@ -254,8 +254,7 @@ class SearchPage : IPage, Gtk.Box {
   } // }}}
 
   public void create_tool_button (Gtk.RadioButton? group){
-    tool_button = new BadgeRadioToolButton (group, "edit-find-symbolic");
-    tool_button.tooltip_text = _("Search");
+    tool_button = new BadgeRadioToolButton (group, "edit-find-symbolic", _("Search"));
   }
 
   public Gtk.RadioButton? get_tool_button() {

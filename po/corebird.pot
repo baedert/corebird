@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-17 18:39+0200\n"
+"POT-Creation-Date: 2014-09-26 00:21+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,8 +22,10 @@ msgid "Select Image"
 msgstr ""
 
 #: ../src/window/ComposeTweetWindow.vala:304
-#: ../src/window/UserListDialog.vala:44 ../src/window/ImageDialog.vala:111
-#: ../src/widgets/MultiMediaWidget.vala:148 ../ui/compose-window.ui.h:4
+#: ../src/window/UserListDialog.vala:44
+#: ../src/widgets/MultiMediaWidget.vala:148
+#: ../src/widgets/AvatarBannerWidget.vala:161
+#: ../src/widgets/AvatarBannerWidget.vala:173 ../ui/compose-window.ui.h:4
 #: ../ui/remove-account-dialog.ui.h:1 ../ui/list-list-entry.ui.h:1
 #: ../ui/list-statuses-page.ui.h:8 ../ui/filter-list-entry.ui.h:1
 #: ../ui/modify-filter-dialog.ui.h:2 ../ui/user-filter-entry.ui.h:1
@@ -32,24 +34,23 @@ msgid "Cancel"
 msgstr ""
 
 #: ../src/window/ComposeTweetWindow.vala:305
+#: ../src/widgets/AvatarBannerWidget.vala:162
+#: ../src/widgets/AvatarBannerWidget.vala:174
 msgid "Choose"
 msgstr ""
 
-#: ../src/window/UserListDialog.vala:45 ../src/window/ImageDialog.vala:112
-#: ../src/widgets/MultiMediaWidget.vala:149 ../ui/list-statuses-page.ui.h:6
-#: ../ui/modify-filter-dialog.ui.h:3
+#: ../src/window/UserListDialog.vala:45
+#: ../src/widgets/MultiMediaWidget.vala:149
+#: ../src/window/ImageCropDialog.vala:56 ../ui/list-statuses-page.ui.h:6
+#: ../ui/modify-filter-dialog.ui.h:3 ../ui/account-dialog.ui.h:9
 msgid "Save"
 msgstr ""
 
-#: ../src/window/ImageDialog.vala:109 ../src/widgets/MultiMediaWidget.vala:146
-msgid "Save image"
-msgstr ""
-
-#: ../src/window/ModifyFilterDialog.vala:74
+#: ../src/window/ModifyFilterDialog.vala:77
 msgid "Matches"
 msgstr ""
 
-#: ../src/window/ModifyFilterDialog.vala:76
+#: ../src/window/ModifyFilterDialog.vala:79
 msgid "Doesn't match"
 msgstr ""
 
@@ -80,7 +81,7 @@ msgstr ""
 msgid "Account already in use"
 msgstr ""
 
-#: ../src/widgets/PixbufButton.vala:41
+#: ../src/widgets/PixbufButton.vala:55
 msgid "Copy link"
 msgstr ""
 
@@ -94,6 +95,10 @@ msgstr ""
 
 #: ../src/widgets/MultiMediaWidget.vala:70 ../src/TweetInfoPage.vala:415
 msgid "Open in Browser"
+msgstr ""
+
+#: ../src/widgets/MultiMediaWidget.vala:146
+msgid "Save image"
 msgstr ""
 
 #: ../src/HomeTimeline.vala:92
@@ -111,7 +116,7 @@ msgstr ""
 msgid "%s tweeted"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:133
+#: ../src/HomeTimeline.vala:146
 msgid "Home"
 msgstr ""
 
@@ -138,16 +143,16 @@ msgstr ""
 msgid "Protected profile"
 msgstr ""
 
-#: ../src/ProfilePage.vala:490
+#: ../src/ProfilePage.vala:502
 #, c-format
 msgid "Tweet to @%s"
 msgstr ""
 
-#: ../src/ProfilePage.vala:573 ../src/TweetInfoPage.vala:401
+#: ../src/ProfilePage.vala:587 ../src/TweetInfoPage.vala:401
 msgid "Unfollow"
 msgstr ""
 
-#: ../src/ProfilePage.vala:577 ../src/TweetInfoPage.vala:405
+#: ../src/ProfilePage.vala:591 ../src/TweetInfoPage.vala:405
 #: ../ui/tweet-info-page.ui.h:3
 msgid "Follow"
 msgstr ""
@@ -183,7 +188,7 @@ msgstr ""
 msgid "%dh"
 msgstr ""
 
-#: ../src/SearchPage.vala:258 ../src/SearchPage.vala:268
+#: ../src/SearchPage.vala:258 ../src/SearchPage.vala:267
 #: ../ui/search-page.ui.h:1
 msgid "Search"
 msgstr ""
@@ -205,8 +210,17 @@ msgstr ""
 msgid "Direct Conversation"
 msgstr ""
 
-#: ../src/ListStatusesPage.vala:382
+#: ../src/ListStatusesPage.vala:393
 msgid "List"
+msgstr ""
+
+#: ../src/widgets/AvatarBannerWidget.vala:158
+#: ../src/widgets/AvatarBannerWidget.vala:170
+msgid "Choose new Banner"
+msgstr ""
+
+#: ../src/window/ImageCropDialog.vala:44 ../ui/image-crop-dialog.ui.h:3
+msgid "Next"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:1 ../ui/menu.ui.h:1
@@ -214,11 +228,11 @@ msgid "Settings"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:2
-msgid "Round Avatars:"
+msgid "Round Avatars"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:3
-msgid "Maximum media size:"
+msgid "Maximum media size"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:4
@@ -226,7 +240,7 @@ msgid "Megabytes"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:5
-msgid "Auto scroll on new tweets:"
+msgid "Auto scroll on new tweets"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:6
@@ -234,7 +248,7 @@ msgid "Interface"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:7
-msgid "On New Tweets:"
+msgid "On New Tweets"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:8
@@ -242,11 +256,11 @@ msgid "Actions"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:9
-msgid "On New Mentions:"
+msgid "On New Mentions"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:10
-msgid "On New Messages:"
+msgid "On New Messages"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:11
@@ -301,10 +315,6 @@ msgstr ""
 msgid "Using Font Awesome by Dave Gandy - http://fontawesome.io"
 msgstr ""
 
-#: ../ui/account-info-widget.ui.h:1
-msgid "Open Window"
-msgstr ""
-
 #: ../ui/dm-page.ui.h:1 ../ui/compose-window.ui.h:5
 msgid "Send"
 msgstr ""
@@ -350,10 +360,6 @@ msgstr ""
 
 #: ../ui/user-list-entry.ui.h:2
 msgid "Open in new window"
-msgstr ""
-
-#: ../ui/image-dialog.ui.h:1
-msgid "Save Image"
 msgstr ""
 
 #: ../ui/new-list-entry.ui.h:1
@@ -524,8 +530,12 @@ msgstr ""
 msgid "Do you really want to delete this account?"
 msgstr ""
 
-#: ../ui/account-dialog.ui.h:9
-msgid "Close"
+#: ../ui/image-crop-dialog.ui.h:1
+msgid "Foobar"
+msgstr ""
+
+#: ../ui/image-crop-dialog.ui.h:2
+msgid "Back"
 msgstr ""
 
 #: ../data/org.baedert.corebird.appdata.xml.in.h:1

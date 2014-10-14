@@ -14,7 +14,6 @@
     <property name="title" translatable="yes">Account Settings</property>
     <property name="border_width">0</property>
     <property name="destroy_with_parent">true</property>
-    <property name="modal">true</property>
     <property name="type_hint">dialog</property>
 
     <child internal-child="vbox">
@@ -28,7 +27,7 @@
         <child>
           <object class="AvatarBannerWidget" id="avatar_banner_widget">
             <property name="visible">true</property>
-            <property name="can_focus">false</property>
+            <property name="can_focus">true</property>
             <property name="hexpand">true</property>
             <property name="margin_bottom">12</property>
           </object>
@@ -310,6 +309,13 @@
               </packing>
             </child>
 
+            <child>
+              <object class="GtkButton" id="cancel_button">
+                <property name="visible">true</property>
+                <property name="can_focus">true</property>
+                <property name="label" translatable="yes">Cancel</property>
+              </object>
+            </child>
 
             <child>
               <object class="GtkButton" id="close_button">
@@ -326,6 +332,7 @@
     </child>
     <action-widgets>
       <action-widget response="1">delete_button</action-widget>
+      <action-widget response="2">cancel_button</action-widget>
       <action-widget response="0">close_button</action-widget>
     </action-widgets>
   </template>

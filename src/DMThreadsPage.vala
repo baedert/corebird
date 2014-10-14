@@ -46,7 +46,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     thread_list.row_activated.connect ((row) => {
       if (row is StartConversationEntry)
         ((StartConversationEntry)row).reveal ();
-      else {
+      else if (row is DMThreadEntry) {
         var entry = (DMThreadEntry) row;
         main_window.main_widget.switch_page (Page.DM,
                                              entry.user_id);
@@ -127,11 +127,10 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       thread_map.set (user_id, entry);
       return true;
     });
-    if (n_rows == 0) {
+    if (n_rows == 0 && GLib.NetworkMonitor.get_default ().get_network_available ()) {
       progress_spinner = new Gtk.Spinner ();
-      progress_spinner.set_size_request (30, 30);
-      progress_spinner.margin_top = 10;
-      progress_spinner.margin_bottom = 10;
+      progress_spinner.set_size_request (16, 16);
+      progress_spinner.margin = 12;
       progress_spinner.start ();
       thread_list.add (progress_spinner);
     }
@@ -370,8 +369,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   }
 
   public void create_tool_button(Gtk.RadioButton? group) {
-    tool_button = new BadgeRadioToolButton(group, "mail-unread-symbolic");
-    tool_button.tooltip_text = _("Direct Messages");
+    tool_button = new BadgeRadioToolButton(group, "mail-unread-symbolic", _("Direct Messages"));
   }
 
   public Gtk.RadioButton? get_tool_button() {

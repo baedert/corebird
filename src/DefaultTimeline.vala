@@ -62,6 +62,10 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
       }
       last_focus_widget = row;
     });
+    tweet_list.retry_button_clicked.connect (() => {
+      tweet_list.remove_all ();
+      this.load_newest ();
+    });
 
   }
 

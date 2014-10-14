@@ -53,7 +53,6 @@ cb_sources = \
 			widgets/BadgeRadioToolButton.vala \
 			widgets/DMPlaceholderBox.vala \
 			widgets/AccountCreateWidget.vala \
-			widgets/AccountInfoWidget.vala \
 			widgets/AspectImage.vala \
 			widgets/BgBox.vala \
 			widgets/UserListsWidget.vala \
@@ -63,6 +62,7 @@ cb_sources = \
 			widgets/AvatarBannerWidget.vala \
 			widgets/MediaImageWidget.vala \
 			widgets/MediaVideoWidget.vala \
+			widgets/CropWidget.vala \
 			util/TweetUtils.vala \
 			util/Utils.vala \
 			util/IntHistory.vala \
@@ -85,12 +85,12 @@ cb_sources = \
 			list/ProgressEntry.vala \
 			window/ComposeTweetWindow.vala \
 			window/SettingsDialog.vala \
-			window/RemoveAccountDialog.vala \
 			window/UserListDialog.vala \
 			window/ModifyFilterDialog.vala \
 			window/AboutDialog.vala \
 			window/AccountDialog.vala \
 			window/MediaDialog.vala \
+			window/ImageCropDialog.vala \
 			sql/Database.vala \
 			sql/Statement.vala \
 			sql/UpdateStatement.vala \

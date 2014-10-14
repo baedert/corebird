@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="ImageCropDialog" parent="GtkDialog">
+    <property name="title" translatable="yes">Foobar</property>
+    <property name="type_hint">dialog</property>
+    <property name="destroy_with_parent">true</property>
+
+    <!-- Main Stack -->
+    <child internal-child="vbox">
+      <object class="GtkBox">
+        <property name="visible">true</property>
+
+        <child>
+          <object class="GtkStack" id="stack">
+            <property name="visible">true</property>
+            <property name="transition_type">slide-left-right</property>
+
+            <child>
+              <object class="GtkFileChooserWidget" id="file_chooser">
+                <property name="visible">true</property>
+                <property name="margin_top">6</property>
+                <property name="margin_start">6</property>
+                <property name="margin_end">6</property>
+                <property name="vexpand">true</property>
+                <signal name="file_activated" handler="next_button_clicked_cb" />
+                <signal name="selection_changed" handler="selection_changed_cb" />
+              </object>
+            </child>
+
+
+            <child>
+              <object class="CropWidget" id="crop_widget">
+                <property name="visible">true</property>
+                <property name="vexpand">true</property>
+                <property name="hexpand">true</property>
+                <property name="valign">fill</property>
+                <property name="halign">fill</property>
+              </object>
+            </child>
+
+
+          </object>
+        </child>
+
+      </object>
+    </child>
+
+
+
+    <child internal-child="action_area">
+      <object class="GtkBox">
+        <property name="visible">true</property>
+        <property name="orientation">horizontal</property>
+        <property name="margin_top">6</property>
+
+        <child>
+          <object class="GtkButton">
+            <property name="visible">true</property>
+            <property name="label" translatable="yes">Cancel</property>
+            <signal name="clicked" handler="cancel_button_clicked_cb" />
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkButton" id="back_button">
+            <property name="visible">true</property>
+            <property name="label" translatable="yes">Back</property>
+            <property name="sensitive">false</property>
+            <signal name="clicked" handler="back_button_clicked_cb" />
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkButton" id="next_button">
+            <property name="visible">true</property>
+            <property name="label" translatable="yes">Next</property>
+            <property name="sensitive">false</property>
+            <signal name="clicked" handler="next_button_clicked_cb" />
+          </object>
+        </child>
+
+      </object>
+    </child>
+
+
+
+  </template>
+
+</interface>

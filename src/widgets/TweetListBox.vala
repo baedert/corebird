@@ -16,9 +16,15 @@
  */
 
 public class TweetListBox : Gtk.ListBox {
-  private Gtk.Stack placeholder = null;
+  private Gtk.Stack placeholder;
   private Gtk.Label no_entries_label;
   private ProgressEntry progress_entry;
+
+  private Gtk.Box error_box;
+  private Gtk.Label error_label;
+  private Gtk.Button retry_button;
+
+  public signal void retry_button_clicked ();
 
   public TweetListBox (bool show_placeholder = true) {
     if (show_placeholder) {
@@ -58,7 +64,7 @@ public class TweetListBox : Gtk.ListBox {
 
   private void add_placeholder () {
     placeholder = new Gtk.Stack ();
-    placeholder.transition_type = Gtk.StackTransitionType.SLIDE_UP_DOWN;
+    placeholder.transition_type = Gtk.StackTransitionType.CROSSFADE;
     var spinner = new Gtk.Spinner ();
     spinner.set_size_request (60, 60);
     spinner.start ();
@@ -68,6 +74,20 @@ public class TweetListBox : Gtk.ListBox {
     no_entries_label.get_style_context ().add_class ("dim-label");
     no_entries_label.wrap_mode = Pango.WrapMode.WORD_CHAR;
     placeholder.add_named (no_entries_label, "no-entries");
+
+    error_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 12);
+    error_label = new Gtk.Label ("");
+    error_label.get_style_context ().add_class ("dim-label");
+    retry_button = new Gtk.Button.with_label (_("Retry"));
+    retry_button.set_halign (Gtk.Align.CENTER);
+    retry_button.clicked.connect (() => {
+      placeholder.visible_child_name = "spinner";
+      retry_button_clicked ();
+    });
+    error_box.add (error_label);
+    error_box.add (retry_button);
+    placeholder.add_named (error_box, "error");
+
     placeholder.visible_child_name = "spinner";
     placeholder.show_all ();
     placeholder.set_valign (Gtk.Align.CENTER);
@@ -81,17 +101,16 @@ public class TweetListBox : Gtk.ListBox {
   }
 
   public void set_unempty () {
-      placeholder.visible_child_name = "spinner";
+    placeholder.visible_child_name = "spinner";
+  }
+
+  public void set_error (string err_msg) {
+    error_label.label = err_msg;
+    placeholder.visible_child_name = "error";
   }
 
   public Gtk.Stack? get_placeholder () {
     return placeholder;
-  }
-
-  public void remove_all () {
-    this.foreach ((w) => {
-      remove (w);
-    });
   }
 
   public void set_placeholder_text (string text) {
@@ -100,6 +119,12 @@ public class TweetListBox : Gtk.ListBox {
 
   public void reset_placeholder_text () {
     no_entries_label.label = _("No entries found");
+  }
+
+  public void remove_all () {
+    this.foreach ((w) => {
+      remove (w);
+    });
   }
 
   public void add_progress_entry () {
