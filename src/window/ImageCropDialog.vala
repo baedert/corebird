@@ -87,4 +87,7 @@ public class ImageCropDialog : Gtk.Dialog {
     this.destroy ();
   }
 
+  public void set_min_size (int min_width) {
+    crop_widget.set_min_size (min_width);
+  }
 }
