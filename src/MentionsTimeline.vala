@@ -82,7 +82,7 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
       base.postprocess_tweet (entry);
 
       if (Settings.notify_new_mentions ()) {
-        send_notification (t.screen_name, t.id, t.text);
+        send_notification (t.screen_name, t.id, Utils.unescape_html (t.text));
       }
     }
   } // }}}

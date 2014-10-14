@@ -256,13 +256,14 @@ namespace TweetUtils {
    * @return The loaded avatar.
    */
   private Soup.Session avatar_session = null;
-  async Gdk.Pixbuf download_avatar (string avatar_url) {
+  async Gdk.Pixbuf download_avatar (string avatar_url) throws GLib.Error {
     if (avatar_session == null) {
       avatar_session = new Soup.Session ();
     }
     string avatar_name = Utils.get_avatar_name (avatar_url);
     Gdk.Pixbuf avatar = null;
     var msg     = new Soup.Message ("GET", avatar_url);
+    GLib.Error? err = null;
     avatar_session.queue_message (msg, (s, _msg) => {
       string dest = Dirs.cache ("assets/avatars/" + avatar_name);
       var memory_stream = new MemoryInputStream.from_data(_msg.response_body.data,
@@ -272,14 +273,15 @@ namespace TweetUtils {
                                                       48, 48,
                                                       false);
         avatar.save (dest, "png");
-        download_avatar.callback ();
       } catch (GLib.Error e) {
-        critical (e.message + " for " + avatar_url);
+        err = e;
       }
-      debug ("Loaded avatar %s", avatar_url);
-      debug ("Dest: %s", dest);
+      download_avatar.callback ();
     });
     yield;
+    if (err != null) {
+      throw err;
+    }
     return avatar;
   }
 
