@@ -187,6 +187,13 @@ namespace Utils {
     }
 
     var root = parser.get_root ().get_object ();
+    if (root.has_member ("error") &&
+        root.get_member ("error").get_node_type () == Json.NodeType.VALUE) {
+      message (json_data);
+      show_error_dialog (root.get_member ("error").get_string ());
+      return;
+    }
+
     if (root.get_member ("errors").get_node_type () == Json.NodeType.VALUE) {
       message (json_data);
       show_error_dialog (root.get_member ("errors").get_string ());
