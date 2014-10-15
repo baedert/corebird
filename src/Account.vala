@@ -102,7 +102,7 @@ public class Account : GLib.Object {
     }
   }
 
-  public void set_new_avatar (Gdk.Pixbuf new_avatar) {
+  public void set_new_avatar (Gdk.Pixbuf new_avatar) throws GLib.Error{
     string path = Dirs.config (@"accounts/$(id).png");
     string small_path = Dirs.config (@"accounts/$(id)_small.png");
 

@@ -80,6 +80,9 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
       this.name = name;
       this.avatar_pixbuf = avatar;
     });
+    acc.notify["avatar"].connect (() => {
+      this.avatar_pixbuf = acc.avatar;
+    });
     var cb = (Corebird) GLib.Application.get_default ();
     cb.window_added.connect ((window) => {
       if (window is MainWindow) {
