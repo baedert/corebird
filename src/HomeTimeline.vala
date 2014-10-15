@@ -46,7 +46,6 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
     }
   } // }}}
 
-  // TODO: Split this logic out and make it unit-testable
   private void add_tweet (Json.Node obj) { // {{{
     GLib.DateTime now = new GLib.DateTime.now_local ();
     Tweet t = new Tweet();

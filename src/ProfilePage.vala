@@ -100,6 +100,7 @@ class ProfilePage : ScrollWidget, IPage {
   private bool lists_page_inited = false;
   private ulong page_change_signal = 0;
   private bool block_item_blocked = false;
+  private bool retweet_item_blocked = false;
   private bool tweets_loading = false;
   private int64 lowest_tweet_id = int64.MAX;
   private GLib.SimpleActionGroup actions;
@@ -148,6 +149,10 @@ class ProfilePage : ScrollWidget, IPage {
                                                                      new GLib.Variant.boolean (false));
     block_action.activate.connect (toggle_blocked_activated);
     actions.add_action (block_action);
+    GLib.SimpleAction rt_action = new GLib.SimpleAction.stateful ("toggle-retweets", null,
+                                                                  new GLib.Variant.boolean (false));
+    rt_action.activate.connect (retweet_action_activated);
+    actions.add_action (rt_action);
 
     this.more_menu = more_button.menu_model;
   }
@@ -226,6 +231,7 @@ class ProfilePage : ScrollWidget, IPage {
     bool followed_by = relationship.get_object_member ("target").get_boolean_member ("following");
     follows_you_label.visible = followed_by;
     set_user_blocked (relationship.get_object_member ("source").get_boolean_member ("blocking"));
+    set_retweets_disabled (!relationship.get_object_member ("source").get_boolean_member ("want_retweets"));
   }
 
   private async void load_profile_data (int64 user_id, bool show_spinner) { //{{{
@@ -699,6 +705,31 @@ class ProfilePage : ScrollWidget, IPage {
     });
   }
 
+  private void retweet_action_activated (GLib.SimpleAction a, GLib.Variant? v) {
+    if (retweet_item_blocked)
+      return;
+
+    retweet_item_blocked = true;
+    bool current_state = a.get_state ().get_boolean ();
+    a.set_state (new GLib.Variant.boolean (!current_state));
+    var call = account.proxy.new_call ();
+    call.set_function ("1.1/friendships/update.json");
+    call.set_method ("POST");
+    call.add_param ("user_id", this.user_id.to_string ());
+    call.add_param ("retweets", current_state.to_string ());
+    call.invoke_async.begin (null, (obj, res) => {
+      try {
+        call.invoke_async.end (res);
+      } catch (GLib.Error e) {
+        Utils.show_error_object (call.get_payload (), e.message,
+                                 GLib.Log.LINE, GLib.Log.FILE);
+        a.set_state (new GLib.Variant.boolean (current_state));
+      }
+      retweet_item_blocked = false;
+    });
+  }
+
+
   private void set_user_blocked (bool blocked) {
     ((SimpleAction)actions.lookup_action ("toggle-blocked")).set_state (new GLib.Variant.boolean (blocked));
   }
@@ -706,4 +737,10 @@ class ProfilePage : ScrollWidget, IPage {
   private bool get_user_blocked () {
     return ((SimpleAction)actions.lookup_action ("toggle-blocked")).get_state ().get_boolean ();
   }
+
+  private void set_retweets_disabled (bool disabled) {
+    ((SimpleAction)actions.lookup_action ("toggle-retweets")).set_state (new GLib.Variant.boolean (disabled));
+  }
+
+
 }
