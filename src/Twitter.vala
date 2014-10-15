@@ -108,8 +108,12 @@ public class Twitter : GLib.Object {
       // download the avatar
       avatars.set (url, null);
       TweetUtils.download_avatar.begin (url, (obj, res) => {
-        Gdk.Pixbuf? avatar;
-        avatar = TweetUtils.download_avatar.end (res);
+        Gdk.Pixbuf? avatar = null;
+        try {
+          avatar = TweetUtils.download_avatar.end (res);
+        } catch (GLib.Error e) {
+          warning (e.message + " for " + url);
+        }
         func (avatar);
         // signal all the other waiters in the queue
         avatar_downloaded[url](avatar);
