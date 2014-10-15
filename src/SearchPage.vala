@@ -49,6 +49,7 @@ class SearchPage : IPage, Gtk.Box {
   private bool loading_tweets = false;
   private Gtk.Widget last_focus_widget;
   private int n_results = 0;
+  private Collect collect_obj;
 
 
   public SearchPage (int id) {
@@ -113,6 +114,9 @@ class SearchPage : IPage, Gtk.Box {
     this.user_page       = 1;
     this.lowest_tweet_id = int64.MAX-1;
 
+    collect_obj = new Collect (2);
+    collect_obj.finished.connect (show_entries);
+
     load_tweets ();
     load_users ();
   } //}}}
@@ -157,11 +161,9 @@ class SearchPage : IPage, Gtk.Box {
         if (user_call.get_payload () != null) {
           Utils.show_error_object (user_call.get_payload (), e.message,
                                    GLib.Log.LINE, GLib.Log.FILE);
-        } else {
-          tweet_list.set_error (e.message);
         }
-        tweet_list.set_empty ();
 
+        collect_obj.emit (e);
         return;
       }
 
@@ -191,6 +193,7 @@ class SearchPage : IPage, Gtk.Box {
         entry.avatar = user_obj.get_string_member ("profile_image_url");
         entry.user_id = user_obj.get_int_member ("id");
         entry.show_settings = false;
+        entry.visible = false;
         tweet_list.add (entry);
       });
       if (users.get_length () > USER_COUNT) {
@@ -199,6 +202,7 @@ class SearchPage : IPage, Gtk.Box {
       } else {
         load_more_entry.hide ();
       }
+      collect_obj.emit ();
     });
 
   } // }}}
@@ -218,6 +222,7 @@ class SearchPage : IPage, Gtk.Box {
       try{
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
+        collect_obj.emit (e);
         warning (e.message);
         return;
       }
@@ -227,6 +232,8 @@ class SearchPage : IPage, Gtk.Box {
         parser.load_from_data (back);
       } catch (GLib.Error e) {
         critical(" %s\nDATA:\n%s", e.message, back);
+        collect_obj.emit (e);
+        return;
       }
       var now = new GLib.DateTime.now_local ();
       var statuses = parser.get_root().get_object().get_array_member("statuses");
@@ -246,12 +253,24 @@ class SearchPage : IPage, Gtk.Box {
           lowest_tweet_id = tweet.id;
         var entry = new TweetListEntry (tweet, main_window, account);
         delta_updater.add (entry);
+        entry.visible = false;
         tweet_list.add (entry);
       });
       loading_tweets = false;
+      collect_obj.emit ();
     });
 
   } // }}}
+
+  private void show_entries (GLib.Error? e) {
+    if (e != null) {
+      tweet_list.set_error (e.message);
+      tweet_list.set_empty ();
+      return;
+    }
+
+    tweet_list.@foreach ((w) => w.show());
+  }
 
   public void create_tool_button (Gtk.RadioButton? group){
     tool_button = new BadgeRadioToolButton (group, "edit-find-symbolic", _("Search"));
