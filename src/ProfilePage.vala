@@ -225,9 +225,7 @@ class ProfilePage : ScrollWidget, IPage {
     var relationship = parser.get_root ().get_object ().get_object_member ("relationship");
     bool followed_by = relationship.get_object_member ("target").get_boolean_member ("following");
     follows_you_label.visible = followed_by;
-    block_item_blocked = true;
     set_user_blocked (relationship.get_object_member ("source").get_boolean_member ("blocking"));
-    block_item_blocked = false;
   }
 
   private async void load_profile_data (int64 user_id, bool show_spinner) { //{{{
@@ -545,9 +543,7 @@ class ProfilePage : ScrollWidget, IPage {
     } else {
       call.set_function ("1.1/friendships/create.json");
       call.add_param ("follow", "false");
-      block_item_blocked = true;
       set_user_blocked (false);
-      block_item_blocked = false;
     }
     debug  (@"User ID: $user_id");
     progress_spinner.start ();
@@ -677,6 +673,8 @@ class ProfilePage : ScrollWidget, IPage {
     if (block_item_blocked)
       return;
 
+    block_item_blocked = true;
+
     bool current_state = get_user_blocked ();
     var call = account.proxy.new_call ();
     call.set_method ("POST");
@@ -697,6 +695,7 @@ class ProfilePage : ScrollWidget, IPage {
         /* Reset the state if the blocking failed */
         a.set_state (new GLib.Variant.boolean (current_state));
       }
+      block_item_blocked = false;
     });
   }
 
