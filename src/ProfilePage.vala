@@ -158,7 +158,7 @@ class ProfilePage : ScrollWidget, IPage {
     follow_button.sensitive = (user_id != account.id);
     ((SimpleAction)actions.lookup_action ("add-remove-list")).set_enabled (user_id != account.id);
     ((SimpleAction)actions.lookup_action ("write-dm")).set_enabled (user_id != account.id);
-    //((SimpleAction)actions.lookup_action ("toggle-blocked")).set_enabled (user_id != account.id);
+    ((SimpleAction)actions.lookup_action ("toggle-blocked")).set_enabled (user_id != account.id);
 
     load_banner (DATADIR + "/no_banner.png");
     load_friendship.begin ();
