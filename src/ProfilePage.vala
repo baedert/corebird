@@ -718,6 +718,12 @@ class ProfilePage : ScrollWidget, IPage {
     call.set_method ("POST");
     call.add_param ("user_id", this.user_id.to_string ());
     call.add_param ("retweets", current_state.to_string ());
+    HomeTimeline ht = (HomeTimeline) main_window.get_page (Page.STREAM);
+    if (current_state)
+      ht.show_retweets_from (this.user_id);
+    else
+      ht.hide_retweets_from (this.user_id);
+
     call.invoke_async.begin (null, (obj, res) => {
       try {
         call.invoke_async.end (res);

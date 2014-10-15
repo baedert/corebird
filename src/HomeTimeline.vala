@@ -124,6 +124,34 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
     }
   }
 
+  public void hide_retweets_from (int64 user_id) {
+    GLib.List<unowned Gtk.Widget> children = tweet_list.get_children ();
+    foreach (Gtk.Widget w in children) {
+      if (!(w is TweetListEntry))
+        continue;
+
+      TweetListEntry tle = (TweetListEntry) w;
+      if (tle.tweet.rt_by_id == user_id && tle.tweet.is_retweet) {
+        tle.hide ();
+      }
+
+    }
+  }
+
+  public void show_retweets_from (int64 user_id) {
+    GLib.List<unowned Gtk.Widget> children = tweet_list.get_children ();
+    foreach (Gtk.Widget w in children) {
+      if (!(w is TweetListEntry))
+        continue;
+
+      TweetListEntry tle = (TweetListEntry) w;
+      if (tle.tweet.rt_by_id == user_id && tle.tweet.is_retweet && !tle.visible) {
+        tle.show ();
+      }
+
+    }
+  }
+
   public override string? get_title () {
     return "@" + account.screen_name;
   }
