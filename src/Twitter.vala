@@ -113,6 +113,9 @@ public class Twitter : GLib.Object {
           avatar = TweetUtils.download_avatar.end (res);
         } catch (GLib.Error e) {
           warning (e.message + " for " + url);
+          func (no_avatar);
+          avatar_downloaded[url](no_avatar);
+          this.avatars.set (url, no_avatar);
         }
         func (avatar);
         // signal all the other waiters in the queue
