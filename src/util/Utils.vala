@@ -204,7 +204,8 @@ namespace Utils {
     if (errors.get_length () == 1) {
       var err = errors.get_object_element (0);
       sb.append (err.get_int_member ("code").to_string ()).append (": ")
-        .append (err.get_string_member ("message"));
+        .append (err.get_string_member ("message"))
+        .append ("(").append (file).append (":").append (line.to_string ()).append (")");
     } else {
       sb.append ("<ul>");
       errors.foreach_element ((arr, index, node) => {
