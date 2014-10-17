@@ -36,7 +36,6 @@ src/window/ImageCropDialog.vala
 [type: gettext/glade]ui/main-window.ui
 [type: gettext/glade]ui/account-create-widget.ui
 [type: gettext/glade]ui/tweet-info-page.ui
-[type: gettext/glade]ui/remove-account-dialog.ui
 [type: gettext/glade]ui/list-list-entry.ui
 [type: gettext/glade]ui/start-conversation-entry.ui
 [type: gettext/glade]ui/list-statuses-page.ui
