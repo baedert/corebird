@@ -21,8 +21,8 @@ class AccountDialog : Gtk.Dialog {
   private static const int RESPONSE_CANCEL = 2;
   private static const string PAGE_NORMAL = "normal";
   private static const string PAGE_DELETE = "delete";
-  [GtkChild]
-  private Gtk.Label screen_name_label;
+  //[GtkChild]
+  //private Gtk.Label screen_name_label;
   [GtkChild]
   private Gtk.Entry name_entry;
   [GtkChild]
@@ -49,7 +49,7 @@ class AccountDialog : Gtk.Dialog {
 
   public AccountDialog (Account account) {
     this.account = account;
-    screen_name_label.label = account.screen_name;
+    //screen_name_label.label = account.screen_name;
     name_entry.text = account.name;
     avatar_banner_widget.set_account (account);
     website_entry.text = account.website ?? "";
