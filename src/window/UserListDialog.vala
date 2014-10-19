@@ -167,7 +167,8 @@ class ListUserEntry : Gtk.ListBoxRow {
   }
 
   public ListUserEntry (string list_name, string description) {
-    var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 5);
+    var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
+    box.margin = 6;
     added_checkbox.valign = Gtk.Align.CENTER;
     box.pack_start (added_checkbox, false, false);
     var box2 = new Gtk.Box (Gtk.Orientation.VERTICAL, 3);

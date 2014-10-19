@@ -29,7 +29,6 @@
             <property name="visible">true</property>
             <property name="can_focus">true</property>
             <property name="hexpand">true</property>
-            <property name="margin_bottom">12</property>
           </object>
         </child>
 
@@ -39,6 +38,7 @@
             <property name="visible">true</property>
             <property name="can_focus">false</property>
             <property name="transition_type">crossfade</property>
+            <property name="margin_top">24</property>
             <!-- Data grid -->
             <child>
               <object class="GtkGrid">
@@ -51,37 +51,6 @@
                 <property name="margin_end">12</property>
                 <property name="margin_start">12</property>
                 <property name="margin_bottom">12</property>
-
-                <!-- screen_name -->
-                <child>
-                  <object class="GtkLabel">
-                    <property name="visible">true</property>
-                    <property name="can_focus">false</property>
-                    <property name="label" translatable="yes">Username</property>
-                    <property name="halign">end</property>
-                    <property name="valign">baseline</property>
-                    <style>
-                      <class name="dim-label" />
-                    </style>
-                  </object>
-                  <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">1</property>
-                  </packing>
-                </child>
-
-                <child>
-                  <object class="GtkLabel" id="screen_name_label">
-                    <property name="visible">true</property>
-                    <property name="can_focus">true</property>
-                    <property name="halign">start</property>
-                    <property name="valign">baseline</property>
-                  </object>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">1</property>
-                  </packing>
-                </child>
 
                 <!-- Real Name -->
                 <child>
@@ -97,7 +66,7 @@
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">2</property>
+                    <property name="top_attach">0</property>
                   </packing>
                 </child>
 
@@ -110,7 +79,7 @@
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="top_attach">2</property>
+                    <property name="top_attach">0</property>
                   </packing>
                 </child>
 
@@ -128,7 +97,7 @@
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">3</property>
+                    <property name="top_attach">1</property>
                   </packing>
                 </child>
 
@@ -141,7 +110,7 @@
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="top_attach">3</property>
+                    <property name="top_attach">1</property>
                   </packing>
                 </child>
 
@@ -162,7 +131,7 @@
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">5</property>
+                    <property name="top_attach">2</property>
                     <property name="width">2</property>
                   </packing>
                  </child>
@@ -176,7 +145,7 @@
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">6</property>
+                    <property name="top_attach">3</property>
                     <property name="width">2</property>
                   </packing>
                 </child>
@@ -195,7 +164,7 @@
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">7</property>
+                    <property name="top_attach">4</property>
                   </packing>
                 </child>
 
@@ -209,7 +178,7 @@
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="top_attach">7</property>
+                    <property name="top_attach">4</property>
                   </packing>
                 </child>
 
@@ -290,10 +259,13 @@
         </child>
 
         <child internal-child="action_area">
-          <object class="GtkGrid">
+          <object class="GtkButtonBox">
             <property name="can_focus">false</property>
             <property name="visible">true</property>
-            <property name="margin">6</property>
+            <property name="margin_top">36</property>
+            <property name="margin_start">6</property>
+            <property name="margin_end">6</property>
+            <property name="margin_bottom">6</property>
 
             <child>
               <object class="GtkButton" id="delete_button">

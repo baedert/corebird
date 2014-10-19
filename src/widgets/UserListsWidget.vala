@@ -50,6 +50,8 @@ class UserListsWidget : Gtk.Box {
   public void hide_user_list_entry () {
     new_list_entry.hide ();
     new_list_entry.no_show_all = true;
+    user_list_label.visible = true;
+    //user_list_frame.margin_top = 24;
     show_create_entry = false;
   }
 
@@ -105,8 +107,10 @@ class UserListsWidget : Gtk.Box {
         user_list_label.hide ();
         user_list_box.hide ();
         user_list_frame.hide ();
+        user_list_frame.margin_top = 0;
       } else {
-        user_list_label.show ();
+        user_list_label.visible = !show_create_entry;
+        user_list_frame.margin_top = show_create_entry ? 24 : 0;
         user_list_box.show ();
         user_list_frame.show ();
       }
