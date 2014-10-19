@@ -187,6 +187,13 @@ namespace Utils {
     }
 
     var root = parser.get_root ().get_object ();
+    if (root.has_member ("error") &&
+        root.get_member ("error").get_node_type () == Json.NodeType.VALUE) {
+      message (json_data);
+      show_error_dialog (root.get_member ("error").get_string ());
+      return;
+    }
+
     if (root.get_member ("errors").get_node_type () == Json.NodeType.VALUE) {
       message (json_data);
       show_error_dialog (root.get_member ("errors").get_string ());
@@ -197,7 +204,8 @@ namespace Utils {
     if (errors.get_length () == 1) {
       var err = errors.get_object_element (0);
       sb.append (err.get_int_member ("code").to_string ()).append (": ")
-        .append (err.get_string_member ("message"));
+        .append (err.get_string_member ("message"))
+        .append ("(").append (file).append (":").append (line.to_string ()).append (")");
     } else {
       sb.append ("<ul>");
       errors.foreach_element ((arr, index, node) => {
@@ -387,6 +395,18 @@ namespace Utils {
       return 0;
 
     return (int)node.get_array_member (object_name).get_length ();
+  }
+
+  /**
+   * Checks if @value is existing in @node and if it is, non-null.
+   *
+   * Returns TRUE if the @value does both exist and is non-null.
+   */
+  public bool usable_json_value (Json.Object node, string value_name) {
+    if (node.get_null_member (value_name))
+      return false;
+
+    return node.has_member (value_name);
   }
 
   public string get_banner_name (int64 user_id) {

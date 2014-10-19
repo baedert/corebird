@@ -95,7 +95,8 @@ cb_sources = \
 			sql/Database.vala \
 			sql/Statement.vala \
 			sql/UpdateStatement.vala \
-			sql/SelectStatement.vala
+			sql/SelectStatement.vala \
+			async/Collect.vala
 # }}}
 
 corebird.vapi libcorebird_la_vala.stamp corebird.h: $(cb_sources)

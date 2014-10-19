@@ -207,6 +207,28 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
     remove_user (id);
   }
 
+  [GtkCallback]
+  private bool filter_list_keynav_failed_cb (Gtk.DirectionType direction) {
+    if (direction == Gtk.DirectionType.DOWN) {
+      if (user_list.visible) {
+        user_list.child_focus (direction);
+      }
+      return true;
+    }
+    return false;
+  }
+
+  [GtkCallback]
+  private bool user_list_keynav_failed_cb (Gtk.DirectionType direction) {
+    if (direction == Gtk.DirectionType.UP) {
+      filter_list.child_focus (direction);
+      return true;
+    }
+    return false;
+  }
+
+
+
   public void on_leave () {}
   public void create_tool_button (Gtk.RadioButton? group) {
     tool_button = new BadgeRadioToolButton(group, "corebird-filter-symbolic", _("Filters"));

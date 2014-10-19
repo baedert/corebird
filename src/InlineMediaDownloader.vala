@@ -58,8 +58,12 @@ namespace InlineMediaDownloader {
     var msg = new Soup.Message ("GET", media.url);
     session.queue_message (msg, (_s, _msg) => {
       string? back = (string)_msg.response_body.data;
-      if (msg.status_code != Soup.Status.OK)
+      if (msg.status_code != Soup.Status.OK) {
         warning ("Message status: %s", msg.status_code.to_string ());
+        media.invalid = true;
+        media.finished_loading ();
+        return;
+      }
 
       if (back == null) {
         warning ("Url '%s' returned null", media.url);

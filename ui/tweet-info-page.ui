@@ -96,7 +96,6 @@
                 <property name="halign">start</property>
                 <property name="valign">end</property>
                 <property name="hexpand">True</property>
-                <property name="xalign">0</property>
                 <signal name="clicked" handler="name_button_clicked_cb" swapped="no"/>
                 <style>
                   <class name="text-only-button"/>
@@ -131,29 +130,6 @@
                 <property name="width">5</property>
               </packing>
             </child>
-
-
-            <child>
-              <object class="GtkButton" id="follow_button">
-                <property name="label" translatable="yes">Follow</property>
-                <property name="visible">false</property>
-                <property name="no_show_all">true</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="halign">end</property>
-                <property name="valign">start</property>
-                <property name="margin_end">5</property>
-                <property name="margin_top">5</property>
-                <signal name="clicked" handler="follow_button_clicked_cb" swapped="no"/>
-              </object>
-              <packing>
-                <property name="left_attach">6</property>
-                <property name="top_attach">2</property>
-                <property name="width">4</property>
-                <property name="height">2</property>
-              </packing>
-            </child>
-
 
             <child>
               <object class="GtkLabel" id="text_label">

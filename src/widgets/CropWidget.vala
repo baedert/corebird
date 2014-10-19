@@ -32,6 +32,7 @@ class CropWidget : Gtk.DrawingArea {
   private int resize_diff_y = 0;
   private bool resize_area_hovered = false;
   private double current_scale = 1.0;
+  private int min_width  = MIN_SIZE;
   /**
    * Ratio of the width to the height, i.e. (width/height)
    * => values >1.0 for landscape pictures
@@ -161,9 +162,9 @@ class CropWidget : Gtk.DrawingArea {
       selection_rect.height = image_rect.height;
 
 
-    if (selection_rect.width < MIN_SIZE) {
-      selection_rect.width = MIN_SIZE;
-      selection_rect.height = (int)(MIN_SIZE / desired_aspect_ratio);
+    if (selection_rect.width < min_width) {
+      selection_rect.width = min_width;
+      selection_rect.height = (int)(min_width / desired_aspect_ratio);
     }
 
 
@@ -377,4 +378,8 @@ class CropWidget : Gtk.DrawingArea {
     return final_image;
   }
 
+
+  public void set_min_size (int min_width) {
+    this.min_width = min_width;
+  }
 }

@@ -21,8 +21,8 @@ class AccountDialog : Gtk.Dialog {
   private static const int RESPONSE_CANCEL = 2;
   private static const string PAGE_NORMAL = "normal";
   private static const string PAGE_DELETE = "delete";
-  [GtkChild]
-  private Gtk.Label screen_name_label;
+  //[GtkChild]
+  //private Gtk.Label screen_name_label;
   [GtkChild]
   private Gtk.Entry name_entry;
   [GtkChild]
@@ -42,12 +42,14 @@ class AccountDialog : Gtk.Dialog {
   private string old_user_name;
   private string old_description;
   private string old_website;
+  private Gdk.Pixbuf? new_avatar = null;
+  private Gdk.Pixbuf? new_banner = null;
 
 
 
   public AccountDialog (Account account) {
     this.account = account;
-    screen_name_label.label = account.screen_name;
+    //screen_name_label.label = account.screen_name;
     name_entry.text = account.name;
     avatar_banner_widget.set_account (account);
     website_entry.text = account.website ?? "";
@@ -68,6 +70,15 @@ class AccountDialog : Gtk.Dialog {
       }
     }
     autostart_switch.thaw_notify ();
+
+    avatar_banner_widget.avatar_changed.connect ((p) => {
+       new_avatar = p;
+    });
+
+    avatar_banner_widget.banner_changed.connect ((b) => {
+      new_banner = b;
+    });
+
     this.set_default_size (350, 450);
   }
 
@@ -88,31 +99,97 @@ class AccountDialog : Gtk.Dialog {
                       (old_description != description_text_view.buffer.text) ||
                       (old_website != website_entry.text);
 
-    if (!needs_save)
-      return;
+    bool needs_init = needs_save || (new_avatar != null) || (new_banner != null);
 
-    debug ("Saving data...");
+    if (needs_init && account.proxy == null) {
+      account.init_proxy ();
+    }
 
-    var call = account.proxy.new_call ();
-    call.set_function ("1.1/account/update_profile.json");
-    call.set_method ("POST");
-    call.add_param ("url", website_entry.text);
-    call.add_param ("name", name_entry.text);
-    call.add_param ("description", description_text_view.buffer.text);
-    call.invoke_async.begin (null, (obj, res) => {
+
+    if (needs_save) {
+      debug ("Saving data...");
+      var call = account.proxy.new_call ();
+      call.set_function ("1.1/account/update_profile.json");
+      call.set_method ("POST");
+      call.add_param ("url", website_entry.text);
+      call.add_param ("name", name_entry.text);
+      call.add_param ("description", description_text_view.buffer.text);
+      call.invoke_async.begin (null, (obj, res) => {
+        try {
+          call.invoke_async.end (res);
+        } catch (GLib.Error e) {
+          warning (e.message);
+          Utils.show_error_object (call.get_payload (), "Could not update profile",
+                                   GLib.Log.LINE, GLib.Log.FILE);
+        }
+      });
+
+      /* Update local user data */
+      account.name = name_entry.text;
+      account.description = description_text_view.buffer.text;
+      account.website = website_entry.text;
+    }
+
+    if (new_avatar != null) {
+      debug ("Updating avatar...");
+      uint8[] buffer;
       try {
-        call.invoke_async.end (res);
+        new_avatar.save_to_buffer (out buffer, "png", null);
       } catch (GLib.Error e) {
         warning (e.message);
-        Utils.show_error_object (call.get_payload (), "Could not update profile",
-                                 GLib.Log.LINE, GLib.Log.FILE);
+        return;
       }
-    });
+      string b64 = GLib.Base64.encode (buffer);
 
-    /* Update local user data */
-    account.name = name_entry.text;
-    account.description = description_text_view.buffer.text;
-    account.website = website_entry.text;
+      var call = account.proxy.new_call ();
+      call.set_function ("1.1/account/update_profile_image.json");
+      call.set_method ("POST");
+      call.add_param ("skip_status", "true");
+      call.add_param ("include_entities", "false");
+      call.add_param ("image", b64);
+      call.invoke_async.begin (null, (obj, res) => {
+        try {
+          call.invoke_async.end (res);
+        } catch (GLib.Error e) {
+          Utils.show_error_object (call.get_payload (), "Could not update your avatar",
+                                   GLib.Log.LINE, GLib.Log.FILE);
+          return;
+        }
+
+        /* Locally set new avatar */
+        try {
+          account.set_new_avatar (new_avatar);
+        } catch (GLib.Error e) {
+          warning (e.message);
+        }
+      });
+    }
+
+    if (new_banner != null) {
+      debug ("Updating banner...");
+      uint8[] buffer;
+      try {
+        new_banner.save_to_buffer (out buffer, "png", null);
+      } catch (GLib.Error e) {
+        warning (e.message);
+        return;
+      }
+      string b64 = GLib.Base64.encode (buffer);
+
+      var call = account.proxy.new_call ();
+      call.set_function ("1.1/account/update_profile_banner.json");
+      call.set_method ("POST");
+
+      call.add_param ("banner", b64);
+      call.invoke_async.begin (null, (obj, res) => {
+        try {
+          call.invoke_async.end (res);
+        } catch (GLib.Error e) {
+          Utils.show_error_object (call.get_payload (), "Could not update your avatar",
+                                   GLib.Log.LINE, GLib.Log.FILE);
+        }
+      });
+    }
   }
 
   [GtkCallback]

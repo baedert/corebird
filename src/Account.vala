@@ -102,6 +102,28 @@ public class Account : GLib.Object {
     }
   }
 
+  public void set_new_avatar (Gdk.Pixbuf new_avatar) throws GLib.Error{
+    string path = Dirs.config (@"accounts/$(id).png");
+    string small_path = Dirs.config (@"accounts/$(id)_small.png");
+
+    Gdk.Pixbuf avatar = new_avatar.scale_simple (48, 48, Gdk.InterpType.BILINEAR);
+    Gdk.Pixbuf avatar_small = new_avatar.scale_simple (24, 24, Gdk.InterpType.BILINEAR);
+
+    /* Save normal-sized avatar (48x48) */
+    GLib.FileIOStream io_stream = GLib.File.new_for_path (path).open_readwrite ();
+    avatar.save_to_stream (io_stream.output_stream, "png", null);
+    io_stream.close ();
+
+    /* save small avatar (24x24) */
+    io_stream = GLib.File.new_for_path (small_path).open_readwrite ();
+    avatar_small.save_to_stream (io_stream.output_stream, "png", null);
+    io_stream.close ();
+
+    this.avatar = avatar;
+    this.avatar_small = avatar_small;
+    message ("changed!");
+  }
+
   /**
    * Download the appropriate user info from the Twitter server,
    * updating the local information stored in this class' local variables.

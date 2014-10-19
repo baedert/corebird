@@ -18,7 +18,9 @@
             <child>
               <object class="GtkFileChooserWidget" id="file_chooser">
                 <property name="visible">true</property>
-                <property name="margin">12</property>
+                <property name="margin_top">6</property>
+                <property name="margin_start">6</property>
+                <property name="margin_end">6</property>
                 <property name="vexpand">true</property>
                 <signal name="file_activated" handler="next_button_clicked_cb" />
                 <signal name="selection_changed" handler="selection_changed_cb" />
@@ -49,6 +51,7 @@
       <object class="GtkBox">
         <property name="visible">true</property>
         <property name="orientation">horizontal</property>
+        <property name="margin_top">6</property>
 
         <child>
           <object class="GtkButton">
@@ -71,6 +74,7 @@
           <object class="GtkButton" id="next_button">
             <property name="visible">true</property>
             <property name="label" translatable="yes">Next</property>
+            <property name="sensitive">false</property>
             <signal name="clicked" handler="next_button_clicked_cb" />
           </object>
         </child>

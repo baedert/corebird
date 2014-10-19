@@ -35,6 +35,7 @@
                       <property name="can_focus">False</property>
                       <property name="valign">start</property>
                       <property name="selection_mode">none</property>
+                      <signal name="keynav-failed" handler="filter_list_keynav_failed_cb" />
                     </object>
                   </child>
                 </object>
@@ -46,9 +47,10 @@
               <property name="can_focus">False</property>
               <property name="visible">False</property>
               <property name="no_show_all">True</property>
-              <property name="label" translatable="Yes">Users:</property>
+              <property name="label" translatable="Yes">Users</property>
               <property name="margin_top">25</property>
               <property name="margin_start">25</property>
+              <property name="margin_bottom">6</property>
               <property name="justify">left</property>
               <property name="halign">start</property>
             </object>
@@ -73,6 +75,7 @@
                       <property name="can_focus">False</property>
                       <property name="valign">start</property>
                       <property name="selection_mode">none</property>
+                      <signal name="keynav-failed" handler="user_list_keynav_failed_cb" />
                     </object>
                   </child>
                 </object>

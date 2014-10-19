@@ -156,6 +156,7 @@ public class AvatarBannerWidget : Gtk.Container {
 
   private void banner_clicked_cb () {
     ImageCropDialog dialog = new ImageCropDialog (2.0);
+    dialog.set_min_size (200);
     dialog.set_modal (true);
     dialog.set_transient_for ((Gtk.Window)this.get_toplevel ());
     dialog.image_cropped.connect ((img) => {
