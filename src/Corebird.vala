@@ -376,6 +376,7 @@ public class Corebird : Gtk.Application {
     MainWindow main_window;
     if (is_window_open_for_screen_name (account_screen_name, out main_window)) {
       main_window.main_widget.switch_page (Page.DM, sender_id);
+      main_window.present ();
     } else
       warning ("Window for Account %s is not open, abort.", account_screen_name);
   }
