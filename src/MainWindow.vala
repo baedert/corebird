@@ -364,10 +364,7 @@ public class MainWindow : Gtk.ApplicationWindow {
     if (a is AddListEntry)
       return 1;
 
-    if (((UserListEntry)a).user_id < ((UserListEntry)b).user_id)
-      return -1;
-
-    return 1;
+    return ((UserListEntry)a).screen_name.ascii_casecmp (((UserListEntry)b).screen_name);
   }
 
   private void header_func (Gtk.ListBoxRow row, Gtk.ListBoxRow? row_before) {
