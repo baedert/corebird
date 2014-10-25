@@ -191,6 +191,7 @@ public class Tweet : GLib.Object {
       string screen_name = mention.get_string_member ("screen_name");
       // Avoid duplicate mentions
       if (!(screen_name in this.mentions) && screen_name != account.screen_name
+          && screen_name != this.rt_by_screen_name
           && screen_name != this.screen_name) {
         this.mentions[real_mentions] = "@" + screen_name;
         real_mentions ++;
