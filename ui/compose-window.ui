@@ -68,7 +68,7 @@
                     <property name="valign">start</property>
                     <property name="width_request">48</property>
                     <property name="height_request">48</property>
-                    <property name="margin_start">5</property>
+                    <property name="margin_start">10</property>
                     <signal name="clicked" handler="media_image_clicked_cb" swapped="no" />
                   </object>
                 </child>
