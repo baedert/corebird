@@ -20,7 +20,8 @@ public class MainWindow : Gtk.ApplicationWindow {
     {"compose-tweet",       show_compose_window},
     {"toggle-sidebar",      Settings.toggle_sidebar_visible},
     {"switch-page",         simple_switch_page, "i"},
-    {"show-account-dialog", show_account_dialog}
+    {"show-account-dialog", show_account_dialog},
+    {"show-account-list",   show_account_list}
   };
   [GtkChild]
   private Gtk.HeaderBar headerbar;
@@ -246,6 +247,12 @@ public class MainWindow : Gtk.ApplicationWindow {
     dialog.set_transient_for (this);
     dialog.modal = true;
     dialog.show ();
+  }
+
+  /* for show-account-list GAction */
+  private void show_account_list () {
+    if (this.account != null && this.account.screen_name != Account.DUMMY)
+      this.account_popover.show ();
   }
 
   public IPage get_page (int page_id) {

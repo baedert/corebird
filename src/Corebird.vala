@@ -85,6 +85,7 @@ public class Corebird : Gtk.Application {
     this.add_accelerator (Settings.get_accel ("show-settings"), "app.show-settings", null);
     this.add_accelerator ("<Control>Q", "app.quit", null);
     this.add_accelerator (Settings.get_accel ("show-account-dialog"), "win.show-account-dialog", null);
+    this.add_accelerator (Settings.get_accel ("show-account-list"), "win.show-account-list", null);
 
     this.add_action_entries (app_entries, this);
 
