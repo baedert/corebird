@@ -144,7 +144,6 @@ class ProfilePage : ScrollWidget, IPage {
 
     actions = new GLib.SimpleActionGroup ();
     actions.add_action_entries (action_entries, this);
-    this.insert_action_group ("user", actions);
     GLib.SimpleAction block_action = new GLib.SimpleAction.stateful ("toggle-blocked", null,
                                                                      new GLib.Variant.boolean (false));
     block_action.activate.connect (toggle_blocked_activated);
@@ -153,6 +152,7 @@ class ProfilePage : ScrollWidget, IPage {
                                                                   new GLib.Variant.boolean (false));
     rt_action.activate.connect (retweet_action_activated);
     actions.add_action (rt_action);
+    this.insert_action_group ("user", actions);
 
     this.more_menu = more_button.menu_model;
   }
@@ -164,6 +164,9 @@ class ProfilePage : ScrollWidget, IPage {
     ((SimpleAction)actions.lookup_action ("add-remove-list")).set_enabled (user_id != account.id);
     ((SimpleAction)actions.lookup_action ("write-dm")).set_enabled (user_id != account.id);
     ((SimpleAction)actions.lookup_action ("toggle-blocked")).set_enabled (user_id != account.id);
+    /* We (maybe) re-enable this later when the friendship object has arrived */
+    ((SimpleAction)actions.lookup_action ("toggle-retweets")).set_enabled (false);
+
 
     load_banner (DATADIR + "/no_banner.png");
     load_friendship.begin ();
@@ -234,6 +237,8 @@ class ProfilePage : ScrollWidget, IPage {
     follows_you_label.visible = followed_by;
     set_user_blocked (relationship.get_object_member ("source").get_boolean_member ("blocking"));
     set_retweets_disabled (following && !want_retweets);
+
+    ((SimpleAction)actions.lookup_action ("toggle-retweets")).set_enabled (following);
   }
 
   private async void load_profile_data (int64 user_id, bool show_spinner) { //{{{
