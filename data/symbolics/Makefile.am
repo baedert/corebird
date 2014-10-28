@@ -8,5 +8,6 @@ symbolics_DATA = \
 								corebird-mentions-symbolic.svg     \
 								corebird-retweet-symbolic.svg      \
 								corebird-new-window-symbolic.svg   \
-								corebird-filter-symbolic.svg
+								corebird-filter-symbolic.svg       \
+								corebird-conversation-symbolic.svg
 EXTRA_DIST = $(symbolics_DATA)
