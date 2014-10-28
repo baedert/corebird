@@ -354,6 +354,8 @@ namespace Utils {
 
     w = img_width;
     h = (int)(thumb_height * f);
+    if (h > img_height)
+      h = img_height;
 
     x = 0;
     y = (img_height / 2) - (h / 2);
