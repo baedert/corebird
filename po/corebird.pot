@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-17 12:57+0200\n"
+"POT-Creation-Date: 2014-10-31 21:25+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,7 +26,7 @@ msgstr ""
 #: ../src/widgets/MultiMediaWidget.vala:148 ../ui/compose-window.ui.h:4
 #: ../ui/list-list-entry.ui.h:1 ../ui/list-statuses-page.ui.h:8
 #: ../ui/filter-list-entry.ui.h:1 ../ui/modify-filter-dialog.ui.h:2
-#: ../ui/user-filter-entry.ui.h:1 ../ui/account-dialog.ui.h:7
+#: ../ui/user-filter-entry.ui.h:1 ../ui/account-dialog.ui.h:6
 #: ../ui/image-crop-dialog.ui.h:2
 msgid "Cancel"
 msgstr ""
@@ -38,7 +38,7 @@ msgstr ""
 #: ../src/window/UserListDialog.vala:45
 #: ../src/widgets/MultiMediaWidget.vala:149
 #: ../src/window/ImageCropDialog.vala:75 ../ui/list-statuses-page.ui.h:6
-#: ../ui/modify-filter-dialog.ui.h:3 ../ui/account-dialog.ui.h:9
+#: ../ui/modify-filter-dialog.ui.h:3 ../ui/account-dialog.ui.h:8
 msgid "Save"
 msgstr ""
 
@@ -120,7 +120,7 @@ msgstr ""
 msgid "%d new Tweets!"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:199
+#: ../src/HomeTimeline.vala:175
 msgid "Home"
 msgstr ""
 
@@ -143,20 +143,20 @@ msgstr ""
 msgid "Lists"
 msgstr ""
 
-#: ../src/ProfilePage.vala:308
+#: ../src/ProfilePage.vala:315
 msgid "Protected profile"
 msgstr ""
 
-#: ../src/ProfilePage.vala:500
+#: ../src/ProfilePage.vala:507
 #, c-format
 msgid "Tweet to @%s"
 msgstr ""
 
-#: ../src/ProfilePage.vala:584
+#: ../src/ProfilePage.vala:591
 msgid "Unfollow"
 msgstr ""
 
-#: ../src/ProfilePage.vala:588
+#: ../src/ProfilePage.vala:595
 msgid "Follow"
 msgstr ""
 
@@ -196,7 +196,7 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: ../src/Corebird.vala:160
+#: ../src/Corebird.vala:161
 msgid "Open Account"
 msgstr ""
 
@@ -332,7 +332,7 @@ msgstr ""
 #: ../ui/tweet-list-entry.ui.h:3 ../ui/tweet-info-page.ui.h:2
 #: ../ui/list-list-entry.ui.h:4 ../ui/list-statuses-page.ui.h:7
 #: ../ui/filter-list-entry.ui.h:2 ../ui/user-filter-entry.ui.h:2
-#: ../ui/account-dialog.ui.h:8
+#: ../ui/account-dialog.ui.h:7
 msgid "Delete"
 msgstr ""
 
@@ -505,22 +505,18 @@ msgid "Account Settings"
 msgstr ""
 
 #: ../ui/account-dialog.ui.h:2
-msgid "Username"
-msgstr ""
-
-#: ../ui/account-dialog.ui.h:3
 msgid "Name"
 msgstr ""
 
-#: ../ui/account-dialog.ui.h:4
+#: ../ui/account-dialog.ui.h:3
 msgid "Website"
 msgstr ""
 
-#: ../ui/account-dialog.ui.h:5
+#: ../ui/account-dialog.ui.h:4
 msgid "Autostart"
 msgstr ""
 
-#: ../ui/account-dialog.ui.h:6
+#: ../ui/account-dialog.ui.h:5
 msgid "Do you really want to delete this account?"
 msgstr ""
 
