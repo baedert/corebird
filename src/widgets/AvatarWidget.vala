@@ -80,10 +80,15 @@ class AvatarWidget : Gtk.Image {
 
     /* Draw verification indicator */
     if (verified) {
+      Gdk.Pixbuf verified_img;
+      if (width > 48)
+        verified_img = Twitter.verified_icon_large;
+      else
+        verified_img = Twitter.verified_icon;
       ctx.rectangle (0, 0, width, height);
       Gdk.cairo_set_source_pixbuf (ctx,
-                                   Twitter.verified_icon,
-                                   width - Twitter.verified_icon.get_width (),
+                                   verified_img,
+                                   width - verified_img.get_width (),
                                    0);
       ctx.fill ();
     }
