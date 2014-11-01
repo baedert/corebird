@@ -27,6 +27,8 @@ public class ImageCropDialog : Gtk.Dialog {
   private Gtk.Button back_button;
   [GtkChild]
   private Gtk.Button next_button;
+  [GtkChild]
+  private Gtk.Label error_label;
 
   public signal void image_cropped (Gdk.Pixbuf result);
 

@@ -39,6 +39,14 @@
             </child>
 
 
+            <child>
+              <object class="GtkLabel" id="error_label">
+                <property name="visible">true</property>
+                <property name="can_focus">false</property>
+                <property name="wrap">true</property>
+                <property name="margin">24</property>
+              </object>
+            </child>
           </object>
         </child>
 
