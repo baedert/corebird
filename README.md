@@ -16,6 +16,7 @@ This is the readme for the current *development version*. If you're looking for 
 | `Ctrl + Shift + s` | Show/Hide sidebar                                                                                                                          |
 | `Ctrl + p` | Show account settings |
 | `Ctrl + k` | Show account list |
+| `Ctrl + Shift + p` | Show application settings |
 
 
   When a tweet is focused(via keynav):
