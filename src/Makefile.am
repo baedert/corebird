@@ -54,7 +54,6 @@ cb_sources = \
 			widgets/DMPlaceholderBox.vala \
 			widgets/AccountCreateWidget.vala \
 			widgets/AspectImage.vala \
-			widgets/BgBox.vala \
 			widgets/UserListsWidget.vala \
 			widgets/ReplyIndicator.vala \
 			widgets/MultiMediaWidget.vala \

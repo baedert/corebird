@@ -226,7 +226,7 @@
           </object>
         </child>
         <child type="overlay">
-          <object class="BgBox" id="hover_box">
+          <object class="GtkBox" id="hover_box">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="no_show_all">True</property>

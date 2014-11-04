@@ -35,7 +35,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   [GtkChild]
   private Gtk.Image conversation_image;
   [GtkChild]
-  private BgBox hover_box;
+  private Gtk.Box hover_box;
   [GtkChild]
   private DoubleTapButton retweet_button;
   [GtkChild]
