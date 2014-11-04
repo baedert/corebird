@@ -35,6 +35,8 @@ public class MainWindow : Gtk.ApplicationWindow {
   private Gtk.Box header_box;
   [GtkChild]
   private Gtk.Button account_button;
+  [GtkChild]
+  public Gtk.Button back_button;
 
   private Gtk.MenuButton app_menu_button = null;
   public MainWidget main_widget;
@@ -114,6 +116,11 @@ public class MainWindow : Gtk.ApplicationWindow {
 
     this.add_accel_group(ag);
   } // }}}
+
+  [GtkCallback]
+  private void back_button_clicked_cb () {
+    main_widget.switch_page (Page.PREVIOUS);
+  }
 
 
 

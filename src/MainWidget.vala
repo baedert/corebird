@@ -178,6 +178,8 @@ public class MainWidget : Gtk.Box {
       ((MainWindow)this.parent).set_title (page.get_title ());
 
     page_switch_lock = false;
+
+    ((MainWindow)this.parent).back_button.sensitive = !history.at_start ();
   } // }}}
 
   public IPage get_page (int page_id) {

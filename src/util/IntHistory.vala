@@ -59,6 +59,10 @@ public class IntHistory {
     return -1;
   }
 
+  public bool at_start () {
+    return pos == 0;
+  }
+
 /*  public void print () {
     string a = "[";
     for (int i = 0; i < elements.length; i++)
