@@ -32,6 +32,9 @@ public class ImageCropDialog : Gtk.Dialog {
 
   public signal void image_cropped (Gdk.Pixbuf result);
 
+  public int min_width;
+  public int min_height;
+
 
   public ImageCropDialog (double aspect_ratio) {
     Gtk.FileFilter filter = new Gtk.FileFilter ();
@@ -66,16 +69,26 @@ public class ImageCropDialog : Gtk.Dialog {
   }
 
   [GtkCallback]
-  private void next_button_clicked_cb () {
+  private async void next_button_clicked_cb () {
     if (stack.visible_child == file_chooser) {
       /* Prepare crop widget with selected image */
       string selected_file = file_chooser.get_filename ();
 
       stack.visible_child = crop_widget;
-      crop_widget.load_file_async.begin (selected_file, null);
 
-      next_button.label = _("Save");
-      back_button.sensitive = true;
+      /* Load the file now, check for min size etc. */
+      Gdk.Pixbuf image = new Gdk.Pixbuf.from_file (selected_file);
+      if (image.get_width () >= min_width &&
+          image.get_height () >= min_height) {
+        crop_widget.set_image (image);
+        next_button.label = _("Save");
+        back_button.sensitive = true;
+      } else {
+        error_label.label = _("Image does not meet the minimum size requirements:\nMinimum width: %d pixels\nMinimum height: %d pixels").printf (min_width, min_height);
+        stack.visible_child = error_label;
+        back_button.sensitive = true;
+      }
+
 
     } else {
       /* Crop the widget and save it... */
