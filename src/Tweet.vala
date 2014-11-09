@@ -228,7 +228,7 @@ public class Tweet : GLib.Object {
         string media_url = url.get_string_member ("media_url");
         if (InlineMediaDownloader.is_media_candidate (media_url)) {
           var m = new Media ();
-          m.url = media_url + ":large";
+          m.url = media_url;
           this.medias[real_media_count] = m;
           real_media_count ++;
         }
