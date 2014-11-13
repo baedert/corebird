@@ -21,8 +21,6 @@ class AccountDialog : Gtk.Dialog {
   private static const int RESPONSE_CANCEL = 2;
   private static const string PAGE_NORMAL = "normal";
   private static const string PAGE_DELETE = "delete";
-  //[GtkChild]
-  //private Gtk.Label screen_name_label;
   [GtkChild]
   private Gtk.Entry name_entry;
   [GtkChild]
