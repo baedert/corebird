@@ -639,7 +639,7 @@ class ProfilePage : ScrollWidget, IPage {
     //       We might otherwise overwrite the new user's data with that from the old one.
 //    data_cancellable.cancel ();
     banner_image.scale = 0.3;
-    lowest_tweet_id = int64.MAX;
+    //lowest_tweet_id = int64.MAX;
   }
 
   private void reset_data () {
@@ -652,6 +652,7 @@ class ProfilePage : ScrollWidget, IPage {
     following_label.label = " ";
     followers_label.label = " ";
     avatar_image.pixbuf = null;
+    lowest_tweet_id = int64.MAX;
   }
 
   public void create_tool_button (Gtk.RadioButton? group) {}
