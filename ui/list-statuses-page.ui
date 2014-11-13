@@ -408,6 +408,7 @@
             <property name="vexpand">True</property>
             <property name="selection_mode">none</property>
             <property name="activate_on_single_click">False</property>
+            <signal name="row_activated" handler="tweet_activated_cb" />
           </object>
           <packing>
             <property name="expand">False</property>
