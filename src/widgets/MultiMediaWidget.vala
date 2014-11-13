@@ -135,7 +135,7 @@ private class MediaButton : Gtk.Button {
   private void open_in_browser_activated (GLib.SimpleAction a, GLib.Variant? v) {
     try {
       Gtk.show_uri (Gdk.Screen.get_default (),
-                    media.url,
+                    media.target_url,
                     Gtk.get_current_event_time ());
     } catch (GLib.Error e) {
       critical (e.message);

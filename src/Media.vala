@@ -38,6 +38,15 @@ public class Media : GLib.Object{
       _thumb_url = value;
     }
   }
+  private string _target_url;
+  public string target_url {
+    get {
+      return _target_url ?? url;
+    }
+    set {
+      _target_url = value;
+    }
+  }
   public int64 length { get; set; default = 0; }
   public double percent_loaded { get; set; default = 0; }
   public MediaType type;
