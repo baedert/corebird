@@ -200,8 +200,10 @@ public class MainWindow : Gtk.ApplicationWindow {
     }
     var e = (UserListEntry)row;
     string screen_name = e.screen_name;
+    Corebird cb = (Corebird)this.get_application ();
 
-    if (screen_name == this.account.screen_name) {
+    if (screen_name == this.account.screen_name ||
+        cb.is_window_open_for_screen_name (screen_name, null)) {
       account_popover.hide ();
       return;
     }
