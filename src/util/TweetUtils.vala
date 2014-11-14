@@ -324,7 +324,7 @@ namespace TweetUtils {
     foreach (string tld in DOMAINS) {
       string[] parts = s.split ("/");
 
-      if (parts[0].has_suffix (tld))
+      if (parts.length > 0 && parts[0].has_suffix (tld))
         return Twitter.short_url_length; // Default to HTTP
     }
 
