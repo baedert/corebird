@@ -76,7 +76,7 @@ class AccountDialog : Gtk.Dialog {
       new_banner = b;
     });
 
-    if (account.website == null) {
+    if (account.proxy == null) {
       account.init_proxy ();
       account.query_user_info_by_screen_name (account.screen_name, (obj, res) => {
         name_entry.text = account.name;
