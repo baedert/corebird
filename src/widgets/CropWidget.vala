@@ -200,12 +200,27 @@ class CropWidget : Gtk.DrawingArea {
       selection_rect.height = new_height;
     } else {
       selection_rect.width = max_width;
+      //message ("%d", selection_rect.width);
+      //message ("%f", image_rect.width / desired_aspect_ratio);
       selection_rect.height = (int)(max_width / desired_aspect_ratio);
     }
 
     restrict_selection_size ();
 
     this.queue_draw ();
+  }
+
+
+
+  public async void load_file_async (string            filename,
+                                     GLib.Cancellable? cancellable = null) {
+    try {
+      GLib.InputStream stream = File.new_for_path (filename).read ();
+      this.set_image (yield new Gdk.Pixbuf.from_stream_async (stream, cancellable));
+      stream.close ();
+    } catch (GLib.Error e) {
+      warning (e.message);
+    }
   }
 
   public void set_image (Gdk.Pixbuf image) {
@@ -257,46 +272,11 @@ class CropWidget : Gtk.DrawingArea {
     ct.fill ();
     ct.restore ();
 
-
-    /* Draw shading */
-    ct.save ();
-
-
-    //ct.new_path ();
-    ct.set_source_rgba (1.0, 0.0, 0.0, 0.4);
-    ct.rectangle (image_rect.x, image_rect.y, image_rect.width - 20, image_rect.height - 20);
-    ct.set_operator (Cairo.Operator.CLEAR);
-    ct.rectangle (selection_rect.x, selection_rect.y,
-                  selection_rect.width, selection_rect.height);
-
-
-    //ct.fill ();
-    //ct.close_path ();
-    //ct.rectangle (selection_rect.x, selection_rect.y,
-                  //selection_rect.width, selection_rect.height);
-    //ct.rectangle (selection_rect.x + selection_rect.width,
-                  //selection_rect.y + selection_rect.height,
-                  //-selection_rect.width,
-                  //-selection_rect.height);
-
-    //ct.rectangle (0, 0, widget_width, widget_height);
-
-
-
-    //ct.set_operator (Cairo.Operator.CLEAR);
-
-    ct.fill ();
-
-
-    ct.restore ();
-
-
     /* Draw selection rectangle border */
     ct.rectangle (selection_rect.x, selection_rect.y,
                   selection_rect.width, selection_rect.height);
     ct.set_source_rgba (1.0, 1.0, 1.0, 1.0);
     ct.stroke ();
-
 
     /* Draw resize quad */
     ct.rectangle (selection_rect.x + selection_rect.width - 15,
