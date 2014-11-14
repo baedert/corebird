@@ -77,7 +77,14 @@ public class ImageCropDialog : Gtk.Dialog {
       stack.visible_child = crop_widget;
 
       /* Load the file now, check for min size etc. */
-      Gdk.Pixbuf image = new Gdk.Pixbuf.from_file (selected_file);
+      Gdk.Pixbuf? image = null;
+      try {
+        image = new Gdk.Pixbuf.from_file (selected_file);
+      } catch (GLib.Error e) {
+        warning (e.message);
+        return;
+      }
+
       if (image.get_width () >= min_width &&
           image.get_height () >= min_height) {
         crop_widget.set_image (image);
