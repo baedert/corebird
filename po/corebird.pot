@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-14 17:28+0100\n"
+"POT-Creation-Date: 2014-11-14 21:44+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,7 +37,7 @@ msgstr ""
 
 #: ../src/window/UserListDialog.vala:45
 #: ../src/widgets/MultiMediaWidget.vala:149
-#: ../src/window/ImageCropDialog.vala:84 ../ui/list-statuses-page.ui.h:6
+#: ../src/window/ImageCropDialog.vala:91 ../ui/list-statuses-page.ui.h:6
 #: ../ui/modify-filter-dialog.ui.h:3 ../ui/account-dialog.ui.h:8
 msgid "Save"
 msgstr ""
@@ -221,7 +221,7 @@ msgstr ""
 msgid "Next"
 msgstr ""
 
-#: ../src/window/ImageCropDialog.vala:87
+#: ../src/window/ImageCropDialog.vala:94
 #, c-format
 msgid ""
 "Image does not meet the minimum size requirements:\n"
