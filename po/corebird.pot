@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-14 21:44+0100\n"
+"POT-Creation-Date: 2014-11-14 22:34+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,7 +27,7 @@ msgstr ""
 #: ../ui/list-list-entry.ui.h:1 ../ui/list-statuses-page.ui.h:8
 #: ../ui/filter-list-entry.ui.h:1 ../ui/modify-filter-dialog.ui.h:2
 #: ../ui/user-filter-entry.ui.h:1 ../ui/account-dialog.ui.h:6
-#: ../ui/image-crop-dialog.ui.h:2
+#: ../ui/image-crop-dialog.ui.h:1
 msgid "Cancel"
 msgstr ""
 
@@ -217,7 +217,15 @@ msgstr ""
 msgid "List"
 msgstr ""
 
-#: ../src/window/ImageCropDialog.vala:52 ../ui/image-crop-dialog.ui.h:4
+#: ../src/widgets/AvatarBannerWidget.vala:159
+msgid "Select banner"
+msgstr ""
+
+#: ../src/widgets/AvatarBannerWidget.vala:174
+msgid "Select avatar"
+msgstr ""
+
+#: ../src/window/ImageCropDialog.vala:52 ../ui/image-crop-dialog.ui.h:3
 msgid "Next"
 msgstr ""
 
@@ -528,11 +536,7 @@ msgstr ""
 msgid "Do you really want to delete this account?"
 msgstr ""
 
-#: ../ui/image-crop-dialog.ui.h:1
-msgid "Foobar"
-msgstr ""
-
-#: ../ui/image-crop-dialog.ui.h:3
+#: ../ui/image-crop-dialog.ui.h:2
 msgid "Back"
 msgstr ""
 
