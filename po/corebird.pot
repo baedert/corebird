@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-31 21:25+0100\n"
+"POT-Creation-Date: 2014-11-14 17:28+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,7 +37,7 @@ msgstr ""
 
 #: ../src/window/UserListDialog.vala:45
 #: ../src/widgets/MultiMediaWidget.vala:149
-#: ../src/window/ImageCropDialog.vala:75 ../ui/list-statuses-page.ui.h:6
+#: ../src/window/ImageCropDialog.vala:84 ../ui/list-statuses-page.ui.h:6
 #: ../ui/modify-filter-dialog.ui.h:3 ../ui/account-dialog.ui.h:8
 msgid "Save"
 msgstr ""
@@ -213,12 +213,20 @@ msgstr ""
 msgid "Direct Conversation"
 msgstr ""
 
-#: ../src/ListStatusesPage.vala:393
+#: ../src/ListStatusesPage.vala:404
 msgid "List"
 msgstr ""
 
-#: ../src/window/ImageCropDialog.vala:47 ../ui/image-crop-dialog.ui.h:4
+#: ../src/window/ImageCropDialog.vala:52 ../ui/image-crop-dialog.ui.h:4
 msgid "Next"
+msgstr ""
+
+#: ../src/window/ImageCropDialog.vala:87
+#, c-format
+msgid ""
+"Image does not meet the minimum size requirements:\n"
+"Minimum width: %d pixels\n"
+"Minimum height: %d pixels"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:1 ../ui/menu.ui.h:1
