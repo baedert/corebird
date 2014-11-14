@@ -47,7 +47,6 @@ class AccountDialog : Gtk.Dialog {
 
   public AccountDialog (Account account) {
     this.account = account;
-    //screen_name_label.label = account.screen_name;
     name_entry.text = account.name;
     avatar_banner_widget.set_account (account);
     website_entry.text = account.website ?? "";
@@ -76,6 +75,15 @@ class AccountDialog : Gtk.Dialog {
     avatar_banner_widget.banner_changed.connect ((b) => {
       new_banner = b;
     });
+
+    if (account.website == null) {
+      account.init_proxy ();
+      account.query_user_info_by_screen_name (account.screen_name, (obj, res) => {
+        name_entry.text = account.name;
+        avatar_banner_widget.set_account (account);
+        website_entry.text = account.website ?? "";
+      });
+    }
 
     this.set_default_size (350, 450);
   }
