@@ -48,15 +48,8 @@ class AccountDialog : Gtk.Dialog {
   public AccountDialog (Account account) {
     this.account = account;
     name_entry.text = account.name;
+    set_transient_data (account.website, account.description);
     avatar_banner_widget.set_account (account);
-    website_entry.text = account.website ?? "";
-    old_user_name = account.name;
-    old_website = account.website ?? "";
-    old_description = account.description ?? "";
-    if (account.description != null) {
-      description_text_view.get_buffer ().set_text (account.description);
-    }
-
 
     autostart_switch.freeze_notify ();
     string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
@@ -78,14 +71,20 @@ class AccountDialog : Gtk.Dialog {
 
     if (account.proxy == null) {
       account.init_proxy ();
-      account.query_user_info_by_screen_name (account.screen_name, (obj, res) => {
-        name_entry.text = account.name;
-        avatar_banner_widget.set_account (account);
-        website_entry.text = account.website ?? "";
+      account.query_user_info_by_screen_name.begin (account.screen_name, (obj, res) => {
+        set_transient_data (account.website, account.description);
       });
     }
 
     this.set_default_size (350, 450);
+  }
+
+  private void set_transient_data (string? website, string? description) {
+    website_entry.text = account.website ?? "";
+    old_user_name = account.name;
+    old_website = account.website ?? "";
+    old_description = account.description ?? "";
+    description_text_view.get_buffer ().set_text (account.description ?? "");
   }
 
   public override void response (int response_id) {
