@@ -57,7 +57,7 @@ public class MainWidget : Gtk.Box {
       }
     }
     account.user_stream.start ();
-    account.query_user_info_by_scren_name.begin (account.screen_name);
+    account.query_user_info_by_screen_name.begin (account.screen_name);
 
 
     // TODO: Just always pass the account instance to the constructor.

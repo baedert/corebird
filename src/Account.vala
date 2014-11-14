@@ -131,7 +131,7 @@ public class Account : GLib.Object {
    *
    * @param screen_name The screen name to use for the API call.
    */
-  public async void query_user_info_by_scren_name (string screen_name) {
+  public async void query_user_info_by_screen_name (string screen_name) {
     this.screen_name = screen_name;
     var call = proxy.new_call ();
     call.set_function ("1.1/users/show.json");
@@ -168,7 +168,7 @@ public class Account : GLib.Object {
 
       string avatar_url = root.get_string_member ("profile_image_url");
       update_avatar.begin (avatar_url);
-      query_user_info_by_scren_name.callback();
+      query_user_info_by_screen_name.callback();
     });
 
     yield;
