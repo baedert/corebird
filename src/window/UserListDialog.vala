@@ -46,6 +46,7 @@ class UserListDialog : Gtk.Dialog {
 
 
     var content_box = get_content_area ();
+    content_box.border_width = 0;
     var scroller = new Gtk.ScrolledWindow (null, null);
     list_list_box.selection_mode = Gtk.SelectionMode.NONE;
     scroller.add (list_list_box);
@@ -98,7 +99,7 @@ class UserListDialog : Gtk.Dialog {
 
 
   public override void response (int response_id) {
-    message ("Response: %d", response_id);
+    debug ("Response: %d", response_id);
     if (response_id == CANCEL_RESPONSE) {
       this.destroy ();
     } else if (response_id == SAVE_RESPONSE) {
@@ -106,7 +107,7 @@ class UserListDialog : Gtk.Dialog {
       foreach (Gtk.Widget w in list_entries) {
         var lue = (ListUserEntry) w;
         if (lue.changed) {
-          message ("VALUE CHANGED");
+          debug ("VALUE CHANGED");
           if (lue.active) {
             // Add user to the list
             add_user (lue.id);
@@ -167,7 +168,8 @@ class ListUserEntry : Gtk.ListBoxRow {
   }
 
   public ListUserEntry (string list_name, string description) {
-    var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
+    this.activatable = false;
+    var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 12);
     box.margin = 6;
     added_checkbox.valign = Gtk.Align.CENTER;
     box.pack_start (added_checkbox, false, false);
