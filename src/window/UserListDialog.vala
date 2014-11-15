@@ -26,8 +26,6 @@ struct TwitterList {
 
 
 class UserListDialog : Gtk.Dialog {
-  private static const int SAVE_RESPONSE   = 2;
-  private static const int CANCEL_RESPONSE = -1;
   private unowned Account account;
   private unowned MainWindow main_window;
   private Gtk.ListBox list_list_box = new Gtk.ListBox ();
@@ -35,14 +33,18 @@ class UserListDialog : Gtk.Dialog {
 
   public UserListDialog (MainWindow parent, Account account,
                          int64 user_id) {
+    GLib.Object (use_header_bar: Gtk.Settings.get_default ().gtk_dialogs_use_header ? 1 : 0);
+    this.title = _("Add to or Remove User From List");
     this.main_window = parent;
     this.user_id = user_id;
     this.account = account;
     set_modal (true);
     set_transient_for (parent);
     set_default_size (250, 200);
-    add_button (_("Cancel"), CANCEL_RESPONSE);
-    add_button (_("Save"), SAVE_RESPONSE);
+    add_button (_("Cancel"), Gtk.ResponseType.CANCEL);
+    add_button (_("Save"), Gtk.ResponseType.OK);
+
+    set_default_response (Gtk.ResponseType.OK);
 
 
     var content_box = get_content_area ();
@@ -100,9 +102,9 @@ class UserListDialog : Gtk.Dialog {
 
   public override void response (int response_id) {
     debug ("Response: %d", response_id);
-    if (response_id == CANCEL_RESPONSE) {
+    if (response_id == Gtk.ResponseType.CANCEL) {
       this.destroy ();
-    } else if (response_id == SAVE_RESPONSE) {
+    } else if (response_id == Gtk.ResponseType.OK) {
       var list_entries = list_list_box.get_children ();
       foreach (Gtk.Widget w in list_entries) {
         var lue = (ListUserEntry) w;
