@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Med Touhami MAHDI <dragnucs@legtux.org>, 2014
 # Med Touhami MAHDI <dragnucs@legtux.org>, 2014
@@ -11,15 +11,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-14 22:34+0100\n"
+"POT-Creation-Date: 2014-11-15 10:13+0100\n"
 "PO-Revision-Date: 2014-11-15 08:57+0000\n"
 "Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
-"Language-Team: Arabic (http://www.transifex.com/projects/p/corebird/language/ar/)\n"
+"Language-Team: Arabic (http://www.transifex.com/projects/p/corebird/language/"
+"ar/)\n"
+"Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ar\n"
-"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
 #: ../src/window/ComposeTweetWindow.vala:317 ../ui/compose-window.ui.h:3
 msgid "Select Image"
@@ -76,9 +78,11 @@ msgstr ""
 
 #: ../src/widgets/AccountCreateWidget.vala:53
 msgid ""
-"Unauthorized. Most of the time, this means that there's something wrong with"
-" the Twitter servers and you should try again later"
-msgstr "غير مسموح. غالبا هذا يعني أن هناك خطأ ما في خوادم تويتر. المرجو المحاولة لاحقا."
+"Unauthorized. Most of the time, this means that there's something wrong with "
+"the Twitter servers and you should try again later"
+msgstr ""
+"غير مسموح. غالبا هذا يعني أن هناك خطأ ما في خوادم تويتر. المرجو المحاولة "
+"لاحقا."
 
 #. We just assume that it was the wrong code
 #: ../src/widgets/AccountCreateWidget.vala:76
@@ -200,7 +204,7 @@ msgstr "%dساعة"
 msgid "Search"
 msgstr "البحث"
 
-#: ../src/Corebird.vala:161
+#: ../src/Corebird.vala:162
 msgid "Open Account"
 msgstr "فتح الحساب"
 
@@ -548,13 +552,17 @@ msgstr ""
 msgid ""
 "Corebird is a native GTK+ twitter client that provides vital features such "
 "as Direct Messages (DMs), tweet notifications, conversation views."
-msgstr "كوربرد عميل تويتر GTK+ أصلي يتوفر على ميزات حيوية مثل الرسائل المباشرة  والإخطار بالتغردات ووِجهات المحادثة."
+msgstr ""
+"كوربرد عميل تويتر GTK+ أصلي يتوفر على ميزات حيوية مثل الرسائل المباشرة  "
+"والإخطار بالتغردات ووِجهات المحادثة."
 
 #: ../data/org.baedert.corebird.appdata.xml.in.h:2
 msgid ""
 "Additional features include the abilty to change to the GTK+ dark theme, "
 "searching and media uploads."
-msgstr "تشمل المميزات الإضافية القدرة على تغيير السمة الداكنة والبحث وتحميل وسائل الاعلام."
+msgstr ""
+"تشمل المميزات الإضافية القدرة على تغيير السمة الداكنة والبحث وتحميل وسائل "
+"الاعلام."
 
 #: ../data/org.baedert.corebird.desktop.in.in.h:1
 msgid "Twitter Client"

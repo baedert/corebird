@@ -1,21 +1,22 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # amraei <omidamraei@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-14 22:34+0100\n"
+"POT-Creation-Date: 2014-11-15 10:13+0100\n"
 "PO-Revision-Date: 2014-11-15 08:57+0000\n"
 "Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
-"Language-Team: Persian (http://www.transifex.com/projects/p/corebird/language/fa/)\n"
+"Language-Team: Persian (http://www.transifex.com/projects/p/corebird/"
+"language/fa/)\n"
+"Language: fa\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fa\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: ../src/window/ComposeTweetWindow.vala:317 ../ui/compose-window.ui.h:3
@@ -73,9 +74,11 @@ msgstr ""
 
 #: ../src/widgets/AccountCreateWidget.vala:53
 msgid ""
-"Unauthorized. Most of the time, this means that there's something wrong with"
-" the Twitter servers and you should try again later"
-msgstr "غیر مجاز. اغلب این به معناست که توی ارتباط با سرور توییتر یه اشکالی هست و بهتره یه وقت دیگه دوباره امتحان کنید."
+"Unauthorized. Most of the time, this means that there's something wrong with "
+"the Twitter servers and you should try again later"
+msgstr ""
+"غیر مجاز. اغلب این به معناست که توی ارتباط با سرور توییتر یه اشکالی هست و "
+"بهتره یه وقت دیگه دوباره امتحان کنید."
 
 #. We just assume that it was the wrong code
 #: ../src/widgets/AccountCreateWidget.vala:76
@@ -197,7 +200,7 @@ msgstr "%dh"
 msgid "Search"
 msgstr "جستجو"
 
-#: ../src/Corebird.vala:161
+#: ../src/Corebird.vala:162
 msgid "Open Account"
 msgstr "بازکردن حساب"
 
@@ -328,7 +331,9 @@ msgstr "درباره Corebird"
 
 #: ../ui/about-dialog.ui.h:2
 msgid "Using Font Awesome by Dave Gandy - http://fontawesome.io"
-msgstr "از فونت های Font Awesome که توسط Dave Gandy  طراحی شدند استفاده کن - http://fontawesome.io"
+msgstr ""
+"از فونت های Font Awesome که توسط Dave Gandy  طراحی شدند استفاده کن - http://"
+"fontawesome.io"
 
 #: ../ui/dm-page.ui.h:1 ../ui/compose-window.ui.h:5
 msgid "Send"
