@@ -208,6 +208,7 @@ public class UserStream : Object {
         parser.load_from_data(data.str);
       } catch (GLib.Error e) {
         critical(e.message);
+        critical (data.str);
       }
 
       var root_node = parser.get_root();
