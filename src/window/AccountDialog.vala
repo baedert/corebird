@@ -16,9 +16,6 @@
  */
 [GtkTemplate (ui = "/org/baedert/corebird/ui/account-dialog.ui")]
 class AccountDialog : Gtk.Dialog {
-  private static const int RESPONSE_CLOSE  = 0;
-  private static const int RESPONSE_DELETE = 1;
-  private static const int RESPONSE_CANCEL = 2;
   private static const string PAGE_NORMAL = "normal";
   private static const string PAGE_DELETE = "delete";
   [GtkChild]
@@ -46,6 +43,8 @@ class AccountDialog : Gtk.Dialog {
 
 
   public AccountDialog (Account account) {
+    GLib.Object (use_header_bar: Gtk.Settings.get_default ().gtk_dialogs_use_header ? 1 : 0);
+    set_default_response (Gtk.ResponseType.CLOSE);
     this.account = account;
     name_entry.text = account.name;
     set_transient_data (account.website, account.description);
@@ -88,15 +87,18 @@ class AccountDialog : Gtk.Dialog {
   }
 
   public override void response (int response_id) {
-    if (response_id == RESPONSE_CLOSE) {
+    if (response_id == Gtk.ResponseType.CLOSE) {
       save_data ();
       this.destroy ();
-    } else if (response_id == RESPONSE_DELETE) {
-      delete_stack.visible_child_name = PAGE_DELETE;
-      delete_button.hide ();
-    } else if (response_id == RESPONSE_CANCEL) {
+    } else if (response_id == Gtk.ResponseType.CANCEL) {
       this.destroy ();
     }
+  }
+
+  [GtkCallback]
+  private void delete_button_clicked_cb () {
+    delete_stack.visible_child_name = PAGE_DELETE;
+    delete_button.hide ();
   }
 
   private void save_data () {
