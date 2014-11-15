@@ -77,12 +77,12 @@ public class Corebird : Gtk.Application {
     this.set_accels_for_action ("win.compose-tweet", {Settings.get_accel ("compose-tweet")});
     this.set_accels_for_action ("win.toggle-sidebar", {Settings.get_accel ("toggle-sidebar")});
     this.set_accels_for_action ("win.switch-page(0)", {"<Alt>1"});
-    this.set_accels_for_action ("win.switch-page(1)", {"<Alt>1"});
-    this.set_accels_for_action ("win.switch-page(2)", {"<Alt>2"});
-    this.set_accels_for_action ("win.switch-page(3)", {"<Alt>3"});
-    this.set_accels_for_action ("win.switch-page(4)", {"<Alt>4"});
-    this.set_accels_for_action ("win.switch-page(5)", {"<Alt>5"});
-    this.set_accels_for_action ("win.switch-page(6)", {"<Alt>6"});
+    this.set_accels_for_action ("win.switch-page(1)", {"<Alt>2"});
+    this.set_accels_for_action ("win.switch-page(2)", {"<Alt>3"});
+    this.set_accels_for_action ("win.switch-page(3)", {"<Alt>4"});
+    this.set_accels_for_action ("win.switch-page(4)", {"<Alt>5"});
+    this.set_accels_for_action ("win.switch-page(5)", {"<Alt>6"});
+    this.set_accels_for_action ("win.switch-page(6)", {"<Alt>7"});
     this.set_accels_for_action ("app.show-settings", {Settings.get_accel ("show-settings")});
     this.set_accels_for_action ("app.quit", {"<Control>Q"});
     this.set_accels_for_action ("win.show-account-dialog", {Settings.get_accel ("show-account-dialog")});
