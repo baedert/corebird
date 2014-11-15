@@ -74,19 +74,19 @@ public class Corebird : Gtk.Application {
 
     init_log_files ();
 
-    this.add_accelerator (Settings.get_accel ("compose-tweet"), "win.compose-tweet", null);
-    this.add_accelerator (Settings.get_accel ("toggle-sidebar"), "win.toggle-sidebar", null);
-    this.add_accelerator ("<Alt>1", "win.switch-page", new GLib.Variant.int32(0));
-    this.add_accelerator ("<Alt>2", "win.switch-page", new GLib.Variant.int32(1));
-    this.add_accelerator ("<Alt>3", "win.switch-page", new GLib.Variant.int32(2));
-    this.add_accelerator ("<Alt>4", "win.switch-page", new GLib.Variant.int32(3));
-    this.add_accelerator ("<Alt>5", "win.switch-page", new GLib.Variant.int32(4));
-    this.add_accelerator ("<Alt>6", "win.switch-page", new GLib.Variant.int32(5));
-    this.add_accelerator ("<Alt>7", "win.switch-page", new GLib.Variant.int32(6));
-    this.add_accelerator (Settings.get_accel ("show-settings"), "app.show-settings", null);
-    this.add_accelerator ("<Control>Q", "app.quit", null);
-    this.add_accelerator (Settings.get_accel ("show-account-dialog"), "win.show-account-dialog", null);
-    this.add_accelerator (Settings.get_accel ("show-account-list"), "win.show-account-list", null);
+    this.set_accels_for_action ("win.compose-tweet", {Settings.get_accel ("compose-tweet")});
+    this.set_accels_for_action ("win.toggle-sidebar", {Settings.get_accel ("toggle-sidebar")});
+    this.set_accels_for_action ("win.switch-page(0)", {"<Alt>1"});
+    this.set_accels_for_action ("win.switch-page(1)", {"<Alt>1"});
+    this.set_accels_for_action ("win.switch-page(2)", {"<Alt>2"});
+    this.set_accels_for_action ("win.switch-page(3)", {"<Alt>3"});
+    this.set_accels_for_action ("win.switch-page(4)", {"<Alt>4"});
+    this.set_accels_for_action ("win.switch-page(5)", {"<Alt>5"});
+    this.set_accels_for_action ("win.switch-page(6)", {"<Alt>6"});
+    this.set_accels_for_action ("app.show-settings", {Settings.get_accel ("show-settings")});
+    this.set_accels_for_action ("app.quit", {"<Control>Q"});
+    this.set_accels_for_action ("win.show-account-dialog", {Settings.get_accel ("show-account-dialog")});
+    this.set_accels_for_action ("win.show-account-list", {Settings.get_accel ("show-account-list")});
 
     this.add_action_entries (app_entries, this);
 
