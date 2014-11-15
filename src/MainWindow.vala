@@ -124,7 +124,10 @@ public class MainWindow : Gtk.ApplicationWindow {
 
 
 
-  public void change_account (Account? account, GLib.Application app = GLib.Application.get_default ()) {
+  public void change_account (Account? account,
+                              GLib.Application app = GLib.Application.get_default ()) {
+
+    string old_screen_name = this.account.screen_name;
     this.account = account;
 
     if (main_widget != null) {
@@ -139,8 +142,10 @@ public class MainWindow : Gtk.ApplicationWindow {
       header_box.visible = true;
     }
 
+    Corebird cb = (Corebird) app;
+
     if (account != null && account.screen_name != Account.DUMMY) {
-      main_widget = new MainWidget (account, this, (Corebird) app);
+      main_widget = new MainWidget (account, this, cb);
       main_widget.sidebar_size_group.add_widget (account_button);
       main_widget.show_all ();
       this.add (main_widget);
@@ -150,6 +155,8 @@ public class MainWindow : Gtk.ApplicationWindow {
       account.notify["avatar-small"].connect(() => {
         avatar_image.pixbuf = account.avatar_small;
       });
+
+      cb.account_window_changed (old_screen_name, account.screen_name);
 
       if (!Gtk.Settings.get_default ().gtk_shell_shows_app_menu) {
         if (app_menu_button == null) {
@@ -175,7 +182,7 @@ public class MainWindow : Gtk.ApplicationWindow {
       this.account = acc_;
 
       Account.add_account (acc_);
-      var create_widget = new AccountCreateWidget (acc_, (Corebird) app);
+      var create_widget = new AccountCreateWidget (acc_, cb);
       create_widget.result_received.connect ((result, acc) => {
         if (result) {
           change_account (acc);
