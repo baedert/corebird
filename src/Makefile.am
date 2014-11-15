@@ -73,7 +73,6 @@ cb_sources = \
 			list/TweetListEntry.vala \
 			list/DMListEntry.vala \
 			list/UserListEntry.vala \
-			list/AccountListEntry.vala \
 			list/DMThreadEntry.vala \
 			list/StartConversationEntry.vala \
 			list/ListListEntry.vala \
