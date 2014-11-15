@@ -127,7 +127,10 @@ public class MainWindow : Gtk.ApplicationWindow {
   public void change_account (Account? account,
                               GLib.Application app = GLib.Application.get_default ()) {
 
-    string old_screen_name = this.account.screen_name;
+    string? old_screen_name = null;
+    if (this.account != null) {
+      old_screen_name = this.account.screen_name;
+    }
     this.account = account;
 
     if (main_widget != null) {
