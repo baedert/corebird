@@ -38,7 +38,7 @@ This is the readme for the current *development version*. If you're looking for 
 
 
 ## Dependencies
- - `gtk+-3.0 >= 3.12`
+ - `gtk+-3.0 >= 3.14`
  - `glib-2.0 >= 2.40`
  - `rest-0.7` (`>= 0.7.91` for image uploads)
  - `json-glib-1.0`
@@ -46,7 +46,7 @@ This is the readme for the current *development version*. If you're looking for 
  - `libsoup-2.4`
  - `intltool >= 0.40`
  - `libgee-0.8`
- - `vala >= 0.24` (makedep)
+ - `vala >= 0.26` (makedep)
  - `automake >= 1.14` (makedep)
  - `gstreamer` (disable via --disable-video, default enabled)
  - `gst-plugins-bad` (disable via --disable-video, default enabled)
