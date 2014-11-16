@@ -8,6 +8,7 @@
     <child internal-child="vbox">
       <object class="GtkBox">
         <property name="visible">true</property>
+        <property name="border_width">0</property>
 
         <child>
           <object class="GtkStack" id="stack">
@@ -17,11 +18,8 @@
             <child>
               <object class="GtkFileChooserWidget" id="file_chooser">
                 <property name="visible">true</property>
-                <property name="margin_top">6</property>
-                <property name="margin_start">6</property>
-                <property name="margin_end">6</property>
                 <property name="vexpand">true</property>
-                <signal name="file_activated" handler="next_button_clicked_cb" />
+                <signal name="file_activated" handler="next" />
                 <signal name="selection_changed" handler="selection_changed_cb" />
               </object>
             </child>
@@ -54,43 +52,52 @@
 
 
 
-    <child internal-child="action_area">
-      <object class="GtkBox">
+
+    <child type="action">
+      <object class="GtkButton" id="cancel_button">
+         <property name="visible">true</property>
+         <property name="label" translatable="yes">Cancel</property>
+      </object>
+    </child>
+
+
+    <child type="action">
+      <object class="GtkButton" id="next_button">
         <property name="visible">true</property>
-        <property name="orientation">horizontal</property>
-        <property name="margin_top">6</property>
-
-        <child>
-          <object class="GtkButton">
-            <property name="visible">true</property>
-            <property name="label" translatable="yes">Cancel</property>
-            <signal name="clicked" handler="cancel_button_clicked_cb" />
-          </object>
-        </child>
-
-        <child>
-          <object class="GtkButton" id="back_button">
-            <property name="visible">true</property>
-            <property name="label" translatable="yes">Back</property>
-            <property name="sensitive">false</property>
-            <signal name="clicked" handler="back_button_clicked_cb" />
-          </object>
-        </child>
-
-        <child>
-          <object class="GtkButton" id="next_button">
-            <property name="visible">true</property>
-            <property name="label" translatable="yes">Next</property>
-            <property name="sensitive">false</property>
-            <signal name="clicked" handler="next_button_clicked_cb" />
-          </object>
-        </child>
-
+        <property name="label" translatable="yes">Next</property>
+        <property name="sensitive">false</property>
+        <property name="can_default">true</property>
       </object>
     </child>
 
 
 
-  </template>
+    <child type="action">
+      <object class="GtkButton" id="back_button">
+        <property name="visible">true</property>
+        <property name="label" translatable="yes">Back</property>
+        <property name="sensitive">false</property>
+      </object>
+    </child>
 
+    <!-- Add this anyway so we can set the margins -->
+    <child internal-child="action_area">
+      <object class="GtkBox">
+        <property name="orientation">horizontal</property>
+        <property name="margin_bottom">6</property>
+        <property name="margin_end">6</property>
+        <property name="margin_top">6</property>
+      </object>
+    </child>
+
+
+
+
+    <action-widgets>
+      <action-widget response="cancel">cancel_button</action-widget>
+      <action-widget response="1">next_button</action-widget>
+      <action-widget response="ok" default="true">next_button</action-widget>
+    </action-widgets>
+
+  </template>
 </interface>

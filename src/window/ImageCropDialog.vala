@@ -37,6 +37,7 @@ public class ImageCropDialog : Gtk.Dialog {
 
 
   public ImageCropDialog (double aspect_ratio) {
+    //GLib.Object (use_header_bar: Gtk.Settings.get_default ().gtk_dialogs_use_header ? 1 : 0);
     Gtk.FileFilter filter = new Gtk.FileFilter ();
     filter.add_mime_type ("image/png");
     filter.add_mime_type ("image/jpeg");
@@ -45,12 +46,18 @@ public class ImageCropDialog : Gtk.Dialog {
   }
 
 
-  [GtkCallback]
-  private void back_button_clicked_cb () {
-    stack.visible_child = file_chooser;
-    back_button.sensitive = false;
-    next_button.label = _("Next");
-    selection_changed_cb ();
+  public override void response (int response_id) {
+    if (response_id == Gtk.ResponseType.CANCEL) {
+      this.destroy ();
+    } else if (response_id == Gtk.ResponseType.OK) {
+      next.begin ();
+    } else if (response_id == -1) {
+      // back
+      stack.visible_child = file_chooser;
+      back_button.sensitive = false;
+      next_button.label = _("Next");
+      selection_changed_cb ();
+    }
   }
 
   [GtkCallback]
@@ -69,13 +76,16 @@ public class ImageCropDialog : Gtk.Dialog {
   }
 
   [GtkCallback]
-  private async void next_button_clicked_cb () {
+  private async void next () {
+    if (stack.visible_child == crop_widget)
+      return;
+
+
     if (stack.visible_child == file_chooser) {
       /* Prepare crop widget with selected image */
       string selected_file = file_chooser.get_filename ();
 
       stack.visible_child = crop_widget;
-
       /* Load the file now, check for min size etc. */
       Gdk.Pixbuf? image = null;
       try {
@@ -102,11 +112,6 @@ public class ImageCropDialog : Gtk.Dialog {
       image_cropped (crop_widget.get_cropped_image ());
       this.destroy ();
     }
-  }
-
-  [GtkCallback]
-  private void cancel_button_clicked_cb () {
-    this.destroy ();
   }
 
   public void set_min_size (int min_width) {
