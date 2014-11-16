@@ -37,7 +37,7 @@ public class ImageCropDialog : Gtk.Dialog {
 
 
   public ImageCropDialog (double aspect_ratio) {
-    //GLib.Object (use_header_bar: Gtk.Settings.get_default ().gtk_dialogs_use_header ? 1 : 0);
+    GLib.Object (use_header_bar: Gtk.Settings.get_default ().gtk_dialogs_use_header ? 1 : 0);
     Gtk.FileFilter filter = new Gtk.FileFilter ();
     filter.add_mime_type ("image/png");
     filter.add_mime_type ("image/jpeg");
