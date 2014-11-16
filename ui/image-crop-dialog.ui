@@ -60,16 +60,26 @@
       </object>
     </child>
 
-
-    <child type="action">
-      <object class="GtkButton" id="next_button">
-        <property name="visible">true</property>
-        <property name="label" translatable="yes">Next</property>
-        <property name="sensitive">false</property>
-        <property name="can_default">true</property>
+    <!--
+         We use both <child type="action"> AND the action
+         area because of https://bugzilla.gnome.org/show_bug.cgi?id=740205
+      -->
+    <child internal-child="action_area">
+      <object class="GtkBox">
+        <property name="orientation">horizontal</property>
+        <property name="margin_bottom">6</property>
+        <property name="margin_end">6</property>
+        <property name="margin_top">6</property>
+        <child>
+          <object class="GtkButton" id="next_button">
+            <property name="visible">true</property>
+            <property name="label" translatable="yes">Next</property>
+            <property name="sensitive">false</property>
+            <property name="can_default">true</property>
+          </object>
+        </child>
       </object>
     </child>
-
 
 
     <child type="action">
@@ -80,22 +90,12 @@
       </object>
     </child>
 
-    <!-- Add this anyway so we can set the margins -->
-    <child internal-child="action_area">
-      <object class="GtkBox">
-        <property name="orientation">horizontal</property>
-        <property name="margin_bottom">6</property>
-        <property name="margin_end">6</property>
-        <property name="margin_top">6</property>
-      </object>
-    </child>
-
 
 
 
     <action-widgets>
       <action-widget response="cancel">cancel_button</action-widget>
-      <action-widget response="1">next_button</action-widget>
+      <action-widget response="1">back_button</action-widget>
       <action-widget response="ok" default="true">next_button</action-widget>
     </action-widgets>
 

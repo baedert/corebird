@@ -51,7 +51,7 @@ public class ImageCropDialog : Gtk.Dialog {
       this.destroy ();
     } else if (response_id == Gtk.ResponseType.OK) {
       next.begin ();
-    } else if (response_id == -1) {
+    } else if (response_id == 1) {
       // back
       stack.visible_child = file_chooser;
       back_button.sensitive = false;
@@ -77,9 +77,6 @@ public class ImageCropDialog : Gtk.Dialog {
 
   [GtkCallback]
   private async void next () {
-    if (stack.visible_child == crop_widget)
-      return;
-
 
     if (stack.visible_child == file_chooser) {
       /* Prepare crop widget with selected image */
