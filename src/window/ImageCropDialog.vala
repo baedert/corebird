@@ -96,11 +96,13 @@ public class ImageCropDialog : Gtk.Dialog {
           image.get_height () >= min_height) {
         crop_widget.set_image (image);
         next_button.label = _("Save");
+        next_button.sensitive = true;
         back_button.sensitive = true;
       } else {
         error_label.label = _("Image does not meet the minimum size requirements:\nMinimum width: %d pixels\nMinimum height: %d pixels").printf (min_width, min_height);
         stack.visible_child = error_label;
         back_button.sensitive = true;
+        next_button.sensitive = false;
       }
 
 
