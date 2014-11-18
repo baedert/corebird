@@ -241,7 +241,7 @@ public class UserStream : Object {
 
 #if DEBUG
       debug ("Message with type %s", type.to_string ());
-        stdout.printf (data.str+"\n\n");
+      stdout.printf (data.str+"\n\n");
 #endif
       foreach (IMessageReceiver it in receivers)
         it.stream_message_received (type, root_node);
