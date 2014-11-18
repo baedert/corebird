@@ -96,6 +96,7 @@ class ProfilePage : ScrollWidget, IPage {
   private new string name;
   private string screen_name;
   private string avatar_url;
+  private int follower_count = -1;
   private GLib.Cancellable data_cancellable;
   private bool lists_page_inited = false;
   private ulong page_change_signal = 0;
@@ -521,10 +522,12 @@ class ProfilePage : ScrollWidget, IPage {
       });
       desc = TweetUtils.get_formatted_text (description, text_urls);
     }
+
+    this.follower_count = followers;
     description_label.label = "<big>" + desc + "</big>";
     tweets_label.label = "%'d".printf(tweets);
-    followers_label.label = "%'d".printf(followers);
     following_label.label = "%'d".printf(following);
+    update_follower_label ();
 
     if (location != null && location != "") {
       location_label.visible = true;
@@ -553,12 +556,15 @@ class ProfilePage : ScrollWidget, IPage {
     if (following) {
       call.set_function( "1.1/friendships/destroy.json");
       ht.hide_tweets_from (this.user_id);
+      follower_count --;
     } else {
       call.set_function ("1.1/friendships/create.json");
       call.add_param ("follow", "false");
       ht.show_tweets_from (this.user_id);
       set_user_blocked (false);
+      follower_count ++;
     }
+    update_follower_label ();
     debug  (@"User ID: $user_id");
     progress_spinner.start ();
     loading_stack.visible_child_name = "progress";
@@ -757,5 +763,8 @@ class ProfilePage : ScrollWidget, IPage {
     ((SimpleAction)actions.lookup_action ("toggle-retweets")).set_state (new GLib.Variant.boolean (disabled));
   }
 
+  private void update_follower_label () {
+    followers_label.label = "%'d".printf(follower_count);
+  }
 
 }
