@@ -74,7 +74,7 @@ public class Account : GLib.Object {
                                       Settings.get_consumer_secret (),
                                       "https://api.twitter.com/",
                                       false);
-    this.user_stream = new UserStream ("@"+screen_name);
+    this.user_stream = new UserStream (this);
     if (load_secrets) {
       init_database ();
       db.select ("common").cols ("token", "token_secret").run ((vals) => {

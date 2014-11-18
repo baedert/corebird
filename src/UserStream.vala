@@ -63,6 +63,7 @@ public class UserStream : Object {
   public string token_secret {
     set { proxy.token_secret = value; }
   }
+  private unowned Account account;
 
   // Signals
   public signal void interrupted ();
@@ -71,9 +72,10 @@ public class UserStream : Object {
 
 
 
-  public UserStream (string account_name) {
-    this.account_name = account_name;
-    debug ("CREATING USER STREAM FOR "+account_name);
+  public UserStream (Account account) {
+    this.account_name = account.screen_name;
+    this.account = account;
+    debug ("CREATING USER STREAM FOR " + account_name);
     proxy = new Rest.OAuthProxy(
           Settings.get_consumer_key (),
           Settings.get_consumer_secret (),
