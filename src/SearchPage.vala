@@ -197,8 +197,10 @@ class SearchPage : IPage, Gtk.Box {
         tweet_list.add (entry);
       });
       if (users.get_length () > USER_COUNT) {
-        if (load_more_entry.parent == null)
+        if (load_more_entry.parent == null) {
+          load_more_entry.visible = false;
           tweet_list.add (load_more_entry);
+        }
       } else {
         load_more_entry.hide ();
       }
