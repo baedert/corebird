@@ -40,6 +40,8 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   [GtkChild]
   private Gtk.Button send_button;
   [GtkChild]
+  private Gtk.Button cancel_button;
+  [GtkChild]
   private PixbufButton media_image;
   [GtkChild]
   private Gtk.Window completion_window;
@@ -53,9 +55,10 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   private int current_match = -1;
 
 
-  public ComposeTweetWindow (Gtk.Window? parent, Account acc,
-                             Tweet? answer_to = null,
-                             Mode mode = Mode.NORMAL,
+  public ComposeTweetWindow (Gtk.Window?      parent,
+                             Account          acc,
+                             Tweet?           answer_to = null,
+                             Mode             mode = Mode.NORMAL,
                              Gtk.Application? app = null) {
     this.set_show_menubar (false);
     this.account = acc;
@@ -87,6 +90,23 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
     completion_window.set_attached_to (tweet_text);
     completion_window.set_screen (tweet_text.get_screen ());
+
+
+    if (Gtk.Settings.get_default ().gtk_dialogs_use_header) {
+      var header_bar = new Gtk.HeaderBar ();
+      header_bar.set_title (_("Compose tweet"));
+      send_button.parent.remove (send_button);
+      send_button.margin = 0;
+      send_button.valign = Gtk.Align.CENTER;
+      header_bar.pack_end (send_button);
+
+      cancel_button.parent.remove (cancel_button);
+      cancel_button.margin = 0;
+      header_bar.pack_start (cancel_button);
+
+      header_bar.show_all ();
+      this.set_titlebar (header_bar);
+    }
 
     if (parent != null) {
       this.set_transient_for (parent);
