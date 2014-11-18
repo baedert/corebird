@@ -94,7 +94,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
     if (Gtk.Settings.get_default ().gtk_dialogs_use_header) {
       var header_bar = new Gtk.HeaderBar ();
-      header_bar.set_title (_("Compose tweet"));
+      header_bar.set_title (_("Compose Tweet"));
       send_button.parent.remove (send_button);
       send_button.margin = 0;
       send_button.valign = Gtk.Align.CENTER;
@@ -115,6 +115,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     if (mode != Mode.NORMAL) {
       TweetListEntry answer_entry = new TweetListEntry (answer_to, (MainWindow)parent, acc);
       content_box.pack_start (answer_entry, false, true);
+      content_box.reorder_child (answer_entry, 0);
     }
 
     if (mode == Mode.REPLY) {
