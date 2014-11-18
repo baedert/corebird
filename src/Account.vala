@@ -31,6 +31,7 @@ public class Account : GLib.Object {
   public Rest.OAuthProxy proxy    {public get; private set;}
   public UserStream user_stream   {public get; private set;}
   public UserCounter user_counter {public get; private set;}
+  public int64[] friends;
   public Gee.ArrayList<Filter> filters;
   public signal void info_changed (string screen_name, string name,
                                    Gdk.Pixbuf avatar_small, Gdk.Pixbuf avatar);
@@ -275,6 +276,14 @@ public class Account : GLib.Object {
       }
     }
     return false;
+  }
+
+  public void set_friends (Json.Array friends_array) {
+    this.friends = new int64[friends_array.get_length ()];
+    debug ("Adding %d friends...", friends.length);
+    for (int i = 0; i < friends_array.get_length (); i ++) {
+      this.friends[i] = friends_array.get_int_element (i);
+    }
   }
 
   /** Static stuff ********************************************************************/

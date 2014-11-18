@@ -226,9 +226,10 @@ public class UserStream : Object {
         type = StreamMessageType.LIMIT;
       else if (root.has_member ("disconnect"))
         type = StreamMessageType.DISCONNECT;
-      else if (root.has_member ("friends"))
+      else if (root.has_member ("friends")) {
+        account.set_friends (root.get_array_member ("friends"));
         type = StreamMessageType.FRIENDS;
-      else if (root.has_member ("text"))
+      } else if (root.has_member ("text"))
         type = StreamMessageType.TWEET;
       else if (root.has_member ("event")) {
         string evt_str = root.get_string_member ("event");
