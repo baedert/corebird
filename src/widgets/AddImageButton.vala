@@ -20,6 +20,10 @@
  * to add new images.
  */
 public class AddImageButton : Gtk.Button {
+  private static const uint TARGET_STRING   = 1;
+  private static const uint TARGET_URI_LIST = 2;
+  private static const uint TARGET_IMAGE    = 3;
+
   private static const int ICON_SIZE = 32;
   private new Gdk.Pixbuf? _image;
   public new Gdk.Pixbuf? image {
@@ -50,6 +54,18 @@ public class AddImageButton : Gtk.Button {
         remove_clicked ();
       }
     });
+
+    /* DND stuff */
+    const Gtk.TargetEntry[] target_entries = {
+      {"STRING",          0,   TARGET_STRING},
+      {"text/plain",      0,   TARGET_STRING},
+      {"text/uri-list",   0,   TARGET_URI_LIST},
+      {"image/png",       0,   TARGET_IMAGE},
+      {"image/jpeg",      0,   TARGET_IMAGE},
+    };
+    Gtk.drag_dest_set (this, Gtk.DestDefaults.ALL, target_entries,
+                       Gdk.DragAction.COPY);
+    this.drag_data_received.connect (drag_data_received_cb);
   }
 
   construct {
@@ -84,6 +100,42 @@ public class AddImageButton : Gtk.Button {
 
     return false;
   }
+
+  private void drag_data_received_cb (Gdk.DragContext context, int x, int y,
+                                      Gtk.SelectionData selection_data,
+                                      uint info, uint time) {
+
+    if (info == TARGET_STRING) {
+      var uri = selection_data.get_text ().strip ();
+      var file = GLib.File.new_for_uri (uri);
+      from_file (file);
+    } else if (info == TARGET_IMAGE) {
+      var pixbuf = selection_data.get_pixbuf ();
+      from_bigger_pixbuf (pixbuf);
+    } else if (info == TARGET_URI_LIST) {
+      var uris = selection_data.get_uris ();
+      var file = GLib.File.new_for_uri (uris[0]);
+      if (file.get_uri_scheme () == "file") {
+        from_file (file);
+      }
+    }
+  }
+
+  private void from_file (GLib.File file) {
+    try {
+      var pixbuf = new Gdk.Pixbuf.from_file (file.get_path ());
+      from_bigger_pixbuf (pixbuf);
+    } catch (GLib.Error e) {
+      warning (e.message);
+    }
+  }
+
+  private void from_bigger_pixbuf (Gdk.Pixbuf pixbuf) {
+    var thumb = Utils.slice_pixbuf (pixbuf, this.get_allocated_width (),
+                                    MultiMediaWidget.HEIGHT);
+    this.image = thumb;
+  }
+
 }
 
 

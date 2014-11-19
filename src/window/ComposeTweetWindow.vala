@@ -165,40 +165,6 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
     /* Add AddImageButton because we can't do it in the ui definition for some reason */
     add_image_button (true);
-
-
-    /* DND stuff */
-    const Gtk.TargetEntry[] target_entries = {
-      {"STRING",          0,   TARGET_STRING},
-      {"text/plain",      0,   TARGET_STRING},
-      {"text/uri-list",   0,   TARGET_URI_LIST},
-      {"image/png",       0,   TARGET_IMAGE},
-      {"image/jpeg",      0,   TARGET_IMAGE},
-    };
-    Gtk.drag_dest_set (this, Gtk.DestDefaults.ALL, target_entries,
-                       Gdk.DragAction.COPY);
-    this.drag_data_received.connect (drag_data_received_cb);
-  }
-
-  private void drag_data_received_cb (Gdk.DragContext context, int x, int y,
-                                      Gtk.SelectionData selection_data,
-                                      uint info, uint time) {
-
-    if (info == TARGET_STRING) {
-      var uri = selection_data.get_text ().strip ();
-      var file = GLib.File.new_for_uri (uri);
-    } else if (info == TARGET_IMAGE) {
-      var pixbuf = selection_data.get_pixbuf ();
-      var thumb = Utils.slice_pixbuf (pixbuf, 48);
-      //media_image.set_bg (thumb);
-    } else if (info == TARGET_URI_LIST) {
-      var uris = selection_data.get_uris ();
-      // TODO: Would be fun to allow using external images (drag a remot image
-      //       from your browser directly into your twitter client)
-      var file = GLib.File.new_for_uri (uris[0]);
-      //if (file.get_uri_scheme () == "file")
-        //load_inline_media (file.get_path ());
-    }
   }
 
   private void cursor_changed_cb () {
