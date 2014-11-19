@@ -62,6 +62,7 @@ cb_sources = \
 			widgets/MediaImageWidget.vala \
 			widgets/MediaVideoWidget.vala \
 			widgets/CropWidget.vala \
+			widgets/AddImageButton.vala \
 			util/TweetUtils.vala \
 			util/Utils.vala \
 			util/IntHistory.vala \
