@@ -1,7 +1,7 @@
 
 AM_CPPFLAGS = $(CB_CFLAGS) -I$(top_srcdir)/src
 
-noinst_PROGRAMS = tle mm_widget ab_widget crop_dialog lle
+noinst_PROGRAMS = tle mm_widget ab_widget crop_dialog lle aib
 
 
 tle_SOURCES = tle.vala $(top_srcdir)/src/resources.c
@@ -27,10 +27,14 @@ lle_SOURCES = lle.vala $(top_srcdir)/src/resources.c
 lle_LDADD = $(top_builddir)/src/libcorebird.la
 lle_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
 
+aib_SOURCES = aib.vala $(top_srcdir)/src/resources.c
+aib_LDADD = $(top_builddir)/src/libcorebird.la
+aib_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
 
 
 EXTRA_DIST = tle.vala \
              mm_widget.vala \
              ab_widget.vala \
 						 crop_dialog.vala \
-						 lle.vala
+						 lle.vala \
+						 aib.vala
