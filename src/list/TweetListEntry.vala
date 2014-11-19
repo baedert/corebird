@@ -54,7 +54,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   private MultiMediaWidget mm_widget;
 
 
-
+  public bool read_only = false;
   public int64 sort_factor{
     get{ return tweet.created_at;}
   }
@@ -205,6 +205,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     var ct = this.get_style_context ();
     bool buttons_visible = (bool)(flags & (Gtk.StateFlags.PRELIGHT | Gtk.StateFlags.SELECTED));
     buttons_visible = (buttons_visible || more_menu.visible);
+    buttons_visible = (buttons_visible && !read_only);
     more_button.visible = buttons_visible;
     favorite_button.visible = buttons_visible || tweet.favorited;
     reply_button.visible = buttons_visible;
