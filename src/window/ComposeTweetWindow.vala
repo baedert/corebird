@@ -40,8 +40,6 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   [GtkChild]
   private Gtk.Button cancel_button;
   [GtkChild]
-  private PixbufButton media_image;
-  [GtkChild]
   private Gtk.Window completion_window;
   [GtkChild]
   private Gtk.ListBox completion_list;
@@ -192,7 +190,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     } else if (info == TARGET_IMAGE) {
       var pixbuf = selection_data.get_pixbuf ();
       var thumb = Utils.slice_pixbuf (pixbuf, 48);
-      media_image.set_bg (thumb);
+      //media_image.set_bg (thumb);
     } else if (info == TARGET_URI_LIST) {
       var uris = selection_data.get_uris ();
       // TODO: Would be fun to allow using external images (drag a remot image
