@@ -113,9 +113,12 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     }
 
     if (mode != Mode.NORMAL) {
+      var list = new Gtk.ListBox ();
       TweetListEntry answer_entry = new TweetListEntry (answer_to, (MainWindow)parent, acc);
-      content_box.pack_start (answer_entry, false, true);
-      content_box.reorder_child (answer_entry, 0);
+      list.add (answer_entry);
+      list.show_all ();
+      content_box.pack_start (list, false, true);
+      content_box.reorder_child (list, 0);
     }
 
     if (mode == Mode.REPLY) {
