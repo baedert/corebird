@@ -186,6 +186,9 @@ class SearchPage : IPage, Gtk.Box {
       }
 
       users.foreach_element ((array, index, node) => {
+        if (index > USER_COUNT - 1)
+          return;
+
         var user_obj = node.get_object ();
         var entry = new UserListEntry ();
         entry.screen_name = "@" + user_obj.get_string_member ("screen_name");
