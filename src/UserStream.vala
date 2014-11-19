@@ -205,6 +205,14 @@ public class UserStream : Object {
         return;
       }
 
+      /* For whatever reason, we sometimes receive "OK"
+         from the server. I can't find an explanation
+         for this but it doesn't seem to cause any harm. */
+      if (data.str.strip () == "OK") {
+        data.erase ();
+        return;
+      }
+
       var parser = new Json.Parser ();
       try {
         parser.load_from_data(data.str);
