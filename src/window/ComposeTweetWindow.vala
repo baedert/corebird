@@ -202,39 +202,6 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       send_button.sensitive = false;
   }
 
-  private void update_completion () {
-    string cur_word = get_cursor_word (null, null);
-
-    /* Check if the word ends with a 'special' character like ?!_ */
-    char end_char = cur_word.get (cur_word.char_count () - 1);
-    bool word_has_alpha_end = (end_char.isalpha () || end_char.isdigit ()) &&
-                              end_char.isgraph () || end_char == '@';
-    if (!cur_word.has_prefix ("@") || !word_has_alpha_end
-        || tweet_text.buffer.has_selection) {
-      completion_window.hide ();
-      return;
-    }
-    show_completion_window ();
-
-    // Strip off the @
-    cur_word = cur_word.substring (1);
-
-    int corpus_size = 0;
-    var corpus = account.user_counter.query_by_prefix (cur_word, 10, out corpus_size);
-
-    for (int i = 0; i < corpus_size; i++) {
-      var l = new Gtk.Label ("@" + corpus[i].screen_name);
-      l.halign = Gtk.Align.START;
-      completion_list.add (l);
-    }
-    if (corpus_size > 0) {
-      completion_list.select_row (completion_list.get_row_at_index (0));
-      current_match = 0;
-    }
-    completion_list.show_all ();
-
-  }
-
   [GtkCallback]
   private void send_tweet () {
     Gtk.TextIter start, end;
@@ -288,6 +255,44 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   private void cancel_clicked (Gtk.Widget source) {
     destroy ();
   }
+
+
+  /* Completion stuff {{{ */
+
+  private void update_completion () {
+    string cur_word = get_cursor_word (null, null);
+
+    /* Check if the word ends with a 'special' character like ?!_ */
+    char end_char = cur_word.get (cur_word.char_count () - 1);
+    bool word_has_alpha_end = (end_char.isalpha () || end_char.isdigit ()) &&
+                              end_char.isgraph () || end_char == '@';
+    if (!cur_word.has_prefix ("@") || !word_has_alpha_end
+        || tweet_text.buffer.has_selection) {
+      completion_window.hide ();
+      return;
+    }
+    show_completion_window ();
+
+    // Strip off the @
+    cur_word = cur_word.substring (1);
+
+    int corpus_size = 0;
+    var corpus = account.user_counter.query_by_prefix (cur_word, 10, out corpus_size);
+
+    for (int i = 0; i < corpus_size; i++) {
+      var l = new Gtk.Label ("@" + corpus[i].screen_name);
+      l.halign = Gtk.Align.START;
+      completion_list.add (l);
+    }
+    if (corpus_size > 0) {
+      completion_list.select_row (completion_list.get_row_at_index (0));
+      current_match = 0;
+    }
+    completion_list.show_all ();
+
+  }
+
+
 
   [GtkCallback]
   private bool completion_window_focus_out_cb () {
@@ -416,6 +421,8 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     end_iter.assign (end_word_iter);
     return tweet_text.buffer.get_text (cursor_iter, end_word_iter, false);
   }
+
+  /* }}} &/
 
   /* Image handling stuff {{{ */
 
