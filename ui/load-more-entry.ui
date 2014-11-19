@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.15.4 on Wed Sep 25 10:16:13 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.10 -->
   <template class="LoadMoreEntry" parent="GtkListBoxRow">
@@ -20,7 +19,6 @@
             <property name="hexpand">True</property>
             <property name="relief">none</property>
             <style>
-              <class name="button-wide"/>
               <class name="dim-label"/>
             </style>
           </object>

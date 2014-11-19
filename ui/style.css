@@ -51,9 +51,8 @@
 }
 
 
-.button-wide {
-  padding-left: 12px;
-  padding-right: 12px;
+.image-placeholder:active {
+  background-color: alpha (#333, 0.9);
 }
 
 .retweet-button,
