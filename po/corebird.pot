@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-15 10:13+0100\n"
+"POT-Creation-Date: 2014-11-20 21:38+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,40 +17,48 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/window/ComposeTweetWindow.vala:317 ../ui/compose-window.ui.h:3
+#: ../src/window/ComposeTweetWindow.vala:94 ../ui/compose-window.ui.h:1
+msgid "Compose Tweet"
+msgstr ""
+
+#: ../src/window/ComposeTweetWindow.vala:516
 msgid "Select Image"
 msgstr ""
 
-#: ../src/window/ComposeTweetWindow.vala:318
+#: ../src/window/ComposeTweetWindow.vala:517
 #: ../src/window/UserListDialog.vala:44
-#: ../src/widgets/MultiMediaWidget.vala:148 ../ui/compose-window.ui.h:4
+#: ../src/widgets/MultiMediaWidget.vala:148 ../ui/compose-window.ui.h:2
 #: ../ui/list-list-entry.ui.h:1 ../ui/list-statuses-page.ui.h:8
 #: ../ui/filter-list-entry.ui.h:1 ../ui/modify-filter-dialog.ui.h:2
-#: ../ui/user-filter-entry.ui.h:1 ../ui/account-dialog.ui.h:6
+#: ../ui/user-filter-entry.ui.h:1 ../ui/account-dialog.ui.h:2
 #: ../ui/image-crop-dialog.ui.h:1
 msgid "Cancel"
 msgstr ""
 
-#: ../src/window/ComposeTweetWindow.vala:319
+#: ../src/window/ComposeTweetWindow.vala:518
 msgid "Choose"
+msgstr ""
+
+#: ../src/window/UserListDialog.vala:37
+msgid "Add to or Remove User From List"
 msgstr ""
 
 #: ../src/window/UserListDialog.vala:45
 #: ../src/widgets/MultiMediaWidget.vala:149
-#: ../src/window/ImageCropDialog.vala:91 ../ui/list-statuses-page.ui.h:6
-#: ../ui/modify-filter-dialog.ui.h:3 ../ui/account-dialog.ui.h:8
+#: ../src/window/ImageCropDialog.vala:98 ../ui/list-statuses-page.ui.h:6
+#: ../ui/modify-filter-dialog.ui.h:3 ../ui/account-dialog.ui.h:3
 msgid "Save"
 msgstr ""
 
-#: ../src/window/ModifyFilterDialog.vala:47
+#: ../src/window/ModifyFilterDialog.vala:45
 msgid "Modify Filter"
 msgstr ""
 
-#: ../src/window/ModifyFilterDialog.vala:78
+#: ../src/window/ModifyFilterDialog.vala:76
 msgid "Matches"
 msgstr ""
 
-#: ../src/window/ModifyFilterDialog.vala:80
+#: ../src/window/ModifyFilterDialog.vala:78
 msgid "Doesn't match"
 msgstr ""
 
@@ -143,20 +151,20 @@ msgstr ""
 msgid "Lists"
 msgstr ""
 
-#: ../src/ProfilePage.vala:315
+#: ../src/ProfilePage.vala:316
 msgid "Protected profile"
 msgstr ""
 
-#: ../src/ProfilePage.vala:507
+#: ../src/ProfilePage.vala:508
 #, c-format
 msgid "Tweet to @%s"
 msgstr ""
 
-#: ../src/ProfilePage.vala:591
+#: ../src/ProfilePage.vala:597
 msgid "Unfollow"
 msgstr ""
 
-#: ../src/ProfilePage.vala:595
+#: ../src/ProfilePage.vala:601
 msgid "Follow"
 msgstr ""
 
@@ -191,7 +199,7 @@ msgstr ""
 msgid "%dh"
 msgstr ""
 
-#: ../src/SearchPage.vala:276 ../src/SearchPage.vala:285
+#: ../src/SearchPage.vala:281 ../src/SearchPage.vala:290
 #: ../ui/search-page.ui.h:1
 msgid "Search"
 msgstr ""
@@ -225,11 +233,11 @@ msgstr ""
 msgid "Select avatar"
 msgstr ""
 
-#: ../src/window/ImageCropDialog.vala:52 ../ui/image-crop-dialog.ui.h:3
+#: ../src/window/ImageCropDialog.vala:58 ../ui/image-crop-dialog.ui.h:2
 msgid "Next"
 msgstr ""
 
-#: ../src/window/ImageCropDialog.vala:94
+#: ../src/window/ImageCropDialog.vala:102
 #, c-format
 msgid ""
 "Image does not meet the minimum size requirements:\n"
@@ -329,7 +337,7 @@ msgstr ""
 msgid "Using Font Awesome by Dave Gandy - http://fontawesome.io"
 msgstr ""
 
-#: ../ui/dm-page.ui.h:1 ../ui/compose-window.ui.h:5
+#: ../ui/dm-page.ui.h:1 ../ui/compose-window.ui.h:3
 msgid "Send"
 msgstr ""
 
@@ -394,14 +402,6 @@ msgstr ""
 
 #: ../ui/search-page.ui.h:3 ../ui/filter-page.ui.h:1
 msgid "Users"
-msgstr ""
-
-#: ../ui/compose-window.ui.h:1
-msgid "Compose Tweet"
-msgstr ""
-
-#: ../ui/compose-window.ui.h:2
-msgid "Attach Image"
 msgstr ""
 
 #: ../ui/profile-page.ui.h:1
@@ -520,23 +520,23 @@ msgstr ""
 msgid "Account Settings"
 msgstr ""
 
-#: ../ui/account-dialog.ui.h:2
+#: ../ui/account-dialog.ui.h:4
 msgid "Name"
 msgstr ""
 
-#: ../ui/account-dialog.ui.h:3
+#: ../ui/account-dialog.ui.h:5
 msgid "Website"
 msgstr ""
 
-#: ../ui/account-dialog.ui.h:4
+#: ../ui/account-dialog.ui.h:6
 msgid "Autostart"
 msgstr ""
 
-#: ../ui/account-dialog.ui.h:5
+#: ../ui/account-dialog.ui.h:8
 msgid "Do you really want to delete this account?"
 msgstr ""
 
-#: ../ui/image-crop-dialog.ui.h:2
+#: ../ui/image-crop-dialog.ui.h:3
 msgid "Back"
 msgstr ""
 

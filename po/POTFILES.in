@@ -5,6 +5,7 @@ src/widgets/TweetListBox.vala
 src/widgets/AccountCreateWidget.vala
 src/widgets/PixbufButton.vala
 src/widgets/MultiMediaWidget.vala
+src/widgets/AddImageButton.vala
 src/HomeTimeline.vala
 src/DMThreadsPage.vala
 src/resources.c
