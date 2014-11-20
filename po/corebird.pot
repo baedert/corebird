@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-26 00:21+0200\n"
+"POT-Creation-Date: 2014-11-20 21:38+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,45 +17,57 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/window/ComposeTweetWindow.vala:303 ../ui/compose-window.ui.h:3
+#: ../src/window/ComposeTweetWindow.vala:94 ../ui/compose-window.ui.h:1
+msgid "Compose Tweet"
+msgstr ""
+
+#: ../src/window/ComposeTweetWindow.vala:516
 msgid "Select Image"
 msgstr ""
 
-#: ../src/window/ComposeTweetWindow.vala:304
+#: ../src/window/ComposeTweetWindow.vala:517
 #: ../src/window/UserListDialog.vala:44
-#: ../src/widgets/MultiMediaWidget.vala:148
-#: ../src/widgets/AvatarBannerWidget.vala:161
-#: ../src/widgets/AvatarBannerWidget.vala:173 ../ui/compose-window.ui.h:4
-#: ../ui/remove-account-dialog.ui.h:1 ../ui/list-list-entry.ui.h:1
-#: ../ui/list-statuses-page.ui.h:8 ../ui/filter-list-entry.ui.h:1
-#: ../ui/modify-filter-dialog.ui.h:2 ../ui/user-filter-entry.ui.h:1
-#: ../ui/account-dialog.ui.h:7
+#: ../src/widgets/MultiMediaWidget.vala:148 ../ui/compose-window.ui.h:2
+#: ../ui/list-list-entry.ui.h:1 ../ui/list-statuses-page.ui.h:8
+#: ../ui/filter-list-entry.ui.h:1 ../ui/modify-filter-dialog.ui.h:2
+#: ../ui/user-filter-entry.ui.h:1 ../ui/account-dialog.ui.h:2
+#: ../ui/image-crop-dialog.ui.h:1
 msgid "Cancel"
 msgstr ""
 
-#: ../src/window/ComposeTweetWindow.vala:305
-#: ../src/widgets/AvatarBannerWidget.vala:162
-#: ../src/widgets/AvatarBannerWidget.vala:174
+#: ../src/window/ComposeTweetWindow.vala:518
 msgid "Choose"
+msgstr ""
+
+#: ../src/window/UserListDialog.vala:37
+msgid "Add to or Remove User From List"
 msgstr ""
 
 #: ../src/window/UserListDialog.vala:45
 #: ../src/widgets/MultiMediaWidget.vala:149
-#: ../src/window/ImageCropDialog.vala:56 ../ui/list-statuses-page.ui.h:6
-#: ../ui/modify-filter-dialog.ui.h:3 ../ui/account-dialog.ui.h:9
+#: ../src/window/ImageCropDialog.vala:98 ../ui/list-statuses-page.ui.h:6
+#: ../ui/modify-filter-dialog.ui.h:3 ../ui/account-dialog.ui.h:3
 msgid "Save"
 msgstr ""
 
-#: ../src/window/ModifyFilterDialog.vala:77
+#: ../src/window/ModifyFilterDialog.vala:45
+msgid "Modify Filter"
+msgstr ""
+
+#: ../src/window/ModifyFilterDialog.vala:76
 msgid "Matches"
 msgstr ""
 
-#: ../src/window/ModifyFilterDialog.vala:79
+#: ../src/window/ModifyFilterDialog.vala:78
 msgid "Doesn't match"
 msgstr ""
 
-#: ../src/widgets/TweetListBox.vala:46 ../src/widgets/TweetListBox.vala:81
+#: ../src/widgets/TweetListBox.vala:52 ../src/widgets/TweetListBox.vala:100
 msgid "No entries found"
+msgstr ""
+
+#: ../src/widgets/TweetListBox.vala:60
+msgid "Retry"
 msgstr ""
 
 #: ../src/widgets/AccountCreateWidget.vala:39
@@ -93,7 +105,7 @@ msgstr ""
 msgid "Save Original"
 msgstr ""
 
-#: ../src/widgets/MultiMediaWidget.vala:70 ../src/TweetInfoPage.vala:415
+#: ../src/widgets/MultiMediaWidget.vala:70 ../src/TweetInfoPage.vala:364
 msgid "Open in Browser"
 msgstr ""
 
@@ -101,31 +113,31 @@ msgstr ""
 msgid "Save image"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:92
-#, c-format
-msgid "%d new Tweets!"
-msgstr ""
-
-#: ../src/HomeTimeline.vala:102
+#: ../src/HomeTimeline.vala:84
 #, c-format
 msgid "%s retweeted %s"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:104
+#: ../src/HomeTimeline.vala:86
 #, c-format
 msgid "%s tweeted"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:146
+#: ../src/HomeTimeline.vala:93
+#, c-format
+msgid "%d new Tweets!"
+msgstr ""
+
+#: ../src/HomeTimeline.vala:175
 msgid "Home"
 msgstr ""
 
-#: ../src/DMThreadsPage.vala:362
+#: ../src/DMThreadsPage.vala:361
 #, c-format
 msgid "New direct message from %s"
 msgstr ""
 
-#: ../src/DMThreadsPage.vala:374 ../src/DMThreadsPage.vala:388
+#: ../src/DMThreadsPage.vala:372 ../src/DMThreadsPage.vala:386
 msgid "Direct Messages"
 msgstr ""
 
@@ -134,43 +146,42 @@ msgstr ""
 msgid "(%d unread)"
 msgstr ""
 
-#: ../src/ListsPage.vala:128 ../src/ListsPage.vala:133
-#: ../ui/profile-page.ui.h:8
+#: ../src/ListsPage.vala:127 ../src/ListsPage.vala:132
+#: ../ui/profile-page.ui.h:9
 msgid "Lists"
 msgstr ""
 
-#: ../src/ProfilePage.vala:310
+#: ../src/ProfilePage.vala:316
 msgid "Protected profile"
 msgstr ""
 
-#: ../src/ProfilePage.vala:502
+#: ../src/ProfilePage.vala:508
 #, c-format
 msgid "Tweet to @%s"
 msgstr ""
 
-#: ../src/ProfilePage.vala:587 ../src/TweetInfoPage.vala:401
+#: ../src/ProfilePage.vala:597
 msgid "Unfollow"
 msgstr ""
 
-#: ../src/ProfilePage.vala:591 ../src/TweetInfoPage.vala:405
-#: ../ui/tweet-info-page.ui.h:3
+#: ../src/ProfilePage.vala:601
 msgid "Follow"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:369
+#: ../src/TweetInfoPage.vala:337
 msgid "Retweets"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:370 ../src/FavoritesTimeline.vala:71
-#: ../src/FavoritesTimeline.vala:76
+#: ../src/TweetInfoPage.vala:338 ../src/FavoritesTimeline.vala:71
+#: ../src/FavoritesTimeline.vala:75
 msgid "Favorites"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:415
+#: ../src/TweetInfoPage.vala:364
 msgid "Source"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:420
+#: ../src/TweetInfoPage.vala:369
 msgid "Tweet Details"
 msgstr ""
 
@@ -188,12 +199,12 @@ msgstr ""
 msgid "%dh"
 msgstr ""
 
-#: ../src/SearchPage.vala:258 ../src/SearchPage.vala:267
+#: ../src/SearchPage.vala:281 ../src/SearchPage.vala:290
 #: ../ui/search-page.ui.h:1
 msgid "Search"
 msgstr ""
 
-#: ../src/Corebird.vala:160
+#: ../src/Corebird.vala:162
 msgid "Open Account"
 msgstr ""
 
@@ -202,7 +213,7 @@ msgstr ""
 msgid "New Mention from @%s"
 msgstr ""
 
-#: ../src/MentionsTimeline.vala:123 ../src/MentionsTimeline.vala:129
+#: ../src/MentionsTimeline.vala:123 ../src/MentionsTimeline.vala:128
 msgid "Mentions"
 msgstr ""
 
@@ -210,17 +221,28 @@ msgstr ""
 msgid "Direct Conversation"
 msgstr ""
 
-#: ../src/ListStatusesPage.vala:393
+#: ../src/ListStatusesPage.vala:404
 msgid "List"
 msgstr ""
 
-#: ../src/widgets/AvatarBannerWidget.vala:158
-#: ../src/widgets/AvatarBannerWidget.vala:170
-msgid "Choose new Banner"
+#: ../src/widgets/AvatarBannerWidget.vala:159
+msgid "Select banner"
 msgstr ""
 
-#: ../src/window/ImageCropDialog.vala:44 ../ui/image-crop-dialog.ui.h:3
+#: ../src/widgets/AvatarBannerWidget.vala:174
+msgid "Select avatar"
+msgstr ""
+
+#: ../src/window/ImageCropDialog.vala:58 ../ui/image-crop-dialog.ui.h:2
 msgid "Next"
+msgstr ""
+
+#: ../src/window/ImageCropDialog.vala:102
+#, c-format
+msgid ""
+"Image does not meet the minimum size requirements:\n"
+"Minimum width: %d pixels\n"
+"Minimum height: %d pixels"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:1 ../ui/menu.ui.h:1
@@ -315,7 +337,7 @@ msgstr ""
 msgid "Using Font Awesome by Dave Gandy - http://fontawesome.io"
 msgstr ""
 
-#: ../ui/dm-page.ui.h:1 ../ui/compose-window.ui.h:5
+#: ../ui/dm-page.ui.h:1 ../ui/compose-window.ui.h:3
 msgid "Send"
 msgstr ""
 
@@ -334,7 +356,7 @@ msgstr ""
 #: ../ui/tweet-list-entry.ui.h:3 ../ui/tweet-info-page.ui.h:2
 #: ../ui/list-list-entry.ui.h:4 ../ui/list-statuses-page.ui.h:7
 #: ../ui/filter-list-entry.ui.h:2 ../ui/user-filter-entry.ui.h:2
-#: ../ui/account-dialog.ui.h:8
+#: ../ui/account-dialog.ui.h:7
 msgid "Delete"
 msgstr ""
 
@@ -342,15 +364,15 @@ msgstr ""
 msgid "Show more actions"
 msgstr ""
 
-#: ../ui/tweet-list-entry.ui.h:5 ../ui/tweet-info-page.ui.h:6
+#: ../ui/tweet-list-entry.ui.h:5 ../ui/tweet-info-page.ui.h:5
 msgid "Reply to tweet"
 msgstr ""
 
-#: ../ui/tweet-list-entry.ui.h:6 ../ui/tweet-info-page.ui.h:5
+#: ../ui/tweet-list-entry.ui.h:6 ../ui/tweet-info-page.ui.h:4
 msgid "Favorite tweet"
 msgstr ""
 
-#: ../ui/tweet-list-entry.ui.h:7 ../ui/tweet-info-page.ui.h:4
+#: ../ui/tweet-list-entry.ui.h:7 ../ui/tweet-info-page.ui.h:3
 msgid "Retweet tweet"
 msgstr ""
 
@@ -374,20 +396,12 @@ msgstr ""
 msgid "Create"
 msgstr ""
 
-#: ../ui/search-page.ui.h:2 ../ui/profile-page.ui.h:5
+#: ../ui/search-page.ui.h:2 ../ui/profile-page.ui.h:6
 msgid "Tweets"
 msgstr ""
 
 #: ../ui/search-page.ui.h:3 ../ui/filter-page.ui.h:1
 msgid "Users"
-msgstr ""
-
-#: ../ui/compose-window.ui.h:1
-msgid "Compose Tweet"
-msgstr ""
-
-#: ../ui/compose-window.ui.h:2
-msgid "Attach Image"
 msgstr ""
 
 #: ../ui/profile-page.ui.h:1
@@ -403,14 +417,18 @@ msgid "Blocked"
 msgstr ""
 
 #: ../ui/profile-page.ui.h:4
+msgid "Retweets disabled"
+msgstr ""
+
+#: ../ui/profile-page.ui.h:5
 msgid "Follows you"
 msgstr ""
 
-#: ../ui/profile-page.ui.h:6
+#: ../ui/profile-page.ui.h:7
 msgid "Followers"
 msgstr ""
 
-#: ../ui/profile-page.ui.h:7
+#: ../ui/profile-page.ui.h:8
 msgid "Following"
 msgstr ""
 
@@ -438,16 +456,8 @@ msgstr ""
 msgid "Confirm"
 msgstr ""
 
-#: ../ui/tweet-info-page.ui.h:7
+#: ../ui/tweet-info-page.ui.h:6
 msgid "More"
-msgstr ""
-
-#: ../ui/remove-account-dialog.ui.h:2
-msgid "Remove"
-msgstr ""
-
-#: ../ui/remove-account-dialog.ui.h:3
-msgid "Do you really want to remove the account?"
 msgstr ""
 
 #: ../ui/list-list-entry.ui.h:2
@@ -510,31 +520,23 @@ msgstr ""
 msgid "Account Settings"
 msgstr ""
 
-#: ../ui/account-dialog.ui.h:2
-msgid "Username"
-msgstr ""
-
-#: ../ui/account-dialog.ui.h:3
+#: ../ui/account-dialog.ui.h:4
 msgid "Name"
 msgstr ""
 
-#: ../ui/account-dialog.ui.h:4
+#: ../ui/account-dialog.ui.h:5
 msgid "Website"
 msgstr ""
 
-#: ../ui/account-dialog.ui.h:5
+#: ../ui/account-dialog.ui.h:6
 msgid "Autostart"
 msgstr ""
 
-#: ../ui/account-dialog.ui.h:6
+#: ../ui/account-dialog.ui.h:8
 msgid "Do you really want to delete this account?"
 msgstr ""
 
-#: ../ui/image-crop-dialog.ui.h:1
-msgid "Foobar"
-msgstr ""
-
-#: ../ui/image-crop-dialog.ui.h:2
+#: ../ui/image-crop-dialog.ui.h:3
 msgid "Back"
 msgstr ""
 

@@ -30,8 +30,6 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   [GtkChild]
   private AvatarWidget avatar_image;
   [GtkChild]
-  private Gtk.Button add_image_button;
-  [GtkChild]
   private Gtk.Box content_box;
   [GtkChild]
   private Gtk.TextView tweet_text;
@@ -40,22 +38,22 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   [GtkChild]
   private Gtk.Button send_button;
   [GtkChild]
-  private PixbufButton media_image;
+  private Gtk.Button cancel_button;
   [GtkChild]
   private Gtk.Window completion_window;
   [GtkChild]
   private Gtk.ListBox completion_list;
-  private string media_uri;
-  private uint media_count = 0;
   private unowned Account account;
   private unowned Tweet answer_to;
   private Mode mode;
   private int current_match = -1;
+  private Gee.ArrayList<AddImageButton> image_buttons;
 
 
-  public ComposeTweetWindow (Gtk.Window? parent, Account acc,
-                             Tweet? answer_to = null,
-                             Mode mode = Mode.NORMAL,
+  public ComposeTweetWindow (Gtk.Window?      parent,
+                             Account          acc,
+                             Tweet?           answer_to = null,
+                             Mode             mode = Mode.NORMAL,
                              Gtk.Application? app = null) {
     this.set_show_menubar (false);
     this.account = acc;
@@ -65,6 +63,8 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       this.application = ((Gtk.ApplicationWindow)parent).application;
     } else
       this.application = app;
+
+    image_buttons = new Gee.ArrayList<AddImageButton> ();
     avatar_image.set_from_pixbuf (acc.avatar);
     length_label.label = Tweet.MAX_LENGTH.to_string ();
     tweet_text.buffer.notify["cursor-position"].connect (cursor_changed_cb);
@@ -88,13 +88,37 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     completion_window.set_attached_to (tweet_text);
     completion_window.set_screen (tweet_text.get_screen ());
 
+
+    if (Gtk.Settings.get_default ().gtk_dialogs_use_header) {
+      var header_bar = new Gtk.HeaderBar ();
+      header_bar.set_title (_("Compose Tweet"));
+      send_button.parent.remove (send_button);
+      send_button.margin = 0;
+      send_button.valign = Gtk.Align.CENTER;
+      header_bar.pack_end (send_button);
+
+      cancel_button.parent.remove (cancel_button);
+      cancel_button.margin = 0;
+      header_bar.pack_start (cancel_button);
+
+      header_bar.show_all ();
+      this.set_titlebar (header_bar);
+    }
+
     if (parent != null) {
       this.set_transient_for (parent);
     }
 
     if (mode != Mode.NORMAL) {
+      var list = new Gtk.ListBox ();
+      list.selection_mode = Gtk.SelectionMode.NONE;
       TweetListEntry answer_entry = new TweetListEntry (answer_to, (MainWindow)parent, acc);
-      content_box.pack_start (answer_entry, false, true);
+      answer_entry.activatable = false;
+      answer_entry.read_only = true;
+      list.add (answer_entry);
+      list.show_all ();
+      content_box.pack_start (list, false, true);
+      content_box.reorder_child (list, 0);
     }
 
     if (mode == Mode.REPLY) {
@@ -134,66 +158,12 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     Gtk.AccelGroup ag = new Gtk.AccelGroup ();
     ag.connect (Gdk.Key.Escape, 0, Gtk.AccelFlags.LOCKED, escape_pressed_cb);
     ag.connect (Gdk.Key.Return, Gdk.ModifierType.CONTROL_MASK, Gtk.AccelFlags.LOCKED,
-        () => {send_tweet (); return true;});
+        () => {start_send_tweet (); return true;});
 
     this.add_accel_group (ag);
 
-
-    // DND stuff
-    const Gtk.TargetEntry[] target_entries = {
-      {"STRING",          0,   TARGET_STRING},
-      {"text/plain",      0,   TARGET_STRING},
-      {"text/uri-list",   0,   TARGET_URI_LIST},
-      {"image/png",       0,   TARGET_IMAGE},
-      {"image/jpeg",      0,   TARGET_IMAGE},
-    };
-    Gtk.drag_dest_set (this, Gtk.DestDefaults.ALL, target_entries,
-                       Gdk.DragAction.COPY);
-    this.drag_data_received.connect (drag_data_received_cb);
-  }
-
-  private void drag_data_received_cb (Gdk.DragContext context, int x, int y,
-                                      Gtk.SelectionData selection_data,
-                                      uint info, uint time) {
-
-    if (media_count > Twitter.max_media_per_upload)
-      return;
-
-    if (info == TARGET_STRING) {
-      var uri = selection_data.get_text ().strip ();
-      var file = GLib.File.new_for_uri (uri);
-      load_inline_media (file.get_path ());
-    } else if (info == TARGET_IMAGE) {
-      var pixbuf = selection_data.get_pixbuf ();
-      var thumb = Utils.slice_pixbuf (pixbuf, 48);
-      load_inline_media ("whyisthisevenneeded", false);
-      media_image.set_bg (thumb);
-    } else if (info == TARGET_URI_LIST) {
-      var uris = selection_data.get_uris ();
-      // TODO: Would be fun to allow using external images (drag a remot image
-      //       from your browser directly into your twitter client)
-      var file = GLib.File.new_for_uri (uris[0]);
-      if (file.get_uri_scheme () == "file")
-        load_inline_media (file.get_path ());
-    }
-  }
-
-  private void load_inline_media (string path, bool load = true) {
-    this.media_uri = path;
-    if (load) {
-      try {
-        var pixbuf = new Gdk.Pixbuf.from_file (path);
-        var thumb = Utils.slice_pixbuf (pixbuf, 48);
-        media_image.set_bg (thumb);
-      } catch (GLib.Error e){critical ("Loading scaled image: %s", e.message);}
-    }
-
-    media_count++;
-    media_image.set_visible (true);
-
-    if (media_count >= Twitter.max_media_per_upload) {
-      add_image_button.set_sensitive (false);
-    }
+    /* Add AddImageButton because we can't do it in the ui definition for some reason */
+    add_image_button (true);
   }
 
   private void cursor_changed_cb () {
@@ -216,7 +186,11 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     tweet_text.buffer.get_end_iter(out end);
     string text = tweet_text.buffer.get_text(start, end, true);
 
-    int length = TweetUtils.calc_tweet_length (text, (int)media_count);
+    int media_count = 0;
+    if (get_effective_media_count () > 0)
+      media_count = 1;
+
+    int length = TweetUtils.calc_tweet_length (text, media_count);
 
     length_label.label = (Tweet.MAX_LENGTH - length).to_string ();
     if (length > 0 && length <= Tweet.MAX_LENGTH)
@@ -224,6 +198,126 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     else
       send_button.sensitive = false;
   }
+
+  [GtkCallback]
+  private void start_send_tweet () {
+    int media_count = get_effective_media_count ();
+    Collect collect_obj = new Collect (media_count);
+    int64[] media_ids = new int64[media_count];
+
+    if (media_count > 0) {
+      /* Set up a new proxy because why not */
+      Rest.OAuthProxy proxy = new Rest.OAuthProxy (Settings.get_consumer_key (),
+                                                   Settings.get_consumer_secret (),
+                                                   "https://upload.twitter.com/",
+                                                   false);
+      proxy.token = account.proxy.token;
+      proxy.token_secret = account.proxy.token_secret;
+
+      int i = 0;
+      foreach (AddImageButton aib in image_buttons) {
+        if (aib.image != null) {
+          int k = i;
+          upload_media.begin (aib.image_path, proxy, (obj, res) => {
+            int64 id;
+            try {
+              id = upload_media.end (res);
+            } catch (GLib.Error e) {
+              warning (e.message); // XXX Error handling!
+              return;
+            }
+            media_ids[k] = id;
+            collect_obj.emit ();
+          });
+          i ++;
+        }
+      }
+      collect_obj.finished.connect ((error) => {
+        send_tweet (error, media_ids);
+      });
+
+    } else {
+      /* No media attached so just send the text */
+      send_tweet (null, media_ids);
+    }
+  }
+
+  private void send_tweet (GLib.Error? error, int64[] ids) {
+    if (error != null) {
+      GLib.error (error.message);
+    }
+
+    Gtk.TextIter start, end;
+    tweet_text.buffer.get_start_iter (out start);
+    tweet_text.buffer.get_end_iter (out end);
+    string text = tweet_text.buffer.get_text (start, end, true);
+    if (text.strip () == "")
+      return;
+
+    var call = account.proxy.new_call ();
+    call.set_method ("POST");
+    call.add_param ("status", text);
+    if (this.answer_to != null && mode == Mode.REPLY) {
+      call.add_param("in_reply_to_status_id", answer_to.id.to_string ());
+    }
+
+    if (ids.length > 0) {
+      StringBuilder id_str = new StringBuilder ();
+      id_str.append (ids[0].to_string ());
+      for (int i = 1; i < ids.length; i ++) {
+        id_str.append (",").append (ids[i].to_string ());
+      }
+      call.add_param ("media_ids", id_str.str);
+    }
+
+    call.set_function ("1.1/statuses/update.json");
+    call.invoke_async.begin (null, (obj, res) => {
+      try {
+        call.invoke_async.end (res);
+      } catch (GLib.Error e) {
+        critical (e.message);
+        Utils.show_error_object (call.get_payload (), e.message,
+                                 GLib.Log.LINE, GLib.Log.FILE);
+      } finally {
+        this.destroy ();
+      }
+    });
+  }
+
+  private async int64 upload_media (string path, Rest.Proxy proxy) throws GLib.Error {
+    var call = proxy.new_call ();
+    call.set_function ("1.1/media/upload.json");
+    call.set_method ("POST");
+    uint8[] file_contents;
+    GLib.File media_file = GLib.File.new_for_path (path);
+    media_file.load_contents (null, out file_contents, null);
+    Rest.Param param = new Rest.Param.full ("media",
+                                            Rest.MemoryUse.COPY,
+                                            file_contents,
+                                            "multipart/form-data",
+                                            path);
+    call.add_param_full (param);
+
+
+    yield call.invoke_async (null);
+    var parser = new Json.Parser ();
+    try {
+      parser.load_from_data (call.get_payload ());
+    } catch (GLib.Error e) {
+      warning (e.message); //XXX Error handling
+      return -1;
+    }
+    var root = parser.get_root ().get_object ();
+    return root.get_int_member ("media_id");
+  }
+
+  [GtkCallback]
+  private void cancel_clicked (Gtk.Widget source) {
+    destroy ();
+  }
+
+
+  /* Completion stuff {{{ */
 
   private void update_completion () {
     string cur_word = get_cursor_word (null, null);
@@ -258,113 +352,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
   }
 
-  [GtkCallback]
-  private void send_tweet () {
-    Gtk.TextIter start, end;
-    tweet_text.buffer.get_start_iter (out start);
-    tweet_text.buffer.get_end_iter (out end);
-    string text = tweet_text.buffer.get_text (start, end, true);
-    if(text.strip() == "")
-      return;
 
-    var call = account.proxy.new_call ();
-    call.set_method ("POST");
-    call.add_param ("status", text);
-    if (this.answer_to != null && mode == Mode.REPLY) {
-      call.add_param("in_reply_to_status_id", answer_to.id.to_string ());
-    }
-
-    Rest.Param param;
-    if (media_count == 0) {
-      call.set_function ("1.1/statuses/update.json");
-    } else {
-      call.set_function ("1.1/statuses/update_with_media.json");
-      uint8[] content;
-      try {
-        GLib.File media_file = GLib.File.new_for_path(media_uri);
-        media_file.load_contents (null, out content, null);
-      } catch (GLib.Error e) {
-        critical (e.message);
-      }
-
-      param  = new Rest.Param.full ("media[]", Rest.MemoryUse.COPY,
-                                    content, "multipart/form-data",
-                                    media_uri);
-      call.add_param_full (param);
-    }
-
-    call.invoke_async.begin (null, (obj, res) => {
-      try {
-        call.invoke_async.end (res);
-      } catch (GLib.Error e) {
-        critical (e.message);
-        Utils.show_error_object (call.get_payload (), e.message,
-                                 GLib.Log.LINE, GLib.Log.FILE);
-      } finally {
-        this.destroy ();
-      }
-    });
-    this.visible = false;
-  }
-
-  [GtkCallback]
-  private void cancel_clicked (Gtk.Widget source) {
-    destroy ();
-  }
-
-  [GtkCallback]
-  private void add_image_clicked () {
-    var fcd = new Gtk.FileChooserDialog(_("Select Image"), null, Gtk.FileChooserAction.OPEN,
-                                        _("Cancel"), Gtk.ResponseType.CANCEL,
-                                        _("Choose"), Gtk.ResponseType.ACCEPT);
-    fcd.set_modal (true);
-    var filter = new Gtk.FileFilter ();
-    filter.add_mime_type ("image/png");
-    filter.add_mime_type ("image/jpeg");
-    filter.add_mime_type ("image/gif");
-    fcd.set_filter (filter);
-    var preview_widget = new Gtk.Image ();
-    fcd.set_preview_widget (preview_widget);
-    fcd.update_preview.connect (() => {
-      string? uri = fcd.get_preview_uri ();
-      if (uri != null && uri.has_prefix ("file://")) {
-        try {
-          int final_size = 130;
-          var p = new Gdk.Pixbuf.from_file (GLib.File.new_for_uri (uri).get_path ());
-          int w = p.get_width ();
-          int h = p.get_height ();
-          if (w > h) {
-            double ratio = final_size / (double) w;
-            w = final_size;
-            h = (int)(h * ratio);
-          } else {
-            double ratio = final_size / (double) h;
-            w = (int)(w * ratio);
-            h = final_size;
-          }
-          var scaled = p.scale_simple (w, h, Gdk.InterpType.BILINEAR);
-          preview_widget.set_from_pixbuf (scaled);
-          preview_widget.show ();
-        } catch (GLib.Error e) {
-          preview_widget.hide ();
-        }
-      } else
-        preview_widget.hide ();
-    });
-    if (fcd.run () == Gtk.ResponseType.ACCEPT) {
-      string file = fcd.get_filename ();
-      load_inline_media (file);
-    }
-    fcd.close ();
-  }
-
-  [GtkCallback]
-  private void media_image_clicked_cb () {
-    media_image.set_visible(false);
-    media_count--;
-    if(media_count <= Twitter.max_media_per_upload)
-      add_image_button.set_sensitive (true);
-  }
 
   [GtkCallback]
   private bool completion_window_focus_out_cb () {
@@ -493,4 +481,109 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     end_iter.assign (end_word_iter);
     return tweet_text.buffer.get_text (cursor_iter, end_word_iter, false);
   }
+
+  /* }}} &/
+
+  /* Image handling stuff {{{ */
+
+  private void add_image_button (bool initially_visible = false) {
+    if (image_buttons.size >= Twitter.max_media_per_upload +2)
+      return;
+
+    var image_button = new AddImageButton ();
+    var revealer = new Gtk.Revealer ();
+    image_button.remove_clicked.connect (remove_image_clicked_cb);
+    image_button.add_clicked.connect (add_image_clicked_cb);
+    image_button.notify["image"].connect (() => {
+      if (image_button.image != null) {
+        add_image_button ();
+        recalc_tweet_length ();
+      }
+    });
+    revealer.add (image_button);
+    revealer.transition_type = Gtk.RevealerTransitionType.SLIDE_DOWN;
+
+    revealer.reveal_child = initially_visible;
+    revealer.show_all ();
+    content_box.pack_start (revealer, false, false);
+    if (!initially_visible)
+      revealer.reveal_child = true;
+
+    image_buttons.add (image_button);
+  }
+
+  private void add_image_clicked_cb (AddImageButton source) {
+    var fcd = new Gtk.FileChooserDialog(_("Select Image"), this, Gtk.FileChooserAction.OPEN,
+                                        _("Cancel"), Gtk.ResponseType.CANCEL,
+                                        _("Choose"), Gtk.ResponseType.ACCEPT);
+    fcd.set_modal (true);
+    var filter = new Gtk.FileFilter ();
+    filter.add_mime_type ("image/png");
+    filter.add_mime_type ("image/jpeg");
+    filter.add_mime_type ("image/gif");
+    fcd.set_filter (filter);
+    var preview_widget = new Gtk.Image ();
+    fcd.set_preview_widget (preview_widget);
+    fcd.update_preview.connect (() => {
+      string? uri = fcd.get_preview_uri ();
+      if (uri != null && uri.has_prefix ("file://")) {
+        try {
+          int final_size = 130;
+          var p = new Gdk.Pixbuf.from_file (GLib.File.new_for_uri (uri).get_path ());
+          int w = p.get_width ();
+          int h = p.get_height ();
+          if (w > h) {
+            double ratio = final_size / (double) w;
+            w = final_size;
+            h = (int)(h * ratio);
+          } else {
+            double ratio = final_size / (double) h;
+            w = (int)(w * ratio);
+            h = final_size;
+          }
+          var scaled = p.scale_simple (w, h, Gdk.InterpType.BILINEAR);
+          preview_widget.set_from_pixbuf (scaled);
+          preview_widget.show ();
+        } catch (GLib.Error e) {
+          preview_widget.hide ();
+        }
+      } else
+        preview_widget.hide ();
+    });
+
+    if (fcd.run () == Gtk.ResponseType.ACCEPT) {
+      string file = fcd.get_filename ();
+      try {
+        var pixbuf = new Gdk.Pixbuf.from_file (file);
+        var thumb = Utils.slice_pixbuf (pixbuf, 500, MultiMediaWidget.HEIGHT);
+        source.image = thumb;
+        source.image_path = file;
+      } catch (GLib.Error e) {
+        warning (e.message);
+      }
+    }
+    fcd.close ();
+  }
+
+  private void remove_image_clicked_cb (AddImageButton source) {
+    source.image = null;
+    Gtk.Revealer revealer = (Gtk.Revealer)source.parent;
+    revealer.reveal_child = false;
+    revealer.notify["child-revealed"].connect (() => {
+      content_box.remove (revealer);
+      image_buttons.remove (source);
+    });
+    recalc_tweet_length ();
+  }
+
+  private int get_effective_media_count () {
+    int c = 0;
+    foreach (AddImageButton btn in image_buttons)
+      if (btn.image != null)
+        c ++;
+
+    return c;
+  }
+
+  /* }}} */
 }

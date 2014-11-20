@@ -108,8 +108,8 @@ class AccountCreateWidget : Gtk.Box {
         }
       }
 
-      acc.query_user_info_by_scren_name.begin (screen_name, (obj, res) => {
-        acc.query_user_info_by_scren_name.end (res);
+      acc.query_user_info_by_screen_name.begin (screen_name, (obj, res) => {
+        acc.query_user_info_by_screen_name.end (res);
         debug ("user info call");
         acc.init_database ();
         acc.save_info();

@@ -105,7 +105,6 @@
                         <property name="halign">start</property>
                         <style>
                           <class name="suggested-action"/>
-                          <class name="button-wide"/>
                         </style>
                         <signal name="clicked" handler="go_button_clicked_cb" swapped="no"/>
                       </object>

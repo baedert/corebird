@@ -1,7 +1,6 @@
 <gresources>
   <gresource prefix="/org/baedert/corebird">
     <file compressed="true" preprocess="xml-stripblanks">ui/settings-dialog.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">ui/account-list-entry.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/account-create-widget.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/menu.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/compose-window.ui</file>

@@ -12,6 +12,7 @@
   <template class="UserFilterEntry" parent="GtkListBoxRow">
     <property name="visible">True</property>
     <property name="can_focus">True</property>
+    <property name="activatable">false</property>
 
     <child>
       <object class="GtkRevealer" id="revealer">

@@ -25,7 +25,7 @@ class Collect : GLib.Object {
   public signal void finished (GLib.Error? error);
 
   public Collect (int max)
-  requires (max > 0)
+  requires (max >= 0)
   {
     this.max = max;
   }

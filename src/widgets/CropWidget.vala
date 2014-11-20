@@ -210,18 +210,8 @@ class CropWidget : Gtk.DrawingArea {
     this.queue_draw ();
   }
 
-
-
-  public async void load_file_async (string            filename,
-                                     GLib.Cancellable? cancellable = null) {
-    try {
-      GLib.InputStream stream = File.new_for_path (filename).read ();
-      this.image = yield new Gdk.Pixbuf.from_stream_async (stream, cancellable);
-      stream.close ();
-    } catch (GLib.Error e) {
-      warning (e.message);
-    }
-
+  public void set_image (Gdk.Pixbuf image) {
+    this.image = image;
     calculate_image_rect ();
 
     /* Place the selection rect initially, using the maximum size
@@ -240,6 +230,7 @@ class CropWidget : Gtk.DrawingArea {
 
     restrict_selection_size ();
     this.queue_draw ();
+
   }
 
 

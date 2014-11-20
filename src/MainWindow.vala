@@ -20,7 +20,8 @@ public class MainWindow : Gtk.ApplicationWindow {
     {"compose-tweet",       show_compose_window},
     {"toggle-sidebar",      Settings.toggle_sidebar_visible},
     {"switch-page",         simple_switch_page, "i"},
-    {"show-account-dialog", show_account_dialog}
+    {"show-account-dialog", show_account_dialog},
+    {"show-account-list",   show_account_list}
   };
   [GtkChild]
   private Gtk.HeaderBar headerbar;
@@ -34,6 +35,8 @@ public class MainWindow : Gtk.ApplicationWindow {
   private Gtk.Box header_box;
   [GtkChild]
   private Gtk.Button account_button;
+  [GtkChild]
+  public Gtk.Button back_button;
 
   private Gtk.MenuButton app_menu_button = null;
   public MainWidget main_widget;
@@ -114,9 +117,20 @@ public class MainWindow : Gtk.ApplicationWindow {
     this.add_accel_group(ag);
   } // }}}
 
+  [GtkCallback]
+  private void back_button_clicked_cb () {
+    main_widget.switch_page (Page.PREVIOUS);
+  }
 
 
-  public void change_account (Account? account, GLib.Application app = GLib.Application.get_default ()) {
+
+  public void change_account (Account? account,
+                              GLib.Application app = GLib.Application.get_default ()) {
+
+    string? old_screen_name = null;
+    if (this.account != null) {
+      old_screen_name = this.account.screen_name;
+    }
     this.account = account;
 
     if (main_widget != null) {
@@ -131,8 +145,10 @@ public class MainWindow : Gtk.ApplicationWindow {
       header_box.visible = true;
     }
 
+    Corebird cb = (Corebird) app;
+
     if (account != null && account.screen_name != Account.DUMMY) {
-      main_widget = new MainWidget (account, this, (Corebird) app);
+      main_widget = new MainWidget (account, this, cb);
       main_widget.sidebar_size_group.add_widget (account_button);
       main_widget.show_all ();
       this.add (main_widget);
@@ -143,13 +159,14 @@ public class MainWindow : Gtk.ApplicationWindow {
         avatar_image.pixbuf = account.avatar_small;
       });
 
+      cb.account_window_changed (old_screen_name, account.screen_name);
+
       if (!Gtk.Settings.get_default ().gtk_shell_shows_app_menu) {
         if (app_menu_button == null) {
           app_menu_button = new Gtk.MenuButton ();
           app_menu_button.image = new Gtk.Image.from_icon_name ("emblem-system-symbolic", Gtk.IconSize.MENU);
           app_menu_button.get_style_context ().add_class ("image-button");
           app_menu_button.menu_model = ((Gtk.Application)app).app_menu;
-          app_menu_button.set_relief (Gtk.ReliefStyle.NONE);
           headerbar.pack_end (app_menu_button);
         } else
           app_menu_button.show ();
@@ -168,7 +185,7 @@ public class MainWindow : Gtk.ApplicationWindow {
       this.account = acc_;
 
       Account.add_account (acc_);
-      var create_widget = new AccountCreateWidget (acc_, (Corebird) app);
+      var create_widget = new AccountCreateWidget (acc_, cb);
       create_widget.result_received.connect ((result, acc) => {
         if (result) {
           change_account (acc);
@@ -193,8 +210,10 @@ public class MainWindow : Gtk.ApplicationWindow {
     }
     var e = (UserListEntry)row;
     string screen_name = e.screen_name;
+    Corebird cb = (Corebird)this.get_application ();
 
-    if (screen_name == this.account.screen_name) {
+    if (screen_name == this.account.screen_name ||
+        cb.is_window_open_for_screen_name (screen_name, null)) {
       account_popover.hide ();
       return;
     }
@@ -247,6 +266,12 @@ public class MainWindow : Gtk.ApplicationWindow {
     dialog.set_transient_for (this);
     dialog.modal = true;
     dialog.show ();
+  }
+
+  /* for show-account-list GAction */
+  private void show_account_list () {
+    if (this.account != null && this.account.screen_name != Account.DUMMY)
+      this.account_popover.show ();
   }
 
   public IPage get_page (int page_id) {
@@ -365,10 +390,7 @@ public class MainWindow : Gtk.ApplicationWindow {
     if (a is AddListEntry)
       return 1;
 
-    if (((UserListEntry)a).user_id < ((UserListEntry)b).user_id)
-      return -1;
-
-    return 1;
+    return ((UserListEntry)a).screen_name.ascii_casecmp (((UserListEntry)b).screen_name);
   }
 
   private void header_func (Gtk.ListBoxRow row, Gtk.ListBoxRow? row_before) {

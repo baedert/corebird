@@ -54,7 +54,6 @@ cb_sources = \
 			widgets/DMPlaceholderBox.vala \
 			widgets/AccountCreateWidget.vala \
 			widgets/AspectImage.vala \
-			widgets/BgBox.vala \
 			widgets/UserListsWidget.vala \
 			widgets/ReplyIndicator.vala \
 			widgets/MultiMediaWidget.vala \
@@ -64,6 +63,7 @@ cb_sources = \
 			widgets/MediaVideoWidget.vala \
 			widgets/CropWidget.vala \
 			widgets/ListInfoPopover.vala \
+			widgets/AddImageButton.vala \
 			util/TweetUtils.vala \
 			util/Utils.vala \
 			util/IntHistory.vala \
@@ -75,7 +75,6 @@ cb_sources = \
 			list/TweetListEntry.vala \
 			list/DMListEntry.vala \
 			list/UserListEntry.vala \
-			list/AccountListEntry.vala \
 			list/DMThreadEntry.vala \
 			list/StartConversationEntry.vala \
 			list/ListListEntry.vala \

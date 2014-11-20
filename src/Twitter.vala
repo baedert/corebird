@@ -37,6 +37,7 @@ public class Twitter : GLib.Object {
   public static Gdk.Pixbuf no_avatar;
   public static Gdk.Pixbuf no_banner;
   public static Gdk.Pixbuf verified_icon;
+  public static Gdk.Pixbuf verified_icon_large;
   public Gee.HashMap<string, Gdk.Pixbuf?> avatars;
 
   public void init () {
@@ -44,6 +45,7 @@ public class Twitter : GLib.Object {
       Twitter.no_avatar     = new Gdk.Pixbuf.from_file(DATADIR + "/no_avatar.png");
       Twitter.no_banner     = new Gdk.Pixbuf.from_file(DATADIR + "/no_banner.png");
       Twitter.verified_icon = new Gdk.Pixbuf.from_file(DATADIR + "/verified.png");
+      Twitter.verified_icon_large = new Gdk.Pixbuf.from_file(DATADIR + "/verified_18.png");
     } catch (GLib.Error e) {
       error ("Error while loading assets: %s", e.message);
     }

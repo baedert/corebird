@@ -95,6 +95,14 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
         update_window_button_sensitivity (window, true);
       }
     });
+
+    cb.account_window_changed.connect ((old_screen_name, new_screen_name) => {
+      if (old_screen_name == this.screen_name)
+        new_window_button.sensitive = true;
+      else if (new_screen_name == this.screen_name)
+        new_window_button.sensitive = false;
+    });
+
     // Set initial sensitivitiy of new_window_button
     new_window_button.sensitive = !(cb.is_window_open_for_screen_name (acc.screen_name));
   }

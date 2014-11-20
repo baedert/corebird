@@ -25,8 +25,8 @@
     <property name="title" translatable="yes">Compose Tweet</property>
     <property name="modal">True</property>
     <property name="window_position">center-on-parent</property>
-    <property name="default_width">350</property>
-    <property name="default_height">130</property>
+    <property name="default_width">500</property>
+    <property name="default_height">180</property>
     <property name="destroy_with_parent">True</property>
     <property name="type_hint">dialog</property>
     <child>
@@ -59,24 +59,12 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">0</property>
                   </packing>
-                </child>
-                <child>
-                  <object class="PixbufButton" id="media_image">
-                    <property name="halign">center</property>
-                    <property name="valign">start</property>
-                    <property name="width_request">48</property>
-                    <property name="height_request">48</property>
-                    <property name="margin_start">5</property>
-                    <signal name="clicked" handler="media_image_clicked_cb" swapped="no" />
-                  </object>
                 </child>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">0</property>
               </packing>
             </child>
             <child>
@@ -96,6 +84,9 @@
                     <property name="vexpand">True</property>
                     <property name="wrap_mode">word-char</property>
                     <property name="accepts_tab">False</property>
+                    <property name="left_margin">2</property>
+                    <property name="right_margin">2</property>
+                    <property name="height_request">60</property>
                     <signal name="key_press_event" handler="tweet_text_key_pressed_cb" swapped="no" />
                     <accessibility>
                       <relation type="labelled-by" target="length_label"/>
@@ -106,60 +97,18 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">1</property>
               </packing>
             </child>
           </object>
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">0</property>
           </packing>
         </child>
         <child>
           <object class="GtkBox" id="box4">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <child>
-              <object class="GtkButton" id="add_image_button">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="halign">start</property>
-                <property name="valign">baseline</property>
-                <property name="margin_start">10</property>
-                <property name="margin_top">6</property>
-                <property name="margin_bottom">6</property>
-                <property name="always_show_image">True</property>
-                <property name="tooltip_text" translatable="yes">Attach Image</property>
-                <signal name="clicked" handler="add_image_clicked" swapped="no"/>
-                <child>
-                  <object class="GtkImage" id="image1">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="pixel_size">16</property>
-                    <property name="icon_name">emblem-photos-symbolic</property>
-                    <style>
-                      <class name="image-button"/>
-                    </style>
-                    <property name="icon_size">2</property>
-                  </object>
-                </child>
-                <accessibility>
-
-                </accessibility>
-                <child internal-child="accessible">
-                  <object class="AtkObject" id="a11y-add_image_button1">
-                    <property name="AtkObject::accessible_name" translatable="yes">Select Image</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
             <child>
               <object class="GtkButtonBox" id="buttonbox2">
                 <property name="visible">True</property>
@@ -179,7 +128,6 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">0</property>
                   </packing>
                 </child>
                 <child>
@@ -195,12 +143,11 @@
                     <style>
                       <class name="suggested-action"/>
                     </style>
-                    <signal name="clicked" handler="send_tweet" swapped="no"/>
+                    <signal name="clicked" handler="start_send_tweet" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">1</property>
                   </packing>
                 </child>
               </object>
@@ -208,7 +155,6 @@
                 <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="pack_type">end</property>
-                <property name="position">1</property>
               </packing>
             </child>
             <child>
@@ -227,14 +173,12 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">2</property>
               </packing>
             </child>
           </object>
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">1</property>
           </packing>
         </child>
       </object>

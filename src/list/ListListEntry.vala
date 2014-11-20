@@ -172,11 +172,13 @@ public class ListListEntry : Gtk.ListBoxRow {
   [GtkCallback]
   private void more_button_clicked_cb () {
     stack.visible_child_name = "more";
+    this.activatable = false;
   }
 
   [GtkCallback]
   private void cancel_button_clicked_cb () {
     stack.visible_child_name = "default";
+    this.activatable = true;
   }
 
   [GtkCallback]

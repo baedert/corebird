@@ -16,13 +16,8 @@
  */
 [GtkTemplate (ui = "/org/baedert/corebird/ui/account-dialog.ui")]
 class AccountDialog : Gtk.Dialog {
-  private static const int RESPONSE_CLOSE  = 0;
-  private static const int RESPONSE_DELETE = 1;
-  private static const int RESPONSE_CANCEL = 2;
   private static const string PAGE_NORMAL = "normal";
   private static const string PAGE_DELETE = "delete";
-  //[GtkChild]
-  //private Gtk.Label screen_name_label;
   [GtkChild]
   private Gtk.Entry name_entry;
   [GtkChild]
@@ -48,18 +43,12 @@ class AccountDialog : Gtk.Dialog {
 
 
   public AccountDialog (Account account) {
+    GLib.Object (use_header_bar: Gtk.Settings.get_default ().gtk_dialogs_use_header ? 1 : 0);
+    set_default_response (Gtk.ResponseType.CLOSE);
     this.account = account;
-    //screen_name_label.label = account.screen_name;
     name_entry.text = account.name;
+    set_transient_data (account.website, account.description);
     avatar_banner_widget.set_account (account);
-    website_entry.text = account.website ?? "";
-    old_user_name = account.name;
-    old_website = account.website ?? "";
-    old_description = account.description ?? "";
-    if (account.description != null) {
-      description_text_view.get_buffer ().set_text (account.description);
-    }
-
 
     autostart_switch.freeze_notify ();
     string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
@@ -79,19 +68,37 @@ class AccountDialog : Gtk.Dialog {
       new_banner = b;
     });
 
+    if (account.proxy == null) {
+      account.init_proxy ();
+      account.query_user_info_by_screen_name.begin (account.screen_name, (obj, res) => {
+        set_transient_data (account.website, account.description);
+      });
+    }
+
     this.set_default_size (350, 450);
   }
 
+  private void set_transient_data (string? website, string? description) {
+    website_entry.text = account.website ?? "";
+    old_user_name = account.name;
+    old_website = account.website ?? "";
+    old_description = account.description ?? "";
+    description_text_view.get_buffer ().set_text (account.description ?? "");
+  }
+
   public override void response (int response_id) {
-    if (response_id == RESPONSE_CLOSE) {
+    if (response_id == Gtk.ResponseType.CLOSE) {
       save_data ();
       this.destroy ();
-    } else if (response_id == RESPONSE_DELETE) {
-      delete_stack.visible_child_name = PAGE_DELETE;
-      delete_button.hide ();
-    } else if (response_id == RESPONSE_CANCEL) {
+    } else if (response_id == Gtk.ResponseType.CANCEL) {
       this.destroy ();
     }
+  }
+
+  [GtkCallback]
+  private void delete_button_clicked_cb () {
+    delete_stack.visible_child_name = PAGE_DELETE;
+    delete_button.hide ();
   }
 
   private void save_data () {

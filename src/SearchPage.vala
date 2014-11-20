@@ -186,6 +186,9 @@ class SearchPage : IPage, Gtk.Box {
       }
 
       users.foreach_element ((array, index, node) => {
+        if (index > USER_COUNT - 1)
+          return;
+
         var user_obj = node.get_object ();
         var entry = new UserListEntry ();
         entry.screen_name = "@" + user_obj.get_string_member ("screen_name");
@@ -197,8 +200,10 @@ class SearchPage : IPage, Gtk.Box {
         tweet_list.add (entry);
       });
       if (users.get_length () > USER_COUNT) {
-        if (load_more_entry.parent == null)
+        if (load_more_entry.parent == null) {
+          load_more_entry.visible = false;
           tweet_list.add (load_more_entry);
+        }
       } else {
         load_more_entry.hide ();
       }
@@ -302,7 +307,9 @@ class LoadMoreEntry : Gtk.ListBoxRow, ITwitterItem {
   [GtkChild]
   private Gtk.Button load_more_button;
 
-  public LoadMoreEntry () {}
+  public LoadMoreEntry () {
+    this.activatable = false;
+  }
   public Gtk.Button get_button () {
     return load_more_button;
   }

@@ -96,6 +96,7 @@ class ProfilePage : ScrollWidget, IPage {
   private new string name;
   private string screen_name;
   private string avatar_url;
+  private int follower_count = -1;
   private GLib.Cancellable data_cancellable;
   private bool lists_page_inited = false;
   private ulong page_change_signal = 0;
@@ -144,7 +145,6 @@ class ProfilePage : ScrollWidget, IPage {
 
     actions = new GLib.SimpleActionGroup ();
     actions.add_action_entries (action_entries, this);
-    this.insert_action_group ("user", actions);
     GLib.SimpleAction block_action = new GLib.SimpleAction.stateful ("toggle-blocked", null,
                                                                      new GLib.Variant.boolean (false));
     block_action.activate.connect (toggle_blocked_activated);
@@ -153,6 +153,7 @@ class ProfilePage : ScrollWidget, IPage {
                                                                   new GLib.Variant.boolean (false));
     rt_action.activate.connect (retweet_action_activated);
     actions.add_action (rt_action);
+    this.insert_action_group ("user", actions);
 
     this.more_menu = more_button.menu_model;
   }
@@ -164,6 +165,9 @@ class ProfilePage : ScrollWidget, IPage {
     ((SimpleAction)actions.lookup_action ("add-remove-list")).set_enabled (user_id != account.id);
     ((SimpleAction)actions.lookup_action ("write-dm")).set_enabled (user_id != account.id);
     ((SimpleAction)actions.lookup_action ("toggle-blocked")).set_enabled (user_id != account.id);
+    /* We (maybe) re-enable this later when the friendship object has arrived */
+    ((SimpleAction)actions.lookup_action ("toggle-retweets")).set_enabled (false);
+
 
     load_banner (DATADIR + "/no_banner.png");
     load_friendship.begin ();
@@ -229,9 +233,13 @@ class ProfilePage : ScrollWidget, IPage {
     }
     var relationship = parser.get_root ().get_object ().get_object_member ("relationship");
     bool followed_by = relationship.get_object_member ("target").get_boolean_member ("following");
+    bool following = relationship.get_object_member ("target").get_boolean_member ("followed_by");
+    bool want_retweets = relationship.get_object_member ("source").get_boolean_member ("want_retweets");
     follows_you_label.visible = followed_by;
     set_user_blocked (relationship.get_object_member ("source").get_boolean_member ("blocking"));
-    set_retweets_disabled (!relationship.get_object_member ("source").get_boolean_member ("want_retweets"));
+    set_retweets_disabled (following && !want_retweets);
+
+    ((SimpleAction)actions.lookup_action ("toggle-retweets")).set_enabled (following);
   }
 
   private async void load_profile_data (int64 user_id, bool show_spinner) { //{{{
@@ -514,10 +522,12 @@ class ProfilePage : ScrollWidget, IPage {
       });
       desc = TweetUtils.get_formatted_text (description, text_urls);
     }
+
+    this.follower_count = followers;
     description_label.label = "<big>" + desc + "</big>";
     tweets_label.label = "%'d".printf(tweets);
-    followers_label.label = "%'d".printf(followers);
     following_label.label = "%'d".printf(following);
+    update_follower_label ();
 
     if (location != null && location != "") {
       location_label.visible = true;
@@ -546,12 +556,15 @@ class ProfilePage : ScrollWidget, IPage {
     if (following) {
       call.set_function( "1.1/friendships/destroy.json");
       ht.hide_tweets_from (this.user_id);
+      follower_count --;
     } else {
       call.set_function ("1.1/friendships/create.json");
       call.add_param ("follow", "false");
       ht.show_tweets_from (this.user_id);
       set_user_blocked (false);
+      follower_count ++;
     }
+    update_follower_label ();
     debug  (@"User ID: $user_id");
     progress_spinner.start ();
     loading_stack.visible_child_name = "progress";
@@ -632,7 +645,7 @@ class ProfilePage : ScrollWidget, IPage {
     //       We might otherwise overwrite the new user's data with that from the old one.
 //    data_cancellable.cancel ();
     banner_image.scale = 0.3;
-    lowest_tweet_id = int64.MAX;
+    //lowest_tweet_id = int64.MAX;
   }
 
   private void reset_data () {
@@ -645,6 +658,7 @@ class ProfilePage : ScrollWidget, IPage {
     following_label.label = " ";
     followers_label.label = " ";
     avatar_image.pixbuf = null;
+    lowest_tweet_id = int64.MAX;
   }
 
   public void create_tool_button (Gtk.RadioButton? group) {}
@@ -749,5 +763,8 @@ class ProfilePage : ScrollWidget, IPage {
     ((SimpleAction)actions.lookup_action ("toggle-retweets")).set_state (new GLib.Variant.boolean (disabled));
   }
 
+  private void update_follower_label () {
+    followers_label.label = "%'d".printf(follower_count);
+  }
 
 }
