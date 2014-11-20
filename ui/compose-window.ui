@@ -143,7 +143,7 @@
                     <style>
                       <class name="suggested-action"/>
                     </style>
-                    <signal name="clicked" handler="send_tweet" swapped="no"/>
+                    <signal name="clicked" handler="start_send_tweet" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>

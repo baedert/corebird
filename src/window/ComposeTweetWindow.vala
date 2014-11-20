@@ -158,7 +158,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     Gtk.AccelGroup ag = new Gtk.AccelGroup ();
     ag.connect (Gdk.Key.Escape, 0, Gtk.AccelFlags.LOCKED, escape_pressed_cb);
     ag.connect (Gdk.Key.Return, Gdk.ModifierType.CONTROL_MASK, Gtk.AccelFlags.LOCKED,
-        () => {send_tweet (); return true;});
+        () => {start_send_tweet (); return true;});
 
     this.add_accel_group (ag);
 
@@ -202,12 +202,58 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   }
 
   [GtkCallback]
-  private void send_tweet () {
+  private void start_send_tweet () {
+    int media_count = get_effective_media_count ();
+    Collect collect_obj = new Collect (media_count);
+    int64[] media_ids = new int64[media_count];
+
+    if (media_count > 0) {
+      /* Set up a new proxy because why not */
+      Rest.OAuthProxy proxy = new Rest.OAuthProxy (Settings.get_consumer_key (),
+                                                   Settings.get_consumer_secret (),
+                                                   "https://upload.twitter.com/",
+                                                   false);
+      proxy.token = account.proxy.token;
+      proxy.token_secret = account.proxy.token_secret;
+
+      int i = 0;
+      foreach (AddImageButton aib in image_buttons) {
+        if (aib.image != null) {
+          int k = i;
+          upload_media.begin (aib.image_path, proxy, (obj, res) => {
+            int64 id;
+            try {
+              id = upload_media.end (res);
+            } catch (GLib.Error e) {
+              warning (e.message); // XXX Error handling!
+              return;
+            }
+            media_ids[k] = id;
+            collect_obj.emit ();
+          });
+          i ++;
+        }
+      }
+      collect_obj.finished.connect ((error) => {
+        send_tweet (error, media_ids);
+      });
+
+    } else {
+      /* No media attached so just send the text */
+      send_tweet (null, media_ids);
+    }
+  }
+
+  private void send_tweet (GLib.Error? error, int64[] ids) {
+    if (error != null) {
+      GLib.error (error.message);
+    }
+
     Gtk.TextIter start, end;
     tweet_text.buffer.get_start_iter (out start);
     tweet_text.buffer.get_end_iter (out end);
     string text = tweet_text.buffer.get_text (start, end, true);
-    if(text.strip() == "")
+    if (text.strip () == "")
       return;
 
     var call = account.proxy.new_call ();
@@ -215,6 +261,15 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     call.add_param ("status", text);
     if (this.answer_to != null && mode == Mode.REPLY) {
       call.add_param("in_reply_to_status_id", answer_to.id.to_string ());
+    }
+
+    if (ids.length > 0) {
+      StringBuilder id_str = new StringBuilder ();
+      id_str.append (ids[0].to_string ());
+      for (int i = 1; i < ids.length; i ++) {
+        id_str.append (",").append (ids[i].to_string ());
+      }
+      call.add_param ("media_ids", id_str.str);
     }
 
     call.set_function ("1.1/statuses/update.json");
@@ -229,7 +284,34 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
         this.destroy ();
       }
     });
-    this.visible = false;
+  }
+
+  private async int64 upload_media (string path, Rest.Proxy proxy) throws GLib.Error {
+    var call = proxy.new_call ();
+    call.set_function ("1.1/media/upload.json");
+    call.set_method ("POST");
+    uint8[] file_contents;
+    GLib.File media_file = GLib.File.new_for_path (path);
+    media_file.load_contents (null, out file_contents, null);
+    Rest.Param param = new Rest.Param.full ("media",
+                                            Rest.MemoryUse.COPY,
+                                            file_contents,
+                                            "multipart/form-data",
+                                            path);
+    call.add_param_full (param);
+
+
+    yield call.invoke_async (null);
+    var parser = new Json.Parser ();
+    try {
+      parser.load_from_data (call.get_payload ());
+    } catch (GLib.Error e) {
+      warning (e.message); //XXX Error handling
+      return -1;
+    }
+    stdout.printf ("%s\n", call.get_payload ());
+    var root = parser.get_root ().get_object ();
+    return root.get_int_member ("media_id");
   }
 
   [GtkCallback]
@@ -476,6 +558,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
         var pixbuf = new Gdk.Pixbuf.from_file (file);
         var thumb = Utils.slice_pixbuf (pixbuf, 500, MultiMediaWidget.HEIGHT);
         source.image = thumb;
+        source.image_path = file;
       } catch (GLib.Error e) {
         warning (e.message);
       }
