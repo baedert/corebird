@@ -43,7 +43,6 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   private Gtk.Window completion_window;
   [GtkChild]
   private Gtk.ListBox completion_list;
-  private string media_uri;
   private unowned Account account;
   private unowned Tweet answer_to;
   private Mode mode;
