@@ -307,7 +307,9 @@ class LoadMoreEntry : Gtk.ListBoxRow, ITwitterItem {
   [GtkChild]
   private Gtk.Button load_more_button;
 
-  public LoadMoreEntry () {}
+  public LoadMoreEntry () {
+    this.activatable = false;
+  }
   public Gtk.Button get_button () {
     return load_more_button;
   }
