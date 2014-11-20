@@ -309,7 +309,6 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       warning (e.message); //XXX Error handling
       return -1;
     }
-    stdout.printf ("%s\n", call.get_payload ());
     var root = parser.get_root ().get_object ();
     return root.get_int_member ("media_id");
   }
