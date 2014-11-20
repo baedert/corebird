@@ -495,8 +495,10 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     image_button.remove_clicked.connect (remove_image_clicked_cb);
     image_button.add_clicked.connect (add_image_clicked_cb);
     image_button.notify["image"].connect (() => {
-      if (image_button.image != null)
+      if (image_button.image != null) {
         add_image_button ();
+        recalc_tweet_length ();
+      }
     });
     revealer.add (image_button);
     revealer.transition_type = Gtk.RevealerTransitionType.SLIDE_DOWN;
@@ -571,6 +573,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       content_box.remove (revealer);
       image_buttons.remove (source);
     });
+    recalc_tweet_length ();
   }
 
   private int get_effective_media_count () {
