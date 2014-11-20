@@ -32,9 +32,11 @@ public class AddImageButton : Gtk.Button {
       if (value != null) {
         this.get_style_context ().remove_class ("image-placeholder");
         this.get_style_context ().add_class ("image-added");
+        this.tooltip_text = _("Click to remove image");
       } else {
         this.get_style_context ().add_class ("image-placeholder");
         this.get_style_context ().remove_class ("image-added");
+        this.tooltip_text = _("Click to add image");
       }
       this.queue_draw ();
     }
@@ -71,8 +73,8 @@ public class AddImageButton : Gtk.Button {
   }
 
   construct {
+    this.image = null;
     this.set_size_request (-1, MultiMediaWidget.HEIGHT);
-    this.get_style_context ().add_class ("image-placeholder");
   }
 
   public override bool draw (Cairo.Context ct) {
