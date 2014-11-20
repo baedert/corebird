@@ -42,6 +42,8 @@ public class AddImageButton : Gtk.Button {
       return _image;
     }
   }
+  public string? image_path = null;
+
   public signal void add_clicked ();
   public signal void remove_clicked ();
 
@@ -110,6 +112,7 @@ public class AddImageButton : Gtk.Button {
       var file = GLib.File.new_for_uri (uri);
       from_file (file);
     } else if (info == TARGET_IMAGE) {
+      /* XXX This doesn't work when uploading since it doesn't set image_path? */
       var pixbuf = selection_data.get_pixbuf ();
       from_bigger_pixbuf (pixbuf);
     } else if (info == TARGET_URI_LIST) {
@@ -124,6 +127,7 @@ public class AddImageButton : Gtk.Button {
   private void from_file (GLib.File file) {
     try {
       var pixbuf = new Gdk.Pixbuf.from_file (file.get_path ());
+      this.image_path = file.get_path ();
       from_bigger_pixbuf (pixbuf);
     } catch (GLib.Error e) {
       warning (e.message);
