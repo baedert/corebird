@@ -218,25 +218,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       call.add_param("in_reply_to_status_id", answer_to.id.to_string ());
     }
 
-    Rest.Param param;
-    //if (media_count == 0) {
-      call.set_function ("1.1/statuses/update.json");
-    //} else {
-      //call.set_function ("1.1/statuses/update_with_media.json");
-      //uint8[] content;
-      //try {
-        //GLib.File media_file = GLib.File.new_for_path(media_uri);
-        //media_file.load_contents (null, out content, null);
-      //} catch (GLib.Error e) {
-        //critical (e.message);
-      //}
-
-      //param  = new Rest.Param.full ("media[]", Rest.MemoryUse.COPY,
-                                    //content, "multipart/form-data",
-                                    //media_uri);
-      //call.add_param_full (param);
-    //}
-
+    call.set_function ("1.1/statuses/update.json");
     call.invoke_async.begin (null, (obj, res) => {
       try {
         call.invoke_async.end (res);
@@ -511,5 +493,15 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       image_buttons.remove (source);
     });
   }
+
+  private int get_effective_media_count () {
+    int c = 0;
+    foreach (AddImageButton btn in image_buttons)
+      if (btn.image != null)
+        c ++;
+
+    return c;
+  }
+
   /* }}} */
 }
