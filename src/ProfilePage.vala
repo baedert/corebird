@@ -556,16 +556,19 @@ class ProfilePage : ScrollWidget, IPage {
     if (following) {
       call.set_function( "1.1/friendships/destroy.json");
       ht.hide_tweets_from (this.user_id);
+      ht.hide_retweets_from (this.user_id);
       follower_count --;
     } else {
       call.set_function ("1.1/friendships/create.json");
       call.add_param ("follow", "false");
       ht.show_tweets_from (this.user_id);
+      if (!((SimpleAction)actions.lookup_action ("toggle-retweets")).get_state ().get_boolean ()) {
+        ht.show_retweets_from (this.user_id);
+      }
       set_user_blocked (false);
       follower_count ++;
     }
     update_follower_label ();
-    debug  (@"User ID: $user_id");
     progress_spinner.start ();
     loading_stack.visible_child_name = "progress";
     follow_button.sensitive = false;
@@ -733,10 +736,11 @@ class ProfilePage : ScrollWidget, IPage {
     call.add_param ("user_id", this.user_id.to_string ());
     call.add_param ("retweets", current_state.to_string ());
     HomeTimeline ht = (HomeTimeline) main_window.get_page (Page.STREAM);
-    if (current_state)
+    if (current_state) {
       ht.show_retweets_from (this.user_id);
-    else
+    } else {
       ht.hide_retweets_from (this.user_id);
+    }
 
     call.invoke_async.begin (null, (obj, res) => {
       try {
