@@ -162,9 +162,9 @@ class CropWidget : Gtk.DrawingArea {
       selection_rect.height = image_rect.height;
 
 
-    if (selection_rect.width < min_width) {
-      selection_rect.width = min_width;
-      selection_rect.height = (int)(min_width / desired_aspect_ratio);
+    if (selection_rect.width < (min_width * current_scale)) {
+      selection_rect.width = (int)(min_width * current_scale);
+      selection_rect.height = (int)(min_width * current_scale / desired_aspect_ratio);
     }
 
 
