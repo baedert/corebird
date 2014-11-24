@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 -->
 <interface>
-  <requires lib="gtk+" version="3.6"/>
   <template class="AboutDialog" parent="GtkAboutDialog">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
@@ -16,22 +14,5 @@
     <property name="logo_icon_name">corebird</property>
     <property name="license_type">gpl-3-0</property>
     <signal name="response" handler="response_cb" swapped="no"/>
-    <child internal-child="vbox">
-      <object class="GtkBox" id="aboutdialog-vbox1">
-        <property name="can_focus">False</property>
-        <property name="orientation">vertical</property>
-        <child internal-child="action_area">
-          <object class="GtkButtonBox" id="aboutdialog-action_area1">
-            <property name="can_focus">False</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="pack_type">end</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-      </object>
-    </child>
   </template>
 </interface>
