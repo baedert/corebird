@@ -19,6 +19,13 @@
     </child>
   </object>
 
+  <object class="GtkSizeGroup">
+    <widgets>
+      <widget name="cancel_button" />
+      <widget name="send_button" />
+    </widgets>
+  </object>
+
 
   <template class="ComposeTweetWindow" parent="GtkApplicationWindow">
     <property name="can_focus">False</property>
