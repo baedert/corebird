@@ -48,10 +48,10 @@ This is the readme for the current *development version*. If you're looking for 
  - `libgee-0.8`
  - `vala >= 0.26` (makedep)
  - `automake >= 1.14` (makedep)
- - `gstreamer` (disable via --disable-video, default enabled)
- - `gst-plugins-bad` (disable via --disable-video, default enabled)
- - `gst-plugins-good` (disable via --disable-video, default enabled)
- - `gst-libav` (disable via --disable-video, default enabled)
+ - `gstreamer-1.0` (disable via --disable-video, default enabled)
+ - `gst-plugins-bad-1.0` (disable via --disable-video, default enabled)
+ - `gst-plugins-good-1.0` (disable via --disable-video, default enabled)
+ - `gst-libav-1.0` (disable via --disable-video, default enabled)
 
 Note that the above packages are just rough estimations, the actual package names on your distribution may vary.
 
