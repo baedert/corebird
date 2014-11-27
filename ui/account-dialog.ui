@@ -313,6 +313,7 @@
         </child>
       </object>
     </child>
+
     <action-widgets>
       <action-widget response="cancel">cancel_button</action-widget>
       <action-widget response="close">close_button</action-widget>

@@ -25,8 +25,6 @@ class AccountDialog : Gtk.Dialog {
   [GtkChild]
   private Gtk.Stack delete_stack;
   [GtkChild]
-  private Gtk.Button delete_button;
-  [GtkChild]
   private Gtk.Switch autostart_switch;
   [GtkChild]
   private Gtk.Entry website_entry;
@@ -98,7 +96,6 @@ class AccountDialog : Gtk.Dialog {
   [GtkCallback]
   private void delete_button_clicked_cb () {
     delete_stack.visible_child_name = PAGE_DELETE;
-    delete_button.hide ();
   }
 
   private void save_data () {
@@ -277,7 +274,6 @@ class AccountDialog : Gtk.Dialog {
   [GtkCallback]
   private void delete_cancel_button_clicked_cb () {
     delete_stack.visible_child_name = PAGE_NORMAL;
-    delete_button.show ();
   }
 
   [GtkCallback]
