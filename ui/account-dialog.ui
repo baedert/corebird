@@ -222,12 +222,12 @@
                     <property name="visible">true</property>
                     <property name="label" translatable="yes">Delete</property>
                     <property name="halign">fill</property>
-                    <property name="margin_start">24</property>
-                    <property name="margin_end">24</property>
+                    <!--<property name="margin_start">24</property>-->
+                    <!--<property name="margin_end">24</property>-->
                     <property name="margin_top">12</property>
                     <signal name="clicked" handler="delete_button_clicked_cb" />
                     <style>
-                      <class name="destructive-action" />
+                      <!--<class name="destructive-action" />-->
                     </style>
                   </object>
                   <packing>
