@@ -206,7 +206,7 @@ class TweetInfoPage : IPage , ScrollWidget {
       Json.Object root_object = parser.get_root ().get_object ();
 
       string with = root_object.get_string_member ("source");
-      with = extract_source (with);
+      with = "<span underline='none'>" + extract_source (with) + "</span>";
       set_tweet_data (tweet, with);
 
       if (tweet.reply_id == 0) {
