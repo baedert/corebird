@@ -29,7 +29,7 @@ class AccountDialog : Gtk.Dialog {
   [GtkChild]
   private Gtk.Entry website_entry;
   [GtkChild]
-  private Gtk.TextView description_text_view;
+  private CompletionTextView description_text_view;
 
   private unowned Account account;
   private string old_user_name;
@@ -47,6 +47,7 @@ class AccountDialog : Gtk.Dialog {
     name_entry.text = account.name;
     set_transient_data (account.website, account.description);
     avatar_banner_widget.set_account (account);
+    description_text_view.set_account (account);
 
     autostart_switch.freeze_notify ();
     string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
