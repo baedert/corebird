@@ -386,7 +386,7 @@ class ProfilePage : ScrollWidget, IPage {
   private async void load_tweets () { // {{{
     tweet_list.set_unempty ();
     tweets_loading = true;
-    int requested_tweet_count = 20;
+    int requested_tweet_count = 10;
     var call = account.proxy.new_call ();
     call.set_function ("1.1/statuses/user_timeline.json");
     call.set_method ("GET");
