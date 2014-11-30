@@ -108,7 +108,6 @@ class CompletionTextView : Gtk.TextView {
     Gtk.TextIter? end_iter;
     this.buffer.get_start_iter (out start_iter);
     this.buffer.get_end_iter (out end_iter);
-    //recalc_tweet_length ();  XXX
     this.buffer.remove_all_tags (start_iter, end_iter);
     TweetUtils.annotate_text (this.buffer);
   }

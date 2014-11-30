@@ -142,13 +142,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
 
   private void buffer_changed_cb () {
-    Gtk.TextIter? start_iter;
-    Gtk.TextIter? end_iter;
-    tweet_text.buffer.get_start_iter (out start_iter);
-    tweet_text.buffer.get_end_iter (out end_iter);
     recalc_tweet_length ();
-    tweet_text.buffer.remove_all_tags (start_iter, end_iter);
-    TweetUtils.annotate_text (tweet_text.buffer);
   }
 
   private void recalc_tweet_length () {
@@ -289,10 +283,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
 
   private bool escape_pressed_cb () {
-    //if (completion_window.visible)
-      //completion_window.hide ();
-    //else
-      this.destroy ();
+    this.destroy ();
     return true;
   }
 
