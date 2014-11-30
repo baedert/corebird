@@ -41,7 +41,7 @@
             <property name="margin">6</property>
 
             <child>
-              <object class="GtkTextView" id="text_view">
+              <object class="CompletionTextView" id="text_view">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="wrap-mode">word-char</property>
