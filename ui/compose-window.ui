@@ -1,24 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <object class="GtkWindow" id="completion_window">
-    <property name="type">popup</property>
-    <property name="type_hint">combo</property>
-    <signal name="focus_out_event" handler="completion_window_focus_out_cb" swapped="false" />
-
-    <child>
-      <object class="GtkScrolledWindow" id="scroller">
-        <property name="visible">True</property>
-        <property name="can_focus">false</property>
-        <child>
-          <object class="GtkListBox" id="completion_list">
-            <property name="visible">true</property>
-            <property name="can_focus">true</property>
-          </object>
-        </child>
-      </object>
-    </child>
-  </object>
-
   <object class="GtkSizeGroup">
     <widgets>
       <widget name="cancel_button" />
@@ -30,7 +11,7 @@
   <template class="ComposeTweetWindow" parent="GtkApplicationWindow">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Compose Tweet</property>
-    <property name="modal">True</property>
+    <!--<property name="modal">True</property>-->
     <property name="window_position">center-on-parent</property>
     <property name="default_width">500</property>
     <property name="default_height">180</property>
@@ -84,7 +65,7 @@
                 <property name="margin_bottom">6</property>
                 <property name="shadow_type">in</property>
                 <child>
-                  <object class="GtkTextView" id="tweet_text">
+                  <object class="CompletionTextView" id="tweet_text">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="hexpand">True</property>
@@ -94,7 +75,6 @@
                     <property name="left_margin">2</property>
                     <property name="right_margin">2</property>
                     <property name="height_request">60</property>
-                    <signal name="key_press_event" handler="tweet_text_key_pressed_cb" swapped="no" />
                     <accessibility>
                       <relation type="labelled-by" target="length_label"/>
                     </accessibility>
