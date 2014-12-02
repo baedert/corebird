@@ -66,6 +66,7 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
     this.balance_next_upper_change (TOP);
 
     entry.seen =  t.user_id == account.id ||
+                  t.rt_by_id == account.id ||
                   (this.scrolled_up  &&
                    main_window.cur_page_id == this.id &&
                    auto_scroll);

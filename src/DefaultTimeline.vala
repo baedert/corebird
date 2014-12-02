@@ -211,15 +211,20 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
    *   - In any case, if the user follows the author of the tweet
    *     (not the author of the retweet!), we already get the source
    *     tweet by other means, so don't display it again.
+   *   - It's a retweet from the authenticating user itself
    */
   protected bool should_display_retweet (Tweet t) {
-    // First case
+    /* First case */
     if (t.user_id == account.id)
       return false;
 
-    // Second case
+    /*  Second case */
     if (account.follows_id (t.rt_by_id))
         return false;
+
+    /* third case */
+    if (t.rt_by_id == account.id)
+      return false;
 
     return true;
   }
