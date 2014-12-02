@@ -294,6 +294,25 @@ public class Account : GLib.Object {
     return false;
   }
 
+  public void follow_id (int64 user_id) {
+    this.friends.resize (this.friends.length + 1);
+    this.friends[this.friends.length - 1] = user_id;
+  }
+
+  public void unfollow_id (int64 user_id) {
+    int64[] new_friends = new int64[this.friends.length - 1];
+
+    int o = 0;
+    for (int i = 0; i < this.friends.length; i++) {
+      if (this.friends[i] == user_id) {
+        continue;
+      }
+      new_friends[o] = this.friends[i];
+      o ++;
+    }
+    this.friends = new_friends;
+  }
+
   /** Static stuff ********************************************************************/
   private static GLib.SList<Account> accounts = null;
 
