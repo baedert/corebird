@@ -226,8 +226,9 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
 
   protected void mark_seen (int64 id) {
     foreach (Gtk.Widget w in tweet_list.get_children ()) {
-       if (w == null || !(w is TweetListEntry))
+      if (w == null || !(w is TweetListEntry))
         continue;
+
       var tle = (TweetListEntry) w;
       if (tle.tweet.id == id) {
         if (!tle.seen) {
