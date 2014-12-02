@@ -51,17 +51,20 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
     Tweet t = new Tweet();
     t.load_from_json (obj, now, account);
 
+
+    var entry = new TweetListEntry (t, main_window, account);
+    entry.visible = true;
+
     if (t.is_retweet && !should_display_retweet (t))
-      return;
+      entry.visible = false;
 
     if (account.filter_matches (t))
-      return;
+      entry.visible = false;
 
     bool auto_scroll = Settings.auto_scroll_on_new_tweets ();
 
     this.balance_next_upper_change (TOP);
 
-    var entry = new TweetListEntry (t, main_window, account);
     entry.seen =  t.user_id == account.id ||
                   (this.scrolled_up  &&
                    main_window.cur_page_id == this.id &&
