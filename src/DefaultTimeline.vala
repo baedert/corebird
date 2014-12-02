@@ -208,9 +208,9 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   /**
    * So, we don't want to display a retweet in the following situations:
    *   - If the original tweet was a tweet by the authenticated user
-   *   - In any case, if the original tweet already exists in the timline,
-   *     we don't display the retweet but instead just mark the original tweet
-   *     as retweeted.
+   *   - In any case, if the user follows the author of the tweet
+   *     (not the author of the retweet!), we already get the source
+   *     tweet by other means, so don't display it again.
    */
   protected bool should_display_retweet (Tweet t) {
     // First case
@@ -218,19 +218,8 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
       return false;
 
     // Second case
-    foreach (Gtk.Widget w in tweet_list.get_children ()) {
-      if (w == null || !(w is TweetListEntry))
-        continue;;
-
-      var tle = (TweetListEntry) w;
-      if (tle.tweet.id == t.rt_id || tle.tweet.rt_id == t.rt_id) {
-        if (t.rt_by_id == account.id) {
-          tle.tweet.retweeted = true;
-          tle.tweet.my_retweet = t.id;
-        }
+    if (account.follows_id (t.rt_by_id))
         return false;
-      }
-    }
 
     return true;
   }
