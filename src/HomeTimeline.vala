@@ -106,8 +106,11 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
         continue;
 
       TweetListEntry tle = (TweetListEntry) w;
-      if (tle.tweet.user_id == user_id) {
+      if (tle.tweet.user_id == user_id && !tle.tweet.is_retweet) {
         tle.hide ();
+      } else if (tle.tweet.user_id == user_id &&
+                 tle.tweet.is_retweet) {
+        tle.show ();
       }
 
     }
