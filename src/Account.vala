@@ -31,6 +31,7 @@ public class Account : GLib.Object {
   public Rest.OAuthProxy proxy    {public get; private set;}
   public UserStream user_stream   {public get; private set;}
   public UserCounter user_counter {public get; private set;}
+  public int64[] friends;
   public Gee.ArrayList<Filter> filters;
   public signal void info_changed (string screen_name, string name,
                                    Gdk.Pixbuf avatar_small, Gdk.Pixbuf avatar);
@@ -74,7 +75,7 @@ public class Account : GLib.Object {
                                       Settings.get_consumer_secret (),
                                       "https://api.twitter.com/",
                                       false);
-    this.user_stream = new UserStream ("@"+screen_name);
+    this.user_stream = new UserStream (this);
     if (load_secrets) {
       init_database ();
       db.select ("common").cols ("token", "token_secret").run ((vals) => {
@@ -131,7 +132,9 @@ public class Account : GLib.Object {
    *
    * @param screen_name The screen name to use for the API call.
    */
-  public async void query_user_info_by_scren_name (string screen_name) {
+  public async void query_user_info_by_screen_name (string screen_name) {
+    if (proxy == null)
+      error ("Proxy not initied");
     this.screen_name = screen_name;
     var call = proxy.new_call ();
     call.set_function ("1.1/users/show.json");
@@ -164,11 +167,12 @@ public class Account : GLib.Object {
       if (root.get_object_member ("entities").has_member ("url")) {
         this.website = root.get_object_member ("entities").get_object_member ("url")
                        .get_array_member ("urls").get_object_element (0).get_string_member ("expanded_url");
-      }
+      } else
+        this.website = "";
 
       string avatar_url = root.get_string_member ("profile_image_url");
       update_avatar.begin (avatar_url);
-      query_user_info_by_scren_name.callback();
+      query_user_info_by_screen_name.callback();
     });
 
     yield;
@@ -272,6 +276,41 @@ public class Account : GLib.Object {
       }
     }
     return false;
+  }
+
+  public void set_friends (Json.Array friends_array) {
+    this.friends = new int64[friends_array.get_length ()];
+    debug ("Adding %d friends...", friends.length);
+    for (int i = 0; i < friends_array.get_length (); i ++) {
+      this.friends[i] = friends_array.get_int_element (i);
+    }
+  }
+
+  public bool follows_id (int64 user_id) {
+    foreach (int64 id in this.friends)
+      if (id == user_id)
+        return true;
+
+    return false;
+  }
+
+  public void follow_id (int64 user_id) {
+    this.friends.resize (this.friends.length + 1);
+    this.friends[this.friends.length - 1] = user_id;
+  }
+
+  public void unfollow_id (int64 user_id) {
+    int64[] new_friends = new int64[this.friends.length - 1];
+
+    int o = 0;
+    for (int i = 0; i < this.friends.length; i++) {
+      if (this.friends[i] == user_id) {
+        continue;
+      }
+      new_friends[o] = this.friends[i];
+      o ++;
+    }
+    this.friends = new_friends;
   }
 
   /** Static stuff ********************************************************************/

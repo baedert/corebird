@@ -11,7 +11,8 @@ TESTS = \
 				filters        \
 				sql            \
 				multimedia     \
-				highlighting
+				highlighting   \
+				friends
 check_PROGRAMS = $(TESTS)
 
 tweet_length_SOURCES = tweet_length.vala
@@ -62,8 +63,9 @@ highlighting_SOURCES = highlighting.vala
 highlighting_LDADD = $(top_builddir)/src/libcorebird.la
 highlighting_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
 
-highlighting_SOURCES = highlighting.vala
-highlighting_LDADD = $(top_builddir)/src/libcorebird.la
-highlighting_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
+friends_SOURCES = friends.vala
+friends_LDADD = $(top_builddir)/src/libcorebird.la
+friends_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
+
 
 CLEANFILES = *.c

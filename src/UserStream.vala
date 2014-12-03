@@ -63,6 +63,7 @@ public class UserStream : Object {
   public string token_secret {
     set { proxy.token_secret = value; }
   }
+  private unowned Account account;
 
   // Signals
   public signal void interrupted ();
@@ -71,9 +72,10 @@ public class UserStream : Object {
 
 
 
-  public UserStream (string account_name) {
-    this.account_name = account_name;
-    debug ("CREATING USER STREAM FOR "+account_name);
+  public UserStream (Account account) {
+    this.account_name = account.screen_name;
+    this.account = account;
+    debug ("CREATING USER STREAM FOR " + account_name);
     proxy = new Rest.OAuthProxy(
           Settings.get_consumer_key (),
           Settings.get_consumer_secret (),
@@ -203,11 +205,20 @@ public class UserStream : Object {
         return;
       }
 
+      /* For whatever reason, we sometimes receive "OK"
+         from the server. I can't find an explanation
+         for this but it doesn't seem to cause any harm. */
+      if (data.str.strip () == "OK") {
+        data.erase ();
+        return;
+      }
+
       var parser = new Json.Parser ();
       try {
         parser.load_from_data(data.str);
       } catch (GLib.Error e) {
         critical(e.message);
+        critical (data.str);
       }
 
       var root_node = parser.get_root();
@@ -223,9 +234,10 @@ public class UserStream : Object {
         type = StreamMessageType.LIMIT;
       else if (root.has_member ("disconnect"))
         type = StreamMessageType.DISCONNECT;
-      else if (root.has_member ("friends"))
+      else if (root.has_member ("friends")) {
+        account.set_friends (root.get_array_member ("friends"));
         type = StreamMessageType.FRIENDS;
-      else if (root.has_member ("text"))
+      } else if (root.has_member ("text"))
         type = StreamMessageType.TWEET;
       else if (root.has_member ("event")) {
         string evt_str = root.get_string_member ("event");
@@ -240,8 +252,7 @@ public class UserStream : Object {
 
 #if DEBUG
       debug ("Message with type %s", type.to_string ());
-      if (type != StreamMessageType.FRIENDS)
-        stdout.printf (data.str+"\n");
+      stdout.printf (data.str+"\n\n");
 #endif
       foreach (IMessageReceiver it in receivers)
         it.stream_message_received (type, root_node);

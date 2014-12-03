@@ -41,10 +41,12 @@
             <property name="margin">6</property>
 
             <child>
-              <object class="GtkTextView" id="text_view">
+              <object class="CompletionTextView" id="text_view">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="wrap-mode">word-char</property>
+                <property name="left-margin">3</property>
+                <property name="right-margin">3</property>
                 <signal name="key_press_event" handler="text_view_key_press_cb" />
               </object>
             </child>
@@ -68,7 +70,6 @@
             <signal name="clicked" handler="send_button_clicked_cb" swapped="no"/>
             <style>
               <class name="suggested-action"/>
-              <class name="button-wide"/>
             </style>
           </object>
           <packing>

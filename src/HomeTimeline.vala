@@ -46,24 +46,27 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
     }
   } // }}}
 
-  // TODO: Split this logic out and make it unit-testable
   private void add_tweet (Json.Node obj) { // {{{
     GLib.DateTime now = new GLib.DateTime.now_local ();
     Tweet t = new Tweet();
     t.load_from_json (obj, now, account);
 
+
+    var entry = new TweetListEntry (t, main_window, account);
+    entry.visible = true;
+
     if (t.is_retweet && !should_display_retweet (t))
-      return;
+      entry.visible = false;
 
     if (account.filter_matches (t))
-      return;
+      entry.visible = false;
 
     bool auto_scroll = Settings.auto_scroll_on_new_tweets ();
 
     this.balance_next_upper_change (TOP);
 
-    var entry = new TweetListEntry (t, main_window, account);
     entry.seen =  t.user_id == account.id ||
+                  t.rt_by_id == account.id ||
                   (this.scrolled_up  &&
                    main_window.cur_page_id == this.id &&
                    auto_scroll);
@@ -97,15 +100,60 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
   } // }}}
 
 
-  public void remove_tweets_from (int64 user_id) {
+  public void hide_tweets_from (int64 user_id) {
     GLib.List<unowned Gtk.Widget> children = tweet_list.get_children ();
     foreach (Gtk.Widget w in children) {
       if (!(w is TweetListEntry))
         continue;
 
       TweetListEntry tle = (TweetListEntry) w;
-      if (tle.tweet.user_id == user_id) {
-        tweet_list.remove (w);
+      if (tle.tweet.user_id == user_id && !tle.tweet.is_retweet) {
+        tle.hide ();
+      } else if (tle.tweet.user_id == user_id &&
+                 tle.tweet.is_retweet) {
+        tle.show ();
+      }
+
+    }
+  }
+
+  public void show_tweets_from (int64 user_id) {
+    GLib.List<unowned Gtk.Widget> children = tweet_list.get_children ();
+    foreach (Gtk.Widget w in children) {
+      if (!(w is TweetListEntry))
+        continue;
+
+      TweetListEntry tle = (TweetListEntry) w;
+      if (tle.tweet.user_id == user_id && !tle.visible) {
+        tle.show ();
+      }
+
+    }
+  }
+
+  public void hide_retweets_from (int64 user_id) {
+    GLib.List<unowned Gtk.Widget> children = tweet_list.get_children ();
+    foreach (Gtk.Widget w in children) {
+      if (!(w is TweetListEntry))
+        continue;
+
+      TweetListEntry tle = (TweetListEntry) w;
+      if (tle.tweet.rt_by_id == user_id && tle.tweet.is_retweet) {
+        tle.hide ();
+      }
+
+    }
+  }
+
+  public void show_retweets_from (int64 user_id) {
+    GLib.List<unowned Gtk.Widget> children = tweet_list.get_children ();
+    foreach (Gtk.Widget w in children) {
+      if (!(w is TweetListEntry))
+        continue;
+
+      TweetListEntry tle = (TweetListEntry) w;
+      if (tle.tweet.rt_by_id == user_id && tle.tweet.is_retweet && !tle.visible) {
+        tle.show ();
       }
 
     }

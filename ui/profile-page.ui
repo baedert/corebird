@@ -23,6 +23,10 @@
         <attribute name="label" translatable="yes">Blocked</attribute>
         <attribute name="action">user.toggle-blocked</attribute>
       </item>
+      <item>
+        <attribute name="label" translatable="yes">Retweets disabled</attribute>
+        <attribute name="action">user.toggle-retweets</attribute>
+      </item>
     </section>
   </menu>
 

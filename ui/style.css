@@ -50,11 +50,44 @@
   opacity: 1.0;
 }
 
-
-.button-wide {
-  padding-left: 12px;
-  padding-right: 12px;
+.image-placeholder {
+  background-image: none;
+  border-radius: 0px;
+  box-shadow: none;
+  border: none;
+  background-color: alpha(grey, 0.7);
+  -GtkButton-default-border: 0;
+  -GtkButton-default-outside-border: 0;
+  -GtkButton-inner-border: 0;
+  -GtkWidget-focus-line-width: 0;
+  -GtkWidget-focus-padding: 0;
+  -gtk-icon-source: -gtk-icontheme("list-add-symbolic");
 }
+
+.image-placeholder:hover {
+  background-color: alpha (#333, 0.8);
+}
+
+.image-placeholder:active {
+  background-color: alpha (#333, 0.9);
+}
+
+
+.image-added {
+  box-shadow: none;
+  background-image: none;
+  border-radius: 0px;
+  border: none;
+  background-color: transparent;
+}
+
+.image-added:hover {
+  color: white;
+  background-color: alpha (red, 0.34);
+  icon-shadow: none;
+  -gtk-icon-source: -gtk-icontheme("edit-delete-symbolic");
+}
+
 
 .retweet-button,
 .favorite-button,

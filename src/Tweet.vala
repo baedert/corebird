@@ -191,6 +191,7 @@ public class Tweet : GLib.Object {
       string screen_name = mention.get_string_member ("screen_name");
       // Avoid duplicate mentions
       if (!(screen_name in this.mentions) && screen_name != account.screen_name
+          && screen_name != this.rt_by_screen_name
           && screen_name != this.screen_name) {
         this.mentions[real_mentions] = "@" + screen_name;
         real_mentions ++;
@@ -228,6 +229,7 @@ public class Tweet : GLib.Object {
         if (InlineMediaDownloader.is_media_candidate (media_url)) {
           var m = new Media ();
           m.url = media_url;
+          m.target_url = media_url + ":large";
           this.medias[real_media_count] = m;
           real_media_count ++;
         }
@@ -239,6 +241,9 @@ public class Tweet : GLib.Object {
       var extended_media = extended_entities.get_array_member ("media");
       extended_media.foreach_element ((arr, index, node) => {
         var media_obj = node.get_object ();
+        if (media_obj.get_string_member ("type") != "photo")
+          return;
+
         string url = media_obj.get_string_member ("media_url");
         foreach (Media m in this.medias) {
           if (m != null && m.url == url)
@@ -247,6 +252,7 @@ public class Tweet : GLib.Object {
         if (InlineMediaDownloader.is_media_candidate (url)) {
           var m = new Media ();
           m.url = url;
+          m.target_url = url + ":large";
           m.id = media_obj.get_int_member ("id");
           m.type = Media.type_from_string (media_obj.get_string_member ("type"));
           this.medias[real_media_count] = m;

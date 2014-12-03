@@ -26,6 +26,7 @@ public class ProgressEntry : Gtk.ListBoxRow, ITwitterItem {
 
 
   public ProgressEntry () {
+    this.activatable = false;
     Gtk.Spinner spinner = new Gtk.Spinner ();
     Gtk.Label l = new Gtk.Label (_("Loading more data..."));
     Gtk.Box box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 12);

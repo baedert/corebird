@@ -319,6 +319,17 @@ class ListStatusesPage : ScrollWidget, IPage {
      });
   } // }}}
 
+
+  [GtkCallback]
+  private void tweet_activated_cb (Gtk.ListBoxRow row) {
+    if (row is TweetListEntry) {
+      main_window.main_widget.switch_page (Page.TWEET_INFO,
+                                           TweetInfoPage.BY_INSTANCE,
+                                           ((TweetListEntry)row).tweet);
+    } else
+      warning ("row is of unknown type");
+  }
+
   private async void load_newer () {
     if (max_id == 0) {
       yield load_newest ();

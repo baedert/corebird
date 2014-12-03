@@ -26,30 +26,41 @@ struct TwitterList {
 
 
 class UserListDialog : Gtk.Dialog {
-  private static const int SAVE_RESPONSE   = 2;
-  private static const int CANCEL_RESPONSE = -1;
   private unowned Account account;
   private unowned MainWindow main_window;
   private Gtk.ListBox list_list_box = new Gtk.ListBox ();
+  private Gtk.Label placeholder_label = new Gtk.Label ("");
   private int64 user_id;
 
   public UserListDialog (MainWindow parent, Account account,
                          int64 user_id) {
+    GLib.Object (use_header_bar: Gtk.Settings.get_default ().gtk_dialogs_use_header ? 1 : 0);
+    this.title = _("Add to or Remove User From List");
     this.main_window = parent;
     this.user_id = user_id;
     this.account = account;
     set_modal (true);
     set_transient_for (parent);
     set_default_size (250, 200);
-    add_button (_("Cancel"), CANCEL_RESPONSE);
-    add_button (_("Save"), SAVE_RESPONSE);
+    add_button (_("Cancel"), Gtk.ResponseType.CANCEL);
+    add_button (_("Save"), Gtk.ResponseType.OK);
+
+    set_default_response (Gtk.ResponseType.OK);
 
 
     var content_box = get_content_area ();
+    content_box.border_width = 0;
     var scroller = new Gtk.ScrolledWindow (null, null);
     list_list_box.selection_mode = Gtk.SelectionMode.NONE;
     scroller.add (list_list_box);
     content_box.pack_start (scroller, true, true);
+
+
+    placeholder_label.label = _("You have no lists.");
+    placeholder_label.get_style_context ().add_class ("dim-label");
+    placeholder_label.show ();
+    list_list_box.set_placeholder (placeholder_label);
+
   }
 
   public void load_lists () {
@@ -98,15 +109,15 @@ class UserListDialog : Gtk.Dialog {
 
 
   public override void response (int response_id) {
-    message ("Response: %d", response_id);
-    if (response_id == CANCEL_RESPONSE) {
+    debug ("Response: %d", response_id);
+    if (response_id == Gtk.ResponseType.CANCEL) {
       this.destroy ();
-    } else if (response_id == SAVE_RESPONSE) {
+    } else if (response_id == Gtk.ResponseType.OK) {
       var list_entries = list_list_box.get_children ();
       foreach (Gtk.Widget w in list_entries) {
         var lue = (ListUserEntry) w;
         if (lue.changed) {
-          message ("VALUE CHANGED");
+          debug ("VALUE CHANGED");
           if (lue.active) {
             // Add user to the list
             add_user (lue.id);
@@ -167,7 +178,9 @@ class ListUserEntry : Gtk.ListBoxRow {
   }
 
   public ListUserEntry (string list_name, string description) {
-    var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 5);
+    this.activatable = false;
+    var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 12);
+    box.margin = 6;
     added_checkbox.valign = Gtk.Align.CENTER;
     box.pack_start (added_checkbox, false, false);
     var box2 = new Gtk.Box (Gtk.Orientation.VERTICAL, 3);

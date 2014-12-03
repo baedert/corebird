@@ -6,11 +6,13 @@
     <property name="orientation">vertical</property>
     <child>
       <object class="GtkLabel" id="user_list_label">
-        <property name="visible">True</property>
+        <property name="visible">false</property>
+        <property name="no_show_all">true</property>
         <property name="can_focus">False</property>
         <property name="halign">start</property>
-        <property name="margin_start">25</property>
+        <property name="margin_start">24</property>
         <property name="margin_top">15</property>
+        <property name="margin_bottom">6</property>
         <property name="label" translatable="yes">Created</property>
       </object>
       <packing>
@@ -27,11 +29,8 @@
         <property name="margin_end">25</property>
         <property name="label_xalign">0</property>
         <property name="shadow_type">in</property>
+        <property name="margin_top">24</property>
         <child>
-          <object class="GtkAlignment" id="alignment1">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <child>
               <object class="GtkListBox" id="user_list_box">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -43,8 +42,6 @@
                   </object>
                 </child>
               </object>
-            </child>
-          </object>
         </child>
       </object>
       <packing>
@@ -60,7 +57,8 @@
         <property name="can_focus">False</property>
         <property name="halign">start</property>
         <property name="margin_start">25</property>
-        <property name="margin_top">15</property>
+        <property name="margin_top">24</property>
+        <property name="margin_bottom">6</property>
         <property name="label" translatable="yes">Subscribed to</property>
         <property name="ellipsize">end</property>
       </object>
@@ -80,17 +78,11 @@
         <property name="label_xalign">0</property>
         <property name="shadow_type">in</property>
         <child>
-          <object class="GtkAlignment" id="alignment2">
+          <object class="GtkListBox" id="subscribed_list_box">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <child>
-              <object class="GtkListBox" id="subscribed_list_box">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="selection_mode">none</property>
-                <signal name="row-activated" handler="row_activated" swapped="no" />
-              </object>
-            </child>
+            <property name="selection_mode">none</property>
+            <signal name="row-activated" handler="row_activated" swapped="no" />
           </object>
         </child>
       </object>

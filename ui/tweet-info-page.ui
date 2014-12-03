@@ -96,7 +96,6 @@
                 <property name="halign">start</property>
                 <property name="valign">end</property>
                 <property name="hexpand">True</property>
-                <property name="xalign">0</property>
                 <signal name="clicked" handler="name_button_clicked_cb" swapped="no"/>
                 <style>
                   <class name="text-only-button"/>
@@ -135,7 +134,7 @@
             <child>
               <object class="GtkLabel" id="text_label">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can_focus">true</property>
                 <property name="margin_start">8</property>
                 <property name="margin_end">6</property>
                 <property name="margin_top">2</property>

@@ -195,7 +195,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       return;
     }
     var root_arr = parser.get_root ().get_array ();
-    message ("sent: %u", root_arr.get_length ());
+    debug ("sent: %u", root_arr.get_length ());
     account.db.begin_transaction ();
     root_arr.foreach_element ((arr, pos, node) => {
       var dm_obj = node.get_object ();
@@ -233,6 +233,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
                                       .vali64 ( "last_message_id", message_id)
                                       .where_eqi ("user_id", sender_id).run ();
       notify_new_dm (sender_id, t_e.screen_name, Utils.unescape_html (text), t_e.avatar_path);
+      thread_list.invalidate_sort ();
       return;
     }
 
@@ -260,6 +261,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     thread_entry.last_message = TweetUtils.get_real_text (text, url_list);
     thread_entry.last_message_id = message_id;
     thread_list.add(thread_entry);
+    thread_list.invalidate_sort ();
     thread_map.set(sender_id, thread_entry);
     string avatar_url = dm_obj.get_object_member ("sender").get_string_member ("profile_image_url");
     thread_entry.avatar_path = Dirs.cache ("assets/avatars/" + Utils.get_avatar_name (avatar_url));

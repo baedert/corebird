@@ -68,11 +68,13 @@ class FilterListEntry : Gtk.ListBoxRow {
   [GtkCallback]
   private void menu_button_clicked_cb () {
     stack.visible_child = delete_box;
+    this.activatable = false;
   }
 
   [GtkCallback]
   private void cancel_button_clicked_cb () {
     stack.visible_child = normal_box;
+    this.activatable = true;
   }
 
   [GtkCallback]

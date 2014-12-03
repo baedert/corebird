@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <template class="ImageCropDialog" parent="GtkDialog">
-    <property name="title" translatable="yes">Foobar</property>
     <property name="type_hint">dialog</property>
     <property name="destroy_with_parent">true</property>
 
@@ -9,6 +8,7 @@
     <child internal-child="vbox">
       <object class="GtkBox">
         <property name="visible">true</property>
+        <property name="border_width">0</property>
 
         <child>
           <object class="GtkStack" id="stack">
@@ -18,11 +18,8 @@
             <child>
               <object class="GtkFileChooserWidget" id="file_chooser">
                 <property name="visible">true</property>
-                <property name="margin_top">6</property>
-                <property name="margin_start">6</property>
-                <property name="margin_end">6</property>
                 <property name="vexpand">true</property>
-                <signal name="file_activated" handler="next_button_clicked_cb" />
+                <signal name="file_activated" handler="next" />
                 <signal name="selection_changed" handler="selection_changed_cb" />
               </object>
             </child>
@@ -39,6 +36,14 @@
             </child>
 
 
+            <child>
+              <object class="GtkLabel" id="error_label">
+                <property name="visible">true</property>
+                <property name="can_focus">false</property>
+                <property name="wrap">true</property>
+                <property name="margin">24</property>
+              </object>
+            </child>
           </object>
         </child>
 
@@ -47,43 +52,52 @@
 
 
 
+
+    <child type="action">
+      <object class="GtkButton" id="cancel_button">
+         <property name="visible">true</property>
+         <property name="label" translatable="yes">Cancel</property>
+      </object>
+    </child>
+
+    <!--
+         We use both <child type="action"> AND the action
+         area because of https://bugzilla.gnome.org/show_bug.cgi?id=740205
+      -->
     <child internal-child="action_area">
       <object class="GtkBox">
-        <property name="visible">true</property>
         <property name="orientation">horizontal</property>
+        <property name="margin_bottom">6</property>
+        <property name="margin_end">6</property>
         <property name="margin_top">6</property>
-
-        <child>
-          <object class="GtkButton">
-            <property name="visible">true</property>
-            <property name="label" translatable="yes">Cancel</property>
-            <signal name="clicked" handler="cancel_button_clicked_cb" />
-          </object>
-        </child>
-
-        <child>
-          <object class="GtkButton" id="back_button">
-            <property name="visible">true</property>
-            <property name="label" translatable="yes">Back</property>
-            <property name="sensitive">false</property>
-            <signal name="clicked" handler="back_button_clicked_cb" />
-          </object>
-        </child>
-
         <child>
           <object class="GtkButton" id="next_button">
             <property name="visible">true</property>
             <property name="label" translatable="yes">Next</property>
             <property name="sensitive">false</property>
-            <signal name="clicked" handler="next_button_clicked_cb" />
+            <property name="can_default">true</property>
           </object>
         </child>
+      </object>
+    </child>
 
+
+    <child type="action">
+      <object class="GtkButton" id="back_button">
+        <property name="visible">true</property>
+        <property name="label" translatable="yes">Back</property>
+        <property name="sensitive">false</property>
       </object>
     </child>
 
 
 
-  </template>
 
+    <action-widgets>
+      <action-widget response="cancel">cancel_button</action-widget>
+      <action-widget response="1">back_button</action-widget>
+      <action-widget response="ok" default="true">next_button</action-widget>
+    </action-widgets>
+
+  </template>
 </interface>
