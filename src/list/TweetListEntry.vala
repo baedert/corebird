@@ -35,6 +35,10 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   [GtkChild]
   private Gtk.Image conversation_image;
   [GtkChild]
+  private Gtk.Image rt_status_image;
+  [GtkChild]
+  private Gtk.Image fav_status_image;
+  [GtkChild]
   private DoubleTapButton retweet_button;
   [GtkChild]
   private Gtk.ToggleButton favorite_button;
@@ -139,18 +143,26 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
         retweet_button.tap ();
     });
 
+    if (tweet.favorited)
+      fav_status_image.show ();
+
+    if (tweet.retweeted)
+      rt_status_image.show ();
+
     values_set = true;
   }
 
   private void favorited_cb () {
     values_set = false;
     favorite_button.active = tweet.favorited;
+    fav_status_image.visible = tweet.favorited;
     values_set = true;
   }
 
   private void retweeted_cb () {
     values_set = false;
     retweet_button.active = tweet.retweeted;
+    rt_status_image.visible = tweet.retweeted;
     values_set = true;
   }
 

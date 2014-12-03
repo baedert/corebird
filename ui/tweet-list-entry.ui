@@ -207,6 +207,39 @@
                 <property name="top_attach">0</property>
               </packing>
             </child>
+
+
+            <child>
+              <object class="GtkImage" id="fav_status_image">
+                <property name="can_focus">false</property>
+                <property name="visible">false</property>
+                <property name="halign">end</property>
+                <property name="valign">baseline</property>
+                <property name="margin_end">6</property>
+                <property name="pixel_size">12</property>
+                <property name="icon_name">corebird-favorite-symbolic</property>
+                <style>
+                  <class name="dim-label" />
+                </style>
+              </object>
+            </child>
+
+
+            <child>
+              <object class="GtkImage" id="rt_status_image">
+                <property name="can_focus">false</property>
+                <property name="visible">false</property>
+                <property name="halign">end</property>
+                <property name="valign">baseline</property>
+                <property name="margin_end">6</property>
+                <property name="pixel_size">12</property>
+                <property name="icon_name">corebird-retweet-symbolic</property>
+                <style>
+                  <class name="dim-label" />
+                </style>
+              </object>
+            </child>
+
             <child>
               <object class="GtkImage" id="conversation_image">
                 <property name="can_focus">False</property>
@@ -214,7 +247,6 @@
                 <property name="halign">end</property>
                 <property name="valign">baseline</property>
                 <property name="margin_end">6</property>
-                <property name="hexpand">True</property>
                 <property name="pixel_size">12</property>
                 <property name="icon_name">corebird-conversation-symbolic</property>
                 <style>
