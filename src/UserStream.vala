@@ -26,7 +26,6 @@ public enum StreamMessageType {
   FRIENDS,
   EVENT,
   WARNING,
-  FOLLOW,
   DIRECT_MESSAGE,
 
   TWEET,
@@ -39,6 +38,7 @@ public enum StreamMessageType {
   EVENT_LIST_MEMBER_REMOVED,
   EVENT_FAVORITE,
   EVENT_UNFAVORITE,
+  EVENT_FOLLOW,
   EVENT_UNFOLLOW,
   EVENT_BLOCK,
   EVENT_UNBLOCK
@@ -266,7 +266,7 @@ public class UserStream : Object {
   private StreamMessageType get_event_type (string evt_str) {
     switch (evt_str) {
       case "follow":
-        return StreamMessageType.FOLLOW;
+        return StreamMessageType.EVENT_FOLLOW;
       case "list_created":
         return StreamMessageType.EVENT_LIST_CREATED;
       case "list_destroyed":
