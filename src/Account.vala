@@ -89,6 +89,13 @@ public class Account : GLib.Object {
     }
   }
 
+  public void uninit () {
+    this.user_stream.stop ();
+    this.user_counter.save (this.db);
+    this.user_stream = null;
+    this.user_counter = null;
+  }
+
   /**
    * Loads the small and normally sized avatars from disk.
    * Normal: accounts/ID.png

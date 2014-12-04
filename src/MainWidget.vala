@@ -192,7 +192,6 @@ public class MainWidget : Gtk.Box {
   }
 
   public void stop () {
-    account.user_stream.stop ();
-    account.user_counter.save (account.db);
+    account.uninit ();
   }
 }
