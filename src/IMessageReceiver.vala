@@ -17,6 +17,6 @@
 
 
 public interface IMessageReceiver : GLib.Object {
-  public abstract void stream_message_received(StreamMessageType type,
-                                               Json.Node root_node);
+  public abstract void stream_message_received (StreamMessageType type,
+                                                Json.Node root_node);
 }
