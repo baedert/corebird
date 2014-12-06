@@ -128,11 +128,14 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       return true;
     });
     if (n_rows == 0 && GLib.NetworkMonitor.get_default ().get_network_available ()) {
+      var row = new Gtk.ListBoxRow ();
       progress_spinner = new Gtk.Spinner ();
       progress_spinner.set_size_request (16, 16);
       progress_spinner.margin = 12;
       progress_spinner.start ();
-      thread_list.add (progress_spinner);
+      row.add (progress_spinner);
+      row.activatable = false;
+      thread_list.add (row);
     }
   } // }}}
 
