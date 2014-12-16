@@ -53,7 +53,6 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     tweet_list.set_sort_func(ITwitterItem.sort_func);
     this.add (tweet_list);
 
-    tweet_list.activate_on_single_click = false;
     tweet_list.row_activated.connect ((row) => {
       if (row is TweetListEntry) {
         main_window.main_widget.switch_page (Page.TWEET_INFO,
