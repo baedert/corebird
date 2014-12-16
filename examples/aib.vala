@@ -19,7 +19,7 @@ void main (string[] args) {
   var window = new Gtk.Window ();
 
   var aib = new AddImageButton ();
-  aib.clicked.connect (() => {
+  aib.add_clicked.connect (() => {
     Gdk.Pixbuf? pixbuf = null;
     try {
       pixbuf = new Gdk.Pixbuf.from_file ("examples/media1.jpg");
@@ -30,7 +30,15 @@ void main (string[] args) {
     int width = 500;
     var thumb = Utils.slice_pixbuf (pixbuf, width, MultiMediaWidget.HEIGHT);
     aib.image = thumb;
+    aib.start_progress ();
+    GLib.Timeout.add (1500, () => {
+      aib.set_error ("Image could not be uploaded: foobar bla bla bla bla bla bla bla bla bla");
+      return false;
+    });
+  });
 
+  aib.remove_clicked.connect (() => {
+    aib.image = null;
   });
 
   window.add (aib);
