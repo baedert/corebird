@@ -1,17 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <object class="GtkSizeGroup">
-    <widgets>
-      <widget name="cancel_button" />
-      <widget name="send_button" />
-    </widgets>
-  </object>
-
-
   <template class="ComposeTweetWindow" parent="GtkApplicationWindow">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Compose Tweet</property>
-    <!--<property name="modal">True</property>-->
     <property name="window_position">center-on-parent</property>
     <property name="default_width">500</property>
     <property name="default_height">180</property>
@@ -21,7 +12,30 @@
     <child type="titlebar">
       <object class="GtkHeaderBar" id="header_bar">
         <property name="visible">true</property>
-        <property name="title" translatable="yes">Compose Tweet</property>
+
+        <child type="title">
+          <object class="GtkStack" id="title_stack">
+            <property name="visible">true</property>
+
+            <child>
+              <object class="GtkLabel" id="title_label">
+                <property name="visible">true</property>
+                <property name="label" translatable="yes">Compose Tweet</property>
+                <style>
+                  <class name="title" />
+                </style>
+              </object>
+            </child>
+
+            <child>
+              <object class="GtkSpinner" id="title_spinner">
+                <property name="visible">true</property>
+              </object>
+            </child>
+
+
+          </object>
+        </child>
 
         <child>
           <object class="GtkButton" id="cancel_button">
@@ -35,6 +49,7 @@
           <object class="GtkButton" id="send_button">
             <property name="visible">true</property>
             <property name="label" translatable="yes">Send</property>
+            <property name="sensitive">false</property>
             <signal name="clicked" handler="start_send_tweet" swapped="no"/>
             <style>
               <class name="suggested-action" />

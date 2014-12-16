@@ -36,6 +36,12 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   private Gtk.Button send_button;
   [GtkChild]
   private Gtk.Button cancel_button;
+  [GtkChild]
+  private Gtk.Spinner title_spinner;
+  [GtkChild]
+  private Gtk.Label title_label;
+  [GtkChild]
+  private Gtk.Stack title_stack;
   private unowned Account account;
   private unowned Tweet answer_to;
   private Mode mode;
@@ -154,6 +160,20 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     Collect collect_obj = new Collect (media_count);
     int64[] media_ids = new int64[media_count];
 
+    title_stack.visible_child = title_spinner;
+    title_spinner.start ();
+    cancel_button.sensitive = false;
+    send_button.sensitive = false;
+    tweet_text.sensitive = false;
+
+    /* Remove unused media button */
+    foreach (AddImageButton btn in image_buttons)
+      if (btn.image == null) {
+        btn.sensitive = false;
+        break;
+      }
+
+
     if (media_count > 0) {
       /* Set up a new proxy because why not */
       Rest.OAuthProxy proxy = new Rest.OAuthProxy (Settings.get_consumer_key (),
@@ -167,14 +187,18 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       foreach (AddImageButton aib in image_buttons) {
         if (aib.image != null) {
           int k = i;
+          aib.start_progress ();
           upload_media.begin (aib.image_path, proxy, (obj, res) => {
             int64 id;
             try {
               id = upload_media.end (res);
             } catch (GLib.Error e) {
-              warning (e.message); // XXX Error handling!
+              warning (e.message);
+              collect_obj.emit (e);
+              aib.set_error (e.message);
               return;
             }
+            aib.set_success ();
             media_ids[k] = id;
             collect_obj.emit ();
           });
@@ -182,6 +206,10 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
         }
       }
       collect_obj.finished.connect ((error) => {
+        title_stack.visible_child = title_label;
+        cancel_button.sensitive = true;
+        send_button.sensitive = true;
+        tweet_text.sensitive = true;
         send_tweet (error, media_ids);
       });
 
@@ -192,7 +220,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   }
 
   private void send_tweet (GLib.Error? error, int64[] ids) {
-    if (error != null) {
+    if (error != null) { // XXX ZOMG
       GLib.error (error.message);
     }
 
@@ -200,8 +228,6 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     tweet_text.buffer.get_start_iter (out start);
     tweet_text.buffer.get_end_iter (out end);
     string text = tweet_text.buffer.get_text (start, end, true);
-    if (text.strip () == "")
-      return;
 
     var call = account.proxy.new_call ();
     call.set_method ("POST");
@@ -231,6 +257,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
         this.destroy ();
       }
     });
+    this.hide ();
   }
 
   private async int64 upload_media (string path, Rest.Proxy proxy) throws GLib.Error {
@@ -275,12 +302,11 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     tweet_text.buffer.text = text;
   }
 
-  /* }}} &/
 
   /* Image handling stuff {{{ */
 
   private void add_image_button (bool initially_visible = false) {
-    if (image_buttons.size >= Twitter.max_media_per_upload +2)
+    if (image_buttons.size >= Twitter.max_media_per_upload)
       return;
 
     var image_button = new AddImageButton ();
