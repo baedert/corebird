@@ -134,6 +134,9 @@
         <property name="no_show_all">true</property>
         <property name="can_focus">False</property>
         <property name="margin_top">8</property>
+        <property name="use_markup">true</property>
+        <property name="wrap">True</property>
+        <property name="wrap_mode">word-char</property>
       </object>
       <packing>
         <property name="expand">False</property>
