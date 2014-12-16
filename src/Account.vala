@@ -31,6 +31,7 @@ public class Account : GLib.Object {
   public Rest.OAuthProxy proxy    {public get; private set;}
   public UserStream user_stream   {public get; private set;}
   public UserCounter user_counter {public get; private set;}
+  private UserEventReceiver event_receiver;
   public int64[] friends;
   public Gee.ArrayList<Filter> filters;
   public signal void info_changed (string screen_name, string name,
@@ -41,6 +42,7 @@ public class Account : GLib.Object {
     this.screen_name = screen_name;
     this.name = name;
     this.filters = new Gee.ArrayList<Filter> ();
+    this.event_receiver = new UserEventReceiver (this);
   }
 
   /**
@@ -76,6 +78,7 @@ public class Account : GLib.Object {
                                       "https://api.twitter.com/",
                                       false);
     this.user_stream = new UserStream (this);
+    this.user_stream.register (this.event_receiver);
     if (load_secrets) {
       init_database ();
       db.select ("common").cols ("token", "token_secret").run ((vals) => {
@@ -84,6 +87,13 @@ public class Account : GLib.Object {
         return false; //stop
       });
     }
+  }
+
+  public void uninit () {
+    this.user_stream.stop ();
+    this.user_counter.save (this.db);
+    this.user_stream = null;
+    this.user_counter = null;
   }
 
   /**
@@ -135,6 +145,7 @@ public class Account : GLib.Object {
   public async void query_user_info_by_screen_name (string screen_name) {
     if (proxy == null)
       error ("Proxy not initied");
+
     this.screen_name = screen_name;
     var call = proxy.new_call ();
     call.set_function ("1.1/users/show.json");

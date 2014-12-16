@@ -1,22 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <object class="GtkSizeGroup">
-    <widgets>
-      <widget name="cancel_button" />
-      <widget name="send_button" />
-    </widgets>
-  </object>
-
-
   <template class="ComposeTweetWindow" parent="GtkApplicationWindow">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Compose Tweet</property>
-    <!--<property name="modal">True</property>-->
     <property name="window_position">center-on-parent</property>
     <property name="default_width">500</property>
     <property name="default_height">180</property>
     <property name="destroy_with_parent">True</property>
     <property name="type_hint">dialog</property>
+
+    <child type="titlebar">
+      <object class="GtkHeaderBar" id="header_bar">
+        <property name="visible">true</property>
+
+        <child type="title">
+          <object class="GtkStack" id="title_stack">
+            <property name="visible">true</property>
+
+            <child>
+              <object class="GtkLabel" id="title_label">
+                <property name="visible">true</property>
+                <property name="label" translatable="yes">Compose Tweet</property>
+                <style>
+                  <class name="title" />
+                </style>
+              </object>
+            </child>
+
+            <child>
+              <object class="GtkSpinner" id="title_spinner">
+                <property name="visible">true</property>
+              </object>
+            </child>
+
+
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkButton" id="cancel_button">
+            <property name="visible">true</property>
+            <property name="label" translatable="yes">Cancel</property>
+            <signal name="clicked" handler="cancel_clicked" swapped="no"/>
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkButton" id="send_button">
+            <property name="visible">true</property>
+            <property name="label" translatable="yes">Send</property>
+            <property name="sensitive">false</property>
+            <signal name="clicked" handler="start_send_tweet" swapped="no"/>
+            <style>
+              <class name="suggested-action" />
+            </style>
+          </object>
+          <packing>
+            <property name="pack-type">end</property>
+          </packing>
+        </child>
+
+      </object>
+    </child>
+
     <child>
       <object class="GtkBox" id="content_box">
         <property name="visible">True</property>
@@ -96,54 +142,6 @@
           <object class="GtkBox" id="box4">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <child>
-              <object class="GtkButtonBox" id="buttonbox2">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="spacing">10</property>
-                <property name="layout_style">end</property>
-                <child>
-                  <object class="GtkButton" id="cancel_button">
-                    <property name="label" translatable="yes">Cancel</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <property name="margin_bottom">6</property>
-                    <property name="valign">baseline</property>
-                    <signal name="clicked" handler="cancel_clicked" swapped="no"/>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkButton" id="send_button">
-                    <property name="label" translatable="yes">Send</property>
-                    <property name="visible">True</property>
-                    <property name="sensitive">False</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <property name="valign">baseline</property>
-                    <property name="margin_end">10</property>
-                    <property name="margin_bottom">6</property>
-                    <style>
-                      <class name="suggested-action"/>
-                    </style>
-                    <signal name="clicked" handler="start_send_tweet" swapped="no"/>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                  </packing>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="pack_type">end</property>
-              </packing>
-            </child>
             <child>
               <object class="GtkLabel" id="length_label">
                 <property name="visible">True</property>

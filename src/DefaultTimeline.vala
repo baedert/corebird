@@ -219,7 +219,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
       return false;
 
     /*  Second case */
-    if (account.follows_id (t.rt_by_id))
+    if (account.follows_id (t.user_id))
         return false;
 
     /* third case */

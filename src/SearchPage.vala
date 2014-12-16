@@ -67,6 +67,7 @@ class SearchPage : IPage, Gtk.Box {
     });
     scroll_widget.scrolled_to_end.connect (load_tweets);
     tweet_list.get_placeholder ().hide ();
+    tweet_list.set_adjustment (scroll_widget.get_vadjustment ());
   }
 
   [GtkCallback]

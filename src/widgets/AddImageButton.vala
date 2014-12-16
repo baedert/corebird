@@ -36,6 +36,8 @@ public class AddImageButton : Gtk.Button {
       } else {
         this.get_style_context ().add_class ("image-placeholder");
         this.get_style_context ().remove_class ("image-added");
+        this.get_style_context ().remove_class ("image-error");
+        this.get_style_context ().remove_class ("image-progress");
         this.tooltip_text = _("Click to add image");
       }
       this.queue_draw ();
@@ -45,6 +47,7 @@ public class AddImageButton : Gtk.Button {
     }
   }
   public string? image_path = null;
+  private string? error_message = null;
 
   public signal void add_clicked ();
   public signal void remove_clicked ();
@@ -52,9 +55,10 @@ public class AddImageButton : Gtk.Button {
 
   public AddImageButton () {
     this.clicked.connect (() => {
-      if (_image == null) {
+      if (_image == null && error_message == null) {
         add_clicked ();
       } else {
+        error_message = null;
         remove_clicked ();
       }
     });
@@ -96,11 +100,27 @@ public class AddImageButton : Gtk.Button {
     }
 
     base.draw (ct);
-    style_context.render_check (ct,
-                                (widget_width / 2.0) - (ICON_SIZE / 2.0),
-                                (widget_height / 2.0) - (ICON_SIZE / 2.0),
-                                ICON_SIZE,
-                                ICON_SIZE);
+    if (error_message == null) {
+      style_context.render_check (ct,
+                                  (widget_width / 2.0) - (ICON_SIZE / 2.0),
+                                  (widget_height / 2.0) - (ICON_SIZE / 2.0),
+                                  ICON_SIZE,
+                                  ICON_SIZE);
+    } else {
+      style_context.render_check (ct,
+                                  20,
+                                  (widget_height / 2.0) - (ICON_SIZE / 2.0),
+                                  ICON_SIZE,
+                                  ICON_SIZE);
+      Pango.Layout error_layout = this.create_pango_layout (this.error_message);
+      error_layout.set_width ((widget_width - ICON_SIZE - 20 - 20 - 20) * Pango.SCALE);
+      error_layout.set_height ((widget_height - 20) * Pango.SCALE);
+      style_context.render_layout (ct,
+                                   20 + ICON_SIZE + 20,
+                                   (widget_height / 2.0) -
+                                    (error_layout.get_height () / Pango.SCALE / 2.0),
+                                   error_layout);
+    }
 
     return false;
   }
@@ -142,6 +162,38 @@ public class AddImageButton : Gtk.Button {
     this.image = thumb;
   }
 
+  public void set_error (string error_message) {
+    this.get_style_context ().remove_class ("image-progress");
+    this.get_style_context ().remove_class ("image-success");
+    this.get_style_context ().add_class ("image-added");
+    if (this.image == null) {
+      warning ("Progress started but image == null");
+    }
+
+    this.get_style_context ().add_class ("image-error");
+    this.error_message = error_message;
+    this.set_tooltip_text (_("Click to remove image"));
+  }
+
+  public void start_progress () {
+    this.get_style_context ().remove_class ("image-added");
+    if (this.image == null) {
+      warning ("Progress started but image == null");
+    }
+
+    this.get_style_context ().add_class ("image-progress");
+  }
+
+  public void set_success () {
+    this.get_style_context ().remove_class ("image-progress");
+    this.get_style_context ().remove_class ("image-added");
+    if (this.image == null) {
+      warning ("Progress started but image == null");
+    }
+
+    this.get_style_context ().add_class ("image-success");
+    this.set_tooltip_text ("");
+  }
 }
 
 

@@ -43,17 +43,30 @@ class AccountCreateWidget : Gtk.Box {
 
   public void open_pin_request_site () {
     acc.init_proxy (false, true);
+
+    string? uri = null;
     try {
       acc.proxy.request_token ("oauth/request_token", "oob");
-      string uri = "http://twitter.com/oauth/authorize?oauth_token=" + acc.proxy.get_token();
+      uri = "http://twitter.com/oauth/authorize?oauth_token=" + acc.proxy.get_token();
       debug ("Trying to open %s", uri);
-      GLib.AppInfo.launch_default_for_uri (uri, null);
     } catch (GLib.Error e) {
       if (e.message.down() == "unauthorized") {
         Utils.show_error_dialog (_("Unauthorized. Most of the time, this means that there's something wrong with the Twitter servers and you should try again later"));
       } else {
         Utils.show_error_dialog (e.message);
       }
+      critical (e.message);
+      return;
+    }
+
+    /* Try to open URI in browser */
+    try {
+      if (!GLib.AppInfo.launch_default_for_uri (uri, null)) {
+        error_label.label = _("Could not open %s").printf ("<a href=\"" + uri + "\">" + uri + "</a>");
+        error_label.show ();
+      }
+    } catch (GLib.Error e) {
+      Utils.show_error_dialog (e.message);
       critical (e.message);
     }
   }

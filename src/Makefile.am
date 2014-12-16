@@ -43,6 +43,7 @@ cb_sources = \
 			Filter.vala \
 			FilterPage.vala \
 			Media.vala \
+			UserEventReceiver.vala \
 			widgets/TweetListBox.vala \
 			widgets/MaxSizeContainer.vala \
 			widgets/ScrollWidget.vala \
