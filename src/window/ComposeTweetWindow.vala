@@ -63,22 +63,6 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     tweet_text.buffer.changed.connect (buffer_changed_cb);
 
 
-    if (Gtk.Settings.get_default ().gtk_dialogs_use_header) {
-      var header_bar = new Gtk.HeaderBar ();
-      header_bar.set_title (_("Compose Tweet"));
-      send_button.parent.remove (send_button);
-      send_button.margin = 0;
-      send_button.valign = Gtk.Align.CENTER;
-      header_bar.pack_end (send_button);
-
-      cancel_button.parent.remove (cancel_button);
-      cancel_button.margin = 0;
-      header_bar.pack_start (cancel_button);
-
-      header_bar.show_all ();
-      this.set_titlebar (header_bar);
-    }
-
     if (parent != null) {
       this.set_transient_for (parent);
     }
