@@ -117,7 +117,6 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       entry.last_message = vals[2];
       entry.last_message_id = int64.parse(vals[3]);
       entry.unread_count = 0;
-      entry.avatar_path = Dirs.cache ("assets/avatars/" + Utils.get_avatar_name (vals[4]));
       entry.avatar = Twitter.get ().get_avatar (vals[4], (a) => {
         entry.avatar = a;
       });
@@ -225,7 +224,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       account.db.update ("dm_threads").val ("last_message", text)
                                       .vali64 ( "last_message_id", message_id)
                                       .where_eqi ("user_id", sender_id).run ();
-      notify_new_dm (sender_id, t_e.screen_name, Utils.unescape_html (text), t_e.avatar_path);
+      notify_new_dm (sender_id, t_e.screen_name, Utils.unescape_html (text));
       thread_list.invalidate_sort ();
       return;
     }
@@ -257,7 +256,6 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     thread_list.invalidate_sort ();
     thread_map.set(sender_id, thread_entry);
     string avatar_url = dm_obj.get_object_member ("sender").get_string_member ("profile_image_url");
-    thread_entry.avatar_path = Dirs.cache ("assets/avatars/" + Utils.get_avatar_name (avatar_url));
     account.db.insert( "dm_threads")
               .vali64 ("user_id", sender_id)
               .val ("name", sender_name)
@@ -348,8 +346,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 
   private void notify_new_dm (int64  sender_id,
                               string sender_screen_name,
-                              string text,
-                              string avatar_path) {
+                              string text) {
     if (!Settings.notify_new_dms ())
       return;
 
