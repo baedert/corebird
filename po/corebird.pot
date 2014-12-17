@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-02 12:35+0100\n"
+"POT-Creation-Date: 2014-12-17 13:23+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,15 +17,11 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/window/ComposeTweetWindow.vala:68 ../ui/compose-window.ui.h:1
-msgid "Compose Tweet"
-msgstr ""
-
-#: ../src/window/ComposeTweetWindow.vala:325
+#: ../src/window/ComposeTweetWindow.vala:335
 msgid "Select Image"
 msgstr ""
 
-#: ../src/window/ComposeTweetWindow.vala:326
+#: ../src/window/ComposeTweetWindow.vala:336
 #: ../src/window/UserListDialog.vala:45
 #: ../src/widgets/MultiMediaWidget.vala:148 ../ui/compose-window.ui.h:2
 #: ../ui/list-list-entry.ui.h:1 ../ui/list-statuses-page.ui.h:8
@@ -35,7 +31,7 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: ../src/window/ComposeTweetWindow.vala:327
+#: ../src/window/ComposeTweetWindow.vala:337
 msgid "Choose"
 msgstr ""
 
@@ -82,18 +78,23 @@ msgstr ""
 msgid "Create one"
 msgstr ""
 
-#: ../src/widgets/AccountCreateWidget.vala:53
+#: ../src/widgets/AccountCreateWidget.vala:54
 msgid ""
 "Unauthorized. Most of the time, this means that there's something wrong with "
 "the Twitter servers and you should try again later"
 msgstr ""
 
+#: ../src/widgets/AccountCreateWidget.vala:65
+#, c-format
+msgid "Could not open %s"
+msgstr ""
+
 #. We just assume that it was the wrong code
-#: ../src/widgets/AccountCreateWidget.vala:76
+#: ../src/widgets/AccountCreateWidget.vala:89
 msgid "Wrong PIN"
 msgstr ""
 
-#: ../src/widgets/AccountCreateWidget.vala:103
+#: ../src/widgets/AccountCreateWidget.vala:116
 msgid "Account already in use"
 msgstr ""
 
@@ -118,38 +119,39 @@ msgid "Save image"
 msgstr ""
 
 #: ../src/widgets/AddImageButton.vala:35
+#: ../src/widgets/AddImageButton.vala:175
 msgid "Click to remove image"
 msgstr ""
 
-#: ../src/widgets/AddImageButton.vala:39
+#: ../src/widgets/AddImageButton.vala:41
 msgid "Click to add image"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:84
+#: ../src/HomeTimeline.vala:88
 #, c-format
 msgid "%s retweeted %s"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:86
+#: ../src/HomeTimeline.vala:90
 #, c-format
 msgid "%s tweeted"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:93
+#: ../src/HomeTimeline.vala:97
 #, c-format
 msgid "%d new Tweets!"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:175
+#: ../src/HomeTimeline.vala:182
 msgid "Home"
 msgstr ""
 
-#: ../src/DMThreadsPage.vala:363
+#: ../src/DMThreadsPage.vala:366
 #, c-format
 msgid "New direct message from %s"
 msgstr ""
 
-#: ../src/DMThreadsPage.vala:374 ../src/DMThreadsPage.vala:388
+#: ../src/DMThreadsPage.vala:377 ../src/DMThreadsPage.vala:391
 msgid "Direct Messages"
 msgstr ""
 
@@ -172,11 +174,11 @@ msgstr ""
 msgid "Tweet to @%s"
 msgstr ""
 
-#: ../src/ProfilePage.vala:600
+#: ../src/ProfilePage.vala:602
 msgid "Unfollow"
 msgstr ""
 
-#: ../src/ProfilePage.vala:604
+#: ../src/ProfilePage.vala:606
 msgid "Follow"
 msgstr ""
 
@@ -211,7 +213,7 @@ msgstr ""
 msgid "%dh"
 msgstr ""
 
-#: ../src/SearchPage.vala:281 ../src/SearchPage.vala:290
+#: ../src/SearchPage.vala:282 ../src/SearchPage.vala:291
 #: ../ui/search-page.ui.h:1
 msgid "Search"
 msgstr ""
@@ -233,7 +235,7 @@ msgstr ""
 msgid "Direct Conversation"
 msgstr ""
 
-#: ../src/ListStatusesPage.vala:404
+#: ../src/ListStatusesPage.vala:405
 msgid "List"
 msgstr ""
 
@@ -414,6 +416,10 @@ msgstr ""
 
 #: ../ui/search-page.ui.h:3 ../ui/filter-page.ui.h:1
 msgid "Users"
+msgstr ""
+
+#: ../ui/compose-window.ui.h:1
+msgid "Compose Tweet"
 msgstr ""
 
 #: ../ui/profile-page.ui.h:1
