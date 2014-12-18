@@ -65,6 +65,7 @@ cb_sources = \
 			widgets/CropWidget.vala \
 			widgets/AddImageButton.vala \
 			widgets/CompletionTextView.vala \
+			widgets/UserNameWidget.vala \
 			util/TweetUtils.vala \
 			util/Utils.vala \
 			util/IntHistory.vala \
