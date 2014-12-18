@@ -124,6 +124,7 @@ class UserNameWidget : Gtk.Box {
           primary_name_clicked ();
         });
         primary_name_label.no_show_all = true;
+        primary_name_label.valign = Gtk.Align.BASELINE;
         primary_name_label.show ();
         this.add (primary_name_label);
         this.reorder_child (primary_name_label, 0);
