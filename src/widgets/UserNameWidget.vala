@@ -24,68 +24,151 @@ class UserNameWidget : Gtk.Box {
   private int _layout = NAME_SCREEN_NAME;
   public int layout {
     set {
+      switch (value) {
+        case NAME_SCREEN_NAME:
+          if (_layout == SCREEN_NAME_NAME || _layout == SCREEN_NAME) {
+            switch_names ();
+          }
+          secondary_name_label.show ();
+        break;
+
+        case SCREEN_NAME_NAME:
+          if (_layout == NAME_SCREEN_NAME || _layout == NAME) {
+            switch_names ();
+          }
+          secondary_name_label.show ();
+        break;
+
+        case NAME:
+          if (_layout == SCREEN_NAME_NAME || _layout == SCREEN_NAME) {
+            switch_names ();
+          }
+
+          secondary_name_label.hide ();
+        break;
+
+        case SCREEN_NAME:
+          if (_layout == NAME_SCREEN_NAME || _layout == NAME) {
+            switch_names ();
+          }
+          secondary_name_label.hide ();
+        break;
+
+        default:
+          assert (false);
+        break;
+      }
       this._layout = value;
-      if (_layout == NAME_SCREEN_NAME) {
-        name_label.show ();
-        screen_name_label.show ();
-        this.reorder_child (name_label, 0);
-        this.reorder_child (screen_name_label, 1);
-      } else if (_layout == SCREEN_NAME_NAME) {
-        name_label.show ();
-        screen_name_label.show ();
-        this.reorder_child (name_label, 1);
-        this.reorder_child (screen_name_label, 0);
-      } else if (_layout == NAME) {
-        screen_name_label.hide ();
-        name_label.show ();
-      } else if (_layout == SCREEN_NAME) {
-        name_label.hide ();
-        screen_name_label.show ();
-      } else
-        assert (false);
     }
     get {
       return this._layout;
     }
   }
 
+  /**
+   * Set the name (not screen_name) on the correct label.
+   */
+  private void set_label_name (string name) {
+    switch (_layout) {
+      case NAME_SCREEN_NAME:
+      case NAME:
+        primary_name_label.set ("label", name, null);
+        break;
+      case SCREEN_NAME_NAME:
+      case SCREEN_NAME:
+        secondary_name_label.label = name;
+        break;
+    }
+  }
+
+  private void set_label_screen_name (string screen_name) {
+    switch (_layout) {
+      case NAME_SCREEN_NAME:
+      case NAME:
+        secondary_name_label.label = screen_name;
+        break;
+      case SCREEN_NAME_NAME:
+      case SCREEN_NAME:
+        primary_name_label.set ("label", screen_name, null);
+        break;
+    }
+  }
+
   public new string name {
     set {
-      name_label.set_label (value);
+      set_label_name (value);
     }
     get {
-      return name_label.get_label ();
+      unowned string s;
+      primary_name_label.get ("name", out s, null);
+      return s;
     }
   }
 
   public string screen_name {
     set {
-      screen_name_label.set_label (value);
+      set_label_screen_name (value);
     }
     get {
-      return screen_name_label.get_label ();
+      return secondary_name_label.get_label ();
     }
   }
 
-  private Gtk.Label name_label;
-  private Gtk.Label screen_name_label;
+  private bool _primary_name_clickable = false;
+  public bool primary_name_clickable {
+    set {
+      if (value) {
+        this.remove (this.primary_name_label);
+        primary_name_label = new TextButton ();
+        ((TextButton)primary_name_label).clicked.connect (() => {
+          primary_name_clicked ();
+        });
+        primary_name_label.no_show_all = true;
+        primary_name_label.show ();
+        this.add (primary_name_label);
+        this.reorder_child (primary_name_label, 0);
+      } else
+        assert (false);
+      _primary_name_clickable = value;
+    }
+    get {
+      return _primary_name_clickable;
+    }
+  }
+
+  private Gtk.Widget primary_name_label;
+  private Gtk.Label secondary_name_label;
+  public signal void primary_name_clicked ();
 
 
   construct {
-    this.name_label = new Gtk.Label ("");
-    this.name_label.no_show_all = true;
-    this.name_label.valign = Gtk.Align.BASELINE;
+    this.primary_name_label = new Gtk.Label ("");
+    this.primary_name_label.no_show_all = true;
+    this.primary_name_label.valign = Gtk.Align.BASELINE;
     Pango.AttrList attr_list = new Pango.AttrList ();
     attr_list.insert (Pango.attr_weight_new (Pango.Weight.BOLD));
-    this.name_label.set_attributes (attr_list);
-    this.screen_name_label = new Gtk.Label ("");
-    this.screen_name_label.no_show_all = true;
-    this.screen_name_label.valign = Gtk.Align.BASELINE;
-    this.screen_name_label.get_style_context ().add_class ("dim-label");
+    this.primary_name_label.set ("attributes", attr_list, null);
+    this.primary_name_label.show ();
+    this.secondary_name_label = new Gtk.Label ("");
+    this.secondary_name_label.no_show_all = true;
+    this.secondary_name_label.valign = Gtk.Align.BASELINE;
+    this.secondary_name_label.get_style_context ().add_class ("dim-label");
 
 
-    this.pack_start (name_label);
-    this.pack_start (screen_name_label);
+    this.pack_start (primary_name_label);
+    this.pack_start (secondary_name_label);
     this.spacing = 6;
+
+    Settings.get ().bind ("name-scheme",
+                          this,
+                          "layout",
+                          GLib.SettingsBindFlags.GET);
+  }
+
+  private void switch_names () {
+    string tmp;
+    primary_name_label.get ("label", out tmp, null);
+    primary_name_label.set ("label", secondary_name_label.label, null);
+    secondary_name_label.label = tmp;
   }
 }
