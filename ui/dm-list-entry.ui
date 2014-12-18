@@ -9,7 +9,7 @@
     </style>
 
     <child>
-      <object class="GtkGrid" id="grid">
+      <object class="GtkGrid">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="margin">6</property>
@@ -30,40 +30,13 @@
           </packing>
         </child>
 
-
         <child>
-          <object class="TextButton" id="name_button">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="valign">baseline</property>
-            <style>
-              <class name="text-only-button"/>
-            </style>
+          <object class="UserNameWidget" id="name_widget">
+            <property name="visible">true</property>
+            <property name="primary_name_clickable">true</property>
+            <signal name="primary_name_clicked" handler="name_clicked_cb" />
           </object>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">0</property>
-          </packing>
         </child>
-
-
-        <child>
-          <object class="GtkLabel" id="screen_name_label">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_start">6</property>
-            <property name="valign">baseline</property>
-            <style>
-              <class name="dim-label"/>
-            </style>
-          </object>
-          <packing>
-            <property name="left_attach">2</property>
-            <property name="top_attach">0</property>
-          </packing>
-        </child>
-
 
         <child>
           <object class="GtkLabel" id="time_delta_label">
