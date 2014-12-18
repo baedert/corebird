@@ -21,5 +21,9 @@ class TextButton : Gtk.Button {
     if(label != "")
       this.label = label;
     this.get_style_context().add_class("text-only-button");
+
+    this.notify["label"].connect (() => {
+      this.get_child ().valign = Gtk.Align.BASELINE;
+    });
   }
 }
