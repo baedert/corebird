@@ -25,20 +25,20 @@ class UserNameWidget : Gtk.Box {
   public int layout {
     set {
       this._layout = value;
-      if (layout == NAME_SCREEN_NAME) {
+      if (_layout == NAME_SCREEN_NAME) {
         name_label.show ();
         screen_name_label.show ();
         this.reorder_child (name_label, 0);
         this.reorder_child (screen_name_label, 1);
-      } else if (layout == SCREEN_NAME_NAME) {
+      } else if (_layout == SCREEN_NAME_NAME) {
         name_label.show ();
         screen_name_label.show ();
         this.reorder_child (name_label, 1);
         this.reorder_child (screen_name_label, 0);
-      } else if (layout == NAME) {
+      } else if (_layout == NAME) {
         screen_name_label.hide ();
         name_label.show ();
-      } else if (layout == SCREEN_NAME) {
+      } else if (_layout == SCREEN_NAME) {
         name_label.hide ();
         screen_name_label.show ();
       } else
@@ -73,10 +73,14 @@ class UserNameWidget : Gtk.Box {
 
   construct {
     this.name_label = new Gtk.Label ("");
+    this.name_label.no_show_all = true;
+    this.name_label.valign = Gtk.Align.BASELINE;
     Pango.AttrList attr_list = new Pango.AttrList ();
     attr_list.insert (Pango.attr_weight_new (Pango.Weight.BOLD));
     this.name_label.set_attributes (attr_list);
     this.screen_name_label = new Gtk.Label ("");
+    this.screen_name_label.no_show_all = true;
+    this.screen_name_label.valign = Gtk.Align.BASELINE;
     this.screen_name_label.get_style_context ().add_class ("dim-label");
 
 
