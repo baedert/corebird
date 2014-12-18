@@ -18,9 +18,7 @@
 [GtkTemplate (ui = "/org/baedert/corebird/ui/user-list-entry.ui")]
 class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
   [GtkChild]
-  private Gtk.Label name_label;
-  [GtkChild]
-  private Gtk.Label screen_name_label;
+  private UserNameWidget name_widget;
   [GtkChild]
   private AvatarWidget avatar_image;
   [GtkChild]
@@ -29,13 +27,13 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
   private Gtk.Button new_window_button;
 
   public new string name {
-    set { name_label.label = value; }
+    set { name_widget.name = value; }
   }
 
   public string screen_name {
-    set { screen_name_label.label = value; }
+    set { name_widget.screen_name = value; }
     owned get {
-      return screen_name_label.label.substring (1);
+      return name_widget.screen_name.substring (1);
     }
   }
 
