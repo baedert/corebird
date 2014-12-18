@@ -188,16 +188,18 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 
     var root_arr = parser.get_root ().get_array ();
     debug ("sent: %u", root_arr.get_length ());
-    account.db.begin_transaction ();
-    root_arr.foreach_element ((arr, pos, node) => {
-      var dm_obj = node.get_object ();
-      if (dm_obj.get_int_member ("sender_id") == account.id)
-        save_message (dm_obj);
-      else
-        add_new_thread (dm_obj);
-    });
-    account.db.end_transaction ();
-    save_last_messages ();
+    if (root_arr.get_length () > 0) {
+      account.db.begin_transaction ();
+      root_arr.foreach_element ((arr, pos, node) => {
+        var dm_obj = node.get_object ();
+        if (dm_obj.get_int_member ("sender_id") == account.id)
+          save_message (dm_obj);
+        else
+          add_new_thread (dm_obj);
+      });
+      account.db.end_transaction ();
+      save_last_messages ();
+    }
   }
 
 
