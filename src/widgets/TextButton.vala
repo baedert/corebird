@@ -19,38 +19,7 @@ class TextButton : Gtk.Button {
 
   public TextButton(string label=""){
     if(label != "")
-      this.label= label;
+      this.label = label;
     this.get_style_context().add_class("text-only-button");
-  }
-
-
-  /**
-   * Adds a GtkLabel to the Button using the given text as markup.
-   * If the button already contains another child, that will either be replaced if it's
-   * no instance of GtkLabel, or - if it's a GtkLabel already - be reused.
-   *
-   * @param text The markup to use(see pango markup)
-   */
-  public void set_markup (string text) {
-    Gtk.Label label = null;
-    Gtk.Widget child = get_child ();
-    if (child != null) {
-      if (child is Gtk.Label) {
-        label = (Gtk.Label)child;
-        label.set_markup (text);
-      } else {
-        this.remove (child);
-        label = new Gtk.Label (text);
-      }
-    } else {
-      label = new Gtk.Label (text);
-    }
-    label.set_use_markup (true);
-    label.set_justify (Gtk.Justification.CENTER);
-    label.valign = Gtk.Align.BASELINE;
-
-    label.visible = true;
-    if(label.parent == null)
-      this.add (label);
   }
 }
