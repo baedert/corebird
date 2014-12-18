@@ -91,5 +91,8 @@
     <key type="b" name="round-avatars">
       <default>true</default>
     </key>
+    <key type="i" name="name-scheme">
+      <default>0</default>
+     </key>
   </schema>
 </schemalist>
