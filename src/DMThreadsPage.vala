@@ -149,9 +149,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     call.add_param ("skip_status", "true");
     call.add_param ("since_id", max_received_id.to_string ());
     call.add_param ("count", "200");
-    call.invoke_async.begin (null, (obj, res) => {
-      on_dm_result (obj, res);
-    });
+    call.invoke_async.begin (null, on_dm_result);
 
     var sent_call = account.proxy.new_call ();
     sent_call.set_function ("1.1/direct_messages/sent.json");
@@ -159,9 +157,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     sent_call.add_param ("since_id", max_sent_id.to_string ());
     sent_call.add_param ("count", "200");
     sent_call.set_method ("GET");
-    sent_call.invoke_async.begin (null, (obj, res) => {
-      on_dm_result (obj, res);
-    });
+    sent_call.invoke_async.begin (null, on_dm_result);
   } // }}}
 
 
