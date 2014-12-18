@@ -18,10 +18,10 @@
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/tweet-list-entry.ui")]
 public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
-  [GtkChild]
-  private Gtk.Label screen_name_label;
-  [GtkChild]
-  private TextButton name_button;
+  //[GtkChild]
+  //private Gtk.Label screen_name_label;
+  //[GtkChild]
+  //private TextButton name_button;
   [GtkChild]
   private Gtk.Label time_delta_label;
   [GtkChild]
@@ -52,6 +52,8 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   private Gtk.Grid grid;
   [GtkChild]
   private MultiMediaWidget mm_widget;
+  [GtkChild]
+  private UserNameWidget name_widget;
 
 
   public bool read_only = false;
@@ -87,8 +89,10 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     this.tweet = tweet;
     this.window = window;
 
-    name_button.set_markup (tweet.user_name);
-    screen_name_label.label = "@"+tweet.screen_name;
+    //name_button.set_markup (tweet.user_name);
+    name_widget.name = tweet.user_name;
+    //screen_name_label.label = "@"+tweet.screen_name;
+    name_widget.screen_name = "@" + tweet.screen_name;
     avatar_image.pixbuf = tweet.avatar;
     avatar_image.verified = tweet.verified;
     text_label.label = tweet.get_trimmed_text ();
