@@ -140,11 +140,11 @@ class UserNameWidget : Gtk.Box {
   private Gtk.Label secondary_name_label;
   public signal void primary_name_clicked ();
 
-
   construct {
     this.primary_name_label = new Gtk.Label ("");
     this.primary_name_label.no_show_all = true;
     this.primary_name_label.valign = Gtk.Align.BASELINE;
+    this.primary_name_label.halign = Gtk.Align.START;
     Pango.AttrList attr_list = new Pango.AttrList ();
     attr_list.insert (Pango.attr_weight_new (Pango.Weight.BOLD));
     this.primary_name_label.set ("attributes", attr_list, null);
@@ -152,6 +152,7 @@ class UserNameWidget : Gtk.Box {
     this.secondary_name_label = new Gtk.Label ("");
     this.secondary_name_label.no_show_all = true;
     this.secondary_name_label.valign = Gtk.Align.BASELINE;
+    this.secondary_name_label.halign = Gtk.Align.START;
     this.secondary_name_label.get_style_context ().add_class ("dim-label");
 
 
@@ -163,6 +164,15 @@ class UserNameWidget : Gtk.Box {
                           this,
                           "layout",
                           GLib.SettingsBindFlags.GET);
+    this.notify["orientation"].connect (orientation_changed_cb);
+  }
+
+  private void orientation_changed_cb () {
+    if (this.orientation == Gtk.Orientation.VERTICAL) {
+      this.primary_name_label.valign = Gtk.Align.END;
+      this.secondary_name_label.valign = Gtk.Align.START;
+      this.spacing = 3;
+    }
   }
 
   private void switch_names () {
