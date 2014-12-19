@@ -15,6 +15,8 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 class AvatarWidget : Gtk.Image {
+  private static const int SMALL = 0;
+  private static const int LARGE = 1;
   private bool _round = true;
   public bool make_round {
     get {
@@ -26,6 +28,31 @@ class AvatarWidget : Gtk.Image {
     }
   }
   public bool verified { get; set; default = false; }
+
+
+
+  static Cairo.Surface[] verified_icons;
+  static const int[] VERIFIED_SIZES = {12, 18};
+  static construct {
+    try {
+      verified_icons = {
+        Gdk.cairo_surface_create_from_pixbuf (
+          new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/assets/verified-small.png"),
+          1, null),
+        Gdk.cairo_surface_create_from_pixbuf (
+          new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/assets/verified-large.png"),
+          1, null),
+        Gdk.cairo_surface_create_from_pixbuf (
+          new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/assets/verified-small@2.png"),
+          2, null),
+        Gdk.cairo_surface_create_from_pixbuf (
+          new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/assets/verified-large@2.png"),
+          2, null)
+      };
+    } catch (GLib.Error e) {
+      critical (e.message);
+    }
+  }
 
   construct {
     Settings.get ().bind ("round-avatars", this, "make_round",
@@ -79,17 +106,17 @@ class AvatarWidget : Gtk.Image {
 
 
     /* Draw verification indicator */
-    if (verified) {
-      Gdk.Pixbuf verified_img;
+    if (verified || true) {
+      int index = SMALL;
       if (width > 48)
-        verified_img = Twitter.verified_icon_large;
-      else
-        verified_img = Twitter.verified_icon;
+        index = LARGE;
+
+      int scale_factor = this.get_scale_factor () - 1;
+      Cairo.Surface verified_img = verified_icons[scale_factor * 2 + index];
       ctx.rectangle (0, 0, width, height);
-      Gdk.cairo_set_source_pixbuf (ctx,
-                                   verified_img,
-                                   width - verified_img.get_width (),
-                                   0);
+      ctx.set_source_surface (verified_img,
+                              width - VERIFIED_SIZES[index],
+                              0);
       ctx.fill ();
     }
 
