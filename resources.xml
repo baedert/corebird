@@ -32,6 +32,7 @@
     <file compressed="true" preprocess="xml-stripblanks">ui/media-dialog.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/image-crop-dialog.ui</file>
     <file>assets/play.png</file>
+    <file>assets/play@2.png</file>
     <file>assets/verified-small.png</file>
     <file>assets/verified-small@2.png</file>
     <file>assets/verified-large.png</file>
