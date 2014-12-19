@@ -141,6 +141,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   public void load_newest () { // {{{
     dm_download_collect.finished.connect (() => {
       remove_spinner ();
+      save_last_messages ();
     });
 
     var call = account.proxy.new_call ();
@@ -198,7 +199,6 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
           add_new_thread (dm_obj);
       });
       account.db.end_transaction ();
-      save_last_messages ();
     }
   }
 
