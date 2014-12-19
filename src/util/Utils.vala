@@ -280,6 +280,7 @@ namespace Utils {
 
 
   public void load_custom_icons () {
+    message ("Add custom icon theme");
     var icon_theme  = Gtk.IconTheme.get_default ();
     icon_theme.append_search_path (DATADIR + "assets/");
   }
@@ -287,9 +288,7 @@ namespace Utils {
   public void load_custom_css () {
     try {
       var provider = new Gtk.CssProvider ();
-      string style = Dirs.config ("style.css");
-      if (!FileUtils.test (style, FileTest.EXISTS))
-        style = DATADIR + "/ui/style.css";
+      string style = DATADIR + "/ui/style.css";
 
       provider.load_from_file(File.new_for_path (style));
       Gtk.StyleContext.add_provider_for_screen ((!)Gdk.Screen.get_default (),
