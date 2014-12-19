@@ -106,7 +106,7 @@ class AvatarWidget : Gtk.Image {
 
 
     /* Draw verification indicator */
-    if (verified || true) {
+    if (verified) {
       int index = SMALL;
       if (width > 48)
         index = LARGE;
