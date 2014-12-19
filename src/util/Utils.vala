@@ -280,7 +280,6 @@ namespace Utils {
 
 
   public void load_custom_icons () {
-    message ("Add custom icon theme");
     var icon_theme  = Gtk.IconTheme.get_default ();
     icon_theme.append_search_path (DATADIR + "assets/");
   }
