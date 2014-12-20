@@ -161,6 +161,8 @@ public class UserStream : Object {
 
   private void start_heartbeat_timeout () {
     heartbeat_timeout_id = GLib.Timeout.add (TIMEOUT_INTERVAL, () => {
+      if (!running)
+        return false;
       // If we get here, we need to restart the stream.
       running = false;
       debug ("Connection lost (%s) Reason: heartbeat. Restarting...", account_name);
@@ -182,10 +184,13 @@ public class UserStream : Object {
    * @param length The buffer's length
    * @param error
    */
-  private void parse_data_cb (Rest.ProxyCall call, string? buf, size_t length,
-                              Error? error) {
+  private void parse_data_cb (Rest.ProxyCall call,
+                              string?        buf,
+                              size_t         length,
+                              GLib.Error?    error) {
     if (buf == null) {
       debug ("buf == NULL");
+      // XXX Maybe restart here too?
       return;
     }
 
