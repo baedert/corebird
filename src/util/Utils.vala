@@ -287,9 +287,7 @@ namespace Utils {
   public void load_custom_css () {
     try {
       var provider = new Gtk.CssProvider ();
-      string style = DATADIR + "/ui/style.css";
-
-      provider.load_from_file(File.new_for_path (style));
+      provider.load_from_file(File.new_for_uri ("resource:///org/baedert/corebird/ui/style.css"));
       Gtk.StyleContext.add_provider_for_screen ((!)Gdk.Screen.get_default (),
                                                 provider,
                                                 Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
