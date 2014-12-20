@@ -20,6 +20,10 @@ class TweetInfoPage : IPage , ScrollWidget {
   public static const uint BY_INSTANCE = 1;
   public static const uint BY_ID       = 2;
 
+  private const GLib.ActionEntry[] action_entries = {
+    {"quote",  quote_activated},
+  };
+
   public int unread_count { get{return 0;} set {} }
   public int id                         { get; set; }
   public unowned MainWindow main_window { get; set; }
@@ -55,8 +59,6 @@ class TweetInfoPage : IPage , ScrollWidget {
   [GtkChild]
   private Gtk.Label source_label;
   [GtkChild]
-  private Gtk.MenuItem delete_menu_item;
-  [GtkChild]
   private MaxSizeContainer max_size_container;
   [GtkChild]
   private ReplyIndicator reply_indicator;
@@ -84,6 +86,10 @@ class TweetInfoPage : IPage , ScrollWidget {
                                            TweetInfoPage.BY_INSTANCE,
                                            ((TweetListEntry)row).tweet);
     });
+
+    GLib.SimpleActionGroup actions = new GLib.SimpleActionGroup ();
+    actions.add_action_entries (action_entries, this);
+    this.insert_action_group ("tweet", actions);
   }
 
   public void on_join (int page_id, va_list args){
@@ -149,18 +155,6 @@ class TweetInfoPage : IPage , ScrollWidget {
     ComposeTweetWindow ctw = new ComposeTweetWindow(main_window, this.account, this.tweet,
                                                     ComposeTweetWindow.Mode.REPLY);
     ctw.show ();
-  }
-
-  [GtkCallback]
-  private void quote_item_activate_cb () {
-    ComposeTweetWindow ctw = new ComposeTweetWindow(main_window, this.account, this.tweet,
-                                                    ComposeTweetWindow.Mode.QUOTE);
-    ctw.show ();
-  }
-
-  [GtkCallback]
-  private void delete_item_activate_cb () {
-    critical ("Implement");
   }
 
   [GtkCallback]
@@ -349,10 +343,8 @@ class TweetInfoPage : IPage , ScrollWidget {
     }
 
     if (tweet.user_id == account.id) {
-      delete_menu_item.show ();
       retweet_button.hide ();
     } else {
-      delete_menu_item.hide ();
       retweet_button.show ();
     }
   } //}}}
@@ -364,6 +356,12 @@ class TweetInfoPage : IPage , ScrollWidget {
                          .printf (link, _("Open in Browser"), _("Source"));
   }
 
+
+  private void quote_activated () {
+    ComposeTweetWindow ctw = new ComposeTweetWindow(main_window, this.account, this.tweet,
+                                                    ComposeTweetWindow.Mode.QUOTE);
+    ctw.show ();
+  }
 
   public string? get_title () {
     return _("Tweet Details");

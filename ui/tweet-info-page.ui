@@ -1,26 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <object class="GtkMenu" id="more_menu">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <child>
-      <object class="GtkMenuItem" id="quote_menu_item">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Quote</property>
-        <property name="use_underline">True</property>
-        <signal name="activate" handler="quote_item_activate_cb" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="delete_menu_item">
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Delete</property>
-        <property name="use_underline">True</property>
-        <signal name="activate" handler="delete_item_activate_cb" swapped="no"/>
-      </object>
-    </child>
-  </object>
+
+  <menu id="actions_menu">
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">Quote</attribute>
+        <attribute name="action">tweet.quote</attribute>
+      </item>
+    </section>
+  </menu>
+
   <template class="TweetInfoPage" parent="ScrollWidget">
     <property name="can_focus">True</property>
     <property name="hscrollbar_policy">never</property>
@@ -329,10 +318,9 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="valign">baseline</property>
-            <property name="receives_default">True</property>
             <property name="margin_end">10</property>
             <property name="relief">none</property>
-            <property name="popup">more_menu</property>
+            <property name="menu_model">actions_menu</property>
             <child>
               <object class="GtkImage" id="image4">
                 <property name="visible">True</property>
