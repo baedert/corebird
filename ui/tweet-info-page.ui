@@ -255,7 +255,6 @@
               <class name="retweet-button"/>
               <class name="dim-label"/>
               <class name="image-button"/>
-              <class name="large-font"/>
             </style>
           </object>
           <packing>
@@ -286,7 +285,6 @@
               <class name="favorite-button"/>
               <class name="dim-label"/>
               <class name="image-button"/>
-              <class name="large-font"/>
             </style>
           </object>
           <packing>
@@ -317,7 +315,6 @@
               <class name="reply-button"/>
               <class name="dim-label"/>
               <class name="image-button"/>
-              <class name="large-font"/>
             </style>
           </object>
           <packing>
