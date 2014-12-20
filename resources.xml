@@ -38,5 +38,7 @@
     <file>assets/verified-small@2.png</file>
     <file>assets/verified-large.png</file>
     <file>assets/verified-large@2.png</file>
+    <file>assets/no_avatar.png</file>
+    <file>assets/no_banner.png</file>
   </gresource>
 </gresources>
