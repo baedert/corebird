@@ -183,7 +183,7 @@ public class Corebird : Gtk.Application {
    * If that array is empty, look at all the account and if there is one, open that one.
    * If there is none, open a MainWindow with a null account.
    */
-  private void  open_startup_windows (string? compose_screen_name = null) { // {{{
+  private void open_startup_windows (string? compose_screen_name = null) { // {{{
     if (compose_screen_name != null) {
       Account? acc = Account.query_account (compose_screen_name);
       if (acc == null) {
@@ -255,15 +255,6 @@ public class Corebird : Gtk.Application {
    * g_critical, etc. to also print to a file)
    */
   private void init_log_files () { // {{{
-    /* First, create that log file */
-    //File log_file = File.new_for_path (Dirs.data ("logs/%s.txt".printf (now.to_string())));
-    //try {
-      //log_stream = log_file.create(FileCreateFlags.REPLACE_DESTINATION);
-    //} catch (GLib.Error e) {
-      //warning ("Couldn't open log file: %s", e.message);
-    //}
-    /* If we do not run on the command line, we simply redirect stdout
-       to a log file*/
     GLib.Log.set_handler (null, LogLevelFlags.LEVEL_MESSAGE,  print_to_log_file);
     GLib.Log.set_handler (null, LogLevelFlags.LEVEL_ERROR,    print_to_log_file);
     GLib.Log.set_handler (null, LogLevelFlags.LEVEL_CRITICAL, print_to_log_file);

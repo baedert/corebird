@@ -18,7 +18,8 @@
 // TODO: Allow D'n'D out of the button
 private class MediaButton : Gtk.Button {
   private unowned Media? _media;
-  private Gdk.Pixbuf? play_icon = null;
+  private static Cairo.Surface[] play_icons;
+  private static const int PLAY_ICON_SIZE = 32;
   public unowned Media? media {
     get {
       return _media;
@@ -33,16 +34,6 @@ private class MediaButton : Gtk.Button {
         menu_model.append (_("Copy URL"), "media.copy-url");
         menu_model.append (_("Save Original"), "media.save-original");
       }
-
-      if (value != null && (value.type == MediaType.VINE ||
-                            value.type == MediaType.ANIMATED_GIF ||
-                            value.type == MediaType.GIF)) {
-        try {
-          play_icon = new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/assets/play.png");
-        } catch (GLib.Error e) {
-          critical (e.message);
-        }
-      }
     }
   }
   public unowned Gtk.Window window;
@@ -56,6 +47,19 @@ private class MediaButton : Gtk.Button {
   };
   private Pango.Layout layout;
 
+
+  static construct {
+    try {
+      play_icons = {
+        Gdk.cairo_surface_create_from_pixbuf (
+          new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/assets/play.png"), 1, null),
+        Gdk.cairo_surface_create_from_pixbuf (
+          new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/assets/play@2.png"), 2, null),
+      };
+    } catch (GLib.Error e) {
+      critical (e.message);
+    }
+  }
 
   public MediaButton (Media? media) {
     this.media = media;
@@ -96,11 +100,10 @@ private class MediaButton : Gtk.Button {
       if (media.type == MediaType.VINE ||
           media.type == MediaType.ANIMATED_GIF ||
           media.type == MediaType.GIF) {
-       int x = (widget_width  / 2) - (play_icon.get_width ()  / 2);
-       int y = (widget_height / 2) - (play_icon.get_height () / 2);
-       ct.rectangle (x, y,
-                     play_icon.get_width (), play_icon.get_height ());
-       Gdk.cairo_set_source_pixbuf (ct, play_icon, x, y);
+       int x = (widget_width  / 2) - (PLAY_ICON_SIZE  / 2);
+       int y = (widget_height / 2) - (PLAY_ICON_SIZE / 2);
+       ct.rectangle (x, y, PLAY_ICON_SIZE, PLAY_ICON_SIZE);
+       ct.set_source_surface (play_icons[this.get_scale_factor () - 1], x, y);
        ct.fill ();
       }
     } else {
