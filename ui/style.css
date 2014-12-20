@@ -131,18 +131,18 @@
   background-color: transparent;
 }
 .retweet-button:hover,
-.retweet-button:active {
+.retweet-button:checked {
   color:green;
 }
 
 .favorite-button:hover,
-.favorite-button:active {
+.favorite-button:checked {
   color: shade(yellow, 0.9);
 }
 
 /* Don't target :hover:active here */
-.favorite-button:active,
-.retweet-button:active {
+.favorite-button:checked,
+.retweet-button:checked {
   background-image: none;
   background-color: transparent;
   border: none;
