@@ -5,17 +5,7 @@
 void main (string[] args) {
   Gtk.init (ref args);
 
-  /* Load CSS */
-  var provider = new Gtk.CssProvider ();
-  try {
-    provider.load_from_path ("/usr/share/corebird/ui/style.css");
-  } catch (GLib.Error e) {
-    error (e.message);
-  }
-  Gtk.StyleContext.add_provider_for_screen (Gdk.Screen.get_default (),
-                                            provider,
-                                            Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-
+  Utils.load_custom_css ();
   var window = new Gtk.Window ();
 
   var aib = new AddImageButton ();
