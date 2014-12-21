@@ -303,7 +303,6 @@ class TweetInfoPage : IPage , ScrollWidget {
         critical (e.message);
         return;
       }
-      var root = parser.get_root ().get_object ();
 
       /* If we get here, the tweet is not protected so we can just use it */
       Tweet tweet = new Tweet ();
