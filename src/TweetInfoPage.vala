@@ -338,6 +338,7 @@ class TweetInfoPage : IPage , ScrollWidget {
 
     if (tweet.has_inline_media) {
       mm_widget.set_all_media (tweet.medias);
+      mm_widget.show ();
     } else {
       mm_widget.hide ();
     }
