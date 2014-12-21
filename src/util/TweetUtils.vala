@@ -401,6 +401,7 @@ namespace TweetUtils {
         var entry = new TweetListEntry (tweet, main_window, account);
         if (account.user_counter == null)
           return false;
+
         account.user_counter.user_seen (tweet.user_id,
                                         tweet.screen_name,
                                         tweet.user_name);
