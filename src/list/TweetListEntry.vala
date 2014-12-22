@@ -66,7 +66,8 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     set {
       _seen = value;
       if (value && notification_id != null) {
-        NotificationManager.withdraw (notification_id);
+        NotificationManager.withdraw (this.notification_id);
+        this.notification_id = null;
       }
     }
   }
