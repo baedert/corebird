@@ -336,7 +336,6 @@
             </child>
             <style>
               <class name="image-button"/>
-              <class name="slim-button"/>
               <class name="dim-label"/>
             </style>
           </object>
