@@ -350,7 +350,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     }
   }
 
-  private string? notify_new_dm (DMThreadEntry thread_entry, string text) {
+  private string? notify_new_dm (DMThreadEntry thread_entry, string msg_text) {
     if (!Settings.notify_new_dms ())
       return null;
 
@@ -359,15 +359,19 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 
 
     string id = "new-dm-" + sender_id.to_string ();
-    var n = new GLib.Notification (_("New direct message from %s")
-                                   .printf (sender_screen_name));
+    string summary;
+    string text;
     if (thread_entry.notification_id != null) {
       GLib.Application.get_default ().withdraw_notification (id);
-      n.set_body (_("%d new Messages from %s").printf (thread_entry.unread_count,
-                                                       thread_entry.name));
+      summary = _("%d new Messages from %s").printf (thread_entry.unread_count,
+                                                  thread_entry.name);
+      text = "";
     } else {
-      n.set_body (text);
+      summary = _("New direct message from %s").printf (sender_screen_name);
+      text = msg_text;
     }
+    var n = new GLib.Notification (summary);
+    n.set_body (text);
     var value = new GLib.Variant.tuple ({new GLib.Variant.string (account.screen_name),
                                          new GLib.Variant.int64 (sender_id)});
     n.set_default_action_and_target_value ("app.show-dm-thread", value);
@@ -416,6 +420,8 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     if (user_entry == null)
       return null;
 
-    return user_entry.notification_id;
+    string id = user_entry.notification_id;
+    user_entry.notification_id = null;
+    return id;
   }
 }
