@@ -286,6 +286,7 @@ int main (string[] args) {
   GLib.Environment.set_variable ("GSETTINGS_BACKEND", "memory", true);
   Settings.init ();
   Dirs.create_dirs ();
+  Utils.init_soup_session ();
   //GLib.Test.add_func ("/media/no-download", no_download);
   GLib.Test.add_func ("/media/name", media_name);
   GLib.Test.add_func ("/media/normal-download", normal_download);

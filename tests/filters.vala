@@ -320,6 +320,7 @@ int main (string[] args) {
   Settings.init ();
   Twitter.get ().init ();
   Dirs.create_dirs ();
+  Utils.init_soup_session ();
   GLib.Test.add_func ("/filters/matches", matches);
   GLib.Test.add_func ("/filters/matches-tweet", matches_tweet);
   GLib.Test.add_func ("/filters/same-user", same_user);
