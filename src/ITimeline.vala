@@ -141,12 +141,11 @@ public interface ITimeline : Gtk.Widget, IPage {
         return;
 
       Gtk.Allocation alloc;
-      tle.get_allocation(out alloc);
-      if (alloc.y+(alloc.height/2.0) >= value) {
+      tle.get_allocation (out alloc);
+      if (alloc.y + (alloc.height / 2.0) >= value) {
         tle.seen = true;
         unread_count--;
       }
-
     });
   } //}}}
 
