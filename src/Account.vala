@@ -201,9 +201,8 @@ public class Account : GLib.Object {
     debug ("Using %s to update the avatar(old: %s)", url, this.avatar_url);
 
     if (url.length > 0) {
-      var session = new Soup.Session ();
       var msg = new Soup.Message ("GET", url);
-      session.queue_message (msg, (_s, _msg) => {
+      SOUP_SESSION.queue_message (msg, (_s, _msg) => {
         var data_stream = new MemoryInputStream.from_data ((owned)msg.response_body.data, null);
         string type = Utils.get_file_type (url);
         string dest_path = Dirs.config (@"accounts/$(id)_small.png");
