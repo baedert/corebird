@@ -36,4 +36,8 @@ namespace NotificationManager {
     n.set_default_action_and_target_value ("app.show-window", acc.screen_name);
     GLib.Application.get_default ().send_notification (null, n);
   }
+
+  public void withdraw (string notification_id) {
+    GLib.Application.get_default ().withdraw_notification (notification_id);
+  }
 }
