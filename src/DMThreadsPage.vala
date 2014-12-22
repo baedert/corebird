@@ -346,11 +346,11 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     }
   }
 
-  private void notify_new_dm (int64  sender_id,
-                              string sender_screen_name,
-                              string text) {
+  private string? notify_new_dm (int64  sender_id,
+                                string sender_screen_name,
+                                string text) {
     if (!Settings.notify_new_dms ())
-      return;
+      return null;
 
     var n = new GLib.Notification (_("New direct message from %s")
                                    .printf (sender_screen_name));
@@ -359,7 +359,10 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
                                          new GLib.Variant.int64 (sender_id)});
     n.set_default_action_and_target_value ("app.show-dm-thread", value);
 
-    GLib.Application.get_default ().send_notification ("new-dm", n);
+    string id = "new-dm-" + sender_id.to_string ();
+    GLib.Application.get_default ().send_notification (id, n);
+
+    return id;
   }
 
   public void create_tool_button(Gtk.RadioButton? group) {
