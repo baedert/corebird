@@ -91,5 +91,8 @@
     <key type="b" name="round-avatars">
       <default>true</default>
     </key>
+    <key type="s" name="proxy-uri">
+      <default>""</default>
+    </key>
   </schema>
 </schemalist>

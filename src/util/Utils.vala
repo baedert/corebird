@@ -301,6 +301,11 @@ namespace Utils {
   public void init_soup_session () {
     assert (SOUP_SESSION == null);
     SOUP_SESSION = new Soup.Session ();
+    string proxy_setting = Settings.get ().get_string ("proxy-uri");
+    if (proxy_setting != null && proxy_setting.length > 0) {
+      debug ("Setting the proxy_uri to %s", proxy_setting);
+      SOUP_SESSION.proxy_uri = new Soup.URI (proxy_setting);
+    }
   }
 
   string capitalize (string s) {
