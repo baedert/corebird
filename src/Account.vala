@@ -90,10 +90,10 @@ public class Account : GLib.Object {
   }
 
   public void uninit () {
+    this.proxy = null;
     this.user_stream.stop ();
     this.user_counter.save (this.db);
     this.user_stream = null;
-    this.user_counter = null;
   }
 
   /**

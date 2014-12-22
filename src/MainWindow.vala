@@ -172,6 +172,7 @@ public class MainWindow : Gtk.ApplicationWindow {
           app_menu_button.show ();
       }
     } else {
+      /* "Special case" when creating a new account */
       header_box.hide ();
       if (app_menu_button != null)
         app_menu_button.hide ();
