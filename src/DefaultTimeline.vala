@@ -15,9 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-
-
 public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   protected bool initialized = false;
   public int id                          { get; set; }
@@ -79,6 +76,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
 
     if (Settings.auto_scroll_on_new_tweets ()) {
       this.unread_count = 0;
+      mark_seen (-1);
       update_unread_count ();
     }
 
@@ -235,7 +233,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
         continue;
 
       var tle = (TweetListEntry) w;
-      if (tle.tweet.id == id) {
+      if (tle.tweet.id == id || id == -1) {
         if (!tle.seen) {
           unread_count--;
           update_unread_count ();
