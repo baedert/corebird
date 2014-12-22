@@ -410,4 +410,12 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     update_unread_count ();
     user_entry.update_unread_count ();
   }
+
+  public string? get_notification_id_for_user_id (int64 user_id) {
+    DMThreadEntry? user_entry = thread_map.get (user_id);
+    if (user_entry == null)
+      return null;
+
+    return user_entry.notification_id;
+  }
 }

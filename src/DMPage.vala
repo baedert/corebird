@@ -196,6 +196,13 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
         text_view.buffer.text.length > Tweet.MAX_LENGTH)
       return;
 
+    // Withdraw the notification if there is one
+    DMThreadsPage threads_page = ((DMThreadsPage)main_window.get_page (Page.DM_THREADS));
+    string notification_id = threads_page.get_notification_id_for_user_id (this.user_id);
+    if (notification_id != null)
+      GLib.Application.get_default ().withdraw_notification (notification_id);
+
+
     // Just add the entry now
     DMListEntry entry = new DMListEntry ();
     entry.screen_name = account.screen_name;
