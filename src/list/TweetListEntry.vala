@@ -65,8 +65,12 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     }
     set {
       _seen = value;
+      if (value && notification_id != null) {
+        NotificationManager.withdraw (notification_id);
+      }
     }
   }
+  public string? notification_id = null;
   private weak Account account;
   private weak MainWindow window;
   public Tweet tweet;
