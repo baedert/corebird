@@ -322,7 +322,7 @@
             <property name="relief">none</property>
             <property name="menu_model">actions_menu</property>
             <child>
-              <object class="GtkImage" id="image4">
+              <object class="GtkImage">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="icon_name">go-down-symbolic</property>
