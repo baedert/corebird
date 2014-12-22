@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-21 12:57+0100\n"
+"POT-Creation-Date: 2014-12-22 19:20+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -146,16 +146,21 @@ msgstr ""
 msgid "Home"
 msgstr ""
 
-#: ../src/DMThreadsPage.vala:355
+#: ../src/DMThreadsPage.vala:366
+#, c-format
+msgid "%d new Messages from %s"
+msgstr ""
+
+#: ../src/DMThreadsPage.vala:370
 #, c-format
 msgid "New direct message from %s"
 msgstr ""
 
-#: ../src/DMThreadsPage.vala:366 ../src/DMThreadsPage.vala:380
+#: ../src/DMThreadsPage.vala:385 ../src/DMThreadsPage.vala:399
 msgid "Direct Messages"
 msgstr ""
 
-#: ../src/list/DMThreadEntry.vala:96
+#: ../src/list/DMThreadEntry.vala:97
 #, c-format
 msgid "(%d unread)"
 msgstr ""
@@ -199,16 +204,16 @@ msgstr ""
 msgid "Tweet Details"
 msgstr ""
 
-#: ../src/util/Utils.vala:88
+#: ../src/util/Utils.vala:90
 msgid "Now"
 msgstr ""
 
-#: ../src/util/Utils.vala:90
+#: ../src/util/Utils.vala:92
 #, c-format
 msgid "%dm"
 msgstr ""
 
-#: ../src/util/Utils.vala:94
+#: ../src/util/Utils.vala:96
 #, c-format
 msgid "%dh"
 msgstr ""
@@ -218,20 +223,20 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: ../src/Corebird.vala:162
+#: ../src/Corebird.vala:167
 msgid "Open Account"
 msgstr ""
 
-#: ../src/MentionsTimeline.vala:92
+#: ../src/MentionsTimeline.vala:95
 #, c-format
 msgid "New Mention from @%s"
 msgstr ""
 
-#: ../src/MentionsTimeline.vala:123 ../src/MentionsTimeline.vala:128
+#: ../src/MentionsTimeline.vala:128 ../src/MentionsTimeline.vala:133
 msgid "Mentions"
 msgstr ""
 
-#: ../src/DMPage.vala:250
+#: ../src/DMPage.vala:257
 msgid "Direct Conversation"
 msgstr ""
 
