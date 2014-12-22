@@ -48,6 +48,10 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
         ((StartConversationEntry)row).reveal ();
       else if (row is DMThreadEntry) {
         var entry = (DMThreadEntry) row;
+        /* We can withdraw the notification here since
+           activating the notification will dismiss it */
+        if (entry.notification_id != null)
+          GLib.Application.get_default ().withdraw_notification (entry.notification_id);
         main_window.main_widget.switch_page (Page.DM,
                                              entry.user_id);
       }
@@ -224,9 +228,9 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       t_e.last_message = text;
       t_e.last_message_id = message_id;
       account.db.update ("dm_threads").val ("last_message", text)
-                                      .vali64 ( "last_message_id", message_id)
+                                      .vali64 ("last_message_id", message_id)
                                       .where_eqi ("user_id", sender_id).run ();
-      notify_new_dm (sender_id, t_e.screen_name, Utils.unescape_html (text));
+      t_e.notification_id = notify_new_dm (t_e, Utils.unescape_html (text));
       thread_list.invalidate_sort ();
       return;
     }
@@ -346,20 +350,28 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     }
   }
 
-  private string? notify_new_dm (int64  sender_id,
-                                string sender_screen_name,
-                                string text) {
+  private string? notify_new_dm (DMThreadEntry thread_entry, string text) {
     if (!Settings.notify_new_dms ())
       return null;
 
+    string sender_screen_name = thread_entry.screen_name;
+    int64 sender_id = thread_entry.user_id;
+
+
+    string id = "new-dm-" + sender_id.to_string ();
     var n = new GLib.Notification (_("New direct message from %s")
                                    .printf (sender_screen_name));
-    n.set_body (text);
+    if (thread_entry.notification_id != null) {
+      GLib.Application.get_default ().withdraw_notification (id);
+      n.set_body (_("%d new Messages from %s").printf (thread_entry.unread_count,
+                                                       thread_entry.name));
+    } else {
+      n.set_body (text);
+    }
     var value = new GLib.Variant.tuple ({new GLib.Variant.string (account.screen_name),
                                          new GLib.Variant.int64 (sender_id)});
     n.set_default_action_and_target_value ("app.show-dm-thread", value);
 
-    string id = "new-dm-" + sender_id.to_string ();
     GLib.Application.get_default ().send_notification (id, n);
 
     return id;
