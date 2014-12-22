@@ -30,7 +30,6 @@ cb_sources = \
 			UserCounter.vala \
 			DefaultTimeline.vala \
 			DMThreadsPage.vala \
-			WarningService.vala \
 			InlineMediaDownloader.vala \
 			Settings.vala \
 			NotificationManager.vala \
