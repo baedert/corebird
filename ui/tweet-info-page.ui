@@ -84,7 +84,6 @@
             <signal name="clicked" handler="name_button_clicked_cb" swapped="no"/>
             <style>
               <class name="text-only-button"/>
-              <class name="list-username"/>
             </style>
           </object>
           <packing>
