@@ -145,7 +145,7 @@
 .retweet-button:checked {
   background-image: none;
   background-color: transparent;
-  border: none;
+  border-color: transparent;
   box-shadow: none;
 }
 
