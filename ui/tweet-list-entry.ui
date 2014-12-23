@@ -50,7 +50,7 @@
                 <child>
                   <object class="GtkImage">
                     <property name="visible">true</property>
-                    <property name="pixel_size">32</property>
+                    <property name="pixel_size">16</property>
                     <property name="icon_name">starred-symbolic</property>
                   </object>
                 </child>
@@ -71,7 +71,7 @@
                 <child>
                   <object class="GtkImage">
                     <property name="visible">true</property>
-                    <property name="pixel_size">32</property>
+                    <property name="pixel_size">16</property>
                     <property name="icon_name">corebird-retweet-symbolic</property>
                   </object>
                 </child>
@@ -92,7 +92,7 @@
                 <child>
                   <object class="GtkImage">
                     <property name="visible">true</property>
-                    <property name="pixel_size">32</property>
+                    <property name="pixel_size">16</property>
                     <property name="icon_name">mail-replied-symbolic</property>
                   </object>
                 </child>
@@ -107,11 +107,12 @@
                 <property name="menu_model">actions_menu</property>
                 <style>
                   <class name="dim-label" />
+                  <class name="image-button" />
                 </style>
                 <child>
                   <object class="GtkImage">
                     <property name="visible">true</property>
-                    <property name="pixel_size">32</property>
+                    <property name="pixel_size">16</property>
                     <property name="icon_name">go-down-symbolic</property>
                   </object>
                 </child>
