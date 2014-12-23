@@ -84,9 +84,6 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   [Signal (action = true)]
   private signal void delete_tweet ();
 
-  private GLib.SimpleActionGroup actions;
-
-
   public TweetListEntry (owned Tweet tweet, MainWindow? window, Account account){
     this.account = account;
     this.tweet = tweet;
@@ -232,13 +229,10 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     // You can't retweet your own tweets.
     if (account.id == this.tweet.user_id || !values_set)
       return;
-    var spinner = new Gtk.Spinner();
 
-    spinner.start ();
-    WidgetReplacer.replace_tmp (retweet_button, spinner);
-    spinner.show ();
+    retweet_button.sensitive = false;
     TweetUtils.toggle_retweet_tweet.begin (account, tweet, !retweet_button.active, () => {
-      WidgetReplacer.replace_tmp_back(retweet_button);
+      retweet_button.sensitive = true;
     });
 
   } // }}}
@@ -248,14 +242,9 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     if (!values_set)
       return;
 
-    var spinner = new Gtk.Spinner();
-    spinner.start();
-    WidgetReplacer.replace_tmp(favorite_button, spinner);
-    spinner.show ();
+    favorite_button.sensitive = false;
     TweetUtils.toggle_favorite_tweet.begin (account, tweet, !favorite_button.active, () => {
-      WidgetReplacer.replace_tmp_back(favorite_button, true,
-                                      favorite_button.active);
-      favorite_button.visible = favorite_button.active;
+      favorite_button.sensitive = true;
     });
   } // }}}
 
