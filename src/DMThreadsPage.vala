@@ -363,7 +363,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   }
 
   public void create_tool_button(Gtk.RadioButton? group) {
-    tool_button = new BadgeRadioToolButton(group, "mail-unread-symbolic", _("Direct Messages"));
+    tool_button = new BadgeRadioToolButton(group, "corebird-dms-symbolic", _("Direct Messages"));
   }
 
   public Gtk.RadioButton? get_tool_button() {
