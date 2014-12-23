@@ -220,7 +220,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   }
 
   private void send_tweet (GLib.Error? error, int64[] ids) {
-    if (error != null) { // XXX ZOMG
+    if (error != null) {
       GLib.error (error.message);
     }
 
