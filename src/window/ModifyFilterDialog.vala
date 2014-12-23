@@ -16,9 +16,6 @@
  */
 [GtkTemplate (ui = "/org/baedert/corebird/ui/modify-filter-dialog.ui")]
 class ModifyFilterDialog : Gtk.Dialog {
-  private static const int RESPONSE_CANCEL = 0;
-  private static const int RESPONSE_SAVE   = 1;
-
   [GtkChild]
   private Gtk.Entry regex_entry;
   [GtkChild]
@@ -39,6 +36,7 @@ class ModifyFilterDialog : Gtk.Dialog {
   public ModifyFilterDialog (MainWindow parent,
                              Account    account,
                              Filter?    filter = null) {
+    GLib.Object (use_header_bar: Gtk.Settings.get_default ().gtk_dialogs_use_header ? 1 : 0);
     this.set_transient_for (parent);
     this.application = parent.get_application ();
     this.account = account;
@@ -56,9 +54,9 @@ class ModifyFilterDialog : Gtk.Dialog {
 
 
   public override void response (int response_id) {
-    if (response_id == RESPONSE_CANCEL) {
+    if (response_id == Gtk.ResponseType.CANCEL) {
       this.destroy ();
-    } else if (response_id == RESPONSE_SAVE) {
+    } else if (response_id == Gtk.ResponseType.OK) {
       save_filter ();
       this.destroy ();
     }

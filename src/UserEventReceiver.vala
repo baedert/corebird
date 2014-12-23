@@ -15,14 +15,24 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+class UserEventReceiver : GLib.Object, IMessageReceiver {
+  private unowned Account account;
 
-[GtkTemplate (ui = "/org/baedert/corebird/ui/about-dialog.ui")]
-class AboutDialog : Gtk.AboutDialog {
-  [GtkCallback]
-  private void response_cb (int id) {
-    if (id == Gtk.ResponseType.DELETE_EVENT) {
-      this.close ();
-    } else
-      warning ("Unhandled response: %d", id);
+  public UserEventReceiver (Account account) {
+    this.account = account;
   }
+
+  public void stream_message_received (StreamMessageType type,
+                                       Json.Node         root_node) {
+    if (type == StreamMessageType.EVENT_FOLLOW) {
+      int64 user_id = root_node.get_object ().get_object_member ("target")
+                               .get_int_member ("id");
+      account.follow_id (user_id);
+    } else if (type == StreamMessageType.EVENT_UNFOLLOW) {
+      int64 user_id = root_node.get_object ().get_object_member ("target")
+                               .get_int_member ("id");
+      account.unfollow_id (user_id);
+    }
+  }
+
 }

@@ -33,17 +33,15 @@ public class Twitter : GLib.Object {
 
   public static int short_url_length         { public get; private set; default = 22;}
   public static int short_url_length_https   { public get; private set; default = 23;}
-  public static int max_media_per_upload     { public get; private set; default = 1; }
+  public static int max_media_per_upload     { public get; private set; default = 4; }
   public static Gdk.Pixbuf no_avatar;
   public static Gdk.Pixbuf no_banner;
-  public static Gdk.Pixbuf verified_icon;
   public Gee.HashMap<string, Gdk.Pixbuf?> avatars;
 
   public void init () {
     try {
-      Twitter.no_avatar     = new Gdk.Pixbuf.from_file(DATADIR + "/no_avatar.png");
-      Twitter.no_banner     = new Gdk.Pixbuf.from_file(DATADIR + "/no_banner.png");
-      Twitter.verified_icon = new Gdk.Pixbuf.from_file(DATADIR + "/verified.png");
+      Twitter.no_avatar     = new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/assets/no_avatar.png");
+      Twitter.no_banner     = new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/assets/no_banner.png");
     } catch (GLib.Error e) {
       error ("Error while loading assets: %s", e.message);
     }
@@ -86,13 +84,15 @@ public class Twitter : GLib.Object {
     string avatar_dest = Dirs.cache ("assets/avatars/" + avatar_name);
     // If the image already exists but is not loaded in ram yet,
     // just load it and return it.
-    if (FileUtils.test (avatar_dest, FileTest.EXISTS)) {
-      try {
-        var p = new Gdk.Pixbuf.from_file (avatar_dest);
-        avatars.set (url, p);
-        return p;
-      } catch (GLib.Error e) {
+    try {
+      var p = new Gdk.Pixbuf.from_file (avatar_dest);
+      avatars.set (url, p);
+      return p;
+    } catch (GLib.Error e) {
+      if (!(e is GLib.FileError.NOENT)) {
         critical ("Error while loading avatar `%s`: %s", url, e.message);
+        this.avatars.set (url, no_avatar);
+        return no_avatar;
       }
     }
 
@@ -108,8 +108,15 @@ public class Twitter : GLib.Object {
       // download the avatar
       avatars.set (url, null);
       TweetUtils.download_avatar.begin (url, (obj, res) => {
-        Gdk.Pixbuf? avatar;
-        avatar = TweetUtils.download_avatar.end (res);
+        Gdk.Pixbuf? avatar = null;
+        try {
+          avatar = TweetUtils.download_avatar.end (res);
+        } catch (GLib.Error e) {
+          warning (e.message + " for " + url);
+          func (no_avatar);
+          this.avatars.set (url, no_avatar);
+          return;
+        }
         func (avatar);
         // signal all the other waiters in the queue
         avatar_downloaded[url](avatar);

@@ -26,7 +26,6 @@ public enum StreamMessageType {
   FRIENDS,
   EVENT,
   WARNING,
-  FOLLOW,
   DIRECT_MESSAGE,
 
   TWEET,
@@ -39,6 +38,7 @@ public enum StreamMessageType {
   EVENT_LIST_MEMBER_REMOVED,
   EVENT_FAVORITE,
   EVENT_UNFAVORITE,
+  EVENT_FOLLOW,
   EVENT_UNFOLLOW,
   EVENT_BLOCK,
   EVENT_UNBLOCK
@@ -63,6 +63,7 @@ public class UserStream : Object {
   public string token_secret {
     set { proxy.token_secret = value; }
   }
+  private unowned Account account;
 
   // Signals
   public signal void interrupted ();
@@ -71,9 +72,10 @@ public class UserStream : Object {
 
 
 
-  public UserStream (string account_name) {
-    this.account_name = account_name;
-    debug ("CREATING USER STREAM FOR "+account_name);
+  public UserStream (Account account) {
+    this.account_name = account.screen_name;
+    this.account = account;
+    debug ("CREATING USER STREAM FOR " + account_name);
     proxy = new Rest.OAuthProxy(
           Settings.get_consumer_key (),
           Settings.get_consumer_secret (),
@@ -159,6 +161,8 @@ public class UserStream : Object {
 
   private void start_heartbeat_timeout () {
     heartbeat_timeout_id = GLib.Timeout.add (TIMEOUT_INTERVAL, () => {
+      if (!running)
+        return false;
       // If we get here, we need to restart the stream.
       running = false;
       debug ("Connection lost (%s) Reason: heartbeat. Restarting...", account_name);
@@ -180,10 +184,13 @@ public class UserStream : Object {
    * @param length The buffer's length
    * @param error
    */
-  private void parse_data_cb (Rest.ProxyCall call, string? buf, size_t length,
-                              Error? error) {
+  private void parse_data_cb (Rest.ProxyCall call,
+                              string?        buf,
+                              size_t         length,
+                              GLib.Error?    error) {
     if (buf == null) {
       debug ("buf == NULL");
+      // XXX Maybe restart here too?
       return;
     }
 
@@ -203,11 +210,20 @@ public class UserStream : Object {
         return;
       }
 
+      /* For whatever reason, we sometimes receive "OK"
+         from the server. I can't find an explanation
+         for this but it doesn't seem to cause any harm. */
+      if (data.str.strip () == "OK") {
+        data.erase ();
+        return;
+      }
+
       var parser = new Json.Parser ();
       try {
         parser.load_from_data(data.str);
       } catch (GLib.Error e) {
         critical(e.message);
+        critical (data.str);
       }
 
       var root_node = parser.get_root();
@@ -223,9 +239,10 @@ public class UserStream : Object {
         type = StreamMessageType.LIMIT;
       else if (root.has_member ("disconnect"))
         type = StreamMessageType.DISCONNECT;
-      else if (root.has_member ("friends"))
+      else if (root.has_member ("friends")) {
+        account.set_friends (root.get_array_member ("friends"));
         type = StreamMessageType.FRIENDS;
-      else if (root.has_member ("text"))
+      } else if (root.has_member ("text"))
         type = StreamMessageType.TWEET;
       else if (root.has_member ("event")) {
         string evt_str = root.get_string_member ("event");
@@ -240,8 +257,7 @@ public class UserStream : Object {
 
 #if DEBUG
       debug ("Message with type %s", type.to_string ());
-      if (type != StreamMessageType.FRIENDS)
-        stdout.printf (data.str+"\n");
+      stdout.printf (data.str+"\n\n");
 #endif
       foreach (IMessageReceiver it in receivers)
         it.stream_message_received (type, root_node);
@@ -255,7 +271,7 @@ public class UserStream : Object {
   private StreamMessageType get_event_type (string evt_str) {
     switch (evt_str) {
       case "follow":
-        return StreamMessageType.FOLLOW;
+        return StreamMessageType.EVENT_FOLLOW;
       case "list_created":
         return StreamMessageType.EVENT_LIST_CREATED;
       case "list_destroyed":

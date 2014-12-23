@@ -47,9 +47,10 @@
               <property name="can_focus">False</property>
               <property name="visible">False</property>
               <property name="no_show_all">True</property>
-              <property name="label" translatable="Yes">Users:</property>
+              <property name="label" translatable="Yes">Users</property>
               <property name="margin_top">25</property>
               <property name="margin_start">25</property>
+              <property name="margin_bottom">6</property>
               <property name="justify">left</property>
               <property name="halign">start</property>
             </object>

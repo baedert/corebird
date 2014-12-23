@@ -79,7 +79,6 @@ class DMThreadEntry : Gtk.ListBoxRow {
     set { avatar_image.pixbuf = value;}
     owned get { return avatar_image.pixbuf; }
   }
-  public string avatar_path;
 
   public int unread_count = 0;
 

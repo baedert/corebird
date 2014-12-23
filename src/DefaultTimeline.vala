@@ -53,7 +53,6 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     tweet_list.set_sort_func(ITwitterItem.sort_func);
     this.add (tweet_list);
 
-    tweet_list.activate_on_single_click = false;
     tweet_list.row_activated.connect ((row) => {
       if (row is TweetListEntry) {
         main_window.main_widget.switch_page (Page.TWEET_INFO,
@@ -208,37 +207,32 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   /**
    * So, we don't want to display a retweet in the following situations:
    *   - If the original tweet was a tweet by the authenticated user
-   *   - In any case, if the original tweet already exists in the timline,
-   *     we don't display the retweet but instead just mark the original tweet
-   *     as retweeted.
+   *   - In any case, if the user follows the author of the tweet
+   *     (not the author of the retweet!), we already get the source
+   *     tweet by other means, so don't display it again.
+   *   - It's a retweet from the authenticating user itself
    */
   protected bool should_display_retweet (Tweet t) {
-    // First case
+    /* First case */
     if (t.user_id == account.id)
       return false;
 
-    // Second case
-    foreach (Gtk.Widget w in tweet_list.get_children ()) {
-      if (w == null || !(w is TweetListEntry))
-        continue;;
-
-      var tle = (TweetListEntry) w;
-      if (tle.tweet.id == t.rt_id || tle.tweet.rt_id == t.rt_id) {
-        if (t.rt_by_id == account.id) {
-          tle.tweet.retweeted = true;
-          tle.tweet.my_retweet = t.id;
-        }
+    /*  Second case */
+    if (account.follows_id (t.user_id))
         return false;
-      }
-    }
+
+    /* third case */
+    if (t.rt_by_id == account.id)
+      return false;
 
     return true;
   }
 
   protected void mark_seen (int64 id) {
     foreach (Gtk.Widget w in tweet_list.get_children ()) {
-       if (w == null || !(w is TweetListEntry))
+      if (w == null || !(w is TweetListEntry))
         continue;
+
       var tle = (TweetListEntry) w;
       if (tle.tweet.id == id) {
         if (!tle.seen) {

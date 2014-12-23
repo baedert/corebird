@@ -204,7 +204,8 @@ namespace Utils {
     if (errors.get_length () == 1) {
       var err = errors.get_object_element (0);
       sb.append (err.get_int_member ("code").to_string ()).append (": ")
-        .append (err.get_string_member ("message"));
+        .append (err.get_string_member ("message"))
+        .append ("(").append (file).append (":").append (line.to_string ()).append (")");
     } else {
       sb.append ("<ul>");
       errors.foreach_element ((arr, index, node) => {
@@ -286,11 +287,7 @@ namespace Utils {
   public void load_custom_css () {
     try {
       var provider = new Gtk.CssProvider ();
-      string style = Dirs.config ("style.css");
-      if (!FileUtils.test (style, FileTest.EXISTS))
-        style = DATADIR + "/ui/style.css";
-
-      provider.load_from_file(File.new_for_path (style));
+      provider.load_from_file(File.new_for_uri ("resource:///org/baedert/corebird/ui/style.css"));
       Gtk.StyleContext.add_provider_for_screen ((!)Gdk.Screen.get_default (),
                                                 provider,
                                                 Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
@@ -353,6 +350,8 @@ namespace Utils {
 
     w = img_width;
     h = (int)(thumb_height * f);
+    if (h > img_height)
+      h = img_height;
 
     x = 0;
     y = (img_height / 2) - (h / 2);

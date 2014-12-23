@@ -16,17 +16,40 @@
  */
 
 
+class Collect : GLib.Object {
+  private int cur = 0;
+  private int max;
+  private GLib.Error? error = null;
 
 
-class BgBox : Gtk.Box {
+  public signal void finished (GLib.Error? error);
 
-
-  public override bool draw (Cairo.Context ct) {
-    Gtk.Allocation alloc;
-    this.get_allocation (out alloc);
-    var style_ct = this.get_style_context ();
-
-    style_ct.render_background (ct, 0, 0, alloc.width, alloc.height);
-    return base.draw (ct);
+  public Collect (int max)
+  requires (max >= 0)
+  {
+    this.max = max;
   }
+
+  public void emit (GLib.Error? error = null)
+  requires (cur < max)
+  {
+    /* If our global error is set, something previously went wrong and we ignore
+       this call to emit(); */
+    if (this.error != null)
+      return;
+
+    /* If error is set, we call finished() with that error and ignore all
+       following calls to emit() */
+    if (error != null) {
+      finished (error);
+      this.error = error;
+      return;
+    }
+
+    cur++;
+    if (cur == max) {
+      finished (null);
+    }
+  }
+
 }

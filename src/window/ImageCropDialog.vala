@@ -27,11 +27,17 @@ public class ImageCropDialog : Gtk.Dialog {
   private Gtk.Button back_button;
   [GtkChild]
   private Gtk.Button next_button;
+  [GtkChild]
+  private Gtk.Label error_label;
 
   public signal void image_cropped (Gdk.Pixbuf result);
 
+  public int min_width;
+  public int min_height;
+
 
   public ImageCropDialog (double aspect_ratio) {
+    GLib.Object (use_header_bar: Gtk.Settings.get_default ().gtk_dialogs_use_header ? 1 : 0);
     Gtk.FileFilter filter = new Gtk.FileFilter ();
     filter.add_mime_type ("image/png");
     filter.add_mime_type ("image/jpeg");
@@ -40,12 +46,18 @@ public class ImageCropDialog : Gtk.Dialog {
   }
 
 
-  [GtkCallback]
-  private void back_button_clicked_cb () {
-    stack.visible_child = file_chooser;
-    back_button.sensitive = false;
-    next_button.label = _("Next");
-    selection_changed_cb ();
+  public override void response (int response_id) {
+    if (response_id == Gtk.ResponseType.CANCEL) {
+      this.destroy ();
+    } else if (response_id == Gtk.ResponseType.OK) {
+      next.begin ();
+    } else if (response_id == 1) {
+      // back
+      stack.visible_child = file_chooser;
+      back_button.sensitive = false;
+      next_button.label = _("Next");
+      selection_changed_cb ();
+    }
   }
 
   [GtkCallback]
@@ -64,27 +76,41 @@ public class ImageCropDialog : Gtk.Dialog {
   }
 
   [GtkCallback]
-  private void next_button_clicked_cb () {
+  private async void next () {
+
     if (stack.visible_child == file_chooser) {
       /* Prepare crop widget with selected image */
       string selected_file = file_chooser.get_filename ();
 
       stack.visible_child = crop_widget;
-      crop_widget.load_file_async.begin (selected_file, null);
+      /* Load the file now, check for min size etc. */
+      Gdk.Pixbuf? image = null;
+      try {
+        image = new Gdk.Pixbuf.from_file (selected_file);
+      } catch (GLib.Error e) {
+        warning (e.message);
+        return;
+      }
 
-      next_button.label = _("Save");
-      back_button.sensitive = true;
+      if (image.get_width () >= min_width &&
+          image.get_height () >= min_height) {
+        crop_widget.set_image (image);
+        next_button.label = _("Save");
+        next_button.sensitive = true;
+        back_button.sensitive = true;
+      } else {
+        error_label.label = _("Image does not meet the minimum size requirements:\nMinimum width: %d pixels\nMinimum height: %d pixels").printf (min_width, min_height);
+        stack.visible_child = error_label;
+        back_button.sensitive = true;
+        next_button.sensitive = false;
+      }
+
 
     } else {
       /* Crop the widget and save it... */
       image_cropped (crop_widget.get_cropped_image ());
       this.destroy ();
     }
-  }
-
-  [GtkCallback]
-  private void cancel_button_clicked_cb () {
-    this.destroy ();
   }
 
   public void set_min_size (int min_width) {

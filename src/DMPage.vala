@@ -26,7 +26,7 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
   [GtkChild]
   private Gtk.Button send_button;
   [GtkChild]
-  private Gtk.TextView text_view;
+  private CompletionTextView text_view;
   [GtkChild]
   private Gtk.ListBox messages_list;
   [GtkChild]
@@ -38,8 +38,6 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
 
   public DMPage (int id) {
     this.id = id;
-    //text_entry.buffer.inserted_text.connect (recalc_length);
-    //text_entry.buffer.deleted_text.connect (recalc_length);
     text_view.buffer.changed.connect (recalc_length);
     messages_list.set_sort_func (ITwitterItem.sort_func_inv);
     placeholder_box.show ();
@@ -142,6 +140,8 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
       placeholder_box.avatar_url = arg_list.arg<string> ();
       placeholder_box.load_avatar ();
     }
+
+    text_view.set_account (this.account);
 
     // Clear list
     messages_list.foreach ((w) => {messages_list.remove (w);});

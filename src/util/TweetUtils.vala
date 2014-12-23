@@ -322,7 +322,9 @@ namespace TweetUtils {
       return Twitter.short_url_length_https;
 
     foreach (string tld in DOMAINS) {
-      if (s.has_suffix (tld))
+      string[] parts = s.split ("/");
+
+      if (parts.length > 0 && parts[0].has_suffix (tld))
         return Twitter.short_url_length; // Default to HTTP
     }
 
@@ -397,6 +399,8 @@ namespace TweetUtils {
       GLib.Idle.add (() => {
         Tweet tweet = tweet_array[index];
         var entry = new TweetListEntry (tweet, main_window, account);
+        if (account.user_counter == null)
+          return false;
         account.user_counter.user_seen (tweet.user_id,
                                         tweet.screen_name,
                                         tweet.user_name);
@@ -410,7 +414,7 @@ namespace TweetUtils {
 
         index ++;
         if (index == tweet_array.length) {
-          if (tweet_array.length < requested_tweet_count - 1) {
+          if (tweet_array.length < requested_tweet_count - 5) {
             debug ("Removing progress entry. Requested: %u, Got: %d", requested_tweet_count,
                                                                       tweet_array.length);
             tweet_list.remove_progress_entry ();

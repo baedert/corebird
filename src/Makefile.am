@@ -43,6 +43,7 @@ cb_sources = \
 			Filter.vala \
 			FilterPage.vala \
 			Media.vala \
+			UserEventReceiver.vala \
 			widgets/TweetListBox.vala \
 			widgets/MaxSizeContainer.vala \
 			widgets/ScrollWidget.vala \
@@ -54,7 +55,6 @@ cb_sources = \
 			widgets/DMPlaceholderBox.vala \
 			widgets/AccountCreateWidget.vala \
 			widgets/AspectImage.vala \
-			widgets/BgBox.vala \
 			widgets/UserListsWidget.vala \
 			widgets/ReplyIndicator.vala \
 			widgets/MultiMediaWidget.vala \
@@ -63,6 +63,8 @@ cb_sources = \
 			widgets/MediaImageWidget.vala \
 			widgets/MediaVideoWidget.vala \
 			widgets/CropWidget.vala \
+			widgets/AddImageButton.vala \
+			widgets/CompletionTextView.vala \
 			util/TweetUtils.vala \
 			util/Utils.vala \
 			util/IntHistory.vala \
@@ -74,7 +76,6 @@ cb_sources = \
 			list/TweetListEntry.vala \
 			list/DMListEntry.vala \
 			list/UserListEntry.vala \
-			list/AccountListEntry.vala \
 			list/DMThreadEntry.vala \
 			list/StartConversationEntry.vala \
 			list/ListListEntry.vala \
@@ -94,7 +95,8 @@ cb_sources = \
 			sql/Database.vala \
 			sql/Statement.vala \
 			sql/UpdateStatement.vala \
-			sql/SelectStatement.vala
+			sql/SelectStatement.vala \
+			async/Collect.vala
 # }}}
 
 corebird.vapi libcorebird_la_vala.stamp corebird.h: $(cb_sources)

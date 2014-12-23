@@ -18,6 +18,11 @@
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/tweet-list-entry.ui")]
 public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
+  private const GLib.ActionEntry[] action_entries = {
+    {"quote", quote_activated},
+    {"delete", delete_activated}
+  };
+
   [GtkChild]
   private Gtk.Label screen_name_label;
   [GtkChild]
@@ -35,13 +40,13 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   [GtkChild]
   private Gtk.Image conversation_image;
   [GtkChild]
+  private Gtk.Image rt_status_image;
+  [GtkChild]
+  private Gtk.Image fav_status_image;
+  [GtkChild]
   private DoubleTapButton retweet_button;
   [GtkChild]
   private Gtk.ToggleButton favorite_button;
-  [GtkChild]
-  private Gtk.Menu more_menu;
-  [GtkChild]
-  private Gtk.MenuItem more_menu_delete_item;
   [GtkChild]
   private Gtk.Grid grid;
   [GtkChild]
@@ -52,9 +57,9 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   private Gtk.Box action_box;
 
 
-
+  public bool read_only = false;
   public int64 sort_factor{
-    get{ return tweet.created_at;}
+    get { return tweet.created_at;}
   }
   private bool _seen = true;
   public bool seen {
@@ -78,6 +83,8 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   private signal void retweet_tweet ();
   [Signal (action = true)]
   private signal void delete_tweet ();
+
+  private GLib.SimpleActionGroup actions;
 
 
   public TweetListEntry (owned Tweet tweet, MainWindow? window, Account account){
@@ -124,8 +131,13 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       grid.remove (mm_widget);
 
 
-    if (tweet.user_id != account.id)
-      more_menu.remove (more_menu_delete_item);
+    var actions = new GLib.SimpleActionGroup ();
+    actions.add_action_entries (action_entries, this);
+    this.insert_action_group ("tweet", actions);
+
+    if (tweet.user_id != account.id) {
+      ((GLib.SimpleAction)actions.lookup_action ("delete")).set_enabled (false);
+    }
 
 
     reply_tweet.connect (reply_button_clicked_cb);
@@ -139,18 +151,26 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
         retweet_button.tap ();
     });
 
+    if (tweet.favorited)
+      fav_status_image.show ();
+
+    if (tweet.retweeted)
+      rt_status_image.show ();
+
     values_set = true;
   }
 
   private void favorited_cb () {
     values_set = false;
     favorite_button.active = tweet.favorited;
+    fav_status_image.visible = tweet.favorited;
     values_set = true;
   }
 
   private void retweeted_cb () {
     values_set = false;
     retweet_button.active = tweet.retweeted;
+    rt_status_image.visible = tweet.retweeted;
     values_set = true;
   }
 
@@ -183,7 +203,6 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     Gtk.BindingEntry.add_signal (binding_set, Gdk.Key.t, 0, "retweet-tweet", 0, null);
     Gtk.BindingEntry.add_signal (binding_set, Gdk.Key.f, 0, "favorite-tweet", 0, null);
   }
-
 
   [GtkCallback]
   private bool focus_out_cb (Gdk.EventFocus evt) {
@@ -254,24 +273,14 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     ctw.show ();
   }
 
-  [GtkCallback]
-  private void detail_item_activated_cb () {
-    window.main_widget.switch_page (Page.TWEET_INFO,
-                                    TweetInfoPage.BY_INSTANCE,
-                                    tweet);
-  }
-
-  [GtkCallback]
-  private void quote_item_activated_cb () {
+  private void quote_activated () {
     ComposeTweetWindow ctw = new ComposeTweetWindow(this.window, this.account, this.tweet,
                                                     ComposeTweetWindow.Mode.QUOTE,
                                                     this.window.get_application ());
     ctw.show ();
-
   }
 
-  [GtkCallback]
-  private void delete_item_activated_cb () {
+  private void delete_activated () {
     delete_first_activated = true;
     delete_tweet ();
   }

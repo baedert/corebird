@@ -50,37 +50,99 @@
   opacity: 1.0;
 }
 
-
-.button-wide {
-  padding-left: 12px;
-  padding-right: 12px;
+.image-placeholder {
+  background-image: none;
+  border-radius: 0px;
+  box-shadow: none;
+  border: none;
+  background-color: alpha(grey, 0.7);
+  -GtkButton-default-border: 0;
+  -GtkButton-default-outside-border: 0;
+  -GtkButton-inner-border: 0;
+  -GtkWidget-focus-line-width: 0;
+  -GtkWidget-focus-padding: 0;
+  -gtk-icon-source: -gtk-icontheme("list-add-symbolic");
 }
+
+.image-placeholder:hover {
+  background-color: alpha (#333, 0.8);
+}
+
+.image-placeholder:active {
+  background-color: alpha (#333, 0.9);
+}
+
+
+.image-added {
+  box-shadow: none;
+  background-image: none;
+  border-radius: 0px;
+  border: none;
+  background-color: transparent;
+}
+
+.image-added:hover {
+  color: white;
+  background-color: alpha (red, 0.34);
+  icon-shadow: none;
+  -gtk-icon-source: -gtk-icontheme("edit-delete-symbolic");
+}
+
+.image-progress {
+  box-shadow: none;
+  background-image: none;
+  border-radius: 0px;
+  border: none;
+  background-color: transparent;
+
+  color: white;
+  -gtk-icon-source: -gtk-icontheme("content-loading-symbolic");
+}
+
+.image-success {
+  box-shadow: none;
+  background-image: none;
+  border-radius: 0px;
+  border: none;
+  background-color: transparent;
+
+  color: white;
+  background-color: alpha (green, 0.5);
+  -gtk-icon-source: -gtk-icontheme("object-select-symbolic");
+}
+
+.image-error {
+  box-shadow: none;
+  background-image: none;
+  border-radius: 0px;
+  border: none;
+  background-color: transparent;
+
+  color: white;
+  background-color: alpha (red, 0.5);
+  -gtk-icon-source: -gtk-icontheme("dialog-error-symbolic");
+}
+
 
 .retweet-button,
 .favorite-button,
 .reply-button,
 .more-button{
-  font-size: 1.0em;
   background-color: transparent;
 }
 .retweet-button:hover,
-.retweet-button:active {
+.retweet-button:checked {
   color:green;
 }
 
-
-.large-font {
-  font-size: 1.3em;
-}
-
 .favorite-button:hover,
-.favorite-button:active {
+.favorite-button:checked {
   color: shade(yellow, 0.9);
 }
 
 /* Don't target :hover:active here */
-.favorite-button:active,
-.retweet-button:active {
+.favorite-button:checked,
+.retweet-button:checked {
   background-image: none;
   background-color: transparent;
   border: none;

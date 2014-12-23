@@ -79,6 +79,7 @@ class ListStatusesPage : ScrollWidget, IPage {
     this.scrolled_to_end.connect (load_older);
     this.scrolled_to_start.connect (handle_scrolled_to_start);
     tweet_list.set_sort_func (ITwitterItem.sort_func);
+    tweet_list.set_adjustment (this.get_vadjustment ());
   }
 
   private bool scroll_event_cb (Gdk.EventScroll evt) {
@@ -318,6 +319,17 @@ class ListStatusesPage : ScrollWidget, IPage {
       refresh_button.sensitive = true;
      });
   } // }}}
+
+
+  [GtkCallback]
+  private void tweet_activated_cb (Gtk.ListBoxRow row) {
+    if (row is TweetListEntry) {
+      main_window.main_widget.switch_page (Page.TWEET_INFO,
+                                           TweetInfoPage.BY_INSTANCE,
+                                           ((TweetListEntry)row).tweet);
+    } else
+      warning ("row is of unknown type");
+  }
 
   private async void load_newer () {
     if (max_id == 0) {

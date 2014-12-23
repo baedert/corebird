@@ -57,7 +57,7 @@ public class MainWidget : Gtk.Box {
       }
     }
     account.user_stream.start ();
-    account.query_user_info_by_scren_name.begin (account.screen_name);
+    account.query_user_info_by_screen_name.begin (account.screen_name);
 
 
     // TODO: Just always pass the account instance to the constructor.
@@ -112,6 +112,11 @@ public class MainWidget : Gtk.Box {
 
     Settings.get ().bind ("sidebar-visible", sidebar_revealer, "reveal-child",
                           SettingsBindFlags.DEFAULT);
+
+    /* Set custom focus chain for the sidebar */
+    GLib.List<Gtk.Widget> list = new GLib.List<Gtk.Widget> ();
+    list.append (stack);
+    left_box.set_focus_chain (list);
   }
 
 
@@ -178,6 +183,8 @@ public class MainWidget : Gtk.Box {
       ((MainWindow)this.parent).set_title (page.get_title ());
 
     page_switch_lock = false;
+
+    ((MainWindow)this.parent).back_button.sensitive = !history.at_start ();
   } // }}}
 
   public IPage get_page (int page_id) {
@@ -185,7 +192,6 @@ public class MainWidget : Gtk.Box {
   }
 
   public void stop () {
-    account.user_stream.stop ();
-    account.user_counter.save (account.db);
+    account.uninit ();
   }
 }

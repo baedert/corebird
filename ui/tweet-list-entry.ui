@@ -1,38 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
 
-
-  <object class="GtkMenu" id="more_menu">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <child>
-      <object class="GtkMenuItem" id="more_menu_quote_item">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Quote</property>
-        <property name="use_underline">True</property>
-        <signal name="activate" handler="quote_item_activated_cb" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="more_menu_detail_item">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Details</property>
-        <property name="use_underline">True</property>
-        <signal name="activate" handler="detail_item_activated_cb" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="more_menu_delete_item">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Delete</property>
-        <property name="use_underline">True</property>
-        <signal name="activate" handler="delete_item_activated_cb" swapped="no"/>
-      </object>
-    </child>
-  </object>
+  <menu id="actions_menu">
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">Quote</attribute>
+        <attribute name="action">tweet.quote</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">Delete</attribute>
+        <attribute name="action">tweet.delete</attribute>
+      </item>
+    </section>
+  </menu>
 
   <template class="TweetListEntry" parent="GtkListBoxRow">
     <property name="visible">True</property>
@@ -123,8 +103,8 @@
               <object class="GtkMenuButton" id="more_button">
                 <property name="visible">true</property>
                 <property name="relief">none</property>
-                <property name="popup">more_menu</property>
                 <property name="valign">center</property>
+                <property name="menu_model">actions_menu</property>
                 <style>
                   <class name="dim-label" />
                 </style>
@@ -207,6 +187,39 @@
                 <property name="top_attach">0</property>
               </packing>
             </child>
+
+
+            <child>
+              <object class="GtkImage" id="fav_status_image">
+                <property name="can_focus">false</property>
+                <property name="visible">false</property>
+                <property name="halign">end</property>
+                <property name="valign">baseline</property>
+                <property name="margin_end">6</property>
+                <property name="pixel_size">12</property>
+                <property name="icon_name">corebird-favorite-symbolic</property>
+                <style>
+                  <class name="dim-label" />
+                </style>
+              </object>
+            </child>
+
+
+            <child>
+              <object class="GtkImage" id="rt_status_image">
+                <property name="can_focus">false</property>
+                <property name="visible">false</property>
+                <property name="halign">end</property>
+                <property name="valign">baseline</property>
+                <property name="margin_end">6</property>
+                <property name="pixel_size">12</property>
+                <property name="icon_name">corebird-retweet-symbolic</property>
+                <style>
+                  <class name="dim-label" />
+                </style>
+              </object>
+            </child>
+
             <child>
               <object class="GtkImage" id="conversation_image">
                 <property name="can_focus">False</property>
@@ -214,7 +227,6 @@
                 <property name="halign">end</property>
                 <property name="valign">baseline</property>
                 <property name="margin_end">6</property>
-                <property name="hexpand">True</property>
                 <property name="pixel_size">12</property>
                 <property name="icon_name">corebird-conversation-symbolic</property>
                 <style>
@@ -320,7 +332,6 @@
             </child>
           </object>
         </child>
-
       </object>
     </child>
 

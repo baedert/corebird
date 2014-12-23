@@ -22,6 +22,7 @@ public class Corebird : Gtk.Application {
   public static GLib.Menu account_menu;
   public signal void account_added (Account acc);
   public signal void account_removed (Account acc);
+  public signal void account_window_changed (string? old_screen_name, string new_screen_name);
 
   const GLib.ActionEntry[] app_entries = {
     {"show-settings",     show_settings_activated         },
@@ -73,18 +74,19 @@ public class Corebird : Gtk.Application {
 
     init_log_files ();
 
-    this.add_accelerator (Settings.get_accel ("compose-tweet"), "win.compose-tweet", null);
-    this.add_accelerator (Settings.get_accel ("toggle-sidebar"), "win.toggle-sidebar", null);
-    this.add_accelerator ("<Alt>1", "win.switch-page", new GLib.Variant.int32(0));
-    this.add_accelerator ("<Alt>2", "win.switch-page", new GLib.Variant.int32(1));
-    this.add_accelerator ("<Alt>3", "win.switch-page", new GLib.Variant.int32(2));
-    this.add_accelerator ("<Alt>4", "win.switch-page", new GLib.Variant.int32(3));
-    this.add_accelerator ("<Alt>5", "win.switch-page", new GLib.Variant.int32(4));
-    this.add_accelerator ("<Alt>6", "win.switch-page", new GLib.Variant.int32(5));
-    this.add_accelerator ("<Alt>7", "win.switch-page", new GLib.Variant.int32(6));
-    this.add_accelerator (Settings.get_accel ("show-settings"), "app.show-settings", null);
-    this.add_accelerator ("<Control>Q", "app.quit", null);
-    this.add_accelerator (Settings.get_accel ("show-account-dialog"), "win.show-account-dialog", null);
+    this.set_accels_for_action ("win.compose-tweet", {Settings.get_accel ("compose-tweet")});
+    this.set_accels_for_action ("win.toggle-sidebar", {Settings.get_accel ("toggle-sidebar")});
+    this.set_accels_for_action ("win.switch-page(0)", {"<Alt>1"});
+    this.set_accels_for_action ("win.switch-page(1)", {"<Alt>2"});
+    this.set_accels_for_action ("win.switch-page(2)", {"<Alt>3"});
+    this.set_accels_for_action ("win.switch-page(3)", {"<Alt>4"});
+    this.set_accels_for_action ("win.switch-page(4)", {"<Alt>5"});
+    this.set_accels_for_action ("win.switch-page(5)", {"<Alt>6"});
+    this.set_accels_for_action ("win.switch-page(6)", {"<Alt>7"});
+    this.set_accels_for_action ("app.show-settings", {Settings.get_accel ("show-settings")});
+    this.set_accels_for_action ("app.quit", {"<Control>Q"});
+    this.set_accels_for_action ("win.show-account-dialog", {Settings.get_accel ("show-account-dialog")});
+    this.set_accels_for_action ("win.show-account-list", {Settings.get_accel ("show-account-list")});
 
     this.add_action_entries (app_entries, this);
 
@@ -181,7 +183,7 @@ public class Corebird : Gtk.Application {
    * If that array is empty, look at all the account and if there is one, open that one.
    * If there is none, open a MainWindow with a null account.
    */
-  private void  open_startup_windows (string? compose_screen_name = null) { // {{{
+  private void open_startup_windows (string? compose_screen_name = null) { // {{{
     if (compose_screen_name != null) {
       Account? acc = Account.query_account (compose_screen_name);
       if (acc == null) {
@@ -192,7 +194,7 @@ public class Corebird : Gtk.Application {
       // TODO: Handle the 'avatar not yet cached' case
       acc.init_proxy ();
       acc.load_avatar ();
-      acc.query_user_info_by_scren_name.begin (acc.screen_name, acc.load_avatar);
+      acc.query_user_info_by_screen_name.begin (acc.screen_name, acc.load_avatar);
       var cw = new ComposeTweetWindow (null, acc, null,
                                        ComposeTweetWindow.Mode.NORMAL,
                                        this);
@@ -226,8 +228,9 @@ public class Corebird : Gtk.Application {
       bool opened_window = false;
       foreach (string account in startup_accounts) {
         if (!is_window_open_for_screen_name (account, null)) {
-          opened_window = true;
-          add_window_for_screen_name (account);
+          if (add_window_for_screen_name (account)) {
+            opened_window = true;
+          }
         }
       }
       /* If we did not open any window at all since all windows for every account
@@ -236,7 +239,6 @@ public class Corebird : Gtk.Application {
         message ("No window opened");
         foreach (Gtk.Window w in this.get_windows ())
           if (((MainWindow)w).account.screen_name == Account.DUMMY) {
-            message ("aaa");
             return;
           }
 
@@ -253,15 +255,6 @@ public class Corebird : Gtk.Application {
    * g_critical, etc. to also print to a file)
    */
   private void init_log_files () { // {{{
-    /* First, create that log file */
-    //File log_file = File.new_for_path (Dirs.data ("logs/%s.txt".printf (now.to_string())));
-    //try {
-      //log_stream = log_file.create(FileCreateFlags.REPLACE_DESTINATION);
-    //} catch (GLib.Error e) {
-      //warning ("Couldn't open log file: %s", e.message);
-    //}
-    /* If we do not run on the command line, we simply redirect stdout
-       to a log file*/
     GLib.Log.set_handler (null, LogLevelFlags.LEVEL_MESSAGE,  print_to_log_file);
     GLib.Log.set_handler (null, LogLevelFlags.LEVEL_ERROR,    print_to_log_file);
     GLib.Log.set_handler (null, LogLevelFlags.LEVEL_CRITICAL, print_to_log_file);
@@ -278,18 +271,20 @@ public class Corebird : Gtk.Application {
    * @param screen_name The screen name of the account do add a
    *                    MainWindow for.
    *
+   * @return true if a window has been opened, false otherwise
    */
-  public void add_window_for_screen_name (string screen_name) {
+  public bool add_window_for_screen_name (string screen_name) {
     unowned GLib.SList<Account> accs = Account.list_accounts ();
     foreach (Account a in accs) {
       if (a.screen_name == screen_name) {
         var window = new MainWindow (this, a);
         add_window (window);
         window.show_all ();
-        return;
+        return true;
       }
     }
     warning ("Could not add window for account '%s'", screen_name);
+    return false;
   }
 
   /**
@@ -376,6 +371,7 @@ public class Corebird : Gtk.Application {
     MainWindow main_window;
     if (is_window_open_for_screen_name (account_screen_name, out main_window)) {
       main_window.main_widget.switch_page (Page.DM, sender_id);
+      main_window.present ();
     } else
       warning ("Window for Account %s is not open, abort.", account_screen_name);
   }

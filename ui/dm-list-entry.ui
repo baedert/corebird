@@ -3,6 +3,7 @@
   <template class="DMListEntry" parent="GtkListBoxRow">
     <property name="visible">True</property>
     <property name="can_focus">True</property>
+    <property name="activatable">false</property>
     <style>
       <class name="tweet" />
     </style>
