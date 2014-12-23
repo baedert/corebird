@@ -234,7 +234,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     TweetUtils.toggle_retweet_tweet.begin (account, tweet, !retweet_button.active, () => {
       retweet_button.sensitive = true;
     });
-
+    toggle_mode ();
   } // }}}
 
   [GtkCallback]
@@ -246,6 +246,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     TweetUtils.toggle_favorite_tweet.begin (account, tweet, !favorite_button.active, () => {
       favorite_button.sensitive = true;
     });
+    toggle_mode ();
   } // }}}
 
   [GtkCallback]
