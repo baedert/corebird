@@ -80,7 +80,6 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       answer_entry.activatable = false;
       answer_entry.read_only = true;
       list.add (answer_entry);
-      list.show_all ();
       content_box.pack_start (list, false, true);
       content_box.reorder_child (list, 0);
     }
