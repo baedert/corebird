@@ -142,7 +142,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     }
 
 
-    reply_tweet.connect (reply_button_clicked_cb);
+    reply_tweet.connect (reply_tweet_activated);
     delete_tweet.connect (delete_tweet_activated);
     favorite_tweet.connect (() => {
       if (favorite_button.parent != null)
@@ -266,11 +266,20 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
                                                     ComposeTweetWindow.Mode.REPLY,
                                                     this.window.get_application ());
     ctw.show ();
+    toggle_mode ();
   }
 
   private void quote_activated () {
     ComposeTweetWindow ctw = new ComposeTweetWindow(this.window, this.account, this.tweet,
                                                     ComposeTweetWindow.Mode.QUOTE,
+                                                    this.window.get_application ());
+    ctw.show ();
+    toggle_mode ();
+  }
+
+  private void reply_tweet_activated () {
+    ComposeTweetWindow ctw = new ComposeTweetWindow(this.window, this.account, this.tweet,
+                                                    ComposeTweetWindow.Mode.REPLY,
                                                     this.window.get_application ());
     ctw.show ();
   }
