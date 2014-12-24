@@ -22,11 +22,10 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkListBox" id="top_list_box">
+              <object class="TweetListBox" id="top_list_box">
                 <property name="name">s</property>
                 <property name="can_focus">False</property>
                 <property name="selection_mode">none</property>
-                <property name="activate_on_single_click">False</property>
               </object>
             </child>
           </object>
@@ -362,11 +361,10 @@
 
 
         <child>
-          <object class="GtkListBox" id="bottom_list_box">
+          <object class="TweetListBox" id="bottom_list_box">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="selection_mode">none</property>
-            <property name="activate_on_single_click">False</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
