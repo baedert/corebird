@@ -317,6 +317,9 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
 
   public void toggle_mode () {
+    if (this.read_only)
+      return;
+
     if (stack.visible_child == action_box)
       stack.visible_child = grid;
     else
