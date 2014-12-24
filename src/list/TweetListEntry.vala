@@ -287,6 +287,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   private void delete_activated () {
     delete_first_activated = true;
     delete_tweet ();
+    toggle_mode ();
   }
 
   [GtkCallback]
