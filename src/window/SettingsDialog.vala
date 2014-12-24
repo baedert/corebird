@@ -105,10 +105,8 @@ class SettingsDialog : Gtk.Window {
     ag.connect (Gdk.Key.Escape, 0, Gtk.AccelFlags.LOCKED,
         () => {this.destroy (); return true;});
     ag.connect (Gdk.Key.@1, Gdk.ModifierType.MOD1_MASK, Gtk.AccelFlags.LOCKED,
-        () => {main_stack.visible_child_name = "accounts"; return true;});
-    ag.connect (Gdk.Key.@2, Gdk.ModifierType.MOD1_MASK, Gtk.AccelFlags.LOCKED,
         () => {main_stack.visible_child_name = "interface"; return true;});
-    ag.connect (Gdk.Key.@3, Gdk.ModifierType.MOD1_MASK, Gtk.AccelFlags.LOCKED,
+    ag.connect (Gdk.Key.@2, Gdk.ModifierType.MOD1_MASK, Gtk.AccelFlags.LOCKED,
         () => {main_stack.visible_child_name = "notifications"; return true;});
 
     this.add_accel_group(ag);

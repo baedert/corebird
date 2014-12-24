@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
+  <object class="GtkSizeGroup">
+    <widgets>
+      <widget name="cancel_button"/>
+      <widget name="send_button"/>
+    </widgets>
+  </object>
+
   <template class="ComposeTweetWindow" parent="GtkApplicationWindow">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Compose Tweet</property>

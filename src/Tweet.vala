@@ -68,7 +68,7 @@ public class Tweet : GLib.Object {
   public string[] mentions;
 
 
-  public Tweet(){
+  public Tweet () {
     this.avatar = Twitter.no_avatar;
   }
 
@@ -77,8 +77,9 @@ public class Tweet : GLib.Object {
    * @param status The Json object to get the data from
    * @param now The current time
    */
-  public void load_from_json (Json.Node status_node, GLib.DateTime now,
-                              Account account) {
+  public void load_from_json (Json.Node     status_node,
+                              GLib.DateTime now,
+                              Account       account) {
     Json.Object status = status_node.get_object ();
     Json.Object user = status.get_object_member("user");
     Json.Object entities;

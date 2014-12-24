@@ -674,6 +674,7 @@ int main (string[] args) {
   GLib.Test.init (ref args);
   Settings.init ();
   Twitter.get ().init ();
+  Utils.init_soup_session ();
   GLib.Test.add_func ("/tweet-parsing/retweet", retweet);
   GLib.Test.add_func ("/tweet-parsing/media-count", media_count);
   GLib.Test.add_func ("/tweet-parsing/media-count2", media_count2);

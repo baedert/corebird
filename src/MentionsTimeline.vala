@@ -82,13 +82,16 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
       base.postprocess_tweet (entry);
 
       if (Settings.notify_new_mentions ()) {
-        send_notification (t.screen_name, t.id, Utils.unescape_html (t.text));
+        entry.notification_id = send_notification (t.screen_name, t.id, Utils.unescape_html (t.text));
       }
     }
   } // }}}
 
 
-  private void send_notification (string sender_screen_name, int64 tweet_id, string text) {
+  /**
+   * @return The notification's ID
+   */
+  private string send_notification (string sender_screen_name, int64 tweet_id, string text) {
     var n = new GLib.Notification (_("New Mention from @%s")
                                    .printf (sender_screen_name));
     n.set_body (text);
@@ -96,7 +99,9 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
                                          new GLib.Variant.int64 (tweet_id)});
     //n.add_button_with_target_value (_("Mark read"), "app.mark-seen", value);
     n.set_default_action_and_target_value ("app.show-window", account.screen_name);
-    GLib.Application.get_default ().send_notification ("new-dm", n);
+    string id = "new-dm-" + tweet_id.to_string ();
+    GLib.Application.get_default ().send_notification (id, n);
+    return id;
   }
 
 

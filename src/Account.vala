@@ -90,10 +90,10 @@ public class Account : GLib.Object {
   }
 
   public void uninit () {
+    this.proxy = null;
     this.user_stream.stop ();
     this.user_counter.save (this.db);
     this.user_stream = null;
-    this.user_counter = null;
   }
 
   /**
@@ -152,41 +152,39 @@ public class Account : GLib.Object {
     call.set_method ("GET");
     call.add_param ("screen_name", screen_name);
     call.add_param ("skip_status", "true");
-    call.invoke_async.begin (null, (obj, res) => {
-      try{call.invoke_async.end (res);} catch (GLib.Error e) {
-        if (e.message.down() == "unauthorized") {
-          Utils.show_error_dialog ("Unauthorized");
-        }
-        critical (e.message);
-        return;
+    try {
+      yield call.invoke_async (null);
+    } catch (GLib.Error e) {
+      if (e.message.down() == "unauthorized") {
+        Utils.show_error_dialog ("Unauthorized");
       }
-      var parser = new Json.Parser ();
-      try {
-        parser.load_from_data (call.get_payload ());
-      } catch (GLib.Error e) {
-        critical (e.message);
-      }
-      stdout.printf (call.get_payload () + "\n");
-      var root = parser.get_root ().get_object ();
-      this.id = root.get_int_member ("id");
-      this.name = root.get_string_member ("name");
-      this.screen_name = root.get_string_member ("screen_name");
-      this.description = root.get_string_member ("description"); // TODO Replace URLS
-      if (root.has_member ("profile_banner_url"))
-        this.banner_url = root.get_string_member ("profile_banner_url");
-      /* Website URL */
-      if (root.get_object_member ("entities").has_member ("url")) {
-        this.website = root.get_object_member ("entities").get_object_member ("url")
-                       .get_array_member ("urls").get_object_element (0).get_string_member ("expanded_url");
-      } else
-        this.website = "";
+      critical (e.message);
+      return;
+    }
 
-      string avatar_url = root.get_string_member ("profile_image_url");
-      update_avatar.begin (avatar_url);
-      query_user_info_by_screen_name.callback();
-    });
+    var parser = new Json.Parser ();
+    try {
+      parser.load_from_data (call.get_payload ());
+    } catch (GLib.Error e) {
+      critical (e.message);
+    }
+    stdout.printf (call.get_payload () + "\n");
+    var root = parser.get_root ().get_object ();
+    this.id = root.get_int_member ("id");
+    this.name = root.get_string_member ("name");
+    this.screen_name = root.get_string_member ("screen_name");
+    this.description = root.get_string_member ("description"); // TODO Replace URLS
+    if (root.has_member ("profile_banner_url"))
+      this.banner_url = root.get_string_member ("profile_banner_url");
+    /* Website URL */
+    if (root.get_object_member ("entities").has_member ("url")) {
+      this.website = root.get_object_member ("entities").get_object_member ("url")
+                     .get_array_member ("urls").get_object_element (0).get_string_member ("expanded_url");
+    } else
+      this.website = "";
 
-    yield;
+    string avatar_url = root.get_string_member ("profile_image_url");
+    yield update_avatar (avatar_url);
   }
 
   /**
@@ -203,33 +201,34 @@ public class Account : GLib.Object {
     debug ("Using %s to update the avatar(old: %s)", url, this.avatar_url);
 
     if (url.length > 0) {
-      var session = new Soup.Session ();
       var msg = new Soup.Message ("GET", url);
-      session.send_message (msg);
-      var data_stream = new MemoryInputStream.from_data ((owned)msg.response_body.data, null);
-      string type = Utils.get_file_type (url);
-      string dest_path = Dirs.config (@"accounts/$(id)_small.png");
-      string big_dest  = Dirs.config (@"accounts/$(id).png");
-      Gdk.Pixbuf pixbuf;
-      try {
-        pixbuf = new Gdk.Pixbuf.from_stream(data_stream);
-        pixbuf.save(big_dest, type);
-        data_stream.close ();
-        double scale_x = 24.0 / pixbuf.get_width();
-        double scale_y = 24.0 / pixbuf.get_height();
-        var scaled_pixbuf = new Gdk.Pixbuf(Gdk.Colorspace.RGB,
-                                           pixbuf.has_alpha, 8, 24, 24);
-        pixbuf.scale(scaled_pixbuf, 0, 0, 24, 24, 0, 0, scale_x, scale_y, Gdk.InterpType.HYPER);
-        scaled_pixbuf.save(dest_path, type);
-        debug ("saving to %s", dest_path);
-        this.avatar_small = scaled_pixbuf;
-        this.avatar = pixbuf;
-      } catch (GLib.Error e) {
-        critical (e.message);
-      }
-      this.avatar_url = url;
-      Corebird.db.update ("accounts").val ("avatar_url", url).where_eqi ("id", id).run ();
-      info_changed (screen_name, name, avatar, avatar_small);
+      SOUP_SESSION.queue_message (msg, (_s, _msg) => {
+        var data_stream = new MemoryInputStream.from_data ((owned)msg.response_body.data, null);
+        string type = Utils.get_file_type (url);
+        string dest_path = Dirs.config (@"accounts/$(id)_small.png");
+        string big_dest  = Dirs.config (@"accounts/$(id).png");
+        Gdk.Pixbuf pixbuf;
+        try {
+          pixbuf = new Gdk.Pixbuf.from_stream(data_stream);
+          pixbuf.save(big_dest, type);
+          data_stream.close ();
+          double scale_x = 24.0 / pixbuf.get_width();
+          double scale_y = 24.0 / pixbuf.get_height();
+          var scaled_pixbuf = new Gdk.Pixbuf(Gdk.Colorspace.RGB,
+                                             pixbuf.has_alpha, 8, 24, 24);
+          pixbuf.scale(scaled_pixbuf, 0, 0, 24, 24, 0, 0, scale_x, scale_y, Gdk.InterpType.HYPER);
+          scaled_pixbuf.save(dest_path, type);
+          debug ("saving to %s", dest_path);
+          this.avatar_small = scaled_pixbuf;
+          this.avatar = pixbuf;
+        } catch (GLib.Error e) {
+          critical (e.message);
+        }
+        this.avatar_url = url;
+        Corebird.db.update ("accounts").val ("avatar_url", url).where_eqi ("id", id).run ();
+        info_changed (screen_name, name, avatar, avatar_small);
+      });
+      yield;
     } else {
       critical ("Not implemented yet");
     }

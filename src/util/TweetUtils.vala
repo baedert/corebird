@@ -255,16 +255,12 @@ namespace TweetUtils {
    *
    * @return The loaded avatar.
    */
-  private Soup.Session avatar_session = null;
   async Gdk.Pixbuf download_avatar (string avatar_url) throws GLib.Error {
-    if (avatar_session == null) {
-      avatar_session = new Soup.Session ();
-    }
     string avatar_name = Utils.get_avatar_name (avatar_url);
     Gdk.Pixbuf avatar = null;
     var msg     = new Soup.Message ("GET", avatar_url);
     GLib.Error? err = null;
-    avatar_session.queue_message (msg, (s, _msg) => {
+    SOUP_SESSION.queue_message (msg, (s, _msg) => {
       string dest = Dirs.cache ("assets/avatars/" + avatar_name);
       var memory_stream = new MemoryInputStream.from_data(_msg.response_body.data,
                                                           null);
@@ -401,6 +397,7 @@ namespace TweetUtils {
         var entry = new TweetListEntry (tweet, main_window, account);
         if (account.user_counter == null)
           return false;
+
         account.user_counter.user_seen (tweet.user_id,
                                         tweet.screen_name,
                                         tweet.user_name);

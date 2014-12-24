@@ -48,6 +48,10 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
         ((StartConversationEntry)row).reveal ();
       else if (row is DMThreadEntry) {
         var entry = (DMThreadEntry) row;
+        /* We can withdraw the notification here since
+           activating the notification will dismiss it */
+        if (entry.notification_id != null)
+          GLib.Application.get_default ().withdraw_notification (entry.notification_id);
         main_window.main_widget.switch_page (Page.DM,
                                              entry.user_id);
       }
@@ -224,9 +228,9 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       t_e.last_message = text;
       t_e.last_message_id = message_id;
       account.db.update ("dm_threads").val ("last_message", text)
-                                      .vali64 ( "last_message_id", message_id)
+                                      .vali64 ("last_message_id", message_id)
                                       .where_eqi ("user_id", sender_id).run ();
-      notify_new_dm (sender_id, t_e.screen_name, Utils.unescape_html (text));
+      t_e.notification_id = notify_new_dm (t_e, Utils.unescape_html (text));
       thread_list.invalidate_sort ();
       return;
     }
@@ -346,20 +350,35 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     }
   }
 
-  private void notify_new_dm (int64  sender_id,
-                              string sender_screen_name,
-                              string text) {
+  private string? notify_new_dm (DMThreadEntry thread_entry, string msg_text) {
     if (!Settings.notify_new_dms ())
-      return;
+      return null;
 
-    var n = new GLib.Notification (_("New direct message from %s")
-                                   .printf (sender_screen_name));
+    string sender_screen_name = thread_entry.screen_name;
+    int64 sender_id = thread_entry.user_id;
+
+
+    string id = "new-dm-" + sender_id.to_string ();
+    string summary;
+    string text;
+    if (thread_entry.notification_id != null) {
+      GLib.Application.get_default ().withdraw_notification (id);
+      summary = _("%d new Messages from %s").printf (thread_entry.unread_count,
+                                                  thread_entry.name);
+      text = "";
+    } else {
+      summary = _("New direct message from %s").printf (sender_screen_name);
+      text = msg_text;
+    }
+    var n = new GLib.Notification (summary);
     n.set_body (text);
     var value = new GLib.Variant.tuple ({new GLib.Variant.string (account.screen_name),
                                          new GLib.Variant.int64 (sender_id)});
     n.set_default_action_and_target_value ("app.show-dm-thread", value);
 
-    GLib.Application.get_default ().send_notification ("new-dm", n);
+    GLib.Application.get_default ().send_notification (id, n);
+
+    return id;
   }
 
   public void create_tool_button(Gtk.RadioButton? group) {
@@ -394,5 +413,15 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     user_entry.unread_count = 0;
     update_unread_count ();
     user_entry.update_unread_count ();
+  }
+
+  public string? get_notification_id_for_user_id (int64 user_id) {
+    DMThreadEntry? user_entry = thread_map.get (user_id);
+    if (user_entry == null)
+      return null;
+
+    string id = user_entry.notification_id;
+    user_entry.notification_id = null;
+    return id;
   }
 }

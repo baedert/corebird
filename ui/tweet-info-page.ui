@@ -84,7 +84,6 @@
             <signal name="clicked" handler="name_button_clicked_cb" swapped="no"/>
             <style>
               <class name="text-only-button"/>
-              <class name="list-username"/>
             </style>
           </object>
           <packing>
@@ -322,7 +321,7 @@
             <property name="relief">none</property>
             <property name="menu_model">actions_menu</property>
             <child>
-              <object class="GtkImage" id="image4">
+              <object class="GtkImage">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="icon_name">go-down-symbolic</property>
@@ -336,7 +335,6 @@
             </child>
             <style>
               <class name="image-button"/>
-              <class name="slim-button"/>
               <class name="dim-label"/>
             </style>
           </object>

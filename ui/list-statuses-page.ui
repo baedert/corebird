@@ -307,9 +307,6 @@
                       <attributes>
                         <attribute name="weight" value="bold" />
                       </attributes>
-                      <!--<style>-->
-                        <!--<class name="list-username"/>-->
-                      <!--</style>-->
                     </object>
                   </child>
                   <child>

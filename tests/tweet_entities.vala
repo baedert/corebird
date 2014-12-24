@@ -395,6 +395,7 @@ int main (string[] args) {
   GLib.Test.init (ref args);
   Settings.init ();
   Twitter.get ().init ();
+  Utils.init_soup_session ();
   GLib.Test.add_func ("/tweet-entities/real-text", real_text);
   GLib.Test.add_func ("/tweet-entities/text-consistency", text_consistency);
 

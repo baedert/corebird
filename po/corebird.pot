@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-17 13:23+0100\n"
+"POT-Creation-Date: 2014-12-22 19:20+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,7 +23,7 @@ msgstr ""
 
 #: ../src/window/ComposeTweetWindow.vala:336
 #: ../src/window/UserListDialog.vala:45
-#: ../src/widgets/MultiMediaWidget.vala:148 ../ui/compose-window.ui.h:2
+#: ../src/widgets/MultiMediaWidget.vala:151 ../ui/compose-window.ui.h:2
 #: ../ui/list-list-entry.ui.h:1 ../ui/list-statuses-page.ui.h:8
 #: ../ui/filter-list-entry.ui.h:1 ../ui/modify-filter-dialog.ui.h:2
 #: ../ui/user-filter-entry.ui.h:1 ../ui/account-dialog.ui.h:2
@@ -40,7 +40,7 @@ msgid "Add to or Remove User From List"
 msgstr ""
 
 #: ../src/window/UserListDialog.vala:46
-#: ../src/widgets/MultiMediaWidget.vala:149
+#: ../src/widgets/MultiMediaWidget.vala:152
 #: ../src/window/ImageCropDialog.vala:98 ../ui/list-statuses-page.ui.h:6
 #: ../ui/modify-filter-dialog.ui.h:3 ../ui/account-dialog.ui.h:3
 msgid "Save"
@@ -102,19 +102,19 @@ msgstr ""
 msgid "Copy link"
 msgstr ""
 
-#: ../src/widgets/MultiMediaWidget.vala:33
+#: ../src/widgets/MultiMediaWidget.vala:34
 msgid "Copy URL"
 msgstr ""
 
-#: ../src/widgets/MultiMediaWidget.vala:34
+#: ../src/widgets/MultiMediaWidget.vala:35
 msgid "Save Original"
 msgstr ""
 
-#: ../src/widgets/MultiMediaWidget.vala:70 ../src/TweetInfoPage.vala:364
+#: ../src/widgets/MultiMediaWidget.vala:74 ../src/TweetInfoPage.vala:356
 msgid "Open in Browser"
 msgstr ""
 
-#: ../src/widgets/MultiMediaWidget.vala:146
+#: ../src/widgets/MultiMediaWidget.vala:149
 msgid "Save image"
 msgstr ""
 
@@ -148,10 +148,15 @@ msgstr ""
 
 #: ../src/DMThreadsPage.vala:366
 #, c-format
+msgid "%d new Messages from %s"
+msgstr ""
+
+#: ../src/DMThreadsPage.vala:370
+#, c-format
 msgid "New direct message from %s"
 msgstr ""
 
-#: ../src/DMThreadsPage.vala:377 ../src/DMThreadsPage.vala:391
+#: ../src/DMThreadsPage.vala:385 ../src/DMThreadsPage.vala:399
 msgid "Direct Messages"
 msgstr ""
 
@@ -182,33 +187,33 @@ msgstr ""
 msgid "Follow"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:337
+#: ../src/TweetInfoPage.vala:330
 msgid "Retweets"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:338 ../src/FavoritesTimeline.vala:71
-#: ../src/FavoritesTimeline.vala:75
+#: ../src/TweetInfoPage.vala:331 ../src/FavoritesTimeline.vala:89
+#: ../src/FavoritesTimeline.vala:93
 msgid "Favorites"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:364
+#: ../src/TweetInfoPage.vala:356
 msgid "Source"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:369
+#: ../src/TweetInfoPage.vala:367
 msgid "Tweet Details"
 msgstr ""
 
-#: ../src/util/Utils.vala:88
+#: ../src/util/Utils.vala:90
 msgid "Now"
 msgstr ""
 
-#: ../src/util/Utils.vala:90
+#: ../src/util/Utils.vala:92
 #, c-format
 msgid "%dm"
 msgstr ""
 
-#: ../src/util/Utils.vala:94
+#: ../src/util/Utils.vala:96
 #, c-format
 msgid "%dh"
 msgstr ""
@@ -218,20 +223,20 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: ../src/Corebird.vala:162
+#: ../src/Corebird.vala:167
 msgid "Open Account"
 msgstr ""
 
-#: ../src/MentionsTimeline.vala:92
+#: ../src/MentionsTimeline.vala:95
 #, c-format
 msgid "New Mention from @%s"
 msgstr ""
 
-#: ../src/MentionsTimeline.vala:123 ../src/MentionsTimeline.vala:128
+#: ../src/MentionsTimeline.vala:128 ../src/MentionsTimeline.vala:133
 msgid "Mentions"
 msgstr ""
 
-#: ../src/DMPage.vala:250
+#: ../src/DMPage.vala:257
 msgid "Direct Conversation"
 msgstr ""
 
@@ -367,10 +372,9 @@ msgstr ""
 msgid "Details"
 msgstr ""
 
-#: ../ui/tweet-list-entry.ui.h:3 ../ui/tweet-info-page.ui.h:2
-#: ../ui/list-list-entry.ui.h:4 ../ui/list-statuses-page.ui.h:7
-#: ../ui/filter-list-entry.ui.h:2 ../ui/user-filter-entry.ui.h:2
-#: ../ui/account-dialog.ui.h:7
+#: ../ui/tweet-list-entry.ui.h:3 ../ui/list-list-entry.ui.h:4
+#: ../ui/list-statuses-page.ui.h:7 ../ui/filter-list-entry.ui.h:2
+#: ../ui/user-filter-entry.ui.h:2 ../ui/account-dialog.ui.h:7
 msgid "Delete"
 msgstr ""
 
@@ -378,15 +382,15 @@ msgstr ""
 msgid "Show more actions"
 msgstr ""
 
-#: ../ui/tweet-list-entry.ui.h:5 ../ui/tweet-info-page.ui.h:5
+#: ../ui/tweet-list-entry.ui.h:5 ../ui/tweet-info-page.ui.h:4
 msgid "Reply to tweet"
 msgstr ""
 
-#: ../ui/tweet-list-entry.ui.h:6 ../ui/tweet-info-page.ui.h:4
+#: ../ui/tweet-list-entry.ui.h:6 ../ui/tweet-info-page.ui.h:3
 msgid "Favorite tweet"
 msgstr ""
 
-#: ../ui/tweet-list-entry.ui.h:7 ../ui/tweet-info-page.ui.h:3
+#: ../ui/tweet-list-entry.ui.h:7 ../ui/tweet-info-page.ui.h:2
 msgid "Retweet tweet"
 msgstr ""
 
@@ -474,7 +478,7 @@ msgstr ""
 msgid "Confirm"
 msgstr ""
 
-#: ../ui/tweet-info-page.ui.h:6
+#: ../ui/tweet-info-page.ui.h:5
 msgid "More"
 msgstr ""
 

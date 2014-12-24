@@ -17,12 +17,8 @@
 
 
 namespace InlineMediaDownloader {
-  private Soup.Session session;
 
   public async void load_media (Tweet t, Media media) {
-    if (session == null)
-      session = new Soup.Session ();
-
     yield load_inline_media (t, media);
   }
 
@@ -56,7 +52,7 @@ namespace InlineMediaDownloader {
   private async void load_real_url (Tweet t, Media media,
                                     string regex_str1, int match_index1) {
     var msg = new Soup.Message ("GET", media.url);
-    session.queue_message (msg, (_s, _msg) => {
+    SOUP_SESSION.queue_message (msg, (_s, _msg) => {
       string? back = (string)_msg.response_body.data;
       if (msg.status_code != Soup.Status.OK) {
         warning ("Message status: %s", msg.status_code.to_string ());
@@ -187,7 +183,7 @@ namespace InlineMediaDownloader {
         debug ("Image %s won't be downloaded,  %fMB > %fMB", media.thumb_url, mb, max);
         media.invalid = true;
         media.finished_loading ();
-        session.cancel_message (msg, Soup.Status.CANCELLED);
+        SOUP_SESSION.cancel_message (msg, Soup.Status.CANCELLED);
       } else {
         media.length = content_length;
       }
@@ -199,7 +195,7 @@ namespace InlineMediaDownloader {
     });
 
 
-    session.queue_message(msg, (s, _msg) => {
+    SOUP_SESSION.queue_message(msg, (s, _msg) => {
       if (_msg.status_code != Soup.Status.OK) {
         callback ();
         return;

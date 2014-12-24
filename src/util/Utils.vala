@@ -33,6 +33,8 @@ enum Page {
   NEXT = 2048
 }
 
+static Soup.Session SOUP_SESSION = null;
+
 
 namespace Utils {
   /**
@@ -233,10 +235,9 @@ namespace Utils {
    *
    */
   async void download_file_async(string url, string path, GLib.Cancellable? cancellable = null) {
-    var session = new Soup.Session();
     var msg = new Soup.Message("GET", url);
     GLib.SourceFunc cb = download_file_async.callback;
-    session.queue_message(msg, (_s, _msg) => {
+    SOUP_SESSION.queue_message(msg, (_s, _msg) => {
       if (cancellable.is_cancelled ()) {
         return;
       }
@@ -295,6 +296,11 @@ namespace Utils {
       warning ("Error while loading ui/style.css: %s", e.message);
     }
 
+  }
+
+  public void init_soup_session () {
+    assert (SOUP_SESSION == null);
+    SOUP_SESSION = new Soup.Session ();
   }
 
   string capitalize (string s) {

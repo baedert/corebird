@@ -126,12 +126,11 @@ class MediaVideoWidget : Gtk.Stack {
   }
 
   private async void fetch_real_url (string first_url, string regex_str) { // {{{
-    var session = new Soup.Session ();
     var msg = new Soup.Message ("GET", first_url);
     cancellable.cancelled.connect (() => {
-      session.cancel_message (msg, Soup.Status.CANCELLED);
+      SOUP_SESSION.cancel_message (msg, Soup.Status.CANCELLED);
     });
-    session.queue_message (msg, (s, _msg) => {
+    SOUP_SESSION.queue_message (msg, (s, _msg) => {
       if (_msg.status_code != Soup.Status.OK) {
         if (_msg.status_code != Soup.Status.CANCELLED) {
           warning ("Status Code %u", _msg.status_code);
@@ -162,13 +161,12 @@ class MediaVideoWidget : Gtk.Stack {
 
 
   private async void download_video (string url) {
-    var session = new Soup.Session ();
     var msg = new Soup.Message ("GET", url);
     msg.got_headers.connect (() => {
       file_content_length = msg.response_headers.get_content_length ();
     });
     cancellable.cancelled.connect (() => {
-      session.cancel_message (msg, Soup.Status.CANCELLED);
+      SOUP_SESSION.cancel_message (msg, Soup.Status.CANCELLED);
     });
     msg.got_chunk.connect ((buffer) => {
       current_content_length += buffer.length;
@@ -176,7 +174,7 @@ class MediaVideoWidget : Gtk.Stack {
       progress_bar.fraction = fraction;
       progress_bar.text = "%d %%".printf ((int)(fraction * 100));
     });
-    session.queue_message (msg, (s, _msg) => {
+    SOUP_SESSION.queue_message (msg, (s, _msg) => {
       if (_msg.status_code != Soup.Status.OK) {
         if (_msg.status_code != Soup.Status.CANCELLED) {
           warning ("Status Code %u", _msg.status_code);

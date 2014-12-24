@@ -81,6 +81,7 @@ class DMThreadEntry : Gtk.ListBoxRow {
   }
 
   public int unread_count = 0;
+  public string? notification_id = null;
 
 
   public DMThreadEntry (int64 user_id) {

@@ -147,6 +147,11 @@ public class Corebird : Gtk.Application {
     var acc_menu = app_menu.get_item_link (0, "section");
     account_menu = new GLib.Menu ();
 
+    Utils.load_custom_css ();
+    Utils.load_custom_icons ();
+    Utils.init_soup_session ();
+    Twitter.get ().init ();
+
     unowned GLib.SList<Account> accounts = Account.list_accounts ();
     foreach (var acc in accounts) {
       var show_win_action = new SimpleAction ("show-" + acc.screen_name, null);
@@ -162,14 +167,6 @@ public class Corebird : Gtk.Application {
     ((GLib.Menu)acc_menu).append_submenu (_("Open Account"), account_menu);
 
     this.set_app_menu (app_menu);
-
-    // Load custom CSS stuff
-    Utils.load_custom_css ();
-    // Load custom icons
-    Utils.load_custom_icons ();
-
-
-    Twitter.get ().init ();
   } // }}}
 
   public override void shutdown () {

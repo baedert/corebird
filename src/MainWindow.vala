@@ -100,7 +100,6 @@ public class MainWindow : Gtk.ApplicationWindow {
 
   /**
    * Adds the accelerators to the GtkWindow
-   * XXX We can't use gtk_application_set_accels_for_action because the binding is broken in vala-0.24
    */
   private void add_accels() { // {{{
     Gtk.AccelGroup ag = new Gtk.AccelGroup();
@@ -172,6 +171,7 @@ public class MainWindow : Gtk.ApplicationWindow {
           app_menu_button.show ();
       }
     } else {
+      /* "Special case" when creating a new account */
       header_box.hide ();
       if (app_menu_button != null)
         app_menu_button.hide ();
