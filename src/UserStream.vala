@@ -135,6 +135,7 @@ public class UserStream : Object {
    */
   public void stop () {
     running = false;
+    GLib.Source.remove (this.network_timeout_id);
     debug ("STOPPING STREAM FOR " + account_name);
     proxy_call.cancel ();
   }
