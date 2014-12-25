@@ -94,7 +94,9 @@ class DMThreadEntry : Gtk.ListBoxRow {
       unread_count_label.hide ();
     else {
       unread_count_label.show ();
-      unread_count_label.label = _("(%d unread)").printf(unread_count);
+      unread_count_label.label = ngettext ("(%d unread)",
+                                           "(%d unread)",
+                                           unread_count).printf(unread_count);
     }
   }
 }
