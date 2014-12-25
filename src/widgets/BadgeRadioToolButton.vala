@@ -26,11 +26,12 @@ public class BadgeRadioToolButton : Gtk.RadioButton {
     var i = new Gtk.Image.from_icon_name (icon_name, Gtk.IconSize.BUTTON);
     this.add (i);
     this.set_mode (false);
+    this.focus_on_click = false;
 
-    if(text != "") {
+    if (text != "") {
       this.tooltip_text = text;
-      Atk.Object accessible = this.get_accessible();
-      accessible.set_name(text);
+      Atk.Object accessible = this.get_accessible ();
+      accessible.set_name (text);
     }
   }
 
