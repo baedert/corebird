@@ -363,8 +363,10 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     string text;
     if (thread_entry.notification_id != null) {
       GLib.Application.get_default ().withdraw_notification (id);
-      summary = _("%d new Messages from %s").printf (thread_entry.unread_count,
-                                                  thread_entry.name);
+      summary = ngettext ("%d new Message from %s",
+                          "%d new Messages from %s",
+                          thread_entry.unread_count).printf (thread_entry.unread_count,
+                                                             thread_entry.name);
       text = "";
     } else {
       summary = _("New direct message from %s").printf (sender_screen_name);
