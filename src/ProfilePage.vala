@@ -646,9 +646,8 @@ class ProfilePage : ScrollWidget, IPage {
   }
 
   public void on_leave () {
-    // TODO: Reenable this once a new librest release is out;
-    //       We might otherwise overwrite the new user's data with that from the old one.
-//    data_cancellable.cancel ();
+    // We might otherwise overwrite the new user's data with that from the old one.
+    data_cancellable.cancel ();
     banner_image.scale = 0.3;
     //lowest_tweet_id = int64.MAX;
   }
