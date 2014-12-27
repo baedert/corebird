@@ -26,6 +26,15 @@ public class TweetListBox : Gtk.ListBox {
 
   public signal void retry_button_clicked ();
 
+  private Gtk.Spinner spinner;
+  private int _spinner_size = 32;
+  public int spinner_size {
+    set {
+      _spinner_size = value;
+      spinner.set_size_request (value, value);
+    }
+  }
+
   public TweetListBox (bool show_placeholder = true) {
     if (show_placeholder) {
       add_placeholder ();
@@ -67,10 +76,12 @@ public class TweetListBox : Gtk.ListBox {
   private void add_placeholder () {
     placeholder = new Gtk.Stack ();
     placeholder.transition_type = Gtk.StackTransitionType.CROSSFADE;
-    var spinner = new Gtk.Spinner ();
-    spinner.set_size_request (60, 60);
-    spinner.start ();
-    spinner.show_all ();
+    this.spinner = new Gtk.Spinner ();
+    this.spinner.set_size_request (_spinner_size, _spinner_size);
+    this.spinner.valign = Gtk.Align.CENTER;
+    this.spinner.halign = Gtk.Align.CENTER;
+    this.spinner.start ();
+    this.spinner.show_all ();
     placeholder.add_named (spinner, "spinner");
     no_entries_label  = new Gtk.Label (_("No entries found"));
     no_entries_label.get_style_context ().add_class ("dim-label");
