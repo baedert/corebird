@@ -194,7 +194,7 @@
                 <property name="can_focus">false</property>
                 <property name="visible">false</property>
                 <property name="halign">end</property>
-                <property name="valign">baseline</property>
+                <property name="valign">center</property>
                 <property name="margin_end">6</property>
                 <property name="pixel_size">12</property>
                 <property name="icon_name">corebird-favorite-symbolic</property>
@@ -210,7 +210,7 @@
                 <property name="can_focus">false</property>
                 <property name="visible">false</property>
                 <property name="halign">end</property>
-                <property name="valign">baseline</property>
+                <property name="valign">center</property>
                 <property name="margin_end">6</property>
                 <property name="pixel_size">12</property>
                 <property name="icon_name">corebird-retweet-symbolic</property>
@@ -225,7 +225,7 @@
                 <property name="can_focus">False</property>
                 <property name="no_show_all">True</property>
                 <property name="halign">end</property>
-                <property name="valign">baseline</property>
+                <property name="valign">center</property>
                 <property name="margin_end">6</property>
                 <property name="pixel_size">12</property>
                 <property name="icon_name">corebird-conversation-symbolic</property>

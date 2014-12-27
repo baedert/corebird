@@ -230,8 +230,8 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
    * Retweets or un-retweets the tweet.
    */
   [GtkCallback]
-  private void retweet_button_toggled_cb () { // {{{
-    // You can't retweet your own tweets.
+  private void retweet_button_toggled_cb () {
+    /* You can't retweet your own tweets. */
     if (account.id == this.tweet.user_id || !values_set)
       return;
 
@@ -240,10 +240,10 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       retweet_button.sensitive = true;
     });
     toggle_mode ();
-  } // }}}
+  }
 
   [GtkCallback]
-  private void favorite_button_toggled_cb () { // {{{
+  private void favorite_button_toggled_cb () {
     if (!values_set)
       return;
 
@@ -252,7 +252,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       favorite_button.sensitive = true;
     });
     toggle_mode ();
-  } // }}}
+  }
 
   [GtkCallback]
   private void name_button_clicked_cb () {
