@@ -92,7 +92,7 @@ class TweetInfoPage : IPage , ScrollWidget {
     this.insert_action_group ("tweet", actions);
   }
 
-  public void on_join (int page_id, va_list args){
+  public void on_join (int page_id, va_list args) {
     uint mode = args.arg ();
 
     if (mode == 0)
@@ -107,9 +107,9 @@ class TweetInfoPage : IPage , ScrollWidget {
         this.tweet_id = tweet.rt_id;
       else
         this.tweet_id = tweet.id;
-      set_tweet_data (tweet);
-      set_source_link (tweet.id, tweet.screen_name);
+
       this.tweet = tweet;
+      set_tweet_data (tweet);
     } else if (mode == BY_ID) {
       this.tweet_id = args.arg ();
     }
@@ -351,7 +351,8 @@ class TweetInfoPage : IPage , ScrollWidget {
 
   private void set_source_link (int64 id, string screen_name) {
     var link = "https://twitter.com/%s/status/%s".printf (screen_name,
-                                                          id.to_string());
+                                                          id.to_string ());
+
     source_label.label = "<span underline='none'><a href='%s' title='%s'>%s</a></span>"
                          .printf (link, _("Open in Browser"), _("Source"));
   }
