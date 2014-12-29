@@ -173,7 +173,24 @@ public class Account : GLib.Object {
     this.id = root.get_int_member ("id");
     this.name = root.get_string_member ("name");
     this.screen_name = root.get_string_member ("screen_name");
-    this.description = root.get_string_member ("description"); // TODO Replace URLS
+
+    string desc_tmp = root.get_string_member ("description");
+    Json.Array desc_urls = root.get_object_member ("entities").get_object_member ("description")
+                                                              .get_array_member ("urls");
+    GLib.SList<TweetUtils.Sequence?> urls = new GLib.SList<TweetUtils.Sequence?> ();
+    desc_urls.foreach_element ((arr, index, node) => {
+      Json.Object obj = node.get_object ();
+      Json.Array indices = obj.get_array_member ("indices");
+      urls.prepend (TweetUtils.Sequence () {
+        start = (int)indices.get_int_element (0),
+        end   = (int)indices.get_int_element (1),
+        visual_display_url = false,
+        url   = obj.get_string_member ("expanded_url")
+      });
+    });
+    this.description = TweetUtils.get_real_text (root.get_string_member ("description"), urls);
+
+
     if (root.has_member ("profile_banner_url"))
       this.banner_url = root.get_string_member ("profile_banner_url");
     /* Website URL */
