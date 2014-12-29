@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-25 20:02+0100\n"
+"POT-Creation-Date: 2014-12-29 13:04+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: ../src/window/ComposeTweetWindow.vala:335
+#: ../src/window/ComposeTweetWindow.vala:334
 msgid "Select Image"
 msgstr ""
 
-#: ../src/window/ComposeTweetWindow.vala:336
+#: ../src/window/ComposeTweetWindow.vala:335
 #: ../src/window/UserListDialog.vala:45
 #: ../src/widgets/MultiMediaWidget.vala:151 ../ui/compose-window.ui.h:2
 #: ../ui/list-list-entry.ui.h:1 ../ui/list-statuses-page.ui.h:8
@@ -32,7 +32,7 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: ../src/window/ComposeTweetWindow.vala:337
+#: ../src/window/ComposeTweetWindow.vala:336
 msgid "Choose"
 msgstr ""
 
@@ -63,11 +63,11 @@ msgstr ""
 msgid "Doesn't match"
 msgstr ""
 
-#: ../src/widgets/TweetListBox.vala:52 ../src/widgets/TweetListBox.vala:100
+#: ../src/widgets/TweetListBox.vala:86 ../src/widgets/TweetListBox.vala:134
 msgid "No entries found"
 msgstr ""
 
-#: ../src/widgets/TweetListBox.vala:60
+#: ../src/widgets/TweetListBox.vala:94
 msgid "Retry"
 msgstr ""
 
@@ -177,28 +177,28 @@ msgstr[1] ""
 msgid "Lists"
 msgstr ""
 
-#: ../src/ProfilePage.vala:316
+#: ../src/ProfilePage.vala:315
 msgid "Protected profile"
 msgstr ""
 
-#: ../src/ProfilePage.vala:508
+#: ../src/ProfilePage.vala:507
 #, c-format
 msgid "Tweet to @%s"
 msgstr ""
 
-#: ../src/ProfilePage.vala:602
+#: ../src/ProfilePage.vala:601
 msgid "Unfollow"
 msgstr ""
 
-#: ../src/ProfilePage.vala:606
+#: ../src/ProfilePage.vala:605
 msgid "Follow"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:330
+#: ../src/TweetInfoPage.vala:329
 msgid "Retweets"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:331 ../src/FavoritesTimeline.vala:89
+#: ../src/TweetInfoPage.vala:330 ../src/FavoritesTimeline.vala:89
 #: ../src/FavoritesTimeline.vala:93
 msgid "Favorites"
 msgstr ""
@@ -385,30 +385,10 @@ msgstr ""
 msgid "Quote"
 msgstr ""
 
-#: ../ui/tweet-list-entry.ui.h:2
-msgid "Details"
-msgstr ""
-
-#: ../ui/tweet-list-entry.ui.h:3 ../ui/list-list-entry.ui.h:4
+#: ../ui/tweet-list-entry.ui.h:2 ../ui/list-list-entry.ui.h:4
 #: ../ui/list-statuses-page.ui.h:7 ../ui/filter-list-entry.ui.h:2
 #: ../ui/user-filter-entry.ui.h:2 ../ui/account-dialog.ui.h:7
 msgid "Delete"
-msgstr ""
-
-#: ../ui/tweet-list-entry.ui.h:4
-msgid "Show more actions"
-msgstr ""
-
-#: ../ui/tweet-list-entry.ui.h:5 ../ui/tweet-info-page.ui.h:4
-msgid "Reply to tweet"
-msgstr ""
-
-#: ../ui/tweet-list-entry.ui.h:6 ../ui/tweet-info-page.ui.h:3
-msgid "Favorite tweet"
-msgstr ""
-
-#: ../ui/tweet-list-entry.ui.h:7 ../ui/tweet-info-page.ui.h:2
-msgid "Retweet tweet"
 msgstr ""
 
 #: ../ui/user-list-entry.ui.h:1
@@ -493,6 +473,18 @@ msgstr ""
 
 #: ../ui/account-create-widget.ui.h:4 ../ui/list-statuses-page.ui.h:12
 msgid "Confirm"
+msgstr ""
+
+#: ../ui/tweet-info-page.ui.h:2
+msgid "Retweet tweet"
+msgstr ""
+
+#: ../ui/tweet-info-page.ui.h:3
+msgid "Favorite tweet"
+msgstr ""
+
+#: ../ui/tweet-info-page.ui.h:4
+msgid "Reply to tweet"
 msgstr ""
 
 #: ../ui/tweet-info-page.ui.h:5
