@@ -133,7 +133,7 @@ namespace Utils {
    */
   string get_avatar_name (string path) {
     string[] parts = path.split ("/");
-    return parts[parts.length - 2]+"_"+parts[parts.length - 1];
+    return parts[parts.length - 2] + "_"+parts[parts.length - 1];
   }
 
 
@@ -165,9 +165,9 @@ namespace Utils {
    *                    show this alternative error message.
    */
   void show_error_object (string? json_data,
-                          string alternative,
-                          int line,
-                          string file) {
+                          string  alternative,
+                          int     line,
+                          string  file) {
     string error_message = "Exception: %s in %s:%d".printf (alternative, file, line);
     if (json_data == null) {
       show_error_dialog (error_message);
