@@ -749,7 +749,7 @@ class ProfilePage : ScrollWidget, IPage {
       } catch (GLib.Error e) {
         Utils.show_error_object (call.get_payload (), e.message,
                                  GLib.Log.LINE, GLib.Log.FILE);
-        /* Reset the state if the blocking failed */
+        /* Reset the state if the retweeting failed */
         a.set_state (new GLib.Variant.boolean (current_state));
       }
       retweet_item_blocked = false;
