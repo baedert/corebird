@@ -1,6 +1,3 @@
-foobaa
-
-blablar
 # Corebird
 
 
