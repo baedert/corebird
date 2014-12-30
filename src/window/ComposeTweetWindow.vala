@@ -76,10 +76,12 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     if (mode != Mode.NORMAL) {
       var list = new Gtk.ListBox ();
       list.selection_mode = Gtk.SelectionMode.NONE;
-      TweetListEntry answer_entry = new TweetListEntry (reply_to, (MainWindow)parent, acc);
-      answer_entry.activatable = false;
-      answer_entry.read_only = true;
-      list.add (answer_entry);
+      TweetListEntry reply_entry = new TweetListEntry (reply_to, (MainWindow)parent, acc);
+      reply_entry.activatable = false;
+      reply_entry.read_only = true;
+      reply_entry.show ();
+      list.add (reply_entry);
+      list.show ();
       content_box.pack_start (list, false, true);
       content_box.reorder_child (list, 0);
     }
