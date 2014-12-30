@@ -51,7 +51,7 @@ public class TweetListBox : Gtk.ListBox {
   }
 
   private bool button_press_cb (Gdk.EventButton evt) {
-    if (evt.button == 3) {
+    if (evt.triggers_context_menu ()) {
       /* From gtklistbox.c */
       Gdk.Window? event_window = evt.window;
       Gdk.Window window = this.get_window ();
