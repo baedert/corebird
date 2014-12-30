@@ -64,7 +64,7 @@ public class TweetListBox : Gtk.ListBox {
         event_window = event_window.get_effective_parent ();
       }
       Gtk.Widget row = this.get_row_at_y ((int)relative_y);
-      if (row is TweetListEntry) {
+      if (row is TweetListEntry && row.sensitive) {
         ((TweetListEntry)row).toggle_mode ();
         return true;
       }
