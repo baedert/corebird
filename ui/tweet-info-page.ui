@@ -22,11 +22,10 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkListBox" id="top_list_box">
+              <object class="TweetListBox" id="top_list_box">
                 <property name="name">s</property>
                 <property name="can_focus">False</property>
                 <property name="selection_mode">none</property>
-                <property name="activate_on_single_click">False</property>
               </object>
             </child>
           </object>
@@ -152,6 +151,7 @@
             <property name="xalign">0</property>
             <property name="valign">baseline</property>
             <property name="use_markup">True</property>
+            <property name="track_visited_links">False</property>
             <style>
               <class name="dim-label"/>
             </style>
@@ -170,6 +170,7 @@
             <property name="valign">baseline</property>
             <property name="use_markup">True</property>
             <property name="halign">end</property>
+            <property name="track_visited_links">False</property>
             <style>
               <class name="dim-label"/>
             </style>
@@ -362,11 +363,11 @@
 
 
         <child>
-          <object class="GtkListBox" id="bottom_list_box">
+          <object class="TweetListBox" id="bottom_list_box">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="selection_mode">none</property>
-            <property name="activate_on_single_click">False</property>
+            <property name="spinner_size">16</property>
           </object>
           <packing>
             <property name="left_attach">0</property>

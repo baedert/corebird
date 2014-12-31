@@ -253,7 +253,6 @@ class TweetInfoPage : IPage , ScrollWidget {
         Tweet t = new Tweet ();
         t.load_from_json (node, now, account);
         var tle = new TweetListEntry (t, main_window, account);
-        tle.show_all ();
         top_list_box.add (tle);
         n_replies ++;
       });

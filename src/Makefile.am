@@ -69,7 +69,6 @@ cb_sources = \
 			util/Utils.vala \
 			util/IntHistory.vala \
 			util/UserCompletion.vala \
-			util/WidgetReplacer.vala \
 			util/Config.vala \
 			util/WeakRef.vala \
 			util/Dirs.vala \
