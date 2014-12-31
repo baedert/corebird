@@ -132,7 +132,6 @@ public class Account : GLib.Object {
 
     this.avatar = avatar;
     this.avatar_small = avatar_small;
-    message ("changed!");
   }
 
   /**
@@ -244,6 +243,7 @@ public class Account : GLib.Object {
         this.avatar_url = url;
         Corebird.db.update ("accounts").val ("avatar_url", url).where_eqi ("id", id).run ();
         info_changed (screen_name, name, avatar, avatar_small);
+        update_avatar.callback ();
       });
       yield;
     } else {
