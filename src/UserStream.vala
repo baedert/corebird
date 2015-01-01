@@ -41,7 +41,9 @@ public enum StreamMessageType {
   EVENT_FOLLOW,
   EVENT_UNFOLLOW,
   EVENT_BLOCK,
-  EVENT_UNBLOCK
+  EVENT_UNBLOCK,
+  EVENT_MUTE,
+  EVENT_UNMUTE
 }
 
 
@@ -300,6 +302,10 @@ public class UserStream : Object {
         return StreamMessageType.EVENT_BLOCK;
       case "unblock":
         return StreamMessageType.EVENT_UNBLOCK;
+      case "mute":
+        return StreamMessageType.EVENT_MUTE;
+      case "unmute":
+        return StreamMessageType.EVENT_UNMUTE;
     }
 
     return 0;
