@@ -539,8 +539,11 @@ class ProfilePage : ScrollWidget, IPage {
     if (url != null && url != "") {
       url_label.visible = true;
       url_label.set_markup ("<span underline='none'><a href='%s'>%s</a></span>".printf (url, url));
-    } else
+      description_label.margin_bottom = 6;
+    } else {
       url_label.visible = false;
+      description_label.margin_bottom = 12;
+    }
 
     this.name = name;
     this.screen_name = screen_name;
