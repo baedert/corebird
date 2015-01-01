@@ -99,7 +99,7 @@
             </child>
 
             <child>
-              <object class="GtkMenuButton" id="more_button">
+              <object class="LazyMenuButton" id="more_button">
                 <property name="visible">true</property>
                 <property name="relief">none</property>
                 <property name="valign">center</property>

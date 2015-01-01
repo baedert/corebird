@@ -57,8 +57,14 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   private Gtk.Box action_box;
 
 
-  public bool read_only = false;
-  public int64 sort_factor{
+  private bool _read_only = false;
+  public bool read_only {
+    set {
+      mm_widget.sensitive = !value;
+      name_button.read_only = value;
+    }
+  }
+  public int64 sort_factor {
     get { return tweet.created_at;}
   }
   private bool _seen = true;
@@ -317,7 +323,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
 
   public void toggle_mode () {
-    if (this.read_only)
+    if (this._read_only)
       return;
 
     if (stack.visible_child == action_box)

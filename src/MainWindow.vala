@@ -34,7 +34,7 @@ public class MainWindow : Gtk.ApplicationWindow {
   [GtkChild]
   private Gtk.Box header_box;
   [GtkChild]
-  private Gtk.Button account_button;
+  private Gtk.ToggleButton account_button;
   [GtkChild]
   public Gtk.Button back_button;
 
@@ -279,8 +279,14 @@ public class MainWindow : Gtk.ApplicationWindow {
   }
 
   [GtkCallback]
-  private void account_button_clicked_cb () {
-    account_popover.show ();
+  private void account_button_toggled_cb () {
+    account_popover.visible = !account_popover.visible;
+  }
+
+  [GtkCallback]
+  private void account_popover_closed_cb () {
+    account_button.active = false;
+    account_popover.hide ();
   }
 
   [GtkCallback]

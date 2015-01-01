@@ -125,6 +125,8 @@ public class Corebird : Gtk.Application {
   public override void startup () { // {{{
     base.startup ();
 
+    new LazyMenuButton ();
+
     Dirs.create_dirs ();
     debug ("startup");
     Corebird.db = new Sql.Database (Dirs.config ("Corebird.db"),
