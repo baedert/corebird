@@ -87,19 +87,15 @@
                     <property name="visible">true</property>
                     <property name="can_focus">true</property>
                     <property name="orientation">vertical</property>
+                    <property name="valign">center</property>
                     <child>
                       <object class="GtkLabel" id="name_label">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="valign">start</property>
-                        <property name="margin_top">6</property>
-                        <property name="margin_bottom">2</property>
                         <property name="xalign">0</property>
                         <property name="ellipsize">end</property>
                         <property name="hexpand">true</property>
-                        <style>
-                          <class name="list-username"/>
-                        </style>
                       </object>
                     </child>
 
@@ -109,8 +105,6 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="valign">start</property>
-                        <property name="margin_top">2</property>
-                        <property name="margin_bottom">2</property>
                         <property name="xalign">0</property>
                         <property name="label"> </property>
                         <style>
@@ -124,8 +118,6 @@
                       <object class="GtkLabel" id="location_label">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="margin_top">2</property>
-                        <property name="margin_bottom">2</property>
                         <property name="xalign">0</property>
                         <property name="valign">start</property>
                       </object>
@@ -211,21 +203,14 @@
                   </packing>
                 </child>
 
-
-
-
-
-
-
-
                 <child>
                   <object class="GtkLabel" id="description_label">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="margin_start">5</property>
-                    <property name="margin_end">5</property>
-                    <property name="margin_top">3</property>
-                    <property name="margin_bottom">3</property>
+                    <property name="margin_start">10</property>
+                    <property name="margin_end">10</property>
+                    <property name="margin_top">12</property>
+                    <property name="margin_bottom">6</property>
                     <property name="yalign">0</property>
                     <property name="use_markup">True</property>
                     <property name="justify">center</property>
@@ -240,14 +225,12 @@
                   </packing>
                 </child>
 
-
                 <child>
                   <object class="GtkLabel" id="url_label">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="halign">center</property>
-                    <property name="margin_start">4</property>
-                    <property name="margin_top">2</property>
+                    <property name="margin_bottom">12</property>
                     <property name="xalign">0</property>
                     <property name="label"> </property>
                     <property name="use_markup">True</property>
