@@ -4,6 +4,7 @@
     <property name="modal">true</property>
     <property name="position">bottom</property>
     <property name="relative_to">account_button</property>
+    <signal name="closed" handler="account_popover_closed_cb" />
     <child>
       <object class="GtkFrame">
         <property name="visible">true</property>
@@ -42,10 +43,10 @@
             <property name="spacing">6</property>
             <property name="no_show_all">true</property>
             <child>
-              <object class="GtkButton" id="account_button">
+              <object class="GtkToggleButton" id="account_button">
                 <property name="visible">true</property>
                 <property name="tooltip_text" translatable="yes">Show configured accounts</property>
-                <signal name="clicked" handler="account_button_clicked_cb" swapped="no" />
+                <signal name="toggled" handler="account_button_toggled_cb" swapped="no" />
                 <style>
                   <class name="image-button" />
                   <class name="account-button" />
