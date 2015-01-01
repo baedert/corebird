@@ -201,6 +201,9 @@
 .text-only-button:backdrop{
   background-color: transparent;
 }
+.readonly-text-only-button {
+  color: currentColor;
+}
 
 .pixbuf-button {
   padding: 0px;
