@@ -173,7 +173,6 @@ public class Account : GLib.Object {
     this.name = root.get_string_member ("name");
     this.screen_name = root.get_string_member ("screen_name");
 
-    string desc_tmp = root.get_string_member ("description");
     Json.Array desc_urls = root.get_object_member ("entities").get_object_member ("description")
                                                               .get_array_member ("urls");
     GLib.SList<TweetUtils.Sequence?> urls = new GLib.SList<TweetUtils.Sequence?> ();
