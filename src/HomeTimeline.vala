@@ -94,7 +94,8 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
 
     } else if(stack_size != 0 && unread_count % stack_size == 0
               && unread_count > 0) {
-      string summary = _("%d new Tweets!").printf (unread_count);
+      string summary = ngettext("%d new Tweet!",
+                                "%d new Tweets!", unread_count).printf (unread_count);
       NotificationManager.notify (account, summary);
     }
   } // }}}

@@ -99,7 +99,13 @@ public class ImageCropDialog : Gtk.Dialog {
         next_button.sensitive = true;
         back_button.sensitive = true;
       } else {
-        error_label.label = _("Image does not meet the minimum size requirements:\nMinimum width: %d pixels\nMinimum height: %d pixels").printf (min_width, min_height);
+        string error_str = "";
+        error_str += _("Image does not meet minimum size requirements:") + "\n";
+        error_str += ngettext ("Minimum width: %d pixel", "Minimum width: %d pixels", min_width)
+                     .printf (min_width) + "\n";
+        error_str += ngettext ("Minimum height: %d pixel", "Minimum height: %d pixels", min_height)
+                     .printf (min_height);
+        error_label.label = error_str;
         stack.visible_child = error_label;
         back_button.sensitive = true;
         next_button.sensitive = false;

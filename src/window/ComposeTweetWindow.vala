@@ -43,19 +43,19 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   [GtkChild]
   private Gtk.Stack title_stack;
   private unowned Account account;
-  private unowned Tweet answer_to;
+  private unowned Tweet reply_to;
   private Mode mode;
   private Gee.ArrayList<AddImageButton> image_buttons;
 
 
   public ComposeTweetWindow (Gtk.Window?      parent,
                              Account          acc,
-                             Tweet?           answer_to = null,
+                             Tweet?           reply_to = null,
                              Mode             mode = Mode.NORMAL,
                              Gtk.Application? app = null) {
     this.set_show_menubar (false);
     this.account = acc;
-    this.answer_to = answer_to;
+    this.reply_to = reply_to;
     this.mode = mode;
     this.tweet_text.set_account (acc);
     if (app == null && parent is Gtk.ApplicationWindow) {
@@ -76,27 +76,28 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     if (mode != Mode.NORMAL) {
       var list = new Gtk.ListBox ();
       list.selection_mode = Gtk.SelectionMode.NONE;
-      TweetListEntry answer_entry = new TweetListEntry (answer_to, (MainWindow)parent, acc);
-      answer_entry.activatable = false;
-      answer_entry.read_only = true;
-      list.add (answer_entry);
-      list.show_all ();
+      TweetListEntry reply_entry = new TweetListEntry (reply_to, (MainWindow)parent, acc);
+      reply_entry.activatable = false;
+      reply_entry.read_only = true;
+      reply_entry.show ();
+      list.add (reply_entry);
+      list.show ();
       content_box.pack_start (list, false, true);
       content_box.reorder_child (list, 0);
     }
 
     if (mode == Mode.REPLY) {
       StringBuilder mention_builder = new StringBuilder ();
-      if (answer_to.screen_name != account.screen_name) {
-        mention_builder.append ("@").append (answer_to.screen_name);
+      if (reply_to.screen_name != account.screen_name) {
+        mention_builder.append ("@").append (reply_to.screen_name);
       }
-      if (answer_to.is_retweet) {
+      if (reply_to.is_retweet) {
         if (mention_builder.len > 0)
           mention_builder.append (" ");
 
-        mention_builder.append ("@").append (answer_to.rt_by_screen_name);
+        mention_builder.append ("@").append (reply_to.rt_by_screen_name);
       }
-      foreach (string s in answer_to.mentions) {
+      foreach (string s in reply_to.mentions) {
         if (mention_builder.len > 0)
           mention_builder.append (" ");
 
@@ -108,8 +109,8 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
       tweet_text.buffer.text = mention_builder.str;
     } else if (mode == Mode.QUOTE) {
-      tweet_text.buffer.text = " RT @%s “%s“".printf (answer_to.screen_name,
-                                             Utils.unescape_html (answer_to.get_real_text ()));
+      tweet_text.buffer.text = " RT @%s “%s“".printf (reply_to.screen_name,
+                                             Utils.unescape_html (reply_to.get_real_text ()));
 
       Gtk.TextIter start_iter;
       tweet_text.buffer.get_start_iter (out start_iter);
@@ -220,7 +221,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   }
 
   private void send_tweet (GLib.Error? error, int64[] ids) {
-    if (error != null) { // XXX ZOMG
+    if (error != null) {
       GLib.error (error.message);
     }
 
@@ -232,8 +233,8 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     var call = account.proxy.new_call ();
     call.set_method ("POST");
     call.add_param ("status", text);
-    if (this.answer_to != null && mode == Mode.REPLY) {
-      call.add_param("in_reply_to_status_id", answer_to.id.to_string ());
+    if (this.reply_to != null && mode == Mode.REPLY) {
+      call.add_param("in_reply_to_status_id", reply_to.id.to_string ());
     }
 
     if (ids.length > 0) {

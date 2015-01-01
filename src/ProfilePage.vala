@@ -168,7 +168,6 @@ class ProfilePage : ScrollWidget, IPage {
     /* We (maybe) re-enable this later when the friendship object has arrived */
     ((SimpleAction)actions.lookup_action ("toggle-retweets")).set_enabled (false);
 
-
     load_banner (DATADIR + "/no_banner.png");
     load_friendship.begin ();
     bool data_in_db = false;
@@ -646,9 +645,8 @@ class ProfilePage : ScrollWidget, IPage {
   }
 
   public void on_leave () {
-    // TODO: Reenable this once a new librest release is out;
-    //       We might otherwise overwrite the new user's data with that from the old one.
-//    data_cancellable.cancel ();
+    // We might otherwise overwrite the new user's data with that from the old one.
+    data_cancellable.cancel ();
     banner_image.scale = 0.3;
     //lowest_tweet_id = int64.MAX;
   }
@@ -750,6 +748,7 @@ class ProfilePage : ScrollWidget, IPage {
       } catch (GLib.Error e) {
         Utils.show_error_object (call.get_payload (), e.message,
                                  GLib.Log.LINE, GLib.Log.FILE);
+        /* Reset the state if the retweeting failed */
         a.set_state (new GLib.Variant.boolean (current_state));
       }
       retweet_item_blocked = false;

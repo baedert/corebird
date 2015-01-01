@@ -18,6 +18,11 @@
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/tweet-list-entry.ui")]
 public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
+  private const GLib.ActionEntry[] action_entries = {
+    {"quote", quote_activated},
+    {"delete", delete_activated}
+  };
+
   [GtkChild]
   private Gtk.Label screen_name_label;
   [GtkChild]
@@ -35,28 +40,26 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   [GtkChild]
   private Gtk.Image conversation_image;
   [GtkChild]
-  private Gtk.Box hover_box;
+  private Gtk.Image rt_status_image;
+  [GtkChild]
+  private Gtk.Image fav_status_image;
   [GtkChild]
   private DoubleTapButton retweet_button;
   [GtkChild]
   private Gtk.ToggleButton favorite_button;
   [GtkChild]
-  private Gtk.Button reply_button;
-  [GtkChild]
-  private Gtk.MenuButton more_button;
-  [GtkChild]
-  private Gtk.Menu more_menu;
-  [GtkChild]
-  private Gtk.MenuItem more_menu_delete_item;
-  [GtkChild]
   private Gtk.Grid grid;
   [GtkChild]
   private MultiMediaWidget mm_widget;
+  [GtkChild]
+  private Gtk.Stack stack;
+  [GtkChild]
+  private Gtk.Box action_box;
 
 
   public bool read_only = false;
   public int64 sort_factor{
-    get{ return tweet.created_at;}
+    get { return tweet.created_at;}
   }
   private bool _seen = true;
   public bool seen {
@@ -86,7 +89,6 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   [Signal (action = true)]
   private signal void delete_tweet ();
 
-
   public TweetListEntry (owned Tweet tweet, MainWindow? window, Account account){
     this.account = account;
     this.tweet = tweet;
@@ -108,16 +110,9 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       grid.remove (rt_label);
     }
 
-
-    if (tweet.retweeted || tweet.favorited || tweet.reply_id != 0) {
-      adjust_hover_box ();
-    }
-
-    retweet_button.visible = tweet.retweeted;
     retweet_button.active = tweet.retweeted;
     tweet.notify["retweeted"].connect (retweeted_cb);
 
-    favorite_button.visible = tweet.favorited;
     favorite_button.active = tweet.favorited;
     tweet.notify["favorited"].connect (favorited_cb);
 
@@ -138,13 +133,16 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       grid.remove (mm_widget);
 
 
-    if (tweet.user_id != account.id)
-      more_menu.remove (more_menu_delete_item);
+    var actions = new GLib.SimpleActionGroup ();
+    actions.add_action_entries (action_entries, this);
+    this.insert_action_group ("tweet", actions);
+
+    if (tweet.user_id != account.id) {
+      ((GLib.SimpleAction)actions.lookup_action ("delete")).set_enabled (false);
+    }
 
 
-    hover_box.show ();
-
-    reply_tweet.connect (reply_button_clicked_cb);
+    reply_tweet.connect (reply_tweet_activated);
     delete_tweet.connect (delete_tweet_activated);
     favorite_tweet.connect (() => {
       if (favorite_button.parent != null)
@@ -155,22 +153,26 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
         retweet_button.tap ();
     });
 
+    if (tweet.favorited)
+      fav_status_image.show ();
+
+    if (tweet.retweeted)
+      rt_status_image.show ();
+
     values_set = true;
   }
 
   private void favorited_cb () {
     values_set = false;
     favorite_button.active = tweet.favorited;
-    favorite_button.visible = tweet.favorited;
-    adjust_hover_box ();
+    fav_status_image.visible = tweet.favorited;
     values_set = true;
   }
 
   private void retweeted_cb () {
     values_set = false;
     retweet_button.active = tweet.retweeted;
-    retweet_button.visible = tweet.retweeted;
-    adjust_hover_box ();
+    rt_status_image.visible = tweet.retweeted;
     values_set = true;
   }
 
@@ -205,32 +207,6 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   }
 
   [GtkCallback]
-  private void state_flags_changed_cb () { //{{{
-    Gtk.StateFlags flags = this.get_state_flags ();
-    var ct = this.get_style_context ();
-    bool buttons_visible = (bool)(flags & (Gtk.StateFlags.PRELIGHT | Gtk.StateFlags.SELECTED));
-    buttons_visible = (buttons_visible || more_menu.visible);
-    buttons_visible = (buttons_visible && !read_only);
-    more_button.visible = buttons_visible;
-    favorite_button.visible = buttons_visible || tweet.favorited;
-    reply_button.visible = buttons_visible;
-
-    if (buttons_visible) {
-      hover_box.margin_end = 1;
-      hover_box.override_background_color (Gtk.StateFlags.NORMAL,
-                                           ct.get_background_color (Gtk.StateFlags.PRELIGHT));
-      retweet_button.visible = (account.id != tweet.user_id);
-    } else {
-      hover_box.override_background_color (Gtk.StateFlags.NORMAL,
-                                           ct.get_background_color (Gtk.StateFlags.NORMAL));
-      retweet_button.visible = tweet.retweeted;
-      hover_box.margin_end = time_delta_label.get_allocated_width () + 3;
-      if (tweet.reply_id != 0)
-        hover_box.margin_end += conversation_image.get_allocated_width () + 4;
-    }
-  } //}}}
-
-  [GtkCallback]
   private bool focus_out_cb (Gdk.EventFocus evt) {
     delete_first_activated = false;
     retweet_button.reset ();
@@ -254,37 +230,29 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
    * Retweets or un-retweets the tweet.
    */
   [GtkCallback]
-  private void retweet_button_toggled () { // {{{
-    // You can't retweet your own tweets.
+  private void retweet_button_toggled_cb () {
+    /* You can't retweet your own tweets. */
     if (account.id == this.tweet.user_id || !values_set)
       return;
-    var spinner = new Gtk.Spinner();
 
-    spinner.start ();
-    WidgetReplacer.replace_tmp (retweet_button, spinner);
-    spinner.show ();
+    retweet_button.sensitive = false;
     TweetUtils.toggle_retweet_tweet.begin (account, tweet, !retweet_button.active, () => {
-      WidgetReplacer.replace_tmp_back(retweet_button);
-      retweet_button.visible = retweet_button.active;
+      retweet_button.sensitive = true;
     });
-
-  } // }}}
+    toggle_mode ();
+  }
 
   [GtkCallback]
-  private void favorite_button_toggled () { // {{{
+  private void favorite_button_toggled_cb () {
     if (!values_set)
       return;
 
-    var spinner = new Gtk.Spinner();
-    spinner.start();
-    WidgetReplacer.replace_tmp(favorite_button, spinner);
-    spinner.show ();
+    favorite_button.sensitive = false;
     TweetUtils.toggle_favorite_tweet.begin (account, tweet, !favorite_button.active, () => {
-      WidgetReplacer.replace_tmp_back(favorite_button, true,
-                                      favorite_button.active);
-      favorite_button.visible = favorite_button.active;
+      favorite_button.sensitive = true;
     });
-  } // }}}
+    toggle_mode ();
+  }
 
   [GtkCallback]
   private void name_button_clicked_cb () {
@@ -298,28 +266,28 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
                                                     ComposeTweetWindow.Mode.REPLY,
                                                     this.window.get_application ());
     ctw.show ();
+    toggle_mode ();
   }
 
-  [GtkCallback]
-  private void detail_item_activated_cb () {
-    window.main_widget.switch_page (Page.TWEET_INFO,
-                                    TweetInfoPage.BY_INSTANCE,
-                                    tweet);
-  }
-
-  [GtkCallback]
-  private void quote_item_activated_cb () {
+  private void quote_activated () {
     ComposeTweetWindow ctw = new ComposeTweetWindow(this.window, this.account, this.tweet,
                                                     ComposeTweetWindow.Mode.QUOTE,
                                                     this.window.get_application ());
     ctw.show ();
-
+    toggle_mode ();
   }
 
-  [GtkCallback]
-  private void delete_item_activated_cb () {
+  private void reply_tweet_activated () {
+    ComposeTweetWindow ctw = new ComposeTweetWindow(this.window, this.account, this.tweet,
+                                                    ComposeTweetWindow.Mode.REPLY,
+                                                    this.window.get_application ());
+    ctw.show ();
+  }
+
+  private void delete_activated () {
     delete_first_activated = true;
     delete_tweet ();
+    toggle_mode ();
   }
 
   [GtkCallback]
@@ -327,43 +295,6 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     return TweetUtils.activate_link (uri, window);
   }
 
-
-  private void adjust_hover_box () {
-    // Only do this if the hover_box has not been 'adjusted' yet
-    if (hover_box.margin_end > 0) {
-      return;
-    }
-
-    // XXX Keep this in sync with the version below
-    if (time_delta_label.get_allocated_width () > 1 && conversation_image.get_allocated_width () > 1) {
-      hover_box.margin_end = time_delta_label.get_allocated_width ();
-      if (tweet.reply_id != 0) {
-        conversation_image.margin_top = (time_delta_label.get_allocated_height () / 2) - 6;
-        hover_box.margin_end += conversation_image.get_allocated_width ();
-      }
-      return;
-    }
-
-
-    ulong id = 0;
-    id = time_delta_label.size_allocate.connect (() => {
-      hover_box.margin_end += time_delta_label.get_allocated_width ();
-      if (tweet.reply_id != 0) {
-        conversation_image.margin_top = (time_delta_label.get_allocated_height () / 2) - 6;
-      }
-      time_delta_label.disconnect (id);
-    });
-
-    if (tweet.reply_id == 0)
-      return;
-
-    ulong id2 = 0;
-    id2 = conversation_image.size_allocate.connect (() => {
-      hover_box.margin_end += conversation_image.get_allocated_width ();
-      conversation_image.disconnect (id2);
-    });
-
-  }
 
   /**
    * Updates the time delta label in the upper right
@@ -384,4 +315,14 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     return (int)(cur_time.difference (then) / 1000.0 / 1000.0);
   } //}}}
 
+
+  public void toggle_mode () {
+    if (this.read_only)
+      return;
+
+    if (stack.visible_child == action_box)
+      stack.visible_child = grid;
+    else
+      stack.visible_child = action_box;
+  }
 }

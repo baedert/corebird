@@ -1,55 +1,132 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <object class="GtkMenu" id="more_menu">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <child>
-      <object class="GtkMenuItem" id="more_menu_quote_item">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Quote</property>
-        <property name="use_underline">True</property>
-        <signal name="activate" handler="quote_item_activated_cb" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="more_menu_detail_item">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Details</property>
-        <property name="use_underline">True</property>
-        <signal name="activate" handler="detail_item_activated_cb" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="more_menu_delete_item">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Delete</property>
-        <property name="use_underline">True</property>
-        <signal name="activate" handler="delete_item_activated_cb" swapped="no"/>
-      </object>
-    </child>
-  </object>
+  <menu id="actions_menu">
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">Quote</attribute>
+        <attribute name="action">tweet.quote</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">Delete</attribute>
+        <attribute name="action">tweet.delete</attribute>
+      </item>
+    </section>
+  </menu>
+
   <template class="TweetListEntry" parent="GtkListBoxRow">
     <property name="visible">True</property>
     <property name="can_focus">True</property>
     <style>
       <class name="tweet"/>
     </style>
-    <signal name="focus-out-event" handler="focus_out_cb" swapped="no"/>
-    <signal name="key-release-event" handler="key_released_cb" swapped="no"/>
-    <signal name="state-flags-changed" handler="state_flags_changed_cb" swapped="no"/>
+    <signal name="focus-out-event" handler="focus_out_cb" />
+    <signal name="key-release-event" handler="key_released_cb" />
 
     <child>
-      <object class="GtkOverlay" id="overlay">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="margin">6</property>
+      <object class="GtkStack" id="stack">
+        <property name="visible">true</property>
+        <property name="can_focus">false</property>
+        <property name="visible_child">grid</property>
+        <property name="transition_type">crossfade</property>
+
+        <child>
+          <object class="GtkBox" id="action_box">
+            <property name="visible">true</property>
+            <property name="spacing">12</property>
+            <property name="halign">center</property>
+
+            <child>
+              <object class="GtkToggleButton" id="favorite_button">
+                <property name="visible">true</property>
+                <property name="relief">none</property>
+                <property name="valign">center</property>
+                <signal name="toggled" handler="favorite_button_toggled_cb" />
+                <style>
+                  <class name="dim-label" />
+                  <class name="favorite-button" />
+                  <class name="image-button" />
+                </style>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">true</property>
+                    <property name="pixel_size">16</property>
+                    <property name="icon_name">starred-symbolic</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+
+            <child>
+              <object class="DoubleTapButton" id="retweet_button">
+                <property name="visible">true</property>
+                <property name="relief">none</property>
+                <property name="valign">center</property>
+                <signal name="toggled" handler="retweet_button_toggled_cb" />
+                <style>
+                  <class name="dim-label" />
+                  <class name="retweet-button" />
+                  <class name="image-button" />
+                </style>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">true</property>
+                    <property name="pixel_size">16</property>
+                    <property name="icon_name">corebird-retweet-symbolic</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+
+            <child>
+              <object class="GtkButton" id="reply_button">
+                <property name="visible">true</property>
+                <property name="relief">none</property>
+                <property name="valign">center</property>
+                <signal name="clicked" handler="reply_button_clicked_cb" />
+                <style>
+                  <class name="dim-label" />
+                  <class name="reply-button" />
+                  <class name="image-button" />
+                </style>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">true</property>
+                    <property name="pixel_size">16</property>
+                    <property name="icon_name">mail-replied-symbolic</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+
+            <child>
+              <object class="GtkMenuButton" id="more_button">
+                <property name="visible">true</property>
+                <property name="relief">none</property>
+                <property name="valign">center</property>
+                <property name="menu_model">actions_menu</property>
+                <style>
+                  <class name="dim-label" />
+                  <class name="image-button" />
+                </style>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">true</property>
+                    <property name="pixel_size">16</property>
+                    <property name="icon_name">go-down-symbolic</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+
+          </object>
+        </child>
+
+
         <child>
           <object class="GtkGrid" id="grid">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="margin">6</property>
             <child>
               <object class="AvatarWidget" id="avatar_image">
                 <property name="width_request">48</property>
@@ -110,14 +187,46 @@
                 <property name="top_attach">0</property>
               </packing>
             </child>
+
+
+            <child>
+              <object class="GtkImage" id="fav_status_image">
+                <property name="can_focus">false</property>
+                <property name="visible">false</property>
+                <property name="halign">end</property>
+                <property name="valign">center</property>
+                <property name="margin_end">6</property>
+                <property name="pixel_size">12</property>
+                <property name="icon_name">corebird-favorite-symbolic</property>
+                <style>
+                  <class name="dim-label" />
+                </style>
+              </object>
+            </child>
+
+
+            <child>
+              <object class="GtkImage" id="rt_status_image">
+                <property name="can_focus">false</property>
+                <property name="visible">false</property>
+                <property name="halign">end</property>
+                <property name="valign">center</property>
+                <property name="margin_end">6</property>
+                <property name="pixel_size">12</property>
+                <property name="icon_name">corebird-retweet-symbolic</property>
+                <style>
+                  <class name="dim-label" />
+                </style>
+              </object>
+            </child>
+
             <child>
               <object class="GtkImage" id="conversation_image">
                 <property name="can_focus">False</property>
                 <property name="no_show_all">True</property>
                 <property name="halign">end</property>
-                <property name="valign">baseline</property>
+                <property name="valign">center</property>
                 <property name="margin_end">6</property>
-                <property name="hexpand">True</property>
                 <property name="pixel_size">12</property>
                 <property name="icon_name">corebird-conversation-symbolic</property>
                 <style>
@@ -223,139 +332,10 @@
             </child>
           </object>
         </child>
-        <child type="overlay">
-          <object class="GtkBox" id="hover_box">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="no_show_all">True</property>
-            <property name="halign">end</property>
-            <property name="valign">start</property>
-            <child>
-              <object class="GtkMenuButton" id="more_button">
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="tooltip_text" translatable="yes">Show more actions</property>
-                <property name="halign">end</property>
-                <property name="valign">start</property>
-                <property name="relief">none</property>
-                <property name="popup">more_menu</property>
-                <child>
-                  <object class="GtkImage" id="image6">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="pixel_size">12</property>
-                    <property name="icon_name">go-down-symbolic</property>
-                  </object>
-                </child>
-                <style>
-                  <class name="button-slim"/>
-                  <class name="dim-label"/>
-                  <class name="image-button"/>
-                  <class name="more-button"/>
-                </style>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="pack_type">end</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="reply_button">
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="tooltip_text" translatable="yes">Reply to tweet</property>
-                <property name="halign">end</property>
-                <property name="relief">none</property>
-                <signal name="clicked" handler="reply_button_clicked_cb" swapped="no"/>
-                <child>
-                  <object class="GtkImage" id="image1">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="pixel_size">12</property>
-                    <property name="icon_name">mail-replied-symbolic</property>
-                  </object>
-                </child>
-                <style>
-                  <class name="reply-button"/>
-                  <class name="button-slim"/>
-                  <class name="dim-label"/>
-                  <class name="image-button"/>
-                </style>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="pack_type">end</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToggleButton" id="favorite_button">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="tooltip_text" translatable="yes">Favorite tweet</property>
-                <property name="halign">end</property>
-                <property name="relief">none</property>
-                <signal name="toggled" handler="favorite_button_toggled" swapped="no"/>
-                <child>
-                  <object class="GtkImage" id="image3">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="pixel_size">12</property>
-                    <property name="icon_name">starred-symbolic</property>
-                  </object>
-                </child>
-                <style>
-                  <class name="favorite-button"/>
-                  <class name="button-slim"/>
-                  <class name="dim-label"/>
-                  <class name="image-button"/>
-                </style>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="pack_type">end</property>
-                <property name="position">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="DoubleTapButton" id="retweet_button">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="tooltip_text" translatable="yes">Retweet tweet</property>
-                <property name="halign">end</property>
-                <property name="relief">none</property>
-                <signal name="toggled" handler="retweet_button_toggled" swapped="no"/>
-                <child>
-                  <object class="GtkImage" id="image2">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="pixel_size">12</property>
-                    <property name="icon_name">corebird-retweet-symbolic</property>
-                  </object>
-                </child>
-                <style>
-                  <class name="retweet-button"/>
-                  <class name="button-slim"/>
-                  <class name="dim-label"/>
-                  <class name="image-button"/>
-                </style>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="pack_type">end</property>
-                <property name="position">3</property>
-              </packing>
-            </child>
-          </object>
-        </child>
       </object>
     </child>
+
+
+
   </template>
 </interface>

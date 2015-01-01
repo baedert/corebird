@@ -123,6 +123,7 @@ public class UserStream : Object {
     proxy_call = proxy.new_call ();
     proxy_call.set_function ("1.1/user.json");
     proxy_call.set_method ("GET");
+    start_heartbeat_timeout ();
     try {
       proxy_call.continuous (parse_data_cb, proxy_call);
     } catch (GLib.Error e) {
@@ -135,6 +136,10 @@ public class UserStream : Object {
    */
   public void stop () {
     running = false;
+
+    if (this.network_timeout_id != 0)
+      GLib.Source.remove (this.network_timeout_id);
+
     debug ("STOPPING STREAM FOR " + account_name);
     proxy_call.cancel ();
   }
@@ -189,12 +194,11 @@ public class UserStream : Object {
                               size_t         length,
                               GLib.Error?    error) {
     if (buf == null) {
-      debug ("buf == NULL");
-      // XXX Maybe restart here too?
+      warning ("buf == NULL");
       return;
     }
 
-    string real = buf.substring(0, (int)length);
+    string real = buf.substring (0, (int)length);
 
     data.append (real);
 

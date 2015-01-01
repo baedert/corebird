@@ -26,6 +26,15 @@ public class TweetListBox : Gtk.ListBox {
 
   public signal void retry_button_clicked ();
 
+  private Gtk.Spinner spinner;
+  private int _spinner_size = 32;
+  public int spinner_size {
+    set {
+      _spinner_size = value;
+      spinner.set_size_request (value, value);
+    }
+  }
+
   public TweetListBox (bool show_placeholder = true) {
     if (show_placeholder) {
       add_placeholder ();
@@ -38,16 +47,41 @@ public class TweetListBox : Gtk.ListBox {
     progress_entry = new ProgressEntry ();
     this.get_style_context ().add_class ("stream");
     this.set_selection_mode (Gtk.SelectionMode.NONE);
+    this.button_press_event.connect (button_press_cb);
+  }
+
+  private bool button_press_cb (Gdk.EventButton evt) {
+    if (evt.triggers_context_menu ()) {
+      /* From gtklistbox.c */
+      Gdk.Window? event_window = evt.window;
+      Gdk.Window window = this.get_window ();
+      double relative_y = evt.y;
+      double parent_y;
+
+      while ((event_window != null) && (event_window != window)) {
+        event_window.coords_to_parent (0, relative_y, null, out parent_y);
+        relative_y = parent_y;
+        event_window = event_window.get_effective_parent ();
+      }
+      Gtk.Widget row = this.get_row_at_y ((int)relative_y);
+      if (row is TweetListEntry && row.sensitive) {
+        ((TweetListEntry)row).toggle_mode ();
+        return true;
+      }
+    }
+    return false;
   }
 
 
   private void add_placeholder () {
     placeholder = new Gtk.Stack ();
     placeholder.transition_type = Gtk.StackTransitionType.CROSSFADE;
-    var spinner = new Gtk.Spinner ();
-    spinner.set_size_request (60, 60);
-    spinner.start ();
-    spinner.show_all ();
+    this.spinner = new Gtk.Spinner ();
+    this.spinner.set_size_request (_spinner_size, _spinner_size);
+    this.spinner.valign = Gtk.Align.CENTER;
+    this.spinner.halign = Gtk.Align.CENTER;
+    this.spinner.start ();
+    this.spinner.show_all ();
     placeholder.add_named (spinner, "spinner");
     no_entries_label  = new Gtk.Label (_("No entries found"));
     no_entries_label.get_style_context ().add_class ("dim-label");
