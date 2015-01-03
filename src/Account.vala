@@ -33,6 +33,9 @@ public class Account : GLib.Object {
   public UserCounter user_counter {public get; private set;}
   private UserEventReceiver event_receiver;
   public int64[] friends;
+  public int64[] blocked;
+  public int64[] muted;
+  public int64[] disabled_rts;
   public Gee.ArrayList<Filter> filters;
   public signal void info_changed (string screen_name, string name,
                                    Gdk.Pixbuf avatar_small, Gdk.Pixbuf avatar);
@@ -202,6 +205,101 @@ public class Account : GLib.Object {
     yield update_avatar (avatar_url);
   }
 
+  public async void init_information () {
+    var collect_obj = new Collect (4);
+    collect_obj.finished.connect (() => {
+      init_information.callback ();
+    });
+
+    query_user_info_by_screen_name.begin (this.screen_name, () => {
+      collect_obj.emit ();
+    });
+
+    load_disabled_rts.begin (collect_obj);
+    load_blocked_ids.begin (collect_obj);
+    load_muted_ids.begin (collect_obj);
+
+    yield;
+  }
+
+  private async void load_disabled_rts (Collect collect_obj) {
+    var call = this.proxy.new_call ();
+    call.set_function ("1.1/friendships/no_retweets/ids.json");
+    call.set_method ("GET");
+    try {
+      yield call.invoke_async (null);
+    } catch (GLib.Error e) {
+      warning (e.message);
+      collect_obj.emit (e);
+      return;
+    }
+
+    var parser = new Json.Parser ();
+    try {
+      parser.load_from_data (call.get_payload ());
+    } catch (GLib.Error e) {
+      warning (e.message);
+      collect_obj.emit (e);
+      return;
+    }
+    var array = parser.get_root ().get_array ();
+    this.set_disabled_rts (array);
+
+    collect_obj.emit ();
+  }
+
+  private async void load_blocked_ids (Collect collect_obj) {
+    var call = this.proxy.new_call ();
+    call.set_function ("1.1/blocks/ids.json");
+    call.set_method ("GET");
+    try {
+      yield call.invoke_async (null);
+    } catch (GLib.Error e) {
+      warning (e.message);
+      collect_obj.emit (e);
+      return;
+    }
+
+    var parser = new Json.Parser ();
+    try {
+      parser.load_from_data (call.get_payload ());
+    } catch (GLib.Error e) {
+      warning (e.message);
+      collect_obj.emit (e);
+      return;
+    }
+    var array = parser.get_root ().get_object ().get_array_member ("ids");
+    this.set_blocked (array);
+
+    collect_obj.emit ();
+  }
+
+  private async void load_muted_ids (Collect collect_obj) {
+    var call = this.proxy.new_call ();
+    call.set_function ("1.1/mutes/users/ids.json");
+    call.set_method ("GET");
+    try {
+      yield call.invoke_async (null);
+    } catch (GLib.Error e) {
+      warning (e.message);
+      collect_obj.emit (e);
+      return;
+    }
+
+    var parser = new Json.Parser ();
+    try {
+      parser.load_from_data (call.get_payload ());
+    } catch (GLib.Error e) {
+      warning (e.message);
+      collect_obj.emit (e);
+      return;
+    }
+    var array = parser.get_root ().get_object ().get_array_member ("ids");
+    this.set_muted (array);
+
+    collect_obj.emit ();
+  }
+
   /**
    * Updates the account's avatar picture.
    * This means that the new avatar will be downloaded if necessary and
@@ -337,6 +435,68 @@ public class Account : GLib.Object {
       o ++;
     }
     this.friends = new_friends;
+  }
+
+  public void set_muted (Json.Array muted_array) {
+    this.muted = new int64[muted_array.get_length ()];
+    debug ("Add %d muted ids", this.muted.length);
+    for (int i = 0; i < this.muted.length; i ++) {
+      this.muted[i] = muted_array.get_int_element (i);
+    }
+  }
+
+  public void mute_id (int64 id) {
+    this.muted.resize (this.muted.length + 1);
+    this.muted[this.muted.length - 1] = id;
+  }
+
+  public void unmute_id (int64 id) {
+    int64[] new_muted = new int64[this.muted.length - 1];
+
+    int o = 0;
+    for (int i = 0; i < this.muted.length; i++) {
+      if (this.muted[i] == id) {
+        continue;
+      }
+      muted[o] = this.muted[i];
+      o ++;
+    }
+    this.muted = new_muted;
+  }
+
+  public void set_blocked (Json.Array blocked_array) {
+    this.blocked = new int64[blocked_array.get_length ()];
+    debug ("Add %d blocked ids", this.blocked.length);
+    for (int i = 0; i < this.blocked.length; i ++) {
+      this.blocked[i] = blocked_array.get_int_element (i);
+    }
+  }
+
+  public void block_id (int64 id) {
+    this.blocked.resize (this.blocked.length + 1);
+    this.blocked[this.blocked.length - 1] = id;
+  }
+
+  public void unblock_id (int64 id) {
+    int64[] new_blocked = new int64[this.blocked.length - 1];
+
+    int o = 0;
+    for (int i = 0; i < this.blocked.length; i++) {
+      if (this.blocked[i] == id) {
+        continue;
+      }
+      blocked[o] = this.blocked[i];
+      o ++;
+    }
+    this.blocked = new_blocked;
+  }
+
+  public void set_disabled_rts (Json.Array disabled_rts_array) {
+    this.disabled_rts = new int64[disabled_rts_array.get_length ()];
+    debug ("Add %d disabled_rts ids", this.disabled_rts.length);
+    for (int i = 0; i < this.disabled_rts.length; i ++) {
+      this.disabled_rts[i] = disabled_rts_array.get_int_element (i);
+    }
   }
 
   /** Static stuff ********************************************************************/
