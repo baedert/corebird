@@ -67,8 +67,9 @@
               </object>
             </child>
             <child>
-              <object class="GtkButton" id="compose_tweet_button">
+              <object class="GtkToggleButton" id="compose_tweet_button">
                 <property name="visible">True</property>
+                <property name="tooltip_text" translatable="yes">Compose tweet</property>
                 <property name="can_focus">True</property>
                 <property name="always-show-image">True</property>
                 <property name="action_name">win.compose-tweet</property>
