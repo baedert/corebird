@@ -22,8 +22,6 @@
   We then save the first 200 or so results and load them on startup.
   If the user types a name and no result is found, we try to search
   for that name via Twitter's search API.
-
- XXX: Check if this works well with sqlite, if not move to a simple text file.
 */
 
 public class UserInfo : GLib.Object {

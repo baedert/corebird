@@ -86,14 +86,19 @@ class AvatarWidget : Gtk.Image {
       var sc = this.get_style_context ();
       // make it round
       ct.set_operator (Cairo.Operator.DEST_IN);
-      ct.translate (width / 2.0, height / 2.0);
-      ct.arc (0.5, 0.5, width / 2 - 1.0, 0, 2 * Math.PI);
+      ct.arc ((width / 2.0), (height / 2.0),
+              (width / 2.0) - 0.5, /* Radius */
+              0, /* Angle from */
+              2 * Math.PI); /* Angle to */
       ct.fill ();
 
       // draw outline
       ct.set_operator (Cairo.Operator.OVER);
       Gdk.RGBA border_color = sc.get_border_color (this.get_state_flags ());
-      ct.arc (0.5, 0.5, (width / 2.0) - 1.0, 0, 2 * Math.PI);
+      ct.arc ((width / 2.0), (height / 2.0),
+              (width / 2.0) - 0.5,
+              0,
+              2 * Math.PI);
       ct.set_line_width (1.0);
       ct.set_source_rgba (border_color.red, border_color.green, border_color.blue,
                           border_color.alpha);

@@ -58,6 +58,10 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
     if (t.is_retweet && !should_display_retweet (t))
       entry.visible = false;
 
+    if (account.blocked_or_muted (t.user_id) ||
+        (t.is_retweet && account.blocked_or_muted (t.rt_by_id)))
+      entry.visible = false;
+
     if (account.filter_matches (t))
       entry.visible = false;
 

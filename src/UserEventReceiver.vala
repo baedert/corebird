@@ -24,14 +24,51 @@ class UserEventReceiver : GLib.Object, IMessageReceiver {
 
   public void stream_message_received (StreamMessageType type,
                                        Json.Node         root_node) {
-    if (type == StreamMessageType.EVENT_FOLLOW) {
-      int64 user_id = root_node.get_object ().get_object_member ("target")
-                               .get_int_member ("id");
-      account.follow_id (user_id);
-    } else if (type == StreamMessageType.EVENT_UNFOLLOW) {
-      int64 user_id = root_node.get_object ().get_object_member ("target")
-                               .get_int_member ("id");
-      account.unfollow_id (user_id);
+    switch (type) {
+      case StreamMessageType.EVENT_FOLLOW:
+        int64 user_id = root_node.get_object ().get_object_member ("target")
+                                 .get_int_member ("id");
+        account.follow_id (user_id);
+        break;
+
+      case StreamMessageType.EVENT_UNFOLLOW:
+        int64 user_id = root_node.get_object ().get_object_member ("target")
+                                 .get_int_member ("id");
+        account.unfollow_id (user_id);
+        break;
+
+      case StreamMessageType.EVENT_MUTE:
+        int64 user_id = root_node.get_object ().get_object_member ("target")
+                                 .get_int_member ("id");
+        account.mute_id (user_id);
+        break;
+
+      case StreamMessageType.EVENT_UNMUTE:
+        int64 user_id = root_node.get_object ().get_object_member ("target")
+                                 .get_int_member ("id");
+        account.unmute_id (user_id);
+        break;
+
+      case StreamMessageType.EVENT_BLOCK:
+        int64 user_id = root_node.get_object ().get_object_member ("target")
+                                 .get_int_member ("id");
+        account.block_id (user_id);
+        break;
+
+      case StreamMessageType.EVENT_UNBLOCK:
+        int64 user_id = root_node.get_object ().get_object_member ("target")
+                                 .get_int_member ("id");
+        account.unblock_id (user_id);
+        break;
+
+      case StreamMessageType.EVENT_USER_UPDATE:
+        var user_obj = root_node.get_object ().get_object_member ("target");
+        if (user_obj.get_int_member ("id") == account.id) {
+          account.name = user_obj.get_string_member ("name");
+          account.description = user_obj.get_string_member ("description");
+        } else
+          warning ("USER_UPDATE: ids don't match");
+        break;
     }
   }
 
