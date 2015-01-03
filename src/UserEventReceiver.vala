@@ -60,6 +60,15 @@ class UserEventReceiver : GLib.Object, IMessageReceiver {
                                  .get_int_member ("id");
         account.unblock_id (user_id);
         break;
+
+      case StreamMessageType.EVENT_USER_UPDATE:
+        var user_obj = root_node.get_object ().get_object_member ("target");
+        if (user_obj.get_int_member ("id") == account.id) {
+          account.name = user_obj.get_string_member ("name");
+          account.description = user_obj.get_string_member ("description");
+        } else
+          warning ("USER_UPDATE: ids don't match");
+        break;
     }
   }
 
