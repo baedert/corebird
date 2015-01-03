@@ -17,7 +17,6 @@
 [GtkTemplate (ui = "/org/baedert/corebird/ui/main-window.ui")]
 public class MainWindow : Gtk.ApplicationWindow {
   private const GLib.ActionEntry[] win_entries = {
-    {"compose-tweet",       show_compose_window},
     {"toggle-sidebar",      Settings.toggle_sidebar_visible},
     {"switch-page",         simple_switch_page, "i"},
     {"show-account-dialog", show_account_dialog},
@@ -37,10 +36,13 @@ public class MainWindow : Gtk.ApplicationWindow {
   private Gtk.ToggleButton account_button;
   [GtkChild]
   public Gtk.Button back_button;
+  [GtkChild]
+  public Gtk.ToggleButton compose_tweet_button;
 
   private Gtk.MenuButton app_menu_button = null;
   public MainWidget main_widget;
   public unowned Account? account  {public get; private set;}
+  private ComposeTweetWindow compose_tweet_window = null ;
 
   public int cur_page_id {
     get {
@@ -241,11 +243,24 @@ public class MainWindow : Gtk.ApplicationWindow {
     return false;
   }
 
-  private void show_compose_window () {
-    var cw = new ComposeTweetWindow(this, account, null,
+  [GtkCallback]
+  private void compose_tweet_toggled_cb () {
+    if (compose_tweet_window == null) {
+      compose_tweet_window = new ComposeTweetWindow(this, account, null,
                                     ComposeTweetWindow.Mode.NORMAL,
                                     get_application ());
-    cw.show();
+      compose_tweet_window.show();
+      compose_tweet_window.hide.connect(()=>{
+        compose_tweet_button.active = false;
+      });
+
+      compose_tweet_window.destroy.connect(()=>{
+        compose_tweet_window = null;
+      });
+    } else {
+      compose_tweet_window.hide();
+      compose_tweet_window.destroy();
+    }
   }
 
   /**
