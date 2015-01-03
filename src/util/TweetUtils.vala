@@ -355,12 +355,12 @@ namespace TweetUtils {
     int64 min_id;
   }
 
-  async WorkerResult work_array (Json.Array json_array,
-                                 uint requested_tweet_count,
+  async WorkerResult work_array (Json.Array   json_array,
+                                 uint         requested_tweet_count,
                                  DeltaUpdater delta_updater,
                                  TweetListBox tweet_list,
-                                 MainWindow main_window,
-                                 Account account) {
+                                 MainWindow   main_window,
+                                 Account      account) {
     int64 max = 0;
     int64 min = int64.MAX;
     new Thread<void*> ("TweetWorker", () => {
