@@ -226,10 +226,12 @@ public class UserStream : Object {
 
       var parser = new Json.Parser ();
       try {
-        parser.load_from_data(data.str);
+        parser.load_from_data (data.str);
       } catch (GLib.Error e) {
-        critical(e.message);
+        critical (e.message);
         critical (data.str);
+        data.erase ();
+        return;
       }
 
       var root_node = parser.get_root();
