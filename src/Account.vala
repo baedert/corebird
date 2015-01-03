@@ -167,7 +167,6 @@ public class Account : GLib.Object {
     } catch (GLib.Error e) {
       critical (e.message);
     }
-    stdout.printf (call.get_payload () + "\n");
     var root = parser.get_root ().get_object ();
     this.id = root.get_int_member ("id");
     this.name = root.get_string_member ("name");
@@ -191,6 +190,7 @@ public class Account : GLib.Object {
 
     if (root.has_member ("profile_banner_url"))
       this.banner_url = root.get_string_member ("profile_banner_url");
+
     /* Website URL */
     if (root.get_object_member ("entities").has_member ("url")) {
       this.website = root.get_object_member ("entities").get_object_member ("url")
