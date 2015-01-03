@@ -215,23 +215,43 @@ public class Account : GLib.Object {
       collect_obj.emit ();
     });
 
-    load_disabled_rts.begin (collect_obj);
-    load_blocked_ids.begin (collect_obj);
-    load_muted_ids.begin (collect_obj);
+    load_id_array.begin (collect_obj, "1.1/friendships/no_retweets/ids.json", true, (obj, res) => {
+      Json.Array? arr = load_id_array.end (res);
+      if (arr != null) {
+        this.set_disabled_rts (arr);
+        collect_obj.emit ();
+      }
+    });
+    load_id_array.begin (collect_obj, "1.1/blocks/ids.json", false, (obj, res) => {
+      Json.Array? arr = load_id_array.end (res);
+      if (arr != null) {
+        this.set_blocked (arr);
+        collect_obj.emit ();
+      }
+    });
+    load_id_array.begin (collect_obj, "1.1/mutes/users/ids.json", false, (obj, res) => {
+      Json.Array? arr = load_id_array.end (res);
+      if (arr != null) {
+        this.set_blocked (arr);
+        collect_obj.emit ();
+      }
+    });
 
     yield;
   }
 
-  private async void load_disabled_rts (Collect collect_obj) {
+  private async Json.Array? load_id_array (Collect collect_obj,
+                                           string  function,
+                                           bool    direct) {
     var call = this.proxy.new_call ();
-    call.set_function ("1.1/friendships/no_retweets/ids.json");
+    call.set_function (function);
     call.set_method ("GET");
     try {
       yield call.invoke_async (null);
     } catch (GLib.Error e) {
       warning (e.message);
       collect_obj.emit (e);
-      return;
+      return null;
     }
 
     var parser = new Json.Parser ();
@@ -240,64 +260,12 @@ public class Account : GLib.Object {
     } catch (GLib.Error e) {
       warning (e.message);
       collect_obj.emit (e);
-      return;
+      return null;
     }
-    var array = parser.get_root ().get_array ();
-    this.set_disabled_rts (array);
-
-    collect_obj.emit ();
-  }
-
-  private async void load_blocked_ids (Collect collect_obj) {
-    var call = this.proxy.new_call ();
-    call.set_function ("1.1/blocks/ids.json");
-    call.set_method ("GET");
-    try {
-      yield call.invoke_async (null);
-    } catch (GLib.Error e) {
-      warning (e.message);
-      collect_obj.emit (e);
-      return;
-    }
-
-    var parser = new Json.Parser ();
-    try {
-      parser.load_from_data (call.get_payload ());
-    } catch (GLib.Error e) {
-      warning (e.message);
-      collect_obj.emit (e);
-      return;
-    }
-    var array = parser.get_root ().get_object ().get_array_member ("ids");
-    this.set_blocked (array);
-
-    collect_obj.emit ();
-  }
-
-  private async void load_muted_ids (Collect collect_obj) {
-    var call = this.proxy.new_call ();
-    call.set_function ("1.1/mutes/users/ids.json");
-    call.set_method ("GET");
-    try {
-      yield call.invoke_async (null);
-    } catch (GLib.Error e) {
-      warning (e.message);
-      collect_obj.emit (e);
-      return;
-    }
-
-    var parser = new Json.Parser ();
-    try {
-      parser.load_from_data (call.get_payload ());
-    } catch (GLib.Error e) {
-      warning (e.message);
-      collect_obj.emit (e);
-      return;
-    }
-    var array = parser.get_root ().get_object ().get_array_member ("ids");
-    this.set_muted (array);
-
-    collect_obj.emit ();
+    if (direct)
+      return parser.get_root ().get_array ();
+    else
+      return parser.get_root ().get_object ().get_array_member ("ids");
   }
 
   /**
