@@ -499,6 +499,18 @@ public class Account : GLib.Object {
     }
   }
 
+  public bool blocked_or_muted (int64 user_id) {
+    foreach (int64 id in this.muted)
+      if (id == user_id)
+        return true;
+
+    foreach (int64 id in this.blocked)
+      if (id == user_id)
+        return true;
+
+    return false;
+  }
+
   /** Static stuff ********************************************************************/
   private static GLib.SList<Account> accounts = null;
 
