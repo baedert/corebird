@@ -499,6 +499,25 @@ public class Account : GLib.Object {
     }
   }
 
+  public void add_disabled_rts_id (int64 user_id) {
+    this.disabled_rts.resize (this.disabled_rts.length + 1);
+    this.disabled_rts[this.disabled_rts.length - 1] = id;
+  }
+
+  public void remove_disabled_rts_id (int64 user_id) {
+    int64[] new_disabled_rts = new int64[this.disabled_rts.length - 1];
+
+    int o = 0;
+    for (int i = 0; i < this.disabled_rts.length; i++) {
+      if (this.disabled_rts[i] == id) {
+        continue;
+      }
+      disabled_rts[o] = this.disabled_rts[i];
+      o ++;
+    }
+    this.disabled_rts = new_disabled_rts;
+  }
+
   public bool blocked_or_muted (int64 user_id) {
     foreach (int64 id in this.muted)
       if (id == user_id)
