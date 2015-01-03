@@ -227,7 +227,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
 
     /* Fourth case */
     foreach (int64 id in account.disabled_rts)
-      if (id == t.user_id)
+      if (id == t.rt_by_id)
         return false;
 
     return true;
