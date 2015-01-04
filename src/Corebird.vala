@@ -72,8 +72,6 @@ public class Corebird : Gtk.Application {
       return -1;
     }
 
-    init_log_files ();
-
     this.set_accels_for_action ("win.compose-tweet", {Settings.get_accel ("compose-tweet")});
     this.set_accels_for_action ("win.toggle-sidebar", {Settings.get_accel ("toggle-sidebar")});
     this.set_accels_for_action ("win.switch-page(0)", {"<Alt>1"});
@@ -249,19 +247,6 @@ public class Corebird : Gtk.Application {
   } // }}}
 
   /**
-   * Initializes log files, i.e. creates the log/ folder and redirects the
-   * appropriate handlers for all log levels(i.e. redirects g_message,
-   * g_critical, etc. to also print to a file)
-   */
-  private void init_log_files () { // {{{
-    GLib.Log.set_handler (null, LogLevelFlags.LEVEL_MESSAGE,  print_to_log_file);
-    GLib.Log.set_handler (null, LogLevelFlags.LEVEL_ERROR,    print_to_log_file);
-    GLib.Log.set_handler (null, LogLevelFlags.LEVEL_CRITICAL, print_to_log_file);
-    GLib.Log.set_handler (null, LogLevelFlags.LEVEL_WARNING,  print_to_log_file);
-    GLib.Log.set_handler (null, LogLevelFlags.LEVEL_DEBUG,    print_to_log_file);
-  } // }}}
-
-  /**
    * Adds a new MainWindow instance with the account that
    * has the given screen name.
    * Note that this only works if the account is already properly
@@ -342,24 +327,6 @@ public class Corebird : Gtk.Application {
     base.quit ();
   }
 
-
-  /**
-   * Log handler in case the application is not
-   * started from the command line.
-   */
-  public static void print_to_log_file (string? log_domain, LogLevelFlags flags,
-                                        string msg) {
-    string out_string;
-    if (log_domain == null)
-      out_string = msg + "\n";
-    else
-      out_string = "(%s) %s".printf (log_domain, msg);
-
-#if !DEBUG
-    if (flags != LogLevelFlags.LEVEL_DEBUG)
-#endif
-      stdout.printf (out_string);
-  }
 
   /********************************************************/
 
