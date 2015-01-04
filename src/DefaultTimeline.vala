@@ -209,6 +209,8 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
    *     (not the author of the retweet!), we already get the source
    *     tweet by other means, so don't display it again.
    *   - It's a retweet from the authenticating user itself
+   *   - If the tweet was retweeted by a user that is on the list of
+   *     users the authenticating user disabled RTs for.
    */
   protected bool should_display_retweet (Tweet t) {
     /* First case */
@@ -222,6 +224,11 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     /* third case */
     if (t.rt_by_id == account.id)
       return false;
+
+    /* Fourth case */
+    foreach (int64 id in account.disabled_rts)
+      if (id == t.rt_by_id)
+        return false;
 
     return true;
   }

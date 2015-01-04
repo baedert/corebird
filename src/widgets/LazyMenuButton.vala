@@ -20,6 +20,7 @@ public class LazyMenuButton : Gtk.ToggleButton {
 
   public override void clicked () {
     var popover = new Gtk.Popover.from_model (this, this.menu_model);
+    popover.position = Gtk.PositionType.BOTTOM;
     popover.show ();
   }
 }

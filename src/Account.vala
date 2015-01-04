@@ -33,6 +33,9 @@ public class Account : GLib.Object {
   public UserCounter user_counter {public get; private set;}
   private UserEventReceiver event_receiver;
   public int64[] friends;
+  public int64[] blocked;
+  public int64[] muted;
+  public int64[] disabled_rts;
   public Gee.ArrayList<Filter> filters;
   public signal void info_changed (string screen_name, string name,
                                    Gdk.Pixbuf avatar_small, Gdk.Pixbuf avatar);
@@ -167,7 +170,6 @@ public class Account : GLib.Object {
     } catch (GLib.Error e) {
       critical (e.message);
     }
-    stdout.printf (call.get_payload () + "\n");
     var root = parser.get_root ().get_object ();
     this.id = root.get_int_member ("id");
     this.name = root.get_string_member ("name");
@@ -191,6 +193,7 @@ public class Account : GLib.Object {
 
     if (root.has_member ("profile_banner_url"))
       this.banner_url = root.get_string_member ("profile_banner_url");
+
     /* Website URL */
     if (root.get_object_member ("entities").has_member ("url")) {
       this.website = root.get_object_member ("entities").get_object_member ("url")
@@ -200,6 +203,69 @@ public class Account : GLib.Object {
 
     string avatar_url = root.get_string_member ("profile_image_url");
     yield update_avatar (avatar_url);
+  }
+
+  public async void init_information () {
+    var collect_obj = new Collect (4);
+    collect_obj.finished.connect (() => {
+      init_information.callback ();
+    });
+
+    query_user_info_by_screen_name.begin (this.screen_name, () => {
+      collect_obj.emit ();
+    });
+
+    load_id_array.begin (collect_obj, "1.1/friendships/no_retweets/ids.json", true, (obj, res) => {
+      Json.Array? arr = load_id_array.end (res);
+      if (arr != null) {
+        this.set_disabled_rts (arr);
+        collect_obj.emit ();
+      }
+    });
+    load_id_array.begin (collect_obj, "1.1/blocks/ids.json", false, (obj, res) => {
+      Json.Array? arr = load_id_array.end (res);
+      if (arr != null) {
+        this.set_blocked (arr);
+        collect_obj.emit ();
+      }
+    });
+    load_id_array.begin (collect_obj, "1.1/mutes/users/ids.json", false, (obj, res) => {
+      Json.Array? arr = load_id_array.end (res);
+      if (arr != null) {
+        this.set_muted (arr);
+        collect_obj.emit ();
+      }
+    });
+
+    yield;
+  }
+
+  private async Json.Array? load_id_array (Collect collect_obj,
+                                           string  function,
+                                           bool    direct) {
+    var call = this.proxy.new_call ();
+    call.set_function (function);
+    call.set_method ("GET");
+    try {
+      yield call.invoke_async (null);
+    } catch (GLib.Error e) {
+      warning (e.message);
+      collect_obj.emit (e);
+      return null;
+    }
+
+    var parser = new Json.Parser ();
+    try {
+      parser.load_from_data (call.get_payload ());
+    } catch (GLib.Error e) {
+      warning (e.message);
+      collect_obj.emit (e);
+      return null;
+    }
+    if (direct)
+      return parser.get_root ().get_array ();
+    else
+      return parser.get_root ().get_object ().get_array_member ("ids");
   }
 
   /**
@@ -326,6 +392,11 @@ public class Account : GLib.Object {
   }
 
   public void unfollow_id (int64 user_id) {
+    if (this.friends == null || this.friends.length == 0) {
+      warning ("friends == null");
+      return;
+    }
+
     int64[] new_friends = new int64[this.friends.length - 1];
 
     int o = 0;
@@ -337,6 +408,111 @@ public class Account : GLib.Object {
       o ++;
     }
     this.friends = new_friends;
+  }
+
+  public void set_muted (Json.Array muted_array) {
+    this.muted = new int64[muted_array.get_length ()];
+    debug ("Add %d muted ids", this.muted.length);
+    for (int i = 0; i < this.muted.length; i ++) {
+      this.muted[i] = muted_array.get_int_element (i);
+    }
+  }
+
+  public void mute_id (int64 id) {
+    this.muted.resize (this.muted.length + 1);
+    this.muted[this.muted.length - 1] = id;
+  }
+
+  public void unmute_id (int64 id) {
+    if (this.muted == null || this.muted.length == 0) {
+      warning ("muted == null");
+      return;
+    }
+    int64[] new_muted = new int64[this.muted.length - 1];
+
+    int o = 0;
+    for (int i = 0; i < this.muted.length; i++) {
+      if (this.muted[i] == id) {
+        continue;
+      }
+      muted[o] = this.muted[i];
+      o ++;
+    }
+    this.muted = new_muted;
+  }
+
+  public void set_blocked (Json.Array blocked_array) {
+    this.blocked = new int64[blocked_array.get_length ()];
+    debug ("Add %d blocked ids", this.blocked.length);
+    for (int i = 0; i < this.blocked.length; i ++) {
+      this.blocked[i] = blocked_array.get_int_element (i);
+    }
+  }
+
+  public void block_id (int64 id) {
+    this.blocked.resize (this.blocked.length + 1);
+    this.blocked[this.blocked.length - 1] = id;
+  }
+
+  public void unblock_id (int64 id) {
+    if (this.blocked == null || this.blocked.length == 0) {
+      warning ("blocked == null");
+      return;
+    }
+    int64[] new_blocked = new int64[this.blocked.length - 1];
+
+    int o = 0;
+    for (int i = 0; i < this.blocked.length; i++) {
+      if (this.blocked[i] == id) {
+        continue;
+      }
+      blocked[o] = this.blocked[i];
+      o ++;
+    }
+    this.blocked = new_blocked;
+  }
+
+  public void set_disabled_rts (Json.Array disabled_rts_array) {
+    this.disabled_rts = new int64[disabled_rts_array.get_length ()];
+    debug ("Add %d disabled_rts ids", this.disabled_rts.length);
+    for (int i = 0; i < this.disabled_rts.length; i ++) {
+      this.disabled_rts[i] = disabled_rts_array.get_int_element (i);
+    }
+  }
+
+  public void add_disabled_rts_id (int64 user_id) {
+    this.disabled_rts.resize (this.disabled_rts.length + 1);
+    this.disabled_rts[this.disabled_rts.length - 1] = id;
+  }
+
+  public void remove_disabled_rts_id (int64 user_id) {
+    if (this.disabled_rts == null || this.disabled_rts.length == 0) {
+      warning ("disabled_rts == null");
+      return;
+    }
+    int64[] new_disabled_rts = new int64[this.disabled_rts.length - 1];
+
+    int o = 0;
+    for (int i = 0; i < this.disabled_rts.length; i++) {
+      if (this.disabled_rts[i] == id) {
+        continue;
+      }
+      disabled_rts[o] = this.disabled_rts[i];
+      o ++;
+    }
+    this.disabled_rts = new_disabled_rts;
+  }
+
+  public bool blocked_or_muted (int64 user_id) {
+    foreach (int64 id in this.muted)
+      if (id == user_id)
+        return true;
+
+    foreach (int64 id in this.blocked)
+      if (id == user_id)
+        return true;
+
+    return false;
   }
 
   /** Static stuff ********************************************************************/

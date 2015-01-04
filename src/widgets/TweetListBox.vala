@@ -152,4 +152,16 @@ public class TweetListBox : Gtk.ListBox {
       this.remove (progress_entry);
     }
   }
+
+  public Gtk.Widget? get_visible_row_at (int index) {
+    int i = -1;
+    int p = 0;
+    while (i < index) {
+      if (this.get_row_at_index (p).visible)
+        i ++;
+
+      p ++;
+    }
+    return this.get_row_at_index (i);
+  }
 }
