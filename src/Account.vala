@@ -392,6 +392,11 @@ public class Account : GLib.Object {
   }
 
   public void unfollow_id (int64 user_id) {
+    if (this.friends == null || this.friends.length == 0) {
+      warning ("friends == null");
+      return;
+    }
+
     int64[] new_friends = new int64[this.friends.length - 1];
 
     int o = 0;
@@ -419,6 +424,10 @@ public class Account : GLib.Object {
   }
 
   public void unmute_id (int64 id) {
+    if (this.muted == null || this.muted.length == 0) {
+      warning ("muted == null");
+      return;
+    }
     int64[] new_muted = new int64[this.muted.length - 1];
 
     int o = 0;
@@ -446,6 +455,10 @@ public class Account : GLib.Object {
   }
 
   public void unblock_id (int64 id) {
+    if (this.blocked == null || this.blocked.length == 0) {
+      warning ("blocked == null");
+      return;
+    }
     int64[] new_blocked = new int64[this.blocked.length - 1];
 
     int o = 0;
@@ -473,6 +486,10 @@ public class Account : GLib.Object {
   }
 
   public void remove_disabled_rts_id (int64 user_id) {
+    if (this.disabled_rts == null || this.disabled_rts.length == 0) {
+      warning ("disabled_rts == null");
+      return;
+    }
     int64[] new_disabled_rts = new int64[this.disabled_rts.length - 1];
 
     int o = 0;
