@@ -232,7 +232,7 @@ public class Account : GLib.Object {
     load_id_array.begin (collect_obj, "1.1/mutes/users/ids.json", false, (obj, res) => {
       Json.Array? arr = load_id_array.end (res);
       if (arr != null) {
-        this.set_blocked (arr);
+        this.set_muted (arr);
         collect_obj.emit ();
       }
     });
