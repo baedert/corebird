@@ -125,6 +125,10 @@ public class Corebird : Gtk.Application {
 
     new LazyMenuButton ();
 
+#if DEBUG
+    GLib.Environment.set_variable ("G_MESSAGES_DEBUG", "all", true);
+#endif
+
     Dirs.create_dirs ();
     debug ("startup");
     Corebird.db = new Sql.Database (Dirs.config ("Corebird.db"),
