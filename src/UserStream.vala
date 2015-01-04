@@ -265,7 +265,7 @@ public class UserStream : Object {
         type = StreamMessageType.UNSUPPORTED;
 
 #if DEBUG
-      debug ("Message with type %s", type.to_string ());
+      stdout.printf ("Message with type %s\n", type.to_string ());
       stdout.printf (data.str+"\n\n");
 #endif
       foreach (IMessageReceiver it in receivers)
