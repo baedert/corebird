@@ -331,6 +331,7 @@ class TweetInfoPage : IPage , ScrollWidget {
     time_label.label = time_format;
     retweet_button.active = tweet.retweeted;
     favorite_button.active = tweet.favorited;
+    avatar_image.verified = tweet.verified;
 
     set_source_link (tweet.id, tweet.screen_name);
 
