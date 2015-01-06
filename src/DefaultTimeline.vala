@@ -267,7 +267,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     else if (t.id > max_id)
       max_id = t.id;
 
-    if (!tle.seen) {
+    if (!tle.seen && tle.visible) {
       this.unread_count ++;
       this.update_unread_count ();
     }
