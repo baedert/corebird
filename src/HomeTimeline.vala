@@ -89,7 +89,10 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
     if (should_focus)
       entry.grab_focus ();
 
-    base.scroll_up (t);
+    if (entry.visible)
+      base.scroll_up (t);
+
+
     base.postprocess_tweet (entry);
 
     // We never show any notifications if auto-scroll-on-new-tweet is enabled
