@@ -51,6 +51,11 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
     Tweet t = new Tweet();
     t.load_from_json (obj, now, account);
 
+    if (t.id <= this.max_id) {
+      warning ("Tweet with ID %s already seen.", t.id.to_string ());
+      return;
+    }
+
 
     var entry = new TweetListEntry (t, main_window, account);
     entry.visible = true;
