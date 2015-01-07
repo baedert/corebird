@@ -309,6 +309,8 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
       if (root_arr.get_length () > 0) {
         tweet_list.remove_all ();
         lowest_id = int64.MAX - 2;
+        unread_count = 0;
+        update_unread_count ();
         load_newest ();
       }
 
