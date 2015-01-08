@@ -80,6 +80,11 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       }
     }
   }
+  public bool shows_actions {
+    get {
+      return stack.visible_child == action_box;
+    }
+  }
   public string? notification_id = null;
   private weak Account account;
   private weak MainWindow window;
