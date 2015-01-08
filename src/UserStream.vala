@@ -140,8 +140,10 @@ public class UserStream : Object {
   public void stop () {
     running = false;
 
-    if (this.network_timeout_id != 0)
+    if (this.network_timeout_id != 0) {
       GLib.Source.remove (this.network_timeout_id);
+      network_timeout_id = 0;
+    }
 
     debug ("STOPPING STREAM FOR " + account_name);
     proxy_call.cancel ();
@@ -210,8 +212,10 @@ public class UserStream : Object {
       if (real == "\r\n") {
         debug ("HEARTBEAT(%s)", account_name);
         data.erase ();
-        if (heartbeat_timeout_id != 0)
+        if (heartbeat_timeout_id != 0) {
           GLib.Source.remove (heartbeat_timeout_id);
+          heartbeat_timeout_id = 0;
+        }
 
         start_heartbeat_timeout ();
         return;
