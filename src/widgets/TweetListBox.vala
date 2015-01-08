@@ -23,6 +23,7 @@ public class TweetListBox : Gtk.ListBox {
   private Gtk.Box error_box;
   private Gtk.Label error_label;
   private Gtk.Button retry_button;
+  private TweetListEntry? action_entry;
 
   public signal void retry_button_clicked ();
 
@@ -65,7 +66,16 @@ public class TweetListBox : Gtk.ListBox {
       }
       Gtk.Widget row = this.get_row_at_y ((int)relative_y);
       if (row is TweetListEntry && row.sensitive) {
-        ((TweetListEntry)row).toggle_mode ();
+        var tle = (TweetListEntry) row;
+        if (tle != this.action_entry && this.action_entry != null &&
+            this.action_entry.shows_actions) {
+          this.action_entry.toggle_mode ();
+        }
+        tle.toggle_mode ();
+        if (tle.shows_actions)
+          this.action_entry = tle;
+        else
+          this.action_entry = null;
         return true;
       }
     }
