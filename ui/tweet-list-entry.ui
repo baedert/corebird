@@ -40,6 +40,7 @@
                 <property name="visible">true</property>
                 <property name="relief">none</property>
                 <property name="valign">center</property>
+                <property name="tooltip_text" translatable="yes">Favorite</property>
                 <signal name="toggled" handler="favorite_button_toggled_cb" />
                 <style>
                   <class name="dim-label" />
@@ -61,6 +62,7 @@
                 <property name="visible">true</property>
                 <property name="relief">none</property>
                 <property name="valign">center</property>
+                <property name="tooltip_text" translatable="true">Retweet</property>
                 <signal name="toggled" handler="retweet_button_toggled_cb" />
                 <style>
                   <class name="dim-label" />
@@ -82,6 +84,7 @@
                 <property name="visible">true</property>
                 <property name="relief">none</property>
                 <property name="valign">center</property>
+                <property name="tooltip_text" translatable="yes">Reply</property>
                 <signal name="clicked" handler="reply_button_clicked_cb" />
                 <style>
                   <class name="dim-label" />
