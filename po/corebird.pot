@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-29 13:04+0100\n"
+"POT-Creation-Date: 2015-01-09 14:35+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: ../src/window/ComposeTweetWindow.vala:334
+#: ../src/window/ComposeTweetWindow.vala:336
 msgid "Select Image"
 msgstr ""
 
-#: ../src/window/ComposeTweetWindow.vala:335
+#: ../src/window/ComposeTweetWindow.vala:337
 #: ../src/window/UserListDialog.vala:45
 #: ../src/widgets/MultiMediaWidget.vala:151 ../ui/compose-window.ui.h:2
 #: ../ui/list-list-entry.ui.h:1 ../ui/list-statuses-page.ui.h:8
@@ -32,7 +32,7 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: ../src/window/ComposeTweetWindow.vala:336
+#: ../src/window/ComposeTweetWindow.vala:338
 msgid "Choose"
 msgstr ""
 
@@ -63,11 +63,11 @@ msgstr ""
 msgid "Doesn't match"
 msgstr ""
 
-#: ../src/widgets/TweetListBox.vala:86 ../src/widgets/TweetListBox.vala:134
+#: ../src/widgets/TweetListBox.vala:96 ../src/widgets/TweetListBox.vala:144
 msgid "No entries found"
 msgstr ""
 
-#: ../src/widgets/TweetListBox.vala:94
+#: ../src/widgets/TweetListBox.vala:104
 msgid "Retry"
 msgstr ""
 
@@ -111,7 +111,7 @@ msgstr ""
 msgid "Save Original"
 msgstr ""
 
-#: ../src/widgets/MultiMediaWidget.vala:74 ../src/TweetInfoPage.vala:356
+#: ../src/widgets/MultiMediaWidget.vala:74 ../src/TweetInfoPage.vala:357
 msgid "Open in Browser"
 msgstr ""
 
@@ -128,24 +128,24 @@ msgstr ""
 msgid "Click to add image"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:88
+#: ../src/HomeTimeline.vala:106
 #, c-format
 msgid "%s retweeted %s"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:90
+#: ../src/HomeTimeline.vala:108
 #, c-format
 msgid "%s tweeted"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:97
+#: ../src/HomeTimeline.vala:115
 #, c-format
 msgid "%d new Tweet!"
 msgid_plural "%d new Tweets!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/HomeTimeline.vala:183
+#: ../src/HomeTimeline.vala:201
 msgid "Home"
 msgstr ""
 
@@ -186,11 +186,11 @@ msgstr ""
 msgid "Tweet to @%s"
 msgstr ""
 
-#: ../src/ProfilePage.vala:601
+#: ../src/ProfilePage.vala:604
 msgid "Unfollow"
 msgstr ""
 
-#: ../src/ProfilePage.vala:605
+#: ../src/ProfilePage.vala:608
 msgid "Follow"
 msgstr ""
 
@@ -203,11 +203,11 @@ msgstr ""
 msgid "Favorites"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:356
+#: ../src/TweetInfoPage.vala:357
 msgid "Source"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:367
+#: ../src/TweetInfoPage.vala:368
 msgid "Tweet Details"
 msgstr ""
 
@@ -230,7 +230,7 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: ../src/Corebird.vala:167
+#: ../src/Corebird.vala:171
 msgid "Open Account"
 msgstr ""
 
@@ -391,6 +391,14 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
+#: ../ui/tweet-list-entry.ui.h:3
+msgid "Favorite"
+msgstr ""
+
+#: ../ui/tweet-list-entry.ui.h:4
+msgid "Reply"
+msgstr ""
+
 #: ../ui/user-list-entry.ui.h:1
 msgid "Show settings of this account"
 msgstr ""
@@ -456,6 +464,10 @@ msgid "Show configured accounts"
 msgstr ""
 
 #: ../ui/main-window.ui.h:2
+msgid "Compose tweet"
+msgstr ""
+
+#: ../ui/main-window.ui.h:3
 msgid "New tweet"
 msgstr ""
 
