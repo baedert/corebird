@@ -57,8 +57,15 @@ void _remove () {
   assert (!account.follows_id (11));
   assert (!account.follows_id (12));
 
-}
 
+  account.unfollow_id (17);
+  assert (!account.follows_id (17));
+
+  account.unfollow_id (17);
+  assert (!account.follows_id (17));
+
+
+}
 
 
 int main (string[] args) {
