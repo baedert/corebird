@@ -397,16 +397,20 @@ public class Account : GLib.Object {
       return;
     }
 
-    int64[] new_friends = new int64[this.friends.length - 1];
+    int64[] new_friends = new int64[this.friends.length];
 
     int o = 0;
+    bool found = false;
     for (int i = 0; i < this.friends.length; i++) {
       if (this.friends[i] == user_id) {
+        found = true;
         continue;
       }
       new_friends[o] = this.friends[i];
       o ++;
     }
+    if (found)
+      new_friends.resize (new_friends.length - 1);
     this.friends = new_friends;
   }
 
