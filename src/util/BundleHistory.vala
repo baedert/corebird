@@ -19,10 +19,25 @@
 
 public class BundleHistory {
   private int[] elements;
+  private Bundle[] bundles;
   private int pos = -1;
 
   public int current {
-    get{ if (pos==-1)return -1; return elements[pos];}
+    get {
+      if (pos == -1)
+        return -1;
+
+      return elements[pos];
+    }
+  }
+
+  public Bundle? current_bundle {
+    get {
+      if (pos == -1)
+        return null;
+
+      return bundles[pos];
+    }
   }
 
 
@@ -30,16 +45,20 @@ public class BundleHistory {
     elements = new int[size];
     for (int i = 0; i < size; i++)
       elements[i] = -1;
+
+    bundles = new Bundle[size];
   }
 
-  public void push (int v) {
+  public void push (int v, Bundle? b) {
     if (pos < elements.length - 1) {
       pos ++;
       elements[pos] = v;
+      bundles[pos] = b;
     } else {
       for (int i = 1; i < elements.length; i++)
         elements[i-1] = elements[i];
       elements[pos] = v;
+      bundles[pos] = b;
     }
   }
 
