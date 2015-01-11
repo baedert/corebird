@@ -148,6 +148,7 @@ public class MainWidget : Gtk.Box {
     else if (page_id == Page.NEXT || page_id > history.current)
       stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
 
+    int current_page = history.current;
     // If we go forward/back, we don't need to update the history.
     if (page_id == Page.PREVIOUS) {
       if (history.at_start ())
@@ -165,9 +166,7 @@ public class MainWidget : Gtk.Box {
       args = history.current_bundle;
     }
 
-    if (page_id == history.current ||
-        page_id == Page.NEXT ||
-        page_id == Page.PREVIOUS) {
+    if (page_id == current_page) {
       var transition_type = stack.transition_type;
       stack.transition_type = Gtk.StackTransitionType.NONE;
       stack_impostor.clone (pages[page_id]);
