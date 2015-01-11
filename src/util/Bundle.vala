@@ -28,8 +28,12 @@ public class Bundle : GLib.Object {
     values.insert (key, v);
   }
 
-  public string get_string (string key) {
-    return this.values.get (key).get_string ();
+  public string? get_string (string key) {
+    var v = this.values.get (key);
+    if (v != null)
+      return v.get_string ();
+
+    return null;
   }
 
   public void put_int64 (string key, int64 value) {
