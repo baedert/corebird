@@ -5,7 +5,7 @@
 
 void all () {
 
-  var history = new IntHistory (5);
+  var history = new BundleHistory (5);
   history.push (1);
   history.push (2);
   history.push (3);
@@ -38,6 +38,6 @@ void all () {
 
 int main (string[] args) {
   GLib.Test.init (ref args);
-  GLib.Test.add_func ("/inthistory/all", all);
+  GLib.Test.add_func ("/bundlehistory/all", all);
   return GLib.Test.run ();
 }

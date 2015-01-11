@@ -23,7 +23,7 @@ public class MainWidget : Gtk.Box {
 
   private Gtk.RadioButton dummy_button = new Gtk.RadioButton (null);
   private IPage[] pages                = new IPage[11];
-  private IntHistory history           = new IntHistory (5);
+  private BundleHistory history        = new BundleHistory (5);
   private DeltaUpdater delta_updater   = new DeltaUpdater ();
   private bool page_switch_lock        = false;
   public Gtk.SizeGroup sidebar_size_group = new Gtk.SizeGroup (Gtk.SizeGroupMode.BOTH);

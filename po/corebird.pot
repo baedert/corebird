@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-09 14:35+0100\n"
+"POT-Creation-Date: 2015-01-11 11:48+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -111,7 +111,7 @@ msgstr ""
 msgid "Save Original"
 msgstr ""
 
-#: ../src/widgets/MultiMediaWidget.vala:74 ../src/TweetInfoPage.vala:357
+#: ../src/widgets/MultiMediaWidget.vala:74 ../src/TweetInfoPage.vala:360
 msgid "Open in Browser"
 msgstr ""
 
@@ -149,19 +149,19 @@ msgstr[1] ""
 msgid "Home"
 msgstr ""
 
-#: ../src/DMThreadsPage.vala:366
+#: ../src/DMThreadsPage.vala:372
 #, c-format
 msgid "%d new Message from %s"
 msgid_plural "%d new Messages from %s"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/DMThreadsPage.vala:372
+#: ../src/DMThreadsPage.vala:378
 #, c-format
 msgid "New direct message from %s"
 msgstr ""
 
-#: ../src/DMThreadsPage.vala:387 ../src/DMThreadsPage.vala:401
+#: ../src/DMThreadsPage.vala:393 ../src/DMThreadsPage.vala:407
 msgid "Direct Messages"
 msgstr ""
 
@@ -177,37 +177,37 @@ msgstr[1] ""
 msgid "Lists"
 msgstr ""
 
-#: ../src/ProfilePage.vala:315
+#: ../src/ProfilePage.vala:316
 msgid "Protected profile"
 msgstr ""
 
-#: ../src/ProfilePage.vala:507
+#: ../src/ProfilePage.vala:508
 #, c-format
 msgid "Tweet to @%s"
 msgstr ""
 
-#: ../src/ProfilePage.vala:604
+#: ../src/ProfilePage.vala:605
 msgid "Unfollow"
 msgstr ""
 
-#: ../src/ProfilePage.vala:608
+#: ../src/ProfilePage.vala:609
 msgid "Follow"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:329
+#: ../src/TweetInfoPage.vala:332
 msgid "Retweets"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:330 ../src/FavoritesTimeline.vala:89
+#: ../src/TweetInfoPage.vala:333 ../src/FavoritesTimeline.vala:89
 #: ../src/FavoritesTimeline.vala:93
 msgid "Favorites"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:357
+#: ../src/TweetInfoPage.vala:360
 msgid "Source"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:368
+#: ../src/TweetInfoPage.vala:371
 msgid "Tweet Details"
 msgstr ""
 
@@ -225,7 +225,7 @@ msgstr ""
 msgid "%dh"
 msgstr ""
 
-#: ../src/SearchPage.vala:282 ../src/SearchPage.vala:291
+#: ../src/SearchPage.vala:283 ../src/SearchPage.vala:292
 #: ../ui/search-page.ui.h:1
 msgid "Search"
 msgstr ""
@@ -247,7 +247,7 @@ msgstr ""
 msgid "Direct Conversation"
 msgstr ""
 
-#: ../src/ListStatusesPage.vala:405
+#: ../src/ListStatusesPage.vala:408
 msgid "List"
 msgstr ""
 

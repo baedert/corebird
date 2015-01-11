@@ -67,7 +67,7 @@ cb_sources = \
 			widgets/LazyMenuButton.vala \
 			util/TweetUtils.vala \
 			util/Utils.vala \
-			util/IntHistory.vala \
+			util/BundleHistory.vala \
 			util/UserCompletion.vala \
 			util/Config.vala \
 			util/WeakRef.vala \

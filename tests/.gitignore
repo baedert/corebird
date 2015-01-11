@@ -7,7 +7,7 @@ _test.db
 tweet_length
 media
 utils
-inthistory
+bundlehistory
 usercounter
 hometimeline
 tweet_entities

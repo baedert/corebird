@@ -17,7 +17,7 @@
 
 
 
-public class IntHistory {
+public class BundleHistory {
   private int[] elements;
   private int pos = -1;
 
@@ -26,7 +26,7 @@ public class IntHistory {
   }
 
 
-  public IntHistory (int size) {
+  public BundleHistory (int size) {
     elements = new int[size];
     for (int i = 0; i < size; i++)
       elements[i] = -1;
