@@ -152,9 +152,15 @@ public class MainWidget : Gtk.Box {
 
     // If we go forward/back, we don't need to update the history.
     if (page_id == Page.PREVIOUS) {
+      if (history.at_start ())
+        return;
+
       push = false;
       page_id = history.back ();
     } else if (page_id == Page.NEXT) {
+      if (history.at_end ())
+        return;
+
       push = false;
       page_id = history.forward ();
     }
