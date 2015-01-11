@@ -54,10 +54,13 @@ class ListsPage : IPage, ScrollWidget, IMessageReceiver {
   }
 
   public void on_join (int page_id, Bundle? args) {
-    int mode = args.get_int ("mode");
+    int mode = 0;
 
     if (!GLib.NetworkMonitor.get_default ().get_network_available ())
       return;
+
+    if (args != null)
+      mode = args.get_int ("mode");
 
     if (mode == 0 && !inited) {
       inited = true;
