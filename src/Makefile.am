@@ -65,6 +65,7 @@ cb_sources = \
 			widgets/AddImageButton.vala \
 			widgets/CompletionTextView.vala \
 			widgets/LazyMenuButton.vala \
+			widgets/ImpostorWidget.vala \
 			util/TweetUtils.vala \
 			util/Utils.vala \
 			util/BundleHistory.vala \
