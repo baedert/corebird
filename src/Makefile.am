@@ -72,6 +72,7 @@ cb_sources = \
 			util/Config.vala \
 			util/WeakRef.vala \
 			util/Dirs.vala \
+			util/Bundle.vala \
 			list/TweetListEntry.vala \
 			list/DMListEntry.vala \
 			list/UserListEntry.vala \

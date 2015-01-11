@@ -17,8 +17,8 @@
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/tweet-info-page.ui")]
 class TweetInfoPage : IPage , ScrollWidget {
-  public static const uint BY_INSTANCE = 1;
-  public static const uint BY_ID       = 2;
+  public static const int BY_INSTANCE = 1;
+  public static const int BY_ID       = 2;
 
   private const GLib.ActionEntry[] action_entries = {
     {"quote",  quote_activated},
@@ -77,14 +77,16 @@ class TweetInfoPage : IPage , ScrollWidget {
     });
     top_list_box.set_sort_func (ITwitterItem.sort_func_inv);
     bottom_list_box.row_activated.connect ((row) => {
-      main_window.main_widget.switch_page (Page.TWEET_INFO,
-                                           TweetInfoPage.BY_INSTANCE,
-                                           ((TweetListEntry)row).tweet);
+      var bundle = new Bundle ();
+      bundle.put_int ("mode", TweetInfoPage.BY_INSTANCE);
+      bundle.put_object ("tweet", ((TweetListEntry)row).tweet);
+      main_window.main_widget.switch_page (Page.TWEET_INFO, bundle);
     });
     top_list_box.row_activated.connect ((row) => {
-      main_window.main_widget.switch_page (Page.TWEET_INFO,
-                                           TweetInfoPage.BY_INSTANCE,
-                                           ((TweetListEntry)row).tweet);
+      var bundle = new Bundle ();
+      bundle.put_int ("mode", TweetInfoPage.BY_INSTANCE);
+      bundle.put_object ("tweet", ((TweetListEntry)row).tweet);
+      main_window.main_widget.switch_page (Page.TWEET_INFO, bundle);
     });
 
     GLib.SimpleActionGroup actions = new GLib.SimpleActionGroup ();
@@ -92,8 +94,8 @@ class TweetInfoPage : IPage , ScrollWidget {
     this.insert_action_group ("tweet", actions);
   }
 
-  public void on_join (int page_id, va_list args) {
-    uint mode = args.arg ();
+  public void on_join (int page_id, Bundle? args) {
+    int mode = args.get_int ("mode");
 
     if (mode == 0)
       return;
@@ -101,7 +103,7 @@ class TweetInfoPage : IPage , ScrollWidget {
     values_set = false;
 
     if (mode == BY_INSTANCE) {
-      Tweet tweet = args.arg<Tweet> ();
+      Tweet tweet = (Tweet)args.get_object ("tweet");
 
       if (tweet.is_retweet)
         this.tweet_id = tweet.rt_id;
@@ -111,7 +113,7 @@ class TweetInfoPage : IPage , ScrollWidget {
       this.tweet = tweet;
       set_tweet_data (tweet);
     } else if (mode == BY_ID) {
-      this.tweet_id = args.arg ();
+      this.tweet_id = args.get_int64 ("tweet_id");
     }
 
     bottom_list_box.foreach ((w) => {bottom_list_box.remove (w);});
@@ -164,9 +166,10 @@ class TweetInfoPage : IPage , ScrollWidget {
 
   [GtkCallback]
   private void name_button_clicked_cb () {
-    main_window.main_widget.switch_page (Page.PROFILE,
-                                         tweet.user_id,
-                                         tweet.screen_name);
+    var bundle = new Bundle ();
+    bundle.put_int64 ("user_id", tweet.user_id);
+    bundle.put_string ("screen_name", tweet.screen_name);
+    main_window.main_widget.switch_page (Page.PROFILE, bundle);
   }
 
   /**

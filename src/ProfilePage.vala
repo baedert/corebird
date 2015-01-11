@@ -125,9 +125,10 @@ class ProfilePage : ScrollWidget, IPage {
     });
 
     tweet_list.row_activated.connect ((row) => {
-      main_window.main_widget.switch_page (Page.TWEET_INFO,
-                                           TweetInfoPage.BY_INSTANCE,
-                                           ((TweetListEntry)row).tweet);
+      var bundle = new Bundle ();
+      bundle.put_int ("mode", TweetInfoPage.BY_INSTANCE);
+      bundle.put_object ("tweet", ((TweetListEntry)row).tweet);
+      main_window.main_widget.switch_page (Page.TWEET_INFO, bundle);
     });
     tweet_list.set_sort_func (ITwitterItem.sort_func);
 
@@ -624,14 +625,14 @@ class ProfilePage : ScrollWidget, IPage {
   /**
    * see IPage#onJoin
    */
-  public void on_join(int page_id, va_list arg_list) {
-    int64 user_id = arg_list.arg ();
+  public void on_join(int page_id, Bundle? args) {
+    int64 user_id = args.get_int64 ("user_id");
     if (user_id == 0)
       return;
     else
       lists_page_inited = false;
 
-    string? screen_name = arg_list.arg ();
+    string? screen_name = args.get_string ("screen_name");
     if (screen_name != null) {
       this.screen_name = screen_name;
     }
@@ -679,8 +680,12 @@ class ProfilePage : ScrollWidget, IPage {
   }
 
   private void write_dm_activated (GLib.SimpleAction a, GLib.Variant? v) {
-     main_window.main_widget.switch_page (Page.DM,
-                                          user_id, screen_name, name, avatar_url);
+    var bundle = new Bundle ();
+    bundle.put_int64 ("sender_id", user_id);
+    bundle.put_string ("screen_name", screen_name);
+    bundle.put_string ("name", name);
+    bundle.put_string ("avatar_url", avatar_url);
+    main_window.main_widget.switch_page (Page.DM, bundle);
   }
 
   private void tweet_to_activated (GLib.SimpleAction a, GLib.Variant? v) {

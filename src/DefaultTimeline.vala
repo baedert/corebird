@@ -52,9 +52,10 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
 
     tweet_list.row_activated.connect ((row) => {
       if (row is TweetListEntry) {
-        main_window.main_widget.switch_page (Page.TWEET_INFO,
-                                             TweetInfoPage.BY_INSTANCE,
-                                             ((TweetListEntry)row).tweet);
+        var bundle = new Bundle ();
+        bundle.put_int ("mode", TweetInfoPage.BY_INSTANCE);
+        bundle.put_object ("tweet", ((TweetListEntry)row).tweet);
+        main_window.main_widget.switch_page (Page.TWEET_INFO, bundle);
       }
       last_focus_widget = row;
     });
@@ -65,7 +66,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
 
   }
 
-  public virtual void on_join (int page_id, va_list args) {
+  public virtual void on_join (int page_id, Bundle? args) {
     if (!initialized) {
       load_cached ();
       load_newest ();

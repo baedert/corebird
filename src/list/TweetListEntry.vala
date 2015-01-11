@@ -267,9 +267,10 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
   [GtkCallback]
   private void name_button_clicked_cb () {
-    window.main_widget.switch_page (Page.PROFILE,
-                                    tweet.user_id,
-                                    tweet.screen_name);
+    var bundle = new Bundle ();
+    bundle.put_int64 ("user_id", tweet.user_id);
+    bundle.put_string ("screen_name", tweet.screen_name);
+    window.main_widget.switch_page (Page.PROFILE, bundle);
   }
   [GtkCallback]
   private void reply_button_clicked_cb () {

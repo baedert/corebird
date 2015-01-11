@@ -340,7 +340,9 @@ public class Corebird : Gtk.Application {
     int64 sender_id = value.get_child_value (1).get_int64 ();
     MainWindow main_window;
     if (is_window_open_for_screen_name (account_screen_name, out main_window)) {
-      main_window.main_widget.switch_page (Page.DM, sender_id);
+      var bundle = new Bundle ();
+      bundle.put_int64 ("sender_id", sender_id);
+      main_window.main_widget.switch_page (Page.DM, bundle);
       main_window.present ();
     } else
       warning ("Window for Account %s is not open, abort.", account_screen_name);

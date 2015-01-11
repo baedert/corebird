@@ -129,12 +129,12 @@ public class MainWidget : Gtk.Box {
    *
    * TODO: Refactor this.
    */
-  public void switch_page (int page_id, ...) { // {{{
+  public void switch_page (int page_id, Bundle? args = null) { // {{{
     if (page_id == history.current) {
       if (pages[page_id].handles_double_open ())
         pages[page_id].double_open ();
       else
-        pages[page_id].on_join (page_id, va_list ());
+        pages[page_id].on_join (page_id, args);
 
       return;
     }
@@ -177,7 +177,7 @@ public class MainWidget : Gtk.Box {
     else
       dummy_button.active = true;
 
-    page.on_join (page_id, va_list ());
+    page.on_join (page_id, args);
     stack.set_visible_child (pages[page_id]);
     if (page.get_title () != null)
       ((MainWindow)this.parent).set_title (page.get_title ());

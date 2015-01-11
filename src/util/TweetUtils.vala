@@ -333,17 +333,20 @@ namespace TweetUtils {
 
     if (uri.has_prefix ("@")) {
       int slash_index = uri.index_of ("/");
+      var bundle = new Bundle ();
       if (slash_index == -1) {
-        window.main_widget.switch_page (Page.PROFILE,
-                                         int64.parse (term));
+        bundle.put_int64 ("user_id", int64.parse (term));
+        window.main_widget.switch_page (Page.PROFILE, bundle);
       } else {
-        window.main_widget.switch_page (Page.PROFILE,
-                                        int64.parse (term.substring (0, slash_index - 1)),
-                                        term.substring (slash_index + 1, term.length - slash_index - 1));
+        bundle.put_int64 ("user_id", int64.parse (term.substring (0, slash_index - 1)));
+        bundle.put_string ("screen_name", term.substring (slash_index + 1, term.length - slash_index - 1));
+        window.main_widget.switch_page (Page.PROFILE, bundle);
       }
       return true;
     } else if (uri.has_prefix ("#")) {
-      window.main_widget.switch_page (Page.SEARCH, uri);
+      var bundle = new Bundle ();
+      bundle.put_string ("query", uri);
+      window.main_widget.switch_page (Page.SEARCH, bundle);
       return true;
     }
     return false;

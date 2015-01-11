@@ -53,8 +53,8 @@ class ListsPage : IPage, ScrollWidget, IMessageReceiver {
     this.id = id;
   }
 
-  public void on_join (int page_id, va_list arg_list) {
-    int mode = arg_list.arg<int> ();
+  public void on_join (int page_id, Bundle? args) {
+    int mode = args.get_int ("mode");
 
     if (!GLib.NetworkMonitor.get_default ().get_network_available ())
       return;
@@ -64,7 +64,7 @@ class ListsPage : IPage, ScrollWidget, IMessageReceiver {
       this.user_id = account.id;
       load_newest.begin ();
     } else if (mode  == MODE_DELETE) {
-      int64 list_id = arg_list.arg<int64> ();
+      int64 list_id = args.get_int64 ("list_id");
       message (@"Deleting list with id $list_id");
       user_lists_widget.remove_list (list_id);
     }

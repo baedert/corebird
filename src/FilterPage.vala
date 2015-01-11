@@ -51,7 +51,7 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
     user_list.set_header_func (header_func);
   }
 
-  public void on_join (int page_id, va_list arg_list) { // {{{
+  public void on_join (int page_id, Bundle? args) { // {{{
 
     if (!filters_loaded) {
       foreach (Filter f in account.filters) {

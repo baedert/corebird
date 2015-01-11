@@ -52,8 +52,10 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
            activating the notification will dismiss it */
         if (entry.notification_id != null)
           GLib.Application.get_default ().withdraw_notification (entry.notification_id);
-        main_window.main_widget.switch_page (Page.DM,
-                                             entry.user_id);
+
+        var bundle = new Bundle ();
+        bundle.put_int64 ("sender_id", entry.user_id);
+        main_window.main_widget.switch_page (Page.DM, bundle);
       }
     });
     start_conversation_entry = new StartConversationEntry (account);
@@ -63,8 +65,12 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
         this.unread_count -= thread_entry.unread_count;
         update_unread_count ();
       }
-      main_window.main_widget.switch_page (Page.DM, user_id,
-                                           screen_name, name, avatar_url);
+      var bundle = new Bundle ();
+      bundle.put_int64 ("sender_id", user_id);
+      bundle.put_string ("screen_name", screen_name);
+      bundle.put_string ("name", name);
+      bundle.put_string ("avatar_url", avatar_url);
+      main_window.main_widget.switch_page (Page.DM, bundle);
     });
 
     thread_list.add (start_conversation_entry);
@@ -87,7 +93,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   }
 
 
-  public void on_join (int page_id, va_list arg_list) {
+  public void on_join (int page_id, Bundle? args) {
     if (!GLib.NetworkMonitor.get_default ().get_network_available ())
       return;
 

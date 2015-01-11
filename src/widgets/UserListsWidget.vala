@@ -61,16 +61,17 @@ class UserListsWidget : Gtk.Box {
       ((NewListEntry)row).reveal ();
     } else {
       var entry = (ListListEntry) row;
-      main_window.main_widget.switch_page (Page.LIST_STATUSES,
-                                           entry.id,
-                                           entry.name,
-                                           entry.user_list,
-                                           entry.description,
-                                           entry.creator_screen_name,
-                                           entry.n_subscribers,
-                                           entry.n_members,
-                                           entry.created_at,
-                                           entry.mode);
+      var bundle = new Bundle ();
+      bundle.put_int64 ("list_id", entry.id);
+      bundle.put_string ("name", entry.name);
+      bundle.put_bool ("user_list", entry.user_list);
+      bundle.put_string ("description", entry.description);
+      bundle.put_string ("creator", entry.creator_screen_name);
+      bundle.put_int ("n_subscribers", entry.n_subscribers);
+      bundle.put_int ("n_members", entry.n_members);
+      bundle.put_int64 ("created_at", entry.created_at);
+      bundle.put_string ("mode", entry.mode);
+      main_window.main_widget.switch_page (Page.LIST_STATUSES, bundle);
     }
   }
 
@@ -295,16 +296,18 @@ class UserListsWidget : Gtk.Box {
       var entry = new ListListEntry.from_json_data (root, account);
       add_list (entry);
 
-      main_window.main_widget.switch_page (Page.LIST_STATUSES,
-                                           entry.id,
-                                           entry.name,
-                                           true,
-                                           entry.description,
-                                           entry.creator_screen_name,
-                                           entry.n_subscribers,
-                                           entry.n_members,
-                                           entry.created_at,
-                                           entry.mode);
+      var bundle = new Bundle ();
+      bundle.put_int64 ("list_id", entry.id);
+      bundle.put_string ("name", entry.name);
+      bundle.put_bool ("user_list", true);
+      bundle.put_string ("description", entry.description);
+      bundle.put_string ("creator", entry.creator_screen_name);
+      bundle.put_int ("n_subscribers", entry.n_subscribers);
+      bundle.put_int ("n_members", entry.n_members);
+      bundle.put_int64 ("created_at", entry.created_at);
+      bundle.put_string ("mode", entry.mode);
+
+      main_window.main_widget.switch_page (Page.LIST_STATUSES, bundle);
       new_list_entry.sensitive = true;
     });
   } // }}}

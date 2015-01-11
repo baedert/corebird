@@ -78,8 +78,8 @@ class SearchPage : IPage, Gtk.Box {
   /**
    * see IPage#onJoin
    */
-  public void on_join (int page_id, va_list arg_list) {
-    string? term = arg_list.arg<string>();
+  public void on_join (int page_id, Bundle? args) {
+    string? term = args.get_string ("query");
     if (term == null) {
       if (last_focus_widget != null)
         last_focus_widget.grab_focus ();
@@ -124,14 +124,15 @@ class SearchPage : IPage, Gtk.Box {
 
   private void row_activated_cb (Gtk.ListBoxRow row) { // {{{
     this.last_focus_widget = row;
+    var bundle = new Bundle ();
     if (row is UserListEntry) {
-      main_window.main_widget.switch_page (Page.PROFILE,
-                                           ((UserListEntry)row).user_id,
-                                           ((UserListEntry)row).screen_name);
+      bundle.put_int64 ("user_id", ((UserListEntry)row).user_id);
+      bundle.put_string ("screen_name", ((UserListEntry)row).screen_name);
+      main_window.main_widget.switch_page (Page.PROFILE, bundle);
     } else if (row is TweetListEntry) {
-      main_window.main_widget.switch_page (Page.TWEET_INFO,
-                                           TweetInfoPage.BY_INSTANCE,
-                                           ((TweetListEntry)row).tweet);
+      bundle.put_int ("mode", TweetInfoPage.BY_INSTANCE);
+      bundle.put_object ("tweet", ((TweetListEntry)row).tweet);
+      main_window.main_widget.switch_page (Page.TWEET_INFO, bundle);
     }
   } //}}}
 

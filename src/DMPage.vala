@@ -124,8 +124,8 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
 
   } // }}}
 
-  public void on_join (int page_id, va_list arg_list) { // {{{
-    int64 user_id = arg_list.arg<int64> ();
+  public void on_join (int page_id, Bundle? args) { // {{{
+    int64 user_id = args.get_int64 ("sender_id");
     if (user_id == 0)
       return;
 
@@ -133,11 +133,11 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
     this.user_id = user_id;
     string screen_name;
     string name = null;
-    if ((screen_name = arg_list.arg<string> ()) != null) {
-      name = arg_list.arg<string> ();
+    if ((screen_name = args.get_string ("screen_name")) != null) {
+      name = args.get_string ("name");
       placeholder_box.screen_name = screen_name;
       placeholder_box.name = name;
-      placeholder_box.avatar_url = arg_list.arg<string> ();
+      placeholder_box.avatar_url = args.get_string ("avatar_url");
       placeholder_box.load_avatar ();
     }
 

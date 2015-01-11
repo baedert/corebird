@@ -105,23 +105,23 @@ class ListStatusesPage : ScrollWidget, IPage {
    *  - int64 created_at
    *  - string mode
    */
-  public void on_join (int page_id, va_list args) { // {{{
-    int64 list_id = args.arg<int64> ();
+  public void on_join (int page_id, Bundle? args) { // {{{
+    int64 list_id = args.get_int64 ("list_id");
     if (list_id == 0) {
       list_id = this.list_id;
       return;
       // Continue
     }
 
-    string? list_name = args.arg<string> ();
+    string? list_name = args.get_string ("list_name");
     if (list_name != null) {
-      bool user_list = args.arg<bool> ();
-      string description = args.arg<string> ();
-      string creator = args.arg<string> ();
-      int n_subscribers = args.arg<int> ();
-      int n_members = args.arg<int> ();
-      int64 created_at = args.arg<int64> ();
-      string mode = args.arg<string> ();
+      bool user_list = args.get_bool ("user_list");
+      string description = args.get_string ("description");
+      string creator = args.get_string ("creator");
+      int n_subscribers = args.get_int ("n_subscribers");
+      int n_members = args.get_int ("n_members");
+      int64 created_at = args.get_int64 ("created_at");
+      string mode = args.get_string ("mode");
 
       delete_button.sensitive = user_list;
       edit_button.sensitive = user_list;
@@ -308,8 +308,10 @@ class ListStatusesPage : ScrollWidget, IPage {
       }
     });
     // Go back to the ListsPage and tell it to remove this list
-    main_window.main_widget.switch_page (Page.LISTS,
-                                         ListsPage.MODE_DELETE, list_id);
+    var bundle = new Bundle ();
+    bundle.put_int ("mode", ListsPage.MODE_DELETE);
+    bundle.put_int64 ("list_id", list_id);
+    main_window.main_widget.switch_page (Page.LISTS, bundle);
   }
 
   [GtkCallback]
@@ -324,9 +326,10 @@ class ListStatusesPage : ScrollWidget, IPage {
   [GtkCallback]
   private void tweet_activated_cb (Gtk.ListBoxRow row) {
     if (row is TweetListEntry) {
-      main_window.main_widget.switch_page (Page.TWEET_INFO,
-                                           TweetInfoPage.BY_INSTANCE,
-                                           ((TweetListEntry)row).tweet);
+      var bundle = new Bundle ();
+      bundle.put_int ("mode", TweetInfoPage.BY_INSTANCE);
+      bundle.put_object ("tweet", ((TweetListEntry)row).tweet);
+      main_window.main_widget.switch_page (Page.TWEET_INFO, bundle);
     } else
       warning ("row is of unknown type");
   }
