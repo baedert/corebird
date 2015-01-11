@@ -27,6 +27,7 @@ public class MainWidget : Gtk.Box {
   private DeltaUpdater delta_updater   = new DeltaUpdater ();
   private bool page_switch_lock        = false;
   public Gtk.SizeGroup sidebar_size_group = new Gtk.SizeGroup (Gtk.SizeGroupMode.BOTH);
+  private ImpostorWidget stack_impostor = new ImpostorWidget ();
 
 
   [GtkChild]
@@ -59,6 +60,8 @@ public class MainWidget : Gtk.Box {
     account.user_stream.start ();
     account.init_information.begin ();
 
+
+    stack.add (stack_impostor);
 
     // TODO: Just always pass the account instance to the constructor.
     pages[0]  = new HomeTimeline (Page.STREAM);
@@ -162,8 +165,14 @@ public class MainWidget : Gtk.Box {
       args = history.current_bundle;
     }
 
-    if (page_id == -1) {
-      return;
+    if (page_id == history.current ||
+        page_id == Page.NEXT ||
+        page_id == Page.PREVIOUS) {
+      var transition_type = stack.transition_type;
+      stack.transition_type = Gtk.StackTransitionType.NONE;
+      stack_impostor.clone (pages[page_id]);
+      stack.set_visible_child (stack_impostor);
+      stack.transition_type = transition_type;
     }
 
     if (push) {
