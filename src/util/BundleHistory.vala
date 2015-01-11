@@ -82,7 +82,18 @@ public class BundleHistory {
     return pos == 0;
   }
 
-/*  public void print () {
+  public bool at_end () {
+    if (pos == elements.length -1)
+      return true;
+
+    if (elements[pos] == -1 ||
+        elements[pos + 1] == -1)
+      return true;
+
+    return false;
+  }
+
+  public void print () {
     string a = "[";
     for (int i = 0; i < elements.length; i++)
       if (i == pos)
@@ -91,5 +102,5 @@ public class BundleHistory {
         a += elements[i].to_string ()+",";
     a += "]";
     message (a);
-  }*/
+  }
 }
