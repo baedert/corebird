@@ -79,7 +79,7 @@ class SearchPage : IPage, Gtk.Box {
    * see IPage#onJoin
    */
   public void on_join (int page_id, Bundle? args) {
-    string? term = args.get_string ("query");
+    string? term = args != null ? args.get_string ("query") : null;
     if (term == null) {
       if (last_focus_widget != null)
         last_focus_widget.grab_focus ();
