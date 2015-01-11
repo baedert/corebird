@@ -125,17 +125,12 @@ public class MainWidget : Gtk.Box {
    *
    * @param page_id The id of the page to switch to.
    *                See the Page.* constants.
-   * @param ... The parameters to pass to the page
    *
-   * TODO: Refactor this.
    */
   public void switch_page (int page_id, Bundle? args = null) { // {{{
-    if (page_id == history.current) {
-      if (pages[page_id].handles_double_open ())
-        pages[page_id].double_open ();
-      else
-        pages[page_id].on_join (page_id, args);
-
+    if (page_id == history.current &&
+        pages[page_id].handles_double_open ()) {
+      pages[page_id].double_open ();
       return;
     }
 
@@ -157,19 +152,23 @@ public class MainWidget : Gtk.Box {
 
       push = false;
       page_id = history.back ();
+      args = history.current_bundle;
     } else if (page_id == Page.NEXT) {
       if (history.at_end ())
         return;
 
       push = false;
       page_id = history.forward ();
+      args = history.current_bundle;
     }
 
-    if (page_id == -1)
+    if (page_id == -1) {
       return;
+    }
 
-    if (push)
-      history.push (page_id);
+    if (push) {
+      history.push (page_id, args);
+    }
 
 
     /* XXX The following will cause switch_page to be called twice
