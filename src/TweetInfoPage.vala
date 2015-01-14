@@ -29,6 +29,7 @@ class TweetInfoPage : IPage , ScrollWidget {
   public unowned MainWindow main_window { get; set; }
   public unowned Account account { get; set; }
   private int64 tweet_id;
+  private string screen_name;
   private bool values_set = false;
   private Tweet tweet;
 
@@ -110,10 +111,12 @@ class TweetInfoPage : IPage , ScrollWidget {
       else
         this.tweet_id = tweet.id;
 
+      this.screen_name = tweet.screen_name;
       this.tweet = tweet;
       set_tweet_data (tweet);
     } else if (mode == BY_ID) {
       this.tweet_id = args.get_int64 ("tweet_id");
+      this.screen_name = args.get_string ("screen_name");
     }
 
     bottom_list_box.foreach ((w) => {bottom_list_box.remove (w);});
@@ -218,7 +221,7 @@ class TweetInfoPage : IPage , ScrollWidget {
     var reply_call = account.proxy.new_call ();
     reply_call.set_method ("GET");
     reply_call.set_function ("1.1/search/tweets.json");
-    reply_call.add_param ("q", "to:" + tweet.screen_name);
+    reply_call.add_param ("q", "to:" + this.screen_name);
     reply_call.add_param ("since_id", tweet_id.to_string ());
     reply_call.add_param ("count", "200");
     reply_call.invoke_async.begin (null, (o, res) => {
