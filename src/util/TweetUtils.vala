@@ -348,6 +348,22 @@ namespace TweetUtils {
       bundle.put_string ("query", uri);
       window.main_widget.switch_page (Page.SEARCH, bundle);
       return true;
+    } else if (uri.has_prefix ("https://twitter.com/")) {
+      // XXX https://twitter.com/baedert/status/321423423423
+      string[] parts = uri.split ("/");
+      foreach (string s in parts)
+        message (s);
+      if (parts[4] == "status") {
+        /* Treat it as a tweet link and hope it'll work out */
+        int64 tweet_id = int64.parse (parts[5]);
+        var bundle = new Bundle ();
+        bundle.put_int ("mode", TweetInfoPage.BY_ID);
+        bundle.put_int64 ("tweet_id", tweet_id);
+        bundle.put_string ("screen_name", parts[3]);
+        window.main_widget.switch_page (Page.TWEET_INFO,
+                                        bundle);
+        return true;
+      }
     }
     return false;
   }
