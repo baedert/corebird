@@ -50,69 +50,85 @@
 
 
         <child>
-          <object class="AvatarWidget" id="avatar_image">
-            <property name="width_request">48</property>
-            <property name="height_request">48</property>
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_start">8</property>
-            <property name="margin_top">6</property>
-            <property name="margin_bottom">6</property>
-            <property name="margin_end">6</property>
-            <property name="halign">start</property>
-            <property name="valign">center</property>
+          <object class="GtkBox">
+            <property name="visible">true</property>
+            <property name="can_focus">false</property>
+            <property name="orientation">horizontal</property>
+            <property name="spacing">6</property>
+
+
+            <!-- XXX Leave this box here. -->
+            <child>
+              <object class="AvatarWidget" id="avatar_image">
+                <property name="width_request">48</property>
+                <property name="height_request">48</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="margin_start">8</property>
+                <property name="margin_top">6</property>
+                <property name="margin_bottom">6</property>
+                <property name="margin_end">6</property>
+                <property name="halign">start</property>
+                <property name="valign">center</property>
+              </object>
+            </child>
+
+
+            <child>
+              <object class="GtkBox">
+                <property name="visible">true</property>
+                <property name="can_focus">false</property>
+                <property name="orientation">vertical</property>
+                <property name="valign">center</property>
+                <property name="halign">start</property>
+
+
+
+
+                <child>
+                  <object class="TextButton" id="name_button">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="margin_bottom">0</property>
+                    <property name="halign">start</property>
+                    <property name="valign">end</property>
+                    <property name="hexpand">True</property>
+                    <signal name="clicked" handler="name_button_clicked_cb" swapped="no"/>
+                    <style>
+                      <class name="text-only-button"/>
+                    </style>
+                  </object>
+                </child>
+
+                <child>
+                  <object class="GtkLabel" id="screen_name_label">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="margin_top">0</property>
+                    <property name="margin_bottom">2</property>
+                    <property name="xalign">0</property>
+                    <property name="halign">start</property>
+                    <property name="valign">start</property>
+                    <property name="hexpand">true</property>
+                    <style>
+                      <class name="dim-label"/>
+                    </style>
+                  </object>
+                </child>
+
+              </object>
+            </child>
+
           </object>
           <packing>
             <property name="left_attach">0</property>
             <property name="top_attach">2</property>
-            <property name="height">2</property>
-            <property name="width">1</property>
+            <property name="width">7</property>
           </packing>
         </child>
 
 
-        <child>
-          <object class="TextButton" id="name_button">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="margin_bottom">0</property>
-            <property name="halign">start</property>
-            <property name="valign">end</property>
-            <property name="hexpand">True</property>
-            <signal name="clicked" handler="name_button_clicked_cb" swapped="no"/>
-            <style>
-              <class name="text-only-button"/>
-            </style>
-          </object>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">2</property>
-            <property name="width">5</property>
-          </packing>
-        </child>
-
-
-        <child>
-          <object class="GtkLabel" id="screen_name_label">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_top">0</property>
-            <property name="margin_bottom">2</property>
-            <property name="xalign">0</property>
-            <property name="halign">start</property>
-            <property name="valign">start</property>
-            <property name="hexpand">true</property>
-            <style>
-              <class name="dim-label"/>
-            </style>
-          </object>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">3</property>
-            <property name="width">5</property>
-          </packing>
-        </child>
 
         <child>
           <object class="GtkLabel" id="text_label">
