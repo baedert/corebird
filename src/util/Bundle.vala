@@ -43,7 +43,11 @@ public class Bundle : GLib.Object {
   }
 
   public int64 get_int64 (string key) {
-    return this.values.get (key).get_int64 ();
+    var v = this.values.get (key);
+    if (v != null)
+      return v.get_int64 ();
+
+    return -1;
   }
 
   public void put_int (string key, int value) {
