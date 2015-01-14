@@ -627,7 +627,7 @@ class ProfilePage : ScrollWidget, IPage {
    */
   public void on_join(int page_id, Bundle? args) {
     int64 user_id = args.get_int64 ("user_id");
-    if (user_id == 0)
+    if (user_id == -1)
       return;
     else
       lists_page_inited = false;
