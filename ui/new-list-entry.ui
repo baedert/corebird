@@ -4,16 +4,18 @@
     <property name="visible">True</property>
     <property name="can_focus">True</property>
     <child>
-      <object class="GtkBox" id="box1">
+      <object class="GtkBox">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
+        <property name="margin_top">4</property>
+        <property name="margin_bottom">4</property>
         <child>
-          <object class="GtkBox" id="box2">
+          <object class="GtkBox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkImage" id="image1">
+              <object class="GtkImage">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="halign">end</property>
@@ -54,13 +56,13 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkBox" id="box3">
+              <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="spacing">6</property>
                 <property name="margin_bottom">6</property>
                 <child>
-                  <object class="GtkLabel" id="label2">
+                  <object class="GtkLabel">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="valign">baseline</property>
