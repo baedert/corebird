@@ -120,8 +120,9 @@ public class UserStream : Object {
    * Starts the UserStream
    */
   public void start () {
+    debug ("Starting stream for %s", this.account_name);
     // Reset state of the stream
-    running = true;
+    //running = true;
     proxy_call = proxy.new_call ();
     proxy_call.set_function ("1.1/user.json");
     proxy_call.set_method ("GET");
@@ -141,7 +142,12 @@ public class UserStream : Object {
 
     if (this.network_timeout_id != 0) {
       GLib.Source.remove (this.network_timeout_id);
-      network_timeout_id = 0;
+      this.network_timeout_id = 0;
+    }
+
+    if (this.heartbeat_timeout_id != 0) {
+      GLib.Source.remove (this.heartbeat_timeout_id);
+      this.heartbeat_timeout_id = 0;
     }
 
     debug ("STOPPING STREAM FOR " + account_name);
@@ -170,10 +176,9 @@ public class UserStream : Object {
 
   private void start_heartbeat_timeout () {
     heartbeat_timeout_id = GLib.Timeout.add (45 * 1000, () => {
-      if (!running)
-        return false;
+      //if (!running)
+        //return false;
       // If we get here, we need to restart the stream.
-      running = false;
       debug ("Connection lost (%s) Reason: heartbeat. Restarting...", account_name);
       restart ();
       return false;
@@ -237,6 +242,8 @@ public class UserStream : Object {
         data.erase ();
         return;
       }
+
+      running = true;
 
       var root_node = parser.get_root();
       var root = root_node.get_object ();
