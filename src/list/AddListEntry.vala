@@ -27,6 +27,8 @@ class AddListEntry : Gtk.ListBoxRow {
     l.hexpand = true;
     l.halign = Gtk.Align.START;
     box.pack_start (l);
+    box.margin_bottom = 4;
+    box.margin_top = 4;
     add (box);
   }
 }
