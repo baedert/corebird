@@ -109,6 +109,9 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
         break;
       }
     }
+
+    if (tweet_list.action_entry.shows_actions)
+      tweet_list.action_entry.toggle_mode ();
   }
 
   public virtual  void load_cached () {}
