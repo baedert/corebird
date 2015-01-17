@@ -110,7 +110,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
       }
     }
 
-    if (tweet_list.action_entry.shows_actions)
+    if (tweet_list.action_entry != null && tweet_list.action_entry.shows_actions)
       tweet_list.action_entry.toggle_mode ();
   }
 
