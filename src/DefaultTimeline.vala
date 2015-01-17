@@ -215,6 +215,9 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
    *   - It's a retweet from the authenticating user itself
    *   - If the tweet was retweeted by a user that is on the list of
    *     users the authenticating user disabled RTs for.
+   *   - If the retweet is already in the timeline. There's no other
+   *     way of checking the case where 2 indipendend users retweet
+   *     the same tweet.
    */
   protected bool should_display_retweet (Tweet t) {
     /* First case */
@@ -233,6 +236,14 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     foreach (int64 id in account.disabled_rts)
       if (id == t.rt_by_id)
         return false;
+
+    /* Fifth case */
+    foreach (Gtk.Widget w in tweet_list.get_children ()) {
+      if (w is TweetListEntry) {
+        if (((TweetListEntry)w).tweet.rt_id == t.rt_id)
+          return false;
+      }
+    }
 
     return true;
   }
