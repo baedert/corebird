@@ -49,7 +49,6 @@ public enum StreamMessageType {
 
 
 public class UserStream : Object {
-  private static const int TIMEOUT_INTERVAL         = 45*1000;
   private Rest.OAuthProxy proxy;
   private Rest.ProxyCall proxy_call;
   private StringBuilder data                        = new StringBuilder();
@@ -170,7 +169,7 @@ public class UserStream : Object {
   }
 
   private void start_heartbeat_timeout () {
-    heartbeat_timeout_id = GLib.Timeout.add (TIMEOUT_INTERVAL, () => {
+    heartbeat_timeout_id = GLib.Timeout.add (45 * 1000, () => {
       if (!running)
         return false;
       // If we get here, we need to restart the stream.
