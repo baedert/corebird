@@ -119,11 +119,13 @@ class StartConversationEntry : Gtk.ListBoxRow {
   public void reveal () {
     revealer.reveal_child = true;
     name_entry.grab_focus ();
+    this.activatable = false;
   }
 
   public void unreveal () {
     revealer.reveal_child = false;
     completion_window.hide ();
+    this.activatable = true;
   }
 
   [GtkCallback]
