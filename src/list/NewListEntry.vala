@@ -33,11 +33,13 @@ class NewListEntry : Gtk.ListBoxRow {
 
   public void reveal () {
     revealer.reveal_child = true;
+    this.activatable = false;
     list_name_entry.grab_focus ();
   }
 
   public void unreveal () {
     revealer.reveal_child = false;
+    this.activatable = true;
     list_name_entry.text = "";
   }
 
