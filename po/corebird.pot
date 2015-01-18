@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-11 11:48+0100\n"
+"POT-Creation-Date: 2015-01-18 09:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -63,11 +63,11 @@ msgstr ""
 msgid "Doesn't match"
 msgstr ""
 
-#: ../src/widgets/TweetListBox.vala:96 ../src/widgets/TweetListBox.vala:144
+#: ../src/widgets/TweetListBox.vala:101 ../src/widgets/TweetListBox.vala:149
 msgid "No entries found"
 msgstr ""
 
-#: ../src/widgets/TweetListBox.vala:104
+#: ../src/widgets/TweetListBox.vala:109
 msgid "Retry"
 msgstr ""
 
@@ -111,7 +111,7 @@ msgstr ""
 msgid "Save Original"
 msgstr ""
 
-#: ../src/widgets/MultiMediaWidget.vala:74 ../src/TweetInfoPage.vala:360
+#: ../src/widgets/MultiMediaWidget.vala:74 ../src/TweetInfoPage.vala:363
 msgid "Open in Browser"
 msgstr ""
 
@@ -172,7 +172,7 @@ msgid_plural "(%d unread)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/ListsPage.vala:127 ../src/ListsPage.vala:132
+#: ../src/ListsPage.vala:130 ../src/ListsPage.vala:135
 #: ../ui/profile-page.ui.h:9
 msgid "Lists"
 msgstr ""
@@ -194,20 +194,20 @@ msgstr ""
 msgid "Follow"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:332
+#: ../src/TweetInfoPage.vala:335
 msgid "Retweets"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:333 ../src/FavoritesTimeline.vala:89
+#: ../src/TweetInfoPage.vala:336 ../src/FavoritesTimeline.vala:89
 #: ../src/FavoritesTimeline.vala:93
 msgid "Favorites"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:360
+#: ../src/TweetInfoPage.vala:363
 msgid "Source"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:371
+#: ../src/TweetInfoPage.vala:374
 msgid "Tweet Details"
 msgstr ""
 
@@ -387,7 +387,7 @@ msgstr ""
 
 #: ../ui/tweet-list-entry.ui.h:2 ../ui/list-list-entry.ui.h:4
 #: ../ui/list-statuses-page.ui.h:7 ../ui/filter-list-entry.ui.h:2
-#: ../ui/user-filter-entry.ui.h:2 ../ui/account-dialog.ui.h:7
+#: ../ui/account-dialog.ui.h:7
 msgid "Delete"
 msgstr ""
 
@@ -557,6 +557,10 @@ msgstr ""
 
 #: ../ui/modify-filter-dialog.ui.h:1
 msgid "Add New Filter"
+msgstr ""
+
+#: ../ui/user-filter-entry.ui.h:2
+msgid "Unblock"
 msgstr ""
 
 #: ../ui/account-dialog.ui.h:1
