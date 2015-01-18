@@ -140,7 +140,7 @@
                     <property name="hexpand">true</property>
                     <property name="halign">start</property>
                     <property name="valign">center</property>
-                    <property name="label" translatable="yes">Delete</property>
+                    <property name="label" translatable="yes">Unblock</property>
                     <signal name="clicked" handler="delete_button_clicked_cb" />
                     <style>
                       <class name="destructive-action" />
