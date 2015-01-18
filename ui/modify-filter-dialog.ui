@@ -59,6 +59,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="hexpand">True</property>
+                <property name="activates_default">true</property>
                 <signal name="changed" handler="regex_entry_changed_cb" swapped="false" />
               </object>
               <packing>
