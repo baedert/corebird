@@ -55,8 +55,10 @@ public class BundleHistory {
       elements[pos] = v;
       bundles[pos] = b;
     } else {
-      for (int i = 1; i < elements.length; i++)
+      for (int i = 1; i < elements.length; i++) {
         elements[i-1] = elements[i];
+        bundles[i-1] = bundles[i];
+      }
       elements[pos] = v;
       bundles[pos] = b;
     }
