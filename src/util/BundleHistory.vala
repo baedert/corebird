@@ -93,14 +93,16 @@ public class BundleHistory {
     return false;
   }
 
-  public void print () {
+  public string to_string () {
     string a = "[";
-    for (int i = 0; i < elements.length; i++)
+    for (int i = 0; i < elements.length; i++) {
+      string bundle_str = bundles[i] != null ? bundles[i].to_string () : "";
       if (i == pos)
-        a += "*"+elements[i].to_string ()+"*,";
+        a += "*"+elements[i].to_string ()+"*(" + bundle_str + "),";
       else
-        a += elements[i].to_string ()+",";
+        a += elements[i].to_string ()+"(" + bundle_str + "),";
+    }
     a += "]";
-    message (a);
+    return a;
   }
 }
