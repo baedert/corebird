@@ -79,4 +79,14 @@ public class Bundle : GLib.Object {
   public bool get_bool (string key) {
     return this.values.get (key).get_boolean ();
   }
+
+  public string to_string () {
+    var sb = new StringBuilder ();
+
+    foreach (var key in values.get_keys ()) {
+      sb.append ("%s -- %s".printf (key.to_string (), values.get (key).strdup_contents ()));
+    }
+
+    return sb.str;
+  }
 }
