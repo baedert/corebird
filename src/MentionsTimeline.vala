@@ -71,6 +71,9 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
       if (account.filter_matches (t))
         return;
 
+      if (account.blocked_or_muted (t.user_id))
+        return;
+
       this.balance_next_upper_change (TOP);
       var entry = new TweetListEntry(t, main_window, account);
       entry.seen = false;
