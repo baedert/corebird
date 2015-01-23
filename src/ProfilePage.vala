@@ -309,7 +309,7 @@ class ProfilePage : ScrollWidget, IPage {
     int tweets         = (int)root.get_int_member("statuses_count");
     bool is_following  = false;
     if (Utils.usable_json_value (root, "following"))
-      root.get_boolean_member("following");
+      is_following = root.get_boolean_member("following");
     bool has_url       = root.get_object_member("entities").has_member("url");
     string banner_name = Utils.get_banner_name(user_id);
     bool verified      = root.get_boolean_member ("verified");
