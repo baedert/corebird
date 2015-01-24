@@ -41,9 +41,9 @@ class UserListsWidget : Gtk.Box {
 
 
   construct {
-    user_list_box.set_header_func (header_func);
+    user_list_box.set_header_func (default_header_func);
     user_list_box.set_sort_func (ListListEntry.sort_func);
-    subscribed_list_box.set_header_func (header_func);
+    subscribed_list_box.set_header_func (default_header_func);
     subscribed_list_box.set_sort_func (ListListEntry.sort_func);
   }
 
@@ -253,18 +253,6 @@ class UserListsWidget : Gtk.Box {
     user_list_box.foreach ((w) => { user_list_box.remove (w);});
     subscribed_list_box.foreach ((w) => {subscribed_list_box.remove (w);});
   }
-
-  private void header_func (Gtk.ListBoxRow row, Gtk.ListBoxRow? row_before) { //{{{
-    if (row_before == null)
-      return;
-
-    Gtk.Widget header = row.get_header ();
-    if (header == null) {
-      header = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
-      header.show ();
-      row.set_header (header);
-    }
-  } //}}}
 
   [GtkCallback]
   private void new_list_create_activated_cb (string list_name) { // {{{

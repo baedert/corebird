@@ -33,7 +33,7 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
 
   public FilterPage (int id) {
     this.id = id;
-    filter_list.set_header_func (header_func);
+    filter_list.set_header_func (default_header_func);
     filter_list.add (new AddListEntry (_("Add new Filter")));
     filter_list.row_activated.connect ((row) => {
       if (row is AddListEntry) {
@@ -48,7 +48,7 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
       }
     });
 
-    user_list.set_header_func (header_func);
+    user_list.set_header_func (default_header_func);
   }
 
   public void on_join (int page_id, Bundle? args) { // {{{
@@ -130,21 +130,6 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
       }
     }
   }
-
-  private void header_func (Gtk.ListBoxRow row, Gtk.ListBoxRow? row_before) { //{{{
-    if (row_before == null)
-      return;
-
-    Gtk.Widget? header = row.get_header ();
-    if (header != null)
-      return;
-    header = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
-    header.show ();
-    row.set_header (header);
-
-  } //}}}
-
-
 
   public void stream_message_received (StreamMessageType type, Json.Node root_node) {
     if (type == StreamMessageType.EVENT_BLOCK) {

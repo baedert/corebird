@@ -57,7 +57,7 @@ public class MainWindow : Gtk.ApplicationWindow {
     change_account (account, app);
 
     account_list.set_sort_func (account_sort_func);
-    account_list.set_header_func (header_func);
+    account_list.set_header_func (default_header_func);
     var add_entry = new AddListEntry (_("Add new Account"));
     add_entry.show_all ();
     account_list.add (add_entry);
@@ -412,19 +412,6 @@ public class MainWindow : Gtk.ApplicationWindow {
       return 1;
 
     return ((UserListEntry)a).screen_name.ascii_casecmp (((UserListEntry)b).screen_name);
-  }
-
-  private void header_func (Gtk.ListBoxRow row, Gtk.ListBoxRow? row_before) {
-    if (row_before == null)
-      return;
-
-    Gtk.Widget? header = row.get_header ();
-    if (header != null)
-      return;
-    header = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
-    header.show ();
-    row.set_header (header);
-
   }
 
   public void rerun_filters () {
