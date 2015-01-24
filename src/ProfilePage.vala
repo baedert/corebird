@@ -710,13 +710,16 @@ class ProfilePage : ScrollWidget, IPage {
     block_item_blocked = true;
 
     bool current_state = get_user_blocked ();
+    HomeTimeline ht = (HomeTimeline) main_window.get_page (Page.STREAM);
     var call = account.proxy.new_call ();
     call.set_method ("POST");
     if (current_state) {
       call.set_function ("1.1/blocks/destroy.json");
+      ht.show_tweets_from (this.user_id);
     } else {
       call.set_function ("1.1/blocks/create.json");
       set_follow_button_state (false);
+      ht.hide_tweets_from (this.user_id);
     }
     set_user_blocked (!current_state);
     call.add_param ("user_id", this.user_id.to_string ());
