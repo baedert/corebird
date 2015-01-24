@@ -131,9 +131,10 @@ public class MainWidget : Gtk.Box {
    *
    */
   public void switch_page (int page_id, Bundle? args = null) { // {{{
-    if (page_id == history.current &&
-        pages[page_id].handles_double_open ()) {
-      pages[page_id].double_open ();
+    if (page_id == history.current) {
+      if (pages[page_id].handles_double_open ())
+        pages[page_id].double_open ();
+
       return;
     }
 
