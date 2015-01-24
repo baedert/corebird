@@ -36,8 +36,8 @@ enum Page {
 static Soup.Session SOUP_SESSION = null;
 
 
-void default_header_func (Gtk.ListBoxRow? row_before,
-                          Gtk.ListBoxRow  row)
+void default_header_func (Gtk.ListBoxRow  row,
+                          Gtk.ListBoxRow? row_before)
 {
   if (row_before == null) {
     row.set_header (null);
@@ -46,7 +46,6 @@ void default_header_func (Gtk.ListBoxRow? row_before,
 
   Gtk.Widget? header = row.get_header ();
   if (header != null) {
-    row.set_header (null);
     return;
   }
 
