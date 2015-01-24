@@ -36,6 +36,27 @@ enum Page {
 static Soup.Session SOUP_SESSION = null;
 
 
+void default_header_func (Gtk.ListBoxRow? row_before,
+                          Gtk.ListBoxRow  row)
+{
+  if (row_before == null) {
+    row.set_header (null);
+    return;
+  }
+
+  Gtk.Widget? header = row.get_header ();
+  if (header != null) {
+    row.set_header (null);
+    return;
+  }
+
+  header = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
+  header.show ();
+  row.set_header (header);
+}
+
+
+
 namespace Utils {
   /**
   * Parses a date given by Twitter in the form 'Wed Jun 20 19:01:28 +0000 2012'
@@ -416,4 +437,5 @@ namespace Utils {
   public string get_banner_name (int64 user_id) {
     return user_id.to_string () + ".png";
   }
+
 }
