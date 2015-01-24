@@ -43,6 +43,12 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
       int64 source_id = root.get_object ().get_object_member ("source").get_int_member ("id");
       if (source_id == account.id)
         toggle_favorite (id, false);
+    } else if (type == StreamMessageType.EVENT_BLOCK) {
+      int64 user_id = root.get_object ().get_object_member ("target").get_int_member ("id");
+      hide_tweets_from (user_id);
+    } else if (type == StreamMessageType.EVENT_UNBLOCK) {
+      int64 user_id = root.get_object ().get_object_member ("target").get_int_member ("id");
+      show_tweets_from (user_id);
     }
   } // }}}
 
