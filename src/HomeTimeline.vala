@@ -88,7 +88,7 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
 
     delta_updater.add (entry);
 
-    bool should_focus = (tweet_list.get_visible_row_at (0).is_focus && this.scrolled_up);
+    bool should_focus = (tweet_list.get_first_visible_row ().is_focus && this.scrolled_up);
 
     tweet_list.add(entry);
 
