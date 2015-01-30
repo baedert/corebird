@@ -162,15 +162,15 @@ public class UserStream : Object {
   private void start_network_timeout () {
     network_timeout_id = GLib.Timeout.add (30 * 1000, () => {
       if (running)
-        return false;
+        return GLib.Source.REMOVE;
 
       var available = network_monitor.get_network_available ();
       if (available) {
         debug ("Restarting stream (reason: network available (timeout))");
         restart ();
-        return false;
+        return GLib.Source.REMOVE;
       }
-      return true;
+      return GLib.Source.CONTINUE;
     });
   }
 
@@ -181,7 +181,7 @@ public class UserStream : Object {
       // If we get here, we need to restart the stream.
       debug ("Connection lost (%s) Reason: heartbeat. Restarting...", account_name);
       restart ();
-      return false;
+      return GLib.Source.REMOVE;
     });
   }
 
