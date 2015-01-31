@@ -49,10 +49,27 @@ void end () {
 
 }
 
+void equals () {
+  var bundle1 = new Bundle ();
+  bundle1.put_string ("a", "1");
+  bundle1.put_string ("b", "3");
+
+  var bundle2 = new Bundle ();
+  bundle2.put_string ("b", "3");
+  bundle2.put_string ("a", "1");
+
+  assert (bundle1.equals (bundle2));
+  assert (!bundle1.equals (null));
+
+  var bundle3 = new Bundle ();
+  assert (!bundle3.equals (bundle1));
+}
+
 
 int main (string[] args) {
   GLib.Test.init (ref args);
   GLib.Test.add_func ("/bundlehistory/all", all);
   GLib.Test.add_func ("/bundlehistory/end", end);
+  GLib.Test.add_func ("/bundlehistory/equals", equals);
   return GLib.Test.run ();
 }
