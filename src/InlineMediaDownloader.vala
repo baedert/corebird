@@ -233,6 +233,9 @@ namespace InlineMediaDownloader {
       anim = yield new Gdk.PixbufAnimation.from_stream_async (in_stream, null);
     } catch (GLib.Error e) {
       warning (e.message);
+      media.invalid = true;
+      media.loaded = true;
+      media.finished_loading ();
       return;
     }
     var pic = anim.get_static_image ();
@@ -260,6 +263,9 @@ namespace InlineMediaDownloader {
       pic = yield new Gdk.Pixbuf.from_stream_async (in_stream, null);
     } catch (GLib.Error e) {
       warning ("%s(%s)", e.message, media.path);
+      media.invalid = true;
+      media.loaded = true;
+      media.finished_loading ();
       return;
     }
 
