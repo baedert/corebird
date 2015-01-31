@@ -135,7 +135,10 @@ public class MainWidget : Gtk.Box {
       if (pages[page_id].handles_double_open ())
         pages[page_id].double_open ();
 
-      return;
+      if ((history.current_bundle != null &&
+          history.current_bundle.equals (args)) ||
+          history.current_bundle == args)
+        return;
     }
 
     bool push = true;
