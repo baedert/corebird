@@ -51,7 +51,7 @@ public class Media : GLib.Object{
   public double percent_loaded { get; set; default = 0; }
   public MediaType type;
   public Gdk.Pixbuf thumbnail = null;
-  /** If this media if fully downloaded and thumb is available */
+  /** If this media is fully downloaded and thumb is available */
   public bool loaded = false;
   public bool invalid = false;
 
