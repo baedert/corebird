@@ -139,6 +139,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     if (tweet.has_inline_media) {
       mm_widget.set_all_media (tweet.medias);
       mm_widget.media_clicked.connect (media_clicked_cb);
+      mm_widget.media_invalid.connect (media_invalid_cb);
       mm_widget.window = window;
     } else
       grid.remove (mm_widget);
@@ -305,6 +306,10 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   [GtkCallback]
   private bool link_activated_cb (string uri) {
     return TweetUtils.activate_link (uri, window);
+  }
+
+  private void media_invalid_cb () {
+    this.text_label.set_label (tweet.get_formatted_text ());
   }
 
 

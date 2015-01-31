@@ -179,6 +179,8 @@ public class MultiMediaWidget : Gtk.Box {
   private MediaButton[] media_buttons;
 
   public signal void media_clicked (Media m, int index);
+  private bool media_invalid_fired = false;
+  public signal void media_invalid ();
 
 
   public MultiMediaWidget (int media_count) {
@@ -239,6 +241,10 @@ public class MultiMediaWidget : Gtk.Box {
         if (media_buttons[i] != null && media_buttons[i].media == source) {
           this.remove (media_buttons[i]);
           media_buttons[i] = null;
+          if (!media_invalid_fired) {
+            media_invalid ();
+            media_invalid_fired = true;
+          }
           return;
         }
       }
