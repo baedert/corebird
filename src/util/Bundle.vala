@@ -18,6 +18,12 @@
 public class Bundle : GLib.Object {
   private GLib.HashTable<string, GLib.Value?> values;
 
+  public uint size {
+    get {
+      return this.values.get_keys ().length ();
+    }
+  }
+
   public Bundle () {
     this.values = new GLib.HashTable<string, GLib.Value?> (str_hash, str_equal);
   }
@@ -80,6 +86,10 @@ public class Bundle : GLib.Object {
     return this.values.get (key).get_boolean ();
   }
 
+  public GLib.Value? get_value (string key) {
+    return this.values.get (key);
+  }
+
   public string to_string () {
     var sb = new StringBuilder ();
 
@@ -88,5 +98,17 @@ public class Bundle : GLib.Object {
     }
 
     return sb.str;
+  }
+
+  public bool equals (Bundle? other) {
+    if (other == null)
+      return false;
+
+    foreach (string key in this.values.get_keys ()) {
+      if (this.values.get (key).strdup_contents () != other.get_value (key).strdup_contents ())
+        return false;
+    }
+
+    return other.size == this.size;
   }
 }
