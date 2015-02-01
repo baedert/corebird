@@ -28,6 +28,14 @@ namespace InlineMediaDownloader {
     }
   }
 
+  private static void mark_invalid (Media m) {
+    GLib.FileUtils.remove (m.path);
+    GLib.FileUtils.remove (m.thumb_path);
+    m.invalid = true;
+    m.loaded = true;
+    m.finished_loading ();
+  }
+
   public bool is_media_candidate (string url) {
     if (Settings.max_media_size () < 0.001)
       return false;
@@ -56,15 +64,13 @@ namespace InlineMediaDownloader {
       string? back = (string)_msg.response_body.data;
       if (msg.status_code != Soup.Status.OK) {
         warning ("Message status: %s", msg.status_code.to_string ());
-        media.invalid = true;
-        media.finished_loading ();
+        mark_invalid (media);
         return;
       }
 
       if (back == null) {
         warning ("Url '%s' returned null", media.url);
-        media.invalid = true;
-        media.finished_loading ();
+        mark_invalid (media);
         return;
       }
       try {
@@ -181,8 +187,7 @@ namespace InlineMediaDownloader {
       double max = Settings.max_media_size ();
       if (mb > max) {
         debug ("Image %s won't be downloaded,  %fMB > %fMB", media.thumb_url, mb, max);
-        media.invalid = true;
-        media.finished_loading ();
+        mark_invalid (media);
         SOUP_SESSION.cancel_message (msg, Soup.Status.CANCELLED);
       } else {
         media.length = content_length;
@@ -197,6 +202,7 @@ namespace InlineMediaDownloader {
 
     SOUP_SESSION.queue_message(msg, (s, _msg) => {
       if (_msg.status_code != Soup.Status.OK) {
+        mark_invalid (media);
         callback ();
         return;
       }
@@ -221,7 +227,6 @@ namespace InlineMediaDownloader {
       }
     });
     yield;
-
   }
 
   private async void load_animation (Tweet t,
@@ -233,9 +238,7 @@ namespace InlineMediaDownloader {
       anim = yield new Gdk.PixbufAnimation.from_stream_async (in_stream, null);
     } catch (GLib.Error e) {
       warning (e.message);
-      media.invalid = true;
-      media.loaded = true;
-      media.finished_loading ();
+      mark_invalid (media);
       return;
     }
     var pic = anim.get_static_image ();
@@ -263,9 +266,7 @@ namespace InlineMediaDownloader {
       pic = yield new Gdk.Pixbuf.from_stream_async (in_stream, null);
     } catch (GLib.Error e) {
       warning ("%s(%s)", e.message, media.path);
-      media.invalid = true;
-      media.loaded = true;
-      media.finished_loading ();
+      mark_invalid (media);
       return;
     }
 
