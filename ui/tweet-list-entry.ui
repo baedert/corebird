@@ -34,6 +34,27 @@
             <property name="visible">true</property>
             <property name="spacing">12</property>
             <property name="halign">center</property>
+            <child>
+              <object class="DoubleTapButton" id="retweet_button">
+                <property name="visible">true</property>
+                <property name="relief">none</property>
+                <property name="valign">center</property>
+                <property name="tooltip_text" translatable="true">Retweet</property>
+                <signal name="toggled" handler="retweet_button_toggled_cb" />
+                <style>
+                  <class name="dim-label" />
+                  <class name="retweet-button" />
+                  <class name="image-button" />
+                </style>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">true</property>
+                    <property name="pixel_size">16</property>
+                    <property name="icon_name">corebird-retweet-symbolic</property>
+                  </object>
+                </child>
+              </object>
+            </child>
 
             <child>
               <object class="GtkToggleButton" id="favorite_button">
@@ -52,28 +73,6 @@
                     <property name="visible">true</property>
                     <property name="pixel_size">16</property>
                     <property name="icon_name">starred-symbolic</property>
-                  </object>
-                </child>
-              </object>
-            </child>
-
-            <child>
-              <object class="DoubleTapButton" id="retweet_button">
-                <property name="visible">true</property>
-                <property name="relief">none</property>
-                <property name="valign">center</property>
-                <property name="tooltip_text" translatable="true">Retweet</property>
-                <signal name="toggled" handler="retweet_button_toggled_cb" />
-                <style>
-                  <class name="dim-label" />
-                  <class name="retweet-button" />
-                  <class name="image-button" />
-                </style>
-                <child>
-                  <object class="GtkImage">
-                    <property name="visible">true</property>
-                    <property name="pixel_size">16</property>
-                    <property name="icon_name">corebird-retweet-symbolic</property>
                   </object>
                 </child>
               </object>
