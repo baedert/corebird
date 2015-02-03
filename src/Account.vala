@@ -142,9 +142,10 @@ public class Account : GLib.Object {
    * updating the local information stored in this class' local variables.
    * (Means, you need to call save_info to actually save it persistently)
    *
-   * @param screen_name The screen name to use for the API call.
+   * @param screen_name The screen name to use for the API call or null in
+   *                    which case the ID will be used.
    */
-  public async void query_user_info_by_screen_name (string screen_name) {
+  public async void query_user_info_by_screen_name (string? screen_name = null) {
     if (proxy == null)
       error ("Proxy not initied");
 
@@ -152,7 +153,10 @@ public class Account : GLib.Object {
     var call = proxy.new_call ();
     call.set_function ("1.1/users/show.json");
     call.set_method ("GET");
-    call.add_param ("screen_name", screen_name);
+    if (screen_name != null)
+      call.add_param ("screen_name", screen_name);
+    else
+      call.add_param ("user_id", this.id.to_string ());
     call.add_param ("skip_status", "true");
     try {
       yield call.invoke_async (null);
@@ -169,6 +173,7 @@ public class Account : GLib.Object {
       parser.load_from_data (call.get_payload ());
     } catch (GLib.Error e) {
       critical (e.message);
+      return;
     }
     var root = parser.get_root ().get_object ();
     this.id = root.get_int_member ("id");
@@ -211,7 +216,7 @@ public class Account : GLib.Object {
       init_information.callback ();
     });
 
-    query_user_info_by_screen_name.begin (this.screen_name, () => {
+    query_user_info_by_screen_name.begin (null, () => {
       collect_obj.emit ();
     });
 
