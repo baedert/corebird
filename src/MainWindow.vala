@@ -366,7 +366,12 @@ public class MainWindow : Gtk.ApplicationWindow {
         y = 0,
         w = 0,
         h = 0;
-    win_geom.lookup (account.screen_name, "(iiii)", &x, &y, &w, &h);
+
+    if (!win_geom.lookup (account.screen_name, "(iiii)", &x, &y, &w, &h)) {
+      warning ("Couldn't load window geometry for screen_name `%s'", account.screen_name);
+      return;
+    }
+
     if (w == 0 || h == 0)
       return;
 
