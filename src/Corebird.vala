@@ -160,7 +160,7 @@ public class Corebird : Gtk.Application {
     foreach (var acc in accounts) {
       var show_win_action = new SimpleAction ("show-" + acc.id.to_string (), null);
       show_win_action.activate.connect (()=> {
-          add_window_for_screen_name (acc.screen_name);
+        add_window_for_account (acc);
       });
       add_action(show_win_action);
 
@@ -272,14 +272,18 @@ public class Corebird : Gtk.Application {
     unowned GLib.SList<Account> accs = Account.list_accounts ();
     foreach (Account a in accs) {
       if (a.screen_name == screen_name) {
-        var window = new MainWindow (this, a);
-        add_window (window);
-        window.show_all ();
+        add_window_for_account (a);
         return true;
       }
     }
     warning ("Could not add window for account '%s'", screen_name);
     return false;
+  }
+
+  public void add_window_for_account (Account account) {
+    var window = new MainWindow (this, account);
+    this.add_window (window);
+    window.show_all ();
   }
 
   /**
