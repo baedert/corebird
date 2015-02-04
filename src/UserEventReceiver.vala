@@ -66,6 +66,11 @@ class UserEventReceiver : GLib.Object, IMessageReceiver {
         if (user_obj.get_int_member ("id") == account.id) {
           account.name = user_obj.get_string_member ("name");
           account.description = user_obj.get_string_member ("description");
+          account.screen_name = user_obj.get_string_member ("screen_name");
+          account.info_changed (account.screen_name,
+                                account.name,
+                                account.avatar_small,
+                                account.avatar);
         } else
           warning ("USER_UPDATE: ids don't match");
         break;
