@@ -71,6 +71,7 @@ class UserEventReceiver : GLib.Object, IMessageReceiver {
                                 account.name,
                                 account.avatar_small,
                                 account.avatar);
+          account.save_info ();
         } else
           warning ("USER_UPDATE: ids don't match");
         break;
