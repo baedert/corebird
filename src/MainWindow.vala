@@ -129,10 +129,10 @@ public class MainWindow : Gtk.ApplicationWindow {
   public void change_account (Account? account,
                               GLib.Application app = GLib.Application.get_default ()) {
 
-    string? old_screen_name = null;
     int64? old_user_id = null;
     if (this.account != null) {
       old_user_id = this.account.id;
+      this.account.info_changed.disconnect (account_info_changed);
     }
     this.account = account;
 
@@ -161,6 +161,8 @@ public class MainWindow : Gtk.ApplicationWindow {
       account.notify["avatar-small"].connect(() => {
         avatar_image.pixbuf = account.avatar_small;
       });
+
+      account.info_changed.connect (account_info_changed);
 
       cb.account_window_changed (old_user_id, account.id);
 
@@ -213,16 +215,16 @@ public class MainWindow : Gtk.ApplicationWindow {
       return;
     }
     var e = (UserListEntry)row;
-    string screen_name = e.screen_name;
+    int64 user_id = e.user_id;
     Corebird cb = (Corebird)this.get_application ();
 
-    if (screen_name == this.account.screen_name ||
-        cb.is_window_open_for_screen_name (screen_name, null)) {
+    if (user_id == this.account.id ||
+        cb.is_window_open_for_user_id (user_id)) {
       account_popover.hide ();
       return;
     }
 
-    Account? acc = Account.query_account (screen_name);
+    Account? acc = Account.query_account_by_id (user_id);
     if (acc != null) {
       change_account (acc);
       account_popover.hide ();
@@ -352,6 +354,14 @@ public class MainWindow : Gtk.ApplicationWindow {
       debug ("Saving the account %s", ((MainWindow)ws.nth_data (0)).account.screen_name);
     }
     return false;
+  }
+
+
+  private void account_info_changed (string     screen_name,
+                                     string     name,
+                                     Gdk.Pixbuf small_avatar,
+                                     Gdk.Pixbuf avatar) {
+    this.set_title (main_widget.get_page (main_widget.cur_page_id).get_title ());
   }
 
   /**
