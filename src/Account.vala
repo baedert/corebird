@@ -186,7 +186,9 @@ public class Account : GLib.Object {
       values_changed = true;
     }
     if (this.screen_name != root.get_string_member ("screen_name")) {
+      string old_screen_name = this.screen_name;
       this.screen_name = root.get_string_member ("screen_name");
+      Utils.update_startup_account (old_screen_name, this.screen_name);
       values_changed = true;
     }
 

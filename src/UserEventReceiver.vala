@@ -64,6 +64,7 @@ class UserEventReceiver : GLib.Object, IMessageReceiver {
       case StreamMessageType.EVENT_USER_UPDATE:
         var user_obj = root_node.get_object ().get_object_member ("target");
         if (user_obj.get_int_member ("id") == account.id) {
+          string old_screen_name = account.screen_name;
           account.name = user_obj.get_string_member ("name");
           account.description = user_obj.get_string_member ("description");
           account.screen_name = user_obj.get_string_member ("screen_name");
@@ -72,6 +73,7 @@ class UserEventReceiver : GLib.Object, IMessageReceiver {
                                 account.avatar_small,
                                 account.avatar);
           account.save_info ();
+          Utils.update_startup_account (old_screen_name, account.screen_name);
         } else
           warning ("USER_UPDATE: ids don't match");
         break;

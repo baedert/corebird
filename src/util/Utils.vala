@@ -437,4 +437,19 @@ namespace Utils {
     return user_id.to_string () + ".png";
   }
 
+  public void update_startup_account (string old_screen_name,
+                                      string new_screen_name) {
+    string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
+    string[] new_startup_accounts = new string[startup_accounts.length];
+
+    for (int i = 0; i < startup_accounts.length; i ++) {
+      if (startup_accounts[i] != old_screen_name)
+        new_startup_accounts[i] = startup_accounts[i];
+      else
+        new_startup_accounts[i] = new_screen_name;
+    }
+
+    Settings.get ().set_strv ("startup-accounts", new_startup_accounts);
+  }
+
 }
