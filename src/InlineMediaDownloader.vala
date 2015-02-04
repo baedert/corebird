@@ -189,6 +189,9 @@ namespace InlineMediaDownloader {
       yield load_real_url (t, media, "<meta property=\"og:image\" content=\"(.*?)\"", 1);
     } else if (url.has_suffix ("/photo/1")) {
       yield load_real_url (t, media, "<img src=\"(.*?)\" class=\"animated-gif-thumbnail", 1);
+    } else if (url.has_prefix ("http://d.pr/i/")) {
+      yield load_real_url (t, media,
+                          "<meta property=\"og:image\"\\s+content=\"(.*?)\"", 1);
     }
 
 
