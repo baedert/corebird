@@ -51,8 +51,8 @@ public class MainWidget : Gtk.Box {
     account.init_proxy ();
     var acc_menu = (GLib.Menu)Corebird.account_menu;
     for (int i = 0; i < acc_menu.get_n_items (); i++){
-      Variant item_name = acc_menu.get_item_attribute_value (i, "label", VariantType.STRING);
-      if (item_name.get_string () == "@" + account.screen_name) {
+      int64 item_id = acc_menu.get_item_attribute_value (i, "user-id", VariantType.INT64).get_int64 ();
+      if (item_id == account.id) {
         ((SimpleAction)app.lookup_action ("show-" + account.id.to_string ())).set_enabled (false);
         break;
       }
