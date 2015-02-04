@@ -166,7 +166,6 @@ public class Corebird : Gtk.Application {
 
       var mi = new GLib.MenuItem ("@" + acc.screen_name.replace ("_", "__"),
                                   "app.show-" + acc.screen_name);
-      mi.set_action_and_target_value ("app.show-" + acc.screen_name, null);
       account_menu.append_item (mi);
     }
     ((GLib.Menu)acc_menu).append_submenu (_("Open Account"), account_menu);
