@@ -292,6 +292,7 @@ class AccountDialog : Gtk.Dialog {
       int i = 0;
       foreach (string s in startup_accounts) {
         new_startup_accounts[i] = s;
+        i ++;
       }
       new_startup_accounts[new_startup_accounts.length - 1] = this.account.screen_name;
       Settings.get ().set_strv ("startup-accounts", new_startup_accounts);
