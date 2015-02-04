@@ -20,7 +20,7 @@ public class Account : GLib.Object {
   public static const string DUMMY = "screen_name";
   public int64 id                 {public get; private set;}
   public Sql.Database db          {public get; private set;}
-  public string screen_name       {public get; private set;}
+  public string screen_name       {public get; public  set;}
   public string name              {public get; public  set;}
   public string avatar_url        {public get; public  set;}
   public string? banner_url       {public get; private set;}
@@ -149,14 +149,15 @@ public class Account : GLib.Object {
     if (proxy == null)
       error ("Proxy not initied");
 
-    this.screen_name = screen_name;
     var call = proxy.new_call ();
     call.set_function ("1.1/users/show.json");
     call.set_method ("GET");
-    if (screen_name != null)
+    if (screen_name != null) {
       call.add_param ("screen_name", screen_name);
-    else
+      this.screen_name = screen_name;
+    } else {
       call.add_param ("user_id", this.id.to_string ());
+    }
     call.add_param ("skip_status", "true");
     try {
       yield call.invoke_async (null);
@@ -175,10 +176,19 @@ public class Account : GLib.Object {
       critical (e.message);
       return;
     }
+
+    bool values_changed = false;
+
     var root = parser.get_root ().get_object ();
     this.id = root.get_int_member ("id");
-    this.name = root.get_string_member ("name");
-    this.screen_name = root.get_string_member ("screen_name");
+    if (this.name != root.get_string_member ("name")) {
+      this.name = root.get_string_member ("name");
+      values_changed = true;
+    }
+    if (this.screen_name != root.get_string_member ("screen_name")) {
+      this.screen_name = root.get_string_member ("screen_name");
+      values_changed = true;
+    }
 
     Json.Array desc_urls = root.get_object_member ("entities").get_object_member ("description")
                                                               .get_array_member ("urls");
@@ -207,7 +217,12 @@ public class Account : GLib.Object {
       this.website = "";
 
     string avatar_url = root.get_string_member ("profile_image_url");
-    yield update_avatar (avatar_url);
+    values_changed |= yield update_avatar (avatar_url);
+
+    if (values_changed) {
+      this.save_info ();
+      info_changed (screen_name, name, avatar, avatar_small);
+    }
   }
 
   public async void init_information () {
@@ -280,9 +295,9 @@ public class Account : GLib.Object {
    *
    * @param url The url of the (possibly) new avatar(optional).
    */
-  private async void update_avatar (string url = "") {
+  private async bool update_avatar (string url = "") {
     if (url.length > 0 && url == this.avatar_url)
-      return;
+      return false;
 
     debug ("Using %s to update the avatar(old: %s)", url, this.avatar_url);
 
@@ -312,13 +327,15 @@ public class Account : GLib.Object {
         }
         this.avatar_url = url;
         Corebird.db.update ("accounts").val ("avatar_url", url).where_eqi ("id", id).run ();
-        info_changed (screen_name, name, avatar, avatar_small);
         update_avatar.callback ();
       });
       yield;
+      return true;
     } else {
       critical ("Not implemented yet");
     }
+
+    return false;
   }
 
   /**
