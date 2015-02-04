@@ -209,9 +209,9 @@ public class Corebird : Gtk.Application {
       startup_accounts.resize (0);
 
 
+    uint n_accounts = Account.list_accounts ().length ();
 
     if (startup_accounts.length == 0) {
-      uint n_accounts = Account.list_accounts ().length ();
       if (n_accounts == 1) {
         add_window_for_screen_name (Account.list_accounts ().nth_data (0).screen_name);
       } else if (n_accounts == 0) {
@@ -236,7 +236,10 @@ public class Corebird : Gtk.Application {
       /* If we did not open any window at all since all windows for every account
          in the startups-account array were already open, just open a new windwo with a null account */
       if (!opened_window) {
-        message ("No window opened");
+        if (n_accounts > 0) {
+          add_window_for_screen_name (Account.list_accounts ().nth_data (0).screen_name);
+          return;
+        }
         foreach (Gtk.Window w in this.get_windows ())
           if (((MainWindow)w).account.screen_name == Account.DUMMY) {
             return;
