@@ -77,7 +77,7 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
     this.account = acc;
     this.user_id = acc.id;
     acc.info_changed.connect ((screen_name, name, nop, avatar) => {
-      this.screen_name = screen_name;
+      this.screen_name = "@" + screen_name;
       this.name = name;
       this.avatar_pixbuf = avatar;
     });
