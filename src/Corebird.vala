@@ -164,7 +164,8 @@ public class Corebird : Gtk.Application {
       });
       add_action(show_win_action);
 
-      var mi = new GLib.MenuItem ("@"+acc.screen_name, "app.show-" + acc.screen_name);
+      var mi = new GLib.MenuItem ("@" + acc.screen_name.replace ("_", "__"),
+                                  "app.show-" + acc.screen_name);
       mi.set_action_and_target_value ("app.show-" + acc.screen_name, null);
       account_menu.append_item (mi);
     }
