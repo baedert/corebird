@@ -263,7 +263,7 @@ class AccountDialog : Gtk.Dialog {
 
 
     /* Remove the account from the global list of accounts */
-    Account acc_to_remove = Account.query_account (account.screen_name);
+    Account acc_to_remove = Account.query_account_by_id (account.id);
     cb.account_removed (acc_to_remove);
     Account.remove_account (account.screen_name);
 

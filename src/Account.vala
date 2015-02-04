@@ -607,4 +607,12 @@ public class Account : GLib.Object {
     }
     return null;
   }
+
+  public static unowned Account? query_account_by_id (int64 id) {
+    foreach (unowned Account a in accounts) {
+      if (id == a.id)
+        return a;
+    }
+    return null;
+  }
 }
