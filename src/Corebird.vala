@@ -158,14 +158,14 @@ public class Corebird : Gtk.Application {
 
     unowned GLib.SList<Account> accounts = Account.list_accounts ();
     foreach (var acc in accounts) {
-      var show_win_action = new SimpleAction ("show-" + acc.screen_name, null);
+      var show_win_action = new SimpleAction ("show-" + acc.id.to_string (), null);
       show_win_action.activate.connect (()=> {
           add_window_for_screen_name (acc.screen_name);
       });
       add_action(show_win_action);
 
       var mi = new GLib.MenuItem ("@" + acc.screen_name.replace ("_", "__"),
-                                  "app.show-" + acc.screen_name);
+                                  "app.show-" + acc.id.to_string ());
       account_menu.append_item (mi);
     }
     ((GLib.Menu)acc_menu).append_submenu (_("Open Account"), account_menu);

@@ -53,7 +53,7 @@ public class MainWidget : Gtk.Box {
     for (int i = 0; i < acc_menu.get_n_items (); i++){
       Variant item_name = acc_menu.get_item_attribute_value (i, "label", VariantType.STRING);
       if (item_name.get_string () == "@" + account.screen_name) {
-        ((SimpleAction)app.lookup_action ("show-"+account.screen_name)).set_enabled (false);
+        ((SimpleAction)app.lookup_action ("show-" + account.id.to_string ())).set_enabled (false);
         break;
       }
     }
