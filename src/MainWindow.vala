@@ -130,8 +130,9 @@ public class MainWindow : Gtk.ApplicationWindow {
                               GLib.Application app = GLib.Application.get_default ()) {
 
     string? old_screen_name = null;
+    int64? old_user_id = null;
     if (this.account != null) {
-      old_screen_name = this.account.screen_name;
+      old_user_id = this.account.id;
     }
     this.account = account;
 
@@ -161,7 +162,7 @@ public class MainWindow : Gtk.ApplicationWindow {
         avatar_image.pixbuf = account.avatar_small;
       });
 
-      cb.account_window_changed (old_screen_name, account.screen_name);
+      cb.account_window_changed (old_user_id, account.id);
 
       if (!Gtk.Settings.get_default ().gtk_shell_shows_app_menu) {
         if (app_menu_button == null) {

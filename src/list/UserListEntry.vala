@@ -97,10 +97,10 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
       }
     });
 
-    cb.account_window_changed.connect ((old_screen_name, new_screen_name) => {
-      if (old_screen_name == this.screen_name)
+    cb.account_window_changed.connect ((old_id, new_id) => {
+      if (old_id == this.user_id)
         new_window_button.sensitive = true;
-      else if (new_screen_name == this.screen_name)
+      else if (new_id == this.user_id)
         new_window_button.sensitive = false;
     });
 

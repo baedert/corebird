@@ -22,7 +22,7 @@ public class Corebird : Gtk.Application {
   public static GLib.Menu account_menu;
   public signal void account_added (Account acc);
   public signal void account_removed (Account acc);
-  public signal void account_window_changed (string? old_screen_name, string new_screen_name);
+  public signal void account_window_changed (int64? old_id, int64 new_id);
 
   const GLib.ActionEntry[] app_entries = {
     {"show-settings",     show_settings_activated         },
