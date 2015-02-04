@@ -158,6 +158,7 @@ public class Corebird : Gtk.Application {
 
     unowned GLib.SList<Account> accounts = Account.list_accounts ();
     foreach (var acc in accounts) {
+      acc.info_changed.connect (account_info_changed);
       var show_win_action = new SimpleAction ("show-" + acc.id.to_string (), null);
       show_win_action.activate.connect (()=> {
         add_window_for_account (acc);
@@ -182,6 +183,26 @@ public class Corebird : Gtk.Application {
       mi.set_attribute_value ("user-id", new GLib.Variant.int64 (account.id));
       return mi;
   }
+
+  private void account_info_changed (Account    source,
+                                     string     screen_name,
+                                     string     s,
+                                     Gdk.Pixbuf a,
+                                     Gdk.Pixbuf b) {
+    for (int i = 0; i < account_menu.get_n_items (); i++){
+      int64 item_id = account_menu.get_item_attribute_value (i,
+                                                             "user-id",
+                                                             GLib.VariantType.INT64).get_int64 ();
+      if (item_id == source.id) {
+        var new_menu_item = create_accout_menu_item (source);
+        account_menu.remove (i);
+        account_menu.insert_item (i, new_menu_item);
+        return;
+      }
+    }
+
+  }
+
 
   /**
    * Open startup windows.
