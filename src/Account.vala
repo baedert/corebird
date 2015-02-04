@@ -221,7 +221,10 @@ public class Account : GLib.Object {
 
     if (values_changed) {
       this.save_info ();
-      info_changed (screen_name, name, avatar, avatar_small);
+      info_changed (this.screen_name,
+                    this.name,
+                    this.avatar_small,
+                    this.avatar);
     }
   }
 
