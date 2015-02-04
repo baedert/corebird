@@ -299,6 +299,21 @@ public class Corebird : Gtk.Application {
     return false;
   }
 
+  public bool is_window_open_for_user_id (int64 user_id,
+                                          out MainWindow? window = null) {
+    unowned GLib.List<weak Gtk.Window> windows = this.get_windows ();
+    foreach (Gtk.Window win in windows) {
+      if (win is MainWindow) {
+        if (((MainWindow)win).account.id == user_id) {
+          window = (MainWindow)win;
+          return true;
+        }
+      }
+    }
+    window = null;
+    return false;
+  }
+
   /**
    * Quits the application, saving all open windows and their geometries.
    */
