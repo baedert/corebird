@@ -164,8 +164,7 @@ public class Corebird : Gtk.Application {
       });
       add_action(show_win_action);
 
-      var mi = new GLib.MenuItem ("@" + acc.screen_name.replace ("_", "__"),
-                                  "app.show-" + acc.id.to_string ());
+      var mi = create_accout_menu_item (acc);
       account_menu.append_item (mi);
     }
     ((GLib.Menu)acc_menu).append_submenu (_("Open Account"), account_menu);
@@ -177,6 +176,12 @@ public class Corebird : Gtk.Application {
     base.shutdown();
   }
 
+  private GLib.MenuItem create_accout_menu_item (Account account) {
+      var mi = new GLib.MenuItem ("@" + account.screen_name.replace ("_", "__"),
+                                  "app.show-" + account.id.to_string ());
+      mi.set_attribute_value ("user-id", new GLib.Variant.int64 (account.id));
+      return mi;
+  }
 
   /**
    * Open startup windows.
