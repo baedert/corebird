@@ -6,9 +6,6 @@
     <property name="step_increment">0.1</property>
     <property name="page_increment">1</property>
   </object>
-  <object class="GtkStackSwitcher" id="custom_title">
-    <property name="stack">main_stack</property>
-  </object>
   <template class="SettingsDialog" parent="GtkWindow">
     <property name="default_width">500</property>
     <property name="default_height">300</property>
@@ -20,12 +17,13 @@
     <child type="titlebar">
       <object class="GtkHeaderBar" id="header_bar">
         <property name="title" translatable="yes">Settings</property>
-        <property name="custom_title">custom_title</property>
         <property name="show_close_button">true</property>
+        <property name="title" translatable="yes">Preferences</property>
       </object>
     </child>
     <child>
-      <object class="GtkStack" id="main_stack">
+      <object class="GtkNotebook" id="main_stack">
+        <property name="show-border">false</property>
         <!-- Interface page -->
         <child>
           <object class="GtkGrid" id="interface_grid">
@@ -180,8 +178,8 @@
 
         </object>
         <packing>
-          <property name="title" translatable="yes">Interface</property>
-          <property name="name">interface</property>
+          <property name="tab-label" translatable="yes">Interface</property>
+          <property name="tab-expand">true</property>
         </packing>
       </child>
 
@@ -323,8 +321,8 @@
             </child>
           </object>
           <packing>
-            <property name="title" translatable="yes">Notifications</property>
-            <property name="name">notifications</property>
+            <property name="tab-label" translatable="yes">Notifications</property>
+            <property name="tab-expand">true</property>
           </packing>
         </child>
       </object>

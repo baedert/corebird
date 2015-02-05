@@ -30,7 +30,7 @@ class SettingsDialog : Gtk.Window {
   [GtkChild]
   private Gtk.SpinButton max_media_size_spin_button;
   [GtkChild]
-  private Gtk.Stack main_stack;
+  private Gtk.Notebook main_stack;
 
   public SettingsDialog (Corebird application) {
     this.application = application;
@@ -104,10 +104,10 @@ class SettingsDialog : Gtk.Window {
 
     ag.connect (Gdk.Key.Escape, 0, Gtk.AccelFlags.LOCKED,
         () => {this.destroy (); return true;});
-    ag.connect (Gdk.Key.@1, Gdk.ModifierType.MOD1_MASK, Gtk.AccelFlags.LOCKED,
-        () => {main_stack.visible_child_name = "interface"; return true;});
-    ag.connect (Gdk.Key.@2, Gdk.ModifierType.MOD1_MASK, Gtk.AccelFlags.LOCKED,
-        () => {main_stack.visible_child_name = "notifications"; return true;});
+    //ag.connect (Gdk.Key.@1, Gdk.ModifierType.MOD1_MASK, Gtk.AccelFlags.LOCKED,
+        //() => {main_stack.visible_child_name = "interface"; return true;});
+    //ag.connect (Gdk.Key.@2, Gdk.ModifierType.MOD1_MASK, Gtk.AccelFlags.LOCKED,
+        //() => {main_stack.visible_child_name = "notifications"; return true;});
 
     this.add_accel_group(ag);
   }
