@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-18 09:02+0100\n"
+"POT-Creation-Date: 2015-02-06 08:45+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -128,24 +128,24 @@ msgstr ""
 msgid "Click to add image"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:106
+#: ../src/HomeTimeline.vala:112
 #, c-format
 msgid "%s retweeted %s"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:108
+#: ../src/HomeTimeline.vala:114
 #, c-format
 msgid "%s tweeted"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:115
+#: ../src/HomeTimeline.vala:121
 #, c-format
 msgid "%d new Tweet!"
 msgid_plural "%d new Tweets!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/HomeTimeline.vala:201
+#: ../src/HomeTimeline.vala:207
 msgid "Home"
 msgstr ""
 
@@ -177,20 +177,20 @@ msgstr[1] ""
 msgid "Lists"
 msgstr ""
 
-#: ../src/ProfilePage.vala:316
+#: ../src/ProfilePage.vala:318
 msgid "Protected profile"
 msgstr ""
 
-#: ../src/ProfilePage.vala:508
+#: ../src/ProfilePage.vala:510
 #, c-format
 msgid "Tweet to @%s"
 msgstr ""
 
-#: ../src/ProfilePage.vala:605
+#: ../src/ProfilePage.vala:607
 msgid "Unfollow"
 msgstr ""
 
-#: ../src/ProfilePage.vala:609
+#: ../src/ProfilePage.vala:611
 msgid "Follow"
 msgstr ""
 
@@ -198,8 +198,8 @@ msgstr ""
 msgid "Retweets"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:336 ../src/FavoritesTimeline.vala:89
-#: ../src/FavoritesTimeline.vala:93
+#: ../src/TweetInfoPage.vala:336 ../src/FavoritesTimeline.vala:90
+#: ../src/FavoritesTimeline.vala:94
 msgid "Favorites"
 msgstr ""
 
@@ -211,16 +211,16 @@ msgstr ""
 msgid "Tweet Details"
 msgstr ""
 
-#: ../src/util/Utils.vala:90
+#: ../src/util/Utils.vala:110
 msgid "Now"
 msgstr ""
 
-#: ../src/util/Utils.vala:92
+#: ../src/util/Utils.vala:112
 #, c-format
 msgid "%dm"
 msgstr ""
 
-#: ../src/util/Utils.vala:96
+#: ../src/util/Utils.vala:116
 #, c-format
 msgid "%dh"
 msgstr ""
@@ -234,12 +234,12 @@ msgstr ""
 msgid "Open Account"
 msgstr ""
 
-#: ../src/MentionsTimeline.vala:95
+#: ../src/MentionsTimeline.vala:98
 #, c-format
 msgid "New Mention from @%s"
 msgstr ""
 
-#: ../src/MentionsTimeline.vala:128 ../src/MentionsTimeline.vala:133
+#: ../src/MentionsTimeline.vala:131 ../src/MentionsTimeline.vala:136
 msgid "Mentions"
 msgstr ""
 
