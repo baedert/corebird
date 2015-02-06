@@ -84,11 +84,16 @@ public class Account : GLib.Object {
     this.user_stream.register (this.event_receiver);
     if (load_secrets) {
       init_database ();
-      db.select ("common").cols ("token", "token_secret").run ((vals) => {
+      int n_rows = db.select ("common").cols ("token", "token_secret")
+                                       .run ((vals) => {
         proxy.token = user_stream.token = vals[0];
         proxy.token_secret = user_stream.token_secret = vals[1];
         return false; //stop
       });
+
+      if (n_rows < 1) {
+        critical ("Could not load token{_secret} for user %s", this.screen_name);
+      }
     }
   }
 
