@@ -121,9 +121,11 @@ class AccountCreateWidget : Gtk.Box {
         }
       }
 
-      acc.init_database ();
       acc.query_user_info_by_screen_name.begin (screen_name, (obj, res) => {
         acc.query_user_info_by_screen_name.end (res);
+        debug ("user info call");
+        acc.init_database ();
+        acc.save_info();
         acc.db.insert ("common")
               .val ("token", acc.proxy.token)
               .val ("token_secret", acc.proxy.token_secret)
