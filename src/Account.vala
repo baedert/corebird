@@ -227,7 +227,9 @@ public class Account : GLib.Object {
     values_changed |= yield update_avatar (avatar_url);
 
     if (values_changed) {
-      this.save_info ();
+      if (this.db != null)
+        this.save_info ();
+
       info_changed (this.screen_name,
                     this.name,
                     this.avatar_small,
