@@ -139,8 +139,8 @@ public class Account : GLib.Object {
 
   /**
    * Download the appropriate user info from the Twitter server,
-   * updating the local information stored in this class' local variables.
-   * (Means, you need to call save_info to actually save it persistently)
+   * updating the local information stored in this class' local variables
+   * and the information stored in the account's database file.
    *
    * @param screen_name The screen name to use for the API call or null in
    *                    which case the ID will be used.
