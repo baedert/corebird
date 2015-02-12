@@ -340,9 +340,12 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     if (this._read_only)
       return;
 
-    if (stack.visible_child == action_box)
+    if (stack.visible_child == action_box) {
       stack.visible_child = grid;
-    else
+      this.activatable = true;
+    } else {
       stack.visible_child = action_box;
+      this.activatable = false;
+    }
   }
 }
