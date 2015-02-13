@@ -157,6 +157,9 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
   [GtkCallback]
   private void start_send_tweet () {
+    if (!send_button.sensitive)
+      return;
+
     int media_count = get_effective_media_count ();
     Collect collect_obj = new Collect (media_count);
     int64[] media_ids = new int64[media_count];
