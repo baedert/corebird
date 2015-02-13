@@ -190,6 +190,8 @@ public class MainWindow : Gtk.ApplicationWindow {
 
       this.account = acc_;
 
+      this.set_title (_("Corebird"));
+
       Account.add_account (acc_);
       var create_widget = new AccountCreateWidget (acc_, cb);
       create_widget.result_received.connect ((result, acc) => {
