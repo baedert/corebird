@@ -1,6 +1,6 @@
 ACLOCAL_AMFLAGS = -I m4 ${ACLOCAL_FLAGS}
 
-SUBDIRS = src ui data assets po tests sql examples
+SUBDIRS = src ui data assets po tests sql
 EXTRA_DIST = config.rpath  \
 						 intltool-extract.in \
 						 intltool-merge.in \
