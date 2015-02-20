@@ -14,6 +14,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 [GtkTemplate (ui = "/org/baedert/corebird/ui/main-window.ui")]
 public class MainWindow : Gtk.ApplicationWindow {
   private const GLib.ActionEntry[] win_entries = {
@@ -39,6 +40,13 @@ public class MainWindow : Gtk.ApplicationWindow {
   public Gtk.Button back_button;
   [GtkChild]
   public Gtk.ToggleButton compose_tweet_button;
+  [GtkChild]
+  private Gtk.Popover n_popover;
+  [GtkChild]
+  private Gtk.ListBox n_listbox;
+  [GtkChild]
+  private Gtk.Button n_button;
+  private NotificationModel n_model = new NotificationModel ();
 
   private Gtk.MenuButton app_menu_button = null;
   public MainWidget main_widget;
@@ -99,6 +107,12 @@ public class MainWindow : Gtk.ApplicationWindow {
 
     add_accels();
     load_geometry ();
+
+    n_listbox.bind_model (n_model, (item) => {
+      var row = new NotificationListRow ((NotificationItem)item);
+      row.show_all ();
+      return row;
+    });
   }
 
   /**
@@ -115,6 +129,29 @@ public class MainWindow : Gtk.ApplicationWindow {
         () => {main_widget.switch_page (Page.PREVIOUS); return true;});
     ag.connect (Gdk.Key.Forward, 0, Gtk.AccelFlags.LOCKED,
         () => {main_widget.switch_page (Page.NEXT); return true;});
+    ag.connect (Gdk.Key.F5, 0, Gtk.AccelFlags.LOCKED,
+                () => {
+                  n_model.add_fav_item (15,
+                                        "foobar bla bla bla bal bla bla bla bla bla bla bla blb a bla blalb",
+                                        "faver");
+                  return true;
+                });
+
+    ag.connect (Gdk.Key.F6, 0, Gtk.AccelFlags.LOCKED,
+                () => {
+                  n_model.add_rt_item (15,
+                                       "some random tweet!asdfsadfsdafsda f sda fsda f sdaf sda fsda f afa ",
+                                       "foobar");
+                  return true;
+                });
+
+    ag.connect (Gdk.Key.F7, 0, Gtk.AccelFlags.LOCKED,
+                () => {
+                  n_model.add_follow_item (15, "supafollowa");
+                  return true;
+                });
+
+
 
     this.add_accel_group(ag);
   } // }}}
@@ -146,7 +183,7 @@ public class MainWindow : Gtk.ApplicationWindow {
     }
 
     if (!header_box.visible) {
-      header_box.visible = true;
+      set_header_button_visibility (true);
     }
 
     Corebird cb = (Corebird) app;
@@ -181,7 +218,7 @@ public class MainWindow : Gtk.ApplicationWindow {
       }
     } else {
       /* "Special case" when creating a new account */
-      header_box.hide ();
+      set_header_button_visibility (false);
       if (app_menu_button != null)
         app_menu_button.hide ();
 
@@ -450,4 +487,14 @@ public class MainWindow : Gtk.ApplicationWindow {
     } // Fucking
   } // BRACES
 
+
+  [GtkCallback]
+  private void n_button_clicked_cb () {
+    n_popover.show ();
+  }
+
+  private void set_header_button_visibility (bool visible) {
+    header_box.visible = visible;
+    n_button.visible = visible;
+  }
 }

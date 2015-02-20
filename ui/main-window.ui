@@ -22,6 +22,25 @@
     </child>
   </object>
 
+  <object class="GtkPopover" id="n_popover">
+    <property name="position">bottom</property>
+    <property name="relative_to">n_button</property>
+    <child>
+      <object class="GtkFrame">
+        <property name="visible">true</property>
+        <property name="shadow_type">in</property>
+        <property name="margin">6</property>
+        <child>
+          <object class="GtkListBox" id="n_listbox">
+            <property name="visible">true</property>
+            <property name="selection_mode">none</property>
+
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+
 
   <template class="MainWindow" parent="GtkApplicationWindow">
     <property name="can_focus">False</property>
@@ -114,6 +133,18 @@
             </child>
           </object>
         </child>
+        <child>
+          <object class="GtkButton" id="n_button">
+            <property name="visible">true</property>
+            <property name="can_focus">true</property>
+            <property name="label" translatable="yes">N</property>
+            <signal name="clicked" handler="n_button_clicked_cb" />
+          </object>
+          <packing>
+            <property name="pack_type">end</property>
+          </packing>
+        </child>
+
       </object>
     </child>
   </template>
