@@ -31,6 +31,7 @@
     <file compressed="true" preprocess="xml-stripblanks">ui/account-dialog.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/media-dialog.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/image-crop-dialog.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">ui/notification-list-row.ui</file>
     <file>ui/style.css</file>
     <file>assets/play.png</file>
     <file>assets/play@2.png</file>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="NotificationListRow" parent="GtkListBoxRow">
+    <child>
+      <object class="GtkGrid">
+        <property name="visible">true</property>
+        <property name="can_focus">false</property>
+        <property name="row_spacing">6</property>
+        <property name="column_spacing">6</property>
+        <property name="margin">6</property>
+        <child>
+          <object class="GtkLabel" id="heading_label">
+            <property name="visible">true</property>
+            <property name="can_focus">false</property>
+            <property name="halign">start</property>
+            <property name="use_markup">true</property>
+            <attributes>
+              <attribute name="weight" value="bold" />
+            </attributes>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="body_label">
+            <property name="visible">true</property>
+            <property name="can_focus">false</property>
+            <property name="ellipsize">end</property>
+            <property name="max_width_chars">40</property>
+            <property name="use_markup">true</property>
+            <property name="halign">start</property>
+            <style>
+              <class name="dim-label" />
+            </style>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>
