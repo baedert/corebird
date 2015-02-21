@@ -39,6 +39,7 @@ public enum StreamMessageType {
   EVENT_FAVORITE,
   EVENT_UNFAVORITE,
   EVENT_FOLLOW,
+  EVENT_FOLLOWED,
   EVENT_UNFOLLOW,
   EVENT_BLOCK,
   EVENT_UNBLOCK,
@@ -266,6 +267,14 @@ public class UserStream : Object {
       else if (root.has_member ("event")) {
         string evt_str = root.get_string_member ("event");
         type = get_event_type (evt_str);
+
+        /* Separate between FOLLOW and FOLLOWED */
+        if (type == StreamMessageType.EVENT_FOLLOW) {
+          if (root_node.get_object ().get_object_member ("target")
+                       .get_int_member ("id") == this.account.id) {
+            type = StreamMessageType.EVENT_FOLLOWED;
+          }
+        }
       }
       else if (root.has_member ("warning"))
         type = StreamMessageType.WARNING;
