@@ -15,7 +15,7 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class NotificationItem : GLib.Object {
+public class NotificationItem : GLib.Object {
   public static int TYPE_RETWEET  = 1;
   public static int TYPE_FAVORITE = 2;
   public static int TYPE_FOLLOW   = 3;
@@ -36,49 +36,57 @@ void append_link (StringBuilder sb, string text) {
     .append ("</a></span>");
 }
 
-string _build_heading (Gee.ArrayList<string> screen_names,
-                       string                sentinel) {
-    var sb = new StringBuilder ();
 
-    if (screen_names.size == 1) {
-      append_link (sb, screen_names.get (0));
-    } else if (screen_names.size <= 3) {
-      append_link (sb, screen_names.get (0));
-      if (screen_names.size == 3) {
-        sb.append (", ");
-        append_link (sb, screen_names.get (1));
-      }
 
-      sb.append (" and ");
-      append_link (sb, screen_names.get (screen_names.size - 1));
-
-    } else {
-      // screen_names.size > 3
-      int l = screen_names.size;
-      append_link (sb, screen_names.get (l - 1));
-      sb.append (", ");
-      append_link (sb, screen_names.get (l - 2));
-      sb.append (" and ")
-        .append ((screen_names.size - 2).to_string ())
-        .append (" others");
-    }
-
-    sb.append (" ").append (sentinel);
-
-    return sb.str;
-}
-
-class MultipleUserNotificationItem : NotificationItem {
+public class MultipleUserNotificationItem : NotificationItem {
   public Gee.ArrayList<string> screen_names = new Gee.ArrayList<string> ();
-  private string sentinel;
+  protected string[] bodies = new string[4];
 
-  public MultipleUserNotificationItem (string sentinel) {
-    this.sentinel = sentinel;
-  }
+  public MultipleUserNotificationItem () {}
 
   public void build_heading () {
-    this.heading = _build_heading (this.screen_names,
-                                   sentinel);
+    if (screen_names.size == 1) {
+      this.heading = bodies[0].printf (screen_names.get (0));
+    } else if (screen_names.size == 2) {
+      this.heading = bodies[1].printf (screen_names.get (0),
+                                       screen_names.get (1));
+    } else if (screen_names.size == 3) {
+      this.heading = bodies[2].printf (screen_names.get (0),
+                                       screen_names.get (1),
+                                       screen_names.get (2));
+    } else if (screen_names.size > 3) {
+      this.heading = bodies[3].printf (screen_names.get (screen_names.size - 1),
+                                       screen_names.get (screen_names.size - 2),
+                                       screen_names.size - 2);
+    }
+
     this.changed ();
+  }
+}
+
+public class RTNotificationItem : MultipleUserNotificationItem {
+  public RTNotificationItem () {
+    this.bodies[0] = "%s followed you";
+    this.bodies[1] = "%s and %s followed you";
+    this.bodies[2] = "%s, %s and %s followed you";
+    this.bodies[3] = "%s, %s and %d others followed you";
+  }
+}
+
+public class FavNotificationItem : MultipleUserNotificationItem {
+  public FavNotificationItem () {
+    this.bodies[0] = "%s favorited one of your tweets";
+    this.bodies[1] = "%s and %s favorited one of your tweets";
+    this.bodies[2] = "%s, %s and %s favorited one of your tweets";
+    this.bodies[3] = "%s, %s and %d others favorited one of your tweets";
+  }
+}
+
+public class FollowNotificationItem : MultipleUserNotificationItem {
+  public FollowNotificationItem () {
+    this.bodies[0] = "%s followed you";
+    this.bodies[1] = "%s and %s followed you";
+    this.bodies[2] = "%s, %s and %s followed you";
+    this.bodies[3] = "%s, %s and %d others followed you";
   }
 }
