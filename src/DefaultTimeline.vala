@@ -134,6 +134,10 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   protected void update_unread_count() {
     tool_button.show_badge = (unread_count > 0);
     tool_button.queue_draw();
+    if(unread_count == 0)
+      main_window.set_title(this.get_title());
+    else
+      main_window.set_title(this.get_title() + " ("+ unread_count.to_string() +")");
   }
   /**
    * Handle the case of the user scrolling to the start of the list,
