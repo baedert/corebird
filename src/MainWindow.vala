@@ -168,6 +168,7 @@ public class MainWindow : Gtk.ApplicationWindow {
     if (this.account != null) {
       old_user_id = this.account.id;
       this.account.info_changed.disconnect (account_info_changed);
+      this.account.notification_received.disconnect (account_notification_cb);
       this.set_account_app_menu_sensitivity (true);
     }
     this.account = account;
@@ -201,6 +202,7 @@ public class MainWindow : Gtk.ApplicationWindow {
       this.set_account_app_menu_sensitivity (false);
 
       account.info_changed.connect (account_info_changed);
+      account.notification_received.connect (account_notification_cb);
 
       cb.account_window_changed (old_user_id, account.id);
 
@@ -494,5 +496,18 @@ public class MainWindow : Gtk.ApplicationWindow {
   private void set_header_button_visibility (bool visible) {
     header_box.visible = visible;
     n_button.visible = visible;
+  }
+
+  private void account_notification_cb (int64  id,
+                                        int    type,
+                                        string body,
+                                        string str) {
+    if (type == NotificationItem.TYPE_FAVORITE) {
+      n_model.add_fav_item (id, body, str);
+    } else if (type == NotificationItem.TYPE_FOLLOWED) {
+      n_model.add_follow_item (id, str);
+    } else if (type == NotificationItem.TYPE_RETWEET) {
+      n_model.add_rt_item (id, body, str);
+    }
   }
 }
