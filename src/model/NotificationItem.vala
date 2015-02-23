@@ -18,7 +18,7 @@
 public class NotificationItem : GLib.Object {
   public static int TYPE_RETWEET  = 1;
   public static int TYPE_FAVORITE = 2;
-  public static int TYPE_FOLLOW   = 3;
+  public static int TYPE_FOLLOWED = 3;
 
   public signal void changed ();
 
@@ -29,34 +29,31 @@ public class NotificationItem : GLib.Object {
 }
 
 
-
-void append_link (StringBuilder sb, string text) {
-  sb.append ("<span underline='none'><a href='foo'>")
-    .append (text)
-    .append ("</a></span>");
-}
-
-
-
 public class MultipleUserNotificationItem : NotificationItem {
   public Gee.ArrayList<string> screen_names = new Gee.ArrayList<string> ();
   protected string[] bodies = new string[4];
 
   public MultipleUserNotificationItem () {}
 
+
+  private string screen_name_link (int i) {
+    return "<span underline='none'><a href='foo'>@%s</a></span>"
+           .printf (this.screen_names.get (i));
+  }
+
   public void build_heading () {
     if (screen_names.size == 1) {
-      this.heading = bodies[0].printf (screen_names.get (0));
+      this.heading = bodies[0].printf (screen_name_link (0));
     } else if (screen_names.size == 2) {
-      this.heading = bodies[1].printf (screen_names.get (0),
-                                       screen_names.get (1));
+      this.heading = bodies[1].printf (screen_name_link (0),
+                                       screen_name_link (1));
     } else if (screen_names.size == 3) {
-      this.heading = bodies[2].printf (screen_names.get (0),
-                                       screen_names.get (1),
-                                       screen_names.get (2));
+      this.heading = bodies[2].printf (screen_name_link (0),
+                                       screen_name_link (1),
+                                       screen_name_link (2));
     } else if (screen_names.size > 3) {
-      this.heading = bodies[3].printf (screen_names.get (screen_names.size - 1),
-                                       screen_names.get (screen_names.size - 2),
+      this.heading = bodies[3].printf (screen_name_link (screen_names.size - 1),
+                                       screen_name_link (screen_names.size - 2),
                                        screen_names.size - 2);
     }
 
@@ -66,10 +63,10 @@ public class MultipleUserNotificationItem : NotificationItem {
 
 public class RTNotificationItem : MultipleUserNotificationItem {
   public RTNotificationItem () {
-    this.bodies[0] = "%s followed you";
-    this.bodies[1] = "%s and %s followed you";
-    this.bodies[2] = "%s, %s and %s followed you";
-    this.bodies[3] = "%s, %s and %d others followed you";
+    this.bodies[0] = "%s retweeted you";
+    this.bodies[1] = "%s and %s retweeted you";
+    this.bodies[2] = "%s, %s and %s retweeted you";
+    this.bodies[3] = "%s, %s and %d others retweeted you";
   }
 }
 
