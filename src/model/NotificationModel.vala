@@ -22,7 +22,7 @@
    - EVENT_FAVORITE: Whenever someone favorites one of the user's tweets
    - Tweets from the user themselves are retweets from people they follow.
      No events from people they don't follow exist
-   - EVENT_FOLLOW: A user followed you
+   - EVENT_FOLLOWED: A user followed you
 
    */
 
@@ -115,7 +115,7 @@ class NotificationModel : GLib.Object, GLib.ListModel {
   public void add_fav_item (int64  tweet_id,
                             string tweet_text,
                             string screen_name) {
-    var item = new RTNotificationItem ();
+    var item = new FavNotificationItem ();
     item.id = tweet_id;
     item.body = tweet_text;
     item.type = NotificationItem.TYPE_FAVORITE;
@@ -127,12 +127,11 @@ class NotificationModel : GLib.Object, GLib.ListModel {
 
   }
 
-
-  public void add_follow_item (int64 user_id,
+  public void add_follow_item (int64  user_id,
                                string screen_name) {
-    var item = new RTNotificationItem ();
+    var item = new FollowNotificationItem ();
     item.id = user_id;
-    item.type = NotificationItem.TYPE_FOLLOW;
+    item.type = NotificationItem.TYPE_FOLLOWED;
     item.screen_names.add (screen_name);
     item.build_heading ();
     add_multiuser_item (item,
