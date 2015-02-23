@@ -77,6 +77,17 @@ class UserEventReceiver : GLib.Object, IMessageReceiver {
         } else
           warning ("USER_UPDATE: ids don't match");
         break;
+
+      case StreamMessageType.EVENT_FOLLOWED:
+        var target = root_node.get_object ().get_object_member ("target");
+        var source = root_node.get_object ().get_object_member ("source");
+        int64 id = source.get_int_member ("id");
+        string str = source.get_string_member ("screen_name");
+        account.notification_received (id,
+                                       NotificationItem.TYPE_FOLLOWED,
+                                       "",
+                                       str);
+        break;
     }
   }
 
