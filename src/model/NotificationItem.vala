@@ -31,7 +31,7 @@ public class NotificationItem : GLib.Object {
 
 public class MultipleUserNotificationItem : NotificationItem {
   public Gee.ArrayList<string> screen_names = new Gee.ArrayList<string> ();
-  protected string[] bodies = new string[4];
+  protected string[] headings = new string[4];
 
   public MultipleUserNotificationItem () {}
 
@@ -43,16 +43,16 @@ public class MultipleUserNotificationItem : NotificationItem {
 
   public virtual void build_text () {
     if (screen_names.size == 1) {
-      this.heading = bodies[0].printf (screen_name_link (0));
+      this.heading = headings[0].printf (screen_name_link (0));
     } else if (screen_names.size == 2) {
-      this.heading = bodies[1].printf (screen_name_link (0),
+      this.heading = headings[1].printf (screen_name_link (0),
                                        screen_name_link (1));
     } else if (screen_names.size == 3) {
-      this.heading = bodies[2].printf (screen_name_link (0),
+      this.heading = headings[2].printf (screen_name_link (0),
                                        screen_name_link (1),
                                        screen_name_link (2));
     } else if (screen_names.size > 3) {
-      this.heading = bodies[3].printf (screen_name_link (screen_names.size - 1),
+      this.heading = headings[3].printf (screen_name_link (screen_names.size - 1),
                                        screen_name_link (screen_names.size - 2),
                                        screen_names.size - 2);
     }
@@ -63,27 +63,27 @@ public class MultipleUserNotificationItem : NotificationItem {
 
 public class RTNotificationItem : MultipleUserNotificationItem {
   public RTNotificationItem () {
-    this.bodies[0] = "%s retweeted you";
-    this.bodies[1] = "%s and %s retweeted you";
-    this.bodies[2] = "%s, %s and %s retweeted you";
-    this.bodies[3] = "%s, %s and %d others retweeted you";
+    this.headings[0] = "%s retweeted you";
+    this.headings[1] = "%s and %s retweeted you";
+    this.headings[2] = "%s, %s and %s retweeted you";
+    this.headings[3] = "%s, %s and %d others retweeted you";
   }
 }
 
 public class FavNotificationItem : MultipleUserNotificationItem {
   public FavNotificationItem () {
-    this.bodies[0] = "%s favorited one of your tweets";
-    this.bodies[1] = "%s and %s favorited one of your tweets";
-    this.bodies[2] = "%s, %s and %s favorited one of your tweets";
-    this.bodies[3] = "%s, %s and %d others favorited one of your tweets";
+    this.headings[0] = "%s favorited one of your tweets";
+    this.headings[1] = "%s and %s favorited one of your tweets";
+    this.headings[2] = "%s, %s and %s favorited one of your tweets";
+    this.headings[3] = "%s, %s and %d others favorited one of your tweets";
   }
 }
 
 public class FollowNotificationItem : MultipleUserNotificationItem {
   public FollowNotificationItem () {
-    this.bodies[0] = "%s followed you";
-    this.bodies[1] = "%s and %s followed you";
-    this.bodies[2] = "%s, %s and %s followed you";
-    this.bodies[3] = "%s, %s and %d others followed you";
+    this.headings[0] = "%s followed you";
+    this.headings[1] = "%s and %s followed you";
+    this.headings[2] = "%s, %s and %s followed you";
+    this.headings[3] = "%s, %s and %d others followed you";
   }
 }
