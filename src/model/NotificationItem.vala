@@ -41,7 +41,7 @@ public class MultipleUserNotificationItem : NotificationItem {
            .printf (this.screen_names.get (i));
   }
 
-  public void build_heading () {
+  public virtual void build_text () {
     if (screen_names.size == 1) {
       this.heading = bodies[0].printf (screen_name_link (0));
     } else if (screen_names.size == 2) {

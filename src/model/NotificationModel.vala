@@ -84,7 +84,7 @@ class NotificationModel : GLib.Object, GLib.ListModel {
         var rt_n = (MultipleUserNotificationItem) (items[i]);
         rt_n.screen_names.add (screen_name);
         rt_n.body = body;
-        rt_n.build_heading ();
+        rt_n.build_text ();
 
         if (i != 0) {
           // Move this item to the front
@@ -106,7 +106,7 @@ class NotificationModel : GLib.Object, GLib.ListModel {
     item.body = tweet_text;
     item.type = NotificationItem.TYPE_RETWEET;
     item.screen_names.add (screen_name);
-    item.build_heading ();
+    item.build_text ();
     add_multiuser_item (item,
                         screen_name,
                         tweet_text);
@@ -120,7 +120,7 @@ class NotificationModel : GLib.Object, GLib.ListModel {
     item.body = tweet_text;
     item.type = NotificationItem.TYPE_FAVORITE;
     item.screen_names.add (screen_name);
-    item.build_heading ();
+    item.build_text ();
     add_multiuser_item (item,
                         screen_name,
                         tweet_text);
@@ -133,7 +133,7 @@ class NotificationModel : GLib.Object, GLib.ListModel {
     item.id = user_id;
     item.type = NotificationItem.TYPE_FOLLOWED;
     item.screen_names.add (screen_name);
-    item.build_heading ();
+    item.build_text ();
     add_multiuser_item (item,
                         screen_name,
                         "");
