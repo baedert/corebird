@@ -36,7 +36,7 @@ public class MultipleUserNotificationItem : NotificationItem {
   public MultipleUserNotificationItem () {}
 
 
-  private string screen_name_link (int i) {
+  protected string screen_name_link (int i) {
     return "<span underline='none'><a href='foo'>@%s</a></span>"
            .printf (this.screen_names.get (i));
   }
@@ -46,15 +46,15 @@ public class MultipleUserNotificationItem : NotificationItem {
       this.heading = headings[0].printf (screen_name_link (0));
     } else if (screen_names.size == 2) {
       this.heading = headings[1].printf (screen_name_link (0),
-                                       screen_name_link (1));
+                                         screen_name_link (1));
     } else if (screen_names.size == 3) {
       this.heading = headings[2].printf (screen_name_link (0),
-                                       screen_name_link (1),
-                                       screen_name_link (2));
+                                         screen_name_link (1),
+                                         screen_name_link (2));
     } else if (screen_names.size > 3) {
       this.heading = headings[3].printf (screen_name_link (screen_names.size - 1),
-                                       screen_name_link (screen_names.size - 2),
-                                       screen_names.size - 2);
+                                         screen_name_link (screen_names.size - 2),
+                                         screen_names.size - 2);
     }
 
     this.changed ();
@@ -80,10 +80,21 @@ public class FavNotificationItem : MultipleUserNotificationItem {
 }
 
 public class FollowNotificationItem : MultipleUserNotificationItem {
-  public FollowNotificationItem () {
-    this.headings[0] = "%s followed you";
-    this.headings[1] = "%s and %s followed you";
-    this.headings[2] = "%s, %s and %s followed you";
-    this.headings[3] = "%s, %s and %d others followed you";
+  public override void build_text () {
+    assert (screen_names.size > 0);
+
+    this.heading = "%s followed you".printf (screen_name_link (screen_names.size - 1));
+    if (screen_names.size > 1) {
+      var sb = new StringBuilder ();
+      sb.append ("Also: ")
+        .append (screen_name_link (screen_names.size - 2));
+      for (int i = screen_names.size - 3; i >= 0; i --) {
+        sb.append (",").append (screen_name_link (i));
+      }
+
+      this.body = sb.str;
+    }
+
+    this.changed ();
   }
 }
