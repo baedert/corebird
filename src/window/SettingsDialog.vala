@@ -31,6 +31,8 @@ class SettingsDialog : Gtk.Window {
   private Gtk.SpinButton max_media_size_spin_button;
   [GtkChild]
   private Gtk.Stack main_stack;
+  [GtkChild]
+  private Gtk.Switch double_click_activation_switch;
 
   public SettingsDialog (Corebird application) {
     this.application = application;
@@ -54,6 +56,8 @@ class SettingsDialog : Gtk.Window {
                           SettingsBindFlags.DEFAULT);
     Settings.get ().bind ("max-media-size", max_media_size_spin_button, "value",
                           SettingsBindFlags.DEFAULT);
+    Settings.get ().bind ("double-click-activation", double_click_activation_switch,
+                          "active", SettingsBindFlags.DEFAULT);
 
     add_accels ();
     load_geometry ();

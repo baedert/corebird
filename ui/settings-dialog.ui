@@ -181,6 +181,41 @@
             </packing>
           </child>
 
+          <child>
+            <object class="GtkLabel" id="double_click_activation_label">
+              <property name="visible">true</property>
+              <property name="label" translatable="yes">Double-click activation</property>
+              <property name="halign">end</property>
+              <property name="hexpand">true</property>
+              <accessibility>
+                <relation type="label-for" target="double_click_activation_switch" />
+              </accessibility>
+            </object>
+            <packing>
+              <property name="left_attach">0</property>
+              <property name="top_attach">6</property>
+              <property name="width">2</property>
+            </packing>
+          </child>
+
+          <child>
+            <object class="GtkSwitch" id="double_click_activation_switch">
+              <property name="visible">true</property>
+              <property name="can_focus">true</property>
+              <property name="halign">start</property>
+              <accessibility>
+                <relation type="labelled-by" target="double_click_activation_label" />
+              </accessibility>
+            </object>
+            <packing>
+              <property name="left_attach">2</property>
+              <property name="top_attach">6</property>
+              <property name="width">2</property>
+            </packing>
+          </child>
+
+
+
         </object>
         <packing>
           <property name="title" translatable="yes">Interface</property>
