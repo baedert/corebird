@@ -15,19 +15,13 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 public class Filter : GLib.Object {
-  public int block_count  { get; set; }
   public string content   { get; set; }
   public int id           { get; set; }
 
-  private GLib.Regex regex;
+  private GLib.Regex? regex = null;
 
   public Filter (string expression) {
-    this.content = expression;
-    try {
-      this.regex = new GLib.Regex (expression, GLib.RegexCompileFlags.CASELESS);
-    } catch (GLib.RegexError e) {
-      warning ("Regex error for `%s`: %s", expression, e.message);
-    }
+    this.reset (expression);
   }
 
   /**

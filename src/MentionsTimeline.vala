@@ -101,7 +101,7 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
     var value = new GLib.Variant.tuple ({new GLib.Variant.string (account.screen_name),
                                          new GLib.Variant.int64 (tweet_id)});
     //n.add_button_with_target_value (_("Mark read"), "app.mark-seen", value);
-    n.set_default_action_and_target_value ("app.show-window", account.screen_name);
+    n.set_default_action_and_target_value ("app.show-window", account.id);
     string id = "new-dm-" + tweet_id.to_string ();
     GLib.Application.get_default ().send_notification (id, n);
     return id;

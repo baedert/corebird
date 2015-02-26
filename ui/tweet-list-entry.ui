@@ -136,10 +136,10 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="valign">start</property>
-                <property name="margin_end">8</property>
+                <property name="margin_end">12</property>
                 <property name="margin_top">4</property>
                 <property name="margin_bottom">4</property>
-                <!--<property name="margin_start">4</property>-->
+                <property name="margin_start">4</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -287,7 +287,7 @@
                 <property name="halign">end</property>
                 <property name="valign">baseline</property>
                 <property name="margin_end">6</property>
-                <property name="pixel_size">14</property>
+                <property name="pixel_size">16</property>
                 <property name="icon_name">corebird-retweet-symbolic</property>
                 <property name="icon_size">1</property>
                 <style>

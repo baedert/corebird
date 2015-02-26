@@ -77,6 +77,7 @@
             <property name="ellipsize">end</property>
             <property name="hexpand">True</property>
             <property name="use_markup">true</property>
+            <property name="margin_end">6</property>
             <style>
               <class name="dim-label"/>
             </style>

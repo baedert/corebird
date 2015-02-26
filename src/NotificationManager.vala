@@ -33,7 +33,7 @@ namespace NotificationManager {
     }
     /* Default action: just bring the appropriate window
        to front */
-    n.set_default_action_and_target_value ("app.show-window", acc.screen_name);
+    n.set_default_action_and_target_value ("app.show-window", acc.id);
     GLib.Application.get_default ().send_notification (null, n);
   }
 

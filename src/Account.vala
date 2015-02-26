@@ -84,11 +84,16 @@ public class Account : GLib.Object {
     this.user_stream.register (this.event_receiver);
     if (load_secrets) {
       init_database ();
-      db.select ("common").cols ("token", "token_secret").run ((vals) => {
+      int n_rows = db.select ("common").cols ("token", "token_secret")
+                                       .run ((vals) => {
         proxy.token = user_stream.token = vals[0];
         proxy.token_secret = user_stream.token_secret = vals[1];
         return false; //stop
       });
+
+      if (n_rows < 1) {
+        critical ("Could not load token{_secret} for user %s", this.screen_name);
+      }
     }
   }
 
@@ -139,8 +144,8 @@ public class Account : GLib.Object {
 
   /**
    * Download the appropriate user info from the Twitter server,
-   * updating the local information stored in this class' local variables.
-   * (Means, you need to call save_info to actually save it persistently)
+   * updating the local information stored in this class' local variables
+   * and the information stored in the account's database file.
    *
    * @param screen_name The screen name to use for the API call or null in
    *                    which case the ID will be used.
@@ -222,7 +227,9 @@ public class Account : GLib.Object {
     values_changed |= yield update_avatar (avatar_url);
 
     if (values_changed) {
-      this.save_info ();
+      if (this.db != null)
+        this.save_info ();
+
       info_changed (this.screen_name,
                     this.name,
                     this.avatar_small,

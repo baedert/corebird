@@ -380,7 +380,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     }
     var n = new GLib.Notification (summary);
     n.set_body (text);
-    var value = new GLib.Variant.tuple ({new GLib.Variant.string (account.screen_name),
+    var value = new GLib.Variant.tuple ({new GLib.Variant.int64 (account.id),
                                          new GLib.Variant.int64 (sender_id)});
     n.set_default_action_and_target_value ("app.show-dm-thread", value);
 

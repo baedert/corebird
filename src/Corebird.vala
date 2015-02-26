@@ -260,11 +260,16 @@ public class Corebird : Gtk.Application {
         }
       }
       /* If we did not open any window at all since all windows for every account
-         in the startups-account array were already open, just open a new windwo with a null account */
+         in the startups-account array were already open, just open a new window with a null account */
       if (!opened_window) {
         if (n_accounts > 0) {
-          add_window_for_screen_name (Account.list_accounts ().nth_data (0).screen_name);
-          return;
+          /* Check if *any* of the configured accounts (not just startup-accounts)
+             is not opened in a window */
+          foreach (Account account in Account.list_accounts ())
+            if (!is_window_open_for_user_id (account.id, null)) {
+              add_window_for_account (account);
+              return;
+            }
         }
         foreach (Gtk.Window w in this.get_windows ())
           if (((MainWindow)w).account.screen_name == Account.DUMMY) {
@@ -382,17 +387,17 @@ public class Corebird : Gtk.Application {
   /********************************************************/
 
   private void show_dm_thread (GLib.SimpleAction a, GLib.Variant? value) {
-    // Values: Account screen_name, sender_id
-    string account_screen_name = value.get_child_value (0).get_string ();
-    int64 sender_id = value.get_child_value (1).get_int64 ();
+    // Values: Account id, sender_id
+    int64 account_id = value.get_child_value (0).get_int64 ();
+    int64 sender_id  = value.get_child_value (1).get_int64 ();
     MainWindow main_window;
-    if (is_window_open_for_screen_name (account_screen_name, out main_window)) {
+    if (is_window_open_for_user_id (account_id, out main_window)) {
       var bundle = new Bundle ();
       bundle.put_int64 ("sender_id", sender_id);
       main_window.main_widget.switch_page (Page.DM, bundle);
       main_window.present ();
     } else
-      warning ("Window for Account %s is not open, abort.", account_screen_name);
+      warning ("Window for Account %s is not open, abort.", account_id.to_string ());
   }
 
   private void mark_seen (GLib.SimpleAction a, GLib.Variant? value) {
@@ -406,9 +411,9 @@ public class Corebird : Gtk.Application {
   }
 
   private void show_window (GLib.SimpleAction a, GLib.Variant? value) {
-    string screen_name = value.get_string ();
+    int64 user_id = value.get_int64 ();
     MainWindow main_window;
-    if (is_window_open_for_screen_name (screen_name, out main_window))
+    if (is_window_open_for_user_id (user_id, out main_window))
       main_window.present ();
     else
       warning ("TODO: Implement");

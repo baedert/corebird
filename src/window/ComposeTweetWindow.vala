@@ -138,9 +138,8 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
   private void recalc_tweet_length () {
     Gtk.TextIter start, end;
-    tweet_text.buffer.get_start_iter(out start);
-    tweet_text.buffer.get_end_iter(out end);
-    string text = tweet_text.buffer.get_text(start, end, true);
+    tweet_text.buffer.get_bounds (out start, out end);
+    string text = tweet_text.buffer.get_text (start, end, true);
 
     int media_count = 0;
     if (get_effective_media_count () > 0)
@@ -157,6 +156,9 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
   [GtkCallback]
   private void start_send_tweet () {
+    if (!send_button.sensitive)
+      return;
+
     int media_count = get_effective_media_count ();
     Collect collect_obj = new Collect (media_count);
     int64[] media_ids = new int64[media_count];
