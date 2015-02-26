@@ -30,7 +30,7 @@ class SettingsDialog : Gtk.Window {
   [GtkChild]
   private Gtk.SpinButton max_media_size_spin_button;
   [GtkChild]
-  private Gtk.Notebook main_stack;
+  private Gtk.Switch double_click_activation_switch;
 
   public SettingsDialog (Corebird application) {
     this.application = application;
@@ -54,6 +54,8 @@ class SettingsDialog : Gtk.Window {
                           SettingsBindFlags.DEFAULT);
     Settings.get ().bind ("max-media-size", max_media_size_spin_button, "value",
                           SettingsBindFlags.DEFAULT);
+    Settings.get ().bind ("double-click-activation", double_click_activation_switch,
+                          "active", SettingsBindFlags.DEFAULT);
 
     add_accels ();
     load_geometry ();
@@ -104,10 +106,6 @@ class SettingsDialog : Gtk.Window {
 
     ag.connect (Gdk.Key.Escape, 0, Gtk.AccelFlags.LOCKED,
         () => {this.destroy (); return true;});
-    //ag.connect (Gdk.Key.@1, Gdk.ModifierType.MOD1_MASK, Gtk.AccelFlags.LOCKED,
-        //() => {main_stack.visible_child_name = "interface"; return true;});
-    //ag.connect (Gdk.Key.@2, Gdk.ModifierType.MOD1_MASK, Gtk.AccelFlags.LOCKED,
-        //() => {main_stack.visible_child_name = "notifications"; return true;});
 
     this.add_accel_group(ag);
   }
