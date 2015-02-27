@@ -78,6 +78,10 @@ public class Corebird : Gtk.Application {
     return 0;
   }
 
+  public override void activate () {
+    open_startup_windows (null);
+  }
+
   private void show_settings_activated () {
     /* We don't set the settings dialog transient to
        any window because we already save its size */
