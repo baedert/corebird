@@ -258,6 +258,17 @@ public class Tweet : GLib.Object {
             this.medias[real_media_count] = m;
             real_media_count ++;
           }
+        } else if (media_type == "video") {
+          Json.Object variant = media_obj.get_object_member ("video_info")
+                                         .get_array_member ("variants")
+                                         .get_object_element (0); // XXX ???
+          Media m = new Media ();
+          m.url = variant.get_string_member ("url");
+          m.thumb_url = media_obj.get_string_member ("media_url");
+          m.type = MediaType.TWITTER_VIDEO;
+          m.id = media_obj.get_int_member ("id");
+          this.medias[real_media_count] = m;
+          real_media_count ++;
         }
       });
     }
