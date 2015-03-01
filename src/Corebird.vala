@@ -30,7 +30,8 @@ public class Corebird : Gtk.Application {
     {"show-about-dialog", about_activated                 },
     {"show-dm-thread",    show_dm_thread,          "(sx)" },
     {"mark-seen",         mark_seen,               "(sx)" },
-    {"show-window",       show_window,             "s"    }
+    {"show-window",       show_window,             "s"    },
+    {"show-profile",      show_profile,            "x"    }
   };
 
 
@@ -426,5 +427,18 @@ public class Corebird : Gtk.Application {
       main_window.present ();
     else
       warning ("TODO: Implement");
+  }
+
+  private void show_profile (GLib.SimpleAction a, GLib.Variant? value) {
+    int64 user_id = value.get_int64 ();
+    var bundle = new Bundle ();
+    bundle.put_int64 ("user_id", user_id);
+    unowned GLib.List<Gtk.Window> windows = this.get_windows ();
+    if (windows.length () > 0) {
+      var window = (MainWindow)windows.nth_data (0);
+      window.main_widget.switch_page (Page.PROFILE,
+                                      bundle);
+    } else
+      warning ("No window open :(");
   }
 }
