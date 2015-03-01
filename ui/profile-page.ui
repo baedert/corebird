@@ -428,6 +428,7 @@
           <object class="GtkStack" id="user_stack">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="transition_type">crossfade</property>
             <child>
               <object class="TweetListBox" id="tweet_list">
                 <property name="visible">True</property>
