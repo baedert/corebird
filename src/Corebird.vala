@@ -72,37 +72,14 @@ public class Corebird : Gtk.Application {
       return -1;
     }
 
-    this.set_accels_for_action ("win.compose-tweet", {Settings.get_accel ("compose-tweet")});
-    this.set_accels_for_action ("win.toggle-sidebar", {Settings.get_accel ("toggle-sidebar")});
-    this.set_accels_for_action ("win.switch-page(0)", {"<Alt>1"});
-    this.set_accels_for_action ("win.switch-page(1)", {"<Alt>2"});
-    this.set_accels_for_action ("win.switch-page(2)", {"<Alt>3"});
-    this.set_accels_for_action ("win.switch-page(3)", {"<Alt>4"});
-    this.set_accels_for_action ("win.switch-page(4)", {"<Alt>5"});
-    this.set_accels_for_action ("win.switch-page(5)", {"<Alt>6"});
-    this.set_accels_for_action ("win.switch-page(6)", {"<Alt>7"});
-    this.set_accels_for_action ("app.show-settings", {Settings.get_accel ("show-settings")});
-    this.set_accels_for_action ("app.quit", {"<Control>Q"});
-    this.set_accels_for_action ("win.show-account-dialog", {Settings.get_accel ("show-account-dialog")});
-    this.set_accels_for_action ("win.show-account-list", {Settings.get_accel ("show-account-list")});
-
-    this.add_action_entries (app_entries, this);
-
     open_startup_windows (compose_screen_name);
-
-
-    // If the user wants the dark theme, apply it
-    var gtk_s = Gtk.Settings.get_default ();
-    if (Settings.use_dark_theme ()) {
-      gtk_s.gtk_application_prefer_dark_theme = true;
-    }
-
-    if (gtk_s.gtk_decoration_layout.contains ("menu")) {
-      gtk_s.gtk_decoration_layout = gtk_s.gtk_decoration_layout.replace ("menu", "");
-    }
 
     this.release ();
     return 0;
+  }
+
+  public override void activate () {
+    open_startup_windows (null);
   }
 
   private void show_settings_activated () {
@@ -171,6 +148,38 @@ public class Corebird : Gtk.Application {
     ((GLib.Menu)acc_menu).append_submenu (_("Open Account"), account_menu);
 
     this.set_app_menu (app_menu);
+
+
+
+    this.set_accels_for_action ("win.compose-tweet", {Settings.get_accel ("compose-tweet")});
+    this.set_accels_for_action ("win.toggle-sidebar", {Settings.get_accel ("toggle-sidebar")});
+    this.set_accels_for_action ("win.switch-page(0)", {"<Alt>1"});
+    this.set_accels_for_action ("win.switch-page(1)", {"<Alt>2"});
+    this.set_accels_for_action ("win.switch-page(2)", {"<Alt>3"});
+    this.set_accels_for_action ("win.switch-page(3)", {"<Alt>4"});
+    this.set_accels_for_action ("win.switch-page(4)", {"<Alt>5"});
+    this.set_accels_for_action ("win.switch-page(5)", {"<Alt>6"});
+    this.set_accels_for_action ("win.switch-page(6)", {"<Alt>7"});
+    this.set_accels_for_action ("app.show-settings", {Settings.get_accel ("show-settings")});
+    this.set_accels_for_action ("app.quit", {"<Control>Q"});
+    this.set_accels_for_action ("win.show-account-dialog", {Settings.get_accel ("show-account-dialog")});
+    this.set_accels_for_action ("win.show-account-list", {Settings.get_accel ("show-account-list")});
+
+    this.add_action_entries (app_entries, this);
+
+    // If the user wants the dark theme, apply it
+    var gtk_s = Gtk.Settings.get_default ();
+    if (Settings.use_dark_theme ()) {
+      gtk_s.gtk_application_prefer_dark_theme = true;
+    }
+
+    if (gtk_s.gtk_decoration_layout.contains ("menu")) {
+      gtk_s.gtk_decoration_layout = gtk_s.gtk_decoration_layout.replace ("menu", "");
+    }
+
+
+
+
   } // }}}
 
   public override void shutdown () {

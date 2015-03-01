@@ -407,6 +407,7 @@ public class MainWindow : Gtk.ApplicationWindow {
       if (key != account.screen_name) {
         builder.add ("{s(iiii)}", key, x, y, w, h);
       }
+      key = null; // Otherwise we leak key
     }
     /* Finally, add this window */
     get_position (out x, out y);
