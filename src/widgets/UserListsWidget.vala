@@ -76,7 +76,6 @@ class UserListsWidget : Gtk.Box {
   }
 
   public async void load_lists (int64 user_id) { // {{{
-    return;
     if (user_id == 0)
       user_id = account.id;
 
