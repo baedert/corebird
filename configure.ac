@@ -105,7 +105,6 @@ AC_CONFIG_FILES([Makefile
                  data/Makefile
                  data/org.baedert.corebird.desktop.in
                  data/symbolics/Makefile
-                 examples/Makefile
                  assets/Makefile
                  assets/128x128/Makefile
                  assets/96x96/Makefile

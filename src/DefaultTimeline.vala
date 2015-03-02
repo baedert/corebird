@@ -97,7 +97,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     }
   }
 
-  public virtual  void on_leave () {
+  public virtual void on_leave () {
     Gtk.Widget? focus_widget = main_window.get_focus ();
     if (focus_widget == null)
       return;
@@ -114,7 +114,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
       tweet_list.action_entry.toggle_mode ();
   }
 
-  public virtual  void load_cached () {}
+  public virtual void load_cached () {}
   public abstract void load_newest ();
   public abstract void load_older ();
   public abstract string? get_title ();
