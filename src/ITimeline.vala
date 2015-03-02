@@ -45,28 +45,14 @@ public interface ITimeline : Gtk.Widget, IPage {
     call.add_param ("include_my_retweet", "true");
     call.add_param ("max_id", (lowest_id - 1).to_string ());
 
-    try {
-      yield call.invoke_async (null);
-    } catch (GLib.Error e) {
-      if (call.get_payload () != null) {
-        Utils.show_error_object (call.get_payload (), e.message,
-                                 GLib.Log.LINE, GLib.Log.FILE);
-      } else {
-        tweet_list.set_error (e.message);
-      }
+    Json.Node? root_node = yield TweetUtils.load_threaded (call);
+    if (root_node == null) {
+      tweet_list.set_error (_("Could not load tweets"));
       tweet_list.set_empty ();
       return;
     }
 
-    var parser = new Json.Parser ();
-    try {
-      parser.load_from_data (call.get_payload ());
-    } catch(GLib.Error e) {
-      critical (e.message);
-      return;
-    }
-
-    var root = parser.get_root().get_array();
+    var root = root_node.get_array();
     if (root.get_length () == 0) {
       tweet_list.set_empty ();
       return;
@@ -97,21 +83,12 @@ public interface ITimeline : Gtk.Widget, IPage {
     call.add_param ("count", requested_tweet_count.to_string ());
     call.add_param ("include_my_retweet", "true");
     call.add_param ("max_id", (lowest_id - 1).to_string ());
-    try {
-      yield call.invoke_async (null);
-    } catch (GLib.Error e) {
-      Utils.show_error_object (call.get_payload (), e.message,
-                               GLib.Log.LINE, GLib.Log.FILE);
+
+    Json.Node? root_node = yield TweetUtils.load_threaded (call);
+    if (root_node == null) {
       return;
     }
-    var parser = new Json.Parser();
-    try {
-      parser.load_from_data (call.get_payload ());
-    } catch (GLib.Error e) {
-      critical(e.message);
-      return;
-    }
-    var root = parser.get_root ().get_array ();
+    var root = root_node.get_array ();
     if (root.get_length () == 0) {
       tweet_list.set_empty ();
       return;
