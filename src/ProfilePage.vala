@@ -253,23 +253,13 @@ class ProfilePage : ScrollWidget, IPage {
     call.set_function ("1.1/users/show.json");
     call.add_param ("user_id", user_id.to_string ());
     call.add_param ("include_entities", "false");
-    try {
-      yield call.invoke_async (data_cancellable);
-    } catch (GLib.Error e) {
-      warning ("Error while ending call: %s", e.message);
-      return;
-    }
-    string back = call.get_payload();
-    stdout.printf (back + "\n");
-    Json.Parser parser = new Json.Parser();
-    try{
-      parser.load_from_data (back);
-    } catch (GLib.Error e){
-      warning ("Error while loading profile data: %s", e.message);
+
+    Json.Node? root_node = yield TweetUtils.load_threaded (call); // TODO: Use data_cancellable here
+    if (root_node == null) {
       return;
     }
 
-    var root = parser.get_root().get_object();
+    var root = root_node.get_object();
     int64 id = root.get_int_member ("id");
 
     string avatar_url = root.get_string_member("profile_image_url");
