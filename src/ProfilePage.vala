@@ -397,27 +397,20 @@ class ProfilePage : ScrollWidget, IPage {
     call.add_param ("contributor_details", "true");
     call.add_param ("include_my_retweet", "true");
 
-    try {
-      yield call.invoke_async (null);
-    } catch (GLib.Error e) {
-      //Utils.show_error_object (call.get_payload (), e.message);
-      // Silently cancel since the user is probably protected.
+
+    Json.Node? root = yield TweetUtils.load_threaded (call);
+
+    if (root == null) {
       tweet_list.set_empty ();
       return;
     }
-    var parser = new Json.Parser ();
-    try {
-      parser.load_from_data (call.get_payload ());
-    } catch (GLib.Error e) {
-      warning (e.message);
-      return;
-    }
-    var root = parser.get_root().get_array();
-    if (root.get_length () == 0) {
+
+    var root_array = root.get_array ();
+    if (root_array.get_length () == 0) {
       tweet_list.set_empty ();
       return;
     }
-    var result = yield TweetUtils.work_array (root,
+    var result = yield TweetUtils.work_array (root_array,
                                               requested_tweet_count,
                                               delta_updater,
                                               tweet_list,
