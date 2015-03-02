@@ -199,10 +199,8 @@ class TweetInfoPage : IPage , ScrollWidget {
       with = "<span underline='none'>" + extract_source (with) + "</span>";
       set_tweet_data (tweet, with);
 
-      if (tweet.reply_id == 0) {
-        load_replied_to_tweet (tweet.reply_id);
-      } else
-        load_replied_to_tweet (tweet.reply_id);
+      load_replied_to_tweet (tweet.reply_id);
+
       values_set = true;
     });
 
