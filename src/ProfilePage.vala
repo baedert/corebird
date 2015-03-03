@@ -277,16 +277,12 @@ class ProfilePage : ScrollWidget, IPage {
     string avatar_name = Utils.get_avatar_name(avatar_url);
     string avatar_on_disk = Dirs.cache("assets/avatars/"+avatar_name);
 
-    if(!FileUtils.test(avatar_on_disk, FileTest.EXISTS)){
+    if (!FileUtils.test (avatar_on_disk, FileTest.EXISTS)) {
       Utils.download_file_async.begin(avatar_url, avatar_on_disk, data_cancellable, () => {
         try {
           avatar_image.pixbuf = new Gdk.Pixbuf.from_file (avatar_on_disk);
         } catch (GLib.Error e) {
           warning (e.message);
-        }
-        if (show_spinner) {
-          progress_spinner.stop ();
-          loading_stack.visible_child_name = "data";
         }
       });
     }else {
@@ -295,11 +291,13 @@ class ProfilePage : ScrollWidget, IPage {
       } catch (GLib.Error e) {
         warning (e.message);
       }
-      if (show_spinner) {
-        progress_spinner.stop ();
-        loading_stack.visible_child_name = "data";
-      }
     }
+
+    if (show_spinner) {
+      progress_spinner.stop ();
+      loading_stack.visible_child_name = "data";
+    }
+
 
     string name        = root.get_string_member("name").replace ("&", "&amp;").strip ();
     string screen_name = root.get_string_member("screen_name");
