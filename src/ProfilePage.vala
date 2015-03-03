@@ -207,7 +207,7 @@ class ProfilePage : ScrollWidget, IPage {
     });
 
     /* Load the profile data now, then - if available - set the cached data */
-    load_profile_data.begin (user_id, !data_in_db);
+    load_profile_data.begin (!data_in_db);
   } // }}}
 
 
@@ -232,7 +232,7 @@ class ProfilePage : ScrollWidget, IPage {
     ((SimpleAction)actions.lookup_action ("toggle-retweets")).set_enabled (following);
   }
 
-  private async void load_profile_data (int64 user_id, bool show_spinner) { //{{{
+  private async void load_profile_data (bool show_spinner) { //{{{
     if (show_spinner) {
       loading_stack.visible_child_name = "progress";
       progress_spinner.start ();
@@ -241,7 +241,7 @@ class ProfilePage : ScrollWidget, IPage {
     var call = account.proxy.new_call ();
     call.set_method ("GET");
     call.set_function ("1.1/users/show.json");
-    call.add_param ("user_id", user_id.to_string ());
+    call.add_param ("user_id", this.user_id.to_string ());
     call.add_param ("include_entities", "false");
 
     Json.Node? root_node = yield TweetUtils.load_threaded (call); // TODO: Use data_cancellable here
