@@ -161,7 +161,11 @@ class ProfilePage : ScrollWidget, IPage {
 
 
   private void prepare_profile_change () {
-    follow_button.sensitive = (user_id != account.id);
+    if (this.user_id != -1)
+      follow_button.sensitive = (this.user_id != account.id);
+    else if (this.screen_name != null)
+      follow_button.sensitive = (this.screen_name != account.screen_name);
+
     ((SimpleAction)actions.lookup_action ("add-remove-list")).set_enabled (user_id != account.id);
     ((SimpleAction)actions.lookup_action ("write-dm")).set_enabled (user_id != account.id);
     ((SimpleAction)actions.lookup_action ("toggle-blocked")).set_enabled (user_id != account.id);
@@ -586,7 +590,11 @@ class ProfilePage : ScrollWidget, IPage {
 
   private void set_follow_button_state (bool following) { //{{{
     var sc = follow_button.get_style_context ();
-    follow_button.sensitive = (user_id != account.id);
+    if (this.user_id != -1)
+      follow_button.sensitive = (this.user_id != account.id);
+    else if (this.screen_name != null)
+      follow_button.sensitive = (this.screen_name != account.screen_name);
+
     if (following) {
       sc.remove_class ("suggested-action");
       sc.add_class ("destructive-action");
