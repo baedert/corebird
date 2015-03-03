@@ -94,7 +94,7 @@ class ProfilePage : ScrollWidget, IPage {
   private bool following;
   private int64 user_id;
   private new string name;
-  private string screen_name;
+  private string? screen_name;
   private string avatar_url;
   private int follower_count = -1;
   private GLib.Cancellable data_cancellable;
@@ -159,9 +159,8 @@ class ProfilePage : ScrollWidget, IPage {
     this.more_menu = more_button.menu_model;
   }
 
-  private void set_user_id (int64 user_id) { // {{{
-    this.user_id = user_id;
 
+  private void prepare_profile_change () {
     follow_button.sensitive = (user_id != account.id);
     ((SimpleAction)actions.lookup_action ("add-remove-list")).set_enabled (user_id != account.id);
     ((SimpleAction)actions.lookup_action ("write-dm")).set_enabled (user_id != account.id);
@@ -171,6 +170,14 @@ class ProfilePage : ScrollWidget, IPage {
 
     load_banner (DATADIR + "/no_banner.png");
     load_friendship.begin ();
+  }
+
+  private void set_user_id (int64 user_id) { // {{{
+    this.user_id = user_id;
+    this.screen_name = null;
+
+    prepare_profile_change ();
+
     bool data_in_db = false;
     //Load cached data
     Corebird.db.select ("profiles").cols ("id", "screen_name", "name", "description", "tweets",
@@ -210,13 +217,23 @@ class ProfilePage : ScrollWidget, IPage {
     load_profile_data.begin (!data_in_db);
   } // }}}
 
+  private void set_screen_name (string screen_name) {
+    this.screen_name = screen_name;
+    this.user_id = -1;
+    prepare_profile_change ();
+    load_profile_data.begin (true);
+  }
+
 
   private async void load_friendship () {
     var call = account.proxy.new_call ();
     call.set_function ("1.1/friendships/show.json");
     call.set_method ("GET");
     call.add_param ("source_id", account.id.to_string ());
-    call.add_param ("target_id", user_id.to_string ());
+    if (user_id != -1)
+      call.add_param ("target_id", user_id.to_string ());
+    else
+      call.add_param ("target_screen_name", screen_name);
     Json.Node? root = yield TweetUtils.load_threaded (call);
     if (root == null)
       return;
@@ -241,7 +258,13 @@ class ProfilePage : ScrollWidget, IPage {
     var call = account.proxy.new_call ();
     call.set_method ("GET");
     call.set_function ("1.1/users/show.json");
-    call.add_param ("user_id", this.user_id.to_string ());
+    if (this.user_id != -1)
+      call.add_param ("user_id", this.user_id.to_string ());
+    else if (this.screen_name != null)
+      call.add_param ("screen_name", this.screen_name);
+    else
+      critical ("Neither user_id nor screen_name is set");
+
     call.add_param ("include_entities", "false");
 
     Json.Node? root_node = yield TweetUtils.load_threaded (call); // TODO: Use data_cancellable here
@@ -592,20 +615,24 @@ class ProfilePage : ScrollWidget, IPage {
    */
   public void on_join(int page_id, Bundle? args) {
     int64 user_id = args.get_int64 ("user_id");
-    if (user_id == -1)
-      return;
-    else
-      lists_page_inited = false;
+
+    lists_page_inited = false;
 
     string? screen_name = args.get_string ("screen_name");
-    if (screen_name != null) {
+    if (screen_name != null && user_id != -1) {
       this.screen_name = screen_name;
     }
 
 
     data_cancellable = new GLib.Cancellable ();
     reset_data ();
-    set_user_id (user_id);
+    if (user_id != -1)
+      set_user_id (user_id);
+    else if (screen_name != null)
+      set_screen_name (screen_name);
+    else
+      critical ("Neither user_id nor screen_name given");
+
     tweet_list.remove_all ();
     tweet_list.reset_placeholder_text ();
     user_stack.visible_child = tweet_list;
