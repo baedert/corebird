@@ -185,34 +185,22 @@ class TweetInfoPage : IPage , ScrollWidget {
     call.set_method ("GET");
     call.set_function ("1.1/statuses/show.json");
     call.add_param ("id", tweet_id.to_string ());
-    call.invoke_async.begin (null, (obj, res) => {
-      try {
-        call.invoke_async.end (res);
-      }catch (GLib.Error e) {
-        critical(e.message);
-        Utils.show_error_object (call.get_payload (), e.message,
-                                 GLib.Log.LINE, GLib.Log.FILE);
+    TweetUtils.load_threaded.begin (call, (_, res) => {
+      Json.Node? root = TweetUtils.load_threaded.end (res);
+
+      if (root == null)
         return;
-      }
+
       this.tweet = new Tweet ();
-      var parser = new Json.Parser ();
-      try {
-        parser.load_from_data (call.get_payload ());
-      } catch (GLib.Error e) {
-        critical (e.message);
-        return;
-      }
-      tweet.load_from_json (parser.get_root (), now, account);
-      Json.Object root_object = parser.get_root ().get_object ();
+      tweet.load_from_json (root, now, account);
+      Json.Object root_object = root.get_object ();
 
       string with = root_object.get_string_member ("source");
       with = "<span underline='none'>" + extract_source (with) + "</span>";
       set_tweet_data (tweet, with);
 
-      if (tweet.reply_id == 0) {
-        load_replied_to_tweet (tweet.reply_id);
-      } else
-        load_replied_to_tweet (tweet.reply_id);
+      load_replied_to_tweet (tweet.reply_id);
+
       values_set = true;
     });
 
@@ -224,24 +212,13 @@ class TweetInfoPage : IPage , ScrollWidget {
     reply_call.add_param ("q", "to:" + this.screen_name);
     reply_call.add_param ("since_id", tweet_id.to_string ());
     reply_call.add_param ("count", "200");
-    reply_call.invoke_async.begin (null, (o, res) => {
-      try { reply_call.invoke_async.end (res); }
-      catch (GLib.Error e) {
-        warning (e.message);
-        Utils.show_error_object (reply_call.get_payload (), e.message,
-                                 GLib.Log.LINE, GLib.Log.FILE);
-        return;
-      }
+    TweetUtils.load_threaded.begin (reply_call, (_, res) => {
+      Json.Node? root = TweetUtils.load_threaded.end (res);
 
-      var parser = new Json.Parser ();
-      try {
-        parser.load_from_data (reply_call.get_payload ());
-      } catch (GLib.Error e) {
-        warning (e.message);
-        debug (reply_call.get_payload ());
+      if (root == null)
         return;
-      }
-      var statuses_node = parser.get_root ().get_object ().get_array_member ("statuses");
+
+      var statuses_node = root.get_object ().get_array_member ("statuses");
       int n_replies = 0;
       statuses_node.foreach_element ((arr, index, node) => {
         if (n_replies >= 5)
@@ -270,6 +247,7 @@ class TweetInfoPage : IPage , ScrollWidget {
         top_list_box.hide ();
         reply_indicator.replies_available = false;
       }
+
     });
 
   } //}}}

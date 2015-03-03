@@ -217,21 +217,11 @@ class ProfilePage : ScrollWidget, IPage {
     call.set_method ("GET");
     call.add_param ("source_id", account.id.to_string ());
     call.add_param ("target_id", user_id.to_string ());
-    try {
-      yield call.invoke_async (null);
-    } catch (GLib.Error e) {
-      Utils.show_error_object (call.get_payload (), e.message,
-                               GLib.Log.LINE, GLib.Log.FILE);
+    Json.Node? root = yield TweetUtils.load_threaded (call);
+    if (root == null)
       return;
-    }
-    var parser = new Json.Parser ();
-    try {
-      parser.load_from_data (call.get_payload ());
-    } catch (GLib.Error e) {
-      critical ("%s:\n%s", e.message, call.get_payload ());
-      return;
-    }
-    var relationship = parser.get_root ().get_object ().get_object_member ("relationship");
+
+    var relationship = root.get_object ().get_object_member ("relationship");
     bool followed_by = relationship.get_object_member ("target").get_boolean_member ("following");
     bool following = relationship.get_object_member ("target").get_boolean_member ("followed_by");
     bool want_retweets = relationship.get_object_member ("source").get_boolean_member ("want_retweets");
@@ -253,23 +243,13 @@ class ProfilePage : ScrollWidget, IPage {
     call.set_function ("1.1/users/show.json");
     call.add_param ("user_id", user_id.to_string ());
     call.add_param ("include_entities", "false");
-    try {
-      yield call.invoke_async (data_cancellable);
-    } catch (GLib.Error e) {
-      warning ("Error while ending call: %s", e.message);
-      return;
-    }
-    string back = call.get_payload();
-    stdout.printf (back + "\n");
-    Json.Parser parser = new Json.Parser();
-    try{
-      parser.load_from_data (back);
-    } catch (GLib.Error e){
-      warning ("Error while loading profile data: %s", e.message);
+
+    Json.Node? root_node = yield TweetUtils.load_threaded (call); // TODO: Use data_cancellable here
+    if (root_node == null) {
       return;
     }
 
-    var root = parser.get_root().get_object();
+    var root = root_node.get_object();
     int64 id = root.get_int_member ("id");
 
     string avatar_url = root.get_string_member("profile_image_url");
@@ -395,27 +375,20 @@ class ProfilePage : ScrollWidget, IPage {
     call.add_param ("contributor_details", "true");
     call.add_param ("include_my_retweet", "true");
 
-    try {
-      yield call.invoke_async (null);
-    } catch (GLib.Error e) {
-      //Utils.show_error_object (call.get_payload (), e.message);
-      // Silently cancel since the user is probably protected.
+
+    Json.Node? root = yield TweetUtils.load_threaded (call);
+
+    if (root == null) {
       tweet_list.set_empty ();
       return;
     }
-    var parser = new Json.Parser ();
-    try {
-      parser.load_from_data (call.get_payload ());
-    } catch (GLib.Error e) {
-      warning (e.message);
-      return;
-    }
-    var root = parser.get_root().get_array();
-    if (root.get_length () == 0) {
+
+    var root_array = root.get_array ();
+    if (root_array.get_length () == 0) {
       tweet_list.set_empty ();
       return;
     }
-    var result = yield TweetUtils.work_array (root,
+    var result = yield TweetUtils.work_array (root_array,
                                               requested_tweet_count,
                                               delta_updater,
                                               tweet_list,
@@ -443,20 +416,12 @@ class ProfilePage : ScrollWidget, IPage {
     call.add_param ("include_my_retweet", "true");
     call.add_param ("max_id", (lowest_tweet_id - 1).to_string ());
 
-    try {
-      yield call.invoke_async (null);
-    } catch (GLib.Error e) {
-      warning (e.message);
+    Json.Node? root = yield TweetUtils.load_threaded (call);
+
+    if (root == null)
       return;
-    }
-    var parser = new Json.Parser ();
-    try {
-      parser.load_from_data (call.get_payload ());
-    } catch (GLib.Error e) {
-      warning ("%s FOR DATA %s", e.message, call.get_payload ());
-      return;
-    }
-    var root_arr = parser.get_root ().get_array ();
+
+    var root_arr = root.get_array ();
     var result = yield TweetUtils.work_array (root_arr,
                                               requested_tweet_count,
                                               delta_updater,

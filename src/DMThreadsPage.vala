@@ -160,8 +160,9 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     call.add_param ("skip_status", "true");
     call.add_param ("since_id", max_received_id.to_string ());
     call.add_param ("count", "200");
-    call.invoke_async.begin (null, (obj, res) => {
-      on_dm_result (obj, res);
+    TweetUtils.load_threaded.begin (call, (obj, res) => {
+      Json.Node? root = TweetUtils.load_threaded.end (res);
+      on_dm_result (root);
     });
 
     var sent_call = account.proxy.new_call ();
@@ -170,34 +171,21 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     sent_call.add_param ("since_id", max_sent_id.to_string ());
     sent_call.add_param ("count", "200");
     sent_call.set_method ("GET");
-    sent_call.invoke_async.begin (null, (obj, res) => {
-      on_dm_result (obj, res);
+    TweetUtils.load_threaded.begin (sent_call, (obj, res) => {
+      Json.Node? root = TweetUtils.load_threaded.end (res);
+      on_dm_result (root);
     });
+
   } // }}}
 
 
-  private void on_dm_result (GLib.Object? object, GLib.AsyncResult res) {
-    var call = (Rest.ProxyCall) object;
-    try {
-      call.invoke_async.end (res);
-    } catch (GLib.Error e) {
-      critical (e.message);
-      dm_download_collect.emit (e);
-      return;
-    }
-    var parser = new Json.Parser ();
-    try {
-      parser.load_from_data (call.get_payload ());
-    } catch (GLib.Error e) {
-      critical (e.message);
-      dm_download_collect.emit (e);
-      return;
-    }
-
-
+  private void on_dm_result (Json.Node? root) {
     dm_download_collect.emit ();
 
-    var root_arr = parser.get_root ().get_array ();
+    if (root == null)
+      return;
+
+    var root_arr = root.get_array ();
     debug ("sent: %u", root_arr.get_length ());
     if (root_arr.get_length () > 0) {
       account.db.begin_transaction ();

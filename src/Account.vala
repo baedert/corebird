@@ -164,27 +164,14 @@ public class Account : GLib.Object {
       call.add_param ("user_id", this.id.to_string ());
     }
     call.add_param ("skip_status", "true");
-    try {
-      yield call.invoke_async (null);
-    } catch (GLib.Error e) {
-      if (e.message.down() == "unauthorized") {
-        Utils.show_error_dialog ("Unauthorized");
-      }
-      critical (e.message);
-      return;
-    }
 
-    var parser = new Json.Parser ();
-    try {
-      parser.load_from_data (call.get_payload ());
-    } catch (GLib.Error e) {
-      critical (e.message);
+    Json.Node? root_node = yield TweetUtils.load_threaded (call);
+    if (root_node == null)
       return;
-    }
 
     bool values_changed = false;
 
-    var root = parser.get_root ().get_object ();
+    var root = root_node.get_object ();
     this.id = root.get_int_member ("id");
     if (this.name != root.get_string_member ("name")) {
       this.name = root.get_string_member ("name");
@@ -278,26 +265,17 @@ public class Account : GLib.Object {
     var call = this.proxy.new_call ();
     call.set_function (function);
     call.set_method ("GET");
-    try {
-      yield call.invoke_async (null);
-    } catch (GLib.Error e) {
-      warning (e.message);
-      collect_obj.emit (e);
+
+    Json.Node? root = yield TweetUtils.load_threaded (call);
+    if (root == null) {
+      collect_obj.emit ();
       return null;
     }
 
-    var parser = new Json.Parser ();
-    try {
-      parser.load_from_data (call.get_payload ());
-    } catch (GLib.Error e) {
-      warning (e.message);
-      collect_obj.emit (e);
-      return null;
-    }
     if (direct)
-      return parser.get_root ().get_array ();
+      return root.get_array ();
     else
-      return parser.get_root ().get_object ().get_array_member ("ids");
+      return root.get_object ().get_array_member ("ids");
   }
 
   /**

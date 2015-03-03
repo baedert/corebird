@@ -595,4 +595,32 @@ namespace TweetUtils {
     }
   }
 
+  public async Json.Node? load_threaded (Rest.ProxyCall call)
+  {
+    Json.Node? result = null;
+    GLib.SourceFunc callback = load_threaded.callback;
+    new Thread<void*> ("json parser", () => {
+      try {
+        call.sync ();
+      } catch (GLib.Error e) {
+        warning (e.message);
+        return null;
+      }
+
+      var parser = new Json.Parser ();
+      try {
+        parser.load_from_data (call.get_payload ());
+      } catch (GLib.Error e) {
+        warning (e.message);
+        return null;
+      }
+
+      result = parser.get_root ();
+      GLib.Idle.add (() => { callback (); return false; });
+      return null;
+    });
+    yield;
+
+    return result;
+  }
 }

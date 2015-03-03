@@ -14,6 +14,7 @@ src/util/Utils.c
 src/DMPage.c
 src/ListStatusesPage.c
 src/MainWindow.c
+src/ITimeline.c
 src/widgets/AccountCreateWidget.c
 src/widgets/TweetListBox.c
 src/widgets/PixbufButton.c
