@@ -156,28 +156,14 @@ class SearchPage : IPage, Gtk.Box {
     user_call.add_param ("count", (USER_COUNT + 1).to_string ());
     user_call.add_param ("include_entities", "false");
     user_call.add_param ("page", user_page.to_string ());
-    user_call.invoke_async.begin (null, (obj, res) => {
-      try {
-        user_call.invoke_async.end (res);
-      } catch (GLib.Error e) {
-        if (user_call.get_payload () != null) {
-          Utils.show_error_object (user_call.get_payload (), e.message,
-                                   GLib.Log.LINE, GLib.Log.FILE);
-        }
-
-        collect_obj.emit (e);
+    TweetUtils.load_threaded.begin (user_call, (_, res) => {
+      Json.Node? root = TweetUtils.load_threaded.end (res);
+      if (root == null) {
+        collect_obj.emit ();
         return;
       }
 
-      var parser = new Json.Parser ();
-      try {
-        parser.load_from_data (user_call.get_payload ());
-      } catch (GLib.Error e) {
-        warning (e.message);
-        return;
-      }
-
-      var users = parser.get_root ().get_array ();
+      var users = root.get_array ();
       if (users.get_length () == 0 && n_results <= 0)
         n_results = -1;
       else
@@ -210,6 +196,7 @@ class SearchPage : IPage, Gtk.Box {
         load_more_entry.hide ();
       }
       collect_obj.emit ();
+
     });
 
   } // }}}
@@ -225,25 +212,16 @@ class SearchPage : IPage, Gtk.Box {
     call.add_param ("q", this.search_query);
     call.add_param ("max_id", (lowest_tweet_id - 1).to_string ());
     call.add_param ("count", "35");
-    call.invoke_async.begin (null, (obj, res) => {
-      try{
-        call.invoke_async.end (res);
-      } catch (GLib.Error e) {
-        collect_obj.emit (e);
-        warning (e.message);
+    TweetUtils.load_threaded.begin (call, (_, res) => {
+      Json.Node? root = TweetUtils.load_threaded.end (res);
+
+      if (root == null) {
+        collect_obj.emit ();
         return;
       }
-      string back = call.get_payload ();
-      Json.Parser parser = new Json.Parser ();
-      try {
-        parser.load_from_data (back);
-      } catch (GLib.Error e) {
-        critical(" %s\nDATA:\n%s", e.message, back);
-        collect_obj.emit (e);
-        return;
-      }
+
       var now = new GLib.DateTime.now_local ();
-      var statuses = parser.get_root().get_object().get_array_member("statuses");
+      var statuses = root.get_object().get_array_member("statuses");
       if (statuses.get_length () == 0 && n_results <= 0)
         n_results = -1;
       else
@@ -265,6 +243,8 @@ class SearchPage : IPage, Gtk.Box {
       });
       loading_tweets = false;
       collect_obj.emit ();
+
+
     });
 
   } // }}}

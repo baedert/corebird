@@ -159,22 +159,14 @@ class ListStatusesPage : ScrollWidget, IPage {
     debug ("USING LIST ID %s", list_id.to_string ());
     call.add_param ("list_id", list_id.to_string ());
     call.add_param ("count", requested_tweet_count.to_string ());
-    try {
-      yield call.invoke_async (null);
-    } catch (GLib.Error e) {
-      Utils.show_error_object (call.get_payload (), e.message,
-                               GLib.Log.LINE, GLib.Log.FILE);
-      return;
-    }
-    var parser = new Json.Parser ();
-    try {
-      parser.load_from_data (call.get_payload ());
-    } catch (GLib.Error e) {
-      critical (e.message);
+
+    Json.Node? root = yield TweetUtils.load_threaded (call);
+    if (root == null) {
       return;
     }
 
-    var root_array = parser.get_root ().get_array ();
+
+    var root_array = root.get_array ();
     if (root_array.get_length () == 0) {
       tweet_list.set_empty ();
       return;
@@ -204,23 +196,12 @@ class ListStatusesPage : ScrollWidget, IPage {
     call.add_param ("list_id", list_id.to_string ());
     call.add_param ("max_id", (lowest_id -1).to_string ());
     call.add_param ("count", requested_tweet_count.to_string ());
-    try {
-      yield call.invoke_async (null);
-    } catch (GLib.Error e) {
-      Utils.show_error_object (call.get_payload (), e.message,
-                               GLib.Log.LINE, GLib.Log.FILE);
-      loading = false;
-      return;
-    }
-    var parser = new Json.Parser ();
-    try {
-      parser.load_from_data (call.get_payload ());
-    } catch (GLib.Error e) {
-      critical (e.message);
-      return;
-    }
 
-    var root_array = parser.get_root ().get_array ();
+    Json.Node? root = yield TweetUtils.load_threaded (call);
+    if (root == null)
+      return;
+
+    var root_array = root.get_array ();
     var res = yield TweetUtils.work_array (root_array,
                                            requested_tweet_count,
                                            delta_updater,
