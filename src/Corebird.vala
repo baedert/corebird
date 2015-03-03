@@ -31,7 +31,7 @@ public class Corebird : Gtk.Application {
     {"show-dm-thread",    show_dm_thread,          "(sx)" },
     {"mark-seen",         mark_seen,               "(sx)" },
     {"show-window",       show_window,             "s"    },
-    {"show-profile",      show_profile,            "x"    }
+    {"show-profile",      show_profile,            "s"    }
   };
 
 
@@ -430,9 +430,8 @@ public class Corebird : Gtk.Application {
   }
 
   private void show_profile (GLib.SimpleAction a, GLib.Variant? value) {
-    int64 user_id = value.get_int64 ();
     var bundle = new Bundle ();
-    bundle.put_int64 ("user_id", user_id);
+    bundle.put_string ("screen_name", value.get_string ());
     unowned GLib.List<Gtk.Window> windows = this.get_windows ();
     if (windows.length () > 0) {
       var window = (MainWindow)windows.nth_data (0);
