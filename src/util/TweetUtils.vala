@@ -599,13 +599,26 @@ namespace TweetUtils {
   {
     Json.Node? result = null;
     GLib.SourceFunc callback = load_threaded.callback;
+
+    /*
+       Call invoke_async anways, even though we create a new thread afterwards.
+       Workaround for https://bugzilla.gnome.org/show_bug.cgi?id=742644
+       TODO: switch to sync() again, bump librest dependency
+     */
+    try {
+      yield call.invoke_async (null);
+    } catch (GLib.Error e) {
+      warning (e.message);
+      return null;
+    }
+
     new Thread<void*> ("json parser", () => {
-      try {
-        call.sync ();
-      } catch (GLib.Error e) {
-        warning (e.message);
-        return null;
-      }
+      //try {
+        //call.sync ();
+      //} catch (GLib.Error e) {
+        //warning (e.message);
+        //return null;
+      //}
 
       var parser = new Json.Parser ();
       try {
