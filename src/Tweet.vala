@@ -258,7 +258,8 @@ public class Tweet : GLib.Object {
             this.medias[real_media_count] = m;
             real_media_count ++;
           }
-        } else if (media_type == "video") {
+        } else if (media_type == "video" ||
+                   media_type == "animated_gif") {
           Json.Object variant = media_obj.get_object_member ("video_info")
                                          .get_array_member ("variants")
                                          .get_object_element (0); // XXX ???
