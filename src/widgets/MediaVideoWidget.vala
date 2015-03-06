@@ -34,7 +34,7 @@ class MediaVideoWidget : Gtk.Stack {
     drawing_area.realize.connect (realize_cb);
 #if VIDEO
     this.src  = Gst.ElementFactory.make ("playbin", "video");
-    this.sink = Gst.ElementFactory.make ("vaapisink", "sink");
+    this.sink = Gst.ElementFactory.make ("xvimagesink", "sink");
     this.src.set ("video-sink", sink, null);
     var bus = src.get_bus ();
     bus.set_sync_handler (bus_sync_handler);
