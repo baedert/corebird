@@ -6,13 +6,13 @@ TESTS = \
 				bundlehistory  \
 				usercounter    \
 				media          \
-				tweet_entities \
 				tweet_parsing  \
 				filters        \
 				sql            \
 				multimedia     \
 				highlighting   \
-				friends
+				friends        \
+				texttransform
 check_PROGRAMS = $(TESTS)
 
 tweet_length_SOURCES = tweet_length.vala
