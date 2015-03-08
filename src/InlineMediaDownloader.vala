@@ -62,6 +62,7 @@ namespace InlineMediaDownloader {
 #if VIDEO
            url.has_prefix ("https://vine.co/v/") ||
            url.has_suffix ("/photo/1") ||
+           url.has_prefix ("https://video.twimg.com/ext_tw_video/") ||
 #endif
            url.has_prefix ("http://pbs.twimg.com/media/") ||
            url.has_prefix ("http://twitpic.com/")
