@@ -230,18 +230,17 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     }
 
     var urls = dm_obj.get_object_member ("entities").get_array_member ("urls");
-    var url_list = new GLib.SList<TweetUtils.Sequence?> ();
+    var url_list = new GLib.SList<TextEntity?> ();
     urls.foreach_element((arr, index, node) => {
       var url = node.get_object();
       string expanded_url = url.get_string_member("expanded_url");
 
       Json.Array indices = url.get_array_member ("indices");
       expanded_url = expanded_url.replace("&", "&amp;");
-      url_list.prepend(TweetUtils.Sequence() {
-        start = (int)indices.get_int_element (0),
-        end   = (int)indices.get_int_element (1) ,
-        url   = url.get_string_member ("display_url"),
-        visual_display_url = false
+      url_list.prepend(TextEntity() {
+        from = (int)indices.get_int_element (0),
+        to   = (int)indices.get_int_element (1) ,
+        display_text = url.get_string_member ("display_url")
       });
     });
 
@@ -250,7 +249,9 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     string sender_name = dm_obj.get_object_member ("sender").get_string_member ("name").strip ();
     thread_entry.name = sender_name;
     thread_entry.screen_name = author;
-    thread_entry.last_message = TweetUtils.get_real_text (text, url_list);
+    thread_entry.last_message = TextTransform.transform (text,
+                                                         url_list,
+                                                         TransformFlags.EXPAND_LINKS);
     thread_entry.last_message_id = message_id;
     thread_list.add(thread_entry);
     thread_list.invalidate_sort ();
@@ -279,22 +280,24 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     string text = dm_obj.get_string_member ("text");
     if (dm_obj.has_member ("entities")) {
       var urls = dm_obj.get_object_member ("entities").get_array_member ("urls");
-      var url_list = new GLib.SList<TweetUtils.Sequence?> ();
+      var url_list = new GLib.SList<TextEntity?> ();
       urls.foreach_element((arr, index, node) => {
         var url = node.get_object();
         string expanded_url = url.get_string_member("expanded_url");
 
         Json.Array indices = url.get_array_member ("indices");
         expanded_url = expanded_url.replace("&", "&amp;");
-        url_list.prepend(TweetUtils.Sequence() {
-          start = (int)indices.get_int_element (0),
-          end   = (int)indices.get_int_element (1) ,
-          url   = expanded_url,
-          display_url = url.get_string_member ("display_url"),
-          visual_display_url = false
+        url_list.prepend(TextEntity() {
+          from = (int)indices.get_int_element (0),
+          to   = (int)indices.get_int_element (1) ,
+          target = expanded_url,
+          display_text = url.get_string_member ("display_url")
         });
       });
-      text = TweetUtils.get_formatted_text (text, url_list);
+      //text = TweetUtils.get_formatted_text (text, url_list);
+      text = TextTransform.transform (text,
+                                      url_list,
+                                      0);
     }
 
     // TODO: Update last_message

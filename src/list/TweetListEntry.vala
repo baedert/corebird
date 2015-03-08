@@ -312,7 +312,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   }
 
   private void media_invalid_cb () {
-    this.text_label.set_label (tweet.get_formatted_text ());
+    this.text_label.set_label ("INVALID MEDIA");
   }
 
 
