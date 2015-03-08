@@ -302,7 +302,7 @@ namespace Utils {
 
   public void load_custom_icons () {
     var icon_theme  = Gtk.IconTheme.get_default ();
-    icon_theme.append_search_path (DATADIR + "assets/");
+    icon_theme.add_resource_path ("/org/baedert/corebird/data/");
   }
 
   public void load_custom_css () {
