@@ -243,8 +243,10 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   [GtkCallback]
   private void retweet_button_toggled_cb () {
     /* You can't retweet your own tweets. */
-    if (account.id == this.tweet.user_id || !values_set)
+    if (account.id == this.tweet.user_id || !values_set) {
+      retweet_button.active = false;
       return;
+    }
 
     retweet_button.sensitive = false;
     TweetUtils.toggle_retweet_tweet.begin (account, tweet, !retweet_button.active, () => {
