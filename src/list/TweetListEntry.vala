@@ -161,8 +161,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
         favorite_button.active = !favorite_button.active;
     });
     retweet_tweet.connect (() => {
-      if (retweet_button.parent != null)
-        retweet_button.tap ();
+      retweet_button.tap ();
     });
 
     if (tweet.favorited)
