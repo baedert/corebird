@@ -122,7 +122,8 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     }
 
     retweet_button.active = tweet.retweeted;
-    retweet_button.sensitive = (tweet.user_id != account.id);
+    retweet_button.sensitive = (tweet.user_id != account.id) &&
+                               !tweet.protected;
     tweet.notify["retweeted"].connect (retweeted_cb);
 
     favorite_button.active = tweet.favorited;
