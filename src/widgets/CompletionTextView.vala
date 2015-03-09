@@ -114,6 +114,9 @@ class CompletionTextView : Gtk.TextView {
 
   private void show_completion_window () {
     debug ("show_completion_window");
+    if (!this.get_mapped ())
+      return;
+
     int x, y;
     Gtk.Allocation alloc;
     this.get_allocation (out alloc);
