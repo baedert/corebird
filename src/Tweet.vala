@@ -49,6 +49,7 @@ public class Tweet : GLib.Object {
   public bool verified = false;
   /** If the user retweeted this tweet */
   public int64 my_retweet;
+  public bool protected;
 
   /** if 0, this tweet is NOT part of a conversation */
   public int64 reply_id = 0;
@@ -90,6 +91,7 @@ public class Tweet : GLib.Object {
     this.favorite_count = (int)status.get_int_member ("favorite_count");
     this.created_at  = Utils.parse_date(status.get_string_member("created_at"))
                       .to_unix();
+    this.protected   = user.get_boolean_member ("protected");
 
 
     if (status.has_member("retweeted_status")) {
