@@ -58,6 +58,13 @@ void real_text1 () {
   assert (l == 139); // according to Twitter's web interface
 }
 
+void newline_link () {
+  string text = "Foo\nhttp://foobar.org";
+  int l = TweetUtils.calc_tweet_length (text);
+  message ("Length: %d", l);
+  assert (l == 26);
+}
+
 int main (string[] args) {
   GLib.Test.init (ref args);
   GLib.Test.add_func ("/tweet-length/normal", normal);
@@ -68,6 +75,8 @@ int main (string[] args) {
   GLib.Test.add_func ("/tweet-length/media-text", media_text);
   GLib.Test.add_func ("/tweet-length/tld1", tld1);
   GLib.Test.add_func ("/tweet-length/real-text1", real_text1);
+  GLib.Test.add_func ("/tweet-length/newline-link", newline_link);
+
 
   return GLib.Test.run ();
 }
