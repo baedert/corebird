@@ -295,7 +295,12 @@ namespace TweetUtils {
     int length = 0;
 
     foreach (string s in words) {
-      length += get_word_length (s);
+      string[] subwords = s.split ("\n");
+      foreach (string sw in subwords) {
+        message ("Subword: %s", sw);
+        length += get_word_length (sw);
+      }
+      length += subwords.length - 1;
     }
 
     // Don't forget the n-1 whitespaces
@@ -311,6 +316,8 @@ namespace TweetUtils {
   }
 
   private int get_word_length (string s) {
+    if (s.contains ("\n"))
+        message ("string %s contains a newline", s);
     if (s.has_prefix ("www.") || s.has_prefix ("http://"))
       return Twitter.short_url_length;
 
