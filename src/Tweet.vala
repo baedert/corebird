@@ -91,7 +91,6 @@ public class Tweet : GLib.Object {
     this.favorite_count = (int)status.get_int_member ("favorite_count");
     this.created_at  = Utils.parse_date(status.get_string_member("created_at"))
                       .to_unix();
-    this.protected   = user.get_boolean_member ("protected");
 
 
     if (status.has_member("retweeted_status")) {
@@ -111,6 +110,7 @@ public class Tweet : GLib.Object {
       this.rt_created_at = Utils.parse_date(rt.get_string_member("created_at"))
                                   .to_unix();
       this.verified      = rt_user.get_boolean_member("verified");
+      this.protected     = rt_user.get_boolean_member ("protected");
       if (!rt.get_null_member("in_reply_to_status_id"))
         this.reply_id = rt.get_int_member("in_reply_to_status_id");
     } else {
@@ -121,6 +121,7 @@ public class Tweet : GLib.Object {
       this.screen_name = user.get_string_member("screen_name");
       this.avatar_url  = user.get_string_member("profile_image_url");
       this.verified    = user.get_boolean_member("verified");
+      this.protected   = user.get_boolean_member ("protected");
       if (!status.get_null_member("in_reply_to_status_id"))
         this.reply_id  = status.get_int_member("in_reply_to_status_id");
     }
