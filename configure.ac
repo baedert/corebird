@@ -36,7 +36,8 @@ pkg_modules="gtk+-3.0 >= 3.14
              libsoup-2.4
              gee-0.8
              json-glib-1.0
-             sqlite3"
+             sqlite3
+             gtkspell3-3.0"
 
 if test "$disable_video" = "no"; then
   pkg_modules="$pkg_modules gstreamer-video-1.0 gdk-x11-3.0"
@@ -53,6 +54,7 @@ CB_VALA_FLAGS=" \
   --pkg sqlite3 \
   --pkg libsoup-2.4 \
   --pkg glib-2.0 \
+  --pkg gtkspell3-3.0 \
   --target-glib=2.38 \
   --gresources=\$(top_srcdir)/resources.xml \
   --vapidir=\$(top_srcdir)/vapi/ \

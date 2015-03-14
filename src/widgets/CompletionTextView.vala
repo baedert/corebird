@@ -20,7 +20,6 @@ class CompletionTextView : Gtk.TextView {
   private Gtk.Window completion_window;
   private int current_match = 0;
 
-
   private unowned Account account;
 
   construct {
@@ -53,6 +52,19 @@ class CompletionTextView : Gtk.TextView {
     this.buffer.notify["cursor-position"].connect (update_completion);
     this.buffer.changed.connect (buffer_changed_cb);
     this.key_press_event.connect (key_press_event_cb);
+
+    var spell_checker = new GtkSpell.Checker ();
+    spell_checker.attach (this);
+    spell_checker.language_changed.connect (() => {
+      var lang = spell_checker.get_language ();
+      if (lang != null) {
+        try {
+          spell_checker.set_language (lang);
+        } catch {
+          debug ("Failed to set spell checker language: %s", lang);
+        }
+      }
+    });
   }
 
   public void set_account (Account account) {
