@@ -45,13 +45,13 @@ This is the readme for the current *development version*. If you're looking for 
  - `libsoup-2.4`
  - `intltool >= 0.40`
  - `libgee-0.8`
- - `gtkspell3-3.0`
  - `vala >= 0.26` (makedep)
  - `automake >= 1.14` (makedep)
  - `gstreamer-1.0` (disable via --disable-video, default enabled)
  - `gst-plugins-bad-1.0` (disable via --disable-video, default enabled)
  - `gst-plugins-good-1.0` (disable via --disable-video, default enabled)
  - `gst-libav-1.0` (disable via --disable-video, default enabled)
+ - `gtkspell3-3.0` (disable via --disable-spell-check, default enabled)
 
 Note that the above packages are just rough estimations, the actual package names on your distribution may vary.
 

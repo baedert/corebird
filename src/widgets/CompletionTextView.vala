@@ -53,6 +53,7 @@ class CompletionTextView : Gtk.TextView {
     this.buffer.changed.connect (buffer_changed_cb);
     this.key_press_event.connect (key_press_event_cb);
 
+#if SPELL_CHECK
     var spell_checker = new GtkSpell.Checker ();
     spell_checker.attach (this);
     spell_checker.language_changed.connect (() => {
@@ -65,6 +66,7 @@ class CompletionTextView : Gtk.TextView {
         }
       }
     });
+#endif    
   }
 
   public void set_account (Account account) {
