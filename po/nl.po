@@ -4,14 +4,15 @@
 #
 # Translators:
 # Geert Wirken <geert@gwirken.nl>, 2014
-# Heimen Stoffels <motionshot@vivaldi.net>, 2014
+# Heimen Stoffels <vistausss@outlook.com>, 2014-2015
+# Heimen Stoffels <vistausss@outlook.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-15 10:13+0100\n"
-"PO-Revision-Date: 2014-11-15 08:57+0000\n"
-"Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
+"POT-Creation-Date: 2015-03-17 15:59+0100\n"
+"PO-Revision-Date: 2015-03-18 12:35+0000\n"
+"Last-Translator: Heimen Stoffels <vistausss@outlook.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/corebird/language/"
 "nl/)\n"
 "Language: nl\n"
@@ -20,48 +21,56 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../src/window/ComposeTweetWindow.vala:317 ../ui/compose-window.ui.h:3
+#: ../src/window/ComposeTweetWindow.vala:338
 msgid "Select Image"
 msgstr "Afbeelding selecteren"
 
-#: ../src/window/ComposeTweetWindow.vala:318
-#: ../src/window/UserListDialog.vala:44
-#: ../src/widgets/MultiMediaWidget.vala:148 ../ui/compose-window.ui.h:4
+#: ../src/window/ComposeTweetWindow.vala:339
+#: ../src/window/UserListDialog.vala:45
+#: ../src/widgets/MultiMediaWidget.vala:152 ../ui/compose-window.ui.h:2
 #: ../ui/list-list-entry.ui.h:1 ../ui/list-statuses-page.ui.h:8
 #: ../ui/filter-list-entry.ui.h:1 ../ui/modify-filter-dialog.ui.h:2
-#: ../ui/user-filter-entry.ui.h:1 ../ui/account-dialog.ui.h:6
+#: ../ui/user-filter-entry.ui.h:1 ../ui/account-dialog.ui.h:2
 #: ../ui/image-crop-dialog.ui.h:1
 msgid "Cancel"
 msgstr "Annuleren"
 
-#: ../src/window/ComposeTweetWindow.vala:319
+#: ../src/window/ComposeTweetWindow.vala:340
 msgid "Choose"
 msgstr "Kiezen"
 
-#: ../src/window/UserListDialog.vala:45
-#: ../src/widgets/MultiMediaWidget.vala:149
-#: ../src/window/ImageCropDialog.vala:91 ../ui/list-statuses-page.ui.h:6
-#: ../ui/modify-filter-dialog.ui.h:3 ../ui/account-dialog.ui.h:8
+#: ../src/window/UserListDialog.vala:38
+msgid "Add to or Remove User From List"
+msgstr "Gebruiker toevoegen aan of verwijderen uit lijst"
+
+#: ../src/window/UserListDialog.vala:46
+#: ../src/widgets/MultiMediaWidget.vala:153
+#: ../src/window/ImageCropDialog.vala:98 ../ui/list-statuses-page.ui.h:6
+#: ../ui/modify-filter-dialog.ui.h:3 ../ui/account-dialog.ui.h:3
 msgid "Save"
 msgstr "Opslaan"
 
-#: ../src/window/ModifyFilterDialog.vala:47
+#: ../src/window/UserListDialog.vala:59
+msgid "You have no lists."
+msgstr "U heeft geen lijsten."
+
+#: ../src/window/ModifyFilterDialog.vala:45
 msgid "Modify Filter"
 msgstr "Filter aanpassen"
 
-#: ../src/window/ModifyFilterDialog.vala:78
+#: ../src/window/ModifyFilterDialog.vala:76
 msgid "Matches"
 msgstr "Overeenkomsten"
 
-#: ../src/window/ModifyFilterDialog.vala:80
+#: ../src/window/ModifyFilterDialog.vala:78
 msgid "Doesn't match"
 msgstr "Komt niet overeen"
 
-#: ../src/widgets/TweetListBox.vala:52 ../src/widgets/TweetListBox.vala:100
+#: ../src/widgets/TweetListBox.vala:104 ../src/widgets/TweetListBox.vala:152
 msgid "No entries found"
 msgstr "Geen invullingen gevonden"
 
-#: ../src/widgets/TweetListBox.vala:60
+#: ../src/widgets/TweetListBox.vala:112
 msgid "Retry"
 msgstr "Opnieuw proberen"
 
@@ -73,20 +82,25 @@ msgstr "Nog geen account?"
 msgid "Create one"
 msgstr "Aanmaken"
 
-#: ../src/widgets/AccountCreateWidget.vala:53
+#: ../src/widgets/AccountCreateWidget.vala:54
 msgid ""
 "Unauthorized. Most of the time, this means that there's something wrong with "
 "the Twitter servers and you should try again later"
 msgstr ""
-"Ongeauthoriseerd. Meestal betekent dit dat er iets mis is met de Twitter-"
+"Niet-geauthoriseerd. Meestal betekent dit dat er iets mis is met de Twitter-"
 "servers en dat u het later opnieuw moet proberen"
 
+#: ../src/widgets/AccountCreateWidget.vala:65
+#, c-format
+msgid "Could not open %s"
+msgstr "Kon %s niet openen"
+
 #. We just assume that it was the wrong code
-#: ../src/widgets/AccountCreateWidget.vala:76
+#: ../src/widgets/AccountCreateWidget.vala:89
 msgid "Wrong PIN"
 msgstr "Verkeerde PIN"
 
-#: ../src/widgets/AccountCreateWidget.vala:103
+#: ../src/widgets/AccountCreateWidget.vala:116
 msgid "Account already in use"
 msgstr "Account al in gebruik"
 
@@ -94,153 +108,183 @@ msgstr "Account al in gebruik"
 msgid "Copy link"
 msgstr "Link kopiëren"
 
-#: ../src/widgets/MultiMediaWidget.vala:33
+#: ../src/widgets/MultiMediaWidget.vala:34
 msgid "Copy URL"
 msgstr "URL kopiëren"
 
-#: ../src/widgets/MultiMediaWidget.vala:34
+#: ../src/widgets/MultiMediaWidget.vala:35
 msgid "Save Original"
 msgstr "Origineel opslaan"
 
-#: ../src/widgets/MultiMediaWidget.vala:70 ../src/TweetInfoPage.vala:364
+#: ../src/widgets/MultiMediaWidget.vala:74 ../src/TweetInfoPage.vala:341
 msgid "Open in Browser"
 msgstr "Openen in browser"
 
-#: ../src/widgets/MultiMediaWidget.vala:146
+#: ../src/widgets/MultiMediaWidget.vala:150
 msgid "Save image"
 msgstr "Afbeelding opslaan"
 
-#: ../src/HomeTimeline.vala:84
+#: ../src/widgets/AddImageButton.vala:35
+#: ../src/widgets/AddImageButton.vala:175
+msgid "Click to remove image"
+msgstr "Klik om afbeelding te verwijderen"
+
+#: ../src/widgets/AddImageButton.vala:41
+msgid "Click to add image"
+msgstr "Klik om afbeelding toe te voegen"
+
+#: ../src/HomeTimeline.vala:112
 #, c-format
 msgid "%s retweeted %s"
 msgstr "%s hertweette %s"
 
-#: ../src/HomeTimeline.vala:86
+#: ../src/HomeTimeline.vala:114
 #, c-format
 msgid "%s tweeted"
 msgstr "%s getweet"
 
-#: ../src/HomeTimeline.vala:93
+#: ../src/HomeTimeline.vala:121
 #, c-format
-msgid "%d new Tweets!"
-msgstr "%d nieuwe tweets!"
+msgid "%d new Tweet!"
+msgid_plural "%d new Tweets!"
+msgstr[0] "%d nieuwe tweet!"
+msgstr[1] "%d nieuwe tweets!"
 
-#: ../src/HomeTimeline.vala:175
+#: ../src/HomeTimeline.vala:207
 msgid "Home"
 msgstr "Begin"
 
-#: ../src/DMThreadsPage.vala:361
+#: ../src/DMThreadsPage.vala:360
+#, c-format
+msgid "%d new Message from %s"
+msgid_plural "%d new Messages from %s"
+msgstr[0] "%d nieuw bericht van %s"
+msgstr[1] "%d nieuwe berichten van %s"
+
+#: ../src/DMThreadsPage.vala:366
 #, c-format
 msgid "New direct message from %s"
 msgstr "Nieuw direct bericht van %s"
 
-#: ../src/DMThreadsPage.vala:372 ../src/DMThreadsPage.vala:386
+#: ../src/DMThreadsPage.vala:381 ../src/DMThreadsPage.vala:395
 msgid "Direct Messages"
 msgstr "Directe Berichten"
 
 #: ../src/list/DMThreadEntry.vala:97
 #, c-format
 msgid "(%d unread)"
-msgstr "(%d ongelezen)"
+msgid_plural "(%d unread)"
+msgstr[0] "(%d ongelezen)"
+msgstr[1] "(%d ongelezen)"
 
-#: ../src/ListsPage.vala:127 ../src/ListsPage.vala:132
+#: ../src/ListsPage.vala:130 ../src/ListsPage.vala:135
 #: ../ui/profile-page.ui.h:9
 msgid "Lists"
 msgstr "Lijsten"
 
-#: ../src/ProfilePage.vala:315
+#: ../src/ProfilePage.vala:298
 msgid "Protected profile"
 msgstr "Afgeschermd profiel"
 
-#: ../src/ProfilePage.vala:507
+#: ../src/ProfilePage.vala:475
 #, c-format
 msgid "Tweet to @%s"
 msgstr "Tweeten aan @%s"
 
-#: ../src/ProfilePage.vala:591
+#: ../src/ProfilePage.vala:572
 msgid "Unfollow"
 msgstr "Ontvolgen"
 
-#: ../src/ProfilePage.vala:595
+#: ../src/ProfilePage.vala:576
 msgid "Follow"
 msgstr "Volgen"
 
-#: ../src/TweetInfoPage.vala:337
+#: ../src/TweetInfoPage.vala:313
 msgid "Retweets"
 msgstr "Hertweets"
 
-#: ../src/TweetInfoPage.vala:338 ../src/FavoritesTimeline.vala:71
-#: ../src/FavoritesTimeline.vala:75
+#: ../src/TweetInfoPage.vala:314 ../src/FavoritesTimeline.vala:90
+#: ../src/FavoritesTimeline.vala:94
 msgid "Favorites"
 msgstr "Favorieten"
 
-#: ../src/TweetInfoPage.vala:364
+#: ../src/TweetInfoPage.vala:341
 msgid "Source"
 msgstr "Bron"
 
-#: ../src/TweetInfoPage.vala:369
+#: ../src/TweetInfoPage.vala:352
 msgid "Tweet Details"
 msgstr "Details van tweet"
 
-#: ../src/util/Utils.vala:88
+#: ../src/util/Utils.vala:110
 msgid "Now"
 msgstr "Nu"
 
-#: ../src/util/Utils.vala:90
+#: ../src/util/Utils.vala:112
 #, c-format
 msgid "%dm"
 msgstr "%dm"
 
-#: ../src/util/Utils.vala:94
+#: ../src/util/Utils.vala:116
 #, c-format
 msgid "%dh"
 msgstr "%dh"
 
-#: ../src/SearchPage.vala:276 ../src/SearchPage.vala:285
+#: ../src/SearchPage.vala:263 ../src/SearchPage.vala:272
 #: ../ui/search-page.ui.h:1
 msgid "Search"
 msgstr "Zoeken"
 
-#: ../src/Corebird.vala:162
+#: ../src/Corebird.vala:148
 msgid "Open Account"
 msgstr "Account openen"
 
-#: ../src/MentionsTimeline.vala:92
+#: ../src/MentionsTimeline.vala:98
 #, c-format
 msgid "New Mention from @%s"
 msgstr "Nieuwe vermelding van %s"
 
-#: ../src/MentionsTimeline.vala:123 ../src/MentionsTimeline.vala:128
+#: ../src/MentionsTimeline.vala:131 ../src/MentionsTimeline.vala:136
 msgid "Mentions"
 msgstr "Vermeldingen"
 
-#: ../src/DMPage.vala:250
+#: ../src/DMPage.vala:257
 msgid "Direct Conversation"
 msgstr "Direct gesprek"
 
-#: ../src/ListStatusesPage.vala:404
+#: ../src/ListStatusesPage.vala:389
 msgid "List"
 msgstr "Lijst"
 
 #: ../src/widgets/AvatarBannerWidget.vala:159
 msgid "Select banner"
-msgstr ""
+msgstr "Omslagfoto selecteren"
 
 #: ../src/widgets/AvatarBannerWidget.vala:174
 msgid "Select avatar"
-msgstr ""
+msgstr "Profielafbeelding selecteren"
 
-#: ../src/window/ImageCropDialog.vala:52 ../ui/image-crop-dialog.ui.h:3
+#: ../src/window/ImageCropDialog.vala:58 ../ui/image-crop-dialog.ui.h:2
 msgid "Next"
 msgstr "Volgende"
 
-#: ../src/window/ImageCropDialog.vala:94
+#: ../src/window/ImageCropDialog.vala:103
+msgid "Image does not meet minimum size requirements:"
+msgstr "Afbeelding voldoet niet aan de minimale grootte-vereisten:"
+
+#: ../src/window/ImageCropDialog.vala:104
 #, c-format
-msgid ""
-"Image does not meet the minimum size requirements:\n"
-"Minimum width: %d pixels\n"
-"Minimum height: %d pixels"
-msgstr ""
+msgid "Minimum width: %d pixel"
+msgid_plural "Minimum width: %d pixels"
+msgstr[0] "Minimale breedte: %d pixel"
+msgstr[1] "Minimale breedte: %d pixels"
+
+#: ../src/window/ImageCropDialog.vala:106
+#, c-format
+msgid "Minimum height: %d pixel"
+msgid_plural "Minimum height: %d pixels"
+msgstr[0] "Minimale hoogte: %d pixel"
+msgstr[1] "Minimale hoogte: %d pixels"
 
 #: ../ui/settings-dialog.ui.h:1 ../ui/menu.ui.h:1
 msgid "Settings"
@@ -255,60 +299,64 @@ msgid "Maximum media size"
 msgstr "Maximale mediagrootte"
 
 #: ../ui/settings-dialog.ui.h:4
-msgid "Megabytes"
-msgstr "Megabytes"
+msgid "MB"
+msgstr "MB"
 
 #: ../ui/settings-dialog.ui.h:5
 msgid "Auto scroll on new tweets"
 msgstr "Automatisch scrollen bij nieuwe tweets"
 
 #: ../ui/settings-dialog.ui.h:6
+msgid "Double-click activation"
+msgstr "Activeren door te dubbelklikken"
+
+#: ../ui/settings-dialog.ui.h:7
 msgid "Interface"
 msgstr "Uiterlijk"
 
-#: ../ui/settings-dialog.ui.h:7
+#: ../ui/settings-dialog.ui.h:8
 msgid "On New Tweets"
 msgstr "Bij nieuwe tweets"
 
-#: ../ui/settings-dialog.ui.h:8
+#: ../ui/settings-dialog.ui.h:9
 msgid "Actions"
 msgstr "Acties"
 
-#: ../ui/settings-dialog.ui.h:9
+#: ../ui/settings-dialog.ui.h:10
 msgid "On New Mentions"
 msgstr "Bij nieuwe vermeldingen"
 
-#: ../ui/settings-dialog.ui.h:10
+#: ../ui/settings-dialog.ui.h:11
 msgid "On New Messages"
 msgstr "Bij nieuwe berichten"
 
-#: ../ui/settings-dialog.ui.h:11
+#: ../ui/settings-dialog.ui.h:12
 msgid "Never"
 msgstr "Nooit"
 
-#: ../ui/settings-dialog.ui.h:12
+#: ../ui/settings-dialog.ui.h:13
 msgid "Every"
 msgstr "Elke"
 
-#: ../ui/settings-dialog.ui.h:13
+#: ../ui/settings-dialog.ui.h:14
 msgid "Stack 5"
 msgstr "5 opstapelen"
 
-#: ../ui/settings-dialog.ui.h:14
+#: ../ui/settings-dialog.ui.h:15
 msgid "Stack 10"
 msgstr "10 opstapelen"
 
-#: ../ui/settings-dialog.ui.h:15
+#: ../ui/settings-dialog.ui.h:16
 msgid "Stack 25"
 msgstr "25 opstapelen"
 
-#: ../ui/settings-dialog.ui.h:16
+#: ../ui/settings-dialog.ui.h:17
 msgid "Stack 50"
 msgstr "50 opstapelen"
 
-#: ../ui/settings-dialog.ui.h:17
+#: ../ui/settings-dialog.ui.h:18
 msgid "Notifications"
-msgstr "Notificaties"
+msgstr "Meldingen"
 
 #: ../ui/menu.ui.h:2
 msgid "About"
@@ -320,7 +368,7 @@ msgstr "Afsluiten"
 
 #: ../ui/user-lists-widget.ui.h:1
 msgid "Created"
-msgstr "Aangemaakt"
+msgstr "Gecreeërd"
 
 #: ../ui/user-lists-widget.ui.h:2
 msgid "Subscribed to"
@@ -334,7 +382,7 @@ msgstr "Over Corebird"
 msgid "Using Font Awesome by Dave Gandy - http://fontawesome.io"
 msgstr "Gebruikmakend van Font Awesome door Dave Gandy - http://fontawesome.io"
 
-#: ../ui/dm-page.ui.h:1 ../ui/compose-window.ui.h:5
+#: ../ui/dm-page.ui.h:1 ../ui/compose-window.ui.h:3
 msgid "Send"
 msgstr "Verzenden"
 
@@ -346,32 +394,19 @@ msgstr "Meer laden"
 msgid "Quote"
 msgstr "Citeren"
 
-#: ../ui/tweet-list-entry.ui.h:2
-msgid "Details"
-msgstr "Details"
-
-#: ../ui/tweet-list-entry.ui.h:3 ../ui/tweet-info-page.ui.h:2
-#: ../ui/list-list-entry.ui.h:4 ../ui/list-statuses-page.ui.h:7
-#: ../ui/filter-list-entry.ui.h:2 ../ui/user-filter-entry.ui.h:2
+#: ../ui/tweet-list-entry.ui.h:2 ../ui/list-list-entry.ui.h:4
+#: ../ui/list-statuses-page.ui.h:7 ../ui/filter-list-entry.ui.h:2
 #: ../ui/account-dialog.ui.h:7
 msgid "Delete"
 msgstr "Verwijderen"
 
-#: ../ui/tweet-list-entry.ui.h:4
-msgid "Show more actions"
-msgstr "Meer acties weergeven"
-
-#: ../ui/tweet-list-entry.ui.h:5 ../ui/tweet-info-page.ui.h:5
-msgid "Reply to tweet"
-msgstr "Tweet beantwoorden"
-
-#: ../ui/tweet-list-entry.ui.h:6 ../ui/tweet-info-page.ui.h:4
-msgid "Favorite tweet"
+#: ../ui/tweet-list-entry.ui.h:3
+msgid "Favorite"
 msgstr "Tweet favorieten"
 
-#: ../ui/tweet-list-entry.ui.h:7 ../ui/tweet-info-page.ui.h:3
-msgid "Retweet tweet"
-msgstr "Tweet hertweeten"
+#: ../ui/tweet-list-entry.ui.h:4
+msgid "Reply"
+msgstr "Beantwoorden"
 
 #: ../ui/user-list-entry.ui.h:1
 msgid "Show settings of this account"
@@ -383,7 +418,7 @@ msgstr "Openen in nieuw venster"
 
 #: ../ui/new-list-entry.ui.h:1
 msgid "Create New List"
-msgstr "Nieuwe lijst creëren"
+msgstr "Nieuwe lijst creeëren"
 
 #: ../ui/new-list-entry.ui.h:2
 msgid "Name:"
@@ -403,11 +438,7 @@ msgstr "Gebruikers"
 
 #: ../ui/compose-window.ui.h:1
 msgid "Compose Tweet"
-msgstr "Tweet schrijven"
-
-#: ../ui/compose-window.ui.h:2
-msgid "Attach Image"
-msgstr "Afbeelding bijvoegen"
+msgstr "Tweet opstellen"
 
 #: ../ui/profile-page.ui.h:1
 msgid "Write Direct Message"
@@ -442,6 +473,10 @@ msgid "Show configured accounts"
 msgstr "Ingestelde accounts weergeven"
 
 #: ../ui/main-window.ui.h:2
+msgid "Compose tweet"
+msgstr "Tweet schrijven"
+
+#: ../ui/main-window.ui.h:3
 msgid "New tweet"
 msgstr "Nieuwe tweet"
 
@@ -461,7 +496,19 @@ msgstr "PIN-code aanvragen"
 msgid "Confirm"
 msgstr "Bevestigen"
 
-#: ../ui/tweet-info-page.ui.h:6
+#: ../ui/tweet-info-page.ui.h:2
+msgid "Retweet tweet"
+msgstr "Tweet hertweeten"
+
+#: ../ui/tweet-info-page.ui.h:3
+msgid "Favorite tweet"
+msgstr "Tweet favorieten"
+
+#: ../ui/tweet-info-page.ui.h:4
+msgid "Reply to tweet"
+msgstr "Tweet beantwoorden"
+
+#: ../ui/tweet-info-page.ui.h:5
 msgid "More"
 msgstr "Meer"
 
@@ -495,11 +542,11 @@ msgstr "Leden:"
 
 #: ../ui/list-statuses-page.ui.h:3
 msgid "Creator:"
-msgstr "Creërder:"
+msgstr "Creeërder:"
 
 #: ../ui/list-statuses-page.ui.h:4
 msgid "Created at:"
-msgstr "Gecreërd op:"
+msgstr "Gecreeërd op:"
 
 #: ../ui/list-statuses-page.ui.h:5
 msgid "Edit"
@@ -521,27 +568,31 @@ msgstr "Openbaar"
 msgid "Add New Filter"
 msgstr "Nieuw filter toevoegen"
 
+#: ../ui/user-filter-entry.ui.h:2
+msgid "Unblock"
+msgstr "Deblokkeren"
+
 #: ../ui/account-dialog.ui.h:1
 msgid "Account Settings"
 msgstr "Accountinstellingen"
 
-#: ../ui/account-dialog.ui.h:2
+#: ../ui/account-dialog.ui.h:4
 msgid "Name"
 msgstr "Naam"
 
-#: ../ui/account-dialog.ui.h:3
+#: ../ui/account-dialog.ui.h:5
 msgid "Website"
 msgstr "Website"
 
-#: ../ui/account-dialog.ui.h:4
+#: ../ui/account-dialog.ui.h:6
 msgid "Autostart"
 msgstr "Automatisch opstarten"
 
-#: ../ui/account-dialog.ui.h:5
+#: ../ui/account-dialog.ui.h:8
 msgid "Do you really want to delete this account?"
 msgstr "Weet u zeker dat u dit account wilt verwijderen?"
 
-#: ../ui/image-crop-dialog.ui.h:2
+#: ../ui/image-crop-dialog.ui.h:3
 msgid "Back"
 msgstr "Vorige"
 
@@ -559,8 +610,8 @@ msgid ""
 "Additional features include the abilty to change to the GTK+ dark theme, "
 "searching and media uploads."
 msgstr ""
-"Extra functionaliteit is er ook, zoals het kiezen voor GTK+ donker thema, "
-"zoeken en media-uploads."
+"Extra functionaliteit is er ook, zoals het kiezen voor het GTK+ donkere "
+"thema, zoeken en media-uploads."
 
 #: ../data/org.baedert.corebird.desktop.in.in.h:1
 msgid "Twitter Client"
