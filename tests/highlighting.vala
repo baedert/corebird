@@ -53,13 +53,16 @@ void hashtag () {
   Gtk.TextBuffer buffer = create_buffer ();
   buffer.set_text ("foobar #hash.");
 
+  int num = 0;
   buffer.apply_tag.connect ((buffer, tag, start, end) => {
     string mention = buffer.get_text (start, end, false);
     assert (mention == "#hash");
     assert (tag.name == "hashtag");
+    num ++;
   });
 
   TweetUtils.annotate_text (buffer);
+  assert (num == 1);
 }
 
 void main (string[] args) {
