@@ -9,7 +9,6 @@
     </widgets>
   </object>
 
-
   <template class="FilterListEntry" parent="GtkListBoxRow">
     <property name="visible">True</property>
     <property name="can_focus">true</property>

@@ -55,6 +55,10 @@ class FilterListEntry : Gtk.ListBoxRow {
     this.filter = f;
     this.account = account;
     this.main_window = main_window;
+    this.filter.notify["enabled"].connect (() => {
+      this.update_style_classes ();
+    });
+    this.update_style_classes ();
   }
 
   construct {
@@ -64,6 +68,16 @@ class FilterListEntry : Gtk.ListBoxRow {
       }
     });
   }
+
+  private void update_style_classes () {
+    var content_sc = content_label.get_style_context ();
+    if (this.filter.enabled) {
+      content_sc.remove_class ("dim-label");
+    } else {
+      content_sc.add_class ("dim-label");
+    }
+  }
+
 
   [GtkCallback]
   private void menu_button_clicked_cb () {
