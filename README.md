@@ -1,6 +1,6 @@
 # Corebird
 
-This is the readme for version 1.0.
+This is the readme for the current *development version*. If you're looking for one of the stable releases, check the "releases" link at the top of this page.
 
 ## Shortcuts
 
