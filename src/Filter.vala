@@ -15,8 +15,9 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 public class Filter : GLib.Object {
-  public string content   { get; set; }
   public int id           { get; set; }
+  public string content   { get; set; }
+  public bool enabled     { get; set; }
 
   private GLib.Regex? regex = null;
 
