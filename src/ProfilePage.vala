@@ -518,7 +518,7 @@ class ProfilePage : ScrollWidget, IPage {
     if (following) {
       call.set_function( "1.1/friendships/destroy.json");
       ht.hide_tweets_from (this.user_id);
-      ht.hide_retweets_from (this.user_id);
+      ht.hide_retweets_from (this.user_id, Tweet.HIDDEN_UNFOLLOWED); // XXX
       follower_count --;
       account.unfollow_id (this.user_id);
     } else {
@@ -544,6 +544,7 @@ class ProfilePage : ScrollWidget, IPage {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
         critical (e.message);
+        critical (call.get_payload ());
       }
       follow_button.sensitive = true;
       loading_stack.visible_child_name = "data";
@@ -713,7 +714,7 @@ class ProfilePage : ScrollWidget, IPage {
       ht.show_retweets_from (this.user_id);
       account.remove_disabled_rts_id (this.user_id);
     } else {
-      ht.hide_retweets_from (this.user_id);
+      ht.hide_retweets_from (this.user_id, Tweet.HIDDEN_RTS_DISABLED); // XXX
       account.add_disabled_rts_id (this.user_id);
     }
 
