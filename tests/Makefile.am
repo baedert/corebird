@@ -1,6 +1,17 @@
 AM_CPPFLAGS = $(CB_CFLAGS) -I$(top_srcdir)/src
 
 TESTS = \
+				tweet_length   \
+				utils          \
+				bundlehistory  \
+				usercounter    \
+				media          \
+				tweet_entities \
+				tweet_parsing  \
+				filters        \
+				sql            \
+				highlighting   \
+				friends        \
 				tweetmodel
 check_PROGRAMS = $(TESTS)
 
@@ -42,10 +53,6 @@ sql_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
 tweet_parsing_SOURCES = tweet_parsing.vala resources.c
 tweet_parsing_LDADD = $(top_builddir)/src/libcorebird.la
 tweet_parsing_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
-
-multimedia_SOURCES = multimedia.vala resources.c
-multimedia_LDADD = $(top_builddir)/src/libcorebird.la
-multimedia_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
 
 highlighting_SOURCES = highlighting.vala
 highlighting_LDADD = $(top_builddir)/src/libcorebird.la
