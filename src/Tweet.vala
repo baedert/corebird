@@ -15,13 +15,18 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 public class Tweet : GLib.Object {
   public static const int MAX_LENGTH = 140;
 
-  public const uint HIDDEN_RT         = 1 << 0;
-  public const uint HIDDEN_UNFOLLOWED = 1 << 1;
-  public const uint HIDDEN_FILTERED   = 1 << 2;
+  /** Hidden because we unfolled the author */
+  public const uint HIDDEN_UNFOLLOWED   = 1 << 0;
+  /** Hidden because one of the filters matched the tweet */
+  public const uint HIDDEN_FILTERED     = 1 << 1;
+  /** Hidden because RTs of the author are disabled */
+  public const uint HIDDEN_RTS_DISABLED = 1 << 2;
+  /** Hidden because another user (!= author) retweeted it and their
+      RTs are disabled */
+  public const uint HIDDEN_INDIRECT_RT  = 1 << 3;
 
   public uint hidden_flags = 0;
 
