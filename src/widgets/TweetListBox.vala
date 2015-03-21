@@ -40,6 +40,7 @@ public class TweetListBox : Gtk.ListBox {
       spinner.set_size_request (value, value);
     }
   }
+  public unowned DeltaUpdater delta_updater;
   public unowned Account account;
   public TweetModel model = new TweetModel ();
 
@@ -65,6 +66,7 @@ public class TweetListBox : Gtk.ListBox {
       var row = new TweetListEntry ((Tweet) obj,
                                     (MainWindow) get_toplevel (),
                                     this.account);
+      delta_updater.add (row);
       row.show ();
       return row;
     });

@@ -26,7 +26,16 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   public int64 lowest_id                 { get; set; default = int64.MAX-2; }
   protected uint tweet_remove_timeout    { get; set; }
   protected int64 max_id                 { get; set; default = 0; }
-  public DeltaUpdater delta_updater      { get; set; }
+  private DeltaUpdater _delta_updater;
+  public DeltaUpdater delta_updater {
+    get {
+      return _delta_updater;
+    }
+    set {
+      this._delta_updater = value;
+      tweet_list.delta_updater = value;
+    }
+  }
   protected abstract string function     { get;      }
   protected bool loading = false;
   protected Gtk.Widget? last_focus_widget = null;
