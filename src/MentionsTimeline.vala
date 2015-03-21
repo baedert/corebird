@@ -66,7 +66,7 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
       if (t.user_id == account.id)
         return;
 
-      if (t.is_retweet && !should_display_retweet (t))
+      if (t.is_retweet && get_rt_flags (t) > 0)
         return;
 
       if (account.filter_matches (t))
