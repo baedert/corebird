@@ -59,7 +59,6 @@ public interface ITimeline : Gtk.Widget, IPage {
     }
     var res = yield TweetUtils.work_array (root,
                                            requested_tweet_count,
-                                           delta_updater,
                                            tweet_list,
                                            main_window,
                                            account);
@@ -95,7 +94,6 @@ public interface ITimeline : Gtk.Widget, IPage {
     }
     var res = yield TweetUtils.work_array (root,
                                            requested_tweet_count,
-                                           delta_updater,
                                            tweet_list,
                                            main_window,
                                            account);

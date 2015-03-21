@@ -174,7 +174,6 @@ class ListStatusesPage : ScrollWidget, IPage {
     }
     var res = yield TweetUtils.work_array (root_array,
                                            requested_tweet_count,
-                                           delta_updater,
                                            tweet_list,
                                            main_window,
                                            account);
@@ -205,7 +204,6 @@ class ListStatusesPage : ScrollWidget, IPage {
     var root_array = root.get_array ();
     var res = yield TweetUtils.work_array (root_array,
                                            requested_tweet_count,
-                                           delta_updater,
                                            tweet_list,
                                            main_window,
                                            account);

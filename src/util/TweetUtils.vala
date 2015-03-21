@@ -380,7 +380,6 @@ namespace TweetUtils {
 
   async WorkerResult work_array (Json.Array   json_array,
                                  uint         requested_tweet_count,
-                                 DeltaUpdater delta_updater,
                                  TweetListBox tweet_list,
                                  MainWindow   main_window,
                                  Account      account) {
