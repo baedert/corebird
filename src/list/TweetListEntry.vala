@@ -64,6 +64,14 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       name_button.read_only = value;
     }
   }
+  public new bool visible {
+    get {
+      return !this.tweet.is_hidden;
+    }
+    set {
+      base.visible = value;
+    }
+  }
   public int64 sort_factor {
     get { return tweet.created_at;}
   }
