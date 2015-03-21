@@ -137,6 +137,8 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     favorite_button.active = tweet.favorited;
     tweet.notify["favorited"].connect (favorited_cb);
 
+    tweet.hidden_flags_changed.connect (hidden_flags_changed_cb);
+
     if (tweet.reply_id == 0)
       conversation_image.unparent ();
     else {
@@ -324,6 +326,13 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
   private void media_invalid_cb () {
     this.text_label.set_label (tweet.get_formatted_text ());
+  }
+
+  private void hidden_flags_changed_cb () {
+    if (tweet.is_hidden)
+      this.hide ();
+    else
+      this.show ();
   }
 
 
