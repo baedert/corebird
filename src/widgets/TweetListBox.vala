@@ -40,6 +40,8 @@ public class TweetListBox : Gtk.ListBox {
       spinner.set_size_request (value, value);
     }
   }
+  public unowned Account account;
+  public TweetModel model = new TweetModel ();
 
   public TweetListBox (bool show_placeholder = true) {
     if (show_placeholder) {
@@ -57,6 +59,15 @@ public class TweetListBox : Gtk.ListBox {
     Settings.get ().bind ("double-click-activation",
                           this, "activate-on-single-click",
                           GLib.SettingsBindFlags.INVERT_BOOLEAN);
+    this.bind_model (this.model, (obj) => {
+      assert (obj is Tweet);
+
+      var row = new TweetListEntry ((Tweet) obj,
+                                    (MainWindow) get_toplevel (),
+                                    this.account);
+      row.show_all ();
+      return row;
+    });
   }
 
   private bool button_press_cb (Gdk.EventButton evt) {
