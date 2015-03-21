@@ -21,9 +21,15 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
       return "1.1/statuses/home_timeline.json";
     }
   }
+  public TweetModel model = new TweetModel ();
 
   public HomeTimeline(int id) {
     base (id);
+    this.tweet_list.bind_model (this.model, (obj) => {
+      assert (obj is Tweet);
+
+      return new TweetListEntry ((Tweet)obj, main_window, account);
+    });
   }
 
   public void stream_message_received (StreamMessageType type, Json.Node root) { // {{{
