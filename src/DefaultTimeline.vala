@@ -217,44 +217,51 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
 
   /**
    * So, we don't want to display a retweet in the following situations:
-   *   - If the original tweet was a tweet by the authenticated user
-   *   - In any case, if the user follows the author of the tweet
-   *     (not the author of the retweet!), we already get the source
-   *     tweet by other means, so don't display it again.
-   *   - It's a retweet from the authenticating user itself
-   *   - If the tweet was retweeted by a user that is on the list of
-   *     users the authenticating user disabled RTs for.
-   *   - If the retweet is already in the timeline. There's no other
-   *     way of checking the case where 2 indipendend users retweet
-   *     the same tweet.
+   *   1) If the original tweet was a tweet by the authenticated user
+   *   2) In any case, if the user follows the author of the tweet
+   *      (not the author of the retweet!), we already get the source
+   *      tweet by other means, so don't display it again.
+   *   3) It's a retweet from the authenticating user itself
+   *   4) If the tweet was retweeted by a user that is on the list of
+   *      users the authenticating user disabled RTs for.
+   *   5) If the retweet is already in the timeline. There's no other
+   *      way of checking the case where 2 indipendend users retweet
+   *      the same tweet.
    */
-  protected bool should_display_retweet (Tweet t) {
+  protected uint get_rt_flags (Tweet t) {
+    uint flags = 0;
+
     /* First case */
     if (t.user_id == account.id)
-      return false;
+      flags |= Tweet.HIDDEN_FORCE;
 
     /*  Second case */
     if (account.follows_id (t.user_id))
-        return false;
+        flags |= Tweet.HIDDEN_RT_BY_FOLLOWEE;
 
     /* third case */
     if (t.rt_by_id == account.id)
-      return false;
+      flags |= Tweet.HIDDEN_FORCE;
 
     /* Fourth case */
     foreach (int64 id in account.disabled_rts)
-      if (id == t.rt_by_id)
-        return false;
+      if (id == t.rt_by_id) {
+        flags |= Tweet.HIDDEN_RTS_DISABLED;
+        break;
+      }
+
 
     /* Fifth case */
     foreach (Gtk.Widget w in tweet_list.get_children ()) {
       if (w is TweetListEntry) {
-        if (((TweetListEntry)w).tweet.rt_id == t.rt_id)
-          return false;
+        if (((TweetListEntry)w).tweet.rt_id == t.rt_id) {
+          flags |= Tweet.HIDDEN_FORCE;
+          break;
+        }
       }
     }
 
-    return true;
+    return flags;
   }
 
   protected void mark_seen (int64 id) {
