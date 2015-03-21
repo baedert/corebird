@@ -52,8 +52,9 @@ class SearchPage : IPage, Gtk.Box {
   private Collect collect_obj;
 
 
-  public SearchPage (int id) {
+  public SearchPage (int id, Account account) {
     this.id = id;
+    this.account = account;
 
     tweet_list.set_header_func (header_func);
     tweet_list.set_sort_func (ITwitterItem.sort_func);

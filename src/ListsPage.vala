@@ -20,7 +20,6 @@ class ListsPage : IPage, ScrollWidget, IMessageReceiver {
   public static const int MODE_DELETE = 1;
 
   private BadgeRadioToolButton tool_button;
-  private unowned Account _account;
   private unowned MainWindow _main_window;
   public int unread_count                   { get; set; }
   public unowned MainWindow main_window {
@@ -32,15 +31,7 @@ class ListsPage : IPage, ScrollWidget, IMessageReceiver {
       this._main_window = value;
     }
   }
-  public unowned Account account {
-    get {
-      return _account;
-    }
-    set {
-      user_lists_widget.account = value;
-      this._account = value;
-    }
-  }
+  public unowned Account account            { get; set; }
   public unowned DeltaUpdater delta_updater { get; set; }
   public int id                             { get; set; }
   private bool inited = false;
@@ -49,8 +40,10 @@ class ListsPage : IPage, ScrollWidget, IMessageReceiver {
   private UserListsWidget user_lists_widget;
 
 
-  public ListsPage (int id) {
+  public ListsPage (int id, Account account) {
     this.id = id;
+    this.account = account;
+    this.user_lists_widget.account = account;
   }
 
   public void on_join (int page_id, Bundle? args) {

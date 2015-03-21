@@ -32,7 +32,6 @@ class ProfilePage : ScrollWidget, IPage {
     set{}
   }
   private unowned MainWindow _main_window;
-  private unowned Account _account;
   public unowned MainWindow main_window {
     get {
       return _main_window;
@@ -42,15 +41,7 @@ class ProfilePage : ScrollWidget, IPage {
       user_lists.main_window = value;
     }
   }
-  public unowned Account account {
-    get {
-      return _account;
-    }
-    set {
-      this._account = value;
-      user_lists.account = value;
-    }
-  }
+  public unowned Account account { get; set; }
   public int id { get; set; }
   public unowned DeltaUpdater delta_updater { get; set; }
 
@@ -106,8 +97,11 @@ class ProfilePage : ScrollWidget, IPage {
   private int64 lowest_tweet_id = int64.MAX;
   private GLib.SimpleActionGroup actions;
 
-  public ProfilePage (int id) {
+  public ProfilePage (int id, Account account) {
     this.id = id;
+    this.account = account;
+    this.user_lists.account = account;
+
     this.scroll_event.connect ((evt) => {
       if (evt.delta_y < 0 && this.vadjustment.value == 0) {
         if (banner_image.scale >= 1.0) {

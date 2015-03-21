@@ -64,8 +64,10 @@ class TweetInfoPage : IPage , ScrollWidget {
   [GtkChild]
   private ReplyIndicator reply_indicator;
 
-  public TweetInfoPage (int id) {
+  public TweetInfoPage (int id, Account account) {
     this.id = id;
+    this.account = account;
+
     mm_widget.media_clicked.connect ((m, i) => TweetUtils.handle_media_click (tweet, main_window, i));
     this.scroll_event.connect ((evt) => {
       if (evt.delta_y < 0 && this.vadjustment.value == 0 && reply_indicator.replies_available) {

@@ -22,8 +22,9 @@ class FavoritesTimeline : IMessageReceiver, DefaultTimeline {
     }
   }
 
-  public FavoritesTimeline(int id) {
+  public FavoritesTimeline (int id, Account account) {
     base (id);
+    this.account = account;
   }
 
   private void stream_message_received (StreamMessageType type, Json.Node root) { // {{{

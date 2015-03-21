@@ -31,8 +31,10 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
   private bool filters_loaded = false;
   private bool users_loaded = false;
 
-  public FilterPage (int id) {
+  public FilterPage (int id, Account account) {
     this.id = id;
+    this.account = account;
+
     filter_list.set_header_func (default_header_func);
     filter_list.add (new AddListEntry (_("Add new Filter")));
     filter_list.row_activated.connect ((row) => {

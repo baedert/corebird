@@ -23,13 +23,14 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
   }
   public TweetModel model = new TweetModel ();
 
-  public HomeTimeline(int id) {
+  public HomeTimeline(int id, Account account) {
     base (id);
     this.tweet_list.bind_model (this.model, (obj) => {
       assert (obj is Tweet);
 
       return new TweetListEntry ((Tweet)obj, main_window, account);
     });
+    this.account = account;
   }
 
   public void stream_message_received (StreamMessageType type, Json.Node root) { // {{{
