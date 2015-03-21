@@ -28,7 +28,7 @@ public class TweetModel : GLib.Object, GLib.ListModel {
 
   public GLib.Object? get_item (uint index) {
     assert (index >= 0);
-    assert (index <= tweets.size);
+    assert (index <  tweets.size);
 
     return tweets.get ((int)index);
   }
@@ -42,12 +42,10 @@ public class TweetModel : GLib.Object, GLib.ListModel {
     /* Determine the end we start at.
        Higher IDs are at the beginning of the list */
     int insert_pos = -1;
-    /*if (tweet.id > max_id) {
-      tweets.insert (0, tweet);
+    if (tweet.id > max_id) {
       insert_pos = 0;
-    } else */if (tweet.id < min_id) {
-      tweets.insert (tweets.size - 1 >= 0 ? tweets.size-1 : 0, tweet);
-      insert_pos = tweets.size - 1 >= 0 ? tweets.size-1 : 0;;
+    } else if (tweet.id < min_id) {
+      insert_pos = tweets.size;
     } else {
       // This case is weird(?), but just estimate the starting point
       int64 half = (max_id - min_id) / 2;
@@ -55,16 +53,14 @@ public class TweetModel : GLib.Object, GLib.ListModel {
         // we start at the beginning
         for (int i = 0, p = tweets.size; i < p; i ++) {
           if (tweets.get (i).id < tweet.id) {
-            tweets.insert (i, tweet);
             insert_pos = i;
             break;
           }
         }
       } else {
         // we start at the end
-        for (int i = tweets.size; i >= 0; i --) {
+        for (int i = tweets.size - 1; i >= 0; i --) {
           if (tweets.get (i).id < tweet.id) {
-            tweets.insert (i, tweet);
             insert_pos = i;
             break;
           }
@@ -74,11 +70,9 @@ public class TweetModel : GLib.Object, GLib.ListModel {
 
     assert (insert_pos != -1);
 
-    message ("Changed at insert_pos %d: %s", insert_pos, tweet.id.to_string ());
-    int s = tweets.size - insert_pos;
+    tweets.insert (insert_pos, tweet);
+
     this.items_changed (insert_pos, 0, 1);
-    //this.items_changed (insert_pos, s-1, s);
-    //this.items_changed (0, tweets.size, tweets.size);
   }
 
   public void add (Tweet tweet) {
