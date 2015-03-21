@@ -19,10 +19,21 @@
 public class Tweet : GLib.Object {
   public static const int MAX_LENGTH = 140;
 
+  public const uint HIDDEN_RT         = 1 << 0;
+  public const uint HIDDEN_UNFOLLOWED = 1 << 1;
+  public const uint HIDDEN_FILTERED   = 1 << 2;
+
+  public uint hidden_flags = 0;
+
 #if DEBUG
   public string json_data;
 #endif
 
+  public bool is_hidden {
+    get {
+      return hidden_flags > 0;
+    }
+  }
 
   public int64 id;
   /** If this tweet is a retweet, this is its id */
