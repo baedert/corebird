@@ -1,19 +1,11 @@
 AM_CPPFLAGS = $(CB_CFLAGS) -I$(top_srcdir)/src
 
 TESTS = \
-				tweet_length   \
-				utils          \
-				bundlehistory  \
-				usercounter    \
-				media          \
-				tweet_entities \
-				tweet_parsing  \
-				filters        \
-				sql            \
-				multimedia     \
-				highlighting   \
-				friends
+				tweetmodel
 check_PROGRAMS = $(TESTS)
+
+# Always add -g to the test cases (for easier debugging)
+CB_VALA_FLAGS="$CB_VALA_FLAGS -g"
 
 tweet_length_SOURCES = tweet_length.vala
 tweet_length_LDADD = $(top_builddir)/src/libcorebird.la
@@ -62,6 +54,11 @@ highlighting_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
 friends_SOURCES = friends.vala
 friends_LDADD = $(top_builddir)/src/libcorebird.la
 friends_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
+
+tweetmodel_SOURCES = tweetmodel.vala
+tweetmodel_LDADD = $(top_builddir)/src/libcorebird.la
+tweetmodel_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
+
 
 GRESDEPS = $(top_srcdir)/$1 $(shell $(GLIB_COMPILE_RESOURCES) --generate-dependencies --sourcedir=$(top_srcdir) $(top_srcdir)/$1)
 resource_deps = $(call GRESDEPS,resources.xml)
