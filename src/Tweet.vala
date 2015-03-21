@@ -45,6 +45,7 @@ public class Tweet : GLib.Object {
       return hidden_flags > 0;
     }
   }
+  public signal void hidden_flags_changed ();
 
   public int64 id;
   /** If this tweet is a retweet, this is its id */
