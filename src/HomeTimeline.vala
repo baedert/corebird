@@ -66,17 +66,22 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
 
 
     var entry = new TweetListEntry (t, main_window, account);
-    entry.visible = true;
 
-    if (t.is_retweet && !should_display_retweet (t))
-      entry.visible = false;
 
-    if (account.blocked_or_muted (t.user_id) ||
-        (t.is_retweet && account.blocked_or_muted (t.rt_by_id)))
-      entry.visible = false;
+
+
+    if (t.is_retweet)
+      t.hidden_flags |= get_rt_flags (t);
+
+    if (account.blocked_or_muted (t.user_id))
+      t.hidden_flags |= Tweet.HIDDEN_RETWEETER_BLOCKED;
+
+
+    if (t.is_retweet && account.blocked_or_muted (t.rt_by_id))
+      t.hidden_flags |= Tweet.HIDDEN_AUTHOR_BLOCKED;
 
     if (account.filter_matches (t))
-      entry.visible = false;
+      t.hidden_flags |= Tweet.HIDDEN_FILTERED;
 
     bool auto_scroll = Settings.auto_scroll_on_new_tweets ();
 
