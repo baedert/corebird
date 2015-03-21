@@ -34,6 +34,7 @@
           <property name="border_width">10</property>
           <property name="row_spacing">6</property>
           <property name="column_spacing">12</property>
+          <property name="column_homogeneous">true</property>
 
           <child>
             <object class="GtkLabel" id="timeline_category_label">
@@ -106,40 +107,42 @@
               <property name="height">1</property>
             </packing>
           </child>
+
           <child>
-            <object class="GtkSpinButton" id="max_media_size_spin_button">
-              <property name="visible">True</property>
-              <property name="can_focus">True</property>
-              <property name="halign">start</property>
-              <property name="vexpand">False</property>
-              <property name="adjustment">adjustment1</property>
-              <property name="climb_rate">0.1</property>
-              <property name="digits">1</property>
-              <property name="value">2</property>
-              <accessibility>
-                <relation type="labelled-by" target="max_media_size_label"/>
-              </accessibility>
+            <object class="GtkBox">
+              <property name="orientation">horizontal</property>
+              <property name="spacing">6</property>
+              <child>
+                <object class="GtkSpinButton" id="max_media_size_spin_button">
+                  <property name="visible">True</property>
+                  <property name="can_focus">True</property>
+                  <property name="halign">start</property>
+                  <property name="vexpand">False</property>
+                  <property name="adjustment">adjustment1</property>
+                  <property name="climb_rate">0.1</property>
+                  <property name="digits">1</property>
+                  <property name="value">2</property>
+                  <accessibility>
+                    <relation type="labelled-by" target="max_media_size_label"/>
+                  </accessibility>
+                </object>
+              </child>
+
+              <child>
+                <object class="GtkLabel" id="mb_label">
+                  <property name="visible">True</property>
+                  <property name="can_focus">False</property>
+                  <property name="halign">start</property>
+                  <property name="hexpand">True</property>
+                  <property name="label" translatable="yes">MB</property>
+                </object>
+              </child>
+
+
             </object>
             <packing>
               <property name="left_attach">2</property>
               <property name="top_attach">4</property>
-              <property name="width">1</property>
-              <property name="height">1</property>
-            </packing>
-          </child>
-          <child>
-            <object class="GtkLabel" id="mb_label">
-              <property name="visible">True</property>
-              <property name="can_focus">False</property>
-              <property name="halign">start</property>
-              <property name="hexpand">True</property>
-              <property name="label" translatable="yes">MB</property>
-            </object>
-            <packing>
-              <property name="left_attach">3</property>
-              <property name="top_attach">4</property>
-              <property name="width">1</property>
-              <property name="height">1</property>
             </packing>
           </child>
           <child>
@@ -177,6 +180,41 @@
               <property name="height">1</property>
             </packing>
           </child>
+
+          <child>
+            <object class="GtkLabel" id="double_click_activation_label">
+              <property name="visible">true</property>
+              <property name="label" translatable="yes">Double-click activation</property>
+              <property name="halign">end</property>
+              <property name="hexpand">true</property>
+              <accessibility>
+                <relation type="label-for" target="double_click_activation_switch" />
+              </accessibility>
+            </object>
+            <packing>
+              <property name="left_attach">0</property>
+              <property name="top_attach">6</property>
+              <property name="width">2</property>
+            </packing>
+          </child>
+
+          <child>
+            <object class="GtkSwitch" id="double_click_activation_switch">
+              <property name="visible">true</property>
+              <property name="can_focus">true</property>
+              <property name="halign">start</property>
+              <accessibility>
+                <relation type="labelled-by" target="double_click_activation_label" />
+              </accessibility>
+            </object>
+            <packing>
+              <property name="left_attach">2</property>
+              <property name="top_attach">6</property>
+              <property name="width">2</property>
+            </packing>
+          </child>
+
+
 
         </object>
         <packing>

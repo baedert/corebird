@@ -34,7 +34,7 @@ class MediaVideoWidget : Gtk.Stack {
     drawing_area.realize.connect (realize_cb);
 #if VIDEO
     this.src  = Gst.ElementFactory.make ("playbin", "video");
-    this.sink = Gst.ElementFactory.make ("vaapisink", "sink");
+    this.sink = Gst.ElementFactory.make ("xvimagesink", "sink");
     this.src.set ("video-sink", sink, null);
     var bus = src.get_bus ();
     bus.set_sync_handler (bus_sync_handler);
@@ -43,6 +43,8 @@ class MediaVideoWidget : Gtk.Stack {
       fetch_real_url.begin (media.url, "<meta property=\"twitter:player:stream\" content=\"(.*?)\"");
     else if (media.type == MediaType.ANIMATED_GIF)
       fetch_real_url.begin (media.url, "<source video-src=\"(.*?)\" type=\"video/mp4\"");
+    else if (media.type == MediaType.TWITTER_VIDEO)
+      download_video.begin (media.url);
     else
       critical ("Unknown video media type: %d", media.type);
 #endif

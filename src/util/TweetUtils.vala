@@ -295,7 +295,11 @@ namespace TweetUtils {
     int length = 0;
 
     foreach (string s in words) {
-      length += get_word_length (s);
+      string[] subwords = s.split ("\n");
+      foreach (string sw in subwords) {
+        length += get_word_length (sw);
+      }
+      length += subwords.length - 1;
     }
 
     // Don't forget the n-1 whitespaces
@@ -472,8 +476,20 @@ namespace TweetUtils {
     return false;
   }
 
-  public bool is_mention (string word) {
-    return word[0] == '@' && word.length > 1;
+  private const unichar[] non_mention_chars = {
+    '“', '"', '-', '`', ',', '.', '^', '(', ')', '[', ']', '{', '}', '+', '='
+  };
+  public bool is_mention (string  word,
+                          out int at_pos) {
+    int k = 0;
+    while (word.get_char (k) in non_mention_chars)
+      k ++;
+
+    at_pos = k;
+
+    return word.get_char (word.index_of_nth_char (k)) == '@' &&
+           word.length > 1 &&
+           word.length - k > 1;
   }
 
   public bool is_hashtag (string word) {
@@ -482,8 +498,8 @@ namespace TweetUtils {
 
 
   private void highlight_link (Gtk.TextBuffer buffer,
-                               Gtk.TextIter? word_start,
-                               Gtk.TextIter? word_end) {
+                               Gtk.TextIter?  word_start,
+                               Gtk.TextIter?  word_end) {
     Gtk.TextIter? iter1 = word_start;
     Gtk.TextIter? iter2 = word_start;
     iter1.forward_char ();
@@ -505,8 +521,8 @@ namespace TweetUtils {
 
   /** Invariant: The word passed to this function starts with a @ */
   private void highlight_mention (Gtk.TextBuffer buffer,
-                                  Gtk.TextIter? word_start,
-                                  Gtk.TextIter? word_end) {
+                                  Gtk.TextIter?  word_start,
+                                  Gtk.TextIter?  word_end) {
     Gtk.TextIter? iter1 = word_start;
     Gtk.TextIter? iter2 = word_start;
     iter1.forward_char ();
@@ -529,8 +545,8 @@ namespace TweetUtils {
 
   /** Invariant: the word passed to this function starts with a # */
   private void highlight_hashtag (Gtk.TextBuffer buffer,
-                                  Gtk.TextIter? word_start,
-                                  Gtk.TextIter? word_end) {
+                                  Gtk.TextIter?  word_start,
+                                  Gtk.TextIter?  word_end) {
     Gtk.TextIter? iter1 = word_start;
     Gtk.TextIter? iter2 = word_start;
     iter1.forward_char ();
@@ -579,13 +595,16 @@ namespace TweetUtils {
 
       if (word_end) {
         // We are at the end of a word so highlight it accordingly
+        int k;
         string w = buffer.get_text (word_start_iter, next_iter, false);
-        if (is_link (w))
+        if (is_link (w)) {
           highlight_link (buffer, word_start_iter, next_iter);
-        else if (is_mention (w))
+        } else if (is_mention (w, out k)) {
+          word_start_iter.forward_chars (k);
           highlight_mention (buffer, word_start_iter, next_iter);
-        else if (is_hashtag (w))
+        } else if (is_hashtag (w)) {
           highlight_hashtag (buffer, word_start_iter, next_iter);
+        }
       }
 
       if (done)
@@ -599,13 +618,26 @@ namespace TweetUtils {
   {
     Json.Node? result = null;
     GLib.SourceFunc callback = load_threaded.callback;
+
+    /*
+       Call invoke_async anways, even though we create a new thread afterwards.
+       Workaround for https://bugzilla.gnome.org/show_bug.cgi?id=742644
+       TODO: switch to sync() again, bump librest dependency
+     */
+    try {
+      yield call.invoke_async (null);
+    } catch (GLib.Error e) {
+      warning (e.message);
+      return null;
+    }
+
     new Thread<void*> ("json parser", () => {
-      try {
-        call.sync ();
-      } catch (GLib.Error e) {
-        warning (e.message);
-        return null;
-      }
+      //try {
+        //call.sync ();
+      //} catch (GLib.Error e) {
+        //warning (e.message);
+        //return null;
+      //}
 
       var parser = new Json.Parser ();
       try {

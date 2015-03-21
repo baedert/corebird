@@ -46,7 +46,7 @@
               <object class="GtkToggleButton" id="account_button">
                 <property name="visible">true</property>
                 <property name="tooltip_text" translatable="yes">Show configured accounts</property>
-                <signal name="toggled" handler="account_button_toggled_cb" swapped="no" />
+                <signal name="clicked" handler="account_button_clicked_cb" />
                 <style>
                   <class name="image-button" />
                   <class name="account-button" />

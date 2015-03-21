@@ -326,7 +326,7 @@ class TweetInfoPage : IPage , ScrollWidget {
       mm_widget.hide ();
     }
 
-    if (tweet.user_id == account.id) {
+    if (tweet.user_id == account.id || tweet.protected) {
       retweet_button.hide ();
     } else {
       retweet_button.show ();

@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-15 10:13+0100\n"
-"PO-Revision-Date: 2014-11-15 08:57+0000\n"
+"POT-Creation-Date: 2015-03-17 15:59+0100\n"
+"PO-Revision-Date: 2015-03-18 10:26+0000\n"
 "Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/projects/p/corebird/"
 "language/zh_CN/)\n"
@@ -20,48 +20,56 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../src/window/ComposeTweetWindow.vala:317 ../ui/compose-window.ui.h:3
+#: ../src/window/ComposeTweetWindow.vala:338
 msgid "Select Image"
 msgstr "选择图像"
 
-#: ../src/window/ComposeTweetWindow.vala:318
-#: ../src/window/UserListDialog.vala:44
-#: ../src/widgets/MultiMediaWidget.vala:148 ../ui/compose-window.ui.h:4
+#: ../src/window/ComposeTweetWindow.vala:339
+#: ../src/window/UserListDialog.vala:45
+#: ../src/widgets/MultiMediaWidget.vala:152 ../ui/compose-window.ui.h:2
 #: ../ui/list-list-entry.ui.h:1 ../ui/list-statuses-page.ui.h:8
 #: ../ui/filter-list-entry.ui.h:1 ../ui/modify-filter-dialog.ui.h:2
-#: ../ui/user-filter-entry.ui.h:1 ../ui/account-dialog.ui.h:6
+#: ../ui/user-filter-entry.ui.h:1 ../ui/account-dialog.ui.h:2
 #: ../ui/image-crop-dialog.ui.h:1
 msgid "Cancel"
 msgstr "取消"
 
-#: ../src/window/ComposeTweetWindow.vala:319
+#: ../src/window/ComposeTweetWindow.vala:340
 msgid "Choose"
 msgstr "选择"
 
-#: ../src/window/UserListDialog.vala:45
-#: ../src/widgets/MultiMediaWidget.vala:149
-#: ../src/window/ImageCropDialog.vala:91 ../ui/list-statuses-page.ui.h:6
-#: ../ui/modify-filter-dialog.ui.h:3 ../ui/account-dialog.ui.h:8
+#: ../src/window/UserListDialog.vala:38
+msgid "Add to or Remove User From List"
+msgstr ""
+
+#: ../src/window/UserListDialog.vala:46
+#: ../src/widgets/MultiMediaWidget.vala:153
+#: ../src/window/ImageCropDialog.vala:98 ../ui/list-statuses-page.ui.h:6
+#: ../ui/modify-filter-dialog.ui.h:3 ../ui/account-dialog.ui.h:3
 msgid "Save"
 msgstr "保存"
 
-#: ../src/window/ModifyFilterDialog.vala:47
+#: ../src/window/UserListDialog.vala:59
+msgid "You have no lists."
+msgstr ""
+
+#: ../src/window/ModifyFilterDialog.vala:45
 msgid "Modify Filter"
 msgstr ""
 
-#: ../src/window/ModifyFilterDialog.vala:78
+#: ../src/window/ModifyFilterDialog.vala:76
 msgid "Matches"
 msgstr ""
 
-#: ../src/window/ModifyFilterDialog.vala:80
+#: ../src/window/ModifyFilterDialog.vala:78
 msgid "Doesn't match"
 msgstr ""
 
-#: ../src/widgets/TweetListBox.vala:52 ../src/widgets/TweetListBox.vala:100
+#: ../src/widgets/TweetListBox.vala:104 ../src/widgets/TweetListBox.vala:152
 msgid "No entries found"
 msgstr "未找到条目"
 
-#: ../src/widgets/TweetListBox.vala:60
+#: ../src/widgets/TweetListBox.vala:112
 msgid "Retry"
 msgstr ""
 
@@ -73,18 +81,23 @@ msgstr ""
 msgid "Create one"
 msgstr ""
 
-#: ../src/widgets/AccountCreateWidget.vala:53
+#: ../src/widgets/AccountCreateWidget.vala:54
 msgid ""
 "Unauthorized. Most of the time, this means that there's something wrong with "
 "the Twitter servers and you should try again later"
 msgstr ""
 
+#: ../src/widgets/AccountCreateWidget.vala:65
+#, c-format
+msgid "Could not open %s"
+msgstr ""
+
 #. We just assume that it was the wrong code
-#: ../src/widgets/AccountCreateWidget.vala:76
+#: ../src/widgets/AccountCreateWidget.vala:89
 msgid "Wrong PIN"
 msgstr "PIN 码错误"
 
-#: ../src/widgets/AccountCreateWidget.vala:103
+#: ../src/widgets/AccountCreateWidget.vala:116
 msgid "Account already in use"
 msgstr ""
 
@@ -92,131 +105,148 @@ msgstr ""
 msgid "Copy link"
 msgstr ""
 
-#: ../src/widgets/MultiMediaWidget.vala:33
+#: ../src/widgets/MultiMediaWidget.vala:34
 msgid "Copy URL"
 msgstr ""
 
-#: ../src/widgets/MultiMediaWidget.vala:34
+#: ../src/widgets/MultiMediaWidget.vala:35
 msgid "Save Original"
 msgstr ""
 
-#: ../src/widgets/MultiMediaWidget.vala:70 ../src/TweetInfoPage.vala:364
+#: ../src/widgets/MultiMediaWidget.vala:74 ../src/TweetInfoPage.vala:341
 msgid "Open in Browser"
 msgstr "在浏览器中打开"
 
-#: ../src/widgets/MultiMediaWidget.vala:146
+#: ../src/widgets/MultiMediaWidget.vala:150
 msgid "Save image"
 msgstr "保存图像"
 
-#: ../src/HomeTimeline.vala:84
+#: ../src/widgets/AddImageButton.vala:35
+#: ../src/widgets/AddImageButton.vala:175
+msgid "Click to remove image"
+msgstr ""
+
+#: ../src/widgets/AddImageButton.vala:41
+msgid "Click to add image"
+msgstr ""
+
+#: ../src/HomeTimeline.vala:112
 #, c-format
 msgid "%s retweeted %s"
 msgstr "%s转推了%s"
 
-#: ../src/HomeTimeline.vala:86
+#: ../src/HomeTimeline.vala:114
 #, c-format
 msgid "%s tweeted"
 msgstr "%s 已发推"
 
-#: ../src/HomeTimeline.vala:93
+#: ../src/HomeTimeline.vala:121
 #, c-format
-msgid "%d new Tweets!"
-msgstr "%d 条新推文！"
+msgid "%d new Tweet!"
+msgid_plural "%d new Tweets!"
+msgstr[0] ""
 
-#: ../src/HomeTimeline.vala:175
+#: ../src/HomeTimeline.vala:207
 msgid "Home"
 msgstr "主页"
 
-#: ../src/DMThreadsPage.vala:361
+#: ../src/DMThreadsPage.vala:360
+#, c-format
+msgid "%d new Message from %s"
+msgid_plural "%d new Messages from %s"
+msgstr[0] ""
+
+#: ../src/DMThreadsPage.vala:366
 #, c-format
 msgid "New direct message from %s"
 msgstr ""
 
-#: ../src/DMThreadsPage.vala:372 ../src/DMThreadsPage.vala:386
+#: ../src/DMThreadsPage.vala:381 ../src/DMThreadsPage.vala:395
 msgid "Direct Messages"
 msgstr "直接消息"
 
 #: ../src/list/DMThreadEntry.vala:97
 #, c-format
 msgid "(%d unread)"
-msgstr "(未读 %d)"
+msgid_plural "(%d unread)"
+msgstr[0] ""
 
-#: ../src/ListsPage.vala:127 ../src/ListsPage.vala:132
+#: ../src/ListsPage.vala:130 ../src/ListsPage.vala:135
 #: ../ui/profile-page.ui.h:9
 msgid "Lists"
 msgstr "列表"
 
-#: ../src/ProfilePage.vala:315
+#: ../src/ProfilePage.vala:298
 msgid "Protected profile"
 msgstr "受保护的个人资料"
 
-#: ../src/ProfilePage.vala:507
+#: ../src/ProfilePage.vala:475
 #, c-format
 msgid "Tweet to @%s"
 msgstr ""
 
-#: ../src/ProfilePage.vala:591
+#: ../src/ProfilePage.vala:572
 msgid "Unfollow"
 msgstr "取消关注"
 
-#: ../src/ProfilePage.vala:595
+#: ../src/ProfilePage.vala:576
 msgid "Follow"
 msgstr "关注"
 
-#: ../src/TweetInfoPage.vala:337
+#: ../src/TweetInfoPage.vala:313
 msgid "Retweets"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:338 ../src/FavoritesTimeline.vala:71
-#: ../src/FavoritesTimeline.vala:75
+#: ../src/TweetInfoPage.vala:314 ../src/FavoritesTimeline.vala:90
+#: ../src/FavoritesTimeline.vala:94
 msgid "Favorites"
 msgstr "收藏"
 
-#: ../src/TweetInfoPage.vala:364
+#: ../src/TweetInfoPage.vala:341
 msgid "Source"
 msgstr "来源"
 
-#: ../src/TweetInfoPage.vala:369
+#: ../src/TweetInfoPage.vala:352
 msgid "Tweet Details"
 msgstr ""
 
-#: ../src/util/Utils.vala:88
+#: ../src/util/Utils.vala:110
 msgid "Now"
 msgstr "现在"
 
-#: ../src/util/Utils.vala:90
+#: ../src/util/Utils.vala:112
 #, c-format
 msgid "%dm"
 msgstr "%d分钟"
 
-#: ../src/util/Utils.vala:94
+#: ../src/util/Utils.vala:116
 #, c-format
 msgid "%dh"
 msgstr "%d小时"
 
-#: ../src/SearchPage.vala:276 ../src/SearchPage.vala:285
+#: ../src/SearchPage.vala:263 ../src/SearchPage.vala:272
 #: ../ui/search-page.ui.h:1
 msgid "Search"
 msgstr "搜索"
 
-#: ../src/Corebird.vala:162
+#: ../src/Corebird.vala:148
 msgid "Open Account"
 msgstr "打开帐号"
 
-#: ../src/MentionsTimeline.vala:92
+#: ../src/MentionsTimeline.vala:98
 #, c-format
 msgid "New Mention from @%s"
 msgstr ""
 
-#: ../src/MentionsTimeline.vala:123 ../src/MentionsTimeline.vala:128
+#: ../src/MentionsTimeline.vala:131 ../src/MentionsTimeline.vala:136
 msgid "Mentions"
 msgstr "提及我的"
 
-#: ../src/DMPage.vala:250
+#: ../src/DMPage.vala:257
 msgid "Direct Conversation"
 msgstr ""
 
-#: ../src/ListStatusesPage.vala:404
+#: ../src/ListStatusesPage.vala:389
 msgid "List"
 msgstr ""
 
@@ -228,17 +258,25 @@ msgstr ""
 msgid "Select avatar"
 msgstr ""
 
-#: ../src/window/ImageCropDialog.vala:52 ../ui/image-crop-dialog.ui.h:3
+#: ../src/window/ImageCropDialog.vala:58 ../ui/image-crop-dialog.ui.h:2
 msgid "Next"
 msgstr ""
 
-#: ../src/window/ImageCropDialog.vala:94
-#, c-format
-msgid ""
-"Image does not meet the minimum size requirements:\n"
-"Minimum width: %d pixels\n"
-"Minimum height: %d pixels"
+#: ../src/window/ImageCropDialog.vala:103
+msgid "Image does not meet minimum size requirements:"
 msgstr ""
+
+#: ../src/window/ImageCropDialog.vala:104
+#, c-format
+msgid "Minimum width: %d pixel"
+msgid_plural "Minimum width: %d pixels"
+msgstr[0] ""
+
+#: ../src/window/ImageCropDialog.vala:106
+#, c-format
+msgid "Minimum height: %d pixel"
+msgid_plural "Minimum height: %d pixels"
+msgstr[0] ""
 
 #: ../ui/settings-dialog.ui.h:1 ../ui/menu.ui.h:1
 msgid "Settings"
@@ -253,58 +291,62 @@ msgid "Maximum media size"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:4
-msgid "Megabytes"
-msgstr "MB"
+msgid "MB"
+msgstr ""
 
 #: ../ui/settings-dialog.ui.h:5
 msgid "Auto scroll on new tweets"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:6
-msgid "Interface"
+msgid "Double-click activation"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:7
-msgid "On New Tweets"
+msgid "Interface"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:8
+msgid "On New Tweets"
+msgstr ""
+
+#: ../ui/settings-dialog.ui.h:9
 msgid "Actions"
 msgstr "动作"
 
-#: ../ui/settings-dialog.ui.h:9
+#: ../ui/settings-dialog.ui.h:10
 msgid "On New Mentions"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:10
+#: ../ui/settings-dialog.ui.h:11
 msgid "On New Messages"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:11
+#: ../ui/settings-dialog.ui.h:12
 msgid "Never"
 msgstr "从不"
 
-#: ../ui/settings-dialog.ui.h:12
+#: ../ui/settings-dialog.ui.h:13
 msgid "Every"
 msgstr "间隔"
 
-#: ../ui/settings-dialog.ui.h:13
+#: ../ui/settings-dialog.ui.h:14
 msgid "Stack 5"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:14
+#: ../ui/settings-dialog.ui.h:15
 msgid "Stack 10"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:15
+#: ../ui/settings-dialog.ui.h:16
 msgid "Stack 25"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:16
+#: ../ui/settings-dialog.ui.h:17
 msgid "Stack 50"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:17
+#: ../ui/settings-dialog.ui.h:18
 msgid "Notifications"
 msgstr ""
 
@@ -332,7 +374,7 @@ msgstr "关于 Corebird"
 msgid "Using Font Awesome by Dave Gandy - http://fontawesome.io"
 msgstr ""
 
-#: ../ui/dm-page.ui.h:1 ../ui/compose-window.ui.h:5
+#: ../ui/dm-page.ui.h:1 ../ui/compose-window.ui.h:3
 msgid "Send"
 msgstr "发送"
 
@@ -344,32 +386,19 @@ msgstr "加载更多"
 msgid "Quote"
 msgstr "引用"
 
-#: ../ui/tweet-list-entry.ui.h:2
-msgid "Details"
-msgstr "详情"
-
-#: ../ui/tweet-list-entry.ui.h:3 ../ui/tweet-info-page.ui.h:2
-#: ../ui/list-list-entry.ui.h:4 ../ui/list-statuses-page.ui.h:7
-#: ../ui/filter-list-entry.ui.h:2 ../ui/user-filter-entry.ui.h:2
+#: ../ui/tweet-list-entry.ui.h:2 ../ui/list-list-entry.ui.h:4
+#: ../ui/list-statuses-page.ui.h:7 ../ui/filter-list-entry.ui.h:2
 #: ../ui/account-dialog.ui.h:7
 msgid "Delete"
 msgstr "删除"
 
+#: ../ui/tweet-list-entry.ui.h:3
+msgid "Favorite"
+msgstr ""
+
 #: ../ui/tweet-list-entry.ui.h:4
-msgid "Show more actions"
-msgstr "显示更多动作"
-
-#: ../ui/tweet-list-entry.ui.h:5 ../ui/tweet-info-page.ui.h:5
-msgid "Reply to tweet"
-msgstr "回复推文"
-
-#: ../ui/tweet-list-entry.ui.h:6 ../ui/tweet-info-page.ui.h:4
-msgid "Favorite tweet"
-msgstr "收藏推文"
-
-#: ../ui/tweet-list-entry.ui.h:7 ../ui/tweet-info-page.ui.h:3
-msgid "Retweet tweet"
-msgstr "转推"
+msgid "Reply"
+msgstr ""
 
 #: ../ui/user-list-entry.ui.h:1
 msgid "Show settings of this account"
@@ -402,10 +431,6 @@ msgstr "用户"
 #: ../ui/compose-window.ui.h:1
 msgid "Compose Tweet"
 msgstr "撰写推文"
-
-#: ../ui/compose-window.ui.h:2
-msgid "Attach Image"
-msgstr ""
 
 #: ../ui/profile-page.ui.h:1
 msgid "Write Direct Message"
@@ -440,6 +465,10 @@ msgid "Show configured accounts"
 msgstr ""
 
 #: ../ui/main-window.ui.h:2
+msgid "Compose tweet"
+msgstr ""
+
+#: ../ui/main-window.ui.h:3
 msgid "New tweet"
 msgstr "新推文"
 
@@ -459,7 +488,19 @@ msgstr ""
 msgid "Confirm"
 msgstr "确认"
 
-#: ../ui/tweet-info-page.ui.h:6
+#: ../ui/tweet-info-page.ui.h:2
+msgid "Retweet tweet"
+msgstr "转推"
+
+#: ../ui/tweet-info-page.ui.h:3
+msgid "Favorite tweet"
+msgstr "收藏推文"
+
+#: ../ui/tweet-info-page.ui.h:4
+msgid "Reply to tweet"
+msgstr "回复推文"
+
+#: ../ui/tweet-info-page.ui.h:5
 msgid "More"
 msgstr "更多"
 
@@ -519,27 +560,31 @@ msgstr "公开"
 msgid "Add New Filter"
 msgstr ""
 
+#: ../ui/user-filter-entry.ui.h:2
+msgid "Unblock"
+msgstr ""
+
 #: ../ui/account-dialog.ui.h:1
 msgid "Account Settings"
 msgstr ""
 
-#: ../ui/account-dialog.ui.h:2
+#: ../ui/account-dialog.ui.h:4
 msgid "Name"
 msgstr ""
 
-#: ../ui/account-dialog.ui.h:3
+#: ../ui/account-dialog.ui.h:5
 msgid "Website"
 msgstr ""
 
-#: ../ui/account-dialog.ui.h:4
+#: ../ui/account-dialog.ui.h:6
 msgid "Autostart"
 msgstr ""
 
-#: ../ui/account-dialog.ui.h:5
+#: ../ui/account-dialog.ui.h:8
 msgid "Do you really want to delete this account?"
 msgstr ""
 
-#: ../ui/image-crop-dialog.ui.h:2
+#: ../ui/image-crop-dialog.ui.h:3
 msgid "Back"
 msgstr ""
 
