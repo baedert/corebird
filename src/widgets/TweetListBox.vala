@@ -65,7 +65,7 @@ public class TweetListBox : Gtk.ListBox {
       var row = new TweetListEntry ((Tweet) obj,
                                     (MainWindow) get_toplevel (),
                                     this.account);
-      row.show_all ();
+      row.show ();
       return row;
     });
   }
