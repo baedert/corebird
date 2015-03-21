@@ -10,7 +10,6 @@ TESTS = \
 				tweet_parsing  \
 				filters        \
 				sql            \
-				multimedia     \
 				highlighting   \
 				friends
 check_PROGRAMS = $(TESTS)
@@ -50,10 +49,6 @@ sql_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
 tweet_parsing_SOURCES = tweet_parsing.vala resources.c
 tweet_parsing_LDADD = $(top_builddir)/src/libcorebird.la
 tweet_parsing_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
-
-multimedia_SOURCES = multimedia.vala resources.c
-multimedia_LDADD = $(top_builddir)/src/libcorebird.la
-multimedia_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
 
 highlighting_SOURCES = highlighting.vala
 highlighting_LDADD = $(top_builddir)/src/libcorebird.la
