@@ -43,7 +43,11 @@ class ProfilePage : ScrollWidget, IPage {
   }
   public unowned Account account { get; set; }
   public int id { get; set; }
-  public unowned DeltaUpdater delta_updater { get; set; }
+  public unowned DeltaUpdater delta_updater {
+    set {
+      tweet_list.delta_updater = value;
+    }
+  }
 
   [GtkChild]
   private AspectImage banner_image;
@@ -101,6 +105,7 @@ class ProfilePage : ScrollWidget, IPage {
     this.id = id;
     this.account = account;
     this.user_lists.account = account;
+    this.tweet_list.account = account;
 
     this.scroll_event.connect ((evt) => {
       if (evt.delta_y < 0 && this.vadjustment.value == 0) {
