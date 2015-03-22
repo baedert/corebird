@@ -97,6 +97,9 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
 
     bool should_focus = (tweet_list.get_first_visible_row ().is_focus && this.scrolled_up);
 
+    if (!t.is_hidden)
+      entry.show ();
+
     tweet_list.add(entry);
 
     if (should_focus)
