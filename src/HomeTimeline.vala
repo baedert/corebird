@@ -176,17 +176,16 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
     }
   }
 
-  public void show_retweets_from (int64 user_id) {
-    GLib.List<unowned Gtk.Widget> children = tweet_list.get_children ();
-    foreach (Gtk.Widget w in children) {
-      if (!(w is TweetListEntry))
-        continue;
+  public void show_retweets_from (int64 user_id, uint reason) {
+    TweetModel tm = (TweetModel) tweet_list.model;
 
-      TweetListEntry tle = (TweetListEntry) w;
-      if (tle.tweet.rt_by_id == user_id && tle.tweet.is_retweet && !tle.visible) {
-        tle.show ();
+    for (uint i = 0, p = tm.get_n_items (); i < p; i ++) {
+      Tweet tweet = (Tweet) tm.get_object (i);
+
+      if (tweet.rt_by_id == user_id && tweet.is_retweet) {
+        tweet.hidden_flags &= ~reason;
+        tweet.hidden_flags_changed ();
       }
-
     }
   }
 
