@@ -30,7 +30,7 @@ public class Corebird : Gtk.Application {
     {"show-about-dialog", about_activated                 },
     {"show-dm-thread",    show_dm_thread,          "(sx)" },
     {"mark-seen",         mark_seen,               "(sx)" },
-    {"show-window",       show_window,             "s"    }
+    {"show-window",       show_window,             "x"    }
   };
 
 
