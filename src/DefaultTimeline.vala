@@ -152,24 +152,14 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     if (tweet_remove_timeout != 0)
       return;
 
-    GLib.List<weak Gtk.Widget> entries = tweet_list.get_children ();
-    uint item_count = entries.length ();
-    if (item_count > ITimeline.REST) {
-      tweet_remove_timeout = GLib.Timeout.add (5000, () => {
+    if (tweet_list.model.get_n_items () > ITimeline.REST) {
+      tweet_remove_timeout = GLib.Timeout.add (500, () => {
         if (!scrolled_up) {
           tweet_remove_timeout = 0;
           return false;
         }
 
-        while (item_count > ITimeline.REST) {
-          Gtk.Widget? w = tweet_list.get_row_at_index (ITimeline.REST);
-          if (w == null || w.visible)
-            item_count --;
-
-          if (w != null)
-            tweet_list.remove (w);
-        }
-        tweet_remove_timeout = 0;
+        tweet_list.model.remove_last_n_visible (tweet_list.model.get_n_items () - ITimeline.REST);
         lowest_id = ((TweetListEntry)tweet_list.get_row_at_index (ITimeline.REST -1)).tweet.id;
         return false;
       });

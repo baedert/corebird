@@ -83,4 +83,23 @@ public class TweetModel : GLib.Object, GLib.ListModel {
     else if (tweet.id < this.min_id)
       this.min_id = tweet.id;
   }
+
+  public void remove_last_n_visible (uint amount) {
+    assert (amount < tweets.size);
+
+    uint n_removed = 0;
+
+    int index = tweets.size - 1;
+    while (index >= 0 && n_removed < amount) {
+      Tweet tweet = tweets.get (index);
+
+      if (!tweet.is_hidden)
+        n_removed ++;
+
+      tweets.remove_at (index);
+      index --;
+    }
+    this.items_changed (tweets.size - 1, n_removed, 0);
+  }
+
 }
