@@ -77,7 +77,6 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
 
   public virtual void on_join (int page_id, Bundle? args) {
     if (!initialized) {
-      load_cached ();
       load_newest ();
       account.user_stream.resumed.connect (stream_resumed_cb);
       initialized = true;
@@ -123,7 +122,6 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
       tweet_list.action_entry.toggle_mode ();
   }
 
-  public virtual void load_cached () {}
   public abstract void load_newest ();
   public abstract void load_older ();
   public abstract string? get_title ();
