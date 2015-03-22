@@ -526,7 +526,7 @@ class ProfilePage : ScrollWidget, IPage {
       call.add_param ("follow", "false");
       ht.show_tweets_from (this.user_id);
       if (!((SimpleAction)actions.lookup_action ("toggle-retweets")).get_state ().get_boolean ()) {
-        ht.show_retweets_from (this.user_id);
+        ht.show_retweets_from (this.user_id, Tweet.HIDDEN_UNFOLLOWED);
       }
       set_user_blocked (false);
       follower_count ++;
@@ -711,10 +711,10 @@ class ProfilePage : ScrollWidget, IPage {
     call.add_param ("retweets", current_state.to_string ());
     HomeTimeline ht = (HomeTimeline) main_window.get_page (Page.STREAM);
     if (current_state) {
-      ht.show_retweets_from (this.user_id);
+      ht.show_retweets_from (this.user_id, Tweet.HIDDEN_RTS_DISABLED);
       account.remove_disabled_rts_id (this.user_id);
     } else {
-      ht.hide_retweets_from (this.user_id, Tweet.HIDDEN_RTS_DISABLED); // XXX
+      ht.hide_retweets_from (this.user_id, Tweet.HIDDEN_RTS_DISABLED);
       account.add_disabled_rts_id (this.user_id);
     }
 
