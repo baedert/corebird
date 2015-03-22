@@ -60,7 +60,7 @@ public class TweetModel : GLib.Object, GLib.ListModel {
       } else {
         // we start at the end
         for (int i = tweets.size - 1; i >= 0; i --) {
-          if (tweets.get (i).id < tweet.id) {
+          if (tweets.get (i).id <= tweet.id) {
             insert_pos = i;
             break;
           }
@@ -102,4 +102,11 @@ public class TweetModel : GLib.Object, GLib.ListModel {
     this.items_changed (tweets.size - 1, n_removed, 0);
   }
 
+  public void clear () {
+    int s = this.tweets.size;
+    this.tweets.clear ();
+    this.min_id = int64.MAX;
+    this.max_id = int64.MIN;
+    this.items_changed (0, s, 0);
+  }
 }
