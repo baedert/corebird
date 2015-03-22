@@ -28,6 +28,12 @@ class TweetInfoPage : IPage , ScrollWidget {
   public int id                         { get; set; }
   public unowned MainWindow main_window { get; set; }
   public unowned Account account { get; set; }
+  public unowned DeltaUpdater delta_updater {
+    set {
+      top_list_box.delta_updater = value;
+      bottom_list_box.delta_updater = value;
+    }
+  }
   private int64 tweet_id;
   private string screen_name;
   private bool values_set = false;
@@ -48,9 +54,9 @@ class TweetInfoPage : IPage , ScrollWidget {
   [GtkChild]
   private Gtk.Label fav_label;
   [GtkChild]
-  private Gtk.ListBox bottom_list_box;
+  private TweetListBox bottom_list_box;
   [GtkChild]
-  private Gtk.ListBox top_list_box;
+  private TweetListBox top_list_box;
   [GtkChild]
   private Gtk.ToggleButton favorite_button;
   [GtkChild]
@@ -67,6 +73,8 @@ class TweetInfoPage : IPage , ScrollWidget {
   public TweetInfoPage (int id, Account account) {
     this.id = id;
     this.account = account;
+    this.top_list_box.account = account;
+    this.bottom_list_box.account = account;
 
     mm_widget.media_clicked.connect ((m, i) => TweetUtils.handle_media_click (tweet, main_window, i));
     this.scroll_event.connect ((evt) => {
@@ -121,9 +129,9 @@ class TweetInfoPage : IPage , ScrollWidget {
       this.screen_name = args.get_string ("screen_name");
     }
 
-    bottom_list_box.foreach ((w) => {bottom_list_box.remove (w);});
+    bottom_list_box.model.clear ();
     bottom_list_box.hide ();
-    top_list_box.foreach ((w) => {top_list_box.remove (w);});
+    top_list_box.model.clear ();
     top_list_box.hide ();
     reply_indicator.replies_available = false;
     max_size_container.max_size = 0;
@@ -237,8 +245,7 @@ class TweetInfoPage : IPage , ScrollWidget {
 
         Tweet t = new Tweet ();
         t.load_from_json (node, now, account);
-        var tle = new TweetListEntry (t, main_window, account);
-        top_list_box.add (tle);
+        top_list_box.model.add (t);
         n_replies ++;
       });
 
@@ -292,7 +299,8 @@ class TweetInfoPage : IPage , ScrollWidget {
       /* If we get here, the tweet is not protected so we can just use it */
       Tweet tweet = new Tweet ();
       tweet.load_from_json (parser.get_root (), new GLib.DateTime.now_local (), account);
-      bottom_list_box.add (new TweetListEntry (tweet, main_window, account));
+      bottom_list_box.model.add (tweet);
+      //bottom_list_box.add (new TweetListEntry (tweet, main_window, account));
       load_replied_to_tweet (tweet.reply_id);
     });
   } //}}}
