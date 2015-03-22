@@ -62,8 +62,25 @@ void tweet_removal () {
   tm.remove_last_n_visible (5);
 
   assert (tm.get_n_items () == 5);
+}
 
 
+void clear () {
+  var tm = new TweetModel ();
+
+  tm.add (new Tweet ());
+  tm.add (new Tweet ());
+  tm.add (new Tweet ());
+  tm.add (new Tweet ());
+  tm.add (new Tweet ());
+  tm.add (new Tweet ());
+  tm.add (new Tweet ());
+  tm.add (new Tweet ());
+
+  assert (tm.get_n_items () == 8);
+
+  tm.clear ();
+  assert (tm.get_n_items () == 0);
 }
 
 
@@ -71,6 +88,7 @@ int main (string[] args) {
   GLib.Test.init (ref args);
   GLib.Test.add_func ("/tweetmodel/basic-tweet-order", basic_tweet_order);
   GLib.Test.add_func ("/tweetmodel/tweet-removal", tweet_removal);
+  GLib.Test.add_func ("/tweetmodel/clear", clear);
 
   return GLib.Test.run ();
 }
