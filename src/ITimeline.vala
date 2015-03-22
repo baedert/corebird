@@ -125,16 +125,17 @@ public interface ITimeline : Gtk.Widget, IPage {
   } //}}}
 
   public void rerun_filters () {
-    GLib.List<unowned Gtk.Widget> children = tweet_list.get_children ();
-    foreach (Gtk.Widget w in children) {
-      if (!(w is TweetListEntry))
-        continue;
+    TweetModel tm = tweet_list.model;
 
-      TweetListEntry tle = (TweetListEntry) w;
-      if (account.filter_matches (tle.tweet))
-        tle.hide ();
+
+    for (uint i = 0, p = tm.get_n_items (); i < p; i ++) {
+      var tweet = (Tweet) tm.get_object (i);
+      if (account.filter_matches (tweet))
+        tweet.hidden_flags |= Tweet.HIDDEN_FILTERED;
       else
-        tle.show ();
+        tweet.hidden_flags &= ~Tweet.HIDDEN_FILTERED;
+
+      tweet.hidden_flags_changed ();
     }
   }
 }
