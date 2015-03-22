@@ -47,10 +47,10 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
         toggle_favorite (id, false);
     } else if (type == StreamMessageType.EVENT_BLOCK) {
       int64 user_id = root.get_object ().get_object_member ("target").get_int_member ("id");
-      hide_tweets_from (user_id);
+      hide_tweets_from (user_id, Tweet.HIDDEN_AUTHOR_BLOCKED);
     } else if (type == StreamMessageType.EVENT_UNBLOCK) {
       int64 user_id = root.get_object ().get_object_member ("target").get_int_member ("id");
-      show_tweets_from (user_id);
+      show_tweets_from (user_id, Tweet.HIDDEN_AUTHOR_BLOCKED);
     }
   } // }}}
 
@@ -132,34 +132,30 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
   } // }}}
 
 
-  public void hide_tweets_from (int64 user_id) {
-    GLib.List<unowned Gtk.Widget> children = tweet_list.get_children ();
-    foreach (Gtk.Widget w in children) {
-      if (!(w is TweetListEntry))
-        continue;
+  public void hide_tweets_from (int64 user_id, uint reason) {
+    TweetModel tm = (TweetModel) tweet_list.model;
 
-      TweetListEntry tle = (TweetListEntry) w;
-      if (tle.tweet.user_id == user_id) {
-        tle.hide ();
-      } else if (tle.tweet.user_id == user_id &&
-                 tle.tweet.is_retweet) {
-        tle.show ();
+    for (uint i = 0, p = tm.get_n_items (); i < p; i ++) {
+      Tweet tweet = (Tweet) tm.get_object (i);
+
+      if (tweet.rt_by_id == user_id && tweet.is_retweet) {
+        tweet.hidden_flags |= reason;
+        tweet.hidden_flags_changed ();
       }
-
     }
   }
 
-  public void show_tweets_from (int64 user_id) {
-    GLib.List<unowned Gtk.Widget> children = tweet_list.get_children ();
-    foreach (Gtk.Widget w in children) {
-      if (!(w is TweetListEntry))
-        continue;
+  // XXX Move all of these in TweetModel?
+  public void show_tweets_from (int64 user_id, uint reason) {
+    TweetModel tm = (TweetModel) tweet_list.model;
 
-      TweetListEntry tle = (TweetListEntry) w;
-      if (tle.tweet.user_id == user_id && !tle.visible) {
-        tle.show ();
+    for (uint i = 0, p = tm.get_n_items (); i < p; i ++) {
+      Tweet tweet = (Tweet) tm.get_object (i);
+
+      if (tweet.rt_by_id == user_id && tweet.is_retweet) {
+        tweet.hidden_flags &= ~reason;
+        tweet.hidden_flags_changed ();
       }
-
     }
   }
 

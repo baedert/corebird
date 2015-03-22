@@ -211,6 +211,7 @@ class ProfilePage : ScrollWidget, IPage {
     call.set_method ("GET");
     call.add_param ("source_id", account.id.to_string ());
     call.add_param ("target_id", user_id.to_string ());
+
     Json.Node? root = yield TweetUtils.load_threaded (call);
     if (root == null)
       return;
@@ -517,14 +518,14 @@ class ProfilePage : ScrollWidget, IPage {
     HomeTimeline ht = (HomeTimeline) main_window.get_page (Page.STREAM);
     if (following) {
       call.set_function( "1.1/friendships/destroy.json");
-      ht.hide_tweets_from (this.user_id);
+      ht.hide_tweets_from (this.user_id, Tweet.HIDDEN_UNFOLLOWED);
       ht.hide_retweets_from (this.user_id, Tweet.HIDDEN_UNFOLLOWED); // XXX
       follower_count --;
       account.unfollow_id (this.user_id);
     } else {
       call.set_function ("1.1/friendships/create.json");
       call.add_param ("follow", "false");
-      ht.show_tweets_from (this.user_id);
+      ht.show_tweets_from (this.user_id, Tweet.HIDDEN_UNFOLLOWED);
       if (!((SimpleAction)actions.lookup_action ("toggle-retweets")).get_state ().get_boolean ()) {
         ht.show_retweets_from (this.user_id, Tweet.HIDDEN_UNFOLLOWED);
       }
@@ -676,11 +677,11 @@ class ProfilePage : ScrollWidget, IPage {
     call.set_method ("POST");
     if (current_state) {
       call.set_function ("1.1/blocks/destroy.json");
-      ht.show_tweets_from (this.user_id);
+      ht.show_tweets_from (this.user_id, Tweet.HIDDEN_AUTHOR_BLOCKED);
     } else {
       call.set_function ("1.1/blocks/create.json");
       set_follow_button_state (false);
-      ht.hide_tweets_from (this.user_id);
+      ht.hide_tweets_from (this.user_id, Tweet.HIDDEN_AUTHOR_BLOCKED);
     }
     set_user_blocked (!current_state);
     call.add_param ("user_id", this.user_id.to_string ());
