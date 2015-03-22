@@ -26,6 +26,7 @@
                 <property name="name">s</property>
                 <property name="can_focus">False</property>
                 <property name="selection_mode">none</property>
+                <property name="spinner_size">16</property>
               </object>
             </child>
           </object>
