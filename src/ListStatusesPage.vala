@@ -21,7 +21,11 @@ class ListStatusesPage : ScrollWidget, IPage {
   public int id                             { get; set; }
   public unowned MainWindow main_window     { get; set; }
   public unowned Account account            { get; set; }
-  public unowned DeltaUpdater delta_updater { get; set; }
+  public unowned DeltaUpdater delta_updater {
+    set {
+      this.tweet_list.delta_updater = value;
+    }
+  }
   private int64 list_id;
   private int64 lowest_id = int64.MAX;
   private int64 max_id = 0;
@@ -76,6 +80,7 @@ class ListStatusesPage : ScrollWidget, IPage {
   public ListStatusesPage (int id, Account account) {
     this.id = id;
     this.account = account;
+    this.tweet_list.account = account;
     this.scroll_event.connect (scroll_event_cb);
     this.scrolled_to_end.connect (load_older);
     this.scrolled_to_start.connect (handle_scrolled_to_start);
