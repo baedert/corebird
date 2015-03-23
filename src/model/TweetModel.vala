@@ -109,4 +109,14 @@ public class TweetModel : GLib.Object, GLib.ListModel {
     this.max_id = int64.MIN;
     this.items_changed (0, s, 0);
   }
+
+  public void remove (int64 tweet_id) {
+    for (int i = 0, p = tweets.size; i < p; i ++) {
+      if (tweets.get(i).id == tweet_id) {
+        tweets.remove_at (i);
+        this.items_changed (i, 1, 0);
+        break;
+      }
+    }
+  }
 }
