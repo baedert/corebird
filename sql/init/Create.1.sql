@@ -25,23 +25,6 @@ CREATE TABLE IF NOT EXISTS `accounts`(
   avatar_url VARCHAR(255)
 );
 
-
-CREATE TABLE IF NOT EXISTS `cache`(
-  id INTEGER(11) PRIMARY KEY,
-  sort_factor INTEGER(19,0),
-  type INTEGER(2),
-  data TEXT
-);
-
-
-CREATE TABLE IF NOT EXISTS `people`(
-  id NUMERIC(19,0),
-  name VARCHAR(30),
-  screen_name VARCHAR(30),
-  avatar_url VARCHAR(255),
-  avatar_name VARCHAR(70)
-);
-
 CREATE TABLE IF NOT EXISTS `user`(
   id NUMERIC(19,0),
   name VARCHAR(40),
