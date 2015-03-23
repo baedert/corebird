@@ -72,7 +72,7 @@ class UserListDialog : Gtk.Dialog {
         l.id = list.id;
         list_list_box.add (l);
       }
-     this.show_all ();
+      this.show_all ();
     });
 
     var call = account.proxy.new_call ();
