@@ -49,6 +49,7 @@ public class Tweet : GLib.Object {
   public bool verified = false;
   /** If the user retweeted this tweet */
   public int64 my_retweet;
+  public bool protected;
 
   /** if 0, this tweet is NOT part of a conversation */
   public int64 reply_id = 0;
@@ -109,6 +110,7 @@ public class Tweet : GLib.Object {
       this.rt_created_at = Utils.parse_date(rt.get_string_member("created_at"))
                                   .to_unix();
       this.verified      = rt_user.get_boolean_member("verified");
+      this.protected     = rt_user.get_boolean_member ("protected");
       if (!rt.get_null_member("in_reply_to_status_id"))
         this.reply_id = rt.get_int_member("in_reply_to_status_id");
     } else {
@@ -119,6 +121,7 @@ public class Tweet : GLib.Object {
       this.screen_name = user.get_string_member("screen_name");
       this.avatar_url  = user.get_string_member("profile_image_url");
       this.verified    = user.get_boolean_member("verified");
+      this.protected   = user.get_boolean_member ("protected");
       if (!status.get_null_member("in_reply_to_status_id"))
         this.reply_id  = status.get_int_member("in_reply_to_status_id");
     }
@@ -241,20 +244,32 @@ public class Tweet : GLib.Object {
       var extended_media = extended_entities.get_array_member ("media");
       extended_media.foreach_element ((arr, index, node) => {
         var media_obj = node.get_object ();
-        if (media_obj.get_string_member ("type") != "photo")
-          return;
-
-        string url = media_obj.get_string_member ("media_url");
-        foreach (Media m in this.medias) {
-          if (m != null && m.url == url)
-            return;
-        }
-        if (InlineMediaDownloader.is_media_candidate (url)) {
-          var m = new Media ();
-          m.url = url;
-          m.target_url = url + ":large";
+        string media_type = media_obj.get_string_member ("type");
+        if (media_type == "photo") {
+          string url = media_obj.get_string_member ("media_url");
+          foreach (Media m in this.medias) {
+            if (m != null && m.url == url)
+              return;
+          }
+          if (InlineMediaDownloader.is_media_candidate (url)) {
+            var m = new Media ();
+            m.url = url;
+            m.target_url = url + ":large";
+            m.id = media_obj.get_int_member ("id");
+            m.type = Media.type_from_string (media_obj.get_string_member ("type"));
+            this.medias[real_media_count] = m;
+            real_media_count ++;
+          }
+        } else if (media_type == "video" ||
+                   media_type == "animated_gif") {
+          Json.Object variant = media_obj.get_object_member ("video_info")
+                                         .get_array_member ("variants")
+                                         .get_object_element (0); // XXX ???
+          Media m = new Media ();
+          m.url = variant.get_string_member ("url");
+          m.thumb_url = media_obj.get_string_member ("media_url");
+          m.type = MediaType.TWITTER_VIDEO;
           m.id = media_obj.get_int_member ("id");
-          m.type = Media.type_from_string (media_obj.get_string_member ("type"));
           this.medias[real_media_count] = m;
           real_media_count ++;
         }

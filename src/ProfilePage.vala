@@ -169,7 +169,7 @@ class ProfilePage : ScrollWidget, IPage {
     /* We (maybe) re-enable this later when the friendship object has arrived */
     ((SimpleAction)actions.lookup_action ("toggle-retweets")).set_enabled (false);
 
-    load_banner (DATADIR + "/no_banner.png");
+    load_banner (null);
     load_friendship.begin ();
     bool data_in_db = false;
     //Load cached data
@@ -200,7 +200,7 @@ class ProfilePage : ScrollWidget, IPage {
         // TODO: ???
         // If the cached banner does somehow not exist, load it again.
         debug("Banner %s does not exist, load it first...", banner_name);
-        load_banner (DATADIR + "/no_banner.png");
+        load_banner (null);
       }
       data_in_db = true;
       return false;
@@ -581,9 +581,12 @@ class ProfilePage : ScrollWidget, IPage {
   } //}}}
 
 
-  private void load_banner (string path) {
+  private void load_banner (string? path) {
     try {
-      banner_image.pixbuf = new Gdk.Pixbuf.from_file (path);
+      if (path != null)
+        banner_image.pixbuf = new Gdk.Pixbuf.from_file (path);
+      else
+        banner_image.pixbuf = new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/assets/no_banner.png");
     } catch (GLib.Error e) {
       warning (e.message);
     }

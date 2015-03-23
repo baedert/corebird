@@ -302,7 +302,7 @@ public class MainWindow : Gtk.ApplicationWindow {
   }
 
   [GtkCallback]
-  private void account_button_toggled_cb () {
+  private void account_button_clicked_cb () {
     account_popover.visible = !account_popover.visible;
   }
 

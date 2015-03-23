@@ -35,6 +35,7 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
 
   public int64 user_id;
   private int64 lowest_id = int64.MAX;
+  private bool was_scrolled_down = false;
 
   public DMPage (int id) {
     this.id = id;
@@ -43,6 +44,17 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
     placeholder_box.show ();
     messages_list.set_placeholder(placeholder_box);
     scroll_widget.scrolled_to_start.connect (load_older);
+    text_view.size_allocate.connect (() => {
+      if (was_scrolled_down)
+        scroll_widget.scroll_down_next (false, false);
+    });
+    scroll_widget.vadjustment.value_changed.connect (() => {
+      if (scroll_widget.scrolled_down) {
+        this.was_scrolled_down = true;
+      } else {
+        this.was_scrolled_down = false;
+      }
+    });
   }
 
   public void stream_message_received (StreamMessageType type, Json.Node root) { // {{{

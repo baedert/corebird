@@ -199,7 +199,7 @@
                 <property name="valign">center</property>
                 <property name="margin_end">6</property>
                 <property name="pixel_size">12</property>
-                <property name="icon_name">corebird-favorite-symbolic</property>
+                <property name="icon_name">starred-symbolic</property>
                 <style>
                   <class name="dim-label" />
                 </style>

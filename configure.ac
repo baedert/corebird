@@ -1,4 +1,4 @@
-AC_INIT([corebird],[0.9],[mail@baedert.org])
+AC_INIT([corebird],[1.0],[mail@baedert.org])
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([foreign no-dist-gzip dist-bzip2])
 
@@ -104,7 +104,6 @@ AC_CONFIG_FILES([Makefile
                  ui/Makefile
                  data/Makefile
                  data/org.baedert.corebird.desktop.in
-                 data/symbolics/Makefile
                  assets/Makefile
                  assets/128x128/Makefile
                  assets/96x96/Makefile
