@@ -106,12 +106,39 @@ void remove_tweet () {
 
 }
 
+void remove_own_retweet () {
+  var tm = new TweetModel ();
+
+  var t1 = new Tweet ();
+  t1.id = 1337;
+  t1.my_retweet = 500; // <--
+  t1.retweeted = true;
+
+  tm.add (t1);
+
+  for (int i = 0; i < 50; i ++) {
+    var t = new Tweet ();
+    t.id = i;
+    tm.add (t);
+  }
+
+  assert (tm.get_n_items () == 51);
+
+  tm.remove (5);
+  assert (tm.get_n_items () == 50);
+
+  // should not actually remove any tweet
+  tm.remove (500);
+  assert (tm.get_n_items () == 50);
+}
+
 int main (string[] args) {
   GLib.Test.init (ref args);
   GLib.Test.add_func ("/tweetmodel/basic-tweet-order", basic_tweet_order);
   GLib.Test.add_func ("/tweetmodel/tweet-removal", tweet_removal);
   GLib.Test.add_func ("/tweetmodel/clear", clear);
   GLib.Test.add_func ("/tweetmodel/remove", remove_tweet);
+  GLib.Test.add_func ("/tweetmodel/remove-own-retweet", remove_own_retweet);
 
   return GLib.Test.run ();
 }
