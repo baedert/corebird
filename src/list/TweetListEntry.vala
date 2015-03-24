@@ -100,7 +100,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   [Signal (action = true)]
   private signal void delete_tweet ();
 
-  public TweetListEntry (owned Tweet tweet, MainWindow? window, Account account){
+  public TweetListEntry (owned Tweet tweet, MainWindow? window, Account account) {
     this.account = account;
     this.tweet = tweet;
     this.window = window;
