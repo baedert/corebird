@@ -312,6 +312,9 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
   [GtkCallback]
   private bool link_activated_cb (string uri) {
+    if (this._read_only) {
+      return false;
+    }
     return TweetUtils.activate_link (uri, window);
   }
 
