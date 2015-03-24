@@ -61,7 +61,6 @@ class SettingsDialog : Gtk.Window {
 
     add_accels ();
     load_geometry ();
-    show_all ();
   }
 
   [GtkCallback]
