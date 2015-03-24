@@ -144,9 +144,42 @@ void multiple_links () {
 
   string spec = """<span underline="none"><a href="http://mirgehendirurlsaus.com" title="http://mirgehendirurlsaus.com">mirgehendirurlsaus.com</a></span>    <span underline="none"><a href="http://foobar.com" title="http://foobar.com">foobar.com</a></span>    <span underline="none"><a href="http://hahaaha.com" title="http://hahaaha.com">hahaaha.com</a></span>   <span underline="none"><a href="http://huehue.org" title="http://huehue.org">huehue.org</a></span>""";
 
-  stdout.printf ("'" + spec + "'\n");
-  stdout.printf ("'" + result + "'\n");
   assert (result == spec);
+}
+
+void textify_hashtags () {
+  string text = "Hey, #totally inappropriate #hashtag!";
+
+  var entities = new GLib.SList<TextEntity?> ();
+
+  entities.prepend (TextEntity () {
+    from = 5,
+    to = 13,
+    display_text = "#totally",
+    target = "foobar"
+  });
+
+  entities.prepend (TextEntity () {
+    from = 28,
+    to = 36,
+    display_text = "#hashtag",
+    target = "blubb"
+  });
+
+
+  entities.sort ((a, b) => {
+    if (a.from < b.from)
+      return -1;
+    return 1;
+   });
+
+  string result = TextTransform.transform (text,
+                                           entities,
+                                           TransformFlags.TEXTIFY_HASHTAGS);
+
+  stdout.printf ("%s\n", result);
+  assert (!result.contains ("#"));
+
 }
 
 int main (string[] args) {
@@ -159,6 +192,7 @@ int main (string[] args) {
   GLib.Test.add_func ("/tt/utf8", utf8);
   GLib.Test.add_func ("/tt/expand-links", expand_links);
   GLib.Test.add_func ("/tt/multiple-links", multiple_links);
+  GLib.Test.add_func ("/tt/textify-hashtags", textify_hashtags);
 
 
   return GLib.Test.run ();

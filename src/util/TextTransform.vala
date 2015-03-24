@@ -24,9 +24,10 @@ public struct TextEntity {
 }
 
 public enum TransformFlags {
-  REMOVE_HASHTAGS,
-  REMOVE_MEDIA_LINKS,
-  EXPAND_LINKS
+  REMOVE_MEDIA_LINKS       = 1 << 0,
+  REMOVE_TRAILING_HASHTAGS = 1 << 1,
+  EXPAND_LINKS             = 1 << 2,
+  TEXTIFY_HASHTAGS         = 1 << 3
 }
 
 namespace TextTransform {
@@ -38,7 +39,10 @@ namespace TextTransform {
            url.has_prefix ("pic.twitter.com/");
   }
 
-
+  private bool is_hashtag (string entity)
+  {
+    return entity[0] == '#';
+  }
 
   public string transform (string                  text,
                            GLib.SList<TextEntity?> entities,
@@ -56,27 +60,42 @@ namespace TextTransform {
 
       /* Skip the entire entity if we should remove media links AND
          it is a media link. */
-      if (!(TransformFlags.REMOVE_MEDIA_LINKS in flags) ||
+      if ((flags & TransformFlags.REMOVE_MEDIA_LINKS) ==  0 ||
           !is_media_url (entity.display_text ?? entity.target, media_count)) {
 
         if (TransformFlags.EXPAND_LINKS in flags) {
           builder.append (entity.target ?? entity.display_text);
         } else {
-          /* Append start of link + entity target */
-          builder.append ("<span underline=\"none\"><a href=\"")
-                 .append (entity.target ?? entity.display_text)
-                 .append ("\"");
+          bool linkify = !(TransformFlags.TEXTIFY_HASHTAGS in flags);
 
-          /* Only set the tooltip if there actually is one */
-          if (entity.tooltip_text != null) {
-            builder.append (" title=\"")
-                   .append (entity.tooltip_text.replace ("&", "&amp;"))
+          /* Append start of link + entity target */
+          if (linkify) {
+            builder.append ("<span underline=\"none\"><a href=\"")
+                   .append (entity.target ?? entity.display_text)
                    .append ("\"");
+
+            /* Only set the tooltip if there actually is one */
+            if (entity.tooltip_text != null) {
+              builder.append (" title=\"")
+                     .append (entity.tooltip_text.replace ("&", "&amp;"))
+                     .append ("\"");
+            }
+
+            builder.append (">");
           }
 
-          builder.append (">")
-                 .append (entity.display_text)
-                 .append ("</a></span>");
+
+          if (TransformFlags.TEXTIFY_HASHTAGS in flags &&
+              is_hashtag (entity.display_text))
+            builder.append (entity.display_text.substring (1));
+          else
+            builder.append (entity.display_text);
+
+
+          if (linkify) {
+            builder.append ("</a></span>");
+          }
+
         }
 
       }
