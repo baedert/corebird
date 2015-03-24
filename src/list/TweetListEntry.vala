@@ -62,6 +62,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     set {
       mm_widget.sensitive = !value;
       name_button.read_only = value;
+      this._read_only = value;
     }
   }
   public int64 sort_factor {
