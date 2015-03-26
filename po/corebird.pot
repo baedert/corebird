@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-17 15:59+0100\n"
+"POT-Creation-Date: 2015-03-26 19:19+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -243,7 +243,7 @@ msgstr ""
 msgid "Mentions"
 msgstr ""
 
-#: ../src/DMPage.vala:257
+#: ../src/DMPage.vala:269
 msgid "Direct Conversation"
 msgstr ""
 
@@ -599,8 +599,22 @@ msgstr ""
 
 #: ../data/org.baedert.corebird.appdata.xml.in.h:2
 msgid ""
-"Additional features include the abilty to change to the GTK+ dark theme, "
-"searching and media uploads."
+"Additional features include local viewing of videos, multiple inline images, "
+"Lists, Filters, multiple accounts, etc."
+msgstr ""
+
+#: ../data/org.baedert.corebird.appdata.xml.in.h:3
+msgid "Generic timeline view when using Corebird"
+msgstr ""
+
+#: ../data/org.baedert.corebird.appdata.xml.in.h:4
+msgid "Typical Twitter profile."
+msgstr ""
+
+#: ../data/org.baedert.corebird.appdata.xml.in.h:5
+msgid ""
+"Account settings like Name, Website, Description and Avatar can be "
+"configured."
 msgstr ""
 
 #: ../data/org.baedert.corebird.desktop.in.in.h:1
