@@ -376,6 +376,7 @@
             <property name="column_homogeneous">true</property>
             <property name="column_spacing">12</property>
             <property name="row_spacing">6</property>
+            <property name="margin_bottom">18</property>
 
             <child>
               <object class="GtkListBox" id="sample_tweet_list">
