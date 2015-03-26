@@ -33,6 +33,9 @@ class SettingsDialog : Gtk.Window {
   private Gtk.Stack main_stack;
   [GtkChild]
   private Gtk.Switch double_click_activation_switch;
+  [GtkChild]
+  private Gtk.ListBox sample_tweet_list;
+  private TweetListEntry sample_tweet_entry;
 
   public SettingsDialog (Corebird application) {
     this.application = application;
@@ -58,6 +61,24 @@ class SettingsDialog : Gtk.Window {
                           SettingsBindFlags.DEFAULT);
     Settings.get ().bind ("double-click-activation", double_click_activation_switch,
                           "active", SettingsBindFlags.DEFAULT);
+
+
+    // Set up sample tweet {{{
+    var sample_tweet = new Tweet ();
+    sample_tweet.is_retweet = true;
+    sample_tweet.rt_by_id = 10;
+    sample_tweet.rt_by_screen_name = "";
+    sample_tweet.retweeted_by = "Some Dude";
+    sample_tweet.text = "Hey, check out this new #Corebird version! #cool #newisalwaysbetter";
+    sample_tweet.screen_name = "corebirdclient";
+    sample_tweet.user_name = "Corebird";
+
+    this.sample_tweet_entry = new TweetListEntry (sample_tweet, null,
+                                                  new Account (10, "", ""));
+    sample_tweet_entry.activatable = false;
+    sample_tweet_entry.read_only = true;
+    this.sample_tweet_list.add (sample_tweet_entry);
+    // }}}
 
     add_accels ();
     load_geometry ();
@@ -111,6 +132,8 @@ class SettingsDialog : Gtk.Window {
         () => {main_stack.visible_child_name = "interface"; return true;});
     ag.connect (Gdk.Key.@2, Gdk.ModifierType.MOD1_MASK, Gtk.AccelFlags.LOCKED,
         () => {main_stack.visible_child_name = "notifications"; return true;});
+    ag.connect (Gdk.Key.@3, Gdk.ModifierType.MOD1_MASK, Gtk.AccelFlags.LOCKED,
+        () => {main_stack.visible_child_name = "tweet"; return true;});
 
     this.add_accel_group(ag);
   }

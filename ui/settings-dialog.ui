@@ -368,6 +368,108 @@
             <property name="name">notifications</property>
           </packing>
         </child>
+
+        <!-- Tweets page -->
+        <child>
+          <object class="GtkGrid">
+            <property name="visible">true</property>
+            <property name="column_homogeneous">true</property>
+            <property name="column_spacing">12</property>
+            <property name="row_spacing">6</property>
+
+            <child>
+              <object class="GtkListBox" id="sample_tweet_list">
+                <property name="visible">true</property>
+                <property name="selection_mode">none</property>
+                <property name="margin_bottom">12</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">0</property>
+                <property name="width">2</property>
+              </packing>
+            </child>
+
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">true</property>
+                <property name="label" translatable="yes">Remove trailing hashtags</property>
+                <property name="halign">end</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">1</property>
+              </packing>
+            </child>
+
+            <child>
+              <object class="GtkSwitch">
+                <property name="visible">true</property>
+                <property name="halign">start</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">1</property>
+              </packing>
+            </child>
+
+
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">true</property>
+                <property name="label" translatable="yes">Remove media links</property>
+                <property name="halign">end</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">2</property>
+              </packing>
+            </child>
+
+            <child>
+              <object class="GtkSwitch">
+                <property name="visible">true</property>
+                <property name="halign">start</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">2</property>
+              </packing>
+            </child>
+
+
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">true</property>
+                <property name="label" translatable="yes">Textify in-text hashtags</property>
+                <property name="halign">end</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">3</property>
+              </packing>
+            </child>
+
+            <child>
+              <object class="GtkSwitch">
+                <property name="visible">true</property>
+                <property name="halign">start</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">3</property>
+              </packing>
+            </child>
+
+
+
+
+          </object>
+          <packing>
+            <property name="title" translatable="yes">Tweets</property>
+            <property name="name">tweet</property>
+          </packing>
+        </child>
       </object>
     </child>
   </template>

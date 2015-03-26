@@ -60,7 +60,7 @@ namespace TextTransform {
 
       /* Skip the entire entity if we should remove media links AND
          it is a media link. */
-      if ((flags & TransformFlags.REMOVE_MEDIA_LINKS) ==  0 ||
+      if (!(TransformFlags.REMOVE_MEDIA_LINKS in flags) ||
           !is_media_url (entity.display_text ?? entity.target, media_count)) {
 
         if (TransformFlags.EXPAND_LINKS in flags) {

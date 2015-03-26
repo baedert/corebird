@@ -179,7 +179,6 @@ void textify_hashtags () {
 
   stdout.printf ("%s\n", result);
   assert (!result.contains ("#"));
-
 }
 
 int main (string[] args) {
