@@ -72,6 +72,15 @@ class SettingsDialog : Gtk.Window {
     sample_tweet.text = "Hey, check out this new #Corebird version! #cool #newisalwaysbetter";
     sample_tweet.screen_name = "corebirdclient";
     sample_tweet.user_name = "Corebird";
+    Gdk.Pixbuf? a = null;
+    try {
+      a = Gtk.IconTheme.get_default ().load_icon ("corebird", 48,
+                                                  Gtk.IconLookupFlags.FORCE_SIZE);
+    } catch (GLib.Error e) {
+      warning (e.message);
+      // Ignore.
+    }
+    sample_tweet.avatar = a;
 
     this.sample_tweet_entry = new TweetListEntry (sample_tweet, null,
                                                   new Account (10, "", ""));
