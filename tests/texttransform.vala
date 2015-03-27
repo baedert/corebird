@@ -1,6 +1,6 @@
 
 void normal () {
-  var entities = new GLib.SList<TextEntity?> ();
+  var entities = new TextEntity[0];
   string source_text = "foo bar foo";
 
   string result = TextTransform.transform (source_text,
@@ -13,14 +13,14 @@ void normal () {
 
 
 void simple () {
-  var entities = new GLib.SList<TextEntity?> ();
-  entities.prepend (TextEntity () {
-                    from = 4,
-                    to   = 6,
-                    display_text = "display_text",
-                    tooltip_text = "tooltip_text",
-                    target       = "target_text"
-                  });
+  var entities = new TextEntity[1];
+  entities[0] = TextEntity () {
+                  from = 4,
+                  to   = 6,
+                  display_text = "display_text",
+                  tooltip_text = "tooltip_text",
+                  target       = "target_text"
+                };
 
   string source_text = "foo bar foo";
   string result = TextTransform.transform (source_text,
@@ -34,14 +34,14 @@ void simple () {
 }
 
 void url_at_end () {
-  var entities = new GLib.SList<TextEntity?> ();
-  entities.prepend (TextEntity () {
-                    from = 8,
-                    to   = 9,
-                    display_text = "display_text",
-                    tooltip_text = "tooltip_text",
-                    target       = "target_text"
-                   });
+  var entities = new TextEntity[1];
+  entities[0] = TextEntity () {
+                  from = 8,
+                  to   = 9,
+                  display_text = "display_text",
+                  tooltip_text = "tooltip_text",
+                  target       = "target_text"
+                 };
 
   string source_text = "foo bar foo";
   string result = TextTransform.transform (source_text,
@@ -56,14 +56,14 @@ void url_at_end () {
 
 
 void utf8 () {
-  var entities = new GLib.SList<TextEntity?> ();
-  entities.prepend (TextEntity () {
-                    from = 2,
-                    to   = 6,
-                    display_text = "#foo",
-                    tooltip_text = "#foo",
-                    target       = null
-                  });
+  var entities = new TextEntity[1];
+  entities[0] = TextEntity () {
+                  from = 2,
+                  to   = 6,
+                  display_text = "#foo",
+                  tooltip_text = "#foo",
+                  target       = null
+                };
 
   string source_text = "× #foo";
   string result = TextTransform.transform (source_text,
@@ -79,61 +79,54 @@ void expand_links () {
       - if target == null, use the display_text
       - but in any case, don't add any pango markup tags
   */
-  var entities = new GLib.SList<TextEntity?> ();
-  entities.prepend (TextEntity () {
-                    from = 2,
-                    to   = 6,
-                    display_text = "displayfoobar",
-                    tooltip_text = "#foo",
-                    target       = "target_url"
-                  });
+  var entities = new TextEntity[1];
+  entities[0] = TextEntity () {
+                  from = 2,
+                  to   = 6,
+                  display_text = "displayfoobar",
+                  tooltip_text = "#foo",
+                  target       = "target_url"
+                };
 
   string source_text = "× #foo";
   string result = TextTransform.transform (source_text,
                                            entities,
                                            TransformFlags.EXPAND_LINKS);
-  message (result);
   assert (result.has_prefix ("× "));
   assert (!result.contains ("displayfoobar"));
   assert (result.contains ("target_url"));
 }
 
 void multiple_links () {
-  var entities = new GLib.SList<TextEntity?> ();
-  entities.prepend (TextEntity () {
+  var entities = new TextEntity[4];
+  entities[0] = TextEntity () {
     from = 0,
     to = 22,
     display_text = "mirgehendirurlsaus.com",
     target = "http://mirgehendirurlsaus.com",
     tooltip_text = "http://mirgehendirurlsaus.com"
-  });
-  entities.prepend (TextEntity () {
+  };
+  entities[1] = TextEntity () {
     from = 26,
     to   = 48,
     display_text = "foobar.com",
     target = "http://foobar.com",
     tooltip_text = "http://foobar.com"
-  });
-  entities.prepend (TextEntity () {
+  };
+  entities[2] = TextEntity () {
     from = 52,
     to   = 74,
     display_text = "hahaaha.com",
     target = "http://hahaaha.com",
     tooltip_text = "http://hahaaha.com"
-  });
-  entities.prepend (TextEntity () {
+  };
+  entities[3] = TextEntity () {
     from = 77,
     to   = 99,
     display_text = "huehue.org",
     target = "http://huehue.org",
     tooltip_text = "http://huehue.org"
-  });
-  entities.sort ((a, b) => {
-    if (a.from < b.from)
-      return -1;
-    return 1;
-   });
-
+  };
 
   string text = "http://t.co/O5uZwJg31k    http://t.co/BsKkxv8UG4    http://t.co/W8qs846ude   http://t.co/x4bKoCusvQ";
 
@@ -150,62 +143,47 @@ void multiple_links () {
 void textify_hashtags () {
   string text = "Hey, #totally inappropriate #hashtag!";
 
-  var entities = new GLib.SList<TextEntity?> ();
+  var entities = new TextEntity[2];
 
-  entities.prepend (TextEntity () {
+  entities[0] = TextEntity () {
     from = 5,
     to = 13,
     display_text = "#totally",
     target = "foobar"
-  });
+  };
 
-  entities.prepend (TextEntity () {
+  entities[1] = TextEntity () {
     from = 28,
     to = 36,
     display_text = "#hashtag",
     target = "blubb"
-  });
-
-
-  entities.sort ((a, b) => {
-    if (a.from < b.from)
-      return -1;
-    return 1;
-   });
+  };
 
   string result = TextTransform.transform (text,
                                            entities,
                                            TransformFlags.TEXTIFY_HASHTAGS);
 
-  stdout.printf ("%s\n", result);
   assert (!result.contains ("#"));
 }
 
 void textify_only_hashtags () {
   string text = "Hey, #totally inappropriate @baedert!";
 
-  var entities = new GLib.SList<TextEntity?> ();
+  var entities = new TextEntity[2];
 
-  entities.prepend (TextEntity () {
+  entities[0] = TextEntity () {
     from = 5,
     to = 13,
     display_text = "#totally",
     target = "foobar"
-  });
+  };
 
-  entities.prepend (TextEntity () {
+  entities[1] = TextEntity () {
     from = 28,
     to = 36,
     display_text = "@baedert",
     target = "blubb"
-  });
-
-
-  entities.sort ((a, b) => {
-    if (a.from < b.from)
-      return -1;
-    return 1;
-   });
+  };
 
   string result = TextTransform.transform (text,
                                            entities,
@@ -218,42 +196,35 @@ void textify_only_hashtags () {
 void remove_only_trailing_hashtags () {
   string text = "Hey, #totally inappropriate @baedert! #baedertworship #thefeels";
 
-  var entities = new GLib.SList<TextEntity?> ();
+  var entities = new TextEntity[4];
 
-  entities.prepend (TextEntity () {
+  entities[0] = TextEntity () {
     from = 5,
     to = 13,
     display_text = "#totally",
     target = "foobar"
-  });
+  };
 
-  entities.prepend (TextEntity () {
+  entities[1] = TextEntity () {
     from = 28,
     to = 36,
     display_text = "@baedert",
     target = "blubb"
-  });
+  };
 
-  entities.prepend (TextEntity () {
+  entities[2] = TextEntity () {
     from = 38,
     to = 53,
     display_text = "#baedertwhorship",
     target = "bla"
-  });
+  };
 
-  entities.prepend (TextEntity () {
+  entities[3] = TextEntity () {
     from = 54,
     to = 63,
     display_text = "#thefeels",
     target = "foobar"
-  });
-
-
-  entities.sort ((a, b) => {
-    if (a.from < b.from)
-      return -1;
-    return 1;
-   });
+  };
 
   string result = TextTransform.transform (text,
                                            entities,
