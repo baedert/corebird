@@ -211,9 +211,59 @@ void textify_only_hashtags () {
                                            entities,
                                            TransformFlags.TEXTIFY_HASHTAGS);
 
-  message (result);
   assert (!result.contains ("#"));
   assert (result.contains (">@baedert<")); // Mention should still be a link
+}
+
+void remove_only_trailing_hashtags () {
+  string text = "Hey, #totally inappropriate @baedert! #baedertworship #thefeels";
+
+  var entities = new GLib.SList<TextEntity?> ();
+
+  entities.prepend (TextEntity () {
+    from = 5,
+    to = 13,
+    display_text = "#totally",
+    target = "foobar"
+  });
+
+  entities.prepend (TextEntity () {
+    from = 28,
+    to = 36,
+    display_text = "@baedert",
+    target = "blubb"
+  });
+
+  entities.prepend (TextEntity () {
+    from = 38,
+    to = 53,
+    display_text = "#baedertwhorship",
+    target = "bla"
+  });
+
+  entities.prepend (TextEntity () {
+    from = 54,
+    to = 63,
+    display_text = "#thefeels",
+    target = "foobar"
+  });
+
+
+  entities.sort ((a, b) => {
+    if (a.from < b.from)
+      return -1;
+    return 1;
+   });
+
+  string result = TextTransform.transform (text,
+                                           entities,
+                                           TransformFlags.REMOVE_TRAILING_HASHTAGS);
+
+  message (result);
+  assert (result.contains (">@baedert<")); // Mention should still be a link
+  assert (result.contains (">#totally<"));
+  assert (!result.contains ("#baedertworship"));
+  assert (!result.contains ("#thefeels"));
 }
 
 
@@ -231,6 +281,7 @@ int main (string[] args) {
   GLib.Test.add_func ("/tt/multiple-links", multiple_links);
   GLib.Test.add_func ("/tt/textify-hashtags", textify_hashtags);
   GLib.Test.add_func ("/tt/textify-only-hashtags", textify_only_hashtags);
+  GLib.Test.add_func ("/tt/remove-only-trailing-hashtags", remove_only_trailing_hashtags);
 
 
   return GLib.Test.run ();
