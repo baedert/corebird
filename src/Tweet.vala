@@ -329,7 +329,7 @@ public class Tweet : GLib.Object {
   public string get_trimmed_text () {
     return TextTransform.transform (this.text,
                                     this.urls,
-                                    TransformFlags.REMOVE_MEDIA_LINKS,
+                                    (TransformFlags) Settings.get_text_transform_flags (),
                                     this.medias.length);
   }
 
