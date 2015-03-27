@@ -181,6 +181,44 @@ void textify_hashtags () {
   assert (!result.contains ("#"));
 }
 
+void textify_only_hashtags () {
+  string text = "Hey, #totally inappropriate @baedert!";
+
+  var entities = new GLib.SList<TextEntity?> ();
+
+  entities.prepend (TextEntity () {
+    from = 5,
+    to = 13,
+    display_text = "#totally",
+    target = "foobar"
+  });
+
+  entities.prepend (TextEntity () {
+    from = 28,
+    to = 36,
+    display_text = "@baedert",
+    target = "blubb"
+  });
+
+
+  entities.sort ((a, b) => {
+    if (a.from < b.from)
+      return -1;
+    return 1;
+   });
+
+  string result = TextTransform.transform (text,
+                                           entities,
+                                           TransformFlags.TEXTIFY_HASHTAGS);
+
+  message (result);
+  assert (!result.contains ("#"));
+  assert (result.contains (">@baedert<")); // Mention should still be a link
+}
+
+
+
+
 int main (string[] args) {
   Intl.setlocale (LocaleCategory.ALL, "");
   GLib.Test.init (ref args);
@@ -192,6 +230,7 @@ int main (string[] args) {
   GLib.Test.add_func ("/tt/expand-links", expand_links);
   GLib.Test.add_func ("/tt/multiple-links", multiple_links);
   GLib.Test.add_func ("/tt/textify-hashtags", textify_hashtags);
+  GLib.Test.add_func ("/tt/textify-only-hashtags", textify_only_hashtags);
 
 
   return GLib.Test.run ();
