@@ -35,6 +35,13 @@ class SettingsDialog : Gtk.Window {
   private Gtk.Switch double_click_activation_switch;
   [GtkChild]
   private Gtk.ListBox sample_tweet_list;
+  [GtkChild]
+  private Gtk.Switch remove_trailing_hashtags_switch;
+  [GtkChild]
+  private Gtk.Switch remove_media_links_switch;
+  [GtkChild]
+  private Gtk.Switch textify_hashtags_switch;
+
   private TweetListEntry sample_tweet_entry;
 
   public SettingsDialog (Corebird application) {
@@ -65,10 +72,6 @@ class SettingsDialog : Gtk.Window {
 
     // Set up sample tweet {{{
     var sample_tweet = new Tweet ();
-    sample_tweet.is_retweet = true;
-    sample_tweet.rt_by_id = 10;
-    sample_tweet.rt_by_screen_name = "";
-    sample_tweet.retweeted_by = "Some Dude";
     sample_tweet.text = "Hey, check out this new #Corebird version! #cool #newisalwaysbetter";
     sample_tweet.screen_name = "corebirdclient";
     sample_tweet.user_name = "Corebird";
@@ -82,12 +85,47 @@ class SettingsDialog : Gtk.Window {
     }
     sample_tweet.avatar = a;
 
+    sample_tweet.urls = new GLib.SList<TextEntity?> ();
+    sample_tweet.urls.prepend (TextEntity () {
+      from = 24,
+      to = 33,
+      display_text = "#Corebird",
+      target = "somewhere" // doesn't matter here.
+    });
+    sample_tweet.urls.prepend (TextEntity () {
+      from = 43,
+      to = 48,
+      display_text = "#cool",
+      target = "somewhere"
+    });
+    sample_tweet.urls.prepend (TextEntity () {
+      from = 49,
+      to = 67,
+      display_text = "#newisalwaysbetter",
+      target = "somewhere"
+    });
+
+    sample_tweet.urls.sort ((a, b) => {
+      if (a.from < b.from)
+        return -1;
+      return 1;
+    });
+
+
+
     this.sample_tweet_entry = new TweetListEntry (sample_tweet, null,
                                                   new Account (10, "", ""));
     sample_tweet_entry.activatable = false;
     sample_tweet_entry.read_only = true;
     this.sample_tweet_list.add (sample_tweet_entry);
     // }}}
+
+    var text_transform_flags = Settings.get_text_transform_flags ();
+
+    remove_trailing_hashtags_switch.active = (TransformFlags.REMOVE_TRAILING_HASHTAGS in
+                                              text_transform_flags);
+    remove_media_links_switch.active = (TransformFlags.REMOVE_MEDIA_LINKS in text_transform_flags);
+    textify_hashtags_switch.active = (TransformFlags.TEXTIFY_HASHTAGS in text_transform_flags);
 
     add_accels ();
     load_geometry ();
@@ -145,5 +183,33 @@ class SettingsDialog : Gtk.Window {
         () => {main_stack.visible_child_name = "tweet"; return true;});
 
     this.add_accel_group(ag);
+  }
+
+
+  [GtkCallback]
+  private void remove_trailing_hashtags_cb () {
+    if (remove_trailing_hashtags_switch.active) {
+      Settings.add_text_transform_flag (TransformFlags.REMOVE_TRAILING_HASHTAGS);
+    } else {
+      Settings.remove_text_transform_flag (TransformFlags.REMOVE_TRAILING_HASHTAGS);
+    }
+  }
+
+  [GtkCallback]
+  private void remove_media_links_cb () {
+    if (remove_media_links_switch.active) {
+      Settings.add_text_transform_flag (TransformFlags.REMOVE_MEDIA_LINKS);
+    } else {
+      Settings.remove_text_transform_flag (TransformFlags.REMOVE_MEDIA_LINKS);
+    }
+  }
+
+  [GtkCallback]
+  private void textify_hashtags_cb () {
+    if (textify_hashtags_switch.active) {
+      Settings.add_text_transform_flag (TransformFlags.TEXTIFY_HASHTAGS);
+    } else {
+      Settings.remove_text_transform_flag (TransformFlags.TEXTIFY_HASHTAGS);
+    }
   }
 }
