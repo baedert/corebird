@@ -85,32 +85,29 @@ class SettingsDialog : Gtk.Window {
     }
     sample_tweet.avatar = a;
 
-    sample_tweet.urls = new GLib.SList<TextEntity?> ();
-    sample_tweet.urls.prepend (TextEntity () {
+
+    sample_tweet.urls = new TextEntity[3];
+    sample_tweet.urls[0] = TextEntity () {
       from = 24,
       to = 33,
       display_text = "#Corebird",
-      target = "somewhere" // doesn't matter here.
-    });
-    sample_tweet.urls.prepend (TextEntity () {
+      target = "somewhere" // doesn't matter here
+    };
+    sample_tweet.urls[1] = TextEntity () {
       from = 43,
       to = 48,
       display_text = "#cool",
-      target = "somewhere"
-    });
-    sample_tweet.urls.prepend (TextEntity () {
+      target = "foo"
+    };
+    sample_tweet.urls[2] = TextEntity () {
       from = 49,
       to = 67,
       display_text = "#newisalwaysbetter",
-      target = "somewhere"
-    });
+      target = "foobar"
+    };
 
-    sample_tweet.urls.sort ((a, b) => {
-      if (a.from < b.from)
-        return -1;
-      return 1;
-    });
-
+    // Just to be sure
+    TweetUtils.sort_entities (ref sample_tweet.urls);
 
 
     this.sample_tweet_entry = new TweetListEntry (sample_tweet, null,
