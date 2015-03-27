@@ -66,7 +66,8 @@ namespace TextTransform {
         if (TransformFlags.EXPAND_LINKS in flags) {
           builder.append (entity.target ?? entity.display_text);
         } else {
-          bool linkify = !(TransformFlags.TEXTIFY_HASHTAGS in flags);
+          bool linkify = !(TransformFlags.TEXTIFY_HASHTAGS in flags &&
+                          is_hashtag (entity.display_text));
 
           /* Append start of link + entity target */
           if (linkify) {
