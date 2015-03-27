@@ -230,18 +230,18 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     }
 
     var urls = dm_obj.get_object_member ("entities").get_array_member ("urls");
-    var url_list = new GLib.SList<TextEntity?> ();
+    var url_list = new TextEntity[urls.get_length ()];
     urls.foreach_element((arr, index, node) => {
       var url = node.get_object();
       string expanded_url = url.get_string_member("expanded_url");
 
       Json.Array indices = url.get_array_member ("indices");
       expanded_url = expanded_url.replace("&", "&amp;");
-      url_list.prepend(TextEntity() {
+      url_list[index] = TextEntity() {
         from = (int)indices.get_int_element (0),
         to   = (int)indices.get_int_element (1) ,
         display_text = url.get_string_member ("display_url")
-      });
+      };
     });
 
     var thread_entry = new DMThreadEntry (sender_id);
@@ -280,21 +280,20 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     string text = dm_obj.get_string_member ("text");
     if (dm_obj.has_member ("entities")) {
       var urls = dm_obj.get_object_member ("entities").get_array_member ("urls");
-      var url_list = new GLib.SList<TextEntity?> ();
+      var url_list = new TextEntity[urls.get_length ()];
       urls.foreach_element((arr, index, node) => {
         var url = node.get_object();
         string expanded_url = url.get_string_member("expanded_url");
 
         Json.Array indices = url.get_array_member ("indices");
         expanded_url = expanded_url.replace("&", "&amp;");
-        url_list.prepend(TextEntity() {
+        url_list[index] = TextEntity() {
           from = (int)indices.get_int_element (0),
           to   = (int)indices.get_int_element (1) ,
           target = expanded_url,
           display_text = url.get_string_member ("display_url")
-        });
+        };
       });
-      //text = TweetUtils.get_formatted_text (text, url_list);
       text = TextTransform.transform (text,
                                       url_list,
                                       0);
