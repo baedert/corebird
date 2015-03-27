@@ -174,6 +174,10 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       rt_status_image.show ();
 
     values_set = true;
+
+    Settings.get ().changed["text-transform-flags"].connect ((key) => {
+      text_label.label = tweet.get_trimmed_text ();
+    });
   }
 
   private void favorited_cb () {
