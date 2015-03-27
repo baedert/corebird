@@ -21,6 +21,7 @@ public struct TextEntity {
   string display_text;
   string tooltip_text;
   string? target; // If target is null, use display_text as target!
+  uint info;
 }
 
 //void print_e (TextEntity ent) {
@@ -36,6 +37,7 @@ public enum TransformFlags {
 }
 
 namespace TextTransform {
+  private static const uint TRAILING = 1 << 0;
 
   private bool is_media_url (string url,
                              uint   media_count)
@@ -57,11 +59,30 @@ namespace TextTransform {
     StringBuilder builder = new StringBuilder ();
     uint last_end = 0;
 
+    uint cur_end = text.length;
+    for (int i = entities.length - 1; i >= 0; i --) {
+      // XXX Skip whitespace entities
+      // XXX Actually, the whitespace wouldn't be an entity at all.
+
+      if (entities[i].to == cur_end) {
+        entities[i].info |= TRAILING;
+        cur_end = entities[i].from;
+      } else break;
+    }
+
+
     foreach (TextEntity entity in entities) {
       /* Append part before this entity */
       builder.append (text.substring (text.index_of_nth_char (last_end),
                                       text.index_of_nth_char (entity.from) -
                                       text.index_of_nth_char (last_end)));
+
+      if (TransformFlags.REMOVE_TRAILING_HASHTAGS in flags &&
+          (entity.info & TRAILING) > 0 &&
+          is_hashtag (entity.display_text)) {
+        last_end = entity.to;
+        continue;
+      }
 
       /* Skip the entire entity if we should remove media links AND
          it is a media link. */
