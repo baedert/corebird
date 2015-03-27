@@ -402,9 +402,10 @@
             </child>
 
             <child>
-              <object class="GtkSwitch">
+              <object class="GtkSwitch" id="remove_trailing_hashtags_switch">
                 <property name="visible">true</property>
                 <property name="halign">start</property>
+                <signal name="notify::active" handler="remove_trailing_hashtags_cb" />
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -426,9 +427,10 @@
             </child>
 
             <child>
-              <object class="GtkSwitch">
+              <object class="GtkSwitch" id="remove_media_links_switch">
                 <property name="visible">true</property>
                 <property name="halign">start</property>
+                <signal name="notify::active" handler="remove_media_links_cb" />
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -450,18 +452,16 @@
             </child>
 
             <child>
-              <object class="GtkSwitch">
+              <object class="GtkSwitch" id="textify_hashtags_switch">
                 <property name="visible">true</property>
                 <property name="halign">start</property>
+                <signal name="notify::active" handler="textify_hashtags_cb" />
               </object>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="top_attach">4</property>
               </packing>
             </child>
-
-
-
 
           </object>
           <packing>
