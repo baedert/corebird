@@ -23,6 +23,11 @@ public struct TextEntity {
   string? target; // If target is null, use display_text as target!
 }
 
+//void print_e (TextEntity ent) {
+  //message ("Entity (range = %u..%u, display_text = '%s', target = '%s'",
+           //ent.from, ent.to, ent.display_text, ent.target);
+//}
+
 public enum TransformFlags {
   REMOVE_MEDIA_LINKS       = 1 << 0,
   REMOVE_TRAILING_HASHTAGS = 1 << 1,
@@ -44,10 +49,10 @@ namespace TextTransform {
     return entity[0] == '#';
   }
 
-  public string transform (string                  text,
-                           GLib.SList<TextEntity?> entities,
-                           TransformFlags          flags,
-                           uint                    media_count = 0)
+  public string transform (string         text,
+                           TextEntity[]   entities,
+                           TransformFlags flags,
+                           uint           media_count = 0)
   {
     StringBuilder builder = new StringBuilder ();
     uint last_end = 0;
