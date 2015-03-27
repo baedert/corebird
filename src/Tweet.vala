@@ -60,7 +60,7 @@ public class Tweet : GLib.Object {
   }
 
   /** if the json from twitter has inline media **/
-  private GLib.SList<TextEntity?> urls;
+  public GLib.SList<TextEntity?> urls;
   public int retweet_count;
   public int favorite_count;
 
