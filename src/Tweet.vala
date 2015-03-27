@@ -60,7 +60,7 @@ public class Tweet : GLib.Object {
   }
 
   /** if the json from twitter has inline media **/
-  public GLib.SList<TextEntity?> urls;
+  public TextEntity[] urls;
   public int retweet_count;
   public int favorite_count;
 
@@ -103,23 +103,23 @@ public class Tweet : GLib.Object {
       this.rt_by_id      = user.get_int_member ("id");
       this.text          = rt.get_string_member("text");
       this.user_name     = rt_user.get_string_member ("name");
-      this.avatar_url    = rt_user.get_string_member("profile_image_url");
-      this.user_id       = rt_user.get_int_member("id");
-      this.screen_name   = rt_user.get_string_member("screen_name");
-      this.rt_created_at = Utils.parse_date(rt.get_string_member("created_at"))
+      this.avatar_url    = rt_user.get_string_member ("profile_image_url");
+      this.user_id       = rt_user.get_int_member ("id");
+      this.screen_name   = rt_user.get_string_member ("screen_name");
+      this.rt_created_at = Utils.parse_date(rt.get_string_member ("created_at"))
                                   .to_unix();
-      this.verified      = rt_user.get_boolean_member("verified");
+      this.verified      = rt_user.get_boolean_member ("verified");
       this.protected     = rt_user.get_boolean_member ("protected");
-      if (!rt.get_null_member("in_reply_to_status_id"))
-        this.reply_id = rt.get_int_member("in_reply_to_status_id");
+      if (!rt.get_null_member ("in_reply_to_status_id"))
+        this.reply_id = rt.get_int_member ("in_reply_to_status_id");
     } else {
       entities = status.get_object_member ("entities");
-      this.text        = status.get_string_member("text");
-      this.user_name   = user.get_string_member("name");
-      this.user_id     = user.get_int_member("id");
-      this.screen_name = user.get_string_member("screen_name");
-      this.avatar_url  = user.get_string_member("profile_image_url");
-      this.verified    = user.get_boolean_member("verified");
+      this.text        = status.get_string_member ("text");
+      this.user_name   = user.get_string_member ("name");
+      this.user_id     = user.get_int_member ("id");
+      this.screen_name = user.get_string_member ("screen_name");
+      this.avatar_url  = user.get_string_member ("profile_image_url");
+      this.verified    = user.get_boolean_member ("verified");
       this.protected   = user.get_boolean_member ("protected");
       if (!status.get_null_member("in_reply_to_status_id"))
         this.reply_id  = status.get_int_member("in_reply_to_status_id");
@@ -129,15 +129,14 @@ public class Tweet : GLib.Object {
       this.retweeted  = true;
     }
 
-    this.user_name = this.user_name.replace ("&", "&amp;").strip();
-    this.avatar_name = Utils.get_avatar_name(this.avatar_url);
+    this.user_name = this.user_name.replace ("&", "&amp;").strip ();
+    this.avatar_name = Utils.get_avatar_name (this.avatar_url);
 
     // 'Resolve' the used URLs
     var urls = entities.get_array_member("urls");
     var hashtags = entities.get_array_member ("hashtags");
     var user_mentions = entities.get_array_member ("user_mentions");
     this.mentions = new string[user_mentions.get_length ()];
-    this.urls = new GLib.SList<TextEntity?>();
 
     int media_count = Utils.get_json_array_size (entities, "media");
     if (status.has_member ("extended_entities"))
@@ -147,6 +146,14 @@ public class Tweet : GLib.Object {
 
     this.medias = new Media[media_count];
     int real_media_count = 0;
+
+    /* Overallocate here, remove the unnecessary parts later. */
+    this.urls = new TextEntity[urls.get_length () +
+                               hashtags.get_length () +
+                               user_mentions.get_length () +
+                               media_count];
+
+    int url_index = 0;
 
 
     urls.foreach_element((arr, index, node) => {
@@ -164,25 +171,27 @@ public class Tweet : GLib.Object {
 
       Json.Array indices = url.get_array_member ("indices");
       expanded_url = expanded_url.replace("&", "&amp;");
-      this.urls.prepend (TextEntity () {
+      this.urls[url_index] = TextEntity () {
         from = (uint) indices.get_int_element (0),
         to   = (uint) indices.get_int_element (1),
         display_text = url.get_string_member ("display_url"),
         tooltip_text = expanded_url,
         target = expanded_url
-      });
+      };
+      url_index ++;
     });
 
     hashtags.foreach_element ((arr, index, node) => {
       var hashtag = node.get_object ();
       Json.Array indices = hashtag.get_array_member ("indices");
-      this.urls.prepend (TextEntity () {
+      this.urls[url_index] = TextEntity () {
         from = (uint) indices.get_int_element (0),
         to   = (uint) indices.get_int_element (1),
         display_text = "#" + hashtag.get_string_member ("text"),
         tooltip_text = "#" + hashtag.get_string_member ("text"),
         target = null // == display_text
-      });
+      };
+      url_index ++;
     });
 
 
@@ -203,13 +212,14 @@ public class Tweet : GLib.Object {
       int64 id = mention.get_int_member ("id");
       account.user_counter.user_seen (id, screen_name, name);
 
-      this.urls.prepend (TextEntity () {
+      this.urls[url_index] = TextEntity () {
         from = (uint) indices.get_int_element (0),
         to   = (uint) indices.get_int_element (1),
         display_text = "@" + screen_name,
         target = "@" + mention.get_string_member ("id_str") + "/" + screen_name,
         tooltip_text = mention.get_string_member ("name")
-      });
+      };
+      url_index ++;
     });
     this.mentions.resize (real_mentions);
 
@@ -221,12 +231,13 @@ public class Tweet : GLib.Object {
         string expanded_url = url.get_string_member ("expanded_url");
         expanded_url = expanded_url.replace ("&", "&amp;");
         Json.Array indices = url.get_array_member ("indices");
-        this.urls.prepend (TextEntity () {
+        this.urls[url_index] = TextEntity () {
           from = (uint) indices.get_int_element (0),
           to   = (uint) indices.get_int_element (1),
           target = url.get_string_member ("url"),
           display_text = url.get_string_member ("display_url")
-        });
+        };
+        url_index ++;
         string media_url = url.get_string_member ("media_url");
         if (InlineMediaDownloader.is_media_candidate (media_url)) {
           var m = new Media ();
@@ -278,11 +289,9 @@ public class Tweet : GLib.Object {
     this.medias.resize (real_media_count);
     InlineMediaDownloader.load_all_media (this, this.medias);
 
-    this.urls.sort ((a, b) => {
-      if (a.from < b.from)
-        return -1;
-      return 1;
-    });
+    /* Remove unnecessary url entries */
+    this.urls.resize (url_index);
+    TweetUtils.sort_entities (ref this.urls);
 
     var dt = new DateTime.from_unix_local(is_retweet ? rt_created_at : created_at);
     this.time_delta  = Utils.get_time_delta(dt, now);
