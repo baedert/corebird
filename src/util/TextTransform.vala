@@ -64,9 +64,9 @@ namespace TextTransform {
       // XXX Skip whitespace entities
       // XXX Actually, the whitespace wouldn't be an entity at all.
 
-      if (entities[i].to == cur_end) {
+      if (text.index_of_nth_char (entities[i].to) == cur_end) {
         entities[i].info |= TRAILING;
-        cur_end = entities[i].from;
+        cur_end = text.index_of_nth_char (entities[i].from);
       } else break;
     }
 

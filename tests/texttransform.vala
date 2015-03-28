@@ -194,7 +194,7 @@ void textify_only_hashtags () {
 }
 
 void remove_only_trailing_hashtags () {
-  string text = "Hey, #totally inappropriate @baedert! #baedertworship #thefeels";
+  string text = "Hey, #totally inappropriate @baedert! #baedertworship öä #thefeels";
 
   var entities = new TextEntity[4];
 
@@ -220,8 +220,8 @@ void remove_only_trailing_hashtags () {
   };
 
   entities[3] = TextEntity () {
-    from = 54,
-    to = 63,
+    from = 57,
+    to = 66,
     display_text = "#thefeels",
     target = "foobar"
   };
