@@ -194,7 +194,7 @@ void textify_only_hashtags () {
 }
 
 void remove_only_trailing_hashtags () {
-  string text = "Hey, #totally inappropriate @baedert! #baedertworship öä #thefeels";
+  string text = "Hey, #totally inappropriate @baedert! #baedertworship öä #thefeels   ";
 
   var entities = new TextEntity[4];
 
