@@ -51,6 +51,18 @@ namespace TextTransform {
     return entity[0] == '#';
   }
 
+  private bool is_whitespace (string s)
+  {
+    unichar c;
+    for (int i = 0; s.get_next_char (ref i, out c);) {
+      if (c.isgraph ())
+        return false;
+    }
+    return true;
+  }
+
+  // XXX We could probably do this a bit faster and simpler (and in one step!)
+  //     if we just built the new string from end to start.
   public string transform (string         text,
                            TextEntity[]   entities,
                            TransformFlags flags,
@@ -59,12 +71,19 @@ namespace TextTransform {
     StringBuilder builder = new StringBuilder ();
     uint last_end = 0;
 
-    uint cur_end = text.length;
+    uint cur_end = text.char_count ();
     for (int i = entities.length - 1; i >= 0; i --) {
-      // XXX Skip whitespace entities
-      // XXX Actually, the whitespace wouldn't be an entity at all.
+      /* Check that only whitespace is between the two entities */
+      string btw = text.substring (text.index_of_nth_char (entities[i].to),
+                                   text.index_of_nth_char (cur_end) -
+                                   text.index_of_nth_char (entities[i].to));
 
-      if (text.index_of_nth_char (entities[i].to) == cur_end) {
+      if (!is_whitespace (btw) && btw.length > 0) {
+        break;
+      } else
+        cur_end = entities[i].to;
+
+      if (entities[i].to == cur_end) {
         entities[i].info |= TRAILING;
         cur_end = text.index_of_nth_char (entities[i].from);
       } else break;
