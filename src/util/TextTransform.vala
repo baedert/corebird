@@ -39,11 +39,12 @@ public enum TransformFlags {
 namespace TextTransform {
   private static const uint TRAILING = 1 << 0;
 
-  private bool is_media_url (string url,
+  private bool is_media_url (string? url,
+                             string display_text,
                              uint   media_count)
   {
-    return (InlineMediaDownloader.is_media_candidate (url) && media_count == 1) ||
-           url.has_prefix ("pic.twitter.com/");
+    return (InlineMediaDownloader.is_media_candidate (url ?? display_text) && media_count == 1) ||
+            display_text.has_prefix ("pic.twitter.com/");
   }
 
   private bool is_hashtag (string entity)
@@ -105,46 +106,49 @@ namespace TextTransform {
 
       /* Skip the entire entity if we should remove media links AND
          it is a media link. */
-      if (!(TransformFlags.REMOVE_MEDIA_LINKS in flags) ||
-          !is_media_url (entity.display_text ?? entity.target, media_count)) {
 
-        if (TransformFlags.EXPAND_LINKS in flags) {
-          builder.append (entity.target ?? entity.display_text);
-        } else {
-          bool linkify = !(TransformFlags.TEXTIFY_HASHTAGS in flags &&
-                          is_hashtag (entity.display_text));
+      if (TransformFlags.REMOVE_MEDIA_LINKS in flags &&
+          is_media_url (entity.target, entity.display_text, media_count)) {
+        last_end = entity.to;
+        continue;
+      }
 
-          /* Append start of link + entity target */
-          if (linkify) {
-            builder.append ("<span underline=\"none\"><a href=\"")
-                   .append (entity.target ?? entity.display_text)
+      if (TransformFlags.EXPAND_LINKS in flags) {
+        builder.append (entity.target ?? entity.display_text);
+      } else {
+        bool linkify = !(TransformFlags.TEXTIFY_HASHTAGS in flags &&
+                        is_hashtag (entity.display_text));
+
+        /* Append start of link + entity target */
+        if (linkify) {
+          builder.append ("<span underline=\"none\"><a href=\"")
+                 .append (entity.target ?? entity.display_text)
+                 .append ("\"");
+
+          /* Only set the tooltip if there actually is one */
+          if (entity.tooltip_text != null) {
+            builder.append (" title=\"")
+                   .append (entity.tooltip_text.replace ("&", "&amp;"))
                    .append ("\"");
-
-            /* Only set the tooltip if there actually is one */
-            if (entity.tooltip_text != null) {
-              builder.append (" title=\"")
-                     .append (entity.tooltip_text.replace ("&", "&amp;"))
-                     .append ("\"");
-            }
-
-            builder.append (">");
           }
 
-
-          if (TransformFlags.TEXTIFY_HASHTAGS in flags &&
-              is_hashtag (entity.display_text))
-            builder.append (entity.display_text.substring (1));
-          else
-            builder.append (entity.display_text);
+          builder.append (">");
+        }
 
 
-          if (linkify) {
-            builder.append ("</a></span>");
-          }
+        if (TransformFlags.TEXTIFY_HASHTAGS in flags &&
+            is_hashtag (entity.display_text))
+          builder.append (entity.display_text.substring (1));
+        else
+          builder.append (entity.display_text);
 
+
+        if (linkify) {
+          builder.append ("</a></span>");
         }
 
       }
+
       last_end = entity.to;
     }
 
