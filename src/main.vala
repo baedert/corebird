@@ -15,9 +15,11 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-
 int main (string[] args) {
+#if VIDEO
+  Gst.init (ref args);
+#endif
+
   try {
     //no initialisation of static fields :(
     Settings.init ();
