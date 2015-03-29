@@ -438,31 +438,6 @@
               </packing>
             </child>
 
-
-            <child>
-              <object class="GtkLabel">
-                <property name="visible">true</property>
-                <property name="label" translatable="yes">Textify in-text hashtags</property>
-                <property name="halign">end</property>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">4</property>
-              </packing>
-            </child>
-
-            <child>
-              <object class="GtkSwitch" id="textify_hashtags_switch">
-                <property name="visible">true</property>
-                <property name="halign">start</property>
-                <signal name="notify::active" handler="textify_hashtags_cb" />
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">4</property>
-              </packing>
-            </child>
-
           </object>
           <packing>
             <property name="title" translatable="yes">Tweets</property>

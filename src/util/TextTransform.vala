@@ -32,16 +32,15 @@ public struct TextEntity {
 public enum TransformFlags {
   REMOVE_MEDIA_LINKS       = 1 << 0,
   REMOVE_TRAILING_HASHTAGS = 1 << 1,
-  EXPAND_LINKS             = 1 << 2,
-  TEXTIFY_HASHTAGS         = 1 << 3
+  EXPAND_LINKS             = 1 << 2
 }
 
 namespace TextTransform {
   private static const uint TRAILING = 1 << 0;
 
   private bool is_media_url (string? url,
-                             string display_text,
-                             uint   media_count)
+                             string  display_text,
+                             uint    media_count)
   {
     return (InlineMediaDownloader.is_media_candidate (url ?? display_text) && media_count == 1) ||
             display_text.has_prefix ("pic.twitter.com/");
@@ -116,36 +115,23 @@ namespace TextTransform {
       if (TransformFlags.EXPAND_LINKS in flags) {
         builder.append (entity.target ?? entity.display_text);
       } else {
-        bool linkify = !(TransformFlags.TEXTIFY_HASHTAGS in flags &&
-                        is_hashtag (entity.display_text));
-
         /* Append start of link + entity target */
-        if (linkify) {
-          builder.append ("<span underline=\"none\"><a href=\"")
-                 .append (entity.target ?? entity.display_text)
+        builder.append ("<span underline=\"none\"><a href=\"")
+               .append (entity.target ?? entity.display_text)
+               .append ("\"");
+
+        /* Only set the tooltip if there actually is one */
+        if (entity.tooltip_text != null) {
+          builder.append (" title=\"")
+                 .append (entity.tooltip_text.replace ("&", "&amp;"))
                  .append ("\"");
-
-          /* Only set the tooltip if there actually is one */
-          if (entity.tooltip_text != null) {
-            builder.append (" title=\"")
-                   .append (entity.tooltip_text.replace ("&", "&amp;"))
-                   .append ("\"");
-          }
-
-          builder.append (">");
         }
 
-
-        if (TransformFlags.TEXTIFY_HASHTAGS in flags &&
-            is_hashtag (entity.display_text))
-          builder.append (entity.display_text.substring (1));
-        else
-          builder.append (entity.display_text);
+        builder.append (">");
+        builder.append (entity.display_text);
 
 
-        if (linkify) {
-          builder.append ("</a></span>");
-        }
+        builder.append ("</a></span>");
 
       }
 

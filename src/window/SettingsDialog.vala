@@ -39,8 +39,6 @@ class SettingsDialog : Gtk.Window {
   private Gtk.Switch remove_trailing_hashtags_switch;
   [GtkChild]
   private Gtk.Switch remove_media_links_switch;
-  [GtkChild]
-  private Gtk.Switch textify_hashtags_switch;
 
   private TweetListEntry sample_tweet_entry;
 
@@ -122,7 +120,6 @@ class SettingsDialog : Gtk.Window {
     remove_trailing_hashtags_switch.active = (TransformFlags.REMOVE_TRAILING_HASHTAGS in
                                               text_transform_flags);
     remove_media_links_switch.active = (TransformFlags.REMOVE_MEDIA_LINKS in text_transform_flags);
-    textify_hashtags_switch.active = (TransformFlags.TEXTIFY_HASHTAGS in text_transform_flags);
 
     add_accels ();
     load_geometry ();
@@ -198,15 +195,6 @@ class SettingsDialog : Gtk.Window {
       Settings.add_text_transform_flag (TransformFlags.REMOVE_MEDIA_LINKS);
     } else {
       Settings.remove_text_transform_flag (TransformFlags.REMOVE_MEDIA_LINKS);
-    }
-  }
-
-  [GtkCallback]
-  private void textify_hashtags_cb () {
-    if (textify_hashtags_switch.active) {
-      Settings.add_text_transform_flag (TransformFlags.TEXTIFY_HASHTAGS);
-    } else {
-      Settings.remove_text_transform_flag (TransformFlags.TEXTIFY_HASHTAGS);
     }
   }
 }
