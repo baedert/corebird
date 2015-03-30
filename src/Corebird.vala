@@ -177,9 +177,6 @@ public class Corebird : Gtk.Application {
       gtk_s.gtk_decoration_layout = gtk_s.gtk_decoration_layout.replace ("menu", "");
     }
 
-
-
-
   } // }}}
 
   public override void shutdown () {
