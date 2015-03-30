@@ -122,10 +122,13 @@ AC_CONFIG_FILES([Makefile
 
 AC_OUTPUT
 
+VALAC_VERSION=$(valac --version)
+
 echo "
              Corebird  $VERSION
                Prefix: ${prefix}
         Vala Compiler: ${VALAC}
+        valac version: ${VALAC_VERSION}
            C Compiler: ${CC} ${CFLAGS}
             Debugging: $enable_debug
        Video disabled: $disable_video
