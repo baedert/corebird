@@ -50,8 +50,10 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
         var entry = (DMThreadEntry) row;
         /* We can withdraw the notification here since
            activating the notification will dismiss it */
-        if (entry.notification_id != null)
+        if (entry.notification_id != null) {
           GLib.Application.get_default ().withdraw_notification (entry.notification_id);
+          entry.notification_id = null;
+        }
 
         var bundle = new Bundle ();
         bundle.put_int64 ("sender_id", entry.user_id);
