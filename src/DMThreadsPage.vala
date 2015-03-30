@@ -40,7 +40,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     this.id = id;
     this.account = account;
     this.dm_download_collect = new Collect (2);
-    thread_list.set_header_func (header_func);
+    thread_list.set_header_func (default_header_func);
     thread_list.set_sort_func (dm_thread_entry_sort_func);
 
     thread_list.row_activated.connect ((row) => {
@@ -326,18 +326,6 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     }
     account.db.end_transaction ();
   }
-
-  private void header_func (Gtk.ListBoxRow row, Gtk.ListBoxRow? row_before) { //{{{
-    if (row_before == null)
-      return;
-
-    Gtk.Widget header = row.get_header ();
-    if (header == null) {
-      header = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
-      header.show ();
-      row.set_header (header);
-    }
-  } //}}}
 
   private void remove_spinner () {
     if (progress_spinner != null && progress_spinner.parent != null) {
