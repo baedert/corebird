@@ -25,6 +25,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       return _unread_count;
     }
     set {
+      debug ("Changing unread_count from %d to %d", this._unread_count, value);
       this._unread_count = value;
       this.update_unread_count ();
     }
