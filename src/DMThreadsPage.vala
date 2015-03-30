@@ -402,10 +402,13 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 
   public void adjust_unread_count_for_user_id (int64 user_id) {
     DMThreadEntry? user_entry = thread_map.get (user_id);
-    if (user_entry == null)
+    if (user_entry == null) {
+      warning ("No DMThreadEntry instance for id %s", user_id.to_string ());
       return;
+    }
 
     this.unread_count -= user_entry.unread_count;
+    debug ("unread_count -= %d", user_entry.unread_count);
     user_entry.unread_count = 0;
     update_unread_count ();
     user_entry.update_unread_count ();
@@ -413,8 +416,10 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 
   public string? get_notification_id_for_user_id (int64 user_id) {
     DMThreadEntry? user_entry = thread_map.get (user_id);
-    if (user_entry == null)
+    if (user_entry == null) {
+      warning ("No DMThreadEntry instance for id %s", user_id.to_string ());
       return null;
+    }
 
     string id = user_entry.notification_id;
     user_entry.notification_id = null;
