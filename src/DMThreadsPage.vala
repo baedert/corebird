@@ -226,7 +226,6 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 
       if (!user_id_visible (t_e.user_id)) {
         t_e.unread_count ++;
-        t_e.update_unread_count ();
       }
       t_e.last_message = text;
       t_e.last_message_id = message_id;
@@ -407,7 +406,6 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     this.unread_count -= user_entry.unread_count;
     debug ("unread_count -= %d", user_entry.unread_count);
     user_entry.unread_count = 0;
-    user_entry.update_unread_count ();
   }
 
   public string? get_notification_id_for_user_id (int64 user_id) {
