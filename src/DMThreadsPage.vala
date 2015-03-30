@@ -19,7 +19,16 @@
 [GtkTemplate (ui = "/org/baedert/corebird/ui/dm-threads-page.ui")]
 class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   private bool initialized = false;
-  public int unread_count                   { get; set; }
+  private int _unread_count = 0;
+  public int unread_count {
+    get {
+      return _unread_count;
+    }
+    set {
+      this._unread_count = value;
+      this.update_unread_count ();
+    }
+  }
   public unowned MainWindow main_window     { get; set; }
   public unowned Account account            { get; set; }
   public unowned DeltaUpdater delta_updater { get; set; }
@@ -65,7 +74,6 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       var thread_entry = thread_map.get (user_id);
       if (thread_entry != null) {
         this.unread_count -= thread_entry.unread_count;
-        update_unread_count ();
       }
       var bundle = new Bundle ();
       bundle.put_int64 ("sender_id", user_id);
@@ -87,7 +95,6 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       if (sender_id != account.id) {
         if (!user_id_visible (sender_id)) {
           this.unread_count ++;
-          this.update_unread_count ();
           debug ("Increasing global unread count by 1");
         }
       }
@@ -400,7 +407,6 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     this.unread_count -= user_entry.unread_count;
     debug ("unread_count -= %d", user_entry.unread_count);
     user_entry.unread_count = 0;
-    update_unread_count ();
     user_entry.update_unread_count ();
   }
 
