@@ -113,7 +113,10 @@ namespace TextTransform {
       }
 
       if (TransformFlags.EXPAND_LINKS in flags) {
-        builder.append (entity.target ?? entity.display_text);
+        if (entity.display_text.has_prefix ("@"))
+          builder.append (entity.display_text);
+        else
+          builder.append (entity.target ?? entity.display_text);
       } else {
         /* Append start of link + entity target */
         builder.append ("<span underline=\"none\"><a href=\"")
