@@ -6,13 +6,13 @@ TESTS = \
 				bundlehistory  \
 				usercounter    \
 				media          \
-				tweet_entities \
 				tweet_parsing  \
 				filters        \
 				sql            \
 				multimedia     \
 				highlighting   \
-				friends
+				friends        \
+				texttransform
 check_PROGRAMS = $(TESTS)
 
 tweet_length_SOURCES = tweet_length.vala
@@ -62,6 +62,10 @@ highlighting_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
 friends_SOURCES = friends.vala
 friends_LDADD = $(top_builddir)/src/libcorebird.la
 friends_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
+
+texttransform_SOURCES = texttransform.vala
+texttransform_LDADD = $(top_builddir)/src/libcorebird.la
+texttransform_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
 
 GRESDEPS = $(top_srcdir)/$1 $(shell $(GLIB_COMPILE_RESOURCES) --generate-dependencies --sourcedir=$(top_srcdir) $(top_srcdir)/$1)
 resource_deps = $(call GRESDEPS,resources.xml)

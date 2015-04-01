@@ -86,7 +86,7 @@ public class Corebird : Gtk.Application {
     /* We don't set the settings dialog transient to
        any window because we already save its size */
     var dialog = new SettingsDialog (this);
-    dialog.show_all ();
+    dialog.show ();
   }
 
   private void about_activated () {
