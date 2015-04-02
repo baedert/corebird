@@ -161,6 +161,9 @@ public class ScrollWidget : Gtk.ScrolledWindow {
       return;
     }
 
+    if (this.scroll_down_id != 0)
+      return;
+
     scroll_down_id = this.size_allocate.connect (() => {
       if (Gtk.Settings.get_default ().gtk_enable_animations && animate) {
         this.start_time = this.get_frame_clock ().get_frame_time ();
@@ -173,6 +176,7 @@ public class ScrollWidget : Gtk.ScrolledWindow {
         this.vadjustment.value_changed ();
       }
       this.disconnect (scroll_down_id);
+      this.scroll_down_id = 0;
     });
   } // }}}
 

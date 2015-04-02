@@ -185,9 +185,11 @@ class ProfilePage : ScrollWidget, IPage {
         warning (e.message);
       }
 
+      var entities = new TextEntity[0];
+
       set_data(vals[2], vals[1], vals[9], vals[10], vals[3],
                int.parse (vals[4]), int.parse (vals[5]), int.parse (vals[6]),
-               vals[7], false);
+               vals[7], false, ref entities);
       set_follow_button_state (bool.parse (vals[11]));
       string banner_name = vals[12];
       debug("banner_name: %s", banner_name);
@@ -305,7 +307,7 @@ class ProfilePage : ScrollWidget, IPage {
 
     string display_url = "";
     Json.Object entities = root.get_object_member ("entities");
-    if(has_url) {
+    if (has_url) {
       var urls_object = entities.get_object_member("url").get_array_member("urls").
         get_element(0).get_object();
 
@@ -319,33 +321,33 @@ class ProfilePage : ScrollWidget, IPage {
     }
 
     string location = null;
-    if(root.has_member("location")){
+    if (root.has_member("location")) {
       location = root.get_string_member("location");
     }
 
-    GLib.SList<TweetUtils.Sequence?> text_urls = null;
+    TextEntity[] text_urls;
     if (root.has_member ("description")) {
       Json.Array urls = entities.get_object_member ("description").get_array_member ("urls");
-      text_urls = new GLib.SList<TweetUtils.Sequence?>();
+      text_urls = new TextEntity[urls.get_length ()];
       urls.foreach_element ((arr, i, node) => {
         var ent = node.get_object ();
         string expanded_url = ent.get_string_member ("expanded_url");
         expanded_url = expanded_url.replace ("&", "&amp;");
         Json.Array indices = ent.get_array_member ("indices");
-        text_urls.prepend (TweetUtils.Sequence(){
-          start = (int)indices.get_int_element (0),
-          end   = (int)indices.get_int_element (1),
-          url   = expanded_url,
-          display_url = ent.get_string_member ("display_url")
-        });
-
+        text_urls[i] = TextEntity(){
+          from = (int)indices.get_int_element (0),
+          to   = (int)indices.get_int_element (1),
+          target = expanded_url,
+          display_text = ent.get_string_member ("display_url")
+        };
       });
-    }
+    } else
+      text_urls = new TextEntity[0];
 
     account.user_counter.user_seen (id, screen_name, name);
 
     set_data(name, screen_name, display_url, location, description, tweets,
-         following, followers, avatar_url, verified, text_urls);
+         following, followers, avatar_url, verified, ref text_urls);
     set_follow_button_state (is_following);
     Corebird.db.replace ("profiles")
                .vali64 ("id", id)
@@ -354,7 +356,7 @@ class ProfilePage : ScrollWidget, IPage {
                .vali ("followers", followers)
                .vali ("following", following)
                .vali ("tweets", tweets)
-               .val ("description", TweetUtils.get_formatted_text (description, text_urls))
+               .val ("description", TextTransform.transform (description, text_urls, 0))
                .val ("avatar_name", avatar_name)
                .val ("url", display_url)
                .val ("location", location)
@@ -467,7 +469,7 @@ class ProfilePage : ScrollWidget, IPage {
                              string? location, string description, int tweets,
                              int following, int followers, string avatar_url,
                              bool verified,
-                             GLib.SList<TweetUtils.Sequence?>? text_urls = null
+                             ref TextEntity[]? text_urls
                              ) { //{{{
 
 
@@ -482,12 +484,10 @@ class ProfilePage : ScrollWidget, IPage {
     //tweet_to_menu_item.label = _("Tweet to @%s").printf (screen_name);
     string desc = description;
     if (text_urls != null) {
-      text_urls.sort ((a, b) => {
-        if (a.start < b.start)
-          return -1;
-        return 1;
-      });
-      desc = TweetUtils.get_formatted_text (description, text_urls);
+      TweetUtils.sort_entities (ref text_urls);
+      desc = TextTransform.transform (description,
+                                      text_urls,
+                                      0);
     }
 
     this.follower_count = followers;

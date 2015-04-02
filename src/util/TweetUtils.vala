@@ -27,114 +27,6 @@ namespace TweetUtils {
      ".mil",  ".mobi", ".museum", ".post", ".tel",  ".travel"
   };
 
-  /* A 'sequence' in a text. Name sucks */
-  public struct Sequence {
-    int start;
-    int end;
-    string url;
-    string display_url;
-    bool visual_display_url;
-    string title;
-  }
-
-  /**
-   * Formats the given Tweet, using the given url list to insert
-   * links(i.e. <a> tags).
-   *
-   * @param tweet_text The text to format
-   * @param urls The urls to insert
-   *
-   * @return The formatted text
-   */
-  string get_formatted_text (string tweet_text, GLib.SList<Sequence?> urls) { // {{{
-    string formatted_text = tweet_text;
-    int char_diff = 0;
-
-    foreach (Sequence s in urls) {
-      int length_before = formatted_text.char_count ();
-      int from = formatted_text.index_of_nth_char (s.start + char_diff);
-      int to   = formatted_text.index_of_nth_char (s.end + char_diff);
-      string? title = null;
-      if (s.title != null) {
-        title = s.title.replace ("&", "&amp;amp;");
-      } else
-        title = s.url.replace ("&", "&amp;");
-
-      formatted_text = formatted_text.splice (from, to,
-           "<span underline='none'><a href=\"%s\" title=\"%s\">%s</a></span>".printf(s.url,
-                                                       title,
-                                                       s.display_url.replace ("&", "&amp;")));
-      char_diff += formatted_text.char_count () - length_before;
-    }
-
-    return formatted_text;
-  } // }}}
-
-
-
-
-  /**
-   * Basically the same as get_formatted_text *BUT* it removes pic.twitter.com links.
-   */
-  string get_trimmed_text (string tweet_text, GLib.SList<Sequence?> urls, int media_count) { // {{{
-    string formatted_text = tweet_text;
-    int char_diff = 0;
-
-    foreach (Sequence s in urls) {
-      int length_before = formatted_text.char_count ();
-      int from = formatted_text.index_of_nth_char (s.start + char_diff);
-      int to   = formatted_text.index_of_nth_char (s.end + char_diff);
-
-      if (s.display_url.has_prefix ("pic.twitter.com/") ||
-          (media_count == 1 && InlineMediaDownloader.is_media_candidate (s.url))) {
-        formatted_text = formatted_text.splice (from, to, "");
-      } else {
-        string? title = null;
-        if (s.title != null) {
-          title = s.title.replace ("&", "&amp;amp;");
-        } else
-          title = s.url.replace ("&", "&amp;");
-
-        formatted_text = formatted_text.splice (from, to,
-             "<span underline='none'><a href=\"%s\" title=\"%s\">%s</a></span>".printf(s.url,
-                                                         title,
-                                                         s.display_url.replace ("&", "&amp;")));
-      }
-      char_diff += formatted_text.char_count () - length_before;
-    }
-
-    return formatted_text;
-  } // }}}
-
-
-
-
-  /**
-   * Formats the given Tweet, using the given url list to insert
-   * links(the real urls, protocol etc. included).
-   *
-   * @param tweet_text The text to format
-   * @param urls The urls to insert
-   *
-   * @return The formatted text
-   */
-  public string get_real_text (string tweet_text, GLib.SList<Sequence?> urls) {
-    string formatted_text = tweet_text;
-    int char_diff = 0;
-
-    foreach (Sequence s in urls) {
-      if (s.visual_display_url)
-        continue;
-      int length_before = formatted_text.char_count ();
-      int from = formatted_text.index_of_nth_char (s.start + char_diff);
-      int to   = formatted_text.index_of_nth_char (s.end + char_diff);
-      formatted_text = formatted_text.splice (from, to, s.url);
-      char_diff += formatted_text.char_count () - length_before;
-    }
-
-    return formatted_text;
-  }
-
   /**
    * Deletes the given tweet.
    *
@@ -654,5 +546,19 @@ namespace TweetUtils {
     yield;
 
     return result;
+  }
+
+  public void sort_entities (ref TextEntity[] entities) {
+    /* Just use bubblesort here. Our n is very small (< 15 maybe?) */
+
+    for (int i = 0; i < entities.length; i ++) {
+      for (int k = 0; k < entities.length; k ++) {
+        if (entities[i].from < entities[k].from) {
+          TextEntity c = entities[i];
+          entities[i] = entities[k];
+          entities[k] = c;
+        }
+      }
+    }
   }
 }
