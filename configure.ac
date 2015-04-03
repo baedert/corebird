@@ -122,7 +122,7 @@ AC_CONFIG_FILES([Makefile
 
 AC_OUTPUT
 
-VALAC_VERSION=$(valac --version)
+VALAC_VERSION=$($VALAC --version)
 
 echo "
              Corebird  $VERSION

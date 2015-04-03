@@ -12,7 +12,7 @@ touch config.rpath
 mkdir -p m4
 
 rm -f .version
-AUTOPOINT='intltoolize --automake --copy' autoreconf -v --install || exit 1
+AUTOPOINT='intltoolize --automake --copy' autoreconf -v --install --force || exit 1
 cd $ORIGDIR || exit $?
 
 if test -z "$NOCONFIGURE"; then
