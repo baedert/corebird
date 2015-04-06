@@ -32,7 +32,7 @@
     <property name="can_focus">True</property>
     <property name="vscrollbar_policy">always</property>
     <child>
-      <object class="GtkBox" id="box1">
+      <object class="GtkBox">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
@@ -167,7 +167,7 @@
                             <property name="can_focus">True</property>
                             <property name="halign">end</property>
                             <property name="valign">fill</property>
-                            <property name="margin_end">3</property>
+                            <property name="margin_end">6</property>
                             <property name="margin_top">6</property>
                             <signal name="clicked" handler="follow_button_clicked_cb" swapped="no"/>
                           </object>
@@ -186,7 +186,7 @@
                         <property name="can_focus">False</property>
                         <property name="no_show_all">True</property>
                         <property name="halign">end</property>
-                        <property name="margin_end">3</property>
+                        <property name="margin_end">6</property>
                         <property name="margin_top">6</property>
                         <property name="label" translatable="yes">Follows you</property>
                         <property name="hexpand">true</property>
@@ -247,13 +247,13 @@
 
 
                 <child>
-                  <object class="GtkGrid" id="grid1">
+                  <object class="GtkGrid">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="margin_top">5</property>
                     <property name="margin_bottom">5</property>
                     <child>
-                      <object class="GtkLabel" id="label1">
+                      <object class="GtkLabel">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="hexpand">True</property>
@@ -282,7 +282,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="label3">
+                      <object class="GtkLabel">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="hexpand">True</property>
@@ -311,7 +311,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="label5">
+                      <object class="GtkLabel">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="hexpand">True</property>
@@ -340,7 +340,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkSeparator" id="separator1">
+                      <object class="GtkSeparator">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="margin_start">5</property>
@@ -354,7 +354,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkSeparator" id="separator2">
+                      <object class="GtkSeparator">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="margin_start">5</property>
@@ -428,6 +428,7 @@
           <object class="GtkStack" id="user_stack">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="transition_type">crossfade</property>
             <child>
               <object class="TweetListBox" id="tweet_list">
                 <property name="visible">True</property>

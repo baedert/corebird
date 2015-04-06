@@ -79,13 +79,16 @@ class UserListsWidget : Gtk.Box {
     if (user_id == 0)
       user_id = account.id;
 
+    var collect_obj = new Collect (2);
 
     var call = account.proxy.new_call ();
     call.set_function ("1.1/lists/subscriptions.json");
     call.set_method ("GET");
     call.add_param ("user_id", user_id.to_string ());
-    call.invoke_async.begin (null, (obj, res) => {
-      uint n_subscribed_list = lists_received_cb (obj, res, subscribed_list_box);
+    TweetUtils.load_threaded.begin (call, (_, res) => {
+      Json.Node? root = TweetUtils.load_threaded.end (res);
+
+      uint n_subscribed_list = lists_received_cb (root, subscribed_list_box);
       if (n_subscribed_list == 0) {
         subscribed_list_box.hide ();
         subscribed_list_frame.hide ();
@@ -95,6 +98,7 @@ class UserListsWidget : Gtk.Box {
         subscribed_list_frame.show ();
         subscribed_list_label.show ();
       }
+      collect_obj.emit ();
     });
 
 
@@ -102,8 +106,9 @@ class UserListsWidget : Gtk.Box {
     user_call.set_function ("1.1/lists/ownerships.json");
     user_call.set_method ("GET");
     user_call.add_param ("user_id", user_id.to_string ());
-    user_call.invoke_async.begin (null, (obj, res) => {
-      uint n_user_list = lists_received_cb (obj, res, user_list_box);
+    TweetUtils.load_threaded.begin (user_call, (_, res) => {
+      Json.Node? root = TweetUtils.load_threaded.end (res);
+      uint n_user_list = lists_received_cb (root, user_list_box);
       if (n_user_list == 0 && !show_create_entry) {
         user_list_label.hide ();
         user_list_box.hide ();
@@ -115,30 +120,23 @@ class UserListsWidget : Gtk.Box {
         user_list_box.show ();
         user_list_frame.show ();
       }
+      collect_obj.emit ();
+    });
+
+    collect_obj.finished.connect (() => {
       load_lists.callback ();
     });
+
     yield;
   } // }}}
 
-  private uint lists_received_cb (GLib.Object? o, GLib.AsyncResult res,
-                                  Gtk.ListBox list_box) { // {{{
-    var call = (Rest.ProxyCall) o;
-    try {
-      call.invoke_async.end (res);
-    } catch (GLib.Error e) {
-      Utils.show_error_object (call.get_payload (), e.message,
-                               GLib.Log.LINE, GLib.Log.FILE);
+  private uint lists_received_cb (Json.Node?  root,
+                                  Gtk.ListBox list_box)
+  { // {{{
+    if (root == null)
       return 0;
-    }
-    var parser = new Json.Parser ();
-    try {
-      parser.load_from_data (call.get_payload ());
-    } catch (GLib.Error e) {
-      warning (e.message);
-      return 0;
-    }
 
-    var arr = parser.get_root ().get_object ().get_array_member ("lists");
+    var arr = root.get_object ().get_array_member ("lists");
     arr.foreach_element ((array, index, node) => {
       var obj = node.get_object ();
       var entry = new ListListEntry.from_json_data (obj, account);

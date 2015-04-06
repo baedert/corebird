@@ -45,9 +45,9 @@ class AccountDialog : Gtk.Dialog {
     set_default_response (Gtk.ResponseType.CLOSE);
     this.account = account;
     name_entry.text = account.name;
-    set_transient_data (account.website, account.description);
     avatar_banner_widget.set_account (account);
     description_text_view.set_account (account);
+    set_transient_data (account.website, account.description);
 
     autostart_switch.freeze_notify ();
     string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");

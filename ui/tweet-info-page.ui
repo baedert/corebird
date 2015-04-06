@@ -168,6 +168,7 @@
             <property name="valign">baseline</property>
             <property name="use_markup">True</property>
             <property name="track_visited_links">False</property>
+            <property name="ellipsize">end</property>
             <style>
               <class name="dim-label"/>
             </style>

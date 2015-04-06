@@ -67,32 +67,17 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
     if (users_loaded)
       return;
 
+
+
     var call = account.proxy.new_call ();
-    call.set_method ("GET");
     call.set_function ("1.1/blocks/list.json");
+    call.set_method ("GET");
     call.add_param ("include_entities", "false");
     call.add_param ("skip_status", "true");
-    call.invoke_async.begin (null, (o, res) => {
-      try {
-        call.invoke_async.end (res);
-      } catch (GLib.Error e) {
-        warning (e.message);
-        Utils.show_error_object (call.get_payload (), e.message,
-                                 GLib.Log.LINE, GLib.Log.FILE);
-        users_loaded = false;
-        return;
-      }
+    TweetUtils.load_threaded.begin (call, (_, res) => {
+      Json.Node? root = TweetUtils.load_threaded.end (res);
 
-      var parser = new Json.Parser ();
-      try {
-        parser.load_from_data (call.get_payload ());
-      } catch (GLib.Error e) {
-        critical (e.message);
-        Utils.show_error_object (call.get_payload (), e.message,
-                                 GLib.Log.LINE, GLib.Log.FILE);
-        return;
-      }
-      Json.Array users = parser.get_root ().get_object ().get_array_member ("users");
+      Json.Array users = root.get_object ().get_array_member ("users");
       uint n_users = users.get_length ();
       users.foreach_element ((arr, index, node) => {
         var obj = node.get_object ();
@@ -103,9 +88,8 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
         user_list_label.show ();
       }
     });
+
     users_loaded = true;
-
-
   } // }}}
 
   /**

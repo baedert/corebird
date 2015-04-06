@@ -62,6 +62,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     set {
       mm_widget.sensitive = !value;
       name_button.read_only = value;
+      this._read_only = value;
     }
   }
   public int64 sort_factor {
@@ -100,7 +101,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   [Signal (action = true)]
   private signal void delete_tweet ();
 
-  public TweetListEntry (owned Tweet tweet, MainWindow? window, Account account){
+  public TweetListEntry (owned Tweet tweet, MainWindow? window, Account account) {
     this.account = account;
     this.tweet = tweet;
     this.window = window;
@@ -122,6 +123,8 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     }
 
     retweet_button.active = tweet.retweeted;
+    retweet_button.sensitive = (tweet.user_id != account.id) &&
+                               !tweet.protected;
     tweet.notify["retweeted"].connect (retweeted_cb);
 
     favorite_button.active = tweet.favorited;
@@ -161,8 +164,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
         favorite_button.active = !favorite_button.active;
     });
     retweet_tweet.connect (() => {
-      if (retweet_button.parent != null)
-        retweet_button.tap ();
+      retweet_button.tap ();
     });
 
     if (tweet.favorited)
@@ -172,6 +174,10 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       rt_status_image.show ();
 
     values_set = true;
+
+    Settings.get ().changed["text-transform-flags"].connect ((key) => {
+      text_label.label = tweet.get_trimmed_text ();
+    });
   }
 
   private void favorited_cb () {
@@ -244,8 +250,10 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   [GtkCallback]
   private void retweet_button_toggled_cb () {
     /* You can't retweet your own tweets. */
-    if (account.id == this.tweet.user_id || !values_set)
+    if (account.id == this.tweet.user_id || !values_set) {
+      retweet_button.active = false;
       return;
+    }
 
     retweet_button.sensitive = false;
     TweetUtils.toggle_retweet_tweet.begin (account, tweet, !retweet_button.active, () => {
@@ -308,11 +316,14 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
   [GtkCallback]
   private bool link_activated_cb (string uri) {
+    if (this._read_only) {
+      return false;
+    }
     return TweetUtils.activate_link (uri, window);
   }
 
   private void media_invalid_cb () {
-    this.text_label.set_label (tweet.get_formatted_text ());
+    this.text_label.set_label ("INVALID MEDIA");
   }
 
 

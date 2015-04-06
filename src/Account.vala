@@ -164,27 +164,14 @@ public class Account : GLib.Object {
       call.add_param ("user_id", this.id.to_string ());
     }
     call.add_param ("skip_status", "true");
-    try {
-      yield call.invoke_async (null);
-    } catch (GLib.Error e) {
-      if (e.message.down() == "unauthorized") {
-        Utils.show_error_dialog ("Unauthorized");
-      }
-      critical (e.message);
-      return;
-    }
 
-    var parser = new Json.Parser ();
-    try {
-      parser.load_from_data (call.get_payload ());
-    } catch (GLib.Error e) {
-      critical (e.message);
+    Json.Node? root_node = yield TweetUtils.load_threaded (call);
+    if (root_node == null)
       return;
-    }
 
     bool values_changed = false;
 
-    var root = parser.get_root ().get_object ();
+    var root = root_node.get_object ();
     this.id = root.get_int_member ("id");
     if (this.name != root.get_string_member ("name")) {
       this.name = root.get_string_member ("name");
@@ -199,18 +186,20 @@ public class Account : GLib.Object {
 
     Json.Array desc_urls = root.get_object_member ("entities").get_object_member ("description")
                                                               .get_array_member ("urls");
-    GLib.SList<TweetUtils.Sequence?> urls = new GLib.SList<TweetUtils.Sequence?> ();
+    var urls = new TextEntity[desc_urls.get_length ()];
     desc_urls.foreach_element ((arr, index, node) => {
       Json.Object obj = node.get_object ();
       Json.Array indices = obj.get_array_member ("indices");
-      urls.prepend (TweetUtils.Sequence () {
-        start = (int)indices.get_int_element (0),
-        end   = (int)indices.get_int_element (1),
-        visual_display_url = false,
-        url   = obj.get_string_member ("expanded_url")
-      });
+      urls[index] = TextEntity () {
+        from = (int)indices.get_int_element (0),
+        to   = (int)indices.get_int_element (1),
+        display_text = obj.get_string_member ("expanded_url"),
+        target = null
+      };
     });
-    this.description = TweetUtils.get_real_text (root.get_string_member ("description"), urls);
+    this.description = TextTransform.transform (root.get_string_member ("description"),
+                                                urls,
+                                                TransformFlags.EXPAND_LINKS);
 
 
     if (root.has_member ("profile_banner_url"))
@@ -278,26 +267,17 @@ public class Account : GLib.Object {
     var call = this.proxy.new_call ();
     call.set_function (function);
     call.set_method ("GET");
-    try {
-      yield call.invoke_async (null);
-    } catch (GLib.Error e) {
-      warning (e.message);
-      collect_obj.emit (e);
+
+    Json.Node? root = yield TweetUtils.load_threaded (call);
+    if (root == null) {
+      collect_obj.emit ();
       return null;
     }
 
-    var parser = new Json.Parser ();
-    try {
-      parser.load_from_data (call.get_payload ());
-    } catch (GLib.Error e) {
-      warning (e.message);
-      collect_obj.emit (e);
-      return null;
-    }
     if (direct)
-      return parser.get_root ().get_array ();
+      return root.get_array ();
     else
-      return parser.get_root ().get_object ().get_array_member ("ids");
+      return root.get_object ().get_array_member ("ids");
   }
 
   /**

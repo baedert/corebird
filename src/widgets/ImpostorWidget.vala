@@ -27,6 +27,9 @@ class ImpostorWidget : Gtk.Image {
 
 
   public override bool draw (Cairo.Context ct) {
+    if (this.surface == null)
+      return false;
+
     ct.set_source_surface (this.surface, 0, 0);
     ct.rectangle (0, 0, this.get_allocated_width (), this.get_allocated_height ());
     ct.fill ();

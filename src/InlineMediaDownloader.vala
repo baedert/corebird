@@ -52,6 +52,8 @@ namespace InlineMediaDownloader {
 
     return url.has_prefix ("http://instagra.am") ||
            url.has_prefix ("http://instagram.com/p/") ||
+           url.has_prefix ("https://instagr.am") ||
+           url.has_prefix ("https://instagram.com/p/") ||
            url.has_prefix ("http://i.imgur.com") ||
            url.has_prefix ("http://d.pr/i/") ||
            url.has_prefix ("http://ow.ly/i/") ||
@@ -60,6 +62,7 @@ namespace InlineMediaDownloader {
 #if VIDEO
            url.has_prefix ("https://vine.co/v/") ||
            url.has_suffix ("/photo/1") ||
+           url.has_prefix ("https://video.twimg.com/ext_tw_video/") ||
 #endif
            url.has_prefix ("http://pbs.twimg.com/media/") ||
            url.has_prefix ("http://twitpic.com/")
@@ -178,7 +181,10 @@ namespace InlineMediaDownloader {
     string url = media.url;
     if (url.has_prefix ("http://instagr.am") ||
         url.has_prefix ("http://instagram.com/p/") ||
+        url.has_prefix ("https://instagr.am") ||
+        url.has_prefix ("https://instagram.com/p/") ||
         url.has_prefix ("http://ow.ly/i/") ||
+        url.has_prefix ("https://ow.ly/i/") ||
         url.has_prefix ("http://www.flickr.com/photos/") ||
         url.has_prefix ("https://www.flickr.com/photos/")) {
       yield load_real_url (t, media, "<meta property=\"og:image\" content=\"(.*?)\"", 1);

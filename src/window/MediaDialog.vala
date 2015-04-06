@@ -53,7 +53,8 @@ class MediaDialog : Gtk.Window {
     if (media.type == MediaType.IMAGE || media.type == MediaType.GIF) {
       new_widget = new MediaImageWidget (media.path);
     } else if (media.type == MediaType.VINE ||
-               media.type == MediaType.ANIMATED_GIF) {
+               media.type == MediaType.ANIMATED_GIF ||
+               media.type == MediaType.TWITTER_VIDEO) {
       new_widget = new MediaVideoWidget (media);
     } else {
       critical ("Unknown media type %d", media.type);

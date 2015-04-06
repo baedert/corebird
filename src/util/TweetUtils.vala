@@ -27,114 +27,6 @@ namespace TweetUtils {
      ".mil",  ".mobi", ".museum", ".post", ".tel",  ".travel"
   };
 
-  /* A 'sequence' in a text. Name sucks */
-  public struct Sequence {
-    int start;
-    int end;
-    string url;
-    string display_url;
-    bool visual_display_url;
-    string title;
-  }
-
-  /**
-   * Formats the given Tweet, using the given url list to insert
-   * links(i.e. <a> tags).
-   *
-   * @param tweet_text The text to format
-   * @param urls The urls to insert
-   *
-   * @return The formatted text
-   */
-  string get_formatted_text (string tweet_text, GLib.SList<Sequence?> urls) { // {{{
-    string formatted_text = tweet_text;
-    int char_diff = 0;
-
-    foreach (Sequence s in urls) {
-      int length_before = formatted_text.char_count ();
-      int from = formatted_text.index_of_nth_char (s.start + char_diff);
-      int to   = formatted_text.index_of_nth_char (s.end + char_diff);
-      string? title = null;
-      if (s.title != null) {
-        title = s.title.replace ("&", "&amp;amp;");
-      } else
-        title = s.url.replace ("&", "&amp;");
-
-      formatted_text = formatted_text.splice (from, to,
-           "<span underline='none'><a href=\"%s\" title=\"%s\">%s</a></span>".printf(s.url,
-                                                       title,
-                                                       s.display_url.replace ("&", "&amp;")));
-      char_diff += formatted_text.char_count () - length_before;
-    }
-
-    return formatted_text;
-  } // }}}
-
-
-
-
-  /**
-   * Basically the same as get_formatted_text *BUT* it removes pic.twitter.com links.
-   */
-  string get_trimmed_text (string tweet_text, GLib.SList<Sequence?> urls, int media_count) { // {{{
-    string formatted_text = tweet_text;
-    int char_diff = 0;
-
-    foreach (Sequence s in urls) {
-      int length_before = formatted_text.char_count ();
-      int from = formatted_text.index_of_nth_char (s.start + char_diff);
-      int to   = formatted_text.index_of_nth_char (s.end + char_diff);
-
-      if (s.display_url.has_prefix ("pic.twitter.com/") ||
-          (media_count == 1 && InlineMediaDownloader.is_media_candidate (s.url))) {
-        formatted_text = formatted_text.splice (from, to, "");
-      } else {
-        string? title = null;
-        if (s.title != null) {
-          title = s.title.replace ("&", "&amp;amp;");
-        } else
-          title = s.url.replace ("&", "&amp;");
-
-        formatted_text = formatted_text.splice (from, to,
-             "<span underline='none'><a href=\"%s\" title=\"%s\">%s</a></span>".printf(s.url,
-                                                         title,
-                                                         s.display_url.replace ("&", "&amp;")));
-      }
-      char_diff += formatted_text.char_count () - length_before;
-    }
-
-    return formatted_text;
-  } // }}}
-
-
-
-
-  /**
-   * Formats the given Tweet, using the given url list to insert
-   * links(the real urls, protocol etc. included).
-   *
-   * @param tweet_text The text to format
-   * @param urls The urls to insert
-   *
-   * @return The formatted text
-   */
-  public string get_real_text (string tweet_text, GLib.SList<Sequence?> urls) {
-    string formatted_text = tweet_text;
-    int char_diff = 0;
-
-    foreach (Sequence s in urls) {
-      if (s.visual_display_url)
-        continue;
-      int length_before = formatted_text.char_count ();
-      int from = formatted_text.index_of_nth_char (s.start + char_diff);
-      int to   = formatted_text.index_of_nth_char (s.end + char_diff);
-      formatted_text = formatted_text.splice (from, to, s.url);
-      char_diff += formatted_text.char_count () - length_before;
-    }
-
-    return formatted_text;
-  }
-
   /**
    * Deletes the given tweet.
    *
@@ -295,7 +187,11 @@ namespace TweetUtils {
     int length = 0;
 
     foreach (string s in words) {
-      length += get_word_length (s);
+      string[] subwords = s.split ("\n");
+      foreach (string sw in subwords) {
+        length += get_word_length (sw);
+      }
+      length += subwords.length - 1;
     }
 
     // Don't forget the n-1 whitespaces
@@ -472,8 +368,20 @@ namespace TweetUtils {
     return false;
   }
 
-  public bool is_mention (string word) {
-    return word[0] == '@' && word.length > 1;
+  private const unichar[] non_mention_chars = {
+    '“', '"', '-', '`', ',', '.', '^', '(', ')', '[', ']', '{', '}', '+', '='
+  };
+  public bool is_mention (string  word,
+                          out int at_pos) {
+    int k = 0;
+    while (word.get_char (k) in non_mention_chars)
+      k ++;
+
+    at_pos = k;
+
+    return word.get_char (word.index_of_nth_char (k)) == '@' &&
+           word.length > 1 &&
+           word.length - k > 1;
   }
 
   public bool is_hashtag (string word) {
@@ -482,8 +390,8 @@ namespace TweetUtils {
 
 
   private void highlight_link (Gtk.TextBuffer buffer,
-                               Gtk.TextIter? word_start,
-                               Gtk.TextIter? word_end) {
+                               Gtk.TextIter?  word_start,
+                               Gtk.TextIter?  word_end) {
     Gtk.TextIter? iter1 = word_start;
     Gtk.TextIter? iter2 = word_start;
     iter1.forward_char ();
@@ -505,8 +413,8 @@ namespace TweetUtils {
 
   /** Invariant: The word passed to this function starts with a @ */
   private void highlight_mention (Gtk.TextBuffer buffer,
-                                  Gtk.TextIter? word_start,
-                                  Gtk.TextIter? word_end) {
+                                  Gtk.TextIter?  word_start,
+                                  Gtk.TextIter?  word_end) {
     Gtk.TextIter? iter1 = word_start;
     Gtk.TextIter? iter2 = word_start;
     iter1.forward_char ();
@@ -529,8 +437,8 @@ namespace TweetUtils {
 
   /** Invariant: the word passed to this function starts with a # */
   private void highlight_hashtag (Gtk.TextBuffer buffer,
-                                  Gtk.TextIter? word_start,
-                                  Gtk.TextIter? word_end) {
+                                  Gtk.TextIter?  word_start,
+                                  Gtk.TextIter?  word_end) {
     Gtk.TextIter? iter1 = word_start;
     Gtk.TextIter? iter2 = word_start;
     iter1.forward_char ();
@@ -579,13 +487,16 @@ namespace TweetUtils {
 
       if (word_end) {
         // We are at the end of a word so highlight it accordingly
+        int k;
         string w = buffer.get_text (word_start_iter, next_iter, false);
-        if (is_link (w))
+        if (is_link (w)) {
           highlight_link (buffer, word_start_iter, next_iter);
-        else if (is_mention (w))
+        } else if (is_mention (w, out k)) {
+          word_start_iter.forward_chars (k);
           highlight_mention (buffer, word_start_iter, next_iter);
-        else if (is_hashtag (w))
+        } else if (is_hashtag (w)) {
           highlight_hashtag (buffer, word_start_iter, next_iter);
+        }
       }
 
       if (done)
@@ -595,4 +506,59 @@ namespace TweetUtils {
     }
   }
 
+  public async Json.Node? load_threaded (Rest.ProxyCall call)
+  {
+    Json.Node? result = null;
+    GLib.SourceFunc callback = load_threaded.callback;
+
+    /*
+       Call invoke_async anways, even though we create a new thread afterwards.
+       Workaround for https://bugzilla.gnome.org/show_bug.cgi?id=742644
+       TODO: switch to sync() again, bump librest dependency
+     */
+    try {
+      yield call.invoke_async (null);
+    } catch (GLib.Error e) {
+      warning (e.message);
+      return null;
+    }
+
+    new Thread<void*> ("json parser", () => {
+      //try {
+        //call.sync ();
+      //} catch (GLib.Error e) {
+        //warning (e.message);
+        //return null;
+      //}
+
+      var parser = new Json.Parser ();
+      try {
+        parser.load_from_data (call.get_payload ());
+      } catch (GLib.Error e) {
+        warning (e.message);
+        return null;
+      }
+
+      result = parser.get_root ();
+      GLib.Idle.add (() => { callback (); return false; });
+      return null;
+    });
+    yield;
+
+    return result;
+  }
+
+  public void sort_entities (ref TextEntity[] entities) {
+    /* Just use bubblesort here. Our n is very small (< 15 maybe?) */
+
+    for (int i = 0; i < entities.length; i ++) {
+      for (int k = 0; k < entities.length; k ++) {
+        if (entities[i].from < entities[k].from) {
+          TextEntity c = entities[i];
+          entities[i] = entities[k];
+          entities[k] = c;
+        }
+      }
+    }
+  }
 }

@@ -91,5 +91,13 @@
     <key type="b" name="round-avatars">
       <default>true</default>
     </key>
+    <key type="b" name="double-click-activation">
+      <default>false</default>
+      <summary>Whether or not to use double-click activation in tweet timelines</summary>
+    </key>
+    <key type="u" name="text-transform-flags">
+      <default>1</default>
+      <summary>Bitfield for text transformations</summary>
+    </key>
   </schema>
 </schemalist>

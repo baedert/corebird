@@ -54,6 +54,9 @@ public class TweetListBox : Gtk.ListBox {
     this.get_style_context ().add_class ("stream");
     this.set_selection_mode (Gtk.SelectionMode.NONE);
     this.button_press_event.connect (button_press_cb);
+    Settings.get ().bind ("double-click-activation",
+                          this, "activate-on-single-click",
+                          GLib.SettingsBindFlags.INVERT_BOOLEAN);
   }
 
   private bool button_press_cb (Gdk.EventButton evt) {

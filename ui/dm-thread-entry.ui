@@ -8,6 +8,7 @@
       <object class="GtkGrid" id="grid">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="margin">2</property>
 
         <child>
           <object class="AvatarWidget" id="avatar_image">

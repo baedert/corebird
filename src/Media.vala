@@ -20,6 +20,7 @@ public enum MediaType {
   VINE,
   GIF,
   ANIMATED_GIF,
+  TWITTER_VIDEO,
 
   UNKNOWN
 }

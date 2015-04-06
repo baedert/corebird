@@ -72,7 +72,7 @@ class UserListDialog : Gtk.Dialog {
         l.id = list.id;
         list_list_box.add (l);
       }
-     this.show_all ();
+      this.show_all ();
     });
 
     var call = account.proxy.new_call ();
@@ -182,6 +182,7 @@ class ListUserEntry : Gtk.ListBoxRow {
     var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 12);
     box.margin = 6;
     added_checkbox.valign = Gtk.Align.CENTER;
+    added_checkbox.margin_start = 6;
     box.pack_start (added_checkbox, false, false);
     var box2 = new Gtk.Box (Gtk.Orientation.VERTICAL, 3);
     var label = new Gtk.Label ("<b>" + list_name + "</b>");

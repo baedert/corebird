@@ -339,7 +339,7 @@ public class MainWindow : Gtk.ApplicationWindow {
   }
 
   [GtkCallback]
-  private void account_button_toggled_cb () {
+  private void account_button_clicked_cb () {
     account_popover.visible = !account_popover.visible;
   }
 
@@ -444,6 +444,7 @@ public class MainWindow : Gtk.ApplicationWindow {
       if (key != account.screen_name) {
         builder.add ("{s(iiii)}", key, x, y, w, h);
       }
+      key = null; // Otherwise we leak key
     }
     /* Finally, add this window */
     get_position (out x, out y);
@@ -472,13 +473,14 @@ public class MainWindow : Gtk.ApplicationWindow {
 
   private void set_account_app_menu_sensitivity (bool sensitivity) {
     var acc_menu = (GLib.Menu)Corebird.account_menu;
-    string action_name = "show-" + account.id.to_string ();
+    string ref_action_name = "app.show-" + account.id.to_string ();
     Gtk.Application app = (Gtk.Application)GLib.Application.get_default ();
 
     for (int i = 0; i < acc_menu.get_n_items (); i++) {
-      Variant item_name = acc_menu.get_item_attribute_value (i, "label", VariantType.STRING);
-      if (item_name.get_string () == "@" + account.screen_name) {
-        GLib.SimpleAction? action = (GLib.SimpleAction)app.lookup_action (action_name);
+      GLib.Variant action_name = acc_menu.get_item_attribute_value (i, GLib.Menu.ATTRIBUTE_ACTION,
+                                                                    GLib.VariantType.STRING);
+      if (ref_action_name == action_name.get_string ()) {
+        GLib.SimpleAction? action = (GLib.SimpleAction)app.lookup_action (ref_action_name.substring (4));
         if (action != null) {
           action.set_enabled (sensitivity);
           return;

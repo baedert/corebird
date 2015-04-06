@@ -140,6 +140,14 @@ class TweetInfoPage : IPage , ScrollWidget {
       return;
 
     favorite_button.sensitive = false;
+
+    if (favorite_button.active)
+      this.tweet.favorite_count ++;
+    else
+      this.tweet.favorite_count --;
+
+    this.update_rt_fav_labels ();
+
     TweetUtils.toggle_favorite_tweet.begin (account, tweet, !favorite_button.active, () => {
         favorite_button.sensitive = true;
     });
@@ -149,7 +157,14 @@ class TweetInfoPage : IPage , ScrollWidget {
   private void retweet_button_toggled_cb () {
     if (!values_set)
       return;
+
     retweet_button.sensitive = false;
+    if (retweet_button.active)
+      this.tweet.retweet_count ++;
+    else
+      this.tweet.retweet_count --;
+    this.update_rt_fav_labels ();
+
     TweetUtils.toggle_retweet_tweet.begin (account, tweet, !retweet_button.active, () => {
       retweet_button.sensitive = true;
     });
@@ -185,34 +200,22 @@ class TweetInfoPage : IPage , ScrollWidget {
     call.set_method ("GET");
     call.set_function ("1.1/statuses/show.json");
     call.add_param ("id", tweet_id.to_string ());
-    call.invoke_async.begin (null, (obj, res) => {
-      try {
-        call.invoke_async.end (res);
-      }catch (GLib.Error e) {
-        critical(e.message);
-        Utils.show_error_object (call.get_payload (), e.message,
-                                 GLib.Log.LINE, GLib.Log.FILE);
+    TweetUtils.load_threaded.begin (call, (_, res) => {
+      Json.Node? root = TweetUtils.load_threaded.end (res);
+
+      if (root == null)
         return;
-      }
+
       this.tweet = new Tweet ();
-      var parser = new Json.Parser ();
-      try {
-        parser.load_from_data (call.get_payload ());
-      } catch (GLib.Error e) {
-        critical (e.message);
-        return;
-      }
-      tweet.load_from_json (parser.get_root (), now, account);
-      Json.Object root_object = parser.get_root ().get_object ();
+      tweet.load_from_json (root, now, account);
+      Json.Object root_object = root.get_object ();
 
       string with = root_object.get_string_member ("source");
       with = "<span underline='none'>" + extract_source (with) + "</span>";
       set_tweet_data (tweet, with);
 
-      if (tweet.reply_id == 0) {
-        load_replied_to_tweet (tweet.reply_id);
-      } else
-        load_replied_to_tweet (tweet.reply_id);
+      load_replied_to_tweet (tweet.reply_id);
+
       values_set = true;
     });
 
@@ -224,24 +227,13 @@ class TweetInfoPage : IPage , ScrollWidget {
     reply_call.add_param ("q", "to:" + this.screen_name);
     reply_call.add_param ("since_id", tweet_id.to_string ());
     reply_call.add_param ("count", "200");
-    reply_call.invoke_async.begin (null, (o, res) => {
-      try { reply_call.invoke_async.end (res); }
-      catch (GLib.Error e) {
-        warning (e.message);
-        Utils.show_error_object (reply_call.get_payload (), e.message,
-                                 GLib.Log.LINE, GLib.Log.FILE);
-        return;
-      }
+    TweetUtils.load_threaded.begin (reply_call, (_, res) => {
+      Json.Node? root = TweetUtils.load_threaded.end (res);
 
-      var parser = new Json.Parser ();
-      try {
-        parser.load_from_data (reply_call.get_payload ());
-      } catch (GLib.Error e) {
-        warning (e.message);
-        debug (reply_call.get_payload ());
+      if (root == null)
         return;
-      }
-      var statuses_node = parser.get_root ().get_object ().get_array_member ("statuses");
+
+      var statuses_node = root.get_object ().get_array_member ("statuses");
       int n_replies = 0;
       statuses_node.foreach_element ((arr, index, node) => {
         if (n_replies >= 5)
@@ -270,6 +262,7 @@ class TweetInfoPage : IPage , ScrollWidget {
         top_list_box.hide ();
         reply_indicator.replies_available = false;
       }
+
     });
 
   } //}}}
@@ -332,8 +325,7 @@ class TweetInfoPage : IPage , ScrollWidget {
     name_button.label = tweet.user_name;
     screen_name_label.label = "@" + tweet.screen_name;
     avatar_image.pixbuf = tweet.avatar;
-    rt_label.label = "<big><b>%'d</b></big> %s".printf (tweet.retweet_count, _("Retweets"));
-    fav_label.label = "<big><b>%'d</b></big> %s".printf (tweet.favorite_count, _("Favorites"));
+    update_rt_fav_labels ();
     time_label.label = time_format;
     retweet_button.active = tweet.retweeted;
     favorite_button.active = tweet.favorited;
@@ -348,12 +340,17 @@ class TweetInfoPage : IPage , ScrollWidget {
       mm_widget.hide ();
     }
 
-    if (tweet.user_id == account.id) {
+    if (tweet.user_id == account.id || tweet.protected) {
       retweet_button.hide ();
     } else {
       retweet_button.show ();
     }
   } //}}}
+
+  private void update_rt_fav_labels () {
+    rt_label.label = "<big><b>%'d</b></big> %s".printf (tweet.retweet_count, _("Retweets"));
+    fav_label.label = "<big><b>%'d</b></big> %s".printf (tweet.favorite_count, _("Favorites"));
+  }
 
   private void set_source_link (int64 id, string screen_name) {
     var link = "https://twitter.com/%s/status/%s".printf (screen_name,

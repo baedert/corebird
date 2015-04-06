@@ -1,6 +1,4 @@
 
-SUBDIRS = symbolics
-
 desktopdir = $(prefix)/share/applications
 desktop_in_files = org.baedert.corebird.desktop.in
 desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
@@ -16,6 +14,18 @@ man_MANS = corebird.1
 gsettings_SCHEMAS = org.baedert.corebird.gschema.xml
 @INTLTOOL_XML_NOMERGE_RULE@
 @GSETTINGS_RULES@
+
+
+
+dbusservicedir = $(datadir)/dbus-1/services
+dbusservice_DATA = org.baedert.corebird.service
+
+org.baedert.corebird.service: Makefile
+	$(AM_V_GEN) (echo '[D-BUS Service]'; \
+		echo 'Name=org.baedert.corebird'; \
+		echo 'Exec=${bindir}/corebird --gapplication-service') > $@.tmp && \
+		mv $@.tmp $@
+
 
 EXTRA_DIST = \
 						 org.baedert.corebird.desktop.in \

@@ -19,7 +19,17 @@
 [GtkTemplate (ui = "/org/baedert/corebird/ui/dm-threads-page.ui")]
 class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   private bool initialized = false;
-  public int unread_count                   { get; set; }
+  private int _unread_count = 0;
+  public int unread_count {
+    get {
+      return _unread_count;
+    }
+    set {
+      debug ("Changing unread_count from %d to %d", this._unread_count, value);
+      this._unread_count = value;
+      this.update_unread_count ();
+    }
+  }
   public unowned MainWindow main_window     { get; set; }
   public unowned Account account            { get; set; }
   public unowned DeltaUpdater delta_updater { get; set; }
@@ -40,7 +50,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     this.id = id;
     this.account = account;
     this.dm_download_collect = new Collect (2);
-    thread_list.set_header_func (header_func);
+    thread_list.set_header_func (default_header_func);
     thread_list.set_sort_func (dm_thread_entry_sort_func);
 
     thread_list.row_activated.connect ((row) => {
@@ -50,8 +60,10 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
         var entry = (DMThreadEntry) row;
         /* We can withdraw the notification here since
            activating the notification will dismiss it */
-        if (entry.notification_id != null)
+        if (entry.notification_id != null) {
           GLib.Application.get_default ().withdraw_notification (entry.notification_id);
+          entry.notification_id = null;
+        }
 
         var bundle = new Bundle ();
         bundle.put_int64 ("sender_id", entry.user_id);
@@ -63,7 +75,6 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       var thread_entry = thread_map.get (user_id);
       if (thread_entry != null) {
         this.unread_count -= thread_entry.unread_count;
-        update_unread_count ();
       }
       var bundle = new Bundle ();
       bundle.put_int64 ("sender_id", user_id);
@@ -85,7 +96,6 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       if (sender_id != account.id) {
         if (!user_id_visible (sender_id)) {
           this.unread_count ++;
-          this.update_unread_count ();
           debug ("Increasing global unread count by 1");
         }
       }
@@ -160,8 +170,9 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     call.add_param ("skip_status", "true");
     call.add_param ("since_id", max_received_id.to_string ());
     call.add_param ("count", "200");
-    call.invoke_async.begin (null, (obj, res) => {
-      on_dm_result (obj, res);
+    TweetUtils.load_threaded.begin (call, (obj, res) => {
+      Json.Node? root = TweetUtils.load_threaded.end (res);
+      on_dm_result (root);
     });
 
     var sent_call = account.proxy.new_call ();
@@ -170,34 +181,21 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     sent_call.add_param ("since_id", max_sent_id.to_string ());
     sent_call.add_param ("count", "200");
     sent_call.set_method ("GET");
-    sent_call.invoke_async.begin (null, (obj, res) => {
-      on_dm_result (obj, res);
+    TweetUtils.load_threaded.begin (sent_call, (obj, res) => {
+      Json.Node? root = TweetUtils.load_threaded.end (res);
+      on_dm_result (root);
     });
+
   } // }}}
 
 
-  private void on_dm_result (GLib.Object? object, GLib.AsyncResult res) {
-    var call = (Rest.ProxyCall) object;
-    try {
-      call.invoke_async.end (res);
-    } catch (GLib.Error e) {
-      critical (e.message);
-      dm_download_collect.emit (e);
-      return;
-    }
-    var parser = new Json.Parser ();
-    try {
-      parser.load_from_data (call.get_payload ());
-    } catch (GLib.Error e) {
-      critical (e.message);
-      dm_download_collect.emit (e);
-      return;
-    }
-
-
+  private void on_dm_result (Json.Node? root) {
     dm_download_collect.emit ();
 
-    var root_arr = parser.get_root ().get_array ();
+    if (root == null)
+      return;
+
+    var root_arr = root.get_array ();
     debug ("sent: %u", root_arr.get_length ());
     if (root_arr.get_length () > 0) {
       account.db.begin_transaction ();
@@ -229,7 +227,6 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 
       if (!user_id_visible (t_e.user_id)) {
         t_e.unread_count ++;
-        t_e.update_unread_count ();
       }
       t_e.last_message = text;
       t_e.last_message_id = message_id;
@@ -242,19 +239,18 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     }
 
     var urls = dm_obj.get_object_member ("entities").get_array_member ("urls");
-    var url_list = new GLib.SList<TweetUtils.Sequence?> ();
+    var url_list = new TextEntity[urls.get_length ()];
     urls.foreach_element((arr, index, node) => {
       var url = node.get_object();
       string expanded_url = url.get_string_member("expanded_url");
 
       Json.Array indices = url.get_array_member ("indices");
       expanded_url = expanded_url.replace("&", "&amp;");
-      url_list.prepend(TweetUtils.Sequence() {
-        start = (int)indices.get_int_element (0),
-        end   = (int)indices.get_int_element (1) ,
-        url   = url.get_string_member ("display_url"),
-        visual_display_url = false
-      });
+      url_list[index] = TextEntity() {
+        from = (int)indices.get_int_element (0),
+        to   = (int)indices.get_int_element (1) ,
+        display_text = url.get_string_member ("display_url")
+      };
     });
 
     var thread_entry = new DMThreadEntry (sender_id);
@@ -262,7 +258,9 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     string sender_name = dm_obj.get_object_member ("sender").get_string_member ("name").strip ();
     thread_entry.name = sender_name;
     thread_entry.screen_name = author;
-    thread_entry.last_message = TweetUtils.get_real_text (text, url_list);
+    thread_entry.last_message = TextTransform.transform (text,
+                                                         url_list,
+                                                         TransformFlags.EXPAND_LINKS);
     thread_entry.last_message_id = message_id;
     thread_list.add(thread_entry);
     thread_list.invalidate_sort ();
@@ -291,22 +289,23 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     string text = dm_obj.get_string_member ("text");
     if (dm_obj.has_member ("entities")) {
       var urls = dm_obj.get_object_member ("entities").get_array_member ("urls");
-      var url_list = new GLib.SList<TweetUtils.Sequence?> ();
+      var url_list = new TextEntity[urls.get_length ()];
       urls.foreach_element((arr, index, node) => {
         var url = node.get_object();
         string expanded_url = url.get_string_member("expanded_url");
 
         Json.Array indices = url.get_array_member ("indices");
         expanded_url = expanded_url.replace("&", "&amp;");
-        url_list.prepend(TweetUtils.Sequence() {
-          start = (int)indices.get_int_element (0),
-          end   = (int)indices.get_int_element (1) ,
-          url   = expanded_url,
-          display_url = url.get_string_member ("display_url"),
-          visual_display_url = false
-        });
+        url_list[index] = TextEntity() {
+          from = (int)indices.get_int_element (0),
+          to   = (int)indices.get_int_element (1) ,
+          target = expanded_url,
+          display_text = url.get_string_member ("display_url")
+        };
       });
-      text = TweetUtils.get_formatted_text (text, url_list);
+      text = TextTransform.transform (text,
+                                      url_list,
+                                      0);
     }
 
     // TODO: Update last_message
@@ -336,18 +335,6 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     }
     account.db.end_transaction ();
   }
-
-  private void header_func (Gtk.ListBoxRow row, Gtk.ListBoxRow? row_before) { //{{{
-    if (row_before == null)
-      return;
-
-    Gtk.Widget header = row.get_header ();
-    if (header == null) {
-      header = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
-      header.show ();
-      row.set_header (header);
-    }
-  } //}}}
 
   private void remove_spinner () {
     if (progress_spinner != null && progress_spinner.parent != null) {
@@ -414,19 +401,22 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 
   public void adjust_unread_count_for_user_id (int64 user_id) {
     DMThreadEntry? user_entry = thread_map.get (user_id);
-    if (user_entry == null)
+    if (user_entry == null) {
+      warning ("No DMThreadEntry instance for id %s", user_id.to_string ());
       return;
+    }
 
     this.unread_count -= user_entry.unread_count;
+    debug ("unread_count -= %d", user_entry.unread_count);
     user_entry.unread_count = 0;
-    update_unread_count ();
-    user_entry.update_unread_count ();
   }
 
   public string? get_notification_id_for_user_id (int64 user_id) {
     DMThreadEntry? user_entry = thread_map.get (user_id);
-    if (user_entry == null)
+    if (user_entry == null) {
+      warning ("No DMThreadEntry instance for id %s", user_id.to_string ());
       return null;
+    }
 
     string id = user_entry.notification_id;
     user_entry.notification_id = null;
