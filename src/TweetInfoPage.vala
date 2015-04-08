@@ -149,7 +149,7 @@ class TweetInfoPage : IPage , ScrollWidget {
     this.update_rt_fav_labels ();
 
     TweetUtils.toggle_favorite_tweet.begin (account, tweet, !favorite_button.active, () => {
-        favorite_button.sensitive = true;
+      favorite_button.sensitive = true;
     });
   }
 
