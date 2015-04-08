@@ -85,7 +85,7 @@ namespace TextTransform {
 
       if (entities[i].to == cur_end) {
         entities[i].info |= TRAILING;
-        cur_end = text.index_of_nth_char (entities[i].from);
+        cur_end = entities[i].from;
       } else break;
     }
 
