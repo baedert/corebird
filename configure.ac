@@ -26,9 +26,7 @@ AM_CONDITIONAL([ENABLE_DEBUG], [ test "$enable_debug" = "yes"])
 AC_ARG_ENABLE(video, AS_HELP_STRING([--disable-video], [Disable video support]),, disable_video=no)
 AM_CONDITIONAL([DISABLE_VIDEO], [ test "$disable_video" = "yes"])
 
-# --disable-spell-check
-AC_ARG_ENABLE(spell_check, AS_HELP_STRING([--disable-spell-check], [Disable spell check]),, disable_spell_check=no)
-AM_CONDITIONAL([DISABLE_SPELL_CHECK], [ test "$disable_spell_check" = "yes"])
+
 
 
 # Vala Packages {{{
@@ -42,10 +40,6 @@ pkg_modules="gtk+-3.0 >= 3.14
 
 if test "$disable_video" = "no"; then
   pkg_modules="$pkg_modules gstreamer-video-1.0 gdk-x11-3.0"
-fi
-
-if test "$disable_spell_check" = "no"; then
-  pkg_modules="$pkg_modules gtkspell3-3.0"
 fi
 
 PKG_CHECK_MODULES(CB, [$pkg_modules])
@@ -85,12 +79,6 @@ if test "$disable_video" = "no"; then
                  -D VIDEO \
                  --pkg gstreamer-video-1.0 \
                  --pkg gdk-x11-3.0"
-fi
-
-if test "$disable_spell_check" = "no"; then
-  CB_VALA_FLAGS="$CB_VALA_FLAGS \
-                 -D SPELL_CHECK \
-                 --pkg gtkspell3-3.0"
 fi
 
 if test "$enable_debug" = "yes"; then
