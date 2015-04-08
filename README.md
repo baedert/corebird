@@ -49,6 +49,7 @@ This is the readme for the current *development version*. If you're looking for 
  - `gst-plugins-bad-1.0` (disable via --disable-video, default enabled)
  - `gst-plugins-good-1.0` (disable via --disable-video, default enabled)
  - `gst-libav-1.0` (disable via --disable-video, default enabled)
+ - `gtkspell3-3.0` (disable via --disable-spell-check, default enabled)
 
 Note that the above packages are just rough estimations, the actual package names on your distribution may vary.
 
