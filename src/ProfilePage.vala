@@ -529,6 +529,8 @@ class ProfilePage : ScrollWidget, IPage {
       ht.hide_retweets_from (this.user_id);
       follower_count --;
       account.unfollow_id (this.user_id);
+      ((SimpleAction)actions.lookup_action ("toggle-retweets")).set_enabled (false);
+      set_retweets_disabled (false);
     } else {
       call.set_function ("1.1/friendships/create.json");
       call.add_param ("follow", "false");
@@ -539,6 +541,7 @@ class ProfilePage : ScrollWidget, IPage {
       set_user_blocked (false);
       follower_count ++;
       account.follow_id (this.user_id);
+      ((SimpleAction)actions.lookup_action ("toggle-retweets")).set_enabled (true);
     }
     update_follower_label ();
     progress_spinner.start ();
