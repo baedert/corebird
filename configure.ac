@@ -9,7 +9,7 @@ m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 LT_INIT
 AC_PROG_CC
 AC_PROG_CC_STDC
-AM_PROG_VALAC([0.24])
+AM_PROG_VALAC([0.26])
 AC_PROG_INSTALL
 IT_PROG_INTLTOOL([0.40])
 
@@ -82,7 +82,7 @@ if test "$disable_video" = "no"; then
 fi
 
 if test "$enable_debug" = "yes"; then
-  CB_VALA_FLAGS="$CB_VALA_FLAGS -D DEBUG"
+  CB_VALA_FLAGS="$CB_VALA_FLAGS -D DEBUG -g"
 fi
 
 
@@ -122,10 +122,13 @@ AC_CONFIG_FILES([Makefile
 
 AC_OUTPUT
 
+VALAC_VERSION=$($VALAC --version)
+
 echo "
              Corebird  $VERSION
                Prefix: ${prefix}
         Vala Compiler: ${VALAC}
+        valac version: ${VALAC_VERSION}
            C Compiler: ${CC} ${CFLAGS}
             Debugging: $enable_debug
        Video disabled: $disable_video

@@ -1,7 +1,19 @@
 AM_CPPFLAGS = $(CB_CFLAGS) -I$(top_srcdir)/src
 
 TESTS = \
-				tweetmodel
+				tweetmodel     \
+				tweet_length   \
+				utils          \
+				bundlehistory  \
+				usercounter    \
+				media          \
+				tweet_parsing  \
+				filters        \
+				sql            \
+				multimedia     \
+				highlighting   \
+				friends        \
+				texttransform
 check_PROGRAMS = $(TESTS)
 
 # Always add -g to the test cases (for easier debugging)
@@ -26,10 +38,6 @@ bundlehistory_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
 usercounter_SOURCES = usercounter.vala
 usercounter_LDADD = $(top_builddir)/src/libcorebird.la
 usercounter_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
-
-tweet_entities_SOURCES = tweet_entities.vala resources.c
-tweet_entities_LDADD = $(top_builddir)/src/libcorebird.la
-tweet_entities_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
 
 filters_SOURCES = filters.vala resources.c
 filters_LDADD = $(top_builddir)/src/libcorebird.la
@@ -59,6 +67,9 @@ tweetmodel_SOURCES = tweetmodel.vala
 tweetmodel_LDADD = $(top_builddir)/src/libcorebird.la
 tweetmodel_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
 
+texttransform_SOURCES = texttransform.vala
+texttransform_LDADD = $(top_builddir)/src/libcorebird.la
+texttransform_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
 
 GRESDEPS = $(top_srcdir)/$1 $(shell $(GLIB_COMPILE_RESOURCES) --generate-dependencies --sourcedir=$(top_srcdir) $(top_srcdir)/$1)
 resource_deps = $(call GRESDEPS,resources.xml)

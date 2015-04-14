@@ -79,4 +79,18 @@ public class Settings : GLib.Object {
   public static string get_consumer_secret () {
     return settings.get_string ("consumer-secret");
   }
+
+  public static void add_text_transform_flag (TransformFlags flag) {
+    settings.set_uint ("text-transform-flags",
+                       settings.get_uint ("text-transform-flags") | flag);
+  }
+
+  public static void remove_text_transform_flag (TransformFlags flag) {
+    settings.set_uint ("text-transform-flags",
+                       settings.get_uint ("text-transform-flags") & ~flag);
+  }
+
+  public static TransformFlags get_text_transform_flags () {
+    return (TransformFlags) settings.get_uint ("text-transform-flags");
+  }
 }

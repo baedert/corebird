@@ -137,7 +137,7 @@
             <property name="margin_start">8</property>
             <property name="margin_end">6</property>
             <property name="margin_top">2</property>
-            <property name="margin_bottom">12</property>
+            <property name="margin_bottom">3</property>
             <property name="hexpand">True</property>
             <property name="xalign">0</property>
             <property name="yalign">0</property>
@@ -159,6 +159,23 @@
           </packing>
         </child>
 
+
+        <child>
+          <object class="MultiMediaWidget" id="mm_widget">
+            <property name="visible">true</property>
+            <property name="margin_bottom">12</property>
+            <property name="margin_start">10</property>
+            <property name="margin_end">10</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">5</property>
+            <property name="width">8</property>
+          </packing>
+        </child>
+
+
+
         <child>
           <object class="GtkLabel" id="time_label">
             <property name="visible">True</property>
@@ -168,13 +185,14 @@
             <property name="valign">baseline</property>
             <property name="use_markup">True</property>
             <property name="track_visited_links">False</property>
+            <property name="ellipsize">end</property>
             <style>
               <class name="dim-label"/>
             </style>
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">5</property>
+            <property name="top_attach">6</property>
             <property name="width">6</property>
           </packing>
         </child>
@@ -193,10 +211,11 @@
           </object>
           <packing>
             <property name="left_attach">6</property>
-            <property name="top_attach">5</property>
+            <property name="top_attach">6</property>
             <property name="width">2</property>
           </packing>
         </child>
+
 
 
         <child>
@@ -214,7 +233,7 @@
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">6</property>
+            <property name="top_attach">7</property>
             <property name="width">3</property>
           </packing>
         </child>
@@ -233,11 +252,9 @@
           </object>
           <packing>
             <property name="left_attach">3</property>
-            <property name="top_attach">6</property>
+            <property name="top_attach">7</property>
           </packing>
         </child>
-
-
 
         <child>
           <object class="GtkToggleButton" id="retweet_button">
@@ -264,7 +281,7 @@
           </object>
           <packing>
             <property name="left_attach">4</property>
-            <property name="top_attach">6</property>
+            <property name="top_attach">7</property>
           </packing>
         </child>
 
@@ -294,10 +311,9 @@
           </object>
           <packing>
             <property name="left_attach">5</property>
-            <property name="top_attach">6</property>
+            <property name="top_attach">7</property>
           </packing>
         </child>
-
 
         <child>
           <object class="GtkButton" id="reply_button">
@@ -324,10 +340,9 @@
           </object>
           <packing>
             <property name="left_attach">6</property>
-            <property name="top_attach">6</property>
+            <property name="top_attach">7</property>
           </packing>
         </child>
-
 
         <child>
           <object class="GtkMenuButton">
@@ -357,22 +372,7 @@
           </object>
           <packing>
             <property name="left_attach">7</property>
-            <property name="top_attach">6</property>
-          </packing>
-        </child>
-
-
-        <child>
-          <object class="MultiMediaWidget" id="mm_widget">
-            <property name="visible">true</property>
-            <property name="margin_top">6</property>
-            <property name="margin_start">10</property>
-            <property name="margin_end">10</property>
-          </object>
-          <packing>
-            <property name="left_attach">0</property>
             <property name="top_attach">7</property>
-            <property name="width">8</property>
           </packing>
         </child>
 
@@ -384,6 +384,7 @@
             <property name="can_focus">False</property>
             <property name="selection_mode">none</property>
             <property name="spinner_size">16</property>
+            <property name="margin_top">6</property>
           </object>
           <packing>
             <property name="left_attach">0</property>

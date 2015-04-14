@@ -1,22 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2013 Ryan Lerch <ryanlerch@fedoraproject.org> -->
-<application>
- <id type="desktop">org.baedert.corebird.desktop</id>
- <summary>twitter client</summary>
-	<metadata_license>CC0-1.0</metadata_license> 
-	<description>
-  <_p>
+<component type="desktop">
+  <id>org.baedert.corebird.desktop</id>
+  <name>Corebird</name>
+  <summary>Twitter Client</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <description>
+    <_p>
    Corebird is a native GTK+ twitter client that provides vital features such as Direct Messages (DMs), tweet notifications, conversation views.
   </_p>
-  <_p>
-   Additional features include the abilty to change to the GTK+ dark theme, searching and media uploads.
+    <_p>
+   Additional features include local viewing of videos, multiple inline images, Lists, Filters, multiple accounts, etc.
   </_p>
- </description>
- <url type="homepage">http://corebird.baedert.org/</url>
- <screenshots>
-  <screenshot type="default" width="800" height="450">http://ryanlerch.org/corebird/corebird.png</screenshot>
-  <screenshot width="800" height="450">http://ryanlerch.org/corebird/corebird2.png</screenshot>
-  <screenshot width="800" height="450">http://ryanlerch.org/corebird/corebird3.png</screenshot>
- </screenshots>
- <updatecontact>ryanlerch@fedoraproject.org</updatecontact>
-</application>
+  </description>
+  <url type="homepage">http://corebird.baedert.org/</url>
+  <screenshots>
+    <screenshot height="450" width="800" type="default">
+      <image>http://corebird.baedert.org/corebird1.png</image>
+      <_caption>Generic timeline view when using Corebird</_caption>
+    </screenshot>
+    <screenshot height="450" width="800">
+      <image>http://corebird.baedert.org/corebird2.png</image>
+      <_caption>Typical Twitter profile.</_caption>
+    </screenshot>
+    <screenshot height="450" width="800">
+      <image>http://corebird.baedert.org/corebird3.png</image>
+      <_caption>Account settings like Name, Website, Description and Avatar can be configured.</_caption>
+    </screenshot>
+  </screenshots>
+  <update_contact>ryanlerch@fedoraproject.org</update_contact>
+
+  <project_license>GPL-3.0+</project_license>
+
+  <developer_name>Timm Bäder</developer_name>
+
+  <url type="bugtracker">https://github.com/baedert/corebird/issues</url>
+
+  <url type="donation">https://flattr.com/profile/baedert</url>
+
+  <!--<url type="help">[> http://www.homepage.com/docs/ <]</url>-->
+</component>
