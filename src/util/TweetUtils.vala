@@ -272,7 +272,6 @@ namespace TweetUtils {
 
   async WorkerResult work_array (Json.Array   json_array,
                                  uint         requested_tweet_count,
-                                 DeltaUpdater delta_updater,
                                  TweetListBox tweet_list,
                                  MainWindow   main_window,
                                  Account      account) {
@@ -316,19 +315,10 @@ namespace TweetUtils {
                                         tweet.screen_name,
                                         tweet.user_name);
 
-        // XXX Where to add the entry to the delta updater?
-        //delta_updater.add (entry);
-
-
+        if (account.filter_matches (tweet))
+          tweet.hidden_flags |= Tweet.HIDDEN_FILTERED;
 
         tweet_list.model.add (tweet);
-        // XXX Do we still need the GLib.Idle call?
-
-        /// XXX What to do about the following?
-        //if (account.filter_matches (entry.tweet))
-          //entry.hide ();
-        //else
-          //entry.show ();
 
         index ++;
         if (index == tweet_array.length) {

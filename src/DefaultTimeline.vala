@@ -26,7 +26,16 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   public int64 lowest_id                 { get; set; default = int64.MAX-2; }
   protected uint tweet_remove_timeout    { get; set; }
   protected int64 max_id                 { get; set; default = 0; }
-  public DeltaUpdater delta_updater      { get; set; }
+  private DeltaUpdater _delta_updater;
+  public DeltaUpdater delta_updater {
+    get {
+      return _delta_updater;
+    }
+    set {
+      this._delta_updater = value;
+      tweet_list.delta_updater = value;
+    }
+  }
   protected abstract string function     { get;      }
   protected bool loading = false;
   protected Gtk.Widget? last_focus_widget = null;
@@ -68,7 +77,6 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
 
   public virtual void on_join (int page_id, Bundle? args) {
     if (!initialized) {
-      load_cached ();
       load_newest ();
       account.user_stream.resumed.connect (stream_resumed_cb);
       initialized = true;
@@ -114,7 +122,6 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
       tweet_list.action_entry.toggle_mode ();
   }
 
-  public virtual void load_cached () {}
   public abstract void load_newest ();
   public abstract void load_older ();
   public abstract string? get_title ();
@@ -143,24 +150,14 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     if (tweet_remove_timeout != 0)
       return;
 
-    GLib.List<weak Gtk.Widget> entries = tweet_list.get_children ();
-    uint item_count = entries.length ();
-    if (item_count > ITimeline.REST) {
-      tweet_remove_timeout = GLib.Timeout.add (5000, () => {
+    if (tweet_list.model.get_n_items () > ITimeline.REST) {
+      tweet_remove_timeout = GLib.Timeout.add (500, () => {
         if (!scrolled_up) {
           tweet_remove_timeout = 0;
           return false;
         }
 
-        while (item_count > ITimeline.REST) {
-          Gtk.Widget? w = tweet_list.get_row_at_index (ITimeline.REST);
-          if (w == null || w.visible)
-            item_count --;
-
-          if (w != null)
-            tweet_list.remove (w);
-        }
-        tweet_remove_timeout = 0;
+        tweet_list.model.remove_last_n_visible (tweet_list.model.get_n_items () - ITimeline.REST);
         lowest_id = ((TweetListEntry)tweet_list.get_row_at_index (ITimeline.REST -1)).tweet.id;
         return false;
       });
@@ -208,44 +205,51 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
 
   /**
    * So, we don't want to display a retweet in the following situations:
-   *   - If the original tweet was a tweet by the authenticated user
-   *   - In any case, if the user follows the author of the tweet
-   *     (not the author of the retweet!), we already get the source
-   *     tweet by other means, so don't display it again.
-   *   - It's a retweet from the authenticating user itself
-   *   - If the tweet was retweeted by a user that is on the list of
-   *     users the authenticating user disabled RTs for.
-   *   - If the retweet is already in the timeline. There's no other
-   *     way of checking the case where 2 indipendend users retweet
-   *     the same tweet.
+   *   1) If the original tweet was a tweet by the authenticated user
+   *   2) In any case, if the user follows the author of the tweet
+   *      (not the author of the retweet!), we already get the source
+   *      tweet by other means, so don't display it again.
+   *   3) It's a retweet from the authenticating user itself
+   *   4) If the tweet was retweeted by a user that is on the list of
+   *      users the authenticating user disabled RTs for.
+   *   5) If the retweet is already in the timeline. There's no other
+   *      way of checking the case where 2 indipendend users retweet
+   *      the same tweet.
    */
-  protected bool should_display_retweet (Tweet t) {
+  protected uint get_rt_flags (Tweet t) {
+    uint flags = 0;
+
     /* First case */
     if (t.user_id == account.id)
-      return false;
+      flags |= Tweet.HIDDEN_FORCE;
 
     /*  Second case */
     if (account.follows_id (t.user_id))
-        return false;
+        flags |= Tweet.HIDDEN_RT_BY_FOLLOWEE;
 
     /* third case */
     if (t.rt_by_id == account.id)
-      return false;
+      flags |= Tweet.HIDDEN_FORCE;
 
     /* Fourth case */
     foreach (int64 id in account.disabled_rts)
-      if (id == t.rt_by_id)
-        return false;
+      if (id == t.rt_by_id) {
+        flags |= Tweet.HIDDEN_RTS_DISABLED;
+        break;
+      }
+
 
     /* Fifth case */
     foreach (Gtk.Widget w in tweet_list.get_children ()) {
       if (w is TweetListEntry) {
-        if (((TweetListEntry)w).tweet.rt_id == t.rt_id)
-          return false;
+        if (((TweetListEntry)w).tweet.rt_id == t.rt_id) {
+          flags |= Tweet.HIDDEN_FORCE;
+          break;
+        }
       }
     }
 
-    return true;
+    return flags;
   }
 
   protected void mark_seen (int64 id) {

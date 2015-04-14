@@ -15,14 +15,37 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 public class Tweet : GLib.Object {
   public static const int MAX_LENGTH = 140;
+
+  /** Force hiding (there's no way this flag will ever get flipped...)*/
+  public const uint HIDDEN_FORCE             = 1 << 0;
+  /** Hidden because we unfolled the author */
+  public const uint HIDDEN_UNFOLLOWED        = 1 << 1;
+  /** Hidden because one of the filters matched the tweet */
+  public const uint HIDDEN_FILTERED          = 1 << 2;
+  /** Hidden because RTs of the author are disabled */
+  public const uint HIDDEN_RTS_DISABLED      = 1 << 3;
+  /** Hidden because it's a RT by the authenticating user */
+  public const uint HIDDEN_RT_BY_USER        = 1 << 4;
+  public const uint HIDDEN_RT_BY_FOLLOWEE    = 1 << 5;
+  /** Hidden because the author is blocked */
+  public const uint HIDDEN_AUTHOR_BLOCKED    = 1 << 6;
+  /** Hidden because the author of a retweet is blocked */
+  public const uint HIDDEN_RETWEETER_BLOCKED = 1 << 7;
+
+  public uint hidden_flags = 0;
 
 #if DEBUG
   public string json_data;
 #endif
 
+  public bool is_hidden {
+    get {
+      return hidden_flags > 0;
+    }
+  }
+  public signal void hidden_flags_changed ();
 
   public int64 id;
   /** If this tweet is a retweet, this is its id */

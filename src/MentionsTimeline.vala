@@ -25,6 +25,7 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
   public MentionsTimeline(int id, Account account) {
     base (id);
     this.account = account;
+    this.tweet_list.account= account;
   }
 
   private void stream_message_received (StreamMessageType type, Json.Node root){
@@ -66,7 +67,7 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
       if (t.user_id == account.id)
         return;
 
-      if (t.is_retweet && !should_display_retweet (t))
+      if (t.is_retweet && get_rt_flags (t) > 0)
         return;
 
       if (account.filter_matches (t))

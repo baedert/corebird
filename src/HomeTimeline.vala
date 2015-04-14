@@ -47,10 +47,10 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
         toggle_favorite (id, false);
     } else if (type == StreamMessageType.EVENT_BLOCK) {
       int64 user_id = root.get_object ().get_object_member ("target").get_int_member ("id");
-      hide_tweets_from (user_id);
+      hide_tweets_from (user_id, Tweet.HIDDEN_AUTHOR_BLOCKED);
     } else if (type == StreamMessageType.EVENT_UNBLOCK) {
       int64 user_id = root.get_object ().get_object_member ("target").get_int_member ("id");
-      show_tweets_from (user_id);
+      show_tweets_from (user_id, Tweet.HIDDEN_AUTHOR_BLOCKED);
     }
   } // }}}
 
@@ -66,17 +66,22 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
 
 
     var entry = new TweetListEntry (t, main_window, account);
-    entry.visible = true;
 
-    if (t.is_retweet && !should_display_retweet (t))
-      entry.visible = false;
 
-    if (account.blocked_or_muted (t.user_id) ||
-        (t.is_retweet && account.blocked_or_muted (t.rt_by_id)))
-      entry.visible = false;
+
+
+    if (t.is_retweet)
+      t.hidden_flags |= get_rt_flags (t);
+
+    if (account.blocked_or_muted (t.user_id))
+      t.hidden_flags |= Tweet.HIDDEN_RETWEETER_BLOCKED;
+
+
+    if (t.is_retweet && account.blocked_or_muted (t.rt_by_id))
+      t.hidden_flags |= Tweet.HIDDEN_AUTHOR_BLOCKED;
 
     if (account.filter_matches (t))
-      entry.visible = false;
+      t.hidden_flags |= Tweet.HIDDEN_FILTERED;
 
     bool auto_scroll = Settings.auto_scroll_on_new_tweets ();
 
@@ -91,6 +96,9 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
     delta_updater.add (entry);
 
     bool should_focus = (tweet_list.get_first_visible_row ().is_focus && this.scrolled_up);
+
+    if (!t.is_hidden)
+      entry.show ();
 
     tweet_list.add(entry);
 
@@ -127,62 +135,56 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
   } // }}}
 
 
-  public void hide_tweets_from (int64 user_id) {
-    GLib.List<unowned Gtk.Widget> children = tweet_list.get_children ();
-    foreach (Gtk.Widget w in children) {
-      if (!(w is TweetListEntry))
-        continue;
+  public void hide_tweets_from (int64 user_id, uint reason) {
+    TweetModel tm = (TweetModel) tweet_list.model;
 
-      TweetListEntry tle = (TweetListEntry) w;
-      if (tle.tweet.user_id == user_id) {
-        tle.hide ();
-      } else if (tle.tweet.user_id == user_id &&
-                 tle.tweet.is_retweet) {
-        tle.show ();
+    for (uint i = 0, p = tm.get_n_items (); i < p; i ++) {
+      Tweet tweet = (Tweet) tm.get_object (i);
+
+      if (tweet.rt_by_id == user_id && tweet.is_retweet) {
+        tweet.hidden_flags |= reason;
+        tweet.hidden_flags_changed ();
       }
-
     }
   }
 
-  public void show_tweets_from (int64 user_id) {
-    GLib.List<unowned Gtk.Widget> children = tweet_list.get_children ();
-    foreach (Gtk.Widget w in children) {
-      if (!(w is TweetListEntry))
-        continue;
+  // XXX Move all of these in TweetModel?
+  public void show_tweets_from (int64 user_id, uint reason) {
+    TweetModel tm = (TweetModel) tweet_list.model;
 
-      TweetListEntry tle = (TweetListEntry) w;
-      if (tle.tweet.user_id == user_id && !tle.visible) {
-        tle.show ();
+    for (uint i = 0, p = tm.get_n_items (); i < p; i ++) {
+      Tweet tweet = (Tweet) tm.get_object (i);
+
+      if (tweet.rt_by_id == user_id && tweet.is_retweet) {
+        tweet.hidden_flags &= ~reason;
+        tweet.hidden_flags_changed ();
       }
-
     }
   }
 
-  public void hide_retweets_from (int64 user_id) {
-    GLib.List<unowned Gtk.Widget> children = tweet_list.get_children ();
-    foreach (Gtk.Widget w in children) {
-      if (!(w is TweetListEntry))
-        continue;
+  public void hide_retweets_from (int64 user_id, uint reason) {
+    TweetModel tm = (TweetModel) tweet_list.model;
 
-      TweetListEntry tle = (TweetListEntry) w;
-      if (tle.tweet.rt_by_id == user_id && tle.tweet.is_retweet) {
-        tle.hide ();
+    for (uint i = 0, p = tm.get_n_items (); i < p; i ++) {
+      Tweet tweet = (Tweet) tm.get_object (i);
+
+      if (tweet.rt_by_id == user_id && tweet.is_retweet) {
+        tweet.hidden_flags |= reason;
+        tweet.hidden_flags_changed ();
       }
-
     }
   }
 
-  public void show_retweets_from (int64 user_id) {
-    GLib.List<unowned Gtk.Widget> children = tweet_list.get_children ();
-    foreach (Gtk.Widget w in children) {
-      if (!(w is TweetListEntry))
-        continue;
+  public void show_retweets_from (int64 user_id, uint reason) {
+    TweetModel tm = (TweetModel) tweet_list.model;
 
-      TweetListEntry tle = (TweetListEntry) w;
-      if (tle.tweet.rt_by_id == user_id && tle.tweet.is_retweet && !tle.visible) {
-        tle.show ();
+    for (uint i = 0, p = tm.get_n_items (); i < p; i ++) {
+      Tweet tweet = (Tweet) tm.get_object (i);
+
+      if (tweet.rt_by_id == user_id && tweet.is_retweet) {
+        tweet.hidden_flags &= ~reason;
+        tweet.hidden_flags_changed ();
       }
-
     }
   }
 

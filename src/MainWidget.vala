@@ -110,6 +110,7 @@ public class MainWidget : Gtk.Box {
     ((DMPage)pages[Page.DM]).delta_updater = this.delta_updater;
     ((ProfilePage)pages[Page.PROFILE]).delta_updater = this.delta_updater;
     ((ListStatusesPage)pages[Page.LIST_STATUSES]).delta_updater = this.delta_updater;
+    ((TweetInfoPage)pages[Page.TWEET_INFO]).delta_updater = this.delta_updater;
 
     Settings.get ().bind ("sidebar-visible", sidebar_revealer, "reveal-child",
                           SettingsBindFlags.DEFAULT);
