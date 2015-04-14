@@ -19,9 +19,6 @@ void basic_tweet_order () {
 
   assert (tm.get_n_items () == 3);
 
-
-
-
   assert (((Tweet)tm.get_item (0)).id == 1000);
   assert (((Tweet)tm.get_item (1)).id == 100);
   assert (((Tweet)tm.get_item (2)).id == 10);

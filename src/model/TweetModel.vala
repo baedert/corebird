@@ -109,4 +109,17 @@ public class TweetModel : GLib.Object, GLib.ListModel {
     this.max_id = int64.MIN;
     this.items_changed (0, s, 0);
   }
+
+  public void toggle_flag_on_retweet (int64 user_id, uint reason, bool active) {
+    foreach (Tweet tweet in tweets) {
+      if (tweet.rt_by_id == user_id && tweet.is_retweet) {
+        if (active)
+          tweet.hidden_flags |= reason;
+        else
+          tweet.hidden_flags &= ~reason;
+
+        tweet.hidden_flags_changed ();
+      }
+    }
+  }
 }
