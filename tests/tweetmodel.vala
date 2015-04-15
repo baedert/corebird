@@ -95,6 +95,9 @@ void hide_rt () {
 
   assert (tm.get_n_items () == 1);
   assert (((Tweet)tm.get_item (0)).is_hidden);
+
+  tm.toggle_flag_on_retweet (100, Tweet.HIDDEN_FILTERED, false);
+  assert (!((Tweet)tm.get_item (0)).is_hidden);
 }
 
 
