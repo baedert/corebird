@@ -80,12 +80,31 @@ void clear () {
   assert (tm.get_n_items () == 0);
 }
 
+void hide_rt () {
+  var tm = new TweetModel ();
+
+  var t1 = new Tweet ();
+  t1.id = 1;
+  t1.user_id = 10;
+  t1.rt_by_id = 100;
+  t1.is_retweet = true;
+
+  tm.add (t1);
+
+  tm.toggle_flag_on_retweet (100, Tweet.HIDDEN_FILTERED, true);
+
+  assert (tm.get_n_items () == 1);
+  assert (((Tweet)tm.get_item (0)).is_hidden);
+}
+
+
 
 int main (string[] args) {
   GLib.Test.init (ref args);
   GLib.Test.add_func ("/tweetmodel/basic-tweet-order", basic_tweet_order);
   GLib.Test.add_func ("/tweetmodel/tweet-removal", tweet_removal);
   GLib.Test.add_func ("/tweetmodel/clear", clear);
+  GLib.Test.add_func ("/tweetmodel/hide-rt", hide_rt);
 
   return GLib.Test.run ();
 }
