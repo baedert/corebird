@@ -131,7 +131,7 @@ namespace TextTransform {
         }
 
         builder.append (">");
-        builder.append (entity.display_text);
+        builder.append (entity.display_text.replace ("&", "&amp;"));
 
 
         builder.append ("</a></span>");
