@@ -91,12 +91,14 @@ class TweetInfoPage : IPage , ScrollWidget {
       var bundle = new Bundle ();
       bundle.put_int ("mode", TweetInfoPage.BY_INSTANCE);
       bundle.put_object ("tweet", ((TweetListEntry)row).tweet);
+      bundle.put_bool ("existing", true);
       main_window.main_widget.switch_page (Page.TWEET_INFO, bundle);
     });
     top_list_box.row_activated.connect ((row) => {
       var bundle = new Bundle ();
       bundle.put_int ("mode", TweetInfoPage.BY_INSTANCE);
       bundle.put_object ("tweet", ((TweetListEntry)row).tweet);
+      bundle.put_bool ("existing", true);
       main_window.main_widget.switch_page (Page.TWEET_INFO, bundle);
     });
 
@@ -113,6 +115,23 @@ class TweetInfoPage : IPage , ScrollWidget {
 
     values_set = false;
 
+    bool existing = args.get_bool ("existing", false);
+
+
+    if (existing) {
+      // Only possible BY_INSTANCE
+      Tweet tweet = (Tweet) args.get_object ("tweet");
+      rearrange_tweets (tweet.id);
+    } else {
+      bottom_list_box.model.clear ();
+      bottom_list_box.hide ();
+      top_list_box.model.clear ();
+      top_list_box.hide ();
+    }
+
+
+
+
     if (mode == BY_INSTANCE) {
       Tweet tweet = (Tweet)args.get_object ("tweet");
 
@@ -128,17 +147,28 @@ class TweetInfoPage : IPage , ScrollWidget {
       this.tweet_id = args.get_int64 ("tweet_id");
       this.screen_name = args.get_string ("screen_name");
     }
-
-    bottom_list_box.model.clear ();
-    bottom_list_box.hide ();
-    top_list_box.model.clear ();
-    top_list_box.hide ();
     reply_indicator.replies_available = false;
     max_size_container.max_size = 0;
     max_size_container.queue_resize ();
 
 
-    query_tweet_info ();
+    query_tweet_info (existing);
+  }
+
+  private void rearrange_tweets (int64 new_id) {
+    assert (new_id != this.tweet_id);
+
+    if (top_list_box.model.contains_id (new_id)) {
+      // Move the current tweet down into bottom_list_box
+      message ("In top list box");
+      bottom_list_box.model.add (this.tweet);
+      bottom_list_box.show ();
+    } else if (bottom_list_box.model.contains_id (new_id)) {
+      // Remove all tweets above the new one from the bottom list box,
+      // add the direct successor to the top_list
+      message ("in bottom list box");
+    } else
+      error ("wtf");
   }
 
   public void on_leave () {}
@@ -203,7 +233,7 @@ class TweetInfoPage : IPage , ScrollWidget {
   /**
    * Loads the data of the tweet with the id tweet_id from the Twitter server.
    */
-  private void query_tweet_info () { //{{{
+  private void query_tweet_info (bool existing) { //{{{
 
     var now = new GLib.DateTime.now_local ();
     var call = account.proxy.new_call ();
@@ -224,7 +254,8 @@ class TweetInfoPage : IPage , ScrollWidget {
       with = "<span underline='none'>" + extract_source (with) + "</span>";
       set_tweet_data (tweet, with);
 
-      load_replied_to_tweet (tweet.reply_id);
+      if (!existing)
+        load_replied_to_tweet (tweet.reply_id);
 
       values_set = true;
     });
@@ -315,7 +346,6 @@ class TweetInfoPage : IPage , ScrollWidget {
       Tweet tweet = new Tweet ();
       tweet.load_from_json (parser.get_root (), new GLib.DateTime.now_local (), account);
       bottom_list_box.model.add (tweet);
-      //bottom_list_box.add (new TweetListEntry (tweet, main_window, account));
       load_replied_to_tweet (tweet.reply_id);
     });
   } //}}}
