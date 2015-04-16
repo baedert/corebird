@@ -119,4 +119,43 @@ public class TweetModel : GLib.Object, GLib.ListModel {
       }
     }
   }
+
+  public void toggle_flag_on_retweet (int64 user_id, uint reason, bool active) {
+    foreach (Tweet tweet in tweets) {
+      if (tweet.rt_by_id == user_id && tweet.is_retweet) {
+        if (active)
+          tweet.hidden_flags |= reason;
+        else
+          tweet.hidden_flags &= ~reason;
+
+        tweet.hidden_flags_changed ();
+      }
+    }
+  }
+
+  public bool contains_id (int64 tweet_id) {
+    foreach (Tweet t in tweets)
+      if (t.id == tweet_id)
+        return true;
+
+    return false;
+  }
+
+  public void remove_tweets_above (int64 id) {
+    while (tweets.get (0).id >= id) {
+      tweets.remove_at (0);
+      this.items_changed (0, 1, 0);
+    }
+  }
+
+  public Tweet? get_from_id (int64 id, int diff) {
+    for (int i = 0; i < tweets.size; i ++) {
+      if (tweets.get (i).id == id) {
+        if (i + diff < tweets.size && i + diff >= 0)
+          return tweets.get (i + diff);
+        return null;
+      }
+    }
+    return null;
+  }
 }

@@ -19,9 +19,6 @@ void basic_tweet_order () {
 
   assert (tm.get_n_items () == 3);
 
-
-
-
   assert (((Tweet)tm.get_item (0)).id == 1000);
   assert (((Tweet)tm.get_item (1)).id == 100);
   assert (((Tweet)tm.get_item (2)).id == 10);
@@ -132,6 +129,50 @@ void remove_own_retweet () {
   assert (tm.get_n_items () == 50);
 }
 
+void hide_rt () {
+  var tm = new TweetModel ();
+
+  var t1 = new Tweet ();
+  t1.id = 1;
+  t1.user_id = 10;
+  t1.rt_by_id = 100;
+  t1.is_retweet = true;
+
+  tm.add (t1);
+
+  tm.toggle_flag_on_retweet (100, Tweet.HIDDEN_FILTERED, true);
+
+  assert (tm.get_n_items () == 1);
+  assert (((Tweet)tm.get_item (0)).is_hidden);
+
+  tm.toggle_flag_on_retweet (100, Tweet.HIDDEN_FILTERED, false);
+  assert (!((Tweet)tm.get_item (0)).is_hidden);
+}
+
+
+void get_from_id () {
+  var tm = new TweetModel ();
+
+  var t1 = new Tweet ();
+  t1.id = 10;
+
+  var t2 = new Tweet ();
+  t2.id = 100;
+
+  tm.add (t1);
+  tm.add (t2);
+
+  assert (((Tweet)tm.get_item (0)).id == 100);
+  assert (((Tweet)tm.get_item (1)).id == 10);
+
+  var result = tm.get_from_id (10, -1);
+
+  assert (result != null);
+  assert (result.id == 100);
+
+}
+
+
 int main (string[] args) {
   GLib.Test.init (ref args);
   GLib.Test.add_func ("/tweetmodel/basic-tweet-order", basic_tweet_order);
@@ -139,6 +180,8 @@ int main (string[] args) {
   GLib.Test.add_func ("/tweetmodel/clear", clear);
   GLib.Test.add_func ("/tweetmodel/remove", remove_tweet);
   GLib.Test.add_func ("/tweetmodel/remove-own-retweet", remove_own_retweet);
+  GLib.Test.add_func ("/tweetmodel/hide-rt", hide_rt);
+  GLib.Test.add_func ("/tweetmodel/get-from-id", get_from_id);
 
   return GLib.Test.run ();
 }

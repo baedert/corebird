@@ -186,18 +186,20 @@ public class Account : GLib.Object {
 
     Json.Array desc_urls = root.get_object_member ("entities").get_object_member ("description")
                                                               .get_array_member ("urls");
-    GLib.SList<TweetUtils.Sequence?> urls = new GLib.SList<TweetUtils.Sequence?> ();
+    var urls = new TextEntity[desc_urls.get_length ()];
     desc_urls.foreach_element ((arr, index, node) => {
       Json.Object obj = node.get_object ();
       Json.Array indices = obj.get_array_member ("indices");
-      urls.prepend (TweetUtils.Sequence () {
-        start = (int)indices.get_int_element (0),
-        end   = (int)indices.get_int_element (1),
-        visual_display_url = false,
-        url   = obj.get_string_member ("expanded_url")
-      });
+      urls[index] = TextEntity () {
+        from = (int)indices.get_int_element (0),
+        to   = (int)indices.get_int_element (1),
+        display_text = obj.get_string_member ("expanded_url"),
+        target = null
+      };
     });
-    this.description = TweetUtils.get_real_text (root.get_string_member ("description"), urls);
+    this.description = TextTransform.transform (root.get_string_member ("description"),
+                                                urls,
+                                                TransformFlags.EXPAND_LINKS);
 
 
     if (root.has_member ("profile_banner_url"))

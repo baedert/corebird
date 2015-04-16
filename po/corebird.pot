@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-17 15:59+0100\n"
+"POT-Creation-Date: 2015-04-01 17:28+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -149,23 +149,23 @@ msgstr[1] ""
 msgid "Home"
 msgstr ""
 
-#: ../src/DMThreadsPage.vala:360
+#: ../src/DMThreadsPage.vala:359
 #, c-format
 msgid "%d new Message from %s"
 msgid_plural "%d new Messages from %s"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/DMThreadsPage.vala:366
+#: ../src/DMThreadsPage.vala:365
 #, c-format
 msgid "New direct message from %s"
 msgstr ""
 
-#: ../src/DMThreadsPage.vala:381 ../src/DMThreadsPage.vala:395
+#: ../src/DMThreadsPage.vala:380 ../src/DMThreadsPage.vala:394
 msgid "Direct Messages"
 msgstr ""
 
-#: ../src/list/DMThreadEntry.vala:97
+#: ../src/list/DMThreadEntry.vala:106
 #, c-format
 msgid "(%d unread)"
 msgid_plural "(%d unread)"
@@ -177,11 +177,11 @@ msgstr[1] ""
 msgid "Lists"
 msgstr ""
 
-#: ../src/ProfilePage.vala:298
+#: ../src/ProfilePage.vala:300
 msgid "Protected profile"
 msgstr ""
 
-#: ../src/ProfilePage.vala:475
+#: ../src/ProfilePage.vala:477
 #, c-format
 msgid "Tweet to @%s"
 msgstr ""
@@ -243,7 +243,7 @@ msgstr ""
 msgid "Mentions"
 msgstr ""
 
-#: ../src/DMPage.vala:257
+#: ../src/DMPage.vala:270
 msgid "Direct Conversation"
 msgstr ""
 
@@ -286,71 +286,84 @@ msgid "Settings"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:2
-msgid "Round Avatars"
-msgstr ""
-
-#: ../ui/settings-dialog.ui.h:3
 msgid "Maximum media size"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:4
+#: ../ui/settings-dialog.ui.h:3
 msgid "MB"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:5
+#: ../ui/settings-dialog.ui.h:4
 msgid "Auto scroll on new tweets"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:6
+#: ../ui/settings-dialog.ui.h:5
 msgid "Double-click activation"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:7
+#: ../ui/settings-dialog.ui.h:6
 msgid "Interface"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:8
+#: ../ui/settings-dialog.ui.h:7
 msgid "On New Tweets"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:9
+#: ../ui/settings-dialog.ui.h:8
 msgid "Actions"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:10
+#: ../ui/settings-dialog.ui.h:9
 msgid "On New Mentions"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:11
+#: ../ui/settings-dialog.ui.h:10
 msgid "On New Messages"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:12
+#: ../ui/settings-dialog.ui.h:11
 msgid "Never"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:13
+#: ../ui/settings-dialog.ui.h:12
 msgid "Every"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:14
+#: ../ui/settings-dialog.ui.h:13
 msgid "Stack 5"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:15
+#: ../ui/settings-dialog.ui.h:14
 msgid "Stack 10"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:16
+#: ../ui/settings-dialog.ui.h:15
 msgid "Stack 25"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:17
+#: ../ui/settings-dialog.ui.h:16
 msgid "Stack 50"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:18
+#: ../ui/settings-dialog.ui.h:17
 msgid "Notifications"
+msgstr ""
+
+#: ../ui/settings-dialog.ui.h:18
+msgid "Round avatars"
+msgstr ""
+
+#: ../ui/settings-dialog.ui.h:19
+msgid "Remove trailing hashtags"
+msgstr ""
+
+#: ../ui/settings-dialog.ui.h:20
+msgid "Remove media links"
+msgstr ""
+
+#: ../ui/settings-dialog.ui.h:21 ../ui/search-page.ui.h:2
+#: ../ui/profile-page.ui.h:6
+msgid "Tweets"
 msgstr ""
 
 #: ../ui/menu.ui.h:2
@@ -421,10 +434,6 @@ msgstr ""
 
 #: ../ui/new-list-entry.ui.h:3
 msgid "Create"
-msgstr ""
-
-#: ../ui/search-page.ui.h:2 ../ui/profile-page.ui.h:6
-msgid "Tweets"
 msgstr ""
 
 #: ../ui/search-page.ui.h:3 ../ui/filter-page.ui.h:1
@@ -599,8 +608,22 @@ msgstr ""
 
 #: ../data/org.baedert.corebird.appdata.xml.in.h:2
 msgid ""
-"Additional features include the abilty to change to the GTK+ dark theme, "
-"searching and media uploads."
+"Additional features include local viewing of videos, multiple inline images, "
+"Lists, Filters, multiple accounts, etc."
+msgstr ""
+
+#: ../data/org.baedert.corebird.appdata.xml.in.h:3
+msgid "Generic timeline view when using Corebird"
+msgstr ""
+
+#: ../data/org.baedert.corebird.appdata.xml.in.h:4
+msgid "Typical Twitter profile."
+msgstr ""
+
+#: ../data/org.baedert.corebird.appdata.xml.in.h:5
+msgid ""
+"Account settings like Name, Website, Description and Avatar can be "
+"configured."
 msgstr ""
 
 #: ../data/org.baedert.corebird.desktop.in.in.h:1

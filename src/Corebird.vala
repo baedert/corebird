@@ -28,7 +28,7 @@ public class Corebird : Gtk.Application {
     {"show-settings",     show_settings_activated         },
     {"quit",              quit_application                },
     {"show-about-dialog", about_activated                 },
-    {"show-dm-thread",    show_dm_thread,          "(sx)" },
+    {"show-dm-thread",    show_dm_thread,          "(xx)" },
     {"mark-seen",         mark_seen,               "(sx)" },
     {"show-window",       show_window,             "x"    }
   };
@@ -86,7 +86,7 @@ public class Corebird : Gtk.Application {
     /* We don't set the settings dialog transient to
        any window because we already save its size */
     var dialog = new SettingsDialog (this);
-    dialog.show_all ();
+    dialog.show ();
   }
 
   private void about_activated () {
@@ -176,9 +176,6 @@ public class Corebird : Gtk.Application {
     if (gtk_s.gtk_decoration_layout.contains ("menu")) {
       gtk_s.gtk_decoration_layout = gtk_s.gtk_decoration_layout.replace ("menu", "");
     }
-
-
-
 
   } // }}}
 

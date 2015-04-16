@@ -80,7 +80,16 @@ class DMThreadEntry : Gtk.ListBoxRow {
     owned get { return avatar_image.pixbuf; }
   }
 
-  public int unread_count = 0;
+  private int _unread_count = 0;
+  public int unread_count {
+    get {
+      return this._unread_count;
+    }
+    set {
+      this._unread_count = value;
+      this.update_unread_count ();
+    }
+  }
   public string? notification_id = null;
 
 
@@ -89,7 +98,7 @@ class DMThreadEntry : Gtk.ListBoxRow {
     update_unread_count ();
   }
 
-  public void update_unread_count () {
+  private void update_unread_count () {
     if (unread_count == 0)
       unread_count_label.hide ();
     else {

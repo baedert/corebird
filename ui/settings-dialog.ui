@@ -7,6 +7,7 @@
     <property name="page_increment">1</property>
   </object>
   <object class="GtkStackSwitcher" id="custom_title">
+    <property name="visible">true</property>
     <property name="stack">main_stack</property>
   </object>
   <template class="SettingsDialog" parent="GtkWindow">
@@ -19,6 +20,7 @@
 
     <child type="titlebar">
       <object class="GtkHeaderBar" id="header_bar">
+        <property name="visible">true</property>
         <property name="title" translatable="yes">Settings</property>
         <property name="custom_title">custom_title</property>
         <property name="show_close_button">true</property>
@@ -26,6 +28,7 @@
     </child>
     <child>
       <object class="GtkStack" id="main_stack">
+        <property name="visible">true</property>
         <!-- Interface page -->
         <child>
           <object class="GtkGrid" id="interface_grid">
@@ -55,41 +58,6 @@
           </child>
 
           <child>
-            <object class="GtkLabel" id="round_avatar_label">
-              <property name="visible">True</property>
-              <property name="can_focus">False</property>
-              <property name="halign">end</property>
-              <property name="hexpand">True</property>
-              <property name="label" translatable="yes">Round Avatars</property>
-              <accessibility>
-                <relation type="label-for" target="round_avatar_switch"/>
-              </accessibility>
-            </object>
-            <packing>
-              <property name="left_attach">0</property>
-              <property name="top_attach">3</property>
-              <property name="width">2</property>
-              <property name="height">1</property>
-            </packing>
-          </child>
-          <child>
-            <object class="GtkSwitch" id="round_avatar_switch">
-              <property name="visible">True</property>
-              <property name="can_focus">True</property>
-              <property name="halign">start</property>
-              <property name="hexpand">True</property>
-              <accessibility>
-                <relation type="labelled-by" target="round_avatar_label"/>
-              </accessibility>
-            </object>
-            <packing>
-              <property name="left_attach">2</property>
-              <property name="top_attach">3</property>
-              <property name="width">2</property>
-              <property name="height">1</property>
-            </packing>
-          </child>
-          <child>
             <object class="GtkLabel" id="max_media_size_label">
               <property name="visible">True</property>
               <property name="can_focus">False</property>
@@ -102,7 +70,7 @@
             </object>
             <packing>
               <property name="left_attach">0</property>
-              <property name="top_attach">4</property>
+              <property name="top_attach">3</property>
               <property name="width">2</property>
               <property name="height">1</property>
             </packing>
@@ -110,6 +78,7 @@
 
           <child>
             <object class="GtkBox">
+              <property name="visible">true</property>
               <property name="orientation">horizontal</property>
               <property name="spacing">6</property>
               <child>
@@ -142,7 +111,7 @@
             </object>
             <packing>
               <property name="left_attach">2</property>
-              <property name="top_attach">4</property>
+              <property name="top_attach">3</property>
             </packing>
           </child>
           <child>
@@ -158,7 +127,7 @@
             </object>
             <packing>
               <property name="left_attach">0</property>
-              <property name="top_attach">5</property>
+              <property name="top_attach">4</property>
               <property name="width">2</property>
               <property name="height">1</property>
             </packing>
@@ -175,7 +144,7 @@
             </object>
             <packing>
               <property name="left_attach">2</property>
-              <property name="top_attach">5</property>
+              <property name="top_attach">4</property>
               <property name="width">2</property>
               <property name="height">1</property>
             </packing>
@@ -193,7 +162,7 @@
             </object>
             <packing>
               <property name="left_attach">0</property>
-              <property name="top_attach">6</property>
+              <property name="top_attach">5</property>
               <property name="width">2</property>
             </packing>
           </child>
@@ -209,7 +178,7 @@
             </object>
             <packing>
               <property name="left_attach">2</property>
-              <property name="top_attach">6</property>
+              <property name="top_attach">5</property>
               <property name="width">2</property>
             </packing>
           </child>
@@ -222,7 +191,6 @@
           <property name="name">interface</property>
         </packing>
       </child>
-
 
         <!-- Notification page -->
         <child>
@@ -363,6 +331,117 @@
           <packing>
             <property name="title" translatable="yes">Notifications</property>
             <property name="name">notifications</property>
+          </packing>
+        </child>
+
+        <!-- Tweets page -->
+        <child>
+          <object class="GtkGrid">
+            <property name="visible">true</property>
+            <property name="column_homogeneous">true</property>
+            <property name="column_spacing">12</property>
+            <property name="row_spacing">6</property>
+            <property name="margin_bottom">18</property>
+
+            <child>
+              <object class="GtkListBox" id="sample_tweet_list">
+                <property name="visible">true</property>
+                <property name="selection_mode">none</property>
+                <property name="margin_bottom">12</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">0</property>
+                <property name="width">2</property>
+              </packing>
+            </child>
+
+
+            <child>
+              <object class="GtkLabel" id="round_avatar_label">
+                <property name="visible">true</property>
+                <property name="label" translatable="yes">Round avatars</property>
+                <property name="halign">end</property>
+                <accessibility>
+                  <relation type="label-for" target="round_avatar_switch"/>
+                </accessibility>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">1</property>
+              </packing>
+            </child>
+
+            <child>
+              <object class="GtkSwitch" id="round_avatar_switch">
+                <property name="visible">true</property>
+                <property name="halign">start</property>
+                <accessibility>
+                  <relation type="labelled-by" target="round_avatar_label"/>
+                </accessibility>
+
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">1</property>
+              </packing>
+            </child>
+
+
+
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">true</property>
+                <property name="label" translatable="yes">Remove trailing hashtags</property>
+                <property name="halign">end</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">2</property>
+              </packing>
+            </child>
+
+            <child>
+              <object class="GtkSwitch" id="remove_trailing_hashtags_switch">
+                <property name="visible">true</property>
+                <property name="halign">start</property>
+                <signal name="notify::active" handler="remove_trailing_hashtags_cb" />
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">2</property>
+              </packing>
+            </child>
+
+
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">true</property>
+                <property name="label" translatable="yes">Remove media links</property>
+                <property name="halign">end</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">3</property>
+              </packing>
+            </child>
+
+            <child>
+              <object class="GtkSwitch" id="remove_media_links_switch">
+                <property name="visible">true</property>
+                <property name="halign">start</property>
+                <signal name="notify::active" handler="remove_media_links_cb" />
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">3</property>
+              </packing>
+            </child>
+
+          </object>
+          <packing>
+            <property name="title" translatable="yes">Tweets</property>
+            <property name="name">tweet</property>
           </packing>
         </child>
       </object>

@@ -91,12 +91,14 @@ class TweetInfoPage : IPage , ScrollWidget {
       var bundle = new Bundle ();
       bundle.put_int ("mode", TweetInfoPage.BY_INSTANCE);
       bundle.put_object ("tweet", ((TweetListEntry)row).tweet);
+      bundle.put_bool ("existing", true);
       main_window.main_widget.switch_page (Page.TWEET_INFO, bundle);
     });
     top_list_box.row_activated.connect ((row) => {
       var bundle = new Bundle ();
       bundle.put_int ("mode", TweetInfoPage.BY_INSTANCE);
       bundle.put_object ("tweet", ((TweetListEntry)row).tweet);
+      bundle.put_bool ("existing", true);
       main_window.main_widget.switch_page (Page.TWEET_INFO, bundle);
     });
 
@@ -112,6 +114,24 @@ class TweetInfoPage : IPage , ScrollWidget {
       return;
 
     values_set = false;
+
+    bool existing = args.get_bool ("existing", false);
+
+    reply_indicator.replies_available = false;
+    max_size_container.max_size = 0;
+    max_size_container.queue_resize ();
+
+
+    if (existing) {
+      // Only possible BY_INSTANCE
+      Tweet tweet = (Tweet) args.get_object ("tweet");
+      rearrange_tweets (tweet.id);
+    } else {
+      bottom_list_box.model.clear ();
+      bottom_list_box.hide ();
+      top_list_box.model.clear ();
+      top_list_box.hide ();
+    }
 
     if (mode == BY_INSTANCE) {
       Tweet tweet = (Tweet)args.get_object ("tweet");
@@ -129,16 +149,36 @@ class TweetInfoPage : IPage , ScrollWidget {
       this.screen_name = args.get_string ("screen_name");
     }
 
-    bottom_list_box.model.clear ();
-    bottom_list_box.hide ();
-    top_list_box.model.clear ();
-    top_list_box.hide ();
-    reply_indicator.replies_available = false;
-    max_size_container.max_size = 0;
-    max_size_container.queue_resize ();
 
+    query_tweet_info (existing);
+  }
 
-    query_tweet_info ();
+  private void rearrange_tweets (int64 new_id) {
+    assert (new_id != this.tweet_id);
+
+    if (top_list_box.model.contains_id (new_id)) {
+      // Move the current tweet down into bottom_list_box
+      bottom_list_box.model.add (this.tweet);
+      bottom_list_box.show ();
+      top_list_box.model.clear ();
+      top_list_box.hide ();
+    } else if (bottom_list_box.model.contains_id (new_id)) {
+      // Remove all tweets above the new one from the bottom list box,
+      // add the direct successor to the top_list
+      top_list_box.model.clear ();
+      top_list_box.show ();
+      var t = bottom_list_box.model.get_from_id (new_id, -1);
+      if (t != null) {
+        top_list_box.model.add (t);
+      } else {
+        top_list_box.model.add (this.tweet);
+      }
+
+      reply_indicator.replies_available = true;
+
+      bottom_list_box.model.remove_tweets_above (new_id);
+    } else
+      error ("wtf");
   }
 
   public void on_leave () {}
@@ -150,8 +190,16 @@ class TweetInfoPage : IPage , ScrollWidget {
       return;
 
     favorite_button.sensitive = false;
+
+    if (favorite_button.active)
+      this.tweet.favorite_count ++;
+    else
+      this.tweet.favorite_count --;
+
+    this.update_rt_fav_labels ();
+
     TweetUtils.toggle_favorite_tweet.begin (account, tweet, !favorite_button.active, () => {
-        favorite_button.sensitive = true;
+      favorite_button.sensitive = true;
     });
   }
 
@@ -159,7 +207,14 @@ class TweetInfoPage : IPage , ScrollWidget {
   private void retweet_button_toggled_cb () {
     if (!values_set)
       return;
+
     retweet_button.sensitive = false;
+    if (retweet_button.active)
+      this.tweet.retweet_count ++;
+    else
+      this.tweet.retweet_count --;
+    this.update_rt_fav_labels ();
+
     TweetUtils.toggle_retweet_tweet.begin (account, tweet, !retweet_button.active, () => {
       retweet_button.sensitive = true;
     });
@@ -188,7 +243,7 @@ class TweetInfoPage : IPage , ScrollWidget {
   /**
    * Loads the data of the tweet with the id tweet_id from the Twitter server.
    */
-  private void query_tweet_info () { //{{{
+  private void query_tweet_info (bool existing) { //{{{
 
     var now = new GLib.DateTime.now_local ();
     var call = account.proxy.new_call ();
@@ -209,13 +264,12 @@ class TweetInfoPage : IPage , ScrollWidget {
       with = "<span underline='none'>" + extract_source (with) + "</span>";
       set_tweet_data (tweet, with);
 
-      load_replied_to_tweet (tweet.reply_id);
+      if (!existing)
+        load_replied_to_tweet (tweet.reply_id);
 
       values_set = true;
     });
 
-
-    //
     var reply_call = account.proxy.new_call ();
     reply_call.set_method ("GET");
     reply_call.set_function ("1.1/search/tweets.json");
@@ -253,8 +307,8 @@ class TweetInfoPage : IPage , ScrollWidget {
         top_list_box.show ();
         reply_indicator.replies_available = true;
       } else {
-        top_list_box.hide ();
-        reply_indicator.replies_available = false;
+        //top_list_box.hide ();
+        //reply_indicator.replies_available = false;
       }
 
     });
@@ -300,7 +354,6 @@ class TweetInfoPage : IPage , ScrollWidget {
       Tweet tweet = new Tweet ();
       tweet.load_from_json (parser.get_root (), new GLib.DateTime.now_local (), account);
       bottom_list_box.model.add (tweet);
-      //bottom_list_box.add (new TweetListEntry (tweet, main_window, account));
       load_replied_to_tweet (tweet.reply_id);
     });
   } //}}}
@@ -320,8 +373,7 @@ class TweetInfoPage : IPage , ScrollWidget {
     name_button.label = tweet.user_name;
     screen_name_label.label = "@" + tweet.screen_name;
     avatar_image.pixbuf = tweet.avatar;
-    rt_label.label = "<big><b>%'d</b></big> %s".printf (tweet.retweet_count, _("Retweets"));
-    fav_label.label = "<big><b>%'d</b></big> %s".printf (tweet.favorite_count, _("Favorites"));
+    update_rt_fav_labels ();
     time_label.label = time_format;
     retweet_button.active = tweet.retweeted;
     favorite_button.active = tweet.favorited;
@@ -342,6 +394,11 @@ class TweetInfoPage : IPage , ScrollWidget {
       retweet_button.show ();
     }
   } //}}}
+
+  private void update_rt_fav_labels () {
+    rt_label.label = "<big><b>%'d</b></big> %s".printf (tweet.retweet_count, _("Retweets"));
+    fav_label.label = "<big><b>%'d</b></big> %s".printf (tweet.favorite_count, _("Favorites"));
+  }
 
   private void set_source_link (int64 id, string screen_name) {
     var link = "https://twitter.com/%s/status/%s".printf (screen_name,

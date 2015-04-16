@@ -62,6 +62,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     set {
       mm_widget.sensitive = !value;
       name_button.read_only = value;
+      this._read_only = value;
     }
   }
   public new bool visible {
@@ -108,7 +109,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   [Signal (action = true)]
   private signal void delete_tweet ();
 
-  public TweetListEntry (owned Tweet tweet, MainWindow? window, Account account){
+  public TweetListEntry (owned Tweet tweet, MainWindow? window, Account account) {
     this.account = account;
     this.tweet = tweet;
     this.window = window;
@@ -183,6 +184,10 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       rt_status_image.show ();
 
     values_set = true;
+
+    Settings.get ().changed["text-transform-flags"].connect ((key) => {
+      text_label.label = tweet.get_trimmed_text ();
+    });
   }
 
   private void favorited_cb () {
@@ -321,11 +326,14 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
   [GtkCallback]
   private bool link_activated_cb (string uri) {
+    if (this._read_only) {
+      return false;
+    }
     return TweetUtils.activate_link (uri, window);
   }
 
   private void media_invalid_cb () {
-    this.text_label.set_label (tweet.get_formatted_text ());
+    this.text_label.set_label ("INVALID MEDIA");
   }
 
   private void hidden_flags_changed_cb () {
