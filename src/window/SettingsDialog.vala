@@ -112,6 +112,7 @@ class SettingsDialog : Gtk.Window {
                                                   new Account (10, "", ""));
     sample_tweet_entry.activatable = false;
     sample_tweet_entry.read_only = true;
+    sample_tweet_entry.show ();
     this.sample_tweet_list.add (sample_tweet_entry);
     // }}}
 
