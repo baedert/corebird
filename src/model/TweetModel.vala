@@ -122,4 +122,12 @@ public class TweetModel : GLib.Object, GLib.ListModel {
       }
     }
   }
+
+  public bool contains_id (int64 tweet_id) {
+    foreach (Tweet t in tweets)
+      if (t.id == tweet_id)
+        return true;
+
+    return false;
+  }
 }
