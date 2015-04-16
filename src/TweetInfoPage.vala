@@ -129,9 +129,6 @@ class TweetInfoPage : IPage , ScrollWidget {
       top_list_box.hide ();
     }
 
-
-
-
     if (mode == BY_INSTANCE) {
       Tweet tweet = (Tweet)args.get_object ("tweet");
 
@@ -160,13 +157,16 @@ class TweetInfoPage : IPage , ScrollWidget {
 
     if (top_list_box.model.contains_id (new_id)) {
       // Move the current tweet down into bottom_list_box
-      message ("In top list box");
       bottom_list_box.model.add (this.tweet);
       bottom_list_box.show ();
+      top_list_box.model.clear ();
+      top_list_box.hide ();
     } else if (bottom_list_box.model.contains_id (new_id)) {
       // Remove all tweets above the new one from the bottom list box,
       // add the direct successor to the top_list
-      message ("in bottom list box");
+      top_list_box.model.clear ();
+      top_list_box.hide ();
+      bottom_list_box.model.remove_tweets_above (new_id);
     } else
       error ("wtf");
   }
