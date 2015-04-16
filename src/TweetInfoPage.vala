@@ -260,8 +260,6 @@ class TweetInfoPage : IPage , ScrollWidget {
       values_set = true;
     });
 
-
-    //
     var reply_call = account.proxy.new_call ();
     reply_call.set_method ("GET");
     reply_call.set_function ("1.1/search/tweets.json");
