@@ -141,7 +141,7 @@ public class TweetModel : GLib.Object, GLib.ListModel {
   public Tweet? get_from_id (int64 id, int diff) {
     for (int i = 0; i < tweets.size; i ++) {
       if (tweets.get (i).id == id) {
-        if (i + diff < tweets.size)
+        if (i + diff < tweets.size && i + diff >= 0)
           return tweets.get (i + diff);
         return null;
       }
