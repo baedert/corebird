@@ -30,8 +30,8 @@ AM_CONDITIONAL([DISABLE_VIDEO], [ test "$disable_video" = "yes"])
 
 
 # Vala Packages {{{
-pkg_modules="gtk+-3.0 >= 3.14
-             glib-2.0 >= 2.40
+pkg_modules="gtk+-3.0 >= 3.16
+             glib-2.0 >= 2.44
              rest-0.7
              libsoup-2.4
              gee-0.8
