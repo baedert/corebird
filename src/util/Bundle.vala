@@ -82,8 +82,12 @@ public class Bundle : GLib.Object {
     values.insert (key, v);
   }
 
-  public bool get_bool (string key) {
-    return this.values.get (key).get_boolean ();
+  public bool get_bool (string key, bool default) {
+    var v = this.values.get (key);
+    if (v != null)
+      return v.get_boolean ();
+
+    return default;
   }
 
   public GLib.Value? get_value (string key) {

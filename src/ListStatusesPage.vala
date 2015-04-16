@@ -121,7 +121,7 @@ class ListStatusesPage : ScrollWidget, IPage {
 
     string? list_name = args.get_string ("name");
     if (list_name != null) {
-      bool user_list = args.get_bool ("user_list");
+      bool user_list = args.get_bool ("user_list", false);
       string description = args.get_string ("description");
       string creator = args.get_string ("creator");
       int n_subscribers = args.get_int ("n_subscribers");
