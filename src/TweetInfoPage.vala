@@ -117,6 +117,10 @@ class TweetInfoPage : IPage , ScrollWidget {
 
     bool existing = args.get_bool ("existing", false);
 
+    reply_indicator.replies_available = false;
+    max_size_container.max_size = 0;
+    max_size_container.queue_resize ();
+
 
     if (existing) {
       // Only possible BY_INSTANCE
@@ -144,9 +148,6 @@ class TweetInfoPage : IPage , ScrollWidget {
       this.tweet_id = args.get_int64 ("tweet_id");
       this.screen_name = args.get_string ("screen_name");
     }
-    reply_indicator.replies_available = false;
-    max_size_container.max_size = 0;
-    max_size_container.queue_resize ();
 
 
     query_tweet_info (existing);
@@ -165,7 +166,16 @@ class TweetInfoPage : IPage , ScrollWidget {
       // Remove all tweets above the new one from the bottom list box,
       // add the direct successor to the top_list
       top_list_box.model.clear ();
-      top_list_box.hide ();
+      top_list_box.show ();
+      var t = bottom_list_box.model.get_from_id (new_id, -1);
+      if (t != null) {
+        top_list_box.model.add (t);
+      } else {
+        top_list_box.model.add (this.tweet);
+      }
+
+      reply_indicator.replies_available = true;
+
       bottom_list_box.model.remove_tweets_above (new_id);
     } else
       error ("wtf");
@@ -297,8 +307,8 @@ class TweetInfoPage : IPage , ScrollWidget {
         top_list_box.show ();
         reply_indicator.replies_available = true;
       } else {
-        top_list_box.hide ();
-        reply_indicator.replies_available = false;
+        //top_list_box.hide ();
+        //reply_indicator.replies_available = false;
       }
 
     });
