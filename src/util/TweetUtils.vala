@@ -247,8 +247,6 @@ namespace TweetUtils {
     } else if (uri.has_prefix ("https://twitter.com/")) {
       // XXX https://twitter.com/baedert/status/321423423423
       string[] parts = uri.split ("/");
-      foreach (string s in parts)
-        message (s);
       if (parts[4] == "status") {
         /* Treat it as a tweet link and hope it'll work out */
         int64 tweet_id = int64.parse (parts[5]);
