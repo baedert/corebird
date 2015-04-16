@@ -101,6 +101,29 @@ void hide_rt () {
 }
 
 
+void get_from_id () {
+  var tm = new TweetModel ();
+
+  var t1 = new Tweet ();
+  t1.id = 10;
+
+  var t2 = new Tweet ();
+  t2.id = 100;
+
+  tm.add (t1);
+  tm.add (t2);
+
+  assert (((Tweet)tm.get_item (0)).id == 100);
+  assert (((Tweet)tm.get_item (1)).id == 10);
+
+  var result = tm.get_from_id (10, -1);
+
+  assert (result != null);
+  assert (result.id == 100);
+
+}
+
+
 
 int main (string[] args) {
   GLib.Test.init (ref args);
@@ -108,6 +131,7 @@ int main (string[] args) {
   GLib.Test.add_func ("/tweetmodel/tweet-removal", tweet_removal);
   GLib.Test.add_func ("/tweetmodel/clear", clear);
   GLib.Test.add_func ("/tweetmodel/hide-rt", hide_rt);
+  GLib.Test.add_func ("/tweetmodel/get-from-id", get_from_id);
 
   return GLib.Test.run ();
 }
