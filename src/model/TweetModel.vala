@@ -137,4 +137,15 @@ public class TweetModel : GLib.Object, GLib.ListModel {
       this.items_changed (0, 1, 0);
     }
   }
+
+  public Tweet? get_from_id (int64 id, int diff) {
+    for (int i = 0; i < tweets.size; i ++) {
+      if (tweets.get (i).id == id) {
+        if (i + diff < tweets.size)
+          return tweets.get (i + diff);
+        return null;
+      }
+    }
+    return null;
+  }
 }
