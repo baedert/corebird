@@ -48,9 +48,9 @@ class TweetInfoPage : IPage , ScrollWidget {
   [GtkChild]
   private Gtk.Label fav_label;
   [GtkChild]
-  private Gtk.ListBox bottom_list_box;
+  private TweetListBox bottom_list_box;
   [GtkChild]
-  private Gtk.ListBox top_list_box;
+  private TweetListBox top_list_box;
   [GtkChild]
   private Gtk.ToggleButton favorite_button;
   [GtkChild]
@@ -119,9 +119,9 @@ class TweetInfoPage : IPage , ScrollWidget {
       this.screen_name = args.get_string ("screen_name");
     }
 
-    bottom_list_box.foreach ((w) => {bottom_list_box.remove (w);});
+    bottom_list_box.remove_all ();
     bottom_list_box.hide ();
-    top_list_box.foreach ((w) => {top_list_box.remove (w);});
+    top_list_box.remove_all ();
     top_list_box.hide ();
     reply_indicator.replies_available = false;
     max_size_container.max_size = 0;
@@ -149,7 +149,7 @@ class TweetInfoPage : IPage , ScrollWidget {
     this.update_rt_fav_labels ();
 
     TweetUtils.toggle_favorite_tweet.begin (account, tweet, !favorite_button.active, () => {
-        favorite_button.sensitive = true;
+      favorite_button.sensitive = true;
     });
   }
 

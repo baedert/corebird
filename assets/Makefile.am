@@ -1,2 +1,2 @@
-iconprefix=$(prefix)/share/icons/hicolor/
+iconprefix=$(datarootdir)/icons/hicolor/
 SUBDIRS = 128x128 96x96 64x64 48x48 32x32 24x24 16x16
