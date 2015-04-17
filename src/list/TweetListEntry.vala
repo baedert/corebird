@@ -333,7 +333,12 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   }
 
   private void media_invalid_cb () {
-    this.text_label.set_label ("INVALID MEDIA");
+    TransformFlags flags = Settings.get_text_transform_flags ()
+                           & ~TransformFlags.REMOVE_MEDIA_LINKS;
+    this.text_label.set_label (TextTransform.transform (tweet.text,
+                                                        tweet.urls,
+                                                        flags,
+                                                        tweet.medias.length));
   }
 
   private void hidden_flags_changed_cb () {
