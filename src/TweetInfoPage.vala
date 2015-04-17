@@ -283,6 +283,11 @@ class TweetInfoPage : IPage , ScrollWidget {
         return;
 
       var statuses_node = root.get_object ().get_array_member ("statuses");
+      int64 previous_tweet_id = -1;
+      if (top_list_box.model.get_n_items () > 0) {
+        assert (top_list_box.model.get_n_items () == 1);
+        previous_tweet_id = ((Tweet)(top_list_box.model.get_item (0))).id;
+      }
       int n_replies = 0;
       statuses_node.foreach_element ((arr, index, node) => {
         if (n_replies >= 5)
@@ -299,8 +304,10 @@ class TweetInfoPage : IPage , ScrollWidget {
 
         Tweet t = new Tweet ();
         t.load_from_json (node, now, account);
-        top_list_box.model.add (t);
-        n_replies ++;
+        if (t.id != previous_tweet_id) {
+          top_list_box.model.add (t);
+          n_replies ++;
+        }
       });
 
       if (n_replies > 0) {
