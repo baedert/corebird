@@ -41,6 +41,19 @@ class CompletionTextView : Gtk.TextView {
     var style_context = this.get_style_context ();
     Gdk.RGBA link_color = style_context.get_color (Gtk.StateFlags.LINK);
 
+    if (link_color.red ==   1.0 &&
+        link_color.green == 1.0 &&
+        link_color.blue ==  1.0 &&
+        link_color.alpha == 1.0) {
+      /* Unset, fall back to Adwaita's default */
+      link_color = {
+        0.16470,
+        0.462735,
+        0.77647,
+        1.0
+      };
+    }
+
     this.buffer.create_tag ("link",
                             "foreground_rgba",
                             link_color, null);
