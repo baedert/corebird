@@ -325,6 +325,10 @@ class TweetInfoPage : IPage , ScrollWidget {
     name_button.label = tweet.user_name;
     screen_name_label.label = "@" + tweet.screen_name;
     avatar_image.pixbuf = tweet.avatar;
+    tweet.notify["avatar"].connect (() => {
+      avatar_image.pixbuf = tweet.avatar;
+      avatar_image.queue_draw ();
+    });
     update_rt_fav_labels ();
     time_label.label = time_format;
     retweet_button.active = tweet.retweeted;
