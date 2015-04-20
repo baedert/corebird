@@ -23,6 +23,8 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     {"delete", delete_activated}
   };
 
+  private const int64 TRANSITION_DURATION = 200;
+
   [GtkChild]
   private Gtk.Label screen_name_label;
   [GtkChild]
@@ -358,5 +360,38 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       stack.visible_child = action_box;
       this.activatable = false;
     }
+  }
+
+
+  private int64 start_time;
+  private int64 end_time;
+
+  private double ease_out_cubic (double t) {
+    double p = t - 1;
+    return p * p * p +1;
+  }
+
+  private bool anim_tick (Gtk.Widget widget, Gdk.FrameClock frame_clock) {
+    int64 now = frame_clock.get_frame_time ();
+
+    if (now > end_time) {
+      this.opacity = 1.0;
+      return false;
+    }
+
+    double t = (now - start_time) / (double)(end_time - start_time);
+
+    t = ease_out_cubic (t);
+
+    this.opacity = t;
+
+    return true;
+  }
+
+  public override void map () {
+    this.start_time = this.get_frame_clock ().get_frame_time ();
+    this.end_time = start_time + (TRANSITION_DURATION * 1000);
+    this.add_tick_callback (anim_tick);
+    base.map ();
   }
 }
