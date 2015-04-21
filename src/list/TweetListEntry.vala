@@ -388,10 +388,10 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     return true;
   }
 
-  public override void map () {
+  public void fade_in () {
+    this.show ();
     this.start_time = this.get_frame_clock ().get_frame_time ();
     this.end_time = start_time + (TRANSITION_DURATION * 1000);
     this.add_tick_callback (anim_tick);
-    base.map ();
   }
 }

@@ -320,7 +320,7 @@ namespace TweetUtils {
         if (account.filter_matches (entry.tweet))
           entry.hide ();
         else
-          entry.show ();
+          entry.fade_in ();
 
         index ++;
         if (index == tweet_array.length) {
