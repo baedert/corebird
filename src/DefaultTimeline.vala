@@ -127,8 +127,10 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   public abstract string? get_title ();
 
   public override void destroy () {
-    if (tweet_remove_timeout > 0)
+    if (tweet_remove_timeout > 0) {
       GLib.Source.remove (tweet_remove_timeout);
+      tweet_remove_timeout = 0;
+    }
   }
 
   public virtual void create_tool_button(Gtk.RadioButton? group){}
