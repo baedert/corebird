@@ -78,19 +78,6 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   public int64 sort_factor {
     get { return tweet.created_at;}
   }
-  private bool _seen = true;
-  public bool seen {
-    get {
-      return _seen;
-    }
-    set {
-      _seen = value;
-      if (value && notification_id != null) {
-        NotificationManager.withdraw (this.notification_id);
-        this.notification_id = null;
-      }
-    }
-  }
   public bool shows_actions {
     get {
       return stack.visible_child == action_box;

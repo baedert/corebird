@@ -78,7 +78,7 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
 
       this.balance_next_upper_change (TOP);
       var entry = new TweetListEntry(t, main_window, account);
-      entry.seen = false;
+      //entry.seen = false; XXX
 
       delta_updater.add (entry);
       tweet_list.add (entry);
