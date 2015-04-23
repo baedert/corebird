@@ -59,11 +59,6 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
     Tweet t = new Tweet();
     t.load_from_json (obj, now, account);
 
-    if (t.id <= this.max_id) {
-      warning ("Tweet with ID %s already seen.", t.id.to_string ());
-      return;
-    }
-
     if (t.is_retweet)
       t.hidden_flags |= get_rt_flags (t);
 

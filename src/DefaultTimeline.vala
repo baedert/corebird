@@ -39,9 +39,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   protected TweetListBox tweet_list      { set; get; default=new TweetListBox ();}
   public unowned Account account         { get; set; }
   protected BadgeRadioToolButton tool_button;
-  public int64 lowest_id                 { get; set; default = int64.MAX-2; }
   protected uint tweet_remove_timeout    { get; set; }
-  protected int64 max_id                 { get; set; default = 0; }
   private DeltaUpdater _delta_updater;
   public DeltaUpdater delta_updater {
     get {
@@ -169,7 +167,6 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
         }
 
         tweet_list.model.remove_last_n_visible (tweet_list.model.get_n_items () - ITimeline.REST);
-        lowest_id = tweet_list.model.lowest_id;
         return false;
       });
     } else if (tweet_remove_timeout != 0) {
@@ -294,7 +291,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     call.set_function (this.function);
     call.set_method ("GET");
     call.add_param ("count", "1");
-    call.add_param ("since_id", (this.max_id + 1).to_string ());
+    call.add_param ("since_id", (this.tweet_list.model.greatest_id + 1).to_string ());
     call.add_param ("trim_user", "true");
     call.add_param ("contributor_details", "false");
     call.add_param ("include_entities", "false");

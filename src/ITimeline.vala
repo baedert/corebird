@@ -23,8 +23,6 @@
 public interface ITimeline : Gtk.Widget, IPage {
   public static const int REST = 25;
   /** The lowest id of any tweet in this timeline */
-  protected abstract int64 lowest_id            {get; set;}
-  protected abstract int64 max_id               {get; set; default = 0;}
   protected abstract TweetListBox tweet_list    {get; set;}
   public    abstract int unread_count           {get; set;}
   public    abstract DeltaUpdater delta_updater {get; set;}
@@ -43,7 +41,7 @@ public interface ITimeline : Gtk.Widget, IPage {
     call.add_param ("count", requested_tweet_count.to_string ());
     call.add_param ("contributor_details", "true");
     call.add_param ("include_my_retweet", "true");
-    call.add_param ("max_id", (lowest_id - 1).to_string ());
+    call.add_param ("max_id", (tweet_list.model.lowest_id - 1).to_string ());
 
     Json.Node? root_node = yield TweetUtils.load_threaded (call);
     if (root_node == null) {
@@ -57,17 +55,11 @@ public interface ITimeline : Gtk.Widget, IPage {
       tweet_list.set_empty ();
       return;
     }
-    var res = yield TweetUtils.work_array (root,
-                                           requested_tweet_count,
-                                           tweet_list,
-                                           main_window,
-                                           account);
-
-    if (res.min_id < this.lowest_id)
-      this.lowest_id = res.min_id;
-
-    if (res.max_id > this.max_id)
-      this.max_id = res.max_id;
+    yield TweetUtils.work_array (root,
+                                 requested_tweet_count,
+                                 tweet_list,
+                                 main_window,
+                                 account);
   } //}}}
 
   /**
@@ -81,7 +73,7 @@ public interface ITimeline : Gtk.Widget, IPage {
     call.set_method ("GET");
     call.add_param ("count", requested_tweet_count.to_string ());
     call.add_param ("include_my_retweet", "true");
-    call.add_param ("max_id", (lowest_id - 1).to_string ());
+    call.add_param ("max_id", (tweet_list.model.lowest_id - 1).to_string ());
 
     Json.Node? root_node = yield TweetUtils.load_threaded (call);
     if (root_node == null) {
@@ -92,13 +84,11 @@ public interface ITimeline : Gtk.Widget, IPage {
       tweet_list.set_empty ();
       return;
     }
-    var res = yield TweetUtils.work_array (root,
-                                           requested_tweet_count,
-                                           tweet_list,
-                                           main_window,
-                                           account);
-    if (res.min_id < lowest_id)
-      lowest_id = res.min_id;
+    yield TweetUtils.work_array (root,
+                                 requested_tweet_count,
+                                 tweet_list,
+                                 main_window,
+                                 account);
   } ///}}}
 
   /**
