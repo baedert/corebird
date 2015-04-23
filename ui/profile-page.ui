@@ -30,7 +30,6 @@
 
   <template class="ProfilePage" parent="ScrollWidget">
     <property name="can_focus">True</property>
-    <property name="vscrollbar_policy">always</property>
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>
