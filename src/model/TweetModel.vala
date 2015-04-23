@@ -142,7 +142,8 @@ public class TweetModel : GLib.Object, GLib.ListModel {
   }
 
   public void remove_tweets_above (int64 id) {
-    while (tweets.get (0).id >= id) {
+    while (tweets.size > 0 &&
+           tweets.get (0).id >= id) {
       tweets.remove_at (0);
       this.items_changed (0, 1, 0);
     }
