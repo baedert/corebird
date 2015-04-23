@@ -160,7 +160,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
         }
 
         tweet_list.model.remove_last_n_visible (tweet_list.model.get_n_items () - ITimeline.REST);
-        lowest_id = ((TweetListEntry)tweet_list.get_row_at_index (ITimeline.REST -1)).tweet.id;
+        lowest_id = tweet_list.model.lowest_id;
         return false;
       });
     } else if (tweet_remove_timeout != 0) {
