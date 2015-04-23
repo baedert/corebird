@@ -84,7 +84,7 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
       tweet_list.add (entry);
 
       base.scroll_up (t);
-      base.postprocess_tweet (entry);
+      //base.postprocess_tweet (entry); XXX
 
       if (Settings.notify_new_mentions ()) {
         entry.notification_id = send_notification (t.screen_name, t.id, Utils.unescape_html (t.text));
