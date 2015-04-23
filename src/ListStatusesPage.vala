@@ -175,11 +175,11 @@ class ListStatusesPage : ScrollWidget, IPage {
       tweet_list.set_empty ();
       return;
     }
-    var res = yield TweetUtils.work_array (root_array,
-                                           requested_tweet_count,
-                                           tweet_list,
-                                           main_window,
-                                           account);
+    yield TweetUtils.work_array (root_array,
+                                 requested_tweet_count,
+                                 tweet_list,
+                                 main_window,
+                                 account);
   } // }}}
 
   private async void load_older () { // {{{
@@ -200,11 +200,11 @@ class ListStatusesPage : ScrollWidget, IPage {
       return;
 
     var root_array = root.get_array ();
-    var res = yield TweetUtils.work_array (root_array,
-                                           requested_tweet_count,
-                                           tweet_list,
-                                           main_window,
-                                           account);
+    yield TweetUtils.work_array (root_array,
+                                 requested_tweet_count,
+                                 tweet_list,
+                                 main_window,
+                                 account);
     loading = false;
   } // }}}
 
