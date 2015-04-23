@@ -25,6 +25,11 @@ public class TweetModel : GLib.Object, GLib.ListModel {
       return min_id;
     }
   }
+  public int64 greatest_id {
+    get {
+      return max_id;
+    }
+  }
 
 
   public GLib.Type get_item_type () {
