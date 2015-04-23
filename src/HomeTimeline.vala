@@ -64,12 +64,6 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
       return;
     }
 
-
-    var entry = new TweetListEntry (t, main_window, account);
-
-
-
-
     if (t.is_retweet)
       t.hidden_flags |= get_rt_flags (t);
 
@@ -87,31 +81,30 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
 
     this.balance_next_upper_change (TOP);
 
-    entry.seen =  t.user_id == account.id ||
-                  t.rt_by_id == account.id ||
-                  (this.scrolled_up  &&
-                   main_window.cur_page_id == this.id &&
-                   auto_scroll);
-
-    delta_updater.add (entry);
+    t.seen =  t.user_id == account.id ||
+              t.rt_by_id == account.id ||
+              (this.scrolled_up  &&
+               main_window.cur_page_id == this.id &&
+               auto_scroll);
 
     bool should_focus = (tweet_list.get_first_visible_row ().is_focus && this.scrolled_up);
 
-    if (!t.is_hidden)
-      entry.show ();
+    tweet_list.model.add (t);
 
-    tweet_list.add(entry);
+    if (should_focus) {
+      tweet_list.get_first_visible_row ().grab_focus ();
+    }
 
-    if (should_focus)
-      entry.grab_focus ();
-
-    if (entry.visible)
+    if (!t.is_hidden) {
       base.scroll_up (t);
 
+      if (!t.seen)
+        this.unread_count ++;
+    }
 
-    base.postprocess_tweet (entry);
 
     // We never show any notifications if auto-scroll-on-new-tweet is enabled
+
     int stack_size = Settings.get_tweet_stack_count ();
     if (t.user_id == account.id || auto_scroll)
       return;
