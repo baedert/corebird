@@ -56,8 +56,10 @@ public class DeltaUpdater : GLib.Object {
   }
 
   ~DeltaUpdater() {
-    GLib.Source.remove (minutely_id);
-    GLib.Source.remove (hourly_id);
+    if (minutely_id != 0)
+      GLib.Source.remove (minutely_id);
+    if (hourly_id != 0)
+      GLib.Source.remove (hourly_id);
   }
 
 
