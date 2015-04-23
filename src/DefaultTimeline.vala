@@ -15,10 +15,26 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*
+  XXX We are tracking min_id and max_id here AGAIN, even though we already
+  do that in TweetModel. We are still adding raw Widgets in HomeTimeline
+  because we need to scroll down, so the values in our TweetModel aren't always
+  100% correct.
+ */
 public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   protected bool initialized = false;
   public int id                          { get; set; }
-  public int unread_count                { get; set; }
+  private int _unread_count = 0;
+  public int unread_count {
+    private set {
+      _unread_count = value;
+      tool_button.show_badge = (_unread_count > 0);
+      tool_button.queue_draw();
+    }
+    get {
+      return this._unread_count;
+    }
+  }
   public unowned MainWindow main_window  { set; get; }
   protected TweetListBox tweet_list      { set; get; default=new TweetListBox ();}
   public unowned Account account         { get; set; }
@@ -52,7 +68,6 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     });
     this.vadjustment.notify["value"].connect (() => {
       mark_seen_on_scroll (vadjustment.value);
-      update_unread_count ();
     });
 
 
@@ -83,9 +98,8 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     }
 
     if (Settings.auto_scroll_on_new_tweets ()) {
-      this.unread_count = 0;
+      this._unread_count = 0;
       mark_seen (-1);
-      update_unread_count ();
     }
 
     if (last_focus_widget != null) {
@@ -139,11 +153,6 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     return tool_button;
   }
 
-
-  protected void update_unread_count() {
-    tool_button.show_badge = (unread_count > 0);
-    tool_button.queue_draw();
-  }
   /**
    * Handle the case of the user scrolling to the start of the list,
    * i.e. remove all the items except a few ones after a timeout.
@@ -178,8 +187,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
       if (tle.tweet.id == tweet_id) {
         if (!tle.seen) {
           tweet_list.remove (tle);
-          unread_count --;
-          update_unread_count ();
+          this.unread_count --;
         }else
           tle.sensitive = false;
         return;
@@ -262,8 +270,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
       var tle = (TweetListEntry) w;
       if (tle.tweet.id == id || id == -1) {
         if (!tle.seen) {
-          unread_count--;
-          update_unread_count ();
+          this.unread_count--;
         }
         tle.seen = true;
         break;
@@ -283,14 +290,9 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
 
   protected void postprocess_tweet (TweetListEntry tle) {
     var t = tle.tweet;
-    if (t.id < lowest_id)
-      lowest_id = t.id;
-    else if (t.id > max_id)
-      max_id = t.id;
 
     if (!tle.seen && tle.visible) {
       this.unread_count ++;
-      this.update_unread_count ();
     }
   }
 
@@ -330,8 +332,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
       if (root_arr.get_length () > 0) {
         tweet_list.remove_all ();
         lowest_id = int64.MAX - 2;
-        unread_count = 0;
-        update_unread_count ();
+        _unread_count = 0;
         load_newest ();
       }
 
