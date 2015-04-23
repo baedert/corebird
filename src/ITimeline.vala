@@ -110,15 +110,19 @@ public interface ITimeline : Gtk.Widget, IPage {
     if (unread_count == 0)
       return;
 
+    // We HAVE to use widgets here.
     tweet_list.forall_internal (false, (w) => {
-      ITwitterItem tle = (ITwitterItem)w;
-      if (tle.seen)
+      if (!(w is TweetListEntry))
+        return;
+
+      var tle = (TweetListEntry)w;
+      if (tle.tweet.seen)
         return;
 
       Gtk.Allocation alloc;
       tle.get_allocation (out alloc);
       if (alloc.y + (alloc.height / 2.0) >= value) {
-        tle.seen = true;
+        tle.tweet.seen = true;
         unread_count--;
       }
     });
