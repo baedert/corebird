@@ -27,8 +27,6 @@ class ListStatusesPage : ScrollWidget, IPage {
     }
   }
   private int64 list_id;
-  private int64 lowest_id = int64.MAX;
-  private int64 max_id = 0;
   private uint tweet_remove_timeout = 0;
   [GtkChild]
   private TweetListBox tweet_list;
@@ -182,11 +180,6 @@ class ListStatusesPage : ScrollWidget, IPage {
                                            tweet_list,
                                            main_window,
                                            account);
-    if (res.max_id > max_id)
-      max_id = res.max_id;
-
-    if (res.min_id < lowest_id)
-      lowest_id = res.min_id;
   } // }}}
 
   private async void load_older () { // {{{
@@ -199,7 +192,7 @@ class ListStatusesPage : ScrollWidget, IPage {
     call.set_function ("1.1/lists/statuses.json");
     call.set_method ("GET");
     call.add_param ("list_id", list_id.to_string ());
-    call.add_param ("max_id", (lowest_id -1).to_string ());
+    call.add_param ("max_id", (tweet_list.model.lowest_id -1).to_string ());
     call.add_param ("count", requested_tweet_count.to_string ());
 
     Json.Node? root = yield TweetUtils.load_threaded (call);
@@ -212,12 +205,6 @@ class ListStatusesPage : ScrollWidget, IPage {
                                            tweet_list,
                                            main_window,
                                            account);
-    if (res.max_id > max_id)
-      max_id = res.max_id;
-
-    if (res.min_id < lowest_id)
-      lowest_id = res.min_id;
-
     loading = false;
   } // }}}
 
@@ -320,17 +307,11 @@ class ListStatusesPage : ScrollWidget, IPage {
   }
 
   private async void load_newer () {
-    if (max_id == 0) {
-      yield load_newest ();
-      return;
-    }
-
     var call = account.proxy.new_call ();
     call.set_function ("1.1/lists/statuses.json");
     call.set_method ("GET");
     call.add_param ("list_id", list_id.to_string ());
-    call.add_param ("since_id", max_id.to_string ());
-    message (@"Using max_id $max_id");
+    call.add_param ("since_id", tweet_list.model.greatest_id.to_string ());
     try {
       yield call.invoke_async (null);
     } catch (GLib.Error e) {
@@ -351,9 +332,6 @@ class ListStatusesPage : ScrollWidget, IPage {
     root_arr.foreach_element ((array, index, node) => {
       Tweet t = new Tweet ();
       t.load_from_json (node, now, account);
-
-      if (t.id > max_id)
-        max_id = t.id;
 
       TweetListEntry entry = new TweetListEntry (t, main_window, account);
       entry.show_all ();
@@ -379,7 +357,6 @@ class ListStatusesPage : ScrollWidget, IPage {
           item_count--;
         }
         tweet_remove_timeout = 0;
-        lowest_id = ((TweetListEntry)tweet_list.get_row_at_index (ITimeline.REST -1)).tweet.id;
         return false;
       });
     } else if (tweet_remove_timeout != 0) {
