@@ -84,6 +84,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     });
     tweet_list.retry_button_clicked.connect (() => {
       tweet_list.model.clear ();
+      tweet_list.remove_progress_entry ();
       this.load_newest ();
     });
 
@@ -302,6 +303,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
         tweet_list.model.clear ();
+        tweet_list.remove_progress_entry ();
         load_newest ();
         warning (e.message);
         return;
@@ -312,6 +314,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
         parser.load_from_data (call.get_payload ());
       } catch (GLib.Error e) {
         tweet_list.model.clear ();
+        tweet_list.remove_progress_entry ();
         load_newest ();
         warning (e.message);
         return;
@@ -320,6 +323,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
       var root_arr = parser.get_root ().get_array ();
       if (root_arr.get_length () > 0) {
         tweet_list.model.clear ();
+        tweet_list.remove_progress_entry ();
         unread_count = 0;
         load_newest ();
       }
