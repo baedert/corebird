@@ -26,7 +26,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   public int id                          { get; set; }
   private int _unread_count = 0;
   public int unread_count {
-    private set {
+    set {
       _unread_count = value;
       tool_button.show_badge = (_unread_count > 0);
       tool_button.queue_draw();
@@ -59,7 +59,6 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
 
   public DefaultTimeline (int id) {
     this.id = id;
-    this.vscrollbar_policy = Gtk.PolicyType.ALWAYS;
     this.scrolled_to_start.connect(handle_scrolled_to_start);
     this.scrolled_to_end.connect(() => {
       if (!loading) {
@@ -185,7 +184,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
 
       var tle = (TweetListEntry) w;
       if (tle.tweet.id == tweet_id) {
-        if (!tle.seen) {
+        if (!tle.tweet.seen) {
           tweet_list.remove (tle);
           this.unread_count --;
         }else
@@ -269,10 +268,10 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
 
       var tle = (TweetListEntry) w;
       if (tle.tweet.id == id || id == -1) {
-        if (!tle.seen) {
+        if (!tle.tweet.seen) {
           this.unread_count--;
         }
-        tle.seen = true;
+        tle.tweet.seen = true;
         break;
       }
     }
@@ -286,14 +285,6 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
                            main_window.cur_page_id != this.id);
     }
 
-  }
-
-  protected void postprocess_tweet (TweetListEntry tle) {
-    var t = tle.tweet;
-
-    if (!tle.seen && tle.visible) {
-      this.unread_count ++;
-    }
   }
 
   private void stream_resumed_cb () {
