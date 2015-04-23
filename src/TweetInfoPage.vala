@@ -16,7 +16,7 @@
  */
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/tweet-info-page.ui")]
-class TweetInfoPage : IPage , ScrollWidget {
+class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
   public static const int BY_INSTANCE = 1;
   public static const int BY_ID       = 2;
 
@@ -456,5 +456,24 @@ class TweetInfoPage : IPage , ScrollWidget {
   public void create_tool_button (Gtk.RadioButton? group) {}
   public Gtk.RadioButton? get_tool_button () {
     return null;
+  }
+
+  public void stream_message_received (StreamMessageType type,
+                                       Json.Node         root) {
+    if (type != StreamMessageType.TWEET)
+      return;
+
+    Json.Object root_obj = root.get_object ();
+    if (Utils.usable_json_value (root_obj, "in_reply_to_status_id")) {
+      int64 reply_id = root_obj.get_int_member ("in_reply_to_status_id");
+
+      if (reply_id == this.tweet_id) {
+        Tweet t = new Tweet ();
+        t.load_from_json (root, new GLib.DateTime.now_local (), this.account);
+        top_list_box.model.add (t);
+        top_list_box.show ();
+        this.reply_indicator.replies_available = true;
+      }
+    }
   }
 }
