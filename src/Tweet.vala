@@ -72,6 +72,20 @@ public class Tweet : GLib.Object {
   /** If the user retweeted this tweet */
   public int64 my_retweet;
   public bool protected;
+  public string? notification_id = null;
+  private bool _seen = true;
+  public bool seen {
+    get {
+      return _seen;
+    }
+    set {
+      _seen = value;
+      if (value && notification_id != null) {
+        NotificationManager.withdraw (this.notification_id);
+        this.notification_id = null;
+      }
+    }
+  }
 
   /** if 0, this tweet is NOT part of a conversation */
   public int64 reply_id = 0;
