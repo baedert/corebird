@@ -263,18 +263,11 @@ namespace TweetUtils {
   }
 
 
-  struct WorkerResult {
-    int64 max_id;
-    int64 min_id;
-  }
-
-  async WorkerResult work_array (Json.Array   json_array,
-                                 uint         requested_tweet_count,
-                                 TweetListBox tweet_list,
-                                 MainWindow   main_window,
-                                 Account      account) {
-    int64 max = 0;
-    int64 min = int64.MAX;
+  async void work_array (Json.Array   json_array,
+                         uint         requested_tweet_count,
+                         TweetListBox tweet_list,
+                         MainWindow   main_window,
+                         Account      account) {
     new Thread<void*> ("TweetWorker", () => {
       Tweet[] tweet_array = new Tweet[json_array.get_length ()];
 
@@ -293,11 +286,6 @@ namespace TweetUtils {
       json_array.foreach_element ((array, index, node) => {
         Tweet t = new Tweet ();
         t.load_from_json (node, now, account);
-        if (t.id > max)
-          max = t.id;
-
-        if (t.id < min)
-          min = t.id;
 
         tweet_array[index] = t;
       });
@@ -334,7 +322,6 @@ namespace TweetUtils {
       return null;
     });
     yield;
-    return {max, min};
   }
 
 
