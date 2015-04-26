@@ -126,39 +126,25 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
   public void hide_tweets_from (int64 user_id, uint reason) {
     TweetModel tm = (TweetModel) tweet_list.model;
 
-    tm.toggle_flag_on_retweet (user_id, reason, true);
+    tm.toggle_flag_on_tweet (user_id, reason, true);
   }
 
   public void show_tweets_from (int64 user_id, uint reason) {
     TweetModel tm = (TweetModel) tweet_list.model;
 
-    tm.toggle_flag_on_retweet (user_id, reason, false);
+    tm.toggle_flag_on_tweet (user_id, reason, false);
   }
 
   public void hide_retweets_from (int64 user_id, uint reason) {
     TweetModel tm = (TweetModel) tweet_list.model;
 
-    for (uint i = 0, p = tm.get_n_items (); i < p; i ++) {
-      Tweet tweet = (Tweet) tm.get_object (i);
-
-      if (tweet.rt_by_id == user_id && tweet.is_retweet) {
-        tweet.hidden_flags |= reason;
-        tweet.hidden_flags_changed ();
-      }
-    }
+    tm.toggle_flag_on_retweet (user_id, reason, true);
   }
 
   public void show_retweets_from (int64 user_id, uint reason) {
     TweetModel tm = (TweetModel) tweet_list.model;
 
-    for (uint i = 0, p = tm.get_n_items (); i < p; i ++) {
-      Tweet tweet = (Tweet) tm.get_object (i);
-
-      if (tweet.rt_by_id == user_id && tweet.is_retweet) {
-        tweet.hidden_flags &= ~reason;
-        tweet.hidden_flags_changed ();
-      }
-    }
+    tm.toggle_flag_on_retweet (user_id, reason, false);
   }
 
   public override string? get_title () {
