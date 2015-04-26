@@ -403,4 +403,11 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     this.end_time = start_time + (TRANSITION_DURATION * 1000);
     this.add_tick_callback (anim_tick);
   }
+
+  public override void show () {
+    if (tweet.is_hidden)
+      return;
+
+    base.show ();
+  }
 }

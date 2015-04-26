@@ -16,6 +16,7 @@
   <template class="TweetListEntry" parent="GtkListBoxRow">
     <property name="visible">True</property>
     <property name="can_focus">True</property>
+    <property name="no_show_all">true</property>
     <style>
       <class name="tweet"/>
     </style>
