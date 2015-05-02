@@ -18,7 +18,6 @@
 public class TweetListBox : Gtk.ListBox {
   private Gtk.Stack placeholder;
   private Gtk.Label no_entries_label;
-  private ProgressEntry progress_entry;
 
   private Gtk.Box error_box;
   private Gtk.Label error_label;
@@ -53,7 +52,6 @@ public class TweetListBox : Gtk.ListBox {
 
   construct {
     add_placeholder ();
-    progress_entry = new ProgressEntry ();
     this.get_style_context ().add_class ("stream");
     this.set_selection_mode (Gtk.SelectionMode.NONE);
     this.button_press_event.connect (button_press_cb);
@@ -169,19 +167,6 @@ public class TweetListBox : Gtk.ListBox {
     this.foreach ((w) => {
       remove (w);
     });
-  }
-
-  public void add_progress_entry () {
-    if (progress_entry.parent == null) {
-      progress_entry.show_all ();
-      this.add (progress_entry);
-    }
-  }
-
-  public void remove_progress_entry () {
-    if (progress_entry.parent != null) {
-      this.remove (progress_entry);
-    }
   }
 
   public Gtk.Widget? get_first_visible_row () {

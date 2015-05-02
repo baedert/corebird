@@ -264,7 +264,7 @@ namespace TweetUtils {
 
 
   async void work_array (Json.Array   json_array,
-                         uint         requested_tweet_count,
+                         uint         requested_tweet_count, /* XXX Unused */
                          TweetListBox tweet_list,
                          MainWindow   main_window,
                          Account      account) {
@@ -275,7 +275,6 @@ namespace TweetUtils {
          need to do all the later stuff */
       if (tweet_array.length == 0) {
         GLib.Idle.add (() => {
-          tweet_list.remove_progress_entry ();
           work_array.callback ();
           return false;
         });
@@ -308,12 +307,6 @@ namespace TweetUtils {
 
         index ++;
         if (index == tweet_array.length) {
-          if (tweet_array.length < requested_tweet_count - 5) {
-            debug ("Removing progress entry. Requested: %u, Got: %d", requested_tweet_count,
-                                                                      tweet_array.length);
-            tweet_list.remove_progress_entry ();
-          } else
-            tweet_list.add_progress_entry ();
           work_array.callback ();
           return false;
         }
