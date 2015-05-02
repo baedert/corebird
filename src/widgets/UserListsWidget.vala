@@ -242,6 +242,7 @@ class UserListsWidget : Gtk.Box {
       lists[i].name = lle.name;
       lists[i].description = lle.description;
       lists[i].mode = lle.mode;
+      lists[i].n_members = lle.n_members;
       i ++;
     }
     return lists;

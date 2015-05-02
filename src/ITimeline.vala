@@ -23,8 +23,6 @@
 public interface ITimeline : Gtk.Widget, IPage {
   public static const int REST = 25;
   /** The lowest id of any tweet in this timeline */
-  protected abstract int64 lowest_id            {get; set;}
-  protected abstract int64 max_id               {get; set; default = 0;}
   protected abstract TweetListBox tweet_list    {get; set;}
   public    abstract int unread_count           {get; set;}
   public    abstract DeltaUpdater delta_updater {get; set;}
@@ -43,7 +41,7 @@ public interface ITimeline : Gtk.Widget, IPage {
     call.add_param ("count", requested_tweet_count.to_string ());
     call.add_param ("contributor_details", "true");
     call.add_param ("include_my_retweet", "true");
-    call.add_param ("max_id", (lowest_id - 1).to_string ());
+    call.add_param ("max_id", (tweet_list.model.lowest_id - 1).to_string ());
 
     Json.Node? root_node = yield TweetUtils.load_threaded (call);
     if (root_node == null) {
@@ -57,18 +55,11 @@ public interface ITimeline : Gtk.Widget, IPage {
       tweet_list.set_empty ();
       return;
     }
-    var res = yield TweetUtils.work_array (root,
-                                           requested_tweet_count,
-                                           delta_updater,
-                                           tweet_list,
-                                           main_window,
-                                           account);
-
-    if (res.min_id < this.lowest_id)
-      this.lowest_id = res.min_id;
-
-    if (res.max_id > this.max_id)
-      this.max_id = res.max_id;
+    yield TweetUtils.work_array (root,
+                                 requested_tweet_count,
+                                 tweet_list,
+                                 main_window,
+                                 account);
   } //}}}
 
   /**
@@ -82,7 +73,7 @@ public interface ITimeline : Gtk.Widget, IPage {
     call.set_method ("GET");
     call.add_param ("count", requested_tweet_count.to_string ());
     call.add_param ("include_my_retweet", "true");
-    call.add_param ("max_id", (lowest_id - 1).to_string ());
+    call.add_param ("max_id", (tweet_list.model.lowest_id - 1).to_string ());
 
     Json.Node? root_node = yield TweetUtils.load_threaded (call);
     if (root_node == null) {
@@ -93,14 +84,11 @@ public interface ITimeline : Gtk.Widget, IPage {
       tweet_list.set_empty ();
       return;
     }
-    var res = yield TweetUtils.work_array (root,
-                                           requested_tweet_count,
-                                           delta_updater,
-                                           tweet_list,
-                                           main_window,
-                                           account);
-    if (res.min_id < lowest_id)
-      lowest_id = res.min_id;
+    yield TweetUtils.work_array (root,
+                                 requested_tweet_count,
+                                 tweet_list,
+                                 main_window,
+                                 account);
   } ///}}}
 
   /**
@@ -112,31 +100,36 @@ public interface ITimeline : Gtk.Widget, IPage {
     if (unread_count == 0)
       return;
 
+    // We HAVE to use widgets here.
     tweet_list.forall_internal (false, (w) => {
-      ITwitterItem tle = (ITwitterItem)w;
-      if (tle.seen)
+      if (!(w is TweetListEntry))
+        return;
+
+      var tle = (TweetListEntry)w;
+      if (tle.tweet.seen)
         return;
 
       Gtk.Allocation alloc;
       tle.get_allocation (out alloc);
       if (alloc.y + (alloc.height / 2.0) >= value) {
-        tle.seen = true;
+        tle.tweet.seen = true;
         unread_count--;
       }
     });
   } //}}}
 
   public void rerun_filters () {
-    GLib.List<unowned Gtk.Widget> children = tweet_list.get_children ();
-    foreach (Gtk.Widget w in children) {
-      if (!(w is TweetListEntry))
-        continue;
+    TweetModel tm = tweet_list.model;
 
-      TweetListEntry tle = (TweetListEntry) w;
-      if (account.filter_matches (tle.tweet))
-        tle.hide ();
+
+    for (uint i = 0, p = tm.get_n_items (); i < p; i ++) {
+      var tweet = (Tweet) tm.get_object (i);
+      if (account.filter_matches (tweet))
+        tweet.hidden_flags |= Tweet.HIDDEN_FILTERED;
       else
-        tle.show ();
+        tweet.hidden_flags &= ~Tweet.HIDDEN_FILTERED;
+
+      tweet.hidden_flags_changed ();
     }
   }
 }

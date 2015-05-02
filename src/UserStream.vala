@@ -203,7 +203,7 @@ public class UserStream : Object {
                               size_t         length,
                               GLib.Error?    error) {
     if (buf == null) {
-      warning ("buf == NULL");
+      warning ("buf(%s) == NULL", this.account_name);
       return;
     }
 

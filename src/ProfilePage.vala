@@ -32,7 +32,6 @@ class ProfilePage : ScrollWidget, IPage {
     set{}
   }
   private unowned MainWindow _main_window;
-  private unowned Account _account;
   public unowned MainWindow main_window {
     get {
       return _main_window;
@@ -42,17 +41,13 @@ class ProfilePage : ScrollWidget, IPage {
       user_lists.main_window = value;
     }
   }
-  public unowned Account account {
-    get {
-      return _account;
-    }
+  public unowned Account account { get; set; }
+  public int id { get; set; }
+  public unowned DeltaUpdater delta_updater {
     set {
-      this._account = value;
-      user_lists.account = value;
+      tweet_list.delta_updater = value;
     }
   }
-  public int id { get; set; }
-  public unowned DeltaUpdater delta_updater { get; set; }
 
   [GtkChild]
   private AspectImage banner_image;
@@ -106,8 +101,12 @@ class ProfilePage : ScrollWidget, IPage {
   private int64 lowest_tweet_id = int64.MAX;
   private GLib.SimpleActionGroup actions;
 
-  public ProfilePage (int id) {
+  public ProfilePage (int id, Account account) {
     this.id = id;
+    this.account = account;
+    this.user_lists.account = account;
+    this.tweet_list.account = account;
+
     this.scroll_event.connect ((evt) => {
       if (evt.delta_y < 0 && this.vadjustment.value == 0) {
         if (banner_image.scale >= 1.0) {
@@ -219,6 +218,7 @@ class ProfilePage : ScrollWidget, IPage {
     call.set_method ("GET");
     call.add_param ("source_id", account.id.to_string ());
     call.add_param ("target_id", user_id.to_string ());
+
     Json.Node? root = yield TweetUtils.load_threaded (call);
     if (root == null)
       return;
@@ -392,13 +392,11 @@ class ProfilePage : ScrollWidget, IPage {
       tweet_list.set_empty ();
       return;
     }
-    var result = yield TweetUtils.work_array (root_array,
-                                              requested_tweet_count,
-                                              delta_updater,
-                                              tweet_list,
-                                              main_window,
-                                              account);
-    lowest_tweet_id = result.min_id;
+    yield TweetUtils.work_array (root_array,
+                                 requested_tweet_count,
+                                 tweet_list,
+                                 main_window,
+                                 account);
     tweets_loading = false;
   } // }}}
 
@@ -418,7 +416,7 @@ class ProfilePage : ScrollWidget, IPage {
     call.add_param ("count", requested_tweet_count.to_string ());
     call.add_param ("contributor_details", "true");
     call.add_param ("include_my_retweet", "true");
-    call.add_param ("max_id", (lowest_tweet_id - 1).to_string ());
+    call.add_param ("max_id", (tweet_list.model.lowest_id - 1).to_string ());
 
     Json.Node? root = yield TweetUtils.load_threaded (call);
 
@@ -426,15 +424,11 @@ class ProfilePage : ScrollWidget, IPage {
       return;
 
     var root_arr = root.get_array ();
-    var result = yield TweetUtils.work_array (root_arr,
-                                              requested_tweet_count,
-                                              delta_updater,
-                                              tweet_list,
-                                              main_window,
-                                              account);
-    if (result.min_id < lowest_tweet_id)
-        lowest_tweet_id = result.min_id;
-
+    yield TweetUtils.work_array (root_arr,
+                                 requested_tweet_count,
+                                 tweet_list,
+                                 main_window,
+                                 account);
     tweets_loading = false;
   } // }}}
 
@@ -525,20 +519,23 @@ class ProfilePage : ScrollWidget, IPage {
     HomeTimeline ht = (HomeTimeline) main_window.get_page (Page.STREAM);
     if (following) {
       call.set_function( "1.1/friendships/destroy.json");
-      ht.hide_tweets_from (this.user_id);
-      ht.hide_retweets_from (this.user_id);
+      ht.hide_tweets_from (this.user_id, Tweet.HIDDEN_UNFOLLOWED);
+      ht.hide_retweets_from (this.user_id, Tweet.HIDDEN_UNFOLLOWED); // XXX
       follower_count --;
       account.unfollow_id (this.user_id);
+      ((SimpleAction)actions.lookup_action ("toggle-retweets")).set_enabled (false);
+      set_retweets_disabled (false);
     } else {
       call.set_function ("1.1/friendships/create.json");
       call.add_param ("follow", "false");
-      ht.show_tweets_from (this.user_id);
+      ht.show_tweets_from (this.user_id, Tweet.HIDDEN_UNFOLLOWED);
       if (!((SimpleAction)actions.lookup_action ("toggle-retweets")).get_state ().get_boolean ()) {
-        ht.show_retweets_from (this.user_id);
+        ht.show_retweets_from (this.user_id, Tweet.HIDDEN_UNFOLLOWED);
       }
       set_user_blocked (false);
       follower_count ++;
       account.follow_id (this.user_id);
+      ((SimpleAction)actions.lookup_action ("toggle-retweets")).set_enabled (true);
     }
     update_follower_label ();
     progress_spinner.start ();
@@ -552,6 +549,7 @@ class ProfilePage : ScrollWidget, IPage {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
         critical (e.message);
+        critical (call.get_payload ());
       }
       follow_button.sensitive = true;
       loading_stack.visible_child_name = "data";
@@ -683,11 +681,11 @@ class ProfilePage : ScrollWidget, IPage {
     call.set_method ("POST");
     if (current_state) {
       call.set_function ("1.1/blocks/destroy.json");
-      ht.show_tweets_from (this.user_id);
+      ht.show_tweets_from (this.user_id, Tweet.HIDDEN_AUTHOR_BLOCKED);
     } else {
       call.set_function ("1.1/blocks/create.json");
       set_follow_button_state (false);
-      ht.hide_tweets_from (this.user_id);
+      ht.hide_tweets_from (this.user_id, Tweet.HIDDEN_AUTHOR_BLOCKED);
     }
     set_user_blocked (!current_state);
     call.add_param ("user_id", this.user_id.to_string ());
@@ -718,10 +716,10 @@ class ProfilePage : ScrollWidget, IPage {
     call.add_param ("retweets", current_state.to_string ());
     HomeTimeline ht = (HomeTimeline) main_window.get_page (Page.STREAM);
     if (current_state) {
-      ht.show_retweets_from (this.user_id);
+      ht.show_retweets_from (this.user_id, Tweet.HIDDEN_RTS_DISABLED);
       account.remove_disabled_rts_id (this.user_id);
     } else {
-      ht.hide_retweets_from (this.user_id);
+      ht.hide_retweets_from (this.user_id, Tweet.HIDDEN_RTS_DISABLED);
       account.add_disabled_rts_id (this.user_id);
     }
 

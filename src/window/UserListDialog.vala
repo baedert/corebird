@@ -21,6 +21,7 @@ struct TwitterList {
   string name;
   string description;
   string mode;
+  uint n_members;
 }
 
 
@@ -32,8 +33,9 @@ class UserListDialog : Gtk.Dialog {
   private Gtk.Label placeholder_label = new Gtk.Label ("");
   private int64 user_id;
 
-  public UserListDialog (MainWindow parent, Account account,
-                         int64 user_id) {
+  public UserListDialog (MainWindow parent,
+                         Account    account,
+                         int64      user_id) {
     GLib.Object (use_header_bar: Gtk.Settings.get_default ().gtk_dialogs_use_header ? 1 : 0);
     this.title = _("Add to or Remove User From List");
     this.main_window = parent;
@@ -70,6 +72,8 @@ class UserListDialog : Gtk.Dialog {
       foreach (var list in lists) {
         var l = new ListUserEntry (list.name, list.description);
         l.id = list.id;
+        if (list.n_members >= 500)
+          l.disable ();
         list_list_box.add (l);
       }
       this.show_all ();
@@ -100,8 +104,10 @@ class UserListDialog : Gtk.Dialog {
         int64 id = node.get_object ().get_int_member ("id");
         list_list_box.@foreach ((w) => {
           var lue = (ListUserEntry) w;
-          if (lue.id == id)
+          if (lue.id == id) {
             lue.check ();
+            lue.enable ();
+          }
         });
       });
     });
@@ -131,7 +137,6 @@ class UserListDialog : Gtk.Dialog {
     }
   }
 
-  // TODO: Extra bonus for not allowing the user to add someone to a list which has already 500 members
   private void add_user (int64 list_id) {
     var call = account.proxy.new_call ();
     call.set_function ("1.1/lists/members/create.json");
@@ -204,6 +209,14 @@ class ListUserEntry : Gtk.ListBoxRow {
   public void check () {
     added_checkbox.active = true;
     changed = false;
+  }
+
+  public void disable () {
+    this.added_checkbox.sensitive = false;
+  }
+
+  public void enable () {
+    this.added_checkbox.sensitive = true;
   }
 }
 

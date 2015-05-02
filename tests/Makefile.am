@@ -1,6 +1,7 @@
 AM_CPPFLAGS = $(CB_CFLAGS) -I$(top_srcdir)/src
 
 TESTS = \
+				tweetmodel     \
 				tweet_length   \
 				utils          \
 				bundlehistory  \
@@ -9,11 +10,13 @@ TESTS = \
 				tweet_parsing  \
 				filters        \
 				sql            \
-				multimedia     \
 				highlighting   \
 				friends        \
 				texttransform
 check_PROGRAMS = $(TESTS)
+
+# Always add -g to the test cases (for easier debugging)
+CB_VALA_FLAGS="$CB_VALA_FLAGS -g"
 
 tweet_length_SOURCES = tweet_length.vala
 tweet_length_LDADD = $(top_builddir)/src/libcorebird.la
@@ -47,10 +50,6 @@ tweet_parsing_SOURCES = tweet_parsing.vala resources.c
 tweet_parsing_LDADD = $(top_builddir)/src/libcorebird.la
 tweet_parsing_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
 
-multimedia_SOURCES = multimedia.vala resources.c
-multimedia_LDADD = $(top_builddir)/src/libcorebird.la
-multimedia_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
-
 highlighting_SOURCES = highlighting.vala
 highlighting_LDADD = $(top_builddir)/src/libcorebird.la
 highlighting_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
@@ -58,6 +57,10 @@ highlighting_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
 friends_SOURCES = friends.vala
 friends_LDADD = $(top_builddir)/src/libcorebird.la
 friends_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
+
+tweetmodel_SOURCES = tweetmodel.vala
+tweetmodel_LDADD = $(top_builddir)/src/libcorebird.la
+tweetmodel_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
 
 texttransform_SOURCES = texttransform.vala
 texttransform_LDADD = $(top_builddir)/src/libcorebird.la

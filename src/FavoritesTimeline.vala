@@ -22,8 +22,10 @@ class FavoritesTimeline : IMessageReceiver, DefaultTimeline {
     }
   }
 
-  public FavoritesTimeline(int id) {
+  public FavoritesTimeline (int id, Account account) {
     base (id);
+    this.account = account;
+    this.tweet_list.account = account;
   }
 
   private void stream_message_received (StreamMessageType type, Json.Node root) { // {{{
@@ -48,7 +50,7 @@ class FavoritesTimeline : IMessageReceiver, DefaultTimeline {
       var tle = new TweetListEntry (tweet, this.main_window, this.account);
       this.delta_updater.add (tle);
       this.tweet_list.add (tle);
-      base.postprocess_tweet (tle);
+      //base.postprocess_tweet (tle); XXX
     } else if (type == StreamMessageType.EVENT_UNFAVORITE) {
       int64 id = root.get_object ().get_object_member ("target_object").get_int_member ("id");
       toggle_favorite (id, false);

@@ -63,24 +63,22 @@ public class MainWidget : Gtk.Box {
 
     stack.add (stack_impostor);
 
-    // TODO: Just always pass the account instance to the constructor.
-    pages[0]  = new HomeTimeline (Page.STREAM);
-    pages[1]  = new MentionsTimeline (Page.MENTIONS);
-    pages[2]  = new FavoritesTimeline (Page.FAVORITES);
+    pages[0]  = new HomeTimeline (Page.STREAM, account);
+    pages[1]  = new MentionsTimeline (Page.MENTIONS, account);
+    pages[2]  = new FavoritesTimeline (Page.FAVORITES, account);
     pages[3]  = new DMThreadsPage (Page.DM_THREADS, account);
-    pages[4]  = new ListsPage (Page.LISTS);
-    pages[5]  = new FilterPage (Page.FILTERS);
-    pages[6]  = new SearchPage (Page.SEARCH);
-    pages[7]  = new ProfilePage (Page.PROFILE);
-    pages[8]  = new TweetInfoPage (Page.TWEET_INFO);
-    pages[9]  = new DMPage (Page.DM);
-    pages[10] = new ListStatusesPage (Page.LIST_STATUSES);
+    pages[4]  = new ListsPage (Page.LISTS, account);
+    pages[5]  = new FilterPage (Page.FILTERS, account);
+    pages[6]  = new SearchPage (Page.SEARCH, account);
+    pages[7]  = new ProfilePage (Page.PROFILE, account);
+    pages[8]  = new TweetInfoPage (Page.TWEET_INFO, account);
+    pages[9]  = new DMPage (Page.DM, account);
+    pages[10] = new ListStatusesPage (Page.LIST_STATUSES, account);
 
     /* Initialize all containers */
     for (int i = 0; i < pages.length; i++) {
       IPage page = pages[i];
       page.main_window = parent;
-      page.account = this.account;
 
       if (page is IMessageReceiver)
         account.user_stream.register ((IMessageReceiver)page);
@@ -112,6 +110,7 @@ public class MainWidget : Gtk.Box {
     ((DMPage)pages[Page.DM]).delta_updater = this.delta_updater;
     ((ProfilePage)pages[Page.PROFILE]).delta_updater = this.delta_updater;
     ((ListStatusesPage)pages[Page.LIST_STATUSES]).delta_updater = this.delta_updater;
+    ((TweetInfoPage)pages[Page.TWEET_INFO]).delta_updater = this.delta_updater;
 
     Settings.get ().bind ("sidebar-visible", sidebar_revealer, "reveal-child",
                           SettingsBindFlags.DEFAULT);

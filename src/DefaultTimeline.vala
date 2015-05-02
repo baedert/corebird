@@ -15,18 +15,41 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*
+  XXX We are tracking min_id and max_id here AGAIN, even though we already
+  do that in TweetModel. We are still adding raw Widgets in HomeTimeline
+  because we need to scroll down, so the values in our TweetModel aren't always
+  100% correct.
+ */
 public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   protected bool initialized = false;
   public int id                          { get; set; }
-  public int unread_count                { get; set; }
+  private int _unread_count = 0;
+  public int unread_count {
+    set {
+      _unread_count = value;
+      tool_button.show_badge = (_unread_count > 0);
+      tool_button.queue_draw();
+    }
+    get {
+      return this._unread_count;
+    }
+  }
   public unowned MainWindow main_window  { set; get; }
   protected TweetListBox tweet_list      { set; get; default=new TweetListBox ();}
   public unowned Account account         { get; set; }
   protected BadgeRadioToolButton tool_button;
-  public int64 lowest_id                 { get; set; default = int64.MAX-2; }
   protected uint tweet_remove_timeout    { get; set; }
-  protected int64 max_id                 { get; set; default = 0; }
-  public DeltaUpdater delta_updater      { get; set; }
+  private DeltaUpdater _delta_updater;
+  public DeltaUpdater delta_updater {
+    get {
+      return _delta_updater;
+    }
+    set {
+      this._delta_updater = value;
+      tweet_list.delta_updater = value;
+    }
+  }
   protected abstract string function     { get;      }
   protected bool loading = false;
   protected Gtk.Widget? last_focus_widget = null;
@@ -34,7 +57,6 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
 
   public DefaultTimeline (int id) {
     this.id = id;
-    this.vscrollbar_policy = Gtk.PolicyType.ALWAYS;
     this.scrolled_to_start.connect(handle_scrolled_to_start);
     this.scrolled_to_end.connect(() => {
       if (!loading) {
@@ -43,7 +65,6 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     });
     this.vadjustment.notify["value"].connect (() => {
       mark_seen_on_scroll (vadjustment.value);
-      update_unread_count ();
     });
 
 
@@ -60,7 +81,8 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
       last_focus_widget = row;
     });
     tweet_list.retry_button_clicked.connect (() => {
-      tweet_list.remove_all ();
+      tweet_list.model.clear ();
+      tweet_list.remove_progress_entry ();
       this.load_newest ();
     });
 
@@ -68,16 +90,14 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
 
   public virtual void on_join (int page_id, Bundle? args) {
     if (!initialized) {
-      load_cached ();
       load_newest ();
       account.user_stream.resumed.connect (stream_resumed_cb);
       initialized = true;
     }
 
     if (Settings.auto_scroll_on_new_tweets ()) {
-      this.unread_count = 0;
+      this._unread_count = 0;
       mark_seen (-1);
-      update_unread_count ();
     }
 
     if (last_focus_widget != null) {
@@ -114,14 +134,15 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
       tweet_list.action_entry.toggle_mode ();
   }
 
-  public virtual void load_cached () {}
   public abstract void load_newest ();
   public abstract void load_older ();
   public abstract string? get_title ();
 
   public override void destroy () {
-    if (tweet_remove_timeout > 0)
+    if (tweet_remove_timeout > 0) {
       GLib.Source.remove (tweet_remove_timeout);
+      tweet_remove_timeout = 0;
+    }
   }
 
   public virtual void create_tool_button(Gtk.RadioButton? group){}
@@ -130,11 +151,6 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     return tool_button;
   }
 
-
-  protected void update_unread_count() {
-    tool_button.show_badge = (unread_count > 0);
-    tool_button.queue_draw();
-  }
   /**
    * Handle the case of the user scrolling to the start of the list,
    * i.e. remove all the items except a few ones after a timeout.
@@ -143,25 +159,14 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     if (tweet_remove_timeout != 0)
       return;
 
-    GLib.List<weak Gtk.Widget> entries = tweet_list.get_children ();
-    uint item_count = entries.length ();
-    if (item_count > ITimeline.REST) {
-      tweet_remove_timeout = GLib.Timeout.add (5000, () => {
+    if (tweet_list.model.get_n_items () > ITimeline.REST) {
+      tweet_remove_timeout = GLib.Timeout.add (500, () => {
         if (!scrolled_up) {
           tweet_remove_timeout = 0;
           return false;
         }
 
-        while (item_count > ITimeline.REST) {
-          Gtk.Widget? w = tweet_list.get_row_at_index (ITimeline.REST);
-          if (w == null || w.visible)
-            item_count --;
-
-          if (w != null)
-            tweet_list.remove (w);
-        }
-        tweet_remove_timeout = 0;
-        lowest_id = ((TweetListEntry)tweet_list.get_row_at_index (ITimeline.REST -1)).tweet.id;
+        tweet_list.model.remove_last_n_visible (tweet_list.model.get_n_items () - ITimeline.REST);
         return false;
       });
     } else if (tweet_remove_timeout != 0) {
@@ -177,10 +182,9 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
 
       var tle = (TweetListEntry) w;
       if (tle.tweet.id == tweet_id) {
-        if (!tle.seen) {
+        if (!tle.tweet.seen) {
           tweet_list.remove (tle);
-          unread_count --;
-          update_unread_count ();
+          this.unread_count --;
         }else
           tle.sensitive = false;
         return;
@@ -208,44 +212,51 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
 
   /**
    * So, we don't want to display a retweet in the following situations:
-   *   - If the original tweet was a tweet by the authenticated user
-   *   - In any case, if the user follows the author of the tweet
-   *     (not the author of the retweet!), we already get the source
-   *     tweet by other means, so don't display it again.
-   *   - It's a retweet from the authenticating user itself
-   *   - If the tweet was retweeted by a user that is on the list of
-   *     users the authenticating user disabled RTs for.
-   *   - If the retweet is already in the timeline. There's no other
-   *     way of checking the case where 2 indipendend users retweet
-   *     the same tweet.
+   *   1) If the original tweet was a tweet by the authenticated user
+   *   2) In any case, if the user follows the author of the tweet
+   *      (not the author of the retweet!), we already get the source
+   *      tweet by other means, so don't display it again.
+   *   3) It's a retweet from the authenticating user itself
+   *   4) If the tweet was retweeted by a user that is on the list of
+   *      users the authenticating user disabled RTs for.
+   *   5) If the retweet is already in the timeline. There's no other
+   *      way of checking the case where 2 indipendend users retweet
+   *      the same tweet.
    */
-  protected bool should_display_retweet (Tweet t) {
+  protected uint get_rt_flags (Tweet t) {
+    uint flags = 0;
+
     /* First case */
     if (t.user_id == account.id)
-      return false;
+      flags |= Tweet.HIDDEN_FORCE;
 
     /*  Second case */
     if (account.follows_id (t.user_id))
-        return false;
+        flags |= Tweet.HIDDEN_RT_BY_FOLLOWEE;
 
     /* third case */
     if (t.rt_by_id == account.id)
-      return false;
+      flags |= Tweet.HIDDEN_FORCE;
 
     /* Fourth case */
     foreach (int64 id in account.disabled_rts)
-      if (id == t.rt_by_id)
-        return false;
+      if (id == t.rt_by_id) {
+        flags |= Tweet.HIDDEN_RTS_DISABLED;
+        break;
+      }
+
 
     /* Fifth case */
     foreach (Gtk.Widget w in tweet_list.get_children ()) {
       if (w is TweetListEntry) {
-        if (((TweetListEntry)w).tweet.rt_id == t.rt_id)
-          return false;
+        if (((TweetListEntry)w).tweet.rt_id == t.rt_id) {
+          flags |= Tweet.HIDDEN_FORCE;
+          break;
+        }
       }
     }
 
-    return true;
+    return flags;
   }
 
   protected void mark_seen (int64 id) {
@@ -255,11 +266,10 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
 
       var tle = (TweetListEntry) w;
       if (tle.tweet.id == id || id == -1) {
-        if (!tle.seen) {
-          unread_count--;
-          update_unread_count ();
+        if (!tle.tweet.seen) {
+          this.unread_count--;
         }
-        tle.seen = true;
+        tle.tweet.seen = true;
         break;
       }
     }
@@ -275,26 +285,13 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
 
   }
 
-  protected void postprocess_tweet (TweetListEntry tle) {
-    var t = tle.tweet;
-    if (t.id < lowest_id)
-      lowest_id = t.id;
-    else if (t.id > max_id)
-      max_id = t.id;
-
-    if (!tle.seen && tle.visible) {
-      this.unread_count ++;
-      this.update_unread_count ();
-    }
-  }
-
   private void stream_resumed_cb () {
     // XXX If load_newest failed, the list still gets cleared...
     var call = account.proxy.new_call ();
     call.set_function (this.function);
     call.set_method ("GET");
     call.add_param ("count", "1");
-    call.add_param ("since_id", (this.max_id + 1).to_string ());
+    call.add_param ("since_id", (this.tweet_list.model.greatest_id + 1).to_string ());
     call.add_param ("trim_user", "true");
     call.add_param ("contributor_details", "false");
     call.add_param ("include_entities", "false");
@@ -302,8 +299,8 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
       try {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
-        tweet_list.remove_all ();
-        lowest_id = int64.MAX - 2;
+        tweet_list.model.clear ();
+        tweet_list.remove_progress_entry ();
         load_newest ();
         warning (e.message);
         return;
@@ -313,8 +310,8 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
       try {
         parser.load_from_data (call.get_payload ());
       } catch (GLib.Error e) {
-        tweet_list.remove_all ();
-        lowest_id = int64.MAX - 2;
+        tweet_list.model.clear ();
+        tweet_list.remove_progress_entry ();
         load_newest ();
         warning (e.message);
         return;
@@ -322,10 +319,9 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
 
       var root_arr = parser.get_root ().get_array ();
       if (root_arr.get_length () > 0) {
-        tweet_list.remove_all ();
-        lowest_id = int64.MAX - 2;
+        tweet_list.model.clear ();
+        tweet_list.remove_progress_entry ();
         unread_count = 0;
-        update_unread_count ();
         load_newest ();
       }
 

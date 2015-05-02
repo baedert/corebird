@@ -22,8 +22,10 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
     }
   }
 
-  public MentionsTimeline(int id){
+  public MentionsTimeline(int id, Account account) {
     base (id);
+    this.account = account;
+    this.tweet_list.account= account;
   }
 
   private void stream_message_received (StreamMessageType type, Json.Node root){
@@ -65,7 +67,7 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
       if (t.user_id == account.id)
         return;
 
-      if (t.is_retweet && !should_display_retweet (t))
+      if (t.is_retweet && get_rt_flags (t) > 0)
         return;
 
       if (account.filter_matches (t))
@@ -76,13 +78,13 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
 
       this.balance_next_upper_change (TOP);
       var entry = new TweetListEntry(t, main_window, account);
-      entry.seen = false;
+      //entry.seen = false; XXX
 
       delta_updater.add (entry);
       tweet_list.add (entry);
 
       base.scroll_up (t);
-      base.postprocess_tweet (entry);
+      //base.postprocess_tweet (entry); XXX
 
       if (Settings.notify_new_mentions ()) {
         entry.notification_id = send_notification (t.screen_name, t.id, Utils.unescape_html (t.text));

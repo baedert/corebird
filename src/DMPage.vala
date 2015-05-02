@@ -37,8 +37,9 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
   private int64 lowest_id = int64.MAX;
   private bool was_scrolled_down = false;
 
-  public DMPage (int id) {
+  public DMPage (int id, Account account) {
     this.id = id;
+    this.account = account;
     text_view.buffer.changed.connect (recalc_length);
     messages_list.set_sort_func (ITwitterItem.sort_func_inv);
     placeholder_box.show ();

@@ -23,6 +23,8 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     {"delete", delete_activated}
   };
 
+  private const int64 TRANSITION_DURATION = 400;
+
   [GtkChild]
   private Gtk.Label screen_name_label;
   [GtkChild]
@@ -65,21 +67,16 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       this._read_only = value;
     }
   }
-  public int64 sort_factor {
-    get { return tweet.created_at;}
-  }
-  private bool _seen = true;
-  public bool seen {
+  public new bool visible {
     get {
-      return _seen;
+      return !this.tweet.is_hidden;
     }
     set {
-      _seen = value;
-      if (value && notification_id != null) {
-        NotificationManager.withdraw (this.notification_id);
-        this.notification_id = null;
-      }
+      base.visible = value;
     }
+  }
+  public int64 sort_factor {
+    get { return tweet.created_at;}
   }
   public bool shows_actions {
     get {
@@ -129,6 +126,8 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
     favorite_button.active = tweet.favorited;
     tweet.notify["favorited"].connect (favorited_cb);
+
+    tweet.hidden_flags_changed.connect (hidden_flags_changed_cb);
 
     if (tweet.reply_id == 0)
       conversation_image.unparent ();
@@ -323,7 +322,19 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   }
 
   private void media_invalid_cb () {
-    this.text_label.set_label ("INVALID MEDIA");
+    TransformFlags flags = Settings.get_text_transform_flags ()
+                           & ~TransformFlags.REMOVE_MEDIA_LINKS;
+    this.text_label.set_label (TextTransform.transform (tweet.text,
+                                                        tweet.urls,
+                                                        flags,
+                                                        tweet.medias.length));
+  }
+
+  private void hidden_flags_changed_cb () {
+    if (tweet.is_hidden)
+      this.hide ();
+    else
+      this.show ();
   }
 
 
@@ -358,5 +369,45 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       stack.visible_child = action_box;
       this.activatable = false;
     }
+  }
+
+
+  private int64 start_time;
+  private int64 end_time;
+
+  private double ease_out_cubic (double t) {
+    double p = t - 1;
+    return p * p * p +1;
+  }
+
+  private bool anim_tick (Gtk.Widget widget, Gdk.FrameClock frame_clock) {
+    int64 now = frame_clock.get_frame_time ();
+
+    if (now > end_time) {
+      this.opacity = 1.0;
+      return false;
+    }
+
+    double t = (now - start_time) / (double)(end_time - start_time);
+
+    t = ease_out_cubic (t);
+
+    this.opacity = t;
+
+    return true;
+  }
+
+  public void fade_in () {
+    this.show ();
+    this.start_time = this.get_frame_clock ().get_frame_time ();
+    this.end_time = start_time + (TRANSITION_DURATION * 1000);
+    this.add_tick_callback (anim_tick);
+  }
+
+  public override void show () {
+    if (tweet.is_hidden)
+      return;
+
+    base.show ();
   }
 }
