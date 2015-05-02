@@ -22,7 +22,7 @@
    - EVENT_FAVORITE: Whenever someone favorites one of the user's tweets
    - Tweets from the user themselves are retweets from people they follow.
      No events from people they don't follow exist
-   - EVENT_FOLLOW: A user followed you
+   - EVENT_FOLLOWED: A user followed you
 
    */
 
@@ -75,17 +75,16 @@ class NotificationModel : GLib.Object, GLib.ListModel {
   }
 
 
-  private void add_multiuser_item (int64  id,
-                                   string body,
-                                   string screen_name,
-                                   int    type,
-                                   string sentinel) {
+  private void add_multiuser_item (MultipleUserNotificationItem item,
+                                   string                       screen_name,
+                                   string                       body) {
     for (int i = 0; i < n_items; i ++) {
-      if (items[i].type == type &&
-          items[i].id   == id) {
+      if (items[i].type == item.type &&
+          items[i].id   == item.id) {
         var rt_n = (MultipleUserNotificationItem) (items[i]);
         rt_n.screen_names.add (screen_name);
-        rt_n.build_heading ();
+        rt_n.body = body;
+        rt_n.build_text ();
 
         if (i != 0) {
           // Move this item to the front
@@ -96,44 +95,48 @@ class NotificationModel : GLib.Object, GLib.ListModel {
       }
     }
 
-    var rt_n = new MultipleUserNotificationItem (sentinel);
-    rt_n.id = id;
-    rt_n.type = type;
-    rt_n.screen_names.add (screen_name);
-    rt_n.body = body;
-    rt_n.build_heading ();
-    this.prepend (rt_n);
+    this.prepend (item);
   }
 
   public void add_rt_item (int64  tweet_id,
                            string tweet_text,
                            string screen_name) {
-    this.add_multiuser_item (tweet_id,
-                             tweet_text,
-                             screen_name,
-                             NotificationItem.TYPE_RETWEET,
-                             "retweeted you");
+    var item = new RTNotificationItem ();
+    item.id = tweet_id;
+    item.body = tweet_text;
+    item.type = NotificationItem.TYPE_RETWEET;
+    item.screen_names.add (screen_name);
+    item.build_text ();
+    add_multiuser_item (item,
+                        screen_name,
+                        tweet_text);
   }
 
   public void add_fav_item (int64  tweet_id,
                             string tweet_text,
                             string screen_name) {
-    this.add_multiuser_item (tweet_id,
-                             tweet_text,
-                             screen_name,
-                             NotificationItem.TYPE_FAVORITE,
-                             "favorited you");
+    var item = new FavNotificationItem ();
+    item.id = tweet_id;
+    item.body = tweet_text;
+    item.type = NotificationItem.TYPE_FAVORITE;
+    item.screen_names.add (screen_name);
+    item.build_text ();
+    add_multiuser_item (item,
+                        screen_name,
+                        tweet_text);
 
   }
 
-
-  public void add_follow_item (int64 user_id,
+  public void add_follow_item (int64  user_id,
                                string screen_name) {
-    this.add_multiuser_item (user_id,
-                             "",
-                             screen_name,
-                             NotificationItem.TYPE_FOLLOW,
-                             "followed you");
+    var item = new FollowNotificationItem ();
+    item.id = user_id;
+    item.type = NotificationItem.TYPE_FOLLOWED;
+    item.screen_names.add (screen_name);
+    item.build_text ();
+    add_multiuser_item (item,
+                        screen_name,
+                        "");
   }
 
 }

@@ -62,7 +62,7 @@ public class MainWindow : Gtk.ApplicationWindow {
   public MainWindow (Gtk.Application app, Account? account = null){
     set_default_size (480, 700);
 
-    change_account (account, app);
+    change_account (account);
 
     account_list.set_sort_func (account_sort_func);
     account_list.set_header_func (default_header_func);
@@ -163,13 +163,12 @@ public class MainWindow : Gtk.ApplicationWindow {
 
 
 
-  public void change_account (Account? account,
-                              GLib.Application app = GLib.Application.get_default ()) {
-
+  public void change_account (Account? account) {
     int64? old_user_id = null;
     if (this.account != null) {
       old_user_id = this.account.id;
       this.account.info_changed.disconnect (account_info_changed);
+      this.account.notification_received.disconnect (account_notification_cb);
       this.set_account_app_menu_sensitivity (true);
     }
     this.account = account;
@@ -186,7 +185,7 @@ public class MainWindow : Gtk.ApplicationWindow {
       set_header_button_visibility (true);
     }
 
-    Corebird cb = (Corebird) app;
+    Corebird cb = (Corebird) GLib.Application.get_default ();
 
     if (account != null && account.screen_name != Account.DUMMY) {
       main_widget = new MainWidget (account, this, cb);
@@ -203,6 +202,7 @@ public class MainWindow : Gtk.ApplicationWindow {
       this.set_account_app_menu_sensitivity (false);
 
       account.info_changed.connect (account_info_changed);
+      account.notification_received.connect (account_notification_cb);
 
       cb.account_window_changed (old_user_id, account.id);
 
@@ -211,7 +211,7 @@ public class MainWindow : Gtk.ApplicationWindow {
           app_menu_button = new Gtk.MenuButton ();
           app_menu_button.image = new Gtk.Image.from_icon_name ("emblem-system-symbolic", Gtk.IconSize.MENU);
           app_menu_button.get_style_context ().add_class ("image-button");
-          app_menu_button.menu_model = ((Gtk.Application)app).app_menu;
+          app_menu_button.menu_model = cb.app_menu;
           headerbar.pack_end (app_menu_button);
         } else
           app_menu_button.show ();
@@ -498,5 +498,18 @@ public class MainWindow : Gtk.ApplicationWindow {
   private void set_header_button_visibility (bool visible) {
     header_box.visible = visible;
     n_button.visible = visible;
+  }
+
+  private void account_notification_cb (int64  id,
+                                        int    type,
+                                        string body,
+                                        string str) {
+    if (type == NotificationItem.TYPE_FAVORITE) {
+      n_model.add_fav_item (id, body, str);
+    } else if (type == NotificationItem.TYPE_FOLLOWED) {
+      n_model.add_follow_item (id, str);
+    } else if (type == NotificationItem.TYPE_RETWEET) {
+      n_model.add_rt_item (id, body, str);
+    }
   }
 }
