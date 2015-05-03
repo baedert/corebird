@@ -68,6 +68,25 @@
           </packing>
         </child>
 
+        <child>
+          <object class="GtkButton" id="drafts_button">
+            <property name="visible">true</property>
+            <property name="tooltip_text" translatable="yes">Drafts</property>
+            <style>
+              <class name="image-button" />
+            </style>
+            <child>
+              <object class="GtkImage">
+                <property name="visible">true</property>
+                <property name="icon-name">list-add-symbolic</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="pack-type">end</property>
+          </packing>
+        </child>
+
       </object>
     </child>
 
