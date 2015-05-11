@@ -42,6 +42,12 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   private Gtk.Label title_label;
   [GtkChild]
   private Gtk.Stack title_stack;
+  [GtkChild]
+  private Gtk.Stack content_stack;
+  [GtkChild]
+  private Gtk.ScrolledWindow drafts_scroller;
+  [GtkChild]
+  private Gtk.ToggleButton drafts_button;
   private unowned Account account;
   private unowned Tweet reply_to;
   private Mode mode;
@@ -303,6 +309,15 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
   public void set_text (string text) {
     tweet_text.buffer.text = text;
+  }
+
+  [GtkCallback]
+  public void drafts_button_toggled_cb () {
+    if (drafts_button.active) {
+      content_stack.visible_child = drafts_scroller;
+    } else {
+      content_stack.visible_child = content_box;
+    }
   }
 
 
