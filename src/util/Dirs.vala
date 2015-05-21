@@ -30,6 +30,7 @@ namespace Dirs {
     create_folder (cache ("assets/user/"));
     create_folder (cache ("assets/media/"));
     create_folder (cache ("assets/media/thumbs/"));
+    create_folder (cache ("draft-media"));
     create_folder (config (""));
     create_folder (config ("accounts/"));
     create_folder (data (""));
