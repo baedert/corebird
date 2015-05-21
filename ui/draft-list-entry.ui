@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="DraftListEntry" parent="GtkListBoxRow">
+    <property name="activatable">true</property>
+    <child>
+      <object class="GtkGrid">
+        <property name="visible">true</property>
+
+      </object>
+    </child>
+  </template>
+</interface>
