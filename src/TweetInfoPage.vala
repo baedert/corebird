@@ -179,8 +179,9 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
       bottom_list_box.model.remove_tweets_above (new_id);
       if (bottom_list_box.model.get_n_items () == 0)
         bottom_list_box.hide ();
-    } else
-      error ("wtf");
+    }
+    //else
+      //error ("wtf");
   }
 
   public void on_leave () {}
