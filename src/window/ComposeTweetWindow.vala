@@ -48,10 +48,13 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   private Gtk.ScrolledWindow drafts_scroller;
   [GtkChild]
   private Gtk.ToggleButton drafts_button;
+
   private unowned Account account;
   private unowned Tweet reply_to;
   private Mode mode;
   private Gee.ArrayList<AddImageButton> image_buttons;
+  private bool drafts_inited = false;
+  private bool draftify = false;
 
 
   public ComposeTweetWindow (Gtk.Window?      parent,
@@ -73,6 +76,13 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     avatar_image.set_from_pixbuf (acc.avatar);
     length_label.label = Tweet.MAX_LENGTH.to_string ();
     tweet_text.buffer.changed.connect (buffer_changed_cb);
+
+
+    if (GLib.NetworkMonitor.get_default ().network_available) {
+      send_button.label = "Save as draft";
+      this.draftify = true;
+    }
+
 
 
     if (parent != null) {
@@ -160,10 +170,19 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       send_button.sensitive = false;
   }
 
+  private void save_draft () {
+
+  }
+
   [GtkCallback]
   private void start_send_tweet () {
     if (!send_button.sensitive)
       return;
+
+
+    if (this.draftify) {
+      save_draft ();
+    }
 
     int media_count = get_effective_media_count ();
     Collect collect_obj = new Collect (media_count);
@@ -314,6 +333,11 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   [GtkCallback]
   public void drafts_button_toggled_cb () {
     if (drafts_button.active) {
+      if (!drafts_inited) {
+        // sql query to load drafts
+
+        drafts_inited = true;
+      }
       content_stack.visible_child = drafts_scroller;
     } else {
       content_stack.visible_child = content_box;
