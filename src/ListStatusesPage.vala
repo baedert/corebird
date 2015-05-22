@@ -146,7 +146,7 @@ class ListStatusesPage : ScrollWidget, IPage {
     } else {
       max_size_container.max_size = 0;
       this.list_id = list_id;
-      tweet_list.remove_all ();
+      tweet_list.model.clear ();
       load_newest.begin ();
     }
 

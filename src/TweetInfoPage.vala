@@ -179,8 +179,9 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
       bottom_list_box.model.remove_tweets_above (new_id);
       if (bottom_list_box.model.get_n_items () == 0)
         bottom_list_box.hide ();
-    } else
-      error ("wtf");
+    }
+    //else
+      //error ("wtf");
   }
 
   public void on_leave () {}
@@ -345,8 +346,10 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
         call.invoke_async.end (res);
       }catch (GLib.Error e) {
         critical(e.message);
-        Utils.show_error_object (call.get_payload (), e.message,
-                                 GLib.Log.LINE, GLib.Log.FILE);
+        if (e.message.strip () != "Forbidden") {
+          Utils.show_error_object (call.get_payload (), e.message,
+                                   GLib.Log.LINE, GLib.Log.FILE);
+        }
         bottom_list_box.visible = (bottom_list_box.get_children ().length () > 0);
         return;
       }

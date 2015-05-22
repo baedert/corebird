@@ -599,10 +599,10 @@ msgstr ""
 
 #: ../data/org.baedert.corebird.appdata.xml.in.h:2
 msgid ""
-"Additional features include the abilty to change to the GTK+ dark theme, "
+"Additional features include the ability to change to the GTK+ dark theme, "
 "searching and media uploads."
 msgstr ""
-"Fitur tambahan termasuk abilty untuk mengubah ke GTK+ dark tema, mencari dan "
+"Fitur tambahan termasuk ability untuk mengubah ke GTK+ dark tema, mencari dan "
 "media upload."
 
 #: ../data/org.baedert.corebird.desktop.in.in.h:1

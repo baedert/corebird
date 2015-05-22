@@ -609,7 +609,7 @@ class ProfilePage : ScrollWidget, IPage {
     data_cancellable = new GLib.Cancellable ();
     reset_data ();
     set_user_id (user_id);
-    tweet_list.remove_all ();
+    tweet_list.model.clear ();
     tweet_list.reset_placeholder_text ();
     user_stack.visible_child = tweet_list;
     user_lists.clear_lists ();
