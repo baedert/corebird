@@ -35,6 +35,17 @@
             <property name="visible">true</property>
             <property name="selection_mode">none</property>
 
+            <child type="placeholder">
+              <object class="GtkLabel">
+                <property name="visible">true</property>
+                <property name="margin">12</property>
+                <property name="label" translatable="yes">No notifications.</property>
+                <style>
+                  <class name="dim-label" />
+                </style>
+              </object>
+            </child>
+
           </object>
         </child>
       </object>
