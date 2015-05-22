@@ -192,16 +192,12 @@ public class UserStream : Object {
 
   /**
    * Callback called by the Rest.ProxyCall whenever it receives data.
-   *
-   * @param call The Rest.ProxyCall created when the UserStream was started.
-   * @param buf The string received
-   * @param length The buffer's length
-   * @param error
+   * Public for testing only
    */
-  private void parse_data_cb (Rest.ProxyCall call,
-                              string?        buf,
-                              size_t         length,
-                              GLib.Error?    error) {
+  public void parse_data_cb (Rest.ProxyCall call,
+                             string?        buf,
+                             size_t         length,
+                             GLib.Error?    error) {
     if (buf == null) {
       warning ("buf(%s) == NULL", this.account_name);
       return;
