@@ -25,7 +25,7 @@ This is the readme for the current *development version*. If you're looking for 
   - `Return` - Show tweet details
 
 
-## Will this work on distrubution XYZ?
+## Will this work on distribution XYZ?
   I don't know. If you can satisfy all the dependencies, probably yes but
   you'd most likely still have to compile and install it from source (that is,
   if no one else makes packages).
