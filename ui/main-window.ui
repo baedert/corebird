@@ -137,8 +137,14 @@
           <object class="GtkButton" id="n_button">
             <property name="visible">true</property>
             <property name="can_focus">true</property>
-            <property name="label" translatable="yes">N</property>
             <signal name="clicked" handler="n_button_clicked_cb" />
+            <child>
+              <object class="GtkImage">
+                <property name="visible">true</property>
+                <property name="can_focus">false</property>
+                <property name="icon-name">security-high-symbolic</property>
+              </object>
+            </child>
           </object>
           <packing>
             <property name="pack_type">end</property>
