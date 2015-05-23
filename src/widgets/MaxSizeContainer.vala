@@ -1,12 +1,30 @@
-
-
-
-
-
-
-
+/*  This file is part of corebird, a Gtk+ linux Twitter client.
+ *  Copyright (C) 2013 Timm Bäder
+ *
+ *  corebird is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  corebird is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
+ */
 class MaxSizeContainer : Gtk.Bin {
-  public int max_size { get; set; default = 0; }
+  private int _max_size = 0;
+  public int max_size {
+    get {
+      return this._max_size;
+    }
+    set {
+      this._max_size = value;
+      this.queue_resize ();
+    }
+  }
 
   public override Gtk.SizeRequestMode get_request_mode () {
     return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
@@ -19,11 +37,11 @@ class MaxSizeContainer : Gtk.Bin {
     get_child ().get_preferred_height_for_width (width, out child_height, null);
 
 
-    if (max_size >= child_height) {
+    if (_max_size >= child_height) {
       base.get_preferred_height_for_width (width, out min_height, out nat_height);
     } else {
-      nat_height = max_size;
-      min_height = max_size;
+      nat_height = _max_size;
+      min_height = _max_size;
     }
 
 //    message ("Min: %d, Nat: %d", min_height, nat_height);
@@ -38,13 +56,13 @@ class MaxSizeContainer : Gtk.Bin {
     child_alloc.x = alloc.x;
     child_alloc.width = alloc.width;
 
-    if (max_size >= alloc.height) {
+    if (_max_size >= alloc.height) {
       // We don't cut away anything
       child_alloc.y = alloc.y;
       child_alloc.height = alloc.height;
     } else {
       child_alloc.y = alloc.y;// - (max_size - alloc.height);
-      child_alloc.height = max_size;
+      child_alloc.height = _max_size;
     }
 
 //    message ("x: %d, y: %d, w: %d, h: %d\n--------------",
