@@ -114,7 +114,6 @@ class ProfilePage : ScrollWidget, IPage {
           return false;
         }
         banner_image.scale += 0.25f * (-evt.delta_y);
-        banner_image.queue_resize ();
         return true;
       }
       return false;
