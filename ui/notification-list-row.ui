@@ -14,6 +14,8 @@
             <property name="can_focus">false</property>
             <property name="halign">start</property>
             <property name="use_markup">true</property>
+            <property name="track_visited_links">false</property>
+            <signal name="activate-link" handler="activate_link_cb" />
             <attributes>
               <attribute name="weight" value="bold" />
             </attributes>
@@ -31,6 +33,8 @@
             <property name="max_width_chars">40</property>
             <property name="use_markup">true</property>
             <property name="halign">start</property>
+            <property name="track_visited_links">false</property>
+            <signal name="activate-link" handler="activate_link_cb" />
             <style>
               <class name="dim-label" />
             </style>

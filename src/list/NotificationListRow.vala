@@ -37,4 +37,11 @@ class NotificationListRow : Gtk.ListBoxRow {
     heading_label.label = item.heading;
     body_label.label = item.body;
   }
+
+  [GtkCallback]
+  private bool activate_link_cb (string uri) {
+    var window = (MainWindow) this.get_toplevel ();
+
+    return TweetUtils.activate_link (uri, window);
+  }
 }
