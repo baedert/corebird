@@ -82,11 +82,14 @@ class UserEventReceiver : GLib.Object, IMessageReceiver {
         var target = root_node.get_object ().get_object_member ("target");
         var source = root_node.get_object ().get_object_member ("source");
         int64 id = source.get_int_member ("id");
-        string str = source.get_string_member ("screen_name");
+        var identity = new UserIdentity ();
+        identity.screen_name = source.get_string_member ("screen_name");
+        identity.user_id = source.get_int_member ("id");
+        identity.name = source.get_string_member ("name");
         account.notification_received (id,
                                        NotificationItem.TYPE_FOLLOWED,
                                        "",
-                                       str);
+                                       identity);
         break;
     }
   }

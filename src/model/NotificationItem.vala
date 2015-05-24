@@ -29,16 +29,25 @@ public class NotificationItem : GLib.Object {
 }
 
 
+// XXX This shouldn't really need to be a class...
+public class UserIdentity : GLib.Object {
+  public string name;
+  public string screen_name;
+  public int64  user_id;
+}
+
 public class MultipleUserNotificationItem : NotificationItem {
   public Gee.ArrayList<string> screen_names = new Gee.ArrayList<string> ();
+  public Gee.ArrayList<UserIdentity> identities = new Gee.ArrayList<UserIdentity> ();
   protected string[] headings = new string[4];
 
   public MultipleUserNotificationItem () {}
 
 
   protected string screen_name_link (int i) {
-    return "<span underline='none'><a href='foo'>@%s</a></span>"
-           .printf (this.screen_names.get (i));
+    return "<span underline='none'><a href='@%s'>@%s</a></span>"
+           .printf (this.identities.get (i).user_id.to_string (),
+                    this.identities.get (i).screen_name);
   }
 
   public virtual void build_text () {
@@ -81,13 +90,13 @@ public class FavNotificationItem : MultipleUserNotificationItem {
 
 public class FollowNotificationItem : MultipleUserNotificationItem {
   public override void build_text () {
-    assert (screen_names.size > 0);
+    assert (this.identities.size > 0);
 
-    this.heading = "%s followed you".printf (screen_name_link (screen_names.size - 1));
+    this.heading = "%s followed you".printf (screen_name_link (this.identities.size - 1));
     if (screen_names.size > 1) {
       var sb = new StringBuilder ();
       sb.append ("Also: ")
-        .append (screen_name_link (screen_names.size - 2));
+        .append (screen_name_link (this.identities.size - 2));
       for (int i = screen_names.size - 3; i >= 0; i --) {
         sb.append (",").append (screen_name_link (i));
       }

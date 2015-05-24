@@ -42,7 +42,7 @@ public class Account : GLib.Object {
   public signal void notification_received (int64  id,
                                             int    type,
                                             string body,
-                                            string str);
+                                            void * data);
 
   public Account (int64 id, string screen_name, string name) {
     this.id = id;

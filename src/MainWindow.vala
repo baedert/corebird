@@ -500,16 +500,16 @@ public class MainWindow : Gtk.ApplicationWindow {
     n_button.visible = visible;
   }
 
-  private void account_notification_cb (int64  id,
-                                        int    type,
-                                        string body,
-                                        string str) {
+  private void account_notification_cb (int64   id,
+                                        int     type,
+                                        string  body,
+                                        void *  data) {
     if (type == NotificationItem.TYPE_FAVORITE) {
-      n_model.add_fav_item (id, body, str);
+      n_model.add_fav_item (id, body, data);
     } else if (type == NotificationItem.TYPE_FOLLOWED) {
-      n_model.add_follow_item (id, str);
+      n_model.add_follow_item (id, data);
     } else if (type == NotificationItem.TYPE_RETWEET) {
-      n_model.add_rt_item (id, body, str);
+      n_model.add_rt_item (id, body, data);
     }
   }
 }

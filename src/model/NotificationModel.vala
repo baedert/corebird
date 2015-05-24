@@ -100,42 +100,42 @@ class NotificationModel : GLib.Object, GLib.ListModel {
 
   public void add_rt_item (int64  tweet_id,
                            string tweet_text,
-                           string screen_name) {
+                           void * data) {
     var item = new RTNotificationItem ();
     item.id = tweet_id;
     item.body = tweet_text;
     item.type = NotificationItem.TYPE_RETWEET;
-    item.screen_names.add (screen_name);
+    item.screen_names.add ((string)data);
     item.build_text ();
     add_multiuser_item (item,
-                        screen_name,
+                        (string)data,
                         tweet_text);
   }
 
   public void add_fav_item (int64  tweet_id,
                             string tweet_text,
-                            string screen_name) {
+                            void * data) {
     var item = new FavNotificationItem ();
     item.id = tweet_id;
     item.body = tweet_text;
     item.type = NotificationItem.TYPE_FAVORITE;
-    item.screen_names.add (screen_name);
+    item.screen_names.add ((string)data);
     item.build_text ();
     add_multiuser_item (item,
-                        screen_name,
+                        (string)data,
                         tweet_text);
 
   }
 
   public void add_follow_item (int64  user_id,
-                               string screen_name) {
+                               void * data) {
     var item = new FollowNotificationItem ();
     item.id = user_id;
     item.type = NotificationItem.TYPE_FOLLOWED;
-    item.screen_names.add (screen_name);
+    item.identities.add ((UserIdentity) data);
     item.build_text ();
     add_multiuser_item (item,
-                        screen_name,
+                        (string)data,
                         "");
   }
 
