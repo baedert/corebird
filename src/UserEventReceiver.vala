@@ -91,6 +91,30 @@ class UserEventReceiver : GLib.Object, IMessageReceiver {
                                        "",
                                        identity);
         break;
+
+      case StreamMessageType.TWEET:
+        Json.Object user_obj = root_node.get_object ().get_object_member ("user");
+        bool is_rt = root_node.get_object ().has_member ("retweeted_status");
+        int64 user_id = user_obj.get_int_member ("id");
+        if (user_id != account.id && is_rt) {
+          var rt = root_node.get_object ().get_object_member ("retweeted_status");
+          var rt_user = rt.get_object_member ("user");
+          int64 retweeted_user = rt_user.get_int_member ("id");
+          if (retweeted_user == account.id) {
+            int64 rt_id = rt.get_int_member ("id");
+            var user = root_node.get_object ().get_object_member ("user");
+            var identity = new UserIdentity ();
+            identity.user_id = user.get_int_member ("id");
+            identity.screen_name = user.get_string_member ("screen_name");
+            identity.name = user.get_string_member ("name");
+            string text = rt.get_string_member ("text"); // XXX Urls not replaced...
+            account.notification_received (rt_id,
+                                           NotificationItem.TYPE_RETWEET,
+                                           text,
+                                           identity);
+          }
+        }
+        break;
     }
   }
 
