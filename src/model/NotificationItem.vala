@@ -71,19 +71,19 @@ public class MultipleUserNotificationItem : NotificationItem {
 
 public class RTNotificationItem : MultipleUserNotificationItem {
   public RTNotificationItem () {
-    this.headings[0] = "%s retweeted you";
-    this.headings[1] = "%s and %s retweeted you";
-    this.headings[2] = "%s, %s and %s retweeted you";
-    this.headings[3] = "%s, %s and %d others retweeted you";
+    this.headings[0] = _("%s retweeted you");
+    this.headings[1] = _("%s and %s retweeted you");
+    this.headings[2] = _("%s, %s and %s retweeted you");
+    this.headings[3] = _("%s, %s and %d others retweeted you");
   }
 }
 
 public class FavNotificationItem : MultipleUserNotificationItem {
   public FavNotificationItem () {
-    this.headings[0] = "%s favorited one of your tweets";
-    this.headings[1] = "%s and %s favorited one of your tweets";
-    this.headings[2] = "%s, %s and %s favorited one of your tweets";
-    this.headings[3] = "%s, %s and %d others favorited one of your tweets";
+    this.headings[0] = _("%s favorited one of your tweets");
+    this.headings[1] = _("%s and %s favorited one of your tweets");
+    this.headings[2] = _("%s, %s and %s favorited one of your tweets");
+    this.headings[3] = _("%s, %s and %d others favorited one of your tweets");
   }
 }
 
@@ -91,10 +91,10 @@ public class FollowNotificationItem : MultipleUserNotificationItem {
   public override void build_text () {
     assert (this.identities.size > 0);
 
-    this.heading = "%s followed you".printf (screen_name_link (this.identities.size - 1));
+    this.heading = _("%s followed you").printf (screen_name_link (this.identities.size - 1));
     if (identities.size > 1) {
       var sb = new StringBuilder ();
-      sb.append ("Also: ")
+      sb.append (_("Also: "))
         .append (screen_name_link (this.identities.size - 2));
       for (int i = identities.size - 3; i >= 0; i --) {
         sb.append (",").append (screen_name_link (i));
