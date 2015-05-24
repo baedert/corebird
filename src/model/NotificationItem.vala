@@ -97,7 +97,7 @@ public class FollowNotificationItem : MultipleUserNotificationItem {
       sb.append (_("Also: "))
         .append (screen_name_link (this.identities.size - 2));
       for (int i = identities.size - 3; i >= 0; i --) {
-        sb.append (",").append (screen_name_link (i));
+        sb.append (", ").append (screen_name_link (i));
       }
 
       this.body = sb.str;
