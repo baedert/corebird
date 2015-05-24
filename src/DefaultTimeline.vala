@@ -15,12 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
-  XXX We are tracking min_id and max_id here AGAIN, even though we already
-  do that in TweetModel. We are still adding raw Widgets in HomeTimeline
-  because we need to scroll down, so the values in our TweetModel aren't always
-  100% correct.
- */
 public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   protected bool initialized = false;
   public int id                          { get; set; }
