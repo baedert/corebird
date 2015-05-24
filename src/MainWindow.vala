@@ -131,23 +131,26 @@ public class MainWindow : Gtk.ApplicationWindow {
         () => {main_widget.switch_page (Page.NEXT); return true;});
     ag.connect (Gdk.Key.F5, 0, Gtk.AccelFlags.LOCKED,
                 () => {
+                var ident = new UserIdentity();
                   n_model.add_fav_item (15,
                                         "foobar bla bla bla bal bla bla bla bla bla bla bla blb a bla blalb",
-                                        "faver");
+                                        ident);
                   return true;
                 });
 
     ag.connect (Gdk.Key.F6, 0, Gtk.AccelFlags.LOCKED,
                 () => {
+                var ident = new UserIdentity();
                   n_model.add_rt_item (15,
                                        "some random tweet!asdfsadfsdafsda f sda fsda f sdaf sda fsda f afa ",
-                                       "foobar");
+                                       ident);
                   return true;
                 });
 
     ag.connect (Gdk.Key.F7, 0, Gtk.AccelFlags.LOCKED,
                 () => {
-                  n_model.add_follow_item (15, "supafollowa");
+                var ident = new UserIdentity();
+                  n_model.add_follow_item (15, ident);
                   return true;
                 });
 
@@ -500,16 +503,16 @@ public class MainWindow : Gtk.ApplicationWindow {
     n_button.visible = visible;
   }
 
-  private void account_notification_cb (int64   id,
-                                        int     type,
-                                        string  body,
-                                        void *  data) {
+  private void account_notification_cb (int64        id,
+                                        int          type,
+                                        string       body,
+                                        UserIdentity user) {
     if (type == NotificationItem.TYPE_FAVORITE) {
-      n_model.add_fav_item (id, body, data);
+      n_model.add_fav_item (id, body, user);
     } else if (type == NotificationItem.TYPE_FOLLOWED) {
-      n_model.add_follow_item (id, data);
+      n_model.add_follow_item (id, user);
     } else if (type == NotificationItem.TYPE_RETWEET) {
-      n_model.add_rt_item (id, body, data);
+      n_model.add_rt_item (id, body, user);
     }
   }
 }

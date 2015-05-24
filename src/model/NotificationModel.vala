@@ -76,13 +76,13 @@ class NotificationModel : GLib.Object, GLib.ListModel {
 
 
   private void add_multiuser_item (MultipleUserNotificationItem item,
-                                   string                       screen_name,
+                                   UserIdentity                 identity,
                                    string                       body) {
     for (int i = 0; i < n_items; i ++) {
       if (items[i].type == item.type &&
           items[i].id   == item.id) {
         var rt_n = (MultipleUserNotificationItem) (items[i]);
-        rt_n.screen_names.add (screen_name);
+        rt_n.identities.add (identity);
         rt_n.body = body;
         rt_n.build_text ();
 
@@ -98,44 +98,44 @@ class NotificationModel : GLib.Object, GLib.ListModel {
     this.prepend (item);
   }
 
-  public void add_rt_item (int64  tweet_id,
-                           string tweet_text,
-                           void * data) {
+  public void add_rt_item (int64        tweet_id,
+                           string       tweet_text,
+                           UserIdentity user) {
     var item = new RTNotificationItem ();
     item.id = tweet_id;
     item.body = tweet_text;
     item.type = NotificationItem.TYPE_RETWEET;
-    item.screen_names.add ((string)data);
+    item.identities.add (user);
     item.build_text ();
     add_multiuser_item (item,
-                        (string)data,
+                        user,
                         tweet_text);
   }
 
-  public void add_fav_item (int64  tweet_id,
-                            string tweet_text,
-                            void * data) {
+  public void add_fav_item (int64        tweet_id,
+                            string       tweet_text,
+                            UserIdentity user) {
     var item = new FavNotificationItem ();
     item.id = tweet_id;
     item.body = tweet_text;
     item.type = NotificationItem.TYPE_FAVORITE;
-    item.screen_names.add ((string)data);
+    item.identities.add (user);
     item.build_text ();
     add_multiuser_item (item,
-                        (string)data,
+                        user,
                         tweet_text);
 
   }
 
-  public void add_follow_item (int64  user_id,
-                               void * data) {
+  public void add_follow_item (int64         user_id,
+                               UserIdentity user) {
     var item = new FollowNotificationItem ();
     item.id = user_id;
     item.type = NotificationItem.TYPE_FOLLOWED;
-    item.identities.add ((UserIdentity) data);
+    item.identities.add (user);
     item.build_text ();
     add_multiuser_item (item,
-                        (string)data,
+                        user,
                         "");
   }
 

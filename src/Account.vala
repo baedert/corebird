@@ -39,10 +39,10 @@ public class Account : GLib.Object {
   public Gee.ArrayList<Filter> filters;
   public signal void info_changed (string screen_name, string name,
                                    Gdk.Pixbuf avatar_small, Gdk.Pixbuf avatar);
-  public signal void notification_received (int64  id,
-                                            int    type,
-                                            string body,
-                                            void * data);
+  public signal void notification_received (int64        id,
+                                            int          type,
+                                            string       body,
+                                            UserIdentity user);
 
   public Account (int64 id, string screen_name, string name) {
     this.id = id;
