@@ -145,7 +145,7 @@
           </object>
         </child>
         <child>
-          <object class="GtkButton" id="n_button">
+          <object class="BadgeButton" id="n_button">
             <property name="visible">true</property>
             <property name="can_focus">true</property>
             <signal name="clicked" handler="n_button_clicked_cb" />

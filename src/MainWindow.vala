@@ -45,7 +45,7 @@ public class MainWindow : Gtk.ApplicationWindow {
   [GtkChild]
   private Gtk.ListBox n_listbox;
   [GtkChild]
-  private Gtk.Button n_button;
+  private BadgeButton n_button;
   private NotificationModel n_model = new NotificationModel ();
 
   private Gtk.MenuButton app_menu_button = null;
