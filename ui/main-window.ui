@@ -148,6 +148,7 @@
           <object class="BadgeButton" id="n_button">
             <property name="visible">true</property>
             <property name="can_focus">true</property>
+            <property name="tooltip_text" translatable="yes">Show notifications (no unread)</property>
             <signal name="clicked" handler="n_button_clicked_cb" />
             <child>
               <object class="GtkImage">
