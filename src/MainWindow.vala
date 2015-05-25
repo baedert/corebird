@@ -52,6 +52,7 @@ public class MainWindow : Gtk.ApplicationWindow {
   public MainWidget main_widget;
   public unowned Account? account  {public get; private set;}
   private ComposeTweetWindow? compose_tweet_window = null;
+  private int unread_account_notifications = 0;
 
   public int cur_page_id {
     get {
@@ -496,6 +497,8 @@ public class MainWindow : Gtk.ApplicationWindow {
   [GtkCallback]
   private void n_button_clicked_cb () {
     n_popover.show ();
+    n_button.show_badge = false;
+    n_button.tooltip_text = _("Show notifications (no unread)");
   }
 
   private void set_header_button_visibility (bool visible) {
@@ -514,5 +517,12 @@ public class MainWindow : Gtk.ApplicationWindow {
     } else if (type == NotificationItem.TYPE_RETWEET) {
       n_model.add_rt_item (id, body, user);
     }
+
+    this.unread_account_notifications ++;
+    n_button.show_badge = true;
+    n_button.tooltip_text = ngettext ("Show notifications (%d unread)",
+                                      "Show notifications (%d unread)",
+                                      unread_account_notifications)
+                                      .printf (unread_account_notifications);
   }
 }
