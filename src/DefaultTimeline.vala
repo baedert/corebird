@@ -23,7 +23,6 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     set {
       _unread_count = value;
       tool_button.show_badge = (_unread_count > 0);
-      tool_button.queue_draw();
     }
     get {
       return this._unread_count;

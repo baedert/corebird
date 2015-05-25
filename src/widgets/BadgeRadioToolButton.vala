@@ -18,7 +18,17 @@
 
 public class BadgeRadioToolButton : Gtk.RadioButton {
   private static const int BADGE_SIZE = 10;
-  public bool show_badge{ get; set; default = false;}
+  private bool _show_badge = false;
+  public bool show_badge {
+    get {
+      return this._show_badge;
+    }
+    set {
+      this._show_badge = value;
+      this.queue_draw ();
+    }
+  }
+
 
   public BadgeRadioToolButton (Gtk.RadioButton group, string icon_name, string text="") {
     GLib.Object (group: group);
@@ -38,7 +48,7 @@ public class BadgeRadioToolButton : Gtk.RadioButton {
   public override bool draw (Cairo.Context c){
     var context = this.get_style_context ();
     base.draw (c);
-    if (!show_badge)
+    if (!_show_badge)
       return false;
 
 
