@@ -173,6 +173,7 @@ class AccountDialog : Gtk.Dialog {
     if (new_banner != null) {
       debug ("Updating banner...");
       uint8[] buffer;
+      // XXX With large banners, this can be too slow...
       try {
         new_banner.save_to_buffer (out buffer, "png", null);
       } catch (GLib.Error e) {
