@@ -65,7 +65,7 @@ public class TweetListBox : Gtk.ListBox {
                                     (MainWindow) get_toplevel (),
                                     this.account);
       delta_updater.add (row);
-      row.show ();
+      row.fade_in ();
       return row;
     });
   }
