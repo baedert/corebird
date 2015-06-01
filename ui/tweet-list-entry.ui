@@ -275,7 +275,8 @@
                 <property name="wrap">True</property>
                 <property name="wrap_mode">word-char</property>
                 <property name="track_visited_links">false</property>
-                <signal name="activate-link" handler="link_activated_cb" swapped="no"/>
+                <signal name="activate-link" handler="link_activated_cb" />
+                <signal name="populate-popup" handler="populate_popup_cb" />
               </object>
               <packing>
                 <property name="left_attach">1</property>

@@ -321,6 +321,20 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     return TweetUtils.activate_link (uri, window);
   }
 
+  [GtkCallback]
+  private void populate_popup_cb (Gtk.Label source, Gtk.Menu menu) {
+    var link_text = source.get_current_uri ();
+    if (link_text.has_prefix ("#")) {
+      var item = new Gtk.MenuItem.with_label (_("Block %s").printf (link_text));
+      item.show ();
+      item.activate.connect (() => {
+        var f = Utils.create_persistent_filter (link_text, account);
+        window.rerun_filters ();
+      });
+      menu.add (item);
+    }
+  }
+
   private void media_invalid_cb () {
     TransformFlags flags = Settings.get_text_transform_flags ()
                            & ~TransformFlags.REMOVE_MEDIA_LINKS;
