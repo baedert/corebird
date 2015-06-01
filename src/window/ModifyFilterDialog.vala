@@ -83,12 +83,13 @@ class ModifyFilterDialog : Gtk.Dialog {
   private void save_filter () {
     string content = regex_entry.text;
     if (this.filter == null) {
-      int id = (int)account.db.insert ("filters")
-                               .val ("content", content)
-                               .run();
-      Filter f = new Filter (content);
-      f.id = id;
-      account.add_filter (f);
+      Filter f = Utils.create_persistent_filter (content, account);
+      //int id = (int)account.db.insert ("filters")
+                               //.val ("content", content)
+                               //.run();
+      //Filter f = new Filter (content);
+      //f.id = id;
+      //account.add_filter (f);
       filter_added (f, true);
     } else {
       /* We update the existing filter */

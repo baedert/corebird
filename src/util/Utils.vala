@@ -452,4 +452,15 @@ namespace Utils {
     Settings.get ().set_strv ("startup-accounts", new_startup_accounts);
   }
 
+
+  public Filter create_persistent_filter (string content, Account account) {
+    int id = (int)account.db.insert ("filters")
+                               .val ("content", content)
+                               .run();
+    Filter f = new Filter (content);
+    f.id = id;
+    account.add_filter (f);
+
+    return f;
+  }
 }
