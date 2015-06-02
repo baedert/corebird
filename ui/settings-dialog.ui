@@ -459,7 +459,7 @@
                   <object class="GtkListBox" id="snippet_list_box">
                     <property name="visible">true</property>
                     <property name="selection_mode">none</property>
-
+                    <signal name="row-activated" handler="snippet_entry_activated_cb" />
                   </object>
                 </child>
               </object>

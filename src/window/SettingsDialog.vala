@@ -139,7 +139,21 @@ class SettingsDialog : Gtk.Window {
   [GtkCallback]
   private bool window_destroy_cb () {
     save_geometry ();
+    save_snippets ();
     return false;
+  }
+
+  [GtkCallback]
+  private void snippet_entry_activated_cb () {
+    var d = new ModifySnippetDialog ("foo", "bar");
+
+    d.set_transient_for (this);
+    d.modal = true;
+    d.show ();
+  }
+
+  private void save_snippets () {
+
   }
 
   private void load_geometry () {
