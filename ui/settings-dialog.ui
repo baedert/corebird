@@ -444,6 +444,48 @@
             <property name="name">tweet</property>
           </packing>
         </child>
+
+        <child>
+          <object class="GtkBox">
+            <property name="visible">true</property>
+            <property name="orientation">vertical</property>
+
+            <child>
+              <object class="GtkScrolledWindow">
+                <property name="visible">true</property>
+                <property name="vexpand">true</property>
+                <property name="hexpand">true</property>
+                <child>
+                  <object class="GtkListBox" id="snippet_list_box">
+                    <property name="visible">true</property>
+                    <property name="selection_mode">none</property>
+
+                  </object>
+                </child>
+              </object>
+            </child>
+
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">true</property>
+                <property name="label" translatable="yes">Snippets allow you to to THINGS!</property>
+                <property name="halign">center</property>
+                <property name="margin">12</property>
+                <property name="wrap">true</property>
+                <style>
+                  <class name="dim-label" />
+                </style>
+              </object>
+            </child>
+
+          </object>
+          <packing>
+            <property name="title" translatable="yes">Snippets</property>
+            <property name="name">snippets</property>
+          </packing>
+        </child>
+
+
       </object>
     </child>
   </template>
