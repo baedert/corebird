@@ -23,7 +23,6 @@ public class SnippetManager : GLib.Object {
 
 
   public SnippetManager () {
-    snippets.set ("f", "foobar");
   }
 
   private void load_snippets () {
@@ -58,6 +57,15 @@ public class SnippetManager : GLib.Object {
   }
 
   public void query_snippets (SnippetQueryFunc func) {
+    if (!inited) load_snippets ();
 
+    foreach (var entry in this.snippets.entries) {
+      func (entry.key, entry.value);
+    }
+  }
+
+  public int n_snippets () {
+    if (!inited) load_snippets ();
+    return this.snippets.size;
   }
 }
