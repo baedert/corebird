@@ -96,8 +96,8 @@ class CompletionTextView : Gtk.TextView {
     return true;
   }
 
-  private bool snippets_configured () {
-    return true;
+  private inline bool snippets_configured () {
+    return Corebird.snippet_manager.n_snippets () > 0;
   }
 
   public bool key_press_event_cb (Gdk.EventKey evt) {
