@@ -72,8 +72,40 @@ class CompletionTextView : Gtk.TextView {
     this.account = account;
   }
 
+  private bool insert_snippet () {
+    Gtk.TextIter cursor_word_start;
+    Gtk.TextIter cursor_word_end;
+    string cursor_word = get_cursor_word (out cursor_word_start,
+                                          out cursor_word_end);
+    string? snippet = Corebird.snippet_manager.get_snippet (cursor_word);
+
+    if (snippet == null)
+      return false;
+
+    Gtk.TextIter start_word_iter;
+
+    this.buffer.freeze_notify ();
+    this.buffer.delete_range (cursor_word_start, cursor_word_end);
+
+    Gtk.TextMark cursor_mark = this.buffer.get_insert ();
+    this.buffer.get_iter_at_mark (out start_word_iter, cursor_mark);
+
+    this.buffer.insert_text (ref start_word_iter, snippet, snippet.length);
+    this.buffer.thaw_notify ();
+
+    return true;
+  }
+
+  private bool snippets_configured () {
+    return true;
+  }
 
   public bool key_press_event_cb (Gdk.EventKey evt) {
+
+    if (evt.keyval == Gdk.Key.Tab && snippets_configured ()) {
+      return insert_snippet ();
+    }
+
     /* If we are not in 'completion mode' atm, just back out. */
     if (!completion_window.visible)
       return false;
@@ -112,6 +144,7 @@ class CompletionTextView : Gtk.TextView {
       completion_window.hide ();
       return true;
     }
+
 
     return false;
   }
