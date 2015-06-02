@@ -20,7 +20,6 @@ class SnippetListEntry : Gtk.ListBoxRow {
   private Gtk.Label value_label;
 
   public SnippetListEntry (string key, string value) {
-    this.activatable = false;
     var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
     box.homogeneous = true;
     box.margin = 6;
