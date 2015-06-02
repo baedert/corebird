@@ -85,7 +85,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   }
   public string? notification_id = null;
   private weak Account account;
-  private weak MainWindow window;
+  private weak MainWindow main_window;
   public Tweet tweet;
   private bool values_set = false;
   private bool delete_first_activated = false;
@@ -98,10 +98,10 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   [Signal (action = true)]
   private signal void delete_tweet ();
 
-  public TweetListEntry (owned Tweet tweet, MainWindow? window, Account account) {
+  public TweetListEntry (owned Tweet tweet, MainWindow? main_window, Account account) {
     this.account = account;
     this.tweet = tweet;
-    this.window = window;
+    this.main_window = main_window;
 
     name_button.set_markup (tweet.user_name);
     screen_name_label.label = "@"+tweet.screen_name;
@@ -142,7 +142,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       mm_widget.set_all_media (tweet.medias);
       mm_widget.media_clicked.connect (media_clicked_cb);
       mm_widget.media_invalid.connect (media_invalid_cb);
-      mm_widget.window = window;
+      mm_widget.window = main_window;
     } else
       grid.remove (mm_widget);
 
@@ -194,7 +194,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   }
 
   private void media_clicked_cb (Media m, int index) {
-    TweetUtils.handle_media_click (this.tweet, this.window, index);
+    TweetUtils.handle_media_click (this.tweet, this.main_window, index);
   }
 
   private void delete_tweet_activated () {
@@ -280,30 +280,30 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     var bundle = new Bundle ();
     bundle.put_int64 ("user_id", tweet.user_id);
     bundle.put_string ("screen_name", tweet.screen_name);
-    window.main_widget.switch_page (Page.PROFILE, bundle);
+    main_window.main_widget.switch_page (Page.PROFILE, bundle);
   }
   [GtkCallback]
   private void reply_button_clicked_cb () {
-    ComposeTweetWindow ctw = new ComposeTweetWindow(this.window, this.account, this.tweet,
-                                                    ComposeTweetWindow.Mode.REPLY,
-                                                    this.window.get_application ());
+    ComposeTweetWindow ctw = new ComposeTweetWindow (this.main_window, this.account, this.tweet,
+                                                     ComposeTweetWindow.Mode.REPLY,
+                                                     this.main_window.get_application ());
     ctw.show ();
     if (shows_actions)
       toggle_mode ();
   }
 
   private void quote_activated () {
-    ComposeTweetWindow ctw = new ComposeTweetWindow(this.window, this.account, this.tweet,
-                                                    ComposeTweetWindow.Mode.QUOTE,
-                                                    this.window.get_application ());
+    ComposeTweetWindow ctw = new ComposeTweetWindow (this.main_window, this.account, this.tweet,
+                                                     ComposeTweetWindow.Mode.QUOTE,
+                                                     this.main_window.get_application ());
     ctw.show ();
     toggle_mode ();
   }
 
   private void reply_tweet_activated () {
-    ComposeTweetWindow ctw = new ComposeTweetWindow(this.window, this.account, this.tweet,
-                                                    ComposeTweetWindow.Mode.REPLY,
-                                                    this.window.get_application ());
+    ComposeTweetWindow ctw = new ComposeTweetWindow (this.main_window, this.account, this.tweet,
+                                                     ComposeTweetWindow.Mode.REPLY,
+                                                     this.main_window.get_application ());
     ctw.show ();
   }
 
@@ -318,7 +318,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     if (this._read_only) {
       return false;
     }
-    return TweetUtils.activate_link (uri, window);
+    return TweetUtils.activate_link (uri, main_window);
   }
 
   [GtkCallback]
@@ -328,8 +328,8 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       var item = new Gtk.MenuItem.with_label (_("Block %s").printf (link_text));
       item.show ();
       item.activate.connect (() => {
-        var f = Utils.create_persistent_filter (link_text, account);
-        window.rerun_filters ();
+        Utils.create_persistent_filter (link_text, account);
+        main_window.rerun_filters ();
       });
       menu.add (item);
     }
