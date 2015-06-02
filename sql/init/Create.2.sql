@@ -1,0 +1,9 @@
+
+PRAGMA user_version = 2;
+
+CREATE TABLE IF NOT EXISTS `snippets`(
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  key VARCHAR(20),
+  value VARCHAR(200)
+);
+
