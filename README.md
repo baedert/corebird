@@ -2,7 +2,7 @@
 
 This is the readme for the current *development version*. If you're looking for one of the stable releases, check the "releases" link at the top of this page.
 
-[![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=baedert&url=http://github.com/baedert/corebirdL&title=corebird&language=vala&tags=github&category=software)
+[![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=baedert&url=http://github.com/baedert/corebird&title=corebird&language=vala&tags=github&category=software)
 
 ## Shortcuts
 
