@@ -96,6 +96,7 @@ cb_sources = \
 			window/AccountDialog.vala \
 			window/MediaDialog.vala \
 			window/ImageCropDialog.vala \
+			window/ModifySnippetDialog.vala \
 			sql/Database.vala \
 			sql/Statement.vala \
 			sql/UpdateStatement.vala \
