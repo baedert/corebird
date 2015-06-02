@@ -39,6 +39,8 @@ class SettingsDialog : Gtk.Window {
   private Gtk.Switch remove_trailing_hashtags_switch;
   [GtkChild]
   private Gtk.Switch remove_media_links_switch;
+  [GtkChild]
+  private Gtk.ListBox snippet_list_box;
 
   private TweetListEntry sample_tweet_entry;
 
@@ -122,6 +124,14 @@ class SettingsDialog : Gtk.Window {
                                               text_transform_flags);
     remove_media_links_switch.active = (TransformFlags.REMOVE_MEDIA_LINKS in text_transform_flags);
 
+
+    // Fill snippet list box
+    Corebird.snippet_manager.query_snippets ((key, value) => {
+      var e = new SnippetListEntry (key, value);
+      e.show_all ();
+      snippet_list_box.add (e);
+    });
+
     add_accels ();
     load_geometry ();
   }
@@ -176,6 +186,9 @@ class SettingsDialog : Gtk.Window {
         () => {main_stack.visible_child_name = "notifications"; return true;});
     ag.connect (Gdk.Key.@3, Gdk.ModifierType.MOD1_MASK, Gtk.AccelFlags.LOCKED,
         () => {main_stack.visible_child_name = "tweet"; return true;});
+    ag.connect (Gdk.Key.@4, Gdk.ModifierType.MOD1_MASK, Gtk.AccelFlags.LOCKED,
+        () => {main_stack.visible_child_name = "snippets"; return true;});
+
 
     this.add_accel_group(ag);
   }
