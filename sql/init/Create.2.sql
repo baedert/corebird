@@ -7,3 +7,6 @@ CREATE TABLE IF NOT EXISTS `snippets`(
   value VARCHAR(200)
 );
 
+INSERT INTO `snippets` (key, value) VALUES ('dealwithit', '(•_•) ( •_•)>⌐■-■ (⌐■_■)');
+INSERT INTO `snippets` (key, value) VALUES ('tableflip', '(╯°□°）╯︵ ┻━┻');
+
