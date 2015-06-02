@@ -20,6 +20,7 @@ public class Corebird : Gtk.Application {
   // TODO: Is the static here needed?
   public static Sql.Database db;
   public static GLib.Menu account_menu;
+  public static SnippetManager snippet_manager;
   public signal void account_added (Account acc);
   public signal void account_removed (Account acc);
   public signal void account_window_changed (int64? old_id, int64 new_id);
@@ -40,7 +41,7 @@ public class Corebird : Gtk.Application {
     GLib.Object(application_id:   "org.baedert.corebird",
                 flags:            ApplicationFlags.HANDLES_COMMAND_LINE);
                 //register_session: true);
-    this.set_inactivity_timeout (500);
+    snippet_manager = new SnippetManager ();
   }
 
   public override int command_line (ApplicationCommandLine cmd) {
