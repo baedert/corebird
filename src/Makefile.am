@@ -87,6 +87,7 @@ cb_sources = \
 			list/UserFilterEntry.vala \
 			list/AddListEntry.vala \
 			list/ProgressEntry.vala \
+			list/SnippetListEntry.vala \
 			window/ComposeTweetWindow.vala \
 			window/SettingsDialog.vala \
 			window/UserListDialog.vala \
