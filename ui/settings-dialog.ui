@@ -460,6 +460,35 @@
                     <property name="visible">true</property>
                     <property name="selection_mode">none</property>
                     <signal name="row-activated" handler="snippet_entry_activated_cb" />
+                    <child type="placeholder">
+                      <object class="GtkBox">
+                        <property name="visible">true</property>
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">12</property>
+                        <property name="valign">center</property>
+                        <property name="halign">center</property>
+
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="visible">true</property>
+                            <property name="label" translatable="yes">No snippets configured.</property>
+                            <style>
+                              <class name="dim-label" />
+                            </style>
+                          </object>
+                        </child>
+
+                        <child>
+                          <object class="GtkButton">
+                            <property name="visible">true</property>
+                            <property name="label" translatable="yes">Add Snippet</property>
+                            <signal name="clicked" handler="add_snippet_button_clicked_cb" />
+                          </object>
+                        </child>
+
+
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>
