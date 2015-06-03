@@ -31,8 +31,6 @@
     <child internal-child="vbox">
       <object class="GtkBox">
         <property name="visible">true</property>
-
-
         <child>
           <object class="GtkGrid">
             <property name="visible">true</property>
@@ -58,7 +56,8 @@
             <child>
               <object class="GtkEntry" id="key_entry">
                 <property name="visible">true</property>
-                <property name="halign">start</property>
+                <property name="halign">fill</property>
+                <property name="hexpand">true</property>
                 <property name="max_length">20</property>
               </object>
               <packing>
@@ -86,7 +85,8 @@
             <child>
               <object class="GtkEntry" id="value_entry">
                 <property name="visible">true</property>
-                <property name="halign">start</property>
+                <property name="halign">fill</property>
+                <property name="hexpand">true</property>
                 <property name="max_length">200</property>
               </object>
               <packing>
@@ -94,7 +94,6 @@
                 <property name="top_attach">1</property>
               </packing>
             </child>
-
 
             <child>
               <object class="GtkLabel" id="error_label">
@@ -111,8 +110,6 @@
 
           </object>
         </child>
-
-
       </object>
     </child>
 
