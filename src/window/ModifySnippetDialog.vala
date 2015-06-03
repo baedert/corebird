@@ -23,6 +23,8 @@ class ModifySnippetDialog : Gtk.Dialog {
   private Gtk.Entry value_entry;
   [GtkChild]
   private Gtk.Label error_label;
+  [GtkChild]
+  private Gtk.Button save_button;
   private string? old_key = null;
 
   public signal void snippet_updated (string? old_key, string key, string value);
@@ -36,6 +38,7 @@ class ModifySnippetDialog : Gtk.Dialog {
       this.old_key = key;
       this.key_entry.text = key;
       this.value_entry.text = value;
+      this.title = _("Modify Snippet");
     }
 
     key_entry.buffer.inserted_text.connect (validate_input);
@@ -52,16 +55,19 @@ class ModifySnippetDialog : Gtk.Dialog {
     key_entry.get_style_context ().remove_class ("error");
     value_entry.get_style_context ().remove_class ("error");
     error_label.label = "";
+    save_button.sensitive = true;
 
     if (key == "") {
       error_label.label = _("Snippet can't be empty");
       key_entry.get_style_context ().add_class ("error");
+      save_button.sensitive = false;
       return;
     }
 
     if (value == "") {
       error_label.label = _("Replacement can't be empty");
       value_entry.get_style_context ().add_class ("error");
+      save_button.sensitive = false;
       return;
     }
 
@@ -69,6 +75,14 @@ class ModifySnippetDialog : Gtk.Dialog {
         key.contains ("\t")) {
       error_label.label = _("Snippet may not contain whitespace");
       key_entry.get_style_context ().add_class ("error");
+      save_button.sensitive = false;
+      return;
+    }
+
+    if (Corebird.snippet_manager.get_snippet (key) != null) {
+      error_label.label = _("Snippet already exists");
+      save_button.sensitive = false;
+      return;
     }
 
   }
