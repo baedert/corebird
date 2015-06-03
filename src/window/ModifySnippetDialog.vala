@@ -37,10 +37,40 @@ class ModifySnippetDialog : Gtk.Dialog {
       this.key_entry.text = key;
       this.value_entry.text = value;
     }
+
+    key_entry.buffer.inserted_text.connect (validate_input);
+    key_entry.buffer.deleted_text.connect (validate_input);
+    value_entry.buffer.inserted_text.connect (validate_input);
+    value_entry.buffer.deleted_text.connect (validate_input);
+
   }
 
   private void validate_input () {
-    // Validate both key and value entry
+    string key = key_entry.text.strip ();
+    string value = value_entry.text.strip ();
+
+    key_entry.get_style_context ().remove_class ("error");
+    value_entry.get_style_context ().remove_class ("error");
+    error_label.label = "";
+
+    if (key == "") {
+      error_label.label = _("Snippet can't be empty");
+      key_entry.get_style_context ().add_class ("error");
+      return;
+    }
+
+    if (value == "") {
+      error_label.label = _("Replacement can't be empty");
+      value_entry.get_style_context ().add_class ("error");
+      return;
+    }
+
+    if (key.contains (" ")  ||
+        key.contains ("\t")) {
+      error_label.label = _("Snippet may not contain whitespace");
+      key_entry.get_style_context ().add_class ("error");
+    }
+
   }
 
 
