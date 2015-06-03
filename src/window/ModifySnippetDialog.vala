@@ -23,6 +23,9 @@ class ModifySnippetDialog : Gtk.Dialog {
   private Gtk.Entry value_entry;
   [GtkChild]
   private Gtk.Label error_label;
+  private string? old_key = null;
+
+  public signal void snippet_updated (string? old_key, string key, string value);
 
   public ModifySnippetDialog (string? key = null, string? value = null) {
     GLib.Object (use_header_bar: Gtk.Settings.get_default ().gtk_dialogs_use_header ? 1 : 0);
@@ -30,17 +33,29 @@ class ModifySnippetDialog : Gtk.Dialog {
     if (key != null) {
       assert (value != null);
 
-      key_entry.text = key;
-      value_entry.text = value;
+      this.old_key = key;
+      this.key_entry.text = key;
+      this.value_entry.text = value;
     }
+  }
+
+  private void validate_input () {
+    // Validate both key and value entry
   }
 
 
   private void save_snippet () {
+    string new_value = this.value_entry.text;
+    string new_key   = this.key_entry.text;
 
+    if (this.old_key != null) {
+      Corebird.snippet_manager.set_snippet (old_key, new_key, new_value);
+    } else {
+      Corebird.snippet_manager.insert_snippet (new_key, new_value);
+    }
+
+    this.snippet_updated (old_key, new_key, new_value);
   }
-
-
 
   public override void response (int response_id) {
     if (response_id == Gtk.ResponseType.CANCEL) {

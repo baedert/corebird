@@ -139,21 +139,34 @@ class SettingsDialog : Gtk.Window {
   [GtkCallback]
   private bool window_destroy_cb () {
     save_geometry ();
-    save_snippets ();
     return false;
   }
 
   [GtkCallback]
-  private void snippet_entry_activated_cb () {
-    var d = new ModifySnippetDialog ("foo", "bar");
+  private void snippet_entry_activated_cb (Gtk.ListBoxRow row) {
+    var snippet_row = (SnippetListEntry) row;
+    var d = new ModifySnippetDialog (snippet_row.key,
+                                     snippet_row.value);
+    d.snippet_updated.connect ((old_key, key, value) => {
+      if (old_key == null) {
+        var e = new SnippetListEntry (key, value);
+        e.show_all ();
+        snippet_list_box.add (e);
+      } else {
+        foreach (var _row in snippet_list_box.get_children ()) {
+          var srow = (SnippetListEntry) _row;
+          if (srow.key == old_key) {
+            srow.key = key;
+            srow.value = value;
+            break;
+          }
+        }
+      }
+    });
 
     d.set_transient_for (this);
     d.modal = true;
     d.show ();
-  }
-
-  private void save_snippets () {
-
   }
 
   private void load_geometry () {
