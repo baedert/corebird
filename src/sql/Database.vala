@@ -46,7 +46,7 @@ public class Database {
     while (FileUtils.test (next_version_file, FileTest.EXISTS)) {
       string sql_content;
       try {
-        debug ("Applyling file '%s'", next_version_file);
+        debug ("Applying file '%s'", next_version_file);
         FileUtils.get_contents (next_version_file, out sql_content);
       } catch (GLib.FileError e) {
         critical (e.message);
