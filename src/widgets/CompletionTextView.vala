@@ -77,10 +77,12 @@ class CompletionTextView : Gtk.TextView {
     Gtk.TextIter cursor_word_end;
     string cursor_word = get_cursor_word (out cursor_word_start,
                                           out cursor_word_end);
-    string? snippet = Corebird.snippet_manager.get_snippet (cursor_word);
+    string? snippet = Corebird.snippet_manager.get_snippet (cursor_word.strip ());
 
-    if (snippet == null)
+    if (snippet == null) {
+      debug ("No snippet for cursor_word '%s' found.", cursor_word);
       return false;
+    }
 
     Gtk.TextIter start_word_iter;
 
