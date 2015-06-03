@@ -39,8 +39,6 @@ class SnippetListEntry : Gtk.ListBoxRow {
   public SnippetListEntry (string key, string value) {
     this.revealer = new Gtk.Revealer ();
     revealer.reveal_child = true;
-    var stack = new Gtk.Stack ();
-    stack.transition_type = Gtk.StackTransitionType.SLIDE_UP_DOWN;
     var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 12);
     box.margin = 6;
 
@@ -57,42 +55,13 @@ class SnippetListEntry : Gtk.ListBoxRow {
     value_label.ellipsize = Pango.EllipsizeMode.END;
     box.add (value_label);
 
-    var delete_button = new Gtk.Button.from_icon_name ("list-remove-symbolic",
-                                                       Gtk.IconSize.MENU);
-    delete_button.clicked.connect (() => {
-      stack.visible_child_name = "delete";
-      this.activatable = false;
-    });
-    box.add (delete_button);
-    stack.add_named (box, "default");
-
-
-    var box2 = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 12);
-    box2.homogeneous = true;
-    box2.valign = Gtk.Align.CENTER;
-    var cancel_button = new Gtk.Button.with_label ("Cancel");
-    cancel_button.clicked.connect (() => {
-      stack.visible_child_name = "default";
-      this.activatable = true;
-    });
-    cancel_button.halign = Gtk.Align.END;
-    box2.add (cancel_button);
-
-    var real_delete_button = new Gtk.Button.with_label ("Delete");
-    real_delete_button.halign = Gtk.Align.START;
-    real_delete_button.get_style_context ().add_class ("destructive-action");
-    real_delete_button.clicked.connect (real_delete_snippet);
-    box2.add (real_delete_button);
-    stack.add_named (box2, "delete");
-
-    revealer.add (stack);
+    revealer.add (box);
     this.add (revealer);
   }
 
-  private void real_delete_snippet () {
+  public void reveal () {
     revealer.notify["child-revealed"].connect (() => {
       if (!revealer.child_revealed) {
-        Corebird.snippet_manager.remove_snippet (this.key);
         this.get_parent ().remove (this);
       }
     });

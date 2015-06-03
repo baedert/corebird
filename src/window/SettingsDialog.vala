@@ -163,7 +163,18 @@ class SettingsDialog : Gtk.Window {
     d.show ();
   }
 
-  private void snippet_updated_func (string? old_key, string key, string value) {
+  private void snippet_updated_func (string? old_key, string? key, string? value) {
+    if (old_key != null && key == null && value == null) {
+      foreach (var _row in snippet_list_box.get_children ()) {
+        var srow = (SnippetListEntry) _row;
+        if (srow.key == old_key) {
+          srow.reveal ();
+          break;
+        }
+      }
+      return;
+    }
+
     if (old_key == null) {
       var e = new SnippetListEntry (key, value);
       e.show_all ();
