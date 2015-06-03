@@ -41,6 +41,10 @@ class ModifySnippetDialog : Gtk.Dialog {
       this.title = _("Modify Snippet");
     }
 
+    // XXX Foobar! zomg<tab> comes up with no snippet because 'zomg ' is the cursor_word.
+    // XXX Inserting snippets
+    // XXX Deleting snippets
+
     key_entry.buffer.inserted_text.connect (validate_input);
     key_entry.buffer.deleted_text.connect (validate_input);
     value_entry.buffer.inserted_text.connect (validate_input);
