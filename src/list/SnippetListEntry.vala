@@ -93,6 +93,7 @@ class SnippetListEntry : Gtk.ListBoxRow {
     revealer.notify["child-revealed"].connect (() => {
       if (!revealer.child_revealed) {
         Corebird.snippet_manager.remove_snippet (this.key);
+        this.get_parent ().remove (this);
       }
     });
     revealer.reveal_child = false;
