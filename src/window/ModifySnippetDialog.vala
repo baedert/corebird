@@ -83,7 +83,8 @@ class ModifySnippetDialog : Gtk.Dialog {
       return;
     }
 
-    if (Corebird.snippet_manager.get_snippet (key) != null) {
+    if (Corebird.snippet_manager.get_snippet (key) != null &&
+        this.old_key == null) {
       error_label.label = _("Snippet already exists");
       save_button.sensitive = false;
       return;
