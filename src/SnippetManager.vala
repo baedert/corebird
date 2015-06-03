@@ -78,7 +78,7 @@ public class SnippetManager : GLib.Object {
     return this.snippets.size;
   }
 
-  public void set_snippet (string old_key, string key, string new_value) { // XXX Key may also change!
+  public void set_snippet (string old_key, string key, string new_value) {
     if (!inited) load_snippets ();
 
     if (!this.snippets.has_key (old_key)) {
