@@ -18,6 +18,18 @@
        </object>
     </child>
 
+
+
+    <!--<child type="action">-->
+      <!--<object class="GtkButton" id="delete_button">-->
+         <!--<property name="label" translatable="yes">Cancel</property>-->
+         <!--<property name="visible">True</property>-->
+         <!--<property name="can_focus">True</property>-->
+       <!--</object>-->
+    <!--</child>-->
+
+
+
     <child type="action">
       <object class="GtkButton" id="save_button">
         <property name="label" translatable="yes">Save</property>
@@ -104,6 +116,19 @@
               <packing>
                 <property name="left_attach">0</property>
                 <property name="top_attach">2</property>
+                <property name="width">2</property>
+              </packing>
+            </child>
+
+            <child>
+              <object class="GtkButton" id="delete_button">
+                <property name="visible">false</property>
+                <property name="label" translatable="yes">Delete</property>
+                <signal name="clicked" handler="delete_button_clicked_cb" />
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">3</property>
                 <property name="width">2</property>
               </packing>
             </child>

@@ -25,9 +25,11 @@ class ModifySnippetDialog : Gtk.Dialog {
   private Gtk.Label error_label;
   [GtkChild]
   private Gtk.Button save_button;
+  [GtkChild]
+  private Gtk.Button delete_button;
   private string? old_key = null;
 
-  public signal void snippet_updated (string? old_key, string key, string value);
+  public signal void snippet_updated (string? old_key, string? key, string? value);
 
   public ModifySnippetDialog (string? key = null, string? value = null) {
     GLib.Object (use_header_bar: Gtk.Settings.get_default ().gtk_dialogs_use_header ? 1 : 0);
@@ -38,6 +40,7 @@ class ModifySnippetDialog : Gtk.Dialog {
       this.old_key = key;
       this.key_entry.text = key;
       this.value_entry.text = value;
+      this.delete_button.show ();
       this.title = _("Modify Snippet");
     }
 
@@ -99,6 +102,15 @@ class ModifySnippetDialog : Gtk.Dialog {
     }
 
     this.snippet_updated (old_key, new_key, new_value);
+  }
+
+  [GtkCallback]
+  private void delete_button_clicked_cb () {
+    assert (this.old_key != null);
+    Corebird.snippet_manager.remove_snippet (this.old_key);
+
+    this.snippet_updated (this.old_key, null, null);
+    this.destroy ();
   }
 
   public override void response (int response_id) {
