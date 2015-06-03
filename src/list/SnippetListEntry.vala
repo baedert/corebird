@@ -18,6 +18,22 @@
 class SnippetListEntry : Gtk.ListBoxRow {
   private Gtk.Label key_label;
   private Gtk.Label value_label;
+  public string key {
+    get {
+      return key_label.label;
+    }
+    set {
+      key_label.label = value;
+    }
+  }
+  public string value {
+    get {
+      return value_label.label;
+    }
+    set {
+      value_label.label = value;
+    }
+  }
 
   public SnippetListEntry (string key, string value) {
     var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);

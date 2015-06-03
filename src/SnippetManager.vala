@@ -47,6 +47,15 @@ public class SnippetManager : GLib.Object {
   public void insert_snippet (string key, string value) {
     if (!inited) load_snippets ();
 
+    if (this.snippets.has_key (key))
+      error ("Snippet already exists: %s", key);
+
+    // Insert snippet into db
+    Corebird.db.insert ("snippets")
+               .val ("key", key)
+               .val ("value", value)
+               .run ();
+
     this.snippets.set (key, value);
   }
 
@@ -67,5 +76,23 @@ public class SnippetManager : GLib.Object {
   public int n_snippets () {
     if (!inited) load_snippets ();
     return this.snippets.size;
+  }
+
+  public void set_snippet (string old_key, string key, string new_value) { // XXX Key may also change!
+    if (!inited) load_snippets ();
+
+    if (!this.snippets.has_key (old_key)) {
+      debug ("Key %s not in hashmap!", key);
+      return;
+    }
+
+    // Delete the old one, add the new one, update the db
+    this.snippets.unset (key);
+    this.snippets.set (key, new_value);
+    Corebird.db.update ("snippets")
+               .val ("key", key)
+               .val ("value", new_value)
+               .where_eq ("key", old_key)
+               .run ();
   }
 }
