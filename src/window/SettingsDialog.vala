@@ -147,26 +147,36 @@ class SettingsDialog : Gtk.Window {
     var snippet_row = (SnippetListEntry) row;
     var d = new ModifySnippetDialog (snippet_row.key,
                                      snippet_row.value);
-    d.snippet_updated.connect ((old_key, key, value) => {
-      if (old_key == null) {
-        var e = new SnippetListEntry (key, value);
-        e.show_all ();
-        snippet_list_box.add (e);
-      } else {
-        foreach (var _row in snippet_list_box.get_children ()) {
-          var srow = (SnippetListEntry) _row;
-          if (srow.key == old_key) {
-            srow.key = key;
-            srow.value = value;
-            break;
-          }
-        }
-      }
-    });
-
+    d.snippet_updated.connect (snippet_updated_func);
     d.set_transient_for (this);
     d.modal = true;
     d.show ();
+  }
+
+  [GtkCallback]
+  private void add_snippet_button_clicked_cb () {
+    var d = new ModifySnippetDialog ();
+    d.snippet_updated.connect (snippet_updated_func);
+    d.set_transient_for (this);
+    d.modal = true;
+    d.show ();
+  }
+
+  private void snippet_updated_func (string? old_key, string key, string value) {
+    if (old_key == null) {
+      var e = new SnippetListEntry (key, value);
+      e.show_all ();
+      snippet_list_box.add (e);
+    } else {
+      foreach (var _row in snippet_list_box.get_children ()) {
+        var srow = (SnippetListEntry) _row;
+        if (srow.key == old_key) {
+          srow.key = key;
+          srow.value = value;
+          break;
+        }
+      }
+    }
   }
 
   private void load_geometry () {
