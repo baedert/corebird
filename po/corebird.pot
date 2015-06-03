@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-01 17:28+0200\n"
+"POT-Creation-Date: 2015-06-03 22:04+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,7 +23,7 @@ msgid "Select Image"
 msgstr ""
 
 #: ../src/window/ComposeTweetWindow.vala:339
-#: ../src/window/UserListDialog.vala:45
+#: ../src/window/UserListDialog.vala:47
 #: ../src/widgets/MultiMediaWidget.vala:152 ../ui/compose-window.ui.h:2
 #: ../ui/list-list-entry.ui.h:1 ../ui/list-statuses-page.ui.h:8
 #: ../ui/filter-list-entry.ui.h:1 ../ui/modify-filter-dialog.ui.h:2
@@ -36,18 +36,18 @@ msgstr ""
 msgid "Choose"
 msgstr ""
 
-#: ../src/window/UserListDialog.vala:38
+#: ../src/window/UserListDialog.vala:40
 msgid "Add to or Remove User From List"
 msgstr ""
 
-#: ../src/window/UserListDialog.vala:46
+#: ../src/window/UserListDialog.vala:48
 #: ../src/widgets/MultiMediaWidget.vala:153
 #: ../src/window/ImageCropDialog.vala:98 ../ui/list-statuses-page.ui.h:6
 #: ../ui/modify-filter-dialog.ui.h:3 ../ui/account-dialog.ui.h:3
 msgid "Save"
 msgstr ""
 
-#: ../src/window/UserListDialog.vala:59
+#: ../src/window/UserListDialog.vala:61
 msgid "You have no lists."
 msgstr ""
 
@@ -63,11 +63,11 @@ msgstr ""
 msgid "Doesn't match"
 msgstr ""
 
-#: ../src/widgets/TweetListBox.vala:104 ../src/widgets/TweetListBox.vala:152
+#: ../src/widgets/TweetListBox.vala:115 ../src/widgets/TweetListBox.vala:163
 msgid "No entries found"
 msgstr ""
 
-#: ../src/widgets/TweetListBox.vala:112
+#: ../src/widgets/TweetListBox.vala:123
 msgid "Retry"
 msgstr ""
 
@@ -111,7 +111,7 @@ msgstr ""
 msgid "Save Original"
 msgstr ""
 
-#: ../src/widgets/MultiMediaWidget.vala:74 ../src/TweetInfoPage.vala:341
+#: ../src/widgets/MultiMediaWidget.vala:74 ../src/TweetInfoPage.vala:424
 msgid "Open in Browser"
 msgstr ""
 
@@ -128,24 +128,24 @@ msgstr ""
 msgid "Click to add image"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:112
+#: ../src/HomeTimeline.vala:110
 #, c-format
 msgid "%s retweeted %s"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:114
+#: ../src/HomeTimeline.vala:112
 #, c-format
 msgid "%s tweeted"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:121
+#: ../src/HomeTimeline.vala:119
 #, c-format
 msgid "%d new Tweet!"
 msgid_plural "%d new Tweets!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/HomeTimeline.vala:207
+#: ../src/HomeTimeline.vala:170
 msgid "Home"
 msgstr ""
 
@@ -172,7 +172,7 @@ msgid_plural "(%d unread)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/ListsPage.vala:130 ../src/ListsPage.vala:135
+#: ../src/ListsPage.vala:123 ../src/ListsPage.vala:128
 #: ../ui/profile-page.ui.h:9
 msgid "Lists"
 msgstr ""
@@ -181,33 +181,33 @@ msgstr ""
 msgid "Protected profile"
 msgstr ""
 
-#: ../src/ProfilePage.vala:477
+#: ../src/ProfilePage.vala:471
 #, c-format
 msgid "Tweet to @%s"
 msgstr ""
 
-#: ../src/ProfilePage.vala:572
+#: ../src/ProfilePage.vala:570
 msgid "Unfollow"
 msgstr ""
 
-#: ../src/ProfilePage.vala:576
+#: ../src/ProfilePage.vala:574
 msgid "Follow"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:313
+#: ../src/TweetInfoPage.vala:415
 msgid "Retweets"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:314 ../src/FavoritesTimeline.vala:90
-#: ../src/FavoritesTimeline.vala:94
+#: ../src/TweetInfoPage.vala:416 ../src/FavoritesTimeline.vala:92
+#: ../src/FavoritesTimeline.vala:96
 msgid "Favorites"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:341
+#: ../src/TweetInfoPage.vala:424
 msgid "Source"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:352
+#: ../src/TweetInfoPage.vala:435
 msgid "Tweet Details"
 msgstr ""
 
@@ -225,29 +225,29 @@ msgstr ""
 msgid "%dh"
 msgstr ""
 
-#: ../src/SearchPage.vala:263 ../src/SearchPage.vala:272
+#: ../src/SearchPage.vala:264 ../src/SearchPage.vala:273
 #: ../ui/search-page.ui.h:1
 msgid "Search"
 msgstr ""
 
-#: ../src/Corebird.vala:148
+#: ../src/Corebird.vala:151
 msgid "Open Account"
 msgstr ""
 
-#: ../src/MentionsTimeline.vala:98
+#: ../src/MentionsTimeline.vala:100
 #, c-format
 msgid "New Mention from @%s"
 msgstr ""
 
-#: ../src/MentionsTimeline.vala:131 ../src/MentionsTimeline.vala:136
+#: ../src/MentionsTimeline.vala:133 ../src/MentionsTimeline.vala:138
 msgid "Mentions"
 msgstr ""
 
-#: ../src/DMPage.vala:270
+#: ../src/DMPage.vala:271
 msgid "Direct Conversation"
 msgstr ""
 
-#: ../src/ListStatusesPage.vala:389
+#: ../src/ListStatusesPage.vala:370
 msgid "List"
 msgstr ""
 
@@ -364,6 +364,18 @@ msgstr ""
 #: ../ui/settings-dialog.ui.h:21 ../ui/search-page.ui.h:2
 #: ../ui/profile-page.ui.h:6
 msgid "Tweets"
+msgstr ""
+
+#: ../ui/settings-dialog.ui.h:22
+msgid "No snippets configured."
+msgstr ""
+
+#: ../ui/settings-dialog.ui.h:23
+msgid "Snippets allow you to do THINGS!"
+msgstr ""
+
+#: ../ui/settings-dialog.ui.h:24
+msgid "Snippets"
 msgstr ""
 
 #: ../ui/menu.ui.h:2

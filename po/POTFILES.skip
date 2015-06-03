@@ -10,6 +10,7 @@ src/SearchPage.c
 src/TweetInfoPage.c
 src/list/DMThreadEntry.c
 src/list/ProgressEntry.c
+src/list/TweetListEntry.c
 src/util/Utils.c
 src/DMPage.c
 src/ListStatusesPage.c
@@ -27,4 +28,6 @@ src/window/UserListDialog.c
 src/window/ModifyFilterDialog.c
 src/widgets/AvatarBannerWidget.c
 src/window/ImageCropDialog.c
+src/window/ModifySnippetDialog.c
+src/model/NotificationItem.c
 data/org.baedert.corebird.desktop.in
