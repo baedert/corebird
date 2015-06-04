@@ -232,30 +232,37 @@ class CompletionTextView : Gtk.TextView {
     Gtk.TextIter cursor_iter;
     this.buffer.get_iter_at_mark (out cursor_iter, cursor_mark);
 
-    Gtk.TextIter end_word_iter = Gtk.TextIter();
-    end_word_iter.assign (cursor_iter);
-
-
     /* Check if the current "word" is just "@" */
     var test_iter = Gtk.TextIter ();
     test_iter.assign (cursor_iter);
-    test_iter.backward_char ();
-    if (this.buffer.get_text (test_iter, cursor_iter, false) != "@") {
-      // Go to the word start and one char back(i.e. the @)
-      cursor_iter.backward_word_start ();
-      cursor_iter.backward_char ();
 
-      // Go to the end of the word
-      end_word_iter.forward_word_end ();
-    } else {
-      end_word_iter.assign (cursor_iter);
-      cursor_iter.backward_char ();
+
+    for (;;) {
+      Gtk.TextIter left_iter = test_iter;
+      left_iter.assign (test_iter);
+
+      left_iter.backward_char ();
+
+      string s = this.buffer.get_text (left_iter, test_iter, false);
+      unichar c = s.get_char (0);
+      assert (s.char_count () == 1 ||
+              s.char_count () == 0);
+
+      if (left_iter.is_start ())
+        test_iter.assign (left_iter);
+
+      if (c.isspace() || left_iter.is_start ()) {
+        break;
+      }
+
+      test_iter.assign (left_iter);
     }
-    start_iter = cursor_iter;
-    start_iter.assign (cursor_iter);
-    end_iter = end_word_iter;
-    end_iter.assign (end_word_iter);
-    return this.buffer.get_text (cursor_iter, end_word_iter, false);
+
+    start_iter = test_iter;
+    start_iter.assign (test_iter);
+    end_iter = cursor_iter;
+    end_iter.assign (cursor_iter);
+    return this.buffer.get_text (test_iter, cursor_iter, false);
   }
   private void insert_completion (string compl) {
     this.buffer.freeze_notify ();
