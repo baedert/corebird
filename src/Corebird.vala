@@ -17,7 +17,6 @@
 
 
 public class Corebird : Gtk.Application {
-  // TODO: Is the static here needed?
   public static Sql.Database db;
   public static GLib.Menu account_menu;
   public static SnippetManager snippet_manager;

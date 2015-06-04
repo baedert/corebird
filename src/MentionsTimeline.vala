@@ -45,9 +45,6 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
   }
 
 
-/* TODO: All the following functions should probably go into DefaultTimeline
-         so we can avoid the code duplication in MentionsTimeline and HomeTimeline */
-
   private void add_tweet (Json.Node root_node) { // {{{
     /* Mark tweets as seen the user has already replied to */
     var root = root_node.get_object ();
@@ -78,13 +75,11 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
 
       this.balance_next_upper_change (TOP);
       var entry = new TweetListEntry(t, main_window, account);
-      //entry.seen = false; XXX
 
       delta_updater.add (entry);
       tweet_list.add (entry);
 
       base.scroll_up (t);
-      //base.postprocess_tweet (entry); XXX
 
       if (Settings.notify_new_mentions ()) {
         entry.notification_id = send_notification (t.screen_name, t.id, Utils.unescape_html (t.text));
