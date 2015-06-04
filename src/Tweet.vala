@@ -253,7 +253,7 @@ public class Tweet : GLib.Object {
         from = (uint) indices.get_int_element (0),
         to   = (uint) indices.get_int_element (1),
         display_text = "@" + screen_name,
-        target = "@" + mention.get_string_member ("id_str") + "/" + screen_name,
+        target = "@" + mention.get_string_member ("id_str") + "/@" + screen_name,
         tooltip_text = mention.get_string_member ("name")
       };
       url_index ++;
