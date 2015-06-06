@@ -18,25 +18,14 @@
        </object>
     </child>
 
-
-
-    <!--<child type="action">-->
-      <!--<object class="GtkButton" id="delete_button">-->
-         <!--<property name="label" translatable="yes">Cancel</property>-->
-         <!--<property name="visible">True</property>-->
-         <!--<property name="can_focus">True</property>-->
-       <!--</object>-->
-    <!--</child>-->
-
-
-
     <child type="action">
       <object class="GtkButton" id="save_button">
         <property name="label" translatable="yes">Save</property>
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="receives_default">True</property>
+        <property name="visible">true</property>
+        <property name="can_focus">true</property>
+        <property name="receives_default">true</property>
         <property name="can_default">true</property>
+        <property name="sensitive">false</property>
       </object>
     </child>
 
@@ -71,6 +60,7 @@
                 <property name="halign">fill</property>
                 <property name="hexpand">true</property>
                 <property name="max_length">20</property>
+                <property name="activates_default">true</property>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -100,6 +90,7 @@
                 <property name="halign">fill</property>
                 <property name="hexpand">true</property>
                 <property name="max_length">200</property>
+                <property name="activates_default">true</property>
               </object>
               <packing>
                 <property name="left_attach">1</property>
