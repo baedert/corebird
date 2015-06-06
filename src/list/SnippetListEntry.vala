@@ -41,15 +41,16 @@ class SnippetListEntry : Gtk.ListBoxRow {
     revealer.reveal_child = true;
     var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 12);
     box.margin = 6;
+    box.homogeneous = true;
 
     key_label = new Gtk.Label (key);
-    key_label.halign = Gtk.Align.FILL;
+    key_label.halign = Gtk.Align.START;
     key_label.hexpand = true;
     key_label.ellipsize = Pango.EllipsizeMode.END;
     box.add (key_label);
 
     value_label = new Gtk.Label (value);
-    value_label.halign = Gtk.Align.FILL;
+    value_label.halign = Gtk.Align.START;
     value_label.hexpand = true;
     value_label.xalign = 0;
     value_label.ellipsize = Pango.EllipsizeMode.END;
