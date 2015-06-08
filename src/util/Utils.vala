@@ -69,7 +69,7 @@ namespace Utils {
     }
     string month_str = input.substring (4, 3);
     int day          = int.parse (input.substring (8, 2));
-    int year         = int.parse (input.substring (input.length-4));
+    int year         = int.parse (input.substring (input.length - 4));
     string timezone  = input.substring (20, 5);
 
     int month = -1;
@@ -153,7 +153,7 @@ namespace Utils {
    */
   string get_avatar_name (string path) {
     string[] parts = path.split ("/");
-    return parts[parts.length - 2] + "_"+parts[parts.length - 1];
+    return parts[parts.length - 2] + "_" + parts[parts.length - 1];
   }
 
 
