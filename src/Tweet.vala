@@ -53,8 +53,11 @@ public class Tweet : GLib.Object {
   public bool retweeted { get; set; default = false; }
   public bool favorited { get; set; default = false; }
   public string text;
+
   public int64 user_id;
+  public string screen_name;
   public string user_name;
+
   public string retweeted_by;
   public string rt_by_screen_name;
   public int64 rt_by_id;
@@ -62,7 +65,6 @@ public class Tweet : GLib.Object {
   public unowned Gdk.Pixbuf avatar {get; set;}
   /** The avatar url on the server */
   public string avatar_url;
-  public string screen_name;
   public int64 created_at;
   public int64 rt_created_at;
   public bool verified = false;
