@@ -62,8 +62,6 @@ public class Tweet : GLib.Object {
   public unowned Gdk.Pixbuf avatar {get; set;}
   /** The avatar url on the server */
   public string avatar_url;
-  /** The name of the avatar image file on the hard disk */
-  public string avatar_name;
   public string screen_name;
   public int64 created_at;
   public int64 rt_created_at;
@@ -166,7 +164,6 @@ public class Tweet : GLib.Object {
     }
 
     this.user_name = this.user_name.replace ("&", "&amp;").strip ();
-    this.avatar_name = Utils.get_avatar_name (this.avatar_url);
 
     // 'Resolve' the used URLs
     var urls = entities.get_array_member("urls");
