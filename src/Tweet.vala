@@ -60,7 +60,6 @@ public class Tweet : GLib.Object {
   public int64 rt_by_id;
   public bool is_retweet;
   public unowned Gdk.Pixbuf avatar {get; set;}
-  public string time_delta = "-1s";
   /** The avatar url on the server */
   public string avatar_url;
   /** The name of the avatar image file on the hard disk */
@@ -329,10 +328,6 @@ public class Tweet : GLib.Object {
     /* Remove unnecessary url entries */
     this.urls.resize (url_index);
     TweetUtils.sort_entities (ref this.urls);
-
-    var dt = new DateTime.from_unix_local(is_retweet ? rt_created_at : created_at);
-    this.time_delta  = Utils.get_time_delta(dt, now);
-
 
     this.avatar = Twitter.get ().get_avatar (avatar_url, (a) => {
       this.avatar = a;
