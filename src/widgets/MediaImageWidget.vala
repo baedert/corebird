@@ -22,7 +22,10 @@ public class MediaImageWidget : Gtk.ScrolledWindow {
   private double dnd_x;
   private double dnd_y;
 
+  private unowned Gdk.PixbufAnimation source_animation;
+
   public MediaImageWidget (Gdk.PixbufAnimation media_image) {
+    this.source_animation = media_image;
 
     this.button_press_event.connect (button_press_event_cb);
     this.image = new Gtk.Image ();
@@ -92,31 +95,22 @@ public class MediaImageWidget : Gtk.ScrolledWindow {
   }
 
   private void save_item_activated_cb () {
-    error ("FIXME");
-     //var file_dialog = new Gtk.FileChooserDialog (_("Save image"), null,
-                                                  //Gtk.FileChooserAction.SAVE,
-                                                  //_("Cancel"), Gtk.ResponseType.CANCEL,
-                                                  //_("Save"), Gtk.ResponseType.ACCEPT);
-    //string filename = Utils.get_file_name (path);
-    //file_dialog.set_current_name (filename);
-    //file_dialog.set_transient_for (this);
+     var file_dialog = new Gtk.FileChooserDialog (_("Save image"), null,
+                                                  Gtk.FileChooserAction.SAVE,
+                                                  _("Cancel"), Gtk.ResponseType.CANCEL,
+                                                  _("Save"), Gtk.ResponseType.ACCEPT);
 
+     // TODO Don't use gtk_dialog_run here.
+    int response = file_dialog.run ();
+    if (response == Gtk.ResponseType.ACCEPT) {
+      File dest = File.new_for_uri (file_dialog.get_uri ());
+      var pixbuf = this.source_animation.get_static_image ();
+      var out_stream = dest.create (0);
+      pixbuf.save_to_stream (out_stream, "jpeg");
 
-    //int response = file_dialog.run ();
-    //if (response == Gtk.ResponseType.ACCEPT) {
-      //File dest = File.new_for_uri (file_dialog.get_uri ());
-      //debug ("Source: %s", path);
-      //debug ("Destin: %s", file_dialog.get_uri ());
-      //File source = File.new_for_path (path);
-      //try {
-        //source.copy (dest, FileCopyFlags.OVERWRITE);
-      //} catch (GLib.Error e) {
-        //critical (e.message);
-      //}
-      //file_dialog.destroy ();
-    //} else if (response == Gtk.ResponseType.CANCEL)
-      //file_dialog.destroy ();
-
+      out_stream.close ();
+    } else if (response == Gtk.ResponseType.CANCEL)
+      file_dialog.destroy ();
   }
 
   private bool button_press_event_cb (Gdk.EventButton evt) {
