@@ -25,8 +25,6 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
   [GtkChild]
   private Gtk.ListBox user_list;
   [GtkChild]
-  private Gtk.Label user_list_label;
-  [GtkChild]
   private Gtk.Frame user_list_frame;
   private bool filters_loaded = false;
   private bool users_loaded = false;
@@ -87,7 +85,6 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
       });
       if (n_users > 0) {
         user_list_frame.show ();
-        user_list_label.show ();
       }
     });
 
@@ -140,7 +137,6 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
     entry.deleted.connect ((id) => { unblock_user (id);});
     user_list.add (entry);
     user_list_frame.show ();
-    user_list_label.show ();
   }
 
   private void remove_user (int64 id) {
@@ -154,7 +150,6 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
 
     if (user_list.get_children ().length () == 0) {
       user_list_frame.hide ();
-      user_list_label.hide ();
     }
   }
 
