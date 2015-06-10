@@ -418,14 +418,20 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   }
 
   public void fade_in () {
+    if (this.get_realized ()) {
+      this.show ();
+      return;
+    }
+
     ulong realize_id = 0;
     realize_id = this.realize.connect (() => {
-      this.show ();
       this.start_time = this.get_frame_clock ().get_frame_time ();
       this.end_time = start_time + (TRANSITION_DURATION * 1000);
       this.add_tick_callback (anim_tick);
       this.disconnect (realize_id);
     });
+
+    this.show ();
   }
 
   public override void show () {
