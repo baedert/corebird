@@ -1,18 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk+" version="3.10"/>
-  <requires lib="corebird" version="0.0"/>
   <template class="ListsPage" parent="ScrollWidget">
     <property name="can_focus">True</property>
     <property name="hscrollbar_policy">never</property>
     <child>
-      <object class="GtkViewport" id="viewport1">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <child>
-          <object class="UserListsWidget" id="user_lists_widget">
-          </object>
-        </child>
+      <object class="UserListsWidget" id="user_lists_widget">
       </object>
     </child>
   </template>
