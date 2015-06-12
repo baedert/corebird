@@ -41,7 +41,7 @@
             <child>
               <object class="GtkLabel">
                 <property name="visible">true</property>
-                <property name="label" translatable="yes">Snippet</property>
+                <property name="label" translatable="yes">Keyword</property>
                 <property name="halign">end</property>
                 <style>
                   <class name="dim-label" />
