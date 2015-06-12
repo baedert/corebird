@@ -23,7 +23,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     {"delete", delete_activated}
   };
 
-  private const int64 TRANSITION_DURATION = 400;
+  private const int64 TRANSITION_DURATION = 300;
 
   [GtkChild]
   private Gtk.Label screen_name_label;
