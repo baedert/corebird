@@ -3,7 +3,7 @@
   <template class="ModifySnippetDialog" parent="GtkDialog">
     <property name="can_focus">False</property>
     <property name="border_width">6</property>
-    <property name="title" translatable="yes">Add New Filter</property>
+    <property name="title" translatable="yes">Add New Snippet</property>
     <property name="modal">true</property>
     <property name="type_hint">dialog</property>
     <property name="destroy_with_parent">True</property>
