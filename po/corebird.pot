@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-03 22:04+0200\n"
+"POT-Creation-Date: 2015-06-12 09:16+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,7 +28,7 @@ msgstr ""
 #: ../ui/list-list-entry.ui.h:1 ../ui/list-statuses-page.ui.h:8
 #: ../ui/filter-list-entry.ui.h:1 ../ui/modify-filter-dialog.ui.h:2
 #: ../ui/user-filter-entry.ui.h:1 ../ui/account-dialog.ui.h:2
-#: ../ui/image-crop-dialog.ui.h:1
+#: ../ui/image-crop-dialog.ui.h:1 ../ui/modify-snippet-dialog.ui.h:2
 msgid "Cancel"
 msgstr ""
 
@@ -44,6 +44,7 @@ msgstr ""
 #: ../src/widgets/MultiMediaWidget.vala:153
 #: ../src/window/ImageCropDialog.vala:98 ../ui/list-statuses-page.ui.h:6
 #: ../ui/modify-filter-dialog.ui.h:3 ../ui/account-dialog.ui.h:3
+#: ../ui/modify-snippet-dialog.ui.h:3
 msgid "Save"
 msgstr ""
 
@@ -198,8 +199,8 @@ msgstr ""
 msgid "Retweets"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:416 ../src/FavoritesTimeline.vala:92
-#: ../src/FavoritesTimeline.vala:96
+#: ../src/TweetInfoPage.vala:416 ../src/FavoritesTimeline.vala:91
+#: ../src/FavoritesTimeline.vala:95
 msgid "Favorites"
 msgstr ""
 
@@ -230,16 +231,16 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: ../src/Corebird.vala:151
+#: ../src/Corebird.vala:150
 msgid "Open Account"
 msgstr ""
 
-#: ../src/MentionsTimeline.vala:100
+#: ../src/MentionsTimeline.vala:95
 #, c-format
 msgid "New Mention from @%s"
 msgstr ""
 
-#: ../src/MentionsTimeline.vala:133 ../src/MentionsTimeline.vala:138
+#: ../src/MentionsTimeline.vala:128 ../src/MentionsTimeline.vala:133
 msgid "Mentions"
 msgstr ""
 
@@ -371,7 +372,7 @@ msgid "No snippets configured."
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:23
-msgid "Snippets allow you to do THINGS!"
+msgid "You can activate snippets by writing the keywoard and pressing TAB."
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:24
@@ -416,7 +417,7 @@ msgstr ""
 
 #: ../ui/tweet-list-entry.ui.h:2 ../ui/list-list-entry.ui.h:4
 #: ../ui/list-statuses-page.ui.h:7 ../ui/filter-list-entry.ui.h:2
-#: ../ui/account-dialog.ui.h:7
+#: ../ui/account-dialog.ui.h:7 ../ui/modify-snippet-dialog.ui.h:6
 msgid "Delete"
 msgstr ""
 
@@ -610,6 +611,18 @@ msgstr ""
 
 #: ../ui/image-crop-dialog.ui.h:3
 msgid "Back"
+msgstr ""
+
+#: ../ui/modify-snippet-dialog.ui.h:1
+msgid "Add New Snippet"
+msgstr ""
+
+#: ../ui/modify-snippet-dialog.ui.h:4
+msgid "Keyword"
+msgstr ""
+
+#: ../ui/modify-snippet-dialog.ui.h:5
+msgid "Replacement"
 msgstr ""
 
 #: ../data/org.baedert.corebird.appdata.xml.in.h:1
