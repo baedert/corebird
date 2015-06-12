@@ -372,7 +372,7 @@ msgid "No snippets configured."
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:23
-msgid "You can activate snippets by writing the keywoard and pressing TAB."
+msgid "You can activate snippets by writing the keyword and pressing TAB."
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:24
