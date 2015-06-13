@@ -58,6 +58,7 @@ class SnippetListEntry : Gtk.ListBoxRow {
 
     revealer.add (box);
     this.add (revealer);
+    this.get_style_context ().add_class ("tweet");
   }
 
   public void reveal () {

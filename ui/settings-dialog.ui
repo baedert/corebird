@@ -474,6 +474,14 @@
               </object>
             </child>
 
+
+            <child>
+              <object class="GtkSeparator">
+                <property name="visible">true</property>
+                <property name="orientation">horizontal</property>
+              </object>
+            </child>
+
             <child>
               <object class="GtkBox">
                 <property name="visible">true</property>
