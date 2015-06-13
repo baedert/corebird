@@ -131,7 +131,6 @@ class SettingsDialog : Gtk.Window {
       e.show_all ();
       snippet_list_box.add (e);
     });
-    snippet_list_box.set_header_func (default_header_func);
 
     add_accels ();
     load_geometry ();
