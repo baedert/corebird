@@ -608,8 +608,8 @@ class ProfilePage : ScrollWidget, IPage {
     data_cancellable = new GLib.Cancellable ();
 
     if (user_id != this.user_id) {
-      set_user_id (user_id);
       reset_data ();
+      set_user_id (user_id);
       tweet_list.model.clear ();
       user_lists.clear_lists ();
       load_tweets.begin ();
