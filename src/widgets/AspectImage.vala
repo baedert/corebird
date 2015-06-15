@@ -28,7 +28,16 @@ class AspectImage : Gtk.Widget {
       return _pixbuf;
     }
   }
-  public double scale { get; set; default = 1.0; }
+  private double _scale = 1.0;
+  public double scale {
+    get {
+      return _scale;
+    }
+    set {
+      this._scale = value;
+      this.queue_resize ();
+    }
+  }
 
 
   public AspectImage () {}
@@ -74,8 +83,8 @@ class AspectImage : Gtk.Widget {
       return;
     }
 
-    min_height = (int)(pixbuf.get_height () * scale);
-    nat_height = (int)(pixbuf.get_height () * scale);
+    min_height = (int)(pixbuf.get_height () * _scale);
+    nat_height = (int)(pixbuf.get_height () * _scale);
   }
 
 
