@@ -56,6 +56,8 @@
             <property name="visible">true</property>
             <property name="transition_type">crossfade</property>
             <property name="can_focus">false</property>
+            <property name="vexpand">true</property>
+            <property name="vhomogeneous">false</property>
 
 
             <child>
