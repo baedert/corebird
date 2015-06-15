@@ -593,7 +593,7 @@ class ProfilePage : ScrollWidget, IPage {
   /**
    * see IPage#onJoin
    */
-  public void on_join(int page_id, Bundle? args) {
+  public void on_join (int page_id, Bundle? args) {
     int64 user_id = args.get_int64 ("user_id");
     if (user_id == -1)
       return;
@@ -607,13 +607,16 @@ class ProfilePage : ScrollWidget, IPage {
 
 
     data_cancellable = new GLib.Cancellable ();
-    reset_data ();
-    set_user_id (user_id);
-    tweet_list.model.clear ();
+
+    if (user_id != this.user_id) {
+      set_user_id (user_id);
+      reset_data ();
+      tweet_list.model.clear ();
+      user_lists.clear_lists ();
+      load_tweets.begin ();
+    }
     tweet_list.reset_placeholder_text ();
     user_stack.visible_child = tweet_list;
-    user_lists.clear_lists ();
-    load_tweets.begin ();
   }
 
   public void on_leave () {
