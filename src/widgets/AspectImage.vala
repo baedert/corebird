@@ -46,34 +46,6 @@ class AspectImage : Gtk.Widget {
     set_has_window (false);
   }
 
-/*  public override void get_preferred_height (out int min_height,
-                                             out int nat_height) {
-    if (pixbuf == null) {
-      min_height = 0;
-      nat_height = 1;
-      return;
-    }
-    min_height = (int)(pixbuf.get_height () * scale);
-    nat_height = (int)(pixbuf.get_height () * scale);
-  }*/
-
-/*  public override void get_preferred_width_for_height (int height,
-                                                       out int min_width,
-                                                       out int nat_width) {
-    if (pixbuf == null) {
-      min_width = 0;
-      nat_width = 1;
-      return;
-    }
-    double ratio = pixbuf.get_height () / (double)pixbuf.get_width ();
-    min_width = 1;
-    nat_width = (int)(height / ratio);
-    if (nat_width == 0)
-      nat_width = 1;
-    min_width = nat_width;
-  }*/
-
-
   public override void get_preferred_height_for_width (int width,
                                                        out int min_height,
                                                        out int nat_height) {
@@ -83,8 +55,13 @@ class AspectImage : Gtk.Widget {
       return;
     }
 
-    min_height = (int)(pixbuf.get_height () * _scale);
-    nat_height = (int)(pixbuf.get_height () * _scale);
+    double scale_x = width  / (double)pixbuf.get_width ();
+    if (scale_x > 1)
+      scale_x = 1;
+    double final_height = scale_x * pixbuf.get_height ();
+
+    min_height = (int)(final_height * _scale);
+    nat_height = (int)(final_height * _scale);
   }
 
 
@@ -93,30 +70,28 @@ class AspectImage : Gtk.Widget {
   }
 
   public override bool draw (Cairo.Context ct) {
-    if (pixbuf == null) {
-      return true;
-    }
+    if (pixbuf == null)
+      return false;
+
+
     int width = get_allocated_width ();
     int height = get_allocated_height ();
     double scale_x = width  / (double)pixbuf.get_width ();
-    double scale_y = height / (double)pixbuf.get_height ();
-    int x = 0;
+    double scale_y = scale_x;
     int y = 0;
 
-
-    if (scale_x < 1) {
-      scale_x = 1;
-      x = (width - pixbuf.get_width ()) / 2;
-    }
-
-    if (scale_y < 1) {
+    /* Never scale it vertically down, instead move it up */
+    if (scale_y > 1) {
       scale_y = 1;
-      y = height - pixbuf.get_height ();
     }
 
+    int view_height = (int)(pixbuf.get_height () * scale_y);
+    y = height - view_height;
+
+
+    ct.rectangle (0, 0, width, view_height);
     ct.scale (scale_x, scale_y);
-    Gdk.cairo_set_source_pixbuf (ct, pixbuf, x, y);
-    ct.rectangle (0, 0, width, pixbuf.get_height ());
+    Gdk.cairo_set_source_pixbuf (ct, pixbuf, 0, 0);
     ct.fill ();
     return false;
   }
