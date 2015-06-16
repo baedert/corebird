@@ -21,7 +21,6 @@ class AspectImage : Gtk.Widget {
   public Gdk.Pixbuf pixbuf  {
     set {
       _pixbuf = value;
-      this.queue_draw ();
       this.queue_resize ();
     }
     get {
@@ -34,6 +33,9 @@ class AspectImage : Gtk.Widget {
       return _scale;
     }
     set {
+      if (value > 1.0)
+        value = 1.0;
+
       this._scale = value;
       this.queue_resize ();
     }
