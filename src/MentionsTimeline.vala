@@ -59,8 +59,8 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
 
     if (root.get_string_member ("text").contains ("@" + account.screen_name)) {
       GLib.DateTime now = new GLib.DateTime.now_local ();
-      Tweet t = new Tweet();
-      t.load_from_json(root_node, now, account);
+      Tweet t = new Tweet ();
+      t.load_from_json (root_node, now, account);
       if (t.user_id == account.id)
         return;
 
@@ -73,16 +73,18 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
       if (account.blocked_or_muted (t.user_id))
         return;
 
+      t.seen = false;
       this.balance_next_upper_change (TOP);
-      var entry = new TweetListEntry(t, main_window, account);
+      tweet_list.model.add (t);
 
-      delta_updater.add (entry);
-      tweet_list.add (entry);
 
       base.scroll_up (t);
+      this.unread_count ++;
 
       if (Settings.notify_new_mentions ()) {
-        entry.notification_id = send_notification (t.screen_name, t.id, Utils.unescape_html (t.text));
+        t.notification_id = send_notification (t.screen_name,
+                                               t.id,
+                                               Utils.unescape_html (t.text));
       }
     }
   } // }}}
