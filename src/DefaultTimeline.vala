@@ -67,8 +67,6 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
       mark_seen_on_scroll (vadjustment.value);
     });
 
-
-    tweet_list.set_sort_func(ITwitterItem.sort_func);
     this.add (tweet_list);
 
     tweet_list.row_activated.connect ((row) => {
