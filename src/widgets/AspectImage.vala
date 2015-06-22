@@ -21,7 +21,10 @@ class AspectImage : Gtk.Widget {
   public Gdk.Pixbuf pixbuf  {
     set {
       if (value != null) {
-        start_animation ();
+
+        if (value != Twitter.no_banner) {
+          start_animation ();
+        }
 
         if (this.pixbuf_surface != null)
           this.old_surface = this.pixbuf_surface;
@@ -31,7 +34,8 @@ class AspectImage : Gtk.Widget {
       }
 
       this._pixbuf = value;
-      this.queue_resize ();
+      this.queue_draw ();
+      //this.queue_resize ();
     }
     get {
       return _pixbuf;
@@ -90,7 +94,6 @@ class AspectImage : Gtk.Widget {
 
     alpha = ease_out_cubic (t);
     this.queue_draw ();
-
 
     return t < 1.0;
   }
