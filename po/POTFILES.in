@@ -46,6 +46,7 @@ src/window/ImageCropDialog.vala
 [type: gettext/glade]ui/user-filter-entry.ui
 [type: gettext/glade]ui/account-dialog.ui
 [type: gettext/glade]ui/image-crop-dialog.ui
+[type: gettext/glade]ui/modify-snippet-dialog.ui
 data/org.baedert.corebird.appdata.xml.in
 data/org.baedert.corebird.gschema.xml.in
 data/org.baedert.corebird.desktop.in.in
