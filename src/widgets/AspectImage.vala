@@ -20,7 +20,17 @@ class AspectImage : Gtk.Widget {
   private Gdk.Pixbuf _pixbuf;
   public Gdk.Pixbuf pixbuf  {
     set {
-      _pixbuf = value;
+      if (value != null) {
+        start_animation ();
+
+        if (this.pixbuf_surface != null)
+          this.old_surface = this.pixbuf_surface;
+
+        this.pixbuf_surface = Gdk.cairo_surface_create_from_pixbuf (value, 1,
+                                                                    this.get_window ());
+      }
+
+      this._pixbuf = value;
       this.queue_resize ();
     }
     get {
@@ -41,11 +51,48 @@ class AspectImage : Gtk.Widget {
     }
   }
 
+  private Cairo.Surface? old_surface;
+  private Cairo.Surface pixbuf_surface;
+
 
   public AspectImage () {}
 
   construct {
     set_has_window (false);
+  }
+
+  private void start_animation () {
+    if (!this.get_realized ())
+      return;
+
+    alpha = 0.0;
+    this.start_time = this.get_frame_clock ().get_frame_time ();
+    this.add_tick_callback (fade_in_cb);
+  }
+
+  private double ease_out_cubic (double t) {
+    double p = t - 1;
+    return p * p * p +1;
+  }
+
+
+  private const double TRANSITION_DURATION = 200 * 1000;
+  private double alpha = 0.0;
+  private int64 start_time;
+  private bool fade_in_cb (Gtk.Widget widget, Gdk.FrameClock frame_clock) {
+
+    int64 now = frame_clock.get_frame_time ();
+    double t = (now - start_time) / TRANSITION_DURATION;
+
+    if (t >= 1.0) {
+      t = 1.0;
+    }
+
+    alpha = ease_out_cubic (t);
+    this.queue_draw ();
+
+
+    return t < 1.0;
   }
 
   public override void get_preferred_height_for_width (int width,
@@ -93,8 +140,15 @@ class AspectImage : Gtk.Widget {
 
     ct.rectangle (0, 0, width, view_height);
     ct.scale (scale_x, scale_y);
-    Gdk.cairo_set_source_pixbuf (ct, pixbuf, 0, 0);
-    ct.fill ();
+    ct.set_source_rgba (1, 1, 1, alpha);
+    if (this.old_surface != null) {
+      ct.set_source_surface (this.old_surface, 0, 0);
+      ct.fill_preserve ();
+    }
+
+
+    ct.set_source_surface (this.pixbuf_surface, 0, 0);
+    ct.paint_with_alpha (alpha);
     return false;
   }
 }
