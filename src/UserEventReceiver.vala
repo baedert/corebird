@@ -115,6 +115,10 @@ class UserEventReceiver : GLib.Object, IMessageReceiver {
           }
         }
         break;
+
+      case StreamMessageType.EVENT_FAVORITE:
+        error ("Implement!");
+        break;
     }
   }
 
