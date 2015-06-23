@@ -14,7 +14,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
-class AvatarWidget : Gtk.Image {
+class AvatarWidget : Gtk.Widget {
   private static const int SMALL = 0;
   private static const int LARGE = 1;
   private bool _round = true;
@@ -25,6 +25,15 @@ class AvatarWidget : Gtk.Image {
     set {
       this._round = value;
       this.queue_draw ();
+    }
+  }
+  private Gdk.Pixbuf _pixbuf;
+  public Gdk.Pixbuf pixbuf {
+    get {
+      return this._pixbuf;
+    }
+    set {
+      this._pixbuf = value;
     }
   }
   public bool verified { get; set; default = false; }
@@ -55,6 +64,7 @@ class AvatarWidget : Gtk.Image {
   }
 
   construct {
+    this.set_has_window (false);
     Settings.get ().bind ("round-avatars", this, "make_round",
                           GLib.SettingsBindFlags.DEFAULT);
     get_style_context ().add_class ("avatar");
@@ -65,7 +75,7 @@ class AvatarWidget : Gtk.Image {
     int width  = this.get_allocated_width ();
     int height = this.get_allocated_height ();
 
-    if (this.pixbuf == null) {
+    if (this._pixbuf == null) {
       return false;
     }
 
@@ -79,7 +89,7 @@ class AvatarWidget : Gtk.Image {
     var ct = new Cairo.Context (surface);
 
     ct.rectangle (0, 0, width, height);
-    Gdk.cairo_set_source_pixbuf (ct, this.pixbuf, 0, 0);
+    Gdk.cairo_set_source_pixbuf (ct, this._pixbuf, 0, 0);
     ct.fill();
 
     if (_round) {
@@ -128,6 +138,18 @@ class AvatarWidget : Gtk.Image {
     return false;
   }
 
+
+  public override void get_preferred_height (out int minimal,
+                                             out int natural) {
+
+    if (this._pixbuf == null) {
+      minimal = 0;
+      natural = 0;
+    } else {
+      minimal = this._pixbuf.get_height ();
+      natural = this._pixbuf.get_height ();
+    }
+  }
 }
 
 
