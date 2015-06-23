@@ -37,6 +37,7 @@ public class Twitter : GLib.Object {
   public static Gdk.Pixbuf no_avatar;
   public static Gdk.Pixbuf no_banner;
   public Gee.HashMap<string, Gdk.Pixbuf?> avatars;
+  public Gee.HashMap<Gdk.Pixbuf, uint> avatar_refcounts;
 
   public void init () {
     try {
@@ -47,6 +48,36 @@ public class Twitter : GLib.Object {
     }
 
     avatars = new Gee.HashMap<string, Gdk.Pixbuf> ();
+    avatar_refcounts = new Gee.HashMap<Gdk.Pixbuf, uint> ();
+  }
+
+  public static void ref_avatar (Gdk.Pixbuf pixbuf) {
+    uint cur = twitter.avatar_refcounts.get (pixbuf);
+    twitter.avatar_refcounts.unset (pixbuf);
+    twitter.avatar_refcounts.set (pixbuf, cur + 1);
+  }
+
+  public static void unref_avatar (Gdk.Pixbuf pixbuf) {
+    uint cur = twitter.avatar_refcounts.get (pixbuf);
+    uint next = cur - 1;
+    twitter.avatar_refcounts.unset (pixbuf);
+
+    if (next > 0)
+      twitter.avatar_refcounts.set (pixbuf, next);
+    else {
+      var iter = twitter.avatars.map_iterator ();
+
+      string? path = null;
+      while (iter.next ()) {
+        if (iter.get_value () == pixbuf) {
+          path = iter.get_key ();
+          break;
+        }
+      }
+
+      if (path != null)
+        twitter.avatars.unset (path);
+    }
   }
 
 
@@ -121,6 +152,7 @@ public class Twitter : GLib.Object {
         // signal all the other waiters in the queue
         avatar_downloaded[url](avatar);
         this.avatars.set (url, avatar);
+        this.avatar_refcounts.set (avatar, 0);
       });
     }
 
