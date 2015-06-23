@@ -64,7 +64,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       this.application = app;
 
     image_buttons = new Gee.ArrayList<AddImageButton> ();
-    avatar_image.set_from_pixbuf (acc.avatar);
+    avatar_image.pixbuf = acc.avatar;
     length_label.label = Tweet.MAX_LENGTH.to_string ();
     tweet_text.buffer.changed.connect (buffer_changed_cb);
 
