@@ -15,8 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-// TODO: Add timeout that removes all entries after X seconds when switched away
 [GtkTemplate (ui = "/org/baedert/corebird/ui/search-page.ui")]
 class SearchPage : IPage, Gtk.Box {
   private static const int USER_COUNT = 3;
@@ -50,6 +48,7 @@ class SearchPage : IPage, Gtk.Box {
   private Gtk.Widget last_focus_widget;
   private int n_results = 0;
   private Collect collect_obj;
+  private uint remove_content_timeout = 0;
 
 
   public SearchPage (int id, Account account) {
@@ -81,6 +80,13 @@ class SearchPage : IPage, Gtk.Box {
    */
   public void on_join (int page_id, Bundle? args) {
     string? term = args != null ? args.get_string ("query") : null;
+
+    if (this.remove_content_timeout != 0) {
+      GLib.Source.remove (this.remove_content_timeout);
+      this.remove_content_timeout = 0;
+    }
+
+
     if (term == null) {
       if (last_focus_widget != null)
         last_focus_widget.grab_focus ();
@@ -92,7 +98,16 @@ class SearchPage : IPage, Gtk.Box {
     search_for (term, true);
   }
 
-  public void on_leave () {}
+  public void on_leave () {
+    this.remove_content_timeout = GLib.Timeout.add (3 * 1000 * 60, () => {
+      foreach (Gtk.Widget w in tweet_list.get_children ()) {
+        // We are still using raw widgets here.
+        tweet_list.remove (w);
+      }
+
+      return GLib.Source.REMOVE;
+    });
+  }
 
   public void search_for (string search_term, bool set_text = false) { //{{{
     if(search_term.length == 0)
