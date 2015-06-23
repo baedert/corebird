@@ -33,7 +33,12 @@ class AvatarWidget : Gtk.Widget {
       return this._pixbuf;
     }
     set {
+      if (this._pixbuf != null) {
+        Twitter.unref_avatar (this._pixbuf);
+      }
       this._pixbuf = value;
+      if (this._pixbuf != null)
+        Twitter.ref_avatar (this._pixbuf);
     }
   }
   public bool verified { get; set; default = false; }
@@ -68,6 +73,11 @@ class AvatarWidget : Gtk.Widget {
     Settings.get ().bind ("round-avatars", this, "make_round",
                           GLib.SettingsBindFlags.DEFAULT);
     get_style_context ().add_class ("avatar");
+  }
+
+  ~AvatarWidget () {
+    if (this._pixbuf != null)
+      Twitter.unref_avatar (this._pixbuf);
   }
 
 
