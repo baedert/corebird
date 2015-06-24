@@ -28,6 +28,15 @@ public class Bundle : GLib.Object {
     this.values = new GLib.HashTable<string, GLib.Value?> (str_hash, str_equal);
   }
 
+  public bool has_key (string key) {
+    // O(n)... m(
+    foreach (var k in values.get_keys ())
+      if (k == key)
+        return true;
+
+    return false;
+  }
+
   public void put_string (string key, string value) {
     var v = GLib.Value (typeof (string));
     v.set_string (value);
@@ -109,6 +118,9 @@ public class Bundle : GLib.Object {
       return false;
 
     foreach (string key in this.values.get_keys ()) {
+      if (!other.has_key (key))
+        return false;
+
       if (this.values.get (key).strdup_contents () != other.get_value (key).strdup_contents ())
         return false;
     }
