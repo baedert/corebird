@@ -16,7 +16,7 @@
  */
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/profile-page.ui")]
-class ProfilePage : ScrollWidget, IPage {
+class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
   private static const int PAGE_TWEETS     = 0;
   private static const int PAGE_FOLLOWING  = 1;
   private static const int PAGE_FOLLOWERS  = 2;
@@ -753,6 +753,23 @@ class ProfilePage : ScrollWidget, IPage {
 
   private void update_follower_label () {
     followers_label.label = "%'d".printf(follower_count);
+  }
+
+  public void stream_message_received (StreamMessageType type,
+                                       Json.Node         root_node) {
+    if (type == StreamMessageType.TWEET) {
+      var obj = root_node.get_object ();
+      var user = obj.get_object_member ("user");
+      if (user.get_int_member ("id") != this.user_id)
+        return;
+
+      // Correct user!
+      var tweet = new Tweet ();
+      tweet.load_from_json (root_node,
+                            new GLib.DateTime.now_local (),
+                            this.account);
+      this.tweet_list.model.add (tweet);
+    }
   }
 
 }
