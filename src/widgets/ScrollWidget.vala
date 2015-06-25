@@ -26,7 +26,7 @@ public class ScrollWidget : Gtk.ScrolledWindow {
   private double upper_cache;
   private double value_cache;
   private int balance = NONE;
-  public double end_diff {get; set; default = 150;}
+  public double end_diff {get; set; default = 200;}
   private ulong scroll_down_id;
   private ulong scroll_up_id;
   public bool scrolled_down {
@@ -46,8 +46,8 @@ public class ScrollWidget : Gtk.ScrolledWindow {
   private double transition_start_value;
 
   construct {
-    vadjustment.notify["upper"].connect(keep_upper_func);
-    vadjustment.notify["value"].connect(keep_value_func);
+    vadjustment.notify["upper"].connect (keep_upper_func);
+    vadjustment.notify["value"].connect (keep_value_func);
   }
 
   private void keep_upper_func() { // {{{
@@ -70,11 +70,11 @@ public class ScrollWidget : Gtk.ScrolledWindow {
     }
 
     double max = vadjustment.upper - vadjustment.page_size;
-    if(vadjustment.value >= max - end_diff)
-      scrolled_to_end();
+    if (vadjustment.value >= max - end_diff)
+      scrolled_to_end ();
 
     double upper = vadjustment.upper;
-    if (balance == BOTTOM){
+    if (balance == BOTTOM) {
       double inc = (upper - upper_cache);
 
       this.vadjustment.value -= inc;
@@ -85,7 +85,7 @@ public class ScrollWidget : Gtk.ScrolledWindow {
     this.value_cache = vadjustment.value;
   } // }}}
 
-  public void balance_next_upper_change(int mode){
+  public void balance_next_upper_change (int mode) {
     balance = mode;
   }
 
