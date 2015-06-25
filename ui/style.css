@@ -231,3 +231,18 @@
 .reply-indicator {
   background-color: #4a90d9;
 }
+
+.profile-button {
+  background-image: none;
+  box-shadow: none;
+  border: none;
+  border-radius: 0px;
+}
+
+.profile-button:checked {
+  border-bottom: 4px solid #4a90d9;
+}
+
+.profile-button:hover {
+  background-color: alpha(white, 0.3);
+}
