@@ -85,6 +85,8 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
   private Gtk.MenuButton more_button;
   [GtkChild]
   private Gtk.Stack loading_stack;
+  [GtkChild]
+  private Gtk.RadioButton tweets_button;
   private GLib.MenuModel more_menu;
   private bool following;
   private int64 user_id;
@@ -94,7 +96,6 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
   private int follower_count = -1;
   private GLib.Cancellable data_cancellable;
   private bool lists_page_inited = false;
-  private ulong page_change_signal = 0;
   private bool block_item_blocked = false;
   private bool retweet_item_blocked = false;
   private bool tweets_loading = false;
@@ -131,16 +132,6 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     tweet_list.set_sort_func (ITwitterItem.sort_func);
 
     user_lists.hide_user_list_entry ();
-    page_change_signal = user_stack.notify["visible-child"].connect (() => {
-      if (user_stack.visible_child == user_lists && !lists_page_inited) {
-        user_lists.load_lists.begin (user_id);
-        lists_page_inited = true;
-      }
-    });
-
-    this.destroy.connect (() => {
-      user_stack.disconnect (page_change_signal);
-    });
 
     actions = new GLib.SimpleActionGroup ();
     actions.add_action_entries (action_entries, this);
@@ -615,7 +606,8 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
       load_tweets.begin ();
     }
     tweet_list.reset_placeholder_text ();
-    user_stack.visible_child = tweet_list;
+    tweets_button.active = true;
+    //user_stack.visible_child = tweet_list;
   }
 
   public void on_leave () {
@@ -772,4 +764,22 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     }
   }
 
+
+  [GtkCallback]
+  private void lists_button_toggled_cb (GLib.Object source) {
+    if (((Gtk.RadioButton)source).active) {
+      if (!lists_page_inited) {
+        user_lists.load_lists.begin (user_id);
+        lists_page_inited = true;
+      }
+      user_stack.visible_child = user_lists;
+    }
+  }
+
+  [GtkCallback]
+  private void tweets_button_toggled_cb (GLib.Object source) {
+    if (((Gtk.RadioButton)source).active) {
+      user_stack.visible_child = tweet_list;
+    }
+  }
 }

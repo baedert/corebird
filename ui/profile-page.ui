@@ -260,6 +260,7 @@
                         <style>
                           <class name="profile-button" />
                         </style>
+                        <signal name="toggled" handler="tweets_button_toggled_cb" />
 
                         <child>
                           <object class="GtkBox">
@@ -446,6 +447,7 @@
                         <style>
                           <class name="profile-button" />
                         </style>
+                        <signal name="toggled" handler="lists_button_toggled_cb" />
 
                         <child>
                           <object class="GtkBox">
@@ -527,16 +529,10 @@
                 <property name="vexpand">True</property>
                 <property name="selection_mode">none</property>
               </object>
-              <packing>
-                <property name="title" translatable="yes">Tweets</property>
-              </packing>
             </child>
             <child>
               <object class="UserListsWidget" id="user_lists">
               </object>
-              <packing>
-                <property name="title" translatable="yes">Lists</property>
-              </packing>
             </child>
           </object>
           <packing>
