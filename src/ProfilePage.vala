@@ -203,25 +203,12 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
 
 
   private async void load_friendship () {
-    var call = account.proxy.new_call ();
-    call.set_function ("1.1/friendships/show.json");
-    call.set_method ("GET");
-    call.add_param ("source_id", account.id.to_string ());
-    call.add_param ("target_id", user_id.to_string ());
+    Friendship? fr = yield UserUtils.load_friendship (account, this.user_id);
+    follows_you_label.visible = fr.followed_by;
+    set_user_blocked (fr.blocking);
+    set_retweets_disabled (fr.following && !fr.want_retweets);
 
-    Json.Node? root = yield TweetUtils.load_threaded (call);
-    if (root == null)
-      return;
-
-    var relationship = root.get_object ().get_object_member ("relationship");
-    bool followed_by = relationship.get_object_member ("target").get_boolean_member ("following");
-    bool following = relationship.get_object_member ("target").get_boolean_member ("followed_by");
-    bool want_retweets = relationship.get_object_member ("source").get_boolean_member ("want_retweets");
-    follows_you_label.visible = followed_by;
-    set_user_blocked (relationship.get_object_member ("source").get_boolean_member ("blocking"));
-    set_retweets_disabled (following && !want_retweets);
-
-    ((SimpleAction)actions.lookup_action ("toggle-retweets")).set_enabled (following);
+    ((SimpleAction)actions.lookup_action ("toggle-retweets")).set_enabled (fr.following);
   }
 
   private async void load_profile_data (int64 user_id, bool show_spinner) { //{{{
