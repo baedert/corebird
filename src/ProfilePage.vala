@@ -74,6 +74,10 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
   [GtkChild]
   private TweetListBox tweet_list;
   [GtkChild]
+  private TweetListBox followers_list;
+  [GtkChild]
+  private TweetListBox following_list;
+  [GtkChild]
   private Gtk.Spinner progress_spinner;
   [GtkChild]
   private Gtk.Label follows_you_label;
@@ -100,6 +104,8 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
   private bool retweet_item_blocked = false;
   private bool tweets_loading = false;
   private int64 lowest_tweet_id = int64.MAX;
+  private bool followers_page_inited = false;
+  private bool following_page_inited = false;
   private GLib.SimpleActionGroup actions;
 
   public ProfilePage (int id, Account account) {
@@ -377,6 +383,20 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     tweets_loading = false;
   } // }}}
 
+  private async void load_followers () {
+    var call = account.proxy.new_call ();
+    call.set_function ("1.1/followers/list.json");
+    call.set_method ("GET");
+    call.add_param ("user_id", this.user_id.to_string ());
+    call.add_param ("count", "25");
+
+    Json.Node? root = yield TweetUtils.load_threaded (call);
+    if (root == null) {
+      followers_list.set_empty ();
+      return;
+    }
+  }
+
   private async void load_older_tweets () { // {{{
     if (tweets_loading)
       return;
@@ -574,8 +594,10 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     int64 user_id = args.get_int64 ("user_id");
     if (user_id == -1)
       return;
-    else
+    else {
       lists_page_inited = false;
+      followers_page_inited = false;
+    }
 
     string? screen_name = args.get_string ("screen_name");
     if (screen_name != null) {
@@ -767,6 +789,23 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
   private void tweets_button_toggled_cb (GLib.Object source) {
     if (((Gtk.RadioButton)source).active) {
       user_stack.visible_child = tweet_list;
+    }
+  }
+  [GtkCallback]
+  private void followers_button_toggled_cb (GLib.Object source) {
+    if (((Gtk.RadioButton)source).active) {
+      if (!followers_page_inited) {
+        load_followers.begin ();
+        followers_page_inited = true;
+      }
+      user_stack.visible_child = followers_list;
+    }
+  }
+
+  [GtkCallback]
+  private void following_button_toggled_cb (GLib.Object source) {
+    if (((Gtk.RadioButton)source).active) {
+      user_stack.visible_child = following_list;
     }
   }
 }

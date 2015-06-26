@@ -322,6 +322,7 @@
                         <style>
                           <class name="profile-button" />
                         </style>
+                        <signal name="toggled" handler="followers_button_toggled_cb" />
 
                         <child>
                           <object class="GtkBox">
@@ -385,6 +386,7 @@
                         <style>
                           <class name="profile-button" />
                         </style>
+                        <signal name="toggled" handler="following_button_toggled_cb" />
 
                         <child>
                           <object class="GtkBox">
@@ -532,6 +534,20 @@
             </child>
             <child>
               <object class="UserListsWidget" id="user_lists">
+              </object>
+            </child>
+            <child>
+              <object class="TweetListBox" id="followers_list">
+                <property name="visible">true</property>
+                <property name="vexpand">true</property>
+                <property name="selection_mode">none</property>
+              </object>
+            </child>
+            <child>
+              <object class="TweetListBox" id="following_list">
+                <property name="visible">true</property>
+                <property name="vexpand">true</property>
+                <property name="selection_mode">none</property>
               </object>
             </child>
           </object>
