@@ -104,7 +104,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
   private bool retweet_item_blocked = false;
   private bool tweets_loading = false;
   private int64 lowest_tweet_id = int64.MAX;
-  private bool followers_page_inited = false;
+  private Cursor? followers_cursor = null;
   private bool following_page_inited = false;
   private GLib.SimpleActionGroup actions;
 
@@ -126,7 +126,14 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
       return false;
     });
     this.scrolled_to_end.connect (() => {
-      load_older_tweets.begin ();
+      if (user_stack.visible_child == tweet_list) {
+        this.load_older_tweets.begin ();
+      } else if (user_stack.visible_child == followers_list) {
+        //if (this.followers_cursor != null && !this.followers_cursor.full)
+          this.load_followers.begin ();
+      } else if (user_stack.visible_child == following_list) {
+
+      }
     });
 
     tweet_list.row_activated.connect ((row) => {
@@ -383,20 +390,6 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     tweets_loading = false;
   } // }}}
 
-  private async void load_followers () {
-    var call = account.proxy.new_call ();
-    call.set_function ("1.1/followers/list.json");
-    call.set_method ("GET");
-    call.add_param ("user_id", this.user_id.to_string ());
-    call.add_param ("count", "25");
-
-    Json.Node? root = yield TweetUtils.load_threaded (call);
-    if (root == null) {
-      followers_list.set_empty ();
-      return;
-    }
-  }
-
   private async void load_older_tweets () { // {{{
     if (tweets_loading)
       return;
@@ -428,6 +421,28 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
                                  account);
     tweets_loading = false;
   } // }}}
+
+  private async void load_followers () {
+    if (this.followers_cursor != null && this.followers_cursor.full)
+      return;
+
+    this.followers_cursor = yield UserUtils.load_followers (this.account,
+                                                            this.user_id,
+                                                            this.followers_cursor);
+
+    var users_array = this.followers_cursor.json_object.get_array ();
+
+    users_array.foreach_element ((array, index, node) => {
+      var user_obj = node.get_object ();
+
+      var entry = new UserListEntry ();
+      entry.user_id = user_obj.get_int_member ("id");
+      entry.screen_name = user_obj.get_string_member ("screen_name");
+      entry.name = user_obj.get_string_member ("name");
+      entry.show ();
+      this.followers_list.add (entry);
+    });
+  }
 
   /**
    * Loads the user's banner image.
@@ -596,7 +611,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
       return;
     else {
       lists_page_inited = false;
-      followers_page_inited = false;
+      followers_cursor = null;
     }
 
     string? screen_name = args.get_string ("screen_name");
@@ -794,9 +809,8 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
   [GtkCallback]
   private void followers_button_toggled_cb (GLib.Object source) {
     if (((Gtk.RadioButton)source).active) {
-      if (!followers_page_inited) {
-        load_followers.begin ();
-        followers_page_inited = true;
+      if (this.followers_cursor == null) {
+        this.load_followers.begin ();
       }
       user_stack.visible_child = followers_list;
     }
