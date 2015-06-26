@@ -234,15 +234,21 @@
 
 .profile-button {
   background-image: none;
+  background-color: alpha(white,0);
   box-shadow: none;
   border: none;
   border-radius: 0px;
 }
 
 .profile-button:checked {
-  border-bottom: 4px solid #4a90d9;
+  border-bottom: 3px solid #4a90d9;
 }
 
 .profile-button:hover {
   background-color: alpha(white, 0.3);
+}
+
+.profile-button:active {
+  background-color: alpha(white, 0.5);
+  border-bottom: 3px solid grey;
 }
