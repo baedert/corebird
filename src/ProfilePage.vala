@@ -129,8 +129,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
       if (user_stack.visible_child == tweet_list) {
         this.load_older_tweets.begin ();
       } else if (user_stack.visible_child == followers_list) {
-        //if (this.followers_cursor != null && !this.followers_cursor.full)
-          this.load_followers.begin ();
+        this.load_followers.begin ();
       } else if (user_stack.visible_child == following_list) {
 
       }
