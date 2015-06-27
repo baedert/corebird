@@ -104,6 +104,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
   private bool retweet_item_blocked = false;
   private bool tweets_loading = false;
   private int64 lowest_tweet_id = int64.MAX;
+  private bool followers_loading = false;
   private Cursor? followers_cursor = null;
   private bool following_page_inited = false;
   private GLib.SimpleActionGroup actions;
@@ -142,6 +143,11 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
       main_window.main_widget.switch_page (Page.TWEET_INFO, bundle);
     });
     tweet_list.set_sort_func (ITwitterItem.sort_func);
+    followers_list.row_activated.connect ((row) => {
+      var bundle = new Bundle ();
+      bundle.put_int64 ("user_id", ((UserListEntry)row).user_id);
+      main_window.main_widget.switch_page (Page.PROFILE, bundle);
+    });
 
     user_lists.hide_user_list_entry ();
 
@@ -425,6 +431,11 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     if (this.followers_cursor != null && this.followers_cursor.full)
       return;
 
+    if (this.followers_loading)
+      return;
+
+    this.followers_loading = true;
+
     this.followers_cursor = yield UserUtils.load_followers (this.account,
                                                             this.user_id,
                                                             this.followers_cursor);
@@ -435,12 +446,17 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
       var user_obj = node.get_object ();
 
       var entry = new UserListEntry ();
+      entry.show_settings = false;
       entry.user_id = user_obj.get_int_member ("id");
       entry.screen_name = user_obj.get_string_member ("screen_name");
       entry.name = user_obj.get_string_member ("name");
+      entry.avatar = user_obj.get_string_member ("profile_image_url");
+      entry.get_style_context ().add_class ("tweet");
       entry.show ();
       this.followers_list.add (entry);
     });
+
+    this.followers_loading = false;
   }
 
   /**
@@ -629,6 +645,8 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
       load_tweets.begin ();
     }
     tweet_list.reset_placeholder_text ();
+    followers_list.reset_placeholder_text ();
+    following_list.reset_placeholder_text ();
     tweets_button.active = true;
     //user_stack.visible_child = tweet_list;
   }
@@ -787,21 +805,10 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     }
   }
 
-
-  [GtkCallback]
-  private void lists_button_toggled_cb (GLib.Object source) {
-    if (((Gtk.RadioButton)source).active) {
-      if (!lists_page_inited) {
-        user_lists.load_lists.begin (user_id);
-        lists_page_inited = true;
-      }
-      user_stack.visible_child = user_lists;
-    }
-  }
-
   [GtkCallback]
   private void tweets_button_toggled_cb (GLib.Object source) {
     if (((Gtk.RadioButton)source).active) {
+      this.balance_next_upper_change (BOTTOM);
       user_stack.visible_child = tweet_list;
     }
   }
@@ -811,6 +818,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
       if (this.followers_cursor == null) {
         this.load_followers.begin ();
       }
+      this.balance_next_upper_change (BOTTOM);
       user_stack.visible_child = followers_list;
     }
   }
@@ -818,7 +826,20 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
   [GtkCallback]
   private void following_button_toggled_cb (GLib.Object source) {
     if (((Gtk.RadioButton)source).active) {
+      this.balance_next_upper_change (BOTTOM);
       user_stack.visible_child = following_list;
+    }
+  }
+
+  [GtkCallback]
+  private void lists_button_toggled_cb (GLib.Object source) {
+    if (((Gtk.RadioButton)source).active) {
+      if (!lists_page_inited) {
+        user_lists.load_lists.begin (user_id);
+        lists_page_inited = true;
+      }
+      this.balance_next_upper_change (BOTTOM);
+      user_stack.visible_child = user_lists;
     }
   }
 }
