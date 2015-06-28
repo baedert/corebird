@@ -17,10 +17,6 @@
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/profile-page.ui")]
 class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
-  private static const int PAGE_TWEETS     = 0;
-  private static const int PAGE_FOLLOWING  = 1;
-  private static const int PAGE_FOLLOWERS  = 2;
-
   private const GLib.ActionEntry[] action_entries = {
     {"write-dm", write_dm_activated},
     {"tweet-to", tweet_to_activated},
