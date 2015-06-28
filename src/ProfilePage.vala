@@ -101,7 +101,8 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
   private bool tweets_loading = false;
   private bool followers_loading = false;
   private Cursor? followers_cursor = null;
-  private bool following_page_inited = false;
+  private bool following_loading = false;
+  private Cursor? following_cursor = null;
   private GLib.SimpleActionGroup actions;
 
   public ProfilePage (int id, Account account) {
@@ -127,7 +128,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
       } else if (user_stack.visible_child == followers_list) {
         this.load_followers.begin ();
       } else if (user_stack.visible_child == following_list) {
-
+        this.load_following.begin ();
       }
     });
 
@@ -454,6 +455,39 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     this.followers_loading = false;
   }
 
+  private async void load_following () {
+    if (this.following_cursor != null && this.following_cursor.full)
+      return;
+
+    if (this.following_loading)
+      return;
+
+    this.following_loading = true;
+
+    this.following_cursor = yield UserUtils.load_following (this.account,
+                                                            this.user_id,
+                                                            this.following_cursor);
+
+    var users_array = this.following_cursor.json_object.get_array ();
+
+    users_array.foreach_element ((array, index, node) => {
+      var user_obj = node.get_object ();
+
+      var entry = new UserListEntry ();
+      entry.show_settings = false;
+      entry.user_id = user_obj.get_int_member ("id");
+      entry.screen_name = user_obj.get_string_member ("screen_name");
+      entry.name = user_obj.get_string_member ("name");
+      entry.avatar = user_obj.get_string_member ("profile_image_url");
+      entry.get_style_context ().add_class ("tweet");
+      entry.show ();
+      this.following_list.add (entry);
+
+    });
+
+    this.following_loading = false;
+  }
+
   /**
    * Loads the user's banner image.
    *
@@ -622,6 +656,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     else {
       lists_page_inited = false;
       followers_cursor = null;
+      following_cursor = null;
     }
 
     string? screen_name = args.get_string ("screen_name");
@@ -819,6 +854,9 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
   [GtkCallback]
   private void following_button_toggled_cb (GLib.Object source) {
     if (((Gtk.RadioButton)source).active) {
+      if (this.following_cursor == null) {
+        this.load_following.begin ();
+      }
       this.balance_next_upper_change (BOTTOM);
       user_stack.visible_child = following_list;
     }
