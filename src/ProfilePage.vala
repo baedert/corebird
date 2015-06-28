@@ -103,7 +103,6 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
   private bool block_item_blocked = false;
   private bool retweet_item_blocked = false;
   private bool tweets_loading = false;
-  private int64 lowest_tweet_id = int64.MAX;
   private bool followers_loading = false;
   private Cursor? followers_cursor = null;
   private bool following_page_inited = false;
@@ -655,7 +654,6 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     // We might otherwise overwrite the new user's data with that from the old one.
     data_cancellable.cancel ();
     banner_image.scale = 0.3;
-    //lowest_tweet_id = int64.MAX;
   }
 
   private void reset_data () {
@@ -668,7 +666,6 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     following_label.label = " ";
     followers_label.label = " ";
     avatar_image.pixbuf = null;
-    lowest_tweet_id = int64.MAX;
   }
 
   public void create_tool_button (Gtk.RadioButton? group) {}
