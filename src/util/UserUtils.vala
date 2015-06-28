@@ -90,4 +90,37 @@ namespace UserUtils {
 
     return cursor;
   }
+
+  async Cursor? load_following (Account account,
+                                int64   user_id,
+                                Cursor? old_cursor)
+  {
+    const int requested = 25;
+    var call = account.proxy.new_call ();
+    call.set_function ("1.1/friends/list.json");
+    call.set_method ("GET");
+    call.add_param ("user_id", user_id.to_string ());
+    call.add_param ("count", requested.to_string ());
+    call.add_param ("skip_status", "true");
+    call.add_param ("include_user_entities", "false");
+
+    if (old_cursor != null)
+      call.add_param ("cursor", old_cursor.next_cursor.to_string ());
+
+    Json.Node? root = yield TweetUtils.load_threaded (call);
+
+    if (root == null)
+      return null;
+
+    var root_obj = root.get_object ();
+
+    var user_array = root_obj.get_array_member ("users");
+
+    Cursor cursor = Cursor ();
+    cursor.next_cursor = root_obj.get_int_member ("next_cursor");
+    cursor.full = (user_array.get_length () < requested);
+    cursor.json_object = root_obj.get_member ("users");
+
+    return cursor;
+  }
 }
