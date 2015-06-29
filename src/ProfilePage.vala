@@ -183,8 +183,8 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     bool data_in_db = false;
     //Load cached data
     Corebird.db.select ("profiles").cols ("id", "screen_name", "name", "description", "tweets",
-     "following", "followers", "avatar_name", "banner_url", "url", "location", "is_following",
-     "banner_name").where_eqi ("id", user_id)
+     "following", "followers", "avatar_name", "banner_url", "url", "location", "is_following")
+      .where_eqi ("id", user_id)
     .run ((vals) => {
       /* If we get inside this block, there is already some data in the
         DB we can use. */
@@ -200,11 +200,9 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
                int.parse (vals[4]), int.parse (vals[5]), int.parse (vals[6]),
                vals[7], false, ref entities);
       set_follow_button_state (bool.parse (vals[11]));
-      string banner_name = vals[12];
-      debug("banner_name: %s", banner_name);
+      string banner_name = Utils.get_banner_name (user_id);
 
-      if (banner_name != null &&
-          FileUtils.test(Dirs.cache("assets/banners/"+banner_name), FileTest.EXISTS)){
+      if (FileUtils.test(Dirs.cache("assets/banners/"+banner_name), FileTest.EXISTS)){
         debug ("Banner exists, set it directly...");
         load_banner (Dirs.cache ("assets/banners/" + banner_name));
       } else {
@@ -358,7 +356,6 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
                .val ("url", display_url)
                .val ("location", location)
                .valb ("is_following", is_following)
-               .val ("banner_name", banner_name)
                .run ();
 
   } //}}}
@@ -502,17 +499,15 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
    * @param screen_name Bar
    */
   private void load_profile_banner (string base_url, int64 user_id) { // {{{
-    string saved_banner_url = Dirs.cache ("assets/banners/"+Utils.get_banner_name (user_id));
-    string banner_url  = base_url+"/mobile_retina";
     string banner_name = Utils.get_banner_name (user_id);
-    string banner_on_disk = Dirs.cache("assets/banners/"+banner_name);
+    string saved_banner_url = Dirs.cache ("assets/banners/" + banner_name);
+    string banner_url  = base_url+"/mobile_retina";
+    string banner_on_disk = Dirs.cache("assets/banners/" + banner_name);
     if (!FileUtils.test (banner_on_disk, FileTest.EXISTS) || banner_url != saved_banner_url) {
-      Utils.download_file_async .begin (banner_url, banner_on_disk, data_cancellable,
+      Utils.download_file_async.begin (banner_url, banner_on_disk, data_cancellable,
           () => {load_banner (banner_on_disk);});
-        debug("Setting the banner name to %s", banner_name);
       Corebird.db.update ("profiles")
                  .val ("banner_url", banner_url)
-                 .val ("banner_name", banner_name)
                  .where_eqi ("id", user_id)
                  .run ();
     } else {
