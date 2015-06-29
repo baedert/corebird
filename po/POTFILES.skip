@@ -29,5 +29,6 @@ src/window/ModifyFilterDialog.c
 src/widgets/AvatarBannerWidget.c
 src/window/ImageCropDialog.c
 src/window/ModifySnippetDialog.c
+src/window/SettingsDialog.c
 src/model/NotificationItem.c
 data/org.baedert.corebird.desktop.in
