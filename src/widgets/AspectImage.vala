@@ -70,6 +70,7 @@ class AspectImage : Gtk.Widget {
       return;
 
     alpha = 0.0;
+    in_transition = true;
     this.start_time = this.get_frame_clock ().get_frame_time ();
     this.add_tick_callback (fade_in_cb);
   }
@@ -83,6 +84,7 @@ class AspectImage : Gtk.Widget {
   private const double TRANSITION_DURATION = 200 * 1000;
   private double alpha = 0.0;
   private int64 start_time;
+  private bool in_transition = false;
   private bool fade_in_cb (Gtk.Widget widget, Gdk.FrameClock frame_clock) {
 
     int64 now = frame_clock.get_frame_time ();
@@ -90,9 +92,10 @@ class AspectImage : Gtk.Widget {
 
     if (t >= 1.0) {
       t = 1.0;
+      in_transition = false;
     }
 
-    alpha = ease_out_cubic (t);
+    this.alpha = ease_out_cubic (t);
     this.queue_draw ();
 
     return t < 1.0;
@@ -143,15 +146,28 @@ class AspectImage : Gtk.Widget {
 
     ct.rectangle (0, 0, width, view_height);
     ct.scale (scale_x, scale_y);
-    ct.set_source_rgba (1, 1, 1, alpha);
+
+
+    ct.push_group ();
+
     if (this.old_surface != null) {
       ct.set_source_surface (this.old_surface, 0, 0);
-      ct.fill_preserve ();
-    }
+      ct.paint ();
+    } else
+      alpha = 1.0;
 
 
     ct.set_source_surface (this.pixbuf_surface, 0, 0);
-    ct.paint_with_alpha (alpha);
-    return false;
+    if (in_transition)
+      ct.paint_with_alpha (alpha);
+    else
+      ct.paint ();
+
+    ct.pop_group_to_source ();
+
+    ct.set_operator (Cairo.Operator.OVER);
+    ct.paint ();
+
+    return Gdk.EVENT_PROPAGATE;
   }
 }
