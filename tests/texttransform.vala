@@ -238,6 +238,50 @@ void remove_multiple_trailing_hashtags () {
 }
 
 
+void trailing_hashtags_mention_before () {
+  string text = "Hey, #totally inappropriate! #baedertworship @baedert #foobar";
+
+  var entities = new TextEntity[4];
+
+  entities[0] = TextEntity () {
+    from = 5,
+    to = 13,
+    display_text = "#totally",
+    target = "foobar"
+  };
+
+  entities[1] = TextEntity () {
+    from = 29,
+    to = 44,
+    display_text = "#baedertworship",
+    target = "bla"
+  };
+
+  entities[2] = TextEntity () {
+    from = 45,
+    to = 53,
+    display_text = "@baedert",
+    target = "foobar"
+  };
+
+  entities[3] = TextEntity () {
+    from = 54,
+    to = 61,
+    display_text = "#foobar",
+    target = "bla"
+  };
+
+  string result = TextTransform.transform (text,
+                                           entities,
+                                           TransformFlags.REMOVE_TRAILING_HASHTAGS);
+
+  message (result);
+  assert (result.contains (">@baedert<")); // Mention should still be a link
+  assert (result.contains (">#totally<"));
+  assert (result.contains (">#baedertworship<"));
+  assert (!result.contains ("#foobar"));
+}
+
 
 int main (string[] args) {
   Intl.setlocale (LocaleCategory.ALL, "");
@@ -251,6 +295,7 @@ int main (string[] args) {
   GLib.Test.add_func ("/tt/multiple-links", multiple_links);
   GLib.Test.add_func ("/tt/remove-only-trailing-hashtags", remove_only_trailing_hashtags);
   GLib.Test.add_func ("/tt/remove-multiple-trailing-hashtags", remove_multiple_trailing_hashtags);
+  GLib.Test.add_func ("/tt/trailing-hashtags-mention-before", trailing_hashtags_mention_before);
 
 
   return GLib.Test.run ();
