@@ -83,7 +83,7 @@ namespace TextTransform {
       } else
         cur_end = entities[i].to;
 
-      if (entities[i].to == cur_end) {
+      if (entities[i].to == cur_end && is_hashtag (entities[i].display_text)) {
         entities[i].info |= TRAILING;
         cur_end = entities[i].from;
       } else break;
@@ -113,7 +113,7 @@ namespace TextTransform {
       }
 
       if (TransformFlags.EXPAND_LINKS in flags) {
-        if (entity.display_text.has_prefix ("@"))
+        if (entity.display_text[0] == '@')
           builder.append (entity.display_text);
         else
           builder.append (entity.target ?? entity.display_text);
