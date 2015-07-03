@@ -438,6 +438,31 @@
               </packing>
             </child>
 
+
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">true</property>
+                <property name="label" translatable="yes">Use real names in mentions</property>
+                <property name="halign">end</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">4</property>
+              </packing>
+            </child>
+
+            <child>
+              <object class="GtkSwitch" id="mentions_use_real_name_switch">
+                <property name="visible">true</property>
+                <property name="halign">start</property>
+                <signal name="notify::active" handler="mentions_use_real_name_cb" />
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">4</property>
+              </packing>
+            </child>
+
           </object>
           <packing>
             <property name="title" translatable="yes">Tweets</property>
@@ -445,6 +470,7 @@
           </packing>
         </child>
 
+        <!-- Snippets page -->
         <child>
           <object class="GtkBox">
             <property name="visible">true</property>

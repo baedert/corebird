@@ -40,6 +40,8 @@ class SettingsDialog : Gtk.Window {
   [GtkChild]
   private Gtk.Switch remove_media_links_switch;
   [GtkChild]
+  private Gtk.Switch mentions_use_real_name_switch;
+  [GtkChild]
   private Gtk.ListBox snippet_list_box;
 
   private TweetListEntry sample_tweet_entry;
@@ -131,6 +133,7 @@ class SettingsDialog : Gtk.Window {
     remove_trailing_hashtags_switch.active = (TransformFlags.REMOVE_TRAILING_HASHTAGS in
                                               text_transform_flags);
     remove_media_links_switch.active = (TransformFlags.REMOVE_MEDIA_LINKS in text_transform_flags);
+    mentions_use_real_name_switch.active = (TransformFlags.MENTIONS_USE_REAL_NAME in text_transform_flags);
 
 
     // Fill snippet list box
@@ -265,6 +268,16 @@ class SettingsDialog : Gtk.Window {
       Settings.add_text_transform_flag (TransformFlags.REMOVE_MEDIA_LINKS);
     } else {
       Settings.remove_text_transform_flag (TransformFlags.REMOVE_MEDIA_LINKS);
+    }
+  }
+
+
+  [GtkCallback]
+  private void mentions_use_real_name_cb () {
+    if (mentions_use_real_name_switch.active) {
+      Settings.add_text_transform_flag (TransformFlags.MENTIONS_USE_REAL_NAME);
+    } else {
+      Settings.remove_text_transform_flag (TransformFlags.MENTIONS_USE_REAL_NAME);
     }
   }
 }

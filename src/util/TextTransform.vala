@@ -32,7 +32,8 @@ public struct TextEntity {
 public enum TransformFlags {
   REMOVE_MEDIA_LINKS       = 1 << 0,
   REMOVE_TRAILING_HASHTAGS = 1 << 1,
-  EXPAND_LINKS             = 1 << 2
+  EXPAND_LINKS             = 1 << 2,
+  MENTIONS_USE_REAL_NAME   = 1 << 3
 }
 
 namespace TextTransform {
@@ -125,13 +126,21 @@ namespace TextTransform {
 
         /* Only set the tooltip if there actually is one */
         if (entity.tooltip_text != null) {
+          string ttext = entity.tooltip_text;
+          if (entity.display_text[0] == '@' && TransformFlags.MENTIONS_USE_REAL_NAME in flags)
+            ttext = entity.display_text;
+
           builder.append (" title=\"")
-                 .append (entity.tooltip_text.replace ("&", "&amp;"))
+                 .append (ttext.replace ("&", "&amp;"))
                  .append ("\"");
         }
 
         builder.append (">");
-        builder.append (entity.display_text.replace ("&", "&amp;"));
+
+        if (entity.display_text[0] == '@' && TransformFlags.MENTIONS_USE_REAL_NAME in flags)
+          builder.append (entity.tooltip_text.replace ("&", "&anp;"));
+        else
+          builder.append (entity.display_text.replace ("&", "&amp;"));
 
 
         builder.append ("</a></span>");
