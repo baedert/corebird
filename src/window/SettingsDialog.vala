@@ -71,59 +71,59 @@ class SettingsDialog : Gtk.Window {
 
 
     // Set up sample tweet {{{
-    var sample_tweet = new Tweet ();
-    sample_tweet.text = _("Hey, check out this new #Corebird version! \\ (•◡•) / #cool #newisalwaysbetter");
-    sample_tweet.screen_name = "corebirdclient";
-    sample_tweet.user_name = "Corebird";
-    Gdk.Pixbuf? a = null;
-    try {
-      a = Gtk.IconTheme.get_default ().load_icon ("corebird", 48,
-                                                  Gtk.IconLookupFlags.FORCE_SIZE);
-    } catch (GLib.Error e) {
-      warning (e.message);
+    //var sample_tweet = new Tweet ();
+    //sample_tweet.text = _("Hey, check out this new #Corebird version! \\ (•◡•) / #cool #newisalwaysbetter");
+    //sample_tweet.screen_name = "corebirdclient";
+    //sample_tweet.user_name = "Corebird";
+    //Gdk.Pixbuf? a = null;
+    //try {
+      //a = Gtk.IconTheme.get_default ().load_icon ("corebird", 48,
+                                                  //Gtk.IconLookupFlags.FORCE_SIZE);
+    //} catch (GLib.Error e) {
+      //warning (e.message);
       // Ignore.
-    }
-    sample_tweet.avatar = a;
+    //}
+    //sample_tweet.avatar = a;
 
 
-    try {
-      var regex = new GLib.Regex ("#\\w+");
-      GLib.MatchInfo match_info;
-      bool matched = regex.match (sample_tweet.text, 0, out match_info);
-      assert (matched);
+    //try {
+      //var regex = new GLib.Regex ("#\\w+");
+      //GLib.MatchInfo match_info;
+      //bool matched = regex.match (sample_tweet.text, 0, out match_info);
+      //assert (matched);
 
-      sample_tweet.urls = new TextEntity[3];
+      //sample_tweet.urls = new TextEntity[3];
 
-      int i = 0;
-      while (match_info.matches ()) {
-        assert (match_info.get_match_count () == 1);
-        int from, to;
-        match_info.fetch_pos (0, out from, out to);
-        string match = match_info.fetch (0);
-        sample_tweet.urls[i] = TextEntity () {
-          from = sample_tweet.text.char_count (from),
-          to   = sample_tweet.text.char_count (to),
-          display_text = match,
-          target       = "foobar"
-        };
+      //int i = 0;
+      //while (match_info.matches ()) {
+        //assert (match_info.get_match_count () == 1);
+        //int from, to;
+        //match_info.fetch_pos (0, out from, out to);
+        //string match = match_info.fetch (0);
+        //sample_tweet.urls[i] = TextEntity () {
+          //from = sample_tweet.text.char_count (from),
+          //to   = sample_tweet.text.char_count (to),
+          //display_text = match,
+          //target       = "foobar"
+        //};
 
-        match_info.next ();
-        i ++;
-      }
-    } catch (GLib.RegexError e) {
-      critical (e.message);
-    }
+        //match_info.next ();
+        //i ++;
+      //}
+    //} catch (GLib.RegexError e) {
+      //critical (e.message);
+    //}
 
     // Just to be sure
-    TweetUtils.sort_entities (ref sample_tweet.urls);
+    //TweetUtils.sort_entities (ref sample_tweet.urls);
 
 
-    this.sample_tweet_entry = new TweetListEntry (sample_tweet, null,
-                                                  new Account (10, "", ""));
-    sample_tweet_entry.activatable = false;
-    sample_tweet_entry.read_only = true;
-    sample_tweet_entry.show ();
-    this.sample_tweet_list.add (sample_tweet_entry);
+    //this.sample_tweet_entry = new TweetListEntry (sample_tweet, null,
+                                                  //new Account (10, "", ""));
+    //sample_tweet_entry.activatable = false;
+    //sample_tweet_entry.read_only = true;
+    //sample_tweet_entry.show ();
+    //this.sample_tweet_list.add (sample_tweet_entry);
     // }}}
 
     var text_transform_flags = Settings.get_text_transform_flags ();

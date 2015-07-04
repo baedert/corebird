@@ -233,12 +233,14 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
         flags |= Tweet.HIDDEN_RT_BY_FOLLOWEE;
 
     /* third case */
-    if (t.rt_by_id == account.id)
+    if (t.retweeted_tweet != null &&
+        t.retweeted_tweet.author.id == account.id)
       flags |= Tweet.HIDDEN_FORCE;
 
     /* Fourth case */
     foreach (int64 id in account.disabled_rts)
-      if (id == t.rt_by_id) {
+      if (t.retweeted_tweet != null &&
+          id == t.retweeted_tweet.id) {
         flags |= Tweet.HIDDEN_RTS_DISABLED;
         break;
       }
@@ -247,7 +249,8 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     /* Fifth case */
     foreach (Gtk.Widget w in tweet_list.get_children ()) {
       if (w is TweetListEntry) {
-        if (((TweetListEntry)w).tweet.rt_id == t.rt_id) {
+        var tt = ((TweetListEntry)w).tweet;
+        if (tt.retweeted_tweet != null && tt.retweeted_tweet.id == t.retweeted_tweet.id) {
           flags |= Tweet.HIDDEN_FORCE;
           break;
         }

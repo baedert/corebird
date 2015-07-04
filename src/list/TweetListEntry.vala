@@ -76,7 +76,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     }
   }
   public int64 sort_factor {
-    get { return tweet.created_at;}
+    get { return tweet.source_tweet.id;}
   }
   public bool shows_actions {
     get {
@@ -108,11 +108,13 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     avatar_image.verified = tweet.verified;
     text_label.label = tweet.get_trimmed_text ();
     update_time_delta ();
-    if (tweet.is_retweet) {
+    if (tweet.retweeted_tweet != null) {
       rt_label.show ();
       rt_image.show ();
-      rt_label.label = @"<span underline='none'><a href=\"@$(tweet.rt_by_id)/$(tweet.rt_by_screen_name)\"
-                         title=\"@$(tweet.rt_by_screen_name)\">$(tweet.retweeted_by)</a></span>";
+      rt_label.label = @"<span underline='none'><a href=\"@$(tweet.source_tweet.author.id)/" +
+                       @"$(tweet.source_tweet.author.screen_name)\"" +
+                       @"title=\"@$(tweet.source_tweet.author.screen_name)\">" +
+                       @"$(tweet.source_tweet.author.user_name)</a></span>";
     } else {
       grid.remove (rt_image);
       grid.remove (rt_label);
@@ -343,10 +345,9 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   private void media_invalid_cb () {
     TransformFlags flags = Settings.get_text_transform_flags ()
                            & ~TransformFlags.REMOVE_MEDIA_LINKS;
-    this.text_label.set_label (TextTransform.transform (tweet.text,
-                                                        tweet.urls,
-                                                        flags,
-                                                        tweet.medias.length));
+    string new_text = TextTransform.transform_tweet (tweet.retweeted_tweet ?? tweet.source_tweet,
+                                                     flags);
+    this.text_label.label = new_text;
   }
 
   private void hidden_flags_changed_cb () {
@@ -371,7 +372,9 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       cur_time = now;
 
     GLib.DateTime then = new GLib.DateTime.from_unix_local (
-                 tweet.is_retweet ? tweet.rt_created_at : tweet.created_at);
+                             tweet.retweeted_tweet != null ? tweet.retweeted_tweet.created_at :
+                                                             tweet.source_tweet.created_at);
+                 //tweet.is_retweet ? tweet.rt_created_at : tweet.created_at);
     time_delta_label.label = Utils.get_time_delta (then, cur_time);
     return (int)(cur_time.difference (then) / 1000.0 / 1000.0);
   } //}}}

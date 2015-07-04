@@ -18,11 +18,11 @@
 
 namespace InlineMediaDownloader {
 
-  public async void load_media (Tweet t, Media media) {
+  public async void load_media (MiniTweet t, Media media) {
     yield load_inline_media (t, media);
   }
 
-  public void load_all_media (Tweet t, Media[] medias) {
+  public void load_all_media (MiniTweet t, Media[] medias) {
     foreach (Media m in medias) {
       load_media.begin (t, m);
     }
@@ -70,7 +70,7 @@ namespace InlineMediaDownloader {
   }
 
   // XXX Rename
-  private async void load_real_url (Tweet  t,
+  private async void load_real_url (MiniTweet  t,
                                     Media  media,
                                     string regex_str1,
                                     int    match_index1) {
@@ -103,7 +103,7 @@ namespace InlineMediaDownloader {
     yield;
   }
 
-  private async void load_inline_media (Tweet t, Media media) {
+  private async void load_inline_media (MiniTweet t, Media media) {
     GLib.SourceFunc callback = load_inline_media.callback;
 
     media.path = get_media_path (t, media);
@@ -250,7 +250,7 @@ namespace InlineMediaDownloader {
     yield;
   }
 
-  private async void load_animation (Tweet                  t,
+  private async void load_animation (MiniTweet                  t,
                                      GLib.MemoryInputStream in_stream,
                                      GLib.OutputStream      thumb_out_stream,
                                      Media                  media) {
@@ -278,7 +278,7 @@ namespace InlineMediaDownloader {
 
   }
 
-  private async void load_normal_media (Tweet             t,
+  private async void load_normal_media (MiniTweet             t,
                                         GLib.InputStream  in_stream,
                                         GLib.OutputStream thumb_out_stream,
                                         Media             media) {
@@ -305,25 +305,21 @@ namespace InlineMediaDownloader {
     }
   }
 
-  public string get_media_path (Tweet t, Media media) {
+  public string get_media_path (MiniTweet t, Media media) {
     string ext = Utils.get_file_type (media.thumb_url);
     ext = ext.down();
     if(ext.length == 0)
       ext = "png";
 
     int64 id = t.id;
-    if (t.is_retweet)
-      id = t.rt_id;
 
-    return Dirs.cache (@"assets/media/$(id)_$(t.user_id)_$(media.id).$(ext)");
+    return Dirs.cache (@"assets/media/$(id)_$(t.author.id)_$(media.id).$(ext)");
   }
 
-  public string get_thumb_path (Tweet t, Media media) {
+  public string get_thumb_path (MiniTweet t, Media media) {
     int64 id = t.id;
-    if (t.is_retweet)
-      id = t.rt_id;
 
-    return Dirs.cache (@"assets/media/thumbs/$(id)_$(t.user_id)_$(media.id).png");
+    return Dirs.cache (@"assets/media/thumbs/$(id)_$(t.author.id)_$(media.id).png");
   }
 
 }

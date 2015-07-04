@@ -66,9 +66,14 @@ public class DeltaUpdater : GLib.Object {
 
   public void add (ITwitterItem entry) {
     // TODO: This sucks
-    GLib.DateTime now  = new GLib.DateTime.now_local();
-    GLib.TimeSpan diff = now.difference(new GLib.DateTime.from_unix_local(
-                                        entry.sort_factor));
+    GLib.DateTime now  = new GLib.DateTime.now_local ();
+    int64 sort_factor = entry.sort_factor;
+    // Fuck.
+    if (entry is TweetListEntry) {
+      var e = (TweetListEntry)entry;
+      sort_factor = e.tweet.source_tweet.created_at;
+    }
+    GLib.TimeSpan diff = now.difference (new GLib.DateTime.from_unix_local (sort_factor));
 
 
     int seconds = (int)(diff / 1000.0 / 1000.0);

@@ -61,6 +61,12 @@ namespace TextTransform {
     return true;
   }
 
+  public string transform_tweet (MiniTweet tweet, TransformFlags flags)
+  {
+    return transform (tweet.text, tweet.entities, flags, tweet.medias.length);
+  }
+
+
   // XXX We could probably do this a bit faster and simpler (and in one step!)
   //     if we just built the new string from end to start.
   public string transform (string         text,
