@@ -296,9 +296,9 @@ namespace TweetUtils {
         if (account.user_counter == null)
           return false;
 
-        account.user_counter.user_seen (tweet.user_id,
-                                        tweet.screen_name,
-                                        tweet.user_name);
+        account.user_counter.id_seen (ref tweet.source_tweet.author);
+        if (tweet.retweeted_tweet != null)
+          account.user_counter.id_seen (ref tweet.retweeted_tweet.author);
 
         if (account.filter_matches (tweet))
           tweet.hidden_flags |= Tweet.HIDDEN_FILTERED;
