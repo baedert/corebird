@@ -83,6 +83,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
       this.load_newest ();
     });
 
+    this.hexpand = true;
   }
 
   public virtual void on_join (int page_id, Bundle? args) {
