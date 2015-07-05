@@ -449,7 +449,7 @@ public class Tweet : GLib.Object {
 
 
     return TextTransform.transform_tweet (t,
-                                          (TransformFlags)Settings.get_text_transform_flags ());
+                                          Settings.get_text_transform_flags ());
   }
 
 }

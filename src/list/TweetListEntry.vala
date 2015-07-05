@@ -192,6 +192,10 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
   private void transform_flags_changed_cb () {
     text_label.label = tweet.get_trimmed_text ();
+    if (this.tweet.quoted_tweet != null) {
+      this.quote_label.label = TextTransform.transform_tweet (tweet.quoted_tweet,
+                                                              Settings.get_text_transform_flags ());
+    }
   }
 
   private void favorited_cb () {
