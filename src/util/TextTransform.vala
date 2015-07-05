@@ -42,8 +42,8 @@ namespace TextTransform {
                              string  display_text,
                              uint    media_count)
   {
-    return (InlineMediaDownloader.is_media_candidate (url ?? display_text) && media_count == 1) ||
-            display_text.has_prefix ("pic.twitter.com/");
+    return (InlineMediaDownloader.is_media_candidate (url ?? display_text) &&
+            media_count == 1) || display_text.has_prefix ("pic.twitter.com/");
   }
 
   private bool is_hashtag (string entity)
