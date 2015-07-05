@@ -31,6 +31,7 @@ UserIdentity? parse_identity (Json.Object user_obj)
   return id;
 }
 
+// XXX FUCK THIS SHOULD BE A STRUCT FFS
 public class MiniTweet {
   public int64 id;
   public int64 created_at;
@@ -376,6 +377,12 @@ public class Tweet : GLib.Object {
       this.protected   = user.get_boolean_member ("protected");
       if (!status.get_null_member ("in_reply_to_status_id"))
         this.reply_id  = status.get_int_member ("in_reply_to_status_id");
+    }
+
+    if (status.has_member ("quoted_status")) {
+      var quoted_status = status.get_object_member ("quoted_status");
+      this.quoted_tweet = parse_mini_tweet (quoted_status);
+      parse_entities (this.quoted_tweet, quoted_status);
     }
 
     if (status.has_member ("current_user_retweet")) {
