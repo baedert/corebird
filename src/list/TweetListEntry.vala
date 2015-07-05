@@ -124,7 +124,8 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
     if (tweet.quoted_tweet != null) {
       quote_label.show ();
-      quote_label.label = TextTransform.transform_tweet (tweet.quoted_tweet, 0);
+      quote_label.label = TextTransform.transform_tweet (tweet.quoted_tweet,
+                                                         Settings.get_text_transform_flags ());
     }
 
     retweet_button.active = tweet.retweeted;

@@ -296,6 +296,8 @@ public class Tweet : GLib.Object {
     get {
       if (this.retweeted_tweet != null)
         return this.retweeted_tweet.medias;
+      else if (this.quoted_tweet != null)
+        return this.quoted_tweet.medias;
       else
         return this.source_tweet.medias;
     }
@@ -305,6 +307,9 @@ public class Tweet : GLib.Object {
       if (this.retweeted_tweet != null)
         return retweeted_tweet.medias != null &&
                retweeted_tweet.medias.length > 0;
+      else if (this.quoted_tweet != null)
+        return quoted_tweet.medias != null &&
+               quoted_tweet.medias.length > 0;
       else
         return source_tweet.medias != null &&
                source_tweet.medias.length > 0;
