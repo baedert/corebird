@@ -239,7 +239,6 @@ void not_reachable () {
   delete_file (thumb_path);
 
   InlineMediaDownloader.load_media.begin (t, media, () => {
-    //assert (media.path == null); XXX
     //assert (media.thumb_path == null);
     //assert (!GLib.FileUtils.test (media_path, GLib.FileTest.EXISTS));
     main_loop.quit ();

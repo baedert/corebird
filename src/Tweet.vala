@@ -182,7 +182,7 @@ void parse_entities (MiniTweet mt, Json.Object status)
                  media_type == "animated_gif") {
         Json.Object variant = media_obj.get_object_member ("video_info")
                                        .get_array_member ("variants")
-                                       .get_object_element (0); // XXX ???
+                                       .get_object_element (0);
         Media m = new Media ();
         m.url = variant.get_string_member ("url");
         m.thumb_url = media_obj.get_string_member ("media_url");

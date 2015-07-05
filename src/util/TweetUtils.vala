@@ -245,7 +245,7 @@ namespace TweetUtils {
       window.main_widget.switch_page (Page.SEARCH, bundle);
       return true;
     } else if (uri.has_prefix ("https://twitter.com/")) {
-      // XXX https://twitter.com/baedert/status/321423423423
+      // https://twitter.com/baedert/status/321423423423
       string[] parts = uri.split ("/");
       if (parts[4] == "status") {
         /* Treat it as a tweet link and hope it'll work out */
