@@ -57,6 +57,8 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   private Gtk.Stack stack;
   [GtkChild]
   private Gtk.Box action_box;
+  [GtkChild]
+  private Gtk.Label quote_label;
 
 
   private bool _read_only = false;
@@ -118,6 +120,11 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     } else {
       grid.remove (rt_image);
       grid.remove (rt_label);
+    }
+
+    if (tweet.quoted_tweet != null) {
+      quote_label.show ();
+      quote_label.label = TextTransform.transform_tweet (tweet.quoted_tweet, 0);
     }
 
     retweet_button.active = tweet.retweeted;
