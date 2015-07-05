@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-29 14:01+0200\n"
+"POT-Creation-Date: 2015-07-05 11:29+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -112,7 +112,7 @@ msgstr ""
 msgid "Save Original"
 msgstr ""
 
-#: ../src/widgets/MultiMediaWidget.vala:74 ../src/TweetInfoPage.vala:424
+#: ../src/widgets/MultiMediaWidget.vala:74 ../src/TweetInfoPage.vala:426
 msgid "Open in Browser"
 msgstr ""
 
@@ -134,19 +134,19 @@ msgstr ""
 msgid "%s retweeted %s"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:112
+#: ../src/HomeTimeline.vala:113
 #, c-format
 msgid "%s tweeted"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:119
+#: ../src/HomeTimeline.vala:120
 #, c-format
 msgid "%d new Tweet!"
 msgid_plural "%d new Tweets!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/HomeTimeline.vala:170
+#: ../src/HomeTimeline.vala:171
 msgid "Home"
 msgstr ""
 
@@ -195,20 +195,20 @@ msgstr ""
 msgid "Follow"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:415
+#: ../src/TweetInfoPage.vala:417
 msgid "Retweets"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:416 ../src/FavoritesTimeline.vala:91
+#: ../src/TweetInfoPage.vala:418 ../src/FavoritesTimeline.vala:91
 #: ../src/FavoritesTimeline.vala:95
 msgid "Favorites"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:424
+#: ../src/TweetInfoPage.vala:426
 msgid "Source"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:435
+#: ../src/TweetInfoPage.vala:437
 msgid "Tweet Details"
 msgstr ""
 
@@ -235,12 +235,12 @@ msgstr ""
 msgid "Open Account"
 msgstr ""
 
-#: ../src/MentionsTimeline.vala:97
+#: ../src/MentionsTimeline.vala:102
 #, c-format
 msgid "New Mention from @%s"
 msgstr ""
 
-#: ../src/MentionsTimeline.vala:130 ../src/MentionsTimeline.vala:135
+#: ../src/MentionsTimeline.vala:135 ../src/MentionsTimeline.vala:140
 msgid "Mentions"
 msgstr ""
 
@@ -282,8 +282,7 @@ msgid_plural "Minimum height: %d pixels"
 msgstr[0] ""
 msgstr[1] ""
 
-#. Set up sample tweet {{{
-#: ../src/window/SettingsDialog.vala:75
+#: ../src/window/SettingsDialog.vala:81
 msgid ""
 "Hey, check out this new #Corebird version! \\ (•◡•) / #cool "
 "#newisalwaysbetter"
