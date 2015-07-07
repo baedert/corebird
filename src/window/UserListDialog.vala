@@ -115,7 +115,6 @@ class UserListDialog : Gtk.Dialog {
 
 
   public override void response (int response_id) {
-    debug ("Response: %d", response_id);
     if (response_id == Gtk.ResponseType.CANCEL) {
       this.destroy ();
     } else if (response_id == Gtk.ResponseType.OK) {

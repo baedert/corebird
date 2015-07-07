@@ -223,6 +223,8 @@ namespace InlineMediaDownloader {
 
     SOUP_SESSION.queue_message(msg, (s, _msg) => {
       if (_msg.status_code != Soup.Status.OK) {
+        debug ("Request on '%s' returned '%s'", _msg.uri.to_string (false),
+               Soup.Status.get_phrase (_msg.status_code));
         mark_invalid (media, null, thumb_out_stream, media_out_stream);
         callback ();
         return;
