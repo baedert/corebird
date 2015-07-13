@@ -388,7 +388,13 @@ public class Tweet : GLib.Object {
       var quoted_status = status.get_object_member ("quoted_status");
       this.quoted_tweet = parse_mini_tweet (quoted_status);
       parse_entities (this.quoted_tweet, quoted_status);
+    } else if (this.retweeted_tweet != null &&
+               status.get_object_member ("retweeted_status").has_member ("quoted_status")) {
+      var quoted_status = status.get_object_member ("retweeted_status").get_object_member ("quoted_status");
+      this.quoted_tweet = parse_mini_tweet (quoted_status);
+      parse_entities (this.quoted_tweet, quoted_status);
     }
+
 
     if (status.has_member ("current_user_retweet")) {
       this.my_retweet = status.get_object_member ("current_user_retweet").get_int_member ("id");
