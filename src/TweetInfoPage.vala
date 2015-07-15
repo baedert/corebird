@@ -81,7 +81,6 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
       if (evt.delta_y < 0 && this.vadjustment.value == 0 && reply_indicator.replies_available) {
         int inc = (int)(vadjustment.step_increment * (-evt.delta_y));
         max_size_container.max_size += inc;
-        max_size_container.queue_resize ();
         return true;
       }
       return false;
@@ -119,7 +118,6 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
 
     reply_indicator.replies_available = false;
     max_size_container.max_size = 0;
-    max_size_container.queue_resize ();
 
 
     if (existing) {
