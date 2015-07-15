@@ -17,7 +17,6 @@
 
 
 class AspectImage : Gtk.Widget {
-  private Gdk.Pixbuf _pixbuf;
   public Gdk.Pixbuf pixbuf  {
     set {
       if (value != null) {
@@ -29,16 +28,10 @@ class AspectImage : Gtk.Widget {
         if (this.pixbuf_surface != null)
           this.old_surface = this.pixbuf_surface;
 
-        this.pixbuf_surface = Gdk.cairo_surface_create_from_pixbuf (value, 1,
-                                                                    this.get_window ());
+        this.pixbuf_surface = (Cairo.ImageSurface)Gdk.cairo_surface_create_from_pixbuf (value, 1,
+                                                                                        this.get_window ());
       }
-
-      this._pixbuf = value;
       this.queue_draw ();
-      //this.queue_resize ();
-    }
-    get {
-      return _pixbuf;
     }
   }
   private double _scale = 1.0;
@@ -56,7 +49,7 @@ class AspectImage : Gtk.Widget {
   }
 
   private Cairo.Surface? old_surface;
-  private Cairo.Surface pixbuf_surface;
+  private Cairo.ImageSurface pixbuf_surface;
 
 
   public AspectImage () {}
@@ -104,16 +97,16 @@ class AspectImage : Gtk.Widget {
   public override void get_preferred_height_for_width (int width,
                                                        out int min_height,
                                                        out int nat_height) {
-    if (pixbuf == null) {
+    if (pixbuf_surface == null) {
       min_height = 0;
       nat_height = 1;
       return;
     }
 
-    double scale_x = width  / (double)pixbuf.get_width ();
+    double scale_x = width  / (double)pixbuf_surface.get_width ();
     if (scale_x > 1)
       scale_x = 1;
-    double final_height = scale_x * pixbuf.get_height ();
+    double final_height = scale_x * pixbuf_surface.get_height ();
 
     min_height = (int)(final_height * _scale);
     nat_height = (int)(final_height * _scale);
@@ -125,13 +118,13 @@ class AspectImage : Gtk.Widget {
   }
 
   public override bool draw (Cairo.Context ct) {
-    if (pixbuf == null)
+    if (pixbuf_surface == null)
       return false;
 
 
     int width = get_allocated_width ();
     int height = get_allocated_height ();
-    double scale_x = width  / (double)pixbuf.get_width ();
+    double scale_x = width  / (double)pixbuf_surface.get_width ();
     double scale_y = scale_x;
     int y = 0;
 
@@ -140,7 +133,7 @@ class AspectImage : Gtk.Widget {
       scale_y = 1;
     }
 
-    int view_height = (int)(pixbuf.get_height () * scale_y);
+    int view_height = (int)(pixbuf_surface.get_height () * scale_y);
     y = height - view_height;
 
 

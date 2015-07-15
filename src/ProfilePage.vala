@@ -188,11 +188,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     .run ((vals) => {
       /* If we get inside this block, there is already some data in the
         DB we can use. */
-      try {
-        avatar_image.pixbuf = new Gdk.Pixbuf.from_file (Dirs.cache ("/assets/avatars/"+vals[7]));
-      } catch (GLib.Error e) {
-        warning (e.message);
-      }
+      avatar_image.surface = load_surface (Dirs.cache ("/assets/avatars/" + vals[7]));
 
       var entities = new TextEntity[0];
 
@@ -256,22 +252,16 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
 
     if(!FileUtils.test(avatar_on_disk, FileTest.EXISTS)){
       Utils.download_file_async.begin(avatar_url, avatar_on_disk, data_cancellable, () => {
-        try {
-          avatar_image.pixbuf = new Gdk.Pixbuf.from_file (avatar_on_disk);
-        } catch (GLib.Error e) {
-          warning (e.message);
-        }
+        avatar_image.surface = load_surface (avatar_on_disk);
+
         if (show_spinner) {
           progress_spinner.stop ();
           loading_stack.visible_child_name = "data";
         }
       });
-    }else {
-      try {
-        avatar_image.pixbuf = new Gdk.Pixbuf.from_file (avatar_on_disk);
-      } catch (GLib.Error e) {
-        warning (e.message);
-      }
+    } else {
+      avatar_image.surface = load_surface (avatar_on_disk);
+
       if (show_spinner) {
         progress_spinner.stop ();
         loading_stack.visible_child_name = "data";
@@ -696,7 +686,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     tweets_label.label = " ";
     following_label.label = " ";
     followers_label.label = " ";
-    avatar_image.pixbuf = null;
+    avatar_image.surface = null;
   }
 
   public void create_tool_button (Gtk.RadioButton? group) {}

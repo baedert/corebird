@@ -56,6 +56,52 @@ void default_header_func (Gtk.ListBoxRow  row,
 
 
 
+Cairo.Surface? load_surface (string path)
+{
+  try {
+    var p = new Gdk.Pixbuf.from_file (path);
+    var s = Gdk.cairo_surface_create_from_pixbuf (p, 1, null);
+    return s;
+  } catch (GLib.Error e) {
+    warning (e.message);
+    return null;
+  }
+}
+
+
+void write_surface (Cairo.Surface surface,
+                    string        path)
+{
+  var status = surface.write_to_png (path);
+
+  if (status != Cairo.Status.SUCCESS) {
+    warning ("Could not write surface to '%s': %s", path, status.to_string ());
+  }
+}
+
+Cairo.Surface scale_surface (Cairo.ImageSurface input,
+                             int                output_width,
+                             int                output_height)
+{
+  Cairo.Surface new_surface = new Cairo.Surface.similar_image (input, Cairo.Format.ARGB32,
+                                                               output_width, output_height);
+  int old_width  = input.get_width ();
+  int old_height = input.get_height ();
+
+  /* http://lists.cairographics.org/archives/cairo/2006-January/006178.html */
+
+  Cairo.Context ct = new Cairo.Context (new_surface);
+
+  ct.scale ((double)output_width / old_width, (double)output_height / old_height);
+  ct.set_source_surface (input, 0, 0);
+  ct.get_source ().set_extend (Cairo.Extend.PAD);
+  ct.set_operator (Cairo.Operator.SOURCE);
+  ct.paint ();
+
+  return new_surface;
+}
+
+
 namespace Utils {
   /**
   * Parses a date given by Twitter in the form 'Wed Jun 20 19:01:28 +0000 2012'

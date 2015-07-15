@@ -104,7 +104,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
     name_button.set_markup (tweet.user_name);
     screen_name_label.label = "@"+tweet.screen_name;
-    avatar_image.pixbuf = tweet.avatar;
+    avatar_image.surface = tweet.avatar;
     avatar_image.verified = tweet.verified;
     text_label.label = tweet.get_trimmed_text ();
     update_time_delta ();
@@ -215,8 +215,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   }
 
   private void avatar_changed () {
-    avatar_image.pixbuf = tweet.avatar;
-    avatar_image.queue_draw ();
+    avatar_image.surface = tweet.avatar;
   }
 
   static construct {

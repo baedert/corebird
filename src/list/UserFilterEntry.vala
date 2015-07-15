@@ -59,8 +59,8 @@ class UserFilterEntry : Gtk.ListBoxRow, ITwitterItem {
   public signal void deleted (int64 id);
 
   private void real_set_avatar (string avatar_url) {
-    avatar_image.pixbuf = Twitter.get ().get_avatar (avatar_url, (a) => {
-      avatar_image.pixbuf = a;
+    avatar_image.surface = Twitter.get ().get_avatar (avatar_url, (a) => {
+      avatar_image.surface = a;
     });
   }
 

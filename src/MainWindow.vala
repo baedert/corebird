@@ -158,9 +158,9 @@ public class MainWindow : Gtk.ApplicationWindow {
       this.add (main_widget);
       main_widget.switch_page (0);
       this.set_title (main_widget.get_page (0).get_title ());
-      avatar_image.pixbuf = account.avatar_small;
+      avatar_image.surface = account.avatar_small;
       account.notify["avatar-small"].connect(() => {
-        avatar_image.pixbuf = account.avatar_small;
+        avatar_image.surface = account.avatar_small;
       });
 
       this.set_account_app_menu_sensitivity (false);
@@ -354,10 +354,10 @@ public class MainWindow : Gtk.ApplicationWindow {
   }
 
 
-  private void account_info_changed (string     screen_name,
-                                     string     name,
-                                     Gdk.Pixbuf small_avatar,
-                                     Gdk.Pixbuf avatar) {
+  private void account_info_changed (string        screen_name,
+                                     string        name,
+                                     Cairo.Surface small_avatar,
+                                     Cairo.Surface avatar) {
     this.set_title (main_widget.get_page (main_widget.cur_page_id).get_title ());
   }
 

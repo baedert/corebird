@@ -26,8 +26,8 @@ public class Account : GLib.Object {
   public string? banner_url       {public get; private set;}
   public string? website          {public get; public  set;}
   public string? description      {public get; public  set;}
-  public Gdk.Pixbuf avatar_small  {public get; private set;}
-  public Gdk.Pixbuf avatar        {public get; private set;}
+  public Cairo.Surface avatar_small  {public get; private set;}
+  public Cairo.Surface avatar        {public get; private set;}
   public Rest.OAuthProxy proxy    {public get; private set;}
   public UserStream user_stream   {public get; private set;}
   public UserCounter user_counter {public get; private set;}
@@ -38,7 +38,7 @@ public class Account : GLib.Object {
   public int64[] disabled_rts;
   public Gee.ArrayList<Filter> filters;
   public signal void info_changed (string screen_name, string name,
-                                   Gdk.Pixbuf avatar_small, Gdk.Pixbuf avatar);
+                                   Cairo.Surface avatar_small, Cairo.Surface avatar);
 
   public Account (int64 id, string screen_name, string name) {
     this.id = id;
@@ -112,31 +112,22 @@ public class Account : GLib.Object {
   public void load_avatar () {
     string small_path = Dirs.config (@"accounts/$(id)_small.png");
     string path = Dirs.config (@"accounts/$(id).png");
-    try {
-      this.avatar_small = new Gdk.Pixbuf.from_file (small_path);
-      this.avatar = new Gdk.Pixbuf.from_file (path);
-      info_changed (screen_name, name, avatar, avatar_small);
-    } catch (GLib.Error e) {
-      warning (e.message);
-    }
+    this.avatar_small = load_surface (small_path);
+    this.avatar       = load_surface (path);
+    info_changed (screen_name, name, avatar, avatar_small);
   }
 
-  public void set_new_avatar (Gdk.Pixbuf new_avatar) throws GLib.Error{
-    string path = Dirs.config (@"accounts/$(id).png");
+  public void set_new_avatar (Cairo.Surface new_avatar) {
+    string path       = Dirs.config (@"accounts/$(id).png");
     string small_path = Dirs.config (@"accounts/$(id)_small.png");
 
-    Gdk.Pixbuf avatar = new_avatar.scale_simple (48, 48, Gdk.InterpType.BILINEAR);
-    Gdk.Pixbuf avatar_small = new_avatar.scale_simple (24, 24, Gdk.InterpType.BILINEAR);
 
-    /* Save normal-sized avatar (48x48) */
-    GLib.FileIOStream io_stream = GLib.File.new_for_path (path).open_readwrite ();
-    avatar.save_to_stream (io_stream.output_stream, "png", null);
-    io_stream.close ();
+    Cairo.Surface avatar = scale_surface ((Cairo.ImageSurface)new_avatar, 48, 48);
+    Cairo.Surface avatar_small = scale_surface ((Cairo.ImageSurface)new_avatar, 24, 24);
 
-    /* save small avatar (24x24) */
-    io_stream = GLib.File.new_for_path (small_path).open_readwrite ();
-    avatar_small.save_to_stream (io_stream.output_stream, "png", null);
-    io_stream.close ();
+
+    write_surface (avatar, path);
+    write_surface (avatar_small, small_path);
 
     this.avatar = avatar;
     this.avatar_small = avatar_small;
@@ -211,6 +202,7 @@ public class Account : GLib.Object {
                      .get_array_member ("urls").get_object_element (0).get_string_member ("expanded_url");
     } else
       this.website = "";
+
 
     string avatar_url = root.get_string_member ("profile_image_url");
     values_changed |= yield update_avatar (avatar_url);
@@ -288,8 +280,16 @@ public class Account : GLib.Object {
    * @param url The url of the (possibly) new avatar(optional).
    */
   private async bool update_avatar (string url = "") {
-    if (url.length > 0 && url == this.avatar_url)
+    string dest_path = Dirs.config (@"accounts/$(id)_small.png");
+    string big_dest  = Dirs.config (@"accounts/$(id).png");
+
+
+
+    if (url.length > 0 && url == this.avatar_url) {
+      if (GLib.FileUtils.test (dest_path, GLib.FileTest.EXISTS) &&
+          GLib.FileUtils.test (big_dest,  GLib.FileTest.EXISTS))
       return false;
+    }
 
     debug ("Using %s to update the avatar(old: %s)", url, this.avatar_url);
 
@@ -298,8 +298,6 @@ public class Account : GLib.Object {
       SOUP_SESSION.queue_message (msg, (_s, _msg) => {
         var data_stream = new MemoryInputStream.from_data ((owned)msg.response_body.data, null);
         string type = Utils.get_file_type (url);
-        string dest_path = Dirs.config (@"accounts/$(id)_small.png");
-        string big_dest  = Dirs.config (@"accounts/$(id).png");
         Gdk.Pixbuf pixbuf;
         try {
           pixbuf = new Gdk.Pixbuf.from_stream(data_stream);
@@ -312,8 +310,8 @@ public class Account : GLib.Object {
           pixbuf.scale(scaled_pixbuf, 0, 0, 24, 24, 0, 0, scale_x, scale_y, Gdk.InterpType.HYPER);
           scaled_pixbuf.save(dest_path, type);
           debug ("saving to %s", dest_path);
-          this.avatar_small = scaled_pixbuf;
-          this.avatar = pixbuf;
+          this.avatar_small = Gdk.cairo_surface_create_from_pixbuf (scaled_pixbuf, 1, null);
+          this.avatar = Gdk.cairo_surface_create_from_pixbuf (pixbuf, 1, null);
         } catch (GLib.Error e) {
           critical (e.message);
         }

@@ -27,49 +27,52 @@ public class Twitter : GLib.Object {
 
   public Twitter () {}
 
-  public delegate void AvatarDownloadedFunc(Gdk.Pixbuf avatar);
+  public delegate void AvatarDownloadedFunc (Cairo.Surface avatar);
   [Signal (detailed = true)]
-  private signal void avatar_downloaded (Gdk.Pixbuf avatar);
+  private signal void avatar_downloaded (Cairo.Surface avatar);
 
   public static int short_url_length         { public get; private set; default = 22;}
   public static int short_url_length_https   { public get; private set; default = 23;}
   public static int max_media_per_upload     { public get; private set; default = 4; }
-  public static Gdk.Pixbuf no_avatar;
-  public static Gdk.Pixbuf no_banner;
-  public Gee.HashMap<string, Gdk.Pixbuf?> avatars;
-  public Gee.HashMap<Gdk.Pixbuf, uint> avatar_refcounts;
+  public static Cairo.Surface no_avatar;
+  public static Gdk.Pixbuf no_banner; // XXX Use surface.
+  public Gee.HashMap<string, Cairo.Surface?> avatars;
+  public Gee.HashMap<Cairo.Surface, uint> avatar_refcounts;
 
   public void init () {
     try {
-      Twitter.no_avatar = new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/assets/no_avatar.png");
+      Twitter.no_avatar = Gdk.cairo_surface_create_from_pixbuf (
+                               new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/assets/no_avatar.png"),
+                               1,
+                               null);
       Twitter.no_banner = new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/assets/no_banner.png");
     } catch (GLib.Error e) {
       error ("Error while loading assets: %s", e.message);
     }
 
-    avatars = new Gee.HashMap<string, Gdk.Pixbuf> ();
-    avatar_refcounts = new Gee.HashMap<Gdk.Pixbuf, uint> ();
+    avatars = new Gee.HashMap<string, Cairo.Surface?> ();
+    avatar_refcounts = new Gee.HashMap<Cairo.Surface, uint> ();
   }
 
-  public static void ref_avatar (Gdk.Pixbuf pixbuf) {
-    uint cur = twitter.avatar_refcounts.get (pixbuf);
-    twitter.avatar_refcounts.unset (pixbuf);
-    twitter.avatar_refcounts.set (pixbuf, cur + 1);
+  public static void ref_avatar (Cairo.Surface surface) {
+    uint cur = twitter.avatar_refcounts.get (surface);
+    twitter.avatar_refcounts.unset (surface);
+    twitter.avatar_refcounts.set (surface, cur + 1);
   }
 
-  public static void unref_avatar (Gdk.Pixbuf pixbuf) {
-    uint cur = twitter.avatar_refcounts.get (pixbuf);
+  public static void unref_avatar (Cairo.Surface surface) {
+    uint cur = twitter.avatar_refcounts.get (surface);
     uint next = cur - 1;
-    twitter.avatar_refcounts.unset (pixbuf);
+    twitter.avatar_refcounts.unset (surface);
 
     if (next > 0)
-      twitter.avatar_refcounts.set (pixbuf, next);
+      twitter.avatar_refcounts.set (surface, next);
     else {
       var iter = twitter.avatars.map_iterator ();
 
       string? path = null;
       while (iter.next ()) {
-        if (iter.get_value () == pixbuf) {
+        if (iter.get_value () == surface) {
           path = iter.get_key ();
           break;
         }
@@ -103,8 +106,8 @@ public class Twitter : GLib.Object {
    *         if it has to be downloaded first, in which case the AvatarDownloadedFunc
    *         will be called after that's finished.
    */
-  public Gdk.Pixbuf? get_avatar (string url, owned AvatarDownloadedFunc? func = null) { // {{{
-    Gdk.Pixbuf? a = avatars.get (url);
+  public Cairo.Surface? get_avatar (string url, owned AvatarDownloadedFunc? func = null) { // {{{
+    Cairo.Surface? a = avatars.get (url);
     bool has_key = avatars.has_key (url);
 
     if (a != null) {
@@ -117,8 +120,9 @@ public class Twitter : GLib.Object {
     // just load it and return it.
     try {
       var p = new Gdk.Pixbuf.from_file (avatar_dest);
-      avatars.set (url, p);
-      return p;
+      var s = Gdk.cairo_surface_create_from_pixbuf (p, 1, null);
+      avatars.set (url, s);
+      return s;
     } catch (GLib.Error e) {
       if (!(e is GLib.FileError.NOENT)) {
         critical ("Error while loading avatar `%s`: %s", url, e.message);
@@ -131,7 +135,7 @@ public class Twitter : GLib.Object {
     if (has_key) {
       // wait until the avatar has finished downloading
       ulong handler_id = 0;
-      handler_id = this.avatar_downloaded[url].connect((ava) => {
+      handler_id = this.avatar_downloaded[url].connect ((ava) => {
         func (ava);
         this.disconnect (handler_id);
       });
@@ -148,13 +152,15 @@ public class Twitter : GLib.Object {
           this.avatars.set (url, no_avatar);
           return;
         }
-        func (avatar);
+        var s = Gdk.cairo_surface_create_from_pixbuf (avatar, 1, null);
+        func (s);
         // signal all the other waiters in the queue
-        avatar_downloaded[url](avatar);
-        this.avatars.set (url, avatar);
-        this.avatar_refcounts.set (avatar, 0);
+        avatar_downloaded[url](s);
+        this.avatars.set (url, s);
+        this.avatar_refcounts.set (s, 0);
       });
     }
+
 
     // Return null for now, set the actual value in the callback
     return null;

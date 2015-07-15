@@ -27,21 +27,25 @@ class AvatarWidget : Gtk.Widget {
       this.queue_draw ();
     }
   }
-  private Gdk.Pixbuf _pixbuf;
-  public Gdk.Pixbuf pixbuf {
+  public bool verified { get; set; default = false; }
+
+  private Cairo.Surface _surface;
+  public Cairo.Surface surface {
     get {
-      return this._pixbuf;
+      return _surface;
     }
     set {
-      if (this._pixbuf != null) {
-        Twitter.unref_avatar (this._pixbuf);
-      }
-      this._pixbuf = value;
-      if (this._pixbuf != null)
-        Twitter.ref_avatar (this._pixbuf);
+      if (this._surface != null)
+        Twitter.unref_avatar (this._surface);
+
+      this._surface = value;
+
+      if (this._surface != null)
+        Twitter.ref_avatar (this._surface);
+
+      this.queue_resize ();
     }
   }
-  public bool verified { get; set; default = false; }
 
 
 
@@ -76,8 +80,8 @@ class AvatarWidget : Gtk.Widget {
   }
 
   ~AvatarWidget () {
-    if (this._pixbuf != null)
-      Twitter.unref_avatar (this._pixbuf);
+    if (this._surface != null)
+      Twitter.unref_avatar (this._surface);
   }
 
 
@@ -85,7 +89,7 @@ class AvatarWidget : Gtk.Widget {
     int width  = this.get_allocated_width ();
     int height = this.get_allocated_height ();
 
-    if (this._pixbuf == null) {
+    if (this._surface == null) {
       return false;
     }
 
@@ -99,7 +103,7 @@ class AvatarWidget : Gtk.Widget {
     var ct = new Cairo.Context (surface);
 
     ct.rectangle (0, 0, width, height);
-    Gdk.cairo_set_source_pixbuf (ct, this._pixbuf, 0, 0);
+    ct.set_source_surface (this._surface, 0, 0);
     ct.fill();
 
     if (_round) {
@@ -152,12 +156,12 @@ class AvatarWidget : Gtk.Widget {
   public override void get_preferred_height (out int minimal,
                                              out int natural) {
 
-    if (this._pixbuf == null) {
+    if (this._surface == null) {
       minimal = 0;
       natural = 0;
     } else {
-      minimal = this._pixbuf.get_height ();
-      natural = this._pixbuf.get_height ();
+      minimal = ((Cairo.ImageSurface)this._surface).get_height ();
+      natural = ((Cairo.ImageSurface)this._surface).get_height ();
     }
   }
 }

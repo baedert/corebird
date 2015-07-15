@@ -75,9 +75,9 @@ class DMThreadEntry : Gtk.ListBoxRow {
     }
   }
   public int64 last_message_id {get; set;}
-  public Gdk.Pixbuf avatar {
-    set { avatar_image.pixbuf = value;}
-    owned get { return avatar_image.pixbuf; }
+  public Cairo.Surface avatar {
+    set { avatar_image.surface = value;}
+    owned get { return avatar_image.surface; }
   }
 
   private int _unread_count = 0;
