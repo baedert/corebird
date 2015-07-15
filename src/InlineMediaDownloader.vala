@@ -151,14 +151,9 @@ namespace InlineMediaDownloader {
     } catch (GLib.Error e) {
       if (e is GLib.IOError.EXISTS) {
         if (main_file_exists) {
-          try {
-            var thumb = new Gdk.Pixbuf.from_file (media.thumb_path);
-            media.thumbnail = thumb;
-            media.loaded = true;
-            media.finished_loading ();
-          } catch (GLib.Error e) {
-            critical ("%s (error code %d)", e.message, e.code);
-          }
+          media.thumbnail = load_surface (media.thumb_path);
+          media.loaded = true;
+          media.finished_loading ();
           return;
         } else  {
           // We just delete the old thumbnail and proceed
@@ -266,7 +261,7 @@ namespace InlineMediaDownloader {
     int thumb_width = (int)(600.0 / (float)t.medias.length);
     var thumb = Utils.slice_pixbuf (pic, thumb_width, MultiMediaWidget.HEIGHT);
     yield Utils.write_pixbuf_async (thumb, thumb_out_stream, "png");
-    media.thumbnail = thumb;
+    media.thumbnail = Gdk.cairo_surface_create_from_pixbuf (thumb, 1, null);
     media.loaded = true;
     media.finished_loading ();
     try {
@@ -294,7 +289,7 @@ namespace InlineMediaDownloader {
     int thumb_width = (int)(600.0 / (float)t.medias.length);
     var thumb = Utils.slice_pixbuf (pic, thumb_width, MultiMediaWidget.HEIGHT);
     yield Utils.write_pixbuf_async (thumb, thumb_out_stream, "png");
-    media.thumbnail = thumb;
+    media.thumbnail = Gdk.cairo_surface_create_from_pixbuf (thumb, 1, null);
     media.loaded = true;
     media.finished_loading ();
     try {

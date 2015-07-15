@@ -90,9 +90,9 @@ private class MediaButton : Gtk.Button {
       ct.save ();
       ct.rectangle (0, 0, widget_width, widget_height);
 
-      double scale = (double)widget_width / media.thumbnail.get_width ();
+      double scale = (double)widget_width / ((Cairo.ImageSurface)media.thumbnail).get_width ();
       ct.scale (scale, 1);
-      Gdk.cairo_set_source_pixbuf (ct, media.thumbnail, 0, 0);
+      ct.set_source_surface (media.thumbnail, 0, 0);
       ct.fill ();
       ct.restore ();
 
