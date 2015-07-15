@@ -62,7 +62,7 @@ public class Tweet : GLib.Object {
   public string rt_by_screen_name;
   public int64 rt_by_id;
   public bool is_retweet;
-  public unowned Gdk.Pixbuf avatar {get; set;}
+  public Cairo.Surface avatar { get; set; }
   /** The avatar url on the server */
   public string avatar_url;
   public int64 created_at;

@@ -195,8 +195,8 @@ public class Corebird : Gtk.Application {
   private void account_info_changed (Account    source,
                                      string     screen_name,
                                      string     s,
-                                     Gdk.Pixbuf a,
-                                     Gdk.Pixbuf b) {
+                                     Cairo.Surface a,
+                                     Cairo.Surface b) {
     for (int i = 0; i < account_menu.get_n_items (); i++){
       int64 item_id = account_menu.get_item_attribute_value (i,
                                                              "user-id",

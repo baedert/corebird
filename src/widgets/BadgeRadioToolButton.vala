@@ -35,13 +35,13 @@ public class BadgeRadioToolButton : Gtk.RadioButton {
     }
   }
 
-  public override bool draw (Cairo.Context c){
-    var context = this.get_style_context ();
+  public override bool draw (Cairo.Context c) {
     base.draw (c);
     if (!show_badge)
       return false;
 
 
+    var context = this.get_style_context ();
     int width = get_allocated_width ();
     context.save ();
     context.add_class ("badge");
