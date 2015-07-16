@@ -62,6 +62,49 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
     if (type == StreamMessageType.DIRECT_MESSAGE) {
       // Arriving new dms get already cached in the DMThreadsPage
       var obj = root.get_object ().get_object_member ("direct_message");
+
+      if (obj.get_int_member ("sender_id") == account.id &&
+          obj.has_member ("entities")) {
+        var entries = messages_list.get_children ();
+
+        message ("replacing dm...");
+        int64 dm_id = obj.get_int_member ("id");
+
+        foreach (var entry in entries) {
+          var e = (DMListEntry) entry;
+          if (e.user_id == account.id &&
+              e.id == -1) {
+
+            message ("Found dm...");
+
+            var text = obj.get_string_member ("text");
+            var urls = obj.get_object_member ("entities").get_array_member ("urls");
+            var url_list = new TextEntity[urls.get_length ()];
+            urls.foreach_element((arr, index, node) => {
+              var url = node.get_object();
+              string expanded_url = url.get_string_member("expanded_url");
+
+              Json.Array indices = url.get_array_member ("indices");
+              expanded_url = expanded_url.replace("&", "&amp;");
+              url_list[index] = TextEntity() {
+                from = (int)indices.get_int_element (0),
+                to   = (int)indices.get_int_element (1) ,
+                target = expanded_url,
+                display_text = url.get_string_member ("display_url")
+              };
+            });
+            e.text = TextTransform.transform (text,
+                                              url_list,
+                                              0);
+
+            e.id = dm_id;
+            break;
+          }
+        }
+      }
+
+
+      /* Only handle DMs from the user we are currently chatting with */
       if (obj.get_int_member ("sender_id") != this.user_id)
         return;
 
@@ -219,6 +262,8 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
 
     // Just add the entry now
     DMListEntry entry = new DMListEntry ();
+    entry.id = -1;
+    entry.user_id = account.id;
     entry.screen_name = account.screen_name;
     entry.timestamp = new GLib.DateTime.now_local ().to_unix ();
     entry.text = GLib.Markup.escape_text (text_view.buffer.text);
