@@ -643,10 +643,6 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     int64 user_id = args.get_int64 ("user_id");
     if (user_id == -1)
       return;
-    else {
-      followers_cursor = null;
-      following_cursor = null;
-    }
 
     string? screen_name = args.get_string ("screen_name");
     if (screen_name != null) {
@@ -658,6 +654,8 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
 
     if (user_id != this.user_id) {
       reset_data ();
+      followers_cursor = null;
+      following_cursor = null;
       set_user_id (user_id);
       tweet_list.model.clear ();
       user_lists.clear_lists ();
