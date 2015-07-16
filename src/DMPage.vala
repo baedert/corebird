@@ -67,15 +67,12 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
           obj.has_member ("entities")) {
         var entries = messages_list.get_children ();
 
-        message ("replacing dm...");
         int64 dm_id = obj.get_int_member ("id");
 
         foreach (var entry in entries) {
           var e = (DMListEntry) entry;
           if (e.user_id == account.id &&
               e.id == -1) {
-
-            message ("Found dm...");
 
             var text = obj.get_string_member ("text");
             var urls = obj.get_object_member ("entities").get_array_member ("urls");
