@@ -596,8 +596,6 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     int64 user_id = args.get_int64 ("user_id");
     if (user_id == -1)
       return;
-    else
-      lists_page_inited = false;
 
     string? screen_name = args.get_string ("screen_name");
     if (screen_name != null) {
@@ -612,6 +610,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
       set_user_id (user_id);
       tweet_list.model.clear ();
       user_lists.clear_lists ();
+      lists_page_inited = false;
       load_tweets.begin ();
     }
     tweet_list.reset_placeholder_text ();
