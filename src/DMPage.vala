@@ -63,6 +63,8 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
       // Arriving new dms get already cached in the DMThreadsPage
       var obj = root.get_object ().get_object_member ("direct_message");
 
+
+      /* XXX Replace this with local entity parsing */
       if (obj.get_int_member ("sender_id") == account.id &&
           obj.has_member ("entities")) {
         var entries = messages_list.get_children ();
