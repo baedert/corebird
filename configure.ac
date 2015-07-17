@@ -1,4 +1,4 @@
-AC_INIT([corebird],[1.0],[mail@baedert.org])
+AC_INIT([corebird],[1.0.1],[mail@baedert.org])
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([foreign no-dist-gzip dist-bzip2])
 
