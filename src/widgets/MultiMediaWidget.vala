@@ -91,6 +91,10 @@ private class MediaButton : Gtk.Button {
 
       ct.rectangle (0, 0, widget_width, widget_height);
 
+      double aspect_ratio = (double) ((Cairo.ImageSurface)media.thumbnail).get_width () /
+                            ((Cairo.ImageSurface)media.thumbnail).get_height ();
+
+      message ("Aspect ratio: %f", aspect_ratio);
       double scale = 0.0;
       double scale_y = (double)widget_height / ((Cairo.ImageSurface)media.thumbnail).get_height ();
       double scale_x = (double)widget_width / ((Cairo.ImageSurface)media.thumbnail).get_width ();
@@ -185,7 +189,7 @@ private class MediaButton : Gtk.Button {
 
 
 public class MultiMediaWidget : Gtk.Box {
-  public static const int HEIGHT = 180;
+  public static const int HEIGHT = 240;
   public static const int MAX_HEIGHT = 180;
   public int media_count { public get; private set; default = 0;}
   public unowned Gtk.Window window;
