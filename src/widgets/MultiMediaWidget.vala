@@ -63,7 +63,7 @@ private class MediaButton : Gtk.Button {
 
   public MediaButton (Media? media) {
     this.media = media;
-    this.set_size_request (-1, MultiMediaWidget.HEIGHT);
+    this.set_size_request (-1, MultiMediaWidget.MAX_HEIGHT);
     this.get_style_context ().add_class ("inline-media");
     this.get_style_context ().add_class ("dim-label");
     actions = new GLib.SimpleActionGroup ();
@@ -88,13 +88,24 @@ private class MediaButton : Gtk.Button {
     /* Draw thumbnail */
     if (media != null && media.thumbnail != null && media.loaded) {
       ct.save ();
+
       ct.rectangle (0, 0, widget_width, widget_height);
 
-      double scale = (double)widget_width / ((Cairo.ImageSurface)media.thumbnail).get_width ();
-      ct.scale (scale, 1);
+      double scale = 0.0;
+      double scale_y = (double)widget_height / ((Cairo.ImageSurface)media.thumbnail).get_height ();
+      double scale_x = (double)widget_width / ((Cairo.ImageSurface)media.thumbnail).get_width ();
+
+      if (scale_y < scale_x)
+        scale = scale_y;
+      else
+        scale = scale_x;
+
+      ct.scale (scale, scale);
       ct.set_source_surface (media.thumbnail, 0, 0);
       ct.fill ();
       ct.restore ();
+
+      return base.draw (ct);
 
       /* Draw play indicator */
       if (media.type == MediaType.VINE ||
@@ -174,7 +185,8 @@ private class MediaButton : Gtk.Button {
 
 
 public class MultiMediaWidget : Gtk.Box {
-  public static const int HEIGHT = 60;
+  public static const int HEIGHT = 180;
+  public static const int MAX_HEIGHT = 180;
   public int media_count { public get; private set; default = 0;}
   public unowned Gtk.Window window;
   private MediaButton[] media_buttons;
@@ -194,10 +206,11 @@ public class MultiMediaWidget : Gtk.Box {
     this.remove_all ();
     this.media_buttons = new MediaButton[medias.length];
     this.media_count = medias.length;
-    for (int i = 0; i < medias.length; i++) {
-      assert (medias[i] != null);
-      set_media (i, medias[i]);
-    }
+    this.set_media (0, medias[0]);
+    //for (int i = 0; i < medias.length; i++) {
+      //assert (medias[i] != null);
+      //set_media (i, medias[i]);
+    //}
   }
 
   private void remove_all () {

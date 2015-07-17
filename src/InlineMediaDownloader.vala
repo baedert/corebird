@@ -287,9 +287,11 @@ namespace InlineMediaDownloader {
     }
 
     int thumb_width = (int)(600.0 / (float)t.medias.length);
-    var thumb = Utils.slice_pixbuf (pic, thumb_width, MultiMediaWidget.HEIGHT);
-    yield Utils.write_pixbuf_async (thumb, thumb_out_stream, "png");
-    media.thumbnail = Gdk.cairo_surface_create_from_pixbuf (thumb, 1, null);
+    //var thumb = Utils.slice_pixbuf (pic, thumb_width, MultiMediaWidget.HEIGHT);
+    //yield Utils.write_pixbuf_async (thumb, thumb_out_stream, "png");
+
+
+    media.thumbnail = Gdk.cairo_surface_create_from_pixbuf (pic, 1, null);
     media.loaded = true;
     media.finished_loading ();
     try {
