@@ -377,7 +377,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       string file = fcd.get_filename ();
       try {
         var pixbuf = new Gdk.Pixbuf.from_file (file);
-        var thumb = Utils.slice_pixbuf (pixbuf, 500, MultiMediaWidget.HEIGHT);
+        var thumb = Utils.slice_pixbuf (pixbuf, 500, MultiMediaWidget.MAX_HEIGHT);
         source.image = thumb;
         source.image_path = file;
       } catch (GLib.Error e) {

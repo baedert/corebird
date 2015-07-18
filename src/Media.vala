@@ -28,7 +28,6 @@ public enum MediaType {
 public class Media : GLib.Object{
   public int64 id;
   public string path;
-  public string thumb_path;
   public string url;
   private string? _thumb_url = null;
   public string thumb_url {
@@ -51,7 +50,8 @@ public class Media : GLib.Object{
   public int64 length { get; set; default = 0; }
   public double percent_loaded { get; set; default = 0; }
   public MediaType type;
-  public Cairo.Surface? thumbnail = null;
+  public Cairo.ImageSurface? surface = null;
+  public Gdk.PixbufAnimation? animation = null;
   /** If this media is fully downloaded and thumb is available */
   public bool loaded = false;
   public bool invalid = false;

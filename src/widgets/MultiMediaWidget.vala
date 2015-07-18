@@ -63,7 +63,7 @@ private class MediaButton : Gtk.Button {
 
   public MediaButton (Media? media) {
     this.media = media;
-    this.set_size_request (-1, MultiMediaWidget.MAX_HEIGHT);
+    //this.set_size_request (-1, MultiMediaWidget.MAX_HEIGHT);
     this.get_style_context ().add_class ("inline-media");
     this.get_style_context ().add_class ("dim-label");
     actions = new GLib.SimpleActionGroup ();
@@ -80,36 +80,41 @@ private class MediaButton : Gtk.Button {
     this.button_press_event.connect (button_clicked_cb);
   }
 
+  private void get_draw_size (out int width,
+                              out int height,
+                              out double scale) {
+    if (this._media == null || !this._media.loaded) {
+      width  = 0;
+      height = 0;
+      scale  = 0.0;
+      return;
+    }
+
+    width  = this.get_allocated_width ();
+    double scale_x = (double)width / (media.surface).get_width ();
+    height = (int)((this._media.surface).get_height () * scale_x);
+    scale = scale_x;
+  }
+
   public override bool draw (Cairo.Context ct) {
     int widget_width = get_allocated_width ();
     int widget_height = get_allocated_height ();
 
 
     /* Draw thumbnail */
-    if (media != null && media.thumbnail != null && media.loaded) {
+    if (media != null && media.surface != null && media.loaded) {
       ct.save ();
 
       ct.rectangle (0, 0, widget_width, widget_height);
 
-      double aspect_ratio = (double) ((Cairo.ImageSurface)media.thumbnail).get_width () /
-                            ((Cairo.ImageSurface)media.thumbnail).get_height ();
-
-      message ("Aspect ratio: %f", aspect_ratio);
-      double scale = 0.0;
-      double scale_y = (double)widget_height / ((Cairo.ImageSurface)media.thumbnail).get_height ();
-      double scale_x = (double)widget_width / ((Cairo.ImageSurface)media.thumbnail).get_width ();
-
-      if (scale_y < scale_x)
-        scale = scale_y;
-      else
-        scale = scale_x;
+      int draw_width, draw_height;
+      double scale;
+      this.get_draw_size (out draw_width, out draw_height, out scale);
 
       ct.scale (scale, scale);
-      ct.set_source_surface (media.thumbnail, 0, 0);
+      ct.set_source_surface (media.surface, 0, 0);
       ct.fill ();
       ct.restore ();
-
-      return base.draw (ct);
 
       /* Draw play indicator */
       if (media.type == MediaType.VINE ||
@@ -185,11 +190,28 @@ private class MediaButton : Gtk.Button {
       file_dialog.destroy ();
   }
 
+
+  public override void get_preferred_height_for_width (int width,
+                                                       out int minimum,
+                                                       out int natural) {
+    //if (this._media == null || !this.media.loaded) {
+      //minimum = width /2;
+      //natural = width /2;
+    //} else {
+      minimum = natural = (int)GLib.Math.fmin (MultiMediaWidget.MAX_HEIGHT,
+                                               width / 2);
+    //}
+  }
+
+  public override Gtk.SizeRequestMode get_request_mode () {
+    return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
+  }
+
+
 }
 
 
 public class MultiMediaWidget : Gtk.Box {
-  public static const int HEIGHT = 240;
   public static const int MAX_HEIGHT = 180;
   public int media_count { public get; private set; default = 0;}
   public unowned Gtk.Window window;
@@ -211,6 +233,7 @@ public class MultiMediaWidget : Gtk.Box {
     this.media_buttons = new MediaButton[medias.length];
     this.media_count = medias.length;
     this.set_media (0, medias[0]);
+    message ("Setting %d media", medias.length);
     //for (int i = 0; i < medias.length; i++) {
       //assert (medias[i] != null);
       //set_media (i, medias[i]);
@@ -275,5 +298,6 @@ public class MultiMediaWidget : Gtk.Box {
       }
     }
   }
+
 }
 

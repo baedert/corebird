@@ -78,7 +78,7 @@ public class AddImageButton : Gtk.Button {
 
   construct {
     this.image = null;
-    this.set_size_request (-1, MultiMediaWidget.HEIGHT);
+    this.set_size_request (-1, MultiMediaWidget.MAX_HEIGHT);
   }
 
   public override bool draw (Cairo.Context ct) {
@@ -158,7 +158,7 @@ public class AddImageButton : Gtk.Button {
 
   private void from_bigger_pixbuf (Gdk.Pixbuf pixbuf) {
     var thumb = Utils.slice_pixbuf (pixbuf, this.get_allocated_width (),
-                                    MultiMediaWidget.HEIGHT);
+                                    MultiMediaWidget.MAX_HEIGHT);
     this.image = thumb;
   }
 

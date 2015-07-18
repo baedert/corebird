@@ -57,7 +57,6 @@ namespace InlineMediaDownloader {
     ;
   }
 
-  // XXX Rename
   private async void load_real_url (Tweet  t,
                                     Media  media,
                                     string regex_str1,
@@ -164,7 +163,7 @@ namespace InlineMediaDownloader {
       }
 
       var ms = new MemoryInputStream.from_data (_msg.response_body.data, null);
-      load_animation (t, ms, media, () => {
+      load_animation.begin (t, ms, media, () => {
         callback ();
       });
       yield;
@@ -180,11 +179,14 @@ namespace InlineMediaDownloader {
       anim = yield new Gdk.PixbufAnimation.from_stream_async (in_stream, null);
     } catch (GLib.Error e) {
       warning (e.message);
-      mark_invalid (media);//, in_stream, thumb_out_stream);
+      mark_invalid (media);
       return;
     }
     var pic = anim.get_static_image ();
-    media.thumbnail = Gdk.cairo_surface_create_from_pixbuf (pic, 1, null);
+    media.surface = (Cairo.ImageSurface)Gdk.cairo_surface_create_from_pixbuf (pic, 1, null);
+    if (media.type == MediaType.GIF)
+      media.animation = anim;
+
     media.loaded = true;
     media.finished_loading ();
     try {
