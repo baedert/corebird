@@ -84,8 +84,6 @@ class DMListEntry : Gtk.ListBoxRow, ITwitterItem {
     time_delta_label.label = Utils.get_time_delta (then, cur_time);
     return (int)(cur_time.difference (then) / 1000.0 / 1000.0);
   }
-
-
 }
 
 

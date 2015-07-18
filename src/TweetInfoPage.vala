@@ -152,7 +152,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
   }
 
   private void rearrange_tweets (int64 new_id) {
-    assert (new_id != this.tweet_id);
+    //assert (new_id != this.tweet_id);
 
     if (top_list_box.model.contains_id (new_id)) {
       // Move the current tweet down into bottom_list_box
@@ -286,7 +286,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
       var statuses_node = root.get_object ().get_array_member ("statuses");
       int64 previous_tweet_id = -1;
       if (top_list_box.model.get_n_items () > 0) {
-        assert (top_list_box.model.get_n_items () == 1);
+        //assert (top_list_box.model.get_n_items () == 1);
         previous_tweet_id = ((Tweet)(top_list_box.model.get_item (0))).id;
       }
       int n_replies = 0;

@@ -28,7 +28,7 @@ namespace InlineMediaDownloader {
     }
   }
 
-  private static void mark_invalid (Media              m) {
+  private static void mark_invalid (Media m) {
     m.invalid = true;
     m.loaded = true;
     m.finished_loading ();
@@ -156,6 +156,8 @@ namespace InlineMediaDownloader {
 
     SOUP_SESSION.queue_message(msg, (s, _msg) => {
       if (_msg.status_code != Soup.Status.OK) {
+        debug ("Request on '%s' returned '%s'", _msg.uri.to_string (false),
+               Soup.Status.get_phrase (_msg.status_code));
         mark_invalid (media);
         callback ();
         return;
@@ -207,7 +209,7 @@ namespace InlineMediaDownloader {
       pic = yield new Gdk.Pixbuf.from_stream_async (in_stream, null);
     } catch (GLib.Error e) {
       warning ("%s(%s)", e.message, media.path);
-      mark_invalid (media);//, in_stream, thumb_out_stream);
+      mark_invalid (media);
       return;
     }
 
@@ -217,7 +219,6 @@ namespace InlineMediaDownloader {
     media.finished_loading ();
     try {
       in_stream.close ();
-      //thumb_out_stream.close ();
     } catch (GLib.Error e) {
       warning (e.message);
     }

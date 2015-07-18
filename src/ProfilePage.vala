@@ -17,10 +17,6 @@
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/profile-page.ui")]
 class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
-  private static const int PAGE_TWEETS     = 0;
-  private static const int PAGE_FOLLOWING  = 1;
-  private static const int PAGE_FOLLOWERS  = 2;
-
   private const GLib.ActionEntry[] action_entries = {
     {"write-dm", write_dm_activated},
     {"tweet-to", tweet_to_activated},
@@ -74,6 +70,10 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
   [GtkChild]
   private TweetListBox tweet_list;
   [GtkChild]
+  private TweetListBox followers_list;
+  [GtkChild]
+  private TweetListBox following_list;
+  [GtkChild]
   private Gtk.Spinner progress_spinner;
   [GtkChild]
   private Gtk.Label follows_you_label;
@@ -85,6 +85,8 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
   private Gtk.MenuButton more_button;
   [GtkChild]
   private Gtk.Stack loading_stack;
+  [GtkChild]
+  private Gtk.RadioButton tweets_button;
   private GLib.MenuModel more_menu;
   private bool following;
   private int64 user_id;
@@ -94,11 +96,13 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
   private int follower_count = -1;
   private GLib.Cancellable data_cancellable;
   private bool lists_page_inited = false;
-  private ulong page_change_signal = 0;
   private bool block_item_blocked = false;
   private bool retweet_item_blocked = false;
   private bool tweets_loading = false;
-  private int64 lowest_tweet_id = int64.MAX;
+  private bool followers_loading = false;
+  private Cursor? followers_cursor = null;
+  private bool following_loading = false;
+  private Cursor? following_cursor = null;
   private GLib.SimpleActionGroup actions;
 
   public ProfilePage (int id, Account account) {
@@ -119,7 +123,13 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
       return false;
     });
     this.scrolled_to_end.connect (() => {
-      load_older_tweets.begin ();
+      if (user_stack.visible_child == tweet_list) {
+        this.load_older_tweets.begin ();
+      } else if (user_stack.visible_child == followers_list) {
+        this.load_followers.begin ();
+      } else if (user_stack.visible_child == following_list) {
+        this.load_following.begin ();
+      }
     });
 
     tweet_list.row_activated.connect ((row) => {
@@ -129,18 +139,19 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
       main_window.main_widget.switch_page (Page.TWEET_INFO, bundle);
     });
     tweet_list.set_sort_func (ITwitterItem.sort_func);
+    followers_list.row_activated.connect ((row) => {
+      var bundle = new Bundle ();
+      bundle.put_int64 ("user_id", ((UserListEntry)row).user_id);
+      main_window.main_widget.switch_page (Page.PROFILE, bundle);
+    });
+    following_list.row_activated.connect ((row) => {
+      var bundle = new Bundle ();
+      bundle.put_int64 ("user_id", ((UserListEntry)row).user_id);
+      main_window.main_widget.switch_page (Page.PROFILE, bundle);
+    });
+
 
     user_lists.hide_user_list_entry ();
-    page_change_signal = user_stack.notify["visible-child"].connect (() => {
-      if (user_stack.visible_child == user_lists && !lists_page_inited) {
-        user_lists.load_lists.begin (user_id);
-        lists_page_inited = true;
-      }
-    });
-
-    this.destroy.connect (() => {
-      user_stack.disconnect (page_change_signal);
-    });
 
     actions = new GLib.SimpleActionGroup ();
     actions.add_action_entries (action_entries, this);
@@ -172,8 +183,8 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     bool data_in_db = false;
     //Load cached data
     Corebird.db.select ("profiles").cols ("id", "screen_name", "name", "description", "tweets",
-     "following", "followers", "avatar_name", "banner_url", "url", "location", "is_following",
-     "banner_name").where_eqi ("id", user_id)
+     "following", "followers", "avatar_name", "banner_url", "url", "location", "is_following")
+      .where_eqi ("id", user_id)
     .run ((vals) => {
       /* If we get inside this block, there is already some data in the
         DB we can use. */
@@ -185,11 +196,9 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
                int.parse (vals[4]), int.parse (vals[5]), int.parse (vals[6]),
                vals[7], false, ref entities);
       set_follow_button_state (bool.parse (vals[11]));
-      string banner_name = vals[12];
-      debug("banner_name: %s", banner_name);
+      string banner_name = Utils.get_banner_name (user_id);
 
-      if (banner_name != null &&
-          FileUtils.test(Dirs.cache("assets/banners/"+banner_name), FileTest.EXISTS)){
+      if (FileUtils.test(Dirs.cache("assets/banners/"+banner_name), FileTest.EXISTS)){
         debug ("Banner exists, set it directly...");
         load_banner (Dirs.cache ("assets/banners/" + banner_name));
       } else {
@@ -208,25 +217,12 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
 
 
   private async void load_friendship () {
-    var call = account.proxy.new_call ();
-    call.set_function ("1.1/friendships/show.json");
-    call.set_method ("GET");
-    call.add_param ("source_id", account.id.to_string ());
-    call.add_param ("target_id", user_id.to_string ());
+    Friendship? fr = yield UserUtils.load_friendship (account, this.user_id);
+    follows_you_label.visible = fr.followed_by;
+    set_user_blocked (fr.blocking);
+    set_retweets_disabled (fr.following && !fr.want_retweets);
 
-    Json.Node? root = yield TweetUtils.load_threaded (call);
-    if (root == null)
-      return;
-
-    var relationship = root.get_object ().get_object_member ("relationship");
-    bool followed_by = relationship.get_object_member ("target").get_boolean_member ("following");
-    bool following = relationship.get_object_member ("target").get_boolean_member ("followed_by");
-    bool want_retweets = relationship.get_object_member ("source").get_boolean_member ("want_retweets");
-    follows_you_label.visible = followed_by;
-    set_user_blocked (relationship.get_object_member ("source").get_boolean_member ("blocking"));
-    set_retweets_disabled (following && !want_retweets);
-
-    ((SimpleAction)actions.lookup_action ("toggle-retweets")).set_enabled (following);
+    ((SimpleAction)actions.lookup_action ("toggle-retweets")).set_enabled (fr.following);
   }
 
   private async void load_profile_data (int64 user_id, bool show_spinner) { //{{{
@@ -282,7 +278,6 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     if (Utils.usable_json_value (root, "following"))
       is_following = root.get_boolean_member("following");
     bool has_url       = root.get_object_member("entities").has_member("url");
-    string banner_name = Utils.get_banner_name(user_id);
     bool verified      = root.get_boolean_member ("verified");
     bool protected_user = root.get_boolean_member ("protected");
     if (protected_user) {
@@ -350,7 +345,6 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
                .val ("url", display_url)
                .val ("location", location)
                .valb ("is_following", is_following)
-               .val ("banner_name", banner_name)
                .run ();
 
   } //}}}
@@ -421,6 +415,71 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     tweets_loading = false;
   } // }}}
 
+  private async void load_followers () {
+    if (this.followers_cursor != null && this.followers_cursor.full)
+      return;
+
+    if (this.followers_loading)
+      return;
+
+    this.followers_loading = true;
+
+    this.followers_cursor = yield UserUtils.load_followers (this.account,
+                                                            this.user_id,
+                                                            this.followers_cursor);
+
+    var users_array = this.followers_cursor.json_object.get_array ();
+
+    users_array.foreach_element ((array, index, node) => {
+      var user_obj = node.get_object ();
+
+      var entry = new UserListEntry ();
+      entry.show_settings = false;
+      entry.user_id = user_obj.get_int_member ("id");
+      entry.screen_name = user_obj.get_string_member ("screen_name");
+      entry.name = user_obj.get_string_member ("name");
+      entry.avatar = user_obj.get_string_member ("profile_image_url");
+      entry.get_style_context ().add_class ("tweet");
+      entry.show ();
+      this.followers_list.add (entry);
+    });
+
+    this.followers_loading = false;
+  }
+
+  private async void load_following () {
+    if (this.following_cursor != null && this.following_cursor.full)
+      return;
+
+    if (this.following_loading)
+      return;
+
+    this.following_loading = true;
+
+    this.following_cursor = yield UserUtils.load_following (this.account,
+                                                            this.user_id,
+                                                            this.following_cursor);
+
+    var users_array = this.following_cursor.json_object.get_array ();
+
+    users_array.foreach_element ((array, index, node) => {
+      var user_obj = node.get_object ();
+
+      var entry = new UserListEntry ();
+      entry.show_settings = false;
+      entry.user_id = user_obj.get_int_member ("id");
+      entry.screen_name = user_obj.get_string_member ("screen_name");
+      entry.name = user_obj.get_string_member ("name");
+      entry.avatar = user_obj.get_string_member ("profile_image_url");
+      entry.get_style_context ().add_class ("tweet");
+      entry.show ();
+      this.following_list.add (entry);
+
+    });
+
+    this.following_loading = false;
+  }
+
   /**
    * Loads the user's banner image.
    *
@@ -429,17 +488,15 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
    * @param screen_name Bar
    */
   private void load_profile_banner (string base_url, int64 user_id) { // {{{
-    string saved_banner_url = Dirs.cache ("assets/banners/"+Utils.get_banner_name (user_id));
-    string banner_url  = base_url+"/mobile_retina";
     string banner_name = Utils.get_banner_name (user_id);
-    string banner_on_disk = Dirs.cache("assets/banners/"+banner_name);
+    string saved_banner_url = Dirs.cache ("assets/banners/" + banner_name);
+    string banner_url  = base_url+"/mobile_retina";
+    string banner_on_disk = Dirs.cache("assets/banners/" + banner_name);
     if (!FileUtils.test (banner_on_disk, FileTest.EXISTS) || banner_url != saved_banner_url) {
-      Utils.download_file_async .begin (banner_url, banner_on_disk, data_cancellable,
+      Utils.download_file_async.begin (banner_url, banner_on_disk, data_cancellable,
           () => {load_banner (banner_on_disk);});
-        debug("Setting the banner name to %s", banner_name);
       Corebird.db.update ("profiles")
                  .val ("banner_url", banner_url)
-                 .val ("banner_name", banner_name)
                  .where_eqi ("id", user_id)
                  .run ();
     } else {
@@ -586,8 +643,10 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     int64 user_id = args.get_int64 ("user_id");
     if (user_id == -1)
       return;
-    else
-      lists_page_inited = false;
+    else {
+      followers_cursor = null;
+      following_cursor = null;
+    }
 
     string? screen_name = args.get_string ("screen_name");
     if (screen_name != null) {
@@ -602,17 +661,20 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
       set_user_id (user_id);
       tweet_list.model.clear ();
       user_lists.clear_lists ();
+      lists_page_inited = false;
       load_tweets.begin ();
     }
     tweet_list.reset_placeholder_text ();
-    user_stack.visible_child = tweet_list;
+    followers_list.reset_placeholder_text ();
+    following_list.reset_placeholder_text ();
+    tweets_button.active = true;
+    //user_stack.visible_child = tweet_list;
   }
 
   public void on_leave () {
     // We might otherwise overwrite the new user's data with that from the old one.
     data_cancellable.cancel ();
     banner_image.scale = 0.3;
-    //lowest_tweet_id = int64.MAX;
   }
 
   private void reset_data () {
@@ -624,8 +686,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     tweets_label.label = " ";
     following_label.label = " ";
     followers_label.label = " ";
-    //avatar_image.pixbuf = null;
-    lowest_tweet_id = int64.MAX;
+    avatar_image.surface = null;
   }
 
   public void create_tool_button (Gtk.RadioButton? group) {}
@@ -762,4 +823,44 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     }
   }
 
+  [GtkCallback]
+  private void tweets_button_toggled_cb (GLib.Object source) {
+    if (((Gtk.RadioButton)source).active) {
+      this.balance_next_upper_change (BOTTOM);
+      user_stack.visible_child = tweet_list;
+    }
+  }
+  [GtkCallback]
+  private void followers_button_toggled_cb (GLib.Object source) {
+    if (((Gtk.RadioButton)source).active) {
+      if (this.followers_cursor == null) {
+        this.load_followers.begin ();
+      }
+      this.balance_next_upper_change (BOTTOM);
+      user_stack.visible_child = followers_list;
+    }
+  }
+
+  [GtkCallback]
+  private void following_button_toggled_cb (GLib.Object source) {
+    if (((Gtk.RadioButton)source).active) {
+      if (this.following_cursor == null) {
+        this.load_following.begin ();
+      }
+      this.balance_next_upper_change (BOTTOM);
+      user_stack.visible_child = following_list;
+    }
+  }
+
+  [GtkCallback]
+  private void lists_button_toggled_cb (GLib.Object source) {
+    if (((Gtk.RadioButton)source).active) {
+      if (!lists_page_inited) {
+        user_lists.load_lists.begin (user_id);
+        lists_page_inited = true;
+      }
+      this.balance_next_upper_change (BOTTOM);
+      user_stack.visible_child = user_lists;
+    }
+  }
 }
