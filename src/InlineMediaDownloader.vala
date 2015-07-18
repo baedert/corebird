@@ -164,15 +164,9 @@ namespace InlineMediaDownloader {
       }
 
       var ms = new MemoryInputStream.from_data (_msg.response_body.data, null);
-      if (ext == "gif") {
-        load_animation.begin (t, ms, media, () => {
-          callback ();
-        });
-      } else {
-        load_normal_media.begin (t, ms, media, () => {
-          callback ();
-        });
-      }
+      load_animation (t, ms, media, () => {
+        callback ();
+      });
       yield;
     });
     yield;
@@ -199,29 +193,6 @@ namespace InlineMediaDownloader {
       warning (e.message);
     }
 
-  }
-
-  private async void load_normal_media (Tweet             t,
-                                        GLib.InputStream  in_stream,
-                                        Media             media) {
-    Gdk.Pixbuf pic = null;
-    try {
-      pic = yield new Gdk.Pixbuf.from_stream_async (in_stream, null);
-    } catch (GLib.Error e) {
-      warning ("%s(%s)", e.message, media.path);
-      mark_invalid (media);
-      return;
-    }
-
-
-    media.thumbnail = Gdk.cairo_surface_create_from_pixbuf (pic, 1, null);
-    media.loaded = true;
-    media.finished_loading ();
-    try {
-      in_stream.close ();
-    } catch (GLib.Error e) {
-      warning (e.message);
-    }
   }
 
 }
