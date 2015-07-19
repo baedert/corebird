@@ -83,13 +83,11 @@ class SettingsDialog : Gtk.Window {
     try {
       a = Gtk.IconTheme.get_default ().load_icon ("corebird", 48,
                                                   Gtk.IconLookupFlags.FORCE_SIZE);
+      sample_tweet.avatar = Gdk.cairo_surface_create_from_pixbuf (a, 1, null);
     } catch (GLib.Error e) {
       warning (e.message);
     }
-    sample_tweet.avatar = a;
-
     sample_tweet.source_tweet.text = sample_text;
-
 
     try {
       var regex = new GLib.Regex ("#\\w+");

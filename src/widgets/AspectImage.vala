@@ -17,7 +17,6 @@
 
 
 class AspectImage : Gtk.Widget {
-  private Gdk.Pixbuf _pixbuf;
   public Gdk.Pixbuf pixbuf  {
     set {
       if (value != null) {
@@ -29,16 +28,10 @@ class AspectImage : Gtk.Widget {
         if (this.pixbuf_surface != null)
           this.old_surface = this.pixbuf_surface;
 
-        this.pixbuf_surface = Gdk.cairo_surface_create_from_pixbuf (value, 1,
-                                                                    this.get_window ());
+        this.pixbuf_surface = (Cairo.ImageSurface)Gdk.cairo_surface_create_from_pixbuf (value, 1,
+                                                                                        this.get_window ());
       }
-
-      this._pixbuf = value;
       this.queue_draw ();
-      //this.queue_resize ();
-    }
-    get {
-      return _pixbuf;
     }
   }
   private double _scale = 1.0;
@@ -56,7 +49,7 @@ class AspectImage : Gtk.Widget {
   }
 
   private Cairo.Surface? old_surface;
-  private Cairo.Surface pixbuf_surface;
+  private Cairo.ImageSurface pixbuf_surface;
 
 
   public AspectImage () {}
@@ -70,6 +63,7 @@ class AspectImage : Gtk.Widget {
       return;
 
     alpha = 0.0;
+    in_transition = true;
     this.start_time = this.get_frame_clock ().get_frame_time ();
     this.add_tick_callback (fade_in_cb);
   }
@@ -83,6 +77,7 @@ class AspectImage : Gtk.Widget {
   private const double TRANSITION_DURATION = 200 * 1000;
   private double alpha = 0.0;
   private int64 start_time;
+  private bool in_transition = false;
   private bool fade_in_cb (Gtk.Widget widget, Gdk.FrameClock frame_clock) {
 
     int64 now = frame_clock.get_frame_time ();
@@ -90,9 +85,10 @@ class AspectImage : Gtk.Widget {
 
     if (t >= 1.0) {
       t = 1.0;
+      in_transition = false;
     }
 
-    alpha = ease_out_cubic (t);
+    this.alpha = ease_out_cubic (t);
     this.queue_draw ();
 
     return t < 1.0;
@@ -101,16 +97,16 @@ class AspectImage : Gtk.Widget {
   public override void get_preferred_height_for_width (int width,
                                                        out int min_height,
                                                        out int nat_height) {
-    if (pixbuf == null) {
+    if (pixbuf_surface == null) {
       min_height = 0;
       nat_height = 1;
       return;
     }
 
-    double scale_x = width  / (double)pixbuf.get_width ();
+    double scale_x = width  / (double)pixbuf_surface.get_width ();
     if (scale_x > 1)
       scale_x = 1;
-    double final_height = scale_x * pixbuf.get_height ();
+    double final_height = scale_x * pixbuf_surface.get_height ();
 
     min_height = (int)(final_height * _scale);
     nat_height = (int)(final_height * _scale);
@@ -122,13 +118,13 @@ class AspectImage : Gtk.Widget {
   }
 
   public override bool draw (Cairo.Context ct) {
-    if (pixbuf == null)
+    if (pixbuf_surface == null)
       return false;
 
 
     int width = get_allocated_width ();
     int height = get_allocated_height ();
-    double scale_x = width  / (double)pixbuf.get_width ();
+    double scale_x = width  / (double)pixbuf_surface.get_width ();
     double scale_y = scale_x;
     int y = 0;
 
@@ -137,21 +133,34 @@ class AspectImage : Gtk.Widget {
       scale_y = 1;
     }
 
-    int view_height = (int)(pixbuf.get_height () * scale_y);
+    int view_height = (int)(pixbuf_surface.get_height () * scale_y);
     y = height - view_height;
 
 
     ct.rectangle (0, 0, width, view_height);
     ct.scale (scale_x, scale_y);
-    ct.set_source_rgba (1, 1, 1, alpha);
+
+
+    ct.push_group ();
+
     if (this.old_surface != null) {
       ct.set_source_surface (this.old_surface, 0, 0);
-      ct.fill_preserve ();
-    }
+      ct.paint ();
+    } else
+      alpha = 1.0;
 
 
     ct.set_source_surface (this.pixbuf_surface, 0, 0);
-    ct.paint_with_alpha (alpha);
-    return false;
+    if (in_transition)
+      ct.paint_with_alpha (alpha);
+    else
+      ct.paint ();
+
+    ct.pop_group_to_source ();
+
+    ct.set_operator (Cairo.Operator.OVER);
+    ct.paint ();
+
+    return Gdk.EVENT_PROPAGATE;
   }
 }

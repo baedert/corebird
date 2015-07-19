@@ -39,8 +39,8 @@ class DMListEntry : Gtk.ListBoxRow, ITwitterItem {
     set { name_button.label = value; }
   }
 
-  public Gdk.Pixbuf avatar {
-    set { avatar_image.pixbuf = value; }
+  public Cairo.Surface avatar {
+    set { avatar_image.surface = value; }
   }
 
   public bool seen {
@@ -68,8 +68,8 @@ class DMListEntry : Gtk.ListBoxRow, ITwitterItem {
   }
 
   public void load_avatar () {
-    avatar_image.pixbuf = Twitter.get ().get_avatar (avatar_url, (a) => {
-      avatar_image.pixbuf = a;
+    avatar_image.surface = Twitter.get ().get_avatar (avatar_url, (a) => {
+      avatar_image.surface = a;
     });
   }
 
@@ -84,8 +84,6 @@ class DMListEntry : Gtk.ListBoxRow, ITwitterItem {
     time_delta_label.label = Utils.get_time_delta (then, cur_time);
     return (int)(cur_time.difference (then) / 1000.0 / 1000.0);
   }
-
-
 }
 
 

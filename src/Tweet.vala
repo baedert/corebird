@@ -269,7 +269,12 @@ public class Tweet : GLib.Object {
   public MiniTweet? retweeted_tweet = null;
   public MiniTweet? quoted_tweet = null;
 
-  public unowned Gdk.Pixbuf avatar {get; set;}
+  public string retweeted_by;
+  public string rt_by_screen_name;
+  public int64 rt_by_id;
+  public bool is_retweet;
+  public Cairo.Surface avatar { get; set; }
+  /** The avatar url on the server */
   public string avatar_url;
   public bool verified = false;
   public int64 my_retweet;

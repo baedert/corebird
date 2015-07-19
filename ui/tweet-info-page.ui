@@ -26,7 +26,6 @@
                 <property name="name">s</property>
                 <property name="can_focus">False</property>
                 <property name="selection_mode">none</property>
-                <property name="spinner_size">16</property>
               </object>
             </child>
           </object>
@@ -384,7 +383,6 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="selection_mode">none</property>
-            <property name="spinner_size">16</property>
             <property name="margin_top">6</property>
           </object>
           <packing>

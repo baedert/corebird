@@ -43,8 +43,8 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
     set { real_set_avatar (value); }
   }
 
-  public Gdk.Pixbuf avatar_pixbuf {
-    set { avatar_image.pixbuf = value; }
+  public Cairo.Surface avatar_surface {
+    set { avatar_image.surface = value; }
   }
 
   public bool seen {
@@ -73,16 +73,16 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
   public UserListEntry.from_account (Account acc) {
     this.screen_name = "@" + acc.screen_name;
     this.name = acc.name;
-    this.avatar_pixbuf = acc.avatar;
+    this.avatar_surface = acc.avatar;
     this.account = acc;
     this.user_id = acc.id;
     acc.info_changed.connect ((screen_name, name, nop, avatar) => {
       this.screen_name = "@" + screen_name;
       this.name = name;
-      this.avatar_pixbuf = avatar;
+      this.avatar_surface = avatar;
     });
     acc.notify["avatar"].connect (() => {
-      this.avatar_pixbuf = acc.avatar;
+      this.avatar_surface = acc.avatar;
     });
     var cb = (Corebird) GLib.Application.get_default ();
     cb.window_added.connect ((window) => {
@@ -109,8 +109,8 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
   }
 
   private void real_set_avatar (string avatar_url) {
-    avatar_image.pixbuf = Twitter.get ().get_avatar (avatar_url, (a) => {
-      avatar_image.pixbuf = a;
+    avatar_image.surface = Twitter.get ().get_avatar (avatar_url, (a) => {
+      avatar_image.surface = a;
     });
   }
 

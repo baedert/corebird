@@ -15,11 +15,8 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * A button with the given pixbuf as background.
- */
 class PixbufButton : Gtk.Button {
-  private Gdk.Pixbuf bg;
+  private Cairo.ImageSurface bg;
   private Gtk.Menu menu;
   private string menu_string;
   private bool _round = false;
@@ -87,7 +84,8 @@ class PixbufButton : Gtk.Button {
       double scale_y = (double)widget_height / bg.get_height ();
       ctx.save ();
       ctx.scale (scale_x, scale_y);
-      Gdk.cairo_set_source_pixbuf (ctx, bg, 0, 0);
+      //Gdk.cairo_set_source_pixbuf (ctx, bg, 0, 0);
+      ctx.set_source_surface (bg, 0, 0);
       ctx.fill ();
       ctx.restore ();
 
@@ -121,9 +119,14 @@ class PixbufButton : Gtk.Button {
     return false;
   }
 
-  public void set_bg (Gdk.Pixbuf bg){
+  public void set_bg (Cairo.ImageSurface bg) {
     this.bg = bg;
     this.set_size_request (bg.get_width(), bg.get_height());
     this.queue_draw ();
+  }
+
+  public void set_pixbuf (Gdk.Pixbuf pixbuf) {
+    // TODO: Convert pixbuf to surface
+    message ("MEH.");
   }
 }

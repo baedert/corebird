@@ -90,7 +90,6 @@ class ListStatusesPage : ScrollWidget, IPage {
     if (evt.delta_y < 0 && this.vadjustment.value == 0) {
       int inc = (int)(vadjustment.step_increment * (-evt.delta_y));
       max_size_container.max_size += inc;
-      max_size_container.queue_resize ();
       return true;
     }
     return false;
