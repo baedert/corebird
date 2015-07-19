@@ -122,7 +122,6 @@ public class UserStream : Object {
   public void start () {
     debug ("Starting stream for %s", this.account_name);
     // Reset state of the stream
-    //running = true;
     proxy_call = proxy.new_call ();
     proxy_call.set_function ("1.1/user.json");
     proxy_call.set_method ("GET");
@@ -160,6 +159,9 @@ public class UserStream : Object {
   }
 
   private void start_network_timeout () {
+    if (this.network_timeout_id != 0)
+      return;
+
     network_timeout_id = GLib.Timeout.add (30 * 1000, () => {
       if (running)
         return GLib.Source.REMOVE;
@@ -167,6 +169,7 @@ public class UserStream : Object {
       var available = network_monitor.get_network_available ();
       if (available) {
         debug ("Restarting stream (reason: network available (timeout))");
+        this.network_timeout_id = 0;
         restart ();
         return GLib.Source.REMOVE;
       }
@@ -200,6 +203,7 @@ public class UserStream : Object {
                              GLib.Error?    error) {
     if (buf == null) {
       warning ("buf(%s) == NULL", this.account_name);
+      this.start_network_timeout ();
       return;
     }
 
