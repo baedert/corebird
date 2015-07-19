@@ -124,8 +124,19 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
     if (tweet.quoted_tweet != null) {
       quote_label.show ();
-      quote_label.label = TextTransform.transform_tweet (tweet.quoted_tweet,
-                                                         Settings.get_text_transform_flags ());
+      var b = new StringBuilder ();
+      b.append (TextTransform.transform_tweet (tweet.quoted_tweet,
+                                               Settings.get_text_transform_flags ()));
+      b.append (" — <span underline=\"none\"><a href=\"@")
+       .append (tweet.quoted_tweet.author.id.to_string ())
+       .append ("/@")
+       .append (tweet.quoted_tweet.author.screen_name)
+       .append ("\" title=\"")
+       .append (tweet.quoted_tweet.author.user_name)
+       .append ("\">@")
+       .append (tweet.quoted_tweet.author.screen_name)
+       .append ("</a></span>");
+       quote_label.label = b.str;
     }
 
     retweet_button.active = tweet.retweeted;

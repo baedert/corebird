@@ -252,3 +252,8 @@
   background-color: alpha(white, 0.5);
   border-bottom: 2px solid grey;
 }
+
+.quote {
+  border-left: 3px solid currentColor;
+  padding-left: 6px;
+}

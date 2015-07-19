@@ -335,8 +335,14 @@
                 <property name="wrap_mode">word-char</property>
                 <property name="track_visited_links">false</property>
                 <property name="hexpand">true</property>
+                <property name="margin-top">6</property>
+                <property name="margin-bottom">6</property>
+                <attributes>
+                  <attribute name="style" value="italic" />
+                </attributes>
                 <style>
                   <class name="dim-label" />
+                  <class name="quote" />
                 </style>
               </object>
               <packing>
