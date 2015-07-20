@@ -152,6 +152,11 @@ namespace InlineMediaDownloader {
       if (e is GLib.IOError.EXISTS) {
         if (main_file_exists) {
           media.thumbnail = load_surface (media.thumb_path);
+          if (media.thumbnail == null) {
+            warning ("'%s` couldn't be loaded from disk.", media.url);
+            media.invalid = true;
+          }
+
           media.loaded = true;
           media.finished_loading ();
           return;
