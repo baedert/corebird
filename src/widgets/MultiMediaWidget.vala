@@ -210,6 +210,9 @@ public class MultiMediaWidget : Gtk.Box {
   public void set_media (int index, Media media) {
     assert (index < media_count);
 
+    if (media.loaded && media.invalid)
+      return;
+
     var button = new MediaButton (null);
     button.set_data ("pos", index);
     button.window = this.window;
