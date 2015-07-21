@@ -234,7 +234,9 @@ namespace InlineMediaDownloader {
         var ms = new MemoryInputStream.from_data (_msg.response_body.data, null);
         media_out_stream.write_all (_msg.response_body.data, null, null);
         media_out_stream.close ();
-        load_animation.begin (t, ms, thumb_out_stream, media, (GLib.AsyncReadyCallback)callback);
+        load_animation.begin (t, ms, thumb_out_stream, media, () => {
+          callback ();
+        });
         yield;
       } catch (GLib.Error e) {
         critical (e.message + " for MEDIA " + media.thumb_url);
