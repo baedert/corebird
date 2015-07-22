@@ -71,7 +71,8 @@ public class UserStream : Object {
   public signal void interrupted ();
   public signal void resumed ();
 
-  private bool stopping = false;
+  private bool stopping   = false;
+  private bool restarting = false;
 
 
 
@@ -105,7 +106,7 @@ public class UserStream : Object {
     if (network_available) {
       debug ("Restarting stream (reason: Network available (callback))");
       restart ();
-      resumed ();
+      //resumed ();
     } else {
       debug ("Connection lost (%s) Reason: network unavailable", account_name);
       interrupted ();
@@ -155,15 +156,17 @@ public class UserStream : Object {
   }
 
   private void restart () {
+    restarting = true;
     stop ();
     start ();
+    //restarting = false;
   }
 
   private void start_network_timeout () {
     if (this.network_timeout_id != 0)
       return;
 
-    network_timeout_id = GLib.Timeout.add (30 * 1000, () => {
+    network_timeout_id = GLib.Timeout.add (1 * 1000, () => {
       if (running)
         return GLib.Source.REMOVE;
 
@@ -213,6 +216,12 @@ public class UserStream : Object {
     data.append (real);
 
     if (real.has_suffix ("\r\n") || real.has_suffix ("\r")) {
+
+      if (restarting) {
+        resumed ();
+        restarting = false;
+      }
+
 
       if (real == "\r\n") {
         debug ("HEARTBEAT(%s)", account_name);
