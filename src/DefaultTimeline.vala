@@ -231,13 +231,16 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
         t.retweeted_tweet.author.id == account.id)
       flags |= Tweet.HIDDEN_FORCE;
 
+
+
     /* Fourth case */
-    foreach (int64 id in account.disabled_rts)
-      if (t.retweeted_tweet != null &&
-          id == t.retweeted_tweet.id) {
-        flags |= Tweet.HIDDEN_RTS_DISABLED;
-        break;
-      }
+    if (t.retweeted_tweet != null) {
+      foreach (int64 id in account.disabled_rts)
+        if (id == t.retweeted_tweet.author.id) {
+          flags |= Tweet.HIDDEN_RTS_DISABLED;
+          break;
+        }
+    }
 
 
     /* Fifth case */
