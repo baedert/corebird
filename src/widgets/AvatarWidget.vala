@@ -25,7 +25,6 @@ class AvatarWidget : Gtk.Widget {
     set {
       if (value) {
         this.get_style_context ().add_class ("avatar-round");
-        message ("Adding style class");
       } else {
         this.get_style_context ().remove_class ("avatar-round");
       }
