@@ -98,6 +98,9 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
         mention_builder.append ("@").append (reply_to.source_tweet.author.screen_name);
       }
       foreach (string s in reply_to.get_mentions ()) {
+        if (s == "@" + account.screen_name)
+          continue;
+
         if (mention_builder.len > 0)
           mention_builder.append (" ");
 
