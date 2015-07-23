@@ -598,17 +598,16 @@ void retweet () {
   var root = parser.get_root ();
 
   t.load_from_json (root, now, acc);
+  assert (t.source_tweet != null);
   assert (t.id == 463208606784311296);
-  assert (t.is_retweet);
-  assert (t.rt_id == 461097667775725569);
-  assert (t.retweeted_by == "Frozenbyte");
+  assert (t.retweeted_tweet != null);
+  assert (t.retweeted_tweet.id == 461097667775725569);
+  assert (t.source_tweet.author.user_name == "Frozenbyte");
   assert (t.favorite_count == 0);
   assert (t.retweet_count == 6);
-  assert (t.rt_by_id == 62574927);
-  message ("Mentions: %d", t.mentions.length);
-  assert (t.mentions.length == 0);
-  assert (t.rt_by_screen_name == "Frozenbyte");
-  assert (t.user_name == "Black Forest Games");
+  assert (t.source_tweet.author.id == 62574927);
+  assert (t.get_mentions ().length == 0);
+  assert (t.retweeted_tweet.author.user_name == "Black Forest Games");
   assert (!t.favorited);
   assert (!t.retweeted);
   assert (!t.verified);
@@ -673,6 +672,7 @@ void media_count2 () {
 int main (string[] args) {
   GLib.Test.init (ref args);
   Settings.init ();
+  Gtk.init (ref args);
   Twitter.get ().init ();
   Utils.init_soup_session ();
   GLib.Test.add_func ("/tweet-parsing/retweet", retweet);

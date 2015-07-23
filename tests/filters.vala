@@ -260,7 +260,7 @@ void same_user () {
     return;
   }
   tweet.load_from_json (parser.get_root (), now, acc);
-  tweet.user_id = 12345;
+  tweet.source_tweet.author.id = 12345;
 
   // Should always return false even if the filter(s) would match
   assert (!acc.filter_matches (tweet));
@@ -318,6 +318,7 @@ void hashtags () {
 int main (string[] args) {
   GLib.Test.init (ref args);
   Settings.init ();
+  Gtk.init (ref args);
   Twitter.get ().init ();
   Dirs.create_dirs ();
   Utils.init_soup_session ();
