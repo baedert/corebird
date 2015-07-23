@@ -84,7 +84,6 @@ class PixbufButton : Gtk.Button {
       double scale_y = (double)widget_height / bg.get_height ();
       ctx.save ();
       ctx.scale (scale_x, scale_y);
-      //Gdk.cairo_set_source_pixbuf (ctx, bg, 0, 0);
       ctx.set_source_surface (bg, 0, 0);
       ctx.fill ();
       ctx.restore ();
@@ -99,14 +98,7 @@ class PixbufButton : Gtk.Button {
         ctx.fill ();
 
         // draw outline
-        ctx.set_operator (Cairo.Operator.OVER);
-        Gdk.RGBA border_color = sc.get_border_color (this.get_state_flags ());
-        ctx.arc (0, 0, (widget_width /2) - 0.5, 0, 2 * Math.PI);
-        ctx.set_line_width (1.0);
-        ctx.set_source_rgba (border_color.red, border_color.green, border_color.blue,
-                            border_color.alpha);
-        ctx.stroke ();
-
+        sc.render_frame (ct, 0, 0, widget_width, widget_height);
       }
 
       ct.rectangle (0, 0, widget_width, widget_height);
@@ -116,7 +108,7 @@ class PixbufButton : Gtk.Button {
 
     // The css-styled background should be transparent.
     base.draw (ct);
-    return false;
+    return GLib.Source.CONTINUE;
   }
 
   public void set_bg (Cairo.ImageSurface bg) {

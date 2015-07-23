@@ -3,8 +3,10 @@
   padding-top: 2px;
 }
 
-.avatar {
-  border-color: grey;
+
+.avatar-round {
+  border: 1px solid grey;
+  border-radius: 48px;
 }
 
 .account-button {
@@ -208,26 +210,25 @@
   border: none;
   border-radius: 0px;
   box-shadow: none;
-  transition: box-shadow 0.25s ease-in-out;
+  transition: box-shadow 0.2s ease-in-out;
 }
 
 .pixbuf-button-round {
+  border: 1px solid grey;
   border-radius: 48px;
 }
 
 .pixbuf-button:hover {
-/*  box-shadow: 0px 0px 10px alpha(black, 0.8);*/
-  border: 2px solid #4a90d9;
+  border: 1px solid #4a90d9;
 }
 
 .pixbuf-button:active {
-  box-shadow: inset 0px 0px 10px alpha(black, 0.95);
+  box-shadow: inset 0px 0px 3px alpha(black, 0.95);
 }
 .pixbuf-button:backdrop {
   background-color: transparent;
   background-image: none;
 }
-
 .reply-indicator {
   background-color: #4a90d9;
 }

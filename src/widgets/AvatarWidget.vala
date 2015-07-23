@@ -23,6 +23,13 @@ class AvatarWidget : Gtk.Widget {
       return _round;
     }
     set {
+      if (value) {
+        this.get_style_context ().add_class ("avatar-round");
+        message ("Adding style class");
+      } else {
+        this.get_style_context ().remove_class ("avatar-round");
+      }
+
       this._round = value;
       this.queue_draw ();
     }
@@ -76,7 +83,6 @@ class AvatarWidget : Gtk.Widget {
     this.set_has_window (false);
     Settings.get ().bind ("round-avatars", this, "make_round",
                           GLib.SettingsBindFlags.DEFAULT);
-    get_style_context ().add_class ("avatar");
   }
 
   ~AvatarWidget () {
@@ -106,8 +112,8 @@ class AvatarWidget : Gtk.Widget {
     ct.set_source_surface (this._surface, 0, 0);
     ct.fill();
 
-    if (_round) {
       var sc = this.get_style_context ();
+    if (_round) {
       // make it round
       ct.set_operator (Cairo.Operator.DEST_IN);
       ct.arc ((width / 2.0), (height / 2.0),
@@ -117,16 +123,7 @@ class AvatarWidget : Gtk.Widget {
       ct.fill ();
 
       // draw outline
-      ct.set_operator (Cairo.Operator.OVER);
-      Gdk.RGBA border_color = sc.get_border_color (this.get_state_flags ());
-      ct.arc ((width / 2.0), (height / 2.0),
-              (width / 2.0) - 0.5,
-              0,
-              2 * Math.PI);
-      ct.set_line_width (1.0);
-      ct.set_source_rgba (border_color.red, border_color.green, border_color.blue,
-                          border_color.alpha);
-      ct.stroke ();
+      sc.render_frame (ctx, 0, 0, width, height);
     }
 
     ctx.rectangle (0, 0, width, height);
@@ -149,7 +146,7 @@ class AvatarWidget : Gtk.Widget {
       ctx.fill ();
     }
 
-    return false;
+    return GLib.Source.CONTINUE;
   }
 
 
