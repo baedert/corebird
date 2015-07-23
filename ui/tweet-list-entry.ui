@@ -355,7 +355,6 @@
             <child>
               <object class="MultiMediaWidget" id="mm_widget">
                 <property name="visible">true</property>
-                <property name="can_focus">true</property>
                 <property name="margin_top">6</property>
               </object>
               <packing>
