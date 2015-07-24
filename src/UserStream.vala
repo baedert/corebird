@@ -44,7 +44,8 @@ public enum StreamMessageType {
   EVENT_UNBLOCK,
   EVENT_MUTE,
   EVENT_UNMUTE,
-  EVENT_USER_UPDATE
+  EVENT_USER_UPDATE,
+  EVENT_QUOTED_TWEET
 }
 
 
@@ -331,6 +332,8 @@ public class UserStream : Object {
         return StreamMessageType.EVENT_UNMUTE;
       case "user_update":
         return StreamMessageType.EVENT_USER_UPDATE;
+      case "quoted_tweet":
+        return StreamMessageType.EVENT_QUOTED_TWEET;
     }
 
     return 0;
