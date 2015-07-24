@@ -114,11 +114,6 @@ public class MainWidget : Gtk.Box {
 
     Settings.get ().bind ("sidebar-visible", sidebar_revealer, "reveal-child",
                           SettingsBindFlags.DEFAULT);
-
-    /* Set custom focus chain for the sidebar */
-    GLib.List<Gtk.Widget> list = new GLib.List<Gtk.Widget> ();
-    list.append (stack);
-    left_box.set_focus_chain (list);
   }
 
 
