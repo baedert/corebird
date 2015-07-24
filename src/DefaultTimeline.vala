@@ -159,7 +159,8 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
         }
 
         tweet_list.model.remove_last_n_visible (tweet_list.model.get_n_items () - ITimeline.REST);
-        return false;
+        tweet_remove_timeout = 0;
+        return GLib.Source.REMOVE;
       });
     } else if (tweet_remove_timeout != 0) {
       GLib.Source.remove (tweet_remove_timeout);
