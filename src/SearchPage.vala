@@ -105,6 +105,8 @@ class SearchPage : IPage, Gtk.Box {
         tweet_list.remove (w);
       }
 
+      this.remove_content_timeout = 0;
+
       return GLib.Source.REMOVE;
     });
   }
