@@ -114,23 +114,6 @@ public class Twitter : GLib.Object {
       return a;
     }
 
-    string avatar_name = Utils.get_avatar_name (url);
-    string avatar_dest = Dirs.cache ("assets/avatars/" + avatar_name);
-    // If the image already exists but is not loaded in ram yet,
-    // just load it and return it.
-    try {
-      var p = new Gdk.Pixbuf.from_file (avatar_dest);
-      var s = Gdk.cairo_surface_create_from_pixbuf (p, 1, null);
-      avatars.set (url, s);
-      return s;
-    } catch (GLib.Error e) {
-      if (!(e is GLib.FileError.NOENT)) {
-        critical ("Error while loading avatar `%s`: %s", url, e.message);
-        this.avatars.set (url, no_avatar);
-        return no_avatar;
-      }
-    }
-
     // Someone is already downloading the avatar
     if (has_key) {
       // wait until the avatar has finished downloading
