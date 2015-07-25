@@ -114,7 +114,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       rt_label.show ();
       rt_image.show ();
       rt_label.label = @"<span underline='none'><a href=\"@$(tweet.source_tweet.author.id)/" +
-                       @"$(tweet.source_tweet.author.screen_name)\"" +
+                       @"@$(tweet.source_tweet.author.screen_name)\"" +
                        @"title=\"@$(tweet.source_tweet.author.screen_name)\">" +
                        @"$(tweet.source_tweet.author.user_name)</a></span>";
     } else {
