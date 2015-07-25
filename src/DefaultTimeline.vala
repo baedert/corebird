@@ -283,7 +283,9 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   }
 
   private void stream_resumed_cb () {
-    // XXX If load_newest failed, the list still gets cleared...
+    if (this.tweet_list.model.get_n_items () == 0)
+      return;
+
     var call = account.proxy.new_call ();
     call.set_function (this.function);
     call.set_method ("GET");
