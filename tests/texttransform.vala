@@ -178,7 +178,6 @@ void remove_only_trailing_hashtags () {
                                            entities,
                                            TransformFlags.REMOVE_TRAILING_HASHTAGS);
 
-  message (result);
   assert (result.contains (">@baedert<")); // Mention should still be a link
   assert (result.contains (">#totally<"));
   assert (!result.contains ("#baedertworship"));
@@ -229,7 +228,6 @@ void remove_multiple_trailing_hashtags () {
                                            entities,
                                            TransformFlags.REMOVE_TRAILING_HASHTAGS);
 
-  message (result);
   assert (result.contains (">@baedert<")); // Mention should still be a link
   assert (result.contains (">#totally<"));
   assert (!result.contains ("#baedertworship"));
@@ -275,11 +273,65 @@ void trailing_hashtags_mention_before () {
                                            entities,
                                            TransformFlags.REMOVE_TRAILING_HASHTAGS);
 
-  message (result);
   assert (result.contains (">@baedert<")); // Mention should still be a link
   assert (result.contains (">#totally<"));
   assert (result.contains (">#baedertworship<"));
   assert (!result.contains ("#foobar"));
+}
+
+
+void whitespace_hashtags () {
+  string text = "Hey, #totally inappropriate @baedert! #baedertworship #thefeels #foobar";
+
+  var entities = new TextEntity[5];
+
+  entities[0] = TextEntity () {
+    from = 5,
+    to = 13,
+    display_text = "#totally",
+    target = "foobar"
+  };
+
+  entities[1] = TextEntity () {
+    from = 28,
+    to = 36,
+    display_text = "@baedert",
+    target = "blubb"
+  };
+
+  entities[2] = TextEntity () {
+    from = 38,
+    to = 53,
+    display_text = "#baedertwhorship",
+    target = "bla"
+  };
+
+  entities[3] = TextEntity () {
+    from = 54,
+    to = 63,
+    display_text = "#thefeels",
+    target = "foobar"
+  };
+
+  entities[4] = TextEntity () {
+    from = 64,
+    to = 71,
+    display_text = "#foobar",
+    target = "bla"
+  };
+
+  string result = TextTransform.transform (text,
+                                           entities,
+                                           TransformFlags.REMOVE_TRAILING_HASHTAGS);
+
+  message ("'%s'", result);
+
+  assert (result.contains (">@baedert<")); // Mention should still be a link
+  assert (result.contains (">#totally<"));
+  assert (!result.contains ("#baedertworship"));
+  assert (!result.contains ("#thefeels"));
+  assert (!result.contains ("#foobar"));
+  assert (!result.contains ("   ")); // 3 spaces between the 3 hashtags
 }
 
 
@@ -296,6 +348,7 @@ int main (string[] args) {
   GLib.Test.add_func ("/tt/remove-only-trailing-hashtags", remove_only_trailing_hashtags);
   GLib.Test.add_func ("/tt/remove-multiple-trailing-hashtags", remove_multiple_trailing_hashtags);
   GLib.Test.add_func ("/tt/trailing-hashtags-mention-before", trailing_hashtags_mention_before);
+  GLib.Test.add_func ("/tt/whitespace-between-trailing-hashtags", whitespace_hashtags);
 
 
   return GLib.Test.run ();

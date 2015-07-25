@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-23 11:46+0200\n"
+"POT-Creation-Date: 2015-07-25 08:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,11 +18,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: ../src/window/ComposeTweetWindow.vala:338
+#: ../src/window/ComposeTweetWindow.vala:123
+msgid "Quote tweet"
+msgstr ""
+
+#: ../src/window/ComposeTweetWindow.vala:361
 msgid "Select Image"
 msgstr ""
 
-#: ../src/window/ComposeTweetWindow.vala:339
+#: ../src/window/ComposeTweetWindow.vala:362
 #: ../src/window/UserListDialog.vala:47
 #: ../src/widgets/MultiMediaWidget.vala:152 ../ui/compose-window.ui.h:2
 #: ../ui/list-list-entry.ui.h:1 ../ui/list-statuses-page.ui.h:8
@@ -32,7 +36,7 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: ../src/window/ComposeTweetWindow.vala:340
+#: ../src/window/ComposeTweetWindow.vala:363
 msgid "Choose"
 msgstr ""
 
@@ -202,8 +206,8 @@ msgstr ""
 msgid "Retweets"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:415 ../src/FavoritesTimeline.vala:91
-#: ../src/FavoritesTimeline.vala:95
+#: ../src/TweetInfoPage.vala:415 ../src/FavoritesTimeline.vala:93
+#: ../src/FavoritesTimeline.vala:97
 msgid "Favorites"
 msgstr ""
 
@@ -229,7 +233,7 @@ msgstr ""
 msgid "%dh"
 msgstr ""
 
-#: ../src/SearchPage.vala:279 ../src/SearchPage.vala:288
+#: ../src/SearchPage.vala:281 ../src/SearchPage.vala:290
 #: ../ui/search-page.ui.h:1
 msgid "Search"
 msgstr ""

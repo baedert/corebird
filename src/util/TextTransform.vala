@@ -96,18 +96,25 @@ namespace TextTransform {
     }
 
 
+    bool last_entity_was_trailing = false;
     foreach (TextEntity entity in entities) {
       /* Append part before this entity */
-      builder.append (text.substring (text.index_of_nth_char (last_end),
+      string before = text.substring (text.index_of_nth_char (last_end),
                                       text.index_of_nth_char (entity.from) -
-                                      text.index_of_nth_char (last_end)));
+                                      text.index_of_nth_char (last_end));
+
+      if (!(last_entity_was_trailing && is_whitespace (before)))
+        builder.append (before);
 
       if (TransformFlags.REMOVE_TRAILING_HASHTAGS in flags &&
           (entity.info & TRAILING) > 0 &&
           is_hashtag (entity.display_text)) {
         last_end = entity.to;
+        last_entity_was_trailing = true;
         continue;
       }
+
+      last_entity_was_trailing = false;
 
       /* Skip the entire entity if we should remove media links AND
          it is a media link. */
