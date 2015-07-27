@@ -254,7 +254,7 @@ namespace InlineMediaDownloader {
     try {
       anim = yield new Gdk.PixbufAnimation.from_stream_async (in_stream, null);
     } catch (GLib.Error e) {
-      warning (e.message);
+      warning ("%s: %s", media.url, e.message);
       mark_invalid (media, in_stream, thumb_out_stream);
       return;
     }
