@@ -139,7 +139,7 @@ namespace TextTransform {
         /* Only set the tooltip if there actually is one */
         if (entity.tooltip_text != null) {
           builder.append (" title=\"")
-                 .append (entity.tooltip_text.replace ("&", "&amp;"))
+                 .append (entity.tooltip_text.replace ("&", "&amp;").replace ("&", "&amp;"))
                  .append ("\"");
         }
 
