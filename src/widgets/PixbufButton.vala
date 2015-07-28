@@ -118,7 +118,6 @@ class PixbufButton : Gtk.Button {
   }
 
   public void set_pixbuf (Gdk.Pixbuf pixbuf) {
-    // TODO: Convert pixbuf to surface
-    message ("MEH.");
+    this.bg = (Cairo.ImageSurface)Gdk.cairo_surface_create_from_pixbuf (pixbuf, 1, null);
   }
 }
