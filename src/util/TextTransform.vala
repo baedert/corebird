@@ -51,6 +51,11 @@ namespace TextTransform {
     return entity[0] == '#';
   }
 
+  private bool is_link (string? target)
+  {
+    return target != null && (target.has_prefix ("http://") || target.has_prefix ("https://"));
+  }
+
   private bool is_whitespace (string s)
   {
     unichar c;
@@ -89,7 +94,8 @@ namespace TextTransform {
       } else
         cur_end = entities[i].to;
 
-      if (entities[i].to == cur_end && is_hashtag (entities[i].display_text)) {
+      if (entities[i].to == cur_end &&
+          (is_hashtag (entities[i].display_text) || is_link (entities[i].target))) {
         entities[i].info |= TRAILING;
         cur_end = entities[i].from;
       } else break;
