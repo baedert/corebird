@@ -104,6 +104,7 @@ class SearchPage : IPage, Gtk.Box {
         // We are still using raw widgets here.
         tweet_list.remove (w);
       }
+      tweet_list.get_placeholder ().hide ();
 
       this.remove_content_timeout = 0;
 
