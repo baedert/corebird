@@ -144,12 +144,12 @@ void hide_rt () {
 
   tm.add (t1);
 
-  tm.toggle_flag_on_retweet (100, Tweet.HIDDEN_FILTERED, true);
+  tm.toggle_flag_on_retweet (10, Tweet.HIDDEN_FILTERED, true);
 
   assert (tm.get_n_items () == 1);
   assert (((Tweet)tm.get_item (0)).is_hidden);
 
-  tm.toggle_flag_on_retweet (100, Tweet.HIDDEN_FILTERED, false);
+  tm.toggle_flag_on_retweet (10, Tweet.HIDDEN_FILTERED, false);
   assert (!((Tweet)tm.get_item (0)).is_hidden);
 }
 
