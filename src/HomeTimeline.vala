@@ -59,14 +59,14 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
     Tweet t = new Tweet();
     t.load_from_json (obj, now, account);
 
-    if (t.is_retweet)
+    if (t.retweeted_tweet != null)
       t.hidden_flags |= get_rt_flags (t);
 
     if (account.blocked_or_muted (t.user_id))
       t.hidden_flags |= Tweet.HIDDEN_RETWEETER_BLOCKED;
 
 
-    if (t.is_retweet && account.blocked_or_muted (t.rt_by_id))
+    if (t.retweeted_tweet != null && account.blocked_or_muted (t.retweeted_tweet.author.id))
       t.hidden_flags |= Tweet.HIDDEN_AUTHOR_BLOCKED;
 
     if (account.filter_matches (t))
@@ -77,7 +77,7 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
     this.balance_next_upper_change (TOP);
 
     t.seen =  t.user_id == account.id ||
-              t.rt_by_id == account.id ||
+              (t.retweeted_tweet != null && t.retweeted_tweet.author.id == account.id) ||
               (this.scrolled_up  &&
                main_window.cur_page_id == this.id &&
                auto_scroll);
@@ -106,10 +106,11 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
 
     if (stack_size == 1 && !auto_scroll) {
       string summary = "";
-      if (t.is_retweet){
-        summary = _("%s retweeted %s").printf(t.retweeted_by, t.user_name);
+      if (t.retweeted_tweet != null){
+        summary = _("%s retweeted %s").printf (t.source_tweet.author.user_name,
+                                               t.retweeted_tweet.author.user_name);
       } else {
-        summary = _("%s tweeted").printf(t.user_name);
+        summary = _("%s tweeted").printf (t.source_tweet.author.user_name);
       }
       NotificationManager.notify (account, summary, t.get_real_text (),
                                   Dirs.cache ("assets/avatars/" + Utils.get_avatar_name (t.avatar_url)));

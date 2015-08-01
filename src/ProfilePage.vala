@@ -376,7 +376,6 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
       return;
     }
     yield TweetUtils.work_array (root_array,
-                                 requested_tweet_count,
                                  tweet_list,
                                  main_window,
                                  account);
@@ -408,7 +407,6 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
 
     var root_arr = root.get_array ();
     yield TweetUtils.work_array (root_arr,
-                                 requested_tweet_count,
                                  tweet_list,
                                  main_window,
                                  account);
@@ -490,7 +488,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
   private void load_profile_banner (string base_url, int64 user_id) { // {{{
     string banner_name = Utils.get_banner_name (user_id);
     string saved_banner_url = Dirs.cache ("assets/banners/" + banner_name);
-    string banner_url  = base_url+"/mobile_retina";
+    string banner_url  = base_url + "/mobile_retina";
     string banner_on_disk = Dirs.cache("assets/banners/" + banner_name);
     if (!FileUtils.test (banner_on_disk, FileTest.EXISTS) || banner_url != saved_banner_url) {
       Utils.download_file_async.begin (banner_url, banner_on_disk, data_cancellable,
@@ -643,10 +641,6 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     int64 user_id = args.get_int64 ("user_id");
     if (user_id == -1)
       return;
-    else {
-      followers_cursor = null;
-      following_cursor = null;
-    }
 
     string? screen_name = args.get_string ("screen_name");
     if (screen_name != null) {
@@ -658,6 +652,8 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
 
     if (user_id != this.user_id) {
       reset_data ();
+      followers_cursor = null;
+      following_cursor = null;
       set_user_id (user_id);
       tweet_list.model.clear ();
       user_lists.clear_lists ();

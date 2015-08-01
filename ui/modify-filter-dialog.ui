@@ -90,6 +90,7 @@
                 <property name="can_focus">False</property>
                 <property name="shadow_type">in</property>
                 <property name="vexpand">True</property>
+                <property name="min-content-height">40</property>
                 <child>
                   <object class="GtkTextView" id="regex_test_text">
                     <property name="visible">True</property>

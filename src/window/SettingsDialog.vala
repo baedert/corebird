@@ -72,9 +72,13 @@ class SettingsDialog : Gtk.Window {
 
     // Set up sample tweet {{{
     var sample_tweet = new Tweet ();
-    sample_tweet.text = _("Hey, check out this new #Corebird version! \\ (•◡•) / #cool #newisalwaysbetter");
-    sample_tweet.screen_name = "corebirdclient";
-    sample_tweet.user_name = "Corebird";
+    sample_tweet.source_tweet = new MiniTweet();
+    sample_tweet.source_tweet.author = UserIdentity() {
+      id = 12,
+      screen_name = "corebirdclient",
+      user_name = "Corebird"
+    };
+    string sample_text = _("Hey, check out this new #Corebird version! \\ (•◡•) / #cool #newisalwaysbetter");
     Gdk.Pixbuf? a = null;
     try {
       a = Gtk.IconTheme.get_default ().load_icon ("corebird", 48,
@@ -82,16 +86,16 @@ class SettingsDialog : Gtk.Window {
       sample_tweet.avatar = Gdk.cairo_surface_create_from_pixbuf (a, 1, null);
     } catch (GLib.Error e) {
       warning (e.message);
-      // Ignore.
     }
+    sample_tweet.source_tweet.text = sample_text;
 
     try {
       var regex = new GLib.Regex ("#\\w+");
       GLib.MatchInfo match_info;
-      bool matched = regex.match (sample_tweet.text, 0, out match_info);
+      bool matched = regex.match (sample_text, 0, out match_info);
       assert (matched);
 
-      sample_tweet.urls = new TextEntity[3];
+      sample_tweet.source_tweet.entities = new TextEntity[3];
 
       int i = 0;
       while (match_info.matches ()) {
@@ -99,9 +103,9 @@ class SettingsDialog : Gtk.Window {
         int from, to;
         match_info.fetch_pos (0, out from, out to);
         string match = match_info.fetch (0);
-        sample_tweet.urls[i] = TextEntity () {
-          from = sample_tweet.text.char_count (from),
-          to   = sample_tweet.text.char_count (to),
+        sample_tweet.source_tweet.entities[i] = TextEntity () {
+          from = sample_text.char_count (from),
+          to   = sample_text.char_count (to),
           display_text = match,
           target       = "foobar"
         };
@@ -114,7 +118,7 @@ class SettingsDialog : Gtk.Window {
     }
 
     // Just to be sure
-    TweetUtils.sort_entities (ref sample_tweet.urls);
+    TweetUtils.sort_entities (ref sample_tweet.source_tweet.entities);
 
 
     this.sample_tweet_entry = new TweetListEntry (sample_tweet, null,

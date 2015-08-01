@@ -134,8 +134,8 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     if (mode == BY_INSTANCE) {
       Tweet tweet = (Tweet)args.get_object ("tweet");
 
-      if (tweet.is_retweet)
-        this.tweet_id = tweet.rt_id;
+      if (tweet.retweeted_tweet != null)
+        this.tweet_id = tweet.retweeted_tweet.id;
       else
         this.tweet_id = tweet.id;
 
@@ -373,7 +373,9 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
    */
   private void set_tweet_data (Tweet tweet, string? with = null) {//{{{
     account.user_counter.user_seen (tweet.user_id, tweet.screen_name, tweet.user_name);
-    GLib.DateTime created_at = new GLib.DateTime.from_unix_local (tweet.created_at);
+    GLib.DateTime created_at = new GLib.DateTime.from_unix_local (
+             tweet.retweeted_tweet != null ? tweet.retweeted_tweet.created_at :
+                                             tweet.source_tweet.created_at);
     string time_format = created_at.format ("%x, %X");
     if (with != null) {
       time_format += " via " + with;

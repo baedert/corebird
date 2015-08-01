@@ -67,6 +67,8 @@ class FavoritesTimeline : IMessageReceiver, DefaultTimeline {
         GLib.Idle.add(() => {tweet_list.remove (w); return false;});
       }
     }
+
+    base.on_leave ();
   }
 
 

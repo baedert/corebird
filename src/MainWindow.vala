@@ -97,6 +97,17 @@ public class MainWindow : Gtk.ApplicationWindow {
 
     this.add_action_entries (win_entries, this);
 
+
+    headerbar.key_press_event.connect ((evt) => {
+      if (evt.keyval == Gdk.Key.Down && main_widget != null) {
+        main_widget.get_page (main_widget.cur_page_id).focus (Gtk.DirectionType.RIGHT);
+        return true;
+      }
+      return false;
+    });
+
+
+
     add_accels();
     load_geometry ();
   }

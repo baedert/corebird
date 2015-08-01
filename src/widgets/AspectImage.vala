@@ -118,12 +118,13 @@ class AspectImage : Gtk.Widget {
   }
 
   public override bool draw (Cairo.Context ct) {
-    if (pixbuf_surface == null)
+    if (this.pixbuf_surface == null)
       return false;
 
 
-    int width = get_allocated_width ();
+    int width  = get_allocated_width ();
     int height = get_allocated_height ();
+
     double scale_x = width  / (double)pixbuf_surface.get_width ();
     double scale_y = scale_x;
     int y = 0;

@@ -1,6 +1,4 @@
 
-// XXX Vala does not support all the g_assert macros, see https://bugzilla.gnome.org/show_bug.cgi?id=704072
-
 void normal () {
   string t = "ABC";
   assert (TweetUtils.calc_tweet_length (t) == 3);

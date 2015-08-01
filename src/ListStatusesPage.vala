@@ -175,7 +175,6 @@ class ListStatusesPage : ScrollWidget, IPage {
       return;
     }
     yield TweetUtils.work_array (root_array,
-                                 requested_tweet_count,
                                  tweet_list,
                                  main_window,
                                  account);
@@ -200,7 +199,6 @@ class ListStatusesPage : ScrollWidget, IPage {
 
     var root_array = root.get_array ();
     yield TweetUtils.work_array (root_array,
-                                 requested_tweet_count,
                                  tweet_list,
                                  main_window,
                                  account);
@@ -310,7 +308,11 @@ class ListStatusesPage : ScrollWidget, IPage {
     call.set_function ("1.1/lists/statuses.json");
     call.set_method ("GET");
     call.add_param ("list_id", list_id.to_string ());
-    call.add_param ("since_id", tweet_list.model.greatest_id.to_string ());
+    int64 since_id = tweet_list.model.greatest_id;
+    if (since_id < 0)
+      since_id = 1;
+
+    call.add_param ("since_id", since_id.to_string ());
     try {
       yield call.invoke_async (null);
     } catch (GLib.Error e) {

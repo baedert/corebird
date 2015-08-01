@@ -133,19 +133,23 @@ void hide_rt () {
   var tm = new TweetModel ();
 
   var t1 = new Tweet ();
-  t1.id = 1;
-  t1.user_id = 10;
-  t1.rt_by_id = 100;
-  t1.is_retweet = true;
+  t1.source_tweet = new MiniTweet ();
+  t1.source_tweet.author = UserIdentity ();
+  t1.source_tweet.author.id = 10;
+  t1.source_tweet.id = 1;
+  t1.retweeted_tweet = new MiniTweet ();
+  t1.retweeted_tweet.id = 100;
+  t1.retweeted_tweet.author = UserIdentity ();
+  t1.retweeted_tweet.author.id = 100;
 
   tm.add (t1);
 
-  tm.toggle_flag_on_retweet (100, Tweet.HIDDEN_FILTERED, true);
+  tm.toggle_flag_on_retweet (10, Tweet.HIDDEN_FILTERED, true);
 
   assert (tm.get_n_items () == 1);
   assert (((Tweet)tm.get_item (0)).is_hidden);
 
-  tm.toggle_flag_on_retweet (100, Tweet.HIDDEN_FILTERED, false);
+  tm.toggle_flag_on_retweet (10, Tweet.HIDDEN_FILTERED, false);
   assert (!((Tweet)tm.get_item (0)).is_hidden);
 }
 

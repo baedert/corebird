@@ -114,11 +114,6 @@ public class MainWidget : Gtk.Box {
 
     Settings.get ().bind ("sidebar-visible", sidebar_revealer, "reveal-child",
                           SettingsBindFlags.DEFAULT);
-
-    /* Set custom focus chain for the sidebar */
-    GLib.List<Gtk.Widget> list = new GLib.List<Gtk.Widget> ();
-    list.append (stack);
-    left_box.set_focus_chain (list);
   }
 
 
@@ -142,8 +137,6 @@ public class MainWidget : Gtk.Box {
 
     bool push = true;
 
-    if (history.current != -1)
-      pages[history.current].on_leave ();
 
     // Set the correct transition type
     if (page_id == Page.PREVIOUS || page_id < history.current)
@@ -170,12 +163,16 @@ public class MainWidget : Gtk.Box {
     }
 
     if (page_id == current_page) {
+      stack_impostor.clone (pages[page_id]);
       var transition_type = stack.transition_type;
       stack.transition_type = Gtk.StackTransitionType.NONE;
-      stack_impostor.clone (pages[page_id]);
       stack.set_visible_child (stack_impostor);
       stack.transition_type = transition_type;
     }
+
+    if (history.current != -1)
+      pages[history.current].on_leave ();
+
 
     if (push) {
       history.push (page_id, args);

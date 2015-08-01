@@ -46,7 +46,7 @@ public interface ITimeline : Gtk.Widget, IPage {
     Json.Node? root_node = yield TweetUtils.load_threaded (call);
     if (root_node == null) {
       tweet_list.set_error (_("Could not load tweets"));
-      tweet_list.set_empty ();
+      //tweet_list.set_empty ();
       return;
     }
 
@@ -56,7 +56,6 @@ public interface ITimeline : Gtk.Widget, IPage {
       return;
     }
     yield TweetUtils.work_array (root,
-                                 requested_tweet_count,
                                  tweet_list,
                                  main_window,
                                  account);
@@ -79,13 +78,13 @@ public interface ITimeline : Gtk.Widget, IPage {
     if (root_node == null) {
       return;
     }
+
     var root = root_node.get_array ();
     if (root.get_length () == 0) {
       tweet_list.set_empty ();
       return;
     }
     yield TweetUtils.work_array (root,
-                                 requested_tweet_count,
                                  tweet_list,
                                  main_window,
                                  account);

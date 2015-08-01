@@ -65,7 +65,13 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
     image_buttons = new Gee.ArrayList<AddImageButton> ();
     avatar_image.surface = acc.avatar;
-    length_label.label = Tweet.MAX_LENGTH.to_string ();
+
+    if (mode != Mode.QUOTE)
+      length_label.label = Tweet.MAX_LENGTH.to_string ();
+    else
+      length_label.label = (Tweet.MAX_LENGTH - Twitter.short_url_length_https).to_string ();
+
+
     tweet_text.buffer.changed.connect (buffer_changed_cb);
 
 
@@ -91,13 +97,16 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       if (reply_to.screen_name != account.screen_name) {
         mention_builder.append ("@").append (reply_to.screen_name);
       }
-      if (reply_to.is_retweet) {
+      if (reply_to.retweeted_tweet != null) {
         if (mention_builder.len > 0)
           mention_builder.append (" ");
 
-        mention_builder.append ("@").append (reply_to.rt_by_screen_name);
+        mention_builder.append ("@").append (reply_to.source_tweet.author.screen_name);
       }
-      foreach (string s in reply_to.mentions) {
+      foreach (string s in reply_to.get_mentions ()) {
+        if (s == "@" + account.screen_name)
+          continue;
+
         if (mention_builder.len > 0)
           mention_builder.append (" ");
 
@@ -109,12 +118,13 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
       tweet_text.buffer.text = mention_builder.str;
     } else if (mode == Mode.QUOTE) {
-      tweet_text.buffer.text = " RT @%s “%s“".printf (reply_to.screen_name,
-                                             Utils.unescape_html (reply_to.get_real_text ()));
+      assert (reply_to != null);
+      this.title_label.label = _("Quote tweet");
 
-      Gtk.TextIter start_iter;
-      tweet_text.buffer.get_start_iter (out start_iter);
-      tweet_text.buffer.place_cursor (start_iter);
+
+
+
+
     }
 
     //Let the text view immediately grab the keyboard focus
@@ -128,7 +138,8 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     this.add_accel_group (ag);
 
     /* Add AddImageButton because we can't do it in the ui definition for some reason */
-    add_image_button (true);
+    if (mode != Mode.QUOTE)
+      add_image_button (true);
   }
 
 
@@ -146,6 +157,10 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       media_count = 1;
 
     int length = TweetUtils.calc_tweet_length (text, media_count);
+
+    if (this.mode == Mode.QUOTE)
+      length += Twitter.short_url_length_https;
+
 
     length_label.label = (Tweet.MAX_LENGTH - length).to_string ();
     if (length > 0 && length <= Tweet.MAX_LENGTH)
@@ -234,10 +249,17 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
     var call = account.proxy.new_call ();
     call.set_method ("POST");
-    call.add_param ("status", text);
     if (this.reply_to != null && mode == Mode.REPLY) {
       call.add_param("in_reply_to_status_id", reply_to.id.to_string ());
+    } else if (this.reply_to != null && mode == Mode.QUOTE) {
+      MiniTweet mt = reply_to.retweeted_tweet ?? reply_to.source_tweet;
+
+      text += " https://twitter.com/%s/status/%s".printf (mt.author.screen_name,
+                                                          mt.id.to_string ());
     }
+
+
+    call.add_param ("status", text);
 
     if (ids.length > 0) {
       StringBuilder id_str = new StringBuilder ();

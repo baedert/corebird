@@ -64,7 +64,7 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
       if (t.user_id == account.id)
         return;
 
-      if (t.is_retweet && get_rt_flags (t) > 0)
+      if (t.retweeted_tweet != null && get_rt_flags (t) > 0)
         return;
 
       if (account.filter_matches (t))
@@ -82,9 +82,14 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
       this.unread_count ++;
 
       if (Settings.notify_new_mentions ()) {
+        string text;
+        if (t.retweeted_tweet != null)
+          text = t.retweeted_tweet.text;
+        else
+          text = t.source_tweet.text;
         t.notification_id = send_notification (t.screen_name,
                                                t.id,
-                                               Utils.unescape_html (t.text));
+                                               Utils.unescape_html (text));
       }
     }
   } // }}}

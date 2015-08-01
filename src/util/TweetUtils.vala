@@ -148,19 +148,16 @@ namespace TweetUtils {
    * @return The loaded avatar.
    */
   async Gdk.Pixbuf download_avatar (string avatar_url) throws GLib.Error {
-    string avatar_name = Utils.get_avatar_name (avatar_url);
     Gdk.Pixbuf avatar = null;
     var msg     = new Soup.Message ("GET", avatar_url);
     GLib.Error? err = null;
     SOUP_SESSION.queue_message (msg, (s, _msg) => {
-      string dest = Dirs.cache ("assets/avatars/" + avatar_name);
       var memory_stream = new MemoryInputStream.from_data(_msg.response_body.data,
                                                           null);
       try {
         avatar = new Gdk.Pixbuf.from_stream_at_scale (memory_stream,
                                                       48, 48,
                                                       false);
-        avatar.save (dest, "png");
       } catch (GLib.Error e) {
         err = e;
       }
@@ -245,7 +242,7 @@ namespace TweetUtils {
       window.main_widget.switch_page (Page.SEARCH, bundle);
       return true;
     } else if (uri.has_prefix ("https://twitter.com/")) {
-      // XXX https://twitter.com/baedert/status/321423423423
+      // https://twitter.com/baedert/status/321423423423
       string[] parts = uri.split ("/");
       if (parts[4] == "status") {
         /* Treat it as a tweet link and hope it'll work out */
@@ -264,7 +261,6 @@ namespace TweetUtils {
 
 
   async void work_array (Json.Array   json_array,
-                         uint         requested_tweet_count, /* XXX Unused */
                          TweetListBox tweet_list,
                          MainWindow   main_window,
                          Account      account) {
@@ -296,9 +292,9 @@ namespace TweetUtils {
         if (account.user_counter == null)
           return false;
 
-        account.user_counter.user_seen (tweet.user_id,
-                                        tweet.screen_name,
-                                        tweet.user_name);
+        account.user_counter.id_seen (ref tweet.source_tweet.author);
+        if (tweet.retweeted_tweet != null)
+          account.user_counter.id_seen (ref tweet.retweeted_tweet.author);
 
         if (account.filter_matches (tweet))
           tweet.hidden_flags |= Tweet.HIDDEN_FILTERED;

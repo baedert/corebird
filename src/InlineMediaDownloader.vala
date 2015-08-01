@@ -18,20 +18,24 @@
 
 namespace InlineMediaDownloader {
 
-  public async void load_media (Tweet t, Media media) {
+  public async void load_media (MiniTweet t, Media media) {
     yield load_inline_media (t, media);
   }
 
-  public void load_all_media (Tweet t, Media[] medias) {
+  public void load_all_media (MiniTweet t, Media[] medias) {
     foreach (Media m in medias) {
       load_media.begin (t, m);
     }
   }
 
-  private static void mark_invalid (Media m) {
+  private static void mark_invalid (Media m, InputStream? in_stream = null) {
     m.invalid = true;
     m.loaded = true;
     m.finished_loading ();
+
+    if (in_stream != null) {
+      try { in_stream.close (); } catch (GLib.Error e) { warning (e.message); }
+    }
   }
 
   public bool is_media_candidate (string url) {
@@ -57,7 +61,7 @@ namespace InlineMediaDownloader {
     ;
   }
 
-  private async void load_real_url (Tweet  t,
+  private async void load_real_url (MiniTweet  t,
                                     Media  media,
                                     string regex_str1,
                                     int    match_index1) {
@@ -90,7 +94,7 @@ namespace InlineMediaDownloader {
     yield;
   }
 
-  private async void load_inline_media (Tweet t, Media media) {
+  private async void load_inline_media (MiniTweet t, Media media) {
     GLib.SourceFunc callback = load_inline_media.callback;
 
     string ext = Utils.get_file_type (media.url);
@@ -171,30 +175,52 @@ namespace InlineMediaDownloader {
     yield;
   }
 
-  private async void load_animation (Tweet                  t,
-                                     GLib.MemoryInputStream in_stream,
-                                     Media                  media) {
+  private async void load_animation (MiniTweet         t,
+                                     GLib.InputStream  in_stream,
+                                     //GLib.OutputStream thumb_out_stream,
+                                     Media             media) {
     Gdk.PixbufAnimation anim;
     try {
       anim = yield new Gdk.PixbufAnimation.from_stream_async (in_stream, null);
     } catch (GLib.Error e) {
-      warning (e.message);
-      mark_invalid (media);
+      warning ("%s: %s", media.url, e.message);
+      mark_invalid (media, in_stream);
       return;
     }
     var pic = anim.get_static_image ();
-    media.surface = (Cairo.ImageSurface)Gdk.cairo_surface_create_from_pixbuf (pic, 1, null);
-    if (media.type == MediaType.GIF)
+    //int thumb_width = (int)(600.0 / (float)t.medias.length);
+    if (!anim.is_static_image ())
       media.animation = anim;
 
+    //var thumb = Utils.slice_pixbuf (pic, thumb_width, MultiMediaWidget.HEIGHT);
+    //yield Utils.write_pixbuf_async (thumb, thumb_out_stream, "png");
+    media.surface = (Cairo.ImageSurface)Gdk.cairo_surface_create_from_pixbuf (pic, 1, null);
     media.loaded = true;
     media.finished_loading ();
     try {
       in_stream.close ();
+      //thumb_out_stream.close ();
     } catch (GLib.Error e) {
       warning (e.message);
     }
 
+  }
+
+  public string get_media_path (MiniTweet t, Media media) {
+    string ext = Utils.get_file_type (media.thumb_url);
+    ext = ext.down();
+    if(ext.length == 0)
+      ext = "png";
+
+    int64 id = t.id;
+
+    return Dirs.cache (@"assets/media/$(id)_$(t.author.id)_$(media.id).$(ext)");
+  }
+
+  public string get_thumb_path (MiniTweet t, Media media) {
+    int64 id = t.id;
+
+    return Dirs.cache (@"assets/media/thumbs/$(id)_$(t.author.id)_$(media.id).png");
   }
 
 }

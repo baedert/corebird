@@ -145,7 +145,9 @@ public class TweetModel : GLib.Object, GLib.ListModel {
 
   public void toggle_flag_on_retweet (int64 user_id, uint reason, bool active) {
     foreach (Tweet tweet in tweets) {
-      if (tweet.rt_by_id == user_id && tweet.is_retweet) {
+      if (tweet.retweeted_tweet != null &&
+          tweet.source_tweet.author.id == user_id) {
+
         if (active)
           tweet.hidden_flags |= reason;
         else

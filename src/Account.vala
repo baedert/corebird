@@ -370,7 +370,7 @@ public class Account : GLib.Object {
    * @return true iff at least one of the filters match, false otherwise.
    */
   public bool filter_matches (Tweet t) {
-    if (t.user_id == this.id)
+    if (t.source_tweet.author.id == this.id)
       return false;
 
 
