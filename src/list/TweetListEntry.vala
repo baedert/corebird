@@ -370,6 +370,12 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     string new_text = TextTransform.transform_tweet (tweet.retweeted_tweet ?? tweet.source_tweet,
                                                      flags);
     this.text_label.label = new_text;
+
+    if (tweet.quoted_tweet != null) {
+      string new_quote_text = TextTransform.transform_tweet (tweet.quoted_tweet,
+                                                             flags);
+      this.quote_label.label = new_quote_text;
+    }
   }
 
   private void hidden_flags_changed_cb () {
