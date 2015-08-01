@@ -56,7 +56,6 @@ public interface ITimeline : Gtk.Widget, IPage {
       return;
     }
     yield TweetUtils.work_array (root,
-                                 requested_tweet_count,
                                  tweet_list,
                                  main_window,
                                  account);
@@ -86,7 +85,6 @@ public interface ITimeline : Gtk.Widget, IPage {
       return;
     }
     yield TweetUtils.work_array (root,
-                                 requested_tweet_count,
                                  tweet_list,
                                  main_window,
                                  account);
