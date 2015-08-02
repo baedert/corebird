@@ -230,8 +230,7 @@ public class Corebird : Gtk.Application {
       acc.init_proxy ();
       acc.query_user_info_by_screen_name.begin ();
       var cw = new ComposeTweetWindow (null, acc, null,
-                                       ComposeTweetWindow.Mode.NORMAL,
-                                       this);
+                                       ComposeTweetWindow.Mode.NORMAL);
       cw.show();
       this.add_window (cw);
       return;

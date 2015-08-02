@@ -314,8 +314,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   [GtkCallback]
   private void reply_button_clicked_cb () {
     ComposeTweetWindow ctw = new ComposeTweetWindow (this.main_window, this.account, this.tweet,
-                                                     ComposeTweetWindow.Mode.REPLY,
-                                                     this.main_window.get_application ());
+                                                     ComposeTweetWindow.Mode.REPLY);
     ctw.show ();
     if (shows_actions)
       toggle_mode ();
@@ -323,16 +322,14 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
   private void quote_activated () {
     ComposeTweetWindow ctw = new ComposeTweetWindow (this.main_window, this.account, this.tweet,
-                                                     ComposeTweetWindow.Mode.QUOTE,
-                                                     this.main_window.get_application ());
+                                                     ComposeTweetWindow.Mode.QUOTE);
     ctw.show ();
     toggle_mode ();
   }
 
   private void reply_tweet_activated () {
     ComposeTweetWindow ctw = new ComposeTweetWindow (this.main_window, this.account, this.tweet,
-                                                     ComposeTweetWindow.Mode.REPLY,
-                                                     this.main_window.get_application ());
+                                                     ComposeTweetWindow.Mode.REPLY);
     ctw.show ();
   }
 

@@ -266,8 +266,7 @@ public class MainWindow : Gtk.ApplicationWindow {
   private void show_hide_compose_window () {
     if (compose_tweet_window == null) {
       compose_tweet_window = new ComposeTweetWindow (this, account, null,
-                                                     ComposeTweetWindow.Mode.NORMAL,
-                                                     get_application ());
+                                                     ComposeTweetWindow.Mode.NORMAL);
       compose_tweet_window.show ();
       compose_tweet_window.hide.connect (() => {
         compose_tweet_button.active = false;

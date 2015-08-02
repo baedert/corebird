@@ -51,17 +51,13 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   public ComposeTweetWindow (Gtk.Window?      parent,
                              Account          acc,
                              Tweet?           reply_to = null,
-                             Mode             mode = Mode.NORMAL,
-                             Gtk.Application? app = null) {
+                             Mode             mode = Mode.NORMAL) {
     this.set_show_menubar (false);
     this.account = acc;
     this.reply_to = reply_to;
     this.mode = mode;
     this.tweet_text.set_account (acc);
-    if (app == null && parent is Gtk.ApplicationWindow) {
-      this.application = ((Gtk.ApplicationWindow)parent).application;
-    } else
-      this.application = app;
+    this.application = (Gtk.Application)GLib.Application.get_default ();
 
     image_buttons = new Gee.ArrayList<AddImageButton> ();
     avatar_image.surface = acc.avatar;
@@ -120,11 +116,6 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     } else if (mode == Mode.QUOTE) {
       assert (reply_to != null);
       this.title_label.label = _("Quote tweet");
-
-
-
-
-
     }
 
     //Let the text view immediately grab the keyboard focus
