@@ -383,7 +383,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     }
 
     text_label.label = tweet.get_formatted_text ();
-    name_button.label = tweet.user_name;
+    name_button.set_markup (tweet.user_name);
     screen_name_label.label = "@" + tweet.screen_name;
     avatar_image.surface = tweet.avatar;
     tweet.notify["avatar"].connect (() => {
