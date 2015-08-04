@@ -148,6 +148,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     tweet.notify["favorited"].connect (favorited_cb);
 
     tweet.hidden_flags_changed.connect (hidden_flags_changed_cb);
+    tweet.notify["deleted"].connect (tweet_deleted_cb);
 
     if (tweet.reply_id == 0)
       conversation_image.unparent ();
@@ -380,6 +381,14 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       this.hide ();
     else
       this.show ();
+  }
+
+  private void tweet_deleted_cb () {
+#if DEBUG
+    assert (this.sensitive != tweet.deleted);
+#endif
+
+    this.sensitive = !tweet.deleted;
   }
 
 
