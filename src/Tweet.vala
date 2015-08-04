@@ -237,9 +237,9 @@ public class Tweet : GLib.Object {
   public signal void hidden_flags_changed ();
 
   public int64 id;
-  /** If this tweet is a retweet, this is its id */
   public bool retweeted { get; set; default = false; }
   public bool favorited { get; set; default = false; }
+  public bool deleted   { get; set; default = false; }
 
   public int64 user_id {
     get {
