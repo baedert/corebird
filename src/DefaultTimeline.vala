@@ -168,13 +168,13 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     }
   } // }}}
 
-  public void delete_tweet (int64 tweet_id) { // {{{
+  public void delete_tweet (int64 tweet_id) {
     bool was_seen;
     bool removed = this.tweet_list.model.delete_id (tweet_id, out was_seen);
 
     if (removed && !was_seen)
       this.unread_count --;
-  } // }}}
+  }
 
   public void toggle_favorite (int64 id, bool mode) { // {{{
     var tweets = tweet_list.get_children ();
