@@ -132,7 +132,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
        .append ("/@")
        .append (tweet.quoted_tweet.author.screen_name)
        .append ("\" title=\"")
-       .append (tweet.quoted_tweet.author.user_name)
+       .append (tweet.quoted_tweet.author.user_name.replace ("&", "&amp;"))
        .append ("\">@")
        .append (tweet.quoted_tweet.author.screen_name)
        .append ("</a></span>");
