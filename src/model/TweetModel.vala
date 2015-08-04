@@ -135,7 +135,9 @@ public class TweetModel : GLib.Object, GLib.ListModel {
   assert (this.contains_id (t.id));
 #endif
 
+    int pos = this.tweets.index_of (t);
     this.tweets.remove (t);
+    this.items_changed (pos, 1, 0);
   }
 
   public void toggle_flag_on_tweet (int64 user_id, uint reason, bool active) {
