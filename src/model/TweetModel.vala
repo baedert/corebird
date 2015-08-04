@@ -214,6 +214,7 @@ public class TweetModel : GLib.Object, GLib.ListModel {
       }
     }
 
+    seen = false;
     return false;
   }
 }
