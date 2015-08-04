@@ -251,6 +251,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     call.set_method ("GET");
     call.set_function ("1.1/statuses/show.json");
     call.add_param ("id", tweet_id.to_string ());
+    call.add_param ("include_my_retweet", "true");
     TweetUtils.load_threaded.begin (call, (_, res) => {
       Json.Node? root = TweetUtils.load_threaded.end (res);
 
