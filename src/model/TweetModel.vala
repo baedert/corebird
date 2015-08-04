@@ -130,6 +130,14 @@ public class TweetModel : GLib.Object, GLib.ListModel {
     }
   }
 
+  public void remove_tweet (Tweet t) {
+#if DEBUG
+  assert (this.contains_id (t.id));
+#endif
+
+    this.tweets.remove (t);
+  }
+
   public void toggle_flag_on_tweet (int64 user_id, uint reason, bool active) {
     foreach (Tweet tweet in tweets) {
       if (tweet.user_id == user_id) {
@@ -183,5 +191,27 @@ public class TweetModel : GLib.Object, GLib.ListModel {
       }
     }
     return null;
+  }
+
+  public bool delete_id (int64 id, out bool seen) {
+    for (int i = 0; i < tweets.size; i ++) {
+      Tweet t = tweets.get (i);
+      if (t.id == id) {
+        seen = t.seen;
+
+        if (t.is_hidden)
+          this.remove_tweet (t);
+        else
+          t.deleted = true;
+
+
+        return true;
+
+      } else if (t.retweeted && t.my_retweet == id) {
+        t.retweeted = false;
+      }
+    }
+
+    return false;
   }
 }
