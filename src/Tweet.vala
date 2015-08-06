@@ -454,9 +454,11 @@ public class Tweet : GLib.Object {
     else
       t = this.source_tweet;
 
+    int64 quote_id = this.quoted_tweet != null ? this.quoted_tweet.id : -1;
 
     return TextTransform.transform_tweet (t,
-                                          Settings.get_text_transform_flags ());
+                                          Settings.get_text_transform_flags (),
+                                          quote_id);
   }
 
 }
