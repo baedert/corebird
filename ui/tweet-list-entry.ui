@@ -324,6 +324,50 @@
               </packing>
             </child>
 
+
+            <child>
+              <object class="GtkBox">
+                <property name="visible">true</property>
+                <property name="orientation">horizontal</property>
+
+            <child>
+              <object class="TextButton" id="quote_name">
+                <property name="visible">false</property>
+                <property name="halign">start</property>
+                <property name="margin_top">6</property>
+                <property name="margin_end">6</property>
+                <property name="valign">baseline</property>
+                <style>
+                  <class name="dim-label" />
+                  <class name="text-only-button"/>
+                </style>
+              </object>
+            </child>
+
+            <child>
+              <object class="GtkLabel" id="quote_screen_name">
+                <property name="halign">start</property>
+                <property name="label" translatable="yes">FOO</property>
+                <property name="valign">baseline</property>
+                <style>
+                  <class name="dim-label" />
+                </style>
+              </object>
+            </child>
+
+
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">3</property>
+                <property name="width">6</property>
+              </packing>
+            </child>
+
+
+
+
+
             <child>
               <object class="GtkLabel" id="quote_label">
                 <property name="visible">false</property>
@@ -335,9 +379,8 @@
                 <property name="wrap_mode">word-char</property>
                 <property name="track_visited_links">false</property>
                 <property name="hexpand">true</property>
-                <property name="margin-top">6</property>
-                <property name="margin-bottom">6</property>
-                <attributes>
+                <property name="margin_bottom">6</property>
+                 <attributes>
                   <attribute name="style" value="italic" />
                 </attributes>
                 <style>
@@ -347,7 +390,7 @@
               </object>
               <packing>
                 <property name="left_attach">1</property>
-                <property name="top_attach">3</property>
+                <property name="top_attach">4</property>
                 <property name="width">6</property>
               </packing>
             </child>
@@ -358,8 +401,8 @@
                 <property name="margin_top">6</property>
               </object>
               <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">4</property>
+                <property name="left_attach">1</property>
+                <property name="top_attach">5</property>
                 <property name="width">7</property>
               </packing>
             </child>

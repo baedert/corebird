@@ -59,6 +59,10 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   private Gtk.Box action_box;
   [GtkChild]
   private Gtk.Label quote_label;
+  [GtkChild]
+  private TextButton quote_name;
+  [GtkChild]
+  private Gtk.Label quote_screen_name;
 
 
   private bool _read_only = false;
@@ -105,7 +109,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     this.main_window = main_window;
 
     name_button.set_markup (tweet.user_name);
-    screen_name_label.label = "@"+tweet.screen_name;
+    screen_name_label.label = "@" + tweet.screen_name;
     avatar_image.surface = tweet.avatar;
     avatar_image.verified = tweet.verified;
     text_label.label = tweet.get_trimmed_text ();
@@ -123,7 +127,6 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     }
 
     if (tweet.quoted_tweet != null) {
-      quote_label.show ();
       var b = new StringBuilder ();
       b.append (TextTransform.transform_tweet (tweet.quoted_tweet,
                                                Settings.get_text_transform_flags ()));
@@ -137,6 +140,13 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
        .append (tweet.quoted_tweet.author.screen_name)
        .append ("</a></span>");
        quote_label.label = b.str;
+       quote_label.show ();
+
+       quote_name.set_markup (tweet.quoted_tweet.author.user_name);
+       quote_name.show ();
+
+       quote_screen_name.label = "@" + tweet.quoted_tweet.author.screen_name;
+       quote_screen_name.show ();
     }
 
     retweet_button.active = tweet.retweeted;
