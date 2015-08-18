@@ -63,6 +63,8 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   private TextButton quote_name;
   [GtkChild]
   private Gtk.Label quote_screen_name;
+  [GtkChild]
+  private Gtk.Grid quote_grid;
 
 
   private bool _read_only = false;
@@ -127,26 +129,13 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     }
 
     if (tweet.quoted_tweet != null) {
-      var b = new StringBuilder ();
-      b.append (TextTransform.transform_tweet (tweet.quoted_tweet,
-                                               Settings.get_text_transform_flags ()));
-      b.append (" — <span underline=\"none\"><a href=\"@")
-       .append (tweet.quoted_tweet.author.id.to_string ())
-       .append ("/@")
-       .append (tweet.quoted_tweet.author.screen_name)
-       .append ("\" title=\"")
-       .append (tweet.quoted_tweet.author.user_name.replace ("&", "&amp;"))
-       .append ("\">@")
-       .append (tweet.quoted_tweet.author.screen_name)
-       .append ("</a></span>");
-       quote_label.label = b.str;
-       quote_label.show ();
+      quote_label.label = TextTransform.transform_tweet (tweet.quoted_tweet,
+                                                         Settings.get_text_transform_flags ());
+      quote_name.set_markup (tweet.quoted_tweet.author.user_name);
+      quote_screen_name.label = "@" + tweet.quoted_tweet.author.screen_name;
 
-       quote_name.set_markup (tweet.quoted_tweet.author.user_name);
-       quote_name.show ();
-
-       quote_screen_name.label = "@" + tweet.quoted_tweet.author.screen_name;
-       quote_screen_name.show ();
+      quote_grid.show ();
+      quote_grid.show_all ();
     }
 
     retweet_button.active = tweet.retweeted;
@@ -318,10 +307,21 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   [GtkCallback]
   private void name_button_clicked_cb () {
     var bundle = new Bundle ();
-    bundle.put_int64 ("user_id", tweet.user_id);
-    bundle.put_string ("screen_name", tweet.screen_name);
+    bundle.put_int64 ("user_id", tweet.source_tweet.author.id);
+    bundle.put_string ("screen_name", tweet.source_tweet.author.screen_name);
     main_window.main_widget.switch_page (Page.PROFILE, bundle);
   }
+
+  [GtkCallback]
+  private void quote_name_button_clicked_cb () {
+    assert (tweet.quoted_tweet != null);
+    var bundle = new Bundle ();
+    bundle.put_int64 ("user_id", tweet.quoted_tweet.author.id);
+    bundle.put_string ("screen_name", tweet.quoted_tweet.author.screen_name);
+    main_window.main_widget.switch_page (Page.PROFILE, bundle);
+  }
+
+
   [GtkCallback]
   private void reply_button_clicked_cb () {
     ComposeTweetWindow ctw = new ComposeTweetWindow (this.main_window, this.account, this.tweet,
