@@ -284,46 +284,6 @@
                 <property name="width">6</property>
               </packing>
             </child>
-            <child>
-              <object class="GtkImage" id="rt_image">
-                <property name="can_focus">False</property>
-                <property name="no_show_all">True</property>
-                <property name="halign">end</property>
-                <property name="valign">baseline</property>
-                <property name="margin_end">6</property>
-                <property name="pixel_size">16</property>
-                <property name="icon_name">corebird-retweet-symbolic</property>
-                <property name="icon_size">1</property>
-                <style>
-                  <class name="dim-label"/>
-                </style>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="rt_label">
-                <property name="can_focus">False</property>
-                <property name="no_show_all">True</property>
-                <property name="halign">start</property>
-                <property name="valign">baseline</property>
-                <property name="margin_top">4</property>
-                <property name="use_markup">True</property>
-                <property name="track_visited_links">false</property>
-                <signal name="activate-link" handler="link_activated_cb" swapped="no"/>
-                <style>
-                  <class name="dim-label"/>
-                </style>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">2</property>
-                <property name="width">6</property>
-              </packing>
-            </child>
-
 
             <child>
               <object class="GtkBox">
@@ -395,6 +355,50 @@
               </packing>
             </child>
 
+
+            <child>
+              <object class="GtkImage" id="rt_image">
+                <property name="can_focus">False</property>
+                <property name="no_show_all">True</property>
+                <property name="halign">end</property>
+                <property name="valign">baseline</property>
+                <property name="margin_end">6</property>
+                <property name="pixel_size">16</property>
+                <property name="icon_name">corebird-retweet-symbolic</property>
+                <property name="icon_size">1</property>
+                <style>
+                  <class name="dim-label"/>
+                </style>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">5</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="rt_label">
+                <property name="can_focus">False</property>
+                <property name="no_show_all">True</property>
+                <property name="halign">start</property>
+                <property name="valign">baseline</property>
+                <property name="margin_top">4</property>
+                <property name="use_markup">True</property>
+                <property name="track_visited_links">false</property>
+                <signal name="activate-link" handler="link_activated_cb" swapped="no"/>
+                <style>
+                  <class name="dim-label"/>
+                </style>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">5</property>
+                <property name="width">6</property>
+              </packing>
+            </child>
+
+
+
+
             <child>
               <object class="MultiMediaWidget" id="mm_widget">
                 <property name="visible">true</property>
@@ -402,7 +406,7 @@
               </object>
               <packing>
                 <property name="left_attach">1</property>
-                <property name="top_attach">5</property>
+                <property name="top_attach">6</property>
                 <property name="width">7</property>
               </packing>
             </child>
