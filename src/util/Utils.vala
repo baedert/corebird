@@ -309,9 +309,9 @@ namespace Utils {
       }
       try {
         File out_file = File.new_for_path(path);
-        var out_stream = out_file.replace(null, false,
-                                          FileCreateFlags.REPLACE_DESTINATION, null);
-        out_stream.write_all(_msg.response_body.data, null);
+        var out_stream = out_file.replace (null, false,
+                                           FileCreateFlags.REPLACE_DESTINATION, null);
+        out_stream.write_all (_msg.response_body.data, null);
         out_stream.close ();
         cb();
       } catch (GLib.Error e) {
