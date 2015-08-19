@@ -306,9 +306,20 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
   [GtkCallback]
   private void name_button_clicked_cb () {
+    int64 user_id;
+    string screen_name;
+
+    if (tweet.retweeted_tweet != null) {
+      user_id = tweet.retweeted_tweet.author.id;
+      screen_name = tweet.retweeted_tweet.author.screen_name;
+    } else {
+      user_id = tweet.source_tweet.author.id;
+      screen_name = tweet.source_tweet.author.screen_name;
+    }
+
     var bundle = new Bundle ();
-    bundle.put_int64 ("user_id", tweet.source_tweet.author.id);
-    bundle.put_string ("screen_name", tweet.source_tweet.author.screen_name);
+    bundle.put_int64 ("user_id", user_id);
+    bundle.put_string ("screen_name", screen_name);
     main_window.main_widget.switch_page (Page.PROFILE, bundle);
   }
 
