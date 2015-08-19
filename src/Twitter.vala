@@ -106,7 +106,7 @@ public class Twitter : GLib.Object {
    *         if it has to be downloaded first, in which case the AvatarDownloadedFunc
    *         will be called after that's finished.
    */
-  public Cairo.Surface? get_avatar (string url, owned AvatarDownloadedFunc? func = null) { // {{{
+  public Cairo.Surface? get_avatar (string url, owned AvatarDownloadedFunc? func = null, int size = 48) { // {{{
     Cairo.Surface? a = avatars.get (url);
     bool has_key = avatars.has_key (url);
 
@@ -125,7 +125,7 @@ public class Twitter : GLib.Object {
     } else {
       // download the avatar
       avatars.set (url, null);
-      TweetUtils.download_avatar.begin (url, (obj, res) => {
+      TweetUtils.download_avatar.begin (url, size, (obj, res) => {
         Gdk.Pixbuf? avatar = null;
         try {
           avatar = TweetUtils.download_avatar.end (res);
