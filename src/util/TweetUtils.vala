@@ -147,7 +147,7 @@ namespace TweetUtils {
    *
    * @return The loaded avatar.
    */
-  async Gdk.Pixbuf download_avatar (string avatar_url) throws GLib.Error {
+  async Gdk.Pixbuf download_avatar (string avatar_url, int size = 48) throws GLib.Error {
     Gdk.Pixbuf avatar = null;
     var msg     = new Soup.Message ("GET", avatar_url);
     GLib.Error? err = null;
@@ -156,7 +156,7 @@ namespace TweetUtils {
                                                           null);
       try {
         avatar = new Gdk.Pixbuf.from_stream_at_scale (memory_stream,
-                                                      48, 48,
+                                                      size, size,
                                                       false);
       } catch (GLib.Error e) {
         err = e;
