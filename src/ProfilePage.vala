@@ -647,7 +647,9 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     if (user_id != this.user_id) {
       reset_data ();
       followers_cursor = null;
+      followers_list.remove_all ();
       following_cursor = null;
+      following_list.remove_all ();
       set_user_id (user_id);
       tweet_list.model.clear ();
       user_lists.clear_lists ();
