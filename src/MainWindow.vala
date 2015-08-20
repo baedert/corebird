@@ -164,7 +164,6 @@ public class MainWindow : Gtk.ApplicationWindow {
 
     if (account != null && account.screen_name != Account.DUMMY) {
       main_widget = new MainWidget (account, this, cb);
-      main_widget.sidebar_size_group.add_widget (account_button);
       main_widget.show_all ();
       this.add (main_widget);
       main_widget.switch_page (0);
