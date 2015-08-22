@@ -235,9 +235,20 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
 
   [GtkCallback]
   private void name_button_clicked_cb () {
+    int64 id;
+    string screen_name;
+
+    if (this.tweet.retweeted_tweet != null) {
+      id = this.tweet.retweeted_tweet.author.id;
+      screen_name = this.tweet.retweeted_tweet.author.screen_name;
+    } else {
+      id = this.tweet.source_tweet.author.id;
+      screen_name = this.tweet.source_tweet.author.screen_name;
+    }
+
     var bundle = new Bundle ();
-    bundle.put_int64 ("user_id", tweet.user_id);
-    bundle.put_string ("screen_name", tweet.screen_name);
+    bundle.put_int64 ("user_id", id);
+    bundle.put_string ("screen_name", screen_name);
     main_window.main_widget.switch_page (Page.PROFILE, bundle);
   }
 
