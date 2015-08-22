@@ -180,16 +180,26 @@ void parse_entities (MiniTweet mt, Json.Object status)
         }
       } else if (media_type == "video" ||
                  media_type == "animated_gif") {
-        Json.Object variant = media_obj.get_object_member ("video_info")
-                                       .get_array_member ("variants")
-                                       .get_object_element (0);
-        Media m = new Media ();
-        m.url = variant.get_string_member ("url");
-        m.thumb_url = media_obj.get_string_member ("media_url");
-        m.type = MediaType.TWITTER_VIDEO;
-        m.id = media_obj.get_int_member ("id");
-        mt.medias[real_media_count] = m;
-        real_media_count ++;
+        Json.Object? variant = null;
+        Json.Array variants = media_obj.get_object_member ("video_info")
+                                       .get_array_member ("variants");
+
+        /* Just pick the first mp4 variant */
+        for (uint i = 0; i < variants.get_length (); i ++) {
+          variant = variants.get_element (i).get_object ();
+          if (variant.get_string_member ("content_type") == "video/mp4")
+            break;
+        }
+
+        if (variant != null) {
+          Media m = new Media ();
+          m.url = variant.get_string_member ("url");
+          m.thumb_url = media_obj.get_string_member ("media_url");
+          m.type = MediaType.TWITTER_VIDEO;
+          m.id = media_obj.get_int_member ("id");
+          mt.medias[real_media_count] = m;
+          real_media_count ++;
+        }
       }
     });
   }
