@@ -317,7 +317,6 @@ public class Tweet : GLib.Object {
     }
   }
 
-  /** if the json from twitter has inline media **/
   public int retweet_count;
   public int favorite_count;
 
