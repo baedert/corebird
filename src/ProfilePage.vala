@@ -590,6 +590,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
         critical (call.get_payload ());
       }
       follow_button.sensitive = true;
+      progress_spinner.stop ();
       loading_stack.visible_child_name = "data";
     });
   } //}}}
