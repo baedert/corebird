@@ -20,6 +20,11 @@ class Collect : GLib.Object {
   private int cur = 0;
   private int max;
   private GLib.Error? error = null;
+  public bool done {
+    get {
+      return this.cur == this.max;
+    }
+  }
 
 
   public signal void finished (GLib.Error? error);
@@ -51,5 +56,4 @@ class Collect : GLib.Object {
       finished (null);
     }
   }
-
 }
