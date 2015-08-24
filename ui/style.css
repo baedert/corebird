@@ -30,7 +30,6 @@
 .inline-media {
   background: none;
   border-radius: 0px;
-  border: none;
   -GtkButton-default-border: 0;
   -GtkButton-default-outside-border: 0;
   -GtkButton-inner-border: 0;
@@ -39,6 +38,10 @@
   padding: 0px;
   box-shadow: none;
   opacity: 0.8;
+  border-top: 2px solid transparent;
+  border-bottom: 2px solid transparent;
+  border-left: none;
+  border-right: none;
 }
 
 .inline-media:hover {
