@@ -284,6 +284,88 @@
                 <property name="width">6</property>
               </packing>
             </child>
+
+            <child>
+              <object class="GtkGrid" id="quote_grid">
+                <property name="visible">false</property>
+                <property name="no_show_all">true</property>
+                <property name="margin_top">6</property>
+                <style>
+                  <class name="quote" />
+                </style>
+
+                <child>
+                  <object class="TextButton" id="quote_name">
+                    <property name="visible">true</property>
+                    <property name="halign">start</property>
+                    <property name="valign">baseline</property>
+                    <property name="margin_start">12</property>
+                    <property name="margin_end">6</property>
+                    <signal name="clicked" handler="quote_name_button_clicked_cb" swapped="no"/>
+                    <style>
+                      <class name="dim-label" />
+                      <class name="text-only-button"/>
+                    </style>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">0</property>
+                  </packing>
+                </child>
+
+                <child>
+                  <object class="GtkLabel" id="quote_screen_name">
+                    <property name="visible">true</property>
+                    <property name="halign">start</property>
+                    <property name="valign">baseline</property>
+                    <property name="hexpand">true</property>
+                    <style>
+                      <class name="dim-label" />
+                    </style>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">0</property>
+                  </packing>
+                </child>
+
+                <child>
+                  <object class="GtkLabel" id="quote_label">
+                    <property name="visible">true</property>
+                    <property name="halign">start</property>
+                    <property name="xalign">0</property>
+                    <property name="use_markup">true</property>
+                    <property name="wrap">true</property>
+                    <property name="wrap_mode">word-char</property>
+                    <property name="track_visited_links">false</property>
+                    <property name="hexpand">true</property>
+                    <property name="margin_start">12</property>
+                    <signal name="activate-link" handler="link_activated_cb" />
+                    <signal name="populate-popup" handler="populate_popup_cb" />
+
+                     <attributes>
+                      <attribute name="style" value="italic" />
+                    </attributes>
+                    <style>
+                      <class name="dim-label" />
+                    </style>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">1</property>
+                    <property name="width">2</property>
+                  </packing>
+                </child>
+
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">3</property>
+                <property name="width">6</property>
+              </packing>
+            </child>
+
+
             <child>
               <object class="GtkImage" id="rt_image">
                 <property name="can_focus">False</property>
@@ -300,7 +382,7 @@
               </object>
               <packing>
                 <property name="left_attach">0</property>
-                <property name="top_attach">2</property>
+                <property name="top_attach">5</property>
               </packing>
             </child>
             <child>
@@ -319,38 +401,13 @@
               </object>
               <packing>
                 <property name="left_attach">1</property>
-                <property name="top_attach">2</property>
+                <property name="top_attach">5</property>
                 <property name="width">6</property>
               </packing>
             </child>
 
-            <child>
-              <object class="GtkLabel" id="quote_label">
-                <property name="visible">false</property>
-                <property name="no_show_all">true</property>
-                <property name="halign">start</property>
-                <property name="xalign">0</property>
-                <property name="use_markup">true</property>
-                <property name="wrap">true</property>
-                <property name="wrap_mode">word-char</property>
-                <property name="track_visited_links">false</property>
-                <property name="hexpand">true</property>
-                <property name="margin-top">6</property>
-                <property name="margin-bottom">6</property>
-                <attributes>
-                  <attribute name="style" value="italic" />
-                </attributes>
-                <style>
-                  <class name="dim-label" />
-                  <class name="quote" />
-                </style>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">3</property>
-                <property name="width">6</property>
-              </packing>
-            </child>
+
+
 
             <child>
               <object class="MultiMediaWidget" id="mm_widget">
@@ -359,7 +416,7 @@
               </object>
               <packing>
                 <property name="left_attach">1</property>
-                <property name="top_attach">4</property>
+                <property name="top_attach">6</property>
                 <property name="width">7</property>
               </packing>
             </child>

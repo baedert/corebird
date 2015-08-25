@@ -263,6 +263,9 @@
                     <property name="margin_top">12</property>
                     <property name="margin_start">6</property>
                     <property name="margin_end">6</property>
+                    <property name="wrap">true</property>
+                    <property name="wrap_mode">word</property>
+                    <property name="max_width_chars">40</property>
                     <property name="label" translatable="yes">Do you really want to delete this account?</property>
                   </object>
                   <packing>

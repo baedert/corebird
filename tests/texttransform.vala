@@ -378,6 +378,28 @@ void trailing_hashtags_link_after () {
 }
 
 
+void no_quoted_link () {
+  Tweet t = new Tweet ();
+  t.quoted_tweet = new MiniTweet ();
+  t.quoted_tweet.id = 1337;
+
+  t.source_tweet = new MiniTweet ();
+  t.source_tweet.text = "Foobar";
+  t.source_tweet.entities = new TextEntity[1];
+  t.source_tweet.entities[0] = TextEntity () {
+    from = 0,
+    to   = 6,
+    target = "https://twitter.com/bla/status/1337",
+    display_text = "sometextwhocares"
+  };
+
+  string result = t.get_trimmed_text ();
+
+  message (result);
+  assert (!result.contains ("1337"));
+}
+
+
 int main (string[] args) {
   Intl.setlocale (LocaleCategory.ALL, "");
   GLib.Test.init (ref args);
@@ -393,6 +415,7 @@ int main (string[] args) {
   GLib.Test.add_func ("/tt/trailing-hashtags-mention-before", trailing_hashtags_mention_before);
   GLib.Test.add_func ("/tt/whitespace-between-trailing-hashtags", whitespace_hashtags);
   GLib.Test.add_func ("/tt/trailing-hashtags-media-link-after", trailing_hashtags_link_after);
+  GLib.Test.add_func ("/tt/no-quoted-link", no_quoted_link);
 
 
   return GLib.Test.run ();

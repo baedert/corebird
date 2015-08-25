@@ -168,25 +168,13 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     }
   } // }}}
 
-  public void delete_tweet (int64 tweet_id) { // {{{
-    foreach (Gtk.Widget w in tweet_list.get_children ()) {
-      if (w == null || !(w is TweetListEntry))
-        continue;
+  public void delete_tweet (int64 tweet_id) {
+    bool was_seen;
+    bool removed = this.tweet_list.model.delete_id (tweet_id, out was_seen);
 
-      var tle = (TweetListEntry) w;
-      if (tle.tweet.id == tweet_id) {
-        if (!tle.tweet.seen) {
-          tweet_list.remove (tle);
-          this.unread_count --;
-        }else
-          tle.sensitive = false;
-        return;
-      } else if (tle.tweet.retweeted && tle.tweet.my_retweet == tweet_id) {
-        tle.tweet.retweeted = false;
-        return;
-      }
-    }
-  } // }}}
+    if (removed && !was_seen)
+      this.unread_count --;
+  }
 
   public void toggle_favorite (int64 id, bool mode) { // {{{
     var tweets = tweet_list.get_children ();

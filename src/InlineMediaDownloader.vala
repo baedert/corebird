@@ -46,7 +46,7 @@ namespace InlineMediaDownloader {
            url.has_prefix ("http://instagram.com/p/") ||
            url.has_prefix ("https://instagr.am") ||
            url.has_prefix ("https://instagram.com/p/") ||
-           url.has_prefix ("http://i.imgur.com") ||
+           (url.has_prefix ("http://i.imgur.com") && !url.has_suffix ("gifv")) ||
            url.has_prefix ("http://d.pr/i/") ||
            url.has_prefix ("http://ow.ly/i/") ||
            url.has_prefix ("http://www.flickr.com/photos/") ||

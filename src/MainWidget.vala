@@ -26,7 +26,6 @@ public class MainWidget : Gtk.Box {
   private BundleHistory history        = new BundleHistory (5);
   private DeltaUpdater delta_updater   = new DeltaUpdater ();
   private bool page_switch_lock        = false;
-  public Gtk.SizeGroup sidebar_size_group = new Gtk.SizeGroup (Gtk.SizeGroupMode.BOTH);
   private ImpostorWidget stack_impostor = new ImpostorWidget ();
 
 
@@ -87,7 +86,6 @@ public class MainWidget : Gtk.Box {
       stack.add (page);
       if (page.get_tool_button () != null) {
         left_box.add (page.get_tool_button ());
-        sidebar_size_group.add_widget (page.get_tool_button ());
         page.get_tool_button ().clicked.connect (() => {
           if (page.get_tool_button ().active && !page_switch_lock) {
             switch_page (page.id);

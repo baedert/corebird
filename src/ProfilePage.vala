@@ -248,24 +248,18 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     string avatar_url = root.get_string_member("profile_image_url");
     avatar_url = avatar_url.replace("_normal", "_bigger");
     string avatar_name = Utils.get_avatar_name(avatar_url);
-    string avatar_on_disk = Dirs.cache("assets/avatars/"+avatar_name);
 
-    if(!FileUtils.test(avatar_on_disk, FileTest.EXISTS)){
-      Utils.download_file_async.begin(avatar_url, avatar_on_disk, data_cancellable, () => {
-        avatar_image.surface = load_surface (avatar_on_disk);
 
+    avatar_image.surface = Twitter.get ().get_avatar (avatar_url, (a) => {
+      avatar_image.surface = a;
         if (show_spinner) {
           progress_spinner.stop ();
           loading_stack.visible_child_name = "data";
         }
-      });
-    } else {
-      avatar_image.surface = load_surface (avatar_on_disk);
-
-      if (show_spinner) {
-        progress_spinner.stop ();
-        loading_stack.visible_child_name = "data";
-      }
+    }, 73);
+    if (avatar_image.surface != null && show_spinner) {
+      progress_spinner.stop ();
+      loading_stack.visible_child_name = "data";
     }
 
     string name        = root.get_string_member("name").replace ("&", "&amp;").strip ();
@@ -596,6 +590,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
         critical (call.get_payload ());
       }
       follow_button.sensitive = true;
+      progress_spinner.stop ();
       loading_stack.visible_child_name = "data";
     });
   } //}}}
@@ -653,7 +648,9 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     if (user_id != this.user_id) {
       reset_data ();
       followers_cursor = null;
+      followers_list.remove_all ();
       following_cursor = null;
+      following_list.remove_all ();
       set_user_id (user_id);
       tweet_list.model.clear ();
       user_lists.clear_lists ();

@@ -235,9 +235,20 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
 
   [GtkCallback]
   private void name_button_clicked_cb () {
+    int64 id;
+    string screen_name;
+
+    if (this.tweet.retweeted_tweet != null) {
+      id = this.tweet.retweeted_tweet.author.id;
+      screen_name = this.tweet.retweeted_tweet.author.screen_name;
+    } else {
+      id = this.tweet.source_tweet.author.id;
+      screen_name = this.tweet.source_tweet.author.screen_name;
+    }
+
     var bundle = new Bundle ();
-    bundle.put_int64 ("user_id", tweet.user_id);
-    bundle.put_string ("screen_name", tweet.screen_name);
+    bundle.put_int64 ("user_id", id);
+    bundle.put_string ("screen_name", screen_name);
     main_window.main_widget.switch_page (Page.PROFILE, bundle);
   }
 
@@ -251,6 +262,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     call.set_method ("GET");
     call.set_function ("1.1/statuses/show.json");
     call.add_param ("id", tweet_id.to_string ());
+    call.add_param ("include_my_retweet", "true");
     TweetUtils.load_threaded.begin (call, (_, res) => {
       Json.Node? root = TweetUtils.load_threaded.end (res);
 
@@ -382,7 +394,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     }
 
     text_label.label = tweet.get_formatted_text ();
-    name_button.label = tweet.user_name;
+    name_button.set_markup (tweet.user_name);
     screen_name_label.label = "@" + tweet.screen_name;
     avatar_image.surface = tweet.avatar;
     tweet.notify["avatar"].connect (() => {

@@ -56,6 +56,14 @@ namespace TextTransform {
     return target != null && (target.has_prefix ("http://") || target.has_prefix ("https://"));
   }
 
+  private bool is_quote_link (ref TextEntity entity, int64 quote_id)
+  {
+    if (entity.target == null) return false;
+
+    return (entity.target.has_prefix ("https://twitter.com/") &&
+            entity.target.has_suffix ("/status/" + quote_id.to_string ()));
+  }
+
   private bool is_whitespace (string s)
   {
     unichar c;
@@ -66,9 +74,13 @@ namespace TextTransform {
     return true;
   }
 
-  public string transform_tweet (MiniTweet tweet, TransformFlags flags)
+  public string transform_tweet (MiniTweet tweet, TransformFlags flags, int64 quote_id = -1)
   {
-    return transform (tweet.text, tweet.entities, flags, tweet.medias.length);
+    return transform (tweet.text,
+                      tweet.entities,
+                      flags,
+                      tweet.medias.length,
+                      quote_id);
   }
 
 
@@ -77,7 +89,8 @@ namespace TextTransform {
   public string transform (string         text,
                            TextEntity[]   entities,
                            TransformFlags flags,
-                           uint           media_count = 0)
+                           uint           media_count = 0,
+                           int64          quote_id = -1)
   {
     StringBuilder builder = new StringBuilder ();
     uint last_end = 0;
@@ -125,8 +138,9 @@ namespace TextTransform {
       /* Skip the entire entity if we should remove media links AND
          it is a media link. */
 
-      if (TransformFlags.REMOVE_MEDIA_LINKS in flags &&
-          is_media_url (entity.target, entity.display_text, media_count)) {
+      if ((TransformFlags.REMOVE_MEDIA_LINKS in flags &&
+          is_media_url (entity.target, entity.display_text, media_count)) ||
+          (quote_id != 0 && is_quote_link (ref entity, quote_id))) {
         last_end = entity.to;
         continue;
       }
