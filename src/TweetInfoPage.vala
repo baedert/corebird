@@ -24,7 +24,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     {"quote",  quote_activated},
   };
 
-  public int unread_count { get{return 0;} set {} }
+  public int unread_count { get {return 0;} }
   public int id                         { get; set; }
   public unowned MainWindow main_window { get; set; }
   public unowned Account account { get; set; }
