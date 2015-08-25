@@ -340,6 +340,9 @@
                     <property name="track_visited_links">false</property>
                     <property name="hexpand">true</property>
                     <property name="margin_start">12</property>
+                    <signal name="activate-link" handler="link_activated_cb" />
+                    <signal name="populate-popup" handler="populate_popup_cb" />
+
                      <attributes>
                       <attribute name="style" value="italic" />
                     </attributes>
