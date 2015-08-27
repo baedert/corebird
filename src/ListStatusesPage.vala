@@ -82,7 +82,6 @@ class ListStatusesPage : ScrollWidget, IPage {
     this.scroll_event.connect (scroll_event_cb);
     this.scrolled_to_end.connect (load_older);
     this.scrolled_to_start.connect (handle_scrolled_to_start);
-    tweet_list.set_sort_func (ITwitterItem.sort_func);
     tweet_list.set_adjustment (this.get_vadjustment ());
   }
 

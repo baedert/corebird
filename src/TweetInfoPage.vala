@@ -85,7 +85,6 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
       }
       return false;
     });
-    top_list_box.set_sort_func (ITwitterItem.sort_func_inv);
     bottom_list_box.row_activated.connect ((row) => {
       var bundle = new Bundle ();
       bundle.put_int ("mode", TweetInfoPage.BY_INSTANCE);

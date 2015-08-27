@@ -138,7 +138,6 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
       bundle.put_object ("tweet", ((TweetListEntry)row).tweet);
       main_window.main_widget.switch_page (Page.TWEET_INFO, bundle);
     });
-    tweet_list.set_sort_func (ITwitterItem.sort_func);
     followers_list.row_activated.connect ((row) => {
       var bundle = new Bundle ();
       bundle.put_int64 ("user_id", ((UserListEntry)row).user_id);

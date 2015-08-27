@@ -55,6 +55,8 @@ class SearchPage : IPage, Gtk.Box {
     this.id = id;
     this.account = account;
 
+    /* We are slightly abusing the TweetListBox here */
+    tweet_list.bind_model (null, null);
     tweet_list.set_header_func (header_func);
     tweet_list.set_sort_func (ITwitterItem.sort_func);
     tweet_list.row_activated.connect (row_activated_cb);
