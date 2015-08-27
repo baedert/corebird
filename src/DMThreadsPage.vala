@@ -27,7 +27,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     set {
       debug ("Changing unread_count from %d to %d", this._unread_count, value);
       this._unread_count = value;
-      this.update_unread_count ();
+      tool_button.show_badge = (this._unread_count > 0);
     }
   }
   public unowned MainWindow main_window     { get; set; }
@@ -392,11 +392,6 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 
   public string? get_title () {
     return _("Direct Messages");
-  }
-
-  private void update_unread_count() {
-    tool_button.show_badge = (unread_count > 0);
-    tool_button.queue_draw();
   }
 
   public void adjust_unread_count_for_user_id (int64 user_id) {
