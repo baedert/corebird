@@ -105,6 +105,7 @@ AC_CONFIG_FILES([Makefile
                  data/Makefile
                  data/org.baedert.corebird.desktop.in
                  assets/Makefile
+                 assets/256x256/Makefile
                  assets/128x128/Makefile
                  assets/96x96/Makefile
                  assets/64x64/Makefile
