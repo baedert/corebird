@@ -20,7 +20,7 @@ public class BadgeRadioToolButton : Gtk.RadioButton {
   private bool _show_badge = false;
   public bool show_badge {
     set {
-      message ("New show_badge value: %s", value ? "true" : "false");
+      debug ("New show_badge value: %s", value ? "true" : "false");
       this._show_badge = value;
       this.queue_draw ();
     }
