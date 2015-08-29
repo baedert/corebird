@@ -49,7 +49,7 @@ class AvatarWidget : Gtk.Widget {
       if (this._surface != null)
         Twitter.ref_avatar (this._surface);
 
-      this.queue_resize ();
+      this.queue_draw ();
     }
   }
 
