@@ -616,4 +616,4 @@ msgstr "Client Twitter"
 
 #: ../data/org.baedert.corebird.desktop.in.in.h:2
 msgid "Use Twitter from within a normal desktop application"
-msgstr "Usa Twitter come una normale appliazione desktop"
+msgstr "Usa Twitter come una normale applicazione desktop"
