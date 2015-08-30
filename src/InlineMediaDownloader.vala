@@ -15,7 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 namespace InlineMediaDownloader {
 
   public async void load_media (MiniTweet t, Media media) {

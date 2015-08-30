@@ -14,6 +14,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 class AvatarWidget : Gtk.Widget {
   private static const int SMALL = 0;
   private static const int LARGE = 1;
