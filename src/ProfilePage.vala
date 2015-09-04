@@ -24,8 +24,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
   };
 
   public int unread_count {
-    get{return 0;}
-    set{}
+    get { return 0; }
   }
   private unowned MainWindow _main_window;
   public unowned MainWindow main_window {
