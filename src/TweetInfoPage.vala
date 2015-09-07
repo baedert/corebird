@@ -38,6 +38,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
   private string screen_name;
   private bool values_set = false;
   private Tweet tweet;
+  private GLib.SimpleActionGroup actions;
 
   [GtkChild]
   private MultiMediaWidget mm_widget;
@@ -100,9 +101,9 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
       main_window.main_widget.switch_page (Page.TWEET_INFO, bundle);
     });
 
-    GLib.SimpleActionGroup actions = new GLib.SimpleActionGroup ();
-    actions.add_action_entries (action_entries, this);
-    this.insert_action_group ("tweet", actions);
+    this.actions = new GLib.SimpleActionGroup ();
+    this.actions.add_action_entries (action_entries, this);
+    this.insert_action_group ("tweet", this.actions);
   }
 
   public void on_join (int page_id, Bundle? args) {
@@ -405,6 +406,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     favorite_button.active = tweet.favorited;
     avatar_image.verified = tweet.verified;
 
+
     set_source_link (tweet.id, tweet.screen_name);
 
     if (tweet.has_inline_media) {
@@ -416,8 +418,11 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
 
     if (tweet.user_id == account.id || tweet.protected) {
       retweet_button.hide ();
+
+      ((GLib.SimpleAction)actions.lookup_action ("quote")).set_enabled (false);
     } else {
       retweet_button.show ();
+      ((GLib.SimpleAction)actions.lookup_action ("quote")).set_enabled (true);
     }
   } //}}}
 
