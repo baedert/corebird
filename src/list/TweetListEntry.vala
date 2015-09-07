@@ -173,6 +173,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
     if (tweet.user_id != account.id) {
       ((GLib.SimpleAction)actions.lookup_action ("delete")).set_enabled (false);
+      ((GLib.SimpleAction)actions.lookup_action ("quote")).set_enabled (false);
     }
 
 
