@@ -44,3 +44,5 @@ CREATE TABLE IF NOT EXISTS `user_cache`(
   user_name VARCHAR (40),
   score INTEGER (11)
 );
+
+INSERT INTO `user_cache` (id, screen_name, name, score) VALUES ('2877682863', 'corebirdclient', 'Corebird', 10);
