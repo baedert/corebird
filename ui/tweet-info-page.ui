@@ -262,7 +262,7 @@
             <property name="can_focus">True</property>
             <property name="valign">baseline</property>
             <property name="receives_default">True</property>
-            <property name="tooltip_text" translatable="yes">Retweet tweet</property>
+            <property name="tooltip_text" translatable="yes">Retweet</property>
             <property name="relief">none</property>
             <signal name="toggled" handler="retweet_button_toggled_cb" swapped="no"/>
             <child>
