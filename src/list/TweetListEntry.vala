@@ -412,6 +412,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 #endif
 
     this.sensitive = !tweet.deleted;
+    stack.visible_child = grid;
   }
 
 
