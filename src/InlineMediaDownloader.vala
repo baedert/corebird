@@ -108,21 +108,6 @@ namespace InlineMediaDownloader {
 
     media.path = get_media_path (t, media);
     media.thumb_path = get_thumb_path (t, media);
-    string ext = Utils.get_file_type (media.url);
-    {
-      if(ext.length == 0)
-        ext = "png";
-
-      ext = ext.down();
-      int qm_index;
-      if ((qm_index = ext.index_of_char ('?')) != -1) {
-        ext = ext.substring (0, qm_index);
-      }
-
-      if (ext == "jpg")
-        ext = "jpeg";
-    }
-
 
     GLib.OutputStream thumb_out_stream = null;
     GLib.OutputStream media_out_stream = null;
