@@ -368,6 +368,9 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     if (this._read_only) {
       return false;
     }
+
+    this.grab_focus ();
+
     return TweetUtils.activate_link (uri, main_window);
   }
 
