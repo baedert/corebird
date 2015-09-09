@@ -81,7 +81,7 @@ void parse_entities (MiniTweet mt, Json.Object status)
     var url = node.get_object();
     string expanded_url = url.get_string_member("expanded_url");
 
-    if (InlineMediaDownloader.is_media_candidate (expanded_url)) {
+    if (is_media_candidate (expanded_url)) {
       var m = new Media ();
       m.url = expanded_url;
       m.id = real_media_count;
@@ -147,7 +147,7 @@ void parse_entities (MiniTweet mt, Json.Object status)
       };
       url_index ++;
       string media_url = url.get_string_member ("media_url");
-      if (InlineMediaDownloader.is_media_candidate (media_url)) {
+      if (is_media_candidate (media_url)) {
         var m = new Media ();
         m.url = media_url;
         m.target_url = media_url + ":large";
@@ -169,7 +169,7 @@ void parse_entities (MiniTweet mt, Json.Object status)
           if (m != null && m.url == url)
             return;
         }
-        if (InlineMediaDownloader.is_media_candidate (url)) {
+        if (is_media_candidate (url)) {
           var m = new Media ();
           m.url = url;
           m.target_url = url + ":large";
@@ -205,7 +205,7 @@ void parse_entities (MiniTweet mt, Json.Object status)
   }
 
   mt.medias.resize (real_media_count);
-  InlineMediaDownloader.load_all_media (mt, mt.medias);
+  InlineMediaDownloader.get ().load_all_media (mt, mt.medias);
 
   /* Remove unnecessary url entries */
   mt.entities.resize (url_index);

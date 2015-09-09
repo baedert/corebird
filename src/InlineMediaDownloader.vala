@@ -15,7 +15,48 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace InlineMediaDownloader {
+
+
+bool is_media_candidate (string url) {
+  if (Settings.max_media_size () < 0.001)
+    return false;
+
+  return url.has_prefix ("http://instagra.am") ||
+         url.has_prefix ("http://instagram.com/p/") ||
+         url.has_prefix ("https://instagr.am") ||
+         url.has_prefix ("https://instagram.com/p/") ||
+         (url.has_prefix ("http://i.imgur.com") && !url.has_suffix ("gifv")) ||
+         (url.has_prefix ("https://i.imgur.com") && !url.has_suffix ("gifv")) ||
+         url.has_prefix ("http://d.pr/i/") ||
+         url.has_prefix ("http://ow.ly/i/") ||
+         url.has_prefix ("http://www.flickr.com/photos/") ||
+         url.has_prefix ("https://www.flickr.com/photos/") ||
+#if VIDEO
+         url.has_prefix ("https://vine.co/v/") ||
+         url.has_suffix ("/photo/1") ||
+         url.has_prefix ("https://video.twimg.com/ext_tw_video/") ||
+#endif
+         url.has_prefix ("http://pbs.twimg.com/media/") ||
+         url.has_prefix ("http://twitpic.com/")
+  ;
+}
+
+
+
+class InlineMediaDownloader {
+  private static InlineMediaDownloader instance;
+
+  private InlineMediaDownloader () {}
+
+
+
+  public static InlineMediaDownloader get () {
+    if (GLib.unlikely (instance == null))
+      instance = new InlineMediaDownloader ();
+
+    return instance;
+  }
+
 
   public async void load_media (MiniTweet t, Media media) {
     yield load_inline_media (t, media);
@@ -44,31 +85,6 @@ namespace InlineMediaDownloader {
     }
     m.finished_loading ();
   }
-
-  public bool is_media_candidate (string url) {
-    if (Settings.max_media_size () < 0.001)
-      return false;
-
-    return url.has_prefix ("http://instagra.am") ||
-           url.has_prefix ("http://instagram.com/p/") ||
-           url.has_prefix ("https://instagr.am") ||
-           url.has_prefix ("https://instagram.com/p/") ||
-           (url.has_prefix ("http://i.imgur.com") && !url.has_suffix ("gifv")) ||
-           (url.has_prefix ("https://i.imgur.com") && !url.has_suffix ("gifv")) ||
-           url.has_prefix ("http://d.pr/i/") ||
-           url.has_prefix ("http://ow.ly/i/") ||
-           url.has_prefix ("http://www.flickr.com/photos/") ||
-           url.has_prefix ("https://www.flickr.com/photos/") ||
-#if VIDEO
-           url.has_prefix ("https://vine.co/v/") ||
-           url.has_suffix ("/photo/1") ||
-           url.has_prefix ("https://video.twimg.com/ext_tw_video/") ||
-#endif
-           url.has_prefix ("http://pbs.twimg.com/media/") ||
-           url.has_prefix ("http://twitpic.com/")
-    ;
-  }
-
   // XXX Rename
   private async void load_real_url (MiniTweet  t,
                                     Media  media,
