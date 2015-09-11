@@ -43,14 +43,17 @@ bool is_media_candidate (string url) {
 
 
 
-class InlineMediaDownloader {
+public class InlineMediaDownloader : GLib.Object {
   private static InlineMediaDownloader instance;
+  private Gee.ArrayList<string> urls_downloading = new Gee.ArrayList<string> ();
+  [Signal (detailed = true)]
+  private signal void downloading ();
 
   private InlineMediaDownloader () {}
 
 
 
-  public static InlineMediaDownloader get () {
+  public static new InlineMediaDownloader get () {
     if (GLib.unlikely (instance == null))
       instance = new InlineMediaDownloader ();
 
@@ -85,7 +88,7 @@ class InlineMediaDownloader {
     }
     m.finished_loading ();
   }
-  // XXX Rename
+
   private async void load_real_url (MiniTweet  t,
                                     Media  media,
                                     string regex_str1,
@@ -125,6 +128,15 @@ class InlineMediaDownloader {
     media.path = get_media_path (t, media);
     media.thumb_path = get_thumb_path (t, media);
 
+    if (this.urls_downloading.contains (media.url)) {
+      ulong id = 0;
+      id = this.downloading[media.url].connect (() => {
+        this.disconnect (id);
+        load_inline_media.begin (t, media, () => { callback (); });
+      });
+      yield;
+    }
+
     GLib.OutputStream thumb_out_stream = null;
     GLib.OutputStream media_out_stream = null;
 
@@ -147,6 +159,12 @@ class InlineMediaDownloader {
       if (main_file_exists) {
         var in_stream = GLib.File.new_for_path (media.path).read ();
         yield load_animation (t, in_stream, thumb_out_stream, media);
+        try {
+          in_stream.close ();
+          thumb_out_stream.close ();
+        } catch (GLib.Error e) {
+          warning (e.message);
+        }
         return;
       }
     } catch (GLib.Error e) {
@@ -220,23 +238,34 @@ class InlineMediaDownloader {
       double percent = (double) buf.length / (double) media.length;
       media.percent_loaded += percent;
     });
+// }}}
 
+    assert (!this.urls_downloading.contains (media.url));
+    this.urls_downloading.add (media.url);
 
     SOUP_SESSION.queue_message(msg, (s, _msg) => {
       if (_msg.status_code != Soup.Status.OK) {
         debug ("Request on '%s' returned '%s'", _msg.uri.to_string (false),
                Soup.Status.get_phrase (_msg.status_code));
         mark_invalid (media, null, thumb_out_stream, media_out_stream);
+        this.urls_downloading.remove (media.url);
         callback ();
         return;
       }
-
       try {
         var ms = new MemoryInputStream.from_data (_msg.response_body.data, null);
         media_out_stream.write_all (_msg.response_body.data, null, null);
         media_out_stream.close ();
         load_animation.begin (t, ms, thumb_out_stream, media, () => {
+          try {
+            ms.close ();
+            thumb_out_stream.close ();
+          } catch (GLib.Error e) {
+            warning (e.message);
+          }
+          this.urls_downloading.remove (media.url);
           callback ();
+          this.downloading[media.url]();
         });
         yield;
       } catch (GLib.Error e) {
@@ -266,13 +295,6 @@ class InlineMediaDownloader {
     media.thumbnail = Gdk.cairo_surface_create_from_pixbuf (thumb, 1, null);
     media.loaded = true;
     media.finished_loading ();
-    try {
-      in_stream.close ();
-      thumb_out_stream.close ();
-    } catch (GLib.Error e) {
-      warning (e.message);
-    }
-
   }
 
   public string get_media_path (MiniTweet t, Media media) {
