@@ -40,9 +40,13 @@ namespace UserUtils {
     call.add_param ("source_id", account.id.to_string ());
     call.add_param ("target_id", user_id.to_string ());
 
-    Json.Node? root = yield TweetUtils.load_threaded (call);
-    if (root == null)
+    Json.Node? root = null;
+    try {
+      root = yield TweetUtils.load_threaded (call);
+    } catch (GLib.Error e) {
+      warning (e.message);
       return null;
+    }
 
     var relationship = root.get_object ().get_object_member ("relationship");
     var target = relationship.get_object_member ("target");
@@ -74,10 +78,13 @@ namespace UserUtils {
     if (old_cursor != null)
       call.add_param ("cursor", old_cursor.next_cursor.to_string ());
 
-    Json.Node? root = yield TweetUtils.load_threaded (call);
-
-    if (root == null)
+    Json.Node? root = null;
+    try {
+      root = yield TweetUtils.load_threaded (call);
+    } catch (GLib.Error e) {
+      warning (e.message);
       return null;
+    }
 
     var root_obj = root.get_object ();
 
@@ -107,10 +114,13 @@ namespace UserUtils {
     if (old_cursor != null)
       call.add_param ("cursor", old_cursor.next_cursor.to_string ());
 
-    Json.Node? root = yield TweetUtils.load_threaded (call);
-
-    if (root == null)
+    Json.Node? root = null;
+    try {
+      root = yield TweetUtils.load_threaded (call);
+    } catch (GLib.Error e) {
+      warning (e.message);
       return null;
+    }
 
     var root_obj = root.get_object ();
 

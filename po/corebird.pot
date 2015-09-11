@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-25 08:02+0200\n"
+"POT-Creation-Date: 2015-09-11 12:12+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,15 +18,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: ../src/window/ComposeTweetWindow.vala:123
+#: ../src/window/ComposeTweetWindow.vala:119
 msgid "Quote tweet"
 msgstr ""
 
-#: ../src/window/ComposeTweetWindow.vala:361
+#: ../src/window/ComposeTweetWindow.vala:352
 msgid "Select Image"
 msgstr ""
 
-#: ../src/window/ComposeTweetWindow.vala:362
+#: ../src/window/ComposeTweetWindow.vala:353
 #: ../src/window/UserListDialog.vala:47
 #: ../src/widgets/MultiMediaWidget.vala:152 ../ui/compose-window.ui.h:2
 #: ../ui/list-list-entry.ui.h:1 ../ui/list-statuses-page.ui.h:8
@@ -36,7 +36,7 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: ../src/window/ComposeTweetWindow.vala:363
+#: ../src/window/ComposeTweetWindow.vala:354
 msgid "Choose"
 msgstr ""
 
@@ -52,7 +52,7 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: ../src/window/UserListDialog.vala:61
+#: ../src/window/UserListDialog.vala:68
 msgid "You have no lists."
 msgstr ""
 
@@ -120,7 +120,7 @@ msgstr ""
 msgid "Save Original"
 msgstr ""
 
-#: ../src/widgets/MultiMediaWidget.vala:74 ../src/TweetInfoPage.vala:423
+#: ../src/widgets/MultiMediaWidget.vala:74 ../src/TweetInfoPage.vala:455
 msgid "Open in Browser"
 msgstr ""
 
@@ -157,19 +157,19 @@ msgstr[1] ""
 msgid "Home"
 msgstr ""
 
-#: ../src/DMThreadsPage.vala:359
+#: ../src/DMThreadsPage.vala:369
 #, c-format
 msgid "%d new Message from %s"
 msgid_plural "%d new Messages from %s"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/DMThreadsPage.vala:365
+#: ../src/DMThreadsPage.vala:375
 #, c-format
 msgid "New direct message from %s"
 msgstr ""
 
-#: ../src/DMThreadsPage.vala:380 ../src/DMThreadsPage.vala:394
+#: ../src/DMThreadsPage.vala:390 ../src/DMThreadsPage.vala:404
 msgid "Direct Messages"
 msgstr ""
 
@@ -185,11 +185,11 @@ msgstr[1] ""
 msgid "Lists"
 msgstr ""
 
-#: ../src/ProfilePage.vala:284
+#: ../src/ProfilePage.vala:280
 msgid "Protected profile"
 msgstr ""
 
-#: ../src/ProfilePage.vala:517
+#: ../src/ProfilePage.vala:516
 #, c-format
 msgid "Tweet to @%s"
 msgstr ""
@@ -202,20 +202,24 @@ msgstr ""
 msgid "Follow"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:414
+#: ../src/TweetInfoPage.vala:279
+msgid "Could not show tweet"
+msgstr ""
+
+#: ../src/TweetInfoPage.vala:446
 msgid "Retweets"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:415 ../src/FavoritesTimeline.vala:93
+#: ../src/TweetInfoPage.vala:447 ../src/FavoritesTimeline.vala:93
 #: ../src/FavoritesTimeline.vala:97
 msgid "Favorites"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:423
+#: ../src/TweetInfoPage.vala:455
 msgid "Source"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:434
+#: ../src/TweetInfoPage.vala:466
 msgid "Tweet Details"
 msgstr ""
 
@@ -233,7 +237,7 @@ msgstr ""
 msgid "%dh"
 msgstr ""
 
-#: ../src/SearchPage.vala:281 ../src/SearchPage.vala:290
+#: ../src/SearchPage.vala:298 ../src/SearchPage.vala:307
 #: ../ui/search-page.ui.h:1
 msgid "Search"
 msgstr ""
@@ -255,7 +259,7 @@ msgstr ""
 msgid "Direct Conversation"
 msgstr ""
 
-#: ../src/ListStatusesPage.vala:373
+#: ../src/ListStatusesPage.vala:376
 msgid "List"
 msgstr ""
 

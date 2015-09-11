@@ -75,7 +75,14 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
     call.add_param ("include_entities", "false");
     call.add_param ("skip_status", "true");
     TweetUtils.load_threaded.begin (call, (_, res) => {
-      Json.Node? root = TweetUtils.load_threaded.end (res);
+      Json.Node? root = null;
+      try  {
+        root = TweetUtils.load_threaded.end (res);
+      } catch (GLib.Error e) {
+        warning (e.message);
+        return;
+      }
+
 
       Json.Array users = root.get_object ().get_array_member ("users");
       uint n_users = users.get_length ();
