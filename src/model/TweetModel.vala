@@ -90,7 +90,8 @@ public class TweetModel : GLib.Object, GLib.ListModel {
 
     if (tweet.id > this.max_id)
       this.max_id = tweet.id;
-    else if (tweet.id < this.min_id)
+
+    if (tweet.id < this.min_id)
       this.min_id = tweet.id;
   }
 
