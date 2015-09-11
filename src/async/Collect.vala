@@ -15,8 +15,7 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-class Collect : GLib.Object {
+public class Collect : GLib.Object {
   private int cur = 0;
   private int max;
   private GLib.Error? error = null;
