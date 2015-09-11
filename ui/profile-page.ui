@@ -161,7 +161,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkButton" id="follow_button">
+                          <object class="FollowButton" id="follow_button">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="halign">end</property>

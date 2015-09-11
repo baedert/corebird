@@ -66,7 +66,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
   [GtkChild]
   private Gtk.Label location_label;
   [GtkChild]
-  private Gtk.Button follow_button;
+  private FollowButton follow_button;
   [GtkChild]
   private TweetListBox tweet_list;
   [GtkChild]
@@ -88,7 +88,6 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
   [GtkChild]
   private Gtk.RadioButton tweets_button;
   private GLib.MenuModel more_menu;
-  private bool following;
   private int64 user_id;
   private new string name;
   private string screen_name;
@@ -170,6 +169,8 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
   private void set_user_id (int64 user_id) { // {{{
     this.user_id = user_id;
 
+    message ("Follow button sensitivitiy!");
+    message ("%s != %s", user_id.to_string (), account.id.to_string ());
     follow_button.sensitive = (user_id != account.id);
     ((SimpleAction)actions.lookup_action ("add-remove-list")).set_enabled (user_id != account.id);
     ((SimpleAction)actions.lookup_action ("write-dm")).set_enabled (user_id != account.id);
@@ -194,7 +195,8 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
       set_data(vals[2], vals[1], vals[9], vals[10], vals[3],
                int.parse (vals[4]), int.parse (vals[5]), int.parse (vals[6]),
                vals[7], false, ref entities);
-      set_follow_button_state (bool.parse (vals[11]));
+      this.follow_button.following = bool.parse (vals[11]);
+      this.follow_button.sensitive = (this.user_id != this.account.id);
       string banner_name = Utils.get_banner_name (user_id);
 
       if (FileUtils.test(Dirs.cache("assets/banners/"+banner_name), FileTest.EXISTS)){
@@ -328,7 +330,8 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
 
     set_data(name, screen_name, display_url, location, description, tweets,
          following, followers, avatar_url, verified, ref text_urls);
-    set_follow_button_state (is_following);
+    this.follow_button.following = is_following;
+    this.follow_button.sensitive = (this.user_id != this.account.id);
     Corebird.db.replace ("profiles")
                .vali64 ("id", id)
                .val ("screen_name", screen_name)
@@ -562,7 +565,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
   private void follow_button_clicked_cb () { //{{{
     var call = account.proxy.new_call();
     HomeTimeline ht = (HomeTimeline) main_window.get_page (Page.STREAM);
-    if (following) {
+    if (follow_button.following) {
       call.set_function( "1.1/friendships/destroy.json");
       ht.hide_tweets_from (this.user_id, Tweet.HIDDEN_UNFOLLOWED);
       ht.hide_retweets_from (this.user_id, Tweet.HIDDEN_UNFOLLOWED); // XXX
@@ -590,7 +593,8 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     call.add_param ("id", user_id.to_string ());
     call.invoke_async.begin (null, (obj, res) => {
       try {
-        set_follow_button_state (!following);
+        this.follow_button.following = !this.follow_button.following;
+        this.follow_button.sensitive = (this.user_id != this.account.id);
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
         critical (e.message);
@@ -606,23 +610,6 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
   private bool activate_link (string uri) {
     return TweetUtils.activate_link (uri, main_window);
   }
-
-  private void set_follow_button_state (bool following) { //{{{
-    var sc = follow_button.get_style_context ();
-    follow_button.sensitive = (user_id != account.id);
-    if (following) {
-      sc.remove_class ("suggested-action");
-      sc.add_class ("destructive-action");
-      follow_button.label = _("Unfollow");
-    } else {
-      sc.remove_class ("destructive-action");
-      sc.add_class ("suggested-action");
-      follow_button.label = _("Follow");
-    }
-    this.following = following;
-    //dm_menu_item.sensitive = following;
-  } //}}}
-
 
   private void load_banner (string? path) {
     try {
@@ -737,7 +724,8 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
       ht.show_tweets_from (this.user_id, Tweet.HIDDEN_AUTHOR_BLOCKED);
     } else {
       call.set_function ("1.1/blocks/create.json");
-      set_follow_button_state (false);
+      this.follow_button.following = false;
+      this.follow_button.sensitive = (this.user_id != this.account.id);
       ht.hide_tweets_from (this.user_id, Tweet.HIDDEN_AUTHOR_BLOCKED);
     }
     set_user_blocked (!current_state);
