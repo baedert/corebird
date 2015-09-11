@@ -487,6 +487,7 @@ namespace TweetUtils {
         call.sync ();
       } catch (GLib.Error e) {
         err = e;
+        return null;
       }
 
       var parser = new Json.Parser ();
@@ -494,6 +495,7 @@ namespace TweetUtils {
         parser.load_from_data (call.get_payload ());
       } catch (GLib.Error e) {
         err = e;
+        return null;
       }
 
       result = parser.get_root ();
