@@ -402,7 +402,8 @@
             <property name="visible">true</property>
             <property name="halign">center</property>
             <property name="valign">center</property>
-            <property name="wrap_mode">word_char</property>
+            <property name="wrap">True</property>
+            <property name="wrap_mode">word-char</property>
           </object>
         </child>
 
