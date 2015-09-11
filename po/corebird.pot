@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-11 20:43+0200\n"
+"POT-Creation-Date: 2015-09-11 21:48+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -136,6 +136,14 @@ msgstr ""
 msgid "Click to add image"
 msgstr ""
 
+#: ../src/widgets/FollowButton.vala:43
+msgid "Follow"
+msgstr ""
+
+#: ../src/widgets/FollowButton.vala:44
+msgid "Unfollow"
+msgstr ""
+
 #: ../src/HomeTimeline.vala:110
 #, c-format
 msgid "%s retweeted %s"
@@ -185,11 +193,11 @@ msgstr[1] ""
 msgid "Lists"
 msgstr ""
 
-#: ../src/ProfilePage.vala:279
+#: ../src/ProfilePage.vala:282
 msgid "Protected profile"
 msgstr ""
 
-#: ../src/ProfilePage.vala:515
+#: ../src/ProfilePage.vala:519
 #, c-format
 msgid "Tweet to @%s"
 msgstr ""
