@@ -41,6 +41,8 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
   private GLib.SimpleActionGroup actions;
 
   [GtkChild]
+  private Gtk.Grid grid;
+  [GtkChild]
   private MultiMediaWidget mm_widget;
   [GtkChild]
   private Gtk.Label text_label;
@@ -70,6 +72,10 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
   private MaxSizeContainer max_size_container;
   [GtkChild]
   private ReplyIndicator reply_indicator;
+  [GtkChild]
+  private Gtk.Stack main_stack;
+  [GtkChild]
+  private Gtk.Label error_label;
 
   public TweetInfoPage (int id, Account account) {
     this.id = id;
@@ -118,6 +124,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
 
     reply_indicator.replies_available = false;
     max_size_container.max_size = 0;
+    main_stack.visible_child = grid;
 
 
     if (existing) {
@@ -263,13 +270,14 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     call.set_function ("1.1/statuses/show.json");
     call.add_param ("id", tweet_id.to_string ());
     call.add_param ("include_my_retweet", "true");
-    TweetUtils.load_threaded.begin (call, (_, res) => {
+    TweetUtils.load_threaded.begin (call, (__, res) => {
       Json.Node? root = null;
 
       try {
         root = TweetUtils.load_threaded.end (res);
       } catch (GLib.Error e) {
-        /* XXX Show some error indication */
+        error_label.label = "%s: %s".printf (_("Could not show tweet"), e.message);
+        main_stack.visible_child = error_label;
         return;
       }
 
