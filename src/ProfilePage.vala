@@ -236,8 +236,11 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     call.add_param ("user_id", user_id.to_string ());
     call.add_param ("include_entities", "false");
 
-    Json.Node? root_node = yield TweetUtils.load_threaded (call); // TODO: Use data_cancellable here
-    if (root_node == null) {
+    Json.Node? root_node = null;
+    try {
+      root_node = yield TweetUtils.load_threaded (call); // TODO: Use data_cancellable here
+    } catch (GLib.Error e) {
+      warning (e.message);
       return;
     }
 
@@ -356,9 +359,11 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     call.add_param ("include_my_retweet", "true");
 
 
-    Json.Node? root = yield TweetUtils.load_threaded (call);
-
-    if (root == null) {
+    Json.Node? root = null;
+    try {
+      root = yield TweetUtils.load_threaded (call);
+    } catch (GLib.Error e) {
+      warning (e.message);
       tweet_list.set_empty ();
       return;
     }
@@ -393,10 +398,13 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     call.add_param ("include_my_retweet", "true");
     call.add_param ("max_id", (tweet_list.model.lowest_id - 1).to_string ());
 
-    Json.Node? root = yield TweetUtils.load_threaded (call);
-
-    if (root == null)
+    Json.Node? root = null;
+    try {
+      root = yield TweetUtils.load_threaded (call);
+    } catch (GLib.Error e) {
+      warning (e.message);
       return;
+    }
 
     var root_arr = root.get_array ();
     yield TweetUtils.work_array (root_arr,

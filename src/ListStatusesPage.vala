@@ -162,11 +162,13 @@ class ListStatusesPage : ScrollWidget, IPage {
     call.add_param ("list_id", list_id.to_string ());
     call.add_param ("count", requested_tweet_count.to_string ());
 
-    Json.Node? root = yield TweetUtils.load_threaded (call);
-    if (root == null) {
+    Json.Node? root = null;
+    try {
+      root = yield TweetUtils.load_threaded (call);
+    } catch (GLib.Error e) {
+      warning (e.message);
       return;
     }
-
 
     var root_array = root.get_array ();
     if (root_array.get_length () == 0) {
@@ -192,9 +194,13 @@ class ListStatusesPage : ScrollWidget, IPage {
     call.add_param ("max_id", (tweet_list.model.lowest_id -1).to_string ());
     call.add_param ("count", requested_tweet_count.to_string ());
 
-    Json.Node? root = yield TweetUtils.load_threaded (call);
-    if (root == null)
+    Json.Node? root = null;
+    try {
+      root = yield TweetUtils.load_threaded (call);
+    } catch (GLib.Error e) {
+      warning (e.message);
       return;
+    }
 
     var root_array = root.get_array ();
     yield TweetUtils.work_array (root_array,

@@ -264,10 +264,14 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     call.add_param ("id", tweet_id.to_string ());
     call.add_param ("include_my_retweet", "true");
     TweetUtils.load_threaded.begin (call, (_, res) => {
-      Json.Node? root = TweetUtils.load_threaded.end (res);
+      Json.Node? root = null;
 
-      if (root == null)
+      try {
+        root = TweetUtils.load_threaded.end (res);
+      } catch (GLib.Error e) {
+        /* XXX Show some error indication */
         return;
+      }
 
       this.tweet = new Tweet ();
       tweet.load_from_json (root, now, account);
@@ -290,10 +294,14 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     reply_call.add_param ("since_id", tweet_id.to_string ());
     reply_call.add_param ("count", "200");
     TweetUtils.load_threaded.begin (reply_call, (_, res) => {
-      Json.Node? root = TweetUtils.load_threaded.end (res);
+      Json.Node? root = null;
 
-      if (root == null)
+      try {
+        root = TweetUtils.load_threaded.end (res);
+      } catch (GLib.Error e) {
+        warning (e.message);
         return;
+      }
 
       var statuses_node = root.get_object ().get_array_member ("statuses");
       int64 previous_tweet_id = -1;

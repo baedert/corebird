@@ -178,10 +178,14 @@ class SearchPage : IPage, Gtk.Box {
     user_call.add_param ("include_entities", "false");
     user_call.add_param ("page", user_page.to_string ());
     TweetUtils.load_threaded.begin (user_call, (_, res) => {
-      Json.Node? root = TweetUtils.load_threaded.end (res);
-      if (root == null) {
+      Json.Node? root = null;
+      try {
+        root = TweetUtils.load_threaded.end (res);
+      } catch (GLib.Error e) {
+        warning (e.message);
         if (!collect_obj.done)
           collect_obj.emit ();
+
         return;
       }
 
@@ -237,11 +241,14 @@ class SearchPage : IPage, Gtk.Box {
     call.add_param ("max_id", (lowest_tweet_id - 1).to_string ());
     call.add_param ("count", "35");
     TweetUtils.load_threaded.begin (call, (_, res) => {
-      Json.Node? root = TweetUtils.load_threaded.end (res);
-
-      if (root == null) {
+      Json.Node? root = null;
+      try {
+        root = TweetUtils.load_threaded.end (res);
+      } catch (GLib.Error e) {
+        warning (e.message);
         if (!collect_obj.done)
           collect_obj.emit ();
+
         return;
       }
 

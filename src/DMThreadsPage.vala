@@ -171,8 +171,13 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     call.add_param ("since_id", max_received_id.to_string ());
     call.add_param ("count", "200");
     TweetUtils.load_threaded.begin (call, (obj, res) => {
-      Json.Node? root = TweetUtils.load_threaded.end (res);
-      on_dm_result (root);
+      try {
+        Json.Node? root = TweetUtils.load_threaded.end (res);
+        on_dm_result (root);
+      } catch (GLib.Error e) {
+        warning (e.message);
+        on_dm_result (null);
+      }
     });
 
     var sent_call = account.proxy.new_call ();
@@ -182,8 +187,13 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     sent_call.add_param ("count", "200");
     sent_call.set_method ("GET");
     TweetUtils.load_threaded.begin (sent_call, (obj, res) => {
-      Json.Node? root = TweetUtils.load_threaded.end (res);
-      on_dm_result (root);
+      try {
+        Json.Node? root = TweetUtils.load_threaded.end (res);
+        on_dm_result (root);
+      } catch (GLib.Error e) {
+        warning (e.message);
+        on_dm_result (null);
+      }
     });
 
   } // }}}
