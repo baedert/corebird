@@ -74,6 +74,8 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
   [GtkChild]
   private TweetListBox following_list;
   [GtkChild]
+  private Gtk.Spinner progress_spinner;
+  [GtkChild]
   private Gtk.Label follows_you_label;
   [GtkChild]
   private UserListsWidget user_lists;
@@ -81,6 +83,8 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
   private Gtk.Stack user_stack;
   [GtkChild]
   private Gtk.MenuButton more_button;
+  [GtkChild]
+  private Gtk.Stack loading_stack;
   [GtkChild]
   private Gtk.RadioButton tweets_button;
   private GLib.MenuModel more_menu;
@@ -221,6 +225,10 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
   }
 
   private async void load_profile_data (int64 user_id, bool show_spinner) { //{{{
+    if (show_spinner) {
+      loading_stack.visible_child_name = "progress";
+      progress_spinner.start ();
+    }
     follow_button.sensitive = false;
     var call = account.proxy.new_call ();
     call.set_method ("GET");
@@ -246,7 +254,15 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
 
     avatar_image.surface = Twitter.get ().get_avatar (avatar_url, (a) => {
       avatar_image.surface = a;
+        if (show_spinner) {
+          progress_spinner.stop ();
+          loading_stack.visible_child_name = "data";
+        }
     }, 73);
+    if (avatar_image.surface != null && show_spinner) {
+      progress_spinner.stop ();
+      loading_stack.visible_child_name = "data";
+    }
 
     string name        = root.get_string_member("name").replace ("&", "&amp;").strip ();
     string screen_name = root.get_string_member("screen_name");
@@ -568,8 +584,8 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
       ((SimpleAction)actions.lookup_action ("toggle-retweets")).set_enabled (true);
     }
     update_follower_label ();
-    //progress_spinner.start ();
-    //loading_stack.visible_child_name = "progress";
+    progress_spinner.start ();
+    loading_stack.visible_child_name = "progress";
     follow_button.sensitive = false;
     call.set_method ("POST");
     call.add_param ("id", user_id.to_string ());
@@ -583,6 +599,8 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
         critical (call.get_payload ());
       }
       follow_button.sensitive = true;
+      progress_spinner.stop ();
+      loading_stack.visible_child_name = "data";
     });
   } //}}}
 
