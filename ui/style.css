@@ -191,10 +191,10 @@
   padding: 0px;
   box-shadow: none;
   border-radius: 0px;
-  border-bottom: 2px solid transparent;
+  border-bottom: 1px solid transparent;
 }
 .text-only-button:hover{
-  border-bottom: 2px solid currentColor;
+  border-bottom: 1px solid currentColor;
 }
 .text-only-button:active{
   background-color: shade(currentColor, 2.3);
