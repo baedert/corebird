@@ -690,7 +690,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     bundle.put_int64 ("sender_id", user_id);
     bundle.put_string ("screen_name", screen_name);
     bundle.put_string ("name", name);
-    bundle.put_string ("avatar_url", avatar_url);
+    bundle.put_string ("avatar_url", avatar_url.replace ("_bigger", "_normal"));
     main_window.main_widget.switch_page (Page.DM, bundle);
   }
 

@@ -238,7 +238,6 @@ public class InlineMediaDownloader : GLib.Object {
       double percent = (double) buf.length / (double) media.length;
       media.percent_loaded += percent;
     });
-// }}}
 
     assert (!this.urls_downloading.contains (media.url));
     this.urls_downloading.add (media.url);
