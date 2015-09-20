@@ -644,6 +644,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
       following_cursor = null;
       following_list.remove_all ();
       set_user_id (user_id);
+      this.follow_button.following = account.follows_id (user_id);
       tweet_list.model.clear ();
       user_lists.clear_lists ();
       lists_page_inited = false;
