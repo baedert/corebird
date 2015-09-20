@@ -35,7 +35,7 @@ public class Twitter : GLib.Object {
   public static int short_url_length_https = 23;
   public static int max_media_per_upload   = 4;
   public static Cairo.Surface no_avatar;
-  public static Gdk.Pixbuf no_banner; // XXX Use surface.
+  public static Gdk.Pixbuf no_banner;
   public Gee.HashMap<string, Cairo.Surface?> avatars;
   public Gee.HashMap<Cairo.Surface, uint> avatar_refcounts;
 

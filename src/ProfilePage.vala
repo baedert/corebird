@@ -566,7 +566,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     if (follow_button.following) {
       call.set_function( "1.1/friendships/destroy.json");
       ht.hide_tweets_from (this.user_id, Tweet.HIDDEN_UNFOLLOWED);
-      ht.hide_retweets_from (this.user_id, Tweet.HIDDEN_UNFOLLOWED); // XXX
+      ht.hide_retweets_from (this.user_id, Tweet.HIDDEN_UNFOLLOWED);
       follower_count --;
       account.unfollow_id (this.user_id);
       ((SimpleAction)actions.lookup_action ("toggle-retweets")).set_enabled (false);
