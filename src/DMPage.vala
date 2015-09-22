@@ -248,8 +248,7 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
 
   [GtkCallback]
   private void send_button_clicked_cb () { // {{{
-    if (text_view.buffer.text.length == 0 ||
-        text_view.buffer.text.length > Tweet.MAX_LENGTH)
+    if (text_view.buffer.text.length == 0)
       return;
 
     // Withdraw the notification if there is one
@@ -307,7 +306,7 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
 
   private void recalc_length () {
     uint text_length = text_view.buffer.text.length;
-    send_button.sensitive = text_length > 0 && text_length < 140;
+    send_button.sensitive = text_length > 0;
   }
 
 
