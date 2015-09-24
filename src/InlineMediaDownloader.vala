@@ -266,10 +266,9 @@ public class InlineMediaDownloader : GLib.Object {
           callback ();
           this.downloading[media.url]();
         });
+        yield;
       } catch (GLib.Error e) {
         critical (e.message + " for MEDIA " + media.thumb_url);
-        this.urls_downloading.remove (media.url);
-        mark_invalid (media, null, thumb_out_stream, media_out_stream);
         callback ();
       }
     });
