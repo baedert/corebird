@@ -97,7 +97,7 @@ public class InlineMediaDownloader : GLib.Object {
     SOUP_SESSION.queue_message (msg, (_s, _msg) => {
       string? back = (string)_msg.response_body.data;
       if (msg.status_code != Soup.Status.OK) {
-        warning ("Message status: %s", msg.status_code.to_string ());
+        warning ("Message status: %s on %s", msg.status_code.to_string (), media.url);
         mark_invalid (media);
         return;
       }
