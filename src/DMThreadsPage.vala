@@ -85,7 +85,6 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     });
 
     thread_list.add (start_conversation_entry);
-    load_cached ();
   }
 
   public void stream_message_received (StreamMessageType type, Json.Node root) {
@@ -109,6 +108,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 
 
     if (!initialized) {
+      load_cached ();
       load_newest ();
       initialized = true;
     }
