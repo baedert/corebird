@@ -13,10 +13,6 @@
   padding: 2px 4px;
 }
 
-.sidebar {
-  -GtkWidget-window-dragging: true;
-}
-
 .button-slim {
   -GtkButton-default-border: 0;
   -GtkButton-default-outside-border: 0;
@@ -36,18 +32,22 @@
   -GtkWidget-focus-line-width: 0;
   -GtkWidget-focus-padding: 0;
   padding: 0px;
-  box-shadow: none;
   opacity: 0.8;
   border-top: 2px solid transparent;
   border-bottom: 2px solid transparent;
   border-left: none;
   border-right: none;
+  box-shadow: 0px -1px 0px grey,
+              0px  1px 0px grey,
+              1px  0px 0px grey,
+             -1px  0px 0px grey;
 }
 
 .inline-media:hover {
   border-top: 2px solid #4a90d9;
   border-bottom: 2px solid #4a90d9;
   opacity: 1.0;
+  box-shadow: none;
 }
 
 .image-placeholder {
