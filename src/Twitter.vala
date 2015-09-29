@@ -39,6 +39,10 @@ public class Twitter : GLib.Object {
   public Gee.HashMap<string, Cairo.Surface?> avatars;
   public Gee.HashMap<Cairo.Surface, uint> avatar_refcounts;
 
+  /* XXX I'd like this to use a int64->{string, Cairo.Surface} hashtable
+         so we can get the avatar of a specific user but also check if
+         the url changed */
+
   public void init () {
     try {
       Twitter.no_avatar = Gdk.cairo_surface_create_from_pixbuf (

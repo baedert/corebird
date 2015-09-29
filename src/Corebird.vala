@@ -15,7 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 public class Corebird : Gtk.Application {
   public static Sql.Database db;
   public static GLib.Menu account_menu;
