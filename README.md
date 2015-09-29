@@ -35,6 +35,11 @@ This is the readme for the current *development version*. If you're looking for 
 ## Translations
   Since February 2014, there's a [Corebird project on Transifex](https://www.transifex.com/projects/p/corebird)
 
+## Contributing
+
+  All contributions are welcome (artword, design, code, just ideas, etc.) but if you're planning to
+  actively change something bigger, talk to me first.
+
 
 ## Dependencies
  - `gtk+-3.0 >= 3.16`

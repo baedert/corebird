@@ -171,10 +171,12 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     actions.add_action_entries (action_entries, this);
     this.insert_action_group ("tweet", actions);
 
-    if (tweet.user_id != account.id) {
+    if (tweet.user_id != account.id)
       ((GLib.SimpleAction)actions.lookup_action ("delete")).set_enabled (false);
-    }
 
+    if (tweet.user_id == account.id ||
+        tweet.protected)
+      ((GLib.SimpleAction)actions.lookup_action ("quote")).set_enabled (false);
 
     reply_tweet.connect (reply_tweet_activated);
     delete_tweet.connect (delete_tweet_activated);
@@ -366,6 +368,9 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     if (this._read_only) {
       return false;
     }
+
+    this.grab_focus ();
+
     return TweetUtils.activate_link (uri, main_window);
   }
 
@@ -410,6 +415,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 #endif
 
     this.sensitive = !tweet.deleted;
+    stack.visible_child = grid;
   }
 
 

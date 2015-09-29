@@ -22,8 +22,8 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   public int unread_count {
     set {
       _unread_count = value;
+      debug ("New unread count: %d", value);
       tool_button.show_badge = (_unread_count > 0);
-      tool_button.queue_draw();
     }
     get {
       return this._unread_count;

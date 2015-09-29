@@ -16,7 +16,50 @@
  */
 
 
-namespace InlineMediaDownloader {
+
+bool is_media_candidate (string url) {
+  if (Settings.max_media_size () < 0.001)
+    return false;
+
+  return url.has_prefix ("http://instagra.am") ||
+         url.has_prefix ("http://instagram.com/p/") ||
+         url.has_prefix ("https://instagr.am") ||
+         url.has_prefix ("https://instagram.com/p/") ||
+         (url.has_prefix ("http://i.imgur.com") && !url.has_suffix ("gifv")) ||
+         (url.has_prefix ("https://i.imgur.com") && !url.has_suffix ("gifv")) ||
+         url.has_prefix ("http://d.pr/i/") ||
+         url.has_prefix ("http://ow.ly/i/") ||
+         url.has_prefix ("http://www.flickr.com/photos/") ||
+         url.has_prefix ("https://www.flickr.com/photos/") ||
+#if VIDEO
+         url.has_prefix ("https://vine.co/v/") ||
+         url.has_suffix ("/photo/1") ||
+         url.has_prefix ("https://video.twimg.com/ext_tw_video/") ||
+#endif
+         url.has_prefix ("http://pbs.twimg.com/media/") ||
+         url.has_prefix ("http://twitpic.com/")
+  ;
+}
+
+
+
+public class InlineMediaDownloader : GLib.Object {
+  private static InlineMediaDownloader instance;
+  private Gee.ArrayList<string> urls_downloading = new Gee.ArrayList<string> ();
+  [Signal (detailed = true)]
+  private signal void downloading ();
+
+  private InlineMediaDownloader () {}
+
+
+
+  public static new InlineMediaDownloader get () {
+    if (GLib.unlikely (instance == null))
+      instance = new InlineMediaDownloader ();
+
+    return instance;
+  }
+
 
   public async void load_media (MiniTweet t, Media media) {
     yield load_inline_media (t, media);
@@ -38,29 +81,6 @@ namespace InlineMediaDownloader {
     }
   }
 
-  public bool is_media_candidate (string url) {
-    if (Settings.max_media_size () < 0.001)
-      return false;
-
-    return url.has_prefix ("http://instagra.am") ||
-           url.has_prefix ("http://instagram.com/p/") ||
-           url.has_prefix ("https://instagr.am") ||
-           url.has_prefix ("https://instagram.com/p/") ||
-           (url.has_prefix ("http://i.imgur.com") && !url.has_suffix ("gifv")) ||
-           url.has_prefix ("http://d.pr/i/") ||
-           url.has_prefix ("http://ow.ly/i/") ||
-           url.has_prefix ("http://www.flickr.com/photos/") ||
-           url.has_prefix ("https://www.flickr.com/photos/") ||
-#if VIDEO
-           url.has_prefix ("https://vine.co/v/") ||
-           url.has_suffix ("/photo/1") ||
-           url.has_prefix ("https://video.twimg.com/ext_tw_video/") ||
-#endif
-           url.has_prefix ("http://pbs.twimg.com/media/") ||
-           url.has_prefix ("http://twitpic.com/")
-    ;
-  }
-
   private async void load_real_url (MiniTweet  t,
                                     Media  media,
                                     string regex_str1,
@@ -69,7 +89,7 @@ namespace InlineMediaDownloader {
     SOUP_SESSION.queue_message (msg, (_s, _msg) => {
       string? back = (string)_msg.response_body.data;
       if (msg.status_code != Soup.Status.OK) {
-        warning ("Message status: %s", msg.status_code.to_string ());
+        warning ("Message status: %s on %s", msg.status_code.to_string (), media.url);
         mark_invalid (media);
         return;
       }
@@ -97,19 +117,14 @@ namespace InlineMediaDownloader {
   private async void load_inline_media (MiniTweet t, Media media) {
     GLib.SourceFunc callback = load_inline_media.callback;
 
-    string ext = Utils.get_file_type (media.url);
-    {
-      if(ext.length == 0)
-        ext = "png";
 
-      ext = ext.down();
-      int qm_index;
-      if ((qm_index = ext.index_of_char ('?')) != -1) {
-        ext = ext.substring (0, qm_index);
-      }
-
-      if (ext == "jpg")
-        ext = "jpeg";
+    if (this.urls_downloading.contains (media.url)) {
+      ulong id = 0;
+      id = this.downloading[media.url].connect (() => {
+        this.disconnect (id);
+        load_inline_media.begin (t, media, () => { callback (); });
+      });
+      yield;
     }
 
     /* If we get to this point, the image was not cached on disk and we
@@ -156,6 +171,8 @@ namespace InlineMediaDownloader {
       media.percent_loaded += percent;
     });
 
+    assert (!this.urls_downloading.contains (media.url));
+    this.urls_downloading.add (media.url);
 
     SOUP_SESSION.queue_message(msg, (s, _msg) => {
       if (_msg.status_code != Soup.Status.OK) {
@@ -168,7 +185,9 @@ namespace InlineMediaDownloader {
 
       var ms = new MemoryInputStream.from_data (_msg.response_body.data, null);
       load_animation.begin (t, ms, media, () => {
+        this.urls_downloading.remove (media.url);
         callback ();
+        this.downloading[media.url]();
       });
       yield;
     });
@@ -177,7 +196,6 @@ namespace InlineMediaDownloader {
 
   private async void load_animation (MiniTweet         t,
                                      GLib.InputStream  in_stream,
-                                     //GLib.OutputStream thumb_out_stream,
                                      Media             media) {
     Gdk.PixbufAnimation anim;
     try {
@@ -188,22 +206,17 @@ namespace InlineMediaDownloader {
       return;
     }
     var pic = anim.get_static_image ();
-    //int thumb_width = (int)(600.0 / (float)t.medias.length);
     if (!anim.is_static_image ())
       media.animation = anim;
 
-    //var thumb = Utils.slice_pixbuf (pic, thumb_width, MultiMediaWidget.HEIGHT);
-    //yield Utils.write_pixbuf_async (thumb, thumb_out_stream, "png");
     media.surface = (Cairo.ImageSurface)Gdk.cairo_surface_create_from_pixbuf (pic, 1, null);
     media.loaded = true;
     media.finished_loading ();
     try {
       in_stream.close ();
-      //thumb_out_stream.close ();
     } catch (GLib.Error e) {
       warning (e.message);
     }
-
   }
 
   public string get_media_path (MiniTweet t, Media media) {
@@ -217,6 +230,7 @@ namespace InlineMediaDownloader {
     return Dirs.cache (@"assets/media/$(id)_$(t.author.id)_$(media.id).$(ext)");
   }
 
+  /* XXX Remove this? */
   public string get_thumb_path (MiniTweet t, Media media) {
     int64 id = t.id;
 

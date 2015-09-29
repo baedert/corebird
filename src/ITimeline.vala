@@ -43,10 +43,12 @@ public interface ITimeline : Gtk.Widget, IPage {
     call.add_param ("include_my_retweet", "true");
     call.add_param ("max_id", (tweet_list.model.lowest_id - 1).to_string ());
 
-    Json.Node? root_node = yield TweetUtils.load_threaded (call);
-    if (root_node == null) {
-      tweet_list.set_error (_("Could not load tweets"));
-      //tweet_list.set_empty ();
+    Json.Node? root_node = null;
+    try {
+      root_node = yield TweetUtils.load_threaded (call);
+    } catch (GLib.Error e) {
+      message (e.message);
+      tweet_list.set_error ("%s\n%s".printf (_("Could not load tweets"), e.message));
       return;
     }
 
@@ -74,8 +76,12 @@ public interface ITimeline : Gtk.Widget, IPage {
     call.add_param ("include_my_retweet", "true");
     call.add_param ("max_id", (tweet_list.model.lowest_id - 1).to_string ());
 
-    Json.Node? root_node = yield TweetUtils.load_threaded (call);
-    if (root_node == null) {
+    Json.Node? root_node = null;
+
+    try {
+      root_node = yield TweetUtils.load_threaded (call);
+    } catch (GLib.Error e) {
+      warning (e.message);
       return;
     }
 

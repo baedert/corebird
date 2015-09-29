@@ -22,6 +22,7 @@ src/widgets/PixbufButton.c
 src/widgets/MultiMediaWidget.c
 src/widgets/MediaImageWidget.c
 src/widgets/AddImageButton.c
+src/widgets/FollowButton.c
 src/window/ComposeTweetWindow.c
 src/window/ImageDialog.c
 src/window/UserListDialog.c

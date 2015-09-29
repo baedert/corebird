@@ -32,7 +32,7 @@ AM_CONDITIONAL([DISABLE_VIDEO], [ test "$disable_video" = "yes"])
 # Vala Packages {{{
 pkg_modules="gtk+-3.0 >= 3.16
              glib-2.0 >= 2.44
-             rest-0.7
+             rest-0.7 >= 0.7.93
              libsoup-2.4
              gee-0.8
              json-glib-1.0
@@ -55,7 +55,6 @@ CB_VALA_FLAGS=" \
   --pkg glib-2.0 \
   --target-glib=2.38 \
   --gresources=\$(top_srcdir)/resources.xml \
-  --vapidir=\$(top_srcdir)/vapi/ \
   --thread \
   --enable-checking \
   --enable-experimental"
@@ -105,6 +104,7 @@ AC_CONFIG_FILES([Makefile
                  data/Makefile
                  data/org.baedert.corebird.desktop.in
                  assets/Makefile
+                 assets/256x256/Makefile
                  assets/128x128/Makefile
                  assets/96x96/Makefile
                  assets/64x64/Makefile

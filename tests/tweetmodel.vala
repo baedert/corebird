@@ -176,6 +176,17 @@ void get_from_id () {
 
 }
 
+void min_max_id () {
+  var tm = new TweetModel ();
+  var t = new Tweet ();
+  t.id = 1337;
+
+  tm.add (t);
+
+  assert (tm.lowest_id == 1337);
+  assert (tm.greatest_id == 1337);
+}
+
 
 int main (string[] args) {
   GLib.Test.init (ref args);
@@ -186,6 +197,7 @@ int main (string[] args) {
   GLib.Test.add_func ("/tweetmodel/remove-own-retweet", remove_own_retweet);
   GLib.Test.add_func ("/tweetmodel/hide-rt", hide_rt);
   GLib.Test.add_func ("/tweetmodel/get-from-id", get_from_id);
+  GLib.Test.add_func ("/tweetmodel/min-max-id", min_max_id);
 
   return GLib.Test.run ();
 }

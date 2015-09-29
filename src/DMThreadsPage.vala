@@ -27,7 +27,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     set {
       debug ("Changing unread_count from %d to %d", this._unread_count, value);
       this._unread_count = value;
-      this.update_unread_count ();
+      tool_button.show_badge = (this._unread_count > 0);
     }
   }
   public unowned MainWindow main_window     { get; set; }
@@ -85,7 +85,6 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     });
 
     thread_list.add (start_conversation_entry);
-    load_cached ();
   }
 
   public void stream_message_received (StreamMessageType type, Json.Node root) {
@@ -109,6 +108,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 
 
     if (!initialized) {
+      load_cached ();
       load_newest ();
       initialized = true;
     }
@@ -171,8 +171,13 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     call.add_param ("since_id", max_received_id.to_string ());
     call.add_param ("count", "200");
     TweetUtils.load_threaded.begin (call, (obj, res) => {
-      Json.Node? root = TweetUtils.load_threaded.end (res);
-      on_dm_result (root);
+      try {
+        Json.Node? root = TweetUtils.load_threaded.end (res);
+        on_dm_result (root);
+      } catch (GLib.Error e) {
+        warning (e.message);
+        on_dm_result (null);
+      }
     });
 
     var sent_call = account.proxy.new_call ();
@@ -182,8 +187,13 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     sent_call.add_param ("count", "200");
     sent_call.set_method ("GET");
     TweetUtils.load_threaded.begin (sent_call, (obj, res) => {
-      Json.Node? root = TweetUtils.load_threaded.end (res);
-      on_dm_result (root);
+      try {
+        Json.Node? root = TweetUtils.load_threaded.end (res);
+        on_dm_result (root);
+      } catch (GLib.Error e) {
+        warning (e.message);
+        on_dm_result (null);
+      }
     });
 
   } // }}}
@@ -392,11 +402,6 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 
   public string? get_title () {
     return _("Direct Messages");
-  }
-
-  private void update_unread_count() {
-    tool_button.show_badge = (unread_count > 0);
-    tool_button.queue_draw();
   }
 
   public void adjust_unread_count_for_user_id (int64 user_id) {
