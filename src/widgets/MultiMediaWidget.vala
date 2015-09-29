@@ -171,21 +171,22 @@ private class MediaButton : Gtk.Button {
                                                   Gtk.FileChooserAction.SAVE,
                                                   _("Cancel"), Gtk.ResponseType.CANCEL,
                                                   _("Save"), Gtk.ResponseType.ACCEPT);
-    string filename = Utils.get_file_name (media.path);
+    string filename = Utils.get_file_name (media.thumb_url);
     file_dialog.set_current_name (filename);
     file_dialog.set_transient_for (window);
 
 
     int response = file_dialog.run ();
     if (response == Gtk.ResponseType.ACCEPT) {
-      File dest = File.new_for_uri (file_dialog.get_uri ());
-      File source = File.new_for_path (media.path);
-      try {
-        source.copy (dest, FileCopyFlags.OVERWRITE);
-      } catch (GLib.Error e) {
-        critical (e.message);
-      }
-      file_dialog.destroy ();
+      assert (false); // XXX
+      //File dest = File.new_for_uri (file_dialog.get_uri ());
+      //File source = File.new_for_path (media.path);
+      //try {
+        //source.copy (dest, FileCopyFlags.OVERWRITE);
+      //} catch (GLib.Error e) {
+        //critical (e.message);
+      //}
+      //file_dialog.destroy ();
     } else if (response == Gtk.ResponseType.CANCEL)
       file_dialog.destroy ();
   }
