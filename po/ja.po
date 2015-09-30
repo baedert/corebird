@@ -8,47 +8,52 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-17 15:59+0100\n"
-"PO-Revision-Date: 2015-03-18 10:26+0000\n"
+"POT-Creation-Date: 2015-09-30 16:02+0200\n"
+"PO-Revision-Date: 2015-09-12 08:49+0000\n"
 "Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
-"Language-Team: Japanese (Japan) (http://www.transifex.com/projects/p/"
-"corebird/language/ja_JP/)\n"
+"Language-Team: Japanese (Japan) (http://www.transifex.com/corebird/corebird/"
+"language/ja_JP/)\n"
 "Language: ja_JP\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../src/window/ComposeTweetWindow.vala:338
+#: ../src/window/ComposeTweetWindow.vala:119
+msgid "Quote tweet"
+msgstr ""
+
+#: ../src/window/ComposeTweetWindow.vala:352
 msgid "Select Image"
 msgstr "画像を選択する"
 
-#: ../src/window/ComposeTweetWindow.vala:339
-#: ../src/window/UserListDialog.vala:45
+#: ../src/window/ComposeTweetWindow.vala:353
+#: ../src/window/UserListDialog.vala:47
 #: ../src/widgets/MultiMediaWidget.vala:152 ../ui/compose-window.ui.h:2
 #: ../ui/list-list-entry.ui.h:1 ../ui/list-statuses-page.ui.h:8
 #: ../ui/filter-list-entry.ui.h:1 ../ui/modify-filter-dialog.ui.h:2
 #: ../ui/user-filter-entry.ui.h:1 ../ui/account-dialog.ui.h:2
-#: ../ui/image-crop-dialog.ui.h:1
+#: ../ui/image-crop-dialog.ui.h:1 ../ui/modify-snippet-dialog.ui.h:2
 msgid "Cancel"
 msgstr "キャンセル"
 
-#: ../src/window/ComposeTweetWindow.vala:340
+#: ../src/window/ComposeTweetWindow.vala:354
 msgid "Choose"
 msgstr "選択"
 
-#: ../src/window/UserListDialog.vala:38
+#: ../src/window/UserListDialog.vala:40
 msgid "Add to or Remove User From List"
 msgstr ""
 
-#: ../src/window/UserListDialog.vala:46
+#: ../src/window/UserListDialog.vala:48
 #: ../src/widgets/MultiMediaWidget.vala:153
 #: ../src/window/ImageCropDialog.vala:98 ../ui/list-statuses-page.ui.h:6
 #: ../ui/modify-filter-dialog.ui.h:3 ../ui/account-dialog.ui.h:3
+#: ../ui/modify-snippet-dialog.ui.h:3
 msgid "Save"
 msgstr "保存"
 
-#: ../src/window/UserListDialog.vala:59
+#: ../src/window/UserListDialog.vala:68
 msgid "You have no lists."
 msgstr ""
 
@@ -64,11 +69,15 @@ msgstr "一致"
 msgid "Doesn't match"
 msgstr "一致しない"
 
-#: ../src/widgets/TweetListBox.vala:104 ../src/widgets/TweetListBox.vala:152
+#: ../src/widgets/TweetListBox.vala:100
+msgid "Loading..."
+msgstr ""
+
+#: ../src/widgets/TweetListBox.vala:103 ../src/widgets/TweetListBox.vala:151
 msgid "No entries found"
 msgstr "エントリーがありません"
 
-#: ../src/widgets/TweetListBox.vala:112
+#: ../src/widgets/TweetListBox.vala:111
 msgid "Retry"
 msgstr ""
 
@@ -102,7 +111,7 @@ msgstr "誤ったPIN"
 msgid "Account already in use"
 msgstr ""
 
-#: ../src/widgets/PixbufButton.vala:55
+#: ../src/widgets/PixbufButton.vala:52
 msgid "Copy link"
 msgstr "リンク アドレスをコピー"
 
@@ -114,7 +123,7 @@ msgstr ""
 msgid "Save Original"
 msgstr ""
 
-#: ../src/widgets/MultiMediaWidget.vala:74 ../src/TweetInfoPage.vala:341
+#: ../src/widgets/MultiMediaWidget.vala:74 ../src/TweetInfoPage.vala:455
 msgid "Open in Browser"
 msgstr "ブラウザーで開く"
 
@@ -122,8 +131,7 @@ msgstr "ブラウザーで開く"
 msgid "Save image"
 msgstr "画像を保存"
 
-#: ../src/widgets/AddImageButton.vala:35
-#: ../src/widgets/AddImageButton.vala:175
+#: ../src/widgets/AddImageButton.vala:35 ../src/widgets/AddImageButton.vala:175
 msgid "Click to remove image"
 msgstr ""
 
@@ -131,123 +139,127 @@ msgstr ""
 msgid "Click to add image"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:112
+#: ../src/widgets/FollowButton.vala:43
+msgid "Follow"
+msgstr "フォロー"
+
+#: ../src/widgets/FollowButton.vala:44
+msgid "Unfollow"
+msgstr "フォロー解除"
+
+#: ../src/HomeTimeline.vala:110
 #, c-format
 msgid "%s retweeted %s"
 msgstr "%s が %s をリツイート"
 
-#: ../src/HomeTimeline.vala:114
+#: ../src/HomeTimeline.vala:113
 #, c-format
 msgid "%s tweeted"
 msgstr "%s がツイート"
 
-#: ../src/HomeTimeline.vala:121
+#: ../src/HomeTimeline.vala:120
 #, c-format
 msgid "%d new Tweet!"
 msgid_plural "%d new Tweets!"
 msgstr[0] ""
 
-#: ../src/HomeTimeline.vala:207
+#: ../src/HomeTimeline.vala:171
 msgid "Home"
 msgstr "ホーム"
 
-#: ../src/DMThreadsPage.vala:360
+#: ../src/DMThreadsPage.vala:369
 #, c-format
 msgid "%d new Message from %s"
 msgid_plural "%d new Messages from %s"
 msgstr[0] ""
 
-#: ../src/DMThreadsPage.vala:366
+#: ../src/DMThreadsPage.vala:375
 #, c-format
 msgid "New direct message from %s"
 msgstr "%s からダイレクトメッセージ"
 
-#: ../src/DMThreadsPage.vala:381 ../src/DMThreadsPage.vala:395
+#: ../src/DMThreadsPage.vala:390 ../src/DMThreadsPage.vala:404
 msgid "Direct Messages"
 msgstr "ダイレクトメッセージ"
 
-#: ../src/list/DMThreadEntry.vala:97
+#: ../src/list/DMThreadEntry.vala:106
 #, c-format
 msgid "(%d unread)"
 msgid_plural "(%d unread)"
 msgstr[0] ""
 
-#: ../src/ListsPage.vala:130 ../src/ListsPage.vala:135
+#: ../src/ListsPage.vala:123 ../src/ListsPage.vala:128
 #: ../ui/profile-page.ui.h:9
 msgid "Lists"
 msgstr "リスト"
 
-#: ../src/ProfilePage.vala:298
+#: ../src/ProfilePage.vala:280
 msgid "Protected profile"
 msgstr "非公開プロフィール"
 
-#: ../src/ProfilePage.vala:475
+#: ../src/ProfilePage.vala:517
 #, c-format
 msgid "Tweet to @%s"
 msgstr "@%s にツイート"
 
-#: ../src/ProfilePage.vala:572
-msgid "Unfollow"
-msgstr "フォロー解除"
+#: ../src/TweetInfoPage.vala:279
+msgid "Could not show tweet"
+msgstr ""
 
-#: ../src/ProfilePage.vala:576
-msgid "Follow"
-msgstr "フォロー"
-
-#: ../src/TweetInfoPage.vala:313
+#: ../src/TweetInfoPage.vala:446
 msgid "Retweets"
 msgstr "リツイート"
 
-#: ../src/TweetInfoPage.vala:314 ../src/FavoritesTimeline.vala:90
-#: ../src/FavoritesTimeline.vala:94
+#: ../src/TweetInfoPage.vala:447 ../src/FavoritesTimeline.vala:93
+#: ../src/FavoritesTimeline.vala:97
 msgid "Favorites"
 msgstr "お気に入り"
 
-#: ../src/TweetInfoPage.vala:341
+#: ../src/TweetInfoPage.vala:455
 msgid "Source"
 msgstr "ソース"
 
-#: ../src/TweetInfoPage.vala:352
+#: ../src/TweetInfoPage.vala:466
 msgid "Tweet Details"
 msgstr "ツイートの詳細"
 
-#: ../src/util/Utils.vala:110
+#: ../src/util/Utils.vala:156
 msgid "Now"
 msgstr "現在"
 
-#: ../src/util/Utils.vala:112
+#: ../src/util/Utils.vala:158
 #, c-format
 msgid "%dm"
 msgstr "%dm"
 
-#: ../src/util/Utils.vala:116
+#: ../src/util/Utils.vala:162
 #, c-format
 msgid "%dh"
 msgstr "%dh"
 
-#: ../src/SearchPage.vala:263 ../src/SearchPage.vala:272
+#: ../src/SearchPage.vala:298 ../src/SearchPage.vala:307
 #: ../ui/search-page.ui.h:1
 msgid "Search"
 msgstr "検索"
 
-#: ../src/Corebird.vala:148
+#: ../src/Corebird.vala:149
 msgid "Open Account"
 msgstr "アカウントを開く"
 
-#: ../src/MentionsTimeline.vala:98
+#: ../src/MentionsTimeline.vala:102
 #, c-format
 msgid "New Mention from @%s"
 msgstr "@%s からメンション"
 
-#: ../src/MentionsTimeline.vala:131 ../src/MentionsTimeline.vala:136
+#: ../src/MentionsTimeline.vala:135 ../src/MentionsTimeline.vala:140
 msgid "Mentions"
 msgstr "メンション"
 
-#: ../src/DMPage.vala:257
+#: ../src/DMPage.vala:314
 msgid "Direct Conversation"
 msgstr ""
 
-#: ../src/ListStatusesPage.vala:389
+#: ../src/ListStatusesPage.vala:376
 msgid "List"
 msgstr ""
 
@@ -279,77 +291,108 @@ msgid "Minimum height: %d pixel"
 msgid_plural "Minimum height: %d pixels"
 msgstr[0] ""
 
+#: ../src/window/SettingsDialog.vala:81
+msgid ""
+"Hey, check out this new #Corebird version! \\ (•◡•) / #cool "
+"#newisalwaysbetter"
+msgstr ""
+
 #: ../ui/settings-dialog.ui.h:1 ../ui/menu.ui.h:1
 msgid "Settings"
 msgstr "設定"
 
 #: ../ui/settings-dialog.ui.h:2
-msgid "Round Avatars"
-msgstr ""
-
-#: ../ui/settings-dialog.ui.h:3
 msgid "Maximum media size"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:4
+#: ../ui/settings-dialog.ui.h:3
 msgid "MB"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:5
+#: ../ui/settings-dialog.ui.h:4
 msgid "Auto scroll on new tweets"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:6
+#: ../ui/settings-dialog.ui.h:5
 msgid "Double-click activation"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:7
+#: ../ui/settings-dialog.ui.h:6
 msgid "Interface"
 msgstr "インターフェイス"
 
-#: ../ui/settings-dialog.ui.h:8
+#: ../ui/settings-dialog.ui.h:7
 msgid "On New Tweets"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:9
+#: ../ui/settings-dialog.ui.h:8
 msgid "Actions"
 msgstr "アクション"
 
-#: ../ui/settings-dialog.ui.h:10
+#: ../ui/settings-dialog.ui.h:9
 msgid "On New Mentions"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:11
+#: ../ui/settings-dialog.ui.h:10
 msgid "On New Messages"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:12
+#: ../ui/settings-dialog.ui.h:11
 msgid "Never"
 msgstr "しない"
 
-#: ../ui/settings-dialog.ui.h:13
+#: ../ui/settings-dialog.ui.h:12
 msgid "Every"
 msgstr "全て"
 
-#: ../ui/settings-dialog.ui.h:14
+#: ../ui/settings-dialog.ui.h:13
 msgid "Stack 5"
 msgstr "5 件溜まったら"
 
-#: ../ui/settings-dialog.ui.h:15
+#: ../ui/settings-dialog.ui.h:14
 msgid "Stack 10"
 msgstr "10 件溜まったら"
 
-#: ../ui/settings-dialog.ui.h:16
+#: ../ui/settings-dialog.ui.h:15
 msgid "Stack 25"
 msgstr "25 件溜まったら"
 
-#: ../ui/settings-dialog.ui.h:17
+#: ../ui/settings-dialog.ui.h:16
 msgid "Stack 50"
 msgstr "50 件溜まったら"
 
-#: ../ui/settings-dialog.ui.h:18
+#: ../ui/settings-dialog.ui.h:17
 msgid "Notifications"
 msgstr "通知"
+
+#: ../ui/settings-dialog.ui.h:18
+msgid "Round avatars"
+msgstr ""
+
+#: ../ui/settings-dialog.ui.h:19
+msgid "Remove trailing hashtags"
+msgstr ""
+
+#: ../ui/settings-dialog.ui.h:20
+msgid "Remove media links"
+msgstr ""
+
+#: ../ui/settings-dialog.ui.h:21 ../ui/search-page.ui.h:2
+#: ../ui/profile-page.ui.h:6
+msgid "Tweets"
+msgstr "ツイート"
+
+#: ../ui/settings-dialog.ui.h:22
+msgid "No snippets configured."
+msgstr ""
+
+#: ../ui/settings-dialog.ui.h:23
+msgid "You can activate snippets by writing the keyword and pressing TAB."
+msgstr ""
+
+#: ../ui/settings-dialog.ui.h:24
+msgid "Snippets"
+msgstr ""
 
 #: ../ui/menu.ui.h:2
 msgid "About"
@@ -390,7 +433,7 @@ msgstr "引用する"
 
 #: ../ui/tweet-list-entry.ui.h:2 ../ui/list-list-entry.ui.h:4
 #: ../ui/list-statuses-page.ui.h:7 ../ui/filter-list-entry.ui.h:2
-#: ../ui/account-dialog.ui.h:7
+#: ../ui/account-dialog.ui.h:7 ../ui/modify-snippet-dialog.ui.h:6
 msgid "Delete"
 msgstr "削除"
 
@@ -421,10 +464,6 @@ msgstr "名前:"
 #: ../ui/new-list-entry.ui.h:3
 msgid "Create"
 msgstr "作成"
-
-#: ../ui/search-page.ui.h:2 ../ui/profile-page.ui.h:6
-msgid "Tweets"
-msgstr "ツイート"
 
 #: ../ui/search-page.ui.h:3 ../ui/filter-page.ui.h:1
 msgid "Users"
@@ -590,6 +629,18 @@ msgstr ""
 msgid "Back"
 msgstr ""
 
+#: ../ui/modify-snippet-dialog.ui.h:1
+msgid "Add New Snippet"
+msgstr ""
+
+#: ../ui/modify-snippet-dialog.ui.h:4
+msgid "Keyword"
+msgstr ""
+
+#: ../ui/modify-snippet-dialog.ui.h:5
+msgid "Replacement"
+msgstr ""
+
 #: ../data/org.baedert.corebird.appdata.xml.in.h:1
 msgid ""
 "Corebird is a native GTK+ twitter client that provides vital features such "
@@ -600,11 +651,23 @@ msgstr ""
 
 #: ../data/org.baedert.corebird.appdata.xml.in.h:2
 msgid ""
-"Additional features include the ability to change to the GTK+ dark theme, "
-"searching and media uploads."
+"Additional features include local viewing of videos, multiple inline images, "
+"Lists, Filters, multiple accounts, etc."
 msgstr ""
-"加えて、GTK+ダークテーマへの変更や、検索、ならびにメディアのアップロードを行"
-"う機能を持っています。"
+
+#: ../data/org.baedert.corebird.appdata.xml.in.h:3
+msgid "Generic timeline view when using Corebird"
+msgstr ""
+
+#: ../data/org.baedert.corebird.appdata.xml.in.h:4
+msgid "Typical Twitter profile."
+msgstr ""
+
+#: ../data/org.baedert.corebird.appdata.xml.in.h:5
+msgid ""
+"Account settings like Name, Website, Description and Avatar can be "
+"configured."
+msgstr ""
 
 #: ../data/org.baedert.corebird.desktop.in.in.h:1
 msgid "Twitter Client"

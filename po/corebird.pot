@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-11 21:48+0200\n"
+"POT-Creation-Date: 2015-09-30 16:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -193,11 +193,11 @@ msgstr[1] ""
 msgid "Lists"
 msgstr ""
 
-#: ../src/ProfilePage.vala:282
+#: ../src/ProfilePage.vala:280
 msgid "Protected profile"
 msgstr ""
 
-#: ../src/ProfilePage.vala:519
+#: ../src/ProfilePage.vala:517
 #, c-format
 msgid "Tweet to @%s"
 msgstr ""
@@ -242,7 +242,7 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: ../src/Corebird.vala:150
+#: ../src/Corebird.vala:149
 msgid "Open Account"
 msgstr ""
 
@@ -255,7 +255,7 @@ msgstr ""
 msgid "Mentions"
 msgstr ""
 
-#: ../src/DMPage.vala:315
+#: ../src/DMPage.vala:314
 msgid "Direct Conversation"
 msgstr ""
 
