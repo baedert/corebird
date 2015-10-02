@@ -9,7 +9,7 @@
     <signal name="enter_notify_event" handler="enter_notify_cb" />
     <signal name="leave_notify_event" handler="leave_notify_cb" />
     <child>
-      <object class="GtkOverlay" id="overlay">
+      <object class="GtkFrame" id="frame">
         <property name="visible">true</property>
         <property name="can_focus">false</property>
         <!--<child type="overlay">-->
