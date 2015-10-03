@@ -39,7 +39,7 @@ pkg_modules="gtk+-3.0 >= 3.16
              sqlite3"
 
 if test "$disable_video" = "no"; then
-  pkg_modules="$pkg_modules gstreamer-video-1.0 gdk-x11-3.0"
+  pkg_modules="$pkg_modules gstreamer-video-1.0"
 fi
 
 PKG_CHECK_MODULES(CB, [$pkg_modules])
