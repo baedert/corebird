@@ -86,4 +86,11 @@ public class Media : GLib.Object{
 
     return MediaType.IMAGE;
   }
+
+  public inline bool is_video () {
+    return this.type == MediaType.GIF ||
+           this.type == MediaType.ANIMATED_GIF ||
+           this.type == MediaType.VINE ||
+           this.type == MediaType.TWITTER_VIDEO;
+  }
 }
