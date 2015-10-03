@@ -73,12 +73,6 @@ class MediaVideoWidget : Gtk.Stack {
     assert (area is Gtk.DrawingArea);
     this.add_named (area, "video");
 
-    var caps = new Gst.Caps.simple ("video/x-raw",
-                                    "width",  typeof (int), 640,
-                                    "height", typeof (int), 480,
-                                    "format", typeof (string),
-                                    "BGRA", null);
-
     var bus = this.src.get_bus ();
     bus.add_watch (GLib.Priority.DEFAULT, watch_cb);
     bus.message.connect ((msg) => {
