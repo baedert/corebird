@@ -52,6 +52,7 @@ public class Media : GLib.Object{
   public double percent_loaded { get; set; default = 0; }
   public MediaType type;
   public Cairo.Surface? thumbnail = null;
+  public Cairo.Surface? fullsize_thumbnail = null; /* XXX Remove this after full-media gets merged */
   /** If this media is fully downloaded and thumb is available */
   public bool loaded = false;
   public bool invalid = false;

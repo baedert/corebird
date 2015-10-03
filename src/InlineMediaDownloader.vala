@@ -292,6 +292,12 @@ public class InlineMediaDownloader : GLib.Object {
     var thumb = Utils.slice_pixbuf (pic, thumb_width, MultiMediaWidget.HEIGHT);
     yield Utils.write_pixbuf_async (thumb, thumb_out_stream, "png");
     media.thumbnail = Gdk.cairo_surface_create_from_pixbuf (thumb, 1, null);
+
+    if (media.is_video ()) {
+      media.fullsize_thumbnail = Gdk.cairo_surface_create_from_pixbuf (pic, 1, null);
+      assert (media.fullsize_thumbnail != null);
+    }
+
     media.loaded = true;
     media.finished_loading ();
   }
