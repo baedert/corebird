@@ -76,7 +76,6 @@ public class InlineMediaDownloader : GLib.Object {
                                     GLib.OutputStream? out_stream = null,
                                     GLib.OutputStream? out_stream2 = null) {
     GLib.FileUtils.remove (m.path);
-    GLib.FileUtils.remove (m.thumb_path);
     m.invalid = true;
     m.loaded = true;
     try {
@@ -126,7 +125,6 @@ public class InlineMediaDownloader : GLib.Object {
     GLib.SourceFunc callback = load_inline_media.callback;
 
     media.path = get_media_path (t, media);
-    media.thumb_path = get_thumb_path (t, media);
 
     if (this.urls_downloading.contains (media.url)) {
       ulong id = 0;
@@ -137,57 +135,21 @@ public class InlineMediaDownloader : GLib.Object {
       yield;
     }
 
-    GLib.OutputStream thumb_out_stream = null;
     GLib.OutputStream media_out_stream = null;
 
-    bool main_file_exists = false;
     try {
       media_out_stream = File.new_for_path (media.path).create (FileCreateFlags.NONE);
     } catch (GLib.Error e) {
-      if (e is GLib.IOError.EXISTS)
-        main_file_exists = true;
-      else {
-        warning (e.message);
-        return;
-      }
-    }
-
-    try {
-      thumb_out_stream = File.new_for_path (media.thumb_path).create (FileCreateFlags.NONE);
-      // If we came to this point, the above operation did not throw a GError, so
-      // the thumbnail does not exist, right?
-      if (main_file_exists) {
-        var in_stream = GLib.File.new_for_path (media.path).read ();
-        yield load_animation (t, in_stream, thumb_out_stream, media);
-        try {
-          in_stream.close ();
-          thumb_out_stream.close ();
-        } catch (GLib.Error e) {
-          warning (e.message);
-        }
-        return;
-      }
-    } catch (GLib.Error e) {
       if (e is GLib.IOError.EXISTS) {
-        if (main_file_exists) {
-          media.thumbnail = load_surface (media.thumb_path);
-          if (media.thumbnail == null) {
-            warning ("'%s` couldn't be loaded from disk.", media.url);
-            media.invalid = true;
-          }
-
-          media.loaded = true;
-          media.finished_loading ();
+        /* No input stream has been created! */
+        try {
+          var in_stream = File.new_for_path (media.path).read ();
+          yield load_animation (t, in_stream, media);
+          in_stream.close ();
           return;
-        } else  {
-          // We just delete the old thumbnail and proceed
-          GLib.FileUtils.remove (media.thumb_path);
-          try {
-            thumb_out_stream = File.new_for_path (media.thumb_path).create (FileCreateFlags.NONE);
-          } catch (GLib.Error e) {
-            critical (e.message);
-            return;
-          }
+        } catch (GLib.Error e) {
+          GLib.FileUtils.remove (media.path);
+          warning (e.message);
         }
       } else {
         warning (e.message);
@@ -227,7 +189,7 @@ public class InlineMediaDownloader : GLib.Object {
       double max = Settings.max_media_size ();
       if (mb > max) {
         debug ("Image %s won't be downloaded,  %fMB > %fMB", media.thumb_url, mb, max);
-        mark_invalid (media, null, thumb_out_stream, media_out_stream);
+        mark_invalid (media, null, /*XXX */ null, media_out_stream);
         SOUP_SESSION.cancel_message (msg, Soup.Status.CANCELLED);
       } else {
         media.length = content_length;
@@ -246,7 +208,7 @@ public class InlineMediaDownloader : GLib.Object {
       if (_msg.status_code != Soup.Status.OK) {
         debug ("Request on '%s' returned '%s'", _msg.uri.to_string (false),
                Soup.Status.get_phrase (_msg.status_code));
-        mark_invalid (media, null, thumb_out_stream, media_out_stream);
+        mark_invalid (media, null, null, media_out_stream);
         this.urls_downloading.remove (media.url);
         callback ();
         return;
@@ -255,10 +217,9 @@ public class InlineMediaDownloader : GLib.Object {
         var ms = new MemoryInputStream.from_data (_msg.response_body.data, null);
         media_out_stream.write_all (_msg.response_body.data, null, null);
         media_out_stream.close ();
-        load_animation.begin (t, ms, thumb_out_stream, media, () => {
+        load_animation.begin (t, ms, media, () => {
           try {
             ms.close ();
-            thumb_out_stream.close ();
           } catch (GLib.Error e) {
             warning (e.message);
           }
@@ -277,20 +238,18 @@ public class InlineMediaDownloader : GLib.Object {
 
   private async void load_animation (MiniTweet         t,
                                      GLib.InputStream  in_stream,
-                                     GLib.OutputStream thumb_out_stream,
                                      Media             media) {
     Gdk.PixbufAnimation anim;
     try {
       anim = yield new Gdk.PixbufAnimation.from_stream_async (in_stream, null);
     } catch (GLib.Error e) {
       warning ("%s: %s", media.url, e.message);
-      mark_invalid (media, in_stream, thumb_out_stream);
+      mark_invalid (media, in_stream);
       return;
     }
     var pic = anim.get_static_image ();
     int thumb_width = (int)(600.0 / (float)t.medias.length);
     var thumb = Utils.slice_pixbuf (pic, thumb_width, MultiMediaWidget.HEIGHT);
-    yield Utils.write_pixbuf_async (thumb, thumb_out_stream, "png");
     media.thumbnail = Gdk.cairo_surface_create_from_pixbuf (thumb, 1, null);
 
     if (media.is_video ()) {
@@ -311,12 +270,6 @@ public class InlineMediaDownloader : GLib.Object {
     int64 id = t.id;
 
     return Dirs.cache (@"assets/media/$(id)_$(t.author.id)_$(media.id).$(ext)");
-  }
-
-  public string get_thumb_path (MiniTweet t, Media media) {
-    int64 id = t.id;
-
-    return Dirs.cache (@"assets/media/thumbs/$(id)_$(t.author.id)_$(media.id).png");
   }
 
 }

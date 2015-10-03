@@ -32,11 +32,9 @@ class MediaVideoWidget : Gtk.Stack {
 
   public MediaVideoWidget (Media media) {
     this.cancellable = new GLib.Cancellable ();
-    //assert (media.thumbnail != null);
-    //var image_surface = (Cairo.ImageSurface) media.thumbnail;
-    //this.set_size_request (image_surface.get_width (), image_surface.get_height ());
-    // TODO: In the full-media branch, we could actually use the
-    //       thumbnail size to set the size-request...
+    assert (media.fullsize_thumbnail != null);
+    var image_surface = (Cairo.ImageSurface) media.fullsize_thumbnail;
+    this.set_size_request (image_surface.get_width (), image_surface.get_height ());
     // TODO: Show the thumbnail in a GtkImage, buffer a bit, then play the video.
 #if VIDEO
     if (media.type == MediaType.VINE)
@@ -48,7 +46,6 @@ class MediaVideoWidget : Gtk.Stack {
     else
       critical ("Unknown video media type: %d", media.type);
 #endif
-    this.set_size_request (435, 435);
 
     // set up error label
     error_label.label = "PENIS";
@@ -105,7 +102,6 @@ class MediaVideoWidget : Gtk.Stack {
   }
 
   private void seek_data_cb (uint64 pos) {
-    debug ("Trying to seek to %s", pos.to_string ());
     this.seek_pos = pos;
   }
 

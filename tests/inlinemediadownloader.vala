@@ -58,10 +58,8 @@ void normal_download () {
   t.source_tweet.medias = new Media[1];
   t.source_tweet.medias[0] = media;
   var media_path = InlineMediaDownloader.get ().get_media_path (t.source_tweet, media);
-  var thumb_path = InlineMediaDownloader.get ().get_thumb_path (t.source_tweet, media);
   // first delete the file if it does exist
   delete_file (media_path);
-  delete_file (thumb_path);
     InlineMediaDownloader.get ().load_media.begin (t.source_tweet, media, () => {
     assert (media.path != null);
     assert (media.thumbnail != null);
@@ -90,9 +88,7 @@ void animation_download () {
   t.source_tweet.medias[0] = media;
 
   var media_path = InlineMediaDownloader.get ().get_media_path (t.source_tweet, media);
-  var thumb_path = InlineMediaDownloader.get ().get_thumb_path (t.source_tweet, media);
   delete_file (media_path);
-  delete_file (thumb_path);
 
   InlineMediaDownloader.get ().load_media.begin (t.source_tweet, media, () => {
     assert (media.path != null);
@@ -123,9 +119,7 @@ void download_twice () {
   t.source_tweet.medias[0] = media;
 
   var media_path = InlineMediaDownloader.get ().get_media_path (t.source_tweet, media);
-  var thumb_path = InlineMediaDownloader.get ().get_thumb_path (t.source_tweet, media);
   delete_file (media_path);
-  delete_file (thumb_path);
 
   InlineMediaDownloader.get ().load_media.begin (t.source_tweet, media, () => {
     assert (media.path != null);
@@ -161,23 +155,16 @@ void no_thumbnail () {
 
 
   var media_path = InlineMediaDownloader.get ().get_media_path (t.source_tweet, media);
-  var thumb_path = InlineMediaDownloader.get ().get_thumb_path (t.source_tweet, media);
   delete_file (media_path);
-  delete_file (thumb_path);
 
   InlineMediaDownloader.get ().load_media.begin (t.source_tweet, media, () => {
     assert (media.path != null);
     assert (media.thumbnail != null);
-    assert (media.thumb_path == thumb_path);
-    assert (GLib.FileUtils.test (media.thumb_path, GLib.FileTest.EXISTS));
     // Delete the thumbnail
-    //delete_file (thumb_path);
     // Download again
     InlineMediaDownloader.get ().load_media.begin (t.source_tweet, media, () => {
                                                    //assert (false);
       assert (media.thumbnail != null);
-      assert (media.thumb_path == thumb_path);
-      assert (GLib.FileUtils.test (media.thumb_path, GLib.FileTest.EXISTS));
       main_loop.quit ();
     });
   });
@@ -207,24 +194,18 @@ void no_media () {
 
 
   var media_path = InlineMediaDownloader.get ().get_media_path (t.source_tweet, media);
-  var thumb_path = InlineMediaDownloader.get ().get_thumb_path (t.source_tweet, media);
   delete_file (media_path);
-  delete_file (thumb_path);
 
   InlineMediaDownloader.get ().load_media.begin (t.source_tweet, media, () => {
     assert (media.path == media_path);
-    assert (media.thumb_path == thumb_path);
     assert (GLib.FileUtils.test (media.path, GLib.FileTest.EXISTS));
-    assert (GLib.FileUtils.test (media.thumb_path, GLib.FileTest.EXISTS));
     // Delete the media (not the thumbnail)
     delete_file (media_path);
     assert (!GLib.FileUtils.test (media.path, GLib.FileTest.EXISTS));
     InlineMediaDownloader.get ().load_media.begin (t.source_tweet, media, () => {
       assert (media.path == media_path);
-      assert (media.thumb_path == thumb_path);
       assert (media.thumbnail != null);
       assert (GLib.FileUtils.test (media.path, GLib.FileTest.EXISTS));
-      assert (GLib.FileUtils.test (media.thumb_path, GLib.FileTest.EXISTS));
       main_loop.quit ();
     });
   });
@@ -254,15 +235,12 @@ void too_big () {
 
 
   var media_path = InlineMediaDownloader.get ().get_media_path (t.source_tweet, media);
-  var thumb_path = InlineMediaDownloader.get ().get_thumb_path (t.source_tweet, media);
   // first delete the file if it does exist
   delete_file (media_path);
-  delete_file (thumb_path);
 
   InlineMediaDownloader.get ().load_media.begin (t.source_tweet, media, () => {
     // gets set anyway
     assert (media.path == media_path);
-    assert (media.thumb_path == thumb_path);
     assert (media.thumbnail == null);
     // should be marked invalid
     assert (media.invalid);
@@ -292,17 +270,14 @@ void double_download () {
 
 
   var media_path = InlineMediaDownloader.get ().get_media_path (t.source_tweet, media);
-  var thumb_path = InlineMediaDownloader.get ().get_thumb_path (t.source_tweet, media);
   // first delete the file if it does exist
   delete_file (media_path);
-  delete_file (thumb_path);
 
   var collect_obj = new Collect (5);
 
   InlineMediaDownloader.get ().load_media.begin (t.source_tweet, media, () => {
     message ("First callback");
     assert (media.path == media_path);
-    assert (media.thumb_path == thumb_path);
     assert (media.thumbnail != null);
     assert (GLib.FileUtils.test (media.path, GLib.FileTest.EXISTS));
     assert (!media.invalid);
@@ -312,7 +287,6 @@ void double_download () {
   InlineMediaDownloader.get ().load_media.begin (t.source_tweet, media, () => {
     message ("Second callback");
     assert (media.path == media_path);
-    assert (media.thumb_path == thumb_path);
     assert (media.thumbnail != null);
     assert (GLib.FileUtils.test (media.path, GLib.FileTest.EXISTS));
     assert (!media.invalid);
@@ -321,7 +295,6 @@ void double_download () {
   InlineMediaDownloader.get ().load_media.begin (t.source_tweet, media, () => {
     message ("Second callback");
     assert (media.path == media_path);
-    assert (media.thumb_path == thumb_path);
     assert (media.thumbnail != null);
     assert (GLib.FileUtils.test (media.path, GLib.FileTest.EXISTS));
     assert (!media.invalid);
@@ -330,7 +303,6 @@ void double_download () {
   InlineMediaDownloader.get ().load_media.begin (t.source_tweet, media, () => {
     message ("Second callback");
     assert (media.path == media_path);
-    assert (media.thumb_path == thumb_path);
     assert (media.thumbnail != null);
     assert (GLib.FileUtils.test (media.path, GLib.FileTest.EXISTS));
     assert (!media.invalid);
@@ -339,7 +311,6 @@ void double_download () {
   InlineMediaDownloader.get ().load_media.begin (t.source_tweet, media, () => {
     message ("Second callback");
     assert (media.path == media_path);
-    assert (media.thumb_path == thumb_path);
     assert (media.thumbnail != null);
     assert (GLib.FileUtils.test (media.path, GLib.FileTest.EXISTS));
     assert (!media.invalid);
