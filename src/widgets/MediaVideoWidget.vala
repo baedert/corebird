@@ -20,7 +20,7 @@ class MediaVideoWidget : Gtk.Stack {
   private Gst.Element src;
   private Gst.Element sink;
 #endif
-  private Gtk.ProgressBar progress_bar = new Gtk.ProgressBar ();
+  //private Gtk.ProgressBar progress_bar = new Gtk.ProgressBar ();
   private int64 file_content_length = -1;
   private int64 current_content_length = 0;
   private GLib.Cancellable cancellable;
@@ -30,6 +30,12 @@ class MediaVideoWidget : Gtk.Stack {
 
   public MediaVideoWidget (Media media) {
     this.cancellable = new GLib.Cancellable ();
+    //assert (media.thumbnail != null);
+    //var image_surface = (Cairo.ImageSurface) media.thumbnail;
+    //this.set_size_request (image_surface.get_width (), image_surface.get_height ());
+    // TODO: In the full-media branch, we could actually use the
+    //       thumbnail size to set the size-request...
+    // TODO: Show the thumbnail in a GtkImage, buffer a bit, then play the video.
 #if VIDEO
     if (media.type == MediaType.VINE)
       fetch_real_url.begin (media.url, "<meta property=\"twitter:player:stream\" content=\"(.*?)\"");
@@ -42,26 +48,112 @@ class MediaVideoWidget : Gtk.Stack {
 #endif
     this.set_size_request (435, 435);
 
-    progress_bar.valign = Gtk.Align.CENTER;
-    progress_bar.margin = 20;
-    progress_bar.show_text = true;
+    //progress_bar.valign = Gtk.Align.CENTER;
+    //progress_bar.margin = 20;
+    //progress_bar.show_text = true;
 
     // set up error label
+    error_label.label = "PENIS";
     error_label.margin = 20;
     error_label.wrap = true;
     error_label.selectable = true;
 
-    this.add_named (progress_bar, "progress");
-    this.add_named (error_label, "error");
+    //this.add_named (progress_bar, "progress");
+    //this.add_named (error_label, "error");
 
-    this.visible_child = progress_bar;
-    this.button_press_event.connect (button_press_event_cb);
-    this.key_press_event.connect (key_press_event_cb);
-    this.show_all ();
+    //this.button_press_event.connect (button_press_event_cb);
+    //this.key_press_event.connect (key_press_event_cb);
+  }
+
+
+
+
+
+  private int64 current_read_pos = 0;
+  private uint64 seek_pos = 0;
+  private void need_data_cb (uint size) {
+    if (this.file_content_length == -1)  {message ("No content length set!"); return; }
+
+
+    if (available_data < this.video_data.length) {
+      message ("not all data here yet");
+      return;
+    }
+
+
+    //message ("NEED DATA :( at %s for %u bytes", seek_pos.to_string (), size);
+
+
+    if (seek_pos + size > available_data) {
+      //if (available_data == this.video_data.length - 1) {
+        //message ("======================= EOS");
+        //Gst.FlowReturn ret;
+        //GLib.Signal.emit_by_name (this.app_src, "end-of-stream", out ret);
+      //} else
+        message ("seek_pos + size > available_data");
+      return;
+    }
+
+      //message ("%s > %s!", (seek_pos + size).to_string (), available_data.to_string ());
+      //return;
+    //}
+
+    //uint64 bytes = size;
+    //uint64 bytes = seek_pos + size;
+    //if (bytes > this.available_data)
+      //bytes = this.available_data - 1; // XXX -1?
+
+    //bytes -= seek_pos;
+
+    //message ("%s, %s", bytes.to_string (), size.to_string ());
+    //assert (bytes == size);
+
+    //message ("Pushing %s bytes", bytes.to_string ());
+
+    //message ("Pushing bytes from %s to %s of %s", ((size_t)seek_pos).to_string (), (seek_pos + size).to_string (),
+             //available_data.to_string ());
+    //message ("size: %s", ((size_t)size).to_string ());
+
+    var buffer = new Gst.Buffer ();
+    var mem = new Gst.Memory.wrapped (Gst.MemoryFlags.READONLY,
+                                      this.video_data,
+                                      (size_t)this.seek_pos,
+                                      (size_t)size,
+                                      null,
+                                      null);
+
+
+    buffer.append_memory (mem);
+
+    Gst.FlowReturn ret;
+    GLib.Signal.emit_by_name (this.app_src, "push-buffer", buffer, out ret);
+
+    this.seek_pos += size;
+
+
+  }
+
+  private void seek_data_cb (uint64 pos) {
+    message ("Trying to seek to %s", pos.to_string ());
+    this.seek_pos = pos;
+  }
+
+  private void enough_data_cb () {
+    message ("enough data");
+  }
+
+  Gst.Element? app_src = null;
+  private void source_setup_cb (Gst.Element source,
+                                Gst.Element playbin) {
+    assert (source != null);
+    app_src = source;
+    app_src.set ("stream-type", 2); // 2 = random access
+    GLib.Signal.connect_swapped (app_src, "need-data", (GLib.Callback)need_data_cb, this);
+    GLib.Signal.connect_swapped (app_src, "seek-data", (GLib.Callback)seek_data_cb, this);
+    GLib.Signal.connect_swapped (app_src, "enough-data", (GLib.Callback)enough_data_cb, this);
   }
 
   public void init () {
-    //this.src = Gst.ElementFactory.make ("videotestsrc", "video");
     this.src = Gst.ElementFactory.make ("playbin", "video");
     this.sink = Gst.ElementFactory.make ("gtksink", "gtksink");
     if (sink == null) {
@@ -83,6 +175,11 @@ class MediaVideoWidget : Gtk.Stack {
     });
 
     this.src.set ("video-sink", this.sink);
+    this.src.set ("uri", "appsrc://");
+    GLib.Signal.connect_swapped (this.src, "source-setup", (GLib.Callback)source_setup_cb, this);
+
+    this.visible_child_name = "video";
+    this.src.set_state (Gst.State.PAUSED);
   }
 
   private void show_error (string error_message) {
@@ -91,15 +188,15 @@ class MediaVideoWidget : Gtk.Stack {
   }
 
 
-  private bool button_press_event_cb (Gdk.EventButton evt) {
-    stop ();
-    return false;
-  }
+  //private bool button_press_event_cb (Gdk.EventButton evt) {
+    //stop ();
+    //return false;
+  //}
 
-  private bool key_press_event_cb (Gdk.EventKey evt) {
-    stop ();
-    return true;
-  }
+  //private bool key_press_event_cb (Gdk.EventKey evt) {
+    //stop ();
+    //return true;
+  //}
 
   private void stop () {
     cancellable.cancel ();
@@ -114,11 +211,12 @@ class MediaVideoWidget : Gtk.Stack {
   }
 
 #if VIDEO
-
   private bool watch_cb (Gst.Bus bus, Gst.Message msg) {
     if (msg.type == Gst.MessageType.EOS) {
       // LOOP
-      this.src.seek (1.0, Gst.Format.TIME, Gst.SeekFlags.FLUSH,
+      message ("=================== FLUSHING!");
+      seek_pos = 0;
+        this.src.seek (1, Gst.Format.BYTES, Gst.SeekFlags.FLUSH,
                      Gst.SeekType.SET, 0,
                      Gst.SeekType.NONE, -1);
     } else if (msg.type == Gst.MessageType.ERROR) {
@@ -166,19 +264,52 @@ class MediaVideoWidget : Gtk.Stack {
 
 
 
+  private uint8[] video_data;
+  private size_t  available_data;
+
   private async void download_video (string url) {
     var msg = new Soup.Message ("GET", url);
     msg.got_headers.connect (() => {
       file_content_length = msg.response_headers.get_content_length ();
+      video_data = new uint8[file_content_length];
+      available_data = 0;
+      assert (app_src != null);
+      app_src.set ("size", file_content_length);
+      message ("Setting size to %s bytes", file_content_length.to_string ());
     });
     cancellable.cancelled.connect (() => {
       SOUP_SESSION.cancel_message (msg, Soup.Status.CANCELLED);
     });
     msg.got_chunk.connect ((buffer) => {
+      message ("Got another %s bytes", buffer.length.to_string ());
+      int PLAY_SIZE = (int)(0.1 * this.file_content_length);
+
+      var old_length = current_content_length;
       current_content_length += buffer.length;
-      double fraction = (double) current_content_length / (double) file_content_length;
-      progress_bar.fraction = fraction;
-      progress_bar.text = "%d %%".printf ((int)(fraction * 100));
+
+      if (old_length < PLAY_SIZE && current_content_length > PLAY_SIZE) {
+      //message ("Got all the data");
+      //Gst.FlowReturn ret;
+      //GLib.Signal.emit_by_name (this.app_src, "end-of-stream", out ret);
+        this.src.set_state (Gst.State.PLAYING);
+      }
+
+
+      for (int i = 0; i < buffer.length; i ++) {
+      //message ("Setting byte %s of %s", (available_data + i).to_string (), video_data.length.to_string ());
+        video_data[available_data + i] = buffer.data[i];
+        }
+
+      available_data += buffer.length;
+
+      //var gst_buf = new Gst.Buffer.wrapped (buffer.data);
+      //Gst.FlowReturn ret;
+      //GLib.Signal.emit_by_name (this.app_src, "push-buffer", gst_buf, out ret);
+      //message ("after emit");
+      //app_src.
+      //double fraction = (double) current_content_length / (double) file_content_length;
+      //progress_bar.fraction = fraction;
+      //progress_bar.text = "%d %%".printf ((int)(fraction * 100));
     });
     SOUP_SESSION.queue_message (msg, (s, _msg) => {
       if (_msg.status_code != Soup.Status.OK) {
@@ -190,13 +321,18 @@ class MediaVideoWidget : Gtk.Stack {
         return;
       }
 
-#if VIDEO
-      string b64 = GLib.Base64.encode ((uchar[])msg.response_body.data);
-      var sa = "data:;base64," + b64;
-      this.src.set ("uri", sa);
-      this.visible_child_name = "video";
-      this.src.set_state (Gst.State.PLAYING);
-#endif
+      message ("Got all the data");
+      Gst.FlowReturn ret;
+      GLib.Signal.emit_by_name (this.app_src, "end-of-stream", out ret);
+
+
+      //string b64 = GLib.Base64.encode ((uchar[])msg.response_body.data);
+      //var sa = "data:;base64," + b64;
+      //this.src.set ("uri", sa);
+      //this.visible_child_name = "video";
+
+
+      //this.src.set_state (Gst.State.PLAYING);
       download_video.callback ();
     });
     yield;
