@@ -28,6 +28,8 @@ class MediaVideoWidget : Gtk.Stack {
   private uint8[] video_data;
   private size_t  available_data;
 
+  private Gtk.Image image;
+
 
 
   public MediaVideoWidget (Media media) {
@@ -48,21 +50,21 @@ class MediaVideoWidget : Gtk.Stack {
 #endif
 
     // set up error label
-    error_label.label = "PENIS";
     error_label.margin = 20;
     error_label.wrap = true;
     error_label.selectable = true;
 
-    //this.add_named (error_label, "error");
+    image = new Gtk.Image ();
+    image.set_from_surface (media.fullsize_thumbnail);
 
-    //this.button_press_event.connect (button_press_event_cb);
-    //this.key_press_event.connect (key_press_event_cb);
+    this.add_named (image, "thumbnail");
+    this.add_named (error_label, "error");
+
+    this.visible_child = image;
+
+    this.button_press_event.connect (button_press_event_cb);
+    this.key_press_event.connect (key_press_event_cb);
   }
-
-
-
-
-
 
   private void need_data_cb (uint size) {
 
@@ -139,7 +141,6 @@ class MediaVideoWidget : Gtk.Stack {
     this.src.set ("uri", "appsrc://");
     GLib.Signal.connect_swapped (this.src, "source-setup", (GLib.Callback)source_setup_cb, this);
 
-    this.visible_child_name = "video";
     this.src.set_state (Gst.State.PAUSED);
   }
 
@@ -149,15 +150,15 @@ class MediaVideoWidget : Gtk.Stack {
   }
 
 
-  //private bool button_press_event_cb (Gdk.EventButton evt) {
-    //stop ();
-    //return false;
-  //}
+  private bool button_press_event_cb (Gdk.EventButton evt) {
+    stop ();
+    return false;
+  }
 
-  //private bool key_press_event_cb (Gdk.EventKey evt) {
-    //stop ();
-    //return true;
-  //}
+  private bool key_press_event_cb (Gdk.EventKey evt) {
+    stop ();
+    return true;
+  }
 
   private void stop () {
     cancellable.cancel ();
@@ -253,6 +254,7 @@ class MediaVideoWidget : Gtk.Stack {
       Gst.FlowReturn ret;
       GLib.Signal.emit_by_name (this.app_src, "end-of-stream", out ret);
 
+      this.visible_child_name = "video";
       this.src.set_state (Gst.State.PLAYING);
       download_video.callback ();
     });
