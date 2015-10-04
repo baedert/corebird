@@ -37,7 +37,6 @@ class MediaVideoWidget : Gtk.Stack {
     assert (media.fullsize_thumbnail != null);
     var image_surface = (Cairo.ImageSurface) media.fullsize_thumbnail;
     this.set_size_request (image_surface.get_width (), image_surface.get_height ());
-    // TODO: Show the thumbnail in a GtkImage, buffer a bit, then play the video.
 #if VIDEO
     if (media.type == MediaType.VINE)
       fetch_real_url.begin (media.url, "<meta property=\"twitter:player:stream\" content=\"(.*?)\"");
@@ -120,7 +119,7 @@ class MediaVideoWidget : Gtk.Stack {
     this.src = Gst.ElementFactory.make ("playbin", "video");
     this.sink = Gst.ElementFactory.make ("gtksink", "gtksink");
     if (sink == null) {
-      warning ("Could not create a gtksink. Need gst-plugins-bad >= 1.6");
+      critical ("Could not create a gtksink. Need gst-plugins-bad >= 1.6");
       return;
     }
     this.sink.get ("widget", out area);
