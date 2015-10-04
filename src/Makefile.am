@@ -68,6 +68,7 @@ cb_sources = \
 			widgets/LazyMenuButton.vala \
 			widgets/ImpostorWidget.vala \
 			widgets/FollowButton.vala \
+			widgets/SurfaceProgress.vala \
 			util/TweetUtils.vala \
 			util/Utils.vala \
 			util/BundleHistory.vala \
