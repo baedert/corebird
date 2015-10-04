@@ -28,7 +28,7 @@ class MediaVideoWidget : Gtk.Stack {
   private uint8[] video_data;
   private size_t  available_data;
 
-  private Gtk.Image image;
+  private SurfaceProgress image;
 
 
 
@@ -53,8 +53,8 @@ class MediaVideoWidget : Gtk.Stack {
     error_label.wrap = true;
     error_label.selectable = true;
 
-    image = new Gtk.Image ();
-    image.set_from_surface (media.fullsize_thumbnail);
+    image = new SurfaceProgress ();
+    image.surface = (Cairo.ImageSurface)media.fullsize_thumbnail;
 
     this.add_named (image, "thumbnail");
     this.add_named (error_label, "error");
@@ -231,6 +231,10 @@ class MediaVideoWidget : Gtk.Stack {
 
   private async void download_video (string url) {
     var msg = new Soup.Message ("GET", url);
+    cancellable.cancelled.connect (() => {
+      SOUP_SESSION.cancel_message (msg, Soup.Status.CANCELLED);
+    });
+
     msg.got_headers.connect (() => {
       this.video_data = new uint8[msg.response_headers.get_content_length ()];
       this.available_data = 0;
@@ -239,15 +243,17 @@ class MediaVideoWidget : Gtk.Stack {
       app_src.set ("size", this.video_data.length);
 #endif
     });
-    cancellable.cancelled.connect (() => {
-      SOUP_SESSION.cancel_message (msg, Soup.Status.CANCELLED);
-    });
+
     msg.got_chunk.connect ((buffer) => {
       for (int i = 0; i < buffer.length; i ++) {
         video_data[available_data + i] = buffer.data[i];
       }
 
       available_data += buffer.length;
+
+      double progress = (double)this.available_data / (double)this.video_data.length;
+      this.image.progress = progress;
+
     });
     SOUP_SESSION.queue_message (msg, (s, _msg) => {
       if (_msg.status_code != Soup.Status.OK) {
