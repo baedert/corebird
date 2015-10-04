@@ -77,8 +77,7 @@ fi
 if test "$disable_video" = "no"; then
   CB_VALA_FLAGS="$CB_VALA_FLAGS \
                  -D VIDEO \
-                 --pkg gstreamer-video-1.0 \
-                 --pkg gdk-x11-3.0"
+                 --pkg gstreamer-video-1.0"
 fi
 
 if test "$enable_debug" = "yes"; then

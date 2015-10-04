@@ -65,6 +65,7 @@ class MediaVideoWidget : Gtk.Stack {
     this.key_press_event.connect (key_press_event_cb);
   }
 
+#if VIDEO
   private void need_data_cb (uint size) {
 
     if (this.video_data == null) {
@@ -115,7 +116,10 @@ class MediaVideoWidget : Gtk.Stack {
     GLib.Signal.connect_swapped (app_src, "seek-data", (GLib.Callback)seek_data_cb, this);
   }
 
+#endif
+
   public void init () {
+#if VIDEO
     this.src = Gst.ElementFactory.make ("playbin", "video");
     this.sink = Gst.ElementFactory.make ("gtksink", "gtksink");
     if (sink == null) {
@@ -141,6 +145,7 @@ class MediaVideoWidget : Gtk.Stack {
     GLib.Signal.connect_swapped (this.src, "source-setup", (GLib.Callback)source_setup_cb, this);
 
     this.src.set_state (Gst.State.PAUSED);
+#endif
   }
 
   private void show_error (string error_message) {
@@ -227,8 +232,10 @@ class MediaVideoWidget : Gtk.Stack {
     msg.got_headers.connect (() => {
       this.video_data = new uint8[msg.response_headers.get_content_length ()];
       this.available_data = 0;
+#if VIDEO
       assert (app_src != null);
       app_src.set ("size", this.video_data.length);
+#endif
     });
     cancellable.cancelled.connect (() => {
       SOUP_SESSION.cancel_message (msg, Soup.Status.CANCELLED);
@@ -250,11 +257,12 @@ class MediaVideoWidget : Gtk.Stack {
         return;
       }
 
+#if VIDEO
       Gst.FlowReturn ret;
       GLib.Signal.emit_by_name (this.app_src, "end-of-stream", out ret);
-
-      this.visible_child_name = "video";
       this.src.set_state (Gst.State.PLAYING);
+#endif
+      this.visible_child_name = "video";
       download_video.callback ();
     });
     yield;
