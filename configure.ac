@@ -58,7 +58,7 @@ CB_VALA_FLAGS=" \
   --thread \
   --enable-checking \
   --enable-experimental \
-  --vapidir=vapi/"
+  --vapidir=\$(top_srcdir)/vapi/"
 
 
 # }}}
