@@ -188,6 +188,8 @@ class MediaVideoWidget : Gtk.Stack {
       string debug;
       msg.parse_error (out error, out debug);
       message (debug);
+    } else if (msg.type == Gst.MessageType.ASYNC_DONE) {
+      this.visible_child_name = "video";
     }
     return true;
   }
@@ -262,7 +264,8 @@ class MediaVideoWidget : Gtk.Stack {
       GLib.Signal.emit_by_name (this.app_src, "end-of-stream", out ret);
       this.src.set_state (Gst.State.PLAYING);
 #endif
-      this.visible_child_name = "video";
+      this.image.progress = 1.0;
+      //this.visible_child_name = "video";
       download_video.callback ();
     });
     yield;
