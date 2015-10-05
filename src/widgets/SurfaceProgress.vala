@@ -64,7 +64,7 @@ class SurfaceProgress : Gtk.Widget {
     /* Draw the surface slightly translucent on the widget's surface */
     ct.rectangle (0, 0, width, height);
     ct.set_source_surface (this._surface, 0, 0);
-    ct.paint_with_alpha (0.3);
+    ct.paint_with_alpha (0.5);
 
 
     /* Draw this._surface on tmp surface */
@@ -76,7 +76,6 @@ class SurfaceProgress : Gtk.Widget {
 
     int arc_size = width > height ? width : height;
     arc_size *= 2;
-    //arc_size = 100;
 
     double cx = width  / 2.0;
     double cy = height / 2.0;
