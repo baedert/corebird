@@ -53,7 +53,7 @@ This is the readme for the current *development version*. If you're looking for 
  - `vala >= 0.26` (makedep)
  - `automake >= 1.14` (makedep)
  - `gstreamer-1.0` (disable via --disable-video, default enabled)
- - `gst-plugins-bad-1.0` (disable via --disable-video, default enabled)
+ - `gst-plugins-bad-1.0 >= 1.6` (disable via --disable-video, default enabled)
  - `gst-plugins-good-1.0` (disable via --disable-video, default enabled)
  - `gst-libav-1.0` (disable via --disable-video, default enabled)
 

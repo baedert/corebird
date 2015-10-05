@@ -39,7 +39,7 @@ pkg_modules="gtk+-3.0 >= 3.16
              sqlite3"
 
 if test "$disable_video" = "no"; then
-  pkg_modules="$pkg_modules gstreamer-video-1.0"
+  pkg_modules="$pkg_modules gstreamer-video-1.0 >= 1.6"
 fi
 
 PKG_CHECK_MODULES(CB, [$pkg_modules])
@@ -59,8 +59,6 @@ CB_VALA_FLAGS=" \
   --enable-checking \
   --enable-experimental \
   --vapidir=\$(top_srcdir)/vapi/"
-
-
 # }}}
 
 AC_SUBST(CB_CFLAGS)
