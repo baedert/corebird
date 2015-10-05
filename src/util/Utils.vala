@@ -102,6 +102,13 @@ Cairo.Surface scale_surface (Cairo.ImageSurface input,
 }
 
 
+inline double ease_out_cubic (double t) {
+  double p = t - 1;
+  return p * p * p +1;
+}
+
+
+
 namespace Utils {
   /**
   * Parses a date given by Twitter in the form 'Wed Jun 20 19:01:28 +0000 2012'
