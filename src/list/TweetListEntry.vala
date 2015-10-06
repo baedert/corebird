@@ -458,11 +458,6 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   private int64 start_time;
   private int64 end_time;
 
-  private double ease_out_cubic (double t) {
-    double p = t - 1;
-    return p * p * p +1;
-  }
-
   private bool anim_tick (Gtk.Widget widget, Gdk.FrameClock frame_clock) {
     int64 now = frame_clock.get_frame_time ();
 

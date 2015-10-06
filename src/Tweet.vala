@@ -150,7 +150,7 @@ void parse_entities (MiniTweet mt, Json.Object status)
       if (is_media_candidate (media_url)) {
         var m = new Media ();
         m.url = media_url;
-        m.target_url = media_url + ":large";
+        m.target_url = media_url + ":orig";
         mt.medias[real_media_count] = m;
         real_media_count ++;
       }
@@ -172,7 +172,7 @@ void parse_entities (MiniTweet mt, Json.Object status)
         if (is_media_candidate (url)) {
           var m = new Media ();
           m.url = url;
-          m.target_url = url + ":large";
+          m.target_url = url + ":orig";
           m.id = media_obj.get_int_member ("id");
           m.type = Media.type_from_string (media_obj.get_string_member ("type"));
           mt.medias[real_media_count] = m;

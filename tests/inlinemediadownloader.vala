@@ -58,10 +58,8 @@ void normal_download () {
   t.source_tweet.medias = new Media[1];
   t.source_tweet.medias[0] = media;
   var media_path = InlineMediaDownloader.get ().get_media_path (t.source_tweet, media);
-  var thumb_path = InlineMediaDownloader.get ().get_thumb_path (t.source_tweet, media);
   // first delete the file if it does exist
   delete_file (media_path);
-  delete_file (thumb_path);
     InlineMediaDownloader.get ().load_media.begin (t.source_tweet, media, () => {
     main_loop.quit ();
   });
@@ -87,9 +85,7 @@ void animation_download () {
   t.source_tweet.medias[0] = media;
 
   var media_path = InlineMediaDownloader.get ().get_media_path (t.source_tweet, media);
-  var thumb_path = InlineMediaDownloader.get ().get_thumb_path (t.source_tweet, media);
   delete_file (media_path);
-  delete_file (thumb_path);
 
   InlineMediaDownloader.get ().load_media.begin (t.source_tweet, media, () => {
     main_loop.quit ();
@@ -117,9 +113,7 @@ void download_twice () {
   t.source_tweet.medias[0] = media;
 
   var media_path = InlineMediaDownloader.get ().get_media_path (t.source_tweet, media);
-  var thumb_path = InlineMediaDownloader.get ().get_thumb_path (t.source_tweet, media);
   delete_file (media_path);
-  delete_file (thumb_path);
 
   InlineMediaDownloader.get ().load_media.begin (t.source_tweet, media, () => {
     InlineMediaDownloader.get ().load_media.begin (t.source_tweet, media, () => {
@@ -150,13 +144,10 @@ void no_thumbnail () {
 
 
   var media_path = InlineMediaDownloader.get ().get_media_path (t.source_tweet, media);
-  var thumb_path = InlineMediaDownloader.get ().get_thumb_path (t.source_tweet, media);
   delete_file (media_path);
-  delete_file (thumb_path);
 
   InlineMediaDownloader.get ().load_media.begin (t.source_tweet, media, () => {
     // Delete the thumbnail
-    //delete_file (thumb_path);
     // Download again
     InlineMediaDownloader.get ().load_media.begin (t.source_tweet, media, () => {
                                                    //assert (false);
@@ -189,9 +180,7 @@ void no_media () {
 
 
   var media_path = InlineMediaDownloader.get ().get_media_path (t.source_tweet, media);
-  var thumb_path = InlineMediaDownloader.get ().get_thumb_path (t.source_tweet, media);
   delete_file (media_path);
-  delete_file (thumb_path);
 
   InlineMediaDownloader.get ().load_media.begin (t.source_tweet, media, () => {
     // Delete the media (not the thumbnail)
@@ -226,10 +215,8 @@ void too_big () {
 
 
   var media_path = InlineMediaDownloader.get ().get_media_path (t.source_tweet, media);
-  var thumb_path = InlineMediaDownloader.get ().get_thumb_path (t.source_tweet, media);
   // first delete the file if it does exist
   delete_file (media_path);
-  delete_file (thumb_path);
 
   InlineMediaDownloader.get ().load_media.begin (t.source_tweet, media, () => {
     // gets set anyway
@@ -261,10 +248,8 @@ void double_download () {
 
 
   var media_path = InlineMediaDownloader.get ().get_media_path (t.source_tweet, media);
-  var thumb_path = InlineMediaDownloader.get ().get_thumb_path (t.source_tweet, media);
   // first delete the file if it does exist
   delete_file (media_path);
-  delete_file (thumb_path);
 
   var collect_obj = new Collect (5);
 

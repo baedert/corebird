@@ -27,7 +27,6 @@ namespace Dirs {
     create_folder (cache ("assets"));
     create_folder (cache ("assets/banners/"));
     create_folder (cache ("assets/media/"));
-    create_folder (cache ("assets/media/thumbs/"));
     create_folder (config (""));
     create_folder (config ("accounts/"));
     create_folder (data (""));

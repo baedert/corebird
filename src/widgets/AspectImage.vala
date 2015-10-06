@@ -68,12 +68,6 @@ class AspectImage : Gtk.Widget {
     this.add_tick_callback (fade_in_cb);
   }
 
-  private double ease_out_cubic (double t) {
-    double p = t - 1;
-    return p * p * p +1;
-  }
-
-
   private const double TRANSITION_DURATION = 200 * 1000;
   private double alpha = 0.0;
   private int64 start_time;

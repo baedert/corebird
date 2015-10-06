@@ -112,7 +112,7 @@ class AvatarWidget : Gtk.Widget {
     ct.set_source_surface (this._surface, 0, 0);
     ct.fill();
 
-      var sc = this.get_style_context ();
+    var sc = this.get_style_context ();
     if (_round) {
       // make it round
       ct.set_operator (Cairo.Operator.DEST_IN);

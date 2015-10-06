@@ -18,7 +18,8 @@
 [GtkTemplate (ui = "/org/baedert/corebird/ui/media-dialog.ui")]
 class MediaDialog : Gtk.Window {
   [GtkChild]
-  private Gtk.Overlay overlay;
+  //private Gtk.Overlay overlay;
+  private Gtk.Frame frame;
   //[GtkChild]
   //private Gtk.Button next_button;
   //[GtkChild]
@@ -39,29 +40,31 @@ class MediaDialog : Gtk.Window {
 
   private void change_media (Media media) {
     /* Remove the current child */
-    var cur_child = overlay.get_child ();
+    var cur_child = frame.get_child ();
     int cur_width = 0, cur_height = 0,
         new_width, new_height;
 
 
-    if (overlay.get_child () != null) {
-      overlay.remove (cur_child);
+    if (frame.get_child () != null) {
+      frame.remove (cur_child);
       cur_child.get_size_request (out cur_width, out cur_height);
     }
 
     Gtk.Widget new_widget = null;
     if (media.type == MediaType.IMAGE || media.type == MediaType.GIF) {
       new_widget = new MediaImageWidget (media);
+      frame.add (new_widget);
     } else if (media.type == MediaType.VINE ||
                media.type == MediaType.ANIMATED_GIF ||
                media.type == MediaType.TWITTER_VIDEO) {
       new_widget = new MediaVideoWidget (media);
+      frame.add (new_widget);
+      ((MediaVideoWidget)new_widget).init ();
     } else {
       critical ("Unknown media type %d", media.type);
       return;
     }
 
-    overlay.add (new_widget);
     new_widget.show_all ();
 
     new_widget.get_size_request (out new_width, out new_height);

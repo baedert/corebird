@@ -80,12 +80,6 @@ public class ReplyIndicator : Gtk.Widget {
     return true;
   }
 
-  private double ease_out_cubic (double t) {
-    double p = t - 1;
-    return p * p * p +1;
-  }
-
-
   public override bool draw (Cairo.Context ct) {
     if (!replies) {
       return false;

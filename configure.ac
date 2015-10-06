@@ -1,4 +1,4 @@
-AC_INIT([corebird],[1.0],[mail@baedert.org])
+AC_INIT([corebird],[1.1],[mail@baedert.org])
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([foreign no-dist-gzip dist-bzip2])
 
@@ -39,7 +39,7 @@ pkg_modules="gtk+-3.0 >= 3.16
              sqlite3"
 
 if test "$disable_video" = "no"; then
-  pkg_modules="$pkg_modules gstreamer-video-1.0 gdk-x11-3.0"
+  pkg_modules="$pkg_modules gstreamer-video-1.0 >= 1.6"
 fi
 
 PKG_CHECK_MODULES(CB, [$pkg_modules])
@@ -57,9 +57,8 @@ CB_VALA_FLAGS=" \
   --gresources=\$(top_srcdir)/resources.xml \
   --thread \
   --enable-checking \
-  --enable-experimental"
-
-
+  --enable-experimental \
+  --vapidir=\$(top_srcdir)/vapi/"
 # }}}
 
 AC_SUBST(CB_CFLAGS)
@@ -76,8 +75,7 @@ fi
 if test "$disable_video" = "no"; then
   CB_VALA_FLAGS="$CB_VALA_FLAGS \
                  -D VIDEO \
-                 --pkg gstreamer-video-1.0 \
-                 --pkg gdk-x11-3.0"
+                 --pkg gstreamer-video-1.0"
 fi
 
 if test "$enable_debug" = "yes"; then

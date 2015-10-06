@@ -117,7 +117,6 @@ public class InlineMediaDownloader : GLib.Object {
   private async void load_inline_media (MiniTweet t, Media media) {
     GLib.SourceFunc callback = load_inline_media.callback;
 
-
     if (this.urls_downloading.contains (media.url)) {
       ulong id = 0;
       id = this.downloading[media.url].connect (() => {
@@ -228,13 +227,6 @@ public class InlineMediaDownloader : GLib.Object {
     int64 id = t.id;
 
     return Dirs.cache (@"assets/media/$(id)_$(t.author.id)_$(media.id).$(ext)");
-  }
-
-  /* XXX Remove this? */
-  public string get_thumb_path (MiniTweet t, Media media) {
-    int64 id = t.id;
-
-    return Dirs.cache (@"assets/media/thumbs/$(id)_$(t.author.id)_$(media.id).png");
   }
 
 }
