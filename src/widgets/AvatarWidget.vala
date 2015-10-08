@@ -43,12 +43,12 @@ class AvatarWidget : Gtk.Widget {
     }
     set {
       if (this._surface != null)
-        Twitter.unref_avatar (this._surface);
+        Twitter.get ().unref_avatar (this._surface);
 
       this._surface = value;
 
       if (this._surface != null)
-        Twitter.ref_avatar (this._surface);
+        Twitter.get ().ref_avatar (this._surface);
 
       this.queue_draw ();
     }
@@ -87,7 +87,7 @@ class AvatarWidget : Gtk.Widget {
 
   ~AvatarWidget () {
     if (this._surface != null)
-      Twitter.unref_avatar (this._surface);
+      Twitter.get ().unref_avatar (this._surface);
   }
 
 
