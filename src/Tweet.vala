@@ -411,7 +411,8 @@ public class Tweet : GLib.Object {
       this.retweeted  = true;
     }
 
-    this.avatar = Twitter.get ().get_avatar (avatar_url, (a) => {
+
+    this.avatar = Twitter.get ().get_avatar (this.user_id, avatar_url, (a) => {
       this.avatar = a;
     });
 

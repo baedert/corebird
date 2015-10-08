@@ -18,6 +18,7 @@
 public class Twitter : GLib.Object {
   private static Twitter twitter;
 
+  private Twitter () {}
   public static new Twitter get () {
     if (twitter == null)
       twitter = new Twitter ();
@@ -25,23 +26,23 @@ public class Twitter : GLib.Object {
     return twitter;
   }
 
-  public Twitter () {}
 
   public delegate void AvatarDownloadedFunc (Cairo.Surface avatar);
   [Signal (detailed = true)]
   private signal void avatar_downloaded (Cairo.Surface avatar);
 
-  public static int short_url_length       = 22;
-  public static int short_url_length_https = 23;
-  public static int max_media_per_upload   = 4;
+  public const int short_url_length       = 22;
+  public const int short_url_length_https = 23;
+  public const int max_media_per_upload   = 4;
   public static Cairo.Surface no_avatar;
   public static Gdk.Pixbuf no_banner;
-  public Gee.HashMap<string, Cairo.Surface?> avatars;
-  public Gee.HashMap<Cairo.Surface, uint> avatar_refcounts;
+  private AvatarCache avatar_cache;
 
-  /* XXX I'd like this to use a int64->{string, Cairo.Surface} hashtable
-         so we can get the avatar of a specific user but also check if
-         the url changed */
+#if DEBUG
+  public void debug () {
+    this.avatar_cache.print_debug ();
+  }
+#endif
 
   public void init () {
     try {
@@ -54,37 +55,15 @@ public class Twitter : GLib.Object {
       error ("Error while loading assets: %s", e.message);
     }
 
-    avatars = new Gee.HashMap<string, Cairo.Surface?> ();
-    avatar_refcounts = new Gee.HashMap<Cairo.Surface, uint> ();
+    this.avatar_cache = new AvatarCache ();
   }
 
-  public static void ref_avatar (Cairo.Surface surface) {
-    uint cur = twitter.avatar_refcounts.get (surface);
-    twitter.avatar_refcounts.unset (surface);
-    twitter.avatar_refcounts.set (surface, cur + 1);
+  public void ref_avatar (Cairo.Surface surface) {
+    this.avatar_cache.increase_refcount_for_surface (surface);
   }
 
-  public static void unref_avatar (Cairo.Surface surface) {
-    uint cur = twitter.avatar_refcounts.get (surface);
-    uint next = cur - 1;
-    twitter.avatar_refcounts.unset (surface);
-
-    if (next > 0)
-      twitter.avatar_refcounts.set (surface, next);
-    else {
-      var iter = twitter.avatars.map_iterator ();
-
-      string? path = null;
-      while (iter.next ()) {
-        if (iter.get_value () == surface) {
-          path = iter.get_key ();
-          break;
-        }
-      }
-
-      if (path != null)
-        twitter.avatars.unset (path);
-    }
+  public void unref_avatar (Cairo.Surface surface) {
+    this.avatar_cache.decrease_refcount_for_surface (surface);
   }
 
 
@@ -110,13 +89,22 @@ public class Twitter : GLib.Object {
    *         if it has to be downloaded first, in which case the AvatarDownloadedFunc
    *         will be called after that's finished.
    */
-  public Cairo.Surface? get_avatar (string url, owned AvatarDownloadedFunc? func = null, int size = 48) { // {{{
-    Cairo.Surface? a = avatars.get (url);
-    bool has_key = avatars.has_key (url);
+
+  public Cairo.Surface? get_avatar (int64  user_id,
+                                    string url,
+                                    owned AvatarDownloadedFunc? func = null,
+                                    int size = 48) {
+    assert (user_id > 0);
+    bool has_key = false;
+    Cairo.Surface? a = this.avatar_cache.get_surface_for_id (user_id, out has_key);
 
     if (a != null) {
       return a;
     }
+
+    /*
+        TODO: If the given
+     */
 
     // Someone is already downloading the avatar
     if (has_key) {
@@ -128,7 +116,7 @@ public class Twitter : GLib.Object {
       });
     } else {
       // download the avatar
-      avatars.set (url, null);
+      this.avatar_cache.add (user_id, null, url);
       TweetUtils.download_avatar.begin (url, size, (obj, res) => {
         Gdk.Pixbuf? avatar = null;
         try {
@@ -136,22 +124,134 @@ public class Twitter : GLib.Object {
         } catch (GLib.Error e) {
           warning (e.message + " for " + url);
           func (no_avatar);
-          this.avatars.set (url, no_avatar);
+          this.avatar_cache.set_data (user_id, no_avatar, url);
           return;
         }
         var s = Gdk.cairo_surface_create_from_pixbuf (avatar, 1, null);
+        // a NULL surface is already in the cache
+        this.avatar_cache.set_data (user_id, s, url);
+
         func (s);
         // signal all the other waiters in the queue
         avatar_downloaded[url](s);
-        this.avatars.set (url, s);
-        this.avatar_refcounts.set (s, 0);
       });
     }
 
-
     // Return null for now, set the actual value in the callback
     return null;
-  } // }}}
-
-  //TODO: Add method to update config
+  }
 }
+
+
+/* Maps from int64 to {int, cairo_surface_t, char*} */
+public class AvatarCache {
+  private GLib.Array<int64?> ids;
+  private GLib.GenericArray<Cairo.Surface?> surfaces;
+  private GLib.Array<int?> refcounts;
+  private GLib.GenericArray<string> urls;
+
+  public AvatarCache () {
+    this.ids       = new GLib.Array<int64?> ();
+    this.surfaces  = new GLib.GenericArray<Cairo.Surface?> ();
+    this.refcounts = new GLib.Array<int?> ();
+    this.urls      = new GLib.GenericArray<string> ();
+  }
+
+  private int get_index (int64 id) {
+    for (int i = 0; i < this.ids.length; i ++) {
+        if (this.ids.data[i] == id) {
+        return i;
+      }
+    }
+
+    return -1;
+  }
+
+  public Cairo.Surface? get_surface_for_id (int64 user_id, out bool found) {
+    assert (ids.length == surfaces.length && surfaces.length == refcounts.length &&
+            refcounts.length == urls.length);
+
+    int index = get_index (user_id);
+    if (index != -1) {
+      found = true;
+      return this.surfaces.data[index];
+    }
+
+    found = false;
+    return null;
+  }
+
+  public void add (int64 user_id, Cairo.Surface? surface, string avatar_url) {
+    this.ids.append_val (user_id);
+    this.surfaces.add (surface);
+    this.urls.add (avatar_url);
+    this.refcounts.append_val (0);
+
+    assert (ids.length == surfaces.length && surfaces.length == refcounts.length &&
+            refcounts.length == urls.length);
+  }
+
+  public void set_data (int64 id, Cairo.Surface? surface, string url) {
+    int index = get_index (id);
+    assert (index != -1);
+
+    this.surfaces[index] = surface;
+    this.urls[index] = url;
+  }
+
+  public void increase_refcount_for_surface (Cairo.Surface surface) {
+    int index = -1;
+    for (int i = 0; i < this.surfaces.length; i ++) {
+      if (this.surfaces.data[i] == surface) {
+        index = i;
+        break;
+      }
+    }
+
+    if (index != -1) {
+      this.refcounts.data[index] = this.refcounts.data[index] + 1;
+    } else {
+      warning ("Surface %p not in cache", surface);
+    }
+  }
+
+  public void decrease_refcount_for_surface (Cairo.Surface surface) {
+    int index = -1;
+    for (int i = 0; i < this.surfaces.length; i ++) {
+      if (this.surfaces.data[i] == surface) {
+        index = i;
+        break;
+      }
+    }
+
+    if (index == -1) {
+      warning ("Surface %p not in cache", surface);
+      return;
+    }
+
+    this.refcounts.data[index] = this.refcounts.data[index] - 1;
+
+    if (this.refcounts.data[index] == 0) {
+      debug ("Removing avatar with id %d from cache", index);
+      this.ids.remove_index_fast (index);
+      this.surfaces.remove_index_fast (index);
+      this.urls.remove_index_fast (index);
+      this.refcounts.remove_index_fast (index);
+    }
+
+    assert (ids.length == surfaces.length && surfaces.length == refcounts.length &&
+            refcounts.length == urls.length);
+  }
+
+#if DEBUG
+  public void print_debug () {
+    message ("-----------------");
+    message ("Cached avatars: %d", this.surfaces.length);
+
+    assert (ids.length == surfaces.length && surfaces.length == refcounts.length &&
+            refcounts.length == urls.length);
+  }
+#endif
+}
+
+

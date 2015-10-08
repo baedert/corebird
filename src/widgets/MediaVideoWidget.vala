@@ -271,7 +271,6 @@ class MediaVideoWidget : Gtk.Stack {
       this.src.set_state (Gst.State.PLAYING);
 #endif
       this.image.progress = 1.0;
-      //this.visible_child_name = "video";
       download_video.callback ();
     });
     yield;

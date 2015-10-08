@@ -24,6 +24,8 @@ class DMPlaceholderBox : Gtk.Box {
   [GtkChild]
   private Gtk.Label screen_name_label;
 
+  public int64 user_id;
+
   public new string name {
     set {
       name_label.label = value;
@@ -39,7 +41,7 @@ class DMPlaceholderBox : Gtk.Box {
   public string avatar_url;
 
   public void load_avatar () {
-    avatar_image.surface = Twitter.get ().get_avatar (avatar_url, (a) => {
+    avatar_image.surface = Twitter.get ().get_avatar (user_id, avatar_url, (a) => {
       avatar_image.surface = a;
     });
   }

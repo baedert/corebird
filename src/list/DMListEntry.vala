@@ -68,7 +68,7 @@ class DMListEntry : Gtk.ListBoxRow, ITwitterItem {
   }
 
   public void load_avatar () {
-    avatar_image.surface = Twitter.get ().get_avatar (avatar_url, (a) => {
+    avatar_image.surface = Twitter.get ().get_avatar (user_id, avatar_url, (a) => {
       avatar_image.surface = a;
     });
   }

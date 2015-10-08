@@ -191,6 +191,7 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
     string name = null;
     if ((screen_name = args.get_string ("screen_name")) != null) {
       name = args.get_string ("name");
+      placeholder_box.user_id = user_id;
       placeholder_box.screen_name = screen_name;
       placeholder_box.name = name;
       placeholder_box.avatar_url = args.get_string ("avatar_url");

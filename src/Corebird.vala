@@ -30,7 +30,8 @@ public class Corebird : Gtk.Application {
     {"show-dm-thread",    show_dm_thread,          "(xx)" },
     {"mark-seen",         mark_seen,               "(sx)" },
     {"show-window",       show_window,             "x"    },
-    {"post-json",         post_json,               "(ss)" }
+    {"post-json",         post_json,               "(ss)" },
+    {"print-debug",       print_debug,                    }
   };
 
 
@@ -165,6 +166,9 @@ public class Corebird : Gtk.Application {
     this.set_accels_for_action ("app.quit", {"<Control>Q"});
     this.set_accels_for_action ("win.show-account-dialog", {Settings.get_accel ("show-account-dialog")});
     this.set_accels_for_action ("win.show-account-list", {Settings.get_accel ("show-account-list")});
+#if DEBUG
+    this.set_accels_for_action ("app.print-debug", {"<Primary>D"});
+#endif
 
     this.add_action_entries (app_entries, this);
 
@@ -423,6 +427,10 @@ public class Corebird : Gtk.Application {
       main_window.present ();
     else
       warning ("TODO: Implement");
+  }
+
+  private void print_debug (GLib.SimpleAction a, GLib.Variant? v) {
+    Twitter.get ().debug ();
   }
 
   private void post_json (GLib.SimpleAction a, GLib.Variant? value) {

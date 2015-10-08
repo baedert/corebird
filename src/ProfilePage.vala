@@ -252,13 +252,24 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     string avatar_name = Utils.get_avatar_name(avatar_url);
 
 
-    avatar_image.surface = Twitter.get ().get_avatar (avatar_url, (a) => {
-      avatar_image.surface = a;
-        if (show_spinner) {
-          progress_spinner.stop ();
-          loading_stack.visible_child_name = "data";
-        }
-    }, 73);
+
+    // We don't use our AvatarCache here becase this (73×73) avatar is only
+    // ever loaded here.
+    TweetUtils.download_avatar.begin (avatar_url, 73, (obj, res) => {
+      Cairo.Surface surface;
+      try {
+        var pixbuf = TweetUtils.download_avatar.end (res);
+        surface = Gdk.cairo_surface_create_from_pixbuf (pixbuf, 1, null);
+      } catch (GLib.Error e) {
+        warning (e.message);
+        surface = Twitter.no_avatar;
+      }
+      avatar_image.surface = surface;
+      if (show_spinner) {
+        progress_spinner.stop ();
+        loading_stack.visible_child_name = "data";
+      }
+    });
     if (avatar_image.surface != null && show_spinner) {
       progress_spinner.stop ();
       loading_stack.visible_child_name = "data";
