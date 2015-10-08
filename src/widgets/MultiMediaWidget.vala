@@ -207,12 +207,10 @@ private class MediaButton : Gtk.Button {
   public override Gtk.SizeRequestMode get_request_mode () {
     return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
   }
-
-
 }
 
 
-public class MultiMediaWidget : Gtk.Box {
+public class MultiMediaWidget : Gtk.Grid {
   public static const int MAX_HEIGHT = 180;
   public int media_count { public get; private set; default = 0;}
   public unowned Gtk.Window window;
@@ -233,18 +231,51 @@ public class MultiMediaWidget : Gtk.Box {
     this.remove_all ();
     this.media_buttons = new MediaButton[medias.length];
     this.media_count = medias.length;
-    this.set_media (0, medias[0]);
+
+    //this.set_media (0, medias[0]);
     message ("Setting %d media", medias.length);
-    //for (int i = 0; i < medias.length; i++) {
-      //assert (medias[i] != null);
-      //set_media (i, medias[i]);
-    //}
+    for (int i = 0; i < medias.length; i++) {
+      assert (medias[i] != null);
+      set_media (i, medias[i]);
+    }
   }
 
   private void remove_all () {
     this.get_children ().foreach ((w) => {
       this.remove (w);
     });
+  }
+
+  private void attach_for_index (int index, Gtk.Widget widget) {
+    int x = -1, y = -1, w = -1, h = -1;
+    switch (this.media_count) {
+      case 1:
+        assert (index == 0);
+        x = 0; y = 0; w = 1; h = 1;
+        break;
+      case 2:
+        if (index == 0) { x = 0; y = 0; w = 1; h = 1; }
+        else            { x = 1; y = 0; w = 1; h = 1; }
+        break;
+      case 3:
+        if (index == 0) { x = 0; y = 0; w = 1; h = 1; }
+        if (index == 1) { x = 1; y = 0; w = 1; h = 1; }
+        if (index == 2) { x = 0; y = 1; w = 2; h = 1; }
+        break;
+
+      case 4:
+        if (index == 0) { x = 0; y = 0; w = 1; h = 1; }
+        if (index == 1) { x = 1; y = 0; w = 1; h = 1; }
+        if (index == 2) { x = 0; y = 1; w = 1; h = 1; }
+        if (index == 3) { x = 1; y = 1; w = 1; h = 1; }
+        break;
+
+      default:
+        error ("A");
+    }
+
+    widget.hexpand = true;
+    this.attach (widget, x, y, w, h);
   }
 
 
@@ -267,7 +298,8 @@ public class MultiMediaWidget : Gtk.Box {
     }
     button.visible = true;
     button.clicked.connect (button_clicked_cb);
-    this.pack_start (button, true, true);
+    this.attach_for_index (index, button);
+    //this.pack_start (button, true, true);
     this.queue_draw ();
   }
 
