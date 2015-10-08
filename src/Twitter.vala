@@ -124,12 +124,12 @@ public class Twitter : GLib.Object {
         } catch (GLib.Error e) {
           warning (e.message + " for " + url);
           func (no_avatar);
-          this.avatar_cache.set_data (user_id, no_avatar, url);
+          this.avatar_cache.set_avatar (user_id, no_avatar, url);
           return;
         }
         var s = Gdk.cairo_surface_create_from_pixbuf (avatar, 1, null);
         // a NULL surface is already in the cache
-        this.avatar_cache.set_data (user_id, s, url);
+        this.avatar_cache.set_avatar (user_id, s, url);
 
         func (s);
         // signal all the other waiters in the queue
@@ -144,7 +144,7 @@ public class Twitter : GLib.Object {
 
 
 /* Maps from int64 to {int, cairo_surface_t, char*} */
-public class AvatarCache {
+public class AvatarCache : GLib.Object {
   private GLib.Array<int64?> ids;
   private GLib.GenericArray<Cairo.Surface?> surfaces;
   private GLib.Array<int?> refcounts;
@@ -191,7 +191,7 @@ public class AvatarCache {
             refcounts.length == urls.length);
   }
 
-  public void set_data (int64 id, Cairo.Surface? surface, string url) {
+  public void set_avatar (int64 id, Cairo.Surface? surface, string url) {
     int index = get_index (id);
     assert (index != -1);
 
