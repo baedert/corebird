@@ -166,7 +166,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     this.more_menu = more_button.menu_model;
   }
 
-  private void set_user_id (int64 user_id) { // {{{
+  private void set_user_id (int64 user_id) {
     this.user_id = user_id;
 
     follow_button.sensitive = (user_id != account.id);
@@ -186,6 +186,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     .run ((vals) => {
       /* If we get inside this block, there is already some data in the
         DB we can use. */
+      avatar_image.surface = Twitter.get ().get_cached_avatar (user_id);
 
       var entities = new TextEntity[0];
 
@@ -211,7 +212,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
 
     /* Load the profile data now, then - if available - set the cached data */
     load_profile_data.begin (user_id, !data_in_db);
-  } // }}}
+  }
 
 
   private async void load_friendship () {
@@ -269,10 +270,6 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
         loading_stack.visible_child_name = "data";
       }
     });
-    if (avatar_image.surface != null && show_spinner) {
-      progress_spinner.stop ();
-      loading_stack.visible_child_name = "data";
-    }
 
     string name        = root.get_string_member("name").replace ("&", "&amp;").strip ();
     string screen_name = root.get_string_member("screen_name");
