@@ -15,8 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-
 public class MediaImageWidget : Gtk.ScrolledWindow {
   private Gtk.Image image;
   private Gtk.Menu image_context_menu;
@@ -60,18 +58,6 @@ public class MediaImageWidget : Gtk.ScrolledWindow {
     if(img_height <= Gdk.Screen.height()*0.7) {
       win_height = img_height;
       this.vscrollbar_policy = Gtk.PolicyType.NEVER;
-    }
-
-    if(win_width < 800 && win_height == 600) {
-      int add_width;
-      this.get_vscrollbar().get_preferred_width(null, out add_width);
-      win_width += add_width;
-    }
-
-    if(win_width == 800 && win_height < 600) {
-      int add_height;
-      this.get_hscrollbar().get_preferred_width(null, out add_height);
-      win_height += add_height;
     }
 
     this.set_size_request(win_width, win_height);
