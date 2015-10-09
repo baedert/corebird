@@ -66,6 +66,14 @@ public class Twitter : GLib.Object {
     this.avatar_cache.decrease_refcount_for_surface (surface);
   }
 
+  public Cairo.Surface get_cached_avatar (int64 user_id) {
+    bool found;
+    Cairo.Surface? surface = this.avatar_cache.get_surface_for_id (user_id, out found);
+    if (surface == null)
+      return Twitter.no_avatar;
+    else
+      return surface;
+  }
 
   /**
    * Get the avatar with the given url. If the avatar exists on the
@@ -102,11 +110,6 @@ public class Twitter : GLib.Object {
       return a;
     }
 
-    /*
-        TODO: If the given
-     */
-
-    // Someone is already downloading the avatar
     if (has_key) {
       // wait until the avatar has finished downloading
       ulong handler_id = 0;
