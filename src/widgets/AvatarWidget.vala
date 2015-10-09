@@ -36,7 +36,7 @@ class AvatarWidget : Gtk.Widget {
   }
   public bool verified { get; set; default = false; }
 
-  private Cairo.Surface _surface;
+  private Cairo.ImageSurface _surface;
   public Cairo.Surface surface {
     get {
       return _surface;
@@ -45,7 +45,7 @@ class AvatarWidget : Gtk.Widget {
       if (this._surface != null)
         Twitter.get ().unref_avatar (this._surface);
 
-      this._surface = value;
+      this._surface = (Cairo.ImageSurface)value;
 
       if (this._surface != null)
         Twitter.get ().ref_avatar (this._surface);
@@ -108,22 +108,25 @@ class AvatarWidget : Gtk.Widget {
                                              width, height);
     var ct = new Cairo.Context (surface);
 
+    double scale = (double)this.get_allocated_width () / (double) this._surface.get_width ();
+
     ct.rectangle (0, 0, width, height);
+    ct.scale (scale, scale);
     ct.set_source_surface (this._surface, 0, 0);
     ct.fill();
 
-    var sc = this.get_style_context ();
     if (_round) {
       // make it round
+      ct.scale (1.0/scale, 1.0/scale);
       ct.set_operator (Cairo.Operator.DEST_IN);
       ct.arc ((width / 2.0), (height / 2.0),
-              (width / 2.0) - 0.5, /* Radius */
-              0, /* Angle from */
-              2 * Math.PI); /* Angle to */
+              (width / 2.0) - 0.5, // Radius
+              0,            //Angle from
+              2 * Math.PI); // Angle to
       ct.fill ();
 
       // draw outline
-      sc.render_frame (ctx, 0, 0, width, height);
+      this.get_style_context ().render_frame (ctx, 0, 0, width, height);
     }
 
     ctx.rectangle (0, 0, width, height);
