@@ -186,7 +186,6 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     .run ((vals) => {
       /* If we get inside this block, there is already some data in the
         DB we can use. */
-      avatar_image.surface = load_surface (Dirs.cache ("/assets/avatars/" + vals[7]));
 
       var entities = new TextEntity[0];
 
