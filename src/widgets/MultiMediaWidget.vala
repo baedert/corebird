@@ -232,8 +232,6 @@ public class MultiMediaWidget : Gtk.Grid {
     this.media_buttons = new MediaButton[medias.length];
     this.media_count = medias.length;
 
-    //this.set_media (0, medias[0]);
-    message ("Setting %d media", medias.length);
     for (int i = 0; i < medias.length; i++) {
       assert (medias[i] != null);
       set_media (i, medias[i]);
