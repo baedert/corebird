@@ -235,7 +235,7 @@ public class AvatarCache : GLib.Object {
     this.refcounts.data[index] = this.refcounts.data[index] - 1;
 
     if (this.refcounts.data[index] == 0) {
-      debug ("Removing avatar with id %d from cache", index);
+      debug ("Removing avatar with id %d from cache (Now: %u)", index, this.ids.length - 1);
       this.ids.remove_index_fast (index);
       this.surfaces.remove_index_fast (index);
       this.urls.remove_index_fast (index);
