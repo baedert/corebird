@@ -35,6 +35,8 @@ enum Page {
 
 static Soup.Session SOUP_SESSION = null;
 
+const int TRANSITION_DURATION = 200 * 1000;
+
 
 void default_header_func (Gtk.ListBoxRow  row,
                           Gtk.ListBoxRow? row_before)

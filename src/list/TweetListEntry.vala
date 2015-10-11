@@ -23,8 +23,6 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     {"delete", delete_activated}
   };
 
-  private const int64 TRANSITION_DURATION = 300;
-
   [GtkChild]
   private Gtk.Label screen_name_label;
   [GtkChild]
@@ -484,7 +482,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     ulong realize_id = 0;
     realize_id = this.realize.connect (() => {
       this.start_time = this.get_frame_clock ().get_frame_time ();
-      this.end_time = start_time + (TRANSITION_DURATION * 1000);
+      this.end_time = start_time + TRANSITION_DURATION;
       this.add_tick_callback (anim_tick);
       this.disconnect (realize_id);
     });
