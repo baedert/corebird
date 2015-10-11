@@ -44,14 +44,19 @@ class AvatarWidget : Gtk.Widget {
     set {
       if (this._surface == value) return;
 
+      bool animate = false;
+
       if (this._surface != null)
         Twitter.get ().unref_avatar (this._surface);
+      else
+        animate = true;
 
       this._surface = (Cairo.ImageSurface)value;
 
       if (this._surface != null) {
         Twitter.get ().ref_avatar (this._surface);
-        this.start_animation ();
+        if (animate)
+          this.start_animation ();
       }
 
       this.queue_draw ();
