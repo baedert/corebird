@@ -430,7 +430,9 @@ public class Corebird : Gtk.Application {
   }
 
   private void print_debug (GLib.SimpleAction a, GLib.Variant? v) {
+#if DEBUG
     Twitter.get ().debug ();
+#endif
   }
 
   private void post_json (GLib.SimpleAction a, GLib.Variant? value) {
