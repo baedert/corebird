@@ -214,7 +214,7 @@ public class AvatarCache : GLib.Object {
     if (index != -1) {
       this.refcounts.data[index] = this.refcounts.data[index] + 1;
     } else {
-      warning ("Surface %p not in cache", surface);
+      //warning ("Surface %p not in cache", surface);
     }
   }
 
@@ -228,7 +228,7 @@ public class AvatarCache : GLib.Object {
     }
 
     if (index == -1) {
-      warning ("Surface %p not in cache", surface);
+      //warning ("Surface %p not in cache", surface);
       return;
     }
 

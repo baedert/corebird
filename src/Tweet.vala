@@ -279,7 +279,6 @@ public class Tweet : GLib.Object {
   public MiniTweet? retweeted_tweet = null;
   public MiniTweet? quoted_tweet = null;
 
-  public Cairo.Surface avatar { get; set; }
   /** The avatar url on the server */
   public string avatar_url;
   public bool verified = false;
@@ -329,10 +328,6 @@ public class Tweet : GLib.Object {
 
   public int retweet_count;
   public int favorite_count;
-
-  public Tweet () {
-    this.avatar = Twitter.no_avatar;
-  }
 
   public string[] get_mentions () {
     TextEntity[] entities;
@@ -411,10 +406,6 @@ public class Tweet : GLib.Object {
       this.retweeted  = true;
     }
 
-
-    this.avatar = Twitter.get ().get_avatar (this.user_id, avatar_url, (a) => {
-      this.avatar = a;
-    });
 
 #if DEBUG
     var gen = new Json.Generator ();
