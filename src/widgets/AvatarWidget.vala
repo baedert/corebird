@@ -42,6 +42,8 @@ class AvatarWidget : Gtk.Widget {
       return _surface;
     }
     set {
+      if (this._surface == value) return;
+
       if (this._surface != null)
         Twitter.get ().unref_avatar (this._surface);
 
