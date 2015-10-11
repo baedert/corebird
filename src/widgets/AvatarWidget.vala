@@ -47,13 +47,16 @@ class AvatarWidget : Gtk.Widget {
 
       this._surface = (Cairo.ImageSurface)value;
 
-      if (this._surface != null)
+      if (this._surface != null) {
         Twitter.get ().ref_avatar (this._surface);
+        this.start_animation ();
+      }
 
       this.queue_draw ();
     }
   }
-
+  private double alpha = 1.0f;
+  private int64 start_time;
 
 
   static Cairo.Surface[] verified_icons;
@@ -91,6 +94,31 @@ class AvatarWidget : Gtk.Widget {
   }
 
 
+  private void start_animation () {
+    if (!this.get_realized ())
+      return;
+
+    alpha = 0.0;
+    this.start_time = this.get_frame_clock ().get_frame_time ();
+    this.add_tick_callback (fade_in_cb);
+  }
+
+  private bool fade_in_cb (Gtk.Widget widget, Gdk.FrameClock frame_clock) {
+    int64 now = frame_clock.get_frame_time ();
+    double t = (now - start_time) / (double) TRANSITION_DURATION;
+
+    if (t >= 1.0) {
+      t = 1.0;
+    }
+
+    this.alpha = ease_out_cubic (t);
+    this.queue_draw ();
+
+    return t < 1.0;
+  }
+
+
+
   public override bool draw (Cairo.Context ctx) {
     int width  = this.get_allocated_width ();
     int height = this.get_allocated_height ();
@@ -121,8 +149,8 @@ class AvatarWidget : Gtk.Widget {
       ct.set_operator (Cairo.Operator.DEST_IN);
       ct.arc ((width / 2.0), (height / 2.0),
               (width / 2.0) - 0.5, // Radius
-              0,            //Angle from
-              2 * Math.PI); // Angle to
+              0,                   //Angle from
+              2 * Math.PI);        // Angle to
       ct.fill ();
 
       // draw outline
@@ -131,7 +159,7 @@ class AvatarWidget : Gtk.Widget {
 
     ctx.rectangle (0, 0, width, height);
     ctx.set_source_surface (surface, 0, 0);
-    ctx.fill ();
+    ctx.paint_with_alpha (alpha);
 
 
     /* Draw verification indicator */
