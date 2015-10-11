@@ -174,7 +174,7 @@ class AvatarWidget : Gtk.Widget {
       ctx.set_source_surface (verified_img,
                               width - VERIFIED_SIZES[index],
                               0);
-      ctx.fill ();
+      ctx.paint_with_alpha (this.alpha);
     }
 
     return GLib.Source.CONTINUE;
