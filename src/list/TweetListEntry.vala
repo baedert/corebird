@@ -113,7 +113,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     if (tweet.avatar_url != null) {
       avatar_image.surface = Twitter.get ().get_avatar (tweet.user_id, tweet.avatar_url, (a) => {
         avatar_image.surface = a;
-      });
+      }, 48 * this.get_scale_factor ());
     }
     avatar_image.verified = tweet.verified;
     text_label.label = tweet.get_trimmed_text ();

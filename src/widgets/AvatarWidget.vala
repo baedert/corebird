@@ -151,14 +151,6 @@ class AvatarWidget : Gtk.Widget {
 
 
 
-
-    if (scale < 1.0) {
-      warning ("Downscaling avatar of size %d/%d by%f",
-               this._surface.get_width (),
-               this._surface.get_height (),
-               scale);
-    }
-
     ct.rectangle (0, 0, width, height);
     ct.scale (scale, scale);
     ct.set_source_surface (this._surface, 0, 0);
@@ -201,20 +193,6 @@ class AvatarWidget : Gtk.Widget {
     return GLib.Source.CONTINUE;
   }
 
-
-  public override void get_preferred_height (out int minimal,
-                                             out int natural) {
-
-    if (this._surface == null) {
-      minimal = 0;
-      natural = 0;
-    } else {
-      double scale;
-      this._surface.get_device_scale (out scale, out scale);
-      minimal = (int)(this._surface.get_height () / scale);
-      natural = (int)(this._surface.get_height () / scale);
-    }
-  }
 }
 
 

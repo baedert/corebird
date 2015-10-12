@@ -400,6 +400,8 @@ public class Tweet : GLib.Object {
       parse_entities (this.quoted_tweet, quoted_status);
     }
 
+    if (true)
+      this.avatar_url = this.avatar_url.replace ("_normal", "_bigger");
 
     if (status.has_member ("current_user_retweet")) {
       this.my_retweet = status.get_object_member ("current_user_retweet").get_int_member ("id");

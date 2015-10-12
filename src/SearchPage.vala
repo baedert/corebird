@@ -205,10 +205,15 @@ class SearchPage : IPage, Gtk.Box {
 
         var user_obj = node.get_object ();
         var entry = new UserListEntry ();
+        string avatar_url = user_obj.get_string_member ("profile_image_url");
+
+        if (this.get_scale_factor () == 2)
+          avatar_url = avatar_url.replace ("_normal", "_bigger");
+
         entry.user_id = user_obj.get_int_member ("id");
         entry.screen_name = "@" + user_obj.get_string_member ("screen_name");
         entry.name = user_obj.get_string_member ("name").strip ();
-        entry.avatar_url = user_obj.get_string_member ("profile_image_url");
+        entry.avatar_url = avatar_url;
         entry.show_settings = false;
         if (!collect_obj.done)
           entry.visible = false;
