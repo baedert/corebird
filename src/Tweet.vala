@@ -284,6 +284,7 @@ public class Tweet : GLib.Object {
   public bool verified = false;
   public int64 my_retweet;
   public bool protected;
+  public bool nsfw;
   public string? notification_id = null;
   private bool _seen = true;
   public bool seen {
@@ -366,6 +367,11 @@ public class Tweet : GLib.Object {
     this.retweeted   = status.get_boolean_member("retweeted");
     this.retweet_count = (int)status.get_int_member ("retweet_count");
     this.favorite_count = (int)status.get_int_member ("favorite_count");
+
+    if (Utils.usable_json_value (status, "possibly_sensitive"))
+      this.nsfw = status.get_boolean_member ("possibly_sensitive");
+    else
+      this.nsfw = false;
 
     this.source_tweet = parse_mini_tweet (status);
 
