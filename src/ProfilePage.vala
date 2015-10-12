@@ -448,7 +448,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
       entry.user_id = user_obj.get_int_member ("id");
       entry.screen_name = user_obj.get_string_member ("screen_name");
       entry.name = user_obj.get_string_member ("name");
-      entry.avatar = user_obj.get_string_member ("profile_image_url");
+      entry.avatar_url = user_obj.get_string_member ("profile_image_url");
       entry.get_style_context ().add_class ("tweet");
       entry.show ();
       this.followers_list.add (entry);
@@ -480,7 +480,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
       entry.user_id = user_obj.get_int_member ("id");
       entry.screen_name = user_obj.get_string_member ("screen_name");
       entry.name = user_obj.get_string_member ("name");
-      entry.avatar = user_obj.get_string_member ("profile_image_url");
+      entry.avatar_url = user_obj.get_string_member ("profile_image_url");
       entry.get_style_context ().add_class ("tweet");
       entry.show ();
       this.following_list.add (entry);
