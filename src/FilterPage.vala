@@ -134,13 +134,18 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
 
   private void add_user (Json.Object user_obj) {
     int64 id = user_obj.get_int_member ("id");
+    string avatar_url = user_obj.get_string_member ("profile_image_url");
+
+    if (this.get_scale_factor () == 2)
+      avatar_url = avatar_url.replace ("_normal", "_bigger");
+
     // make sure the user does not yet exist in the list
     remove_user (id);
     var entry = new UserFilterEntry ();
     entry.user_id = id;
     entry.name = user_obj.get_string_member ("name");
     entry.screen_name = user_obj.get_string_member ("screen_name");
-    entry.avatar_url = user_obj.get_string_member ("profile_image_url");
+    entry.avatar_url = avatar_url;
     entry.deleted.connect ((id) => { unblock_user (id);});
     user_list.add (entry);
     user_list_frame.show ();
