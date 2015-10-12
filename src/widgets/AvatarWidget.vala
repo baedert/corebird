@@ -209,8 +209,10 @@ class AvatarWidget : Gtk.Widget {
       minimal = 0;
       natural = 0;
     } else {
-      minimal = ((Cairo.ImageSurface)this._surface).get_height ();
-      natural = ((Cairo.ImageSurface)this._surface).get_height ();
+      double scale;
+      this._surface.get_device_scale (out scale, out scale);
+      minimal = (int)(this._surface.get_height () / scale);
+      natural = (int)(this._surface.get_height () / scale);
     }
   }
 }
