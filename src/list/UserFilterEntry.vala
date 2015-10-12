@@ -41,7 +41,7 @@ class UserFilterEntry : Gtk.ListBoxRow, ITwitterItem {
     set { screen_name_label.label = "@" + value; }
   }
 
-  public string avatar {
+  public string avatar_url {
     set { real_set_avatar (value); }
   }
 

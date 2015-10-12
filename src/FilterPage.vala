@@ -140,7 +140,7 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
     entry.user_id = id;
     entry.name = user_obj.get_string_member ("name");
     entry.screen_name = user_obj.get_string_member ("screen_name");
-    entry.avatar = user_obj.get_string_member ("profile_image_url");
+    entry.avatar_url = user_obj.get_string_member ("profile_image_url");
     entry.deleted.connect ((id) => { unblock_user (id);});
     user_list.add (entry);
     user_list_frame.show ();
