@@ -134,6 +134,9 @@ class AvatarWidget : Gtk.Widget {
       return false;
     }
 
+    double surface_scale;
+    this._surface.get_device_scale (out surface_scale, out surface_scale);
+
     if (width != height) {
       warning ("Avatar with mapped with width %d and height %d", width, height);
     }
@@ -143,7 +146,18 @@ class AvatarWidget : Gtk.Widget {
                                              width, height);
     var ct = new Cairo.Context (surface);
 
-    double scale = (double)this.get_allocated_width () / (double) this._surface.get_width ();
+    double scale = (double)this.get_allocated_width () /
+                   (double) (this._surface.get_width () / surface_scale);
+
+
+
+
+    if (scale < 1.0) {
+      warning ("Downscaling avatar of size %d/%d by%f",
+               this._surface.get_width (),
+               this._surface.get_height (),
+               scale);
+    }
 
     ct.rectangle (0, 0, width, height);
     ct.scale (scale, scale);
