@@ -134,6 +134,9 @@ class AvatarWidget : Gtk.Widget {
       return false;
     }
 
+    double surface_scale;
+    this._surface.get_device_scale (out surface_scale, out surface_scale);
+
     if (width != height) {
       warning ("Avatar with mapped with width %d and height %d", width, height);
     }
@@ -143,7 +146,10 @@ class AvatarWidget : Gtk.Widget {
                                              width, height);
     var ct = new Cairo.Context (surface);
 
-    double scale = (double)this.get_allocated_width () / (double) this._surface.get_width ();
+    double scale = (double)this.get_allocated_width () /
+                   (double) (this._surface.get_width () / surface_scale);
+
+
 
     ct.rectangle (0, 0, width, height);
     ct.scale (scale, scale);
@@ -187,18 +193,6 @@ class AvatarWidget : Gtk.Widget {
     return GLib.Source.CONTINUE;
   }
 
-
-  public override void get_preferred_height (out int minimal,
-                                             out int natural) {
-
-    if (this._surface == null) {
-      minimal = 0;
-      natural = 0;
-    } else {
-      minimal = ((Cairo.ImageSurface)this._surface).get_height ();
-      natural = ((Cairo.ImageSurface)this._surface).get_height ();
-    }
-  }
 }
 
 

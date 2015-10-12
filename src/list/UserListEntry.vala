@@ -39,7 +39,7 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
     }
   }
 
-  public string avatar {
+  public string avatar_url {
     set { real_set_avatar (value); }
   }
 
@@ -111,7 +111,7 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
   private void real_set_avatar (string avatar_url) {
     avatar_image.surface = Twitter.get ().get_avatar (user_id, avatar_url, (a) => {
       avatar_image.surface = a;
-    });
+    }, 48 * this.get_scale_factor ());
   }
 
   public int update_time_delta (GLib.DateTime? now = null) {return 0;}

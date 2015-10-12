@@ -81,9 +81,10 @@ class SettingsDialog : Gtk.Window {
     string sample_text = _("Hey, check out this new #Corebird version! \\ (•◡•) / #cool #newisalwaysbetter");
     Cairo.Surface? avatar_surface = null;
     try {
-      var a = Gtk.IconTheme.get_default ().load_icon ("corebird", 48,
+      var a = Gtk.IconTheme.get_default ().load_icon ("corebird",
+                                                      48 * this.get_scale_factor (),
                                                       Gtk.IconLookupFlags.FORCE_SIZE);
-      avatar_surface = Gdk.cairo_surface_create_from_pixbuf (a, 1, null);
+      avatar_surface = Gdk.cairo_surface_create_from_pixbuf (a, this.get_scale_factor (), this.get_window ());
     } catch (GLib.Error e) {
       warning (e.message);
     }

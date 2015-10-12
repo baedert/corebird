@@ -248,18 +248,21 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     int64 id = root.get_int_member ("id");
 
     string avatar_url = root.get_string_member("profile_image_url");
-    avatar_url = avatar_url.replace("_normal", "_bigger");
     string avatar_name = Utils.get_avatar_name(avatar_url);
+    int scale = this.get_scale_factor ();
 
-
+    if (scale == 1)
+      avatar_url = avatar_url.replace("_normal", "_bigger");
+    else
+      avatar_url = avatar_url.replace ("_normal", "_200x200");
 
     // We don't use our AvatarCache here becase this (73×73) avatar is only
     // ever loaded here.
-    TweetUtils.download_avatar.begin (avatar_url, 73, (obj, res) => {
+    TweetUtils.download_avatar.begin (avatar_url, 73 * scale, (obj, res) => {
       Cairo.Surface surface;
       try {
         var pixbuf = TweetUtils.download_avatar.end (res);
-        surface = Gdk.cairo_surface_create_from_pixbuf (pixbuf, 1, null);
+        surface = Gdk.cairo_surface_create_from_pixbuf (pixbuf, scale, null);
       } catch (GLib.Error e) {
         warning (e.message);
         surface = Twitter.no_avatar;
@@ -439,13 +442,18 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
 
     users_array.foreach_element ((array, index, node) => {
       var user_obj = node.get_object ();
+      string avatar_url = user_obj.get_string_member ("profile_image_url");
+
+      if (this.get_scale_factor () == 2)
+        avatar_url = avatar_url.replace ("_normal", "_bigger");
+
 
       var entry = new UserListEntry ();
       entry.show_settings = false;
       entry.user_id = user_obj.get_int_member ("id");
       entry.screen_name = user_obj.get_string_member ("screen_name");
       entry.name = user_obj.get_string_member ("name");
-      entry.avatar = user_obj.get_string_member ("profile_image_url");
+      entry.avatar_url = avatar_url;
       entry.get_style_context ().add_class ("tweet");
       entry.show ();
       this.followers_list.add (entry);
@@ -471,13 +479,17 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
 
     users_array.foreach_element ((array, index, node) => {
       var user_obj = node.get_object ();
+      string avatar_url = user_obj.get_string_member ("profile_image_url");
+
+      if (this.get_scale_factor () == 2)
+        avatar_url = avatar_url.replace ("_normal", "_bigger");
 
       var entry = new UserListEntry ();
       entry.show_settings = false;
       entry.user_id = user_obj.get_int_member ("id");
       entry.screen_name = user_obj.get_string_member ("screen_name");
       entry.name = user_obj.get_string_member ("name");
-      entry.avatar = user_obj.get_string_member ("profile_image_url");
+      entry.avatar_url = avatar_url;
       entry.get_style_context ().add_class ("tweet");
       entry.show ();
       this.following_list.add (entry);
