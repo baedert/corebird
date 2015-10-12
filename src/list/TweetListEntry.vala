@@ -111,6 +111,9 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     name_button.set_markup (tweet.user_name);
     screen_name_label.label = "@" + tweet.screen_name;
     if (tweet.avatar_url != null) {
+      string avatar_url = tweet.avatar_url;
+      if (this.get_scale_factor () == 2)
+        avatar_url = avatar_url.replace ("_normal", "_bigger");
       avatar_image.surface = Twitter.get ().get_avatar (tweet.user_id, tweet.avatar_url, (a) => {
         avatar_image.surface = a;
       }, 48 * this.get_scale_factor ());
