@@ -1,4 +1,15 @@
 
+bool is_sorted (TweetModel tm) {
+  int64 last_id = ((Tweet)tm.get_item (0)).id;
+
+  for (int i = 1; i < tm.get_n_items (); i ++) {
+    Tweet t = (Tweet)tm.get_item (i);
+    if (t.id > last_id) return false;
+
+    last_id = t.id;
+  }
+  return true;
+}
 
 void basic_tweet_order () {
   TweetModel tm = new TweetModel ();
@@ -54,7 +65,7 @@ void tweet_removal () {
   assert (tm.get_n_items () == 12);
 
   // Now remove the last 5 visible ones.
-  // This should remove both invisible tweets as well as 5 visible ones
+  // This should remove 2 invisible tweets as well as 5 visible ones
   // Leaving the model with 5 remaining tweets
   tm.remove_last_n_visible (5);
 
@@ -188,6 +199,20 @@ void min_max_id () {
 }
 
 
+void sorting () {
+  var tm = new TweetModel ();
+
+  for (int i = 0; i < 100; i ++) {
+    var t = new Tweet ();
+    t.id = GLib.Random.next_int ();
+    tm.add (t);
+  }
+
+  //for (int i = 0; i < tm.get_n_items (); i ++)
+    //message ("ID: %s", ((Tweet)tm.get_item (i)).id.to_string ());
+
+  assert (is_sorted (tm));
+}
 int main (string[] args) {
   GLib.Test.init (ref args);
   GLib.Test.add_func ("/tweetmodel/basic-tweet-order", basic_tweet_order);
@@ -198,6 +223,7 @@ int main (string[] args) {
   GLib.Test.add_func ("/tweetmodel/hide-rt", hide_rt);
   GLib.Test.add_func ("/tweetmodel/get-from-id", get_from_id);
   GLib.Test.add_func ("/tweetmodel/min-max-id", min_max_id);
+  GLib.Test.add_func ("/tweetmodel/sorting", sorting);
 
   return GLib.Test.run ();
 }
