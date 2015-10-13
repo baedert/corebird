@@ -11,6 +11,17 @@ bool is_sorted (TweetModel tm) {
   return true;
 }
 
+int64 get_max_id (TweetModel tm) {
+  int64 max = -1;
+
+  for (int i = 0; i < tm.get_n_items (); i ++) {
+    var t = (Tweet)tm.get_item (i);
+    if (t.id > max) max = t.id;
+  }
+
+  return max;
+}
+
 void basic_tweet_order () {
   TweetModel tm = new TweetModel ();
 
@@ -213,6 +224,55 @@ void sorting () {
 
   assert (is_sorted (tm));
 }
+
+void min_max_remove () {
+  var tm = new TweetModel ();
+
+  var t = new Tweet ();
+  t.id = 10;
+  tm.add (t);
+
+  t = new Tweet ();
+  t.id = 20;
+  tm.add (t);
+
+  t = new Tweet ();
+  t.id = 2;
+  tm.add (t);
+
+  assert (tm.greatest_id == 20);
+  assert (tm.lowest_id == 2);
+
+  tm.remove (10);
+  // Should still be the same
+  assert (tm.greatest_id == 20);
+  assert (tm.lowest_id == 2);
+
+  t = new Tweet ();
+  t.id = 10;
+  tm.add (t);
+
+  // And again...
+  assert (tm.greatest_id == 20);
+  assert (tm.lowest_id == 2);
+
+
+  // Now it gets interesting
+  tm.remove (20);
+  assert (tm.lowest_id == 2);
+  assert (tm.greatest_id == 10);
+  assert (tm.greatest_id == get_max_id (tm));
+
+  tm.remove (2);
+  assert (tm.lowest_id == 10);
+  assert (tm.greatest_id == 10);
+
+  tm.remove (10);
+  assert (tm.lowest_id == int64.MAX);
+  assert (tm.greatest_id == int64.MIN);
+}
+
+
 int main (string[] args) {
   GLib.Test.init (ref args);
   GLib.Test.add_func ("/tweetmodel/basic-tweet-order", basic_tweet_order);
@@ -224,6 +284,7 @@ int main (string[] args) {
   GLib.Test.add_func ("/tweetmodel/get-from-id", get_from_id);
   GLib.Test.add_func ("/tweetmodel/min-max-id", min_max_id);
   GLib.Test.add_func ("/tweetmodel/sorting", sorting);
+  GLib.Test.add_func ("/tweetmodel/min-max-remove", min_max_remove);
 
   return GLib.Test.run ();
 }
