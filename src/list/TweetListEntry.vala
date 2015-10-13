@@ -114,7 +114,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       string avatar_url = tweet.avatar_url;
       if (this.get_scale_factor () == 2)
         avatar_url = avatar_url.replace ("_normal", "_bigger");
-      avatar_image.surface = Twitter.get ().get_avatar (tweet.user_id, tweet.avatar_url, (a) => {
+      avatar_image.surface = Twitter.get ().get_avatar (tweet.user_id, avatar_url, (a) => {
         avatar_image.surface = a;
       }, 48 * this.get_scale_factor ());
     }
