@@ -250,6 +250,9 @@ public class AvatarCache : GLib.Object {
   public void print_debug () {
     message ("-----------------");
     message ("Cached avatars: %d", this.surfaces.length);
+    message ("URLS:");
+    for (int i = 0; i < this.urls.length; i ++)
+      message ("%d: %s", i, this.urls[i]);
 
     assert (ids.length == surfaces.length && surfaces.length == refcounts.length &&
             refcounts.length == urls.length);
