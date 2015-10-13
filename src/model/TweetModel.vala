@@ -62,7 +62,7 @@ public class TweetModel : GLib.Object, GLib.ListModel {
       if (tweet.id > min_id + half) {
         // we start at the beginning
         for (int i = 0, p = tweets.size; i < p; i ++) {
-          if (tweets.get (i).id < tweet.id) {
+          if (tweets.get (i).id <= tweet.id) {
             insert_pos = i;
             break;
           }
@@ -70,8 +70,8 @@ public class TweetModel : GLib.Object, GLib.ListModel {
       } else {
         // we start at the end
         for (int i = tweets.size - 1; i >= 0; i --) {
-          if (tweets.get (i).id <= tweet.id) {
-            insert_pos = i;
+          if (tweets.get (i).id >= tweet.id) {
+            insert_pos = i + 1;
             break;
           }
         }
