@@ -47,6 +47,30 @@ public class TweetModel : GLib.Object, GLib.ListModel {
     return tweets.size;
   }
 
+  private void remove_at_pos (int pos) {
+    int64 id = this.tweets.get (pos).id;
+    this.tweets.remove_at (pos);
+
+    // Now we just need to update the min_id/max_id fields
+    if (id == this.max_id) {
+      if (this.tweets.size > 0) {
+        int p = int.max (pos - 1, 0);
+        message ("p: %d", p);
+        this.max_id = this.tweets.get (p).id;
+      } else {
+        this.max_id = int64.MIN;
+      }
+    }
+
+    if (id == this.min_id) {
+      if (this.tweets.size > 0) {
+        int p = int.min (pos + 1, this.tweets.size - 1);
+        this.min_id = this.tweets.get (p).id;
+      } else {
+        this.min_id = int64.MAX;
+      }
+    }
+  }
 
   private void insert_sorted (Tweet tweet) {
     /* Determine the end we start at.
@@ -100,6 +124,7 @@ public class TweetModel : GLib.Object, GLib.ListModel {
 
     uint n_removed = 0;
 
+    int size_before = tweets.size;
     int index = tweets.size - 1;
     while (index >= 0 && n_removed < amount) {
       Tweet tweet = tweets.get (index);
@@ -107,10 +132,11 @@ public class TweetModel : GLib.Object, GLib.ListModel {
       if (!tweet.is_hidden)
         n_removed ++;
 
-      tweets.remove_at (index);
+      this.remove_at_pos (index);
       index --;
     }
-    this.items_changed (tweets.size - 1, n_removed, 0);
+    int removed = size_before - tweets.size;
+    this.items_changed (size_before - removed, removed, 0);
   }
 
   public void clear () {
@@ -124,7 +150,7 @@ public class TweetModel : GLib.Object, GLib.ListModel {
   public void remove (int64 tweet_id) {
     for (int i = 0, p = tweets.size; i < p; i ++) {
       if (tweets.get(i).id == tweet_id) {
-        tweets.remove_at (i);
+        this.remove_at_pos (i);
         this.items_changed (i, 1, 0);
         break;
       }
@@ -137,7 +163,7 @@ public class TweetModel : GLib.Object, GLib.ListModel {
 #endif
 
     int pos = this.tweets.index_of (t);
-    this.tweets.remove (t);
+    this.remove_at_pos (pos);
     this.items_changed (pos, 1, 0);
   }
 
@@ -180,7 +206,7 @@ public class TweetModel : GLib.Object, GLib.ListModel {
   public void remove_tweets_above (int64 id) {
     while (tweets.size > 0 &&
            tweets.get (0).id >= id) {
-      tweets.remove_at (0);
+      this.remove_at_pos (0);
       this.items_changed (0, 1, 0);
     }
   }
