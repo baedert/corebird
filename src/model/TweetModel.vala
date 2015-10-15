@@ -55,7 +55,6 @@ public class TweetModel : GLib.Object, GLib.ListModel {
     if (id == this.max_id) {
       if (this.tweets.size > 0) {
         int p = int.max (pos - 1, 0);
-        message ("p: %d", p);
         this.max_id = this.tweets.get (p).id;
       } else {
         this.max_id = int64.MIN;
