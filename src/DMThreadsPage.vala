@@ -118,7 +118,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     start_conversation_entry.unreveal ();
   }
 
-  public void load_cached () { // {{{
+  public void load_cached () {
     //Load max message id
 
     max_received_id = account.db.select ("dms").cols ("id")
@@ -133,7 +133,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 
       var entry = new DMThreadEntry (user_id);
       entry.screen_name =  vals[1];
-      entry.name = vals[5];
+      entry.name = vals[5].replace ("&", "&amp;");
       entry.last_message = vals[2];
       entry.last_message_id = int64.parse(vals[3]);
       entry.unread_count = 0;
@@ -154,7 +154,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       row.activatable = false;
       thread_list.add (row);
     }
-  } // }}}
+  }
 
   public void load_newest () { // {{{
     dm_download_collect.finished.connect (() => {
@@ -264,7 +264,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     var thread_entry = new DMThreadEntry (sender_id);
     var author = dm_obj.get_string_member ("sender_screen_name");
     string sender_name = dm_obj.get_object_member ("sender").get_string_member ("name").strip ();
-    thread_entry.name = sender_name;
+    thread_entry.name = sender_name.replace ("&", "&amp;");
     thread_entry.screen_name = author;
     thread_entry.last_message = TextTransform.transform (text,
                                                          url_list,
