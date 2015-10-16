@@ -15,7 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// TODO: Allow D'n'D out of the button
 private class MediaButton : Gtk.Button {
   private unowned Media? _media;
   private static Cairo.Surface[] play_icons;
@@ -142,7 +141,7 @@ private class MediaButton : Gtk.Button {
   }
 
   private bool button_clicked_cb (Gdk.EventButton evt) {
-    if (evt.button == Gdk.BUTTON_SECONDARY && this.media != null) {
+    if (evt.triggers_context_menu () && this.media != null) {
       menu.show_all ();
       menu.popup (null, null, null, evt.button, evt.time);
       return true;
