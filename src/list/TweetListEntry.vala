@@ -23,8 +23,6 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     {"delete", delete_activated}
   };
 
-  private const int64 TRANSITION_DURATION = 300;
-
   [GtkChild]
   private Gtk.Label screen_name_label;
   [GtkChild]
@@ -112,7 +110,14 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
     name_button.set_markup (tweet.user_name);
     screen_name_label.label = "@" + tweet.screen_name;
-    avatar_image.surface = tweet.avatar;
+    if (tweet.avatar_url != null) {
+      string avatar_url = tweet.avatar_url;
+      if (this.get_scale_factor () == 2)
+        avatar_url = avatar_url.replace ("_normal", "_bigger");
+      avatar_image.surface = Twitter.get ().get_avatar (tweet.user_id, avatar_url, (a) => {
+        avatar_image.surface = a;
+      }, 48 * this.get_scale_factor ());
+    }
     avatar_image.verified = tweet.verified;
     text_label.label = tweet.get_trimmed_text ();
     update_time_delta ();
@@ -154,9 +159,6 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     else {
       conversation_image.show ();
     }
-
-    // If the avatar gets loaded, we want to change it here immediately
-    tweet.notify["avatar"].connect (avatar_changed);
 
     if (tweet.has_inline_media) {
       mm_widget.set_all_media (tweet.medias);
@@ -239,10 +241,6 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       });
     } else
       delete_first_activated = true;
-  }
-
-  private void avatar_changed () {
-    avatar_image.surface = tweet.avatar;
   }
 
   static construct {
@@ -418,6 +416,11 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     stack.visible_child = grid;
   }
 
+  public void set_avatar (Cairo.Surface surface) {
+    /* This should only ever be called from the settings page. */
+    this.avatar_image.surface = surface;
+  }
+
 
   /**
    * Updates the time delta label in the upper right
@@ -484,7 +487,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     ulong realize_id = 0;
     realize_id = this.realize.connect (() => {
       this.start_time = this.get_frame_clock ().get_frame_time ();
-      this.end_time = start_time + (TRANSITION_DURATION * 1000);
+      this.end_time = start_time + TRANSITION_DURATION;
       this.add_tick_callback (anim_tick);
       this.disconnect (realize_id);
     });

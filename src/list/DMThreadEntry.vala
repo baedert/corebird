@@ -49,6 +49,7 @@ class DMThreadEntry : Gtk.ListBoxRow {
   private AvatarWidget avatar_image;
   [GtkChild]
   private Gtk.Label unread_count_label;
+  public string avatar_url;
   public int64 user_id {public get; private set;}
   public new string name {
     get {
@@ -96,6 +97,16 @@ class DMThreadEntry : Gtk.ListBoxRow {
   public DMThreadEntry (int64 user_id) {
     this.user_id = user_id;
     update_unread_count ();
+  }
+
+  public void load_avatar () {
+    string url = avatar_url;
+    if (this.get_scale_factor () == 2)
+      url = url.replace ("_normal", "_bigger");
+
+    avatar_image.surface = Twitter.get ().get_avatar (user_id, url, (a) => {
+      avatar_image.surface = a;
+    }, 48 * this.get_scale_factor ());
   }
 
   private void update_unread_count () {

@@ -487,6 +487,7 @@ namespace TweetUtils {
         call.sync ();
       } catch (GLib.Error e) {
         err = e;
+        GLib.Idle.add (() => { callback (); return GLib.Source.REMOVE; });
         return null;
       }
 
@@ -495,6 +496,7 @@ namespace TweetUtils {
         parser.load_from_data (call.get_payload ());
       } catch (GLib.Error e) {
         err = e;
+        GLib.Idle.add (() => { callback (); return GLib.Source.REMOVE; });
         return null;
       }
 

@@ -118,7 +118,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     start_conversation_entry.unreveal ();
   }
 
-  public void load_cached () { // {{{
+  public void load_cached () {
     //Load max message id
 
     max_received_id = account.db.select ("dms").cols ("id")
@@ -133,14 +133,12 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 
       var entry = new DMThreadEntry (user_id);
       entry.screen_name =  vals[1];
-      entry.name = vals[5];
+      entry.name = vals[5].replace ("&", "&amp;");
       entry.last_message = vals[2];
       entry.last_message_id = int64.parse(vals[3]);
       entry.unread_count = 0;
-      entry.avatar = Twitter.get ().get_avatar (user_id, vals[4], (a) => {
-        entry.avatar = a;
-      });
-
+      entry.avatar_url = vals[4];
+      entry.load_avatar ();
 
       thread_list.add (entry);
       thread_map.set (user_id, entry);
@@ -156,9 +154,9 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       row.activatable = false;
       thread_list.add (row);
     }
-  } // }}}
+  }
 
-  public void load_newest () { // {{{
+  public void load_newest () {
     dm_download_collect.finished.connect (() => {
       remove_spinner ();
       save_last_messages ();
@@ -196,7 +194,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       }
     });
 
-  } // }}}
+  }
 
 
   private void on_dm_result (Json.Node? root) {
@@ -221,7 +219,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   }
 
 
-  private void add_new_thread (Json.Object dm_obj) { // {{{
+  private void add_new_thread (Json.Object dm_obj) {
     int64 sender_id  = dm_obj.get_int_member ("sender_id");
     int64 message_id = dm_obj.get_int_member ("id");
     save_message (dm_obj);
@@ -266,7 +264,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     var thread_entry = new DMThreadEntry (sender_id);
     var author = dm_obj.get_string_member ("sender_screen_name");
     string sender_name = dm_obj.get_object_member ("sender").get_string_member ("name").strip ();
-    thread_entry.name = sender_name;
+    thread_entry.name = sender_name.replace ("&", "&amp;");
     thread_entry.screen_name = author;
     thread_entry.last_message = TextTransform.transform (text,
                                                          url_list,
@@ -289,9 +287,9 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     thread_entry.avatar = Twitter.get ().get_avatar (sender_id, avatar_url, (a) => {
       thread_entry.avatar = a;
     });
-  } // }}}
+  }
 
-  private void save_message (Json.Object dm_obj) { // {{{
+  private void save_message (Json.Object dm_obj) {
     Json.Object sender = dm_obj.get_object_member ("sender");
     Json.Object recipient = dm_obj.get_object_member ("recipient");
     int64 sender_id = dm_obj.get_int_member ("sender_id");
@@ -334,7 +332,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       max_received_id = dm_id;
     else
       max_sent_id = dm_id;
-  } // }}}
+  }
 
 
   private void save_last_messages () {

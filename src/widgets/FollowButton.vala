@@ -39,6 +39,8 @@ class FollowButton : Gtk.Button {
 
   construct {
     this.stack = new Gtk.Stack ();
+    this.stack.margin_start = 3;
+    this.stack.margin_end   = 3;
 
     this.follow_label = new Gtk.Label (_("Follow"));
     this.unfollow_label = new Gtk.Label (_("Unfollow"));

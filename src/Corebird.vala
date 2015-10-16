@@ -99,7 +99,7 @@ public class Corebird : Gtk.Application {
     ad.show_all ();
   }
 
-  public override void startup () { // {{{
+  public override void startup () {
     base.startup ();
 
     new LazyMenuButton ();
@@ -182,7 +182,7 @@ public class Corebird : Gtk.Application {
       gtk_s.gtk_decoration_layout = gtk_s.gtk_decoration_layout.replace ("menu", "");
     }
 
-  } // }}}
+  }
 
   public override void shutdown () {
     base.shutdown();
@@ -430,7 +430,9 @@ public class Corebird : Gtk.Application {
   }
 
   private void print_debug (GLib.SimpleAction a, GLib.Variant? v) {
+#if DEBUG
     Twitter.get ().debug ();
+#endif
   }
 
   private void post_json (GLib.SimpleAction a, GLib.Variant? value) {

@@ -79,11 +79,12 @@ class SettingsDialog : Gtk.Window {
       user_name = "Corebird"
     };
     string sample_text = _("Hey, check out this new #Corebird version! \\ (•◡•) / #cool #newisalwaysbetter");
-    Gdk.Pixbuf? a = null;
+    Cairo.Surface? avatar_surface = null;
     try {
-      a = Gtk.IconTheme.get_default ().load_icon ("corebird", 48,
-                                                  Gtk.IconLookupFlags.FORCE_SIZE);
-      sample_tweet.avatar = Gdk.cairo_surface_create_from_pixbuf (a, 1, null);
+      var a = Gtk.IconTheme.get_default ().load_icon ("corebird",
+                                                      48 * this.get_scale_factor (),
+                                                      Gtk.IconLookupFlags.FORCE_SIZE);
+      avatar_surface = Gdk.cairo_surface_create_from_pixbuf (a, this.get_scale_factor (), this.get_window ());
     } catch (GLib.Error e) {
       warning (e.message);
     }
@@ -123,6 +124,7 @@ class SettingsDialog : Gtk.Window {
 
     this.sample_tweet_entry = new TweetListEntry (sample_tweet, null,
                                                   new Account (10, "", ""));
+    sample_tweet_entry.set_avatar (avatar_surface);
     sample_tweet_entry.activatable = false;
     sample_tweet_entry.read_only = true;
     sample_tweet_entry.show ();

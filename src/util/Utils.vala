@@ -35,6 +35,8 @@ enum Page {
 
 static Soup.Session SOUP_SESSION = null;
 
+const int TRANSITION_DURATION = 200 * 1000;
+
 
 void default_header_func (Gtk.ListBoxRow  row,
                           Gtk.ListBoxRow? row_before)
@@ -480,10 +482,10 @@ namespace Utils {
    * Returns TRUE if the @value does both exist and is non-null.
    */
   public bool usable_json_value (Json.Object node, string value_name) {
-    if (node.get_null_member (value_name))
-      return false;
+    if (!node.has_member (value_name))
+        return false;
 
-    return node.has_member (value_name);
+    return !node.get_null_member (value_name);
   }
 
   public string get_banner_name (int64 user_id) {

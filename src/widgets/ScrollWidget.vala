@@ -20,7 +20,6 @@ const int BOTTOM = 2;
 const int NONE   = 0;
 
 public class ScrollWidget : Gtk.ScrolledWindow {
-  private static const int64 TRANSITION_DURATION = 300;
   public signal void scrolled_to_start(double value);
   public signal void scrolled_to_end();
   private double upper_cache;
@@ -113,7 +112,7 @@ public class ScrollWidget : Gtk.ScrolledWindow {
     if (force_start) {
       if (Gtk.Settings.get_default ().gtk_enable_animations && animate) {
         this.start_time = this.get_frame_clock ().get_frame_time ();
-        this.end_time = start_time + (TRANSITION_DURATION * 1000);
+        this.end_time = start_time + TRANSITION_DURATION;
         this.transition_diff = - this.vadjustment.value;
         this.transition_start_value = vadjustment.value;
         this.add_tick_callback (scroll_up_tick_cb);
@@ -130,7 +129,7 @@ public class ScrollWidget : Gtk.ScrolledWindow {
       scroll_up_id = this.size_allocate.connect (() => {
         if (Gtk.Settings.get_default ().gtk_enable_animations && animate) {
           this.start_time = this.get_frame_clock ().get_frame_time ();
-          this.end_time = start_time + (TRANSITION_DURATION * 1000);
+          this.end_time = start_time + TRANSITION_DURATION;
           this.transition_diff = - this.vadjustment.value;
           this.transition_start_value = vadjustment.value;
           this.add_tick_callback (scroll_up_tick_cb);
@@ -167,7 +166,7 @@ public class ScrollWidget : Gtk.ScrolledWindow {
     scroll_down_id = this.size_allocate.connect (() => {
       if (Gtk.Settings.get_default ().gtk_enable_animations && animate) {
         this.start_time = this.get_frame_clock ().get_frame_time ();
-        this.end_time = start_time + (TRANSITION_DURATION * 1000);
+        this.end_time = start_time + TRANSITION_DURATION;
         this.transition_diff = (vadjustment.upper - vadjustment.page_size - vadjustment.value);
         this.transition_start_value = this.vadjustment.value;
         this.add_tick_callback (scroll_up_tick_cb);

@@ -279,12 +279,12 @@ public class Tweet : GLib.Object {
   public MiniTweet? retweeted_tweet = null;
   public MiniTweet? quoted_tweet = null;
 
-  public Cairo.Surface avatar { get; set; }
   /** The avatar url on the server */
   public string avatar_url;
   public bool verified = false;
   public int64 my_retweet;
   public bool protected;
+  public bool nsfw;
   public string? notification_id = null;
   private bool _seen = true;
   public bool seen {
@@ -330,10 +330,6 @@ public class Tweet : GLib.Object {
   public int retweet_count;
   public int favorite_count;
 
-  public Tweet () {
-    this.avatar = Twitter.no_avatar;
-  }
-
   public string[] get_mentions () {
     TextEntity[] entities;
     if (this.retweeted_tweet != null)
@@ -372,6 +368,11 @@ public class Tweet : GLib.Object {
     this.retweet_count = (int)status.get_int_member ("retweet_count");
     this.favorite_count = (int)status.get_int_member ("favorite_count");
 
+    if (Utils.usable_json_value (status, "possibly_sensitive"))
+      this.nsfw = status.get_boolean_member ("possibly_sensitive");
+    else
+      this.nsfw = false;
+
     this.source_tweet = parse_mini_tweet (status);
 
     if (status.has_member("retweeted_status")) {
@@ -405,16 +406,10 @@ public class Tweet : GLib.Object {
       parse_entities (this.quoted_tweet, quoted_status);
     }
 
-
     if (status.has_member ("current_user_retweet")) {
       this.my_retweet = status.get_object_member ("current_user_retweet").get_int_member ("id");
       this.retweeted  = true;
     }
-
-
-    this.avatar = Twitter.get ().get_avatar (this.user_id, avatar_url, (a) => {
-      this.avatar = a;
-    });
 
 #if DEBUG
     var gen = new Json.Generator ();

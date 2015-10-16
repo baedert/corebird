@@ -69,7 +69,7 @@ class UserListDialog : Gtk.Dialog {
     placeholder_label.get_style_context ().add_class ("dim-label");
     placeholder_label.show ();
     list_list_box.set_placeholder (placeholder_label);
-
+    this.set_default_size (400, 200);
   }
 
   public void load_lists () {

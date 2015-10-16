@@ -21,7 +21,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   private int _unread_count = 0;
   public int unread_count {
     set {
-      _unread_count = value;
+      _unread_count = int.max (value, 0);
       debug ("New unread count: %d", value);
       tool_button.show_badge = (_unread_count > 0);
     }
@@ -147,7 +147,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
    * Handle the case of the user scrolling to the start of the list,
    * i.e. remove all the items except a few ones after a timeout.
    */
-  protected void handle_scrolled_to_start() { // {{{
+  protected void handle_scrolled_to_start() {
     if (tweet_remove_timeout != 0)
       return;
 
@@ -166,7 +166,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
       GLib.Source.remove (tweet_remove_timeout);
       tweet_remove_timeout = 0;
     }
-  } // }}}
+  }
 
   public void delete_tweet (int64 tweet_id) {
     bool was_seen;
@@ -176,7 +176,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
       this.unread_count --;
   }
 
-  public void toggle_favorite (int64 id, bool mode) { // {{{
+  public void toggle_favorite (int64 id, bool mode) {
     var tweets = tweet_list.get_children ();
 
     foreach (var w in tweets) {
@@ -188,7 +188,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
         break;
       }
     }
-  } // }}}
+  }
 
 
   /**
@@ -304,9 +304,9 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
 
       var root_arr = parser.get_root ().get_array ();
       if (root_arr.get_length () > 0) {
-        tweet_list.model.clear ();
-        unread_count = 0;
-        load_newest ();
+        this.tweet_list.model.clear ();
+        this.unread_count = 0;
+        this.load_newest ();
       }
 
     });

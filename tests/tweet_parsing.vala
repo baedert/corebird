@@ -624,7 +624,6 @@ void media_count () {
   Tweet t = new Tweet ();
 
   rm_dir (Dirs.cache ("assets/media"));
-  rm_dir (Dirs.cache ("assets/media/thumbs"));
 
 
   var parser = new Json.Parser ();
@@ -648,7 +647,6 @@ void media_count2 () {
   Tweet t = new Tweet ();
 
   rm_dir (Dirs.cache ("assets/media"));
-  rm_dir (Dirs.cache ("assets/media/thumbs"));
 
   var parser = new Json.Parser ();
   try {

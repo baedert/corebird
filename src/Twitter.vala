@@ -214,7 +214,7 @@ public class AvatarCache : GLib.Object {
     if (index != -1) {
       this.refcounts.data[index] = this.refcounts.data[index] + 1;
     } else {
-      warning ("Surface %p not in cache", surface);
+      //warning ("Surface %p not in cache", surface);
     }
   }
 
@@ -228,14 +228,14 @@ public class AvatarCache : GLib.Object {
     }
 
     if (index == -1) {
-      warning ("Surface %p not in cache", surface);
+      //warning ("Surface %p not in cache", surface);
       return;
     }
 
     this.refcounts.data[index] = this.refcounts.data[index] - 1;
 
     if (this.refcounts.data[index] == 0) {
-      debug ("Removing avatar with id %d from cache", index);
+      debug ("Removing avatar with id %d from cache (Now: %u)", index, this.ids.length - 1);
       this.ids.remove_index_fast (index);
       this.surfaces.remove_index_fast (index);
       this.urls.remove_index_fast (index);
@@ -250,6 +250,9 @@ public class AvatarCache : GLib.Object {
   public void print_debug () {
     message ("-----------------");
     message ("Cached avatars: %d", this.surfaces.length);
+    message ("URLS:");
+    for (int i = 0; i < this.urls.length; i ++)
+      message ("%d: %s", i, this.urls[i]);
 
     assert (ids.length == surfaces.length && surfaces.length == refcounts.length &&
             refcounts.length == urls.length);

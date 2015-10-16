@@ -45,7 +45,7 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
   }
 
 
-  private void add_tweet (Json.Node root_node) { // {{{
+  private void add_tweet (Json.Node root_node) {
     /* Mark tweets as seen the user has already replied to */
     var root = root_node.get_object ();
     var author = root.get_object_member ("user");
@@ -92,7 +92,7 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
                                                Utils.unescape_html (text));
       }
     }
-  } // }}}
+  }
 
 
   /**
@@ -110,7 +110,6 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
     GLib.Application.get_default ().send_notification (id, n);
     return id;
   }
-
 
   public override void load_newest () {
     this.loading = true;
@@ -130,14 +129,11 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
     });
   }
 
-
   public override string? get_title () {
     return _("Mentions");
   }
 
-
   public override void create_tool_button (Gtk.RadioButton? group) {
     tool_button = new BadgeRadioToolButton(group, "corebird-mentions-symbolic", _("Mentions"));
   }
-
 }

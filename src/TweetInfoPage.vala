@@ -412,9 +412,8 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     text_label.label = tweet.get_formatted_text ();
     name_button.set_markup (tweet.user_name);
     screen_name_label.label = "@" + tweet.screen_name;
-    avatar_image.surface = tweet.avatar;
-    tweet.notify["avatar"].connect (() => {
-      avatar_image.surface = tweet.avatar;
+    avatar_image.surface = Twitter.get ().get_avatar (tweet.user_id, tweet.avatar_url, (a) => {
+      avatar_image.surface = a;
     });
     update_rt_fav_labels ();
     time_label.label = time_format;
