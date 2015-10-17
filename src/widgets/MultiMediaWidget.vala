@@ -15,6 +15,9 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+const bool FULLSIZE = true;
+
+
 private class MediaButton : Gtk.Button {
   private unowned Media? _media;
   private static Cairo.Surface[] play_icons;
@@ -90,9 +93,13 @@ private class MediaButton : Gtk.Button {
     }
 
     width  = this.get_allocated_width ();
+    height = this.get_allocated_height ();
     double scale_x = (double)width / (media.surface).get_width ();
+    double scale_y = (double)height / media.surface.get_height ();
     height = (int)((this._media.surface).get_height () * scale_x);
-    scale = scale_x;
+
+    if (FULLSIZE) scale = double.min (double.min (scale_x, scale_y), 1.0);
+    else          scale = scale_x;
   }
 
   public override bool draw (Cairo.Context ct) {
@@ -190,13 +197,26 @@ private class MediaButton : Gtk.Button {
       file_dialog.destroy ();
   }
 
+  public override void get_preferred_width (out int minimum,
+                                            out int natural) {
+    if (media.surface == null)
+      minimum = natural = 0;
+    else {
+      int w, h;
+      double scale;
+      this.get_draw_size (out w, out h, out scale);
+      minimum = natural = (int)(media.surface.get_width () * scale);
+    }
+  }
 
   public override void get_preferred_height_for_width (int width,
                                                        out int minimum,
                                                        out int natural) {
-    //if (this._media == null || !this.media.loaded) {
-      //minimum = width /2;
-      //natural = width /2;
+
+    //if (FULLSIZE) {
+      //int s_h = this._media.surface == null ? 0 : this._media.surface.get_height ();
+      //minimum = natural = int.min (s_h, width / 2);
+      //minimum = natural = s_h;
     //} else {
       minimum = natural = (int)GLib.Math.fmin (MultiMediaWidget.MAX_HEIGHT,
                                                width / 2);
