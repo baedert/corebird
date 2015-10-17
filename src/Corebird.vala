@@ -166,6 +166,10 @@ public class Corebird : Gtk.Application {
     this.set_accels_for_action ("app.quit", {"<Control>Q"});
     this.set_accels_for_action ("win.show-account-dialog", {Settings.get_accel ("show-account-dialog")});
     this.set_accels_for_action ("win.show-account-list", {Settings.get_accel ("show-account-list")});
+
+    // TweetInfoPage
+    this.set_accels_for_action ("tweet.reply",    {"r"});
+    this.set_accels_for_action ("tweet.favorite", {"f"});
 #if DEBUG
     this.set_accels_for_action ("app.print-debug", {"<Primary>D"});
 #endif
