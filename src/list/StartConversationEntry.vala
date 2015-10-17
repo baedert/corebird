@@ -78,7 +78,7 @@ class StartConversationEntry : Gtk.ListBoxRow {
 //    });
   }
 
-  private void position_popup_window () { // {{{
+  private void position_popup_window () {
     int x, y;
     Gtk.Allocation alloc;
     name_entry.get_allocation (out alloc);
@@ -88,25 +88,30 @@ class StartConversationEntry : Gtk.ListBoxRow {
 
     completion_window.move (x, y);
     completion_window.resize (alloc.width, 50);
-  } // }}}
+  }
 
   private bool name_entry_key_pressed (Gdk.EventKey evt) {
     uint num_results = completion_list.get_children ().length ();
+
+    if (num_results == 0)
+      return Gdk.EVENT_PROPAGATE;
+
+
     if (evt.keyval == Gdk.Key.Down) {
       current_match = (current_match + 1) % (int)num_results;
       var row = completion_list.get_row_at_index (current_match);
       completion_list.select_row (row);
-      return true;
+      return Gdk.EVENT_STOP;
     } else if (evt.keyval == Gdk.Key.Up) {
       current_match --;
       if (current_match < 0) current_match = (int)num_results - 1;
       var row = completion_list.get_row_at_index (current_match);
       completion_list.select_row (row);
-      return true;
+      return Gdk.EVENT_STOP;
     } else if (evt.keyval == Gdk.Key.Return) {
 
     }
-    return false;
+    return Gdk.EVENT_PROPAGATE;
   }
 
   construct {
@@ -129,7 +134,7 @@ class StartConversationEntry : Gtk.ListBoxRow {
   }
 
   [GtkCallback]
-  private void go_button_clicked_cb () { // {{{
+  private void go_button_clicked_cb () {
 //    if (name_entry.text.length > 0)
 //      activated ();
     string screen_name;
@@ -182,7 +187,7 @@ class StartConversationEntry : Gtk.ListBoxRow {
       go_stack.visible_child_name = "button";
     });
   }
-} /// }}}
+}
 
 
 class CompletionListEntry : Gtk.ListBoxRow {
