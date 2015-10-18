@@ -11,6 +11,9 @@ appdata_DATA = $(appdata_in_files:.xml.in=.xml)
 
 man_MANS = corebird.1
 
+# if you change this, change Config.vala.in too.
+# This overrided what configure defines.
+gsettingsschemadir = $(prefix)/share/corebird/schemas/
 gsettings_SCHEMAS = org.baedert.corebird.gschema.xml
 @INTLTOOL_XML_NOMERGE_RULE@
 @GSETTINGS_RULES@

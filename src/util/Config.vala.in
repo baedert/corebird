@@ -19,3 +19,4 @@
 public const string DATADIR = "@prefix@/share/corebird/";
 public const string LOCALEDIR = "@prefix@/share/locale";
 public const string GETTEXT_PACKAGE = "@GETTEXT_PACKAGE@";
+public const string GSETTINGSDIR = "@prefix@/share/corebird/schemas/";
