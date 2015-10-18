@@ -1,5 +1,6 @@
 void count () {
-  var db = new Sql.Database (Dirs.config ("accounts/118055879.db"),
+  FileUtils.remove (Dirs.config ("accounts/test-account.db"));
+  var db = new Sql.Database (Dirs.config ("accounts/test-account.db"),
                              Sql.ACCOUNTS_INIT_FILE);
   var counter = new UserCounter ();
   counter.load (db);
