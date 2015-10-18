@@ -1,5 +1,7 @@
 AM_CPPFLAGS = $(CB_CFLAGS) -I$(top_srcdir)/src
 
+TESTS_ENVIRONMENT = GSETTINGS_SCHEMA_DIR=$(abs_top_builddir)/data
+
 TESTS = \
 				tweetmodel     \
 				tweet_length   \
