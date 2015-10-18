@@ -28,7 +28,6 @@ void count () {
 int main (string[] args) {
   GLib.Test.init (ref args);
   Dirs.create_dirs ();
-  GLib.Test.add_func ("/usercounter/order", order);
   GLib.Test.add_func ("/usercounter/count", count);
 
 
