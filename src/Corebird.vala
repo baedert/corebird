@@ -62,7 +62,8 @@ public class Corebird : Gtk.Application {
     try {
       var opt_context = new OptionContext ("");
       opt_context.set_help_enabled (true);
-      opt_context.add_main_entries (options, GETTEXT_PACKAGE);
+      opt_context.add_main_entries (options, Config.GETTEXT_PACKAGE);
+      opt_context.add_group (Gtk.get_option_group (false));
 #if VIDEO
       opt_context.add_group (Gst.init_get_option_group ());
 #endif
@@ -114,10 +115,10 @@ public class Corebird : Gtk.Application {
                                     Sql.COREBIRD_INIT_FILE);
 
     // Setup gettext
-    GLib.Intl.setlocale(GLib.LocaleCategory.ALL, LOCALEDIR);
-    GLib.Intl.bindtextdomain (GETTEXT_PACKAGE, null);
-    GLib.Intl.bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
-    GLib.Intl.textdomain(GETTEXT_PACKAGE);
+    GLib.Intl.setlocale(GLib.LocaleCategory.ALL, Config.DATADIR + "/locale");
+    GLib.Intl.bindtextdomain (Config.GETTEXT_PACKAGE, null);
+    GLib.Intl.bind_textdomain_codeset(Config.GETTEXT_PACKAGE, "UTF-8");
+    GLib.Intl.textdomain(Config.GETTEXT_PACKAGE);
 
     // Construct app menu
     Gtk.Builder builder = new Gtk.Builder ();

@@ -19,8 +19,8 @@
 
 
 namespace Sql {
-  public const string COREBIRD_INIT_FILE = DATADIR + "/sql/init/Create.%d.sql";
-  public const string ACCOUNTS_INIT_FILE = DATADIR + "/sql/accounts/Create.%d.sql";
+  public const string COREBIRD_INIT_FILE = Config.PKGDATADIR + "/sql/init/Create.%d.sql";
+  public const string ACCOUNTS_INIT_FILE = Config.PKGDATADIR + "/sql/accounts/Create.%d.sql";
 
   public const int STOP     = -1;
   public const int CONTINUE =  0;
