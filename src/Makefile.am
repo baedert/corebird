@@ -103,7 +103,6 @@ libcorebird_la_VALASOURCES = \
 	list/FilterListEntry.vala \
 	list/UserFilterEntry.vala \
 	list/AddListEntry.vala \
-	list/ProgressEntry.vala \
 	list/SnippetListEntry.vala \
 	window/ComposeTweetWindow.vala \
 	window/SettingsDialog.vala \
