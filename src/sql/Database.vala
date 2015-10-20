@@ -15,9 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-
-
 namespace Sql {
   public const string COREBIRD_INIT_FILE = Config.PKGDATADIR + "/sql/init/Create.%d.sql";
   public const string ACCOUNTS_INIT_FILE = Config.PKGDATADIR + "/sql/accounts/Create.%d.sql";
