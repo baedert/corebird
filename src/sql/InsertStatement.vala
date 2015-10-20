@@ -15,9 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-
-
 namespace Sql {
   public delegate bool SelectCallback (string[] vals);
 
