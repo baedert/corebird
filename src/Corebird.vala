@@ -28,7 +28,6 @@ public class Corebird : Gtk.Application {
     {"quit",              quit_application                },
     {"show-about-dialog", about_activated                 },
     {"show-dm-thread",    show_dm_thread,          "(xx)" },
-    {"mark-seen",         mark_seen,               "(sx)" },
     {"show-window",       show_window,             "x"    },
     {"post-json",         post_json,               "(ss)" },
     {"print-debug",       print_debug,                    }
@@ -62,7 +61,8 @@ public class Corebird : Gtk.Application {
     try {
       var opt_context = new OptionContext ("");
       opt_context.set_help_enabled (true);
-      opt_context.add_main_entries (options, GETTEXT_PACKAGE);
+      opt_context.add_main_entries (options, Config.GETTEXT_PACKAGE);
+      opt_context.add_group (Gtk.get_option_group (false));
 #if VIDEO
       opt_context.add_group (Gst.init_get_option_group ());
 #endif
@@ -114,10 +114,10 @@ public class Corebird : Gtk.Application {
                                     Sql.COREBIRD_INIT_FILE);
 
     // Setup gettext
-    GLib.Intl.setlocale(GLib.LocaleCategory.ALL, LOCALEDIR);
-    GLib.Intl.bindtextdomain (GETTEXT_PACKAGE, null);
-    GLib.Intl.bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
-    GLib.Intl.textdomain(GETTEXT_PACKAGE);
+    GLib.Intl.setlocale(GLib.LocaleCategory.ALL, Config.DATADIR + "/locale");
+    GLib.Intl.bindtextdomain (Config.GETTEXT_PACKAGE, null);
+    GLib.Intl.bind_textdomain_codeset(Config.GETTEXT_PACKAGE, "UTF-8");
+    GLib.Intl.textdomain(Config.GETTEXT_PACKAGE);
 
     // Construct app menu
     Gtk.Builder builder = new Gtk.Builder ();
@@ -166,6 +166,10 @@ public class Corebird : Gtk.Application {
     this.set_accels_for_action ("app.quit", {"<Control>Q"});
     this.set_accels_for_action ("win.show-account-dialog", {Settings.get_accel ("show-account-dialog")});
     this.set_accels_for_action ("win.show-account-list", {Settings.get_accel ("show-account-list")});
+
+    // TweetInfoPage
+    this.set_accels_for_action ("tweet.reply",    {"r"});
+    this.set_accels_for_action ("tweet.favorite", {"f"});
 #if DEBUG
     this.set_accels_for_action ("app.print-debug", {"<Primary>D"});
 #endif
@@ -408,16 +412,6 @@ public class Corebird : Gtk.Application {
       main_window.present ();
     } else
       warning ("Window for Account %s is not open, abort.", account_id.to_string ());
-  }
-
-  private void mark_seen (GLib.SimpleAction a, GLib.Variant? value) {
-    string screen_name = value.get_child_value (0).get_string ();
-    int64 tweet_id = value.get_child_value (1).get_int64 ();
-    MainWindow main_window;
-    if (is_window_open_for_screen_name (screen_name, out main_window)) {
-      message ("Mark as read...");
-    } else
-      warning ("No window for Account %s found", screen_name);
   }
 
   private void show_window (GLib.SimpleAction a, GLib.Variant? value) {

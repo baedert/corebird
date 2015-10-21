@@ -9,7 +9,6 @@ src/widgets/AddImageButton.vala
 src/widgets/FollowButton.vala
 src/HomeTimeline.vala
 src/DMThreadsPage.vala
-src/resources.c
 src/list/DMThreadEntry.vala
 src/ListsPage.vala
 src/ProfilePage.vala

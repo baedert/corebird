@@ -188,7 +188,7 @@ class AvatarWidget : Gtk.Widget {
       ctx.paint_with_alpha (this.alpha);
     }
 
-    return GLib.Source.CONTINUE;
+    return Gdk.EVENT_PROPAGATE;
   }
 
 }

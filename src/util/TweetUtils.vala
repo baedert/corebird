@@ -74,6 +74,9 @@ namespace TweetUtils {
    * @param tweet The tweet to (un)favorite
    * @param unfavorite If set to true, this function will unfavorite the tiven tweet,
    *                   else it will favorite it.
+   *
+   * TODO: Rename this, since it doesn't automatically toggle but rather just set the
+   *       favorite status based on the given boolean.
    */
   async void toggle_favorite_tweet (Account account, Tweet tweet, bool unfavorite = false) {
     var call = account.proxy.new_call();

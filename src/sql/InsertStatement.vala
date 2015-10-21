@@ -15,17 +15,11 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-
-
 namespace Sql {
-  public interface IStatement {
-      public abstract Sqlite.Database db { public set; protected get; }
-  }
   public delegate bool SelectCallback (string[] vals);
 
-  public class InsertStatement : IStatement {
-    public unowned Sqlite.Database db { public set; private get; }
+  public class InsertStatement : GLib.Object {
+    public unowned Sqlite.Database db;
     private StringBuilder query_builder  = new StringBuilder ();
     private Gee.ArrayList<string> bindings = new Gee.ArrayList<string>();
     private bool ran = false;

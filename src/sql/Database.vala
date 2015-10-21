@@ -15,12 +15,9 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-
-
 namespace Sql {
-  public const string COREBIRD_INIT_FILE = DATADIR + "/sql/init/Create.%d.sql";
-  public const string ACCOUNTS_INIT_FILE = DATADIR + "/sql/accounts/Create.%d.sql";
+  public const string COREBIRD_INIT_FILE = Config.PKGDATADIR + "/sql/init/Create.%d.sql";
+  public const string ACCOUNTS_INIT_FILE = Config.PKGDATADIR + "/sql/accounts/Create.%d.sql";
 
   public const int STOP     = -1;
   public const int CONTINUE =  0;
@@ -59,11 +56,6 @@ public class Database {
     }
   }
 
-  public int64 exec_insert (string sql) {
-    db.exec (sql);
-    return db.last_insert_rowid ();
-  }
-
   public void exec (string sql, Sqlite.Callback? callback = null) {
 #if DEBUG
     string err = "";
@@ -73,10 +65,6 @@ public class Database {
 #else
     db.exec (sql, callback);
 #endif
-  }
-
-  public void execf (string sql, string first_param, ...) {
-    db.exec (sql.printf (first_param, va_list ()));
   }
 
   public Sql.InsertStatement insert (string table_name) {

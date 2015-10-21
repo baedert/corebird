@@ -21,7 +21,9 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
   public static const int BY_ID       = 2;
 
   private const GLib.ActionEntry[] action_entries = {
-    {"quote",  quote_activated},
+    {"quote",    quote_activated   },
+    {"reply",    reply_activated   },
+    {"favorite", favorite_activated}
   };
 
   public int unread_count { get {return 0;} }
@@ -459,6 +461,35 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     ComposeTweetWindow ctw = new ComposeTweetWindow(main_window, this.account, this.tweet,
                                                     ComposeTweetWindow.Mode.QUOTE);
     ctw.show ();
+  }
+
+  private void reply_activated () {
+    ComposeTweetWindow ctw = new ComposeTweetWindow(main_window, this.account, this.tweet,
+                                                    ComposeTweetWindow.Mode.REPLY);
+    ctw.show ();
+  }
+
+  private void favorite_activated () {
+    if (!values_set)
+      return;
+
+    bool favoriting = !favorite_button.active;
+
+    favorite_button.sensitive = false;
+
+    if (favoriting)
+      this.tweet.favorite_count ++;
+    else
+      this.tweet.favorite_count --;
+
+    this.update_rt_fav_labels ();
+
+    TweetUtils.toggle_favorite_tweet.begin (account, tweet, !favoriting, () => {
+      favorite_button.sensitive = true;
+      values_set = false;
+      favorite_button.active = favoriting;
+      values_set = true;
+    });
   }
 
   public string? get_title () {

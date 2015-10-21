@@ -8,11 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-<<<<<<< HEAD
-"POT-Creation-Date: 2015-09-29 20:12+0200\n"
-=======
-"POT-Creation-Date: 2015-10-04 12:43+0200\n"
->>>>>>> master
+"POT-Creation-Date: 2015-10-18 14:13+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,17 +18,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: ../src/window/ComposeTweetWindow.vala:118
+#: ../src/window/ComposeTweetWindow.vala:119
 msgid "Quote tweet"
 msgstr ""
 
-#: ../src/window/ComposeTweetWindow.vala:351
+#: ../src/window/ComposeTweetWindow.vala:352
 msgid "Select Image"
 msgstr ""
 
-#: ../src/window/ComposeTweetWindow.vala:352
+#: ../src/window/ComposeTweetWindow.vala:353
 #: ../src/window/UserListDialog.vala:47
-#: ../src/widgets/MultiMediaWidget.vala:172 ../ui/compose-window.ui.h:2
+#: ../src/widgets/MultiMediaWidget.vala:152 ../ui/compose-window.ui.h:2
 #: ../ui/list-list-entry.ui.h:1 ../ui/list-statuses-page.ui.h:8
 #: ../ui/filter-list-entry.ui.h:1 ../ui/modify-filter-dialog.ui.h:2
 #: ../ui/user-filter-entry.ui.h:1 ../ui/account-dialog.ui.h:2
@@ -40,7 +36,7 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: ../src/window/ComposeTweetWindow.vala:353
+#: ../src/window/ComposeTweetWindow.vala:354
 msgid "Choose"
 msgstr ""
 
@@ -49,7 +45,7 @@ msgid "Add to or Remove User From List"
 msgstr ""
 
 #: ../src/window/UserListDialog.vala:48
-#: ../src/widgets/MultiMediaWidget.vala:173
+#: ../src/widgets/MultiMediaWidget.vala:153
 #: ../src/window/ImageCropDialog.vala:98 ../ui/list-statuses-page.ui.h:6
 #: ../ui/modify-filter-dialog.ui.h:3 ../ui/account-dialog.ui.h:3
 #: ../ui/modify-snippet-dialog.ui.h:3
@@ -124,11 +120,11 @@ msgstr ""
 msgid "Save Original"
 msgstr ""
 
-#: ../src/widgets/MultiMediaWidget.vala:74 ../src/TweetInfoPage.vala:455
+#: ../src/widgets/MultiMediaWidget.vala:74 ../src/TweetInfoPage.vala:456
 msgid "Open in Browser"
 msgstr ""
 
-#: ../src/widgets/MultiMediaWidget.vala:170
+#: ../src/widgets/MultiMediaWidget.vala:150
 msgid "Save image"
 msgstr ""
 
@@ -140,11 +136,11 @@ msgstr ""
 msgid "Click to add image"
 msgstr ""
 
-#: ../src/widgets/FollowButton.vala:43
+#: ../src/widgets/FollowButton.vala:45
 msgid "Follow"
 msgstr ""
 
-#: ../src/widgets/FollowButton.vala:44
+#: ../src/widgets/FollowButton.vala:46
 msgid "Unfollow"
 msgstr ""
 
@@ -169,23 +165,23 @@ msgstr[1] ""
 msgid "Home"
 msgstr ""
 
-#: ../src/DMThreadsPage.vala:369
+#: ../src/DMThreadsPage.vala:367
 #, c-format
 msgid "%d new Message from %s"
 msgid_plural "%d new Messages from %s"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/DMThreadsPage.vala:375
+#: ../src/DMThreadsPage.vala:373
 #, c-format
 msgid "New direct message from %s"
 msgstr ""
 
-#: ../src/DMThreadsPage.vala:390 ../src/DMThreadsPage.vala:404
+#: ../src/DMThreadsPage.vala:388 ../src/DMThreadsPage.vala:402
 msgid "Direct Messages"
 msgstr ""
 
-#: ../src/list/DMThreadEntry.vala:106
+#: ../src/list/DMThreadEntry.vala:117
 #, c-format
 msgid "(%d unread)"
 msgid_plural "(%d unread)"
@@ -197,56 +193,56 @@ msgstr[1] ""
 msgid "Lists"
 msgstr ""
 
-#: ../src/ProfilePage.vala:280
+#: ../src/ProfilePage.vala:290
 msgid "Protected profile"
 msgstr ""
 
-#: ../src/ProfilePage.vala:517
+#: ../src/ProfilePage.vala:536
 #, c-format
 msgid "Tweet to @%s"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:279
+#: ../src/TweetInfoPage.vala:281
 msgid "Could not show tweet"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:446
+#: ../src/TweetInfoPage.vala:447
 msgid "Retweets"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:447 ../src/FavoritesTimeline.vala:93
+#: ../src/TweetInfoPage.vala:448 ../src/FavoritesTimeline.vala:93
 #: ../src/FavoritesTimeline.vala:97
 msgid "Favorites"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:455
+#: ../src/TweetInfoPage.vala:456
 msgid "Source"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:466
+#: ../src/TweetInfoPage.vala:496
 msgid "Tweet Details"
 msgstr ""
 
-#: ../src/util/Utils.vala:156
+#: ../src/util/Utils.vala:165
 msgid "Now"
 msgstr ""
 
-#: ../src/util/Utils.vala:158
+#: ../src/util/Utils.vala:167
 #, c-format
 msgid "%dm"
 msgstr ""
 
-#: ../src/util/Utils.vala:162
+#: ../src/util/Utils.vala:171
 #, c-format
 msgid "%dh"
 msgstr ""
 
-#: ../src/SearchPage.vala:298 ../src/SearchPage.vala:307
+#: ../src/SearchPage.vala:303 ../src/SearchPage.vala:312
 #: ../ui/search-page.ui.h:1
 msgid "Search"
 msgstr ""
 
-#: ../src/Corebird.vala:149
+#: ../src/Corebird.vala:150
 msgid "Open Account"
 msgstr ""
 
@@ -255,7 +251,7 @@ msgstr ""
 msgid "New Mention from @%s"
 msgstr ""
 
-#: ../src/MentionsTimeline.vala:135 ../src/MentionsTimeline.vala:140
+#: ../src/MentionsTimeline.vala:133 ../src/MentionsTimeline.vala:137
 msgid "Mentions"
 msgstr ""
 
