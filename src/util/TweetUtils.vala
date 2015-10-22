@@ -477,7 +477,8 @@ namespace TweetUtils {
     }
   }
 
-  public async Json.Node? load_threaded (Rest.ProxyCall call) throws GLib.Error
+  public async Json.Node? load_threaded (Rest.ProxyCall    call,
+                                         GLib.Cancellable? cancellable) throws GLib.Error
   {
     Json.Node? result = null;
     GLib.Error? err   = null;
@@ -492,11 +493,21 @@ namespace TweetUtils {
         return null;
       }
 
+      if (cancellable != null && cancellable.is_cancelled ()) {
+        GLib.Idle.add (() => { callback (); return GLib.Source.REMOVE; });
+        return null;
+      }
+
       var parser = new Json.Parser ();
       try {
         parser.load_from_data (call.get_payload ());
       } catch (GLib.Error e) {
         err = e;
+        GLib.Idle.add (() => { callback (); return GLib.Source.REMOVE; });
+        return null;
+      }
+
+      if (cancellable != null && cancellable.is_cancelled ()) {
         GLib.Idle.add (() => { callback (); return GLib.Source.REMOVE; });
         return null;
       }

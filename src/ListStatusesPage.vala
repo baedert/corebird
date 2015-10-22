@@ -164,7 +164,7 @@ class ListStatusesPage : ScrollWidget, IPage {
 
     Json.Node? root = null;
     try {
-      root = yield TweetUtils.load_threaded (call);
+      root = yield TweetUtils.load_threaded (call, null);
     } catch (GLib.Error e) {
       warning (e.message);
       return;
@@ -196,7 +196,7 @@ class ListStatusesPage : ScrollWidget, IPage {
 
     Json.Node? root = null;
     try {
-      root = yield TweetUtils.load_threaded (call);
+      root = yield TweetUtils.load_threaded (call, null);
     } catch (GLib.Error e) {
       warning (e.message);
       return;

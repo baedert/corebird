@@ -85,7 +85,7 @@ class UserListsWidget : Gtk.Box {
     call.set_function ("1.1/lists/subscriptions.json");
     call.set_method ("GET");
     call.add_param ("user_id", user_id.to_string ());
-    TweetUtils.load_threaded.begin (call, (_, res) => {
+    TweetUtils.load_threaded.begin (call, null, (_, res) => {
       Json.Node? root = null;
       try {
         root = TweetUtils.load_threaded.end (res);
@@ -111,7 +111,7 @@ class UserListsWidget : Gtk.Box {
     user_call.set_function ("1.1/lists/ownerships.json");
     user_call.set_method ("GET");
     user_call.add_param ("user_id", user_id.to_string ());
-    TweetUtils.load_threaded.begin (user_call, (_, res) => {
+    TweetUtils.load_threaded.begin (user_call, null, (_, res) => {
       Json.Node? root = null;
       try {
         root = TweetUtils.load_threaded.end (res);

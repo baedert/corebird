@@ -272,7 +272,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     call.set_function ("1.1/statuses/show.json");
     call.add_param ("id", tweet_id.to_string ());
     call.add_param ("include_my_retweet", "true");
-    TweetUtils.load_threaded.begin (call, (__, res) => {
+    TweetUtils.load_threaded.begin (call, null, (__, res) => {
       Json.Node? root = null;
 
       try {
@@ -303,7 +303,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     reply_call.add_param ("q", "to:" + this.screen_name);
     reply_call.add_param ("since_id", tweet_id.to_string ());
     reply_call.add_param ("count", "200");
-    TweetUtils.load_threaded.begin (reply_call, (_, res) => {
+    TweetUtils.load_threaded.begin (reply_call, null, (_, res) => {
       Json.Node? root = null;
 
       try {
