@@ -72,15 +72,14 @@ namespace TweetUtils {
    *
    * @param account The account to (un)favorite from
    * @param tweet The tweet to (un)favorite
-   * @param unfavorite If set to true, this function will unfavorite the tiven tweet,
-   *                   else it will favorite it.
+   * @param status %true to favorite the tweet, %false to unfavorite it.
    *
    * TODO: Rename this, since it doesn't automatically toggle but rather just set the
    *       favorite status based on the given boolean.
    */
-  async void toggle_favorite_tweet (Account account, Tweet tweet, bool unfavorite = false) {
+  async void set_favorite_status (Account account, Tweet tweet, bool status) {
     var call = account.proxy.new_call();
-    if (!unfavorite)
+    if (status)
       call.set_function ("1.1/favorites/create.json");
     else
       call.set_function ("1.1/favorites/destroy.json");
@@ -94,8 +93,8 @@ namespace TweetUtils {
         Utils.show_error_object (call.get_payload (), e.message,
                                  GLib.Log.LINE, GLib.Log.FILE);
       }
-      tweet.favorited = !unfavorite;
-      toggle_favorite_tweet.callback ();
+      tweet.favorited = status;
+      set_favorite_status.callback ();
     });
     yield;
   }
@@ -105,13 +104,12 @@ namespace TweetUtils {
    *
    * @param account The account to (un)retweet from
    * @param tweet The tweet to (un)retweet
-   * @param unretweet If set to true, this function will delete te retweet of #tweet,
-   *                  else it will retweet it.
+   * @param status %true to retweet it, false to unretweet it.
    */
-  async void toggle_retweet_tweet (Account account, Tweet tweet, bool unretweet = false) {
-  var call = account.proxy.new_call ();
+  async void set_retweet_status (Account account, Tweet tweet, bool status) {
+    var call = account.proxy.new_call ();
     call.set_method ("POST");
-    if (!unretweet)
+    if (status)
       call.set_function (@"1.1/statuses/retweet/$(tweet.id).json");
     else
       call.set_function (@"1.1/statuses/destroy/$(tweet.my_retweet).json");
@@ -127,18 +125,18 @@ namespace TweetUtils {
       var parser = new Json.Parser ();
       try {
         parser.load_from_data (back);
-        if (!unretweet) {
+        if (status) {
           int64 new_id = parser.get_root ().get_object ().get_int_member ("id");
           tweet.my_retweet = new_id;
         } else {
           tweet.my_retweet = 0;
         }
-        tweet.retweeted = !unretweet;
+        tweet.retweeted = status;
       } catch (GLib.Error e) {
         critical (e.message);
         critical (back);
       }
-      toggle_retweet_tweet.callback ();
+      set_retweet_status.callback ();
     });
     yield;
   }

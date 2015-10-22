@@ -284,7 +284,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     }
 
     retweet_button.sensitive = false;
-    TweetUtils.toggle_retweet_tweet.begin (account, tweet, !retweet_button.active, () => {
+    TweetUtils.set_retweet_status.begin (account, tweet, retweet_button.active, () => {
       retweet_button.sensitive = true;
     });
     if (shows_actions)
@@ -297,7 +297,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       return;
 
     favorite_button.sensitive = false;
-    TweetUtils.toggle_favorite_tweet.begin (account, tweet, !favorite_button.active, () => {
+    TweetUtils.set_favorite_status.begin (account, tweet, favorite_button.active, () => {
       favorite_button.sensitive = true;
     });
     if (shows_actions)
