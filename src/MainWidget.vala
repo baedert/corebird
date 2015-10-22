@@ -122,7 +122,7 @@ public class MainWidget : Gtk.Box {
    *                See the Page.* constants.
    *
    */
-  public void switch_page (int page_id, Bundle? args = null) { // {{{
+  public void switch_page (int page_id, Bundle? args = null) {
     if (page_id == history.current) {
       if (pages[page_id].handles_double_open ())
         pages[page_id].double_open ();
@@ -168,8 +168,8 @@ public class MainWidget : Gtk.Box {
       stack.transition_type = transition_type;
     }
 
-    if (history.current != -1)
-      pages[history.current].on_leave ();
+    if (current_page != -1)
+      pages[current_page].on_leave ();
 
 
     if (push) {
@@ -196,7 +196,7 @@ public class MainWidget : Gtk.Box {
     page_switch_lock = false;
 
     ((MainWindow)this.parent).back_button.sensitive = !history.at_start ();
-  } // }}}
+  }
 
   public IPage get_page (int page_id) {
     return pages[page_id];
