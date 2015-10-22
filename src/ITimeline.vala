@@ -45,7 +45,7 @@ public interface ITimeline : Gtk.Widget, IPage {
 
     Json.Node? root_node = null;
     try {
-      root_node = yield TweetUtils.load_threaded (call);
+      root_node = yield TweetUtils.load_threaded (call, null);
     } catch (GLib.Error e) {
       message (e.message);
       tweet_list.set_error ("%s\n%s".printf (_("Could not load tweets"), e.message));
@@ -79,7 +79,7 @@ public interface ITimeline : Gtk.Widget, IPage {
     Json.Node? root_node = null;
 
     try {
-      root_node = yield TweetUtils.load_threaded (call);
+      root_node = yield TweetUtils.load_threaded (call, null);
     } catch (GLib.Error e) {
       warning (e.message);
       return;

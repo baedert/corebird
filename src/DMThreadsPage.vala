@@ -168,7 +168,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     call.add_param ("skip_status", "true");
     call.add_param ("since_id", max_received_id.to_string ());
     call.add_param ("count", "200");
-    TweetUtils.load_threaded.begin (call, (obj, res) => {
+    TweetUtils.load_threaded.begin (call, null, (obj, res) => {
       try {
         Json.Node? root = TweetUtils.load_threaded.end (res);
         on_dm_result (root);
@@ -184,7 +184,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     sent_call.add_param ("since_id", max_sent_id.to_string ());
     sent_call.add_param ("count", "200");
     sent_call.set_method ("GET");
-    TweetUtils.load_threaded.begin (sent_call, (obj, res) => {
+    TweetUtils.load_threaded.begin (sent_call, null, (obj, res) => {
       try {
         Json.Node? root = TweetUtils.load_threaded.end (res);
         on_dm_result (root);
