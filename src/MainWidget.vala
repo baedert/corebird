@@ -65,14 +65,14 @@ public class MainWidget : Gtk.Box {
     pages[0]  = new HomeTimeline (Page.STREAM, account);
     pages[1]  = new MentionsTimeline (Page.MENTIONS, account);
     pages[2]  = new FavoritesTimeline (Page.FAVORITES, account);
-    pages[3]  = new DMThreadsPage (Page.DM_THREADS, account);
+    pages[3]  = new DMThreadsPage (Page.DM_THREADS, account, delta_updater);
     pages[4]  = new ListsPage (Page.LISTS, account);
     pages[5]  = new FilterPage (Page.FILTERS, account);
-    pages[6]  = new SearchPage (Page.SEARCH, account);
-    pages[7]  = new ProfilePage (Page.PROFILE, account);
-    pages[8]  = new TweetInfoPage (Page.TWEET_INFO, account);
-    pages[9]  = new DMPage (Page.DM, account);
-    pages[10] = new ListStatusesPage (Page.LIST_STATUSES, account);
+    pages[6]  = new SearchPage (Page.SEARCH, account, delta_updater);
+    pages[7]  = new ProfilePage (Page.PROFILE, account, delta_updater);
+    pages[8]  = new TweetInfoPage (Page.TWEET_INFO, account, delta_updater);
+    pages[9]  = new DMPage (Page.DM, account, delta_updater);
+    pages[10] = new ListStatusesPage (Page.LIST_STATUSES, account, delta_updater);
 
     /* Initialize all containers */
     for (int i = 0; i < pages.length; i++) {
@@ -100,15 +100,6 @@ public class MainWidget : Gtk.Box {
       ITimeline tl = (ITimeline)page;
       tl.delta_updater = delta_updater;
     }
-
-    // TODO: Gnarf this sucks
-    // SearchPage still needs a delta updater
-    ((SearchPage)pages[Page.SEARCH]).delta_updater = this.delta_updater;
-    ((DMThreadsPage)pages[Page.DM_THREADS]).delta_updater = this.delta_updater;
-    ((DMPage)pages[Page.DM]).delta_updater = this.delta_updater;
-    ((ProfilePage)pages[Page.PROFILE]).delta_updater = this.delta_updater;
-    ((ListStatusesPage)pages[Page.LIST_STATUSES]).delta_updater = this.delta_updater;
-    ((TweetInfoPage)pages[Page.TWEET_INFO]).delta_updater = this.delta_updater;
 
     Settings.get ().bind ("sidebar-visible", sidebar_revealer, "reveal-child",
                           SettingsBindFlags.DEFAULT);

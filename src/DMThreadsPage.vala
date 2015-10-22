@@ -46,9 +46,10 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   private Collect dm_download_collect;
 
 
-  public DMThreadsPage (int id, Account account) {
+  public DMThreadsPage (int id, Account account, DeltaUpdater delta_updater) {
     this.id = id;
     this.account = account;
+    this.delta_updater = delta_updater;
     this.dm_download_collect = new Collect (2);
     thread_list.set_header_func (default_header_func);
     thread_list.set_sort_func (dm_thread_entry_sort_func);
