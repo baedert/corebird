@@ -208,7 +208,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
 
     this.update_rt_fav_labels ();
 
-    TweetUtils.toggle_favorite_tweet.begin (account, tweet, !favorite_button.active, () => {
+    TweetUtils.set_favorite_status.begin (account, tweet, favorite_button.active, () => {
       favorite_button.sensitive = true;
     });
   }
@@ -225,7 +225,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
       this.tweet.retweet_count --;
     this.update_rt_fav_labels ();
 
-    TweetUtils.toggle_retweet_tweet.begin (account, tweet, !retweet_button.active, () => {
+    TweetUtils.set_retweet_status.begin (account, tweet, retweet_button.active, () => {
       retweet_button.sensitive = true;
     });
   }
@@ -484,7 +484,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
 
     this.update_rt_fav_labels ();
 
-    TweetUtils.toggle_favorite_tweet.begin (account, tweet, !favoriting, () => {
+    TweetUtils.set_favorite_status.begin (account, tweet, !favoriting, () => {
       favorite_button.sensitive = true;
       values_set = false;
       favorite_button.active = favoriting;
