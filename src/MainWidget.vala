@@ -19,7 +19,6 @@
 [GtkTemplate (ui = "/org/baedert/corebird/ui/main-widget.ui")]
 public class MainWidget : Gtk.Box {
   private unowned Account account;
-  private unowned Corebird app;
 
   private Gtk.RadioButton dummy_button = new Gtk.RadioButton (null);
   private IPage[] pages                = new IPage[11];
@@ -45,7 +44,6 @@ public class MainWidget : Gtk.Box {
 
   public MainWidget (Account account, MainWindow parent, Corebird app) {
     this.account = account;
-    this.app = app;
 
     account.init_proxy ();
     var acc_menu = (GLib.Menu)Corebird.account_menu;
@@ -58,7 +56,6 @@ public class MainWidget : Gtk.Box {
     }
     account.user_stream.start ();
     account.init_information.begin ();
-
 
     stack.add (stack_impostor);
 
