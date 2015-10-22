@@ -32,8 +32,6 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
   public unowned Account account { get; set; }
   public unowned DeltaUpdater delta_updater {
     set {
-      top_list_box.delta_updater = value;
-      bottom_list_box.delta_updater = value;
     }
   }
   private int64 tweet_id;
@@ -79,11 +77,14 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
   [GtkChild]
   private Gtk.Label error_label;
 
-  public TweetInfoPage (int id, Account account) {
+  public TweetInfoPage (int id, Account account, DeltaUpdater delta_updater) {
     this.id = id;
     this.account = account;
     this.top_list_box.account = account;
     this.bottom_list_box.account = account;
+    this.top_list_box.delta_updater = delta_updater;
+    this.bottom_list_box.delta_updater = delta_updater;
+
 
     mm_widget.media_clicked.connect ((m, i) => TweetUtils.handle_media_click (tweet, main_window, i));
     this.scroll_event.connect ((evt) => {

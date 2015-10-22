@@ -51,9 +51,10 @@ class SearchPage : IPage, Gtk.Box {
   private uint remove_content_timeout = 0;
 
 
-  public SearchPage (int id, Account account) {
+  public SearchPage (int id, Account account, DeltaUpdater delta_updater) {
     this.id = id;
     this.account = account;
+    this.delta_updater = delta_updater;
 
     /* We are slightly abusing the TweetListBox here */
     tweet_list.bind_model (null, null);
