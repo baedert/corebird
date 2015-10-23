@@ -65,7 +65,6 @@ private class MediaButton : Gtk.Button {
 
   public MediaButton (Media? media) {
     this.media = media;
-    //this.set_size_request (-1, MultiMediaWidget.MAX_HEIGHT);
     this.get_style_context ().add_class ("inline-media");
     this.get_style_context ().add_class ("dim-label");
     actions = new GLib.SimpleActionGroup ();
@@ -85,7 +84,7 @@ private class MediaButton : Gtk.Button {
   private void get_draw_size (out int width,
                               out int height,
                               out double scale) {
-    if (this._media == null || !this._media.loaded) {
+    if (this._media.width == -1 && this._media.height == -1) {
       width  = 0;
       height = 0;
       scale  = 0.0;
@@ -94,9 +93,9 @@ private class MediaButton : Gtk.Button {
 
     width  = this.get_allocated_width ();
     height = this.get_allocated_height ();
-    double scale_x = (double)width / (media.surface).get_width ();
-    double scale_y = (double)height / media.surface.get_height ();
-    height = (int)((this._media.surface).get_height () * scale_x);
+    double scale_x = (double)width / this._media.width;
+    double scale_y = (double)height / this._media.height;
+    height = (int)(this._media.height * scale_x);
 
     if (FULLSIZE) scale = double.min (double.min (scale_x, scale_y), 1.0);
     else          scale = scale_x;
@@ -133,6 +132,11 @@ private class MediaButton : Gtk.Button {
        ct.set_source_surface (play_icons[this.get_scale_factor () - 1], x, y);
        ct.fill ();
       }
+
+
+      var sc = this.get_style_context ();
+      sc.render_background (ct, 0, 0, media.width * scale, media.height * scale);
+      sc.render_frame (ct, 0, 0, media.width * scale, media.height * scale);
     } else {
       var sc = this.get_style_context ();
       double layout_x, layout_y;
@@ -144,16 +148,17 @@ private class MediaButton : Gtk.Button {
       sc.render_layout (ct, layout_x, layout_y, layout);
     }
 
-    return base.draw (ct);
+
+    return Gdk.EVENT_PROPAGATE;
   }
 
   private bool button_clicked_cb (Gdk.EventButton evt) {
     if (evt.triggers_context_menu () && this.media != null) {
       menu.show_all ();
       menu.popup (null, null, null, evt.button, evt.time);
-      return true;
+      return Gdk.EVENT_STOP;
     }
-    return false;
+    return Gdk.EVENT_PROPAGATE;
   }
 
   private void copy_url_activated (GLib.SimpleAction a, GLib.Variant? v) {
@@ -199,13 +204,15 @@ private class MediaButton : Gtk.Button {
 
   public override void get_preferred_width (out int minimum,
                                             out int natural) {
-    if (media.surface == null)
-      minimum = natural = 0;
-    else {
+
+    if (this._media.width == -1 && this._media.height == -1) {
+      minimum = natural = MultiMediaWidget.MAX_HEIGHT * 2;
+    } else {
       int w, h;
       double scale;
       this.get_draw_size (out w, out h, out scale);
-      minimum = natural = (int)(media.surface.get_width () * scale);
+      minimum = natural = (int)(media.width * scale);
+      //minimum = int.min (natural, 0);
     }
   }
 
@@ -213,14 +220,13 @@ private class MediaButton : Gtk.Button {
                                                        out int minimum,
                                                        out int natural) {
 
-    //if (FULLSIZE) {
-      //int s_h = this._media.surface == null ? 0 : this._media.surface.get_height ();
-      //minimum = natural = int.min (s_h, width / 2);
-      //minimum = natural = s_h;
-    //} else {
-      int surface_height = this.media.surface != null ? this.media.surface.get_height () : 0;
-      minimum = natural = int.min (MultiMediaWidget.MAX_HEIGHT, int.min (width / 2, surface_height));
-    //}
+    if (this._media.width == -1 && this._media.height == -1) {
+      minimum = natural = int.max ((int)(width * 0.5),
+                                   MultiMediaWidget.MAX_HEIGHT);
+    } else {
+      minimum = natural = int.min (MultiMediaWidget.MAX_HEIGHT,
+                                   int.min (width / 2, media.height));
+    }
   }
 
   public override Gtk.SizeRequestMode get_request_mode () {

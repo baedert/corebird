@@ -54,8 +54,8 @@ public class Media : GLib.Object{
   public int64 length { get; set; default = 0; }
   public double percent_loaded { get; set; default = 0; }
   /* Pixel size of the image/video */
-  public int width;
-  public int height;
+  public int width = -1;
+  public int height = -1;
   public MediaType type;
   public Cairo.ImageSurface? surface = null;
   public Gdk.PixbufAnimation? animation = null;

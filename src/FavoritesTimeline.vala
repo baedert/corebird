@@ -32,7 +32,6 @@ class FavoritesTimeline : IMessageReceiver, DefaultTimeline {
     if (type == StreamMessageType.EVENT_FAVORITE) {
       Json.Node tweet_obj = root.get_object ().get_member ("target_object");
       int64 tweet_id = tweet_obj.get_object ().get_int_member ("id");
-      // TODO: Use the TweetModel here.
       for (uint i = 0; i < this.tweet_list.model.get_n_items (); i ++) {
         Tweet t = (Tweet) this.tweet_list.model.get_item (i);
 

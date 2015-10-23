@@ -163,7 +163,6 @@ void parse_entities (MiniTweet mt, Json.Object status)
     url_index ++;
   });
 
-  // The same with media
   if (entities.has_member ("media")) {
     var medias = entities.get_array_member ("media");
     medias.foreach_element ((arr, index, node) => {
@@ -178,14 +177,6 @@ void parse_entities (MiniTweet mt, Json.Object status)
         display_text = url.get_string_member ("display_url")
       };
       url_index ++;
-      string media_url = url.get_string_member ("media_url");
-      if (is_media_candidate (media_url)) {
-        var m = new Media ();
-        m.url = media_url;
-        m.target_url = media_url + ":orig";
-        mt.medias[real_media_count] = m;
-        real_media_count ++;
-      }
     });
   }
 
