@@ -207,6 +207,16 @@ void parse_entities (MiniTweet mt, Json.Object status)
           m.target_url = url + ":orig";
           m.id = media_obj.get_int_member ("id");
           m.type = Media.type_from_string (media_obj.get_string_member ("type"));
+
+          /* TODO: Which size are we picking here? */
+          if (media_obj.has_member ("sizes")) {
+            var size_obj = media_obj.get_object_member ("sizes")
+                                    .get_object_member ("medium");
+
+            m.width  = (int)size_obj.get_int_member ("w");
+            m.height = (int)size_obj.get_int_member ("h");
+          }
+
           mt.medias[real_media_count] = m;
           real_media_count ++;
         }
