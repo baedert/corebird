@@ -248,9 +248,7 @@ void parse_entities (MiniTweet mt, Json.Object status)
 
 public class Tweet : GLib.Object {
   public static const int MAX_LENGTH = 140;
-
-  // TODO: Make this private
-  public uint state = 0;
+  private uint state = 0;
 
 #if DEBUG
   public string json_data;

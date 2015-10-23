@@ -60,17 +60,17 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
     t.load_from_json (obj, now, account);
 
     if (t.retweeted_tweet != null)
-      t.state |= get_rt_flags (t);
+      t.set_flag (get_rt_flags (t));
 
     if (account.blocked_or_muted (t.user_id))
-      t.state |= TweetState.HIDDEN_RETWEETER_BLOCKED;
+      t.set_flag (TweetState.HIDDEN_RETWEETER_BLOCKED);
 
 
     if (t.retweeted_tweet != null && account.blocked_or_muted (t.retweeted_tweet.author.id))
-      t.state |= TweetState.HIDDEN_AUTHOR_BLOCKED;
+      t.set_flag (TweetState.HIDDEN_AUTHOR_BLOCKED);
 
     if (account.filter_matches (t))
-      t.state |= TweetState.HIDDEN_FILTERED;
+      t.set_flag (TweetState.HIDDEN_FILTERED);
 
     bool auto_scroll = Settings.auto_scroll_on_new_tweets ();
 
@@ -124,25 +124,25 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
   } // }}}
 
 
-  public void hide_tweets_from (int64 user_id, uint reason) {
+  public void hide_tweets_from (int64 user_id, TweetState reason) {
     TweetModel tm = (TweetModel) tweet_list.model;
 
     tm.toggle_flag_on_tweet (user_id, reason, true);
   }
 
-  public void show_tweets_from (int64 user_id, uint reason) {
+  public void show_tweets_from (int64 user_id, TweetState reason) {
     TweetModel tm = (TweetModel) tweet_list.model;
 
     tm.toggle_flag_on_tweet (user_id, reason, false);
   }
 
-  public void hide_retweets_from (int64 user_id, uint reason) {
+  public void hide_retweets_from (int64 user_id, TweetState reason) {
     TweetModel tm = (TweetModel) tweet_list.model;
 
     tm.toggle_flag_on_retweet (user_id, reason, true);
   }
 
-  public void show_retweets_from (int64 user_id, uint reason) {
+  public void show_retweets_from (int64 user_id, TweetState reason) {
     TweetModel tm = (TweetModel) tweet_list.model;
 
     tm.toggle_flag_on_retweet (user_id, reason, false);

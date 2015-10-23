@@ -166,30 +166,26 @@ public class TweetModel : GLib.Object, GLib.ListModel {
     this.items_changed (pos, 1, 0);
   }
 
-  public void toggle_flag_on_tweet (int64 user_id, uint reason, bool active) {
+  public void toggle_flag_on_tweet (int64 user_id, TweetState reason, bool active) {
     foreach (Tweet tweet in tweets) {
       if (tweet.user_id == user_id) {
         if (active)
-          tweet.state |= reason;
+          tweet.set_flag (reason);
         else
-          tweet.state &= ~reason;
-
-        tweet.state_changed ();
+          tweet.unset_flag (reason);
       }
     }
   }
 
-  public void toggle_flag_on_retweet (int64 user_id, uint reason, bool active) {
+  public void toggle_flag_on_retweet (int64 user_id, TweetState reason, bool active) {
     foreach (Tweet tweet in tweets) {
       if (tweet.retweeted_tweet != null &&
           tweet.source_tweet.author.id == user_id) {
 
         if (active)
-          tweet.state |= reason;
+          tweet.set_flag (reason);
         else
-          tweet.state &= ~reason;
-
-        tweet.state_changed ();
+          tweet.unset_flag (reason);
       }
     }
   }

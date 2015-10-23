@@ -118,7 +118,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
         avatar_image.surface = a;
       }, 48 * this.get_scale_factor ());
     }
-    avatar_image.verified = (tweet.state & TweetState.VERIFIED) > 0;
+    avatar_image.verified = tweet.is_flag_set (TweetState.VERIFIED);
     text_label.label = tweet.get_trimmed_text ();
     update_time_delta ();
     if (tweet.retweeted_tweet != null) {
@@ -128,9 +128,6 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
                        @"@$(tweet.source_tweet.author.screen_name)\"" +
                        @"title=\"@$(tweet.source_tweet.author.screen_name)\">" +
                        @"$(tweet.source_tweet.author.user_name)</a></span>";
-    } else {
-      grid.remove (rt_image);
-      grid.remove (rt_label);
     }
 
     if (tweet.quoted_tweet != null) {
@@ -139,15 +136,14 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       quote_name.set_markup (tweet.quoted_tweet.author.user_name);
       quote_screen_name.label = "@" + tweet.quoted_tweet.author.screen_name;
 
-      quote_grid.show ();
       quote_grid.show_all ();
     }
 
-    retweet_button.active = (tweet.state & TweetState.RETWEETED) > 0;
+    retweet_button.active = tweet.is_flag_set (TweetState.RETWEETED);
     retweet_button.sensitive = (tweet.user_id != account.id) &&
-                               (tweet.state & TweetState.PROTECTED) == 0;
+                               !tweet.is_flag_set (TweetState.PROTECTED);
 
-    favorite_button.active = (tweet.state & TweetState.FAVORITED) > 0;
+    favorite_button.active = tweet.is_flag_set (TweetState.FAVORITED);
 
     tweet.state_changed.connect (state_changed_cb);
 
@@ -170,7 +166,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       ((GLib.SimpleAction)actions.lookup_action ("delete")).set_enabled (false);
 
     if (tweet.user_id == account.id ||
-        (tweet.state & TweetState.PROTECTED) > 0)
+        tweet.is_flag_set (TweetState.PROTECTED))
       ((GLib.SimpleAction)actions.lookup_action ("quote")).set_enabled (false);
 
     reply_tweet.connect (reply_tweet_activated);

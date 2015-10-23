@@ -208,7 +208,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
    *      way of checking the case where 2 indipendend users retweet
    *      the same tweet.
    */
-  protected uint get_rt_flags (Tweet t) {
+  protected TweetState get_rt_flags (Tweet t) {
     uint flags = 0;
 
     /* First case */
@@ -245,7 +245,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
       }
     }
 
-    return flags;
+    return (TweetState)flags;
   }
 
   protected void mark_seen (int64 id) {
