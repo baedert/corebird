@@ -256,9 +256,14 @@ public class Tweet : GLib.Object {
 
   public bool is_hidden {
     get {
-      // TODO: This needs to care only about the HIDDEN_ flags
-      //return state > 0;
-      return false;
+      return this.is_flag_set (TweetState.HIDDEN_FORCE |
+                               TweetState.HIDDEN_UNFOLLOWED |
+                               TweetState.HIDDEN_FILTERED |
+                               TweetState.HIDDEN_RTS_DISABLED |
+                               TweetState.HIDDEN_RT_BY_USER |
+                               TweetState.HIDDEN_RT_BY_FOLLOWEE |
+                               TweetState.HIDDEN_AUTHOR_BLOCKED |
+                               TweetState.HIDDEN_RETWEETER_BLOCKED);
     }
   }
   public signal void state_changed ();
