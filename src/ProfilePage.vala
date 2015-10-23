@@ -583,8 +583,8 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     HomeTimeline ht = (HomeTimeline) main_window.get_page (Page.STREAM);
     if (follow_button.following) {
       call.set_function( "1.1/friendships/destroy.json");
-      ht.hide_tweets_from (this.user_id, Tweet.HIDDEN_UNFOLLOWED);
-      ht.hide_retweets_from (this.user_id, Tweet.HIDDEN_UNFOLLOWED);
+      ht.hide_tweets_from (this.user_id, TweetState.HIDDEN_UNFOLLOWED);
+      ht.hide_retweets_from (this.user_id, TweetState.HIDDEN_UNFOLLOWED);
       follower_count --;
       account.unfollow_id (this.user_id);
       ((SimpleAction)actions.lookup_action ("toggle-retweets")).set_enabled (false);
@@ -592,9 +592,9 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     } else {
       call.set_function ("1.1/friendships/create.json");
       call.add_param ("follow", "false");
-      ht.show_tweets_from (this.user_id, Tweet.HIDDEN_UNFOLLOWED);
+      ht.show_tweets_from (this.user_id, TweetState.HIDDEN_UNFOLLOWED);
       if (!((SimpleAction)actions.lookup_action ("toggle-retweets")).get_state ().get_boolean ()) {
-        ht.show_retweets_from (this.user_id, Tweet.HIDDEN_UNFOLLOWED);
+        ht.show_retweets_from (this.user_id, TweetState.HIDDEN_UNFOLLOWED);
       }
       set_user_blocked (false);
       follower_count ++;
@@ -741,12 +741,12 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     call.set_method ("POST");
     if (current_state) {
       call.set_function ("1.1/blocks/destroy.json");
-      ht.show_tweets_from (this.user_id, Tweet.HIDDEN_AUTHOR_BLOCKED);
+      ht.show_tweets_from (this.user_id, TweetState.HIDDEN_AUTHOR_BLOCKED);
     } else {
       call.set_function ("1.1/blocks/create.json");
       this.follow_button.following = false;
       this.follow_button.sensitive = (this.user_id != this.account.id);
-      ht.hide_tweets_from (this.user_id, Tweet.HIDDEN_AUTHOR_BLOCKED);
+      ht.hide_tweets_from (this.user_id, TweetState.HIDDEN_AUTHOR_BLOCKED);
     }
     set_user_blocked (!current_state);
     call.add_param ("user_id", this.user_id.to_string ());
@@ -777,10 +777,10 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     call.add_param ("retweets", current_state.to_string ());
     HomeTimeline ht = (HomeTimeline) main_window.get_page (Page.STREAM);
     if (current_state) {
-      ht.show_retweets_from (this.user_id, Tweet.HIDDEN_RTS_DISABLED);
+      ht.show_retweets_from (this.user_id, TweetState.HIDDEN_RTS_DISABLED);
       account.remove_disabled_rts_id (this.user_id);
     } else {
-      ht.hide_retweets_from (this.user_id, Tweet.HIDDEN_RTS_DISABLED);
+      ht.hide_retweets_from (this.user_id, TweetState.HIDDEN_RTS_DISABLED);
       account.add_disabled_rts_id (this.user_id);
     }
 

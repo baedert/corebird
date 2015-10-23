@@ -300,7 +300,7 @@ namespace TweetUtils {
           account.user_counter.id_seen (ref tweet.retweeted_tweet.author);
 
         if (account.filter_matches (tweet))
-          tweet.hidden_flags |= Tweet.HIDDEN_FILTERED;
+          tweet.state |= TweetState.HIDDEN_FILTERED;
 
         tweet_list.model.add (tweet);
 

@@ -421,7 +421,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     time_label.label = time_format;
     retweet_button.active = tweet.retweeted;
     favorite_button.active = tweet.favorited;
-    avatar_image.verified = tweet.verified;
+    avatar_image.verified = (tweet.state & TweetState.VERIFIED) > 0;
 
 
     set_source_link (tweet.id, tweet.screen_name);
@@ -433,7 +433,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
       mm_widget.hide ();
     }
 
-    if (tweet.user_id == account.id || tweet.protected) {
+    if (tweet.user_id == account.id || (tweet.state & TweetState.PROTECTED) > 0) {
       retweet_button.hide ();
 
       ((GLib.SimpleAction)actions.lookup_action ("quote")).set_enabled (false);

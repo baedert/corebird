@@ -61,13 +61,13 @@ void tweet_removal () {
   {
     var t = new Tweet ();
     t.id = 2;
-    t.hidden_flags |= Tweet.HIDDEN_FORCE;
+    t.state |= Tweet.HIDDEN_FORCE;
 
     tm.add (t);
 
     t = new Tweet ();
     t.id = 1;
-    t.hidden_flags |= Tweet.HIDDEN_UNFOLLOWED;
+    t.state |= Tweet.HIDDEN_UNFOLLOWED;
 
     tm.add (t);
   }

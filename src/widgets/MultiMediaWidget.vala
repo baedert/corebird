@@ -218,8 +218,8 @@ private class MediaButton : Gtk.Button {
       //minimum = natural = int.min (s_h, width / 2);
       //minimum = natural = s_h;
     //} else {
-      minimum = natural = (int)GLib.Math.fmin (MultiMediaWidget.MAX_HEIGHT,
-                                               width / 2);
+      int surface_height = this.media.surface != null ? this.media.surface.get_height () : 0;
+      minimum = natural = int.min (MultiMediaWidget.MAX_HEIGHT, int.min (width / 2, surface_height));
     //}
   }
 

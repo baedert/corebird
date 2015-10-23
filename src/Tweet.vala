@@ -21,6 +21,38 @@ public struct UserIdentity {
   string user_name;
 }
 
+[Flags]
+public enum TweetState {
+  /** Force hiding (there's no way this flag will ever get flipped...)*/
+  HIDDEN_FORCE,
+  /** Hidden because we unfolled the author */
+  HIDDEN_UNFOLLOWED,
+  /** Hidden because one o the filters matched the tweet */
+  HIDDEN_FILTERED,
+  /** Hidden because RTs of the author are disabled */
+  HIDDEN_RTS_DISABLED,
+  /** Hidden because it's a RT by the authenticating user */
+  HIDDEN_RT_BY_USER,
+  HIDDEN_RT_BY_FOLLOWEE,
+  /** Hidden because the author is blocked */
+  HIDDEN_AUTHOR_BLOCKED,
+  /** Hidden because the author of a retweet is blocked */
+  HIDDEN_RETWEETER_BLOCKED,
+
+  /* The authenticating user retweeted this tweet */
+  RETWEETED,
+  /* The authenticating user favorited this tweet */
+  FAVORITED,
+  /* This tweet has been deleted by its author */
+  DELETED,
+  /* The author of this tweet is verified */
+  VERIFIED,
+  /* The author of this tweet is protected */
+  PROTECTED,
+  /* At least one media attached to this tweet is marked sensitive */
+  NSFW
+}
+
 UserIdentity? parse_identity (Json.Object user_obj)
 {
   UserIdentity id = {};
@@ -217,23 +249,7 @@ void parse_entities (MiniTweet mt, Json.Object status)
 public class Tweet : GLib.Object {
   public static const int MAX_LENGTH = 140;
 
-  /** Force hiding (there's no way this flag will ever get flipped...)*/
-  public const uint HIDDEN_FORCE             = 1 << 0;
-  /** Hidden because we unfolled the author */
-  public const uint HIDDEN_UNFOLLOWED        = 1 << 1;
-  /** Hidden because one of the filters matched the tweet */
-  public const uint HIDDEN_FILTERED          = 1 << 2;
-  /** Hidden because RTs of the author are disabled */
-  public const uint HIDDEN_RTS_DISABLED      = 1 << 3;
-  /** Hidden because it's a RT by the authenticating user */
-  public const uint HIDDEN_RT_BY_USER        = 1 << 4;
-  public const uint HIDDEN_RT_BY_FOLLOWEE    = 1 << 5;
-  /** Hidden because the author is blocked */
-  public const uint HIDDEN_AUTHOR_BLOCKED    = 1 << 6;
-  /** Hidden because the author of a retweet is blocked */
-  public const uint HIDDEN_RETWEETER_BLOCKED = 1 << 7;
-
-  public uint hidden_flags = 0;
+  public uint state = 0;
 
 #if DEBUG
   public string json_data;
@@ -241,10 +257,12 @@ public class Tweet : GLib.Object {
 
   public bool is_hidden {
     get {
-      return hidden_flags > 0;
+      // TODO: This needs to care only about the HIDDEN_ flags
+      //return state > 0;
+      return false;
     }
   }
-  public signal void hidden_flags_changed ();
+  public signal void state_changed ();
 
   public int64 id;
   public bool retweeted { get; set; default = false; }
@@ -281,10 +299,7 @@ public class Tweet : GLib.Object {
 
   /** The avatar url on the server */
   public string avatar_url;
-  public bool verified = false;
   public int64 my_retweet;
-  public bool protected;
-  public bool nsfw;
   public string? notification_id = null;
   private bool _seen = true;
   public bool seen {
@@ -363,15 +378,16 @@ public class Tweet : GLib.Object {
     Json.Object status = status_node.get_object ();
     Json.Object user = status.get_object_member("user");
     this.id          = status.get_int_member("id");
-    this.favorited   = status.get_boolean_member("favorited");
-    this.retweeted   = status.get_boolean_member("retweeted");
+    if (status.get_boolean_member ("favorited"))
+      this.state |= TweetState.FAVORITED;
+    if (status.get_boolean_member ("retweeted"))
+      this.state |= TweetState.RETWEETED;
+
     this.retweet_count = (int)status.get_int_member ("retweet_count");
     this.favorite_count = (int)status.get_int_member ("favorite_count");
 
     if (Utils.usable_json_value (status, "possibly_sensitive"))
-      this.nsfw = status.get_boolean_member ("possibly_sensitive");
-    else
-      this.nsfw = false;
+      this.state |= TweetState.NSFW;
 
     this.source_tweet = parse_mini_tweet (status);
 
@@ -382,15 +398,23 @@ public class Tweet : GLib.Object {
 
       Json.Object rt_user = rt.get_object_member("user");
       this.avatar_url    = rt_user.get_string_member ("profile_image_url");
-      this.verified      = rt_user.get_boolean_member ("verified");
-      this.protected     = rt_user.get_boolean_member ("protected");
+      if (rt_user.get_boolean_member ("protected"))
+        this.state |= TweetState.PROTECTED;
+
+      if (rt_user.get_boolean_member ("verified"))
+        this.state |= TweetState.VERIFIED;
+
       if (!rt.get_null_member ("in_reply_to_status_id"))
         this.reply_id = rt.get_int_member ("in_reply_to_status_id");
     } else {
       parse_entities (this.source_tweet, status);
       this.avatar_url  = user.get_string_member ("profile_image_url");
-      this.verified    = user.get_boolean_member ("verified");
-      this.protected   = user.get_boolean_member ("protected");
+      if (user.get_boolean_member ("verified"))
+        this.state |= TweetState.VERIFIED;
+
+      if (user.get_boolean_member ("protected"))
+        this.state |= TweetState.PROTECTED;
+
       if (!status.get_null_member ("in_reply_to_status_id"))
         this.reply_id  = status.get_int_member ("in_reply_to_status_id");
     }

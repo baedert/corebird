@@ -118,7 +118,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
         avatar_image.surface = a;
       }, 48 * this.get_scale_factor ());
     }
-    avatar_image.verified = tweet.verified;
+    avatar_image.verified = (tweet.state & TweetState.VERIFIED) > 0;
     text_label.label = tweet.get_trimmed_text ();
     update_time_delta ();
     if (tweet.retweeted_tweet != null) {
@@ -145,20 +145,16 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
     retweet_button.active = tweet.retweeted;
     retweet_button.sensitive = (tweet.user_id != account.id) &&
-                               !tweet.protected;
+                               (tweet.state & TweetState.PROTECTED) == 0;
     tweet.notify["retweeted"].connect (retweeted_cb);
 
     favorite_button.active = tweet.favorited;
     tweet.notify["favorited"].connect (favorited_cb);
 
-    tweet.hidden_flags_changed.connect (hidden_flags_changed_cb);
+    tweet.state_changed.connect (state_changed_cb);
     tweet.notify["deleted"].connect (tweet_deleted_cb);
 
-    if (tweet.reply_id == 0)
-      conversation_image.unparent ();
-    else {
-      conversation_image.show ();
-    }
+    conversation_image.visible = (tweet.reply_id != 0);
 
     if (tweet.has_inline_media) {
       mm_widget.set_all_media (tweet.medias);
@@ -177,7 +173,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       ((GLib.SimpleAction)actions.lookup_action ("delete")).set_enabled (false);
 
     if (tweet.user_id == account.id ||
-        tweet.protected)
+        (tweet.state & TweetState.PROTECTED) > 0)
       ((GLib.SimpleAction)actions.lookup_action ("quote")).set_enabled (false);
 
     reply_tweet.connect (reply_tweet_activated);
@@ -400,7 +396,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     }
   }
 
-  private void hidden_flags_changed_cb () {
+  private void state_changed_cb () {
     if (tweet.is_hidden)
       this.hide ();
     else

@@ -170,11 +170,11 @@ public class TweetModel : GLib.Object, GLib.ListModel {
     foreach (Tweet tweet in tweets) {
       if (tweet.user_id == user_id) {
         if (active)
-          tweet.hidden_flags |= reason;
+          tweet.state |= reason;
         else
-          tweet.hidden_flags &= ~reason;
+          tweet.state &= ~reason;
 
-        tweet.hidden_flags_changed ();
+        tweet.state_changed ();
       }
     }
   }
@@ -185,11 +185,11 @@ public class TweetModel : GLib.Object, GLib.ListModel {
           tweet.source_tweet.author.id == user_id) {
 
         if (active)
-          tweet.hidden_flags |= reason;
+          tweet.state |= reason;
         else
-          tweet.hidden_flags &= ~reason;
+          tweet.state &= ~reason;
 
-        tweet.hidden_flags_changed ();
+        tweet.state_changed ();
       }
     }
   }

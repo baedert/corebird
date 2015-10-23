@@ -47,10 +47,10 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
         toggle_favorite (id, false);
     } else if (type == StreamMessageType.EVENT_BLOCK) {
       int64 user_id = root.get_object ().get_object_member ("target").get_int_member ("id");
-      hide_tweets_from (user_id, Tweet.HIDDEN_AUTHOR_BLOCKED);
+      hide_tweets_from (user_id, TweetState.HIDDEN_AUTHOR_BLOCKED);
     } else if (type == StreamMessageType.EVENT_UNBLOCK) {
       int64 user_id = root.get_object ().get_object_member ("target").get_int_member ("id");
-      show_tweets_from (user_id, Tweet.HIDDEN_AUTHOR_BLOCKED);
+      show_tweets_from (user_id, TweetState.HIDDEN_AUTHOR_BLOCKED);
     }
   } // }}}
 
@@ -60,17 +60,17 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
     t.load_from_json (obj, now, account);
 
     if (t.retweeted_tweet != null)
-      t.hidden_flags |= get_rt_flags (t);
+      t.state |= get_rt_flags (t);
 
     if (account.blocked_or_muted (t.user_id))
-      t.hidden_flags |= Tweet.HIDDEN_RETWEETER_BLOCKED;
+      t.state |= TweetState.HIDDEN_RETWEETER_BLOCKED;
 
 
     if (t.retweeted_tweet != null && account.blocked_or_muted (t.retweeted_tweet.author.id))
-      t.hidden_flags |= Tweet.HIDDEN_AUTHOR_BLOCKED;
+      t.state |= TweetState.HIDDEN_AUTHOR_BLOCKED;
 
     if (account.filter_matches (t))
-      t.hidden_flags |= Tweet.HIDDEN_FILTERED;
+      t.state |= TweetState.HIDDEN_FILTERED;
 
     bool auto_scroll = Settings.auto_scroll_on_new_tweets ();
 

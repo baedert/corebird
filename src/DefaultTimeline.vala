@@ -209,23 +209,23 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
 
     /* First case */
     if (t.user_id == account.id)
-      flags |= Tweet.HIDDEN_FORCE;
+      flags |= TweetState.HIDDEN_FORCE;
 
     /*  Second case */
     if (account.follows_id (t.user_id))
-        flags |= Tweet.HIDDEN_RT_BY_FOLLOWEE;
+        flags |= TweetState.HIDDEN_RT_BY_FOLLOWEE;
 
     /* third case */
     if (t.retweeted_tweet != null &&
         t.retweeted_tweet.author.id == account.id)
-      flags |= Tweet.HIDDEN_FORCE;
+      flags |= TweetState.HIDDEN_FORCE;
 
 
 
     /* Fourth case */
     foreach (int64 id in account.disabled_rts)
       if (id == t.source_tweet.author.id) {
-        flags |= Tweet.HIDDEN_RTS_DISABLED;
+        flags |= TweetState.HIDDEN_RTS_DISABLED;
         break;
       }
 
@@ -235,7 +235,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
       if (w is TweetListEntry) {
         var tt = ((TweetListEntry)w).tweet;
         if (tt.retweeted_tweet != null && tt.retweeted_tweet.id == t.retweeted_tweet.id) {
-          flags |= Tweet.HIDDEN_FORCE;
+          flags |= TweetState.HIDDEN_FORCE;
           break;
         }
       }
