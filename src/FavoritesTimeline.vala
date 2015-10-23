@@ -33,16 +33,17 @@ class FavoritesTimeline : IMessageReceiver, DefaultTimeline {
       Json.Node tweet_obj = root.get_object ().get_member ("target_object");
       int64 tweet_id = tweet_obj.get_object ().get_int_member ("id");
       // TODO: Use the TweetModel here.
-      foreach (Gtk.Widget w in tweet_list.get_children ()) {
-        if (!(w is TweetListEntry))
-          continue;
+      for (uint i = 0; i < this.tweet_list.model.get_n_items (); i ++) {
+        Tweet t = (Tweet) this.tweet_list.model.get_item (i);
 
-        var tle = (TweetListEntry) w;
-        if (tle.tweet.id == tweet_id) {
-          tle.tweet.set_flag (TweetState.FAVORITED);
+        if (t.id == tweet_id) {
+          t.set_flag (TweetState.FAVORITED);
+          // This tweet has been unfavorited and now favorited again,
+          // so just mark it favorited and then return.
           return;
         }
       }
+
       Tweet tweet = new Tweet ();
       tweet.load_from_json (tweet_obj,
                             new GLib.DateTime.now_local (),
