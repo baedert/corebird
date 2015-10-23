@@ -209,6 +209,8 @@ public class InlineMediaDownloader : GLib.Object {
       media.animation = anim;
 
     media.surface = (Cairo.ImageSurface)Gdk.cairo_surface_create_from_pixbuf (pic, 1, null);
+    media.width = media.surface.get_width ();
+    media.height = media.surface.get_height ();
     media.loaded = true;
     media.finished_loading ();
     try {
