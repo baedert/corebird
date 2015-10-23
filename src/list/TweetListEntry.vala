@@ -143,16 +143,13 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       quote_grid.show_all ();
     }
 
-    retweet_button.active = tweet.retweeted;
+    retweet_button.active = (tweet.state & TweetState.RETWEETED) > 0;
     retweet_button.sensitive = (tweet.user_id != account.id) &&
                                (tweet.state & TweetState.PROTECTED) == 0;
-    tweet.notify["retweeted"].connect (retweeted_cb);
 
-    favorite_button.active = tweet.favorited;
-    tweet.notify["favorited"].connect (favorited_cb);
+    favorite_button.active = (tweet.state & TweetState.FAVORITED) > 0;
 
     tweet.state_changed.connect (state_changed_cb);
-    tweet.notify["deleted"].connect (tweet_deleted_cb);
 
     conversation_image.visible = (tweet.reply_id != 0);
 
@@ -186,10 +183,10 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       retweet_button.tap ();
     });
 
-    if (tweet.favorited)
+    if (tweet.is_flag_set (TweetState.FAVORITED))
       fav_status_image.show ();
 
-    if (tweet.retweeted)
+    if (tweet.is_flag_set (TweetState.RETWEETED))
       rt_status_image.show ();
 
     values_set = true;
@@ -207,20 +204,6 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       this.quote_label.label = TextTransform.transform_tweet (tweet.quoted_tweet,
                                                               Settings.get_text_transform_flags ());
     }
-  }
-
-  private void favorited_cb () {
-    values_set = false;
-    favorite_button.active = tweet.favorited;
-    fav_status_image.visible = tweet.favorited;
-    values_set = true;
-  }
-
-  private void retweeted_cb () {
-    values_set = false;
-    retweet_button.active = tweet.retweeted;
-    rt_status_image.visible = tweet.retweeted;
-    values_set = true;
   }
 
   private void media_clicked_cb (Media m, int index) {
@@ -401,15 +384,20 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       this.hide ();
     else
       this.show ();
-  }
 
-  private void tweet_deleted_cb () {
-#if DEBUG
-    assert (this.sensitive != tweet.deleted);
-#endif
+    this.values_set = false;
+    this.fav_status_image.visible = tweet.is_flag_set (TweetState.FAVORITED);
+    this.favorite_button.active = tweet.is_flag_set (TweetState.RETWEETED);
 
-    this.sensitive = !tweet.deleted;
-    stack.visible_child = grid;
+    this.retweet_button.active = tweet.is_flag_set (TweetState.RETWEETED);
+    this.rt_status_image.visible = tweet.is_flag_set (TweetState.RETWEETED);
+
+    if (tweet.is_flag_set (TweetState.DELETED)) {
+      this.sensitive = false;
+      stack.visible_child = grid;
+    }
+
+    this.values_set = true;
   }
 
   public void set_avatar (Cairo.Surface surface) {

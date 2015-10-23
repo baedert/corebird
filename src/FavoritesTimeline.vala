@@ -28,17 +28,18 @@ class FavoritesTimeline : IMessageReceiver, DefaultTimeline {
     this.tweet_list.account = account;
   }
 
-  private void stream_message_received (StreamMessageType type, Json.Node root) { // {{{
+  private void stream_message_received (StreamMessageType type, Json.Node root) {
     if (type == StreamMessageType.EVENT_FAVORITE) {
       Json.Node tweet_obj = root.get_object ().get_member ("target_object");
       int64 tweet_id = tweet_obj.get_object ().get_int_member ("id");
+      // TODO: Use the TweetModel here.
       foreach (Gtk.Widget w in tweet_list.get_children ()) {
         if (!(w is TweetListEntry))
           continue;
 
         var tle = (TweetListEntry) w;
         if (tle.tweet.id == tweet_id) {
-          tle.tweet.favorited = true;
+          tle.tweet.set_flag (TweetState.FAVORITED);
           return;
         }
       }
@@ -46,7 +47,7 @@ class FavoritesTimeline : IMessageReceiver, DefaultTimeline {
       tweet.load_from_json (tweet_obj,
                             new GLib.DateTime.now_local (),
                             this.account);
-      tweet.favorited = true;
+      tweet.set_flag (TweetState.FAVORITED);
       var tle = new TweetListEntry (tweet, this.main_window, this.account);
       this.delta_updater.add (tle);
       this.tweet_list.add (tle);
@@ -54,7 +55,7 @@ class FavoritesTimeline : IMessageReceiver, DefaultTimeline {
       int64 id = root.get_object ().get_object_member ("target_object").get_int_member ("id");
       toggle_favorite (id, false);
     }
-  } // }}}
+  }
 
 
   public override void on_leave () {
@@ -63,7 +64,7 @@ class FavoritesTimeline : IMessageReceiver, DefaultTimeline {
       if (!(w is TweetListEntry))
         continue;
 
-      if (!((TweetListEntry)w).tweet.favorited) {
+      if (!((TweetListEntry)w).tweet.is_flag_set (TweetState.FAVORITED)) {
         GLib.Idle.add(() => {tweet_list.remove (w); return false;});
       }
     }

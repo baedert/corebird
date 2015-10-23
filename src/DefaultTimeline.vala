@@ -184,7 +184,11 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
         continue;
       var t = ((TweetListEntry)w).tweet;
       if (t.id == id) {
-        t.favorited = mode;
+        if (mode)
+          t.set_flag (TweetState.FAVORITED);
+        else
+          t.unset_flag (TweetState.FAVORITED);
+
         break;
       }
     }

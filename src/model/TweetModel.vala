@@ -230,13 +230,13 @@ public class TweetModel : GLib.Object, GLib.ListModel {
         if (t.is_hidden)
           this.remove_tweet (t);
         else
-          t.deleted = true;
+          t.set_flag (TweetState.DELETED);
 
 
         return true;
 
-      } else if (t.retweeted && t.my_retweet == id) {
-        t.retweeted = false;
+      } else if (t.is_flag_set (TweetState.RETWEETED) && t.my_retweet == id) {
+        t.unset_flag (TweetState.RETWEETED);
       }
     }
 

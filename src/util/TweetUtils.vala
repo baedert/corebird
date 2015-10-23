@@ -94,7 +94,10 @@ namespace TweetUtils {
         Utils.show_error_object (call.get_payload (), e.message,
                                  GLib.Log.LINE, GLib.Log.FILE);
       }
-      tweet.favorited = !unfavorite;
+      if (unfavorite)
+        tweet.unset_flag (TweetState.FAVORITED);
+      else
+        tweet.set_flag (TweetState.FAVORITED);
       toggle_favorite_tweet.callback ();
     });
     yield;
@@ -133,7 +136,10 @@ namespace TweetUtils {
         } else {
           tweet.my_retweet = 0;
         }
-        tweet.retweeted = !unretweet;
+        if (unretweet)
+          tweet.unset_flag (TweetState.RETWEETED);
+        else
+          tweet.set_flag (TweetState.RETWEETED);
       } catch (GLib.Error e) {
         critical (e.message);
         critical (back);

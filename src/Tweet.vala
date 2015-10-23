@@ -249,6 +249,7 @@ void parse_entities (MiniTweet mt, Json.Object status)
 public class Tweet : GLib.Object {
   public static const int MAX_LENGTH = 140;
 
+  // TODO: Make this private
   public uint state = 0;
 
 #if DEBUG
@@ -429,7 +430,7 @@ public class Tweet : GLib.Object {
 
     if (status.has_member ("current_user_retweet")) {
       this.my_retweet = status.get_object_member ("current_user_retweet").get_int_member ("id");
-      this.retweeted  = true;
+      this.state |= TweetState.RETWEETED;
     }
 
 #if DEBUG
@@ -487,4 +488,23 @@ public class Tweet : GLib.Object {
                                           quote_id);
   }
 
+  public void set_flag (TweetState flag) {
+    uint state_before = this.state;
+    this.state |= flag;
+
+    if (state_before != this.state)
+      this.state_changed ();
+  }
+
+  public void unset_flag (TweetState flag) {
+    uint state_before = this.state;
+    this.state &= ~flag;
+
+    if (state_before != this.state)
+      this.state_changed ();
+  }
+
+  public bool is_flag_set (TweetState flag) {
+    return (this.state & flag) > 0;
+  }
 }

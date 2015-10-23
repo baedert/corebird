@@ -419,8 +419,8 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     });
     update_rt_fav_labels ();
     time_label.label = time_format;
-    retweet_button.active = tweet.retweeted;
-    favorite_button.active = tweet.favorited;
+    retweet_button.active = tweet.is_flag_set (TweetState.RETWEETED);
+    favorite_button.active = tweet.is_flag_set (TweetState.FAVORITED);
     avatar_image.verified = (tweet.state & TweetState.VERIFIED) > 0;
 
 
