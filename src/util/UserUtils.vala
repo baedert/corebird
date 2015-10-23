@@ -42,7 +42,7 @@ namespace UserUtils {
 
     Json.Node? root = null;
     try {
-      root = yield TweetUtils.load_threaded (call);
+      root = yield TweetUtils.load_threaded (call, null);
     } catch (GLib.Error e) {
       warning (e.message);
       return null;
@@ -80,7 +80,7 @@ namespace UserUtils {
 
     Json.Node? root = null;
     try {
-      root = yield TweetUtils.load_threaded (call);
+      root = yield TweetUtils.load_threaded (call, null);
     } catch (GLib.Error e) {
       warning (e.message);
       return null;
@@ -116,7 +116,7 @@ namespace UserUtils {
 
     Json.Node? root = null;
     try {
-      root = yield TweetUtils.load_threaded (call);
+      root = yield TweetUtils.load_threaded (call, null);
     } catch (GLib.Error e) {
       warning (e.message);
       return null;

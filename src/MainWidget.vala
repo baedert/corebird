@@ -19,7 +19,6 @@
 [GtkTemplate (ui = "/org/baedert/corebird/ui/main-widget.ui")]
 public class MainWidget : Gtk.Box {
   private unowned Account account;
-  private unowned Corebird app;
 
   private Gtk.RadioButton dummy_button = new Gtk.RadioButton (null);
   private IPage[] pages                = new IPage[11];
@@ -45,7 +44,6 @@ public class MainWidget : Gtk.Box {
 
   public MainWidget (Account account, MainWindow parent, Corebird app) {
     this.account = account;
-    this.app = app;
 
     account.init_proxy ();
     var acc_menu = (GLib.Menu)Corebird.account_menu;
@@ -59,20 +57,19 @@ public class MainWidget : Gtk.Box {
     account.user_stream.start ();
     account.init_information.begin ();
 
-
     stack.add (stack_impostor);
 
     pages[0]  = new HomeTimeline (Page.STREAM, account);
     pages[1]  = new MentionsTimeline (Page.MENTIONS, account);
     pages[2]  = new FavoritesTimeline (Page.FAVORITES, account);
-    pages[3]  = new DMThreadsPage (Page.DM_THREADS, account);
+    pages[3]  = new DMThreadsPage (Page.DM_THREADS, account, delta_updater);
     pages[4]  = new ListsPage (Page.LISTS, account);
     pages[5]  = new FilterPage (Page.FILTERS, account);
-    pages[6]  = new SearchPage (Page.SEARCH, account);
-    pages[7]  = new ProfilePage (Page.PROFILE, account);
-    pages[8]  = new TweetInfoPage (Page.TWEET_INFO, account);
-    pages[9]  = new DMPage (Page.DM, account);
-    pages[10] = new ListStatusesPage (Page.LIST_STATUSES, account);
+    pages[6]  = new SearchPage (Page.SEARCH, account, delta_updater);
+    pages[7]  = new ProfilePage (Page.PROFILE, account, delta_updater);
+    pages[8]  = new TweetInfoPage (Page.TWEET_INFO, account, delta_updater);
+    pages[9]  = new DMPage (Page.DM, account, delta_updater);
+    pages[10] = new ListStatusesPage (Page.LIST_STATUSES, account, delta_updater);
 
     /* Initialize all containers */
     for (int i = 0; i < pages.length; i++) {
@@ -101,15 +98,6 @@ public class MainWidget : Gtk.Box {
       tl.delta_updater = delta_updater;
     }
 
-    // TODO: Gnarf this sucks
-    // SearchPage still needs a delta updater
-    ((SearchPage)pages[Page.SEARCH]).delta_updater = this.delta_updater;
-    ((DMThreadsPage)pages[Page.DM_THREADS]).delta_updater = this.delta_updater;
-    ((DMPage)pages[Page.DM]).delta_updater = this.delta_updater;
-    ((ProfilePage)pages[Page.PROFILE]).delta_updater = this.delta_updater;
-    ((ListStatusesPage)pages[Page.LIST_STATUSES]).delta_updater = this.delta_updater;
-    ((TweetInfoPage)pages[Page.TWEET_INFO]).delta_updater = this.delta_updater;
-
     Settings.get ().bind ("sidebar-visible", sidebar_revealer, "reveal-child",
                           SettingsBindFlags.DEFAULT);
   }
@@ -122,7 +110,7 @@ public class MainWidget : Gtk.Box {
    *                See the Page.* constants.
    *
    */
-  public void switch_page (int page_id, Bundle? args = null) { // {{{
+  public void switch_page (int page_id, Bundle? args = null) {
     if (page_id == history.current) {
       if (pages[page_id].handles_double_open ())
         pages[page_id].double_open ();
@@ -168,8 +156,8 @@ public class MainWidget : Gtk.Box {
       stack.transition_type = transition_type;
     }
 
-    if (history.current != -1)
-      pages[history.current].on_leave ();
+    if (current_page != -1)
+      pages[current_page].on_leave ();
 
 
     if (push) {
@@ -196,7 +184,7 @@ public class MainWidget : Gtk.Box {
     page_switch_lock = false;
 
     ((MainWindow)this.parent).back_button.sensitive = !history.at_start ();
-  } // }}}
+  }
 
   public IPage get_page (int page_id) {
     return pages[page_id];

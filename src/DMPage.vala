@@ -20,7 +20,7 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
   public int unread_count                   { get { return 0; } }
   public unowned MainWindow main_window     { get; set; }
   public unowned Account account            { get; set; }
-  public unowned DeltaUpdater delta_updater { get; set; }
+  public unowned DeltaUpdater delta_updater;
   public int id                             { get; set; }
   [GtkChild]
   private Gtk.Button send_button;
@@ -36,9 +36,10 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
   private int64 lowest_id = int64.MAX;
   private bool was_scrolled_down = false;
 
-  public DMPage (int id, Account account) {
+  public DMPage (int id, Account account, DeltaUpdater delta_updater) {
     this.id = id;
     this.account = account;
+    this.delta_updater = delta_updater;
     text_view.buffer.changed.connect (recalc_length);
     messages_list.set_sort_func (ITwitterItem.sort_func_inv);
     placeholder_box.show ();

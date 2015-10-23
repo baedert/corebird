@@ -608,9 +608,9 @@ void retweet () {
   assert (t.source_tweet.author.id == 62574927);
   assert (t.get_mentions ().length == 0);
   assert (t.retweeted_tweet.author.user_name == "Black Forest Games");
-  assert (!t.favorited);
-  assert (!t.retweeted);
-  assert (!t.verified);
+  assert (!t.is_flag_set (TweetState.FAVORITED));
+  assert (!t.is_flag_set (TweetState.RETWEETED));
+  assert (!t.is_flag_set (TweetState.VERIFIED));
   assert (t.reply_id == 0);
   assert (t.my_retweet == 0);
   //assert (!t.has_inline_media);

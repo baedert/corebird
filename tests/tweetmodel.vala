@@ -61,13 +61,13 @@ void tweet_removal () {
   {
     var t = new Tweet ();
     t.id = 2;
-    t.state |= Tweet.HIDDEN_FORCE;
+    t.set_flag (TweetState.HIDDEN_FORCE);
 
     tm.add (t);
 
     t = new Tweet ();
     t.id = 1;
-    t.state |= Tweet.HIDDEN_UNFOLLOWED;
+    t.set_flag (TweetState.HIDDEN_UNFOLLOWED);
 
     tm.add (t);
   }
@@ -131,7 +131,7 @@ void remove_own_retweet () {
   var t1 = new Tweet ();
   t1.id = 1337;
   t1.my_retweet = 500; // <--
-  t1.retweeted = true;
+  t1.set_flag (TweetState.RETWEETED);
 
   tm.add (t1);
 
@@ -166,12 +166,12 @@ void hide_rt () {
 
   tm.add (t1);
 
-  tm.toggle_flag_on_retweet (10, Tweet.HIDDEN_FILTERED, true);
+  tm.toggle_flag_on_retweet (10, TweetState.HIDDEN_FILTERED, true);
 
   assert (tm.get_n_items () == 1);
   assert (((Tweet)tm.get_item (0)).is_hidden);
 
-  tm.toggle_flag_on_retweet (10, Tweet.HIDDEN_FILTERED, false);
+  tm.toggle_flag_on_retweet (10, TweetState.HIDDEN_FILTERED, false);
   assert (!((Tweet)tm.get_item (0)).is_hidden);
 }
 

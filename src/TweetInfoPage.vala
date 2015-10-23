@@ -32,8 +32,6 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
   public unowned Account account { get; set; }
   public unowned DeltaUpdater delta_updater {
     set {
-      top_list_box.delta_updater = value;
-      bottom_list_box.delta_updater = value;
     }
   }
   private int64 tweet_id;
@@ -79,11 +77,14 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
   [GtkChild]
   private Gtk.Label error_label;
 
-  public TweetInfoPage (int id, Account account) {
+  public TweetInfoPage (int id, Account account, DeltaUpdater delta_updater) {
     this.id = id;
     this.account = account;
     this.top_list_box.account = account;
     this.bottom_list_box.account = account;
+    this.top_list_box.delta_updater = delta_updater;
+    this.bottom_list_box.delta_updater = delta_updater;
+
 
     mm_widget.media_clicked.connect ((m, i) => TweetUtils.handle_media_click (tweet, main_window, i));
     this.scroll_event.connect ((evt) => {
@@ -208,7 +209,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
 
     this.update_rt_fav_labels ();
 
-    TweetUtils.toggle_favorite_tweet.begin (account, tweet, !favorite_button.active, () => {
+    TweetUtils.set_favorite_status.begin (account, tweet, favorite_button.active, () => {
       favorite_button.sensitive = true;
     });
   }
@@ -225,7 +226,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
       this.tweet.retweet_count --;
     this.update_rt_fav_labels ();
 
-    TweetUtils.toggle_retweet_tweet.begin (account, tweet, !retweet_button.active, () => {
+    TweetUtils.set_retweet_status.begin (account, tweet, retweet_button.active, () => {
       retweet_button.sensitive = true;
     });
   }
@@ -272,7 +273,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     call.set_function ("1.1/statuses/show.json");
     call.add_param ("id", tweet_id.to_string ());
     call.add_param ("include_my_retweet", "true");
-    TweetUtils.load_threaded.begin (call, (__, res) => {
+    TweetUtils.load_threaded.begin (call, null, (__, res) => {
       Json.Node? root = null;
 
       try {
@@ -303,7 +304,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     reply_call.add_param ("q", "to:" + this.screen_name);
     reply_call.add_param ("since_id", tweet_id.to_string ());
     reply_call.add_param ("count", "200");
-    TweetUtils.load_threaded.begin (reply_call, (_, res) => {
+    TweetUtils.load_threaded.begin (reply_call, null, (_, res) => {
       Json.Node? root = null;
 
       try {
@@ -484,7 +485,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
 
     this.update_rt_fav_labels ();
 
-    TweetUtils.toggle_favorite_tweet.begin (account, tweet, !favoriting, () => {
+    TweetUtils.set_favorite_status.begin (account, tweet, !favoriting, () => {
       favorite_button.sensitive = true;
       values_set = false;
       favorite_button.active = favoriting;

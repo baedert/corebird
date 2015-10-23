@@ -72,15 +72,14 @@ namespace TweetUtils {
    *
    * @param account The account to (un)favorite from
    * @param tweet The tweet to (un)favorite
-   * @param unfavorite If set to true, this function will unfavorite the tiven tweet,
-   *                   else it will favorite it.
+   * @param status %true to favorite the tweet, %false to unfavorite it.
    *
    * TODO: Rename this, since it doesn't automatically toggle but rather just set the
    *       favorite status based on the given boolean.
    */
-  async void toggle_favorite_tweet (Account account, Tweet tweet, bool unfavorite = false) {
+  async void set_favorite_status (Account account, Tweet tweet, bool status) {
     var call = account.proxy.new_call();
-    if (!unfavorite)
+    if (status)
       call.set_function ("1.1/favorites/create.json");
     else
       call.set_function ("1.1/favorites/destroy.json");
@@ -94,11 +93,11 @@ namespace TweetUtils {
         Utils.show_error_object (call.get_payload (), e.message,
                                  GLib.Log.LINE, GLib.Log.FILE);
       }
-      if (unfavorite)
-        tweet.unset_flag (TweetState.FAVORITED);
-      else
+      if (status)
         tweet.set_flag (TweetState.FAVORITED);
-      toggle_favorite_tweet.callback ();
+      else
+        tweet.unset_flag (TweetState.FAVORITED);
+      set_favorite_status.callback ();
     });
     yield;
   }
@@ -108,13 +107,12 @@ namespace TweetUtils {
    *
    * @param account The account to (un)retweet from
    * @param tweet The tweet to (un)retweet
-   * @param unretweet If set to true, this function will delete te retweet of #tweet,
-   *                  else it will retweet it.
+   * @param status %true to retweet it, false to unretweet it.
    */
-  async void toggle_retweet_tweet (Account account, Tweet tweet, bool unretweet = false) {
-  var call = account.proxy.new_call ();
+  async void set_retweet_status (Account account, Tweet tweet, bool status) {
+    var call = account.proxy.new_call ();
     call.set_method ("POST");
-    if (!unretweet)
+    if (status)
       call.set_function (@"1.1/statuses/retweet/$(tweet.id).json");
     else
       call.set_function (@"1.1/statuses/destroy/$(tweet.my_retweet).json");
@@ -130,21 +128,21 @@ namespace TweetUtils {
       var parser = new Json.Parser ();
       try {
         parser.load_from_data (back);
-        if (!unretweet) {
+        if (status) {
           int64 new_id = parser.get_root ().get_object ().get_int_member ("id");
           tweet.my_retweet = new_id;
         } else {
           tweet.my_retweet = 0;
         }
-        if (unretweet)
-          tweet.unset_flag (TweetState.RETWEETED);
-        else
+        if (status)
           tweet.set_flag (TweetState.RETWEETED);
+        else
+          tweet.unset_flag (TweetState.RETWEETED);
       } catch (GLib.Error e) {
         critical (e.message);
         critical (back);
       }
-      toggle_retweet_tweet.callback ();
+      set_retweet_status.callback ();
     });
     yield;
   }
@@ -485,7 +483,8 @@ namespace TweetUtils {
     }
   }
 
-  public async Json.Node? load_threaded (Rest.ProxyCall call) throws GLib.Error
+  public async Json.Node? load_threaded (Rest.ProxyCall    call,
+                                         GLib.Cancellable? cancellable) throws GLib.Error
   {
     Json.Node? result = null;
     GLib.Error? err   = null;
@@ -500,11 +499,21 @@ namespace TweetUtils {
         return null;
       }
 
+      if (cancellable != null && cancellable.is_cancelled ()) {
+        GLib.Idle.add (() => { callback (); return GLib.Source.REMOVE; });
+        return null;
+      }
+
       var parser = new Json.Parser ();
       try {
         parser.load_from_data (call.get_payload ());
       } catch (GLib.Error e) {
         err = e;
+        GLib.Idle.add (() => { callback (); return GLib.Source.REMOVE; });
+        return null;
+      }
+
+      if (cancellable != null && cancellable.is_cancelled ()) {
         GLib.Idle.add (() => { callback (); return GLib.Source.REMOVE; });
         return null;
       }

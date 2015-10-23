@@ -38,11 +38,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
   }
   public unowned Account account { get; set; }
   public int id { get; set; }
-  public unowned DeltaUpdater delta_updater {
-    set {
-      tweet_list.delta_updater = value;
-    }
-  }
+  private DeltaUpdater delta_updater;
 
   [GtkChild]
   private AspectImage banner_image;
@@ -103,11 +99,13 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
   private Cursor? following_cursor = null;
   private GLib.SimpleActionGroup actions;
 
-  public ProfilePage (int id, Account account) {
+  public ProfilePage (int id, Account account, DeltaUpdater delta_updater) {
     this.id = id;
     this.account = account;
     this.user_lists.account = account;
     this.tweet_list.account = account;
+    this.delta_updater = delta_updater;
+    this.tweet_list.delta_updater = delta_updater;
 
     this.scroll_event.connect ((evt) => {
       if (evt.delta_y < 0 && this.vadjustment.value == 0) {
@@ -237,11 +235,13 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
 
     Json.Node? root_node = null;
     try {
-      root_node = yield TweetUtils.load_threaded (call); // TODO: Use data_cancellable here
+      root_node = yield TweetUtils.load_threaded (call, data_cancellable);
     } catch (GLib.Error e) {
       warning (e.message);
       return;
     }
+
+    if (root_node == null) return;
 
     var root = root_node.get_object();
     int64 id = root.get_int_member ("id");
@@ -371,12 +371,14 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
 
     Json.Node? root = null;
     try {
-      root = yield TweetUtils.load_threaded (call);
+      root = yield TweetUtils.load_threaded (call, data_cancellable);
     } catch (GLib.Error e) {
       warning (e.message);
       tweet_list.set_empty ();
       return;
     }
+
+    if (root == null) return;
 
     var root_array = root.get_array ();
     if (root_array.get_length () == 0) {
@@ -410,11 +412,13 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
 
     Json.Node? root = null;
     try {
-      root = yield TweetUtils.load_threaded (call);
+      root = yield TweetUtils.load_threaded (call, data_cancellable);
     } catch (GLib.Error e) {
       warning (e.message);
       return;
     }
+
+    if (root == null) return;
 
     var root_arr = root.get_array ();
     yield TweetUtils.work_array (root_arr,
