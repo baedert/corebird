@@ -59,13 +59,11 @@ class FavoritesTimeline : IMessageReceiver, DefaultTimeline {
 
 
   public override void on_leave () {
-    GLib.List<unowned Gtk.Widget> children = tweet_list.get_children ();
-    foreach (Gtk.Widget w in children) {
-      if (!(w is TweetListEntry))
-        continue;
-
-      if (!((TweetListEntry)w).tweet.is_flag_set (TweetState.FAVORITED)) {
-        GLib.Idle.add(() => {tweet_list.remove (w); return false;});
+    for (uint i = 0; i < tweet_list.model.get_n_items (); i ++) {
+      var tweet = (Tweet) tweet_list.model.get_item (i);
+      if (!tweet.is_flag_set (TweetState.FAVORITED)) {
+        tweet_list.model.remove_tweet (tweet);
+        i --;
       }
     }
 
