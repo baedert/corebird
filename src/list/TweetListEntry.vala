@@ -136,6 +136,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       quote_name.set_markup (tweet.quoted_tweet.author.user_name);
       quote_screen_name.label = "@" + tweet.quoted_tweet.author.screen_name;
 
+      quote_grid.show ();
       quote_grid.show_all ();
     }
 
