@@ -247,6 +247,9 @@ void parse_entities (MiniTweet mt, Json.Object status)
           }
         }
 
+        if (variant == null && variants.get_length () > 0)
+          variant = variants.get_element (0).get_object ();
+
         if (variant != null) {
           Media m = new Media ();
           m.url = variant.get_string_member ("url");
