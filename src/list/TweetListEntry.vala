@@ -384,7 +384,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
     this.values_set = false;
     this.fav_status_image.visible = tweet.is_flag_set (TweetState.FAVORITED);
-    this.favorite_button.active = tweet.is_flag_set (TweetState.RETWEETED);
+    this.favorite_button.active = tweet.is_flag_set (TweetState.FAVORITED);
 
     this.retweet_button.active = tweet.is_flag_set (TweetState.RETWEETED);
     this.rt_status_image.visible = tweet.is_flag_set (TweetState.RETWEETED);
