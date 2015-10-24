@@ -199,7 +199,6 @@ void parse_entities (MiniTweet mt, Json.Object status)
           m.id = media_obj.get_int_member ("id");
           m.type = Media.type_from_string (media_obj.get_string_member ("type"));
 
-          /* TODO: Which size are we picking here? */
           if (media_obj.has_member ("sizes")) {
             var size_obj = media_obj.get_object_member ("sizes")
                                     .get_object_member ("medium");
@@ -213,15 +212,39 @@ void parse_entities (MiniTweet mt, Json.Object status)
         }
       } else if (media_type == "video" ||
                  media_type == "animated_gif") {
+        int thumb_width = -1;
+        int thumb_height = -1;
         Json.Object? variant = null;
         Json.Array variants = media_obj.get_object_member ("video_info")
                                        .get_array_member ("variants");
 
-        /* Just pick the first mp4 variant */
+        if (media_obj.has_member ("sizes")) {
+          var size_obj = media_obj.get_object_member ("sizes")
+                                  .get_object_member ("medium");
+          thumb_width = (int)size_obj.get_int_member ("w");
+          thumb_height = (int)size_obj.get_int_member ("h");
+        }
+
+        int variant_width = 0;
+        int variant_height = 0;
+        /* We pick the mp4 variant with a size closest to the
+           thumbnail size, but not bigger */
         for (uint i = 0; i < variants.get_length (); i ++) {
-          variant = variants.get_element (i).get_object ();
-          if (variant.get_string_member ("content_type") == "video/mp4")
-            break;
+          var cur_variant = variants.get_element (i).get_object ();
+          if (cur_variant.get_string_member ("content_type") == "video/mp4") {
+            if (thumb_width == -1 && thumb_height == -1)
+              break;
+
+            int w, h;
+            Utils.get_size_from_url (cur_variant.get_string_member ("url"),
+                                     out w, out h);
+            if (w > variant_width && w <= thumb_width &&
+                h > variant_height && h <= thumb_height) {
+              variant_width = w;
+              variant_height = h;
+              variant = cur_variant;
+            }
+          }
         }
 
         if (variant != null) {
@@ -230,6 +253,9 @@ void parse_entities (MiniTweet mt, Json.Object status)
           m.thumb_url = media_obj.get_string_member ("media_url");
           m.type = MediaType.TWITTER_VIDEO;
           m.id = media_obj.get_int_member ("id");
+          m.width = thumb_width;
+          m.height = thumb_height;
+
           mt.medias[real_media_count] = m;
           real_media_count ++;
         }
