@@ -13,37 +13,17 @@
           <property name="vexpand">false</property>
 
           <child>
-            <object class="GtkBox">
+            <object class="GtkBox" id="left_box">
               <property name="visible">true</property>
               <property name="can_focus">false</property>
-              <property name="orientation">vertical</property>
-
-
-              <child>
-                <object class="GtkBox" id="left_box">
-                  <property name="visible">true</property>
-                  <property name="can_focus">false</property>
-                  <property name="orientation">horizontal</property>
-                  <property name="halign">fill</property>
-                  <property name="hexpand">true</property>
-                  <property name="homogeneous">true</property>
-                  <style>
-                    <class name="linked" />
-                    <class name="sidebar" />
-                  </style>
-                </object>
-              </child>
-
-
-              <child>
-                <object class="GtkSeparator">
-                  <property name="visible">true</property>
-                  <property name="can_focus">false</property>
-                  <property name="orientation">horizontal</property>
-                  <property name="vexpand">true</property>
-                </object>
-              </child>
-
+              <property name="orientation">horizontal</property>
+              <property name="halign">fill</property>
+              <property name="hexpand">true</property>
+              <property name="homogeneous">true</property>
+              <style>
+                <class name="linked" />
+                <class name="sidebar" />
+              </style>
             </object>
           </child>
 
