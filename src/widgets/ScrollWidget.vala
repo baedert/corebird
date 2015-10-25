@@ -55,7 +55,6 @@ public class ScrollWidget : Gtk.ScrolledWindow {
       double inc = (upper - upper_cache);
 
       this.vadjustment.value += inc;
-      this.vadjustment.value_changed ();
       balance = NONE;
     }
     this.upper_cache = vadjustment.upper;
@@ -77,7 +76,6 @@ public class ScrollWidget : Gtk.ScrolledWindow {
       double inc = (upper - upper_cache);
 
       this.vadjustment.value -= inc;
-      this.vadjustment.value_changed ();
       balance = NONE;
     }
     this.upper_cache = vadjustment.upper;
@@ -104,7 +102,6 @@ public class ScrollWidget : Gtk.ScrolledWindow {
                               bool force_start = false) { // {{{
     if (!this.get_mapped () && !force_wait) {
       this.vadjustment.value = 0;
-      this.vadjustment.value_changed ();
       return;
     }
 
@@ -118,7 +115,6 @@ public class ScrollWidget : Gtk.ScrolledWindow {
         this.add_tick_callback (scroll_up_tick_cb);
       } else {
         this.vadjustment.value = 0;
-        this.vadjustment.value_changed ();
       }
     } else {
       if (scroll_up_id != 0) {
@@ -135,7 +131,6 @@ public class ScrollWidget : Gtk.ScrolledWindow {
           this.add_tick_callback (scroll_up_tick_cb);
         } else {
           this.vadjustment.value = 0;
-          this.vadjustment.value_changed ();
         }
         this.disconnect (scroll_up_id);
         this.scroll_up_id = 0;
@@ -156,7 +151,6 @@ public class ScrollWidget : Gtk.ScrolledWindow {
   public void scroll_down_next (bool animate = true, bool force_wait = false) { // {{{
     if (!this.get_mapped () && !force_wait) {
       this.vadjustment.value = this.vadjustment.upper - this.vadjustment.page_size;
-      this.vadjustment.value_changed ();
       return;
     }
 
@@ -172,7 +166,6 @@ public class ScrollWidget : Gtk.ScrolledWindow {
         this.add_tick_callback (scroll_up_tick_cb);
       } else {
         this.vadjustment.value = this.vadjustment.upper - this.vadjustment.page_size;
-        this.vadjustment.value_changed ();
       }
       this.disconnect (scroll_down_id);
       this.scroll_down_id = 0;
