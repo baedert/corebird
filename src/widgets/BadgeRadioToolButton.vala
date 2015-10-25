@@ -36,6 +36,7 @@ public class BadgeRadioToolButton : Gtk.RadioButton {
     this.add (i);
     this.set_mode (false);
     this.focus_on_click = false;
+    this.hexpand = true;
 
     if (text != "") {
       this.tooltip_text = text;

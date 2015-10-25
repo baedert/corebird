@@ -13,8 +13,22 @@
   padding: 2px 4px;
 }
 
-.sidebar {
-  -GtkWidget-window-dragging: true;
+.sidebar .button {
+  border: none;
+  border-bottom: 1px solid transparent;
+  box-shadow: none;
+  background-image: none;
+  
+}
+
+.sidebar .button:hover {
+  background-color: alpha(currentColor, 0.1);
+}
+
+
+.sidebar .button:checked {
+  background-color: alpha(currentColor, 0.2);
+  border-bottom: 1px solid blue;
 }
 
 .button-slim {
