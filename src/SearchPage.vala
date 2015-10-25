@@ -21,7 +21,6 @@ class SearchPage : IPage, Gtk.Box {
   /** The unread count here is always zero */
   public int unread_count {
     get { return 0; }
-    set {;}
   }
   public unowned Account account        { get; set; }
   public unowned MainWindow main_window { set; get; }
@@ -184,6 +183,8 @@ class SearchPage : IPage, Gtk.Box {
         root = TweetUtils.load_threaded.end (res);
       } catch (GLib.Error e) {
         warning (e.message);
+        tweet_list.set_error (e.message);
+
         if (!collect_obj.done)
           collect_obj.emit ();
 
@@ -252,6 +253,7 @@ class SearchPage : IPage, Gtk.Box {
         root = TweetUtils.load_threaded.end (res);
       } catch (GLib.Error e) {
         warning (e.message);
+        tweet_list.set_error (e.message);
         if (!collect_obj.done)
           collect_obj.emit ();
 
