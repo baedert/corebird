@@ -221,7 +221,7 @@ private class MediaButton : Gtk.Button {
                                                        out int natural) {
 
     if (this._media.width == -1 && this._media.height == -1) {
-      minimum = natural = int.max ((int)(width * 0.5),
+      minimum = natural = int.min ((int)(width * 0.5),
                                    MultiMediaWidget.MAX_HEIGHT);
     } else {
       minimum = natural = int.min (MultiMediaWidget.MAX_HEIGHT,
