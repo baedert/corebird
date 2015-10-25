@@ -1,7 +1,8 @@
 void count () {
   FileUtils.remove (Dirs.config ("accounts/test-account.db"));
   var db = new Sql.Database (Dirs.config ("accounts/test-account.db"),
-                             Sql.ACCOUNTS_INIT_FILE);
+                             Sql.ACCOUNTS_INIT_FILE,
+                             Sql.ACCOUNTS_SQL_VERSION);
   var counter = new UserCounter ();
   counter.load (db);
   counter.user_seen (0, "baedert", "blabla");

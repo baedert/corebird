@@ -58,7 +58,8 @@ public class Account : GLib.Object {
       return;
 
     this.db = new Sql.Database (Dirs.config (@"accounts/$id.db"),
-                                Sql.ACCOUNTS_INIT_FILE);
+                                Sql.ACCOUNTS_INIT_FILE,
+                                Sql.ACCOUNTS_SQL_VERSION);
     user_counter = new UserCounter ();
     user_counter.load (db);
     this.load_filters ();
