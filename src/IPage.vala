@@ -23,8 +23,8 @@ public interface IPage : Gtk.Widget {
   public abstract int id { get; set; }
   public abstract void on_join(int page_id, Bundle? args);
   public abstract void on_leave ();
-  public abstract void create_tool_button(Gtk.RadioButton? group);
-  public abstract Gtk.RadioButton? get_tool_button();
+  public abstract void create_radio_button(Gtk.RadioButton? group);
+  public abstract Gtk.RadioButton? get_radio_button();
   public abstract string? get_title ();
   public abstract unowned MainWindow main_window {get; set;}
   public abstract unowned Account account        {get; set;}

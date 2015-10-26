@@ -23,7 +23,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     set {
       _unread_count = int.max (value, 0);
       debug ("New unread count: %d", value);
-      tool_button.show_badge = (_unread_count > 0);
+      radio_button.show_badge = (_unread_count > 0);
     }
     get {
       return this._unread_count;
@@ -32,7 +32,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   public unowned MainWindow main_window  { set; get; }
   protected TweetListBox tweet_list      { set; get; default=new TweetListBox ();}
   public unowned Account account         { get; set; }
-  protected BadgeRadioToolButton tool_button;
+  protected BadgeRadioButton radio_button;
   protected uint tweet_remove_timeout    { get; set; }
   private DeltaUpdater _delta_updater;
   public DeltaUpdater delta_updater {
@@ -137,10 +137,10 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     }
   }
 
-  public virtual void create_tool_button(Gtk.RadioButton? group){}
+  public virtual void create_radio_button(Gtk.RadioButton? group){}
 
-  public Gtk.RadioButton? get_tool_button() {
-    return tool_button;
+  public Gtk.RadioButton? get_radio_button() {
+    return radio_button;
   }
 
   /**

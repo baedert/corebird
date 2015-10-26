@@ -520,8 +520,8 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     return source_str.substring (0, from-5) + source_str.substring(to + 1);
   } //}}}
 
-  public void create_tool_button (Gtk.RadioButton? group) {}
-  public Gtk.RadioButton? get_tool_button () {
+  public void create_radio_button (Gtk.RadioButton? group) {}
+  public Gtk.RadioButton? get_radio_button () {
     return null;
   }
 

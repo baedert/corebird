@@ -15,7 +15,7 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-public class BadgeRadioToolButton : Gtk.RadioButton {
+public class BadgeRadioButton : Gtk.RadioButton {
   private static const int BADGE_SIZE = 10;
   private bool _show_badge = false;
   public bool show_badge {
@@ -29,7 +29,7 @@ public class BadgeRadioToolButton : Gtk.RadioButton {
     }
   }
 
-  public BadgeRadioToolButton (Gtk.RadioButton group, string icon_name, string text="") {
+  public BadgeRadioButton (Gtk.RadioButton group, string icon_name, string text="") {
     GLib.Object (group: group);
     this.get_style_context ().add_class ("image-button");
     var i = new Gtk.Image.from_icon_name (icon_name, Gtk.IconSize.BUTTON);
