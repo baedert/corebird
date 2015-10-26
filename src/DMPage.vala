@@ -315,6 +315,6 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
     return _("Direct Conversation");
   }
 
-  public void create_tool_button (Gtk.RadioButton? group) {}
-  public Gtk.RadioButton? get_tool_button() {return null;}
+  public void create_radio_button (Gtk.RadioButton? group) {}
+  public Gtk.RadioButton? get_radio_button() {return null;}
 }

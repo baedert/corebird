@@ -66,7 +66,7 @@ libcorebird_la_VALASOURCES = \
 	widgets/DoubleTapButton.vala \
 	widgets/ReplyEntry.vala \
 	widgets/PixbufButton.vala \
-	widgets/BadgeRadioToolButton.vala \
+	widgets/BadgeRadioButton.vala \
 	widgets/DMPlaceholderBox.vala \
 	widgets/AccountCreateWidget.vala \
 	widgets/AspectImage.vala \

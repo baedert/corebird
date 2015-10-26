@@ -19,7 +19,7 @@
 class ListsPage : IPage, ScrollWidget, IMessageReceiver {
   public static const int MODE_DELETE = 1;
 
-  private BadgeRadioToolButton tool_button;
+  private BadgeRadioButton radio_button;
   private unowned MainWindow _main_window;
   public int unread_count                   { get; set; }
   public unowned MainWindow main_window {
@@ -119,8 +119,8 @@ class ListsPage : IPage, ScrollWidget, IMessageReceiver {
   }
 
 
-  public void create_tool_button (Gtk.RadioButton? group) {
-    tool_button = new BadgeRadioToolButton (group, "view-list-symbolic", _("Lists"));
+  public void create_radio_button (Gtk.RadioButton? group) {
+    radio_button = new BadgeRadioButton (group, "view-list-symbolic", _("Lists"));
   }
 
 
@@ -128,8 +128,8 @@ class ListsPage : IPage, ScrollWidget, IMessageReceiver {
     return _("Lists");
   }
 
-  public Gtk.RadioButton? get_tool_button () {
-    return tool_button;
+  public Gtk.RadioButton? get_radio_button () {
+    return radio_button;
   }
 
 }

@@ -130,7 +130,7 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
     return _("Mentions");
   }
 
-  public override void create_tool_button (Gtk.RadioButton? group) {
-    tool_button = new BadgeRadioToolButton(group, "corebird-mentions-symbolic", _("Mentions"));
+  public override void create_radio_button (Gtk.RadioButton? group) {
+    radio_button = new BadgeRadioButton(group, "corebird-mentions-symbolic", _("Mentions"));
   }
 }

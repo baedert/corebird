@@ -19,7 +19,7 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
   public int id { get; set; }
   public unowned MainWindow main_window {get; set;}
   public unowned Account account        {get; set;}
-  private BadgeRadioToolButton tool_button;
+  private BadgeRadioButton radio_button;
   [GtkChild]
   private Gtk.ListBox filter_list;
   [GtkChild]
@@ -208,11 +208,11 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
 
 
   public void on_leave () {}
-  public void create_tool_button (Gtk.RadioButton? group) {
-    tool_button = new BadgeRadioToolButton(group, "corebird-filter-symbolic", _("Filters"));
+  public void create_radio_button (Gtk.RadioButton? group) {
+    radio_button = new BadgeRadioButton(group, "corebird-filter-symbolic", _("Filters"));
   }
 
-  public Gtk.RadioButton? get_tool_button() { return tool_button; }
+  public Gtk.RadioButton? get_radio_button() { return radio_button; }
 
   public string? get_title () {
     return _("Filters");
