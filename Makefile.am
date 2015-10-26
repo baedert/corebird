@@ -1,6 +1,6 @@
 ACLOCAL_AMFLAGS = -I m4 ${ACLOCAL_FLAGS}
 
-SUBDIRS = src ui data assets po tests sql
+SUBDIRS = src ui data assets po tests
 
 EXTRA_DIST = \
 	vapi/config.vapi \

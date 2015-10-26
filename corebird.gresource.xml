@@ -48,5 +48,9 @@
     <file>assets/verified-large@2.png</file>
     <file>assets/no_avatar.png</file>
     <file>assets/no_banner.png</file>
+    <file>sql/init/Create.1.sql</file>
+    <file>sql/init/Create.2.sql</file>
+    <file>sql/accounts/Create.1.sql</file>
+    <file>sql/accounts/Create.2.sql</file>
   </gresource>
 </gresources>
