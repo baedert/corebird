@@ -11,7 +11,6 @@
 
 .sidebar .button {
   border: none;
-  border-bottom: 1px solid transparent;
   box-shadow: none;
   background-image: none;
   border-radius: 0px;
@@ -27,7 +26,6 @@
 
 .sidebar .button:checked {
   background-color: shade(@sidebar_bg, 1.5);
-  border-bottom: 1px solid blue;
 }
 
 .button-slim {
