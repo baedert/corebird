@@ -124,9 +124,6 @@ assets/32x32/Makefile
 assets/24x24/Makefile
 assets/16x16/Makefile
 po/Makefile.in
-sql/Makefile
-sql/accounts/Makefile
-sql/init/Makefile
 tests/Makefile
 ])
 

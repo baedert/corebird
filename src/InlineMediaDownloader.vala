@@ -73,15 +73,13 @@ public class InlineMediaDownloader : GLib.Object {
 
   private static void mark_invalid (Media              m,
                                     GLib.InputStream?  in_stream = null,
-                                    GLib.OutputStream? out_stream = null,
-                                    GLib.OutputStream? out_stream2 = null) {
+                                    GLib.OutputStream? out_stream = null) {
     GLib.FileUtils.remove (m.path);
     m.invalid = true;
     m.loaded = true;
     try {
       if (in_stream != null) in_stream.close ();
       if (out_stream != null) out_stream.close ();
-      if (out_stream2 != null) out_stream2.close ();
     } catch (GLib.Error e) {
       warning (e.message);
     }
@@ -189,7 +187,7 @@ public class InlineMediaDownloader : GLib.Object {
       double max = Settings.max_media_size ();
       if (mb > max) {
         debug ("Image %s won't be downloaded,  %fMB > %fMB", media.thumb_url, mb, max);
-        mark_invalid (media, null, /*XXX */ null, media_out_stream);
+        mark_invalid (media, null, media_out_stream);
         SOUP_SESSION.cancel_message (msg, Soup.Status.CANCELLED);
       } else {
         media.length = content_length;
@@ -208,7 +206,7 @@ public class InlineMediaDownloader : GLib.Object {
       if (_msg.status_code != Soup.Status.OK) {
         debug ("Request on '%s' returned '%s'", _msg.uri.to_string (false),
                Soup.Status.get_phrase (_msg.status_code));
-        mark_invalid (media, null, null, media_out_stream);
+        mark_invalid (media, null, media_out_stream);
         this.urls_downloading.remove (media.url);
         callback ();
         return;
