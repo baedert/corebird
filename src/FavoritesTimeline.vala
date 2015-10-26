@@ -93,7 +93,7 @@ class FavoritesTimeline : IMessageReceiver, DefaultTimeline {
     return _("Favorites");
   }
 
-  public override void create_tool_button (Gtk.RadioButton? group) {
-    tool_button = new BadgeRadioToolButton(group, "starred-symbolic", _("Favorites"));
+  public override void create_radio_button (Gtk.RadioButton? group) {
+    radio_button = new BadgeRadioButton(group, "starred-symbolic", _("Favorites"));
   }
 }
