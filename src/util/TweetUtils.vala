@@ -154,7 +154,7 @@ namespace TweetUtils {
     GLib.Error? err = null;
     SOUP_SESSION.queue_message (msg, (s, _msg) => {
       var memory_stream = new MemoryInputStream.from_data(_msg.response_body.data,
-                                                          null);
+                                                          array_destroy);
       try {
         avatar = new Gdk.Pixbuf.from_stream_at_scale (memory_stream,
                                                       size, size,

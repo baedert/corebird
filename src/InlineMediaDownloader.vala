@@ -212,7 +212,7 @@ public class InlineMediaDownloader : GLib.Object {
         return;
       }
       try {
-        var ms = new MemoryInputStream.from_data (_msg.response_body.data, null);
+        var ms = new MemoryInputStream.from_data (_msg.response_body.data, array_destroy);
         media_out_stream.write_all (_msg.response_body.data, null, null);
         media_out_stream.close ();
         load_animation.begin (t, ms, media, () => {
