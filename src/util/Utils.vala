@@ -110,10 +110,6 @@ inline double ease_out_cubic (double t) {
 }
 
 
-void array_destroy (void* data) {
-  delete data;
-}
-
 namespace Utils {
   /**
   * Parses a date given by Twitter in the form 'Wed Jun 20 19:01:28 +0000 2012'
