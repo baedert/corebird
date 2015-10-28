@@ -73,9 +73,6 @@ namespace TweetUtils {
    * @param account The account to (un)favorite from
    * @param tweet The tweet to (un)favorite
    * @param status %true to favorite the tweet, %false to unfavorite it.
-   *
-   * TODO: Rename this, since it doesn't automatically toggle but rather just set the
-   *       favorite status based on the given boolean.
    */
   async void set_favorite_status (Account account, Tweet tweet, bool status) {
     var call = account.proxy.new_call();
