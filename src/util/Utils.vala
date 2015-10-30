@@ -313,6 +313,7 @@ namespace Utils {
     GLib.SourceFunc cb = download_file_async.callback;
     SOUP_SESSION.queue_message(msg, (_s, _msg) => {
       if (cancellable.is_cancelled ()) {
+        cb ();
         return;
       }
       try {
