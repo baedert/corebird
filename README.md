@@ -32,6 +32,10 @@ This is the readme for the current *development version*. If you're looking for 
   you'd most likely still have to compile and install it from source (that is,
   if no one else makes packages).
 
+## Packages
+  Here you find packages for your distribution:
+  - Ubuntu 15.10: [GetDeb](http://www.getdeb.net/app/Corebird)
+
 ## Translations
   Since February 2014, there's a [Corebird project on Transifex](https://www.transifex.com/projects/p/corebird)
 
