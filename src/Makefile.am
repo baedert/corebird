@@ -118,6 +118,7 @@ libcorebird_la_VALASOURCES = \
 	sql/UpdateStatement.vala \
 	sql/SelectStatement.vala \
 	async/Collect.vala \
+	async/ComposeJob.vala \
 	model/TweetModel.vala
 
 nodist_libcorebird_la_SOURCES = \
