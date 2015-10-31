@@ -165,9 +165,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     if (!send_button.sensitive)
       return;
 
-    int media_count = get_effective_media_count ();
-    Collect collect_obj = new Collect (media_count);
-    int64[] media_ids = new int64[media_count];
+    var job = new ComposeJob (this.account);
 
     title_stack.visible_child = title_spinner;
     title_spinner.start ();
@@ -175,139 +173,48 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     send_button.sensitive = false;
     tweet_text.sensitive = false;
 
-    /* Remove unused media button */
-    foreach (AddImageButton btn in image_buttons)
-      if (btn.image == null) {
-        btn.sensitive = false;
-        break;
-      }
-
-
-    if (media_count > 0) {
-      /* Set up a new proxy because why not */
-      Rest.OAuthProxy proxy = new Rest.OAuthProxy (Settings.get_consumer_key (),
-                                                   Settings.get_consumer_secret (),
-                                                   "https://upload.twitter.com/",
-                                                   false);
-      proxy.token = account.proxy.token;
-      proxy.token_secret = account.proxy.token_secret;
-
-      int i = 0;
-      foreach (AddImageButton aib in image_buttons) {
-        if (aib.image != null) {
-          int k = i;
-          aib.start_progress ();
-          upload_media.begin (aib.image_path, proxy, (obj, res) => {
-            int64 id;
-            try {
-              id = upload_media.end (res);
-            } catch (GLib.Error e) {
-              warning (e.message);
-              collect_obj.emit (e);
-              aib.set_error (e.message);
-              return;
-            }
-            aib.set_success ();
-            media_ids[k] = id;
-            collect_obj.emit ();
-          });
-          i ++;
-        }
-      }
-      collect_obj.finished.connect ((error) => {
-        title_stack.visible_child = title_label;
-        cancel_button.sensitive = true;
-        send_button.sensitive = true;
-        tweet_text.sensitive = true;
-        send_tweet (error, media_ids);
-      });
-
-    } else {
-      /* No media attached so just send the text */
-      send_tweet (null, media_ids);
-    }
-  }
-
-  private void send_tweet (GLib.Error? error, int64[] ids) {
-    if (error != null) {
-      GLib.error (error.message);
-    }
-
     Gtk.TextIter start, end;
     tweet_text.buffer.get_start_iter (out start);
     tweet_text.buffer.get_end_iter (out end);
-    string text = tweet_text.buffer.get_text (start, end, true);
+    job.text = tweet_text.buffer.get_text (start, end, true);
 
-    var call = account.proxy.new_call ();
-    call.set_method ("POST");
-    if (this.reply_to != null && mode == Mode.REPLY) {
-      call.add_param("in_reply_to_status_id", reply_to.id.to_string ());
-    } else if (this.reply_to != null && mode == Mode.QUOTE) {
-      MiniTweet mt = reply_to.retweeted_tweet ?? reply_to.source_tweet;
-
-      text += " https://twitter.com/%s/status/%s".printf (mt.author.screen_name,
-                                                          mt.id.to_string ());
+    foreach (var btn in this.image_buttons) {
+      if (btn.image_path != null)
+        job.add_image (btn.image_path);
     }
 
-
-    call.add_param ("status", text);
-
-    if (ids.length > 0) {
-      StringBuilder id_str = new StringBuilder ();
-      id_str.append (ids[0].to_string ());
-      for (int i = 1; i < ids.length; i ++) {
-        id_str.append (",").append (ids[i].to_string ());
-      }
-      call.add_param ("media_ids", id_str.str);
-    }
-
-    call.set_function ("1.1/statuses/update.json");
-    call.invoke_async.begin (null, (obj, res) => {
-      try {
-        call.invoke_async.end (res);
-      } catch (GLib.Error e) {
-        critical (e.message);
-        Utils.show_error_object (call.get_payload (), e.message,
-                                 GLib.Log.LINE, GLib.Log.FILE);
-      } finally {
-        this.destroy ();
+    job.image_upload_started.connect ((path) => {
+      foreach (var btn in this.image_buttons) {
+        if (btn.image_path == path) {
+          btn.start_progress ();
+          break;
+        }
       }
     });
-    this.hide ();
-  }
-
-  private async int64 upload_media (string path, Rest.Proxy proxy) throws GLib.Error {
-    var call = proxy.new_call ();
-    call.set_function ("1.1/media/upload.json");
-    call.set_method ("POST");
-    uint8[] file_contents;
-    GLib.File media_file = GLib.File.new_for_path (path);
-    media_file.load_contents (null, out file_contents, null);
-    Rest.Param param = new Rest.Param.full ("media",
-                                            Rest.MemoryUse.COPY,
-                                            file_contents,
-                                            "multipart/form-data",
-                                            path);
-    call.add_param_full (param);
 
 
-    yield call.invoke_async (null);
-    var parser = new Json.Parser ();
-    try {
-      parser.load_from_data (call.get_payload ());
-    } catch (GLib.Error e) {
-      warning (e.message); //XXX Error handling
-      return -1;
-    }
-    var root = parser.get_root ().get_object ();
-    return root.get_int_member ("media_id");
+    job.image_upload_finished.connect ((path, error_msg) => {
+      foreach (var btn in this.image_buttons) {
+        if (btn.image_path == path) {
+          if (error_msg == null)
+            btn.set_success ();
+          else
+            btn.set_error (error_msg);
+          break;
+        }
+      }
+    });
+
+    job.start.begin (() => {
+      message ("Tweet sent.");
+      this.hide ();
+    });
   }
 
   [GtkCallback]
   private void cancel_clicked (Gtk.Widget source) {
     destroy ();
   }
-
 
   private bool escape_pressed_cb () {
     this.destroy ();
@@ -317,7 +224,6 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   public void set_text (string text) {
     tweet_text.buffer.text = text;
   }
-
 
   /* Image handling stuff {{{ */
 

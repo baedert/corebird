@@ -37,7 +37,7 @@ class SearchPage : IPage, Gtk.Box {
   private Gtk.Label tweets_header;
   [GtkChild]
   private ScrollWidget scroll_widget;
-  private Gtk.RadioButton tool_button;
+  private Gtk.RadioButton radio_button;
   public DeltaUpdater delta_updater;
   private LoadMoreEntry load_more_entry = new LoadMoreEntry ();
   private string search_query;
@@ -302,12 +302,12 @@ class SearchPage : IPage, Gtk.Box {
     tweet_list.@foreach ((w) => w.show());
   }
 
-  public void create_tool_button (Gtk.RadioButton? group){
-    tool_button = new BadgeRadioToolButton (group, "edit-find-symbolic", _("Search"));
+  public void create_radio_button (Gtk.RadioButton? group){
+    radio_button = new BadgeRadioButton (group, "edit-find-symbolic", _("Search"));
   }
 
-  public Gtk.RadioButton? get_tool_button() {
-    return tool_button;
+  public Gtk.RadioButton? get_radio_button() {
+    return radio_button;
   }
 
 

@@ -351,22 +351,25 @@ public class Tweet : GLib.Object {
 
   public Media[] medias {
     get {
-      if (this.retweeted_tweet != null)
+      if (this.quoted_tweet != null)
+          return this.quoted_tweet.medias;
+      else if (this.retweeted_tweet != null)
         return this.retweeted_tweet.medias;
-      else if (this.quoted_tweet != null)
-        return this.quoted_tweet.medias;
       else
         return this.source_tweet.medias;
     }
   }
   public bool has_inline_media {
     get {
+      /* If there's a quoted tweet, always prefer that. */
+      if (this.quoted_tweet != null) {
+        return this.quoted_tweet.medias != null &&
+               this.quoted_tweet.medias.length > 0;
+      }
+
       if (this.retweeted_tweet != null)
         return retweeted_tweet.medias != null &&
                retweeted_tweet.medias.length > 0;
-      else if (this.quoted_tweet != null)
-        return quoted_tweet.medias != null &&
-               quoted_tweet.medias.length > 0;
       else
         return source_tweet.medias != null &&
                source_tweet.medias.length > 0;
@@ -422,8 +425,8 @@ public class Tweet : GLib.Object {
 
     this.source_tweet = parse_mini_tweet (status);
 
-    if (status.has_member("retweeted_status")) {
-      Json.Object rt      = status.get_object_member("retweeted_status");
+    if (status.has_member ("retweeted_status")) {
+      Json.Object rt      = status.get_object_member ("retweeted_status");
       this.retweeted_tweet = parse_mini_tweet (rt);
       parse_entities (this.retweeted_tweet, rt);
 

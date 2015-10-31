@@ -66,7 +66,7 @@ libcorebird_la_VALASOURCES = \
 	widgets/DoubleTapButton.vala \
 	widgets/ReplyEntry.vala \
 	widgets/PixbufButton.vala \
-	widgets/BadgeRadioToolButton.vala \
+	widgets/BadgeRadioButton.vala \
 	widgets/DMPlaceholderBox.vala \
 	widgets/AccountCreateWidget.vala \
 	widgets/AspectImage.vala \
@@ -118,6 +118,7 @@ libcorebird_la_VALASOURCES = \
 	sql/UpdateStatement.vala \
 	sql/SelectStatement.vala \
 	async/Collect.vala \
+	async/ComposeJob.vala \
 	model/TweetModel.vala
 
 nodist_libcorebird_la_SOURCES = \

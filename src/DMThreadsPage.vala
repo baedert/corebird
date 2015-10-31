@@ -27,14 +27,14 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     set {
       debug ("Changing unread_count from %d to %d", this._unread_count, value);
       this._unread_count = value;
-      tool_button.show_badge = (this._unread_count > 0);
+      radio_button.show_badge = (this._unread_count > 0);
     }
   }
   public unowned MainWindow main_window     { get; set; }
   public unowned Account account            { get; set; }
   public unowned DeltaUpdater delta_updater { get; set; }
   public int id                             { get; set; }
-  private BadgeRadioToolButton tool_button;
+  private BadgeRadioButton radio_button;
   private Gee.HashMap<int64?, unowned DMThreadEntry> thread_map = new Gee.HashMap<int64?, unowned DMThreadEntry>
                               (Utils.int64_hash_func, Utils.int64_equal_func, DMThreadEntry.equal_func);
   private StartConversationEntry start_conversation_entry;
@@ -385,12 +385,12 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     return id;
   }
 
-  public void create_tool_button(Gtk.RadioButton? group) {
-    tool_button = new BadgeRadioToolButton(group, "corebird-dms-symbolic", _("Direct Messages"));
+  public void create_radio_button(Gtk.RadioButton? group) {
+    radio_button = new BadgeRadioButton(group, "corebird-dms-symbolic", _("Direct Messages"));
   }
 
-  public Gtk.RadioButton? get_tool_button() {
-    return tool_button;
+  public Gtk.RadioButton? get_radio_button() {
+    return radio_button;
   }
 
   private bool user_id_visible (int64 sender_id) {

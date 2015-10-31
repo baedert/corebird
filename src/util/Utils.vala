@@ -110,7 +110,6 @@ inline double ease_out_cubic (double t) {
 }
 
 
-
 namespace Utils {
   /**
   * Parses a date given by Twitter in the form 'Wed Jun 20 19:01:28 +0000 2012'
@@ -314,6 +313,7 @@ namespace Utils {
     GLib.SourceFunc cb = download_file_async.callback;
     SOUP_SESSION.queue_message(msg, (_s, _msg) => {
       if (cancellable.is_cancelled ()) {
+        cb ();
         return;
       }
       try {

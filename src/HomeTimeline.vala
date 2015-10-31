@@ -167,7 +167,7 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
     });
   }
 
-  public override void create_tool_button (Gtk.RadioButton? group) {
-    tool_button = new BadgeRadioToolButton(group, "user-home-symbolic", _("Home"));
+  public override void create_radio_button (Gtk.RadioButton? group) {
+    radio_button = new BadgeRadioButton(group, "user-home-symbolic", _("Home"));
   }
 }

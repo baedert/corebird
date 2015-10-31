@@ -111,7 +111,8 @@ public class Corebird : Gtk.Application {
     Dirs.create_dirs ();
     debug ("startup");
     Corebird.db = new Sql.Database (Dirs.config ("Corebird.db"),
-                                    Sql.COREBIRD_INIT_FILE);
+                                    Sql.COREBIRD_INIT_FILE,
+                                    Sql.COREBIRD_SQL_VERSION);
 
     // Setup gettext
     GLib.Intl.setlocale(GLib.LocaleCategory.ALL, Config.DATADIR + "/locale");

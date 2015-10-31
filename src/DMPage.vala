@@ -58,7 +58,7 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
     });
   }
 
-  public void stream_message_received (StreamMessageType type, Json.Node root) { // {{{
+  public void stream_message_received (StreamMessageType type, Json.Node root) {
     if (type == StreamMessageType.DIRECT_MESSAGE) {
       // Arriving new dms get already cached in the DMThreadsPage
       var obj = root.get_object ().get_object_member ("direct_message");
@@ -145,9 +145,9 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
       if (scroll_widget.scrolled_down)
         scroll_widget.scroll_down_next ();
     }
-  } /// }}}
+  }
 
-  private void load_older () { // {{{
+  private void load_older () {
     var now = new GLib.DateTime.now_local ();
     scroll_widget.balance_next_upper_change (TOP);
     // Load messages
@@ -178,9 +178,9 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
       return true;
     });
 
-  } // }}}
+  }
 
-  public void on_join (int page_id, Bundle? args) { // {{{
+  public void on_join (int page_id, Bundle? args) {
     int64 user_id = args.get_int64 ("sender_id");
     if (user_id == 0)
       return;
@@ -243,12 +243,12 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
 
     // Focus the text entry
     text_view.grab_focus ();
-  } // }}}
+  }
 
   public void on_leave () {}
 
   [GtkCallback]
-  private void send_button_clicked_cb () { // {{{
+  private void send_button_clicked_cb () {
     if (text_view.buffer.text.length == 0)
       return;
 
@@ -292,7 +292,7 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
     // Scroll down
     if (scroll_widget.scrolled_down)
       scroll_widget.scroll_down_next ();
-  } // }}}
+  }
 
   [GtkCallback]
   private bool text_view_key_press_cb (Gdk.EventKey evt) {
@@ -315,6 +315,6 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
     return _("Direct Conversation");
   }
 
-  public void create_tool_button (Gtk.RadioButton? group) {}
-  public Gtk.RadioButton? get_tool_button() {return null;}
+  public void create_radio_button (Gtk.RadioButton? group) {}
+  public Gtk.RadioButton? get_radio_button() {return null;}
 }
