@@ -9,6 +9,7 @@
   padding: 2px 4px;
 }
 
+.sidebar button,
 .sidebar .button {
   border: none;
   box-shadow: none;
@@ -19,11 +20,13 @@
   icon-shadow: none;
 }
 
+.sidebar button:hover,
 .sidebar .button:hover {
   background-color: shade(@sidebar_bg, 1.3);
 }
 
 
+.sidebar button:checked,
 .sidebar .button:checked {
   background-color: shade(@sidebar_bg, 1.5);
 }
