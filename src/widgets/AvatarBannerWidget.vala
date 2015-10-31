@@ -134,6 +134,7 @@ public class AvatarBannerWidget : Gtk.Container {
 
 
     /* set_avatar_button */
+    set_avatar_button.get_preferred_size (out child_requisition, null);
     child_allocation.x = get_avatar_x () + allocation.x;
     child_allocation.y = get_avatar_y () + allocation.y;
     child_allocation.width = avatar_size;

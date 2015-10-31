@@ -1,8 +1,4 @@
-.image-overlay{
-  padding-right: 5px;
-  padding-top: 2px;
-}
-
+@define-color sidebar_bg #333;
 
 .avatar-round {
   border: 1px solid grey;
@@ -13,8 +9,26 @@
   padding: 2px 4px;
 }
 
-.sidebar {
-  -GtkWidget-window-dragging: true;
+.sidebar button,
+.sidebar .button {
+  border: none;
+  box-shadow: none;
+  background-image: none;
+  border-radius: 0px;
+  background-color: @sidebar_bg;
+  color: #ddd;
+  icon-shadow: none;
+}
+
+.sidebar button:hover,
+.sidebar .button:hover {
+  background-color: shade(@sidebar_bg, 1.3);
+}
+
+
+.sidebar button:checked,
+.sidebar .button:checked {
+  background-color: shade(@sidebar_bg, 1.5);
 }
 
 .button-slim {
