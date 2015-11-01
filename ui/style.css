@@ -31,6 +31,24 @@
   background-color: shade(@sidebar_bg, 1.5);
 }
 
+.sidebar button .badge,
+.sidebar .button .badge {
+  background-color: shade(blue, 1.4);
+  background-image: none;
+  text-shadow: 0px 1px 1px #FFF;
+  border-radius: 20px;
+  border: 1px solid white;
+  padding: 3px 2px;
+}
+
+.sidebar button .badge:backdrop,
+.sidebar .button .badge:backdrop {
+  background-color: transparent;
+}
+
+
+
+
 .button-slim {
   -GtkButton-default-border: 0;
   -GtkButton-default-outside-border: 0;
@@ -173,19 +191,6 @@
 .retweet-button:backdrop {
   background-color: transparent;
 }
-
-.badge{
-  background-color: shade(blue, 1.4);
-  background-image: none;
-  text-shadow: 0px 1px 1px #FFF;
-  border-radius: 20px;
-  border: 1px solid white;
-  padding: 3px 2px;
-}
-.badge:backdrop{
-  background-color: transparent;
-}
-
 
 .tweet {
   border-bottom: solid 1px alpha (grey, 0.3);
