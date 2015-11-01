@@ -167,6 +167,8 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       return;
 
     var job = new ComposeJob (this.account);
+    if (this.reply_to != null)
+      job.reply_id = this.reply_to.id;
 
     title_stack.visible_child = title_spinner;
     title_spinner.start ();
