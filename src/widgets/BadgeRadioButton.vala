@@ -47,16 +47,20 @@ public class BadgeRadioButton : Gtk.RadioButton {
 
   public override bool draw (Cairo.Context c) {
     base.draw (c);
-    if (!show_badge)
+    if (!show_badge || this.get_child () == null)
       return false;
 
 
+    Gtk.Allocation child_allocation;
+    this.get_child ().get_allocation (out child_allocation);
+
     var context = this.get_style_context ();
-    int width = get_allocated_width ();
+    int x = child_allocation.x + child_allocation.width - BADGE_SIZE;
+    int y = 5;
     context.save ();
     context.add_class ("badge");
-    context.render_background (c, width - BADGE_SIZE, 0, BADGE_SIZE, BADGE_SIZE);
-    context.render_frame (c, width - BADGE_SIZE, 0, BADGE_SIZE, BADGE_SIZE);
+    context.render_background (c, x, y, BADGE_SIZE, BADGE_SIZE);
+    context.render_frame      (c, x, y, BADGE_SIZE, BADGE_SIZE);
     context.restore ();
     return false;
   }
