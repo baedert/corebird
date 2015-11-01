@@ -21,8 +21,10 @@ public class BadgeRadioButton : Gtk.RadioButton {
   public bool show_badge {
     set {
       debug ("New show_badge value: %s", value ? "true" : "false");
-      this._show_badge = value;
-      this.queue_draw ();
+      if (value != this._show_badge) {
+        this._show_badge = value;
+        this.queue_draw ();
+      }
     }
     get {
       return this._show_badge;
@@ -45,19 +47,19 @@ public class BadgeRadioButton : Gtk.RadioButton {
     }
   }
 
-  public override bool draw (Cairo.Context c) {
-    base.draw (c);
+  public override bool draw (Cairo.Context ct) {
+    base.draw (ct);
     if (!show_badge)
-      return false;
+      return Gdk.EVENT_PROPAGATE;
 
 
     var context = this.get_style_context ();
     int width = get_allocated_width ();
     context.save ();
     context.add_class ("badge");
-    context.render_background (c, width - BADGE_SIZE, 0, BADGE_SIZE, BADGE_SIZE);
-    context.render_frame (c, width - BADGE_SIZE, 0, BADGE_SIZE, BADGE_SIZE);
+    context.render_background (ct, width - BADGE_SIZE, 0, BADGE_SIZE, BADGE_SIZE);
+    context.render_frame (ct, width - BADGE_SIZE, 0, BADGE_SIZE, BADGE_SIZE);
     context.restore ();
-    return false;
+    return Gdk.EVENT_PROPAGATE;
   }
 }
