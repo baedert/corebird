@@ -15,16 +15,11 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 [GtkTemplate (ui = "/org/baedert/corebird/ui/list-statuses-page.ui")]
 class ListStatusesPage : ScrollWidget, IPage {
   public int id                             { get; set; }
   public unowned MainWindow main_window     { get; set; }
   public unowned Account account            { get; set; }
-  public unowned DeltaUpdater delta_updater {
-    set {
-    }
-  }
   private int64 list_id;
   private uint tweet_remove_timeout = 0;
   [GtkChild]
