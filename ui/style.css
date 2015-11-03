@@ -1,8 +1,4 @@
-.image-overlay{
-  padding-right: 5px;
-  padding-top: 2px;
-}
-
+@define-color sidebar_bg #333;
 
 .avatar-round {
   border: 1px solid grey;
@@ -11,6 +7,43 @@
 
 .account-button {
   padding: 2px 4px;
+}
+
+.sidebar button,
+.sidebar .button {
+  border: none;
+  box-shadow: none;
+  background-image: none;
+  border-radius: 0px;
+  background-color: @sidebar_bg;
+  color: #ddd;
+  icon-shadow: none;
+}
+
+.sidebar button:hover,
+.sidebar .button:hover {
+  background-color: shade(@sidebar_bg, 1.3);
+}
+
+
+.sidebar button:checked,
+.sidebar .button:checked {
+  background-color: shade(@sidebar_bg, 1.5);
+}
+
+.sidebar button .badge,
+.sidebar .button .badge {
+  background-color: shade(blue, 1.4);
+  background-image: none;
+  text-shadow: 0px 1px 1px #FFF;
+  border-radius: 20px;
+  border: 1px solid white;
+  padding: 3px 2px;
+}
+
+.sidebar button .badge:backdrop,
+.sidebar .button .badge:backdrop {
+  background-color: transparent;
 }
 
 .button-slim {
@@ -153,19 +186,6 @@
 .retweet-button:backdrop {
   background-color: transparent;
 }
-
-.badge{
-  background-color: shade(blue, 1.4);
-  background-image: none;
-  text-shadow: 0px 1px 1px #FFF;
-  border-radius: 20px;
-  border: 1px solid white;
-  padding: 3px 2px;
-}
-.badge:backdrop{
-  background-color: transparent;
-}
-
 
 .tweet {
   border-bottom: solid 1px alpha (grey, 0.3);

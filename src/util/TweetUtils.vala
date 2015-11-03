@@ -73,9 +73,6 @@ namespace TweetUtils {
    * @param account The account to (un)favorite from
    * @param tweet The tweet to (un)favorite
    * @param status %true to favorite the tweet, %false to unfavorite it.
-   *
-   * TODO: Rename this, since it doesn't automatically toggle but rather just set the
-   *       favorite status based on the given boolean.
    */
   async void set_favorite_status (Account account, Tweet tweet, bool status) {
     var call = account.proxy.new_call();
@@ -160,7 +157,7 @@ namespace TweetUtils {
     GLib.Error? err = null;
     SOUP_SESSION.queue_message (msg, (s, _msg) => {
       var memory_stream = new MemoryInputStream.from_data(_msg.response_body.data,
-                                                          null);
+                                                          GLib.g_free);
       try {
         avatar = new Gdk.Pixbuf.from_stream_at_scale (memory_stream,
                                                       size, size,

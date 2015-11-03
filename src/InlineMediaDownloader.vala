@@ -178,6 +178,7 @@ public class InlineMediaDownloader : GLib.Object {
         debug ("Request on '%s' returned '%s'", _msg.uri.to_string (false),
                Soup.Status.get_phrase (_msg.status_code));
         mark_invalid (media);
+        this.urls_downloading.remove (media.url);
         callback ();
         return;
       }

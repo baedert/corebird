@@ -700,14 +700,14 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     avatar_image.surface = null;
   }
 
-  public void create_tool_button (Gtk.RadioButton? group) {}
+  public void create_radio_button (Gtk.RadioButton? group) {}
 
 
   public string? get_title () {
     return "@" + screen_name;
   }
 
-  public Gtk.RadioButton? get_tool_button(){
+  public Gtk.RadioButton? get_radio_button(){
     return null;
   }
 

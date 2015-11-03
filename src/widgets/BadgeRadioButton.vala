@@ -15,27 +15,30 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-public class BadgeRadioToolButton : Gtk.RadioButton {
+public class BadgeRadioButton : Gtk.RadioButton {
   private static const int BADGE_SIZE = 10;
   private bool _show_badge = false;
   public bool show_badge {
     set {
       debug ("New show_badge value: %s", value ? "true" : "false");
-      this._show_badge = value;
-      this.queue_draw ();
+      if (value != this._show_badge) {
+        this._show_badge = value;
+        this.queue_draw ();
+      }
     }
     get {
       return this._show_badge;
     }
   }
 
-  public BadgeRadioToolButton (Gtk.RadioButton group, string icon_name, string text="") {
+  public BadgeRadioButton (Gtk.RadioButton group, string icon_name, string text="") {
     GLib.Object (group: group);
     this.get_style_context ().add_class ("image-button");
     var i = new Gtk.Image.from_icon_name (icon_name, Gtk.IconSize.BUTTON);
     this.add (i);
     this.set_mode (false);
     this.focus_on_click = false;
+    this.hexpand = true;
 
     if (text != "") {
       this.tooltip_text = text;
@@ -44,19 +47,23 @@ public class BadgeRadioToolButton : Gtk.RadioButton {
     }
   }
 
-  public override bool draw (Cairo.Context c) {
-    base.draw (c);
-    if (!show_badge)
-      return false;
+  public override bool draw (Cairo.Context ct) {
+    base.draw (ct);
+    if (!show_badge || this.get_child () == null)
+      return Gdk.EVENT_PROPAGATE;
 
+
+    Gtk.Allocation child_allocation;
+    this.get_child ().get_allocation (out child_allocation);
 
     var context = this.get_style_context ();
-    int width = get_allocated_width ();
+    int x = child_allocation.x + child_allocation.width - BADGE_SIZE;
+    int y = 5;
     context.save ();
     context.add_class ("badge");
-    context.render_background (c, width - BADGE_SIZE, 0, BADGE_SIZE, BADGE_SIZE);
-    context.render_frame (c, width - BADGE_SIZE, 0, BADGE_SIZE, BADGE_SIZE);
+    context.render_background (ct, x, y, BADGE_SIZE, BADGE_SIZE);
+    context.render_frame      (ct, x, y, BADGE_SIZE, BADGE_SIZE);
     context.restore ();
-    return false;
+    return Gdk.EVENT_PROPAGATE;
   }
 }

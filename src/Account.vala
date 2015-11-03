@@ -58,7 +58,8 @@ public class Account : GLib.Object {
       return;
 
     this.db = new Sql.Database (Dirs.config (@"accounts/$id.db"),
-                                Sql.ACCOUNTS_INIT_FILE);
+                                Sql.ACCOUNTS_INIT_FILE,
+                                Sql.ACCOUNTS_SQL_VERSION);
     user_counter = new UserCounter ();
     user_counter.load (db);
     this.load_filters ();
@@ -303,7 +304,7 @@ public class Account : GLib.Object {
     if (url.length > 0) {
       var msg = new Soup.Message ("GET", url);
       SOUP_SESSION.queue_message (msg, (_s, _msg) => {
-        var data_stream = new MemoryInputStream.from_data ((owned)msg.response_body.data, null);
+        var data_stream = new MemoryInputStream.from_data ((owned)msg.response_body.data, GLib.g_free);
         string type = Utils.get_file_type (url);
         Gdk.Pixbuf pixbuf;
         try {

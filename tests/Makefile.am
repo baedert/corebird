@@ -10,6 +10,7 @@ AM_VALAFLAGS = \
 	--enable-experimental \
 	--vapidir $(top_builddir)/src \
 	--vapidir $(top_srcdir)/vapi \
+	--gresources $(top_srcdir)/corebird.gresource.xml \
 	-C \
 	-g
 
@@ -24,7 +25,6 @@ TESTS = \
 	media \
 	tweet_parsing \
 	filters \
-	sql \
 	highlighting \
 	friends \
 	texttransform
@@ -38,7 +38,6 @@ tests_VALASOURCES = \
 	bundlehistory.vala \
 	usercounter.vala \
 	filters.vala \
-	sql.vala \
 	tweet_parsing.vala \
 	highlighting.vala \
 	friends.vala \
@@ -68,14 +67,11 @@ utils_LDADD = $(top_builddir)/src/libcorebird.la
 nodist_bundlehistory_SOURCES = bundlehistory.c
 bundlehistory_LDADD = $(top_builddir)/src/libcorebird.la
 
-nodist_usercounter_SOURCES = usercounter.c
+nodist_usercounter_SOURCES = usercounter.c ../src/corebird-resources.c
 usercounter_LDADD = $(top_builddir)/src/libcorebird.la
 
 nodist_filters_SOURCES = filters.c ../src/corebird-resources.c
 filters_LDADD = $(top_builddir)/src/libcorebird.la
-
-nodist_sql_SOURCES = sql.c
-sql_LDADD = $(top_builddir)/src/libcorebird.la
 
 nodist_tweet_parsing_SOURCES = tweet_parsing.c ../src/corebird-resources.c
 tweet_parsing_LDADD = $(top_builddir)/src/libcorebird.la
@@ -93,5 +89,4 @@ nodist_texttransform_SOURCES = texttransform.c
 texttransform_LDADD = $(top_builddir)/src/libcorebird.la
 
 EXTRA_DIST = \
-	$(tests_VALASOURCES) \
-	*.sql
+	$(tests_VALASOURCES)
