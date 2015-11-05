@@ -303,7 +303,7 @@
                   <object class="GtkImage" id="image2">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="icon_name">starred-symbolic</property>
+                    <property name="icon_name">emblem-favorite-symbolic</property>
                     <property name="icon_size">1</property>
                   </object>
                 </child>
