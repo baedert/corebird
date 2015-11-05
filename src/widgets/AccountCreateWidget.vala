@@ -62,11 +62,12 @@ class AccountCreateWidget : Gtk.Box {
     /* Try to open URI in browser */
     try {
       if (!GLib.AppInfo.launch_default_for_uri (uri, null)) {
-        error_label.label = _("Could not open %s").printf ("<a href=\"" + uri + "\">" + uri + "</a>");
-        error_label.show ();
+        critical ("launch_default_for_uri failed");
+        this.show_error (_("Could not open %s").printf ("<a href=\"" + uri + "\">" + uri + "</a>"));
       }
     } catch (GLib.Error e) {
       Utils.show_error_dialog (e.message);
+      critical ("Could not open %s", uri);
       critical (e.message);
     }
   }
