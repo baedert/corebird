@@ -64,7 +64,7 @@ class AccountCreateWidget : Gtk.Box {
     } catch (GLib.Error e) {
       this.show_error (_("Could not open %s").printf ("<a href=\"" + uri + "\">" + uri + "</a>"));
       Utils.show_error_dialog (e.message);
-      critical ("URL to be opened; %s", uri);
+      critical ("Could not open %s", uri);
       critical (e.message);
     }
   }
