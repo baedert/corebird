@@ -375,7 +375,8 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
         call.invoke_async.end (res);
       }catch (GLib.Error e) {
         critical(e.message);
-        if (e.message.strip () != "Forbidden") {
+        if (e.message.strip () != "Forbidden" &&
+            e.message.strip ().down () != "not found") {
           Utils.show_error_object (call.get_payload (), e.message,
                                    GLib.Log.LINE, GLib.Log.FILE);
         }
