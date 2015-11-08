@@ -34,7 +34,7 @@ class ComposeJob : GLib.Object {
   }
 
 
-  private async int64 upload_image (string path, Rest.Proxy proxy)
+  private async int64 upload_image (string path, Rest.Proxy proxy, GLib.Cancellable cancellable)
                       throws GLib.Error {
     var call = proxy.new_call ();
     call.set_function ("1.1/media/upload.json");
@@ -50,7 +50,7 @@ class ComposeJob : GLib.Object {
     call.add_param_full (param);
 
 
-    yield call.invoke_async (null);
+    yield call.invoke_async (cancellable);
     var parser = new Json.Parser ();
     try {
       parser.load_from_data (call.get_payload ());
@@ -58,12 +58,15 @@ class ComposeJob : GLib.Object {
       warning (e.message); //XXX Error handling
       return -1;
     }
+
+    if (cancellable.is_cancelled ()) return 0;
+
     var root = parser.get_root ().get_object ();
     return root.get_int_member ("media_id");
   }
 
 
-  private async int64[] upload_images () {
+  private async int64[] upload_images (GLib.Cancellable cancellable) {
     assert (this.image_paths.size > 0);
 
     Rest.OAuthProxy proxy = new Rest.OAuthProxy (Settings.get_consumer_key (),
@@ -85,7 +88,7 @@ class ComposeJob : GLib.Object {
       this.image_upload_started (path);
       debug ("Starting upload of %s (%d)", path, i);
       int index = i;
-      this.upload_image.begin (path, proxy, (obj, res) => {
+      this.upload_image.begin (path, proxy, cancellable, (obj, res) => {
         int64 id;
         try {
           id = this.upload_image.end (res);
@@ -101,6 +104,8 @@ class ComposeJob : GLib.Object {
         this.image_upload_finished (path);
         collect_obj.emit ();
       });
+
+      if (cancellable.is_cancelled ()) break;
     }
 
     yield;
@@ -150,7 +155,7 @@ class ComposeJob : GLib.Object {
   }
 
 
-  public async void start () {
+  public async void start (GLib.Cancellable cancellable) {
     /* composing a tweet consists of 2 phases:
        1) we need to upload each image separately and get its
           media ID form the payload.
@@ -161,9 +166,11 @@ class ComposeJob : GLib.Object {
     int64[]? media_ids = null;
     if (this.image_paths.size > 0) {
       debug ("Uploading %d images first...", this.image_paths.size);
-      media_ids = yield upload_images ();
+      media_ids = yield upload_images (cancellable);
       debug ("media_ids[0]: %s", media_ids[0].to_string ());
     }
+
+    if (cancellable.is_cancelled ()) return;
 
     yield send_tweet (media_ids);
   }
