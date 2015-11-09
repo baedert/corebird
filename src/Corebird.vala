@@ -25,6 +25,7 @@ public class Corebird : Gtk.Application {
 
   const GLib.ActionEntry[] app_entries = {
     {"show-settings",     show_settings_activated         },
+    {"show-shortcuts",    show_shortcuts_activated        },
     {"quit",              quit_application                },
     {"show-about-dialog", about_activated                 },
     {"show-dm-thread",    show_dm_thread,          "(xx)" },
@@ -97,6 +98,12 @@ public class Corebird : Gtk.Application {
     ad.modal = true;
     ad.set_transient_for (active_window);
     ad.show_all ();
+  }
+
+  private void show_shortcuts_activated () {
+    var builder = new Gtk.Builder.from_resource ("/org/baedert/corebird/ui/shortcuts-window.ui");
+    var shortcuts_window = (Gtk.ShortcutsWindow) builder.get_object ("shortcuts_window");
+    shortcuts_window.show ();
   }
 
   public override void startup () {

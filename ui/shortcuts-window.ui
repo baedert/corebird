@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+<interface>
+  <object class="GtkShortcutsWindow" id="shortcuts_window">
+    <property name="modal">true</property>
+    <child>
+      <object class="GtkShortcutsSection">
+        <property name="visible">true</property>
+        <property name="section_name">shortcuts</property>
+        <child>
+          <object class="GtkShortcutsGroup">
+            <property name="visible">true</property>
+            <property name="title" translatable="yes">General</property>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="visible">true</property>
+                <property name="accelerator">&lt;ctrl&gt;t</property>
+                <property name="title" translatable="yes">Compose Tweet</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="visible">true</property>
+                <property name="accelerator">&lt;Ctrl&gt;p</property>
+                <property name="title" translatable="yes">Show Account settings</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="visible">true</property>
+                <property name="accelerator">&lt;Ctrl&gt;k</property>
+                <property name="title" translatable="yes">Show Accounts Popover</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="visible">true</property>
+                <property name="accelerator">&lt;Ctrl&gt;&lt;Shift&gt;p</property>
+                <property name="title" translatable="yes">Show Application Settings</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="visible">true</property>
+                <property name="accelerator">&lt;Ctrl&gt;&lt;Shift&gt;s</property>
+                <property name="title" translatable="yes">Toggle Topbar</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="visible">true</property>
+                <property name="accelerator">Back</property>
+                <property name="title" translatable="yes">Go Back</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="visible">true</property>
+                <property name="accelerator">Forward</property>
+                <property name="title" translatable="yes">Go Forward</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="visible">true</property>
+                <property name="accelerator">&lt;Alt&gt;1...7</property>
+                <property name="title" translatable="yes">Go to nth page</property>
+              </object>
+            </child>
+
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkShortcutsGroup">
+            <property name="visible">true</property>
+            <property name="title" translatable="yes">Tweets</property>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="visible">true</property>
+                <property name="accelerator">tt</property>
+                <property name="title" translatable="yes">Retweet</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="visible">true</property>
+                <property name="accelerator">f</property>
+                <property name="title" translatable="yes">Favorite</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="visible">true</property>
+                <property name="accelerator">r</property>
+                <property name="title" translatable="yes">Reply</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="visible">true</property>
+                <property name="accelerator">Return</property>
+                <property name="title" translatable="yes">Show Details</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="visible">true</property>
+                <property name="accelerator">dd</property>
+                <property name="title" translatable="yes">Delete</property>
+              </object>
+            </child>
+
+
+          </object>
+        </child>
+
+      </object>
+    </child>
+
+
+  </object>
+</interface>
