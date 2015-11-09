@@ -344,7 +344,7 @@ msgstr "Aktionen"
 
 #: ../ui/settings-dialog.ui.h:9
 msgid "On New Mentions"
-msgstr "Bei Neuen Erwähnungen"
+msgstr "Bei neuen Erwähnungen"
 
 #: ../ui/settings-dialog.ui.h:10
 msgid "On New Messages"
