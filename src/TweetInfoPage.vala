@@ -360,7 +360,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
    *
    * @param reply_id The id of the tweet the previous tweet was a reply to.
    */
-  private void load_replied_to_tweet (int64 reply_id) { //{{{
+  private void load_replied_to_tweet (int64 reply_id) {
     if (reply_id == 0) {
       return;
     }
@@ -398,12 +398,12 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
       bottom_list_box.model.add (tweet);
       load_replied_to_tweet (tweet.reply_id);
     });
-  } //}}}
+  }
 
   /**
    *
    */
-  private void set_tweet_data (Tweet tweet, string? with = null) {//{{{
+  private void set_tweet_data (Tweet tweet, string? with = null) {
     account.user_counter.user_seen (tweet.user_id, tweet.screen_name, tweet.user_name);
     GLib.DateTime created_at = new GLib.DateTime.from_unix_local (
              tweet.retweeted_tweet != null ? tweet.retweeted_tweet.created_at :
@@ -443,7 +443,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
       retweet_button.show ();
       ((GLib.SimpleAction)actions.lookup_action ("quote")).set_enabled (true);
     }
-  } //}}}
+  }
 
   private void update_rt_fav_labels () {
     rt_label.label = "<big><b>%'d</b></big> %s".printf (tweet.retweet_count, _("Retweets"));
@@ -509,7 +509,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
    *
    * @return The #source_string without the rel parameter
    */
-  private string extract_source (string source_str) { //{{{
+  private string extract_source (string source_str) {
     int from, to;
     int tmp = 0;
     tmp = source_str.index_of_char ('"');
@@ -519,7 +519,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     if (to == -1 || from == -1)
       return source_str;
     return source_str.substring (0, from-5) + source_str.substring(to + 1);
-  } //}}}
+  }
 
   public void create_radio_button (Gtk.RadioButton? group) {}
   public Gtk.RadioButton? get_radio_button () {
