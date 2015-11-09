@@ -3,6 +3,13 @@
 [CCode (cprefix = "Gst", gir_namespace = "Gst", gir_version = "1.0", lower_case_cprefix = "gst_")]
 [Experimental]
 namespace Gst {
+	[CCode (cheader_filename = "gst/gst.h", lower_case_csuffix = "flagset", type_id = "gst_flagset_get_type ()")]
+	public class FlagSet {
+		[CCode (has_construct_function = false)]
+		protected FlagSet ();
+		public static GLib.Type register (GLib.Type flags_type);
+	}
+
 	namespace Debug {
 		[CCode (cheader_filename = "gst/gst.h", cname = "GST_DEBUG_BG_MASK")]
 		public const int BG_MASK;
