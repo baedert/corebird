@@ -173,7 +173,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     reply_tweet.connect (reply_tweet_activated);
     delete_tweet.connect (delete_tweet_activated);
     favorite_tweet.connect (() => {
-      if (favorite_button.parent != null)
+      if (favorite_button.parent != null) // XXX This check doesn't make sense anymore
         favorite_button.active = !favorite_button.active;
     });
     retweet_tweet.connect (() => {

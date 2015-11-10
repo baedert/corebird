@@ -84,6 +84,7 @@ libcorebird_la_VALASOURCES = \
 	widgets/ImpostorWidget.vala \
 	widgets/FollowButton.vala \
 	widgets/SurfaceProgress.vala \
+	widgets/MediaButton.vala \
 	util/TweetUtils.vala \
 	util/Utils.vala \
 	util/BundleHistory.vala \
