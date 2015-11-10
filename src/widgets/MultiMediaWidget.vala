@@ -78,7 +78,7 @@ public class MultiMediaWidget : Gtk.Grid {
     }
 
     //widget.hexpand = false;
-    widget.halign = Gtk.Align.START;
+    //widget.halign = Gtk.Align.START;
     this.attach (widget, x, y, w, h);
   }
 
@@ -102,6 +102,8 @@ public class MultiMediaWidget : Gtk.Grid {
     }
     button.visible = true;
     button.clicked.connect (button_clicked_cb);
+    button.hexpand = true;
+    button.halign = Gtk.Align.FILL;
     this.attach_for_index (index, button);
     //this.pack_start (button, true, true);
     this.queue_draw ();

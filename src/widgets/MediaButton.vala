@@ -130,8 +130,10 @@ private class MediaButton : Gtk.Widget {
       double scale;
       this.get_draw_size (out draw_width, out draw_height, out scale);
 
+      int draw_x = (widget_width / 2) - (draw_width / 2);
+
       ct.scale (scale, scale);
-      ct.set_source_surface (media.surface, 0, 0);
+      ct.set_source_surface (media.surface, draw_x / scale, 0);
       ct.fill ();
       ct.restore ();
 
@@ -140,17 +142,16 @@ private class MediaButton : Gtk.Widget {
           media.type == MediaType.ANIMATED_GIF ||
           media.type == MediaType.GIF ||
           media.type == MediaType.TWITTER_VIDEO) {
-       int x = (widget_width  / 2) - (PLAY_ICON_SIZE  / 2);
-       int y = (widget_height / 2) - (PLAY_ICON_SIZE / 2);
-       ct.rectangle (x, y, PLAY_ICON_SIZE, PLAY_ICON_SIZE);
-       ct.set_source_surface (play_icons[this.get_scale_factor () - 1], x, y);
-       ct.fill ();
+        int x = (widget_width  / 2) - (PLAY_ICON_SIZE / 2);
+        int y = (widget_height / 2) - (PLAY_ICON_SIZE / 2);
+        ct.rectangle (x, y, PLAY_ICON_SIZE, PLAY_ICON_SIZE);
+        ct.set_source_surface (play_icons[this.get_scale_factor () - 1], x, y);
+        ct.fill ();
       }
 
-
       var sc = this.get_style_context ();
-      sc.render_background (ct, 0, 0, draw_width, draw_height);
-      sc.render_frame      (ct, 0, 0, draw_width, draw_height);
+      sc.render_background (ct, draw_x, 0, draw_width, draw_height);
+      sc.render_frame      (ct, draw_x, 0, draw_width, draw_height);
     } else {
       var sc = this.get_style_context ();
       double layout_x, layout_y;
@@ -318,7 +319,8 @@ private class MediaButton : Gtk.Widget {
 
     if (this.get_realized ()) {
       this.get_draw_size (out draw_width, out draw_height, out scale);
-      this.event_window.move_resize (alloc.x,    alloc.y,
+      int draw_x = (alloc.width / 2) - (draw_width / 2);
+      this.event_window.move_resize (alloc.x + draw_x,     alloc.y,
                                      draw_width, draw_height);
     }
   }
