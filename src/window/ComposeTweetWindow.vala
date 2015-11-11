@@ -35,8 +35,6 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   [GtkChild]
   private Gtk.Button send_button;
   [GtkChild]
-  private Gtk.Button cancel_button;
-  [GtkChild]
   private Gtk.Spinner title_spinner;
   [GtkChild]
   private Gtk.Label title_label;
@@ -46,6 +44,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   private unowned Tweet reply_to;
   private Mode mode;
   private Gee.ArrayList<AddImageButton> image_buttons;
+  private GLib.Cancellable? cancellable;
 
 
   public ComposeTweetWindow (Gtk.Window?      parent,
@@ -166,14 +165,16 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       return;
 
     var job = new ComposeJob (this.account);
+    this.cancellable = new GLib.Cancellable ();
+
     if (this.reply_to != null)
       job.reply_id = this.reply_to.id;
 
     title_stack.visible_child = title_spinner;
     title_spinner.start ();
-    cancel_button.sensitive = false;
     send_button.sensitive = false;
     tweet_text.sensitive = false;
+    content_box.sensitive = false;
 
     Gtk.TextIter start, end;
     tweet_text.buffer.get_start_iter (out start);
@@ -207,14 +208,16 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       }
     });
 
-    job.start.begin (() => {
+    job.start.begin (cancellable, () => {
       message ("Tweet sent.");
-      this.hide ();
+      this.destroy ();
     });
   }
 
   [GtkCallback]
   private void cancel_clicked (Gtk.Widget source) {
+    if (this.cancellable != null)
+      this.cancellable.cancel ();
     destroy ();
   }
 
