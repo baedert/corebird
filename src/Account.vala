@@ -15,7 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 public class Account : GLib.Object {
   public static const string DUMMY = "screen_name";
   public int64 id                 {public get; private set;}
