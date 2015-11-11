@@ -77,6 +77,8 @@ public class MultiMediaWidget : Gtk.Grid {
         error ("A");
     }
 
+    x = index; y =0; w = 1; h = 1;
+
     //widget.hexpand = false;
     //widget.halign = Gtk.Align.START;
     this.attach (widget, x, y, w, h);
