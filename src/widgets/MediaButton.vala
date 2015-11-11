@@ -226,9 +226,10 @@ private class MediaButton : Gtk.Widget {
                                                        out int natural) {
     int media_width;
     int media_height;
+
     if (this.media == null) {
       media_width = 1;
-      media_height = 1;
+      media_height = MAX_HEIGHT;
     } else {
       media_width = this._media.width;
       media_height = this._media.height;
@@ -345,9 +346,9 @@ private class MediaButton : Gtk.Widget {
     return Gdk.EVENT_PROPAGATE;
   }
 
-  private void gesture_pressed_cb (int                   n_press,
-                                   double                x,
-                                   double                y) {
+  private void gesture_pressed_cb (int    n_press,
+                                   double x,
+                                   double y) {
     this.clicked (this);
   }
 }
