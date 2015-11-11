@@ -73,7 +73,7 @@
                   <object class="GtkImage">
                     <property name="visible">true</property>
                     <property name="pixel_size">16</property>
-                    <property name="icon_name">starred-symbolic</property>
+                    <property name="icon_name">emblem-favorite-symbolic</property>
                   </object>
                 </child>
               </object>
@@ -200,7 +200,7 @@
                 <property name="valign">center</property>
                 <property name="margin_end">6</property>
                 <property name="pixel_size">12</property>
-                <property name="icon_name">starred-symbolic</property>
+                <property name="icon_name">emblem-favorite-symbolic</property>
                 <property name="no_show_all">true</property>
                 <style>
                   <class name="dim-label" />
