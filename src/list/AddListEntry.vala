@@ -14,6 +14,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 class AddListEntry : Gtk.ListBoxRow {
   public AddListEntry (string label) {
     var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 5);
