@@ -15,7 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 [GtkTemplate (ui = "/org/baedert/corebird/ui/dm-list-entry.ui")]
 class DMListEntry : Gtk.ListBoxRow, ITwitterItem {
   [GtkChild]
