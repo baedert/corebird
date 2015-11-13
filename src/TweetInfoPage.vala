@@ -30,10 +30,6 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
   public int id                         { get; set; }
   public unowned MainWindow main_window { get; set; }
   public unowned Account account { get; set; }
-  public unowned DeltaUpdater delta_updater {
-    set {
-    }
-  }
   private int64 tweet_id;
   private string screen_name;
   private bool values_set = false;
