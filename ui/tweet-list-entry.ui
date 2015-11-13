@@ -408,13 +408,52 @@
 
 
 
-
             <child>
-              <object class="MultiMediaWidget" id="mm_widget">
-                <property name="visible">true</property>
+              <object class="GtkStack" id="media_stack">
+                <property name="visible">false</property>
                 <property name="margin_top">6</property>
                 <property name="halign">fill</property>
                 <property name="hexpand">true</property>
+                <property name="transition_type">crossfade</property>
+                <child>
+                  <object class="MultiMediaWidget" id="mm_widget">
+                    <property name="visible">true</property>
+                    <property name="margin_top">6</property>
+                    <property name="halign">fill</property>
+                    <property name="hexpand">true</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="visible">true</property>
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <property name="valign">center</property>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">true</property>
+                        <property name="margin_start">12</property>
+                        <property name="margin_end">12</property>
+                        <property name="wrap">true</property>
+                        <property name="wrap_mode">word-char</property>
+                        <property name="label" translatable="yes">This tweet contains images marked as inappropariate</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton">
+                        <property name="visible">true</property>
+                        <property name="label" translatable="yes">Show anyway</property>
+                        <property name="halign">center</property>
+                        <property name="valign">center</property>
+                        <property name="relief">none</property>
+                        <signal name="clicked" handler="show_media_clicked_cb" />
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="name">nsfw</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="left_attach">1</property>

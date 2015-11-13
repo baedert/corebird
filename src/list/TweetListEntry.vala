@@ -63,6 +63,8 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   private Gtk.Label quote_screen_name;
   [GtkChild]
   private Gtk.Grid quote_grid;
+  [GtkChild]
+  private Gtk.Stack media_stack;
 
 
   private bool _read_only = false;
@@ -151,12 +153,19 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     conversation_image.visible = (tweet.reply_id != 0);
 
     if (tweet.has_inline_media) {
+      if (tweet.is_flag_set (TweetState.NSFW))
+        media_stack.visible_child_name = "nsfw";
+      else
+        media_stack.visible_child = mm_widget;
+
+      media_stack.show ();
       mm_widget.set_all_media (tweet.medias);
       mm_widget.media_clicked.connect (media_clicked_cb);
       mm_widget.media_invalid.connect (media_invalid_cb);
       mm_widget.window = main_window;
-    } else
-      grid.remove (mm_widget);
+    } else {
+      mm_widget.hide ();
+    }
 
 
     var actions = new GLib.SimpleActionGroup ();
@@ -314,6 +323,11 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     ctw.show ();
     if (shows_actions)
       toggle_mode ();
+  }
+
+  [GtkCallback]
+  private void show_media_clicked_cb () {
+    media_stack.visible_child = mm_widget;
   }
 
   private void quote_activated () {
