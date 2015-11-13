@@ -21,6 +21,7 @@ public enum MediaType {
   GIF,
   ANIMATED_GIF,
   TWITTER_VIDEO,
+  INSTAGRAM_VIDEO,
 
   UNKNOWN
 }
@@ -93,6 +94,7 @@ public class Media : GLib.Object{
   public inline bool is_video () {
     return this.type == MediaType.ANIMATED_GIF ||
            this.type == MediaType.VINE ||
-           this.type == MediaType.TWITTER_VIDEO;
+           this.type == MediaType.TWITTER_VIDEO ||
+           this.type == MediaType.INSTAGRAM_VIDEO;
   }
 }

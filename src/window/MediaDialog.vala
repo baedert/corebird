@@ -51,18 +51,13 @@ class MediaDialog : Gtk.Window {
     }
 
     Gtk.Widget new_widget = null;
-    if (media.type == MediaType.IMAGE || media.type == MediaType.GIF) {
-      new_widget = new MediaImageWidget (media);
-      frame.add (new_widget);
-    } else if (media.type == MediaType.VINE ||
-               media.type == MediaType.ANIMATED_GIF ||
-               media.type == MediaType.TWITTER_VIDEO) {
+    if (media.is_video ()) {
       new_widget = new MediaVideoWidget (media);
       frame.add (new_widget);
       ((MediaVideoWidget)new_widget).init ();
     } else {
-      critical ("Unknown media type %d", media.type);
-      return;
+      new_widget = new MediaImageWidget (media);
+      frame.add (new_widget);
     }
 
     new_widget.show_all ();

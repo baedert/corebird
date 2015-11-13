@@ -81,27 +81,66 @@ public class InlineMediaDownloader : GLib.Object {
     }
   }
 
-  private async void load_real_url (MiniTweet  t,
-                                    Media  media,
-                                    string regex_str1,
-                                    int    match_index1) {
-
-    // TODO: We can also use a regex here to get the media size via the same properties...
-
+  private async void load_instagram_url (MiniTweet t, Media media) {
+    /* For instagram, we need to get the html data,
+       then check if the og:medium tag says it's a video, then set the
+       media type and extract the according target url */
     var msg = new Soup.Message ("GET", media.url);
     SOUP_SESSION.queue_message (msg, (_s, _msg) => {
-      string? back = (string)_msg.response_body.data;
       if (msg.status_code != Soup.Status.OK) {
         warning ("Message status: %s on %s", msg.status_code.to_string (), media.url);
         mark_invalid (media);
         return;
       }
+      string back = (string)_msg.response_body.data;
+      try {
+        MatchInfo info;
+        var regex = new GLib.Regex ("<meta name=\"medium\" content=\"video\" />", 0);
+        regex.match (back, 0, out info);
 
+        if (info.get_match_count () > 0) {
+          // This is a video!
+          media.type = MediaType.INSTAGRAM_VIDEO;
+          regex = new GLib.Regex ("<meta property=\"og:video\" content=\"(.*?)\"", 0);
+          regex.match (back, 0, out info);
+          media.url = info.fetch (1);
+        }
+
+        regex = new GLib.Regex ("<meta property=\"og:image\" content=\"(.*?)\"", 0);
+        regex.match (back, 0, out info);
+        media.thumb_url = info.fetch (1);
+
+        load_instagram_url.callback ();
+      } catch (GLib.RegexError e) {
+        critical ("Regex error: %s", e.message);
+        load_instagram_url.callback ();
+      }
+    });
+    yield;
+  }
+
+  private async void load_real_url (MiniTweet  t,
+                                    Media  media,
+                                    string regex_str1,
+                                    int    match_index1,
+                                    bool   check_video = false) {
+
+    // TODO: We can also use a regex here to get the media size via the same properties...
+
+    var msg = new Soup.Message ("GET", media.url);
+    SOUP_SESSION.queue_message (msg, (_s, _msg) => {
+      if (msg.status_code != Soup.Status.OK) {
+        warning ("Message status: %s on %s", msg.status_code.to_string (), media.url);
+        mark_invalid (media);
+        return;
+      }
+      string? back = (string)_msg.response_body.data;
       if (back == null) {
         warning ("Url '%s' returned null", media.url);
         mark_invalid (media);
         return;
       }
+
       try {
         var regex = new GLib.Regex (regex_str1, 0);
         MatchInfo info;
@@ -135,11 +174,12 @@ public class InlineMediaDownloader : GLib.Object {
     if (url.has_prefix ("http://instagr.am") ||
         url.has_prefix ("http://instagram.com/p/") ||
         url.has_prefix ("https://instagr.am") ||
-        url.has_prefix ("https://instagram.com/p/") ||
-        url.has_prefix ("http://ow.ly/i/") ||
-        url.has_prefix ("https://ow.ly/i/") ||
-        url.has_prefix ("http://www.flickr.com/photos/") ||
-        url.has_prefix ("https://www.flickr.com/photos/")) {
+        url.has_prefix ("https://instagram.com/p/")) {
+      yield load_instagram_url (t, media);
+    } else if (url.has_prefix ("http://ow.ly/i/") ||
+               url.has_prefix ("https://ow.ly/i/") ||
+               url.has_prefix ("http://www.flickr.com/photos/") ||
+               url.has_prefix ("https://www.flickr.com/photos/")) {
       yield load_real_url (t, media, "<meta property=\"og:image\" content=\"(.*?)\"", 1);
     } else if (url.has_prefix("http://twitpic.com/")) {
       yield load_real_url (t, media,

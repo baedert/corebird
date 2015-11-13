@@ -44,6 +44,8 @@ class MediaVideoWidget : Gtk.Stack {
       fetch_real_url.begin (media.url, "<source video-src=\"(.*?)\" type=\"video/mp4\"");
     else if (media.type == MediaType.TWITTER_VIDEO)
       download_video.begin (media.url);
+    else if (media.type == MediaType.INSTAGRAM_VIDEO)
+      download_video.begin (media.url);
     else
       critical ("Unknown video media type: %d", media.type);
 #endif

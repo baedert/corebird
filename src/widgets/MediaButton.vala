@@ -138,10 +138,7 @@ private class MediaButton : Gtk.Widget {
       ct.restore ();
 
       /* Draw play indicator */
-      if (media.type == MediaType.VINE ||
-          media.type == MediaType.ANIMATED_GIF ||
-          media.type == MediaType.GIF ||
-          media.type == MediaType.TWITTER_VIDEO) {
+      if (media.is_video ()) {
         int x = (widget_width  / 2) - (PLAY_ICON_SIZE / 2);
         int y = (widget_height / 2) - (PLAY_ICON_SIZE / 2);
         ct.rectangle (x, y, PLAY_ICON_SIZE, PLAY_ICON_SIZE);
