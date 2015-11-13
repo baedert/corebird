@@ -280,13 +280,21 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
         return;
       }
 
-      // XXX When we load the tweet data here from on_join, we download the media agin...
-      this.tweet = new Tweet ();
-      tweet.load_from_json (root, now, account);
       Json.Object root_object = root.get_object ();
+
+      if (this.tweet != null) {
+        int n_retweets  = (int)root_object.get_int_member ("retweet_count");
+        int n_favorites = (int)root_object.get_int_member ("favorite_count");
+        this.tweet.retweet_count = n_retweets;
+        this.tweet.favorite_count = n_favorites;
+      } else {
+        this.tweet = new Tweet ();
+        tweet.load_from_json (root, now, account);
+      }
 
       string with = root_object.get_string_member ("source");
       with = "<span underline='none'>" + extract_source (with) + "</span>";
+
       set_tweet_data (tweet, with);
 
       if (!existing)
@@ -426,7 +434,6 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     set_source_link (tweet.id, tweet.screen_name);
 
     if (tweet.has_inline_media) {
-      message ("Showing media widget");
       mm_widget.set_all_media (tweet.medias);
       mm_widget.show ();
     } else {
