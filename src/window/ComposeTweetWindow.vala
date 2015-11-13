@@ -47,10 +47,10 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   private GLib.Cancellable? cancellable;
 
 
-  public ComposeTweetWindow (Gtk.Window?      parent,
-                             Account          acc,
-                             Tweet?           reply_to = null,
-                             Mode             mode = Mode.NORMAL) {
+  public ComposeTweetWindow (Gtk.Window? parent,
+                             Account     acc,
+                             Tweet?      reply_to = null,
+                             Mode        mode = Mode.NORMAL) {
     this.set_show_menubar (false);
     this.account = acc;
     this.reply_to = reply_to;
@@ -168,8 +168,10 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     var job = new ComposeJob (this.account);
     this.cancellable = new GLib.Cancellable ();
 
-    if (this.reply_to != null)
+    if (this.mode == Mode.REPLY)
       job.reply_id = this.reply_to.id;
+    else if (this.mode == Mode.QUOTE)
+      job.quoted_tweet = this.reply_to;
 
     title_stack.visible_child = title_spinner;
     title_spinner.start ();
