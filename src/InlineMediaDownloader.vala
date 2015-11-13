@@ -85,6 +85,9 @@ public class InlineMediaDownloader : GLib.Object {
                                     Media  media,
                                     string regex_str1,
                                     int    match_index1) {
+
+    // TODO: We can also use a regex here to get the media size via the same properties...
+
     var msg = new Soup.Message ("GET", media.url);
     SOUP_SESSION.queue_message (msg, (_s, _msg) => {
       string? back = (string)_msg.response_body.data;

@@ -47,11 +47,7 @@ public class Media : GLib.Object{
       _target_url = value;
     }
   }
-  /* TODO: At least for twitter media, we could save the size here,
-           and thus know it before we actually loaded the entire (thumbnail)-image.
-           This is actually possible for most image types, but we'd need to parse
-           more of them (og:width, etc. meta values) */
-  public int64 length { get; set; default = 0; }
+  public int64 length = 0;
   public double percent_loaded { get; set; default = 0; }
   /* Pixel size of the image/video */
   public int width = -1;

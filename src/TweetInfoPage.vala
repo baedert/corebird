@@ -280,6 +280,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
         return;
       }
 
+      // XXX When we load the tweet data here from on_join, we download the media agin...
       this.tweet = new Tweet ();
       tweet.load_from_json (root, now, account);
       Json.Object root_object = root.get_object ();
@@ -425,6 +426,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     set_source_link (tweet.id, tweet.screen_name);
 
     if (tweet.has_inline_media) {
+      message ("Showing media widget");
       mm_widget.set_all_media (tweet.medias);
       mm_widget.show ();
     } else {
