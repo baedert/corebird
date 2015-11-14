@@ -224,8 +224,8 @@ private class MediaButton : Gtk.Widget {
     int media_width;
     int media_height;
 
-    if (this.media == null) {
-      media_width = 1;
+    if (this.media == null || this.media.width == -1 || this.media.height == -1) {
+      media_width = MIN_WIDTH;
       media_height = MAX_HEIGHT;
     } else {
       media_width = this._media.width;
