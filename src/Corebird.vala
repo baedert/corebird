@@ -101,7 +101,6 @@ public class Corebird : Gtk.Application {
   }
 
   private void show_shortcuts_activated () {
-    message ("%d, %d", Gtk.MAJOR_VERSION, Gtk.MINOR_VERSION);
     if (Gtk.MAJOR_VERSION == 3 && Gtk.MINOR_VERSION >= 19) {
       var builder = new Gtk.Builder.from_resource ("/org/baedert/corebird/ui/shortcuts-window.ui");
       var shortcuts_window = (Gtk.Window) builder.get_object ("shortcuts_window");
