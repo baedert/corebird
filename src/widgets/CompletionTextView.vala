@@ -39,7 +39,10 @@ class CompletionTextView : Gtk.TextView {
 
     /* Your theme uses a wildcard for :link, right? */
     var style_context = this.get_style_context ();
-    Gdk.RGBA link_color = style_context.get_color (Gtk.StateFlags.LINK);
+    Gtk.StateFlags prev_state = style_context.get_state ();
+    style_context.set_state (Gtk.StateFlags.LINK);
+    Gdk.RGBA link_color = style_context.get_color (style_context.get_state ());
+    style_context.set_state (prev_state);
 
     if (link_color.red ==   1.0 &&
         link_color.green == 1.0 &&
