@@ -263,16 +263,4 @@ public class InlineMediaDownloader : GLib.Object {
       warning (e.message);
     }
   }
-
-  public string get_media_path (MiniTweet t, Media media) {
-    string ext = Utils.get_file_type (media.thumb_url);
-    ext = ext.down();
-    if(ext.length == 0)
-      ext = "png";
-
-    int64 id = t.id;
-
-    return Dirs.cache (@"assets/media/$(id)_$(t.author.id)_$(media.id).$(ext)");
-  }
-
 }
