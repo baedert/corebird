@@ -28,6 +28,7 @@ src/window/ImageDialog.c
 src/window/UserListDialog.c
 src/window/ModifyFilterDialog.c
 src/widgets/AvatarBannerWidget.c
+src/widgets/MediaButton.c
 src/window/ImageCropDialog.c
 src/window/ModifySnippetDialog.c
 src/window/SettingsDialog.c
