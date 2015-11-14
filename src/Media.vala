@@ -19,7 +19,6 @@ public enum MediaType {
   IMAGE,
   VINE,
   GIF,
-  ANIMATED_GIF,
   TWITTER_VIDEO,
   INSTAGRAM_VIDEO,
 
@@ -82,9 +81,6 @@ public class Media : GLib.Object{
     if (url.has_prefix ("https://vine.co/v/"))
       return MediaType.VINE;
 
-    if (url.has_suffix ("/photo/1"))
-      return MediaType.ANIMATED_GIF;
-
     if (url.down ().has_suffix (".gif"))
       return MediaType.GIF;
 
@@ -92,8 +88,7 @@ public class Media : GLib.Object{
   }
 
   public inline bool is_video () {
-    return this.type == MediaType.ANIMATED_GIF ||
-           this.type == MediaType.VINE ||
+    return this.type == MediaType.VINE ||
            this.type == MediaType.TWITTER_VIDEO ||
            this.type == MediaType.INSTAGRAM_VIDEO;
   }

@@ -40,8 +40,6 @@ class MediaVideoWidget : Gtk.Stack {
 #if VIDEO
     if (media.type == MediaType.VINE)
       fetch_real_url.begin (media.url, "<meta property=\"twitter:player:stream\" content=\"(.*?)\"");
-    else if (media.type == MediaType.ANIMATED_GIF)
-      fetch_real_url.begin (media.url, "<source video-src=\"(.*?)\" type=\"video/mp4\"");
     else if (media.type == MediaType.TWITTER_VIDEO)
       download_video.begin (media.url);
     else if (media.type == MediaType.INSTAGRAM_VIDEO)

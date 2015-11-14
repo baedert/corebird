@@ -91,7 +91,7 @@ void parse_entities (MiniTweet mt, Json.Object status)
   var hashtags = entities.get_array_member ("hashtags");
   var user_mentions = entities.get_array_member ("user_mentions");
 
-  int media_count = Utils.get_json_array_size (entities, "media");
+  int media_count = 0;
   if (status.has_member ("extended_entities"))
     media_count += Utils.get_json_array_size (status.get_object_member ("extended_entities"), "media");
 
@@ -163,28 +163,22 @@ void parse_entities (MiniTweet mt, Json.Object status)
     url_index ++;
   });
 
-  if (entities.has_member ("media")) {
-    var medias = entities.get_array_member ("media");
-    medias.foreach_element ((arr, index, node) => {
-      var url = node.get_object();
-      string expanded_url = url.get_string_member ("expanded_url");
-      expanded_url = expanded_url.replace ("&", "&amp;");
-      Json.Array indices = url.get_array_member ("indices");
-      mt.entities[url_index] = TextEntity () {
-        from = (uint) indices.get_int_element (0),
-        to   = (uint) indices.get_int_element (1),
-        target = url.get_string_member ("url"),
-        display_text = url.get_string_member ("display_url")
-      };
-      url_index ++;
-    });
-  }
-
   if (status.has_member ("extended_entities")) {
     var extended_entities = status.get_object_member ("extended_entities");
     var extended_media = extended_entities.get_array_member ("media");
     extended_media.foreach_element ((arr, index, node) => {
       var media_obj = node.get_object ();
+
+      var indices = media_obj.get_array_member ("indices");
+      mt.entities[url_index] = TextEntity () {
+        from = (uint) indices.get_int_element (0),
+        to   = (uint) indices.get_int_element (1),
+        target = media_obj.get_string_member ("url"),
+        display_text = media_obj.get_string_member ("display_url")
+      };
+      url_index ++;
+
+
       string media_type = media_obj.get_string_member ("type");
       if (media_type == "photo") {
         string url = media_obj.get_string_member ("media_url");
