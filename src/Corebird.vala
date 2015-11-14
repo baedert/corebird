@@ -25,6 +25,7 @@ public class Corebird : Gtk.Application {
 
   const GLib.ActionEntry[] app_entries = {
     {"show-settings",     show_settings_activated         },
+    {"show-shortcuts",    show_shortcuts_activated        },
     {"quit",              quit_application                },
     {"show-about-dialog", about_activated                 },
     {"show-dm-thread",    show_dm_thread,          "(xx)" },
@@ -99,6 +100,18 @@ public class Corebird : Gtk.Application {
     ad.show_all ();
   }
 
+  private void show_shortcuts_activated () {
+    message ("%d, %d", Gtk.MAJOR_VERSION, Gtk.MINOR_VERSION);
+    if (Gtk.MAJOR_VERSION == 3 && Gtk.MINOR_VERSION >= 19) {
+      var builder = new Gtk.Builder.from_resource ("/org/baedert/corebird/ui/shortcuts-window.ui");
+      var shortcuts_window = (Gtk.Window) builder.get_object ("shortcuts_window");
+      shortcuts_window.show ();
+    } else {
+      warning ("The shortcuts window is only available in gtk+ >= 3.20, version is %d.%d",
+               Gtk.MAJOR_VERSION, Gtk.MINOR_VERSION);
+    }
+  }
+
   public override void startup () {
     base.startup ();
 
@@ -165,6 +178,7 @@ public class Corebird : Gtk.Application {
     this.set_accels_for_action ("win.switch-page(6)", {"<Alt>7"});
     this.set_accels_for_action ("app.show-settings", {Settings.get_accel ("show-settings")});
     this.set_accels_for_action ("app.quit", {"<Control>Q"});
+    this.set_accels_for_action ("app.show-shortcuts", {"<Primary>question", "<Primary>F1"});
     this.set_accels_for_action ("win.show-account-dialog", {Settings.get_accel ("show-account-dialog")});
     this.set_accels_for_action ("win.show-account-list", {Settings.get_accel ("show-account-list")});
 
