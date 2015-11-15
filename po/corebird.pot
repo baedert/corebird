@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-14 09:34+0100\n"
+"POT-Creation-Date: 2015-11-15 09:13+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -227,7 +227,7 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: ../src/Corebird.vala:151
+#: ../src/Corebird.vala:163
 msgid "Open Account"
 msgstr ""
 
@@ -365,7 +365,7 @@ msgid "Remove media links"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:21 ../ui/search-page.ui.h:2
-#: ../ui/profile-page.ui.h:6
+#: ../ui/profile-page.ui.h:6 ../ui/shortcuts-window.ui.h:10
 msgid "Tweets"
 msgstr ""
 
@@ -420,14 +420,15 @@ msgstr ""
 #: ../ui/tweet-list-entry.ui.h:2 ../ui/list-list-entry.ui.h:4
 #: ../ui/list-statuses-page.ui.h:7 ../ui/filter-list-entry.ui.h:2
 #: ../ui/account-dialog.ui.h:7 ../ui/modify-snippet-dialog.ui.h:6
+#: ../ui/shortcuts-window.ui.h:15
 msgid "Delete"
 msgstr ""
 
-#: ../ui/tweet-list-entry.ui.h:3
+#: ../ui/tweet-list-entry.ui.h:3 ../ui/shortcuts-window.ui.h:12
 msgid "Favorite"
 msgstr ""
 
-#: ../ui/tweet-list-entry.ui.h:4
+#: ../ui/tweet-list-entry.ui.h:4 ../ui/shortcuts-window.ui.h:13
 msgid "Reply"
 msgstr ""
 
@@ -455,7 +456,7 @@ msgstr ""
 msgid "Users"
 msgstr ""
 
-#: ../ui/compose-window.ui.h:1
+#: ../ui/compose-window.ui.h:1 ../ui/shortcuts-window.ui.h:2
 msgid "Compose Tweet"
 msgstr ""
 
@@ -625,6 +626,46 @@ msgstr ""
 
 #: ../ui/modify-snippet-dialog.ui.h:5
 msgid "Replacement"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:1
+msgid "General"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:3
+msgid "Show Account settings"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:4
+msgid "Show Accounts Popover"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:5
+msgid "Show Application Settings"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:6
+msgid "Toggle Topbar"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:7
+msgid "Go Back"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:8
+msgid "Go Forward"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:9
+msgid "Go to nth page"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:11
+msgid "Retweet"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:14
+msgid "Show Details"
 msgstr ""
 
 #: ../data/org.baedert.corebird.appdata.xml.in.h:1
