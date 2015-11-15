@@ -116,7 +116,6 @@ void parse_entities (MiniTweet mt, Json.Object status)
     if (is_media_candidate (expanded_url)) {
       var m = new Media ();
       m.url = expanded_url;
-      m.id = real_media_count;
       m.type = Media.type_from_url (expanded_url);
       mt.medias[real_media_count] = m;
       real_media_count ++;
@@ -206,7 +205,6 @@ void parse_entities (MiniTweet mt, Json.Object status)
           var m = new Media ();
           m.url = url;
           m.target_url = url + ":orig";
-          m.id = media_obj.get_int_member ("id");
           m.type = Media.type_from_string (media_obj.get_string_member ("type"));
 
           if (media_obj.has_member ("sizes")) {
@@ -265,7 +263,6 @@ void parse_entities (MiniTweet mt, Json.Object status)
           m.url = variant.get_string_member ("url");
           m.thumb_url = media_obj.get_string_member ("media_url");
           m.type = MediaType.TWITTER_VIDEO;
-          m.id = media_obj.get_int_member ("id");
           m.width = thumb_width;
           m.height = thumb_height;
 
