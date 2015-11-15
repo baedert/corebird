@@ -90,7 +90,8 @@ class SearchPage : IPage, Gtk.Box {
 
 
     if (term == null) {
-      if (last_focus_widget != null)
+      if (last_focus_widget != null &&
+          last_focus_widget.parent != null)
         last_focus_widget.grab_focus ();
       else
         search_entry.grab_focus ();
@@ -107,9 +108,9 @@ class SearchPage : IPage, Gtk.Box {
         tweet_list.remove (w);
       }
       tweet_list.get_placeholder ().hide ();
+      this.last_focus_widget  = null;
 
       this.remove_content_timeout = 0;
-
       return GLib.Source.REMOVE;
     });
   }
