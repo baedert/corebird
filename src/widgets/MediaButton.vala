@@ -15,8 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-const bool FULLSIZE = true;
-
 private class MediaButton : Gtk.Widget {
   private static const int PLAY_ICON_SIZE = 32;
   private static const int MIN_WIDTH      = 40;
