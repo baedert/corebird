@@ -165,7 +165,7 @@ private class MediaButton : Gtk.Widget {
   }
 
   private bool button_clicked_cb (Gdk.EventButton evt) {
-    if (evt.triggers_context_menu () && this.media != null) {
+    if (evt.triggers_context_menu () && this._media != null) {
       menu.show_all ();
       menu.popup (null, null, null, evt.button, evt.time);
       return Gdk.EVENT_STOP;
@@ -224,7 +224,7 @@ private class MediaButton : Gtk.Widget {
     int media_width;
     int media_height;
 
-    if (this.media == null || this.media.width == -1 || this.media.height == -1) {
+    if (this._media == null || this._media.width == -1 || this._media.height == -1) {
       media_width = MIN_WIDTH;
       media_height = MAX_HEIGHT;
     } else {
@@ -241,7 +241,7 @@ private class MediaButton : Gtk.Widget {
   public override void get_preferred_width (out int minimum,
                                             out int natural) {
     int media_width;
-    if (this.media == null || !this.media.loaded) {
+    if (this._media == null || this._media.width == -1) {
       media_width = 1;
     } else {
       media_width = this._media.width;
