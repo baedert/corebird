@@ -164,7 +164,7 @@
 
 .favorite-button:hover,
 .favorite-button:checked {
-  color: shade(yellow, 0.9);
+  color: shade(red, 0.9);
 }
 
 /* Don't target :hover:active here */
