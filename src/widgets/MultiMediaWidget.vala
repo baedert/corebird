@@ -26,12 +26,6 @@ public class MultiMediaWidget : Gtk.Grid {
   public signal void media_invalid ();
 
 
-  public MultiMediaWidget (int media_count) {
-    this.media_count = media_count;
-    this.media_buttons = new MediaButton[media_count];
-  }
-
-
   public void set_all_media (Media[] medias) {
     this.remove_all ();
     this.media_buttons = new MediaButton[medias.length];
