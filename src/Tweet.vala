@@ -180,10 +180,20 @@ void parse_entities (MiniTweet mt, Json.Object status)
     });
   }
 
-  if (status.has_member ("extended_entities")) {
-    var extended_entities = status.get_object_member ("extended_entities");
-    var extended_media = extended_entities.get_array_member ("media");
-    extended_media.foreach_element ((arr, index, node) => {
+  /* entities->media and extended_entities contain exactly the same media objects,
+     but extended_entities is not always present, and entities->media doesn't
+     contain all the attached media, so parse both the same way... */
+  int n_media_arrays = 0;
+  if (entities.has_member ("media")) n_media_arrays ++;
+  if (status.has_member ("extended_entities")) n_media_arrays ++;
+  Json.Array[] media_arrays = new Json.Array[n_media_arrays];
+  int m_i = 0;
+  if (entities.has_member ("media")) media_arrays[m_i++] = entities.get_array_member ("media");
+  if (status.has_member ("extended_entities"))
+      media_arrays[m_i++] = status.get_object_member ("extended_entities").get_array_member ("media");
+
+  foreach (Json.Array media_array in media_arrays) {
+    media_array.foreach_element ((arr, index, node) => {
       var media_obj = node.get_object ();
       string media_type = media_obj.get_string_member ("type");
       if (media_type == "photo") {
