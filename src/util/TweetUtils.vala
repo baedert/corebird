@@ -151,11 +151,16 @@ namespace TweetUtils {
    *
    * @return The loaded avatar.
    */
-  async Gdk.Pixbuf download_avatar (string avatar_url, int size = 48) throws GLib.Error {
-    Gdk.Pixbuf avatar = null;
+  async Gdk.Pixbuf? download_avatar (string avatar_url, int size = 48) throws GLib.Error {
+    Gdk.Pixbuf? avatar = null;
     var msg     = new Soup.Message ("GET", avatar_url);
     GLib.Error? err = null;
     SOUP_SESSION.queue_message (msg, (s, _msg) => {
+      if (_msg.status_code != Soup.Status.OK) {
+        avatar = null;
+        download_avatar.callback ();
+        return;
+      }
       var memory_stream = new MemoryInputStream.from_data(_msg.response_body.data,
                                                           GLib.g_free);
       try {
@@ -184,19 +189,20 @@ namespace TweetUtils {
    *         tweet length into account.
    */
   public int calc_tweet_length (string text, int media_count = 0) {
-    string[] words = text.split (" ");
     int length = 0;
 
-    foreach (string s in words) {
-      string[] subwords = s.split ("\n");
-      foreach (string sw in subwords) {
-        length += get_word_length (sw);
-      }
-      length += subwords.length - 1;
-    }
+    int last_word_start = 0;
+    for (int cur = 0, p = text.char_count (); cur < p; cur ++) {
+      unichar c = text.get_char (cur);
 
-    // Don't forget the n-1 whitespaces
-    length += words.length - 1;
+      if (c == ' ' || c == '\n' || cur == p-1) {
+        string word = text.substring (text.index_of_nth_char (last_word_start),
+                                      text.index_of_nth_char (cur+1) - text.index_of_nth_char
+                                      (last_word_start));
+        length += get_word_length (word);
+        last_word_start = cur + 1;
+      }
+    }
 
     if (length < 0) {
       return Twitter.short_url_length_https * media_count;
