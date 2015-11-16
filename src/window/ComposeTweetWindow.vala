@@ -15,8 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-
 [GtkTemplate (ui = "/org/baedert/corebird/ui/compose-window.ui")]
 class ComposeTweetWindow : Gtk.ApplicationWindow {
   public enum Mode {
@@ -67,7 +65,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       length_label.label = (Tweet.MAX_LENGTH - Twitter.short_url_length_https).to_string ();
 
 
-    tweet_text.buffer.changed.connect (buffer_changed_cb);
+    tweet_text.buffer.changed.connect (recalc_tweet_length);
 
 
     if (parent != null) {
@@ -130,11 +128,6 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     /* Add AddImageButton because we can't do it in the ui definition for some reason */
     if (mode != Mode.QUOTE)
       add_image_button (true);
-  }
-
-
-  private void buffer_changed_cb () {
-    recalc_tweet_length ();
   }
 
   private void recalc_tweet_length () {
