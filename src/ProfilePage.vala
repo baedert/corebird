@@ -38,7 +38,6 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
   }
   public unowned Account account { get; set; }
   public int id { get; set; }
-  private DeltaUpdater delta_updater;
 
   [GtkChild]
   private AspectImage banner_image;
@@ -104,7 +103,6 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     this.account = account;
     this.user_lists.account = account;
     this.tweet_list.account = account;
-    this.delta_updater = delta_updater;
     this.tweet_list.delta_updater = delta_updater;
 
     this.scroll_event.connect ((evt) => {
