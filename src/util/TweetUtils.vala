@@ -189,19 +189,20 @@ namespace TweetUtils {
    *         tweet length into account.
    */
   public int calc_tweet_length (string text, int media_count = 0) {
-    string[] words = text.split (" ");
     int length = 0;
 
-    foreach (string s in words) {
-      string[] subwords = s.split ("\n");
-      foreach (string sw in subwords) {
-        length += get_word_length (sw);
-      }
-      length += subwords.length - 1;
-    }
+    int last_word_start = 0;
+    for (int cur = 0, p = text.char_count (); cur < p; cur ++) {
+      unichar c = text.get_char (cur);
 
-    // Don't forget the n-1 whitespaces
-    length += words.length - 1;
+      if (c == ' ' || c == '\n' || cur == p-1) {
+        string word = text.substring (text.index_of_nth_char (last_word_start),
+                                      text.index_of_nth_char (cur+1) - text.index_of_nth_char
+                                      (last_word_start));
+        length += get_word_length (word);
+        last_word_start = cur + 1;
+      }
+    }
 
     if (length < 0) {
       return Twitter.short_url_length_https * media_count;
