@@ -155,7 +155,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
       tweet_remove_timeout = GLib.Timeout.add (500, () => {
         if (!scrolled_up) {
           tweet_remove_timeout = 0;
-          return false;
+          return GLib.Source.REMOVE;
         }
 
         tweet_list.model.remove_last_n_visible (tweet_list.model.get_n_items () - ITimeline.REST);
