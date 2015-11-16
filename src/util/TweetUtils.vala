@@ -151,11 +151,16 @@ namespace TweetUtils {
    *
    * @return The loaded avatar.
    */
-  async Gdk.Pixbuf download_avatar (string avatar_url, int size = 48) throws GLib.Error {
-    Gdk.Pixbuf avatar = null;
+  async Gdk.Pixbuf? download_avatar (string avatar_url, int size = 48) throws GLib.Error {
+    Gdk.Pixbuf? avatar = null;
     var msg     = new Soup.Message ("GET", avatar_url);
     GLib.Error? err = null;
     SOUP_SESSION.queue_message (msg, (s, _msg) => {
+      if (_msg.status_code != Soup.Status.OK) {
+        avatar = null;
+        download_avatar.callback ();
+        return;
+      }
       var memory_stream = new MemoryInputStream.from_data(_msg.response_body.data,
                                                           GLib.g_free);
       try {

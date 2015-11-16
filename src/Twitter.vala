@@ -106,11 +106,19 @@ public class Twitter : GLib.Object {
     bool has_key = false;
     Cairo.Surface? a = this.avatar_cache.get_surface_for_id (user_id, out has_key);
 
-    if (a != null) {
+    // TODO: There might be a potential race condition here
+    //       if we get an avatar with a new url while the old
+    //       one is still being downloaded.
+
+
+    bool new_url = a == Twitter.no_avatar &&
+                        url != this.avatar_cache.get_url_for_id (user_id);
+
+    if (a != null && !new_url) {
       return a;
     }
 
-    if (has_key) {
+    if (has_key && !new_url) {
       // wait until the avatar has finished downloading
       ulong handler_id = 0;
       handler_id = this.avatar_downloaded[url].connect ((ava) => {
@@ -130,7 +138,15 @@ public class Twitter : GLib.Object {
           this.avatar_cache.set_avatar (user_id, no_avatar, url);
           return;
         }
-        var s = Gdk.cairo_surface_create_from_pixbuf (avatar, 1, null);
+
+        Cairo.Surface s;
+        // E.g. in the 404 case...
+        if (avatar == null) {
+          s = Twitter.no_avatar;
+        } else
+          s = Gdk.cairo_surface_create_from_pixbuf (avatar, 1, null);
+
+        //var s = Gdk.cairo_surface_create_from_pixbuf (avatar, 1, null);
         // a NULL surface is already in the cache
         this.avatar_cache.set_avatar (user_id, s, url);
 
@@ -171,7 +187,8 @@ public class AvatarCache : GLib.Object {
   }
 
   public Cairo.Surface? get_surface_for_id (int64 user_id, out bool found) {
-    assert (ids.length == surfaces.length && surfaces.length == refcounts.length &&
+    assert (ids.length == surfaces.length &&
+            surfaces.length == refcounts.length &&
             refcounts.length == urls.length);
 
     int index = get_index (user_id);
@@ -181,6 +198,15 @@ public class AvatarCache : GLib.Object {
     }
 
     found = false;
+    return null;
+  }
+
+  public string? get_url_for_id (int64 user_id) {
+    int index = get_index (user_id);
+    if (index != -1) {
+      return this.urls[index];
+    }
+
     return null;
   }
 
