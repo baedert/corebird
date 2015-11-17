@@ -15,6 +15,207 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
+
+class AddImageButton2 : Gtk.Widget {
+  private static const int MIN_WIDTH  = 40;
+  private static const int MAX_HEIGHT = 150;
+  public Cairo.ImageSurface? surface;
+  private Gdk.Window? event_window;
+
+  construct {
+    this.set_has_window (false);
+  }
+
+
+  private void get_draw_size (out int width,
+                              out int height,
+                              out double scale) {
+    if (this.surface == null) {
+      width  = 0;
+      height = 0;
+      scale  = 0.0;
+      return;
+    }
+
+    width  = this.get_allocated_width ();
+    height = this.get_allocated_height ();
+    double scale_x = (double)width / this.surface.get_width ();
+    double scale_y = (double)height / this.surface.get_height ();
+
+    scale = double.min (double.min (scale_x, scale_y), 1.0);
+
+    width  = (int)(this.surface.get_width ()  * scale);
+    height = (int)(this.surface.get_height () * scale);
+  }
+
+  public override bool draw (Cairo.Context ct) {
+    int widget_width = get_allocated_width ();
+    int widget_height = get_allocated_height ();
+
+
+    /* Draw thumbnail */
+    if (this.surface != null) {
+      ct.save ();
+
+      ct.rectangle (0, 0, widget_width, widget_height);
+
+      int draw_width, draw_height;
+      double scale;
+      this.get_draw_size (out draw_width, out draw_height, out scale);
+
+      int draw_x = (widget_width / 2) - (draw_width / 2);
+      draw_x = 0;
+
+      ct.scale (scale, scale);
+      ct.set_source_surface (this.surface, draw_x / scale, 0);
+      ct.fill ();
+      ct.restore ();
+
+      var sc = this.get_style_context ();
+      sc.render_background (ct, draw_x, 0, draw_width, draw_height);
+      sc.render_frame      (ct, draw_x, 0, draw_width, draw_height);
+    } else {
+      //var sc = this.get_style_context ();
+      //double layout_x, layout_y;
+      //int layout_w, layout_h;
+      //layout.set_text ("%d%%".printf ((int)(media.percent_loaded * 100)), -1);
+      //layout.get_size (out layout_w, out layout_h);
+      //layout_x = (widget_width / 2.0) - (layout_w / Pango.SCALE / 2.0);
+      //layout_y = (widget_height / 2.0) - (layout_h / Pango.SCALE / 2.0);
+      //sc.render_layout (ct, layout_x, layout_y, layout);
+    }
+
+
+    return Gdk.EVENT_PROPAGATE;
+  }
+
+
+  public void start_progress (){}
+  public void set_success (){}
+  public void set_error (string error_message) {}
+
+
+
+  public override Gtk.SizeRequestMode get_request_mode () {
+    return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
+  }
+
+  public override void get_preferred_height_for_width (int width,
+                                                       out int minimum,
+                                                       out int natural) {
+    int media_width;
+    int media_height;
+
+      if (this.surface == null) {
+      media_width = MIN_WIDTH;
+      media_height = MAX_HEIGHT;
+    } else {
+      media_width = this.surface.get_width ();
+      media_height = this.surface.get_height ();
+    }
+
+    double width_ratio = (double)width / (double) media_width;
+    int height = int.min (media_height, (int)(media_height * width_ratio));
+    height = int.min (MAX_HEIGHT, height);
+    minimum = natural = height;
+  }
+
+  public override void get_preferred_width (out int minimum,
+                                            out int natural) {
+    int media_width;
+    if (this.surface == null) {
+      media_width = 1;
+    } else {
+      media_width = this.surface.get_width ();
+    }
+
+    minimum = int.min (media_width, MIN_WIDTH);
+    natural = media_width;
+  }
+
+  public override void realize () {
+    this.set_realized (true);
+    int draw_width;
+    int draw_height;
+    double scale;
+
+    this.get_draw_size (out draw_width, out draw_height, out scale);
+
+    Gdk.WindowAttr attr = {};
+    attr.x = 0;
+    attr.y = 0;
+    attr.width = draw_width;
+    attr.height = draw_height;
+    attr.window_type = Gdk.WindowType.CHILD;
+    attr.visual = this.get_visual ();
+    attr.wclass = Gdk.WindowWindowClass.INPUT_ONLY;
+    attr.event_mask = this.get_events () |
+                      Gdk.EventMask.BUTTON_PRESS_MASK |
+                      Gdk.EventMask.BUTTON_RELEASE_MASK |
+                      Gdk.EventMask.TOUCH_MASK |
+                      Gdk.EventMask.ENTER_NOTIFY_MASK |
+                      Gdk.EventMask.LEAVE_NOTIFY_MASK;
+
+    Gdk.WindowAttributesType attr_mask = Gdk.WindowAttributesType.X |
+                                         Gdk.WindowAttributesType.Y;
+    Gdk.Window window = this.get_parent_window ();
+    this.set_window (window);
+    window.ref ();
+
+    this.event_window = new Gdk.Window (window, attr, attr_mask);
+    this.register_window (this.event_window);
+  }
+
+  public override void unrealize () {
+    if (this.event_window != null) {
+      this.unregister_window (this.event_window);
+      this.event_window.destroy ();
+      this.event_window = null;
+    }
+    base.unrealize ();
+  }
+
+  public override void map () {
+    base.map ();
+
+    if (this.event_window != null)
+      this.event_window.show ();
+  }
+
+  public override void unmap () {
+
+    if (this.event_window != null)
+      this.event_window.hide ();
+
+    base.unmap ();
+  }
+
+  public override void size_allocate (Gtk.Allocation alloc) {
+    this.set_allocation (alloc);
+
+    int draw_width;
+    int draw_height;
+    double scale;
+
+    if (this.get_realized ()) {
+      this.get_draw_size (out draw_width, out draw_height, out scale);
+      this.event_window.move_resize (alloc.x,    alloc.y,
+                                     draw_width, draw_height);
+    }
+  }
+
+
+
+}
+
+
+
+
+
+
+
+
 /**
  * Trimmed-down version of MediaButton, used in the Compose Widow
  * to add new images.

@@ -25,7 +25,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   [GtkChild]
   private AvatarWidget avatar_image;
   [GtkChild]
-  private Gtk.Box content_box;
+  private Gtk.Grid content_grid;
   [GtkChild]
   private CompletionTextView tweet_text;
   [GtkChild]
@@ -38,10 +38,12 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   private Gtk.Label title_label;
   [GtkChild]
   private Gtk.Stack title_stack;
+  [GtkChild]
+  private ComposeImageManager compose_image_manager;
   private unowned Account account;
   private unowned Tweet reply_to;
   private Mode mode;
-  private Gee.ArrayList<AddImageButton> image_buttons;
+  private Gee.ArrayList<AddImageButton2> image_buttons;
   private GLib.Cancellable? cancellable;
 
 
@@ -56,7 +58,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     this.tweet_text.set_account (acc);
     this.application = (Gtk.Application)GLib.Application.get_default ();
 
-    image_buttons = new Gee.ArrayList<AddImageButton> ();
+    image_buttons = new Gee.ArrayList<AddImageButton2> ();
     avatar_image.surface = acc.avatar;
 
     if (mode != Mode.QUOTE)
@@ -81,8 +83,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       reply_entry.show ();
       list.add (reply_entry);
       list.show ();
-      content_box.pack_start (list, false, true);
-      content_box.reorder_child (list, 0);
+      content_grid.attach (list, 0, 0, 2, 1);
     }
 
     if (mode == Mode.REPLY) {
@@ -169,7 +170,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     title_spinner.start ();
     send_button.sensitive = false;
     tweet_text.sensitive = false;
-    content_box.sensitive = false;
+    content_grid.sensitive = false;
 
     Gtk.TextIter start, end;
     tweet_text.buffer.get_start_iter (out start);
@@ -177,29 +178,29 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     job.text = tweet_text.buffer.get_text (start, end, true);
 
     foreach (var btn in this.image_buttons) {
-      if (btn.image_path != null)
-        job.add_image (btn.image_path);
+      //if (btn.image_path != null)
+        //job.add_image (btn.image_path);
     }
 
     job.image_upload_started.connect ((path) => {
       foreach (var btn in this.image_buttons) {
-        if (btn.image_path == path) {
-          btn.start_progress ();
-          break;
-        }
+        //if (btn.image_path == path) {
+          //btn.start_progress ();
+          //break;
+        //}
       }
     });
 
 
     job.image_upload_finished.connect ((path, error_msg) => {
       foreach (var btn in this.image_buttons) {
-        if (btn.image_path == path) {
-          if (error_msg == null)
-            btn.set_success ();
-          else
-            btn.set_error (error_msg);
-          break;
-        }
+        //if (btn.image_path == path) {
+          //if (error_msg == null)
+            //btn.set_success ();
+          //else
+            //btn.set_error (error_msg);
+          //break;
+        //}
       }
     });
 
@@ -231,29 +232,30 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     if (image_buttons.size >= Twitter.max_media_per_upload)
       return;
 
-    var image_button = new AddImageButton ();
+    var image_button = new AddImageButton2 ();
     var revealer = new Gtk.Revealer ();
-    image_button.remove_clicked.connect (remove_image_clicked_cb);
-    image_button.add_clicked.connect (add_image_clicked_cb);
-    image_button.notify["image"].connect (() => {
-      if (image_button.image != null) {
-        add_image_button ();
-        recalc_tweet_length ();
-      }
-    });
+    //image_button.remove_clicked.connect (remove_image_clicked_cb);
+    //image_button.add_clicked.connect (add_image_clicked_cb);
+    //image_button.notify["image"].connect (() => {
+      //if (image_button.image != null) {
+        //add_image_button ();
+        //recalc_tweet_length ();
+      //}
+    //});
     revealer.add (image_button);
     revealer.transition_type = Gtk.RevealerTransitionType.SLIDE_DOWN;
 
     revealer.reveal_child = initially_visible;
     revealer.show_all ();
-    content_box.pack_start (revealer, false, false);
+    //content_box.pack_start (revealer, false, false);
     if (!initially_visible)
       revealer.reveal_child = true;
 
     image_buttons.add (image_button);
   }
 
-  private void add_image_clicked_cb (AddImageButton source) {
+  [GtkCallback]
+  private void add_image_clicked_cb (Gtk.Button source) {
     var fcd = new Gtk.FileChooserDialog(_("Select Image"), this, Gtk.FileChooserAction.OPEN,
                                         _("Cancel"), Gtk.ResponseType.CANCEL,
                                         _("Choose"), Gtk.ResponseType.ACCEPT);
@@ -293,25 +295,18 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     });
 
     if (fcd.run () == Gtk.ResponseType.ACCEPT) {
-      string file = fcd.get_filename ();
-      try {
-        var pixbuf = new Gdk.Pixbuf.from_file (file);
-        var thumb = Utils.slice_pixbuf (pixbuf, 500, MultiMediaWidget.MAX_HEIGHT);
-        source.image = thumb;
-        source.image_path = file;
-      } catch (GLib.Error e) {
-        warning (e.message);
-      }
+      string path = fcd.get_filename ();
+      this.compose_image_manager.load_image.begin (path);
     }
     fcd.close ();
   }
 
-  private void remove_image_clicked_cb (AddImageButton source) {
-    source.image = null;
+  private void remove_image_clicked_cb (AddImageButton2 source) {
+    //source.image = null;
     Gtk.Revealer revealer = (Gtk.Revealer)source.parent;
     revealer.reveal_child = false;
     revealer.notify["child-revealed"].connect (() => {
-      content_box.remove (revealer);
+      //content_box.remove (revealer);
       image_buttons.remove (source);
     });
     recalc_tweet_length ();
@@ -319,9 +314,9 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
   private int get_effective_media_count () {
     int c = 0;
-    foreach (AddImageButton btn in image_buttons)
-      if (btn.image != null)
-        c ++;
+    //foreach (AddImageButton2 btn in image_buttons)
+      //if (btn.image != null)
+        //c ++;
 
     return c;
   }
