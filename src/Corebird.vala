@@ -114,6 +114,7 @@ public class Corebird : Gtk.Application {
   public override void startup () {
     base.startup ();
 
+    new ComposeImageManager ();
     new LazyMenuButton ();
 
 #if DEBUG
