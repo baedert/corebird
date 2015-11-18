@@ -20,6 +20,7 @@
 class AddImageButton2 : Gtk.Widget {
   private static const int MIN_WIDTH  = 40;
   private static const int MAX_HEIGHT = 150;
+  public string image_path;
   public Cairo.ImageSurface? surface;
   private Gdk.Window? event_window;
 
@@ -75,7 +76,9 @@ class AddImageButton2 : Gtk.Widget {
       var sc = this.get_style_context ();
       sc.render_background (ct, draw_x, 0, draw_width, draw_height);
       sc.render_frame      (ct, draw_x, 0, draw_width, draw_height);
-    } else {
+    }
+
+    //else {
       //var sc = this.get_style_context ();
       //double layout_x, layout_y;
       //int layout_w, layout_h;
@@ -84,7 +87,7 @@ class AddImageButton2 : Gtk.Widget {
       //layout_x = (widget_width / 2.0) - (layout_w / Pango.SCALE / 2.0);
       //layout_y = (widget_height / 2.0) - (layout_h / Pango.SCALE / 2.0);
       //sc.render_layout (ct, layout_x, layout_y, layout);
-    }
+    //}
 
 
     return Gdk.EVENT_PROPAGATE;
