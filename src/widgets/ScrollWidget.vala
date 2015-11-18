@@ -190,8 +190,10 @@ public class ScrollWidget : Gtk.ScrolledWindow {
     t = ease_out_cubic (t);
 
     this.vadjustment.value = transition_start_value + (t * transition_diff);
-    if (this.vadjustment.value <= 0 || now >= end_time)
+    if (this.vadjustment.value <= 0 || now >= end_time) {
+      this.queue_draw ();
       return false;
+    }
 
     return true;
   }
