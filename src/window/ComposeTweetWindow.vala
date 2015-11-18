@@ -177,9 +177,9 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     tweet_text.buffer.get_end_iter (out end);
     job.text = tweet_text.buffer.get_text (start, end, true);
 
-    foreach (var btn in this.image_buttons) {
-      //if (btn.image_path != null)
-        //job.add_image (btn.image_path);
+    foreach (var path in this.compose_image_manager.get_image_paths ()) {
+      message ("Adding %s", path);
+      job.add_image (path);
     }
 
     job.image_upload_started.connect ((path) => {
@@ -296,7 +296,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
     if (fcd.run () == Gtk.ResponseType.ACCEPT) {
       string path = fcd.get_filename ();
-      this.compose_image_manager.load_image.begin (path);
+      this.compose_image_manager.load_image (path);
     }
     fcd.close ();
   }

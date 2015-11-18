@@ -22,19 +22,35 @@ class ComposeImageManager : Gtk.Box {
     this.spacing = 6;
   }
 
-  public async void load_image (string path) {
+  public void load_image (string path) {
     Cairo.ImageSurface surface = (Cairo.ImageSurface) load_surface (path);
 
     var button = new AddImageButton2 ();
     button.surface = surface;
+    button.image_path = path;
 
+    button.hexpand = false;
+    button.halign = Gtk.Align.START;
     button.show ();
     this.add (button);
+
+    this.n_images ++;
   }
 
   public string[] get_image_paths () {
     var paths = new string[n_images];
 
+    int i = 0;
+    foreach (var child in this.get_children ()) {
+      var btn = (AddImageButton2) child;
+      paths[i] = btn.image_path;
+      i ++;
+    }
+
     return paths;
+  }
+
+  public void start_progress (string image_path) {
+
   }
 }
