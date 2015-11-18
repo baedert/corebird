@@ -177,22 +177,13 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   }
 
   public void toggle_favorite (int64 id, bool mode) {
-    var tweets = tweet_list.get_children ();
 
-
-
-    foreach (var w in tweets) {
-      if (!(w is TweetListEntry))
-        continue;
-      var t = ((TweetListEntry)w).tweet;
-      if (t.id == id) {
-        if (mode)
-          t.set_flag (TweetState.FAVORITED);
-        else
-          t.unset_flag (TweetState.FAVORITED);
-
-        break;
-      }
+    Tweet? t = this.tweet_list.model.get_from_id (id, 0);
+    if (t != null) {
+      if (mode)
+        t.set_flag (TweetState.FAVORITED);
+      else
+        t.unset_flag (TweetState.FAVORITED);
     }
   }
 
