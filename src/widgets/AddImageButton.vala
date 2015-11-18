@@ -46,8 +46,8 @@ class AddImageButton2 : Gtk.Widget {
 
     scale = double.min (double.min (scale_x, scale_y), 1.0);
 
-    width  = (int)(this.surface.get_width ()  * scale);
-    height = (int)(this.surface.get_height () * scale);
+    width  = (int)(this.surface.get_width ()  * scale) - 10;
+    height = (int)(this.surface.get_height () * scale) - 10;
   }
 
   public override bool draw (Cairo.Context ct) {
@@ -76,6 +76,11 @@ class AddImageButton2 : Gtk.Widget {
       var sc = this.get_style_context ();
       sc.render_background (ct, draw_x, 0, draw_width, draw_height);
       sc.render_frame      (ct, draw_x, 0, draw_width, draw_height);
+
+      // Remove button
+      sc.render_background (ct, draw_width - 20, 0, 20, 20);
+
+
     }
 
     //else {
