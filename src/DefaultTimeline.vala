@@ -179,6 +179,8 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   public void toggle_favorite (int64 id, bool mode) {
     var tweets = tweet_list.get_children ();
 
+
+
     foreach (var w in tweets) {
       if (!(w is TweetListEntry))
         continue;
