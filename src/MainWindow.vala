@@ -392,7 +392,7 @@ public class MainWindow : Gtk.ApplicationWindow {
       return;
 
     move (x, y);
-    resize (w, h);
+    this.set_default_size (w, h);
   }
 
   /**
@@ -418,9 +418,8 @@ public class MainWindow : Gtk.ApplicationWindow {
       key = null; // Otherwise we leak key
     }
     /* Finally, add this window */
-    get_position (out x, out y);
-    w = get_allocated_width ();
-    h = get_allocated_height ();
+    this.get_position (out x, out y);
+    this.get_size (out w, out h);
     builder.add ("{s(iiii)}", account.screen_name, x, y, w, h);
     new_geom = builder.end ();
     debug ("Saving geomentry for %s: %d,%d,%d,%d", account.screen_name, x, y, w, h);
