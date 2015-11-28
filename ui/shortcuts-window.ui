@@ -77,7 +77,7 @@
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">true</property>
-                <property name="accelerator">tt</property>
+                <property name="accelerator">t+t</property>
                 <property name="title" translatable="yes">Retweet</property>
               </object>
             </child>
@@ -105,7 +105,7 @@
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">true</property>
-                <property name="accelerator">dd</property>
+                <property name="accelerator">d+d</property>
                 <property name="title" translatable="yes">Delete</property>
               </object>
             </child>

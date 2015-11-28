@@ -155,7 +155,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
       tweet_remove_timeout = GLib.Timeout.add (500, () => {
         if (!scrolled_up) {
           tweet_remove_timeout = 0;
-          return false;
+          return GLib.Source.REMOVE;
         }
 
         tweet_list.model.remove_last_n_visible (tweet_list.model.get_n_items () - ITimeline.REST);
@@ -177,20 +177,13 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   }
 
   public void toggle_favorite (int64 id, bool mode) {
-    var tweets = tweet_list.get_children ();
 
-    foreach (var w in tweets) {
-      if (!(w is TweetListEntry))
-        continue;
-      var t = ((TweetListEntry)w).tweet;
-      if (t.id == id) {
-        if (mode)
-          t.set_flag (TweetState.FAVORITED);
-        else
-          t.unset_flag (TweetState.FAVORITED);
-
-        break;
-      }
+    Tweet? t = this.tweet_list.model.get_from_id (id, 0);
+    if (t != null) {
+      if (mode)
+        t.set_flag (TweetState.FAVORITED);
+      else
+        t.unset_flag (TweetState.FAVORITED);
     }
   }
 

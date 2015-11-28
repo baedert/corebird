@@ -27,7 +27,6 @@ public enum MediaType {
 }
 
 public class Media : GLib.Object{
-  public string path;
   public string url;
   private string? _thumb_url = null;
   public string thumb_url {

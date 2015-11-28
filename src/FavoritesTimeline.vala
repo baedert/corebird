@@ -32,25 +32,18 @@ class FavoritesTimeline : IMessageReceiver, DefaultTimeline {
     if (type == StreamMessageType.EVENT_FAVORITE) {
       Json.Node tweet_obj = root.get_object ().get_member ("target_object");
       int64 tweet_id = tweet_obj.get_object ().get_int_member ("id");
-      for (uint i = 0; i < this.tweet_list.model.get_n_items (); i ++) {
-        Tweet t = (Tweet) this.tweet_list.model.get_item (i);
 
-        if (t.id == tweet_id) {
-          t.set_flag (TweetState.FAVORITED);
-          // This tweet has been unfavorited and now favorited again,
-          // so just mark it favorited and then return.
-          return;
-        }
+      Tweet? existing_tweet = this.tweet_list.model.get_from_id (tweet_id, 0);
+      if (existing_tweet != null) {
+        /* This tweet is already in the model, so just mark it as favorited */
+        existing_tweet.set_flag (TweetState.FAVORITED);
+        return;
       }
 
       Tweet tweet = new Tweet ();
-      tweet.load_from_json (tweet_obj,
-                            new GLib.DateTime.now_local (),
-                            this.account);
+      tweet.load_from_json (tweet_obj, new GLib.DateTime.now_local (), this.account);
       tweet.set_flag (TweetState.FAVORITED);
-      var tle = new TweetListEntry (tweet, this.main_window, this.account);
-      this.delta_updater.add (tle);
-      this.tweet_list.add (tle);
+      this.tweet_list.model.add (tweet);
     } else if (type == StreamMessageType.EVENT_UNFAVORITE) {
       int64 id = root.get_object ().get_object_member ("target_object").get_int_member ("id");
       toggle_favorite (id, false);
