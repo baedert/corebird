@@ -125,10 +125,6 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
         () => {start_send_tweet (); return true;});
 
     this.add_accel_group (ag);
-
-    /* Add AddImageButton because we can't do it in the ui definition for some reason */
-    if (mode != Mode.QUOTE)
-      add_image_button (true);
   }
 
   private void recalc_tweet_length () {
