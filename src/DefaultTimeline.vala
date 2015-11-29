@@ -33,7 +33,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   protected TweetListBox tweet_list      { set; get; default=new TweetListBox ();}
   public unowned Account account         { get; set; }
   protected BadgeRadioButton radio_button;
-  protected uint tweet_remove_timeout    { get; set; }
+  protected uint tweet_remove_timeout = 0;
   private DeltaUpdater _delta_updater;
   public DeltaUpdater delta_updater {
     get {
