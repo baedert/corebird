@@ -35,7 +35,6 @@ private class MediaButton : Gtk.Widget {
       if (value != null && (value.type == MediaType.IMAGE ||
                             value.type == MediaType.GIF)) {
         menu_model.append (_("Copy URL"), "media.copy-url");
-        menu_model.append (_("Save Original"), "media.save-original");
       }
     }
   }
@@ -45,7 +44,6 @@ private class MediaButton : Gtk.Widget {
   private GLib.SimpleActionGroup actions;
   private const GLib.ActionEntry[] action_entries = {
     {"copy-url",        copy_url_activated},
-    {"save-original",   save_original_activated},
     {"open-in-browser", open_in_browser_activated}
   };
   private Pango.Layout layout;
@@ -172,31 +170,6 @@ private class MediaButton : Gtk.Widget {
     } catch (GLib.Error e) {
       critical (e.message);
     }
-  }
-
-  private void save_original_activated (GLib.SimpleAction a, GLib.Variant? v) {
-     var file_dialog = new Gtk.FileChooserDialog (_("Save image"), window,
-                                                  Gtk.FileChooserAction.SAVE,
-                                                  _("Cancel"), Gtk.ResponseType.CANCEL,
-                                                  _("Save"), Gtk.ResponseType.ACCEPT);
-    string filename = Utils.get_file_name (media.thumb_url);
-    file_dialog.set_current_name (filename);
-    file_dialog.set_transient_for (window);
-
-
-    int response = file_dialog.run ();
-    if (response == Gtk.ResponseType.ACCEPT) {
-      assert (false); // XXX
-      //File dest = File.new_for_uri (file_dialog.get_uri ());
-      //File source = File.new_for_path (media.path);
-      //try {
-        //source.copy (dest, FileCopyFlags.OVERWRITE);
-      //} catch (GLib.Error e) {
-        //critical (e.message);
-      //}
-      //file_dialog.destroy ();
-    } else if (response == Gtk.ResponseType.CANCEL)
-      file_dialog.destroy ();
   }
 
   public override Gtk.SizeRequestMode get_request_mode () {
