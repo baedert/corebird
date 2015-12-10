@@ -89,4 +89,8 @@ public class Settings : GLib.Object {
   public static TransformFlags get_text_transform_flags () {
     return (TransformFlags) settings.get_uint ("text-transform-flags");
   }
+
+  public static string get_default_location(){
+    return settings.get_string("default-trend-location");
+  }
 }

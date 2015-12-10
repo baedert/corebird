@@ -99,5 +99,13 @@
       <default>1</default>
       <summary>Bitfield for text transformations</summary>
     </key>
+    <key name="default-trend-location" type="s">
+      <default>"Worldwide"</default>
+      <summary>Default Trending Topics Location</summary>
+    </key>
+    <key name="show-top-trend-tweet" type="b">
+      <default>true</default>
+      <summary>Show most popular tweet about a specific trending topic</summary>
+    </key>
   </schema>
 </schemalist>

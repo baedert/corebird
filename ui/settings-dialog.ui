@@ -532,6 +532,96 @@
           </packing>
         </child>
 
+        <!-- Trending Topic -->
+        <child>
+          <object class="GtkGrid">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="border_width">10</property>
+            <property name="row_spacing">6</property>
+            <property name="column_spacing">12</property>
+            <property name="column_homogeneous">true</property>
+          <child>
+            <object class="GtkLabel">
+              <property name="visible">True</property>
+              <property name="label" translatable="Yes">Trending Topics</property>
+              <property name="halign">start</property>
+              <property name="can_focus">False</property>
+              <attributes>
+                <attribute name="weight" value="bold"/>
+              </attributes>
+            </object>
+            <packing>
+              <property name="left_attach">0</property>
+              <property name="top_attach">0</property>
+              <property name="width">2</property>
+              <property name="height">1</property>
+            </packing>
+          </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">true</property>
+                <property name="label" translatable="yes">Default location</property>
+                <property name="halign">end</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">1</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+
+            <child>
+              <object class="GtkEntry" id="default_trending_topic_location">
+                <property name="visible">true</property>
+                <property name="halign">start</property>
+                
+                <!-- <signal name="notify::active" handler="remove_trailing_hashtags_cb" /> -->
+              </object>
+              <packing>
+                <property name="width_chars">60</property>
+                <property name="left_attach">1</property>
+                <property name="top_attach">1</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">true</property>
+                <property name="label" translatable="yes">Show top tweets</property>
+                <property name="halign">end</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">2</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+
+            <child>
+              <object class="GtkSwitch" id="show_popular_trend_tweet">
+                <property name="visible">true</property>
+                <property name="halign">start</property>
+                <!-- <signal name="notify::active" handler="remove_trailing_hashtags_cb" /> -->
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">2</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="title" translatable="yes">Trends</property>
+            <property name="name">trending</property>
+          </packing>
+        </child>
+
 
       </object>
     </child>

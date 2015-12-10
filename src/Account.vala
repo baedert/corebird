@@ -253,6 +253,15 @@ public class Account : GLib.Object {
         collect_obj.emit ();
       }
     });
+    
+    load_id_array.begin (collect_obj, "1.1/trends/available.json", true, (obj, res) => {
+      Json.Array? arr = load_id_array.end (res);
+      if (arr != null) {
+        Location location = Location.instance ();
+        location.set_locations (arr);
+        collect_obj.emit ();
+      }
+    });
 
     yield;
   }

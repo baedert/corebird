@@ -41,6 +41,12 @@ class SettingsDialog : Gtk.Window {
   private Gtk.Switch remove_media_links_switch;
   [GtkChild]
   private Gtk.ListBox snippet_list_box;
+  
+  [GtkChild]
+  private Gtk.Entry default_trending_topic_location;
+  
+  [GtkChild]
+  private Gtk.Switch show_popular_trend_tweet;
 
   private TweetListEntry sample_tweet_entry;
 
@@ -68,6 +74,13 @@ class SettingsDialog : Gtk.Window {
                           SettingsBindFlags.DEFAULT);
     Settings.get ().bind ("double-click-activation", double_click_activation_switch,
                           "active", SettingsBindFlags.DEFAULT);
+
+    //Trtending Topics
+    set_location_completion ();
+    Settings.get ().bind ("default-trend-location", default_trending_topic_location, "text",
+                          SettingsBindFlags.DEFAULT);
+    Settings.get ().bind ("show-top-trend-tweet", show_popular_trend_tweet, "active",
+                          SettingsBindFlags.DEFAULT);
 
 
     // Set up sample tweet {{{
@@ -252,6 +265,33 @@ class SettingsDialog : Gtk.Window {
 
 
     this.add_accel_group(ag);
+  }
+
+  private void set_location_completion(){
+    Gtk.EntryCompletion completion = new Gtk.EntryCompletion ();
+    default_trending_topic_location.set_completion(completion);
+  
+    Gtk.ListStore list_store = new Gtk.ListStore (2, typeof (string), typeof (string));
+    completion.set_model(list_store);
+    completion.set_text_column(0);
+    var cell = new Gtk.CellRendererText();
+    completion.pack_start(cell, false);
+    completion.add_attribute(cell, "text", 1);
+
+    Gtk.TreeIter iter;
+    Location avaliable_locations = Location.instance ();
+    Place place = new Place ();
+    string country;
+    int32 woeid;
+    var locations_array = new Gee.HashMap<string, Place> ();
+    locations_array = avaliable_locations.get_locations ();
+
+    foreach (var location in locations_array.entries) {
+        place = location.value;
+        country = place.country;
+        list_store.append(out iter);
+        list_store.set (iter, 0, location.key, 1, country);
+    }
   }
 
 

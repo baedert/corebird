@@ -59,6 +59,7 @@ libcorebird_la_VALASOURCES = \
 	Media.vala \
 	UserEventReceiver.vala \
 	SnippetManager.vala \
+	Location.vala \
 	widgets/TweetListBox.vala \
 	widgets/MaxSizeContainer.vala \
 	widgets/ScrollWidget.vala \
