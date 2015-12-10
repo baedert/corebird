@@ -41,7 +41,7 @@ private class MediaButton : Gtk.Widget {
   }
   public unowned Gtk.Window window;
   private GLib.Menu menu_model;
-  private Gtk.Menu menu;
+  private Gtk.Menu? menu = null;
   private GLib.SimpleActionGroup actions;
   private const GLib.ActionEntry[] action_entries = {
     {"copy-url",        copy_url_activated},
@@ -81,16 +81,12 @@ private class MediaButton : Gtk.Widget {
 
     this.menu_model = new GLib.Menu ();
     menu_model.append (_("Open in Browser"), "media.open-in-browser");
-    this.menu = new Gtk.Menu.from_model (menu_model);
-    this.menu.attach_to_widget (this, null);
 
     this.layout = this.create_pango_layout ("0%");
     this.press_gesture = new Gtk.GestureMultiPress (this);
     this.press_gesture.set_exclusive (true);
-    this.press_gesture.set_button (Gdk.BUTTON_PRIMARY);
+    this.press_gesture.set_button (0);
     this.press_gesture.pressed.connect (gesture_pressed_cb);
-
-    this.button_press_event.connect (button_clicked_cb);
   }
 
   private void get_draw_size (out int width,
@@ -165,15 +161,6 @@ private class MediaButton : Gtk.Widget {
     }
 
 
-    return Gdk.EVENT_PROPAGATE;
-  }
-
-  private bool button_clicked_cb (Gdk.EventButton evt) {
-    if (evt.triggers_context_menu () && this._media != null) {
-      menu.show_all ();
-      menu.popup (null, null, null, evt.button, evt.time);
-      return Gdk.EVENT_STOP;
-    }
     return Gdk.EVENT_PROPAGATE;
   }
 
@@ -351,7 +338,24 @@ private class MediaButton : Gtk.Widget {
   private void gesture_pressed_cb (int    n_press,
                                    double x,
                                    double y) {
-    this.clicked (this);
+
+    Gdk.EventSequence sequence = this.press_gesture.get_current_sequence ();
+    Gdk.Event event = this.press_gesture.get_last_event (sequence);
+    uint button = this.press_gesture.button;
+
+    if (this._media == null)
+      return;
+
+    if (button == Gdk.BUTTON_PRIMARY) {
+      this.clicked (this);
+    } else if (event.triggers_context_menu ()) {
+      if (this.menu == null) {
+        this.menu = new Gtk.Menu.from_model (menu_model);
+        this.menu.attach_to_widget (this, null);
+      }
+      menu.show_all ();
+      menu.popup (null, null, null, button, Gtk.get_current_event_time ());
+    }
   }
 }
 
