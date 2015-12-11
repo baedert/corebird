@@ -212,6 +212,9 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
 
   private async void load_friendship () {
     Friendship? fr = yield UserUtils.load_friendship (account, this.user_id);
+    if (fr == null) {
+      return;
+    }
     follows_you_label.visible = fr.followed_by;
     set_user_blocked (fr.blocking);
     set_retweets_disabled (fr.following && !fr.want_retweets);

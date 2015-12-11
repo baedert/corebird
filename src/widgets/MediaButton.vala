@@ -66,6 +66,7 @@ private class MediaButton : Gtk.Widget {
 
   construct {
     this.set_has_window (false);
+    this.set_can_focus (true);
   }
 
   public MediaButton (Media? media) {
@@ -113,7 +114,7 @@ private class MediaButton : Gtk.Widget {
 
 
     /* Draw thumbnail */
-    if (media != null && media.surface != null && media.loaded) {
+    if (_media != null && _media.surface != null && _media.loaded) {
       ct.save ();
 
       ct.rectangle (0, 0, widget_width, widget_height);
@@ -141,6 +142,11 @@ private class MediaButton : Gtk.Widget {
       var sc = this.get_style_context ();
       sc.render_background (ct, draw_x, 0, draw_width, draw_height);
       sc.render_frame      (ct, draw_x, 0, draw_width, draw_height);
+
+      if (this.has_visible_focus ()) {
+        sc.render_focus (ct, draw_x + 2, 2, draw_width - 4, draw_height - 4);
+      }
+
     } else {
       var sc = this.get_style_context ();
       double layout_x, layout_y;
@@ -192,7 +198,8 @@ private class MediaButton : Gtk.Widget {
 
     double width_ratio = (double)width / (double) media_width;
     int height = int.min (media_height, (int)(media_height * width_ratio));
-    height = int.min (MAX_HEIGHT, height);
+    //height = int.min (MAX_HEIGHT, height);
+    height = int.min (height, media_height);
     minimum = natural = height;
   }
 
