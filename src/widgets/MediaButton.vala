@@ -314,20 +314,25 @@ private class MediaButton : Gtk.Widget {
 
     Gdk.EventSequence sequence = this.press_gesture.get_current_sequence ();
     Gdk.Event event = this.press_gesture.get_last_event (sequence);
-    uint button = this.press_gesture.button;
+    uint button = this.press_gesture.get_current_button ();
 
     if (this._media == null)
       return;
 
     if (button == Gdk.BUTTON_PRIMARY) {
+      this.press_gesture.set_state (Gtk.EventSequenceState.CLAIMED);
       this.clicked (this);
     } else if (event.triggers_context_menu ()) {
+      this.press_gesture.set_state (Gtk.EventSequenceState.CLAIMED);
+
       if (this.menu == null) {
         this.menu = new Gtk.Menu.from_model (menu_model);
         this.menu.attach_to_widget (this, null);
       }
       menu.show_all ();
       menu.popup (null, null, null, button, Gtk.get_current_event_time ());
+    } else {
+      this.press_gesture.set_state (Gtk.EventSequenceState.DENIED);
     }
   }
 }
