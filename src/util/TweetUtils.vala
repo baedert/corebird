@@ -191,17 +191,29 @@ namespace TweetUtils {
   public int calc_tweet_length (string text, int media_count = 0) {
     int length = 0;
 
+    unichar c;
     int last_word_start = 0;
-    for (int cur = 0, p = text.char_count (); cur < p; cur ++) {
-      unichar c = text.get_char (cur);
+    int n_chars = text.char_count ();
+    int cur = 0;
+    for (int next = 0, c_n = 0; text.get_next_char (ref next, out c); c_n ++) {
 
-      if (c == ' ' || c == '\n' || cur == p-1) {
-        string word = text.substring (text.index_of_nth_char (last_word_start),
-                                      text.index_of_nth_char (cur+1) - text.index_of_nth_char
-                                      (last_word_start));
-        length += get_word_length (word);
+      if (c == ' ' || c == '\n' || c_n == n_chars - 1) {
+        if (c_n == n_chars - 1)
+          cur ++;
+
+        string word = text.substring (last_word_start,
+                                      cur - last_word_start);
+
+        if (word.length > 0)
+          length += get_word_length (word);
+
+          if (c == ' ' || c == '\n')
+            length += 1;
+
+        // Just adding one here is save since we made sure c is either ' ' or \n
         last_word_start = cur + 1;
       }
+      cur = next;
     }
 
     if (length < 0) {
@@ -220,9 +232,9 @@ namespace TweetUtils {
     if (s.has_prefix ("https://"))
       return Twitter.short_url_length_https;
 
-    foreach (string tld in DOMAINS) {
-      string[] parts = s.split ("/");
 
+    string[] parts = s.split ("/");
+    foreach (string tld in DOMAINS) {
       if (parts.length > 0 && parts[0].has_suffix (tld))
         return Twitter.short_url_length; // Default to HTTP
     }
