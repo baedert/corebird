@@ -149,6 +149,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
       this.tweet = tweet;
       set_tweet_data (tweet);
     } else if (mode == BY_ID) {
+      this.tweet = null;
       this.tweet_id = args.get_int64 ("tweet_id");
       this.screen_name = args.get_string ("screen_name");
     }
