@@ -182,15 +182,19 @@
   border-radius: 0px;
   border-bottom: 1px solid transparent;
 }
-.text-only-button:hover{
+
+.text-only-button:hover {
   border-bottom: 1px solid currentColor;
 }
-.text-only-button:active{
+
+.text-only-button:active {
   background-color: shade(currentColor, 2.3);
 }
-.text-only-button:backdrop{
+
+.text-only-button:backdrop {
   background-color: transparent;
 }
+
 .readonly-text-only-button {
   color: currentColor;
 }
@@ -249,4 +253,10 @@
 .quote {
   border-left: 3px solid currentColor;
   padding-left: 6px;
+}
+
+.close-button {
+  padding: 3px;
+  /*border: none;*/
+  /*box-shadow: none;*/
 }
