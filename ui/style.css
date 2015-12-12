@@ -56,8 +56,8 @@
 }
 
 .inline-media:hover {
-  border-top: 2px solid #4a90d9;
-  border-bottom: 2px solid #4a90d9;
+  border-top: 2px solid @theme_selected_bg_color;
+  border-bottom: 2px solid @theme_selected_bg_color;
   opacity: 1.0;
   box-shadow: none;
 }
