@@ -60,7 +60,7 @@ void newline_link () {
   string text = "Foo\nhttp://foobar.org";
   int l = TweetUtils.calc_tweet_length (text);
   message ("Length: %d", l);
-  assert (l == 26);
+  assert (l == Twitter.short_url_length + 3 + 1);
 }
 
 void whitespace () {
@@ -71,9 +71,12 @@ void whitespace () {
 }
 
 void utf8 () {
-  string text = "ð²³¤æñïü";
+  string text = "€¤²˛×     ××¹áœ http://¤³¤€.com"; // 5 + 5 + 5 + 1 + 22
+  message (text);
   int l = TweetUtils.calc_tweet_length (text);
-  assert (l == 8);
+  message ("%d", l);
+
+  assert (l == 5 + 5 + 5 + 1 + Twitter.short_url_length);
 }
 
 int main (string[] args) {
@@ -89,6 +92,7 @@ int main (string[] args) {
   GLib.Test.add_func ("/tweet-length/newline-link", newline_link);
   GLib.Test.add_func ("/tweet-length/whitespace", whitespace);
   GLib.Test.add_func ("/tweet-length/utf8", utf8);
+
 
 
   return GLib.Test.run ();
