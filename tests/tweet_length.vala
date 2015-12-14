@@ -14,14 +14,14 @@ void http_link () {
   string text = "http://foobar.org";
   int l = TweetUtils.calc_tweet_length (text);
   message ("Link length: %d", l);
-  assert (l == 22);
+  assert (l == Twitter.short_url_length);
 }
 
 void https_link () {
   string text = "https://foobar.org/thisissolong/itsnotevenfunnyanymore";
   int  l = TweetUtils.calc_tweet_length (text);
   message ("Https link length: %d", l);
-  assert (l == 23);
+  assert (l == Twitter.short_url_length_https);
 }
 
 
@@ -29,7 +29,7 @@ void media () {
   string text = "";
   int l = TweetUtils.calc_tweet_length (text, 1);
   message ("media length: %d", l);
-  assert (l == Twitter.short_url_length_https);
+  assert (l == Twitter.characters_reserved_per_media);
 }
 
 
@@ -37,7 +37,7 @@ void media_text () {
   string text = "0123456789 012345678";
   int l = TweetUtils.calc_tweet_length (text, 1);
   message ("media length: %d", l);
-  assert (l == Twitter.short_url_length_https + 20);
+  assert (l == Twitter.characters_reserved_per_media + 20);
 }
 
 
@@ -53,7 +53,7 @@ void real_text1 () {
   string text = "That @humble Bundle we're doing? Finishes in 1:40hrs so if you still want to get 7 great fantasy games dirt cheap... humblebundle.com/weekly";
   int l = TweetUtils.calc_tweet_length (text);
   message ("real text 1 length: %d", l);
-  assert (l == 139); // according to Twitter's web interface
+  assert (l == 140); // according to Twitter's web interface
 }
 
 void newline_link () {
