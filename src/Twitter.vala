@@ -31,7 +31,7 @@ public class Twitter : GLib.Object {
   [Signal (detailed = true)]
   private signal void avatar_downloaded (Cairo.Surface avatar);
 
-  public const int short_url_length       = 22;
+  public const int short_url_length       = 23;
   public const int short_url_length_https = 23;
   public const int max_media_per_upload   = 4;
   public static Cairo.Surface no_avatar;
