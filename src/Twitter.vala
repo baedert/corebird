@@ -34,6 +34,7 @@ public class Twitter : GLib.Object {
   public const int short_url_length       = 23;
   public const int short_url_length_https = 23;
   public const int max_media_per_upload   = 4;
+  public const int characters_reserved_per_media = 24;
   public static Cairo.Surface no_avatar;
   public static Gdk.Pixbuf no_banner;
   private AvatarCache avatar_cache;

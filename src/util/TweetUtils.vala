@@ -217,10 +217,10 @@ namespace TweetUtils {
     }
 
     if (length < 0) {
-      return Twitter.short_url_length_https * media_count;
+      return Twitter.characters_reserved_per_media * media_count;
     }
 
-    length += Twitter.short_url_length_https * media_count;
+    length += Twitter.characters_reserved_per_media * media_count;
 
     return length;
   }
