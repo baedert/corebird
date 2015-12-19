@@ -432,6 +432,9 @@ public class Tweet : GLib.Object {
 
     this.source_tweet = parse_mini_tweet (status);
 
+    bool has_media = Utils.get_json_array_size (status.get_object_member ("entities"),
+                                                "media") > 0;
+
     if (status.has_member ("retweeted_status")) {
       Json.Object rt      = status.get_object_member ("retweeted_status");
       this.retweeted_tweet = parse_mini_tweet (rt);
@@ -460,7 +463,7 @@ public class Tweet : GLib.Object {
         this.reply_id  = status.get_int_member ("in_reply_to_status_id");
     }
 
-    if (status.has_member ("quoted_status")) {
+    if (status.has_member ("quoted_status") && !has_media) {
       var quoted_status = status.get_object_member ("quoted_status");
       this.quoted_tweet = parse_mini_tweet (quoted_status);
       parse_entities (this.quoted_tweet, quoted_status);
