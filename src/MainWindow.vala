@@ -406,7 +406,7 @@ public class MainWindow : Gtk.ApplicationWindow {
     GLib.Variant new_geom;
     GLib.VariantBuilder builder = new GLib.VariantBuilder (new GLib.VariantType("a{s(iiii)}"));
     var iter = win_geom.iterator ();
-    string key = null;
+    string? key = null;
     int x = 0,
         y = 0,
         w = 0,
