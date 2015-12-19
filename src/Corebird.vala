@@ -23,6 +23,8 @@ public class Corebird : Gtk.Application {
   public signal void account_removed (Account acc);
   public signal void account_window_changed (int64? old_id, int64 new_id);
 
+  private SettingsDialog? settings_dialog;
+
   const GLib.ActionEntry[] app_entries = {
     {"show-settings",     show_settings_activated         },
     {"show-shortcuts",    show_shortcuts_activated        },
@@ -88,7 +90,17 @@ public class Corebird : Gtk.Application {
   private void show_settings_activated () {
     /* We don't set the settings dialog transient to
        any window because we already save its size */
+    if (this.settings_dialog != null)
+      return;
+
     var dialog = new SettingsDialog (this);
+    var action = (GLib.SimpleAction)this.lookup_action ("show-settings");
+    action.set_enabled (false);
+    dialog.delete_event.connect (() => {
+      action.set_enabled (true);
+      this.settings_dialog = null;
+      return Gdk.EVENT_PROPAGATE;
+    });
     dialog.show ();
   }
 
