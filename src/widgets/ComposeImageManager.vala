@@ -19,6 +19,12 @@ class ComposeImageManager : Gtk.Container {
   private Gee.ArrayList<AddImageButton2> buttons;
   private Gee.ArrayList<Gtk.Button>      close_buttons;
 
+  public int n_images {
+    get {
+      return this.buttons.size;
+    }
+  }
+
   construct {
     this.buttons = new Gee.ArrayList<AddImageButton2> ();
     this.close_buttons = new Gee.ArrayList<Gtk.Button> ();

@@ -133,7 +133,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     string text = tweet_text.buffer.get_text (start, end, true);
 
     int media_count = 0;
-    if (get_effective_media_count () > 0)
+    if (compose_image_manager.n_images > 0)
       media_count = 1;
 
     int length = TweetUtils.calc_tweet_length (text, media_count);
@@ -223,33 +223,6 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   }
 
   /* Image handling stuff {{{ */
-
-  private void add_image_button (bool initially_visible = false) {
-    if (image_buttons.size >= Twitter.max_media_per_upload)
-      return;
-
-    var image_button = new AddImageButton2 ();
-    var revealer = new Gtk.Revealer ();
-    //image_button.remove_clicked.connect (remove_image_clicked_cb);
-    //image_button.add_clicked.connect (add_image_clicked_cb);
-    //image_button.notify["image"].connect (() => {
-      //if (image_button.image != null) {
-        //add_image_button ();
-        //recalc_tweet_length ();
-      //}
-    //});
-    revealer.add (image_button);
-    revealer.transition_type = Gtk.RevealerTransitionType.SLIDE_DOWN;
-
-    revealer.reveal_child = initially_visible;
-    revealer.show_all ();
-    //content_box.pack_start (revealer, false, false);
-    if (!initially_visible)
-      revealer.reveal_child = true;
-
-    image_buttons.add (image_button);
-  }
-
   [GtkCallback]
   private void add_image_clicked_cb (Gtk.Button source) {
     var fcd = new Gtk.FileChooserDialog(_("Select Image"), this, Gtk.FileChooserAction.OPEN,
@@ -296,26 +269,5 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     }
     fcd.close ();
   }
-
-  private void remove_image_clicked_cb (AddImageButton2 source) {
-    //source.image = null;
-    Gtk.Revealer revealer = (Gtk.Revealer)source.parent;
-    revealer.reveal_child = false;
-    revealer.notify["child-revealed"].connect (() => {
-      //content_box.remove (revealer);
-      image_buttons.remove (source);
-    });
-    recalc_tweet_length ();
-  }
-
-  private int get_effective_media_count () {
-    int c = 0;
-    //foreach (AddImageButton2 btn in image_buttons)
-      //if (btn.image != null)
-        //c ++;
-
-    return c;
-  }
-
   /* }}} */
 }
