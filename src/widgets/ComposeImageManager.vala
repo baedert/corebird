@@ -54,9 +54,10 @@ class ComposeImageManager : Gtk.Container {
     widget.set_parent (this);
     widget.set_parent_window (this.get_window ());
     this.buttons.add ((AddImageButton2)widget);
-    var btn = new Gtk.Button.with_label ("-");
+    var btn = new Gtk.Button.from_icon_name ("window-close-symbolic");
     btn.set_parent (this);
     btn.get_style_context ().add_class ("image-button");
+    btn.get_style_context ().add_class ("close-button");
     btn.clicked.connect (remove_clicked_cb);
     btn.show ();
     this.close_buttons.add (btn);
