@@ -112,8 +112,7 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
       } else {
         summary = _("%s tweeted").printf (t.source_tweet.author.user_name);
       }
-      NotificationManager.notify (account, summary, t.get_real_text (),
-                                  Dirs.cache ("assets/avatars/" + Utils.get_avatar_name (t.avatar_url)));
+      NotificationManager.notify (account, summary, t.get_real_text ());
 
     } else if(stack_size != 0 && unread_count % stack_size == 0
               && unread_count > 0) {

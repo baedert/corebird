@@ -215,7 +215,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
   private bool escape_pressed_cb () {
     this.destroy ();
-    return true;
+    return Gdk.EVENT_STOP;
   }
 
   public void set_text (string text) {

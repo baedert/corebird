@@ -109,6 +109,7 @@ public class TweetModel : GLib.Object, GLib.ListModel {
   }
 
   public void add (Tweet tweet) {
+    assert (tweet.id > 0);
     this.insert_sorted (tweet);
 
     if (tweet.id > this.max_id)

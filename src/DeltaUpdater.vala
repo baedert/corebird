@@ -22,7 +22,7 @@ public class DeltaUpdater : GLib.Object {
   private uint hourly_id;
 
   public DeltaUpdater () {
-    minutely_id = GLib.Timeout.add(60 * 1000, () => {
+    minutely_id = GLib.Timeout.add (60 * 1000, () => {
       for (int i = 0, size = minutely.size; i < size; i++) {
         WeakRef item_ref = minutely.get (i);
         ITwitterItem item = item_ref.get ();
@@ -41,7 +41,7 @@ public class DeltaUpdater : GLib.Object {
       return true;
     });
 
-    hourly_id = GLib.Timeout.add(60 * 60 * 1000, () => {
+    hourly_id = GLib.Timeout.add (60 * 60 * 1000, () => {
       for (int i = 0, size = hourly.size; i < size; i++) {
         WeakRef item_ref = hourly.get (i);
         if (item_ref.get () == null) {

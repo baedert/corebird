@@ -326,7 +326,7 @@ public class MainWindow : Gtk.ApplicationWindow {
       main_widget.stop ();
 
     if (account == null)
-      return false;
+      return Gdk.EVENT_PROPAGATE;
 
     unowned GLib.List<weak Gtk.Window> ws = this.application.get_windows ();
     debug("Windows: %u", ws.length ());
@@ -341,7 +341,7 @@ public class MainWindow : Gtk.ApplicationWindow {
     save_geometry ();
 
     if (startup_accounts.length > 0)
-      return false;
+      return Gdk.EVENT_PROPAGATE;
 
     int n_main_windows = 0;
     foreach (Gtk.Window win in ws)
@@ -358,7 +358,7 @@ public class MainWindow : Gtk.ApplicationWindow {
       Settings.get ().set_strv ("startup-accounts", new_startup_accounts);
       debug ("Saving the account %s", ((MainWindow)ws.nth_data (0)).account.screen_name);
     }
-    return false;
+    return Gdk.EVENT_PROPAGATE;
   }
 
 
@@ -406,7 +406,7 @@ public class MainWindow : Gtk.ApplicationWindow {
     GLib.Variant new_geom;
     GLib.VariantBuilder builder = new GLib.VariantBuilder (new GLib.VariantType("a{s(iiii)}"));
     var iter = win_geom.iterator ();
-    string key = null;
+    string? key = null;
     int x = 0,
         y = 0,
         w = 0,
