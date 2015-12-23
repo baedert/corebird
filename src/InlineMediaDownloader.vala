@@ -41,7 +41,17 @@ bool is_media_candidate (string url) {
   ;
 }
 
+bool is_media_link_removal_candidate (string url) {
+  if (Settings.max_media_size () < 0.001)
+    return false;
 
+  return
+#if VIDEO
+         url.has_suffix ("/photo/1") ||
+         url.has_prefix ("https://video.twimg.com/ext_tw_video/") ||
+#endif
+         url.has_prefix ("http://pbs.twimg.com/media/");
+}
 
 public class InlineMediaDownloader : GLib.Object {
   private static InlineMediaDownloader instance;
