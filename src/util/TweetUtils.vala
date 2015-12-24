@@ -15,10 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-
-
-
 namespace TweetUtils {
   private static const string[] DOMAINS = {
      ".com",  ".net",  ".org",    ".xxx",  ".sexy", ".pro",
@@ -294,7 +290,7 @@ namespace TweetUtils {
       if (tweet_array.length == 0) {
         GLib.Idle.add (() => {
           work_array.callback ();
-          return false;
+          return GLib.Source.REMOVE;
         });
         return null;
       }
@@ -311,8 +307,9 @@ namespace TweetUtils {
       int index = 0;
       GLib.Idle.add (() => {
         Tweet tweet = tweet_array[index];
-        if (account.user_counter == null)
-          return false;
+        if (account.user_counter == null ||
+            tweet_list == null)
+          return GLib.Source.REMOVE;
 
         account.user_counter.id_seen (ref tweet.source_tweet.author);
         if (tweet.retweeted_tweet != null)
@@ -326,9 +323,9 @@ namespace TweetUtils {
         index ++;
         if (index == tweet_array.length) {
           work_array.callback ();
-          return false;
+          return GLib.Source.REMOVE;
         }
-        return true;
+        return GLib.Source.CONTINUE;
       });
       return null;
     });
