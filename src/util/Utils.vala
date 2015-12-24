@@ -308,7 +308,9 @@ namespace Utils {
    * @param path The filesystem path to save the file to
    *
    */
-  async void download_file_async(string url, string path, GLib.Cancellable? cancellable = null) {
+  async void download_file_async (string            url,
+                                  string            path,
+                                  GLib.Cancellable? cancellable = null) {
     var msg = new Soup.Message("GET", url);
     GLib.SourceFunc cb = download_file_async.callback;
     SOUP_SESSION.queue_message(msg, (_s, _msg) => {
@@ -326,23 +328,6 @@ namespace Utils {
       } catch (GLib.Error e) {
         critical (e.message);
       }
-    });
-    yield;
-  }
-
-  public async void write_pixbuf_async (Gdk.Pixbuf pixbuf, GLib.OutputStream out_stream, string type) {
-    new Thread<void*> ("write_pixbuf", () => {
-      try {
-        pixbuf.save_to_stream (out_stream, type);
-      } catch (GLib.Error e) {
-        warning (e.message);
-        return null;
-      }
-      GLib.Idle.add (() => {
-        write_pixbuf_async.callback ();
-        return false;
-      });
-      return null;
     });
     yield;
   }
