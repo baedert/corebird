@@ -23,6 +23,11 @@ class AddImageButton2 : Gtk.Widget {
   public string image_path;
   public Cairo.ImageSurface? surface;
 
+  public signal void deleted ();
+
+  private double delete_factor = 1.0;
+  private uint64 delete_transition_start;
+
   construct {
     this.set_has_window (false);
   }
@@ -42,10 +47,10 @@ class AddImageButton2 : Gtk.Widget {
     double scale_x = (double)width / this.surface.get_width ();
     double scale_y = (double)height / this.surface.get_height ();
 
-    scale = double.min (double.min (scale_x, scale_y), 1.0);
+    scale = double.min (double.min (scale_x, scale_y), 1.0) * delete_factor;
 
-    width  = (int)(this.surface.get_width ()  * scale);
-    height = (int)(this.surface.get_height () * scale);
+    width  = (int)(this.surface.get_width ()  * scale * delete_factor);
+    height = (int)(this.surface.get_height () * scale * delete_factor);
   }
 
   public override bool draw (Cairo.Context ct) {
@@ -132,10 +137,31 @@ class AddImageButton2 : Gtk.Widget {
     natural = media_width;
   }
 
-  public override void size_allocate (Gtk.Allocation alloc) {
-    this.set_allocation (alloc);
+  private bool delete_tick_cb (Gtk.Widget     widget,
+                               Gdk.FrameClock frame_clock) {
+    uint64 now = frame_clock.get_frame_time ();
+
+    double t = 1.0 - (now - this.delete_transition_start) / (double)TRANSITION_DURATION;
+
+    t = ease_out_cubic (t);
+    this.delete_factor = t;
+    this.queue_resize ();
+
+    if (t <= 0) {
+      this.delete_factor = 0.0;
+      this.deleted ();
+      return GLib.Source.REMOVE;
+    }
+
+    return GLib.Source.CONTINUE;
   }
 
+  public void start_remove () {
+    if (!this.get_realized ()) return;
+
+    this.delete_transition_start = this.get_frame_clock ().get_frame_time ();
+    this.add_tick_callback (delete_tick_cb);
+  }
 }
 
 

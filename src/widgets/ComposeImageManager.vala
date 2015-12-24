@@ -34,11 +34,15 @@ class ComposeImageManager : Gtk.Container {
   private void remove_clicked_cb (Gtk.Button source) {
     int index = this.close_buttons.index_of (source);
     assert (index >= 0);
-    message ("remove clicked");
 
-    this.buttons.remove_at (index);
-    this.close_buttons.remove_at (index);
-    this.queue_draw ();
+    AddImageButton2 aib = (AddImageButton2) this.buttons.get (index);
+    aib.deleted.connect (() => {
+      this.buttons.remove_at (index);
+      this.close_buttons.remove_at (index);
+      this.queue_draw ();
+    });
+
+    aib.start_remove ();
   }
 
   // GtkContainer API {{{
