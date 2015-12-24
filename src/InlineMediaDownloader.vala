@@ -31,6 +31,10 @@ bool is_media_candidate (string url) {
          url.has_prefix ("http://ow.ly/i/") ||
          url.has_prefix ("http://www.flickr.com/photos/") ||
          url.has_prefix ("https://www.flickr.com/photos/") ||
+         url.has_prefix ("http://flic.kr/p/") ||
+         url.has_prefix ("https://flic.kr/p/") ||
+         url.has_prefix ("http://flic.kr/s/") ||
+         url.has_prefix ("https://flic.kr/s/") ||
 #if VIDEO
          url.has_prefix ("https://vine.co/v/") ||
          url.has_suffix ("/photo/1") ||
@@ -179,7 +183,11 @@ public class InlineMediaDownloader : GLib.Object {
     } else if (url.has_prefix ("http://ow.ly/i/") ||
                url.has_prefix ("https://ow.ly/i/") ||
                url.has_prefix ("http://www.flickr.com/photos/") ||
-               url.has_prefix ("https://www.flickr.com/photos/")) {
+               url.has_prefix ("https://www.flickr.com/photos/") ||
+               url.has_prefix ("http://flic.kr/p/") ||
+               url.has_prefix ("https://flic.kr/p/") ||
+               url.has_prefix ("http://flic.kr/s/") ||
+               url.has_prefix ("https://flic.kr/s/")) {
       yield load_real_url (t, media, "<meta property=\"og:image\" content=\"(.*?)\"", 1);
     } else if (url.has_prefix("http://twitpic.com/")) {
       yield load_real_url (t, media,
