@@ -166,8 +166,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     if (tweet.user_id != account.id)
       ((GLib.SimpleAction)actions.lookup_action ("delete")).set_enabled (false);
 
-    if (tweet.user_id == account.id ||
-        tweet.is_flag_set (TweetState.PROTECTED))
+    if (tweet.is_flag_set (TweetState.PROTECTED))
       ((GLib.SimpleAction)actions.lookup_action ("quote")).set_enabled (false);
 
     reply_tweet.connect (reply_tweet_activated);
