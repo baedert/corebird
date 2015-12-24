@@ -87,16 +87,16 @@ void tweet_removal () {
 void clear () {
   var tm = new TweetModel ();
 
-  tm.add (new Tweet ());
-  tm.add (new Tweet ());
-  tm.add (new Tweet ());
-  tm.add (new Tweet ());
-  tm.add (new Tweet ());
-  tm.add (new Tweet ());
-  tm.add (new Tweet ());
-  tm.add (new Tweet ());
+  const int n = 10;
 
-  assert (tm.get_n_items () == 8);
+  for (int i = 0; i < n; i++) {
+    var t = new Tweet ();
+    t.id = 100 + i;
+
+    tm.add (t);
+  }
+
+  assert (tm.get_n_items () == n);
 
   tm.clear ();
   assert (tm.get_n_items () == 0);
@@ -135,7 +135,7 @@ void remove_own_retweet () {
 
   tm.add (t1);
 
-  for (int i = 0; i < 50; i ++) {
+  for (int i = 1; i < 51; i ++) {
     var t = new Tweet ();
     t.id = i;
     tm.add (t);
@@ -155,6 +155,7 @@ void hide_rt () {
   var tm = new TweetModel ();
 
   var t1 = new Tweet ();
+  t1.id = 100;
   t1.source_tweet = new MiniTweet ();
   t1.source_tweet.author = UserIdentity ();
   t1.source_tweet.author.id = 10;
