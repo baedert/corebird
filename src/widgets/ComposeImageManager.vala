@@ -96,19 +96,25 @@ class ComposeImageManager : Gtk.Container {
     Gtk.Allocation close_allocation = {};
     close_allocation.y = allocation.y;
     for (int i = 0, p = this.buttons.size; i < p; i ++) {
-      Gtk.Widget btn = this.buttons.get (i);
-      btn.size_allocate (child_allocation);
+      int imp;
+      int min, nat;
 
-      int draw_width, draw_height;
-      ((AddImageButton2)btn).get_draw_size (out draw_width, out draw_height, null);
+      AddImageButton2 aib = this.buttons.get (i);
+      aib.get_preferred_width_for_height (allocation.height, out min, out nat);
+
+      int width = int.min (nat, allocation.width / buttons.size);
+
+      child_allocation.width = width;
+      aib.size_allocate (child_allocation);
+
 
       int m, n;
-      btn = this.close_buttons.get (i);
+      Gtk.Widget btn = this.close_buttons.get (i);
       btn.get_preferred_width (out close_allocation.width, out n);
       btn.get_preferred_height (out close_allocation.height, out n);
-      close_allocation.x = child_allocation.x + draw_width - close_allocation.width + 10;
+      close_allocation.x = child_allocation.x + child_allocation.width
+                           - close_allocation.width + 10;
       btn.size_allocate (close_allocation);
-
 
       child_allocation.x += child_allocation.width;
     }

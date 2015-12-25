@@ -110,7 +110,7 @@ class AddImageButton2 : Gtk.Widget {
     int media_width;
     int media_height;
 
-      if (this.surface == null) {
+    if (this.surface == null) {
       media_width = MIN_WIDTH;
       media_height = MAX_HEIGHT;
     } else {
@@ -121,7 +121,27 @@ class AddImageButton2 : Gtk.Widget {
     double width_ratio = (double)width / (double) media_width;
     int height = int.min (media_height, (int)(media_height * width_ratio));
     height = int.min (MAX_HEIGHT, height);
-    minimum = natural = height;
+    minimum = natural = (int)(height * this.delete_factor);
+  }
+
+  public override void get_preferred_width_for_height (int height,
+                                                       out int minimum,
+                                                       out int natural) {
+    int media_width;
+    int media_height;
+
+    if (this.surface == null) {
+      media_width = MIN_WIDTH;
+      media_height = MAX_HEIGHT;
+    } else {
+      media_width = this.surface.get_width ();
+      media_height = this.surface.get_height ();
+    }
+
+    double height_ratio = (double)height / (double) media_height;
+    int width = int.min (media_width, (int)(media_width * height_ratio));
+    width = int.max (MIN_WIDTH, width);
+    minimum = natural = (int)(width * this.delete_factor);
   }
 
   public override void get_preferred_width (out int minimum,
@@ -141,13 +161,13 @@ class AddImageButton2 : Gtk.Widget {
                                Gdk.FrameClock frame_clock) {
     uint64 now = frame_clock.get_frame_time ();
 
-    double t = 1.0 - (now - this.delete_transition_start) / (double)TRANSITION_DURATION;
+    double t = (now - this.delete_transition_start) / (double)TRANSITION_DURATION;
 
     t = ease_out_cubic (t);
-    this.delete_factor = t;
+    this.delete_factor = 1.0 - t;
     this.queue_resize ();
 
-    if (t <= 0) {
+    if (t >= 1.0) {
       this.delete_factor = 0.0;
       this.deleted ();
       return GLib.Source.REMOVE;
