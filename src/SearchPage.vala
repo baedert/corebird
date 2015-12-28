@@ -37,6 +37,8 @@ class SearchPage : IPage, Gtk.Box {
   private Gtk.Label tweets_header;
   [GtkChild]
   private ScrollWidget scroll_widget;
+  [GtkChild]
+  private Gtk.ComboBoxText trends_location_combobox;
   private Gtk.RadioButton radio_button;
   public DeltaUpdater delta_updater;
   private LoadMoreEntry load_more_entry = new LoadMoreEntry ();
@@ -88,6 +90,8 @@ class SearchPage : IPage, Gtk.Box {
       this.remove_content_timeout = 0;
     }
 
+    if (this.account.trend_woeid_selection == -1)
+		show_trends_locations();
 
     if (term == null) {
       if (last_focus_widget != null &&
@@ -318,6 +322,24 @@ class SearchPage : IPage, Gtk.Box {
 
   public bool handles_double_open () {
     return true;
+  }
+
+  private void show_trends_locations() {
+    int i = 0;
+    foreach (string location in this.account.woeid_with_trends.keys) {
+        this.trends_location_combobox.insert (i, null, location);
+        if (this.account.trend_woeid_selection == -1 && location == "Worldwide")  {
+  			this.trends_location_combobox.set_active (i);
+        } else if (this.account.trend_woeid_selection == this.account.woeid_with_trends[location]) {
+  			this.trends_location_combobox.set_active (i);
+  		}
+        i++;
+      }
+  	this.trends_location_combobox.changed.connect (this.get_trends_woeid_selection);
+  }
+
+  private void get_trends_woeid_selection(Gtk.ComboBox combobox) {
+
   }
 }
 

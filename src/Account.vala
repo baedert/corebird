@@ -35,7 +35,9 @@ public class Account : GLib.Object {
   public int64[] blocked;
   public int64[] muted;
   public int64[] disabled_rts;
+  public int trend_woeid_selection = -1;
   public Gee.ArrayList<Filter> filters;
+  public Gee.HashMap<string, int> woeid_with_trends;
   public signal void info_changed (string screen_name, string name,
                                    Cairo.Surface avatar_small, Cairo.Surface avatar);
 
@@ -223,7 +225,7 @@ public class Account : GLib.Object {
   }
 
   public async void init_information () {
-    var collect_obj = new Collect (4);
+    var collect_obj = new Collect (5);
     collect_obj.finished.connect (() => {
       init_information.callback ();
     });
@@ -251,6 +253,13 @@ public class Account : GLib.Object {
       if (arr != null) {
         this.set_muted (arr);
         collect_obj.emit ();
+      }
+    });
+    load_id_array.begin (collect_obj, "1.1/trends/available.json", true, (obj, res) => {
+      Json.Array? arr = load_id_array.end (res);
+      if (arr != null) {
+		  this.set_locations_with_trends (arr);
+		  collect_obj.emit ();
       }
     });
 
@@ -536,6 +545,21 @@ public class Account : GLib.Object {
         return true;
 
     return false;
+  }
+
+  public void set_locations_with_trends(Json.Array arr) {
+	  Json.Object obj;
+	  this.woeid_with_trends = new Gee.HashMap<string, int> ();
+	  for(int i = 0; i < arr.get_length (); i++) {
+	  	obj = arr.get_object_element (i);
+	  	if (obj.has_member ("name") && obj.has_member ("woeid")) {
+            string woeid64 = obj.get_int_member ("woeid").to_string ();
+            int woeid = int.parse(woeid64); // a woeid is a 32-bit identifier
+            this.woeid_with_trends.set (obj.get_string_member ("name"), woeid);
+	  	} else {
+	  		warning ("Locations that have Trending Topics not obtained");
+	  	}
+  	  }
   }
 
   /** Static stuff ********************************************************************/
