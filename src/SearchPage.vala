@@ -95,7 +95,6 @@ class SearchPage : IPage, Gtk.Box {
     }
 
     show_trends_locations ();
-    this.trends_location.show ();
     show_trending_topics ();
 
     if (term == null) {
@@ -330,6 +329,9 @@ class SearchPage : IPage, Gtk.Box {
   }
 
   private void show_trends_locations () {
+    this.tweet_list.hide ();
+    this.scroll_widget.hide ();
+
     int i = 0;
     foreach (string location in this.account.woeid_with_trends.keys) {
         this.trends_location_combobox.insert (i, null, location);
@@ -340,6 +342,8 @@ class SearchPage : IPage, Gtk.Box {
   		}
         i++;
       }
+
+    this.trends_location.show ();
   	this.trends_location_combobox.changed.connect (this.get_trends_woeid_selection);
   }
 
@@ -349,38 +353,38 @@ class SearchPage : IPage, Gtk.Box {
       	if (location == location_selected) {
       		this.account.trend_woeid_selection = this.account.woeid_with_trends[location];
             this.account.get_trending_topics ();
-            show_trending_topics ();
+            GLib.Timeout.add_seconds (3, (GLib.SourceFunc) show_trending_topics);
       	}
       }
   }
 
-  private void show_trending_topics () {
+  private bool show_trending_topics () {
       if (this.trends_list == null) {
-           this.trends_list = new Gtk.ListBox ();
+          this.trends_list = new Gtk.ListBox ();
       } else {
-           foreach (Gtk.Widget child in this.trends_list.get_children ())
-                this.trends_list.remove (child);
+          foreach (Gtk.Widget child in this.trends_list.get_children ()) {
+            this.trends_list.remove (child);
+          }
       }
 
       int j = 0;
-      Gtk.Button topic_item[10];
+      Gtk.Button topic_item;
       foreach (string topic in this.account.trending_topics) {
-           topic_item[j] = new Gtk.Button.with_label (topic);
-           topic_item[j].clicked.connect (this.get_selected_topic);
-           trends_list.insert (topic_item[j], j);
-           j++;
+           topic_item = new Gtk.Button.with_label (topic);
+           topic_item.clicked.connect (this.get_selected_topic);
+           trends_list.insert (topic_item, ++j);
       }
-
-      this.scroll_widget.hide ();
       this.trends_list.show_all ();
+
+      return false;
   }
 
   private void get_selected_topic (Gtk.Button topic) {
-      string topic_selected = topic.get_label ();
-      search_for (topic_selected, true);
+      search_for (topic.get_label (), true);
       this.trends_list.hide ();
       this.trends_location.hide ();
       this.scroll_widget.show ();
+      this.tweet_list.show ();
   }
 
 }
