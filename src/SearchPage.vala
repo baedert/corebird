@@ -335,7 +335,7 @@ class SearchPage : IPage, Gtk.Box {
     int i = 0;
     foreach (string location in this.account.woeid_with_trends.keys) {
         this.trends_location_combobox.insert (i, null, location);
-        if (this.account.trend_woeid_selection == -1 && location == "Worldwide")  {
+        if (this.account.trend_woeid_selection == null && location == "Worldwide")  {
   			this.trends_location_combobox.set_active (i);
         } else if (this.account.trend_woeid_selection == this.account.woeid_with_trends[location]) {
   			this.trends_location_combobox.set_active (i);
@@ -351,7 +351,7 @@ class SearchPage : IPage, Gtk.Box {
       string location_selected = this.trends_location_combobox.get_active_text ();
       foreach (string location in this.account.woeid_with_trends.keys) {
       	if (location == location_selected) {
-      		this.account.trend_woeid_selection = this.account.woeid_with_trends[location];
+      		this.account.trend_woeid_selection = this.account.woeid_with_trends[location].to_string ();
             this.account.get_trending_topics ();
             GLib.Timeout.add_seconds (3, (GLib.SourceFunc) show_trending_topics);
       	}
