@@ -30,6 +30,8 @@ class SearchPage : IPage, Gtk.Box {
   [GtkChild]
   private Gtk.Button search_button;
   [GtkChild]
+  private Gtk.ListBox trends_list;
+  [GtkChild]
   private TweetListBox tweet_list;
   [GtkChild]
   private Gtk.Label users_header;
@@ -37,6 +39,8 @@ class SearchPage : IPage, Gtk.Box {
   private Gtk.Label tweets_header;
   [GtkChild]
   private ScrollWidget scroll_widget;
+  [GtkChild]
+  private Gtk.Box trends_location;
   [GtkChild]
   private Gtk.ComboBoxText trends_location_combobox;
   private Gtk.RadioButton radio_button;
@@ -90,8 +94,9 @@ class SearchPage : IPage, Gtk.Box {
       this.remove_content_timeout = 0;
     }
 
-    if (this.account.trend_woeid_selection == -1)
-		show_trends_locations();
+    show_trends_locations ();
+    this.trends_location.show ();
+    show_trending_topics ();
 
     if (term == null) {
       if (last_focus_widget != null &&
@@ -343,10 +348,41 @@ class SearchPage : IPage, Gtk.Box {
       foreach (string location in this.account.woeid_with_trends.keys) {
       	if (location == location_selected) {
       		this.account.trend_woeid_selection = this.account.woeid_with_trends[location];
-      		this.account.get_trending_topics ();
+            this.account.get_trending_topics ();
+            show_trending_topics ();
       	}
       }
   }
+
+  private void show_trending_topics () {
+      if (this.trends_list == null) {
+           this.trends_list = new Gtk.ListBox ();
+      } else {
+           foreach (Gtk.Widget child in this.trends_list.get_children ())
+                this.trends_list.remove (child);
+      }
+
+      int j = 0;
+      Gtk.Button topic_item[10];
+      foreach (string topic in this.account.trending_topics) {
+           topic_item[j] = new Gtk.Button.with_label (topic);
+           topic_item[j].clicked.connect (this.get_selected_topic);
+           trends_list.insert (topic_item[j], j);
+           j++;
+      }
+
+      this.scroll_widget.hide ();
+      this.trends_list.show_all ();
+  }
+
+  private void get_selected_topic (Gtk.Button topic) {
+      string topic_selected = topic.get_label ();
+      search_for (topic_selected, true);
+      this.trends_list.hide ();
+      this.trends_location.hide ();
+      this.scroll_widget.show ();
+  }
+
 }
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/load-more-entry.ui")]

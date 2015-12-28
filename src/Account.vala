@@ -569,31 +569,31 @@ public class Account : GLib.Object {
       if (this.trending_topics == null)
         this.trending_topics = new string[10];
 
-        var call = this.proxy.new_call ();
-        call.set_function ("1.1/trends/place.json");
-        call.set_method ("GET");
+      var call = this.proxy.new_call ();
+      call.set_function ("1.1/trends/place.json");
+      call.set_method ("GET");
 
-        if (this.trend_woeid_selection == -1) {
-            call.add_param ("id", "1");
-        } else {
-            call.add_param ("id", this.trend_woeid_selection.to_string ());
-        }
+      if (this.trend_woeid_selection == -1) {
+        call.add_param ("id", "1");
+      } else {
+        call.add_param ("id", this.trend_woeid_selection.to_string ());
+      }
 
-        Json.Node? root = null;
-        try {
-          root = yield TweetUtils.load_threaded (call, null);
-        } catch (GLib.Error e) {
-          warning (e.message);
-        }
+      Json.Node? root = null;
+      try {
+        root = yield TweetUtils.load_threaded (call, null);
+      } catch (GLib.Error e) {
+        warning (e.message);
+      }
 
-        Json.Array? res = root.get_array ();
-        Json.Object? obj = res.get_object_element (0);
-        Json.Array? arr = obj.get_array_member ("trends");
-        Json.Object? trend;
-        for (int i = 0; i < 10; i++) {
-            trend = arr.get_object_element (i);
-            this.trending_topics[i] = trend.get_string_member ("name");
-        }
+      Json.Array? res = root.get_array ();
+      Json.Object? obj = res.get_object_element (0);
+      Json.Array? arr = obj.get_array_member ("trends");
+      Json.Object? trend;
+      for (int i = 0; i < 10; i++) {
+        trend = arr.get_object_element (i);
+        this.trending_topics[i] = trend.get_string_member ("name");
+      }
   }
 
   /** Static stuff ********************************************************************/
