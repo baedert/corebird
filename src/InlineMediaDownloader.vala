@@ -21,7 +21,7 @@ bool is_media_candidate (string url) {
   if (Settings.max_media_size () < 0.001)
     return false;
 
-  return url.has_prefix ("http://instagra.am") ||
+  return url.has_prefix ("http://instagr.am") ||
          url.has_prefix ("http://instagram.com/p/") ||
          url.has_prefix ("https://instagr.am") ||
          url.has_prefix ("https://instagram.com/p/") ||
