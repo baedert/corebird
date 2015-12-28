@@ -324,7 +324,7 @@ class SearchPage : IPage, Gtk.Box {
     return true;
   }
 
-  private void show_trends_locations() {
+  private void show_trends_locations () {
     int i = 0;
     foreach (string location in this.account.woeid_with_trends.keys) {
         this.trends_location_combobox.insert (i, null, location);
@@ -338,8 +338,14 @@ class SearchPage : IPage, Gtk.Box {
   	this.trends_location_combobox.changed.connect (this.get_trends_woeid_selection);
   }
 
-  private void get_trends_woeid_selection(Gtk.ComboBox combobox) {
-
+  private void get_trends_woeid_selection (Gtk.ComboBox combobox) {
+      string location_selected = this.trends_location_combobox.get_active_text ();
+      foreach (string location in this.account.woeid_with_trends.keys) {
+      	if (location == location_selected) {
+      		this.account.trend_woeid_selection = this.account.woeid_with_trends[location];
+      		this.account.get_trending_topics ();
+      	}
+      }
   }
 }
 

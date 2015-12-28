@@ -35,6 +35,7 @@ public class Account : GLib.Object {
   public int64[] blocked;
   public int64[] muted;
   public int64[] disabled_rts;
+  public string[] trending_topics;
   public int trend_woeid_selection = -1;
   public Gee.ArrayList<Filter> filters;
   public Gee.HashMap<string, int> woeid_with_trends;
@@ -262,6 +263,8 @@ public class Account : GLib.Object {
 		  collect_obj.emit ();
       }
     });
+
+    this.get_trending_topics ();
 
     yield;
   }
@@ -547,7 +550,7 @@ public class Account : GLib.Object {
     return false;
   }
 
-  public void set_locations_with_trends(Json.Array arr) {
+  public void set_locations_with_trends (Json.Array arr) {
 	  Json.Object obj;
 	  this.woeid_with_trends = new Gee.HashMap<string, int> ();
 	  for(int i = 0; i < arr.get_length (); i++) {
@@ -560,6 +563,37 @@ public class Account : GLib.Object {
 	  		warning ("Locations that have Trending Topics not obtained");
 	  	}
   	  }
+  }
+
+  public async void get_trending_topics () {
+      if (this.trending_topics == null)
+        this.trending_topics = new string[10];
+
+        var call = this.proxy.new_call ();
+        call.set_function ("1.1/trends/place.json");
+        call.set_method ("GET");
+
+        if (this.trend_woeid_selection == -1) {
+            call.add_param ("id", "1");
+        } else {
+            call.add_param ("id", this.trend_woeid_selection.to_string ());
+        }
+
+        Json.Node? root = null;
+        try {
+          root = yield TweetUtils.load_threaded (call, null);
+        } catch (GLib.Error e) {
+          warning (e.message);
+        }
+
+        Json.Array? res = root.get_array ();
+        Json.Object? obj = res.get_object_element (0);
+        Json.Array? arr = obj.get_array_member ("trends");
+        Json.Object? trend;
+        for (int i = 0; i < 10; i++) {
+            trend = arr.get_object_element (i);
+            this.trending_topics[i] = trend.get_string_member ("name");
+        }
   }
 
   /** Static stuff ********************************************************************/
