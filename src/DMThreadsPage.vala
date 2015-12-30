@@ -86,6 +86,9 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     });
 
     thread_list.add (start_conversation_entry);
+
+    /* We need to do this here so we know which threads we already have cached */
+    load_cached ();
   }
 
   public void stream_message_received (StreamMessageType type, Json.Node root) {
@@ -109,7 +112,6 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 
 
     if (!initialized) {
-      load_cached ();
       load_newest ();
       initialized = true;
     }
@@ -227,7 +229,27 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     if (sender_id == account.id)
       return;
 
-    string text = dm_obj.get_string_member ("text");
+    string source_text = dm_obj.get_string_member ("text");
+
+    var urls = dm_obj.get_object_member ("entities").get_array_member ("urls");
+    var url_list = new TextEntity[urls.get_length ()];
+    urls.foreach_element((arr, index, node) => {
+      var url = node.get_object();
+      string expanded_url = url.get_string_member("expanded_url");
+
+      Json.Array indices = url.get_array_member ("indices");
+      url_list[index] = TextEntity() {
+        from = (int)indices.get_int_element (0),
+        to   = (int)indices.get_int_element (1) ,
+        display_text = url.get_string_member ("display_url"),
+        target = expanded_url.replace ("&", "&amp;"),
+        tooltip_text = expanded_url
+      };
+    });
+
+    string text = TextTransform.transform (source_text,
+                                           url_list,
+                                           TransformFlags.EXPAND_LINKS);
 
     if (thread_map.has_key(sender_id)) {
       var t_e = thread_map.get (sender_id);
@@ -237,39 +259,28 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       if (!user_id_visible (t_e.user_id)) {
         t_e.unread_count ++;
       }
+
+      string notification_text =
+             TextTransform.transform (source_text,
+                                      url_list,
+                                      TransformFlags.EXPAND_LINKS);
+
       t_e.last_message = text;
       t_e.last_message_id = message_id;
       account.db.update ("dm_threads").val ("last_message", text)
                                       .vali64 ("last_message_id", message_id)
                                       .where_eqi ("user_id", sender_id).run ();
-      t_e.notification_id = notify_new_dm (t_e, Utils.unescape_html (text));
+      t_e.notification_id = notify_new_dm (t_e, Utils.unescape_html (notification_text));
       thread_list.invalidate_sort ();
       return;
     }
-
-    var urls = dm_obj.get_object_member ("entities").get_array_member ("urls");
-    var url_list = new TextEntity[urls.get_length ()];
-    urls.foreach_element((arr, index, node) => {
-      var url = node.get_object();
-      string expanded_url = url.get_string_member("expanded_url");
-
-      Json.Array indices = url.get_array_member ("indices");
-      expanded_url = expanded_url.replace("&", "&amp;");
-      url_list[index] = TextEntity() {
-        from = (int)indices.get_int_element (0),
-        to   = (int)indices.get_int_element (1) ,
-        display_text = url.get_string_member ("display_url")
-      };
-    });
 
     var thread_entry = new DMThreadEntry (sender_id);
     var author = dm_obj.get_string_member ("sender_screen_name");
     string sender_name = dm_obj.get_object_member ("sender").get_string_member ("name").strip ();
     thread_entry.name = sender_name.replace ("&", "&amp;");
     thread_entry.screen_name = author;
-    thread_entry.last_message = TextTransform.transform (text,
-                                                         url_list,
-                                                         TransformFlags.EXPAND_LINKS);
+    thread_entry.last_message = text;
     thread_entry.last_message_id = message_id;
     thread_list.add(thread_entry);
     thread_list.invalidate_sort ();
@@ -304,11 +315,11 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
         string expanded_url = url.get_string_member("expanded_url");
 
         Json.Array indices = url.get_array_member ("indices");
-        expanded_url = expanded_url.replace("&", "&amp;");
         url_list[index] = TextEntity() {
           from = (int)indices.get_int_element (0),
           to   = (int)indices.get_int_element (1) ,
-          target = expanded_url,
+          target = expanded_url.replace ("&", "&amp;"),
+          tooltip_text = expanded_url,
           display_text = url.get_string_member ("display_url")
         };
       });

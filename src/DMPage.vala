@@ -116,11 +116,11 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
           string expanded_url = url.get_string_member("expanded_url");
 
           Json.Array indices = url.get_array_member ("indices");
-          expanded_url = expanded_url.replace("&", "&amp;");
           url_list[index] = TextEntity() {
             from = (int)indices.get_int_element (0),
             to   = (int)indices.get_int_element (1) ,
-            target = expanded_url,
+            target = expanded_url.replace ("&", "&amp;"),
+            tooltip_text = expanded_url,
             display_text = url.get_string_member ("display_url")
           };
         });
@@ -131,7 +131,7 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
 
       var sender = obj.get_object_member ("sender");
       var new_msg = new DMListEntry ();
-      new_msg.text = obj.get_string_member ("text");
+      new_msg.text = text;
       new_msg.name = sender.get_string_member ("name");
       new_msg.screen_name = sender.get_string_member ("screen_name");
       new_msg.avatar_url = sender.get_string_member ("profile_image_url");
