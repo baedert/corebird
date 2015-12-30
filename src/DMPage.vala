@@ -131,7 +131,7 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
 
       var sender = obj.get_object_member ("sender");
       var new_msg = new DMListEntry ();
-      new_msg.text = obj.get_string_member ("text");
+      new_msg.text = text;
       new_msg.name = sender.get_string_member ("name");
       new_msg.screen_name = sender.get_string_member ("screen_name");
       new_msg.avatar_url = sender.get_string_member ("profile_image_url");
