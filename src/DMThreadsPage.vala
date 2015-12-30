@@ -238,12 +238,12 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       string expanded_url = url.get_string_member("expanded_url");
 
       Json.Array indices = url.get_array_member ("indices");
-      //expanded_url = expanded_url.replace("&", "&amp;");
       url_list[index] = TextEntity() {
         from = (int)indices.get_int_element (0),
         to   = (int)indices.get_int_element (1) ,
         display_text = url.get_string_member ("display_url"),
-        target = expanded_url
+        target = expanded_url.replace ("&", "&amp;"),
+        tooltip_text = expanded_url
       };
     });
 
@@ -264,7 +264,6 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
              TextTransform.transform (source_text,
                                       url_list,
                                       TransformFlags.EXPAND_LINKS);
-                                      //TransformFlags.ADD_PROTOCOL);
 
       t_e.last_message = text;
       t_e.last_message_id = message_id;
@@ -316,11 +315,11 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
         string expanded_url = url.get_string_member("expanded_url");
 
         Json.Array indices = url.get_array_member ("indices");
-        expanded_url = expanded_url.replace("&", "&amp;");
         url_list[index] = TextEntity() {
           from = (int)indices.get_int_element (0),
           to   = (int)indices.get_int_element (1) ,
-          target = expanded_url,
+          target = expanded_url.replace ("&", "&amp;"),
+          tooltip_text = expanded_url,
           display_text = url.get_string_member ("display_url")
         };
       });

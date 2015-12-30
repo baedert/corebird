@@ -116,11 +116,11 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
           string expanded_url = url.get_string_member("expanded_url");
 
           Json.Array indices = url.get_array_member ("indices");
-          expanded_url = expanded_url.replace("&", "&amp;");
           url_list[index] = TextEntity() {
             from = (int)indices.get_int_element (0),
             to   = (int)indices.get_int_element (1) ,
-            target = expanded_url,
+            target = expanded_url.replace ("&", "&amp;"),
+            tooltip_text = expanded_url,
             display_text = url.get_string_member ("display_url")
           };
         });
