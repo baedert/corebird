@@ -91,7 +91,7 @@ class ComposeImageManager : Gtk.Container {
     child_allocation.x = allocation.x;
     child_allocation.y = allocation.y + 10;
     child_allocation.width = allocation.width / buttons.size;
-    child_allocation.height = allocation.height - 10;
+    child_allocation.height = int.max (allocation.height - 10, 0);
 
     Gtk.Allocation close_allocation = {};
     close_allocation.y = allocation.y;
@@ -155,8 +155,10 @@ class ComposeImageManager : Gtk.Container {
     for (int i = 0, p = this.buttons.size; i < p; i ++) {
       Gtk.Widget btn = this.buttons.get (i);
       this.propagate_draw (btn, ct);
+    }
 
-      btn = this.close_buttons.get (i);
+    for (int i = 0, p = this.close_buttons.size; i < p; i ++) {
+      var btn = this.close_buttons.get (i);
       this.propagate_draw (btn, ct);
     }
 
