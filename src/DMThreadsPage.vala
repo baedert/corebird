@@ -86,6 +86,9 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     });
 
     thread_list.add (start_conversation_entry);
+
+    /* We need to do this here so we know which threads we already have cached */
+    load_cached ();
   }
 
   public void stream_message_received (StreamMessageType type, Json.Node root) {
@@ -109,7 +112,6 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 
 
     if (!initialized) {
-      load_cached ();
       load_newest ();
       initialized = true;
     }
