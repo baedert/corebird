@@ -113,13 +113,13 @@ public class Corebird : Gtk.Application {
   }
 
   private void show_shortcuts_activated () {
-    if (Gtk.MAJOR_VERSION == 3 && Gtk.MINOR_VERSION >= 19) {
+    if (Gtk.get_major_version () == 3 && Gtk.get_minor_version () >= 19) {
       var builder = new Gtk.Builder.from_resource ("/org/baedert/corebird/ui/shortcuts-window.ui");
       var shortcuts_window = (Gtk.Window) builder.get_object ("shortcuts_window");
       shortcuts_window.show ();
     } else {
-      warning ("The shortcuts window is only available in gtk+ >= 3.20, version is %d.%d",
-               Gtk.MAJOR_VERSION, Gtk.MINOR_VERSION);
+      warning ("The shortcuts window is only available in gtk+ >= 3.20, version is %u.%u",
+               Gtk.get_major_version (), Gtk.get_minor_version ());
     }
   }
 
