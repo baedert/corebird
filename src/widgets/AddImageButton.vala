@@ -20,6 +20,7 @@
 class AddImageButton2 : Gtk.Widget {
   private static const int MIN_WIDTH  = 40;
   private static const int MAX_HEIGHT = 150;
+  private static const int ICON_SIZE  = 32;
   public string image_path;
   public Cairo.ImageSurface? surface;
 
@@ -56,6 +57,7 @@ class AddImageButton2 : Gtk.Widget {
   public override bool draw (Cairo.Context ct) {
     int widget_width = get_allocated_width ();
     int widget_height = get_allocated_height ();
+    var style_context = this.get_style_context ();
 
     /* Draw thumbnail */
     if (this.surface != null) {
@@ -75,9 +77,13 @@ class AddImageButton2 : Gtk.Widget {
       ct.fill ();
       ct.restore ();
 
-      var sc = this.get_style_context ();
-      sc.render_background (ct, draw_x, 0, draw_width, draw_height);
-      sc.render_frame      (ct, draw_x, 0, draw_width, draw_height);
+      style_context.render_check (ct,
+                                  (widget_width / 2.0) - (ICON_SIZE / 2.0),
+                                  (widget_height / 2.0) - (ICON_SIZE / 2.0),
+                                  ICON_SIZE,
+                                  ICON_SIZE);
+
+
     }
 
     //else {
