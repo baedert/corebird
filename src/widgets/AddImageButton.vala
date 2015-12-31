@@ -49,8 +49,8 @@ class AddImageButton2 : Gtk.Widget {
 
     scale = double.min (double.min (scale_x, scale_y), 1.0) * delete_factor;
 
-    width  = (int)(this.surface.get_width ()  * scale * delete_factor);
-    height = (int)(this.surface.get_height () * scale * delete_factor);
+    width  = (int)(this.surface.get_width ()  * scale);
+    height = (int)(this.surface.get_height () * scale);
   }
 
   public override bool draw (Cairo.Context ct) {
@@ -71,7 +71,7 @@ class AddImageButton2 : Gtk.Widget {
       draw_x = 0;
 
       ct.scale (scale, scale);
-      ct.set_source_surface (this.surface, draw_x / scale, 0);
+      ct.set_source_surface (this.surface, draw_x, 0);
       ct.fill ();
       ct.restore ();
 
@@ -161,14 +161,14 @@ class AddImageButton2 : Gtk.Widget {
                                Gdk.FrameClock frame_clock) {
     uint64 now = frame_clock.get_frame_time ();
 
-    double t = (now - this.delete_transition_start) / (double)TRANSITION_DURATION;
+    double t = (now - this.delete_transition_start) / (double)(TRANSITION_DURATION* 1);
 
     t = ease_out_cubic (t);
     this.delete_factor = 1.0 - t;
     this.queue_resize ();
 
     if (t >= 1.0) {
-      this.delete_factor = 0.0;
+      this.delete_factor = 1.0;
       this.deleted ();
       return GLib.Source.REMOVE;
     }
