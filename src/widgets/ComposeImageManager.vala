@@ -25,6 +25,16 @@ class ComposeImageManager : Gtk.Container {
     }
   }
 
+  static construct {
+    if (Gtk.get_major_version () == 3 && Gtk.get_minor_version () >= 19) {
+      var screen = Gdk.Screen.get_default ();
+      var provider = new Gtk.CssProvider ();
+      provider.load_from_data (".close-button{min-width:0px;min-height:0px;}", -1);
+      Gtk.StyleContext.add_provider_for_screen (screen, provider,
+                                                Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+    }
+  }
+
   construct {
     this.buttons = new Gee.ArrayList<AddImageButton2> ();
     this.close_buttons = new Gee.ArrayList<Gtk.Button> ();
