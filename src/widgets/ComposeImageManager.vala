@@ -213,6 +213,14 @@ class ComposeImageManager : Gtk.Container {
   public void end_progress (string image_path, string? error_message) {
     foreach (var btn in this.buttons) {
       if (btn.image_path == image_path) {
+        btn.get_style_context ().remove_class ("image-progress");
+
+        if (error_message == null) {
+          btn.get_style_context ().add_class ("image-success");
+        } else {
+          warning ("%s: %s", image_path, error_message);
+          btn.get_style_context ().add_class ("image-error");
+        }
         break;
       }
     }
