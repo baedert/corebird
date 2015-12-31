@@ -202,6 +202,19 @@ class ComposeImageManager : Gtk.Container {
   }
 
   public void start_progress (string image_path) {
+    foreach (var btn in this.buttons) {
+      if (btn.image_path == image_path) {
+        btn.get_style_context ().add_class ("image-progress");
+        break;
+      }
+    }
+  }
 
+  public void end_progress (string image_path, string? error_message) {
+    foreach (var btn in this.buttons) {
+      if (btn.image_path == image_path) {
+        break;
+      }
+    }
   }
 }

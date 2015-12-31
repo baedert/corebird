@@ -179,25 +179,11 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     }
 
     job.image_upload_started.connect ((path) => {
-      foreach (var btn in this.image_buttons) {
-        //if (btn.image_path == path) {
-          //btn.start_progress ();
-          //break;
-        //}
-      }
+      this.compose_image_manager.start_progress (path);
     });
 
-
     job.image_upload_finished.connect ((path, error_msg) => {
-      foreach (var btn in this.image_buttons) {
-        //if (btn.image_path == path) {
-          //if (error_msg == null)
-            //btn.set_success ();
-          //else
-            //btn.set_error (error_msg);
-          //break;
-        //}
-      }
+      this.compose_image_manager.end_progress (path, error_msg);
     });
 
     job.start.begin (cancellable, () => {
