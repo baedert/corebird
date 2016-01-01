@@ -54,16 +54,20 @@ public class BadgeRadioButton : Gtk.RadioButton {
 
 
     Gtk.Allocation child_allocation;
+    Gtk.Allocation allocation;
     this.get_child ().get_allocation (out child_allocation);
+    this.get_allocation (out allocation);
 
     var context = this.get_style_context ();
-    int x = child_allocation.x + child_allocation.width - BADGE_SIZE;
+    int x = allocation.x - child_allocation.x + child_allocation.width - BADGE_SIZE;
     int y = 5;
+
     context.save ();
     context.add_class ("badge");
     context.render_background (ct, x, y, BADGE_SIZE, BADGE_SIZE);
     context.render_frame      (ct, x, y, BADGE_SIZE, BADGE_SIZE);
     context.restore ();
+
     return Gdk.EVENT_PROPAGATE;
   }
 }
