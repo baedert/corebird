@@ -26,6 +26,7 @@ class ComposeImageManager : Gtk.Container {
   }
 
   static construct {
+    // TODO: Remove this once the required gtk+ version is >= 3.20
     if (Gtk.get_major_version () == 3 && Gtk.get_minor_version () >= 19) {
       var screen = Gdk.Screen.get_default ();
       var provider = new Gtk.CssProvider ();

@@ -226,9 +226,9 @@ public class Corebird : Gtk.Application {
       return mi;
   }
 
-  private void account_info_changed (Account    source,
-                                     string     screen_name,
-                                     string     s,
+  private void account_info_changed (Account       source,
+                                     string        screen_name,
+                                     string        s,
                                      Cairo.Surface a,
                                      Cairo.Surface b) {
     for (int i = 0; i < account_menu.get_n_items (); i++){
@@ -330,7 +330,7 @@ public class Corebird : Gtk.Application {
    * Note that this only works if the account is already properly
    * set up and won't warn or fail if if isn't.
    *
-   * @param screen_name The screen name of the account do add a
+   * @param screen_name The screen name of the account to add a
    *                    MainWindow for.
    *
    * @return true if a window has been opened, false otherwise

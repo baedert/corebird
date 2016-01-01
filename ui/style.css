@@ -127,8 +127,6 @@
   color: blue;
 }
 
-
-
 .favorite-button:backdrop,
 .retweet-button:backdrop {
   background-color: transparent;
