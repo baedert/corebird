@@ -33,7 +33,7 @@ public class Corebird : Gtk.Application {
     {"show-dm-thread",    show_dm_thread,          "(xx)" },
     {"show-window",       show_window,             "x"    },
     {"post-json",         post_json,               "(ss)" },
-    {"print-debug",       print_debug,                    }
+    {"print-debug",       print_debug,                    },
   };
 
 
@@ -202,6 +202,11 @@ public class Corebird : Gtk.Application {
 #endif
 
     this.add_action_entries (app_entries, this);
+
+    // TODO: Remove this once the required gtk version is >= 3.20
+    if (Gtk.get_major_version () == 3 && Gtk.get_minor_version () < 19) {
+      ((GLib.SimpleAction)this.lookup_action ("show-shortcuts")).set_enabled (false);
+    }
 
     // If the user wants the dark theme, apply it
     var gtk_s = Gtk.Settings.get_default ();
@@ -476,6 +481,4 @@ public class Corebird : Gtk.Application {
     } else
       error ("Window for %s is not open, so account isn't active.", screen_name);
   }
-
-
 }
