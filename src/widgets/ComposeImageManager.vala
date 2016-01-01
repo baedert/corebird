@@ -30,7 +30,11 @@ class ComposeImageManager : Gtk.Container {
     if (Gtk.get_major_version () == 3 && Gtk.get_minor_version () >= 19) {
       var screen = Gdk.Screen.get_default ();
       var provider = new Gtk.CssProvider ();
-      provider.load_from_data (".close-button{min-width:0px;min-height:0px;}", -1);
+      try {
+        provider.load_from_data (".close-button{min-width:0px;min-height:0px;}", -1);
+      } catch (GLib.Error e) {
+        warning (e.message);
+      }
       Gtk.StyleContext.add_provider_for_screen (screen, provider,
                                                 Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
     }
