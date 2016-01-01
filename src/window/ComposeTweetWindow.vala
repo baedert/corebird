@@ -43,7 +43,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   private unowned Account account;
   private unowned Tweet reply_to;
   private Mode mode;
-  private Gee.ArrayList<AddImageButton2> image_buttons;
+  private Gee.ArrayList<AddImageButton> image_buttons;
   private GLib.Cancellable? cancellable;
 
 
@@ -58,7 +58,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     this.tweet_text.set_account (acc);
     this.application = (Gtk.Application)GLib.Application.get_default ();
 
-    image_buttons = new Gee.ArrayList<AddImageButton2> ();
+    image_buttons = new Gee.ArrayList<AddImageButton> ();
     avatar_image.surface = acc.avatar;
 
     if (mode != Mode.QUOTE)

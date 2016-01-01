@@ -16,7 +16,7 @@
  */
 
 class ComposeImageManager : Gtk.Container {
-  private Gee.ArrayList<AddImageButton2> buttons;
+  private Gee.ArrayList<AddImageButton> buttons;
   private Gee.ArrayList<Gtk.Button>      close_buttons;
 
   public int n_images {
@@ -41,7 +41,7 @@ class ComposeImageManager : Gtk.Container {
   }
 
   construct {
-    this.buttons = new Gee.ArrayList<AddImageButton2> ();
+    this.buttons = new Gee.ArrayList<AddImageButton> ();
     this.close_buttons = new Gee.ArrayList<Gtk.Button> ();
     this.set_has_window (false);
   }
@@ -50,7 +50,7 @@ class ComposeImageManager : Gtk.Container {
     int index = this.close_buttons.index_of (source);
     assert (index >= 0);
 
-    AddImageButton2 aib = (AddImageButton2) this.buttons.get (index);
+    AddImageButton aib = (AddImageButton) this.buttons.get (index);
     aib.deleted.connect (() => {
       this.buttons.remove_at (index);
       this.close_buttons.remove_at (index);
@@ -72,7 +72,7 @@ class ComposeImageManager : Gtk.Container {
   public override void add (Gtk.Widget widget) {
     widget.set_parent (this);
     widget.set_parent_window (this.get_window ());
-    this.buttons.add ((AddImageButton2)widget);
+    this.buttons.add ((AddImageButton)widget);
     var btn = new Gtk.Button.from_icon_name ("window-close-symbolic");
     btn.set_parent (this);
     btn.get_style_context ().add_class ("image-button");
@@ -85,8 +85,8 @@ class ComposeImageManager : Gtk.Container {
   public override void remove (Gtk.Widget widget) {
     widget.unparent ();
     int index = 0;
-    if (widget is AddImageButton2)
-      this.buttons.remove ((AddImageButton2)widget);
+    if (widget is AddImageButton)
+      this.buttons.remove ((AddImageButton)widget);
     else
       this.close_buttons.remove ((Gtk.Button)widget);
   }
@@ -114,7 +114,7 @@ class ComposeImageManager : Gtk.Container {
       int imp;
       int min, nat;
 
-      AddImageButton2 aib = this.buttons.get (i);
+      AddImageButton aib = this.buttons.get (i);
       aib.get_preferred_width_for_height (allocation.height, out min, out nat);
 
       int width = int.min (nat, allocation.width / buttons.size);
@@ -184,7 +184,7 @@ class ComposeImageManager : Gtk.Container {
   public void load_image (string path) {
     Cairo.ImageSurface surface = (Cairo.ImageSurface) load_surface (path);
 
-    var button = new AddImageButton2 ();
+    var button = new AddImageButton ();
     button.surface = surface;
     button.image_path = path;
 
