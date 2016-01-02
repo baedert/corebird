@@ -16,17 +16,16 @@
  */
 
 
-string canonicalize_url (string url) {
-  string ret = url;
+string canonicalize_url (string *url) {
+  string *ret = url;
 
-  if (ret.has_prefix ("http://")) {
-    ret = ret.substring (7);
-  } else if (ret.has_prefix ("https://")) {
-    ret = ret.substring (8);
-  }
+  if (ret->has_prefix ("http://"))
+    ret = ret + 7;
+  else if (ret->has_prefix ("https://"))
+    ret = ret + 8;
 
-  if (ret.has_prefix ("www."))
-    ret = ret.substring (4);
+  if (ret->has_prefix ("www."))
+    ret = ret + 4;
 
   return ret;
 }
