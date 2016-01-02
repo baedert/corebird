@@ -188,7 +188,7 @@ public class InlineMediaDownloader : GLib.Object {
         url.has_prefix ("instagram.com/p/")) {
       yield load_instagram_url (t, media);
     } else if (url.has_prefix ("ow.ly/i/") ||
-               url.has_prefix ("www.flickr.com/photos/")) {
+               url.has_prefix ("flickr.com/photos/")) {
       yield load_real_url (t, media, "<meta property=\"og:image\" content=\"(.*?)\"", 1);
     } else if (url.has_prefix("twitpic.com/")) {
       yield load_real_url (t, media,
