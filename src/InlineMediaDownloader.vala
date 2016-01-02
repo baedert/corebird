@@ -16,28 +16,41 @@
  */
 
 
+string canonicalize_url (string url) {
+  string ret = url;
 
-bool is_media_candidate (string url) {
+  if (ret.has_prefix ("http://")) {
+    ret = ret.substring (7);
+  } else if (ret.has_prefix ("https://")) {
+    ret = ret.substring (8);
+  }
+
+  if (ret.has_prefix ("www."))
+    ret = ret.substring (4);
+
+  return ret;
+}
+
+
+bool is_media_candidate (string _url) {
   if (Settings.max_media_size () < 0.001)
     return false;
 
-  return url.has_prefix ("http://instagr.am") ||
-         url.has_prefix ("http://instagram.com/p/") ||
-         url.has_prefix ("https://instagr.am") ||
-         url.has_prefix ("https://instagram.com/p/") ||
-         (url.has_prefix ("http://i.imgur.com") && !url.has_suffix ("gifv")) ||
-         (url.has_prefix ("https://i.imgur.com") && !url.has_suffix ("gifv")) ||
-         url.has_prefix ("http://d.pr/i/") ||
-         url.has_prefix ("http://ow.ly/i/") ||
-         url.has_prefix ("http://www.flickr.com/photos/") ||
-         url.has_prefix ("https://www.flickr.com/photos/") ||
+  string url = canonicalize_url (_url);
+
+  return url.has_prefix ("instagr.am") ||
+         url.has_prefix ("instagram.com/p/") ||
+         (url.has_prefix ("i.imgur.com") && !url.has_suffix ("gifv")) ||
+         url.has_prefix ("d.pr/i/") ||
+         url.has_prefix ("ow.ly/i/") ||
+         url.has_prefix ("flickr.com/photos/") ||
 #if VIDEO
-         url.has_prefix ("https://vine.co/v/") ||
+         url.has_prefix ("vine.co/v/") ||
          url.has_suffix ("/photo/1") ||
-         url.has_prefix ("https://video.twimg.com/ext_tw_video/") ||
+         url.has_prefix ("video.twimg.com/ext_tw_video/") ||
 #endif
-         url.has_prefix ("http://pbs.twimg.com/media/") ||
-         url.has_prefix ("http://twitpic.com/")
+         url.has_prefix ("pbs.twimg.com/media/") ||
+         url.has_prefix ("twitpic.com/")
   ;
 }
 
@@ -170,25 +183,21 @@ public class InlineMediaDownloader : GLib.Object {
 
     /* If we get to this point, the image was not cached on disk and we
        *really* need to download it. */
-    string url = media.url;
-    if (url.has_prefix ("http://instagr.am") ||
-        url.has_prefix ("http://instagram.com/p/") ||
-        url.has_prefix ("https://instagr.am") ||
-        url.has_prefix ("https://instagram.com/p/")) {
+    string url = canonicalize_url (media.url);
+    if (url.has_prefix ("instagr.am") ||
+        url.has_prefix ("instagram.com/p/")) {
       yield load_instagram_url (t, media);
-    } else if (url.has_prefix ("http://ow.ly/i/") ||
-               url.has_prefix ("https://ow.ly/i/") ||
-               url.has_prefix ("http://www.flickr.com/photos/") ||
-               url.has_prefix ("https://www.flickr.com/photos/")) {
+    } else if (url.has_prefix ("ow.ly/i/") ||
+               url.has_prefix ("www.flickr.com/photos/")) {
       yield load_real_url (t, media, "<meta property=\"og:image\" content=\"(.*?)\"", 1);
-    } else if (url.has_prefix("http://twitpic.com/")) {
+    } else if (url.has_prefix("twitpic.com/")) {
       yield load_real_url (t, media,
                           "<meta name=\"twitter:image\" value=\"(.*?)\"", 1);
-    } else if (url.has_prefix ("https://vine.co/v/")) {
+    } else if (url.has_prefix ("vine.co/v/")) {
       yield load_real_url (t, media, "<meta property=\"og:image\" content=\"(.*?)\"", 1);
     } else if (url.has_suffix ("/photo/1")) {
       yield load_real_url (t, media, "<img src=\"(.*?)\" class=\"animated-gif-thumbnail", 1);
-    } else if (url.has_prefix ("http://d.pr/i/")) {
+    } else if (url.has_prefix ("d.pr/i/")) {
       yield load_real_url (t, media,
                           "<meta property=\"og:image\"\\s+content=\"(.*?)\"", 1);
     }
