@@ -150,7 +150,7 @@
         </child>
 
         <child>
-          <object class="GtkButton">
+          <object class="GtkButton" id="add_image_button">
             <property name="visible">true</property>
             <property name="label" translatable="yes">Add Image</property>
             <property name="halign">end</property>

@@ -40,6 +40,8 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   private Gtk.Stack title_stack;
   [GtkChild]
   private ComposeImageManager compose_image_manager;
+  [GtkChild]
+  private Gtk.Button add_image_button;
   private unowned Account account;
   private unowned Tweet reply_to;
   private Mode mode;
@@ -123,6 +125,12 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     ag.connect (Gdk.Key.Escape, 0, Gtk.AccelFlags.LOCKED, escape_pressed_cb);
     ag.connect (Gdk.Key.Return, Gdk.ModifierType.CONTROL_MASK, Gtk.AccelFlags.LOCKED,
         () => {start_send_tweet (); return true;});
+
+    this.compose_image_manager.image_removed.connect (() => {
+      if (this.compose_image_manager.n_images < Twitter.max_media_per_upload) {
+        this.add_image_button.sensitive = true;
+      }
+    });
 
     this.add_accel_group (ag);
   }
@@ -252,6 +260,9 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     if (fcd.run () == Gtk.ResponseType.ACCEPT) {
       string path = fcd.get_filename ();
       this.compose_image_manager.load_image (path);
+
+      if (this.compose_image_manager.n_images == Twitter.max_media_per_upload)
+        this.add_image_button.sensitive = false;
     }
     fcd.close ();
   }

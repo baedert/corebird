@@ -25,6 +25,8 @@ class ComposeImageManager : Gtk.Container {
     }
   }
 
+  public signal void image_removed ();
+
   static construct {
     // TODO: Remove this once the required gtk+ version is >= 3.20
     if (Gtk.get_major_version () == 3 && Gtk.get_minor_version () >= 19) {
@@ -54,6 +56,7 @@ class ComposeImageManager : Gtk.Container {
     aib.deleted.connect (() => {
       this.buttons.remove_at (index);
       this.close_buttons.remove_at (index);
+      this.image_removed ();
       this.queue_draw ();
     });
 
