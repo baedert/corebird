@@ -10,6 +10,7 @@
       </item>
       <item>
         <attribute name="label" translatable="yes">Shortcuts</attribute>
+        <attribute name="hidden-when">action-disabled</attribute>
         <attribute name="action">app.show-shortcuts</attribute>
       </item>
       <item>
