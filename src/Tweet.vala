@@ -427,7 +427,8 @@ public class Tweet : GLib.Object {
     this.retweet_count = (int)status.get_int_member ("retweet_count");
     this.favorite_count = (int)status.get_int_member ("favorite_count");
 
-    if (Utils.usable_json_value (status, "possibly_sensitive"))
+    if (Utils.usable_json_value (status, "possibly_sensitive") &&
+        status.get_boolean_member ("possibly_sensitive"))
       this.state |= TweetState.NSFW;
 
     this.source_tweet = parse_mini_tweet (status);
