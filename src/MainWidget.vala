@@ -29,7 +29,7 @@ public class MainWidget : Gtk.Box {
 
 
   [GtkChild]
-  private Gtk.Box left_box;
+  private Gtk.Box top_box;
   [GtkChild]
   private Gtk.Stack stack;
   [GtkChild]
@@ -82,7 +82,7 @@ public class MainWidget : Gtk.Box {
       page.create_radio_button (dummy_button);
       stack.add (page);
       if (page.get_radio_button () != null) {
-        left_box.add (page.get_radio_button ());
+        top_box.add (page.get_radio_button ());
         page.get_radio_button ().clicked.connect (() => {
           if (page.get_radio_button ().active && !page_switch_lock) {
             switch_page (page.id);

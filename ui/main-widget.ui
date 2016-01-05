@@ -13,7 +13,7 @@
           <property name="vexpand">false</property>
 
           <child>
-            <object class="GtkBox" id="left_box">
+            <object class="GtkBox" id="top_box">
               <property name="visible">true</property>
               <property name="can_focus">false</property>
               <property name="orientation">horizontal</property>
@@ -21,7 +21,6 @@
               <property name="hexpand">true</property>
               <property name="homogeneous">true</property>
               <style>
-                <class name="linked" />
                 <class name="sidebar" />
               </style>
             </object>
