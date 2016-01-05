@@ -429,6 +429,9 @@
                     <property name="orientation">vertical</property>
                     <property name="spacing">12</property>
                     <property name="valign">center</property>
+                    <style>
+                      <class name="dim-label" />
+                    </style>
                     <child>
                       <object class="GtkLabel">
                         <property name="visible">true</property>
@@ -445,7 +448,6 @@
                         <property name="label" translatable="yes">Show anyway</property>
                         <property name="halign">center</property>
                         <property name="valign">center</property>
-                        <property name="relief">none</property>
                         <signal name="clicked" handler="show_media_clicked_cb" />
                       </object>
                     </child>
