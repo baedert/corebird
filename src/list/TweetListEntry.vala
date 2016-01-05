@@ -153,7 +153,9 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     conversation_image.visible = (tweet.reply_id != 0);
 
     if (tweet.has_inline_media) {
-      if (tweet.is_flag_set (TweetState.NSFW))
+
+      if (tweet.is_flag_set (TweetState.NSFW) &&
+          Settings.hide_nsfw_content ())
         media_stack.visible_child_name = "nsfw";
       else
         media_stack.visible_child = mm_widget;

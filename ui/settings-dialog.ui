@@ -438,6 +438,29 @@
               </packing>
             </child>
 
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">true</property>
+                <property name="label" translatable="yes">Hide inappropriate content</property>
+                <property name="halign">end</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">4</property>
+              </packing>
+            </child>
+
+            <child>
+              <object class="GtkSwitch" id="hide_nsfw_content_switch">
+                <property name="visible">true</property>
+                <property name="halign">start</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">4</property>
+              </packing>
+            </child>
+
           </object>
           <packing>
             <property name="title" translatable="yes">Tweets</property>

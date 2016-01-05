@@ -40,6 +40,8 @@ class SettingsDialog : Gtk.Window {
   [GtkChild]
   private Gtk.Switch remove_media_links_switch;
   [GtkChild]
+  private Gtk.Switch hide_nsfw_content_switch;
+  [GtkChild]
   private Gtk.ListBox snippet_list_box;
 
   private TweetListEntry sample_tweet_entry;
@@ -69,6 +71,7 @@ class SettingsDialog : Gtk.Window {
     Settings.get ().bind ("double-click-activation", double_click_activation_switch,
                           "active", SettingsBindFlags.DEFAULT);
 
+    // Tweets page
 
     // Set up sample tweet {{{
     var sample_tweet = new Tweet ();
@@ -136,6 +139,10 @@ class SettingsDialog : Gtk.Window {
     remove_trailing_hashtags_switch.active = (TransformFlags.REMOVE_TRAILING_HASHTAGS in
                                               text_transform_flags);
     remove_media_links_switch.active = (TransformFlags.REMOVE_MEDIA_LINKS in text_transform_flags);
+
+
+    Settings.get ().bind ("hide-nsfw-content", hide_nsfw_content_switch, "active",
+                          SettingsBindFlags.DEFAULT);
 
 
     // Fill snippet list box
