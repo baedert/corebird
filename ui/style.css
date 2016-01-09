@@ -43,7 +43,7 @@
 
 .sidebar button .badge:backdrop,
 .sidebar .button .badge:backdrop {
-  background-color: transparent;
+  background-color: grey;
 }
 
 .inline-media {
