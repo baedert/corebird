@@ -29,6 +29,17 @@
       </object>
     </child>
 
+
+    <!-- Add this anyway so we can set the margins -->
+    <child internal-child="action_area">
+      <object class="GtkBox">
+        <property name="orientation">horizontal</property>
+        <property name="margin_top">12</property>
+      </object>
+    </child>
+
+
+
     <child internal-child="vbox">
       <object class="GtkBox">
         <property name="visible">true</property>
