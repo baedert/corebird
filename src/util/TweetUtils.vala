@@ -190,12 +190,12 @@ namespace TweetUtils {
     unichar c;
     int last_word_start = 0;
     int n_chars = text.char_count ();
-    int cur = 0;
-    for (int next = 0, c_n = 0; text.get_next_char (ref next, out c); c_n ++) {
+    int cur = 0; /* Byte Index */
 
+    for (int next = 0, c_n = 0; text.get_next_char (ref next, out c); c_n ++) {
       if (c == ' ' || c == '\n' || c_n == n_chars - 1) {
         if (c_n == n_chars - 1)
-          cur ++;
+          cur = next;
 
         string word = text.substring (last_word_start,
                                       cur - last_word_start);
@@ -203,8 +203,8 @@ namespace TweetUtils {
         if (word.length > 0)
           length += get_word_length (word);
 
-          if (c == ' ' || c == '\n')
-            length += 1;
+        if (c == ' ' || c == '\n')
+          length += 1;
 
         // Just adding one here is save since we made sure c is either ' ' or \n
         last_word_start = cur + 1;
