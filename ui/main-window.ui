@@ -63,12 +63,6 @@
               </object>
             </child>
             <child>
-              <object class="GtkSeparator" id="sep">
-                <property name="orientation">vertical</property>
-                <property name="visible">True</property>
-              </object>
-            </child>
-            <child>
               <object class="GtkToggleButton" id="compose_tweet_button">
                 <property name="visible">True</property>
                 <property name="tooltip_text" translatable="yes">Compose tweet</property>
