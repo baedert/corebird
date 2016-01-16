@@ -71,7 +71,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   public bool read_only {
     set {
       mm_widget.sensitive = !value;
-      name_button.read_only = value;
+      name_button.sensitive = !value;
       this._read_only = value;
     }
   }

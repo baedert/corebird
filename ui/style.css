@@ -160,10 +160,6 @@
   background-color: transparent;
 }
 
-.readonly-text-only-button {
-  color: currentColor;
-}
-
 .pixbuf-button {
   padding: 0px;
   background-image: none;
