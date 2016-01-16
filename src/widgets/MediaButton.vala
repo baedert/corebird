@@ -17,8 +17,10 @@
 
 private class MediaButton : Gtk.Widget {
   private static const int PLAY_ICON_SIZE = 32;
-  private static const int MIN_WIDTH      = 40;
   private static const int MAX_HEIGHT     = 200;
+  /* We use MIN_ constants in case the media has not yet been loaded */
+  private static const int MIN_HEIGHT     = 40;
+  private static const int MIN_WIDTH      = 40;
   private Gdk.Window? event_window = null;
   private unowned Media? _media;
   private static Cairo.Surface[] play_icons;
@@ -198,9 +200,39 @@ private class MediaButton : Gtk.Widget {
 
     double width_ratio = (double)width / (double) media_width;
     int height = int.min (media_height, (int)(media_height * width_ratio));
-    //height = int.min (MAX_HEIGHT, height);
-    height = int.min (height, media_height);
     minimum = natural = height;
+  }
+
+  public override void get_preferred_width_for_height (int height,
+                                                       out int minimum,
+                                                       out int natural) {
+    int media_width;
+    int media_height;
+
+    if (this._media == null || this._media.width == -1 || this._media.height == -1) {
+      media_width = MIN_WIDTH;
+      media_height = MAX_HEIGHT;
+    } else {
+      media_width = this._media.width;
+      media_height = this._media.height;
+    }
+
+    double height_ratio = (double)height / (double)media_height;
+    int width = int.min (media_width, (int)(media_width * height_ratio));
+    minimum = natural = width;
+  }
+
+  public override void get_preferred_height (out int minimum,
+                                             out int natural) {
+    int media_height;
+    if (this._media == null || this._media.width == -1) {
+      media_height = 1;
+    } else {
+      media_height = this._media.width;
+    }
+
+    minimum = int.min (media_height, MIN_HEIGHT);
+    natural = media_height;
   }
 
   public override void get_preferred_width (out int minimum,
