@@ -197,11 +197,14 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
     values_set = true;
 
+    // TODO All these settings signal connections with lots of tweets could be costly...
     Settings.get ().changed["text-transform-flags"].connect (transform_flags_changed_cb);
+    Settings.get ().changed["hide-nsfw-content"].connect (hide_nsfw_content_changed_cb);
   }
 
   ~TweetListEntry () {
     Settings.get ().changed["text-transform-flags"].disconnect (transform_flags_changed_cb);
+    Settings.get ().changed["hide-nsfw-content"].disconnect (hide_nsfw_content_changed_cb);
   }
 
   private void transform_flags_changed_cb () {
@@ -210,6 +213,14 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       this.quote_label.label = TextTransform.transform_tweet (tweet.quoted_tweet,
                                                               Settings.get_text_transform_flags ());
     }
+  }
+
+  private void hide_nsfw_content_changed_cb () {
+    if (this.tweet.is_flag_set (TweetState.NSFW) &&
+        Settings.hide_nsfw_content ())
+      this.media_stack.visible_child_name = "nsfw";
+    else
+      this.media_stack.visible_child = mm_widget;
   }
 
   private void media_clicked_cb (Media m, int index) {
