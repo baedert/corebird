@@ -179,8 +179,7 @@ public class InlineMediaDownloader : GLib.Object {
       yield;
     }
 
-    /* If we get to this point, the image was not cached on disk and we
-       *really* need to download it. */
+    /* We are not downloading the image ATM... */
     string url = canonicalize_url (media.url);
     if (url.has_prefix ("instagr.am") ||
         url.has_prefix ("instagram.com/p/")) {
@@ -202,6 +201,16 @@ public class InlineMediaDownloader : GLib.Object {
                           "<meta property=\"og:image\"\\s+content=\"(.*?)\"", 1);
     }
 
+    /* We check this here again, since loading e.g. instragram videos might
+       change both the media type and the media url. */
+    if (this.urls_downloading.contains (media.url)) {
+      ulong id = 0;
+      id = this.downloading[media.url].connect (() => {
+        this.disconnect (id);
+        load_inline_media.begin (t, media, () => { callback (); });
+      });
+      yield;
+    }
 
     var msg = new Soup.Message ("GET", media.thumb_url);
     msg.got_headers.connect (() => {
