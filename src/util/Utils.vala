@@ -346,15 +346,11 @@ namespace Utils {
   }
 
   public void load_custom_css () {
-    try {
-      var provider = new Gtk.CssProvider ();
-      provider.load_from_file(File.new_for_uri ("resource:///org/baedert/corebird/ui/style.css"));
-      Gtk.StyleContext.add_provider_for_screen ((!)Gdk.Screen.get_default (),
-                                                provider,
-                                                Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-    } catch (GLib.Error e) {
-      warning ("Error while loading ui/style.css: %s", e.message);
-    }
+    var provider = new Gtk.CssProvider ();
+    provider.load_from_resource ("/org/baedert/corebird/ui/style.css");
+    Gtk.StyleContext.add_provider_for_screen ((!)Gdk.Screen.get_default (),
+                                              provider,
+                                              Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
   }
 
