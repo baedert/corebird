@@ -198,7 +198,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
    *   4) If the tweet was retweeted by a user that is on the list of
    *      users the authenticating user disabled RTs for.
    *   5) If the retweet is already in the timeline. There's no other
-   *      way of checking the case where 2 indipendend users retweet
+   *      way of checking the case where 2 independend users retweet
    *      the same tweet.
    */
   protected TweetState get_rt_flags (Tweet t) {
