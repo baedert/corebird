@@ -95,7 +95,7 @@ public class InlineMediaDownloader : GLib.Object {
     }
   }
 
-  private async void load_instagram_url (MiniTweet t, Media media) {
+  private async void load_instagram_url (Media media) {
     /* For instagram, we need to get the html data,
        then check if the og:medium tag says it's a video, then set the
        media type and extract the according target url */
@@ -106,7 +106,7 @@ public class InlineMediaDownloader : GLib.Object {
         mark_invalid (media);
         return;
       }
-      string back = (string)_msg.response_body.data;
+      unowned string back = (string)_msg.response_body.data;
       try {
         MatchInfo info;
         var regex = new GLib.Regex ("<meta name=\"medium\" content=\"video\" />", 0);
@@ -128,6 +128,50 @@ public class InlineMediaDownloader : GLib.Object {
       } catch (GLib.RegexError e) {
         critical ("Regex error: %s", e.message);
         load_instagram_url.callback ();
+      }
+    });
+    yield;
+  }
+
+  // TODO: All those load functions could use some structure...
+
+  private async void load_twitter_video (Media media) {
+    /* These can contain a gif or a video.. */
+    var msg = new Soup.Message ("GET", media.url);
+    SOUP_SESSION.queue_message (msg, (_s, _msg) => {
+      if (msg.status_code != Soup.Status.OK) {
+        warning ("Message status: %s on %s", msg.status_code.to_string (), media.url);
+        mark_invalid (media);
+        return;
+      }
+      unowned string back = (string)_msg.response_body.data;
+      try {
+        MatchInfo info;
+        var regex = new GLib.Regex ("<img src=\"(.*?)\" class=\"animatted-gif-thumbnail", 0);
+        regex.match (back, 0, out info);
+
+        if (info.get_match_count () > 0) {
+          assert (media.type == MediaType.ANIMATED_GIF);
+          media.url = info.fetch (1);
+          load_twitter_video.callback ();
+          return;
+        } else {
+          message ("Not a gif");
+          /* It's not a gif, so let's see if it's a video... */
+          regex = new GLib.Regex ("<source video-src=\"(.*?)\"", 0);
+          regex.match (back, 0, out info);
+          media.url = info.fetch (1);
+          media.type = MediaType.TWITTER_VIDEO;
+        }
+
+        regex = new GLib.Regex ("poster=\"(.*?)\"", 0);
+        regex.match (back, 0, out info);
+        media.thumb_url = info.fetch (1);
+
+        load_twitter_video.callback ();
+      } catch (GLib.RegexError e) {
+        critical ("Regex error: %s", e.message);
+        load_twitter_video.callback ();
       }
     });
     yield;
@@ -183,7 +227,7 @@ public class InlineMediaDownloader : GLib.Object {
     string url = canonicalize_url (media.url);
     if (url.has_prefix ("instagr.am") ||
         url.has_prefix ("instagram.com/p/")) {
-      yield load_instagram_url (t, media);
+      yield load_instagram_url (media);
     } else if (url.has_prefix ("ow.ly/i/") ||
                url.has_prefix ("flickr.com/photos/") ||
                url.has_prefix ("flic.kr/p/") ||
@@ -195,7 +239,7 @@ public class InlineMediaDownloader : GLib.Object {
     } else if (url.has_prefix ("vine.co/v/")) {
       yield load_real_url (t, media, "<meta property=\"og:image\" content=\"(.*?)\"", 1);
     } else if (url.has_suffix ("/photo/1")) {
-      yield load_real_url (t, media, "<img src=\"(.*?)\" class=\"animated-gif-thumbnail", 1);
+      yield load_twitter_video (media);
     } else if (url.has_prefix ("d.pr/i/")) {
       yield load_real_url (t, media,
                           "<meta property=\"og:image\"\\s+content=\"(.*?)\"", 1);
