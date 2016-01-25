@@ -221,4 +221,6 @@
   padding: 3px;
   border-radius: 50%;
   outline-radius: 50%;
+  min-height: 0px;
+  min-width: 0px;
 }

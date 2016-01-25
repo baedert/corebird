@@ -27,21 +27,6 @@ class ComposeImageManager : Gtk.Container {
 
   public signal void image_removed ();
 
-  static construct {
-    // TODO: Remove this once the required gtk+ version is >= 3.20
-    if (Gtk.get_major_version () == 3 && Gtk.get_minor_version () >= 19) {
-      var screen = Gdk.Screen.get_default ();
-      var provider = new Gtk.CssProvider ();
-      try {
-        provider.load_from_data (".close-button{min-width:0px;min-height:0px;}", -1);
-      } catch (GLib.Error e) {
-        warning (e.message);
-      }
-      Gtk.StyleContext.add_provider_for_screen (screen, provider,
-                                                Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-    }
-  }
-
   construct {
     this.buttons = new Gee.ArrayList<AddImageButton> ();
     this.close_buttons = new Gee.ArrayList<Gtk.Button> ();
