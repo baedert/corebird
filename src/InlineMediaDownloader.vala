@@ -55,7 +55,7 @@ bool is_media_candidate (string _url) {
   ;
 }
 
-bool is_media_link_removal_candidate (string url) {
+bool is_twitter_media_candidate (string url) {
   if (Settings.max_media_size () < 0.001)
     return false;
 

@@ -38,11 +38,11 @@ public enum TransformFlags {
 namespace TextTransform {
   private static const uint TRAILING = 1 << 0;
 
-  private bool is_media_url (string? url,
+  private bool is_removable_media_url (string? url,
                              string  display_text,
                              uint    media_count)
   {
-    return (is_media_link_removal_candidate (url ?? display_text) &&
+    return (is_twitter_media_candidate (url ?? display_text) &&
             media_count == 1) || display_text.has_prefix ("pic.twitter.com/");
   }
 
@@ -136,10 +136,10 @@ namespace TextTransform {
       last_entity_was_trailing = false;
 
       /* Skip the entire entity if we should remove media links AND
-         it is a media link. */
+         it is a Twitter uploaded media link. */
 
       if ((TransformFlags.REMOVE_MEDIA_LINKS in flags &&
-          is_media_url (entity.target, entity.display_text, media_count)) ||
+          is_removable_media_url (entity.target, entity.display_text, media_count)) ||
           (quote_id != 0 && is_quote_link (ref entity, quote_id))) {
         last_end = entity.to;
         continue;
