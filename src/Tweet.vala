@@ -113,14 +113,6 @@ void parse_entities (MiniTweet mt, Json.Object status)
     var url = node.get_object();
     string expanded_url = url.get_string_member("expanded_url");
 
-    if (is_media_candidate (expanded_url)) {
-      var m = new Media ();
-      m.url = expanded_url;
-      m.type = Media.type_from_url (expanded_url);
-      mt.medias[real_media_count] = m;
-      real_media_count ++;
-    }
-
     Json.Array indices = url.get_array_member ("indices");
     expanded_url = expanded_url.replace("&", "&amp;");
     mt.entities[url_index] = TextEntity () {
@@ -269,6 +261,24 @@ void parse_entities (MiniTweet mt, Json.Object status)
           mt.medias[real_media_count] = m;
           real_media_count ++;
         }
+      }
+    });
+  }
+
+  if (real_media_count == 0) {
+    // Only load other media if there is no Twitter media
+    // This prevents sites like IFTT linking to media we'll load
+    // AND uploading it to Twitter, causing us to load identical pics
+    urls.foreach_element((arr, index, node) => {
+      var url = node.get_object();
+      string expanded_url = url.get_string_member("expanded_url");
+
+      if (is_media_candidate (expanded_url)) {
+        var m = new Media ();
+        m.url = expanded_url;
+        m.type = Media.type_from_url (expanded_url);
+        mt.medias[real_media_count] = m;
+        real_media_count ++;
       }
     });
   }
