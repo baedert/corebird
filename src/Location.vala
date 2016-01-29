@@ -26,8 +26,8 @@ public class Location : GLib.Object{
   public string name {public get; public set;}
   public int32 woeid {public get; public set;}
   public string country {public get; public set;}
-  
-  
+
+
   private static GLib.Once<Location> _instance;
   /* Location singleton */
   public static unowned Location instance () {
@@ -48,5 +48,8 @@ public class Location : GLib.Object{
     return this.locations;
   }
 
-
+  public int32 lookup(string place_name){
+    Place place = this.locations.get(place_name);
+    return place.woeid;
+  }
 }

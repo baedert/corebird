@@ -23,6 +23,7 @@ enum Page {
   DM_THREADS,
   LISTS,
   FILTERS,
+  TRENDS,
   SEARCH,
   PROFILE,
   TWEET_INFO,

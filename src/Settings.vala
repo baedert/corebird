@@ -90,7 +90,11 @@ public class Settings : GLib.Object {
     return (TransformFlags) settings.get_uint ("text-transform-flags");
   }
 
-  public static string get_default_location(){
+  public static string default_location(){
     return settings.get_string("default-trend-location");
+  }
+
+  public static bool show_top_trend_tweet(){
+    return settings.get_boolean("show-top-trend-tweet");
   }
 }

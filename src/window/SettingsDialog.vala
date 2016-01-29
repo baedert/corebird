@@ -282,7 +282,7 @@ class SettingsDialog : Gtk.Window {
     Location avaliable_locations = Location.instance ();
     Place place = new Place ();
     string country;
-    int32 woeid;
+
     var locations_array = new Gee.HashMap<string, Place> ();
     locations_array = avaliable_locations.get_locations ();
 

@@ -33,6 +33,7 @@
     <file compressed="true" preprocess="xml-stripblanks">ui/image-crop-dialog.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/modify-snippet-dialog.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/shortcuts-window.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">ui/trending-topics.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/scalable/actions/corebird-compose-symbolic.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">data/scalable/actions/corebird-conversation-symbolic.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">data/scalable/actions/corebird-dms-symbolic.svg</file>
@@ -40,6 +41,7 @@
     <file compressed="true" preprocess="xml-stripblanks">data/scalable/actions/corebird-mentions-symbolic.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">data/scalable/actions/corebird-new-window-symbolic.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">data/scalable/actions/corebird-retweet-symbolic.svg</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/symbolic/apps/corebird-trending-topics-symbolic.svg</file>
     <file>ui/style.css</file>
     <file>assets/play.png</file>
     <file>assets/play@2.png</file>

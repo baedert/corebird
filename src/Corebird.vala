@@ -175,6 +175,7 @@ public class Corebird : Gtk.Application {
     this.set_accels_for_action ("win.switch-page(4)", {"<Alt>5"});
     this.set_accels_for_action ("win.switch-page(5)", {"<Alt>6"});
     this.set_accels_for_action ("win.switch-page(6)", {"<Alt>7"});
+    this.set_accels_for_action ("win.switch-page(7)", {"<Alt>8"});
     this.set_accels_for_action ("app.show-settings", {Settings.get_accel ("show-settings")});
     this.set_accels_for_action ("app.quit", {"<Primary>Q"});
     this.set_accels_for_action ("app.show-shortcuts", {"<Primary>question", "<Primary>F1"});
