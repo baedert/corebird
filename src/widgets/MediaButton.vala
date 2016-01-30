@@ -99,15 +99,19 @@ private class MediaButton : Gtk.Widget {
       return;
     }
 
-    width  = this.get_allocated_width ();
-    height = this.get_allocated_height ();
-    double scale_x = (double)width / this._media.width;
-    double scale_y = (double)height / this._media.height;
-
-    scale = double.min (double.min (scale_x, scale_y), 1.0);
-
-    width  = (int)(this._media.width  * scale);
-    height = (int)(this._media.height * scale);
+    if (this._media.width > this.get_allocated_width ()) {
+      width = this.get_allocated_width ();
+      int maxHeight = (int) Math.floor((width / 4.0) * 3);
+      height = int.min(this._media.height, maxHeight);
+      scale = this.get_allocated_width () / (double) this._media.width;
+      stderr.printf("Scale %s: %d x %d => %d x %d (%f)\n", this._media.url,this._media.width,this._media.height,width,height, scale);
+    } else {
+      width = this._media.width;
+      int maxHeight = (int)Math.floor((this._media.width / 4.0) * 3);
+      height = int.min(this._media.height, maxHeight);
+      scale = 1;
+      stderr.printf("No scale %s: %d x %d => %d x %d (%f)\n", this._media.url,this._media.width,this._media.height,width,height, scale);
+    }
   }
 
   public override bool draw (Cairo.Context ct) {
