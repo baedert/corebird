@@ -99,18 +99,17 @@ private class MediaButton : Gtk.Widget {
       return;
     }
 
+    int maxHeight = (int) Math.floor((this.get_allocated_width () / 4.0) * 3);
+    height = int.min(this._media.height, maxHeight);
+
     if (this._media.width > this.get_allocated_width ()) {
       width = this.get_allocated_width ();
-      int maxHeight = (int) Math.floor((width / 4.0) * 3);
-      height = int.min(this._media.height, maxHeight);
-      scale = this.get_allocated_width () / (double) this._media.width;
-      stderr.printf("Scale %s: %d x %d => %d x %d (%f)\n", this._media.url,this._media.width,this._media.height,width,height, scale);
+      scale = width / (double) this._media.width;
+      stderr.printf("Scale %s: %d x %d => %d x %d (%f) in %d x %d\n", this._media.url,this._media.width,this._media.height,width,height, scale, this.get_allocated_width (), this.get_allocated_height ());
     } else {
       width = this._media.width;
-      int maxHeight = (int)Math.floor((this._media.width / 4.0) * 3);
-      height = int.min(this._media.height, maxHeight);
       scale = 1;
-      stderr.printf("No scale %s: %d x %d => %d x %d (%f)\n", this._media.url,this._media.width,this._media.height,width,height, scale);
+      stderr.printf("No scale %s: %d x %d => %d x %d (%f) in %d x %d\n", this._media.url,this._media.width,this._media.height,width,height, scale, this.get_allocated_width (), this.get_allocated_height ());
     }
   }
 
@@ -193,7 +192,7 @@ private class MediaButton : Gtk.Widget {
                                                        out int natural) {
     int media_width;
     int media_height;
-
+    
     if (this._media == null || this._media.width == -1 || this._media.height == -1) {
       media_width = MIN_WIDTH;
       media_height = MAX_HEIGHT;
@@ -202,9 +201,15 @@ private class MediaButton : Gtk.Widget {
       media_height = this._media.height;
     }
 
-    double width_ratio = (double)width / (double) media_width;
-    int height = int.min (media_height, (int)(media_height * width_ratio));
+    int maxHeight = (int) Math.floor((int.min(media_width, width) / 4.0) * 3);
+    int height = int.min(media_height, maxHeight);
     minimum = natural = height;
+    if (this._media != null) {
+      //FIXME: The calls are height_for_width, width_for_height, height_for_width
+      //We need to make sure they're consistent, as currently width_for_height returns
+      //too wide a width!
+      stderr.printf("get_preferred_height_for_width(%d) for %s (%d x %d): %d\n", width, this._media.url, this._media.width, this._media.height, height);
+    }
   }
 
   public override void get_preferred_width_for_height (int height,
@@ -221,9 +226,14 @@ private class MediaButton : Gtk.Widget {
       media_height = this._media.height;
     }
 
-    double height_ratio = (double)height / (double)media_height;
-    int width = int.min (media_width, (int)(media_width * height_ratio));
+    //double height_ratio = (double)height / (double)media_height;
+    //int width = int.min (media_width, (int)(media_width * height_ratio));
+    int maxWidth = (height / 3) * 4;
+    int width = int.min(media_height, maxWidth);
     minimum = natural = width;
+    if (this._media != null) {
+      stderr.printf("get_preferred_width_for_height(%d) for %s (%d x %d): %d\n", height, this._media.url, this._media.width, this._media.height, width);
+    }
   }
 
   public override void get_preferred_height (out int minimum,
@@ -237,6 +247,7 @@ private class MediaButton : Gtk.Widget {
 
     minimum = int.min (media_height, MIN_HEIGHT);
     natural = media_height;
+    stderr.printf("get_preferred_height() for %s (%d x %d): %d or %d\n", this._media.url, this._media.width, this._media.height, minimum, natural);
   }
 
   public override void get_preferred_width (out int minimum,
@@ -250,6 +261,7 @@ private class MediaButton : Gtk.Widget {
 
     minimum = int.min (media_width, MIN_WIDTH);
     natural = media_width;
+    stderr.printf("get_preferred_width() for %s (%d x %d): %d or %d\n", this._media.url, this._media.width, this._media.height, minimum, natural);
   }
 
   public override void realize () {
