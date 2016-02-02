@@ -22,34 +22,35 @@ public class Place{
 }
 
 public class Location : GLib.Object{
-  private Gee.HashMap<string, Place> locations = new Gee.HashMap<string, Place>();
+  private Gee.HashMap<string, Place> locations = new Gee.HashMap <string, Place> ();
   public string name {public get; public set;}
   public int32 woeid {public get; public set;}
   public string country {public get; public set;}
 
 
-  private static GLib.Once<Location> _instance;
+  private static GLib.Once <Location> _instance;
+
   /* Location singleton */
   public static unowned Location instance () {
     return _instance.once (() => { return new Location (); });
   }
 
-  public void set_locations (Json.Array locations_nodes){    
-    foreach (var location_node in locations_nodes.get_elements()) {
-      Place  place = new Place();
-      var location = location_node.get_object();
+  public void set_locations (Json.Array locations_nodes) {    
+    foreach (var location_node in locations_nodes.get_elements ()) {
+      Place  place = new Place ();
+      var location = location_node.get_object ();
       place.country = location.get_string_member ("country");
       place.woeid = (int32) location.get_int_member ("woeid");
       this.locations.set(location.get_string_member ("name"), place);
     }
   }
 
-  public Gee.HashMap<string, Place> get_locations (){
+  public Gee.HashMap <string, Place> get_locations (){
     return this.locations;
   }
 
-  public int32 lookup(string place_name){
-    Place place = this.locations.get(place_name);
+  public int32 lookup (string place_name){
+    Place place = this.locations.get (place_name);
     return place.woeid;
   }
 }

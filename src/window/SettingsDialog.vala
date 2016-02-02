@@ -267,16 +267,16 @@ class SettingsDialog : Gtk.Window {
     this.add_accel_group(ag);
   }
 
-  private void set_location_completion(){
+  private void set_location_completion () {
     Gtk.EntryCompletion completion = new Gtk.EntryCompletion ();
-    default_trending_topic_location.set_completion(completion);
+    default_trending_topic_location.set_completion (completion);
   
     Gtk.ListStore list_store = new Gtk.ListStore (2, typeof (string), typeof (string));
-    completion.set_model(list_store);
+    completion.set_model (list_store);
     completion.set_text_column(0);
-    var cell = new Gtk.CellRendererText();
+    var cell = new Gtk.CellRendererText ();
     completion.pack_start(cell, false);
-    completion.add_attribute(cell, "text", 1);
+    completion.add_attribute (cell, "text", 1);
 
     Gtk.TreeIter iter;
     Location avaliable_locations = Location.instance ();
@@ -289,7 +289,7 @@ class SettingsDialog : Gtk.Window {
     foreach (var location in locations_array.entries) {
         place = location.value;
         country = place.country;
-        list_store.append(out iter);
+        list_store.append (out iter);
         list_store.set (iter, 0, location.key, 1, country);
     }
   }

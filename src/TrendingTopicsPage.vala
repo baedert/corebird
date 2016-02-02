@@ -39,24 +39,24 @@
   private GLib.DateTime leave_time = new DateTime.from_unix_utc (0);
 
 
-  public TrendingTopicsPage (int id, Account account, DeltaUpdater delta_updater){
+  public TrendingTopicsPage (int id, Account account, DeltaUpdater delta_updater) {
     this.id = id;
     this.account = account;
     this.delta_updater = delta_updater;
   }
 
 
-  public void create_radio_button (Gtk.RadioButton? group){
+  public void create_radio_button (Gtk.RadioButton? group) {
     radio_button = new BadgeRadioButton (group, "corebird-trending-topics-symbolic", _("Trending Topics"));
   }
 
 
-  public Gtk.RadioButton? get_radio_button() {
+  public Gtk.RadioButton? get_radio_button () {
     return radio_button;
   }
 
 
-  public void on_join(int page_id, Bundle? args){
+  public void on_join (int page_id, Bundle? args) {
     this.location_name = Settings.default_location ();
     this.show_tweet = Settings.show_top_trend_tweet ();
     var now = new DateTime.now_local ();
@@ -65,12 +65,12 @@
 
     location_button.clicked.connect (() => {
       trend_list.remove_all ();
-      load_trends (location_entry.get_text());
+      load_trends (location_entry.get_text ());
     });
 
-    TimeSpan difference = now.difference(this.leave_time);
+    TimeSpan difference = now.difference (this.leave_time);
     var minutes = (difference / TimeSpan.MINUTE);
-    if(minutes >= 15){
+    if(minutes >= 15) {
       trend_list.remove_all ();
       load_trends (location_name);
       this.leave_time = new GLib.DateTime.now_local ();
@@ -78,7 +78,7 @@
   }
 
 
-  public void load_trends (string location_name) { //{{{
+  public void load_trends (string location_name) {
     collect_obj = new Collect (2);
     collect_obj.finished.connect (show_entries);
     this.avaliable_locations = Location.instance ();
@@ -87,7 +87,7 @@
     var call = account.proxy.new_call ();
     call.set_function ("1.1/trends/place.json");
     call.set_method ("GET");
-    call.add_param ("id", woeid.to_string());
+    call.add_param ("id", woeid.to_string ());
     TweetUtils.load_threaded.begin (call, null, (_, res) => {
       Json.Node? root = null;
       try {
@@ -100,19 +100,19 @@
 
         return;
       }
-      var trends = root.get_array().get_object_element(0).get_array_member("trends");
+      var trends = root.get_array ().get_object_element (0).get_array_member ("trends");
 
       trends.foreach_element ((array, index, node) => {
-        var topic = node.get_object();
+        var topic = node.get_object ();
         trend_name = topic.get_string_member("name");
 
         if (this.show_tweet) {
-          this.trend_list.set_header_func(header_func);
-          string query = topic.get_string_member("query");
+          this.trend_list.set_header_func (header_func);
+          string query = topic.get_string_member ("query");
           load_tweet (query);
         }
         else {
-          var label = header_label(this.trend_name);
+          var label = header_label (this.trend_name);
           label.show ();
           this.trend_list.add (label);
         }
@@ -129,15 +129,15 @@
     call.set_function ("1.1/search/tweets.json");
     call.set_method ("GET");
     call.add_param ("q", query);
-    call.add_param("count", "1");
-    call.add_param("result_type", "popular");
+    call.add_param ("count", "1");
+    call.add_param ("result_type", "popular");
 
       Json.Node? root = null;
-      Json.Parser parser = new Json.Parser();
+      Json.Parser parser = new Json.Parser ();
       try {
         call.run();
-        parser.load_from_data(call.get_payload());
-        root = parser.get_root();
+        parser.load_from_data(call.get_payload ());
+        root = parser.get_root ();
       } catch (GLib.Error e) {
         warning (e.message);
         trend_list.set_error (e.message);
@@ -148,7 +148,7 @@
       }
 
       var now = new GLib.DateTime.now_local ();
-      var statuses = root.get_object().get_array_member("statuses");
+      var statuses = root.get_object().get_array_member ("statuses");
       if (statuses.get_length () == 0 && n_results <= 0)
         n_results = -1;
       else
@@ -183,7 +183,7 @@
       return;
     }
 
-    trend_list.@foreach ((w) => w.show());
+    trend_list.@foreach ((w) => w.show ());
   }
 
 
@@ -191,7 +191,7 @@
     if (before == null && this.update_header) {
       Gtk.Widget? header = row.get_header ();
 
-      header = header_label(this.trend_name);
+      header = header_label (this.trend_name);
       header.show ();
       row.set_header (header);
       this.update_header = false;
@@ -204,19 +204,19 @@
       return;
     }
 
-    header = header_label(this.trend_name);
+    header = header_label (this.trend_name);
     header.show ();
     row.set_header (header);
   }
 
 
-  private Gtk.Label  header_label(string label_text){
+  private Gtk.Label header_label (string label_text) {
     Pango.AttrList attr_list = new Pango.AttrList ();
     Pango.Attribute attr_scale = Pango.attr_scale_new (1.2);
     Pango.Attribute attr_weigth = Pango.attr_weight_new (Pango.Weight.BOLD);
 
-    attr_list.insert (attr_scale.copy());
-    attr_list.insert (attr_weigth.copy());
+    attr_list.insert (attr_scale.copy ());
+    attr_list.insert (attr_weigth.copy ());
 
     Gtk.Label label = new Gtk.Label (label_text);
 
@@ -240,16 +240,16 @@
   }
 
 
-  private void set_location_completion(){
+  private void set_location_completion (){
     Gtk.EntryCompletion completion = new Gtk.EntryCompletion ();
     this.location_entry.set_completion(completion);
 
     Gtk.ListStore list_store = new Gtk.ListStore (2, typeof (string), typeof (string));
-    completion.set_model(list_store);
-    completion.set_text_column(0);
-    var cell = new Gtk.CellRendererText();
-    completion.pack_start(cell, false);
-    completion.add_attribute(cell, "text", 1);
+    completion.set_model (list_store);
+    completion.set_text_column (0);
+    var cell = new Gtk.CellRendererText ();
+    completion.pack_start (cell, false);
+    completion.add_attribute (cell, "text", 1);
 
     Gtk.TreeIter iter;
     this.avaliable_locations = Location.instance ();
@@ -261,7 +261,7 @@
     foreach (var location in locations_array.entries) {
         place = location.value;
         country = place.country;
-        list_store.append(out iter);
+        list_store.append (out iter);
         list_store.set (iter, 0, location.key, 1, country);
     }
   }
