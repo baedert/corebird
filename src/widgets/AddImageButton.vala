@@ -15,8 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// XXX This is more or less a copy of MediaButton, so if something
-//     changes there, we need to reflect that here.
 class AddImageButton : Gtk.Widget {
   private static const int MIN_WIDTH  = 40;
   private static const int MAX_HEIGHT = 150;
@@ -48,7 +46,9 @@ class AddImageButton : Gtk.Widget {
     double scale_x = (double)width / this.surface.get_width ();
     double scale_y = (double)height / this.surface.get_height ();
 
-    scale = double.min (double.min (scale_x, scale_y), 1.0) * delete_factor;
+    //scale = double.min (double.min (scale_x, scale_y), 1.0) * delete_factor;
+    scale = double.min (double.min (scale_x, scale_y), 5.0) * delete_factor;
+
 
     width  = (int)(this.surface.get_width ()  * scale);
     height = (int)(this.surface.get_height () * scale);
@@ -69,6 +69,8 @@ class AddImageButton : Gtk.Widget {
       double scale;
       this.get_draw_size (out draw_width, out draw_height, out scale);
 
+      //message ("Widget height: %d, draw height: %d", widget_height, draw_height);
+
       int draw_x = (widget_width / 2) - (draw_width / 2);
       draw_x = 0;
 
@@ -82,21 +84,7 @@ class AddImageButton : Gtk.Widget {
                                   (widget_height / 2.0) - (ICON_SIZE / 2.0),
                                   ICON_SIZE,
                                   ICON_SIZE);
-
-
     }
-
-    //else {
-      //var sc = this.get_style_context ();
-      //double layout_x, layout_y;
-      //int layout_w, layout_h;
-      //layout.set_text ("%d%%".printf ((int)(media.percent_loaded * 100)), -1);
-      //layout.get_size (out layout_w, out layout_h);
-      //layout_x = (widget_width / 2.0) - (layout_w / Pango.SCALE / 2.0);
-      //layout_y = (widget_height / 2.0) - (layout_h / Pango.SCALE / 2.0);
-      //sc.render_layout (ct, layout_x, layout_y, layout);
-    //}
-
 
     return Gdk.EVENT_PROPAGATE;
   }
@@ -127,6 +115,8 @@ class AddImageButton : Gtk.Widget {
     double width_ratio = (double)width / (double) media_width;
     int height = int.min (media_height, (int)(media_height * width_ratio));
     height = int.min (MAX_HEIGHT, height);
+
+    //message ("Min height: %d", (int)(height * this.delete_factor));
     minimum = natural = (int)(height * this.delete_factor);
   }
 
@@ -144,7 +134,10 @@ class AddImageButton : Gtk.Widget {
       media_height = this.surface.get_height ();
     }
 
+    message ("media size: %d/%d", media_width, media_height);
+
     double height_ratio = (double)height / (double) media_height;
+    message ("height ratio: %f for pased height %d", height_ratio, height);
     int width = int.min (media_width, (int)(media_width * height_ratio));
     width = int.max (MIN_WIDTH, width);
     minimum = natural = (int)(width * this.delete_factor);
@@ -161,6 +154,20 @@ class AddImageButton : Gtk.Widget {
 
     minimum = int.min (media_width, MIN_WIDTH);
     natural = media_width;
+  }
+
+  public override void get_preferred_height (out int minimum,
+                                             out int natural) {
+    int media_height;
+    if (this.surface == null) {
+      media_height = 1;
+    } else {
+      media_height = this.surface.get_height ();
+    }
+
+    //minimum = media_height;
+    minimum = 100;
+    natural = media_height;
   }
 
   private bool delete_tick_cb (Gtk.Widget     widget,

@@ -86,6 +86,9 @@ class ComposeImageManager : Gtk.Container {
   }
 
   public override void size_allocate (Gtk.Allocation allocation) {
+    const int MIN_BUTTON_WIDTH  = 100;
+    const int MIN_BUTTON_HEIGHT = 100;
+
     Gtk.Allocation child_allocation = {};
     this.set_allocation (allocation);
 
@@ -94,7 +97,8 @@ class ComposeImageManager : Gtk.Container {
     child_allocation.x = allocation.x;
     child_allocation.y = allocation.y + 10;
     child_allocation.width = allocation.width / buttons.size;
-    child_allocation.height = int.max (allocation.height - 10, 0);
+    //child_allocation.height = int.max (allocation.height - 10, 0);
+    child_allocation.height = allocation.height;
 
     Gtk.Allocation close_allocation = {};
     close_allocation.y = allocation.y;
@@ -105,19 +109,24 @@ class ComposeImageManager : Gtk.Container {
       AddImageButton aib = this.buttons.get (i);
       aib.get_preferred_width_for_height (allocation.height, out min, out nat);
 
+      message ("Natural button width: %d for height %d", nat, allocation.height);
+      message ("Minimum button width: %d", min);
       int width = int.min (nat, allocation.width / buttons.size);
 
       child_allocation.width = width;
+      //child_allocation.width = int.max (width, MIN_BUTTON_WIDTH);
+      //child_allocation.height = int.max (child_allocation.height, MIN_BUTTON_HEIGHT);
+      //message ("size: %d, %d", child_allocation.width, child_allocation.height);
       aib.size_allocate (child_allocation);
 
 
-      int m, n;
-      Gtk.Widget btn = this.close_buttons.get (i);
-      btn.get_preferred_width (out close_allocation.width, out n);
-      btn.get_preferred_height (out close_allocation.height, out n);
-      close_allocation.x = child_allocation.x + child_allocation.width
-                           - close_allocation.width + 10;
-      btn.size_allocate (close_allocation);
+      //int m, n;
+      //Gtk.Widget btn = this.close_buttons.get (i);
+      //btn.get_preferred_width (out close_allocation.width, out n);
+      //btn.get_preferred_height (out close_allocation.height, out n);
+      //close_allocation.x = child_allocation.x + child_allocation.width
+                           //- close_allocation.width + 10;
+      //btn.size_allocate (close_allocation);
 
       child_allocation.x += child_allocation.width;
     }
@@ -131,8 +140,8 @@ class ComposeImageManager : Gtk.Container {
     foreach (var btn in this.buttons) {
       int m, n;
       btn.get_preferred_height_for_width (width, out m, out n);
-      min = int.max (m, min);
-      nat = int.max (n, nat);
+      min = int.max (int.max (m, min), 100);
+      nat = int.max (int.max (n, nat), 100);
     }
 
     minimum = min;

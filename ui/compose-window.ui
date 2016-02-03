@@ -169,7 +169,7 @@
         <child>
           <object class="ComposeImageManager" id="compose_image_manager">
             <property name="visible">true</property>
-            <property name="margin">6</property>
+            <!--<property name="margin">6</property>-->
           </object>
           <packing>
             <property name="left_attach">0</property>

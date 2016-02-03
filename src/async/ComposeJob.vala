@@ -47,11 +47,12 @@ class ComposeJob : GLib.Object {
                                             file_contents,
                                             "multipart/form-data",
                                             path);
-    call.add_param_full (param);
 
+    call.add_param_full (param);
 
     yield call.invoke_async (cancellable);
     var parser = new Json.Parser ();
+    stdout.printf ("%s\n", call.get_payload ());
     try {
       parser.load_from_data (call.get_payload ());
     } catch (GLib.Error e) {

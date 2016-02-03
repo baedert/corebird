@@ -164,6 +164,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
   private void set_user_id (int64 user_id) {
     this.user_id = user_id;
 
+    message ("vadjustment: %p", this.get_vadjustment ());
     follow_button.sensitive = (user_id != account.id);
     ((SimpleAction)actions.lookup_action ("add-remove-list")).set_enabled (user_id != account.id);
     ((SimpleAction)actions.lookup_action ("write-dm")).set_enabled (user_id != account.id);

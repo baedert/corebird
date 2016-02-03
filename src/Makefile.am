@@ -4,7 +4,8 @@ AM_CPPFLAGS = \
 	-include $(CONFIG_HEADER) \
 	-DDATADIR=\"$(datadir)\" \
 	-DPKGDATADIR=\"$(pkgdatadir)\" \
-	-Wno-unused-value
+	-Wno-unused-value \
+	-w
 
 AM_VALAFLAGS = \
 	--thread \
