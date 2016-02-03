@@ -99,8 +99,10 @@ private class MediaButton : Gtk.Widget {
       return;
     }
 
-    int maxHeight = (int) Math.floor((this.get_allocated_width () / 4.0) * 3);
-    height = int.min(this._media.height, maxHeight);
+    int maxHeightAllocated = (int) Math.floor((this.get_allocated_width () / 4.0) * 3);
+    int maxHeightFromWidth = (int) Math.floor((this._media.width / 4.0) * 3);
+    height = int.min(this._media.height, maxHeightAllocated);
+    height = int.min (height, maxHeightFromWidth);
 
     if (this._media.width > this.get_allocated_width ()) {
       width = this.get_allocated_width ();
@@ -202,13 +204,12 @@ private class MediaButton : Gtk.Widget {
     }
 
     int maxHeight = (int) Math.floor((int.min(media_width, width) / 4.0) * 3);
-    int height = int.min(media_height, maxHeight);
+    double width_scale = width / (double) media_width;
+    int scaled_height = (int) Math.floor(media_height * width_scale);
+    int height = int.min(int.min(media_height, maxHeight), scaled_height);
     minimum = natural = height;
     if (this._media != null) {
-      //FIXME: The calls are height_for_width, width_for_height, height_for_width
-      //We need to make sure they're consistent, as currently width_for_height returns
-      //too wide a width!
-      stderr.printf("get_preferred_height_for_width(%d) for %s (%d x %d): %d\n", width, this._media.url, this._media.width, this._media.height, height);
+      stderr.printf("get_preferred_height_for_width(%d) for %s (%d x %d): %d (max %d)\n", width, this._media.url, this._media.width, this._media.height, height, maxHeight);
     }
   }
 
@@ -228,21 +229,21 @@ private class MediaButton : Gtk.Widget {
 
     //double height_ratio = (double)height / (double)media_height;
     //int width = int.min (media_width, (int)(media_width * height_ratio));
-    int maxWidth = (height / 3) * 4;
+    int maxWidth = (int) Math.floor((height / 3.0) * 4);
     int width = int.min(media_height, maxWidth);
     minimum = natural = width;
     if (this._media != null) {
-      stderr.printf("get_preferred_width_for_height(%d) for %s (%d x %d): %d\n", height, this._media.url, this._media.width, this._media.height, width);
+      stderr.printf("get_preferred_width_for_height(%d) for %s (%d x %d): %d (max %d)\n", height, this._media.url, this._media.width, this._media.height, width, maxWidth);
     }
   }
 
   public override void get_preferred_height (out int minimum,
                                              out int natural) {
     int media_height;
-    if (this._media == null || this._media.width == -1) {
+    if (this._media == null || this._media.height == -1) {
       media_height = 1;
     } else {
-      media_height = this._media.width;
+      media_height = this._media.height;
     }
 
     minimum = int.min (media_height, MIN_HEIGHT);
