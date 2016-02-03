@@ -211,25 +211,19 @@
 
 
   private TextButton header_label (string label_text) {
-    Pango.AttrList attr_list = new Pango.AttrList ();
-    Pango.Attribute attr_scale = Pango.attr_scale_new (1.2);
-    Pango.Attribute attr_weigth = Pango.attr_weight_new (Pango.Weight.BOLD);
-
-    attr_list.insert (attr_scale.copy ());
-    attr_list.insert (attr_weigth.copy ());
 
     TextButton label = new TextButton (label_text);
 
-    /*label.attributes = attr_list;
-    label.set_use_markup (true);*/
     label.set_markup ("<span weight=\"bold\" size=\"large\">%s</span>".printf(label_text));
     label.margin = 6;
     label.xalign = 0;
-    Bundle bundle = new Bundle();
+
+    Bundle bundle = new Bundle ();
     label.clicked.connect ( () => {
       bundle.put_string ("query", label_text);
       this.main_window.main_widget.switch_page (Page.SEARCH, bundle);
     });
+
     return label;
   }
 
