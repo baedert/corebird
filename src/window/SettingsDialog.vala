@@ -223,8 +223,8 @@ class SettingsDialog : Gtk.Window {
     if (w == 0 || h == 0)
       return;
 
-    move (x, y);
-    resize (w, h);
+    this.move (x, y);
+    this.set_default_size (w, h);
   }
 
   private void save_geometry () {
@@ -233,9 +233,8 @@ class SettingsDialog : Gtk.Window {
         y = 0,
         w = 0,
         h = 0;
-    get_position (out x, out y);
-    w = get_allocated_width ();
-    h = get_allocated_height ();
+    this.get_position (out x, out y);
+    this.get_size (out w, out h);
     builder.add_value (new GLib.Variant.int32(x));
     builder.add_value (new GLib.Variant.int32(y));
     builder.add_value (new GLib.Variant.int32(w));
