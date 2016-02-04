@@ -247,7 +247,7 @@ class SettingsDialog : Gtk.Window {
     Gtk.AccelGroup ag = new Gtk.AccelGroup();
 
     ag.connect (Gdk.Key.Escape, 0, Gtk.AccelFlags.LOCKED,
-        () => {this.destroy (); return true;});
+        () => {this.close (); return true;});
     ag.connect (Gdk.Key.@1, Gdk.ModifierType.MOD1_MASK, Gtk.AccelFlags.LOCKED,
         () => {main_stack.visible_child_name = "interface"; return true;});
     ag.connect (Gdk.Key.@2, Gdk.ModifierType.MOD1_MASK, Gtk.AccelFlags.LOCKED,
