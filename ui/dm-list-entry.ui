@@ -102,6 +102,7 @@
             <property name="wrap_mode">word-char</property>
             <property name="use_markup">True</property>
             <property name="track_visited_links">false</property>
+            <property name="selectable">True</property>
           </object>
           <packing>
             <property name="left_attach">1</property>
