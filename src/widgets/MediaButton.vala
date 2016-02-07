@@ -99,19 +99,14 @@ private class MediaButton : Gtk.Widget {
       return;
     }
 
-    int maxHeightAllocated = (int) Math.floor((this.get_allocated_width () / 4.0) * 3);
-    int maxHeightFromWidth = (int) Math.floor((this._media.width / 4.0) * 3);
-    height = int.min(this._media.height, maxHeightAllocated);
-    height = int.min (height, maxHeightFromWidth);
+    width = int.min (this._media.width, this.get_allocated_width ());
+    scale = this.get_allocated_width () / (double) this._media.width;
 
-    if (this._media.width > this.get_allocated_width ()) {
-      width = this.get_allocated_width ();
-      scale = width / (double) this._media.width;
-      stderr.printf("Scale %s: %d x %d => %d x %d (%f) in %d x %d\n", this._media.url,this._media.width,this._media.height,width,height, scale, this.get_allocated_width (), this.get_allocated_height ());
-    } else {
-      width = this._media.width;
+    if (scale > 1) {
+      height = int.min (this._media.height, (int) Math.floor((this.get_allocated_width () / 4.0) * 3));
       scale = 1;
-      stderr.printf("No scale %s: %d x %d => %d x %d (%f) in %d x %d\n", this._media.url,this._media.width,this._media.height,width,height, scale, this.get_allocated_width (), this.get_allocated_height ());
+    } else {
+      height = (int) Math.floor (double.min (this._media.height * scale, (this._media.width * scale / 4.0) * 3));
     }
   }
 
@@ -133,7 +128,7 @@ private class MediaButton : Gtk.Widget {
       int draw_x = (widget_width / 2) - (draw_width / 2);
 
       ct.scale (scale, scale);
-      ct.set_source_surface (media.surface, draw_x / scale, 0);
+      ct.set_source_surface (media.surface, draw_x / scale, -(((media.height * scale) - draw_height) / 2) / scale);
       ct.fill ();
       ct.restore ();
 
@@ -203,14 +198,17 @@ private class MediaButton : Gtk.Widget {
       media_height = this._media.height;
     }
 
-    int maxHeight = (int) Math.floor((int.min(media_width, width) / 4.0) * 3);
-    double width_scale = width / (double) media_width;
-    int scaled_height = (int) Math.floor(media_height * width_scale);
-    int height = int.min(int.min(media_height, maxHeight), scaled_height);
-    minimum = natural = height;
-    if (this._media != null) {
-      stderr.printf("get_preferred_height_for_width(%d) for %s (%d x %d): %d (max %d)\n", width, this._media.url, this._media.width, this._media.height, height, maxHeight);
+    double scale = width / (double) media_width;
+    
+    int height = 0;
+
+    if (scale > 1) {
+      height = int.min (media_height, (int) Math.floor((width / 4.0) * 3));
+    } else {
+      height = (int) Math.floor (double.min (media_height * scale, (media_width * scale / 4.0) * 3));
     }
+
+    minimum = natural = height;
   }
 
   public override void get_preferred_width_for_height (int height,
@@ -227,14 +225,9 @@ private class MediaButton : Gtk.Widget {
       media_height = this._media.height;
     }
 
-    //double height_ratio = (double)height / (double)media_height;
-    //int width = int.min (media_width, (int)(media_width * height_ratio));
     int maxWidth = (int) Math.floor((height / 3.0) * 4);
-    int width = int.min(media_height, maxWidth);
+    int width = int.min(media_width, maxWidth);
     minimum = natural = width;
-    if (this._media != null) {
-      stderr.printf("get_preferred_width_for_height(%d) for %s (%d x %d): %d (max %d)\n", height, this._media.url, this._media.width, this._media.height, width, maxWidth);
-    }
   }
 
   public override void get_preferred_height (out int minimum,
@@ -248,7 +241,6 @@ private class MediaButton : Gtk.Widget {
 
     minimum = int.min (media_height, MIN_HEIGHT);
     natural = media_height;
-    stderr.printf("get_preferred_height() for %s (%d x %d): %d or %d\n", this._media.url, this._media.width, this._media.height, minimum, natural);
   }
 
   public override void get_preferred_width (out int minimum,
@@ -262,7 +254,6 @@ private class MediaButton : Gtk.Widget {
 
     minimum = int.min (media_width, MIN_WIDTH);
     natural = media_width;
-    stderr.printf("get_preferred_width() for %s (%d x %d): %d or %d\n", this._media.url, this._media.width, this._media.height, minimum, natural);
   }
 
   public override void realize () {
