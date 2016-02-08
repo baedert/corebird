@@ -147,7 +147,7 @@ public class InlineMediaDownloader : GLib.Object {
       unowned string back = (string)_msg.response_body.data;
       try {
         MatchInfo info;
-        var regex = new GLib.Regex ("<img src=\"(.*?)\" class=\"animatted-gif-thumbnail", 0);
+        var regex = new GLib.Regex ("<img src=\"(.*?)\" class=\"animated-gif-thumbnail", 0);
         regex.match (back, 0, out info);
 
         if (info.get_match_count () > 0) {
@@ -156,7 +156,6 @@ public class InlineMediaDownloader : GLib.Object {
           load_twitter_video.callback ();
           return;
         } else {
-          message ("Not a gif");
           /* It's not a gif, so let's see if it's a video... */
           regex = new GLib.Regex ("<source video-src=\"(.*?)\"", 0);
           regex.match (back, 0, out info);

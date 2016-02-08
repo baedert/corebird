@@ -23,7 +23,7 @@ public class Corebird : Gtk.Application {
   public signal void account_removed (Account acc);
   public signal void account_window_changed (int64? old_id, int64 new_id);
 
-  private SettingsDialog? settings_dialog;
+  private SettingsDialog? settings_dialog = null;
 
   const GLib.ActionEntry[] app_entries = {
     {"show-settings",     show_settings_activated         },

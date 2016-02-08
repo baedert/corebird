@@ -223,8 +223,8 @@ class SettingsDialog : Gtk.Window {
     if (w == 0 || h == 0)
       return;
 
-    move (x, y);
-    resize (w, h);
+    this.move (x, y);
+    this.set_default_size (w, h);
   }
 
   private void save_geometry () {
@@ -233,9 +233,8 @@ class SettingsDialog : Gtk.Window {
         y = 0,
         w = 0,
         h = 0;
-    get_position (out x, out y);
-    w = get_allocated_width ();
-    h = get_allocated_height ();
+    this.get_position (out x, out y);
+    this.get_size (out w, out h);
     builder.add_value (new GLib.Variant.int32(x));
     builder.add_value (new GLib.Variant.int32(y));
     builder.add_value (new GLib.Variant.int32(w));
@@ -247,7 +246,7 @@ class SettingsDialog : Gtk.Window {
     Gtk.AccelGroup ag = new Gtk.AccelGroup();
 
     ag.connect (Gdk.Key.Escape, 0, Gtk.AccelFlags.LOCKED,
-        () => {this.destroy (); return true;});
+        () => {this.close (); return true;});
     ag.connect (Gdk.Key.@1, Gdk.ModifierType.MOD1_MASK, Gtk.AccelFlags.LOCKED,
         () => {main_stack.visible_child_name = "interface"; return true;});
     ag.connect (Gdk.Key.@2, Gdk.ModifierType.MOD1_MASK, Gtk.AccelFlags.LOCKED,

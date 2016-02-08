@@ -9,61 +9,61 @@
         <child>
           <object class="GtkShortcutsGroup">
             <property name="visible">true</property>
-            <property name="title" translatable="yes">General</property>
+            <property name="title" translatable="yes" context="shortcuts window">General</property>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">true</property>
                 <property name="accelerator">&lt;ctrl&gt;t</property>
-                <property name="title" translatable="yes">Compose Tweet</property>
+                <property name="title" translatable="yes" context="shortcuts window">Compose Tweet</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">true</property>
                 <property name="accelerator">&lt;Ctrl&gt;p</property>
-                <property name="title" translatable="yes">Show Account settings</property>
+                <property name="title" translatable="yes" context="shortcuts window">Show Account settings</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">true</property>
                 <property name="accelerator">&lt;Ctrl&gt;k</property>
-                <property name="title" translatable="yes">Show Accounts Popover</property>
+                <property name="title" translatable="yes" context="shortcuts window">Show Accounts Popover</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">true</property>
                 <property name="accelerator">&lt;Ctrl&gt;&lt;Shift&gt;p</property>
-                <property name="title" translatable="yes">Show Application Settings</property>
+                <property name="title" translatable="yes" context="shortcuts window">Show Application Settings</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">true</property>
                 <property name="accelerator">&lt;Ctrl&gt;&lt;Shift&gt;s</property>
-                <property name="title" translatable="yes">Toggle Topbar</property>
+                <property name="title" translatable="yes" context="shortcuts window">Toggle Topbar</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">true</property>
                 <property name="accelerator">Back</property>
-                <property name="title" translatable="yes">Go Back</property>
+                <property name="title" translatable="yes" context="shortcuts window">Go Back</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">true</property>
                 <property name="accelerator">Forward</property>
-                <property name="title" translatable="yes">Go Forward</property>
+                <property name="title" translatable="yes" context="shortcuts window">Go Forward</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">true</property>
                 <property name="accelerator">&lt;Alt&gt;1...7</property>
-                <property name="title" translatable="yes">Go to nth page</property>
+                <property name="title" translatable="yes" context="shortcuts window">Go to nth page</property>
               </object>
             </child>
 
@@ -73,40 +73,40 @@
         <child>
           <object class="GtkShortcutsGroup">
             <property name="visible">true</property>
-            <property name="title" translatable="yes">Tweets</property>
+            <property name="title" translatable="yes" context="shortcuts window">Tweets</property>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">true</property>
                 <property name="accelerator">t+t</property>
-                <property name="title" translatable="yes">Retweet</property>
+                <property name="title" translatable="yes" context="shortcuts window">Retweet</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">true</property>
                 <property name="accelerator">f</property>
-                <property name="title" translatable="yes">Favorite</property>
+                <property name="title" translatable="yes" context="shortcuts window">Favorite</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">true</property>
                 <property name="accelerator">r</property>
-                <property name="title" translatable="yes">Reply</property>
+                <property name="title" translatable="yes" context="shortcuts window">Reply</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">true</property>
                 <property name="accelerator">Return</property>
-                <property name="title" translatable="yes">Show Details</property>
+                <property name="title" translatable="yes" context="shortcuts window">Show Details</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">true</property>
                 <property name="accelerator">d+d</property>
-                <property name="title" translatable="yes">Delete</property>
+                <property name="title" translatable="yes" context="shortcuts window">Delete</property>
               </object>
             </child>
 

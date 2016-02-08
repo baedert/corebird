@@ -133,6 +133,9 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     });
 
     this.add_accel_group (ag);
+
+    if (mode == Mode.NORMAL)
+      this.resize (400, 250);
   }
 
   private void recalc_tweet_length () {

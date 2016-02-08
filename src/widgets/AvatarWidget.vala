@@ -155,7 +155,6 @@ class AvatarWidget : Gtk.Widget {
     ct.fill();
 
     if (_round) {
-      // make it round
       ct.scale (1.0/scale, 1.0/scale);
       ct.set_operator (Cairo.Operator.DEST_IN);
       ct.arc ((width / 2.0), (height / 2.0),
@@ -164,16 +163,12 @@ class AvatarWidget : Gtk.Widget {
               2 * Math.PI);        // Angle to
       ct.fill ();
 
-      // draw outline
       this.get_style_context ().render_frame (ctx, 0, 0, width, height);
     }
 
-    ctx.rectangle (0, 0, width, height);
     ctx.set_source_surface (surface, 0, 0);
     ctx.paint_with_alpha (alpha);
 
-
-    /* Draw verification indicator */
     if (verified) {
       int index = SMALL;
       if (width > 48)
@@ -181,7 +176,6 @@ class AvatarWidget : Gtk.Widget {
 
       int scale_factor = this.get_scale_factor () - 1;
       Cairo.Surface verified_img = verified_icons[scale_factor * 2 + index];
-      ctx.rectangle (0, 0, width, height);
       ctx.set_source_surface (verified_img,
                               width - VERIFIED_SIZES[index],
                               0);
