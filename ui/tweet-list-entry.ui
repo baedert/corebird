@@ -303,7 +303,6 @@
                     <property name="margin_end">6</property>
                     <signal name="clicked" handler="quote_name_button_clicked_cb" swapped="no"/>
                     <style>
-                      <class name="dim-label" />
                       <class name="text-only-button"/>
                     </style>
                   </object>
@@ -346,9 +345,6 @@
                      <attributes>
                       <attribute name="style" value="italic" />
                     </attributes>
-                    <style>
-                      <class name="dim-label" />
-                    </style>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
