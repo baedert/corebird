@@ -50,7 +50,6 @@ class DMThreadsModel : GLib.ListModel, GLib.Object {
     assert (this.has_thread (sender_id));
 #endif
 
-    int pos = 0;
     foreach (var thread in this.threads) {
       if (thread.user.id == sender_id) {
         thread.last_message_id = message_id;
@@ -58,7 +57,6 @@ class DMThreadsModel : GLib.ListModel, GLib.Object {
         /* Don't call items_changed, the caller DMManager has to call thread_changed */
         break;
       }
-      pos ++;
     }
   }
 
@@ -96,14 +94,12 @@ class DMThreadsModel : GLib.ListModel, GLib.Object {
   }
 
   public void increase_unread_count (int64 user_id, int amount = 1) {
-    int pos  = 0;
     foreach (var thread in this.threads) {
       if (thread.user.id == user_id) {
         thread.unread_count += amount;
         /* Don't call items_changed, the caller DMManager has to call thread_changed */
         break;
       }
-      pos ++;
     }
   }
 

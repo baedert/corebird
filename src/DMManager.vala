@@ -139,7 +139,7 @@ class DMManager : GLib.Object {
         if (dm_obj.get_int_member ("sender_id") == account.id) {
           save_message (dm_obj);
         } else {
-          add_new_thread (dm_obj);
+          update_thread (dm_obj, node);
         }
       });
       account.db.end_transaction ();
@@ -150,12 +150,12 @@ class DMManager : GLib.Object {
     if (dm_obj.get_int_member ("sender_id") == account.id) {
       save_message (dm_obj);
     } else {
-      add_new_thread (dm_obj);
+      update_thread (dm_obj);
     }
   }
 
   /* We are ONLY calling this for RECEIVED messages, not sent ones. */
-  private void add_new_thread (Json.Object dm_obj) {
+  private void update_thread (Json.Object dm_obj, Json.Node? node = null) {
     int64 sender_id  = dm_obj.get_int_member ("sender_id");
     int64 message_id = dm_obj.get_int_member ("id");
     assert (sender_id != account.id);
@@ -190,21 +190,27 @@ class DMManager : GLib.Object {
       thread.user.id = sender_id;
       thread.user.screen_name = sender_screen_name;
       thread.user.user_name = sender_name;
+      thread.last_message = text;
+      thread.last_message_id = message_id;
       this.threads_model.add (thread);
 
-      account.db.insert( "dm_threads")
-              .vali64 ("user_id", sender_id)
-              .val ("screen_name", sender_screen_name)
-              .val ("name", sender_name)
-              .val ("last_message", text)
-              .vali64 ("last_message_id", message_id)
-              .run ();
+      account.db.insert ("dm_threads")
+             .vali64 ("user_id", sender_id)
+             .val ("screen_name", sender_screen_name)
+             .val ("name", sender_name)
+             .val ("last_message", text)
+             .vali64 ("last_message_id", message_id)
+             .run ();
     } else {
-      this.threads_model.update_last_message (sender_id, message_id, text);
-      account.db.update ("dm_threads").val ("last_message", text)
-                                      .vali64 ("last_message_id", message_id)
-                                      .where_eqi ("user_id", sender_id).run ();
-      this.thread_changed (this.threads_model.get_thread (sender_id));
+      DMThread thread = threads_model.get_thread (sender_id);
+      if (message_id > thread.last_message_id) {
+        this.threads_model.update_last_message (sender_id, message_id, text);
+        account.db.update ("dm_threads").val ("last_message", text)
+                                        .vali64 ("last_message_id", message_id)
+                                        .where_eqi ("user_id", sender_id).run ();
+
+        this.thread_changed (thread);
+      }
     }
 
     account.user_counter.user_seen (sender_id, sender_screen_name, sender_name);
@@ -260,10 +266,10 @@ class DMManager : GLib.Object {
 
     /* Update unread count for the thread */
     if (sender_id != account.id && threads_model.has_thread (sender_id)) {
+      DMThread thread = threads_model.get_thread (sender_id);
       threads_model.increase_unread_count (sender_id);
-      assert (threads_model.has_thread (sender_id));
-      this.message_received (threads_model.get_thread (sender_id), text);
-      this.thread_changed (threads_model.get_thread (sender_id));
+      this.message_received (thread, text);
+      this.thread_changed (thread);
     }
   }
 }
