@@ -234,14 +234,12 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
       screen_name = vals[4];
       entry.main_window = main_window;
       entry.update_time_delta (now);
-      message ("From: %s, named %s", entry.user_id.to_string (), screen_name);
       Twitter.get ().load_avatar_for_user_id.begin (account,
                                                     entry.user_id,
                                                     48 * this.get_scale_factor (),
                                                     (obj, res) => {
         Cairo.Surface? s = Twitter.get ().load_avatar_for_user_id.end (res);
         entry.avatar = s;
-        message ("callback called for %s: %p", entry.user_id.to_string(), s);
       });
       delta_updater.add (entry);
       messages_list.add (entry);
