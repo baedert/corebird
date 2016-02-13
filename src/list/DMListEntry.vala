@@ -51,7 +51,6 @@ class DMListEntry : Gtk.ListBoxRow, ITwitterItem {
     get { return timestamp; }
   }
 
-  public string avatar_url;
   public int64 timestamp;
   public int64 id;
   public int64 user_id;
@@ -66,7 +65,7 @@ class DMListEntry : Gtk.ListBoxRow, ITwitterItem {
     });
   }
 
-  public void load_avatar () {
+  public void load_avatar (string avatar_url) {
     string url = avatar_url;
     if (this.get_scale_factor () == 2)
       url = url.replace ("_normal", "_bigger");
