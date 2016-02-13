@@ -15,30 +15,8 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-
-int dm_thread_entry_sort_func (Gtk.ListBoxRow r1,
-                               Gtk.ListBoxRow r2) {
-  if (r1 is StartConversationEntry)
-    return -1;
-  else if (r2 is StartConversationEntry)
-    return 1;
-
-  if (!(r1 is DMThreadEntry))
-    return 1;
-
-  if (((DMThreadEntry)r1).last_message_id >
-      ((DMThreadEntry)r2).last_message_id)
-    return -1;
-  return 1;
-}
-
-
 [GtkTemplate (ui = "/org/baedert/corebird/ui/dm-thread-entry.ui")]
 class DMThreadEntry : Gtk.ListBoxRow {
-  public static bool equal_func (DMThreadEntry a, DMThreadEntry b) {
-    return a.user_id == b.user_id;
-  }
   [GtkChild]
   private Gtk.Label name_label;
   [GtkChild]
@@ -49,8 +27,7 @@ class DMThreadEntry : Gtk.ListBoxRow {
   private AvatarWidget avatar_image;
   [GtkChild]
   private Gtk.Label unread_count_label;
-  public string avatar_url;
-  public int64 user_id {public get; private set;}
+  public int64 user_id;
   public new string name {
     get {
       return name_label.label;
@@ -68,17 +45,12 @@ class DMThreadEntry : Gtk.ListBoxRow {
     }
   }
   public string last_message {
-    get {
-      return last_message_label.label;
-    }
     set {
       last_message_label.label = value;
     }
   }
-  public int64 last_message_id {get; set;}
-  public Cairo.Surface avatar {
+  public Cairo.Surface? avatar {
     set { avatar_image.surface = value;}
-    owned get { return avatar_image.surface; }
   }
 
   private int _unread_count = 0;
@@ -91,22 +63,10 @@ class DMThreadEntry : Gtk.ListBoxRow {
       this.update_unread_count ();
     }
   }
-  public string? notification_id = null;
-
 
   public DMThreadEntry (int64 user_id) {
     this.user_id = user_id;
     update_unread_count ();
-  }
-
-  public void load_avatar () {
-    string url = avatar_url;
-    if (this.get_scale_factor () == 2)
-      url = url.replace ("_normal", "_bigger");
-
-    avatar_image.surface = Twitter.get ().get_avatar (user_id, url, (a) => {
-      avatar_image.surface = a;
-    }, 48 * this.get_scale_factor ());
   }
 
   private void update_unread_count () {

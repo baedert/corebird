@@ -367,14 +367,6 @@ namespace Utils {
     return back;
   }
 
-  uint int64_hash_func (int64? k) {
-    return (uint)k;
-  }
-
-  bool int64_equal_func (int64? a, int64? b) {
-    return a == b;
-  }
-
   public int get_json_array_size (Json.Object node, string object_name) {
     if (!node.has_member (object_name))
       return 0;
