@@ -373,7 +373,7 @@ public class MainWindow : Gtk.ApplicationWindow {
    *
    */
   private void load_geometry () {
-    if (account == null) {
+    if (account == null || account.screen_name == Account.DUMMY) {
       debug ("Could not load geometry, account == null");
       return;
     }
