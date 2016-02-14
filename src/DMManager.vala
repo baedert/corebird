@@ -24,7 +24,7 @@ class DMManager : GLib.Object {
     }
   }
 
-  public signal void message_received (DMThread thread, string text);
+  public signal void message_received (DMThread thread, string text, bool initial);
   public signal void thread_changed (DMThread thread);
 
   public DMManager.for_account (Account account) {
@@ -137,9 +137,9 @@ class DMManager : GLib.Object {
       root_arr.foreach_element ((arr, pos, node) => {
         var dm_obj = node.get_object ();
         if (dm_obj.get_int_member ("sender_id") == account.id) {
-          save_message (dm_obj);
+          save_message (dm_obj, true);
         } else {
-          update_thread (dm_obj, node);
+          update_thread (dm_obj, true);
         }
       });
       account.db.end_transaction ();
@@ -148,14 +148,14 @@ class DMManager : GLib.Object {
 
   public void insert_message (Json.Object dm_obj) {
     if (dm_obj.get_int_member ("sender_id") == account.id) {
-      save_message (dm_obj);
+      save_message (dm_obj, false);
     } else {
-      update_thread (dm_obj);
+      update_thread (dm_obj, false);
     }
   }
 
   /* We are ONLY calling this for RECEIVED messages, not sent ones. */
-  private void update_thread (Json.Object dm_obj, Json.Node? node = null) {
+  private void update_thread (Json.Object dm_obj, bool initial) {
     int64 sender_id  = dm_obj.get_int_member ("sender_id");
     int64 message_id = dm_obj.get_int_member ("id");
     assert (sender_id != account.id);
@@ -217,11 +217,11 @@ class DMManager : GLib.Object {
 
     /* This will exctract the json data again, etc. but it's still easier than
      * replacing entities here... */
-    save_message (dm_obj);
+    save_message (dm_obj, initial);
   }
 
 
-  private void save_message (Json.Object dm_obj) {
+  private void save_message (Json.Object dm_obj, bool initial) {
     Json.Object sender = dm_obj.get_object_member ("sender");
     Json.Object recipient = dm_obj.get_object_member ("recipient");
     int64 sender_id = dm_obj.get_int_member ("sender_id");
@@ -268,7 +268,7 @@ class DMManager : GLib.Object {
     if (sender_id != account.id && threads_model.has_thread (sender_id)) {
       DMThread thread = threads_model.get_thread (sender_id);
       threads_model.increase_unread_count (sender_id);
-      this.message_received (thread, text);
+      this.message_received (thread, text, initial);
       this.thread_changed (thread);
     }
   }

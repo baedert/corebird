@@ -117,7 +117,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     return row;
   }
 
-  void dm_received_cb (DMThread thread, string text) {
+  void dm_received_cb (DMThread thread, string text, bool initial) {
     assert (thread.user.id != account.id);
 
     if (thread.user.id != account.id) {
@@ -127,7 +127,9 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       }
     }
 
-    this.notify_new_dm (thread, text);
+    if (!initial) {
+      this.notify_new_dm (thread, text);
+    }
   }
 
   void thread_changed_cb (DMThread thread) {
