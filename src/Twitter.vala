@@ -80,6 +80,12 @@ public class Twitter : GLib.Object {
       return surface;
   }
 
+  /* This is a get_avatar version for times where we don't have an at least
+     relatively recent avatar_url for the given account.
+
+     This will first query the account details of the given account,
+     then use the avatar_url to download the avatar and insert it
+     into the avatar cache */
   public async Cairo.Surface? load_avatar_for_user_id (Account account,
                                                        int64   user_id,
                                                        int     size) {
@@ -89,9 +95,12 @@ public class Twitter : GLib.Object {
     s = avatar_cache.get_surface_for_id (user_id, out found);
 
     if (s != null) {
+      //message ("surface for account %s found", user_id.to_string ());
       assert (found);
       return s;
     }
+    //else
+      //message ("surface for account %s not found (found: %s)", user_id.to_string (), found.to_string ());
 
     if (s == null && found) {
       ulong handler_id = 0;
