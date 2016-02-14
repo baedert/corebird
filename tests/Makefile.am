@@ -27,7 +27,8 @@ TESTS = \
 	filters \
 	highlighting \
 	friends \
-	texttransform
+	texttransform \
+	avatar_download
 
 check_PROGRAMS = $(TESTS)
 
@@ -42,7 +43,8 @@ tests_VALASOURCES = \
 	highlighting.vala \
 	friends.vala \
 	tweetmodel.vala \
-	texttransform.vala
+	texttransform.vala \
+	avatar_download.vala
 
 $(tests_VALASOURCES:.vala=.c): tests_vala.stamp
 
@@ -87,6 +89,9 @@ tweetmodel_LDADD = $(top_builddir)/src/libcorebird.la
 
 nodist_texttransform_SOURCES = texttransform.c
 texttransform_LDADD = $(top_builddir)/src/libcorebird.la
+
+nodist_avatar_download_SOURCES = avatar_download.c ../src/corebird-resources.c
+avatar_download_LDADD = $(top_builddir)/src/libcorebird.la
 
 EXTRA_DIST = \
 	$(tests_VALASOURCES)
