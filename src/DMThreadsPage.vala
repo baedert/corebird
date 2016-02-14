@@ -15,7 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 [GtkTemplate (ui = "/org/baedert/corebird/ui/dm-threads-page.ui")]
 class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   private bool initialized = false;
@@ -42,7 +41,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   private int64 max_sent_id = -1;
   [GtkChild]
   private Gtk.ListBox thread_list;
-  private Gtk.Spinner progress_spinner;
+  private Gtk.ListBoxRow? progress_row = null;
   private Collect dm_download_collect;
 
 
@@ -148,14 +147,14 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       return true;
     });
     if (n_rows == 0 && GLib.NetworkMonitor.get_default ().get_network_available ()) {
-      var row = new Gtk.ListBoxRow ();
-      progress_spinner = new Gtk.Spinner ();
+      this.progress_row = new Gtk.ListBoxRow ();
+      var progress_spinner = new Gtk.Spinner ();
       progress_spinner.set_size_request (16, 16);
       progress_spinner.margin = 12;
       progress_spinner.start ();
-      row.add (progress_spinner);
-      row.activatable = false;
-      thread_list.add (row);
+      progress_row.add (progress_spinner);
+      progress_row.activatable = false;
+      thread_list.add (progress_row);
     }
   }
 
@@ -357,9 +356,9 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   }
 
   private void remove_spinner () {
-    if (progress_spinner != null && progress_spinner.parent != null) {
-      thread_list.remove (thread_list.get_row_at_index (1));
-      progress_spinner = null;
+    if (this.progress_row != null) {
+      thread_list.remove (this.progress_row);
+      this.progress_row = null;
     }
   }
 
