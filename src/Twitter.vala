@@ -95,12 +95,9 @@ public class Twitter : GLib.Object {
     s = avatar_cache.get_surface_for_id (user_id, out found);
 
     if (s != null) {
-      //message ("surface for account %s found", user_id.to_string ());
       assert (found);
       return s;
     }
-    //else
-      //message ("surface for account %s not found (found: %s)", user_id.to_string (), found.to_string ());
 
     if (s == null && found) {
       ulong handler_id = 0;
