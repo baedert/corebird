@@ -159,7 +159,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     if (!initialized) {
       bool was_empty = manager.empty;
       if (was_empty) {
-        start_conversation_entry.hide ();
+        top_list.hide ();
         this.progress_row = new Gtk.ListBoxRow ();
         var spinner = new Gtk.Spinner ();
         spinner.set_size_request (16, 16);
@@ -177,6 +177,8 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
             thread_list.remove (progress_row);
             this.progress_row = null;
           }
+
+          top_list.show_all ();
 
           foreach (Gtk.Widget w in thread_list.get_children ()) {
             w.show ();
