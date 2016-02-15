@@ -72,7 +72,6 @@ class ComposeImageManager : Gtk.Container {
 
   public override void remove (Gtk.Widget widget) {
     widget.unparent ();
-    int index = 0;
     if (widget is AddImageButton)
       this.buttons.remove ((AddImageButton)widget);
     else
@@ -99,7 +98,6 @@ class ComposeImageManager : Gtk.Container {
     Gtk.Allocation close_allocation = {};
     close_allocation.y = allocation.y;
     for (int i = 0, p = this.buttons.size; i < p; i ++) {
-      int imp;
       int min, nat;
 
       AddImageButton aib = this.buttons.get (i);
@@ -111,7 +109,7 @@ class ComposeImageManager : Gtk.Container {
       aib.size_allocate (child_allocation);
 
 
-      int m, n;
+      int n;
       Gtk.Widget btn = this.close_buttons.get (i);
       btn.get_preferred_width (out close_allocation.width, out n);
       btn.get_preferred_height (out close_allocation.height, out n);
