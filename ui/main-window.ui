@@ -48,7 +48,6 @@
                 <property name="tooltip_text" translatable="yes">Show configured accounts</property>
                 <signal name="clicked" handler="account_button_clicked_cb" />
                 <style>
-                  <class name="image-button" />
                   <class name="account-button" />
                 </style>
                 <child>
