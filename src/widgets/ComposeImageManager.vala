@@ -16,6 +16,8 @@
  */
 
 class ComposeImageManager : Gtk.Container {
+  private static const int BUTTON_DELTA = 10;
+  private static const int BUTTON_SPACING = 12;
   private Gee.ArrayList<AddImageButton> buttons;
   private Gee.ArrayList<Gtk.Button>      close_buttons;
 
@@ -36,6 +38,9 @@ class ComposeImageManager : Gtk.Container {
   private void remove_clicked_cb (Gtk.Button source) {
     int index = this.close_buttons.index_of (source);
     assert (index >= 0);
+
+    this.close_buttons.get (index).hide ();
+
 
     AddImageButton aib = (AddImageButton) this.buttons.get (index);
     aib.deleted.connect (() => {
@@ -93,10 +98,13 @@ class ComposeImageManager : Gtk.Container {
 
     if (this.buttons.size == 0) return;
 
+
+    int default_button_width = (allocation.width - (buttons.size * BUTTON_SPACING)) /
+                               buttons.size;
+
     child_allocation.x = allocation.x;
-    child_allocation.y = allocation.y + 10;
-    child_allocation.width = allocation.width / buttons.size;
-    child_allocation.height = int.max (allocation.height - 10, 0);
+    child_allocation.y = allocation.y + BUTTON_DELTA;
+    child_allocation.height = int.max (allocation.height - BUTTON_DELTA, 0);
 
     Gtk.Allocation close_allocation = {};
     close_allocation.y = allocation.y;
@@ -104,11 +112,9 @@ class ComposeImageManager : Gtk.Container {
       int min, nat;
 
       AddImageButton aib = this.buttons.get (i);
-      aib.get_preferred_width_for_height (allocation.height, out min, out nat);
+      aib.get_preferred_width_for_height (child_allocation.height, out min, out nat);
 
-      int width = int.min (nat, allocation.width / buttons.size);
-
-      child_allocation.width = width;
+      child_allocation.width = int.min (default_button_width, nat);
       aib.size_allocate (child_allocation);
 
 
@@ -117,14 +123,15 @@ class ComposeImageManager : Gtk.Container {
       btn.get_preferred_width (out close_allocation.width, out n);
       btn.get_preferred_height (out close_allocation.height, out n);
       close_allocation.x = child_allocation.x + child_allocation.width
-                           - close_allocation.width + 10;
+                           - close_allocation.width + BUTTON_DELTA;
+
       btn.size_allocate (close_allocation);
 
-      child_allocation.x += child_allocation.width;
+      child_allocation.x += child_allocation.width + BUTTON_SPACING;
     }
   }
 
-  public override void get_preferred_height_for_width (int width,
+  public override void get_preferred_height_for_width (int     width,
                                                        out int minimum,
                                                        out int natural) {
     int min = 0;
@@ -151,8 +158,8 @@ class ComposeImageManager : Gtk.Container {
       nat += n;
     }
 
-    minimum = min;
-    natural = nat;
+    minimum = min + (buttons.size * BUTTON_SPACING);
+    natural = nat + (buttons.size * BUTTON_SPACING);
   }
 
   public override bool draw (Cairo.Context ct) {
