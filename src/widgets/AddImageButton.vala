@@ -15,8 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// XXX This is more or less a copy of MediaButton, so if something
-//     changes there, we need to reflect that here.
 class AddImageButton : Gtk.Widget {
   private static const int MIN_WIDTH  = 40;
   private static const int MAX_HEIGHT = 150;
@@ -33,8 +31,8 @@ class AddImageButton : Gtk.Widget {
     this.set_has_window (false);
   }
 
-  public void get_draw_size (out int width,
-                             out int height,
+  public void get_draw_size (out int    width,
+                             out int    height,
                              out double scale) {
     if (this.surface == null) {
       width  = 0;
@@ -62,19 +60,17 @@ class AddImageButton : Gtk.Widget {
     /* Draw thumbnail */
     if (this.surface != null) {
       ct.save ();
-
       ct.rectangle (0, 0, widget_width, widget_height);
 
       int draw_width, draw_height;
       double scale;
       this.get_draw_size (out draw_width, out draw_height, out scale);
 
-      int draw_x = (widget_width / 2) - (draw_width / 2);
-      draw_x = 0;
-
-      ct.scale (scale, scale);
-      ct.set_source_surface (this.surface, draw_x, 0);
-      ct.fill ();
+      if (draw_width > 0 && draw_height > 0) {
+        ct.scale (scale, scale);
+        ct.set_source_surface (this.surface, 0, 0);
+        ct.fill ();
+      }
       ct.restore ();
 
       style_context.render_check (ct,
@@ -82,21 +78,7 @@ class AddImageButton : Gtk.Widget {
                                   (widget_height / 2.0) - (ICON_SIZE / 2.0),
                                   ICON_SIZE,
                                   ICON_SIZE);
-
-
     }
-
-    //else {
-      //var sc = this.get_style_context ();
-      //double layout_x, layout_y;
-      //int layout_w, layout_h;
-      //layout.set_text ("%d%%".printf ((int)(media.percent_loaded * 100)), -1);
-      //layout.get_size (out layout_w, out layout_h);
-      //layout_x = (widget_width / 2.0) - (layout_w / Pango.SCALE / 2.0);
-      //layout_y = (widget_height / 2.0) - (layout_h / Pango.SCALE / 2.0);
-      //sc.render_layout (ct, layout_x, layout_y, layout);
-    //}
-
 
     return Gdk.EVENT_PROPAGATE;
   }
@@ -110,7 +92,7 @@ class AddImageButton : Gtk.Widget {
     return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
   }
 
-  public override void get_preferred_height_for_width (int width,
+  public override void get_preferred_height_for_width (int     width,
                                                        out int minimum,
                                                        out int natural) {
     int media_width;
@@ -130,7 +112,7 @@ class AddImageButton : Gtk.Widget {
     minimum = natural = (int)(height * this.delete_factor);
   }
 
-  public override void get_preferred_width_for_height (int height,
+  public override void get_preferred_width_for_height (int     height,
                                                        out int minimum,
                                                        out int natural) {
     int media_width;
