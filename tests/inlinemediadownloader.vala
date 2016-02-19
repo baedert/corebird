@@ -229,9 +229,9 @@ int main (string[] args) {
   GLib.Test.add_func ("/media/download-twice", download_twice);
   GLib.Test.add_func ("/media/no-thumbnail", no_thumbnail);
   GLib.Test.add_func ("/media/no-media", no_media);
-  GLib.Test.add_func ("/media/double_download", double_download);
+  GLib.Test.add_func ("/media/double-download", double_download);
   /* Keep this one at the bottom! */
-  GLib.Test.add_func ("/media/too_big", too_big);
+  GLib.Test.add_func ("/media/too-big", too_big);
 
   return GLib.Test.run ();
 }
