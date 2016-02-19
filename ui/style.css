@@ -222,4 +222,5 @@
   outline-radius: 50%;
   min-height: 0px;
   min-width: 0px;
+  box-shadow: none;
 }
