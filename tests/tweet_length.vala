@@ -70,6 +70,13 @@ void whitespace () {
   assert (l == 11);
 }
 
+void trailing_space () {
+  string text = "Foo Bar ";
+  int l = TweetUtils.calc_tweet_length (text);
+  message ("Length: %d", l);
+  assert (l == 8);
+}
+
 void utf8 () {
   string text = "€¤²˛×     ××¹áœ http://¤³¤€.com"; // 5 + 5 + 5 + 1 + 22
   message (text);
@@ -107,6 +114,7 @@ int main (string[] args) {
   GLib.Test.add_func ("/tweet-length/real-text1", real_text1);
   GLib.Test.add_func ("/tweet-length/newline-link", newline_link);
   GLib.Test.add_func ("/tweet-length/whitespace", whitespace);
+  GLib.Test.add_func ("/tweet-length/trailing_space", trailing_space);
   GLib.Test.add_func ("/tweet-length/utf8", utf8);
   //GLib.Test.add_func ("/tweet-length/punctuation-url", punctuation_url); XXX Fails.
   GLib.Test.add_func ("/tweet-length/unicode1", unicode1);

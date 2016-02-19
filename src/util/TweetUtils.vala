@@ -194,7 +194,7 @@ namespace TweetUtils {
 
     for (int next = 0, c_n = 0; text.get_next_char (ref next, out c); c_n ++) {
       if (c == ' ' || c == '\n' || c_n == n_chars - 1) {
-        if (c_n == n_chars - 1)
+        if (c_n == n_chars - 1 && c != ' ' && c != '\n')
           cur = next;
 
         string word = text.substring (last_word_start,
