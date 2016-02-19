@@ -193,8 +193,13 @@ namespace TweetUtils {
     int cur = 0; /* Byte Index */
 
     for (int next = 0, c_n = 0; text.get_next_char (ref next, out c); c_n ++) {
-      if (c == ' ' || c == '\n' || c_n == n_chars - 1) {
-        if (c_n == n_chars - 1)
+      bool is_whitespace = (c == ' ' || c == '\n');
+
+      if (is_whitespace || c_n == n_chars - 1) {
+
+        /* Include the current character only if it's not whitespace since we are
+           later accounting for whitespace characters anyway */
+        if (!is_whitespace && c_n == n_chars - 1)
           cur = next;
 
         string word = text.substring (last_word_start,
@@ -203,7 +208,7 @@ namespace TweetUtils {
         if (word.length > 0)
           length += get_word_length (word);
 
-        if (c == ' ' || c == '\n')
+        if (is_whitespace)
           length += 1;
 
         // Just adding one here is save since we made sure c is either ' ' or \n
