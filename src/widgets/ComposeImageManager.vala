@@ -51,9 +51,12 @@ class ComposeImageManager : Gtk.Container {
   // GtkContainer API {{{
   public override void forall_internal (bool include_internals, Gtk.Callback cb) {
     assert (buttons.size == close_buttons.size);
-    for (int i = 0, p = buttons.size; i < p; i ++) {
+    for (int i = 0; i < this.buttons.size;) {
+      int size_before = this.buttons.size;
       cb (buttons.get (i));
       cb (close_buttons.get (i));
+
+      i += this.buttons.size - size_before + 1;
     }
   }
 
