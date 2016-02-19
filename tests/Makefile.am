@@ -18,33 +18,33 @@ TESTS_ENVIRONMENT = GSETTINGS_SCHEMA_DIR=$(abs_top_builddir)/data
 
 TESTS = \
 	tweetmodel \
-	tweet_length \
+	tweetlength \
 	utils \
 	bundlehistory \
 	usercounter \
 	media \
-	tweet_parsing \
+	tweetparsing \
 	filters \
 	highlighting \
 	friends \
 	texttransform \
-	avatar_download
+	avatardownload
 
 check_PROGRAMS = $(TESTS)
 
 tests_VALASOURCES = \
-	tweet_length.vala \
+	tweetlength.vala \
 	inlinemediadownloader.vala \
 	utils.vala \
 	bundlehistory.vala \
 	usercounter.vala \
 	filters.vala \
-	tweet_parsing.vala \
+	tweetparsing.vala \
 	highlighting.vala \
 	friends.vala \
 	tweetmodel.vala \
 	texttransform.vala \
-	avatar_download.vala
+	avatardownload.vala
 
 $(tests_VALASOURCES:.vala=.c): tests_vala.stamp
 
@@ -57,8 +57,8 @@ tests_vala.stamp: $(tests_VALASOURCES) $(top_builddir)/src/libcorebird.la $(top_
 	done; \
 	touch $@
 
-nodist_tweet_length_SOURCES = tweet_length.c
-tweet_length_LDADD = $(top_builddir)/src/libcorebird.la
+nodist_tweetlength_SOURCES = tweetlength.c
+tweetlength_LDADD = $(top_builddir)/src/libcorebird.la
 
 nodist_media_SOURCES = inlinemediadownloader.c
 media_LDADD = $(top_builddir)/src/libcorebird.la
@@ -75,8 +75,8 @@ usercounter_LDADD = $(top_builddir)/src/libcorebird.la
 nodist_filters_SOURCES = filters.c ../src/corebird-resources.c
 filters_LDADD = $(top_builddir)/src/libcorebird.la
 
-nodist_tweet_parsing_SOURCES = tweet_parsing.c ../src/corebird-resources.c
-tweet_parsing_LDADD = $(top_builddir)/src/libcorebird.la
+nodist_tweetparsing_SOURCES = tweetparsing.c ../src/corebird-resources.c
+tweetparsing_LDADD = $(top_builddir)/src/libcorebird.la
 
 nodist_highlighting_SOURCES = highlighting.c
 highlighting_LDADD = $(top_builddir)/src/libcorebird.la
@@ -90,8 +90,8 @@ tweetmodel_LDADD = $(top_builddir)/src/libcorebird.la
 nodist_texttransform_SOURCES = texttransform.c
 texttransform_LDADD = $(top_builddir)/src/libcorebird.la
 
-nodist_avatar_download_SOURCES = avatar_download.c ../src/corebird-resources.c
-avatar_download_LDADD = $(top_builddir)/src/libcorebird.la
+nodist_avatardownload_SOURCES = avatardownload.c ../src/corebird-resources.c
+avatardownload_LDADD = $(top_builddir)/src/libcorebird.la
 
 EXTRA_DIST = \
 	$(tests_VALASOURCES)
