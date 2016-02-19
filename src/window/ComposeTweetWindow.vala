@@ -118,7 +118,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       this.title_label.label = _("Quote tweet");
     }
 
-    //Let the text view immediately grab the keyboard focus
+    /* Let the text view immediately grab the keyboard focus */
     tweet_text.grab_focus ();
 
     Gtk.AccelGroup ag = new Gtk.AccelGroup ();
@@ -185,7 +185,6 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     job.text = tweet_text.buffer.get_text (start, end, true);
 
     foreach (var path in this.compose_image_manager.get_image_paths ()) {
-      message ("Adding %s", path);
       job.add_image (path);
     }
 
