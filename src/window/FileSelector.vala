@@ -80,6 +80,7 @@ class FileSelector : Gtk.Window {
     if (Gtk.Settings.get_default ().gtk_dialogs_use_header) {
       /* Use CSDs */
       var titlebar = new Gtk.HeaderBar ();
+      titlebar.title = _("Select Image");
       titlebar.pack_start (cancel_button);
       titlebar.pack_end (select_button);
       this.set_titlebar (titlebar);
@@ -117,7 +118,6 @@ class FileSelector : Gtk.Window {
     }
     if (info.get_file_type () == GLib.FileType.REGULAR) {
       int64 size = info.get_size ();
-      message ("File size: %s", size.to_string ());
       select_button.sensitive = size < this._max_file_size;
     } else {
       select_button.sensitive = true;
