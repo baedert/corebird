@@ -154,9 +154,6 @@
             <property name="halign">end</property>
             <property name="margin_end">10</property>
             <signal name="clicked" handler="add_image_clicked_cb" />
-            <style>
-              <class name="image-button" />
-            </style>
           </object>
           <packing>
             <property name="left_attach">1</property>
