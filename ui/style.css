@@ -213,7 +213,7 @@
 }
 
 .quote {
-  border-left: 3px solid currentColor;
+  border-left: 3px solid alpha(currentColor, 0.4);
 }
 
 .close-button {
