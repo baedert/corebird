@@ -183,7 +183,7 @@ class DMManager : GLib.Object {
                                            TransformFlags.EXPAND_LINKS);
     string sender_screen_name = dm_obj.get_string_member ("sender_screen_name");
     string sender_name = dm_obj.get_object_member ("sender").get_string_member ("name")
-                                                            .strip ();
+                                                            .strip ().replace ("&", "&amp;");
 
     if (!threads_model.has_thread (sender_id)) {
       DMThread thread = new DMThread ();
