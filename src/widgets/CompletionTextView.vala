@@ -37,7 +37,9 @@ class CompletionTextView : Gtk.TextView {
 
     var scroller = new Gtk.ScrolledWindow (null, null);
     scroller.add (completion_list);
-    completion_window.add (scroller);
+    var frame = new Gtk.Frame (null);
+    frame.add (scroller);
+    completion_window.add (frame);
 
     this.focus_out_event.connect (completion_window_focus_out_cb);
 
@@ -187,8 +189,10 @@ class CompletionTextView : Gtk.TextView {
     this.get_window (Gtk.TextWindowType.WIDGET).get_origin (out x, out y);
     y += alloc.height;
 
-    completion_window.move (x, y);
-    completion_window.resize (alloc.width, 50);
+    /* +2 for the size and -1 for x since we account for the
+       frame size around the text view */
+    completion_window.move (x - 1, y);
+    completion_window.resize (alloc.width + 2, 50);
     completion_list.foreach ((w) => { completion_list.remove (w);});
     completion_window.show_all ();
   }
