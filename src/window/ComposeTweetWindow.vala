@@ -197,7 +197,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     });
 
     job.start.begin (cancellable, () => {
-      message ("Tweet sent.");
+      debug ("Tweet sent.");
       this.destroy ();
     });
   }
