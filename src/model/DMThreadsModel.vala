@@ -21,6 +21,26 @@ class DMThread : GLib.Object {
   public string last_message;
   public int unread_count = 0;
   public string? notification_id = null;
+
+  public Cairo.Surface? avatar_surface = null;
+
+  public async void load_avatar (Account account, int scale_factor) {
+    assert (this.user.id != 0);
+
+    if (this.avatar_surface != null) {
+      load_avatar.callback ();
+      return;
+    }
+
+    this.avatar_surface = yield Twitter.get ().load_avatar_for_user_id (account,
+                                                                        user.id,
+                                                                        48 * scale_factor);
+  }
+
+  ~DMThread () {
+    if (this.avatar_surface != null)
+      Twitter.get ().unref_avatar (this.avatar_surface);
+  }
 }
 
 /* Let's hope there aren't a lof of threads */

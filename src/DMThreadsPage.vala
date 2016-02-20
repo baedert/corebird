@@ -100,18 +100,14 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 
   private Gtk.Widget thread_widget_func (GLib.Object item) {
     DMThread thread = (DMThread) item;
+
     var row = new DMThreadEntry (thread.user.id);
     row.screen_name = thread.user.screen_name;
     row.name = thread.user.user_name;
     row.last_message = thread.last_message;
     row.unread_count = thread.unread_count;
-
-    Twitter.get ().load_avatar_for_user_id.begin (account,
-                                                  thread.user.id,
-                                                  48 * this.get_scale_factor (),
-                                                  (obj, res) => {
-      Cairo.Surface? s = Twitter.get ().load_avatar_for_user_id.end (res);
-      row.avatar = s;
+    thread.load_avatar.begin (this.account, this.get_scale_factor (), () => {
+      row.avatar = thread.avatar_surface;
     });
 
     return row;
