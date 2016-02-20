@@ -177,8 +177,14 @@ class ComposeImageManager : Gtk.Container {
   }
   // }}}
 
-  public void load_image (string path) {
-    Cairo.ImageSurface surface = (Cairo.ImageSurface) load_surface (path);
+  public void load_image (string path, Gdk.Pixbuf? image) {
+    Cairo.ImageSurface surface;
+    if (image == null)
+      surface = (Cairo.ImageSurface) load_surface (path);
+    else
+      surface = (Cairo.ImageSurface) Gdk.cairo_surface_create_from_pixbuf (image,
+                                                                           this.get_scale_factor (),
+                                                                           this.get_window ());
 
     var button = new AddImageButton ();
     button.surface = surface;

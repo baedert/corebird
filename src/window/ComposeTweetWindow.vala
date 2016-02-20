@@ -224,7 +224,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     file_chooser.set_transient_for (this);
     file_chooser.modal = true;
     file_chooser.file_selected.connect ((path, image) => {
-      this.compose_image_manager.load_image (path);
+      this.compose_image_manager.load_image (path, image);
 
       if (this.compose_image_manager.n_images == Twitter.max_media_per_upload)
         this.add_image_button.sensitive = false;
