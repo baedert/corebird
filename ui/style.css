@@ -53,6 +53,8 @@
   opacity: 0.9;
   box-shadow: none;
   border: none;
+  border-top: 2px solid transparent;
+  border-bottom: 2px solid transparent;
 }
 
 .inline-media:hover {
