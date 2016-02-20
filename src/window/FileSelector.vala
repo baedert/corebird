@@ -197,11 +197,18 @@ class FileSelector : Gtk.Window {
     GLib.File file = GLib.File.new_for_uri (uri);
     GLib.FileInfo info;
     try {
-      info = file.query_info (GLib.FileAttribute.STANDARD_TYPE, 0);
+      info = file.query_info (GLib.FileAttribute.STANDARD_TYPE + "," +
+                              GLib.FileAttribute.STANDARD_SIZE, 0);
     } catch (GLib.Error e) {
       warning (e.message);
       return;
     }
+
+    /* Via double-click, we can still end up here with a file that is too large */
+    if (info.get_size () > this._max_file_size) {
+      return;
+    }
+
     if (info.get_file_type () == GLib.FileType.DIRECTORY) {
       /* Go into the directory */
       file_chooser.set_current_folder (file.get_path ());
