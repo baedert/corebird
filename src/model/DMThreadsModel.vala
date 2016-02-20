@@ -27,14 +27,13 @@ class DMThread : GLib.Object {
   public async void load_avatar (Account account, int scale_factor) {
     assert (this.user.id != 0);
 
-    if (this.avatar_surface != null) {
-      load_avatar.callback ();
+    if (this.avatar_surface != null)
       return;
-    }
 
     this.avatar_surface = yield Twitter.get ().load_avatar_for_user_id (account,
                                                                         user.id,
                                                                         48 * scale_factor);
+    Twitter.get ().ref_avatar (this.avatar_surface);
   }
 
   ~DMThread () {
@@ -60,9 +59,21 @@ class DMThreadsModel : GLib.ListModel, GLib.Object {
   }
 
   public void add (DMThread thread) {
-    this.threads.add (thread);
-    // TODO: Keep sorted
-    this.items_changed (this.threads.size - 1, 0, 1);
+    bool added = false;
+    for (int i = 0; i < threads.size; i ++) {
+      if (thread.last_message_id > threads.get (i).last_message_id) {
+        this.threads.insert (i, thread);
+        this.items_changed (i, 0, 1);
+        added = true;
+        break;
+      }
+    }
+
+    if (!added) {
+      this.threads.add (thread);
+      this.items_changed (this.threads.size - 1, 0, 1);
+    }
+
   }
 
   public void update_last_message (int64 sender_id, int64 message_id, string message_text) {
@@ -70,13 +81,22 @@ class DMThreadsModel : GLib.ListModel, GLib.Object {
     assert (this.has_thread (sender_id));
 #endif
 
+    int index = 0;
     foreach (var thread in this.threads) {
       if (thread.user.id == sender_id) {
-        thread.last_message_id = message_id;
-        thread.last_message = message_text;
+        if (message_id > thread.last_message_id) {
+          thread.last_message_id = message_id;
+          thread.last_message = message_text;
+          this.threads.remove (thread);
+          this.items_changed (index, 1, 0);
+          this.add (thread);
+        } else {
+          warning ("id %s is < than %s", message_id.to_string (), thread.last_message_id.to_string ());
+        }
         /* Don't call items_changed, the caller DMManager has to call thread_changed */
         break;
       }
+      index ++;
     }
   }
 
