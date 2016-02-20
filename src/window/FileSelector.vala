@@ -100,6 +100,10 @@ class FileSelector : Gtk.Window {
 
     /* select_button needs to be anchored */
     select_button.grab_default ();
+
+    /* gtkfilechooserdialog.c chooses 600px width here, but we need
+       to account for the width of the preview image */
+    this.set_default_size (800, 400);
   }
 
   private void selection_changed_cb () {
