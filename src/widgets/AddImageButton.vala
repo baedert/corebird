@@ -83,11 +83,6 @@ class AddImageButton : Gtk.Widget {
     return Gdk.EVENT_PROPAGATE;
   }
 
-
-  public void start_progress (){}
-  public void set_success (){}
-  public void set_error (string error_message) {}
-
   public override Gtk.SizeRequestMode get_request_mode () {
     return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
   }
