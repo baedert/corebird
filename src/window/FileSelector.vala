@@ -126,9 +126,30 @@ class FileSelector : Gtk.Window {
 
   /* TODO: Make this async; the current impl sucks with bigger images. */
   private void update_preview_cb () {
-    string? uri = file_chooser.get_preview_uri ();
-    if (uri != null && uri.has_prefix ("file://")) {
-      var file = GLib.File.new_for_uri (uri);
+    string? uri = file_chooser.get_uri ();
+    if (uri == null)
+      return;
+
+    GLib.File file = GLib.File.new_for_uri (uri);
+    GLib.FileInfo info;
+    try {
+      info = file.query_info (GLib.FileAttribute.STANDARD_TYPE + "," +
+                              GLib.FileAttribute.STANDARD_SIZE, 0);
+    } catch (GLib.Error e) {
+      warning (e.message);
+      return;
+    }
+
+    if (info.get_size () > this._max_file_size) {
+      preview_image.clear ();
+      preview_image.hide ();
+      preview_label.label = _("Max file size exceeded\n(3MB)");
+      preview_label.justify = Gtk.Justification.CENTER;
+      preview_box.show_all ();
+      return;
+    }
+
+    if (uri.has_prefix ("file://")) {
       preview_label.label = file.get_basename ();
       try {
         int final_size = 130;
