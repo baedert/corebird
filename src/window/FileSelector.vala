@@ -58,6 +58,7 @@ class FileSelector : Gtk.Window {
     file_chooser.update_preview.connect (update_preview_cb);
     file_chooser.selection_changed.connect (selection_changed_cb);
     file_chooser.file_activated.connect (file_activated_cb);
+    file_chooser.current_folder_changed.connect (folder_changed_cb);
     file_chooser.use_preview_label = false;
 
 
@@ -178,6 +179,14 @@ class FileSelector : Gtk.Window {
       }
     } else {
       preview_box.hide ();
+    }
+  }
+
+  private void folder_changed_cb () {
+    string? uri = file_chooser.get_uri ();
+    if (uri == null) {
+      preview_box.hide ();
+      select_button.sensitive = false;
     }
   }
 
