@@ -23,6 +23,7 @@ src/widgets/MultiMediaWidget.c
 src/widgets/MediaImageWidget.c
 src/widgets/AddImageButton.c
 src/widgets/FollowButton.c
+src/widgets/CompletionTextView.c
 src/window/ComposeTweetWindow.c
 src/window/ImageDialog.c
 src/window/UserListDialog.c
@@ -32,6 +33,7 @@ src/widgets/MediaButton.c
 src/window/ImageCropDialog.c
 src/window/ModifySnippetDialog.c
 src/window/SettingsDialog.c
+src/window/FileSelector.c
 src/model/NotificationItem.c
 src/corebird-resources.c
 data/org.baedert.corebird.desktop.in
