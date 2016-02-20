@@ -31,6 +31,7 @@ public class Twitter : GLib.Object {
   [Signal (detailed = true)]
   private signal void avatar_downloaded (Cairo.Surface avatar);
 
+  public const int MAX_BYTES_PER_IMAGE    = 1024 * 1024 * 3;
   public const int short_url_length       = 23;
   public const int short_url_length_https = 23;
   public const int max_media_per_upload   = 4;
