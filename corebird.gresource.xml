@@ -47,15 +47,15 @@
     <file preprocess="to-pixdata">data/32x32/apps/corebird-mentions-symbolic.symbolic.png</file>
     <file preprocess="to-pixdata">data/32x32/apps/corebird-new-window-symbolic.symbolic.png</file>
     <file preprocess="to-pixdata">data/32x32/apps/corebird-retweet-symbolic.symbolic.png</file>
+    <file preprocess="to-pixdata">assets/play.png</file>
+    <file preprocess="to-pixdata">assets/play@2.png</file>
+    <file preprocess="to-pixdata">assets/verified-small.png</file>
+    <file preprocess="to-pixdata">assets/verified-small@2.png</file>
+    <file preprocess="to-pixdata">assets/verified-large.png</file>
+    <file preprocess="to-pixdata">assets/verified-large@2.png</file>
+    <file preprocess="to-pixdata">assets/no_avatar.png</file>
+    <file preprocess="to-pixdata">assets/no_banner.png</file>
     <file>ui/style.css</file>
-    <file>assets/play.png</file>
-    <file>assets/play@2.png</file>
-    <file>assets/verified-small.png</file>
-    <file>assets/verified-small@2.png</file>
-    <file>assets/verified-large.png</file>
-    <file>assets/verified-large@2.png</file>
-    <file>assets/no_avatar.png</file>
-    <file>assets/no_banner.png</file>
     <file>sql/init/Create.1.sql</file>
     <file>sql/init/Create.2.sql</file>
     <file>sql/accounts/Create.1.sql</file>
