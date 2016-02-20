@@ -238,8 +238,8 @@ public class Twitter : GLib.Object {
 public class AvatarCache : GLib.Object {
   private GLib.Array<int64?> ids;
   private GLib.GenericArray<Cairo.Surface?> surfaces;
-  private GLib.Array<int?> refcounts;
   private GLib.GenericArray<string> urls;
+  private GLib.Array<int?> refcounts;
 
   public AvatarCache () {
     this.ids       = new GLib.Array<int64?> ();
