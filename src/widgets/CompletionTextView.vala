@@ -30,6 +30,10 @@ class CompletionTextView : Gtk.TextView {
     completion_window.set_screen (this.get_screen ());
 
     completion_list = new Gtk.ListBox ();
+    var placeholder_label = new Gtk.Label (_("No users found"));
+    placeholder_label.get_style_context ().add_class ("dim-label");
+    placeholder_label.show ();
+    completion_list.set_placeholder (placeholder_label);
 
     var scroller = new Gtk.ScrolledWindow (null, null);
     scroller.add (completion_list);
