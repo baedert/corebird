@@ -93,8 +93,8 @@ class ComposeImageManager : Gtk.Container {
   }
 
   public override void size_allocate (Gtk.Allocation allocation) {
+    base.size_allocate (allocation);
     Gtk.Allocation child_allocation = {};
-    this.set_allocation (allocation);
 
     if (this.buttons.size == 0) return;
 

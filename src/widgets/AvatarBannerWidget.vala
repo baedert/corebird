@@ -119,7 +119,7 @@ public class AvatarBannerWidget : Gtk.Container {
   }
 
   public override void size_allocate (Gtk.Allocation allocation) {
-    this.set_allocation (allocation);
+    base.size_allocate  (allocation);
 
     Gtk.Requisition child_requisition;
     Gtk.Allocation child_allocation = Gtk.Allocation();

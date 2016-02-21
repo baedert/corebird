@@ -307,7 +307,7 @@ private class MediaButton : Gtk.Widget {
   }
 
   public override void size_allocate (Gtk.Allocation alloc) {
-    this.set_allocation (alloc);
+    base.size_allocate (alloc);
 
     int draw_width;
     int draw_height;
