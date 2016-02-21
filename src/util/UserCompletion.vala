@@ -15,7 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 class UserCompletion : GLib.Object {
   public signal void start_completion ();
   public signal void populate_completion (string name, string screen_name);
