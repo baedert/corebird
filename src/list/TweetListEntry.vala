@@ -105,7 +105,10 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   [Signal (action = true)]
   private signal void delete_tweet ();
 
-  public TweetListEntry (owned Tweet tweet, MainWindow? main_window, Account account) {
+  public TweetListEntry (owned Tweet tweet,
+                         MainWindow? main_window,
+                         Account     account,
+                         bool        restrict_height = false) {
     this.account = account;
     this.tweet = tweet;
     this.main_window = main_window;
@@ -161,6 +164,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
         media_stack.visible_child = mm_widget;
 
       media_stack.show ();
+      mm_widget.restrict_height = restrict_height;
       mm_widget.set_all_media (tweet.medias);
       mm_widget.media_clicked.connect (media_clicked_cb);
       mm_widget.media_invalid.connect (media_invalid_cb);
