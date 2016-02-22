@@ -117,7 +117,7 @@ namespace TweetUtils {
         Utils.show_error_object (call.get_payload (), e.message,
                                  GLib.Log.LINE, GLib.Log.FILE);
       }
-      string back = call.get_payload();
+      unowned string back = call.get_payload();
       var parser = new Json.Parser ();
       try {
         parser.load_from_data (back);
@@ -356,7 +356,7 @@ namespace TweetUtils {
     if (word.has_prefix ("https://") && word.length > 8)
       return true;
 
-    foreach (string tld in DOMAINS)
+    foreach (unowned string tld in DOMAINS)
       if (word.has_suffix (tld))
           return true;
 
