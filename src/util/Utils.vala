@@ -118,7 +118,7 @@ namespace Utils {
   * @return The given date as GLib.DateTime in the current time zone.
   */
   GLib.DateTime parse_date (string input) {
-    if (input == "") {
+    if (input.length == 0) {
       return new GLib.DateTime.now_local ();
     }
     string month_str = input.substring (4, 3);
