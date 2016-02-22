@@ -211,7 +211,7 @@ class MediaVideoWidget : Gtk.Stack {
         fetch_real_url.callback ();
         return;
       }
-      string back = (string)_msg.response_body.data;
+      unowned string back = (string)_msg.response_body.data;
       try {
         var regex = new GLib.Regex (regex_str, 0);
         MatchInfo info;
