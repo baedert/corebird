@@ -120,7 +120,7 @@ public class ScrollWidget : Gtk.ScrolledWindow {
         this.transition_start_value = this.vadjustment.value;
         return;
       }
-      scroll_up_id = this.size_allocate.connect (() => {
+      scroll_up_id = this.vadjustment.notify["upper"].connect (() => {
         if (Gtk.Settings.get_default ().gtk_enable_animations && animate) {
           this.start_time = this.get_frame_clock ().get_frame_time ();
           this.end_time = start_time + TRANSITION_DURATION;
@@ -130,7 +130,7 @@ public class ScrollWidget : Gtk.ScrolledWindow {
         } else {
           this.vadjustment.value = 0;
         }
-        this.disconnect (scroll_up_id);
+        this.vadjustment.disconnect (scroll_up_id);
         this.scroll_up_id = 0;
       });
     }
