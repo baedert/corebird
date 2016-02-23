@@ -85,8 +85,9 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
     tweet_list.model.add (t);
 
     if (!t.is_hidden) {
+      this.balance_next_upper_change (TOP);
+
       if (!base.scroll_up (t))
-        this.balance_next_upper_change (TOP);
 
       if (!t.seen)
         this.unread_count ++;

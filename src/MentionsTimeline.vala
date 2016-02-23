@@ -73,8 +73,8 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
       if (account.blocked_or_muted (t.user_id))
         return;
 
-      t.seen = false;
       this.balance_next_upper_change (TOP);
+      t.seen = false;
       tweet_list.model.add (t);
 
 
