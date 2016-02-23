@@ -281,8 +281,9 @@ public class Corebird : Gtk.Application {
     if (startup_accounts.length == 1 && startup_accounts[0] == "")
       startup_accounts.resize (0);
 
-
+    debug ("Configured startup accounts: %d", startup_accounts.length);
     uint n_accounts = Account.list_accounts ().length ();
+    debug ("Configured accounts: %u", n_accounts);
 
     if (startup_accounts.length == 0) {
       if (n_accounts == 1) {
