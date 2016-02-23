@@ -52,6 +52,7 @@ private class MediaButton : Gtk.Widget {
   private Gtk.GestureMultiPress press_gesture;
   private bool restrict_height = false;
 
+
   public signal void clicked (MediaButton source);
 
   static construct {
@@ -89,10 +90,6 @@ private class MediaButton : Gtk.Widget {
     this.press_gesture.set_exclusive (true);
     this.press_gesture.set_button (0);
     this.press_gesture.pressed.connect (gesture_pressed_cb);
-
-    if (restrict_height) {
-      this.set_size_request (-1, 280);
-    }
   }
 
   private void get_draw_size (out int width,
@@ -199,10 +196,7 @@ private class MediaButton : Gtk.Widget {
       media_height = this._media.height;
     }
 
-    if (restrict_height)
-      minimum = int.min (media_height, MIN_HEIGHT);
-    else
-      minimum = MIN_HEIGHT;
+    minimum = int.min (media_height, MAX_HEIGHT);
 
     natural = media_height;
   }
@@ -224,7 +218,7 @@ private class MediaButton : Gtk.Widget {
     double width_ratio = (double)width / (double) media_width;
     int height = int.min (media_height, (int)(media_height * width_ratio));
     if (restrict_height) {
-      minimum = MIN_HEIGHT;
+      minimum = int.min (height, MAX_HEIGHT);
     } else
       minimum = height;
 
