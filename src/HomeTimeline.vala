@@ -74,29 +74,27 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
 
     bool auto_scroll = Settings.auto_scroll_on_new_tweets ();
 
-    this.balance_next_upper_change (TOP);
-
-    t.seen =  t.user_id == account.id ||
-              (t.retweeted_tweet != null && t.retweeted_tweet.author.id == account.id) ||
-              (this.scrolled_up  &&
-               main_window.cur_page_id == this.id &&
-               auto_scroll);
+    t.seen = t.user_id == account.id ||
+             (t.retweeted_tweet != null && t.retweeted_tweet.author.id == account.id) ||
+             (this.scrolled_up  &&
+              main_window.cur_page_id == this.id &&
+              auto_scroll);
 
     bool should_focus = (tweet_list.get_first_visible_row ().is_focus && this.scrolled_up);
 
     tweet_list.model.add (t);
 
-    if (should_focus) {
-      tweet_list.get_first_visible_row ().grab_focus ();
-    }
-
     if (!t.is_hidden) {
-      base.scroll_up (t);
+      if (!base.scroll_up (t))
+        this.balance_next_upper_change (TOP);
 
       if (!t.seen)
         this.unread_count ++;
     }
 
+    if (should_focus) {
+      tweet_list.get_first_visible_row ().grab_focus ();
+    }
 
     // We never show any notifications if auto-scroll-on-new-tweet is enabled
 

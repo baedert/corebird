@@ -258,13 +258,15 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   }
 
 
-  protected void scroll_up (Tweet t) {
+  protected bool scroll_up (Tweet t) {
     bool auto_scroll = Settings.auto_scroll_on_new_tweets ();
     if (this.scrolled_up && (t.user_id == account.id || auto_scroll)) {
       this.scroll_up_next (true, false,
                            main_window.cur_page_id != this.id);
+      return true;
     }
 
+    return false;
   }
 
   private void stream_resumed_cb () {
