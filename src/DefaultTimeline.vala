@@ -22,7 +22,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   public int unread_count {
     set {
       _unread_count = int.max (value, 0);
-      debug ("New unread count: %d", value);
+      debug ("New unread count for %s: %d", this.get_title (), value);
       radio_button.show_badge = (_unread_count > 0);
     }
     get {
