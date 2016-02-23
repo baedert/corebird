@@ -15,7 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 public class Settings : GLib.Object {
   private static GLib.Settings settings;
 
