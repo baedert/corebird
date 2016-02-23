@@ -95,12 +95,10 @@ public class ScrollWidget : Gtk.ScrolledWindow {
    * to true.
    *
    * @param animate    Whether to animate/transition the change or not (default: true)
-   * @param force_wait If this is set to true, we will wait for the next size_allocate
-   *                   event, even if the widget is unmapped (default: false).
    */
-  public void scroll_up_next (bool animate = true, bool force_wait = false,
+  public void scroll_up_next (bool animate = true,
                               bool force_start = false) { // {{{
-    if (!this.get_mapped () && !force_wait) {
+    if (!this.get_mapped ()) {
       this.vadjustment.value = 0;
       return;
     }
