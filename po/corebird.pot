@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-20 18:48+0100\n"
+"POT-Creation-Date: 2016-02-25 13:13+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: ../src/window/ComposeTweetWindow.vala:118
+#: ../src/window/ComposeTweetWindow.vala:120
 msgid "Quote tweet"
 msgstr ""
 
@@ -108,24 +108,24 @@ msgstr ""
 msgid "Unfollow"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:110
+#: ../src/HomeTimeline.vala:109
 #, c-format
 msgid "%s retweeted %s"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:113
+#: ../src/HomeTimeline.vala:112
 #, c-format
 msgid "%s tweeted"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:119
+#: ../src/HomeTimeline.vala:118
 #, c-format
 msgid "%d new Tweet!"
 msgid_plural "%d new Tweets!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/HomeTimeline.vala:170
+#: ../src/HomeTimeline.vala:169
 msgid "Home"
 msgstr ""
 
@@ -210,7 +210,7 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: ../src/Corebird.vala:176
+#: ../src/Corebird.vala:177
 msgid "Open Account"
 msgstr ""
 
