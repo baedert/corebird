@@ -51,7 +51,7 @@ class AccountDialog : Gtk.Dialog {
 
     autostart_switch.freeze_notify ();
     string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
-    foreach (string acc in startup_accounts) {
+    foreach (unowned string acc in startup_accounts) {
       if (acc == this.account.screen_name) {
         autostart_switch.active = true;
         break;
@@ -280,7 +280,7 @@ class AccountDialog : Gtk.Dialog {
     bool active = autostart_switch.active;
     string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
     if (active) {
-      foreach (string acc in startup_accounts) {
+      foreach (unowned string acc in startup_accounts) {
         if (acc == this.account.screen_name) {
           return;
         }
@@ -288,7 +288,7 @@ class AccountDialog : Gtk.Dialog {
 
       string[] new_startup_accounts = new string[startup_accounts.length + 1];
       int i = 0;
-      foreach (string s in startup_accounts) {
+      foreach (unowned string s in startup_accounts) {
         new_startup_accounts[i] = s;
         i ++;
       }
@@ -297,7 +297,7 @@ class AccountDialog : Gtk.Dialog {
     } else {
       string[] new_startup_accounts = new string[startup_accounts.length - 1];
       int i = 0;
-      foreach (string acc in startup_accounts) {
+      foreach (unowned string acc in startup_accounts) {
         if (acc != this.account.screen_name) {
           new_startup_accounts[i] = acc;
           i ++;

@@ -300,7 +300,7 @@ public class Corebird : Gtk.Application {
       }
     } else {
       bool opened_window = false;
-      foreach (string account in startup_accounts) {
+      foreach (unowned string account in startup_accounts) {
         if (!is_window_open_for_screen_name (account, null)) {
           if (add_window_for_screen_name (account)) {
             opened_window = true;

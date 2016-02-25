@@ -117,7 +117,7 @@ public class Bundle : GLib.Object {
     if (other == null)
       return false;
 
-    foreach (string key in this.values.get_keys ()) {
+    foreach (unowned string key in this.values.get_keys ()) {
       if (!other.has_key (key))
         return false;
 
