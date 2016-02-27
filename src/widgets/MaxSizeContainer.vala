@@ -50,7 +50,6 @@ class MaxSizeContainer : Gtk.Bin {
     if (get_child () == null || !get_child ().visible)
       return;
 
-
     Gtk.Allocation child_alloc = {};
     child_alloc.x = alloc.x;
     child_alloc.width = alloc.width;
@@ -64,9 +63,12 @@ class MaxSizeContainer : Gtk.Bin {
       child_alloc.height = max_size;
     }
 
-
-    base.size_allocate (child_alloc);
+    this.set_allocation (child_alloc);
     if (get_child () != null && get_child ().visible) {
+      int min_height, nat_height;
+      get_child ().get_preferred_height (out min_height, out nat_height);
+      child_alloc.height = int.max(child_alloc.height, min_height);
+
       get_child ().size_allocate (child_alloc);
       if (this.get_realized ())
         get_child ().show ();
