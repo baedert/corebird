@@ -390,10 +390,13 @@
 
 
             <child>
-              <object class="GtkLabel">
+              <object class="GtkLabel" id="remove_trailing_hashtags_label">
                 <property name="visible">true</property>
                 <property name="label" translatable="yes">Remove trailing hashtags</property>
                 <property name="halign">end</property>
+                <accessibility>
+                  <relation type="label-for" target="remove_trailing_hashtags_switch"/>
+                </accessibility>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -406,6 +409,9 @@
                 <property name="visible">true</property>
                 <property name="halign">start</property>
                 <signal name="notify::active" handler="remove_trailing_hashtags_cb" />
+                <accessibility>
+                  <relation type="labelled-by" target="remove_trailing_hashtags_label"/>
+                </accessibility>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -415,10 +421,13 @@
 
 
             <child>
-              <object class="GtkLabel">
+              <object class="GtkLabel" id="remove_media_links_label">
                 <property name="visible">true</property>
                 <property name="label" translatable="yes">Remove media links</property>
                 <property name="halign">end</property>
+                <accessibility>
+                  <relation type="label-for" target="remove_media_links_switch"/>
+                </accessibility>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -431,6 +440,9 @@
                 <property name="visible">true</property>
                 <property name="halign">start</property>
                 <signal name="notify::active" handler="remove_media_links_cb" />
+                <accessibility>
+                  <relation type="labelled-by" target="remove_media_links_label"/>
+                </accessibility>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -439,10 +451,13 @@
             </child>
 
             <child>
-              <object class="GtkLabel">
+              <object class="GtkLabel" id="hide_nsfw_content_label">
                 <property name="visible">true</property>
                 <property name="label" translatable="yes">Hide inappropriate content</property>
                 <property name="halign">end</property>
+                <accessibility>
+                  <relation type="label-for" target="hide_nsfw_content_switch"/>
+                </accessibility>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -454,6 +469,9 @@
               <object class="GtkSwitch" id="hide_nsfw_content_switch">
                 <property name="visible">true</property>
                 <property name="halign">start</property>
+                <accessibility>
+                  <relation type="labelled-by" target="hide_nsfw_content_label"/>
+                </accessibility>
               </object>
               <packing>
                 <property name="left_attach">1</property>
