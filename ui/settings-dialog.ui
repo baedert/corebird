@@ -591,7 +591,7 @@
             <child>
               <object class="GtkLabel">
                 <property name="visible">true</property>
-                <property name="label" translatable="yes">Show top tweets</property>
+                <property name="label" translatable="yes">Show popular tweet</property>
                 <property name="halign">end</property>
               </object>
               <packing>
