@@ -104,7 +104,7 @@
 
       trends.foreach_element ((array, index, node) => {
         var topic = node.get_object ();
-        trend_name = topic.get_string_member("name");
+        this.trend_name = topic.get_string_member("name");
 
         if (this.show_tweet) {
           this.trend_list.set_header_func (header_func);
@@ -188,18 +188,16 @@
 
 
   private void header_func (Gtk.ListBoxRow row, Gtk.ListBoxRow? before) {
-    if (before == null && this.update_header) {
-      Gtk.Widget? header = row.get_header ();
-
+    Gtk.Widget? header = row.get_header ();
+    if (before == null && header == null && update_header) {
       header = header_label (this.trend_name);
       header.show ();
       row.set_header (header);
-      this.update_header = false;
+      update_header = false;
       return;
     }
 
 
-    Gtk.Widget? header = row.get_header ();
     if (header != null) {
       return;
     }
