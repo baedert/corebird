@@ -16,6 +16,7 @@
  */
 
 class MaxSizeContainer : Gtk.Bin {
+  private Gdk.Window event_window;
   private int _max_size = 0;
   public int max_size {
     get {
@@ -25,6 +26,12 @@ class MaxSizeContainer : Gtk.Bin {
       this._max_size = value;
       this.queue_resize ();
     }
+  }
+
+  public override void add (Gtk.Widget widget) {
+    base.add (widget);
+    if (this.event_window != null)
+      widget.set_parent_window (this.event_window);
   }
 
   public override Gtk.SizeRequestMode get_request_mode () {
@@ -63,6 +70,8 @@ class MaxSizeContainer : Gtk.Bin {
       child_alloc.height = max_size;
     }
 
+    this.event_window.move_resize (child_alloc.x, child_alloc.y,
+                                   child_alloc.width, child_alloc.height);
     this.set_allocation (child_alloc);
     if (get_child () != null && get_child ().visible) {
       int min_height, nat_height;
@@ -78,5 +87,55 @@ class MaxSizeContainer : Gtk.Bin {
       if (get_child () != null)
         get_child ().set_child_visible (true);
     }
+  }
+
+  public override void realize () {
+    base.realize ();
+    Gtk.Allocation alloc;
+    this.get_allocation (out alloc);
+
+    Gdk.WindowAttr attr = {};
+    attr.x = alloc.x;
+    attr.y = alloc.y;
+    attr.width = alloc.width;
+    attr.height = alloc.height;
+    attr.window_type = Gdk.WindowType.CHILD;
+    attr.visual = this.get_visual ();
+    attr.wclass = Gdk.WindowWindowClass.INPUT_ONLY;
+    attr.event_mask = this.get_events ();
+
+    Gdk.WindowAttributesType attr_mask = Gdk.WindowAttributesType.X |
+                                         Gdk.WindowAttributesType.Y;
+    Gdk.Window window = this.get_parent_window ();
+    this.set_window (window);
+    window.ref ();
+
+    this.event_window = new Gdk.Window (window, attr, attr_mask);
+    this.register_window (this.event_window);
+
+    if (this.get_child () != null)
+      this.get_child ().set_parent_window (this.event_window);
+  }
+
+  public override void unrealize () {
+    if (this.event_window != null) {
+      this.unregister_window (this.event_window);
+      this.event_window.destroy ();
+      this.event_window = null;
+    }
+
+    base.unrealize ();
+  }
+
+  public override void map () {
+    base.map ();
+    if (this.event_window != null)
+      this.event_window.show ();
+  }
+
+  public override void unmap () {
+    base.unmap ();
+    if (this.event_window != null)
+      this.event_window.show ();
   }
 }
