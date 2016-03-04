@@ -136,6 +136,6 @@ class MaxSizeContainer : Gtk.Bin {
   public override void unmap () {
     base.unmap ();
     if (this.event_window != null)
-      this.event_window.show ();
+      this.event_window.hide ();
   }
 }
