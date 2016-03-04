@@ -1,21 +1,32 @@
-AC_INIT([corebird],[1.0],[mail@baedert.org])
+AC_INIT([corebird],[1.2],[mail@baedert.org])
+
+AC_PREREQ([2.65])
+
 AC_CONFIG_MACRO_DIR([m4])
-AM_INIT_AUTOMAKE([foreign no-dist-gzip dist-bzip2])
+AC_CONFIG_AUX_DIR([build-aux])
+AC_CONFIG_SRCDIR([Makefile.am])
+AC_CONFIG_HEADERS(config.h)
+AC_CONFIG_SRCDIR([configure.ac])
+AM_INIT_AUTOMAKE([1.11 foreign no-dist-gzip dist-xz subdir-objects])
 
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 
-#AM_MAINTAINER_MODE
+AM_MAINTAINER_MODE([enable])
 
-LT_INIT
 AC_PROG_CC
+AM_PROG_CC_C_O
 AC_PROG_CC_STDC
-AM_PROG_VALAC([0.26])
 AC_PROG_INSTALL
-IT_PROG_INTLTOOL([0.40])
 
+LT_PREREQ([2.2.6])
+LT_INIT([disable-static])
 
+VALA_MIN_VERSION=0.28.0
+AM_PROG_VALAC([$VALA_MIN_VERSION],
+  [],
+  [AC_MSG_ERROR([valac >= $VALA_MIN_VERSION is required])])
 
-
+GLIB_GSETTINGS
 
 
 # --enable-debug
@@ -32,14 +43,14 @@ AM_CONDITIONAL([DISABLE_VIDEO], [ test "$disable_video" = "yes"])
 # Vala Packages {{{
 pkg_modules="gtk+-3.0 >= 3.16
              glib-2.0 >= 2.44
-             rest-0.7
+             rest-0.7 >= 0.7.93
              libsoup-2.4
              gee-0.8
              json-glib-1.0
              sqlite3"
 
 if test "$disable_video" = "no"; then
-  pkg_modules="$pkg_modules gstreamer-video-1.0 gdk-x11-3.0"
+  pkg_modules="$pkg_modules gstreamer-video-1.0 >= 1.6"
 fi
 
 PKG_CHECK_MODULES(CB, [$pkg_modules])
@@ -53,21 +64,25 @@ CB_VALA_FLAGS=" \
   --pkg sqlite3 \
   --pkg libsoup-2.4 \
   --pkg glib-2.0 \
-  --target-glib=2.38 \
-  --gresources=\$(top_srcdir)/resources.xml \
-  --vapidir=\$(top_srcdir)/vapi/ \
-  --thread \
-  --enable-checking \
-  --enable-experimental"
-
-
+  --target-glib=2.38"
 # }}}
 
 AC_SUBST(CB_CFLAGS)
 AC_SUBST(CB_LIBS)
 AC_SUBST(CB_VALA_FLAGS)
 
-AC_PATH_PROG(GLIB_COMPILE_RESOURCES, glib-compile-resources)
+
+AC_ARG_VAR([GLIB_COMPILE_RESOURCES],[the glib-compile-resources program])
+AC_PATH_PROG([GLIB_COMPILE_RESOURCES],[glib-compile-resources],[])
+if test -z "$GLIB_COMPILE_RESOURCES"; then
+  AC_MSG_ERROR([glib-compile-resources not found])
+fi
+
+AC_ARG_VAR([XMLLINT],[the xmllint program])
+AC_PATH_PROG([XMLLINT],[xmllint],[])
+if test -z "$XMLLINT"; then
+  AC_MSG_ERROR([xmllint not found])
+fi
 
 
 if test "${CC}" = "clang"; then
@@ -77,8 +92,7 @@ fi
 if test "$disable_video" = "no"; then
   CB_VALA_FLAGS="$CB_VALA_FLAGS \
                  -D VIDEO \
-                 --pkg gstreamer-video-1.0 \
-                 --pkg gdk-x11-3.0"
+                 --pkg gstreamer-video-1.0"
 fi
 
 if test "$enable_debug" = "yes"; then
@@ -86,38 +100,32 @@ if test "$enable_debug" = "yes"; then
 fi
 
 
-GLIB_GSETTINGS
-
 
 # Gettext stuff
-GETTEXT_PACKAGE=corebird
+GETTEXT_PACKAGE=AC_PACKAGE_NAME
 AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE], ["$GETTEXT_PACKAGE"], [Gettext Package])
 AC_SUBST(GETTEXT_PACKAGE)
-AM_GNU_GETTEXT([external])
-AM_GNU_GETTEXT_VERSION([0.18.3])
-AM_GLIB_GNU_GETTEXT
+IT_PROG_INTLTOOL([0.40])
 
 
-
-AC_CONFIG_FILES([Makefile
-                 src/Makefile
-                 ui/Makefile
-                 data/Makefile
-                 data/org.baedert.corebird.desktop.in
-                 assets/Makefile
-                 assets/128x128/Makefile
-                 assets/96x96/Makefile
-                 assets/64x64/Makefile
-                 assets/48x48/Makefile
-                 assets/32x32/Makefile
-                 assets/24x24/Makefile
-                 assets/16x16/Makefile
-                 po/Makefile.in
-                 sql/Makefile
-                 sql/accounts/Makefile
-                 sql/init/Makefile
-                 tests/Makefile
-                 src/util/Config.vala])
+AC_CONFIG_FILES([
+Makefile
+src/Makefile
+ui/Makefile
+data/Makefile
+data/org.baedert.corebird.desktop.in
+assets/Makefile
+assets/256x256/Makefile
+assets/128x128/Makefile
+assets/96x96/Makefile
+assets/64x64/Makefile
+assets/48x48/Makefile
+assets/32x32/Makefile
+assets/24x24/Makefile
+assets/16x16/Makefile
+po/Makefile.in
+tests/Makefile
+])
 
 
 AC_OUTPUT

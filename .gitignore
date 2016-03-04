@@ -30,6 +30,8 @@ session.vim
 *~
 aclocal.m4
 compile
+config.h
+config.h.in
 config.guess
 config.log
 config.status
@@ -48,6 +50,8 @@ intltool-merge.in
 intltool-update.in
 config.rpath
 test-driver
+stamp*
 .libs
+data/gschemas.compiled
 src/corebird.h
 src/corebird.vapi

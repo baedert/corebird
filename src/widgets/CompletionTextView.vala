@@ -30,16 +30,25 @@ class CompletionTextView : Gtk.TextView {
     completion_window.set_screen (this.get_screen ());
 
     completion_list = new Gtk.ListBox ();
+    var placeholder_label = new Gtk.Label (_("No users found"));
+    placeholder_label.get_style_context ().add_class ("dim-label");
+    placeholder_label.show ();
+    completion_list.set_placeholder (placeholder_label);
 
     var scroller = new Gtk.ScrolledWindow (null, null);
     scroller.add (completion_list);
-    completion_window.add (scroller);
+    var frame = new Gtk.Frame (null);
+    frame.add (scroller);
+    completion_window.add (frame);
 
     this.focus_out_event.connect (completion_window_focus_out_cb);
 
     /* Your theme uses a wildcard for :link, right? */
     var style_context = this.get_style_context ();
-    Gdk.RGBA link_color = style_context.get_color (Gtk.StateFlags.LINK);
+    style_context.save ();
+    style_context.set_state (Gtk.StateFlags.LINK);
+    Gdk.RGBA link_color = style_context.get_color (style_context.get_state ());
+    style_context.restore ();
 
     if (link_color.red ==   1.0 &&
         link_color.green == 1.0 &&
@@ -180,8 +189,10 @@ class CompletionTextView : Gtk.TextView {
     this.get_window (Gtk.TextWindowType.WIDGET).get_origin (out x, out y);
     y += alloc.height;
 
-    completion_window.move (x, y);
-    completion_window.resize (alloc.width, 50);
+    /* +2 for the size and -1 for x since we account for the
+       frame size around the text view */
+    completion_window.move (x - 1, y);
+    completion_window.resize (alloc.width + 2, 50);
     completion_list.foreach ((w) => { completion_list.remove (w);});
     completion_window.show_all ();
   }

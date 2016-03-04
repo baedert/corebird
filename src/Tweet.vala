@@ -15,26 +15,277 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+public struct UserIdentity {
+  int64 id;
+  string screen_name;
+  string user_name;
+}
+
+[Flags]
+public enum TweetState {
+  /** Force hiding (there's no way this flag will ever get flipped...)*/
+  HIDDEN_FORCE,
+  /** Hidden because we unfolled the author */
+  HIDDEN_UNFOLLOWED,
+  /** Hidden because one o the filters matched the tweet */
+  HIDDEN_FILTERED,
+  /** Hidden because RTs of the author are disabled */
+  HIDDEN_RTS_DISABLED,
+  /** Hidden because it's a RT by the authenticating user */
+  HIDDEN_RT_BY_USER,
+  HIDDEN_RT_BY_FOLLOWEE,
+  /** Hidden because the author is blocked */
+  HIDDEN_AUTHOR_BLOCKED,
+  /** Hidden because the author of a retweet is blocked */
+  HIDDEN_RETWEETER_BLOCKED,
+
+  /* The authenticating user retweeted this tweet */
+  RETWEETED,
+  /* The authenticating user favorited this tweet */
+  FAVORITED,
+  /* This tweet has been deleted by its author */
+  DELETED,
+  /* The author of this tweet is verified */
+  VERIFIED,
+  /* The author of this tweet is protected */
+  PROTECTED,
+  /* At least one media attached to this tweet is marked sensitive */
+  NSFW
+}
+
+UserIdentity? parse_identity (Json.Object user_obj)
+{
+  UserIdentity id = {};
+  id.id = user_obj.get_int_member ("id");
+  id.screen_name = user_obj.get_string_member ("screen_name");
+  id.user_name = user_obj.get_string_member ("name").replace ("&", "&amp;").strip ();
+
+  return id;
+}
+
+// XXX FUCK THIS SHOULD BE A STRUCT FFS
+public class MiniTweet {
+  public int64 id;
+  public int64 created_at;
+  public UserIdentity author;
+  public string text;
+  public TextEntity[] entities;
+  public Media[] medias;
+}
+
+MiniTweet? parse_mini_tweet (Json.Object status)
+{
+  MiniTweet mt = new MiniTweet ();
+  mt.id = status.get_int_member ("id");
+  mt.author = parse_identity (status.get_object_member ("user"));
+  mt.text = status.get_string_member ("text");
+  mt.created_at = Utils.parse_date (status.get_string_member ("created_at")).to_unix ();
+
+  return mt;
+}
+
+void parse_entities (MiniTweet mt, Json.Object status)
+{ // {{{
+  var entities = status.get_object_member ("entities");
+  var urls = entities.get_array_member("urls");
+  var hashtags = entities.get_array_member ("hashtags");
+  var user_mentions = entities.get_array_member ("user_mentions");
+
+  int media_count = Utils.get_json_array_size (entities, "media");
+  if (status.has_member ("extended_entities"))
+    media_count += Utils.get_json_array_size (status.get_object_member ("extended_entities"), "media");
+
+  media_count += (int)urls.get_length ();
+
+  mt.medias = new Media[media_count];
+  int real_media_count = 0;
+
+  /* Overallocate here, remove the unnecessary parts later. */
+  mt.entities = new TextEntity[urls.get_length () +
+                               hashtags.get_length () +
+                               user_mentions.get_length () +
+                               media_count];
+
+  int url_index = 0;
+
+
+  urls.foreach_element((arr, index, node) => {
+    var url = node.get_object();
+    string expanded_url = url.get_string_member("expanded_url");
+
+    if (is_media_candidate (expanded_url)) {
+      var m = new Media ();
+      m.url = expanded_url;
+      m.type = Media.type_from_url (expanded_url);
+      mt.medias[real_media_count] = m;
+      real_media_count ++;
+    }
+
+    Json.Array indices = url.get_array_member ("indices");
+    expanded_url = expanded_url.replace("&", "&amp;");
+    mt.entities[url_index] = TextEntity () {
+      from = (uint) indices.get_int_element (0),
+      to   = (uint) indices.get_int_element (1),
+      display_text = url.get_string_member ("display_url"),
+      tooltip_text = expanded_url,
+      target = expanded_url
+    };
+    url_index ++;
+  });
+
+  hashtags.foreach_element ((arr, index, node) => {
+    var hashtag = node.get_object ();
+    Json.Array indices = hashtag.get_array_member ("indices");
+    mt.entities[url_index] = TextEntity () {
+      from = (uint) indices.get_int_element (0),
+      to   = (uint) indices.get_int_element (1),
+      display_text = "#" + hashtag.get_string_member ("text"),
+      tooltip_text = "#" + hashtag.get_string_member ("text"),
+      target = null // == display_text
+    };
+    url_index ++;
+  });
+
+
+  user_mentions.foreach_element ((arr, index, node) => {
+    var mention = node.get_object ();
+    Json.Array indices = mention.get_array_member ("indices");
+
+    string screen_name = mention.get_string_member ("screen_name");
+    mt.entities[url_index] = TextEntity () {
+      from = (uint) indices.get_int_element (0),
+      to   = (uint) indices.get_int_element (1),
+      display_text = "@" + screen_name,
+      target = "@" + mention.get_string_member ("id_str") + "/@" + screen_name,
+      tooltip_text = mention.get_string_member ("name")
+    };
+    url_index ++;
+  });
+
+  if (entities.has_member ("media")) {
+    var medias = entities.get_array_member ("media");
+    medias.foreach_element ((arr, index, node) => {
+      var url = node.get_object();
+      string expanded_url = url.get_string_member ("expanded_url");
+      expanded_url = expanded_url.replace ("&", "&amp;");
+      Json.Array indices = url.get_array_member ("indices");
+      mt.entities[url_index] = TextEntity () {
+        from = (uint) indices.get_int_element (0),
+        to   = (uint) indices.get_int_element (1),
+        target = url.get_string_member ("url"),
+        display_text = url.get_string_member ("display_url")
+      };
+      url_index ++;
+    });
+  }
+
+  /* entities->media and extended_entities contain exactly the same media objects,
+     but extended_entities is not always present, and entities->media doesn't
+     contain all the attached media, so parse both the same way... */
+  int n_media_arrays = 0;
+  if (entities.has_member ("media")) n_media_arrays ++;
+  if (status.has_member ("extended_entities")) n_media_arrays ++;
+  Json.Array[] media_arrays = new Json.Array[n_media_arrays];
+  int m_i = 0;
+  if (entities.has_member ("media")) media_arrays[m_i++] = entities.get_array_member ("media");
+  if (status.has_member ("extended_entities"))
+      media_arrays[m_i++] = status.get_object_member ("extended_entities").get_array_member ("media");
+
+  foreach (Json.Array media_array in media_arrays) {
+    media_array.foreach_element ((arr, index, node) => {
+      var media_obj = node.get_object ();
+      string media_type = media_obj.get_string_member ("type");
+      if (media_type == "photo") {
+        string url = media_obj.get_string_member ("media_url");
+        foreach (Media m in mt.medias) {
+          if (m != null && m.url == url)
+            return;
+        }
+        if (is_media_candidate (url)) {
+          var m = new Media ();
+          m.url = url;
+          m.target_url = url + ":orig";
+          m.type = Media.type_from_string (media_obj.get_string_member ("type"));
+
+          if (media_obj.has_member ("sizes")) {
+            var size_obj = media_obj.get_object_member ("sizes")
+                                    .get_object_member ("medium");
+
+            m.width  = (int)size_obj.get_int_member ("w");
+            m.height = (int)size_obj.get_int_member ("h");
+          }
+
+          mt.medias[real_media_count] = m;
+          real_media_count ++;
+        }
+      } else if (media_type == "video" ||
+                 media_type == "animated_gif") {
+        int thumb_width = -1;
+        int thumb_height = -1;
+        Json.Object? variant = null;
+        Json.Array variants = media_obj.get_object_member ("video_info")
+                                       .get_array_member ("variants");
+
+        if (media_obj.has_member ("sizes")) {
+          var size_obj = media_obj.get_object_member ("sizes")
+                                  .get_object_member ("medium");
+          thumb_width = (int)size_obj.get_int_member ("w");
+          thumb_height = (int)size_obj.get_int_member ("h");
+        }
+
+        int variant_width = 0;
+        int variant_height = 0;
+        /* We pick the mp4 variant with a size closest to the
+           thumbnail size, but not bigger */
+        for (uint i = 0; i < variants.get_length (); i ++) {
+          var cur_variant = variants.get_element (i).get_object ();
+          if (cur_variant.get_string_member ("content_type") == "video/mp4") {
+            if (thumb_width == -1 && thumb_height == -1)
+              break;
+
+            int w, h;
+            Utils.get_size_from_url (cur_variant.get_string_member ("url"),
+                                     out w, out h);
+            if (w > variant_width && w <= thumb_width &&
+                h > variant_height && h <= thumb_height) {
+              variant_width = w;
+              variant_height = h;
+              variant = cur_variant;
+            }
+          }
+        }
+
+        if (variant == null && variants.get_length () > 0)
+          variant = variants.get_element (0).get_object ();
+
+        if (variant != null) {
+          Media m = new Media ();
+          m.url = variant.get_string_member ("url");
+          m.thumb_url = media_obj.get_string_member ("media_url");
+          m.type = MediaType.TWITTER_VIDEO;
+          m.width = thumb_width;
+          m.height = thumb_height;
+
+          mt.medias[real_media_count] = m;
+          real_media_count ++;
+        }
+      }
+    });
+  }
+
+  mt.medias.resize (real_media_count);
+  InlineMediaDownloader.get ().load_all_media (mt, mt.medias);
+
+  /* Remove unnecessary url entries */
+  mt.entities.resize (url_index);
+  TweetUtils.sort_entities (ref mt.entities);
+
+} // }}}
+
+
 public class Tweet : GLib.Object {
   public static const int MAX_LENGTH = 140;
-
-  /** Force hiding (there's no way this flag will ever get flipped...)*/
-  public const uint HIDDEN_FORCE             = 1 << 0;
-  /** Hidden because we unfolled the author */
-  public const uint HIDDEN_UNFOLLOWED        = 1 << 1;
-  /** Hidden because one of the filters matched the tweet */
-  public const uint HIDDEN_FILTERED          = 1 << 2;
-  /** Hidden because RTs of the author are disabled */
-  public const uint HIDDEN_RTS_DISABLED      = 1 << 3;
-  /** Hidden because it's a RT by the authenticating user */
-  public const uint HIDDEN_RT_BY_USER        = 1 << 4;
-  public const uint HIDDEN_RT_BY_FOLLOWEE    = 1 << 5;
-  /** Hidden because the author is blocked */
-  public const uint HIDDEN_AUTHOR_BLOCKED    = 1 << 6;
-  /** Hidden because the author of a retweet is blocked */
-  public const uint HIDDEN_RETWEETER_BLOCKED = 1 << 7;
-
-  public uint hidden_flags = 0;
+  private uint state = 0;
 
 #if DEBUG
   public string json_data;
@@ -42,35 +293,51 @@ public class Tweet : GLib.Object {
 
   public bool is_hidden {
     get {
-      return hidden_flags > 0;
+      return this.is_flag_set (TweetState.HIDDEN_FORCE |
+                               TweetState.HIDDEN_UNFOLLOWED |
+                               TweetState.HIDDEN_FILTERED |
+                               TweetState.HIDDEN_RTS_DISABLED |
+                               TweetState.HIDDEN_RT_BY_USER |
+                               TweetState.HIDDEN_RT_BY_FOLLOWEE |
+                               TweetState.HIDDEN_AUTHOR_BLOCKED |
+                               TweetState.HIDDEN_RETWEETER_BLOCKED);
     }
   }
-  public signal void hidden_flags_changed ();
+  public signal void state_changed ();
 
   public int64 id;
-  /** If this tweet is a retweet, this is its id */
-  public int64 rt_id = 0;
-  public bool retweeted { get; set; default = false; }
-  public bool favorited { get; set; default = false; }
-  public string text;
 
-  public int64 user_id;
-  public string screen_name;
-  public string user_name;
+  public int64 user_id {
+    get {
+      if (this.retweeted_tweet != null)
+        return this.retweeted_tweet.author.id;
+      else
+        return this.source_tweet.author.id;
+    }
+  }
+  public string screen_name {
+   get {
+      if (this.retweeted_tweet != null)
+        return this.retweeted_tweet.author.screen_name;
+      else
+        return this.source_tweet.author.screen_name;
+    }
+  }
+  public string user_name {
+    get {
+      if (this.retweeted_tweet != null)
+        return this.retweeted_tweet.author.user_name;
+      else
+        return this.source_tweet.author.user_name;
+    }
+  }
+  public MiniTweet  source_tweet;
+  public MiniTweet? retweeted_tweet = null;
+  public MiniTweet? quoted_tweet = null;
 
-  public string retweeted_by;
-  public string rt_by_screen_name;
-  public int64 rt_by_id;
-  public bool is_retweet;
-  public unowned Gdk.Pixbuf avatar {get; set;}
   /** The avatar url on the server */
   public string avatar_url;
-  public int64 created_at;
-  public int64 rt_created_at;
-  public bool verified = false;
-  /** If the user retweeted this tweet */
   public int64 my_retweet;
-  public bool protected;
   public string? notification_id = null;
   private bool _seen = true;
   public bool seen {
@@ -89,24 +356,57 @@ public class Tweet : GLib.Object {
   /** if 0, this tweet is NOT part of a conversation */
   public int64 reply_id = 0;
 
-  /** List of all the used media **/
-  public Media[] medias;
+  public Media[] medias {
+    get {
+      if (this.quoted_tweet != null)
+          return this.quoted_tweet.medias;
+      else if (this.retweeted_tweet != null)
+        return this.retweeted_tweet.medias;
+      else
+        return this.source_tweet.medias;
+    }
+  }
   public bool has_inline_media {
-    get { return medias != null && medias.length > 0; }
+    get {
+      /* If there's a quoted tweet, always prefer that. */
+      if (this.quoted_tweet != null) {
+        return this.quoted_tweet.medias != null &&
+               this.quoted_tweet.medias.length > 0;
+      }
+
+      if (this.retweeted_tweet != null)
+        return retweeted_tweet.medias != null &&
+               retweeted_tweet.medias.length > 0;
+      else
+        return source_tweet.medias != null &&
+               source_tweet.medias.length > 0;
+    }
   }
 
-  /** if the json from twitter has inline media **/
-  public TextEntity[] urls;
   public int retweet_count;
   public int favorite_count;
 
-  /** List of users mentioned in this tweet */
-  public string[] mentions;
+  public string[] get_mentions () {
+    TextEntity[] entities;
+    if (this.retweeted_tweet != null)
+      entities = this.retweeted_tweet.entities;
+    else
+      entities = this.source_tweet.entities;
 
 
-  public Tweet () {
-    this.avatar = Twitter.no_avatar;
+    string[] e = new string[entities.length];
+    int n_mentions = 0;
+    foreach (var entity in entities) {
+      if (entity.display_text[0] == '@') {
+        e[n_mentions] = entity.display_text;
+        n_mentions ++;
+      }
+    }
+
+    e.resize (n_mentions);
+    return e;
   }
+
 
   /**
    * Fills all the data of this tweet from Json data.
@@ -118,219 +418,67 @@ public class Tweet : GLib.Object {
                               Account       account) {
     Json.Object status = status_node.get_object ();
     Json.Object user = status.get_object_member("user");
-    Json.Object entities;
     this.id          = status.get_int_member("id");
-    this.favorited   = status.get_boolean_member("favorited");
-    this.retweeted   = status.get_boolean_member("retweeted");
+    if (status.get_boolean_member ("favorited"))
+      this.state |= TweetState.FAVORITED;
+    if (status.get_boolean_member ("retweeted"))
+      this.state |= TweetState.RETWEETED;
+
     this.retweet_count = (int)status.get_int_member ("retweet_count");
     this.favorite_count = (int)status.get_int_member ("favorite_count");
-    this.created_at  = Utils.parse_date(status.get_string_member("created_at"))
-                      .to_unix();
 
+    if (Utils.usable_json_value (status, "possibly_sensitive") &&
+        status.get_boolean_member ("possibly_sensitive"))
+      this.state |= TweetState.NSFW;
 
-    if (status.has_member("retweeted_status")) {
-      Json.Object rt      = status.get_object_member("retweeted_status");
+    this.source_tweet = parse_mini_tweet (status);
+
+    bool has_media = Utils.get_json_array_size (status.get_object_member ("entities"),
+                                                "media") > 0;
+
+    if (status.has_member ("retweeted_status")) {
+      Json.Object rt      = status.get_object_member ("retweeted_status");
+      this.retweeted_tweet = parse_mini_tweet (rt);
+      parse_entities (this.retweeted_tweet, rt);
+
       Json.Object rt_user = rt.get_object_member("user");
-      entities           = rt.get_object_member ("entities");
-      this.is_retweet    = true;
-      this.rt_id         = rt.get_int_member("id");
-      this.retweeted_by  = user.get_string_member("name").replace ("&", "&amp;");
-      this.rt_by_screen_name = user.get_string_member ("screen_name");
-      this.rt_by_id      = user.get_int_member ("id");
-      this.text          = rt.get_string_member("text");
-      this.user_name     = rt_user.get_string_member ("name");
       this.avatar_url    = rt_user.get_string_member ("profile_image_url");
-      this.user_id       = rt_user.get_int_member ("id");
-      this.screen_name   = rt_user.get_string_member ("screen_name");
-      this.rt_created_at = Utils.parse_date(rt.get_string_member ("created_at"))
-                                  .to_unix();
-      this.verified      = rt_user.get_boolean_member ("verified");
-      this.protected     = rt_user.get_boolean_member ("protected");
+      if (rt_user.get_boolean_member ("protected"))
+        this.state |= TweetState.PROTECTED;
+
+      if (rt_user.get_boolean_member ("verified"))
+        this.state |= TweetState.VERIFIED;
+
       if (!rt.get_null_member ("in_reply_to_status_id"))
         this.reply_id = rt.get_int_member ("in_reply_to_status_id");
     } else {
-      entities = status.get_object_member ("entities");
-      this.text        = status.get_string_member ("text");
-      this.user_name   = user.get_string_member ("name");
-      this.user_id     = user.get_int_member ("id");
-      this.screen_name = user.get_string_member ("screen_name");
+      parse_entities (this.source_tweet, status);
       this.avatar_url  = user.get_string_member ("profile_image_url");
-      this.verified    = user.get_boolean_member ("verified");
-      this.protected   = user.get_boolean_member ("protected");
-      if (!status.get_null_member("in_reply_to_status_id"))
-        this.reply_id  = status.get_int_member("in_reply_to_status_id");
+      if (user.get_boolean_member ("verified"))
+        this.state |= TweetState.VERIFIED;
+
+      if (user.get_boolean_member ("protected"))
+        this.state |= TweetState.PROTECTED;
+
+      if (!status.get_null_member ("in_reply_to_status_id"))
+        this.reply_id  = status.get_int_member ("in_reply_to_status_id");
     }
+
+    if (status.has_member ("quoted_status") && !has_media) {
+      var quoted_status = status.get_object_member ("quoted_status");
+      this.quoted_tweet = parse_mini_tweet (quoted_status);
+      parse_entities (this.quoted_tweet, quoted_status);
+    } else if (this.retweeted_tweet != null &&
+               status.get_object_member ("retweeted_status").has_member ("quoted_status")) {
+      var quoted_status = status.get_object_member ("retweeted_status").get_object_member ("quoted_status");
+      this.quoted_tweet = parse_mini_tweet (quoted_status);
+      parse_entities (this.quoted_tweet, quoted_status);
+    }
+
     if (status.has_member ("current_user_retweet")) {
       this.my_retweet = status.get_object_member ("current_user_retweet").get_int_member ("id");
-      this.retweeted  = true;
+      this.state |= TweetState.RETWEETED;
     }
-
-    this.user_name = this.user_name.replace ("&", "&amp;").strip ();
-
-    // 'Resolve' the used URLs
-    var urls = entities.get_array_member("urls");
-    var hashtags = entities.get_array_member ("hashtags");
-    var user_mentions = entities.get_array_member ("user_mentions");
-    this.mentions = new string[user_mentions.get_length ()];
-
-    int media_count = Utils.get_json_array_size (entities, "media");
-    if (status.has_member ("extended_entities"))
-      media_count += Utils.get_json_array_size (status.get_object_member ("extended_entities"), "media");
-
-    media_count += (int)urls.get_length ();
-
-    this.medias = new Media[media_count];
-    int real_media_count = 0;
-
-    /* Overallocate here, remove the unnecessary parts later. */
-    this.urls = new TextEntity[urls.get_length () +
-                               hashtags.get_length () +
-                               user_mentions.get_length () +
-                               media_count];
-
-    int url_index = 0;
-
-
-    urls.foreach_element((arr, index, node) => {
-      var url = node.get_object();
-      string expanded_url = url.get_string_member("expanded_url");
-
-      if (InlineMediaDownloader.is_media_candidate (expanded_url)) {
-        var m = new Media ();
-        m.url = expanded_url;
-        m.id = real_media_count;
-        m.type = Media.type_from_url (expanded_url);
-        this.medias[real_media_count] = m;
-        real_media_count ++;
-      }
-
-      Json.Array indices = url.get_array_member ("indices");
-      expanded_url = expanded_url.replace("&", "&amp;");
-      this.urls[url_index] = TextEntity () {
-        from = (uint) indices.get_int_element (0),
-        to   = (uint) indices.get_int_element (1),
-        display_text = url.get_string_member ("display_url"),
-        tooltip_text = expanded_url,
-        target = expanded_url
-      };
-      url_index ++;
-    });
-
-    hashtags.foreach_element ((arr, index, node) => {
-      var hashtag = node.get_object ();
-      Json.Array indices = hashtag.get_array_member ("indices");
-      this.urls[url_index] = TextEntity () {
-        from = (uint) indices.get_int_element (0),
-        to   = (uint) indices.get_int_element (1),
-        display_text = "#" + hashtag.get_string_member ("text"),
-        tooltip_text = "#" + hashtag.get_string_member ("text"),
-        target = null // == display_text
-      };
-      url_index ++;
-    });
-
-
-    int real_mentions = 0;
-    user_mentions.foreach_element ((arr, index, node) => {
-      var mention = node.get_object ();
-      Json.Array indices = mention.get_array_member ("indices");
-
-      string screen_name = mention.get_string_member ("screen_name");
-      // Avoid duplicate mentions
-      if (!(screen_name in this.mentions) && screen_name != account.screen_name
-          && screen_name != this.rt_by_screen_name
-          && screen_name != this.screen_name) {
-        this.mentions[real_mentions] = "@" + screen_name;
-        real_mentions ++;
-      }
-      string name = mention.get_string_member ("name");
-      int64 id = mention.get_int_member ("id");
-      account.user_counter.user_seen (id, screen_name, name);
-
-      this.urls[url_index] = TextEntity () {
-        from = (uint) indices.get_int_element (0),
-        to   = (uint) indices.get_int_element (1),
-        display_text = "@" + screen_name,
-        target = "@" + mention.get_string_member ("id_str") + "/@" + screen_name,
-        tooltip_text = mention.get_string_member ("name")
-      };
-      url_index ++;
-    });
-    this.mentions.resize (real_mentions);
-
-    // The same with media
-    if (entities.has_member ("media")) {
-      var medias = entities.get_array_member ("media");
-      medias.foreach_element ((arr, index, node) => {
-        var url = node.get_object();
-        string expanded_url = url.get_string_member ("expanded_url");
-        expanded_url = expanded_url.replace ("&", "&amp;");
-        Json.Array indices = url.get_array_member ("indices");
-        this.urls[url_index] = TextEntity () {
-          from = (uint) indices.get_int_element (0),
-          to   = (uint) indices.get_int_element (1),
-          target = url.get_string_member ("url"),
-          display_text = url.get_string_member ("display_url")
-        };
-        url_index ++;
-        string media_url = url.get_string_member ("media_url");
-        if (InlineMediaDownloader.is_media_candidate (media_url)) {
-          var m = new Media ();
-          m.url = media_url;
-          m.target_url = media_url + ":large";
-          this.medias[real_media_count] = m;
-          real_media_count ++;
-        }
-      });
-    }
-
-    if (status.has_member ("extended_entities")) {
-      var extended_entities = status.get_object_member ("extended_entities");
-      var extended_media = extended_entities.get_array_member ("media");
-      extended_media.foreach_element ((arr, index, node) => {
-        var media_obj = node.get_object ();
-        string media_type = media_obj.get_string_member ("type");
-        if (media_type == "photo") {
-          string url = media_obj.get_string_member ("media_url");
-          foreach (Media m in this.medias) {
-            if (m != null && m.url == url)
-              return;
-          }
-          if (InlineMediaDownloader.is_media_candidate (url)) {
-            var m = new Media ();
-            m.url = url;
-            m.target_url = url + ":large";
-            m.id = media_obj.get_int_member ("id");
-            m.type = Media.type_from_string (media_obj.get_string_member ("type"));
-            this.medias[real_media_count] = m;
-            real_media_count ++;
-          }
-        } else if (media_type == "video" ||
-                   media_type == "animated_gif") {
-          Json.Object variant = media_obj.get_object_member ("video_info")
-                                         .get_array_member ("variants")
-                                         .get_object_element (0); // XXX ???
-          Media m = new Media ();
-          m.url = variant.get_string_member ("url");
-          m.thumb_url = media_obj.get_string_member ("media_url");
-          m.type = MediaType.TWITTER_VIDEO;
-          m.id = media_obj.get_int_member ("id");
-          this.medias[real_media_count] = m;
-          real_media_count ++;
-        }
-      });
-    }
-
-    this.medias.resize (real_media_count);
-    InlineMediaDownloader.load_all_media (this, this.medias);
-
-    /* Remove unnecessary url entries */
-    this.urls.resize (url_index);
-    TweetUtils.sort_entities (ref this.urls);
-
-    this.avatar = Twitter.get ().get_avatar (avatar_url, (a) => {
-      this.avatar = a;
-    });
 
 #if DEBUG
     var gen = new Json.Generator ();
@@ -347,10 +495,13 @@ public class Tweet : GLib.Object {
    * @return The tweet's formatted text.
    */
   public string get_formatted_text () {
-    return TextTransform.transform (this.text,
-                                    this.urls,
-                                    0,
-                                    this.medias.length);
+    MiniTweet t;
+    if (this.retweeted_tweet != null)
+      t = this.retweeted_tweet;
+    else
+      t = this.source_tweet;
+
+    return TextTransform.transform_tweet (t, 0);
   }
 
   /**
@@ -360,17 +511,47 @@ public class Tweet : GLib.Object {
    * @return The tweet's text with long urls
    */
   public string get_real_text () {
-    return TextTransform.transform (this.text,
-                                    this.urls,
-                                    TransformFlags.EXPAND_LINKS,
-                                    this.medias.length);
+    MiniTweet t;
+    if (this.retweeted_tweet != null)
+      t = this.retweeted_tweet;
+    else
+      t = this.source_tweet;
+
+    return TextTransform.transform_tweet (t,
+                                          TransformFlags.EXPAND_LINKS);
   }
 
   public string get_trimmed_text () {
-    return TextTransform.transform (this.text,
-                                    this.urls,
-                                    (TransformFlags) Settings.get_text_transform_flags (),
-                                    this.medias.length);
+    MiniTweet t;
+    if (this.retweeted_tweet != null)
+      t = this.retweeted_tweet;
+    else
+      t = this.source_tweet;
+
+    int64 quote_id = this.quoted_tweet != null ? this.quoted_tweet.id : -1;
+
+    return TextTransform.transform_tweet (t,
+                                          Settings.get_text_transform_flags (),
+                                          quote_id);
   }
 
+  public void set_flag (TweetState flag) {
+    uint state_before = this.state;
+    this.state |= flag;
+
+    if (state_before != this.state)
+      this.state_changed ();
+  }
+
+  public void unset_flag (TweetState flag) {
+    uint state_before = this.state;
+    this.state &= ~flag;
+
+    if (state_before != this.state)
+      this.state_changed ();
+  }
+
+  public bool is_flag_set (TweetState flag) {
+    return (this.state & flag) > 0;
+  }
 }

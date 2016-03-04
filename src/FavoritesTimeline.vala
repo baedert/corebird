@@ -28,45 +28,39 @@ class FavoritesTimeline : IMessageReceiver, DefaultTimeline {
     this.tweet_list.account = account;
   }
 
-  private void stream_message_received (StreamMessageType type, Json.Node root) { // {{{
+  private void stream_message_received (StreamMessageType type, Json.Node root) {
     if (type == StreamMessageType.EVENT_FAVORITE) {
       Json.Node tweet_obj = root.get_object ().get_member ("target_object");
       int64 tweet_id = tweet_obj.get_object ().get_int_member ("id");
-      foreach (Gtk.Widget w in tweet_list.get_children ()) {
-        if (!(w is TweetListEntry))
-          continue;
 
-        var tle = (TweetListEntry) w;
-        if (tle.tweet.id == tweet_id) {
-          tle.tweet.favorited = true;
-          return;
-        }
+      Tweet? existing_tweet = this.tweet_list.model.get_from_id (tweet_id, 0);
+      if (existing_tweet != null) {
+        /* This tweet is already in the model, so just mark it as favorited */
+        existing_tweet.set_flag (TweetState.FAVORITED);
+        return;
       }
+
       Tweet tweet = new Tweet ();
-      tweet.load_from_json (tweet_obj,
-                            new GLib.DateTime.now_local (),
-                            this.account);
-      tweet.favorited = true;
-      var tle = new TweetListEntry (tweet, this.main_window, this.account);
-      this.delta_updater.add (tle);
-      this.tweet_list.add (tle);
+      tweet.load_from_json (tweet_obj, new GLib.DateTime.now_local (), this.account);
+      tweet.set_flag (TweetState.FAVORITED);
+      this.tweet_list.model.add (tweet);
     } else if (type == StreamMessageType.EVENT_UNFAVORITE) {
       int64 id = root.get_object ().get_object_member ("target_object").get_int_member ("id");
       toggle_favorite (id, false);
     }
-  } // }}}
+  }
 
 
   public override void on_leave () {
-    GLib.List<unowned Gtk.Widget> children = tweet_list.get_children ();
-    foreach (Gtk.Widget w in children) {
-      if (!(w is TweetListEntry))
-        continue;
-
-      if (!((TweetListEntry)w).tweet.favorited) {
-        GLib.Idle.add(() => {tweet_list.remove (w); return false;});
+    for (uint i = 0; i < tweet_list.model.get_n_items (); i ++) {
+      var tweet = (Tweet) tweet_list.model.get_item (i);
+      if (!tweet.is_flag_set (TweetState.FAVORITED)) {
+        tweet_list.model.remove_tweet (tweet);
+        i --;
       }
     }
+
+    base.on_leave ();
   }
 
 
@@ -91,7 +85,7 @@ class FavoritesTimeline : IMessageReceiver, DefaultTimeline {
     return _("Favorites");
   }
 
-  public override void create_tool_button (Gtk.RadioButton? group) {
-    tool_button = new BadgeRadioToolButton(group, "starred-symbolic", _("Favorites"));
+  public override void create_radio_button (Gtk.RadioButton? group) {
+    radio_button = new BadgeRadioButton(group, "emblem-favorite-symbolic", _("Favorites"));
   }
 }

@@ -14,6 +14,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 class MaxSizeContainer : Gtk.Bin {
   private int _max_size = 0;
   public int max_size {
@@ -43,14 +44,11 @@ class MaxSizeContainer : Gtk.Bin {
       nat_height = _max_size;
       min_height = _max_size;
     }
-
-//    message ("Min: %d, Nat: %d", min_height, nat_height);
   }
 
   public override void size_allocate (Gtk.Allocation alloc) {
     if (get_child () == null || !get_child ().visible)
       return;
-
 
     Gtk.Allocation child_alloc = {};
     child_alloc.x = alloc.x;
@@ -65,11 +63,12 @@ class MaxSizeContainer : Gtk.Bin {
       child_alloc.height = _max_size;
     }
 
-//    message ("x: %d, y: %d, w: %d, h: %d\n--------------",
-//             child_alloc.x, child_alloc.y, child_alloc.width, child_alloc.height);
-
-    base.size_allocate (child_alloc);
+    this.set_allocation (child_alloc);
     if (get_child () != null && get_child ().visible) {
+      int min_height, nat_height;
+      get_child ().get_preferred_height (out min_height, out nat_height);
+      child_alloc.height = int.max(child_alloc.height, min_height);
+
       get_child ().size_allocate (child_alloc);
       if (this.get_realized ())
         get_child ().show ();

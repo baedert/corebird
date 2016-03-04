@@ -15,19 +15,14 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-
 public class MediaImageWidget : Gtk.ScrolledWindow {
   private Gtk.Image image;
   private Gtk.Menu image_context_menu;
 
-  private new string path;
   private double dnd_x;
   private double dnd_y;
 
-  public MediaImageWidget (string path) {
-    this.path = path;
-
+  public MediaImageWidget (Media media) {
     this.button_press_event.connect (button_press_event_cb);
     this.image = new Gtk.Image ();
     Gtk.EventBox event_box = new Gtk.EventBox ();
@@ -43,25 +38,15 @@ public class MediaImageWidget : Gtk.ScrolledWindow {
     save_as_item.show ();
     image_context_menu.add (save_as_item);
 
-    //Choose proper width/height
-    Gdk.Pixbuf? pixbuf = null;
-    try {
-      pixbuf = new Gdk.Pixbuf.from_file(path);
-    } catch (GLib.Error e) {
-      critical(e.message);
-    }
-    try {
-      if(path.has_suffix("gif"))
-        image.pixbuf_animation = new Gdk.PixbufAnimation.from_file(path);
-      else
-        image.pixbuf = new Gdk.Pixbuf.from_file(path);
-    } catch (GLib.Error e) {
-      critical (e.message);
-      return;
+    if (media.type == MediaType.GIF) {
+      assert (media.animation != null);
+      this.image.set_from_animation (media.animation);
+    } else {
+      this.image.set_from_surface (media.surface);
     }
 
-    int img_width  = pixbuf.get_width();
-    int img_height = pixbuf.get_height();
+    int img_width  = media.surface.get_width ();
+    int img_height = media.surface.get_height ();
 
     int win_width  = 800;
     int win_height = 600;
@@ -73,18 +58,6 @@ public class MediaImageWidget : Gtk.ScrolledWindow {
     if(img_height <= Gdk.Screen.height()*0.7) {
       win_height = img_height;
       this.vscrollbar_policy = Gtk.PolicyType.NEVER;
-    }
-
-    if(win_width < 800 && win_height == 600) {
-      int add_width;
-      this.get_vscrollbar().get_preferred_width(null, out add_width);
-      win_width += add_width;
-    }
-
-    if(win_width == 800 && win_height < 600) {
-      int add_height;
-      this.get_hscrollbar().get_preferred_width(null, out add_height);
-      win_height += add_height;
     }
 
     this.set_size_request(win_width, win_height);
@@ -111,29 +84,25 @@ public class MediaImageWidget : Gtk.ScrolledWindow {
   }
 
   private void save_item_activated_cb () {
-     var file_dialog = new Gtk.FileChooserDialog (_("Save image"), null,
-                                                  Gtk.FileChooserAction.SAVE,
-                                                  _("Cancel"), Gtk.ResponseType.CANCEL,
-                                                  _("Save"), Gtk.ResponseType.ACCEPT);
-    string filename = Utils.get_file_name (path);
-    file_dialog.set_current_name (filename);
-    //file_dialog.set_transient_for (this);
+     //var file_dialog = new Gtk.FileChooserDialog (_("Save image"), null,
+                                                  //Gtk.FileChooserAction.SAVE,
+                                                  //_("Cancel"), Gtk.ResponseType.CANCEL,
+                                                  //_("Save"), Gtk.ResponseType.ACCEPT);
+    //string filename = Utils.get_file_name (path);
+    //file_dialog.set_current_name (filename);
 
-
-    int response = file_dialog.run ();
-    if (response == Gtk.ResponseType.ACCEPT) {
-      File dest = File.new_for_uri (file_dialog.get_uri ());
-      debug ("Source: %s", path);
-      debug ("Destin: %s", file_dialog.get_uri ());
-      File source = File.new_for_path (path);
-      try {
-        source.copy (dest, FileCopyFlags.OVERWRITE);
-      } catch (GLib.Error e) {
-        critical (e.message);
-      }
-      file_dialog.destroy ();
-    } else if (response == Gtk.ResponseType.CANCEL)
-      file_dialog.destroy ();
+    //int response = file_dialog.run ();
+    //if (response == Gtk.ResponseType.ACCEPT) {
+      //File dest = File.new_for_uri (file_dialog.get_uri ());
+      //File source = File.new_for_path (path);
+      //try {
+        //source.copy (dest, FileCopyFlags.OVERWRITE);
+      //} catch (GLib.Error e) {
+        //critical (e.message);
+      //}
+      //file_dialog.destroy ();
+    //} else if (response == Gtk.ResponseType.CANCEL)
+      //file_dialog.destroy ();
 
   }
 

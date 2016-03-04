@@ -14,7 +14,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
-class AvatarWidget : Gtk.Image {
+
+class AvatarWidget : Gtk.Widget {
   private static const int SMALL = 0;
   private static const int LARGE = 1;
   private bool _round = true;
@@ -23,12 +24,46 @@ class AvatarWidget : Gtk.Image {
       return _round;
     }
     set {
+      if (value) {
+        this.get_style_context ().add_class ("avatar-round");
+      } else {
+        this.get_style_context ().remove_class ("avatar-round");
+      }
+
       this._round = value;
       this.queue_draw ();
     }
   }
   public bool verified { get; set; default = false; }
 
+  private Cairo.ImageSurface _surface;
+  public Cairo.Surface surface {
+    get {
+      return _surface;
+    }
+    set {
+      if (this._surface == value) return;
+
+      bool animate = false;
+
+      if (this._surface != null)
+        Twitter.get ().unref_avatar (this._surface);
+      else
+        animate = true;
+
+      this._surface = (Cairo.ImageSurface)value;
+
+      if (this._surface != null) {
+        Twitter.get ().ref_avatar (this._surface);
+        if (animate)
+          this.start_animation ();
+      }
+
+      this.queue_draw ();
+    }
+  }
+  private double alpha = 1.0f;
+  private int64 start_time;
 
 
   static Cairo.Surface[] verified_icons;
@@ -55,19 +90,52 @@ class AvatarWidget : Gtk.Image {
   }
 
   construct {
+    this.set_has_window (false);
     Settings.get ().bind ("round-avatars", this, "make_round",
                           GLib.SettingsBindFlags.DEFAULT);
-    get_style_context ().add_class ("avatar");
   }
+
+  ~AvatarWidget () {
+    if (this._surface != null)
+      Twitter.get ().unref_avatar (this._surface);
+  }
+
+
+  private void start_animation () {
+    if (!this.get_realized ())
+      return;
+
+    alpha = 0.0;
+    this.start_time = this.get_frame_clock ().get_frame_time ();
+    this.add_tick_callback (fade_in_cb);
+  }
+
+  private bool fade_in_cb (Gtk.Widget widget, Gdk.FrameClock frame_clock) {
+    int64 now = frame_clock.get_frame_time ();
+    double t = (now - start_time) / (double) TRANSITION_DURATION;
+
+    if (t >= 1.0) {
+      t = 1.0;
+    }
+
+    this.alpha = ease_out_cubic (t);
+    this.queue_draw ();
+
+    return t < 1.0;
+  }
+
 
 
   public override bool draw (Cairo.Context ctx) {
     int width  = this.get_allocated_width ();
     int height = this.get_allocated_height ();
 
-    if (this.pixbuf == null) {
+    if (this._surface == null) {
       return false;
     }
+
+    double surface_scale;
+    this._surface.get_device_scale (out surface_scale, out surface_scale);
 
     if (width != height) {
       warning ("Avatar with mapped with width %d and height %d", width, height);
@@ -78,39 +146,29 @@ class AvatarWidget : Gtk.Image {
                                              width, height);
     var ct = new Cairo.Context (surface);
 
+    double scale = (double)this.get_allocated_width () /
+                   (double) (this._surface.get_width () / surface_scale);
+
     ct.rectangle (0, 0, width, height);
-    Gdk.cairo_set_source_pixbuf (ct, this.pixbuf, 0, 0);
+    ct.scale (scale, scale);
+    ct.set_source_surface (this._surface, 0, 0);
     ct.fill();
 
     if (_round) {
-      var sc = this.get_style_context ();
-      // make it round
+      ct.scale (1.0/scale, 1.0/scale);
       ct.set_operator (Cairo.Operator.DEST_IN);
       ct.arc ((width / 2.0), (height / 2.0),
-              (width / 2.0) - 0.5, /* Radius */
-              0, /* Angle from */
-              2 * Math.PI); /* Angle to */
+              (width / 2.0) - 0.5, // Radius
+              0,                   //Angle from
+              2 * Math.PI);        // Angle to
       ct.fill ();
 
-      // draw outline
-      ct.set_operator (Cairo.Operator.OVER);
-      Gdk.RGBA border_color = sc.get_border_color (this.get_state_flags ());
-      ct.arc ((width / 2.0), (height / 2.0),
-              (width / 2.0) - 0.5,
-              0,
-              2 * Math.PI);
-      ct.set_line_width (1.0);
-      ct.set_source_rgba (border_color.red, border_color.green, border_color.blue,
-                          border_color.alpha);
-      ct.stroke ();
+      this.get_style_context ().render_frame (ctx, 0, 0, width, height);
     }
 
-    ctx.rectangle (0, 0, width, height);
     ctx.set_source_surface (surface, 0, 0);
-    ctx.fill ();
+    ctx.paint_with_alpha (alpha);
 
-
-    /* Draw verification indicator */
     if (verified) {
       int index = SMALL;
       if (width > 48)
@@ -118,14 +176,13 @@ class AvatarWidget : Gtk.Image {
 
       int scale_factor = this.get_scale_factor () - 1;
       Cairo.Surface verified_img = verified_icons[scale_factor * 2 + index];
-      ctx.rectangle (0, 0, width, height);
       ctx.set_source_surface (verified_img,
                               width - VERIFIED_SIZES[index],
                               0);
-      ctx.fill ();
+      ctx.paint_with_alpha (this.alpha);
     }
 
-    return false;
+    return Gdk.EVENT_PROPAGATE;
   }
 
 }

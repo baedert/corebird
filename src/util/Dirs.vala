@@ -15,25 +15,17 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 namespace Dirs {
-  static string? config_dir  = null;
-  static string? cache_dir = null;
-  static string? data_dir  = null;
+  static string? config_dir = null;
+  static string? cache_dir  = null;
 
 
   public void create_dirs () {
     create_folder (cache (""));
     create_folder (cache ("assets"));
     create_folder (cache ("assets/banners/"));
-    create_folder (cache ("assets/avatars/"));
-    create_folder (cache ("assets/user/"));
-    create_folder (cache ("assets/media/"));
-    create_folder (cache ("assets/media/thumbs/"));
     create_folder (config (""));
     create_folder (config ("accounts/"));
-    create_folder (data (""));
-    create_folder (data ("logs/"));
   }
 
   public string cache (string path) {
@@ -41,13 +33,6 @@ namespace Dirs {
       cache_dir = GLib.Environment.get_user_cache_dir () + "/corebird/";
     }
     return cache_dir + path;
-  }
-
-  string data (string path) {
-    if (data_dir == null) {
-      data_dir = GLib.Environment.get_user_data_dir () + "/corebird/";
-    }
-    return data_dir + path;
   }
 
   public string config (string path) {

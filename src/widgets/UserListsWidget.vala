@@ -85,8 +85,13 @@ class UserListsWidget : Gtk.Box {
     call.set_function ("1.1/lists/subscriptions.json");
     call.set_method ("GET");
     call.add_param ("user_id", user_id.to_string ());
-    TweetUtils.load_threaded.begin (call, (_, res) => {
-      Json.Node? root = TweetUtils.load_threaded.end (res);
+    TweetUtils.load_threaded.begin (call, null, (_, res) => {
+      Json.Node? root = null;
+      try {
+        root = TweetUtils.load_threaded.end (res);
+      } catch (GLib.Error e) {
+        warning (e.message);
+      }
 
       uint n_subscribed_list = lists_received_cb (root, subscribed_list_box);
       if (n_subscribed_list == 0) {
@@ -106,8 +111,14 @@ class UserListsWidget : Gtk.Box {
     user_call.set_function ("1.1/lists/ownerships.json");
     user_call.set_method ("GET");
     user_call.add_param ("user_id", user_id.to_string ());
-    TweetUtils.load_threaded.begin (user_call, (_, res) => {
-      Json.Node? root = TweetUtils.load_threaded.end (res);
+    TweetUtils.load_threaded.begin (user_call, null, (_, res) => {
+      Json.Node? root = null;
+      try {
+        root = TweetUtils.load_threaded.end (res);
+      } catch (GLib.Error e) {
+        warning (e.message);
+      }
+
       uint n_user_list = lists_received_cb (root, user_list_box);
       if (n_user_list == 0 && !show_create_entry) {
         user_list_label.hide ();

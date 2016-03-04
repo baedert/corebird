@@ -47,10 +47,10 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
         toggle_favorite (id, false);
     } else if (type == StreamMessageType.EVENT_BLOCK) {
       int64 user_id = root.get_object ().get_object_member ("target").get_int_member ("id");
-      hide_tweets_from (user_id, Tweet.HIDDEN_AUTHOR_BLOCKED);
+      hide_tweets_from (user_id, TweetState.HIDDEN_AUTHOR_BLOCKED);
     } else if (type == StreamMessageType.EVENT_UNBLOCK) {
       int64 user_id = root.get_object ().get_object_member ("target").get_int_member ("id");
-      show_tweets_from (user_id, Tweet.HIDDEN_AUTHOR_BLOCKED);
+      show_tweets_from (user_id, TweetState.HIDDEN_AUTHOR_BLOCKED);
     }
   } // }}}
 
@@ -59,44 +59,43 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
     Tweet t = new Tweet();
     t.load_from_json (obj, now, account);
 
-    if (t.is_retweet)
-      t.hidden_flags |= get_rt_flags (t);
+    if (t.retweeted_tweet != null)
+      t.set_flag (get_rt_flags (t));
 
     if (account.blocked_or_muted (t.user_id))
-      t.hidden_flags |= Tweet.HIDDEN_RETWEETER_BLOCKED;
+      t.set_flag (TweetState.HIDDEN_RETWEETER_BLOCKED);
 
 
-    if (t.is_retweet && account.blocked_or_muted (t.rt_by_id))
-      t.hidden_flags |= Tweet.HIDDEN_AUTHOR_BLOCKED;
+    if (t.retweeted_tweet != null && account.blocked_or_muted (t.retweeted_tweet.author.id))
+      t.set_flag (TweetState.HIDDEN_AUTHOR_BLOCKED);
 
     if (account.filter_matches (t))
-      t.hidden_flags |= Tweet.HIDDEN_FILTERED;
+      t.set_flag (TweetState.HIDDEN_FILTERED);
 
     bool auto_scroll = Settings.auto_scroll_on_new_tweets ();
 
-    this.balance_next_upper_change (TOP);
-
-    t.seen =  t.user_id == account.id ||
-              t.rt_by_id == account.id ||
-              (this.scrolled_up  &&
-               main_window.cur_page_id == this.id &&
-               auto_scroll);
+    t.seen = t.user_id == account.id ||
+             (t.retweeted_tweet != null && t.retweeted_tweet.author.id == account.id) ||
+             (this.scrolled_up  &&
+              main_window.cur_page_id == this.id &&
+              auto_scroll);
 
     bool should_focus = (tweet_list.get_first_visible_row ().is_focus && this.scrolled_up);
 
     tweet_list.model.add (t);
 
-    if (should_focus) {
-      tweet_list.get_first_visible_row ().grab_focus ();
-    }
-
     if (!t.is_hidden) {
-      base.scroll_up (t);
+      this.balance_next_upper_change (TOP);
+
+      if (!base.scroll_up (t))
 
       if (!t.seen)
         this.unread_count ++;
     }
 
+    if (should_focus) {
+      tweet_list.get_first_visible_row ().grab_focus ();
+    }
 
     // We never show any notifications if auto-scroll-on-new-tweet is enabled
 
@@ -106,13 +105,13 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
 
     if (stack_size == 1 && !auto_scroll) {
       string summary = "";
-      if (t.is_retweet){
-        summary = _("%s retweeted %s").printf(t.retweeted_by, t.user_name);
+      if (t.retweeted_tweet != null){
+        summary = _("%s retweeted %s").printf (t.source_tweet.author.user_name,
+                                               t.retweeted_tweet.author.user_name);
       } else {
-        summary = _("%s tweeted").printf(t.user_name);
+        summary = _("%s tweeted").printf (t.source_tweet.author.user_name);
       }
-      NotificationManager.notify (account, summary, t.get_real_text (),
-                                  Dirs.cache ("assets/avatars/" + Utils.get_avatar_name (t.avatar_url)));
+      NotificationManager.notify (account, summary, t.get_real_text ());
 
     } else if(stack_size != 0 && unread_count % stack_size == 0
               && unread_count > 0) {
@@ -123,25 +122,25 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
   } // }}}
 
 
-  public void hide_tweets_from (int64 user_id, uint reason) {
+  public void hide_tweets_from (int64 user_id, TweetState reason) {
     TweetModel tm = (TweetModel) tweet_list.model;
 
     tm.toggle_flag_on_tweet (user_id, reason, true);
   }
 
-  public void show_tweets_from (int64 user_id, uint reason) {
+  public void show_tweets_from (int64 user_id, TweetState reason) {
     TweetModel tm = (TweetModel) tweet_list.model;
 
     tm.toggle_flag_on_tweet (user_id, reason, false);
   }
 
-  public void hide_retweets_from (int64 user_id, uint reason) {
+  public void hide_retweets_from (int64 user_id, TweetState reason) {
     TweetModel tm = (TweetModel) tweet_list.model;
 
     tm.toggle_flag_on_retweet (user_id, reason, true);
   }
 
-  public void show_retweets_from (int64 user_id, uint reason) {
+  public void show_retweets_from (int64 user_id, TweetState reason) {
     TweetModel tm = (TweetModel) tweet_list.model;
 
     tm.toggle_flag_on_retweet (user_id, reason, false);
@@ -166,7 +165,7 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
     });
   }
 
-  public override void create_tool_button (Gtk.RadioButton? group) {
-    tool_button = new BadgeRadioToolButton(group, "user-home-symbolic", _("Home"));
+  public override void create_radio_button (Gtk.RadioButton? group) {
+    radio_button = new BadgeRadioButton(group, "user-home-symbolic", _("Home"));
   }
 }

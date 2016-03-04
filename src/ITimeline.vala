@@ -43,10 +43,12 @@ public interface ITimeline : Gtk.Widget, IPage {
     call.add_param ("include_my_retweet", "true");
     call.add_param ("max_id", (tweet_list.model.lowest_id - 1).to_string ());
 
-    Json.Node? root_node = yield TweetUtils.load_threaded (call);
-    if (root_node == null) {
-      tweet_list.set_error (_("Could not load tweets"));
-      tweet_list.set_empty ();
+    Json.Node? root_node = null;
+    try {
+      root_node = yield TweetUtils.load_threaded (call, null);
+    } catch (GLib.Error e) {
+      message (e.message);
+      tweet_list.set_error ("%s\n%s".printf (_("Could not load tweets"), e.message));
       return;
     }
 
@@ -56,7 +58,6 @@ public interface ITimeline : Gtk.Widget, IPage {
       return;
     }
     yield TweetUtils.work_array (root,
-                                 requested_tweet_count,
                                  tweet_list,
                                  main_window,
                                  account);
@@ -75,17 +76,21 @@ public interface ITimeline : Gtk.Widget, IPage {
     call.add_param ("include_my_retweet", "true");
     call.add_param ("max_id", (tweet_list.model.lowest_id - 1).to_string ());
 
-    Json.Node? root_node = yield TweetUtils.load_threaded (call);
-    if (root_node == null) {
+    Json.Node? root_node = null;
+
+    try {
+      root_node = yield TweetUtils.load_threaded (call, null);
+    } catch (GLib.Error e) {
+      warning (e.message);
       return;
     }
+
     var root = root_node.get_array ();
     if (root.get_length () == 0) {
       tweet_list.set_empty ();
       return;
     }
     yield TweetUtils.work_array (root,
-                                 requested_tweet_count,
                                  tweet_list,
                                  main_window,
                                  account);
@@ -125,16 +130,14 @@ public interface ITimeline : Gtk.Widget, IPage {
     for (uint i = 0, p = tm.get_n_items (); i < p; i ++) {
       var tweet = (Tweet) tm.get_object (i);
       if (account.filter_matches (tweet)) {
-        tweet.hidden_flags |= Tweet.HIDDEN_FILTERED;
+        tweet.set_flag (TweetState.HIDDEN_FILTERED);
         if (!tweet.seen) {
           this.unread_count --;
           tweet.seen = true;
         }
       } else {
-        tweet.hidden_flags &= ~Tweet.HIDDEN_FILTERED;
+        tweet.unset_flag (TweetState.HIDDEN_FILTERED);
       }
-
-      tweet.hidden_flags_changed ();
     }
   }
 }

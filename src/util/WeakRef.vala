@@ -15,20 +15,14 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-
-
-
-class WeakRef<G> : GLib.Object {
+class WeakRef : GLib.Object {
   private GLib.WeakRef wr;
 
-  public WeakRef (G obj) {
-    this.wr = GLib.WeakRef ((GLib.Object)obj);
+  public WeakRef (ITwitterItem obj) {
+    this.wr = GLib.WeakRef (obj);
   }
 
-  public new G get () {
-    return wr.get ();
+  public new ITwitterItem get () {
+    return (ITwitterItem) wr.get ();
   }
 }
-
-

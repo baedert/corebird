@@ -23,8 +23,6 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     {"delete", delete_activated}
   };
 
-  private const int64 TRANSITION_DURATION = 300;
-
   [GtkChild]
   private Gtk.Label screen_name_label;
   [GtkChild]
@@ -57,13 +55,23 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   private Gtk.Stack stack;
   [GtkChild]
   private Gtk.Box action_box;
+  [GtkChild]
+  private Gtk.Label quote_label;
+  [GtkChild]
+  private TextButton quote_name;
+  [GtkChild]
+  private Gtk.Label quote_screen_name;
+  [GtkChild]
+  private Gtk.Grid quote_grid;
+  [GtkChild]
+  private Gtk.Stack media_stack;
 
 
   private bool _read_only = false;
   public bool read_only {
     set {
       mm_widget.sensitive = !value;
-      name_button.read_only = value;
+      name_button.sensitive = !value;
       this._read_only = value;
     }
   }
@@ -76,7 +84,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     }
   }
   public int64 sort_factor {
-    get { return tweet.created_at;}
+    get { return tweet.source_tweet.id;}
   }
   public bool shows_actions {
     get {
@@ -97,105 +105,126 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   [Signal (action = true)]
   private signal void delete_tweet ();
 
-  public TweetListEntry (owned Tweet tweet, MainWindow? main_window, Account account) {
+  public TweetListEntry (owned Tweet tweet,
+                         MainWindow? main_window,
+                         Account     account,
+                         bool        restrict_height = false) {
     this.account = account;
     this.tweet = tweet;
     this.main_window = main_window;
 
     name_button.set_markup (tweet.user_name);
-    screen_name_label.label = "@"+tweet.screen_name;
-    avatar_image.pixbuf = tweet.avatar;
-    avatar_image.verified = tweet.verified;
+    screen_name_label.label = "@" + tweet.screen_name;
+    if (tweet.avatar_url != null) {
+      string avatar_url = tweet.avatar_url;
+      if (this.get_scale_factor () == 2)
+        avatar_url = avatar_url.replace ("_normal", "_bigger");
+      avatar_image.surface = Twitter.get ().get_avatar (tweet.user_id, avatar_url, (a) => {
+        avatar_image.surface = a;
+      }, 48 * this.get_scale_factor ());
+    }
+    avatar_image.verified = tweet.is_flag_set (TweetState.VERIFIED);
     text_label.label = tweet.get_trimmed_text ();
     update_time_delta ();
-    if (tweet.is_retweet) {
+    if (tweet.retweeted_tweet != null) {
       rt_label.show ();
       rt_image.show ();
-      rt_label.label = @"<span underline='none'><a href=\"@$(tweet.rt_by_id)/$(tweet.rt_by_screen_name)\"
-                         title=\"@$(tweet.rt_by_screen_name)\">$(tweet.retweeted_by)</a></span>";
-    } else {
-      grid.remove (rt_image);
-      grid.remove (rt_label);
+      rt_label.label = @"<span underline='none'><a href=\"@$(tweet.source_tweet.author.id)/" +
+                       @"@$(tweet.source_tweet.author.screen_name)\"" +
+                       @"title=\"@$(tweet.source_tweet.author.screen_name)\">" +
+                       @"$(tweet.source_tweet.author.user_name)</a></span>";
     }
 
-    retweet_button.active = tweet.retweeted;
+    if (tweet.quoted_tweet != null) {
+      quote_label.label = TextTransform.transform_tweet (tweet.quoted_tweet,
+                                                         Settings.get_text_transform_flags ());
+      quote_name.set_markup (tweet.quoted_tweet.author.user_name);
+      quote_screen_name.label = "@" + tweet.quoted_tweet.author.screen_name;
+
+      quote_grid.show ();
+      quote_grid.show_all ();
+    }
+
+    retweet_button.active = tweet.is_flag_set (TweetState.RETWEETED);
     retweet_button.sensitive = (tweet.user_id != account.id) &&
-                               !tweet.protected;
-    tweet.notify["retweeted"].connect (retweeted_cb);
+                               !tweet.is_flag_set (TweetState.PROTECTED);
 
-    favorite_button.active = tweet.favorited;
-    tweet.notify["favorited"].connect (favorited_cb);
+    favorite_button.active = tweet.is_flag_set (TweetState.FAVORITED);
 
-    tweet.hidden_flags_changed.connect (hidden_flags_changed_cb);
+    tweet.state_changed.connect (state_changed_cb);
 
-    if (tweet.reply_id == 0)
-      conversation_image.unparent ();
-    else {
-      conversation_image.show ();
-    }
-
-    // If the avatar gets loaded, we want to change it here immediately
-    tweet.notify["avatar"].connect (avatar_changed);
+    conversation_image.visible = (tweet.reply_id != 0);
 
     if (tweet.has_inline_media) {
+
+      if (tweet.is_flag_set (TweetState.NSFW) &&
+          Settings.hide_nsfw_content ())
+        media_stack.visible_child_name = "nsfw";
+      else
+        media_stack.visible_child = mm_widget;
+
+      media_stack.show ();
+      mm_widget.restrict_height = restrict_height;
       mm_widget.set_all_media (tweet.medias);
       mm_widget.media_clicked.connect (media_clicked_cb);
       mm_widget.media_invalid.connect (media_invalid_cb);
       mm_widget.window = main_window;
-    } else
-      grid.remove (mm_widget);
+    } else {
+      mm_widget.hide ();
+    }
 
 
     var actions = new GLib.SimpleActionGroup ();
     actions.add_action_entries (action_entries, this);
     this.insert_action_group ("tweet", actions);
 
-    if (tweet.user_id != account.id) {
+    if (tweet.user_id != account.id)
       ((GLib.SimpleAction)actions.lookup_action ("delete")).set_enabled (false);
-    }
 
+    if (tweet.is_flag_set (TweetState.PROTECTED))
+      ((GLib.SimpleAction)actions.lookup_action ("quote")).set_enabled (false);
 
     reply_tweet.connect (reply_tweet_activated);
     delete_tweet.connect (delete_tweet_activated);
     favorite_tweet.connect (() => {
-      if (favorite_button.parent != null)
-        favorite_button.active = !favorite_button.active;
+      favorite_button.active = !favorite_button.active;
     });
     retweet_tweet.connect (() => {
       retweet_button.tap ();
     });
 
-    if (tweet.favorited)
+    if (tweet.is_flag_set (TweetState.FAVORITED))
       fav_status_image.show ();
 
-    if (tweet.retweeted)
+    if (tweet.is_flag_set (TweetState.RETWEETED))
       rt_status_image.show ();
 
     values_set = true;
 
+    // TODO All these settings signal connections with lots of tweets could be costly...
     Settings.get ().changed["text-transform-flags"].connect (transform_flags_changed_cb);
+    Settings.get ().changed["hide-nsfw-content"].connect (hide_nsfw_content_changed_cb);
   }
 
   ~TweetListEntry () {
     Settings.get ().changed["text-transform-flags"].disconnect (transform_flags_changed_cb);
+    Settings.get ().changed["hide-nsfw-content"].disconnect (hide_nsfw_content_changed_cb);
   }
 
   private void transform_flags_changed_cb () {
     text_label.label = tweet.get_trimmed_text ();
+    if (this.tweet.quoted_tweet != null) {
+      this.quote_label.label = TextTransform.transform_tweet (tweet.quoted_tweet,
+                                                              Settings.get_text_transform_flags ());
+    }
   }
 
-  private void favorited_cb () {
-    values_set = false;
-    favorite_button.active = tweet.favorited;
-    fav_status_image.visible = tweet.favorited;
-    values_set = true;
-  }
-
-  private void retweeted_cb () {
-    values_set = false;
-    retweet_button.active = tweet.retweeted;
-    rt_status_image.visible = tweet.retweeted;
-    values_set = true;
+  private void hide_nsfw_content_changed_cb () {
+    if (this.tweet.is_flag_set (TweetState.NSFW) &&
+        Settings.hide_nsfw_content ())
+      this.media_stack.visible_child_name = "nsfw";
+    else
+      this.media_stack.visible_child = mm_widget;
   }
 
   private void media_clicked_cb (Media m, int index) {
@@ -212,11 +241,6 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       });
     } else
       delete_first_activated = true;
-  }
-
-  private void avatar_changed () {
-    avatar_image.pixbuf = tweet.avatar;
-    avatar_image.queue_draw ();
   }
 
   static construct {
@@ -242,10 +266,10 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     switch(evt.keyval) {
       case Gdk.Key.k:
         stdout.printf (tweet.json_data+"\n");
-        return true;
+        return Gdk.EVENT_STOP;
     }
 #endif
-    return false;
+    return Gdk.EVENT_PROPAGATE;
   }
 
   /**
@@ -260,7 +284,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     }
 
     retweet_button.sensitive = false;
-    TweetUtils.toggle_retweet_tweet.begin (account, tweet, !retweet_button.active, () => {
+    TweetUtils.set_retweet_status.begin (account, tweet, retweet_button.active, () => {
       retweet_button.sensitive = true;
     });
     if (shows_actions)
@@ -273,7 +297,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       return;
 
     favorite_button.sensitive = false;
-    TweetUtils.toggle_favorite_tweet.begin (account, tweet, !favorite_button.active, () => {
+    TweetUtils.set_favorite_status.begin (account, tweet, favorite_button.active, () => {
       favorite_button.sensitive = true;
     });
     if (shows_actions)
@@ -282,33 +306,57 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
   [GtkCallback]
   private void name_button_clicked_cb () {
+    int64 user_id;
+    string screen_name;
+
+    if (tweet.retweeted_tweet != null) {
+      user_id = tweet.retweeted_tweet.author.id;
+      screen_name = tweet.retweeted_tweet.author.screen_name;
+    } else {
+      user_id = tweet.source_tweet.author.id;
+      screen_name = tweet.source_tweet.author.screen_name;
+    }
+
     var bundle = new Bundle ();
-    bundle.put_int64 ("user_id", tweet.user_id);
-    bundle.put_string ("screen_name", tweet.screen_name);
+    bundle.put_int64 ("user_id", user_id);
+    bundle.put_string ("screen_name", screen_name);
     main_window.main_widget.switch_page (Page.PROFILE, bundle);
   }
+
+  [GtkCallback]
+  private void quote_name_button_clicked_cb () {
+    assert (tweet.quoted_tweet != null);
+    var bundle = new Bundle ();
+    bundle.put_int64 ("user_id", tweet.quoted_tweet.author.id);
+    bundle.put_string ("screen_name", tweet.quoted_tweet.author.screen_name);
+    main_window.main_widget.switch_page (Page.PROFILE, bundle);
+  }
+
+
   [GtkCallback]
   private void reply_button_clicked_cb () {
     ComposeTweetWindow ctw = new ComposeTweetWindow (this.main_window, this.account, this.tweet,
-                                                     ComposeTweetWindow.Mode.REPLY,
-                                                     this.main_window.get_application ());
+                                                     ComposeTweetWindow.Mode.REPLY);
     ctw.show ();
     if (shows_actions)
       toggle_mode ();
   }
 
+  [GtkCallback]
+  private void show_media_clicked_cb () {
+    media_stack.visible_child = mm_widget;
+  }
+
   private void quote_activated () {
     ComposeTweetWindow ctw = new ComposeTweetWindow (this.main_window, this.account, this.tweet,
-                                                     ComposeTweetWindow.Mode.QUOTE,
-                                                     this.main_window.get_application ());
+                                                     ComposeTweetWindow.Mode.QUOTE);
     ctw.show ();
     toggle_mode ();
   }
 
   private void reply_tweet_activated () {
     ComposeTweetWindow ctw = new ComposeTweetWindow (this.main_window, this.account, this.tweet,
-                                                     ComposeTweetWindow.Mode.REPLY,
-                                                     this.main_window.get_application ());
+                                                     ComposeTweetWindow.Mode.REPLY);
     ctw.show ();
   }
 
@@ -323,6 +371,9 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     if (this._read_only) {
       return false;
     }
+
+    this.grab_focus ();
+
     return TweetUtils.activate_link (uri, main_window);
   }
 
@@ -343,17 +394,41 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   private void media_invalid_cb () {
     TransformFlags flags = Settings.get_text_transform_flags ()
                            & ~TransformFlags.REMOVE_MEDIA_LINKS;
-    this.text_label.set_label (TextTransform.transform (tweet.text,
-                                                        tweet.urls,
-                                                        flags,
-                                                        tweet.medias.length));
+    string new_text = TextTransform.transform_tweet (tweet.retweeted_tweet ?? tweet.source_tweet,
+                                                     flags);
+    this.text_label.label = new_text;
+
+    if (tweet.quoted_tweet != null) {
+      string new_quote_text = TextTransform.transform_tweet (tweet.quoted_tweet,
+                                                             flags);
+      this.quote_label.label = new_quote_text;
+    }
   }
 
-  private void hidden_flags_changed_cb () {
+  private void state_changed_cb () {
     if (tweet.is_hidden)
       this.hide ();
     else
       this.show ();
+
+    this.values_set = false;
+    this.fav_status_image.visible = tweet.is_flag_set (TweetState.FAVORITED);
+    this.favorite_button.active = tweet.is_flag_set (TweetState.FAVORITED);
+
+    this.retweet_button.active = tweet.is_flag_set (TweetState.RETWEETED);
+    this.rt_status_image.visible = tweet.is_flag_set (TweetState.RETWEETED);
+
+    if (tweet.is_flag_set (TweetState.DELETED)) {
+      this.sensitive = false;
+      stack.visible_child = grid;
+    }
+
+    this.values_set = true;
+  }
+
+  public void set_avatar (Cairo.Surface surface) {
+    /* This should only ever be called from the settings page. */
+    this.avatar_image.surface = surface;
   }
 
 
@@ -371,7 +446,9 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       cur_time = now;
 
     GLib.DateTime then = new GLib.DateTime.from_unix_local (
-                 tweet.is_retweet ? tweet.rt_created_at : tweet.created_at);
+                             tweet.retweeted_tweet != null ? tweet.retweeted_tweet.created_at :
+                                                             tweet.source_tweet.created_at);
+                 //tweet.is_retweet ? tweet.rt_created_at : tweet.created_at);
     time_delta_label.label = Utils.get_time_delta (then, cur_time);
     return (int)(cur_time.difference (then) / 1000.0 / 1000.0);
   } //}}}
@@ -393,11 +470,6 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
   private int64 start_time;
   private int64 end_time;
-
-  private double ease_out_cubic (double t) {
-    double p = t - 1;
-    return p * p * p +1;
-  }
 
   private bool anim_tick (Gtk.Widget widget, Gdk.FrameClock frame_clock) {
     int64 now = frame_clock.get_frame_time ();
@@ -425,7 +497,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     ulong realize_id = 0;
     realize_id = this.realize.connect (() => {
       this.start_time = this.get_frame_clock ().get_frame_time ();
-      this.end_time = start_time + (TRANSITION_DURATION * 1000);
+      this.end_time = start_time + TRANSITION_DURATION;
       this.add_tick_callback (anim_tick);
       this.disconnect (realize_id);
     });

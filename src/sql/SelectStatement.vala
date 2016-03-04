@@ -16,8 +16,8 @@
  */
 
 namespace Sql {
-  public class SelectStatement : IStatement {
-    public unowned Sqlite.Database db { public set; private get; }
+  public class SelectStatement : GLib.Object {
+    public unowned Sqlite.Database db;
     private StringBuilder query_builder = new StringBuilder ();
     private string table_name;
 

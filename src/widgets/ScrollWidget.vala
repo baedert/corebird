@@ -20,13 +20,12 @@ const int BOTTOM = 2;
 const int NONE   = 0;
 
 public class ScrollWidget : Gtk.ScrolledWindow {
-  private static const int64 TRANSITION_DURATION = 300;
   public signal void scrolled_to_start(double value);
   public signal void scrolled_to_end();
   private double upper_cache;
   private double value_cache;
   private int balance = NONE;
-  public double end_diff {get; set; default = 150;}
+  public double end_diff {get; set; default = 200;}
   private ulong scroll_down_id;
   private ulong scroll_up_id;
   public bool scrolled_down {
@@ -46,8 +45,8 @@ public class ScrollWidget : Gtk.ScrolledWindow {
   private double transition_start_value;
 
   construct {
-    vadjustment.notify["upper"].connect(keep_upper_func);
-    vadjustment.notify["value"].connect(keep_value_func);
+    vadjustment.notify["upper"].connect (keep_upper_func);
+    vadjustment.notify["value"].connect (keep_value_func);
   }
 
   private void keep_upper_func() { // {{{
@@ -56,7 +55,6 @@ public class ScrollWidget : Gtk.ScrolledWindow {
       double inc = (upper - upper_cache);
 
       this.vadjustment.value += inc;
-      this.vadjustment.value_changed ();
       balance = NONE;
     }
     this.upper_cache = vadjustment.upper;
@@ -70,22 +68,21 @@ public class ScrollWidget : Gtk.ScrolledWindow {
     }
 
     double max = vadjustment.upper - vadjustment.page_size;
-    if(vadjustment.value >= max - end_diff)
-      scrolled_to_end();
+    if (vadjustment.value >= max - end_diff)
+      scrolled_to_end ();
 
     double upper = vadjustment.upper;
-    if (balance == BOTTOM){
+    if (balance == BOTTOM) {
       double inc = (upper - upper_cache);
 
       this.vadjustment.value -= inc;
-      this.vadjustment.value_changed ();
       balance = NONE;
     }
     this.upper_cache = vadjustment.upper;
     this.value_cache = vadjustment.value;
   } // }}}
 
-  public void balance_next_upper_change(int mode){
+  public void balance_next_upper_change (int mode) {
     balance = mode;
   }
 
@@ -98,14 +95,11 @@ public class ScrollWidget : Gtk.ScrolledWindow {
    * to true.
    *
    * @param animate    Whether to animate/transition the change or not (default: true)
-   * @param force_wait If this is set to true, we will wait for the next size_allocate
-   *                   event, even if the widget is unmapped (default: false).
    */
-  public void scroll_up_next (bool animate = true, bool force_wait = false,
+  public void scroll_up_next (bool animate = true,
                               bool force_start = false) { // {{{
-    if (!this.get_mapped () && !force_wait) {
+    if (!this.get_mapped ()) {
       this.vadjustment.value = 0;
-      this.vadjustment.value_changed ();
       return;
     }
 
@@ -113,13 +107,12 @@ public class ScrollWidget : Gtk.ScrolledWindow {
     if (force_start) {
       if (Gtk.Settings.get_default ().gtk_enable_animations && animate) {
         this.start_time = this.get_frame_clock ().get_frame_time ();
-        this.end_time = start_time + (TRANSITION_DURATION * 1000);
+        this.end_time = start_time + TRANSITION_DURATION;
         this.transition_diff = - this.vadjustment.value;
         this.transition_start_value = vadjustment.value;
         this.add_tick_callback (scroll_up_tick_cb);
       } else {
         this.vadjustment.value = 0;
-        this.vadjustment.value_changed ();
       }
     } else {
       if (scroll_up_id != 0) {
@@ -127,18 +120,17 @@ public class ScrollWidget : Gtk.ScrolledWindow {
         this.transition_start_value = this.vadjustment.value;
         return;
       }
-      scroll_up_id = this.size_allocate.connect (() => {
+      scroll_up_id = this.vadjustment.notify["upper"].connect (() => {
         if (Gtk.Settings.get_default ().gtk_enable_animations && animate) {
           this.start_time = this.get_frame_clock ().get_frame_time ();
-          this.end_time = start_time + (TRANSITION_DURATION * 1000);
+          this.end_time = start_time + TRANSITION_DURATION;
           this.transition_diff = - this.vadjustment.value;
           this.transition_start_value = vadjustment.value;
           this.add_tick_callback (scroll_up_tick_cb);
         } else {
           this.vadjustment.value = 0;
-          this.vadjustment.value_changed ();
         }
-        this.disconnect (scroll_up_id);
+        this.vadjustment.disconnect (scroll_up_id);
         this.scroll_up_id = 0;
       });
     }
@@ -157,7 +149,6 @@ public class ScrollWidget : Gtk.ScrolledWindow {
   public void scroll_down_next (bool animate = true, bool force_wait = false) { // {{{
     if (!this.get_mapped () && !force_wait) {
       this.vadjustment.value = this.vadjustment.upper - this.vadjustment.page_size;
-      this.vadjustment.value_changed ();
       return;
     }
 
@@ -167,13 +158,12 @@ public class ScrollWidget : Gtk.ScrolledWindow {
     scroll_down_id = this.size_allocate.connect (() => {
       if (Gtk.Settings.get_default ().gtk_enable_animations && animate) {
         this.start_time = this.get_frame_clock ().get_frame_time ();
-        this.end_time = start_time + (TRANSITION_DURATION * 1000);
+        this.end_time = start_time + TRANSITION_DURATION;
         this.transition_diff = (vadjustment.upper - vadjustment.page_size - vadjustment.value);
         this.transition_start_value = this.vadjustment.value;
         this.add_tick_callback (scroll_up_tick_cb);
       } else {
         this.vadjustment.value = this.vadjustment.upper - this.vadjustment.page_size;
-        this.vadjustment.value_changed ();
       }
       this.disconnect (scroll_down_id);
       this.scroll_down_id = 0;
@@ -198,14 +188,12 @@ public class ScrollWidget : Gtk.ScrolledWindow {
     t = ease_out_cubic (t);
 
     this.vadjustment.value = transition_start_value + (t * transition_diff);
-    if (this.vadjustment.value <= 0 || now >= end_time)
+    if (this.vadjustment.value <= 0 || now >= end_time) {
+      this.queue_draw ();
       return false;
+    }
 
     return true;
   }
 
-  private double ease_out_cubic (double t) {
-    double p = t - 1;
-    return p * p * p +1;
-  }
 }

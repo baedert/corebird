@@ -1,0 +1,736 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# adem demir <scripard@gmail.com>, 2015
+# Ali GÖREN <goren.ali@yandex.com>, 2015
+msgid ""
+msgstr ""
+"Project-Id-Version: Corebird\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-02-25 13:13+0100\n"
+"PO-Revision-Date: 2016-02-21 09:14+0000\n"
+"Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
+"Language-Team: Turkish (Turkey) (http://www.transifex.com/corebird/corebird/language/tr_TR/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: tr_TR\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: ../src/window/ComposeTweetWindow.vala:120
+msgid "Quote tweet"
+msgstr "Alıntı Tweet"
+
+#: ../src/window/UserListDialog.vala:40
+msgid "Add to or Remove User From List"
+msgstr "Kullanıcı Listesinden Ekle ya da Kaldır"
+
+#: ../src/window/UserListDialog.vala:47 ../ui/compose-window.ui.h:2
+#: ../ui/list-list-entry.ui.h:1 ../ui/list-statuses-page.ui.h:8
+#: ../ui/filter-list-entry.ui.h:1 ../ui/modify-filter-dialog.ui.h:2
+#: ../ui/user-filter-entry.ui.h:1 ../ui/account-dialog.ui.h:2
+#: ../ui/image-crop-dialog.ui.h:1 ../ui/modify-snippet-dialog.ui.h:2
+msgid "Cancel"
+msgstr "İptal"
+
+#: ../src/window/UserListDialog.vala:48 ../src/window/ImageCropDialog.vala:98
+#: ../ui/list-statuses-page.ui.h:6 ../ui/modify-filter-dialog.ui.h:3
+#: ../ui/account-dialog.ui.h:3 ../ui/modify-snippet-dialog.ui.h:3
+msgid "Save"
+msgstr "Kaydet"
+
+#: ../src/window/UserListDialog.vala:68
+msgid "You have no lists."
+msgstr "Herhangi Bir Listeniz Yok."
+
+#: ../src/window/ModifyFilterDialog.vala:45
+msgid "Modify Filter"
+msgstr "Filtreleri Düzenle."
+
+#: ../src/window/ModifyFilterDialog.vala:76
+msgid "Matches"
+msgstr "Eşleşenler"
+
+#: ../src/window/ModifyFilterDialog.vala:78
+msgid "Doesn't match"
+msgstr "Eşleşme Yok."
+
+#: ../src/widgets/TweetListBox.vala:100
+msgid "Loading..."
+msgstr "Yükleniyor..."
+
+#: ../src/widgets/TweetListBox.vala:103 ../src/widgets/TweetListBox.vala:151
+msgid "No entries found"
+msgstr "Herhangi Bir Tweet Bulunamadı."
+
+#: ../src/widgets/TweetListBox.vala:111
+msgid "Retry"
+msgstr "Tekrar"
+
+#: ../src/widgets/AccountCreateWidget.vala:38
+msgid "Don't have an account yet?"
+msgstr "Henüz Bir Hesabınız Yok Mu?"
+
+#: ../src/widgets/AccountCreateWidget.vala:38
+msgid "Create one"
+msgstr "Yeni Bir Tane Oluştur."
+
+#: ../src/widgets/AccountCreateWidget.vala:53
+msgid ""
+"Unauthorized. Most of the time, this means that there's something wrong with"
+" the Twitter servers and you should try again later"
+msgstr "Yetkisiz. Çoğu Zaman Twitter Sunucularında Bir Problem Olmasından Kaynaklanır, Daha sonra tekrar deneyebilirsiniz."
+
+#: ../src/widgets/AccountCreateWidget.vala:65
+#, c-format
+msgid "Could not open %s"
+msgstr "%s Açılamadı"
+
+#. We just assume that it was the wrong code
+#: ../src/widgets/AccountCreateWidget.vala:87
+msgid "Wrong PIN"
+msgstr "Yanlış PİN."
+
+#: ../src/widgets/AccountCreateWidget.vala:114
+msgid "Account already in use"
+msgstr "Bu Hesap Bir Başkası Tarafından Kullanılıyor."
+
+#: ../src/widgets/PixbufButton.vala:52
+msgid "Copy link"
+msgstr "Linki Kopyala"
+
+#: ../src/widgets/FollowButton.vala:45
+msgid "Follow"
+msgstr "Takip Et"
+
+#: ../src/widgets/FollowButton.vala:46
+msgid "Unfollow"
+msgstr "Takibi Bırak"
+
+#: ../src/HomeTimeline.vala:109
+#, c-format
+msgid "%s retweeted %s"
+msgstr "%s Retweetlendi %s"
+
+#: ../src/HomeTimeline.vala:112
+#, c-format
+msgid "%s tweeted"
+msgstr "%s Tweetlendi"
+
+#: ../src/HomeTimeline.vala:118
+#, c-format
+msgid "%d new Tweet!"
+msgid_plural "%d new Tweets!"
+msgstr[0] "%d Yeni Tweet!"
+
+#: ../src/HomeTimeline.vala:169
+msgid "Home"
+msgstr "Anasayfa"
+
+#: ../src/DMThreadsPage.vala:205
+#, c-format
+msgid "%d new Message from %s"
+msgid_plural "%d new Messages from %s"
+msgstr[0] "%s Kullanıcısından %d Yeni Mesaj"
+
+#: ../src/DMThreadsPage.vala:211
+#, c-format
+msgid "New direct message from %s"
+msgstr "%s Kullanıcısından Yeni Mesaj Var"
+
+#: ../src/DMThreadsPage.vala:229 ../src/DMThreadsPage.vala:243
+msgid "Direct Messages"
+msgstr "Direkt Mesajlar"
+
+#: ../src/list/DMThreadEntry.vala:77
+#, c-format
+msgid "(%d unread)"
+msgid_plural "(%d unread)"
+msgstr[0] "(%d Okunmamış)"
+
+#: ../src/ListsPage.vala:123 ../src/ListsPage.vala:128
+#: ../ui/profile-page.ui.h:9
+msgid "Lists"
+msgstr "Listeler"
+
+#: ../src/ProfilePage.vala:290
+msgid "Protected profile"
+msgstr "Korumalı Hesap"
+
+#: ../src/ProfilePage.vala:540
+#, c-format
+msgid "Tweet to @%s"
+msgstr "@%s Kullanıcısına Tweetle"
+
+#: ../src/TweetInfoPage.vala:279
+msgid "Could not show tweet"
+msgstr "Tweet Gösterilemiyor"
+
+#: ../src/TweetInfoPage.vala:455
+msgid "Retweets"
+msgstr "Yeniden Tweetlenenler"
+
+#: ../src/TweetInfoPage.vala:456 ../src/FavoritesTimeline.vala:85
+#: ../src/FavoritesTimeline.vala:89
+msgid "Favorites"
+msgstr "Favoriler"
+
+#: ../src/TweetInfoPage.vala:464
+msgid "Open in Browser"
+msgstr "Tarayıcıda Aç"
+
+#: ../src/TweetInfoPage.vala:464
+msgid "Source"
+msgstr "Kaynak"
+
+#: ../src/TweetInfoPage.vala:504
+msgid "Tweet Details"
+msgstr "Tweet Detayları"
+
+#: ../src/util/Utils.vala:164
+msgid "Now"
+msgstr "Şimdi"
+
+#: ../src/util/Utils.vala:166
+#, c-format
+msgid "%dm"
+msgstr "%dm"
+
+#: ../src/util/Utils.vala:170
+#, c-format
+msgid "%dh"
+msgstr "%dh"
+
+#: ../src/SearchPage.vala:307 ../src/SearchPage.vala:316
+#: ../ui/search-page.ui.h:1
+msgid "Search"
+msgstr "Ara"
+
+#: ../src/Corebird.vala:177
+msgid "Open Account"
+msgstr "Hesap Aç"
+
+#: ../src/MentionsTimeline.vala:102
+#, c-format
+msgid "New Mention from @%s"
+msgstr "@%s Kullanıcısı Senden Bahsetti."
+
+#: ../src/MentionsTimeline.vala:130 ../src/MentionsTimeline.vala:134
+msgid "Mentions"
+msgstr "Bahsedilenler"
+
+#: ../src/DMPage.vala:324
+msgid "Direct Conversation"
+msgstr "Doğrudan Görüşme"
+
+#: ../src/ListStatusesPage.vala:359
+msgid "List"
+msgstr "Liste"
+
+#: ../src/widgets/AvatarBannerWidget.vala:160
+msgid "Select banner"
+msgstr "Başlık Fotoğrafı Seç"
+
+#: ../src/widgets/AvatarBannerWidget.vala:175
+msgid "Select avatar"
+msgstr "Avatar Seç"
+
+#: ../src/window/ImageCropDialog.vala:58 ../ui/image-crop-dialog.ui.h:2
+msgid "Next"
+msgstr "Devam"
+
+#: ../src/window/ImageCropDialog.vala:103
+msgid "Image does not meet minimum size requirements:"
+msgstr "Resim Genişliği Minimum Gereksinimleri Karşılamıyor"
+
+#: ../src/window/ImageCropDialog.vala:104
+#, c-format
+msgid "Minimum width: %d pixel"
+msgid_plural "Minimum width: %d pixels"
+msgstr[0] "Minimum Genişlik %d Piksel"
+
+#: ../src/window/ImageCropDialog.vala:106
+#, c-format
+msgid "Minimum height: %d pixel"
+msgid_plural "Minimum height: %d pixels"
+msgstr[0] "Minimum Yükseklik %d Piksel"
+
+#: ../src/window/SettingsDialog.vala:84
+msgid ""
+"Hey, check out this new #Corebird version! \\ (•◡•) / #cool "
+"#newisalwaysbetter"
+msgstr "Merhaba, #Corebird Uygulamasının Son Sürümüne Bakmanı Öneririm! \\ (•◡•) / #harika"
+
+#: ../ui/settings-dialog.ui.h:1 ../ui/menu.ui.h:1
+msgid "Settings"
+msgstr "Ayarlar"
+
+#: ../ui/settings-dialog.ui.h:2
+msgid "Maximum media size"
+msgstr "Maksimum Medya Boyutu"
+
+#: ../ui/settings-dialog.ui.h:3
+msgid "MB"
+msgstr "MB"
+
+#: ../ui/settings-dialog.ui.h:4
+msgid "Auto scroll on new tweets"
+msgstr "Yeni Tweetlerde Otomatik Kaydır"
+
+#: ../ui/settings-dialog.ui.h:5
+msgid "Double-click activation"
+msgstr "Etkinleştirmek İçin Çift Tıkla"
+
+#: ../ui/settings-dialog.ui.h:6
+msgid "Interface"
+msgstr "Arayüz"
+
+#: ../ui/settings-dialog.ui.h:7
+msgid "On New Tweets"
+msgstr "Yeni Tweetlerde"
+
+#: ../ui/settings-dialog.ui.h:8
+msgid "Actions"
+msgstr "Etkileşimler"
+
+#: ../ui/settings-dialog.ui.h:9
+msgid "On New Mentions"
+msgstr "Yeni Cevaplarda"
+
+#: ../ui/settings-dialog.ui.h:10
+msgid "On New Messages"
+msgstr "Yeni Mesajlarda"
+
+#: ../ui/settings-dialog.ui.h:11
+msgid "Never"
+msgstr "Asla"
+
+#: ../ui/settings-dialog.ui.h:12
+msgid "Every"
+msgstr "Her Zaman"
+
+#: ../ui/settings-dialog.ui.h:13
+msgid "Stack 5"
+msgstr "5 destek"
+
+#: ../ui/settings-dialog.ui.h:14
+msgid "Stack 10"
+msgstr "10 destek"
+
+#: ../ui/settings-dialog.ui.h:15
+msgid "Stack 25"
+msgstr "25 destek"
+
+#: ../ui/settings-dialog.ui.h:16
+msgid "Stack 50"
+msgstr "50 destek"
+
+#: ../ui/settings-dialog.ui.h:17
+msgid "Notifications"
+msgstr "Bildirimler"
+
+#: ../ui/settings-dialog.ui.h:18
+msgid "Round avatars"
+msgstr "Yuvarlak Avatarlar"
+
+#: ../ui/settings-dialog.ui.h:19
+msgid "Remove trailing hashtags"
+msgstr "Tekrarlayan Hashtagleri Kaldır"
+
+#: ../ui/settings-dialog.ui.h:20
+msgid "Remove media links"
+msgstr "Medya Linklerini Kaldır"
+
+#: ../ui/settings-dialog.ui.h:21
+msgid "Hide inappropriate content"
+msgstr ""
+
+#: ../ui/settings-dialog.ui.h:22 ../ui/search-page.ui.h:2
+#: ../ui/profile-page.ui.h:6
+msgid "Tweets"
+msgstr "Tweetler"
+
+#: ../ui/settings-dialog.ui.h:23
+msgid "No snippets configured."
+msgstr "Yapılandırılmış Parçalar Yok."
+
+#: ../ui/settings-dialog.ui.h:24
+msgid "You can activate snippets by writing the keyword and pressing TAB."
+msgstr "Anahtar Kelimeleri Yazıp TAB Tuşuna Basabilir ve Parçacıkları Aktif Edebilirsiniz."
+
+#: ../ui/settings-dialog.ui.h:25
+msgid "Snippets"
+msgstr "Parçacıklar"
+
+#: ../ui/menu.ui.h:2
+msgid "Shortcuts"
+msgstr ""
+
+#: ../ui/menu.ui.h:3
+msgid "About"
+msgstr "Hakkında"
+
+#: ../ui/menu.ui.h:4
+msgid "Quit"
+msgstr "Çıkış"
+
+#: ../ui/user-lists-widget.ui.h:1
+msgid "Created"
+msgstr "Oluşturuldu"
+
+#: ../ui/user-lists-widget.ui.h:2
+msgid "Subscribed to"
+msgstr "Abone Olundu"
+
+#: ../ui/about-dialog.ui.h:1
+msgid "About Corebird"
+msgstr "Corebird Hakkında"
+
+#: ../ui/about-dialog.ui.h:2
+msgid "Using Font Awesome by Dave Gandy - http://fontawesome.io"
+msgstr "Dave Gandy - http://fontawesome.io tarafınan Font Awesome Kullanıldı"
+
+#: ../ui/dm-page.ui.h:1 ../ui/compose-window.ui.h:3
+msgid "Send"
+msgstr "Gönder"
+
+#: ../ui/load-more-entry.ui.h:1
+msgid "Load more"
+msgstr "Daha Fazla Getir"
+
+#: ../ui/tweet-list-entry.ui.h:1 ../ui/tweet-info-page.ui.h:1
+msgid "Quote"
+msgstr "Alıntı"
+
+#: ../ui/tweet-list-entry.ui.h:2 ../ui/list-list-entry.ui.h:4
+#: ../ui/list-statuses-page.ui.h:7 ../ui/filter-list-entry.ui.h:2
+#: ../ui/account-dialog.ui.h:7 ../ui/modify-snippet-dialog.ui.h:6
+msgid "Delete"
+msgstr "Sil"
+
+#: ../ui/tweet-list-entry.ui.h:3
+msgid "Favorite"
+msgstr "Favori"
+
+#: ../ui/tweet-list-entry.ui.h:4
+msgid "Reply"
+msgstr "Cevap"
+
+#: ../ui/tweet-list-entry.ui.h:5
+msgid "This tweet contains images marked as inappropariate"
+msgstr ""
+
+#: ../ui/tweet-list-entry.ui.h:6
+msgid "Show anyway"
+msgstr ""
+
+#: ../ui/user-list-entry.ui.h:1
+msgid "Show settings of this account"
+msgstr "Hesap Ayarlarını Göster"
+
+#: ../ui/user-list-entry.ui.h:2
+msgid "Open in new window"
+msgstr "Yeni Pencerede Aç"
+
+#: ../ui/new-list-entry.ui.h:1
+msgid "Create New List"
+msgstr "Yeni Liste Oluştur"
+
+#: ../ui/new-list-entry.ui.h:2
+msgid "Name:"
+msgstr "İsim:"
+
+#: ../ui/new-list-entry.ui.h:3
+msgid "Create"
+msgstr "Oluştur"
+
+#: ../ui/search-page.ui.h:3 ../ui/filter-page.ui.h:1
+msgid "Users"
+msgstr "Kullanıcılar"
+
+#: ../ui/compose-window.ui.h:1
+msgid "Compose Tweet"
+msgstr "Tweet Oluştur"
+
+#: ../ui/compose-window.ui.h:4
+msgid "Add Image"
+msgstr ""
+
+#: ../ui/profile-page.ui.h:1
+msgid "Write Direct Message"
+msgstr "Direkt Mesaj Gönder"
+
+#: ../ui/profile-page.ui.h:2
+msgid "Add to/Remove from List"
+msgstr "Listeden Kaldır/Ekle"
+
+#: ../ui/profile-page.ui.h:3
+msgid "Blocked"
+msgstr "Engellenmiş"
+
+#: ../ui/profile-page.ui.h:4
+msgid "Retweets disabled"
+msgstr "Retweetler Kapalı"
+
+#: ../ui/profile-page.ui.h:5
+msgid "Follows you"
+msgstr "Seni Takip Edenler"
+
+#: ../ui/profile-page.ui.h:7
+msgid "Followers"
+msgstr "Takipçiler"
+
+#: ../ui/profile-page.ui.h:8
+msgid "Following"
+msgstr "Takiptekiler"
+
+#: ../ui/main-window.ui.h:1
+msgid "Show configured accounts"
+msgstr "Hesap Yapılandırmalarını Göster"
+
+#: ../ui/main-window.ui.h:2
+msgid "Compose tweet"
+msgstr "Tweet Oluştur"
+
+#: ../ui/main-window.ui.h:3
+msgid "New tweet"
+msgstr "Yeni Tweet"
+
+#: ../ui/account-create-widget.ui.h:1
+msgid "New Account"
+msgstr "Yeni Hesap"
+
+#: ../ui/account-create-widget.ui.h:2
+msgid "PIN:"
+msgstr "PIN:"
+
+#: ../ui/account-create-widget.ui.h:3
+msgid "Request PIN"
+msgstr "Yeni PIN İste"
+
+#: ../ui/account-create-widget.ui.h:4 ../ui/list-statuses-page.ui.h:12
+msgid "Confirm"
+msgstr "Doğrula"
+
+#: ../ui/tweet-info-page.ui.h:2
+msgid "Retweet tweet"
+msgstr "Tweet'i Retweetle"
+
+#: ../ui/tweet-info-page.ui.h:3
+msgid "Favorite tweet"
+msgstr "Tweet'i Favorile"
+
+#: ../ui/tweet-info-page.ui.h:4
+msgid "Reply to tweet"
+msgstr "Tweeti Cevapla"
+
+#: ../ui/tweet-info-page.ui.h:5
+msgid "More"
+msgstr "Daha Fazla"
+
+#: ../ui/list-list-entry.ui.h:2
+msgid "Subscribe"
+msgstr "Abone Ol"
+
+#: ../ui/list-list-entry.ui.h:3
+msgid "Unsubscribe"
+msgstr "Abonelikten Çık"
+
+#: ../ui/start-conversation-entry.ui.h:1
+msgid "Start new conversation"
+msgstr "Yeni Bir Sohbet Başlat"
+
+#: ../ui/start-conversation-entry.ui.h:2
+msgid "With:"
+msgstr "İle:"
+
+#: ../ui/start-conversation-entry.ui.h:3
+msgid "Go"
+msgstr "Git"
+
+#: ../ui/list-statuses-page.ui.h:1
+msgid "Subscribers:"
+msgstr "Aboneler:"
+
+#: ../ui/list-statuses-page.ui.h:2
+msgid "Members:"
+msgstr "Üyeler:"
+
+#: ../ui/list-statuses-page.ui.h:3
+msgid "Creator:"
+msgstr "Kurucular:"
+
+#: ../ui/list-statuses-page.ui.h:4
+msgid "Created at:"
+msgstr "Oluşturulan:"
+
+#: ../ui/list-statuses-page.ui.h:5
+msgid "Edit"
+msgstr "Düzenleme"
+
+#: ../ui/list-statuses-page.ui.h:9
+msgid "Mode:"
+msgstr "Mod:"
+
+#: ../ui/list-statuses-page.ui.h:10
+msgid "Private"
+msgstr "Özel"
+
+#: ../ui/list-statuses-page.ui.h:11
+msgid "Public"
+msgstr "Genel"
+
+#: ../ui/modify-filter-dialog.ui.h:1
+msgid "Add New Filter"
+msgstr "Yeni Filtre Ekle"
+
+#: ../ui/user-filter-entry.ui.h:2
+msgid "Unblock"
+msgstr "Engeli Kaldır"
+
+#: ../ui/account-dialog.ui.h:1
+msgid "Account Settings"
+msgstr "Hesap Ayarları"
+
+#: ../ui/account-dialog.ui.h:4
+msgid "Name"
+msgstr "İsim"
+
+#: ../ui/account-dialog.ui.h:5
+msgid "Website"
+msgstr "Website"
+
+#: ../ui/account-dialog.ui.h:6
+msgid "Autostart"
+msgstr "Otomotik Başlat"
+
+#: ../ui/account-dialog.ui.h:8
+msgid "Do you really want to delete this account?"
+msgstr "Gerçekten Bu Hesabı Silmek İstiyor Musunuz?"
+
+#: ../ui/image-crop-dialog.ui.h:3
+msgid "Back"
+msgstr "Geri"
+
+#: ../ui/modify-snippet-dialog.ui.h:1
+msgid "Add New Snippet"
+msgstr "Yeni Parçacık Ekle"
+
+#: ../ui/modify-snippet-dialog.ui.h:4
+msgid "Keyword"
+msgstr "Anahtar Kelime"
+
+#: ../ui/modify-snippet-dialog.ui.h:5
+msgid "Replacement"
+msgstr "Değiştirme"
+
+#: ../ui/shortcuts-window.ui.h:1
+msgctxt "shortcuts window"
+msgid "General"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:2
+msgctxt "shortcuts window"
+msgid "Compose Tweet"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:3
+msgctxt "shortcuts window"
+msgid "Show Account settings"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:4
+msgctxt "shortcuts window"
+msgid "Show Accounts Popover"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:5
+msgctxt "shortcuts window"
+msgid "Show Application Settings"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:6
+msgctxt "shortcuts window"
+msgid "Toggle Topbar"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:7
+msgctxt "shortcuts window"
+msgid "Go Back"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:8
+msgctxt "shortcuts window"
+msgid "Go Forward"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:9
+msgctxt "shortcuts window"
+msgid "Go to nth page"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:10
+msgctxt "shortcuts window"
+msgid "Tweets"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:11
+msgctxt "shortcuts window"
+msgid "Retweet"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:12
+msgctxt "shortcuts window"
+msgid "Favorite"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:13
+msgctxt "shortcuts window"
+msgid "Reply"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:14
+msgctxt "shortcuts window"
+msgid "Show Details"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:15
+msgctxt "shortcuts window"
+msgid "Delete"
+msgstr ""
+
+#: ../data/org.baedert.corebird.appdata.xml.in.h:1
+msgid ""
+"Corebird is a native GTK+ twitter client that provides vital features such "
+"as Direct Messages (DMs), tweet notifications, conversation views."
+msgstr "Corebird, Direkt Mesajlar (DMS), Bildirimler, Konuşma Görünümleri Gibi Hayati Özellikler Taşıyan GTK+ Kullanan Yerel Bir Twitter İstemcisidir."
+
+#: ../data/org.baedert.corebird.appdata.xml.in.h:2
+msgid ""
+"Additional features include local viewing of videos, multiple inline images,"
+" Lists, Filters, multiple accounts, etc."
+msgstr "Yerel Görüntüleme İçin Ek Özellikler Şunlardır, Videolar, Çoklu Resimler, Listeler, Çoklu Hesaplar ve Dahası."
+
+#: ../data/org.baedert.corebird.appdata.xml.in.h:3
+msgid "Generic timeline view when using Corebird"
+msgstr "Corebird Kullanarak Jenerik Zaman Çizelgenizi Görüntüleyin"
+
+#: ../data/org.baedert.corebird.appdata.xml.in.h:4
+msgid "Typical Twitter profile."
+msgstr "Tipik Twitter Profili"
+
+#: ../data/org.baedert.corebird.appdata.xml.in.h:5
+msgid ""
+"Account settings like Name, Website, Description and Avatar can be "
+"configured."
+msgstr "Hesap Ayarlarından İsim, Açıklama, Avatar Gibi Özellikler Yapılandırılabilir."
+
+#: ../data/org.baedert.corebird.desktop.in.in.h:1
+msgid "Twitter Client"
+msgstr "Twitter İstemcisi"
+
+#: ../data/org.baedert.corebird.desktop.in.in.h:2
+msgid "Use Twitter from within a normal desktop application"
+msgstr "Twitter'ı Normal Bir Masaüstü Uygulaması İle Kullanın"

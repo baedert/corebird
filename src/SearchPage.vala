@@ -15,15 +15,12 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-// TODO: Add timeout that removes all entries after X seconds when switched away
 [GtkTemplate (ui = "/org/baedert/corebird/ui/search-page.ui")]
 class SearchPage : IPage, Gtk.Box {
   private static const int USER_COUNT = 3;
   /** The unread count here is always zero */
   public int unread_count {
     get { return 0; }
-    set {;}
   }
   public unowned Account account        { get; set; }
   public unowned MainWindow main_window { set; get; }
@@ -40,7 +37,7 @@ class SearchPage : IPage, Gtk.Box {
   private Gtk.Label tweets_header;
   [GtkChild]
   private ScrollWidget scroll_widget;
-  private Gtk.RadioButton tool_button;
+  private Gtk.RadioButton radio_button;
   public DeltaUpdater delta_updater;
   private LoadMoreEntry load_more_entry = new LoadMoreEntry ();
   private string search_query;
@@ -50,12 +47,16 @@ class SearchPage : IPage, Gtk.Box {
   private Gtk.Widget last_focus_widget;
   private int n_results = 0;
   private Collect collect_obj;
+  private uint remove_content_timeout = 0;
 
 
-  public SearchPage (int id, Account account) {
+  public SearchPage (int id, Account account, DeltaUpdater delta_updater) {
     this.id = id;
     this.account = account;
+    this.delta_updater = delta_updater;
 
+    /* We are slightly abusing the TweetListBox here */
+    tweet_list.bind_model (null, null);
     tweet_list.set_header_func (header_func);
     tweet_list.set_sort_func (ITwitterItem.sort_func);
     tweet_list.row_activated.connect (row_activated_cb);
@@ -81,8 +82,16 @@ class SearchPage : IPage, Gtk.Box {
    */
   public void on_join (int page_id, Bundle? args) {
     string? term = args != null ? args.get_string ("query") : null;
+
+    if (this.remove_content_timeout != 0) {
+      GLib.Source.remove (this.remove_content_timeout);
+      this.remove_content_timeout = 0;
+    }
+
+
     if (term == null) {
-      if (last_focus_widget != null)
+      if (last_focus_widget != null &&
+          last_focus_widget.parent != null)
         last_focus_widget.grab_focus ();
       else
         search_entry.grab_focus ();
@@ -92,7 +101,19 @@ class SearchPage : IPage, Gtk.Box {
     search_for (term, true);
   }
 
-  public void on_leave () {}
+  public void on_leave () {
+    this.remove_content_timeout = GLib.Timeout.add (3 * 1000 * 60, () => {
+      foreach (Gtk.Widget w in tweet_list.get_children ()) {
+        // We are still using raw widgets here.
+        tweet_list.remove (w);
+      }
+      tweet_list.get_placeholder ().hide ();
+      this.last_focus_widget  = null;
+
+      this.remove_content_timeout = 0;
+      return GLib.Source.REMOVE;
+    });
+  }
 
   public void search_for (string search_term, bool set_text = false) { //{{{
     if(search_term.length == 0)
@@ -157,10 +178,17 @@ class SearchPage : IPage, Gtk.Box {
     user_call.add_param ("count", (USER_COUNT + 1).to_string ());
     user_call.add_param ("include_entities", "false");
     user_call.add_param ("page", user_page.to_string ());
-    TweetUtils.load_threaded.begin (user_call, (_, res) => {
-      Json.Node? root = TweetUtils.load_threaded.end (res);
-      if (root == null) {
-        collect_obj.emit ();
+    TweetUtils.load_threaded.begin (user_call, null, (_, res) => {
+      Json.Node? root = null;
+      try {
+        root = TweetUtils.load_threaded.end (res);
+      } catch (GLib.Error e) {
+        warning (e.message);
+        tweet_list.set_error (e.message);
+
+        if (!collect_obj.done)
+          collect_obj.emit ();
+
         return;
       }
 
@@ -180,12 +208,18 @@ class SearchPage : IPage, Gtk.Box {
 
         var user_obj = node.get_object ();
         var entry = new UserListEntry ();
+        string avatar_url = user_obj.get_string_member ("profile_image_url");
+
+        if (this.get_scale_factor () == 2)
+          avatar_url = avatar_url.replace ("_normal", "_bigger");
+
+        entry.user_id = user_obj.get_int_member ("id");
         entry.screen_name = "@" + user_obj.get_string_member ("screen_name");
         entry.name = user_obj.get_string_member ("name").strip ();
-        entry.avatar = user_obj.get_string_member ("profile_image_url");
-        entry.user_id = user_obj.get_int_member ("id");
+        entry.avatar_url = avatar_url;
         entry.show_settings = false;
-        entry.visible = false;
+        if (!collect_obj.done)
+          entry.visible = false;
         tweet_list.add (entry);
       });
       if (users.get_length () > USER_COUNT) {
@@ -196,8 +230,9 @@ class SearchPage : IPage, Gtk.Box {
       } else {
         load_more_entry.hide ();
       }
-      collect_obj.emit ();
 
+      if (!collect_obj.done)
+        collect_obj.emit ();
     });
 
   } // }}}
@@ -213,11 +248,16 @@ class SearchPage : IPage, Gtk.Box {
     call.add_param ("q", this.search_query);
     call.add_param ("max_id", (lowest_tweet_id - 1).to_string ());
     call.add_param ("count", "35");
-    TweetUtils.load_threaded.begin (call, (_, res) => {
-      Json.Node? root = TweetUtils.load_threaded.end (res);
+    TweetUtils.load_threaded.begin (call, null, (_, res) => {
+      Json.Node? root = null;
+      try {
+        root = TweetUtils.load_threaded.end (res);
+      } catch (GLib.Error e) {
+        warning (e.message);
+        tweet_list.set_error (e.message);
+        if (!collect_obj.done)
+          collect_obj.emit ();
 
-      if (root == null) {
-        collect_obj.emit ();
         return;
       }
 
@@ -231,7 +271,6 @@ class SearchPage : IPage, Gtk.Box {
       if (n_results <= 0)
         tweet_list.set_empty ();
 
-
       statuses.foreach_element ((array, index, node) => {
         var tweet = new Tweet ();
         tweet.load_from_json (node, now, account);
@@ -239,13 +278,17 @@ class SearchPage : IPage, Gtk.Box {
           lowest_tweet_id = tweet.id;
         var entry = new TweetListEntry (tweet, main_window, account);
         delta_updater.add (entry);
-        entry.visible = false;
+        if (!collect_obj.done)
+          entry.visible = false;
+        else
+          entry.show ();
+
         tweet_list.add (entry);
       });
       loading_tweets = false;
-      collect_obj.emit ();
 
-
+      if (!collect_obj.done)
+        collect_obj.emit ();
     });
 
   } // }}}
@@ -260,12 +303,12 @@ class SearchPage : IPage, Gtk.Box {
     tweet_list.@foreach ((w) => w.show());
   }
 
-  public void create_tool_button (Gtk.RadioButton? group){
-    tool_button = new BadgeRadioToolButton (group, "edit-find-symbolic", _("Search"));
+  public void create_radio_button (Gtk.RadioButton? group){
+    radio_button = new BadgeRadioButton (group, "edit-find-symbolic", _("Search"));
   }
 
-  public Gtk.RadioButton? get_tool_button() {
-    return tool_button;
+  public Gtk.RadioButton? get_radio_button() {
+    return radio_button;
   }
 
 

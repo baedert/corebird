@@ -6,9 +6,9 @@ src/widgets/AccountCreateWidget.vala
 src/widgets/PixbufButton.vala
 src/widgets/MultiMediaWidget.vala
 src/widgets/AddImageButton.vala
+src/widgets/FollowButton.vala
 src/HomeTimeline.vala
 src/DMThreadsPage.vala
-src/resources.c
 src/list/DMThreadEntry.vala
 src/ListsPage.vala
 src/ProfilePage.vala
@@ -22,6 +22,7 @@ src/DMPage.vala
 src/ListStatusesPage.vala
 src/widgets/AvatarBannerWidget.vala
 src/window/ImageCropDialog.vala
+src/window/SettingsDialog.vala
 [type: gettext/glade]ui/settings-dialog.ui
 [type: gettext/glade]ui/menu.ui
 [type: gettext/glade]ui/user-lists-widget.ui
@@ -47,6 +48,7 @@ src/window/ImageCropDialog.vala
 [type: gettext/glade]ui/account-dialog.ui
 [type: gettext/glade]ui/image-crop-dialog.ui
 [type: gettext/glade]ui/modify-snippet-dialog.ui
+[type: gettext/glade]ui/shortcuts-window.ui
 data/org.baedert.corebird.appdata.xml.in
 data/org.baedert.corebird.gschema.xml.in
 data/org.baedert.corebird.desktop.in.in

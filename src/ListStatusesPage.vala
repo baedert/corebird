@@ -15,17 +15,11 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 [GtkTemplate (ui = "/org/baedert/corebird/ui/list-statuses-page.ui")]
 class ListStatusesPage : ScrollWidget, IPage {
   public int id                             { get; set; }
   public unowned MainWindow main_window     { get; set; }
   public unowned Account account            { get; set; }
-  public unowned DeltaUpdater delta_updater {
-    set {
-      this.tweet_list.delta_updater = value;
-    }
-  }
   private int64 list_id;
   private uint tweet_remove_timeout = 0;
   [GtkChild]
@@ -75,14 +69,14 @@ class ListStatusesPage : ScrollWidget, IPage {
   private bool loading = false;
 
 
-  public ListStatusesPage (int id, Account account) {
+  public ListStatusesPage (int id, Account account, DeltaUpdater delta_updater) {
     this.id = id;
     this.account = account;
     this.tweet_list.account = account;
+    this.tweet_list.delta_updater = delta_updater;
     this.scroll_event.connect (scroll_event_cb);
     this.scrolled_to_end.connect (load_older);
     this.scrolled_to_start.connect (handle_scrolled_to_start);
-    tweet_list.set_sort_func (ITwitterItem.sort_func);
     tweet_list.set_adjustment (this.get_vadjustment ());
   }
 
@@ -163,11 +157,13 @@ class ListStatusesPage : ScrollWidget, IPage {
     call.add_param ("list_id", list_id.to_string ());
     call.add_param ("count", requested_tweet_count.to_string ());
 
-    Json.Node? root = yield TweetUtils.load_threaded (call);
-    if (root == null) {
+    Json.Node? root = null;
+    try {
+      root = yield TweetUtils.load_threaded (call, null);
+    } catch (GLib.Error e) {
+      warning (e.message);
       return;
     }
-
 
     var root_array = root.get_array ();
     if (root_array.get_length () == 0) {
@@ -175,7 +171,6 @@ class ListStatusesPage : ScrollWidget, IPage {
       return;
     }
     yield TweetUtils.work_array (root_array,
-                                 requested_tweet_count,
                                  tweet_list,
                                  main_window,
                                  account);
@@ -194,13 +189,16 @@ class ListStatusesPage : ScrollWidget, IPage {
     call.add_param ("max_id", (tweet_list.model.lowest_id -1).to_string ());
     call.add_param ("count", requested_tweet_count.to_string ());
 
-    Json.Node? root = yield TweetUtils.load_threaded (call);
-    if (root == null)
+    Json.Node? root = null;
+    try {
+      root = yield TweetUtils.load_threaded (call, null);
+    } catch (GLib.Error e) {
+      warning (e.message);
       return;
+    }
 
     var root_array = root.get_array ();
     yield TweetUtils.work_array (root_array,
-                                 requested_tweet_count,
                                  tweet_list,
                                  main_window,
                                  account);
@@ -290,7 +288,7 @@ class ListStatusesPage : ScrollWidget, IPage {
     refresh_button.sensitive = false;
     load_newer.begin (() => {
       refresh_button.sensitive = true;
-     });
+    });
   } // }}}
 
 
@@ -310,65 +308,57 @@ class ListStatusesPage : ScrollWidget, IPage {
     call.set_function ("1.1/lists/statuses.json");
     call.set_method ("GET");
     call.add_param ("list_id", list_id.to_string ());
-    call.add_param ("since_id", tweet_list.model.greatest_id.to_string ());
+    call.add_param ("count", "30");
+    int64 since_id = tweet_list.model.greatest_id;
+    if (since_id < 0)
+      since_id = 1;
+
+    call.add_param ("since_id", since_id.to_string ());
+    debug ("Getting statuses since %s for list_id %s",
+           since_id.to_string (), list_id.to_string ());
+
+    Json.Node? root = null;
     try {
-      yield call.invoke_async (null);
+      root = yield TweetUtils.load_threaded (call, null);
     } catch (GLib.Error e) {
-      Utils.show_error_object (call.get_payload (), e.message,
-                               GLib.Log.LINE, GLib.Log.FILE);
+      warning (e.message);
       return;
     }
 
-    var parser = new Json.Parser ();
-    try {
-      parser.load_from_data (call.get_payload ());
-    } catch (GLib.Error e) {
-      critical (e.message);
-      return;
+    var root_array = root.get_array ();
+    if (root_array.get_length () > 0) {
+      yield TweetUtils.work_array (root_array,
+                                   tweet_list,
+                                   main_window,
+                                   account);
     }
-    var root_arr = parser.get_root ().get_array ();
-    var now = new GLib.DateTime.now_local ();
-    root_arr.foreach_element ((array, index, node) => {
-      Tweet t = new Tweet ();
-      t.load_from_json (node, now, account);
-
-      TweetListEntry entry = new TweetListEntry (t, main_window, account);
-      entry.show_all ();
-      tweet_list.add (entry);
-    });
   }
 
-  protected void handle_scrolled_to_start() { // {{{
+  protected void handle_scrolled_to_start() {
     if (tweet_remove_timeout != 0)
       return;
 
-    GLib.List<weak Gtk.Widget> entries = tweet_list.get_children ();
-    uint item_count = entries.length ();
-    if (item_count > ITimeline.REST) {
-      tweet_remove_timeout = GLib.Timeout.add (5000, () => {
+    if (tweet_list.model.get_n_items () > ITimeline.REST) {
+      tweet_remove_timeout = GLib.Timeout.add (500, () => {
         if (!scrolled_up) {
           tweet_remove_timeout = 0;
           return false;
         }
 
-        while (item_count > ITimeline.REST) {
-          tweet_list.remove (tweet_list.get_row_at_index (ITimeline.REST));
-          item_count--;
-        }
+        tweet_list.model.remove_last_n_visible (tweet_list.model.get_n_items () - ITimeline.REST);
         tweet_remove_timeout = 0;
-        return false;
+        return GLib.Source.REMOVE;
       });
     } else if (tweet_remove_timeout != 0) {
       GLib.Source.remove (tweet_remove_timeout);
       tweet_remove_timeout = 0;
     }
-  } // }}}
-
+  }
 
   public string? get_title () {
     return _("List");
   }
 
-  public void create_tool_button (Gtk.RadioButton? group) {}
-  public Gtk.RadioButton? get_tool_button () {return null;}
+  public void create_radio_button (Gtk.RadioButton? group) {}
+  public Gtk.RadioButton? get_radio_button () {return null;}
 }

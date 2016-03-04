@@ -84,8 +84,8 @@ class UserEventReceiver : GLib.Object, IMessageReceiver {
         int64 id = source.get_int_member ("id");
         var identity = new UserIdentity ();
         identity.screen_name = source.get_string_member ("screen_name");
-        identity.user_id = source.get_int_member ("id");
-        identity.name = source.get_string_member ("name");
+        identity.id = source.get_int_member ("id");
+        identity.user_name = source.get_string_member ("name");
         account.notification_received (id,
                                        NotificationItem.TYPE_FOLLOWED,
                                        "",
@@ -103,10 +103,10 @@ class UserEventReceiver : GLib.Object, IMessageReceiver {
           if (retweeted_user == account.id) {
             int64 rt_id = rt.get_int_member ("id");
             var user = root_node.get_object ().get_object_member ("user");
-            var identity = new UserIdentity ();
-            identity.user_id = user.get_int_member ("id");
+            var identity = UserIdentity ();
+            identity.id = user.get_int_member ("id");
             identity.screen_name = user.get_string_member ("screen_name");
-            identity.name = user.get_string_member ("name");
+            identity.user_name = user.get_string_member ("name");
             string text = rt.get_string_member ("text"); // XXX Urls not replaced...
             account.notification_received (rt_id,
                                            NotificationItem.TYPE_RETWEET,

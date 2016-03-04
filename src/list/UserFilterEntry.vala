@@ -41,7 +41,7 @@ class UserFilterEntry : Gtk.ListBoxRow, ITwitterItem {
     set { screen_name_label.label = "@" + value; }
   }
 
-  public string avatar {
+  public string avatar_url {
     set { real_set_avatar (value); }
   }
 
@@ -59,9 +59,9 @@ class UserFilterEntry : Gtk.ListBoxRow, ITwitterItem {
   public signal void deleted (int64 id);
 
   private void real_set_avatar (string avatar_url) {
-    avatar_image.pixbuf = Twitter.get ().get_avatar (avatar_url, (a) => {
-      avatar_image.pixbuf = a;
-    });
+    avatar_image.surface = Twitter.get ().get_avatar (user_id, avatar_url, (a) => {
+      avatar_image.surface = a;
+    }, 48 * this.get_scale_factor ());
   }
 
   public int update_time_delta (GLib.DateTime? now = null) {return 0;}

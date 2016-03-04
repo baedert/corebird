@@ -99,5 +99,9 @@
       <default>1</default>
       <summary>Bitfield for text transformations</summary>
     </key>
+    <key type="b" name="hide-nsfw-content">
+      <default>true</default>
+      <summary>Whether to hide images marked as inappropriate by default or not</summary>
+    </key>
   </schema>
 </schemalist>

@@ -14,6 +14,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 public class Filter : GLib.Object {
   public string content   { get; set; }
   public int id           { get; set; }

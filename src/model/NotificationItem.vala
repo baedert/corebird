@@ -28,16 +28,8 @@ public class NotificationItem : GLib.Object {
   public string body;
 }
 
-
-// XXX This shouldn't really need to be a class...
-public class UserIdentity : GLib.Object {
-  public string name;
-  public string screen_name;
-  public int64  user_id;
-}
-
 public class MultipleUserNotificationItem : NotificationItem {
-  public Gee.ArrayList<UserIdentity> identities = new Gee.ArrayList<UserIdentity> ();
+  public Gee.ArrayList<UserIdentity?> identities = new Gee.ArrayList<UserIdentity?> ();
   protected string[] headings = new string[4];
 
   public MultipleUserNotificationItem () {}
@@ -45,7 +37,7 @@ public class MultipleUserNotificationItem : NotificationItem {
 
   protected string screen_name_link (int i) {
     return "<span underline='none'><a href='@%s'>@%s</a></span>"
-           .printf (this.identities.get (i).user_id.to_string (),
+           .printf (this.identities.get (i).id.to_string (),
                     this.identities.get (i).screen_name);
   }
 

@@ -39,6 +39,10 @@ public class UserCounter : GLib.Object {
 
   public UserCounter () {}
 
+  public void id_seen (ref UserIdentity id) {
+    this.user_seen (id.id, id.screen_name, id.user_name);
+  }
+
   public void user_seen (int64 id, string screen_name, string name) {
     // increase the user's seen-count by one
     bool found = false;
@@ -82,7 +86,11 @@ public class UserCounter : GLib.Object {
   }
 
   public void load (Sql.Database db) {
-    db.select ("user_cache").cols ("id", "screen_name", "user_name", "score").order ("score DESC").run ((vals) => {
+    db.select ("user_cache")
+      .cols ("id", "screen_name", "user_name", "score")
+      .order ("score DESC")
+      .limit (300)
+      .run ((vals) => {
       UserInfo ui = new UserInfo ();
       ui.id = int64.parse (vals[0]);
       ui.screen_name = vals[1];

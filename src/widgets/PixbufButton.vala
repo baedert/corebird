@@ -15,11 +15,8 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * A button with the given pixbuf as background.
- */
 class PixbufButton : Gtk.Button {
-  private Gdk.Pixbuf bg;
+  private Cairo.ImageSurface bg;
   private Gtk.Menu menu;
   private string menu_string;
   private bool _round = false;
@@ -87,7 +84,7 @@ class PixbufButton : Gtk.Button {
       double scale_y = (double)widget_height / bg.get_height ();
       ctx.save ();
       ctx.scale (scale_x, scale_y);
-      Gdk.cairo_set_source_pixbuf (ctx, bg, 0, 0);
+      ctx.set_source_surface (bg, 0, 0);
       ctx.fill ();
       ctx.restore ();
 
@@ -101,14 +98,7 @@ class PixbufButton : Gtk.Button {
         ctx.fill ();
 
         // draw outline
-        ctx.set_operator (Cairo.Operator.OVER);
-        Gdk.RGBA border_color = sc.get_border_color (this.get_state_flags ());
-        ctx.arc (0, 0, (widget_width /2) - 0.5, 0, 2 * Math.PI);
-        ctx.set_line_width (1.0);
-        ctx.set_source_rgba (border_color.red, border_color.green, border_color.blue,
-                            border_color.alpha);
-        ctx.stroke ();
-
+        sc.render_frame (ct, 0, 0, widget_width, widget_height);
       }
 
       ct.rectangle (0, 0, widget_width, widget_height);
@@ -118,12 +108,17 @@ class PixbufButton : Gtk.Button {
 
     // The css-styled background should be transparent.
     base.draw (ct);
-    return false;
+    return GLib.Source.CONTINUE;
   }
 
-  public void set_bg (Gdk.Pixbuf bg){
+  public void set_bg (Cairo.ImageSurface bg) {
     this.bg = bg;
     this.set_size_request (bg.get_width(), bg.get_height());
+    this.queue_draw ();
+  }
+
+  public void set_pixbuf (Gdk.Pixbuf pixbuf) {
+    this.bg = (Cairo.ImageSurface)Gdk.cairo_surface_create_from_pixbuf (pixbuf, 1, null);
     this.queue_draw ();
   }
 }

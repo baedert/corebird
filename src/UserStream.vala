@@ -45,15 +45,16 @@ public enum StreamMessageType {
   EVENT_UNBLOCK,
   EVENT_MUTE,
   EVENT_UNMUTE,
-  EVENT_USER_UPDATE
+  EVENT_USER_UPDATE,
+  EVENT_QUOTED_TWEET
 }
 
 
 public class UserStream : Object {
   private Rest.OAuthProxy proxy;
   private Rest.ProxyCall proxy_call;
-  private StringBuilder data                        = new StringBuilder();
-  private SList<unowned IMessageReceiver> receivers = new SList<unowned IMessageReceiver>();
+  private StringBuilder data = new StringBuilder();
+  private Gee.ArrayList<unowned IMessageReceiver> receivers = new Gee.ArrayList<unowned IMessageReceiver> ();
   private GLib.NetworkMonitor network_monitor;
   private bool network_available;
   private uint network_timeout_id   = 0;
@@ -72,6 +73,8 @@ public class UserStream : Object {
   public signal void interrupted ();
   public signal void resumed ();
 
+  private bool stopping   = false;
+  private bool restarting = false;
 
 
 
@@ -92,11 +95,9 @@ public class UserStream : Object {
       start_network_timeout ();
   }
 
-
   public void register (IMessageReceiver receiver) {
-    receivers.append(receiver);
+    receivers.add (receiver);
   }
-
 
   private void network_changed_cb (bool available) {
     if (available == this.network_available)
@@ -107,7 +108,7 @@ public class UserStream : Object {
     if (network_available) {
       debug ("Restarting stream (reason: Network available (callback))");
       restart ();
-      resumed ();
+      //resumed ();
     } else {
       debug ("Connection lost (%s) Reason: network unavailable", account_name);
       interrupted ();
@@ -123,7 +124,6 @@ public class UserStream : Object {
   public void start () {
     debug ("Starting stream for %s", this.account_name);
     // Reset state of the stream
-    //running = true;
     proxy_call = proxy.new_call ();
     proxy_call.set_function ("1.1/user.json");
     proxy_call.set_method ("GET");
@@ -151,23 +151,31 @@ public class UserStream : Object {
       this.heartbeat_timeout_id = 0;
     }
 
+    stopping = true;
     debug ("STOPPING STREAM FOR " + account_name);
     proxy_call.cancel ();
+    stopping = false;
   }
 
   private void restart () {
+    restarting = true;
     stop ();
     start ();
+    //restarting = false;
   }
 
   private void start_network_timeout () {
-    network_timeout_id = GLib.Timeout.add (30 * 1000, () => {
+    if (this.network_timeout_id != 0)
+      return;
+
+    network_timeout_id = GLib.Timeout.add (1 * 1000, () => {
       if (running)
         return GLib.Source.REMOVE;
 
       var available = network_monitor.get_network_available ();
       if (available) {
         debug ("Restarting stream (reason: network available (timeout))");
+        this.network_timeout_id = 0;
         restart ();
         return GLib.Source.REMOVE;
       }
@@ -177,8 +185,6 @@ public class UserStream : Object {
 
   private void start_heartbeat_timeout () {
     heartbeat_timeout_id = GLib.Timeout.add (45 * 1000, () => {
-      //if (!running)
-        //return false;
       // If we get here, we need to restart the stream.
       debug ("Connection lost (%s) Reason: heartbeat. Restarting...", account_name);
       restart ();
@@ -200,7 +206,10 @@ public class UserStream : Object {
                              size_t         length,
                              GLib.Error?    error) {
     if (buf == null) {
-      warning ("buf(%s) == NULL", this.account_name);
+      if (!stopping) {
+        warning ("buf(%s) == NULL. Starting timeout...", this.account_name);
+        this.start_network_timeout ();
+      }
       return;
     }
 
@@ -209,6 +218,12 @@ public class UserStream : Object {
     data.append (real);
 
     if (real.has_suffix ("\r\n") || real.has_suffix ("\r")) {
+
+      if (restarting) {
+        resumed ();
+        restarting = false;
+      }
+
 
       if (real == "\r\n") {
         debug ("HEARTBEAT(%s)", account_name);
@@ -280,7 +295,7 @@ public class UserStream : Object {
         type = StreamMessageType.UNSUPPORTED;
 
 #if DEBUG
-      stdout.printf ("Message with type %s\n", type.to_string ());
+      stdout.printf ("Message with type %s on stream @%s\n", type.to_string (), this.account_name);
       stdout.printf (data.str+"\n\n");
 #endif
       foreach (IMessageReceiver it in receivers)
@@ -326,6 +341,8 @@ public class UserStream : Object {
         return StreamMessageType.EVENT_UNMUTE;
       case "user_update":
         return StreamMessageType.EVENT_USER_UPDATE;
+      case "quoted_tweet":
+        return StreamMessageType.EVENT_QUOTED_TWEET;
     }
 
     return 0;

@@ -15,10 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-
-
-
 namespace TweetUtils {
   private static const string[] DOMAINS = {
      ".com",  ".net",  ".org",    ".xxx",  ".sexy", ".pro",
@@ -72,12 +68,11 @@ namespace TweetUtils {
    *
    * @param account The account to (un)favorite from
    * @param tweet The tweet to (un)favorite
-   * @param unfavorite If set to true, this function will unfavorite the tiven tweet,
-   *                   else it will favorite it.
+   * @param status %true to favorite the tweet, %false to unfavorite it.
    */
-  async void toggle_favorite_tweet (Account account, Tweet tweet, bool unfavorite = false) {
+  async void set_favorite_status (Account account, Tweet tweet, bool status) {
     var call = account.proxy.new_call();
-    if (!unfavorite)
+    if (status)
       call.set_function ("1.1/favorites/create.json");
     else
       call.set_function ("1.1/favorites/destroy.json");
@@ -91,8 +86,11 @@ namespace TweetUtils {
         Utils.show_error_object (call.get_payload (), e.message,
                                  GLib.Log.LINE, GLib.Log.FILE);
       }
-      tweet.favorited = !unfavorite;
-      toggle_favorite_tweet.callback ();
+      if (status)
+        tweet.set_flag (TweetState.FAVORITED);
+      else
+        tweet.unset_flag (TweetState.FAVORITED);
+      set_favorite_status.callback ();
     });
     yield;
   }
@@ -102,13 +100,12 @@ namespace TweetUtils {
    *
    * @param account The account to (un)retweet from
    * @param tweet The tweet to (un)retweet
-   * @param unretweet If set to true, this function will delete te retweet of #tweet,
-   *                  else it will retweet it.
+   * @param status %true to retweet it, false to unretweet it.
    */
-  async void toggle_retweet_tweet (Account account, Tweet tweet, bool unretweet = false) {
-  var call = account.proxy.new_call ();
+  async void set_retweet_status (Account account, Tweet tweet, bool status) {
+    var call = account.proxy.new_call ();
     call.set_method ("POST");
-    if (!unretweet)
+    if (status)
       call.set_function (@"1.1/statuses/retweet/$(tweet.id).json");
     else
       call.set_function (@"1.1/statuses/destroy/$(tweet.my_retweet).json");
@@ -120,22 +117,25 @@ namespace TweetUtils {
         Utils.show_error_object (call.get_payload (), e.message,
                                  GLib.Log.LINE, GLib.Log.FILE);
       }
-      string back = call.get_payload();
+      unowned string back = call.get_payload();
       var parser = new Json.Parser ();
       try {
         parser.load_from_data (back);
-        if (!unretweet) {
+        if (status) {
           int64 new_id = parser.get_root ().get_object ().get_int_member ("id");
           tweet.my_retweet = new_id;
         } else {
           tweet.my_retweet = 0;
         }
-        tweet.retweeted = !unretweet;
+        if (status)
+          tweet.set_flag (TweetState.RETWEETED);
+        else
+          tweet.unset_flag (TweetState.RETWEETED);
       } catch (GLib.Error e) {
         critical (e.message);
         critical (back);
       }
-      toggle_retweet_tweet.callback ();
+      set_retweet_status.callback ();
     });
     yield;
   }
@@ -147,20 +147,22 @@ namespace TweetUtils {
    *
    * @return The loaded avatar.
    */
-  async Gdk.Pixbuf download_avatar (string avatar_url) throws GLib.Error {
-    string avatar_name = Utils.get_avatar_name (avatar_url);
-    Gdk.Pixbuf avatar = null;
+  async Gdk.Pixbuf? download_avatar (string avatar_url, int size = 48) throws GLib.Error {
+    Gdk.Pixbuf? avatar = null;
     var msg     = new Soup.Message ("GET", avatar_url);
     GLib.Error? err = null;
     SOUP_SESSION.queue_message (msg, (s, _msg) => {
-      string dest = Dirs.cache ("assets/avatars/" + avatar_name);
+      if (_msg.status_code != Soup.Status.OK) {
+        avatar = null;
+        download_avatar.callback ();
+        return;
+      }
       var memory_stream = new MemoryInputStream.from_data(_msg.response_body.data,
-                                                          null);
+                                                          GLib.g_free);
       try {
         avatar = new Gdk.Pixbuf.from_stream_at_scale (memory_stream,
-                                                      48, 48,
+                                                      size, size,
                                                       false);
-        avatar.save (dest, "png");
       } catch (GLib.Error e) {
         err = e;
       }
@@ -183,25 +185,44 @@ namespace TweetUtils {
    *         tweet length into account.
    */
   public int calc_tweet_length (string text, int media_count = 0) {
-    string[] words = text.split (" ");
     int length = 0;
 
-    foreach (string s in words) {
-      string[] subwords = s.split ("\n");
-      foreach (string sw in subwords) {
-        length += get_word_length (sw);
-      }
-      length += subwords.length - 1;
-    }
+    unichar c;
+    int last_word_start = 0;
+    int n_chars = text.char_count ();
+    int cur = 0; /* Byte Index */
 
-    // Don't forget the n-1 whitespaces
-    length += words.length - 1;
+    for (int next = 0, c_n = 0; text.get_next_char (ref next, out c); c_n ++) {
+      bool splits = (c == ' ' || c == '\n' || c == '(' || c == ')' || c == '[' ||
+                     c == ']' || c == '{' || c == '}');
+
+      if (splits || c_n == n_chars - 1) {
+
+        /* Include the current character only if it's not whitespace since we are
+           later accounting for whitespace characters anyway */
+        if (!splits && c_n == n_chars - 1)
+          cur = next;
+
+        string word = text.substring (last_word_start,
+                                      cur - last_word_start);
+
+        if (word.length > 0)
+          length += get_word_length (word);
+
+        if (splits)
+          length += 1;
+
+        // Just adding one here is save since we made sure c is either ' ' or \n
+        last_word_start = cur + 1;
+      }
+      cur = next;
+    }
 
     if (length < 0) {
-      return Twitter.short_url_length_https * media_count;
+      return Twitter.characters_reserved_per_media * media_count;
     }
 
-    length += Twitter.short_url_length_https * media_count;
+    length += Twitter.characters_reserved_per_media * media_count;
 
     return length;
   }
@@ -213,11 +234,13 @@ namespace TweetUtils {
     if (s.has_prefix ("https://"))
       return Twitter.short_url_length_https;
 
-    foreach (string tld in DOMAINS) {
-      string[] parts = s.split ("/");
 
-      if (parts.length > 0 && parts[0].has_suffix (tld))
-        return Twitter.short_url_length; // Default to HTTP
+    string[] parts = s.split ("/");
+    if (parts.length > 0) {
+      foreach (unowned string tld in DOMAINS) {
+        if (parts[0].has_suffix (tld))
+          return Twitter.short_url_length; // Default to HTTP
+      }
     }
 
     return s.char_count();
@@ -245,7 +268,7 @@ namespace TweetUtils {
       window.main_widget.switch_page (Page.SEARCH, bundle);
       return true;
     } else if (uri.has_prefix ("https://twitter.com/")) {
-      // XXX https://twitter.com/baedert/status/321423423423
+      // https://twitter.com/baedert/status/321423423423
       string[] parts = uri.split ("/");
       if (parts[4] == "status") {
         /* Treat it as a tweet link and hope it'll work out */
@@ -264,7 +287,6 @@ namespace TweetUtils {
 
 
   async void work_array (Json.Array   json_array,
-                         uint         requested_tweet_count, /* XXX Unused */
                          TweetListBox tweet_list,
                          MainWindow   main_window,
                          Account      account) {
@@ -276,7 +298,7 @@ namespace TweetUtils {
       if (tweet_array.length == 0) {
         GLib.Idle.add (() => {
           work_array.callback ();
-          return false;
+          return GLib.Source.REMOVE;
         });
         return null;
       }
@@ -293,24 +315,25 @@ namespace TweetUtils {
       int index = 0;
       GLib.Idle.add (() => {
         Tweet tweet = tweet_array[index];
-        if (account.user_counter == null)
-          return false;
+        if (account.user_counter == null ||
+            tweet_list == null)
+          return GLib.Source.REMOVE;
 
-        account.user_counter.user_seen (tweet.user_id,
-                                        tweet.screen_name,
-                                        tweet.user_name);
+        account.user_counter.id_seen (ref tweet.source_tweet.author);
+        if (tweet.retweeted_tweet != null)
+          account.user_counter.id_seen (ref tweet.retweeted_tweet.author);
 
         if (account.filter_matches (tweet))
-          tweet.hidden_flags |= Tweet.HIDDEN_FILTERED;
+          tweet.set_flag (TweetState.HIDDEN_FILTERED);
 
         tweet_list.model.add (tweet);
 
         index ++;
         if (index == tweet_array.length) {
           work_array.callback ();
-          return false;
+          return GLib.Source.REMOVE;
         }
-        return true;
+        return GLib.Source.CONTINUE;
       });
       return null;
     });
@@ -334,7 +357,7 @@ namespace TweetUtils {
     if (word.has_prefix ("https://") && word.length > 8)
       return true;
 
-    foreach (string tld in DOMAINS)
+    foreach (unowned string tld in DOMAINS)
       if (word.has_suffix (tld))
           return true;
 
@@ -480,44 +503,49 @@ namespace TweetUtils {
     }
   }
 
-  public async Json.Node? load_threaded (Rest.ProxyCall call)
+  public async Json.Node? load_threaded (Rest.ProxyCall    call,
+                                         GLib.Cancellable? cancellable) throws GLib.Error
   {
     Json.Node? result = null;
+    GLib.Error? err   = null;
     GLib.SourceFunc callback = load_threaded.callback;
 
-    /*
-       Call invoke_async anways, even though we create a new thread afterwards.
-       Workaround for https://bugzilla.gnome.org/show_bug.cgi?id=742644
-       TODO: switch to sync() again, bump librest dependency
-     */
-    try {
-      yield call.invoke_async (null);
-    } catch (GLib.Error e) {
-      warning (e.message);
-      return null;
-    }
-
     new Thread<void*> ("json parser", () => {
-      //try {
-        //call.sync ();
-      //} catch (GLib.Error e) {
-        //warning (e.message);
-        //return null;
-      //}
+      try {
+        call.sync ();
+      } catch (GLib.Error e) {
+        err = e;
+        GLib.Idle.add (() => { callback (); return GLib.Source.REMOVE; });
+        return null;
+      }
+
+      if (cancellable != null && cancellable.is_cancelled ()) {
+        GLib.Idle.add (() => { callback (); return GLib.Source.REMOVE; });
+        return null;
+      }
 
       var parser = new Json.Parser ();
       try {
         parser.load_from_data (call.get_payload ());
       } catch (GLib.Error e) {
-        warning (e.message);
+        err = e;
+        GLib.Idle.add (() => { callback (); return GLib.Source.REMOVE; });
+        return null;
+      }
+
+      if (cancellable != null && cancellable.is_cancelled ()) {
+        GLib.Idle.add (() => { callback (); return GLib.Source.REMOVE; });
         return null;
       }
 
       result = parser.get_root ();
-      GLib.Idle.add (() => { callback (); return false; });
+      GLib.Idle.add (() => { callback (); return GLib.Source.REMOVE; });
       return null;
     });
     yield;
+
+    if (err != null)
+      throw err;
 
     return result;
   }

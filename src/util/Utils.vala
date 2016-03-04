@@ -35,6 +35,8 @@ enum Page {
 
 static Soup.Session SOUP_SESSION = null;
 
+const int TRANSITION_DURATION = 200 * 1000;
+
 
 void default_header_func (Gtk.ListBoxRow  row,
                           Gtk.ListBoxRow? row_before)
@@ -56,6 +58,58 @@ void default_header_func (Gtk.ListBoxRow  row,
 
 
 
+Cairo.Surface? load_surface (string path)
+{
+  try {
+    var p = new Gdk.Pixbuf.from_file (path);
+    var s = Gdk.cairo_surface_create_from_pixbuf (p, 1, null);
+    return s;
+  } catch (GLib.Error e) {
+    warning (e.message);
+    return null;
+  }
+}
+
+
+void write_surface (Cairo.Surface surface,
+                    string        path)
+{
+  var status = surface.write_to_png (path);
+
+  if (status != Cairo.Status.SUCCESS) {
+    warning ("Could not write surface to '%s': %s", path, status.to_string ());
+  }
+}
+
+Cairo.Surface scale_surface (Cairo.ImageSurface input,
+                             int                output_width,
+                             int                output_height)
+{
+  Cairo.Surface new_surface = new Cairo.Surface.similar_image (input, Cairo.Format.ARGB32,
+                                                               output_width, output_height);
+  int old_width  = input.get_width ();
+  int old_height = input.get_height ();
+
+  /* http://lists.cairographics.org/archives/cairo/2006-January/006178.html */
+
+  Cairo.Context ct = new Cairo.Context (new_surface);
+
+  ct.scale ((double)output_width / old_width, (double)output_height / old_height);
+  ct.set_source_surface (input, 0, 0);
+  ct.get_source ().set_extend (Cairo.Extend.PAD);
+  ct.set_operator (Cairo.Operator.SOURCE);
+  ct.paint ();
+
+  return new_surface;
+}
+
+
+inline double ease_out_cubic (double t) {
+  double p = t - 1;
+  return p * p * p +1;
+}
+
+
 namespace Utils {
   /**
   * Parses a date given by Twitter in the form 'Wed Jun 20 19:01:28 +0000 2012'
@@ -64,7 +118,7 @@ namespace Utils {
   * @return The given date as GLib.DateTime in the current time zone.
   */
   GLib.DateTime parse_date (string input) {
-    if (input == "") {
+    if (input.length == 0) {
       return new GLib.DateTime.now_local ();
     }
     string month_str = input.substring (4, 3);
@@ -254,40 +308,26 @@ namespace Utils {
    * @param path The filesystem path to save the file to
    *
    */
-  async void download_file_async(string url, string path, GLib.Cancellable? cancellable = null) {
+  async void download_file_async (string            url,
+                                  string            path,
+                                  GLib.Cancellable? cancellable = null) {
     var msg = new Soup.Message("GET", url);
     GLib.SourceFunc cb = download_file_async.callback;
     SOUP_SESSION.queue_message(msg, (_s, _msg) => {
       if (cancellable.is_cancelled ()) {
+        cb ();
         return;
       }
       try {
         File out_file = File.new_for_path(path);
-        var out_stream = out_file.replace(null, false,
-                                          FileCreateFlags.REPLACE_DESTINATION, null);
-        out_stream.write_all(_msg.response_body.data, null);
+        var out_stream = out_file.replace (null, false,
+                                           FileCreateFlags.REPLACE_DESTINATION, null);
+        out_stream.write_all (_msg.response_body.data, null);
         out_stream.close ();
         cb();
       } catch (GLib.Error e) {
         critical (e.message);
       }
-    });
-    yield;
-  }
-
-  public async void write_pixbuf_async (Gdk.Pixbuf pixbuf, GLib.OutputStream out_stream, string type) {
-    new Thread<void*> ("write_pixbuf", () => {
-      try {
-        pixbuf.save_to_stream (out_stream, type);
-      } catch (GLib.Error e) {
-        warning (e.message);
-        return null;
-      }
-      GLib.Idle.add (() => {
-        write_pixbuf_async.callback ();
-        return false;
-      });
-      return null;
     });
     yield;
   }
@@ -306,15 +346,11 @@ namespace Utils {
   }
 
   public void load_custom_css () {
-    try {
-      var provider = new Gtk.CssProvider ();
-      provider.load_from_file(File.new_for_uri ("resource:///org/baedert/corebird/ui/style.css"));
-      Gtk.StyleContext.add_provider_for_screen ((!)Gdk.Screen.get_default (),
-                                                provider,
-                                                Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-    }catch (GLib.Error e) {
-      warning ("Error while loading ui/style.css: %s", e.message);
-    }
+    var provider = new Gtk.CssProvider ();
+    provider.load_from_resource ("/org/baedert/corebird/ui/style.css");
+    Gtk.StyleContext.add_provider_for_screen ((!)Gdk.Screen.get_default (),
+                                              provider,
+                                              Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
   }
 
@@ -331,89 +367,6 @@ namespace Utils {
     return back;
   }
 
-  uint int64_hash_func (int64? k) {
-    return (uint)k;
-  }
-
-  bool int64_equal_func (int64? a, int64? b) {
-    return a == b;
-  }
-
-  /**
-   * Calculates the region of the image the thumbnail should be composed of.
-   *
-   * @param img_width  The width of the original image
-   * @param img_height The height of the original image
-   *
-   */
-  private void calc_thumb_square (int img_width, int img_height,
-                                 out int x, out int y, out int width, out int height) {
-    float ratio = img_width / (float)img_height;
-    if (ratio >= 0.9 && ratio <= 1.1) {
-      // it's more or less squared, so...
-      x = y = 0;
-      width = img_width;
-      height = img_height;
-    } else if (ratio > 1.1) {
-      // The image is pretty wide but not really high
-      x = (img_width/2) - (img_height/2);
-      y = 0;
-      width = height = img_height;
-    } else {
-      x = 0;
-      y = (img_height/2) - (img_width/2);
-      width = height = img_width;
-    }
-  }
-
-
-  private void calc_thumb_rect (int img_width, int img_height,
-                                int thumb_width, int thumb_height,
-                                out int x, out int y,
-                                out int w, out int h) {
-    float f = (float)img_width / (float)thumb_width;
-
-
-    w = img_width;
-    h = (int)(thumb_height * f);
-    if (h > img_height)
-      h = img_height;
-
-    x = 0;
-    y = (img_height / 2) - (h / 2);
-  }
-
-
-  /**
-   * Slices the given pixbuf to a smaller thumbnail image.
-   *
-   * @param pic The Gdk.Pixbuf to use as base image
-   *
-   * @return The created thumbnail
-   */
-  public Gdk.Pixbuf slice_pixbuf (Gdk.Pixbuf pic, int thumb_width, int thumb_height = -1) {
-    int x = 0,
-        y = 0,
-        w = 0,
-        h = 0;
-    if (thumb_height == -1)
-      thumb_height = thumb_width;
-
-    if (thumb_width == thumb_height) {
-      Utils.calc_thumb_square (pic.get_width (), pic.get_height (),
-                               out x, out y, out w, out h);
-    } else {
-      Utils.calc_thumb_rect (pic.get_width (), pic.get_height (),
-                             thumb_width, thumb_height,
-                             out x, out y, out w, out h);
-    }
-    var big_thumb = new Gdk.Pixbuf (Gdk.Colorspace.RGB, true, 8, w, h);
-    pic.copy_area (x, y, w, h, big_thumb, 0, 0);
-    var thumb = big_thumb.scale_simple (thumb_width, thumb_height, Gdk.InterpType.TILES);
-    return thumb;
-  }
-
-
   public int get_json_array_size (Json.Object node, string object_name) {
     if (!node.has_member (object_name))
       return 0;
@@ -427,10 +380,10 @@ namespace Utils {
    * Returns TRUE if the @value does both exist and is non-null.
    */
   public bool usable_json_value (Json.Object node, string value_name) {
-    if (node.get_null_member (value_name))
-      return false;
+    if (!node.has_member (value_name))
+        return false;
 
-    return node.has_member (value_name);
+    return !node.get_null_member (value_name);
   }
 
   public string get_banner_name (int64 user_id) {
@@ -462,5 +415,38 @@ namespace Utils {
     account.add_filter (f);
 
     return f;
+  }
+
+  private GLib.Regex? url_size_regex = null;
+  public void get_size_from_url (string url,
+                                 out int width,
+                                 out int height) {
+    if (url_size_regex == null) {
+      try {
+        //e.g.480x480
+        url_size_regex = new GLib.Regex ("\\/\\d+x\\d+\\/",
+                                         GLib.RegexCompileFlags.OPTIMIZE, 0);
+      } catch (GLib.RegexError e) {
+        warning (e.message);
+        width = 0;
+        height = 0;
+        return;
+      }
+    }
+
+    GLib.MatchInfo info;
+    url_size_regex.match (url, 0, out info);
+    // Just use the first match...
+    string? match = info.fetch (0);
+    if (match == null) {
+      warning ("No resolution found in url '%s'", url);
+      width = 0;
+      height = 0;
+      return;
+    }
+    int x_index = match.index_of_char ('x');
+    width  = int.parse (match.substring (1, x_index - 1));
+    height = int.parse (match.substring (x_index + 1, match.length - x_index - 2));
+
   }
 }

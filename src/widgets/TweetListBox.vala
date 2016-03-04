@@ -31,14 +31,6 @@ public class TweetListBox : Gtk.ListBox {
 
   public signal void retry_button_clicked ();
 
-  private Gtk.Spinner spinner;
-  private int _spinner_size = 32;
-  public int spinner_size {
-    set {
-      _spinner_size = value;
-      spinner.set_size_request (value, value);
-    }
-  }
   public unowned DeltaUpdater delta_updater;
   public unowned Account account;
   public TweetModel model = new TweetModel ();
@@ -105,13 +97,9 @@ public class TweetListBox : Gtk.ListBox {
   private void add_placeholder () {
     placeholder = new Gtk.Stack ();
     placeholder.transition_type = Gtk.StackTransitionType.CROSSFADE;
-    this.spinner = new Gtk.Spinner ();
-    this.spinner.set_size_request (_spinner_size, _spinner_size);
-    this.spinner.valign = Gtk.Align.CENTER;
-    this.spinner.halign = Gtk.Align.CENTER;
-    this.spinner.start ();
-    this.spinner.show_all ();
-    placeholder.add_named (spinner, "spinner");
+    var loading_label = new Gtk.Label (_("Loading..."));
+    loading_label.get_style_context ().add_class ("dim-label");
+    placeholder.add_named (loading_label, "spinner");
     no_entries_label  = new Gtk.Label (_("No entries found"));
     no_entries_label.get_style_context ().add_class ("dim-label");
     no_entries_label.wrap_mode = Pango.WrapMode.WORD_CHAR;

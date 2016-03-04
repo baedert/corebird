@@ -1,75 +1,97 @@
-AM_CPPFLAGS = $(CB_CFLAGS) -I$(top_srcdir)/src
+AM_CPPFLAGS = \
+	$(CB_CFLAGS) \
+	-I$(top_builddir)/src \
+	-include $(CONFIG_HEADER) \
+	-DDATADIR=\"$(datadir)\" \
+	-DPKGDATADIR=\"$(pkgdatadir)\"
+
+AM_VALAFLAGS = \
+	--enable-checking \
+	--enable-experimental \
+	--vapidir $(top_builddir)/src \
+	--vapidir $(top_srcdir)/vapi \
+	--gresources $(top_srcdir)/corebird.gresource.xml \
+	-C \
+	-g
+
+TESTS_ENVIRONMENT = GSETTINGS_SCHEMA_DIR=$(abs_top_builddir)/data
 
 TESTS = \
-				tweetmodel     \
-				tweet_length   \
-				utils          \
-				bundlehistory  \
-				usercounter    \
-				media          \
-				tweet_parsing  \
-				filters        \
-				sql            \
-				highlighting   \
-				friends        \
-				texttransform
+	tweetmodel \
+	tweetlength \
+	utils \
+	bundlehistory \
+	usercounter \
+	media \
+	tweetparsing \
+	filters \
+	highlighting \
+	friends \
+	texttransform \
+	avatardownload
+
 check_PROGRAMS = $(TESTS)
 
-# Always add -g to the test cases (for easier debugging)
-CB_VALA_FLAGS="$CB_VALA_FLAGS -g"
+tests_VALASOURCES = \
+	tweetlength.vala \
+	inlinemediadownloader.vala \
+	utils.vala \
+	bundlehistory.vala \
+	usercounter.vala \
+	filters.vala \
+	tweetparsing.vala \
+	highlighting.vala \
+	friends.vala \
+	tweetmodel.vala \
+	texttransform.vala \
+	avatardownload.vala
 
-tweet_length_SOURCES = tweet_length.vala
-tweet_length_LDADD = $(top_builddir)/src/libcorebird.la
-tweet_length_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
+$(tests_VALASOURCES:.vala=.c): tests_vala.stamp
 
-media_SOURCES = inlinemediadownloader.vala
+tests_vala.stamp: $(tests_VALASOURCES) $(top_builddir)/src/libcorebird.la $(top_builddir)/src/corebird.vapi Makefile
+	for s in $(filter %.vala,$^); do \
+		$(VALAC) \
+			$(AM_VALAFLAGS) $(CB_VALA_FLAGS) \
+			--pkg corebird \
+			$$s; \
+	done; \
+	touch $@
+
+nodist_tweetlength_SOURCES = tweetlength.c
+tweetlength_LDADD = $(top_builddir)/src/libcorebird.la
+
+nodist_media_SOURCES = inlinemediadownloader.c
 media_LDADD = $(top_builddir)/src/libcorebird.la
-media_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
 
-utils_SOURCES = utils.vala
+nodist_utils_SOURCES = utils.c
 utils_LDADD = $(top_builddir)/src/libcorebird.la
-utils_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
 
-bundlehistory_SOURCES = bundlehistory.vala
+nodist_bundlehistory_SOURCES = bundlehistory.c
 bundlehistory_LDADD = $(top_builddir)/src/libcorebird.la
-bundlehistory_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
 
-usercounter_SOURCES = usercounter.vala
+nodist_usercounter_SOURCES = usercounter.c ../src/corebird-resources.c
 usercounter_LDADD = $(top_builddir)/src/libcorebird.la
-usercounter_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
 
-filters_SOURCES = filters.vala resources.c
+nodist_filters_SOURCES = filters.c ../src/corebird-resources.c
 filters_LDADD = $(top_builddir)/src/libcorebird.la
-filters_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
 
-sql_SOURCES = sql.vala
-sql_LDADD = $(top_builddir)/src/libcorebird.la
-sql_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
+nodist_tweetparsing_SOURCES = tweetparsing.c ../src/corebird-resources.c
+tweetparsing_LDADD = $(top_builddir)/src/libcorebird.la
 
-tweet_parsing_SOURCES = tweet_parsing.vala resources.c
-tweet_parsing_LDADD = $(top_builddir)/src/libcorebird.la
-tweet_parsing_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
-
-highlighting_SOURCES = highlighting.vala
+nodist_highlighting_SOURCES = highlighting.c
 highlighting_LDADD = $(top_builddir)/src/libcorebird.la
-highlighting_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
 
-friends_SOURCES = friends.vala
+nodist_friends_SOURCES = friends.c
 friends_LDADD = $(top_builddir)/src/libcorebird.la
-friends_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
 
-tweetmodel_SOURCES = tweetmodel.vala
+nodist_tweetmodel_SOURCES = tweetmodel.c
 tweetmodel_LDADD = $(top_builddir)/src/libcorebird.la
-tweetmodel_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
 
-texttransform_SOURCES = texttransform.vala
+nodist_texttransform_SOURCES = texttransform.c
 texttransform_LDADD = $(top_builddir)/src/libcorebird.la
-texttransform_VALAFLAGS = $(top_builddir)/src/corebird.vapi @CB_VALA_FLAGS@
 
-GRESDEPS = $(top_srcdir)/$1 $(shell $(GLIB_COMPILE_RESOURCES) --generate-dependencies --sourcedir=$(top_srcdir) $(top_srcdir)/$1)
-resource_deps = $(call GRESDEPS,resources.xml)
-resources.c: $(resource_deps)
-	$(GLIB_COMPILE_RESOURCES) $(top_srcdir)/resources.xml --target=resources.c --generate-source --sourcedir=$(top_srcdir)
+nodist_avatardownload_SOURCES = avatardownload.c ../src/corebird-resources.c
+avatardownload_LDADD = $(top_builddir)/src/libcorebird.la
 
-
-CLEANFILES = *.c
+EXTRA_DIST = \
+	$(tests_VALASOURCES)

@@ -16,24 +16,11 @@
  */
 
 class TextButton : Gtk.Button {
-
-  public bool read_only {
-    set {
-      if (value) {
-        this.get_style_context ().add_class ("readonly-text-only-button");
-      } else {
-        this.get_style_context ().remove_class ("readonly-text-only-button");
-      }
-      this.sensitive = !value;
-    }
-  }
-
   public TextButton (string label = "") {
     if (label != "")
       this.label= label;
     this.get_style_context ().add_class ("text-only-button");
   }
-
 
   /**
    * Adds a GtkLabel to the Button using the given text as markup.

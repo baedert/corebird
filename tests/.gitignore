@@ -4,18 +4,18 @@
 
 _test.db
 
-tweet_length
+tweetlength
 media
 utils
 bundlehistory
 usercounter
 hometimeline
-tweet_entities
 filters
 sql
-tweet_parsing
+tweetparsing
 multimedia
 highlighting
 friends
 tweetmodel
 texttransform
+avatardownload

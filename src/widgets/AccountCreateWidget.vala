@@ -15,7 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 [GtkTemplate (ui = "/org/baedert/corebird/ui/account-create-widget.ui")]
 class AccountCreateWidget : Gtk.Box {
   [GtkChild]
@@ -61,12 +60,11 @@ class AccountCreateWidget : Gtk.Box {
 
     /* Try to open URI in browser */
     try {
-      if (!GLib.AppInfo.launch_default_for_uri (uri, null)) {
-        error_label.label = _("Could not open %s").printf ("<a href=\"" + uri + "\">" + uri + "</a>");
-        error_label.show ();
-      }
+      GLib.AppInfo.launch_default_for_uri (uri, null);
     } catch (GLib.Error e) {
+      this.show_error (_("Could not open %s").printf ("<a href=\"" + uri + "\">" + uri + "</a>"));
       Utils.show_error_dialog (e.message);
+      critical ("Could not open %s", uri);
       critical (e.message);
     }
   }

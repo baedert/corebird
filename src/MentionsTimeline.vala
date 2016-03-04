@@ -45,7 +45,7 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
   }
 
 
-  private void add_tweet (Json.Node root_node) { // {{{
+  private void add_tweet (Json.Node root_node) {
     /* Mark tweets as seen the user has already replied to */
     var root = root_node.get_object ();
     var author = root.get_object_member ("user");
@@ -64,7 +64,7 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
       if (t.user_id == account.id)
         return;
 
-      if (t.is_retweet && get_rt_flags (t) > 0)
+      if (t.retweeted_tweet != null && get_rt_flags (t) > 0)
         return;
 
       if (account.filter_matches (t))
@@ -73,8 +73,8 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
       if (account.blocked_or_muted (t.user_id))
         return;
 
-      t.seen = false;
       this.balance_next_upper_change (TOP);
+      t.seen = false;
       tweet_list.model.add (t);
 
 
@@ -82,12 +82,17 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
       this.unread_count ++;
 
       if (Settings.notify_new_mentions ()) {
+        string text;
+        if (t.retweeted_tweet != null)
+          text = t.retweeted_tweet.text;
+        else
+          text = t.source_tweet.text;
         t.notification_id = send_notification (t.screen_name,
                                                t.id,
-                                               Utils.unescape_html (t.text));
+                                               Utils.unescape_html (text));
       }
     }
-  } // }}}
+  }
 
 
   /**
@@ -97,15 +102,11 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
     var n = new GLib.Notification (_("New Mention from @%s")
                                    .printf (sender_screen_name));
     n.set_body (text);
-    var value = new GLib.Variant.tuple ({new GLib.Variant.string (account.screen_name),
-                                         new GLib.Variant.int64 (tweet_id)});
-    //n.add_button_with_target_value (_("Mark read"), "app.mark-seen", value);
     n.set_default_action_and_target_value ("app.show-window", account.id);
     string id = "new-dm-" + tweet_id.to_string ();
     GLib.Application.get_default ().send_notification (id, n);
     return id;
   }
-
 
   public override void load_newest () {
     this.loading = true;
@@ -125,14 +126,11 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
     });
   }
 
-
   public override string? get_title () {
     return _("Mentions");
   }
 
-
-  public override void create_tool_button (Gtk.RadioButton? group) {
-    tool_button = new BadgeRadioToolButton(group, "corebird-mentions-symbolic", _("Mentions"));
+  public override void create_radio_button (Gtk.RadioButton? group) {
+    radio_button = new BadgeRadioButton(group, "corebird-mentions-symbolic", _("Mentions"));
   }
-
 }

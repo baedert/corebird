@@ -15,7 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 public class Settings : GLib.Object {
   private static GLib.Settings settings;
 
@@ -49,10 +48,6 @@ public class Settings : GLib.Object {
 
   public static bool notify_new_dms(){
     return settings.get_boolean("new-dms-notify");
-  }
-
-  public static bool show_inline_media(){
-    return settings.get_boolean("show-inline-media");
   }
 
   public static bool auto_scroll_on_new_tweets () {
@@ -92,5 +87,9 @@ public class Settings : GLib.Object {
 
   public static TransformFlags get_text_transform_flags () {
     return (TransformFlags) settings.get_uint ("text-transform-flags");
+  }
+
+  public static bool hide_nsfw_content () {
+    return settings.get_boolean ("hide-nsfw-content");
   }
 }

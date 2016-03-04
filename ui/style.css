@@ -1,86 +1,67 @@
-.image-overlay{
-  padding-right: 5px;
-  padding-top: 2px;
-}
+@define-color sidebar_bg #333;
 
-.avatar {
-  border-color: grey;
+.avatar-round {
+  border: 1px solid grey;
+  border-radius: 48px;
 }
 
 .account-button {
   padding: 2px 4px;
 }
 
-.sidebar {
-  -GtkWidget-window-dragging: true;
+.sidebar button,
+.sidebar .button {
+  border: none;
+  box-shadow: none;
+  background-image: none;
+  border-radius: 0px;
+  background-color: @sidebar_bg;
+  color: #ddd;
+  icon-shadow: none;
 }
 
-.button-slim {
-  -GtkButton-default-border: 0;
-  -GtkButton-default-outside-border: 0;
-  -GtkButton-inner-border: 0;
-  -GtkWidget-focus-line-width: 0;
-  -GtkWidget-focus-padding: 0;
-  -GtkButton-image-spacing: 0;
-  padding: 4px;
+.sidebar button:hover,
+.sidebar .button:hover {
+  background-color: shade(@sidebar_bg, 1.3);
+}
+
+
+.sidebar button:checked,
+.sidebar .button:checked {
+  background-color: shade(@sidebar_bg, 1.5);
+}
+
+.sidebar button .badge,
+.sidebar .button .badge {
+  background-color: shade(blue, 1.4);
+  background-image: none;
+  text-shadow: 0px 1px 1px #FFF;
+  border-radius: 20px;
+  border: 1px solid white;
+  padding: 3px 2px;
+}
+
+.sidebar button .badge:backdrop,
+.sidebar .button .badge:backdrop {
+  background-color: grey;
 }
 
 .inline-media {
   background: none;
   border-radius: 0px;
-  border: none;
-  -GtkButton-default-border: 0;
-  -GtkButton-default-outside-border: 0;
-  -GtkButton-inner-border: 0;
-  -GtkWidget-focus-line-width: 0;
-  -GtkWidget-focus-padding: 0;
   padding: 0px;
+  opacity: 0.9;
   box-shadow: none;
-  opacity: 0.8;
+  border: none;
+  border-top: 2px solid transparent;
+  border-bottom: 2px solid transparent;
 }
 
 .inline-media:hover {
   border-top: 2px solid #4a90d9;
   border-bottom: 2px solid #4a90d9;
   opacity: 1.0;
-}
-
-.image-placeholder {
-  background-image: none;
-  border-radius: 0px;
   box-shadow: none;
-  border: none;
-  background-color: alpha(grey, 0.7);
-  -GtkButton-default-border: 0;
-  -GtkButton-default-outside-border: 0;
-  -GtkButton-inner-border: 0;
-  -GtkWidget-focus-line-width: 0;
-  -GtkWidget-focus-padding: 0;
-  -gtk-icon-source: -gtk-icontheme("list-add-symbolic");
-}
-
-.image-placeholder:hover {
-  background-color: alpha (#333, 0.8);
-}
-
-.image-placeholder:active {
-  background-color: alpha (#333, 0.9);
-}
-
-
-.image-added {
-  box-shadow: none;
-  background-image: none;
-  border-radius: 0px;
-  border: none;
-  background-color: transparent;
-}
-
-.image-added:hover {
-  color: white;
-  background-color: alpha (red, 0.34);
-  icon-shadow: none;
-  -gtk-icon-source: -gtk-icontheme("edit-delete-symbolic");
 }
 
 .image-progress {
@@ -132,7 +113,7 @@
 
 .favorite-button:hover,
 .favorite-button:checked {
-  color: shade(yellow, 0.9);
+  color: shade(red, 0.9);
 }
 
 /* Don't target :hover:active here */
@@ -148,25 +129,10 @@
   color: blue;
 }
 
-
-
 .favorite-button:backdrop,
 .retweet-button:backdrop {
   background-color: transparent;
 }
-
-.badge{
-  background-color: shade(blue, 1.4);
-  background-image: none;
-  text-shadow: 0px 1px 1px #FFF;
-  border-radius: 20px;
-  border: 1px solid white;
-  padding: 3px 2px;
-}
-.badge:backdrop{
-  background-color: transparent;
-}
-
 
 .tweet {
   border-bottom: solid 1px alpha (grey, 0.3);
@@ -178,27 +144,23 @@
   background-color: transparent;
   border:none;
   text-shadow: none;
-  -GtkButton-default-border: 0;
-  -GtkButton-default-outside-border: 0;
-  -GtkButton-inner-border: 0;
-  -GtkWidget-focus-line-width: 0;
-  -GtkWidget-focus-padding: 0;
   padding: 0px;
   box-shadow: none;
   border-radius: 0px;
-  border-bottom: 2px solid transparent;
+  border-bottom: 1px solid transparent;
+  min-height: 0px;
 }
-.text-only-button:hover{
-  border-bottom: 2px solid currentColor;
+
+.text-only-button:hover {
+  border-bottom: 1px solid currentColor;
 }
-.text-only-button:active{
+
+.text-only-button:active {
   background-color: shade(currentColor, 2.3);
 }
-.text-only-button:backdrop{
+
+.text-only-button:backdrop {
   background-color: transparent;
-}
-.readonly-text-only-button {
-  color: currentColor;
 }
 
 .pixbuf-button {
@@ -208,26 +170,59 @@
   border: none;
   border-radius: 0px;
   box-shadow: none;
-  transition: box-shadow 0.25s ease-in-out;
+  transition: box-shadow 0.2s ease-in-out;
 }
 
 .pixbuf-button-round {
+  border: 1px solid grey;
   border-radius: 48px;
 }
 
 .pixbuf-button:hover {
-/*  box-shadow: 0px 0px 10px alpha(black, 0.8);*/
-  border: 2px solid #4a90d9;
+  border: 1px solid #4a90d9;
 }
 
 .pixbuf-button:active {
-  box-shadow: inset 0px 0px 10px alpha(black, 0.95);
+  box-shadow: inset 0px 0px 3px alpha(black, 0.95);
 }
 .pixbuf-button:backdrop {
   background-color: transparent;
   background-image: none;
 }
-
 .reply-indicator {
   background-color: #4a90d9;
+}
+
+.profile-button {
+  background-image: none;
+  background-color: alpha(white,0);
+  box-shadow: none;
+  border: none;
+  border-radius: 0px;
+}
+
+.profile-button:checked {
+  border-bottom: 2px solid #4a90d9;
+}
+
+.profile-button:hover {
+  background-color: alpha(white, 0.3);
+}
+
+.profile-button:active {
+  background-color: alpha(white, 0.5);
+  border-bottom: 2px solid grey;
+}
+
+.quote {
+  border-left: 3px solid alpha(currentColor, 0.4);
+}
+
+.close-button {
+  padding: 3px;
+  border-radius: 50%;
+  outline-radius: 50%;
+  min-height: 0px;
+  min-width: 0px;
+  box-shadow: none;
 }

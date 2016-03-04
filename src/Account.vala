@@ -15,7 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 public class Account : GLib.Object {
   public static const string DUMMY = "screen_name";
   public int64 id;
@@ -26,8 +25,8 @@ public class Account : GLib.Object {
   public string? banner_url;
   public string? website;
   public string? description;
-  public Gdk.Pixbuf avatar_small  {public get; private set;}
-  public Gdk.Pixbuf avatar        {public get; private set;}
+  public Cairo.Surface avatar_small  {public get; private set;}
+  public Cairo.Surface avatar        {public get; private set;}
   public Rest.OAuthProxy proxy;
   public UserStream user_stream;
   public UserCounter user_counter;
@@ -38,7 +37,7 @@ public class Account : GLib.Object {
   public int64[] disabled_rts;
   public Gee.ArrayList<Filter> filters;
   public signal void info_changed (string screen_name, string name,
-                                   Gdk.Pixbuf avatar_small, Gdk.Pixbuf avatar);
+                                   Cairo.Surface avatar_small, Cairo.Surface avatar);
   public signal void notification_received (int64        id,
                                             int          type,
                                             string       body,
@@ -62,7 +61,8 @@ public class Account : GLib.Object {
       return;
 
     this.db = new Sql.Database (Dirs.config (@"accounts/$id.db"),
-                                Sql.ACCOUNTS_INIT_FILE);
+                                Sql.ACCOUNTS_INIT_FILE,
+                                Sql.ACCOUNTS_SQL_VERSION);
     user_counter = new UserCounter ();
     user_counter.load (db);
     this.load_filters ();
@@ -116,31 +116,22 @@ public class Account : GLib.Object {
   public void load_avatar () {
     string small_path = Dirs.config (@"accounts/$(id)_small.png");
     string path = Dirs.config (@"accounts/$(id).png");
-    try {
-      this.avatar_small = new Gdk.Pixbuf.from_file (small_path);
-      this.avatar = new Gdk.Pixbuf.from_file (path);
-      info_changed (screen_name, name, avatar, avatar_small);
-    } catch (GLib.Error e) {
-      warning (e.message);
-    }
+    this.avatar_small = load_surface (small_path);
+    this.avatar       = load_surface (path);
+    info_changed (screen_name, name, avatar, avatar_small);
   }
 
-  public void set_new_avatar (Gdk.Pixbuf new_avatar) throws GLib.Error{
-    string path = Dirs.config (@"accounts/$(id).png");
+  public void set_new_avatar (Cairo.Surface new_avatar) {
+    string path       = Dirs.config (@"accounts/$(id).png");
     string small_path = Dirs.config (@"accounts/$(id)_small.png");
 
-    Gdk.Pixbuf avatar = new_avatar.scale_simple (48, 48, Gdk.InterpType.BILINEAR);
-    Gdk.Pixbuf avatar_small = new_avatar.scale_simple (24, 24, Gdk.InterpType.BILINEAR);
 
-    /* Save normal-sized avatar (48x48) */
-    GLib.FileIOStream io_stream = GLib.File.new_for_path (path).open_readwrite ();
-    avatar.save_to_stream (io_stream.output_stream, "png", null);
-    io_stream.close ();
+    Cairo.Surface avatar = scale_surface ((Cairo.ImageSurface)new_avatar, 48, 48);
+    Cairo.Surface avatar_small = scale_surface ((Cairo.ImageSurface)new_avatar, 24, 24);
 
-    /* save small avatar (24x24) */
-    io_stream = GLib.File.new_for_path (small_path).open_readwrite ();
-    avatar_small.save_to_stream (io_stream.output_stream, "png", null);
-    io_stream.close ();
+
+    write_surface (avatar, path);
+    write_surface (avatar_small, small_path);
 
     this.avatar = avatar;
     this.avatar_small = avatar_small;
@@ -169,9 +160,13 @@ public class Account : GLib.Object {
     }
     call.add_param ("skip_status", "true");
 
-    Json.Node? root_node = yield TweetUtils.load_threaded (call);
-    if (root_node == null)
+    Json.Node? root_node = null;
+    try {
+      root_node = yield TweetUtils.load_threaded (call, null);
+    } catch (GLib.Error e) {
+      warning (e.message);
       return;
+    }
 
     bool values_changed = false;
 
@@ -215,6 +210,7 @@ public class Account : GLib.Object {
                      .get_array_member ("urls").get_object_element (0).get_string_member ("expanded_url");
     } else
       this.website = "";
+
 
     string avatar_url = root.get_string_member ("profile_image_url");
     values_changed |= yield update_avatar (avatar_url);
@@ -272,8 +268,11 @@ public class Account : GLib.Object {
     call.set_function (function);
     call.set_method ("GET");
 
-    Json.Node? root = yield TweetUtils.load_threaded (call);
-    if (root == null) {
+    Json.Node? root = null;
+    try {
+      root = yield TweetUtils.load_threaded (call, null);
+    } catch (GLib.Error e) {
+      warning (e.message);
       collect_obj.emit ();
       return null;
     }
@@ -292,18 +291,24 @@ public class Account : GLib.Object {
    * @param url The url of the (possibly) new avatar(optional).
    */
   private async bool update_avatar (string url = "") {
-    if (url.length > 0 && url == this.avatar_url)
+    string dest_path = Dirs.config (@"accounts/$(id)_small.png");
+    string big_dest  = Dirs.config (@"accounts/$(id).png");
+
+
+
+    if (url.length > 0 && url == this.avatar_url) {
+      if (GLib.FileUtils.test (dest_path, GLib.FileTest.EXISTS) &&
+          GLib.FileUtils.test (big_dest,  GLib.FileTest.EXISTS))
       return false;
+    }
 
     debug ("Using %s to update the avatar(old: %s)", url, this.avatar_url);
 
     if (url.length > 0) {
       var msg = new Soup.Message ("GET", url);
       SOUP_SESSION.queue_message (msg, (_s, _msg) => {
-        var data_stream = new MemoryInputStream.from_data ((owned)msg.response_body.data, null);
+        var data_stream = new MemoryInputStream.from_data (msg.response_body.data, GLib.g_free);
         string type = Utils.get_file_type (url);
-        string dest_path = Dirs.config (@"accounts/$(id)_small.png");
-        string big_dest  = Dirs.config (@"accounts/$(id).png");
         Gdk.Pixbuf pixbuf;
         try {
           pixbuf = new Gdk.Pixbuf.from_stream(data_stream);
@@ -316,8 +321,8 @@ public class Account : GLib.Object {
           pixbuf.scale(scaled_pixbuf, 0, 0, 24, 24, 0, 0, scale_x, scale_y, Gdk.InterpType.HYPER);
           scaled_pixbuf.save(dest_path, type);
           debug ("saving to %s", dest_path);
-          this.avatar_small = scaled_pixbuf;
-          this.avatar = pixbuf;
+          this.avatar_small = Gdk.cairo_surface_create_from_pixbuf (scaled_pixbuf, 1, null);
+          this.avatar = Gdk.cairo_surface_create_from_pixbuf (pixbuf, 1, null);
         } catch (GLib.Error e) {
           critical (e.message);
         }
@@ -376,7 +381,7 @@ public class Account : GLib.Object {
    * @return true iff at least one of the filters match, false otherwise.
    */
   public bool filter_matches (Tweet t) {
-    if (t.user_id == this.id)
+    if (t.source_tweet.author.id == this.id)
       return false;
 
 

@@ -14,12 +14,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 [GtkTemplate (ui = "/org/baedert/corebird/ui/filter-page.ui")]
 class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
   public int id { get; set; }
   public unowned MainWindow main_window {get; set;}
   public unowned Account account        {get; set;}
-  private BadgeRadioToolButton tool_button;
+  private BadgeRadioButton radio_button;
   [GtkChild]
   private Gtk.ListBox filter_list;
   [GtkChild]
@@ -74,8 +75,15 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
     call.set_method ("GET");
     call.add_param ("include_entities", "false");
     call.add_param ("skip_status", "true");
-    TweetUtils.load_threaded.begin (call, (_, res) => {
-      Json.Node? root = TweetUtils.load_threaded.end (res);
+    TweetUtils.load_threaded.begin (call, null, (_, res) => {
+      Json.Node? root = null;
+      try  {
+        root = TweetUtils.load_threaded.end (res);
+      } catch (GLib.Error e) {
+        warning (e.message);
+        return;
+      }
+
 
       Json.Array users = root.get_object ().get_array_member ("users");
       uint n_users = users.get_length ();
@@ -127,13 +135,18 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
 
   private void add_user (Json.Object user_obj) {
     int64 id = user_obj.get_int_member ("id");
+    string avatar_url = user_obj.get_string_member ("profile_image_url");
+
+    if (this.get_scale_factor () == 2)
+      avatar_url = avatar_url.replace ("_normal", "_bigger");
+
     // make sure the user does not yet exist in the list
     remove_user (id);
     var entry = new UserFilterEntry ();
     entry.user_id = id;
     entry.name = user_obj.get_string_member ("name");
     entry.screen_name = user_obj.get_string_member ("screen_name");
-    entry.avatar = user_obj.get_string_member ("profile_image_url");
+    entry.avatar_url = avatar_url;
     entry.deleted.connect ((id) => { unblock_user (id);});
     user_list.add (entry);
     user_list_frame.show ();
@@ -196,11 +209,11 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
 
 
   public void on_leave () {}
-  public void create_tool_button (Gtk.RadioButton? group) {
-    tool_button = new BadgeRadioToolButton(group, "corebird-filter-symbolic", _("Filters"));
+  public void create_radio_button (Gtk.RadioButton? group) {
+    radio_button = new BadgeRadioButton(group, "corebird-filter-symbolic", _("Filters"));
   }
 
-  public Gtk.RadioButton? get_tool_button() { return tool_button; }
+  public Gtk.RadioButton? get_radio_button() { return radio_button; }
 
   public string? get_title () {
     return _("Filters");

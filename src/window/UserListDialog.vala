@@ -54,6 +54,13 @@ class UserListDialog : Gtk.Dialog {
     content_box.border_width = 0;
     var scroller = new Gtk.ScrolledWindow (null, null);
     list_list_box.selection_mode = Gtk.SelectionMode.NONE;
+    list_list_box.row_activated.connect ((row) => {
+      if (!(row is ListUserEntry)) {
+        warning ("Row != ListUserEntry!");
+        return;
+      }
+      ((ListUserEntry)row).toggle ();
+    });
     scroller.add (list_list_box);
     content_box.pack_start (scroller, true, true);
 
@@ -62,7 +69,7 @@ class UserListDialog : Gtk.Dialog {
     placeholder_label.get_style_context ().add_class ("dim-label");
     placeholder_label.show ();
     list_list_box.set_placeholder (placeholder_label);
-
+    this.set_default_size (400, 200);
   }
 
   public void load_lists () {
@@ -115,7 +122,6 @@ class UserListDialog : Gtk.Dialog {
 
 
   public override void response (int response_id) {
-    debug ("Response: %d", response_id);
     if (response_id == Gtk.ResponseType.CANCEL) {
       this.destroy ();
     } else if (response_id == Gtk.ResponseType.OK) {
@@ -183,7 +189,6 @@ class ListUserEntry : Gtk.ListBoxRow {
   }
 
   public ListUserEntry (string list_name, string description) {
-    this.activatable = false;
     var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 12);
     box.margin = 6;
     added_checkbox.valign = Gtk.Align.CENTER;
@@ -209,6 +214,10 @@ class ListUserEntry : Gtk.ListBoxRow {
   public void check () {
     added_checkbox.active = true;
     changed = false;
+  }
+
+  public void toggle () {
+    added_checkbox.active = !added_checkbox.active;
   }
 
   public void disable () {

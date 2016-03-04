@@ -3,41 +3,26 @@
   <template class="MainWidget" parent="GtkBox">
       <property name="visible">True</property>
       <property name="can_focus">False</property>
+      <property name="orientation">vertical</property>
       <child>
         <object class="GtkRevealer" id="sidebar_revealer">
           <property name="visible">True</property>
           <property name="reveal_child">True</property>
           <property name="can_focus">False</property>
-          <property name="transition_type">slide-right</property>
+          <property name="transition_type">slide-up</property>
+          <property name="vexpand">false</property>
 
           <child>
-            <object class="GtkBox">
+            <object class="GtkBox" id="top_box">
               <property name="visible">true</property>
               <property name="can_focus">false</property>
-
-
-              <child>
-                <object class="GtkBox" id="left_box">
-                  <property name="visible">true</property>
-                  <property name="can_focus">false</property>
-                  <property name="orientation">vertical</property>
-                  <property name="margin">6</property>
-                  <style>
-                    <class name="linked" />
-                  </style>
-                </object>
-              </child>
-
-
-              <child>
-                <object class="GtkSeparator">
-                  <property name="visible">true</property>
-                  <property name="can_focus">false</property>
-                  <property name="orientation">vertical</property>
-                  <property name="vexpand">true</property>
-                </object>
-              </child>
-
+              <property name="orientation">horizontal</property>
+              <property name="halign">fill</property>
+              <property name="hexpand">true</property>
+              <property name="homogeneous">true</property>
+              <style>
+                <class name="sidebar" />
+              </style>
             </object>
           </child>
 
@@ -49,6 +34,7 @@
         <object class="GtkStack" id="stack">
           <property name="visible">True</property>
           <property name="can_focus">False</property>
+          <property name="vexpand">true</property>
         </object>
         <packing>
           <property name="expand">False</property>

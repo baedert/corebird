@@ -16,7 +16,7 @@
  */
 
 class ImpostorWidget : Gtk.Image {
-  private new Cairo.Surface surface;
+  private new Cairo.Surface? surface = null;
 
 
   public ImpostorWidget () {

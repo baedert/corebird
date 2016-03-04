@@ -42,7 +42,8 @@ public class SnippetManager : GLib.Object {
     if (!inited) load_snippets ();
 
     this.snippets.unset (snippet_key);
-    Corebird.db.exec (@"DELETE FROM `snippets` WHERE `key`='$(snippet_key)'");
+    string key = snippet_key.replace ("'", "''");
+    Corebird.db.exec (@"DELETE FROM `snippets` WHERE `key`='$(key)'");
   }
 
   public void insert_snippet (string key, string value) {

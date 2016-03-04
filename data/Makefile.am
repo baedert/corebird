@@ -15,6 +15,8 @@ gsettings_SCHEMAS = org.baedert.corebird.gschema.xml
 @INTLTOOL_XML_NOMERGE_RULE@
 @GSETTINGS_RULES@
 
+gschemas.compiled: Makefile $(gsettings_SCHEMAS:.xml=.valid)
+	$(AM_V_GEN) $(GLIB_COMPILE_SCHEMAS) --targetdir=$(builddir) $(builddir)
 
 
 dbusservicedir = $(datadir)/dbus-1/services
@@ -28,12 +30,17 @@ org.baedert.corebird.service: Makefile
 
 
 EXTRA_DIST = \
-						 org.baedert.corebird.desktop.in \
-						 $(desktop_in_files) \
-						 $(appdata_in_files) \
-						 org.baedert.corebird.gschema.xml.in \
-						 $(man_MANS)
+	$(desktop_in_files) \
+	$(appdata_in_files) \
+	org.baedert.corebird.gschema.xml.in \
+	$(man_MANS)
 
-DISTCLEANFILES = \
-								 $(desktop_DATA) \
-								 $(appdata_DATA)
+CLEANFILES = \
+	$(gsettings_SCHEMAS) \
+	gschemas.compiled \
+	org.baedert.corebird.gschema.valid \
+	$(desktop_DATA) \
+	$(dbusservice_DATA) \
+	$(appdata_DATA)
+
+all-local: gschemas.compiled

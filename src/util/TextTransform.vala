@@ -42,13 +42,26 @@ namespace TextTransform {
                              string  display_text,
                              uint    media_count)
   {
-    return (InlineMediaDownloader.is_media_candidate (url ?? display_text) && media_count == 1) ||
-            display_text.has_prefix ("pic.twitter.com/");
+    return (is_media_candidate (url ?? display_text) &&
+            media_count == 1) || display_text.has_prefix ("pic.twitter.com/");
   }
 
   private bool is_hashtag (string entity)
   {
     return entity[0] == '#';
+  }
+
+  private bool is_link (string? target)
+  {
+    return target != null && (target.has_prefix ("http://") || target.has_prefix ("https://"));
+  }
+
+  private bool is_quote_link (ref TextEntity entity, int64 quote_id)
+  {
+    if (entity.target == null) return false;
+
+    return (entity.target.has_prefix ("https://twitter.com/") &&
+            entity.target.has_suffix ("/status/" + quote_id.to_string ()));
   }
 
   private bool is_whitespace (string s)
@@ -61,12 +74,23 @@ namespace TextTransform {
     return true;
   }
 
+  public string transform_tweet (MiniTweet tweet, TransformFlags flags, int64 quote_id = -1)
+  {
+    return transform (tweet.text,
+                      tweet.entities,
+                      flags,
+                      tweet.medias.length,
+                      quote_id);
+  }
+
+
   // XXX We could probably do this a bit faster and simpler (and in one step!)
   //     if we just built the new string from end to start.
   public string transform (string         text,
                            TextEntity[]   entities,
                            TransformFlags flags,
-                           uint           media_count = 0)
+                           uint           media_count = 0,
+                           int64          quote_id = -1)
   {
     StringBuilder builder = new StringBuilder ();
     uint last_end = 0;
@@ -83,37 +107,46 @@ namespace TextTransform {
       } else
         cur_end = entities[i].to;
 
-      if (entities[i].to == cur_end) {
+      if (entities[i].to == cur_end &&
+          (is_hashtag (entities[i].display_text) || is_link (entities[i].target))) {
         entities[i].info |= TRAILING;
         cur_end = entities[i].from;
       } else break;
     }
 
 
+    bool last_entity_was_trailing = false;
     foreach (TextEntity entity in entities) {
       /* Append part before this entity */
-      builder.append (text.substring (text.index_of_nth_char (last_end),
+      string before = text.substring (text.index_of_nth_char (last_end),
                                       text.index_of_nth_char (entity.from) -
-                                      text.index_of_nth_char (last_end)));
+                                      text.index_of_nth_char (last_end));
+
+      if (!(last_entity_was_trailing && is_whitespace (before)))
+        builder.append (before);
 
       if (TransformFlags.REMOVE_TRAILING_HASHTAGS in flags &&
           (entity.info & TRAILING) > 0 &&
           is_hashtag (entity.display_text)) {
         last_end = entity.to;
+        last_entity_was_trailing = true;
         continue;
       }
+
+      last_entity_was_trailing = false;
 
       /* Skip the entire entity if we should remove media links AND
          it is a media link. */
 
-      if (TransformFlags.REMOVE_MEDIA_LINKS in flags &&
-          is_media_url (entity.target, entity.display_text, media_count)) {
+      if ((TransformFlags.REMOVE_MEDIA_LINKS in flags &&
+          is_media_url (entity.target, entity.display_text, media_count)) ||
+          (quote_id != 0 && is_quote_link (ref entity, quote_id))) {
         last_end = entity.to;
         continue;
       }
 
       if (TransformFlags.EXPAND_LINKS in flags) {
-        if (entity.display_text.has_prefix ("@"))
+        if (entity.display_text[0] == '@')
           builder.append (entity.display_text);
         else
           builder.append (entity.target ?? entity.display_text);
@@ -126,7 +159,7 @@ namespace TextTransform {
         /* Only set the tooltip if there actually is one */
         if (entity.tooltip_text != null) {
           builder.append (" title=\"")
-                 .append (entity.tooltip_text.replace ("&", "&amp;"))
+                 .append (entity.tooltip_text.replace ("&", "&amp;amp;"))
                  .append ("\"");
         }
 

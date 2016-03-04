@@ -16,6 +16,7 @@
  */
 
 public class AvatarBannerWidget : Gtk.Container {
+  private static const int MAX_HEIGHT = 250;
   private static const double BANNER_RATIO = 0.5; /* 320/640 */
   public int avatar_size { get; set; default = 48; }
 
@@ -51,7 +52,7 @@ public class AvatarBannerWidget : Gtk.Container {
     this.account = account;
     load_banner.begin ();
     this.queue_draw ();
-    set_avatar_button.set_bg (account.avatar);
+    set_avatar_button.set_bg ((Cairo.ImageSurface)account.avatar);
   }
 
   private async void load_banner () {
@@ -60,7 +61,7 @@ public class AvatarBannerWidget : Gtk.Container {
     /* Try to load the banner */
     try {
       var stream = GLib.File.new_for_path (banner_path).read ();
-      set_banner_button.set_bg (yield new Gdk.Pixbuf.from_stream_async (stream, null));
+      set_banner_button.set_pixbuf (yield new Gdk.Pixbuf.from_stream_async (stream, null));
       stream.close();
     } catch (GLib.Error e) {
       if (e is GLib.IOError.NOT_FOUND) {
@@ -98,28 +99,27 @@ public class AvatarBannerWidget : Gtk.Container {
   }
 
   public override void get_preferred_height_for_width (int width,
-                                                   out int min,
-                                                   out int nat) {
-    nat = (int)(width * BANNER_RATIO) + (avatar_size / 3);
-    min = (int)(width * BANNER_RATIO) + (avatar_size / 3);
+                                                       out int min,
+                                                       out int nat) {
+    min = nat = int.min (MAX_HEIGHT, (int)(width * BANNER_RATIO) + (avatar_size / 3));
   }
 
   private async void fetch_banner (string banner_path) {
     if (account.banner_url == null) {
-      set_banner_button.set_bg (Twitter.no_banner);
+      set_banner_button.set_pixbuf (Twitter.no_banner);
       return;
     }
 
     yield Utils.download_file_async (account.banner_url, banner_path);
     try {
-      this.set_banner_button.set_bg (new Gdk.Pixbuf.from_file (banner_path));
+      this.set_banner_button.set_pixbuf (new Gdk.Pixbuf.from_file (banner_path));
     } catch (GLib.Error e) {
       warning (e.message);
     }
   }
 
   public override void size_allocate (Gtk.Allocation allocation) {
-    this.set_allocation (allocation);
+    base.size_allocate  (allocation);
 
     Gtk.Requisition child_requisition;
     Gtk.Allocation child_allocation = Gtk.Allocation();
@@ -134,6 +134,7 @@ public class AvatarBannerWidget : Gtk.Container {
 
 
     /* set_avatar_button */
+    set_avatar_button.get_preferred_size (out child_requisition, null);
     child_allocation.x = get_avatar_x () + allocation.x;
     child_allocation.y = get_avatar_y () + allocation.y;
     child_allocation.width = avatar_size;
@@ -163,7 +164,7 @@ public class AvatarBannerWidget : Gtk.Container {
     dialog.min_height = 100;
     dialog.set_transient_for ((Gtk.Window)this.get_toplevel ());
     dialog.image_cropped.connect ((img) => {
-      set_banner_button.set_bg (img);
+      set_banner_button.set_pixbuf (img);
       banner_changed (img);
     });
     dialog.show_all ();
@@ -175,7 +176,7 @@ public class AvatarBannerWidget : Gtk.Container {
     dialog.set_modal (true);
     dialog.set_transient_for ((Gtk.Window)this.get_toplevel ());
     dialog.image_cropped.connect ((img) => {
-      set_avatar_button.set_bg (img);
+      set_avatar_button.set_pixbuf (img);
       avatar_changed (img);
     });
     dialog.show_all ();

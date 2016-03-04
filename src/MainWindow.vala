@@ -106,6 +106,17 @@ public class MainWindow : Gtk.ApplicationWindow {
 
     this.add_action_entries (win_entries, this);
 
+
+    headerbar.key_press_event.connect ((evt) => {
+      if (evt.keyval == Gdk.Key.Down && main_widget != null) {
+        main_widget.get_page (main_widget.cur_page_id).focus (Gtk.DirectionType.RIGHT);
+        return true;
+      }
+      return false;
+    });
+
+
+
     add_accels();
     load_geometry ();
 
@@ -132,7 +143,7 @@ public class MainWindow : Gtk.ApplicationWindow {
         () => {main_widget.switch_page (Page.NEXT); return true;});
     ag.connect (Gdk.Key.F5, 0, Gtk.AccelFlags.LOCKED,
                 () => {
-                var ident = new UserIdentity();
+                var ident = UserIdentity();
                   n_model.add_fav_item (15,
                                         "foobar bla bla bla bal bla bla bla bla bla bla bla blb a bla blalb",
                                         ident);
@@ -141,7 +152,7 @@ public class MainWindow : Gtk.ApplicationWindow {
 
     ag.connect (Gdk.Key.F6, 0, Gtk.AccelFlags.LOCKED,
                 () => {
-                var ident = new UserIdentity();
+                var ident = UserIdentity();
                   n_model.add_rt_item (15,
                                        "some random tweet!asdfsadfsdafsda f sda fsda f sdaf sda fsda f afa ",
                                        ident);
@@ -150,7 +161,7 @@ public class MainWindow : Gtk.ApplicationWindow {
 
     ag.connect (Gdk.Key.F7, 0, Gtk.AccelFlags.LOCKED,
                 () => {
-                var ident = new UserIdentity();
+                var ident = UserIdentity();
                   n_model.add_follow_item (15, ident);
                   return true;
                 });
@@ -193,14 +204,13 @@ public class MainWindow : Gtk.ApplicationWindow {
 
     if (account != null && account.screen_name != Account.DUMMY) {
       main_widget = new MainWidget (account, this, cb);
-      main_widget.sidebar_size_group.add_widget (account_button);
       main_widget.show_all ();
       this.add (main_widget);
       main_widget.switch_page (0);
       this.set_title (main_widget.get_page (0).get_title ());
-      avatar_image.pixbuf = account.avatar_small;
+      avatar_image.surface = account.avatar_small;
       account.notify["avatar-small"].connect(() => {
-        avatar_image.pixbuf = account.avatar_small;
+        avatar_image.surface = account.avatar_small;
       });
 
       this.set_account_app_menu_sensitivity (false);
@@ -296,8 +306,7 @@ public class MainWindow : Gtk.ApplicationWindow {
   private void show_hide_compose_window () {
     if (compose_tweet_window == null) {
       compose_tweet_window = new ComposeTweetWindow (this, account, null,
-                                                     ComposeTweetWindow.Mode.NORMAL,
-                                                     get_application ());
+                                                     ComposeTweetWindow.Mode.NORMAL);
       compose_tweet_window.show ();
       compose_tweet_window.hide.connect (() => {
         compose_tweet_button.active = false;
@@ -359,7 +368,7 @@ public class MainWindow : Gtk.ApplicationWindow {
       main_widget.stop ();
 
     if (account == null)
-      return false;
+      return Gdk.EVENT_PROPAGATE;
 
     unowned GLib.List<weak Gtk.Window> ws = this.application.get_windows ();
     debug("Windows: %u", ws.length ());
@@ -374,7 +383,7 @@ public class MainWindow : Gtk.ApplicationWindow {
     save_geometry ();
 
     if (startup_accounts.length > 0)
-      return false;
+      return Gdk.EVENT_PROPAGATE;
 
     int n_main_windows = 0;
     foreach (Gtk.Window win in ws)
@@ -391,14 +400,14 @@ public class MainWindow : Gtk.ApplicationWindow {
       Settings.get ().set_strv ("startup-accounts", new_startup_accounts);
       debug ("Saving the account %s", ((MainWindow)ws.nth_data (0)).account.screen_name);
     }
-    return false;
+    return Gdk.EVENT_PROPAGATE;
   }
 
 
-  private void account_info_changed (string     screen_name,
-                                     string     name,
-                                     Gdk.Pixbuf small_avatar,
-                                     Gdk.Pixbuf avatar) {
+  private void account_info_changed (string        screen_name,
+                                     string        name,
+                                     Cairo.Surface small_avatar,
+                                     Cairo.Surface avatar) {
     this.set_title (main_widget.get_page (main_widget.cur_page_id).get_title ());
   }
 
@@ -406,7 +415,7 @@ public class MainWindow : Gtk.ApplicationWindow {
    *
    */
   private void load_geometry () {
-    if (account == null) {
+    if (account == null || account.screen_name == Account.DUMMY) {
       debug ("Could not load geometry, account == null");
       return;
     }
@@ -425,7 +434,7 @@ public class MainWindow : Gtk.ApplicationWindow {
       return;
 
     move (x, y);
-    resize (w, h);
+    this.set_default_size (w, h);
   }
 
   /**
@@ -439,7 +448,7 @@ public class MainWindow : Gtk.ApplicationWindow {
     GLib.Variant new_geom;
     GLib.VariantBuilder builder = new GLib.VariantBuilder (new GLib.VariantType("a{s(iiii)}"));
     var iter = win_geom.iterator ();
-    string key = null;
+    string? key = null;
     int x = 0,
         y = 0,
         w = 0,
@@ -451,9 +460,8 @@ public class MainWindow : Gtk.ApplicationWindow {
       key = null; // Otherwise we leak key
     }
     /* Finally, add this window */
-    get_position (out x, out y);
-    w = get_allocated_width ();
-    h = get_allocated_height ();
+    this.get_position (out x, out y);
+    this.get_size (out w, out h);
     builder.add ("{s(iiii)}", account.screen_name, x, y, w, h);
     new_geom = builder.end ();
     debug ("Saving geomentry for %s: %d,%d,%d,%d", account.screen_name, x, y, w, h);

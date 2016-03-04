@@ -15,7 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 [GtkTemplate (ui = "/org/baedert/corebird/ui/dm-list-entry.ui")]
 class DMListEntry : Gtk.ListBoxRow, ITwitterItem {
   [GtkChild]
@@ -39,8 +38,8 @@ class DMListEntry : Gtk.ListBoxRow, ITwitterItem {
     set { name_button.label = value; }
   }
 
-  public Gdk.Pixbuf avatar {
-    set { avatar_image.pixbuf = value; }
+  public Cairo.Surface avatar {
+    set { avatar_image.surface = value; }
   }
 
   public bool seen {
@@ -52,7 +51,6 @@ class DMListEntry : Gtk.ListBoxRow, ITwitterItem {
     get { return timestamp; }
   }
 
-  public string avatar_url;
   public int64 timestamp;
   public int64 id;
   public int64 user_id;
@@ -67,10 +65,14 @@ class DMListEntry : Gtk.ListBoxRow, ITwitterItem {
     });
   }
 
-  public void load_avatar () {
-    avatar_image.pixbuf = Twitter.get ().get_avatar (avatar_url, (a) => {
-      avatar_image.pixbuf = a;
-    });
+  public void load_avatar (string avatar_url) {
+    string url = avatar_url;
+    if (this.get_scale_factor () == 2)
+      url = url.replace ("_normal", "_bigger");
+
+    avatar_image.surface = Twitter.get ().get_avatar (user_id, url, (a) => {
+      avatar_image.surface = a;
+    }, 48 * this.get_scale_factor ());
   }
 
   public int update_time_delta (GLib.DateTime? now = null) {
@@ -84,8 +86,6 @@ class DMListEntry : Gtk.ListBoxRow, ITwitterItem {
     time_delta_label.label = Utils.get_time_delta (then, cur_time);
     return (int)(cur_time.difference (then) / 1000.0 / 1000.0);
   }
-
-
 }
 
 
