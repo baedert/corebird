@@ -218,11 +218,13 @@ private class MediaButton : Gtk.Widget {
     double width_ratio = (double)width / (double) media_width;
     int height = int.min (media_height, (int)(media_height * width_ratio));
     if (restrict_height) {
-      minimum = int.min (height, MAX_HEIGHT);
-    } else
+      minimum = int.min (media_height, MAX_HEIGHT);
+      natural = minimum;
+    } else {
       minimum = height;
+      natural = height;
+    }
 
-    natural = height;
   }
 
   public override void get_preferred_width_for_height (int height,
