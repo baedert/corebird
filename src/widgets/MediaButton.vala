@@ -66,6 +66,8 @@ private class MediaButton : Gtk.Widget {
     } catch (GLib.Error e) {
       critical (e.message);
     }
+
+    set_accessible_type (typeof (Gtk.ButtonAccessible));
   }
 
   construct {
