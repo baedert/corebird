@@ -37,6 +37,9 @@ AM_CONDITIONAL([ENABLE_DEBUG], [ test "$enable_debug" = "yes"])
 AC_ARG_ENABLE(video, AS_HELP_STRING([--disable-video], [Disable video support]),, disable_video=no)
 AM_CONDITIONAL([DISABLE_VIDEO], [ test "$disable_video" = "yes"])
 
+# --disable-gst-check
+AC_ARG_ENABLE(gst_check, AS_HELP_STRING([--disable-gst-check], [Disable check for needed gstreamer elements]),, disable_gst_check=no)
+AM_CONDITIONAL([DISABLE_GST_CHECK], [ test "$disable_gst_check" = "yes"])
 
 
 
@@ -100,6 +103,11 @@ if test "$enable_debug" = "yes"; then
 fi
 
 
+if test "$disable_gst_check" = "no"; then
+  # Check for gtksink
+  GST_ELEMENT_CHECK([gtksink], [1.0], [], [])
+fi
+
 
 # Gettext stuff
 GETTEXT_PACKAGE=AC_PACKAGE_NAME
@@ -140,4 +148,5 @@ echo "
            C Compiler: ${CC} ${CFLAGS}
             Debugging: $enable_debug
        Video disabled: $disable_video
+   Gst check disabled: $disable_gst_check
 "
