@@ -42,7 +42,7 @@ This is the readme for the current *development version*. If you're looking for 
 
 
 ## Dependencies
- - `gtk+-3.0 >= 3.16`
+ - `gtk+-3.0 >= 3.18`
  - `glib-2.0 >= 2.44`
  - `rest-0.7` (`>= 0.7.91` for image uploads)
  - `json-glib-1.0`
