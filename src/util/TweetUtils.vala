@@ -510,6 +510,8 @@ namespace TweetUtils {
     GLib.Error? err   = null;
     GLib.SourceFunc callback = load_threaded.callback;
 
+    debug ("REST Call: %s", rest_call_to_string (call));
+
     new Thread<void*> ("json parser", () => {
       try {
         call.sync ();
