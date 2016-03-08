@@ -50,8 +50,6 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   [GtkChild]
   private Gtk.Grid grid;
   [GtkChild]
-  private MultiMediaWidget mm_widget;
-  [GtkChild]
   private Gtk.Stack stack;
   [GtkChild]
   private Gtk.Box action_box;
@@ -63,14 +61,15 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   private Gtk.Label quote_screen_name;
   [GtkChild]
   private Gtk.Grid quote_grid;
-  [GtkChild]
-  private Gtk.Stack media_stack;
+  private Gtk.Stack? media_stack = null;
+  private MultiMediaWidget? mm_widget = null;
 
 
   private bool _read_only = false;
   public bool read_only {
     set {
-      mm_widget.sensitive = !value;
+      if (mm_widget != null)
+        mm_widget.sensitive = !value;
       name_button.sensitive = !value;
       this._read_only = value;
     }
@@ -156,23 +155,13 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     conversation_image.visible = (tweet.reply_id != 0);
 
     if (tweet.has_inline_media) {
-
-      if (tweet.is_flag_set (TweetState.NSFW) &&
-          Settings.hide_nsfw_content ())
-        media_stack.visible_child_name = "nsfw";
-      else
-        media_stack.visible_child = mm_widget;
-
-      media_stack.show ();
+      this.create_media_widget (tweet.is_flag_set (TweetState.NSFW));
       mm_widget.restrict_height = restrict_height;
       mm_widget.set_all_media (tweet.medias);
       mm_widget.media_clicked.connect (media_clicked_cb);
       mm_widget.media_invalid.connect (media_invalid_cb);
       mm_widget.window = main_window;
-    } else {
-      mm_widget.hide ();
     }
-
 
     var actions = new GLib.SimpleActionGroup ();
     actions.add_action_entries (action_entries, this);
@@ -220,6 +209,9 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   }
 
   private void hide_nsfw_content_changed_cb () {
+    if (this.media_stack == null)
+      return;
+
     if (this.tweet.is_flag_set (TweetState.NSFW) &&
         Settings.hide_nsfw_content ())
       this.media_stack.visible_child_name = "nsfw";
@@ -342,7 +334,6 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       toggle_mode ();
   }
 
-  [GtkCallback]
   private void show_media_clicked_cb () {
     media_stack.visible_child = mm_widget;
   }
@@ -510,5 +501,41 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       return;
 
     base.show ();
+  }
+
+  private void create_media_widget (bool nsfw) {
+    this.mm_widget = new MultiMediaWidget ();
+    mm_widget.halign = Gtk.Align.FILL;
+    mm_widget.hexpand = true;
+    mm_widget.margin_top = 6;
+
+    if (nsfw) {
+      this.media_stack = new Gtk.Stack ();
+      media_stack.transition_type = Gtk.StackTransitionType.CROSSFADE;
+      media_stack.add (mm_widget);
+      var box = new Gtk.Box (Gtk.Orientation.VERTICAL, 12);
+      box.valign = Gtk.Align.CENTER;
+      var label = new Gtk.Label (_("This tweet contains images marked as inappropriate"));
+      label.margin_start = 12;
+      label.margin_end = 12;
+      label.wrap = true;
+      label.wrap_mode = Pango.WrapMode.WORD_CHAR;
+      box.add (label);
+
+      var button = new Gtk.Button.with_label (_("Show anyway"));
+      button.halign = Gtk.Align.CENTER;
+      button.valign = Gtk.Align.CENTER;
+      button.clicked.connect (show_media_clicked_cb);
+      box.add (button);
+
+      media_stack.add_named (box, "nsfw");
+      media_stack.show_all ();
+      media_stack.visible_child_name = "nsfw";
+      this.grid.attach (media_stack, 1, 6, 7, 1);
+    } else {
+      /* We will never have to hide mm_widget */
+      mm_widget.show_all ();
+      this.grid.attach (mm_widget, 1, 6, 7, 1);
+    }
   }
 }
