@@ -53,14 +53,12 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   private Gtk.Stack stack;
   [GtkChild]
   private Gtk.Box action_box;
-  [GtkChild]
-  private Gtk.Label quote_label;
-  [GtkChild]
-  private TextButton quote_name;
-  [GtkChild]
-  private Gtk.Label quote_screen_name;
-  [GtkChild]
-  private Gtk.Grid quote_grid;
+
+  /* Conditionally created widgets... */
+  private Gtk.Label? quote_label = null;
+  private TextButton? quote_name = null;
+  private Gtk.Label? quote_screen_name = null;
+  private Gtk.Grid? quote_grid = null;
   private Gtk.Stack? media_stack = null;
   private MultiMediaWidget? mm_widget = null;
 
@@ -135,13 +133,11 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     }
 
     if (tweet.quoted_tweet != null) {
+      this.create_quote_grid ();
       quote_label.label = TextTransform.transform_tweet (tweet.quoted_tweet,
                                                          Settings.get_text_transform_flags ());
       quote_name.set_markup (tweet.quoted_tweet.author.user_name);
       quote_screen_name.label = "@" + tweet.quoted_tweet.author.screen_name;
-
-      quote_grid.show ();
-      quote_grid.show_all ();
     }
 
     retweet_button.active = tweet.is_flag_set (TweetState.RETWEETED);
@@ -315,7 +311,6 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     main_window.main_widget.switch_page (Page.PROFILE, bundle);
   }
 
-  [GtkCallback]
   private void quote_name_button_clicked_cb () {
     assert (tweet.quoted_tweet != null);
     var bundle = new Bundle ();
@@ -537,5 +532,57 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       mm_widget.show_all ();
       this.grid.attach (mm_widget, 1, 6, 7, 1);
     }
+  }
+
+
+
+  private bool quote_link_activated_cb (string uri) {
+    if (this._read_only) {
+      return false;
+    }
+
+    this.grab_focus ();
+
+    return TweetUtils.activate_link (uri, main_window);
+  }
+
+  private void create_quote_grid () {
+    this.quote_grid = new Gtk.Grid ();
+    quote_grid.margin_top = 6;
+    quote_grid.get_style_context ().add_class ("quote");
+
+    this.quote_name = new TextButton ();
+    quote_name.halign = Gtk.Align.START;
+    quote_name.valign = Gtk.Align.BASELINE;
+    quote_name.margin_start = 12;
+    quote_name.margin_end = 6;
+    quote_name.clicked.connect (quote_name_button_clicked_cb);
+    quote_grid.attach (quote_name, 0, 0, 1, 1);
+
+    this.quote_screen_name = new Gtk.Label ("");
+    quote_screen_name.halign = Gtk.Align.START;
+    quote_screen_name.valign = Gtk.Align.BASELINE;
+    quote_screen_name.hexpand = true;
+    quote_screen_name.get_style_context ().add_class ("dim-label");
+    quote_grid.attach (quote_screen_name, 1, 0, 1, 1);
+
+    this.quote_label = new Gtk.Label ("");
+    quote_label.halign = Gtk.Align.START;
+    quote_label.hexpand = true;
+    quote_label.xalign = 0;
+    quote_label.use_markup = true;
+    quote_label.wrap = true;
+    quote_label.wrap_mode = Pango.WrapMode.WORD_CHAR;
+    quote_label.track_visited_links = false;
+    quote_label.margin_start = 12;
+    quote_label.activate_link.connect (quote_link_activated_cb);
+    quote_label.populate_popup.connect (populate_popup_cb);
+    var attrs = new Pango.AttrList ();
+    attrs.insert (Pango.attr_style_new (Pango.Style.ITALIC));
+    quote_label.set_attributes (attrs);
+    quote_grid.attach (quote_label, 0, 1, 2, 1);
+
+    quote_grid.show_all ();
+    this.grid.attach (quote_grid, 1, 3, 6, 1);
   }
 }
