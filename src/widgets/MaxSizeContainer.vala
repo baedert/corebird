@@ -16,7 +16,7 @@
  */
 
 class MaxSizeContainer : Gtk.Bin {
-  private Gdk.Window event_window;
+  private Gdk.Window? event_window = null;
   private int _max_size = 0;
   public int max_size {
     get {
@@ -70,8 +70,10 @@ class MaxSizeContainer : Gtk.Bin {
       child_alloc.height = max_size;
     }
 
-    this.event_window.move_resize (child_alloc.x, child_alloc.y,
-                                   child_alloc.width, child_alloc.height);
+    if (this.event_window != null)
+      this.event_window.move_resize (child_alloc.x, child_alloc.y,
+                                     child_alloc.width, child_alloc.height);
+
     this.set_allocation (child_alloc);
     if (get_child () != null && get_child ().visible) {
       int min_height, nat_height;
@@ -81,11 +83,6 @@ class MaxSizeContainer : Gtk.Bin {
       get_child ().size_allocate (child_alloc);
       if (this.get_realized ())
         get_child ().show ();
-    }
-
-    if (this.get_realized ()) {
-      if (get_child () != null)
-        get_child ().set_child_visible (true);
     }
   }
 
@@ -134,8 +131,9 @@ class MaxSizeContainer : Gtk.Bin {
   }
 
   public override void unmap () {
-    base.unmap ();
     if (this.event_window != null)
       this.event_window.hide ();
+
+    base.unmap ();
   }
 }
