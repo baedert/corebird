@@ -79,8 +79,11 @@ class CompletionTextView : Gtk.TextView {
     /* Set them here so they are consistent everywhere */
     this.right_margin  = 6;
     this.left_margin   = 6;
-    this.top_margin    = 6;
-    this.bottom_margin = 6;
+
+    if (Gtk.get_major_version () >= 3 && Gtk.get_minor_version () >= 18) {
+      this.top_margin    = 6;
+      this.bottom_margin = 6;
+    }
   }
 
   public void set_account (Account account) {

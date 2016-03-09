@@ -46,6 +46,11 @@ class ModifyFilterDialog : Gtk.Dialog {
     }
     this.filter = filter;
     this.main_window = parent;
+
+    if (Gtk.get_major_version () >= 3 && Gtk.get_minor_version () >= 18) {
+      regex_test_text.top_margin = 6;
+      regex_test_text.bottom_margin = 6;
+    }
   }
 
   construct {
