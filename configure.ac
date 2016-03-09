@@ -44,7 +44,7 @@ AM_CONDITIONAL([DISABLE_GST_CHECK], [ test "$disable_gst_check" = "yes"])
 
 
 # Vala Packages {{{
-pkg_modules="gtk+-3.0 >= 3.18
+pkg_modules="gtk+-3.0 >= 3.16
              glib-2.0 >= 2.44
              rest-0.7 >= 0.7.93
              libsoup-2.4
