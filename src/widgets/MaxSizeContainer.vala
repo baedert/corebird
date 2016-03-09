@@ -54,8 +54,13 @@ class MaxSizeContainer : Gtk.Bin {
   }
 
   public override void size_allocate (Gtk.Allocation alloc) {
-    if (get_child () == null || !get_child ().visible)
+    if (get_child () == null || !get_child ().visible) {
+      if (this.event_window != null)
+        event_window.move_resize (alloc.x, alloc.y, alloc.width, alloc.height);
+
+      this.set_allocation (alloc);
       return;
+    }
 
     Gtk.Allocation child_alloc = {};
     child_alloc.x = alloc.x;
