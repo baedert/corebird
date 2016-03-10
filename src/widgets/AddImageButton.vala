@@ -18,6 +18,7 @@
 class AddImageButton : Gtk.Widget {
   private static const int MIN_WIDTH  = 40;
   private static const int MAX_HEIGHT = 150;
+  private static const int MIN_HEIGHT = 100;
   private static const int ICON_SIZE  = 32;
   public string image_path;
   public Cairo.ImageSurface? surface;
@@ -104,7 +105,8 @@ class AddImageButton : Gtk.Widget {
     double width_ratio = (double)width / (double) media_width;
     int height = int.min (media_height, (int)(media_height * width_ratio));
     height = int.min (MAX_HEIGHT, height);
-    minimum = natural = (int)(height * this.delete_factor);
+    minimum = MIN_HEIGHT;
+    natural = int.max (minimum, (int)(height * this.delete_factor));
   }
 
   public override void get_preferred_width_for_height (int     height,
