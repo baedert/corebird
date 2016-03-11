@@ -126,10 +126,17 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     if (tweet.retweeted_tweet != null) {
       rt_label.show ();
       rt_image.show ();
-      rt_label.label = @"<span underline='none'><a href=\"@$(tweet.source_tweet.author.id)/" +
-                       @"@$(tweet.source_tweet.author.screen_name)\"" +
-                       @"title=\"@$(tweet.source_tweet.author.screen_name)\">" +
-                       @"$(tweet.source_tweet.author.user_name)</a></span>";
+      var buff = new StringBuilder ();
+      buff.append ("<span underline='none'><a href=\"@")
+          .append (tweet.source_tweet.author.id.to_string ())
+          .append ("/")
+          .append (tweet.source_tweet.author.screen_name)
+          .append ("\" title=\"@")
+          .append (tweet.source_tweet.author.screen_name)
+          .append ("\">")
+          .append (tweet.source_tweet.author.user_name)
+          .append ("</a></span>");
+      rt_label.label = buff.str;
     }
 
     if (tweet.quoted_tweet != null) {
