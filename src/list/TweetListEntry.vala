@@ -157,6 +157,9 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       mm_widget.media_clicked.connect (media_clicked_cb);
       mm_widget.media_invalid.connect (media_invalid_cb);
       mm_widget.window = main_window;
+
+      if (tweet.is_flag_set (TweetState.NSFW))
+        Settings.get ().changed["hide-nsfw-content"].connect (hide_nsfw_content_changed_cb);
     }
 
     var actions = new GLib.SimpleActionGroup ();
@@ -188,12 +191,13 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
     // TODO All these settings signal connections with lots of tweets could be costly...
     Settings.get ().changed["text-transform-flags"].connect (transform_flags_changed_cb);
-    Settings.get ().changed["hide-nsfw-content"].connect (hide_nsfw_content_changed_cb);
   }
 
   ~TweetListEntry () {
     Settings.get ().changed["text-transform-flags"].disconnect (transform_flags_changed_cb);
-    Settings.get ().changed["hide-nsfw-content"].disconnect (hide_nsfw_content_changed_cb);
+
+    if (tweet.is_flag_set (TweetState.NSFW) && this.media_stack != null)
+      Settings.get ().changed["hide-nsfw-content"].disconnect (hide_nsfw_content_changed_cb);
   }
 
   private void transform_flags_changed_cb () {
