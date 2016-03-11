@@ -525,7 +525,10 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
       media_stack.add_named (box, "nsfw");
       media_stack.show_all ();
-      media_stack.visible_child_name = "nsfw";
+      if (Settings.hide_nsfw_content ())
+        media_stack.visible_child_name = "nsfw";
+      else
+        media_stack.visible_child = mm_widget;
       this.grid.attach (media_stack, 1, 6, 7, 1);
     } else {
       /* We will never have to hide mm_widget */
