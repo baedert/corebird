@@ -59,9 +59,9 @@ private class MediaButton : Gtk.Widget {
     try {
       play_icons = {
         Gdk.cairo_surface_create_from_pixbuf (
-          new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/assets/play.png"), 1, null),
+          new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/data/play.png"), 1, null),
         Gdk.cairo_surface_create_from_pixbuf (
-          new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/assets/play@2.png"), 2, null),
+          new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/data/play@2.png"), 2, null),
       };
     } catch (GLib.Error e) {
       critical (e.message);

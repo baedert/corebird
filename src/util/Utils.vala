@@ -372,7 +372,6 @@ namespace Utils {
     Gtk.StyleContext.add_provider_for_screen ((!)Gdk.Screen.get_default (),
                                               provider,
                                               Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-
   }
 
   public void init_soup_session () {
