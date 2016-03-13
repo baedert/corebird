@@ -32,8 +32,10 @@ public class Corebird : Gtk.Application {
     {"show-about-dialog", about_activated                 },
     {"show-dm-thread",    show_dm_thread,          "(xx)" },
     {"show-window",       show_window,             "x"    },
+#if DEBUG
     {"post-json",         post_json,               "(ss)" },
     {"print-debug",       print_debug,                    },
+#endif
   };
 
 
@@ -457,10 +459,9 @@ public class Corebird : Gtk.Application {
       warning ("TODO: Implement");
   }
 
-  private void print_debug (GLib.SimpleAction a, GLib.Variant? v) {
 #if DEBUG
+  private void print_debug (GLib.SimpleAction a, GLib.Variant? v) {
     Twitter.get ().debug ();
-#endif
   }
 
   private void post_json (GLib.SimpleAction a, GLib.Variant? value) {
@@ -483,4 +484,5 @@ public class Corebird : Gtk.Application {
     } else
       error ("Window for %s is not open, so account isn't active.", screen_name);
   }
+#endif
 }
