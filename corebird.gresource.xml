@@ -60,5 +60,6 @@
     <file>sql/init/Create.2.sql</file>
     <file>sql/accounts/Create.1.sql</file>
     <file>sql/accounts/Create.2.sql</file>
+    <file>sql/accounts/Create.3.sql</file>
   </gresource>
 </gresources>
