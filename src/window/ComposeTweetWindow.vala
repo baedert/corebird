@@ -153,13 +153,18 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       if (Gtk.get_major_version () == 3 && Gtk.get_minor_version () < 19) {
         int deco_min, deco_nat;
         this.get_titlebar ().get_preferred_height_for_width (window_width,
-                                                              out deco_min, out deco_nat);
+                                                             out deco_min, out deco_nat);
         window_height += deco_min;
       }
 
       this.set_default_size (window_width, window_height);
     }
 
+    string? last_tweet = account.db.select ("info").cols ("last_tweet").once_string ();
+    if (last_tweet != null && last_tweet.length > 0 &&
+        tweet_text.get_buffer ().text.length == 0) {
+      this.tweet_text.get_buffer ().text = last_tweet;
+    }
   }
 
   private void recalc_tweet_length () {
@@ -186,8 +191,8 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
   [GtkCallback]
   private void start_send_tweet () {
-    if (!send_button.sensitive)
-      return;
+    //if (!send_button.sensitive)
+      //return;
 
     var job = new ComposeJob (this.account);
     this.cancellable = new GLib.Cancellable ();
@@ -220,20 +225,38 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       this.compose_image_manager.end_progress (path, error_msg);
     });
 
-    job.start.begin (cancellable, () => {
+    job.start.begin (cancellable, (obj, res) => {
+      bool success = job.start.end (res);
       debug ("Tweet sent.");
+      if (success) {
+        /* Reset last_tweet */
+        account.db.update ("info").val ("last_tweet", "").run ();
+      } else {
+        /* Better save this tweet */
+        this.save_last_tweet ();
+      }
       this.destroy ();
     });
+  }
+
+  private void save_last_tweet () {
+    string text = tweet_text.buffer.text;
+
+    if (text.length > 0)
+      account.db.update ("info").val ("last_tweet", text).run ();
   }
 
   [GtkCallback]
   private void cancel_clicked (Gtk.Widget source) {
     if (this.cancellable != null)
       this.cancellable.cancel ();
+
+     this.save_last_tweet ();
     destroy ();
   }
 
   private bool escape_pressed_cb () {
+    this.save_last_tweet ();
     this.destroy ();
     return Gdk.EVENT_STOP;
   }
