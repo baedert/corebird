@@ -158,9 +158,6 @@
                 <property name="margin_top">4</property>
                 <property name="margin_bottom">1</property>
                 <signal name="clicked" handler="name_button_clicked_cb" swapped="no"/>
-                <style>
-                  <class name="text-only-button"/>
-                </style>
               </object>
               <packing>
                 <property name="left_attach">1</property>
