@@ -66,9 +66,17 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   private bool _read_only = false;
   public bool read_only {
     set {
+      assert (value);
       if (mm_widget != null)
         mm_widget.sensitive = !value;
-      name_button.sensitive = !value;
+
+      this.grid.remove (name_button);
+      var name_label = new Gtk.Label ("<b>" + tweet.user_name + "</b>");
+      name_label.set_use_markup (true);
+      name_label.valign = Gtk.Align.BASELINE;
+      name_label.show ();
+      this.grid.attach (name_label, 1, 0, 1, 1);
+
       this._read_only = value;
     }
   }
