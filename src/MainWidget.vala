@@ -44,6 +44,7 @@ public class MainWidget : Gtk.Box {
 
   public MainWidget (Account account, MainWindow parent, Corebird app) {
     this.account = account;
+    ((Corebird)GLib.Application.get_default ()).start_account (account);
 
     var acc_menu = (GLib.Menu)Corebird.account_menu;
     for (int i = 0; i < acc_menu.get_n_items (); i++){
@@ -96,8 +97,6 @@ public class MainWidget : Gtk.Box {
 
     Settings.get ().bind ("sidebar-visible", sidebar_revealer, "reveal-child",
                           SettingsBindFlags.DEFAULT);
-
-    ((Corebird)GLib.Application.get_default ()).start_account (account);
   }
 
 
