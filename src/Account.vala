@@ -548,8 +548,9 @@ public class Account : GLib.Object {
    * @return A singly-linked list of accounts
    */
   public static unowned GLib.SList<Account> list_accounts () {
-    if (accounts == null)
+    if (GLib.unlikely (accounts == null))
       lookup_accounts ();
+
     return accounts;
   }
   /**
@@ -582,6 +583,9 @@ public class Account : GLib.Object {
    * @param screen_name The screen name of the account to remove.
    */
   public static void remove_account (string screen_name) {
+    if (GLib.unlikely (accounts == null))
+      lookup_accounts ();
+
     foreach (Account a in accounts) {
       if (a.screen_name == screen_name) {
         accounts.remove (a);
@@ -598,6 +602,9 @@ public class Account : GLib.Object {
    *         null of no such instance could be found.
    */
   public static unowned Account? query_account (string screen_name) {
+    if (GLib.unlikely (accounts == null))
+      lookup_accounts ();
+
     foreach (unowned Account a in accounts) {
       if (screen_name == a.screen_name)
         return a;
@@ -606,6 +613,9 @@ public class Account : GLib.Object {
   }
 
   public static unowned Account? query_account_by_id (int64 id) {
+    if (GLib.unlikely (accounts == null))
+      lookup_accounts ();
+
     foreach (unowned Account a in accounts) {
       if (id == a.id)
         return a;

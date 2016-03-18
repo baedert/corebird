@@ -153,6 +153,18 @@ public class Corebird : Gtk.Application {
 
     if (GLib.ApplicationFlags.IS_SERVICE in this.flags) {
       this.hold ();
+
+      string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
+
+      foreach (unowned string screen_name in startup_accounts) {
+        Account? acc = Account.query_account (screen_name);
+        if (acc != null) {
+          debug ("Service: Starting account %s...", screen_name);
+          this.start_account (acc);
+        } else {
+          warning ("Invalid startup account: '%s'", screen_name);
+        }
+      }
     }
 
     // Construct app menu
@@ -446,6 +458,7 @@ public class Corebird : Gtk.Application {
       return;
     }
 
+    acc.init_proxy ();
     acc.user_stream.start ();
     acc.init_information.begin ();
 
