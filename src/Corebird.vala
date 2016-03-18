@@ -24,6 +24,7 @@ public class Corebird : Gtk.Application {
   public signal void account_window_changed (int64? old_id, int64 new_id);
 
   private SettingsDialog? settings_dialog = null;
+  private Gee.ArrayList<Account> active_accounts;
 
   const GLib.ActionEntry[] app_entries = {
     {"show-settings",     show_settings_activated         },
@@ -45,6 +46,7 @@ public class Corebird : Gtk.Application {
                 flags:            ApplicationFlags.HANDLES_COMMAND_LINE);
                 //register_session: true);
     snippet_manager = new SnippetManager ();
+    active_accounts = new Gee.ArrayList<Account> ();
   }
 
   public override int command_line (ApplicationCommandLine cmd) {
@@ -143,10 +145,15 @@ public class Corebird : Gtk.Application {
                                     Sql.COREBIRD_SQL_VERSION);
 
     // Setup gettext
-    GLib.Intl.setlocale(GLib.LocaleCategory.ALL, Config.DATADIR + "/locale");
+    GLib.Intl.setlocale (GLib.LocaleCategory.ALL, Config.DATADIR + "/locale");
     GLib.Intl.bindtextdomain (Config.GETTEXT_PACKAGE, null);
-    GLib.Intl.bind_textdomain_codeset(Config.GETTEXT_PACKAGE, "UTF-8");
-    GLib.Intl.textdomain(Config.GETTEXT_PACKAGE);
+    GLib.Intl.bind_textdomain_codeset (Config.GETTEXT_PACKAGE, "UTF-8");
+    GLib.Intl.textdomain (Config.GETTEXT_PACKAGE);
+
+
+    if (GLib.ApplicationFlags.IS_SERVICE in this.flags) {
+      this.hold ();
+    }
 
     // Construct app menu
     Gtk.Builder builder = new Gtk.Builder ();
@@ -431,6 +438,18 @@ public class Corebird : Gtk.Application {
     account_names.resize (index + 1);
     Settings.get ().set_strv ("startup-accounts", account_names);
     base.quit ();
+  }
+
+  public void start_account (Account acc) {
+    if (this.active_accounts.contains (acc)) {
+      warning ("Account %s is already active", acc.screen_name);
+      return;
+    }
+
+    acc.user_stream.start ();
+    acc.init_information.begin ();
+
+    this.active_accounts.add (acc);
   }
 
 

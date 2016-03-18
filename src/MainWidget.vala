@@ -54,9 +54,6 @@ public class MainWidget : Gtk.Box {
         break;
       }
     }
-    account.user_stream.start ();
-    account.init_information.begin ();
-
     stack.add (stack_impostor);
 
     pages[0]  = new HomeTimeline (Page.STREAM, account);
@@ -100,6 +97,8 @@ public class MainWidget : Gtk.Box {
 
     Settings.get ().bind ("sidebar-visible", sidebar_revealer, "reveal-child",
                           SettingsBindFlags.DEFAULT);
+
+    ((Corebird)GLib.Application.get_default ()).start_account (account);
   }
 
 
