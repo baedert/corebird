@@ -190,6 +190,6 @@ public class MainWidget : Gtk.Box {
   }
 
   public void stop () {
-    account.uninit ();
+    ((Corebird)GLib.Application.get_default ()).stop_account (this.account);
   }
 }

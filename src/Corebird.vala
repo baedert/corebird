@@ -452,6 +452,17 @@ public class Corebird : Gtk.Application {
     this.active_accounts.add (acc);
   }
 
+  public void stop_account (Account acc) {
+    if (!this.active_accounts.contains (acc)) {
+      warning ("Can't stop account %s since it's not in the list of active accounts",
+               acc.screen_name);
+      return;
+    }
+
+    acc.uninit ();
+    this.active_accounts.remove (acc);
+  }
+
 
   /********************************************************/
 
