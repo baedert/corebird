@@ -99,9 +99,6 @@
                         <property name="valign">end</property>
                         <property name="hexpand">True</property>
                         <signal name="clicked" handler="name_button_clicked_cb" swapped="no"/>
-                        <style>
-                          <class name="text-only-button"/>
-                        </style>
                       </object>
                     </child>
 

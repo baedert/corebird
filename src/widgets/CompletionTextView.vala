@@ -75,6 +75,14 @@ class CompletionTextView : Gtk.TextView {
     this.buffer.notify["cursor-position"].connect (update_completion);
     this.buffer.changed.connect (buffer_changed_cb);
     this.key_press_event.connect (key_press_event_cb);
+
+    /* Set them here so they are consistent everywhere */
+    this.right_margin  = 6;
+    this.left_margin   = 6;
+
+    /* TODO: Remove this once the required gtk+ version is >= 3.18 */
+    if (Gtk.get_major_version () >= 3 && Gtk.get_minor_version () >= 18)
+      this.set ("top-margin", 6, "bottom-margin", 6, null);
   }
 
   public void set_account (Account account) {

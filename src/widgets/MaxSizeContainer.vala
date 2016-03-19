@@ -16,7 +16,7 @@
  */
 
 class MaxSizeContainer : Gtk.Bin {
-  private Gdk.Window event_window;
+  private Gdk.Window? event_window = null;
   private int _max_size = 0;
   public int max_size {
     get {
@@ -54,8 +54,13 @@ class MaxSizeContainer : Gtk.Bin {
   }
 
   public override void size_allocate (Gtk.Allocation alloc) {
-    if (get_child () == null || !get_child ().visible)
+    if (get_child () == null || !get_child ().visible) {
+      if (this.event_window != null)
+        event_window.move_resize (alloc.x, alloc.y, alloc.width, alloc.height);
+
+      this.set_allocation (alloc);
       return;
+    }
 
     Gtk.Allocation child_alloc = {};
     child_alloc.x = alloc.x;
@@ -70,8 +75,10 @@ class MaxSizeContainer : Gtk.Bin {
       child_alloc.height = max_size;
     }
 
-    this.event_window.move_resize (child_alloc.x, child_alloc.y,
-                                   child_alloc.width, child_alloc.height);
+    if (this.event_window != null)
+      this.event_window.move_resize (child_alloc.x, child_alloc.y,
+                                     child_alloc.width, child_alloc.height);
+
     this.set_allocation (child_alloc);
     if (get_child () != null && get_child ().visible) {
       int min_height, nat_height;
@@ -81,11 +88,6 @@ class MaxSizeContainer : Gtk.Bin {
       get_child ().size_allocate (child_alloc);
       if (this.get_realized ())
         get_child ().show ();
-    }
-
-    if (this.get_realized ()) {
-      if (get_child () != null)
-        get_child ().set_child_visible (true);
     }
   }
 
@@ -101,7 +103,7 @@ class MaxSizeContainer : Gtk.Bin {
     attr.height = alloc.height;
     attr.window_type = Gdk.WindowType.CHILD;
     attr.visual = this.get_visual ();
-    attr.wclass = Gdk.WindowWindowClass.INPUT_ONLY;
+    attr.wclass = Gdk.WindowWindowClass.INPUT_OUTPUT;
     attr.event_mask = this.get_events ();
 
     Gdk.WindowAttributesType attr_mask = Gdk.WindowAttributesType.X |
@@ -134,8 +136,9 @@ class MaxSizeContainer : Gtk.Bin {
   }
 
   public override void unmap () {
-    base.unmap ();
     if (this.event_window != null)
       this.event_window.hide ();
+
+    base.unmap ();
   }
 }

@@ -72,16 +72,16 @@ class AvatarWidget : Gtk.Widget {
     try {
       verified_icons = {
         Gdk.cairo_surface_create_from_pixbuf (
-          new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/assets/verified-small.png"),
+          new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/data/verified-small.png"),
           1, null),
         Gdk.cairo_surface_create_from_pixbuf (
-          new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/assets/verified-large.png"),
+          new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/data/verified-large.png"),
           1, null),
         Gdk.cairo_surface_create_from_pixbuf (
-          new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/assets/verified-small@2.png"),
+          new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/data/verified-small@2.png"),
           2, null),
         Gdk.cairo_surface_create_from_pixbuf (
-          new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/assets/verified-large@2.png"),
+          new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/data/verified-large@2.png"),
           2, null)
       };
     } catch (GLib.Error e) {

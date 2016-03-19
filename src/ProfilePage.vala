@@ -637,7 +637,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
       if (path != null)
         banner_image.pixbuf = new Gdk.Pixbuf.from_file (path);
       else
-        banner_image.pixbuf = new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/assets/no_banner.png");
+        banner_image.pixbuf = Twitter.no_banner;
     } catch (GLib.Error e) {
       warning (e.message);
     }

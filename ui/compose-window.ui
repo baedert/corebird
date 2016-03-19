@@ -112,8 +112,6 @@
                 <property name="vexpand">True</property>
                 <property name="wrap_mode">word-char</property>
                 <property name="accepts_tab">False</property>
-                <property name="left_margin">2</property>
-                <property name="right_margin">2</property>
                 <property name="height_request">60</property>
                 <accessibility>
                   <relation type="labelled-by" target="length_label"/>

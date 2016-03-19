@@ -37,6 +37,9 @@ AM_CONDITIONAL([ENABLE_DEBUG], [ test "$enable_debug" = "yes"])
 AC_ARG_ENABLE(video, AS_HELP_STRING([--disable-video], [Disable video support]),, disable_video=no)
 AM_CONDITIONAL([DISABLE_VIDEO], [ test "$disable_video" = "yes"])
 
+# --disable-gst-check
+AC_ARG_ENABLE(gst_check, AS_HELP_STRING([--disable-gst-check], [Disable check for needed gstreamer elements]),, disable_gst_check=no)
+AM_CONDITIONAL([DISABLE_GST_CHECK], [ test "$disable_gst_check" = "yes"])
 
 
 
@@ -100,6 +103,11 @@ if test "$enable_debug" = "yes"; then
 fi
 
 
+if test "$disable_gst_check" = "no"; then
+  # Check for gtksink
+  GST_ELEMENT_CHECK([gtksink], [1.0], [], [])
+fi
+
 
 # Gettext stuff
 GETTEXT_PACKAGE=AC_PACKAGE_NAME
@@ -114,15 +122,14 @@ src/Makefile
 ui/Makefile
 data/Makefile
 data/org.baedert.corebird.desktop.in
-assets/Makefile
-assets/256x256/Makefile
-assets/128x128/Makefile
-assets/96x96/Makefile
-assets/64x64/Makefile
-assets/48x48/Makefile
-assets/32x32/Makefile
-assets/24x24/Makefile
-assets/16x16/Makefile
+data/256x256/Makefile
+data/128x128/Makefile
+data/96x96/Makefile
+data/64x64/Makefile
+data/48x48/Makefile
+data/32x32/Makefile
+data/24x24/Makefile
+data/16x16/Makefile
 po/Makefile.in
 tests/Makefile
 ])
@@ -140,4 +147,5 @@ echo "
            C Compiler: ${CC} ${CFLAGS}
             Debugging: $enable_debug
        Video disabled: $disable_video
+   Gst check disabled: $disable_gst_check
 "
