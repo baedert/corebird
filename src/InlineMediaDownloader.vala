@@ -244,6 +244,13 @@ public class InlineMediaDownloader : GLib.Object {
                           "<meta property=\"og:image\"\\s+content=\"(.*?)\"", 1);
     }
 
+    if (media.url == null ||
+        media.thumb_url == null) {
+      mark_invalid (media);
+      return;
+    }
+
+
     /* We check this here again, since loading e.g. instragram videos might
        change both the media type and the media url. */
     if (this.urls_downloading.contains (media.url)) {
