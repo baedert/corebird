@@ -171,42 +171,10 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     /* We (maybe) re-enable this later when the friendship object has arrived */
     ((SimpleAction)actions.lookup_action ("toggle-retweets")).set_enabled (false);
 
-    load_banner (null);
+    set_banner (null);
     load_friendship.begin ();
-    bool data_in_db = false;
-    //Load cached data
-    Corebird.db.select ("profiles").cols ("id", "screen_name", "name", "description", "tweets",
-     "following", "followers", "avatar_name", "banner_url", "url", "location", "is_following")
-      .where_eqi ("id", user_id)
-    .run ((vals) => {
-      /* If we get inside this block, there is already some data in the
-        DB we can use. */
-      avatar_image.surface = Twitter.get ().get_cached_avatar (user_id);
-
-      var entities = new TextEntity[0];
-
-      set_data(vals[2], vals[1], vals[9], vals[10], vals[3],
-               int.parse (vals[4]), int.parse (vals[5]), int.parse (vals[6]),
-               vals[7], false, ref entities);
-      this.follow_button.following = bool.parse (vals[11]);
-      this.follow_button.sensitive = (this.user_id != this.account.id);
-      string banner_name = Utils.get_banner_name (user_id);
-
-      if (FileUtils.test(Dirs.cache("assets/banners/"+banner_name), FileTest.EXISTS)){
-        debug ("Banner exists, set it directly...");
-        load_banner (Dirs.cache ("assets/banners/" + banner_name));
-      } else {
-        // TODO: ???
-        // If the cached banner does somehow not exist, load it again.
-        debug("Banner %s does not exist, load it first...", banner_name);
-        load_banner (null);
-      }
-      data_in_db = true;
-      return false;
-    });
-
     /* Load the profile data now, then - if available - set the cached data */
-    load_profile_data.begin (user_id, !data_in_db);
+    load_profile_data.begin (user_id);
   }
 
 
@@ -222,11 +190,10 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     ((SimpleAction)actions.lookup_action ("toggle-retweets")).set_enabled (fr.following);
   }
 
-  private async void load_profile_data (int64 user_id, bool show_spinner) { //{{{
-    if (show_spinner) {
-      loading_stack.visible_child_name = "progress";
-      progress_spinner.start ();
-    }
+  private async void load_profile_data (int64 user_id) { //{{{
+    loading_stack.visible_child_name = "progress";
+    progress_spinner.start ();
+
     follow_button.sensitive = false;
     var call = account.proxy.new_call ();
     call.set_method ("GET");
@@ -248,7 +215,6 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     int64 id = root.get_int_member ("id");
 
     string avatar_url = root.get_string_member("profile_image_url");
-    string avatar_name = Utils.get_avatar_name(avatar_url);
     int scale = this.get_scale_factor ();
 
     if (scale == 1)
@@ -268,10 +234,8 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
         surface = Twitter.no_avatar;
       }
       avatar_image.surface = surface;
-      if (show_spinner) {
-        progress_spinner.stop ();
-        loading_stack.visible_child_name = "data";
-      }
+      progress_spinner.stop ();
+      loading_stack.visible_child_name = "data";
     });
 
     string name        = root.get_string_member("name").replace ("&", "&amp;").strip ();
@@ -340,24 +304,10 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
          following, followers, avatar_url, verified, ref text_urls);
     this.follow_button.following = is_following;
     this.follow_button.sensitive = (this.user_id != this.account.id);
-    Corebird.db.replace ("profiles")
-               .vali64 ("id", id)
-               .val ("screen_name", screen_name)
-               .val ("name", name)
-               .vali ("followers", followers)
-               .vali ("following", following)
-               .vali ("tweets", tweets)
-               .val ("description", TextTransform.transform (description, text_urls, 0))
-               .val ("avatar_name", avatar_name)
-               .val ("url", display_url)
-               .val ("location", location)
-               .valb ("is_following", is_following)
-               .run ();
-
   } //}}}
 
 
-  private async void load_tweets () { // {{{
+  private async void load_tweets () {
     tweet_list.set_unempty ();
     tweets_loading = true;
     int requested_tweet_count = 10;
@@ -391,9 +341,9 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
                                  main_window,
                                  account);
     tweets_loading = false;
-  } // }}}
+  }
 
-  private async void load_older_tweets () { // {{{
+  private async void load_older_tweets () {
     if (tweets_loading)
       return;
 
@@ -427,7 +377,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
                                  main_window,
                                  account);
     tweets_loading = false;
-  } // }}}
+  }
 
   private async void load_followers () {
     if (this.followers_cursor != null && this.followers_cursor.full)
@@ -503,29 +453,13 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     this.following_loading = false;
   }
 
-  /**
-   * Loads the user's banner image.
-   *
-   * @param base_url The "base url" of the banner, obtained from the users/show call from Twitter.
-   * @param user_id Foo
-   * @param screen_name Bar
-   */
   private void load_profile_banner (string base_url, int64 user_id) { // {{{
-    string banner_name = Utils.get_banner_name (user_id);
-    string saved_banner_url = Dirs.cache ("assets/banners/" + banner_name);
     string banner_url  = base_url + "/mobile_retina";
-    string banner_on_disk = Dirs.cache("assets/banners/" + banner_name);
-    if (!FileUtils.test (banner_on_disk, FileTest.EXISTS) || banner_url != saved_banner_url) {
-      Utils.download_file_async.begin (banner_url, banner_on_disk, data_cancellable,
-          () => {load_banner (banner_on_disk);});
-      Corebird.db.update ("profiles")
-                 .val ("banner_url", banner_url)
-                 .where_eqi ("id", user_id)
-                 .run ();
-    } else {
-      load_banner (banner_on_disk);
-    }
-  } // }}}
+    Utils.download_pixbuf.begin (banner_url, null, (obj, res) => {
+      Gdk.Pixbuf? banner = Utils.download_pixbuf.end (res);
+      set_banner (banner);
+    });
+  }
 
 
   private new void set_data (string name, string screen_name, string? url,
@@ -533,7 +467,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
                              int following, int followers, string avatar_url,
                              bool verified,
                              ref TextEntity[]? text_urls
-                             ) { //{{{
+                             ) {
 
 
     var section = (GLib.Menu)more_menu.get_item_link (0, GLib.Menu.LINK_SECTION);
@@ -580,10 +514,10 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     this.screen_name = screen_name;
     this.avatar_url = avatar_url;
 
-  } //}}}
+  }
 
   [GtkCallback]
-  private void follow_button_clicked_cb () { //{{{
+  private void follow_button_clicked_cb () {
     var call = account.proxy.new_call();
     HomeTimeline ht = (HomeTimeline) main_window.get_page (Page.STREAM);
     if (follow_button.following) {
@@ -625,24 +559,20 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
       progress_spinner.stop ();
       loading_stack.visible_child_name = "data";
     });
-  } //}}}
+  }
 
   [GtkCallback]
   private bool activate_link (string uri) {
     return TweetUtils.activate_link (uri, main_window);
   }
 
-  private void load_banner (string? path) {
-    try {
-      if (path != null)
-        banner_image.pixbuf = new Gdk.Pixbuf.from_file (path);
-      else
-        banner_image.pixbuf = Twitter.no_banner;
-    } catch (GLib.Error e) {
-      warning (e.message);
-    }
-  }
 
+  private inline void set_banner (Gdk.Pixbuf? banner) {
+    if (banner == null)
+      banner_image.pixbuf = Twitter.no_banner;
+    else
+      banner_image.pixbuf = banner;
+  }
 
   /**
    * see IPage#onJoin

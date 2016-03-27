@@ -222,17 +222,6 @@ namespace Utils {
   }
 
   /**
-   * Returns the avatar name for the given path
-   *
-   * @return the 'calculated' avatar name
-   */
-  string get_avatar_name (string path) {
-    string[] parts = path.split ("/");
-    return parts[parts.length - 2] + "_" + parts[parts.length - 1];
-  }
-
-
-  /**
    * Shows an error dialog with the given error message
    *
    * @param message The error message to show
@@ -351,6 +340,33 @@ namespace Utils {
       }
     });
     yield;
+  }
+
+  async Gdk.Pixbuf? download_pixbuf (string            url,
+                                     GLib.Cancellable? cancellable = null) {
+
+    Gdk.Pixbuf? result = null;
+    var msg = new Soup.Message ("GET", url);
+    GLib.SourceFunc cb = download_pixbuf.callback;
+
+    SOUP_SESSION.queue_message (msg, (_s, _msg) => {
+      if (cancellable.is_cancelled ()) {
+        cb ();
+        return;
+      }
+      try {
+        var in_stream = new MemoryInputStream.from_data (_msg.response_body.data,
+                                                         GLib.g_free);
+        result = new Gdk.Pixbuf.from_stream (in_stream, cancellable);
+      } catch (GLib.Error e) {
+        warning (e.message);
+      } finally {
+        cb ();
+      }
+    });
+    yield;
+
+    return result;
   }
 
   string unescape_html (string input) {
