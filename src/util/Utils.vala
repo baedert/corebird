@@ -122,7 +122,7 @@ string rest_call_to_string (Rest.ProxyCall call)
     builder.append ("?");
 
     foreach (string key in params.get_keys ()) {
-      // This doesn't work for the last param what whatever.
+      // This doesn't work for the last param but whatever.
       builder.append (key).append ("=").append (params.get (key)).append ("&");
     }
   }
