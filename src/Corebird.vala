@@ -242,10 +242,6 @@ public class Corebird : Gtk.Application {
 
   }
 
-  public override void shutdown () {
-    base.shutdown();
-  }
-
   private GLib.MenuItem create_accout_menu_item (Account account) {
       var mi = new GLib.MenuItem ("@" + account.screen_name.replace ("_", "__"),
                                   "app.show-" + account.id.to_string ());
