@@ -155,6 +155,12 @@ public class Corebird : Gtk.Application {
       this.hold ();
 
       string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
+      if (startup_accounts.length == 1 && startup_accounts[0] == "")
+        startup_accounts.resize (0);
+
+      debug ("Configured startup accounts: %d", startup_accounts.length);
+      uint n_accounts = Account.list_accounts ().length ();
+      debug ("Configured accounts: %u", n_accounts);
 
       foreach (unowned string screen_name in startup_accounts) {
         Account? acc = Account.query_account (screen_name);
@@ -279,7 +285,7 @@ public class Corebird : Gtk.Application {
    * If that array is empty, look at all the account and if there is one, open that one.
    * If there is none, open a MainWindow with a null account.
    */
-  private void open_startup_windows (string? compose_screen_name = null) { // {{{
+  private void open_startup_windows (string? compose_screen_name = null) {
     if (compose_screen_name != null) {
       Account? acc = Account.query_account (compose_screen_name);
       if (acc == null) {
@@ -302,9 +308,7 @@ public class Corebird : Gtk.Application {
     if (startup_accounts.length == 1 && startup_accounts[0] == "")
       startup_accounts.resize (0);
 
-    debug ("Configured startup accounts: %d", startup_accounts.length);
     uint n_accounts = Account.list_accounts ().length ();
-    debug ("Configured accounts: %u", n_accounts);
 
     if (startup_accounts.length == 0) {
       if (n_accounts == 1) {
@@ -350,7 +354,7 @@ public class Corebird : Gtk.Application {
         m.show_all ();
       }
     }
-  } // }}}
+  }
 
   /**
    * Adds a new MainWindow instance with the account that
