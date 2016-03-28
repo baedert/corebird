@@ -17,22 +17,11 @@
 
 namespace Dirs {
   static string? config_dir = null;
-  static string? cache_dir  = null;
 
 
   public void create_dirs () {
-    create_folder (cache (""));
-    create_folder (cache ("assets"));
-    create_folder (cache ("assets/banners/"));
     create_folder (config (""));
     create_folder (config ("accounts/"));
-  }
-
-  public string cache (string path) {
-    if (cache_dir == null) {
-      cache_dir = GLib.Environment.get_user_cache_dir () + "/corebird/";
-    }
-    return cache_dir + path;
   }
 
   public string config (string path) {
