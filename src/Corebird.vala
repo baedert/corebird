@@ -130,6 +130,7 @@ public class Corebird : Gtk.Application {
 
   public override void startup () {
     base.startup ();
+    this.set_resource_base_path ("/org/baedert/corebird");
 
     new ComposeImageManager ();
     new LazyMenuButton ();
@@ -173,14 +174,7 @@ public class Corebird : Gtk.Application {
       }
     }
 
-    // Construct app menu
-    Gtk.Builder builder = new Gtk.Builder ();
-    try {
-      builder.add_from_resource ("/org/baedert/corebird/ui/menu.ui");
-    } catch (GLib.Error e) {
-      critical (e.message);
-    }
-    GLib.MenuModel app_menu = (MenuModel)builder.get_object ("app-menu");
+    GLib.MenuModel app_menu = this.get_app_menu ();
     var acc_menu = app_menu.get_item_link (0, "section");
     account_menu = new GLib.Menu ();
 
