@@ -122,7 +122,7 @@ string rest_call_to_string (Rest.ProxyCall call)
     builder.append ("?");
 
     foreach (string key in params.get_keys ()) {
-      // This doesn't work for the last param what whatever.
+      // This doesn't work for the last param but whatever.
       builder.append (key).append ("=").append (params.get (key)).append ("&");
     }
   }
@@ -220,17 +220,6 @@ namespace Utils {
       return "jpeg";
     return type;
   }
-
-  /**
-   * Returns the avatar name for the given path
-   *
-   * @return the 'calculated' avatar name
-   */
-  string get_avatar_name (string path) {
-    string[] parts = path.split ("/");
-    return parts[parts.length - 2] + "_" + parts[parts.length - 1];
-  }
-
 
   /**
    * Shows an error dialog with the given error message
@@ -351,6 +340,33 @@ namespace Utils {
       }
     });
     yield;
+  }
+
+  async Gdk.Pixbuf? download_pixbuf (string            url,
+                                     GLib.Cancellable? cancellable = null) {
+
+    Gdk.Pixbuf? result = null;
+    var msg = new Soup.Message ("GET", url);
+    GLib.SourceFunc cb = download_pixbuf.callback;
+
+    SOUP_SESSION.queue_message (msg, (_s, _msg) => {
+      if (cancellable.is_cancelled ()) {
+        cb ();
+        return;
+      }
+      try {
+        var in_stream = new MemoryInputStream.from_data (_msg.response_body.data,
+                                                         GLib.g_free);
+        result = new Gdk.Pixbuf.from_stream (in_stream, cancellable);
+      } catch (GLib.Error e) {
+        warning (e.message);
+      } finally {
+        cb ();
+      }
+    });
+    yield;
+
+    return result;
   }
 
   string unescape_html (string input) {
