@@ -50,27 +50,9 @@ public class AvatarBannerWidget : Gtk.Container {
 
   public void set_account (Account account) {
     this.account = account;
-    load_banner.begin ();
+    fetch_banner.begin ();
     this.queue_draw ();
     set_avatar_button.set_bg ((Cairo.ImageSurface)account.avatar);
-  }
-
-  private async void load_banner () {
-    string banner_name = Utils.get_banner_name (account.id);
-    string banner_path = Dirs.cache ("assets/banners/" + banner_name);
-    /* Try to load the banner */
-    try {
-      var stream = GLib.File.new_for_path (banner_path).read ();
-      set_banner_button.set_pixbuf (yield new Gdk.Pixbuf.from_stream_async (stream, null));
-      stream.close();
-    } catch (GLib.Error e) {
-      if (e is GLib.IOError.NOT_FOUND) {
-        /* Banner does not exist locally so we need to fetch it */
-        yield fetch_banner (banner_path);
-      } else {
-        warning (e.message);
-      }
-    }
   }
 
   public override bool draw (Cairo.Context ct) {
@@ -104,18 +86,14 @@ public class AvatarBannerWidget : Gtk.Container {
     min = nat = int.min (MAX_HEIGHT, (int)(width * BANNER_RATIO) + (avatar_size / 3));
   }
 
-  private async void fetch_banner (string banner_path) {
+  private async void fetch_banner () {
     if (account.banner_url == null) {
       set_banner_button.set_pixbuf (Twitter.no_banner);
       return;
     }
 
-    yield Utils.download_file_async (account.banner_url, banner_path);
-    try {
-      this.set_banner_button.set_pixbuf (new Gdk.Pixbuf.from_file (banner_path));
-    } catch (GLib.Error e) {
-      warning (e.message);
-    }
+    var pixbuf = yield Utils.download_pixbuf (account.banner_url);
+    this.set_banner_button.set_pixbuf (pixbuf);
   }
 
   public override void size_allocate (Gtk.Allocation allocation) {
