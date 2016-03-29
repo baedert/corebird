@@ -137,7 +137,6 @@ public class Corebird : Gtk.Application {
 
   public override void startup () {
     base.startup ();
-    message ("startup");
     this.set_resource_base_path ("/org/baedert/corebird");
 
     new ComposeImageManager ();
@@ -454,7 +453,8 @@ public class Corebird : Gtk.Application {
 
   public void start_account (Account acc) {
     if (this.active_accounts.contains (acc)) {
-      warning ("Account %s is already active", acc.screen_name);
+      /* This can very well happen when we've been started as a service */
+      debug ("Account %s is already active", acc.screen_name);
       return;
     }
 
@@ -472,8 +472,16 @@ public class Corebird : Gtk.Application {
       return;
     }
 
-    acc.uninit ();
-    this.active_accounts.remove (acc);
+    /* If we got started as a service and the given account is in the
+     * startup accounts, don't stop it here */
+    string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
+    if (GLib.ApplicationFlags.IS_SERVICE in this.flags &&
+        acc.screen_name in startup_accounts) {
+      // Don't stop account
+    } else {
+      acc.uninit ();
+      this.active_accounts.remove (acc);
+    }
   }
 
 
