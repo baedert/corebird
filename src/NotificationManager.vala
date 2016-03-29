@@ -18,19 +18,10 @@
 namespace NotificationManager {
   public void notify (Account acc,
                       string  summary,
-                      string  body = "",
-                      string? icon = null) {
+                      string  body = "") {
 
     var n = new GLib.Notification (summary);
     n.set_body (body);
-    if (icon != null) {
-      try {
-        var gicon = GLib.Icon.new_for_string (icon);
-        n.set_icon (gicon);
-      } catch (GLib.Error e) {
-        warning (e.message);
-      }
-    }
     /* Default action: just bring the appropriate window
        to front */
     n.set_default_action_and_target_value ("app.show-window", acc.id);
