@@ -58,7 +58,7 @@ public class Corebird : Gtk.Application {
     options[0] = {"tweet", 't', 0, OptionArg.STRING, ref compose_screen_name,
                   "Shows only the 'compose tweet' window for the given account, nothing else.", "SCREEN_NAME"};
     options[1] = {"stop-service", 'p', 0, OptionArg.NONE, ref stop_service,
-                  "Stop service", null};
+                  "Stop service, if it has been started as a service", null};
     options[2] = {"print-startup-accounts", 'a', 0, OptionArg.NONE, ref print_startup_accounts,
                   "Print configured startup accounts", null};
 
@@ -89,9 +89,13 @@ public class Corebird : Gtk.Application {
 
 
     if (stop_service) {
-      debug ("Stopping service");
-      /* Starting as a service adds an extra hold() */
-      this.release ();
+      if (GLib.ApplicationFlags.IS_SERVICE in this.flags) {
+        debug ("Stopping service");
+        /* Starting as a service adds an extra hold() */
+        this.release ();
+      } else {
+        warning ("--stop-service passed, but corebird has not been started as a service");
+      }
     } else if (print_startup_accounts) {
       string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
       foreach (unowned string acc in startup_accounts) {
