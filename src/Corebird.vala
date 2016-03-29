@@ -52,14 +52,17 @@ public class Corebird : Gtk.Application {
   public override int command_line (ApplicationCommandLine cmd) {
     string? compose_screen_name = null;
     bool stop_service = false;
+    bool print_startup_accounts = false;
 
-    OptionEntry[] options = new OptionEntry[3];
+    OptionEntry[] options = new OptionEntry[4];
     options[0] = {"tweet", 't', 0, OptionArg.STRING, ref compose_screen_name,
                   "Shows only the 'compose tweet' window for the given account, nothing else.", "SCREEN_NAME"};
     options[1] = {"stop-service", 'p', 0, OptionArg.NONE, ref stop_service,
                   "Stop service", null};
+    options[2] = {"print-startup-accounts", 'a', 0, OptionArg.NONE, ref print_startup_accounts,
+                  "Print configured startup accounts", null};
 
-    options[2] = {null};
+    options[3] = {null};
 
     string[] args = cmd.get_arguments ();
     string*[] _args = new string[args.length];
@@ -83,10 +86,17 @@ public class Corebird : Gtk.Application {
       return -1;
     }
 
+
+
     if (stop_service) {
       debug ("Stopping service");
       /* Starting as a service adds an extra hold() */
       this.release ();
+    } else if (print_startup_accounts) {
+      string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
+      foreach (unowned string acc in startup_accounts) {
+        stdout.printf ("%s\n", acc);
+      }
     } else {
       open_startup_windows (compose_screen_name);
     }
