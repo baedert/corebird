@@ -50,14 +50,16 @@ public class Corebird : Gtk.Application {
   }
 
   public override int command_line (ApplicationCommandLine cmd) {
-    this.hold ();
     string? compose_screen_name = null;
+    bool stop_service = false;
 
-
-    OptionEntry[] options = new OptionEntry[2];
+    OptionEntry[] options = new OptionEntry[3];
     options[0] = {"tweet", 't', 0, OptionArg.STRING, ref compose_screen_name,
-            "Shows only the 'compose tweet' window for the given account, nothing else.", "SCREEN_NAME"};
-    options[1] = {null};
+                  "Shows only the 'compose tweet' window for the given account, nothing else.", "SCREEN_NAME"};
+    options[1] = {"stop-service", 'p', 0, OptionArg.NONE, ref stop_service,
+                  "Stop service", null};
+
+    options[2] = {null};
 
     string[] args = cmd.get_arguments ();
     string*[] _args = new string[args.length];
@@ -81,9 +83,14 @@ public class Corebird : Gtk.Application {
       return -1;
     }
 
-    open_startup_windows (compose_screen_name);
+    if (stop_service) {
+      debug ("Stopping service");
+      /* Starting as a service adds an extra hold() */
+      this.release ();
+    } else {
+      open_startup_windows (compose_screen_name);
+    }
 
-    this.release ();
     return 0;
   }
 
@@ -130,6 +137,7 @@ public class Corebird : Gtk.Application {
 
   public override void startup () {
     base.startup ();
+    message ("startup");
     this.set_resource_base_path ("/org/baedert/corebird");
 
     new ComposeImageManager ();
@@ -196,8 +204,6 @@ public class Corebird : Gtk.Application {
       account_menu.append_item (mi);
     }
     ((GLib.Menu)acc_menu).append_submenu (_("Open Account"), account_menu);
-
-    this.set_app_menu (app_menu);
 
 
 
