@@ -510,8 +510,21 @@ public class Corebird : Gtk.Application {
       bundle.put_int64 ("sender_id", sender_id);
       main_window.main_widget.switch_page (Page.DM, bundle);
       main_window.present ();
-    } else
-      warning ("Window for Account %s is not open, abort.", account_id.to_string ());
+    } else {
+      var account = Account.query_account_by_id (account_id);
+      if (account == null) {
+        /* Security measure, should never happen. */
+        critical ("No account with id %s found", account_id.to_string ());
+        return;
+      }
+      var window = new MainWindow (this, account);
+      this.add_window (window);
+      var bundle = new Bundle ();
+      bundle.put_int64 ("sender_id", sender_id);
+      main_window.main_widget.switch_page (Page.DM, bundle);
+
+      window.show_all ();
+    }
   }
 
   private void show_window (GLib.SimpleAction a, GLib.Variant? value) {
