@@ -52,7 +52,7 @@ public class MainWindow : Gtk.ApplicationWindow {
     }
   }
 
-  public MainWindow (Gtk.Application app, Account? account = null){
+  public MainWindow (Gtk.Application app, Account? account = null) {
     set_default_size (480, 700);
 
     change_account (account);
