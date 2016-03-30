@@ -31,6 +31,7 @@ public class Account : GLib.Object {
   public UserStream user_stream   {public get; private set;}
   public UserCounter user_counter {public get; private set;}
   private UserEventReceiver event_receiver;
+  public NotificationManager2 notifications;
   public int64[] friends;
   public int64[] blocked;
   public int64[] muted;
@@ -45,6 +46,7 @@ public class Account : GLib.Object {
     this.name = name;
     this.filters = new Gee.ArrayList<Filter> ();
     this.event_receiver = new UserEventReceiver (this);
+    this.notifications = new NotificationManager2 (this);
   }
 
   /**

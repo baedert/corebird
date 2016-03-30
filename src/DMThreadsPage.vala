@@ -189,19 +189,16 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     start_conversation_entry.unreveal ();
   }
 
-  private string? notify_new_dm (DMThread thread, string msg_text) {
+  private void notify_new_dm (DMThread thread, string msg_text) {
     if (!Settings.notify_new_dms ())
-      return null;
+      return;
 
     string sender_screen_name = thread.user.screen_name;
     int64 sender_id = thread.user.id;
 
-
-    string id = "new-dm-" + sender_id.to_string ();
     string summary;
     string text;
     if (thread.notification_id != null) {
-      GLib.Application.get_default ().withdraw_notification (id);
       summary = ngettext ("%d new Message from %s",
                           "%d new Messages from %s",
                           thread.unread_count).printf (thread.unread_count,
@@ -211,18 +208,10 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       summary = _("New direct message from %s").printf (sender_screen_name);
       text = msg_text;
     }
-
-    var n = new GLib.Notification (summary);
-    n.set_body (text);
-    var value = new GLib.Variant.tuple ({new GLib.Variant.int64 (account.id),
-                                         new GLib.Variant.int64 (sender_id)});
-    n.set_default_action_and_target_value ("app.show-dm-thread", value);
-
-    GLib.Application.get_default ().send_notification (id, n);
-
-    thread.notification_id = id;
-
-    return id;
+    thread.notification_id = account.notifications.send_dm (sender_id,
+                                                            thread.notification_id,
+                                                            summary,
+                                                            text);
   }
 
   public void create_radio_button(Gtk.RadioButton? group) {

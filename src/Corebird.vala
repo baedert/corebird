@@ -498,7 +498,6 @@ public class Corebird : Gtk.Application {
     }
   }
 
-
   /********************************************************/
 
   private void show_dm_thread (GLib.SimpleAction a, GLib.Variant? value) {

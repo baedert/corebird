@@ -74,8 +74,25 @@ class UserEventReceiver : GLib.Object, IMessageReceiver {
                                 account.avatar);
           account.save_info ();
           Utils.update_startup_account (old_screen_name, account.screen_name);
-        } else
+        } else {
           warning ("USER_UPDATE: ids don't match");
+        }
+        break;
+
+      case StreamMessageType.DIRECT_MESSAGE:
+        var cb = (Corebird) GLib.Application.get_default ();
+        if (!cb.is_window_open_for_user_id (account.id)) {
+          var dm_obj = root_node.get_object ().get_object_member ("direct_message");
+          var sender_obj = dm_obj.get_object_member ("sender");
+          int64 sender_id = sender_obj.get_int_member ("id");
+          string sender_name = sender_obj.get_string_member ("name");
+          string dm_text = dm_obj.get_string_member ("text");
+
+          account.notifications.send_dm (sender_id,
+                                         null,
+                                         _("New direct message from %s").printf (sender_name),
+                                         Utils.unescape_html (dm_text));
+        }
         break;
     }
   }

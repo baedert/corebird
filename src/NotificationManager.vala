@@ -32,3 +32,48 @@ namespace NotificationManager {
     GLib.Application.get_default ().withdraw_notification (notification_id);
   }
 }
+
+
+public class NotificationManager2 : GLib.Object {
+  private unowned Account account;
+
+  public NotificationManager2 (Account account) {
+    this.account = account;
+  }
+
+  public void withdraw (string id) {
+    GLib.Application.get_default ().withdraw_notification (id);
+  }
+
+  public string send (string summary, string body, string? id_suffix = null) {
+    var n = new GLib.Notification (summary);
+    n.set_body (body);
+
+    string id = "%s-%s".printf (account.id.to_string (), id_suffix ?? "");
+
+    GLib.Application.get_default ().send_notification (id, n);
+
+    return id;
+  }
+
+  public string send_dm (int64   sender_id,
+                         string? existing_id,
+                         string  summary,
+                         string  text) {
+    if (existing_id != null) {
+      this.withdraw (existing_id);
+    }
+
+    string new_id = "new-dm-%s".printf (sender_id.to_string ());
+
+    var n = new GLib.Notification (summary);
+    var value = new GLib.Variant.tuple ({new GLib.Variant.int64 (account.id),
+                                         new GLib.Variant.int64 (sender_id)});
+    n.set_default_action_and_target_value ("app.show-dm-thread", value);
+    n.set_body (text);
+
+    GLib.Application.get_default ().send_notification (new_id, n);
+
+    return new_id;
+  }
+}
