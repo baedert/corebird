@@ -94,6 +94,25 @@ class UserEventReceiver : GLib.Object, IMessageReceiver {
                                          Utils.unescape_html (dm_text));
         }
         break;
+
+      case StreamMessageType.TWEET:
+        var cb = (Corebird) GLib.Application.get_default ();
+        if (!cb.is_window_open_for_user_id (account.id)) {
+          var tweet_obj = root_node.get_object ();
+          string text = tweet_obj.get_string_member ("text");
+          if (text.contains ("@" + account.screen_name)) {
+            var author_obj = tweet_obj.get_object_member ("user");
+            // TODO: Care about retweets/quotes!
+            // XXX : And media?
+
+            string author_name = author_obj.get_string_member ("name");
+            string summary = _("%s mentioned %s").printf (author_name,
+                                                          account.name);
+
+            account.notifications.send (summary, text);
+          }
+        }
+        break;
     }
   }
 
