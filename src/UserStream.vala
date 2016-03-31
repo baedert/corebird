@@ -53,7 +53,7 @@ public class UserStream : Object {
   private Rest.OAuthProxy proxy;
   private Rest.ProxyCall proxy_call;
   private StringBuilder data = new StringBuilder();
-  private Gee.ArrayList<unowned IMessageReceiver> receivers = new Gee.ArrayList<unowned IMessageReceiver> ();
+  private Gee.ArrayList<unowned IMessageReceiver> receivers;
   private GLib.NetworkMonitor network_monitor;
   private bool network_available;
   private uint network_timeout_id   = 0;
@@ -80,6 +80,7 @@ public class UserStream : Object {
   public UserStream (Account account) {
     this.account_name = account.screen_name;
     this.account = account;
+    this.receivers = new Gee.ArrayList<unowned IMessageReceiver> ();
     debug ("CREATING USER STREAM FOR " + account_name);
     proxy = new Rest.OAuthProxy(
           Settings.get_consumer_key (),
@@ -96,6 +97,10 @@ public class UserStream : Object {
 
   public void register (IMessageReceiver receiver) {
     receivers.add (receiver);
+  }
+
+  public void unregister (IMessageReceiver receiver) {
+    receivers.remove (receiver);
   }
 
   private void network_changed_cb (bool available) {

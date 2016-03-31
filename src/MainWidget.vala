@@ -188,6 +188,12 @@ public class MainWidget : Gtk.Box {
   }
 
   public void stop () {
+    for (int i = 0; i < pages.length; i++) {
+      IPage page = pages[i];
+      if (page is IMessageReceiver)
+        account.user_stream.unregister ((IMessageReceiver)page);
+    }
+
     ((Corebird)GLib.Application.get_default ()).stop_account (this.account);
   }
 }

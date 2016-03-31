@@ -96,8 +96,8 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       return stack.visible_child == action_box;
     }
   }
-  private weak Account account;
-  private weak MainWindow main_window;
+  private unowned Account account;
+  private unowned MainWindow main_window;
   public Tweet tweet;
   private bool values_set = false;
   private bool delete_first_activated = false;
