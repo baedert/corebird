@@ -73,8 +73,6 @@ class AccountDialog : Gtk.Dialog {
         set_transient_data (account.website, account.description);
       });
     }
-
-    this.set_default_size (350, 450);
   }
 
   private void set_transient_data (string? website, string? description) {

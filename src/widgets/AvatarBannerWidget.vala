@@ -16,6 +16,7 @@
  */
 
 public class AvatarBannerWidget : Gtk.Container {
+  private static const int MIN_HEIGHT = 150;
   private static const int MAX_HEIGHT = 250;
   private static const double BANNER_RATIO = 0.5; /* 320/640 */
   public int avatar_size { get; set; default = 48; }
@@ -76,14 +77,14 @@ public class AvatarBannerWidget : Gtk.Container {
 
   public override void get_preferred_width (out int min,
                                             out int nat) {
-    min = avatar_size + 40; // 20px margin on either side
-    nat = min;
+    min = nat = avatar_size + 40; // 20px margin on either side
   }
 
   public override void get_preferred_height_for_width (int width,
                                                        out int min,
                                                        out int nat) {
-    min = nat = int.min (MAX_HEIGHT, (int)(width * BANNER_RATIO) + (avatar_size / 3));
+    min = (avatar_size / 3) + MIN_HEIGHT;
+    nat = int.max (min, int.min (MAX_HEIGHT, (int)(width * BANNER_RATIO) + (avatar_size / 3)));
   }
 
   private async void fetch_banner () {
@@ -106,8 +107,9 @@ public class AvatarBannerWidget : Gtk.Container {
     set_banner_button.get_preferred_size (out child_requisition, null);
     child_allocation.x = allocation.x;
     child_allocation.y = allocation.y;
-    child_allocation.width = allocation.width;
+    child_allocation.width = int.max (allocation.width, child_requisition.width);
     child_allocation.height = (int)(allocation.width * BANNER_RATIO);
+    child_allocation.height = int.max (allocation.height - (avatar_size / 2), child_requisition.height);
     set_banner_button.size_allocate (child_allocation);
 
 
