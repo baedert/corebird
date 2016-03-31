@@ -191,8 +191,8 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
   [GtkCallback]
   private void start_send_tweet () {
-    //if (!send_button.sensitive)
-      //return;
+    if (!send_button.sensitive)
+      return;
 
     var job = new ComposeJob (this.account);
     this.cancellable = new GLib.Cancellable ();
