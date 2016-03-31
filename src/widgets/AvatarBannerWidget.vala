@@ -92,7 +92,7 @@ public class AvatarBannerWidget : Gtk.Container {
       return;
     }
 
-    var pixbuf = yield Utils.download_pixbuf (account.banner_url);
+    var pixbuf = yield Utils.download_pixbuf (account.banner_url + "/600x200");
     this.set_banner_button.set_pixbuf (pixbuf);
   }
 
