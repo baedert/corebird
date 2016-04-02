@@ -137,7 +137,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       var buff = new StringBuilder ();
       buff.append ("<span underline='none'><a href=\"@")
           .append (tweet.source_tweet.author.id.to_string ())
-          .append ("/")
+          .append ("/@")
           .append (tweet.source_tweet.author.screen_name)
           .append ("\" title=\"@")
           .append (tweet.source_tweet.author.screen_name)
