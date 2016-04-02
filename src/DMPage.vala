@@ -308,10 +308,10 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
     if (evt.keyval == Gdk.Key.Return &&
         (evt.state & Gdk.ModifierType.CONTROL_MASK) == Gdk.ModifierType.CONTROL_MASK) {
       send_button_clicked_cb ();
-      return true;
+      return Gdk.EVENT_STOP;
     }
 
-    return false;
+    return Gdk.EVENT_PROPAGATE;
   }
 
   private void recalc_length () {
