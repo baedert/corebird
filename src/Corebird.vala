@@ -482,10 +482,19 @@ public class Corebird : Gtk.Application {
   private void show_window (GLib.SimpleAction a, GLib.Variant? value) {
     int64 user_id = value.get_int64 ();
     MainWindow main_window;
-    if (is_window_open_for_user_id (user_id, out main_window))
+    if (is_window_open_for_user_id (user_id, out main_window)) {
       main_window.present ();
-    else
-      warning ("TODO: Implement");
+    } else {
+      var account = Account.query_account_by_id (user_id);
+      if (account == null) {
+        /* Security measure, should never happen. */
+        critical ("No account with id %s found", user_id.to_string ());
+        return;
+      }
+      main_window = new MainWindow (this, account);
+      this.add_window (main_window);
+      main_window.show_all ();
+    }
   }
 
 #if DEBUG
