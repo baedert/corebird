@@ -35,7 +35,10 @@ public class Account : GLib.Object {
   public int64[] blocked;
   public int64[] muted;
   public int64[] disabled_rts;
+  public string[] trending_topics;
+  public string trend_woeid_selection;
   public Gee.ArrayList<Filter> filters;
+  public Gee.HashMap<string, string> woeid_with_trends;
   public signal void info_changed (string screen_name, string name,
                                    Cairo.Surface avatar_small, Cairo.Surface avatar);
 
@@ -223,7 +226,7 @@ public class Account : GLib.Object {
   }
 
   public async void init_information () {
-    var collect_obj = new Collect (4);
+    var collect_obj = new Collect (5);
     collect_obj.finished.connect (() => {
       init_information.callback ();
     });
@@ -253,6 +256,15 @@ public class Account : GLib.Object {
         collect_obj.emit ();
       }
     });
+    load_id_array.begin (collect_obj, "1.1/trends/available.json", true, (obj, res) => {
+      Json.Array? arr = load_id_array.end (res);
+      if (arr != null) {
+		  this.set_locations_with_trends (arr);
+		  collect_obj.emit ();
+      }
+    });
+
+    this.get_trending_topics ();
 
     yield;
   }
@@ -536,6 +548,50 @@ public class Account : GLib.Object {
         return true;
 
     return false;
+  }
+
+  public void set_locations_with_trends (Json.Array arr) {
+	  Json.Object obj;
+	  this.woeid_with_trends = new Gee.HashMap<string, string> ();
+	  for(int i = 0; i < arr.get_length (); i++) {
+	  	obj = arr.get_object_element (i);
+	  	if (obj.has_member ("name") && obj.has_member ("woeid")) {
+            this.woeid_with_trends.set (obj.get_string_member ("name"), obj.get_int_member ("woeid").to_string ());
+	  	} else {
+	  		warning ("Locations that have Trending Topics not obtained");
+	  	}
+  	  }
+  }
+
+  public async void get_trending_topics () {
+      if (this.trending_topics == null)
+        this.trending_topics = new string[10];
+
+      var call = this.proxy.new_call ();
+      call.set_function ("1.1/trends/place.json");
+      call.set_method ("GET");
+
+      if (this.trend_woeid_selection == null) {
+        call.add_param ("id", "1");
+      } else {
+        call.add_param ("id", this.trend_woeid_selection);
+      }
+
+      Json.Node? root = null;
+      try {
+        root = yield TweetUtils.load_threaded (call, null);
+      } catch (GLib.Error e) {
+        warning (e.message);
+      }
+
+      Json.Array? res = root.get_array ();
+      Json.Object? obj = res.get_object_element (0);
+      Json.Array? arr = obj.get_array_member ("trends");
+      Json.Object? trend;
+      for (int i = 0; i < 10; i++) {
+        trend = arr.get_object_element (i);
+        this.trending_topics[i] = trend.get_string_member ("name");
+      }
   }
 
   /** Static stuff ********************************************************************/

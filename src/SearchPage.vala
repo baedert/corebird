@@ -30,6 +30,8 @@ class SearchPage : IPage, Gtk.Box {
   [GtkChild]
   private Gtk.Button search_button;
   [GtkChild]
+  private Gtk.ListBox trends_list;
+  [GtkChild]
   private TweetListBox tweet_list;
   [GtkChild]
   private Gtk.Label users_header;
@@ -37,6 +39,10 @@ class SearchPage : IPage, Gtk.Box {
   private Gtk.Label tweets_header;
   [GtkChild]
   private ScrollWidget scroll_widget;
+  [GtkChild]
+  private Gtk.Box trends_location;
+  [GtkChild]
+  private Gtk.ComboBoxText trends_location_combobox;
   private Gtk.RadioButton radio_button;
   public DeltaUpdater delta_updater;
   private LoadMoreEntry load_more_entry = new LoadMoreEntry ();
@@ -88,6 +94,8 @@ class SearchPage : IPage, Gtk.Box {
       this.remove_content_timeout = 0;
     }
 
+    show_trends_locations ();
+    show_trending_topics ();
 
     if (term == null) {
       if (last_focus_widget != null &&
@@ -319,6 +327,66 @@ class SearchPage : IPage, Gtk.Box {
   public bool handles_double_open () {
     return true;
   }
+
+  private void show_trends_locations () {
+    this.tweet_list.hide ();
+    this.scroll_widget.hide ();
+
+    int i = 0;
+    foreach (string location in this.account.woeid_with_trends.keys) {
+        this.trends_location_combobox.insert (i, null, location);
+        if (this.account.trend_woeid_selection == null && location == "Worldwide")  {
+  			this.trends_location_combobox.set_active (i);
+        } else if (this.account.trend_woeid_selection == this.account.woeid_with_trends[location]) {
+  			this.trends_location_combobox.set_active (i);
+  		}
+        i++;
+      }
+
+    this.trends_location.show ();
+  	this.trends_location_combobox.changed.connect (this.get_trends_woeid_selection);
+  }
+
+  private void get_trends_woeid_selection (Gtk.ComboBox combobox) {
+      string location_selected = this.trends_location_combobox.get_active_text ();
+      foreach (string location in this.account.woeid_with_trends.keys) {
+      	if (location == location_selected) {
+      		this.account.trend_woeid_selection = this.account.woeid_with_trends[location].to_string ();
+            this.account.get_trending_topics ();
+            GLib.Timeout.add_seconds (3, (GLib.SourceFunc) show_trending_topics);
+      	}
+      }
+  }
+
+  private bool show_trending_topics () {
+      if (this.trends_list == null) {
+          this.trends_list = new Gtk.ListBox ();
+      } else {
+          foreach (Gtk.Widget child in this.trends_list.get_children ()) {
+            this.trends_list.remove (child);
+          }
+      }
+
+      int j = 0;
+      Gtk.Button topic_item;
+      foreach (string topic in this.account.trending_topics) {
+           topic_item = new Gtk.Button.with_label (topic);
+           topic_item.clicked.connect (this.get_selected_topic);
+           trends_list.insert (topic_item, ++j);
+      }
+      this.trends_list.show_all ();
+
+      return false;
+  }
+
+  private void get_selected_topic (Gtk.Button topic) {
+      search_for (topic.get_label (), true);
+      this.trends_list.hide ();
+      this.trends_location.hide ();
+      this.scroll_widget.show ();
+      this.tweet_list.show ();
+  }
+
 }
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/load-more-entry.ui")]
