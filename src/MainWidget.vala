@@ -44,16 +44,8 @@ public class MainWidget : Gtk.Box {
 
   public MainWidget (Account account, MainWindow parent, Corebird app) {
     this.account = account;
-    ((Corebird)GLib.Application.get_default ()).start_account (account);
+    app.start_account (account);
 
-    var acc_menu = (GLib.Menu)Corebird.account_menu;
-    for (int i = 0; i < acc_menu.get_n_items (); i++){
-      int64 item_id = acc_menu.get_item_attribute_value (i, "user-id", VariantType.INT64).get_int64 ();
-      if (item_id == account.id) {
-        ((SimpleAction)app.lookup_action ("show-" + account.id.to_string ())).set_enabled (false);
-        break;
-      }
-    }
     stack.add (stack_impostor);
 
     pages[0]  = new HomeTimeline (Page.STREAM, account);

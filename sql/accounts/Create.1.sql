@@ -1,5 +1,3 @@
-
-
 PRAGMA user_version = 1;
 
 -- SQL schema for an account database

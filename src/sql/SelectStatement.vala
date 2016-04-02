@@ -83,6 +83,15 @@ namespace Sql {
       });
       return back;
     }
+
+    public string? once_string () {
+      string? back = null;
+      this.run ((vals) => {
+        back = vals[0];
+        return false;
+      });
+      return back;
+    }
   }
 
 }

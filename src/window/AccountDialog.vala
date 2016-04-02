@@ -73,8 +73,6 @@ class AccountDialog : Gtk.Dialog {
         set_transient_data (account.website, account.description);
       });
     }
-
-    this.set_default_size (350, 450);
   }
 
   private void set_transient_data (string? website, string? description) {
@@ -204,7 +202,6 @@ class AccountDialog : Gtk.Dialog {
        - If this would close the last opened window,
          set the account of that window to NULL
      */
-    var acc_menu = (GLib.Menu) Corebird.account_menu;
     int64 acc_id = account.id;
     FileUtils.remove (Dirs.config (@"accounts/$(acc_id).db"));
     FileUtils.remove (Dirs.config (@"accounts/$(acc_id).png"));
@@ -222,17 +219,6 @@ class AccountDialog : Gtk.Dialog {
           sa_new[x] = startup_accounts[x];
         Settings.get ().set_strv ("startup-accounts", sa_new);
       }
-
-    /* Remove account from account app menu */
-    for (int i = 0; i < acc_menu.get_n_items (); i++){
-      Variant item_name = acc_menu.get_item_attribute_value (i,
-                                       "label", VariantType.STRING);
-      if (item_name.get_string () == "@"+account.screen_name) {
-        acc_menu.remove (i);
-        break;
-      }
-    }
-
 
     Corebird cb = (Corebird) GLib.Application.get_default ();
 

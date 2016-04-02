@@ -177,7 +177,6 @@ namespace TextTransform {
     /* Append last part of the source string */
     builder.append (text.substring (text.index_of_nth_char (last_end)));
 
-    /* Replace all & with &amp; */
     return builder.str;
   }
 
