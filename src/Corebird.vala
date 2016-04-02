@@ -40,7 +40,7 @@ public class Corebird : Gtk.Application {
 
 
 
-  public Corebird () throws GLib.Error {
+  public Corebird () {
     GLib.Object(application_id:   "org.baedert.corebird",
                 flags:            ApplicationFlags.HANDLES_COMMAND_LINE);
                 //register_session: true);
