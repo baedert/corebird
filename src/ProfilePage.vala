@@ -453,7 +453,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     this.following_loading = false;
   }
 
-  private void load_profile_banner (string base_url, int64 user_id) { // {{{
+  private void load_profile_banner (string base_url, int64 user_id) {
     string banner_url  = base_url + "/mobile_retina";
     Utils.download_pixbuf.begin (banner_url, null, (obj, res) => {
       Gdk.Pixbuf? banner = Utils.download_pixbuf.end (res);

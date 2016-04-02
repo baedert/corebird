@@ -143,7 +143,6 @@ public class MainWindow : Gtk.ApplicationWindow {
     if (this.account != null) {
       old_user_id = this.account.id;
       this.account.info_changed.disconnect (account_info_changed);
-      this.set_account_app_menu_sensitivity (true);
     }
     this.account = account;
 
@@ -171,8 +170,6 @@ public class MainWindow : Gtk.ApplicationWindow {
       account.notify["avatar-small"].connect(() => {
         avatar_image.surface = account.avatar_small;
       });
-
-      this.set_account_app_menu_sensitivity (false);
 
       account.info_changed.connect (account_info_changed);
 
@@ -331,9 +328,6 @@ public class MainWindow : Gtk.ApplicationWindow {
     unowned GLib.List<weak Gtk.Window> ws = this.application.get_windows ();
     debug("Windows: %u", ws.length ());
 
-     // Enable the account's entry in the app menu again
-    set_account_app_menu_sensitivity (true);
-
     string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
     if (startup_accounts.length == 1 && startup_accounts[0] == "")
       startup_accounts.resize (0);
@@ -440,23 +434,4 @@ public class MainWindow : Gtk.ApplicationWindow {
     ((ITimeline)get_page (Page.STREAM)).rerun_filters ();
     ((ITimeline)get_page (Page.MENTIONS)).rerun_filters ();
   }
-
-  private void set_account_app_menu_sensitivity (bool sensitivity) {
-    var acc_menu = (GLib.Menu)Corebird.account_menu;
-    string ref_action_name = "app.show-" + account.id.to_string ();
-    Gtk.Application app = (Gtk.Application)GLib.Application.get_default ();
-
-    for (int i = 0; i < acc_menu.get_n_items (); i++) {
-      GLib.Variant action_name = acc_menu.get_item_attribute_value (i, GLib.Menu.ATTRIBUTE_ACTION,
-                                                                    GLib.VariantType.STRING);
-      if (ref_action_name == action_name.get_string ()) {
-        GLib.SimpleAction? action = (GLib.SimpleAction)app.lookup_action (ref_action_name.substring (4));
-        if (action != null) {
-          action.set_enabled (sensitivity);
-          return;
-        }
-      } // Glorious
-    } // Fucking
-  } // BRACES
-
 }

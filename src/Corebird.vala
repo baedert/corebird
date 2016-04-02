@@ -17,7 +17,6 @@
 
 public class Corebird : Gtk.Application {
   public static Sql.Database db;
-  public static GLib.Menu account_menu;
   public static SnippetManager snippet_manager;
   public signal void account_added (Account acc);
   public signal void account_removed (Account acc);
@@ -156,31 +155,12 @@ public class Corebird : Gtk.Application {
       critical (e.message);
     }
     GLib.MenuModel app_menu = (MenuModel)builder.get_object ("app-menu");
-    var acc_menu = app_menu.get_item_link (0, "section");
-    account_menu = new GLib.Menu ();
+    set_app_menu (app_menu);
 
     Utils.load_custom_css ();
     Utils.load_custom_icons ();
     Utils.init_soup_session ();
     Twitter.get ().init ();
-
-    unowned GLib.SList<Account> accounts = Account.list_accounts ();
-    foreach (var acc in accounts) {
-      acc.info_changed.connect (account_info_changed);
-      var show_win_action = new SimpleAction ("show-" + acc.id.to_string (), null);
-      show_win_action.activate.connect (()=> {
-        add_window_for_account (acc);
-      });
-      add_action(show_win_action);
-
-      var mi = create_accout_menu_item (acc);
-      account_menu.append_item (mi);
-    }
-    ((GLib.Menu)acc_menu).append_submenu (_("Open Account"), account_menu);
-
-    this.set_app_menu (app_menu);
-
-
 
     this.set_accels_for_action ("win.compose-tweet", {Settings.get_accel ("compose-tweet")});
     this.set_accels_for_action ("win.toggle-sidebar", {Settings.get_accel ("toggle-sidebar")});
@@ -226,33 +206,6 @@ public class Corebird : Gtk.Application {
   public override void shutdown () {
     base.shutdown();
   }
-
-  private GLib.MenuItem create_accout_menu_item (Account account) {
-      var mi = new GLib.MenuItem ("@" + account.screen_name.replace ("_", "__"),
-                                  "app.show-" + account.id.to_string ());
-      mi.set_attribute_value ("user-id", new GLib.Variant.int64 (account.id));
-      return mi;
-  }
-
-  private void account_info_changed (Account       source,
-                                     string        screen_name,
-                                     string        s,
-                                     Cairo.Surface a,
-                                     Cairo.Surface b) {
-    for (int i = 0; i < account_menu.get_n_items (); i++){
-      int64 item_id = account_menu.get_item_attribute_value (i,
-                                                             "user-id",
-                                                             GLib.VariantType.INT64).get_int64 ();
-      if (item_id == source.id) {
-        var new_menu_item = create_accout_menu_item (source);
-        account_menu.remove (i);
-        account_menu.insert_item (i, new_menu_item);
-        return;
-      }
-    }
-
-  }
-
 
   /**
    * Open startup windows.
