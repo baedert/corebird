@@ -116,7 +116,7 @@ public class MainWindow : Gtk.ApplicationWindow {
   /**
    * Adds the accelerators to the GtkWindow
    */
-  private void add_accels() { // {{{
+  private void add_accels() {
     Gtk.AccelGroup ag = new Gtk.AccelGroup();
 
     ag.connect (Gdk.Key.Left, Gdk.ModifierType.MOD1_MASK, Gtk.AccelFlags.LOCKED,
@@ -129,7 +129,7 @@ public class MainWindow : Gtk.ApplicationWindow {
         () => {main_widget.switch_page (Page.NEXT); return true;});
 
     this.add_accel_group(ag);
-  } // }}}
+  }
 
   [GtkCallback]
   private void back_button_clicked_cb () {
