@@ -546,20 +546,15 @@ public class Corebird : Gtk.Application {
     string json = value.get_child_value (1).get_string ();
     json += "\r\n";
 
-    MainWindow? win = null;
-    if (is_window_open_for_screen_name (screen_name, out win)) {
-      if (win.account == null) {
-        error ("account is null");
+    foreach (Account acc in this.active_accounts) {
+      if (acc.screen_name == screen_name) {
+        var fake_call = acc.proxy.new_call ();
+        acc.user_stream.parse_data_cb (fake_call, json, json.length, null);
+        return;
       }
-      var fake_call = win.account.proxy.new_call ();
+    }
 
-      win.account.user_stream.parse_data_cb (fake_call,
-                                             json,
-                                             json.length,
-                                             null);
-
-    } else
-      error ("Window for %s is not open, so account isn't active.", screen_name);
+    error ("Account @%s is not active.", screen_name);
   }
 #endif
 }
