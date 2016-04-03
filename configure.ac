@@ -48,7 +48,6 @@ pkg_modules="gtk+-3.0 >= 3.16
              glib-2.0 >= 2.44
              rest-0.7 >= 0.7.93
              libsoup-2.4
-             gee-0.8
              json-glib-1.0
              sqlite3"
 
@@ -63,7 +62,6 @@ CB_VALA_FLAGS=" \
   --pkg gtk+-3.0 \
   --pkg json-glib-1.0 \
   --pkg rest-0.7 \
-  --pkg gee-0.8 \
   --pkg sqlite3 \
   --pkg libsoup-2.4 \
   --pkg glib-2.0 \
