@@ -315,7 +315,8 @@ namespace TweetUtils {
       GLib.Idle.add (() => {
         Tweet tweet = tweet_array[index];
         if (account.user_counter == null ||
-            tweet_list == null)
+            tweet_list == null ||
+            !(tweet_list.get_toplevel () is Gtk.Window))
           return GLib.Source.REMOVE;
 
         account.user_counter.id_seen (ref tweet.source_tweet.author);
