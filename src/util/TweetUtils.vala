@@ -288,7 +288,6 @@ namespace TweetUtils {
 
   async void work_array (Json.Array   json_array,
                          TweetListBox tweet_list,
-                         MainWindow   main_window,
                          Account      account) {
     new Thread<void*> ("TweetWorker", () => {
       Tweet[] tweet_array = new Tweet[json_array.get_length ()];

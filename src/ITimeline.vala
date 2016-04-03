@@ -59,7 +59,6 @@ public interface ITimeline : Gtk.Widget, IPage {
     }
     yield TweetUtils.work_array (root,
                                  tweet_list,
-                                 main_window,
                                  account);
   } //}}}
 
@@ -92,7 +91,6 @@ public interface ITimeline : Gtk.Widget, IPage {
     }
     yield TweetUtils.work_array (root,
                                  tweet_list,
-                                 main_window,
                                  account);
   } ///}}}
 

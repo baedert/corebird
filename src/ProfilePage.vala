@@ -338,7 +338,6 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     }
     yield TweetUtils.work_array (root_array,
                                  tweet_list,
-                                 main_window,
                                  account);
     tweets_loading = false;
   }
@@ -374,7 +373,6 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     var root_arr = root.get_array ();
     yield TweetUtils.work_array (root_arr,
                                  tweet_list,
-                                 main_window,
                                  account);
     tweets_loading = false;
   }
