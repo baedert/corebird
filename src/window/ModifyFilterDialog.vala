@@ -100,7 +100,9 @@ class ModifyFilterDialog : Gtk.Dialog {
       account.db.update ("filters").val ("content", content)
                                    .where_eq ("id", filter.id.to_string ())
                                    .run ();
-      foreach (var f in account.filters) {
+
+      for (int i = 0; i < account.filters.length; i ++) {
+        var f = account.filters.get (i);
         if (f.id == this.filter.id) {
           f.reset (content);
           filter_added (f, false);

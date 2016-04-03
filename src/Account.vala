@@ -36,7 +36,7 @@ public class Account : GLib.Object {
   public int64[] blocked;
   public int64[] muted;
   public int64[] disabled_rts;
-  public Gee.ArrayList<Filter> filters;
+  public GLib.GenericArray<Filter> filters;
   public signal void info_changed (string screen_name, string name,
                                    Cairo.Surface avatar_small, Cairo.Surface avatar);
 
@@ -44,7 +44,7 @@ public class Account : GLib.Object {
     this.id = id;
     this.screen_name = screen_name;
     this.name = name;
-    this.filters = new Gee.ArrayList<Filter> ();
+    this.filters = new GLib.GenericArray<Filter> ();
     this.event_receiver = new UserEventReceiver (this);
     this.notifications = new NotificationManager2 (this);
   }
@@ -383,7 +383,8 @@ public class Account : GLib.Object {
       return false;
 
 
-    foreach (Filter f in filters) {
+    for (int i = 0; i < filters.length; i ++) {
+      var f = this.filters.get (i);
       if (f.matches (t.get_real_text ())) {
         return true;
       }
