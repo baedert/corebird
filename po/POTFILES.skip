@@ -36,4 +36,5 @@ src/window/SettingsDialog.c
 src/window/FileSelector.c
 src/model/NotificationItem.c
 src/corebird-resources.c
+src/UserEventReceiver.c
 data/org.baedert.corebird.desktop.in

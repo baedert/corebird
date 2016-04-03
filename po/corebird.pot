@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-25 13:13+0100\n"
+"POT-Creation-Date: 2016-04-03 16:58+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -48,11 +48,11 @@ msgstr ""
 msgid "Modify Filter"
 msgstr ""
 
-#: ../src/window/ModifyFilterDialog.vala:76
+#: ../src/window/ModifyFilterDialog.vala:80
 msgid "Matches"
 msgstr ""
 
-#: ../src/window/ModifyFilterDialog.vala:78
+#: ../src/window/ModifyFilterDialog.vala:82
 msgid "Doesn't match"
 msgstr ""
 
@@ -129,19 +129,19 @@ msgstr[1] ""
 msgid "Home"
 msgstr ""
 
-#: ../src/DMThreadsPage.vala:205
+#: ../src/DMThreadsPage.vala:202
 #, c-format
 msgid "%d new Message from %s"
 msgid_plural "%d new Messages from %s"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/DMThreadsPage.vala:211
+#: ../src/DMThreadsPage.vala:208
 #, c-format
 msgid "New direct message from %s"
 msgstr ""
 
-#: ../src/DMThreadsPage.vala:229 ../src/DMThreadsPage.vala:243
+#: ../src/DMThreadsPage.vala:218 ../src/DMThreadsPage.vala:232
 msgid "Direct Messages"
 msgstr ""
 
@@ -157,11 +157,11 @@ msgstr[1] ""
 msgid "Lists"
 msgstr ""
 
-#: ../src/ProfilePage.vala:290
+#: ../src/ProfilePage.vala:254
 msgid "Protected profile"
 msgstr ""
 
-#: ../src/ProfilePage.vala:540
+#: ../src/ProfilePage.vala:472
 #, c-format
 msgid "Tweet to @%s"
 msgstr ""
@@ -191,16 +191,16 @@ msgstr ""
 msgid "Tweet Details"
 msgstr ""
 
-#: ../src/util/Utils.vala:164
+#: ../src/util/Utils.vala:185
 msgid "Now"
 msgstr ""
 
-#: ../src/util/Utils.vala:166
+#: ../src/util/Utils.vala:187
 #, c-format
 msgid "%dm"
 msgstr ""
 
-#: ../src/util/Utils.vala:170
+#: ../src/util/Utils.vala:191
 #, c-format
 msgid "%dh"
 msgstr ""
@@ -210,16 +210,12 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: ../src/Corebird.vala:177
-msgid "Open Account"
-msgstr ""
-
-#: ../src/MentionsTimeline.vala:102
+#: ../src/MentionsTimeline.vala:91
 #, c-format
-msgid "New Mention from @%s"
+msgid "@%s mentioned @%s"
 msgstr ""
 
-#: ../src/MentionsTimeline.vala:130 ../src/MentionsTimeline.vala:134
+#: ../src/MentionsTimeline.vala:116 ../src/MentionsTimeline.vala:120
 msgid "Mentions"
 msgstr ""
 
@@ -227,15 +223,15 @@ msgstr ""
 msgid "Direct Conversation"
 msgstr ""
 
-#: ../src/ListStatusesPage.vala:359
+#: ../src/ListStatusesPage.vala:356
 msgid "List"
 msgstr ""
 
-#: ../src/widgets/AvatarBannerWidget.vala:160
+#: ../src/widgets/AvatarBannerWidget.vala:140
 msgid "Select banner"
 msgstr ""
 
-#: ../src/widgets/AvatarBannerWidget.vala:175
+#: ../src/widgets/AvatarBannerWidget.vala:155
 msgid "Select avatar"
 msgstr ""
 
@@ -267,7 +263,7 @@ msgid ""
 "#newisalwaysbetter"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:1 ../ui/menu.ui.h:1
+#: ../ui/settings-dialog.ui.h:1 ../ui/menus.ui.h:1
 msgid "Settings"
 msgstr ""
 
@@ -368,15 +364,15 @@ msgstr ""
 msgid "Snippets"
 msgstr ""
 
-#: ../ui/menu.ui.h:2
+#: ../ui/menus.ui.h:2
 msgid "Shortcuts"
 msgstr ""
 
-#: ../ui/menu.ui.h:3
+#: ../ui/menus.ui.h:3
 msgid "About"
 msgstr ""
 
-#: ../ui/menu.ui.h:4
+#: ../ui/menus.ui.h:4
 msgid "Quit"
 msgstr ""
 
@@ -422,20 +418,16 @@ msgstr ""
 msgid "Reply"
 msgstr ""
 
-#: ../ui/tweet-list-entry.ui.h:5
-msgid "This tweet contains images marked as inappropariate"
-msgstr ""
-
-#: ../ui/tweet-list-entry.ui.h:6
-msgid "Show anyway"
-msgstr ""
-
 #: ../ui/user-list-entry.ui.h:1
 msgid "Show settings of this account"
 msgstr ""
 
 #: ../ui/user-list-entry.ui.h:2
 msgid "Open in new window"
+msgstr ""
+
+#: ../ui/user-list-entry.ui.h:3
+msgid "Go to profile"
 msgstr ""
 
 #: ../ui/new-list-entry.ui.h:1
