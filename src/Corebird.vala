@@ -469,13 +469,13 @@ public class Corebird : Gtk.Application {
         critical ("No account with id %s found", account_id.to_string ());
         return;
       }
-      var window = new MainWindow (this, account);
-      this.add_window (window);
+      main_window = new MainWindow (this, account);
+      this.add_window (main_window);
       var bundle = new Bundle ();
       bundle.put_int64 ("sender_id", sender_id);
       main_window.main_widget.switch_page (Page.DM, bundle);
 
-      window.show_all ();
+      main_window.show_all ();
     }
   }
 
