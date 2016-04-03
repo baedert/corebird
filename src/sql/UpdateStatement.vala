@@ -21,7 +21,7 @@ namespace Sql {
   public class UpdateStatement : GLib.Object {
     public unowned Sqlite.Database db;
     private StringBuilder query_builder  = new StringBuilder ();
-    private Gee.ArrayList<string> bindings = new Gee.ArrayList<string>();
+    private GLib.GenericArray<string> bindings = new GLib.GenericArray<string> ();
     private bool ran = false;
 
     public UpdateStatement (string table_name) {
@@ -37,7 +37,7 @@ namespace Sql {
         critical (db.errmsg ());
         return -1;
       }
-      for (int i = 0; i < bindings.size; i++) {
+      for (int i = 0; i < bindings.length; i++) {
         stmt.bind_text (i + 1, bindings.get (i));
       }
       ok = stmt.step ();
@@ -65,7 +65,7 @@ namespace Sql {
     }
 
     public UpdateStatement val (string col_name, string col_value) {
-      if (bindings.size > 0)
+      if (bindings.length > 0)
         query_builder.append (", ");
       query_builder.append ("`").append (col_name).append ("` = ?");
       bindings.add (col_value);
