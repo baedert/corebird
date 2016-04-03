@@ -20,7 +20,7 @@ class ComposeJob : GLib.Object {
   public string text;
   public Tweet quoted_tweet;
   public int64? reply_id = null;
-  private Gee.ArrayList<string> image_paths = new Gee.ArrayList<string> ();
+  private GLib.GenericArray<string> image_paths = new GLib.GenericArray<string> ();
   public signal void image_upload_started  (string path);
   public signal void image_upload_finished (string path, string? error_message = null);
 
@@ -67,7 +67,7 @@ class ComposeJob : GLib.Object {
 
 
   private async int64[] upload_images (GLib.Cancellable cancellable) {
-    assert (this.image_paths.size > 0);
+    assert (this.image_paths.length > 0);
 
     Rest.OAuthProxy proxy = new Rest.OAuthProxy (Settings.get_consumer_key (),
                                                  Settings.get_consumer_secret (),
@@ -76,14 +76,14 @@ class ComposeJob : GLib.Object {
     proxy.token = account.proxy.token;
     proxy.token_secret = account.proxy.token_secret;
 
-    int64[] ids = new int64[this.image_paths.size];
-    var collect_obj = new Collect (this.image_paths.size);
+    int64[] ids = new int64[this.image_paths.length];
+    var collect_obj = new Collect (this.image_paths.length);
     collect_obj.finished.connect (() => {
       debug ("Calling the callback...");
       upload_images.callback ();
     });
 
-    for (int i = 0; i < this.image_paths.size; i ++) {
+    for (int i = 0; i < this.image_paths.length; i ++) {
       string path = this.image_paths.get (i);
       this.image_upload_started (path);
       debug ("Starting upload of %s (%d)", path, i);
@@ -166,8 +166,8 @@ class ComposeJob : GLib.Object {
      */
 
     int64[]? media_ids = null;
-    if (this.image_paths.size > 0) {
-      debug ("Uploading %d images first...", this.image_paths.size);
+    if (this.image_paths.length > 0) {
+      debug ("Uploading %d images first...", this.image_paths.length);
       media_ids = yield upload_images (cancellable);
       debug ("media_ids[0]: %s", media_ids[0].to_string ());
     }
