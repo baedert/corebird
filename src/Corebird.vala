@@ -23,7 +23,7 @@ public class Corebird : Gtk.Application {
   public signal void account_window_changed (int64? old_id, int64 new_id);
 
   private SettingsDialog? settings_dialog = null;
-  private Gee.ArrayList<Account> active_accounts;
+  private GLib.GenericArray<Account> active_accounts;
 
   const GLib.ActionEntry[] app_entries = {
     {"show-settings",     show_settings_activated         },
@@ -45,7 +45,7 @@ public class Corebird : Gtk.Application {
                 flags:            ApplicationFlags.HANDLES_COMMAND_LINE);
                 //register_session: true);
     snippet_manager = new SnippetManager ();
-    active_accounts = new Gee.ArrayList<Account> ();
+    active_accounts = new GLib.GenericArray<Account> ();
   }
 
   public override int command_line (ApplicationCommandLine cmd) {
@@ -418,10 +418,13 @@ public class Corebird : Gtk.Application {
   }
 
   public void start_account (Account acc) {
-    if (this.active_accounts.contains (acc)) {
-      /* This can very well happen when we've been started as a service */
-      debug ("Account %s is already active", acc.screen_name);
-      return;
+    for (int i = 0; i < this.active_accounts.length; i ++) {
+      var account = this.active_accounts.get (i);
+      if (acc == account) {
+        /* This can very well happen when we've been started as a service */
+        debug ("Account %s is already active", acc.screen_name);
+        return;
+      }
     }
 
     acc.init_proxy ();
@@ -432,7 +435,16 @@ public class Corebird : Gtk.Application {
   }
 
   public void stop_account (Account acc) {
-    if (!this.active_accounts.contains (acc)) {
+    bool found = false;
+    for (int i = 0; i < this.active_accounts.length; i ++) {
+      var account = this.active_accounts.get (i);
+      if (account == acc) {
+        found = true;
+        break;
+      }
+    }
+
+    if (!found) {
       warning ("Can't stop account %s since it's not in the list of active accounts",
                acc.screen_name);
       return;
@@ -507,7 +519,8 @@ public class Corebird : Gtk.Application {
     string json = value.get_child_value (1).get_string ();
     json += "\r\n";
 
-    foreach (Account acc in this.active_accounts) {
+    for (int i = 0; i < this.active_accounts.length; i ++) {
+      var acc = this.active_accounts.get (i);
       if (acc.screen_name == screen_name) {
         var fake_call = acc.proxy.new_call ();
         acc.user_stream.parse_data_cb (fake_call, json, json.length, null);
