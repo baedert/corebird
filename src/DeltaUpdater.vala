@@ -16,14 +16,14 @@
  */
 
 public class DeltaUpdater : GLib.Object {
-  private Gee.ArrayList<WeakRef> minutely = new Gee.ArrayList<WeakRef> ();
-  private Gee.ArrayList<WeakRef> hourly   = new Gee.ArrayList<WeakRef> ();
+  private GLib.GenericArray<WeakRef> minutely = new GenericArray<WeakRef> ();
+  private GLib.GenericArray<WeakRef> hourly = new GenericArray<WeakRef> ();
   private uint minutely_id;
   private uint hourly_id;
 
   public DeltaUpdater () {
     minutely_id = GLib.Timeout.add (60 * 1000, () => {
-      for (int i = 0, size = minutely.size; i < size; i++) {
+      for (int i = 0, size = minutely.length; i < size; i++) {
         WeakRef item_ref = minutely.get (i);
         ITwitterItem item = item_ref.get ();
         if (item == null) {
@@ -42,7 +42,7 @@ public class DeltaUpdater : GLib.Object {
     });
 
     hourly_id = GLib.Timeout.add (60 * 60 * 1000, () => {
-      for (int i = 0, size = hourly.size; i < size; i++) {
+      for (int i = 0, size = hourly.length; i < size; i++) {
         WeakRef item_ref = hourly.get (i);
         if (item_ref.get () == null) {
           hourly.remove (item_ref);
