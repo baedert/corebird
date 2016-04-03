@@ -16,21 +16,18 @@
  */
 
 public class SnippetManager : GLib.Object {
-  private Gee.HashMap<string, string> snippets = new Gee.HashMap<string, string> ();
+  private GLib.HashTable<string, string> snippets = new GLib.HashTable<string, string> (GLib.str_hash,
+                                                                                        GLib.str_equal);
   private bool inited = false;
 
-  public delegate void SnippetQueryFunc (string key, string value);
-
-
-  public SnippetManager () {
-  }
+  public SnippetManager () {}
 
   private void load_snippets () {
     Corebird.db.select ("snippets")
                .cols ("id", "key", "value")
                .order ("id")
                .run ((vals) => {
-      snippets.set (vals[1], vals[2]);
+      snippets.insert (vals[1], vals[2]);
 
       return true;
     });
@@ -41,7 +38,7 @@ public class SnippetManager : GLib.Object {
   public void remove_snippet (string snippet_key) {
     if (!inited) load_snippets ();
 
-    this.snippets.unset (snippet_key);
+    this.snippets.remove (snippet_key);
     string key = snippet_key.replace ("'", "''");
     Corebird.db.exec (@"DELETE FROM `snippets` WHERE `key`='$(key)'");
   }
@@ -49,7 +46,7 @@ public class SnippetManager : GLib.Object {
   public void insert_snippet (string key, string value) {
     if (!inited) load_snippets ();
 
-    if (this.snippets.has_key (key))
+    if (this.snippets.contains (key))
       error ("Snippet already exists: %s", key);
 
     // Insert snippet into db
@@ -58,7 +55,7 @@ public class SnippetManager : GLib.Object {
                .val ("value", value)
                .run ();
 
-    this.snippets.set (key, value);
+    this.snippets.insert (key, value);
   }
 
   public string? get_snippet (string key) {
@@ -67,30 +64,27 @@ public class SnippetManager : GLib.Object {
     return this.snippets.get (key);
   }
 
-  public void query_snippets (SnippetQueryFunc func) {
+  public void query_snippets (GLib.HFunc<string, string> func) {
     if (!inited) load_snippets ();
 
-    foreach (var entry in this.snippets.entries) {
-      func (entry.key, entry.value);
-    }
+    this.snippets.foreach (func);
   }
 
-  public int n_snippets () {
+  public uint n_snippets () {
     if (!inited) load_snippets ();
-    return this.snippets.size;
+    return this.snippets.length;
   }
 
   public void set_snippet (string old_key, string key, string new_value) {
     if (!inited) load_snippets ();
 
-    if (!this.snippets.has_key (old_key)) {
+    if (!this.snippets.contains (old_key)) {
       debug ("Key %s not in hashmap!", key);
       return;
     }
 
     // Delete the old one, add the new one, update the db
-    this.snippets.unset (key);
-    this.snippets.set (key, new_value);
+    this.snippets.replace (key, new_value);
     Corebird.db.update ("snippets")
                .val ("key", key)
                .val ("value", new_value)
