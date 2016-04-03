@@ -35,7 +35,7 @@ public class UserInfo : GLib.Object {
 
 public class UserCounter : GLib.Object {
   private bool changed = false;
-  private Gee.ArrayList<UserInfo?> names = new Gee.ArrayList<UserInfo?> ();
+  private GLib.GenericArray<UserInfo?> names = new GLib.GenericArray<UserInfo?> ();
 
   public UserCounter () {}
 
@@ -47,7 +47,8 @@ public class UserCounter : GLib.Object {
     // increase the user's seen-count by one
     bool found = false;
     this.changed = true;
-    foreach (var ui in names) {
+    for (int i = 0; i < names.length; i ++) {
+      var ui = names.get (i);
       if (ui.id == id) {
         found = true;
         ui.score ++;
@@ -72,7 +73,8 @@ public class UserCounter : GLib.Object {
     int n_results = 0;
     string p = prefix.down ();
     UserInfo[] results = new UserInfo[max_results];
-    foreach (var ui in names) {
+    for (int i = 0; i < names.length; i ++) {
+      var ui = names.get (i);
       if (n_results >= max_results)
         break;
 
@@ -113,7 +115,8 @@ public class UserCounter : GLib.Object {
 
     int saved = 0;
     db.begin_transaction ();
-    foreach (var ui in names) {
+    for (int i = 0; i < names.length; i ++) {
+      var ui = names.get (i);
       if (!ui.changed)
         continue;
       ui.changed = false;
