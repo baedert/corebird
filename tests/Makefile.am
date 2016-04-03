@@ -33,16 +33,16 @@ TESTS = \
 check_PROGRAMS = $(TESTS)
 
 tests_VALASOURCES = \
+	tweetmodel.vala \
 	tweetlength.vala \
-	inlinemediadownloader.vala \
 	utils.vala \
 	bundlehistory.vala \
 	usercounter.vala \
-	filters.vala \
+	inlinemediadownloader.vala \
 	tweetparsing.vala \
+	filters.vala \
 	highlighting.vala \
 	friends.vala \
-	tweetmodel.vala \
 	texttransform.vala \
 	avatardownload.vala
 
@@ -57,11 +57,11 @@ tests_vala.stamp: $(tests_VALASOURCES) $(top_builddir)/src/libcorebird.la $(top_
 	done; \
 	touch $@
 
+nodist_tweetmodel_SOURCES = tweetmodel.c
+tweetmodel_LDADD = $(top_builddir)/src/libcorebird.la
+
 nodist_tweetlength_SOURCES = tweetlength.c
 tweetlength_LDADD = $(top_builddir)/src/libcorebird.la
-
-nodist_media_SOURCES = inlinemediadownloader.c
-media_LDADD = $(top_builddir)/src/libcorebird.la
 
 nodist_utils_SOURCES = utils.c
 utils_LDADD = $(top_builddir)/src/libcorebird.la
@@ -72,20 +72,20 @@ bundlehistory_LDADD = $(top_builddir)/src/libcorebird.la
 nodist_usercounter_SOURCES = usercounter.c ../src/corebird-resources.c
 usercounter_LDADD = $(top_builddir)/src/libcorebird.la
 
-nodist_filters_SOURCES = filters.c ../src/corebird-resources.c
-filters_LDADD = $(top_builddir)/src/libcorebird.la
+nodist_media_SOURCES = inlinemediadownloader.c
+media_LDADD = $(top_builddir)/src/libcorebird.la
 
 nodist_tweetparsing_SOURCES = tweetparsing.c ../src/corebird-resources.c
 tweetparsing_LDADD = $(top_builddir)/src/libcorebird.la
+
+nodist_filters_SOURCES = filters.c ../src/corebird-resources.c
+filters_LDADD = $(top_builddir)/src/libcorebird.la
 
 nodist_highlighting_SOURCES = highlighting.c
 highlighting_LDADD = $(top_builddir)/src/libcorebird.la
 
 nodist_friends_SOURCES = friends.c
 friends_LDADD = $(top_builddir)/src/libcorebird.la
-
-nodist_tweetmodel_SOURCES = tweetmodel.c
-tweetmodel_LDADD = $(top_builddir)/src/libcorebird.la
 
 nodist_texttransform_SOURCES = texttransform.c
 texttransform_LDADD = $(top_builddir)/src/libcorebird.la
