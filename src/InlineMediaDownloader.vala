@@ -59,7 +59,7 @@ bool is_media_candidate (string _url) {
 
 public class InlineMediaDownloader : GLib.Object {
   private static InlineMediaDownloader instance;
-  private GLib.GenericArray<string> urls_downloading = new GLib.GenericArray<string> ();
+  private GLib.GenericArray<unowned string> urls_downloading = new GLib.GenericArray<unowned string> ();
   [Signal (detailed = true)]
   private signal void downloading ();
 
@@ -73,7 +73,6 @@ public class InlineMediaDownloader : GLib.Object {
 
     return false;
   }
-
 
   public static new InlineMediaDownloader get () {
     if (GLib.unlikely (instance == null))
@@ -297,14 +296,14 @@ public class InlineMediaDownloader : GLib.Object {
         debug ("Request on '%s' returned '%s'", _msg.uri.to_string (false),
                Soup.Status.get_phrase (_msg.status_code));
         mark_invalid (media);
-        this.urls_downloading.remove (media.url);
+        urls_downloading.remove_fast (media.url);
         callback ();
         return;
       }
 
       var ms = new MemoryInputStream.from_data (_msg.response_body.data, GLib.g_free);
       load_animation.begin (t, ms, media, () => {
-        this.urls_downloading.remove (media.url);
+        this.urls_downloading.remove_fast (media.url);
         callback ();
         this.downloading[media.url]();
       });
