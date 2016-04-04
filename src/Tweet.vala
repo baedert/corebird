@@ -396,7 +396,7 @@ public class Tweet : GLib.Object {
 
     string[] e = new string[entities.length];
     int n_mentions = 0;
-    foreach (var entity in entities) {
+    foreach (unowned TextEntity entity in entities) {
       if (entity.display_text[0] == '@') {
         e[n_mentions] = entity.display_text;
         n_mentions ++;
