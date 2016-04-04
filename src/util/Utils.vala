@@ -308,40 +308,6 @@ namespace Utils {
     show_error_dialog (error_message);
   }
 
-
-
-  /**
-   * download_file_async:
-   * Downloads the given file asynchronously to the given location.
-   *
-   * @param url The URL of the file to download
-   * @param path The filesystem path to save the file to
-   *
-   */
-  async void download_file_async (string            url,
-                                  string            path,
-                                  GLib.Cancellable? cancellable = null) {
-    var msg = new Soup.Message("GET", url);
-    GLib.SourceFunc cb = download_file_async.callback;
-    SOUP_SESSION.queue_message(msg, (_s, _msg) => {
-      if (cancellable.is_cancelled ()) {
-        cb ();
-        return;
-      }
-      try {
-        File out_file = File.new_for_path(path);
-        var out_stream = out_file.replace (null, false,
-                                           FileCreateFlags.REPLACE_DESTINATION, null);
-        out_stream.write_all (_msg.response_body.data, null);
-        out_stream.close ();
-        cb();
-      } catch (GLib.Error e) {
-        critical (e.message);
-      }
-    });
-    yield;
-  }
-
   async Gdk.Pixbuf? download_pixbuf (string            url,
                                      GLib.Cancellable? cancellable = null) {
 
@@ -420,10 +386,6 @@ namespace Utils {
         return false;
 
     return !node.get_null_member (value_name);
-  }
-
-  public string get_banner_name (int64 user_id) {
-    return user_id.to_string () + ".png";
   }
 
   public void update_startup_account (string old_screen_name,
