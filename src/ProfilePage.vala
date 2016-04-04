@@ -473,7 +473,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     section.remove (1);
     section.insert_item (1, user_item);
 
-    name_label.set_markup("<b>%s</b>".printf (name.strip ()));
+    name_label.set_markup (name.strip ());
     screen_name_label.set_label ("@" + screen_name);
     //tweet_to_menu_item.label = _("Tweet to @%s").printf (screen_name);
     string desc = description;
