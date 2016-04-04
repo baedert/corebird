@@ -179,15 +179,14 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
 
 
   private async void load_friendship () {
-    Friendship? fr = yield UserUtils.load_friendship (account, this.user_id);
-    if (fr == null) {
-      return;
-    }
-    follows_you_label.visible = fr.followed_by;
-    set_user_blocked (fr.blocking);
-    set_retweets_disabled (fr.following && !fr.want_retweets);
+    uint fr = yield UserUtils.load_friendship (account, this.user_id);
 
-    ((SimpleAction)actions.lookup_action ("toggle-retweets")).set_enabled (fr.following);
+    follows_you_label.visible = (fr & FRIENDSHIP_FOLLOWED_BY) > 0;
+    set_user_blocked ((fr & FRIENDSHIP_BLOCKING) > 0);
+    set_retweets_disabled ((fr & FRIENDSHIP_FOLLOWING) > 0 &&
+                           (fr & FRIENDSHIP_WANT_RETWEETS) == 0);
+
+    ((SimpleAction)actions.lookup_action ("toggle-retweets")).set_enabled ((fr & FRIENDSHIP_FOLLOWING) > 0);
   }
 
   private async void load_profile_data (int64 user_id) { //{{{
