@@ -24,6 +24,7 @@ public class Corebird : Gtk.Application {
 
   private SettingsDialog? settings_dialog = null;
   private GLib.GenericArray<Account> active_accounts;
+  private bool started_as_service = false;
 
   const GLib.ActionEntry[] app_entries = {
     {"show-settings",     show_settings_activated         },
@@ -50,18 +51,21 @@ public class Corebird : Gtk.Application {
 
   public override int command_line (ApplicationCommandLine cmd) {
     string? compose_screen_name = null;
+    bool start_service = false;
     bool stop_service = false;
     bool print_startup_accounts = false;
 
-    OptionEntry[] options = new OptionEntry[4];
+    OptionEntry[] options = new OptionEntry[5];
     options[0] = {"tweet", 't', 0, OptionArg.STRING, ref compose_screen_name,
                   "Shows only the 'compose tweet' window for the given account, nothing else.", "SCREEN_NAME"};
-    options[1] = {"stop-service", 'p', 0, OptionArg.NONE, ref stop_service,
+    options[1] = {"start-service", 's', 0, OptionArg.NONE, ref start_service,
+                  "Start service", null};
+    options[2] = {"stop-service", 'p', 0, OptionArg.NONE, ref stop_service,
                   "Stop service, if it has been started as a service", null};
-    options[2] = {"print-startup-accounts", 'a', 0, OptionArg.NONE, ref print_startup_accounts,
+    options[3] = {"print-startup-accounts", 'a', 0, OptionArg.NONE, ref print_startup_accounts,
                   "Print configured startup accounts", null};
 
-    options[3] = {null};
+    options[4] = {null};
 
     string[] args = cmd.get_arguments ();
     string*[] _args = new string[args.length];
@@ -85,10 +89,13 @@ public class Corebird : Gtk.Application {
       return -1;
     }
 
+    if (stop_service && start_service) {
+      error ("Can't stop and start service at the same time.");
+    }
 
 
     if (stop_service) {
-      if (GLib.ApplicationFlags.IS_SERVICE in this.flags) {
+      if (this.started_as_service) {
         debug ("Stopping service");
         /* Starting as a service adds an extra hold() */
         this.release ();
@@ -100,6 +107,9 @@ public class Corebird : Gtk.Application {
       foreach (unowned string acc in startup_accounts) {
         stdout.printf ("%s\n", acc);
       }
+    } else if (start_service) {
+      this.started_as_service = true;
+      this.activate ();
     } else {
       open_startup_windows (compose_screen_name);
     }
@@ -108,7 +118,11 @@ public class Corebird : Gtk.Application {
   }
 
   public override void activate () {
-    open_startup_windows (null);
+    if (started_as_service) {
+      this.hold ();
+    } else {
+      open_startup_windows (null);
+    }
   }
 
   private void show_settings_activated () {
@@ -172,7 +186,7 @@ public class Corebird : Gtk.Application {
     GLib.Intl.textdomain (Config.GETTEXT_PACKAGE);
 
 
-    if (GLib.ApplicationFlags.IS_SERVICE in this.flags) {
+    if (this.started_as_service) {
       this.hold ();
 
       string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
