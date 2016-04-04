@@ -28,13 +28,18 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
 
   public int unread_count { get {return 0;} }
   public int id                         { get; set; }
-  public unowned MainWindow main_window { get; set; }
+  public unowned MainWindow window {
+    set {
+      main_window = value;
+    }
+  }
   public unowned Account account { get; set; }
   private int64 tweet_id;
   private string screen_name;
   private bool values_set = false;
   private Tweet tweet;
   private GLib.SimpleActionGroup actions;
+  private unowned MainWindow main_window;
 
   [GtkChild]
   private Gtk.Grid grid;

@@ -62,7 +62,7 @@ public class MainWidget : Gtk.Box {
     /* Initialize all containers */
     for (int i = 0; i < pages.length; i++) {
       IPage page = pages[i];
-      page.main_window = parent;
+      page.window = parent;
 
       if (page is IMessageReceiver)
         account.user_stream.register ((IMessageReceiver)page);

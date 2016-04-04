@@ -29,7 +29,12 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       radio_button.show_badge = (this._unread_count > 0);
     }
   }
-  public unowned MainWindow main_window     { get; set; }
+  private unowned MainWindow main_window;
+  public unowned MainWindow window {
+    set {
+      main_window = value;
+    }
+  }
   public unowned Account account            { get; set; }
   public unowned DeltaUpdater delta_updater { get; set; }
   public int id                             { get; set; }

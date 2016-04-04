@@ -15,10 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-/**
- * Page in a MainWindow(i.e. in the MainWindow's GtkStack).
- */
 public interface IPage : Gtk.Widget {
   public abstract int id { get; set; }
   public abstract void on_join(int page_id, Bundle? args);
@@ -26,10 +22,8 @@ public interface IPage : Gtk.Widget {
   public abstract void create_radio_button(Gtk.RadioButton? group);
   public abstract Gtk.RadioButton? get_radio_button();
   public abstract string? get_title ();
-  public abstract unowned MainWindow main_window {get; set;}
-  public abstract unowned Account account        {get; set;}
-
-
+  public abstract unowned MainWindow window { set; }
+  public abstract unowned Account account   { get; set; }
 
 
   public virtual bool handles_double_open () {

@@ -18,7 +18,12 @@
 [GtkTemplate (ui = "/org/baedert/corebird/ui/filter-page.ui")]
 class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
   public int id { get; set; }
-  public unowned MainWindow main_window {get; set;}
+  private unowned MainWindow main_window;
+  public unowned MainWindow window {
+    set {
+      main_window = value;
+    }
+  }
   public unowned Account account        {get; set;}
   private BadgeRadioButton radio_button;
   [GtkChild]

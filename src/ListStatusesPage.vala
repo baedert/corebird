@@ -18,7 +18,12 @@
 [GtkTemplate (ui = "/org/baedert/corebird/ui/list-statuses-page.ui")]
 class ListStatusesPage : ScrollWidget, IPage {
   public int id                             { get; set; }
-  public unowned MainWindow main_window     { get; set; }
+  private unowned MainWindow main_window;
+  public unowned MainWindow window {
+    set {
+      main_window = value;
+    }
+  }
   public unowned Account account            { get; set; }
   private int64 list_id;
   private uint tweet_remove_timeout = 0;

@@ -29,7 +29,12 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
       return this._unread_count;
     }
   }
-  public unowned MainWindow main_window  { set; get; }
+  protected unowned MainWindow main_window;
+  public unowned MainWindow window  {
+    set {
+      main_window = value;
+    }
+  }
   protected TweetListBox tweet_list      { set; get; default=new TweetListBox ();}
   public unowned Account account         { get; set; }
   protected BadgeRadioButton radio_button;
