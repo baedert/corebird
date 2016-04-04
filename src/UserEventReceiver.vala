@@ -81,7 +81,8 @@ class UserEventReceiver : GLib.Object, IMessageReceiver {
 
       case StreamMessageType.DIRECT_MESSAGE:
         var cb = (Corebird) GLib.Application.get_default ();
-        if (!cb.is_window_open_for_user_id (account.id)) {
+        if (!cb.is_window_open_for_user_id (account.id) &&
+            Settings.notify_new_dms ()) {
           var dm_obj = root_node.get_object ().get_object_member ("direct_message");
           var sender_obj = dm_obj.get_object_member ("sender");
           int64 sender_id = sender_obj.get_int_member ("id");
@@ -97,7 +98,8 @@ class UserEventReceiver : GLib.Object, IMessageReceiver {
 
       case StreamMessageType.TWEET:
         var cb = (Corebird) GLib.Application.get_default ();
-        if (!cb.is_window_open_for_user_id (account.id)) {
+        if (!cb.is_window_open_for_user_id (account.id) &&
+            Settings.notify_new_mentions ()) {
           var tweet_obj = root_node.get_object ();
           string text = tweet_obj.get_string_member ("text");
           if (text.contains ("@" + account.screen_name)) {
