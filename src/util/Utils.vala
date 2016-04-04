@@ -121,7 +121,7 @@ string rest_call_to_string (Rest.ProxyCall call)
   if (params.size () > 0) {
     builder.append ("?");
 
-    foreach (string key in params.get_keys ()) {
+    foreach (unowned string key in params.get_keys ()) {
       // This doesn't work for the last param but whatever.
       builder.append (key).append ("=").append (params.get (key)).append ("&");
     }
