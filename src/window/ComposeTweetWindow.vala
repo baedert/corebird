@@ -241,10 +241,10 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   }
 
   private void save_last_tweet () {
-    string text = tweet_text.buffer.text;
-
-    if (text.length > 0)
+    if (this.reply_to == null) {
+      string text = tweet_text.buffer.text;
       account.db.update ("info").val ("last_tweet", text).run ();
+    }
   }
 
   [GtkCallback]
