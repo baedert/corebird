@@ -128,9 +128,11 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
         () => {start_send_tweet (); return true;});
 
     this.compose_image_manager.image_removed.connect (() => {
-      if (this.compose_image_manager.n_images < Twitter.max_media_per_upload) {
+      if (this.compose_image_manager.n_images < Twitter.max_media_per_upload)
         this.add_image_button.sensitive = true;
-      }
+
+      if (this.compose_image_manager.n_images == 0)
+        this.compose_image_manager.hide ();
     });
 
     this.add_accel_group (ag);
@@ -270,6 +272,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     file_chooser.set_transient_for (this);
     file_chooser.modal = true;
     file_chooser.file_selected.connect ((path, image) => {
+      this.compose_image_manager.show ();
       this.compose_image_manager.load_image (path, image);
 
       if (this.compose_image_manager.n_images == Twitter.max_media_per_upload)
