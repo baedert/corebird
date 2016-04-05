@@ -199,6 +199,7 @@ class CompletionTextView : Gtk.TextView {
 
     /* +2 for the size and -1 for x since we account for the
        frame size around the text view */
+    completion_window.set_transient_for ((Gtk.Window) this.get_toplevel ());
     completion_window.move (x - 1, y);
     completion_window.resize (alloc.width + 2, 50);
     completion_list.foreach ((w) => { completion_list.remove (w);});
