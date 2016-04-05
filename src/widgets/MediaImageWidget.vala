@@ -17,26 +17,17 @@
 
 public class MediaImageWidget : Gtk.ScrolledWindow {
   private Gtk.Image image;
-  private Gtk.Menu image_context_menu;
 
   private double dnd_x;
   private double dnd_y;
 
   public MediaImageWidget (Media media) {
-    this.button_press_event.connect (button_press_event_cb);
     this.image = new Gtk.Image ();
     Gtk.EventBox event_box = new Gtk.EventBox ();
     event_box.add (this.image);
     event_box.motion_notify_event.connect (event_box_motion_notify_cb);
     event_box.button_press_event.connect (event_box_button_press_cb);
     this.add (event_box);
-
-    image_context_menu = new Gtk.Menu ();
-    var save_as_item = new Gtk.MenuItem ();
-    save_as_item.label = _("Save Image");
-    save_as_item.activate.connect (save_item_activated_cb);
-    save_as_item.show ();
-    image_context_menu.add (save_as_item);
 
     if (media.type == MediaType.GIF) {
       assert (media.animation != null);
@@ -82,37 +73,4 @@ public class MediaImageWidget : Gtk.ScrolledWindow {
     }
     return false;
   }
-
-  private void save_item_activated_cb () {
-     //var file_dialog = new Gtk.FileChooserDialog (_("Save image"), null,
-                                                  //Gtk.FileChooserAction.SAVE,
-                                                  //_("Cancel"), Gtk.ResponseType.CANCEL,
-                                                  //_("Save"), Gtk.ResponseType.ACCEPT);
-    //string filename = Utils.get_file_name (path);
-    //file_dialog.set_current_name (filename);
-
-    //int response = file_dialog.run ();
-    //if (response == Gtk.ResponseType.ACCEPT) {
-      //File dest = File.new_for_uri (file_dialog.get_uri ());
-      //File source = File.new_for_path (path);
-      //try {
-        //source.copy (dest, FileCopyFlags.OVERWRITE);
-      //} catch (GLib.Error e) {
-        //critical (e.message);
-      //}
-      //file_dialog.destroy ();
-    //} else if (response == Gtk.ResponseType.CANCEL)
-      //file_dialog.destroy ();
-
-  }
-
-  private bool button_press_event_cb (Gdk.EventButton evt) {
-    if (evt.button == 3) {
-      image_context_menu.popup (null, null, null, evt.button, evt.time);
-      return true;
-    }
-
-    return false;
-  }
-
 }
