@@ -137,35 +137,14 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
     this.add_accel_group (ag);
 
-    if (mode == Mode.NORMAL) {
-      this.set_default_size (DEFAULT_WIDTH, (int)(DEFAULT_WIDTH / 1.8));
-    } else {
-      int window_width = DEFAULT_WIDTH;
-      int min, nat;
-
-      reply_list.get_preferred_width (out min, out nat);
-      window_width = int.min (window_width, nat);
-
-      content_grid.get_preferred_height_for_width (window_width, out min, out nat);
-
-      int window_height = min;
-
-      // TODO: Remove this once the required gtk version is >= 3.20
-      if (Gtk.get_major_version () == 3 && Gtk.get_minor_version () < 19) {
-        int deco_min, deco_nat;
-        this.get_titlebar ().get_preferred_height_for_width (window_width,
-                                                             out deco_min, out deco_nat);
-        window_height += deco_min;
-      }
-
-      this.set_default_size (window_width, window_height);
-    }
-
     string? last_tweet = account.db.select ("info").cols ("last_tweet").once_string ();
     if (last_tweet != null && last_tweet.length > 0 &&
         tweet_text.get_buffer ().text.length == 0) {
       this.tweet_text.get_buffer ().text = last_tweet;
     }
+
+
+    this.set_default_size (DEFAULT_WIDTH, (int)(DEFAULT_WIDTH / 2.5));
   }
 
   private void recalc_tweet_length () {
