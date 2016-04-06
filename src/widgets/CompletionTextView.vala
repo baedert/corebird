@@ -199,6 +199,7 @@ class CompletionTextView : Gtk.TextView {
 
     /* +2 for the size and -1 for x since we account for the
        frame size around the text view */
+    completion_window.set_attached_to (this);
     completion_window.set_transient_for ((Gtk.Window) this.get_toplevel ());
     completion_window.move (x - 1, y);
     completion_window.resize (alloc.width + 2, 50);
@@ -284,6 +285,7 @@ class CompletionTextView : Gtk.TextView {
     end_iter.assign (cursor_iter);
     return this.buffer.get_text (test_iter, cursor_iter, false);
   }
+
   private void insert_completion (string compl) {
     this.buffer.freeze_notify ();
     Gtk.TextIter start_word_iter;
@@ -299,6 +301,4 @@ class CompletionTextView : Gtk.TextView {
     this.buffer.insert_text (ref start_word_iter, "@" + compl + " ", compl.length + 2);
     this.buffer.thaw_notify ();
   }
-
-
 }
