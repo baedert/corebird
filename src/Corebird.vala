@@ -120,6 +120,24 @@ public class Corebird : Gtk.Application {
   public override void activate () {
     if (started_as_service) {
       this.hold ();
+
+      string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
+      if (startup_accounts.length == 1 && startup_accounts[0] == "")
+        startup_accounts.resize (0);
+
+      debug ("Configured startup accounts: %d", startup_accounts.length);
+      uint n_accounts = Account.list_accounts ().length ();
+      debug ("Configured accounts: %u", n_accounts);
+
+      foreach (unowned string screen_name in startup_accounts) {
+        Account? acc = Account.query_account (screen_name);
+        if (acc != null) {
+          debug ("Service: Starting account %s...", screen_name);
+          this.start_account (acc);
+        } else {
+          warning ("Invalid startup account: '%s'", screen_name);
+        }
+      }
     } else {
       open_startup_windows (null);
     }
@@ -186,27 +204,6 @@ public class Corebird : Gtk.Application {
     GLib.Intl.textdomain (Config.GETTEXT_PACKAGE);
 
 
-    if (this.started_as_service) {
-      this.hold ();
-
-      string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
-      if (startup_accounts.length == 1 && startup_accounts[0] == "")
-        startup_accounts.resize (0);
-
-      debug ("Configured startup accounts: %d", startup_accounts.length);
-      uint n_accounts = Account.list_accounts ().length ();
-      debug ("Configured accounts: %u", n_accounts);
-
-      foreach (unowned string screen_name in startup_accounts) {
-        Account? acc = Account.query_account (screen_name);
-        if (acc != null) {
-          debug ("Service: Starting account %s...", screen_name);
-          this.start_account (acc);
-        } else {
-          warning ("Invalid startup account: '%s'", screen_name);
-        }
-      }
-    }
 
     Utils.load_custom_css ();
     Utils.load_custom_icons ();
@@ -467,8 +464,7 @@ public class Corebird : Gtk.Application {
     /* If we got started as a service and the given account is in the
      * startup accounts, don't stop it here */
     string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
-    if (GLib.ApplicationFlags.IS_SERVICE in this.flags &&
-        acc.screen_name in startup_accounts) {
+    if (this.started_as_service && acc.screen_name in startup_accounts) {
       // Don't stop account
     } else {
       acc.uninit ();
