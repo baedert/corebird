@@ -443,7 +443,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
    * @return The seconds between the current time and
    *         the time the tweet was created
    */
-  public int update_time_delta (GLib.DateTime? now = null) { //{{{
+  public int update_time_delta (GLib.DateTime? now = null) {
     GLib.DateTime cur_time;
     if (now == null)
       cur_time = new GLib.DateTime.now_local ();
@@ -453,10 +453,9 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     GLib.DateTime then = new GLib.DateTime.from_unix_local (
                              tweet.retweeted_tweet != null ? tweet.retweeted_tweet.created_at :
                                                              tweet.source_tweet.created_at);
-                 //tweet.is_retweet ? tweet.rt_created_at : tweet.created_at);
     time_delta_label.label = Utils.get_time_delta (then, cur_time);
     return (int)(cur_time.difference (then) / 1000.0 / 1000.0);
-  } //}}}
+  }
 
 
   public void toggle_mode () {
