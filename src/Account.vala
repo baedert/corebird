@@ -17,19 +17,19 @@
 
 public class Account : GLib.Object {
   public static const string DUMMY = "screen_name";
-  public int64 id                 {public get; private set;}
-  public Sql.Database db          {public get; private set;}
+  public int64 id;
+  public Sql.Database db;
   public string screen_name       {public get; public  set;}
   public string name              {public get; public  set;}
   public string avatar_url        {public get; public  set;}
   public string? banner_url       {public get; private set;}
   public string? website          {public get; public  set;}
   public string? description      {public get; public  set;}
-  public Cairo.Surface avatar_small  {public get; private set;}
-  public Cairo.Surface avatar        {public get; private set;}
-  public Rest.OAuthProxy proxy    {public get; private set;}
-  public UserStream user_stream   {public get; private set;}
-  public UserCounter user_counter {public get; private set;}
+  public Cairo.Surface avatar_small;
+  public Cairo.Surface avatar;
+  public Rest.OAuthProxy proxy;
+  public UserStream user_stream;
+  public UserCounter user_counter;
   private UserEventReceiver event_receiver;
   public NotificationManager2 notifications;
   public int64[] friends;
