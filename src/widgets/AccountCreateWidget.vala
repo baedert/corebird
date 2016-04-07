@@ -129,7 +129,6 @@ class AccountCreateWidget : Gtk.Box {
               .val ("token_secret", acc.proxy.token_secret)
               .run ();
         acc.init_proxy (true, true);
-        // TODO: Insert account into app menu
         corebird.account_added (acc);
         result_received (true, acc);
       });
