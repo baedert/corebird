@@ -107,7 +107,7 @@ public class Corebird : Gtk.Application {
       foreach (unowned string acc in startup_accounts) {
         stdout.printf ("%s\n", acc);
       }
-    } else if (start_service) {
+    } else if (start_service && !this.started_as_service) {
       this.started_as_service = true;
       this.activate ();
     } else {
