@@ -223,7 +223,7 @@ public class Account : GLib.Object {
   }
 
   public async void init_information () {
-    var collect_obj = new Collect (4);
+    var collect_obj = new Collect (5);
     collect_obj.finished.connect (() => {
       init_information.callback ();
     });

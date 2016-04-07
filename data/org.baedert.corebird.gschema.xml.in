@@ -103,7 +103,7 @@
       <default>"Worldwide"</default>
       <summary>Default Trending Topics Location</summary>
     </key>
-    <key name="show-top-trend-tweet" type="b">
+    <key name="show-popular-trend-tweet" type="b">
       <default>true</default>
       <summary>Show most popular tweet about a specific trending topic</summary>
     </key>

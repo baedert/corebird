@@ -58,7 +58,6 @@
 
   public void on_join (int page_id, Bundle? args) {
     this.location_name = Settings.default_location ();
-    this.show_tweet = Settings.show_top_trend_tweet ();
     var now = new DateTime.now_local ();
 
     set_location_completion ();
@@ -67,7 +66,7 @@
       trend_list.remove_all ();
       load_trends (location_entry.get_text ());
     });
-
+    //update every 15 minutes
     TimeSpan difference = now.difference (this.leave_time);
     var minutes = (difference / TimeSpan.MINUTE);
     if(minutes >= 15) {
@@ -79,7 +78,7 @@
 
 
   public void load_trends (string location_name) {
-    collect_obj = new Collect (2);
+    collect_obj = new Collect (0);
     collect_obj.finished.connect (show_entries);
     this.avaliable_locations = Location.instance ();
     int32 woeid = avaliable_locations.lookup(location_name);
@@ -102,14 +101,15 @@
       }
       var trends = root.get_array ().get_object_element (0).get_array_member ("trends");
 
+      this.show_tweet = Settings.show_popular_trend_tweet ();
       trends.foreach_element ((array, index, node) => {
         var topic = node.get_object ();
         this.trend_name = topic.get_string_member("name");
 
         if (this.show_tweet) {
-          this.trend_list.set_header_func (header_func);
           string query = topic.get_string_member ("query");
           load_tweet (query);
+          this.trend_list.set_header_func (header_func);
         }
         else {
           var label = header_label (this.trend_name);
@@ -189,22 +189,17 @@
 
   private void header_func (Gtk.ListBoxRow row, Gtk.ListBoxRow? before) {
     Gtk.Widget? header = row.get_header ();
-    if (before == null && header == null && update_header) {
+    if (before == null && update_header) {
       header = header_label (this.trend_name);
       header.show ();
       row.set_header (header);
       update_header = false;
-      return;
     }
-
-
-    if (header != null) {
-      return;
+    if (header == null && this.show_tweet) {
+      header = header_label (this.trend_name);
+      header.show ();
+      row.set_header (header);
     }
-
-    header = header_label (this.trend_name);
-    header.show ();
-    row.set_header (header);
   }
 
 

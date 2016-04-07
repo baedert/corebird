@@ -94,7 +94,7 @@ public class Settings : GLib.Object {
     return settings.get_string("default-trend-location");
   }
 
-  public static bool show_top_trend_tweet(){
-    return settings.get_boolean("show-top-trend-tweet");
+  public static bool show_popular_trend_tweet(){
+    return settings.get_boolean("show-popular-trend-tweet");
   }
 }

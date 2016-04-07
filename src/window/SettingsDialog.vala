@@ -79,7 +79,7 @@ class SettingsDialog : Gtk.Window {
     set_location_completion ();
     Settings.get ().bind ("default-trend-location", default_trending_topic_location, "text",
                           SettingsBindFlags.DEFAULT);
-    Settings.get ().bind ("show-top-trend-tweet", show_popular_trend_tweet, "active",
+    Settings.get ().bind ("show-popular-trend-tweet", show_popular_trend_tweet, "active",
                           SettingsBindFlags.DEFAULT);
 
 
