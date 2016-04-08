@@ -62,6 +62,9 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     this.application = (Gtk.Application)GLib.Application.get_default ();
 
     avatar_image.surface = acc.avatar;
+    acc.notify["avatar"].connect (() => {
+      avatar_image.surface = acc.avatar;
+    });
 
     if (mode != Mode.QUOTE)
       length_label.label = Tweet.MAX_LENGTH.to_string ();

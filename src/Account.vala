@@ -25,8 +25,8 @@ public class Account : GLib.Object {
   public string? banner_url       {public get; private set;}
   public string? website          {public get; public  set;}
   public string? description      {public get; public  set;}
-  public Cairo.Surface avatar_small;
-  public Cairo.Surface avatar;
+  public Cairo.Surface avatar_small {public get; public set;}
+  public Cairo.Surface avatar       {public get; public set;}
   public Rest.OAuthProxy proxy;
   public UserStream user_stream;
   public UserCounter user_counter;

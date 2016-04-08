@@ -265,12 +265,11 @@ public class Corebird : Gtk.Application {
                   compose_screen_name);
         return;
       }
-      // TODO: Handle the 'avatar not yet cached' case
       acc.init_proxy ();
       acc.query_user_info_by_screen_name.begin ();
       var cw = new ComposeTweetWindow (null, acc, null,
                                        ComposeTweetWindow.Mode.NORMAL);
-      cw.show();
+      cw.show ();
       this.add_window (cw);
       return;
     }
