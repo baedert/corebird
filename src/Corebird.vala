@@ -126,7 +126,7 @@ public class Corebird : Gtk.Application {
         startup_accounts.resize (0);
 
       debug ("Configured startup accounts: %d", startup_accounts.length);
-      uint n_accounts = Account.list_accounts ().length ();
+      uint n_accounts = Account.get_n ();
       debug ("Configured accounts: %u", n_accounts);
 
       foreach (unowned string screen_name in startup_accounts) {
@@ -280,11 +280,11 @@ public class Corebird : Gtk.Application {
     if (startup_accounts.length == 1 && startup_accounts[0] == "")
       startup_accounts.resize (0);
 
-    uint n_accounts = Account.list_accounts ().length ();
+    uint n_accounts = Account.get_n ();
 
     if (startup_accounts.length == 0) {
       if (n_accounts == 1) {
-        add_window_for_screen_name (Account.list_accounts ().nth_data (0).screen_name);
+        add_window_for_screen_name (Account.get_nth (0).screen_name);
       } else if (n_accounts == 0) {
         var window = new MainWindow (this, null);
         add_window (window);
@@ -293,7 +293,7 @@ public class Corebird : Gtk.Application {
         /* We have multiple configured accounts but still none in autostart.
            This should never happen but we handle the case anyway by just opening
            the first one. */
-        add_window_for_screen_name (Account.list_accounts ().nth_data (0).screen_name);
+        add_window_for_screen_name (Account.get_nth (0).screen_name);
       }
     } else {
       bool opened_window = false;
@@ -310,11 +310,13 @@ public class Corebird : Gtk.Application {
         if (n_accounts > 0) {
           /* Check if *any* of the configured accounts (not just startup-accounts)
              is not opened in a window */
-          foreach (Account account in Account.list_accounts ())
+          for (uint i = 0; i < Account.get_n (); i ++) {
+            var account = Account.get_nth (i);
             if (!is_window_open_for_user_id (account.id, null)) {
               add_window_for_account (account);
               return;
             }
+          }
         }
         foreach (Gtk.Window w in this.get_windows ())
           if (((MainWindow)w).account.screen_name == Account.DUMMY) {
@@ -340,13 +342,12 @@ public class Corebird : Gtk.Application {
    * @return true if a window has been opened, false otherwise
    */
   public bool add_window_for_screen_name (string screen_name) {
-    unowned GLib.SList<Account> accs = Account.list_accounts ();
-    foreach (Account a in accs) {
-      if (a.screen_name == screen_name) {
-        add_window_for_account (a);
-        return true;
-      }
+    Account? acc = Account.query_account (screen_name);
+    if (acc != null) {
+      add_window_for_account (acc);
+      return true;
     }
+
     warning ("Could not add window for account '%s'", screen_name);
     return false;
   }

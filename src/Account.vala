@@ -542,31 +542,34 @@ public class Account : GLib.Object {
   }
 
   /** Static stuff ********************************************************************/
-  private static GLib.SList<Account> accounts = null;
+  private static GLib.GenericArray<Account>? accounts = null;
 
-  /**
-   * Simply returns a list of user-specified accounts.
-   * The list is lazily loaded from the database
-   *
-   * @return A singly-linked list of accounts
-   */
-  public static unowned GLib.SList<Account> list_accounts () {
+  public static Account get_nth (uint index) {
     if (GLib.unlikely (accounts == null))
       lookup_accounts ();
 
-    return accounts;
+    return accounts.get (index);
   }
+
+  public static uint get_n () {
+    if (GLib.unlikely (accounts == null))
+      lookup_accounts ();
+
+    return accounts.length;
+  }
+
   /**
    * Look up the accounts. Each account has a <id>.db in ~/.corebird/accounts/
    * The accounts are initialized with only their screen_name and their ID.
    */
   private static void lookup_accounts () {
-    accounts = new GLib.SList<Account> ();
+    assert (accounts == null);
+    accounts = new GLib.GenericArray<Account> ();
     Corebird.db.select ("accounts").cols ("id", "screen_name", "name", "avatar_url").run ((vals) => {
       Account acc = new Account (int64.parse(vals[0]), vals[1], vals[2]);
       acc.avatar_url = vals[3];
       acc.load_avatar ();
-      accounts.append (acc);
+      accounts.add (acc);
       return true;
     });
   }
@@ -577,7 +580,7 @@ public class Account : GLib.Object {
    * @param acc The account to add.
    */
   public static void add_account (Account acc) {
-    accounts.append (acc);
+    accounts.add (acc);
   }
 
   /**
@@ -589,7 +592,8 @@ public class Account : GLib.Object {
     if (GLib.unlikely (accounts == null))
       lookup_accounts ();
 
-    foreach (Account a in accounts) {
+    for (uint i = 0; i < accounts.length; i ++) {
+      var a = accounts.get (i);
       if (a.screen_name == screen_name) {
         accounts.remove (a);
         return;
@@ -608,7 +612,9 @@ public class Account : GLib.Object {
     if (GLib.unlikely (accounts == null))
       lookup_accounts ();
 
-    foreach (unowned Account a in accounts) {
+    for (uint i = 0; i < accounts.length; i ++) {
+      unowned Account a = accounts.get (i);
+
       if (screen_name == a.screen_name)
         return a;
     }
@@ -619,7 +625,8 @@ public class Account : GLib.Object {
     if (GLib.unlikely (accounts == null))
       lookup_accounts ();
 
-    foreach (unowned Account a in accounts) {
+    for (uint i = 0; i < accounts.length; i ++) {
+      unowned Account a = accounts.get (i);
       if (id == a.id)
         return a;
     }

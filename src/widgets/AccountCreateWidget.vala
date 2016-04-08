@@ -106,17 +106,16 @@ class AccountCreateWidget : Gtk.Box {
       var root = parser.get_root ().get_object ();
       string screen_name = root.get_string_member ("screen_name");
       debug ("Checking for %s", screen_name);
-      unowned GLib.SList<Account> current_accounts = Account.list_accounts ();
-      foreach (var a in current_accounts) {
-        if (a.screen_name == screen_name) {
-          result_received (false, a);
-          critical ("Account is already in use");
-          show_error (_("Account already in use"));
-          pin_entry.sensitive = true;
-          pin_entry.text = "";
-          request_pin_button.sensitive = true;
-          return;
-        }
+      Account? existing_account = Account.query_account (screen_name);
+      if (existing_account != null) {
+        result_received (false, existing_account);
+        critical ("Account is already in use");
+        show_error (_("Account already in use"));
+        pin_entry.sensitive = true;
+        pin_entry.text = "";
+        request_pin_button.sensitive = true;
+        return;
+
       }
 
       acc.query_user_info_by_screen_name.begin (screen_name, (obj, res) => {

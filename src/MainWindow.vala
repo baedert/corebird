@@ -63,7 +63,8 @@ public class MainWindow : Gtk.ApplicationWindow {
     add_entry.show_all ();
     account_list.add (add_entry);
 
-    foreach (Account acc in Account.list_accounts ()) {
+    for (uint i = 0; i < Account.get_n (); i ++) {
+      var acc = Account.get_nth (i);
       if (acc.screen_name == Account.DUMMY)
           continue;
       var e = new UserListEntry.from_account (acc);
