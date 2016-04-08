@@ -85,10 +85,15 @@ Cairo.Surface scale_surface (Cairo.ImageSurface input,
                              int                output_width,
                              int                output_height)
 {
-  Cairo.Surface new_surface = new Cairo.Surface.similar_image (input, Cairo.Format.ARGB32,
-                                                               output_width, output_height);
   int old_width  = input.get_width ();
   int old_height = input.get_height ();
+
+  if (old_width == output_width && old_height == output_height)
+    return input;
+
+  Cairo.Surface new_surface = new Cairo.Surface.similar_image (input, Cairo.Format.ARGB32,
+                                                               output_width, output_height);
+
 
   /* http://lists.cairographics.org/archives/cairo/2006-January/006178.html */
 
