@@ -224,8 +224,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   }
 
   private void hide_nsfw_content_changed_cb () {
-    if (this.media_stack == null)
-      return;
+    assert (this.media_stack != null);
 
     if (this.tweet.is_flag_set (TweetState.NSFW) &&
         Settings.hide_nsfw_content ())
