@@ -226,3 +226,7 @@
   min-width: 0px;
   box-shadow: none;
 }
+
+.avatar:insensitive {
+  opacity: 0.4;
+}

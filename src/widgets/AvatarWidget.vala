@@ -93,6 +93,7 @@ class AvatarWidget : Gtk.Widget {
     this.set_has_window (false);
     Settings.get ().bind ("round-avatars", this, "make_round",
                           GLib.SettingsBindFlags.DEFAULT);
+    this.get_style_context ().add_class ("avatar");
   }
 
   ~AvatarWidget () {
