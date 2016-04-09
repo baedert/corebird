@@ -27,7 +27,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
   };
 
   public int unread_count { get {return 0;} }
-  public int id                         { get; set; }
+  public int id           { get; set; }
   public unowned MainWindow window {
     set {
       main_window = value;

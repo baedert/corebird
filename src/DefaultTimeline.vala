@@ -52,6 +52,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   protected abstract string function     { get;      }
   protected bool loading = false;
   protected Gtk.Widget? last_focus_widget = null;
+  private double last_value = 0.0;
 
 
   public DefaultTimeline (int id) {
@@ -99,6 +100,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
 
     if (last_focus_widget != null) {
       last_focus_widget.grab_focus ();
+      this.get_vadjustment ().value = this.last_value;
     }
   }
 
@@ -129,6 +131,8 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
 
     if (tweet_list.action_entry != null && tweet_list.action_entry.shows_actions)
       tweet_list.action_entry.toggle_mode ();
+
+    last_value = this.get_vadjustment ().value;
   }
 
   public abstract void load_newest ();
