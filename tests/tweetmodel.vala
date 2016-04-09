@@ -102,6 +102,20 @@ void clear () {
   assert (tm.get_n_items () == 0);
 }
 
+void clear2 () {
+  var tm1 = new TweetModel ();
+  var tm2 = new TweetModel ();
+
+  var t = new Tweet ();
+  t.id = 10000;
+  tm1.add (t);
+  tm1.clear ();
+
+  assert (tm1.get_n_items () == tm2.get_n_items ());
+  assert (tm1.greatest_id == tm2.greatest_id);
+  assert (tm1.lowest_id == tm2.lowest_id);
+}
+
 void remove_tweet () {
   var tm = new TweetModel ();
 
@@ -279,6 +293,7 @@ int main (string[] args) {
   GLib.Test.add_func ("/tweetmodel/basic-tweet-order", basic_tweet_order);
   GLib.Test.add_func ("/tweetmodel/tweet-removal", tweet_removal);
   GLib.Test.add_func ("/tweetmodel/clear", clear);
+  GLib.Test.add_func ("/tweetmodel/clear2", clear2);
   GLib.Test.add_func ("/tweetmodel/remove", remove_tweet);
   GLib.Test.add_func ("/tweetmodel/remove-own-retweet", remove_own_retweet);
   GLib.Test.add_func ("/tweetmodel/hide-rt", hide_rt);
