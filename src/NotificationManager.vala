@@ -15,10 +15,10 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-public class NotificationManager2 : GLib.Object {
+public class NotificationManager : GLib.Object {
   private unowned Account account;
 
-  public NotificationManager2 (Account account) {
+  public NotificationManager (Account account) {
     this.account = account;
   }
 

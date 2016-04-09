@@ -31,7 +31,7 @@ public class Account : GLib.Object {
   public UserStream user_stream;
   public UserCounter user_counter;
   private UserEventReceiver event_receiver;
-  public NotificationManager2 notifications;
+  public NotificationManager notifications;
   public int64[] friends;
   public int64[] blocked;
   public int64[] muted;
@@ -46,7 +46,7 @@ public class Account : GLib.Object {
     this.name = name;
     this.filters = new GLib.GenericArray<Filter> ();
     this.event_receiver = new UserEventReceiver (this);
-    this.notifications = new NotificationManager2 (this);
+    this.notifications = new NotificationManager (this);
   }
 
   /**
