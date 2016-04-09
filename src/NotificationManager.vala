@@ -15,25 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace NotificationManager {
-  public void notify (Account acc,
-                      string  summary,
-                      string  body = "") {
-
-    var n = new GLib.Notification (summary);
-    n.set_body (body);
-    /* Default action: just bring the appropriate window
-       to front */
-    n.set_default_action_and_target_value ("app.show-window", acc.id);
-    GLib.Application.get_default ().send_notification (null, n);
-  }
-
-  public void withdraw (string notification_id) {
-    GLib.Application.get_default ().withdraw_notification (notification_id);
-  }
-}
-
-
 public class NotificationManager2 : GLib.Object {
   private unowned Account account;
 
@@ -50,6 +31,9 @@ public class NotificationManager2 : GLib.Object {
     n.set_body (body);
 
     string id = "%s-%s".printf (account.id.to_string (), id_suffix ?? "");
+
+    /* Default action: Bring the account window to the front */
+    n.set_default_action_and_target_value ("app.show-window", account.id);
 
     GLib.Application.get_default ().send_notification (id, n);
 

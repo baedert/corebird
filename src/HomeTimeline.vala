@@ -111,13 +111,16 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
       } else {
         summary = _("%s tweeted").printf (t.source_tweet.author.user_name);
       }
-      NotificationManager.notify (account, summary, t.get_real_text ());
+      string id_suffix = "tweet-%s".printf (t.id.to_string ());
+      t.notification_id = account.notifications.send (summary,
+                                                      t.get_real_text (),
+                                                      id_suffix);
 
     } else if(stack_size != 0 && unread_count % stack_size == 0
               && unread_count > 0) {
       string summary = ngettext("%d new Tweet!",
                                 "%d new Tweets!", unread_count).printf (unread_count);
-      NotificationManager.notify (account, summary);
+      account.notifications.send (summary, "");
     }
   } // }}}
 

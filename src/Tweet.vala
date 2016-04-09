@@ -347,7 +347,7 @@ public class Tweet : GLib.Object {
     set {
       _seen = value;
       if (value && notification_id != null) {
-        NotificationManager.withdraw (this.notification_id);
+        GLib.Application.get_default ().withdraw_notification (notification_id);
         this.notification_id = null;
       }
     }
