@@ -305,8 +305,9 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
         parser.load_from_data (call.get_payload ());
       } catch (GLib.Error e) {
         tweet_list.model.clear ();
-        load_newest ();
+        this.unread_count = 0;
         warning (e.message);
+        load_newest ();
         return;
       }
 
