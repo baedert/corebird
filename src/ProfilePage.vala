@@ -387,6 +387,9 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
                                                             this.user_id,
                                                             this.followers_cursor);
 
+    if (this.followers_cursor == null)
+      return;
+
     var users_array = this.followers_cursor.json_object.get_array ();
 
     users_array.foreach_element ((array, index, node) => {
@@ -423,6 +426,9 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     this.following_cursor = yield UserUtils.load_following (this.account,
                                                             this.user_id,
                                                             this.following_cursor);
+
+    if (this.following_cursor == null)
+      return;
 
     var users_array = this.following_cursor.json_object.get_array ();
 
