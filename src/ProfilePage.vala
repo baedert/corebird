@@ -184,7 +184,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     ((SimpleAction)actions.lookup_action ("toggle-retweets")).set_enabled ((fr & FRIENDSHIP_FOLLOWING) > 0);
   }
 
-  private async void load_profile_data (int64 user_id) { //{{{
+  private async void load_profile_data (int64 user_id) {
     loading_stack.visible_child_name = "progress";
     progress_spinner.start ();
 
@@ -216,7 +216,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     else
       avatar_url = avatar_url.replace ("_normal", "_200x200");
 
-    // We don't use our AvatarCache here becase this (73×73) avatar is only
+    // We don't use our AvatarCache here because this (73×73) avatar is only
     // ever loaded here.
     TweetUtils.download_avatar.begin (avatar_url, 73 * scale, (obj, res) => {
       Cairo.Surface surface;
@@ -273,7 +273,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
       location = root.get_string_member("location");
     }
 
-    TextEntity[] text_urls;
+    TextEntity[]? text_urls = null;
     if (root.has_member ("description")) {
       Json.Array urls = entities.get_object_member ("description").get_array_member ("urls");
       text_urls = new TextEntity[urls.get_length ()];
@@ -289,16 +289,59 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
           display_text = ent.get_string_member ("display_url")
         };
       });
-    } else
-      text_urls = new TextEntity[0];
+    }
 
     account.user_counter.user_seen (id, screen_name, name);
 
-    set_data(name, screen_name, display_url, location, description, tweets,
-         following, followers, avatar_url, verified, ref text_urls);
     this.follow_button.following = is_following;
     this.follow_button.sensitive = (this.user_id != this.account.id);
-  } //}}}
+
+
+    var section = (GLib.Menu)more_button.menu_model.get_item_link (0, GLib.Menu.LINK_SECTION);
+    var user_item = new GLib.MenuItem (_("Tweet to @%s").printf (screen_name),
+                                       "user.tweet-to");
+    section.remove (1);
+    section.insert_item (1, user_item);
+
+    name_label.set_markup (name.strip ());
+    screen_name_label.set_label ("@" + screen_name);
+    //tweet_to_menu_item.label = _("Tweet to @%s").printf (screen_name);
+    string desc = description;
+    if (text_urls != null) {
+      TweetUtils.sort_entities (ref text_urls);
+      desc = TextTransform.transform (description,
+                                      text_urls,
+                                      0);
+    }
+
+    this.follower_count = followers;
+    description_label.label = "<big>" + desc + "</big>";
+    tweets_label.label = "%'d".printf(tweets);
+    following_label.label = "%'d".printf(following);
+    update_follower_label ();
+
+    if (location != null && location != "") {
+      location_label.visible = true;
+      location_label.label = location;
+    } else
+      location_label.visible = false;
+
+    avatar_image.verified = verified;
+
+    if (display_url.length > 0) {
+      url_label.visible = true;
+      url_label.set_markup ("<span underline='none'><a href='%s'>%s</a></span>"
+                            .printf (display_url, display_url));
+      description_label.margin_bottom = 6;
+    } else {
+      url_label.visible = false;
+      description_label.margin_bottom = 12;
+    }
+
+    this.name = name;
+    this.screen_name = screen_name;
+    this.avatar_url = avatar_url;
+  }
 
 
   private async void load_tweets () {
@@ -457,61 +500,6 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
       Gdk.Pixbuf? banner = Utils.download_pixbuf.end (res);
       set_banner (banner);
     });
-  }
-
-
-  private new void set_data (string name, string screen_name, string? url,
-                             string? location, string description, int tweets,
-                             int following, int followers, string avatar_url,
-                             bool verified,
-                             ref TextEntity[]? text_urls
-                             ) {
-
-
-    var section = (GLib.Menu)more_button.menu_model.get_item_link (0, GLib.Menu.LINK_SECTION);
-    var user_item = new GLib.MenuItem (_("Tweet to @%s").printf (screen_name),
-                                       "user.tweet-to");
-    section.remove (1);
-    section.insert_item (1, user_item);
-
-    name_label.set_markup (name.strip ());
-    screen_name_label.set_label ("@" + screen_name);
-    //tweet_to_menu_item.label = _("Tweet to @%s").printf (screen_name);
-    string desc = description;
-    if (text_urls != null) {
-      TweetUtils.sort_entities (ref text_urls);
-      desc = TextTransform.transform (description,
-                                      text_urls,
-                                      0);
-    }
-
-    this.follower_count = followers;
-    description_label.label = "<big>" + desc + "</big>";
-    tweets_label.label = "%'d".printf(tweets);
-    following_label.label = "%'d".printf(following);
-    update_follower_label ();
-
-    if (location != null && location != "") {
-      location_label.visible = true;
-      location_label.label = location;
-    } else
-      location_label.visible = false;
-
-    avatar_image.verified = verified;
-
-    if (url != null && url != "") {
-      url_label.visible = true;
-      url_label.set_markup ("<span underline='none'><a href='%s'>%s</a></span>".printf (url, url));
-      description_label.margin_bottom = 6;
-    } else {
-      url_label.visible = false;
-      description_label.margin_bottom = 12;
-    }
-
-    this.name = name;
-    this.screen_name = screen_name;
-    this.avatar_url = avatar_url;
-
   }
 
   [GtkCallback]
