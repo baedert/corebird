@@ -79,7 +79,6 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
   private Gtk.Stack loading_stack;
   [GtkChild]
   private Gtk.RadioButton tweets_button;
-  private GLib.MenuModel more_menu;
   private int64 user_id;
   private new string name;
   private string screen_name;
@@ -155,8 +154,6 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     rt_action.activate.connect (retweet_action_activated);
     actions.add_action (rt_action);
     this.insert_action_group ("user", actions);
-
-    this.more_menu = more_button.menu_model;
   }
 
   private void set_user_id (int64 user_id) {
@@ -471,7 +468,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
                              ) {
 
 
-    var section = (GLib.Menu)more_menu.get_item_link (0, GLib.Menu.LINK_SECTION);
+    var section = (GLib.Menu)more_button.menu_model.get_item_link (0, GLib.Menu.LINK_SECTION);
     var user_item = new GLib.MenuItem (_("Tweet to @%s").printf (screen_name),
                                        "user.tweet-to");
     section.remove (1);
