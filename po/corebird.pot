@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-03 16:58+0200\n"
+"POT-Creation-Date: 2016-04-12 20:28+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: ../src/window/ComposeTweetWindow.vala:120
+#: ../src/window/ComposeTweetWindow.vala:122
 msgid "Quote tweet"
 msgstr ""
 
@@ -92,7 +92,7 @@ msgstr ""
 msgid "Wrong PIN"
 msgstr ""
 
-#: ../src/widgets/AccountCreateWidget.vala:114
+#: ../src/widgets/AccountCreateWidget.vala:113
 msgid "Account already in use"
 msgstr ""
 
@@ -118,94 +118,94 @@ msgstr ""
 msgid "%s tweeted"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:118
+#: ../src/HomeTimeline.vala:121
 #, c-format
 msgid "%d new Tweet!"
 msgid_plural "%d new Tweets!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/HomeTimeline.vala:169
+#: ../src/HomeTimeline.vala:172
 msgid "Home"
 msgstr ""
 
-#: ../src/DMThreadsPage.vala:202
+#: ../src/DMThreadsPage.vala:207
 #, c-format
 msgid "%d new Message from %s"
 msgid_plural "%d new Messages from %s"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/DMThreadsPage.vala:208
+#: ../src/DMThreadsPage.vala:213
 #, c-format
 msgid "New direct message from %s"
 msgstr ""
 
-#: ../src/DMThreadsPage.vala:218 ../src/DMThreadsPage.vala:232
+#: ../src/DMThreadsPage.vala:223 ../src/DMThreadsPage.vala:237
 msgid "Direct Messages"
 msgstr ""
 
-#: ../src/list/DMThreadEntry.vala:77
+#: ../src/list/DMThreadEntry.vala:71
 #, c-format
 msgid "(%d unread)"
 msgid_plural "(%d unread)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/ListsPage.vala:123 ../src/ListsPage.vala:128
+#: ../src/ListsPage.vala:120 ../src/ListsPage.vala:125
 #: ../ui/profile-page.ui.h:9
 msgid "Lists"
 msgstr ""
 
-#: ../src/ProfilePage.vala:254
+#: ../src/ProfilePage.vala:248
 msgid "Protected profile"
 msgstr ""
 
-#: ../src/ProfilePage.vala:472
+#: ../src/ProfilePage.vala:301
 #, c-format
 msgid "Tweet to @%s"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:279
+#: ../src/TweetInfoPage.vala:284
 msgid "Could not show tweet"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:455
+#: ../src/TweetInfoPage.vala:460
 msgid "Retweets"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:456 ../src/FavoritesTimeline.vala:85
+#: ../src/TweetInfoPage.vala:461 ../src/FavoritesTimeline.vala:85
 #: ../src/FavoritesTimeline.vala:89
 msgid "Favorites"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:464
+#: ../src/TweetInfoPage.vala:469
 msgid "Open in Browser"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:464
+#: ../src/TweetInfoPage.vala:469
 msgid "Source"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:504
+#: ../src/TweetInfoPage.vala:509
 msgid "Tweet Details"
 msgstr ""
 
-#: ../src/util/Utils.vala:185
+#: ../src/util/Utils.vala:190
 msgid "Now"
 msgstr ""
 
-#: ../src/util/Utils.vala:187
+#: ../src/util/Utils.vala:192
 #, c-format
 msgid "%dm"
 msgstr ""
 
-#: ../src/util/Utils.vala:191
+#: ../src/util/Utils.vala:196
 #, c-format
 msgid "%dh"
 msgstr ""
 
-#: ../src/SearchPage.vala:307 ../src/SearchPage.vala:316
+#: ../src/SearchPage.vala:313 ../src/SearchPage.vala:322
 #: ../ui/search-page.ui.h:1
 msgid "Search"
 msgstr ""
@@ -219,11 +219,11 @@ msgstr ""
 msgid "Mentions"
 msgstr ""
 
-#: ../src/DMPage.vala:324
+#: ../src/DMPage.vala:329
 msgid "Direct Conversation"
 msgstr ""
 
-#: ../src/ListStatusesPage.vala:356
+#: ../src/ListStatusesPage.vala:361
 msgid "List"
 msgstr ""
 
