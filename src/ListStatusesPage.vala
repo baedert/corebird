@@ -340,14 +340,14 @@ class ListStatusesPage : ScrollWidget, IPage {
     if (tweet_remove_timeout != 0)
       return;
 
-    if (tweet_list.model.get_n_items () > ITimeline.REST) {
+    if (tweet_list.model.get_n_items () > DefaultTimeline.REST) {
       tweet_remove_timeout = GLib.Timeout.add (500, () => {
         if (!scrolled_up) {
           tweet_remove_timeout = 0;
           return false;
         }
 
-        tweet_list.model.remove_last_n_visible (tweet_list.model.get_n_items () - ITimeline.REST);
+        tweet_list.model.remove_last_n_visible (tweet_list.model.get_n_items () - DefaultTimeline.REST);
         tweet_remove_timeout = 0;
         return GLib.Source.REMOVE;
       });

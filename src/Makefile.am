@@ -40,7 +40,6 @@ libcorebird_la_VALASOURCES = \
 	ITwitterItem.vala \
 	UserStream.vala \
 	IMessageReceiver.vala \
-	ITimeline.vala \
 	Tweet.vala \
 	IPage.vala \
 	UserCounter.vala \

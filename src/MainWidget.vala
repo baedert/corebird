@@ -79,10 +79,10 @@ public class MainWidget : Gtk.Box {
       }
 
 
-      if (!(page is ITimeline))
+      if (!(page is DefaultTimeline))
         continue;
 
-      ITimeline tl = (ITimeline)page;
+      DefaultTimeline tl = (DefaultTimeline)page;
       tl.delta_updater = delta_updater;
     }
 
