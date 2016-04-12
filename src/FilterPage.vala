@@ -24,7 +24,7 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
       main_window = value;
     }
   }
-  public unowned Account account        {get; set;}
+  public unowned Account account;
   private BadgeRadioButton radio_button;
   [GtkChild]
   private Gtk.ListBox filter_list;

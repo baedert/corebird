@@ -33,7 +33,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
       main_window = value;
     }
   }
-  public unowned Account account { get; set; }
+  public unowned Account account;
   private int64 tweet_id;
   private string screen_name;
   private bool values_set = false;

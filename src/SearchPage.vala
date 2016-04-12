@@ -22,7 +22,7 @@ class SearchPage : IPage, Gtk.Box {
   public int unread_count {
     get { return 0; }
   }
-  public unowned Account account        { get; set; }
+  public unowned Account account;
   public int id                         { get; set; }
   private unowned MainWindow main_window;
   public unowned MainWindow window {

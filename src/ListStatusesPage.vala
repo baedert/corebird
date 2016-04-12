@@ -24,7 +24,7 @@ class ListStatusesPage : ScrollWidget, IPage {
       main_window = value;
     }
   }
-  public unowned Account account            { get; set; }
+  public unowned Account account;
   private int64 list_id;
   private uint tweet_remove_timeout = 0;
   [GtkChild]

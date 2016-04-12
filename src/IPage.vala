@@ -23,7 +23,6 @@ public interface IPage : Gtk.Widget {
   public abstract Gtk.RadioButton? get_radio_button();
   public abstract string? get_title ();
   public abstract unowned MainWindow window { set; }
-  public abstract unowned Account account   { get; set; }
 
 
   public virtual bool handles_double_open () {

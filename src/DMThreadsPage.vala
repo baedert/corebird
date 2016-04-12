@@ -35,8 +35,8 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       main_window = value;
     }
   }
-  public unowned Account account            { get; set; }
-  public unowned DeltaUpdater delta_updater { get; set; }
+  public unowned Account account;
+  public unowned DeltaUpdater delta_updater;
   public int id                             { get; set; }
   private BadgeRadioButton radio_button;
   private StartConversationEntry start_conversation_entry;

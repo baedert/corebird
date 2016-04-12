@@ -24,7 +24,7 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
       main_window = value;
     }
   }
-  public unowned Account account            { get; set; }
+  public unowned Account account;
   public unowned DeltaUpdater delta_updater;
   public int id                             { get; set; }
   [GtkChild]

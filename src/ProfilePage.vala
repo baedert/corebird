@@ -34,7 +34,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
       user_lists.main_window = value;
     }
   }
-  public unowned Account account { get; set; }
+  public unowned Account account;
   public int id { get; set; }
 
   [GtkChild]
