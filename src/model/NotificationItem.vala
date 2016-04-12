@@ -29,7 +29,7 @@ public class NotificationItem : GLib.Object {
 }
 
 public class MultipleUserNotificationItem : NotificationItem {
-  public Gee.ArrayList<UserIdentity?> identities = new Gee.ArrayList<UserIdentity?> ();
+  public GLib.GenericArray<UserIdentity?> identities = new GLib.GenericArray<UserIdentity?> ();
   protected string[] headings = new string[4];
 
   public MultipleUserNotificationItem () {}
@@ -42,19 +42,19 @@ public class MultipleUserNotificationItem : NotificationItem {
   }
 
   public virtual void build_text () {
-    if (identities.size == 1) {
+    if (identities.length == 1) {
       this.heading = headings[0].printf (screen_name_link (0));
-    } else if (identities.size == 2) {
+    } else if (identities.length == 2) {
       this.heading = headings[1].printf (screen_name_link (0),
                                          screen_name_link (1));
-    } else if (identities.size == 3) {
+    } else if (identities.length == 3) {
       this.heading = headings[2].printf (screen_name_link (0),
                                          screen_name_link (1),
                                          screen_name_link (2));
-    } else if (identities.size > 3) {
-      this.heading = headings[3].printf (screen_name_link (identities.size - 1),
-                                         screen_name_link (identities.size - 2),
-                                         identities.size - 2);
+    } else if (identities.length > 3) {
+      this.heading = headings[3].printf (screen_name_link (identities.length - 1),
+                                         screen_name_link (identities.length - 2),
+                                         identities.length - 2);
     }
 
     this.changed ();
@@ -81,14 +81,14 @@ public class FavNotificationItem : MultipleUserNotificationItem {
 
 public class FollowNotificationItem : MultipleUserNotificationItem {
   public override void build_text () {
-    assert (this.identities.size > 0);
+    assert (this.identities.length > 0);
 
-    this.heading = _("%s followed you").printf (screen_name_link (this.identities.size - 1));
-    if (identities.size > 1) {
+    this.heading = _("%s followed you").printf (screen_name_link (this.identities.length - 1));
+    if (identities.length > 1) {
       var sb = new StringBuilder ();
       sb.append (_("Also: "))
-        .append (screen_name_link (this.identities.size - 2));
-      for (int i = identities.size - 3; i >= 0; i --) {
+        .append (screen_name_link (this.identities.length - 2));
+      for (int i = identities.length - 3; i >= 0; i --) {
         sb.append (", ").append (screen_name_link (i));
       }
 

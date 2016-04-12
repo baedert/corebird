@@ -114,23 +114,7 @@ class UserEventReceiver : GLib.Object, IMessageReceiver {
             account.notifications.send (summary, text);
           }
         }
-        break;
 
-      case StreamMessageType.EVENT_FOLLOWED:
-        var target = root_node.get_object ().get_object_member ("target");
-        var source = root_node.get_object ().get_object_member ("source");
-        int64 id = source.get_int_member ("id");
-        var identity = new UserIdentity ();
-        identity.screen_name = source.get_string_member ("screen_name");
-        identity.id = source.get_int_member ("id");
-        identity.user_name = source.get_string_member ("name");
-        account.notification_received (id,
-                                       NotificationItem.TYPE_FOLLOWED,
-                                       "",
-                                       identity);
-        break;
-
-      case StreamMessageType.TWEET:
         Json.Object user_obj = root_node.get_object ().get_object_member ("user");
         bool is_rt = root_node.get_object ().has_member ("retweeted_status");
         int64 user_id = user_obj.get_int_member ("id");
@@ -152,11 +136,27 @@ class UserEventReceiver : GLib.Object, IMessageReceiver {
                                            identity);
           }
         }
+
+
+
+
+        break;
+
+      case StreamMessageType.EVENT_FOLLOWED:
+        var source = root_node.get_object ().get_object_member ("source");
+        int64 id = source.get_int_member ("id");
+        var identity = UserIdentity ();
+        identity.screen_name = source.get_string_member ("screen_name");
+        identity.id = source.get_int_member ("id");
+        identity.user_name = source.get_string_member ("name");
+        account.notification_received (id,
+                                       NotificationItem.TYPE_FOLLOWED,
+                                       "",
+                                       identity);
         break;
 
       case StreamMessageType.EVENT_FAVORITE:
         error ("Implement!");
-        break;
     }
   }
 
