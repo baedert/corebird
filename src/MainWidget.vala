@@ -15,7 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 [GtkTemplate (ui = "/org/baedert/corebird/ui/main-widget.ui")]
 public class MainWidget : Gtk.Box {
   private unowned Account account;
@@ -44,18 +43,7 @@ public class MainWidget : Gtk.Box {
 
   public MainWidget (Account account, MainWindow parent, Corebird app) {
     this.account = account;
-
-    account.init_proxy ();
-    var acc_menu = (GLib.Menu)Corebird.account_menu;
-    for (int i = 0; i < acc_menu.get_n_items (); i++){
-      int64 item_id = acc_menu.get_item_attribute_value (i, "user-id", VariantType.INT64).get_int64 ();
-      if (item_id == account.id) {
-        ((SimpleAction)app.lookup_action ("show-" + account.id.to_string ())).set_enabled (false);
-        break;
-      }
-    }
-    account.user_stream.start ();
-    account.init_information.begin ();
+    app.start_account (account);
 
     stack.add (stack_impostor);
 
@@ -74,7 +62,7 @@ public class MainWidget : Gtk.Box {
     /* Initialize all containers */
     for (int i = 0; i < pages.length; i++) {
       IPage page = pages[i];
-      page.main_window = parent;
+      page.window = parent;
 
       if (page is IMessageReceiver)
         account.user_stream.register ((IMessageReceiver)page);
@@ -91,10 +79,10 @@ public class MainWidget : Gtk.Box {
       }
 
 
-      if (!(page is ITimeline))
+      if (!(page is DefaultTimeline))
         continue;
 
-      ITimeline tl = (ITimeline)page;
+      DefaultTimeline tl = (DefaultTimeline)page;
       tl.delta_updater = delta_updater;
     }
 
@@ -191,6 +179,12 @@ public class MainWidget : Gtk.Box {
   }
 
   public void stop () {
-    account.uninit ();
+    for (int i = 0; i < pages.length; i++) {
+      IPage page = pages[i];
+      if (page is IMessageReceiver)
+        account.user_stream.unregister ((IMessageReceiver)page);
+    }
+
+    ((Corebird)GLib.Application.get_default ()).stop_account (this.account);
   }
 }

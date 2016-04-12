@@ -2,8 +2,6 @@
 <interface>
   <menu id="app-menu">
     <section>
-    </section>
-    <section>
       <item>
         <attribute name="label" translatable="yes">Settings</attribute>
         <attribute name="action">app.show-settings</attribute>

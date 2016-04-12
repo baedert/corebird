@@ -16,6 +16,7 @@
  */
 
 public class AvatarBannerWidget : Gtk.Container {
+  private static const int MIN_HEIGHT = 150;
   private static const int MAX_HEIGHT = 250;
   private static const double BANNER_RATIO = 0.5; /* 320/640 */
   public int avatar_size { get; set; default = 48; }
@@ -50,27 +51,9 @@ public class AvatarBannerWidget : Gtk.Container {
 
   public void set_account (Account account) {
     this.account = account;
-    load_banner.begin ();
+    fetch_banner.begin ();
     this.queue_draw ();
     set_avatar_button.set_bg ((Cairo.ImageSurface)account.avatar);
-  }
-
-  private async void load_banner () {
-    string banner_name = Utils.get_banner_name (account.id);
-    string banner_path = Dirs.cache ("assets/banners/" + banner_name);
-    /* Try to load the banner */
-    try {
-      var stream = GLib.File.new_for_path (banner_path).read ();
-      set_banner_button.set_pixbuf (yield new Gdk.Pixbuf.from_stream_async (stream, null));
-      stream.close();
-    } catch (GLib.Error e) {
-      if (e is GLib.IOError.NOT_FOUND) {
-        /* Banner does not exist locally so we need to fetch it */
-        yield fetch_banner (banner_path);
-      } else {
-        warning (e.message);
-      }
-    }
   }
 
   public override bool draw (Cairo.Context ct) {
@@ -94,28 +77,24 @@ public class AvatarBannerWidget : Gtk.Container {
 
   public override void get_preferred_width (out int min,
                                             out int nat) {
-    min = avatar_size + 40; // 20px margin on either side
-    nat = min;
+    min = nat = avatar_size + 40; // 20px margin on either side
   }
 
   public override void get_preferred_height_for_width (int width,
                                                        out int min,
                                                        out int nat) {
-    min = nat = int.min (MAX_HEIGHT, (int)(width * BANNER_RATIO) + (avatar_size / 3));
+    min = (avatar_size / 3) + MIN_HEIGHT;
+    nat = int.max (min, int.min (MAX_HEIGHT, (int)(width * BANNER_RATIO) + (avatar_size / 3)));
   }
 
-  private async void fetch_banner (string banner_path) {
+  private async void fetch_banner () {
     if (account.banner_url == null) {
       set_banner_button.set_pixbuf (Twitter.no_banner);
       return;
     }
 
-    yield Utils.download_file_async (account.banner_url, banner_path);
-    try {
-      this.set_banner_button.set_pixbuf (new Gdk.Pixbuf.from_file (banner_path));
-    } catch (GLib.Error e) {
-      warning (e.message);
-    }
+    var pixbuf = yield Utils.download_pixbuf (account.banner_url + "/600x200");
+    this.set_banner_button.set_pixbuf (pixbuf);
   }
 
   public override void size_allocate (Gtk.Allocation allocation) {
@@ -128,8 +107,9 @@ public class AvatarBannerWidget : Gtk.Container {
     set_banner_button.get_preferred_size (out child_requisition, null);
     child_allocation.x = allocation.x;
     child_allocation.y = allocation.y;
-    child_allocation.width = allocation.width;
+    child_allocation.width = int.max (allocation.width, child_requisition.width);
     child_allocation.height = (int)(allocation.width * BANNER_RATIO);
+    child_allocation.height = int.max (allocation.height - (avatar_size / 2), child_requisition.height);
     set_banner_button.size_allocate (child_allocation);
 
 

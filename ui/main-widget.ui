@@ -21,7 +21,7 @@
               <property name="hexpand">true</property>
               <property name="homogeneous">true</property>
               <style>
-                <class name="sidebar" />
+                <class name="topbar" />
               </style>
             </object>
           </child>

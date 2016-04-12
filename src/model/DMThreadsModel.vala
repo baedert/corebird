@@ -44,14 +44,14 @@ class DMThread : GLib.Object {
 
 /* Let's hope there aren't a lof of threads */
 class DMThreadsModel : GLib.ListModel, GLib.Object {
-  private Gee.ArrayList<DMThread> threads = new Gee.ArrayList<DMThread> ();
+  private GLib.GenericArray<DMThread> threads = new GLib.GenericArray<DMThread> ();
 
   public GLib.Object? get_item (uint index) {
     return this.threads.get ((int)index);
   }
 
   public uint get_n_items () {
-    return (uint) this.threads.size;
+    return (uint) this.threads.length;
   }
 
   public GLib.Type get_item_type () {
@@ -60,7 +60,7 @@ class DMThreadsModel : GLib.ListModel, GLib.Object {
 
   public void add (DMThread thread) {
     bool added = false;
-    for (int i = 0; i < threads.size; i ++) {
+    for (int i = 0; i < threads.length; i ++) {
       if (thread.last_message_id > threads.get (i).last_message_id) {
         this.threads.insert (i, thread);
         this.items_changed (i, 0, 1);
@@ -71,7 +71,7 @@ class DMThreadsModel : GLib.ListModel, GLib.Object {
 
     if (!added) {
       this.threads.add (thread);
-      this.items_changed (this.threads.size - 1, 0, 1);
+      this.items_changed (this.threads.length - 1, 0, 1);
     }
 
   }
@@ -82,7 +82,8 @@ class DMThreadsModel : GLib.ListModel, GLib.Object {
 #endif
 
     int index = 0;
-    foreach (var thread in this.threads) {
+    for (int i = 0; i < threads.length; i ++) {
+      var thread = threads.get (i);
       if (thread.user.id == sender_id) {
         if (message_id > thread.last_message_id) {
           thread.last_message_id = message_id;
@@ -101,7 +102,8 @@ class DMThreadsModel : GLib.ListModel, GLib.Object {
   }
 
   public bool has_thread (int64 user_id) {
-    foreach (var thread in this.threads) {
+    for (int i = 0; i < threads.length; i ++) {
+      var thread = threads.get (i);
       if (thread.user.id == user_id)
         return true;
     }
@@ -110,7 +112,8 @@ class DMThreadsModel : GLib.ListModel, GLib.Object {
   }
 
   public int reset_unread_count (int64 user_id) {
-    foreach (var thread in this.threads) {
+    for (int i = 0; i < threads.length; i ++) {
+      var thread = threads.get (i);
       if (thread.user.id == user_id) {
         int k = thread.unread_count;
         thread.unread_count = 0;
@@ -122,7 +125,8 @@ class DMThreadsModel : GLib.ListModel, GLib.Object {
   }
 
   public string? reset_notification_id (int64 user_id) {
-    foreach (var thread in this.threads) {
+    for (int i = 0; i < threads.length; i ++) {
+      var thread = threads.get (i);
       if (thread.user.id == user_id) {
         string k = thread.notification_id;
         thread.notification_id = null;
@@ -134,7 +138,8 @@ class DMThreadsModel : GLib.ListModel, GLib.Object {
   }
 
   public void increase_unread_count (int64 user_id, int amount = 1) {
-    foreach (var thread in this.threads) {
+    for (int i = 0; i < threads.length; i ++) {
+      var thread = threads.get (i);
       if (thread.user.id == user_id) {
         thread.unread_count += amount;
         /* Don't call items_changed, the caller DMManager has to call thread_changed */
@@ -144,7 +149,8 @@ class DMThreadsModel : GLib.ListModel, GLib.Object {
   }
 
   public DMThread? get_thread (int64 user_id) {
-    foreach (var thread in this.threads) {
+    for (int i = 0; i < threads.length; i ++) {
+      var thread = threads.get (i);
       if (thread.user.id == user_id) {
         return thread;
       }

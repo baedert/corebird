@@ -18,8 +18,13 @@
 [GtkTemplate (ui = "/org/baedert/corebird/ui/filter-page.ui")]
 class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
   public int id { get; set; }
-  public unowned MainWindow main_window {get; set;}
-  public unowned Account account        {get; set;}
+  private unowned MainWindow main_window;
+  public unowned MainWindow window {
+    set {
+      main_window = value;
+    }
+  }
+  public unowned Account account;
   private BadgeRadioButton radio_button;
   [GtkChild]
   private Gtk.ListBox filter_list;
@@ -52,10 +57,11 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
     user_list.set_header_func (default_header_func);
   }
 
-  public void on_join (int page_id, Bundle? args) { // {{{
+  public void on_join (int page_id, Bundle? args) {
 
     if (!filters_loaded) {
-      foreach (Filter f in account.filters) {
+      for (int i = 0; i < account.filters.length; i ++) {
+        var f = account.filters.get (i);
         var entry = new FilterListEntry (f, account, main_window);
         filter_list.add (entry);
       }
@@ -97,7 +103,7 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
     });
 
     users_loaded = true;
-  } // }}}
+  }
 
   /**
    * Called when the user adds a new Filter via the AddFilterDialog

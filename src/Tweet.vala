@@ -347,7 +347,7 @@ public class Tweet : GLib.Object {
     set {
       _seen = value;
       if (value && notification_id != null) {
-        NotificationManager.withdraw (this.notification_id);
+        GLib.Application.get_default ().withdraw_notification (notification_id);
         this.notification_id = null;
       }
     }
@@ -396,7 +396,7 @@ public class Tweet : GLib.Object {
 
     string[] e = new string[entities.length];
     int n_mentions = 0;
-    foreach (var entity in entities) {
+    foreach (unowned TextEntity entity in entities) {
       if (entity.display_text[0] == '@') {
         e[n_mentions] = entity.display_text;
         n_mentions ++;

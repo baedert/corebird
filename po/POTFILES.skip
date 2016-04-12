@@ -15,7 +15,6 @@ src/util/Utils.c
 src/DMPage.c
 src/ListStatusesPage.c
 src/MainWindow.c
-src/ITimeline.c
 src/widgets/AccountCreateWidget.c
 src/widgets/TweetListBox.c
 src/widgets/PixbufButton.c
@@ -36,4 +35,6 @@ src/window/SettingsDialog.c
 src/window/FileSelector.c
 src/model/NotificationItem.c
 src/corebird-resources.c
+src/UserEventReceiver.c
+src/DefaultTimeline.c
 data/org.baedert.corebird.desktop.in

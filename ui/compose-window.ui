@@ -112,8 +112,6 @@
                 <property name="vexpand">True</property>
                 <property name="wrap_mode">word-char</property>
                 <property name="accepts_tab">False</property>
-                <property name="left_margin">2</property>
-                <property name="right_margin">2</property>
                 <property name="height_request">60</property>
                 <accessibility>
                   <relation type="labelled-by" target="length_label"/>
@@ -153,6 +151,7 @@
             <property name="label" translatable="yes">Add Image</property>
             <property name="halign">end</property>
             <property name="margin_end">10</property>
+            <property name="margin_bottom">10</property>
             <signal name="clicked" handler="add_image_clicked_cb" />
           </object>
           <packing>
@@ -163,8 +162,11 @@
 
         <child>
           <object class="ComposeImageManager" id="compose_image_manager">
-            <property name="visible">true</property>
-            <property name="margin">6</property>
+            <property name="visible">false</property>
+            <property name="no_show_all">true</property>
+            <property name="margin_start">6</property>
+            <property name="margin_end">6</property>
+            <property name="margin_bottom">6</property>
           </object>
           <packing>
             <property name="left_attach">0</property>

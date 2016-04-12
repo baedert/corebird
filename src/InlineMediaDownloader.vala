@@ -59,13 +59,20 @@ bool is_media_candidate (string _url) {
 
 public class InlineMediaDownloader : GLib.Object {
   private static InlineMediaDownloader instance;
-  private Gee.ArrayList<string> urls_downloading = new Gee.ArrayList<string> ();
+  private GLib.GenericArray<unowned string> urls_downloading = new GLib.GenericArray<unowned string> ();
   [Signal (detailed = true)]
   private signal void downloading ();
 
   private InlineMediaDownloader () {}
 
+  private bool downloading_url (string url) {
+    for (int i = 0; i < this.urls_downloading.length; i ++) {
+      if (urls_downloading.get (i) == url)
+        return true;
+    }
 
+    return false;
+  }
 
   public static new InlineMediaDownloader get () {
     if (GLib.unlikely (instance == null))
@@ -213,7 +220,7 @@ public class InlineMediaDownloader : GLib.Object {
   private async void load_inline_media (MiniTweet t, Media media) {
     GLib.SourceFunc callback = load_inline_media.callback;
 
-    if (this.urls_downloading.contains (media.url)) {
+    if (this.downloading_url (media.url)) {
       ulong id = 0;
       id = this.downloading[media.url].connect (() => {
         this.disconnect (id);
@@ -244,9 +251,16 @@ public class InlineMediaDownloader : GLib.Object {
                           "<meta property=\"og:image\"\\s+content=\"(.*?)\"", 1);
     }
 
+    if (media.url == null ||
+        media.thumb_url == null) {
+      mark_invalid (media);
+      return;
+    }
+
+
     /* We check this here again, since loading e.g. instragram videos might
        change both the media type and the media url. */
-    if (this.urls_downloading.contains (media.url)) {
+    if (this.downloading_url (media.url)) {
       ulong id = 0;
       id = this.downloading[media.url].connect (() => {
         this.disconnect (id);
@@ -274,7 +288,7 @@ public class InlineMediaDownloader : GLib.Object {
       media.percent_loaded += percent;
     });
 
-    assert (!this.urls_downloading.contains (media.url));
+    assert (!this.downloading_url (media.url));
     this.urls_downloading.add (media.url);
 
     SOUP_SESSION.queue_message(msg, (s, _msg) => {
@@ -282,14 +296,14 @@ public class InlineMediaDownloader : GLib.Object {
         debug ("Request on '%s' returned '%s'", _msg.uri.to_string (false),
                Soup.Status.get_phrase (_msg.status_code));
         mark_invalid (media);
-        this.urls_downloading.remove (media.url);
+        urls_downloading.remove_fast (media.url);
         callback ();
         return;
       }
 
       var ms = new MemoryInputStream.from_data (_msg.response_body.data, GLib.g_free);
       load_animation.begin (t, ms, media, () => {
-        this.urls_downloading.remove (media.url);
+        this.urls_downloading.remove_fast (media.url);
         callback ();
         this.downloading[media.url]();
       });

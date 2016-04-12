@@ -50,28 +50,33 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   [GtkChild]
   private Gtk.Grid grid;
   [GtkChild]
-  private MultiMediaWidget mm_widget;
-  [GtkChild]
   private Gtk.Stack stack;
   [GtkChild]
   private Gtk.Box action_box;
-  [GtkChild]
-  private Gtk.Label quote_label;
-  [GtkChild]
-  private TextButton quote_name;
-  [GtkChild]
-  private Gtk.Label quote_screen_name;
-  [GtkChild]
-  private Gtk.Grid quote_grid;
-  [GtkChild]
-  private Gtk.Stack media_stack;
+
+  /* Conditionally created widgets... */
+  private Gtk.Label? quote_label = null;
+  private TextButton? quote_name = null;
+  private Gtk.Label? quote_screen_name = null;
+  private Gtk.Grid? quote_grid = null;
+  private Gtk.Stack? media_stack = null;
+  private MultiMediaWidget? mm_widget = null;
 
 
   private bool _read_only = false;
   public bool read_only {
     set {
-      mm_widget.sensitive = !value;
-      name_button.sensitive = !value;
+      assert (value);
+      if (mm_widget != null)
+        mm_widget.sensitive = !value;
+
+      this.grid.remove (name_button);
+      var name_label = new Gtk.Label ("<b>" + tweet.user_name + "</b>");
+      name_label.set_use_markup (true);
+      name_label.valign = Gtk.Align.BASELINE;
+      name_label.show ();
+      this.grid.attach (name_label, 1, 0, 1, 1);
+
       this._read_only = value;
     }
   }
@@ -91,8 +96,8 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       return stack.visible_child == action_box;
     }
   }
-  private weak Account account;
-  private weak MainWindow main_window;
+  private unowned Account account;
+  private unowned MainWindow main_window;
   public Tweet tweet;
   private bool values_set = false;
   private bool delete_first_activated = false;
@@ -129,20 +134,25 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     if (tweet.retweeted_tweet != null) {
       rt_label.show ();
       rt_image.show ();
-      rt_label.label = @"<span underline='none'><a href=\"@$(tweet.source_tweet.author.id)/" +
-                       @"@$(tweet.source_tweet.author.screen_name)\"" +
-                       @"title=\"@$(tweet.source_tweet.author.screen_name)\">" +
-                       @"$(tweet.source_tweet.author.user_name)</a></span>";
+      var buff = new StringBuilder ();
+      buff.append ("<span underline='none'><a href=\"@")
+          .append (tweet.source_tweet.author.id.to_string ())
+          .append ("/@")
+          .append (tweet.source_tweet.author.screen_name)
+          .append ("\" title=\"@")
+          .append (tweet.source_tweet.author.screen_name)
+          .append ("\">")
+          .append (tweet.source_tweet.author.user_name)
+          .append ("</a></span>");
+      rt_label.label = buff.str;
     }
 
     if (tweet.quoted_tweet != null) {
+      this.create_quote_grid ();
       quote_label.label = TextTransform.transform_tweet (tweet.quoted_tweet,
                                                          Settings.get_text_transform_flags ());
       quote_name.set_markup (tweet.quoted_tweet.author.user_name);
       quote_screen_name.label = "@" + tweet.quoted_tweet.author.screen_name;
-
-      quote_grid.show ();
-      quote_grid.show_all ();
     }
 
     retweet_button.active = tweet.is_flag_set (TweetState.RETWEETED);
@@ -156,23 +166,16 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     conversation_image.visible = (tweet.reply_id != 0);
 
     if (tweet.has_inline_media) {
-
-      if (tweet.is_flag_set (TweetState.NSFW) &&
-          Settings.hide_nsfw_content ())
-        media_stack.visible_child_name = "nsfw";
-      else
-        media_stack.visible_child = mm_widget;
-
-      media_stack.show ();
+      this.create_media_widget (tweet.is_flag_set (TweetState.NSFW));
       mm_widget.restrict_height = restrict_height;
       mm_widget.set_all_media (tweet.medias);
       mm_widget.media_clicked.connect (media_clicked_cb);
       mm_widget.media_invalid.connect (media_invalid_cb);
       mm_widget.window = main_window;
-    } else {
-      mm_widget.hide ();
-    }
 
+      if (tweet.is_flag_set (TweetState.NSFW))
+        Settings.get ().changed["hide-nsfw-content"].connect (hide_nsfw_content_changed_cb);
+    }
 
     var actions = new GLib.SimpleActionGroup ();
     actions.add_action_entries (action_entries, this);
@@ -203,12 +206,13 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
     // TODO All these settings signal connections with lots of tweets could be costly...
     Settings.get ().changed["text-transform-flags"].connect (transform_flags_changed_cb);
-    Settings.get ().changed["hide-nsfw-content"].connect (hide_nsfw_content_changed_cb);
   }
 
   ~TweetListEntry () {
     Settings.get ().changed["text-transform-flags"].disconnect (transform_flags_changed_cb);
-    Settings.get ().changed["hide-nsfw-content"].disconnect (hide_nsfw_content_changed_cb);
+
+    if (tweet.is_flag_set (TweetState.NSFW) && this.media_stack != null)
+      Settings.get ().changed["hide-nsfw-content"].disconnect (hide_nsfw_content_changed_cb);
   }
 
   private void transform_flags_changed_cb () {
@@ -220,6 +224,8 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   }
 
   private void hide_nsfw_content_changed_cb () {
+    assert (this.media_stack != null);
+
     if (this.tweet.is_flag_set (TweetState.NSFW) &&
         Settings.hide_nsfw_content ())
       this.media_stack.visible_child_name = "nsfw";
@@ -323,7 +329,6 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     main_window.main_widget.switch_page (Page.PROFILE, bundle);
   }
 
-  [GtkCallback]
   private void quote_name_button_clicked_cb () {
     assert (tweet.quoted_tweet != null);
     var bundle = new Bundle ();
@@ -342,7 +347,6 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       toggle_mode ();
   }
 
-  [GtkCallback]
   private void show_media_clicked_cb () {
     media_stack.visible_child = mm_widget;
   }
@@ -438,7 +442,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
    * @return The seconds between the current time and
    *         the time the tweet was created
    */
-  public int update_time_delta (GLib.DateTime? now = null) { //{{{
+  public int update_time_delta (GLib.DateTime? now = null) {
     GLib.DateTime cur_time;
     if (now == null)
       cur_time = new GLib.DateTime.now_local ();
@@ -448,10 +452,9 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     GLib.DateTime then = new GLib.DateTime.from_unix_local (
                              tweet.retweeted_tweet != null ? tweet.retweeted_tweet.created_at :
                                                              tweet.source_tweet.created_at);
-                 //tweet.is_retweet ? tweet.rt_created_at : tweet.created_at);
     time_delta_label.label = Utils.get_time_delta (then, cur_time);
     return (int)(cur_time.difference (then) / 1000.0 / 1000.0);
-  } //}}}
+  }
 
 
   public void toggle_mode () {
@@ -510,5 +513,96 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       return;
 
     base.show ();
+  }
+
+  private void create_media_widget (bool nsfw) {
+    this.mm_widget = new MultiMediaWidget ();
+    mm_widget.halign = Gtk.Align.FILL;
+    mm_widget.hexpand = true;
+    mm_widget.margin_top = 6;
+
+    if (nsfw) {
+      this.media_stack = new Gtk.Stack ();
+      media_stack.transition_type = Gtk.StackTransitionType.CROSSFADE;
+      media_stack.add (mm_widget);
+      var box = new Gtk.Box (Gtk.Orientation.VERTICAL, 12);
+      box.valign = Gtk.Align.CENTER;
+      var label = new Gtk.Label (_("This tweet contains images marked as inappropriate"));
+      label.margin_start = 12;
+      label.margin_end = 12;
+      label.wrap = true;
+      label.wrap_mode = Pango.WrapMode.WORD_CHAR;
+      box.add (label);
+
+      var button = new Gtk.Button.with_label (_("Show anyway"));
+      button.halign = Gtk.Align.CENTER;
+      button.valign = Gtk.Align.CENTER;
+      button.clicked.connect (show_media_clicked_cb);
+      box.add (button);
+
+      media_stack.add_named (box, "nsfw");
+      media_stack.show_all ();
+      if (Settings.hide_nsfw_content ())
+        media_stack.visible_child_name = "nsfw";
+      else
+        media_stack.visible_child = mm_widget;
+      this.grid.attach (media_stack, 1, 6, 7, 1);
+    } else {
+      /* We will never have to hide mm_widget */
+      mm_widget.show_all ();
+      this.grid.attach (mm_widget, 1, 6, 7, 1);
+    }
+  }
+
+
+
+  private bool quote_link_activated_cb (string uri) {
+    if (this._read_only) {
+      return false;
+    }
+
+    this.grab_focus ();
+
+    return TweetUtils.activate_link (uri, main_window);
+  }
+
+  private void create_quote_grid () {
+    this.quote_grid = new Gtk.Grid ();
+    quote_grid.margin_top = 6;
+    quote_grid.get_style_context ().add_class ("quote");
+
+    this.quote_name = new TextButton ();
+    quote_name.halign = Gtk.Align.START;
+    quote_name.valign = Gtk.Align.BASELINE;
+    quote_name.margin_start = 12;
+    quote_name.margin_end = 6;
+    quote_name.clicked.connect (quote_name_button_clicked_cb);
+    quote_grid.attach (quote_name, 0, 0, 1, 1);
+
+    this.quote_screen_name = new Gtk.Label ("");
+    quote_screen_name.halign = Gtk.Align.START;
+    quote_screen_name.valign = Gtk.Align.BASELINE;
+    quote_screen_name.hexpand = true;
+    quote_screen_name.get_style_context ().add_class ("dim-label");
+    quote_grid.attach (quote_screen_name, 1, 0, 1, 1);
+
+    this.quote_label = new Gtk.Label ("");
+    quote_label.halign = Gtk.Align.START;
+    quote_label.hexpand = true;
+    quote_label.xalign = 0;
+    quote_label.use_markup = true;
+    quote_label.wrap = true;
+    quote_label.wrap_mode = Pango.WrapMode.WORD_CHAR;
+    quote_label.track_visited_links = false;
+    quote_label.margin_start = 12;
+    quote_label.activate_link.connect (quote_link_activated_cb);
+    quote_label.populate_popup.connect (populate_popup_cb);
+    var attrs = new Pango.AttrList ();
+    attrs.insert (Pango.attr_style_new (Pango.Style.ITALIC));
+    quote_label.set_attributes (attrs);
+    quote_grid.attach (quote_label, 0, 1, 2, 1);
+
+    quote_grid.show_all ();
+    this.grid.attach (quote_grid, 1, 3, 6, 1);
   }
 }

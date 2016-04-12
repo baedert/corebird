@@ -21,7 +21,7 @@ namespace Sql {
   public class InsertStatement : GLib.Object {
     public unowned Sqlite.Database db;
     private StringBuilder query_builder  = new StringBuilder ();
-    private Gee.ArrayList<string> bindings = new Gee.ArrayList<string>();
+    private GLib.GenericArray<string> bindings = new GLib.GenericArray<string>();
     private bool ran = false;
 
     public InsertStatement (string table_name, bool replace = false) {
@@ -35,7 +35,7 @@ namespace Sql {
     public int64 run () {
       query_builder.append (") VALUES (");
       query_builder.append ("?");
-      for (int i = 0; i < bindings.size -1; i++)
+      for (int i = 0; i < bindings.length -1; i++)
         query_builder.append (",?");
       query_builder.append (");");
 
@@ -48,7 +48,7 @@ namespace Sql {
         return -1;
       }
 
-      for (int i = 0; i < bindings.size; i++) {
+      for (int i = 0; i < bindings.length; i++) {
         stmt.bind_text (i + 1, bindings.get (i));
       }
       ok = stmt.step ();
@@ -56,7 +56,7 @@ namespace Sql {
         critical (db.errmsg ());
         StringBuilder err_msg = new StringBuilder ();
         err_msg.append (stmt.sql ()).append (" --- ");
-        for (int i = 0; i < bindings.size; i++) {
+        for (int i = 0; i < bindings.length; i++) {
           err_msg.append (bindings.get (i)).append (", ");
         }
         critical (err_msg.str);
@@ -66,7 +66,7 @@ namespace Sql {
     }
 
     public InsertStatement val (string col_name, string col_value) {
-      if (bindings.size > 0)
+      if (bindings.length > 0)
         query_builder.append (", ");
       query_builder.append ("`").append (col_name).append ("`");
       bindings.add (col_value);

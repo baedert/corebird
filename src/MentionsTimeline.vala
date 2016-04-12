@@ -84,28 +84,14 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
       if (Settings.notify_new_mentions ()) {
         string text;
         if (t.retweeted_tweet != null)
-          text = t.retweeted_tweet.text;
+          text = Utils.unescape_html (t.retweeted_tweet.text);
         else
-          text = t.source_tweet.text;
-        t.notification_id = send_notification (t.screen_name,
-                                               t.id,
-                                               Utils.unescape_html (text));
+          text = Utils.unescape_html (t.source_tweet.text);
+
+        string summary = _("@%s mentioned @%s").printf (t.user_name, account.name);
+        t.notification_id = account.notifications.send (summary, text);
       }
     }
-  }
-
-
-  /**
-   * @return The notification's ID
-   */
-  private string send_notification (string sender_screen_name, int64 tweet_id, string text) {
-    var n = new GLib.Notification (_("New Mention from @%s")
-                                   .printf (sender_screen_name));
-    n.set_body (text);
-    n.set_default_action_and_target_value ("app.show-window", account.id);
-    string id = "new-dm-" + tweet_id.to_string ();
-    GLib.Application.get_default ().send_notification (id, n);
-    return id;
   }
 
   public override void load_newest () {

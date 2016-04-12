@@ -79,7 +79,8 @@ class FilterListEntry : Gtk.ListBoxRow {
 
   [GtkCallback]
   private void delete_button_clicked_cb () {
-    foreach (Filter f in account.filters) {
+    for (int i = 0; i < account.filters.length; i ++) {
+      var f = account.filters.get (i);
       if (f.id == this.filter.id) {
         account.filters.remove (f);
         account.db.exec ("DELETE FROM `filters` WHERE `id`='%d'".printf (f.id));

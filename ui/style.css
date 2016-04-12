@@ -1,4 +1,4 @@
-@define-color sidebar_bg #333;
+@define-color topbar_bg #333;
 
 .avatar-round {
   border: 1px solid grey;
@@ -9,30 +9,30 @@
   padding: 2px 4px;
 }
 
-.sidebar button,
-.sidebar .button {
+.topbar button,
+.topbar .button {
   border: none;
   box-shadow: none;
   background-image: none;
   border-radius: 0px;
-  background-color: @sidebar_bg;
+  background-color: @topbar_bg;
   color: #ddd;
   icon-shadow: none;
 }
 
-.sidebar button:hover,
-.sidebar .button:hover {
-  background-color: shade(@sidebar_bg, 1.3);
+.topbar button:hover,
+.topbar .button:hover {
+  background-color: shade(@topbar_bg, 1.3);
 }
 
 
-.sidebar button:checked,
-.sidebar .button:checked {
-  background-color: shade(@sidebar_bg, 1.5);
+.topbar button:checked,
+.topbar .button:checked {
+  background-color: shade(@topbar_bg, 1.5);
 }
 
-.sidebar button .badge,
-.sidebar .button .badge {
+.topbar button .badge,
+.topbar .button .badge {
   background-color: shade(blue, 1.4);
   background-image: none;
   text-shadow: 0px 1px 1px #FFF;
@@ -41,8 +41,8 @@
   padding: 3px 2px;
 }
 
-.sidebar button .badge:backdrop,
-.sidebar .button .badge:backdrop {
+.topbar button .badge:backdrop,
+.topbar .button .badge:backdrop {
   background-color: grey;
 }
 
@@ -225,4 +225,8 @@
   min-height: 0px;
   min-width: 0px;
   box-shadow: none;
+}
+
+.avatar:insensitive {
+  opacity: 0.4;
 }

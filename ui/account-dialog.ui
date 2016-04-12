@@ -163,8 +163,6 @@
                             <property name="height_request">60</property>
                             <property name="accepts_tab">false</property>
                             <property name="wrap_mode">word-char</property>
-                            <property name="left-margin">3</property>
-                            <property name="right-margin">3</property>
                           </object>
                         </child>
                       </object>

@@ -15,29 +15,49 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace NotificationManager {
-  public void notify (Account acc,
-                      string  summary,
-                      string  body = "",
-                      string? icon = null) {
+public class NotificationManager : GLib.Object {
+  private unowned Account account;
 
-    var n = new GLib.Notification (summary);
-    n.set_body (body);
-    if (icon != null) {
-      try {
-        var gicon = GLib.Icon.new_for_string (icon);
-        n.set_icon (gicon);
-      } catch (GLib.Error e) {
-        warning (e.message);
-      }
-    }
-    /* Default action: just bring the appropriate window
-       to front */
-    n.set_default_action_and_target_value ("app.show-window", acc.id);
-    GLib.Application.get_default ().send_notification (null, n);
+  public NotificationManager (Account account) {
+    this.account = account;
   }
 
-  public void withdraw (string notification_id) {
-    GLib.Application.get_default ().withdraw_notification (notification_id);
+  public void withdraw (string id) {
+    GLib.Application.get_default ().withdraw_notification (id);
+  }
+
+  public string send (string summary, string body, string? id_suffix = null) {
+    var n = new GLib.Notification (summary);
+    n.set_body (body);
+
+    string id = "%s-%s".printf (account.id.to_string (), id_suffix ?? "");
+
+    /* Default action: Bring the account window to the front */
+    n.set_default_action_and_target_value ("app.show-window", account.id);
+
+    GLib.Application.get_default ().send_notification (id, n);
+
+    return id;
+  }
+
+  public string send_dm (int64   sender_id,
+                         string? existing_id,
+                         string  summary,
+                         string  text) {
+    if (existing_id != null) {
+      this.withdraw (existing_id);
+    }
+
+    string new_id = "new-dm-%s".printf (sender_id.to_string ());
+
+    var n = new GLib.Notification (summary);
+    var value = new GLib.Variant.tuple ({new GLib.Variant.int64 (account.id),
+                                         new GLib.Variant.int64 (sender_id)});
+    n.set_default_action_and_target_value ("app.show-dm-thread", value);
+    n.set_body (text);
+
+    GLib.Application.get_default ().send_notification (new_id, n);
+
+    return new_id;
   }
 }

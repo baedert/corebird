@@ -17,13 +17,14 @@
 
 public class Corebird : Gtk.Application {
   public static Sql.Database db;
-  public static GLib.Menu account_menu;
   public static SnippetManager snippet_manager;
   public signal void account_added (Account acc);
   public signal void account_removed (Account acc);
   public signal void account_window_changed (int64? old_id, int64 new_id);
 
   private SettingsDialog? settings_dialog = null;
+  private GLib.GenericArray<Account> active_accounts;
+  private bool started_as_service = false;
 
   const GLib.ActionEntry[] app_entries = {
     {"show-settings",     show_settings_activated         },
@@ -32,28 +33,39 @@ public class Corebird : Gtk.Application {
     {"show-about-dialog", about_activated                 },
     {"show-dm-thread",    show_dm_thread,          "(xx)" },
     {"show-window",       show_window,             "x"    },
+#if DEBUG
     {"post-json",         post_json,               "(ss)" },
     {"print-debug",       print_debug,                    },
+#endif
   };
 
 
 
-  public Corebird () throws GLib.Error {
+  public Corebird () {
     GLib.Object(application_id:   "org.baedert.corebird",
                 flags:            ApplicationFlags.HANDLES_COMMAND_LINE);
                 //register_session: true);
     snippet_manager = new SnippetManager ();
+    active_accounts = new GLib.GenericArray<Account> ();
   }
 
   public override int command_line (ApplicationCommandLine cmd) {
-    this.hold ();
     string? compose_screen_name = null;
+    bool start_service = false;
+    bool stop_service = false;
+    bool print_startup_accounts = false;
 
-
-    OptionEntry[] options = new OptionEntry[2];
+    OptionEntry[] options = new OptionEntry[5];
     options[0] = {"tweet", 't', 0, OptionArg.STRING, ref compose_screen_name,
-            "Shows only the 'compose tweet' window for the given account, nothing else.", "SCREEN_NAME"};
-    options[1] = {null};
+                  "Shows only the 'compose tweet' window for the given account, nothing else.", "SCREEN_NAME"};
+    options[1] = {"start-service", 's', 0, OptionArg.NONE, ref start_service,
+                  "Start service", null};
+    options[2] = {"stop-service", 'p', 0, OptionArg.NONE, ref stop_service,
+                  "Stop service, if it has been started as a service", null};
+    options[3] = {"print-startup-accounts", 'a', 0, OptionArg.NONE, ref print_startup_accounts,
+                  "Print configured startup accounts", null};
+
+    options[4] = {null};
 
     string[] args = cmd.get_arguments ();
     string*[] _args = new string[args.length];
@@ -77,14 +89,58 @@ public class Corebird : Gtk.Application {
       return -1;
     }
 
-    open_startup_windows (compose_screen_name);
+    if (stop_service && start_service) {
+      error ("Can't stop and start service at the same time.");
+    }
 
-    this.release ();
+
+    if (stop_service) {
+      if (this.started_as_service) {
+        debug ("Stopping service");
+        /* Starting as a service adds an extra hold() */
+        this.release ();
+      } else {
+        warning ("--stop-service passed, but corebird has not been started as a service");
+      }
+    } else if (print_startup_accounts) {
+      string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
+      foreach (unowned string acc in startup_accounts) {
+        stdout.printf ("%s\n", acc);
+      }
+    } else if (start_service && !this.started_as_service) {
+      this.started_as_service = true;
+      this.activate ();
+    } else {
+      open_startup_windows (compose_screen_name);
+    }
+
     return 0;
   }
 
   public override void activate () {
-    open_startup_windows (null);
+    if (started_as_service) {
+      this.hold ();
+
+      string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
+      if (startup_accounts.length == 1 && startup_accounts[0] == "")
+        startup_accounts.resize (0);
+
+      debug ("Configured startup accounts: %d", startup_accounts.length);
+      uint n_accounts = Account.get_n ();
+      debug ("Configured accounts: %u", n_accounts);
+
+      foreach (unowned string screen_name in startup_accounts) {
+        Account? acc = Account.query_account (screen_name);
+        if (acc != null) {
+          debug ("Service: Starting account %s...", screen_name);
+          this.start_account (acc);
+        } else {
+          warning ("Invalid startup account: '%s'", screen_name);
+        }
+      }
+    } else {
+      open_startup_windows (null);
+    }
   }
 
   private void show_settings_activated () {
@@ -126,6 +182,7 @@ public class Corebird : Gtk.Application {
 
   public override void startup () {
     base.startup ();
+    this.set_resource_base_path ("/org/baedert/corebird");
 
     new ComposeImageManager ();
     new LazyMenuButton ();
@@ -141,44 +198,17 @@ public class Corebird : Gtk.Application {
                                     Sql.COREBIRD_SQL_VERSION);
 
     // Setup gettext
-    GLib.Intl.setlocale(GLib.LocaleCategory.ALL, Config.DATADIR + "/locale");
+    GLib.Intl.setlocale (GLib.LocaleCategory.ALL, Config.DATADIR + "/locale");
     GLib.Intl.bindtextdomain (Config.GETTEXT_PACKAGE, null);
-    GLib.Intl.bind_textdomain_codeset(Config.GETTEXT_PACKAGE, "UTF-8");
-    GLib.Intl.textdomain(Config.GETTEXT_PACKAGE);
+    GLib.Intl.bind_textdomain_codeset (Config.GETTEXT_PACKAGE, "UTF-8");
+    GLib.Intl.textdomain (Config.GETTEXT_PACKAGE);
 
-    // Construct app menu
-    Gtk.Builder builder = new Gtk.Builder ();
-    try {
-      builder.add_from_resource ("/org/baedert/corebird/ui/menu.ui");
-    } catch (GLib.Error e) {
-      critical (e.message);
-    }
-    GLib.MenuModel app_menu = (MenuModel)builder.get_object ("app-menu");
-    var acc_menu = app_menu.get_item_link (0, "section");
-    account_menu = new GLib.Menu ();
+
 
     Utils.load_custom_css ();
     Utils.load_custom_icons ();
     Utils.init_soup_session ();
     Twitter.get ().init ();
-
-    unowned GLib.SList<Account> accounts = Account.list_accounts ();
-    foreach (var acc in accounts) {
-      acc.info_changed.connect (account_info_changed);
-      var show_win_action = new SimpleAction ("show-" + acc.id.to_string (), null);
-      show_win_action.activate.connect (()=> {
-        add_window_for_account (acc);
-      });
-      add_action(show_win_action);
-
-      var mi = create_accout_menu_item (acc);
-      account_menu.append_item (mi);
-    }
-    ((GLib.Menu)acc_menu).append_submenu (_("Open Account"), account_menu);
-
-    this.set_app_menu (app_menu);
-
-
 
     this.set_accels_for_action ("win.compose-tweet", {Settings.get_accel ("compose-tweet")});
     this.set_accels_for_action ("win.toggle-sidebar", {Settings.get_accel ("toggle-sidebar")});
@@ -221,44 +251,13 @@ public class Corebird : Gtk.Application {
 
   }
 
-  public override void shutdown () {
-    base.shutdown();
-  }
-
-  private GLib.MenuItem create_accout_menu_item (Account account) {
-      var mi = new GLib.MenuItem ("@" + account.screen_name.replace ("_", "__"),
-                                  "app.show-" + account.id.to_string ());
-      mi.set_attribute_value ("user-id", new GLib.Variant.int64 (account.id));
-      return mi;
-  }
-
-  private void account_info_changed (Account       source,
-                                     string        screen_name,
-                                     string        s,
-                                     Cairo.Surface a,
-                                     Cairo.Surface b) {
-    for (int i = 0; i < account_menu.get_n_items (); i++){
-      int64 item_id = account_menu.get_item_attribute_value (i,
-                                                             "user-id",
-                                                             GLib.VariantType.INT64).get_int64 ();
-      if (item_id == source.id) {
-        var new_menu_item = create_accout_menu_item (source);
-        account_menu.remove (i);
-        account_menu.insert_item (i, new_menu_item);
-        return;
-      }
-    }
-
-  }
-
-
   /**
    * Open startup windows.
    * Semantics: Open a window for every account in the startup-accounts array.
    * If that array is empty, look at all the account and if there is one, open that one.
    * If there is none, open a MainWindow with a null account.
    */
-  private void open_startup_windows (string? compose_screen_name = null) { // {{{
+  private void open_startup_windows (string? compose_screen_name = null) {
     if (compose_screen_name != null) {
       Account? acc = Account.query_account (compose_screen_name);
       if (acc == null) {
@@ -266,12 +265,11 @@ public class Corebird : Gtk.Application {
                   compose_screen_name);
         return;
       }
-      // TODO: Handle the 'avatar not yet cached' case
       acc.init_proxy ();
       acc.query_user_info_by_screen_name.begin ();
       var cw = new ComposeTweetWindow (null, acc, null,
                                        ComposeTweetWindow.Mode.NORMAL);
-      cw.show();
+      cw.show ();
       this.add_window (cw);
       return;
     }
@@ -281,13 +279,11 @@ public class Corebird : Gtk.Application {
     if (startup_accounts.length == 1 && startup_accounts[0] == "")
       startup_accounts.resize (0);
 
-    debug ("Configured startup accounts: %d", startup_accounts.length);
-    uint n_accounts = Account.list_accounts ().length ();
-    debug ("Configured accounts: %u", n_accounts);
+    uint n_accounts = Account.get_n ();
 
     if (startup_accounts.length == 0) {
       if (n_accounts == 1) {
-        add_window_for_screen_name (Account.list_accounts ().nth_data (0).screen_name);
+        add_window_for_screen_name (Account.get_nth (0).screen_name);
       } else if (n_accounts == 0) {
         var window = new MainWindow (this, null);
         add_window (window);
@@ -296,7 +292,7 @@ public class Corebird : Gtk.Application {
         /* We have multiple configured accounts but still none in autostart.
            This should never happen but we handle the case anyway by just opening
            the first one. */
-        add_window_for_screen_name (Account.list_accounts ().nth_data (0).screen_name);
+        add_window_for_screen_name (Account.get_nth (0).screen_name);
       }
     } else {
       bool opened_window = false;
@@ -313,11 +309,13 @@ public class Corebird : Gtk.Application {
         if (n_accounts > 0) {
           /* Check if *any* of the configured accounts (not just startup-accounts)
              is not opened in a window */
-          foreach (Account account in Account.list_accounts ())
+          for (uint i = 0; i < Account.get_n (); i ++) {
+            var account = Account.get_nth (i);
             if (!is_window_open_for_user_id (account.id, null)) {
               add_window_for_account (account);
               return;
             }
+          }
         }
         foreach (Gtk.Window w in this.get_windows ())
           if (((MainWindow)w).account.screen_name == Account.DUMMY) {
@@ -329,7 +327,7 @@ public class Corebird : Gtk.Application {
         m.show_all ();
       }
     }
-  } // }}}
+  }
 
   /**
    * Adds a new MainWindow instance with the account that
@@ -343,13 +341,12 @@ public class Corebird : Gtk.Application {
    * @return true if a window has been opened, false otherwise
    */
   public bool add_window_for_screen_name (string screen_name) {
-    unowned GLib.SList<Account> accs = Account.list_accounts ();
-    foreach (Account a in accs) {
-      if (a.screen_name == screen_name) {
-        add_window_for_account (a);
-        return true;
-      }
+    Account? acc = Account.query_account (screen_name);
+    if (acc != null) {
+      add_window_for_account (acc);
+      return true;
     }
+
     warning ("Could not add window for account '%s'", screen_name);
     return false;
   }
@@ -431,6 +428,49 @@ public class Corebird : Gtk.Application {
     base.quit ();
   }
 
+  public void start_account (Account acc) {
+    for (int i = 0; i < this.active_accounts.length; i ++) {
+      var account = this.active_accounts.get (i);
+      if (acc == account) {
+        /* This can very well happen when we've been started as a service */
+        debug ("Account %s is already active", acc.screen_name);
+        return;
+      }
+    }
+
+    acc.init_proxy ();
+    acc.user_stream.start ();
+    acc.init_information.begin ();
+
+    this.active_accounts.add (acc);
+  }
+
+  public void stop_account (Account acc) {
+    bool found = false;
+    for (int i = 0; i < this.active_accounts.length; i ++) {
+      var account = this.active_accounts.get (i);
+      if (account == acc) {
+        found = true;
+        break;
+      }
+    }
+
+    if (!found) {
+      warning ("Can't stop account %s since it's not in the list of active accounts",
+               acc.screen_name);
+      return;
+    }
+
+    /* If we got started as a service and the given account is in the
+     * startup accounts, don't stop it here */
+    string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
+    if (this.started_as_service && acc.screen_name in startup_accounts) {
+      // Don't stop account
+    } else {
+      acc.uninit ();
+      this.active_accounts.remove (acc);
+    }
+  }
 
   /********************************************************/
 
@@ -444,23 +484,44 @@ public class Corebird : Gtk.Application {
       bundle.put_int64 ("sender_id", sender_id);
       main_window.main_widget.switch_page (Page.DM, bundle);
       main_window.present ();
-    } else
-      warning ("Window for Account %s is not open, abort.", account_id.to_string ());
+    } else {
+      var account = Account.query_account_by_id (account_id);
+      if (account == null) {
+        /* Security measure, should never happen. */
+        critical ("No account with id %s found", account_id.to_string ());
+        return;
+      }
+      main_window = new MainWindow (this, account);
+      this.add_window (main_window);
+      var bundle = new Bundle ();
+      bundle.put_int64 ("sender_id", sender_id);
+      main_window.main_widget.switch_page (Page.DM, bundle);
+
+      main_window.show_all ();
+    }
   }
 
   private void show_window (GLib.SimpleAction a, GLib.Variant? value) {
     int64 user_id = value.get_int64 ();
     MainWindow main_window;
-    if (is_window_open_for_user_id (user_id, out main_window))
+    if (is_window_open_for_user_id (user_id, out main_window)) {
       main_window.present ();
-    else
-      warning ("TODO: Implement");
+    } else {
+      var account = Account.query_account_by_id (user_id);
+      if (account == null) {
+        /* Security measure, should never happen. */
+        critical ("No account with id %s found", user_id.to_string ());
+        return;
+      }
+      main_window = new MainWindow (this, account);
+      this.add_window (main_window);
+      main_window.show_all ();
+    }
   }
 
-  private void print_debug (GLib.SimpleAction a, GLib.Variant? v) {
 #if DEBUG
+  private void print_debug (GLib.SimpleAction a, GLib.Variant? v) {
     Twitter.get ().debug ();
-#endif
   }
 
   private void post_json (GLib.SimpleAction a, GLib.Variant? value) {
@@ -468,19 +529,16 @@ public class Corebird : Gtk.Application {
     string json = value.get_child_value (1).get_string ();
     json += "\r\n";
 
-    MainWindow? win = null;
-    if (is_window_open_for_screen_name (screen_name, out win)) {
-      if (win.account == null) {
-        error ("account is null");
+    for (int i = 0; i < this.active_accounts.length; i ++) {
+      var acc = this.active_accounts.get (i);
+      if (acc.screen_name == screen_name) {
+        var fake_call = acc.proxy.new_call ();
+        acc.user_stream.parse_data_cb (fake_call, json, json.length, null);
+        return;
       }
-      var fake_call = win.account.proxy.new_call ();
+    }
 
-      win.account.user_stream.parse_data_cb (fake_call,
-                                             json,
-                                             json.length,
-                                             null);
-
-    } else
-      error ("Window for %s is not open, so account isn't active.", screen_name);
+    error ("Account @%s is not active.", screen_name);
   }
+#endif
 }

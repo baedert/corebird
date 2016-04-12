@@ -46,7 +46,6 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   private unowned Account account;
   private unowned Tweet reply_to;
   private Mode mode;
-  private Gee.ArrayList<AddImageButton> image_buttons;
   private GLib.Cancellable? cancellable;
   private Gtk.ListBox? reply_list = null;
 
@@ -62,8 +61,10 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     this.tweet_text.set_account (acc);
     this.application = (Gtk.Application)GLib.Application.get_default ();
 
-    image_buttons = new Gee.ArrayList<AddImageButton> ();
     avatar_image.surface = acc.avatar;
+    acc.notify["avatar"].connect (() => {
+      avatar_image.surface = acc.avatar;
+    });
 
     if (mode != Mode.QUOTE)
       length_label.label = Tweet.MAX_LENGTH.to_string ();
@@ -102,7 +103,8 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
         mention_builder.append ("@").append (reply_to.source_tweet.author.screen_name);
       }
       foreach (unowned string s in reply_to.get_mentions ()) {
-        if (s == "@" + account.screen_name)
+        if (s == "@" + account.screen_name ||
+            (reply_to.retweeted_tweet != null && reply_to.source_tweet.author.screen_name != s))
           continue;
 
         if (mention_builder.len > 0)
@@ -129,37 +131,23 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
         () => {start_send_tweet (); return true;});
 
     this.compose_image_manager.image_removed.connect (() => {
-      if (this.compose_image_manager.n_images < Twitter.max_media_per_upload) {
+      if (this.compose_image_manager.n_images < Twitter.max_media_per_upload)
         this.add_image_button.sensitive = true;
-      }
+
+      if (this.compose_image_manager.n_images == 0)
+        this.compose_image_manager.hide ();
     });
 
     this.add_accel_group (ag);
 
-    if (mode == Mode.NORMAL) {
-      this.set_default_size (DEFAULT_WIDTH, (int)(DEFAULT_WIDTH / 1.8));
-    } else {
-      int window_width = DEFAULT_WIDTH;
-      int min, nat;
-
-      reply_list.get_preferred_width (out min, out nat);
-      window_width = int.min (window_width, nat);
-
-      content_grid.get_preferred_height_for_width (window_width, out min, out nat);
-
-      int window_height = min;
-
-      // TODO: Remove this once the required gtk version is >= 3.20
-      if (Gtk.get_major_version () == 3 && Gtk.get_minor_version () < 19) {
-        int deco_min, deco_nat;
-        this.get_titlebar ().get_preferred_height_for_width (window_width,
-                                                              out deco_min, out deco_nat);
-        window_height += deco_min;
-      }
-
-      this.set_default_size (window_width, window_height);
+    string? last_tweet = account.db.select ("info").cols ("last_tweet").once_string ();
+    if (last_tweet != null && last_tweet.length > 0 &&
+        tweet_text.get_buffer ().text.length == 0) {
+      this.tweet_text.get_buffer ().text = last_tweet;
     }
 
+
+    this.set_default_size (DEFAULT_WIDTH, (int)(DEFAULT_WIDTH / 2.5));
   }
 
   private void recalc_tweet_length () {
@@ -220,20 +208,38 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       this.compose_image_manager.end_progress (path, error_msg);
     });
 
-    job.start.begin (cancellable, () => {
+    job.start.begin (cancellable, (obj, res) => {
+      bool success = job.start.end (res);
       debug ("Tweet sent.");
+      if (success) {
+        /* Reset last_tweet */
+        account.db.update ("info").val ("last_tweet", "").run ();
+      } else {
+        /* Better save this tweet */
+        this.save_last_tweet ();
+      }
       this.destroy ();
     });
+  }
+
+  private void save_last_tweet () {
+    if (this.reply_to == null) {
+      string text = tweet_text.buffer.text;
+      account.db.update ("info").val ("last_tweet", text).run ();
+    }
   }
 
   [GtkCallback]
   private void cancel_clicked (Gtk.Widget source) {
     if (this.cancellable != null)
       this.cancellable.cancel ();
+
+     this.save_last_tweet ();
     destroy ();
   }
 
   private bool escape_pressed_cb () {
+    this.save_last_tweet ();
     this.destroy ();
     return Gdk.EVENT_STOP;
   }
@@ -248,6 +254,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     file_chooser.set_transient_for (this);
     file_chooser.modal = true;
     file_chooser.file_selected.connect ((path, image) => {
+      this.compose_image_manager.show ();
       this.compose_image_manager.load_image (path, image);
 
       if (this.compose_image_manager.n_images == Twitter.max_media_per_upload)

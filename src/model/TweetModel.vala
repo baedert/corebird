@@ -16,7 +16,7 @@
  */
 
 public class TweetModel : GLib.Object, GLib.ListModel {
-  private Gee.ArrayList<Tweet> tweets = new Gee.ArrayList<Tweet> ();
+  private GLib.GenericArray<Tweet> tweets = new GLib.GenericArray<Tweet> ();
   private int64 min_id = int64.MAX;
   private int64 max_id = int64.MIN;
 
@@ -38,22 +38,23 @@ public class TweetModel : GLib.Object, GLib.ListModel {
 
   public GLib.Object? get_item (uint index) {
     assert (index >= 0);
-    assert (index <  tweets.size);
+    assert (index <  tweets.length);
 
     return tweets.get ((int)index);
   }
 
   public uint get_n_items () {
-    return tweets.size;
+    return tweets.length;
   }
 
   private void remove_at_pos (int pos) {
     int64 id = this.tweets.get (pos).id;
-    this.tweets.remove_at (pos);
+    //this.tweets.remove_at (pos);
+    this.tweets.remove_index (pos);
 
     // Now we just need to update the min_id/max_id fields
     if (id == this.max_id) {
-      if (this.tweets.size > 0) {
+      if (this.tweets.length > 0) {
         int p = int.max (pos - 1, 0);
         this.max_id = this.tweets.get (p).id;
       } else {
@@ -62,8 +63,8 @@ public class TweetModel : GLib.Object, GLib.ListModel {
     }
 
     if (id == this.min_id) {
-      if (this.tweets.size > 0) {
-        int p = int.min (pos + 1, this.tweets.size - 1);
+      if (this.tweets.length > 0) {
+        int p = int.min (pos + 1, this.tweets.length - 1);
         this.min_id = this.tweets.get (p).id;
       } else {
         this.min_id = int64.MAX;
@@ -78,13 +79,13 @@ public class TweetModel : GLib.Object, GLib.ListModel {
     if (tweet.id > max_id) {
       insert_pos = 0;
     } else if (tweet.id < min_id) {
-      insert_pos = tweets.size;
+      insert_pos = tweets.length;
     } else {
       // This case is weird(?), but just estimate the starting point
       int64 half = (max_id - min_id) / 2;
       if (tweet.id > min_id + half) {
         // we start at the beginning
-        for (int i = 0, p = tweets.size; i < p; i ++) {
+        for (int i = 0, p = tweets.length; i < p; i ++) {
           if (tweets.get (i).id <= tweet.id) {
             insert_pos = i;
             break;
@@ -92,7 +93,7 @@ public class TweetModel : GLib.Object, GLib.ListModel {
         }
       } else {
         // we start at the end
-        for (int i = tweets.size - 1; i >= 0; i --) {
+        for (int i = tweets.length - 1; i >= 0; i --) {
           if (tweets.get (i).id >= tweet.id) {
             insert_pos = i + 1;
             break;
@@ -120,12 +121,12 @@ public class TweetModel : GLib.Object, GLib.ListModel {
   }
 
   public void remove_last_n_visible (uint amount) {
-    assert (amount < tweets.size);
+    assert (amount < tweets.length);
 
     uint n_removed = 0;
 
-    int size_before = tweets.size;
-    int index = tweets.size - 1;
+    int size_before = tweets.length;
+    int index = tweets.length - 1;
     while (index >= 0 && n_removed < amount) {
       Tweet tweet = tweets.get (index);
 
@@ -135,20 +136,20 @@ public class TweetModel : GLib.Object, GLib.ListModel {
       this.remove_at_pos (index);
       index --;
     }
-    int removed = size_before - tweets.size;
+    int removed = size_before - tweets.length;
     this.items_changed (size_before - removed, removed, 0);
   }
 
   public void clear () {
-    int s = this.tweets.size;
-    this.tweets.clear ();
+    int s = this.tweets.length;
+    this.tweets.remove_range (0, tweets.length);
     this.min_id = int64.MAX;
     this.max_id = int64.MIN;
     this.items_changed (0, s, 0);
   }
 
   public void remove (int64 tweet_id) {
-    for (int i = 0, p = tweets.size; i < p; i ++) {
+    for (int i = 0, p = tweets.length; i < p; i ++) {
       if (tweets.get(i).id == tweet_id) {
         this.remove_at_pos (i);
         this.items_changed (i, 1, 0);
@@ -162,13 +163,22 @@ public class TweetModel : GLib.Object, GLib.ListModel {
   assert (this.contains_id (t.id));
 #endif
 
-    int pos = this.tweets.index_of (t);
+    int pos = 0;
+    for (int i = 0; i < tweets.length; i ++) {
+      Tweet tweet = tweets.get (i);
+      if (t == tweet) {
+        pos = i;
+        break;
+      }
+    }
+
     this.remove_at_pos (pos);
     this.items_changed (pos, 1, 0);
   }
 
   public void toggle_flag_on_tweet (int64 user_id, TweetState reason, bool active) {
-    foreach (Tweet tweet in tweets) {
+    for (int i = 0; i < tweets.length; i ++) {
+      Tweet tweet = tweets.get (i);
       if (tweet.user_id == user_id) {
         if (active)
           tweet.set_flag (reason);
@@ -179,7 +189,8 @@ public class TweetModel : GLib.Object, GLib.ListModel {
   }
 
   public void toggle_flag_on_retweet (int64 user_id, TweetState reason, bool active) {
-    foreach (Tweet tweet in tweets) {
+    for (int i = 0; i < tweets.length; i ++) {
+      Tweet tweet = tweets.get (i);
       if (tweet.retweeted_tweet != null &&
           tweet.source_tweet.author.id == user_id) {
 
@@ -192,15 +203,17 @@ public class TweetModel : GLib.Object, GLib.ListModel {
   }
 
   public bool contains_id (int64 tweet_id) {
-    foreach (Tweet t in tweets)
-      if (t.id == tweet_id)
+    for (int i = 0; i < tweets.length; i ++) {
+      Tweet tweet = tweets.get (i);
+      if (tweet.id == tweet_id)
         return true;
+    }
 
     return false;
   }
 
   public void remove_tweets_above (int64 id) {
-    while (tweets.size > 0 &&
+    while (tweets.length > 0 &&
            tweets.get (0).id >= id) {
       this.remove_at_pos (0);
       this.items_changed (0, 1, 0);
@@ -208,9 +221,9 @@ public class TweetModel : GLib.Object, GLib.ListModel {
   }
 
   public Tweet? get_from_id (int64 id, int diff = -1) {
-    for (int i = 0; i < tweets.size; i ++) {
+    for (int i = 0; i < tweets.length; i ++) {
       if (tweets.get (i).id == id) {
-        if (i + diff < tweets.size && i + diff >= 0)
+        if (i + diff < tweets.length && i + diff >= 0)
           return tweets.get (i + diff);
         return null;
       }
@@ -219,7 +232,7 @@ public class TweetModel : GLib.Object, GLib.ListModel {
   }
 
   public bool delete_id (int64 id, out bool seen) {
-    for (int i = 0; i < tweets.size; i ++) {
+    for (int i = 0; i < tweets.length; i ++) {
       Tweet t = tweets.get (i);
       if (t.id == id) {
         seen = t.seen;

@@ -288,14 +288,13 @@ namespace TweetUtils {
 
   async void work_array (Json.Array   json_array,
                          TweetListBox tweet_list,
-                         MainWindow   main_window,
                          Account      account) {
     new Thread<void*> ("TweetWorker", () => {
-      Tweet[] tweet_array = new Tweet[json_array.get_length ()];
-
+      uint n_tweets = json_array.get_length ();
+      uint index    = 0;
       /* If the request returned no results at all, we don't
          need to do all the later stuff */
-      if (tweet_array.length == 0) {
+      if (n_tweets == 0) {
         GLib.Idle.add (() => {
           work_array.callback ();
           return GLib.Source.REMOVE;
@@ -304,19 +303,12 @@ namespace TweetUtils {
       }
 
       var now = new GLib.DateTime.now_local ();
-      json_array.foreach_element ((array, index, node) => {
-        Tweet t = new Tweet ();
-        t.load_from_json (node, now, account);
-
-        tweet_array[index] = t;
-      });
-
-
-      int index = 0;
       GLib.Idle.add (() => {
-        Tweet tweet = tweet_array[index];
+        Tweet tweet = new Tweet ();
+        tweet.load_from_json (json_array.get_element (index), now, account);
         if (account.user_counter == null ||
-            tweet_list == null)
+            tweet_list == null ||
+            !(tweet_list.get_toplevel () is Gtk.Window))
           return GLib.Source.REMOVE;
 
         account.user_counter.id_seen (ref tweet.source_tweet.author);
@@ -329,7 +321,7 @@ namespace TweetUtils {
         tweet_list.model.add (tweet);
 
         index ++;
-        if (index == tweet_array.length) {
+        if (index == n_tweets) {
           work_array.callback ();
           return GLib.Source.REMOVE;
         }
@@ -509,6 +501,8 @@ namespace TweetUtils {
     Json.Node? result = null;
     GLib.Error? err   = null;
     GLib.SourceFunc callback = load_threaded.callback;
+
+    debug ("REST Call: %s", rest_call_to_string (call));
 
     new Thread<void*> ("json parser", () => {
       try {

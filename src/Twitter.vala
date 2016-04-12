@@ -49,10 +49,10 @@ public class Twitter : GLib.Object {
   public void init () {
     try {
       Twitter.no_avatar = Gdk.cairo_surface_create_from_pixbuf (
-                               new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/assets/no_avatar.png"),
+                               new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/data/no_avatar.png"),
                                1,
                                null);
-      Twitter.no_banner = new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/assets/no_banner.png");
+      Twitter.no_banner = new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/data/no_banner.png");
     } catch (GLib.Error e) {
       error ("Error while loading assets: %s", e.message);
     }
