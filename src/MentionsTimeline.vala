@@ -28,7 +28,7 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
     this.tweet_list.account= account;
   }
 
-  private void stream_message_received (StreamMessageType type, Json.Node root){
+  private void stream_message_received (StreamMessageType type, Json.Node root) {
     if (type == StreamMessageType.TWEET) {
       add_tweet (root);
     } else if (type == StreamMessageType.DELETE) {
@@ -117,6 +117,6 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
   }
 
   public override void create_radio_button (Gtk.RadioButton? group) {
-    radio_button = new BadgeRadioButton(group, "corebird-mentions-symbolic", _("Mentions"));
+    radio_button = new BadgeRadioButton (group, "corebird-mentions-symbolic", _("Mentions"));
   }
 }
