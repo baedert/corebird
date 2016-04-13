@@ -22,7 +22,9 @@ public class MainWindow : Gtk.ApplicationWindow {
     {"toggle-sidebar",      Settings.toggle_sidebar_visible},
     {"switch-page",         simple_switch_page, "i"},
     {"show-account-dialog", show_account_dialog},
-    {"show-account-list",   show_account_list}
+    {"show-account-list",   show_account_list},
+    {"previous",            previous},
+    {"next",                next}
   };
   [GtkChild]
   private Gtk.HeaderBar headerbar;
@@ -108,28 +110,7 @@ public class MainWindow : Gtk.ApplicationWindow {
       return false;
     });
 
-
-
-    add_accels();
     load_geometry ();
-  }
-
-  /**
-   * Adds the accelerators to the GtkWindow
-   */
-  private void add_accels() {
-    Gtk.AccelGroup ag = new Gtk.AccelGroup();
-
-    ag.connect (Gdk.Key.Left, Gdk.ModifierType.MOD1_MASK, Gtk.AccelFlags.LOCKED,
-        () => {main_widget.switch_page (Page.PREVIOUS); return true;});
-    ag.connect (Gdk.Key.Right, Gdk.ModifierType.MOD1_MASK, Gtk.AccelFlags.LOCKED,
-        () => {main_widget.switch_page (Page.NEXT); return true;});
-    ag.connect (Gdk.Key.Back, 0, Gtk.AccelFlags.LOCKED,
-        () => {main_widget.switch_page (Page.PREVIOUS); return true;});
-    ag.connect (Gdk.Key.Forward, 0, Gtk.AccelFlags.LOCKED,
-        () => {main_widget.switch_page (Page.NEXT); return true;});
-
-    this.add_accel_group(ag);
   }
 
   [GtkCallback]
@@ -260,6 +241,10 @@ public class MainWindow : Gtk.ApplicationWindow {
   }
 
   private void show_hide_compose_window () {
+    if (this.account == null ||
+        this.account.screen_name == Account.DUMMY)
+      return;
+
     if (compose_tweet_window == null) {
       compose_tweet_window = new ComposeTweetWindow (this, account, null,
                                                      ComposeTweetWindow.Mode.NORMAL);
@@ -283,6 +268,22 @@ public class MainWindow : Gtk.ApplicationWindow {
    */
   private void simple_switch_page (GLib.SimpleAction a, GLib.Variant? param) {
     main_widget.switch_page (param.get_int32 ());
+  }
+
+  private void previous (GLib.SimpleAction a, GLib.Variant? param) {
+    if (this.account == null ||
+        this.account.screen_name == Account.DUMMY)
+      return;
+
+    main_widget.switch_page (Page.PREVIOUS);
+  }
+
+  private void next (GLib.SimpleAction a, GLib.Variant? param) {
+    if (this.account == null ||
+        this.account.screen_name == Account.DUMMY)
+      return;
+
+    main_widget.switch_page (Page.NEXT);
   }
 
   /* result of the show-account-dialog GAction */

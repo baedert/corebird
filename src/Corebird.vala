@@ -224,6 +224,8 @@ public class Corebird : Gtk.Application {
     this.set_accels_for_action ("app.show-shortcuts", {"<Primary>question", "<Primary>F1"});
     this.set_accels_for_action ("win.show-account-dialog", {Settings.get_accel ("show-account-dialog")});
     this.set_accels_for_action ("win.show-account-list", {Settings.get_accel ("show-account-list")});
+    this.set_accels_for_action ("win.previous", {"<Alt>Left", "Back"});
+    this.set_accels_for_action ("win.next", {"<Alt>Right", "Forward"});
 
     // TweetInfoPage
     this.set_accels_for_action ("tweet.reply",    {"r"});
