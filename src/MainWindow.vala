@@ -45,7 +45,7 @@ public class MainWindow : Gtk.ApplicationWindow {
 
   private Gtk.MenuButton app_menu_button = null;
   public MainWidget main_widget;
-  public unowned Account? account  {public get; private set;}
+  public unowned Account? account;
   private ComposeTweetWindow? compose_tweet_window = null;
 
   public int cur_page_id {
