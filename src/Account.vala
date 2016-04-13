@@ -222,6 +222,16 @@ public class Account : GLib.Object {
                     this.avatar_small,
                     this.avatar);
     }
+
+    string text_color = root.get_string_member ("profile_text_color");
+    string bg_color = root.get_string_member ("profile_background_color");
+
+    string css = ".topbar button { background-color: #%s; color: #%s;}".printf (bg_color, text_color);
+    var provider = new Gtk.CssProvider ();
+    provider.load_from_data (css, -1);
+
+    Gtk.StyleContext.add_provider_for_screen (Gdk.Screen.get_default (), provider,
+                                              Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
   }
 
   public async void init_information () {
