@@ -231,13 +231,13 @@ public class MainWindow : Gtk.ApplicationWindow {
     if (evt.button == 9) {
       // Forward thumb button
       main_widget.switch_page (Page.NEXT);
-      return true;
+      return Gdk.EVENT_STOP;
     } else if (evt.button == 8) {
       // backward thumb button
       main_widget.switch_page (Page.PREVIOUS);
-      return true;
+      return Gdk.EVENT_STOP;
     }
-    return false;
+    return Gdk.EVENT_PROPAGATE;
   }
 
   private void show_hide_compose_window () {
