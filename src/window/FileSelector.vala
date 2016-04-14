@@ -60,6 +60,7 @@ class FileSelector : Gtk.Window {
     file_chooser.file_activated.connect (file_activated_cb);
     file_chooser.current_folder_changed.connect (folder_changed_cb);
     file_chooser.use_preview_label = false;
+    file_chooser.vexpand = true;
 
 
     this.main_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 6);
