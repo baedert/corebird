@@ -101,8 +101,9 @@ public class Account : GLib.Object {
 
   public void uninit () {
     this.proxy = null;
-    this.user_stream.stop ();
     this.user_counter.save (this.db);
+    this.user_stream.unregister (this.event_receiver);
+    this.user_stream.stop ();
     this.user_stream = null;
   }
 
