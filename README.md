@@ -11,7 +11,7 @@ This is the readme for the current *development version*. If you're looking for 
 | `Ctrl + t`         | Compose Tweet                                                                                                                               |
 | `Back`             | Go one page back (this can be triggered via the back button on the keyboard, the back thumb button on the mouse or  `Alt + Left`)           |
 | `Forward`          | Go one page forward (this can be triggered via the forward button on the keyboard, the forward thumb button on the mouse or  `Alt + Right`) |
-| `Alt + num`        | Go to page `num` (between 1 and 7 at the moment)                                                                                            |
+| `Alt + num`        | Go to page `num` (between 1 and 8 at the moment)                                                                                            |
 | `Ctrl + Shift + s` | Show/Hide sidebar                                                                                                                           |
 | `Ctrl + p`         | Show account settings                                                                                                                       |
 | `Ctrl + k`         | Show account list                                                                                                                           |

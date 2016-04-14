@@ -62,7 +62,7 @@
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">true</property>
-                <property name="accelerator">&lt;Alt&gt;1...7</property>
+                <property name="accelerator">&lt;Alt&gt;1...8</property>
                 <property name="title" translatable="yes">Go to nth page</property>
               </object>
             </child>
