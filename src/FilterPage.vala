@@ -32,6 +32,8 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
   private Gtk.ListBox user_list;
   [GtkChild]
   private Gtk.Frame user_list_frame;
+  [GtkChild]
+  private Gtk.Revealer user_list_revealer;
   private bool filters_loaded = false;
   private bool users_loaded = false;
 
@@ -93,12 +95,15 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
 
       Json.Array users = root.get_object ().get_array_member ("users");
       uint n_users = users.get_length ();
+
       users.foreach_element ((arr, index, node) => {
         var obj = node.get_object ();
         add_user (obj);
       });
+
       if (n_users > 0) {
         user_list_frame.show ();
+        user_list_revealer.reveal_child = true;
       }
     });
 
