@@ -42,6 +42,12 @@ public class MainWindow : Gtk.ApplicationWindow {
   public Gtk.Button back_button;
   [GtkChild]
   public Gtk.ToggleButton compose_tweet_button;
+  [GtkChild]
+  private Gtk.Label title_label;
+  [GtkChild]
+  private Gtk.Label last_page_label;
+  [GtkChild]
+  private Gtk.Stack title_stack;
 
   private Gtk.MenuButton app_menu_button = null;
   public MainWidget main_widget;
@@ -147,7 +153,7 @@ public class MainWindow : Gtk.ApplicationWindow {
       main_widget.show_all ();
       this.add (main_widget);
       main_widget.switch_page (0);
-      this.set_title (main_widget.get_page (0).get_title ());
+      this.set_window_title (main_widget.get_page (0).get_title ());
       avatar_image.surface = account.avatar_small;
       account.notify["avatar-small"].connect(() => {
         avatar_image.surface = account.avatar_small;
@@ -362,7 +368,7 @@ public class MainWindow : Gtk.ApplicationWindow {
                                      string        name,
                                      Cairo.Surface small_avatar,
                                      Cairo.Surface avatar) {
-    this.set_title (main_widget.get_page (main_widget.cur_page_id).get_title ());
+    this.set_window_title (main_widget.get_page (main_widget.cur_page_id).get_title ());
   }
 
   /**
@@ -435,5 +441,17 @@ public class MainWindow : Gtk.ApplicationWindow {
     /* We only do this for stream + mentions at the moment */
     ((DefaultTimeline)get_page (Page.STREAM)).rerun_filters ();
     ((DefaultTimeline)get_page (Page.MENTIONS)).rerun_filters ();
+  }
+
+  public void set_window_title (string title,
+                                Gtk.StackTransitionType transition_type = Gtk.StackTransitionType.NONE) {
+    message ("set_window_title transition_type: %s", transition_type.to_string ());
+    this.last_page_label.label = this.title_label.label;
+    this.title_stack.transition_type = Gtk.StackTransitionType.NONE;
+    this.title_stack.visible_child = last_page_label;
+
+    this.title_stack.transition_type = transition_type;
+    this.title_label.label = title;
+    this.title_stack.visible_child = title_label;
   }
 }
