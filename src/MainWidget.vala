@@ -166,8 +166,7 @@ public class MainWidget : Gtk.Box {
 
     page.on_join (page_id, args);
     stack.set_visible_child (pages[page_id]);
-    if (page.get_title () != null)
-      ((MainWindow)this.parent).set_title (page.get_title ());
+    ((MainWindow)this.parent).set_title (page.get_title ());
 
     page_switch_lock = false;
 

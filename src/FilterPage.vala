@@ -221,7 +221,7 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
 
   public Gtk.RadioButton? get_radio_button() { return radio_button; }
 
-  public string? get_title () {
+  public string get_title () {
     return _("Filters");
   }
 

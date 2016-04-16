@@ -325,7 +325,7 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
   }
 
 
-  public string? get_title () {
+  public string get_title () {
     return _("Direct Conversation");
   }
 

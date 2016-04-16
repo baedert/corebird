@@ -81,7 +81,7 @@ class FavoritesTimeline : IMessageReceiver, DefaultTimeline {
 
 
 
-  public override string? get_title () {
+  public override string get_title () {
     return _("Favorites");
   }
 

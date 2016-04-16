@@ -233,7 +233,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   }
 
 
-  public string? get_title () {
+  public string get_title () {
     return _("Direct Messages");
   }
 

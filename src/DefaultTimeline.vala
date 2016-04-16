@@ -138,7 +138,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
 
   public abstract void load_newest ();
   public abstract void load_older ();
-  public abstract string? get_title ();
+  public abstract string get_title ();
 
   public override void destroy () {
     if (tweet_remove_timeout > 0) {

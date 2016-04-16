@@ -620,7 +620,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
   public void create_radio_button (Gtk.RadioButton? group) {}
 
 
-  public string? get_title () {
+  public string get_title () {
     return "@" + screen_name;
   }
 

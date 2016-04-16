@@ -149,7 +149,7 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
     tm.toggle_flag_on_retweet (user_id, reason, false);
   }
 
-  public override string? get_title () {
+  public override string get_title () {
     return "@" + account.screen_name;
   }
 

@@ -505,7 +505,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     });
   }
 
-  public string? get_title () {
+  public string get_title () {
     return _("Tweet Details");
   }
 

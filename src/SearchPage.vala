@@ -318,7 +318,7 @@ class SearchPage : IPage, Gtk.Box {
   }
 
 
-  public string? get_title () {
+  public string get_title () {
     return _("Search");
   }
 

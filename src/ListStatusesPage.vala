@@ -357,7 +357,7 @@ class ListStatusesPage : ScrollWidget, IPage {
     }
   }
 
-  public string? get_title () {
+  public string get_title () {
     return _("List");
   }
 
