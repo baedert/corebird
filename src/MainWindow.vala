@@ -445,7 +445,6 @@ public class MainWindow : Gtk.ApplicationWindow {
 
   public void set_window_title (string title,
                                 Gtk.StackTransitionType transition_type = Gtk.StackTransitionType.NONE) {
-    message ("set_window_title transition_type: %s", transition_type.to_string ());
     this.last_page_label.label = this.title_label.label;
     this.title_stack.transition_type = Gtk.StackTransitionType.NONE;
     this.title_stack.visible_child = last_page_label;
