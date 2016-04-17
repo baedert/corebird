@@ -100,7 +100,11 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
     }
 
     if (last_focus_widget != null) {
-      last_focus_widget.grab_focus ();
+      if (last_focus_widget.parent == this.tweet_list)
+        last_focus_widget.grab_focus ();
+      else
+        last_focus_widget = null;
+
       this.get_vadjustment ().value = this.last_value;
     }
   }
