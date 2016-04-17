@@ -37,6 +37,11 @@ static Soup.Session SOUP_SESSION = null;
 
 const int TRANSITION_DURATION = 200 * 1000;
 
+#if DEBUG
+public string __class_name (GLib.Object o) {
+  return GLib.Type.from_instance (o).name ();
+}
+#endif
 
 void default_header_func (Gtk.ListBoxRow  row,
                           Gtk.ListBoxRow? row_before)
