@@ -99,16 +99,20 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
       mark_seen (-1);
     }
 
-    if (last_focus_widget != null) {
-      if (last_focus_widget.parent == this.tweet_list)
-        last_focus_widget.grab_focus ();
-      else
-        last_focus_widget = null;
+    if (last_focus_widget != null)
+      last_focus_widget.grab_focus ();
 
-      this.get_vadjustment ().value = this.last_value;
-    }
+    this.get_vadjustment ().value = this.last_value;
   }
 
+  public virtual void on_leave () {
+    this.last_focus_widget = main_window.get_focus ();
+
+    if (tweet_list.action_entry != null && tweet_list.action_entry.shows_actions)
+      tweet_list.action_entry.toggle_mode ();
+
+    last_value = this.get_vadjustment ().value;
+  }
 
   public bool handles_double_open () {
     return true;
@@ -119,25 +123,6 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
       this.scroll_up_next (true, true);
       tweet_list.get_row_at_index (0).grab_focus ();
     }
-  }
-
-  public virtual void on_leave () {
-    Gtk.Widget? focus_widget = main_window.get_focus ();
-    if (focus_widget == null)
-      return;
-
-    GLib.List<weak Gtk.Widget> list_rows = tweet_list.get_children ();
-    foreach (Gtk.Widget w in list_rows) {
-      if (w == focus_widget) {
-        last_focus_widget = w;
-        break;
-      }
-    }
-
-    if (tweet_list.action_entry != null && tweet_list.action_entry.shows_actions)
-      tweet_list.action_entry.toggle_mode ();
-
-    last_value = this.get_vadjustment ().value;
   }
 
   public abstract void load_newest ();
