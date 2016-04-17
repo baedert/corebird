@@ -231,15 +231,13 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
         t.retweeted_tweet.author.id == account.id)
       flags |= TweetState.HIDDEN_FORCE;
 
-
-
     /* Fourth case */
-    foreach (int64 id in account.disabled_rts)
+    foreach (int64 id in account.disabled_rts) {
       if (id == t.source_tweet.author.id) {
         flags |= TweetState.HIDDEN_RTS_DISABLED;
         break;
       }
-
+    }
 
     /* Fifth case */
     foreach (Gtk.Widget w in tweet_list.get_children ()) {
