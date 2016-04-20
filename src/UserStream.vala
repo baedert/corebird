@@ -55,10 +55,8 @@ public class UserStream : Object {
   private StringBuilder data = new StringBuilder();
   private GLib.GenericArray<unowned IMessageReceiver> receivers;
   private GLib.NetworkMonitor network_monitor;
-  private bool network_available;
   private uint network_timeout_id   = 0;
   private uint heartbeat_timeout_id = 0;
-  private bool running = false;
   private string account_name;
   public string token {
     set { proxy.token = value; }
@@ -72,8 +70,10 @@ public class UserStream : Object {
   public signal void interrupted ();
   public signal void resumed ();
 
+  private bool network_available;
   private bool stopping   = false;
   private bool restarting = false;
+  private bool running = false;
 
 
 
@@ -173,8 +173,10 @@ public class UserStream : Object {
       return;
 
     network_timeout_id = GLib.Timeout.add (1 * 1000, () => {
-      if (running)
+      if (running) {
+        this.network_timeout_id = 0;
         return GLib.Source.REMOVE;
+      }
 
       var available = network_monitor.get_network_available ();
       if (available) {
