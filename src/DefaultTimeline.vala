@@ -22,6 +22,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
   private int _unread_count = 0;
   public int unread_count {
     set {
+      debug ("Unread count for %s from %d to %d", get_title (), _unread_count, value);
       _unread_count = int.max (value, 0);
       debug ("New unread count for %s: %d", this.get_title (), value);
       radio_button.show_badge = (_unread_count > 0);
@@ -95,7 +96,6 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
     }
 
     if (Settings.auto_scroll_on_new_tweets ()) {
-      this._unread_count = 0;
       mark_seen (-1);
     }
 
