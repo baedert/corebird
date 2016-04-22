@@ -85,12 +85,15 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
     tweet_list.model.add (t);
 
     if (!t.is_hidden) {
-      this.balance_next_upper_change (TOP);
-
-      if (!base.scroll_up (t))
+      if (auto_scroll) {
+        this.balance_next_upper_change (TOP);
+        base.scroll_up (t);
+      }
 
       if (!t.seen)
         this.unread_count ++;
+    } else {
+      t.seen = true;
     }
 
     if (should_focus) {
