@@ -63,6 +63,11 @@ public class MainWindow : Gtk.ApplicationWindow {
   public MainWindow (Gtk.Application app, Account? account = null) {
     set_default_size (480, 700);
 
+#if DEBUG
+    this.set_focus.connect ((w) => {
+      debug ("Focus widget now: %s %p", w != null ? __class_name (w) : "(null)", w);
+    });
+#endif
     change_account (account);
 
     account_list.set_sort_func (account_sort_func);
