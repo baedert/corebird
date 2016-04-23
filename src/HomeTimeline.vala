@@ -156,21 +156,6 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
     return "@" + account.screen_name;
   }
 
-  public override void load_newest () {
-    this.loading = true;
-    this.load_newest_internal.begin (() => {
-      this.loading = false;
-    });
-  }
-
-  public override void load_older () {
-    this.balance_next_upper_change (BOTTOM);
-    this.loading = true;
-    this.load_older_internal.begin (() => {
-      this.loading = false;
-    });
-  }
-
   public override void create_radio_button (Gtk.RadioButton? group) {
     radio_button = new BadgeRadioButton(group, "user-home-symbolic", _("Home"));
   }

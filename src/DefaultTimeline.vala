@@ -125,8 +125,24 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
     }
   }
 
-  public abstract void load_newest ();
-  public abstract void load_older ();
+  public void load_newest () {
+    this.loading = true;
+    this.load_newest_internal.begin (() => {
+      this.loading = false;
+    });
+  }
+
+  public void load_older () {
+    if (!initialized)
+      return;
+
+    this.balance_next_upper_change (BOTTOM);
+    this.loading = true;
+    this.load_older_internal.begin (() => {
+      this.loading = false;
+    });
+  }
+
   public abstract string get_title ();
 
   public override void destroy () {

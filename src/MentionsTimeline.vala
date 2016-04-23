@@ -94,24 +94,6 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
     }
   }
 
-  public override void load_newest () {
-    this.loading = true;
-    this.load_newest_internal.begin (() => {
-      this.loading = false;
-    });
-  }
-
-  public override void load_older () {
-    if (!initialized)
-      return;
-
-    this.balance_next_upper_change (BOTTOM);
-    this.loading = true;
-    this.load_older_internal.begin (() => {
-      this.loading = false;
-    });
-  }
-
   public override string get_title () {
     return _("Mentions");
   }
