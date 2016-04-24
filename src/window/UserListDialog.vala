@@ -95,7 +95,7 @@ class UserListDialog : Gtk.Dialog {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
         Utils.show_error_object (call.get_payload (), e.message,
-                                 GLib.Log.LINE, GLib.Log.FILE);
+                                 GLib.Log.LINE, GLib.Log.FILE, this);
         return;
       }
       var parser = new Json.Parser ();
@@ -154,7 +154,7 @@ class UserListDialog : Gtk.Dialog {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
         Utils.show_error_object (call.get_payload (), e.message,
-                                 GLib.Log.LINE, GLib.Log.FILE);
+                                 GLib.Log.LINE, GLib.Log.FILE, this);
       }
     });
   }
@@ -170,7 +170,7 @@ class UserListDialog : Gtk.Dialog {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
         Utils.show_error_object (call.get_payload (), e.message,
-                                 GLib.Log.LINE, GLib.Log.FILE);
+                                 GLib.Log.LINE, GLib.Log.FILE, this);
       }
     });
   }

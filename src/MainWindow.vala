@@ -195,7 +195,7 @@ public class MainWindow : Gtk.ApplicationWindow {
       this.set_title (_("Corebird"));
 
       Account.add_account (acc_);
-      var create_widget = new AccountCreateWidget (acc_, cb);
+      var create_widget = new AccountCreateWidget (acc_, cb, this);
       create_widget.result_received.connect ((result, acc) => {
         if (result) {
           change_account (acc);

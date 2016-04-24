@@ -123,7 +123,7 @@ class AccountDialog : Gtk.Dialog {
         } catch (GLib.Error e) {
           warning (e.message);
           Utils.show_error_object (call.get_payload (), "Could not update profile",
-                                   GLib.Log.LINE, GLib.Log.FILE);
+                                   GLib.Log.LINE, GLib.Log.FILE, this);
         }
       });
 
@@ -155,7 +155,7 @@ class AccountDialog : Gtk.Dialog {
           call.invoke_async.end (res);
         } catch (GLib.Error e) {
           Utils.show_error_object (call.get_payload (), "Could not update your avatar",
-                                   GLib.Log.LINE, GLib.Log.FILE);
+                                   GLib.Log.LINE, GLib.Log.FILE, this);
           return;
         }
 
@@ -187,7 +187,7 @@ class AccountDialog : Gtk.Dialog {
           call.invoke_async.end (res);
         } catch (GLib.Error e) {
           Utils.show_error_object (call.get_payload (), "Could not update your avatar",
-                                   GLib.Log.LINE, GLib.Log.FILE);
+                                   GLib.Log.LINE, GLib.Log.FILE, this);
         }
       });
     }

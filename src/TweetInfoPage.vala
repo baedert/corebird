@@ -389,7 +389,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
         if (e.message.strip () != "Forbidden" &&
             e.message.strip ().down () != "not found") {
           Utils.show_error_object (call.get_payload (), e.message,
-                                   GLib.Log.LINE, GLib.Log.FILE);
+                                   GLib.Log.LINE, GLib.Log.FILE, this.main_window);
         }
         bottom_list_box.visible = (bottom_list_box.get_children ().length () > 0);
         return;
