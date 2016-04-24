@@ -166,6 +166,9 @@ class ListStatusesPage : ScrollWidget, IPage {
     try {
       root = yield TweetUtils.load_threaded (call, null);
     } catch (GLib.Error e) {
+      if (e.message.down () == "not found") {
+        tweet_list.set_empty ();
+      }
       warning (e.message);
       return;
     }
