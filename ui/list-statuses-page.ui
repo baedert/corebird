@@ -339,7 +339,6 @@
                     <object class="GtkLabel" id="description_label">
                       <property name="visible">True</property>
                       <property name="can_focus">False</property>
-                      <property name="label">List description</property>
                       <property name="wrap">True</property>
                       <property name="wrap_mode">word-char</property>
                       <attributes>
@@ -352,6 +351,7 @@
                       <property name="visible">True</property>
                       <property name="can_focus">True</property>
                       <property name="max_length">110</property>
+                      <property name="placeholder_text" translatable="yes">Description</property>
                     </object>
                     <packing>
                       <property name="position">1</property>
