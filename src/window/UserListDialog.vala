@@ -54,6 +54,7 @@ class UserListDialog : Gtk.Dialog {
     content_box.border_width = 0;
     var scroller = new Gtk.ScrolledWindow (null, null);
     list_list_box.selection_mode = Gtk.SelectionMode.NONE;
+    list_list_box.set_header_func (default_header_func);
     list_list_box.row_activated.connect ((row) => {
       if (!(row is ListUserEntry)) {
         warning ("Row != ListUserEntry!");
