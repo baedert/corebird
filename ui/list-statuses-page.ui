@@ -41,7 +41,6 @@
                     <property name="can_focus">False</property>
                     <property name="halign">start</property>
                     <property name="valign">baseline</property>
-                    <property name="label">label</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -71,7 +70,6 @@
                     <property name="can_focus">False</property>
                     <property name="halign">start</property>
                     <property name="valign">baseline</property>
-                    <property name="label">label</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -116,7 +114,6 @@
                     <property name="can_focus">False</property>
                     <property name="halign">start</property>
                     <property name="valign">baseline</property>
-                    <property name="label">label</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -130,7 +127,6 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="halign">start</property>
-                    <property name="label">label</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -248,7 +244,6 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="halign">start</property>
-                        <property name="label">Mode</property>
                         <property name="ellipsize">middle</property>
                       </object>
                     </child>
