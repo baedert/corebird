@@ -284,80 +284,81 @@
             <child>
               <object class="GtkBox">
                 <property name="orientation">vertical</property>
-              <child>
-                <object class="GtkStack" id="name_stack">
-                  <property name="visible">True</property>
-                  <property name="can_focus">False</property>
-                  <property name="margin_start">3</property>
-                  <property name="margin_end">10</property>
-                  <property name="margin_top">5</property>
-                  <property name="visible_child">name_label</property>
-                  <property name="transition_type">slide-up-down</property>
-                  <child>
-                    <object class="GtkLabel" id="name_label">
-                      <property name="visible">True</property>
-                      <property name="can_focus">False</property>
-                      <property name="halign">start</property>
-                      <attributes>
-                        <attribute name="weight" value="bold" />
-                      </attributes>
-                    </object>
-                  </child>
-                  <child>
-                    <object class="GtkEntry" id="name_entry">
-                      <property name="width_request">200</property>
-                      <property name="visible">True</property>
-                      <property name="can_focus">True</property>
-                      <property name="halign">start</property>
-                    </object>
-                    <packing>
-                      <property name="position">2</property>
-                    </packing>
-                  </child>
-                </object>
-                <packing>
-                  <property name="expand">False</property>
-                  <property name="fill">True</property>
-                  <property name="position">1</property>
-                </packing>
-              </child>
-              <child>
-                <object class="GtkStack" id="description_stack">
-                  <property name="visible">True</property>
-                  <property name="can_focus">False</property>
-                  <property name="visible_child">description_label</property>
-                  <property name="transition_type">slide-up-down</property>
-                  <property name="margin_bottom">3</property>
-                  <property name="margin_start">3</property>
-                  <child>
-                    <object class="GtkLabel" id="description_label">
-                      <property name="visible">True</property>
-                      <property name="can_focus">False</property>
-                      <property name="wrap">True</property>
-                      <property name="wrap_mode">word-char</property>
-                      <attributes>
-                        <attribute name="scale" value="1.1"/>
-                      </attributes>
-                    </object>
-                  </child>
-                  <child>
-                    <object class="GtkEntry" id="description_entry">
-                      <property name="visible">True</property>
-                      <property name="can_focus">True</property>
-                      <property name="max_length">110</property>
-                      <property name="placeholder_text" translatable="yes">Description</property>
-                    </object>
-                    <packing>
-                      <property name="position">1</property>
-                    </packing>
-                  </child>
-                </object>
-                <packing>
-                  <property name="expand">False</property>
-                  <property name="fill">True</property>
-                  <property name="position">2</property>
-                </packing>
-              </child>
+                <child>
+                  <object class="GtkStack" id="name_stack">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="margin_start">3</property>
+                    <property name="margin_end">10</property>
+                    <property name="margin_top">5</property>
+                    <property name="visible_child">name_label</property>
+                    <property name="transition_type">slide-up-down</property>
+                    <child>
+                      <object class="GtkLabel" id="name_label">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="halign">start</property>
+                        <property name="margin_start">6</property>
+                        <attributes>
+                          <attribute name="weight" value="bold" />
+                        </attributes>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkEntry" id="name_entry">
+                        <property name="width_request">200</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="halign">start</property>
+                      </object>
+                      <packing>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkStack" id="description_stack">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="visible_child">description_label</property>
+                    <property name="transition_type">slide-up-down</property>
+                    <property name="margin_bottom">3</property>
+                    <property name="margin_start">3</property>
+                    <child>
+                      <object class="GtkLabel" id="description_label">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="wrap">True</property>
+                        <property name="wrap_mode">word-char</property>
+                        <attributes>
+                          <attribute name="scale" value="1.1"/>
+                        </attributes>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkEntry" id="description_entry">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="max_length">110</property>
+                        <property name="placeholder_text" translatable="yes">Description</property>
+                      </object>
+                      <packing>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="expand">True</property>
