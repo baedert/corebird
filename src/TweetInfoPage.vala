@@ -478,7 +478,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
   }
 
   private void favorite_activated () {
-    if (!values_set)
+    if (!values_set || !favorite_button.sensitive)
       return;
 
     bool favoriting = !favorite_button.active;
