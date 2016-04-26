@@ -497,7 +497,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
 
     this.update_rt_fav_labels ();
 
-    TweetUtils.set_favorite_status.begin (account, tweet, !favoriting, () => {
+    TweetUtils.set_favorite_status.begin (account, tweet, favoriting, () => {
       favorite_button.sensitive = true;
       values_set = false;
       favorite_button.active = favoriting;
