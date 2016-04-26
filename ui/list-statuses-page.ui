@@ -21,7 +21,7 @@
                 <property name="column_spacing">10</property>
                 <property name="column_homogeneous">True</property>
                 <child>
-                  <object class="GtkLabel" id="label2">
+                  <object class="GtkLabel">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="halign">end</property>
@@ -51,7 +51,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="label1">
+                  <object class="GtkLabel">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="halign">end</property>
@@ -81,7 +81,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="label8">
+                  <object class="GtkLabel">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="halign">end</property>
@@ -96,7 +96,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="label">
+                  <object class="GtkLabel">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="halign">end</property>
@@ -195,7 +195,7 @@
                           <class name="destructive-action"/>
                         </style>
                         <child>
-                          <object class="GtkLabel" id="label4">
+                          <object class="GtkLabel">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="label" translatable="yes">Delete</property>
@@ -225,7 +225,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="label3">
+                  <object class="GtkLabel">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="halign">end</property>
@@ -284,10 +284,10 @@
           </packing>
         </child>
         <child>
-          <object class="GtkBox" id="box4">
+          <object class="GtkBox">
             <property name="orientation">horizontal</property>
             <child>
-              <object class="GtkBox" id="box5">
+              <object class="GtkBox">
                 <property name="orientation">vertical</property>
               <child>
                 <object class="GtkStack" id="name_stack">
@@ -303,7 +303,6 @@
                       <property name="visible">True</property>
                       <property name="can_focus">False</property>
                       <property name="halign">start</property>
-                      <property name="label">List name</property>
                       <attributes>
                         <attribute name="weight" value="bold" />
                       </attributes>
