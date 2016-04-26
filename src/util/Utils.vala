@@ -236,7 +236,7 @@ namespace Utils {
    *
    * @param message The error message to show
    */
-  void show_error_dialog (string message, Gtk.Window transient_for) {
+  void show_error_dialog (string message, Gtk.Window? transient_for) {
     var dialog = new Gtk.MessageDialog (transient_for, Gtk.DialogFlags.DESTROY_WITH_PARENT,
                                         Gtk.MessageType.ERROR, Gtk.ButtonsType.OK,
                                         "%s", message);
