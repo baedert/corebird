@@ -45,15 +45,16 @@ class SearchPage : IPage, Gtk.Box {
   private ScrollWidget scroll_widget;
   private Gtk.RadioButton radio_button;
   public DeltaUpdater delta_updater;
+  private GLib.Cancellable? cancellable = null;
   private LoadMoreEntry load_more_entry = new LoadMoreEntry ();
   private string search_query;
   private int user_page = 1;
   private int64 lowest_tweet_id = int64.MAX-1;
-  private bool loading_tweets = false;
   private Gtk.Widget last_focus_widget;
   private int n_results = 0;
   private Collect collect_obj;
   private uint remove_content_timeout = 0;
+  private string last_search_query;
 
 
   public SearchPage (int id, Account account, DeltaUpdater delta_updater) {
@@ -66,6 +67,7 @@ class SearchPage : IPage, Gtk.Box {
     tweet_list.set_header_func (header_func);
     tweet_list.set_sort_func (ITwitterItem.sort_func);
     tweet_list.row_activated.connect (row_activated_cb);
+    tweet_list.retry_button_clicked.connect (retry_button_clicked_cb);
     search_button.clicked.connect (() => {
       search_for (search_entry.get_text());
     });
@@ -81,6 +83,10 @@ class SearchPage : IPage, Gtk.Box {
   [GtkCallback]
   private void search_entry_activate_cb () {
     search_for (search_entry.get_text ());
+  }
+
+  private void retry_button_clicked_cb () {
+    search_for (last_search_query);
   }
 
   /**
@@ -125,6 +131,15 @@ class SearchPage : IPage, Gtk.Box {
     if(search_term.length == 0)
       return;
 
+    this.last_search_query = search_term;
+
+    if (this.cancellable != null) {
+      debug ("Cancelling earlier search...");
+      this.cancellable.cancel ();
+    }
+
+    this.cancellable = new GLib.Cancellable ();
+
     n_results = 0;
     string q = search_term;
 
@@ -150,7 +165,7 @@ class SearchPage : IPage, Gtk.Box {
     load_users ();
   } //}}}
 
-  private void row_activated_cb (Gtk.ListBoxRow row) { // {{{
+  private void row_activated_cb (Gtk.ListBoxRow row) {
     this.last_focus_widget = row;
     var bundle = new Bundle ();
     if (row is UserListEntry) {
@@ -162,7 +177,7 @@ class SearchPage : IPage, Gtk.Box {
       bundle.put_object ("tweet", ((TweetListEntry)row).tweet);
       main_window.main_widget.switch_page (Page.TWEET_INFO, bundle);
     }
-  } //}}}
+  }
 
   private void header_func (Gtk.ListBoxRow row, Gtk.ListBoxRow? before) { //{{{
     Gtk.Widget header = row.get_header ();
@@ -176,7 +191,7 @@ class SearchPage : IPage, Gtk.Box {
     }
   } //}}}
 
-  private void load_users () {  // {{{
+  private void load_users () {
     var user_call = account.proxy.new_call ();
     user_call.set_method ("GET");
     user_call.set_function ("1.1/users/search.json");
@@ -184,7 +199,7 @@ class SearchPage : IPage, Gtk.Box {
     user_call.add_param ("count", (USER_COUNT + 1).to_string ());
     user_call.add_param ("include_entities", "false");
     user_call.add_param ("page", user_page.to_string ());
-    TweetUtils.load_threaded.begin (user_call, null, (_, res) => {
+    TweetUtils.load_threaded.begin (user_call, cancellable, (_, res) => {
       Json.Node? root = null;
       try {
         root = TweetUtils.load_threaded.end (res);
@@ -195,6 +210,11 @@ class SearchPage : IPage, Gtk.Box {
         if (!collect_obj.done)
           collect_obj.emit ();
 
+        return;
+      }
+
+      if (root == null) {
+        debug ("load_users: root is null");
         return;
       }
 
@@ -241,20 +261,16 @@ class SearchPage : IPage, Gtk.Box {
         collect_obj.emit ();
     });
 
-  } // }}}
+  }
 
-  private void load_tweets () { // {{{
-    if (loading_tweets)
-      return;
-
-    loading_tweets = true;
+  private void load_tweets () {
     var call = account.proxy.new_call ();
     call.set_function ("1.1/search/tweets.json");
     call.set_method ("GET");
     call.add_param ("q", this.search_query);
     call.add_param ("max_id", (lowest_tweet_id - 1).to_string ());
     call.add_param ("count", "35");
-    TweetUtils.load_threaded.begin (call, null, (_, res) => {
+    TweetUtils.load_threaded.begin (call, cancellable, (_, res) => {
       Json.Node? root = null;
       try {
         root = TweetUtils.load_threaded.end (res);
@@ -264,6 +280,11 @@ class SearchPage : IPage, Gtk.Box {
         if (!collect_obj.done)
           collect_obj.emit ();
 
+        return;
+      }
+
+      if (root == null) {
+        debug ("load tweets: root is null");
         return;
       }
 
@@ -291,13 +312,12 @@ class SearchPage : IPage, Gtk.Box {
 
         tweet_list.add (entry);
       });
-      loading_tweets = false;
 
       if (!collect_obj.done)
         collect_obj.emit ();
     });
 
-  } // }}}
+  }
 
   private void show_entries (GLib.Error? e) {
     if (e != null) {
