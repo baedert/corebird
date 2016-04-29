@@ -20,7 +20,7 @@ public class MainWidget : Gtk.Box {
   private unowned Account account;
 
   private Gtk.RadioButton dummy_button = new Gtk.RadioButton (null);
-  private IPage[] pages                = new IPage[11];
+  private IPage[] pages;
   private BundleHistory history        = new BundleHistory (5);
   private DeltaUpdater delta_updater   = new DeltaUpdater ();
   private bool page_switch_lock        = false;
@@ -47,6 +47,7 @@ public class MainWidget : Gtk.Box {
 
     stack.add (stack_impostor);
 
+    pages     = new IPage[11];
     pages[0]  = new HomeTimeline (Page.STREAM, account);
     pages[1]  = new MentionsTimeline (Page.MENTIONS, account);
     pages[2]  = new FavoritesTimeline (Page.FAVORITES, account);
