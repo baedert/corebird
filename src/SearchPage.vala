@@ -115,10 +115,7 @@ class SearchPage : IPage, Gtk.Box {
 
   public void on_leave () {
     this.remove_content_timeout = GLib.Timeout.add (3 * 1000 * 60, () => {
-      foreach (Gtk.Widget w in tweet_list.get_children ()) {
-        // We are still using raw widgets here.
-        tweet_list.remove (w);
-      }
+      tweet_list.remove_all ();
       tweet_list.get_placeholder ().hide ();
       this.last_focus_widget  = null;
 
