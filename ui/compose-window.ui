@@ -76,7 +76,7 @@
         <property name="column_spacing">6</property>
         <property name="row_spacing">6</property>
         <child>
-          <object class="TouchStack">
+          <object class="TouchStack" id="account_stack">
             <property name="visible">true</property>
             <property name="halign">start</property>
             <property name="valign">start</property>
@@ -85,22 +85,6 @@
             <property name="margin_bottom">6</property>
             <property name="width_request">48</property>
             <property name="height_request">48</property>
-            <child>
-              <object class="AvatarWidget" id="avatar_image">
-                <property name="width_request">48</property>
-                <property name="height_request">48</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-              </object>
-            </child>
-            <child>
-              <object class="AvatarWidget" id="avatar_image2">
-                <property name="width_request">48</property>
-                <property name="height_request">48</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-              </object>
-            </child>
           </object>
           <packing>
             <property name="left_attach">0</property>

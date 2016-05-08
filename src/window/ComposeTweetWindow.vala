@@ -23,10 +23,10 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     REPLY,
     QUOTE
   }
-  [GtkChild]
-  private AvatarWidget avatar_image;
-  [GtkChild]
-  private AvatarWidget avatar_image2;
+  //[GtkChild]
+  //private AvatarWidget avatar_image;
+  //[GtkChild]
+  //private AvatarWidget avatar_image2;
   [GtkChild]
   private Gtk.Grid content_grid;
   [GtkChild]
@@ -45,12 +45,12 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   private ComposeImageManager compose_image_manager;
   [GtkChild]
   private Gtk.Button add_image_button;
+  [GtkChild]
+  private TouchStack account_stack;
   private unowned Account account;
   private unowned Tweet reply_to;
   private Mode mode;
   private GLib.Cancellable? cancellable;
-  private Gtk.ListBox? reply_list = null;
-
 
   public ComposeTweetWindow (Gtk.Window? parent,
                              Account     acc,
@@ -63,11 +63,18 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     this.tweet_text.set_account (acc);
     this.application = (Gtk.Application)GLib.Application.get_default ();
 
-    avatar_image.surface = acc.avatar;
-    avatar_image2.surface = acc.avatar;
-    acc.notify["avatar"].connect (() => {
-      avatar_image.surface = acc.avatar;
-    });
+    for (uint i = 0; i < Account.get_n (); i ++) {
+      var account = Account.get_nth (i);
+      var avatar_widget = new AvatarWidget ();
+      avatar_widget.set_size_request (48, 48);
+      avatar_widget.surface = account.avatar;
+      account.notify["avatar"].connect (() => {
+        avatar_widget.surface = acc.avatar;
+      });
+
+      avatar_widget.show ();
+      account_stack.add (avatar_widget);
+    }
 
     if (mode != Mode.QUOTE)
       length_label.label = Tweet.MAX_LENGTH.to_string ();
@@ -83,7 +90,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     }
 
     if (mode != Mode.NORMAL) {
-      reply_list = new Gtk.ListBox ();
+      var reply_list = new Gtk.ListBox ();
       reply_list.selection_mode = Gtk.SelectionMode.NONE;
       TweetListEntry reply_entry = new TweetListEntry (reply_to, (MainWindow)parent, acc, true);
       reply_entry.activatable = false;
