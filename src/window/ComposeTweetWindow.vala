@@ -26,6 +26,8 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   [GtkChild]
   private AvatarWidget avatar_image;
   [GtkChild]
+  private AvatarWidget avatar_image2;
+  [GtkChild]
   private Gtk.Grid content_grid;
   [GtkChild]
   private CompletionTextView tweet_text;
@@ -62,6 +64,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     this.application = (Gtk.Application)GLib.Application.get_default ();
 
     avatar_image.surface = acc.avatar;
+    avatar_image2.surface = acc.avatar;
     acc.notify["avatar"].connect (() => {
       avatar_image.surface = acc.avatar;
     });
