@@ -23,10 +23,6 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     REPLY,
     QUOTE
   }
-  //[GtkChild]
-  //private AvatarWidget avatar_image;
-  //[GtkChild]
-  //private AvatarWidget avatar_image2;
   [GtkChild]
   private Gtk.Grid content_grid;
   [GtkChild]
@@ -62,8 +58,9 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     this.mode = mode;
     this.tweet_text.set_account (acc);
     this.application = (Gtk.Application)GLib.Application.get_default ();
+    this.title_label.label = _("Compose Tweet as @%s").printf (acc.screen_name);
 
-    for (uint i = 0; i < Account.get_n (); i ++) {
+    for (int i = (int)Account.get_n () - 1; i >= 0; i --) {
       var account = Account.get_nth (i);
       var avatar_widget = new AvatarWidget ();
       avatar_widget.set_size_request (48, 48);
@@ -273,5 +270,12 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     });
 
     file_chooser.show_all ();
+  }
+
+  [GtkCallback]
+  private void account_changed_cb (uint index) {
+    Account account = Account.get_nth (Account.get_n () - 1 - index);
+    this.title_label.label = _("Compose Tweet as @%s").printf (account.screen_name);
+    this.account = account;
   }
 }

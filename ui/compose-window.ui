@@ -9,7 +9,6 @@
 
   <template class="ComposeTweetWindow" parent="GtkApplicationWindow">
     <property name="can_focus">False</property>
-    <property name="title" translatable="yes">Compose Tweet</property>
     <property name="window_position">center-on-parent</property>
     <property name="destroy_with_parent">True</property>
     <property name="type_hint">dialog</property>
@@ -26,7 +25,6 @@
             <child>
               <object class="GtkLabel" id="title_label">
                 <property name="visible">true</property>
-                <property name="label" translatable="yes">Compose Tweet</property>
                 <style>
                   <class name="title" />
                 </style>
@@ -85,6 +83,7 @@
             <property name="margin_bottom">6</property>
             <property name="width_request">48</property>
             <property name="height_request">48</property>
+            <signal name="child-changed" handler="account_changed_cb" />
           </object>
           <packing>
             <property name="left_attach">0</property>

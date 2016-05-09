@@ -26,7 +26,8 @@ class TouchStack : Gtk.Container {
   private double transition_start_offset;
   private double transition_start_time;
 
-  public signal void child_changed (int new_index);
+  public uint current_child { get; set; default = 0; }
+  public signal void child_changed (uint new_index);
 
   construct {
     this.set_has_window (false);
@@ -47,6 +48,9 @@ class TouchStack : Gtk.Container {
   private void drag_end_cb (double offset_x, double offset_y) {
     int child_width = box.get_children ().nth_data (0).get_allocated_width ();
     int child_index = (-(int)this.drag_offset + (child_width / 2)) / child_width;
+
+    this.current_child = child_index;
+    this.child_changed (this.current_child);
 
     this.transition_start_offset = this.drag_offset;
     this.transition_end_offset   = - (child_index * child_width);
