@@ -9,6 +9,12 @@
   padding: 2px 4px;
 }
 
+.topbar button image,
+.topbar .button .image {
+  icon-shadow: none;
+  color: #ddd;
+}
+
 .topbar button,
 .topbar .button {
   border: none;
@@ -17,8 +23,6 @@
   border-radius: 0px;
   background-color: @topbar_bg;
   outline-color: #999;
-  color: #ddd;
-  icon-shadow: none;
 }
 
 .topbar button:hover,
