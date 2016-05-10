@@ -15,6 +15,8 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// TODO: Replace the queue_resize calls here with queue_allocate once we
+//       depend on gtk+ >= 3.20
 class TouchStack : Gtk.Container {
   private Gdk.Window? event_window = null;
   private Gtk.Box box;
@@ -73,7 +75,7 @@ class TouchStack : Gtk.Container {
 
     this.drag_offset = this.transition_start_offset +
                        t * (transition_end_offset - transition_start_offset);
-    this.queue_allocate ();
+    this.queue_resize ();
 
     if (t >= 1.0)
       return GLib.Source.REMOVE;
@@ -94,7 +96,7 @@ class TouchStack : Gtk.Container {
                                       this.get_allocated_width ()),
                                    drag_offset);
 
-    this.queue_allocate ();
+    this.queue_resize ();
   }
 
   public override void add (Gtk.Widget widget) {
@@ -218,7 +220,7 @@ class TouchStack : Gtk.Container {
     box.get_children ().data.get_preferred_width (out child_width, null);
     this.drag_offset = -child_width * index;
 
-    this.queue_allocate ();
+    this.queue_resize ();
   }
 }
 
