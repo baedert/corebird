@@ -69,6 +69,7 @@ class TouchStack : Gtk.Container {
     double t = (now - transition_start_time) / TRANSITION_DURATION;
 
     t = double.min (1.0, t);
+    t = ease_out_cubic (t);
 
     this.drag_offset = this.transition_start_offset +
                        t * (transition_end_offset - transition_start_offset);
@@ -110,7 +111,7 @@ class TouchStack : Gtk.Container {
   }
 
   public override void get_preferred_width (out int min, out int nat) {
-    Gtk.Widget? first_child = box.get_children ().nth_data (0);
+    Gtk.Widget? first_child = box.get_children ().data;
 
     if (first_child == null) {
       min = nat = 0;
@@ -120,7 +121,7 @@ class TouchStack : Gtk.Container {
   }
 
   public override void get_preferred_height (out int min, out int nat) {
-    Gtk.Widget? first_child = box.get_children ().nth_data (0);
+    Gtk.Widget? first_child = box.get_children ().data;
 
     if (first_child == null) {
       min = nat = 0;
@@ -199,17 +200,25 @@ class TouchStack : Gtk.Container {
     int min_width, min_height;
     base.size_allocate (allocation);
 
+    if (this.event_window != null) {
+      this.event_window.move_resize (allocation.x, allocation.y,
+                                     allocation.width, allocation.height);
+    }
+
     box.get_preferred_width (out min_width, null);
     box.get_preferred_height (out min_height, null);
     allocation.width = int.max (allocation.width, min_width);
     allocation.height = int.max (allocation.height, min_height);
     allocation.x += (int)this.drag_offset;
     this.box.size_allocate (allocation);
+  }
 
-    if (this.event_window != null) {
-      this.event_window.move_resize (allocation.x, allocation.y,
-                                     allocation.width, allocation.height);
-    }
+  public void select_child (int index) {
+    int child_width;
+    box.get_children ().data.get_preferred_width (out child_width, null);
+    this.drag_offset = -child_width * index;
+
+    this.queue_allocate ();
   }
 }
 

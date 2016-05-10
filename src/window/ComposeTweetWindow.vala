@@ -60,6 +60,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     this.application = (Gtk.Application)GLib.Application.get_default ();
     this.title_label.label = _("Compose Tweet as @%s").printf (acc.screen_name);
 
+    int account_index = 0;
     for (int i = (int)Account.get_n () - 1; i >= 0; i --) {
       var account = Account.get_nth (i);
       var avatar_widget = new AvatarWidget ();
@@ -71,7 +72,12 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
       avatar_widget.show ();
       account_stack.add (avatar_widget);
+
+      if (account == acc)
+        account_index = (int)Account.get_n () - i - 1;
     }
+
+    account_stack.select_child (account_index);
 
     if (mode != Mode.QUOTE)
       length_label.label = Tweet.MAX_LENGTH.to_string ();
