@@ -68,7 +68,6 @@ class MediaDialog : Gtk.Window {
       this.resize (new_width, new_height);
     }
     this.queue_resize ();
-    this.queue_draw ();
 
     //if (cur_index >= tweet.medias.length - 1)
       //next_button.hide ();
@@ -115,13 +114,13 @@ class MediaDialog : Gtk.Window {
     else
       this.destroy ();
 
-    return true;
+    return Gdk.EVENT_STOP;
   }
 
   [GtkCallback]
   private bool button_press_event_cb () {
     this.destroy ();
-    return true;
+    return Gdk.EVENT_STOP;
   }
 
   [GtkCallback]
