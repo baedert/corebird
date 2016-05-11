@@ -18,19 +18,14 @@
 class MediaVideoWidget : Gtk.Stack {
 #if VIDEO
   private Gst.Element src;
-  private Gst.Element? app_src = null;
   private Gst.Element sink;
 #endif
   private GLib.Cancellable cancellable;
   private Gtk.Label error_label = new Gtk.Label ("");
   private Gtk.Widget area;
-  private uint64 seek_pos = 0;
-  private uint8[] video_data;
-  private size_t  available_data;
 
-  private SurfaceProgress image;
-
-
+  private SurfaceProgress surface_progress;
+  private string? media_url = null;
 
   public MediaVideoWidget (Media media) {
     this.cancellable = new GLib.Cancellable ();
@@ -38,16 +33,30 @@ class MediaVideoWidget : Gtk.Stack {
     var image_surface = (Cairo.ImageSurface) media.surface;
     this.set_size_request (image_surface.get_width (), image_surface.get_height ());
 #if VIDEO
-    if (media.type == MediaType.VINE)
-      fetch_real_url.begin (media.url, "<meta property=\"twitter:player:stream\" content=\"(.*?)\"");
-    else if (media.type == MediaType.ANIMATED_GIF)
-      fetch_real_url.begin (media.url, "<source video-src=\"(.*?)\" type=\"video/mp4\"");
-    else if (media.type == MediaType.TWITTER_VIDEO)
-      download_video.begin (media.url);
-    else if (media.type == MediaType.INSTAGRAM_VIDEO)
-      download_video.begin (media.url);
-    else
-      critical ("Unknown video media type: %d", media.type);
+
+    message ("Media type: %s", media.type.to_string ());
+
+    this.media_url = media.url;
+
+    switch (media.type) {
+      case MediaType.TWITTER_VIDEO:
+      case MediaType.INSTAGRAM_VIDEO:
+        this.media_url = media.url;
+        /* Video will be started in init() */
+      break;
+
+      case MediaType.VINE:
+        fetch_real_url.begin (media.url, "<meta property=\"twitter:player:stream\" content=\"(.*?)\"");
+      break;
+
+      case MediaType.ANIMATED_GIF:
+        fetch_real_url.begin (media.url, "<source video-src=\"(.*?)\" type=\"video/mp4\"");
+      break;
+
+      default:
+        GLib.warn_if_reached ();
+      break;
+    }
 #endif
 
     // set up error label
@@ -55,70 +64,25 @@ class MediaVideoWidget : Gtk.Stack {
     error_label.wrap = true;
     error_label.selectable = true;
 
-    image = new SurfaceProgress ();
-    image.surface = media.surface;
+    surface_progress = new SurfaceProgress ();
+    surface_progress.surface = media.surface;
 
-    this.add_named (image, "thumbnail");
+    this.add_named (surface_progress, "thumbnail");
     this.add_named (error_label, "error");
 
-    this.visible_child = image;
+    this.visible_child = surface_progress;
 
     this.button_press_event.connect (button_press_event_cb);
     this.key_press_event.connect (key_press_event_cb);
   }
 
+  private void start_video () {
 #if VIDEO
-  private void need_data_cb (uint size) {
-
-    if (this.video_data == null) {
-      debug ("No content length set!");
-      return;
-    }
-
-    if (available_data < this.video_data.length) {
-      debug ("not all data here yet");
-      return;
-    }
-
-    if (this.seek_pos + size > this.available_data)
-      size = (uint)(this.available_data - this.seek_pos);
-
-    if (size <= 0) {
-      debug ("seek_pos + size > available_data");
-      return;
-    }
-
-    var buffer = new Gst.Buffer ();
-    var mem = new Gst.Memory.wrapped (Gst.MemoryFlags.READONLY,
-                                      this.video_data,
-                                      (size_t)this.seek_pos,
-                                      (size_t)size,
-                                      null,
-                                      null);
-
-
-    buffer.append_memory (mem);
-
-    Gst.FlowReturn ret;
-    GLib.Signal.emit_by_name (this.app_src, "push-buffer", buffer, out ret);
-
-    this.seek_pos += size;
-  }
-
-  private void seek_data_cb (uint64 pos) {
-    this.seek_pos = pos;
-  }
-
-  private void source_setup_cb (Gst.Element source,
-                                Gst.Element playbin) {
-    assert (source != null);
-    app_src = source;
-    app_src.set ("stream-type", 2); // 2 = random access
-    GLib.Signal.connect_swapped (app_src, "need-data", (GLib.Callback)need_data_cb, this);
-    GLib.Signal.connect_swapped (app_src, "seek-data", (GLib.Callback)seek_data_cb, this);
-  }
-
+    assert (this.media_url != null);
+    this.src.set ("uri", this.media_url);
+    this.src.set_state (Gst.State.PLAYING);
 #endif
+  }
 
   public void init () {
 #if VIDEO
@@ -132,21 +96,18 @@ class MediaVideoWidget : Gtk.Stack {
     assert (area != null);
     assert (area is Gtk.DrawingArea);
     this.add_named (area, "video");
+    this.visible_child_name = "video";
 
     var bus = this.src.get_bus ();
     bus.add_watch (GLib.Priority.DEFAULT, watch_cb);
-    bus.message.connect ((msg) => {
-      string debug;
-      GLib.Error error;
-      msg.parse_error (out error, out debug);
-      message (debug);
-    });
 
     this.src.set ("video-sink", this.sink);
-    this.src.set ("uri", "appsrc://");
-    GLib.Signal.connect_swapped (this.src, "source-setup", (GLib.Callback)source_setup_cb, this);
 
-    this.src.set_state (Gst.State.PAUSED);
+    if (this.media_url != null) {
+      /* Set in constructor */
+      this.start_video ();
+    }
+
 #endif
   }
 
@@ -180,24 +141,37 @@ class MediaVideoWidget : Gtk.Stack {
 
 #if VIDEO
   private bool watch_cb (Gst.Bus bus, Gst.Message msg) {
-    if (msg.type == Gst.MessageType.EOS) {
-      // LOOP
-      this.src.seek (1, Gst.Format.BYTES, Gst.SeekFlags.FLUSH,
-                     Gst.SeekType.SET, 0,
-                     Gst.SeekType.NONE, -1);
-    } else if (msg.type == Gst.MessageType.ERROR) {
-      GLib.Error error;
-      string debug;
-      msg.parse_error (out error, out debug);
-      message (debug);
-    } else if (msg.type == Gst.MessageType.ASYNC_DONE) {
-      this.visible_child_name = "video";
+    switch (msg.type) {
+      case Gst.MessageType.BUFFERING:
+        int percent;
+        msg.parse_buffering (out percent);
+        this.surface_progress.progress = percent / 100.0;
+      break;
+
+      case Gst.MessageType.EOS:
+        this.src.seek (1.0, Gst.Format.TIME, Gst.SeekFlags.FLUSH,
+                       Gst.SeekType.SET, 0,
+                       Gst.SeekType.NONE, (int64)Gst.CLOCK_TIME_NONE);
+      break;
+
+      case Gst.MessageType.ASYNC_DONE:
+        this.visible_child_name = "video";
+      break;
+
+      case Gst.MessageType.ERROR:
+        GLib.Error error;
+        string debug;
+        msg.parse_error (out error, out debug);
+        show_error (debug);
+        critical (error.message);
+      break;
     }
+
     return true;
   }
 #endif
 
-  private async void fetch_real_url (string first_url, string regex_str) { // {{{
+  private async void fetch_real_url (string first_url, string regex_str) {
     var msg = new Soup.Message ("GET", first_url);
     cancellable.cancelled.connect (() => {
       SOUP_SESSION.cancel_message (msg, Soup.Status.CANCELLED);
@@ -219,61 +193,15 @@ class MediaVideoWidget : Gtk.Stack {
         string? real_url = info.fetch (1);
         if (real_url == null) {
           show_error ("Error: Could not get real URL");
-        } else
-          download_video.begin (real_url);
+        } else {
+          this.media_url = real_url;
+          this.start_video ();
+        }
       } catch (GLib.RegexError e) {
         warning ("Regex error: %s", e.message);
         show_error ("Regex error: %s".printf (e.message));
       }
       fetch_real_url.callback ();
-    });
-    yield;
-  } // }}}
-
-
-  private async void download_video (string url) {
-    var msg = new Soup.Message ("GET", url);
-    cancellable.cancelled.connect (() => {
-      SOUP_SESSION.cancel_message (msg, Soup.Status.CANCELLED);
-    });
-
-    msg.got_headers.connect (() => {
-      this.video_data = new uint8[msg.response_headers.get_content_length ()];
-      this.available_data = 0;
-#if VIDEO
-      assert (app_src != null);
-      app_src.set ("size", this.video_data.length);
-#endif
-    });
-
-    msg.got_chunk.connect ((buffer) => {
-      for (int i = 0; i < buffer.length; i ++) {
-        video_data[available_data + i] = buffer.data[i];
-      }
-
-      available_data += buffer.length;
-
-      double progress = (double)this.available_data / (double)this.video_data.length;
-      this.image.progress = progress;
-
-    });
-    SOUP_SESSION.queue_message (msg, (s, _msg) => {
-      if (_msg.status_code != Soup.Status.OK) {
-        if (_msg.status_code != Soup.Status.CANCELLED) {
-          warning ("Status Code %u", _msg.status_code);
-          show_error ("%u %s".printf (_msg.status_code, Soup.Status.get_phrase (_msg.status_code)));
-        }
-        download_video.callback ();
-        return;
-      }
-
-#if VIDEO
-      Gst.FlowReturn ret;
-      GLib.Signal.emit_by_name (this.app_src, "end-of-stream", out ret);
-      this.src.set_state (Gst.State.PLAYING);
-#endif
-      this.image.progress = 1.0;
-      download_video.callback ();
     });
     yield;
   }
