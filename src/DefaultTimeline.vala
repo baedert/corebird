@@ -265,7 +265,8 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
           this.unread_count--;
         }
         tle.tweet.seen = true;
-        break;
+        if (id != -1)
+          break;
       }
     }
   }
