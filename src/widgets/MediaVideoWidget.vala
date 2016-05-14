@@ -34,7 +34,7 @@ class MediaVideoWidget : Gtk.Stack {
     this.set_size_request (image_surface.get_width (), image_surface.get_height ());
 #if VIDEO
 
-    message ("Media type: %s", media.type.to_string ());
+    debug ("Media type: %s", media.type.to_string ());
 
     this.media_url = media.url;
 
@@ -63,12 +63,15 @@ class MediaVideoWidget : Gtk.Stack {
     error_label.margin = 20;
     error_label.wrap = true;
     error_label.selectable = true;
+    error_label.show ();
 
     surface_progress = new SurfaceProgress ();
     surface_progress.surface = media.surface;
+    surface_progress.show ();
 
-    this.add_named (surface_progress, "thumbnail");
-    this.add_named (error_label, "error");
+    this.add (surface_progress);
+    this.add (error_label);
+
 
     this.visible_child = surface_progress;
 
@@ -89,6 +92,7 @@ class MediaVideoWidget : Gtk.Stack {
     this.src = Gst.ElementFactory.make ("playbin", "video");
     this.sink = Gst.ElementFactory.make ("gtksink", "gtksink");
     if (sink == null) {
+      this.show_error ("Could not create a gtksink. Need gst-plugins-bad >= 1.6");
       critical ("Could not create a gtksink. Need gst-plugins-bad >= 1.6");
       return;
     }
@@ -96,7 +100,7 @@ class MediaVideoWidget : Gtk.Stack {
     assert (area != null);
     assert (area is Gtk.DrawingArea);
     this.add_named (area, "video");
-    this.visible_child_name = "video";
+    this.visible_child = area;
 
     var bus = this.src.get_bus ();
     bus.add_watch (GLib.Priority.DEFAULT, watch_cb);
@@ -113,7 +117,7 @@ class MediaVideoWidget : Gtk.Stack {
 
   private void show_error (string error_message) {
     error_label.label = error_message;
-    this.visible_child_name = "error";
+    this.visible_child = error_label;
   }
 
 
@@ -145,6 +149,7 @@ class MediaVideoWidget : Gtk.Stack {
       case Gst.MessageType.BUFFERING:
         int percent;
         msg.parse_buffering (out percent);
+        debug ("Buffering: %d%%", percent);
         this.surface_progress.progress = percent / 100.0;
       break;
 
@@ -155,6 +160,7 @@ class MediaVideoWidget : Gtk.Stack {
       break;
 
       case Gst.MessageType.ASYNC_DONE:
+        debug ("ASYNC DONE");
         this.visible_child_name = "video";
       break;
 
@@ -192,14 +198,14 @@ class MediaVideoWidget : Gtk.Stack {
         regex.match (back, 0, out info);
         string? real_url = info.fetch (1);
         if (real_url == null) {
-          show_error ("Error: Could not get real URL");
+          this.show_error ("Error: Could not get real URL");
         } else {
           this.media_url = real_url;
           this.start_video ();
         }
       } catch (GLib.RegexError e) {
         warning ("Regex error: %s", e.message);
-        show_error ("Regex error: %s".printf (e.message));
+        this.show_error ("Regex error: %s".printf (e.message));
       }
       fetch_real_url.callback ();
     });
