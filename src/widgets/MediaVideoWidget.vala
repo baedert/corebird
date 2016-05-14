@@ -19,10 +19,10 @@ class MediaVideoWidget : Gtk.Stack {
 #if VIDEO
   private Gst.Element src;
   private Gst.Element sink;
+  private Gtk.Widget area;
 #endif
   private GLib.Cancellable cancellable;
   private Gtk.Label error_label = new Gtk.Label ("");
-  private Gtk.Widget area;
 
   private SurfaceProgress surface_progress;
   private string? media_url = null;
