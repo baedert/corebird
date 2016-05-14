@@ -127,14 +127,14 @@ class MediaDialog : Gtk.Window {
   private bool leave_notify_cb () {
     //back_revealer.reveal_child= false;
     //next_revealer.reveal_child= false;
-    return true;
+    return Gdk.EVENT_PROPAGATE;
   }
 
   [GtkCallback]
   private bool enter_notify_cb () {
     //back_revealer.reveal_child= true;
     //next_revealer.reveal_child= true;
-    return true;
+    return Gdk.EVENT_PROPAGATE;
   }
 
 
