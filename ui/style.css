@@ -10,7 +10,7 @@
 }
 
 .topbar button image,
-.topbar .button .image {
+.topbar .button GtkImage {
   icon-shadow: none;
   color: #ddd;
 }
