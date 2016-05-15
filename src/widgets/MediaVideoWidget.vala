@@ -36,8 +36,6 @@ class MediaVideoWidget : Gtk.Stack {
 
     debug ("Media type: %s", media.type.to_string ());
 
-    this.media_url = media.url;
-
     switch (media.type) {
       case MediaType.TWITTER_VIDEO:
       case MediaType.INSTAGRAM_VIDEO:
@@ -197,6 +195,7 @@ class MediaVideoWidget : Gtk.Stack {
         MatchInfo info;
         regex.match (back, 0, out info);
         string? real_url = info.fetch (1);
+        debug ("Real url: %s", real_url);
         if (real_url == null) {
           this.show_error ("Error: Could not get real URL");
         } else {
