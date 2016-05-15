@@ -72,9 +72,6 @@ class MediaVideoWidget : Gtk.Stack {
 
 
     this.visible_child = surface_progress;
-
-    this.button_press_event.connect (button_press_event_cb);
-    this.key_press_event.connect (key_press_event_cb);
   }
 
   private void start_video () {
@@ -120,15 +117,14 @@ class MediaVideoWidget : Gtk.Stack {
     this.visible_child = error_label;
   }
 
-
-  private bool button_press_event_cb (Gdk.EventButton evt) {
+  public override bool button_press_event (Gdk.EventButton evt) {
     stop ();
-    return false;
+    return Gdk.EVENT_STOP;
   }
 
-  private bool key_press_event_cb (Gdk.EventKey evt) {
+  public override bool key_press_event (Gdk.EventKey evt) {
     stop ();
-    return true;
+    return Gdk.EVENT_STOP;
   }
 
   private void stop () {
