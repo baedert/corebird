@@ -166,6 +166,9 @@ class ListStatusesPage : ScrollWidget, IPage {
     try {
       root = yield TweetUtils.load_threaded (call, null);
     } catch (GLib.Error e) {
+      if (e.message.down () == "not found") {
+        tweet_list.set_empty ();
+      }
       warning (e.message);
       return;
     }
@@ -252,7 +255,7 @@ class ListStatusesPage : ScrollWidget, IPage {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
         Utils.show_error_object (call.get_payload (), e.message,
-                                 GLib.Log.LINE, GLib.Log.FILE);
+                                 GLib.Log.LINE, GLib.Log.FILE, this.main_window);
       }
       edit_button.sensitive = true;
       delete_button.sensitive = true;
@@ -276,7 +279,7 @@ class ListStatusesPage : ScrollWidget, IPage {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
         Utils.show_error_object (call.get_payload (), e.message,
-                                 GLib.Log.LINE, GLib.Log.FILE);
+                                 GLib.Log.LINE, GLib.Log.FILE, this.main_window);
       }
     });
     // Go back to the ListsPage and tell it to remove this list
@@ -357,7 +360,7 @@ class ListStatusesPage : ScrollWidget, IPage {
     }
   }
 
-  public string? get_title () {
+  public string get_title () {
     return _("List");
   }
 

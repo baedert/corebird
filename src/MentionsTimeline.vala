@@ -28,7 +28,7 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
     this.tweet_list.account= account;
   }
 
-  private void stream_message_received (StreamMessageType type, Json.Node root){
+  private void stream_message_received (StreamMessageType type, Json.Node root) {
     if (type == StreamMessageType.TWEET) {
       add_tweet (root);
     } else if (type == StreamMessageType.DELETE) {
@@ -88,35 +88,17 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
         else
           text = Utils.unescape_html (t.source_tweet.text);
 
-        string summary = _("@%s mentioned @%s").printf (t.user_name, account.name);
+        string summary = _("%s mentioned %s").printf (t.user_name, account.name);
         t.notification_id = account.notifications.send (summary, text);
       }
     }
   }
 
-  public override void load_newest () {
-    this.loading = true;
-    this.load_newest_internal.begin (() => {
-      this.loading = false;
-    });
-  }
-
-  public override void load_older () {
-    if (!initialized)
-      return;
-
-    this.balance_next_upper_change (BOTTOM);
-    this.loading = true;
-    this.load_older_internal.begin (() => {
-      this.loading = false;
-    });
-  }
-
-  public override string? get_title () {
+  public override string get_title () {
     return _("Mentions");
   }
 
   public override void create_radio_button (Gtk.RadioButton? group) {
-    radio_button = new BadgeRadioButton(group, "corebird-mentions-symbolic", _("Mentions"));
+    radio_button = new BadgeRadioButton (group, "corebird-mentions-symbolic", _("Mentions"));
   }
 }

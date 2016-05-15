@@ -84,7 +84,7 @@
                 <child>
                   <object class="GtkBox">
                     <property name="visible">true</property>
-                    <property name="can_focus">true</property>
+                    <property name="can_focus">false</property>
                     <property name="orientation">vertical</property>
                     <property name="valign">center</property>
                     <child>
@@ -143,7 +143,7 @@
                     <child>
                       <object class="GtkBox">
                         <property name="orientation">horizontal</property>
-                        <property name="has_focus">false</property>
+                        <property name="can_focus">false</property>
                         <property name="valign">start</property>
                         <property name="halign">end</property>
                         <style>

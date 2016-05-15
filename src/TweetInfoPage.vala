@@ -40,6 +40,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
   private Tweet tweet;
   private GLib.SimpleActionGroup actions;
   private unowned MainWindow main_window;
+  private GLib.Cancellable? cancellable = null;
 
   [GtkChild]
   private Gtk.Grid grid;
@@ -268,6 +269,11 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
    * Loads the data of the tweet with the id tweet_id from the Twitter server.
    */
   private void query_tweet_info (bool existing) { //{{{
+    if (this.cancellable != null) {
+      this.cancellable.cancel ();
+    }
+
+    this.cancellable = new Cancellable ();
 
     var now = new GLib.DateTime.now_local ();
     var call = account.proxy.new_call ();
@@ -275,7 +281,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     call.set_function ("1.1/statuses/show.json");
     call.add_param ("id", tweet_id.to_string ());
     call.add_param ("include_my_retweet", "true");
-    TweetUtils.load_threaded.begin (call, null, (__, res) => {
+    TweetUtils.load_threaded.begin (call, cancellable, (__, res) => {
       Json.Node? root = null;
 
       try {
@@ -285,6 +291,9 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
         main_stack.visible_child = error_label;
         return;
       }
+
+      if (root == null)
+        return;
 
       Json.Object root_object = root.get_object ();
 
@@ -315,7 +324,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     reply_call.add_param ("q", "to:" + this.screen_name);
     reply_call.add_param ("since_id", tweet_id.to_string ());
     reply_call.add_param ("count", "200");
-    TweetUtils.load_threaded.begin (reply_call, null, (_, res) => {
+    TweetUtils.load_threaded.begin (reply_call, cancellable, (_, res) => {
       Json.Node? root = null;
 
       try {
@@ -324,6 +333,9 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
         warning (e.message);
         return;
       }
+
+      if (root == null)
+        return;
 
       var statuses_node = root.get_object ().get_array_member ("statuses");
       int64 previous_tweet_id = -1;
@@ -381,7 +393,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     call.set_function ("1.1/statuses/show.json");
     call.set_method ("GET");
     call.add_param ("id", reply_id.to_string ());
-    call.invoke_async.begin (null, (obj, res) => {
+    call.invoke_async.begin (cancellable, (obj, res) => {
       try {
         call.invoke_async.end (res);
       }catch (GLib.Error e) {
@@ -389,7 +401,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
         if (e.message.strip () != "Forbidden" &&
             e.message.strip ().down () != "not found") {
           Utils.show_error_object (call.get_payload (), e.message,
-                                   GLib.Log.LINE, GLib.Log.FILE);
+                                   GLib.Log.LINE, GLib.Log.FILE, this.main_window);
         }
         bottom_list_box.visible = (bottom_list_box.get_children ().length () > 0);
         return;
@@ -483,7 +495,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
   }
 
   private void favorite_activated () {
-    if (!values_set)
+    if (!values_set || !favorite_button.sensitive)
       return;
 
     bool favoriting = !favorite_button.active;
@@ -497,7 +509,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
 
     this.update_rt_fav_labels ();
 
-    TweetUtils.set_favorite_status.begin (account, tweet, !favoriting, () => {
+    TweetUtils.set_favorite_status.begin (account, tweet, favoriting, () => {
       favorite_button.sensitive = true;
       values_set = false;
       favorite_button.active = favoriting;
@@ -505,7 +517,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     });
   }
 
-  public string? get_title () {
+  public string get_title () {
     return _("Tweet Details");
   }
 

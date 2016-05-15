@@ -9,6 +9,12 @@
   padding: 2px 4px;
 }
 
+.topbar button image,
+.topbar .button GtkImage {
+  icon-shadow: none;
+  color: #ddd;
+}
+
 .topbar button,
 .topbar .button {
   border: none;
@@ -16,8 +22,8 @@
   background-image: none;
   border-radius: 0px;
   background-color: @topbar_bg;
-  color: #ddd;
-  icon-shadow: none;
+  outline-color: #999;
+  margin: 0px;
 }
 
 .topbar button:hover,

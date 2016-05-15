@@ -90,6 +90,7 @@ namespace TweetUtils {
         tweet.set_flag (TweetState.FAVORITED);
       else
         tweet.unset_flag (TweetState.FAVORITED);
+
       set_favorite_status.callback ();
     });
     yield;

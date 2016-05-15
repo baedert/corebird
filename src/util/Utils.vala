@@ -37,6 +37,11 @@ static Soup.Session SOUP_SESSION = null;
 
 const int TRANSITION_DURATION = 200 * 1000;
 
+#if DEBUG
+public string __class_name (GLib.Object o) {
+  return GLib.Type.from_instance (o).name ();
+}
+#endif
 
 void default_header_func (Gtk.ListBoxRow  row,
                           Gtk.ListBoxRow? row_before)
@@ -231,17 +236,17 @@ namespace Utils {
    *
    * @param message The error message to show
    */
-  void show_error_dialog (string message) {
-    var dialog = new Gtk.MessageDialog (null, Gtk.DialogFlags.DESTROY_WITH_PARENT,
+  void show_error_dialog (string message, Gtk.Window? transient_for) {
+    var dialog = new Gtk.MessageDialog (transient_for, Gtk.DialogFlags.DESTROY_WITH_PARENT,
                                         Gtk.MessageType.ERROR, Gtk.ButtonsType.OK,
                                         "%s", message);
 
-    dialog.response.connect((id) => {
-      if(id == Gtk.ResponseType.OK)
-        dialog.destroy();
+    dialog.response.connect ((id) => {
+      if (id == Gtk.ResponseType.OK)
+        dialog.destroy ();
     });
 
-    dialog.show();
+    dialog.show ();
   }
 
   /**
@@ -253,13 +258,14 @@ namespace Utils {
    * @param alternative If the given json data is not valid,
    *                    show this alternative error message.
    */
-  void show_error_object (string? json_data,
-                          string  alternative,
-                          int     line,
-                          string  file) {
+  void show_error_object (string?     json_data,
+                          string      alternative,
+                          int         line,
+                          string      file,
+                          Gtk.Window? transient_for = null) {
     string error_message = "Exception: %s in %s:%d".printf (alternative, file, line);
     if (json_data == null) {
-      show_error_dialog (error_message);
+      show_error_dialog (error_message, transient_for);
       return;
     }
 
@@ -268,12 +274,12 @@ namespace Utils {
     try {
       parser.load_from_data (json_data);
     } catch (GLib.Error e) {
-      show_error_dialog (error_message);
+      show_error_dialog (error_message, transient_for);
       return;
     }
 
     if (parser.get_root ().get_node_type () != Json.NodeType.OBJECT) {
-      show_error_dialog (error_message);
+      show_error_dialog (error_message, transient_for);
       return;
     }
 
@@ -281,13 +287,13 @@ namespace Utils {
     if (root.has_member ("error") &&
         root.get_member ("error").get_node_type () == Json.NodeType.VALUE) {
       message (json_data);
-      show_error_dialog (root.get_member ("error").get_string ());
+      show_error_dialog (root.get_member ("error").get_string (), transient_for);
       return;
     }
 
     if (root.get_member ("errors").get_node_type () == Json.NodeType.VALUE) {
       message (json_data);
-      show_error_dialog (root.get_member ("errors").get_string ());
+      show_error_dialog (root.get_member ("errors").get_string (), transient_for);
       return;
     }
 
@@ -310,7 +316,7 @@ namespace Utils {
     error_message = sb.str;
 
     critical (json_data);
-    show_error_dialog (error_message);
+    show_error_dialog (error_message, transient_for);
   }
 
   async Gdk.Pixbuf? download_pixbuf (string            url,

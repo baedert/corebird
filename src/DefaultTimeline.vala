@@ -22,6 +22,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
   private int _unread_count = 0;
   public int unread_count {
     set {
+      debug ("Unread count for %s from %d to %d", get_title (), _unread_count, value);
       _unread_count = int.max (value, 0);
       debug ("New unread count for %s: %d", this.get_title (), value);
       radio_button.show_badge = (_unread_count > 0);
@@ -95,16 +96,23 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
     }
 
     if (Settings.auto_scroll_on_new_tweets ()) {
-      this._unread_count = 0;
       mark_seen (-1);
     }
 
-    if (last_focus_widget != null) {
+    if (last_focus_widget != null)
       last_focus_widget.grab_focus ();
-      this.get_vadjustment ().value = this.last_value;
-    }
+
+    this.get_vadjustment ().value = this.last_value;
   }
 
+  public virtual void on_leave () {
+    this.last_focus_widget = main_window.get_focus ();
+
+    if (tweet_list.action_entry != null && tweet_list.action_entry.shows_actions)
+      tweet_list.action_entry.toggle_mode ();
+
+    last_value = this.get_vadjustment ().value;
+  }
 
   public bool handles_double_open () {
     return true;
@@ -117,28 +125,25 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
     }
   }
 
-  public virtual void on_leave () {
-    Gtk.Widget? focus_widget = main_window.get_focus ();
-    if (focus_widget == null)
-      return;
-
-    GLib.List<weak Gtk.Widget> list_rows = tweet_list.get_children ();
-    foreach (Gtk.Widget w in list_rows) {
-      if (w == focus_widget) {
-        last_focus_widget = w;
-        break;
-      }
-    }
-
-    if (tweet_list.action_entry != null && tweet_list.action_entry.shows_actions)
-      tweet_list.action_entry.toggle_mode ();
-
-    last_value = this.get_vadjustment ().value;
+  public void load_newest () {
+    this.loading = true;
+    this.load_newest_internal.begin (() => {
+      this.loading = false;
+    });
   }
 
-  public abstract void load_newest ();
-  public abstract void load_older ();
-  public abstract string? get_title ();
+  public void load_older () {
+    if (!initialized)
+      return;
+
+    this.balance_next_upper_change (BOTTOM);
+    this.loading = true;
+    this.load_older_internal.begin (() => {
+      this.loading = false;
+    });
+  }
+
+  public abstract string get_title ();
 
   public override void destroy () {
     if (tweet_remove_timeout > 0) {
@@ -227,15 +232,13 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
         t.retweeted_tweet.author.id == account.id)
       flags |= TweetState.HIDDEN_FORCE;
 
-
-
     /* Fourth case */
-    foreach (int64 id in account.disabled_rts)
+    foreach (int64 id in account.disabled_rts) {
       if (id == t.source_tweet.author.id) {
         flags |= TweetState.HIDDEN_RTS_DISABLED;
         break;
       }
-
+    }
 
     /* Fifth case */
     foreach (Gtk.Widget w in tweet_list.get_children ()) {
@@ -262,7 +265,8 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
           this.unread_count--;
         }
         tle.tweet.seen = true;
-        break;
+        if (id != -1)
+          break;
       }
     }
   }

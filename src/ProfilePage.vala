@@ -620,7 +620,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
   public void create_radio_button (Gtk.RadioButton? group) {}
 
 
-  public string? get_title () {
+  public string get_title () {
     return "@" + screen_name;
   }
 
@@ -676,7 +676,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
         Utils.show_error_object (call.get_payload (), e.message,
-                                 GLib.Log.LINE, GLib.Log.FILE);
+                                 GLib.Log.LINE, GLib.Log.FILE, this.main_window);
         /* Reset the state if the blocking failed */
         a.set_state (new GLib.Variant.boolean (current_state));
       }
@@ -710,7 +710,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
         Utils.show_error_object (call.get_payload (), e.message,
-                                 GLib.Log.LINE, GLib.Log.FILE);
+                                 GLib.Log.LINE, GLib.Log.FILE, this.main_window);
         /* Reset the state if the retweeting failed */
         a.set_state (new GLib.Variant.boolean (current_state));
       }

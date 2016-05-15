@@ -22,7 +22,9 @@ public class MainWindow : Gtk.ApplicationWindow {
     {"toggle-sidebar",      Settings.toggle_sidebar_visible},
     {"switch-page",         simple_switch_page, "i"},
     {"show-account-dialog", show_account_dialog},
-    {"show-account-list",   show_account_list}
+    {"show-account-list",   show_account_list},
+    {"previous",            previous},
+    {"next",                next}
   };
   [GtkChild]
   private Gtk.HeaderBar headerbar;
@@ -47,10 +49,16 @@ public class MainWindow : Gtk.ApplicationWindow {
   [GtkChild]
   private BadgeButton n_button;
   private NotificationModel n_model = new NotificationModel ();
+  [GtkChild]
+  private Gtk.Label title_label;
+  [GtkChild]
+  private Gtk.Label last_page_label;
+  [GtkChild]
+  private Gtk.Stack title_stack;
 
   private Gtk.MenuButton app_menu_button = null;
   public MainWidget main_widget;
-  public unowned Account? account  {public get; private set;}
+  public unowned Account? account;
   private ComposeTweetWindow? compose_tweet_window = null;
   private int unread_account_notifications = 0;
 
@@ -63,6 +71,11 @@ public class MainWindow : Gtk.ApplicationWindow {
   public MainWindow (Gtk.Application app, Account? account = null) {
     set_default_size (480, 700);
 
+#if DEBUG
+    this.set_focus.connect ((w) => {
+      debug ("Focus widget now: %s %p", w != null ? __class_name (w) : "(null)", w);
+    });
+#endif
     change_account (account);
 
     account_list.set_sort_func (account_sort_func);
@@ -116,9 +129,6 @@ public class MainWindow : Gtk.ApplicationWindow {
       return false;
     });
 
-
-
-    add_accels();
     load_geometry ();
 
     n_listbox.bind_model (n_model, (item) => {
@@ -126,6 +136,8 @@ public class MainWindow : Gtk.ApplicationWindow {
       row.show_all ();
       return row;
     });
+
+    add_accels ();
   }
 
   /**
@@ -133,15 +145,6 @@ public class MainWindow : Gtk.ApplicationWindow {
    */
   private void add_accels() {
     Gtk.AccelGroup ag = new Gtk.AccelGroup();
-
-    ag.connect (Gdk.Key.Left, Gdk.ModifierType.MOD1_MASK, Gtk.AccelFlags.LOCKED,
-        () => {main_widget.switch_page (Page.PREVIOUS); return true;});
-    ag.connect (Gdk.Key.Right, Gdk.ModifierType.MOD1_MASK, Gtk.AccelFlags.LOCKED,
-        () => {main_widget.switch_page (Page.NEXT); return true;});
-    ag.connect (Gdk.Key.Back, 0, Gtk.AccelFlags.LOCKED,
-        () => {main_widget.switch_page (Page.PREVIOUS); return true;});
-    ag.connect (Gdk.Key.Forward, 0, Gtk.AccelFlags.LOCKED,
-        () => {main_widget.switch_page (Page.NEXT); return true;});
     ag.connect (Gdk.Key.F5, 0, Gtk.AccelFlags.LOCKED,
                 () => {
                 var ident = UserIdentity();
@@ -177,8 +180,6 @@ public class MainWindow : Gtk.ApplicationWindow {
     main_widget.switch_page (Page.PREVIOUS);
   }
 
-
-
   public void change_account (Account? account) {
     int64? old_user_id = null;
     if (this.account != null) {
@@ -207,7 +208,7 @@ public class MainWindow : Gtk.ApplicationWindow {
       main_widget.show_all ();
       this.add (main_widget);
       main_widget.switch_page (0);
-      this.set_title (main_widget.get_page (0).get_title ());
+      this.set_window_title (main_widget.get_page (0).get_title ());
       avatar_image.surface = account.avatar_small;
       account.notify["avatar-small"].connect(() => {
         avatar_image.surface = account.avatar_small;
@@ -245,7 +246,7 @@ public class MainWindow : Gtk.ApplicationWindow {
       this.set_title (_("Corebird"));
 
       Account.add_account (acc_);
-      var create_widget = new AccountCreateWidget (acc_, cb);
+      var create_widget = new AccountCreateWidget (acc_, cb, this);
       create_widget.result_received.connect ((result, acc) => {
         if (result) {
           change_account (acc);
@@ -292,16 +293,20 @@ public class MainWindow : Gtk.ApplicationWindow {
     if (evt.button == 9) {
       // Forward thumb button
       main_widget.switch_page (Page.NEXT);
-      return true;
+      return Gdk.EVENT_STOP;
     } else if (evt.button == 8) {
       // backward thumb button
       main_widget.switch_page (Page.PREVIOUS);
-      return true;
+      return Gdk.EVENT_STOP;
     }
-    return false;
+    return Gdk.EVENT_PROPAGATE;
   }
 
   private void show_hide_compose_window () {
+    if (this.account == null ||
+        this.account.screen_name == Account.DUMMY)
+      return;
+
     if (compose_tweet_window == null) {
       compose_tweet_window = new ComposeTweetWindow (this, account, null,
                                                      ComposeTweetWindow.Mode.NORMAL);
@@ -325,6 +330,22 @@ public class MainWindow : Gtk.ApplicationWindow {
    */
   private void simple_switch_page (GLib.SimpleAction a, GLib.Variant? param) {
     main_widget.switch_page (param.get_int32 ());
+  }
+
+  private void previous (GLib.SimpleAction a, GLib.Variant? param) {
+    if (this.account == null ||
+        this.account.screen_name == Account.DUMMY)
+      return;
+
+    main_widget.switch_page (Page.PREVIOUS);
+  }
+
+  private void next (GLib.SimpleAction a, GLib.Variant? param) {
+    if (this.account == null ||
+        this.account.screen_name == Account.DUMMY)
+      return;
+
+    main_widget.switch_page (Page.NEXT);
   }
 
   /* result of the show-account-dialog GAction */
@@ -403,7 +424,7 @@ public class MainWindow : Gtk.ApplicationWindow {
                                      string        name,
                                      Cairo.Surface small_avatar,
                                      Cairo.Surface avatar) {
-    this.set_title (main_widget.get_page (main_widget.cur_page_id).get_title ());
+    this.set_window_title (main_widget.get_page (main_widget.cur_page_id).get_title ());
   }
 
   /**
@@ -508,5 +529,16 @@ public class MainWindow : Gtk.ApplicationWindow {
                                       "Show notifications (%d unread)",
                                       unread_account_notifications)
                                       .printf (unread_account_notifications);
+  }
+
+  public void set_window_title (string title,
+                                Gtk.StackTransitionType transition_type = Gtk.StackTransitionType.NONE) {
+    this.last_page_label.label = this.title_label.label;
+    this.title_stack.transition_type = Gtk.StackTransitionType.NONE;
+    this.title_stack.visible_child = last_page_label;
+
+    this.title_stack.transition_type = transition_type;
+    this.title_label.label = title;
+    this.title_stack.visible_child = title_label;
   }
 }

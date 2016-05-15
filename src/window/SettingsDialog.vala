@@ -48,7 +48,6 @@ class SettingsDialog : Gtk.Window {
 
   public SettingsDialog (Corebird application) {
     this.application = application;
-    this.type_hint   = Gdk.WindowTypeHint.DIALOG;
 
     // Notifications Page
     Settings.get ().bind ("round-avatars", round_avatar_switch, "active",
