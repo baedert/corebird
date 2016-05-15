@@ -103,6 +103,10 @@ class MediaVideoWidget : Gtk.Stack {
     bus.add_watch (GLib.Priority.DEFAULT, watch_cb);
 
     this.src.set ("video-sink", this.sink);
+    this.src.set ("ring-buffer-max-size", (10 * 1024 * 1024)); // 10 mb, ¯\_(ツ)_/¯
+    //uint flags;
+    //this.src.get ("flags",  out flags);
+    //this.src.set ("flags",  flags | (1 << 7)); // (1 << 7) = GST_PLAY_FLAG_DOWNLOAD
 
     if (this.media_url != null) {
       /* Set in constructor */
