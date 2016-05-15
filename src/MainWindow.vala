@@ -506,6 +506,12 @@ public class MainWindow : Gtk.ApplicationWindow {
     n_button.tooltip_text = _("Show notifications (no unread)");
   }
 
+  [GtkCallback]
+  private void n_popover_closed_cb () {
+    n_button.active = false;
+    n_popover.hide ();
+  }
+
   private void set_header_button_visibility (bool visible) {
     header_box.visible = visible;
     n_button.visible = visible;

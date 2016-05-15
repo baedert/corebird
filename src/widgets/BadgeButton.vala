@@ -15,7 +15,7 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class BadgeButton : Gtk.Button {
+class BadgeButton : Gtk.ToggleButton {
   private static const int BADGE_SIZE = 10;
   private bool _show_badge = false;
   public bool show_badge {
