@@ -81,7 +81,8 @@ class MediaVideoWidget : Gtk.Stack {
 #if VIDEO
     assert (this.media_url != null);
     this.src.set ("uri", this.media_url);
-    this.src.set_state (Gst.State.PLAYING);
+    /* We will set it to PLAYING once we hit 100% buffering */
+    this.src.set_state (Gst.State.PAUSED);
 #endif
   }
 
@@ -98,7 +99,8 @@ class MediaVideoWidget : Gtk.Stack {
     assert (area != null);
     assert (area is Gtk.DrawingArea);
     this.add_named (area, "video");
-    this.visible_child = area;
+    /* We will switch to the "video" child later after getting
+       an ASYNC_DONE message from gstreamer */
 
     var bus = this.src.get_bus ();
     bus.add_watch (GLib.Priority.DEFAULT, watch_cb);
@@ -149,6 +151,10 @@ class MediaVideoWidget : Gtk.Stack {
         msg.parse_buffering (out percent);
         debug ("Buffering: %d%%", percent);
         this.surface_progress.progress = percent / 100.0;
+        if (percent == 100) {
+          debug ("Playing...");
+          this.src.set_state (Gst.State.PLAYING);
+        }
       break;
 
       case Gst.MessageType.EOS:
