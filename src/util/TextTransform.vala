@@ -56,7 +56,7 @@ namespace TextTransform {
     return target != null && (target.has_prefix ("http://") || target.has_prefix ("https://"));
   }
 
-  private bool is_quote_link (ref TextEntity entity, int64 quote_id)
+  private bool is_quote_link (TextEntity entity, int64 quote_id)
   {
     if (entity.target == null) return false;
 
@@ -116,7 +116,7 @@ namespace TextTransform {
 
 
     bool last_entity_was_trailing = false;
-    foreach (TextEntity entity in entities) {
+    foreach (unowned TextEntity entity in entities) {
       /* Append part before this entity */
       string before = text.substring (text.index_of_nth_char (last_end),
                                       text.index_of_nth_char (entity.from) -
@@ -177,7 +177,6 @@ namespace TextTransform {
     /* Append last part of the source string */
     builder.append (text.substring (text.index_of_nth_char (last_end)));
 
-    /* Replace all & with &amp; */
     return builder.str;
   }
 

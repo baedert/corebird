@@ -27,6 +27,8 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
   private Gtk.Button settings_button;
   [GtkChild]
   private Gtk.Button new_window_button;
+  [GtkChild]
+  private Gtk.Button profile_button;
 
   public new string name {
     set { name_label.label = value; }
@@ -60,6 +62,7 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
     set {
       settings_button.visible = value;
       new_window_button.visible = value;
+      profile_button.visible = value;
     }
   }
 
@@ -139,5 +142,18 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
     cb.add_window (window);
     window.show_all ();
     action_clicked ();
+  }
+
+  [GtkCallback]
+  private void profile_button_clicked_cb () {
+    action_clicked ();
+    var active_window = ((Gtk.Application)GLib.Application.get_default ()).active_window;
+    if (active_window is MainWindow) {
+      var mw = (MainWindow) active_window;
+      var bundle = new Bundle ();
+      bundle.put_int64 ("user_id", this.user_id);
+      bundle.put_string ("screen_name", this.screen_name);
+      mw.main_widget.switch_page (Page.PROFILE, bundle);
+    }
   }
 }

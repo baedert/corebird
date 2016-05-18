@@ -79,6 +79,32 @@ void utf8 () {
   assert (l == 5 + 5 + 5 + 1 + Twitter.short_url_length);
 }
 
+void unicode1 () {
+  string text = "a…";
+
+  int l = TweetUtils.calc_tweet_length (text);
+  message ("Length: %d", l);
+  assert (l == 2);
+}
+
+void trailing_whitespace () {
+  string text = "abc ";
+
+  int l = TweetUtils.calc_tweet_length (text);
+  message ("Length: %d", l);
+
+  assert (l == 4);
+}
+
+void trailing_whitespace2 () {
+  string text = "abc    ";
+
+  int l = TweetUtils.calc_tweet_length (text);
+  message ("Length: %d", l);
+
+  assert (l == 7);
+}
+
 void punctuation_url () {
   string text = "foobar(http://abc.com)";
 
@@ -87,12 +113,13 @@ void punctuation_url () {
   assert (l == 6 + 1 + Twitter.short_url_length + 1);
 }
 
-void unicode1 () {
-  string text = "a…";
+
+void punctuation_url2 () {
+  string text = "...http://foobar.com";
 
   int l = TweetUtils.calc_tweet_length (text);
   message ("Length: %d", l);
-  assert (l == 2);
+  assert (l == 3 + Twitter.short_url_length);
 }
 
 int main (string[] args) {
@@ -108,10 +135,13 @@ int main (string[] args) {
   GLib.Test.add_func ("/tweet-length/newline-link", newline_link);
   GLib.Test.add_func ("/tweet-length/whitespace", whitespace);
   GLib.Test.add_func ("/tweet-length/utf8", utf8);
-  //GLib.Test.add_func ("/tweet-length/punctuation-url", punctuation_url); XXX Fails.
   GLib.Test.add_func ("/tweet-length/unicode1", unicode1);
+  GLib.Test.add_func ("/tweet-length/trailing-whitespace", trailing_whitespace);
+  GLib.Test.add_func ("/tweet-length/trailing-whitespace2", trailing_whitespace2);
+  GLib.Test.add_func ("/tweet-length/punctuation-url", punctuation_url);
 
-
+  // TODO Fails.
+  //GLib.Test.add_func ("/tweet-length/punctuation-url2", punctuation_url2);
 
   return GLib.Test.run ();
 }

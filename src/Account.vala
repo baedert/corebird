@@ -17,25 +17,26 @@
 
 public class Account : GLib.Object {
   public static const string DUMMY = "screen_name";
-  public int64 id                 {public get; private set;}
-  public Sql.Database db          {public get; private set;}
+  public int64 id;
+  public Sql.Database db;
   public string screen_name       {public get; public  set;}
   public string name              {public get; public  set;}
   public string avatar_url        {public get; public  set;}
   public string? banner_url       {public get; private set;}
   public string? website          {public get; public  set;}
   public string? description      {public get; public  set;}
-  public Cairo.Surface avatar_small  {public get; private set;}
-  public Cairo.Surface avatar        {public get; private set;}
-  public Rest.OAuthProxy proxy    {public get; private set;}
-  public UserStream user_stream   {public get; private set;}
-  public UserCounter user_counter {public get; private set;}
+  public Cairo.Surface avatar_small {public get; public set;}
+  public Cairo.Surface avatar       {public get; public set;}
+  public Rest.OAuthProxy proxy;
+  public UserStream user_stream;
+  public UserCounter user_counter;
   private UserEventReceiver event_receiver;
+  public NotificationManager notifications;
   public int64[] friends;
   public int64[] blocked;
   public int64[] muted;
   public int64[] disabled_rts;
-  public Gee.ArrayList<Filter> filters;
+  public GLib.GenericArray<Filter> filters;
   public signal void info_changed (string screen_name, string name,
                                    Cairo.Surface avatar_small, Cairo.Surface avatar);
 
@@ -43,8 +44,9 @@ public class Account : GLib.Object {
     this.id = id;
     this.screen_name = screen_name;
     this.name = name;
-    this.filters = new Gee.ArrayList<Filter> ();
+    this.filters = new GLib.GenericArray<Filter> ();
     this.event_receiver = new UserEventReceiver (this);
+    this.notifications = new NotificationManager (this);
   }
 
   /**
@@ -99,8 +101,9 @@ public class Account : GLib.Object {
 
   public void uninit () {
     this.proxy = null;
-    this.user_stream.stop ();
     this.user_counter.save (this.db);
+    this.user_stream.unregister (this.event_receiver);
+    this.user_stream.stop ();
     this.user_stream = null;
   }
 
@@ -381,7 +384,8 @@ public class Account : GLib.Object {
       return false;
 
 
-    foreach (Filter f in filters) {
+    for (int i = 0; i < filters.length; i ++) {
+      var f = this.filters.get (i);
       if (f.matches (t.get_real_text ())) {
         return true;
       }
@@ -539,30 +543,34 @@ public class Account : GLib.Object {
   }
 
   /** Static stuff ********************************************************************/
-  private static GLib.SList<Account> accounts = null;
+  private static GLib.GenericArray<Account>? accounts = null;
 
-  /**
-   * Simply returns a list of user-specified accounts.
-   * The list is lazily loaded from the database
-   *
-   * @return A singly-linked list of accounts
-   */
-  public static unowned GLib.SList<Account> list_accounts () {
-    if (accounts == null)
+  public static Account get_nth (uint index) {
+    if (GLib.unlikely (accounts == null))
       lookup_accounts ();
-    return accounts;
+
+    return accounts.get (index);
   }
+
+  public static uint get_n () {
+    if (GLib.unlikely (accounts == null))
+      lookup_accounts ();
+
+    return accounts.length;
+  }
+
   /**
    * Look up the accounts. Each account has a <id>.db in ~/.corebird/accounts/
    * The accounts are initialized with only their screen_name and their ID.
    */
   private static void lookup_accounts () {
-    accounts = new GLib.SList<Account> ();
+    assert (accounts == null);
+    accounts = new GLib.GenericArray<Account> ();
     Corebird.db.select ("accounts").cols ("id", "screen_name", "name", "avatar_url").run ((vals) => {
       Account acc = new Account (int64.parse(vals[0]), vals[1], vals[2]);
       acc.avatar_url = vals[3];
       acc.load_avatar ();
-      accounts.append (acc);
+      accounts.add (acc);
       return true;
     });
   }
@@ -573,7 +581,7 @@ public class Account : GLib.Object {
    * @param acc The account to add.
    */
   public static void add_account (Account acc) {
-    accounts.append (acc);
+    accounts.add (acc);
   }
 
   /**
@@ -582,7 +590,11 @@ public class Account : GLib.Object {
    * @param screen_name The screen name of the account to remove.
    */
   public static void remove_account (string screen_name) {
-    foreach (Account a in accounts) {
+    if (GLib.unlikely (accounts == null))
+      lookup_accounts ();
+
+    for (uint i = 0; i < accounts.length; i ++) {
+      var a = accounts.get (i);
       if (a.screen_name == screen_name) {
         accounts.remove (a);
         return;
@@ -598,7 +610,12 @@ public class Account : GLib.Object {
    *         null of no such instance could be found.
    */
   public static unowned Account? query_account (string screen_name) {
-    foreach (unowned Account a in accounts) {
+    if (GLib.unlikely (accounts == null))
+      lookup_accounts ();
+
+    for (uint i = 0; i < accounts.length; i ++) {
+      unowned Account a = accounts.get (i);
+
       if (screen_name == a.screen_name)
         return a;
     }
@@ -606,7 +623,11 @@ public class Account : GLib.Object {
   }
 
   public static unowned Account? query_account_by_id (int64 id) {
-    foreach (unowned Account a in accounts) {
+    if (GLib.unlikely (accounts == null))
+      lookup_accounts ();
+
+    for (uint i = 0; i < accounts.length; i ++) {
+      unowned Account a = accounts.get (i);
       if (id == a.id)
         return a;
     }

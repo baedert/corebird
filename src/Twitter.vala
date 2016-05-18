@@ -31,6 +31,7 @@ public class Twitter : GLib.Object {
   [Signal (detailed = true)]
   private signal void avatar_downloaded (Cairo.Surface avatar);
 
+  public const int MAX_BYTES_PER_IMAGE    = 1024 * 1024 * 3;
   public const int short_url_length       = 23;
   public const int short_url_length_https = 23;
   public const int max_media_per_upload   = 4;
@@ -48,10 +49,10 @@ public class Twitter : GLib.Object {
   public void init () {
     try {
       Twitter.no_avatar = Gdk.cairo_surface_create_from_pixbuf (
-                               new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/assets/no_avatar.png"),
+                               new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/data/no_avatar.png"),
                                1,
                                null);
-      Twitter.no_banner = new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/assets/no_banner.png");
+      Twitter.no_banner = new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/data/no_banner.png");
     } catch (GLib.Error e) {
       error ("Error while loading assets: %s", e.message);
     }
@@ -67,6 +68,10 @@ public class Twitter : GLib.Object {
     this.avatar_cache.decrease_refcount_for_surface (surface);
   }
 
+  public bool has_avatar (int64 user_id) {
+    return (get_cached_avatar (user_id) != Twitter.no_avatar);
+  }
+
   public Cairo.Surface get_cached_avatar (int64 user_id) {
     bool found;
     Cairo.Surface? surface = this.avatar_cache.get_surface_for_id (user_id, out found);
@@ -75,6 +80,77 @@ public class Twitter : GLib.Object {
     else
       return surface;
   }
+
+  /* This is a get_avatar version for times where we don't have an at least
+     relatively recent avatar_url for the given account.
+
+     This will first query the account details of the given account,
+     then use the avatar_url to download the avatar and insert it
+     into the avatar cache */
+  public async Cairo.Surface? load_avatar_for_user_id (Account account,
+                                                       int64   user_id,
+                                                       int     size) {
+    Cairo.Surface? s;
+    bool found = false;
+
+    s = avatar_cache.get_surface_for_id (user_id, out found);
+
+    if (s != null) {
+      assert (found);
+      return s;
+    }
+
+    if (s == null && found) {
+      ulong handler_id = 0;
+      handler_id = this.avatar_downloaded[user_id.to_string ()].connect ((ava) => {
+        s = ava;
+        this.disconnect (handler_id);
+        this.load_avatar_for_user_id.callback ();
+      });
+      yield;
+
+      assert (s != null);
+      return s;
+    }
+
+    this.avatar_cache.add (user_id, null, null);
+
+    // We first need to get the avatar url for the given user id...
+    var call = account.proxy.new_call ();
+    call.set_function ("1.1/users/show.json");
+    call.set_method ("GET");
+    call.add_param ("user_id", user_id.to_string ());
+    call.add_param ("include_entities", "false");
+
+    Json.Node? root = null;
+    try {
+      root = yield TweetUtils.load_threaded (call, null);
+    } catch (GLib.Error e) {
+      warning (e.message);
+      return null;
+    }
+
+    if (root == null)
+      return null;
+
+    var root_obj = root.get_object ();
+    string avatar_url = root_obj.get_string_member ("profile_image_url");
+
+    this.avatar_cache.set_url (user_id, avatar_url);
+
+    s = Twitter.get ().get_avatar (user_id, avatar_url, (a) => {
+      s = a;
+      load_avatar_for_user_id.callback ();
+    }, size, true);
+
+    if (s != null)
+      return s;
+    else
+      yield;
+
+    return s;
+  }
+
 
   /**
    * Get the avatar with the given url. If the avatar exists on the
@@ -102,15 +178,11 @@ public class Twitter : GLib.Object {
   public Cairo.Surface? get_avatar (int64  user_id,
                                     string url,
                                     owned AvatarDownloadedFunc? func = null,
-                                    int size = 48) {
+                                    int size = 48,
+                                    bool force_download = false) {
     assert (user_id > 0);
     bool has_key = false;
     Cairo.Surface? a = this.avatar_cache.get_surface_for_id (user_id, out has_key);
-
-    // TODO: There might be a potential race condition here
-    //       if we get an avatar with a new url while the old
-    //       one is still being downloaded.
-
 
     bool new_url = a == Twitter.no_avatar &&
                         url != this.avatar_cache.get_url_for_id (user_id);
@@ -119,10 +191,10 @@ public class Twitter : GLib.Object {
       return a;
     }
 
-    if (has_key && !new_url) {
+    if (has_key && !new_url && !force_download) {
       // wait until the avatar has finished downloading
       ulong handler_id = 0;
-      handler_id = this.avatar_downloaded[url].connect ((ava) => {
+      handler_id = this.avatar_downloaded[user_id.to_string ()].connect ((ava) => {
         func (ava);
         this.disconnect (handler_id);
       });
@@ -147,13 +219,12 @@ public class Twitter : GLib.Object {
         } else
           s = Gdk.cairo_surface_create_from_pixbuf (avatar, 1, null);
 
-        //var s = Gdk.cairo_surface_create_from_pixbuf (avatar, 1, null);
         // a NULL surface is already in the cache
         this.avatar_cache.set_avatar (user_id, s, url);
 
         func (s);
         // signal all the other waiters in the queue
-        avatar_downloaded[url](s);
+        avatar_downloaded[user_id.to_string ()](s);
       });
     }
 
@@ -167,8 +238,8 @@ public class Twitter : GLib.Object {
 public class AvatarCache : GLib.Object {
   private GLib.Array<int64?> ids;
   private GLib.GenericArray<Cairo.Surface?> surfaces;
-  private GLib.Array<int?> refcounts;
   private GLib.GenericArray<string> urls;
+  private GLib.Array<int?> refcounts;
 
   public AvatarCache () {
     this.ids       = new GLib.Array<int64?> ();
@@ -195,6 +266,7 @@ public class AvatarCache : GLib.Object {
     int index = get_index (user_id);
     if (index != -1) {
       found = true;
+      /* the surface can be null anyway here */
       return this.surfaces.data[index];
     }
 
@@ -211,11 +283,18 @@ public class AvatarCache : GLib.Object {
     return null;
   }
 
-  public void add (int64 user_id, Cairo.Surface? surface, string avatar_url) {
-    this.ids.append_val (user_id);
-    this.surfaces.add (surface);
-    this.urls.add (avatar_url);
-    this.refcounts.append_val (0);
+  public void add (int64 user_id, Cairo.Surface? surface, string? avatar_url) {
+
+    int index;
+    if ((index = get_index (user_id)) != -1) {
+      this.surfaces[index] = surface;
+      this.urls[index] = avatar_url;
+    } else {
+      this.ids.append_val (user_id);
+      this.surfaces.add (surface);
+      this.urls.add (avatar_url);
+      this.refcounts.append_val (0);
+    }
 
     assert (ids.length == surfaces.length && surfaces.length == refcounts.length &&
             refcounts.length == urls.length);
@@ -226,6 +305,13 @@ public class AvatarCache : GLib.Object {
     assert (index != -1);
 
     this.surfaces[index] = surface;
+    this.urls[index] = url;
+  }
+
+  public void set_url (int64 id, string url) {
+    int index = get_index (id);
+    assert (index != -1);
+
     this.urls[index] = url;
   }
 
@@ -279,7 +365,7 @@ public class AvatarCache : GLib.Object {
     message ("Cached avatars: %d", this.surfaces.length);
     message ("URLS:");
     for (int i = 0; i < this.urls.length; i ++)
-      message ("%d: %s", i, this.urls[i]);
+      message ("%d: %s (id %s): %p", i, this.urls[i], this.ids.index (i).to_string (), this.surfaces[i]);
 
     assert (ids.length == surfaces.length && surfaces.length == refcounts.length &&
             refcounts.length == urls.length);

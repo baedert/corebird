@@ -51,7 +51,7 @@ class AccountDialog : Gtk.Dialog {
 
     autostart_switch.freeze_notify ();
     string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
-    foreach (string acc in startup_accounts) {
+    foreach (unowned string acc in startup_accounts) {
       if (acc == this.account.screen_name) {
         autostart_switch.active = true;
         break;
@@ -73,8 +73,6 @@ class AccountDialog : Gtk.Dialog {
         set_transient_data (account.website, account.description);
       });
     }
-
-    this.set_default_size (350, 450);
   }
 
   private void set_transient_data (string? website, string? description) {
@@ -125,7 +123,7 @@ class AccountDialog : Gtk.Dialog {
         } catch (GLib.Error e) {
           warning (e.message);
           Utils.show_error_object (call.get_payload (), "Could not update profile",
-                                   GLib.Log.LINE, GLib.Log.FILE);
+                                   GLib.Log.LINE, GLib.Log.FILE, this);
         }
       });
 
@@ -157,7 +155,7 @@ class AccountDialog : Gtk.Dialog {
           call.invoke_async.end (res);
         } catch (GLib.Error e) {
           Utils.show_error_object (call.get_payload (), "Could not update your avatar",
-                                   GLib.Log.LINE, GLib.Log.FILE);
+                                   GLib.Log.LINE, GLib.Log.FILE, this);
           return;
         }
 
@@ -189,7 +187,7 @@ class AccountDialog : Gtk.Dialog {
           call.invoke_async.end (res);
         } catch (GLib.Error e) {
           Utils.show_error_object (call.get_payload (), "Could not update your avatar",
-                                   GLib.Log.LINE, GLib.Log.FILE);
+                                   GLib.Log.LINE, GLib.Log.FILE, this);
         }
       });
     }
@@ -204,7 +202,6 @@ class AccountDialog : Gtk.Dialog {
        - If this would close the last opened window,
          set the account of that window to NULL
      */
-    var acc_menu = (GLib.Menu) Corebird.account_menu;
     int64 acc_id = account.id;
     FileUtils.remove (Dirs.config (@"accounts/$(acc_id).db"));
     FileUtils.remove (Dirs.config (@"accounts/$(acc_id).png"));
@@ -222,17 +219,6 @@ class AccountDialog : Gtk.Dialog {
           sa_new[x] = startup_accounts[x];
         Settings.get ().set_strv ("startup-accounts", sa_new);
       }
-
-    /* Remove account from account app menu */
-    for (int i = 0; i < acc_menu.get_n_items (); i++){
-      Variant item_name = acc_menu.get_item_attribute_value (i,
-                                       "label", VariantType.STRING);
-      if (item_name.get_string () == "@"+account.screen_name) {
-        acc_menu.remove (i);
-        break;
-      }
-    }
-
 
     Corebird cb = (Corebird) GLib.Application.get_default ();
 
@@ -280,7 +266,7 @@ class AccountDialog : Gtk.Dialog {
     bool active = autostart_switch.active;
     string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
     if (active) {
-      foreach (string acc in startup_accounts) {
+      foreach (unowned string acc in startup_accounts) {
         if (acc == this.account.screen_name) {
           return;
         }
@@ -288,7 +274,7 @@ class AccountDialog : Gtk.Dialog {
 
       string[] new_startup_accounts = new string[startup_accounts.length + 1];
       int i = 0;
-      foreach (string s in startup_accounts) {
+      foreach (unowned string s in startup_accounts) {
         new_startup_accounts[i] = s;
         i ++;
       }
@@ -297,7 +283,7 @@ class AccountDialog : Gtk.Dialog {
     } else {
       string[] new_startup_accounts = new string[startup_accounts.length - 1];
       int i = 0;
-      foreach (string acc in startup_accounts) {
+      foreach (unowned string acc in startup_accounts) {
         if (acc != this.account.screen_name) {
           new_startup_accounts[i] = acc;
           i ++;

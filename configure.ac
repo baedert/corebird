@@ -1,4 +1,4 @@
-AC_INIT([corebird],[1.1],[mail@baedert.org])
+AC_INIT([corebird],[1.2],[mail@baedert.org])
 
 AC_PREREQ([2.65])
 
@@ -37,6 +37,9 @@ AM_CONDITIONAL([ENABLE_DEBUG], [ test "$enable_debug" = "yes"])
 AC_ARG_ENABLE(video, AS_HELP_STRING([--disable-video], [Disable video support]),, disable_video=no)
 AM_CONDITIONAL([DISABLE_VIDEO], [ test "$disable_video" = "yes"])
 
+# --disable-gst-check
+AC_ARG_ENABLE(gst_check, AS_HELP_STRING([--disable-gst-check], [Disable check for needed gstreamer elements]),, disable_gst_check=no)
+AM_CONDITIONAL([DISABLE_GST_CHECK], [ test "$disable_gst_check" = "yes"])
 
 
 
@@ -45,7 +48,6 @@ pkg_modules="gtk+-3.0 >= 3.16
              glib-2.0 >= 2.44
              rest-0.7 >= 0.7.93
              libsoup-2.4
-             gee-0.8
              json-glib-1.0
              sqlite3"
 
@@ -60,7 +62,6 @@ CB_VALA_FLAGS=" \
   --pkg gtk+-3.0 \
   --pkg json-glib-1.0 \
   --pkg rest-0.7 \
-  --pkg gee-0.8 \
   --pkg sqlite3 \
   --pkg libsoup-2.4 \
   --pkg glib-2.0 \
@@ -100,6 +101,11 @@ if test "$enable_debug" = "yes"; then
 fi
 
 
+if test "$disable_gst_check" = "no"; then
+  # Check for gtksink
+  GST_ELEMENT_CHECK([gtksink], [1.0], [], [])
+fi
+
 
 # Gettext stuff
 GETTEXT_PACKAGE=AC_PACKAGE_NAME
@@ -114,15 +120,14 @@ src/Makefile
 ui/Makefile
 data/Makefile
 data/org.baedert.corebird.desktop.in
-assets/Makefile
-assets/256x256/Makefile
-assets/128x128/Makefile
-assets/96x96/Makefile
-assets/64x64/Makefile
-assets/48x48/Makefile
-assets/32x32/Makefile
-assets/24x24/Makefile
-assets/16x16/Makefile
+data/256x256/Makefile
+data/128x128/Makefile
+data/96x96/Makefile
+data/64x64/Makefile
+data/48x48/Makefile
+data/32x32/Makefile
+data/24x24/Makefile
+data/16x16/Makefile
 po/Makefile.in
 tests/Makefile
 ])
@@ -140,4 +145,5 @@ echo "
            C Compiler: ${CC} ${CFLAGS}
             Debugging: $enable_debug
        Video disabled: $disable_video
+   Gst check disabled: $disable_gst_check
 "

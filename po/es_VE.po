@@ -1,35 +1,32 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # Jerry Anselmi <jerry.anselmi@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-30 16:02+0200\n"
-"PO-Revision-Date: 2015-09-13 02:49+0000\n"
-"Last-Translator: Jerry Anselmi <jerry.anselmi@gmail.com>\n"
-"Language-Team: Spanish (Venezuela) (http://www.transifex.com/corebird/"
-"corebird/language/es_VE/)\n"
-"Language: es_VE\n"
+"POT-Creation-Date: 2016-02-25 13:13+0100\n"
+"PO-Revision-Date: 2016-02-21 09:14+0000\n"
+"Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
+"Language-Team: Spanish (Venezuela) (http://www.transifex.com/corebird/corebird/language/es_VE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: es_VE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../src/window/ComposeTweetWindow.vala:119
+#: ../src/window/ComposeTweetWindow.vala:120
 msgid "Quote tweet"
 msgstr "Cita de tweet"
 
-#: ../src/window/ComposeTweetWindow.vala:352
-msgid "Select Image"
-msgstr "Seleccione una imagen"
+#: ../src/window/UserListDialog.vala:40
+msgid "Add to or Remove User From List"
+msgstr "Agregar o eliminar usuario de la lista"
 
-#: ../src/window/ComposeTweetWindow.vala:353
-#: ../src/window/UserListDialog.vala:47
-#: ../src/widgets/MultiMediaWidget.vala:152 ../ui/compose-window.ui.h:2
+#: ../src/window/UserListDialog.vala:47 ../ui/compose-window.ui.h:2
 #: ../ui/list-list-entry.ui.h:1 ../ui/list-statuses-page.ui.h:8
 #: ../ui/filter-list-entry.ui.h:1 ../ui/modify-filter-dialog.ui.h:2
 #: ../ui/user-filter-entry.ui.h:1 ../ui/account-dialog.ui.h:2
@@ -37,19 +34,9 @@ msgstr "Seleccione una imagen"
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: ../src/window/ComposeTweetWindow.vala:354
-msgid "Choose"
-msgstr "Escoger"
-
-#: ../src/window/UserListDialog.vala:40
-msgid "Add to or Remove User From List"
-msgstr "Agregar o eliminar usuario de la lista"
-
-#: ../src/window/UserListDialog.vala:48
-#: ../src/widgets/MultiMediaWidget.vala:153
-#: ../src/window/ImageCropDialog.vala:98 ../ui/list-statuses-page.ui.h:6
-#: ../ui/modify-filter-dialog.ui.h:3 ../ui/account-dialog.ui.h:3
-#: ../ui/modify-snippet-dialog.ui.h:3
+#: ../src/window/UserListDialog.vala:48 ../src/window/ImageCropDialog.vala:98
+#: ../ui/list-statuses-page.ui.h:6 ../ui/modify-filter-dialog.ui.h:3
+#: ../ui/account-dialog.ui.h:3 ../ui/modify-snippet-dialog.ui.h:3
 msgid "Save"
 msgstr "Guardar"
 
@@ -81,21 +68,19 @@ msgstr "No se encontraron entradas"
 msgid "Retry"
 msgstr "Reintentar"
 
-#: ../src/widgets/AccountCreateWidget.vala:39
+#: ../src/widgets/AccountCreateWidget.vala:38
 msgid "Don't have an account yet?"
 msgstr "¿No tienes una cuenta todavía?"
 
-#: ../src/widgets/AccountCreateWidget.vala:39
+#: ../src/widgets/AccountCreateWidget.vala:38
 msgid "Create one"
 msgstr "Crear una"
 
-#: ../src/widgets/AccountCreateWidget.vala:54
+#: ../src/widgets/AccountCreateWidget.vala:53
 msgid ""
-"Unauthorized. Most of the time, this means that there's something wrong with "
-"the Twitter servers and you should try again later"
-msgstr ""
-"No autorizado. La mayoría de las veces, esto significa que hay algo mal con "
-"los servidores de Twitter y usted debe intentarlo más tarde"
+"Unauthorized. Most of the time, this means that there's something wrong with"
+" the Twitter servers and you should try again later"
+msgstr "No autorizado. La mayoría de las veces, esto significa que hay algo mal con los servidores de Twitter y usted debe intentarlo más tarde"
 
 #: ../src/widgets/AccountCreateWidget.vala:65
 #, c-format
@@ -103,11 +88,11 @@ msgid "Could not open %s"
 msgstr "No se pudo abrir %s"
 
 #. We just assume that it was the wrong code
-#: ../src/widgets/AccountCreateWidget.vala:89
+#: ../src/widgets/AccountCreateWidget.vala:87
 msgid "Wrong PIN"
 msgstr "PIN incorrecto"
 
-#: ../src/widgets/AccountCreateWidget.vala:116
+#: ../src/widgets/AccountCreateWidget.vala:114
 msgid "Account already in use"
 msgstr "La cuenta ya esta siendo usada"
 
@@ -115,76 +100,52 @@ msgstr "La cuenta ya esta siendo usada"
 msgid "Copy link"
 msgstr "Copiar enlace"
 
-#: ../src/widgets/MultiMediaWidget.vala:34
-msgid "Copy URL"
-msgstr "Copiar URL"
-
-#: ../src/widgets/MultiMediaWidget.vala:35
-msgid "Save Original"
-msgstr "Guardar original"
-
-#: ../src/widgets/MultiMediaWidget.vala:74 ../src/TweetInfoPage.vala:455
-msgid "Open in Browser"
-msgstr "Abrir en un navegador"
-
-#: ../src/widgets/MultiMediaWidget.vala:150
-msgid "Save image"
-msgstr "Guardar imagen"
-
-#: ../src/widgets/AddImageButton.vala:35 ../src/widgets/AddImageButton.vala:175
-msgid "Click to remove image"
-msgstr "Haga clic para eliminar la imagen"
-
-#: ../src/widgets/AddImageButton.vala:41
-msgid "Click to add image"
-msgstr "Haga clic para agregar la imagen"
-
-#: ../src/widgets/FollowButton.vala:43
+#: ../src/widgets/FollowButton.vala:45
 msgid "Follow"
 msgstr "Seguir"
 
-#: ../src/widgets/FollowButton.vala:44
+#: ../src/widgets/FollowButton.vala:46
 msgid "Unfollow"
 msgstr "Dejar de seguir"
 
-#: ../src/HomeTimeline.vala:110
+#: ../src/HomeTimeline.vala:109
 #, c-format
 msgid "%s retweeted %s"
 msgstr "%s retweeteado %s"
 
-#: ../src/HomeTimeline.vala:113
+#: ../src/HomeTimeline.vala:112
 #, c-format
 msgid "%s tweeted"
 msgstr "%s tweeteado"
 
-#: ../src/HomeTimeline.vala:120
+#: ../src/HomeTimeline.vala:118
 #, c-format
 msgid "%d new Tweet!"
 msgid_plural "%d new Tweets!"
 msgstr[0] "%d nuevo Tweet!"
 msgstr[1] "%d nuevos Tweets!"
 
-#: ../src/HomeTimeline.vala:171
+#: ../src/HomeTimeline.vala:169
 msgid "Home"
 msgstr "Inicio"
 
-#: ../src/DMThreadsPage.vala:369
+#: ../src/DMThreadsPage.vala:205
 #, c-format
 msgid "%d new Message from %s"
 msgid_plural "%d new Messages from %s"
 msgstr[0] "%d nuevo Mensaje de %s"
 msgstr[1] "%d nuevos Mensajes de %s"
 
-#: ../src/DMThreadsPage.vala:375
+#: ../src/DMThreadsPage.vala:211
 #, c-format
 msgid "New direct message from %s"
 msgstr "Nuevo mensaje directo de %s"
 
-#: ../src/DMThreadsPage.vala:390 ../src/DMThreadsPage.vala:404
+#: ../src/DMThreadsPage.vala:229 ../src/DMThreadsPage.vala:243
 msgid "Direct Messages"
 msgstr "Mensajes directos"
 
-#: ../src/list/DMThreadEntry.vala:106
+#: ../src/list/DMThreadEntry.vala:77
 #, c-format
 msgid "(%d unread)"
 msgid_plural "(%d unread)"
@@ -196,11 +157,11 @@ msgstr[1] "(%d sin leer)"
 msgid "Lists"
 msgstr "Listas"
 
-#: ../src/ProfilePage.vala:280
+#: ../src/ProfilePage.vala:290
 msgid "Protected profile"
 msgstr "Perfil protegido"
 
-#: ../src/ProfilePage.vala:517
+#: ../src/ProfilePage.vala:540
 #, c-format
 msgid "Tweet to @%s"
 msgstr "Tweet a @%s"
@@ -209,43 +170,47 @@ msgstr "Tweet a @%s"
 msgid "Could not show tweet"
 msgstr "No se pudo mostrar el tweet"
 
-#: ../src/TweetInfoPage.vala:446
+#: ../src/TweetInfoPage.vala:455
 msgid "Retweets"
 msgstr "Retweets"
 
-#: ../src/TweetInfoPage.vala:447 ../src/FavoritesTimeline.vala:93
-#: ../src/FavoritesTimeline.vala:97
+#: ../src/TweetInfoPage.vala:456 ../src/FavoritesTimeline.vala:85
+#: ../src/FavoritesTimeline.vala:89
 msgid "Favorites"
 msgstr "Favoritos"
 
-#: ../src/TweetInfoPage.vala:455
+#: ../src/TweetInfoPage.vala:464
+msgid "Open in Browser"
+msgstr "Abrir en un navegador"
+
+#: ../src/TweetInfoPage.vala:464
 msgid "Source"
 msgstr "Fuente"
 
-#: ../src/TweetInfoPage.vala:466
+#: ../src/TweetInfoPage.vala:504
 msgid "Tweet Details"
 msgstr "Detalles del tweet"
 
-#: ../src/util/Utils.vala:156
+#: ../src/util/Utils.vala:164
 msgid "Now"
 msgstr "Ahora"
 
-#: ../src/util/Utils.vala:158
+#: ../src/util/Utils.vala:166
 #, c-format
 msgid "%dm"
 msgstr "%dm"
 
-#: ../src/util/Utils.vala:162
+#: ../src/util/Utils.vala:170
 #, c-format
 msgid "%dh"
 msgstr "%dh"
 
-#: ../src/SearchPage.vala:298 ../src/SearchPage.vala:307
+#: ../src/SearchPage.vala:307 ../src/SearchPage.vala:316
 #: ../ui/search-page.ui.h:1
 msgid "Search"
 msgstr "Buscar"
 
-#: ../src/Corebird.vala:149
+#: ../src/Corebird.vala:177
 msgid "Open Account"
 msgstr "Abrir una cuenta"
 
@@ -254,23 +219,23 @@ msgstr "Abrir una cuenta"
 msgid "New Mention from @%s"
 msgstr "Nueva Mención de @%s"
 
-#: ../src/MentionsTimeline.vala:135 ../src/MentionsTimeline.vala:140
+#: ../src/MentionsTimeline.vala:130 ../src/MentionsTimeline.vala:134
 msgid "Mentions"
 msgstr "Menciones"
 
-#: ../src/DMPage.vala:314
+#: ../src/DMPage.vala:324
 msgid "Direct Conversation"
 msgstr "Conversación directa"
 
-#: ../src/ListStatusesPage.vala:376
+#: ../src/ListStatusesPage.vala:359
 msgid "List"
 msgstr "Lista"
 
-#: ../src/widgets/AvatarBannerWidget.vala:159
+#: ../src/widgets/AvatarBannerWidget.vala:160
 msgid "Select banner"
 msgstr "Seleccione el banner"
 
-#: ../src/widgets/AvatarBannerWidget.vala:174
+#: ../src/widgets/AvatarBannerWidget.vala:175
 msgid "Select avatar"
 msgstr "Seleccione el avatar"
 
@@ -296,13 +261,11 @@ msgid_plural "Minimum height: %d pixels"
 msgstr[0] "Alto mínimo: %d pixel"
 msgstr[1] "Alto mínimo: %d pixels"
 
-#: ../src/window/SettingsDialog.vala:81
+#: ../src/window/SettingsDialog.vala:84
 msgid ""
 "Hey, check out this new #Corebird version! \\ (•◡•) / #cool "
 "#newisalwaysbetter"
-msgstr ""
-"Hey, echa un vistazo a esta nueva versión #Corebird! \\ (• ◡ •) / #cool "
-"#newisalwaysbetter"
+msgstr "Hey, echa un vistazo a esta nueva versión #Corebird! \\ (• ◡ •) / #cool #newisalwaysbetter"
 
 #: ../ui/settings-dialog.ui.h:1 ../ui/menu.ui.h:1
 msgid "Settings"
@@ -384,28 +347,36 @@ msgstr "Eliminar trailing hashtags"
 msgid "Remove media links"
 msgstr "Eliminar enlaces de imagenes, videos y audios"
 
-#: ../ui/settings-dialog.ui.h:21 ../ui/search-page.ui.h:2
+#: ../ui/settings-dialog.ui.h:21
+msgid "Hide inappropriate content"
+msgstr ""
+
+#: ../ui/settings-dialog.ui.h:22 ../ui/search-page.ui.h:2
 #: ../ui/profile-page.ui.h:6
 msgid "Tweets"
 msgstr "trailing hashtags"
 
-#: ../ui/settings-dialog.ui.h:22
+#: ../ui/settings-dialog.ui.h:23
 msgid "No snippets configured."
 msgstr "No hay fragmentos configurados."
 
-#: ../ui/settings-dialog.ui.h:23
+#: ../ui/settings-dialog.ui.h:24
 msgid "You can activate snippets by writing the keyword and pressing TAB."
 msgstr "Puede activar fragmentos escribiendo la palabra clave y presionar TAB."
 
-#: ../ui/settings-dialog.ui.h:24
+#: ../ui/settings-dialog.ui.h:25
 msgid "Snippets"
 msgstr "Fragmento"
 
 #: ../ui/menu.ui.h:2
+msgid "Shortcuts"
+msgstr ""
+
+#: ../ui/menu.ui.h:3
 msgid "About"
 msgstr "Acerca de"
 
-#: ../ui/menu.ui.h:3
+#: ../ui/menu.ui.h:4
 msgid "Quit"
 msgstr "Salir"
 
@@ -451,6 +422,14 @@ msgstr "Favorito"
 msgid "Reply"
 msgstr "Responder"
 
+#: ../ui/tweet-list-entry.ui.h:5
+msgid "This tweet contains images marked as inappropariate"
+msgstr ""
+
+#: ../ui/tweet-list-entry.ui.h:6
+msgid "Show anyway"
+msgstr ""
+
 #: ../ui/user-list-entry.ui.h:1
 msgid "Show settings of this account"
 msgstr "Mostrar los ajustes de esta cuenta"
@@ -478,6 +457,10 @@ msgstr "usuarios"
 #: ../ui/compose-window.ui.h:1
 msgid "Compose Tweet"
 msgstr "Hacer un Tweet"
+
+#: ../ui/compose-window.ui.h:4
+msgid "Add Image"
+msgstr ""
 
 #: ../ui/profile-page.ui.h:1
 msgid "Write Direct Message"
@@ -647,22 +630,92 @@ msgstr "Palabra clave"
 msgid "Replacement"
 msgstr "Reemplazo"
 
+#: ../ui/shortcuts-window.ui.h:1
+msgctxt "shortcuts window"
+msgid "General"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:2
+msgctxt "shortcuts window"
+msgid "Compose Tweet"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:3
+msgctxt "shortcuts window"
+msgid "Show Account settings"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:4
+msgctxt "shortcuts window"
+msgid "Show Accounts Popover"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:5
+msgctxt "shortcuts window"
+msgid "Show Application Settings"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:6
+msgctxt "shortcuts window"
+msgid "Toggle Topbar"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:7
+msgctxt "shortcuts window"
+msgid "Go Back"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:8
+msgctxt "shortcuts window"
+msgid "Go Forward"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:9
+msgctxt "shortcuts window"
+msgid "Go to nth page"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:10
+msgctxt "shortcuts window"
+msgid "Tweets"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:11
+msgctxt "shortcuts window"
+msgid "Retweet"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:12
+msgctxt "shortcuts window"
+msgid "Favorite"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:13
+msgctxt "shortcuts window"
+msgid "Reply"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:14
+msgctxt "shortcuts window"
+msgid "Show Details"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:15
+msgctxt "shortcuts window"
+msgid "Delete"
+msgstr ""
+
 #: ../data/org.baedert.corebird.appdata.xml.in.h:1
 msgid ""
 "Corebird is a native GTK+ twitter client that provides vital features such "
 "as Direct Messages (DMs), tweet notifications, conversation views."
-msgstr ""
-"Corebird es un cliente nativo GTK+ de Twitter que proporciona funciones "
-"vitales tales como mensajes directos (DM), notificaciones, vistas de "
-"conversación."
+msgstr "Corebird es un cliente nativo GTK+ de Twitter que proporciona funciones vitales tales como mensajes directos (DM), notificaciones, vistas de conversación."
 
 #: ../data/org.baedert.corebird.appdata.xml.in.h:2
 msgid ""
-"Additional features include local viewing of videos, multiple inline images, "
-"Lists, Filters, multiple accounts, etc."
-msgstr ""
-"Las características adicionales incluyen la visión local de los vídeos, "
-"múltiples imágenes en línea, listas, filtros, múltiples cuentas, etc."
+"Additional features include local viewing of videos, multiple inline images,"
+" Lists, Filters, multiple accounts, etc."
+msgstr "Las características adicionales incluyen la visión local de los vídeos, múltiples imágenes en línea, listas, filtros, múltiples cuentas, etc."
 
 #: ../data/org.baedert.corebird.appdata.xml.in.h:3
 msgid "Generic timeline view when using Corebird"
@@ -676,9 +729,7 @@ msgstr "Perfil típico de Twitter."
 msgid ""
 "Account settings like Name, Website, Description and Avatar can be "
 "configured."
-msgstr ""
-"Los ajustes de la cuenta tales como Nombre, Descripción y avatar son "
-"configurables "
+msgstr "Los ajustes de la cuenta tales como Nombre, Descripción y avatar son configurables "
 
 #: ../data/org.baedert.corebird.desktop.in.in.h:1
 msgid "Twitter Client"

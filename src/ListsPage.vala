@@ -20,15 +20,12 @@ class ListsPage : IPage, ScrollWidget, IMessageReceiver {
   public static const int MODE_DELETE = 1;
 
   private BadgeRadioButton radio_button;
-  private unowned MainWindow _main_window;
   public int unread_count                   { get; set; }
-  public unowned MainWindow main_window {
-    get {
-      return _main_window;
-    }
+  private unowned MainWindow main_window;
+  public unowned MainWindow window {
     set {
+      main_window = value;
       user_lists_widget.main_window = value;
-      this._main_window = value;
     }
   }
   public unowned Account account            { get; set; }
@@ -124,7 +121,7 @@ class ListsPage : IPage, ScrollWidget, IMessageReceiver {
   }
 
 
-  public string? get_title () {
+  public string get_title () {
     return _("Lists");
   }
 

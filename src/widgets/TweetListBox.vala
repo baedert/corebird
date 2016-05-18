@@ -158,6 +158,13 @@ public class TweetListBox : Gtk.ListBox {
   }
 
   public Gtk.Widget? get_first_visible_row () {
-    return this.get_row_at_y (1);
+    int i = 0;
+    Gtk.Widget? row = this.get_row_at_index (0);
+    while (row != null && !row.visible) {
+      i ++;
+      row = this.get_row_at_index (i);
+    }
+
+    return row;
   }
 }

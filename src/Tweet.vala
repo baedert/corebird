@@ -227,22 +227,37 @@ void parse_entities (MiniTweet mt, Json.Object status)
 
         int variant_width = 0;
         int variant_height = 0;
-        /* We pick the mp4 variant with a size closest to the
-           thumbnail size, but not bigger */
+
+        bool hls_found = false;
+        /* See if we can find a HLS stream and prefer that */
         for (uint i = 0; i < variants.get_length (); i ++) {
           var cur_variant = variants.get_element (i).get_object ();
-          if (cur_variant.get_string_member ("content_type") == "video/mp4") {
-            if (thumb_width == -1 && thumb_height == -1)
-              break;
+          if (cur_variant.get_string_member ("content_type") == "application/x-mpegURL") {
+            hls_found = true;
+            variant = cur_variant;
+          }
+        }
 
-            int w, h;
-            Utils.get_size_from_url (cur_variant.get_string_member ("url"),
-                                     out w, out h);
-            if (w > variant_width && w <= thumb_width &&
-                h > variant_height && h <= thumb_height) {
-              variant_width = w;
-              variant_height = h;
-              variant = cur_variant;
+
+        if (!hls_found) {
+          /* We pick the mp4 variant with a size closest to the
+             thumbnail size, but not bigger */
+          for (uint i = 0; i < variants.get_length (); i ++) {
+            var cur_variant = variants.get_element (i).get_object ();
+            if (cur_variant.get_string_member ("content_type") == "video/mp4") {
+              if (thumb_width == -1 && thumb_height == -1)
+                break;
+
+
+              int w, h;
+              Utils.get_size_from_url (cur_variant.get_string_member ("url"),
+                                       out w, out h);
+              if (w > variant_width && w <= thumb_width &&
+                  h > variant_height && h <= thumb_height) {
+                variant_width = w;
+                variant_height = h;
+                variant = cur_variant;
+              }
             }
           }
         }
@@ -357,7 +372,7 @@ public class Tweet : GLib.Object {
     set {
       _seen = value;
       if (value && notification_id != null) {
-        NotificationManager.withdraw (this.notification_id);
+        GLib.Application.get_default ().withdraw_notification (notification_id);
         this.notification_id = null;
       }
     }
@@ -406,7 +421,7 @@ public class Tweet : GLib.Object {
 
     string[] e = new string[entities.length];
     int n_mentions = 0;
-    foreach (var entity in entities) {
+    foreach (unowned TextEntity entity in entities) {
       if (entity.display_text[0] == '@') {
         e[n_mentions] = entity.display_text;
         n_mentions ++;

@@ -1,39 +1,36 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # Andrew Makarov, 2015
+# Dmitry Kireev <dinimito@mail.ru>, 2015
 # Ivlev Denis <ivlevdenis.ru@gmail.com>, 2015
+# Max Koloskov <mirrherow@gmail.com>, 2015
 # NetFoHack <vanek316@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-30 16:02+0200\n"
-"PO-Revision-Date: 2015-09-12 08:49+0000\n"
+"POT-Creation-Date: 2016-02-25 13:13+0100\n"
+"PO-Revision-Date: 2016-02-21 09:14+0000\n"
 "Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
-"Language-Team: Russian (http://www.transifex.com/corebird/corebird/language/"
-"ru/)\n"
-"Language: ru\n"
+"Language-Team: Russian (http://www.transifex.com/corebird/corebird/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
-"%100>=11 && n%100<=14)? 2 : 3);\n"
+"Language: ru\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: ../src/window/ComposeTweetWindow.vala:119
+#: ../src/window/ComposeTweetWindow.vala:120
 msgid "Quote tweet"
-msgstr ""
+msgstr "Цитировать tweet"
 
-#: ../src/window/ComposeTweetWindow.vala:352
-msgid "Select Image"
-msgstr "Выберите изображение"
+#: ../src/window/UserListDialog.vala:40
+msgid "Add to or Remove User From List"
+msgstr "Добавить или удалить пользователя из списка"
 
-#: ../src/window/ComposeTweetWindow.vala:353
-#: ../src/window/UserListDialog.vala:47
-#: ../src/widgets/MultiMediaWidget.vala:152 ../ui/compose-window.ui.h:2
+#: ../src/window/UserListDialog.vala:47 ../ui/compose-window.ui.h:2
 #: ../ui/list-list-entry.ui.h:1 ../ui/list-statuses-page.ui.h:8
 #: ../ui/filter-list-entry.ui.h:1 ../ui/modify-filter-dialog.ui.h:2
 #: ../ui/user-filter-entry.ui.h:1 ../ui/account-dialog.ui.h:2
@@ -41,25 +38,15 @@ msgstr "Выберите изображение"
 msgid "Cancel"
 msgstr "Отмена"
 
-#: ../src/window/ComposeTweetWindow.vala:354
-msgid "Choose"
-msgstr "Выбрать"
-
-#: ../src/window/UserListDialog.vala:40
-msgid "Add to or Remove User From List"
-msgstr "Добавить или удалить пользователя из списка"
-
-#: ../src/window/UserListDialog.vala:48
-#: ../src/widgets/MultiMediaWidget.vala:153
-#: ../src/window/ImageCropDialog.vala:98 ../ui/list-statuses-page.ui.h:6
-#: ../ui/modify-filter-dialog.ui.h:3 ../ui/account-dialog.ui.h:3
-#: ../ui/modify-snippet-dialog.ui.h:3
+#: ../src/window/UserListDialog.vala:48 ../src/window/ImageCropDialog.vala:98
+#: ../ui/list-statuses-page.ui.h:6 ../ui/modify-filter-dialog.ui.h:3
+#: ../ui/account-dialog.ui.h:3 ../ui/modify-snippet-dialog.ui.h:3
 msgid "Save"
 msgstr "Сохранить"
 
 #: ../src/window/UserListDialog.vala:68
 msgid "You have no lists."
-msgstr "У тебя нет списков"
+msgstr "У вас нет списков."
 
 #: ../src/window/ModifyFilterDialog.vala:45
 msgid "Modify Filter"
@@ -85,21 +72,19 @@ msgstr "Нет записей"
 msgid "Retry"
 msgstr "Повтор"
 
-#: ../src/widgets/AccountCreateWidget.vala:39
+#: ../src/widgets/AccountCreateWidget.vala:38
 msgid "Don't have an account yet?"
 msgstr "Ещё не зарегистрирован?"
 
-#: ../src/widgets/AccountCreateWidget.vala:39
+#: ../src/widgets/AccountCreateWidget.vala:38
 msgid "Create one"
 msgstr "Создать"
 
-#: ../src/widgets/AccountCreateWidget.vala:54
+#: ../src/widgets/AccountCreateWidget.vala:53
 msgid ""
-"Unauthorized. Most of the time, this means that there's something wrong with "
-"the Twitter servers and you should try again later"
-msgstr ""
-"Не авторизован. Возможно серверы Твиттер поломались, попробуй немного "
-"позднее."
+"Unauthorized. Most of the time, this means that there's something wrong with"
+" the Twitter servers and you should try again later"
+msgstr "Не авторизован. Возможно серверы Твиттер поломались, попробуй немного позднее."
 
 #: ../src/widgets/AccountCreateWidget.vala:65
 #, c-format
@@ -107,11 +92,11 @@ msgid "Could not open %s"
 msgstr "Не могу открыть %s"
 
 #. We just assume that it was the wrong code
-#: ../src/widgets/AccountCreateWidget.vala:89
+#: ../src/widgets/AccountCreateWidget.vala:87
 msgid "Wrong PIN"
-msgstr "Не верный PIN"
+msgstr "Неверный PIN"
 
-#: ../src/widgets/AccountCreateWidget.vala:116
+#: ../src/widgets/AccountCreateWidget.vala:114
 msgid "Account already in use"
 msgstr "Аккаунт уже используется"
 
@@ -119,49 +104,25 @@ msgstr "Аккаунт уже используется"
 msgid "Copy link"
 msgstr "Скопировать ссылку"
 
-#: ../src/widgets/MultiMediaWidget.vala:34
-msgid "Copy URL"
-msgstr "Копировать URL"
-
-#: ../src/widgets/MultiMediaWidget.vala:35
-msgid "Save Original"
-msgstr "Сохранить оригинал"
-
-#: ../src/widgets/MultiMediaWidget.vala:74 ../src/TweetInfoPage.vala:455
-msgid "Open in Browser"
-msgstr "Открыть в браузере"
-
-#: ../src/widgets/MultiMediaWidget.vala:150
-msgid "Save image"
-msgstr "Сохранить изображение"
-
-#: ../src/widgets/AddImageButton.vala:35 ../src/widgets/AddImageButton.vala:175
-msgid "Click to remove image"
-msgstr "Удалить изображение"
-
-#: ../src/widgets/AddImageButton.vala:41
-msgid "Click to add image"
-msgstr "Добавить изображение"
-
-#: ../src/widgets/FollowButton.vala:43
+#: ../src/widgets/FollowButton.vala:45
 msgid "Follow"
 msgstr "Читать"
 
-#: ../src/widgets/FollowButton.vala:44
+#: ../src/widgets/FollowButton.vala:46
 msgid "Unfollow"
 msgstr "Не читать"
 
-#: ../src/HomeTimeline.vala:110
+#: ../src/HomeTimeline.vala:109
 #, c-format
 msgid "%s retweeted %s"
 msgstr "%s ретвитнут %s"
 
-#: ../src/HomeTimeline.vala:113
+#: ../src/HomeTimeline.vala:112
 #, c-format
 msgid "%s tweeted"
 msgstr "%s твитнут"
 
-#: ../src/HomeTimeline.vala:120
+#: ../src/HomeTimeline.vala:118
 #, c-format
 msgid "%d new Tweet!"
 msgid_plural "%d new Tweets!"
@@ -170,11 +131,11 @@ msgstr[1] "%d новых твита!"
 msgstr[2] "%d новых твитов!"
 msgstr[3] "%d новых твитов!"
 
-#: ../src/HomeTimeline.vala:171
+#: ../src/HomeTimeline.vala:169
 msgid "Home"
 msgstr "Домой"
 
-#: ../src/DMThreadsPage.vala:369
+#: ../src/DMThreadsPage.vala:205
 #, c-format
 msgid "%d new Message from %s"
 msgid_plural "%d new Messages from %s"
@@ -183,16 +144,16 @@ msgstr[1] "%d новых сообщения от %s"
 msgstr[2] "%d новых сообщений от %s"
 msgstr[3] "%d новых сообщений от %s"
 
-#: ../src/DMThreadsPage.vala:375
+#: ../src/DMThreadsPage.vala:211
 #, c-format
 msgid "New direct message from %s"
 msgstr "Новое сообщение от %s"
 
-#: ../src/DMThreadsPage.vala:390 ../src/DMThreadsPage.vala:404
+#: ../src/DMThreadsPage.vala:229 ../src/DMThreadsPage.vala:243
 msgid "Direct Messages"
 msgstr "Сообщения"
 
-#: ../src/list/DMThreadEntry.vala:106
+#: ../src/list/DMThreadEntry.vala:77
 #, c-format
 msgid "(%d unread)"
 msgid_plural "(%d unread)"
@@ -206,56 +167,60 @@ msgstr[3] "(%d не прочитано)"
 msgid "Lists"
 msgstr "Списки"
 
-#: ../src/ProfilePage.vala:280
+#: ../src/ProfilePage.vala:290
 msgid "Protected profile"
 msgstr "Защищённый профиль"
 
-#: ../src/ProfilePage.vala:517
+#: ../src/ProfilePage.vala:540
 #, c-format
 msgid "Tweet to @%s"
 msgstr "Твитнуть @%s "
 
 #: ../src/TweetInfoPage.vala:279
 msgid "Could not show tweet"
-msgstr ""
+msgstr "Не удалось показать Твит"
 
-#: ../src/TweetInfoPage.vala:446
+#: ../src/TweetInfoPage.vala:455
 msgid "Retweets"
 msgstr "Ретвиты"
 
-#: ../src/TweetInfoPage.vala:447 ../src/FavoritesTimeline.vala:93
-#: ../src/FavoritesTimeline.vala:97
+#: ../src/TweetInfoPage.vala:456 ../src/FavoritesTimeline.vala:85
+#: ../src/FavoritesTimeline.vala:89
 msgid "Favorites"
 msgstr "Избранные"
 
-#: ../src/TweetInfoPage.vala:455
+#: ../src/TweetInfoPage.vala:464
+msgid "Open in Browser"
+msgstr "Открыть в браузере"
+
+#: ../src/TweetInfoPage.vala:464
 msgid "Source"
 msgstr "Источник"
 
-#: ../src/TweetInfoPage.vala:466
+#: ../src/TweetInfoPage.vala:504
 msgid "Tweet Details"
-msgstr ""
+msgstr "Подробности твита"
 
-#: ../src/util/Utils.vala:156
+#: ../src/util/Utils.vala:164
 msgid "Now"
 msgstr "Сейчас"
 
-#: ../src/util/Utils.vala:158
+#: ../src/util/Utils.vala:166
 #, c-format
 msgid "%dm"
 msgstr "%dм"
 
-#: ../src/util/Utils.vala:162
+#: ../src/util/Utils.vala:170
 #, c-format
 msgid "%dh"
 msgstr "%dч"
 
-#: ../src/SearchPage.vala:298 ../src/SearchPage.vala:307
+#: ../src/SearchPage.vala:307 ../src/SearchPage.vala:316
 #: ../ui/search-page.ui.h:1
 msgid "Search"
 msgstr "Поиск"
 
-#: ../src/Corebird.vala:149
+#: ../src/Corebird.vala:177
 msgid "Open Account"
 msgstr "Открытый аккаунт"
 
@@ -264,23 +229,23 @@ msgstr "Открытый аккаунт"
 msgid "New Mention from @%s"
 msgstr "Новое упоминание от @%s"
 
-#: ../src/MentionsTimeline.vala:135 ../src/MentionsTimeline.vala:140
+#: ../src/MentionsTimeline.vala:130 ../src/MentionsTimeline.vala:134
 msgid "Mentions"
 msgstr "Упоминания"
 
-#: ../src/DMPage.vala:314
+#: ../src/DMPage.vala:324
 msgid "Direct Conversation"
 msgstr "Личная беседа"
 
-#: ../src/ListStatusesPage.vala:376
+#: ../src/ListStatusesPage.vala:359
 msgid "List"
 msgstr "Список"
 
-#: ../src/widgets/AvatarBannerWidget.vala:159
+#: ../src/widgets/AvatarBannerWidget.vala:160
 msgid "Select banner"
 msgstr "Выбрать банер"
 
-#: ../src/widgets/AvatarBannerWidget.vala:174
+#: ../src/widgets/AvatarBannerWidget.vala:175
 msgid "Select avatar"
 msgstr "Выбрать аватар"
 
@@ -310,12 +275,11 @@ msgstr[1] "Минимальная высота: %d пикселя"
 msgstr[2] "Минимальная высота: %d пикселей"
 msgstr[3] "Минимальная высота: %d пикселей"
 
-#: ../src/window/SettingsDialog.vala:81
+#: ../src/window/SettingsDialog.vala:84
 msgid ""
 "Hey, check out this new #Corebird version! \\ (•◡•) / #cool "
 "#newisalwaysbetter"
-msgstr ""
-"Привет, появилась новая версия #Corebird! \\ (•◡•) / #cool #newisalwaysbetter"
+msgstr "Привет, появилась новая версия #Corebird! \\ (•◡•) / #cool #newisalwaysbetter"
 
 #: ../ui/settings-dialog.ui.h:1 ../ui/menu.ui.h:1
 msgid "Settings"
@@ -363,23 +327,23 @@ msgstr "Никогда"
 
 #: ../ui/settings-dialog.ui.h:12
 msgid "Every"
-msgstr ""
+msgstr "Каждый"
 
 #: ../ui/settings-dialog.ui.h:13
 msgid "Stack 5"
-msgstr ""
+msgstr "Стек 5"
 
 #: ../ui/settings-dialog.ui.h:14
 msgid "Stack 10"
-msgstr ""
+msgstr "Стек 10"
 
 #: ../ui/settings-dialog.ui.h:15
 msgid "Stack 25"
-msgstr ""
+msgstr "Стек 25"
 
 #: ../ui/settings-dialog.ui.h:16
 msgid "Stack 50"
-msgstr ""
+msgstr "Стек 50"
 
 #: ../ui/settings-dialog.ui.h:17
 msgid "Notifications"
@@ -397,28 +361,36 @@ msgstr "Удалить завершающие хэштеги"
 msgid "Remove media links"
 msgstr "Удалить ссылки на медиа"
 
-#: ../ui/settings-dialog.ui.h:21 ../ui/search-page.ui.h:2
+#: ../ui/settings-dialog.ui.h:21
+msgid "Hide inappropriate content"
+msgstr ""
+
+#: ../ui/settings-dialog.ui.h:22 ../ui/search-page.ui.h:2
 #: ../ui/profile-page.ui.h:6
 msgid "Tweets"
 msgstr "Твиты"
 
-#: ../ui/settings-dialog.ui.h:22
+#: ../ui/settings-dialog.ui.h:23
 msgid "No snippets configured."
 msgstr "Настроенных сниппетов нет."
 
-#: ../ui/settings-dialog.ui.h:23
-msgid "You can activate snippets by writing the keyword and pressing TAB."
-msgstr ""
-
 #: ../ui/settings-dialog.ui.h:24
+msgid "You can activate snippets by writing the keyword and pressing TAB."
+msgstr "Вы можете отметить и переместить слово в тексте нажав клавишуTAB"
+
+#: ../ui/settings-dialog.ui.h:25
 msgid "Snippets"
 msgstr "Сниппеты"
 
 #: ../ui/menu.ui.h:2
+msgid "Shortcuts"
+msgstr ""
+
+#: ../ui/menu.ui.h:3
 msgid "About"
 msgstr "О программе"
 
-#: ../ui/menu.ui.h:3
+#: ../ui/menu.ui.h:4
 msgid "Quit"
 msgstr "Выход"
 
@@ -464,6 +436,14 @@ msgstr "В избранные"
 msgid "Reply"
 msgstr "Ответить"
 
+#: ../ui/tweet-list-entry.ui.h:5
+msgid "This tweet contains images marked as inappropariate"
+msgstr ""
+
+#: ../ui/tweet-list-entry.ui.h:6
+msgid "Show anyway"
+msgstr ""
+
 #: ../ui/user-list-entry.ui.h:1
 msgid "Show settings of this account"
 msgstr "Показать настройки аккаунта"
@@ -491,6 +471,10 @@ msgstr "Пользователи"
 #: ../ui/compose-window.ui.h:1
 msgid "Compose Tweet"
 msgstr "Написать твит"
+
+#: ../ui/compose-window.ui.h:4
+msgid "Add Image"
+msgstr ""
 
 #: ../ui/profile-page.ui.h:1
 msgid "Write Direct Message"
@@ -582,7 +566,7 @@ msgstr "С:"
 
 #: ../ui/start-conversation-entry.ui.h:3
 msgid "Go"
-msgstr ""
+msgstr "Вперед"
 
 #: ../ui/list-statuses-page.ui.h:1
 msgid "Subscribers:"
@@ -606,7 +590,7 @@ msgstr "Редактировать"
 
 #: ../ui/list-statuses-page.ui.h:9
 msgid "Mode:"
-msgstr ""
+msgstr "Режим:"
 
 #: ../ui/list-statuses-page.ui.h:10
 msgid "Private"
@@ -660,31 +644,106 @@ msgstr "Ключевое слово"
 msgid "Replacement"
 msgstr "Замена"
 
+#: ../ui/shortcuts-window.ui.h:1
+msgctxt "shortcuts window"
+msgid "General"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:2
+msgctxt "shortcuts window"
+msgid "Compose Tweet"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:3
+msgctxt "shortcuts window"
+msgid "Show Account settings"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:4
+msgctxt "shortcuts window"
+msgid "Show Accounts Popover"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:5
+msgctxt "shortcuts window"
+msgid "Show Application Settings"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:6
+msgctxt "shortcuts window"
+msgid "Toggle Topbar"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:7
+msgctxt "shortcuts window"
+msgid "Go Back"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:8
+msgctxt "shortcuts window"
+msgid "Go Forward"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:9
+msgctxt "shortcuts window"
+msgid "Go to nth page"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:10
+msgctxt "shortcuts window"
+msgid "Tweets"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:11
+msgctxt "shortcuts window"
+msgid "Retweet"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:12
+msgctxt "shortcuts window"
+msgid "Favorite"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:13
+msgctxt "shortcuts window"
+msgid "Reply"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:14
+msgctxt "shortcuts window"
+msgid "Show Details"
+msgstr ""
+
+#: ../ui/shortcuts-window.ui.h:15
+msgctxt "shortcuts window"
+msgid "Delete"
+msgstr ""
+
 #: ../data/org.baedert.corebird.appdata.xml.in.h:1
 msgid ""
 "Corebird is a native GTK+ twitter client that provides vital features such "
 "as Direct Messages (DMs), tweet notifications, conversation views."
-msgstr ""
+msgstr "Corebird является родным GTK + клиентом Twitter, который поддерживает такие функции,  как прямые сообщения (DMS), уведомления и беседы."
 
 #: ../data/org.baedert.corebird.appdata.xml.in.h:2
 msgid ""
-"Additional features include local viewing of videos, multiple inline images, "
-"Lists, Filters, multiple accounts, etc."
-msgstr ""
+"Additional features include local viewing of videos, multiple inline images,"
+" Lists, Filters, multiple accounts, etc."
+msgstr "Дополнительные функции включают в себя:  просмотр видео и изображений в клиенте, списки, фильтры, несколько учетных записей и т.д."
 
 #: ../data/org.baedert.corebird.appdata.xml.in.h:3
 msgid "Generic timeline view when using Corebird"
-msgstr ""
+msgstr "Общий график времени использования Corebird"
 
 #: ../data/org.baedert.corebird.appdata.xml.in.h:4
 msgid "Typical Twitter profile."
-msgstr ""
+msgstr "Типичный профиль Twitterа."
 
 #: ../data/org.baedert.corebird.appdata.xml.in.h:5
 msgid ""
 "Account settings like Name, Website, Description and Avatar can be "
 "configured."
-msgstr ""
+msgstr "Настройки аккаунта, такие как имя, сайт, описания и аватар можно изменить."
 
 #: ../data/org.baedert.corebird.desktop.in.in.h:1
 msgid "Twitter Client"
@@ -692,4 +751,4 @@ msgstr "Клиент Твиттер"
 
 #: ../data/org.baedert.corebird.desktop.in.in.h:2
 msgid "Use Twitter from within a normal desktop application"
-msgstr ""
+msgstr "Используйте Twitter в приложени для компьютера"

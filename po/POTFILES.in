@@ -23,8 +23,9 @@ src/ListStatusesPage.vala
 src/widgets/AvatarBannerWidget.vala
 src/window/ImageCropDialog.vala
 src/window/SettingsDialog.vala
+src/DefaultTimeline.vala
 [type: gettext/glade]ui/settings-dialog.ui
-[type: gettext/glade]ui/menu.ui
+[type: gettext/glade]ui/menus.ui
 [type: gettext/glade]ui/user-lists-widget.ui
 [type: gettext/glade]ui/about-dialog.ui
 [type: gettext/glade]ui/dm-page.ui

@@ -70,7 +70,7 @@
             <property name="halign">end</property>
             <property name="relief">none</property>
             <property name="margin_start">6</property>
-            <property name="margin_end">6</property>
+            <property name="margin_end">3</property>
             <property name="tooltip_text" translatable="yes">Show settings of this account</property>
             <signal name="clicked" handler="settings_button_clicked_cb" />
             <child>
@@ -96,7 +96,8 @@
             <property name="visible">true</property>
             <property name="relief">none</property>
             <property name="valign">center</property>
-            <property name="margin">6</property>
+            <property name="margin_end">3</property>
+            <property name="margin_start">3</property>
             <property name="tooltip_text" translatable="yes">Open in new window</property>
             <signal name="clicked" handler="new_window_button_clicked_cb" />
             <style>
@@ -117,6 +118,31 @@
           </packing>
         </child>
 
+        <child>
+          <object class="GtkButton" id="profile_button">
+            <property name="visible">true</property>
+            <property name="relief">none</property>
+            <property name="valign">center</property>
+            <property name="margin_start">3</property>
+            <property name="tooltip_text" translatable="yes">Go to profile</property>
+            <signal name="clicked" handler="profile_button_clicked_cb" />
+            <style>
+              <class name="image-button" />
+            </style>
+            <child>
+              <object class="GtkImage">
+                <property name="visible">true</property>
+                <property name="can_focus">false</property>
+                <property name="icon_name">corebird-profile-symbolic</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">4</property>
+            <property name="top_attach">0</property>
+            <property name="height">2</property>
+          </packing>
+        </child>
 
       </object>
     </child>

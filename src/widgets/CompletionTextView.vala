@@ -30,10 +30,16 @@ class CompletionTextView : Gtk.TextView {
     completion_window.set_screen (this.get_screen ());
 
     completion_list = new Gtk.ListBox ();
+    var placeholder_label = new Gtk.Label (_("No users found"));
+    placeholder_label.get_style_context ().add_class ("dim-label");
+    placeholder_label.show ();
+    completion_list.set_placeholder (placeholder_label);
 
     var scroller = new Gtk.ScrolledWindow (null, null);
     scroller.add (completion_list);
-    completion_window.add (scroller);
+    var frame = new Gtk.Frame (null);
+    frame.add (scroller);
+    completion_window.add (frame);
 
     this.focus_out_event.connect (completion_window_focus_out_cb);
 
@@ -69,6 +75,14 @@ class CompletionTextView : Gtk.TextView {
     this.buffer.notify["cursor-position"].connect (update_completion);
     this.buffer.changed.connect (buffer_changed_cb);
     this.key_press_event.connect (key_press_event_cb);
+
+    /* Set them here so they are consistent everywhere */
+    this.right_margin  = 6;
+    this.left_margin   = 6;
+
+    /* TODO: Remove this once the required gtk+ version is >= 3.18 */
+    if (Gtk.get_major_version () >= 3 && Gtk.get_minor_version () >= 18)
+      this.set ("top-margin", 6, "bottom-margin", 6, null);
   }
 
   public void set_account (Account account) {
@@ -183,8 +197,12 @@ class CompletionTextView : Gtk.TextView {
     this.get_window (Gtk.TextWindowType.WIDGET).get_origin (out x, out y);
     y += alloc.height;
 
-    completion_window.move (x, y);
-    completion_window.resize (alloc.width, 50);
+    /* +2 for the size and -1 for x since we account for the
+       frame size around the text view */
+    completion_window.set_attached_to (this);
+    completion_window.set_transient_for ((Gtk.Window) this.get_toplevel ());
+    completion_window.move (x - 1, y);
+    completion_window.resize (alloc.width + 2, 50);
     completion_list.foreach ((w) => { completion_list.remove (w);});
     completion_window.show_all ();
   }
@@ -267,6 +285,7 @@ class CompletionTextView : Gtk.TextView {
     end_iter.assign (cursor_iter);
     return this.buffer.get_text (test_iter, cursor_iter, false);
   }
+
   private void insert_completion (string compl) {
     this.buffer.freeze_notify ();
     Gtk.TextIter start_word_iter;
@@ -282,6 +301,4 @@ class CompletionTextView : Gtk.TextView {
     this.buffer.insert_text (ref start_word_iter, "@" + compl + " ", compl.length + 2);
     this.buffer.thaw_notify ();
   }
-
-
 }

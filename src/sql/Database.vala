@@ -18,11 +18,11 @@
 namespace Sql {
   public const int    COREBIRD_SQL_VERSION = 2;
   public const string COREBIRD_INIT_FILE = "/org/baedert/corebird/sql/init/Create.%d.sql";
-  public const int    ACCOUNTS_SQL_VERSION = 2;
+  public const int    ACCOUNTS_SQL_VERSION = 3;
   public const string ACCOUNTS_INIT_FILE = "/org/baedert/corebird/sql/accounts/Create.%d.sql";
 
-  public const int STOP     = -1;
-  public const int CONTINUE =  0;
+  private const int STOP     = -1;
+  private const int CONTINUE =  0;
 
 public class Database {
   private Sqlite.Database db;

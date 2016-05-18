@@ -20,7 +20,7 @@ class ComposeJob : GLib.Object {
   public string text;
   public Tweet quoted_tweet;
   public int64? reply_id = null;
-  private Gee.ArrayList<string> image_paths = new Gee.ArrayList<string> ();
+  private GLib.GenericArray<string> image_paths = new GLib.GenericArray<string> ();
   public signal void image_upload_started  (string path);
   public signal void image_upload_finished (string path, string? error_message = null);
 
@@ -67,7 +67,7 @@ class ComposeJob : GLib.Object {
 
 
   private async int64[] upload_images (GLib.Cancellable cancellable) {
-    assert (this.image_paths.size > 0);
+    assert (this.image_paths.length > 0);
 
     Rest.OAuthProxy proxy = new Rest.OAuthProxy (Settings.get_consumer_key (),
                                                  Settings.get_consumer_secret (),
@@ -76,14 +76,14 @@ class ComposeJob : GLib.Object {
     proxy.token = account.proxy.token;
     proxy.token_secret = account.proxy.token_secret;
 
-    int64[] ids = new int64[this.image_paths.size];
-    var collect_obj = new Collect (this.image_paths.size);
+    int64[] ids = new int64[this.image_paths.length];
+    var collect_obj = new Collect (this.image_paths.length);
     collect_obj.finished.connect (() => {
       debug ("Calling the callback...");
       upload_images.callback ();
     });
 
-    for (int i = 0; i < this.image_paths.size; i ++) {
+    for (int i = 0; i < this.image_paths.length; i ++) {
       string path = this.image_paths.get (i);
       this.image_upload_started (path);
       debug ("Starting upload of %s (%d)", path, i);
@@ -110,12 +110,11 @@ class ComposeJob : GLib.Object {
 
     yield;
 
-    debug ("returning ids...");
-    debug ("Before return: %s", ids[0].to_string ());
     return ids;
   }
 
-  private async void send_tweet (int64[]? media_ids) {
+  private async bool send_tweet (int64[]? media_ids, GLib.Cancellable? cancellable) {
+    bool success = true;
     var call = this.account.proxy.new_call ();
     call.set_method ("POST");
     call.set_function ("1.1/statuses/update.json");
@@ -141,21 +140,24 @@ class ComposeJob : GLib.Object {
       call.add_param ("media_ids", sb.str);
     }
 
-    call.invoke_async.begin (null, (obj, res) => {
+    call.invoke_async.begin (cancellable, (obj, res) => {
       try {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
         warning (e.message);
         Utils.show_error_object (call.get_payload (), e.message,
                                  GLib.Log.LINE, GLib.Log.FILE);
+        success = false;
       }
       send_tweet.callback ();
     });
     yield;
+
+    return success;
   }
 
 
-  public async void start (GLib.Cancellable cancellable) {
+  public async bool start (GLib.Cancellable cancellable) {
     /* composing a tweet consists of 2 phases:
        1) we need to upload each image separately and get its
           media ID form the payload.
@@ -164,14 +166,16 @@ class ComposeJob : GLib.Object {
      */
 
     int64[]? media_ids = null;
-    if (this.image_paths.size > 0) {
-      debug ("Uploading %d images first...", this.image_paths.size);
+    if (this.image_paths.length > 0) {
+      debug ("Uploading %d images first...", this.image_paths.length);
       media_ids = yield upload_images (cancellable);
       debug ("media_ids[0]: %s", media_ids[0].to_string ());
     }
 
-    if (cancellable.is_cancelled ()) return;
+    if (cancellable.is_cancelled ()) return false;
 
-    yield send_tweet (media_ids);
+    bool success = yield send_tweet (media_ids, cancellable);
+
+    return success;
   }
 }

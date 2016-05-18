@@ -9,7 +9,6 @@
     </widgets>
   </object>
 
-
   <template class="FilterListEntry" parent="GtkListBoxRow">
     <property name="visible">True</property>
     <property name="can_focus">true</property>
@@ -20,6 +19,7 @@
         <property name="visible">true</property>
         <property name="can_focus">false</property>
         <property name="reveal_child">true</property>
+
         <child>
           <object class="GtkStack" id="stack">
             <property name="visible">true</property>

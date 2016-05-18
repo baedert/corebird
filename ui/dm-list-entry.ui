@@ -40,9 +40,6 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="valign">baseline</property>
-            <style>
-              <class name="text-only-button"/>
-            </style>
           </object>
           <packing>
             <property name="left_attach">1</property>

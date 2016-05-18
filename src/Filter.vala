@@ -16,8 +16,8 @@
  */
 
 public class Filter : GLib.Object {
-  public string content   { get; set; }
-  public int id           { get; set; }
+  public string content;
+  public int id;
 
   private GLib.Regex? regex = null;
 

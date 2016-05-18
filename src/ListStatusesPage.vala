@@ -18,8 +18,13 @@
 [GtkTemplate (ui = "/org/baedert/corebird/ui/list-statuses-page.ui")]
 class ListStatusesPage : ScrollWidget, IPage {
   public int id                             { get; set; }
-  public unowned MainWindow main_window     { get; set; }
-  public unowned Account account            { get; set; }
+  private unowned MainWindow main_window;
+  public unowned MainWindow window {
+    set {
+      main_window = value;
+    }
+  }
+  public unowned Account account;
   private int64 list_id;
   private uint tweet_remove_timeout = 0;
   [GtkChild]
@@ -161,6 +166,9 @@ class ListStatusesPage : ScrollWidget, IPage {
     try {
       root = yield TweetUtils.load_threaded (call, null);
     } catch (GLib.Error e) {
+      if (e.message.down () == "not found") {
+        tweet_list.set_empty ();
+      }
       warning (e.message);
       return;
     }
@@ -172,7 +180,6 @@ class ListStatusesPage : ScrollWidget, IPage {
     }
     yield TweetUtils.work_array (root_array,
                                  tweet_list,
-                                 main_window,
                                  account);
   } // }}}
 
@@ -200,7 +207,6 @@ class ListStatusesPage : ScrollWidget, IPage {
     var root_array = root.get_array ();
     yield TweetUtils.work_array (root_array,
                                  tweet_list,
-                                 main_window,
                                  account);
     loading = false;
   } // }}}
@@ -249,7 +255,7 @@ class ListStatusesPage : ScrollWidget, IPage {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
         Utils.show_error_object (call.get_payload (), e.message,
-                                 GLib.Log.LINE, GLib.Log.FILE);
+                                 GLib.Log.LINE, GLib.Log.FILE, this.main_window);
       }
       edit_button.sensitive = true;
       delete_button.sensitive = true;
@@ -273,7 +279,7 @@ class ListStatusesPage : ScrollWidget, IPage {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
         Utils.show_error_object (call.get_payload (), e.message,
-                                 GLib.Log.LINE, GLib.Log.FILE);
+                                 GLib.Log.LINE, GLib.Log.FILE, this.main_window);
       }
     });
     // Go back to the ListsPage and tell it to remove this list
@@ -329,7 +335,6 @@ class ListStatusesPage : ScrollWidget, IPage {
     if (root_array.get_length () > 0) {
       yield TweetUtils.work_array (root_array,
                                    tweet_list,
-                                   main_window,
                                    account);
     }
   }
@@ -338,14 +343,14 @@ class ListStatusesPage : ScrollWidget, IPage {
     if (tweet_remove_timeout != 0)
       return;
 
-    if (tweet_list.model.get_n_items () > ITimeline.REST) {
+    if (tweet_list.model.get_n_items () > DefaultTimeline.REST) {
       tweet_remove_timeout = GLib.Timeout.add (500, () => {
         if (!scrolled_up) {
           tweet_remove_timeout = 0;
           return false;
         }
 
-        tweet_list.model.remove_last_n_visible (tweet_list.model.get_n_items () - ITimeline.REST);
+        tweet_list.model.remove_last_n_visible (tweet_list.model.get_n_items () - DefaultTimeline.REST);
         tweet_remove_timeout = 0;
         return GLib.Source.REMOVE;
       });
@@ -355,7 +360,7 @@ class ListStatusesPage : ScrollWidget, IPage {
     }
   }
 
-  public string? get_title () {
+  public string get_title () {
     return _("List");
   }
 

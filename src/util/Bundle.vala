@@ -30,7 +30,7 @@ public class Bundle : GLib.Object {
 
   public bool has_key (string key) {
     // O(n)... m(
-    foreach (var k in values.get_keys ())
+    foreach (unowned string k in values.get_keys ())
       if (k == key)
         return true;
 
@@ -106,7 +106,7 @@ public class Bundle : GLib.Object {
   public string to_string () {
     var sb = new StringBuilder ();
 
-    foreach (var key in values.get_keys ()) {
+    foreach (unowned string key in values.get_keys ()) {
       sb.append ("%s -- %s".printf (key.to_string (), values.get (key).strdup_contents ()));
     }
 
@@ -117,7 +117,7 @@ public class Bundle : GLib.Object {
     if (other == null)
       return false;
 
-    foreach (string key in this.values.get_keys ()) {
+    foreach (unowned string key in this.values.get_keys ()) {
       if (!other.has_key (key))
         return false;
 

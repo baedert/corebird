@@ -29,11 +29,13 @@ class AccountCreateWidget : Gtk.Box {
   private Gtk.Label info_label;
   private unowned Account acc;
   private unowned Corebird corebird;
+  private unowned MainWindow main_window;
   public signal void result_received (bool result, Account acc);
 
-  public AccountCreateWidget (Account acc, Corebird corebird) {
+  public AccountCreateWidget (Account acc, Corebird corebird, MainWindow main_window) {
     this.acc = acc;
     this.corebird = corebird;
+    this.main_window = main_window;
     info_label.label = "%s <a href=\"http://twitter.com/signup\">%s</a>"
                        .printf (_("Don't have an account yet?"), _("Create one"));
     pin_entry.buffer.deleted_text.connect (pin_changed_cb);
@@ -50,9 +52,9 @@ class AccountCreateWidget : Gtk.Box {
       debug ("Trying to open %s", uri);
     } catch (GLib.Error e) {
       if (e.message.down() == "unauthorized") {
-        Utils.show_error_dialog (_("Unauthorized. Most of the time, this means that there's something wrong with the Twitter servers and you should try again later"));
+        Utils.show_error_dialog (_("Unauthorized. Most of the time, this means that there's something wrong with the Twitter servers and you should try again later"), this.main_window);
       } else {
-        Utils.show_error_dialog (e.message);
+        Utils.show_error_dialog (e.message, this.main_window);
       }
       critical (e.message);
       return;
@@ -63,7 +65,7 @@ class AccountCreateWidget : Gtk.Box {
       GLib.AppInfo.launch_default_for_uri (uri, null);
     } catch (GLib.Error e) {
       this.show_error (_("Could not open %s").printf ("<a href=\"" + uri + "\">" + uri + "</a>"));
-      Utils.show_error_dialog (e.message);
+      Utils.show_error_dialog (e.message, this.main_window);
       critical ("Could not open %s", uri);
       critical (e.message);
     }
@@ -106,17 +108,16 @@ class AccountCreateWidget : Gtk.Box {
       var root = parser.get_root ().get_object ();
       string screen_name = root.get_string_member ("screen_name");
       debug ("Checking for %s", screen_name);
-      unowned GLib.SList<Account> current_accounts = Account.list_accounts ();
-      foreach (var a in current_accounts) {
-        if (a.screen_name == screen_name) {
-          result_received (false, a);
-          critical ("Account is already in use");
-          show_error (_("Account already in use"));
-          pin_entry.sensitive = true;
-          pin_entry.text = "";
-          request_pin_button.sensitive = true;
-          return;
-        }
+      Account? existing_account = Account.query_account (screen_name);
+      if (existing_account != null) {
+        result_received (false, existing_account);
+        critical ("Account is already in use");
+        show_error (_("Account already in use"));
+        pin_entry.sensitive = true;
+        pin_entry.text = "";
+        request_pin_button.sensitive = true;
+        return;
+
       }
 
       acc.query_user_info_by_screen_name.begin (screen_name, (obj, res) => {
@@ -129,7 +130,6 @@ class AccountCreateWidget : Gtk.Box {
               .val ("token_secret", acc.proxy.token_secret)
               .run ();
         acc.init_proxy (true, true);
-        // TODO: Insert account into app menu
         corebird.account_added (acc);
         result_received (true, acc);
       });

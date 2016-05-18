@@ -26,17 +26,15 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
   public int unread_count {
     get { return 0; }
   }
-  private unowned MainWindow _main_window;
-  public unowned MainWindow main_window {
-    get {
-      return _main_window;
-    }
+
+  private unowned MainWindow main_window;
+  public unowned MainWindow window {
     set {
-      this._main_window = value;
+      main_window = value;
       user_lists.main_window = value;
     }
   }
-  public unowned Account account { get; set; }
+  public unowned Account account;
   public int id { get; set; }
 
   [GtkChild]
@@ -81,7 +79,6 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
   private Gtk.Stack loading_stack;
   [GtkChild]
   private Gtk.RadioButton tweets_button;
-  private GLib.MenuModel more_menu;
   private int64 user_id;
   private new string name;
   private string screen_name;
@@ -157,8 +154,6 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     rt_action.activate.connect (retweet_action_activated);
     actions.add_action (rt_action);
     this.insert_action_group ("user", actions);
-
-    this.more_menu = more_button.menu_model;
   }
 
   private void set_user_id (int64 user_id) {
@@ -171,62 +166,28 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     /* We (maybe) re-enable this later when the friendship object has arrived */
     ((SimpleAction)actions.lookup_action ("toggle-retweets")).set_enabled (false);
 
-    load_banner (null);
+    set_banner (null);
     load_friendship.begin ();
-    bool data_in_db = false;
-    //Load cached data
-    Corebird.db.select ("profiles").cols ("id", "screen_name", "name", "description", "tweets",
-     "following", "followers", "avatar_name", "banner_url", "url", "location", "is_following")
-      .where_eqi ("id", user_id)
-    .run ((vals) => {
-      /* If we get inside this block, there is already some data in the
-        DB we can use. */
-      avatar_image.surface = Twitter.get ().get_cached_avatar (user_id);
-
-      var entities = new TextEntity[0];
-
-      set_data(vals[2], vals[1], vals[9], vals[10], vals[3],
-               int.parse (vals[4]), int.parse (vals[5]), int.parse (vals[6]),
-               vals[7], false, ref entities);
-      this.follow_button.following = bool.parse (vals[11]);
-      this.follow_button.sensitive = (this.user_id != this.account.id);
-      string banner_name = Utils.get_banner_name (user_id);
-
-      if (FileUtils.test(Dirs.cache("assets/banners/"+banner_name), FileTest.EXISTS)){
-        debug ("Banner exists, set it directly...");
-        load_banner (Dirs.cache ("assets/banners/" + banner_name));
-      } else {
-        // TODO: ???
-        // If the cached banner does somehow not exist, load it again.
-        debug("Banner %s does not exist, load it first...", banner_name);
-        load_banner (null);
-      }
-      data_in_db = true;
-      return false;
-    });
-
     /* Load the profile data now, then - if available - set the cached data */
-    load_profile_data.begin (user_id, !data_in_db);
+    load_profile_data.begin (user_id);
   }
 
 
   private async void load_friendship () {
-    Friendship? fr = yield UserUtils.load_friendship (account, this.user_id);
-    if (fr == null) {
-      return;
-    }
-    follows_you_label.visible = fr.followed_by;
-    set_user_blocked (fr.blocking);
-    set_retweets_disabled (fr.following && !fr.want_retweets);
+    uint fr = yield UserUtils.load_friendship (account, this.user_id);
 
-    ((SimpleAction)actions.lookup_action ("toggle-retweets")).set_enabled (fr.following);
+    follows_you_label.visible = (fr & FRIENDSHIP_FOLLOWED_BY) > 0;
+    set_user_blocked ((fr & FRIENDSHIP_BLOCKING) > 0);
+    set_retweets_disabled ((fr & FRIENDSHIP_FOLLOWING) > 0 &&
+                           (fr & FRIENDSHIP_WANT_RETWEETS) == 0);
+
+    ((SimpleAction)actions.lookup_action ("toggle-retweets")).set_enabled ((fr & FRIENDSHIP_FOLLOWING) > 0);
   }
 
-  private async void load_profile_data (int64 user_id, bool show_spinner) { //{{{
-    if (show_spinner) {
-      loading_stack.visible_child_name = "progress";
-      progress_spinner.start ();
-    }
+  private async void load_profile_data (int64 user_id) {
+    loading_stack.visible_child_name = "progress";
+    progress_spinner.start ();
+
     follow_button.sensitive = false;
     var call = account.proxy.new_call ();
     call.set_method ("GET");
@@ -248,7 +209,6 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     int64 id = root.get_int_member ("id");
 
     string avatar_url = root.get_string_member("profile_image_url");
-    string avatar_name = Utils.get_avatar_name(avatar_url);
     int scale = this.get_scale_factor ();
 
     if (scale == 1)
@@ -256,7 +216,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     else
       avatar_url = avatar_url.replace ("_normal", "_200x200");
 
-    // We don't use our AvatarCache here becase this (73×73) avatar is only
+    // We don't use our AvatarCache here because this (73×73) avatar is only
     // ever loaded here.
     TweetUtils.download_avatar.begin (avatar_url, 73 * scale, (obj, res) => {
       Cairo.Surface surface;
@@ -268,10 +228,8 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
         surface = Twitter.no_avatar;
       }
       avatar_image.surface = surface;
-      if (show_spinner) {
-        progress_spinner.stop ();
-        loading_stack.visible_child_name = "data";
-      }
+      progress_spinner.stop ();
+      loading_stack.visible_child_name = "data";
     });
 
     string name        = root.get_string_member("name").replace ("&", "&amp;").strip ();
@@ -315,7 +273,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
       location = root.get_string_member("location");
     }
 
-    TextEntity[] text_urls;
+    TextEntity[]? text_urls = null;
     if (root.has_member ("description")) {
       Json.Array urls = entities.get_object_member ("description").get_array_member ("urls");
       text_urls = new TextEntity[urls.get_length ()];
@@ -331,33 +289,62 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
           display_text = ent.get_string_member ("display_url")
         };
       });
-    } else
-      text_urls = new TextEntity[0];
+    }
 
     account.user_counter.user_seen (id, screen_name, name);
 
-    set_data(name, screen_name, display_url, location, description, tweets,
-         following, followers, avatar_url, verified, ref text_urls);
     this.follow_button.following = is_following;
     this.follow_button.sensitive = (this.user_id != this.account.id);
-    Corebird.db.replace ("profiles")
-               .vali64 ("id", id)
-               .val ("screen_name", screen_name)
-               .val ("name", name)
-               .vali ("followers", followers)
-               .vali ("following", following)
-               .vali ("tweets", tweets)
-               .val ("description", TextTransform.transform (description, text_urls, 0))
-               .val ("avatar_name", avatar_name)
-               .val ("url", display_url)
-               .val ("location", location)
-               .valb ("is_following", is_following)
-               .run ();
-
-  } //}}}
 
 
-  private async void load_tweets () { // {{{
+    var section = (GLib.Menu)more_button.menu_model.get_item_link (0, GLib.Menu.LINK_SECTION);
+    var user_item = new GLib.MenuItem (_("Tweet to @%s").printf (screen_name),
+                                       "user.tweet-to");
+    section.remove (1);
+    section.insert_item (1, user_item);
+
+    name_label.set_markup (name.strip ());
+    screen_name_label.set_label ("@" + screen_name);
+    //tweet_to_menu_item.label = _("Tweet to @%s").printf (screen_name);
+    string desc = description;
+    if (text_urls != null) {
+      TweetUtils.sort_entities (ref text_urls);
+      desc = TextTransform.transform (description,
+                                      text_urls,
+                                      0);
+    }
+
+    this.follower_count = followers;
+    description_label.label = "<big>" + desc + "</big>";
+    tweets_label.label = "%'d".printf(tweets);
+    following_label.label = "%'d".printf(following);
+    update_follower_label ();
+
+    if (location != null && location != "") {
+      location_label.visible = true;
+      location_label.label = location;
+    } else
+      location_label.visible = false;
+
+    avatar_image.verified = verified;
+
+    if (display_url.length > 0) {
+      url_label.visible = true;
+      url_label.set_markup ("<span underline='none'><a href='%s'>%s</a></span>"
+                            .printf (display_url, display_url));
+      description_label.margin_bottom = 6;
+    } else {
+      url_label.visible = false;
+      description_label.margin_bottom = 12;
+    }
+
+    this.name = name;
+    this.screen_name = screen_name;
+    this.avatar_url = avatar_url;
+  }
+
+
+  private async void load_tweets () {
     tweet_list.set_unempty ();
     tweets_loading = true;
     int requested_tweet_count = 10;
@@ -388,12 +375,11 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     }
     yield TweetUtils.work_array (root_array,
                                  tweet_list,
-                                 main_window,
                                  account);
     tweets_loading = false;
-  } // }}}
+  }
 
-  private async void load_older_tweets () { // {{{
+  private async void load_older_tweets () {
     if (tweets_loading)
       return;
 
@@ -424,10 +410,9 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     var root_arr = root.get_array ();
     yield TweetUtils.work_array (root_arr,
                                  tweet_list,
-                                 main_window,
                                  account);
     tweets_loading = false;
-  } // }}}
+  }
 
   private async void load_followers () {
     if (this.followers_cursor != null && this.followers_cursor.full)
@@ -441,6 +426,9 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     this.followers_cursor = yield UserUtils.load_followers (this.account,
                                                             this.user_id,
                                                             this.followers_cursor);
+
+    if (this.followers_cursor == null)
+      return;
 
     var users_array = this.followers_cursor.json_object.get_array ();
 
@@ -479,6 +467,9 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
                                                             this.user_id,
                                                             this.following_cursor);
 
+    if (this.following_cursor == null)
+      return;
+
     var users_array = this.following_cursor.json_object.get_array ();
 
     users_array.foreach_element ((array, index, node) => {
@@ -503,87 +494,16 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     this.following_loading = false;
   }
 
-  /**
-   * Loads the user's banner image.
-   *
-   * @param base_url The "base url" of the banner, obtained from the users/show call from Twitter.
-   * @param user_id Foo
-   * @param screen_name Bar
-   */
-  private void load_profile_banner (string base_url, int64 user_id) { // {{{
-    string banner_name = Utils.get_banner_name (user_id);
-    string saved_banner_url = Dirs.cache ("assets/banners/" + banner_name);
+  private void load_profile_banner (string base_url, int64 user_id) {
     string banner_url  = base_url + "/mobile_retina";
-    string banner_on_disk = Dirs.cache("assets/banners/" + banner_name);
-    if (!FileUtils.test (banner_on_disk, FileTest.EXISTS) || banner_url != saved_banner_url) {
-      Utils.download_file_async.begin (banner_url, banner_on_disk, data_cancellable,
-          () => {load_banner (banner_on_disk);});
-      Corebird.db.update ("profiles")
-                 .val ("banner_url", banner_url)
-                 .where_eqi ("id", user_id)
-                 .run ();
-    } else {
-      load_banner (banner_on_disk);
-    }
-  } // }}}
-
-
-  private new void set_data (string name, string screen_name, string? url,
-                             string? location, string description, int tweets,
-                             int following, int followers, string avatar_url,
-                             bool verified,
-                             ref TextEntity[]? text_urls
-                             ) { //{{{
-
-
-    var section = (GLib.Menu)more_menu.get_item_link (0, GLib.Menu.LINK_SECTION);
-    var user_item = new GLib.MenuItem (_("Tweet to @%s").printf (screen_name),
-                                       "user.tweet-to");
-    section.remove (1);
-    section.insert_item (1, user_item);
-
-    name_label.set_markup("<b>%s</b>".printf (name.strip ()));
-    screen_name_label.set_label ("@" + screen_name);
-    //tweet_to_menu_item.label = _("Tweet to @%s").printf (screen_name);
-    string desc = description;
-    if (text_urls != null) {
-      TweetUtils.sort_entities (ref text_urls);
-      desc = TextTransform.transform (description,
-                                      text_urls,
-                                      0);
-    }
-
-    this.follower_count = followers;
-    description_label.label = "<big>" + desc + "</big>";
-    tweets_label.label = "%'d".printf(tweets);
-    following_label.label = "%'d".printf(following);
-    update_follower_label ();
-
-    if (location != null && location != "") {
-      location_label.visible = true;
-      location_label.label = location;
-    } else
-      location_label.visible = false;
-
-    avatar_image.verified = verified;
-
-    if (url != null && url != "") {
-      url_label.visible = true;
-      url_label.set_markup ("<span underline='none'><a href='%s'>%s</a></span>".printf (url, url));
-      description_label.margin_bottom = 6;
-    } else {
-      url_label.visible = false;
-      description_label.margin_bottom = 12;
-    }
-
-    this.name = name;
-    this.screen_name = screen_name;
-    this.avatar_url = avatar_url;
-
-  } //}}}
+    Utils.download_pixbuf.begin (banner_url, null, (obj, res) => {
+      Gdk.Pixbuf? banner = Utils.download_pixbuf.end (res);
+      set_banner (banner);
+    });
+  }
 
   [GtkCallback]
-  private void follow_button_clicked_cb () { //{{{
+  private void follow_button_clicked_cb () {
     var call = account.proxy.new_call();
     HomeTimeline ht = (HomeTimeline) main_window.get_page (Page.STREAM);
     if (follow_button.following) {
@@ -625,24 +545,20 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
       progress_spinner.stop ();
       loading_stack.visible_child_name = "data";
     });
-  } //}}}
+  }
 
   [GtkCallback]
   private bool activate_link (string uri) {
     return TweetUtils.activate_link (uri, main_window);
   }
 
-  private void load_banner (string? path) {
-    try {
-      if (path != null)
-        banner_image.pixbuf = new Gdk.Pixbuf.from_file (path);
-      else
-        banner_image.pixbuf = new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/assets/no_banner.png");
-    } catch (GLib.Error e) {
-      warning (e.message);
-    }
-  }
 
+  private inline void set_banner (Gdk.Pixbuf? banner) {
+    if (banner == null)
+      banner_image.pixbuf = Twitter.no_banner;
+    else
+      banner_image.pixbuf = banner;
+  }
 
   /**
    * see IPage#onJoin
@@ -704,7 +620,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
   public void create_radio_button (Gtk.RadioButton? group) {}
 
 
-  public string? get_title () {
+  public string get_title () {
     return "@" + screen_name;
   }
 
@@ -760,7 +676,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
         Utils.show_error_object (call.get_payload (), e.message,
-                                 GLib.Log.LINE, GLib.Log.FILE);
+                                 GLib.Log.LINE, GLib.Log.FILE, this.main_window);
         /* Reset the state if the blocking failed */
         a.set_state (new GLib.Variant.boolean (current_state));
       }
@@ -794,7 +710,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
         Utils.show_error_object (call.get_payload (), e.message,
-                                 GLib.Log.LINE, GLib.Log.FILE);
+                                 GLib.Log.LINE, GLib.Log.FILE, this.main_window);
         /* Reset the state if the retweeting failed */
         a.set_state (new GLib.Variant.boolean (current_state));
       }

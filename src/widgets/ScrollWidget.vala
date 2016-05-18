@@ -95,12 +95,10 @@ public class ScrollWidget : Gtk.ScrolledWindow {
    * to true.
    *
    * @param animate    Whether to animate/transition the change or not (default: true)
-   * @param force_wait If this is set to true, we will wait for the next size_allocate
-   *                   event, even if the widget is unmapped (default: false).
    */
-  public void scroll_up_next (bool animate = true, bool force_wait = false,
+  public void scroll_up_next (bool animate = true,
                               bool force_start = false) { // {{{
-    if (!this.get_mapped () && !force_wait) {
+    if (!this.get_mapped ()) {
       this.vadjustment.value = 0;
       return;
     }
@@ -122,7 +120,7 @@ public class ScrollWidget : Gtk.ScrolledWindow {
         this.transition_start_value = this.vadjustment.value;
         return;
       }
-      scroll_up_id = this.size_allocate.connect (() => {
+      scroll_up_id = this.vadjustment.notify["upper"].connect (() => {
         if (Gtk.Settings.get_default ().gtk_enable_animations && animate) {
           this.start_time = this.get_frame_clock ().get_frame_time ();
           this.end_time = start_time + TRANSITION_DURATION;
@@ -132,7 +130,7 @@ public class ScrollWidget : Gtk.ScrolledWindow {
         } else {
           this.vadjustment.value = 0;
         }
-        this.disconnect (scroll_up_id);
+        this.vadjustment.disconnect (scroll_up_id);
         this.scroll_up_id = 0;
       });
     }
@@ -198,8 +196,4 @@ public class ScrollWidget : Gtk.ScrolledWindow {
     return true;
   }
 
-  private double ease_out_cubic (double t) {
-    double p = t - 1;
-    return p * p * p +1;
-  }
 }

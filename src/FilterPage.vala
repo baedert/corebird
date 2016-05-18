@@ -14,11 +14,17 @@
  *  You should have received a copy of the GNU General Public License
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 [GtkTemplate (ui = "/org/baedert/corebird/ui/filter-page.ui")]
 class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
   public int id { get; set; }
-  public unowned MainWindow main_window {get; set;}
-  public unowned Account account        {get; set;}
+  private unowned MainWindow main_window;
+  public unowned MainWindow window {
+    set {
+      main_window = value;
+    }
+  }
+  public unowned Account account;
   private BadgeRadioButton radio_button;
   [GtkChild]
   private Gtk.ListBox filter_list;
@@ -26,6 +32,8 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
   private Gtk.ListBox user_list;
   [GtkChild]
   private Gtk.Frame user_list_frame;
+  [GtkChild]
+  private Gtk.Revealer user_list_revealer;
   private bool filters_loaded = false;
   private bool users_loaded = false;
 
@@ -51,10 +59,11 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
     user_list.set_header_func (default_header_func);
   }
 
-  public void on_join (int page_id, Bundle? args) { // {{{
+  public void on_join (int page_id, Bundle? args) {
 
     if (!filters_loaded) {
-      foreach (Filter f in account.filters) {
+      for (int i = 0; i < account.filters.length; i ++) {
+        var f = account.filters.get (i);
         var entry = new FilterListEntry (f, account, main_window);
         filter_list.add (entry);
       }
@@ -86,17 +95,20 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
 
       Json.Array users = root.get_object ().get_array_member ("users");
       uint n_users = users.get_length ();
+
       users.foreach_element ((arr, index, node) => {
         var obj = node.get_object ();
         add_user (obj);
       });
+
       if (n_users > 0) {
         user_list_frame.show ();
+        user_list_revealer.reveal_child = true;
       }
     });
 
     users_loaded = true;
-  } // }}}
+  }
 
   /**
    * Called when the user adds a new Filter via the AddFilterDialog
@@ -177,7 +189,7 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
         Utils.show_error_object (call.get_payload (), e.message,
-                                 GLib.Log.LINE, GLib.Log.FILE);
+                                 GLib.Log.LINE, GLib.Log.FILE, this.main_window);
         warning (e.message);
         return;
       }
@@ -214,7 +226,7 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
 
   public Gtk.RadioButton? get_radio_button() { return radio_button; }
 
-  public string? get_title () {
+  public string get_title () {
     return _("Filters");
   }
 

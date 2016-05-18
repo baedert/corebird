@@ -9,46 +9,53 @@
         <property name="orientation">vertical</property>
         <child>
           <object class="GtkFrame">
-          <property name="visible">True</property>
-          <property name="can_focus">False</property>
-          <property name="valign">start</property>
-          <property name="margin_start">25</property>
-          <property name="margin_end">25</property>
-          <property name="margin_top">25</property>
-          <property name="label_xalign">0</property>
-          <property name="shadow_type">in</property>
-          <child>
-            <object class="GtkListBox" id="filter_list">
-              <property name="visible">True</property>
-              <property name="can_focus">False</property>
-              <property name="valign">start</property>
-              <property name="selection_mode">none</property>
-              <signal name="keynav-failed" handler="filter_list_keynav_failed_cb" />
-            </object>
-          </child>
-        </object>
-      </child>
-      <child>
-        <object class="GtkFrame" id="user_list_frame">
-          <property name="visible">False</property>
-          <property name="no_show_all">True</property>
-          <property name="can_focus">False</property>
-          <property name="valign">start</property>
-          <property name="margin_start">25</property>
-          <property name="margin_end">25</property>
-          <property name="margin_top">25</property>
-          <property name="label_xalign">0</property>
-          <property name="shadow_type">in</property>
-          <child>
-            <object class="GtkListBox" id="user_list">
-              <property name="visible">True</property>
-              <property name="can_focus">False</property>
-              <property name="valign">start</property>
-              <property name="selection_mode">none</property>
-              <signal name="keynav-failed" handler="user_list_keynav_failed_cb" />
-            </object>
-          </child>
-        </object>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="valign">start</property>
+            <property name="margin_start">25</property>
+            <property name="margin_end">25</property>
+            <property name="margin_top">25</property>
+            <property name="label_xalign">0</property>
+            <property name="shadow_type">in</property>
+            <child>
+              <object class="GtkListBox" id="filter_list">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="valign">start</property>
+                <property name="selection_mode">none</property>
+                <signal name="keynav-failed" handler="filter_list_keynav_failed_cb" />
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkRevealer" id="user_list_revealer">
+            <property name="visible">true</property>
+            <property name="reveal_child">false</property>
+            <property name="transition_type">slide-down</property>
+            <child>
+              <object class="GtkFrame" id="user_list_frame">
+                <property name="visible">False</property>
+                <property name="no_show_all">True</property>
+                <property name="can_focus">False</property>
+                <property name="valign">start</property>
+                <property name="margin_start">25</property>
+                <property name="margin_end">25</property>
+                <property name="margin_top">25</property>
+                <property name="label_xalign">0</property>
+                <property name="shadow_type">in</property>
+                <child>
+                  <object class="GtkListBox" id="user_list">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="valign">start</property>
+                    <property name="selection_mode">none</property>
+                    <signal name="keynav-failed" handler="user_list_keynav_failed_cb" />
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
         </child>
         <child>
           <object class="GtkLabel">

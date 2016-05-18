@@ -74,8 +74,46 @@ class UserEventReceiver : GLib.Object, IMessageReceiver {
                                 account.avatar);
           account.save_info ();
           Utils.update_startup_account (old_screen_name, account.screen_name);
-        } else
+        } else {
           warning ("USER_UPDATE: ids don't match");
+        }
+        break;
+
+      case StreamMessageType.DIRECT_MESSAGE:
+        var cb = (Corebird) GLib.Application.get_default ();
+        if (!cb.is_window_open_for_user_id (account.id) &&
+            Settings.notify_new_dms ()) {
+          var dm_obj = root_node.get_object ().get_object_member ("direct_message");
+          var sender_obj = dm_obj.get_object_member ("sender");
+          int64 sender_id = sender_obj.get_int_member ("id");
+          string sender_name = sender_obj.get_string_member ("name");
+          string dm_text = dm_obj.get_string_member ("text");
+
+          account.notifications.send_dm (sender_id,
+                                         null,
+                                         _("New direct message from %s").printf (sender_name),
+                                         Utils.unescape_html (dm_text));
+        }
+        break;
+
+      case StreamMessageType.TWEET:
+        var cb = (Corebird) GLib.Application.get_default ();
+        if (!cb.is_window_open_for_user_id (account.id) &&
+            Settings.notify_new_mentions ()) {
+          var tweet_obj = root_node.get_object ();
+          string text = tweet_obj.get_string_member ("text");
+          if (text.contains ("@" + account.screen_name)) {
+            var author_obj = tweet_obj.get_object_member ("user");
+            // TODO: Care about retweets/quotes!
+            // XXX : And media?
+
+            string author_name = author_obj.get_string_member ("name");
+            string summary = _("%s mentioned %s").printf (author_name,
+                                                          account.name);
+
+            account.notifications.send (summary, text);
+          }
+        }
         break;
     }
   }

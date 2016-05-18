@@ -20,12 +20,8 @@ int main (string[] args) {
   Gst.init (ref args);
 #endif
 
-  try {
-    //no initialisation of static fields :(
-    Settings.init ();
-    var corebird = new Corebird ();
-    return corebird.run (args);
-  } catch (GLib.Error e) {
-    error (e.message);
-  }
+  //no initialisation of static fields :(
+  Settings.init ();
+  var corebird = new Corebird ();
+  return corebird.run (args);
 }

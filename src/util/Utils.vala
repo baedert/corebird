@@ -37,6 +37,11 @@ static Soup.Session SOUP_SESSION = null;
 
 const int TRANSITION_DURATION = 200 * 1000;
 
+#if DEBUG
+public string __class_name (GLib.Object o) {
+  return GLib.Type.from_instance (o).name ();
+}
+#endif
 
 void default_header_func (Gtk.ListBoxRow  row,
                           Gtk.ListBoxRow? row_before)
@@ -85,10 +90,15 @@ Cairo.Surface scale_surface (Cairo.ImageSurface input,
                              int                output_width,
                              int                output_height)
 {
-  Cairo.Surface new_surface = new Cairo.Surface.similar_image (input, Cairo.Format.ARGB32,
-                                                               output_width, output_height);
   int old_width  = input.get_width ();
   int old_height = input.get_height ();
+
+  if (old_width == output_width && old_height == output_height)
+    return input;
+
+  Cairo.Surface new_surface = new Cairo.Surface.similar_image (input, Cairo.Format.ARGB32,
+                                                               output_width, output_height);
+
 
   /* http://lists.cairographics.org/archives/cairo/2006-January/006178.html */
 
@@ -109,6 +119,27 @@ inline double ease_out_cubic (double t) {
   return p * p * p +1;
 }
 
+string rest_call_to_string (Rest.ProxyCall call)
+{
+  StringBuilder builder = new StringBuilder ();
+  builder.append (call.get_method ());
+  builder.append (" ");
+  builder.append (call.get_function ());
+
+  GLib.HashTable<string, string> params = call.get_params ().as_string_hash_table ();
+
+  if (params.size () > 0) {
+    builder.append ("?");
+
+    foreach (unowned string key in params.get_keys ()) {
+      // This doesn't work for the last param but whatever.
+      builder.append (key).append ("=").append (params.get (key)).append ("&");
+    }
+  }
+
+  return builder.str;
+}
+
 
 namespace Utils {
   /**
@@ -118,7 +149,7 @@ namespace Utils {
   * @return The given date as GLib.DateTime in the current time zone.
   */
   GLib.DateTime parse_date (string input) {
-    if (input == "") {
+    if (input.length == 0) {
       return new GLib.DateTime.now_local ();
     }
     string month_str = input.substring (4, 3);
@@ -201,32 +232,21 @@ namespace Utils {
   }
 
   /**
-   * Returns the avatar name for the given path
-   *
-   * @return the 'calculated' avatar name
-   */
-  string get_avatar_name (string path) {
-    string[] parts = path.split ("/");
-    return parts[parts.length - 2] + "_" + parts[parts.length - 1];
-  }
-
-
-  /**
    * Shows an error dialog with the given error message
    *
    * @param message The error message to show
    */
-  void show_error_dialog (string message) {
-    var dialog = new Gtk.MessageDialog (null, Gtk.DialogFlags.DESTROY_WITH_PARENT,
+  void show_error_dialog (string message, Gtk.Window? transient_for) {
+    var dialog = new Gtk.MessageDialog (transient_for, Gtk.DialogFlags.DESTROY_WITH_PARENT,
                                         Gtk.MessageType.ERROR, Gtk.ButtonsType.OK,
                                         "%s", message);
 
-    dialog.response.connect((id) => {
-      if(id == Gtk.ResponseType.OK)
-        dialog.destroy();
+    dialog.response.connect ((id) => {
+      if (id == Gtk.ResponseType.OK)
+        dialog.destroy ();
     });
 
-    dialog.show();
+    dialog.show ();
   }
 
   /**
@@ -238,13 +258,14 @@ namespace Utils {
    * @param alternative If the given json data is not valid,
    *                    show this alternative error message.
    */
-  void show_error_object (string? json_data,
-                          string  alternative,
-                          int     line,
-                          string  file) {
+  void show_error_object (string?     json_data,
+                          string      alternative,
+                          int         line,
+                          string      file,
+                          Gtk.Window? transient_for = null) {
     string error_message = "Exception: %s in %s:%d".printf (alternative, file, line);
     if (json_data == null) {
-      show_error_dialog (error_message);
+      show_error_dialog (error_message, transient_for);
       return;
     }
 
@@ -253,12 +274,12 @@ namespace Utils {
     try {
       parser.load_from_data (json_data);
     } catch (GLib.Error e) {
-      show_error_dialog (error_message);
+      show_error_dialog (error_message, transient_for);
       return;
     }
 
     if (parser.get_root ().get_node_type () != Json.NodeType.OBJECT) {
-      show_error_dialog (error_message);
+      show_error_dialog (error_message, transient_for);
       return;
     }
 
@@ -266,13 +287,13 @@ namespace Utils {
     if (root.has_member ("error") &&
         root.get_member ("error").get_node_type () == Json.NodeType.VALUE) {
       message (json_data);
-      show_error_dialog (root.get_member ("error").get_string ());
+      show_error_dialog (root.get_member ("error").get_string (), transient_for);
       return;
     }
 
     if (root.get_member ("errors").get_node_type () == Json.NodeType.VALUE) {
       message (json_data);
-      show_error_dialog (root.get_member ("errors").get_string ());
+      show_error_dialog (root.get_member ("errors").get_string (), transient_for);
       return;
     }
 
@@ -295,41 +316,34 @@ namespace Utils {
     error_message = sb.str;
 
     critical (json_data);
-    show_error_dialog (error_message);
+    show_error_dialog (error_message, transient_for);
   }
 
+  async Gdk.Pixbuf? download_pixbuf (string            url,
+                                     GLib.Cancellable? cancellable = null) {
 
+    Gdk.Pixbuf? result = null;
+    var msg = new Soup.Message ("GET", url);
+    GLib.SourceFunc cb = download_pixbuf.callback;
 
-  /**
-   * download_file_async:
-   * Downloads the given file asynchronously to the given location.
-   *
-   * @param url The URL of the file to download
-   * @param path The filesystem path to save the file to
-   *
-   */
-  async void download_file_async (string            url,
-                                  string            path,
-                                  GLib.Cancellable? cancellable = null) {
-    var msg = new Soup.Message("GET", url);
-    GLib.SourceFunc cb = download_file_async.callback;
-    SOUP_SESSION.queue_message(msg, (_s, _msg) => {
+    SOUP_SESSION.queue_message (msg, (_s, _msg) => {
       if (cancellable.is_cancelled ()) {
         cb ();
         return;
       }
       try {
-        File out_file = File.new_for_path(path);
-        var out_stream = out_file.replace (null, false,
-                                           FileCreateFlags.REPLACE_DESTINATION, null);
-        out_stream.write_all (_msg.response_body.data, null);
-        out_stream.close ();
-        cb();
+        var in_stream = new MemoryInputStream.from_data (_msg.response_body.data,
+                                                         GLib.g_free);
+        result = new Gdk.Pixbuf.from_stream (in_stream, cancellable);
       } catch (GLib.Error e) {
-        critical (e.message);
+        warning (e.message);
+      } finally {
+        cb ();
       }
     });
     yield;
+
+    return result;
   }
 
   string unescape_html (string input) {
@@ -351,7 +365,6 @@ namespace Utils {
     Gtk.StyleContext.add_provider_for_screen ((!)Gdk.Screen.get_default (),
                                               provider,
                                               Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-
   }
 
   public void init_soup_session () {
@@ -365,14 +378,6 @@ namespace Utils {
       back = s.get_char (0).toupper ().to_string () + s.substring (1);
     }
     return back;
-  }
-
-  uint int64_hash_func (int64? k) {
-    return (uint)k;
-  }
-
-  bool int64_equal_func (int64? a, int64? b) {
-    return a == b;
   }
 
   public int get_json_array_size (Json.Object node, string object_name) {
@@ -392,10 +397,6 @@ namespace Utils {
         return false;
 
     return !node.get_null_member (value_name);
-  }
-
-  public string get_banner_name (int64 user_id) {
-    return user_id.to_string () + ".png";
   }
 
   public void update_startup_account (string old_screen_name,

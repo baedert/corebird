@@ -90,6 +90,7 @@ namespace TweetUtils {
         tweet.set_flag (TweetState.FAVORITED);
       else
         tweet.unset_flag (TweetState.FAVORITED);
+
       set_favorite_status.callback ();
     });
     yield;
@@ -117,7 +118,7 @@ namespace TweetUtils {
         Utils.show_error_object (call.get_payload (), e.message,
                                  GLib.Log.LINE, GLib.Log.FILE);
       }
-      string back = call.get_payload();
+      unowned string back = call.get_payload();
       var parser = new Json.Parser ();
       try {
         parser.load_from_data (back);
@@ -193,8 +194,14 @@ namespace TweetUtils {
     int cur = 0; /* Byte Index */
 
     for (int next = 0, c_n = 0; text.get_next_char (ref next, out c); c_n ++) {
-      if (c == ' ' || c == '\n' || c_n == n_chars - 1) {
-        if (c_n == n_chars - 1)
+      bool splits = (c == ' ' || c == '\n' || c == '(' || c == ')' || c == '[' ||
+                     c == ']' || c == '{' || c == '}');
+
+      if (splits || c_n == n_chars - 1) {
+
+        /* Include the current character only if it's not whitespace since we are
+           later accounting for whitespace characters anyway */
+        if (!splits && c_n == n_chars - 1)
           cur = next;
 
         string word = text.substring (last_word_start,
@@ -203,7 +210,7 @@ namespace TweetUtils {
         if (word.length > 0)
           length += get_word_length (word);
 
-        if (c == ' ' || c == '\n')
+        if (splits)
           length += 1;
 
         // Just adding one here is save since we made sure c is either ' ' or \n
@@ -230,9 +237,11 @@ namespace TweetUtils {
 
 
     string[] parts = s.split ("/");
-    foreach (string tld in DOMAINS) {
-      if (parts.length > 0 && parts[0].has_suffix (tld))
-        return Twitter.short_url_length; // Default to HTTP
+    if (parts.length > 0) {
+      foreach (unowned string tld in DOMAINS) {
+        if (parts[0].has_suffix (tld))
+          return Twitter.short_url_length; // Default to HTTP
+      }
     }
 
     return s.char_count();
@@ -280,14 +289,13 @@ namespace TweetUtils {
 
   async void work_array (Json.Array   json_array,
                          TweetListBox tweet_list,
-                         MainWindow   main_window,
                          Account      account) {
     new Thread<void*> ("TweetWorker", () => {
-      Tweet[] tweet_array = new Tweet[json_array.get_length ()];
-
+      uint n_tweets = json_array.get_length ();
+      uint index    = 0;
       /* If the request returned no results at all, we don't
          need to do all the later stuff */
-      if (tweet_array.length == 0) {
+      if (n_tweets == 0) {
         GLib.Idle.add (() => {
           work_array.callback ();
           return GLib.Source.REMOVE;
@@ -296,19 +304,12 @@ namespace TweetUtils {
       }
 
       var now = new GLib.DateTime.now_local ();
-      json_array.foreach_element ((array, index, node) => {
-        Tweet t = new Tweet ();
-        t.load_from_json (node, now, account);
-
-        tweet_array[index] = t;
-      });
-
-
-      int index = 0;
       GLib.Idle.add (() => {
-        Tweet tweet = tweet_array[index];
+        Tweet tweet = new Tweet ();
+        tweet.load_from_json (json_array.get_element (index), now, account);
         if (account.user_counter == null ||
-            tweet_list == null)
+            tweet_list == null ||
+            !(tweet_list.get_toplevel () is Gtk.Window))
           return GLib.Source.REMOVE;
 
         account.user_counter.id_seen (ref tweet.source_tweet.author);
@@ -321,7 +322,7 @@ namespace TweetUtils {
         tweet_list.model.add (tweet);
 
         index ++;
-        if (index == tweet_array.length) {
+        if (index == n_tweets) {
           work_array.callback ();
           return GLib.Source.REMOVE;
         }
@@ -349,7 +350,7 @@ namespace TweetUtils {
     if (word.has_prefix ("https://") && word.length > 8)
       return true;
 
-    foreach (string tld in DOMAINS)
+    foreach (unowned string tld in DOMAINS)
       if (word.has_suffix (tld))
           return true;
 
@@ -501,6 +502,8 @@ namespace TweetUtils {
     Json.Node? result = null;
     GLib.Error? err   = null;
     GLib.SourceFunc callback = load_threaded.callback;
+
+    debug ("REST Call: %s", rest_call_to_string (call));
 
     new Thread<void*> ("json parser", () => {
       try {

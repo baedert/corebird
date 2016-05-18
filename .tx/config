@@ -1,0 +1,10 @@
+[main]
+host = https://transifex.com
+
+[corebird.corebirdpot]
+file_filter = po/<lang>.po
+host = https://transifex.com
+source_file = po/corebird.pot
+source_lang = en
+type = PO
+

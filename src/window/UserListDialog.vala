@@ -30,7 +30,7 @@ class UserListDialog : Gtk.Dialog {
   private unowned Account account;
   private unowned MainWindow main_window;
   private Gtk.ListBox list_list_box = new Gtk.ListBox ();
-  private Gtk.Label placeholder_label = new Gtk.Label ("");
+  private Gtk.Label placeholder_label;
   private int64 user_id;
 
   public UserListDialog (MainWindow parent,
@@ -54,6 +54,7 @@ class UserListDialog : Gtk.Dialog {
     content_box.border_width = 0;
     var scroller = new Gtk.ScrolledWindow (null, null);
     list_list_box.selection_mode = Gtk.SelectionMode.NONE;
+    list_list_box.set_header_func (default_header_func);
     list_list_box.row_activated.connect ((row) => {
       if (!(row is ListUserEntry)) {
         warning ("Row != ListUserEntry!");
@@ -65,7 +66,7 @@ class UserListDialog : Gtk.Dialog {
     content_box.pack_start (scroller, true, true);
 
 
-    placeholder_label.label = _("You have no lists.");
+    placeholder_label = new Gtk.Label (_("You have no lists."));
     placeholder_label.get_style_context ().add_class ("dim-label");
     placeholder_label.show ();
     list_list_box.set_placeholder (placeholder_label);
@@ -76,7 +77,7 @@ class UserListDialog : Gtk.Dialog {
     var lists_page = (ListsPage)main_window.get_page (Page.LISTS);
     lists_page.get_user_lists.begin ((obj, res) => {
       TwitterList[] lists = lists_page.get_user_lists.end (res);
-      foreach (var list in lists) {
+      foreach (unowned TwitterList list in lists) {
         var l = new ListUserEntry (list.name, list.description);
         l.id = list.id;
         if (list.n_members >= 500)
@@ -95,7 +96,7 @@ class UserListDialog : Gtk.Dialog {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
         Utils.show_error_object (call.get_payload (), e.message,
-                                 GLib.Log.LINE, GLib.Log.FILE);
+                                 GLib.Log.LINE, GLib.Log.FILE, this);
         return;
       }
       var parser = new Json.Parser ();
@@ -154,7 +155,7 @@ class UserListDialog : Gtk.Dialog {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
         Utils.show_error_object (call.get_payload (), e.message,
-                                 GLib.Log.LINE, GLib.Log.FILE);
+                                 GLib.Log.LINE, GLib.Log.FILE, this);
       }
     });
   }
@@ -170,7 +171,7 @@ class UserListDialog : Gtk.Dialog {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
         Utils.show_error_object (call.get_payload (), e.message,
-                                 GLib.Log.LINE, GLib.Log.FILE);
+                                 GLib.Log.LINE, GLib.Log.FILE, this);
       }
     });
   }

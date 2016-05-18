@@ -15,7 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 public interface IMessageReceiver : GLib.Object {
   public abstract void stream_message_received (StreamMessageType type,
                                                 Json.Node root_node);

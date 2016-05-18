@@ -15,23 +15,30 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
+public abstract class DefaultTimeline : ScrollWidget, IPage {
+  public static const int REST = 25;
   protected bool initialized = false;
   public int id                          { get; set; }
   private int _unread_count = 0;
   public int unread_count {
     set {
+      debug ("Unread count for %s from %d to %d", get_title (), _unread_count, value);
       _unread_count = int.max (value, 0);
-      debug ("New unread count: %d", value);
+      debug ("New unread count for %s: %d", this.get_title (), value);
       radio_button.show_badge = (_unread_count > 0);
     }
     get {
       return this._unread_count;
     }
   }
-  public unowned MainWindow main_window  { set; get; }
-  protected TweetListBox tweet_list      { set; get; default=new TweetListBox ();}
-  public unowned Account account         { get; set; }
+  protected unowned MainWindow main_window;
+  public unowned MainWindow window  {
+    set {
+      main_window = value;
+    }
+  }
+  protected TweetListBox tweet_list = new TweetListBox ();
+  public unowned Account account;
   protected BadgeRadioButton radio_button;
   protected uint tweet_remove_timeout = 0;
   private DeltaUpdater _delta_updater;
@@ -47,6 +54,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
   protected abstract string function     { get;      }
   protected bool loading = false;
   protected Gtk.Widget? last_focus_widget = null;
+  private double last_value = 0.0;
 
 
   public DefaultTimeline (int id) {
@@ -88,15 +96,23 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     }
 
     if (Settings.auto_scroll_on_new_tweets ()) {
-      this._unread_count = 0;
       mark_seen (-1);
     }
 
-    if (last_focus_widget != null) {
+    if (last_focus_widget != null)
       last_focus_widget.grab_focus ();
-    }
+
+    this.get_vadjustment ().value = this.last_value;
   }
 
+  public virtual void on_leave () {
+    this.last_focus_widget = main_window.get_focus ();
+
+    if (tweet_list.action_entry != null && tweet_list.action_entry.shows_actions)
+      tweet_list.action_entry.toggle_mode ();
+
+    last_value = this.get_vadjustment ().value;
+  }
 
   public bool handles_double_open () {
     return true;
@@ -104,31 +120,30 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
 
   public void double_open () {
     if (!loading) {
-      this.scroll_up_next (true, false, true);
+      this.scroll_up_next (true, true);
       tweet_list.get_row_at_index (0).grab_focus ();
     }
   }
 
-  public virtual void on_leave () {
-    Gtk.Widget? focus_widget = main_window.get_focus ();
-    if (focus_widget == null)
-      return;
-
-    GLib.List<weak Gtk.Widget> list_rows = tweet_list.get_children ();
-    foreach (Gtk.Widget w in list_rows) {
-      if (w == focus_widget) {
-        last_focus_widget = w;
-        break;
-      }
-    }
-
-    if (tweet_list.action_entry != null && tweet_list.action_entry.shows_actions)
-      tweet_list.action_entry.toggle_mode ();
+  public void load_newest () {
+    this.loading = true;
+    this.load_newest_internal.begin (() => {
+      this.loading = false;
+    });
   }
 
-  public abstract void load_newest ();
-  public abstract void load_older ();
-  public abstract string? get_title ();
+  public void load_older () {
+    if (!initialized)
+      return;
+
+    this.balance_next_upper_change (BOTTOM);
+    this.loading = true;
+    this.load_older_internal.begin (() => {
+      this.loading = false;
+    });
+  }
+
+  public abstract string get_title ();
 
   public override void destroy () {
     if (tweet_remove_timeout > 0) {
@@ -151,14 +166,14 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
     if (tweet_remove_timeout != 0)
       return;
 
-    if (tweet_list.model.get_n_items () > ITimeline.REST) {
+    if (tweet_list.model.get_n_items () > DefaultTimeline.REST) {
       tweet_remove_timeout = GLib.Timeout.add (500, () => {
         if (!scrolled_up) {
           tweet_remove_timeout = 0;
           return GLib.Source.REMOVE;
         }
 
-        tweet_list.model.remove_last_n_visible (tweet_list.model.get_n_items () - ITimeline.REST);
+        tweet_list.model.remove_last_n_visible (tweet_list.model.get_n_items () - DefaultTimeline.REST);
         tweet_remove_timeout = 0;
         return GLib.Source.REMOVE;
       });
@@ -217,15 +232,13 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
         t.retweeted_tweet.author.id == account.id)
       flags |= TweetState.HIDDEN_FORCE;
 
-
-
     /* Fourth case */
-    foreach (int64 id in account.disabled_rts)
+    foreach (int64 id in account.disabled_rts) {
       if (id == t.source_tweet.author.id) {
         flags |= TweetState.HIDDEN_RTS_DISABLED;
         break;
       }
-
+    }
 
     /* Fifth case */
     foreach (Gtk.Widget w in tweet_list.get_children ()) {
@@ -252,19 +265,22 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
           this.unread_count--;
         }
         tle.tweet.seen = true;
-        break;
+        if (id != -1)
+          break;
       }
     }
   }
 
 
-  protected void scroll_up (Tweet t) {
+  protected bool scroll_up (Tweet t) {
     bool auto_scroll = Settings.auto_scroll_on_new_tweets ();
     if (this.scrolled_up && (t.user_id == account.id || auto_scroll)) {
-      this.scroll_up_next (true, false,
+      this.scroll_up_next (true,
                            main_window.cur_page_id != this.id);
+      return true;
     }
 
+    return false;
   }
 
   private void stream_resumed_cb () {
@@ -294,8 +310,9 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
         parser.load_from_data (call.get_payload ());
       } catch (GLib.Error e) {
         tweet_list.model.clear ();
-        load_newest ();
+        this.unread_count = 0;
         warning (e.message);
+        load_newest ();
         return;
       }
 
@@ -308,4 +325,116 @@ public abstract class DefaultTimeline : ScrollWidget, IPage, ITimeline {
 
     });
   }
+
+
+  /**
+   * Default implementation for loading the newest tweets
+   * from the given function of the twitter api.
+   */
+  protected async void load_newest_internal () {
+    int requested_tweet_count = 28;
+    var call = account.proxy.new_call ();
+    call.set_function (this.function);
+    call.set_method("GET");
+    call.add_param ("count", requested_tweet_count.to_string ());
+    call.add_param ("contributor_details", "true");
+    call.add_param ("include_my_retweet", "true");
+    call.add_param ("max_id", (tweet_list.model.lowest_id - 1).to_string ());
+
+    Json.Node? root_node = null;
+    try {
+      root_node = yield TweetUtils.load_threaded (call, null);
+    } catch (GLib.Error e) {
+      message (e.message);
+      tweet_list.set_error ("%s\n%s".printf (_("Could not load tweets"), e.message));
+      return;
+    }
+
+    var root = root_node.get_array();
+    if (root.get_length () == 0) {
+      tweet_list.set_empty ();
+      return;
+    }
+    yield TweetUtils.work_array (root,
+                                 tweet_list,
+                                 account);
+  }
+
+  /**
+   * Default implementation to load older tweets.
+   *
+   */
+  protected async void load_older_internal () {
+    int requested_tweet_count = 28;
+    var call = account.proxy.new_call ();
+    call.set_function (this.function);
+    call.set_method ("GET");
+    call.add_param ("count", requested_tweet_count.to_string ());
+    call.add_param ("include_my_retweet", "true");
+    call.add_param ("max_id", (tweet_list.model.lowest_id - 1).to_string ());
+
+    Json.Node? root_node = null;
+
+    try {
+      root_node = yield TweetUtils.load_threaded (call, null);
+    } catch (GLib.Error e) {
+      warning (e.message);
+      return;
+    }
+
+    var root = root_node.get_array ();
+    if (root.get_length () == 0) {
+      tweet_list.set_empty ();
+      return;
+    }
+    yield TweetUtils.work_array (root,
+                                 tweet_list,
+                                 account);
+  }
+
+  /**
+   * Mark the TweetListEntries the user has already seen.
+   *
+   * @param value The scrolling value as from Gtk.Adjustment
+   */
+  protected void mark_seen_on_scroll (double value) {
+    if (unread_count == 0)
+      return;
+
+    // We HAVE to use widgets here.
+    tweet_list.forall_internal (false, (w) => {
+      if (!(w is TweetListEntry))
+        return;
+
+      var tle = (TweetListEntry)w;
+      if (tle.tweet.seen)
+        return;
+
+      Gtk.Allocation alloc;
+      tle.get_allocation (out alloc);
+      if (alloc.y + (alloc.height / 2.0) >= value) {
+        tle.tweet.seen = true;
+        unread_count--;
+      }
+    });
+  }
+
+  public void rerun_filters () {
+    TweetModel tm = tweet_list.model;
+
+
+    for (uint i = 0, p = tm.get_n_items (); i < p; i ++) {
+      var tweet = (Tweet) tm.get_object (i);
+      if (account.filter_matches (tweet)) {
+        tweet.set_flag (TweetState.HIDDEN_FILTERED);
+        if (!tweet.seen) {
+          this.unread_count --;
+          tweet.seen = true;
+        }
+      } else {
+        tweet.unset_flag (TweetState.HIDDEN_FILTERED);
+      }
+    }
+  }
+
 }

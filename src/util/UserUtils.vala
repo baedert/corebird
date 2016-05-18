@@ -15,13 +15,10 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-struct Friendship {
-  bool followed_by;
-  bool following;
-  bool want_retweets;
-  bool blocking;
-}
+const uint FRIENDSHIP_FOLLOWED_BY   = 1 << 0;
+const uint FRIENDSHIP_FOLLOWING     = 1 << 1;
+const uint FRIENDSHIP_WANT_RETWEETS = 1 << 2;
+const uint FRIENDSHIP_BLOCKING      = 1 << 3;
 
 struct Cursor {
   int64 next_cursor;
@@ -31,8 +28,8 @@ struct Cursor {
 
 
 namespace UserUtils {
-  async Friendship? load_friendship (Account account,
-                                     int64   user_id)
+  async uint load_friendship (Account account,
+                              int64   user_id)
   {
     var call = account.proxy.new_call ();
     call.set_function ("1.1/friendships/show.json");
@@ -45,20 +42,27 @@ namespace UserUtils {
       root = yield TweetUtils.load_threaded (call, null);
     } catch (GLib.Error e) {
       warning (e.message);
-      return null;
+      return 0;
     }
 
     var relationship = root.get_object ().get_object_member ("relationship");
     var target = relationship.get_object_member ("target");
     var source = relationship.get_object_member ("source");
 
-    var friendship = Friendship ();
-    friendship.followed_by   = target.get_boolean_member ("following");
-    friendship.following     = target.get_boolean_member ("followed_by");
-    friendship.want_retweets = source.get_boolean_member ("want_retweets");
-    friendship.blocking      = source.get_boolean_member ("blocking");
+    uint friendship = 0;
 
-    // XXX This gets copied and I just want to rewrite this in C.
+    if (target.get_boolean_member ("following"))
+      friendship |= FRIENDSHIP_FOLLOWED_BY;
+
+    if (target.get_boolean_member ("followed_by"))
+      friendship |= FRIENDSHIP_FOLLOWING;
+
+    if (source.get_boolean_member ("want_retweets"))
+      friendship |= FRIENDSHIP_WANT_RETWEETS;
+
+    if (source.get_boolean_member ("blocking"))
+      friendship |= FRIENDSHIP_BLOCKING;
+
     return friendship;
   }
 

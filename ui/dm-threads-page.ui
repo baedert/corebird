@@ -4,7 +4,7 @@
     <property name="can_focus">True</property>
     <property name="hscrollbar_policy">never</property>
     <child>
-      <object class="GtkFrame" id="frame2">
+      <object class="GtkFrame">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="valign">start</property>
@@ -14,22 +14,38 @@
         <property name="margin_bottom">20</property>
         <property name="label_xalign">0</property>
         <property name="shadow_type">in</property>
+
         <child>
-          <object class="GtkAlignment" id="alignment2">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
+          <object class="GtkBox">
+            <property name="visible">true</property>
+            <property name="orientation">vertical</property>
+
+            <child>
+              <object class="GtkListBox" id="top_list">
+                <property name="visible">true</property>
+                <property name="selection_mode">none</property>
+                <signal name="keynav-failed" handler="top_list_keynav_failed_cb" />
+              </object>
+            </child>
+
+            <child>
+              <object class="GtkSeparator">
+                <property name="visible">true</property>
+                <property name="orientation">horizontal</property>
+              </object>
+            </child>
+
             <child>
               <object class="GtkListBox" id="thread_list">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="valign">start</property>
                 <property name="selection_mode">none</property>
+                <signal name="keynav-failed" handler="thread_list_keynav_failed_cb" />
               </object>
             </child>
+
           </object>
-        </child>
-        <child type="label_item">
-          <placeholder/>
         </child>
       </object>
     </child>
