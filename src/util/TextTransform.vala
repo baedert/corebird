@@ -140,7 +140,7 @@ namespace TextTransform {
 
       if ((TransformFlags.REMOVE_MEDIA_LINKS in flags &&
           is_removable_media_url (entity.target, entity.display_text, media_count)) ||
-          (quote_id != 0 && is_quote_link (ref entity, quote_id))) {
+          (quote_id != 0 && is_quote_link (entity, quote_id))) {
         last_end = entity.to;
         continue;
       }
