@@ -54,7 +54,7 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
     }
   } // }}}
 
-  private void add_tweet (Json.Node obj) { // {{{
+  private void add_tweet (Json.Node obj) {
     GLib.DateTime now = new GLib.DateTime.now_local ();
     Tweet t = new Tweet();
     t.load_from_json (obj, now, account);
@@ -85,8 +85,10 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
     tweet_list.model.add (t);
 
     if (!t.is_hidden) {
+      /* We need to balance even if we don't scroll up, in case
+         auto-scroll-on-new-tweets is disabled */
+      this.balance_next_upper_change (TOP);
       if (auto_scroll) {
-        this.balance_next_upper_change (TOP);
         base.scroll_up (t);
       }
 
@@ -125,8 +127,7 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
                                 "%d new Tweets!", unread_count).printf (unread_count);
       account.notifications.send (summary, "");
     }
-  } // }}}
-
+  }
 
   public void hide_tweets_from (int64 user_id, TweetState reason) {
     TweetModel tm = (TweetModel) tweet_list.model;
