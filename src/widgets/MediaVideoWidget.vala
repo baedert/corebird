@@ -150,7 +150,7 @@ class MediaVideoWidget : Gtk.Stack {
         int percent;
         msg.parse_buffering (out percent);
         debug ("Buffering: %d%%", percent);
-        this.surface_progress.progress = percent / 100.0;
+        this.surface_progress.progress = double.max (percent / 100.0, this.surface_progress.progress);
         if (percent == 100) {
           debug ("Playing...");
           this.src.set_state (Gst.State.PLAYING);
