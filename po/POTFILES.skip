@@ -37,4 +37,5 @@ src/model/NotificationItem.c
 src/corebird-resources.c
 src/UserEventReceiver.c
 src/DefaultTimeline.c
+src/ITimeline.c
 data/org.baedert.corebird.desktop.in

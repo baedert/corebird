@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-12 20:28+0200\n"
+"POT-Creation-Date: 2016-05-21 08:50+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -40,7 +40,7 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: ../src/window/UserListDialog.vala:68
+#: ../src/window/UserListDialog.vala:69
 msgid "You have no lists."
 msgstr ""
 
@@ -68,31 +68,31 @@ msgstr ""
 msgid "Retry"
 msgstr ""
 
-#: ../src/widgets/AccountCreateWidget.vala:38
+#: ../src/widgets/AccountCreateWidget.vala:40
 msgid "Don't have an account yet?"
 msgstr ""
 
-#: ../src/widgets/AccountCreateWidget.vala:38
+#: ../src/widgets/AccountCreateWidget.vala:40
 msgid "Create one"
 msgstr ""
 
-#: ../src/widgets/AccountCreateWidget.vala:53
+#: ../src/widgets/AccountCreateWidget.vala:55
 msgid ""
 "Unauthorized. Most of the time, this means that there's something wrong with "
 "the Twitter servers and you should try again later"
 msgstr ""
 
-#: ../src/widgets/AccountCreateWidget.vala:65
+#: ../src/widgets/AccountCreateWidget.vala:67
 #, c-format
 msgid "Could not open %s"
 msgstr ""
 
 #. We just assume that it was the wrong code
-#: ../src/widgets/AccountCreateWidget.vala:87
+#: ../src/widgets/AccountCreateWidget.vala:89
 msgid "Wrong PIN"
 msgstr ""
 
-#: ../src/widgets/AccountCreateWidget.vala:113
+#: ../src/widgets/AccountCreateWidget.vala:115
 msgid "Account already in use"
 msgstr ""
 
@@ -108,24 +108,24 @@ msgstr ""
 msgid "Unfollow"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:109
+#: ../src/HomeTimeline.vala:114
 #, c-format
 msgid "%s retweeted %s"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:112
+#: ../src/HomeTimeline.vala:117
 #, c-format
 msgid "%s tweeted"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:121
+#: ../src/HomeTimeline.vala:126
 #, c-format
 msgid "%d new Tweet!"
 msgid_plural "%d new Tweets!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/HomeTimeline.vala:172
+#: ../src/HomeTimeline.vala:161
 msgid "Home"
 msgstr ""
 
@@ -166,56 +166,56 @@ msgstr ""
 msgid "Tweet to @%s"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:284
+#: ../src/TweetInfoPage.vala:290
 msgid "Could not show tweet"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:460
+#: ../src/TweetInfoPage.vala:472
 msgid "Retweets"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:461 ../src/FavoritesTimeline.vala:85
-#: ../src/FavoritesTimeline.vala:89
+#: ../src/TweetInfoPage.vala:473 ../src/FavoritesTimeline.vala:67
+#: ../src/FavoritesTimeline.vala:71
 msgid "Favorites"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:469
+#: ../src/TweetInfoPage.vala:481
 msgid "Open in Browser"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:469
+#: ../src/TweetInfoPage.vala:481
 msgid "Source"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:509
+#: ../src/TweetInfoPage.vala:521
 msgid "Tweet Details"
 msgstr ""
 
-#: ../src/util/Utils.vala:190
+#: ../src/util/Utils.vala:195
 msgid "Now"
 msgstr ""
 
-#: ../src/util/Utils.vala:192
+#: ../src/util/Utils.vala:197
 #, c-format
 msgid "%dm"
 msgstr ""
 
-#: ../src/util/Utils.vala:196
+#: ../src/util/Utils.vala:201
 #, c-format
 msgid "%dh"
 msgstr ""
 
-#: ../src/SearchPage.vala:313 ../src/SearchPage.vala:322
+#: ../src/SearchPage.vala:330 ../src/SearchPage.vala:339
 #: ../ui/search-page.ui.h:1
 msgid "Search"
 msgstr ""
 
 #: ../src/MentionsTimeline.vala:91
 #, c-format
-msgid "@%s mentioned @%s"
+msgid "%s mentioned %s"
 msgstr ""
 
-#: ../src/MentionsTimeline.vala:116 ../src/MentionsTimeline.vala:120
+#: ../src/MentionsTimeline.vala:98 ../src/MentionsTimeline.vala:102
 msgid "Mentions"
 msgstr ""
 
@@ -223,7 +223,7 @@ msgstr ""
 msgid "Direct Conversation"
 msgstr ""
 
-#: ../src/ListStatusesPage.vala:361
+#: ../src/ListStatusesPage.vala:364
 msgid "List"
 msgstr ""
 
@@ -257,10 +257,14 @@ msgid_plural "Minimum height: %d pixels"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/window/SettingsDialog.vala:84
+#: ../src/window/SettingsDialog.vala:83
 msgid ""
 "Hey, check out this new #Corebird version! \\ (•◡•) / #cool "
 "#newisalwaysbetter"
+msgstr ""
+
+#: ../src/DefaultTimeline.vala:350
+msgid "Could not load tweets"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:1 ../ui/menus.ui.h:1
@@ -506,7 +510,7 @@ msgstr ""
 msgid "Request PIN"
 msgstr ""
 
-#: ../ui/account-create-widget.ui.h:4 ../ui/list-statuses-page.ui.h:12
+#: ../ui/account-create-widget.ui.h:4 ../ui/list-statuses-page.ui.h:13
 msgid "Confirm"
 msgstr ""
 
@@ -576,6 +580,10 @@ msgstr ""
 
 #: ../ui/list-statuses-page.ui.h:11
 msgid "Public"
+msgstr ""
+
+#: ../ui/list-statuses-page.ui.h:12
+msgid "Description"
 msgstr ""
 
 #: ../ui/modify-filter-dialog.ui.h:1
