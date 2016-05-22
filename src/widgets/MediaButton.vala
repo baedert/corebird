@@ -31,8 +31,12 @@ private class MediaButton : Gtk.Widget {
     set {
       _media = value;
       if (value != null) {
+        if (!media.loaded) {
           _media.notify["percent-loaded"].connect (this.queue_draw);
           _media.finished_loading.connect (fully_loaded_cb);
+        } else {
+          this.media_alpha = 1.0;
+        }
       }
       if (value != null && (value.type == MediaType.IMAGE ||
                             value.type == MediaType.GIF)) {
