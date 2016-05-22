@@ -32,7 +32,7 @@ private class MediaButton : Gtk.Widget {
       _media = value;
       if (value != null) {
           _media.notify["percent-loaded"].connect (this.queue_draw);
-          _media.finished_loading.connect (this.queue_resize);
+          _media.finished_loading.connect (fully_loaded_cb);
       }
       if (value != null && (value.type == MediaType.IMAGE ||
                             value.type == MediaType.GIF)) {
@@ -51,6 +51,8 @@ private class MediaButton : Gtk.Widget {
   private Pango.Layout layout;
   private Gtk.GestureMultiPress press_gesture;
   private bool restrict_height = false;
+  private int64 fade_start_time;
+  private double media_alpha = 0.0;
 
 
   public signal void clicked (MediaButton source);
@@ -90,6 +92,49 @@ private class MediaButton : Gtk.Widget {
     this.press_gesture.set_exclusive (true);
     this.press_gesture.set_button (0);
     this.press_gesture.pressed.connect (gesture_pressed_cb);
+  }
+
+  // Hah.
+  private void fully_loaded_cb () {
+    this.queue_resize ();
+    this.start_fade ();
+  }
+
+  private bool fade_in_cb (Gtk.Widget widget, Gdk.FrameClock frame_clock) {
+    if (!this.get_mapped ()) {
+      this.media_alpha = 1.0;
+      return GLib.Source.REMOVE;
+    }
+
+    int64 now = frame_clock.get_frame_time ();
+    double t = 1.0;
+    if (now < this.fade_start_time + TRANSITION_DURATION)
+      t = (now - fade_start_time) / (double)(TRANSITION_DURATION );
+
+    t = ease_out_cubic (t);
+
+    this.media_alpha = t;
+    this.queue_draw ();
+    if (t >= 1.0) {
+      this.media_alpha = 1.0;
+      return GLib.Source.REMOVE;
+    }
+
+    return GLib.Source.CONTINUE;
+  }
+
+  private void start_fade () {
+    assert (this.media != null);
+    assert (this.media.surface != null);
+
+    if (!this.get_realized () || !this.get_mapped () ||
+        !Gtk.Settings.get_default ().gtk_enable_animations) {
+      this.media_alpha = 1.0;
+      return;
+    }
+
+    this.fade_start_time = this.get_frame_clock ().get_frame_time ();
+    this.add_tick_callback (fade_in_cb);
   }
 
   private void get_draw_size (out int width,
@@ -132,7 +177,7 @@ private class MediaButton : Gtk.Widget {
 
       ct.scale (scale, scale);
       ct.set_source_surface (media.surface, draw_x / scale, 0);
-      ct.fill ();
+      ct.paint_with_alpha (this.media_alpha);
       ct.restore ();
 
       /* Draw play indicator */
@@ -141,7 +186,7 @@ private class MediaButton : Gtk.Widget {
         int y = (widget_height / 2) - (PLAY_ICON_SIZE / 2);
         ct.rectangle (x, y, PLAY_ICON_SIZE, PLAY_ICON_SIZE);
         ct.set_source_surface (play_icons[this.get_scale_factor () - 1], x, y);
-        ct.fill ();
+        ct.paint_with_alpha (this.media_alpha);
       }
 
       var sc = this.get_style_context ();
