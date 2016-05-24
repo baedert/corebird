@@ -128,7 +128,7 @@ class CompletionTextView : Gtk.TextView {
     return Corebird.snippet_manager.n_snippets () > 0;
   }
 
-  public bool key_press_event_cb (Gdk.EventKey evt) {
+  private bool key_press_event_cb (Gdk.EventKey evt) {
 
     if (evt.keyval == Gdk.Key.Tab && snippets_configured ()) {
       return insert_snippet ();
@@ -136,27 +136,27 @@ class CompletionTextView : Gtk.TextView {
 
     /* If we are not in 'completion mode' atm, just back out. */
     if (!completion_window.visible)
-      return false;
+      return Gdk.EVENT_PROPAGATE;
 
 
     int n_results = (int)completion_list.get_children ().length ();
 
     if (evt.keyval == Gdk.Key.Down) {
       if (n_results == 0)
-        return false;
+        return Gdk.EVENT_PROPAGATE;
 
       this.current_match = (current_match + 1) % n_results;
       var row = completion_list.get_row_at_index (current_match);
       completion_list.select_row (row);
 
-      return true;
+      return Gdk.EVENT_STOP;
     } else if (evt.keyval == Gdk.Key.Up) {
       current_match --;
       if (current_match < 0) current_match = n_results - 1;
       var row = completion_list.get_row_at_index (current_match);
       completion_list.select_row (row);
 
-      return true;
+      return Gdk.EVENT_STOP;
     } else if (evt.keyval == Gdk.Key.Return) {
       if (n_results == 0)
         return false;
@@ -167,14 +167,14 @@ class CompletionTextView : Gtk.TextView {
       insert_completion (compl.substring (1));
       current_match = -1;
       completion_window.hide ();
-      return true;
+      return Gdk.EVENT_STOP;
     } else if (evt.keyval == Gdk.Key.Escape) {
       completion_window.hide ();
-      return true;
+      return Gdk.EVENT_STOP;
     }
 
 
-    return false;
+    return Gdk.EVENT_PROPAGATE;
   }
 
   private void buffer_changed_cb () {
