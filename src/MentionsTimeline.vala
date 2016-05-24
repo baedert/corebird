@@ -88,7 +88,8 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
         else
           text = Utils.unescape_html (t.source_tweet.text);
 
-        string summary = _("%s mentioned %s").printf (t.user_name, account.name);
+        string summary = _("%s mentioned %s").printf (Utils.unescape_html (t.user_name),
+                                                      account.name);
         t.notification_id = account.notifications.send (summary, text);
       }
     }
