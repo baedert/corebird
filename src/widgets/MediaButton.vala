@@ -101,7 +101,9 @@ private class MediaButton : Gtk.Widget {
   // Hah.
   private void fully_loaded_cb () {
     this.queue_resize ();
-    this.start_fade ();
+
+    if (this.media != null && !this.media.invalid)
+      this.start_fade ();
   }
 
   private bool fade_in_cb (Gtk.Widget widget, Gdk.FrameClock frame_clock) {
