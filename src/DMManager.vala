@@ -100,6 +100,7 @@ class DMManager : GLib.Object {
     call.add_param ("skip_status", "true");
     call.add_param ("since_id", max_received_id.to_string ());
     call.add_param ("count", "200");
+    call.add_param ("full_text", "true");
     TweetUtils.load_threaded.begin (call, null, (obj, res) => {
       try {
         Json.Node? root = TweetUtils.load_threaded.end (res);
@@ -115,6 +116,7 @@ class DMManager : GLib.Object {
     sent_call.add_param ("skip_status", "true");
     sent_call.add_param ("since_id", max_sent_id.to_string ());
     sent_call.add_param ("count", "200");
+    sent_call.add_param ("full_text", "true");
     sent_call.set_method ("GET");
     TweetUtils.load_threaded.begin (sent_call, null, (obj, res) => {
       try {
