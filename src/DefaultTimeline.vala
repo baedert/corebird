@@ -92,6 +92,14 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
   public virtual void on_join (int page_id, Bundle? args) {
     if (!initialized) {
       load_newest ();
+
+      if (!Settings.auto_scroll_on_new_tweets ()) {
+        /* we are technically not scrolling up, but due to missing content,
+           we can't really not be scrolled up...
+         */
+        mark_seen (-1);
+      }
+
       account.user_stream.resumed.connect (stream_resumed_cb);
       initialized = true;
     }
