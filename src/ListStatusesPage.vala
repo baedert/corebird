@@ -89,13 +89,12 @@ class ListStatusesPage : ScrollWidget, IPage {
     if (evt.delta_y < 0 && this.vadjustment.value == 0) {
       int inc = (int)(vadjustment.step_increment * (-evt.delta_y));
       max_size_container.max_size += inc;
-      return true;
+      return Gdk.EVENT_STOP;
     }
-    return false;
+    return Gdk.EVENT_PROPAGATE;
   }
+
   /**
-   *
-   *
    * va_list params:
    *  - int64 list_id - The id of the list to show
    *  - string name - The lists's name
