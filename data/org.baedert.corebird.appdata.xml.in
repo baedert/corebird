@@ -5,6 +5,7 @@
   <name>Corebird</name>
   <summary>Twitter Client</summary>
   <metadata_license>CC0-1.0</metadata_license>
+  <translation type="gettext">corebird</translation>
   <description>
     <_p>
    Corebird is a native GTK+ twitter client that provides vital features such as Direct Messages (DMs), tweet notifications, conversation views.
@@ -21,11 +22,11 @@
     </screenshot>
     <screenshot height="450" width="800">
       <image>http://corebird.baedert.org/appdata/1.2/2.png</image>
-      <_caption>Typical Twitter profile.</_caption>
+      <_caption>Typical Twitter profile</_caption>
     </screenshot>
     <screenshot height="450" width="800">
       <image>http://corebird.baedert.org/appdata/1.2/3.png</image>
-      <_caption>Account settings like Name, Website, Description and Avatar can be configured.</_caption>
+      <_caption>Account settings can be configured</_caption>
     </screenshot>
   </screenshots>
   <update_contact>ryanlerch@fedoraproject.org</update_contact>
