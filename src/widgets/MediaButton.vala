@@ -185,6 +185,7 @@ private class MediaButton : Gtk.Widget {
       ct.set_source_surface (media.surface, draw_x / scale, 0);
       ct.paint_with_alpha (this.media_alpha);
       ct.restore ();
+      ct.new_path ();
 
       /* Draw play indicator */
       if (media.is_video ()) {
