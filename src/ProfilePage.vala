@@ -132,11 +132,13 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     followers_list.row_activated.connect ((row) => {
       var bundle = new Bundle ();
       bundle.put_int64 ("user_id", ((UserListEntry)row).user_id);
+      bundle.put_string ("screen_name", ((UserListEntry)row).screen_name);
       main_window.main_widget.switch_page (Page.PROFILE, bundle);
     });
     following_list.row_activated.connect ((row) => {
       var bundle = new Bundle ();
       bundle.put_int64 ("user_id", ((UserListEntry)row).user_id);
+      bundle.put_string ("screen_name", ((UserListEntry)row).screen_name);
       main_window.main_widget.switch_page (Page.PROFILE, bundle);
     });
 
