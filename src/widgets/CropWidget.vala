@@ -191,9 +191,9 @@ class CropWidget : Gtk.DrawingArea {
     if (!resize_area_grabbed)
       return;
 
-    int max_width = MIN (image_rect.width,
-                         MIN ((int)(image_rect.width),
-                              (int)(image_rect.height * desired_aspect_ratio)));
+    int max_width = int.min (image_rect.width,
+                             int.min ((int)(image_rect.width),
+                                      (int)(image_rect.height * desired_aspect_ratio)));
 
     int new_width  = (int)x - selection_rect.x - resize_diff_x;
     int new_height = (int)(new_width / desired_aspect_ratio);
@@ -341,12 +341,6 @@ class CropWidget : Gtk.DrawingArea {
     }
 
     return false;
-  }
-
-  private inline int MIN (int a, int b) {
-    if (a < b)
-      return a;
-    return b;
   }
 
   public Gdk.Pixbuf get_cropped_image () {
