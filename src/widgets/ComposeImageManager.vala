@@ -150,8 +150,26 @@ class ComposeImageManager : Gtk.Container {
       nat = int.max (n, nat);
     }
 
-    minimum = min;
-    natural = nat;
+    /* We subtract BUTTON_DELTA in size_allocate again */
+    minimum = min + BUTTON_DELTA;
+    natural = nat + BUTTON_DELTA;
+  }
+
+  public override void get_preferred_height (out int minimum,
+                                             out int natural) {
+    int min = 0;
+    int nat = 0;
+    for (int i = 0; i < buttons.length; i ++) {
+      var btn = buttons.get (i);
+      int m, n;
+      btn.get_preferred_height (out m, out n);
+      min = int.max (m, min);
+      nat = int.max (n, nat);
+    }
+
+    /* We subtract BUTTON_DELTA in size_allocate again */
+    minimum = min + BUTTON_DELTA;
+    natural = nat + BUTTON_DELTA;
   }
 
   public override void get_preferred_width (out int minimum,
