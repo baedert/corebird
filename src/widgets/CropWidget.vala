@@ -239,7 +239,7 @@ class CropWidget : Gtk.DrawingArea {
 
   public override bool draw (Cairo.Context ct) {
     if (image == null)
-      return false;
+      return Gdk.EVENT_PROPAGATE;
 
     int widget_width  = get_allocated_width ();
     int widget_height = get_allocated_height ();
@@ -279,7 +279,7 @@ class CropWidget : Gtk.DrawingArea {
       ct.set_source_rgba (1.0, 1.0, 1.0, 0.7);
     ct.fill ();
 
-    return true;
+    return Gdk.EVENT_PROPAGATE;
   }
 
   private inline void set_cursor (Gdk.Cursor cursor) {
