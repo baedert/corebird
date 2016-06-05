@@ -250,14 +250,12 @@ class UserListsWidget : Gtk.Box {
     }
   }
 
-  public TwitterList[] get_user_lists () { // {{{
+  public TwitterList[] get_user_lists () {
     GLib.List<weak Gtk.Widget> children = user_list_box.get_children ();
-    TwitterList[] lists = new TwitterList[children.length () - 1];
+    TwitterList[] lists = new TwitterList[children.length ()];
     int i = 0;
     foreach (Gtk.Widget w in children) {
-      if (!(w is ListListEntry))
-        continue;
-
+      assert (w is ListListEntry);
       var lle = (ListListEntry) w;
       lists[i].id = lle.id;
       lists[i].name = lle.name;
@@ -267,7 +265,7 @@ class UserListsWidget : Gtk.Box {
       i ++;
     }
     return lists;
-  } // }}}
+  }
 
   public void clear_lists () {
     user_list_box.foreach ((w) => { user_list_box.remove (w);});
