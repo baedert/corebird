@@ -30,20 +30,63 @@
         <property name="label_xalign">0</property>
         <property name="shadow_type">in</property>
         <property name="margin_top">24</property>
+
         <child>
-              <object class="GtkListBox" id="user_list_box">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="selection_mode">none</property>
+          <object class="GtkBox">
+            <property name="visible">true</property>
+            <property name="orientation">vertical</property>
+
+            <child>
+              <object class="GtkListBox" id="new_list_box">
+                <property name="visible">true</property>
+                <property name="can_focus">false</property>
+                <property name="selection-mode">none</property>
                 <signal name="row-activated" handler="row_activated" swapped="no" />
+                <signal name="keynav-failed" handler="new_list_box_keynav_failed_cb" />
                 <child>
                   <object class="NewListEntry" id="new_list_entry">
                     <signal name="create_activated" handler="new_list_create_activated_cb" swapped="no" />
                   </object>
                 </child>
               </object>
+            </child>
+
+            <child>
+              <object class="GtkRevealer" id="user_lists_revealer">
+                <property name="visible">false</property>
+                <property name="transition-type">slide-down</property>
+                <signal name="notify::child-revealed" handler="revealer_child_revealed_cb" />
+
+                <child>
+                  <object class="GtkBox">
+                    <property name="visible">true</property>
+                    <property name="orientation">vertical</property>
+
+                    <child>
+                      <object class="GtkSeparator" id="upper_separator">
+                        <property name="visible">true</property>
+                        <property name="orientation">horizontal</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkListBox" id="user_list_box">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="selection_mode">none</property>
+                        <signal name="row-activated" handler="row_activated" swapped="no" />
+                        <signal name="keynav-failed" handler="user_list_box_keynav_failed_cb" />
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+
+
+          </object>
         </child>
-      </object>
+
+       </object>
       <packing>
         <property name="expand">False</property>
         <property name="fill">True</property>
@@ -83,6 +126,7 @@
             <property name="can_focus">False</property>
             <property name="selection_mode">none</property>
             <signal name="row-activated" handler="row_activated" swapped="no" />
+            <signal name="keynav-failed" handler="subscribed_list_box_keynav_failed_cb" />
           </object>
         </child>
       </object>
