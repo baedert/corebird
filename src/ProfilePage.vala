@@ -183,6 +183,9 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     set_retweets_disabled ((fr & FRIENDSHIP_FOLLOWING) > 0 &&
                            (fr & FRIENDSHIP_WANT_RETWEETS) == 0);
 
+    if ((fr & FRIENDSHIP_CAN_DM) == 0)
+      ((SimpleAction)actions.lookup_action ("write-dm")).set_enabled (false);
+
     ((SimpleAction)actions.lookup_action ("toggle-retweets")).set_enabled ((fr & FRIENDSHIP_FOLLOWING) > 0);
   }
 
