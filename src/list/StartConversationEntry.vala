@@ -175,30 +175,43 @@ class StartConversationEntry : Gtk.ListBoxRow {
         parser.load_from_data (call.get_payload ());
       } catch (GLib.Error e) {
         critical (e.message);
+        go_stack.visible_child_name = "button";
+        name_entry.sensitive = true;
         return;
       }
       var root = parser.get_root ().get_object ();
       int64 user_id = root.get_int_member ("id");
-      string name = root.get_string_member ("name");
-      string avatar_url = root.get_string_member ("profile_image_url");
-      start (user_id, screen_name, name, avatar_url);
 
-      name_entry.sensitive = true;
-      go_stack.visible_child_name = "button";
+      UserUtils.load_friendship.begin (account, user_id, (obj, res) => {
+        uint fr = UserUtils.load_friendship.end (res);
+
+        if ((fr & FRIENDSHIP_CAN_DM) == 0) {
+          go_stack.visible_child_name = "button";
+          name_entry.sensitive = true;
+          return;
+        }
+
+        string name = root.get_string_member ("name");
+        string avatar_url = root.get_string_member ("profile_image_url");
+        start (user_id, screen_name, name, avatar_url);
+
+        name_entry.sensitive = true;
+        go_stack.visible_child_name = "button";
+      });
     });
   }
 }
 
 
 class CompletionListEntry : Gtk.ListBoxRow {
-  private Gtk.Label name_label = new Gtk.Label ("");
-  private Gtk.Label screen_name_label = new Gtk.Label ("");
+  private Gtk.Label name_label;
+  private Gtk.Label screen_name_label;
 
   public CompletionListEntry (string screen_name, string name) {
     var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
-    name_label.label = name;
+    name_label = new Gtk.Label (name);
     name_label.ellipsize = Pango.EllipsizeMode.END;
-    screen_name_label.label = "@" + screen_name;
+    screen_name_label = new Gtk.Label ("@" + screen_name);
     name_label.set_valign (Gtk.Align.BASELINE);
     screen_name_label.set_valign (Gtk.Align.BASELINE);
     screen_name_label.get_style_context ().add_class ("dim-label");
