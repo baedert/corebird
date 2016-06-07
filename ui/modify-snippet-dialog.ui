@@ -8,6 +8,7 @@
     <property name="type_hint">dialog</property>
     <property name="destroy_with_parent">True</property>
     <property name="default_width">300</property>
+    <property name="default_height">20</property>
 
 
     <child type="action">
