@@ -171,9 +171,7 @@ private class MediaButton : Gtk.Widget {
 
     /* Draw thumbnail */
     if (_media != null && _media.surface != null && _media.loaded) {
-      ct.save ();
 
-      ct.rectangle (0, 0, widget_width, widget_height);
 
       int draw_width, draw_height;
       double scale;
@@ -181,6 +179,8 @@ private class MediaButton : Gtk.Widget {
 
       int draw_x = (widget_width / 2) - (draw_width / 2);
 
+      ct.save ();
+      ct.rectangle (0, 0, widget_width, widget_height);
       ct.scale (scale, scale);
       ct.set_source_surface (media.surface, draw_x / scale, 0);
       ct.paint_with_alpha (this.media_alpha);
@@ -191,9 +191,13 @@ private class MediaButton : Gtk.Widget {
       if (media.is_video ()) {
         int x = (widget_width  / 2) - (PLAY_ICON_SIZE / 2);
         int y = (widget_height / 2) - (PLAY_ICON_SIZE / 2);
+
+        ct.save ();
         ct.rectangle (x, y, PLAY_ICON_SIZE, PLAY_ICON_SIZE);
         ct.set_source_surface (play_icons[this.get_scale_factor () - 1], x, y);
         ct.paint_with_alpha (this.media_alpha);
+        ct.restore ();
+        ct.new_path ();
       }
 
       var sc = this.get_style_context ();
