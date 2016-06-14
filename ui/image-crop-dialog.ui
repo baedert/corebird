@@ -1,30 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <template class="ImageCropDialog" parent="GtkDialog">
-    <property name="type_hint">dialog</property>
-    <property name="destroy_with_parent">true</property>
-
+    <property name="type-hint">dialog</property>
+    <property name="destroy-with-parent">true</property>
     <!-- Main Stack -->
     <child internal-child="vbox">
       <object class="GtkBox">
-        <property name="visible">true</property>
-        <property name="border_width">0</property>
-
+        <property name="visible">1</property>
         <child>
           <object class="GtkStack" id="stack">
-            <property name="visible">true</property>
-            <property name="transition_type">slide-left-right</property>
-
+            <property name="visible">1</property>
+            <property name="transition-type">slide-left-right</property>
             <child>
               <object class="GtkFileChooserWidget" id="file_chooser">
-                <property name="visible">true</property>
-                <property name="vexpand">true</property>
-                <signal name="file_activated" handler="next" />
-                <signal name="selection_changed" handler="selection_changed_cb" />
+                <property name="visible">1</property>
+                <property name="vexpand">1</property>
+                <signal name="file_activated" handler="next"/>
+                <signal name="selection_changed" handler="selection_changed_cb"/>
               </object>
             </child>
-
-
             <child>
               <object class="CropWidget" id="crop_widget">
                 <property name="visible">true</property>
@@ -34,70 +28,53 @@
                 <property name="halign">fill</property>
               </object>
             </child>
-
-
             <child>
               <object class="GtkLabel" id="error_label">
-                <property name="visible">true</property>
-                <property name="can_focus">false</property>
-                <property name="wrap">true</property>
+                <property name="visible">1</property>
+                <property name="wrap">1</property>
                 <property name="margin">24</property>
               </object>
             </child>
           </object>
         </child>
-
       </object>
     </child>
-
-
-
-
     <child type="action">
       <object class="GtkButton" id="cancel_button">
-         <property name="visible">true</property>
-         <property name="label" translatable="yes">Cancel</property>
+        <property name="visible">1</property>
+        <property name="label" translatable="yes">Cancel</property>
       </object>
     </child>
-
     <!--
          We use both <child type="action"> AND the action
          area because of https://bugzilla.gnome.org/show_bug.cgi?id=740205
       -->
     <child internal-child="action_area">
       <object class="GtkBox">
-        <property name="orientation">horizontal</property>
-        <property name="margin_bottom">6</property>
-        <property name="margin_end">6</property>
-        <property name="margin_top">6</property>
+        <property name="margin-bottom">6</property>
+        <property name="margin-end">6</property>
+        <property name="margin-top">6</property>
         <child>
           <object class="GtkButton" id="next_button">
-            <property name="visible">true</property>
+            <property name="visible">1</property>
             <property name="label" translatable="yes">Next</property>
-            <property name="sensitive">false</property>
-            <property name="can_default">true</property>
+            <property name="sensitive">0</property>
+            <property name="can-default">1</property>
           </object>
         </child>
       </object>
     </child>
-
-
     <child type="action">
       <object class="GtkButton" id="back_button">
-        <property name="visible">true</property>
+        <property name="visible">1</property>
         <property name="label" translatable="yes">Back</property>
-        <property name="sensitive">false</property>
+        <property name="sensitive">0</property>
       </object>
     </child>
-
-
-
-
     <action-widgets>
       <action-widget response="cancel">cancel_button</action-widget>
       <action-widget response="1">back_button</action-widget>
       <action-widget response="ok" default="true">next_button</action-widget>
     </action-widgets>
-
   </template>
 </interface>

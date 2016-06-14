@@ -1,161 +1,138 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-
   <object class="GtkSizeGroup">
-    <property name="ignore_hidden">False</property>
     <widgets>
-      <widget name="delete_button" />
-      <widget name="cancel_button" />
+      <widget name="delete_button"/>
+      <widget name="cancel_button"/>
     </widgets>
   </object>
-
   <template class="UserFilterEntry" parent="GtkListBoxRow">
     <property name="visible">True</property>
-    <property name="can_focus">True</property>
+    <property name="can-focus">True</property>
     <property name="activatable">false</property>
-
     <child>
       <object class="GtkRevealer" id="revealer">
-        <property name="visible">true</property>
-        <property name="can_focus">false</property>
-        <property name="reveal_child">true</property>
-
+        <property name="visible">1</property>
+        <property name="reveal-child">1</property>
         <child>
           <object class="GtkStack" id="stack">
-            <property name="visible">true</property>
-            <property name="can_focus">false</property>
-            <property name="transition_type">slide-up-down</property>
+            <property name="visible">1</property>
+            <property name="transition-type">slide-up-down</property>
             <property name="margin">3</property>
-
             <child>
               <object class="GtkGrid" id="grid">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-
+                <property name="visible">1</property>
                 <child>
                   <object class="AvatarWidget" id="avatar_image">
                     <property name="visible">true</property>
-                    <property name="width_request">48</property>
-                    <property name="height_request">48</property>
+                    <property name="width-request">48</property>
+                    <property name="height-request">48</property>
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="valign">center</property>
-                    <property name="margin_end">11</property>
-                    <property name="margin_start">3</property>
-                    <property name="margin_top">3</property>
-                    <property name="margin_bottom">3</property>
+                    <property name="margin-end">11</property>
+                    <property name="margin-start">3</property>
+                    <property name="margin-top">3</property>
+                    <property name="margin-bottom">3</property>
                   </object>
                   <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">0</property>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">0</property>
                     <property name="height">2</property>
                   </packing>
                 </child>
-
                 <child>
                   <object class="GtkLabel" id="name_label">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="visible">1</property>
                     <property name="halign">start</property>
-                    <property name="margin_bottom">1</property>
+                    <property name="margin-bottom">1</property>
                     <property name="yalign">1</property>
-                    <property name="hexpand">True</property>
+                    <property name="hexpand">1</property>
                     <attributes>
-                      <attribute name="weight" value="bold" />
+                      <attribute name="weight" value="bold"/>
                     </attributes>
                   </object>
                   <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">0</property>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">0</property>
                   </packing>
                 </child>
-
                 <child>
                   <object class="GtkLabel" id="screen_name_label">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="visible">1</property>
                     <property name="halign">start</property>
-                    <property name="margin_top">1</property>
+                    <property name="margin-top">1</property>
                     <property name="yalign">0</property>
-                    <property name="hexpand">True</property>
+                    <property name="hexpand">1</property>
                     <style>
                       <class name="dim-label"/>
                     </style>
                   </object>
                   <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">1</property>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">1</property>
                   </packing>
                 </child>
-
                 <child>
                   <object class="GtkButton" id="menu_button">
-                    <property name="visible">True</property>
+                    <property name="visible">1</property>
                     <property name="halign">center</property>
                     <property name="valign">center</property>
                     <property name="relief">none</property>
-                    <property name="can_focus">True</property>
-                    <property name="tooltip_text" translatable="Yes">Remove this Filter</property>
-                    <signal name="clicked" handler="menu_button_clicked_cb" />
+                    <property name="can-focus">1</property>
+                    <property name="tooltip-text" translatable="Yes">Remove this Filter</property>
+                    <signal name="clicked" handler="menu_button_clicked_cb"/>
                     <style>
-                      <class name="image-button" />
+                      <class name="image-button"/>
                     </style>
                     <child>
                       <object class="GtkImage">
-                        <property name="visible">True</property>
-                        <property name="icon_name">list-remove-symbolic</property>
-                        <property name="icon_size">4</property>
+                        <property name="visible">1</property>
+                        <property name="icon-name">list-remove-symbolic</property>
                       </object>
                     </child>
                   </object>
                   <packing>
-                    <property name="left_attach">2</property>
-                    <property name="top_attach">0</property>
+                    <property name="left-attach">2</property>
+                    <property name="top-attach">0</property>
                     <property name="height">2</property>
                   </packing>
                 </child>
-
               </object>
             </child>
-
             <child>
               <object class="GtkBox" id="delete_box">
-                <property name="visible">true</property>
-                <property name="can_focus">false</property>
+                <property name="visible">1</property>
                 <property name="spacing">12</property>
-
                 <child>
                   <object class="GtkButton" id="cancel_button">
-                    <property name="visible">true</property>
-                    <property name="can_focus">true</property>
-                    <property name="hexpand">true</property>
+                    <property name="visible">1</property>
+                    <property name="can-focus">1</property>
+                    <property name="hexpand">1</property>
                     <property name="halign">end</property>
                     <property name="valign">center</property>
                     <property name="label" translatable="yes">Cancel</property>
-                    <signal name="clicked" handler="cancel_button_clicked_cb" />
+                    <signal name="clicked" handler="cancel_button_clicked_cb"/>
                   </object>
                 </child>
-
                 <child>
                   <object class="GtkButton" id="delete_button">
-                    <property name="visible">true</property>
-                    <property name="can_focus">true</property>
-                    <property name="hexpand">true</property>
+                    <property name="visible">1</property>
+                    <property name="can-focus">1</property>
+                    <property name="hexpand">1</property>
                     <property name="halign">start</property>
                     <property name="valign">center</property>
                     <property name="label" translatable="yes">Unblock</property>
-                    <signal name="clicked" handler="delete_button_clicked_cb" />
+                    <signal name="clicked" handler="delete_button_clicked_cb"/>
                     <style>
-                      <class name="destructive-action" />
+                      <class name="destructive-action"/>
                     </style>
                   </object>
                 </child>
               </object>
             </child>
-
           </object>
         </child>
-
       </object>
     </child>
   </template>

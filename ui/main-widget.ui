@@ -1,45 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <template class="MainWidget" parent="GtkBox">
-      <property name="visible">True</property>
-      <property name="can_focus">False</property>
-      <property name="orientation">vertical</property>
-      <child>
-        <object class="GtkRevealer" id="sidebar_revealer">
-          <property name="visible">True</property>
-          <property name="reveal_child">True</property>
-          <property name="can_focus">False</property>
-          <property name="transition_type">slide-up</property>
-          <property name="vexpand">false</property>
-
-          <child>
-            <object class="GtkBox" id="top_box">
-              <property name="visible">true</property>
-              <property name="can_focus">false</property>
-              <property name="orientation">horizontal</property>
-              <property name="halign">fill</property>
-              <property name="hexpand">true</property>
-              <property name="homogeneous">true</property>
-              <style>
-                <class name="topbar" />
-              </style>
-            </object>
-          </child>
-
-
-        </object>
-      </child>
-
-      <child>
-        <object class="GtkStack" id="stack">
-          <property name="visible">True</property>
-          <property name="can_focus">False</property>
-          <property name="vexpand">true</property>
-        </object>
-        <packing>
-          <property name="expand">False</property>
-          <property name="fill">True</property>
-        </packing>
-      </child>
+    <property name="visible">True</property>
+    <property name="can-focus">False</property>
+    <property name="orientation">vertical</property>
+    <child>
+      <object class="GtkRevealer" id="sidebar_revealer">
+        <property name="visible">1</property>
+        <property name="reveal-child">1</property>
+        <property name="transition-type">slide-up</property>
+        <child>
+          <object class="GtkBox" id="top_box">
+            <property name="visible">1</property>
+            <property name="hexpand">1</property>
+            <property name="homogeneous">1</property>
+            <style>
+              <class name="topbar"/>
+            </style>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkStack" id="stack">
+        <property name="visible">1</property>
+        <property name="vexpand">1</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+      </packing>
+    </child>
   </template>
 </interface>

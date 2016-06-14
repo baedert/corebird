@@ -2,109 +2,81 @@
 <interface>
   <template class="NewListEntry" parent="GtkListBoxRow">
     <property name="visible">True</property>
-    <property name="can_focus">True</property>
+    <property name="can-focus">True</property>
     <child>
       <object class="GtkBox">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="visible">1</property>
         <property name="orientation">vertical</property>
-        <property name="margin_top">4</property>
-        <property name="margin_bottom">4</property>
+        <property name="margin-top">4</property>
+        <property name="margin-bottom">4</property>
         <child>
           <object class="GtkBox">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="visible">1</property>
             <child>
               <object class="GtkImage">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="visible">1</property>
                 <property name="halign">end</property>
-                <property name="hexpand">True</property>
-                <property name="pixel_size">32</property>
-                <property name="icon_name">list-add-symbolic</property>
+                <property name="hexpand">1</property>
+                <property name="pixel-size">32</property>
+                <property name="icon-name">list-add-symbolic</property>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
             </child>
             <child>
               <object class="GtkLabel">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="visible">1</property>
                 <property name="halign">start</property>
-                <property name="margin_start">6</property>
-                <property name="hexpand">True</property>
+                <property name="margin-start">6</property>
+                <property name="hexpand">1</property>
                 <property name="label" translatable="yes">Create New List</property>
               </object>
               <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
                 <property name="position">1</property>
               </packing>
             </child>
           </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
         </child>
         <child>
           <object class="GtkRevealer" id="revealer">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="visible">1</property>
             <child>
               <object class="GtkBox">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="visible">1</property>
                 <property name="spacing">12</property>
-                <property name="margin_bottom">6</property>
+                <property name="margin-bottom">6</property>
                 <child>
                   <object class="GtkLabel">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="visible">1</property>
                     <property name="valign">baseline</property>
-                    <property name="margin_start">6</property>
+                    <property name="margin-start">6</property>
                     <property name="label" translatable="yes">Name:</property>
                   </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
-                  </packing>
                 </child>
                 <child>
                   <object class="GtkEntry" id="list_name_entry">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
+                    <property name="visible">1</property>
+                    <property name="can-focus">1</property>
                     <property name="valign">baseline</property>
-                    <property name="hexpand">True</property>
+                    <property name="hexpand">1</property>
                     <signal name="activate" handler="create_list_button_clicked_cb" swapped="no"/>
                   </object>
                   <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkButton" id="create_list_button">
                     <property name="label" translatable="yes">Create</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
+                    <property name="visible">1</property>
+                    <property name="can-focus">1</property>
+                    <property name="receives-default">1</property>
                     <property name="valign">baseline</property>
-                    <property name="margin_end">6</property>
+                    <property name="margin-end">6</property>
                     <style>
                       <class name="suggested-action"/>
                     </style>
                     <signal name="clicked" handler="create_list_button_clicked_cb" swapped="no"/>
                   </object>
                   <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
                     <property name="position">2</property>
                   </packing>
                 </child>
@@ -112,8 +84,6 @@
             </child>
           </object>
           <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
             <property name="position">1</property>
           </packing>
         </child>

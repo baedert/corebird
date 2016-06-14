@@ -1,60 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <object class="GtkPopover" id="account_popover">
-    <property name="modal">true</property>
     <property name="position">bottom</property>
-    <property name="relative_to">account_button</property>
-    <signal name="closed" handler="account_popover_closed_cb" />
+    <property name="relative-to">account_button</property>
+    <signal name="closed" handler="account_popover_closed_cb"/>
     <child>
       <object class="GtkFrame">
-        <property name="visible">true</property>
-        <property name="shadow_type">in</property>
+        <property name="visible">1</property>
+        <property name="shadow-type">in</property>
         <property name="margin">6</property>
         <child>
           <object class="GtkListBox" id="account_list">
-            <property name="visible">true</property>
-            <property name="activate_on_single_click">true</property>
-            <property name="selection_mode">none</property>
-            <signal name="row_activated" handler="account_row_activated_cb" swapped="no" />
+            <property name="visible">1</property>
+            <property name="selection-mode">none</property>
+            <signal name="row_activated" handler="account_row_activated_cb" swapped="no"/>
           </object>
         </child>
       </object>
     </child>
   </object>
-
-
   <template class="MainWindow" parent="GtkApplicationWindow">
-    <property name="can_focus">False</property>
+    <property name="can-focus">False</property>
     <property name="title">Corebird</property>
-    <property name="icon_name">corebird</property>
-    <property name="show_menubar">false</property>
+    <property name="icon-name">corebird</property>
+    <property name="show-menubar">false</property>
     <signal name="button-press-event" handler="button_press_event_cb" swapped="no"/>
-    <signal name="delete_event" handler="window_delete_cb" swapped="no" />
+    <signal name="delete_event" handler="window_delete_cb" swapped="no"/>
     <child type="titlebar">
       <object class="GtkHeaderBar" id="headerbar">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="visible">1</property>
         <property name="title">Corebird</property>
-        <property name="show_close_button">True</property>
+        <property name="show-close-button">1</property>
         <child type="title">
           <object class="GtkStack" id="title_stack">
-            <property name="visible">true</property>
-            <property name="hexpand">true</property>
+            <property name="visible">1</property>
+            <property name="hexpand">1</property>
             <child>
               <object class="GtkLabel" id="title_label">
-                <property name="visible">true</property>
+                <property name="visible">1</property>
                 <property name="ellipsize">middle</property>
                 <style>
-                  <class name="title" />
+                  <class name="title"/>
                 </style>
               </object>
             </child>
             <child>
               <object class="GtkLabel" id="last_page_label">
-                <property name="visible">true</property>
+                <property name="visible">1</property>
                 <property name="ellipsize">middle</property>
                 <style>
-                  <class name="title" />
+                  <class name="title"/>
                 </style>
               </object>
             </child>
@@ -62,71 +57,66 @@
         </child>
         <child>
           <object class="GtkBox" id="header_box">
-            <property name="visible">true</property>
-            <property name="can_focus">false</property>
+            <property name="visible">1</property>
             <property name="spacing">6</property>
-            <property name="no_show_all">true</property>
+            <property name="no-show-all">1</property>
             <child>
               <object class="GtkToggleButton" id="account_button">
-                <property name="visible">true</property>
-                <property name="tooltip_text" translatable="yes">Show configured accounts</property>
-                <signal name="clicked" handler="account_button_clicked_cb" />
+                <property name="visible">1</property>
+                <property name="tooltip-text" translatable="yes">Show configured accounts</property>
+                <signal name="clicked" handler="account_button_clicked_cb"/>
                 <style>
-                  <class name="account-button" />
+                  <class name="account-button"/>
                 </style>
                 <child>
-                <object class="AvatarWidget" id="avatar_image">
-                  <property name="visible">True</property>
-                  <property name="can_focus">False</property>
-                  <property name="valign">center</property>
-                  <property name="width_request">24</property>
-                  <property name="height_request">24</property>
+                  <object class="AvatarWidget" id="avatar_image">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="valign">center</property>
+                    <property name="width-request">24</property>
+                    <property name="height-request">24</property>
                   </object>
                 </child>
               </object>
             </child>
             <child>
               <object class="GtkToggleButton" id="compose_tweet_button">
-                <property name="visible">True</property>
-                <property name="tooltip_text" translatable="yes">Compose tweet</property>
-                <property name="can_focus">True</property>
-                <property name="always-show-image">True</property>
-                <property name="action_name">win.compose-tweet</property>
+                <property name="visible">1</property>
+                <property name="tooltip-text" translatable="yes">Compose tweet</property>
+                <property name="can-focus">1</property>
+                <property name="always-show-image">1</property>
+                <property name="action-name">win.compose-tweet</property>
                 <style>
-                  <class name="image-button" />
+                  <class name="image-button"/>
                 </style>
                 <child>
                   <object class="GtkImage" id="img">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="icon_name">corebird-compose-symbolic</property>
-                    <property name="icon_size">1</property>
+                    <property name="visible">1</property>
+                    <property name="icon-name">corebird-compose-symbolic</property>
+                    <property name="icon-size">1</property>
                   </object>
                 </child>
-                <accessibility>
-
-                </accessibility>
+                <accessibility/>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="a11y-compose_tweet_button1">
-                    <property name="AtkObject::accessible_name" translatable="yes">New tweet</property>
-                    </object>
+                    <property name="AtkObject::accessible-name" translatable="yes">New tweet</property>
+                  </object>
                 </child>
               </object>
             </child>
             <child>
               <object class="GtkButton" id="back_button">
-                <property name="visible">true</property>
-                <property name="can_focus">true</property>
-                <signal name="clicked" handler="back_button_clicked_cb" />
+                <property name="visible">1</property>
+                <property name="can-focus">1</property>
+                <signal name="clicked" handler="back_button_clicked_cb"/>
                 <style>
-                  <class name="image-button" />
+                  <class name="image-button"/>
                 </style>
                 <child>
                   <object class="GtkImage">
-                    <property name="visible">true</property>
-                    <property name="can_focus">false</property>
-                    <property name="icon_name">go-previous-symbolic</property>
-                    <property name="icon_size">1</property>
+                    <property name="visible">1</property>
+                    <property name="icon-name">go-previous-symbolic</property>
+                    <property name="icon-size">1</property>
                   </object>
                 </child>
               </object>
