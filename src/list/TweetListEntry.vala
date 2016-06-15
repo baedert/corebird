@@ -272,6 +272,10 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     switch(evt.keyval) {
       case Gdk.Key.k:
         stdout.printf (tweet.json_data+"\n");
+        message ("My retweet: %s", tweet.my_retweet.to_string ());
+        message ("Retweeted: %s", tweet.is_flag_set (TweetState.RETWEETED).to_string ());
+        message ("Favorited: %s", tweet.is_flag_set (TweetState.FAVORITED).to_string ());
+        message ("Protected: %s", tweet.is_flag_set (TweetState.PROTECTED).to_string ());
         return Gdk.EVENT_STOP;
     }
 #endif
