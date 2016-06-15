@@ -155,9 +155,9 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       quote_screen_name.label = "@" + tweet.quoted_tweet.author.screen_name;
     }
 
-    retweet_button.active = tweet.is_flag_set (TweetState.RETWEETED);
-    retweet_button.sensitive = (tweet.user_id != account.id) &&
-                               !tweet.is_flag_set (TweetState.PROTECTED);
+    retweet_button.active    =   tweet.is_flag_set (TweetState.RETWEETED);
+    retweet_button.sensitive = !(tweet.is_flag_set (TweetState.PROTECTED) &&
+                                 tweet.user_id != account.id);
 
     favorite_button.active = tweet.is_flag_set (TweetState.FAVORITED);
 
@@ -287,11 +287,11 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
    */
   [GtkCallback]
   private void retweet_button_toggled_cb () {
-    /* You can't retweet your own tweets. */
-    if (account.id == this.tweet.user_id || !values_set) {
-      retweet_button.active = false;
+    bool retweetable = tweet.user_id == account.id ||
+                       !tweet.is_flag_set (TweetState.PROTECTED);
+
+    if (!retweetable || !values_set)
       return;
-    }
 
     retweet_button.sensitive = false;
     TweetUtils.set_retweet_status.begin (account, tweet, retweet_button.active, () => {
