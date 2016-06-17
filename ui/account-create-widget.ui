@@ -11,7 +11,7 @@
     <property name="margin-end">20</property>
     <signal name="delete_event" handler="delete_event_cb" swapped="no"/>
     <child>
-      <object class="GtkLabel" id="label1">
+      <object class="GtkLabel">
         <property name="visible">1</property>
         <property name="label" translatable="yes">New Account</property>
         <attributes>
@@ -25,14 +25,14 @@
       </packing>
     </child>
     <child>
-      <object class="GtkBox" id="box2">
+      <object class="GtkBox">
         <property name="visible">1</property>
         <property name="halign">center</property>
         <property name="margin-top">35</property>
         <property name="orientation">vertical</property>
         <property name="spacing">6</property>
         <child>
-          <object class="GtkBox" id="box3">
+          <object class="GtkBox">
             <property name="visible">1</property>
             <child>
               <object class="GtkLabel" id="label2">
@@ -58,7 +58,7 @@
           </object>
         </child>
         <child>
-          <object class="GtkBox" id="box4">
+          <object class="GtkBox">
             <property name="visible">1</property>
             <child>
               <object class="GtkButton" id="request_pin_button">
