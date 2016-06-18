@@ -6,7 +6,8 @@ AM_CPPFLAGS = \
 	-DPKGDATADIR=\"$(pkgdatadir)\" \
 	-g \
 	-O0 \
-	-Wno-inline
+	-Wno-inline \
+	-D DEBUG
 
 AM_VALAFLAGS = \
 	--enable-checking \

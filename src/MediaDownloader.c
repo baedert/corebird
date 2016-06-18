@@ -25,7 +25,8 @@ G_DEFINE_TYPE (CbMediaDownloader, cb_media_downloader, G_TYPE_OBJECT);
 CbMediaDownloader *
 cb_media_downloader_get_default (void)
 {
-  static CbMediaDownloader *d;
+  static CbMediaDownloader *d = NULL;
+
   if (G_UNLIKELY (d == NULL))
     {
       d = CB_MEDIA_DOWNLOADER (g_object_new (CB_TYPE_MEDIA_DOWNLOADER, NULL));

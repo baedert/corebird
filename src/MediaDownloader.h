@@ -30,7 +30,6 @@ struct _CbMediaDownloader
   GObject parent_instance;
 
   SoupSession *soup_session;
-  GPtrArray   *downloading_media;
 };
 
 typedef struct _CbMediaDownloader CbMediaDownloader;
