@@ -43,10 +43,10 @@ namespace Cb {
   }
 
   /* Needed for unit tests */
-  [CCode (cprefix = "CbTexMediaDownloader", lower_case_cprefix = "cb_media_downloader_",
+  [CCode (cprefix = "CbMediaDownloader", lower_case_cprefix = "cb_media_downloader_",
           cheader_filename = "MediaDownloader.h")]
   public struct MediaDownloader {
-    static MediaDownloader get_default ();
+    public static MediaDownloader get_default ();
     public async void load_async (Media media);
   }
 

@@ -30,7 +30,9 @@ TESTS = \
 	tweetparsing \
 	filters \
 	texttransform \
-	avatardownload
+	avatardownload \
+	friends \
+	highlighting
 
 check_PROGRAMS = $(TESTS)
 
@@ -49,7 +51,7 @@ tests_VALASOURCES = \
 C_SOURCES = $(top_builddir)/src/Types.c \
 	$(top_builddir)/src/Media.c \
 	$(top_builddir)/src/MediaDownloader.c \
-	$(top_builddir)/src/TextTransform2.c
+	$(top_builddir)/src/TextTransform.c
 
 $(tests_VALASOURCES:.vala=.c): tests_vala.stamp
 
