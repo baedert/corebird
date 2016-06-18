@@ -1,5 +1,6 @@
 #include "TextTransform.h"
 #include "MediaDownloader.h"
+#include "Types.h"
 #include <string.h>
 #include <ctype.h>
 
@@ -163,13 +164,16 @@ cb_text_transform_text (const char   *text,
 
           if (entity->tooltip_text != NULL)
             {
+              char *c = escape_ampersand (entity->tooltip_text);
               g_string_append (str, " title=\"");
-              g_string_append (str, entity->tooltip_text); /* TODO: Replace & ! */
+              g_string_append (str, c);
               g_string_append (str, "\"");
+
+              g_free (c);
             }
 
           g_string_append (str, ">");
-          g_string_append (str, entity->display_text); /* TODO: Replace &!*/
+          g_string_append (str, entity->display_text);
           g_string_append (str,"</a></span>");
         }
 

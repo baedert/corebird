@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-static char *
+char *
 escape_ampersand (const char *in)
 {
   gsize bytes = strlen (in);
@@ -340,7 +340,7 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
       indices = json_object_get_array_member (url, "indices");
       t->entities[url_index].from = json_array_get_int_element (indices, 0);
       t->entities[url_index].to   = json_array_get_int_element (indices, 1);
-      t->entities[url_index].display_text = g_strdup (json_object_get_string_member (url, "display_url"));
+      t->entities[url_index].display_text = escape_ampersand (json_object_get_string_member (url, "display_url"));
       t->entities[url_index].tooltip_text = escape_ampersand (expanded_url);
       t->entities[url_index].target = g_strdup (expanded_url);
 
@@ -392,7 +392,7 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
 
           t->entities[url_index].from = json_array_get_int_element (indices, 0);
           t->entities[url_index].to   = json_array_get_int_element (indices, 1);
-          t->entities[url_index].display_text = g_strdup (json_object_get_string_member (url, "display_url"));
+          t->entities[url_index].display_text = escape_ampersand (json_object_get_string_member (url, "display_url"));
           t->entities[url_index].target = g_strdup (json_object_get_string_member (url, "url"));
 
           url_index ++;
