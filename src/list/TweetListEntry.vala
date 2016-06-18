@@ -149,8 +149,9 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
     if (tweet.quoted_tweet != null) {
       this.create_quote_grid ();
-      quote_label.label = TextTransform.transform_tweet (tweet.quoted_tweet,
-                                                         Settings.get_text_transform_flags ());
+      quote_label.label = Cb.TextTransform.tweet (ref tweet.quoted_tweet,
+                                                 Settings.get_text_transform_flags (),
+                                                 0);
       quote_name.set_markup (tweet.quoted_tweet.author.user_name);
       quote_screen_name.label = "@" + tweet.quoted_tweet.author.screen_name;
     }
@@ -218,8 +219,9 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   private void transform_flags_changed_cb () {
     text_label.label = tweet.get_trimmed_text ();
     if (this.tweet.quoted_tweet != null) {
-      this.quote_label.label = TextTransform.transform_tweet (tweet.quoted_tweet,
-                                                              Settings.get_text_transform_flags ());
+      this.quote_label.label = Cb.TextTransform.tweet (ref tweet.quoted_tweet,
+                                                       Settings.get_text_transform_flags (),
+                                                       0);
     }
   }
 
@@ -233,7 +235,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       this.media_stack.visible_child = mm_widget;
   }
 
-  private void media_clicked_cb (Media m, int index) {
+  private void media_clicked_cb (Cb.Media m, int index) {
     TweetUtils.handle_media_click (this.tweet, this.main_window, index);
   }
 
@@ -396,15 +398,20 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   }
 
   private void media_invalid_cb () {
-    TransformFlags flags = Settings.get_text_transform_flags ()
-                           & ~TransformFlags.REMOVE_MEDIA_LINKS;
-    string new_text = TextTransform.transform_tweet (tweet.retweeted_tweet ?? tweet.source_tweet,
-                                                     flags);
+    Cb.TransformFlags flags = Settings.get_text_transform_flags ()
+                              & ~Cb.TransformFlags.REMOVE_MEDIA_LINKS;
+
+    string new_text;
+    if (tweet.retweeted_tweet != null)
+      new_text = Cb.TextTransform.tweet (ref tweet.retweeted_tweet, flags, 0);
+    else
+      new_text = Cb.TextTransform.tweet (ref tweet.source_tweet, flags, 0);
+
     this.text_label.label = new_text;
 
     if (tweet.quoted_tweet != null) {
-      string new_quote_text = TextTransform.transform_tweet (tweet.quoted_tweet,
-                                                             flags);
+      string new_quote_text = Cb.TextTransform.tweet (ref tweet.quoted_tweet,
+                                                      flags, 0);
       this.quote_label.label = new_quote_text;
     }
   }

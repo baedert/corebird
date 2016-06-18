@@ -2,18 +2,10 @@
 void normal_download () {
   var url = "http://pbs.twimg.com/media/BiHRjmFCYAAEKFg.png";
   var main_loop = new GLib.MainLoop ();
-  var media = new Media ();
+  var media = new Cb.Media ();
   media.url = url;
-  Tweet t = new Tweet ();
-  t.source_tweet = new MiniTweet ();
-  t.source_tweet.id = 0;
-  t.source_tweet.author = UserIdentity ();
-  t.id = 0;
-  t.source_tweet.author.id = 1;
-  t.source_tweet.medias = new Media[1];
-  t.source_tweet.medias[0] = media;
 
-  InlineMediaDownloader.get ().load_media.begin (t.source_tweet, media, () => {
+  Cb.MediaDownloader.get_default ().load_async.begin (media, () => {
     main_loop.quit ();
   });
 
@@ -24,20 +16,10 @@ void normal_download () {
 void animation_download () {
   var main_loop = new GLib.MainLoop ();
   var url = "http://i.imgur.com/rgF0Czu.gif";
-  var media = new Media ();
+  var media = new Cb.Media ();
   media.url = url;
 
-  Tweet t = new Tweet ();
-  t.source_tweet = new MiniTweet ();
-  t.source_tweet.id = 100;
-  t.source_tweet.author = UserIdentity ();
-  t.id = 100;
-
-  t.source_tweet.author.id = 20;
-  t.source_tweet.medias = new Media[1];
-  t.source_tweet.medias[0] = media;
-
-  InlineMediaDownloader.get ().load_media.begin (t.source_tweet, media, () => {
+  Cb.MediaDownloader.get_default ().load_async.begin (media, () => {
     main_loop.quit ();
   });
 
@@ -47,54 +29,26 @@ void animation_download () {
 void download_twice () {
   var main_loop = new GLib.MainLoop ();
   var url = "http://pbs.twimg.com/media/BiHRjmFCYAAEKFg.png";
-  var media = new Media ();
+  var media = new Cb.Media ();
   media.url = url;
 
-  Tweet t = new Tweet ();
-  t.source_tweet = new MiniTweet ();
-  t.source_tweet.id = 300;
-  t.source_tweet.author = UserIdentity ();
-  t.id = 300;
-  t.source_tweet.author.id = 5;
-
-
-
-  t.source_tweet.medias = new Media[1];
-  t.source_tweet.medias[0] = media;
-
-  InlineMediaDownloader.get ().load_media.begin (t.source_tweet, media, () => {
-    InlineMediaDownloader.get ().load_media.begin (t.source_tweet, media, () => {
-      // NOTE: We are *not* deleting the just downloaded file here
+  Cb.MediaDownloader.get_default ().load_async.begin (media, () => {
+    Cb.MediaDownloader.get_default ().load_async.begin (media, () => {
       main_loop.quit ();
     });
   });
+
   main_loop.run ();
 }
 
 void no_thumbnail () {
   var main_loop = new GLib.MainLoop ();
   var url = "http://pbs.twimg.com/media/BiHRjmFCYAAEKFg.png";
-  var media = new Media ();
+  var media = new Cb.Media ();
   media.url = url;
 
-
-
-  Tweet t = new Tweet ();
-  t.source_tweet = new MiniTweet ();
-  t.source_tweet.id = 300;
-  t.source_tweet.author = UserIdentity ();
-  t.id = 300;
-  t.source_tweet.author.id = 5;
-
-  t.source_tweet.medias = new Media[1];
-  t.source_tweet.medias[0] = media;
-
-
-  InlineMediaDownloader.get ().load_media.begin (t.source_tweet, media, () => {
-    // Delete the thumbnail
-    // Download again
-    InlineMediaDownloader.get ().load_media.begin (t.source_tweet, media, () => {
-                                                   //assert (false);
+  Cb.MediaDownloader.get_default ().load_async.begin (media, () => {
+    Cb.MediaDownloader.get_default ().load_async.begin (media, () => {
       main_loop.quit ();
     });
   });
@@ -105,60 +59,13 @@ void no_thumbnail () {
 void no_media () {
   var main_loop = new GLib.MainLoop ();
   var url = "http://pbs.twimg.com/media/BiHRjmFCYAAEKFg.png";
-  var media = new Media ();
+  var media = new Cb.Media ();
   media.url = url;
 
-
-
-
-  Tweet t = new Tweet ();
-  t.source_tweet = new MiniTweet ();
-  t.source_tweet.id = 300;
-  t.source_tweet.author = UserIdentity ();
-  t.id = 300;
-  t.source_tweet.author.id = 5;
-
-  t.source_tweet.medias = new Media[1];
-  t.source_tweet.medias[0] = media;
-
-
-
-  InlineMediaDownloader.get ().load_media.begin (t.source_tweet, media, () => {
-    InlineMediaDownloader.get ().load_media.begin (t.source_tweet, media, () => {
+  Cb.MediaDownloader.get_default ().load_async.begin (media, () => {
+    Cb.MediaDownloader.get_default ().load_async.begin (media, () => {
       main_loop.quit ();
     });
-  });
-
-  main_loop.run ();
-}
-
-void too_big () {
-  var main_loop = new GLib.MainLoop ();
-  Settings.get ().set_double ("max-media-size", 0.0);
-  var url = "http://pbs.twimg.com/media/BiHRjmFCYAAEKFg.png";
-  var media = new Media ();
-  media.url = url;
-
-  Tweet t = new Tweet ();
-  t.source_tweet = new MiniTweet ();
-  t.source_tweet.id = 0;
-  t.source_tweet.author = UserIdentity ();
-  t.id = 0;
-  t.source_tweet.author.id = 1;
-
-  t.source_tweet.medias = new Media[1];
-  t.source_tweet.medias[0] = media;
-
-
-
-
-
-  InlineMediaDownloader.get ().load_media.begin (t.source_tweet, media, () => {
-    // gets set anyway
-    // should be marked invalid
-    assert (media.invalid);
-    main_loop.quit ();
-    Settings.get ().revert ();
   });
 
   main_loop.run ();
@@ -167,42 +74,33 @@ void too_big () {
 void double_download () {
   var main_loop = new GLib.MainLoop ();
   var url = "http://pbs.twimg.com/media/BiHRjmFCYAAEKFg.png";
-  var media = new Media ();
+  var media = new Cb.Media ();
   media.url = url;
-
-  Tweet t = new Tweet ();
-  t.source_tweet = new MiniTweet ();
-  t.source_tweet.id = 0;
-  t.source_tweet.author = UserIdentity ();
-  t.id = 0;
-  t.source_tweet.author.id = 1;
-
-  t.source_tweet.medias = new Media[1];
-  t.source_tweet.medias[0] = media;
-
-
-
 
   var collect_obj = new Collect (5);
 
-  InlineMediaDownloader.get ().load_media.begin (t.source_tweet, media, () => {
+  Cb.MediaDownloader.get_default ().load_async.begin (media, () => {
     assert (!media.invalid);
     collect_obj.emit ();
   });
 
-  InlineMediaDownloader.get ().load_media.begin (t.source_tweet, media, () => {
+  Cb.MediaDownloader.get_default ().load_async.begin (media, () => {
     assert (!media.invalid);
     collect_obj.emit ();
   });
-  InlineMediaDownloader.get ().load_media.begin (t.source_tweet, media, () => {
+
+
+  Cb.MediaDownloader.get_default ().load_async.begin (media, () => {
     assert (!media.invalid);
     collect_obj.emit ();
   });
-  InlineMediaDownloader.get ().load_media.begin (t.source_tweet, media, () => {
+
+  Cb.MediaDownloader.get_default ().load_async.begin (media, () => {
     assert (!media.invalid);
     collect_obj.emit ();
   });
-  InlineMediaDownloader.get ().load_media.begin (t.source_tweet, media, () => {
+
+  Cb.MediaDownloader.get_default ().load_async.begin (media, () => {
     assert (!media.invalid);
     collect_obj.emit ();
   });
@@ -230,8 +128,6 @@ int main (string[] args) {
   GLib.Test.add_func ("/media/no-thumbnail", no_thumbnail);
   GLib.Test.add_func ("/media/no-media", no_media);
   GLib.Test.add_func ("/media/double-download", double_download);
-  /* Keep this one at the bottom! */
-  GLib.Test.add_func ("/media/too-big", too_big);
 
   return GLib.Test.run ();
 }

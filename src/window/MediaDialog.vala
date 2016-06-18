@@ -32,13 +32,13 @@ class MediaDialog : Gtk.Window {
   private int cur_index = 0;
 
   public MediaDialog (Tweet tweet, int start_media_index) {
-    Media cur_media = tweet.medias[start_media_index];
+    Cb.Media cur_media = tweet.medias[start_media_index];
     this.tweet = tweet;
     this.cur_index = start_media_index;
     change_media (cur_media);
   }
 
-  private void change_media (Media media) {
+  private void change_media (Cb.Media media) {
     /* Remove the current child */
     var cur_child = frame.get_child ();
     int cur_width = 0, cur_height = 0,

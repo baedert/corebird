@@ -545,13 +545,13 @@ namespace TweetUtils {
     return result;
   }
 
-  public void sort_entities (ref TextEntity[] entities) {
+  public void sort_entities (ref Cb.TextEntity[] entities) {
     /* Just use bubblesort here. Our n is very small (< 15 maybe?) */
 
     for (int i = 0; i < entities.length; i ++) {
       for (int k = 0; k < entities.length; k ++) {
         if (entities[i].from < entities[k].from) {
-          TextEntity c = entities[i];
+          Cb.TextEntity c = entities[i];
           entities[i] = entities[k];
           entities[k] = c;
         }

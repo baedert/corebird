@@ -184,20 +184,21 @@ public class Account : GLib.Object {
 
     Json.Array desc_urls = root.get_object_member ("entities").get_object_member ("description")
                                                               .get_array_member ("urls");
-    var urls = new TextEntity[desc_urls.get_length ()];
+    var urls = new Cb.TextEntity[desc_urls.get_length ()];
     desc_urls.foreach_element ((arr, index, node) => {
       Json.Object obj = node.get_object ();
       Json.Array indices = obj.get_array_member ("indices");
-      urls[index] = TextEntity () {
-        from = (int)indices.get_int_element (0),
-        to   = (int)indices.get_int_element (1),
+      urls[index] = Cb.TextEntity () {
+        from = (uint)indices.get_int_element (0),
+        to   = (uint)indices.get_int_element (1),
         display_text = obj.get_string_member ("expanded_url"),
         target = null
       };
     });
-    this.description = TextTransform.transform (root.get_string_member ("description"),
-                                                urls,
-                                                TransformFlags.EXPAND_LINKS);
+    this.description = Cb.TextTransform.text (root.get_string_member ("description"),
+                                              urls,
+                                              Cb.TransformFlags.EXPAND_LINKS,
+                                              0, 0);
 
 
     if (root.has_member ("profile_banner_url"))

@@ -21,7 +21,7 @@ public class MediaImageWidget : Gtk.ScrolledWindow {
   private double dnd_x;
   private double dnd_y;
 
-  public MediaImageWidget (Media media) {
+  public MediaImageWidget (Cb.Media media) {
     this.image = new Gtk.Image ();
     Gtk.EventBox event_box = new Gtk.EventBox ();
     event_box.add (this.image);
@@ -29,7 +29,7 @@ public class MediaImageWidget : Gtk.ScrolledWindow {
     event_box.button_press_event.connect (event_box_button_press_cb);
     this.add (event_box);
 
-    if (media.type == MediaType.GIF) {
+    if (media.type == Cb.MediaType.GIF) {
       assert (media.animation != null);
       this.image.set_from_animation (media.animation);
     } else {

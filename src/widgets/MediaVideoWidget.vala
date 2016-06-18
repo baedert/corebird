@@ -27,27 +27,27 @@ class MediaVideoWidget : Gtk.Stack {
   private SurfaceProgress surface_progress;
   private string? media_url = null;
 
-  public MediaVideoWidget (Media media) {
+  public MediaVideoWidget (Cb.Media media) {
     this.cancellable = new GLib.Cancellable ();
     assert (media.surface != null);
     var image_surface = (Cairo.ImageSurface) media.surface;
     this.set_size_request (image_surface.get_width (), image_surface.get_height ());
 #if VIDEO
 
-    debug ("Media type: %s", media.type.to_string ());
+    debug ("Media type: %d", media.type);
 
     switch (media.type) {
-      case MediaType.TWITTER_VIDEO:
-      case MediaType.INSTAGRAM_VIDEO:
+      case Cb.MediaType.TWITTER_VIDEO:
+      case Cb.MediaType.INSTAGRAM_VIDEO:
         this.media_url = media.url;
         /* Video will be started in init() */
       break;
 
-      case MediaType.VINE:
+      case Cb.MediaType.VINE:
         fetch_real_url.begin (media.url, "<meta property=\"twitter:player:stream\" content=\"(.*?)\"");
       break;
 
-      case MediaType.ANIMATED_GIF:
+      case Cb.MediaType.ANIMATED_GIF:
         fetch_real_url.begin (media.url, "<source video-src=\"(.*?)\" type=\"video/mp4\"");
       break;
 

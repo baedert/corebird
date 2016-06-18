@@ -278,18 +278,18 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
       location = root.get_string_member("location");
     }
 
-    TextEntity[]? text_urls = null;
+    Cb.TextEntity[]? text_urls = null;
     if (root.has_member ("description")) {
       Json.Array urls = entities.get_object_member ("description").get_array_member ("urls");
-      text_urls = new TextEntity[urls.get_length ()];
+      text_urls = new Cb.TextEntity[urls.get_length ()];
       urls.foreach_element ((arr, i, node) => {
         var ent = node.get_object ();
         string expanded_url = ent.get_string_member ("expanded_url");
         expanded_url = expanded_url.replace ("&", "&amp;");
         Json.Array indices = ent.get_array_member ("indices");
-        text_urls[i] = TextEntity(){
-          from = (int)indices.get_int_element (0),
-          to   = (int)indices.get_int_element (1),
+        text_urls[i] = Cb.TextEntity(){
+          from = (uint)indices.get_int_element (0),
+          to   = (uint)indices.get_int_element (1),
           target = expanded_url,
           display_text = ent.get_string_member ("display_url")
         };
@@ -314,9 +314,11 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     string desc = description;
     if (text_urls != null) {
       TweetUtils.sort_entities (ref text_urls);
-      desc = TextTransform.transform (description,
-                                      text_urls,
-                                      0);
+      desc = Cb.TextTransform.text (description,
+                                    text_urls,
+                                    0,
+                                    0,
+                                    0);
     }
 
     this.follower_count = followers;

@@ -94,10 +94,12 @@ if test "$disable_video" = "no"; then
   CB_VALA_FLAGS="$CB_VALA_FLAGS \
                  -D VIDEO \
                  --pkg gstreamer-video-1.0"
+  CB_CFLAGS="$CB_CFLAGS -D VIDEO"
 fi
 
 if test "$enable_debug" = "yes"; then
   CB_VALA_FLAGS="$CB_VALA_FLAGS -D DEBUG -g"
+  CB_CFLAGS="$CB_CFLAGS -D DEBUG"
 fi
 
 

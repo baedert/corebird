@@ -83,23 +83,23 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
 
             var text = obj.get_string_member ("text");
             var urls = obj.get_object_member ("entities").get_array_member ("urls");
-            var url_list = new TextEntity[urls.get_length ()];
+            var url_list = new Cb.TextEntity[urls.get_length ()];
             urls.foreach_element((arr, index, node) => {
               var url = node.get_object();
               string expanded_url = url.get_string_member("expanded_url");
 
               Json.Array indices = url.get_array_member ("indices");
               expanded_url = expanded_url.replace("&", "&amp;");
-              url_list[index] = TextEntity() {
+              url_list[index] = Cb.TextEntity() {
                 from = (int)indices.get_int_element (0),
                 to   = (int)indices.get_int_element (1) ,
                 target = expanded_url,
                 display_text = url.get_string_member ("display_url")
               };
             });
-            e.text = TextTransform.transform (text,
-                                              url_list,
-                                              0);
+            e.text = Cb.TextTransform.text (text,
+                                            url_list,
+                                            0, 0, 0);
 
             e.id = dm_id;
             break;
@@ -115,23 +115,23 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
       var text = obj.get_string_member ("text");
       if (obj.has_member ("entities")) {
         var urls = obj.get_object_member ("entities").get_array_member ("urls");
-        var url_list = new TextEntity[urls.get_length ()];
+        var url_list = new Cb.TextEntity[urls.get_length ()];
         urls.foreach_element((arr, index, node) => {
           var url = node.get_object();
           string expanded_url = url.get_string_member("expanded_url");
 
           Json.Array indices = url.get_array_member ("indices");
-          url_list[index] = TextEntity() {
-            from = (int)indices.get_int_element (0),
-            to   = (int)indices.get_int_element (1) ,
+          url_list[index] = Cb.TextEntity() {
+            from = (uint)indices.get_int_element (0),
+            to   = (uint)indices.get_int_element (1) ,
             target = expanded_url.replace ("&", "&amp;"),
             tooltip_text = expanded_url,
             display_text = url.get_string_member ("display_url")
           };
         });
-        text = TextTransform.transform (text,
-                                        url_list,
-                                        0);
+        text = Cb.TextTransform.text (text,
+                                      url_list,
+                                      0, 0, 0);
       }
 
       var sender = obj.get_object_member ("sender");
