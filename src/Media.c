@@ -64,6 +64,8 @@ cb_media_init (CbMedia *media)
   media->surface = NULL;
   media->url     = NULL;
   media->percent_loaded = 0;
+  media->width = -1;
+  media->height = -1;
 }
 
 CbMedia *
