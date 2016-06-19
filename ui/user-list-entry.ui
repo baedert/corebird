@@ -2,148 +2,133 @@
 <interface>
   <template class="UserListEntry" parent="GtkListBoxRow">
     <property name="visible">True</property>
-    <property name="can_focus">True</property>
-
+    <property name="can-focus">True</property>
     <child>
       <object class="GtkGrid" id="grid">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="visible">1</property>
         <property name="margin">6</property>
-
         <child>
           <object class="AvatarWidget" id="avatar_image">
-            <property name="width_request">48</property>
-            <property name="height_request">48</property>
+            <property name="width-request">48</property>
+            <property name="height-request">48</property>
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="valign">center</property>
-            <property name="margin_end">8</property>
+            <property name="margin-end">8</property>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">0</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">0</property>
             <property name="height">2</property>
           </packing>
         </child>
-
         <child>
           <object class="GtkLabel" id="name_label">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="visible">1</property>
             <property name="halign">start</property>
-            <property name="margin_bottom">1</property>
-            <property name="margin_end">20</property>
+            <property name="margin-bottom">1</property>
+            <property name="margin-end">20</property>
             <property name="yalign">1</property>
             <attributes>
-              <attribute name="weight" value="bold" />
+              <attribute name="weight" value="bold"/>
             </attributes>
           </object>
           <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">0</property>
+            <property name="left-attach">1</property>
+            <property name="top-attach">0</property>
           </packing>
         </child>
-
         <child>
           <object class="GtkLabel" id="screen_name_label">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="visible">1</property>
             <property name="halign">start</property>
-            <property name="margin_top">1</property>
+            <property name="margin-top">1</property>
             <property name="yalign">0</property>
-            <property name="hexpand">True</property>
+            <property name="hexpand">1</property>
             <style>
               <class name="dim-label"/>
             </style>
           </object>
           <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">1</property>
+            <property name="left-attach">1</property>
+            <property name="top-attach">1</property>
           </packing>
         </child>
-
-
         <child>
           <object class="GtkButton" id="settings_button">
-            <property name="visible">true</property>
+            <property name="visible">1</property>
             <property name="valign">center</property>
             <property name="halign">end</property>
             <property name="relief">none</property>
-            <property name="margin_start">6</property>
-            <property name="margin_end">3</property>
-            <property name="tooltip_text" translatable="yes">Show settings of this account</property>
-            <signal name="clicked" handler="settings_button_clicked_cb" />
+            <property name="margin-start">6</property>
+            <property name="margin-end">3</property>
+            <property name="tooltip-text" translatable="yes">Show settings of this account</property>
+            <signal name="clicked" handler="settings_button_clicked_cb"/>
             <child>
               <object class="GtkImage">
-                <property name="visible">true</property>
-                <property name="icon_name">emblem-system-symbolic</property>
-                <property name="can_focus">false</property>
+                <property name="visible">1</property>
+                <property name="icon-name">emblem-system-symbolic</property>
               </object>
             </child>
             <style>
-              <class name="image-button" />
+              <class name="image-button"/>
             </style>
           </object>
           <packing>
-            <property name="left_attach">2</property>
-            <property name="top_attach">0</property>
+            <property name="left-attach">2</property>
+            <property name="top-attach">0</property>
             <property name="height">2</property>
           </packing>
         </child>
-
         <child>
           <object class="GtkButton" id="new_window_button">
-            <property name="visible">true</property>
+            <property name="visible">1</property>
             <property name="relief">none</property>
             <property name="valign">center</property>
-            <property name="margin_end">3</property>
-            <property name="margin_start">3</property>
-            <property name="tooltip_text" translatable="yes">Open in new window</property>
-            <signal name="clicked" handler="new_window_button_clicked_cb" />
+            <property name="margin-end">3</property>
+            <property name="margin-start">3</property>
+            <property name="tooltip-text" translatable="yes">Open in new window</property>
+            <signal name="clicked" handler="new_window_button_clicked_cb"/>
             <style>
-              <class name="image-button" />
+              <class name="image-button"/>
             </style>
             <child>
               <object class="GtkImage">
-                <property name="visible">true</property>
-                <property name="can_focus">false</property>
-                <property name="icon_name">corebird-new-window-symbolic</property>
+                <property name="visible">1</property>
+                <property name="icon-name">corebird-new-window-symbolic</property>
               </object>
             </child>
           </object>
           <packing>
-            <property name="left_attach">3</property>
-            <property name="top_attach">0</property>
+            <property name="left-attach">3</property>
+            <property name="top-attach">0</property>
             <property name="height">2</property>
           </packing>
         </child>
-
         <child>
           <object class="GtkButton" id="profile_button">
-            <property name="visible">true</property>
+            <property name="visible">1</property>
             <property name="relief">none</property>
             <property name="valign">center</property>
-            <property name="margin_start">3</property>
-            <property name="tooltip_text" translatable="yes">Go to profile</property>
-            <signal name="clicked" handler="profile_button_clicked_cb" />
+            <property name="margin-start">3</property>
+            <property name="tooltip-text" translatable="yes">Go to profile</property>
+            <signal name="clicked" handler="profile_button_clicked_cb"/>
             <style>
-              <class name="image-button" />
+              <class name="image-button"/>
             </style>
             <child>
               <object class="GtkImage">
-                <property name="visible">true</property>
-                <property name="can_focus">false</property>
-                <property name="icon_name">corebird-profile-symbolic</property>
+                <property name="visible">1</property>
+                <property name="icon-name">corebird-profile-symbolic</property>
               </object>
             </child>
           </object>
           <packing>
-            <property name="left_attach">4</property>
-            <property name="top_attach">0</property>
+            <property name="left-attach">4</property>
+            <property name="top-attach">0</property>
             <property name="height">2</property>
           </packing>
         </child>
-
       </object>
     </child>
   </template>

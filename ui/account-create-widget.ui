@@ -2,18 +2,17 @@
 <interface>
   <template class="AccountCreateWidget" parent="GtkBox">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
+    <property name="can-focus">False</property>
     <property name="halign">center</property>
     <property name="orientation">vertical</property>
-    <property name="margin_top">50</property>
-    <property name="margin_bottom">20</property>
-    <property name="margin_start">20</property>
-    <property name="margin_end">20</property>
-    <signal name="delete_event" handler="delete_event_cb" swapped="no" />
+    <property name="margin-top">50</property>
+    <property name="margin-bottom">20</property>
+    <property name="margin-start">20</property>
+    <property name="margin-end">20</property>
+    <signal name="delete_event" handler="delete_event_cb" swapped="no"/>
     <child>
-      <object class="GtkLabel" id="label1">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
+      <object class="GtkLabel">
+        <property name="visible">1</property>
         <property name="label" translatable="yes">New Account</property>
         <attributes>
           <attribute name="scale" value="3"/>
@@ -26,98 +25,70 @@
       </packing>
     </child>
     <child>
-      <object class="GtkBox" id="box2">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
+      <object class="GtkBox">
+        <property name="visible">1</property>
         <property name="halign">center</property>
-        <property name="margin_top">35</property>
+        <property name="margin-top">35</property>
         <property name="orientation">vertical</property>
         <property name="spacing">6</property>
         <child>
-          <object class="GtkBox" id="box3">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
+          <object class="GtkBox">
+            <property name="visible">1</property>
             <child>
               <object class="GtkLabel" id="label2">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="visible">1</property>
                 <property name="halign">end</property>
                 <property name="valign">baseline</property>
-                <property name="margin_end">8</property>
-                <property name="hexpand">True</property>
+                <property name="margin-end">8</property>
+                <property name="hexpand">1</property>
                 <property name="label" translatable="yes">PIN:</property>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
             </child>
             <child>
               <object class="GtkEntry" id="pin_entry">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="halign">fill</property>
+                <property name="visible">1</property>
+                <property name="can-focus">1</property>
                 <property name="valign">baseline</property>
-                <property name="hexpand">True</property>
-
+                <property name="hexpand">1</property>
               </object>
               <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
                 <property name="position">1</property>
               </packing>
             </child>
           </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
         </child>
         <child>
-          <object class="GtkBox" id="box4">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
+          <object class="GtkBox">
+            <property name="visible">1</property>
             <child>
               <object class="GtkButton" id="request_pin_button">
                 <property name="label" translatable="yes">Request PIN</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="margin_end">8</property>
-                <property name="hexpand">False</property>
+                <property name="visible">1</property>
+                <property name="can-focus">1</property>
+                <property name="receives-default">1</property>
+                <property name="margin-end">8</property>
                 <signal name="clicked" handler="request_pin_clicked_cb" swapped="no"/>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
             </child>
             <child>
               <object class="GtkButton" id="confirm_button">
                 <property name="label" translatable="yes">Confirm</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="hexpand">True</property>
-                <property name="sensitive">false</property>
+                <property name="visible">1</property>
+                <property name="can-focus">1</property>
+                <property name="receives-default">1</property>
+                <property name="hexpand">1</property>
+                <property name="sensitive">0</property>
                 <signal name="clicked" handler="confirm_button_clicked_cb" swapped="no"/>
                 <style>
                   <class name="suggested-action"/>
                 </style>
               </object>
               <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
                 <property name="position">1</property>
               </packing>
             </child>
           </object>
           <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
             <property name="position">1</property>
           </packing>
         </child>
@@ -130,14 +101,12 @@
     </child>
     <child>
       <object class="GtkLabel" id="error_label">
-        <property name="visible">false</property>
-        <property name="no_show_all">true</property>
-        <property name="can_focus">False</property>
-        <property name="margin_top">8</property>
-        <property name="use_markup">true</property>
-        <property name="wrap">True</property>
-        <property name="wrap_mode">word-char</property>
-        <property name="selectable">true</property>
+        <property name="no-show-all">1</property>
+        <property name="margin-top">8</property>
+        <property name="use-markup">1</property>
+        <property name="wrap">1</property>
+        <property name="wrap-mode">word-char</property>
+        <property name="selectable">1</property>
       </object>
       <packing>
         <property name="expand">False</property>
@@ -147,12 +116,11 @@
     </child>
     <child>
       <object class="GtkLabel" id="info_label">
-        <property name="visible">true</property>
-        <property name="can_focus">false</property>
-        <property name="margin_top">20</property>
-        <property name="use_markup">true</property>
+        <property name="visible">1</property>
+        <property name="margin-top">20</property>
+        <property name="use-markup">1</property>
         <style>
-          <class name="dim-label" />
+          <class name="dim-label"/>
         </style>
       </object>
       <packing>

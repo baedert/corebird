@@ -12,27 +12,23 @@
       </item>
     </section>
   </menu>
-
   <template class="TweetListEntry" parent="GtkListBoxRow">
-    <property name="visible">True</property>
-    <property name="can_focus">True</property>
-    <property name="no_show_all">true</property>
+    <property name="visible">1</property>
+    <property name="can-focus">1</property>
+    <property name="no-show-all">1</property>
     <style>
       <class name="tweet"/>
     </style>
-    <signal name="focus-out-event" handler="focus_out_cb" />
-    <signal name="key-release-event" handler="key_released_cb" />
-
+    <signal name="focus-out-event" handler="focus_out_cb"/>
+    <signal name="key-release-event" handler="key_released_cb"/>
     <child>
       <object class="GtkStack" id="stack">
-        <property name="visible">true</property>
-        <property name="can_focus">false</property>
-        <property name="visible_child">grid</property>
-        <property name="transition_type">crossfade</property>
-
+        <property name="visible">1</property>
+        <property name="visible-child">grid</property>
+        <property name="transition-type">crossfade</property>
         <child>
           <object class="GtkBox" id="action_box">
-            <property name="visible">true</property>
+            <property name="visible">1</property>
             <property name="spacing">12</property>
             <property name="halign">center</property>
             <child>
@@ -40,142 +36,132 @@
                 <property name="visible">true</property>
                 <property name="relief">none</property>
                 <property name="valign">center</property>
-                <property name="tooltip_text" translatable="true">Retweet</property>
-                <signal name="toggled" handler="retweet_button_toggled_cb" />
+                <property name="tooltip-text" translatable="true">Retweet</property>
+                <signal name="toggled" handler="retweet_button_toggled_cb"/>
                 <style>
-                  <class name="dim-label" />
-                  <class name="retweet-button" />
-                  <class name="image-button" />
+                  <class name="dim-label"/>
+                  <class name="retweet-button"/>
+                  <class name="image-button"/>
                 </style>
                 <child>
                   <object class="GtkImage">
-                    <property name="visible">true</property>
-                    <property name="pixel_size">16</property>
-                    <property name="icon_name">corebird-retweet-symbolic</property>
+                    <property name="visible">1</property>
+                    <property name="pixel-size">16</property>
+                    <property name="icon-name">corebird-retweet-symbolic</property>
                   </object>
                 </child>
               </object>
             </child>
-
             <child>
               <object class="GtkToggleButton" id="favorite_button">
-                <property name="visible">true</property>
+                <property name="visible">1</property>
                 <property name="relief">none</property>
                 <property name="valign">center</property>
-                <property name="tooltip_text" translatable="yes">Favorite</property>
-                <signal name="toggled" handler="favorite_button_toggled_cb" />
+                <property name="tooltip-text" translatable="yes">Favorite</property>
+                <signal name="toggled" handler="favorite_button_toggled_cb"/>
                 <style>
-                  <class name="dim-label" />
-                  <class name="favorite-button" />
-                  <class name="image-button" />
+                  <class name="dim-label"/>
+                  <class name="favorite-button"/>
+                  <class name="image-button"/>
                 </style>
                 <child>
                   <object class="GtkImage">
-                    <property name="visible">true</property>
-                    <property name="pixel_size">16</property>
-                    <property name="icon_name">emblem-favorite-symbolic</property>
+                    <property name="visible">1</property>
+                    <property name="pixel-size">16</property>
+                    <property name="icon-name">emblem-favorite-symbolic</property>
                   </object>
                 </child>
               </object>
             </child>
-
             <child>
               <object class="GtkButton" id="reply_button">
-                <property name="visible">true</property>
+                <property name="visible">1</property>
                 <property name="relief">none</property>
                 <property name="valign">center</property>
-                <property name="tooltip_text" translatable="yes">Reply</property>
-                <signal name="clicked" handler="reply_button_clicked_cb" />
+                <property name="tooltip-text" translatable="yes">Reply</property>
+                <signal name="clicked" handler="reply_button_clicked_cb"/>
                 <style>
-                  <class name="dim-label" />
-                  <class name="reply-button" />
-                  <class name="image-button" />
+                  <class name="dim-label"/>
+                  <class name="reply-button"/>
+                  <class name="image-button"/>
                 </style>
                 <child>
                   <object class="GtkImage">
-                    <property name="visible">true</property>
-                    <property name="pixel_size">16</property>
-                    <property name="icon_name">mail-replied-symbolic</property>
+                    <property name="visible">1</property>
+                    <property name="pixel-size">16</property>
+                    <property name="icon-name">mail-replied-symbolic</property>
                   </object>
                 </child>
               </object>
             </child>
-
             <child>
               <object class="LazyMenuButton" id="more_button">
                 <property name="visible">true</property>
                 <property name="relief">none</property>
                 <property name="valign">center</property>
-                <property name="menu_model">actions_menu</property>
+                <property name="menu-model">actions_menu</property>
                 <style>
-                  <class name="dim-label" />
-                  <class name="image-button" />
+                  <class name="dim-label"/>
+                  <class name="image-button"/>
                 </style>
                 <child>
                   <object class="GtkImage">
-                    <property name="visible">true</property>
-                    <property name="pixel_size">16</property>
-                    <property name="icon_name">go-down-symbolic</property>
+                    <property name="visible">1</property>
+                    <property name="pixel-size">16</property>
+                    <property name="icon-name">go-down-symbolic</property>
                   </object>
                 </child>
               </object>
             </child>
-
           </object>
         </child>
-
-
         <child>
           <object class="GtkGrid" id="grid">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="visible">1</property>
             <property name="margin">6</property>
             <child>
               <object class="AvatarWidget" id="avatar_image">
-                <property name="width_request">48</property>
-                <property name="height_request">48</property>
+                <property name="width-request">48</property>
+                <property name="height-request">48</property>
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="valign">start</property>
-                <property name="margin_end">12</property>
-                <property name="margin_top">4</property>
-                <property name="margin_bottom">4</property>
-                <property name="margin_start">4</property>
+                <property name="margin-end">12</property>
+                <property name="margin-top">4</property>
+                <property name="margin-bottom">4</property>
+                <property name="margin-start">4</property>
               </object>
               <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">0</property>
+                <property name="left-attach">0</property>
+                <property name="top-attach">0</property>
                 <property name="height">2</property>
               </packing>
             </child>
             <child>
               <object class="TextButton" id="name_button">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
                 <property name="halign">start</property>
                 <property name="valign">baseline</property>
-                <property name="margin_top">4</property>
-                <property name="margin_bottom">1</property>
+                <property name="margin-top">4</property>
+                <property name="margin-bottom">1</property>
                 <signal name="clicked" handler="name_button_clicked_cb" swapped="no"/>
               </object>
               <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">0</property>
-                <property name="width">1</property>
-                <property name="height">1</property>
+                <property name="left-attach">1</property>
+                <property name="top-attach">0</property>
               </packing>
             </child>
             <child>
               <object class="GtkLabel" id="screen_name_label">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="visible">1</property>
                 <property name="halign">start</property>
                 <property name="valign">baseline</property>
-                <property name="margin_start">6</property>
-                <property name="margin_end">4</property>
-                <property name="margin_top">4</property>
-                <property name="hexpand">True</property>
+                <property name="margin-start">6</property>
+                <property name="margin-end">4</property>
+                <property name="margin-top">4</property>
+                <property name="hexpand">1</property>
                 <property name="xalign">0</property>
                 <property name="ellipsize">end</property>
                 <style>
@@ -183,151 +169,132 @@
                 </style>
               </object>
               <packing>
-                <property name="left_attach">2</property>
-                <property name="top_attach">0</property>
+                <property name="left-attach">2</property>
+                <property name="top-attach">0</property>
               </packing>
             </child>
-
-
             <child>
               <object class="GtkImage" id="fav_status_image">
-                <property name="can_focus">false</property>
-                <property name="visible">false</property>
                 <property name="halign">end</property>
                 <property name="valign">center</property>
-                <property name="margin_end">6</property>
-                <property name="pixel_size">12</property>
-                <property name="icon_name">emblem-favorite-symbolic</property>
-                <property name="no_show_all">true</property>
+                <property name="margin-end">6</property>
+                <property name="pixel-size">12</property>
+                <property name="icon-name">emblem-favorite-symbolic</property>
+                <property name="no-show-all">1</property>
                 <style>
-                  <class name="dim-label" />
+                  <class name="dim-label"/>
                 </style>
               </object>
             </child>
-
-
             <child>
               <object class="GtkImage" id="rt_status_image">
-                <property name="can_focus">false</property>
-                <property name="visible">false</property>
                 <property name="halign">end</property>
                 <property name="valign">center</property>
-                <property name="margin_end">6</property>
-                <property name="pixel_size">12</property>
-                <property name="icon_name">corebird-retweet-symbolic</property>
-                <property name="no_show_all">true</property>
+                <property name="margin-end">6</property>
+                <property name="pixel-size">12</property>
+                <property name="icon-name">corebird-retweet-symbolic</property>
+                <property name="no-show-all">1</property>
                 <style>
-                  <class name="dim-label" />
+                  <class name="dim-label"/>
                 </style>
               </object>
             </child>
-
             <child>
               <object class="GtkImage" id="conversation_image">
-                <property name="can_focus">False</property>
-                <property name="no_show_all">True</property>
+                <property name="no-show-all">1</property>
                 <property name="halign">end</property>
                 <property name="valign">center</property>
-                <property name="margin_end">6</property>
-                <property name="pixel_size">12</property>
-                <property name="icon_name">corebird-conversation-symbolic</property>
+                <property name="margin-end">6</property>
+                <property name="pixel-size">12</property>
+                <property name="icon-name">corebird-conversation-symbolic</property>
                 <style>
                   <class name="dim-label"/>
                 </style>
               </object>
               <packing>
-                <property name="left_attach">5</property>
-                <property name="top_attach">0</property>
+                <property name="left-attach">5</property>
+                <property name="top-attach">0</property>
               </packing>
             </child>
             <child>
               <object class="GtkLabel" id="time_delta_label">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="visible">1</property>
                 <property name="halign">end</property>
                 <property name="valign">baseline</property>
-                <property name="margin_top">4</property>
-                <property name="margin_end">6</property>
+                <property name="margin-top">4</property>
+                <property name="margin-end">6</property>
                 <property name="lines">0</property>
                 <style>
                   <class name="dim-label"/>
                 </style>
               </object>
               <packing>
-                <property name="left_attach">6</property>
-                <property name="top_attach">0</property>
+                <property name="left-attach">6</property>
+                <property name="top-attach">0</property>
               </packing>
             </child>
             <child>
               <object class="GtkLabel" id="text_label">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="margin_end">6</property>
-                <property name="margin_bottom">4</property>
-                <property name="hexpand">True</property>
-                <property name="vexpand">True</property>
+                <property name="visible">1</property>
+                <property name="margin-end">6</property>
+                <property name="margin-bottom">4</property>
+                <property name="hexpand">1</property>
+                <property name="vexpand">1</property>
                 <property name="xalign">0</property>
                 <property name="yalign">0</property>
-                <property name="use_markup">True</property>
-                <property name="wrap">True</property>
-                <property name="wrap_mode">word-char</property>
-                <property name="track_visited_links">false</property>
-                <signal name="activate-link" handler="link_activated_cb" />
-                <signal name="populate-popup" handler="populate_popup_cb" />
+                <property name="use-markup">1</property>
+                <property name="wrap">1</property>
+                <property name="wrap-mode">word-char</property>
+                <property name="track-visited-links">0</property>
+                <signal name="activate-link" handler="link_activated_cb"/>
+                <signal name="populate-popup" handler="populate_popup_cb"/>
               </object>
               <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">1</property>
+                <property name="left-attach">1</property>
+                <property name="top-attach">1</property>
                 <property name="width">6</property>
               </packing>
             </child>
-
-           <child>
+            <child>
               <object class="GtkImage" id="rt_image">
-                <property name="can_focus">False</property>
-                <property name="no_show_all">True</property>
+                <property name="no-show-all">1</property>
                 <property name="halign">end</property>
                 <property name="valign">baseline</property>
-                <property name="margin_end">6</property>
-                <property name="pixel_size">16</property>
-                <property name="icon_name">corebird-retweet-symbolic</property>
-                <property name="icon_size">1</property>
+                <property name="margin-end">6</property>
+                <property name="pixel-size">16</property>
+                <property name="icon-name">corebird-retweet-symbolic</property>
+                <property name="icon-size">1</property>
                 <style>
                   <class name="dim-label"/>
                 </style>
               </object>
               <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">5</property>
+                <property name="left-attach">0</property>
+                <property name="top-attach">5</property>
               </packing>
             </child>
             <child>
               <object class="GtkLabel" id="rt_label">
-                <property name="can_focus">False</property>
-                <property name="no_show_all">True</property>
+                <property name="no-show-all">1</property>
                 <property name="halign">start</property>
                 <property name="valign">baseline</property>
-                <property name="margin_top">4</property>
-                <property name="use_markup">True</property>
-                <property name="track_visited_links">false</property>
+                <property name="margin-top">4</property>
+                <property name="use-markup">1</property>
+                <property name="track-visited-links">0</property>
                 <signal name="activate-link" handler="link_activated_cb" swapped="no"/>
                 <style>
                   <class name="dim-label"/>
                 </style>
               </object>
               <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">5</property>
+                <property name="left-attach">1</property>
+                <property name="top-attach">5</property>
                 <property name="width">6</property>
               </packing>
             </child>
-
           </object>
         </child>
       </object>
     </child>
-
-
-
   </template>
 </interface>

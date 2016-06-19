@@ -2,111 +2,96 @@
 <interface>
   <template class="DMListEntry" parent="GtkListBoxRow">
     <property name="visible">True</property>
-    <property name="can_focus">True</property>
+    <property name="can-focus">True</property>
     <property name="activatable">false</property>
     <style>
-      <class name="tweet" />
+      <class name="tweet"/>
     </style>
-
     <child>
       <object class="GtkGrid" id="grid">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="visible">1</property>
         <property name="margin">6</property>
-
         <child>
           <object class="AvatarWidget" id="avatar_image">
-            <property name="width_request">48</property>
-            <property name="height_request">48</property>
+            <property name="width-request">48</property>
+            <property name="height-request">48</property>
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="valign">start</property>
-            <property name="margin_end">12</property>
-            <property name="margin_start">4</property>
-            <property name="margin_top">4</property>
-            <property name="margin_bottom">4</property>
+            <property name="margin-end">12</property>
+            <property name="margin-start">4</property>
+            <property name="margin-top">4</property>
+            <property name="margin-bottom">4</property>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">0</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">0</property>
             <property name="height">2</property>
           </packing>
         </child>
-
-
         <child>
           <object class="TextButton" id="name_button">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
             <property name="valign">baseline</property>
           </object>
           <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">0</property>
+            <property name="left-attach">1</property>
+            <property name="top-attach">0</property>
           </packing>
         </child>
-
-
         <child>
           <object class="GtkLabel" id="screen_name_label">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_start">6</property>
+            <property name="visible">1</property>
+            <property name="margin-start">6</property>
             <property name="valign">baseline</property>
             <style>
               <class name="dim-label"/>
             </style>
           </object>
           <packing>
-            <property name="left_attach">2</property>
-            <property name="top_attach">0</property>
+            <property name="left-attach">2</property>
+            <property name="top-attach">0</property>
           </packing>
         </child>
-
-
         <child>
           <object class="GtkLabel" id="time_delta_label">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="visible">1</property>
             <property name="halign">end</property>
             <property name="valign">baseline</property>
-            <property name="hexpand">True</property>
+            <property name="hexpand">1</property>
             <property name="label">delta</property>
-            <property name="use_markup">True</property>
+            <property name="use-markup">1</property>
             <style>
               <class name="dim-label"/>
             </style>
           </object>
           <packing>
-            <property name="left_attach">3</property>
-            <property name="top_attach">0</property>
+            <property name="left-attach">3</property>
+            <property name="top-attach">0</property>
           </packing>
         </child>
-
-
         <child>
           <object class="GtkLabel" id="text_label">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_end">6</property>
-            <property name="margin_bottom">6</property>
-            <property name="hexpand">True</property>
-            <property name="vexpand">True</property>
+            <property name="visible">1</property>
+            <property name="margin-end">6</property>
+            <property name="margin-bottom">6</property>
+            <property name="hexpand">1</property>
+            <property name="vexpand">1</property>
             <property name="xalign">0</property>
             <property name="yalign">0</property>
-            <property name="wrap">True</property>
-            <property name="wrap_mode">word-char</property>
-            <property name="use_markup">True</property>
-            <property name="track_visited_links">false</property>
+            <property name="wrap">1</property>
+            <property name="wrap-mode">word-char</property>
+            <property name="use-markup">1</property>
+            <property name="track-visited-links">0</property>
           </object>
           <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">1</property>
+            <property name="left-attach">1</property>
+            <property name="top-attach">1</property>
             <property name="width">3</property>
           </packing>
         </child>
-
       </object>
     </child>
   </template>

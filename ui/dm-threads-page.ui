@@ -1,50 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <template class="DMThreadsPage" parent="ScrollWidget">
-    <property name="can_focus">True</property>
-    <property name="hscrollbar_policy">never</property>
+    <property name="can-focus">True</property>
+    <property name="hscrollbar-policy">never</property>
     <child>
       <object class="GtkFrame">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="visible">1</property>
         <property name="valign">start</property>
-        <property name="margin_start">25</property>
-        <property name="margin_end">25</property>
-        <property name="margin_top">25</property>
-        <property name="margin_bottom">20</property>
-        <property name="label_xalign">0</property>
-        <property name="shadow_type">in</property>
-
+        <property name="margin-start">25</property>
+        <property name="margin-end">25</property>
+        <property name="margin-top">25</property>
+        <property name="margin-bottom">20</property>
+        <property name="shadow-type">in</property>
         <child>
           <object class="GtkBox">
-            <property name="visible">true</property>
+            <property name="visible">1</property>
             <property name="orientation">vertical</property>
-
             <child>
               <object class="GtkListBox" id="top_list">
-                <property name="visible">true</property>
-                <property name="selection_mode">none</property>
-                <signal name="keynav-failed" handler="top_list_keynav_failed_cb" />
+                <property name="visible">1</property>
+                <property name="selection-mode">none</property>
+                <signal name="keynav-failed" handler="top_list_keynav_failed_cb"/>
               </object>
             </child>
-
             <child>
               <object class="GtkSeparator">
-                <property name="visible">true</property>
-                <property name="orientation">horizontal</property>
+                <property name="visible">1</property>
               </object>
             </child>
-
             <child>
               <object class="GtkListBox" id="thread_list">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="visible">1</property>
                 <property name="valign">start</property>
-                <property name="selection_mode">none</property>
-                <signal name="keynav-failed" handler="thread_list_keynav_failed_cb" />
+                <property name="selection-mode">none</property>
+                <signal name="keynav-failed" handler="thread_list_keynav_failed_cb"/>
               </object>
             </child>
-
           </object>
         </child>
       </object>

@@ -1,56 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <template class="FilterPage" parent="GtkScrolledWindow">
-    <property name="can_focus">False</property>
+    <property name="can-focus">False</property>
     <child>
       <object class="GtkBox" id="box">
-        <property name="can_focus">False</property>
-        <property name="visible">True</property>
+        <property name="visible">1</property>
         <property name="orientation">vertical</property>
         <child>
           <object class="GtkFrame">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="visible">1</property>
             <property name="valign">start</property>
-            <property name="margin_start">25</property>
-            <property name="margin_end">25</property>
-            <property name="margin_top">25</property>
-            <property name="label_xalign">0</property>
-            <property name="shadow_type">in</property>
+            <property name="margin-start">25</property>
+            <property name="margin-end">25</property>
+            <property name="margin-top">25</property>
+            <property name="shadow-type">in</property>
             <child>
               <object class="GtkListBox" id="filter_list">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="visible">1</property>
                 <property name="valign">start</property>
-                <property name="selection_mode">none</property>
-                <signal name="keynav-failed" handler="filter_list_keynav_failed_cb" />
+                <property name="selection-mode">none</property>
+                <signal name="keynav-failed" handler="filter_list_keynav_failed_cb"/>
               </object>
             </child>
           </object>
         </child>
         <child>
           <object class="GtkRevealer" id="user_list_revealer">
-            <property name="visible">true</property>
-            <property name="reveal_child">false</property>
-            <property name="transition_type">slide-down</property>
+            <property name="visible">1</property>
             <child>
               <object class="GtkFrame" id="user_list_frame">
-                <property name="visible">False</property>
-                <property name="no_show_all">True</property>
-                <property name="can_focus">False</property>
+                <property name="no-show-all">1</property>
                 <property name="valign">start</property>
-                <property name="margin_start">25</property>
-                <property name="margin_end">25</property>
-                <property name="margin_top">25</property>
-                <property name="label_xalign">0</property>
-                <property name="shadow_type">in</property>
+                <property name="margin-start">25</property>
+                <property name="margin-end">25</property>
+                <property name="margin-top">25</property>
+                <property name="shadow-type">in</property>
                 <child>
                   <object class="GtkListBox" id="user_list">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="visible">1</property>
                     <property name="valign">start</property>
-                    <property name="selection_mode">none</property>
-                    <signal name="keynav-failed" handler="user_list_keynav_failed_cb" />
+                    <property name="selection-mode">none</property>
+                    <signal name="keynav-failed" handler="user_list_keynav_failed_cb"/>
                   </object>
                 </child>
               </object>
@@ -59,18 +49,17 @@
         </child>
         <child>
           <object class="GtkLabel">
-            <property name="no_show_all">True</property>
-            <property name="can_focus">False</property>
-            <property name="visible">True</property>
+            <property name="no-show-all">1</property>
+            <property name="visible">1</property>
             <property name="label" translatable="Yes">You can block users in their profile</property>
-            <property name="wrap">True</property>
+            <property name="wrap">1</property>
             <property name="justify">center</property>
-            <property name="margin_start">25</property>
-            <property name="margin_end">25</property>
-            <property name="margin_top">12</property>
-            <property name="margin_bottom">12</property>
+            <property name="margin-start">25</property>
+            <property name="margin-end">25</property>
+            <property name="margin-top">12</property>
+            <property name="margin-bottom">12</property>
             <style>
-              <class name="dim-label" />
+              <class name="dim-label"/>
             </style>
           </object>
         </child>
@@ -78,8 +67,7 @@
     </child>
   </template>
   <object class="GtkLabel" id="users_header">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
+    <property name="visible">1</property>
     <property name="label" translatable="yes">Users</property>
     <attributes>
       <attribute name="weight" value="bold"/>

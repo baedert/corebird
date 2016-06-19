@@ -1,100 +1,97 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <template class="MediaDialog" parent="GtkWindow">
-    <property name="can_focus">False</property>
-    <property name="type_hint">dialog</property>
+    <property name="can-focus">False</property>
+    <property name="type-hint">dialog</property>
     <property name="decorated">False</property>
-    <signal name="key-press-event" handler="key_press_event_cb" />
-    <signal name="button-press-event" handler="button_press_event_cb" />
-    <signal name="enter_notify_event" handler="enter_notify_cb" />
-    <signal name="leave_notify_event" handler="leave_notify_cb" />
+    <signal name="key-press-event" handler="key_press_event_cb"/>
+    <signal name="button-press-event" handler="button_press_event_cb"/>
+    <signal name="enter_notify_event" handler="enter_notify_cb"/>
+    <signal name="leave_notify_event" handler="leave_notify_cb"/>
     <child>
       <object class="GtkFrame" id="frame">
-        <property name="visible">true</property>
-        <property name="can_focus">false</property>
-        <property name="shadow_type">none</property>
+        <property name="visible">1</property>
+        <property name="shadow-type">none</property>
         <!--<child type="overlay">-->
-          <!--<object class="GtkEventBox">-->
-            <!--<property name="visible">true</property>-->
-            <!--<property name="can_focus">false</property>-->
-            <!--<property name="valign">center</property>-->
-            <!--<property name="events">GDK_SCROLL_MASK</property>-->
-            <!--<signal name="button-press-event" handler="fake_button_press_cb" />-->
-            <!--<signal name="scroll-event" handler="fake_scroll_event_cb" />-->
-            <!--<child>-->
-              <!--<object class="GtkBox" id="osd_box">-->
-                <!--<property name="visible">true</property>-->
-                <!--<property name="can_focus">false</property>-->
-                <!--<property name="orientation">horizontal</property>-->
-                <!--<property name="hexpand">true</property>-->
-                <!--<property name="valign">center</property>-->
-                <!--<child>-->
-                  <!--<object class="GtkRevealer" id="back_revealer">-->
-                    <!--<property name="visible">true</property>-->
-                    <!--<property name="can_focus">false</property>-->
-                    <!--<property name="transition_type">slide-left</property>-->
-                    <!--<child>-->
-                      <!--<object class="GtkButton" id="back_button">-->
-                        <!--<property name="visible">true</property>-->
-                        <!--<property name="can_focus">true</property>-->
-                        <!--<property name="valign">center</property>-->
-                        <!--<property name="margin_start">6</property>-->
-                        <!--<signal name="clicked" handler="back_button_clicked_cb" />-->
-                        <!--<style>-->
-                          <!--<class name="image-button" />-->
-                          <!--<class name="osd" />-->
-                        <!--</style>-->
-                        <!--<child>-->
-                          <!--<object class="GtkImage">-->
-                            <!--<property name="visible">true</property>-->
-                            <!--<property name="can_focus">false</property>-->
-                            <!--<property name="icon_name">go-previous-symbolic</property>-->
-                          <!--</object>-->
-                        <!--</child>-->
-                      <!--</object>-->
-                    <!--</child>-->
-                  <!--</object>-->
-                  <!--<packing>-->
-                    <!--<property name="pack_type">start</property>-->
-                  <!--</packing>-->
-                <!--</child>-->
-
-                <!--<child>-->
-                  <!--<object class="GtkRevealer" id="next_revealer">-->
-                    <!--<property name="visible">true</property>-->
-                    <!--<property name="can_focus">false</property>-->
-                    <!--<property name="transition_type">slide-right</property>-->
-                    <!--<child>-->
-                      <!--<object class="GtkButton" id="next_button">-->
-                        <!--<property name="visible">true</property>-->
-                        <!--<property name="can_focus">true</property>-->
-                        <!--<property name="valign">center</property>-->
-                        <!--<property name="margin_end">6</property>-->
-                        <!--<signal name="clicked" handler="next_button_clicked_cb" />-->
-                        <!--<style>-->
-                          <!--<class name="image-button" />-->
-                          <!--<class name="osd" />-->
-                        <!--</style>-->
-                        <!--<child>-->
-                          <!--<object class="GtkImage">-->
-                            <!--<property name="visible">true</property>-->
-                            <!--<property name="can_focus">false</property>-->
-                            <!--<property name="icon_name">go-next-symbolic</property>-->
-                          <!--</object>-->
-                        <!--</child>-->
-                      <!--</object>-->
-                    <!--</child>-->
-                  <!--</object>-->
-                  <!--<packing>-->
-                    <!--<property name="pack_type">end</property>-->
-                  <!--</packing>-->
-                <!--</child>-->
-              <!--</object>-->
-            <!--</child>-->
-          <!--</object>-->
+        <!--<object class="GtkEventBox">-->
+        <!--<property name="visible">true</property>-->
+        <!--<property name="can_focus">false</property>-->
+        <!--<property name="valign">center</property>-->
+        <!--<property name="events">GDK_SCROLL_MASK</property>-->
+        <!--<signal name="button-press-event" handler="fake_button_press_cb" />-->
+        <!--<signal name="scroll-event" handler="fake_scroll_event_cb" />-->
+        <!--<child>-->
+        <!--<object class="GtkBox" id="osd_box">-->
+        <!--<property name="visible">true</property>-->
+        <!--<property name="can_focus">false</property>-->
+        <!--<property name="orientation">horizontal</property>-->
+        <!--<property name="hexpand">true</property>-->
+        <!--<property name="valign">center</property>-->
+        <!--<child>-->
+        <!--<object class="GtkRevealer" id="back_revealer">-->
+        <!--<property name="visible">true</property>-->
+        <!--<property name="can_focus">false</property>-->
+        <!--<property name="transition_type">slide-left</property>-->
+        <!--<child>-->
+        <!--<object class="GtkButton" id="back_button">-->
+        <!--<property name="visible">true</property>-->
+        <!--<property name="can_focus">true</property>-->
+        <!--<property name="valign">center</property>-->
+        <!--<property name="margin_start">6</property>-->
+        <!--<signal name="clicked" handler="back_button_clicked_cb" />-->
+        <!--<style>-->
+        <!--<class name="image-button" />-->
+        <!--<class name="osd" />-->
+        <!--</style>-->
+        <!--<child>-->
+        <!--<object class="GtkImage">-->
+        <!--<property name="visible">true</property>-->
+        <!--<property name="can_focus">false</property>-->
+        <!--<property name="icon_name">go-previous-symbolic</property>-->
+        <!--</object>-->
+        <!--</child>-->
+        <!--</object>-->
+        <!--</child>-->
+        <!--</object>-->
+        <!--<packing>-->
+        <!--<property name="pack_type">start</property>-->
+        <!--</packing>-->
+        <!--</child>-->
+        <!--<child>-->
+        <!--<object class="GtkRevealer" id="next_revealer">-->
+        <!--<property name="visible">true</property>-->
+        <!--<property name="can_focus">false</property>-->
+        <!--<property name="transition_type">slide-right</property>-->
+        <!--<child>-->
+        <!--<object class="GtkButton" id="next_button">-->
+        <!--<property name="visible">true</property>-->
+        <!--<property name="can_focus">true</property>-->
+        <!--<property name="valign">center</property>-->
+        <!--<property name="margin_end">6</property>-->
+        <!--<signal name="clicked" handler="next_button_clicked_cb" />-->
+        <!--<style>-->
+        <!--<class name="image-button" />-->
+        <!--<class name="osd" />-->
+        <!--</style>-->
+        <!--<child>-->
+        <!--<object class="GtkImage">-->
+        <!--<property name="visible">true</property>-->
+        <!--<property name="can_focus">false</property>-->
+        <!--<property name="icon_name">go-next-symbolic</property>-->
+        <!--</object>-->
+        <!--</child>-->
+        <!--</object>-->
+        <!--</child>-->
+        <!--</object>-->
+        <!--<packing>-->
+        <!--<property name="pack_type">end</property>-->
+        <!--</packing>-->
+        <!--</child>-->
+        <!--</object>-->
+        <!--</child>-->
+        <!--</object>-->
         <!--</child>-->
       </object>
     </child>
   </template>
 </interface>
-
