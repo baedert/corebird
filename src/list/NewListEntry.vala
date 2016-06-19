@@ -21,9 +21,15 @@ class NewListEntry : Gtk.ListBoxRow {
   private Gtk.Entry list_name_entry;
   [GtkChild]
   private Gtk.Revealer revealer;
+  [GtkChild]
+  private Gtk.Button create_list_button;
+
   public signal void create_activated (string list_name);
 
 
+  construct {
+    list_name_entry.buffer.notify["text"].connect (name_text_changed_cb);
+  }
 
   public void reveal () {
     revealer.reveal_child = true;
@@ -40,5 +46,20 @@ class NewListEntry : Gtk.ListBoxRow {
   [GtkCallback]
   private void create_list_button_clicked_cb () {
     create_activated (list_name_entry.text);
+  }
+
+  private void name_text_changed_cb () {
+    string name = list_name_entry.text;
+
+    create_list_button.sensitive = false;
+
+    if (name.length == 0 || name.char_count () > 25)
+      return;
+
+    if (name.get_char (0).isdigit())
+      return;
+
+
+    create_list_button.sensitive = true;
   }
 }

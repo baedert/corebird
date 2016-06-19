@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <template class="NewListEntry" parent="GtkListBoxRow">
-    <property name="visible">True</property>
-    <property name="can_focus">True</property>
+    <property name="visible">1</property>
+    <property name="can_focus">1</property>
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>
@@ -97,6 +97,7 @@
                     <property name="receives_default">True</property>
                     <property name="valign">baseline</property>
                     <property name="margin_end">6</property>
+                    <property name="sensitive">0</property>
                     <style>
                       <class name="suggested-action"/>
                     </style>
