@@ -28,8 +28,6 @@ class SettingsDialog : Gtk.Window {
   [GtkChild]
   private Gtk.Switch auto_scroll_on_new_tweets_switch;
   [GtkChild]
-  private Gtk.SpinButton max_media_size_spin_button;
-  [GtkChild]
   private Gtk.Stack main_stack;
   [GtkChild]
   private Gtk.Switch double_click_activation_switch;
@@ -43,6 +41,8 @@ class SettingsDialog : Gtk.Window {
   private Gtk.Switch hide_nsfw_content_switch;
   [GtkChild]
   private Gtk.ListBox snippet_list_box;
+  [GtkChild]
+  private Gtk.ComboBoxText media_visibility_combobox;
 
   private TweetListEntry sample_tweet_entry;
 
@@ -65,10 +65,10 @@ class SettingsDialog : Gtk.Window {
     });
     Settings.get ().bind ("auto-scroll-on-new-tweets", auto_scroll_on_new_tweets_switch, "active",
                           SettingsBindFlags.DEFAULT);
-    Settings.get ().bind ("max-media-size", max_media_size_spin_button, "value",
-                          SettingsBindFlags.DEFAULT);
     Settings.get ().bind ("double-click-activation", double_click_activation_switch,
                           "active", SettingsBindFlags.DEFAULT);
+    Settings.get ().bind ("media-visibility", media_visibility_combobox, "active-id",
+                          SettingsBindFlags.DEFAULT);
 
     // Tweets page
 

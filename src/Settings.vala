@@ -15,6 +15,12 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+public enum MediaVisibility{
+  SHOW                = 1,
+  HIDE                = 2,
+  HIDE_IN_TIMELINES   = 3
+}
+
 public class Settings : GLib.Object {
   private static GLib.Settings settings;
 
@@ -91,5 +97,9 @@ public class Settings : GLib.Object {
 
   public static bool hide_nsfw_content () {
     return settings.get_boolean ("hide-nsfw-content");
+  }
+
+  public static MediaVisibility get_media_visiblity () {
+    return (MediaVisibility)settings.get_enum ("media-visibility");
   }
 }

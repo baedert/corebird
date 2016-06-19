@@ -58,14 +58,14 @@
           </child>
 
           <child>
-            <object class="GtkLabel" id="max_media_size_label">
+            <object class="GtkLabel" id="media_visibility_label">
               <property name="visible">True</property>
               <property name="can_focus">False</property>
               <property name="halign">end</property>
               <property name="hexpand">True</property>
-              <property name="label" translatable="yes">Maximum media size</property>
+              <property name="label" translatable="yes">Show inline media</property>
               <accessibility>
-                <relation type="label-for" target="max_media_size_spin_button"/>
+                <relation type="label-for" target="media_visibility_combobox" />
               </accessibility>
             </object>
             <packing>
@@ -77,43 +77,27 @@
           </child>
 
           <child>
-            <object class="GtkBox">
+            <object class="GtkComboBoxText" id="media_visibility_combobox">
               <property name="visible">true</property>
-              <property name="orientation">horizontal</property>
-              <property name="spacing">6</property>
-              <child>
-                <object class="GtkSpinButton" id="max_media_size_spin_button">
-                  <property name="visible">True</property>
-                  <property name="can_focus">True</property>
-                  <property name="halign">start</property>
-                  <property name="vexpand">False</property>
-                  <property name="adjustment">adjustment1</property>
-                  <property name="climb_rate">0.1</property>
-                  <property name="digits">1</property>
-                  <property name="value">2</property>
-                  <accessibility>
-                    <relation type="labelled-by" target="max_media_size_label"/>
-                  </accessibility>
-                </object>
-              </child>
-
-              <child>
-                <object class="GtkLabel" id="mb_label">
-                  <property name="visible">True</property>
-                  <property name="can_focus">False</property>
-                  <property name="halign">start</property>
-                  <property name="hexpand">True</property>
-                  <property name="label" translatable="yes">MB</property>
-                </object>
-              </child>
-
-
+              <property name="halign">start</property>
+              <!-- The IDs here should match the gsettings enum values -->
+              <items>
+                <item id="Show" translatable="yes">Always show</item>
+                <item id="Hide" translatable="yes">Always hide</item>
+                <item id="Hide in Timeline" translatable="yes">Hide in timeline</item>
+              </items>
+              <accessibility>
+                <relation type="labelled-by" target="media_visibility_label" />
+              </accessibility>
             </object>
             <packing>
               <property name="left_attach">2</property>
               <property name="top_attach">3</property>
+              <property name="width">2</property>
+              <property name="height">1</property>
             </packing>
           </child>
+
           <child>
             <object class="GtkLabel" id="auto_scroll_label">
               <property name="visible">True</property>
@@ -134,10 +118,10 @@
           </child>
           <child>
             <object class="GtkSwitch" id="auto_scroll_on_new_tweets_switch">
-              <property name="visible">True</property>
-              <property name="can_focus">True</property>
+              <property name="visible">1</property>
+              <property name="can_focus">1</property>
               <property name="halign">start</property>
-              <property name="hexpand">True</property>
+              <property name="hexpand">1</property>
               <accessibility>
                 <relation type="labelled-by" target="auto_scroll_label"/>
               </accessibility>

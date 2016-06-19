@@ -176,6 +176,9 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
       if (tweet.is_flag_set (TweetState.NSFW))
         Settings.get ().changed["hide-nsfw-content"].connect (hide_nsfw_content_changed_cb);
+
+      Settings.get ().changed["media-visibility"].connect (media_visibility_changed_cb);
+      mm_widget.visible = (Settings.get_media_visiblity () == MediaVisibility.SHOW);
     }
 
     var actions = new GLib.SimpleActionGroup ();
@@ -214,6 +217,16 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
     if (tweet.is_flag_set (TweetState.NSFW) && this.media_stack != null)
       Settings.get ().changed["hide-nsfw-content"].disconnect (hide_nsfw_content_changed_cb);
+
+    if (this.mm_widget != null)
+      Settings.get ().changed["media-visibility"].disconnect (media_visibility_changed_cb);
+  }
+
+  private void media_visibility_changed_cb () {
+    if (Settings.get_media_visiblity () == MediaVisibility.SHOW)
+      this.mm_widget.show ();
+    else
+      this.mm_widget.hide ();
   }
 
   private void transform_flags_changed_cb () {
