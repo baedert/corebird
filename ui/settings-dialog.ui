@@ -191,7 +191,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="label12">
+              <object class="GtkLabel">
                 <property name="visible">1</property>
                 <property name="halign">start</property>
                 <property name="label" translatable="yes">Actions</property>
