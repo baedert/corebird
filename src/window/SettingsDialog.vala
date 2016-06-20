@@ -28,8 +28,6 @@ class SettingsDialog : Gtk.Window {
   [GtkChild]
   private Gtk.Switch auto_scroll_on_new_tweets_switch;
   [GtkChild]
-  private Gtk.SpinButton max_media_size_spin_button;
-  [GtkChild]
   private Gtk.Stack main_stack;
   [GtkChild]
   private Gtk.Switch double_click_activation_switch;
@@ -43,6 +41,8 @@ class SettingsDialog : Gtk.Window {
   private Gtk.Switch hide_nsfw_content_switch;
   [GtkChild]
   private Gtk.ListBox snippet_list_box;
+  [GtkChild]
+  private Gtk.ComboBoxText media_visibility_combobox;
 
   private TweetListEntry sample_tweet_entry;
 
@@ -65,17 +65,17 @@ class SettingsDialog : Gtk.Window {
     });
     Settings.get ().bind ("auto-scroll-on-new-tweets", auto_scroll_on_new_tweets_switch, "active",
                           SettingsBindFlags.DEFAULT);
-    Settings.get ().bind ("max-media-size", max_media_size_spin_button, "value",
-                          SettingsBindFlags.DEFAULT);
     Settings.get ().bind ("double-click-activation", double_click_activation_switch,
                           "active", SettingsBindFlags.DEFAULT);
+    Settings.get ().bind ("media-visibility", media_visibility_combobox, "active-id",
+                          SettingsBindFlags.DEFAULT);
 
     // Tweets page
 
     // Set up sample tweet {{{
     var sample_tweet = new Tweet ();
-    sample_tweet.source_tweet = new MiniTweet();
-    sample_tweet.source_tweet.author = UserIdentity() {
+    sample_tweet.source_tweet = Cb.MiniTweet();
+    sample_tweet.source_tweet.author = Cb.UserIdentity() {
       id = 12,
       screen_name = "corebirdclient",
       user_name = "Corebird"
@@ -98,7 +98,7 @@ class SettingsDialog : Gtk.Window {
       bool matched = regex.match (sample_text, 0, out match_info);
       assert (matched);
 
-      sample_tweet.source_tweet.entities = new TextEntity[3];
+      sample_tweet.source_tweet.entities = new Cb.TextEntity[3];
 
       int i = 0;
       while (match_info.matches ()) {
@@ -106,7 +106,7 @@ class SettingsDialog : Gtk.Window {
         int from, to;
         match_info.fetch_pos (0, out from, out to);
         string match = match_info.fetch (0);
-        sample_tweet.source_tweet.entities[i] = TextEntity () {
+        sample_tweet.source_tweet.entities[i] = Cb.TextEntity () {
           from = sample_text.char_count (from),
           to   = sample_text.char_count (to),
           display_text = match,
@@ -135,9 +135,9 @@ class SettingsDialog : Gtk.Window {
 
     var text_transform_flags = Settings.get_text_transform_flags ();
 
-    remove_trailing_hashtags_switch.active = (TransformFlags.REMOVE_TRAILING_HASHTAGS in
+    remove_trailing_hashtags_switch.active = (Cb.TransformFlags.REMOVE_TRAILING_HASHTAGS in
                                               text_transform_flags);
-    remove_media_links_switch.active = (TransformFlags.REMOVE_MEDIA_LINKS in text_transform_flags);
+    remove_media_links_switch.active = (Cb.TransformFlags.REMOVE_MEDIA_LINKS in text_transform_flags);
 
 
     Settings.get ().bind ("hide-nsfw-content", hide_nsfw_content_switch, "active",
@@ -263,18 +263,18 @@ class SettingsDialog : Gtk.Window {
   [GtkCallback]
   private void remove_trailing_hashtags_cb () {
     if (remove_trailing_hashtags_switch.active) {
-      Settings.add_text_transform_flag (TransformFlags.REMOVE_TRAILING_HASHTAGS);
+      Settings.add_text_transform_flag (Cb.TransformFlags.REMOVE_TRAILING_HASHTAGS);
     } else {
-      Settings.remove_text_transform_flag (TransformFlags.REMOVE_TRAILING_HASHTAGS);
+      Settings.remove_text_transform_flag (Cb.TransformFlags.REMOVE_TRAILING_HASHTAGS);
     }
   }
 
   [GtkCallback]
   private void remove_media_links_cb () {
     if (remove_media_links_switch.active) {
-      Settings.add_text_transform_flag (TransformFlags.REMOVE_MEDIA_LINKS);
+      Settings.add_text_transform_flag (Cb.TransformFlags.REMOVE_MEDIA_LINKS);
     } else {
-      Settings.remove_text_transform_flag (TransformFlags.REMOVE_MEDIA_LINKS);
+      Settings.remove_text_transform_flag (Cb.TransformFlags.REMOVE_MEDIA_LINKS);
     }
   }
 }

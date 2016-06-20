@@ -8,6 +8,13 @@
     <value nick="Stack 50" value="50" />
   </enum>
 
+  <enum id="org.baedert.corebird.media-visibility">
+    <value nick="Show" value="1" />
+    <value nick="Hide" value="2" />
+    <value nick="Hide in Timeline" value="3" />
+
+  </enum>
+
   <schema id="org.baedert.corebird"
       path="/org/baedert/corebird/"
       gettext-domain="corebird">
@@ -44,11 +51,11 @@
     </key>
     <key name="max-media-size" type="d">
       <default>2.0</default>
-      <summary>Maximum size of inline media to download, in Megabytes.</summary>
+      <summary>(UNUSED!)Maximum size of inline media to download, in Megabytes.</summary>
     </key>
     <key name="sidebar-visible" type="b">
       <default>true</default>
-      <summary>Whether to show the sidebar or not</summary>
+      <summary>Whether to show the topbar or not</summary>
     </key>
     <key name="accel-compose-tweet" type="s">
       <default>"&lt;Control&gt;T"</default>
@@ -102,6 +109,10 @@
     <key type="b" name="hide-nsfw-content">
       <default>true</default>
       <summary>Whether to hide images marked as inappropriate by default or not</summary>
+    </key>
+    <key name="media-visibility" enum="org.baedert.corebird.media-visibility">
+      <default>"Show"</default>
+      <summary>When to show media attached to tweets</summary>
     </key>
   </schema>
 </schemalist>

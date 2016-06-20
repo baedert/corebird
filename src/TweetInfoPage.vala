@@ -115,6 +115,16 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     this.actions = new GLib.SimpleActionGroup ();
     this.actions.add_action_entries (action_entries, this);
     this.insert_action_group ("tweet", this.actions);
+
+    Settings.get ().changed["media-visibility"].connect (media_visiblity_changed_cb);
+    this.mm_widget.visible = (Settings.get_media_visiblity () != MediaVisibility.HIDE);
+  }
+
+  private void media_visiblity_changed_cb () {
+    if (Settings.get_media_visiblity () == MediaVisibility.HIDE)
+      this.mm_widget.hide ();
+    else
+      this.mm_widget.show ();
   }
 
   public void on_join (int page_id, Bundle? args) {

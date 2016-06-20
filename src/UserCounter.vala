@@ -39,7 +39,7 @@ public class UserCounter : GLib.Object {
 
   public UserCounter () {}
 
-  public void id_seen (ref UserIdentity id) {
+  public void id_seen (ref Cb.UserIdentity id) {
     this.user_seen (id.id, id.screen_name, id.user_name);
   }
 

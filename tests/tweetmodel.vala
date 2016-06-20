@@ -170,13 +170,13 @@ void hide_rt () {
 
   var t1 = new Tweet ();
   t1.id = 100;
-  t1.source_tweet = new MiniTweet ();
-  t1.source_tweet.author = UserIdentity ();
+  t1.source_tweet = Cb.MiniTweet ();
+  t1.source_tweet.author = Cb.UserIdentity ();
   t1.source_tweet.author.id = 10;
   t1.source_tweet.id = 1;
-  t1.retweeted_tweet = new MiniTweet ();
+  t1.retweeted_tweet = Cb.MiniTweet ();
   t1.retweeted_tweet.id = 100;
-  t1.retweeted_tweet.author = UserIdentity ();
+  t1.retweeted_tweet.author = Cb.UserIdentity ();
   t1.retweeted_tweet.author.id = 100;
 
   tm.add (t1);

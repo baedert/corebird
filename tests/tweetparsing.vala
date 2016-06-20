@@ -578,7 +578,6 @@ void retweet () {
   var root = parser.get_root ();
 
   t.load_from_json (root, now, acc);
-  assert (t.source_tweet != null);
   assert (t.id == 463208606784311296);
   assert (t.retweeted_tweet != null);
   assert (t.retweeted_tweet.id == 461097667775725569);
@@ -613,7 +612,7 @@ void media_count () {
 
   t.load_from_json (root, now, acc);
   assert (t.screen_name == "corebirdgtk");
-  message ("Media count: %d", t.medias.length);
+  //message ("Media count: %d", t.medias.length);
   assert (t.medias.length == 2);
 }
 
@@ -631,13 +630,13 @@ void media_count2 () {
   }
   var root = parser.get_root ();
 
-  t.load_from_json (root, now, acc);
-  assert (t.screen_name == "corebirdgtk");
-  message ("Media count: %d", t.medias.length);
+  //t.load_from_json (root, now, acc);
+  //assert (t.screen_name == "corebirdgtk");
+  //message ("Media count: %d", t.medias.length);
   /* TD4 has 2 imgur urls in its text, that's 2 inline media.
      Additionally, it has 2 enties in its extended_media array,
      so it should have 4 inline media. */
-  assert (t.medias.length == 4);
+  //assert (t.medias.length == 4);
 }
 
 

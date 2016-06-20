@@ -165,24 +165,25 @@ class DMManager : GLib.Object {
     string source_text = dm_obj.get_string_member ("text");
 
     var urls = dm_obj.get_object_member ("entities").get_array_member ("urls");
-    var url_list = new TextEntity[urls.get_length ()];
+    var url_list = new Cb.TextEntity[urls.get_length ()];
     urls.foreach_element((arr, index, node) => {
       var url = node.get_object();
       string expanded_url = url.get_string_member("expanded_url");
 
       Json.Array indices = url.get_array_member ("indices");
-      url_list[index] = TextEntity() {
-        from = (int)indices.get_int_element (0),
-        to   = (int)indices.get_int_element (1) ,
+      url_list[index] = Cb.TextEntity() {
+        from = (uint)indices.get_int_element (0),
+        to   = (uint)indices.get_int_element (1) ,
         display_text = url.get_string_member ("display_url"),
         target = expanded_url.replace ("&", "&amp;"),
         tooltip_text = expanded_url
       };
     });
 
-    string text = TextTransform.transform (source_text,
-                                           url_list,
-                                           TransformFlags.EXPAND_LINKS);
+    string text = Cb.TextTransform.text (source_text,
+                                         url_list,
+                                         Cb.TransformFlags.EXPAND_LINKS,
+                                         0, 0);
     string sender_screen_name = dm_obj.get_string_member ("sender_screen_name");
     string sender_name = dm_obj.get_object_member ("sender").get_string_member ("name")
                                                             .strip ().replace ("&", "&amp;");
@@ -232,23 +233,25 @@ class DMManager : GLib.Object {
 
     if (dm_obj.has_member ("entities")) {
       var urls = dm_obj.get_object_member ("entities").get_array_member ("urls");
-      var url_list = new TextEntity[urls.get_length ()];
+      var url_list = new Cb.TextEntity[urls.get_length ()];
       urls.foreach_element((arr, index, node) => {
         var url = node.get_object();
         string expanded_url = url.get_string_member("expanded_url");
 
         Json.Array indices = url.get_array_member ("indices");
-        url_list[index] = TextEntity() {
-          from = (int)indices.get_int_element (0),
-          to   = (int)indices.get_int_element (1) ,
+        url_list[index] = Cb.TextEntity() {
+          from = (uint)indices.get_int_element (0),
+          to   = (uint)indices.get_int_element (1) ,
           target = expanded_url.replace ("&", "&amp;"),
           tooltip_text = expanded_url,
           display_text = url.get_string_member ("display_url")
         };
       });
-      text = TextTransform.transform (text,
-                                      url_list,
-                                      0);
+      text = Cb.TextTransform.text (text,
+                                    url_list,
+                                    0,
+                                    0,
+                                    0);
     }
 
     account.db.insert ("dms").vali64 ("id", dm_id)

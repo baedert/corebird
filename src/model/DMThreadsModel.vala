@@ -16,7 +16,7 @@
  */
 
 class DMThread : GLib.Object {
-  public UserIdentity user; /* id, name, screen_name */
+  public Cb.UserIdentity user; /* id, name, screen_name */
   public int64  last_message_id;
   public string last_message;
   public int unread_count = 0;

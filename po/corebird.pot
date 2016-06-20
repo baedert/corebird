@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-21 08:50+0200\n"
+"POT-Creation-Date: 2016-06-20 18:04+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: ../src/window/ComposeTweetWindow.vala:122
+#: ../src/window/ComposeTweetWindow.vala:125
 msgid "Quote tweet"
 msgstr ""
 
@@ -157,37 +157,37 @@ msgstr[1] ""
 msgid "Lists"
 msgstr ""
 
-#: ../src/ProfilePage.vala:248
+#: ../src/ProfilePage.vala:253
 msgid "Protected profile"
 msgstr ""
 
-#: ../src/ProfilePage.vala:301
+#: ../src/ProfilePage.vala:306
 #, c-format
 msgid "Tweet to @%s"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:290
+#: ../src/TweetInfoPage.vala:300
 msgid "Could not show tweet"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:472
+#: ../src/TweetInfoPage.vala:481
 msgid "Retweets"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:473 ../src/FavoritesTimeline.vala:67
+#: ../src/TweetInfoPage.vala:482 ../src/FavoritesTimeline.vala:67
 #: ../src/FavoritesTimeline.vala:71
 msgid "Favorites"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:481
+#: ../src/TweetInfoPage.vala:490
 msgid "Open in Browser"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:481
+#: ../src/TweetInfoPage.vala:490
 msgid "Source"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:521
+#: ../src/TweetInfoPage.vala:530
 msgid "Tweet Details"
 msgstr ""
 
@@ -215,7 +215,7 @@ msgstr ""
 msgid "%s mentioned %s"
 msgstr ""
 
-#: ../src/MentionsTimeline.vala:98 ../src/MentionsTimeline.vala:102
+#: ../src/MentionsTimeline.vala:99 ../src/MentionsTimeline.vala:103
 msgid "Mentions"
 msgstr ""
 
@@ -223,7 +223,7 @@ msgstr ""
 msgid "Direct Conversation"
 msgstr ""
 
-#: ../src/ListStatusesPage.vala:364
+#: ../src/ListStatusesPage.vala:367
 msgid "List"
 msgstr ""
 
@@ -263,7 +263,7 @@ msgid ""
 "#newisalwaysbetter"
 msgstr ""
 
-#: ../src/DefaultTimeline.vala:350
+#: ../src/DefaultTimeline.vala:358
 msgid "Could not load tweets"
 msgstr ""
 
@@ -272,99 +272,107 @@ msgid "Settings"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:2
-msgid "Maximum media size"
+msgid "Show inline media"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:3
-msgid "MB"
+msgid "Always show"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:4
-msgid "Auto scroll on new tweets"
+msgid "Always hide"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:5
-msgid "Double-click activation"
+msgid "Hide in timeline"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:6
-msgid "Interface"
+msgid "Auto scroll on new tweets"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:7
-msgid "On New Tweets"
+msgid "Double-click activation"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:8
-msgid "Actions"
+msgid "Interface"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:9
-msgid "On New Mentions"
+msgid "On New Tweets"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:10
-msgid "On New Messages"
+msgid "Actions"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:11
-msgid "Never"
+msgid "On New Mentions"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:12
-msgid "Every"
+msgid "On New Messages"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:13
-msgid "Stack 5"
+msgid "Never"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:14
-msgid "Stack 10"
+msgid "Every"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:15
-msgid "Stack 25"
+msgid "Stack 5"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:16
-msgid "Stack 50"
+msgid "Stack 10"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:17
-msgid "Notifications"
+msgid "Stack 25"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:18
-msgid "Round avatars"
+msgid "Stack 50"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:19
-msgid "Remove trailing hashtags"
+msgid "Notifications"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:20
-msgid "Remove media links"
+msgid "Round avatars"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:21
+msgid "Remove trailing hashtags"
+msgstr ""
+
+#: ../ui/settings-dialog.ui.h:22
+msgid "Remove media links"
+msgstr ""
+
+#: ../ui/settings-dialog.ui.h:23
 msgid "Hide inappropriate content"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:22 ../ui/search-page.ui.h:2
+#: ../ui/settings-dialog.ui.h:24 ../ui/search-page.ui.h:2
 #: ../ui/profile-page.ui.h:6
 msgid "Tweets"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:23
+#: ../ui/settings-dialog.ui.h:25
 msgid "No snippets configured."
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:24
+#: ../ui/settings-dialog.ui.h:26
 msgid "You can activate snippets by writing the keyword and pressing TAB."
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:25
+#: ../ui/settings-dialog.ui.h:27
 msgid "Snippets"
 msgstr ""
 
@@ -722,13 +730,11 @@ msgid "Generic timeline view when using Corebird"
 msgstr ""
 
 #: ../data/org.baedert.corebird.appdata.xml.in.h:4
-msgid "Typical Twitter profile."
+msgid "Typical Twitter profile"
 msgstr ""
 
 #: ../data/org.baedert.corebird.appdata.xml.in.h:5
-msgid ""
-"Account settings like Name, Website, Description and Avatar can be "
-"configured."
+msgid "Account settings can be configured"
 msgstr ""
 
 #: ../data/org.baedert.corebird.desktop.in.in.h:1

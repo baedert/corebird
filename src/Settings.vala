@@ -15,6 +15,12 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+public enum MediaVisibility{
+  SHOW                = 1,
+  HIDE                = 2,
+  HIDE_IN_TIMELINES   = 3
+}
+
 public class Settings : GLib.Object {
   private static GLib.Settings settings;
 
@@ -75,21 +81,25 @@ public class Settings : GLib.Object {
     return settings.get_string ("consumer-secret");
   }
 
-  public static void add_text_transform_flag (TransformFlags flag) {
+  public static void add_text_transform_flag (Cb.TransformFlags flag) {
     settings.set_uint ("text-transform-flags",
                        settings.get_uint ("text-transform-flags") | flag);
   }
 
-  public static void remove_text_transform_flag (TransformFlags flag) {
+  public static void remove_text_transform_flag (Cb.TransformFlags flag) {
     settings.set_uint ("text-transform-flags",
                        settings.get_uint ("text-transform-flags") & ~flag);
   }
 
-  public static TransformFlags get_text_transform_flags () {
-    return (TransformFlags) settings.get_uint ("text-transform-flags");
+  public static Cb.TransformFlags get_text_transform_flags () {
+    return (Cb.TransformFlags) settings.get_uint ("text-transform-flags");
   }
 
   public static bool hide_nsfw_content () {
     return settings.get_boolean ("hide-nsfw-content");
+  }
+
+  public static MediaVisibility get_media_visiblity () {
+    return (MediaVisibility)settings.get_enum ("media-visibility");
   }
 }

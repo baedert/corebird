@@ -30,6 +30,7 @@
         <!-- Interface page -->
         <child>
           <object class="GtkGrid" id="interface_grid">
+
             <property name="visible">1</property>
             <property name="border-width">10</property>
             <property name="row-spacing">6</property>
@@ -51,53 +52,48 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="max_media_size_label">
-                <property name="visible">1</property>
+              <object class="GtkLabel" id="media_visibility_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="halign">end</property>
-                <property name="hexpand">1</property>
-                <property name="label" translatable="yes">Maximum media size</property>
+                <property name="hexpand">True</property>
+                <property name="label" translatable="yes">Show inline media</property>
                 <accessibility>
-                  <relation type="label-for" target="max_media_size_spin_button"/>
+                  <relation type="label-for" target="media_visibility_combobox" />
                 </accessibility>
               </object>
               <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">3</property>
+                <property name="left_attach">0</property>
+                <property name="top_attach">3</property>
                 <property name="width">2</property>
+                <property name="height">1</property>
               </packing>
             </child>
+
             <child>
-              <object class="GtkBox">
-                <property name="visible">1</property>
-                <property name="spacing">6</property>
-                <child>
-                  <object class="GtkSpinButton" id="max_media_size_spin_button">
-                    <property name="visible">1</property>
-                    <property name="can-focus">1</property>
-                    <property name="halign">start</property>
-                    <property name="adjustment">adjustment1</property>
-                    <property name="climb-rate">0.1</property>
-                    <property name="digits">1</property>
-                    <property name="value">2</property>
-                    <accessibility>
-                      <relation type="labelled-by" target="max_media_size_label"/>
-                    </accessibility>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="mb_label">
-                    <property name="visible">1</property>
-                    <property name="halign">start</property>
-                    <property name="hexpand">1</property>
-                    <property name="label" translatable="yes">MB</property>
-                  </object>
-                </child>
+              <object class="GtkComboBoxText" id="media_visibility_combobox">
+                <property name="visible">true</property>
+                <property name="halign">start</property>
+                <!-- The IDs here should match the gsettings enum values -->
+                <items>
+                  <item id="Show" translatable="yes">Always show</item>
+                  <item id="Hide" translatable="yes">Always hide</item>
+                  <item id="Hide in Timeline" translatable="yes">Hide in timeline</item>
+                </items>
+                <accessibility>
+                  <relation type="labelled-by" target="media_visibility_label" />
+                </accessibility>
               </object>
               <packing>
-                <property name="left-attach">2</property>
-                <property name="top-attach">3</property>
+                <property name="left_attach">2</property>
+                <property name="top_attach">3</property>
+                <property name="width">2</property>
+                <property name="height">1</property>
               </packing>
             </child>
+
+
+
             <child>
               <object class="GtkLabel" id="auto_scroll_label">
                 <property name="visible">1</property>
@@ -167,6 +163,7 @@
             <property name="name">interface</property>
           </packing>
         </child>
+>>>>>>> master
         <!-- Notification page -->
         <child>
           <object class="GtkGrid" id="notification_grid">

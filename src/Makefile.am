@@ -4,11 +4,13 @@ AM_CPPFLAGS = \
 	-include $(CONFIG_HEADER) \
 	-DDATADIR=\"$(datadir)\" \
 	-DPKGDATADIR=\"$(pkgdatadir)\" \
-	-Wno-unused-value \
-	-w
+	-O0 \
+	-fno-omit-frame-pointer
+
 
 AM_VALAFLAGS = \
 	--thread \
+	--enable-deprecated \
 	--enable-checking \
 	--enable-experimental \
 	--vapidir $(builddir) \
@@ -17,6 +19,7 @@ AM_VALAFLAGS = \
 	--directory $(builddir) \
 	--gresources $(top_srcdir)/corebird.gresource.xml \
 	$(top_srcdir)/vapi/config.vapi \
+	$(top_srcdir)/vapi/corebird-internal.vapi \
 	-C \
 	$(NULL)
 
@@ -45,7 +48,6 @@ libcorebird_la_VALASOURCES = \
 	UserCounter.vala \
 	DefaultTimeline.vala \
 	DMThreadsPage.vala \
-	InlineMediaDownloader.vala \
 	Settings.vala \
 	NotificationManager.vala \
 	Twitter.vala \
@@ -56,7 +58,6 @@ libcorebird_la_VALASOURCES = \
 	FavoritesTimeline.vala \
 	Filter.vala \
 	FilterPage.vala \
-	Media.vala \
 	UserEventReceiver.vala \
 	SnippetManager.vala \
 	DMManager.vala \
@@ -94,7 +95,6 @@ libcorebird_la_VALASOURCES = \
 	util/WeakRef.vala \
 	util/Dirs.vala \
 	util/Bundle.vala \
-	util/TextTransform.vala \
 	util/UserUtils.vala \
 	list/TweetListEntry.vala \
 	list/DMListEntry.vala \
@@ -133,6 +133,9 @@ nodist_libcorebird_la_SOURCES = \
 corebird.h corebird.vapi: libcorebird_la_vala.stamp
 $(libcorebird_la_VALASOURCES:.vala=.c): libcorebird_la_vala.stamp
 
+
+corebird_SOURCES = Media.c Media.h MediaDownloader.c MediaDownloader.h Types.c Types.h TextTransform.c TextTransform.h
+
 libcorebird_la_vala.stamp: $(libcorebird_la_VALASOURCES) Makefile
 	@$(VALAC) \
 		$(AM_VALAFLAGS) $(CB_VALA_FLAGS) \
@@ -146,6 +149,7 @@ libcorebird_la_LIBADD = $(CB_LIBS)
 
 corebird_VALASOURCES = \
 	main.vala
+
 
 nodist_corebird_SOURCES = \
 	corebird_vala.stamp \
