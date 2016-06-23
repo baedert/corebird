@@ -32,6 +32,10 @@ public enum TweetState {
   HIDDEN_AUTHOR_BLOCKED,
   /** Hidden because the author of a retweet is blocked */
   HIDDEN_RETWEETER_BLOCKED,
+  /** Hidden because the author was muted */
+  HIDDEN_AUTHOR_MUTED,
+  /** Hidden because the author of a retweet is muted */
+  HIDDEN_RETWEETER_MUTED,
 
   /* The authenticating user retweeted this tweet */
   RETWEETED,
@@ -64,7 +68,9 @@ public class Tweet : GLib.Object {
                                TweetState.HIDDEN_RT_BY_USER |
                                TweetState.HIDDEN_RT_BY_FOLLOWEE |
                                TweetState.HIDDEN_AUTHOR_BLOCKED |
-                               TweetState.HIDDEN_RETWEETER_BLOCKED);
+                               TweetState.HIDDEN_RETWEETER_BLOCKED |
+                               TweetState.HIDDEN_AUTHOR_MUTED |
+                               TweetState.HIDDEN_RETWEETER_MUTED);
     }
   }
   public signal void state_changed ();

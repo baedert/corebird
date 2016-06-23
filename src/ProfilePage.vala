@@ -179,6 +179,10 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     /* We (maybe) re-enable this later when the friendship object has arrived */
     ((SimpleAction)actions.lookup_action ("toggle-retweets")).set_enabled (false);
 
+    /* Set muted and blocked status now, let the friendship update it */
+    set_user_blocked (account.is_blocked (user_id));
+    set_user_muted (account.is_muted (user_id));
+
     set_banner (null);
     load_friendship.begin ();
     /* Load the profile data now, then - if available - set the cached data */
@@ -709,7 +713,11 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     UserUtils.mute_user.begin (account,this.user_id, !setting, (obj, res) => {
       UserUtils.mute_user.end (res);
       mute_item_blocked = false;
-      /* TODO: Hide tweets in timeline? */
+      HomeTimeline ht = (HomeTimeline) main_window.get_page (Page.STREAM);
+      if (setting)
+        ht.show_tweets_from (this.user_id, TweetState.HIDDEN_AUTHOR_MUTED);
+      else
+        ht.hide_tweets_from (this.user_id, TweetState.HIDDEN_AUTHOR_MUTED);
     });
   }
 
@@ -754,6 +762,10 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
 
   private bool get_user_blocked () {
     return ((SimpleAction)actions.lookup_action ("toggle-blocked")).get_state ().get_boolean ();
+  }
+
+  private void set_user_muted (bool muted) {
+    ((SimpleAction)actions.lookup_action ("toggle-muted")).set_state (new GLib.Variant.boolean (muted));
   }
 
   private bool get_user_muted () {

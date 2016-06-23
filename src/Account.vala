@@ -543,6 +543,22 @@ public class Account : GLib.Object {
     return false;
   }
 
+  public bool is_blocked (int64 user_id) {
+    foreach (int64 id in this.blocked)
+      if (id == user_id)
+        return true;
+
+    return false;
+  }
+
+  public bool is_muted (int64 user_id) {
+    foreach (int64 id in this.muted)
+      if (id == user_id)
+        return true;
+
+    return false;
+  }
+
   /** Static stuff ********************************************************************/
   private static GLib.GenericArray<Account>? accounts = null;
 
