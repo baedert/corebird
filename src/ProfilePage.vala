@@ -88,6 +88,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
   private bool lists_page_inited = false;
   private bool block_item_blocked = false;
   private bool retweet_item_blocked = false;
+  private bool mute_item_blocked = false;
   private bool tweets_loading = false;
   private bool followers_loading = false;
   private Cursor? followers_cursor = null;
@@ -147,14 +148,23 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
 
     actions = new GLib.SimpleActionGroup ();
     actions.add_action_entries (action_entries, this);
+
     GLib.SimpleAction block_action = new GLib.SimpleAction.stateful ("toggle-blocked", null,
                                                                      new GLib.Variant.boolean (false));
     block_action.activate.connect (toggle_blocked_activated);
     actions.add_action (block_action);
+
+    GLib.SimpleAction mute_action = new GLib.SimpleAction.stateful ("toggle-muted", null,
+                                                                    new GLib.Variant.boolean (false));
+    mute_action.activate.connect (toggle_muted_activated);
+    actions.add_action (mute_action);
+
     GLib.SimpleAction rt_action = new GLib.SimpleAction.stateful ("toggle-retweets", null,
                                                                   new GLib.Variant.boolean (false));
     rt_action.activate.connect (retweet_action_activated);
     actions.add_action (rt_action);
+
+
     this.insert_action_group ("user", actions);
   }
 
@@ -165,6 +175,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     ((SimpleAction)actions.lookup_action ("add-remove-list")).set_enabled (user_id != account.id);
     ((SimpleAction)actions.lookup_action ("write-dm")).set_enabled (user_id != account.id);
     ((SimpleAction)actions.lookup_action ("toggle-blocked")).set_enabled (user_id != account.id);
+    ((SimpleAction)actions.lookup_action ("toggle-muted")).set_enabled (user_id != account.id);
     /* We (maybe) re-enable this later when the friendship object has arrived */
     ((SimpleAction)actions.lookup_action ("toggle-retweets")).set_enabled (false);
 
@@ -691,6 +702,17 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     });
   }
 
+  private void toggle_muted_activated (GLib.SimpleAction a, GLib.Variant? v) {
+    bool setting = get_user_muted ();
+    mute_item_blocked = true;
+    a.set_state (!setting);
+    UserUtils.mute_user.begin (account,this.user_id, !setting, (obj, res) => {
+      UserUtils.mute_user.end (res);
+      mute_item_blocked = false;
+      /* TODO: Hide tweets in timeline? */
+    });
+  }
+
   private void retweet_action_activated (GLib.SimpleAction a, GLib.Variant? v) {
     if (retweet_item_blocked)
       return;
@@ -732,6 +754,10 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
 
   private bool get_user_blocked () {
     return ((SimpleAction)actions.lookup_action ("toggle-blocked")).get_state ().get_boolean ();
+  }
+
+  private bool get_user_muted () {
+    return ((SimpleAction)actions.lookup_action ("toggle-muted")).get_state ().get_boolean ();
   }
 
   private void set_retweets_disabled (bool disabled) {

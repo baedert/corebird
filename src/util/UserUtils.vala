@@ -141,4 +141,23 @@ namespace UserUtils {
 
     return cursor;
   }
+
+  async void mute_user (Account account,
+                        int64   to_block,
+                        bool    setting) {
+    var call = account.proxy.new_call ();
+    call.set_method ("POST");
+    if (setting)
+      call.set_function ("1.1/mutes/users/create.json");
+    else
+      call.set_function ("1.1/mutes/users/destroy.json");
+
+    call.add_param ("user_id", to_block.to_string ());
+
+    try {
+      yield call.invoke_async (null);
+    } catch (GLib.Error e) {
+      critical (e.message);
+    }
+  }
 }
