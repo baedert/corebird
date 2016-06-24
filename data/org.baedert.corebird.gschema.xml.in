@@ -21,7 +21,7 @@
 
     <key name="use-dark-theme" type="b">
       <default>false</default>
-      <summary>Specifies if Corebird should request to use the dark variant of the gtk theme</summary>
+      <summary>Unused</summary>
       <description></description>
     </key>
 
@@ -51,7 +51,7 @@
     </key>
     <key name="max-media-size" type="d">
       <default>2.0</default>
-      <summary>(UNUSED!)Maximum size of inline media to download, in Megabytes.</summary>
+      <summary>Unused</summary>
     </key>
     <key name="sidebar-visible" type="b">
       <default>true</default>
