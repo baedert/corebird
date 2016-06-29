@@ -65,12 +65,13 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="create_list_button">
-                    <property name="label" translatable="yes">Create</property>
                     <property name="visible">1</property>
                     <property name="can-focus">1</property>
                     <property name="receives-default">1</property>
                     <property name="valign">baseline</property>
                     <property name="sensitive">0</property>
+                    <property name="label" translatable="yes">Create</property>
+                    <property name="margin-end">6</property>
                     <style>
                       <class name="suggested-action"/>
                     </style>
