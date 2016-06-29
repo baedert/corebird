@@ -53,7 +53,7 @@ canonicalize_url (const char *url)
   else if (g_str_has_prefix (url, "https://"))
     ret += 8;
 
-  if (g_str_has_prefix(url, "www."))
+  if (g_str_has_prefix(url + ret, "www."))
     ret += 4;
 
   return url + ret;
@@ -149,7 +149,7 @@ cb_media_downloader_load_twitter_video (CbMediaDownloader *downloader,
   soup_session_send_message (downloader->soup_session, msg);
   if (msg->status_code != SOUP_STATUS_OK)
     {
-      g_message ("zomg");
+      mark_invalid (media);
       return;
     }
 
