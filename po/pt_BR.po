@@ -484,7 +484,7 @@ msgstr "Retweets desativados"
 
 #: ../ui/profile-page.ui.h:5
 msgid "Follows you"
-msgstr "Você segue"
+msgstr "Segue você"
 
 #: ../ui/profile-page.ui.h:7
 msgid "Followers"
