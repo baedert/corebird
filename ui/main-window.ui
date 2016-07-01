@@ -34,7 +34,6 @@
         <child type="title">
           <object class="GtkStack" id="title_stack">
             <property name="visible">1</property>
-            <property name="hexpand">1</property>
             <child>
               <object class="GtkLabel" id="title_label">
                 <property name="visible">1</property>
