@@ -49,6 +49,12 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
     set { avatar_image.surface = value; }
   }
 
+  public bool verified {
+    set {
+      this.avatar_image.verified = value;
+    }
+  }
+
   public bool seen {
     get { return true; }
     set {}

@@ -240,6 +240,7 @@ class SearchPage : IPage, Gtk.Box {
         entry.screen_name = "@" + user_obj.get_string_member ("screen_name");
         entry.name = user_obj.get_string_member ("name").strip ();
         entry.avatar_url = avatar_url;
+        entry.verified = user_obj.get_boolean_member ("verified");
         entry.show_settings = false;
         if (!collect_obj.done)
           entry.visible = false;
