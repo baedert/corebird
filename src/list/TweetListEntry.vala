@@ -80,14 +80,6 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       this._read_only = value;
     }
   }
-  public new bool visible {
-    get {
-      return !this.tweet.is_hidden;
-    }
-    set {
-      base.visible = value;
-    }
-  }
   public int64 sort_factor {
     get { return tweet.source_tweet.id;}
   }
@@ -442,11 +434,6 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   }
 
   private void state_changed_cb () {
-    if (tweet.is_hidden)
-      this.hide ();
-    else
-      this.show ();
-
     this.values_set = false;
     this.fav_status_image.visible = tweet.is_flag_set (TweetState.FAVORITED);
     this.favorite_button.active = tweet.is_flag_set (TweetState.FAVORITED);
@@ -538,13 +525,6 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     });
 
     this.show ();
-  }
-
-  public override void show () {
-    if (tweet.is_hidden)
-      return;
-
-    base.show ();
   }
 
   private void create_media_widget (bool nsfw) {
