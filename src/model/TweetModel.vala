@@ -17,6 +17,7 @@
 
 public class TweetModel : GLib.Object, GLib.ListModel {
   private GLib.GenericArray<Tweet> tweets = new GLib.GenericArray<Tweet> ();
+  private GLib.GenericArray<Tweet> hidden_tweets = new GLib.GenericArray<Tweet> ();
   private int64 min_id = int64.MAX;
   private int64 max_id = int64.MIN;
 
@@ -45,6 +46,130 @@ public class TweetModel : GLib.Object, GLib.ListModel {
 
   public uint get_n_items () {
     return tweets.length;
+  }
+
+  /**
+   * Removes @t from the list of tweets and adds it to the list of hidden tweets,
+   * updates the min/max id fields.
+   */
+  private void hide_tweet_internal (Tweet t, uint pos) {
+    tweets.remove (t);
+    hidden_tweets.add (t);
+    int64 id = t.id;
+
+    if (id == this.max_id) {
+      if (this.tweets.length > 0) {
+       uint p = int.max ((int)pos - 1, 0);
+        this.max_id = this.tweets.get (p).id;
+      } else {
+        this.max_id = int64.MIN;
+      }
+    }
+
+    if (id == this.min_id) {
+      if (this.tweets.length > 0) {
+        uint p = uint.min (pos + 1, this.tweets.length - 1);
+        this.min_id = this.tweets.get (p).id;
+      } else {
+        this.min_id = int64.MAX;
+      }
+    }
+  }
+
+  private void show_tweet_internal (Tweet t) {
+    hidden_tweets.remove (t);
+    this.insert_sorted (t);
+
+    if (t.id > this.max_id)
+      this.max_id = t.id;
+
+    if (t.id < this.min_id)
+      this.min_id = t.id;
+  }
+
+  /**
+   * Returns true if a tweet was hidden, false otherwise.
+   */
+  public bool set_tweet_flag (Tweet t, TweetState flag) {
+    if (t.is_hidden) {
+#if DEBUG
+      bool found = false;
+      for (uint i  = 0; i < hidden_tweets.length; i ++)
+        if (hidden_tweets.get (i) == t) {
+          found = true;
+          break;
+        }
+
+      assert (found);
+#endif
+      t.set_flag (flag);
+    } else {
+#if DEBUG
+      bool found = false;
+      for (uint i  = 0; i < tweets.length; i ++)
+        if (tweets.get (i) == t) {
+          found = true;
+          break;
+        }
+
+      assert (found);
+      assert (!t.is_hidden);
+#endif
+
+      t.set_flag (flag);
+      if (t.is_hidden) {
+        for (uint i = 0; i < tweets.length; i ++) {
+          if (tweets.get (i) == t) {
+            hide_tweet_internal (tweets.get(i), i);
+            this.items_changed (i, 1, 0);
+            return true;
+          }
+        }
+      }
+    }
+
+    return false;
+  }
+
+  public bool unset_tweet_flag (Tweet t, TweetState flag) {
+    if (t.is_hidden) {
+#if DEBUG
+      bool found = false;
+      for (uint i  = 0; i < hidden_tweets.length; i ++)
+        if (hidden_tweets.get (i) == t) {
+          found = true;
+          break;
+        }
+
+      assert (found);
+#endif
+      t.unset_flag (flag);
+
+      if (!t.is_hidden) {
+        for (uint i = 0; i < hidden_tweets.length; i ++) {
+          if (hidden_tweets.get (i) == t) {
+            this.show_tweet_internal (hidden_tweets.get (i));
+            return true;
+          }
+        }
+      }
+    } else {
+#if DEBUG
+      bool found = false;
+      for (uint i  = 0; i < hidden_tweets.length; i ++)
+        if (tweets.get (i) == t) {
+          found = true;
+          break;
+        }
+
+      assert (found);
+      assert (!t.is_hidden);
+#endif
+
+      t.unset_flag (flag);
+    }
+
+    return false;
   }
 
   private void remove_at_pos (int pos) {
@@ -111,13 +236,18 @@ public class TweetModel : GLib.Object, GLib.ListModel {
 
   public void add (Tweet tweet) {
     assert (tweet.id > 0);
-    this.insert_sorted (tweet);
 
-    if (tweet.id > this.max_id)
-      this.max_id = tweet.id;
+    if (tweet.is_hidden) {
+      hidden_tweets.add (tweet);
+    } else {
+      this.insert_sorted (tweet);
 
-    if (tweet.id < this.min_id)
-      this.min_id = tweet.id;
+      if (tweet.id > this.max_id)
+        this.max_id = tweet.id;
+
+      if (tweet.id < this.min_id)
+        this.min_id = tweet.id;
+    }
   }
 
   public void remove_last_n_visible (uint amount) {
@@ -180,24 +310,66 @@ public class TweetModel : GLib.Object, GLib.ListModel {
     for (int i = 0; i < tweets.length; i ++) {
       Tweet tweet = tweets.get (i);
       if (tweet.user_id == user_id) {
-        if (active)
-          tweet.set_flag (reason);
-        else
-          tweet.unset_flag (reason);
+        if (active) {
+          if (this.set_tweet_flag (tweet, reason))
+            i --;
+        } else {
+          if (this.unset_tweet_flag (tweet, reason))
+            i --;
+        }
+      }
+    }
+
+    // Do it a second time for hidden tweets
+    for (int i = 0; i < hidden_tweets.length; i ++) {
+      Tweet tweet = hidden_tweets.get (i);
+      if (tweet.user_id == user_id) {
+        if (active) {
+          if (this.set_tweet_flag (tweet, reason))
+            i --;
+        } else {
+          if (this.unset_tweet_flag (tweet, reason))
+            i --;
+        }
       }
     }
   }
 
+  /**
+   * Hides all tweets where the given user is the RETWEETER
+   */
   public void toggle_flag_on_retweet (int64 user_id, TweetState reason, bool active) {
     for (int i = 0; i < tweets.length; i ++) {
       Tweet tweet = tweets.get (i);
+
       if (tweet.retweeted_tweet != null &&
           tweet.source_tweet.author.id == user_id) {
 
-        if (active)
-          tweet.set_flag (reason);
-        else
-          tweet.unset_flag (reason);
+        // TODO: (PERF) We iterate here to get the tweet from the user id, and in set_tweet_flag we iterate
+        // again to get the position of the tweet, which we already have here...
+        if (active) {
+          if (this.set_tweet_flag (tweet, reason))
+            i --;
+        } else {
+          if (this.unset_tweet_flag (tweet, reason))
+            i --;
+        }
+      }
+    }
+
+    // Do it a second time for hidden tweets
+    for (int i = 0; i < hidden_tweets.length; i ++) {
+      Tweet tweet = hidden_tweets.get (i);
+      if (tweet.retweeted_tweet != null &&
+          tweet.source_tweet.author.id == user_id) {
+
+        if (active) {
+          if (this.set_tweet_flag (tweet, reason))
+            i --;
+        } else {
+          if (this.unset_tweet_flag (tweet, reason))
+            i --;
+        }
       }
     }
   }

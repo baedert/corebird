@@ -36,7 +36,7 @@ class FavoritesTimeline : IMessageReceiver, DefaultTimeline {
       Tweet? existing_tweet = this.tweet_list.model.get_from_id (tweet_id, 0);
       if (existing_tweet != null) {
         /* This tweet is already in the model, so just mark it as favorited */
-        existing_tweet.set_flag (TweetState.FAVORITED);
+        tweet_list.model.set_tweet_flag (existing_tweet, TweetState.FAVORITED);
         return;
       }
 

@@ -72,8 +72,8 @@ void tweet_removal () {
     tm.add (t);
   }
 
-  // We should have 12 now
-  assert (tm.get_n_items () == 12);
+  // We should have 10 now
+  assert (tm.get_n_items () == 10);
 
   // Now remove the last 5 visible ones.
   // This should remove 2 invisible tweets as well as 5 visible ones
@@ -180,13 +180,16 @@ void hide_rt () {
   t1.retweeted_tweet.author.id = 100;
 
   tm.add (t1);
+  assert (!t1.is_hidden);
 
   tm.toggle_flag_on_retweet (10, TweetState.HIDDEN_FILTERED, true);
+  assert (t1.is_hidden);
 
-  assert (tm.get_n_items () == 1);
-  assert (((Tweet)tm.get_item (0)).is_hidden);
+  assert (tm.get_n_items () == 0);
 
   tm.toggle_flag_on_retweet (10, TweetState.HIDDEN_FILTERED, false);
+  assert (!t1.is_hidden);
+  assert (tm.get_n_items () == 1);
   assert (!((Tweet)tm.get_item (0)).is_hidden);
 }
 
@@ -203,6 +206,7 @@ void get_from_id () {
   tm.add (t1);
   tm.add (t2);
 
+  assert (tm.get_n_items () == 2);
   assert (((Tweet)tm.get_item (0)).id == 100);
   assert (((Tweet)tm.get_item (1)).id == 10);
 
@@ -287,6 +291,86 @@ void min_max_remove () {
   assert (tm.greatest_id == int64.MIN);
 }
 
+void tweet_count () {
+  var tm = new TweetModel ();
+
+  var t1 = new Tweet ();
+  t1.id = 10;
+  t1.source_tweet = Cb.MiniTweet ();
+  t1.source_tweet.author = Cb.UserIdentity ();
+  t1.source_tweet.author.id = 11;
+  t1.retweeted_tweet = Cb.MiniTweet ();
+  t1.retweeted_tweet.id = 100;
+  t1.retweeted_tweet.author = Cb.UserIdentity ();
+  t1.retweeted_tweet.author.id = 111;
+
+  tm.add (t1);
+  assert (tm.get_n_items () == 1);
+  assert (tm.greatest_id == t1.id);
+  assert (tm.lowest_id == t1.id);
+
+  tm.toggle_flag_on_retweet (11, TweetState.HIDDEN_FILTERED, true);
+  assert (tm.get_n_items () == 0);
+
+  tm.toggle_flag_on_retweet (11, TweetState.HIDDEN_FILTERED, false);
+  assert (tm.get_n_items () == 1);
+
+
+  var t2 = new Tweet ();
+  t2.id = 20;
+  t2.source_tweet = Cb.MiniTweet ();
+  t2.source_tweet.author = Cb.UserIdentity ();
+  t2.source_tweet.author.id = 11;
+
+  tm.add (t2);
+  assert (tm.get_n_items () == 2);
+  assert (tm.greatest_id == t2.id);
+  assert (tm.lowest_id == t1.id);
+
+  tm.toggle_flag_on_tweet (11, TweetState.HIDDEN_FILTERED, true);
+  assert (tm.get_n_items () == 1);
+  tm.toggle_flag_on_retweet (11, TweetState.HIDDEN_FILTERED, true);
+  assert (tm.get_n_items () == 0);
+
+  tm.toggle_flag_on_retweet (11, TweetState.HIDDEN_FILTERED, false);
+  assert (tm.get_n_items () == 1);
+  tm.toggle_flag_on_tweet (11, TweetState.HIDDEN_FILTERED, false);
+  assert (tm.get_n_items () == 2);
+}
+
+void tweet_count2 () {
+  var tm = new TweetModel ();
+
+  for (int i = 1;  i <= 20; i ++) {
+    var t1 = new Tweet ();
+    t1.id = i * 10;
+    t1.source_tweet = Cb.MiniTweet ();
+    t1.source_tweet.author = Cb.UserIdentity ();
+    t1.source_tweet.author.id = 1337;
+    t1.retweeted_tweet = Cb.MiniTweet ();
+    t1.retweeted_tweet.id = i * 100;
+    t1.retweeted_tweet.author = Cb.UserIdentity ();
+    t1.retweeted_tweet.author.id = 999;//i * 100 + 1;
+
+    tm.add (t1);
+  }
+
+  assert (tm.get_n_items () == 20);
+
+  tm.toggle_flag_on_retweet (1337, TweetState.HIDDEN_RETWEETER_MUTED, true);
+  assert (tm.get_n_items () == 0);
+
+  tm.toggle_flag_on_retweet (1337, TweetState.HIDDEN_RETWEETER_MUTED, false);
+  assert (tm.get_n_items () == 20);
+
+  tm.toggle_flag_on_tweet (999, TweetState.HIDDEN_RETWEETER_MUTED, true);
+  message ("%u", tm.get_n_items ());
+  assert (tm.get_n_items () == 0);
+
+  tm.toggle_flag_on_tweet (999, TweetState.HIDDEN_RETWEETER_MUTED, false);
+  message ("%u", tm.get_n_items ());
+  assert (tm.get_n_items () == 20);
+}
 
 int main (string[] args) {
   GLib.Test.init (ref args);
@@ -301,6 +385,8 @@ int main (string[] args) {
   GLib.Test.add_func ("/tweetmodel/min-max-id", min_max_id);
   GLib.Test.add_func ("/tweetmodel/sorting", sorting);
   GLib.Test.add_func ("/tweetmodel/min-max-remove", min_max_remove);
+  GLib.Test.add_func ("/tweetmodel/tweet-count", tweet_count);
+  GLib.Test.add_func ("/tweetmodel/tweet-count2", tweet_count2);
 
   return GLib.Test.run ();
 }

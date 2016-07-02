@@ -53,7 +53,7 @@ public enum TweetState {
 
 public class Tweet : GLib.Object {
   public static const int MAX_LENGTH = 140;
-  private uint state = 0;
+  public uint state = 0;
 
 #if DEBUG
   public string json_data;

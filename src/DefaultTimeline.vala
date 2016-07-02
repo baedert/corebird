@@ -205,9 +205,9 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
     Tweet? t = this.tweet_list.model.get_from_id (id, 0);
     if (t != null) {
       if (mode)
-        t.set_flag (TweetState.FAVORITED);
+        this.tweet_list.model.set_tweet_flag (t, TweetState.FAVORITED);
       else
-        t.unset_flag (TweetState.FAVORITED);
+        this.tweet_list.model.unset_tweet_flag (t, TweetState.FAVORITED);
     }
   }
 
@@ -435,13 +435,13 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
     for (uint i = 0, p = tm.get_n_items (); i < p; i ++) {
       var tweet = (Tweet) tm.get_object (i);
       if (account.filter_matches (tweet)) {
-        tweet.set_flag (TweetState.HIDDEN_FILTERED);
+        tm.set_tweet_flag (tweet, TweetState.HIDDEN_FILTERED);
         if (!tweet.seen) {
           this.unread_count --;
           tweet.seen = true;
         }
       } else {
-        tweet.unset_flag (TweetState.HIDDEN_FILTERED);
+        tm.unset_tweet_flag (tweet, TweetState.HIDDEN_FILTERED);
       }
     }
   }

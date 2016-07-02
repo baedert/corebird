@@ -59,6 +59,8 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
     Tweet t = new Tweet();
     t.load_from_json (obj, now, account);
 
+    /* We don't use the set_state version from TweetModel here since
+       we just decide the initial visibility of the tweet */
     if (t.retweeted_tweet != null)
       t.set_flag (get_rt_flags (t));
 
