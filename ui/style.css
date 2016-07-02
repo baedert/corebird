@@ -24,6 +24,7 @@
   background-color: @topbar_bg;
   outline-color: #999;
   margin: 0px;
+  -GtkWidget-window-dragging: 1;
 }
 
 .topbar button:hover,
