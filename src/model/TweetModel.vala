@@ -17,7 +17,7 @@
 
 public class TweetModel : GLib.Object, GLib.ListModel {
   private GLib.GenericArray<Tweet> tweets = new GLib.GenericArray<Tweet> ();
-  private GLib.GenericArray<Tweet> hidden_tweets = new GLib.GenericArray<Tweet> ();
+  public GLib.GenericArray<Tweet> hidden_tweets = new GLib.GenericArray<Tweet> ();
   private int64 min_id = int64.MAX;
   private int64 max_id = int64.MIN;
 
@@ -156,7 +156,7 @@ public class TweetModel : GLib.Object, GLib.ListModel {
     } else {
 #if DEBUG
       bool found = false;
-      for (uint i  = 0; i < hidden_tweets.length; i ++)
+      for (uint i  = 0; i < tweets.length; i ++)
         if (tweets.get (i) == t) {
           found = true;
           break;
