@@ -714,10 +714,13 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
       UserUtils.mute_user.end (res);
       mute_item_blocked = false;
       HomeTimeline ht = (HomeTimeline) main_window.get_page (Page.STREAM);
-      if (setting)
+      if (setting) {
         ht.show_tweets_from (this.user_id, TweetState.HIDDEN_AUTHOR_MUTED);
-      else
+        ht.show_retweets_from (this.user_id, TweetState.HIDDEN_RETWEETER_MUTED);
+      } else {
         ht.hide_tweets_from (this.user_id, TweetState.HIDDEN_AUTHOR_MUTED);
+        ht.hide_retweets_from (this.user_id, TweetState.HIDDEN_RETWEETER_MUTED);
+      }
     });
   }
 
