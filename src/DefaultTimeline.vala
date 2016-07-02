@@ -431,17 +431,32 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
   public void rerun_filters () {
     TweetModel tm = tweet_list.model;
 
-
-    for (uint i = 0, p = tm.get_n_items (); i < p; i ++) {
+    for (uint i = 0; i < tm.get_n_items (); i ++) {
       var tweet = (Tweet) tm.get_object (i);
       if (account.filter_matches (tweet)) {
-        tm.set_tweet_flag (tweet, TweetState.HIDDEN_FILTERED);
+        if (tm.set_tweet_flag (tweet, TweetState.HIDDEN_FILTERED))
+          i --;
+
         if (!tweet.seen) {
           this.unread_count --;
           tweet.seen = true;
         }
       } else {
-        tm.unset_tweet_flag (tweet, TweetState.HIDDEN_FILTERED);
+        if (tm.unset_tweet_flag (tweet, TweetState.HIDDEN_FILTERED)) {
+          i --;
+        }
+      }
+
+    }
+
+    // Same thing for invisible tweets...
+    for (uint i = 0; i < tm.hidden_tweets.length; i ++) {
+      var tweet =  tm.hidden_tweets.get (i);
+      if (tweet.is_flag_set (TweetState.HIDDEN_FILTERED)) {
+        if (!account.filter_matches (tweet)) {
+          tm.unset_tweet_flag (tweet, TweetState.HIDDEN_FILTERED);
+          i --;
+        }
       }
     }
   }
