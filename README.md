@@ -51,7 +51,7 @@ This is the readme for the current *development version*. If you're looking for 
  - `intltool >= 0.40`
  - `vala >= 0.28` (makedep)
  - `automake >= 1.14` (makedep)
- - `gstreamer-1.0` (disable via --disable-video, default enabled)
+ - `gst-plugins-base-1.0` (for playbin, disable via --disable-video)
  - `gst-plugins-bad-1.0 >= 1.6` (disable via --disable-video, default enabled)
  - `gst-plugins-good-1.0` (disable via --disable-video, default enabled)
  - `gst-libav-1.0` (disable via --disable-video, default enabled)
