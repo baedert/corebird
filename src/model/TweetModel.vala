@@ -258,13 +258,9 @@ public class TweetModel : GLib.Object, GLib.ListModel {
     int size_before = tweets.length;
     int index = tweets.length - 1;
     while (index >= 0 && n_removed < amount) {
-      Cb.Tweet tweet = tweets.get (index);
-
-      if (!tweet.is_hidden ())
-        n_removed ++;
-
       this.remove_at_pos (index);
       index --;
+      n_removed ++;
     }
     int removed = size_before - tweets.length;
     this.items_changed (size_before - removed, removed, 0);
