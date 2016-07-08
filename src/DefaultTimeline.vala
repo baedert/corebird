@@ -60,8 +60,8 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
   public DefaultTimeline (int id) {
     this.id = id;
     this.hscrollbar_policy = Gtk.PolicyType.NEVER;
-    this.scrolled_to_start.connect(handle_scrolled_to_start);
-    this.scrolled_to_end.connect(() => {
+    this.scrolled_to_start.connect (handle_scrolled_to_start);
+    this.scrolled_to_end.connect (() => {
       if (!loading) {
         load_older ();
       }
