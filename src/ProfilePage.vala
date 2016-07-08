@@ -794,8 +794,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
       // Correct user!
       var tweet = new Tweet ();
       tweet.load_from_json (root_node,
-                            new GLib.DateTime.now_local (),
-                            this.account);
+                            new GLib.DateTime.now_local ());
       this.tweet_list.model.add (tweet);
     }
   }

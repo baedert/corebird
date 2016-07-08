@@ -184,8 +184,7 @@ public class Tweet : GLib.Object {
    * @param now The current time
    */
   public void load_from_json (Json.Node     status_node,
-                              GLib.DateTime now,
-                              Account       account) {
+                              GLib.DateTime now) {
     Json.Object status = status_node.get_object ();
     Json.Object user = status.get_object_member("user");
     this.id          = status.get_int_member("id");

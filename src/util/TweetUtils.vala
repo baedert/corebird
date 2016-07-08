@@ -306,7 +306,7 @@ namespace TweetUtils {
       var now = new GLib.DateTime.now_local ();
       GLib.Idle.add (() => {
         Tweet tweet = new Tweet ();
-        tweet.load_from_json (json_array.get_element (index), now, account);
+        tweet.load_from_json (json_array.get_element (index), now);
         if (account.user_counter == null ||
             tweet_list == null ||
             !(tweet_list.get_toplevel () is Gtk.Window))

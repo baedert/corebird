@@ -577,7 +577,7 @@ void retweet () {
   }
   var root = parser.get_root ();
 
-  t.load_from_json (root, now, acc);
+  t.load_from_json (root, now);
   assert (t.id == 463208606784311296);
   assert (t.retweeted_tweet != null);
   assert (t.retweeted_tweet.id == 461097667775725569);
@@ -610,7 +610,7 @@ void media_count () {
   }
   var root = parser.get_root ();
 
-  t.load_from_json (root, now, acc);
+  t.load_from_json (root, now);
   assert (t.screen_name == "corebirdgtk");
   //message ("Media count: %d", t.medias.length);
   assert (t.medias.length == 2);
