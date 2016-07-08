@@ -47,16 +47,16 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
         toggle_favorite (id, false);
     } else if (type == StreamMessageType.EVENT_BLOCK) {
       int64 user_id = root.get_object ().get_object_member ("target").get_int_member ("id");
-      hide_tweets_from (user_id, TweetState.HIDDEN_AUTHOR_BLOCKED);
+      hide_tweets_from (user_id, Cb.TweetState.HIDDEN_AUTHOR_BLOCKED);
     } else if (type == StreamMessageType.EVENT_UNBLOCK) {
       int64 user_id = root.get_object ().get_object_member ("target").get_int_member ("id");
-      show_tweets_from (user_id, TweetState.HIDDEN_AUTHOR_BLOCKED);
+      show_tweets_from (user_id, Cb.TweetState.HIDDEN_AUTHOR_BLOCKED);
     }
   } // }}}
 
   private void add_tweet (Json.Node obj) {
     GLib.DateTime now = new GLib.DateTime.now_local ();
-    Tweet t = new Tweet();
+    Cb.Tweet t = new Cb.Tweet ();
     t.load_from_json (obj, now);
 
     /* We don't use the set_state version from TweetModel here since
@@ -64,19 +64,19 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
     if (t.retweeted_tweet != null)
       t.set_flag (get_rt_flags (t));
 
-    if (account.blocked_or_muted (t.user_id))
-      t.set_flag (TweetState.HIDDEN_RETWEETER_BLOCKED);
+    if (account.blocked_or_muted (t.get_user_id ()))
+      t.set_flag (Cb.TweetState.HIDDEN_RETWEETER_BLOCKED);
 
 
     if (t.retweeted_tweet != null && account.blocked_or_muted (t.retweeted_tweet.author.id))
-      t.set_flag (TweetState.HIDDEN_AUTHOR_BLOCKED);
+      t.set_flag (Cb.TweetState.HIDDEN_AUTHOR_BLOCKED);
 
     if (account.filter_matches (t))
-      t.set_flag (TweetState.HIDDEN_FILTERED);
+      t.set_flag (Cb.TweetState.HIDDEN_FILTERED);
 
     bool auto_scroll = Settings.auto_scroll_on_new_tweets ();
 
-    t.seen = t.user_id == account.id ||
+    t.seen = t.get_user_id () == account.id ||
              (t.retweeted_tweet != null && t.retweeted_tweet.author.id == account.id) ||
              (this.scrolled_up  &&
               main_window.cur_page_id == this.id &&
@@ -86,7 +86,7 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
 
     tweet_list.model.add (t);
 
-    if (!t.is_hidden) {
+    if (!t.is_hidden ()) {
       /* We need to balance even if we don't scroll up, in case
          auto-scroll-on-new-tweets is disabled */
       this.balance_next_upper_change (TOP);
@@ -107,7 +107,7 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
     // We never show any notifications if auto-scroll-on-new-tweet is enabled
 
     int stack_size = Settings.get_tweet_stack_count ();
-    if (t.user_id == account.id || auto_scroll)
+    if (t.get_user_id () == account.id || auto_scroll)
       return;
 
     if (stack_size == 1 && !auto_scroll) {
@@ -131,25 +131,25 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
     }
   }
 
-  public void hide_tweets_from (int64 user_id, TweetState reason) {
+  public void hide_tweets_from (int64 user_id, Cb.TweetState reason) {
     TweetModel tm = (TweetModel) tweet_list.model;
 
     tm.toggle_flag_on_tweet (user_id, reason, true);
   }
 
-  public void show_tweets_from (int64 user_id, TweetState reason) {
+  public void show_tweets_from (int64 user_id, Cb.TweetState reason) {
     TweetModel tm = (TweetModel) tweet_list.model;
 
     tm.toggle_flag_on_tweet (user_id, reason, false);
   }
 
-  public void hide_retweets_from (int64 user_id, TweetState reason) {
+  public void hide_retweets_from (int64 user_id, Cb.TweetState reason) {
     TweetModel tm = (TweetModel) tweet_list.model;
 
     tm.toggle_flag_on_retweet (user_id, reason, true);
   }
 
-  public void show_retweets_from (int64 user_id, TweetState reason) {
+  public void show_retweets_from (int64 user_id, Cb.TweetState reason) {
     TweetModel tm = (TweetModel) tweet_list.model;
 
     tm.toggle_flag_on_retweet (user_id, reason, false);

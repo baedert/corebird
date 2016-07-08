@@ -18,7 +18,7 @@
 class ComposeJob : GLib.Object {
   private unowned Account account;
   public string text;
-  public Tweet quoted_tweet;
+  public Cb.Tweet quoted_tweet;
   public int64? reply_id = null;
   private GLib.GenericArray<string> image_paths = new GLib.GenericArray<string> ();
   public signal void image_upload_started  (string path);

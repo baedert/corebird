@@ -16,8 +16,8 @@
  */
 
 public class TweetModel : GLib.Object, GLib.ListModel {
-  private GLib.GenericArray<Tweet> tweets = new GLib.GenericArray<Tweet> ();
-  public GLib.GenericArray<Tweet> hidden_tweets = new GLib.GenericArray<Tweet> ();
+  private GLib.GenericArray<Cb.Tweet> tweets = new GLib.GenericArray<Cb.Tweet> ();
+  public GLib.GenericArray<Cb.Tweet> hidden_tweets = new GLib.GenericArray<Cb.Tweet> ();
   private int64 min_id = int64.MAX;
   private int64 max_id = int64.MIN;
 
@@ -34,7 +34,7 @@ public class TweetModel : GLib.Object, GLib.ListModel {
 
 
   public GLib.Type get_item_type () {
-    return typeof (Tweet);
+    return typeof (Cb.Tweet);
   }
 
   public GLib.Object? get_item (uint index) {
@@ -52,7 +52,7 @@ public class TweetModel : GLib.Object, GLib.ListModel {
    * Removes @t from the list of tweets and adds it to the list of hidden tweets,
    * updates the min/max id fields.
    */
-  private void hide_tweet_internal (Tweet t, uint pos) {
+  private void hide_tweet_internal (Cb.Tweet t, uint pos) {
     tweets.remove (t);
     hidden_tweets.add (t);
     int64 id = t.id;
@@ -76,7 +76,7 @@ public class TweetModel : GLib.Object, GLib.ListModel {
     }
   }
 
-  private void show_tweet_internal (Tweet t) {
+  private void show_tweet_internal (Cb.Tweet t) {
     hidden_tweets.remove (t);
     this.insert_sorted (t);
 
@@ -90,8 +90,8 @@ public class TweetModel : GLib.Object, GLib.ListModel {
   /**
    * Returns true if a tweet was hidden, false otherwise.
    */
-  public bool set_tweet_flag (Tweet t, TweetState flag) {
-    if (t.is_hidden) {
+  public bool set_tweet_flag (Cb.Tweet t, Cb.TweetState flag) {
+    if (t.is_hidden ()) {
 #if DEBUG
       bool found = false;
       for (uint i  = 0; i < hidden_tweets.length; i ++)
@@ -113,11 +113,11 @@ public class TweetModel : GLib.Object, GLib.ListModel {
         }
 
       assert (found);
-      assert (!t.is_hidden);
+      assert (!t.is_hidden ());
 #endif
 
       t.set_flag (flag);
-      if (t.is_hidden) {
+      if (t.is_hidden ()) {
         for (uint i = 0; i < tweets.length; i ++) {
           if (tweets.get (i) == t) {
             hide_tweet_internal (tweets.get(i), i);
@@ -131,8 +131,8 @@ public class TweetModel : GLib.Object, GLib.ListModel {
     return false;
   }
 
-  public bool unset_tweet_flag (Tweet t, TweetState flag) {
-    if (t.is_hidden) {
+  public bool unset_tweet_flag (Cb.Tweet t, Cb.TweetState flag) {
+    if (t.is_hidden ()) {
 #if DEBUG
       bool found = false;
       for (uint i  = 0; i < hidden_tweets.length; i ++)
@@ -145,7 +145,7 @@ public class TweetModel : GLib.Object, GLib.ListModel {
 #endif
       t.unset_flag (flag);
 
-      if (!t.is_hidden) {
+      if (!t.is_hidden ()) {
         for (uint i = 0; i < hidden_tweets.length; i ++) {
           if (hidden_tweets.get (i) == t) {
             this.show_tweet_internal (hidden_tweets.get (i));
@@ -163,7 +163,7 @@ public class TweetModel : GLib.Object, GLib.ListModel {
         }
 
       assert (found);
-      assert (!t.is_hidden);
+      assert (!t.is_hidden ());
 #endif
 
       t.unset_flag (flag);
@@ -197,7 +197,7 @@ public class TweetModel : GLib.Object, GLib.ListModel {
     }
   }
 
-  private void insert_sorted (Tweet tweet) {
+  private void insert_sorted (Cb.Tweet tweet) {
     /* Determine the end we start at.
        Higher IDs are at the beginning of the list */
     int insert_pos = -1;
@@ -234,10 +234,10 @@ public class TweetModel : GLib.Object, GLib.ListModel {
     this.items_changed (insert_pos, 0, 1);
   }
 
-  public void add (Tweet tweet) {
+  public void add (Cb.Tweet tweet) {
     assert (tweet.id > 0);
 
-    if (tweet.is_hidden) {
+    if (tweet.is_hidden ()) {
       hidden_tweets.add (tweet);
     } else {
       this.insert_sorted (tweet);
@@ -258,9 +258,9 @@ public class TweetModel : GLib.Object, GLib.ListModel {
     int size_before = tweets.length;
     int index = tweets.length - 1;
     while (index >= 0 && n_removed < amount) {
-      Tweet tweet = tweets.get (index);
+      Cb.Tweet tweet = tweets.get (index);
 
-      if (!tweet.is_hidden)
+      if (!tweet.is_hidden ())
         n_removed ++;
 
       this.remove_at_pos (index);
@@ -288,14 +288,14 @@ public class TweetModel : GLib.Object, GLib.ListModel {
     }
   }
 
-  public void remove_tweet (Tweet t) {
+  public void remove_tweet (Cb.Tweet t) {
 #if DEBUG
   assert (this.contains_id (t.id));
 #endif
 
     int pos = 0;
     for (int i = 0; i < tweets.length; i ++) {
-      Tweet tweet = tweets.get (i);
+      Cb.Tweet tweet = tweets.get (i);
       if (t == tweet) {
         pos = i;
         break;
@@ -306,10 +306,10 @@ public class TweetModel : GLib.Object, GLib.ListModel {
     this.items_changed (pos, 1, 0);
   }
 
-  public void toggle_flag_on_tweet (int64 user_id, TweetState reason, bool active) {
+  public void toggle_flag_on_tweet (int64 user_id, Cb.TweetState reason, bool active) {
     for (int i = 0; i < tweets.length; i ++) {
-      Tweet tweet = tweets.get (i);
-      if (tweet.user_id == user_id) {
+      Cb.Tweet tweet = tweets.get (i);
+      if (tweet.get_user_id () == user_id) {
         if (active) {
           if (this.set_tweet_flag (tweet, reason))
             i --;
@@ -322,8 +322,8 @@ public class TweetModel : GLib.Object, GLib.ListModel {
 
     // Do it a second time for hidden tweets
     for (int i = 0; i < hidden_tweets.length; i ++) {
-      Tweet tweet = hidden_tweets.get (i);
-      if (tweet.user_id == user_id) {
+      Cb.Tweet tweet = hidden_tweets.get (i);
+      if (tweet.get_user_id () == user_id) {
         if (active) {
           if (this.set_tweet_flag (tweet, reason))
             i --;
@@ -338,9 +338,9 @@ public class TweetModel : GLib.Object, GLib.ListModel {
   /**
    * Hides all tweets where the given user is the RETWEETER
    */
-  public void toggle_flag_on_retweet (int64 user_id, TweetState reason, bool active) {
+  public void toggle_flag_on_retweet (int64 user_id, Cb.TweetState reason, bool active) {
     for (int i = 0; i < tweets.length; i ++) {
-      Tweet tweet = tweets.get (i);
+      Cb.Tweet tweet = tweets.get (i);
 
       if (tweet.retweeted_tweet != null &&
           tweet.source_tweet.author.id == user_id) {
@@ -359,7 +359,7 @@ public class TweetModel : GLib.Object, GLib.ListModel {
 
     // Do it a second time for hidden tweets
     for (int i = 0; i < hidden_tweets.length; i ++) {
-      Tweet tweet = hidden_tweets.get (i);
+      Cb.Tweet tweet = hidden_tweets.get (i);
       if (tweet.retweeted_tweet != null &&
           tweet.source_tweet.author.id == user_id) {
 
@@ -376,7 +376,7 @@ public class TweetModel : GLib.Object, GLib.ListModel {
 
   public bool contains_id (int64 tweet_id) {
     for (int i = 0; i < tweets.length; i ++) {
-      Tweet tweet = tweets.get (i);
+      Cb.Tweet tweet = tweets.get (i);
       if (tweet.id == tweet_id)
         return true;
     }
@@ -392,7 +392,7 @@ public class TweetModel : GLib.Object, GLib.ListModel {
     }
   }
 
-  public Tweet? get_from_id (int64 id, int diff = -1) {
+  public Cb.Tweet? get_from_id (int64 id, int diff = -1) {
     for (int i = 0; i < tweets.length; i ++) {
       if (tweets.get (i).id == id) {
         if (i + diff < tweets.length && i + diff >= 0)
@@ -405,20 +405,20 @@ public class TweetModel : GLib.Object, GLib.ListModel {
 
   public bool delete_id (int64 id, out bool seen) {
     for (int i = 0; i < tweets.length; i ++) {
-      Tweet t = tweets.get (i);
+      Cb.Tweet t = tweets.get (i);
       if (t.id == id) {
         seen = t.seen;
 
-        if (t.is_hidden)
+        if (t.is_hidden ())
           this.remove_tweet (t);
         else
-          t.set_flag (TweetState.DELETED);
+          t.set_flag (Cb.TweetState.DELETED);
 
 
         return true;
 
-      } else if (t.is_flag_set (TweetState.RETWEETED) && t.my_retweet == id) {
-        t.unset_flag (TweetState.RETWEETED);
+      } else if (t.is_flag_set (Cb.TweetState.RETWEETED) && t.my_retweet == id) {
+        t.unset_flag (Cb.TweetState.RETWEETED);
       }
     }
 

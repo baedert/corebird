@@ -202,12 +202,12 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
 
   public void toggle_favorite (int64 id, bool mode) {
 
-    Tweet? t = this.tweet_list.model.get_from_id (id, 0);
+    Cb.Tweet? t = this.tweet_list.model.get_from_id (id, 0);
     if (t != null) {
       if (mode)
-        this.tweet_list.model.set_tweet_flag (t, TweetState.FAVORITED);
+        this.tweet_list.model.set_tweet_flag (t, Cb.TweetState.FAVORITED);
       else
-        this.tweet_list.model.unset_tweet_flag (t, TweetState.FAVORITED);
+        this.tweet_list.model.unset_tweet_flag (t, Cb.TweetState.FAVORITED);
     }
   }
 
@@ -225,26 +225,26 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
    *      way of checking the case where 2 independend users retweet
    *      the same tweet.
    */
-  protected TweetState get_rt_flags (Tweet t) {
+  protected Cb.TweetState get_rt_flags (Cb.Tweet t) {
     uint flags = 0;
 
     /* First case */
-    if (t.user_id == account.id)
-      flags |= TweetState.HIDDEN_FORCE;
+    if (t.get_user_id () == account.id)
+      flags |= Cb.TweetState.HIDDEN_FORCE;
 
     /*  Second case */
-    if (account.follows_id (t.user_id))
-        flags |= TweetState.HIDDEN_RT_BY_FOLLOWEE;
+    if (account.follows_id (t.get_user_id ()))
+        flags |= Cb.TweetState.HIDDEN_RT_BY_FOLLOWEE;
 
     /* third case */
     if (t.retweeted_tweet != null &&
         t.retweeted_tweet.author.id == account.id)
-      flags |= TweetState.HIDDEN_FORCE;
+      flags |= Cb.TweetState.HIDDEN_FORCE;
 
     /* Fourth case */
     foreach (int64 id in account.disabled_rts) {
       if (id == t.source_tweet.author.id) {
-        flags |= TweetState.HIDDEN_RTS_DISABLED;
+        flags |= Cb.TweetState.HIDDEN_RTS_DISABLED;
         break;
       }
     }
@@ -254,13 +254,13 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
       if (w is TweetListEntry) {
         var tt = ((TweetListEntry)w).tweet;
         if (tt.retweeted_tweet != null && tt.retweeted_tweet.id == t.retweeted_tweet.id) {
-          flags |= TweetState.HIDDEN_FORCE;
+          flags |= Cb.TweetState.HIDDEN_FORCE;
           break;
         }
       }
     }
 
-    return (TweetState)flags;
+    return (Cb.TweetState)flags;
   }
 
   protected void mark_seen (int64 id) {
@@ -281,9 +281,9 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
   }
 
 
-  protected bool scroll_up (Tweet t) {
+  protected bool scroll_up (Cb.Tweet t) {
     bool auto_scroll = Settings.auto_scroll_on_new_tweets ();
-    if (this.scrolled_up && (t.user_id == account.id || auto_scroll)) {
+    if (this.scrolled_up && (t.get_user_id () == account.id || auto_scroll)) {
       this.scroll_up_next (true,
                            main_window.cur_page_id != this.id);
       return true;
@@ -432,9 +432,9 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
     TweetModel tm = tweet_list.model;
 
     for (uint i = 0; i < tm.get_n_items (); i ++) {
-      var tweet = (Tweet) tm.get_object (i);
+      var tweet = (Cb.Tweet) tm.get_object (i);
       if (account.filter_matches (tweet)) {
-        if (tm.set_tweet_flag (tweet, TweetState.HIDDEN_FILTERED))
+        if (tm.set_tweet_flag (tweet, Cb.TweetState.HIDDEN_FILTERED))
           i --;
 
         if (!tweet.seen) {
@@ -442,7 +442,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
           tweet.seen = true;
         }
       } else {
-        if (tm.unset_tweet_flag (tweet, TweetState.HIDDEN_FILTERED)) {
+        if (tm.unset_tweet_flag (tweet, Cb.TweetState.HIDDEN_FILTERED)) {
           i --;
         }
       }
@@ -452,9 +452,9 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
     // Same thing for invisible tweets...
     for (uint i = 0; i < tm.hidden_tweets.length; i ++) {
       var tweet =  tm.hidden_tweets.get (i);
-      if (tweet.is_flag_set (TweetState.HIDDEN_FILTERED)) {
+      if (tweet.is_flag_set (Cb.TweetState.HIDDEN_FILTERED)) {
         if (!account.filter_matches (tweet)) {
-          tm.unset_tweet_flag (tweet, TweetState.HIDDEN_FILTERED);
+          tm.unset_tweet_flag (tweet, Cb.TweetState.HIDDEN_FILTERED);
           i --;
         }
       }

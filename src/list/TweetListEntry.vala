@@ -15,7 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 [GtkTemplate (ui = "/org/baedert/corebird/ui/tweet-list-entry.ui")]
 public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   private const GLib.ActionEntry[] action_entries = {
@@ -71,7 +70,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
         mm_widget.sensitive = !value;
 
       this.grid.remove (name_button);
-      var name_label = new Gtk.Label ("<b>" + tweet.user_name + "</b>");
+      var name_label = new Gtk.Label ("<b>" + tweet.get_user_name () + "</b>");
       name_label.set_use_markup (true);
       name_label.valign = Gtk.Align.BASELINE;
       name_label.show ();
@@ -90,7 +89,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   }
   private unowned Account account;
   private unowned MainWindow main_window;
-  public Tweet tweet;
+  public Cb.Tweet tweet;
   private bool values_set = false;
   private bool delete_first_activated = false;
   [Signal (action = true)]
@@ -102,7 +101,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   [Signal (action = true)]
   private signal void delete_tweet ();
 
-  public TweetListEntry (owned Tweet tweet,
+  public TweetListEntry (Cb.Tweet    tweet,
                          MainWindow? main_window,
                          Account     account,
                          bool        restrict_height = false) {
@@ -110,17 +109,17 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     this.tweet = tweet;
     this.main_window = main_window;
 
-    name_button.set_markup (tweet.user_name);
-    screen_name_label.label = "@" + tweet.screen_name;
+    name_button.set_markup (tweet.get_user_name ());
+    screen_name_label.label = "@" + tweet.get_screen_name ();
     if (tweet.avatar_url != null) {
       string avatar_url = tweet.avatar_url;
       if (this.get_scale_factor () == 2)
         avatar_url = avatar_url.replace ("_normal", "_bigger");
-      avatar_image.surface = Twitter.get ().get_avatar (tweet.user_id, avatar_url, (a) => {
+      avatar_image.surface = Twitter.get ().get_avatar (tweet.get_user_id (), avatar_url, (a) => {
         avatar_image.surface = a;
       }, 48 * this.get_scale_factor ());
     }
-    avatar_image.verified = tweet.is_flag_set (TweetState.VERIFIED);
+    avatar_image.verified = tweet.is_flag_set (Cb.TweetState.VERIFIED);
     text_label.label = tweet.get_trimmed_text ();
     update_time_delta ();
     if (tweet.retweeted_tweet != null) {
@@ -148,25 +147,25 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       quote_screen_name.label = "@" + tweet.quoted_tweet.author.screen_name;
     }
 
-    retweet_button.active    =   tweet.is_flag_set (TweetState.RETWEETED);
-    retweet_button.sensitive = !(tweet.is_flag_set (TweetState.PROTECTED) &&
-                                 tweet.user_id != account.id);
+    retweet_button.active    =   tweet.is_flag_set (Cb.TweetState.RETWEETED);
+    retweet_button.sensitive = !(tweet.is_flag_set (Cb.TweetState.PROTECTED) &&
+                                 tweet.get_user_id () != account.id);
 
-    favorite_button.active = tweet.is_flag_set (TweetState.FAVORITED);
+    favorite_button.active = tweet.is_flag_set (Cb.TweetState.FAVORITED);
 
     tweet.state_changed.connect (state_changed_cb);
 
     conversation_image.visible = (tweet.reply_id != 0);
 
-    if (tweet.has_inline_media) {
-      this.create_media_widget (tweet.is_flag_set (TweetState.NSFW));
+    if (tweet.has_inline_media ()) {
+      this.create_media_widget (tweet.is_flag_set (Cb.TweetState.NSFW));
       mm_widget.restrict_height = restrict_height;
-      mm_widget.set_all_media (tweet.medias);
+      mm_widget.set_all_media (tweet.get_medias ());
       mm_widget.media_clicked.connect (media_clicked_cb);
       mm_widget.media_invalid.connect (media_invalid_cb);
       mm_widget.window = main_window;
 
-      if (tweet.is_flag_set (TweetState.NSFW))
+      if (tweet.is_flag_set (Cb.TweetState.NSFW))
         Settings.get ().changed["hide-nsfw-content"].connect (hide_nsfw_content_changed_cb);
 
       Settings.get ().changed["media-visibility"].connect (media_visibility_changed_cb);
@@ -177,10 +176,10 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     actions.add_action_entries (action_entries, this);
     this.insert_action_group ("tweet", actions);
 
-    if (tweet.user_id != account.id)
+    if (tweet.get_user_id () != account.id)
       ((GLib.SimpleAction)actions.lookup_action ("delete")).set_enabled (false);
 
-    if (tweet.is_flag_set (TweetState.PROTECTED))
+    if (tweet.is_flag_set (Cb.TweetState.PROTECTED))
       ((GLib.SimpleAction)actions.lookup_action ("quote")).set_enabled (false);
 
     reply_tweet.connect (reply_tweet_activated);
@@ -192,10 +191,10 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       retweet_button.tap ();
     });
 
-    if (tweet.is_flag_set (TweetState.FAVORITED))
+    if (tweet.is_flag_set (Cb.TweetState.FAVORITED))
       fav_status_image.show ();
 
-    if (tweet.is_flag_set (TweetState.RETWEETED))
+    if (tweet.is_flag_set (Cb.TweetState.RETWEETED))
       rt_status_image.show ();
 
     values_set = true;
@@ -207,7 +206,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   ~TweetListEntry () {
     Settings.get ().changed["text-transform-flags"].disconnect (transform_flags_changed_cb);
 
-    if (tweet.is_flag_set (TweetState.NSFW) && this.media_stack != null)
+    if (tweet.is_flag_set (Cb.TweetState.NSFW) && this.media_stack != null)
       Settings.get ().changed["hide-nsfw-content"].disconnect (hide_nsfw_content_changed_cb);
 
     if (this.mm_widget != null)
@@ -233,7 +232,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   private void hide_nsfw_content_changed_cb () {
     assert (this.media_stack != null);
 
-    if (this.tweet.is_flag_set (TweetState.NSFW) &&
+    if (this.tweet.is_flag_set (Cb.TweetState.NSFW) &&
         Settings.hide_nsfw_content ())
       this.media_stack.visible_child_name = "nsfw";
     else
@@ -245,7 +244,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   }
 
   private void delete_tweet_activated () {
-    if (tweet.user_id != account.id)
+    if (tweet.get_user_id () != account.id)
       return; // Nope.
 
     if (delete_first_activated) {
@@ -280,9 +279,9 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       case Gdk.Key.k:
         stdout.printf (tweet.json_data+"\n");
         message ("My retweet: %s", tweet.my_retweet.to_string ());
-        message ("Retweeted: %s", tweet.is_flag_set (TweetState.RETWEETED).to_string ());
-        message ("Favorited: %s", tweet.is_flag_set (TweetState.FAVORITED).to_string ());
-        message ("Protected: %s", tweet.is_flag_set (TweetState.PROTECTED).to_string ());
+        message ("Retweeted: %s", tweet.is_flag_set (Cb.TweetState.RETWEETED).to_string ());
+        message ("Favorited: %s", tweet.is_flag_set (Cb.TweetState.FAVORITED).to_string ());
+        message ("Protected: %s", tweet.is_flag_set (Cb.TweetState.PROTECTED).to_string ());
         message ("State    : %s", tweet.state.to_string ());
         message ("Source tweet author id: %s", tweet.source_tweet.author.id.to_string ());
         message ("Source tweet author screen_name: %s", tweet.source_tweet.author.screen_name);
@@ -302,8 +301,8 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
    */
   [GtkCallback]
   private void retweet_button_toggled_cb () {
-    bool retweetable = tweet.user_id == account.id ||
-                       !tweet.is_flag_set (TweetState.PROTECTED);
+    bool retweetable = tweet.get_user_id () == account.id ||
+                       !tweet.is_flag_set (Cb.TweetState.PROTECTED);
 
     if (!retweetable || !values_set)
       return;
@@ -435,13 +434,13 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
   private void state_changed_cb () {
     this.values_set = false;
-    this.fav_status_image.visible = tweet.is_flag_set (TweetState.FAVORITED);
-    this.favorite_button.active = tweet.is_flag_set (TweetState.FAVORITED);
+    this.fav_status_image.visible = tweet.is_flag_set (Cb.TweetState.FAVORITED);
+    this.favorite_button.active = tweet.is_flag_set (Cb.TweetState.FAVORITED);
 
-    this.retweet_button.active = tweet.is_flag_set (TweetState.RETWEETED);
-    this.rt_status_image.visible = tweet.is_flag_set (TweetState.RETWEETED);
+    this.retweet_button.active = tweet.is_flag_set (Cb.TweetState.RETWEETED);
+    this.rt_status_image.visible = tweet.is_flag_set (Cb.TweetState.RETWEETED);
 
-    if (tweet.is_flag_set (TweetState.DELETED)) {
+    if (tweet.is_flag_set (Cb.TweetState.DELETED)) {
       this.sensitive = false;
       stack.visible_child = grid;
     }

@@ -29,7 +29,7 @@ namespace TweetUtils {
    * @param account The account to delete the tweet from
    * @param tweet the tweet to delete
    */
-  async void delete_tweet (Account account, Tweet tweet) {
+  async void delete_tweet (Account account, Cb.Tweet tweet) {
     var call = account.proxy.new_call ();
     call.set_method ("POST");
     call.set_function ("1.1/statuses/destroy/"+tweet.id.to_string ()+".json");
@@ -41,28 +41,6 @@ namespace TweetUtils {
     yield;
   }
 
-
-  /**
-   * Replies to the given tweet. This intended for quick/easy replies, without any
-   * additional data such as media.
-   *
-   * @param account The account to reply from
-   * @param tweet The tweet to reply to
-   * @param text The text to reply
-   */
-  async void reply_to_tweet (Account account, Tweet tweet, string text) {
-    var call = account.proxy.new_call ();
-    call.set_function ("1.1/statuses/update.json");
-    call.set_method ("POST");
-    call.add_param ("in_reply_to_status_id", tweet.id.to_string ());
-    call.add_param ("status", text);
-    call.invoke_async.begin (null, () => {
-      reply_to_tweet.callback ();
-    });
-    yield;
-  }
-
-
   /**
    * (Un)favorites the given tweet.
    *
@@ -70,7 +48,7 @@ namespace TweetUtils {
    * @param tweet The tweet to (un)favorite
    * @param status %true to favorite the tweet, %false to unfavorite it.
    */
-  async void set_favorite_status (Account account, Tweet tweet, bool status) {
+  async void set_favorite_status (Account account, Cb.Tweet tweet, bool status) {
     var call = account.proxy.new_call();
     if (status)
       call.set_function ("1.1/favorites/create.json");
@@ -87,9 +65,9 @@ namespace TweetUtils {
                                  GLib.Log.LINE, GLib.Log.FILE);
       }
       if (status)
-        tweet.set_flag (TweetState.FAVORITED);
+        tweet.set_flag (Cb.TweetState.FAVORITED);
       else
-        tweet.unset_flag (TweetState.FAVORITED);
+        tweet.unset_flag (Cb.TweetState.FAVORITED);
 
       set_favorite_status.callback ();
     });
@@ -103,7 +81,7 @@ namespace TweetUtils {
    * @param tweet The tweet to (un)retweet
    * @param status %true to retweet it, false to unretweet it.
    */
-  async void set_retweet_status (Account account, Tweet tweet, bool status) {
+  async void set_retweet_status (Account account, Cb.Tweet tweet, bool status) {
     var call = account.proxy.new_call ();
     call.set_method ("POST");
     if (status)
@@ -129,9 +107,9 @@ namespace TweetUtils {
           tweet.my_retweet = 0;
         }
         if (status)
-          tweet.set_flag (TweetState.RETWEETED);
+          tweet.set_flag (Cb.TweetState.RETWEETED);
         else
-          tweet.unset_flag (TweetState.RETWEETED);
+          tweet.unset_flag (Cb.TweetState.RETWEETED);
       } catch (GLib.Error e) {
         critical (e.message);
         critical (back);
@@ -305,7 +283,7 @@ namespace TweetUtils {
 
       var now = new GLib.DateTime.now_local ();
       GLib.Idle.add (() => {
-        Tweet tweet = new Tweet ();
+        var tweet = new Cb.Tweet ();
         tweet.load_from_json (json_array.get_element (index), now);
         if (account.user_counter == null ||
             tweet_list == null ||
@@ -317,7 +295,7 @@ namespace TweetUtils {
           account.user_counter.id_seen (ref tweet.retweeted_tweet.author);
 
         if (account.filter_matches (tweet))
-          tweet.set_flag (TweetState.HIDDEN_FILTERED);
+          tweet.set_flag (Cb.TweetState.HIDDEN_FILTERED);
 
         tweet_list.model.add (tweet);
 
@@ -334,7 +312,7 @@ namespace TweetUtils {
   }
 
 
-  public void handle_media_click (Tweet t, MainWindow window, int index) {
+  public void handle_media_click (Cb.Tweet t, MainWindow window, int index) {
     MediaDialog media_dialog = new MediaDialog (t, index);
     media_dialog.set_transient_for (window);
     media_dialog.set_modal (true);

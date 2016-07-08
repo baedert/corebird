@@ -28,11 +28,11 @@ class MediaDialog : Gtk.Window {
   //private Gtk.Revealer back_revealer;
   //[GtkChild]
   //private Gtk.Revealer next_revealer;
-  private unowned Tweet tweet;
+  private unowned Cb.Tweet tweet;
   private int cur_index = 0;
 
-  public MediaDialog (Tweet tweet, int start_media_index) {
-    Cb.Media cur_media = tweet.medias[start_media_index];
+  public MediaDialog (Cb.Tweet tweet, int start_media_index) {
+    Cb.Media cur_media = tweet.get_medias()[start_media_index];
     this.tweet = tweet;
     this.cur_index = start_media_index;
     change_media (cur_media);
@@ -81,16 +81,16 @@ class MediaDialog : Gtk.Window {
   }
 
   private void next_media () {
-    if (cur_index < tweet.medias.length - 1) {
+    if (cur_index < tweet.get_medias ().length - 1) {
       cur_index ++;
-      change_media (tweet.medias[cur_index]);
+      change_media (tweet.get_medias ()[cur_index]);
     }
   }
 
   private void previous_media () {
     if (cur_index > 0) {
       cur_index --;
-      change_media (tweet.medias[cur_index]);
+      change_media (tweet.get_medias ()[cur_index]);
     }
   }
 

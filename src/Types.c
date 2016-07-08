@@ -331,7 +331,7 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
 
       if (is_media_candidate (expanded_url))
         {
-          t->medias[t->n_medias] = CB_MEDIA (g_object_new (CB_TYPE_MEDIA, NULL));
+          t->medias[t->n_medias] = cb_media_new ();
           t->medias[t->n_medias]->url = g_strdup (expanded_url);
           t->medias[t->n_medias]->type = cb_media_type_from_url (expanded_url);
           t->n_medias ++;
@@ -440,7 +440,7 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
 
               if (is_media_candidate (url))
                 {
-                  t->medias[t->n_medias] = g_object_new (CB_TYPE_MEDIA, NULL);
+                  t->medias[t->n_medias] = cb_media_new ();
                   t->medias[t->n_medias]->url = g_strdup (url);
                   t->medias[t->n_medias]->target_url = g_strdup_printf ("%s:orig", url);
 
@@ -508,7 +508,7 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
 
               if (variant != NULL)
                 {
-                  t->medias[t->n_medias] = CB_MEDIA (g_object_new (CB_TYPE_MEDIA, NULL));
+                  t->medias[t->n_medias] = cb_media_new ();
                   t->medias[t->n_medias]->url = g_strdup (json_object_get_string_member (variant, "url"));
                   t->medias[t->n_medias]->thumb_url = g_strdup (json_object_get_string_member (media_obj, "media_url"));
                   t->medias[t->n_medias]->type   = CB_MEDIA_TYPE_TWITTER_VIDEO;

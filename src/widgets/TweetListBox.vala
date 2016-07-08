@@ -51,9 +51,9 @@ public class TweetListBox : Gtk.ListBox {
                           this, "activate-on-single-click",
                           GLib.SettingsBindFlags.INVERT_BOOLEAN);
     this.bind_model (this.model, (obj) => {
-      assert (obj is Tweet);
+      assert (obj is Cb.Tweet);
 
-      var row = new TweetListEntry ((Tweet) obj,
+      var row = new TweetListEntry ((Cb.Tweet) obj,
                                     (MainWindow) get_toplevel (),
                                     this.account);
       delta_updater.add (row);

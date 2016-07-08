@@ -382,7 +382,7 @@ void trailing_hashtags_link_after () {
 
 
 void no_quoted_link () {
-  Tweet t = new Tweet ();
+  var t = new Cb.Tweet ();
   t.quoted_tweet = Cb.MiniTweet ();
   t.quoted_tweet.id = 1337;
 

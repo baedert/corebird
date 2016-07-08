@@ -44,7 +44,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   [GtkChild]
   private Gtk.Button add_image_button;
   private unowned Account account;
-  private unowned Tweet reply_to;
+  private unowned Cb.Tweet reply_to;
   private Mode mode;
   private GLib.Cancellable? cancellable;
   private Gtk.ListBox? reply_list = null;
@@ -52,7 +52,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
   public ComposeTweetWindow (Gtk.Window? parent,
                              Account     acc,
-                             Tweet?      reply_to = null,
+                             Cb.Tweet?   reply_to = null,
                              Mode        mode = Mode.NORMAL) {
     this.set_show_menubar (false);
     this.account = acc;
@@ -67,9 +67,9 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     });
 
     if (mode != Mode.QUOTE)
-      length_label.label = Tweet.MAX_LENGTH.to_string ();
+      length_label.label = Cb.Tweet.MAX_LENGTH.to_string ();
     else
-      length_label.label = (Tweet.MAX_LENGTH - Twitter.short_url_length_https).to_string ();
+      length_label.label = (Cb.Tweet.MAX_LENGTH - Twitter.short_url_length_https).to_string ();
 
 
     tweet_text.buffer.changed.connect (recalc_tweet_length);
@@ -93,8 +93,8 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
     if (mode == Mode.REPLY) {
       StringBuilder mention_builder = new StringBuilder ();
-      if (reply_to.screen_name != account.screen_name) {
-        mention_builder.append ("@").append (reply_to.screen_name);
+      if (reply_to.get_screen_name () != account.screen_name) {
+        mention_builder.append ("@").append (reply_to.get_screen_name ());
       }
 
       if (reply_to.retweeted_tweet != null) {
@@ -106,7 +106,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
       foreach (unowned string s in reply_to.get_mentions ()) {
         if (s == "@" + account.screen_name ||
-            s == "@" + reply_to.screen_name ||
+            s == "@" + reply_to.get_screen_name () ||
             (reply_to.retweeted_tweet != null && reply_to.source_tweet.author.screen_name != s))
           continue;
 
@@ -168,8 +168,8 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       length += 1 + Twitter.short_url_length_https; //Quoting will add a space and then the tweet's URL
 
 
-    length_label.label = (Tweet.MAX_LENGTH - length).to_string ();
-    if (length > 0 && length <= Tweet.MAX_LENGTH)
+    length_label.label = (Cb.Tweet.MAX_LENGTH - length).to_string ();
+    if (length > 0 && length <= Cb.Tweet.MAX_LENGTH)
       send_button.sensitive = true;
     else
       send_button.sensitive = false;

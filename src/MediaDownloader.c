@@ -150,6 +150,7 @@ cb_media_downloader_load_twitter_video (CbMediaDownloader *downloader,
   if (msg->status_code != SOUP_STATUS_OK)
     {
       mark_invalid (media);
+      g_object_unref (msg);
       return;
     }
 
@@ -174,6 +175,7 @@ cb_media_downloader_load_twitter_video (CbMediaDownloader *downloader,
   regex = g_regex_new ("poster=\"(.*?)\"", 0, 0, NULL);
   g_regex_match (regex, (const char *)msg->response_body->data, 0, &match_info);
   media->thumb_url = g_match_info_fetch (match_info, 1);
+
   g_object_unref (msg);
 }
 
@@ -285,6 +287,7 @@ cb_media_downloader_load_threaded (CbMediaDownloader *downloader,
                soup_status_get_phrase (msg->status_code));
 
       mark_invalid (media);
+      g_object_unref (msg);
       return;
     }
 

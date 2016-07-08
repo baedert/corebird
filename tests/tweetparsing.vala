@@ -565,9 +565,8 @@ const string TD4 =
 // }}}
 
 void retweet () {
-  var acc = new Account (12345, "foobar", "Foo Bar");
   var now = new GLib.DateTime.now_local ();
-  Tweet t = new Tweet ();
+  var t = new Cb.Tweet ();
 
   var parser = new Json.Parser ();
   try {
@@ -587,9 +586,9 @@ void retweet () {
   assert (t.source_tweet.author.id == 62574927);
   assert (t.get_mentions ().length == 0);
   assert (t.retweeted_tweet.author.user_name == "Black Forest Games");
-  assert (!t.is_flag_set (TweetState.FAVORITED));
-  assert (!t.is_flag_set (TweetState.RETWEETED));
-  assert (!t.is_flag_set (TweetState.VERIFIED));
+  assert (!t.is_flag_set (Cb.TweetState.FAVORITED));
+  assert (!t.is_flag_set (Cb.TweetState.RETWEETED));
+  assert (!t.is_flag_set (Cb.TweetState.VERIFIED));
   assert (t.reply_id == 0);
   assert (t.my_retweet == 0);
   //assert (!t.has_inline_media);
@@ -598,9 +597,8 @@ void retweet () {
 
 
 void media_count () {
-  var acc = new Account (12345, "foobar", "Foo Bar");
   var now = new GLib.DateTime.now_local ();
-  Tweet t = new Tweet ();
+  var t = new Cb.Tweet ();
 
   var parser = new Json.Parser ();
   try {
@@ -611,35 +609,10 @@ void media_count () {
   var root = parser.get_root ();
 
   t.load_from_json (root, now);
-  assert (t.screen_name == "corebirdgtk");
+  assert (t.get_screen_name () == "corebirdgtk");
   //message ("Media count: %d", t.medias.length);
-  assert (t.medias.length == 2);
+  assert (t.get_medias ().length == 2);
 }
-
-
-void media_count2 () {
-  var acc = new Account (12345, "foobar", "Foo Bar");
-  var now = new GLib.DateTime.now_local ();
-  Tweet t = new Tweet ();
-
-  var parser = new Json.Parser ();
-  try {
-    parser.load_from_data (TD4);
-  } catch (GLib.Error e) {
-    critical (e.message);
-  }
-  var root = parser.get_root ();
-
-  //t.load_from_json (root, now, acc);
-  //assert (t.screen_name == "corebirdgtk");
-  //message ("Media count: %d", t.medias.length);
-  /* TD4 has 2 imgur urls in its text, that's 2 inline media.
-     Additionally, it has 2 enties in its extended_media array,
-     so it should have 4 inline media. */
-  //assert (t.medias.length == 4);
-}
-
-
 
 int main (string[] args) {
   GLib.Test.init (ref args);
@@ -649,7 +622,6 @@ int main (string[] args) {
   Utils.init_soup_session ();
   GLib.Test.add_func ("/tweet-parsing/retweet", retweet);
   GLib.Test.add_func ("/tweet-parsing/media-count", media_count);
-  GLib.Test.add_func ("/tweet-parsing/media-count2", media_count2);
 
   return GLib.Test.run ();
 }

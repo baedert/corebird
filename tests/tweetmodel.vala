@@ -1,9 +1,9 @@
 
 bool is_sorted (TweetModel tm) {
-  int64 last_id = ((Tweet)tm.get_item (0)).id;
+  int64 last_id = ((Cb.Tweet)tm.get_item (0)).id;
 
   for (int i = 1; i < tm.get_n_items (); i ++) {
-    Tweet t = (Tweet)tm.get_item (i);
+    Cb.Tweet t = (Cb.Tweet)tm.get_item (i);
     if (t.id > last_id) return false;
 
     last_id = t.id;
@@ -15,7 +15,7 @@ int64 get_max_id (TweetModel tm) {
   int64 max = -1;
 
   for (int i = 0; i < tm.get_n_items (); i ++) {
-    var t = (Tweet)tm.get_item (i);
+    var t = (Cb.Tweet)tm.get_item (i);
     if (t.id > max) max = t.id;
   }
 
@@ -25,13 +25,13 @@ int64 get_max_id (TweetModel tm) {
 void basic_tweet_order () {
   TweetModel tm = new TweetModel ();
 
-  Tweet t1 = new Tweet ();
+  Cb.Tweet t1 = new Cb.Tweet ();
   t1.id = 10;
 
-  Tweet t2 = new Tweet ();
+  Cb.Tweet t2 = new Cb.Tweet ();
   t2.id = 100;
 
-  Tweet t3 = new Tweet ();
+  Cb.Tweet t3 = new Cb.Tweet ();
   t3.id = 1000;
 
 
@@ -41,9 +41,9 @@ void basic_tweet_order () {
 
   assert (tm.get_n_items () == 3);
 
-  assert (((Tweet)tm.get_item (0)).id == 1000);
-  assert (((Tweet)tm.get_item (1)).id == 100);
-  assert (((Tweet)tm.get_item (2)).id == 10);
+  assert (((Cb.Tweet)tm.get_item (0)).id == 1000);
+  assert (((Cb.Tweet)tm.get_item (1)).id == 100);
+  assert (((Cb.Tweet)tm.get_item (2)).id == 10);
 }
 
 
@@ -52,24 +52,26 @@ void tweet_removal () {
 
   //add 10 visible tweets
   for (int i = 0; i < 10; i ++) {
-    var t = new Tweet ();
+    var t = new Cb.Tweet ();
     t.id = 100 - i;
     tm.add (t);
   }
 
   // now add 2 invisible tweets
   {
-    var t = new Tweet ();
+    var t = new Cb.Tweet ();
     t.id = 2;
-    t.set_flag (TweetState.HIDDEN_FORCE);
-
+    t.set_flag (Cb.TweetState.HIDDEN_FORCE);
     tm.add (t);
 
-    t = new Tweet ();
+    assert (tm.get_n_items () == 10);
+
+    t = new Cb.Tweet ();
     t.id = 1;
-    t.set_flag (TweetState.HIDDEN_UNFOLLOWED);
-
+    t.set_flag (Cb.TweetState.HIDDEN_UNFOLLOWED);
     tm.add (t);
+
+    assert (tm.get_n_items () == 10);
   }
 
   // We should have 10 now
@@ -90,7 +92,7 @@ void clear () {
   const int n = 10;
 
   for (int i = 0; i < n; i++) {
-    var t = new Tweet ();
+    var t = new Cb.Tweet ();
     t.id = 100 + i;
 
     tm.add (t);
@@ -106,7 +108,7 @@ void clear2 () {
   var tm1 = new TweetModel ();
   var tm2 = new TweetModel ();
 
-  var t = new Tweet ();
+  var t = new Cb.Tweet ();
   t.id = 10000;
   tm1.add (t);
   tm1.clear ();
@@ -119,11 +121,11 @@ void clear2 () {
 void remove_tweet () {
   var tm = new TweetModel ();
 
-  var t1 = new Tweet ();
+  var t1 = new Cb.Tweet ();
   t1.id = 10;
   tm.add (t1);
 
-  var t2 = new Tweet ();
+  var t2 = new Cb.Tweet ();
   t2.id = 100;
   tm.add (t2);
 
@@ -142,15 +144,15 @@ void remove_tweet () {
 void remove_own_retweet () {
   var tm = new TweetModel ();
 
-  var t1 = new Tweet ();
+  var t1 = new Cb.Tweet ();
   t1.id = 1337;
   t1.my_retweet = 500; // <--
-  t1.set_flag (TweetState.RETWEETED);
+  t1.set_flag (Cb.TweetState.RETWEETED);
 
   tm.add (t1);
 
   for (int i = 1; i < 51; i ++) {
-    var t = new Tweet ();
+    var t = new Cb.Tweet ();
     t.id = i;
     tm.add (t);
   }
@@ -168,7 +170,7 @@ void remove_own_retweet () {
 void hide_rt () {
   var tm = new TweetModel ();
 
-  var t1 = new Tweet ();
+  var t1 = new Cb.Tweet ();
   t1.id = 100;
   t1.source_tweet = Cb.MiniTweet ();
   t1.source_tweet.author = Cb.UserIdentity ();
@@ -180,35 +182,35 @@ void hide_rt () {
   t1.retweeted_tweet.author.id = 100;
 
   tm.add (t1);
-  assert (!t1.is_hidden);
+  assert (!t1.is_hidden ());
 
-  tm.toggle_flag_on_retweet (10, TweetState.HIDDEN_FILTERED, true);
-  assert (t1.is_hidden);
+  tm.toggle_flag_on_retweet (10, Cb.TweetState.HIDDEN_FILTERED, true);
+  assert (t1.is_hidden ());
 
   assert (tm.get_n_items () == 0);
 
-  tm.toggle_flag_on_retweet (10, TweetState.HIDDEN_FILTERED, false);
-  assert (!t1.is_hidden);
+  tm.toggle_flag_on_retweet (10, Cb.TweetState.HIDDEN_FILTERED, false);
+  assert (!t1.is_hidden ());
   assert (tm.get_n_items () == 1);
-  assert (!((Tweet)tm.get_item (0)).is_hidden);
+  assert (!((Cb.Tweet)tm.get_item (0)).is_hidden ());
 }
 
 
 void get_from_id () {
   var tm = new TweetModel ();
 
-  var t1 = new Tweet ();
+  var t1 = new Cb.Tweet ();
   t1.id = 10;
 
-  var t2 = new Tweet ();
+  var t2 = new Cb.Tweet ();
   t2.id = 100;
 
   tm.add (t1);
   tm.add (t2);
 
   assert (tm.get_n_items () == 2);
-  assert (((Tweet)tm.get_item (0)).id == 100);
-  assert (((Tweet)tm.get_item (1)).id == 10);
+  assert (((Cb.Tweet)tm.get_item (0)).id == 100);
+  assert (((Cb.Tweet)tm.get_item (1)).id == 10);
 
   var result = tm.get_from_id (10, -1);
 
@@ -219,7 +221,7 @@ void get_from_id () {
 
 void min_max_id () {
   var tm = new TweetModel ();
-  var t = new Tweet ();
+  var t = new Cb.Tweet ();
   t.id = 1337;
 
   tm.add (t);
@@ -233,7 +235,7 @@ void sorting () {
   var tm = new TweetModel ();
 
   for (int i = 0; i < 100; i ++) {
-    var t = new Tweet ();
+    var t = new Cb.Tweet ();
     t.id = GLib.Random.next_int ();
     tm.add (t);
   }
@@ -247,15 +249,15 @@ void sorting () {
 void min_max_remove () {
   var tm = new TweetModel ();
 
-  var t = new Tweet ();
+  var t = new Cb.Tweet ();
   t.id = 10;
   tm.add (t);
 
-  t = new Tweet ();
+  t = new Cb.Tweet ();
   t.id = 20;
   tm.add (t);
 
-  t = new Tweet ();
+  t = new Cb.Tweet ();
   t.id = 2;
   tm.add (t);
 
@@ -267,7 +269,7 @@ void min_max_remove () {
   assert (tm.greatest_id == 20);
   assert (tm.lowest_id == 2);
 
-  t = new Tweet ();
+  t = new Cb.Tweet ();
   t.id = 10;
   tm.add (t);
 
@@ -294,7 +296,7 @@ void min_max_remove () {
 void tweet_count () {
   var tm = new TweetModel ();
 
-  var t1 = new Tweet ();
+  var t1 = new Cb.Tweet ();
   t1.id = 10;
   t1.source_tweet = Cb.MiniTweet ();
   t1.source_tweet.author = Cb.UserIdentity ();
@@ -309,14 +311,14 @@ void tweet_count () {
   assert (tm.greatest_id == t1.id);
   assert (tm.lowest_id == t1.id);
 
-  tm.toggle_flag_on_retweet (11, TweetState.HIDDEN_FILTERED, true);
+  tm.toggle_flag_on_retweet (11, Cb.TweetState.HIDDEN_FILTERED, true);
   assert (tm.get_n_items () == 0);
 
-  tm.toggle_flag_on_retweet (11, TweetState.HIDDEN_FILTERED, false);
+  tm.toggle_flag_on_retweet (11, Cb.TweetState.HIDDEN_FILTERED, false);
   assert (tm.get_n_items () == 1);
 
 
-  var t2 = new Tweet ();
+  var t2 = new Cb.Tweet ();
   t2.id = 20;
   t2.source_tweet = Cb.MiniTweet ();
   t2.source_tweet.author = Cb.UserIdentity ();
@@ -327,14 +329,14 @@ void tweet_count () {
   assert (tm.greatest_id == t2.id);
   assert (tm.lowest_id == t1.id);
 
-  tm.toggle_flag_on_tweet (11, TweetState.HIDDEN_FILTERED, true);
+  tm.toggle_flag_on_tweet (11, Cb.TweetState.HIDDEN_FILTERED, true);
   assert (tm.get_n_items () == 1);
-  tm.toggle_flag_on_retweet (11, TweetState.HIDDEN_FILTERED, true);
+  tm.toggle_flag_on_retweet (11, Cb.TweetState.HIDDEN_FILTERED, true);
   assert (tm.get_n_items () == 0);
 
-  tm.toggle_flag_on_retweet (11, TweetState.HIDDEN_FILTERED, false);
+  tm.toggle_flag_on_retweet (11, Cb.TweetState.HIDDEN_FILTERED, false);
   assert (tm.get_n_items () == 1);
-  tm.toggle_flag_on_tweet (11, TweetState.HIDDEN_FILTERED, false);
+  tm.toggle_flag_on_tweet (11, Cb.TweetState.HIDDEN_FILTERED, false);
   assert (tm.get_n_items () == 2);
 }
 
@@ -342,7 +344,7 @@ void tweet_count2 () {
   var tm = new TweetModel ();
 
   for (int i = 1;  i <= 20; i ++) {
-    var t1 = new Tweet ();
+    var t1 = new Cb.Tweet ();
     t1.id = i * 10;
     t1.source_tweet = Cb.MiniTweet ();
     t1.source_tweet.author = Cb.UserIdentity ();
@@ -357,17 +359,17 @@ void tweet_count2 () {
 
   assert (tm.get_n_items () == 20);
 
-  tm.toggle_flag_on_retweet (1337, TweetState.HIDDEN_RETWEETER_MUTED, true);
+  tm.toggle_flag_on_retweet (1337, Cb.TweetState.HIDDEN_RETWEETER_MUTED, true);
   assert (tm.get_n_items () == 0);
 
-  tm.toggle_flag_on_retweet (1337, TweetState.HIDDEN_RETWEETER_MUTED, false);
+  tm.toggle_flag_on_retweet (1337, Cb.TweetState.HIDDEN_RETWEETER_MUTED, false);
   assert (tm.get_n_items () == 20);
 
-  tm.toggle_flag_on_tweet (999, TweetState.HIDDEN_RETWEETER_MUTED, true);
+  tm.toggle_flag_on_tweet (999, Cb.TweetState.HIDDEN_RETWEETER_MUTED, true);
   message ("%u", tm.get_n_items ());
   assert (tm.get_n_items () == 0);
 
-  tm.toggle_flag_on_tweet (999, TweetState.HIDDEN_RETWEETER_MUTED, false);
+  tm.toggle_flag_on_tweet (999, Cb.TweetState.HIDDEN_RETWEETER_MUTED, false);
   message ("%u", tm.get_n_items ());
   assert (tm.get_n_items () == 20);
 }

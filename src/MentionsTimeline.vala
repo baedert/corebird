@@ -59,9 +59,9 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
 
     if (root.get_string_member ("text").contains ("@" + account.screen_name)) {
       GLib.DateTime now = new GLib.DateTime.now_local ();
-      Tweet t = new Tweet ();
+      var t = new Cb.Tweet ();
       t.load_from_json (root_node, now);
-      if (t.user_id == account.id)
+      if (t.get_user_id () == account.id)
         return;
 
       if (t.retweeted_tweet != null && get_rt_flags (t) > 0)
@@ -70,7 +70,7 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
       if (account.filter_matches (t))
         return;
 
-      if (account.blocked_or_muted (t.user_id))
+      if (account.blocked_or_muted (t.get_user_id ()))
         return;
 
       this.balance_next_upper_change (TOP);
@@ -88,7 +88,7 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
         else
           text = Utils.unescape_html (t.source_tweet.text);
 
-        string summary = _("%s mentioned %s").printf (Utils.unescape_html (t.user_name),
+        string summary = _("%s mentioned %s").printf (Utils.unescape_html (t.get_user_name ()),
                                                       account.name);
         t.notification_id = account.notifications.send (summary, text);
       }

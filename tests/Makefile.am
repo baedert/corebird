@@ -52,7 +52,8 @@ tests_VALASOURCES = \
 C_SOURCES = $(top_builddir)/src/Types.c \
 	$(top_builddir)/src/Media.c \
 	$(top_builddir)/src/MediaDownloader.c \
-	$(top_builddir)/src/TextTransform.c
+	$(top_builddir)/src/TextTransform.c \
+	$(top_builddir)/src/CbTweet.c
 
 $(tests_VALASOURCES:.vala=.c): tests_vala.stamp
 

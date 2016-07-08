@@ -33,16 +33,16 @@ class FavoritesTimeline : IMessageReceiver, DefaultTimeline {
       Json.Node tweet_obj = root.get_object ().get_member ("target_object");
       int64 tweet_id = tweet_obj.get_object ().get_int_member ("id");
 
-      Tweet? existing_tweet = this.tweet_list.model.get_from_id (tweet_id, 0);
+      Cb.Tweet? existing_tweet = this.tweet_list.model.get_from_id (tweet_id, 0);
       if (existing_tweet != null) {
         /* This tweet is already in the model, so just mark it as favorited */
-        tweet_list.model.set_tweet_flag (existing_tweet, TweetState.FAVORITED);
+        tweet_list.model.set_tweet_flag (existing_tweet, Cb.TweetState.FAVORITED);
         return;
       }
 
-      Tweet tweet = new Tweet ();
+      var tweet = new Cb.Tweet ();
       tweet.load_from_json (tweet_obj, new GLib.DateTime.now_local ());
-      tweet.set_flag (TweetState.FAVORITED);
+      tweet.set_flag (Cb.TweetState.FAVORITED);
       this.tweet_list.model.add (tweet);
     } else if (type == StreamMessageType.EVENT_UNFAVORITE) {
       int64 id = root.get_object ().get_object_member ("target_object").get_int_member ("id");
@@ -53,8 +53,8 @@ class FavoritesTimeline : IMessageReceiver, DefaultTimeline {
 
   public override void on_leave () {
     for (uint i = 0; i < tweet_list.model.get_n_items (); i ++) {
-      var tweet = (Tweet) tweet_list.model.get_item (i);
-      if (!tweet.is_flag_set (TweetState.FAVORITED)) {
+      var tweet = (Cb.Tweet) tweet_list.model.get_item (i);
+      if (!tweet.is_flag_set (Cb.TweetState.FAVORITED)) {
         tweet_list.model.remove_tweet (tweet);
         i --;
       }

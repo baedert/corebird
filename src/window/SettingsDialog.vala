@@ -73,7 +73,7 @@ class SettingsDialog : Gtk.Window {
     // Tweets page
 
     // Set up sample tweet {{{
-    var sample_tweet = new Tweet ();
+    var sample_tweet = new Cb.Tweet ();
     sample_tweet.source_tweet = Cb.MiniTweet();
     sample_tweet.source_tweet.author = Cb.UserIdentity() {
       id = 12,
