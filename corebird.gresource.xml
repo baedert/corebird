@@ -1,38 +1,38 @@
 <gresources>
   <gresource prefix="/org/baedert/corebird">
-    <file compressed="true" preprocess="xml-stripblanks" alias="gtk/menus.ui">ui/menus.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">ui/settings-dialog.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">ui/account-create-widget.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">ui/compose-window.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">ui/tweet-list-entry.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">ui/tweet-info-page.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">ui/about-dialog.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">ui/dm-threads-page.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">ui/dm-thread-entry.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">ui/profile-page.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">ui/main-window.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">ui/dm-page.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">ui/search-page.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">ui/user-list-entry.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">ui/load-more-entry.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">ui/start-conversation-entry.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">ui/dm-list-entry.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">ui/dm-placeholder-box.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">ui/lists-page.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">ui/list-statuses-page.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">ui/list-list-entry.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">ui/new-list-entry.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">ui/user-lists-widget.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">ui/filter-page.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">ui/filter-list-entry.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">ui/modify-filter-dialog.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">ui/user-filter-entry.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">ui/main-widget.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">ui/account-dialog.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">ui/media-dialog.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">ui/image-crop-dialog.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">ui/modify-snippet-dialog.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">ui/shortcuts-window.ui</file>
+    <file preprocess="xml-stripblanks" alias="gtk/menus.ui">ui/menus.ui</file>
+    <file preprocess="xml-stripblanks">ui/settings-dialog.ui</file>
+    <file preprocess="xml-stripblanks">ui/account-create-widget.ui</file>
+    <file preprocess="xml-stripblanks">ui/compose-window.ui</file>
+    <file preprocess="xml-stripblanks">ui/tweet-list-entry.ui</file>
+    <file preprocess="xml-stripblanks">ui/tweet-info-page.ui</file>
+    <file preprocess="xml-stripblanks">ui/about-dialog.ui</file>
+    <file preprocess="xml-stripblanks">ui/dm-threads-page.ui</file>
+    <file preprocess="xml-stripblanks">ui/dm-thread-entry.ui</file>
+    <file preprocess="xml-stripblanks">ui/profile-page.ui</file>
+    <file preprocess="xml-stripblanks">ui/main-window.ui</file>
+    <file preprocess="xml-stripblanks">ui/dm-page.ui</file>
+    <file preprocess="xml-stripblanks">ui/search-page.ui</file>
+    <file preprocess="xml-stripblanks">ui/user-list-entry.ui</file>
+    <file preprocess="xml-stripblanks">ui/load-more-entry.ui</file>
+    <file preprocess="xml-stripblanks">ui/start-conversation-entry.ui</file>
+    <file preprocess="xml-stripblanks">ui/dm-list-entry.ui</file>
+    <file preprocess="xml-stripblanks">ui/dm-placeholder-box.ui</file>
+    <file preprocess="xml-stripblanks">ui/lists-page.ui</file>
+    <file preprocess="xml-stripblanks">ui/list-statuses-page.ui</file>
+    <file preprocess="xml-stripblanks">ui/list-list-entry.ui</file>
+    <file preprocess="xml-stripblanks">ui/new-list-entry.ui</file>
+    <file preprocess="xml-stripblanks">ui/user-lists-widget.ui</file>
+    <file preprocess="xml-stripblanks">ui/filter-page.ui</file>
+    <file preprocess="xml-stripblanks">ui/filter-list-entry.ui</file>
+    <file preprocess="xml-stripblanks">ui/modify-filter-dialog.ui</file>
+    <file preprocess="xml-stripblanks">ui/user-filter-entry.ui</file>
+    <file preprocess="xml-stripblanks">ui/main-widget.ui</file>
+    <file preprocess="xml-stripblanks">ui/account-dialog.ui</file>
+    <file preprocess="xml-stripblanks">ui/media-dialog.ui</file>
+    <file preprocess="xml-stripblanks">ui/image-crop-dialog.ui</file>
+    <file preprocess="xml-stripblanks">ui/modify-snippet-dialog.ui</file>
+    <file preprocess="xml-stripblanks">ui/shortcuts-window.ui</file>
     <file preprocess="to-pixdata">data/16x16/apps/corebird-compose-symbolic.symbolic.png</file>
     <file preprocess="to-pixdata">data/16x16/apps/corebird-conversation-symbolic.symbolic.png</file>
     <file preprocess="to-pixdata">data/16x16/apps/corebird-dms-symbolic.symbolic.png</file>
