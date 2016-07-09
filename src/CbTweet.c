@@ -351,10 +351,16 @@ cb_tweet_finalize (GObject *object)
   cb_mini_tweet_free (&tweet->source_tweet);
 
   if (tweet->retweeted_tweet != NULL)
-    cb_mini_tweet_free (tweet->retweeted_tweet);
+    {
+      cb_mini_tweet_free (tweet->retweeted_tweet);
+      g_free (tweet->retweeted_tweet);
+    }
 
   if (tweet->quoted_tweet != NULL)
-    cb_mini_tweet_free (tweet->quoted_tweet);
+    {
+      cb_mini_tweet_free (tweet->quoted_tweet);
+      g_free (tweet->quoted_tweet);
+    }
 
 #ifdef DEBUG
   g_free (tweet->json_data);
