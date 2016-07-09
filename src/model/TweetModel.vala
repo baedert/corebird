@@ -20,7 +20,6 @@ public class TweetModel : GLib.Object, GLib.ListModel {
   public GLib.GenericArray<Cb.Tweet> hidden_tweets = new GLib.GenericArray<Cb.Tweet> ();
   private int64 min_id = int64.MAX;
   private int64 max_id = int64.MIN;
-
   public int64 lowest_id {
     get {
       return min_id;
@@ -31,7 +30,6 @@ public class TweetModel : GLib.Object, GLib.ListModel {
       return max_id;
     }
   }
-
 
   public GLib.Type get_item_type () {
     return typeof (Cb.Tweet);
@@ -174,8 +172,16 @@ public class TweetModel : GLib.Object, GLib.ListModel {
 
   private void remove_at_pos (int pos) {
     int64 id = this.tweets.get (pos).id;
-    //this.tweets.remove_at (pos);
+
     this.tweets.remove_index (pos);
+
+    for (int i = 0; i < hidden_tweets.length; i ++) {
+      Cb.Tweet tweet = hidden_tweets.get (i);
+      if (tweet.id > id) {
+        hidden_tweets.remove (tweet);
+        i --;
+      }
+    }
 
     // Now we just need to update the min_id/max_id fields
     if (id == this.max_id) {
@@ -251,7 +257,7 @@ public class TweetModel : GLib.Object, GLib.ListModel {
   }
 
   public void remove_last_n_visible (uint amount) {
-    assert (amount < tweets.length);
+    assert (amount <= tweets.length);
 
     uint n_removed = 0;
 
@@ -269,37 +275,51 @@ public class TweetModel : GLib.Object, GLib.ListModel {
   public void clear () {
     int s = this.tweets.length;
     this.tweets.remove_range (0, tweets.length);
+    this.hidden_tweets.remove_range (0, hidden_tweets.length);
     this.min_id = int64.MAX;
     this.max_id = int64.MIN;
     this.items_changed (0, s, 0);
   }
 
-  public void remove (int64 tweet_id) {
-    for (int i = 0, p = tweets.length; i < p; i ++) {
-      if (tweets.get(i).id == tweet_id) {
-        this.remove_at_pos (i);
-        this.items_changed (i, 1, 0);
-        break;
-      }
-    }
-  }
-
   public void remove_tweet (Cb.Tweet t) {
 #if DEBUG
-  assert (this.contains_id (t.id));
+    if (!t.is_hidden ())
+      assert (this.contains_id (t.id));
 #endif
 
-    int pos = 0;
-    for (int i = 0; i < tweets.length; i ++) {
-      Cb.Tweet tweet = tweets.get (i);
-      if (t == tweet) {
-        pos = i;
-        break;
+    if (t.is_hidden ()) {
+      for (int i = 0; i < hidden_tweets.length; i ++) {
+        Cb.Tweet tweet = hidden_tweets.get (i);
+        if (t == tweet) {
+          this.hidden_tweets.remove (t);
+          break;
+        }
+      }
+    } else {
+      int pos = 0;
+      for (int i = 0; i < tweets.length; i ++) {
+        Cb.Tweet tweet = tweets.get (i);
+        if (t == tweet) {
+          pos = i;
+          break;
+        }
+      }
+      /* We only need to emit items-changes if the tweet was really in @tweets, not @hidden_tweets */
+      this.remove_at_pos (pos);
+      this.items_changed (pos, 1, 0);
+      /* Remove hidden tweet(s) with an id greater than the one of the just removed tweet */
+      if (tweets.length == 0) {
+        hidden_tweets.remove_range (0, hidden_tweets.length);
+      } else {
+        for (int i = 0; i < hidden_tweets.length; i ++) {
+          Cb.Tweet tweet = hidden_tweets.get (i);
+          if (tweet.id > t.id) {
+            hidden_tweets.remove (tweet);
+            i --;
+          }
+        }
       }
     }
-
-    this.remove_at_pos (pos);
-    this.items_changed (pos, 1, 0);
   }
 
   public void toggle_flag_on_tweet (int64 user_id, Cb.TweetState reason, bool active) {
