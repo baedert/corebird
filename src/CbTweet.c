@@ -138,7 +138,7 @@ cb_tweet_get_mentions (CbTweet  *tweet,
   *n_mentions = 0;
   for (i = 0; i < n_entities; i ++)
     if (entities[i].display_text[0] == '@')
-        n_mentions ++;
+        (*n_mentions) ++;
 
   if (*n_mentions == 0)
     return NULL;
