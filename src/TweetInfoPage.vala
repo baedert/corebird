@@ -446,7 +446,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
       time_format += " via " + with;
     }
 
-    text_label.label = tweet.get_formatted_text ();
+    text_label.label = tweet.get_formatted_text (Settings.get_text_transform_flags ());
     name_button.set_markup (tweet.get_user_name ());
     screen_name_label.label = "@" + tweet.get_screen_name ();
     avatar_image.surface = Twitter.get ().get_avatar (tweet.get_user_id (), tweet.avatar_url, (a) => {

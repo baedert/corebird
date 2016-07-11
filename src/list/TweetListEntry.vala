@@ -120,7 +120,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       }, 48 * this.get_scale_factor ());
     }
     avatar_image.verified = tweet.is_flag_set (Cb.TweetState.VERIFIED);
-    text_label.label = tweet.get_trimmed_text ();
+    text_label.label = tweet.get_trimmed_text (Settings.get_text_transform_flags ());
     update_time_delta ();
     if (tweet.retweeted_tweet != null) {
       rt_label.show ();
@@ -221,7 +221,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   }
 
   private void transform_flags_changed_cb () {
-    text_label.label = tweet.get_trimmed_text ();
+    text_label.label = tweet.get_trimmed_text (Settings.get_text_transform_flags ());
     if (this.tweet.quoted_tweet != null) {
       this.quote_label.label = Cb.TextTransform.tweet (ref tweet.quoted_tweet,
                                                        Settings.get_text_transform_flags (),

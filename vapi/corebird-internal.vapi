@@ -107,8 +107,8 @@ namespace Cb {
       public void set_flag (uint flag);
       public void unset_flag (uint flag);
 
-      public string get_formatted_text (uint transform_flags = 0);
-      public string get_trimmed_text (uint transform_flags = 0); // TODO: Remove default param
+      public string get_formatted_text (uint transform_flags);
+      public string get_trimmed_text (uint transform_flags);
       public string get_real_text ();
 
       public unowned Cb.Media[] get_medias();
