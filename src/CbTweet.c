@@ -53,15 +53,15 @@ cb_tweet_is_hidden (CbTweet *tweet)
   g_return_val_if_fail (CB_IS_TWEET (tweet), TRUE);
 
   return (tweet->state & (CB_TWEET_STATE_HIDDEN_FORCE |
-                         CB_TWEET_STATE_HIDDEN_UNFOLLOWED |
-                         CB_TWEET_STATE_HIDDEN_FILTERED |
-                         CB_TWEET_STATE_HIDDEN_RTS_DISABLED |
-                         CB_TWEET_STATE_HIDDEN_RT_BY_USER |
-                         CB_TWEET_STATE_HIDDEN_RT_BY_FOLLOWEE |
-                         CB_TWEET_STATE_HIDDEN_AUTHOR_BLOCKED |
-                         CB_TWEET_STATE_HIDDEN_RETWEETER_BLOCKED |
-                         CB_TWEET_STATE_HIDDEN_AUTHOR_MUTED |
-                         CB_TWEET_STATE_HIDDEN_RETWEETER_MUTED)) > 0;
+                          CB_TWEET_STATE_HIDDEN_UNFOLLOWED |
+                          CB_TWEET_STATE_HIDDEN_FILTERED |
+                          CB_TWEET_STATE_HIDDEN_RTS_DISABLED |
+                          CB_TWEET_STATE_HIDDEN_RT_BY_USER |
+                          CB_TWEET_STATE_HIDDEN_RT_BY_FOLLOWEE |
+                          CB_TWEET_STATE_HIDDEN_AUTHOR_BLOCKED |
+                          CB_TWEET_STATE_HIDDEN_RETWEETER_BLOCKED |
+                          CB_TWEET_STATE_HIDDEN_AUTHOR_MUTED |
+                          CB_TWEET_STATE_HIDDEN_RETWEETER_MUTED)) > 0;
 }
 
 gboolean
