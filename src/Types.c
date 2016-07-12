@@ -308,8 +308,6 @@ void
 cb_mini_tweet_parse_entities (CbMiniTweet *t,
                               JsonObject  *status)
 {
-  g_assert (status);
-
   JsonObject *entities     = json_object_get_object_member (status, "entities");
   JsonArray *urls          = json_object_get_array_member (entities, "urls");
   JsonArray *hashtags      = json_object_get_array_member (entities, "hashtags");
@@ -325,11 +323,11 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
     media_count +=  json_object_get_member_size (json_object_get_object_member (status, "extended_entities"),
                                                  "media");
 
-  media_count += (int)json_array_get_length (urls);
   max_entities = json_array_get_length (urls) +
                                       json_array_get_length (hashtags) +
                                       json_array_get_length (user_mentions) +
                                       media_count;
+  media_count += (int)json_array_get_length (urls);
 
 
   t->medias   = g_new0 (CbMedia*, media_count);
