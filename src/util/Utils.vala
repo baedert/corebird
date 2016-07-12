@@ -425,37 +425,4 @@ namespace Utils {
 
     return f;
   }
-
-  private GLib.Regex? url_size_regex = null;
-  public void get_size_from_url (string url,
-                                 out int width,
-                                 out int height) {
-    if (url_size_regex == null) {
-      try {
-        //e.g.480x480
-        url_size_regex = new GLib.Regex ("\\/\\d+x\\d+\\/",
-                                         GLib.RegexCompileFlags.OPTIMIZE, 0);
-      } catch (GLib.RegexError e) {
-        warning (e.message);
-        width = 0;
-        height = 0;
-        return;
-      }
-    }
-
-    GLib.MatchInfo info;
-    url_size_regex.match (url, 0, out info);
-    // Just use the first match...
-    string? match = info.fetch (0);
-    if (match == null) {
-      warning ("No resolution found in url '%s'", url);
-      width = 0;
-      height = 0;
-      return;
-    }
-    int x_index = match.index_of_char ('x');
-    width  = int.parse (match.substring (1, x_index - 1));
-    height = int.parse (match.substring (x_index + 1, match.length - x_index - 2));
-
-  }
 }
