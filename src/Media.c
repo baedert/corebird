@@ -59,6 +59,7 @@ static void
 cb_media_init (CbMedia *media)
 {
   media->surface = NULL;
+  media->animation = NULL;
   media->loaded  = FALSE;
   media->invalid = FALSE;
   media->surface = NULL;
