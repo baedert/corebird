@@ -398,7 +398,7 @@ void no_quoted_link () {
 
   Settings.add_text_transform_flag (Cb.TransformFlags.REMOVE_MEDIA_LINKS);
 
-  string result = t.get_trimmed_text ();
+  string result = t.get_trimmed_text (Settings.get_text_transform_flags ());
 
   message (result);
 
