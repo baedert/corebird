@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-20 18:04+0200\n"
+"POT-Creation-Date: 2016-07-12 21:32+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -108,24 +108,24 @@ msgstr ""
 msgid "Unfollow"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:114
+#: ../src/HomeTimeline.vala:116
 #, c-format
 msgid "%s retweeted %s"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:117
+#: ../src/HomeTimeline.vala:119
 #, c-format
 msgid "%s tweeted"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:126
+#: ../src/HomeTimeline.vala:128
 #, c-format
 msgid "%d new Tweet!"
 msgid_plural "%d new Tweets!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/HomeTimeline.vala:161
+#: ../src/HomeTimeline.vala:163
 msgid "Home"
 msgstr ""
 
@@ -153,15 +153,15 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: ../src/ListsPage.vala:120 ../src/ListsPage.vala:125
-#: ../ui/profile-page.ui.h:9
+#: ../ui/profile-page.ui.h:10
 msgid "Lists"
 msgstr ""
 
-#: ../src/ProfilePage.vala:253
+#: ../src/ProfilePage.vala:268
 msgid "Protected profile"
 msgstr ""
 
-#: ../src/ProfilePage.vala:306
+#: ../src/ProfilePage.vala:321
 #, c-format
 msgid "Tweet to @%s"
 msgstr ""
@@ -205,7 +205,7 @@ msgstr ""
 msgid "%dh"
 msgstr ""
 
-#: ../src/SearchPage.vala:330 ../src/SearchPage.vala:339
+#: ../src/SearchPage.vala:331 ../src/SearchPage.vala:340
 #: ../ui/search-page.ui.h:1
 msgid "Search"
 msgstr ""
@@ -360,7 +360,7 @@ msgid "Hide inappropriate content"
 msgstr ""
 
 #: ../ui/settings-dialog.ui.h:24 ../ui/search-page.ui.h:2
-#: ../ui/profile-page.ui.h:6
+#: ../ui/profile-page.ui.h:7
 msgid "Tweets"
 msgstr ""
 
@@ -479,18 +479,22 @@ msgid "Blocked"
 msgstr ""
 
 #: ../ui/profile-page.ui.h:4
-msgid "Retweets disabled"
+msgid "Muted"
 msgstr ""
 
 #: ../ui/profile-page.ui.h:5
+msgid "Retweets disabled"
+msgstr ""
+
+#: ../ui/profile-page.ui.h:6
 msgid "Follows you"
 msgstr ""
 
-#: ../ui/profile-page.ui.h:7
+#: ../ui/profile-page.ui.h:8
 msgid "Followers"
 msgstr ""
 
-#: ../ui/profile-page.ui.h:8
+#: ../ui/profile-page.ui.h:9
 msgid "Following"
 msgstr ""
 
