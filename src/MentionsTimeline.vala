@@ -74,7 +74,7 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
         return;
 
       this.balance_next_upper_change (TOP);
-      t.seen = false;
+      t.set_seen (false);
       tweet_list.model.add (t);
 
 

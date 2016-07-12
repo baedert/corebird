@@ -423,7 +423,7 @@ public class TweetModel : GLib.Object, GLib.ListModel {
     for (int i = 0; i < tweets.length; i ++) {
       Cb.Tweet t = tweets.get (i);
       if (t.id == id) {
-        seen = t.seen;
+        seen = t.get_seen ();
 
         if (t.is_hidden ())
           this.remove_tweet (t);

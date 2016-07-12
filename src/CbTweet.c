@@ -335,6 +335,32 @@ cb_tweet_get_real_text (CbTweet *tweet)
     return cb_text_transform_tweet (&tweet->source_tweet, CB_TEXT_TRANSFORM_EXPAND_LINKS, 0);
 }
 
+gboolean
+cb_tweet_get_seen (CbTweet *tweet)
+{
+  g_return_val_if_fail (CB_IS_TWEET (tweet), FALSE);
+
+  return tweet->seen;
+}
+
+void
+cb_tweet_set_seen (CbTweet *tweet, gboolean value)
+{
+  g_return_if_fail (CB_IS_TWEET (tweet));
+
+  value = !!value;
+
+  if (value && tweet->notification_id != NULL)
+    {
+      GApplication *app = g_application_get_default ();
+
+      g_application_withdraw_notification (app, tweet->notification_id);
+      tweet->notification_id = NULL;
+    }
+
+  tweet->seen = value;
+}
+
 CbTweet *
 cb_tweet_new (void)
 {
@@ -374,6 +400,7 @@ cb_tweet_init (CbTweet *tweet)
   tweet->quoted_tweet = NULL;
   tweet->retweeted_tweet = NULL;
   tweet->reply_id = 0;
+  tweet->notification_id = NULL;
 }
 
 static void

@@ -270,10 +270,10 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
 
       var tle = (TweetListEntry) w;
       if (tle.tweet.id == id || id == -1) {
-        if (!tle.tweet.seen) {
+        if (!tle.tweet.get_seen ()) {
           this.unread_count--;
         }
-        tle.tweet.seen = true;
+        tle.tweet.set_seen (true);
         if (id != -1)
           break;
       }
@@ -416,13 +416,13 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
         return;
 
       var tle = (TweetListEntry)w;
-      if (tle.tweet.seen)
+      if (tle.tweet.get_seen ())
         return;
 
       Gtk.Allocation alloc;
       tle.get_allocation (out alloc);
       if (alloc.y + (alloc.height / 2.0) >= value) {
-        tle.tweet.seen = true;
+        tle.tweet.set_seen (true);
         unread_count--;
       }
     });
@@ -437,9 +437,9 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
         if (tm.set_tweet_flag (tweet, Cb.TweetState.HIDDEN_FILTERED))
           i --;
 
-        if (!tweet.seen) {
+        if (!tweet.get_seen ()) {
           this.unread_count --;
-          tweet.seen = true;
+          tweet.set_seen (true);
         }
       } else {
         if (tm.unset_tweet_flag (tweet, Cb.TweetState.HIDDEN_FILTERED)) {

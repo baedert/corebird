@@ -89,7 +89,7 @@ namespace Cb {
       public int64 id;
       public int64 my_retweet;
       public int64 reply_id;
-      public bool seen;
+      //public bool seen;
       public int favorite_count;
       public int retweet_count;
       public string avatar_url;
@@ -117,6 +117,9 @@ namespace Cb {
       public signal void state_changed();
       public bool is_hidden ();
       public string? notification_id;
+
+      public bool get_seen ();
+      public void set_seen (bool val);
 
       public uint state;
 #if DEBUG

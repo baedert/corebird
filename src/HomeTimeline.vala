@@ -76,11 +76,11 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
 
     bool auto_scroll = Settings.auto_scroll_on_new_tweets ();
 
-    t.seen = t.get_user_id () == account.id ||
-             (t.retweeted_tweet != null && t.retweeted_tweet.author.id == account.id) ||
-             (this.scrolled_up  &&
-              main_window.cur_page_id == this.id &&
-              auto_scroll);
+    t.set_seen (t.get_user_id () == account.id ||
+                (t.retweeted_tweet != null && t.retweeted_tweet.author.id == account.id) ||
+                (this.scrolled_up  &&
+                 main_window.cur_page_id == this.id &&
+                 auto_scroll));
 
     bool should_focus = (tweet_list.get_first_visible_row ().is_focus && this.scrolled_up);
 
@@ -94,10 +94,10 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
         base.scroll_up (t);
       }
 
-      if (!t.seen)
+      if (!t.get_seen ())
         this.unread_count ++;
     } else {
-      t.seen = true;
+      t.set_seen (true);
     }
 
     if (should_focus) {
