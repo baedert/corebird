@@ -418,6 +418,7 @@ cb_tweet_init (CbTweet *tweet)
   tweet->retweeted_tweet = NULL;
   tweet->reply_id = 0;
   tweet->notification_id = NULL;
+  tweet->seen = TRUE;
 }
 
 static void
