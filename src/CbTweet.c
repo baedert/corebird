@@ -38,12 +38,15 @@ json_array_size (JsonObject *object, const char *name)
   return (guint)json_array_get_length (json_object_get_array_member (object, name));
 }
 
+
+
 G_DEFINE_TYPE (CbTweet, cb_tweet, G_TYPE_OBJECT);
 
 enum {
   STATE_CHANGED,
   LAST_SIGNAL
 };
+
 static guint tweet_signals[LAST_SIGNAL] = { 0 };
 
 
@@ -408,6 +411,8 @@ cb_tweet_finalize (GObject *object)
 #ifdef DEBUG
   g_free (tweet->json_data);
 #endif
+
+  G_OBJECT_CLASS (cb_tweet_parent_class)->finalize (object);
 }
 
 static void
