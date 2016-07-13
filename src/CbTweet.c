@@ -178,9 +178,9 @@ cb_tweet_get_mentions (CbTweet  *tweet,
 }
 
 void
-cb_tweet_load_from_json (CbTweet    *tweet,
-                         JsonNode   *status_node,
-                         GDateTime  *now)
+cb_tweet_load_from_json (CbTweet   *tweet,
+                         JsonNode  *status_node,
+                         GDateTime *now)
 {
   JsonObject *status;
   JsonObject *user;
