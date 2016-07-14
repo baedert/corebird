@@ -165,11 +165,14 @@ cb_text_transform_text (const char   *text,
           if (entity->tooltip_text != NULL)
             {
               char *c = escape_ampersand (entity->tooltip_text);
+              char *cc = escape_ampersand (c);
+
               g_string_append (str, " title=\"");
-              g_string_append (str, c);
+              g_string_append (str, cc);
               g_string_append (str, "\"");
 
               g_free (c);
+              g_free (cc);
             }
 
           g_string_append (str, ">");
