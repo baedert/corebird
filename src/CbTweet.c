@@ -187,8 +187,8 @@ cb_tweet_load_from_json (CbTweet   *tweet,
   gboolean has_media;
 
   g_return_if_fail (CB_IS_TWEET (tweet));
-  g_return_if_fail (now != NULL);
   g_return_if_fail (status_node != NULL);
+  g_return_if_fail (now != NULL);
 
   status = json_node_get_object (status_node);
   user = json_object_get_object_member (status, "user");
