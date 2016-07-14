@@ -41,12 +41,13 @@ class MaxSizeContainer : Gtk.Bin {
   public override void get_preferred_height_for_width (int width,
                                                        out int min_height,
                                                        out int nat_height) {
-    int child_height;
-    get_child ().get_preferred_height_for_width (width, out child_height, null);
+    int min_child_height;
+    int nat_child_height;
+    get_child ().get_preferred_height_for_width (width, out min_child_height, out nat_child_height);
 
-
-    if (max_size >= child_height) {
-      base.get_preferred_height_for_width (width, out min_height, out nat_height);
+    if (max_size >= min_child_height) {
+      min_height = min_child_height;
+      nat_height = nat_child_height;
     } else {
       nat_height = max_size;
       min_height = max_size;
@@ -82,8 +83,8 @@ class MaxSizeContainer : Gtk.Bin {
     this.set_allocation (child_alloc);
     if (get_child () != null && get_child ().visible) {
       int min_height, nat_height;
-      get_child ().get_preferred_height (out min_height, out nat_height);
-      child_alloc.height = int.max(child_alloc.height, min_height);
+      get_child ().get_preferred_height_for_width (alloc.width, out min_height, out nat_height);
+      child_alloc.height = int.max (child_alloc.height, min_height);
 
       get_child ().size_allocate (child_alloc);
       if (this.get_realized ())
