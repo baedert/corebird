@@ -126,16 +126,26 @@ cb_media_downloader_get_instagram_url (CbMediaDownloader *downloader,
 
   if (g_match_info_get_match_count (match_info) > 0)
     {
+      g_match_info_free (match_info);
+      g_regex_unref (url_regex);
+
       /* Video! */
       url_regex = g_regex_new ("<meta property=\"og:video\" content=\"(.*?)\"", 0, 0, NULL);
       g_regex_match (url_regex, (const char *)msg->response_body->data, 0, &match_info);
       media->url = g_match_info_fetch (match_info, 1);
+      g_regex_unref (url_regex);
     }
+
+  g_match_info_free (match_info);
 
   url_regex = g_regex_new ("<meta property=\"og:image\" content=\"(.*?)\"", 0, 0, NULL);
   g_regex_match (url_regex, (const char*)msg->response_body->data, 0, &match_info);
 
   media->thumb_url = g_match_info_fetch (match_info, 1);
+
+  g_regex_unref (url_regex);
+  g_regex_unref (medium_regex);
+  g_match_info_free (match_info);
 }
 
 static void
@@ -161,21 +171,32 @@ cb_media_downloader_load_twitter_video (CbMediaDownloader *downloader,
     {
       g_assert (media->type == CB_MEDIA_TYPE_ANIMATED_GIF);
       media->url = g_match_info_fetch (match_info, 1);
+
+      g_regex_unref (regex);
+      g_match_info_free (match_info);
       g_object_unref (msg);
       return;
     }
   else
     {
+      g_regex_unref (regex);
+      g_match_info_free (match_info);
+
       regex = g_regex_new ("<source video-src=\"(.*?)\"", 0, 0, NULL);
       g_regex_match (regex, (const char *)msg->response_body->data, 0, &match_info);
       media->url = g_match_info_fetch (match_info, 1);
       media->type = CB_MEDIA_TYPE_TWITTER_VIDEO;
     }
 
+  g_regex_unref (regex);
+  g_match_info_free (match_info);
+
   regex = g_regex_new ("poster=\"(.*?)\"", 0, 0, NULL);
   g_regex_match (regex, (const char *)msg->response_body->data, 0, &match_info);
   media->thumb_url = g_match_info_fetch (match_info, 1);
 
+  g_regex_unref (regex);
+  g_match_info_free (match_info);
   g_object_unref (msg);
 }
 
