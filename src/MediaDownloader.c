@@ -97,7 +97,6 @@ load_animation (GInputStream *input_stream,
   media->invalid = FALSE;
 
 out:
-  g_input_stream_close (input_stream, NULL, NULL);
   if (media->animation == NULL)
     g_object_unref (animation);
 
@@ -317,6 +316,7 @@ cb_media_downloader_load_threaded (CbMediaDownloader *downloader,
                                                       NULL);
 
   load_animation (input_stream, media);
+  g_input_stream_close (input_stream, NULL, NULL);
   g_object_unref (input_stream);
   g_object_unref (msg);
 }
