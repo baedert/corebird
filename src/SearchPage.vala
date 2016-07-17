@@ -17,7 +17,7 @@
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/search-page.ui")]
 class SearchPage : IPage, Gtk.Box {
-  private static const int USER_COUNT = 3;
+  private const int USER_COUNT = 3;
   /** The unread count here is always zero */
   public int unread_count {
     get { return 0; }

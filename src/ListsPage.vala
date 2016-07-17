@@ -17,7 +17,7 @@
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/lists-page.ui")]
 class ListsPage : IPage, ScrollWidget, IMessageReceiver {
-  public static const int MODE_DELETE = 1;
+  public const int MODE_DELETE = 1;
 
   private BadgeRadioButton radio_button;
   public int unread_count                   { get; set; }

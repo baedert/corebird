@@ -16,8 +16,8 @@
  */
 [GtkTemplate (ui = "/org/baedert/corebird/ui/account-dialog.ui")]
 class AccountDialog : Gtk.Dialog {
-  private static const string PAGE_NORMAL = "normal";
-  private static const string PAGE_DELETE = "delete";
+  private const string PAGE_NORMAL = "normal";
+  private const string PAGE_DELETE = "delete";
   [GtkChild]
   private Gtk.Entry name_entry;
   [GtkChild]

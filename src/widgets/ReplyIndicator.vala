@@ -16,7 +16,7 @@
  */
 
 public class ReplyIndicator : Gtk.Widget {
-  private static const int FINAL_HEIGHT = 5;
+  private const int FINAL_HEIGHT = 5;
   private double height = 0;
   private bool replies = false;
   public bool replies_available {

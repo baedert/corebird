@@ -16,10 +16,10 @@
  */
 
 class AddImageButton : Gtk.Widget {
-  private static const int MIN_WIDTH  = 40;
-  private static const int MAX_HEIGHT = 150;
-  private static const int MIN_HEIGHT = 100;
-  private static const int ICON_SIZE  = 32;
+  private const int MIN_WIDTH  = 40;
+  private const int MAX_HEIGHT = 150;
+  private const int MIN_HEIGHT = 100;
+  private const int ICON_SIZE  = 32;
   public string image_path;
   public Cairo.ImageSurface? surface;
 

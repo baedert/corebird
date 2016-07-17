@@ -16,8 +16,8 @@
  */
 
 class AvatarWidget : Gtk.Widget {
-  private static const int SMALL = 0;
-  private static const int LARGE = 1;
+  private const int SMALL = 0;
+  private const int LARGE = 1;
   private bool _round = true;
   public bool make_round {
     get {
@@ -67,7 +67,7 @@ class AvatarWidget : Gtk.Widget {
 
 
   static Cairo.Surface[] verified_icons;
-  static const int[] VERIFIED_SIZES = {12, 18};
+  const int[] VERIFIED_SIZES = {12, 18};
   static construct {
     try {
       verified_icons = {

@@ -16,8 +16,8 @@
  */
 
 class ComposeImageManager : Gtk.Container {
-  private static const int BUTTON_DELTA = 10;
-  private static const int BUTTON_SPACING = 12;
+  private const int BUTTON_DELTA = 10;
+  private const int BUTTON_SPACING = 12;
   private GLib.GenericArray<AddImageButton> buttons;
   private GLib.GenericArray<Gtk.Button> close_buttons;
 

@@ -16,7 +16,7 @@
  */
 
 public abstract class DefaultTimeline : ScrollWidget, IPage {
-  public static const int REST = 25;
+  public const int REST = 25;
   protected bool initialized = false;
   public int id                          { get; set; }
   private int _unread_count = 0;

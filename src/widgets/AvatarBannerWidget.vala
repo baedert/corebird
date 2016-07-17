@@ -16,9 +16,9 @@
  */
 
 public class AvatarBannerWidget : Gtk.Container {
-  private static const int MIN_HEIGHT = 150;
-  private static const int MAX_HEIGHT = 250;
-  private static const double BANNER_RATIO = 0.5; /* 320/640 */
+  private const int MIN_HEIGHT = 150;
+  private const int MAX_HEIGHT = 250;
+  private const double BANNER_RATIO = 0.5; /* 320/640 */
   public int avatar_size { get; set; default = 48; }
 
   private unowned Account account;

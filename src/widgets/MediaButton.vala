@@ -16,11 +16,11 @@
  */
 
 private class MediaButton : Gtk.Widget {
-  private static const int PLAY_ICON_SIZE = 32;
-  private static const int MAX_HEIGHT     = 200;
+  private const int PLAY_ICON_SIZE = 32;
+  private const int MAX_HEIGHT     = 200;
   /* We use MIN_ constants in case the media has not yet been loaded */
-  private static const int MIN_HEIGHT     = 40;
-  private static const int MIN_WIDTH      = 40;
+  private const int MIN_HEIGHT     = 40;
+  private const int MIN_WIDTH      = 40;
   private Gdk.Window? event_window = null;
   private unowned Cb.Media? _media;
   private static Cairo.Surface[] play_icons;

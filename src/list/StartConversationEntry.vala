@@ -17,7 +17,7 @@
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/start-conversation-entry.ui")]
 class StartConversationEntry : Gtk.ListBoxRow {
-  private static const int MAX_RESULTS = 7;
+  private const int MAX_RESULTS = 7;
   [GtkChild]
   private Gtk.Revealer revealer;
   [GtkChild]

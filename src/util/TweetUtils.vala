@@ -16,7 +16,7 @@
  */
 
 namespace TweetUtils {
-  private static const string[] DOMAINS = {
+  private const string[] DOMAINS = {
      ".com",  ".net",  ".org",    ".xxx",  ".sexy", ".pro",
      ".biz",  ".name", ".info",   ".arpa", ".gov",  ".aero",
      ".asia", ".cat",  ".coop",   ".edu",  ".int",  ".jobs",

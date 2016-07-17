@@ -17,8 +17,8 @@
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/tweet-info-page.ui")]
 class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
-  public static const int BY_INSTANCE = 1;
-  public static const int BY_ID       = 2;
+  public const int BY_INSTANCE = 1;
+  public const int BY_ID       = 2;
 
   private const GLib.ActionEntry[] action_entries = {
     {"quote",    quote_activated   },

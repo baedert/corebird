@@ -16,7 +16,7 @@
  */
 
 public class BadgeRadioButton : Gtk.RadioButton {
-  private static const int BADGE_SIZE = 10;
+  private const int BADGE_SIZE = 10;
   private bool _show_badge = false;
   public bool show_badge {
     set {
