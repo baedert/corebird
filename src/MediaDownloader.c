@@ -121,7 +121,7 @@ cb_media_downloader_get_instagram_url (CbMediaDownloader *downloader,
       return;
     }
 
-  medium_regex = g_regex_new ("<meda name=\"medium\" content=\"video\" />", 0, 0, NULL);
+  medium_regex = g_regex_new ("<media name=\"medium\" content=\"video\" />", 0, 0, NULL);
   g_regex_match (medium_regex, (const char *)msg->response_body->data, 0, &match_info);
 
   if (g_match_info_get_match_count (match_info) > 0)
