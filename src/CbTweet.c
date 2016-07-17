@@ -370,7 +370,7 @@ cb_tweet_set_seen (CbTweet *tweet, gboolean value)
 
   value = !!value;
 
-  if (value && tweet->notification_id != NULL)
+  if (value && !tweet->seen && tweet->notification_id != NULL)
     {
       GApplication *app = g_application_get_default ();
 
