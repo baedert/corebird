@@ -104,7 +104,7 @@ emit_media_finished (gpointer data)
 }
 
 void
-cb_media_update_progress (CbMedia *media, int progress)
+cb_media_update_progress (CbMedia *media, double progress)
 {
   media->percent_loaded = progress;
 

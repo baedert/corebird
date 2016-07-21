@@ -237,8 +237,7 @@ update_media_progress (SoupMessage *msg,
 
   if (msg->response_headers == NULL) return;
 
-  int chunk_percent = MAX (chunk->length /soup_message_headers_get_content_length (msg->response_headers),
-                           1);
+  double chunk_percent = chunk->length / (double)soup_message_headers_get_content_length (msg->response_headers);
 
   cb_media_update_progress (media, media->percent_loaded + chunk_percent);
 }

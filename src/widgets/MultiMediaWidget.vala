@@ -78,7 +78,7 @@ public class MultiMediaWidget : Gtk.Box {
 
 
   private void media_loaded_cb (Cb.Media source) {
-    if (source.percent_loaded != 100)
+    if (source.percent_loaded < 100)
       return;
 
     if (source.invalid) {

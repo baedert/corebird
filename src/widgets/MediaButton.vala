@@ -215,7 +215,7 @@ private class MediaButton : Gtk.Widget {
       var sc = this.get_style_context ();
       double layout_x, layout_y;
       int layout_w, layout_h;
-      layout.set_text ("%d%%".printf (_media.percent_loaded), -1);
+      layout.set_text ("%d%%".printf ((int)(_media.percent_loaded * 100)), -1);
       layout.get_size (out layout_w, out layout_h);
       layout_x = (widget_width / 2.0) - (layout_w / Pango.SCALE / 2.0);
       layout_y = (widget_height / 2.0) - (layout_h / Pango.SCALE / 2.0);

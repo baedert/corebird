@@ -24,7 +24,7 @@ namespace Cb {
     public MediaType type;
     public int width;
     public int height;
-    public int percent_loaded;
+    public double percent_loaded;
     public Cairo.ImageSurface? surface;
     public Gdk.PixbufAnimation? animation;
     public signal void progress();
