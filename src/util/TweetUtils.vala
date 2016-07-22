@@ -425,6 +425,20 @@ namespace TweetUtils {
     buffer.apply_tag_by_name ("hashtag", word_start, iter1);
   }
 
+  private void maybe_highlight_snippet (Gtk.TextBuffer buffer,
+                                        Gtk.TextIter?  word_start,
+                                        Gtk.TextIter?  word_end) {
+    string word = buffer.get_text (word_start, word_end, false);
+
+    if (word.length == 0)
+      return;
+
+    string? snippet;
+    if ((snippet = Corebird.snippet_manager.get_snippet (word)) != null) {
+      buffer.apply_tag_by_name ("snippet", word_start, word_end);
+    }
+  }
+
 
   public void annotate_text (Gtk.TextBuffer buffer) {
     Gtk.TextIter? start_iter;
@@ -464,6 +478,8 @@ namespace TweetUtils {
           highlight_mention (buffer, word_start_iter, next_iter);
         } else if (is_hashtag (w)) {
           highlight_hashtag (buffer, word_start_iter, next_iter);
+        } else {
+          maybe_highlight_snippet (buffer, word_start_iter, next_iter);
         }
       }
 
