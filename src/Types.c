@@ -25,7 +25,6 @@ escape_ampersand (const char *in)
 {
   gsize bytes = strlen (in);
   gsize n_ampersands = 0;
-  gsize i = 0;
   const char *p = in;
   gunichar c;
   char *result;
@@ -129,7 +128,7 @@ cb_text_entity_copy (CbTextEntity *e1, CbTextEntity *e2)
 void
 cb_mini_tweet_free (CbMiniTweet *t)
 {
-  int i;
+  guint i;
 
   g_free (t->text);
 
@@ -148,7 +147,7 @@ cb_mini_tweet_free (CbMiniTweet *t)
 void
 cb_mini_tweet_copy (CbMiniTweet *t1, CbMiniTweet *t2)
 {
-  int i;
+  guint i;
 
   t2->id = t1->id;
   t2->created_at = t1->created_at;
@@ -313,9 +312,9 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
   JsonArray *user_mentions = json_object_get_array_member (entities, "user_mentions");
   JsonArray *media_arrays[2];
   int media_count = json_object_get_member_size (entities, "media");
-  int i, p;
+  guint i, p;
   int url_index = 0;
-  int n_media_arrays = 0;
+  guint n_media_arrays = 0;
   int max_entities;
 
   if (json_object_has_member (status, "extended_entities"))
@@ -402,7 +401,7 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
         {
           JsonObject *url = json_node_get_object (json_array_get_element (medias, i));
           JsonArray  *indices = json_object_get_array_member (url, "indices");
-          const char *expanded_url = json_object_get_string_member (url, "expanded_url");
+          /*const char *expanded_url = json_object_get_string_member (url, "expanded_url");*/
 
           t->entities[url_index].from = json_array_get_int_element (indices, 0);
           t->entities[url_index].to   = json_array_get_int_element (indices, 1);
@@ -428,7 +427,7 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
 
   for (i = 0; i < n_media_arrays; i ++)
     {
-      int x, k;
+      guint x, k;
       for (x = 0, p = json_array_get_length (media_arrays[i]); x < p; x ++)
         {
           JsonObject *media_obj = json_node_get_object (json_array_get_element (media_arrays[i], x));
@@ -479,8 +478,8 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
               JsonObject *variant = NULL;
               int thumb_width  = -1;
               int thumb_height = -1;
-              gboolean hls_found = FALSE;
-              int q;
+              /*gboolean hls_found = FALSE;*/
+              guint q;
 
               if (json_object_has_member (media_obj, "sizes"))
                 {
@@ -496,7 +495,7 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
                   JsonObject *v = json_node_get_object (json_array_get_element (variants, k));
                   if (strcmp (json_object_get_string_member (v, "content_type"), "application/x-mpegURL") == 0)
                     {
-                      hls_found = TRUE;
+                      /*hls_found = TRUE;*/
                       variant = v;
                       break;
                     }
@@ -549,7 +548,7 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
 
   if (t->n_entities > 0)
     {
-      int i, k;
+      guint i, k;
       /* Sort entities. */
       for (i = 0; i < t->n_entities; i ++)
         for (k = 0; k < t->n_entities; k++)

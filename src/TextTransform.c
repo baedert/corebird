@@ -82,13 +82,13 @@ cb_text_transform_text (const char   *text,
 {
   GString *str = g_string_new (NULL);
   const  guint text_len   = g_utf8_strlen (text, -1);
-  gint i;
+  int i;
   char *end_str;
   gboolean last_entity_was_trailing = FALSE;
   guint last_end   = 0;
   guint cur_end    = text_len;
 
-  for (i = n_entities - 1; i >= 0; i --)
+  for (i = (int)n_entities - 1; i >= 0; i --)
     {
       char *btw = g_utf8_substring (text,
                                     entities[i].to,
@@ -119,7 +119,7 @@ cb_text_transform_text (const char   *text,
     }
 
 
-  for (i = 0; i < n_entities; i ++)
+  for (i = 0; i < (int)n_entities; i ++)
     {
       CbTextEntity *entity = &entities[i];
 
