@@ -492,15 +492,15 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
 
 
   private void quote_activated () {
-    //ComposeTweetWindow ctw = new ComposeTweetWindow(main_window, this.account, this.tweet,
-                                                    //ComposeTweetWindow.Mode.QUOTE);
-    //ctw.show ();
+    ComposeTweetWindow ctw = new ComposeTweetWindow(main_window, this.account, this.tweet,
+                                                    ComposeTweetWindow.Mode.QUOTE);
+    ctw.show ();
   }
 
   private void reply_activated () {
-    //ComposeTweetWindow ctw = new ComposeTweetWindow(main_window, this.account, this.tweet,
-                                                    //ComposeTweetWindow.Mode.REPLY);
-    //ctw.show ();
+    ComposeTweetWindow ctw = new ComposeTweetWindow(main_window, this.account, this.tweet,
+                                                    ComposeTweetWindow.Mode.REPLY);
+    ctw.show ();
   }
 
   private void favorite_activated () {
