@@ -23,7 +23,6 @@
                 <property name="can-focus">False</property>
                 <child>
                   <object class="TweetListBox" id="top_list_box">
-                    <property name="name">s</property>
                     <property name="can-focus">False</property>
                     <property name="selection-mode">none</property>
                   </object>
