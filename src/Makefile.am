@@ -3,9 +3,7 @@ AM_CPPFLAGS = \
 	$(CB_CFLAGS) \
 	-include $(CONFIG_HEADER) \
 	-DDATADIR=\"$(datadir)\" \
-	-DPKGDATADIR=\"$(pkgdatadir)\" \
-	-O0 \
-	-fno-omit-frame-pointer
+	-DPKGDATADIR=\"$(pkgdatadir)\"
 
 
 AM_VALAFLAGS = \
