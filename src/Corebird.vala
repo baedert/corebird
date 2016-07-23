@@ -47,6 +47,9 @@ public class Corebird : Gtk.Application {
                 //register_session: true);
     snippet_manager = new SnippetManager ();
     active_accounts = new GLib.GenericArray<Account> ();
+    db = new Sql.Database (Dirs.config ("Corebird.db"),
+                           Sql.COREBIRD_INIT_FILE,
+                           Sql.COREBIRD_SQL_VERSION);
   }
 
   public override int command_line (ApplicationCommandLine cmd) {
@@ -193,10 +196,6 @@ public class Corebird : Gtk.Application {
 
     Dirs.create_dirs ();
     debug ("startup");
-    Corebird.db = new Sql.Database (Dirs.config ("Corebird.db"),
-                                    Sql.COREBIRD_INIT_FILE,
-                                    Sql.COREBIRD_SQL_VERSION);
-
     // Setup gettext
     GLib.Intl.setlocale (GLib.LocaleCategory.ALL, Config.DATADIR + "/locale");
     GLib.Intl.bindtextdomain (Config.GETTEXT_PACKAGE, null);
