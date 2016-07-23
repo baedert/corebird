@@ -47,7 +47,9 @@ tests_VALASOURCES = \
 	tweetparsing.vala \
 	filters.vala \
 	texttransform.vala \
-	avatardownload.vala
+	avatardownload.vala \
+	friends.vala \
+	highlighting.vala
 
 C_SOURCES = $(top_builddir)/src/Types.c \
 	$(top_builddir)/src/Media.c \
@@ -66,6 +68,7 @@ tests_vala.stamp: $(tests_VALASOURCES) $(top_builddir)/src/libcorebird.la $(top_
 			$$s; \
 	done; \
 	touch $@
+
 
 nodist_tweetmodel_SOURCES = tweetmodel.c $(C_SOURCES)
 tweetmodel_LDADD = $(top_builddir)/src/libcorebird.la
@@ -102,6 +105,8 @@ texttransform_LDADD = $(top_builddir)/src/libcorebird.la
 
 nodist_avatardownload_SOURCES = avatardownload.c ../src/corebird-resources.c $(C_SOURCES)
 avatardownload_LDADD = $(top_builddir)/src/libcorebird.la
+
+CLEANFILES = tests_vala.stamp
 
 EXTRA_DIST = \
 	$(tests_VALASOURCES)
