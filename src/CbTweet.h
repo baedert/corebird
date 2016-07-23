@@ -110,6 +110,7 @@ void        cb_tweet_unset_flag (CbTweet *tweet, guint flag);
 char       *cb_tweet_get_formatted_text (CbTweet *tweet, guint transform_flags);
 char       *cb_tweet_get_trimmed_text (CbTweet *tweet, guint transform_flags);
 char       *cb_tweet_get_real_text (CbTweet *tweet);
+char       *cb_tweet_get_filter_text (CbTweet *tweet);
 
 gboolean    cb_tweet_get_seen (CbTweet *tweet);
 void        cb_tweet_set_seen (CbTweet *tweet, gboolean value);

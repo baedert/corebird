@@ -110,6 +110,7 @@ namespace Cb {
       public string get_formatted_text (uint transform_flags);
       public string get_trimmed_text (uint transform_flags);
       public string get_real_text ();
+      public string get_filter_text ();
 
       public unowned Cb.Media[] get_medias();
       public string[] get_mentions();

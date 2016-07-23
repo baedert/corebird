@@ -384,8 +384,7 @@ public class Account : GLib.Object {
     if (t.source_tweet.author.id == this.id)
       return false;
 
-
-    string text = t.get_real_text ();
+    string text = t.get_filter_text ();
     for (int i = 0; i < filters.length; i ++) {
       var f = this.filters.get (i);
       if (f.matches (text)) {

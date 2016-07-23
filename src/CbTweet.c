@@ -355,6 +355,36 @@ cb_tweet_get_real_text (CbTweet *tweet)
     return cb_text_transform_tweet (&tweet->source_tweet, CB_TEXT_TRANSFORM_EXPAND_LINKS, 0);
 }
 
+char *
+cb_tweet_get_filter_text (CbTweet *tweet)
+{
+  GString *string;
+  char *text;
+
+  g_return_val_if_fail (CB_IS_TWEET (tweet), NULL);
+
+  string = g_string_new (0);
+
+  if (tweet->retweeted_tweet != NULL)
+    text = cb_text_transform_tweet (tweet->retweeted_tweet, CB_TEXT_TRANSFORM_EXPAND_LINKS, 0);
+  else
+    text = cb_text_transform_tweet (&tweet->source_tweet, CB_TEXT_TRANSFORM_EXPAND_LINKS ,0);
+
+  g_string_append (string, text);
+  g_free (text);
+  g_string_append_c (string, '[');
+
+  if (tweet->retweeted_tweet != NULL)
+    g_string_append (string, "rt");
+
+  if (tweet->quoted_tweet != NULL)
+    g_string_append (string, ",quote");
+
+  g_string_append_c (string, ']');
+
+  return g_string_free (string, FALSE);
+}
+
 gboolean
 cb_tweet_get_seen (CbTweet *tweet)
 {
