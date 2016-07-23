@@ -14,28 +14,8 @@ Gtk.TextBuffer create_buffer () {
 
 // }}}
 
-void mention () {
-  Gtk.TextBuffer buffer = create_buffer ();
-  buffer.apply_tag.connect ((buffer, tag, start, end) => {
-    string s = buffer.get_text (start, end, false);
-    assert (s == "@bla");
-  });
-  buffer.set_text ("A @bla B");
-  TweetUtils.annotate_text (buffer);
-}
-
-void underline_mention () {
-  Gtk.TextBuffer buffer = create_buffer ();
-  buffer.apply_tag.connect ((buffer, tag, start, end) => {
-    string s = buffer.get_text (start, end, false);
-    message ("Underline mention: %s", s);
-    assert (s == "@bla_foo");
-  });
-  buffer.set_text ("A @bla_foo B");
-  TweetUtils.annotate_text (buffer);
-}
-
 void normal () {
+  var c = new Corebird ();
   Gtk.TextBuffer buffer = create_buffer ();
   buffer.set_text ("foobar @blabla");
 
@@ -46,10 +26,34 @@ void normal () {
   });
 
   TweetUtils.annotate_text (buffer);
+  c.get_type ();
 }
 
+void mention () {
+  var c = new Corebird ();
+  Gtk.TextBuffer buffer = create_buffer ();
+  buffer.apply_tag.connect ((buffer, tag, start, end) => {
+    string s = buffer.get_text (start, end, false);
+    assert (s == "@bla");
+  });
+  buffer.set_text ("A @bla B");
+  TweetUtils.annotate_text (buffer);
+}
+
+void underline_mention () {
+  var c = new Corebird ();
+  Gtk.TextBuffer buffer = create_buffer ();
+  buffer.apply_tag.connect ((buffer, tag, start, end) => {
+    string s = buffer.get_text (start, end, false);
+    message ("Underline mention: %s", s);
+    assert (s == "@bla_foo");
+  });
+  buffer.set_text ("A @bla_foo B");
+  TweetUtils.annotate_text (buffer);
+}
 
 void hashtag () {
+  var c = new Corebird ();
   Gtk.TextBuffer buffer = create_buffer ();
   buffer.set_text ("foobar #hash.");
 
@@ -65,8 +69,9 @@ void hashtag () {
   assert (num == 1);
 }
 
-// Sorry for this name.
+/* Sorry for this name. */
 void non_default_mention () {
+  var c = new Corebird ();
 
   Gtk.TextBuffer buffer = create_buffer ();
   buffer.set_text ("“@foobar");
@@ -87,9 +92,10 @@ void non_default_mention () {
 void main (string[] args) {
   GLib.Test.init (ref args);
   Gtk.init (ref args);
+  var c = new Corebird ();
   GLib.Test.add_func ("/highlighting/normal", normal);
-  GLib.Test.add_func ("/highlighting/underline", underline_mention);
   GLib.Test.add_func ("/highlighting/mention", mention);
+  GLib.Test.add_func ("/highlighting/underline", underline_mention);
   GLib.Test.add_func ("/highlighting/hashtag", hashtag);
   GLib.Test.add_func ("/highlighting/non-default-mention", non_default_mention);
 
