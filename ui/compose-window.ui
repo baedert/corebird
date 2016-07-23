@@ -133,6 +133,7 @@
             <property name="visible">1</property>
             <property name="label" translatable="yes">Add Image</property>
             <property name="halign">end</property>
+            <property name="valign">baseline</property>
             <property name="margin-end">10</property>
             <property name="margin-bottom">10</property>
             <signal name="clicked" handler="add_image_clicked_cb"/>
