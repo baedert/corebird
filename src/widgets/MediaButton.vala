@@ -283,7 +283,6 @@ private class MediaButton : Gtk.Widget {
       minimum = height;
       natural = height;
     }
-
   }
 
   public override void get_preferred_width_for_height (int height,

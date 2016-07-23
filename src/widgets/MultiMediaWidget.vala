@@ -26,6 +26,10 @@ public class MultiMediaWidget : Gtk.Box {
   private bool media_invalid_fired = false;
   public signal void media_invalid ();
 
+  construct {
+    this.orientation = Gtk.Orientation.HORIZONTAL;
+    this.homogeneous = true;
+  }
 
   public void set_all_media (Cb.Media[] medias) {
     this.remove_all ();
@@ -63,8 +67,6 @@ public class MultiMediaWidget : Gtk.Box {
     }
     button.visible = true;
     button.clicked.connect (button_clicked_cb);
-    button.hexpand = true;
-    button.halign = Gtk.Align.FILL;
     this.pack_start (button, true, true);
     this.queue_draw ();
   }
