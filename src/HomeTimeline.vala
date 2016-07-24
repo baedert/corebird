@@ -28,7 +28,7 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
     this.tweet_list.account = account;
   }
 
-  public void stream_message_received (StreamMessageType type, Json.Node root) { // {{{
+  public void stream_message_received (StreamMessageType type, Json.Node root) {
     if (type == StreamMessageType.TWEET) {
       add_tweet (root);
     } else if (type == StreamMessageType.DELETE) {
@@ -51,8 +51,14 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
     } else if (type == StreamMessageType.EVENT_UNBLOCK) {
       int64 user_id = root.get_object ().get_object_member ("target").get_int_member ("id");
       show_tweets_from (user_id, Cb.TweetState.HIDDEN_AUTHOR_BLOCKED);
+    } else if (type == StreamMessageType.EVENT_MUTE) {
+      int64 user_id = root.get_object ().get_object_member ("target").get_int_member ("id");
+      hide_tweets_from (user_id, Cb.TweetState.HIDDEN_AUTHOR_MUTED);
+    } else if (type == StreamMessageType.EVENT_UNMUTE) {
+      int64 user_id = root.get_object ().get_object_member ("target").get_int_member ("id");
+      show_tweets_from (user_id, Cb.TweetState.HIDDEN_AUTHOR_MUTED);
     }
-  } // }}}
+  }
 
   private void add_tweet (Json.Node obj) {
     GLib.DateTime now = new GLib.DateTime.now_local ();
