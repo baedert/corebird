@@ -108,11 +108,12 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
         if (banner_image.scale >= 1.0) {
           banner_image.scale = 1.0f;
           return false;
+          return Gdk.EVENT_PROPAGATE;
         }
         banner_image.scale += 0.25f * (-evt.delta_y);
-        return true;
+        return Gdk.EVENT_STOP;
       }
-      return false;
+      return Gdk.EVENT_PROPAGATE;
     });
     this.scrolled_to_end.connect (() => {
       if (user_stack.visible_child == tweet_list) {
