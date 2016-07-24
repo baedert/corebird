@@ -479,7 +479,33 @@ void empty_hidden_tweets () {
   assert (tm.get_n_items () == 0);
   message ("%u", tm.hidden_tweets.length);
   assert (tm.hidden_tweets.length == 0);
+}
 
+void muting () {
+  var tm = new TweetModel ();
+  var t = new Cb.Tweet();
+  t.id = 1337;
+  t.set_flag (Cb.TweetState.HIDDEN_AUTHOR_MUTED);
+
+  tm.add (t);
+  assert (tm.get_n_items () == 0);
+  assert (tm.hidden_tweets.length == 1);
+
+  tm.unset_tweet_flag (t, Cb.TweetState.HIDDEN_AUTHOR_MUTED);
+  assert (tm.get_n_items () == 1);
+  assert (tm.hidden_tweets.length == 0);
+
+  tm.set_tweet_flag (t, Cb.TweetState.HIDDEN_RETWEETER_MUTED);
+  assert (tm.get_n_items () == 0);
+  assert (tm.hidden_tweets.length == 1);
+
+  tm.unset_tweet_flag (t, Cb.TweetState.HIDDEN_RETWEETER_MUTED);
+  assert (tm.get_n_items () == 1);
+  assert (tm.hidden_tweets.length == 0);
+
+  tm.remove_tweet (t);
+  assert (tm.get_n_items () == 0);
+  assert (tm.hidden_tweets.length == 0);
 }
 
 int main (string[] args) {
@@ -501,6 +527,7 @@ int main (string[] args) {
   GLib.Test.add_func ("/tweetmodel/hidden-max-id", hidden_max_id);
   GLib.Test.add_func ("/tweetmodel/empty-hidden-tweets", empty_hidden_tweets);
   GLib.Test.add_func ("/tweetmodel/hidden-remove-last-n-visible", hidden_remove_last_n_visible);
+  GLib.Test.add_func ("/tweetmodel/muting", muting);
 
   return GLib.Test.run ();
 }
