@@ -268,6 +268,7 @@ cb_media_downloader_load_threaded (CbMediaDownloader *downloader,
   g_return_if_fail (CB_IS_MEDIA (media));
   g_return_if_fail (media->url != NULL);
 
+  g_object_ref (media);
 
   url = canonicalize_url (media->url);
 
@@ -306,6 +307,7 @@ cb_media_downloader_load_threaded (CbMediaDownloader *downloader,
     {
       g_warning ("Media is invalid.");
       mark_invalid (media);
+      g_object_unref (media);
       return;
     }
 
@@ -322,6 +324,7 @@ cb_media_downloader_load_threaded (CbMediaDownloader *downloader,
 
       mark_invalid (media);
       g_object_unref (msg);
+      g_object_unref (media);
       return;
     }
 
@@ -333,6 +336,7 @@ cb_media_downloader_load_threaded (CbMediaDownloader *downloader,
   g_input_stream_close (input_stream, NULL, NULL);
   g_object_unref (input_stream);
   g_object_unref (msg);
+  g_object_unref (media);
 }
 
 void
