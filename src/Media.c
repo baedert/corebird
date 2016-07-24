@@ -98,6 +98,10 @@ cb_media_is_video (CbMedia *media)
 static gboolean
 emit_media_finished (gpointer data)
 {
+  CbMedia *media = data;
+
+  g_return_val_if_fail (CB_IS_MEDIA (media), G_SOURCE_REMOVE);
+
   g_signal_emit (data, media_signals[PROGRESS], 0);
 
   return G_SOURCE_REMOVE;
@@ -106,6 +110,8 @@ emit_media_finished (gpointer data)
 void
 cb_media_update_progress (CbMedia *media, double progress)
 {
+  g_return_if_fail (CB_IS_MEDIA (media));
+
   media->percent_loaded = progress;
 
   g_main_context_invoke (NULL,
