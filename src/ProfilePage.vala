@@ -107,7 +107,6 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
       if (evt.delta_y < 0 && this.vadjustment.value == 0) {
         if (banner_image.scale >= 1.0) {
           banner_image.scale = 1.0f;
-          return false;
           return Gdk.EVENT_PROPAGATE;
         }
         banner_image.scale += 0.25f * (-evt.delta_y);
