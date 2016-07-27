@@ -211,6 +211,7 @@ class CompletionListEntry : Gtk.ListBoxRow {
     var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
     name_label = new Gtk.Label (name);
     name_label.ellipsize = Pango.EllipsizeMode.END;
+    name_label.use_markup = true;
     screen_name_label = new Gtk.Label ("@" + screen_name);
     name_label.set_valign (Gtk.Align.BASELINE);
     screen_name_label.set_valign (Gtk.Align.BASELINE);
