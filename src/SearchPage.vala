@@ -55,6 +55,8 @@ class SearchPage : IPage, Gtk.Box {
   private Collect collect_obj;
   private uint remove_content_timeout = 0;
   private string last_search_query;
+  private bool loading_tweets = false;
+  private bool loading_users  = false;
 
 
   public SearchPage (int id, Account account, DeltaUpdater delta_updater) {
@@ -189,6 +191,10 @@ class SearchPage : IPage, Gtk.Box {
   } //}}}
 
   private void load_users () {
+    if (this.loading_users)
+      return;
+
+    this.loading_users = true;
     var user_call = account.proxy.new_call ();
     user_call.set_method ("GET");
     user_call.set_function ("1.1/users/search.json");
@@ -207,10 +213,12 @@ class SearchPage : IPage, Gtk.Box {
         if (!collect_obj.done)
           collect_obj.emit ();
 
+        this.loading_users = false;
         return;
       }
 
       if (root == null) {
+        this.loading_users = false;
         debug ("load_users: root is null");
         return;
       }
@@ -257,11 +265,17 @@ class SearchPage : IPage, Gtk.Box {
 
       if (!collect_obj.done)
         collect_obj.emit ();
+
+      this.loading_users = false;
     });
 
   }
 
   private void load_tweets () {
+    if (loading_tweets)
+      return;
+
+    this.loading_tweets = true;
     var call = account.proxy.new_call ();
     call.set_function ("1.1/search/tweets.json");
     call.set_method ("GET");
@@ -278,11 +292,13 @@ class SearchPage : IPage, Gtk.Box {
         if (!collect_obj.done)
           collect_obj.emit ();
 
+        this.loading_tweets = false;
         return;
       }
 
       if (root == null) {
         debug ("load tweets: root is null");
+        this.loading_tweets = false;
         return;
       }
 
@@ -313,6 +329,8 @@ class SearchPage : IPage, Gtk.Box {
 
       if (!collect_obj.done)
         collect_obj.emit ();
+
+      this.loading_tweets = false;
     });
 
   }
@@ -321,10 +339,14 @@ class SearchPage : IPage, Gtk.Box {
     if (e != null) {
       tweet_list.set_error (e.message);
       tweet_list.set_empty ();
+      this.loading_tweets = false;
+      this.loading_users = false;
       return;
     }
 
     tweet_list.@foreach ((w) => w.show());
+    this.loading_tweets = false;
+    this.loading_users = false;
   }
 
   public void create_radio_button (Gtk.RadioButton? group){
