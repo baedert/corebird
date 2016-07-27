@@ -170,27 +170,25 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
 
   private void set_user_id (int64 user_id) {
     this.user_id = user_id;
-
     follow_button.sensitive = (user_id != account.id);
-    ((SimpleAction)actions.lookup_action ("add-remove-list")).set_enabled (user_id != account.id);
-    ((SimpleAction)actions.lookup_action ("write-dm")).set_enabled (user_id != account.id);
-    ((SimpleAction)actions.lookup_action ("toggle-blocked")).set_enabled (user_id != account.id);
-    ((SimpleAction)actions.lookup_action ("toggle-muted")).set_enabled (user_id != account.id);
-    /* We (maybe) re-enable this later when the friendship object has arrived */
-    ((SimpleAction)actions.lookup_action ("toggle-retweets")).set_enabled (false);
-
-    /* Set muted and blocked status now, let the friendship update it */
-    set_user_blocked (account.is_blocked (user_id));
-    set_user_muted (account.is_muted (user_id));
 
     set_banner (null);
     load_friendship.begin ();
-    /* Load the profile data now, then - if available - set the cached data */
     load_profile_data.begin (user_id);
   }
 
 
   private async void load_friendship () {
+    /* Set muted and blocked status now, let the friendship update it */
+    set_user_blocked (account.is_blocked (user_id));
+    set_user_muted (account.is_muted (user_id));
+    /* We (maybe) re-enable this later when the friendship object has arrived */
+    ((SimpleAction)actions.lookup_action ("toggle-retweets")).set_enabled (false);
+    ((SimpleAction)actions.lookup_action ("add-remove-list")).set_enabled (user_id != account.id);
+    ((SimpleAction)actions.lookup_action ("write-dm")).set_enabled (user_id != account.id);
+    ((SimpleAction)actions.lookup_action ("toggle-blocked")).set_enabled (user_id != account.id);
+    ((SimpleAction)actions.lookup_action ("toggle-muted")).set_enabled (user_id != account.id);
+
     uint fr = yield UserUtils.load_friendship (account, this.user_id);
 
     follows_you_label.visible = (fr & FRIENDSHIP_FOLLOWED_BY) > 0;
@@ -613,6 +611,9 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
       user_lists.clear_lists ();
       lists_page_inited = false;
       load_tweets.begin ();
+    } else {
+      /* Still load the friendship since muted/blocked/etc. may have changed */
+      load_friendship.begin ();
     }
     tweet_list.reset_placeholder_text ();
     followers_list.reset_placeholder_text ();
