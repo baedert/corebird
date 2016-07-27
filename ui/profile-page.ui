@@ -72,6 +72,7 @@
                     <property name="visible">1</property>
                     <property name="orientation">vertical</property>
                     <property name="valign">center</property>
+                    <property name="margin-top">12</property>
                     <child>
                       <object class="GtkLabel" id="name_label">
                         <property name="visible">1</property>
@@ -124,9 +125,8 @@
                         <child>
                           <object class="GtkMenuButton" id="more_button">
                             <property name="visible">1</property>
-                            <property name="can-focus">1</property>
                             <property name="halign">end</property>
-                            <property name="margin-top">6</property>
+                            <property name="margin-top">14</property>
                             <property name="menu-model">more_menu</property>
                           </object>
                         </child>
@@ -137,7 +137,7 @@
                             <property name="halign">end</property>
                             <property name="valign">fill</property>
                             <property name="margin-end">14</property>
-                            <property name="margin-top">6</property>
+                            <property name="margin-top">14</property>
                             <signal name="clicked" handler="follow_button_clicked_cb" swapped="no"/>
                           </object>
                           <packing>
