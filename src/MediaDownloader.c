@@ -76,7 +76,7 @@ load_animation (GInputStream *input_stream,
       g_warning ("Couldn't load pixbuf: %s (%s)", error->message, media->url);
       mark_invalid (media);
       g_error_free (error);
-      goto out;
+      return;
     }
   frame = gdk_pixbuf_animation_get_static_image (animation);
 
