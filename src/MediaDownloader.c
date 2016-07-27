@@ -73,7 +73,7 @@ load_animation (GInputStream *input_stream,
   animation = gdk_pixbuf_animation_new_from_stream (input_stream, NULL, &error);
   if (error)
     {
-      g_warning ("Couldn't load pixbuf: %s", error->message);
+      g_warning ("Couldn't load pixbuf: %s (%s)", error->message, media->url);
       mark_invalid (media);
       g_error_free (error);
       goto out;
