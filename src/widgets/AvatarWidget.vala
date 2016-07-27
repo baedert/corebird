@@ -132,7 +132,7 @@ class AvatarWidget : Gtk.Widget {
     int height = this.get_allocated_height ();
 
     if (this._surface == null) {
-      return false;
+      return Gdk.EVENT_PROPAGATE;
     }
 
     double surface_scale;
