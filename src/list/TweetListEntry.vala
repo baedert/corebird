@@ -290,6 +290,11 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
           message ("Retweet author id: %s", tweet.retweeted_tweet.author.id.to_string ());
           message ("Retweet author screen_name: %s", tweet.retweeted_tweet.author.screen_name);
         }
+        if (tweet.has_inline_media ()) {
+          foreach (Cb.Media m in tweet.get_medias ()) {
+            message ("Media: %p", m);
+          }
+        }
         return Gdk.EVENT_STOP;
     }
 #endif
