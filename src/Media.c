@@ -132,7 +132,8 @@ cb_media_loading_finished (CbMedia *media)
 CbMediaType
 cb_media_type_from_url (const char *url)
 {
-  if (g_str_has_prefix (url, "https://vine.co/v/"))
+  if (g_str_has_prefix (url, "https://vine.co/v/") ||
+      g_str_has_prefix (url, "http://vine.co/v/"))
     return CB_MEDIA_TYPE_VINE;
 
   if (g_str_has_suffix (url, "/photo/1"))
