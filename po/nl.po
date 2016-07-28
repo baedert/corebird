@@ -4,8 +4,7 @@
 #
 # Translators:
 # Geert Wirken <geert@gwirken.nl>, 2014
-# Heimen Stoffels <vistausss@outlook.com>, 2014-2015
-# Heimen Stoffels <vistausss@outlook.com>, 2015-2016
+# Heimen Stoffels <vistausss@outlook.com>, 2014-2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
