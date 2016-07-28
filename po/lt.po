@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: mail@baedert.org\n"
-"POT-Creation-Date: 2016-07-28 08:19+0200\n"
+"POT-Creation-Date: 2016-07-28 16:40+0200\n"
 "PO-Revision-Date: 2016-02-29 12:00+0000\n"
 "Last-Translator: Moo\n"
 "Language-Team: Lithuanian (http://www.transifex.com/corebird/corebird/"
@@ -734,6 +734,7 @@ msgid "Corebird"
 msgstr "Apie Corebird"
 
 #: data/org.baedert.corebird.appdata.xml.in:6
+#: data/org.baedert.corebird.desktop.in:4
 msgid "Twitter Client"
 msgstr "Twitter klientas"
 
@@ -762,6 +763,10 @@ msgstr ""
 #, fuzzy
 msgid "corebird"
 msgstr "Apie Corebird"
+
+#: data/org.baedert.corebird.desktop.in:11
+msgid "Use Twitter from within a normal desktop application"
+msgstr "Naudokitės Twitter normalioje darbalaukio programoje"
 
 #, fuzzy
 #~ msgid "Whether to hide images marked as inappropriate by default or not"
@@ -794,6 +799,3 @@ msgstr "Apie Corebird"
 #~ msgstr ""
 #~ "Paskyros nustatymai, tokie kaip Vardas, Svetainė, Aprašas ir Avataras "
 #~ "gali būti konfigūruojami."
-
-#~ msgid "Use Twitter from within a normal desktop application"
-#~ msgstr "Naudokitės Twitter normalioje darbalaukio programoje"

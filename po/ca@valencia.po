@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: mail@baedert.org\n"
-"POT-Creation-Date: 2016-07-28 08:19+0200\n"
+"POT-Creation-Date: 2016-07-28 16:40+0200\n"
 "PO-Revision-Date: 2016-02-21 09:14+0000\n"
 "Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
 "Language-Team: Catalan (Valencian) (http://www.transifex.com/corebird/"
@@ -726,6 +726,7 @@ msgid "Corebird"
 msgstr "Quant al Corebird"
 
 #: data/org.baedert.corebird.appdata.xml.in:6
+#: data/org.baedert.corebird.desktop.in:4
 msgid "Twitter Client"
 msgstr "Client del Twitter"
 
@@ -753,6 +754,10 @@ msgstr ""
 msgid "corebird"
 msgstr "Quant al Corebird"
 
+#: data/org.baedert.corebird.desktop.in:11
+msgid "Use Twitter from within a normal desktop application"
+msgstr "Feu servir el Twitter des d'una aplicació d'escriptori"
+
 #~ msgid "Open Account"
 #~ msgstr "Obri un compte"
 
@@ -761,6 +766,3 @@ msgstr "Quant al Corebird"
 
 #~ msgid "Maximum media size"
 #~ msgstr "Mida màxima de fitxers multimèdia"
-
-#~ msgid "Use Twitter from within a normal desktop application"
-#~ msgstr "Feu servir el Twitter des d'una aplicació d'escriptori"

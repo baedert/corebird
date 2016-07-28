@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: corebird 1.2\n"
 "Report-Msgid-Bugs-To: mail@baedert.org\n"
-"POT-Creation-Date: 2016-07-28 08:19+0200\n"
+"POT-Creation-Date: 2016-07-28 16:40+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -720,6 +720,7 @@ msgid "Corebird"
 msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:6
+#: data/org.baedert.corebird.desktop.in:4
 msgid "Twitter Client"
 msgstr ""
 
@@ -741,4 +742,8 @@ msgstr ""
 
 #: data/org.baedert.corebird.desktop.in:8
 msgid "corebird"
+msgstr ""
+
+#: data/org.baedert.corebird.desktop.in:11
+msgid "Use Twitter from within a normal desktop application"
 msgstr ""

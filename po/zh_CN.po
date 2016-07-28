@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: mail@baedert.org\n"
-"POT-Creation-Date: 2016-07-28 08:19+0200\n"
+"POT-Creation-Date: 2016-07-28 16:40+0200\n"
 "PO-Revision-Date: 2016-02-21 09:14+0000\n"
 "Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/corebird/corebird/"
@@ -723,6 +723,7 @@ msgid "Corebird"
 msgstr "关于 Corebird"
 
 #: data/org.baedert.corebird.appdata.xml.in:6
+#: data/org.baedert.corebird.desktop.in:4
 msgid "Twitter Client"
 msgstr "Twitter 客户端"
 
@@ -749,6 +750,10 @@ msgstr ""
 msgid "corebird"
 msgstr "关于 Corebird"
 
+#: data/org.baedert.corebird.desktop.in:11
+msgid "Use Twitter from within a normal desktop application"
+msgstr "为桌面系统带来简约的 Twitter 体验"
+
 #~ msgid "Open Account"
 #~ msgstr "帐号"
 
@@ -771,6 +776,3 @@ msgstr "关于 Corebird"
 #~ "Account settings like Name, Website, Description and Avatar can be "
 #~ "configured."
 #~ msgstr "账户设置，如更改名称、主页、介绍和头像等。"
-
-#~ msgid "Use Twitter from within a normal desktop application"
-#~ msgstr "为桌面系统带来简约的 Twitter 体验"

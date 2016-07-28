@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: mail@baedert.org\n"
-"POT-Creation-Date: 2016-07-28 08:19+0200\n"
+"POT-Creation-Date: 2016-07-28 16:40+0200\n"
 "PO-Revision-Date: 2016-02-25 17:47+0000\n"
 "Last-Translator: Heiko Adams <HeikoAdams@users.noreply.github.com>\n"
 "Language-Team: German (http://www.transifex.com/corebird/corebird/language/"
@@ -739,6 +739,7 @@ msgid "Corebird"
 msgstr "Über Corebird"
 
 #: data/org.baedert.corebird.appdata.xml.in:6
+#: data/org.baedert.corebird.desktop.in:4
 msgid "Twitter Client"
 msgstr "Twitter Client"
 
@@ -766,6 +767,10 @@ msgstr ""
 #, fuzzy
 msgid "corebird"
 msgstr "Über Corebird"
+
+#: data/org.baedert.corebird.desktop.in:11
+msgid "Use Twitter from within a normal desktop application"
+msgstr "Nutzen Sie Twitter in einer normalen Desktopanwendung"
 
 #, fuzzy
 #~ msgid "Whether to hide images marked as inappropriate by default or not"
@@ -798,6 +803,3 @@ msgstr "Über Corebird"
 #~ msgstr ""
 #~ "Account-Einstellungen wie der Name, die Webseite, die Beschreibung und "
 #~ "der Avatar können konfiguriert werden."
-
-#~ msgid "Use Twitter from within a normal desktop application"
-#~ msgstr "Nutzen Sie Twitter in einer normalen Desktopanwendung"
