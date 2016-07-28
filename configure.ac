@@ -120,7 +120,6 @@ AC_SUBST([GETTEXT_PACKAGE], ["$GETTEXT_PACKAGE"])
 AC_CONFIG_FILES([
 Makefile
 src/Makefile
-ui/Makefile
 data/Makefile
 data/256x256/Makefile
 data/128x128/Makefile
