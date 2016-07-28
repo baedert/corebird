@@ -131,7 +131,7 @@ corebird.h corebird.vapi: libcorebird_la_vala.stamp
 $(libcorebird_la_VALASOURCES:.vala=.c): libcorebird_la_vala.stamp
 
 
-corebird_SOURCES = Media.c Media.h MediaDownloader.c MediaDownloader.h Types.c Types.h TextTransform.c TextTransform.h CbTweet.h CbTweet.c
+libcorebird_la_SOURCES = Media.c Media.h MediaDownloader.c MediaDownloader.h Types.c Types.h TextTransform.c TextTransform.h CbTweet.h CbTweet.c
 
 libcorebird_la_vala.stamp: $(libcorebird_la_VALASOURCES) Makefile
 	@$(VALAC) \
@@ -185,4 +185,5 @@ CLEANFILES = \
 EXTRA_DIST = \
 	$(libcorebird_la_VALASOURCES) \
 	$(corebird_VALASOURCES) \
+	$(corebird_SOURCES) \
 	$(resource_deps)

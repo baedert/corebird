@@ -51,12 +51,6 @@ tests_VALASOURCES = \
 	friends.vala \
 	highlighting.vala
 
-C_SOURCES = $(top_builddir)/src/Types.c \
-	$(top_builddir)/src/Media.c \
-	$(top_builddir)/src/MediaDownloader.c \
-	$(top_builddir)/src/TextTransform.c \
-	$(top_builddir)/src/CbTweet.c
-
 $(tests_VALASOURCES:.vala=.c): tests_vala.stamp
 
 tests_vala.stamp: $(tests_VALASOURCES) $(top_builddir)/src/libcorebird.la $(top_builddir)/src/corebird.vapi Makefile
@@ -70,40 +64,40 @@ tests_vala.stamp: $(tests_VALASOURCES) $(top_builddir)/src/libcorebird.la $(top_
 	touch $@
 
 
-nodist_tweetmodel_SOURCES = tweetmodel.c $(C_SOURCES)
+nodist_tweetmodel_SOURCES = tweetmodel.c
 tweetmodel_LDADD = $(top_builddir)/src/libcorebird.la
 
-nodist_tweetlength_SOURCES = tweetlength.c $(C_SOURCES)
+nodist_tweetlength_SOURCES = tweetlength.c
 tweetlength_LDADD = $(top_builddir)/src/libcorebird.la
 
-nodist_utils_SOURCES = utils.c $(C_SOURCES)
+nodist_utils_SOURCES = utils.c
 utils_LDADD = $(top_builddir)/src/libcorebird.la
 
-nodist_bundlehistory_SOURCES = bundlehistory.c $(C_SOURCES)
+nodist_bundlehistory_SOURCES = bundlehistory.c
 bundlehistory_LDADD = $(top_builddir)/src/libcorebird.la
 
-nodist_usercounter_SOURCES = usercounter.c ../src/corebird-resources.c $(C_SOURCES)
+nodist_usercounter_SOURCES = usercounter.c ../src/corebird-resources.c
 usercounter_LDADD = $(top_builddir)/src/libcorebird.la
 
-nodist_inlinemediadownloader_SOURCES = inlinemediadownloader.c $(C_SOURCES)
+nodist_inlinemediadownloader_SOURCES = inlinemediadownloader.c
 inlinemediadownloader_LDADD = $(top_builddir)/src/libcorebird.la
 
-nodist_tweetparsing_SOURCES = tweetparsing.c ../src/corebird-resources.c $(C_SOURCES)
+nodist_tweetparsing_SOURCES = tweetparsing.c ../src/corebird-resources.c
 tweetparsing_LDADD = $(top_builddir)/src/libcorebird.la
 
-nodist_filters_SOURCES = filters.c ../src/corebird-resources.c $(C_SOURCES)
+nodist_filters_SOURCES = filters.c ../src/corebird-resources.c
 filters_LDADD = $(top_builddir)/src/libcorebird.la
 
-nodist_highlighting_SOURCES = highlighting.c $(C_SOURCES)
+nodist_highlighting_SOURCES = highlighting.c
 highlighting_LDADD = $(top_builddir)/src/libcorebird.la
 
 nodist_friends_SOURCES = friends.c $(C_SOURCES)
 friends_LDADD = $(top_builddir)/src/libcorebird.la
 
-nodist_texttransform_SOURCES = texttransform.c $(C_SOURCES)
+nodist_texttransform_SOURCES = texttransform.c
 texttransform_LDADD = $(top_builddir)/src/libcorebird.la
 
-nodist_avatardownload_SOURCES = avatardownload.c ../src/corebird-resources.c $(C_SOURCES)
+nodist_avatardownload_SOURCES = avatardownload.c ../src/corebird-resources.c
 avatardownload_LDADD = $(top_builddir)/src/libcorebird.la
 
 CLEANFILES = tests_vala.stamp
