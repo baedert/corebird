@@ -24,32 +24,32 @@ src/widgets/AvatarBannerWidget.vala
 src/window/ImageCropDialog.vala
 src/window/SettingsDialog.vala
 src/DefaultTimeline.vala
-[type: gettext/glade]ui/settings-dialog.ui
-[type: gettext/glade]ui/menus.ui
-[type: gettext/glade]ui/user-lists-widget.ui
-[type: gettext/glade]ui/about-dialog.ui
-[type: gettext/glade]ui/dm-page.ui
-[type: gettext/glade]ui/load-more-entry.ui
-[type: gettext/glade]ui/tweet-list-entry.ui
-[type: gettext/glade]ui/user-list-entry.ui
-[type: gettext/glade]ui/new-list-entry.ui
-[type: gettext/glade]ui/search-page.ui
-[type: gettext/glade]ui/compose-window.ui
-[type: gettext/glade]ui/profile-page.ui
-[type: gettext/glade]ui/main-window.ui
-[type: gettext/glade]ui/account-create-widget.ui
-[type: gettext/glade]ui/tweet-info-page.ui
-[type: gettext/glade]ui/list-list-entry.ui
-[type: gettext/glade]ui/start-conversation-entry.ui
-[type: gettext/glade]ui/list-statuses-page.ui
-[type: gettext/glade]ui/filter-list-entry.ui
-[type: gettext/glade]ui/filter-page.ui
-[type: gettext/glade]ui/modify-filter-dialog.ui
-[type: gettext/glade]ui/user-filter-entry.ui
-[type: gettext/glade]ui/account-dialog.ui
-[type: gettext/glade]ui/image-crop-dialog.ui
-[type: gettext/glade]ui/modify-snippet-dialog.ui
-[type: gettext/glade]ui/shortcuts-window.ui
+ui/settings-dialog.ui
+ui/menus.ui
+ui/user-lists-widget.ui
+ui/about-dialog.ui
+ui/dm-page.ui
+ui/load-more-entry.ui
+ui/tweet-list-entry.ui
+ui/user-list-entry.ui
+ui/new-list-entry.ui
+ui/search-page.ui
+ui/compose-window.ui
+ui/profile-page.ui
+ui/main-window.ui
+ui/account-create-widget.ui
+ui/tweet-info-page.ui
+ui/list-list-entry.ui
+ui/start-conversation-entry.ui
+ui/list-statuses-page.ui
+ui/filter-list-entry.ui
+ui/filter-page.ui
+ui/modify-filter-dialog.ui
+ui/user-filter-entry.ui
+ui/account-dialog.ui
+ui/image-crop-dialog.ui
+ui/modify-snippet-dialog.ui
+ui/shortcuts-window.ui
 data/org.baedert.corebird.appdata.xml.in
 data/org.baedert.corebird.gschema.xml.in
 data/org.baedert.corebird.desktop.in.in

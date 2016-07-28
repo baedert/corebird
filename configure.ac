@@ -112,8 +112,9 @@ fi
 # Gettext stuff
 GETTEXT_PACKAGE=AC_PACKAGE_NAME
 AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE], ["$GETTEXT_PACKAGE"], [Gettext Package])
-AC_SUBST(GETTEXT_PACKAGE)
-IT_PROG_INTLTOOL([0.40])
+AM_GNU_GETTEXT([external])
+AM_GNU_GETTEXT_VERSION([0.19.8])
+AC_SUBST([GETTEXT_PACKAGE], ["$GETTEXT_PACKAGE"])
 
 
 AC_CONFIG_FILES([
@@ -121,7 +122,6 @@ Makefile
 src/Makefile
 ui/Makefile
 data/Makefile
-data/org.baedert.corebird.desktop.in
 data/256x256/Makefile
 data/128x128/Makefile
 data/96x96/Makefile

@@ -12,7 +12,13 @@ src/util/*.c
 .dirstamp
 *.stamp
 *.stamp-t
+*.template
+*.sed
+*.sin
+*.header
+po/Rules-quot
 .deps
+ABOUT-NLS
 Makefile.in
 m4/
 src/sql/*.c

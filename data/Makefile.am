@@ -4,17 +4,30 @@ SUBDIRS = 256x256 128x128 96x96 64x64 48x48 32x32 24x24 16x16
 desktopdir = $(datarootdir)/applications
 desktop_in_files = org.baedert.corebird.desktop.in
 desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
-@INTLTOOL_DESKTOP_RULE@
 
 appdatadir = $(datarootdir)/appdata
 appdata_in_files = org.baedert.corebird.appdata.xml.in
 appdata_DATA = $(appdata_in_files:.xml.in=.xml)
-@INTLTOOL_XML_RULE@
+
+%.desktop: %.desktop.in
+	msgfmt --desktop -d $(top_srcdir)/po \
+	--template $< -o $@
+
+%.appdata.xml: %.appdata.xml.in
+	msgfmt --xml -d $(top_srcdir)/po \
+	--template $< -o $@
+
+# Actually, just ignore gschema translations...
+org.baedert.corebird.gschema.xml: org.baedert.corebird.gschema.xml.in
+	cp $^ $@
+#%.gschema.xml: %.gschema.xml.in
+#	msgfmt --xml -d $(top_srcdir)/po \
+#	--template $< -o $@
+
 
 man_MANS = corebird.1
 
 gsettings_SCHEMAS = org.baedert.corebird.gschema.xml
-@INTLTOOL_XML_NOMERGE_RULE@
 @GSETTINGS_RULES@
 
 gschemas.compiled: Makefile $(gsettings_SCHEMAS:.xml=.valid)
