@@ -43,7 +43,7 @@ This is the readme for the current *development version*. If you're looking for 
  - `json-glib-1.0`
  - `sqlite3`
  - `libsoup-2.4`
- - `intltool >= 0.40`
+ - `gettext >= 0.19.7`
  - `vala >= 0.28` (makedep)
  - `automake >= 1.14` (makedep)
  - `gst-plugins-base-1.0` (for playbin, disable via --disable-video)
