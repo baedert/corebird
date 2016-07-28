@@ -3,8 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
-# colindemian <colindemian@outlook.com>, 2016
-# colindemian <colindemian@outlook.com>, 2015
+# colindemian <colindemian@outlook.com>, 2015-2016
 # Dianjin Wang <1132321739qq@gmail.com>, 2014
 # hmingming1222 <hmingming1222@gmail.com>, 2015
 # Tong Hui <tonghuix@gmail.com>, 2014

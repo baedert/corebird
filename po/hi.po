@@ -3,8 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Guillermo Peralta <onezetty@gmail.com>, 2015
-# Jose Gregorio Jimenez Sanchez <josegjimenez@gmail.com>, 2014
+# vm, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
@@ -12,11 +11,11 @@ msgstr ""
 "POT-Creation-Date: 2016-02-25 13:13+0100\n"
 "PO-Revision-Date: 2016-02-21 09:14+0000\n"
 "Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
-"Language-Team: Spanish (Latin America) (http://www.transifex.com/corebird/corebird/language/es_419/)\n"
+"Language-Team: Hindi (http://www.transifex.com/corebird/corebird/language/hi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: es_419\n"
+"Language: hi\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../src/window/ComposeTweetWindow.vala:120
@@ -25,7 +24,7 @@ msgstr ""
 
 #: ../src/window/UserListDialog.vala:40
 msgid "Add to or Remove User From List"
-msgstr "Agregar o Quitar usuario desde la lista"
+msgstr "उपयोगकर्ता को सूची से जोड़ें या निकालें"
 
 #: ../src/window/UserListDialog.vala:47 ../ui/compose-window.ui.h:2
 #: ../ui/list-list-entry.ui.h:1 ../ui/list-statuses-page.ui.h:8
@@ -33,118 +32,118 @@ msgstr "Agregar o Quitar usuario desde la lista"
 #: ../ui/user-filter-entry.ui.h:1 ../ui/account-dialog.ui.h:2
 #: ../ui/image-crop-dialog.ui.h:1 ../ui/modify-snippet-dialog.ui.h:2
 msgid "Cancel"
-msgstr "Cancelar"
+msgstr "रद्द करें"
 
 #: ../src/window/UserListDialog.vala:48 ../src/window/ImageCropDialog.vala:98
 #: ../ui/list-statuses-page.ui.h:6 ../ui/modify-filter-dialog.ui.h:3
 #: ../ui/account-dialog.ui.h:3 ../ui/modify-snippet-dialog.ui.h:3
 msgid "Save"
-msgstr "Guardar"
+msgstr "सहेजें"
 
 #: ../src/window/UserListDialog.vala:68
 msgid "You have no lists."
-msgstr "Tu no tienes listas."
+msgstr "आपके पास कोई सूची नही है"
 
 #: ../src/window/ModifyFilterDialog.vala:45
 msgid "Modify Filter"
-msgstr "Modificar Filtro"
+msgstr "फ़िल्टर करे संशोधित करे"
 
 #: ../src/window/ModifyFilterDialog.vala:76
 msgid "Matches"
-msgstr "Coincidencias"
+msgstr ""
 
 #: ../src/window/ModifyFilterDialog.vala:78
 msgid "Doesn't match"
-msgstr "No concuerda"
+msgstr ""
 
 #: ../src/widgets/TweetListBox.vala:100
 msgid "Loading..."
-msgstr ""
+msgstr "लोड हो रहा है"
 
 #: ../src/widgets/TweetListBox.vala:103 ../src/widgets/TweetListBox.vala:151
 msgid "No entries found"
-msgstr "No se encontraron entradas"
+msgstr "कोई अभिलेख नही मिला"
 
 #: ../src/widgets/TweetListBox.vala:111
 msgid "Retry"
-msgstr "Reintentar"
+msgstr "पुन: प्रयास करें"
 
 #: ../src/widgets/AccountCreateWidget.vala:38
 msgid "Don't have an account yet?"
-msgstr "¿No tienes una cuenta todavía?"
+msgstr "अब तक कोई खाता नहीं है?"
 
 #: ../src/widgets/AccountCreateWidget.vala:38
 msgid "Create one"
-msgstr "Crear una"
+msgstr "अभि बनाये"
 
 #: ../src/widgets/AccountCreateWidget.vala:53
 msgid ""
 "Unauthorized. Most of the time, this means that there's something wrong with"
 " the Twitter servers and you should try again later"
-msgstr "No autorizado. La mayoría de las veces, esto significa que hay algo mal con los servidores de Twitter y usted debe intentarlo más tarde"
+msgstr "अनधिकृत। अधिकांश इसका है मतलब ट्विटर सर्वर के साथ कुछ गड़बड़ है और को आप बाद में फिर से कोशिश करनी चाहिए"
 
 #: ../src/widgets/AccountCreateWidget.vala:65
 #, c-format
 msgid "Could not open %s"
-msgstr ""
+msgstr "%s नहीं खोल पाये"
 
 #. We just assume that it was the wrong code
 #: ../src/widgets/AccountCreateWidget.vala:87
 msgid "Wrong PIN"
-msgstr "PIN Incorrecto"
+msgstr "गलत पिन"
 
 #: ../src/widgets/AccountCreateWidget.vala:114
 msgid "Account already in use"
-msgstr "La cuenta ya está en uso"
+msgstr "यह खता पहले से उपयोग में है"
 
 #: ../src/widgets/PixbufButton.vala:52
 msgid "Copy link"
-msgstr "Copiar enlace"
+msgstr "लिंक कॉपी करे"
 
 #: ../src/widgets/FollowButton.vala:45
 msgid "Follow"
-msgstr ""
+msgstr "फॉलो करे"
 
 #: ../src/widgets/FollowButton.vala:46
 msgid "Unfollow"
-msgstr ""
+msgstr "अनफॉलो करे"
 
 #: ../src/HomeTimeline.vala:109
 #, c-format
 msgid "%s retweeted %s"
-msgstr "%s retweeteados %s"
+msgstr "%s ने यह रीट्वीट किया %s"
 
 #: ../src/HomeTimeline.vala:112
 #, c-format
 msgid "%s tweeted"
-msgstr "%s tweeteado"
+msgstr "%s ने ट्वीट किया"
 
 #: ../src/HomeTimeline.vala:118
 #, c-format
 msgid "%d new Tweet!"
 msgid_plural "%d new Tweets!"
-msgstr[0] "%d nuevos Tweets!"
-msgstr[1] "%d nuevos Tweets!"
+msgstr[0] "%d नया ट्वीट"
+msgstr[1] "%d नए ट्वीट!"
 
 #: ../src/HomeTimeline.vala:169
 msgid "Home"
-msgstr "Inicio"
+msgstr "होम"
 
 #: ../src/DMThreadsPage.vala:205
 #, c-format
 msgid "%d new Message from %s"
 msgid_plural "%d new Messages from %s"
-msgstr[0] "%d nuevos Mensajes de %s"
-msgstr[1] "%d nuevos Mensajes de %s"
+msgstr[0] ""
+msgstr[1] ""
 
 #: ../src/DMThreadsPage.vala:211
 #, c-format
 msgid "New direct message from %s"
-msgstr ""
+msgstr "%s द्वारा प्रत्यक्ष संदेश"
 
 #: ../src/DMThreadsPage.vala:229 ../src/DMThreadsPage.vala:243
 msgid "Direct Messages"
-msgstr ""
+msgstr "प्रत्यक्ष संदेश"
 
 #: ../src/list/DMThreadEntry.vala:77
 #, c-format
@@ -156,7 +155,7 @@ msgstr[1] ""
 #: ../src/ListsPage.vala:123 ../src/ListsPage.vala:128
 #: ../ui/profile-page.ui.h:9
 msgid "Lists"
-msgstr ""
+msgstr "सूचियाँ"
 
 #: ../src/ProfilePage.vala:290
 msgid "Protected profile"
@@ -182,7 +181,7 @@ msgstr ""
 
 #: ../src/TweetInfoPage.vala:464
 msgid "Open in Browser"
-msgstr "Abrir en el Navegador"
+msgstr ""
 
 #: ../src/TweetInfoPage.vala:464
 msgid "Source"
@@ -230,7 +229,7 @@ msgstr ""
 
 #: ../src/ListStatusesPage.vala:359
 msgid "List"
-msgstr ""
+msgstr "सूचि"
 
 #: ../src/widgets/AvatarBannerWidget.vala:160
 msgid "Select banner"
@@ -270,7 +269,7 @@ msgstr ""
 
 #: ../ui/settings-dialog.ui.h:1 ../ui/menu.ui.h:1
 msgid "Settings"
-msgstr ""
+msgstr "सेटिंग्स"
 
 #: ../ui/settings-dialog.ui.h:2
 msgid "Maximum media size"
@@ -433,7 +432,7 @@ msgstr ""
 
 #: ../ui/user-list-entry.ui.h:1
 msgid "Show settings of this account"
-msgstr ""
+msgstr "इस खाते की सेटिंग्स दिखाए"
 
 #: ../ui/user-list-entry.ui.h:2
 msgid "Open in new window"
@@ -441,7 +440,7 @@ msgstr ""
 
 #: ../ui/new-list-entry.ui.h:1
 msgid "Create New List"
-msgstr ""
+msgstr "नयी सूचि बनाये "
 
 #: ../ui/new-list-entry.ui.h:2
 msgid "Name:"
@@ -457,7 +456,7 @@ msgstr ""
 
 #: ../ui/compose-window.ui.h:1
 msgid "Compose Tweet"
-msgstr "Escribir Tweet"
+msgstr ""
 
 #: ../ui/compose-window.ui.h:4
 msgid "Add Image"
@@ -485,7 +484,7 @@ msgstr ""
 
 #: ../ui/profile-page.ui.h:7
 msgid "Followers"
-msgstr ""
+msgstr "फ़ॉलोअर्स"
 
 #: ../ui/profile-page.ui.h:8
 msgid "Following"
@@ -597,7 +596,7 @@ msgstr ""
 
 #: ../ui/account-dialog.ui.h:1
 msgid "Account Settings"
-msgstr ""
+msgstr "खाते की सेटिंग्स"
 
 #: ../ui/account-dialog.ui.h:4
 msgid "Name"

@@ -3,11 +3,9 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
-# Guillaume Hayot, 2016
-# Guillaume Hayot, 2015
+# Guillaume Hayot, 2015-2016
 # newincpp <bruder_r@epitech.eu>, 2014
 # RoPP <rodolphe+transifex@damsy.net>, 2015
-# Seboss666 <sebastien_verdet@seboss666.info>, 2015
 # Seboss666 <sebastien_verdet@seboss666.info>, 2015
 msgid ""
 msgstr ""

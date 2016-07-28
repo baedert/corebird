@@ -4,9 +4,6 @@
 #
 # Translators:
 # Med Touhami MAHDI <dragnucs@legtux.org>, 2014
-# Med Touhami MAHDI <dragnucs@legtux.org>, 2014
-# Med Touhami MAHDI <dragnucs@legtux.org>, 2014
-# Med Touhami MAHDI <dragnucs@legtux.org>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
