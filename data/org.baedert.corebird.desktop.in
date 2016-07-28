@@ -1,10 +1,10 @@
 [Desktop Entry]
 Name=Corebird
-_GenericName=Twitter Client
+GenericName=Twitter Client
 Keywords=twitter;
 Exec=corebird
 Type=Application
 Icon=corebird
 Categories=Network;GTK;
 DBusActivatable=true
-_Comment=Use Twitter from within a normal desktop application
+Comment=Use Twitter from within a normal desktop application
