@@ -97,10 +97,12 @@ friends_LDADD = $(top_builddir)/src/libcorebird.la
 nodist_texttransform_SOURCES = texttransform.c
 texttransform_LDADD = $(top_builddir)/src/libcorebird.la
 
-nodist_avatardownload_SOURCES = avatardownload.c ../src/corebird-resources.c
+nodist_avatardownload_SOURCES = avatardownload.c $(top_srcdir)/src/corebird-resources.c
 avatardownload_LDADD = $(top_builddir)/src/libcorebird.la
 
-CLEANFILES = tests_vala.stamp
+CLEANFILES = \
+	tests_vala.stamp \
+	$(tests_VALASOURCES:.vala=.c)
 
 EXTRA_DIST = \
 	$(tests_VALASOURCES)
