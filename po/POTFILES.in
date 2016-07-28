@@ -51,5 +51,4 @@ ui/image-crop-dialog.ui
 ui/modify-snippet-dialog.ui
 ui/shortcuts-window.ui
 data/org.baedert.corebird.appdata.xml.in
-data/org.baedert.corebird.gschema.xml.in
-data/org.baedert.corebird.desktop.in.in
+data/org.baedert.corebird.desktop.in
