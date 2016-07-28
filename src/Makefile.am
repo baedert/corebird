@@ -177,7 +177,7 @@ corebird-resources.c: $(top_srcdir)/corebird.gresource.xml $(resource_deps) Make
 CLEANFILES = \
 	libcorebird_la_vala.stamp \
 	corebird_vala.stamp \
-	$(nodist_libcorebird_la_SOURCES) \
+	$(libcorebird_la_VALASOURCES:.vala=.c) \
 	$(nodist_corebird_SOURCES) \
 	corebird.vapi \
 	corebird.h
