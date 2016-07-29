@@ -13,7 +13,7 @@ cb_text_transform_tweet (const CbMiniTweet *tweet,
                                  tweet->entities,
                                  tweet->n_entities,
                                  flags,
-                                 0,
+                                 tweet->n_medias,
                                  quote_id);
 }
 
