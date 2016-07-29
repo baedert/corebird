@@ -150,7 +150,7 @@
                       <object class="GtkLabel" id="follows_you_label">
                         <property name="no-show-all">1</property>
                         <property name="halign">end</property>
-                        <property name="margin-end">6</property>
+                        <property name="margin-end">14</property>
                         <property name="margin-top">6</property>
                         <property name="label" translatable="yes">Follows you</property>
                         <property name="hexpand">1</property>
