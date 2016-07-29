@@ -9,8 +9,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
-"Report-Msgid-Bugs-To: mail@baedert.org\n"
-"POT-Creation-Date: 2016-07-28 16:40+0200\n"
+"Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
+"POT-Creation-Date: 2016-07-29 13:43+0200\n"
 "PO-Revision-Date: 2016-02-21 09:14+0000\n"
 "Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
 "Language-Team: Catalan (http://www.transifex.com/corebird/corebird/language/"
@@ -21,55 +21,208 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/window/ComposeTweetWindow.vala:125
-msgid "Quote tweet"
+#: data/org.baedert.corebird.appdata.xml.in:5
+#: data/org.baedert.corebird.desktop.in:3
+#, fuzzy
+msgid "Corebird"
+msgstr "Quant al Corebird"
+
+#: data/org.baedert.corebird.appdata.xml.in:6
+#: data/org.baedert.corebird.desktop.in:4
+msgid "Twitter Client"
+msgstr "Client del Twitter"
+
+#: data/org.baedert.corebird.appdata.xml.in:10
+msgid ""
+"Corebird is a native GTK+ twitter client that provides vital features such "
+"as Direct Messages (DMs), tweet notifications, conversation views."
+msgstr ""
+"El Corebird és un client del twitter natiu GTK+ que proveeix "
+"característiques bàsiques com missatges directes, notificacions de piulades "
+"i visualització de converses. "
+
+#: data/org.baedert.corebird.appdata.xml.in:13
+msgid ""
+"Additional features include local viewing of videos, multiple inline images, "
+"Lists, Filters, multiple accounts, etc."
 msgstr ""
 
-#: src/window/UserListDialog.vala:40
-msgid "Add to or Remove User From List"
-msgstr "Afegeix o elimina un usuari de la llista"
+#: data/org.baedert.corebird.appdata.xml.in:21
+msgid "Generic timeline view when using Corebird"
+msgstr ""
 
-#: src/window/UserListDialog.vala:47 ui/compose-window.ui:41
-#: ui/list-list-entry.ui:98 ui/list-statuses-page.ui:173
-#: ui/filter-list-entry.ui:80 ui/modify-filter-dialog.ui:13
-#: ui/user-filter-entry.ui:114 ui/account-dialog.ui:21 ui/account-dialog.ui:233
-#: ui/image-crop-dialog.ui:46 ui/modify-snippet-dialog.ui:14
-msgid "Cancel"
-msgstr "Cancel·la"
+#: data/org.baedert.corebird.appdata.xml.in:25
+#, fuzzy
+msgid "Typical Twitter profile"
+msgstr "Típic perfil de twitter"
 
-#: src/window/UserListDialog.vala:48 src/window/ImageCropDialog.vala:98
-#: ui/list-statuses-page.ui:129 ui/modify-filter-dialog.ui:20
-#: ui/account-dialog.ui:28 ui/modify-snippet-dialog.ui:21
-msgid "Save"
-msgstr "Desa"
+#: data/org.baedert.corebird.appdata.xml.in:29
+#, fuzzy
+msgid "Account settings can be configured"
+msgstr "Paràmetres del compte"
 
-#: src/window/UserListDialog.vala:69
-msgid "You have no lists."
-msgstr "No tens cap llista"
+#: data/org.baedert.corebird.desktop.in:5
+msgid "Use Twitter from within a normal desktop application"
+msgstr "Feu servir el Twitter des d'una aplicació d'escriptori"
 
-#: src/window/ModifyFilterDialog.vala:45
-msgid "Modify Filter"
+#: data/org.baedert.corebird.desktop.in:7
+msgid "twitter;"
+msgstr ""
+
+#: data/org.baedert.corebird.desktop.in:11
+#, fuzzy
+msgid "corebird"
+msgstr "Quant al Corebird"
+
+#: src/DefaultTimeline.vala:358
+#, fuzzy
+msgid "Could not load tweets"
+msgstr "No s'ha pogut obrir %s"
+
+#: src/DMPage.vala:329
+msgid "Direct Conversation"
+msgstr "Conversa directa"
+
+#: src/DMThreadsPage.vala:207
+#, c-format
+msgid "%d new Message from %s"
+msgid_plural "%d new Messages from %s"
+msgstr[0] "%d nou missatge de %s"
+msgstr[1] "%d nous missatges de %s"
+
+#: src/DMThreadsPage.vala:213 src/UserEventReceiver.vala:94
+#, c-format
+msgid "New direct message from %s"
+msgstr "Hi ha un missatge directe nou de %s"
+
+#: src/DMThreadsPage.vala:223 src/DMThreadsPage.vala:237
+msgid "Direct Messages"
+msgstr "Missatges directes"
+
+#: src/FavoritesTimeline.vala:67 src/FavoritesTimeline.vala:71
+#: src/TweetInfoPage.vala:482
+msgid "Favorites"
+msgstr "Preferits"
+
+#: src/FilterPage.vala:47
+#, fuzzy
+msgid "Add new Filter"
+msgstr "Afegeix un filtre nou"
+
+#: src/FilterPage.vala:317 src/FilterPage.vala:323
+#, fuzzy
+msgid "Filters"
 msgstr "Modifica el filtre"
 
-#: src/window/ModifyFilterDialog.vala:80
-msgid "Matches"
-msgstr "Coincideix"
+#: src/HomeTimeline.vala:122
+#, c-format
+msgid "%s retweeted %s"
+msgstr "%s ha repiulat %s"
 
-#: src/window/ModifyFilterDialog.vala:82
-msgid "Doesn't match"
-msgstr "No conincideix"
+#: src/HomeTimeline.vala:125
+#, c-format
+msgid "%s tweeted"
+msgstr "%s ha repiulat"
 
-#: src/widgets/TweetListBox.vala:100
-msgid "Loading..."
+#: src/HomeTimeline.vala:134
+#, c-format
+msgid "%d new Tweet!"
+msgid_plural "%d new Tweets!"
+msgstr[0] "%d nou tweet!"
+msgstr[1] "%d nous tweets!"
+
+#: src/HomeTimeline.vala:169
+msgid "Home"
+msgstr "Inici"
+
+#: src/list/DMThreadEntry.vala:71
+#, c-format
+msgid "(%d unread)"
+msgid_plural "(%d unread)"
+msgstr[0] "(%d missatge no llegit)"
+msgstr[1] "(%d missatges no llegits)"
+
+#: src/ListsPage.vala:120 src/ListsPage.vala:125 ui/profile-page.ui:350
+msgid "Lists"
+msgstr "Llistes"
+
+#: src/ListStatusesPage.vala:367
+msgid "List"
+msgstr "Llista"
+
+#: src/list/TweetListEntry.vala:411
+#, fuzzy, c-format
+msgid "Block %s"
+msgstr "Blocat"
+
+#: src/list/TweetListEntry.vala:546
+msgid "This tweet contains images marked as inappropriate"
 msgstr ""
 
-#: src/widgets/TweetListBox.vala:103 src/widgets/TweetListBox.vala:151
-msgid "No entries found"
-msgstr "No s'ha trobat cap resultat"
+#: src/list/TweetListEntry.vala:553
+msgid "Show anyway"
+msgstr ""
 
-#: src/widgets/TweetListBox.vala:111
-msgid "Retry"
-msgstr "Prova de nou"
+#: src/MainWindow.vala:75
+#, fuzzy
+msgid "Add new Account"
+msgstr "Compte nou"
+
+#: src/MentionsTimeline.vala:91 src/UserEventReceiver.vala:111
+#, fuzzy, c-format
+msgid "%s mentioned %s"
+msgstr "%s ha repiulat %s"
+
+#: src/MentionsTimeline.vala:99 src/MentionsTimeline.vala:103
+msgid "Mentions"
+msgstr "Mencions"
+
+#: src/ProfilePage.vala:266
+msgid "Protected profile"
+msgstr "Perfil protegit"
+
+#: src/ProfilePage.vala:319
+#, c-format
+msgid "Tweet to @%s"
+msgstr "Piula a @%s"
+
+#: src/SearchPage.vala:353 src/SearchPage.vala:362 ui/search-page.ui:24
+msgid "Search"
+msgstr "Cerca"
+
+#: src/TweetInfoPage.vala:300
+msgid "Could not show tweet"
+msgstr ""
+
+#: src/TweetInfoPage.vala:481
+msgid "Retweets"
+msgstr "Repiulades"
+
+#: src/TweetInfoPage.vala:490 src/widgets/MediaButton.vala:91
+msgid "Open in Browser"
+msgstr "Obre al navegador"
+
+#: src/TweetInfoPage.vala:490
+msgid "Source"
+msgstr "Origen"
+
+#: src/TweetInfoPage.vala:530
+msgid "Tweet Details"
+msgstr "Detalls de la piulada"
+
+#: src/util/Utils.vala:195
+msgid "Now"
+msgstr "Ara"
+
+#: src/util/Utils.vala:197
+#, c-format
+msgid "%dm"
+msgstr "%dm"
+
+#: src/util/Utils.vala:201
+#, c-format
+msgid "%dh"
+msgstr "%dh"
 
 #: src/widgets/AccountCreateWidget.vala:40
 msgid "Don't have an account yet?"
@@ -100,9 +253,18 @@ msgstr "PIN incorrecte"
 msgid "Account already in use"
 msgstr "Ja s'està utilitzant el compte"
 
-#: src/widgets/PixbufButton.vala:52
-msgid "Copy link"
-msgstr "Copia l'enllaç"
+#: src/widgets/AvatarBannerWidget.vala:140
+msgid "Select banner"
+msgstr "Seleccioneu un bàner"
+
+#: src/widgets/AvatarBannerWidget.vala:155
+msgid "Select avatar"
+msgstr "Seleccioneu un avatar"
+
+#: src/widgets/CompletionTextView.vala:33
+#, fuzzy
+msgid "No users found"
+msgstr "No s'ha trobat cap resultat"
 
 #: src/widgets/FollowButton.vala:45
 msgid "Follow"
@@ -112,134 +274,63 @@ msgstr "Segueix"
 msgid "Unfollow"
 msgstr "Deixa de seguir"
 
-#: src/HomeTimeline.vala:122
-#, c-format
-msgid "%s retweeted %s"
-msgstr "%s ha repiulat %s"
-
-#: src/HomeTimeline.vala:125
-#, c-format
-msgid "%s tweeted"
-msgstr "%s ha repiulat"
-
-#: src/HomeTimeline.vala:134
-#, c-format
-msgid "%d new Tweet!"
-msgid_plural "%d new Tweets!"
-msgstr[0] "%d nou tweet!"
-msgstr[1] "%d nous tweets!"
-
-#: src/HomeTimeline.vala:169
-msgid "Home"
-msgstr "Inici"
-
-#: src/DMThreadsPage.vala:207
-#, c-format
-msgid "%d new Message from %s"
-msgid_plural "%d new Messages from %s"
-msgstr[0] "%d nou missatge de %s"
-msgstr[1] "%d nous missatges de %s"
-
-#: src/DMThreadsPage.vala:213
-#, c-format
-msgid "New direct message from %s"
-msgstr "Hi ha un missatge directe nou de %s"
-
-#: src/DMThreadsPage.vala:223 src/DMThreadsPage.vala:237
-msgid "Direct Messages"
-msgstr "Missatges directes"
-
-#: src/list/DMThreadEntry.vala:71
-#, c-format
-msgid "(%d unread)"
-msgid_plural "(%d unread)"
-msgstr[0] "(%d missatge no llegit)"
-msgstr[1] "(%d missatges no llegits)"
-
-#: src/ListsPage.vala:120 src/ListsPage.vala:125 ui/profile-page.ui:350
-msgid "Lists"
-msgstr "Llistes"
-
-#: src/ProfilePage.vala:266
-msgid "Protected profile"
-msgstr "Perfil protegit"
-
-#: src/ProfilePage.vala:319
-#, c-format
-msgid "Tweet to @%s"
-msgstr "Piula a @%s"
-
-#: src/TweetInfoPage.vala:300
-msgid "Could not show tweet"
+#: src/widgets/MediaButton.vala:42
+msgid "Copy URL"
 msgstr ""
 
-#: src/TweetInfoPage.vala:481
-msgid "Retweets"
-msgstr "Repiulades"
+#: src/widgets/PixbufButton.vala:52
+msgid "Copy link"
+msgstr "Copia l'enllaç"
 
-#: src/TweetInfoPage.vala:482 src/FavoritesTimeline.vala:67
-#: src/FavoritesTimeline.vala:71
-msgid "Favorites"
-msgstr "Preferits"
+#: src/widgets/TweetListBox.vala:100
+msgid "Loading..."
+msgstr ""
 
-#: src/TweetInfoPage.vala:490
-msgid "Open in Browser"
-msgstr "Obre al navegador"
+#: src/widgets/TweetListBox.vala:103 src/widgets/TweetListBox.vala:151
+msgid "No entries found"
+msgstr "No s'ha trobat cap resultat"
 
-#: src/TweetInfoPage.vala:490
-msgid "Source"
-msgstr "Origen"
+#: src/widgets/TweetListBox.vala:111
+msgid "Retry"
+msgstr "Prova de nou"
 
-#: src/TweetInfoPage.vala:530
-msgid "Tweet Details"
-msgstr "Detalls de la piulada"
+#: src/window/ComposeTweetWindow.vala:125
+msgid "Quote tweet"
+msgstr ""
 
-#: src/util/Utils.vala:195
-msgid "Now"
-msgstr "Ara"
-
-#: src/util/Utils.vala:197
-#, c-format
-msgid "%dm"
-msgstr "%dm"
-
-#: src/util/Utils.vala:201
-#, c-format
-msgid "%dh"
-msgstr "%dh"
-
-#: src/SearchPage.vala:353 src/SearchPage.vala:362 ui/search-page.ui:24
-msgid "Search"
-msgstr "Cerca"
-
-#: src/MentionsTimeline.vala:91
-#, fuzzy, c-format
-msgid "%s mentioned %s"
-msgstr "%s ha repiulat %s"
-
-#: src/MentionsTimeline.vala:99 src/MentionsTimeline.vala:103
-msgid "Mentions"
-msgstr "Mencions"
-
-#: src/DMPage.vala:329
-msgid "Direct Conversation"
-msgstr "Conversa directa"
-
-#: src/ListStatusesPage.vala:367
-msgid "List"
-msgstr "Llista"
-
-#: src/widgets/AvatarBannerWidget.vala:140
-msgid "Select banner"
+#: src/window/FileSelector.vala:39 src/window/FileSelector.vala:85
+#, fuzzy
+msgid "Select Image"
 msgstr "Seleccioneu un bàner"
 
-#: src/widgets/AvatarBannerWidget.vala:155
-msgid "Select avatar"
-msgstr "Seleccioneu un avatar"
+#: src/window/FileSelector.vala:70
+msgid "Open"
+msgstr ""
+
+#: src/window/FileSelector.vala:77 src/window/UserListDialog.vala:47
+#: ui/account-dialog.ui:21 ui/account-dialog.ui:233 ui/compose-window.ui:41
+#: ui/filter-list-entry.ui:80 ui/image-crop-dialog.ui:46
+#: ui/list-list-entry.ui:98 ui/list-statuses-page.ui:173
+#: ui/modify-filter-dialog.ui:13 ui/modify-snippet-dialog.ui:14
+#: ui/user-filter-entry.ui:114
+msgid "Cancel"
+msgstr "Cancel·la"
+
+#: src/window/FileSelector.vala:152
+msgid ""
+"Max file size exceeded\n"
+"(3MB)"
+msgstr ""
 
 #: src/window/ImageCropDialog.vala:58 ui/image-crop-dialog.ui:61
 msgid "Next"
 msgstr "Següent"
+
+#: src/window/ImageCropDialog.vala:98 src/window/UserListDialog.vala:48
+#: ui/account-dialog.ui:28 ui/list-statuses-page.ui:129
+#: ui/modify-filter-dialog.ui:20 ui/modify-snippet-dialog.ui:21
+msgid "Save"
+msgstr "Desa"
 
 #: src/window/ImageCropDialog.vala:103
 msgid "Image does not meet minimum size requirements:"
@@ -259,20 +350,263 @@ msgid_plural "Minimum height: %d pixels"
 msgstr[0] "Alçada mínima: %d pixel"
 msgstr[1] "Alçada mínima: %d pixels"
 
+#: src/window/ModifyFilterDialog.vala:45
+msgid "Modify Filter"
+msgstr "Modifica el filtre"
+
+#: src/window/ModifyFilterDialog.vala:80
+msgid "Matches"
+msgstr "Coincideix"
+
+#: src/window/ModifyFilterDialog.vala:82
+msgid "Doesn't match"
+msgstr "No conincideix"
+
+#: src/window/ModifySnippetDialog.vala:44
+#, fuzzy
+msgid "Modify Snippet"
+msgstr "Modifica el filtre"
+
+#: src/window/ModifySnippetDialog.vala:63
+msgid "Snippet can't be empty"
+msgstr ""
+
+#: src/window/ModifySnippetDialog.vala:70
+msgid "Replacement can't be empty"
+msgstr ""
+
+#: src/window/ModifySnippetDialog.vala:78
+msgid "Snippet may not contain whitespace"
+msgstr ""
+
+#: src/window/ModifySnippetDialog.vala:86
+msgid "Snippet already exists"
+msgstr ""
+
 #: src/window/SettingsDialog.vala:83
 msgid ""
 "Hey, check out this new #Corebird version! \\ (•◡•) / #cool "
 "#newisalwaysbetter"
 msgstr ""
 
-#: src/DefaultTimeline.vala:358
-#, fuzzy
-msgid "Could not load tweets"
-msgstr "No s'ha pogut obrir %s"
+#: src/window/UserListDialog.vala:40
+msgid "Add to or Remove User From List"
+msgstr "Afegeix o elimina un usuari de la llista"
 
-#: ui/settings-dialog.ui:16 ui/settings-dialog.ui:22 ui/menus.ui:6
+#: src/window/UserListDialog.vala:69
+msgid "You have no lists."
+msgstr "No tens cap llista"
+
+#: ui/about-dialog.ui:6
+msgid "About Corebird"
+msgstr "Quant al Corebird"
+
+#: ui/about-dialog.ui:10
+msgid "Using Font Awesome by Dave Gandy - http://fontawesome.io"
+msgstr ""
+"Fent servir el tipus de lletra Awesome per Dave Gandy - http://fontawesome.io"
+
+#: ui/account-create-widget.ui:16
+msgid "New Account"
+msgstr "Compte nou"
+
+#: ui/account-create-widget.ui:44
+msgid "PIN:"
+msgstr "PIN:"
+
+#: ui/account-create-widget.ui:65
+msgid "Request PIN"
+msgstr "Sol·licita un PIN"
+
+#: ui/account-create-widget.ui:75 ui/list-statuses-page.ui:358
+msgid "Confirm"
+msgstr "Confirma"
+
+#: ui/account-dialog.ui:11
+msgid "Account Settings"
+msgstr "Paràmetres del compte"
+
+#: ui/account-dialog.ui:76
+msgid "Name"
+msgstr "Nom"
+
+#: ui/account-dialog.ui:104
+msgid "Website"
+msgstr "Lloc web"
+
+#: ui/account-dialog.ui:158
+msgid "Autostart"
+msgstr "Inici automàtic"
+
+#: ui/account-dialog.ui:189 ui/account-dialog.ui:246 ui/filter-list-entry.ui:93
+#: ui/list-list-entry.ui:132 ui/list-statuses-page.ui:166
+#: ui/modify-snippet-dialog.ui:108 ui/tweet-list-entry.ui:10
+msgid "Delete"
+msgstr "Suprimeix"
+
+#: ui/account-dialog.ui:221
+msgid "Do you really want to delete this account?"
+msgstr "Voleu eliminar aquest compte?"
+
+#: ui/compose-window.ui:11 ui/compose-window.ui:25
+msgid "Compose Tweet"
+msgstr "Redacteu una piulada"
+
+#: ui/compose-window.ui:48 ui/dm-page.ui:46
+msgid "Send"
+msgstr "Envia"
+
+#: ui/compose-window.ui:134
+msgid "Add Image"
+msgstr ""
+
+#: ui/filter-page.ui:71 ui/search-page.ui:86
+msgid "Users"
+msgstr "Usuaris"
+
+#: ui/image-crop-dialog.ui:71
+msgid "Back"
+msgstr "Enrere"
+
+#: ui/list-list-entry.ui:109
+msgid "Subscribe"
+msgstr "Subscriviu-vos"
+
+#: ui/list-list-entry.ui:122
+msgid "Unsubscribe"
+msgstr "Cancel·la la subscripció"
+
+#: ui/list-statuses-page.ui:26
+msgid "Subscribers:"
+msgstr "Subscriptors:"
+
+#: ui/list-statuses-page.ui:49
+msgid "Members:"
+msgstr "Membres:"
+
+#: ui/list-statuses-page.ui:72
+msgid "Creator:"
+msgstr "Creador:"
+
+#: ui/list-statuses-page.ui:84
+msgid "Created at:"
+msgstr "Creat el:"
+
+#: ui/list-statuses-page.ui:119
+msgid "Edit"
+msgstr "Edita"
+
+#: ui/list-statuses-page.ui:194
+msgid "Mode:"
+msgstr "Mode:"
+
+#: ui/list-statuses-page.ui:217
+msgid "Private"
+msgstr "Privat"
+
+#: ui/list-statuses-page.ui:218
+msgid "Public"
+msgstr "Públic"
+
+#: ui/list-statuses-page.ui:296
+msgid "Description"
+msgstr ""
+
+#: ui/load-more-entry.ui:11
+msgid "Load more"
+msgstr "Carrega'n més"
+
+#: ui/main-window.ui:65
+msgid "Show configured accounts"
+msgstr "Mostra els comptes configurats"
+
+#: ui/main-window.ui:84
+msgid "Compose tweet"
+msgstr "Escriu un nou tweet"
+
+#: ui/main-window.ui:101
+msgid "New tweet"
+msgstr "Piulada nova"
+
+#: ui/menus.ui:6 ui/settings-dialog.ui:16 ui/settings-dialog.ui:22
 msgid "Settings"
 msgstr "Paràmetres"
+
+#: ui/menus.ui:10
+msgid "Shortcuts"
+msgstr ""
+
+#: ui/menus.ui:15
+msgid "About"
+msgstr "Quant a"
+
+#: ui/menus.ui:19
+msgid "Quit"
+msgstr "Surt"
+
+#: ui/modify-filter-dialog.ui:6
+msgid "Add New Filter"
+msgstr "Afegeix un filtre nou"
+
+#: ui/modify-snippet-dialog.ui:6
+msgid "Add New Snippet"
+msgstr ""
+
+#: ui/modify-snippet-dialog.ui:46
+msgid "Keyword"
+msgstr ""
+
+#: ui/modify-snippet-dialog.ui:72
+msgid "Replacement"
+msgstr ""
+
+#: ui/new-list-entry.ui:30
+msgid "Create New List"
+msgstr "Crea una llista nova"
+
+#: ui/new-list-entry.ui:51
+msgid "Name:"
+msgstr "Nom:"
+
+#: ui/new-list-entry.ui:73
+msgid "Create"
+msgstr "Crea"
+
+#: ui/profile-page.ui:6
+msgid "Write Direct Message"
+msgstr "Escriu un missatge directe"
+
+#: ui/profile-page.ui:14
+msgid "Add to/Remove from List"
+msgstr "Afegeix/Elimina de la llista"
+
+#: ui/profile-page.ui:20
+msgid "Blocked"
+msgstr "Blocat"
+
+#: ui/profile-page.ui:24
+msgid "Muted"
+msgstr ""
+
+#: ui/profile-page.ui:28
+msgid "Retweets disabled"
+msgstr "S'han desactivat les repiulades"
+
+#: ui/profile-page.ui:155
+msgid "Follows you"
+msgstr "Us segueix"
+
+#: ui/profile-page.ui:227 ui/search-page.ui:74 ui/settings-dialog.ui:421
+msgid "Tweets"
+msgstr "Piulades"
+
+#: ui/profile-page.ui:268
+msgid "Followers"
+msgstr "Seguidors"
+
+#: ui/profile-page.ui:309
+msgid "Following"
+msgstr "Seguint"
 
 #: ui/settings-dialog.ui:60
 msgid "Show inline media"
@@ -362,10 +696,6 @@ msgstr "Eliminar enllaços"
 msgid "Hide inappropriate content"
 msgstr ""
 
-#: ui/settings-dialog.ui:421 ui/search-page.ui:74 ui/profile-page.ui:227
-msgid "Tweets"
-msgstr "Piulades"
-
 #: ui/settings-dialog.ui:442
 msgid "No snippets configured."
 msgstr ""
@@ -376,275 +706,6 @@ msgstr ""
 
 #: ui/settings-dialog.ui:495
 msgid "Snippets"
-msgstr ""
-
-#: ui/menus.ui:10
-msgid "Shortcuts"
-msgstr ""
-
-#: ui/menus.ui:15
-msgid "About"
-msgstr "Quant a"
-
-#: ui/menus.ui:19
-msgid "Quit"
-msgstr "Surt"
-
-#: ui/user-lists-widget.ui:14
-msgid "Created"
-msgstr "Creat"
-
-#: ui/user-lists-widget.ui:86
-msgid "Subscribed to"
-msgstr "Subscrit a"
-
-#: ui/about-dialog.ui:6
-msgid "About Corebird"
-msgstr "Quant al Corebird"
-
-#: ui/about-dialog.ui:10
-msgid "Using Font Awesome by Dave Gandy - http://fontawesome.io"
-msgstr ""
-"Fent servir el tipus de lletra Awesome per Dave Gandy - http://fontawesome.io"
-
-#: ui/dm-page.ui:46 ui/compose-window.ui:48
-msgid "Send"
-msgstr "Envia"
-
-#: ui/load-more-entry.ui:11
-msgid "Load more"
-msgstr "Carrega'n més"
-
-#: ui/tweet-list-entry.ui:6 ui/tweet-info-page.ui:6
-msgid "Quote"
-msgstr "Cita"
-
-#: ui/tweet-list-entry.ui:10 ui/list-list-entry.ui:132
-#: ui/list-statuses-page.ui:166 ui/filter-list-entry.ui:93
-#: ui/account-dialog.ui:189 ui/account-dialog.ui:246
-#: ui/modify-snippet-dialog.ui:108
-msgid "Delete"
-msgstr "Suprimeix"
-
-#: ui/tweet-list-entry.ui:60
-msgid "Favorite"
-msgstr "Favorit"
-
-#: ui/tweet-list-entry.ui:81
-msgid "Reply"
-msgstr "Contesta"
-
-#: ui/user-list-entry.ui:65
-msgid "Show settings of this account"
-msgstr "Mostra els paràmetres per a aquest compte"
-
-#: ui/user-list-entry.ui:90
-msgid "Open in new window"
-msgstr "Obre a una finestra nova"
-
-#: ui/user-list-entry.ui:114
-#, fuzzy
-msgid "Go to profile"
-msgstr "Perfil protegit"
-
-#: ui/new-list-entry.ui:30
-msgid "Create New List"
-msgstr "Crea una llista nova"
-
-#: ui/new-list-entry.ui:51
-msgid "Name:"
-msgstr "Nom:"
-
-#: ui/new-list-entry.ui:73
-msgid "Create"
-msgstr "Crea"
-
-#: ui/search-page.ui:86 ui/filter-page.ui:71
-msgid "Users"
-msgstr "Usuaris"
-
-#: ui/compose-window.ui:11 ui/compose-window.ui:25
-msgid "Compose Tweet"
-msgstr "Redacteu una piulada"
-
-#: ui/compose-window.ui:134
-msgid "Add Image"
-msgstr ""
-
-#: ui/profile-page.ui:6
-msgid "Write Direct Message"
-msgstr "Escriu un missatge directe"
-
-#: ui/profile-page.ui:14
-msgid "Add to/Remove from List"
-msgstr "Afegeix/Elimina de la llista"
-
-#: ui/profile-page.ui:20
-msgid "Blocked"
-msgstr "Blocat"
-
-#: ui/profile-page.ui:24
-msgid "Muted"
-msgstr ""
-
-#: ui/profile-page.ui:28
-msgid "Retweets disabled"
-msgstr "S'han desactivat les repiulades"
-
-#: ui/profile-page.ui:155
-msgid "Follows you"
-msgstr "Us segueix"
-
-#: ui/profile-page.ui:268
-msgid "Followers"
-msgstr "Seguidors"
-
-#: ui/profile-page.ui:309
-msgid "Following"
-msgstr "Seguint"
-
-#: ui/main-window.ui:65
-msgid "Show configured accounts"
-msgstr "Mostra els comptes configurats"
-
-#: ui/main-window.ui:84
-msgid "Compose tweet"
-msgstr "Escriu un nou tweet"
-
-#: ui/main-window.ui:101
-msgid "New tweet"
-msgstr "Piulada nova"
-
-#: ui/account-create-widget.ui:16
-msgid "New Account"
-msgstr "Compte nou"
-
-#: ui/account-create-widget.ui:44
-msgid "PIN:"
-msgstr "PIN:"
-
-#: ui/account-create-widget.ui:65
-msgid "Request PIN"
-msgstr "Sol·licita un PIN"
-
-#: ui/account-create-widget.ui:75 ui/list-statuses-page.ui:358
-msgid "Confirm"
-msgstr "Confirma"
-
-#: ui/tweet-info-page.ui:223
-msgid "Retweet tweet"
-msgstr "Repiula la piulada"
-
-#: ui/tweet-info-page.ui:250
-msgid "Favorite tweet"
-msgstr "Marca com a preferit"
-
-#: ui/tweet-info-page.ui:277
-msgid "Reply to tweet"
-msgstr "Respon a la piulada"
-
-#: ui/tweet-info-page.ui:315
-msgid "More"
-msgstr "Més"
-
-#: ui/list-list-entry.ui:109
-msgid "Subscribe"
-msgstr "Subscriviu-vos"
-
-#: ui/list-list-entry.ui:122
-msgid "Unsubscribe"
-msgstr "Cancel·la la subscripció"
-
-#: ui/start-conversation-entry.ui:29
-msgid "Start new conversation"
-msgstr "Inicia una conversa nova"
-
-#: ui/start-conversation-entry.ui:49
-msgid "With:"
-msgstr "Amb:"
-
-#: ui/start-conversation-entry.ui:75
-msgid "Go"
-msgstr "Vés"
-
-#: ui/list-statuses-page.ui:26
-msgid "Subscribers:"
-msgstr "Subscriptors:"
-
-#: ui/list-statuses-page.ui:49
-msgid "Members:"
-msgstr "Membres:"
-
-#: ui/list-statuses-page.ui:72
-msgid "Creator:"
-msgstr "Creador:"
-
-#: ui/list-statuses-page.ui:84
-msgid "Created at:"
-msgstr "Creat el:"
-
-#: ui/list-statuses-page.ui:119
-msgid "Edit"
-msgstr "Edita"
-
-#: ui/list-statuses-page.ui:194
-msgid "Mode:"
-msgstr "Mode:"
-
-#: ui/list-statuses-page.ui:217
-msgid "Private"
-msgstr "Privat"
-
-#: ui/list-statuses-page.ui:218
-msgid "Public"
-msgstr "Públic"
-
-#: ui/list-statuses-page.ui:296
-msgid "Description"
-msgstr ""
-
-#: ui/modify-filter-dialog.ui:6
-msgid "Add New Filter"
-msgstr "Afegeix un filtre nou"
-
-#: ui/user-filter-entry.ui:125
-msgid "Unblock"
-msgstr "Desbloqueja "
-
-#: ui/account-dialog.ui:11
-msgid "Account Settings"
-msgstr "Paràmetres del compte"
-
-#: ui/account-dialog.ui:76
-msgid "Name"
-msgstr "Nom"
-
-#: ui/account-dialog.ui:104
-msgid "Website"
-msgstr "Lloc web"
-
-#: ui/account-dialog.ui:158
-msgid "Autostart"
-msgstr "Inici automàtic"
-
-#: ui/account-dialog.ui:221
-msgid "Do you really want to delete this account?"
-msgstr "Voleu eliminar aquest compte?"
-
-#: ui/image-crop-dialog.ui:71
-msgid "Back"
-msgstr "Enrere"
-
-#: ui/modify-snippet-dialog.ui:6
-msgid "Add New Snippet"
-msgstr ""
-
-#: ui/modify-snippet-dialog.ui:46
-msgid "Keyword"
-msgstr ""
-
-#: ui/modify-snippet-dialog.ui:72
-msgid "Replacement"
 msgstr ""
 
 #: ui/shortcuts-window.ui:12
@@ -722,44 +783,70 @@ msgctxt "shortcuts window"
 msgid "Delete"
 msgstr ""
 
-#: data/org.baedert.corebird.appdata.xml.in:5
-#: data/org.baedert.corebird.desktop.in:3
+#: ui/start-conversation-entry.ui:29
+msgid "Start new conversation"
+msgstr "Inicia una conversa nova"
+
+#: ui/start-conversation-entry.ui:49
+msgid "With:"
+msgstr "Amb:"
+
+#: ui/start-conversation-entry.ui:75
+msgid "Go"
+msgstr "Vés"
+
+#: ui/tweet-info-page.ui:6 ui/tweet-list-entry.ui:6
+msgid "Quote"
+msgstr "Cita"
+
+#: ui/tweet-info-page.ui:223
+msgid "Retweet tweet"
+msgstr "Repiula la piulada"
+
+#: ui/tweet-info-page.ui:250
+msgid "Favorite tweet"
+msgstr "Marca com a preferit"
+
+#: ui/tweet-info-page.ui:277
+msgid "Reply to tweet"
+msgstr "Respon a la piulada"
+
+#: ui/tweet-info-page.ui:315
+msgid "More"
+msgstr "Més"
+
+#: ui/tweet-list-entry.ui:60
+msgid "Favorite"
+msgstr "Favorit"
+
+#: ui/tweet-list-entry.ui:81
+msgid "Reply"
+msgstr "Contesta"
+
+#: ui/user-filter-entry.ui:125
+msgid "Unblock"
+msgstr "Desbloqueja "
+
+#: ui/user-list-entry.ui:65
+msgid "Show settings of this account"
+msgstr "Mostra els paràmetres per a aquest compte"
+
+#: ui/user-list-entry.ui:90
+msgid "Open in new window"
+msgstr "Obre a una finestra nova"
+
+#: ui/user-list-entry.ui:114
 #, fuzzy
-msgid "Corebird"
-msgstr "Quant al Corebird"
+msgid "Go to profile"
+msgstr "Perfil protegit"
 
-#: data/org.baedert.corebird.appdata.xml.in:6
-#: data/org.baedert.corebird.desktop.in:4
-msgid "Twitter Client"
-msgstr "Client del Twitter"
+#: ui/user-lists-widget.ui:14
+msgid "Created"
+msgstr "Creat"
 
-#: data/org.baedert.corebird.appdata.xml.in:10
-msgid ""
-"Corebird is a native GTK+ twitter client that provides vital features such "
-"as Direct Messages (DMs), tweet notifications, conversation views."
-msgstr ""
-"El Corebird és un client del twitter natiu GTK+ que proveeix "
-"característiques bàsiques com missatges directes, notificacions de piulades "
-"i visualització de converses. "
-
-#: data/org.baedert.corebird.appdata.xml.in:13
-msgid ""
-"Additional features include local viewing of videos, multiple inline images, "
-"Lists, Filters, multiple accounts, etc."
-msgstr ""
-
-#: data/org.baedert.corebird.desktop.in:5
-msgid "twitter;"
-msgstr ""
-
-#: data/org.baedert.corebird.desktop.in:8
-#, fuzzy
-msgid "corebird"
-msgstr "Quant al Corebird"
-
-#: data/org.baedert.corebird.desktop.in:11
-msgid "Use Twitter from within a normal desktop application"
-msgstr "Feu servir el Twitter des d'una aplicació d'escriptori"
+#: ui/user-lists-widget.ui:86
+msgid "Subscribed to"
+msgstr "Subscrit a"
 
 #~ msgid "Open Account"
 #~ msgstr "Obre un compte"
@@ -772,6 +859,3 @@ msgstr "Feu servir el Twitter des d'una aplicació d'escriptori"
 
 #~ msgid "MB"
 #~ msgstr "MB"
-
-#~ msgid "Typical Twitter profile."
-#~ msgstr "Típic perfil de twitter"

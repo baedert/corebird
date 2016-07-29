@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
-"Report-Msgid-Bugs-To: mail@baedert.org\n"
-"POT-Creation-Date: 2016-07-28 16:40+0200\n"
+"Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
+"POT-Creation-Date: 2016-07-29 13:43+0200\n"
 "PO-Revision-Date: 2016-02-21 20:31+0000\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos@iki.fi>\n"
 "Language-Team: Finnish (http://www.transifex.com/corebird/corebird/language/"
@@ -19,55 +19,212 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/window/ComposeTweetWindow.vala:125
-msgid "Quote tweet"
-msgstr "Lainaa twiittiä"
+#: data/org.baedert.corebird.appdata.xml.in:5
+#: data/org.baedert.corebird.desktop.in:3
+#, fuzzy
+msgid "Corebird"
+msgstr "Tietoja - Corebird"
 
-#: src/window/UserListDialog.vala:40
-msgid "Add to or Remove User From List"
-msgstr "Lisää tai poista käyttäjä listalta"
+#: data/org.baedert.corebird.appdata.xml.in:6
+#: data/org.baedert.corebird.desktop.in:4
+msgid "Twitter Client"
+msgstr "Twitter-sovellus"
 
-#: src/window/UserListDialog.vala:47 ui/compose-window.ui:41
-#: ui/list-list-entry.ui:98 ui/list-statuses-page.ui:173
-#: ui/filter-list-entry.ui:80 ui/modify-filter-dialog.ui:13
-#: ui/user-filter-entry.ui:114 ui/account-dialog.ui:21 ui/account-dialog.ui:233
-#: ui/image-crop-dialog.ui:46 ui/modify-snippet-dialog.ui:14
-msgid "Cancel"
-msgstr "Peru"
+#: data/org.baedert.corebird.appdata.xml.in:10
+msgid ""
+"Corebird is a native GTK+ twitter client that provides vital features such "
+"as Direct Messages (DMs), tweet notifications, conversation views."
+msgstr ""
+"Corebird on GTK+:lla toteutettu Twitter-sovellus, joka tarjoaa muun muassa "
+"yksityisviestit, ilmoitukset twiiteistä ja keskustelunäkymän."
 
-#: src/window/UserListDialog.vala:48 src/window/ImageCropDialog.vala:98
-#: ui/list-statuses-page.ui:129 ui/modify-filter-dialog.ui:20
-#: ui/account-dialog.ui:28 ui/modify-snippet-dialog.ui:21
-msgid "Save"
-msgstr "Tallenna"
+#: data/org.baedert.corebird.appdata.xml.in:13
+msgid ""
+"Additional features include local viewing of videos, multiple inline images, "
+"Lists, Filters, multiple accounts, etc."
+msgstr ""
+"Lisäominaisuuksiin kuuluu muun muassa videoiden katselu suoraan "
+"sovelluksesta, useat upotetut kuvat, listat, suodattimet, useat tilit jne."
 
-#: src/window/UserListDialog.vala:69
-msgid "You have no lists."
-msgstr "Sinulla ei ole listoja."
+#: data/org.baedert.corebird.appdata.xml.in:21
+msgid "Generic timeline view when using Corebird"
+msgstr "Yleinen aikajana Corebirdissä"
 
-#: src/window/ModifyFilterDialog.vala:45
-msgid "Modify Filter"
+#: data/org.baedert.corebird.appdata.xml.in:25
+#, fuzzy
+msgid "Typical Twitter profile"
+msgstr "Tyypillinen Twitter-profiili."
+
+#: data/org.baedert.corebird.appdata.xml.in:29
+#, fuzzy
+msgid "Account settings can be configured"
+msgstr ""
+"Tilin asetuksia, kuten nimeä, verkkosivustoa, kuvausta ja kuvaa on "
+"mahdollista muuttaa."
+
+#: data/org.baedert.corebird.desktop.in:5
+msgid "Use Twitter from within a normal desktop application"
+msgstr "Käytä Twitteriä työpöytäsovelluksella"
+
+#: data/org.baedert.corebird.desktop.in:7
+msgid "twitter;"
+msgstr ""
+
+#: data/org.baedert.corebird.desktop.in:11
+#, fuzzy
+msgid "corebird"
+msgstr "Tietoja - Corebird"
+
+#: src/DefaultTimeline.vala:358
+#, fuzzy
+msgid "Could not load tweets"
+msgstr "Twiitin näyttäminen epäonnistui"
+
+#: src/DMPage.vala:329
+msgid "Direct Conversation"
+msgstr "Yksityiskeskustelu"
+
+#: src/DMThreadsPage.vala:207
+#, c-format
+msgid "%d new Message from %s"
+msgid_plural "%d new Messages from %s"
+msgstr[0] "%d uusi viesti käyttäjältä %s"
+msgstr[1] "%d uutta viestiä käyttäjältä %s"
+
+#: src/DMThreadsPage.vala:213 src/UserEventReceiver.vala:94
+#, c-format
+msgid "New direct message from %s"
+msgstr "Uusi yksityinen viesti käyttäjältä %s"
+
+#: src/DMThreadsPage.vala:223 src/DMThreadsPage.vala:237
+msgid "Direct Messages"
+msgstr "Yksityisviestit"
+
+#: src/FavoritesTimeline.vala:67 src/FavoritesTimeline.vala:71
+#: src/TweetInfoPage.vala:482
+msgid "Favorites"
+msgstr "Suosikit"
+
+#: src/FilterPage.vala:47
+#, fuzzy
+msgid "Add new Filter"
+msgstr "Lisää uusi suodatin"
+
+#: src/FilterPage.vala:317 src/FilterPage.vala:323
+#, fuzzy
+msgid "Filters"
 msgstr "Muokkaa suodatinta"
 
-#: src/window/ModifyFilterDialog.vala:80
-msgid "Matches"
-msgstr "Vastaa"
+#: src/HomeTimeline.vala:122
+#, c-format
+msgid "%s retweeted %s"
+msgstr "%s twiittasi uudelleen %s"
 
-#: src/window/ModifyFilterDialog.vala:82
-msgid "Doesn't match"
-msgstr "Ei vastaa"
+#: src/HomeTimeline.vala:125
+#, c-format
+msgid "%s tweeted"
+msgstr "%s twiittasi"
 
-#: src/widgets/TweetListBox.vala:100
-msgid "Loading..."
-msgstr "Ladataan..."
+#: src/HomeTimeline.vala:134
+#, c-format
+msgid "%d new Tweet!"
+msgid_plural "%d new Tweets!"
+msgstr[0] "%d uusi twiitti!"
+msgstr[1] "%d uutta twiittiä!"
 
-#: src/widgets/TweetListBox.vala:103 src/widgets/TweetListBox.vala:151
-msgid "No entries found"
-msgstr "Kohteita ei löytynyt"
+#: src/HomeTimeline.vala:169
+msgid "Home"
+msgstr "Koti"
 
-#: src/widgets/TweetListBox.vala:111
-msgid "Retry"
-msgstr "Yritä uudelleen"
+#: src/list/DMThreadEntry.vala:71
+#, c-format
+msgid "(%d unread)"
+msgid_plural "(%d unread)"
+msgstr[0] "(%d lukematon)"
+msgstr[1] "(%d lukematonta)"
+
+#: src/ListsPage.vala:120 src/ListsPage.vala:125 ui/profile-page.ui:350
+msgid "Lists"
+msgstr "Listat"
+
+#: src/ListStatusesPage.vala:367
+msgid "List"
+msgstr "Lista"
+
+#: src/list/TweetListEntry.vala:411
+#, fuzzy, c-format
+msgid "Block %s"
+msgstr "Estetty"
+
+#: src/list/TweetListEntry.vala:546
+#, fuzzy
+msgid "This tweet contains images marked as inappropriate"
+msgstr "Tämä twiitti sisältää asiattomaksi merkittyjä kuvia"
+
+#: src/list/TweetListEntry.vala:553
+msgid "Show anyway"
+msgstr "Näytä silti"
+
+#: src/MainWindow.vala:75
+#, fuzzy
+msgid "Add new Account"
+msgstr "Uusi tili"
+
+#: src/MentionsTimeline.vala:91 src/UserEventReceiver.vala:111
+#, fuzzy, c-format
+msgid "%s mentioned %s"
+msgstr "%s twiittasi uudelleen %s"
+
+#: src/MentionsTimeline.vala:99 src/MentionsTimeline.vala:103
+msgid "Mentions"
+msgstr "Maininnat"
+
+#: src/ProfilePage.vala:266
+msgid "Protected profile"
+msgstr "Suojattu profiili"
+
+#: src/ProfilePage.vala:319
+#, c-format
+msgid "Tweet to @%s"
+msgstr "Twiittaa käyttäjälle @%s"
+
+#: src/SearchPage.vala:353 src/SearchPage.vala:362 ui/search-page.ui:24
+msgid "Search"
+msgstr "Etsi"
+
+#: src/TweetInfoPage.vala:300
+msgid "Could not show tweet"
+msgstr "Twiitin näyttäminen epäonnistui"
+
+#: src/TweetInfoPage.vala:481
+msgid "Retweets"
+msgstr "Uudelleentwiittaukset"
+
+#: src/TweetInfoPage.vala:490 src/widgets/MediaButton.vala:91
+msgid "Open in Browser"
+msgstr "Avaa selaimessa"
+
+#: src/TweetInfoPage.vala:490
+msgid "Source"
+msgstr "Lähde"
+
+#: src/TweetInfoPage.vala:530
+msgid "Tweet Details"
+msgstr "Twiitin tiedot"
+
+#: src/util/Utils.vala:195
+msgid "Now"
+msgstr "Nyt"
+
+#: src/util/Utils.vala:197
+#, c-format
+msgid "%dm"
+msgstr "%d min"
+
+#: src/util/Utils.vala:201
+#, c-format
+msgid "%dh"
+msgstr "%d t"
 
 #: src/widgets/AccountCreateWidget.vala:40
 msgid "Don't have an account yet?"
@@ -98,9 +255,18 @@ msgstr "Väärä PIN"
 msgid "Account already in use"
 msgstr "Tili on jo käytössä"
 
-#: src/widgets/PixbufButton.vala:52
-msgid "Copy link"
-msgstr "Kopioi linkki"
+#: src/widgets/AvatarBannerWidget.vala:140
+msgid "Select banner"
+msgstr "Valitse banneri"
+
+#: src/widgets/AvatarBannerWidget.vala:155
+msgid "Select avatar"
+msgstr "Valitse avatar"
+
+#: src/widgets/CompletionTextView.vala:33
+#, fuzzy
+msgid "No users found"
+msgstr "Kohteita ei löytynyt"
 
 #: src/widgets/FollowButton.vala:45
 msgid "Follow"
@@ -110,134 +276,63 @@ msgstr "Seuraa"
 msgid "Unfollow"
 msgstr "Lopeta seuraaminen"
 
-#: src/HomeTimeline.vala:122
-#, c-format
-msgid "%s retweeted %s"
-msgstr "%s twiittasi uudelleen %s"
+#: src/widgets/MediaButton.vala:42
+msgid "Copy URL"
+msgstr ""
 
-#: src/HomeTimeline.vala:125
-#, c-format
-msgid "%s tweeted"
-msgstr "%s twiittasi"
+#: src/widgets/PixbufButton.vala:52
+msgid "Copy link"
+msgstr "Kopioi linkki"
 
-#: src/HomeTimeline.vala:134
-#, c-format
-msgid "%d new Tweet!"
-msgid_plural "%d new Tweets!"
-msgstr[0] "%d uusi twiitti!"
-msgstr[1] "%d uutta twiittiä!"
+#: src/widgets/TweetListBox.vala:100
+msgid "Loading..."
+msgstr "Ladataan..."
 
-#: src/HomeTimeline.vala:169
-msgid "Home"
-msgstr "Koti"
+#: src/widgets/TweetListBox.vala:103 src/widgets/TweetListBox.vala:151
+msgid "No entries found"
+msgstr "Kohteita ei löytynyt"
 
-#: src/DMThreadsPage.vala:207
-#, c-format
-msgid "%d new Message from %s"
-msgid_plural "%d new Messages from %s"
-msgstr[0] "%d uusi viesti käyttäjältä %s"
-msgstr[1] "%d uutta viestiä käyttäjältä %s"
+#: src/widgets/TweetListBox.vala:111
+msgid "Retry"
+msgstr "Yritä uudelleen"
 
-#: src/DMThreadsPage.vala:213
-#, c-format
-msgid "New direct message from %s"
-msgstr "Uusi yksityinen viesti käyttäjältä %s"
+#: src/window/ComposeTweetWindow.vala:125
+msgid "Quote tweet"
+msgstr "Lainaa twiittiä"
 
-#: src/DMThreadsPage.vala:223 src/DMThreadsPage.vala:237
-msgid "Direct Messages"
-msgstr "Yksityisviestit"
-
-#: src/list/DMThreadEntry.vala:71
-#, c-format
-msgid "(%d unread)"
-msgid_plural "(%d unread)"
-msgstr[0] "(%d lukematon)"
-msgstr[1] "(%d lukematonta)"
-
-#: src/ListsPage.vala:120 src/ListsPage.vala:125 ui/profile-page.ui:350
-msgid "Lists"
-msgstr "Listat"
-
-#: src/ProfilePage.vala:266
-msgid "Protected profile"
-msgstr "Suojattu profiili"
-
-#: src/ProfilePage.vala:319
-#, c-format
-msgid "Tweet to @%s"
-msgstr "Twiittaa käyttäjälle @%s"
-
-#: src/TweetInfoPage.vala:300
-msgid "Could not show tweet"
-msgstr "Twiitin näyttäminen epäonnistui"
-
-#: src/TweetInfoPage.vala:481
-msgid "Retweets"
-msgstr "Uudelleentwiittaukset"
-
-#: src/TweetInfoPage.vala:482 src/FavoritesTimeline.vala:67
-#: src/FavoritesTimeline.vala:71
-msgid "Favorites"
-msgstr "Suosikit"
-
-#: src/TweetInfoPage.vala:490
-msgid "Open in Browser"
-msgstr "Avaa selaimessa"
-
-#: src/TweetInfoPage.vala:490
-msgid "Source"
-msgstr "Lähde"
-
-#: src/TweetInfoPage.vala:530
-msgid "Tweet Details"
-msgstr "Twiitin tiedot"
-
-#: src/util/Utils.vala:195
-msgid "Now"
-msgstr "Nyt"
-
-#: src/util/Utils.vala:197
-#, c-format
-msgid "%dm"
-msgstr "%d min"
-
-#: src/util/Utils.vala:201
-#, c-format
-msgid "%dh"
-msgstr "%d t"
-
-#: src/SearchPage.vala:353 src/SearchPage.vala:362 ui/search-page.ui:24
-msgid "Search"
-msgstr "Etsi"
-
-#: src/MentionsTimeline.vala:91
-#, fuzzy, c-format
-msgid "%s mentioned %s"
-msgstr "%s twiittasi uudelleen %s"
-
-#: src/MentionsTimeline.vala:99 src/MentionsTimeline.vala:103
-msgid "Mentions"
-msgstr "Maininnat"
-
-#: src/DMPage.vala:329
-msgid "Direct Conversation"
-msgstr "Yksityiskeskustelu"
-
-#: src/ListStatusesPage.vala:367
-msgid "List"
-msgstr "Lista"
-
-#: src/widgets/AvatarBannerWidget.vala:140
-msgid "Select banner"
+#: src/window/FileSelector.vala:39 src/window/FileSelector.vala:85
+#, fuzzy
+msgid "Select Image"
 msgstr "Valitse banneri"
 
-#: src/widgets/AvatarBannerWidget.vala:155
-msgid "Select avatar"
-msgstr "Valitse avatar"
+#: src/window/FileSelector.vala:70
+msgid "Open"
+msgstr ""
+
+#: src/window/FileSelector.vala:77 src/window/UserListDialog.vala:47
+#: ui/account-dialog.ui:21 ui/account-dialog.ui:233 ui/compose-window.ui:41
+#: ui/filter-list-entry.ui:80 ui/image-crop-dialog.ui:46
+#: ui/list-list-entry.ui:98 ui/list-statuses-page.ui:173
+#: ui/modify-filter-dialog.ui:13 ui/modify-snippet-dialog.ui:14
+#: ui/user-filter-entry.ui:114
+msgid "Cancel"
+msgstr "Peru"
+
+#: src/window/FileSelector.vala:152
+msgid ""
+"Max file size exceeded\n"
+"(3MB)"
+msgstr ""
 
 #: src/window/ImageCropDialog.vala:58 ui/image-crop-dialog.ui:61
 msgid "Next"
 msgstr "Seuraava"
+
+#: src/window/ImageCropDialog.vala:98 src/window/UserListDialog.vala:48
+#: ui/account-dialog.ui:28 ui/list-statuses-page.ui:129
+#: ui/modify-filter-dialog.ui:20 ui/modify-snippet-dialog.ui:21
+msgid "Save"
+msgstr "Tallenna"
 
 #: src/window/ImageCropDialog.vala:103
 msgid "Image does not meet minimum size requirements:"
@@ -257,6 +352,39 @@ msgid_plural "Minimum height: %d pixels"
 msgstr[0] "Vähimmäiskorkeus: %d pikseli"
 msgstr[1] "Vähimmäiskorkeus: %d pikseliä"
 
+#: src/window/ModifyFilterDialog.vala:45
+msgid "Modify Filter"
+msgstr "Muokkaa suodatinta"
+
+#: src/window/ModifyFilterDialog.vala:80
+msgid "Matches"
+msgstr "Vastaa"
+
+#: src/window/ModifyFilterDialog.vala:82
+msgid "Doesn't match"
+msgstr "Ei vastaa"
+
+#: src/window/ModifySnippetDialog.vala:44
+#, fuzzy
+msgid "Modify Snippet"
+msgstr "Muokkaa suodatinta"
+
+#: src/window/ModifySnippetDialog.vala:63
+msgid "Snippet can't be empty"
+msgstr ""
+
+#: src/window/ModifySnippetDialog.vala:70
+msgid "Replacement can't be empty"
+msgstr ""
+
+#: src/window/ModifySnippetDialog.vala:78
+msgid "Snippet may not contain whitespace"
+msgstr ""
+
+#: src/window/ModifySnippetDialog.vala:86
+msgid "Snippet already exists"
+msgstr ""
+
 #: src/window/SettingsDialog.vala:83
 msgid ""
 "Hey, check out this new #Corebird version! \\ (•◡•) / #cool "
@@ -265,14 +393,223 @@ msgstr ""
 "Hei, #Corebird'in uusi versio on nyt saatavilla! \\ (•◡•) / #cool "
 "#newisalwaysbetter"
 
-#: src/DefaultTimeline.vala:358
-#, fuzzy
-msgid "Could not load tweets"
-msgstr "Twiitin näyttäminen epäonnistui"
+#: src/window/UserListDialog.vala:40
+msgid "Add to or Remove User From List"
+msgstr "Lisää tai poista käyttäjä listalta"
 
-#: ui/settings-dialog.ui:16 ui/settings-dialog.ui:22 ui/menus.ui:6
+#: src/window/UserListDialog.vala:69
+msgid "You have no lists."
+msgstr "Sinulla ei ole listoja."
+
+#: ui/about-dialog.ui:6
+msgid "About Corebird"
+msgstr "Tietoja - Corebird"
+
+#: ui/about-dialog.ui:10
+msgid "Using Font Awesome by Dave Gandy - http://fontawesome.io"
+msgstr "Käyttää Dave Gandyn tekemää Font Awesomea - http://fontawesome.io"
+
+#: ui/account-create-widget.ui:16
+msgid "New Account"
+msgstr "Uusi tili"
+
+#: ui/account-create-widget.ui:44
+msgid "PIN:"
+msgstr "PIN:"
+
+#: ui/account-create-widget.ui:65
+msgid "Request PIN"
+msgstr "Pyydä PIN"
+
+#: ui/account-create-widget.ui:75 ui/list-statuses-page.ui:358
+msgid "Confirm"
+msgstr "Vahvista"
+
+#: ui/account-dialog.ui:11
+msgid "Account Settings"
+msgstr "Tilin asetukset"
+
+#: ui/account-dialog.ui:76
+msgid "Name"
+msgstr "Nimi"
+
+#: ui/account-dialog.ui:104
+msgid "Website"
+msgstr "Verkkosivusto"
+
+#: ui/account-dialog.ui:158
+msgid "Autostart"
+msgstr "Käynnistä automaattisesti"
+
+#: ui/account-dialog.ui:189 ui/account-dialog.ui:246 ui/filter-list-entry.ui:93
+#: ui/list-list-entry.ui:132 ui/list-statuses-page.ui:166
+#: ui/modify-snippet-dialog.ui:108 ui/tweet-list-entry.ui:10
+msgid "Delete"
+msgstr "Poista"
+
+#: ui/account-dialog.ui:221
+msgid "Do you really want to delete this account?"
+msgstr "Haluatko varmasti poistaa tämän tilin?"
+
+#: ui/compose-window.ui:11 ui/compose-window.ui:25
+msgid "Compose Tweet"
+msgstr "Kirjoita twiitti"
+
+#: ui/compose-window.ui:48 ui/dm-page.ui:46
+msgid "Send"
+msgstr "Lähetä"
+
+#: ui/compose-window.ui:134
+msgid "Add Image"
+msgstr "Lisää kuva"
+
+#: ui/filter-page.ui:71 ui/search-page.ui:86
+msgid "Users"
+msgstr "Käyttäjät"
+
+#: ui/image-crop-dialog.ui:71
+msgid "Back"
+msgstr "Takaisin"
+
+#: ui/list-list-entry.ui:109
+msgid "Subscribe"
+msgstr "Tilaa"
+
+#: ui/list-list-entry.ui:122
+msgid "Unsubscribe"
+msgstr "Lopeta tilaus"
+
+#: ui/list-statuses-page.ui:26
+msgid "Subscribers:"
+msgstr "Tilaajat:"
+
+#: ui/list-statuses-page.ui:49
+msgid "Members:"
+msgstr "Jäsenet:"
+
+#: ui/list-statuses-page.ui:72
+msgid "Creator:"
+msgstr "Tehnyt:"
+
+#: ui/list-statuses-page.ui:84
+msgid "Created at:"
+msgstr "Tehty:"
+
+#: ui/list-statuses-page.ui:119
+msgid "Edit"
+msgstr "Muokkaa"
+
+#: ui/list-statuses-page.ui:194
+msgid "Mode:"
+msgstr "Tila:"
+
+#: ui/list-statuses-page.ui:217
+msgid "Private"
+msgstr "Yksityinen"
+
+#: ui/list-statuses-page.ui:218
+msgid "Public"
+msgstr "Julkinen"
+
+#: ui/list-statuses-page.ui:296
+msgid "Description"
+msgstr ""
+
+#: ui/load-more-entry.ui:11
+msgid "Load more"
+msgstr "Lataa lisää"
+
+#: ui/main-window.ui:65
+msgid "Show configured accounts"
+msgstr "Näytä määritetyt tilit"
+
+#: ui/main-window.ui:84
+msgid "Compose tweet"
+msgstr "Twiittaa"
+
+#: ui/main-window.ui:101
+msgid "New tweet"
+msgstr "Uusi twiitti"
+
+#: ui/menus.ui:6 ui/settings-dialog.ui:16 ui/settings-dialog.ui:22
 msgid "Settings"
 msgstr "Asetukset"
+
+#: ui/menus.ui:10
+msgid "Shortcuts"
+msgstr "Pikanäppäimet"
+
+#: ui/menus.ui:15
+msgid "About"
+msgstr "Tietoja"
+
+#: ui/menus.ui:19
+msgid "Quit"
+msgstr "Lopeta"
+
+#: ui/modify-filter-dialog.ui:6
+msgid "Add New Filter"
+msgstr "Lisää uusi suodatin"
+
+#: ui/modify-snippet-dialog.ui:6
+msgid "Add New Snippet"
+msgstr "Lisää uusi tekstileike"
+
+#: ui/modify-snippet-dialog.ui:46
+msgid "Keyword"
+msgstr "Avainsana"
+
+#: ui/modify-snippet-dialog.ui:72
+msgid "Replacement"
+msgstr "Korvike"
+
+#: ui/new-list-entry.ui:30
+msgid "Create New List"
+msgstr "Luo uusi lista"
+
+#: ui/new-list-entry.ui:51
+msgid "Name:"
+msgstr "Nimi:"
+
+#: ui/new-list-entry.ui:73
+msgid "Create"
+msgstr "Luo"
+
+#: ui/profile-page.ui:6
+msgid "Write Direct Message"
+msgstr "Kirjoita yksityisviesti"
+
+#: ui/profile-page.ui:14
+msgid "Add to/Remove from List"
+msgstr "Lisää listalle tai poista listalta"
+
+#: ui/profile-page.ui:20
+msgid "Blocked"
+msgstr "Estetty"
+
+#: ui/profile-page.ui:24
+msgid "Muted"
+msgstr ""
+
+#: ui/profile-page.ui:28
+msgid "Retweets disabled"
+msgstr "Uudelleentwiittaukset poistettu käytöstä"
+
+#: ui/profile-page.ui:155
+msgid "Follows you"
+msgstr "Seuraa sinua"
+
+#: ui/profile-page.ui:227 ui/search-page.ui:74 ui/settings-dialog.ui:421
+msgid "Tweets"
+msgstr "Twiitit"
+
+#: ui/profile-page.ui:268
+msgid "Followers"
+msgstr "Seuraajia"
+
+#: ui/profile-page.ui:309
+msgid "Following"
+msgstr "Seuraa"
 
 #: ui/settings-dialog.ui:60
 msgid "Show inline media"
@@ -362,10 +699,6 @@ msgstr "Poista medialinkit"
 msgid "Hide inappropriate content"
 msgstr "Piilota asiaton sisältö"
 
-#: ui/settings-dialog.ui:421 ui/search-page.ui:74 ui/profile-page.ui:227
-msgid "Tweets"
-msgstr "Twiitit"
-
 #: ui/settings-dialog.ui:442
 msgid "No snippets configured."
 msgstr "Tekstileikkeitä ei ole määritetty."
@@ -378,274 +711,6 @@ msgstr ""
 #: ui/settings-dialog.ui:495
 msgid "Snippets"
 msgstr "Tekstileikkeet"
-
-#: ui/menus.ui:10
-msgid "Shortcuts"
-msgstr "Pikanäppäimet"
-
-#: ui/menus.ui:15
-msgid "About"
-msgstr "Tietoja"
-
-#: ui/menus.ui:19
-msgid "Quit"
-msgstr "Lopeta"
-
-#: ui/user-lists-widget.ui:14
-msgid "Created"
-msgstr "Luotu"
-
-#: ui/user-lists-widget.ui:86
-msgid "Subscribed to"
-msgstr "Tilannut"
-
-#: ui/about-dialog.ui:6
-msgid "About Corebird"
-msgstr "Tietoja - Corebird"
-
-#: ui/about-dialog.ui:10
-msgid "Using Font Awesome by Dave Gandy - http://fontawesome.io"
-msgstr "Käyttää Dave Gandyn tekemää Font Awesomea - http://fontawesome.io"
-
-#: ui/dm-page.ui:46 ui/compose-window.ui:48
-msgid "Send"
-msgstr "Lähetä"
-
-#: ui/load-more-entry.ui:11
-msgid "Load more"
-msgstr "Lataa lisää"
-
-#: ui/tweet-list-entry.ui:6 ui/tweet-info-page.ui:6
-msgid "Quote"
-msgstr "Lainaa"
-
-#: ui/tweet-list-entry.ui:10 ui/list-list-entry.ui:132
-#: ui/list-statuses-page.ui:166 ui/filter-list-entry.ui:93
-#: ui/account-dialog.ui:189 ui/account-dialog.ui:246
-#: ui/modify-snippet-dialog.ui:108
-msgid "Delete"
-msgstr "Poista"
-
-#: ui/tweet-list-entry.ui:60
-msgid "Favorite"
-msgstr "Suosikki"
-
-#: ui/tweet-list-entry.ui:81
-msgid "Reply"
-msgstr "Vastaa"
-
-#: ui/user-list-entry.ui:65
-msgid "Show settings of this account"
-msgstr "Näytä tämän tilin asetukset"
-
-#: ui/user-list-entry.ui:90
-msgid "Open in new window"
-msgstr "Avaa uudessa ikkunassa"
-
-#: ui/user-list-entry.ui:114
-#, fuzzy
-msgid "Go to profile"
-msgstr "Suojattu profiili"
-
-#: ui/new-list-entry.ui:30
-msgid "Create New List"
-msgstr "Luo uusi lista"
-
-#: ui/new-list-entry.ui:51
-msgid "Name:"
-msgstr "Nimi:"
-
-#: ui/new-list-entry.ui:73
-msgid "Create"
-msgstr "Luo"
-
-#: ui/search-page.ui:86 ui/filter-page.ui:71
-msgid "Users"
-msgstr "Käyttäjät"
-
-#: ui/compose-window.ui:11 ui/compose-window.ui:25
-msgid "Compose Tweet"
-msgstr "Kirjoita twiitti"
-
-#: ui/compose-window.ui:134
-msgid "Add Image"
-msgstr "Lisää kuva"
-
-#: ui/profile-page.ui:6
-msgid "Write Direct Message"
-msgstr "Kirjoita yksityisviesti"
-
-#: ui/profile-page.ui:14
-msgid "Add to/Remove from List"
-msgstr "Lisää listalle tai poista listalta"
-
-#: ui/profile-page.ui:20
-msgid "Blocked"
-msgstr "Estetty"
-
-#: ui/profile-page.ui:24
-msgid "Muted"
-msgstr ""
-
-#: ui/profile-page.ui:28
-msgid "Retweets disabled"
-msgstr "Uudelleentwiittaukset poistettu käytöstä"
-
-#: ui/profile-page.ui:155
-msgid "Follows you"
-msgstr "Seuraa sinua"
-
-#: ui/profile-page.ui:268
-msgid "Followers"
-msgstr "Seuraajia"
-
-#: ui/profile-page.ui:309
-msgid "Following"
-msgstr "Seuraa"
-
-#: ui/main-window.ui:65
-msgid "Show configured accounts"
-msgstr "Näytä määritetyt tilit"
-
-#: ui/main-window.ui:84
-msgid "Compose tweet"
-msgstr "Twiittaa"
-
-#: ui/main-window.ui:101
-msgid "New tweet"
-msgstr "Uusi twiitti"
-
-#: ui/account-create-widget.ui:16
-msgid "New Account"
-msgstr "Uusi tili"
-
-#: ui/account-create-widget.ui:44
-msgid "PIN:"
-msgstr "PIN:"
-
-#: ui/account-create-widget.ui:65
-msgid "Request PIN"
-msgstr "Pyydä PIN"
-
-#: ui/account-create-widget.ui:75 ui/list-statuses-page.ui:358
-msgid "Confirm"
-msgstr "Vahvista"
-
-#: ui/tweet-info-page.ui:223
-msgid "Retweet tweet"
-msgstr "Twiittaa uudelleen"
-
-#: ui/tweet-info-page.ui:250
-msgid "Favorite tweet"
-msgstr "Lisää twiitti suosikkeihin"
-
-#: ui/tweet-info-page.ui:277
-msgid "Reply to tweet"
-msgstr "Vastaa twiittiin"
-
-#: ui/tweet-info-page.ui:315
-msgid "More"
-msgstr "Lisää"
-
-#: ui/list-list-entry.ui:109
-msgid "Subscribe"
-msgstr "Tilaa"
-
-#: ui/list-list-entry.ui:122
-msgid "Unsubscribe"
-msgstr "Lopeta tilaus"
-
-#: ui/start-conversation-entry.ui:29
-msgid "Start new conversation"
-msgstr "Aloita uusi keskustelu"
-
-#: ui/start-conversation-entry.ui:49
-msgid "With:"
-msgstr "Osallistujat:"
-
-#: ui/start-conversation-entry.ui:75
-msgid "Go"
-msgstr "Aloita"
-
-#: ui/list-statuses-page.ui:26
-msgid "Subscribers:"
-msgstr "Tilaajat:"
-
-#: ui/list-statuses-page.ui:49
-msgid "Members:"
-msgstr "Jäsenet:"
-
-#: ui/list-statuses-page.ui:72
-msgid "Creator:"
-msgstr "Tehnyt:"
-
-#: ui/list-statuses-page.ui:84
-msgid "Created at:"
-msgstr "Tehty:"
-
-#: ui/list-statuses-page.ui:119
-msgid "Edit"
-msgstr "Muokkaa"
-
-#: ui/list-statuses-page.ui:194
-msgid "Mode:"
-msgstr "Tila:"
-
-#: ui/list-statuses-page.ui:217
-msgid "Private"
-msgstr "Yksityinen"
-
-#: ui/list-statuses-page.ui:218
-msgid "Public"
-msgstr "Julkinen"
-
-#: ui/list-statuses-page.ui:296
-msgid "Description"
-msgstr ""
-
-#: ui/modify-filter-dialog.ui:6
-msgid "Add New Filter"
-msgstr "Lisää uusi suodatin"
-
-#: ui/user-filter-entry.ui:125
-msgid "Unblock"
-msgstr "Lopeta estäminen"
-
-#: ui/account-dialog.ui:11
-msgid "Account Settings"
-msgstr "Tilin asetukset"
-
-#: ui/account-dialog.ui:76
-msgid "Name"
-msgstr "Nimi"
-
-#: ui/account-dialog.ui:104
-msgid "Website"
-msgstr "Verkkosivusto"
-
-#: ui/account-dialog.ui:158
-msgid "Autostart"
-msgstr "Käynnistä automaattisesti"
-
-#: ui/account-dialog.ui:221
-msgid "Do you really want to delete this account?"
-msgstr "Haluatko varmasti poistaa tämän tilin?"
-
-#: ui/image-crop-dialog.ui:71
-msgid "Back"
-msgstr "Takaisin"
-
-#: ui/modify-snippet-dialog.ui:6
-msgid "Add New Snippet"
-msgstr "Lisää uusi tekstileike"
-
-#: ui/modify-snippet-dialog.ui:46
-msgid "Keyword"
-msgstr "Avainsana"
-
-#: ui/modify-snippet-dialog.ui:72
-msgid "Replacement"
-msgstr "Korvike"
 
 #: ui/shortcuts-window.ui:12
 msgctxt "shortcuts window"
@@ -722,49 +787,70 @@ msgctxt "shortcuts window"
 msgid "Delete"
 msgstr "Poista"
 
-#: data/org.baedert.corebird.appdata.xml.in:5
-#: data/org.baedert.corebird.desktop.in:3
+#: ui/start-conversation-entry.ui:29
+msgid "Start new conversation"
+msgstr "Aloita uusi keskustelu"
+
+#: ui/start-conversation-entry.ui:49
+msgid "With:"
+msgstr "Osallistujat:"
+
+#: ui/start-conversation-entry.ui:75
+msgid "Go"
+msgstr "Aloita"
+
+#: ui/tweet-info-page.ui:6 ui/tweet-list-entry.ui:6
+msgid "Quote"
+msgstr "Lainaa"
+
+#: ui/tweet-info-page.ui:223
+msgid "Retweet tweet"
+msgstr "Twiittaa uudelleen"
+
+#: ui/tweet-info-page.ui:250
+msgid "Favorite tweet"
+msgstr "Lisää twiitti suosikkeihin"
+
+#: ui/tweet-info-page.ui:277
+msgid "Reply to tweet"
+msgstr "Vastaa twiittiin"
+
+#: ui/tweet-info-page.ui:315
+msgid "More"
+msgstr "Lisää"
+
+#: ui/tweet-list-entry.ui:60
+msgid "Favorite"
+msgstr "Suosikki"
+
+#: ui/tweet-list-entry.ui:81
+msgid "Reply"
+msgstr "Vastaa"
+
+#: ui/user-filter-entry.ui:125
+msgid "Unblock"
+msgstr "Lopeta estäminen"
+
+#: ui/user-list-entry.ui:65
+msgid "Show settings of this account"
+msgstr "Näytä tämän tilin asetukset"
+
+#: ui/user-list-entry.ui:90
+msgid "Open in new window"
+msgstr "Avaa uudessa ikkunassa"
+
+#: ui/user-list-entry.ui:114
 #, fuzzy
-msgid "Corebird"
-msgstr "Tietoja - Corebird"
+msgid "Go to profile"
+msgstr "Suojattu profiili"
 
-#: data/org.baedert.corebird.appdata.xml.in:6
-#: data/org.baedert.corebird.desktop.in:4
-msgid "Twitter Client"
-msgstr "Twitter-sovellus"
+#: ui/user-lists-widget.ui:14
+msgid "Created"
+msgstr "Luotu"
 
-#: data/org.baedert.corebird.appdata.xml.in:10
-msgid ""
-"Corebird is a native GTK+ twitter client that provides vital features such "
-"as Direct Messages (DMs), tweet notifications, conversation views."
-msgstr ""
-"Corebird on GTK+:lla toteutettu Twitter-sovellus, joka tarjoaa muun muassa "
-"yksityisviestit, ilmoitukset twiiteistä ja keskustelunäkymän."
-
-#: data/org.baedert.corebird.appdata.xml.in:13
-msgid ""
-"Additional features include local viewing of videos, multiple inline images, "
-"Lists, Filters, multiple accounts, etc."
-msgstr ""
-"Lisäominaisuuksiin kuuluu muun muassa videoiden katselu suoraan "
-"sovelluksesta, useat upotetut kuvat, listat, suodattimet, useat tilit jne."
-
-#: data/org.baedert.corebird.desktop.in:5
-msgid "twitter;"
-msgstr ""
-
-#: data/org.baedert.corebird.desktop.in:8
-#, fuzzy
-msgid "corebird"
-msgstr "Tietoja - Corebird"
-
-#: data/org.baedert.corebird.desktop.in:11
-msgid "Use Twitter from within a normal desktop application"
-msgstr "Käytä Twitteriä työpöytäsovelluksella"
-
-#, fuzzy
-#~ msgid "Whether to hide images marked as inappropriate by default or not"
-#~ msgstr "Tämä twiitti sisältää asiattomaksi merkittyjä kuvia"
+#: ui/user-lists-widget.ui:86
+msgid "Subscribed to"
+msgstr "Tilannut"
 
 #~ msgid "Open Account"
 #~ msgstr "Avaa tili"
@@ -777,19 +863,3 @@ msgstr "Käytä Twitteriä työpöytäsovelluksella"
 
 #~ msgid "MB"
 #~ msgstr "Mt"
-
-#~ msgid "Show anyway"
-#~ msgstr "Näytä silti"
-
-#~ msgid "Generic timeline view when using Corebird"
-#~ msgstr "Yleinen aikajana Corebirdissä"
-
-#~ msgid "Typical Twitter profile."
-#~ msgstr "Tyypillinen Twitter-profiili."
-
-#~ msgid ""
-#~ "Account settings like Name, Website, Description and Avatar can be "
-#~ "configured."
-#~ msgstr ""
-#~ "Tilin asetuksia, kuten nimeä, verkkosivustoa, kuvausta ja kuvaa on "
-#~ "mahdollista muuttaa."

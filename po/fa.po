@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
-"Report-Msgid-Bugs-To: mail@baedert.org\n"
-"POT-Creation-Date: 2016-07-28 16:40+0200\n"
+"Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
+"POT-Creation-Date: 2016-07-29 13:43+0200\n"
 "PO-Revision-Date: 2016-02-21 09:14+0000\n"
 "Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
 "Language-Team: Persian (http://www.transifex.com/corebird/corebird/language/"
@@ -19,55 +19,197 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: src/window/ComposeTweetWindow.vala:125
-msgid "Quote tweet"
+#: data/org.baedert.corebird.appdata.xml.in:5
+#: data/org.baedert.corebird.desktop.in:3
+#, fuzzy
+msgid "Corebird"
+msgstr "درباره Corebird"
+
+#: data/org.baedert.corebird.appdata.xml.in:6
+#: data/org.baedert.corebird.desktop.in:4
+msgid "Twitter Client"
 msgstr ""
 
-#: src/window/UserListDialog.vala:40
-msgid "Add to or Remove User From List"
+#: data/org.baedert.corebird.appdata.xml.in:10
+msgid ""
+"Corebird is a native GTK+ twitter client that provides vital features such "
+"as Direct Messages (DMs), tweet notifications, conversation views."
 msgstr ""
 
-#: src/window/UserListDialog.vala:47 ui/compose-window.ui:41
-#: ui/list-list-entry.ui:98 ui/list-statuses-page.ui:173
-#: ui/filter-list-entry.ui:80 ui/modify-filter-dialog.ui:13
-#: ui/user-filter-entry.ui:114 ui/account-dialog.ui:21 ui/account-dialog.ui:233
-#: ui/image-crop-dialog.ui:46 ui/modify-snippet-dialog.ui:14
-msgid "Cancel"
-msgstr "انصراف"
-
-#: src/window/UserListDialog.vala:48 src/window/ImageCropDialog.vala:98
-#: ui/list-statuses-page.ui:129 ui/modify-filter-dialog.ui:20
-#: ui/account-dialog.ui:28 ui/modify-snippet-dialog.ui:21
-msgid "Save"
-msgstr "ذخیره سازی"
-
-#: src/window/UserListDialog.vala:69
-msgid "You have no lists."
+#: data/org.baedert.corebird.appdata.xml.in:13
+msgid ""
+"Additional features include local viewing of videos, multiple inline images, "
+"Lists, Filters, multiple accounts, etc."
 msgstr ""
 
-#: src/window/ModifyFilterDialog.vala:45
-msgid "Modify Filter"
+#: data/org.baedert.corebird.appdata.xml.in:21
+msgid "Generic timeline view when using Corebird"
 msgstr ""
 
-#: src/window/ModifyFilterDialog.vala:80
-msgid "Matches"
-msgstr "مطابقت داره"
-
-#: src/window/ModifyFilterDialog.vala:82
-msgid "Doesn't match"
-msgstr "مطابقت نداره"
-
-#: src/widgets/TweetListBox.vala:100
-msgid "Loading..."
+#: data/org.baedert.corebird.appdata.xml.in:25
+msgid "Typical Twitter profile"
 msgstr ""
 
-#: src/widgets/TweetListBox.vala:103 src/widgets/TweetListBox.vala:151
-msgid "No entries found"
-msgstr "چیزی یافت نشد!"
-
-#: src/widgets/TweetListBox.vala:111
-msgid "Retry"
+#: data/org.baedert.corebird.appdata.xml.in:29
+msgid "Account settings can be configured"
 msgstr ""
+
+#: data/org.baedert.corebird.desktop.in:5
+msgid "Use Twitter from within a normal desktop application"
+msgstr ""
+
+#: data/org.baedert.corebird.desktop.in:7
+msgid "twitter;"
+msgstr ""
+
+#: data/org.baedert.corebird.desktop.in:11
+#, fuzzy
+msgid "corebird"
+msgstr "درباره Corebird"
+
+#: src/DefaultTimeline.vala:358
+msgid "Could not load tweets"
+msgstr ""
+
+#: src/DMPage.vala:329
+msgid "Direct Conversation"
+msgstr ""
+
+#: src/DMThreadsPage.vala:207
+#, c-format
+msgid "%d new Message from %s"
+msgid_plural "%d new Messages from %s"
+msgstr[0] ""
+
+#: src/DMThreadsPage.vala:213 src/UserEventReceiver.vala:94
+#, c-format
+msgid "New direct message from %s"
+msgstr ""
+
+#: src/DMThreadsPage.vala:223 src/DMThreadsPage.vala:237
+msgid "Direct Messages"
+msgstr "پیام مستقیم"
+
+#: src/FavoritesTimeline.vala:67 src/FavoritesTimeline.vala:71
+#: src/TweetInfoPage.vala:482
+msgid "Favorites"
+msgstr "علاقه مندی ها"
+
+#: src/FilterPage.vala:47
+msgid "Add new Filter"
+msgstr ""
+
+#: src/FilterPage.vala:317 src/FilterPage.vala:323
+msgid "Filters"
+msgstr ""
+
+#: src/HomeTimeline.vala:122
+#, c-format
+msgid "%s retweeted %s"
+msgstr ""
+
+#: src/HomeTimeline.vala:125
+#, c-format
+msgid "%s tweeted"
+msgstr "%s توییت شد"
+
+#: src/HomeTimeline.vala:134
+#, c-format
+msgid "%d new Tweet!"
+msgid_plural "%d new Tweets!"
+msgstr[0] ""
+
+#: src/HomeTimeline.vala:169
+msgid "Home"
+msgstr "خانه"
+
+#: src/list/DMThreadEntry.vala:71
+#, c-format
+msgid "(%d unread)"
+msgid_plural "(%d unread)"
+msgstr[0] ""
+
+#: src/ListsPage.vala:120 src/ListsPage.vala:125 ui/profile-page.ui:350
+msgid "Lists"
+msgstr "لیست ها"
+
+#: src/ListStatusesPage.vala:367
+msgid "List"
+msgstr ""
+
+#: src/list/TweetListEntry.vala:411
+#, fuzzy, c-format
+msgid "Block %s"
+msgstr "بلاک شده"
+
+#: src/list/TweetListEntry.vala:546
+msgid "This tweet contains images marked as inappropriate"
+msgstr ""
+
+#: src/list/TweetListEntry.vala:553
+msgid "Show anyway"
+msgstr ""
+
+#: src/MainWindow.vala:75
+#, fuzzy
+msgid "Add new Account"
+msgstr "بازکردن حساب"
+
+#: src/MentionsTimeline.vala:91 src/UserEventReceiver.vala:111
+#, fuzzy, c-format
+msgid "%s mentioned %s"
+msgstr "اشاره ها"
+
+#: src/MentionsTimeline.vala:99 src/MentionsTimeline.vala:103
+msgid "Mentions"
+msgstr "اشاره ها"
+
+#: src/ProfilePage.vala:266
+msgid "Protected profile"
+msgstr "پروفایل محافظت شده"
+
+#: src/ProfilePage.vala:319
+#, c-format
+msgid "Tweet to @%s"
+msgstr ""
+
+#: src/SearchPage.vala:353 src/SearchPage.vala:362 ui/search-page.ui:24
+msgid "Search"
+msgstr "جستجو"
+
+#: src/TweetInfoPage.vala:300
+msgid "Could not show tweet"
+msgstr ""
+
+#: src/TweetInfoPage.vala:481
+msgid "Retweets"
+msgstr "توییت های مجدد"
+
+#: src/TweetInfoPage.vala:490 src/widgets/MediaButton.vala:91
+msgid "Open in Browser"
+msgstr "توی مرورگر باز بشه"
+
+#: src/TweetInfoPage.vala:490
+msgid "Source"
+msgstr "منبع"
+
+#: src/TweetInfoPage.vala:530
+msgid "Tweet Details"
+msgstr ""
+
+#: src/util/Utils.vala:195
+msgid "Now"
+msgstr "اکنون"
+
+#: src/util/Utils.vala:197
+#, c-format
+msgid "%dm"
+msgstr "%dm"
+
+#: src/util/Utils.vala:201
+#, c-format
+msgid "%dh"
+msgstr "%dh"
 
 #: src/widgets/AccountCreateWidget.vala:40
 msgid "Don't have an account yet?"
@@ -98,9 +240,18 @@ msgstr "PIN اشتباهه"
 msgid "Account already in use"
 msgstr ""
 
-#: src/widgets/PixbufButton.vala:52
-msgid "Copy link"
+#: src/widgets/AvatarBannerWidget.vala:140
+msgid "Select banner"
 msgstr ""
+
+#: src/widgets/AvatarBannerWidget.vala:155
+msgid "Select avatar"
+msgstr ""
+
+#: src/widgets/CompletionTextView.vala:33
+#, fuzzy
+msgid "No users found"
+msgstr "چیزی یافت نشد!"
 
 #: src/widgets/FollowButton.vala:45
 msgid "Follow"
@@ -110,131 +261,62 @@ msgstr "دنبال کردن"
 msgid "Unfollow"
 msgstr "دنبال نکنید"
 
-#: src/HomeTimeline.vala:122
-#, c-format
-msgid "%s retweeted %s"
+#: src/widgets/MediaButton.vala:42
+msgid "Copy URL"
 msgstr ""
 
-#: src/HomeTimeline.vala:125
-#, c-format
-msgid "%s tweeted"
-msgstr "%s توییت شد"
-
-#: src/HomeTimeline.vala:134
-#, c-format
-msgid "%d new Tweet!"
-msgid_plural "%d new Tweets!"
-msgstr[0] ""
-
-#: src/HomeTimeline.vala:169
-msgid "Home"
-msgstr "خانه"
-
-#: src/DMThreadsPage.vala:207
-#, c-format
-msgid "%d new Message from %s"
-msgid_plural "%d new Messages from %s"
-msgstr[0] ""
-
-#: src/DMThreadsPage.vala:213
-#, c-format
-msgid "New direct message from %s"
+#: src/widgets/PixbufButton.vala:52
+msgid "Copy link"
 msgstr ""
 
-#: src/DMThreadsPage.vala:223 src/DMThreadsPage.vala:237
-msgid "Direct Messages"
-msgstr "پیام مستقیم"
-
-#: src/list/DMThreadEntry.vala:71
-#, c-format
-msgid "(%d unread)"
-msgid_plural "(%d unread)"
-msgstr[0] ""
-
-#: src/ListsPage.vala:120 src/ListsPage.vala:125 ui/profile-page.ui:350
-msgid "Lists"
-msgstr "لیست ها"
-
-#: src/ProfilePage.vala:266
-msgid "Protected profile"
-msgstr "پروفایل محافظت شده"
-
-#: src/ProfilePage.vala:319
-#, c-format
-msgid "Tweet to @%s"
+#: src/widgets/TweetListBox.vala:100
+msgid "Loading..."
 msgstr ""
 
-#: src/TweetInfoPage.vala:300
-msgid "Could not show tweet"
+#: src/widgets/TweetListBox.vala:103 src/widgets/TweetListBox.vala:151
+msgid "No entries found"
+msgstr "چیزی یافت نشد!"
+
+#: src/widgets/TweetListBox.vala:111
+msgid "Retry"
 msgstr ""
 
-#: src/TweetInfoPage.vala:481
-msgid "Retweets"
-msgstr "توییت های مجدد"
-
-#: src/TweetInfoPage.vala:482 src/FavoritesTimeline.vala:67
-#: src/FavoritesTimeline.vala:71
-msgid "Favorites"
-msgstr "علاقه مندی ها"
-
-#: src/TweetInfoPage.vala:490
-msgid "Open in Browser"
-msgstr "توی مرورگر باز بشه"
-
-#: src/TweetInfoPage.vala:490
-msgid "Source"
-msgstr "منبع"
-
-#: src/TweetInfoPage.vala:530
-msgid "Tweet Details"
+#: src/window/ComposeTweetWindow.vala:125
+msgid "Quote tweet"
 msgstr ""
 
-#: src/util/Utils.vala:195
-msgid "Now"
-msgstr "اکنون"
-
-#: src/util/Utils.vala:197
-#, c-format
-msgid "%dm"
-msgstr "%dm"
-
-#: src/util/Utils.vala:201
-#, c-format
-msgid "%dh"
-msgstr "%dh"
-
-#: src/SearchPage.vala:353 src/SearchPage.vala:362 ui/search-page.ui:24
-msgid "Search"
-msgstr "جستجو"
-
-#: src/MentionsTimeline.vala:91
-#, fuzzy, c-format
-msgid "%s mentioned %s"
-msgstr "اشاره ها"
-
-#: src/MentionsTimeline.vala:99 src/MentionsTimeline.vala:103
-msgid "Mentions"
-msgstr "اشاره ها"
-
-#: src/DMPage.vala:329
-msgid "Direct Conversation"
+#: src/window/FileSelector.vala:39 src/window/FileSelector.vala:85
+msgid "Select Image"
 msgstr ""
 
-#: src/ListStatusesPage.vala:367
-msgid "List"
+#: src/window/FileSelector.vala:70
+msgid "Open"
 msgstr ""
 
-#: src/widgets/AvatarBannerWidget.vala:140
-msgid "Select banner"
-msgstr ""
+#: src/window/FileSelector.vala:77 src/window/UserListDialog.vala:47
+#: ui/account-dialog.ui:21 ui/account-dialog.ui:233 ui/compose-window.ui:41
+#: ui/filter-list-entry.ui:80 ui/image-crop-dialog.ui:46
+#: ui/list-list-entry.ui:98 ui/list-statuses-page.ui:173
+#: ui/modify-filter-dialog.ui:13 ui/modify-snippet-dialog.ui:14
+#: ui/user-filter-entry.ui:114
+msgid "Cancel"
+msgstr "انصراف"
 
-#: src/widgets/AvatarBannerWidget.vala:155
-msgid "Select avatar"
+#: src/window/FileSelector.vala:152
+msgid ""
+"Max file size exceeded\n"
+"(3MB)"
 msgstr ""
 
 #: src/window/ImageCropDialog.vala:58 ui/image-crop-dialog.ui:61
 msgid "Next"
 msgstr ""
+
+#: src/window/ImageCropDialog.vala:98 src/window/UserListDialog.vala:48
+#: ui/account-dialog.ui:28 ui/list-statuses-page.ui:129
+#: ui/modify-filter-dialog.ui:20 ui/modify-snippet-dialog.ui:21
+msgid "Save"
+msgstr "ذخیره سازی"
 
 #: src/window/ImageCropDialog.vala:103
 msgid "Image does not meet minimum size requirements:"
@@ -252,19 +334,263 @@ msgid "Minimum height: %d pixel"
 msgid_plural "Minimum height: %d pixels"
 msgstr[0] ""
 
+#: src/window/ModifyFilterDialog.vala:45
+msgid "Modify Filter"
+msgstr ""
+
+#: src/window/ModifyFilterDialog.vala:80
+msgid "Matches"
+msgstr "مطابقت داره"
+
+#: src/window/ModifyFilterDialog.vala:82
+msgid "Doesn't match"
+msgstr "مطابقت نداره"
+
+#: src/window/ModifySnippetDialog.vala:44
+msgid "Modify Snippet"
+msgstr ""
+
+#: src/window/ModifySnippetDialog.vala:63
+msgid "Snippet can't be empty"
+msgstr ""
+
+#: src/window/ModifySnippetDialog.vala:70
+msgid "Replacement can't be empty"
+msgstr ""
+
+#: src/window/ModifySnippetDialog.vala:78
+msgid "Snippet may not contain whitespace"
+msgstr ""
+
+#: src/window/ModifySnippetDialog.vala:86
+msgid "Snippet already exists"
+msgstr ""
+
 #: src/window/SettingsDialog.vala:83
 msgid ""
 "Hey, check out this new #Corebird version! \\ (•◡•) / #cool "
 "#newisalwaysbetter"
 msgstr ""
 
-#: src/DefaultTimeline.vala:358
-msgid "Could not load tweets"
+#: src/window/UserListDialog.vala:40
+msgid "Add to or Remove User From List"
 msgstr ""
 
-#: ui/settings-dialog.ui:16 ui/settings-dialog.ui:22 ui/menus.ui:6
+#: src/window/UserListDialog.vala:69
+msgid "You have no lists."
+msgstr ""
+
+#: ui/about-dialog.ui:6
+msgid "About Corebird"
+msgstr "درباره Corebird"
+
+#: ui/about-dialog.ui:10
+msgid "Using Font Awesome by Dave Gandy - http://fontawesome.io"
+msgstr ""
+"از فونت های Font Awesome که توسط Dave Gandy  طراحی شدند استفاده کن - http://"
+"fontawesome.io"
+
+#: ui/account-create-widget.ui:16
+msgid "New Account"
+msgstr ""
+
+#: ui/account-create-widget.ui:44
+msgid "PIN:"
+msgstr "PIN:"
+
+#: ui/account-create-widget.ui:65
+msgid "Request PIN"
+msgstr ""
+
+#: ui/account-create-widget.ui:75 ui/list-statuses-page.ui:358
+msgid "Confirm"
+msgstr "تایید"
+
+#: ui/account-dialog.ui:11
+msgid "Account Settings"
+msgstr ""
+
+#: ui/account-dialog.ui:76
+msgid "Name"
+msgstr ""
+
+#: ui/account-dialog.ui:104
+msgid "Website"
+msgstr ""
+
+#: ui/account-dialog.ui:158
+msgid "Autostart"
+msgstr ""
+
+#: ui/account-dialog.ui:189 ui/account-dialog.ui:246 ui/filter-list-entry.ui:93
+#: ui/list-list-entry.ui:132 ui/list-statuses-page.ui:166
+#: ui/modify-snippet-dialog.ui:108 ui/tweet-list-entry.ui:10
+msgid "Delete"
+msgstr "حذف"
+
+#: ui/account-dialog.ui:221
+msgid "Do you really want to delete this account?"
+msgstr ""
+
+#: ui/compose-window.ui:11 ui/compose-window.ui:25
+msgid "Compose Tweet"
+msgstr "توییت کنید"
+
+#: ui/compose-window.ui:48 ui/dm-page.ui:46
+msgid "Send"
+msgstr "ارسال کن"
+
+#: ui/compose-window.ui:134
+msgid "Add Image"
+msgstr ""
+
+#: ui/filter-page.ui:71 ui/search-page.ui:86
+msgid "Users"
+msgstr "کاربران"
+
+#: ui/image-crop-dialog.ui:71
+msgid "Back"
+msgstr ""
+
+#: ui/list-list-entry.ui:109
+msgid "Subscribe"
+msgstr "مشترک شو"
+
+#: ui/list-list-entry.ui:122
+msgid "Unsubscribe"
+msgstr "لغو اشتراک"
+
+#: ui/list-statuses-page.ui:26
+msgid "Subscribers:"
+msgstr "مشترکین:"
+
+#: ui/list-statuses-page.ui:49
+msgid "Members:"
+msgstr "اعضا:"
+
+#: ui/list-statuses-page.ui:72
+msgid "Creator:"
+msgstr "ایجاد کننده"
+
+#: ui/list-statuses-page.ui:84
+msgid "Created at:"
+msgstr "ایجاد شده در:"
+
+#: ui/list-statuses-page.ui:119
+msgid "Edit"
+msgstr "ویرایش"
+
+#: ui/list-statuses-page.ui:194
+msgid "Mode:"
+msgstr "حالت:"
+
+#: ui/list-statuses-page.ui:217
+msgid "Private"
+msgstr "خصوصی"
+
+#: ui/list-statuses-page.ui:218
+msgid "Public"
+msgstr "عمومی"
+
+#: ui/list-statuses-page.ui:296
+msgid "Description"
+msgstr ""
+
+#: ui/load-more-entry.ui:11
+msgid "Load more"
+msgstr "بیشتر"
+
+#: ui/main-window.ui:65
+msgid "Show configured accounts"
+msgstr ""
+
+#: ui/main-window.ui:84
+msgid "Compose tweet"
+msgstr ""
+
+#: ui/main-window.ui:101
+msgid "New tweet"
+msgstr "توییت جدید"
+
+#: ui/menus.ui:6 ui/settings-dialog.ui:16 ui/settings-dialog.ui:22
 msgid "Settings"
 msgstr "تنظیمات"
+
+#: ui/menus.ui:10
+msgid "Shortcuts"
+msgstr ""
+
+#: ui/menus.ui:15
+msgid "About"
+msgstr "درباره"
+
+#: ui/menus.ui:19
+msgid "Quit"
+msgstr "خروج"
+
+#: ui/modify-filter-dialog.ui:6
+msgid "Add New Filter"
+msgstr ""
+
+#: ui/modify-snippet-dialog.ui:6
+msgid "Add New Snippet"
+msgstr ""
+
+#: ui/modify-snippet-dialog.ui:46
+msgid "Keyword"
+msgstr ""
+
+#: ui/modify-snippet-dialog.ui:72
+msgid "Replacement"
+msgstr ""
+
+#: ui/new-list-entry.ui:30
+msgid "Create New List"
+msgstr "یه لیست جدید ایجاد کنید"
+
+#: ui/new-list-entry.ui:51
+msgid "Name:"
+msgstr "نام"
+
+#: ui/new-list-entry.ui:73
+msgid "Create"
+msgstr "ایجاد کنید"
+
+#: ui/profile-page.ui:6
+msgid "Write Direct Message"
+msgstr "یه پیام مستقیم بنویسید"
+
+#: ui/profile-page.ui:14
+msgid "Add to/Remove from List"
+msgstr "اضافه کردن به/ حذف از لیست"
+
+#: ui/profile-page.ui:20
+msgid "Blocked"
+msgstr "بلاک شده"
+
+#: ui/profile-page.ui:24
+msgid "Muted"
+msgstr ""
+
+#: ui/profile-page.ui:28
+msgid "Retweets disabled"
+msgstr ""
+
+#: ui/profile-page.ui:155
+msgid "Follows you"
+msgstr "شمال رو دنبال می کنه"
+
+#: ui/profile-page.ui:227 ui/search-page.ui:74 ui/settings-dialog.ui:421
+msgid "Tweets"
+msgstr "توییت ها"
+
+#: ui/profile-page.ui:268
+msgid "Followers"
+msgstr ""
+
+#: ui/profile-page.ui:309
+msgid "Following"
+msgstr ""
 
 #: ui/settings-dialog.ui:60
 msgid "Show inline media"
@@ -354,10 +680,6 @@ msgstr ""
 msgid "Hide inappropriate content"
 msgstr ""
 
-#: ui/settings-dialog.ui:421 ui/search-page.ui:74 ui/profile-page.ui:227
-msgid "Tweets"
-msgstr "توییت ها"
-
 #: ui/settings-dialog.ui:442
 msgid "No snippets configured."
 msgstr ""
@@ -368,276 +690,6 @@ msgstr ""
 
 #: ui/settings-dialog.ui:495
 msgid "Snippets"
-msgstr ""
-
-#: ui/menus.ui:10
-msgid "Shortcuts"
-msgstr ""
-
-#: ui/menus.ui:15
-msgid "About"
-msgstr "درباره"
-
-#: ui/menus.ui:19
-msgid "Quit"
-msgstr "خروج"
-
-#: ui/user-lists-widget.ui:14
-msgid "Created"
-msgstr "ایجاد شد"
-
-#: ui/user-lists-widget.ui:86
-msgid "Subscribed to"
-msgstr "مشترک شد"
-
-#: ui/about-dialog.ui:6
-msgid "About Corebird"
-msgstr "درباره Corebird"
-
-#: ui/about-dialog.ui:10
-msgid "Using Font Awesome by Dave Gandy - http://fontawesome.io"
-msgstr ""
-"از فونت های Font Awesome که توسط Dave Gandy  طراحی شدند استفاده کن - http://"
-"fontawesome.io"
-
-#: ui/dm-page.ui:46 ui/compose-window.ui:48
-msgid "Send"
-msgstr "ارسال کن"
-
-#: ui/load-more-entry.ui:11
-msgid "Load more"
-msgstr "بیشتر"
-
-#: ui/tweet-list-entry.ui:6 ui/tweet-info-page.ui:6
-msgid "Quote"
-msgstr "نقل قول"
-
-#: ui/tweet-list-entry.ui:10 ui/list-list-entry.ui:132
-#: ui/list-statuses-page.ui:166 ui/filter-list-entry.ui:93
-#: ui/account-dialog.ui:189 ui/account-dialog.ui:246
-#: ui/modify-snippet-dialog.ui:108
-msgid "Delete"
-msgstr "حذف"
-
-#: ui/tweet-list-entry.ui:60
-msgid "Favorite"
-msgstr ""
-
-#: ui/tweet-list-entry.ui:81
-msgid "Reply"
-msgstr ""
-
-#: ui/user-list-entry.ui:65
-msgid "Show settings of this account"
-msgstr ""
-
-#: ui/user-list-entry.ui:90
-msgid "Open in new window"
-msgstr ""
-
-#: ui/user-list-entry.ui:114
-#, fuzzy
-msgid "Go to profile"
-msgstr "پروفایل محافظت شده"
-
-#: ui/new-list-entry.ui:30
-msgid "Create New List"
-msgstr "یه لیست جدید ایجاد کنید"
-
-#: ui/new-list-entry.ui:51
-msgid "Name:"
-msgstr "نام"
-
-#: ui/new-list-entry.ui:73
-msgid "Create"
-msgstr "ایجاد کنید"
-
-#: ui/search-page.ui:86 ui/filter-page.ui:71
-msgid "Users"
-msgstr "کاربران"
-
-#: ui/compose-window.ui:11 ui/compose-window.ui:25
-msgid "Compose Tweet"
-msgstr "توییت کنید"
-
-#: ui/compose-window.ui:134
-msgid "Add Image"
-msgstr ""
-
-#: ui/profile-page.ui:6
-msgid "Write Direct Message"
-msgstr "یه پیام مستقیم بنویسید"
-
-#: ui/profile-page.ui:14
-msgid "Add to/Remove from List"
-msgstr "اضافه کردن به/ حذف از لیست"
-
-#: ui/profile-page.ui:20
-msgid "Blocked"
-msgstr "بلاک شده"
-
-#: ui/profile-page.ui:24
-msgid "Muted"
-msgstr ""
-
-#: ui/profile-page.ui:28
-msgid "Retweets disabled"
-msgstr ""
-
-#: ui/profile-page.ui:155
-msgid "Follows you"
-msgstr "شمال رو دنبال می کنه"
-
-#: ui/profile-page.ui:268
-msgid "Followers"
-msgstr ""
-
-#: ui/profile-page.ui:309
-msgid "Following"
-msgstr ""
-
-#: ui/main-window.ui:65
-msgid "Show configured accounts"
-msgstr ""
-
-#: ui/main-window.ui:84
-msgid "Compose tweet"
-msgstr ""
-
-#: ui/main-window.ui:101
-msgid "New tweet"
-msgstr "توییت جدید"
-
-#: ui/account-create-widget.ui:16
-msgid "New Account"
-msgstr ""
-
-#: ui/account-create-widget.ui:44
-msgid "PIN:"
-msgstr "PIN:"
-
-#: ui/account-create-widget.ui:65
-msgid "Request PIN"
-msgstr ""
-
-#: ui/account-create-widget.ui:75 ui/list-statuses-page.ui:358
-msgid "Confirm"
-msgstr "تایید"
-
-#: ui/tweet-info-page.ui:223
-msgid "Retweet tweet"
-msgstr "بازنشر توییت"
-
-#: ui/tweet-info-page.ui:250
-msgid "Favorite tweet"
-msgstr "توییت های مورد علاقه"
-
-#: ui/tweet-info-page.ui:277
-msgid "Reply to tweet"
-msgstr "پاسخ به توییت"
-
-#: ui/tweet-info-page.ui:315
-msgid "More"
-msgstr "بیشتر"
-
-#: ui/list-list-entry.ui:109
-msgid "Subscribe"
-msgstr "مشترک شو"
-
-#: ui/list-list-entry.ui:122
-msgid "Unsubscribe"
-msgstr "لغو اشتراک"
-
-#: ui/start-conversation-entry.ui:29
-msgid "Start new conversation"
-msgstr ""
-
-#: ui/start-conversation-entry.ui:49
-msgid "With:"
-msgstr "همراه با:"
-
-#: ui/start-conversation-entry.ui:75
-msgid "Go"
-msgstr "برو"
-
-#: ui/list-statuses-page.ui:26
-msgid "Subscribers:"
-msgstr "مشترکین:"
-
-#: ui/list-statuses-page.ui:49
-msgid "Members:"
-msgstr "اعضا:"
-
-#: ui/list-statuses-page.ui:72
-msgid "Creator:"
-msgstr "ایجاد کننده"
-
-#: ui/list-statuses-page.ui:84
-msgid "Created at:"
-msgstr "ایجاد شده در:"
-
-#: ui/list-statuses-page.ui:119
-msgid "Edit"
-msgstr "ویرایش"
-
-#: ui/list-statuses-page.ui:194
-msgid "Mode:"
-msgstr "حالت:"
-
-#: ui/list-statuses-page.ui:217
-msgid "Private"
-msgstr "خصوصی"
-
-#: ui/list-statuses-page.ui:218
-msgid "Public"
-msgstr "عمومی"
-
-#: ui/list-statuses-page.ui:296
-msgid "Description"
-msgstr ""
-
-#: ui/modify-filter-dialog.ui:6
-msgid "Add New Filter"
-msgstr ""
-
-#: ui/user-filter-entry.ui:125
-msgid "Unblock"
-msgstr ""
-
-#: ui/account-dialog.ui:11
-msgid "Account Settings"
-msgstr ""
-
-#: ui/account-dialog.ui:76
-msgid "Name"
-msgstr ""
-
-#: ui/account-dialog.ui:104
-msgid "Website"
-msgstr ""
-
-#: ui/account-dialog.ui:158
-msgid "Autostart"
-msgstr ""
-
-#: ui/account-dialog.ui:221
-msgid "Do you really want to delete this account?"
-msgstr ""
-
-#: ui/image-crop-dialog.ui:71
-msgid "Back"
-msgstr ""
-
-#: ui/modify-snippet-dialog.ui:6
-msgid "Add New Snippet"
-msgstr ""
-
-#: ui/modify-snippet-dialog.ui:46
-msgid "Keyword"
-msgstr ""
-
-#: ui/modify-snippet-dialog.ui:72
-msgid "Replacement"
 msgstr ""
 
 #: ui/shortcuts-window.ui:12
@@ -715,41 +767,67 @@ msgctxt "shortcuts window"
 msgid "Delete"
 msgstr ""
 
-#: data/org.baedert.corebird.appdata.xml.in:5
-#: data/org.baedert.corebird.desktop.in:3
+#: ui/start-conversation-entry.ui:29
+msgid "Start new conversation"
+msgstr ""
+
+#: ui/start-conversation-entry.ui:49
+msgid "With:"
+msgstr "همراه با:"
+
+#: ui/start-conversation-entry.ui:75
+msgid "Go"
+msgstr "برو"
+
+#: ui/tweet-info-page.ui:6 ui/tweet-list-entry.ui:6
+msgid "Quote"
+msgstr "نقل قول"
+
+#: ui/tweet-info-page.ui:223
+msgid "Retweet tweet"
+msgstr "بازنشر توییت"
+
+#: ui/tweet-info-page.ui:250
+msgid "Favorite tweet"
+msgstr "توییت های مورد علاقه"
+
+#: ui/tweet-info-page.ui:277
+msgid "Reply to tweet"
+msgstr "پاسخ به توییت"
+
+#: ui/tweet-info-page.ui:315
+msgid "More"
+msgstr "بیشتر"
+
+#: ui/tweet-list-entry.ui:60
+msgid "Favorite"
+msgstr ""
+
+#: ui/tweet-list-entry.ui:81
+msgid "Reply"
+msgstr ""
+
+#: ui/user-filter-entry.ui:125
+msgid "Unblock"
+msgstr ""
+
+#: ui/user-list-entry.ui:65
+msgid "Show settings of this account"
+msgstr ""
+
+#: ui/user-list-entry.ui:90
+msgid "Open in new window"
+msgstr ""
+
+#: ui/user-list-entry.ui:114
 #, fuzzy
-msgid "Corebird"
-msgstr "درباره Corebird"
+msgid "Go to profile"
+msgstr "پروفایل محافظت شده"
 
-#: data/org.baedert.corebird.appdata.xml.in:6
-#: data/org.baedert.corebird.desktop.in:4
-msgid "Twitter Client"
-msgstr ""
+#: ui/user-lists-widget.ui:14
+msgid "Created"
+msgstr "ایجاد شد"
 
-#: data/org.baedert.corebird.appdata.xml.in:10
-msgid ""
-"Corebird is a native GTK+ twitter client that provides vital features such "
-"as Direct Messages (DMs), tweet notifications, conversation views."
-msgstr ""
-
-#: data/org.baedert.corebird.appdata.xml.in:13
-msgid ""
-"Additional features include local viewing of videos, multiple inline images, "
-"Lists, Filters, multiple accounts, etc."
-msgstr ""
-
-#: data/org.baedert.corebird.desktop.in:5
-msgid "twitter;"
-msgstr ""
-
-#: data/org.baedert.corebird.desktop.in:8
-#, fuzzy
-msgid "corebird"
-msgstr "درباره Corebird"
-
-#: data/org.baedert.corebird.desktop.in:11
-msgid "Use Twitter from within a normal desktop application"
-msgstr ""
-
-#~ msgid "Open Account"
-#~ msgstr "بازکردن حساب"
+#: ui/user-lists-widget.ui:86
+msgid "Subscribed to"
+msgstr "مشترک شد"

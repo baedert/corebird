@@ -1,136 +1,91 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Iulian Vărzaru <me@iulianvarzaru.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-25 13:13+0100\n"
+"Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
+"POT-Creation-Date: 2016-07-29 13:43+0200\n"
 "PO-Revision-Date: 2016-02-21 09:14+0000\n"
 "Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
-"Language-Team: Romanian (http://www.transifex.com/corebird/corebird/language/ro/)\n"
+"Language-Team: Romanian (http://www.transifex.com/corebird/corebird/language/"
+"ro/)\n"
+"Language: ro\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ro\n"
-"Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));\n"
+"Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?"
+"2:1));\n"
 
-#: ../src/window/ComposeTweetWindow.vala:120
-msgid "Quote tweet"
-msgstr "Încorporează tweet"
+#: data/org.baedert.corebird.appdata.xml.in:5
+#: data/org.baedert.corebird.desktop.in:3
+#, fuzzy
+msgid "Corebird"
+msgstr "Despre Corebird"
 
-#: ../src/window/UserListDialog.vala:40
-msgid "Add to or Remove User From List"
-msgstr "Adaugă sau Şterge un utilizator din listă"
+#: data/org.baedert.corebird.appdata.xml.in:6
+#: data/org.baedert.corebird.desktop.in:4
+msgid "Twitter Client"
+msgstr "Client Twitter"
 
-#: ../src/window/UserListDialog.vala:47 ../ui/compose-window.ui.h:2
-#: ../ui/list-list-entry.ui.h:1 ../ui/list-statuses-page.ui.h:8
-#: ../ui/filter-list-entry.ui.h:1 ../ui/modify-filter-dialog.ui.h:2
-#: ../ui/user-filter-entry.ui.h:1 ../ui/account-dialog.ui.h:2
-#: ../ui/image-crop-dialog.ui.h:1 ../ui/modify-snippet-dialog.ui.h:2
-msgid "Cancel"
-msgstr "Anulează"
-
-#: ../src/window/UserListDialog.vala:48 ../src/window/ImageCropDialog.vala:98
-#: ../ui/list-statuses-page.ui.h:6 ../ui/modify-filter-dialog.ui.h:3
-#: ../ui/account-dialog.ui.h:3 ../ui/modify-snippet-dialog.ui.h:3
-msgid "Save"
-msgstr "Salvează"
-
-#: ../src/window/UserListDialog.vala:68
-msgid "You have no lists."
-msgstr "Nu ai nici o listă."
-
-#: ../src/window/ModifyFilterDialog.vala:45
-msgid "Modify Filter"
-msgstr "Modifică Filtru"
-
-#: ../src/window/ModifyFilterDialog.vala:76
-msgid "Matches"
-msgstr "Se potriveşte"
-
-#: ../src/window/ModifyFilterDialog.vala:78
-msgid "Doesn't match"
-msgstr "Nu se potriveşte"
-
-#: ../src/widgets/TweetListBox.vala:100
-msgid "Loading..."
-msgstr "Se încarcă..."
-
-#: ../src/widgets/TweetListBox.vala:103 ../src/widgets/TweetListBox.vala:151
-msgid "No entries found"
-msgstr "Nu a fost găsit nici un rezultat"
-
-#: ../src/widgets/TweetListBox.vala:111
-msgid "Retry"
-msgstr "Reîncearcă"
-
-#: ../src/widgets/AccountCreateWidget.vala:38
-msgid "Don't have an account yet?"
-msgstr "Nu ai încă un cont?"
-
-#: ../src/widgets/AccountCreateWidget.vala:38
-msgid "Create one"
-msgstr "Creează unul"
-
-#: ../src/widgets/AccountCreateWidget.vala:53
+#: data/org.baedert.corebird.appdata.xml.in:10
 msgid ""
-"Unauthorized. Most of the time, this means that there's something wrong with"
-" the Twitter servers and you should try again later"
-msgstr "Neautorizat. În majoritatea timpului asta înseamnă că este o problemă cu serverele de la Twitter şi ar trebui să încerci mai târziu."
+"Corebird is a native GTK+ twitter client that provides vital features such "
+"as Direct Messages (DMs), tweet notifications, conversation views."
+msgstr ""
+"Corebird este un client de Twitter nativ GTK+ care furnizează caracteristici "
+"vitale ca Mesaje Directe (DM), notificări, pagina de conversaţii."
 
-#: ../src/widgets/AccountCreateWidget.vala:65
-#, c-format
-msgid "Could not open %s"
-msgstr "Nu s-a putut deschide %s"
+#: data/org.baedert.corebird.appdata.xml.in:13
+msgid ""
+"Additional features include local viewing of videos, multiple inline images, "
+"Lists, Filters, multiple accounts, etc."
+msgstr ""
+"Caracteristici adiţionale includ vizualizarea videoclipurilor local, imagini "
+"in linie multiple, Liste, Filtre, conturi multiple, etc."
 
-#. We just assume that it was the wrong code
-#: ../src/widgets/AccountCreateWidget.vala:87
-msgid "Wrong PIN"
-msgstr "PIN Greşit"
-
-#: ../src/widgets/AccountCreateWidget.vala:114
-msgid "Account already in use"
-msgstr "Cont deja in folosinţă"
-
-#: ../src/widgets/PixbufButton.vala:52
-msgid "Copy link"
-msgstr "Copiază link"
-
-#: ../src/widgets/FollowButton.vala:45
-msgid "Follow"
-msgstr "Urmăreşte"
-
-#: ../src/widgets/FollowButton.vala:46
-msgid "Unfollow"
-msgstr "Nu mai urmări"
-
-#: ../src/HomeTimeline.vala:109
-#, c-format
-msgid "%s retweeted %s"
+#: data/org.baedert.corebird.appdata.xml.in:21
+msgid "Generic timeline view when using Corebird"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:112
-#, c-format
-msgid "%s tweeted"
+#: data/org.baedert.corebird.appdata.xml.in:25
+#, fuzzy
+msgid "Typical Twitter profile"
+msgstr "Profil Twitter tipic."
+
+#: data/org.baedert.corebird.appdata.xml.in:29
+#, fuzzy
+msgid "Account settings can be configured"
+msgstr ""
+"Setări ale contului ca Nume, Website, Descriere şi Avatar care pot fi "
+"configurate."
+
+#: data/org.baedert.corebird.desktop.in:5
+msgid "Use Twitter from within a normal desktop application"
+msgstr "Foloseşte Twitter în o aplicaţie de desktop normală."
+
+#: data/org.baedert.corebird.desktop.in:7
+msgid "twitter;"
 msgstr ""
 
-#: ../src/HomeTimeline.vala:118
-#, c-format
-msgid "%d new Tweet!"
-msgid_plural "%d new Tweets!"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+#: data/org.baedert.corebird.desktop.in:11
+#, fuzzy
+msgid "corebird"
+msgstr "Despre Corebird"
 
-#: ../src/HomeTimeline.vala:169
-msgid "Home"
-msgstr "Pagina de pornire"
+#: src/DefaultTimeline.vala:358
+#, fuzzy
+msgid "Could not load tweets"
+msgstr "Nu am putut afişa tweet"
 
-#: ../src/DMThreadsPage.vala:205
+#: src/DMPage.vala:329
+msgid "Direct Conversation"
+msgstr "Conversaţie directă"
+
+#: src/DMThreadsPage.vala:207
 #, c-format
 msgid "%d new Message from %s"
 msgid_plural "%d new Messages from %s"
@@ -138,16 +93,53 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: ../src/DMThreadsPage.vala:211
+#: src/DMThreadsPage.vala:213 src/UserEventReceiver.vala:94
 #, c-format
 msgid "New direct message from %s"
 msgstr "Un nou mesaj direct de la %s"
 
-#: ../src/DMThreadsPage.vala:229 ../src/DMThreadsPage.vala:243
+#: src/DMThreadsPage.vala:223 src/DMThreadsPage.vala:237
 msgid "Direct Messages"
 msgstr "Mesaje directe"
 
-#: ../src/list/DMThreadEntry.vala:77
+#: src/FavoritesTimeline.vala:67 src/FavoritesTimeline.vala:71
+#: src/TweetInfoPage.vala:482
+msgid "Favorites"
+msgstr "Apreciate"
+
+#: src/FilterPage.vala:47
+#, fuzzy
+msgid "Add new Filter"
+msgstr "Adaugă un filtru nou"
+
+#: src/FilterPage.vala:317 src/FilterPage.vala:323
+#, fuzzy
+msgid "Filters"
+msgstr "Modifică Filtru"
+
+#: src/HomeTimeline.vala:122
+#, c-format
+msgid "%s retweeted %s"
+msgstr ""
+
+#: src/HomeTimeline.vala:125
+#, c-format
+msgid "%s tweeted"
+msgstr ""
+
+#: src/HomeTimeline.vala:134
+#, c-format
+msgid "%d new Tweet!"
+msgid_plural "%d new Tweets!"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: src/HomeTimeline.vala:169
+msgid "Home"
+msgstr "Pagina de pornire"
+
+#: src/list/DMThreadEntry.vala:71
 #, c-format
 msgid "(%d unread)"
 msgid_plural "(%d unread)"
@@ -155,102 +147,201 @@ msgstr[0] "(%d necitit)"
 msgstr[1] "(%d necitite)"
 msgstr[2] "(%d necitite)"
 
-#: ../src/ListsPage.vala:123 ../src/ListsPage.vala:128
-#: ../ui/profile-page.ui.h:9
+#: src/ListsPage.vala:120 src/ListsPage.vala:125 ui/profile-page.ui:350
 msgid "Lists"
 msgstr "Liste"
 
-#: ../src/ProfilePage.vala:290
+#: src/ListStatusesPage.vala:367
+msgid "List"
+msgstr "Listă"
+
+#: src/list/TweetListEntry.vala:411
+#, fuzzy, c-format
+msgid "Block %s"
+msgstr "Blocat"
+
+#: src/list/TweetListEntry.vala:546
+msgid "This tweet contains images marked as inappropriate"
+msgstr ""
+
+#: src/list/TweetListEntry.vala:553
+msgid "Show anyway"
+msgstr ""
+
+#: src/MainWindow.vala:75
+#, fuzzy
+msgid "Add new Account"
+msgstr "Cont nou"
+
+#: src/MentionsTimeline.vala:91 src/UserEventReceiver.vala:111
+#, fuzzy, c-format
+msgid "%s mentioned %s"
+msgstr "Menţionări"
+
+#: src/MentionsTimeline.vala:99 src/MentionsTimeline.vala:103
+msgid "Mentions"
+msgstr "Menţionări"
+
+#: src/ProfilePage.vala:266
 msgid "Protected profile"
 msgstr "Profil protejat"
 
-#: ../src/ProfilePage.vala:540
+#: src/ProfilePage.vala:319
 #, c-format
 msgid "Tweet to @%s"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:279
+#: src/SearchPage.vala:353 src/SearchPage.vala:362 ui/search-page.ui:24
+msgid "Search"
+msgstr "Caută"
+
+#: src/TweetInfoPage.vala:300
 msgid "Could not show tweet"
 msgstr "Nu am putut afişa tweet"
 
-#: ../src/TweetInfoPage.vala:455
+#: src/TweetInfoPage.vala:481
 msgid "Retweets"
 msgstr ""
 
-#: ../src/TweetInfoPage.vala:456 ../src/FavoritesTimeline.vala:85
-#: ../src/FavoritesTimeline.vala:89
-msgid "Favorites"
-msgstr "Apreciate"
-
-#: ../src/TweetInfoPage.vala:464
+#: src/TweetInfoPage.vala:490 src/widgets/MediaButton.vala:91
 msgid "Open in Browser"
 msgstr "Deschide în Browser"
 
-#: ../src/TweetInfoPage.vala:464
+#: src/TweetInfoPage.vala:490
 msgid "Source"
 msgstr "Sursă"
 
-#: ../src/TweetInfoPage.vala:504
+#: src/TweetInfoPage.vala:530
 msgid "Tweet Details"
 msgstr "Detalii tweet"
 
-#: ../src/util/Utils.vala:164
+#: src/util/Utils.vala:195
 msgid "Now"
 msgstr "Acum"
 
-#: ../src/util/Utils.vala:166
+#: src/util/Utils.vala:197
 #, c-format
 msgid "%dm"
 msgstr "%dm"
 
-#: ../src/util/Utils.vala:170
+#: src/util/Utils.vala:201
 #, c-format
 msgid "%dh"
 msgstr "%dh"
 
-#: ../src/SearchPage.vala:307 ../src/SearchPage.vala:316
-#: ../ui/search-page.ui.h:1
-msgid "Search"
-msgstr "Caută"
+#: src/widgets/AccountCreateWidget.vala:40
+msgid "Don't have an account yet?"
+msgstr "Nu ai încă un cont?"
 
-#: ../src/Corebird.vala:177
-msgid "Open Account"
-msgstr "Deschide Cont"
+#: src/widgets/AccountCreateWidget.vala:40
+msgid "Create one"
+msgstr "Creează unul"
 
-#: ../src/MentionsTimeline.vala:102
+#: src/widgets/AccountCreateWidget.vala:55
+msgid ""
+"Unauthorized. Most of the time, this means that there's something wrong with "
+"the Twitter servers and you should try again later"
+msgstr ""
+"Neautorizat. În majoritatea timpului asta înseamnă că este o problemă cu "
+"serverele de la Twitter şi ar trebui să încerci mai târziu."
+
+#: src/widgets/AccountCreateWidget.vala:67
 #, c-format
-msgid "New Mention from @%s"
-msgstr "O nouă menţionare de la @%s"
+msgid "Could not open %s"
+msgstr "Nu s-a putut deschide %s"
 
-#: ../src/MentionsTimeline.vala:130 ../src/MentionsTimeline.vala:134
-msgid "Mentions"
-msgstr "Menţionări"
+#: src/widgets/AccountCreateWidget.vala:89
+msgid "Wrong PIN"
+msgstr "PIN Greşit"
 
-#: ../src/DMPage.vala:324
-msgid "Direct Conversation"
-msgstr "Conversaţie directă"
+#: src/widgets/AccountCreateWidget.vala:115
+msgid "Account already in use"
+msgstr "Cont deja in folosinţă"
 
-#: ../src/ListStatusesPage.vala:359
-msgid "List"
-msgstr "Listă"
-
-#: ../src/widgets/AvatarBannerWidget.vala:160
+#: src/widgets/AvatarBannerWidget.vala:140
 msgid "Select banner"
 msgstr "Selectează banner"
 
-#: ../src/widgets/AvatarBannerWidget.vala:175
+#: src/widgets/AvatarBannerWidget.vala:155
 msgid "Select avatar"
 msgstr "Selectează avatar"
 
-#: ../src/window/ImageCropDialog.vala:58 ../ui/image-crop-dialog.ui.h:2
+#: src/widgets/CompletionTextView.vala:33
+#, fuzzy
+msgid "No users found"
+msgstr "Nu a fost găsit nici un rezultat"
+
+#: src/widgets/FollowButton.vala:45
+msgid "Follow"
+msgstr "Urmăreşte"
+
+#: src/widgets/FollowButton.vala:46
+msgid "Unfollow"
+msgstr "Nu mai urmări"
+
+#: src/widgets/MediaButton.vala:42
+msgid "Copy URL"
+msgstr ""
+
+#: src/widgets/PixbufButton.vala:52
+msgid "Copy link"
+msgstr "Copiază link"
+
+#: src/widgets/TweetListBox.vala:100
+msgid "Loading..."
+msgstr "Se încarcă..."
+
+#: src/widgets/TweetListBox.vala:103 src/widgets/TweetListBox.vala:151
+msgid "No entries found"
+msgstr "Nu a fost găsit nici un rezultat"
+
+#: src/widgets/TweetListBox.vala:111
+msgid "Retry"
+msgstr "Reîncearcă"
+
+#: src/window/ComposeTweetWindow.vala:125
+msgid "Quote tweet"
+msgstr "Încorporează tweet"
+
+#: src/window/FileSelector.vala:39 src/window/FileSelector.vala:85
+#, fuzzy
+msgid "Select Image"
+msgstr "Selectează banner"
+
+#: src/window/FileSelector.vala:70
+msgid "Open"
+msgstr ""
+
+#: src/window/FileSelector.vala:77 src/window/UserListDialog.vala:47
+#: ui/account-dialog.ui:21 ui/account-dialog.ui:233 ui/compose-window.ui:41
+#: ui/filter-list-entry.ui:80 ui/image-crop-dialog.ui:46
+#: ui/list-list-entry.ui:98 ui/list-statuses-page.ui:173
+#: ui/modify-filter-dialog.ui:13 ui/modify-snippet-dialog.ui:14
+#: ui/user-filter-entry.ui:114
+msgid "Cancel"
+msgstr "Anulează"
+
+#: src/window/FileSelector.vala:152
+msgid ""
+"Max file size exceeded\n"
+"(3MB)"
+msgstr ""
+
+#: src/window/ImageCropDialog.vala:58 ui/image-crop-dialog.ui:61
 msgid "Next"
 msgstr "Următorul"
 
-#: ../src/window/ImageCropDialog.vala:103
+#: src/window/ImageCropDialog.vala:98 src/window/UserListDialog.vala:48
+#: ui/account-dialog.ui:28 ui/list-statuses-page.ui:129
+#: ui/modify-filter-dialog.ui:20 ui/modify-snippet-dialog.ui:21
+msgid "Save"
+msgstr "Salvează"
+
+#: src/window/ImageCropDialog.vala:103
 msgid "Image does not meet minimum size requirements:"
 msgstr ""
 
-#: ../src/window/ImageCropDialog.vala:104
+#: src/window/ImageCropDialog.vala:104
 #, c-format
 msgid "Minimum width: %d pixel"
 msgid_plural "Minimum width: %d pixels"
@@ -258,7 +349,7 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: ../src/window/ImageCropDialog.vala:106
+#: src/window/ImageCropDialog.vala:106
 #, c-format
 msgid "Minimum height: %d pixel"
 msgid_plural "Minimum height: %d pixels"
@@ -266,480 +357,512 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: ../src/window/SettingsDialog.vala:84
+#: src/window/ModifyFilterDialog.vala:45
+msgid "Modify Filter"
+msgstr "Modifică Filtru"
+
+#: src/window/ModifyFilterDialog.vala:80
+msgid "Matches"
+msgstr "Se potriveşte"
+
+#: src/window/ModifyFilterDialog.vala:82
+msgid "Doesn't match"
+msgstr "Nu se potriveşte"
+
+#: src/window/ModifySnippetDialog.vala:44
+#, fuzzy
+msgid "Modify Snippet"
+msgstr "Modifică Filtru"
+
+#: src/window/ModifySnippetDialog.vala:63
+msgid "Snippet can't be empty"
+msgstr ""
+
+#: src/window/ModifySnippetDialog.vala:70
+msgid "Replacement can't be empty"
+msgstr ""
+
+#: src/window/ModifySnippetDialog.vala:78
+msgid "Snippet may not contain whitespace"
+msgstr ""
+
+#: src/window/ModifySnippetDialog.vala:86
+msgid "Snippet already exists"
+msgstr ""
+
+#: src/window/SettingsDialog.vala:83
 msgid ""
 "Hey, check out this new #Corebird version! \\ (•◡•) / #cool "
 "#newisalwaysbetter"
 msgstr ""
 
-#: ../ui/settings-dialog.ui.h:1 ../ui/menu.ui.h:1
-msgid "Settings"
-msgstr "Setări"
+#: src/window/UserListDialog.vala:40
+msgid "Add to or Remove User From List"
+msgstr "Adaugă sau Şterge un utilizator din listă"
 
-#: ../ui/settings-dialog.ui.h:2
-msgid "Maximum media size"
-msgstr "Mărime maximă fişiere media"
+#: src/window/UserListDialog.vala:69
+msgid "You have no lists."
+msgstr "Nu ai nici o listă."
 
-#: ../ui/settings-dialog.ui.h:3
-msgid "MB"
-msgstr "MB"
-
-#: ../ui/settings-dialog.ui.h:4
-msgid "Auto scroll on new tweets"
-msgstr "Derulare automată la tweeturi noi"
-
-#: ../ui/settings-dialog.ui.h:5
-msgid "Double-click activation"
-msgstr "Activare prin dublu click"
-
-#: ../ui/settings-dialog.ui.h:6
-msgid "Interface"
-msgstr "Interfaţă"
-
-#: ../ui/settings-dialog.ui.h:7
-msgid "On New Tweets"
-msgstr "La tweeturi noi"
-
-#: ../ui/settings-dialog.ui.h:8
-msgid "Actions"
-msgstr "Acţiuni"
-
-#: ../ui/settings-dialog.ui.h:9
-msgid "On New Mentions"
-msgstr "La menţionări noi"
-
-#: ../ui/settings-dialog.ui.h:10
-msgid "On New Messages"
-msgstr "La mesaje noi"
-
-#: ../ui/settings-dialog.ui.h:11
-msgid "Never"
-msgstr "Niciodată"
-
-#: ../ui/settings-dialog.ui.h:12
-msgid "Every"
-msgstr "Fiecare"
-
-#: ../ui/settings-dialog.ui.h:13
-msgid "Stack 5"
-msgstr "Câte 5"
-
-#: ../ui/settings-dialog.ui.h:14
-msgid "Stack 10"
-msgstr "Câte 10"
-
-#: ../ui/settings-dialog.ui.h:15
-msgid "Stack 25"
-msgstr "Câte 25"
-
-#: ../ui/settings-dialog.ui.h:16
-msgid "Stack 50"
-msgstr "Câte 50"
-
-#: ../ui/settings-dialog.ui.h:17
-msgid "Notifications"
-msgstr "Notificări"
-
-#: ../ui/settings-dialog.ui.h:18
-msgid "Round avatars"
-msgstr "Avatare rotunde"
-
-#: ../ui/settings-dialog.ui.h:19
-msgid "Remove trailing hashtags"
-msgstr "Şterge hashtag-urile de la sfârşit"
-
-#: ../ui/settings-dialog.ui.h:20
-msgid "Remove media links"
-msgstr "Şterge linkurile media"
-
-#: ../ui/settings-dialog.ui.h:21
-msgid "Hide inappropriate content"
-msgstr ""
-
-#: ../ui/settings-dialog.ui.h:22 ../ui/search-page.ui.h:2
-#: ../ui/profile-page.ui.h:6
-msgid "Tweets"
-msgstr "Tweeturi"
-
-#: ../ui/settings-dialog.ui.h:23
-msgid "No snippets configured."
-msgstr "Nici un fragment de text configurat."
-
-#: ../ui/settings-dialog.ui.h:24
-msgid "You can activate snippets by writing the keyword and pressing TAB."
-msgstr "Poţi activa fragmentele de text scriinde cuvântul cheie si apasând tasta TAB."
-
-#: ../ui/settings-dialog.ui.h:25
-msgid "Snippets"
-msgstr "Fragmente"
-
-#: ../ui/menu.ui.h:2
-msgid "Shortcuts"
-msgstr ""
-
-#: ../ui/menu.ui.h:3
-msgid "About"
-msgstr "Despre"
-
-#: ../ui/menu.ui.h:4
-msgid "Quit"
-msgstr "Închide"
-
-#: ../ui/user-lists-widget.ui.h:1
-msgid "Created"
-msgstr "Creat"
-
-#: ../ui/user-lists-widget.ui.h:2
-msgid "Subscribed to"
-msgstr "Abonat la"
-
-#: ../ui/about-dialog.ui.h:1
+#: ui/about-dialog.ui:6
 msgid "About Corebird"
 msgstr "Despre Corebird"
 
-#: ../ui/about-dialog.ui.h:2
+#: ui/about-dialog.ui:10
 msgid "Using Font Awesome by Dave Gandy - http://fontawesome.io"
 msgstr "Foloseşte Font Awesome de Dave Gandy - http://fontawesome.io"
 
-#: ../ui/dm-page.ui.h:1 ../ui/compose-window.ui.h:3
-msgid "Send"
-msgstr "Trimite"
-
-#: ../ui/load-more-entry.ui.h:1
-msgid "Load more"
-msgstr "Încarcă mai multe"
-
-#: ../ui/tweet-list-entry.ui.h:1 ../ui/tweet-info-page.ui.h:1
-msgid "Quote"
-msgstr "Încorporează"
-
-#: ../ui/tweet-list-entry.ui.h:2 ../ui/list-list-entry.ui.h:4
-#: ../ui/list-statuses-page.ui.h:7 ../ui/filter-list-entry.ui.h:2
-#: ../ui/account-dialog.ui.h:7 ../ui/modify-snippet-dialog.ui.h:6
-msgid "Delete"
-msgstr "Şterge"
-
-#: ../ui/tweet-list-entry.ui.h:3
-msgid "Favorite"
-msgstr "Apreciază"
-
-#: ../ui/tweet-list-entry.ui.h:4
-msgid "Reply"
-msgstr "Răspunde"
-
-#: ../ui/tweet-list-entry.ui.h:5
-msgid "This tweet contains images marked as inappropariate"
-msgstr ""
-
-#: ../ui/tweet-list-entry.ui.h:6
-msgid "Show anyway"
-msgstr ""
-
-#: ../ui/user-list-entry.ui.h:1
-msgid "Show settings of this account"
-msgstr "Arată setările acestui cont"
-
-#: ../ui/user-list-entry.ui.h:2
-msgid "Open in new window"
-msgstr "Deschide intr-o pagină nouă"
-
-#: ../ui/new-list-entry.ui.h:1
-msgid "Create New List"
-msgstr "Creează o listă nouă"
-
-#: ../ui/new-list-entry.ui.h:2
-msgid "Name:"
-msgstr "Nume:"
-
-#: ../ui/new-list-entry.ui.h:3
-msgid "Create"
-msgstr "Creează"
-
-#: ../ui/search-page.ui.h:3 ../ui/filter-page.ui.h:1
-msgid "Users"
-msgstr "Utilizatori"
-
-#: ../ui/compose-window.ui.h:1
-msgid "Compose Tweet"
-msgstr "Compune Tweet"
-
-#: ../ui/compose-window.ui.h:4
-msgid "Add Image"
-msgstr ""
-
-#: ../ui/profile-page.ui.h:1
-msgid "Write Direct Message"
-msgstr "Scrie mesaj direct"
-
-#: ../ui/profile-page.ui.h:2
-msgid "Add to/Remove from List"
-msgstr "Adaugă sau Şterge din listă"
-
-#: ../ui/profile-page.ui.h:3
-msgid "Blocked"
-msgstr "Blocat"
-
-#: ../ui/profile-page.ui.h:4
-msgid "Retweets disabled"
-msgstr ""
-
-#: ../ui/profile-page.ui.h:5
-msgid "Follows you"
-msgstr "Te urmăreşte"
-
-#: ../ui/profile-page.ui.h:7
-msgid "Followers"
-msgstr "Urmăritori"
-
-#: ../ui/profile-page.ui.h:8
-msgid "Following"
-msgstr "Urmăriţi"
-
-#: ../ui/main-window.ui.h:1
-msgid "Show configured accounts"
-msgstr "Arată conturile configurate"
-
-#: ../ui/main-window.ui.h:2
-msgid "Compose tweet"
-msgstr "Compune tweet"
-
-#: ../ui/main-window.ui.h:3
-msgid "New tweet"
-msgstr "Tweet nou"
-
-#: ../ui/account-create-widget.ui.h:1
+#: ui/account-create-widget.ui:16
 msgid "New Account"
 msgstr "Cont nou"
 
-#: ../ui/account-create-widget.ui.h:2
+#: ui/account-create-widget.ui:44
 msgid "PIN:"
 msgstr "PIN:"
 
-#: ../ui/account-create-widget.ui.h:3
+#: ui/account-create-widget.ui:65
 msgid "Request PIN"
 msgstr "Cere PIN"
 
-#: ../ui/account-create-widget.ui.h:4 ../ui/list-statuses-page.ui.h:12
+#: ui/account-create-widget.ui:75 ui/list-statuses-page.ui:358
 msgid "Confirm"
 msgstr "Confirmă"
 
-#: ../ui/tweet-info-page.ui.h:2
-msgid "Retweet tweet"
-msgstr ""
-
-#: ../ui/tweet-info-page.ui.h:3
-msgid "Favorite tweet"
-msgstr "Apreciază tweet"
-
-#: ../ui/tweet-info-page.ui.h:4
-msgid "Reply to tweet"
-msgstr "Răspunde la tweet"
-
-#: ../ui/tweet-info-page.ui.h:5
-msgid "More"
-msgstr "Mai multe"
-
-#: ../ui/list-list-entry.ui.h:2
-msgid "Subscribe"
-msgstr "Abonează-te"
-
-#: ../ui/list-list-entry.ui.h:3
-msgid "Unsubscribe"
-msgstr "Dezabonează-te"
-
-#: ../ui/start-conversation-entry.ui.h:1
-msgid "Start new conversation"
-msgstr "Începe o conversaţie nouă"
-
-#: ../ui/start-conversation-entry.ui.h:2
-msgid "With:"
-msgstr "Cu:"
-
-#: ../ui/start-conversation-entry.ui.h:3
-msgid "Go"
-msgstr "Începe"
-
-#: ../ui/list-statuses-page.ui.h:1
-msgid "Subscribers:"
-msgstr "Abonaţi:"
-
-#: ../ui/list-statuses-page.ui.h:2
-msgid "Members:"
-msgstr "Membrii:"
-
-#: ../ui/list-statuses-page.ui.h:3
-msgid "Creator:"
-msgstr "Creator:"
-
-#: ../ui/list-statuses-page.ui.h:4
-msgid "Created at:"
-msgstr "Creat la:"
-
-#: ../ui/list-statuses-page.ui.h:5
-msgid "Edit"
-msgstr "Editează"
-
-#: ../ui/list-statuses-page.ui.h:9
-msgid "Mode:"
-msgstr "Mod:"
-
-#: ../ui/list-statuses-page.ui.h:10
-msgid "Private"
-msgstr "Privat"
-
-#: ../ui/list-statuses-page.ui.h:11
-msgid "Public"
-msgstr "Public"
-
-#: ../ui/modify-filter-dialog.ui.h:1
-msgid "Add New Filter"
-msgstr "Adaugă un filtru nou"
-
-#: ../ui/user-filter-entry.ui.h:2
-msgid "Unblock"
-msgstr "Deblochează"
-
-#: ../ui/account-dialog.ui.h:1
+#: ui/account-dialog.ui:11
 msgid "Account Settings"
 msgstr "Setări cont"
 
-#: ../ui/account-dialog.ui.h:4
+#: ui/account-dialog.ui:76
 msgid "Name"
 msgstr "Nume"
 
-#: ../ui/account-dialog.ui.h:5
+#: ui/account-dialog.ui:104
 msgid "Website"
 msgstr "Website"
 
-#: ../ui/account-dialog.ui.h:6
+#: ui/account-dialog.ui:158
 msgid "Autostart"
 msgstr "Pornire automată"
 
-#: ../ui/account-dialog.ui.h:8
+#: ui/account-dialog.ui:189 ui/account-dialog.ui:246 ui/filter-list-entry.ui:93
+#: ui/list-list-entry.ui:132 ui/list-statuses-page.ui:166
+#: ui/modify-snippet-dialog.ui:108 ui/tweet-list-entry.ui:10
+msgid "Delete"
+msgstr "Şterge"
+
+#: ui/account-dialog.ui:221
 msgid "Do you really want to delete this account?"
 msgstr "Eşti sigur că doreşti să ştergi contul?"
 
-#: ../ui/image-crop-dialog.ui.h:3
+#: ui/compose-window.ui:11 ui/compose-window.ui:25
+msgid "Compose Tweet"
+msgstr "Compune Tweet"
+
+#: ui/compose-window.ui:48 ui/dm-page.ui:46
+msgid "Send"
+msgstr "Trimite"
+
+#: ui/compose-window.ui:134
+msgid "Add Image"
+msgstr ""
+
+#: ui/filter-page.ui:71 ui/search-page.ui:86
+msgid "Users"
+msgstr "Utilizatori"
+
+#: ui/image-crop-dialog.ui:71
 msgid "Back"
 msgstr "Înapoi"
 
-#: ../ui/modify-snippet-dialog.ui.h:1
+#: ui/list-list-entry.ui:109
+msgid "Subscribe"
+msgstr "Abonează-te"
+
+#: ui/list-list-entry.ui:122
+msgid "Unsubscribe"
+msgstr "Dezabonează-te"
+
+#: ui/list-statuses-page.ui:26
+msgid "Subscribers:"
+msgstr "Abonaţi:"
+
+#: ui/list-statuses-page.ui:49
+msgid "Members:"
+msgstr "Membrii:"
+
+#: ui/list-statuses-page.ui:72
+msgid "Creator:"
+msgstr "Creator:"
+
+#: ui/list-statuses-page.ui:84
+msgid "Created at:"
+msgstr "Creat la:"
+
+#: ui/list-statuses-page.ui:119
+msgid "Edit"
+msgstr "Editează"
+
+#: ui/list-statuses-page.ui:194
+msgid "Mode:"
+msgstr "Mod:"
+
+#: ui/list-statuses-page.ui:217
+msgid "Private"
+msgstr "Privat"
+
+#: ui/list-statuses-page.ui:218
+msgid "Public"
+msgstr "Public"
+
+#: ui/list-statuses-page.ui:296
+msgid "Description"
+msgstr ""
+
+#: ui/load-more-entry.ui:11
+msgid "Load more"
+msgstr "Încarcă mai multe"
+
+#: ui/main-window.ui:65
+msgid "Show configured accounts"
+msgstr "Arată conturile configurate"
+
+#: ui/main-window.ui:84
+msgid "Compose tweet"
+msgstr "Compune tweet"
+
+#: ui/main-window.ui:101
+msgid "New tweet"
+msgstr "Tweet nou"
+
+#: ui/menus.ui:6 ui/settings-dialog.ui:16 ui/settings-dialog.ui:22
+msgid "Settings"
+msgstr "Setări"
+
+#: ui/menus.ui:10
+msgid "Shortcuts"
+msgstr ""
+
+#: ui/menus.ui:15
+msgid "About"
+msgstr "Despre"
+
+#: ui/menus.ui:19
+msgid "Quit"
+msgstr "Închide"
+
+#: ui/modify-filter-dialog.ui:6
+msgid "Add New Filter"
+msgstr "Adaugă un filtru nou"
+
+#: ui/modify-snippet-dialog.ui:6
 msgid "Add New Snippet"
 msgstr "Adaugă un nou fragment de text"
 
-#: ../ui/modify-snippet-dialog.ui.h:4
+#: ui/modify-snippet-dialog.ui:46
 msgid "Keyword"
 msgstr "Cuvânt cheie"
 
-#: ../ui/modify-snippet-dialog.ui.h:5
+#: ui/modify-snippet-dialog.ui:72
 msgid "Replacement"
 msgstr "Înlocuitor"
 
-#: ../ui/shortcuts-window.ui.h:1
+#: ui/new-list-entry.ui:30
+msgid "Create New List"
+msgstr "Creează o listă nouă"
+
+#: ui/new-list-entry.ui:51
+msgid "Name:"
+msgstr "Nume:"
+
+#: ui/new-list-entry.ui:73
+msgid "Create"
+msgstr "Creează"
+
+#: ui/profile-page.ui:6
+msgid "Write Direct Message"
+msgstr "Scrie mesaj direct"
+
+#: ui/profile-page.ui:14
+msgid "Add to/Remove from List"
+msgstr "Adaugă sau Şterge din listă"
+
+#: ui/profile-page.ui:20
+msgid "Blocked"
+msgstr "Blocat"
+
+#: ui/profile-page.ui:24
+msgid "Muted"
+msgstr ""
+
+#: ui/profile-page.ui:28
+msgid "Retweets disabled"
+msgstr ""
+
+#: ui/profile-page.ui:155
+msgid "Follows you"
+msgstr "Te urmăreşte"
+
+#: ui/profile-page.ui:227 ui/search-page.ui:74 ui/settings-dialog.ui:421
+msgid "Tweets"
+msgstr "Tweeturi"
+
+#: ui/profile-page.ui:268
+msgid "Followers"
+msgstr "Urmăritori"
+
+#: ui/profile-page.ui:309
+msgid "Following"
+msgstr "Urmăriţi"
+
+#: ui/settings-dialog.ui:60
+msgid "Show inline media"
+msgstr ""
+
+#: ui/settings-dialog.ui:79
+msgid "Always show"
+msgstr ""
+
+#: ui/settings-dialog.ui:80
+msgid "Always hide"
+msgstr ""
+
+#: ui/settings-dialog.ui:81
+msgid "Hide in timeline"
+msgstr ""
+
+#: ui/settings-dialog.ui:102
+msgid "Auto scroll on new tweets"
+msgstr "Derulare automată la tweeturi noi"
+
+#: ui/settings-dialog.ui:132
+msgid "Double-click activation"
+msgstr "Activare prin dublu click"
+
+#: ui/settings-dialog.ui:162
+msgid "Interface"
+msgstr "Interfaţă"
+
+#: ui/settings-dialog.ui:180
+msgid "On New Tweets"
+msgstr "La tweeturi noi"
+
+#: ui/settings-dialog.ui:194
+msgid "Actions"
+msgstr "Acţiuni"
+
+#: ui/settings-dialog.ui:209
+msgid "On New Mentions"
+msgstr "La menţionări noi"
+
+#: ui/settings-dialog.ui:223
+msgid "On New Messages"
+msgstr "La mesaje noi"
+
+#: ui/settings-dialog.ui:267
+msgid "Never"
+msgstr "Niciodată"
+
+#: ui/settings-dialog.ui:268
+msgid "Every"
+msgstr "Fiecare"
+
+#: ui/settings-dialog.ui:269
+msgid "Stack 5"
+msgstr "Câte 5"
+
+#: ui/settings-dialog.ui:270
+msgid "Stack 10"
+msgstr "Câte 10"
+
+#: ui/settings-dialog.ui:271
+msgid "Stack 25"
+msgstr "Câte 25"
+
+#: ui/settings-dialog.ui:272
+msgid "Stack 50"
+msgstr "Câte 50"
+
+#: ui/settings-dialog.ui:285
+msgid "Notifications"
+msgstr "Notificări"
+
+#: ui/settings-dialog.ui:312
+msgid "Round avatars"
+msgstr "Avatare rotunde"
+
+#: ui/settings-dialog.ui:339
+msgid "Remove trailing hashtags"
+msgstr "Şterge hashtag-urile de la sfârşit"
+
+#: ui/settings-dialog.ui:367
+msgid "Remove media links"
+msgstr "Şterge linkurile media"
+
+#: ui/settings-dialog.ui:395
+msgid "Hide inappropriate content"
+msgstr ""
+
+#: ui/settings-dialog.ui:442
+msgid "No snippets configured."
+msgstr "Nici un fragment de text configurat."
+
+#: ui/settings-dialog.ui:481
+msgid "You can activate snippets by writing the keyword and pressing TAB."
+msgstr ""
+"Poţi activa fragmentele de text scriinde cuvântul cheie si apasând tasta TAB."
+
+#: ui/settings-dialog.ui:495
+msgid "Snippets"
+msgstr "Fragmente"
+
+#: ui/shortcuts-window.ui:12
 msgctxt "shortcuts window"
 msgid "General"
 msgstr ""
 
-#: ../ui/shortcuts-window.ui.h:2
+#: ui/shortcuts-window.ui:17
 msgctxt "shortcuts window"
 msgid "Compose Tweet"
 msgstr ""
 
-#: ../ui/shortcuts-window.ui.h:3
+#: ui/shortcuts-window.ui:24
 msgctxt "shortcuts window"
 msgid "Show Account settings"
 msgstr ""
 
-#: ../ui/shortcuts-window.ui.h:4
+#: ui/shortcuts-window.ui:31
 msgctxt "shortcuts window"
 msgid "Show Accounts Popover"
 msgstr ""
 
-#: ../ui/shortcuts-window.ui.h:5
+#: ui/shortcuts-window.ui:38
 msgctxt "shortcuts window"
 msgid "Show Application Settings"
 msgstr ""
 
-#: ../ui/shortcuts-window.ui.h:6
+#: ui/shortcuts-window.ui:45
 msgctxt "shortcuts window"
 msgid "Toggle Topbar"
 msgstr ""
 
-#: ../ui/shortcuts-window.ui.h:7
+#: ui/shortcuts-window.ui:52
 msgctxt "shortcuts window"
 msgid "Go Back"
 msgstr ""
 
-#: ../ui/shortcuts-window.ui.h:8
+#: ui/shortcuts-window.ui:59
 msgctxt "shortcuts window"
 msgid "Go Forward"
 msgstr ""
 
-#: ../ui/shortcuts-window.ui.h:9
+#: ui/shortcuts-window.ui:66
 msgctxt "shortcuts window"
 msgid "Go to nth page"
 msgstr ""
 
-#: ../ui/shortcuts-window.ui.h:10
+#: ui/shortcuts-window.ui:74
 msgctxt "shortcuts window"
 msgid "Tweets"
 msgstr ""
 
-#: ../ui/shortcuts-window.ui.h:11
+#: ui/shortcuts-window.ui:79
 msgctxt "shortcuts window"
 msgid "Retweet"
 msgstr ""
 
-#: ../ui/shortcuts-window.ui.h:12
+#: ui/shortcuts-window.ui:86
 msgctxt "shortcuts window"
 msgid "Favorite"
 msgstr ""
 
-#: ../ui/shortcuts-window.ui.h:13
+#: ui/shortcuts-window.ui:93
 msgctxt "shortcuts window"
 msgid "Reply"
 msgstr ""
 
-#: ../ui/shortcuts-window.ui.h:14
+#: ui/shortcuts-window.ui:100
 msgctxt "shortcuts window"
 msgid "Show Details"
 msgstr ""
 
-#: ../ui/shortcuts-window.ui.h:15
+#: ui/shortcuts-window.ui:107
 msgctxt "shortcuts window"
 msgid "Delete"
 msgstr ""
 
-#: ../data/org.baedert.corebird.appdata.xml.in.h:1
-msgid ""
-"Corebird is a native GTK+ twitter client that provides vital features such "
-"as Direct Messages (DMs), tweet notifications, conversation views."
-msgstr "Corebird este un client de Twitter nativ GTK+ care furnizează caracteristici vitale ca Mesaje Directe (DM), notificări, pagina de conversaţii."
+#: ui/start-conversation-entry.ui:29
+msgid "Start new conversation"
+msgstr "Începe o conversaţie nouă"
 
-#: ../data/org.baedert.corebird.appdata.xml.in.h:2
-msgid ""
-"Additional features include local viewing of videos, multiple inline images,"
-" Lists, Filters, multiple accounts, etc."
-msgstr "Caracteristici adiţionale includ vizualizarea videoclipurilor local, imagini in linie multiple, Liste, Filtre, conturi multiple, etc."
+#: ui/start-conversation-entry.ui:49
+msgid "With:"
+msgstr "Cu:"
 
-#: ../data/org.baedert.corebird.appdata.xml.in.h:3
-msgid "Generic timeline view when using Corebird"
+#: ui/start-conversation-entry.ui:75
+msgid "Go"
+msgstr "Începe"
+
+#: ui/tweet-info-page.ui:6 ui/tweet-list-entry.ui:6
+msgid "Quote"
+msgstr "Încorporează"
+
+#: ui/tweet-info-page.ui:223
+msgid "Retweet tweet"
 msgstr ""
 
-#: ../data/org.baedert.corebird.appdata.xml.in.h:4
-msgid "Typical Twitter profile."
-msgstr "Profil Twitter tipic."
+#: ui/tweet-info-page.ui:250
+msgid "Favorite tweet"
+msgstr "Apreciază tweet"
 
-#: ../data/org.baedert.corebird.appdata.xml.in.h:5
-msgid ""
-"Account settings like Name, Website, Description and Avatar can be "
-"configured."
-msgstr "Setări ale contului ca Nume, Website, Descriere şi Avatar care pot fi configurate."
+#: ui/tweet-info-page.ui:277
+msgid "Reply to tweet"
+msgstr "Răspunde la tweet"
 
-#: ../data/org.baedert.corebird.desktop.in.in.h:1
-msgid "Twitter Client"
-msgstr "Client Twitter"
+#: ui/tweet-info-page.ui:315
+msgid "More"
+msgstr "Mai multe"
 
-#: ../data/org.baedert.corebird.desktop.in.in.h:2
-msgid "Use Twitter from within a normal desktop application"
-msgstr "Foloseşte Twitter în o aplicaţie de desktop normală."
+#: ui/tweet-list-entry.ui:60
+msgid "Favorite"
+msgstr "Apreciază"
+
+#: ui/tweet-list-entry.ui:81
+msgid "Reply"
+msgstr "Răspunde"
+
+#: ui/user-filter-entry.ui:125
+msgid "Unblock"
+msgstr "Deblochează"
+
+#: ui/user-list-entry.ui:65
+msgid "Show settings of this account"
+msgstr "Arată setările acestui cont"
+
+#: ui/user-list-entry.ui:90
+msgid "Open in new window"
+msgstr "Deschide intr-o pagină nouă"
+
+#: ui/user-list-entry.ui:114
+#, fuzzy
+msgid "Go to profile"
+msgstr "Profil protejat"
+
+#: ui/user-lists-widget.ui:14
+msgid "Created"
+msgstr "Creat"
+
+#: ui/user-lists-widget.ui:86
+msgid "Subscribed to"
+msgstr "Abonat la"
+
+#~ msgid "Open Account"
+#~ msgstr "Deschide Cont"
+
+#~ msgid "New Mention from @%s"
+#~ msgstr "O nouă menţionare de la @%s"
+
+#~ msgid "Maximum media size"
+#~ msgstr "Mărime maximă fişiere media"
+
+#~ msgid "MB"
+#~ msgstr "MB"
