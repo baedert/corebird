@@ -15,7 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 [GtkTemplate (ui = "/org/baedert/corebird/ui/user-filter-entry.ui")]
 class UserFilterEntry : Gtk.ListBoxRow, ITwitterItem {
   [GtkChild]
@@ -54,9 +53,12 @@ class UserFilterEntry : Gtk.ListBoxRow, ITwitterItem {
     get{ return 2; }
   }
 
-  public int64 user_id { get; set; }
+  public int64 user_id;
 
   public signal void deleted (int64 id);
+
+  public bool muted = false;
+  public bool blocked = false;
 
   private void real_set_avatar (string avatar_url) {
     avatar_image.surface = Twitter.get ().get_avatar (user_id, avatar_url, (a) => {
