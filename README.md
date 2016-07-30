@@ -53,7 +53,7 @@ This is the readme for the current *development version*. If you're looking for 
 
 Note that the above packages are just rough estimations, the actual package names on your distribution may vary.
 
-If you pass `--disable-video` to the configure script, you don't need any gstreamer dependency but  won't be able to view any videos (i.e. no vines and no twitter gifs).
+If you pass `--disable-video` to the configure script, you don't need any gstreamer dependency but won't be able to view any videos.
 
 ## Compiling
 
