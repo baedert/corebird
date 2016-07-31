@@ -10,5 +10,5 @@ EXTRA_DIST = \
 
 
 update-translations: po/corebird.pot
-	@tx pull --all --force --skip
+	@tx pull --all --force --skip --minimum-perc=1
 	@tx push --source
