@@ -1,6 +1,6 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# Copyright (C) YEAR Timm Bäder
+# This file is distributed under the same license as the corebird package.
 #
 # Translators:
 # enolp <enolp@softastur.org>, 2014-2015
@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
-"POT-Creation-Date: 2016-07-29 13:43+0200\n"
-"PO-Revision-Date: 2016-02-21 09:14+0000\n"
+"POT-Creation-Date: 2016-07-31 08:33+0200\n"
+"PO-Revision-Date: 2016-07-30 08:17+0000\n"
 "Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
 "Language-Team: Asturian (http://www.transifex.com/corebird/corebird/language/"
 "ast/)\n"
@@ -23,9 +23,8 @@ msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:5
 #: data/org.baedert.corebird.desktop.in:3
-#, fuzzy
 msgid "Corebird"
-msgstr "Tocante a Corebird"
+msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:6
 #: data/org.baedert.corebird.desktop.in:4
@@ -51,37 +50,31 @@ msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:21
 msgid "Generic timeline view when using Corebird"
-msgstr "Vista de llinia temporal al usar Corebird"
+msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:25
-#, fuzzy
 msgid "Typical Twitter profile"
-msgstr "Perfil típicu de Twitter."
+msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:29
-#, fuzzy
 msgid "Account settings can be configured"
 msgstr ""
-"Puen configurase los axustes de cuenta como'l nome, sitiu web, la "
-"descripción y l'avatar."
 
 #: data/org.baedert.corebird.desktop.in:5
 msgid "Use Twitter from within a normal desktop application"
-msgstr "Usa Twitter dende una aplicación normal d'escritoriu"
+msgstr ""
 
 #: data/org.baedert.corebird.desktop.in:7
 msgid "twitter;"
 msgstr ""
 
 #: data/org.baedert.corebird.desktop.in:11
-#, fuzzy
 msgid "corebird"
-msgstr "Tocante a Corebird"
+msgstr ""
 
 #: src/DefaultTimeline.vala:358
-#, fuzzy
 msgid "Could not load tweets"
-msgstr "Nun pudo amosase'l tuit"
+msgstr ""
 
 #: src/DMPage.vala:329
 msgid "Direct Conversation"
@@ -109,14 +102,12 @@ msgid "Favorites"
 msgstr "Favoritos"
 
 #: src/FilterPage.vala:47
-#, fuzzy
 msgid "Add new Filter"
-msgstr "Amestar filtru nuevu"
+msgstr ""
 
 #: src/FilterPage.vala:317 src/FilterPage.vala:323
-#, fuzzy
 msgid "Filters"
-msgstr "Modificar filtru"
+msgstr ""
 
 #: src/HomeTimeline.vala:122
 #, c-format
@@ -155,9 +146,9 @@ msgid "List"
 msgstr "Llista"
 
 #: src/list/TweetListEntry.vala:411
-#, fuzzy, c-format
+#, c-format
 msgid "Block %s"
-msgstr "Bloquiáu"
+msgstr ""
 
 #: src/list/TweetListEntry.vala:546
 msgid "This tweet contains images marked as inappropriate"
@@ -168,14 +159,13 @@ msgid "Show anyway"
 msgstr ""
 
 #: src/MainWindow.vala:75
-#, fuzzy
 msgid "Add new Account"
-msgstr "Cuenta nueva"
+msgstr ""
 
 #: src/MentionsTimeline.vala:91 src/UserEventReceiver.vala:111
-#, fuzzy, c-format
+#, c-format
 msgid "%s mentioned %s"
-msgstr "%s retuiteó %s"
+msgstr ""
 
 #: src/MentionsTimeline.vala:99 src/MentionsTimeline.vala:103
 msgid "Mentions"
@@ -266,9 +256,8 @@ msgid "Select avatar"
 msgstr "Esbillar semeya"
 
 #: src/widgets/CompletionTextView.vala:33
-#, fuzzy
 msgid "No users found"
-msgstr "Nun s'alcontraron entraes"
+msgstr ""
 
 #: src/widgets/FollowButton.vala:45
 msgid "Follow"
@@ -303,9 +292,8 @@ msgid "Quote tweet"
 msgstr "Citar tuit"
 
 #: src/window/FileSelector.vala:39 src/window/FileSelector.vala:85
-#, fuzzy
 msgid "Select Image"
-msgstr "Esbillar pancarta"
+msgstr ""
 
 #: src/window/FileSelector.vala:70
 msgid "Open"
@@ -367,9 +355,8 @@ msgid "Doesn't match"
 msgstr "Nun concasa"
 
 #: src/window/ModifySnippetDialog.vala:44
-#, fuzzy
 msgid "Modify Snippet"
-msgstr "Modificar filtru"
+msgstr ""
 
 #: src/window/ModifySnippetDialog.vala:63
 msgid "Snippet can't be empty"
@@ -841,9 +828,8 @@ msgid "Open in new window"
 msgstr "Abrir nuna ventana nueva"
 
 #: ui/user-list-entry.ui:114
-#, fuzzy
 msgid "Go to profile"
-msgstr "Perfil protexíu"
+msgstr ""
 
 #: ui/user-lists-widget.ui:14
 msgid "Created"
@@ -852,15 +838,3 @@ msgstr "Creáu"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "Soscribise a"
-
-#~ msgid "Open Account"
-#~ msgstr "Abrir cuenta"
-
-#~ msgid "New Mention from @%s"
-#~ msgstr "Mención nueva de @%s"
-
-#~ msgid "Maximum media size"
-#~ msgstr "Tamañu de multimedia máximu"
-
-#~ msgid "MB"
-#~ msgstr "MB"

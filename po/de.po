@@ -1,12 +1,13 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# Copyright (C) YEAR Timm Bäder
+# This file is distributed under the same license as the corebird package.
 #
 # Translators:
 # fgreinus <florian.greinus@googlemail.com>, 2015
 # Heiko Adams <HeikoAdams@users.noreply.github.com>, 2016
-# jupaja <jupaja@gmx.net>, 2014-2015
+# jupaja, 2014-2015
 # baedert <mail@baedert.org>, 2014-2015
+# Matthias Kellermann <matthias.kellermann@outlook.com>, 2016
 # Michael <michaelbaer89@gmail.com>, 2014
 # Peter Ludikovsky, 2015
 # Peter S <peter@schwindt-net.de>, 2015
@@ -17,9 +18,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
-"POT-Creation-Date: 2016-07-29 13:43+0200\n"
-"PO-Revision-Date: 2016-02-25 17:47+0000\n"
-"Last-Translator: Heiko Adams <HeikoAdams@users.noreply.github.com>\n"
+"POT-Creation-Date: 2016-07-31 08:33+0200\n"
+"PO-Revision-Date: 2016-07-30 08:17+0000\n"
+"Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
 "Language-Team: German (http://www.transifex.com/corebird/corebird/language/"
 "de/)\n"
 "Language: de\n"
@@ -30,9 +31,8 @@ msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:5
 #: data/org.baedert.corebird.desktop.in:3
-#, fuzzy
 msgid "Corebird"
-msgstr "Über Corebird"
+msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:6
 #: data/org.baedert.corebird.desktop.in:4
@@ -57,37 +57,31 @@ msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:21
 msgid "Generic timeline view when using Corebird"
-msgstr "Übergeordnete Zeitleistenansicht bei der Nutzung von Corebird"
+msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:25
-#, fuzzy
 msgid "Typical Twitter profile"
-msgstr "Typisches Twitter-Profil"
+msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:29
-#, fuzzy
 msgid "Account settings can be configured"
 msgstr ""
-"Account-Einstellungen wie der Name, die Webseite, die Beschreibung und der "
-"Avatar können konfiguriert werden."
 
 #: data/org.baedert.corebird.desktop.in:5
 msgid "Use Twitter from within a normal desktop application"
-msgstr "Nutzen Sie Twitter in einer normalen Desktopanwendung"
+msgstr ""
 
 #: data/org.baedert.corebird.desktop.in:7
 msgid "twitter;"
 msgstr ""
 
 #: data/org.baedert.corebird.desktop.in:11
-#, fuzzy
 msgid "corebird"
-msgstr "Über Corebird"
+msgstr ""
 
 #: src/DefaultTimeline.vala:358
-#, fuzzy
 msgid "Could not load tweets"
-msgstr "Konnte Tweet nicht anzeigen"
+msgstr ""
 
 #: src/DMPage.vala:329
 msgid "Direct Conversation"
@@ -115,14 +109,12 @@ msgid "Favorites"
 msgstr "Favoriten"
 
 #: src/FilterPage.vala:47
-#, fuzzy
 msgid "Add new Filter"
-msgstr "Neuen Filter Hinzufügen"
+msgstr ""
 
 #: src/FilterPage.vala:317 src/FilterPage.vala:323
-#, fuzzy
 msgid "Filters"
-msgstr "Filter ändern"
+msgstr ""
 
 #: src/HomeTimeline.vala:122
 #, c-format
@@ -161,28 +153,26 @@ msgid "List"
 msgstr "Liste"
 
 #: src/list/TweetListEntry.vala:411
-#, fuzzy, c-format
+#, c-format
 msgid "Block %s"
-msgstr "Blockiert"
+msgstr ""
 
 #: src/list/TweetListEntry.vala:546
-#, fuzzy
 msgid "This tweet contains images marked as inappropriate"
-msgstr "Dieser Tweet enthält Bilder, die als unangebracht markiert wurden"
+msgstr ""
 
 #: src/list/TweetListEntry.vala:553
 msgid "Show anyway"
-msgstr "trotzdem zeigen"
+msgstr ""
 
 #: src/MainWindow.vala:75
-#, fuzzy
 msgid "Add new Account"
-msgstr "Neuer Account"
+msgstr ""
 
 #: src/MentionsTimeline.vala:91 src/UserEventReceiver.vala:111
-#, fuzzy, c-format
+#, c-format
 msgid "%s mentioned %s"
-msgstr "%s retweetete %s"
+msgstr ""
 
 #: src/MentionsTimeline.vala:99 src/MentionsTimeline.vala:103
 msgid "Mentions"
@@ -273,9 +263,8 @@ msgid "Select avatar"
 msgstr "Avatar auswählen"
 
 #: src/widgets/CompletionTextView.vala:33
-#, fuzzy
 msgid "No users found"
-msgstr "Keine Einträge gefunden"
+msgstr ""
 
 #: src/widgets/FollowButton.vala:45
 msgid "Follow"
@@ -310,9 +299,8 @@ msgid "Quote tweet"
 msgstr "Zitiere Tweet"
 
 #: src/window/FileSelector.vala:39 src/window/FileSelector.vala:85
-#, fuzzy
 msgid "Select Image"
-msgstr "Banner auswählen"
+msgstr ""
 
 #: src/window/FileSelector.vala:70
 msgid "Open"
@@ -345,21 +333,24 @@ msgstr "Speichern"
 
 #: src/window/ImageCropDialog.vala:103
 msgid "Image does not meet minimum size requirements:"
-msgstr "Bild entspricht nicht der mindest Größe:"
+msgstr ""
+"Das Bild entspricht nicht den minimalen Größenanforderungen.\n"
+"Minimale Breite: %d Pixel\n"
+"Minimale Höhe: %d Pixel"
 
 #: src/window/ImageCropDialog.vala:104
 #, c-format
 msgid "Minimum width: %d pixel"
 msgid_plural "Minimum width: %d pixels"
 msgstr[0] "Minimum Breite sind %d Bildpunkte"
-msgstr[1] "Minimum Breite sind %d Bildpunkten"
+msgstr[1] "Minimale Breite sind %d Bildpunkte"
 
 #: src/window/ImageCropDialog.vala:106
 #, c-format
 msgid "Minimum height: %d pixel"
 msgid_plural "Minimum height: %d pixels"
 msgstr[0] "Minimum Höhne sind %d Bildpunkte"
-msgstr[1] "Minimum Höhne sind %d Bildpunkten"
+msgstr[1] "Minimale Höhe sind %d Bildpunkte"
 
 #: src/window/ModifyFilterDialog.vala:45
 msgid "Modify Filter"
@@ -374,9 +365,8 @@ msgid "Doesn't match"
 msgstr "Passt nicht"
 
 #: src/window/ModifySnippetDialog.vala:44
-#, fuzzy
 msgid "Modify Snippet"
-msgstr "Filter ändern"
+msgstr ""
 
 #: src/window/ModifySnippetDialog.vala:63
 msgid "Snippet can't be empty"
@@ -558,7 +548,7 @@ msgstr "Beenden"
 
 #: ui/modify-filter-dialog.ui:6
 msgid "Add New Filter"
-msgstr "Neuen Filter Hinzufügen"
+msgstr "Neuen Filter hinzufügen"
 
 #: ui/modify-snippet-dialog.ui:6
 msgid "Add New Snippet"
@@ -706,7 +696,7 @@ msgstr "Entferne Medienverweise"
 
 #: ui/settings-dialog.ui:395
 msgid "Hide inappropriate content"
-msgstr "verstecke unangebrachte Inhalte"
+msgstr "Verstecke unangebrachte Inhalte"
 
 #: ui/settings-dialog.ui:442
 msgid "No snippets configured."
@@ -850,9 +840,8 @@ msgid "Open in new window"
 msgstr "In neuem Fenster öffnen"
 
 #: ui/user-list-entry.ui:114
-#, fuzzy
 msgid "Go to profile"
-msgstr "Geschütztes Profil"
+msgstr ""
 
 #: ui/user-lists-widget.ui:14
 msgid "Created"
@@ -861,15 +850,3 @@ msgstr "Erstellt"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "Anmelden zu"
-
-#~ msgid "Open Account"
-#~ msgstr "Account öffnen"
-
-#~ msgid "New Mention from @%s"
-#~ msgstr "Neue Erwähnung von @%s"
-
-#~ msgid "Maximum media size"
-#~ msgstr "Maximale Bildergröße"
-
-#~ msgid "MB"
-#~ msgstr "MB"

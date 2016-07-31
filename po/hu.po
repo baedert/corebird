@@ -1,6 +1,6 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# Copyright (C) YEAR Timm Bäder
+# This file is distributed under the same license as the corebird package.
 #
 # Translators:
 # Peter Borsa <peter.borsa@gmail.com>, 2015
@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
-"POT-Creation-Date: 2016-07-29 13:43+0200\n"
-"PO-Revision-Date: 2016-02-21 09:14+0000\n"
+"POT-Creation-Date: 2016-07-31 08:33+0200\n"
+"PO-Revision-Date: 2016-07-30 08:17+0000\n"
 "Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
 "Language-Team: Hungarian (http://www.transifex.com/corebird/corebird/"
 "language/hu/)\n"
@@ -21,9 +21,8 @@ msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:5
 #: data/org.baedert.corebird.desktop.in:3
-#, fuzzy
 msgid "Corebird"
-msgstr "Corebird-ről"
+msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:6
 #: data/org.baedert.corebird.desktop.in:4
@@ -63,9 +62,8 @@ msgid "twitter;"
 msgstr ""
 
 #: data/org.baedert.corebird.desktop.in:11
-#, fuzzy
 msgid "corebird"
-msgstr "Corebird-ről"
+msgstr ""
 
 #: src/DefaultTimeline.vala:358
 msgid "Could not load tweets"
@@ -101,9 +99,8 @@ msgid "Add new Filter"
 msgstr ""
 
 #: src/FilterPage.vala:317 src/FilterPage.vala:323
-#, fuzzy
 msgid "Filters"
-msgstr "Szűrő módosítása"
+msgstr ""
 
 #: src/HomeTimeline.vala:122
 #, c-format
@@ -142,9 +139,9 @@ msgid "List"
 msgstr ""
 
 #: src/list/TweetListEntry.vala:411
-#, fuzzy, c-format
+#, c-format
 msgid "Block %s"
-msgstr "Blokkolva"
+msgstr ""
 
 #: src/list/TweetListEntry.vala:546
 msgid "This tweet contains images marked as inappropriate"
@@ -155,9 +152,8 @@ msgid "Show anyway"
 msgstr ""
 
 #: src/MainWindow.vala:75
-#, fuzzy
 msgid "Add new Account"
-msgstr "Új felhasználói fiók"
+msgstr ""
 
 #: src/MentionsTimeline.vala:91 src/UserEventReceiver.vala:111
 #, c-format
@@ -287,9 +283,8 @@ msgid "Quote tweet"
 msgstr ""
 
 #: src/window/FileSelector.vala:39 src/window/FileSelector.vala:85
-#, fuzzy
 msgid "Select Image"
-msgstr "Avatar kiválasztása"
+msgstr ""
 
 #: src/window/FileSelector.vala:70
 msgid "Open"
@@ -351,9 +346,8 @@ msgid "Doesn't match"
 msgstr ""
 
 #: src/window/ModifySnippetDialog.vala:44
-#, fuzzy
 msgid "Modify Snippet"
-msgstr "Szűrő módosítása"
+msgstr ""
 
 #: src/window/ModifySnippetDialog.vala:63
 msgid "Snippet can't be empty"
@@ -823,9 +817,8 @@ msgid "Open in new window"
 msgstr "Megnyitás új ablakban"
 
 #: ui/user-list-entry.ui:114
-#, fuzzy
 msgid "Go to profile"
-msgstr "Védett profil"
+msgstr ""
 
 #: ui/user-lists-widget.ui:14
 msgid "Created"
@@ -834,6 +827,3 @@ msgstr "Létrehozva"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr ""
-
-#~ msgid "MB"
-#~ msgstr "MB"

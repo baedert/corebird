@@ -1,29 +1,29 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# Copyright (C) YEAR Timm Bäder
+# This file is distributed under the same license as the corebird package.
 #
 # Translators:
+# adem demir <scripard@gmail.com>, 2015
 # Ali GÖREN <goren.ali@yandex.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
-"POT-Creation-Date: 2016-07-29 13:43+0200\n"
-"PO-Revision-Date: 2016-02-21 09:14+0000\n"
+"POT-Creation-Date: 2016-07-31 08:33+0200\n"
+"PO-Revision-Date: 2016-07-30 08:17+0000\n"
 "Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
-"Language-Team: Turkish (http://www.transifex.com/corebird/corebird/language/"
-"tr/)\n"
+"Language-Team: Turkish (Turkey) (http://www.transifex.com/corebird/corebird/"
+"language/tr_TR/)\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: data/org.baedert.corebird.appdata.xml.in:5
 #: data/org.baedert.corebird.desktop.in:3
-#, fuzzy
 msgid "Corebird"
-msgstr "Corebird Hakkında"
+msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:6
 #: data/org.baedert.corebird.desktop.in:4
@@ -48,36 +48,31 @@ msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:21
 msgid "Generic timeline view when using Corebird"
-msgstr "Corebird Kullanarak Jenerik Zaman Çizelgenizi Görüntüleyin"
+msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:25
-#, fuzzy
 msgid "Typical Twitter profile"
-msgstr "Tipik Twitter Profili"
+msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:29
-#, fuzzy
 msgid "Account settings can be configured"
 msgstr ""
-"Hesap Ayarlarından İsim, Açıklama, Avatar Gibi Özellikler Yapılandırılabilir."
 
 #: data/org.baedert.corebird.desktop.in:5
 msgid "Use Twitter from within a normal desktop application"
-msgstr "Twitter'ı Normal Bir Masaüstü Uygulaması İle Kullanın"
+msgstr ""
 
 #: data/org.baedert.corebird.desktop.in:7
 msgid "twitter;"
 msgstr ""
 
 #: data/org.baedert.corebird.desktop.in:11
-#, fuzzy
 msgid "corebird"
-msgstr "Corebird Hakkında"
+msgstr ""
 
 #: src/DefaultTimeline.vala:358
-#, fuzzy
 msgid "Could not load tweets"
-msgstr "Tweet Gösterilemiyor"
+msgstr ""
 
 #: src/DMPage.vala:329
 msgid "Direct Conversation"
@@ -88,7 +83,6 @@ msgstr "Doğrudan Görüşme"
 msgid "%d new Message from %s"
 msgid_plural "%d new Messages from %s"
 msgstr[0] "%s Kullanıcısından %d Yeni Mesaj"
-msgstr[1] "%s Kullanıcısından %d Yeni Mesaj"
 
 #: src/DMThreadsPage.vala:213 src/UserEventReceiver.vala:94
 #, c-format
@@ -105,14 +99,12 @@ msgid "Favorites"
 msgstr "Favoriler"
 
 #: src/FilterPage.vala:47
-#, fuzzy
 msgid "Add new Filter"
-msgstr "Yeni Filtre Ekle"
+msgstr ""
 
 #: src/FilterPage.vala:317 src/FilterPage.vala:323
-#, fuzzy
 msgid "Filters"
-msgstr "Filtreleri Düzenle."
+msgstr ""
 
 #: src/HomeTimeline.vala:122
 #, c-format
@@ -129,7 +121,6 @@ msgstr "%s Tweetlendi"
 msgid "%d new Tweet!"
 msgid_plural "%d new Tweets!"
 msgstr[0] "%d Yeni Tweet!"
-msgstr[1] "%d Yeni Tweet!"
 
 #: src/HomeTimeline.vala:169
 msgid "Home"
@@ -140,7 +131,6 @@ msgstr "Anasayfa"
 msgid "(%d unread)"
 msgid_plural "(%d unread)"
 msgstr[0] "(%d Okunmamış)"
-msgstr[1] "(%d Okunmamış)"
 
 #: src/ListsPage.vala:120 src/ListsPage.vala:125 ui/profile-page.ui:350
 msgid "Lists"
@@ -151,9 +141,9 @@ msgid "List"
 msgstr "Liste"
 
 #: src/list/TweetListEntry.vala:411
-#, fuzzy, c-format
+#, c-format
 msgid "Block %s"
-msgstr "Engellenmiş"
+msgstr ""
 
 #: src/list/TweetListEntry.vala:546
 msgid "This tweet contains images marked as inappropriate"
@@ -164,14 +154,13 @@ msgid "Show anyway"
 msgstr ""
 
 #: src/MainWindow.vala:75
-#, fuzzy
 msgid "Add new Account"
-msgstr "Yeni Hesap"
+msgstr ""
 
 #: src/MentionsTimeline.vala:91 src/UserEventReceiver.vala:111
-#, fuzzy, c-format
+#, c-format
 msgid "%s mentioned %s"
-msgstr "%s Retweetlendi %s"
+msgstr ""
 
 #: src/MentionsTimeline.vala:99 src/MentionsTimeline.vala:103
 msgid "Mentions"
@@ -262,9 +251,8 @@ msgid "Select avatar"
 msgstr "Avatar Seç"
 
 #: src/widgets/CompletionTextView.vala:33
-#, fuzzy
 msgid "No users found"
-msgstr "Herhangi Bir Tweet Bulunamadı."
+msgstr ""
 
 #: src/widgets/FollowButton.vala:45
 msgid "Follow"
@@ -299,9 +287,8 @@ msgid "Quote tweet"
 msgstr "Alıntı Tweet"
 
 #: src/window/FileSelector.vala:39 src/window/FileSelector.vala:85
-#, fuzzy
 msgid "Select Image"
-msgstr "Başlık Fotoğrafı Seç"
+msgstr ""
 
 #: src/window/FileSelector.vala:70
 msgid "Open"
@@ -341,14 +328,12 @@ msgstr "Resim Genişliği Minimum Gereksinimleri Karşılamıyor"
 msgid "Minimum width: %d pixel"
 msgid_plural "Minimum width: %d pixels"
 msgstr[0] "Minimum Genişlik %d Piksel"
-msgstr[1] "Minimum Genişlik %d Piksel"
 
 #: src/window/ImageCropDialog.vala:106
 #, c-format
 msgid "Minimum height: %d pixel"
 msgid_plural "Minimum height: %d pixels"
 msgstr[0] "Minimum Yükseklik %d Piksel"
-msgstr[1] "Minimum Yükseklik %d Piksel"
 
 #: src/window/ModifyFilterDialog.vala:45
 msgid "Modify Filter"
@@ -363,9 +348,8 @@ msgid "Doesn't match"
 msgstr "Eşleşme Yok."
 
 #: src/window/ModifySnippetDialog.vala:44
-#, fuzzy
 msgid "Modify Snippet"
-msgstr "Filtreleri Düzenle."
+msgstr ""
 
 #: src/window/ModifySnippetDialog.vala:63
 msgid "Snippet can't be empty"
@@ -447,7 +431,7 @@ msgstr "Sil"
 
 #: ui/account-dialog.ui:221
 msgid "Do you really want to delete this account?"
-msgstr "Bu Hesabı Gerçekten Silmek İstiyor Musunuz?"
+msgstr "Gerçekten Bu Hesabı Silmek İstiyor Musunuz?"
 
 #: ui/compose-window.ui:11 ui/compose-window.ui:25
 msgid "Compose Tweet"
@@ -812,7 +796,7 @@ msgstr "Tweet'i Favorile"
 
 #: ui/tweet-info-page.ui:277
 msgid "Reply to tweet"
-msgstr "Tweet'i Cevapla"
+msgstr "Tweeti Cevapla"
 
 #: ui/tweet-info-page.ui:315
 msgid "More"
@@ -839,9 +823,8 @@ msgid "Open in new window"
 msgstr "Yeni Pencerede Aç"
 
 #: ui/user-list-entry.ui:114
-#, fuzzy
 msgid "Go to profile"
-msgstr "Korumalı Hesap"
+msgstr ""
 
 #: ui/user-lists-widget.ui:14
 msgid "Created"
@@ -850,15 +833,3 @@ msgstr "Oluşturuldu"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "Abone Olundu"
-
-#~ msgid "Open Account"
-#~ msgstr "Hesap Aç"
-
-#~ msgid "New Mention from @%s"
-#~ msgstr "@%s Kullanıcısı Senden Bahsetti."
-
-#~ msgid "Maximum media size"
-#~ msgstr "Maksimum Medya Boyutu"
-
-#~ msgid "MB"
-#~ msgstr "MB"

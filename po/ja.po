@@ -1,6 +1,6 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# Copyright (C) YEAR Timm Bäder
+# This file is distributed under the same license as the corebird package.
 #
 # Translators:
 # kumar8600 <kumar8600@gmail.com>, 2014
@@ -8,11 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
-"POT-Creation-Date: 2016-07-29 13:43+0200\n"
-"PO-Revision-Date: 2015-09-12 08:49+0000\n"
+"POT-Creation-Date: 2016-07-31 08:33+0200\n"
+"PO-Revision-Date: 2016-07-30 08:17+0000\n"
 "Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
-"Language-Team: Japanese (http://www.transifex.com/corebird/corebird/language/"
-"ja/)\n"
+"Language-Team: Japanese (Japan) (http://www.transifex.com/corebird/corebird/"
+"language/ja_JP/)\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,9 +21,8 @@ msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:5
 #: data/org.baedert.corebird.desktop.in:3
-#, fuzzy
 msgid "Corebird"
-msgstr "Corebird について"
+msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:6
 #: data/org.baedert.corebird.desktop.in:4
@@ -65,9 +64,8 @@ msgid "twitter;"
 msgstr ""
 
 #: data/org.baedert.corebird.desktop.in:11
-#, fuzzy
 msgid "corebird"
-msgstr "Corebird について"
+msgstr ""
 
 #: src/DefaultTimeline.vala:358
 msgid "Could not load tweets"
@@ -140,9 +138,9 @@ msgid "List"
 msgstr ""
 
 #: src/list/TweetListEntry.vala:411
-#, fuzzy, c-format
+#, c-format
 msgid "Block %s"
-msgstr "ブロック済み"
+msgstr ""
 
 #: src/list/TweetListEntry.vala:546
 msgid "This tweet contains images marked as inappropriate"
@@ -153,14 +151,13 @@ msgid "Show anyway"
 msgstr ""
 
 #: src/MainWindow.vala:75
-#, fuzzy
 msgid "Add new Account"
-msgstr "アカウントを開く"
+msgstr ""
 
 #: src/MentionsTimeline.vala:91 src/UserEventReceiver.vala:111
-#, fuzzy, c-format
+#, c-format
 msgid "%s mentioned %s"
-msgstr "%s が %s をリツイート"
+msgstr ""
 
 #: src/MentionsTimeline.vala:99 src/MentionsTimeline.vala:103
 msgid "Mentions"
@@ -251,9 +248,8 @@ msgid "Select avatar"
 msgstr ""
 
 #: src/widgets/CompletionTextView.vala:33
-#, fuzzy
 msgid "No users found"
-msgstr "エントリーがありません"
+msgstr ""
 
 #: src/widgets/FollowButton.vala:45
 msgid "Follow"
@@ -289,7 +285,7 @@ msgstr ""
 
 #: src/window/FileSelector.vala:39 src/window/FileSelector.vala:85
 msgid "Select Image"
-msgstr "画像を選択する"
+msgstr ""
 
 #: src/window/FileSelector.vala:70
 msgid "Open"
@@ -699,10 +695,9 @@ msgid "General"
 msgstr ""
 
 #: ui/shortcuts-window.ui:17
-#, fuzzy
 msgctxt "shortcuts window"
 msgid "Compose Tweet"
-msgstr "ツイートの編集"
+msgstr ""
 
 #: ui/shortcuts-window.ui:24
 msgctxt "shortcuts window"
@@ -740,22 +735,19 @@ msgid "Go to nth page"
 msgstr ""
 
 #: ui/shortcuts-window.ui:74
-#, fuzzy
 msgctxt "shortcuts window"
 msgid "Tweets"
-msgstr "ツイート"
+msgstr ""
 
 #: ui/shortcuts-window.ui:79
-#, fuzzy
 msgctxt "shortcuts window"
 msgid "Retweet"
-msgstr "リツイート"
+msgstr ""
 
 #: ui/shortcuts-window.ui:86
-#, fuzzy
 msgctxt "shortcuts window"
 msgid "Favorite"
-msgstr "お気に入り"
+msgstr ""
 
 #: ui/shortcuts-window.ui:93
 msgctxt "shortcuts window"
@@ -763,16 +755,14 @@ msgid "Reply"
 msgstr ""
 
 #: ui/shortcuts-window.ui:100
-#, fuzzy
 msgctxt "shortcuts window"
 msgid "Show Details"
-msgstr "ツイートの詳細"
+msgstr ""
 
 #: ui/shortcuts-window.ui:107
-#, fuzzy
 msgctxt "shortcuts window"
 msgid "Delete"
-msgstr "削除"
+msgstr ""
 
 #: ui/start-conversation-entry.ui:29
 msgid "Start new conversation"
@@ -827,9 +817,8 @@ msgid "Open in new window"
 msgstr ""
 
 #: ui/user-list-entry.ui:114
-#, fuzzy
 msgid "Go to profile"
-msgstr "非公開プロフィール"
+msgstr ""
 
 #: ui/user-lists-widget.ui:14
 msgid "Created"
@@ -838,12 +827,3 @@ msgstr "既成"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "購読中"
-
-#~ msgid "Choose"
-#~ msgstr "選択"
-
-#~ msgid "Save image"
-#~ msgstr "画像を保存"
-
-#~ msgid "New Mention from @%s"
-#~ msgstr "@%s からメンション"

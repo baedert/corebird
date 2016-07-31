@@ -1,17 +1,18 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# Copyright (C) YEAR Timm Bäder
+# This file is distributed under the same license as the corebird package.
 #
 # Translators:
 # Krisan Alfa Timur <krisan47@gmail.com>, 2015
-# mhy <dotovr@di.blankon.in>, 2015
-# Reza Faiz A Rahman <ylpmiskrad@gmail.com>, 2015
+# Mahyuddin Idram Ahmad <dotovr@di.blankon.in>, 2016
+# Mahyuddin Idram Ahmad <dotovr@di.blankon.in>, 2015
+# Reza Faiz A Rahman <rezafaizarahman@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
-"POT-Creation-Date: 2016-07-29 13:43+0200\n"
-"PO-Revision-Date: 2016-02-21 09:14+0000\n"
+"POT-Creation-Date: 2016-07-31 08:33+0200\n"
+"PO-Revision-Date: 2016-07-30 08:17+0000\n"
 "Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
 "Language-Team: Indonesian (http://www.transifex.com/corebird/corebird/"
 "language/id/)\n"
@@ -23,9 +24,8 @@ msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:5
 #: data/org.baedert.corebird.desktop.in:3
-#, fuzzy
 msgid "Corebird"
-msgstr "Tentang Corebird"
+msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:6
 #: data/org.baedert.corebird.desktop.in:4
@@ -50,36 +50,31 @@ msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:21
 msgid "Generic timeline view when using Corebird"
-msgstr "Tampilan timeline generik ketika menggunakan Corebird"
+msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:25
-#, fuzzy
 msgid "Typical Twitter profile"
-msgstr "Khas profil Twitter."
+msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:29
-#, fuzzy
 msgid "Account settings can be configured"
 msgstr ""
-"Setelan akun seperti Nama, Website, Deskripsi dan Avatar dapat dikonfigurasi."
 
 #: data/org.baedert.corebird.desktop.in:5
 msgid "Use Twitter from within a normal desktop application"
-msgstr "Gunakan Twitter dari aplikasi desktop normal"
+msgstr ""
 
 #: data/org.baedert.corebird.desktop.in:7
 msgid "twitter;"
 msgstr ""
 
 #: data/org.baedert.corebird.desktop.in:11
-#, fuzzy
 msgid "corebird"
-msgstr "Tentang Corebird"
+msgstr ""
 
 #: src/DefaultTimeline.vala:358
-#, fuzzy
 msgid "Could not load tweets"
-msgstr "Tidak bisa menampilkan tweet"
+msgstr ""
 
 #: src/DMPage.vala:329
 msgid "Direct Conversation"
@@ -106,14 +101,12 @@ msgid "Favorites"
 msgstr "Kesukaan"
 
 #: src/FilterPage.vala:47
-#, fuzzy
 msgid "Add new Filter"
-msgstr "Tambah Penyaringan Baru"
+msgstr ""
 
 #: src/FilterPage.vala:317 src/FilterPage.vala:323
-#, fuzzy
 msgid "Filters"
-msgstr "Ubah Penyaringan"
+msgstr ""
 
 #: src/HomeTimeline.vala:122
 #, c-format
@@ -150,9 +143,9 @@ msgid "List"
 msgstr "Daftar"
 
 #: src/list/TweetListEntry.vala:411
-#, fuzzy, c-format
+#, c-format
 msgid "Block %s"
-msgstr "Diblokir"
+msgstr ""
 
 #: src/list/TweetListEntry.vala:546
 msgid "This tweet contains images marked as inappropriate"
@@ -163,14 +156,13 @@ msgid "Show anyway"
 msgstr ""
 
 #: src/MainWindow.vala:75
-#, fuzzy
 msgid "Add new Account"
-msgstr "Akun Baru"
+msgstr ""
 
 #: src/MentionsTimeline.vala:91 src/UserEventReceiver.vala:111
-#, fuzzy, c-format
+#, c-format
 msgid "%s mentioned %s"
-msgstr "%s retweeted %s"
+msgstr ""
 
 #: src/MentionsTimeline.vala:99 src/MentionsTimeline.vala:103
 msgid "Mentions"
@@ -261,9 +253,8 @@ msgid "Select avatar"
 msgstr "Pilih avatar"
 
 #: src/widgets/CompletionTextView.vala:33
-#, fuzzy
 msgid "No users found"
-msgstr "Entri tidak ditemukan"
+msgstr ""
 
 #: src/widgets/FollowButton.vala:45
 msgid "Follow"
@@ -298,9 +289,8 @@ msgid "Quote tweet"
 msgstr "Kutip tweet"
 
 #: src/window/FileSelector.vala:39 src/window/FileSelector.vala:85
-#, fuzzy
 msgid "Select Image"
-msgstr "Pilih gambar latar"
+msgstr ""
 
 #: src/window/FileSelector.vala:70
 msgid "Open"
@@ -360,9 +350,8 @@ msgid "Doesn't match"
 msgstr "Tidak cocok"
 
 #: src/window/ModifySnippetDialog.vala:44
-#, fuzzy
 msgid "Modify Snippet"
-msgstr "Ubah Penyaringan"
+msgstr ""
 
 #: src/window/ModifySnippetDialog.vala:63
 msgid "Snippet can't be empty"
@@ -456,7 +445,7 @@ msgstr "Kirim"
 
 #: ui/compose-window.ui:134
 msgid "Add Image"
-msgstr ""
+msgstr "Tambah Gambar"
 
 #: ui/filter-page.ui:71 ui/search-page.ui:86
 msgid "Users"
@@ -532,7 +521,7 @@ msgstr "Pengaturan"
 
 #: ui/menus.ui:10
 msgid "Shortcuts"
-msgstr ""
+msgstr "Pintasan"
 
 #: ui/menus.ui:15
 msgid "About"
@@ -692,7 +681,7 @@ msgstr "Hapus tautan media"
 
 #: ui/settings-dialog.ui:395
 msgid "Hide inappropriate content"
-msgstr ""
+msgstr "Sembunyikan konten yang tidak sesuai"
 
 #: ui/settings-dialog.ui:442
 msgid "No snippets configured."
@@ -711,77 +700,77 @@ msgstr "Potongan"
 #: ui/shortcuts-window.ui:12
 msgctxt "shortcuts window"
 msgid "General"
-msgstr ""
+msgstr "Umum"
 
 #: ui/shortcuts-window.ui:17
 msgctxt "shortcuts window"
 msgid "Compose Tweet"
-msgstr ""
+msgstr "Menulis Tweet"
 
 #: ui/shortcuts-window.ui:24
 msgctxt "shortcuts window"
 msgid "Show Account settings"
-msgstr ""
+msgstr "Tampilkan Pengaturan Akun"
 
 #: ui/shortcuts-window.ui:31
 msgctxt "shortcuts window"
 msgid "Show Accounts Popover"
-msgstr ""
+msgstr "Tampilkan Popover Akun"
 
 #: ui/shortcuts-window.ui:38
 msgctxt "shortcuts window"
 msgid "Show Application Settings"
-msgstr ""
+msgstr "Tampilkan Pengaturan Aplikasi"
 
 #: ui/shortcuts-window.ui:45
 msgctxt "shortcuts window"
 msgid "Toggle Topbar"
-msgstr ""
+msgstr "Alih Topbar"
 
 #: ui/shortcuts-window.ui:52
 msgctxt "shortcuts window"
 msgid "Go Back"
-msgstr ""
+msgstr "Kembali"
 
 #: ui/shortcuts-window.ui:59
 msgctxt "shortcuts window"
 msgid "Go Forward"
-msgstr ""
+msgstr "Lanjut"
 
 #: ui/shortcuts-window.ui:66
 msgctxt "shortcuts window"
 msgid "Go to nth page"
-msgstr ""
+msgstr "Ke halaman nth"
 
 #: ui/shortcuts-window.ui:74
 msgctxt "shortcuts window"
 msgid "Tweets"
-msgstr ""
+msgstr "Tweets"
 
 #: ui/shortcuts-window.ui:79
 msgctxt "shortcuts window"
 msgid "Retweet"
-msgstr ""
+msgstr "Retweet"
 
 #: ui/shortcuts-window.ui:86
 msgctxt "shortcuts window"
 msgid "Favorite"
-msgstr ""
+msgstr "Kesukaan"
 
 #: ui/shortcuts-window.ui:93
 msgctxt "shortcuts window"
 msgid "Reply"
-msgstr ""
+msgstr "Balas"
 
 #: ui/shortcuts-window.ui:100
 msgctxt "shortcuts window"
 msgid "Show Details"
-msgstr ""
+msgstr "Tampilkan Detil"
 
 #: ui/shortcuts-window.ui:107
 msgctxt "shortcuts window"
 msgid "Delete"
-msgstr ""
+msgstr "Hapus"
 
 #: ui/start-conversation-entry.ui:29
 msgid "Start new conversation"
@@ -836,9 +825,8 @@ msgid "Open in new window"
 msgstr "Buka di window baru"
 
 #: ui/user-list-entry.ui:114
-#, fuzzy
 msgid "Go to profile"
-msgstr "Profil dilindungi"
+msgstr ""
 
 #: ui/user-lists-widget.ui:14
 msgid "Created"
@@ -847,15 +835,3 @@ msgstr "Dibuat"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "Berlangganan ke"
-
-#~ msgid "Open Account"
-#~ msgstr "Bukan Akun"
-
-#~ msgid "New Mention from @%s"
-#~ msgstr "Baru Menyebutkan dari @%s"
-
-#~ msgid "Maximum media size"
-#~ msgstr "Maksimum ukuran media"
-
-#~ msgid "MB"
-#~ msgstr "MB"

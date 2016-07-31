@@ -1,19 +1,21 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# Copyright (C) YEAR Timm Bäder
+# This file is distributed under the same license as the corebird package.
 #
 # Translators:
+# Cyril Colin <ccolin@fastmail.com>, 2016
 # Guillaume Hayot, 2015-2016
 # newincpp <bruder_r@epitech.eu>, 2014
+# rc spam <rcspams@gmail.com>, 2016
 # RoPP <rodolphe+transifex@damsy.net>, 2015
 # Seboss666 <sebastien_verdet@seboss666.info>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
-"POT-Creation-Date: 2016-07-29 13:43+0200\n"
-"PO-Revision-Date: 2016-02-21 15:57+0000\n"
-"Last-Translator: Guillaume Hayot\n"
+"POT-Creation-Date: 2016-07-31 08:33+0200\n"
+"PO-Revision-Date: 2016-07-30 08:17+0000\n"
+"Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
 "Language-Team: French (http://www.transifex.com/corebird/corebird/language/"
 "fr/)\n"
 "Language: fr\n"
@@ -24,9 +26,8 @@ msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:5
 #: data/org.baedert.corebird.desktop.in:3
-#, fuzzy
 msgid "Corebird"
-msgstr "À propos de Corebird"
+msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:6
 #: data/org.baedert.corebird.desktop.in:4
@@ -53,37 +54,31 @@ msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:21
 msgid "Generic timeline view when using Corebird"
-msgstr "Vue générique de la timeline lors de l'utilisation de Corebird"
+msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:25
-#, fuzzy
 msgid "Typical Twitter profile"
-msgstr "Profil Twitter standard."
+msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:29
-#, fuzzy
 msgid "Account settings can be configured"
 msgstr ""
-"Les paramètres de compte comme le nom, le site web, la description et "
-"l'avatar peuvent être modifiés."
 
 #: data/org.baedert.corebird.desktop.in:5
 msgid "Use Twitter from within a normal desktop application"
-msgstr "Utilisez Twitter depuis une application bureau classique"
+msgstr ""
 
 #: data/org.baedert.corebird.desktop.in:7
 msgid "twitter;"
 msgstr ""
 
 #: data/org.baedert.corebird.desktop.in:11
-#, fuzzy
 msgid "corebird"
-msgstr "À propos de Corebird"
+msgstr ""
 
 #: src/DefaultTimeline.vala:358
-#, fuzzy
 msgid "Could not load tweets"
-msgstr "Tweet non visible"
+msgstr ""
 
 #: src/DMPage.vala:329
 msgid "Direct Conversation"
@@ -111,14 +106,12 @@ msgid "Favorites"
 msgstr "Favoris "
 
 #: src/FilterPage.vala:47
-#, fuzzy
 msgid "Add new Filter"
-msgstr "Ajouter un nouveau filtre"
+msgstr ""
 
 #: src/FilterPage.vala:317 src/FilterPage.vala:323
-#, fuzzy
 msgid "Filters"
-msgstr "Modifier les filtres"
+msgstr ""
 
 #: src/HomeTimeline.vala:122
 #, c-format
@@ -157,28 +150,26 @@ msgid "List"
 msgstr "Liste"
 
 #: src/list/TweetListEntry.vala:411
-#, fuzzy, c-format
+#, c-format
 msgid "Block %s"
-msgstr "Bloqué"
+msgstr ""
 
 #: src/list/TweetListEntry.vala:546
-#, fuzzy
 msgid "This tweet contains images marked as inappropriate"
-msgstr "Ce tweet contient des images marquées comme inappropriées"
+msgstr ""
 
 #: src/list/TweetListEntry.vala:553
 msgid "Show anyway"
-msgstr "Montrer quand même"
+msgstr ""
 
 #: src/MainWindow.vala:75
-#, fuzzy
 msgid "Add new Account"
-msgstr "Nouveau compte"
+msgstr ""
 
 #: src/MentionsTimeline.vala:91 src/UserEventReceiver.vala:111
-#, fuzzy, c-format
+#, c-format
 msgid "%s mentioned %s"
-msgstr "%s retweeté %s"
+msgstr ""
 
 #: src/MentionsTimeline.vala:99 src/MentionsTimeline.vala:103
 msgid "Mentions"
@@ -269,9 +260,8 @@ msgid "Select avatar"
 msgstr "Sélectionner un avatar"
 
 #: src/widgets/CompletionTextView.vala:33
-#, fuzzy
 msgid "No users found"
-msgstr "Aucune entrée trouvée"
+msgstr ""
 
 #: src/widgets/FollowButton.vala:45
 msgid "Follow"
@@ -306,9 +296,8 @@ msgid "Quote tweet"
 msgstr "Citer le tweet"
 
 #: src/window/FileSelector.vala:39 src/window/FileSelector.vala:85
-#, fuzzy
 msgid "Select Image"
-msgstr "Sélectionner une bannière"
+msgstr ""
 
 #: src/window/FileSelector.vala:70
 msgid "Open"
@@ -370,9 +359,8 @@ msgid "Doesn't match"
 msgstr "Ne correspond pas"
 
 #: src/window/ModifySnippetDialog.vala:44
-#, fuzzy
 msgid "Modify Snippet"
-msgstr "Modifier les filtres"
+msgstr ""
 
 #: src/window/ModifySnippetDialog.vala:63
 msgid "Snippet can't be empty"
@@ -735,7 +723,7 @@ msgstr "Paramètres du compte"
 #: ui/shortcuts-window.ui:31
 msgctxt "shortcuts window"
 msgid "Show Accounts Popover"
-msgstr ""
+msgstr "Afficher le compte Popover"
 
 #: ui/shortcuts-window.ui:38
 msgctxt "shortcuts window"
@@ -745,7 +733,7 @@ msgstr "Paramètres de l'application"
 #: ui/shortcuts-window.ui:45
 msgctxt "shortcuts window"
 msgid "Toggle Topbar"
-msgstr ""
+msgstr "(Dés)Activer la barre supérieure"
 
 #: ui/shortcuts-window.ui:52
 msgctxt "shortcuts window"
@@ -755,42 +743,42 @@ msgstr "Retour"
 #: ui/shortcuts-window.ui:59
 msgctxt "shortcuts window"
 msgid "Go Forward"
-msgstr ""
+msgstr "Avancer"
 
 #: ui/shortcuts-window.ui:66
 msgctxt "shortcuts window"
 msgid "Go to nth page"
-msgstr ""
+msgstr "Aller à la énième page"
 
 #: ui/shortcuts-window.ui:74
 msgctxt "shortcuts window"
 msgid "Tweets"
-msgstr ""
+msgstr "Tweets"
 
 #: ui/shortcuts-window.ui:79
 msgctxt "shortcuts window"
 msgid "Retweet"
-msgstr ""
+msgstr "Retweeter"
 
 #: ui/shortcuts-window.ui:86
 msgctxt "shortcuts window"
 msgid "Favorite"
-msgstr ""
+msgstr "Ajouter aux favoris"
 
 #: ui/shortcuts-window.ui:93
 msgctxt "shortcuts window"
 msgid "Reply"
-msgstr ""
+msgstr "Répondre"
 
 #: ui/shortcuts-window.ui:100
 msgctxt "shortcuts window"
 msgid "Show Details"
-msgstr ""
+msgstr "Montrer les détails"
 
 #: ui/shortcuts-window.ui:107
 msgctxt "shortcuts window"
 msgid "Delete"
-msgstr ""
+msgstr "Supprimer"
 
 #: ui/start-conversation-entry.ui:29
 msgid "Start new conversation"
@@ -845,9 +833,8 @@ msgid "Open in new window"
 msgstr "Ouvrir dans une nouvelle fenêtre"
 
 #: ui/user-list-entry.ui:114
-#, fuzzy
 msgid "Go to profile"
-msgstr "Profil protégé"
+msgstr ""
 
 #: ui/user-lists-widget.ui:14
 msgid "Created"
@@ -856,15 +843,3 @@ msgstr "Créé"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "S'inscrire"
-
-#~ msgid "Open Account"
-#~ msgstr "Ouverture du compte"
-
-#~ msgid "New Mention from @%s"
-#~ msgstr "Nouvelles mentions de @%s"
-
-#~ msgid "Maximum media size"
-#~ msgstr "Taille maximum des medias"
-
-#~ msgid "MB"
-#~ msgstr "Mo"

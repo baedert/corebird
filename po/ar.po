@@ -1,15 +1,17 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# Copyright (C) YEAR Timm Bäder
+# This file is distributed under the same license as the corebird package.
 #
 # Translators:
+# Med Touhami MAHDI <dragnucs@legtux.org>, 2014
+# mohammadA <mohammadAbdulhadi1@gmail.com>, 2016
 # Med Touhami MAHDI <dragnucs@legtux.org>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
-"POT-Creation-Date: 2016-07-29 13:43+0200\n"
-"PO-Revision-Date: 2016-02-21 09:14+0000\n"
+"POT-Creation-Date: 2016-07-31 08:33+0200\n"
+"PO-Revision-Date: 2016-07-30 08:17+0000\n"
 "Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
 "Language-Team: Arabic (http://www.transifex.com/corebird/corebird/language/"
 "ar/)\n"
@@ -22,9 +24,8 @@ msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:5
 #: data/org.baedert.corebird.desktop.in:3
-#, fuzzy
 msgid "Corebird"
-msgstr "حول كوربرد"
+msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:6
 #: data/org.baedert.corebird.desktop.in:4
@@ -36,8 +37,8 @@ msgid ""
 "Corebird is a native GTK+ twitter client that provides vital features such "
 "as Direct Messages (DMs), tweet notifications, conversation views."
 msgstr ""
-"كوربرد عميل تويتر GTK+ أصلي يتوفر على ميزات حيوية مثل الرسائل المباشرة  "
-"والإخطار بالتغردات ووِجهات المحادثة."
+"كوربرد عميل تويتر GTK+ أصيل يوفّر ميزات حيوية مثل الرسائل المباشرة  والإخطار "
+"بالتغريدات وعرض المحادثات."
 
 #: data/org.baedert.corebird.appdata.xml.in:13
 msgid ""
@@ -66,9 +67,8 @@ msgid "twitter;"
 msgstr ""
 
 #: data/org.baedert.corebird.desktop.in:11
-#, fuzzy
 msgid "corebird"
-msgstr "حول كوربرد"
+msgstr ""
 
 #: src/DefaultTimeline.vala:358
 msgid "Could not load tweets"
@@ -149,16 +149,16 @@ msgstr[5] ""
 
 #: src/ListsPage.vala:120 src/ListsPage.vala:125 ui/profile-page.ui:350
 msgid "Lists"
-msgstr "قواءم"
+msgstr "قوائم"
 
 #: src/ListStatusesPage.vala:367
 msgid "List"
 msgstr "قائمة"
 
 #: src/list/TweetListEntry.vala:411
-#, fuzzy, c-format
+#, c-format
 msgid "Block %s"
-msgstr "محضور"
+msgstr ""
 
 #: src/list/TweetListEntry.vala:546
 msgid "This tweet contains images marked as inappropriate"
@@ -169,14 +169,13 @@ msgid "Show anyway"
 msgstr ""
 
 #: src/MainWindow.vala:75
-#, fuzzy
 msgid "Add new Account"
-msgstr "فتح الحساب"
+msgstr ""
 
 #: src/MentionsTimeline.vala:91 src/UserEventReceiver.vala:111
-#, fuzzy, c-format
+#, c-format
 msgid "%s mentioned %s"
-msgstr "%s أعاد تغريد %s"
+msgstr ""
 
 #: src/MentionsTimeline.vala:99 src/MentionsTimeline.vala:103
 msgid "Mentions"
@@ -231,11 +230,11 @@ msgstr "%dساعة"
 
 #: src/widgets/AccountCreateWidget.vala:40
 msgid "Don't have an account yet?"
-msgstr ""
+msgstr "ألم تنشئ لك حسابًا بعد؟"
 
 #: src/widgets/AccountCreateWidget.vala:40
 msgid "Create one"
-msgstr ""
+msgstr "أنشئ واحدًا"
 
 #: src/widgets/AccountCreateWidget.vala:55
 msgid ""
@@ -248,7 +247,7 @@ msgstr ""
 #: src/widgets/AccountCreateWidget.vala:67
 #, c-format
 msgid "Could not open %s"
-msgstr ""
+msgstr "تعذّر فتح %s"
 
 #: src/widgets/AccountCreateWidget.vala:89
 msgid "Wrong PIN"
@@ -267,9 +266,8 @@ msgid "Select avatar"
 msgstr ""
 
 #: src/widgets/CompletionTextView.vala:33
-#, fuzzy
 msgid "No users found"
-msgstr "لم يتم العثور على أي شيء"
+msgstr ""
 
 #: src/widgets/FollowButton.vala:45
 msgid "Follow"
@@ -285,11 +283,11 @@ msgstr ""
 
 #: src/widgets/PixbufButton.vala:52
 msgid "Copy link"
-msgstr "نسخ الرابط"
+msgstr "انسخ الرابط"
 
 #: src/widgets/TweetListBox.vala:100
 msgid "Loading..."
-msgstr ""
+msgstr "يحمّل..."
 
 #: src/widgets/TweetListBox.vala:103 src/widgets/TweetListBox.vala:151
 msgid "No entries found"
@@ -318,7 +316,7 @@ msgstr ""
 #: ui/modify-filter-dialog.ui:13 ui/modify-snippet-dialog.ui:14
 #: ui/user-filter-entry.ui:114
 msgid "Cancel"
-msgstr "إلغاء"
+msgstr "ألغ"
 
 #: src/window/FileSelector.vala:152
 msgid ""
@@ -334,7 +332,7 @@ msgstr ""
 #: ui/account-dialog.ui:28 ui/list-statuses-page.ui:129
 #: ui/modify-filter-dialog.ui:20 ui/modify-snippet-dialog.ui:21
 msgid "Save"
-msgstr "حفظ"
+msgstr "احفظ"
 
 #: src/window/ImageCropDialog.vala:103
 msgid "Image does not meet minimum size requirements:"
@@ -368,7 +366,7 @@ msgstr ""
 
 #: src/window/ModifyFilterDialog.vala:80
 msgid "Matches"
-msgstr "يوافق"
+msgstr "يطابق"
 
 #: src/window/ModifyFilterDialog.vala:82
 msgid "Doesn't match"
@@ -418,7 +416,7 @@ msgstr "مع إستعمال Font Awesome ل Dave Gandy - http://fontawesome.io"
 
 #: ui/account-create-widget.ui:16
 msgid "New Account"
-msgstr ""
+msgstr "حساب جديد"
 
 #: ui/account-create-widget.ui:44
 msgid "PIN:"
@@ -846,9 +844,8 @@ msgid "Open in new window"
 msgstr ""
 
 #: ui/user-list-entry.ui:114
-#, fuzzy
 msgid "Go to profile"
-msgstr "ملف محمي"
+msgstr ""
 
 #: ui/user-lists-widget.ui:14
 msgid "Created"
@@ -857,6 +854,3 @@ msgstr "تم الإنشاء"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "مشترك في"
-
-#~ msgid "New Mention from @%s"
-#~ msgstr "إشاراة جديدة من @%s"

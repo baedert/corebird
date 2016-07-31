@@ -1,9 +1,11 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# Copyright (C) YEAR Timm Bäder
+# This file is distributed under the same license as the corebird package.
 #
 # Translators:
+# Anders Bateva <andersbateva@gmail.com>, 2016
 # Evertton de Lima <e.everttonlima@gmail.com>, 2015
+# Luderson Costa <luderson@gmail.com>, 2016
 # Mauro Pereira Junior <mauropereirajr@gmail.com>, 2015
 # Ricardo Borges Jr. <ricardoborges.jr@gmail.com>, 2015-2016
 # Salomão Carneiro de Brito <salomaocar@gmail.com>, 2015
@@ -12,9 +14,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
-"POT-Creation-Date: 2016-07-29 13:43+0200\n"
-"PO-Revision-Date: 2016-02-22 19:27+0000\n"
-"Last-Translator: Ricardo Borges Jr. <ricardoborges.jr@gmail.com>\n"
+"POT-Creation-Date: 2016-07-31 08:33+0200\n"
+"PO-Revision-Date: 2016-07-30 08:17+0000\n"
+"Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/corebird/"
 "corebird/language/pt_BR/)\n"
 "Language: pt_BR\n"
@@ -25,9 +27,8 @@ msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:5
 #: data/org.baedert.corebird.desktop.in:3
-#, fuzzy
 msgid "Corebird"
-msgstr "Sobre o Corebird"
+msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:6
 #: data/org.baedert.corebird.desktop.in:4
@@ -52,37 +53,31 @@ msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:21
 msgid "Generic timeline view when using Corebird"
-msgstr "Visualização da Timeline ao usar o Corebird"
+msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:25
-#, fuzzy
 msgid "Typical Twitter profile"
-msgstr "Perfil típico do Twitter"
+msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:29
-#, fuzzy
 msgid "Account settings can be configured"
 msgstr ""
-"Configurações da conta como Nome, Website, Descrição e Avatar podem ser "
-"configurados."
 
 #: data/org.baedert.corebird.desktop.in:5
 msgid "Use Twitter from within a normal desktop application"
-msgstr "Usar o Twitter a partir de uma aplicação desktop normal"
+msgstr ""
 
 #: data/org.baedert.corebird.desktop.in:7
 msgid "twitter;"
 msgstr ""
 
 #: data/org.baedert.corebird.desktop.in:11
-#, fuzzy
 msgid "corebird"
-msgstr "Sobre o Corebird"
+msgstr ""
 
 #: src/DefaultTimeline.vala:358
-#, fuzzy
 msgid "Could not load tweets"
-msgstr "Não possível mostrar o tweet"
+msgstr ""
 
 #: src/DMPage.vala:329
 msgid "Direct Conversation"
@@ -110,14 +105,12 @@ msgid "Favorites"
 msgstr "Favoritos"
 
 #: src/FilterPage.vala:47
-#, fuzzy
 msgid "Add new Filter"
-msgstr "Adicionar novo filtro"
+msgstr ""
 
 #: src/FilterPage.vala:317 src/FilterPage.vala:323
-#, fuzzy
 msgid "Filters"
-msgstr "Modificar o filtro"
+msgstr ""
 
 #: src/HomeTimeline.vala:122
 #, c-format
@@ -156,28 +149,26 @@ msgid "List"
 msgstr "Lista"
 
 #: src/list/TweetListEntry.vala:411
-#, fuzzy, c-format
+#, c-format
 msgid "Block %s"
-msgstr "Bloqueado"
+msgstr ""
 
 #: src/list/TweetListEntry.vala:546
-#, fuzzy
 msgid "This tweet contains images marked as inappropriate"
-msgstr "Este tweet contém imagens marcadas como inapropriados"
+msgstr ""
 
 #: src/list/TweetListEntry.vala:553
 msgid "Show anyway"
-msgstr "Exibir em qualquer caso"
+msgstr ""
 
 #: src/MainWindow.vala:75
-#, fuzzy
 msgid "Add new Account"
-msgstr "Nova conta"
+msgstr ""
 
 #: src/MentionsTimeline.vala:91 src/UserEventReceiver.vala:111
-#, fuzzy, c-format
+#, c-format
 msgid "%s mentioned %s"
-msgstr "%s retweetou %s"
+msgstr ""
 
 #: src/MentionsTimeline.vala:99 src/MentionsTimeline.vala:103
 msgid "Mentions"
@@ -198,7 +189,7 @@ msgstr "Pesquisa"
 
 #: src/TweetInfoPage.vala:300
 msgid "Could not show tweet"
-msgstr "Não possível mostrar o tweet"
+msgstr "Não foi possível mostrar o tweet"
 
 #: src/TweetInfoPage.vala:481
 msgid "Retweets"
@@ -268,9 +259,8 @@ msgid "Select avatar"
 msgstr "Escolha um avatar"
 
 #: src/widgets/CompletionTextView.vala:33
-#, fuzzy
 msgid "No users found"
-msgstr "Nenhuma entrada encontrada"
+msgstr ""
 
 #: src/widgets/FollowButton.vala:45
 msgid "Follow"
@@ -305,9 +295,8 @@ msgid "Quote tweet"
 msgstr "Citar tweet"
 
 #: src/window/FileSelector.vala:39 src/window/FileSelector.vala:85
-#, fuzzy
 msgid "Select Image"
-msgstr "Selecione o banner"
+msgstr ""
 
 #: src/window/FileSelector.vala:70
 msgid "Open"
@@ -369,9 +358,8 @@ msgid "Doesn't match"
 msgstr "Não corresponde"
 
 #: src/window/ModifySnippetDialog.vala:44
-#, fuzzy
 msgid "Modify Snippet"
-msgstr "Modificar o filtro"
+msgstr ""
 
 #: src/window/ModifySnippetDialog.vala:63
 msgid "Snippet can't be empty"
@@ -701,7 +689,7 @@ msgstr "Remover links de mídia"
 
 #: ui/settings-dialog.ui:395
 msgid "Hide inappropriate content"
-msgstr "Esconder conteúdo inapropriado"
+msgstr "Ocultar conteúdo inapropriado"
 
 #: ui/settings-dialog.ui:442
 msgid "No snippets configured."
@@ -760,7 +748,7 @@ msgstr "Avançar"
 #: ui/shortcuts-window.ui:66
 msgctxt "shortcuts window"
 msgid "Go to nth page"
-msgstr ""
+msgstr "Ir para página n°"
 
 #: ui/shortcuts-window.ui:74
 msgctxt "shortcuts window"
@@ -845,9 +833,8 @@ msgid "Open in new window"
 msgstr "Abrir em uma nova janela"
 
 #: ui/user-list-entry.ui:114
-#, fuzzy
 msgid "Go to profile"
-msgstr "Perfil protegido"
+msgstr ""
 
 #: ui/user-lists-widget.ui:14
 msgid "Created"
@@ -856,15 +843,3 @@ msgstr "Criado"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "Inscrever-se"
-
-#~ msgid "Open Account"
-#~ msgstr "Abrir uma conta"
-
-#~ msgid "New Mention from @%s"
-#~ msgstr "Nova menção de @%s"
-
-#~ msgid "Maximum media size"
-#~ msgstr "Tamanho máximo de mídia"
-
-#~ msgid "MB"
-#~ msgstr "MB"

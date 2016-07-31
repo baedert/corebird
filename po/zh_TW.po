@@ -1,6 +1,6 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# Copyright (C) YEAR Timm Bäder
+# This file is distributed under the same license as the corebird package.
 #
 # Translators:
 # 梁穎鎬 <a07051226@gmail.com>, 2016
@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
-"POT-Creation-Date: 2016-07-29 13:43+0200\n"
-"PO-Revision-Date: 2016-02-21 09:14+0000\n"
+"POT-Creation-Date: 2016-07-31 08:33+0200\n"
+"PO-Revision-Date: 2016-07-30 08:17+0000\n"
 "Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/corebird/corebird/"
 "language/zh_TW/)\n"
@@ -21,9 +21,8 @@ msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:5
 #: data/org.baedert.corebird.desktop.in:3
-#, fuzzy
 msgid "Corebird"
-msgstr "關於Corebird"
+msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:6
 #: data/org.baedert.corebird.desktop.in:4
@@ -51,9 +50,8 @@ msgid "Typical Twitter profile"
 msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:29
-#, fuzzy
 msgid "Account settings can be configured"
-msgstr "帳戶設定"
+msgstr ""
 
 #: data/org.baedert.corebird.desktop.in:5
 msgid "Use Twitter from within a normal desktop application"
@@ -64,14 +62,12 @@ msgid "twitter;"
 msgstr ""
 
 #: data/org.baedert.corebird.desktop.in:11
-#, fuzzy
 msgid "corebird"
-msgstr "關於Corebird"
+msgstr ""
 
 #: src/DefaultTimeline.vala:358
-#, fuzzy
 msgid "Could not load tweets"
-msgstr "無法顯示推文"
+msgstr ""
 
 #: src/DMPage.vala:329
 msgid "Direct Conversation"
@@ -98,14 +94,12 @@ msgid "Favorites"
 msgstr "喜歡"
 
 #: src/FilterPage.vala:47
-#, fuzzy
 msgid "Add new Filter"
-msgstr "新增過濾器"
+msgstr ""
 
 #: src/FilterPage.vala:317 src/FilterPage.vala:323
-#, fuzzy
 msgid "Filters"
-msgstr "修改過濾器"
+msgstr ""
 
 #: src/HomeTimeline.vala:122
 #, c-format
@@ -142,9 +136,9 @@ msgid "List"
 msgstr "列表"
 
 #: src/list/TweetListEntry.vala:411
-#, fuzzy, c-format
+#, c-format
 msgid "Block %s"
-msgstr "封鎖"
+msgstr ""
 
 #: src/list/TweetListEntry.vala:546
 msgid "This tweet contains images marked as inappropriate"
@@ -155,14 +149,13 @@ msgid "Show anyway"
 msgstr ""
 
 #: src/MainWindow.vala:75
-#, fuzzy
 msgid "Add new Account"
-msgstr "新帳戶"
+msgstr ""
 
 #: src/MentionsTimeline.vala:91 src/UserEventReceiver.vala:111
-#, fuzzy, c-format
+#, c-format
 msgid "%s mentioned %s"
-msgstr "%s 轉推了 %s"
+msgstr ""
 
 #: src/MentionsTimeline.vala:99 src/MentionsTimeline.vala:103
 msgid "Mentions"
@@ -170,7 +163,7 @@ msgstr "提及"
 
 #: src/ProfilePage.vala:266
 msgid "Protected profile"
-msgstr ""
+msgstr "受保護的個人檔案"
 
 #: src/ProfilePage.vala:319
 #, c-format
@@ -251,9 +244,8 @@ msgid "Select avatar"
 msgstr "選擇個人資料相片"
 
 #: src/widgets/CompletionTextView.vala:33
-#, fuzzy
 msgid "No users found"
-msgstr "沒有找到條目"
+msgstr ""
 
 #: src/widgets/FollowButton.vala:45
 msgid "Follow"
@@ -288,9 +280,8 @@ msgid "Quote tweet"
 msgstr "引用推文"
 
 #: src/window/FileSelector.vala:39 src/window/FileSelector.vala:85
-#, fuzzy
 msgid "Select Image"
-msgstr "選擇首頁相片"
+msgstr ""
 
 #: src/window/FileSelector.vala:70
 msgid "Open"
@@ -350,9 +341,8 @@ msgid "Doesn't match"
 msgstr "不相符"
 
 #: src/window/ModifySnippetDialog.vala:44
-#, fuzzy
 msgid "Modify Snippet"
-msgstr "修改過濾器"
+msgstr ""
 
 #: src/window/ModifySnippetDialog.vala:63
 msgid "Snippet can't be empty"
@@ -444,7 +434,7 @@ msgstr "推文"
 
 #: ui/compose-window.ui:134
 msgid "Add Image"
-msgstr ""
+msgstr "新增圖片"
 
 #: ui/filter-page.ui:71 ui/search-page.ui:86
 msgid "Users"
@@ -680,7 +670,7 @@ msgstr "移除媒體連結"
 
 #: ui/settings-dialog.ui:395
 msgid "Hide inappropriate content"
-msgstr ""
+msgstr "隱藏標示為敏感內容"
 
 #: ui/settings-dialog.ui:442
 msgid "No snippets configured."
@@ -697,17 +687,17 @@ msgstr "片語"
 #: ui/shortcuts-window.ui:12
 msgctxt "shortcuts window"
 msgid "General"
-msgstr ""
+msgstr "一般"
 
 #: ui/shortcuts-window.ui:17
 msgctxt "shortcuts window"
 msgid "Compose Tweet"
-msgstr ""
+msgstr "撰寫新推文"
 
 #: ui/shortcuts-window.ui:24
 msgctxt "shortcuts window"
 msgid "Show Account settings"
-msgstr ""
+msgstr "顯示帳號設定"
 
 #: ui/shortcuts-window.ui:31
 msgctxt "shortcuts window"
@@ -717,7 +707,7 @@ msgstr ""
 #: ui/shortcuts-window.ui:38
 msgctxt "shortcuts window"
 msgid "Show Application Settings"
-msgstr ""
+msgstr "顯示程式設定"
 
 #: ui/shortcuts-window.ui:45
 msgctxt "shortcuts window"
@@ -742,32 +732,32 @@ msgstr ""
 #: ui/shortcuts-window.ui:74
 msgctxt "shortcuts window"
 msgid "Tweets"
-msgstr ""
+msgstr "推文"
 
 #: ui/shortcuts-window.ui:79
 msgctxt "shortcuts window"
 msgid "Retweet"
-msgstr ""
+msgstr "轉推"
 
 #: ui/shortcuts-window.ui:86
 msgctxt "shortcuts window"
 msgid "Favorite"
-msgstr ""
+msgstr "喜歡"
 
 #: ui/shortcuts-window.ui:93
 msgctxt "shortcuts window"
 msgid "Reply"
-msgstr ""
+msgstr "回覆"
 
 #: ui/shortcuts-window.ui:100
 msgctxt "shortcuts window"
 msgid "Show Details"
-msgstr ""
+msgstr "顯示詳細資料"
 
 #: ui/shortcuts-window.ui:107
 msgctxt "shortcuts window"
 msgid "Delete"
-msgstr ""
+msgstr "刪除"
 
 #: ui/start-conversation-entry.ui:29
 msgid "Start new conversation"
@@ -811,7 +801,7 @@ msgstr "回覆"
 
 #: ui/user-filter-entry.ui:125
 msgid "Unblock"
-msgstr ""
+msgstr "解除封鎖"
 
 #: ui/user-list-entry.ui:65
 msgid "Show settings of this account"
@@ -831,16 +821,4 @@ msgstr "建立"
 
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
-msgstr ""
-
-#~ msgid "Open Account"
-#~ msgstr "開啟帳戶"
-
-#~ msgid "New Mention from @%s"
-#~ msgstr "@%s 提及了你"
-
-#~ msgid "Maximum media size"
-#~ msgstr "最大媒體大小"
-
-#~ msgid "MB"
-#~ msgstr "MB"
+msgstr "訂閱的"

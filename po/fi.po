@@ -1,6 +1,6 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# Copyright (C) YEAR Timm Bäder
+# This file is distributed under the same license as the corebird package.
 #
 # Translators:
 # Jiri Grönroos <jiri.gronroos@iki.fi>, 2014-2016
@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
-"POT-Creation-Date: 2016-07-29 13:43+0200\n"
-"PO-Revision-Date: 2016-02-21 20:31+0000\n"
+"POT-Creation-Date: 2016-07-31 08:33+0200\n"
+"PO-Revision-Date: 2016-07-30 08:37+0000\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos@iki.fi>\n"
 "Language-Team: Finnish (http://www.transifex.com/corebird/corebird/language/"
 "fi/)\n"
@@ -21,9 +21,8 @@ msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:5
 #: data/org.baedert.corebird.desktop.in:3
-#, fuzzy
 msgid "Corebird"
-msgstr "Tietoja - Corebird"
+msgstr "Corebird"
 
 #: data/org.baedert.corebird.appdata.xml.in:6
 #: data/org.baedert.corebird.desktop.in:4
@@ -51,34 +50,28 @@ msgid "Generic timeline view when using Corebird"
 msgstr "Yleinen aikajana Corebirdissä"
 
 #: data/org.baedert.corebird.appdata.xml.in:25
-#, fuzzy
 msgid "Typical Twitter profile"
-msgstr "Tyypillinen Twitter-profiili."
+msgstr "Tyypillinen Twitter-profiili"
 
 #: data/org.baedert.corebird.appdata.xml.in:29
-#, fuzzy
 msgid "Account settings can be configured"
-msgstr ""
-"Tilin asetuksia, kuten nimeä, verkkosivustoa, kuvausta ja kuvaa on "
-"mahdollista muuttaa."
+msgstr "Tilin asetuksia on mahdollista muuttaa"
 
 #: data/org.baedert.corebird.desktop.in:5
 msgid "Use Twitter from within a normal desktop application"
-msgstr "Käytä Twitteriä työpöytäsovelluksella"
+msgstr "Käytä Twitteriä tavallisella työpöytäsovelluksella"
 
 #: data/org.baedert.corebird.desktop.in:7
 msgid "twitter;"
-msgstr ""
+msgstr "twitter;"
 
 #: data/org.baedert.corebird.desktop.in:11
-#, fuzzy
 msgid "corebird"
-msgstr "Tietoja - Corebird"
+msgstr "corebird"
 
 #: src/DefaultTimeline.vala:358
-#, fuzzy
 msgid "Could not load tweets"
-msgstr "Twiitin näyttäminen epäonnistui"
+msgstr "Twiittien lataaminen epäonnistui"
 
 #: src/DMPage.vala:329
 msgid "Direct Conversation"
@@ -106,14 +99,12 @@ msgid "Favorites"
 msgstr "Suosikit"
 
 #: src/FilterPage.vala:47
-#, fuzzy
 msgid "Add new Filter"
 msgstr "Lisää uusi suodatin"
 
 #: src/FilterPage.vala:317 src/FilterPage.vala:323
-#, fuzzy
 msgid "Filters"
-msgstr "Muokkaa suodatinta"
+msgstr "Suodattimet"
 
 #: src/HomeTimeline.vala:122
 #, c-format
@@ -152,12 +143,11 @@ msgid "List"
 msgstr "Lista"
 
 #: src/list/TweetListEntry.vala:411
-#, fuzzy, c-format
+#, c-format
 msgid "Block %s"
-msgstr "Estetty"
+msgstr "Estä %s"
 
 #: src/list/TweetListEntry.vala:546
-#, fuzzy
 msgid "This tweet contains images marked as inappropriate"
 msgstr "Tämä twiitti sisältää asiattomaksi merkittyjä kuvia"
 
@@ -166,14 +156,13 @@ msgid "Show anyway"
 msgstr "Näytä silti"
 
 #: src/MainWindow.vala:75
-#, fuzzy
 msgid "Add new Account"
-msgstr "Uusi tili"
+msgstr "Lisää uusi tili"
 
 #: src/MentionsTimeline.vala:91 src/UserEventReceiver.vala:111
-#, fuzzy, c-format
+#, c-format
 msgid "%s mentioned %s"
-msgstr "%s twiittasi uudelleen %s"
+msgstr "%s mainitsi %s"
 
 #: src/MentionsTimeline.vala:99 src/MentionsTimeline.vala:103
 msgid "Mentions"
@@ -264,9 +253,8 @@ msgid "Select avatar"
 msgstr "Valitse avatar"
 
 #: src/widgets/CompletionTextView.vala:33
-#, fuzzy
 msgid "No users found"
-msgstr "Kohteita ei löytynyt"
+msgstr "Käyttäjiä ei löytynyt"
 
 #: src/widgets/FollowButton.vala:45
 msgid "Follow"
@@ -278,7 +266,7 @@ msgstr "Lopeta seuraaminen"
 
 #: src/widgets/MediaButton.vala:42
 msgid "Copy URL"
-msgstr ""
+msgstr "Kopioi osoite"
 
 #: src/widgets/PixbufButton.vala:52
 msgid "Copy link"
@@ -301,13 +289,12 @@ msgid "Quote tweet"
 msgstr "Lainaa twiittiä"
 
 #: src/window/FileSelector.vala:39 src/window/FileSelector.vala:85
-#, fuzzy
 msgid "Select Image"
-msgstr "Valitse banneri"
+msgstr "Valitse kuva"
 
 #: src/window/FileSelector.vala:70
 msgid "Open"
-msgstr ""
+msgstr "Avaa"
 
 #: src/window/FileSelector.vala:77 src/window/UserListDialog.vala:47
 #: ui/account-dialog.ui:21 ui/account-dialog.ui:233 ui/compose-window.ui:41
@@ -323,6 +310,8 @@ msgid ""
 "Max file size exceeded\n"
 "(3MB)"
 msgstr ""
+"Tiedoston enimmäiskoko ylitetty\n"
+"(3 Mt)"
 
 #: src/window/ImageCropDialog.vala:58 ui/image-crop-dialog.ui:61
 msgid "Next"
@@ -365,25 +354,24 @@ msgid "Doesn't match"
 msgstr "Ei vastaa"
 
 #: src/window/ModifySnippetDialog.vala:44
-#, fuzzy
 msgid "Modify Snippet"
-msgstr "Muokkaa suodatinta"
+msgstr "Muokkaa tekstileikettä"
 
 #: src/window/ModifySnippetDialog.vala:63
 msgid "Snippet can't be empty"
-msgstr ""
+msgstr "Tekstileike ei voi olla tyhjä"
 
 #: src/window/ModifySnippetDialog.vala:70
 msgid "Replacement can't be empty"
-msgstr ""
+msgstr "Korvike ei voi olla tyhjä"
 
 #: src/window/ModifySnippetDialog.vala:78
 msgid "Snippet may not contain whitespace"
-msgstr ""
+msgstr "Tekstileike ei voi sisältää tyhjätilaa"
 
 #: src/window/ModifySnippetDialog.vala:86
 msgid "Snippet already exists"
-msgstr ""
+msgstr "Tekstileike on jo olemassa"
 
 #: src/window/SettingsDialog.vala:83
 msgid ""
@@ -513,7 +501,7 @@ msgstr "Julkinen"
 
 #: ui/list-statuses-page.ui:296
 msgid "Description"
-msgstr ""
+msgstr "Kuvaus"
 
 #: ui/load-more-entry.ui:11
 msgid "Load more"
@@ -589,7 +577,7 @@ msgstr "Estetty"
 
 #: ui/profile-page.ui:24
 msgid "Muted"
-msgstr ""
+msgstr "Mykistetty"
 
 #: ui/profile-page.ui:28
 msgid "Retweets disabled"
@@ -613,19 +601,19 @@ msgstr "Seuraa"
 
 #: ui/settings-dialog.ui:60
 msgid "Show inline media"
-msgstr ""
+msgstr "Näytä sisennetty media"
 
 #: ui/settings-dialog.ui:79
 msgid "Always show"
-msgstr ""
+msgstr "Näytä aina"
 
 #: ui/settings-dialog.ui:80
 msgid "Always hide"
-msgstr ""
+msgstr "Piilota aina"
 
 #: ui/settings-dialog.ui:81
 msgid "Hide in timeline"
-msgstr ""
+msgstr "Piilota aikajanalla"
 
 #: ui/settings-dialog.ui:102
 msgid "Auto scroll on new tweets"
@@ -840,9 +828,8 @@ msgid "Open in new window"
 msgstr "Avaa uudessa ikkunassa"
 
 #: ui/user-list-entry.ui:114
-#, fuzzy
 msgid "Go to profile"
-msgstr "Suojattu profiili"
+msgstr "Siirry profiiliin"
 
 #: ui/user-lists-widget.ui:14
 msgid "Created"
@@ -851,15 +838,3 @@ msgstr "Luotu"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "Tilannut"
-
-#~ msgid "Open Account"
-#~ msgstr "Avaa tili"
-
-#~ msgid "New Mention from @%s"
-#~ msgstr "Uusi maininta käyttäjältä @%s"
-
-#~ msgid "Maximum media size"
-#~ msgstr "Median enimmäiskoko"
-
-#~ msgid "MB"
-#~ msgstr "Mt"

@@ -1,6 +1,6 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# Copyright (C) YEAR Timm Bäder
+# This file is distributed under the same license as the corebird package.
 #
 # Translators:
 # Daniele Napolitano <dnax88@gmail.com>, 2014
@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
-"POT-Creation-Date: 2016-07-29 13:43+0200\n"
-"PO-Revision-Date: 2016-02-21 09:14+0000\n"
+"POT-Creation-Date: 2016-07-31 08:33+0200\n"
+"PO-Revision-Date: 2016-07-30 08:17+0000\n"
 "Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
 "Language-Team: Italian (http://www.transifex.com/corebird/corebird/language/"
 "it/)\n"
@@ -23,9 +23,8 @@ msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:5
 #: data/org.baedert.corebird.desktop.in:3
-#, fuzzy
 msgid "Corebird"
-msgstr "Informazioni su Corebird"
+msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:6
 #: data/org.baedert.corebird.desktop.in:4
@@ -55,29 +54,24 @@ msgid "Typical Twitter profile"
 msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:29
-#, fuzzy
 msgid "Account settings can be configured"
 msgstr ""
-"Le seguenti impostazioni dell'Account possono essere configurate: Nome, "
-"Sito, Descrizione e Avatar."
 
 #: data/org.baedert.corebird.desktop.in:5
 msgid "Use Twitter from within a normal desktop application"
-msgstr "Usa Twitter come una normale applicazione desktop"
+msgstr ""
 
 #: data/org.baedert.corebird.desktop.in:7
 msgid "twitter;"
 msgstr ""
 
 #: data/org.baedert.corebird.desktop.in:11
-#, fuzzy
 msgid "corebird"
-msgstr "Informazioni su Corebird"
+msgstr ""
 
 #: src/DefaultTimeline.vala:358
-#, fuzzy
 msgid "Could not load tweets"
-msgstr "Impossibile mostrare il tweet"
+msgstr ""
 
 #: src/DMPage.vala:329
 msgid "Direct Conversation"
@@ -105,14 +99,12 @@ msgid "Favorites"
 msgstr "Preferiti"
 
 #: src/FilterPage.vala:47
-#, fuzzy
 msgid "Add new Filter"
-msgstr "Aggiungi nuovo filtro"
+msgstr ""
 
 #: src/FilterPage.vala:317 src/FilterPage.vala:323
-#, fuzzy
 msgid "Filters"
-msgstr "Modifica filtro"
+msgstr ""
 
 #: src/HomeTimeline.vala:122
 #, c-format
@@ -151,9 +143,9 @@ msgid "List"
 msgstr "Lista"
 
 #: src/list/TweetListEntry.vala:411
-#, fuzzy, c-format
+#, c-format
 msgid "Block %s"
-msgstr "Bloccato"
+msgstr ""
 
 #: src/list/TweetListEntry.vala:546
 msgid "This tweet contains images marked as inappropriate"
@@ -164,14 +156,13 @@ msgid "Show anyway"
 msgstr ""
 
 #: src/MainWindow.vala:75
-#, fuzzy
 msgid "Add new Account"
-msgstr "Nuovo account"
+msgstr ""
 
 #: src/MentionsTimeline.vala:91 src/UserEventReceiver.vala:111
-#, fuzzy, c-format
+#, c-format
 msgid "%s mentioned %s"
-msgstr "%s ha ritwittato %s"
+msgstr ""
 
 #: src/MentionsTimeline.vala:99 src/MentionsTimeline.vala:103
 msgid "Mentions"
@@ -262,9 +253,8 @@ msgid "Select avatar"
 msgstr "Seleziona avatar"
 
 #: src/widgets/CompletionTextView.vala:33
-#, fuzzy
 msgid "No users found"
-msgstr "Nessun risultato trovato"
+msgstr ""
 
 #: src/widgets/FollowButton.vala:45
 msgid "Follow"
@@ -299,9 +289,8 @@ msgid "Quote tweet"
 msgstr "Cita il tweet"
 
 #: src/window/FileSelector.vala:39 src/window/FileSelector.vala:85
-#, fuzzy
 msgid "Select Image"
-msgstr "Seleziona banner"
+msgstr ""
 
 #: src/window/FileSelector.vala:70
 msgid "Open"
@@ -363,9 +352,8 @@ msgid "Doesn't match"
 msgstr "Non corrisponde"
 
 #: src/window/ModifySnippetDialog.vala:44
-#, fuzzy
 msgid "Modify Snippet"
-msgstr "Modifica filtro"
+msgstr ""
 
 #: src/window/ModifySnippetDialog.vala:63
 msgid "Snippet can't be empty"
@@ -839,9 +827,8 @@ msgid "Open in new window"
 msgstr "Apri in una nuova finestra"
 
 #: ui/user-list-entry.ui:114
-#, fuzzy
 msgid "Go to profile"
-msgstr "Profilo protetto"
+msgstr ""
 
 #: ui/user-lists-widget.ui:14
 msgid "Created"
@@ -850,15 +837,3 @@ msgstr "Creato"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "Sottoscritto a"
-
-#~ msgid "Open Account"
-#~ msgstr "Apri account"
-
-#~ msgid "New Mention from @%s"
-#~ msgstr "Nuova menzione da @%s"
-
-#~ msgid "Maximum media size"
-#~ msgstr "Dimensioni massime file multimediale"
-
-#~ msgid "MB"
-#~ msgstr "MB"

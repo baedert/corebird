@@ -1,15 +1,16 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# Copyright (C) YEAR Timm Bäder
+# This file is distributed under the same license as the corebird package.
 #
 # Translators:
+# Morteza Parvini <afee1990@gmail.com>, 2016
 # amraei <omidamraei@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
-"POT-Creation-Date: 2016-07-29 13:43+0200\n"
-"PO-Revision-Date: 2016-02-21 09:14+0000\n"
+"POT-Creation-Date: 2016-07-31 08:33+0200\n"
+"PO-Revision-Date: 2016-07-30 08:17+0000\n"
 "Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
 "Language-Team: Persian (http://www.transifex.com/corebird/corebird/language/"
 "fa/)\n"
@@ -21,9 +22,8 @@ msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:5
 #: data/org.baedert.corebird.desktop.in:3
-#, fuzzy
 msgid "Corebird"
-msgstr "درباره Corebird"
+msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:6
 #: data/org.baedert.corebird.desktop.in:4
@@ -63,9 +63,8 @@ msgid "twitter;"
 msgstr ""
 
 #: data/org.baedert.corebird.desktop.in:11
-#, fuzzy
 msgid "corebird"
-msgstr "درباره Corebird"
+msgstr ""
 
 #: src/DefaultTimeline.vala:358
 msgid "Could not load tweets"
@@ -138,9 +137,9 @@ msgid "List"
 msgstr ""
 
 #: src/list/TweetListEntry.vala:411
-#, fuzzy, c-format
+#, c-format
 msgid "Block %s"
-msgstr "بلاک شده"
+msgstr ""
 
 #: src/list/TweetListEntry.vala:546
 msgid "This tweet contains images marked as inappropriate"
@@ -151,14 +150,13 @@ msgid "Show anyway"
 msgstr ""
 
 #: src/MainWindow.vala:75
-#, fuzzy
 msgid "Add new Account"
-msgstr "بازکردن حساب"
+msgstr ""
 
 #: src/MentionsTimeline.vala:91 src/UserEventReceiver.vala:111
-#, fuzzy, c-format
+#, c-format
 msgid "%s mentioned %s"
-msgstr "اشاره ها"
+msgstr ""
 
 #: src/MentionsTimeline.vala:99 src/MentionsTimeline.vala:103
 msgid "Mentions"
@@ -249,9 +247,8 @@ msgid "Select avatar"
 msgstr ""
 
 #: src/widgets/CompletionTextView.vala:33
-#, fuzzy
 msgid "No users found"
-msgstr "چیزی یافت نشد!"
+msgstr ""
 
 #: src/widgets/FollowButton.vala:45
 msgid "Follow"
@@ -271,7 +268,7 @@ msgstr ""
 
 #: src/widgets/TweetListBox.vala:100
 msgid "Loading..."
-msgstr ""
+msgstr "بارگزاری..."
 
 #: src/widgets/TweetListBox.vala:103 src/widgets/TweetListBox.vala:151
 msgid "No entries found"
@@ -374,7 +371,7 @@ msgstr ""
 
 #: src/window/UserListDialog.vala:40
 msgid "Add to or Remove User From List"
-msgstr ""
+msgstr "اضافه کردن به/ حذف از لیست"
 
 #: src/window/UserListDialog.vala:69
 msgid "You have no lists."
@@ -408,15 +405,15 @@ msgstr "تایید"
 
 #: ui/account-dialog.ui:11
 msgid "Account Settings"
-msgstr ""
+msgstr "تنظیمات حساب"
 
 #: ui/account-dialog.ui:76
 msgid "Name"
-msgstr ""
+msgstr "نام"
 
 #: ui/account-dialog.ui:104
 msgid "Website"
-msgstr ""
+msgstr "وب‌سایت"
 
 #: ui/account-dialog.ui:158
 msgid "Autostart"
@@ -430,7 +427,7 @@ msgstr "حذف"
 
 #: ui/account-dialog.ui:221
 msgid "Do you really want to delete this account?"
-msgstr ""
+msgstr "آیا از پاک‌کردن این حساب، اطمینان دارید؟"
 
 #: ui/compose-window.ui:11 ui/compose-window.ui:25
 msgid "Compose Tweet"
@@ -450,7 +447,7 @@ msgstr "کاربران"
 
 #: ui/image-crop-dialog.ui:71
 msgid "Back"
-msgstr ""
+msgstr "بازگشت"
 
 #: ui/list-list-entry.ui:109
 msgid "Subscribe"
@@ -538,7 +535,7 @@ msgstr ""
 
 #: ui/modify-snippet-dialog.ui:46
 msgid "Keyword"
-msgstr ""
+msgstr "کلیدواژه"
 
 #: ui/modify-snippet-dialog.ui:72
 msgid "Replacement"
@@ -695,17 +692,17 @@ msgstr ""
 #: ui/shortcuts-window.ui:12
 msgctxt "shortcuts window"
 msgid "General"
-msgstr ""
+msgstr "عمومی"
 
 #: ui/shortcuts-window.ui:17
 msgctxt "shortcuts window"
 msgid "Compose Tweet"
-msgstr ""
+msgstr "توییت کنید"
 
 #: ui/shortcuts-window.ui:24
 msgctxt "shortcuts window"
 msgid "Show Account settings"
-msgstr ""
+msgstr "نمایش تنظیمات حساب"
 
 #: ui/shortcuts-window.ui:31
 msgctxt "shortcuts window"
@@ -715,7 +712,7 @@ msgstr ""
 #: ui/shortcuts-window.ui:38
 msgctxt "shortcuts window"
 msgid "Show Application Settings"
-msgstr ""
+msgstr "نمایش تنظیمات برنامه"
 
 #: ui/shortcuts-window.ui:45
 msgctxt "shortcuts window"
@@ -745,7 +742,7 @@ msgstr ""
 #: ui/shortcuts-window.ui:79
 msgctxt "shortcuts window"
 msgid "Retweet"
-msgstr ""
+msgstr "بازتوییت"
 
 #: ui/shortcuts-window.ui:86
 msgctxt "shortcuts window"
@@ -755,12 +752,12 @@ msgstr ""
 #: ui/shortcuts-window.ui:93
 msgctxt "shortcuts window"
 msgid "Reply"
-msgstr ""
+msgstr "پاسخ دادن"
 
 #: ui/shortcuts-window.ui:100
 msgctxt "shortcuts window"
 msgid "Show Details"
-msgstr ""
+msgstr "جزییات"
 
 #: ui/shortcuts-window.ui:107
 msgctxt "shortcuts window"
@@ -820,9 +817,8 @@ msgid "Open in new window"
 msgstr ""
 
 #: ui/user-list-entry.ui:114
-#, fuzzy
 msgid "Go to profile"
-msgstr "پروفایل محافظت شده"
+msgstr ""
 
 #: ui/user-lists-widget.ui:14
 msgid "Created"

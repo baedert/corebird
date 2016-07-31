@@ -1,6 +1,6 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# Copyright (C) YEAR Timm Bäder
+# This file is distributed under the same license as the corebird package.
 #
 # Translators:
 # Pau Iranzo <paugnu@gmail.com>, 2014
@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
-"POT-Creation-Date: 2016-07-29 13:43+0200\n"
-"PO-Revision-Date: 2016-02-21 09:14+0000\n"
+"POT-Creation-Date: 2016-07-31 08:33+0200\n"
+"PO-Revision-Date: 2016-07-30 08:17+0000\n"
 "Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
 "Language-Team: Catalan (Valencian) (http://www.transifex.com/corebird/"
 "corebird/language/ca@valencia/)\n"
@@ -21,9 +21,8 @@ msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:5
 #: data/org.baedert.corebird.desktop.in:3
-#, fuzzy
 msgid "Corebird"
-msgstr "Quant al Corebird"
+msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:6
 #: data/org.baedert.corebird.desktop.in:4
@@ -54,22 +53,20 @@ msgid "Typical Twitter profile"
 msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:29
-#, fuzzy
 msgid "Account settings can be configured"
-msgstr "Paràmetres del compte"
+msgstr ""
 
 #: data/org.baedert.corebird.desktop.in:5
 msgid "Use Twitter from within a normal desktop application"
-msgstr "Feu servir el Twitter des d'una aplicació d'escriptori"
+msgstr ""
 
 #: data/org.baedert.corebird.desktop.in:7
 msgid "twitter;"
 msgstr ""
 
 #: data/org.baedert.corebird.desktop.in:11
-#, fuzzy
 msgid "corebird"
-msgstr "Quant al Corebird"
+msgstr ""
 
 #: src/DefaultTimeline.vala:358
 msgid "Could not load tweets"
@@ -101,14 +98,12 @@ msgid "Favorites"
 msgstr "Preferits"
 
 #: src/FilterPage.vala:47
-#, fuzzy
 msgid "Add new Filter"
-msgstr "Afig un filtre nou"
+msgstr ""
 
 #: src/FilterPage.vala:317 src/FilterPage.vala:323
-#, fuzzy
 msgid "Filters"
-msgstr "Modifica el filtre"
+msgstr ""
 
 #: src/HomeTimeline.vala:122
 #, c-format
@@ -147,9 +142,9 @@ msgid "List"
 msgstr "Llista"
 
 #: src/list/TweetListEntry.vala:411
-#, fuzzy, c-format
+#, c-format
 msgid "Block %s"
-msgstr "Blocat"
+msgstr ""
 
 #: src/list/TweetListEntry.vala:546
 msgid "This tweet contains images marked as inappropriate"
@@ -160,14 +155,13 @@ msgid "Show anyway"
 msgstr ""
 
 #: src/MainWindow.vala:75
-#, fuzzy
 msgid "Add new Account"
-msgstr "Compte nou"
+msgstr ""
 
 #: src/MentionsTimeline.vala:91 src/UserEventReceiver.vala:111
-#, fuzzy, c-format
+#, c-format
 msgid "%s mentioned %s"
-msgstr "%s ha repiulat %s"
+msgstr ""
 
 #: src/MentionsTimeline.vala:99 src/MentionsTimeline.vala:103
 msgid "Mentions"
@@ -258,9 +252,8 @@ msgid "Select avatar"
 msgstr "Seleccioneu un avatar"
 
 #: src/widgets/CompletionTextView.vala:33
-#, fuzzy
 msgid "No users found"
-msgstr "No s'ha trobat cap resultat"
+msgstr ""
 
 #: src/widgets/FollowButton.vala:45
 msgid "Follow"
@@ -295,9 +288,8 @@ msgid "Quote tweet"
 msgstr ""
 
 #: src/window/FileSelector.vala:39 src/window/FileSelector.vala:85
-#, fuzzy
 msgid "Select Image"
-msgstr "Seleccioneu un bàner"
+msgstr ""
 
 #: src/window/FileSelector.vala:70
 msgid "Open"
@@ -359,9 +351,8 @@ msgid "Doesn't match"
 msgstr "No conincideix"
 
 #: src/window/ModifySnippetDialog.vala:44
-#, fuzzy
 msgid "Modify Snippet"
-msgstr "Modifica el filtre"
+msgstr ""
 
 #: src/window/ModifySnippetDialog.vala:63
 msgid "Snippet can't be empty"
@@ -832,9 +823,8 @@ msgid "Open in new window"
 msgstr "Obri a una finestra nova"
 
 #: ui/user-list-entry.ui:114
-#, fuzzy
 msgid "Go to profile"
-msgstr "Perfil protegit"
+msgstr ""
 
 #: ui/user-lists-widget.ui:14
 msgid "Created"
@@ -843,12 +833,3 @@ msgstr "Creat"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "Subscrit a"
-
-#~ msgid "Open Account"
-#~ msgstr "Obri un compte"
-
-#~ msgid "New Mention from @%s"
-#~ msgstr "Menció nova de @%s"
-
-#~ msgid "Maximum media size"
-#~ msgstr "Mida màxima de fitxers multimèdia"
