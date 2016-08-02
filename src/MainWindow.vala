@@ -35,6 +35,8 @@ public class MainWindow : Gtk.ApplicationWindow {
   [GtkChild]
   private Gtk.Popover account_popover;
   [GtkChild]
+  private Gtk.Popover notification_popover;
+  [GtkChild]
   private Gtk.Box header_box;
   [GtkChild]
   private Gtk.ToggleButton account_button;
@@ -236,7 +238,6 @@ public class MainWindow : Gtk.ApplicationWindow {
       warning ("account == null");
   }
 
-
   [GtkCallback]
   private bool button_press_event_cb (Gdk.EventButton evt) {
     if (evt.button == 9) {
@@ -322,6 +323,11 @@ public class MainWindow : Gtk.ApplicationWindow {
   [GtkCallback]
   private void account_button_clicked_cb () {
     account_popover.visible = !account_popover.visible;
+  }
+
+  [GtkCallback]
+  private void notification_button_clicked_cb () {
+    notification_popover.visible = !notification_popover.visible;
   }
 
   [GtkCallback]

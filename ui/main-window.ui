@@ -19,6 +19,11 @@
       </object>
     </child>
   </object>
+  <object class="GtkPopover" id="notification_popover">
+    <property name="visible">0</property>
+    <property name="position">bottom</property>
+    <property name="relative-to">notification_button</property>
+  </object>
   <template class="MainWindow" parent="GtkApplicationWindow">
     <property name="can-focus">False</property>
     <property name="title">Corebird</property>
@@ -53,6 +58,16 @@
               </object>
             </child>
           </object>
+        </child>
+        <child>
+          <object class="GtkToggleButton" id="notification_button">
+            <property name="visible">1</property>
+            <property name="label" translatable="yes">N</property>
+            <signal name="clicked" handler="notification_button_clicked_cb"/>
+          </object>
+          <packing>
+            <property name="pack-type">end</property>
+          </packing>
         </child>
         <child>
           <object class="GtkBox" id="header_box">
