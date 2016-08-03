@@ -278,7 +278,7 @@
                 <property name="no-show-all">1</property>
                 <property name="halign">start</property>
                 <property name="valign">baseline</property>
-                <property name="margin-top">4</property>
+                <property name="margin-top">8</property>
                 <property name="use-markup">1</property>
                 <property name="track-visited-links">0</property>
                 <signal name="activate-link" handler="link_activated_cb" swapped="no"/>
