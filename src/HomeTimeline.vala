@@ -124,8 +124,12 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
       tweet_list.get_first_visible_row ().grab_focus ();
     }
 
-    // We never show any notifications if auto-scroll-on-new-tweet is enabled
+    /* The rest of this function deals with notifications which we certainly
+       don't want to show for invisible tweets */
+    if (t.is_hidden ())
+      return;
 
+    // We never show any notifications if auto-scroll-on-new-tweet is enabled
     int stack_size = Settings.get_tweet_stack_count ();
     if (t.get_user_id () == account.id || auto_scroll)
       return;
