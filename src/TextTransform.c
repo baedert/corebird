@@ -88,6 +88,9 @@ cb_text_transform_text (const char   *text,
   guint last_end   = 0;
   guint cur_end    = text_len;
 
+  if (text_len == 0)
+    return g_strdup (text);
+
   for (i = (int)n_entities - 1; i >= 0; i --)
     {
       char *btw = g_utf8_substring (text,
