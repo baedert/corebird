@@ -562,11 +562,18 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
         media_stack.visible_child_name = "nsfw";
       else
         media_stack.visible_child = mm_widget;
+
       this.grid.attach (media_stack, 1, 6, 7, 1);
     } else {
       /* We will never have to hide mm_widget */
       mm_widget.show_all ();
-      this.grid.attach (mm_widget, 1, 6, 7, 1);
+
+      if (this.tweet.quoted_tweet != null) {
+        mm_widget.margin_start = 12;
+        this.quote_grid.attach (mm_widget, 0, 2, 2, 1);
+      } else {
+        this.grid.attach (mm_widget, 1, 6, 7, 1);
+      }
     }
   }
 
