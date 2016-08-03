@@ -1,6 +1,6 @@
 ACLOCAL_AMFLAGS = -I m4 ${ACLOCAL_FLAGS}
 
-SUBDIRS = src data po tests
+SUBDIRS = src data po tests examples
 
 EXTRA_DIST = \
 	vapi/config.vapi \
