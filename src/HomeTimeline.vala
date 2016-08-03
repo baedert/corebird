@@ -67,15 +67,29 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
 
     /* We don't use the set_state version from TweetModel here since
        we just decide the initial visibility of the tweet */
-    if (t.retweeted_tweet != null)
+    if (t.retweeted_tweet != null) {
       t.set_flag (get_rt_flags (t));
 
-    if (account.blocked_or_muted (t.get_user_id ()))
-      t.set_flag (Cb.TweetState.HIDDEN_RETWEETER_BLOCKED);
+      /* CbTweet#get_user_id () returns the retweeted user's id in case it's a retweet,
+         so check both retweeted_tweet's and source_tweet's author id separately */
+      if (account.is_blocked (t.source_tweet.author.id))
+        t.set_flag (Cb.TweetState.HIDDEN_RETWEETER_BLOCKED);
 
+      if (account.is_blocked (t.retweeted_tweet.author.id))
+        t.set_flag (Cb.TweetState.HIDDEN_AUTHOR_BLOCKED);
 
-    if (t.retweeted_tweet != null && account.blocked_or_muted (t.retweeted_tweet.author.id))
-      t.set_flag (Cb.TweetState.HIDDEN_AUTHOR_BLOCKED);
+      if (account.is_muted (t.source_tweet.author.id))
+        t.set_flag (Cb.TweetState.HIDDEN_RETWEETER_MUTED);
+
+      if (account.is_muted (t.retweeted_tweet.author.id))
+        t.set_flag (Cb.TweetState.HIDDEN_AUTHOR_MUTED);
+    } else {
+       if (account.is_blocked (t.source_tweet.author.id))
+          t.set_flag (Cb.TweetState.HIDDEN_AUTHOR_BLOCKED);
+
+       if (account.is_muted (t.source_tweet.author.id))
+         t.set_flag (Cb.TweetState.HIDDEN_AUTHOR_MUTED);
+    }
 
     if (account.filter_matches (t))
       t.set_flag (Cb.TweetState.HIDDEN_FILTERED);
