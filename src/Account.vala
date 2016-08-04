@@ -32,6 +32,7 @@ public class Account : GLib.Object {
   public UserCounter user_counter;
   private UserEventReceiver event_receiver;
   public NotificationManager notifications;
+  public AccountService service;
   public int64[] friends;
   public int64[] blocked;
   public int64[] muted;
@@ -47,6 +48,7 @@ public class Account : GLib.Object {
     this.filters = new GLib.GenericArray<Filter> ();
     this.event_receiver = new UserEventReceiver (this);
     this.notifications = new NotificationManager (this);
+    this.service = new AccountService (this);
   }
 
   /**
@@ -105,6 +107,8 @@ public class Account : GLib.Object {
     this.user_stream.unregister (this.event_receiver);
     this.user_stream.stop ();
     this.user_stream = null;
+    this.service.stop ();
+    this.service = null;
   }
 
   /**

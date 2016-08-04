@@ -58,6 +58,7 @@ libcorebird_la_VALASOURCES = \
 	UserEventReceiver.vala \
 	SnippetManager.vala \
 	DMManager.vala \
+	AccountService.vala \
 	widgets/TweetListBox.vala \
 	widgets/MaxSizeContainer.vala \
 	widgets/ScrollWidget.vala \
@@ -121,7 +122,9 @@ libcorebird_la_VALASOURCES = \
 	async/Collect.vala \
 	async/ComposeJob.vala \
 	model/TweetModel.vala \
-	model/DMThreadsModel.vala
+	model/DMThreadsModel.vala \
+	model/NotificationModel.vala \
+	model/NotificationItem.vala
 
 nodist_libcorebird_la_SOURCES = \
 	libcorebird_la_vala.stamp \

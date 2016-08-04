@@ -441,6 +441,7 @@ public class Corebird : Gtk.Application {
 
     acc.init_proxy ();
     acc.user_stream.start ();
+    acc.service.start ();
     acc.init_information.begin ();
 
     this.active_accounts.add (acc);
