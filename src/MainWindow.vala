@@ -37,6 +37,8 @@ public class MainWindow : Gtk.ApplicationWindow {
   [GtkChild]
   private Gtk.Popover notification_popover;
   [GtkChild]
+  private Gtk.ListBox notification_list;
+  [GtkChild]
   private Gtk.Box header_box;
   [GtkChild]
   private Gtk.ToggleButton account_button;

@@ -23,6 +23,33 @@
     <property name="visible">0</property>
     <property name="position">bottom</property>
     <property name="relative-to">notification_button</property>
+    <child>
+      <object class="GtkFrame">
+        <property name="visible">true</property>
+        <property name="margin">6</property>
+        <child>
+          <object class="GtkScrolledWindow">
+            <property name="visible">true</property>
+            <property name="hscrollbar-policy">never</property>
+            <child>
+              <object class="GtkListBox" id="notification_list">
+                <property name="visible">1</property>
+                <child type="placeholder">
+                  <object class="GtkLabel">
+                    <property name="visible">1</property>
+                    <property name="margin">6</property>
+                    <property name="label" translatable="yes">No notifications</property>
+                    <style>
+                      <class name="dim-label" />
+                    </style>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
   </object>
   <template class="MainWindow" parent="GtkApplicationWindow">
     <property name="can-focus">False</property>
