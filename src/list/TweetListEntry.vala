@@ -618,6 +618,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     quote_name.valign = Gtk.Align.BASELINE;
     quote_name.margin_start = 12;
     quote_name.margin_end = 6;
+    quote_name.margin_bottom = 4;
     quote_name.clicked.connect (quote_name_button_clicked_cb);
     quote_grid.attach (quote_name, 0, 0, 1, 1);
 
