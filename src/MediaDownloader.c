@@ -307,7 +307,6 @@ cb_media_downloader_load_threaded (CbMediaDownloader *downloader,
     {
       g_warning ("Media is invalid.");
       mark_invalid (media);
-      g_object_unref (media);
       return;
     }
 
@@ -324,7 +323,6 @@ cb_media_downloader_load_threaded (CbMediaDownloader *downloader,
 
       mark_invalid (media);
       g_object_unref (msg);
-      g_object_unref (media);
       return;
     }
 
@@ -336,7 +334,6 @@ cb_media_downloader_load_threaded (CbMediaDownloader *downloader,
   g_input_stream_close (input_stream, NULL, NULL);
   g_object_unref (input_stream);
   g_object_unref (msg);
-  g_object_unref (media);
 }
 
 void
@@ -364,8 +361,10 @@ cb_media_downloader_load_async (CbMediaDownloader   *downloader,
   g_return_if_fail (CB_IS_MEDIA_DOWNLOADER (downloader));
   g_return_if_fail (CB_IS_MEDIA (media));
 
+  g_object_ref (media);
+
   task = g_task_new (downloader, NULL, callback, user_data);
-  g_task_set_task_data (task, media, NULL);
+  g_task_set_task_data (task, media, g_object_unref);
 
   g_task_run_in_thread (task, load_in_thread);
   g_object_unref (task);
