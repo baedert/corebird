@@ -17,6 +17,9 @@
 
 public class NotificationManager : GLib.Object {
   private unowned Account account;
+#if AUDIO
+  private static Canberra.Context? sound_context = null;
+#endif
 
   public NotificationManager (Account account) {
     this.account = account;
@@ -36,6 +39,13 @@ public class NotificationManager : GLib.Object {
     n.set_default_action_and_target_value ("app.show-window", account.id);
 
     GLib.Application.get_default ().send_notification (id, n);
+#if AUDIO
+    if (Settings.play_sound ()) { 
+ 	 if (sound_context == null)
+      Canberra.Context.create(out sound_context);
+     sound_context.play (0, Canberra.PROP_EVENT_ID, "message");
+    }
+#endif
 
     return id;
   }
@@ -57,6 +67,13 @@ public class NotificationManager : GLib.Object {
     n.set_body (text);
 
     GLib.Application.get_default ().send_notification (new_id, n);
+#if AUDIO
+    if (Settings.play_sound ()) { 
+ 	 if (sound_context == null)
+      Canberra.Context.create(out sound_context);
+     sound_context.play (0, Canberra.PROP_EVENT_ID, "message");
+    }
+#endif
 
     return new_id;
   }

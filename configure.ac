@@ -37,6 +37,10 @@ AM_CONDITIONAL([ENABLE_DEBUG], [ test "$enable_debug" = "yes"])
 AC_ARG_ENABLE(video, AS_HELP_STRING([--disable-video], [Disable video support]),, disable_video=no)
 AM_CONDITIONAL([DISABLE_VIDEO], [ test "$disable_video" = "yes"])
 
+# --disable-audio
+AC_ARG_ENABLE(audio, AS_HELP_STRING([--disable-audio], [Disable audio support]),, disable_audio=no)
+AM_CONDITIONAL([DISABLE_AUDIO], [ test "$disable_audio" = "yes"])
+
 # --disable-gst-check
 AC_ARG_ENABLE(gst_check, AS_HELP_STRING([--disable-gst-check], [Disable check for needed gstreamer elements]),, disable_gst_check=no)
 AM_CONDITIONAL([DISABLE_GST_CHECK], [ test "$disable_gst_check" = "yes"])
@@ -53,6 +57,10 @@ pkg_modules="gtk+-3.0 >= 3.16
 
 if test "$disable_video" = "no"; then
   pkg_modules="$pkg_modules gstreamer-video-1.0 >= 1.6"
+fi
+
+if test "$disable_audio" = "no"; then
+  pkg_modules="$pkg_modules libcanberra"
 fi
 
 PKG_CHECK_MODULES(CB, [$pkg_modules])
@@ -95,6 +103,13 @@ if test "$disable_video" = "no"; then
                  -D VIDEO \
                  --pkg gstreamer-video-1.0"
   CB_CFLAGS="$CB_CFLAGS -D VIDEO"
+fi
+
+if test "$disable_audio" = "no"; then
+  CB_VALA_FLAGS="$CB_VALA_FLAGS \
+                 -D AUDIO \
+                 --pkg libcanberra"
+  CB_CFLAGS="$CB_CFLAGS -D AUDIO"
 fi
 
 if test "$enable_debug" = "yes"; then
@@ -147,5 +162,6 @@ echo "
            C Compiler: ${CC} ${CFLAGS}
             Debugging: $enable_debug
        Video disabled: $disable_video
+       Audio disabled: $disable_audio
    Gst check disabled: $disable_gst_check
 "

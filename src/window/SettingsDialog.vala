@@ -24,6 +24,8 @@ class SettingsDialog : Gtk.Window {
   [GtkChild]
   private Gtk.Switch on_new_dms_switch;
   [GtkChild]
+  private Gtk.Switch play_sound_switch;
+  [GtkChild]
   private Gtk.ComboBoxText on_new_tweets_combobox;
   [GtkChild]
   private Gtk.Switch auto_scroll_on_new_tweets_switch;
@@ -57,6 +59,8 @@ class SettingsDialog : Gtk.Window {
     Settings.get ().bind ("new-mentions-notify", on_new_mentions_switch, "active",
                           SettingsBindFlags.DEFAULT);
     Settings.get ().bind ("new-dms-notify", on_new_dms_switch, "active",
+                          SettingsBindFlags.DEFAULT);
+    Settings.get ().bind ("play-sound", play_sound_switch, "active",
                           SettingsBindFlags.DEFAULT);
 
     // Interface page

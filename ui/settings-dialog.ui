@@ -231,6 +231,20 @@
               </packing>
             </child>
             <child>
+              <object class="GtkLabel" id="label16">
+                <property name="visible">1</property>
+                <property name="xalign">1</property>
+                <property name="label" translatable="yes">Play Sound</property>
+                <accessibility>
+                  <relation type="label-for" target="play_sound_switch"/>
+                </accessibility>
+              </object>
+              <packing>
+                <property name="left-attach">0</property>
+                <property name="top-attach">4</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkSwitch" id="on_new_mentions_switch">
                 <property name="visible">1</property>
                 <property name="can-focus">1</property>
@@ -256,6 +270,20 @@
               <packing>
                 <property name="left-attach">1</property>
                 <property name="top-attach">3</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSwitch" id="play_sound_switch">
+                <property name="visible">1</property>
+                <property name="can-focus">1</property>
+                <property name="halign">start</property>
+                <accessibility>
+                  <relation type="labelled-by" target="label16"/>
+                </accessibility>
+              </object>
+              <packing>
+                <property name="left-attach">1</property>
+                <property name="top-attach">4</property>
               </packing>
             </child>
             <child>
