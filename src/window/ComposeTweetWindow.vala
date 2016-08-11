@@ -43,11 +43,14 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   private ComposeImageManager compose_image_manager;
   [GtkChild]
   private Gtk.Button add_image_button;
+  [GtkChild]
+  private Gtk.Revealer top_revealer;
   private unowned Account account;
   private unowned Cb.Tweet reply_to;
   private Mode mode;
   private GLib.Cancellable? cancellable;
   private Gtk.ListBox? reply_list = null;
+  private int64 quote_id = 0;
 
 
   public ComposeTweetWindow (MainWindow? parent,
@@ -72,14 +75,14 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       length_label.label = (Cb.Tweet.MAX_LENGTH - Twitter.short_url_length_https).to_string ();
 
 
-    tweet_text.buffer.changed.connect (recalc_tweet_length);
-
+    tweet_text.buffer.changed.connect (buffer_changed_cb);
 
     if (parent != null) {
       this.set_transient_for (parent);
     }
 
     if (mode != Mode.NORMAL) {
+      assert (reply_to != null);
       reply_list = new Gtk.ListBox ();
       reply_list.selection_mode = Gtk.SelectionMode.NONE;
       TweetListEntry reply_entry = new TweetListEntry (reply_to, parent, acc, true);
@@ -88,7 +91,9 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       reply_entry.show ();
       reply_list.add (reply_entry);
       reply_list.show ();
-      content_grid.attach (reply_list, 0, 0, 2, 1);
+      top_revealer.add (reply_list);
+      top_revealer.reveal_child = true;
+      top_revealer.show_all ();
     }
 
     if (mode == Mode.REPLY) {
@@ -151,6 +156,50 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
 
     this.set_default_size (DEFAULT_WIDTH, (int)(DEFAULT_WIDTH / 2.5));
+  }
+
+  private void load_quoted_tweet (int64 id) {
+    var call = account.proxy.new_call ();
+    call.set_method ("GET");
+    call.set_function ("1.1/statuses/show.json");
+    call.add_param ("id", id.to_string ());
+    TweetUtils.load_threaded.begin (call, null, (obj, res) => {
+      Json.Node? root = null;
+
+      try {
+        root = TweetUtils.load_threaded.end (res);
+      } catch (GLib.Error e) {
+        warning (e.message);
+        return;
+      }
+
+      var tweet = new Cb.Tweet ();
+      tweet.load_from_json (root, null);
+      this.reply_to = tweet;
+      this.mode = Mode.QUOTE;
+    });
+  }
+
+  private void buffer_changed_cb () {
+    Gtk.TextIter start, end;
+    tweet_text.buffer.get_bounds (out start, out end);
+    string text = tweet_text.buffer.get_text (start, end, true);
+
+    string[] words = text.split (" ");
+
+    foreach (unowned string link in words) {
+      if (Utils.is_tweet_link (link)) {
+        string[] parts = link.split ("/");
+        int64 id = int64.parse (parts[5]);
+        if (this.reply_to == null ||
+            (this.reply_to != null && this.reply_to.source_tweet.id != id)) {
+          load_quoted_tweet (id);
+        }
+        break;
+      }
+    }
+
+    this.recalc_tweet_length ();
   }
 
   private void recalc_tweet_length () {

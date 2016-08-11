@@ -425,4 +425,17 @@ namespace Utils {
 
     return f;
   }
+
+  public bool is_tweet_link (string link) {
+    if (link == null)
+      return false;
+
+    // https://twitter.com/baedert/status/321423423423
+    if (!link.has_prefix ("https://twitter.com/"))
+      return false;
+
+    string[] parts = link.split ("/");
+    return parts.length == 6 &&
+           parts[4] == "status";
+  }
 }

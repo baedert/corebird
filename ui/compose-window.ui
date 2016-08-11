@@ -64,6 +64,17 @@
         <property name="column-spacing">6</property>
         <property name="row-spacing">6</property>
         <child>
+          <object class="GtkRevealer" id="top_revealer">
+            <property name="visible">0</property>
+            <property name="reveal-child">0</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">0</property>
+            <property name="width">2</property>
+          </packing>
+        </child>
+        <child>
           <object class="AvatarWidget" id="avatar_image">
             <property name="width-request">48</property>
             <property name="height-request">48</property>
