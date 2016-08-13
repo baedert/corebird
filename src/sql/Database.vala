@@ -36,7 +36,7 @@ public class Database {
     }
     this.exec ("PRAGMA journal_mode = MEMORY;");
 
-    int user_version = -1;
+    int user_version = 0;
     this.exec ("pragma user_version;", (n_cols, vals) => {user_version = int.parse(vals[0]); return STOP;});
 
     for (int cur_version = user_version + 1; cur_version <= max_version; cur_version ++) {
