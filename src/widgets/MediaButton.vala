@@ -279,7 +279,9 @@ private class MediaButton : Gtk.Widget {
     
     int height = 0;
 
-    if (scale > 1) {
+    if (restrict_height) {
+      height = int.min (media_height, MAX_HEIGHT);
+    } else if (scale > 1) {
       height = int.min (media_height, (int) Math.floor ((width / 4.0) * 3));
     } else {
       height = (int) Math.floor (double.min (media_height * scale, (media_width * scale / 4.0) * 3));
