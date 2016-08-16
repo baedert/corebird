@@ -30,7 +30,7 @@ public class Database {
 
   public Database (string filename, string init_file, int max_version) {
     int err = Sqlite.Database.open (filename, out db);
-    if (err == 1) {
+    if (err != 0) {
       critical ("Error when opening the database '%s': %s",
                 filename, db.errmsg ());
     }
