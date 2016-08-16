@@ -47,6 +47,9 @@ public class Corebird : Gtk.Application {
                 //register_session: true);
     snippet_manager = new SnippetManager ();
     active_accounts = new GLib.GenericArray<Account> ();
+
+    /* Create the directories here already since the database below needs it */
+    Dirs.create_dirs ();
     db = new Sql.Database (Dirs.config ("Corebird.db"),
                            Sql.COREBIRD_INIT_FILE,
                            Sql.COREBIRD_SQL_VERSION);
@@ -194,7 +197,6 @@ public class Corebird : Gtk.Application {
     GLib.Environment.set_variable ("G_MESSAGES_DEBUG", "all", true);
 #endif
 
-    Dirs.create_dirs ();
     debug ("startup");
     // Setup gettext
     GLib.Intl.setlocale (GLib.LocaleCategory.ALL, Config.DATADIR + "/locale");
