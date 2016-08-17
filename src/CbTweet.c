@@ -319,14 +319,14 @@ cb_tweet_unset_flag (CbTweet *tweet, guint flag)
 }
 
 char *
-cb_tweet_get_formatted_text (CbTweet *tweet, guint transform_flags)
+cb_tweet_get_formatted_text (CbTweet *tweet)
 {
   g_return_val_if_fail (CB_IS_TWEET (tweet), NULL);
 
   if (tweet->retweeted_tweet != NULL)
-    return cb_text_transform_tweet (tweet->retweeted_tweet, transform_flags, 0);
+    return cb_text_transform_tweet (tweet->retweeted_tweet, 0, 0);
   else
-    return cb_text_transform_tweet (&tweet->source_tweet, transform_flags, 0);
+    return cb_text_transform_tweet (&tweet->source_tweet, 0, 0);
 }
 
 char *
