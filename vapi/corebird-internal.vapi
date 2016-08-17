@@ -107,7 +107,7 @@ namespace Cb {
       public void set_flag (uint flag);
       public void unset_flag (uint flag);
 
-      public string get_formatted_text (uint transform_flags);
+      public string get_formatted_text ();
       public string get_trimmed_text (uint transform_flags);
       public string get_real_text ();
       public string get_filter_text ();
