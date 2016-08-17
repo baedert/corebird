@@ -1,0 +1,9 @@
+#mesondefine GETTEXT_PACKAGE;
+
+#mesondefine PACKAGE;
+
+#mesondefine PACKAGE_NAME;
+
+#mesondefine DATADIR;
+
+#mesondefine PKGDATADIR;
