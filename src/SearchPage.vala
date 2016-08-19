@@ -220,6 +220,9 @@ class SearchPage : IPage, Gtk.Box {
       if (root == null) {
         this.loading_users = false;
         debug ("load_users: root is null");
+        if (!collect_obj.done)
+          collect_obj.emit ();
+
         return;
       }
 
@@ -299,6 +302,9 @@ class SearchPage : IPage, Gtk.Box {
       if (root == null) {
         debug ("load tweets: root is null");
         this.loading_tweets = false;
+        if (!collect_obj.done)
+          collect_obj.emit ();
+
         return;
       }
 
