@@ -364,16 +364,6 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
       JsonObject *url = json_node_get_object (json_array_get_element (urls, i));
       const char *expanded_url = json_object_get_string_member (url, "expanded_url");
       JsonArray *indices;
-
-      if (is_media_candidate (expanded_url))
-        {
-          t->medias[t->n_medias] = cb_media_new ();
-          t->medias[t->n_medias]->url = g_strdup (expanded_url);
-          t->medias[t->n_medias]->type = cb_media_type_from_url (expanded_url);
-          t->medias[t->n_medias]->target_url = g_strdup (expanded_url);
-          t->n_medias ++;
-        }
-
       indices = json_object_get_array_member (url, "indices");
       t->entities[url_index].from = json_array_get_int_element (indices, 0);
       t->entities[url_index].to   = json_array_get_int_element (indices, 1);
@@ -577,6 +567,24 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
             {
               g_debug ("Unhandled media type: %s", media_type);
             }
+        }
+    }
+
+  if (t->n_medias == 0)
+    {
+      for (i  = 0, p = json_array_get_length (urls); i < p; i ++)
+        {
+          JsonObject *url = json_node_get_object (json_array_get_element (urls, i));
+          const char *expanded_url = json_object_get_string_member (url, "expanded_url");
+
+          if (is_media_candidate (expanded_url))
+           {
+             t->medias[t->n_medias] = cb_media_new ();
+             t->medias[t->n_medias]->url = g_strdup (expanded_url);
+             t->medias[t->n_medias]->type = cb_media_type_from_url (expanded_url);
+             t->medias[t->n_medias]->target_url = g_strdup (expanded_url);
+             t->n_medias ++;
+           }
         }
     }
 

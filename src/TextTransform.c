@@ -54,7 +54,7 @@ is_media_url (const char *url,
               const char *display_text,
               gsize       media_count)
 {
-  return (is_media_candidate (url != NULL ? url : display_text) && media_count == 1) ||
+  return (is_twitter_media_candidate (url != NULL ? url : display_text) && media_count == 1) ||
          g_str_has_prefix (display_text, "pic.twitter.com/");
 }
 

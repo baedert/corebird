@@ -432,6 +432,21 @@ is_media_candidate (const char *url)
 
 }
 
+gboolean
+is_twitter_media_candidate (const char *url)
+{
+  url = canonicalize_url (url);
+
+  return
+#ifdef VIDEO
+         g_str_has_prefix (url, "/photo/1/") ||
+         g_str_has_prefix (url, "video.twimg.com/ext_tw_video") ||
+#endif
+         g_str_has_prefix (url, "pbs.twimg.com/media/")
+   ;
+
+}
+
 static void
 cb_media_downloader_init (CbMediaDownloader *downloader)
 {
