@@ -319,7 +319,7 @@ cb_media_downloader_load_threaded (CbMediaDownloader *downloader,
   if (msg->status_code != SOUP_STATUS_OK)
     {
       g_debug ("Request on '%s' returned status '%s'",
-               media->thumb_url,
+               media->thumb_url ? media->thumb_url : media->url,
                soup_status_get_phrase (msg->status_code));
 
       mark_invalid (media);
