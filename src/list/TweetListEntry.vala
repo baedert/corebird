@@ -290,7 +290,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   private bool key_released_cb (Gdk.EventKey evt) {
 #if DEBUG
     switch(evt.keyval) {
-      case Gdk.Key.k:
+      case Gdk.Key.p:
         stdout.printf (tweet.json_data+"\n");
         message ("My retweet: %s", tweet.my_retweet.to_string ());
         message ("Retweeted: %s", tweet.is_flag_set (Cb.TweetState.RETWEETED).to_string ());

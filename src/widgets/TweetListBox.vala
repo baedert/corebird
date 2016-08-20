@@ -16,6 +16,13 @@
  */
 
 public class TweetListBox : Gtk.ListBox {
+  private const GLib.ActionEntry[] action_entries = {
+    {"up",   up_activated  },
+    {"down", down_activated}
+  };
+  private GLib.SimpleActionGroup actions;
+
+
   private Gtk.Stack placeholder;
   private Gtk.Label no_entries_label;
 
@@ -60,6 +67,10 @@ public class TweetListBox : Gtk.ListBox {
       row.fade_in ();
       return row;
     });
+
+    this.actions = new GLib.SimpleActionGroup ();
+    this.actions.add_action_entries (action_entries, this);
+    this.insert_action_group ("tweet-list", this.actions);
   }
 
   private bool button_press_cb (Gdk.EventButton evt) {
@@ -166,5 +177,13 @@ public class TweetListBox : Gtk.ListBox {
     }
 
     return row;
+  }
+
+  private void up_activated () {
+    this.child_focus (Gtk.DirectionType.UP);
+  }
+
+  private void down_activated () {
+    this.child_focus (Gtk.DirectionType.DOWN);
   }
 }
