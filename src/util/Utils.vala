@@ -201,8 +201,12 @@ namespace Utils {
       return _("%dh").printf (hours);
 
     string month = time.format ("%b");
-    //If 'time' was over 24 hours ago, we just return that
-    return "%d %s".printf (time.get_day_of_month (), month);
+    if (time.get_year () == now.get_year ()) {
+      //If 'time' was over 24 hours ago, we just return that
+      return "%d %s".printf (time.get_day_of_month (), month);
+    } else {
+      return "%d %s %d".printf (time.get_day_of_month (), month, time.get_year ());
+    }
   }
 
 
