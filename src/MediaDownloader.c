@@ -362,8 +362,6 @@ cb_media_downloader_load_async (CbMediaDownloader   *downloader,
   g_return_if_fail (CB_IS_MEDIA_DOWNLOADER (downloader));
   g_return_if_fail (CB_IS_MEDIA (media));
 
-  g_object_ref (media);
-
   task = g_task_new (downloader, NULL, callback, user_data);
   g_task_set_task_data (task, media, g_object_unref);
 
