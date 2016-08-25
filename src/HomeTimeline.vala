@@ -63,7 +63,7 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
   private void add_tweet (Json.Node obj) {
     GLib.DateTime now = new GLib.DateTime.now_local ();
     Cb.Tweet t = new Cb.Tweet ();
-    t.load_from_json (obj, now);
+    t.load_from_json (obj, this.account.id, now);
 
     /* We don't use the set_state version from TweetModel here since
        we just decide the initial visibility of the tweet */

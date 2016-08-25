@@ -314,7 +314,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
         this.tweet.favorite_count = n_favorites;
       } else {
         this.tweet = new Cb.Tweet ();
-        tweet.load_from_json (root, now);
+        tweet.load_from_json (root, account.id, now);
       }
 
       string with = root_object.get_string_member ("source");
@@ -368,7 +368,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
         }
 
         var t = new Cb.Tweet ();
-        t.load_from_json (node, now);
+        t.load_from_json (node, account.id, now);
         if (t.id != previous_tweet_id) {
           top_list_box.model.add (t);
           n_replies ++;
@@ -427,7 +427,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
 
       /* If we get here, the tweet is not protected so we can just use it */
       var tweet = new Cb.Tweet ();
-      tweet.load_from_json (parser.get_root (), new GLib.DateTime.now_local ());
+      tweet.load_from_json (parser.get_root (), account.id, new GLib.DateTime.now_local ());
       bottom_list_box.model.add (tweet);
       load_replied_to_tweet (tweet.reply_id);
     });
@@ -569,7 +569,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
 
       if (reply_id == this.tweet_id) {
         var t = new Cb.Tweet ();
-        t.load_from_json (root, new GLib.DateTime.now_local ());
+        t.load_from_json (root, account.id, new GLib.DateTime.now_local ());
         top_list_box.model.add (t);
         top_list_box.show ();
         this.reply_indicator.replies_available = true;

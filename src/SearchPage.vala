@@ -314,7 +314,7 @@ class SearchPage : IPage, Gtk.Box {
 
       statuses.foreach_element ((array, index, node) => {
         var tweet = new Cb.Tweet ();
-        tweet.load_from_json (node, now);
+        tweet.load_from_json (node, account.id, now);
         if (tweet.id < lowest_tweet_id)
           lowest_tweet_id = tweet.id;
         var entry = new TweetListEntry (tweet, main_window, account);
