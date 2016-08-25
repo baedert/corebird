@@ -96,7 +96,7 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
 
     bool auto_scroll = Settings.auto_scroll_on_new_tweets ();
 
-    t.set_seen (t.get_user_id () == account.id ||
+    t.set_seen (t.source_tweet.author.id == account.id ||
                 (t.retweeted_tweet != null && t.retweeted_tweet.author.id == account.id) ||
                 (this.scrolled_up  &&
                  main_window.cur_page_id == this.id &&
