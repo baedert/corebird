@@ -267,7 +267,6 @@ cb_tweet_load_from_json (CbTweet   *tweet,
     {
       JsonObject *cur_rt = json_object_get_object_member (status, "current_user_retweet");
       tweet->my_retweet = json_object_get_int_member (cur_rt, "id");
-      tweet->state |= CB_TWEET_STATE_RETWEETED;
     }
 
 #ifdef DEBUG
