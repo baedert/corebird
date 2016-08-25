@@ -41,7 +41,7 @@ class FavoritesTimeline : IMessageReceiver, DefaultTimeline {
       }
 
       var tweet = new Cb.Tweet ();
-      tweet.load_from_json (tweet_obj, new GLib.DateTime.now_local ());
+      tweet.load_from_json (tweet_obj, account.id, new GLib.DateTime.now_local ());
       tweet.set_flag (Cb.TweetState.FAVORITED);
       this.tweet_list.model.add (tweet);
     } else if (type == StreamMessageType.EVENT_UNFAVORITE) {

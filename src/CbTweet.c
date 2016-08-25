@@ -180,6 +180,7 @@ cb_tweet_get_mentions (CbTweet  *tweet,
 void
 cb_tweet_load_from_json (CbTweet   *tweet,
                          JsonNode  *status_node,
+                         gint64     account_id,
                          GDateTime *now)
 {
   JsonObject *status;
@@ -197,10 +198,6 @@ cb_tweet_load_from_json (CbTweet   *tweet,
   tweet->retweet_count = (guint) json_object_get_int_member (status, "retweet_count");
   tweet->favorite_count = (guint) json_object_get_int_member (status, "favorite_count");
 
-  if (json_object_get_boolean_member (status, "favorited"))
-    tweet->state |= CB_TWEET_STATE_FAVORITED;
-  if (json_object_get_boolean_member (status, "retweeted"))
-    tweet->state |= CB_TWEET_STATE_RETWEETED;
 
   if (usable_json_value (status, "possibly_sensitive") &&
       json_object_get_boolean_member (status, "possibly_sensitive"))
@@ -263,11 +260,26 @@ cb_tweet_load_from_json (CbTweet   *tweet,
       cb_mini_tweet_parse_entities (tweet->quoted_tweet, quote);
     }
 
+  if (json_object_get_boolean_member (status, "favorited"))
+    tweet->state |= CB_TWEET_STATE_FAVORITED;
+  if (json_object_get_boolean_member (status, "retweeted"))
+    tweet->state |= CB_TWEET_STATE_RETWEETED;
+
   if (json_object_has_member (status, "current_user_retweet"))
     {
       JsonObject *cur_rt = json_object_get_object_member (status, "current_user_retweet");
       tweet->my_retweet = json_object_get_int_member (cur_rt, "id");
+      tweet->state |= CB_TWEET_STATE_RETWEETED;
     }
+  else if (json_object_get_boolean_member (status, "retweeted") ||
+           (tweet->retweeted_tweet != NULL && tweet->source_tweet.author.id == account_id))
+    {
+      /* The 'retweeted' flag is not reliable so we additionally check if the tweet is authored
+         by the authenticating user */
+      tweet->my_retweet = tweet->id;
+      tweet->state |= CB_TWEET_STATE_RETWEETED;
+    }
+
 
 #ifdef DEBUG
   {

@@ -8,7 +8,7 @@ Cb.Tweet parse_tweet (string input) {
   }
 
   Cb.Tweet tweet = new Cb.Tweet ();
-  tweet.load_from_json (parser.get_root (), new GLib.DateTime.now_local ());
+  tweet.load_from_json (parser.get_root (), 0, new GLib.DateTime.now_local ());
 
   return tweet;
 }

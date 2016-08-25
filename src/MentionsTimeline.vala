@@ -60,7 +60,7 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
     if (root.get_string_member ("text").contains ("@" + account.screen_name)) {
       GLib.DateTime now = new GLib.DateTime.now_local ();
       var t = new Cb.Tweet ();
-      t.load_from_json (root_node, now);
+      t.load_from_json (root_node, account.id, now);
       if (t.get_user_id () == account.id)
         return;
 

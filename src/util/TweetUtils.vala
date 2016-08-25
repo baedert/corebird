@@ -89,6 +89,7 @@ namespace TweetUtils {
     else
       call.set_function (@"1.1/statuses/destroy/$(tweet.my_retweet).json");
 
+    debug (rest_call_to_string (call));
     call.invoke_async.begin (null, (obj, res) => {
       try{
         call.invoke_async.end (res);
@@ -284,7 +285,7 @@ namespace TweetUtils {
       var now = new GLib.DateTime.now_local ();
       GLib.Idle.add (() => {
         var tweet = new Cb.Tweet ();
-        tweet.load_from_json (json_array.get_element (index), now);
+        tweet.load_from_json (json_array.get_element (index), account.id, now);
         if (account.user_counter == null ||
             tweet_list == null ||
             !(tweet_list.get_toplevel () is Gtk.Window))

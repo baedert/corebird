@@ -89,7 +89,6 @@ namespace Cb {
       public int64 id;
       public int64 my_retweet;
       public int64 reply_id;
-      //public bool seen;
       public int favorite_count;
       public int retweet_count;
       public string avatar_url;
@@ -101,7 +100,7 @@ namespace Cb {
       public unowned string get_user_name ();
 
       public bool has_inline_media ();
-      public void load_from_json (Json.Node node, GLib.DateTime now);
+      public void load_from_json (Json.Node node, int64 account_id, GLib.DateTime now);
 
       public bool is_flag_set (uint flag);
       public void set_flag (uint flag);
