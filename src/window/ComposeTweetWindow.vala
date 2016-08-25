@@ -77,6 +77,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
     if (parent != null) {
       this.set_transient_for (parent);
+      this.set_modal (true);
     }
 
     if (mode != Mode.NORMAL) {
