@@ -262,8 +262,6 @@ cb_tweet_load_from_json (CbTweet   *tweet,
 
   if (json_object_get_boolean_member (status, "favorited"))
     tweet->state |= CB_TWEET_STATE_FAVORITED;
-  if (json_object_get_boolean_member (status, "retweeted"))
-    tweet->state |= CB_TWEET_STATE_RETWEETED;
 
   if (json_object_has_member (status, "current_user_retweet"))
     {
