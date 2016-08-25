@@ -243,7 +243,7 @@ void matches_tweet () {
     critical (e.message);
     return;
   }
-  tweet.load_from_json (parser.get_root (), now);
+  tweet.load_from_json (parser.get_root (), 0, now);
 }
 
 void same_user () {
@@ -259,7 +259,7 @@ void same_user () {
     critical (e.message);
     return;
   }
-  tweet.load_from_json (parser.get_root (), now);
+  tweet.load_from_json (parser.get_root (), 0, now);
   tweet.source_tweet.author.id = 12345;
 
   // Should always return false even if the filter(s) would match
@@ -281,7 +281,7 @@ void links () {
     critical (e.message);
     return;
   }
-  tweet.load_from_json (parser.get_root (), now);
+  tweet.load_from_json (parser.get_root (), 0, now);
 
   // This should never match since we should be using the
   // 'real' url instead of the t.co shortened one.
@@ -307,7 +307,7 @@ void hashtags () {
     critical (e.message);
     return;
   }
-  tweet.load_from_json (parser.get_root (), now);
+  tweet.load_from_json (parser.get_root (), 0, now);
 
   // This should never match since we should be using the
   // 'real' url instead of the t.co shortened one.
