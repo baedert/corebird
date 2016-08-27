@@ -15,7 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 class AspectImage : Gtk.Widget {
   public Gdk.Pixbuf pixbuf  {
     set {
@@ -72,9 +71,8 @@ class AspectImage : Gtk.Widget {
   private int64 start_time;
   private bool in_transition = false;
   private bool fade_in_cb (Gtk.Widget widget, Gdk.FrameClock frame_clock) {
-
     int64 now = frame_clock.get_frame_time ();
-    double t = (now - start_time) / TRANSITION_DURATION;
+    double t = (double)(now - start_time) / TRANSITION_DURATION;
 
     if (t >= 1.0) {
       t = 1.0;
