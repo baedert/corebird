@@ -547,8 +547,6 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
       ((SimpleAction)actions.lookup_action ("toggle-retweets")).set_enabled (true);
     }
     update_follower_label ();
-    progress_spinner.start ();
-    loading_stack.visible_child_name = "progress";
     follow_button.sensitive = false;
     call.set_method ("POST");
     call.add_param ("id", user_id.to_string ());
@@ -562,8 +560,6 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
         critical (call.get_payload ());
       }
       follow_button.sensitive = true;
-      progress_spinner.stop ();
-      loading_stack.visible_child_name = "data";
     });
   }
 
