@@ -478,7 +478,6 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
               JsonObject *variant = NULL;
               int thumb_width  = -1;
               int thumb_height = -1;
-              /*gboolean hls_found = FALSE;*/
               guint q;
 
               if (json_object_has_member (media_obj, "sizes"))
@@ -495,26 +494,10 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
                   JsonObject *v = json_node_get_object (json_array_get_element (variants, k));
                   if (strcmp (json_object_get_string_member (v, "content_type"), "application/x-mpegURL") == 0)
                     {
-                      /*hls_found = TRUE;*/
                       variant = v;
                       break;
                     }
                 }
-
-#if 0
-              if (!hls_found)
-                {
-                  /* We pick the mp4 variant with size closest to the thumbnails size, but not bigger */
-                  for (k = 0, q = json_array_get_length (variants); k < q; k ++)
-                    {
-                      JsonObject *v = json_node_get_object (json_array_get_element (variants, k));
-                      if (strcmp (json_object_get_string_member (v, "content_type"), "video/mp4") == 0)
-                        {
-
-                        }
-                    }
-                }
-#endif
 
               if (variant == NULL && json_array_get_length (variants) > 0)
                 variant = json_node_get_object (json_array_get_element (variants, 0));
