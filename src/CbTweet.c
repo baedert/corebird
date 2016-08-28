@@ -35,7 +35,7 @@ json_array_size (JsonObject *object, const char *name)
   if (!json_object_has_member (object, name))
     return 0;
 
-  return (guint)json_array_get_length (json_object_get_array_member (object, name));
+  return json_array_get_length (json_object_get_array_member (object, name));
 }
 
 
