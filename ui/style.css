@@ -107,12 +107,6 @@
 }
 
 
-.retweet-button,
-.favorite-button,
-.reply-button,
-.more-button{
-  background-color: transparent;
-}
 .retweet-button:hover,
 .retweet-button:checked {
   color:green;
