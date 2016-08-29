@@ -181,6 +181,7 @@
                         <property name="justify">center</property>
                         <property name="wrap">1</property>
                         <property name="wrap-mode">word-char</property>
+                        <property name="track-visited-links">0</property>
                         <signal name="activate-link" handler="activate_link" swapped="no"/>
                       </object>
                       <packing>
@@ -199,6 +200,7 @@
                         <property name="use-markup">1</property>
                         <property name="justify">center</property>
                         <property name="ellipsize">end</property>
+                        <property name="track-visited-links">0</property>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
