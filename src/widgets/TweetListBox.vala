@@ -44,7 +44,6 @@ public class TweetListBox : Gtk.ListBox {
 
   construct {
     add_placeholder ();
-    this.get_style_context ().add_class ("stream");
     this.set_selection_mode (Gtk.SelectionMode.NONE);
     this.button_press_event.connect (button_press_cb);
     Settings.get ().bind ("double-click-activation",
