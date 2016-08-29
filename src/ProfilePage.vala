@@ -252,7 +252,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
 
     string name        = root.get_string_member("name").replace ("&", "&amp;").strip ();
     string screen_name = root.get_string_member("screen_name");
-    string description = root.get_string_member("description").replace("&", "&amp;");
+    string description = root.get_string_member("description");
     int followers      = (int)root.get_int_member("followers_count");
     int following      = (int)root.get_int_member("friends_count");
     int tweets         = (int)root.get_int_member("statuses_count");
@@ -298,7 +298,9 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
       urls.foreach_element ((arr, i, node) => {
         var ent = node.get_object ();
         string expanded_url = ent.get_string_member ("expanded_url");
-        expanded_url = expanded_url.replace ("&", "&amp;");
+        /* We do *not* escape ampersands as &amp; here, since we will later do that on the entire
+           description when setting the text of our description_label. Contrary to normal tweets,
+           profile descriptions don't come with pre-escaped ampersands */
         Json.Array indices = ent.get_array_member ("indices");
         text_urls[i] = Cb.TextEntity(){
           from = (uint)indices.get_int_element (0),
@@ -335,7 +337,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     }
 
     this.follower_count = followers;
-    description_label.label = "<big>" + desc + "</big>";
+    description_label.label = "<big>%s</big>".printf (desc.replace ("&", "&amp;"));
     tweets_label.label = "%'d".printf(tweets);
     following_label.label = "%'d".printf(following);
     update_follower_label ();
