@@ -13,12 +13,11 @@ msgstr ""
 "POT-Creation-Date: 2016-07-31 08:33+0200\n"
 "PO-Revision-Date: 2016-07-30 08:17+0000\n"
 "Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
-"Language-Team: Italian (http://www.transifex.com/corebird/corebird/language/"
-"it/)\n"
-"Language: it\n"
+"Language-Team: Italian (http://www.transifex.com/corebird/corebird/language/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: it\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: data/org.baedert.corebird.appdata.xml.in:5
@@ -35,14 +34,12 @@ msgstr "Client Twitter"
 msgid ""
 "Corebird is a native GTK+ twitter client that provides vital features such "
 "as Direct Messages (DMs), tweet notifications, conversation views."
-msgstr ""
-"Corebird è un client twitter nativo GTK+ che fornisce funzioni vitali come "
-"messaggi diretti (DM), notifiche dei tweet e vista delle conversazioni."
+msgstr "Corebird è un client twitter nativo GTK+ che fornisce funzioni vitali come messaggi diretti (DM), notifiche dei tweet e vista delle conversazioni."
 
 #: data/org.baedert.corebird.appdata.xml.in:13
 msgid ""
-"Additional features include local viewing of videos, multiple inline images, "
-"Lists, Filters, multiple accounts, etc."
+"Additional features include local viewing of videos, multiple inline images,"
+" Lists, Filters, multiple accounts, etc."
 msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:21
@@ -225,11 +222,9 @@ msgstr "Creane uno"
 
 #: src/widgets/AccountCreateWidget.vala:55
 msgid ""
-"Unauthorized. Most of the time, this means that there's something wrong with "
-"the Twitter servers and you should try again later"
-msgstr ""
-"Non autorizzato. Solitamente questo vuol dire che c'è qualche problema con i "
-"server di Twitter e dovesti riprovare più tardi."
+"Unauthorized. Most of the time, this means that there's something wrong with"
+" the Twitter servers and you should try again later"
+msgstr "Non autorizzato. Solitamente questo vuol dire che c'è qualche problema con i server di Twitter e dovesti riprovare più tardi."
 
 #: src/widgets/AccountCreateWidget.vala:67
 #, c-format
@@ -375,9 +370,7 @@ msgstr ""
 msgid ""
 "Hey, check out this new #Corebird version! \\ (•◡•) / #cool "
 "#newisalwaysbetter"
-msgstr ""
-"Ehi, scarica la nuova versione di #Corebird \\ (•◡•) / #cool "
-"#newisalwaysbetter"
+msgstr "Ehi, scarica la nuova versione di #Corebird \\ (•◡•) / #cool #newisalwaysbetter"
 
 #: src/window/UserListDialog.vala:40
 msgid "Add to or Remove User From List"
@@ -427,9 +420,10 @@ msgstr "Sito web"
 msgid "Autostart"
 msgstr "Avvio automatico"
 
-#: ui/account-dialog.ui:189 ui/account-dialog.ui:246 ui/filter-list-entry.ui:93
-#: ui/list-list-entry.ui:132 ui/list-statuses-page.ui:166
-#: ui/modify-snippet-dialog.ui:108 ui/tweet-list-entry.ui:10
+#: ui/account-dialog.ui:189 ui/account-dialog.ui:246
+#: ui/filter-list-entry.ui:93 ui/list-list-entry.ui:132
+#: ui/list-statuses-page.ui:166 ui/modify-snippet-dialog.ui:108
+#: ui/tweet-list-entry.ui:10
 msgid "Delete"
 msgstr "Elimina"
 
@@ -691,9 +685,7 @@ msgstr "Nessuno snippet configurato."
 
 #: ui/settings-dialog.ui:481
 msgid "You can activate snippets by writing the keyword and pressing TAB."
-msgstr ""
-"Gli snippet si attivano digitando la parola chiave con la tastiera e "
-"premendo TAB."
+msgstr "Gli snippet si attivano digitando la parola chiave con la tastiera e premendo TAB."
 
 #: ui/settings-dialog.ui:495
 msgid "Snippets"

@@ -4,28 +4,26 @@
 #
 # Translators:
 # Krisan Alfa Timur <krisan47@gmail.com>, 2015
-# Mahyuddin Idram Ahmad <dotovr@di.blankon.in>, 2016
-# Mahyuddin Idram Ahmad <dotovr@di.blankon.in>, 2015
+# Mahyuddin Idram Ahmad <dotovr@di.blankon.in>, 2015-2016
 # Reza Faiz A Rahman <rezafaizarahman@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2016-07-31 08:33+0200\n"
-"PO-Revision-Date: 2016-07-30 08:17+0000\n"
-"Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
-"Language-Team: Indonesian (http://www.transifex.com/corebird/corebird/"
-"language/id/)\n"
-"Language: id\n"
+"PO-Revision-Date: 2016-08-07 08:24+0000\n"
+"Last-Translator: Mahyuddin Idram Ahmad <dotovr@di.blankon.in>\n"
+"Language-Team: Indonesian (Indonesia) (http://www.transifex.com/corebird/corebird/language/id_ID/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: id_ID\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: data/org.baedert.corebird.appdata.xml.in:5
 #: data/org.baedert.corebird.desktop.in:3
 msgid "Corebird"
-msgstr ""
+msgstr "Corebird"
 
 #: data/org.baedert.corebird.appdata.xml.in:6
 #: data/org.baedert.corebird.desktop.in:4
@@ -36,45 +34,41 @@ msgstr "Twitter Klien"
 msgid ""
 "Corebird is a native GTK+ twitter client that provides vital features such "
 "as Direct Messages (DMs), tweet notifications, conversation views."
-msgstr ""
-"Corebird adalah GTK+ twitter klien native yang menyediakan fitur penting "
-"seperti Pesan Langsung (DMS), tweet pemberitahuan, pemandangan percakapan."
+msgstr "Corebird adalah GTK+ twitter klien native yang menyediakan fitur penting seperti Pesan Langsung (DMS), tweet pemberitahuan, pemandangan percakapan."
 
 #: data/org.baedert.corebird.appdata.xml.in:13
 msgid ""
-"Additional features include local viewing of videos, multiple inline images, "
-"Lists, Filters, multiple accounts, etc."
-msgstr ""
-"Fitur tambahan termasuk melihat video lokal, beberapa gambar di baris, "
-"Daftar, Penyaring, beberapa akun, dll"
+"Additional features include local viewing of videos, multiple inline images,"
+" Lists, Filters, multiple accounts, etc."
+msgstr "Fitur tambahan termasuk melihat video lokal, beberapa gambar di baris, Daftar, Penyaring, beberapa akun, dll"
 
 #: data/org.baedert.corebird.appdata.xml.in:21
 msgid "Generic timeline view when using Corebird"
-msgstr ""
+msgstr "Tampilan timeline generik ketika menggunakan Corebird"
 
 #: data/org.baedert.corebird.appdata.xml.in:25
 msgid "Typical Twitter profile"
-msgstr ""
+msgstr "Khas Profil Twitter"
 
 #: data/org.baedert.corebird.appdata.xml.in:29
 msgid "Account settings can be configured"
-msgstr ""
+msgstr "Setelan akun dapat dikonfigurasi"
 
 #: data/org.baedert.corebird.desktop.in:5
 msgid "Use Twitter from within a normal desktop application"
-msgstr ""
+msgstr "Gunakan Twitter dari aplikasi desktop normal"
 
 #: data/org.baedert.corebird.desktop.in:7
 msgid "twitter;"
-msgstr ""
+msgstr "twitter;"
 
 #: data/org.baedert.corebird.desktop.in:11
 msgid "corebird"
-msgstr ""
+msgstr "corebird"
 
 #: src/DefaultTimeline.vala:358
 msgid "Could not load tweets"
-msgstr ""
+msgstr "Tidak bisa menampilkan tweet"
 
 #: src/DMPage.vala:329
 msgid "Direct Conversation"
@@ -102,11 +96,11 @@ msgstr "Kesukaan"
 
 #: src/FilterPage.vala:47
 msgid "Add new Filter"
-msgstr ""
+msgstr "Tambah Penyaringan baru"
 
 #: src/FilterPage.vala:317 src/FilterPage.vala:323
 msgid "Filters"
-msgstr ""
+msgstr "Penyaringan"
 
 #: src/HomeTimeline.vala:122
 #, c-format
@@ -145,24 +139,24 @@ msgstr "Daftar"
 #: src/list/TweetListEntry.vala:411
 #, c-format
 msgid "Block %s"
-msgstr ""
+msgstr "Blok %s"
 
 #: src/list/TweetListEntry.vala:546
 msgid "This tweet contains images marked as inappropriate"
-msgstr ""
+msgstr "Tweet ini berisi gambar yang ditandai sebagai tidak sesuai"
 
 #: src/list/TweetListEntry.vala:553
 msgid "Show anyway"
-msgstr ""
+msgstr "Tampilkan apa saja"
 
 #: src/MainWindow.vala:75
 msgid "Add new Account"
-msgstr ""
+msgstr "Tambah Akun baru"
 
 #: src/MentionsTimeline.vala:91 src/UserEventReceiver.vala:111
 #, c-format
 msgid "%s mentioned %s"
-msgstr ""
+msgstr "%s mentioned %s"
 
 #: src/MentionsTimeline.vala:99 src/MentionsTimeline.vala:103
 msgid "Mentions"
@@ -225,11 +219,9 @@ msgstr "Buat satu"
 
 #: src/widgets/AccountCreateWidget.vala:55
 msgid ""
-"Unauthorized. Most of the time, this means that there's something wrong with "
-"the Twitter servers and you should try again later"
-msgstr ""
-"Tidak sah. Sebagian besar waktu, ini berarti bahwa ada sesuatu yang salah "
-"dengan server Twitter dan Anda harus mencoba lagi nanti"
+"Unauthorized. Most of the time, this means that there's something wrong with"
+" the Twitter servers and you should try again later"
+msgstr "Tidak sah. Sebagian besar waktu, ini berarti bahwa ada sesuatu yang salah dengan server Twitter dan Anda harus mencoba lagi nanti"
 
 #: src/widgets/AccountCreateWidget.vala:67
 #, c-format
@@ -254,7 +246,7 @@ msgstr "Pilih avatar"
 
 #: src/widgets/CompletionTextView.vala:33
 msgid "No users found"
-msgstr ""
+msgstr "User tidak ditemukan"
 
 #: src/widgets/FollowButton.vala:45
 msgid "Follow"
@@ -266,7 +258,7 @@ msgstr "Batal mengikuti"
 
 #: src/widgets/MediaButton.vala:42
 msgid "Copy URL"
-msgstr ""
+msgstr "Salin URL"
 
 #: src/widgets/PixbufButton.vala:52
 msgid "Copy link"
@@ -290,11 +282,11 @@ msgstr "Kutip tweet"
 
 #: src/window/FileSelector.vala:39 src/window/FileSelector.vala:85
 msgid "Select Image"
-msgstr ""
+msgstr "Pilih Gambar"
 
 #: src/window/FileSelector.vala:70
 msgid "Open"
-msgstr ""
+msgstr "Buka"
 
 #: src/window/FileSelector.vala:77 src/window/UserListDialog.vala:47
 #: ui/account-dialog.ui:21 ui/account-dialog.ui:233 ui/compose-window.ui:41
@@ -309,7 +301,7 @@ msgstr "Batal"
 msgid ""
 "Max file size exceeded\n"
 "(3MB)"
-msgstr ""
+msgstr "Ukuran berkas maks melebihi\n(3MB)"
 
 #: src/window/ImageCropDialog.vala:58 ui/image-crop-dialog.ui:61
 msgid "Next"
@@ -351,31 +343,29 @@ msgstr "Tidak cocok"
 
 #: src/window/ModifySnippetDialog.vala:44
 msgid "Modify Snippet"
-msgstr ""
+msgstr "Ubah Cuplikan"
 
 #: src/window/ModifySnippetDialog.vala:63
 msgid "Snippet can't be empty"
-msgstr ""
+msgstr "Cuplikan tidak boleh kosong"
 
 #: src/window/ModifySnippetDialog.vala:70
 msgid "Replacement can't be empty"
-msgstr ""
+msgstr "Penggantian tidak boleh kosong"
 
 #: src/window/ModifySnippetDialog.vala:78
 msgid "Snippet may not contain whitespace"
-msgstr ""
+msgstr "Cuplikan mungkin tidak mengandung spasi"
 
 #: src/window/ModifySnippetDialog.vala:86
 msgid "Snippet already exists"
-msgstr ""
+msgstr "Cuplikan sudah ada"
 
 #: src/window/SettingsDialog.vala:83
 msgid ""
 "Hey, check out this new #Corebird version! \\ (•◡•) / #cool "
 "#newisalwaysbetter"
-msgstr ""
-"Hai, coba lihat versi baru dari #Corebird! \\ (•◡•) / #keren "
-"#yangbaruselalulebihbaik"
+msgstr "Hai, coba lihat versi baru dari #Corebird! \\ (•◡•) / #keren #yangbaruselalulebihbaik"
 
 #: src/window/UserListDialog.vala:40
 msgid "Add to or Remove User From List"
@@ -425,9 +415,10 @@ msgstr "Situs"
 msgid "Autostart"
 msgstr "Mulai Otomatis"
 
-#: ui/account-dialog.ui:189 ui/account-dialog.ui:246 ui/filter-list-entry.ui:93
-#: ui/list-list-entry.ui:132 ui/list-statuses-page.ui:166
-#: ui/modify-snippet-dialog.ui:108 ui/tweet-list-entry.ui:10
+#: ui/account-dialog.ui:189 ui/account-dialog.ui:246
+#: ui/filter-list-entry.ui:93 ui/list-list-entry.ui:132
+#: ui/list-statuses-page.ui:166 ui/modify-snippet-dialog.ui:108
+#: ui/tweet-list-entry.ui:10
 msgid "Delete"
 msgstr "Hapus"
 
@@ -497,7 +488,7 @@ msgstr "Umum"
 
 #: ui/list-statuses-page.ui:296
 msgid "Description"
-msgstr ""
+msgstr "Deskripsi"
 
 #: ui/load-more-entry.ui:11
 msgid "Load more"
@@ -573,7 +564,7 @@ msgstr "Diblokir"
 
 #: ui/profile-page.ui:24
 msgid "Muted"
-msgstr ""
+msgstr "Meredam"
 
 #: ui/profile-page.ui:28
 msgid "Retweets disabled"
@@ -597,19 +588,19 @@ msgstr "Mengikuti"
 
 #: ui/settings-dialog.ui:60
 msgid "Show inline media"
-msgstr ""
+msgstr "Tampilkan media dalam baris"
 
 #: ui/settings-dialog.ui:79
 msgid "Always show"
-msgstr ""
+msgstr "Selalu muncul"
 
 #: ui/settings-dialog.ui:80
 msgid "Always hide"
-msgstr ""
+msgstr "Selalu sembunyi"
 
 #: ui/settings-dialog.ui:81
 msgid "Hide in timeline"
-msgstr ""
+msgstr "Sembunyi di beranda"
 
 #: ui/settings-dialog.ui:102
 msgid "Auto scroll on new tweets"
@@ -689,9 +680,7 @@ msgstr "Tidak ada potongan yang terkonfigurasi."
 
 #: ui/settings-dialog.ui:481
 msgid "You can activate snippets by writing the keyword and pressing TAB."
-msgstr ""
-"Kamu bisa mengaktifkan potongan dengan menuliskan kata kuncinya dan tekan "
-"tombol TAB."
+msgstr "Kamu bisa mengaktifkan potongan dengan menuliskan kata kuncinya dan tekan tombol TAB."
 
 #: ui/settings-dialog.ui:495
 msgid "Snippets"
@@ -826,7 +815,7 @@ msgstr "Buka di window baru"
 
 #: ui/user-list-entry.ui:114
 msgid "Go to profile"
-msgstr ""
+msgstr "Pergi ke profil"
 
 #: ui/user-lists-widget.ui:14
 msgid "Created"
