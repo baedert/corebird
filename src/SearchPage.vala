@@ -347,6 +347,10 @@ class SearchPage : IPage, Gtk.Box {
     tweet_list.@foreach ((w) => w.show());
     this.loading_tweets = false;
     this.loading_users = false;
+
+    /* Work around a problem with GtkListBox where the entries are not redrawn for some reason.
+       This happened whenever we remove_all'd all the rows from the list while it was not mapped */
+    tweet_list.queue_draw ();
   }
 
   public void create_radio_button (Gtk.RadioButton? group){
