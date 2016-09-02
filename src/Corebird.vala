@@ -27,15 +27,17 @@ public class Corebird : Gtk.Application {
   private bool started_as_service = false;
 
   const GLib.ActionEntry[] app_entries = {
-    {"show-settings",     show_settings_activated         },
-    {"show-shortcuts",    show_shortcuts_activated        },
-    {"quit",              quit_application                },
-    {"show-about-dialog", about_activated                 },
-    {"show-dm-thread",    show_dm_thread,          "(xx)" },
-    {"show-window",       show_window,             "x"    },
+    {"show-settings",     show_settings_activated          },
+    {"show-shortcuts",    show_shortcuts_activated         },
+    {"quit",              quit_application                 },
+    {"show-about-dialog", about_activated                  },
+    {"show-dm-thread",    show_dm_thread,          "(xx)"  },
+    {"show-window",       show_window,             "x"     },
+    {"mark-read",        mark_read_activated,     "(xx)"  },
+    {"reply-to-tweet",    reply_to_tweet_activated, "(xx)" },
 #if DEBUG
-    {"post-json",         post_json,               "(ss)" },
-    {"print-debug",       print_debug,                    },
+    {"post-json",         post_json,               "(ss)"  },
+    {"print-debug",       print_debug,                     },
 #endif
   };
 
@@ -519,6 +521,27 @@ public class Corebird : Gtk.Application {
       main_window = new MainWindow (this, account);
       this.add_window (main_window);
       main_window.show_all ();
+    }
+  }
+
+  private void mark_read_activated (GLib.SimpleAction a, GLib.Variant? v) {
+    int64 account_id = v.get_child_value (0).get_int64 ();
+    int64 tweet_id   = v.get_child_value (1).get_int64 ();
+    MainWindow main_window;
+
+    if (is_window_open_for_user_id (account_id, out main_window)) {
+      main_window.mark_tweet_as_read (tweet_id);
+    }
+  }
+
+  private void reply_to_tweet_activated (GLib.SimpleAction a, GLib.Variant? v) {
+    int64 account_id = v.get_child_value (0).get_int64 ();
+    int64 tweet_id   = v.get_child_value (1).get_int64 ();
+    MainWindow main_window;
+
+    if (is_window_open_for_user_id (account_id, out main_window)) {
+      main_window.reply_to_tweet (tweet_id);
+      main_window.present ();
     }
   }
 

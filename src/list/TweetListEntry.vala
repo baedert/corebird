@@ -292,6 +292,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     switch(evt.keyval) {
       case Gdk.Key.k:
         stdout.printf (tweet.json_data+"\n");
+        message ("Seen      : %s", tweet.get_seen ().to_string ());
         message ("My retweet: %s", tweet.my_retweet.to_string ());
         message ("Retweeted: %s", tweet.is_flag_set (Cb.TweetState.RETWEETED).to_string ());
         message ("Favorited: %s", tweet.is_flag_set (Cb.TweetState.FAVORITED).to_string ());

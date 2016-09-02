@@ -37,7 +37,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
       main_window = value;
     }
   }
-  protected TweetListBox tweet_list = new TweetListBox ();
+  public TweetListBox tweet_list = new TweetListBox ();
   public unowned Account account;
   protected BadgeRadioButton radio_button;
   protected uint tweet_remove_timeout = 0;

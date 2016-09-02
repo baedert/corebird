@@ -90,7 +90,16 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
 
         string summary = _("%s mentioned %s").printf (Utils.unescape_html (t.get_user_name ()),
                                                       account.name);
-        t.notification_id = account.notifications.send (summary, text);
+        string id = "%s-%s".printf (account.id.to_string (), "mention");
+        var tuple = new GLib.Variant.tuple ({account.id, t.id});
+        var notification = new GLib.Notification (summary);
+        notification.set_body (text);
+        notification.set_default_action_and_target_value ("app.show-window", account.id);
+        notification.add_button_with_target_value ("Mark read", "app.mark-read", tuple);
+        notification.add_button_with_target_value ("Reply", "app.reply-to-tweet", tuple);
+
+        t.notification_id = id;
+        GLib.Application.get_default ().send_notification (id, notification);
       }
     }
   }

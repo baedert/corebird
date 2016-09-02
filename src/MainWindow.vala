@@ -494,4 +494,38 @@ public class MainWindow : Gtk.ApplicationWindow {
     this.title_label.label = title;
     this.title_stack.visible_child = title_label;
   }
+
+  public void reply_to_tweet (int64 tweet_id) {
+    Cb.Tweet? tweet = null;
+    tweet = ((DefaultTimeline)this.main_widget.get_page(Page.STREAM)).tweet_list.model.get_from_id (tweet_id,
+                                                                                                    0);
+    if (tweet == null) {
+      warning ("tweet with id %s could not be found", tweet_id.to_string ());
+      return;
+    }
+
+    var ctw = new ComposeTweetWindow (this, this.account, tweet,
+                                      ComposeTweetWindow.Mode.REPLY);
+    ctw.show_all ();
+  }
+
+  public void mark_tweet_as_read (int64 tweet_id) {
+    DefaultTimeline home_timeline     = ((DefaultTimeline)this.main_widget.get_page(Page.STREAM));
+    DefaultTimeline mentions_timeline = ((DefaultTimeline)this.main_widget.get_page(Page.MENTIONS));
+    Cb.Tweet? tweet = null;
+    tweet = home_timeline.tweet_list.model.get_from_id (tweet_id,
+                                                        0);
+    if (tweet != null) {
+      tweet.set_seen (true);
+      home_timeline.unread_count --;
+    }
+
+    // and now with the MentionsTimeline
+    tweet = mentions_timeline.tweet_list.model.get_from_id (tweet_id,
+                                                            0);
+    if (tweet != null) {
+      tweet.set_seen (true);
+      mentions_timeline.unread_count --;
+    }
+  }
 }
