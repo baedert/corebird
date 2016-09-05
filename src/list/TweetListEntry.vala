@@ -120,7 +120,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       }, 48 * this.get_scale_factor ());
     }
     avatar_image.verified = tweet.is_flag_set (Cb.TweetState.VERIFIED);
-    text_label.label = tweet.get_trimmed_text (Settings.get_text_transform_flags ());
+    text_label.label = tweet.get_trimmed_text (Settings.get_text_transform_flags ()).strip ();
     update_time_delta ();
     if (tweet.retweeted_tweet != null) {
       rt_label.show ();
