@@ -318,7 +318,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
 
 
     var section = (GLib.Menu)more_button.menu_model.get_item_link (0, GLib.Menu.LINK_SECTION);
-    var user_item = new GLib.MenuItem (_("Tweet to @%s").printf (screen_name),
+    var user_item = new GLib.MenuItem (_("Tweet to @%s").printf (screen_name.replace ("_", "__")),
                                        "user.tweet-to");
     section.remove (1);
     section.insert_item (1, user_item);
