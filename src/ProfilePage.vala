@@ -624,6 +624,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     // We might otherwise overwrite the new user's data with that from the old one.
     data_cancellable.cancel ();
     banner_image.scale = 0.3;
+    more_button.get_popover ().hide ();
   }
 
   private void reset_data () {
