@@ -347,6 +347,7 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
           t->medias[t->n_medias] = cb_media_new ();
           t->medias[t->n_medias]->url = g_strdup (expanded_url);
           t->medias[t->n_medias]->type = cb_media_type_from_url (expanded_url);
+          t->medias[t->n_medias]->target_url = g_strdup (expanded_url);
           t->n_medias ++;
         }
 
