@@ -48,7 +48,8 @@ pkg_modules="gtk+-3.0 >= 3.18
              rest-0.7 >= 0.7.93
              libsoup-2.4
              json-glib-1.0
-             sqlite3"
+             sqlite3
+             gspell-1"
 
 if test "$disable_video" = "no"; then
   pkg_modules="$pkg_modules gstreamer-video-1.0 >= 1.6"
@@ -64,6 +65,7 @@ CB_VALA_FLAGS=" \
   --pkg sqlite3 \
   --pkg libsoup-2.4 \
   --pkg glib-2.0 \
+  --pkg gspell-1 \
   --target-glib=2.38"
 
 
