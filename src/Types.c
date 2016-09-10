@@ -410,7 +410,7 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
       t->entities[url_index].from = json_array_get_int_element (indices, 0);
       t->entities[url_index].to   = json_array_get_int_element (indices, 1);
       t->entities[url_index].display_text = g_strdup_printf ("@%s", screen_name);
-      t->entities[url_index].tooltip_text = g_strdup (json_object_get_string_member (mention, "name"));
+      t->entities[url_index].tooltip_text = escape_ampersand (json_object_get_string_member (mention, "name"));
       t->entities[url_index].target = g_strdup_printf ("@%s/@%s", id_str, screen_name);
       url_index ++;
     }
