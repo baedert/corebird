@@ -80,7 +80,7 @@ cb_text_transform_text (const char   *text,
                         gsize         n_medias,
                         gint64        quote_id)
 {
-  GString *str = g_string_new (NULL);
+  GString *str;
   const  guint text_len   = g_utf8_strlen (text, -1);
   int i;
   char *end_str;
@@ -90,6 +90,8 @@ cb_text_transform_text (const char   *text,
 
   if (text_len == 0)
     return g_strdup (text);
+
+  str = g_string_new (NULL);
 
   for (i = (int)n_entities - 1; i >= 0; i --)
     {
