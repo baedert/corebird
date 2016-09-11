@@ -280,6 +280,7 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
     entry.screen_name = account.screen_name;
     entry.timestamp = new GLib.DateTime.now_local ().to_unix ();
     entry.text = GLib.Markup.escape_text (text_view.buffer.text);
+    entry.main_window = main_window;
     entry.name = account.name;
     entry.avatar = account.avatar;
     entry.update_time_delta ();
