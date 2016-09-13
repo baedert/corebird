@@ -266,50 +266,34 @@ namespace TweetUtils {
   }
 
 
-  async void work_array (Json.Array   json_array,
-                         TweetListBox tweet_list,
-                         Account      account) {
-    new Thread<void*> ("TweetWorker", () => {
-      uint n_tweets = json_array.get_length ();
-      uint index    = 0;
-      /* If the request returned no results at all, we don't
-         need to do all the later stuff */
-      if (n_tweets == 0) {
-        GLib.Idle.add (() => {
-          work_array.callback ();
-          return GLib.Source.REMOVE;
-        });
-        return null;
-      }
+  void work_array (Json.Array   json_array,
+                   TweetListBox tweet_list,
+                   Account      account) {
+    uint n_tweets = json_array.get_length ();
+    /* If the request returned no results at all, we don't
+       need to do all the later stuff */
+    if (n_tweets == 0) {
+      return;
+    }
 
-      var now = new GLib.DateTime.now_local ();
-      GLib.Idle.add (() => {
-        var tweet = new Cb.Tweet ();
-        tweet.load_from_json (json_array.get_element (index), account.id, now);
-        if (account.user_counter == null ||
-            tweet_list == null ||
-            !(tweet_list.get_toplevel () is Gtk.Window))
-          return GLib.Source.REMOVE;
+    var now = new GLib.DateTime.now_local ();
+    for (uint i = 0; i < n_tweets; i++) {
+      var tweet = new Cb.Tweet ();
+      tweet.load_from_json (json_array.get_element (i), account.id, now);
+      if (account.user_counter == null ||
+          tweet_list == null ||
+          !(tweet_list.get_toplevel () is Gtk.Window))
+        break;
 
-        account.user_counter.id_seen (ref tweet.source_tweet.author);
-        if (tweet.retweeted_tweet != null)
-          account.user_counter.id_seen (ref tweet.retweeted_tweet.author);
+      account.user_counter.id_seen (ref tweet.source_tweet.author);
+      if (tweet.retweeted_tweet != null)
+        account.user_counter.id_seen (ref tweet.retweeted_tweet.author);
 
-        if (account.filter_matches (tweet))
-          tweet.set_flag (Cb.TweetState.HIDDEN_FILTERED);
+      if (account.filter_matches (tweet))
+        tweet.set_flag (Cb.TweetState.HIDDEN_FILTERED);
 
-        tweet_list.model.add (tweet);
-
-        index ++;
-        if (index == n_tweets) {
-          work_array.callback ();
-          return GLib.Source.REMOVE;
-        }
-        return GLib.Source.CONTINUE;
-      });
-      return null;
-    });
-    yield;
+      tweet_list.model.add (tweet);
+    }
   }
 
 
@@ -319,8 +303,6 @@ namespace TweetUtils {
     media_dialog.set_modal (true);
     media_dialog.show ();
   }
-
-
 
   public bool is_link (string word) {
     if (word.has_prefix ("http://") && word.length > 7)

@@ -395,9 +395,9 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
       tweet_list.set_empty ();
       return;
     }
-    yield TweetUtils.work_array (root_array,
-                                 tweet_list,
-                                 account);
+    TweetUtils.work_array (root_array,
+                           tweet_list,
+                           account);
     tweets_loading = false;
   }
 
@@ -430,9 +430,9 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     if (root == null) return;
 
     var root_arr = root.get_array ();
-    yield TweetUtils.work_array (root_arr,
-                                 tweet_list,
-                                 account);
+    TweetUtils.work_array (root_arr,
+                           tweet_list,
+                           account);
     tweets_loading = false;
   }
 

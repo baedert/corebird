@@ -180,9 +180,9 @@ class ListStatusesPage : ScrollWidget, IPage {
       loading = false;
       return;
     }
-    yield TweetUtils.work_array (root_array,
-                                 tweet_list,
-                                 account);
+    TweetUtils.work_array (root_array,
+                           tweet_list,
+                           account);
 
     loading = false;
   }
@@ -209,9 +209,9 @@ class ListStatusesPage : ScrollWidget, IPage {
     }
 
     var root_array = root.get_array ();
-    yield TweetUtils.work_array (root_array,
-                                 tweet_list,
-                                 account);
+    TweetUtils.work_array (root_array,
+                           tweet_list,
+                           account);
     loading = false;
   }
 
@@ -336,9 +336,9 @@ class ListStatusesPage : ScrollWidget, IPage {
 
     var root_array = root.get_array ();
     if (root_array.get_length () > 0) {
-      yield TweetUtils.work_array (root_array,
-                                   tweet_list,
-                                   account);
+      TweetUtils.work_array (root_array,
+                             tweet_list,
+                             account);
     }
   }
 

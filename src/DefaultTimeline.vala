@@ -364,9 +364,9 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
       tweet_list.set_empty ();
       return;
     }
-    yield TweetUtils.work_array (root,
-                                 tweet_list,
-                                 account);
+    TweetUtils.work_array (root,
+                           tweet_list,
+                           account);
   }
 
   /**
@@ -396,9 +396,9 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
       tweet_list.set_empty ();
       return;
     }
-    yield TweetUtils.work_array (root,
-                                 tweet_list,
-                                 account);
+    TweetUtils.work_array (root,
+                           tweet_list,
+                           account);
   }
 
   /**
