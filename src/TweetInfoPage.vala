@@ -560,19 +560,26 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
 
   public void stream_message_received (StreamMessageType type,
                                        Json.Node         root) {
-    if (type != StreamMessageType.TWEET)
-      return;
+    if (type == StreamMessageType.TWEET) {
+      Json.Object root_obj = root.get_object ();
+      if (Utils.usable_json_value (root_obj, "in_reply_to_status_id")) {
+        int64 reply_id = root_obj.get_int_member ("in_reply_to_status_id");
 
-    Json.Object root_obj = root.get_object ();
-    if (Utils.usable_json_value (root_obj, "in_reply_to_status_id")) {
-      int64 reply_id = root_obj.get_int_member ("in_reply_to_status_id");
-
-      if (reply_id == this.tweet_id) {
-        var t = new Cb.Tweet ();
-        t.load_from_json (root, account.id, new GLib.DateTime.now_local ());
-        top_list_box.model.add (t);
-        top_list_box.show ();
-        this.reply_indicator.replies_available = true;
+        if (reply_id == this.tweet_id) {
+          var t = new Cb.Tweet ();
+          t.load_from_json (root, account.id, new GLib.DateTime.now_local ());
+          top_list_box.model.add (t);
+          top_list_box.show ();
+          this.reply_indicator.replies_available = true;
+        }
+      }
+    } else if (type == StreamMessageType.DELETE) {
+      int64 tweet_id = root.get_object ().get_object_member ("delete")
+                                         .get_object_member ("status")
+                                           .get_int_member ("id");
+      if (tweet_id == this.tweet_id) {
+        debug ("Current tweet with id %s deleted!", tweet_id.to_string ());
+        this.main_window.main_widget.remove_current_page ();
       }
     }
   }
