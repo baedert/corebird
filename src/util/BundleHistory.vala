@@ -15,8 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-
 public class BundleHistory {
   private int[] elements;
   private Bundle[] bundles;
@@ -93,6 +91,20 @@ public class BundleHistory {
       return true;
 
     return false;
+  }
+
+  /* Calling this alone won't go one step back! */
+  public void remove_current () {
+    elements[pos] = -1;
+    bundles[pos]  = null;
+    /* Now fill an eventual gap by moving everything one positino back */
+    if (pos + 1 < elements.length - 1 &&
+        elements[pos + 1] != -1) {
+      for (int i = pos + 1; i < elements.length; i ++) {
+        elements[i - 1] = elements[i];
+        bundles[i - 1]  = bundles[i];
+      }
+    }
   }
 
   public string to_string () {
