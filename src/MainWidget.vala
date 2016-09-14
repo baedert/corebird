@@ -176,6 +176,11 @@ public class MainWidget : Gtk.Box {
     ((MainWindow)this.parent).back_button.sensitive = !history.at_start ();
   }
 
+  public void remove_current_page () {
+    this.history.remove_current ();
+    this.switch_page (Page.PREVIOUS);
+  }
+
   public IPage get_page (int page_id) {
     return pages[page_id];
   }
