@@ -85,7 +85,7 @@ load_animation (GInputStream *input_stream,
   else
     media->animation = NULL;
 
-  g_object_get (frame, "has-alpha", &has_alpha, NULL);
+  has_alpha = gdk_pixbuf_get_has_alpha (frame);
 
   surface = cairo_image_surface_create (has_alpha ? CAIRO_FORMAT_ARGB32 : CAIRO_FORMAT_RGB24,
                                         gdk_pixbuf_get_width (frame),
