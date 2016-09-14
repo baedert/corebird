@@ -313,6 +313,13 @@ cb_media_downloader_load_threaded (CbMediaDownloader *downloader,
 
 
   msg = soup_message_new ("GET", media->thumb_url ? media->thumb_url : media->url);
+  if (msg == NULL)
+    {
+      mark_invalid (media);
+      g_warning ("soup_message_new failed for URI '%s'",
+                 media->thumb_url ? media->thumb_url : media->url);
+      return;
+    }
   g_signal_connect (msg, "got-chunk", G_CALLBACK (update_media_progress), media);
   soup_session_send_message (downloader->soup_session, msg);
 
