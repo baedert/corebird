@@ -23,7 +23,8 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
   private const GLib.ActionEntry[] action_entries = {
     {"quote",    quote_activated   },
     {"reply",    reply_activated   },
-    {"favorite", favorite_activated}
+    {"favorite", favorite_activated},
+    {"delete",   delete_activated  }
   };
 
   public int unread_count { get {return 0;} }
@@ -526,6 +527,17 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     });
   }
 
+  private void delete_activated () {
+    if (this.tweet == null ||
+        this.tweet.get_user_id () != account.id) {
+      return;
+    }
+
+    this.main_window.main_widget.remove_current_page ();
+    TweetUtils.delete_tweet.begin (account, tweet, () => {
+    });
+  }
+
   public string get_title () {
     return _("Tweet Details");
   }
@@ -577,7 +589,9 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
       int64 tweet_id = root.get_object ().get_object_member ("delete")
                                          .get_object_member ("status")
                                            .get_int_member ("id");
-      if (tweet_id == this.tweet_id) {
+      if (tweet_id == this.tweet_id && main_window.cur_page_id == this.id) {
+        /* TODO: We should probably remove this page with this bundle form the
+                 history, even if it's not the currently visible page */
         debug ("Current tweet with id %s deleted!", tweet_id.to_string ());
         this.main_window.main_widget.remove_current_page ();
       }

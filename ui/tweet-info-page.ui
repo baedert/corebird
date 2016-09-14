@@ -6,6 +6,10 @@
         <attribute name="label" translatable="yes">Quote</attribute>
         <attribute name="action">tweet.quote</attribute>
       </item>
+      <item>
+        <attribute name="label" translatable="yes">Delete</attribute>
+        <attribute name="action">tweet.delete</attribute>
+      </item>
     </section>
   </menu>
   <template class="TweetInfoPage" parent="ScrollWidget">
