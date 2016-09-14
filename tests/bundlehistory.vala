@@ -65,11 +65,81 @@ void equals () {
   assert (!bundle3.equals (bundle1));
 }
 
+void remove_current () {
+  var history = new BundleHistory (5);
+
+  var bundle1 = new Bundle ();
+  bundle1.put_string ("a", "a");
+  bundle1.put_string ("b", "b");
+  history.push (1, bundle1);
+
+  var bundle2 = new Bundle ();
+  bundle2.put_string ("c", "c");
+  bundle2.put_string ("d", "d");
+  history.push (2, bundle2);
+
+  // push advances
+  assert (history.at_end());
+  assert (history.current_bundle == bundle2);
+  assert (history.current == 2);
+
+
+  // remove_current deletes the current bundle but doesn't
+  // to back
+  history.remove_current ();
+  assert (history.current_bundle == null);
+  assert (history.current == -1);
+
+  // This should bring us to bundle1
+  history.back ();
+  assert (history.current_bundle == bundle1);
+  assert (history.current == 1);
+
+
+  history.remove_current ();
+  assert (history.current_bundle == null);
+  assert (history.current == -1);
+
+  history.back ();
+  assert (history.at_start ());
+
+  // Shouldn't do anything significant even if at_start() == true
+  history.remove_current ();
+  history.remove_current ();
+
+
+  // Empty!
+  assert (history.at_end ());
+  assert (history.at_start ());
+
+  var bundle3 = new Bundle ();
+  bundle3.put_string ("_", "_");
+  var bundle4 = new Bundle ();
+  bundle4.put_string ("_)", "__");
+  var bundle5 = new Bundle ();
+  bundle5.put_string ("___", "___");
+
+  history.push (3, bundle3);
+  history.push (4, bundle4);
+  history.push (5, bundle5);
+
+  assert (history.current == 5);
+  history.back ();
+  assert (history.current == 4);
+
+  history.remove_current ();
+  assert (history.current == 5); // everything after 4 was moved one to the front
+  assert (history.current_bundle == bundle5);
+  assert (history.at_end ());
+
+}
 
 int main (string[] args) {
   GLib.Test.init (ref args);
   GLib.Test.add_func ("/bundlehistory/all", all);
   GLib.Test.add_func ("/bundlehistory/end", end);
   GLib.Test.add_func ("/bundlehistory/equals", equals);
+  GLib.Test.add_func ("/bundlehistory/remove-current", remove_current);
+
   return GLib.Test.run ();
 }
