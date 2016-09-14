@@ -581,6 +581,27 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
         debug ("Current tweet with id %s deleted!", tweet_id.to_string ());
         this.main_window.main_widget.remove_current_page ();
       }
+    } else if (type == StreamMessageType.EVENT_FAVORITE) {
+      int64 id = root.get_object ().get_object_member ("target_object").get_int_member ("id");
+      int64 source_id = root.get_object ().get_object_member ("source").get_int_member ("id");
+      if (source_id == account.id && id == this.tweet_id) {
+        this.values_set = false;
+        this.favorite_button.active = true;
+        this.tweet.favorite_count ++;
+        this.update_rt_fav_labels ();
+        this.values_set = true;
+      }
+
+    } else if (type == StreamMessageType.EVENT_UNFAVORITE) {
+      int64 id = root.get_object ().get_object_member ("target_object").get_int_member ("id");
+      int64 source_id = root.get_object ().get_object_member ("source").get_int_member ("id");
+      if (source_id == account.id && id == this.tweet_id) {
+        this.values_set = false;
+        this.favorite_button.active = false;
+        this.tweet.favorite_count --;
+        this.update_rt_fav_labels ();
+        this.values_set = true;
+      }
     }
   }
 }
