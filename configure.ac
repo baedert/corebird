@@ -43,6 +43,7 @@ AM_CONDITIONAL([DISABLE_GST_CHECK], [ test "$disable_gst_check" = "yes"])
 
 
 
+# Vala Packages {{{
 pkg_modules="gtk+-3.0 >= 3.18
              glib-2.0 >= 2.44
              rest-0.7 >= 0.7.93
@@ -65,13 +66,7 @@ CB_VALA_FLAGS=" \
   --pkg libsoup-2.4 \
   --pkg glib-2.0 \
   --target-glib=2.38"
-
-# Check for gtk+ again, this time only if the version is >= 3.22
-# This theoretically also depends on some vala version but one
-# can really only use those in lockstep anyay.
-AC_CHECK_LIB([gtk-3], [gtk_popover_popup],
-             [CB_VALA_FLAGS="$CB_VALA_FLAGS -D GTK322"],
-             )
+# }}}
 
 AC_SUBST(CB_CFLAGS)
 AC_SUBST(CB_LIBS)
@@ -147,11 +142,10 @@ VALAC_VERSION=$($VALAC --version)
 echo "
              Corebird  $VERSION
                Prefix: ${prefix}
-        Vala Compiler: ${VALAC} ${CB_VALA_FLAGS}
+        Vala Compiler: ${VALAC}
         valac version: ${VALAC_VERSION}
            C Compiler: ${CC} ${CFLAGS}
             Debugging: $enable_debug
        Video disabled: $disable_video
    Gst check disabled: $disable_gst_check
-   Gst check disabled: ${GTK_VERSION}
 "

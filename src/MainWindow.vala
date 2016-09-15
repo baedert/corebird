@@ -82,13 +82,7 @@ public class MainWindow : Gtk.ApplicationWindow {
           continue;
       var e = new UserListEntry.from_account (acc);
       e.show_settings = true;
-      e.action_clicked.connect (() => {
-#if GTK322
-        account_popover.popdown ();
-#else
-        account_popover.hide ();
-#endif
-      });
+      e.action_clicked.connect (() => { account_popover.hide ();});
       account_list.add (e);
     }
 
@@ -101,13 +95,7 @@ public class MainWindow : Gtk.ApplicationWindow {
 
       var ule = new UserListEntry.from_account (new_acc);
       ule.show_settings = true;
-      ule.action_clicked.connect (() => {
-#if GTK322
-        account_popover.popdown ();
-#else
-        account_popover.hide ();
-#endif
-      });
+      ule.action_clicked.connect (() => { account_popover.hide ();});
       account_list.add (ule);
       ule.show ();
     });
@@ -223,11 +211,7 @@ public class MainWindow : Gtk.ApplicationWindow {
   [GtkCallback]
   private void account_row_activated_cb (Gtk.ListBoxRow row) {
     if (row is AddListEntry) {
-#if GTK322
-      account_popover.popdown ();
-#else
       account_popover.hide ();
-#endif
       Account dummy_acc = new Account (0, Account.DUMMY, "name");
       var window = new MainWindow (application, dummy_acc);
       get_application ().add_window (window);
@@ -240,22 +224,14 @@ public class MainWindow : Gtk.ApplicationWindow {
 
     if (user_id == this.account.id ||
         cb.is_window_open_for_user_id (user_id)) {
-#if GTK322
-      account_popover.popdown ();
-#else
       account_popover.hide ();
-#endif
       return;
     }
 
     Account? acc = Account.query_account_by_id (user_id);
     if (acc != null) {
       change_account (acc);
-#if GTK322
-      account_popover.popdown ();
-#else
       account_popover.hide ();
-#endif
     } else
       warning ("account == null");
   }
@@ -335,13 +311,8 @@ public class MainWindow : Gtk.ApplicationWindow {
 
   /* for show-account-list GAction */
   private void show_account_list () {
-    if (this.account != null && this.account.screen_name != Account.DUMMY) {
-#if GTK322
-      this.account_popover.popup ();
-#else
+    if (this.account != null && this.account.screen_name != Account.DUMMY)
       this.account_popover.show ();
-#endif
-    }
   }
 
   public IPage get_page (int page_id) {
@@ -350,20 +321,13 @@ public class MainWindow : Gtk.ApplicationWindow {
 
   [GtkCallback]
   private void account_button_clicked_cb () {
-#if GTK322
-    if (account_popover.visible) {
-      account_popover.popdown ();
-    } else {
-      account_popover.popup ();
-    }
-#else
     account_popover.visible = !account_popover.visible;
-#endif
   }
 
   [GtkCallback]
   private void account_popover_closed_cb () {
     account_button.active = false;
+    account_popover.hide ();
   }
 
   [GtkCallback]
