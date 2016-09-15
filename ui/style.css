@@ -228,6 +228,7 @@
   box-shadow: none;
 }
 
-.avatar:insensitive {
+.avatar:insensitive,
+.inline-media:insensitive {
   opacity: 0.4;
 }
