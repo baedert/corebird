@@ -469,6 +469,8 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
       mm_widget.hide ();
     }
 
+    ((GLib.SimpleAction)actions.lookup_action ("delete")).set_enabled (tweet.get_user_id () == account.id);
+
     if (tweet.is_flag_set (Cb.TweetState.PROTECTED)) {
       retweet_button.hide ();
       ((GLib.SimpleAction)actions.lookup_action ("quote")).set_enabled (false);
