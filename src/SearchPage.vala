@@ -280,6 +280,7 @@ class SearchPage : IPage, Gtk.Box {
     call.set_function ("1.1/search/tweets.json");
     call.set_method ("GET");
     call.add_param ("q", this.search_query);
+    call.add_param ("tweet_mode", "extended");
     call.add_param ("max_id", (lowest_tweet_id - 1).to_string ());
     call.add_param ("count", "35");
     TweetUtils.load_threaded.begin (call, cancellable, (_, res) => {
