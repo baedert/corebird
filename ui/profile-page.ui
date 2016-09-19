@@ -31,7 +31,7 @@
     </section>
   </menu>
   <template class="ProfilePage" parent="ScrollWidget">
-    <property name="can-focus">True</property>
+    <property name="can-focus">0</property>
     <child>
       <object class="GtkBox">
         <property name="visible">1</property>
