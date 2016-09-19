@@ -376,6 +376,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     call.add_param ("user_id", this.user_id.to_string ());
     call.add_param ("count", requested_tweet_count.to_string ());
     call.add_param ("contributor_details", "true");
+    call.add_param ("tweet_mode", "extended");
     call.add_param ("include_my_retweet", "true");
 
 
