@@ -292,6 +292,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     call.set_function ("1.1/statuses/show.json");
     call.add_param ("id", tweet_id.to_string ());
     call.add_param ("include_my_retweet", "true");
+    call.add_param ("tweet_mode", "extended");
     TweetUtils.load_threaded.begin (call, cancellable, (__, res) => {
       Json.Node? root = null;
 
@@ -335,6 +336,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     reply_call.add_param ("q", "to:" + this.screen_name);
     reply_call.add_param ("since_id", tweet_id.to_string ());
     reply_call.add_param ("count", "200");
+    reply_call.add_param ("tweet_mode", "extended");
     TweetUtils.load_threaded.begin (reply_call, cancellable, (_, res) => {
       Json.Node? root = null;
 
@@ -404,6 +406,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     call.set_function ("1.1/statuses/show.json");
     call.set_method ("GET");
     call.add_param ("id", reply_id.to_string ());
+    call.add_param ("tweet_mode", "extended");
     call.invoke_async.begin (cancellable, (obj, res) => {
       try {
         call.invoke_async.end (res);
