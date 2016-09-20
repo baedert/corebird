@@ -69,39 +69,32 @@ public class UserCounter : GLib.Object {
     }
   }
 
-  public UserInfo[] query_by_prefix (string prefix, int max_results, out int num_results) {
-    int n_results = 0;
-    string p = prefix.down ();
+  public UserInfo[] query_by_prefix (Sql.Database db, string prefix, int max_results, out int num_results) {
     UserInfo[] results = new UserInfo[max_results];
-    for (int i = 0; i < names.length; i ++) {
-      var ui = names.get (i);
-      if (n_results >= max_results)
-        break;
+    int n_results = 0;
 
-      if (ui.name.down ().has_prefix (p) || ui.screen_name.down ().has_prefix (p)) {
-        results[n_results] = ui;
-        n_results ++;
-      }
-    }
-    num_results = n_results;
-    return results;
-  }
-
-  public void load (Sql.Database db) {
     db.select ("user_cache")
       .cols ("id", "screen_name", "user_name", "score")
+      .where_prefix ("screen_name", prefix)
+      .or ()
+      .where_prefix2 ("user_name", prefix)
       .order ("score DESC")
-      .limit (300)
+      .limit (max_results)
+      .nocase()
       .run ((vals) => {
-      UserInfo ui = new UserInfo ();
-      ui.id = int64.parse (vals[0]);
-      ui.screen_name = vals[1];
-      ui.name = vals[2];
-      ui.changed = false;
-      ui.score = int.parse (vals[3]);
-      names.add (ui);
+
+      results[n_results] = new UserInfo();
+      results[n_results].id = int64.parse(vals[0]);
+      results[n_results].screen_name = vals[1];
+      results[n_results].name = vals[2];
+
+      n_results ++;
       return true;
     });
+
+    num_results = n_results;
+
+    return results;
   }
 
   /**

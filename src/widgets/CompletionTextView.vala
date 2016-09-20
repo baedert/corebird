@@ -239,7 +239,7 @@ class CompletionTextView : Gtk.TextView {
     cur_word = cur_word.substring (1);
 
     int corpus_size = 0;
-    var corpus = account.user_counter.query_by_prefix (cur_word, 10, out corpus_size);
+    var corpus = account.user_counter.query_by_prefix (account.db, cur_word, 10, out corpus_size);
 
     for (int i = 0; i < corpus_size; i++) {
       var l = new Gtk.Label ("@" + corpus[i].screen_name);

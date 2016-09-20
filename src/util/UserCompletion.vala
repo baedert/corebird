@@ -41,7 +41,7 @@ class UserCompletion : GLib.Object {
       name = name.substring (1);
     start_completion ();
     int n_results;
-    UserInfo[] names = account.user_counter.query_by_prefix (name, 10, out n_results);
+    UserInfo[] names = account.user_counter.query_by_prefix (account.db, name, 10, out n_results);
 
 
     for (int i = 0; i < n_results; i++)

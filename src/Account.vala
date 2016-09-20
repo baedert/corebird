@@ -62,7 +62,6 @@ public class Account : GLib.Object {
                                 Sql.ACCOUNTS_INIT_FILE,
                                 Sql.ACCOUNTS_SQL_VERSION);
     user_counter = new UserCounter ();
-    user_counter.load (db);
     this.load_filters ();
   }
 
