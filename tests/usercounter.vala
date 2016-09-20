@@ -4,7 +4,6 @@ void count () {
                              Sql.ACCOUNTS_INIT_FILE,
                              Sql.ACCOUNTS_SQL_VERSION);
   var counter = new UserCounter ();
-  counter.load (db);
   counter.user_seen (0, "baedert", "blabla");
   int changed = counter.save (db);
   message ("Single change: %d", changed);
