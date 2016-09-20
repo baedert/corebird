@@ -293,7 +293,11 @@ cb_mini_tweet_parse (CbMiniTweet *t,
   time = parse_created_at (json_object_get_string_member (obj, "created_at"));
 
   t->id = json_object_get_int_member (obj, "id");
-  t->text = g_strdup (json_object_get_string_member (extended_object, "full_text"));
+  if (json_object_has_member (extended_object, "full_text"))
+    t->text = g_strdup (json_object_get_string_member (extended_object, "full_text"));
+  else
+    t->text = g_strdup (json_object_get_string_member (extended_object, "text"));
+
   t->created_at = g_date_time_to_unix (time);
   cb_user_identity_parse (&t->author, json_object_get_object_member (obj, "user"));
 
