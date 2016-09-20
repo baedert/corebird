@@ -106,6 +106,8 @@ public class UserCounter : GLib.Object {
     if (!changed)
       return 0;
 
+    var b = Benchmark.start ("save");
+
     int saved = 0;
     db.begin_transaction ();
     for (int i = 0; i < names.length; i ++) {
@@ -122,6 +124,8 @@ public class UserCounter : GLib.Object {
     }
     db.end_transaction ();
     changed = false;
+
+    b.stop ();
     return saved;
   }
 
