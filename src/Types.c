@@ -282,10 +282,18 @@ void
 cb_mini_tweet_parse (CbMiniTweet *t,
                      JsonObject  *obj)
 {
-  GDateTime *time = parse_created_at (json_object_get_string_member (obj, "created_at"));
+  GDateTime *time;
+  JsonObject *extended_object;
+
+  if (json_object_has_member (obj, "extended_tweet"))
+    extended_object = json_object_get_object_member (obj, "extended_tweet");
+  else
+    extended_object = obj;
+
+  time = parse_created_at (json_object_get_string_member (obj, "created_at"));
 
   t->id = json_object_get_int_member (obj, "id");
-  t->text = g_strdup (json_object_get_string_member (obj, "full_text"));
+  t->text = g_strdup (json_object_get_string_member (extended_object, "full_text"));
   t->created_at = g_date_time_to_unix (time);
   cb_user_identity_parse (&t->author, json_object_get_object_member (obj, "user"));
 
@@ -306,16 +314,27 @@ void
 cb_mini_tweet_parse_entities (CbMiniTweet *t,
                               JsonObject  *status)
 {
-  JsonObject *entities     = json_object_get_object_member (status, "entities");
-  JsonArray *urls          = json_object_get_array_member (entities, "urls");
-  JsonArray *hashtags      = json_object_get_array_member (entities, "hashtags");
-  JsonArray *user_mentions = json_object_get_array_member (entities, "user_mentions");
+  JsonObject *extended_obj = status;
+  JsonObject *entities;
+  JsonArray *urls;
+  JsonArray *hashtags;
+  JsonArray *user_mentions;
   JsonArray *media_arrays[2];
-  int media_count = json_object_get_member_size (entities, "media");
+  int media_count;
   guint i, p;
   int url_index = 0;
   guint n_media_arrays = 0;
   int max_entities;
+
+  if (json_object_has_member (status, "extended_tweet"))
+    extended_obj = json_object_get_object_member (status, "extended_tweet");
+
+  entities      = json_object_get_object_member (extended_obj, "entities");
+  urls          = json_object_get_array_member (entities, "urls");
+  hashtags      = json_object_get_array_member (entities, "hashtags");
+  user_mentions = json_object_get_array_member (entities, "user_mentions");
+  media_count   = json_object_get_member_size (entities, "media");
+
 
   if (json_object_has_member (status, "extended_entities"))
     media_count +=  json_object_get_member_size (json_object_get_object_member (status, "extended_entities"),
