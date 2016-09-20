@@ -39,6 +39,31 @@ namespace Sql {
       return this;
     }
 
+    public SelectStatement where_prefix (string field, string prefix) {
+      query_builder.append (" WHERE `").append (field).append ("` LIKE '")
+                   .append (prefix).append ("%'");
+
+      return this;
+    }
+
+    public SelectStatement where_prefix2 (string field, string prefix) {
+      query_builder.append ("`").append (field).append ("` LIKE '")
+                   .append (prefix).append ("%'");
+
+      return this;
+    }
+
+    public SelectStatement or () {
+      query_builder.append (" OR ");
+
+      return this;
+    }
+
+    public SelectStatement nocase () {
+      query_builder.append (" COLLATE NOCASE");
+      return this;
+    }
+
     public SelectStatement where_eqi (string w, int64 v) {
       query_builder.append (" WHERE `").append (w).append ("`='").append (v.to_string ()).append ("'");
       return this;
