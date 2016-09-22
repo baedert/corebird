@@ -164,10 +164,6 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
     int length = TweetUtils.calc_tweet_length (text, media_count);
 
-    if (this.mode == Mode.QUOTE)
-      length += 1 + Twitter.short_url_length_https; //Quoting will add a space and then the tweet's URL
-
-
     length_label.label = (Cb.Tweet.MAX_LENGTH - length).to_string ();
     if (length > 0 && length <= Cb.Tweet.MAX_LENGTH)
       send_button.sensitive = true;
