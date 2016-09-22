@@ -24,24 +24,6 @@ void https_link () {
   assert (l == Twitter.short_url_length_https);
 }
 
-
-void media () {
-  string text = "";
-  int l = TweetUtils.calc_tweet_length (text, 1);
-  message ("media length: %d", l);
-  assert (l == Twitter.characters_reserved_per_media);
-}
-
-
-void media_text () {
-  string text = "0123456789 012345678";
-  int l = TweetUtils.calc_tweet_length (text, 1);
-  message ("media length: %d", l);
-  assert (l == Twitter.characters_reserved_per_media + 20);
-}
-
-
-
 void tld1 () {
   string text = "google.com";
   int l = TweetUtils.calc_tweet_length (text);
@@ -128,8 +110,6 @@ int main (string[] args) {
   GLib.Test.add_func ("/tweet-length/empty", empty);
   GLib.Test.add_func ("/tweet-length/http-link", http_link);
   GLib.Test.add_func ("/tweet-length/https-link", https_link);
-  GLib.Test.add_func ("/tweet-length/media", media);
-  GLib.Test.add_func ("/tweet-length/media-text", media_text);
   GLib.Test.add_func ("/tweet-length/tld1", tld1);
   GLib.Test.add_func ("/tweet-length/real-text1", real_text1);
   GLib.Test.add_func ("/tweet-length/newline-link", newline_link);
