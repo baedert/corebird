@@ -157,7 +157,6 @@ namespace TweetUtils {
 
   /**
    * Calculates the length of a tweet.
-   * See https://dev.twitter.com/docs/faq#5810 for details
    *
    * @param text The text to calculate the length for
    *
