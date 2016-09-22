@@ -198,12 +198,6 @@ namespace TweetUtils {
       cur = next;
     }
 
-    if (length < 0) {
-      return Twitter.characters_reserved_per_media * media_count;
-    }
-
-    length += Twitter.characters_reserved_per_media * media_count;
-
     return length;
   }
 
