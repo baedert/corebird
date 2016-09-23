@@ -49,6 +49,8 @@ class TextButton : Gtk.Button {
     label.set_use_markup (true);
     label.set_justify (Gtk.Justification.CENTER);
     label.valign = Gtk.Align.BASELINE;
+    label.ellipsize = Pango.EllipsizeMode.END;
+      label.xalign = 0;
 
     label.visible = true;
     if(label.parent == null)
