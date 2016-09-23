@@ -188,6 +188,9 @@ class CompletionTextView : Gtk.TextView {
     this.buffer.get_end_iter (out end_iter);
     this.buffer.remove_all_tags (start_iter, end_iter);
     TweetUtils.annotate_text (this.buffer);
+
+    if (buffer.text.length == 0)
+      completion_window.hide ();
   }
 
   private void show_completion_window () {
