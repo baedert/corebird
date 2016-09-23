@@ -159,11 +159,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     tweet_text.buffer.get_bounds (out start, out end);
     string text = tweet_text.buffer.get_text (start, end, true);
 
-    int media_count = 0;
-    if (compose_image_manager.n_images > 0)
-      media_count = 1;
-
-    int length = TweetUtils.calc_tweet_length (text, media_count);
+    int length = TweetUtils.calc_tweet_length (text);
 
     length_label.label = (Cb.Tweet.MAX_LENGTH - length).to_string ();
     if (length > 0 && length <= Cb.Tweet.MAX_LENGTH)
