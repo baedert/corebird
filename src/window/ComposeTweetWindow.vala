@@ -66,14 +66,8 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       avatar_image.surface = acc.avatar;
     });
 
-    if (mode != Mode.QUOTE)
-      length_label.label = Cb.Tweet.MAX_LENGTH.to_string ();
-    else
-      length_label.label = (Cb.Tweet.MAX_LENGTH - Twitter.short_url_length_https).to_string ();
-
-
+    length_label.label = Cb.Tweet.MAX_LENGTH.to_string ();
     tweet_text.buffer.changed.connect (recalc_tweet_length);
-
 
     if (parent != null) {
       this.set_transient_for (parent);
