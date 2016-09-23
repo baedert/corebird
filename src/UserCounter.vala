@@ -70,8 +70,11 @@ public class UserCounter : GLib.Object {
   }
 
   public UserInfo[] query_by_prefix (Sql.Database db, string prefix, int max_results, out int num_results) {
-    UserInfo[] results = new UserInfo[max_results];
+    var b = Benchmark.start ("query_by_prefix(%s)".printf (prefix));
+    GLib.GenericArray<UserInfo> infos = new GLib.GenericArray<UserInfo> ();
     int n_results = 0;
+    int highscore = 0;
+    int lowscore  = int.MAX;
 
     db.select ("user_cache")
       .cols ("id", "screen_name", "user_name", "score")
@@ -83,17 +86,49 @@ public class UserCounter : GLib.Object {
       .nocase()
       .run ((vals) => {
 
-      results[n_results] = new UserInfo();
-      results[n_results].id = int64.parse(vals[0]);
-      results[n_results].screen_name = vals[1];
-      results[n_results].name = vals[2];
+      int score = int.parse (vals[3]);
+      var ui = new UserInfo ();
+      ui.id = int64.parse(vals[0]);
+      ui.screen_name = vals[1];
+      ui.name = vals[2];
+      ui.score = score;
+
+      infos.add (ui);
+
+      highscore = int.max (highscore, score);
+      lowscore  = int.min (lowscore, score);
 
       n_results ++;
       return true;
     });
+    if (n_results == 0) {
+      lowscore = -1;
+    }
 
-    num_results = n_results;
+    /* So we have all possible results from the DB, now
+       now we just need to mix those with the local ones */
+    for (uint i = 0; i < names.length; i ++) {
+      var ui = this.names.get (i);
+      bool full = infos.length >= max_results;
+      if (full && ui.score < lowscore)
+        continue;
 
+      if (ui.name.down().has_prefix (prefix) ||
+          ui.screen_name.down().has_prefix (prefix)) {
+        infos.add (ui);
+      }
+    }
+
+    // Sort it after score
+    infos.sort ((a,b) => { if (a.score < b.score) return 1; return -1; });
+
+    UserInfo[] results = new UserInfo[int.min (max_results, infos.length)];
+    for (int i = 0; i < results.length; i ++) {
+      results[i] = infos.get (i);
+    }
+    num_results = results.length;
+
+    b.stop ();
     return results;
   }
 
@@ -108,6 +143,7 @@ public class UserCounter : GLib.Object {
 
     var b = Benchmark.start ("save");
 
+    debug ("Saving %d user infos", names.length);
     int saved = 0;
     db.begin_transaction ();
     for (int i = 0; i < names.length; i ++) {
@@ -124,6 +160,7 @@ public class UserCounter : GLib.Object {
     }
     db.end_transaction ();
     changed = false;
+    this.names.remove_range (0, this.names.length);
 
     b.stop ();
     return saved;
