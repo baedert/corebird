@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the corebird package.
 #
 # Translators:
+# Alejandro Moreno <amorenocuquerella@gmail.com>, 2016
 # auroszx <auros.andres@gmail.com>, 2014
 # baedert <mail@baedert.org>, 2016
 # Carlos C Soto <eclipxe13@gmail.com>, 2015
@@ -14,8 +15,8 @@ msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2016-07-31 08:33+0200\n"
-"PO-Revision-Date: 2016-07-30 08:17+0000\n"
-"Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
+"PO-Revision-Date: 2016-09-15 09:26+0000\n"
+"Last-Translator: Alejandro Moreno <amorenocuquerella@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/corebird/corebird/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,7 +27,7 @@ msgstr ""
 #: data/org.baedert.corebird.appdata.xml.in:5
 #: data/org.baedert.corebird.desktop.in:3
 msgid "Corebird"
-msgstr ""
+msgstr "Corebird"
 
 #: data/org.baedert.corebird.appdata.xml.in:6
 #: data/org.baedert.corebird.desktop.in:4
@@ -71,7 +72,7 @@ msgstr ""
 
 #: src/DefaultTimeline.vala:358
 msgid "Could not load tweets"
-msgstr ""
+msgstr "No se pudieron cargar los tweets"
 
 #: src/DMPage.vala:329
 msgid "Direct Conversation"
@@ -100,11 +101,11 @@ msgstr "Favoritos"
 
 #: src/FilterPage.vala:47
 msgid "Add new Filter"
-msgstr ""
+msgstr "Añadir nuevo filtro"
 
 #: src/FilterPage.vala:317 src/FilterPage.vala:323
 msgid "Filters"
-msgstr ""
+msgstr "Filtros"
 
 #: src/HomeTimeline.vala:122
 #, c-format
@@ -145,24 +146,24 @@ msgstr "Lista"
 #: src/list/TweetListEntry.vala:411
 #, c-format
 msgid "Block %s"
-msgstr ""
+msgstr "Bloquear a %s"
 
 #: src/list/TweetListEntry.vala:546
 msgid "This tweet contains images marked as inappropriate"
-msgstr ""
+msgstr "Este tweet contiene imágenes que pueden herir la sensibilidad de algunas personas"
 
 #: src/list/TweetListEntry.vala:553
 msgid "Show anyway"
-msgstr ""
+msgstr "Mostrar de todas formas"
 
 #: src/MainWindow.vala:75
 msgid "Add new Account"
-msgstr ""
+msgstr "Añadir nueva cuenta"
 
 #: src/MentionsTimeline.vala:91 src/UserEventReceiver.vala:111
 #, c-format
 msgid "%s mentioned %s"
-msgstr ""
+msgstr "%s mencionó a %s"
 
 #: src/MentionsTimeline.vala:99 src/MentionsTimeline.vala:103
 msgid "Mentions"
@@ -252,7 +253,7 @@ msgstr "Seleccionar avatar"
 
 #: src/widgets/CompletionTextView.vala:33
 msgid "No users found"
-msgstr ""
+msgstr "No se han encontrado usuarios"
 
 #: src/widgets/FollowButton.vala:45
 msgid "Follow"
@@ -264,7 +265,7 @@ msgstr "Dejar de seguir"
 
 #: src/widgets/MediaButton.vala:42
 msgid "Copy URL"
-msgstr ""
+msgstr "Copiar URL"
 
 #: src/widgets/PixbufButton.vala:52
 msgid "Copy link"
@@ -288,11 +289,11 @@ msgstr "Citar tweet"
 
 #: src/window/FileSelector.vala:39 src/window/FileSelector.vala:85
 msgid "Select Image"
-msgstr ""
+msgstr "Seleccionar imagen"
 
 #: src/window/FileSelector.vala:70
 msgid "Open"
-msgstr ""
+msgstr "Abrir"
 
 #: src/window/FileSelector.vala:77 src/window/UserListDialog.vala:47
 #: ui/account-dialog.ui:21 ui/account-dialog.ui:233 ui/compose-window.ui:41
@@ -307,7 +308,7 @@ msgstr "Cancelar"
 msgid ""
 "Max file size exceeded\n"
 "(3MB)"
-msgstr ""
+msgstr "Tamaño máximo de fichero excedido\n(3MB)"
 
 #: src/window/ImageCropDialog.vala:58 ui/image-crop-dialog.ui:61
 msgid "Next"
@@ -444,7 +445,7 @@ msgstr "Enviar"
 
 #: ui/compose-window.ui:134
 msgid "Add Image"
-msgstr ""
+msgstr "Añadir imagen"
 
 #: ui/filter-page.ui:71 ui/search-page.ui:86
 msgid "Users"
@@ -496,7 +497,7 @@ msgstr "Público"
 
 #: ui/list-statuses-page.ui:296
 msgid "Description"
-msgstr ""
+msgstr "Descripción"
 
 #: ui/load-more-entry.ui:11
 msgid "Load more"
@@ -520,7 +521,7 @@ msgstr "Preferencias"
 
 #: ui/menus.ui:10
 msgid "Shortcuts"
-msgstr ""
+msgstr "Atajos"
 
 #: ui/menus.ui:15
 msgid "About"
@@ -600,11 +601,11 @@ msgstr ""
 
 #: ui/settings-dialog.ui:79
 msgid "Always show"
-msgstr ""
+msgstr "Mostrar siempre"
 
 #: ui/settings-dialog.ui:80
 msgid "Always hide"
-msgstr ""
+msgstr "Ocultar siempre"
 
 #: ui/settings-dialog.ui:81
 msgid "Hide in timeline"
@@ -680,7 +681,7 @@ msgstr "Eliminar enlaces"
 
 #: ui/settings-dialog.ui:395
 msgid "Hide inappropriate content"
-msgstr ""
+msgstr "Ocultar contenido que pueda herir la sensibilidad de algunas personas"
 
 #: ui/settings-dialog.ui:442
 msgid "No snippets configured."
@@ -823,7 +824,7 @@ msgstr "Abrir en una nueva ventana"
 
 #: ui/user-list-entry.ui:114
 msgid "Go to profile"
-msgstr ""
+msgstr "Ir al perfil"
 
 #: ui/user-lists-widget.ui:14
 msgid "Created"
