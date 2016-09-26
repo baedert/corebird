@@ -66,16 +66,19 @@ CB_VALA_FLAGS=" \
   --pkg glib-2.0 \
   --target-glib=2.38"
 
-# Check for gtk+ again, this time only if the version is >= 3.22
-# This theoretically also depends on some vala version but one
-# can really only use those in lockstep anyay.
-AC_CHECK_LIB([gtk-3], [gtk_popover_popup],
-             [CB_VALA_FLAGS="$CB_VALA_FLAGS -D GTK322"],
-             )
 
 AC_SUBST(CB_CFLAGS)
 AC_SUBST(CB_LIBS)
 AC_SUBST(CB_VALA_FLAGS)
+
+
+# Check for valac >= 0.34, which binds gtk_popover_popup
+# as well as if that function exists in gtk+
+AM_PROG_VALAC([0.34.0], [
+AC_CHECK_LIB([gtk-3], [gtk_popover_popup],
+             [CB_VALA_FLAGS="$CB_VALA_FLAGS -D GTK322"],
+            )
+])
 
 
 AC_ARG_VAR([GLIB_COMPILE_RESOURCES],[the glib-compile-resources program])
