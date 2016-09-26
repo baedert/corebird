@@ -19,6 +19,7 @@ class CompletionTextView : Gtk.TextView {
   private Gtk.ListBox completion_list;
   private Gtk.Window completion_window;
   private int current_match = 0;
+  private string? current_word = null;
 
 
   private unowned Account account;
@@ -170,10 +171,10 @@ class CompletionTextView : Gtk.TextView {
       string compl = ((Gtk.Label)(((Gtk.ListBoxRow)row).get_child ())).label;
       insert_completion (compl.substring (1));
       current_match = -1;
-      completion_window.hide ();
+      hide_completion_window ();
       return Gdk.EVENT_STOP;
     } else if (evt.keyval == Gdk.Key.Escape) {
-      completion_window.hide ();
+      hide_completion_window ();
       return Gdk.EVENT_STOP;
     }
 
@@ -194,10 +195,10 @@ class CompletionTextView : Gtk.TextView {
   }
 
   private void show_completion_window () {
-    debug ("show_completion_window");
     if (!this.get_mapped ())
       return;
 
+    debug ("show_completion_window");
     int x, y;
     Gtk.Allocation alloc;
     this.get_allocation (out alloc);
@@ -214,8 +215,13 @@ class CompletionTextView : Gtk.TextView {
     completion_window.show_all ();
   }
 
-  private bool completion_window_focus_out_cb () {
+  private void hide_completion_window () {
     completion_window.hide ();
+    this.current_word = null;
+  }
+
+  private bool completion_window_focus_out_cb () {
+    hide_completion_window ();
     return false;
   }
 
@@ -233,28 +239,34 @@ class CompletionTextView : Gtk.TextView {
                               end_char.isgraph () || end_char == '@';
     if (!cur_word.has_prefix ("@") || !word_has_alpha_end
         || this.buffer.has_selection) {
-      completion_window.hide ();
+      hide_completion_window ();
       return;
     }
-    show_completion_window ();
+
+
 
     // Strip off the @
     cur_word = cur_word.substring (1);
 
-    int corpus_size = 0;
-    var corpus = account.user_counter.query_by_prefix (account.db, cur_word, 10, out corpus_size);
+    if (cur_word != this.current_word) {
+      show_completion_window ();
+      this.current_word = cur_word;
 
-    for (int i = 0; i < corpus_size; i++) {
-      var l = new Gtk.Label ("@" + corpus[i].screen_name);
-      l.halign = Gtk.Align.START;
-      completion_list.add (l);
-    }
-    if (corpus_size > 0) {
-      completion_list.select_row (completion_list.get_row_at_index (0));
-      current_match = 0;
-    }
-    completion_list.show_all ();
+      int corpus_size = 0;
+      var corpus = account.user_counter.query_by_prefix (account.db, cur_word, 10, out corpus_size);
 
+      for (int i = 0; i < corpus_size; i++) {
+        var l = new Gtk.Label ("@" + corpus[i].screen_name);
+        l.halign = Gtk.Align.START;
+        completion_list.add (l);
+      }
+      if (corpus_size > 0) {
+        completion_list.select_row (completion_list.get_row_at_index (0));
+        current_match = 0;
+      }
+      completion_list.show_all ();
+
+    }
   }
 
   private string get_cursor_word (out Gtk.TextIter start_iter,
