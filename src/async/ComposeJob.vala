@@ -123,9 +123,9 @@ class ComposeJob : GLib.Object {
       call.add_param ("in_reply_to_status_id", this.reply_id.to_string ());
     } else if (this.quoted_tweet != null) {
       Cb.MiniTweet mt = quoted_tweet.retweeted_tweet ?? quoted_tweet.source_tweet;
-
-      this.text += " https://twitter.com/%s/status/%s".printf (mt.author.screen_name,
-                                                               mt.id.to_string ());
+      var quoted_url = "https://twitter.com/%s/status/%s".printf (mt.author.screen_name,
+                                                                  mt.id.to_string ());
+      call.add_param ("attachment_url", quoted_url);
     }
 
     call.add_param ("status", this.text);
