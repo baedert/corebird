@@ -381,6 +381,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
     call.set_method ("GET");
     call.add_param ("count", requested_tweet_count.to_string ());
     call.add_param ("include_my_retweet", "true");
+    call.add_param ("tweet_mode", "extended");
     call.add_param ("max_id", (tweet_list.model.lowest_id - 1).to_string ());
 
     Json.Node? root_node = null;

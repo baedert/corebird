@@ -157,6 +157,7 @@ class ListStatusesPage : ScrollWidget, IPage {
     uint requested_tweet_count = 25;
     var call = account.proxy.new_call ();
     call.set_function ("1.1/lists/statuses.json");
+    call.add_param ("tweet_mode", "extended");
     call.set_method ("GET");
     debug ("USING LIST ID %s", list_id.to_string ());
     call.add_param ("list_id", list_id.to_string ());
@@ -195,6 +196,7 @@ class ListStatusesPage : ScrollWidget, IPage {
     uint requested_tweet_count = 25;
     var call = account.proxy.new_call ();
     call.set_function ("1.1/lists/statuses.json");
+    call.add_param ("tweet_mode", "extended");
     call.set_method ("GET");
     call.add_param ("list_id", list_id.to_string ());
     call.add_param ("max_id", (tweet_list.model.lowest_id -1).to_string ());
