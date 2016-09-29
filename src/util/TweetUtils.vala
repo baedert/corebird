@@ -167,6 +167,11 @@ namespace TweetUtils {
   public int calc_tweet_length (string text, int media_count = 0) {
     int length = 0;
 
+    /* trailing & laeding whitespace don't count unless there's other text */
+    if (text.strip ().length == 0) {
+      return 0;
+    }
+
     unichar c;
     int last_word_start = 0;
     int n_chars = text.char_count ();
