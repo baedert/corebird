@@ -424,12 +424,28 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
         {
           JsonObject *url = json_node_get_object (json_array_get_element (medias, i));
           JsonArray  *indices = json_object_get_array_member (url, "indices");
-          /*const char *expanded_url = json_object_get_string_member (url, "expanded_url");*/
+          char *url_str = escape_ampersand (json_object_get_string_member (url, "url"));
+          int k;
+          gboolean duplicate = FALSE;
+
+          /* Check for duplicates */
+          for (k = 0; k < url_index; k ++)
+            {
+              const char *target = t->entities[k].target;
+              if (target != NULL && strcmp (target, url_str) == 0)
+                {
+                  duplicate = TRUE;
+                  break;
+                }
+            }
+
+          if (duplicate)
+            continue;
 
           t->entities[url_index].from = json_array_get_int_element (indices, 0);
           t->entities[url_index].to   = json_array_get_int_element (indices, 1);
           t->entities[url_index].display_text = escape_ampersand (json_object_get_string_member (url, "display_url"));
-          t->entities[url_index].target = escape_ampersand (json_object_get_string_member (url, "url"));
+          t->entities[url_index].target = url_str;
 
           url_index ++;
         }
