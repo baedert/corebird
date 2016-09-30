@@ -199,10 +199,6 @@ cb_tweet_load_from_json (CbTweet   *tweet,
   tweet->favorite_count = (guint) json_object_get_int_member (status, "favorite_count");
 
 
-  if (usable_json_value (status, "possibly_sensitive") &&
-      json_object_get_boolean_member (status, "possibly_sensitive"))
-    tweet->state |= CB_TWEET_STATE_NSFW;
-
   cb_mini_tweet_parse (&tweet->source_tweet, status);
   has_media = json_array_size (json_object_get_object_member (status, "entities"), "media") > 0;
 
@@ -225,6 +221,10 @@ cb_tweet_load_from_json (CbTweet   *tweet,
 
       if (!json_object_get_null_member (rt, "in_reply_to_status_id"))
         tweet->reply_id = json_object_get_int_member (rt, "in_reply_to_status_id");
+
+      if (usable_json_value (rt, "possibly_sensitive") &&
+          json_object_get_boolean_member (rt, "possibly_sensitive"))
+        tweet->state |= CB_TWEET_STATE_NSFW;
     }
   else
     {
@@ -239,6 +239,10 @@ cb_tweet_load_from_json (CbTweet   *tweet,
 
       if (!json_object_get_null_member (status, "in_reply_to_status_id"))
         tweet->reply_id = json_object_get_int_member (status, "in_reply_to_status_id");
+
+      if (usable_json_value (status, "possibly_sensitive") &&
+          json_object_get_boolean_member (status, "possibly_sensitive"))
+        tweet->state |= CB_TWEET_STATE_NSFW;
     }
 
   if (json_object_has_member (status, "quoted_status") && !has_media)
@@ -248,6 +252,12 @@ cb_tweet_load_from_json (CbTweet   *tweet,
       cb_mini_tweet_init (tweet->quoted_tweet);
       cb_mini_tweet_parse (tweet->quoted_tweet, quote);
       cb_mini_tweet_parse_entities (tweet->quoted_tweet, quote);
+
+      if (usable_json_value (quote, "possibly_sensitive") &&
+          json_object_get_boolean_member (quote, "possibly_sensitive"))
+        tweet->state |= CB_TWEET_STATE_NSFW;
+      else
+        tweet->state &= ~CB_TWEET_STATE_NSFW;
     }
   else if (tweet->retweeted_tweet != NULL &&
            json_object_has_member (json_object_get_object_member (status, "retweeted_status"), "quoted_status"))
@@ -258,6 +268,12 @@ cb_tweet_load_from_json (CbTweet   *tweet,
       cb_mini_tweet_init (tweet->quoted_tweet);
       cb_mini_tweet_parse (tweet->quoted_tweet, quote);
       cb_mini_tweet_parse_entities (tweet->quoted_tweet, quote);
+
+      if (usable_json_value (quote, "possibly_sensitive") &&
+          json_object_get_boolean_member (quote, "possibly_sensitive"))
+        tweet->state |= CB_TWEET_STATE_NSFW;
+      else
+        tweet->state &= ~CB_TWEET_STATE_NSFW;
     }
 
   if (json_object_get_boolean_member (status, "favorited"))
