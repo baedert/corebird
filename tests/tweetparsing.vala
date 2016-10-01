@@ -610,7 +610,6 @@ void media_count () {
 
   t.load_from_json (root, 0, now);
   assert (t.get_screen_name () == "corebirdgtk");
-  //message ("Media count: %d", t.medias.length);
   assert (t.get_medias ().length == 2);
 }
 
@@ -620,10 +619,11 @@ int main (string[] args) {
   Gtk.init (ref args);
   Twitter.get ().init ();
   Utils.init_soup_session ();
-  //XXX These are disabled for now since using Tweet.load_from_json will also start a media download
-  //    which might spuriously fail because it's an async operation (which we don't care about here...).
-  //GLib.Test.add_func ("/tweet-parsing/retweet", retweet);
-  //GLib.Test.add_func ("/tweet-parsing/media-count", media_count);
+  // Parsing tweets will otherwise cause media to be downloaded which is an async operation
+  // so it might spuriously make these tests fail. Also, we don't care about media here.
+  Cb.MediaDownloader.get_default ().disable ();
+  GLib.Test.add_func ("/tweet-parsing/retweet", retweet);
+  GLib.Test.add_func ("/tweet-parsing/media-count", media_count);
 
   return GLib.Test.run ();
 }
