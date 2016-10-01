@@ -29,6 +29,7 @@ struct _CbMediaDownloader
 {
   GObject parent_instance;
 
+  guint        disabled : 1;
   SoupSession *soup_session;
 };
 
@@ -54,6 +55,7 @@ gboolean cb_media_downloader_load_finish (CbMediaDownloader  *downloader,
                                           GAsyncResult       *result,
                                           GError            **error);
 
+void cb_media_downloader_disable (CbMediaDownloader *downloader);
 
 gboolean is_media_candidate (const char *url);
 

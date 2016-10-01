@@ -48,6 +48,7 @@ namespace Cb {
   public class MediaDownloader : GLib.Object {
     public static unowned MediaDownloader get_default ();
     public async void load_async (Media media);
+    public void disable ();
   }
 
   [CCode (cprefix = "CbTextEntity", lower_case_cprefix = "cb_text_entity_", cheader_filename = "Types.h",

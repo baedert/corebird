@@ -393,8 +393,19 @@ cb_media_downloader_load_all (CbMediaDownloader  *downloader,
   guint i;
   g_return_if_fail (CB_IS_MEDIA_DOWNLOADER (downloader));
 
+  if (downloader->disabled)
+    return;
+
   for (i = 0; i < t->n_medias; i ++)
     cb_media_downloader_load_async (downloader, t->medias[i], NULL, NULL);
+}
+
+void
+cb_media_downloader_disable (CbMediaDownloader *downloader)
+{
+  g_return_if_fail (CB_IS_MEDIA_DOWNLOADER (downloader));
+
+  downloader->disabled = TRUE;
 }
 
 gboolean
@@ -424,6 +435,7 @@ is_media_candidate (const char *url)
 static void
 cb_media_downloader_init (CbMediaDownloader *downloader)
 {
+  downloader->disabled     = FALSE;
   downloader->soup_session = soup_session_new ();
 }
 
