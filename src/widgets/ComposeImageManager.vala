@@ -62,10 +62,17 @@ class ComposeImageManager : Gtk.Container {
   // GtkContainer API {{{
   public override void forall_internal (bool include_internals, Gtk.Callback cb) {
     assert (buttons.length == close_buttons.length);
-    for (int i = 0; i < this.buttons.length; i ++) {
+
+    for (int i = 0; i < this.close_buttons.length;) {
+      int size_before = this.close_buttons.length;
+      cb (close_buttons.get (i));
+
+      i += this.close_buttons.length - size_before + 1;
+    }
+
+    for (int i = 0; i < this.buttons.length;) {
       int size_before = this.buttons.length;
       cb (buttons.get (i));
-      cb (close_buttons.get (i));
 
       i += this.buttons.length - size_before + 1;
     }
@@ -73,7 +80,6 @@ class ComposeImageManager : Gtk.Container {
 
   public override void add (Gtk.Widget widget) {
     widget.set_parent (this);
-    widget.set_parent_window (this.get_window ());
     this.buttons.add ((AddImageButton)widget);
     var btn = new Gtk.Button.from_icon_name ("window-close-symbolic");
     btn.set_parent (this);
