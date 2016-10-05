@@ -238,13 +238,18 @@ public class MainWindow : Gtk.ApplicationWindow {
     int64 user_id = e.user_id;
     Corebird cb = (Corebird)this.get_application ();
 
+    MainWindow? account_window = null;
     if (user_id == this.account.id ||
-        cb.is_window_open_for_user_id (user_id)) {
+        cb.is_window_open_for_user_id (user_id, out account_window)) {
 #if GTK322
       account_popover.popdown ();
 #else
       account_popover.hide ();
 #endif
+
+      if (account_window != null)
+        account_window.present ();
+
       return;
     }
 
