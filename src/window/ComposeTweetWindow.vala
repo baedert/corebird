@@ -142,6 +142,8 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
       if (this.compose_image_manager.n_images == 0)
         this.compose_image_manager.hide ();
+
+      this.recalc_tweet_length();
     });
 
     this.add_accel_group (ag);
