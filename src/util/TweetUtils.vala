@@ -168,9 +168,12 @@ namespace TweetUtils {
   public int calc_tweet_length (string text, bool add_url = false) {
     int length = 0;
 
+    if (add_url)
+      length += 1 + Twitter.short_url_length_https;
+
     /* trailing & laeding whitespace don't count unless there's other text */
     if (text.strip ().length == 0) {
-      return 0;
+      return length;
     }
 
     unichar c;
@@ -203,9 +206,6 @@ namespace TweetUtils {
       }
       cur = next;
     }
-
-    if (add_url)
-      length += 1 + Twitter.short_url_length_https;
 
     return length;
   }
