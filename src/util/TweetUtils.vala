@@ -160,11 +160,12 @@ namespace TweetUtils {
    * Calculates the length of a tweet.
    *
    * @param text The text to calculate the length for
+   * @param add_url Whether to add a Twitter URL to the calculation
    *
    * @return The length of the tweet, taking Twitter's rules for
    *         tweet length into account.
    */
-  public int calc_tweet_length (string text, int media_count = 0) {
+  public int calc_tweet_length (string text, bool add_url = false) {
     int length = 0;
 
     /* trailing & laeding whitespace don't count unless there's other text */
@@ -202,6 +203,9 @@ namespace TweetUtils {
       }
       cur = next;
     }
+
+    if (add_url)
+      length += 1 + Twitter.short_url_length_https;
 
     return length;
   }
