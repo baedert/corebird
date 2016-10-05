@@ -240,18 +240,39 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
   [GtkCallback]
   private void add_image_clicked_cb (Gtk.Button source) {
-    var file_chooser = new FileSelector ();
-    file_chooser.set_transient_for (this);
-    file_chooser.modal = true;
-    file_chooser.file_selected.connect ((path, image) => {
-      this.compose_image_manager.show ();
-      this.compose_image_manager.load_image (path, image);
 
-      if (this.compose_image_manager.n_images == Twitter.max_media_per_upload)
-        this.add_image_button.sensitive = false;
-      file_chooser.close ();
+    var filechooser = new Gtk.FileChooserDialog (_("Select Image"),
+                                                 this,
+                                                 Gtk.FileChooserAction.OPEN,
+                                                 _("Cancel"),
+                                                 Gtk.ResponseType.CANCEL,
+                                                 _("Open"),
+                                                 Gtk.ResponseType.ACCEPT);
+    filechooser.select_multiple = true;
+    filechooser.modal = true;
+
+    filechooser.response.connect ((id) => {
+      if (id == Gtk.ResponseType.ACCEPT) {
+        var path = filechooser.get_filename ();
+        this.compose_image_manager.show ();
+        this.compose_image_manager.load_image (path, null);
+      }
+      filechooser.destroy ();
     });
 
-    file_chooser.show_all ();
+    filechooser.file_activated.connect (() => {
+      var path = filechooser.get_filename ();
+      this.compose_image_manager.show ();
+      this.compose_image_manager.load_image (path, null);
+      filechooser.destroy ();
+    });
+
+    var filter = new Gtk.FileFilter ();
+    filter.add_mime_type ("image/png");
+    filter.add_mime_type ("image/jpeg");
+    filter.add_mime_type ("image/gif");
+    filechooser.set_filter (filter);
+
+    filechooser.show_all ();
   }
 }
