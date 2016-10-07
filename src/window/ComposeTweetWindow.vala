@@ -238,6 +238,15 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     tweet_text.buffer.text = text;
   }
 
+  private void filechooser_accept (Gtk.FileChooser fc) {
+    debug ("filechoser_accept");
+    var filenames = fc.get_filenames ();
+    for (uint i = 0; i < uint.min (4, filenames.length()); i ++) {
+      this.compose_image_manager.show ();
+      this.compose_image_manager.load_image (filenames.nth_data (i), null);
+    }
+  }
+
   [GtkCallback]
   private void add_image_clicked_cb (Gtk.Button source) {
 
@@ -253,17 +262,8 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
     filechooser.response.connect ((id) => {
       if (id == Gtk.ResponseType.ACCEPT) {
-        var path = filechooser.get_filename ();
-        this.compose_image_manager.show ();
-        this.compose_image_manager.load_image (path, null);
+        filechooser_accept (filechooser);
       }
-      filechooser.destroy ();
-    });
-
-    filechooser.file_activated.connect (() => {
-      var path = filechooser.get_filename ();
-      this.compose_image_manager.show ();
-      this.compose_image_manager.load_image (path, null);
       filechooser.destroy ();
     });
 
