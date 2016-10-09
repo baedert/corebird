@@ -115,6 +115,13 @@ class SearchPage : IPage, Gtk.Box {
     search_for (term, true);
   }
 
+  ~SearchPage () {
+    if (this.remove_content_timeout != 0) {
+      GLib.Source.remove (this.remove_content_timeout);
+      this.remove_content_timeout = 0;
+    }
+  }
+
   public void on_leave () {
     this.remove_content_timeout = GLib.Timeout.add (3 * 1000 * 60, () => {
       tweet_list.remove_all ();
