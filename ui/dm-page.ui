@@ -29,11 +29,15 @@
             <property name="visible">1</property>
             <property name="margin">6</property>
             <child>
-              <object class="CompletionTextView" id="text_view">
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="wrap-mode">word-char</property>
-                <signal name="key_press_event" handler="text_view_key_press_cb"/>
+              <object class="GtkScrolledWindow">
+                <child>
+                  <object class="CompletionTextView" id="text_view">
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="wrap-mode">word-char</property>
+                    <signal name="key_press_event" handler="text_view_key_press_cb"/>
+                  </object>
+                </child>
               </object>
             </child>
           </object>
