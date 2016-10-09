@@ -91,7 +91,7 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
       this.avatar_surface = avatar;
     });
     acc.notify["avatar"].connect (() => {
-      this.avatar_surface = acc.avatar;
+      this.avatar_surface = this.account.avatar;
     });
     var cb = (Corebird) GLib.Application.get_default ();
     cb.window_added.connect ((window) => {

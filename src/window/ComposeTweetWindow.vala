@@ -63,7 +63,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
     avatar_image.surface = acc.avatar;
     acc.notify["avatar"].connect (() => {
-      avatar_image.surface = acc.avatar;
+      avatar_image.surface = account.avatar;
     });
 
     length_label.label = Cb.Tweet.MAX_LENGTH.to_string ();

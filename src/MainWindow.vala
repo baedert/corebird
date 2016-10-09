@@ -173,7 +173,7 @@ public class MainWindow : Gtk.ApplicationWindow {
       this.set_window_title (main_widget.get_page (0).get_title ());
       avatar_image.surface = account.avatar_small;
       account.notify["avatar-small"].connect(() => {
-        avatar_image.surface = account.avatar_small;
+        avatar_image.surface = this.account.avatar_small;
       });
 
       account.info_changed.connect (account_info_changed);
