@@ -30,6 +30,7 @@
             <property name="margin">6</property>
             <child>
               <object class="GtkScrolledWindow">
+                <property name="visible">1</property>
                 <child>
                   <object class="CompletionTextView" id="text_view">
                     <property name="visible">True</property>
