@@ -30,7 +30,7 @@ msgstr ""
 #: data/org.baedert.corebird.appdata.xml.in:5
 #: data/org.baedert.corebird.desktop.in:3
 msgid "Corebird"
-msgstr ""
+msgstr "Corebird"
 
 #: data/org.baedert.corebird.appdata.xml.in:6
 #: data/org.baedert.corebird.desktop.in:4
@@ -59,11 +59,11 @@ msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:25
 msgid "Typical Twitter profile"
-msgstr ""
+msgstr "Типичный профиль Твиттер"
 
 #: data/org.baedert.corebird.appdata.xml.in:29
 msgid "Account settings can be configured"
-msgstr ""
+msgstr "Настройки учетной записи могут быть сконфигурированы"
 
 #: data/org.baedert.corebird.desktop.in:5
 msgid "Use Twitter from within a normal desktop application"
@@ -71,15 +71,15 @@ msgstr ""
 
 #: data/org.baedert.corebird.desktop.in:7
 msgid "twitter;"
-msgstr ""
+msgstr "твиттер"
 
 #: data/org.baedert.corebird.desktop.in:11
 msgid "corebird"
-msgstr ""
+msgstr "corebird"
 
 #: src/DefaultTimeline.vala:358
 msgid "Could not load tweets"
-msgstr ""
+msgstr "Не удалось загрузить твиты"
 
 #: src/DMPage.vala:329
 msgid "Direct Conversation"
@@ -110,11 +110,11 @@ msgstr "Избранные"
 
 #: src/FilterPage.vala:47
 msgid "Add new Filter"
-msgstr ""
+msgstr "Добавить новый фильтр"
 
 #: src/FilterPage.vala:317 src/FilterPage.vala:323
 msgid "Filters"
-msgstr ""
+msgstr "Фильтры"
 
 #: src/HomeTimeline.vala:122
 #, c-format
@@ -163,15 +163,15 @@ msgstr ""
 
 #: src/list/TweetListEntry.vala:546
 msgid "This tweet contains images marked as inappropriate"
-msgstr ""
+msgstr "Этот твит содержит изображения, помеченные как неприемлемое"
 
 #: src/list/TweetListEntry.vala:553
 msgid "Show anyway"
-msgstr ""
+msgstr "Всеравно показывать"
 
 #: src/MainWindow.vala:75
 msgid "Add new Account"
-msgstr ""
+msgstr "Добавить новый аккаунт"
 
 #: src/MentionsTimeline.vala:91 src/UserEventReceiver.vala:111
 #, c-format
@@ -268,7 +268,7 @@ msgstr "Выбрать аватар"
 
 #: src/widgets/CompletionTextView.vala:33
 msgid "No users found"
-msgstr ""
+msgstr "Пользователи не найдены"
 
 #: src/widgets/FollowButton.vala:45
 msgid "Follow"
@@ -280,7 +280,7 @@ msgstr "Не читать"
 
 #: src/widgets/MediaButton.vala:42
 msgid "Copy URL"
-msgstr ""
+msgstr "Скопировать URL"
 
 #: src/widgets/PixbufButton.vala:52
 msgid "Copy link"
@@ -304,11 +304,11 @@ msgstr "Цитировать tweet"
 
 #: src/window/FileSelector.vala:39 src/window/FileSelector.vala:85
 msgid "Select Image"
-msgstr ""
+msgstr "Выберите изображение"
 
 #: src/window/FileSelector.vala:70
 msgid "Open"
-msgstr ""
+msgstr "Открыть"
 
 #: src/window/FileSelector.vala:77 src/window/UserListDialog.vala:47
 #: ui/account-dialog.ui:21 ui/account-dialog.ui:233 ui/compose-window.ui:41
@@ -324,6 +324,8 @@ msgid ""
 "Max file size exceeded\n"
 "(3MB)"
 msgstr ""
+"Максимальный размер файла превышает\n"
+"(3MB)"
 
 #: src/window/ImageCropDialog.vala:58 ui/image-crop-dialog.ui:61
 msgid "Next"
@@ -371,23 +373,23 @@ msgstr "Не совпадает"
 
 #: src/window/ModifySnippetDialog.vala:44
 msgid "Modify Snippet"
-msgstr ""
+msgstr "Изменить сниппет"
 
 #: src/window/ModifySnippetDialog.vala:63
 msgid "Snippet can't be empty"
-msgstr ""
+msgstr "Снипет не может быть пустым"
 
 #: src/window/ModifySnippetDialog.vala:70
 msgid "Replacement can't be empty"
-msgstr ""
+msgstr "Замена не может быть пустым"
 
 #: src/window/ModifySnippetDialog.vala:78
 msgid "Snippet may not contain whitespace"
-msgstr ""
+msgstr "Сниппет не может содержать пробелов"
 
 #: src/window/ModifySnippetDialog.vala:86
 msgid "Snippet already exists"
-msgstr ""
+msgstr "Сниппет уже существует"
 
 #: src/window/SettingsDialog.vala:83
 msgid ""
@@ -516,7 +518,7 @@ msgstr "Открытый"
 
 #: ui/list-statuses-page.ui:296
 msgid "Description"
-msgstr ""
+msgstr "Описание"
 
 #: ui/load-more-entry.ui:11
 msgid "Load more"
@@ -540,7 +542,7 @@ msgstr "Настройки"
 
 #: ui/menus.ui:10
 msgid "Shortcuts"
-msgstr "Шоткаты"
+msgstr "Клавиши быстрого доступа"
 
 #: ui/menus.ui:15
 msgid "About"
@@ -592,7 +594,7 @@ msgstr "Заблокирован"
 
 #: ui/profile-page.ui:24
 msgid "Muted"
-msgstr ""
+msgstr "Отключить уведомлени"
 
 #: ui/profile-page.ui:28
 msgid "Retweets disabled"
@@ -620,11 +622,11 @@ msgstr ""
 
 #: ui/settings-dialog.ui:79
 msgid "Always show"
-msgstr ""
+msgstr "Всегда показываться"
 
 #: ui/settings-dialog.ui:80
 msgid "Always hide"
-msgstr ""
+msgstr "Всегда скрывать"
 
 #: ui/settings-dialog.ui:81
 msgid "Hide in timeline"
@@ -843,7 +845,7 @@ msgstr "Открыть в новом окне"
 
 #: ui/user-list-entry.ui:114
 msgid "Go to profile"
-msgstr ""
+msgstr "Перейти к профилю"
 
 #: ui/user-lists-widget.ui:14
 msgid "Created"
