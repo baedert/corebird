@@ -51,7 +51,6 @@ class UserListDialog : Gtk.Dialog {
 
 
     var content_box = get_content_area ();
-    content_box.border_width = 0;
     var scroller = new Gtk.ScrolledWindow (null, null);
     list_list_box.selection_mode = Gtk.SelectionMode.NONE;
     list_list_box.set_header_func (default_header_func);

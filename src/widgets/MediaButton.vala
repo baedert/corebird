@@ -332,7 +332,6 @@ private class MediaButton : Gtk.Widget {
     attr.width = draw_width;
     attr.height = draw_height;
     attr.window_type = Gdk.WindowType.CHILD;
-    attr.visual = this.get_visual ();
     attr.wclass = Gdk.WindowWindowClass.INPUT_ONLY;
     attr.event_mask = this.get_events () |
                       Gdk.EventMask.BUTTON_PRESS_MASK |

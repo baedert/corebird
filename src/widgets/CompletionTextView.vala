@@ -48,7 +48,7 @@ class CompletionTextView : Gtk.TextView {
     var style_context = this.get_style_context ();
     style_context.save ();
     style_context.set_state (Gtk.StateFlags.LINK);
-    Gdk.RGBA link_color = style_context.get_color (style_context.get_state ());
+    Gdk.RGBA link_color = style_context.get_color ();
     style_context.restore ();
 
     if (link_color.red ==   1.0 &&

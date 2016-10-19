@@ -43,7 +43,7 @@ AM_CONDITIONAL([DISABLE_GST_CHECK], [ test "$disable_gst_check" = "yes"])
 
 
 
-pkg_modules="gtk+-3.0 >= 3.18
+pkg_modules="gtk+-4.0 >= 3.22
              glib-2.0 >= 2.44
              rest-0.7 >= 0.7.93
              libsoup-2.4
@@ -58,7 +58,7 @@ PKG_CHECK_MODULES(CB, [$pkg_modules])
 
 
 CB_VALA_FLAGS=" \
-  --pkg gtk+-3.0 \
+  --pkg gtk+-4.0 \
   --pkg json-glib-1.0 \
   --pkg rest-0.7 \
   --pkg sqlite3 \

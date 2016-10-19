@@ -103,7 +103,6 @@ class MaxSizeContainer : Gtk.Bin {
     attr.width = alloc.width;
     attr.height = alloc.height;
     attr.window_type = Gdk.WindowType.CHILD;
-    attr.visual = this.get_visual ();
     attr.wclass = Gdk.WindowWindowClass.INPUT_OUTPUT;
     attr.event_mask = this.get_events ();
 

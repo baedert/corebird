@@ -11,7 +11,7 @@
 
 .topbar button image,
 .topbar .button GtkImage {
-  icon-shadow: none;
+  -gtk-icon-shadow: none;
   color: #ddd;
 }
 
@@ -222,13 +222,13 @@
 .close-button {
   padding: 3px;
   border-radius: 50%;
-  outline-radius: 50%;
+  -gtk-outline-radius: 50%;
   min-height: 0px;
   min-width: 0px;
   box-shadow: none;
 }
 
-.avatar:insensitive,
-.inline-media:insensitive {
+.avatar:disabled,
+.inline-media:disabled {
   opacity: 0.4;
 }
