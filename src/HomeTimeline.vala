@@ -99,7 +99,7 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
     t.set_seen (t.source_tweet.author.id == account.id ||
                 (t.retweeted_tweet != null && t.retweeted_tweet.author.id == account.id) ||
                 (this.scrolled_up  &&
-                 main_window.cur_page_id == this.id &&
+                 _main_window.cur_page_id == this.id &&
                  auto_scroll));
 
     bool should_focus = (tweet_list.get_first_visible_row ().is_focus && this.scrolled_up);

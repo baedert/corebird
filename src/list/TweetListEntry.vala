@@ -163,7 +163,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       mm_widget.set_all_media (tweet.get_medias ());
       mm_widget.media_clicked.connect (media_clicked_cb);
       mm_widget.media_invalid.connect (media_invalid_cb);
-      mm_widget.window = main_window;
+      mm_widget.parent_window = main_window;
 
       if (text_label.label.length == 0 && tweet.quoted_tweet == null) {
         if (this.media_stack == null)

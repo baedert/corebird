@@ -31,10 +31,10 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
       return this._unread_count;
     }
   }
-  protected unowned MainWindow main_window;
-  public unowned MainWindow window  {
+  protected unowned MainWindow _main_window;
+  public unowned MainWindow main_window  {
     set {
-      main_window = value;
+      _main_window = value;
     }
   }
   public TweetListBox tweet_list = new TweetListBox ();
@@ -77,7 +77,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
         var bundle = new Bundle ();
         bundle.put_int ("mode", TweetInfoPage.BY_INSTANCE);
         bundle.put_object ("tweet", ((TweetListEntry)row).tweet);
-        main_window.main_widget.switch_page (Page.TWEET_INFO, bundle);
+        _main_window.main_widget.switch_page (Page.TWEET_INFO, bundle);
       }
       last_focus_widget = row;
     });
@@ -115,7 +115,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
   }
 
   public virtual void on_leave () {
-    this.last_focus_widget = main_window.get_focus ();
+    this.last_focus_widget = _main_window.get_focus ();
 
     if (tweet_list.action_entry != null && tweet_list.action_entry.shows_actions)
       tweet_list.action_entry.toggle_mode ();
@@ -285,7 +285,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
     bool auto_scroll = Settings.auto_scroll_on_new_tweets ();
     if (this.scrolled_up && (t.get_user_id () == account.id || auto_scroll)) {
       this.scroll_up_next (true,
-                           main_window.cur_page_id != this.id);
+                           _main_window.cur_page_id != this.id);
       return true;
     }
 

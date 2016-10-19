@@ -43,7 +43,7 @@ private class MediaButton : Gtk.Widget {
       }
     }
   }
-  public unowned Gtk.Window window;
+  public unowned Gtk.Window parent_window;
   private GLib.Menu menu_model;
   private Gtk.Menu? menu = null;
   private GLib.SimpleActionGroup actions;
