@@ -146,5 +146,4 @@ echo "
             Debugging: $enable_debug
        Video disabled: $disable_video
    Gst check disabled: $disable_gst_check
-   Gst check disabled: ${GTK_VERSION}
 "
