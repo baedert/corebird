@@ -41,9 +41,7 @@ class DMPlaceholderBox : Gtk.Box {
   public string avatar_url;
 
   public void load_avatar () {
-    avatar_image.surface = Twitter.get ().get_avatar (user_id, avatar_url, (a) => {
-      avatar_image.surface = a;
-    });
+    Twitter.get ().get_avatar (user_id, avatar_url, avatar_image);
   }
 
 }

@@ -15,7 +15,7 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class AvatarWidget : Gtk.Widget {
+public class AvatarWidget : Gtk.Widget {
   private const int SMALL = 0;
   private const int LARGE = 1;
   private bool _round = true;
