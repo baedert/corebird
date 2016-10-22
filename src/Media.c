@@ -96,7 +96,7 @@ cb_media_is_video (CbMedia *media)
 }
 
 static gboolean
-emit_media_finished (gpointer data)
+emit_media_progress (gpointer data)
 {
   CbMedia *media = data;
 
@@ -111,11 +111,12 @@ void
 cb_media_update_progress (CbMedia *media, double progress)
 {
   g_return_if_fail (CB_IS_MEDIA (media));
+  g_return_if_fail (progress >= 0);
 
   media->percent_loaded = progress;
 
   g_main_context_invoke (NULL,
-                         emit_media_finished,
+                         emit_media_progress,
                          media);
 }
 
@@ -126,7 +127,7 @@ cb_media_loading_finished (CbMedia *media)
 
   media->loaded = TRUE;
 
-  cb_media_update_progress (media, 100);
+  cb_media_update_progress (media, 1.0);
 }
 
 CbMediaType
