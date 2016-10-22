@@ -108,7 +108,7 @@ if test "$disable_video" = "no"; then
 fi
 
 if test "$enable_debug" = "yes"; then
-  CB_VALA_FLAGS="$CB_VALA_FLAGS -D DEBUG -g"
+  CB_VALA_FLAGS="$CB_VALA_FLAGS -D DEBUG"
   CB_CFLAGS="$CB_CFLAGS -D DEBUG -D G_DISABLE_CAST_CHECKS"
 fi
 
