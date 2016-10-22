@@ -34,6 +34,7 @@ TESTS = \
 	texttransform \
 	avatardownload \
 	friends \
+	Types \
 	highlighting
 
 check_PROGRAMS = $(TESTS)
@@ -50,6 +51,7 @@ tests_VALASOURCES = \
 	texttransform.vala \
 	avatardownload.vala \
 	friends.vala \
+	Types.vala \
 	highlighting.vala
 
 $(tests_VALASOURCES:.vala=.c): tests_vala.stamp
@@ -105,6 +107,9 @@ texttransform_LDADD = $(top_builddir)/src/libcorebird.la
 
 nodist_avatardownload_SOURCES = avatardownload.c corebird-resources.c
 avatardownload_LDADD = $(top_builddir)/src/libcorebird.la
+
+nodist_Types_SOURCES = Types.c
+Types_LDADD = $(top_builddir)/src/libcorebird.la
 
 CLEANFILES = \
 	tests_vala.stamp \
