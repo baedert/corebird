@@ -137,7 +137,7 @@ public class Twitter : GLib.Object {
 
     this.avatar_cache.set_url (user_id, avatar_url);
 
-    s = Twitter.get ().get_avatar (user_id, avatar_url, (a) => {
+    s = Twitter.get ().get_surface (user_id, avatar_url, (a) => {
       s = a;
       load_avatar_for_user_id.callback ();
     }, size, true);
@@ -157,28 +157,22 @@ public class Twitter : GLib.Object {
    * the avatar is in memory already, that version is returned.
    * If the avatar is neither on disk nor in memory, it will be downladed
    * first and set via the supplied `func`.
-   *
-   * Example usage:
-   *
-   * Gdk.Pixbuf? a = get_avatar("http://foo", (avatar) => {
-   *   a = avatar;
-   * });
-   * (a may be null here)
-   *
-   * @param url The url of the avatar to return
-   * @param func The AvatarDownloadedFunc to call once the avatar has been
-   *             downloaded successfully.
-   *
-   * @return The requested avatar if it was already downloaded/in ram, or null
-   *         if it has to be downloaded first, in which case the AvatarDownloadedFunc
-   *         will be called after that's finished.
    */
+  public void get_avatar (int64        user_id,
+                          string       url,
+                          AvatarWidget dest_widget,
+                          int          size = 48,
+                          bool         force_download = false) {
+    dest_widget.surface = this.get_surface (user_id, url, (a) => {
+      dest_widget.surface = a;
+    }, size, force_download);
+  }
 
-  public Cairo.Surface? get_avatar (int64  user_id,
-                                    string url,
-                                    owned AvatarDownloadedFunc? func = null,
-                                    int size = 48,
-                                    bool force_download = false) {
+  private Cairo.Surface? get_surface (int64  user_id,
+                                            string url,
+                                            owned AvatarDownloadedFunc? func = null,
+                                            int size = 48,
+                                            bool force_download = false) {
     assert (user_id > 0);
     bool has_key = false;
     Cairo.Surface? a = this.avatar_cache.get_surface_for_id (user_id, out has_key);
@@ -230,6 +224,7 @@ public class Twitter : GLib.Object {
     // Return null for now, set the actual value in the callback
     return null;
   }
+
 }
 
 
