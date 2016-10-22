@@ -158,7 +158,8 @@ cb_mini_tweet_copy (CbMiniTweet *t1, CbMiniTweet *t2)
 
   t2->n_entities = t1->n_entities;
   t2->entities = g_new0 (CbTextEntity, t2->n_entities);
-  memcpy  (&t2->entities, &t1->entities, sizeof (CbTextEntity) * t2->n_entities);
+  for (i = 0; i < t2->n_entities; i ++)
+    cb_text_entity_copy (&t1->entities[i], &t2->entities[i]);
 
   t2->n_medias = t1->n_medias;
   t2->medias = g_new0 (CbMedia*, t2->n_medias);
