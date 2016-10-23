@@ -26,8 +26,6 @@ public class Twitter : GLib.Object {
     return twitter;
   }
 
-
-  public delegate void AvatarDownloadedFunc (Cairo.Surface avatar);
   [Signal (detailed = true)]
   private signal void avatar_downloaded (Cairo.Surface avatar);
 
@@ -137,10 +135,7 @@ public class Twitter : GLib.Object {
 
     this.avatar_cache.set_url (user_id, avatar_url);
 
-    s = Twitter.get ().get_surface (user_id, avatar_url, (a) => {
-      s = a;
-      load_avatar_for_user_id.callback ();
-    }, size, true);
+    s = yield this.get_surface(user_id, avatar_url, size, true);
 
     if (s != null)
       return s;
@@ -158,21 +153,18 @@ public class Twitter : GLib.Object {
    * If the avatar is neither on disk nor in memory, it will be downladed
    * first and set via the supplied `func`.
    */
-  public void get_avatar (int64        user_id,
-                          string       url,
-                          AvatarWidget dest_widget,
-                          int          size = 48,
-                          bool         force_download = false) {
-    dest_widget.surface = this.get_surface (user_id, url, (a) => {
-      dest_widget.surface = a;
-    }, size, force_download);
+  public async void get_avatar (int64        user_id,
+                                string       url,
+                                AvatarWidget dest_widget,
+                                int          size = 48,
+                                bool         force_download = false) {
+    dest_widget.surface = yield this.get_surface (user_id, url, size, force_download);
   }
 
-  private Cairo.Surface? get_surface (int64  user_id,
+  private async Cairo.Surface? get_surface (int64  user_id,
                                             string url,
-                                            owned AvatarDownloadedFunc? func = null,
-                                            int size = 48,
-                                            bool force_download = false) {
+                                            int    size = 48,
+                                            bool   force_download = false) {
     assert (user_id > 0);
     bool has_key = false;
     Cairo.Surface? a = this.avatar_cache.get_surface_for_id (user_id, out has_key);
@@ -188,41 +180,36 @@ public class Twitter : GLib.Object {
       // wait until the avatar has finished downloading
       ulong handler_id = 0;
       handler_id = this.avatar_downloaded[user_id.to_string ()].connect ((ava) => {
-        func (ava);
         this.disconnect (handler_id);
+        a = ava;
+        get_surface.callback ();
       });
+      yield;
+      return a;
     } else {
       // download the avatar
       this.avatar_cache.add (user_id, null, url);
-      TweetUtils.download_avatar.begin (url, size, (obj, res) => {
-        Gdk.Pixbuf? avatar = null;
-        try {
-          avatar = TweetUtils.download_avatar.end (res);
-        } catch (GLib.Error e) {
-          warning (e.message + " for " + url);
-          func (no_avatar);
-          this.avatar_cache.set_avatar (user_id, no_avatar, url);
-          return;
-        }
+      Gdk.Pixbuf? avatar = null;
+      try {
+        avatar = yield TweetUtils.download_avatar (url, size);
+      } catch (GLib.Error e) {
+        warning ("%s for %s", e.message, url);
+      }
 
-        Cairo.Surface s;
-        // E.g. in the 404 case...
-        if (avatar == null) {
-          s = Twitter.no_avatar;
-        } else
-          s = Gdk.cairo_surface_create_from_pixbuf (avatar, 1, null);
+      Cairo.Surface s;
+      // E.g. in the 404 case...
+      if (avatar == null)
+        s = Twitter.no_avatar;
+      else
+        s = Gdk.cairo_surface_create_from_pixbuf (avatar, 1, null);
 
-        // a NULL surface is already in the cache
-        this.avatar_cache.set_avatar (user_id, s, url);
+      // a NULL surface is already in the cache
+      this.avatar_cache.set_avatar (user_id, s, url);
 
-        func (s);
-        // signal all the other waiters in the queue
-        avatar_downloaded[user_id.to_string ()](s);
-      });
+      // signal all the other waiters in the queue
+      avatar_downloaded[user_id.to_string ()](s);
+      return s;
     }
-
-    // Return null for now, set the actual value in the callback
-    return null;
   }
 
 }
