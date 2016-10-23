@@ -4,14 +4,13 @@ void simple () {
   var loop = new GLib.MainLoop ();
   Twitter.get ().init ();
 
-  Cairo.Surface? surface = null;
-  surface = Twitter.get ().get_avatar (10, "http://i.imgur.com/GzdoOMu.jpg", (ava) => {
-    assert (ava != null);
+  var avatar_widget = new AvatarWidget ();
+  Twitter.get ().get_avatar.begin (10, "http://i.imgur.com/GzdoOMu.jpg",
+                                             avatar_widget, 48, false, () => {
+    assert (avatar_widget.surface != null);
 
     loop.quit ();
   });
-
-  assert (surface == null);
 
   loop.run ();
 }
@@ -20,20 +19,20 @@ void cached () {
   var loop = new GLib.MainLoop ();
   Twitter.get ().init ();
 
-  Cairo.Surface? surface = null;
-  surface = Twitter.get ().get_avatar (10, "http://i.imgur.com/GzdoOMu.jpg", (ava) => {
-    assert (ava != null);
+  var avatar_widget = new AvatarWidget ();
+  var avatar_widget2 = new AvatarWidget ();
+  Twitter.get ().get_avatar.begin (10, "http://i.imgur.com/GzdoOMu.jpg",
+                                   avatar_widget, 48, false, () => {
+    assert (avatar_widget.surface != null);
 
-    surface = Twitter.get ().get_avatar (10, "http://i.imgur.com/GzdoOMu.jpg", (ava) => {
-      assert_not_reached ();
+    Twitter.get ().get_avatar.begin (10, "http://i.imgur.com/GzdoOMu.jpg",
+                                     avatar_widget2, 48, false, () => {
+
+      assert (avatar_widget2.surface != null);
+      assert (avatar_widget2.surface == avatar_widget.surface);
+      loop.quit ();
     });
-    assert (surface != null);
-    assert (surface == ava);
-
-    loop.quit ();
   });
-
-  assert (surface == null);
 
   loop.run ();
 }
@@ -43,23 +42,18 @@ void double_download ()
   var loop = new GLib.MainLoop ();
   Twitter.get ().init ();
 
-  Cairo.Surface? surface = null;
-  Cairo.Surface? surface2 = null;
-  surface = Twitter.get ().get_avatar (10, "http://i.imgur.com/GzdoOMu.jpg", (ava) => {
-    assert (ava != null);
-    surface = ava;
+  var avatar_widget = new AvatarWidget ();
+  var avatar_widget2 = new AvatarWidget ();
+  Twitter.get ().get_avatar.begin (10, "http://i.imgur.com/GzdoOMu.jpg",
+                                   avatar_widget, 48, false, () => {
+    assert (avatar_widget.surface != null);
     loop.quit ();
   });
-  assert (surface == null);
 
-  surface2 = Twitter.get ().get_avatar (10, "http://i.imgur.com/GzdoOMu.jpg", (ava) => {
-    assert (ava != null);
-    surface2 = ava;
-    assert (ava != null);
-    assert (surface != null);
-    assert (surface == surface2);
+  Twitter.get ().get_avatar.begin (10, "http://i.imgur.com/GzdoOMu.jpg",
+                                   avatar_widget2, 48, false, () => {
+    assert (avatar_widget2.surface != null);
   });
-  assert (surface2 == null); // Being downloaded by the previous call
 
   loop.run ();
 }
@@ -67,6 +61,7 @@ void double_download ()
 int main (string[] args) {
   GLib.Test.init (ref args);
   Gtk.init (ref args);
+  Settings.init ();
   Utils.init_soup_session ();
 
   GLib.Test.add_func ("/avatar-download/simple", simple);

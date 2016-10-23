@@ -453,7 +453,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     text_label.label = tweet.get_formatted_text ();
     name_button.set_markup (tweet.get_user_name ());
     screen_name_label.label = "@" + tweet.get_screen_name ();
-    Twitter.get ().get_avatar (tweet.get_user_id (), tweet.avatar_url, avatar_image);
+    Twitter.get ().get_avatar.begin (tweet.get_user_id (), tweet.avatar_url, avatar_image);
     update_rt_fav_labels ();
     time_label.label = time_format;
     retweet_button.active  = tweet.is_flag_set (Cb.TweetState.RETWEETED);

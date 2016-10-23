@@ -115,8 +115,8 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       string avatar_url = tweet.avatar_url;
       if (this.get_scale_factor () == 2)
         avatar_url = avatar_url.replace ("_normal", "_bigger");
-      Twitter.get ().get_avatar (tweet.get_user_id (), avatar_url, avatar_image,
-                                 48 * this.get_scale_factor ());
+      Twitter.get ().get_avatar.begin (tweet.get_user_id (), avatar_url, avatar_image,
+                                       48 * this.get_scale_factor ());
     }
     avatar_image.verified = tweet.is_flag_set (Cb.TweetState.VERIFIED);
     text_label.label = tweet.get_trimmed_text (Settings.get_text_transform_flags ()).strip ();
