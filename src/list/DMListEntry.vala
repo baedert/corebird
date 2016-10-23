@@ -70,7 +70,7 @@ class DMListEntry : Gtk.ListBoxRow, ITwitterItem {
     if (this.get_scale_factor () == 2)
       url = url.replace ("_normal", "_bigger");
 
-    Twitter.get ().get_avatar (user_id, url, avatar_image, 48 * this.get_scale_factor ());
+    Twitter.get ().get_avatar.begin (user_id, url, avatar_image, 48 * this.get_scale_factor ());
   }
 
   public int update_time_delta (GLib.DateTime? now = null) {
