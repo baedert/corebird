@@ -43,7 +43,7 @@ AM_CONDITIONAL([DISABLE_GST_CHECK], [ test "$disable_gst_check" = "yes"])
 
 
 
-pkg_modules="gtk+-4.0 >= 3.22
+pkg_modules="gtk+-4.0 >= 3.89
              glib-2.0 >= 2.44
              rest-0.7 >= 0.7.93
              libsoup-2.4
@@ -70,16 +70,6 @@ CB_VALA_FLAGS=" \
 AC_SUBST(CB_CFLAGS)
 AC_SUBST(CB_LIBS)
 AC_SUBST(CB_VALA_FLAGS)
-
-
-# Check for valac >= 0.34, which binds gtk_popover_popup
-# as well as if that function exists in gtk+
-AM_PROG_VALAC([0.34.0], [
-AC_CHECK_LIB([gtk-3], [gtk_popover_popup],
-             [CB_VALA_FLAGS="$CB_VALA_FLAGS -D GTK322"],
-            )
-])
-
 
 AC_ARG_VAR([GLIB_COMPILE_RESOURCES],[the glib-compile-resources program])
 AC_PATH_PROG([GLIB_COMPILE_RESOURCES],[glib-compile-resources],[])
