@@ -38,11 +38,17 @@ public class ReplyIndicator : Gtk.Widget {
   }
 
 
-  public override void get_preferred_height_for_width (int     width,
-                                                       out int min_height,
-                                                       out int nat_height) {
-    min_height = FINAL_HEIGHT;
-    nat_height = FINAL_HEIGHT;
+  public override void measure (Gtk.Orientation orientation,
+                                int             for_size,
+                                out int         min,
+                                out int         nat,
+                                out int         min_baseline,
+                                out int         nat_baseline) {
+    if (orientation == Gtk.Orientation.HORIZONTAL) {
+      min = nat = 0;
+    } else {
+      min = nat = FINAL_HEIGHT;
+    }
   }
 
   private void on_replies_available () {

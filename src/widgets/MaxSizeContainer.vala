@@ -38,19 +38,26 @@ class MaxSizeContainer : Gtk.Bin {
     return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
   }
 
-  public override void get_preferred_height_for_width (int width,
-                                                       out int min_height,
-                                                       out int nat_height) {
-    int min_child_height;
-    int nat_child_height;
-    get_child ().get_preferred_height_for_width (width, out min_child_height, out nat_child_height);
+  public override void measure (Gtk.Orientation orientation,
+                                int             for_size,
+                                out int         min,
+                                out int         nat,
+                                out int         min_baseline,
+                                out int         nat_baseline) {
+    int min_child, nat_child;
+    get_child ().measure (orientation, for_size, out min_child, out nat_child, null, null);
 
-    if (max_size >= min_child_height) {
-      min_height = min_child_height;
-      nat_height = nat_child_height;
+    if (orientation == Gtk.Orientation.HORIZONTAL) {
+      if (max_size >= min_child) {
+        min = min_child;
+        nat = nat_child;
+      } else {
+        min = max_size;
+        nat = max_size;
+      }
     } else {
-      nat_height = max_size;
-      min_height = max_size;
+      min = min_child;
+      nat = nat_child;
     }
   }
 

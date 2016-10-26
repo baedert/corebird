@@ -11,6 +11,7 @@ AM_VALAFLAGS = \
 	--enable-deprecated \
 	--enable-checking \
 	--enable-experimental \
+	--disable-since-check \
 	--vapidir $(builddir) \
 	--vapidir $(top_srcdir)/vapi \
 	--basedir $(srcdir) \

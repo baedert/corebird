@@ -88,71 +88,55 @@ class AddImageButton : Gtk.Widget {
     return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
   }
 
-  public override void get_preferred_height_for_width (int     width,
-                                                       out int minimum,
-                                                       out int natural) {
-    int media_width;
-    int media_height;
+  public override void measure (Gtk.Orientation orientation,
+                                int             for_size,
+                                out int         min,
+                                out int         nat,
+                                out int         min_baseline,
+                                out int         nat_baseline) {
+    int media_size;
+    int other_media_size;
+    int min_size;
 
     if (this.surface == null) {
-      media_width = MIN_WIDTH;
-      media_height = MAX_HEIGHT;
+      if (orientation == Gtk.Orientation.HORIZONTAL) {
+        media_size = MIN_WIDTH;
+        other_media_size = MAX_HEIGHT;
+        min_size = MIN_WIDTH;
+      } else {
+        media_size = MAX_HEIGHT;
+        other_media_size = MIN_WIDTH;
+        min_size = MIN_HEIGHT;
+      }
     } else {
-      media_width = this.surface.get_width ();
-      media_height = this.surface.get_height ();
+      if (orientation == Gtk.Orientation.HORIZONTAL) {
+        media_size = this.surface.get_width ();
+        other_media_size = this.surface.get_height ();
+        min_size = MIN_WIDTH;
+      } else {
+        media_size = this.surface.get_height ();
+        other_media_size = this.surface.get_width ();
+        min_size = MIN_HEIGHT;
+      }
     }
 
-    double width_ratio = (double)width / (double) media_width;
-    int height = int.min (media_height, (int)(media_height * width_ratio));
-    height = int.min (MAX_HEIGHT, height);
-    minimum = MIN_HEIGHT;
-    natural = int.max (minimum, (int)(height * this.delete_factor));
-  }
-
-  public override void get_preferred_width_for_height (int     height,
-                                                       out int minimum,
-                                                       out int natural) {
-    int media_width;
-    int media_height;
-
-    if (this.surface == null) {
-      media_width = MIN_WIDTH;
-      media_height = MAX_HEIGHT;
+    if (for_size == -1) {
+      min = (int)(int.min (media_size, min_size) * delete_factor);
+      nat = (int)(media_size * delete_factor);
     } else {
-      media_width = this.surface.get_width ();
-      media_height = this.surface.get_height ();
+      double ratio = (double)for_size / (double) media_size;
+      int size = int.min (media_size, (int)(media_size * for_size));
+      if (orientation == Gtk.Orientation.HORIZONTAL) {
+        size = int.max (MIN_WIDTH, size);
+        min = nat = (int)(size * this.delete_factor);
+      } else {
+        size = int.min (MAX_HEIGHT, size);
+        min = MIN_HEIGHT;
+        nat = int.max (min, (int)(size * this.delete_factor));
+      }
+
+      min = nat = (int)(size * this.delete_factor);
     }
-
-    double height_ratio = (double)height / (double) media_height;
-    int width = int.min (media_width, (int)(media_width * height_ratio));
-    width = int.max (MIN_WIDTH, width);
-    minimum = natural = (int)(width * this.delete_factor);
-  }
-
-  public override void get_preferred_width (out int minimum,
-                                            out int natural) {
-    int media_width;
-    if (this.surface == null) {
-      media_width = 1;
-    } else {
-      media_width = this.surface.get_width ();
-    }
-
-    minimum = (int)(int.min (media_width, MIN_WIDTH) * delete_factor);
-    natural = (int)(media_width * delete_factor);
-  }
-
-  public override void get_preferred_height (out int minimum,
-                                             out int natural) {
-    int media_height;
-    if (this.surface == null) {
-      media_height = 1;
-    } else {
-      media_height = this.surface.get_height ();
-    }
-
-    minimum = (int)(int.min (media_height, MIN_HEIGHT) * delete_factor);
-    natural = (int)(media_height * delete_factor);
   }
 
   private bool delete_tick_cb (Gtk.Widget     widget,

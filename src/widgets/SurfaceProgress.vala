@@ -102,25 +102,21 @@ class SurfaceProgress : Gtk.Widget {
     return Gdk.EVENT_PROPAGATE;
   }
 
-  public override void get_preferred_width (out int min,
-                                            out int nat) {
+  public override void measure (Gtk.Orientation orientation,
+                                int             for_size,
+                                out int         min,
+                                out int         nat,
+                                out int         min_baseline,
+                                out int         nat_baseline) {
     if (this.surface == null) {
       min = 0;
       nat = 0;
       return;
     }
 
-    min = nat = this.surface.get_width ();
-  }
-
-  public override void get_preferred_height (out int min,
-                                             out int nat) {
-    if (this.surface == null) {
-      min = 0;
-      nat = 0;
-      return;
-    }
-
-    min = nat = this.surface.get_height ();
+    if (orientation == Gtk.Orientation.HORIZONTAL)
+      min = nat = surface.get_width ();
+    else
+      min = nat = surface.get_height ();
   }
 }

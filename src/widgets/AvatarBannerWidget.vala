@@ -75,16 +75,18 @@ public class AvatarBannerWidget : Gtk.Container {
     return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
   }
 
-  public override void get_preferred_width (out int min,
-                                            out int nat) {
-    min = nat = avatar_size + 40; // 20px margin on either side
-  }
-
-  public override void get_preferred_height_for_width (int width,
-                                                       out int min,
-                                                       out int nat) {
-    min = (avatar_size / 3) + MIN_HEIGHT;
-    nat = int.max (min, int.min (MAX_HEIGHT, (int)(width * BANNER_RATIO) + (avatar_size / 3)));
+  public override void measure (Gtk.Orientation orientation,
+                                int             for_size,
+                                out int         min,
+                                out int         nat,
+                                out int         min_baseline,
+                                out int         nat_baseline) {
+    if (orientation == Gtk.Orientation.HORIZONTAL) {
+      min = nat = avatar_size + 40; // 20px margin on either side
+    } else {
+      min = (avatar_size / 3) + MIN_HEIGHT;
+      nat = int.max (min, int.min (MAX_HEIGHT, (int)(for_size * BANNER_RATIO) + (avatar_size / 3)));
+    }
   }
 
   private async void fetch_banner () {
