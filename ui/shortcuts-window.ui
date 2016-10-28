@@ -95,6 +95,13 @@
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
+                <property name="visible">true</property>
+                <property name="accelerator">q</property>
+                <property name="title" translatable="yes" context="shortcuts window">Quote</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
                 <property name="visible">1</property>
                 <property name="accelerator">Return</property>
                 <property name="title" translatable="yes" context="shortcuts window">Show Details</property>
