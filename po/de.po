@@ -85,7 +85,7 @@ msgstr ""
 
 #: src/DMPage.vala:329
 msgid "Direct Conversation"
-msgstr "Direcktnachrichten"
+msgstr "Direktnachrichten"
 
 #: src/DMThreadsPage.vala:207
 #, c-format
