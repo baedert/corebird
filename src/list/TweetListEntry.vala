@@ -100,6 +100,8 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   private signal void retweet_tweet ();
   [Signal (action = true)]
   private signal void delete_tweet ();
+  [Signal (action = true)]
+  private signal void quote_tweet ();
 
   public TweetListEntry (Cb.Tweet    tweet,
                          MainWindow? main_window,
@@ -190,6 +192,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
     reply_tweet.connect (reply_tweet_activated);
     delete_tweet.connect (delete_tweet_activated);
+    quote_tweet.connect (quote_activated);
     favorite_tweet.connect (() => {
       favorite_button.active = !favorite_button.active;
     });
@@ -275,6 +278,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     Gtk.BindingEntry.add_signal (binding_set, Gdk.Key.d, 0, "delete-tweet", 0, null);
     Gtk.BindingEntry.add_signal (binding_set, Gdk.Key.t, 0, "retweet-tweet", 0, null);
     Gtk.BindingEntry.add_signal (binding_set, Gdk.Key.f, 0, "favorite-tweet", 0, null);
+    Gtk.BindingEntry.add_signal (binding_set, Gdk.Key.q, 0, "quote-tweet", 0, null);
   }
 
   [GtkCallback]
@@ -392,7 +396,9 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     ComposeTweetWindow ctw = new ComposeTweetWindow (this.main_window, this.account, this.tweet,
                                                      ComposeTweetWindow.Mode.QUOTE);
     ctw.show ();
-    toggle_mode ();
+
+    if (shows_actions)
+      toggle_mode ();
   }
 
   private void reply_tweet_activated () {
