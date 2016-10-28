@@ -76,6 +76,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       name_label.show ();
       this.grid.attach (name_label, 1, 0, 1, 1);
 
+      this.get_style_context ().add_class ("read-only");
       this._read_only = value;
     }
   }
