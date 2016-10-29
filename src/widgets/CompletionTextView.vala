@@ -16,6 +16,12 @@
  */
 
 class CompletionTextView : Gtk.TextView {
+  private const string[] TEXT_TAGS = {
+    "link",
+    "mention",
+    "hashtag",
+    "snippet"
+  };
   private Gtk.ListBox completion_list;
   private Gtk.Window completion_window;
   private int current_match = 0;
@@ -66,18 +72,20 @@ class CompletionTextView : Gtk.TextView {
 
     Gdk.RGBA snippet_color = { 0.0, 0.65, 0.0627, 1.0};
 
-    this.buffer.create_tag ("link",
+    this.buffer.create_tag (TEXT_TAGS[0],
                             "foreground_rgba",
                             link_color, null);
-    this.buffer.create_tag ("mention",
+    this.buffer.create_tag (TEXT_TAGS[1],
                             "foreground_rgba",
                             link_color, null);
-    this.buffer.create_tag ("hashtag",
+    this.buffer.create_tag (TEXT_TAGS[2],
                             "foreground_rgba",
                             link_color, null);
-    this.buffer.create_tag ("snippet",
+    this.buffer.create_tag (TEXT_TAGS[3],
                             "foreground_rgba",
                             snippet_color, null);
+    /* gspell marker */
+    this.buffer.create_tag (TweetUtils.NO_SPELL_CHECK, null);
 
     this.buffer.notify["cursor-position"].connect (update_completion);
     this.buffer.changed.connect (buffer_changed_cb);
@@ -195,7 +203,13 @@ class CompletionTextView : Gtk.TextView {
     Gtk.TextIter? end_iter;
     this.buffer.get_start_iter (out start_iter);
     this.buffer.get_end_iter (out end_iter);
-    this.buffer.remove_all_tags (start_iter, end_iter);
+    var tag_table = this.buffer.get_tag_table ();
+
+    /* We can't use gtk_text_buffer_remove_all_tags because that will also
+       remove the ones added by gspell */
+    for (int i = 0; i < TEXT_TAGS.length; i ++)
+      this.buffer.remove_tag (tag_table.lookup (TEXT_TAGS[i]), start_iter, end_iter);
+
     TweetUtils.annotate_text (this.buffer);
 
     if (buffer.text.length == 0)
