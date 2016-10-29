@@ -88,6 +88,14 @@ class CompletionTextView : Gtk.TextView {
     this.left_margin   = 6;
     this.top_margin    = 6;
     this.bottom_margin = 6;
+
+    var gspell_view = Gspell.TextView.get_from_gtk_text_view (this);
+    gspell_view.set_inline_spell_checking (true);
+    gspell_view.set_enable_language_menu (true);
+
+    var gspell_buffer = Gspell.TextBuffer.get_from_gtk_text_buffer (this.buffer);
+    var checker = new Gspell.Checker (Gspell.Language.get_default ());
+    gspell_buffer.set_spell_checker (checker);
   }
 
   public void set_account (Account account) {
