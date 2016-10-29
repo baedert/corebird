@@ -22,6 +22,7 @@ namespace TweetUtils {
      ".asia", ".cat",  ".coop",   ".edu",  ".int",  ".jobs",
      ".mil",  ".mobi", ".museum", ".post", ".tel",  ".travel"
   };
+  public const string NO_SPELL_CHECK = "gtksourceview:context-classes:no-spell-check";
 
   /**
    * Deletes the given tweet.
@@ -358,6 +359,7 @@ namespace TweetUtils {
 
     }
     buffer.apply_tag_by_name ("link", word_start, iter1);
+    buffer.apply_tag_by_name (NO_SPELL_CHECK, word_start, iter1);
   }
 
   /** Invariant: The word passed to this function starts with a @ */
@@ -381,6 +383,7 @@ namespace TweetUtils {
 
     }
     buffer.apply_tag_by_name ("mention", word_start, iter1);
+    buffer.apply_tag_by_name (NO_SPELL_CHECK, word_start, iter1);
   }
 
 
@@ -404,6 +407,7 @@ namespace TweetUtils {
 
     }
     buffer.apply_tag_by_name ("hashtag", word_start, iter1);
+    buffer.apply_tag_by_name (NO_SPELL_CHECK, word_start, iter1);
   }
 
   private void maybe_highlight_snippet (Gtk.TextBuffer buffer,
@@ -417,6 +421,7 @@ namespace TweetUtils {
     string? snippet;
     if ((snippet = Corebird.snippet_manager.get_snippet (word)) != null) {
       buffer.apply_tag_by_name ("snippet", word_start, word_end);
+      buffer.apply_tag_by_name (NO_SPELL_CHECK, word_start, word_end);
     }
   }
 
