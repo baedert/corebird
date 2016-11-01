@@ -241,7 +241,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   private void filechooser_accept (Gtk.FileChooser fc) {
     debug ("filechoser_accept");
     var filenames = fc.get_filenames ();
-    for (uint i = 0; i < uint.min (4, filenames.length()); i ++) {
+    for (uint i = 0; i < uint.min (Twitter.max_media_per_upload, filenames.length()); i ++) {
       this.compose_image_manager.show ();
       this.compose_image_manager.load_image (filenames.nth_data (i), null);
     }
