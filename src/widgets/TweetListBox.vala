@@ -72,7 +72,7 @@ public class TweetListBox : Gtk.ListBox {
       while ((event_window != null) && (event_window != window)) {
         event_window.coords_to_parent (0, relative_y, null, out parent_y);
         relative_y = parent_y;
-        event_window = event_window.get_effective_parent ();
+        event_window = event_window.get_parent ();
       }
       Gtk.Widget row = this.get_row_at_y ((int)relative_y);
       if (row is TweetListEntry && row.sensitive) {
