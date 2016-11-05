@@ -43,6 +43,12 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   private ComposeImageManager compose_image_manager;
   [GtkChild]
   private Gtk.Button add_image_button;
+  [GtkChild]
+  private Gtk.Stack stack;
+  [GtkChild]
+  private Gtk.Grid image_error_grid;
+  [GtkChild]
+  private Gtk.Label image_error_label;
   private unowned Account account;
   private unowned Cb.Tweet reply_to;
   private Mode mode;
@@ -164,7 +170,10 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
   [GtkCallback]
   private void start_send_tweet () {
-    if (!send_button.sensitive)
+
+    stack.visible_child = image_error_grid;
+
+    //if (!send_button.sensitive)
       return;
 
     var job = new ComposeJob (this.account);
@@ -238,18 +247,8 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     tweet_text.buffer.text = text;
   }
 
-  private void filechooser_accept (Gtk.FileChooser fc) {
-    debug ("filechoser_accept");
-    var filenames = fc.get_filenames ();
-    for (uint i = 0; i < uint.min (Twitter.max_media_per_upload, filenames.length()); i ++) {
-      this.compose_image_manager.show ();
-      this.compose_image_manager.load_image (filenames.nth_data (i), null);
-    }
-  }
-
   [GtkCallback]
   private void add_image_clicked_cb (Gtk.Button source) {
-
     var filechooser = new Gtk.FileChooserDialog (_("Select Image"),
                                                  this,
                                                  Gtk.FileChooserAction.OPEN,
@@ -257,12 +256,33 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
                                                  Gtk.ResponseType.CANCEL,
                                                  _("Open"),
                                                  Gtk.ResponseType.ACCEPT);
-    filechooser.select_multiple = true;
+    filechooser.select_multiple = false;
     filechooser.modal = true;
 
     filechooser.response.connect ((id) => {
       if (id == Gtk.ResponseType.ACCEPT) {
-        filechooser_accept (filechooser);
+        var filename = filechooser.get_filename ();
+        debug ("Loading %s", filename);
+
+        /* Get file size */
+        var file = GLib.File.new_for_path (filename);
+        GLib.FileInfo info;
+        try {
+          info = file.query_info (GLib.FileAttribute.STANDARD_TYPE + "," +
+                                  GLib.FileAttribute.STANDARD_SIZE, 0);
+        } catch (GLib.Error e) {
+          warning ("%s (%s)", e.message, filename);
+          // TODO: Proper error checking
+          return;
+        }
+
+        if (info.get_size () > 2) { //Twitter.MAX_BYTES_PER_IMAGE) {
+          stack.visible_child = image_error_grid;
+          image_error_label.label = _("Image too big. Resize?");
+        } else {
+          this.compose_image_manager.show ();
+          this.compose_image_manager.load_image (filename, null);
+        }
       }
       filechooser.destroy ();
     });
@@ -274,5 +294,10 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     filechooser.set_filter (filter);
 
     filechooser.show_all ();
+  }
+
+  [GtkCallback]
+  private void error_back_cb () {
+    stack.visible_child = content_grid;
   }
 }
