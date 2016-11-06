@@ -7,6 +7,7 @@ Gtk.TextBuffer create_buffer () {
   buffer.create_tag ("mention", null);
   buffer.create_tag ("link", null);
   buffer.create_tag ("hashtag", null);
+  buffer.create_tag (TweetUtils.NO_SPELL_CHECK, null);
 
   return buffer;
 }
@@ -21,7 +22,7 @@ void normal () {
   buffer.apply_tag.connect ((buffer, tag, start, end) => {
     string mention = buffer.get_text (start, end, false);
     assert (mention == "@blabla");
-    assert (tag.name == "mention");
+    assert (tag.name == "mention" || tag.name == TweetUtils.NO_SPELL_CHECK);
   });
 
   TweetUtils.annotate_text (buffer);
@@ -56,12 +57,12 @@ void hashtag () {
   buffer.apply_tag.connect ((buffer, tag, start, end) => {
     string mention = buffer.get_text (start, end, false);
     assert (mention == "#hash");
-    assert (tag.name == "hashtag");
+    assert (tag.name == "hashtag" || tag.name == TweetUtils.NO_SPELL_CHECK);
     num ++;
   });
 
   TweetUtils.annotate_text (buffer);
-  assert (num == 1);
+  assert (num == 2); // Actual tag AND no-spell-check tag
 }
 
 /* Sorry for this name. */
@@ -74,12 +75,12 @@ void non_default_mention () {
   buffer.apply_tag.connect ((buffer, tag, start, end) => {
     string mention = buffer.get_text (start, end, false);
     assert (mention == "@foobar");
-    assert (tag.name == "mention");
+    assert (tag.name == "mention" || tag.name == TweetUtils.NO_SPELL_CHECK);
     num ++;
   });
 
   TweetUtils.annotate_text (buffer);
-  assert (num == 1);
+  assert (num == 2); // Actual tag AND no-spell-check tag
 }
 
 
