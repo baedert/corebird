@@ -356,6 +356,7 @@ load_in_thread (GTask        *task,
   cb_media_downloader_load_threaded (downloader, media);
 
   g_task_return_boolean (task, TRUE);
+  g_object_unref (task);
 }
 
 void
@@ -373,7 +374,6 @@ cb_media_downloader_load_async (CbMediaDownloader   *downloader,
   g_task_set_task_data (task, media, g_object_unref);
 
   g_task_run_in_thread (task, load_in_thread);
-  g_object_unref (task);
 }
 
 gboolean

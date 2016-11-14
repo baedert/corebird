@@ -43,6 +43,14 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   private ComposeImageManager compose_image_manager;
   [GtkChild]
   private Gtk.Button add_image_button;
+  [GtkChild]
+  private Gtk.Stack stack;
+  [GtkChild]
+  private Gtk.Grid image_error_grid;
+  [GtkChild]
+  private Gtk.Label image_error_label;
+  [GtkChild]
+  private Gtk.Button cancel_button;
   private unowned Account account;
   private unowned Cb.Tweet reply_to;
   private Mode mode;
@@ -224,8 +232,16 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     if (this.cancellable != null)
       this.cancellable.cancel ();
 
-     this.save_last_tweet ();
-    destroy ();
+    if (stack.visible_child == image_error_grid) {
+      stack.visible_child = content_grid;
+      cancel_button.label = _("Cancel");
+      /* Use this instead of just setting send_button.sensitive to true to avoid
+         sending tweets with 0 length */
+      this.recalc_tweet_length ();
+    } else {
+      this.save_last_tweet ();
+      destroy ();
+    }
   }
 
   private bool escape_pressed_cb () {
@@ -240,18 +256,53 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
   [GtkCallback]
   private void add_image_clicked_cb (Gtk.Button source) {
-    var file_chooser = new FileSelector ();
-    file_chooser.set_transient_for (this);
-    file_chooser.modal = true;
-    file_chooser.file_selected.connect ((path, image) => {
-      this.compose_image_manager.show ();
-      this.compose_image_manager.load_image (path, image);
+    var filechooser = new Gtk.FileChooserDialog (_("Select Image"),
+                                                 this,
+                                                 Gtk.FileChooserAction.OPEN,
+                                                 _("Cancel"),
+                                                 Gtk.ResponseType.CANCEL,
+                                                 _("Open"),
+                                                 Gtk.ResponseType.ACCEPT);
+    filechooser.select_multiple = false;
+    filechooser.modal = true;
 
-      if (this.compose_image_manager.n_images == Twitter.max_media_per_upload)
-        this.add_image_button.sensitive = false;
-      file_chooser.close ();
+    filechooser.response.connect ((id) => {
+      if (id == Gtk.ResponseType.ACCEPT) {
+        var filename = filechooser.get_filename ();
+        debug ("Loading %s", filename);
+
+        /* Get file size */
+        var file = GLib.File.new_for_path (filename);
+        GLib.FileInfo info;
+        try {
+          info = file.query_info (GLib.FileAttribute.STANDARD_TYPE + "," +
+                                  GLib.FileAttribute.STANDARD_SIZE, 0);
+        } catch (GLib.Error e) {
+          warning ("%s (%s)", e.message, filename);
+          // TODO: Proper error checking
+          return;
+        }
+
+        if (info.get_size () > Twitter.MAX_BYTES_PER_IMAGE) {
+          stack.visible_child = image_error_grid;
+          image_error_label.label = _("The selected image is too big. The maximum file size per image is %'d MB")
+                                    .printf (Twitter.MAX_BYTES_PER_IMAGE / 1024 / 1024);
+          cancel_button.label = _("Back");
+          send_button.sensitive = false;
+        } else {
+          this.compose_image_manager.show ();
+          this.compose_image_manager.load_image (filename, null);
+        }
+      }
+      filechooser.destroy ();
     });
 
-    file_chooser.show_all ();
+    var filter = new Gtk.FileFilter ();
+    filter.add_mime_type ("image/png");
+    filter.add_mime_type ("image/jpeg");
+    filter.add_mime_type ("image/gif");
+    filechooser.set_filter (filter);
+
+    filechooser.show_all ();
   }
 }

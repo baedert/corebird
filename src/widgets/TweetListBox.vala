@@ -16,7 +16,7 @@
  */
 
 public class TweetListBox : Gtk.ListBox {
-  private Gtk.Stack placeholder;
+  private Gtk.Stack? placeholder = null;
   private Gtk.Label no_entries_label;
 
   private Gtk.Box error_box;

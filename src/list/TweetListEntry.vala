@@ -56,6 +56,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   /* Conditionally created widgets... */
   private Gtk.Label? quote_label = null;
   private TextButton? quote_name = null;
+  private Gtk.Label? quote_time_delta = null;
   private Gtk.Label? quote_screen_name = null;
   private Gtk.Grid? quote_grid = null;
   private Gtk.Stack? media_stack = null;
@@ -123,7 +124,6 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     }
     avatar_image.verified = tweet.is_flag_set (Cb.TweetState.VERIFIED);
     text_label.label = tweet.get_trimmed_text (Settings.get_text_transform_flags ()).strip ();
-    update_time_delta ();
     if (tweet.retweeted_tweet != null) {
       rt_label.show ();
       rt_image.show ();
@@ -208,6 +208,8 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       rt_status_image.show ();
 
     values_set = true;
+
+    update_time_delta ();
 
     // TODO All these settings signal connections with lots of tweets could be costly...
     Settings.get ().changed["text-transform-flags"].connect (transform_flags_changed_cb);
@@ -497,6 +499,12 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
                              tweet.retweeted_tweet != null ? tweet.retweeted_tweet.created_at :
                                                              tweet.source_tweet.created_at);
     time_delta_label.label = Utils.get_time_delta (then, cur_time);
+
+    if (quote_time_delta != null) {
+      then = new GLib.DateTime.from_unix_local (tweet.quoted_tweet.created_at);
+      quote_time_delta.label = Utils.get_time_delta (then, cur_time);
+    }
+
     return (int)(cur_time.difference (then) / 1000.0 / 1000.0);
   }
 
@@ -618,6 +626,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
   private void create_quote_grid () {
     this.quote_grid = new Gtk.Grid ();
     quote_grid.margin_top = 6;
+    quote_grid.margin_end = 6;
     quote_grid.get_style_context ().add_class ("quote");
 
     this.quote_name = new TextButton ();
@@ -625,7 +634,6 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     quote_name.valign = Gtk.Align.BASELINE;
     quote_name.margin_start = 12;
     quote_name.margin_end = 6;
-    quote_name.margin_bottom = 4;
     quote_name.clicked.connect (quote_name_button_clicked_cb);
     quote_grid.attach (quote_name, 0, 0, 1, 1);
 
@@ -650,7 +658,12 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     var attrs = new Pango.AttrList ();
     attrs.insert (Pango.attr_style_new (Pango.Style.ITALIC));
     quote_label.set_attributes (attrs);
-    quote_grid.attach (quote_label, 0, 1, 2, 1);
+    quote_grid.attach (quote_label, 0, 1, 3, 1);
+
+    this.quote_time_delta = new Gtk.Label ("");
+    quote_time_delta.halign = Gtk.Align.END;
+    quote_time_delta.get_style_context ().add_class ("dim-label");
+    quote_grid.attach (quote_time_delta, 2, 0, 1, 1);
 
     quote_grid.show_all ();
     this.grid.attach (quote_grid, 1, 3, 6, 1);
