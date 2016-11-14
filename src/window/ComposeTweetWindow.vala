@@ -49,6 +49,8 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   private Gtk.Grid image_error_grid;
   [GtkChild]
   private Gtk.Label image_error_label;
+  [GtkChild]
+  private Gtk.Button cancel_button;
   private unowned Account account;
   private unowned Cb.Tweet reply_to;
   private Mode mode;
@@ -170,10 +172,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
   [GtkCallback]
   private void start_send_tweet () {
-
-    stack.visible_child = image_error_grid;
-
-    //if (!send_button.sensitive)
+    if (!send_button.sensitive)
       return;
 
     var job = new ComposeJob (this.account);
@@ -233,8 +232,16 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     if (this.cancellable != null)
       this.cancellable.cancel ();
 
-     this.save_last_tweet ();
-    destroy ();
+    if (stack.visible_child == image_error_grid) {
+      stack.visible_child = content_grid;
+      cancel_button.label = _("Cancel");
+      /* Use this instead of just setting send_button.sensitive to true to avoid
+         sending tweets with 0 length */
+      this.recalc_tweet_length ();
+    } else {
+      this.save_last_tweet ();
+      destroy ();
+    }
   }
 
   private bool escape_pressed_cb () {
@@ -276,9 +283,12 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
           return;
         }
 
-        if (info.get_size () > 2) { //Twitter.MAX_BYTES_PER_IMAGE) {
+        if (info.get_size () > Twitter.MAX_BYTES_PER_IMAGE) {
           stack.visible_child = image_error_grid;
-          image_error_label.label = _("Image too big. Resize?");
+          image_error_label.label = _("The selected image is too big. The maximum file size per image is %'d MB")
+                                    .printf (Twitter.MAX_BYTES_PER_IMAGE / 1024 / 1024);
+          cancel_button.label = _("Back");
+          send_button.sensitive = false;
         } else {
           this.compose_image_manager.show ();
           this.compose_image_manager.load_image (filename, null);
@@ -294,10 +304,5 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     filechooser.set_filter (filter);
 
     filechooser.show_all ();
-  }
-
-  [GtkCallback]
-  private void error_back_cb () {
-    stack.visible_child = content_grid;
   }
 }

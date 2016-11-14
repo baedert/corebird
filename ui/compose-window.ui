@@ -61,6 +61,7 @@
     <child>
       <object class="GtkStack" id="stack">
         <property name="visible">1</property>
+        <property name="transition-type">crossfade</property>
         <child>
           <object class="GtkGrid" id="content_grid">
             <property name="visible">1</property>
@@ -169,16 +170,6 @@
             <property name="column-spacing">6</property>
             <property name="row-spacing">6</property>
             <child>
-              <object class="GtkImage" id="error_image">
-
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">0</property>
-                <property name="height">2</property>
-              </packing>
-            </child>
-            <child>
               <object class="GtkLabel" id="image_error_label">
                 <property name="visible">true</property>
                 <property name="wrap">1</property>
@@ -190,27 +181,6 @@
                 <property name="left_attach">1</property>
                 <property name="top_attach">0</property>
                 <property name="width">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="error_back_button">
-                <property name="visible">1</property>
-                <property name="label" translatable="yes">Back</property>
-                <signal name="clicked" handler="error_back_cb" />
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="error_scale_button">
-                <property name="visible">1</property>
-                <property name="label" translatable="yes">Scale Down</property>
-              </object>
-              <packing>
-                <property name="left_attach">2</property>
-                <property name="top_attach">1</property>
               </packing>
             </child>
           </object>
