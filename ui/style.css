@@ -234,6 +234,6 @@
 }
 /* Override the earlier rule to read-only
  * inline media are still full-opacity */
-.read-only .inline-media:insensitive {
+.read-only .inline-media:disabled {
   opacity: 1.0;
 }
