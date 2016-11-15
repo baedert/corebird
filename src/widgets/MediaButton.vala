@@ -246,22 +246,20 @@ private class MediaButton : Gtk.Widget {
     return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
   }
 
-  private int media_size (Gtk.Orientation o) {
-    return o == Gtk.Orientation.HORIZONTAL ? media.width : media.height;
-  }
-
   public override void measure (Gtk.Orientation orientation,
                                 int             for_size,
                                 out int         min,
                                 out int         nat,
-                                out int         min_baseline,
-                                out int         nat_baseline) {
+                                out int         min_baseline = null,
+                                out int         nat_baseline = null) {
     int media_size;
     int other_media_size;
     if (this.media == null || this._media.width == -1) {
       media_size = orientation == Gtk.Orientation.HORIZONTAL ? MIN_WIDTH : MIN_HEIGHT;
+      other_media_size = orientation == Gtk.Orientation.VERTICAL ? MIN_WIDTH : MIN_HEIGHT;
     } else {
       media_size = orientation == Gtk.Orientation.HORIZONTAL ? media.width : media.height;
+      other_media_size = orientation == Gtk.Orientation.VERTICAL ? media.width : media.height;
     }
 
     if (for_size == -1) {
@@ -271,54 +269,22 @@ private class MediaButton : Gtk.Widget {
         min = int.min (media_size, MAX_HEIGHT);
       nat = media_size;
     } else {
-      double ratio = (double)for_size / (double)media_size;
+      double ratio = (double)for_size / (double)other_media_size;
+      int size = int.min (media_size, (int)(media_size * ratio));
+      if (orientation == Gtk.Orientation.VERTICAL) {
+        if (restrict_height) {
+          /* Hack around broken size request */
+          min = int.min (media_size, MAX_HEIGHT);
+          nat = min;
+        } else {
+          min = nat = size;
+        }
+      } else {
+        min = int.min (size, MIN_WIDTH);
+        nat = size;
+      }
     }
   }
-
-  //public override void get_preferred_height_for_width (int width,
-                                                       //out int minimum,
-                                                       //out int natural) {
-    //int media_width;
-    //int media_height;
-
-    //if (this._media == null || this._media.width == -1 || this._media.height == -1) {
-      //media_width = MIN_WIDTH;
-      //media_height = MAX_HEIGHT;
-    //} else {
-      //media_width = this._media.width;
-      //media_height = this._media.height;
-    //}
-
-    //double width_ratio = (double)width / (double) media_width;
-    //int height = int.min (media_height, (int)(media_height * width_ratio));
-    //if (restrict_height) {
-      //minimum = int.min (media_height, MAX_HEIGHT);
-      //natural = minimum;
-    //} else {
-      //minimum = height;
-      //natural = height;
-    //}
-  //}
-
-  //public override void get_preferred_width_for_height (int height,
-                                                       //out int minimum,
-                                                       //out int natural) {
-    //int media_width;
-    //int media_height;
-
-    //if (this._media == null || this._media.width == -1 || this._media.height == -1) {
-      //media_width = MIN_WIDTH;
-      //media_height = MAX_HEIGHT;
-    //} else {
-      //media_width = this._media.width;
-      //media_height = this._media.height;
-    //}
-
-    //double height_ratio = (double)height / (double)media_height;
-    //int width = int.min (media_width, (int)(media_width * height_ratio));
-    //minimum = int.min (media_width, MIN_WIDTH);
-    //natural = width;
-  //}
 
   public override void realize () {
     this.set_realized (true);
