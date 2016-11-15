@@ -325,30 +325,24 @@ private class MediaButton : Gtk.Widget {
     int draw_width;
     int draw_height;
     double scale;
+    Gdk.Rectangle window_rect;
 
     this.get_draw_size (out draw_width, out draw_height, out scale);
 
-    Gdk.WindowAttr attr = {};
-    attr.x = 0;
-    attr.y = 0;
-    attr.width = draw_width;
-    attr.height = draw_height;
-    attr.window_type = Gdk.WindowType.CHILD;
-    attr.wclass = Gdk.WindowWindowClass.INPUT_ONLY;
-    attr.event_mask = this.get_events () |
-                      Gdk.EventMask.BUTTON_PRESS_MASK |
-                      Gdk.EventMask.BUTTON_RELEASE_MASK |
-                      Gdk.EventMask.TOUCH_MASK |
-                      Gdk.EventMask.ENTER_NOTIFY_MASK |
-                      Gdk.EventMask.LEAVE_NOTIFY_MASK;
-
-    Gdk.WindowAttributesType attr_mask = Gdk.WindowAttributesType.X |
-                                         Gdk.WindowAttributesType.Y;
     Gdk.Window window = this.get_parent_window ();
     this.set_window (window);
     window.ref ();
 
-    this.event_window = new Gdk.Window (window, attr, attr_mask);
+    window_rect = {0, 0, draw_width, draw_height};
+    this.event_window = new Gdk.Window.input (window,
+                                              this.get_events () |
+                                              Gdk.EventMask.BUTTON_PRESS_MASK |
+                                              Gdk.EventMask.BUTTON_RELEASE_MASK |
+                                              Gdk.EventMask.TOUCH_MASK |
+                                              Gdk.EventMask.ENTER_NOTIFY_MASK |
+                                              Gdk.EventMask.LEAVE_NOTIFY_MASK,
+                                              window_rect);
+
     this.register_window (this.event_window);
   }
 
