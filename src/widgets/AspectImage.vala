@@ -89,8 +89,8 @@ class AspectImage : Gtk.Widget {
                                 int             for_size,
                                 out int         min,
                                 out int         nat,
-                                out int         min_baseline,
-                                out int         nat_baseline) {
+                                out int         min_baseline = null,
+                                out int         nat_baseline = null) {
     if (pixbuf_surface == null) {
       min = 0;
       nat = 1;

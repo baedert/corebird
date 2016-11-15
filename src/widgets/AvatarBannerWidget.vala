@@ -79,8 +79,8 @@ public class AvatarBannerWidget : Gtk.Container {
                                 int             for_size,
                                 out int         min,
                                 out int         nat,
-                                out int         min_baseline,
-                                out int         nat_baseline) {
+                                out int         min_baseline = null,
+                                out int         nat_baseline = null) {
     if (orientation == Gtk.Orientation.HORIZONTAL) {
       min = nat = avatar_size + 40; // 20px margin on either side
     } else {

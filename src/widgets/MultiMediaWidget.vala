@@ -32,7 +32,6 @@ public class MultiMediaWidget : Gtk.Box {
   }
 
   public void set_all_media (Cb.Media[] medias) {
-    assert (media_count == 0);
     this.media_buttons = new MediaButton[medias.length];
     this.media_count = medias.length;
 

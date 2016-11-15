@@ -92,8 +92,8 @@ class AddImageButton : Gtk.Widget {
                                 int             for_size,
                                 out int         min,
                                 out int         nat,
-                                out int         min_baseline,
-                                out int         nat_baseline) {
+                                out int         min_baseline = null,
+                                out int         nat_baseline = null) {
     int media_size;
     int other_media_size;
     int min_size;
