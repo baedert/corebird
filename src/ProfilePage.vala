@@ -466,7 +466,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
       var entry = new UserListEntry ();
       entry.show_settings = false;
       entry.user_id = user_obj.get_int_member ("id");
-      entry.screen_name = "@" + user_obj.get_string_member ("screen_name");
+      entry.set_screen_name ("@" + user_obj.get_string_member ("screen_name"));
       entry.name = user_obj.get_string_member ("name");
       entry.avatar_url = avatar_url;
       entry.get_style_context ().add_class ("tweet");
@@ -505,7 +505,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
       var entry = new UserListEntry ();
       entry.show_settings = false;
       entry.user_id = user_obj.get_int_member ("id");
-      entry.screen_name = "@" + user_obj.get_string_member ("screen_name");
+      entry.set_screen_name ("@" + user_obj.get_string_member ("screen_name"));
       entry.name = user_obj.get_string_member ("name");
       entry.avatar_url = avatar_url;
       entry.get_style_context ().add_class ("tweet");

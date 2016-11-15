@@ -23,6 +23,7 @@ This is the readme for the current *development version*. If you're looking for 
   - `r`  - reply
   - `tt` - retweet
   - `f`  - favorite
+  - `q`  - quote
   - `dd` - delete
   - `Return` - Show tweet details
 
@@ -50,6 +51,7 @@ This is the readme for the current *development version*. If you're looking for 
  - `gst-plugins-bad-1.0 >= 1.6` (disable via --disable-video, default enabled)
  - `gst-plugins-good-1.0` (disable via --disable-video, default enabled)
  - `gst-libav-1.0` (disable via --disable-video, default enabled)
+ - `gspell-1` (for spellchecking, disable via --disable-spellcheck, default enabled)
 
 Note that the above packages are just rough estimations, the actual package names on your distribution may vary.
 

@@ -16,7 +16,7 @@
  */
 
 public class TweetListBox : Gtk.ListBox {
-  private Gtk.Stack placeholder;
+  private Gtk.Stack? placeholder = null;
   private Gtk.Label no_entries_label;
 
   private Gtk.Box error_box;
@@ -107,6 +107,9 @@ public class TweetListBox : Gtk.ListBox {
     error_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 12);
     error_label = new Gtk.Label ("");
     error_label.get_style_context ().add_class ("dim-label");
+    error_label.margin = 12;
+    error_label.selectable = true;
+    error_label.wrap = true;
     retry_button = new Gtk.Button.with_label (_("Retry"));
     retry_button.set_halign (Gtk.Align.CENTER);
     retry_button.clicked.connect (() => {

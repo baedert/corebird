@@ -63,6 +63,9 @@ public class MainWindow : Gtk.ApplicationWindow {
   public MainWindow (Gtk.Application app, Account? account = null) {
     set_default_size (480, 700);
 
+    var group = new Gtk.WindowGroup ();
+    group.add_window (this);
+
 #if DEBUG
     this.set_focus.connect ((w) => {
       debug ("Focus widget now: %s %p", w != null ? __class_name (w) : "(null)", w);

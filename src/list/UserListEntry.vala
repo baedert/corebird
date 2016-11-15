@@ -35,10 +35,12 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
   }
 
   public string screen_name {
-    set { screen_name_label.label = value; }
     owned get {
       return screen_name_label.label.substring (1);
     }
+  }
+  public void set_screen_name (string sn) {
+    screen_name_label.label = sn;
   }
 
   public string avatar_url {
@@ -80,13 +82,13 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
   private unowned Account account;
 
   public UserListEntry.from_account (Account acc) {
-    this.screen_name = "@" + acc.screen_name;
+    this.screen_name_label.label = "@" + acc.screen_name;
     this.name = acc.name;
     this.avatar_surface = acc.avatar;
     this.account = acc;
     this.user_id = acc.id;
     acc.info_changed.connect ((screen_name, name, nop, avatar) => {
-      this.screen_name = "@" + screen_name;
+      this.screen_name_label.label = "@" + acc.screen_name;
       this.name = name;
       this.avatar_surface = avatar;
     });
@@ -118,7 +120,7 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
   }
 
   private void real_set_avatar (string avatar_url) {
-    Twitter.get ().get_avatar (user_id, avatar_url, avatar_image, 48 * this.get_scale_factor ());
+    Twitter.get ().get_avatar.begin (user_id, avatar_url, avatar_image, 48 * this.get_scale_factor ());
   }
 
   public int update_time_delta (GLib.DateTime? now = null) {return 0;}

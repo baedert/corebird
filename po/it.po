@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
-"POT-Creation-Date: 2016-07-31 08:33+0200\n"
+"POT-Creation-Date: 2016-11-14 17:33+0100\n"
 "PO-Revision-Date: 2016-07-30 08:17+0000\n"
 "Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
 "Language-Team: Italian (http://www.transifex.com/corebird/corebird/language/"
@@ -69,11 +69,11 @@ msgstr ""
 msgid "corebird"
 msgstr ""
 
-#: src/DefaultTimeline.vala:358
+#: src/DefaultTimeline.vala:359
 msgid "Could not load tweets"
 msgstr ""
 
-#: src/DMPage.vala:329
+#: src/DMPage.vala:330
 msgid "Direct Conversation"
 msgstr "Conversazione diretta"
 
@@ -94,7 +94,7 @@ msgid "Direct Messages"
 msgstr "Messaggi diretti"
 
 #: src/FavoritesTimeline.vala:67 src/FavoritesTimeline.vala:71
-#: src/TweetInfoPage.vala:482
+#: src/TweetInfoPage.vala:486
 msgid "Favorites"
 msgstr "Preferiti"
 
@@ -106,24 +106,24 @@ msgstr ""
 msgid "Filters"
 msgstr ""
 
-#: src/HomeTimeline.vala:122
+#: src/HomeTimeline.vala:140
 #, c-format
 msgid "%s retweeted %s"
 msgstr "%s ha ritwittato %s"
 
-#: src/HomeTimeline.vala:125
+#: src/HomeTimeline.vala:143
 #, c-format
 msgid "%s tweeted"
 msgstr "%s ritwittato"
 
-#: src/HomeTimeline.vala:134
+#: src/HomeTimeline.vala:152
 #, c-format
 msgid "%d new Tweet!"
 msgid_plural "%d new Tweets!"
 msgstr[0] "%d nuovo Twett!"
 msgstr[1] "%d nuovi Tweet!"
 
-#: src/HomeTimeline.vala:169
+#: src/HomeTimeline.vala:187
 msgid "Home"
 msgstr "Home"
 
@@ -134,28 +134,28 @@ msgid_plural "(%d unread)"
 msgstr[0] "(%d non letto)"
 msgstr[1] "(%d non letti)"
 
-#: src/ListsPage.vala:120 src/ListsPage.vala:125 ui/profile-page.ui:350
+#: src/ListsPage.vala:120 src/ListsPage.vala:125 ui/profile-page.ui:356
 msgid "Lists"
 msgstr "Liste"
 
-#: src/ListStatusesPage.vala:367
+#: src/ListStatusesPage.vala:369
 msgid "List"
 msgstr "Lista"
 
-#: src/list/TweetListEntry.vala:411
+#: src/list/TweetListEntry.vala:434
 #, c-format
 msgid "Block %s"
 msgstr ""
 
-#: src/list/TweetListEntry.vala:546
+#: src/list/TweetListEntry.vala:575
 msgid "This tweet contains images marked as inappropriate"
 msgstr ""
 
-#: src/list/TweetListEntry.vala:553
+#: src/list/TweetListEntry.vala:582
 msgid "Show anyway"
 msgstr ""
 
-#: src/MainWindow.vala:75
+#: src/MainWindow.vala:78
 msgid "Add new Account"
 msgstr ""
 
@@ -164,7 +164,7 @@ msgstr ""
 msgid "%s mentioned %s"
 msgstr ""
 
-#: src/MentionsTimeline.vala:99 src/MentionsTimeline.vala:103
+#: src/MentionsTimeline.vala:108 src/MentionsTimeline.vala:112
 msgid "Mentions"
 msgstr "Menzioni"
 
@@ -172,32 +172,32 @@ msgstr "Menzioni"
 msgid "Protected profile"
 msgstr "Profilo protetto"
 
-#: src/ProfilePage.vala:319
+#: src/ProfilePage.vala:321
 #, c-format
 msgid "Tweet to @%s"
 msgstr "Twitta a @%s"
 
-#: src/SearchPage.vala:353 src/SearchPage.vala:362 ui/search-page.ui:24
+#: src/SearchPage.vala:371 src/SearchPage.vala:380 ui/search-page.ui:24
 msgid "Search"
 msgstr "Cerca"
 
-#: src/TweetInfoPage.vala:300
+#: src/TweetInfoPage.vala:302
 msgid "Could not show tweet"
 msgstr "Impossibile mostrare il tweet"
 
-#: src/TweetInfoPage.vala:481
+#: src/TweetInfoPage.vala:485
 msgid "Retweets"
 msgstr "Retweet"
 
-#: src/TweetInfoPage.vala:490 src/widgets/MediaButton.vala:91
+#: src/TweetInfoPage.vala:494 src/widgets/MediaButton.vala:91
 msgid "Open in Browser"
 msgstr "Apri nel browser"
 
-#: src/TweetInfoPage.vala:490
+#: src/TweetInfoPage.vala:494
 msgid "Source"
 msgstr "Sorgente"
 
-#: src/TweetInfoPage.vala:530
+#: src/TweetInfoPage.vala:545
 msgid "Tweet Details"
 msgstr "Dettagli tweet"
 
@@ -252,15 +252,15 @@ msgstr "Seleziona banner"
 msgid "Select avatar"
 msgstr "Seleziona avatar"
 
-#: src/widgets/CompletionTextView.vala:33
+#: src/widgets/CompletionTextView.vala:40
 msgid "No users found"
 msgstr ""
 
-#: src/widgets/FollowButton.vala:45
+#: src/widgets/FollowButton.vala:43
 msgid "Follow"
 msgstr "Segui"
 
-#: src/widgets/FollowButton.vala:46
+#: src/widgets/FollowButton.vala:44
 msgid "Unfollow"
 msgstr "Non seguire"
 
@@ -272,31 +272,24 @@ msgstr ""
 msgid "Copy link"
 msgstr "Copia link"
 
-#: src/widgets/TweetListBox.vala:100
+#: src/widgets/TweetListBox.vala:99
 msgid "Loading..."
 msgstr "Caricamento in corso..."
 
-#: src/widgets/TweetListBox.vala:103 src/widgets/TweetListBox.vala:151
+#: src/widgets/TweetListBox.vala:102 src/widgets/TweetListBox.vala:150
 msgid "No entries found"
 msgstr "Nessun risultato trovato"
 
-#: src/widgets/TweetListBox.vala:111
+#: src/widgets/TweetListBox.vala:110
 msgid "Retry"
 msgstr "Riprova"
 
-#: src/window/ComposeTweetWindow.vala:125
+#: src/window/ComposeTweetWindow.vala:128
 msgid "Quote tweet"
 msgstr "Cita il tweet"
 
-#: src/window/FileSelector.vala:39 src/window/FileSelector.vala:85
-msgid "Select Image"
-msgstr ""
-
-#: src/window/FileSelector.vala:70
-msgid "Open"
-msgstr ""
-
-#: src/window/FileSelector.vala:77 src/window/UserListDialog.vala:47
+#: src/window/ComposeTweetWindow.vala:237
+#: src/window/ComposeTweetWindow.vala:262 src/window/UserListDialog.vala:47
 #: ui/account-dialog.ui:21 ui/account-dialog.ui:233 ui/compose-window.ui:41
 #: ui/filter-list-entry.ui:80 ui/image-crop-dialog.ui:46
 #: ui/list-list-entry.ui:98 ui/list-statuses-page.ui:173
@@ -305,11 +298,23 @@ msgstr ""
 msgid "Cancel"
 msgstr "Annulla"
 
-#: src/window/FileSelector.vala:152
-msgid ""
-"Max file size exceeded\n"
-"(3MB)"
+#: src/window/ComposeTweetWindow.vala:259
+msgid "Select Image"
 msgstr ""
+
+#: src/window/ComposeTweetWindow.vala:264
+msgid "Open"
+msgstr ""
+
+#: src/window/ComposeTweetWindow.vala:288
+#, c-format
+msgid ""
+"The selected image is too big. The maximum file size per image is %'d MB"
+msgstr ""
+
+#: src/window/ComposeTweetWindow.vala:290 ui/image-crop-dialog.ui:71
+msgid "Back"
+msgstr "Indietro"
 
 #: src/window/ImageCropDialog.vala:58 ui/image-crop-dialog.ui:61
 msgid "Next"
@@ -343,11 +348,11 @@ msgstr[1] "Altezza minima: %d pixel"
 msgid "Modify Filter"
 msgstr "Modifica filtro"
 
-#: src/window/ModifyFilterDialog.vala:80
+#: src/window/ModifyFilterDialog.vala:76
 msgid "Matches"
 msgstr "Corrispondenze"
 
-#: src/window/ModifyFilterDialog.vala:82
+#: src/window/ModifyFilterDialog.vala:78
 msgid "Doesn't match"
 msgstr "Non corrisponde"
 
@@ -391,10 +396,6 @@ msgstr "Non hai nessuna lista"
 msgid "About Corebird"
 msgstr "Informazioni su Corebird"
 
-#: ui/about-dialog.ui:10
-msgid "Using Font Awesome by Dave Gandy - http://fontawesome.io"
-msgstr "Usa i Font Awesome di Dave Gandy - http://fontawesome.io"
-
 #: ui/account-create-widget.ui:16
 msgid "New Account"
 msgstr "Nuovo account"
@@ -429,7 +430,8 @@ msgstr "Avvio automatico"
 
 #: ui/account-dialog.ui:189 ui/account-dialog.ui:246 ui/filter-list-entry.ui:93
 #: ui/list-list-entry.ui:132 ui/list-statuses-page.ui:166
-#: ui/modify-snippet-dialog.ui:108 ui/tweet-list-entry.ui:10
+#: ui/modify-snippet-dialog.ui:108 ui/tweet-info-page.ui:10
+#: ui/tweet-list-entry.ui:10
 msgid "Delete"
 msgstr "Elimina"
 
@@ -441,21 +443,17 @@ msgstr "Vuoi davvero rimuovere questo account?"
 msgid "Compose Tweet"
 msgstr "Componi tweet"
 
-#: ui/compose-window.ui:48 ui/dm-page.ui:46
+#: ui/compose-window.ui:48 ui/dm-page.ui:51
 msgid "Send"
 msgstr "Invia"
 
-#: ui/compose-window.ui:134
+#: ui/compose-window.ui:138
 msgid "Add Image"
 msgstr ""
 
 #: ui/filter-page.ui:71 ui/search-page.ui:86
 msgid "Users"
 msgstr "Utenti"
-
-#: ui/image-crop-dialog.ui:71
-msgid "Back"
-msgstr "Indietro"
 
 #: ui/list-list-entry.ui:109
 msgid "Subscribe"
@@ -581,19 +579,19 @@ msgstr ""
 msgid "Retweets disabled"
 msgstr "Retweet disabilitati"
 
-#: ui/profile-page.ui:155
+#: ui/profile-page.ui:159
 msgid "Follows you"
 msgstr "Ti seguono"
 
-#: ui/profile-page.ui:227 ui/search-page.ui:74 ui/settings-dialog.ui:421
+#: ui/profile-page.ui:233 ui/search-page.ui:74 ui/settings-dialog.ui:421
 msgid "Tweets"
 msgstr "Tweet"
 
-#: ui/profile-page.ui:268
+#: ui/profile-page.ui:274
 msgid "Followers"
 msgstr "Followers"
 
-#: ui/profile-page.ui:309
+#: ui/profile-page.ui:315
 msgid "Following"
 msgstr "Following"
 
@@ -765,11 +763,17 @@ msgid "Reply"
 msgstr ""
 
 #: ui/shortcuts-window.ui:100
+#, fuzzy
+msgctxt "shortcuts window"
+msgid "Quote"
+msgstr "Cita"
+
+#: ui/shortcuts-window.ui:107
 msgctxt "shortcuts window"
 msgid "Show Details"
 msgstr ""
 
-#: ui/shortcuts-window.ui:107
+#: ui/shortcuts-window.ui:114
 msgctxt "shortcuts window"
 msgid "Delete"
 msgstr ""
@@ -790,19 +794,19 @@ msgstr "Vai"
 msgid "Quote"
 msgstr "Cita"
 
-#: ui/tweet-info-page.ui:223
+#: ui/tweet-info-page.ui:226
 msgid "Retweet tweet"
 msgstr "Ritwitta il tweet"
 
-#: ui/tweet-info-page.ui:250
+#: ui/tweet-info-page.ui:253
 msgid "Favorite tweet"
 msgstr "Tweet preferito"
 
-#: ui/tweet-info-page.ui:277
+#: ui/tweet-info-page.ui:280
 msgid "Reply to tweet"
 msgstr "Rispondi al tweet"
 
-#: ui/tweet-info-page.ui:315
+#: ui/tweet-info-page.ui:318
 msgid "More"
 msgstr "Altro"
 
@@ -818,15 +822,15 @@ msgstr "Rispondi"
 msgid "Unblock"
 msgstr "Sblocca"
 
-#: ui/user-list-entry.ui:65
+#: ui/user-list-entry.ui:67
 msgid "Show settings of this account"
 msgstr "Mostra le impostazioni di questo account"
 
-#: ui/user-list-entry.ui:90
+#: ui/user-list-entry.ui:92
 msgid "Open in new window"
 msgstr "Apri in una nuova finestra"
 
-#: ui/user-list-entry.ui:114
+#: ui/user-list-entry.ui:116
 msgid "Go to profile"
 msgstr ""
 
@@ -837,3 +841,6 @@ msgstr "Creato"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "Sottoscritto a"
+
+#~ msgid "Using Font Awesome by Dave Gandy - http://fontawesome.io"
+#~ msgstr "Usa i Font Awesome di Dave Gandy - http://fontawesome.io"

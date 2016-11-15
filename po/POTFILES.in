@@ -27,7 +27,6 @@ src/widgets/MediaButton.vala
 src/widgets/PixbufButton.vala
 src/widgets/TweetListBox.vala
 src/window/ComposeTweetWindow.vala
-src/window/FileSelector.vala
 src/window/ImageCropDialog.vala
 src/window/ModifyFilterDialog.vala
 src/window/ModifySnippetDialog.vala

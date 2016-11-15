@@ -95,6 +95,13 @@ void main (string[] args) {
     list3.add (row);
   }
 
+  {
+    // Video + Thumbnail of that video, but should only show video
+    var tweet = parse_tweet (VIDEO_AND_THUMBNAIL);
+    var row = new TweetListEntry (tweet, null, fake_acount);
+    list3.add (row);
+  }
+
   list.set_size_request  (500, -1);
   list2.set_size_request (500, -1);
   list2.set_size_request (500, -1);
@@ -2420,3 +2427,586 @@ const string EMPTY_RETWEET_WITH_MEDIA =
 """;
 
 
+const string VIDEO_AND_THUMBNAIL =
+"""
+{
+  "created_at" : "Sat Nov 05 19:41:06 +0000 2016",
+  "id" : 794987926157410308,
+  "id_str" : "794987926157410308",
+  "full_text" : "RT @mileysdrive: Truly iconic https://t.co/8gdSKk0Zx2",
+  "truncated" : false,
+  "display_text_range" : [
+    0,
+    53
+  ],
+  "entities" : {
+    "hashtags" : [
+    ],
+    "symbols" : [
+    ],
+    "user_mentions" : [
+      {
+        "screen_name" : "mileysdrive",
+        "name" : "NSA agent jim",
+        "id" : 2624180621,
+        "id_str" : "2624180621",
+        "indices" : [
+          3,
+          15
+        ]
+      }
+    ],
+    "urls" : [
+    ],
+    "media" : [
+      {
+        "id" : 793976804549754880,
+        "id_str" : "793976804549754880",
+        "indices" : [
+          30,
+          53
+        ],
+        "media_url" : "http://pbs.twimg.com/media/CwTHbn3XgAEcDEr.jpg",
+        "media_url_https" : "https://pbs.twimg.com/media/CwTHbn3XgAEcDEr.jpg",
+        "url" : "https://t.co/8gdSKk0Zx2",
+        "display_url" : "pic.twitter.com/8gdSKk0Zx2",
+        "expanded_url" : "https://twitter.com/LateNightSeth/status/793982502008397825/video/1",
+        "type" : "photo",
+        "sizes" : {
+          "large" : {
+            "w" : 1273,
+            "h" : 715,
+            "resize" : "fit"
+          },
+          "thumb" : {
+            "w" : 150,
+            "h" : 150,
+            "resize" : "crop"
+          },
+          "small" : {
+            "w" : 680,
+            "h" : 382,
+            "resize" : "fit"
+          },
+          "medium" : {
+            "w" : 1200,
+            "h" : 674,
+            "resize" : "fit"
+          }
+        },
+        "source_status_id" : 793982502008397825,
+        "source_status_id_str" : "793982502008397825",
+        "source_user_id" : 570290656,
+        "source_user_id_str" : "570290656"
+      }
+    ]
+  },
+  "extended_entities" : {
+    "media" : [
+      {
+        "id" : 793976804549754880,
+        "id_str" : "793976804549754880",
+        "indices" : [
+          30,
+          53
+        ],
+        "media_url" : "http://pbs.twimg.com/media/CwTHbn3XgAEcDEr.jpg",
+        "media_url_https" : "https://pbs.twimg.com/media/CwTHbn3XgAEcDEr.jpg",
+        "url" : "https://t.co/8gdSKk0Zx2",
+        "display_url" : "pic.twitter.com/8gdSKk0Zx2",
+        "expanded_url" : "https://twitter.com/LateNightSeth/status/793982502008397825/video/1",
+        "type" : "video",
+        "sizes" : {
+          "large" : {
+            "w" : 1273,
+            "h" : 715,
+            "resize" : "fit"
+          },
+          "thumb" : {
+            "w" : 150,
+            "h" : 150,
+            "resize" : "crop"
+          },
+          "small" : {
+            "w" : 680,
+            "h" : 382,
+            "resize" : "fit"
+          },
+          "medium" : {
+            "w" : 1200,
+            "h" : 674,
+            "resize" : "fit"
+          }
+        },
+        "source_status_id" : 793982502008397825,
+        "source_status_id_str" : "793982502008397825",
+        "source_user_id" : 570290656,
+        "source_user_id_str" : "570290656",
+        "video_info" : {
+          "aspect_ratio" : [
+            16,
+            9
+          ],
+          "duration_millis" : 72440,
+          "variants" : [
+            {
+              "bitrate" : 320000,
+              "content_type" : "video/mp4",
+              "url" : "https://video.twimg.com/amplify_video/793976804549754880/vid/320x180/wO9JSutxwKtnr-4M.mp4"
+            },
+            {
+              "bitrate" : 2176000,
+              "content_type" : "video/mp4",
+              "url" : "https://video.twimg.com/amplify_video/793976804549754880/vid/1280x720/zMwtzVr0k_5SYkOG.mp4"
+            },
+            {
+              "content_type" : "application/x-mpegURL",
+              "url" : "https://video.twimg.com/amplify_video/793976804549754880/pl/Vj9EDa2m-8tTq332.m3u8"
+            },
+            {
+              "bitrate" : 832000,
+              "content_type" : "video/mp4",
+              "url" : "https://video.twimg.com/amplify_video/793976804549754880/vid/640x360/1WAEEC98fuAilBVX.mp4"
+            },
+            {
+              "content_type" : "application/dash+xml",
+              "url" : "https://video.twimg.com/amplify_video/793976804549754880/pl/Vj9EDa2m-8tTq332.mpd"
+            }
+          ]
+        },
+        "additional_media_info" : {
+          "title" : "",
+          "description" : "",
+          "call_to_actions" : {
+            "visit_site" : {
+              "url" : "https://www.youtube.com/user/LateNightSeth/featured"
+            }
+          },
+          "embeddable" : true,
+          "monetizable" : false,
+          "source_user" : {
+            "id" : 570290656,
+            "id_str" : "570290656",
+            "name" : "Late Night",
+            "screen_name" : "LateNightSeth",
+            "location" : "Studio 8G - Rockefeller Center",
+            "description" : "Official Twitter handle for Late Night with @SethMeyers, airing weeknights at 12:35/11:35c on @NBC. #LNSM",
+            "url" : "http://t.co/af2p12D0GI",
+            "entities" : {
+              "url" : {
+                "urls" : [
+                  {
+                    "url" : "http://t.co/af2p12D0GI",
+                    "expanded_url" : "http://latenightseth.com",
+                    "display_url" : "latenightseth.com",
+                    "indices" : [
+                      0,
+                      22
+                    ]
+                  }
+                ]
+              },
+              "description" : {
+                "urls" : [
+                ]
+              }
+            },
+            "protected" : false,
+            "followers_count" : 291188,
+            "friends_count" : 1743,
+            "listed_count" : 1467,
+            "created_at" : "Thu May 03 21:08:00 +0000 2012",
+            "favourites_count" : 2440,
+            "utc_offset" : -18000,
+            "time_zone" : "Eastern Time (US & Canada)",
+            "geo_enabled" : true,
+            "verified" : true,
+            "statuses_count" : 8635,
+            "lang" : "en",
+            "contributors_enabled" : false,
+            "is_translator" : false,
+            "is_translation_enabled" : false,
+            "profile_background_color" : "C0DEED",
+            "profile_background_image_url" : "http://pbs.twimg.com/profile_background_images/438333165292097536/Z0HtuqUc.jpeg",
+            "profile_background_image_url_https" : "https://pbs.twimg.com/profile_background_images/438333165292097536/Z0HtuqUc.jpeg",
+            "profile_background_tile" : false,
+            "profile_image_url" : "http://pbs.twimg.com/profile_images/781548560944865280/9dpThu5h_normal.jpg",
+            "profile_image_url_https" : "https://pbs.twimg.com/profile_images/781548560944865280/9dpThu5h_normal.jpg",
+            "profile_banner_url" : "https://pbs.twimg.com/profile_banners/570290656/1476483213",
+            "profile_link_color" : "0084B4",
+            "profile_sidebar_border_color" : "FFFFFF",
+            "profile_sidebar_fill_color" : "DDEEF6",
+            "profile_text_color" : "333333",
+            "profile_use_background_image" : true,
+            "has_extended_profile" : false,
+            "default_profile" : false,
+            "default_profile_image" : false,
+            "following" : false,
+            "follow_request_sent" : false,
+            "notifications" : false,
+            "translator_type" : "none"
+          }
+        }
+      }
+    ]
+  },
+  "source" : "<a href=\"http://twitter.com/download/iphone\" rel=\"nofollow\">Twitter for iPhone</a>",
+  "in_reply_to_status_id" : null,
+  "in_reply_to_status_id_str" : null,
+  "in_reply_to_user_id" : null,
+  "in_reply_to_user_id_str" : null,
+  "in_reply_to_screen_name" : null,
+  "user" : {
+    "id" : 21369740,
+    "id_str" : "21369740",
+    "name" : "Rob DenBleyker",
+    "screen_name" : "RobDenBleyker",
+    "location" : "Dallas",
+    "description" : "I'm not Rob Dyrdek. Don't follow me.",
+    "url" : "https://t.co/5jh1OQTAOO",
+    "entities" : {
+      "url" : {
+        "urls" : [
+          {
+            "url" : "https://t.co/5jh1OQTAOO",
+            "expanded_url" : "http://www.explosm.net",
+            "display_url" : "explosm.net",
+            "indices" : [
+              0,
+              23
+            ]
+          }
+        ]
+      },
+      "description" : {
+        "urls" : [
+        ]
+      }
+    },
+    "protected" : false,
+    "followers_count" : 126727,
+    "friends_count" : 815,
+    "listed_count" : 1287,
+    "created_at" : "Fri Feb 20 03:26:24 +0000 2009",
+    "favourites_count" : 1543,
+    "utc_offset" : -18000,
+    "time_zone" : "Central Time (US & Canada)",
+    "geo_enabled" : true,
+    "verified" : false,
+    "statuses_count" : 8276,
+    "lang" : "en",
+    "contributors_enabled" : false,
+    "is_translator" : false,
+    "is_translation_enabled" : false,
+    "profile_background_color" : "49585E",
+    "profile_background_image_url" : "http://abs.twimg.com/images/themes/theme1/bg.png",
+    "profile_background_image_url_https" : "https://abs.twimg.com/images/themes/theme1/bg.png",
+    "profile_background_tile" : false,
+    "profile_image_url" : "http://pbs.twimg.com/profile_images/769014291756441601/b0axYzlg_normal.jpg",
+    "profile_image_url_https" : "https://pbs.twimg.com/profile_images/769014291756441601/b0axYzlg_normal.jpg",
+    "profile_link_color" : "0C90F5",
+    "profile_sidebar_border_color" : "C0DEED",
+    "profile_sidebar_fill_color" : "DDEEF6",
+    "profile_text_color" : "333333",
+    "profile_use_background_image" : false,
+    "has_extended_profile" : false,
+    "default_profile" : false,
+    "default_profile_image" : false,
+    "following" : true,
+    "follow_request_sent" : false,
+    "notifications" : false,
+    "translator_type" : "none"
+  },
+  "geo" : null,
+  "coordinates" : null,
+  "place" : null,
+  "contributors" : null,
+  "retweeted_status" : {
+    "created_at" : "Thu Nov 03 19:59:57 +0000 2016",
+    "id" : 794267893257170944,
+    "id_str" : "794267893257170944",
+    "full_text" : "Truly iconic https://t.co/8gdSKk0Zx2",
+    "truncated" : false,
+    "display_text_range" : [
+      0,
+      36
+    ],
+    "entities" : {
+      "hashtags" : [
+      ],
+      "symbols" : [
+      ],
+      "user_mentions" : [
+      ],
+      "urls" : [
+      ],
+      "media" : [
+        {
+          "id" : 793976804549754880,
+          "id_str" : "793976804549754880",
+          "indices" : [
+            13,
+            36
+          ],
+          "media_url" : "http://pbs.twimg.com/media/CwTHbn3XgAEcDEr.jpg",
+          "media_url_https" : "https://pbs.twimg.com/media/CwTHbn3XgAEcDEr.jpg",
+          "url" : "https://t.co/8gdSKk0Zx2",
+          "display_url" : "pic.twitter.com/8gdSKk0Zx2",
+          "expanded_url" : "https://twitter.com/LateNightSeth/status/793982502008397825/video/1",
+          "type" : "photo",
+          "sizes" : {
+            "large" : {
+              "w" : 1273,
+              "h" : 715,
+              "resize" : "fit"
+            },
+            "thumb" : {
+              "w" : 150,
+              "h" : 150,
+              "resize" : "crop"
+            },
+            "small" : {
+              "w" : 680,
+              "h" : 382,
+              "resize" : "fit"
+            },
+            "medium" : {
+              "w" : 1200,
+              "h" : 674,
+              "resize" : "fit"
+            }
+          },
+          "source_status_id" : 793982502008397825,
+          "source_status_id_str" : "793982502008397825",
+          "source_user_id" : 570290656,
+          "source_user_id_str" : "570290656"
+        }
+      ]
+    },
+    "extended_entities" : {
+      "media" : [
+        {
+          "id" : 793976804549754880,
+          "id_str" : "793976804549754880",
+          "indices" : [
+            13,
+            36
+          ],
+          "media_url" : "http://pbs.twimg.com/media/CwTHbn3XgAEcDEr.jpg",
+          "media_url_https" : "https://pbs.twimg.com/media/CwTHbn3XgAEcDEr.jpg",
+          "url" : "https://t.co/8gdSKk0Zx2",
+          "display_url" : "pic.twitter.com/8gdSKk0Zx2",
+          "expanded_url" : "https://twitter.com/LateNightSeth/status/793982502008397825/video/1",
+          "type" : "video",
+          "sizes" : {
+            "large" : {
+              "w" : 1273,
+              "h" : 715,
+              "resize" : "fit"
+            },
+            "thumb" : {
+              "w" : 150,
+              "h" : 150,
+              "resize" : "crop"
+            },
+            "small" : {
+              "w" : 680,
+              "h" : 382,
+              "resize" : "fit"
+            },
+            "medium" : {
+              "w" : 1200,
+              "h" : 674,
+              "resize" : "fit"
+            }
+          },
+          "source_status_id" : 793982502008397825,
+          "source_status_id_str" : "793982502008397825",
+          "source_user_id" : 570290656,
+          "source_user_id_str" : "570290656",
+          "video_info" : {
+            "aspect_ratio" : [
+              16,
+              9
+            ],
+            "duration_millis" : 72440,
+            "variants" : [
+              {
+                "bitrate" : 320000,
+                "content_type" : "video/mp4",
+                "url" : "https://video.twimg.com/amplify_video/793976804549754880/vid/320x180/wO9JSutxwKtnr-4M.mp4"
+              },
+              {
+                "bitrate" : 2176000,
+                "content_type" : "video/mp4",
+                "url" : "https://video.twimg.com/amplify_video/793976804549754880/vid/1280x720/zMwtzVr0k_5SYkOG.mp4"
+              },
+              {
+                "content_type" : "application/x-mpegURL",
+                "url" : "https://video.twimg.com/amplify_video/793976804549754880/pl/Vj9EDa2m-8tTq332.m3u8"
+              },
+              {
+                "bitrate" : 832000,
+                "content_type" : "video/mp4",
+                "url" : "https://video.twimg.com/amplify_video/793976804549754880/vid/640x360/1WAEEC98fuAilBVX.mp4"
+              },
+              {
+                "content_type" : "application/dash+xml",
+                "url" : "https://video.twimg.com/amplify_video/793976804549754880/pl/Vj9EDa2m-8tTq332.mpd"
+              }
+            ]
+          },
+          "additional_media_info" : {
+            "title" : "",
+            "description" : "",
+            "call_to_actions" : {
+              "visit_site" : {
+                "url" : "https://www.youtube.com/user/LateNightSeth/featured"
+              }
+            },
+            "embeddable" : true,
+            "monetizable" : false,
+            "source_user" : {
+              "id" : 570290656,
+              "id_str" : "570290656",
+              "name" : "Late Night",
+              "screen_name" : "LateNightSeth",
+              "location" : "Studio 8G - Rockefeller Center",
+              "description" : "Official Twitter handle for Late Night with @SethMeyers, airing weeknights at 12:35/11:35c on @NBC. #LNSM",
+              "url" : "http://t.co/af2p12D0GI",
+              "entities" : {
+                "url" : {
+                  "urls" : [
+                    {
+                      "url" : "http://t.co/af2p12D0GI",
+                      "expanded_url" : "http://latenightseth.com",
+                      "display_url" : "latenightseth.com",
+                      "indices" : [
+                        0,
+                        22
+                      ]
+                    }
+                  ]
+                },
+                "description" : {
+                  "urls" : [
+                  ]
+                }
+              },
+              "protected" : false,
+              "followers_count" : 291188,
+              "friends_count" : 1743,
+              "listed_count" : 1467,
+              "created_at" : "Thu May 03 21:08:00 +0000 2012",
+              "favourites_count" : 2440,
+              "utc_offset" : -18000,
+              "time_zone" : "Eastern Time (US & Canada)",
+              "geo_enabled" : true,
+              "verified" : true,
+              "statuses_count" : 8635,
+              "lang" : "en",
+              "contributors_enabled" : false,
+              "is_translator" : false,
+              "is_translation_enabled" : false,
+              "profile_background_color" : "C0DEED",
+              "profile_background_image_url" : "http://pbs.twimg.com/profile_background_images/438333165292097536/Z0HtuqUc.jpeg",
+              "profile_background_image_url_https" : "https://pbs.twimg.com/profile_background_images/438333165292097536/Z0HtuqUc.jpeg",
+              "profile_background_tile" : false,
+              "profile_image_url" : "http://pbs.twimg.com/profile_images/781548560944865280/9dpThu5h_normal.jpg",
+              "profile_image_url_https" : "https://pbs.twimg.com/profile_images/781548560944865280/9dpThu5h_normal.jpg",
+              "profile_banner_url" : "https://pbs.twimg.com/profile_banners/570290656/1476483213",
+              "profile_link_color" : "0084B4",
+              "profile_sidebar_border_color" : "FFFFFF",
+              "profile_sidebar_fill_color" : "DDEEF6",
+              "profile_text_color" : "333333",
+              "profile_use_background_image" : true,
+              "has_extended_profile" : false,
+              "default_profile" : false,
+              "default_profile_image" : false,
+              "following" : false,
+              "follow_request_sent" : false,
+              "notifications" : false,
+              "translator_type" : "none"
+            }
+          }
+        }
+      ]
+    },
+    "source" : "<a href=\"http://twitter.com/download/iphone\" rel=\"nofollow\">Twitter for iPhone</a>",
+    "in_reply_to_status_id" : null,
+    "in_reply_to_status_id_str" : null,
+    "in_reply_to_user_id" : null,
+    "in_reply_to_user_id_str" : null,
+    "in_reply_to_screen_name" : null,
+    "user" : {
+      "id" : 2624180621,
+      "id_str" : "2624180621",
+      "name" : "NSA agent jim",
+      "screen_name" : "mileysdrive",
+      "location" : "",
+      "description" : "cristina yang",
+      "url" : null,
+      "entities" : {
+        "description" : {
+          "urls" : [
+          ]
+        }
+      },
+      "protected" : false,
+      "followers_count" : 16939,
+      "friends_count" : 124,
+      "listed_count" : 48,
+      "created_at" : "Thu Jun 19 23:54:07 +0000 2014",
+      "favourites_count" : 7577,
+      "utc_offset" : 7200,
+      "time_zone" : "Bucharest",
+      "geo_enabled" : true,
+      "verified" : false,
+      "statuses_count" : 5639,
+      "lang" : "en",
+      "contributors_enabled" : false,
+      "is_translator" : false,
+      "is_translation_enabled" : false,
+      "profile_background_color" : "C0DEED",
+      "profile_background_image_url" : "http://abs.twimg.com/images/themes/theme1/bg.png",
+      "profile_background_image_url_https" : "https://abs.twimg.com/images/themes/theme1/bg.png",
+      "profile_background_tile" : false,
+      "profile_image_url" : "http://pbs.twimg.com/profile_images/794467416331927552/LcPQANP8_normal.jpg",
+      "profile_image_url_https" : "https://pbs.twimg.com/profile_images/794467416331927552/LcPQANP8_normal.jpg",
+      "profile_banner_url" : "https://pbs.twimg.com/profile_banners/2624180621/1467532442",
+      "profile_link_color" : "1DA1F2",
+      "profile_sidebar_border_color" : "C0DEED",
+      "profile_sidebar_fill_color" : "DDEEF6",
+      "profile_text_color" : "333333",
+      "profile_use_background_image" : true,
+      "has_extended_profile" : false,
+      "default_profile" : true,
+      "default_profile_image" : false,
+      "following" : false,
+      "follow_request_sent" : false,
+      "notifications" : false,
+      "translator_type" : "none"
+    },
+    "geo" : null,
+    "coordinates" : null,
+    "place" : null,
+    "contributors" : null,
+    "is_quote_status" : false,
+    "retweet_count" : 7523,
+    "favorite_count" : 8028,
+    "favorited" : false,
+    "retweeted" : false,
+    "possibly_sensitive" : false,
+    "possibly_sensitive_appealable" : false,
+    "lang" : "en"
+  },
+  "is_quote_status" : false,
+  "retweet_count" : 7523,
+  "favorite_count" : 0,
+  "favorited" : false,
+  "retweeted" : false,
+  "possibly_sensitive" : false,
+  "possibly_sensitive_appealable" : false,
+  "lang" : "en"
+}
+""";

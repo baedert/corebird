@@ -34,12 +34,18 @@ AC_ARG_ENABLE(debug, AS_HELP_STRING([--enable-debug], [Enable debugging]),, enab
 AM_CONDITIONAL([ENABLE_DEBUG], [ test "$enable_debug" = "yes"])
 
 # --disable-video
-AC_ARG_ENABLE(video, AS_HELP_STRING([--disable-video], [Disable video support]),, disable_video=no)
+AC_ARG_ENABLE(video, AS_HELP_STRING([--disable-video], [Disable video support]),
+              disable_video=yes, disable_video=no)
 AM_CONDITIONAL([DISABLE_VIDEO], [ test "$disable_video" = "yes"])
 
 # --disable-gst-check
 AC_ARG_ENABLE(gst_check, AS_HELP_STRING([--disable-gst-check], [Disable check for needed gstreamer elements]),, disable_gst_check=no)
 AM_CONDITIONAL([DISABLE_GST_CHECK], [ test "$disable_gst_check" = "yes"])
+
+# --disable-spellcheck
+AC_ARG_ENABLE(spellcheck, AS_HELP_STRING([--disable-spellcheck], [Disable spellchecking supoprt]),
+              disable_spellcheck=yes, disable_spellcheck=no)
+AM_CONDITIONAL([DISABLE_SPELLCHECK], [ test "$disable_spellcheck" = "yes"])
 
 
 
@@ -53,6 +59,11 @@ pkg_modules="gtk+-4.0 >= 3.89
 if test "$disable_video" = "no"; then
   pkg_modules="$pkg_modules gstreamer-video-1.0 >= 1.6"
 fi
+
+# XXX We disable gspell in the gtk4 branch since it depends on gtk3 and we can't have both.
+#if test "$disable_spellcheck" = "no"; then
+  #pkg_modules="$pkg_modules gspell-1"
+#fi
 
 PKG_CHECK_MODULES(CB, [$pkg_modules])
 
@@ -100,6 +111,10 @@ if test "$enable_debug" = "yes"; then
   CB_CFLAGS="$CB_CFLAGS -D DEBUG -D G_DISABLE_CAST_CHECKS"
 fi
 
+#if test "$disable_spellcheck" = "no"; then
+  #CB_VALA_FLAGS="$CB_VALA_FLAGS -D SPELLCHECK --pkg gspell-1"
+  #CB_CFLAGS="$CB_CFLAGS -D SPELLCHECK"
+#fi
 
 if test "$disable_gst_check" = "no"; then
   # Check for gtksink
@@ -138,12 +153,13 @@ AC_OUTPUT
 VALAC_VERSION=$($VALAC --version)
 
 echo "
-             Corebird  $VERSION
-               Prefix: ${prefix}
-        Vala Compiler: ${VALAC} ${CB_VALA_FLAGS}
-        valac version: ${VALAC_VERSION}
-           C Compiler: ${CC} ${CFLAGS}
-            Debugging: $enable_debug
-       Video disabled: $disable_video
-   Gst check disabled: $disable_gst_check
+                Corebird  $VERSION
+                  Prefix: ${prefix}
+           Vala Compiler: ${VALAC} ${CB_VALA_FLAGS}
+           valac version: ${VALAC_VERSION}
+              C Compiler: ${CC} ${CFLAGS}
+               Debugging: $enable_debug
+          Video disabled: $disable_video
+      Gst check disabled: $disable_gst_check
+  Spellchecking disabled: $disable_spellcheck
 "
