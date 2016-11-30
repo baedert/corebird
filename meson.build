@@ -5,11 +5,12 @@ gnome = import('gnome')
 add_global_arguments('-DGETTEXT_PACKAGE="corebird"', language: 'c')
 add_global_arguments('-DDATADIR="' + get_option('datadir') + '"', language: 'c')
 add_global_arguments('--enable-deprecated', language: 'vala')
+add_global_arguments('--disable-since-check', language: 'vala')
 
 srcdir = include_directories('src')
 
 glib_dep = dependency('glib-2.0')
-gtk_dep  = dependency('gtk+-3.0')
+gtk_dep  = dependency('gtk+-4.0', version: '>= 3.89')
 json_dep = dependency('json-glib-1.0')
 rest_dep = dependency('rest-0.7')
 sql_dep  = dependency('sqlite3')
@@ -38,11 +39,11 @@ if (enable_video)
 endif
 
 enable_spellcheck = get_option('enable-spellcheck')
-if (enable_spellcheck)
-  add_global_arguments('-DSPELLCHECK', language: 'c')
-  add_global_arguments('-D', 'SPELLCHECK', language: 'vala')
-  cb_deps += [dependency('gspell-1')]
-endif
+# if (enable_spellcheck)
+  # add_global_arguments('-DSPELLCHECK', language: 'c')
+  # add_global_arguments('-D', 'SPELLCHECK', language: 'vala')
+  # cb_deps += [dependency('gspell-1')]
+# endif
 
 
 corebird_lib_sources = files([
