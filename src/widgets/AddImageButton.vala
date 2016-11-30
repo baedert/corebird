@@ -124,7 +124,6 @@ class AddImageButton : Gtk.Widget {
       min = (int)(int.min (media_size, min_size) * delete_factor);
       nat = (int)(media_size * delete_factor);
     } else {
-      double ratio = (double)for_size / (double) media_size;
       int size = int.min (media_size, (int)(media_size * for_size));
       if (orientation == Gtk.Orientation.HORIZONTAL) {
         size = int.max (MIN_WIDTH, size);
