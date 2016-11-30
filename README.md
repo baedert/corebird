@@ -33,7 +33,7 @@ This is the readme for the current *development version*. If you're looking for 
 
 ## Contributing
 
-  All contributions are welcome (artword, design, code, just ideas, etc.) but if you're planning to
+  All contributions are welcome (artwork, design, code, just ideas, etc.) but if you're planning to
   actively change something bigger, talk to me first.
 
 
