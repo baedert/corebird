@@ -39,6 +39,7 @@
     },
     {
       "name" : "gst-plugins-bad",
+      "config-opts" : ["--with-gtk=4.0", "--disable-gtk3", "--disable-qt"],
       "sources" : [
         {
           "type"   : "git",
