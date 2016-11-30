@@ -1,0 +1,82 @@
+{
+  "app-id": "org.baedert.corebird",
+  "branch": "next",
+  "runtime": "org.gnome.Platform",
+  "runtime-version": "master",
+  "sdk" : "org.gnome.Sdk",
+  "strip" : false,
+  "command" : "corebird",
+  "rename-icon" : "corebird",
+  "copy-icon" : true,
+  "tags" : ["next"],
+  "desktop-file-name-prefix": "(Next)",
+  "finish-args" : [
+    "--share=ipc",
+    "--share=network",
+    "--socket=wayland",
+    "--socket=pulseaudio",
+    "--filesystem=host",
+    "--talk-name=ca.desrt.dconf",
+    "--env=DCONF_USER_CONFIG_DIR=.config/dconf"
+  ],
+  "build-options" : {
+    "cflags" : "-O0 -g"
+  },
+  "cleanup" : [
+    "/include", "/share/gir-1.0",
+    "/lib/pkgconfig", "/lib/girepository-1.0"
+  ],
+  "modules" : [
+    {
+      "name" : "librest",
+      "sources" : [
+        {
+          "type"   : "git",
+          "url"    : "git://git.gnome.org/librest.git",
+          "branch" : "librest-0-7"
+        }
+      ]
+    },
+    {
+      "name"   : "graphene",
+      "sources" : [
+        {
+          "type"   : "git",
+          "url"    : "https://github.com/ebassi/graphene",
+          "branch" : "master"
+        }
+      ]
+    },
+    {
+      "name" : "gtk+",
+      "sources" : [
+        {
+          "type"   : "git",
+          "url"    : "git://git.gnome.org/gtk+.git",
+          "branch" : "master"
+        }
+      ]
+    },
+    {
+      "name" : "gspell",
+      "sources" : [
+        {
+          "type"   : "git",
+          "url"    : "git://git.gnome.org/gspell.git",
+          "branch" : "gspell-1-2"
+        }
+      ]
+    },
+    {
+      "name" : "corebird",
+      "config-opts" : ["--enable-debug"],
+      "sources" : [
+        {
+          "type"   : "git",
+          "url"    : "https://github.com/baedert/corebird",
+          "branch" : "master"
+        }
+      ]
+    }
+  ]
+}
