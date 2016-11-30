@@ -47,27 +47,35 @@ public class BadgeRadioButton : Gtk.RadioButton {
     }
   }
 
-  public override bool draw (Cairo.Context ct) {
-    base.draw (ct);
-    if (!show_badge || this.get_child () == null)
-      return Gdk.EVENT_PROPAGATE;
+  // TODO: This doesn't work currently since even calling base.draw() doesn't have any effect.
+  //       The draw handlers are just empty and don't do anything because widgets moved
+  //       to ::snapshot. For the badge we'd best just use a child widget but that's currently
+  //       not possible.
 
 
-    Gtk.Allocation child_allocation;
-    Gtk.Allocation allocation;
-    this.get_child ().get_allocation (out child_allocation);
-    this.get_allocation (out allocation);
+  //public override bool draw (Cairo.Context ct) {
+    //base.draw (ct);
+    //if (!show_badge || this.get_child () == null)
+      //return Gdk.EVENT_PROPAGATE;
 
-    var context = this.get_style_context ();
-    int x = allocation.x - child_allocation.x + child_allocation.width - BADGE_SIZE;
-    int y = 5;
 
-    context.save ();
-    context.add_class ("badge");
-    context.render_background (ct, x, y, BADGE_SIZE, BADGE_SIZE);
-    context.render_frame      (ct, x, y, BADGE_SIZE, BADGE_SIZE);
-    context.restore ();
+    //Gtk.Allocation child_allocation;
+    //Gtk.Allocation allocation;
+    //this.get_child ().get_allocation (out child_allocation);
+    //this.get_allocation (out allocation);
 
-    return Gdk.EVENT_PROPAGATE;
-  }
+    //var context = this.get_style_context ();
+    //int x = allocation.x - child_allocation.x + child_allocation.width - BADGE_SIZE;
+    //int y = 5;
+
+    //base.draw (ct);
+
+    //context.save ();
+    //context.add_class ("badge");
+    //context.render_background (ct, x, y, BADGE_SIZE, BADGE_SIZE);
+    //context.render_frame      (ct, x, y, BADGE_SIZE, BADGE_SIZE);
+    //context.restore ();
+
+    //return Gdk.EVENT_PROPAGATE;
+  //}
 }
