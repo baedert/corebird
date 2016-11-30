@@ -38,6 +38,20 @@
       ]
     },
     {
+      "name" : "gst-plugins-bad",
+      "sources" : [
+        {
+          "type"   : "git",
+          "url"    : "git://anongit.freedesktop.org/gstreamer/gst-plugins-bad",
+          "branch" : "1.8"
+        },
+        {
+          "type"   : "patch",
+          "path"   : "0001-Add-gtk4sink.patch"
+        }
+      ]
+    },
+    {
       "name"   : "graphene",
       "sources" : [
         {
@@ -74,7 +88,7 @@
         {
           "type"   : "git",
           "url"    : "https://github.com/baedert/corebird",
-          "branch" : "master"
+          "branch" : "next"
         }
       ]
     }

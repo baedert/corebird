@@ -86,7 +86,7 @@ class MediaVideoWidget : Gtk.Stack {
   public void init () {
 #if VIDEO
     this.src = Gst.ElementFactory.make ("playbin", "video");
-    this.sink = Gst.ElementFactory.make ("gtksink", "gtksink");
+    this.sink = Gst.ElementFactory.make ("gtk4sink", "gtksink");
     if (sink == null) {
       this.show_error ("Could not create a gtksink. Need gst-plugins-bad >= 1.6");
       critical ("Could not create a gtksink. Need gst-plugins-bad >= 1.6");
