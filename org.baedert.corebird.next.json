@@ -77,7 +77,21 @@
         {
           "type"   : "git",
           "url"    : "git://git.gnome.org/gspell.git",
-          "branch" : "gspell-1-2"
+          "branch" : "master"
+        },
+        {
+          "type"   : "patch",
+          "path"   : "0001-Build-against-gtk4.patch"
+        }
+      ]
+    },
+    {
+      "name" : "vala",
+      "sources" : [
+        {
+          "type"   : "git",
+          "url"    : "git://git.gnome.org/vala.git",
+          "branch" : "master"
         }
       ]
     },
