@@ -1,0 +1,3 @@
+option('enable-debug',      type: 'boolean', value: 'false')
+option('enable-video',      type: 'boolean', value: 'true')
+option('enable-spellcheck', type: 'boolean', value: 'true')
