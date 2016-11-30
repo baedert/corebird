@@ -29,10 +29,10 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       radio_button.show_badge = (this._unread_count > 0);
     }
   }
-  private unowned MainWindow main_window;
-  public unowned MainWindow window {
+  private unowned MainWindow _main_window;
+  public unowned MainWindow main_window {
     set {
-      main_window = value;
+      _main_window = value;
     }
   }
   public unowned Account account;
@@ -77,7 +77,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
 
         var bundle = new Bundle ();
         bundle.put_int64 ("sender_id", entry.user_id);
-        main_window.main_widget.switch_page (Page.DM, bundle);
+        _main_window.main_widget.switch_page (Page.DM, bundle);
       } else
         warning ("activated row is not a DMThreadEntry");
     });
@@ -91,7 +91,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       bundle.put_string ("screen_name", screen_name);
       bundle.put_string ("name", name);
       bundle.put_string ("avatar_url", avatar_url);
-      main_window.main_widget.switch_page (Page.DM, bundle);
+      _main_window.main_widget.switch_page (Page.DM, bundle);
     });
 
 
@@ -228,8 +228,8 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   }
 
   private bool user_id_visible (int64 sender_id) {
-    return (main_window.cur_page_id == Page.DM &&
-            ((DMPage)main_window.get_page (Page.DM)).user_id == sender_id);
+    return (_main_window.cur_page_id == Page.DM &&
+            ((DMPage)_main_window.get_page (Page.DM)).user_id == sender_id);
   }
 
 

@@ -49,7 +49,7 @@ AM_CONDITIONAL([DISABLE_SPELLCHECK], [ test "$disable_spellcheck" = "yes"])
 
 
 
-pkg_modules="gtk+-3.0 >= 3.18
+pkg_modules="gtk+-4.0 >= 3.89
              glib-2.0 >= 2.44
              rest-0.7 >= 0.7.93
              libsoup-2.4
@@ -60,15 +60,16 @@ if test "$disable_video" = "no"; then
   pkg_modules="$pkg_modules gstreamer-video-1.0 >= 1.6"
 fi
 
-if test "$disable_spellcheck" = "no"; then
-  pkg_modules="$pkg_modules gspell-1"
-fi
+# XXX We disable gspell in the gtk4 branch since it depends on gtk3 and we can't have both.
+#if test "$disable_spellcheck" = "no"; then
+  #pkg_modules="$pkg_modules gspell-1"
+#fi
 
 PKG_CHECK_MODULES(CB, [$pkg_modules])
 
 
 CB_VALA_FLAGS=" \
-  --pkg gtk+-3.0 \
+  --pkg gtk+-4.0 \
   --pkg json-glib-1.0 \
   --pkg rest-0.7 \
   --pkg sqlite3 \
@@ -80,16 +81,6 @@ CB_VALA_FLAGS=" \
 AC_SUBST(CB_CFLAGS)
 AC_SUBST(CB_LIBS)
 AC_SUBST(CB_VALA_FLAGS)
-
-
-# Check for valac >= 0.34, which binds gtk_popover_popup
-# as well as if that function exists in gtk+
-AM_PROG_VALAC([0.34.0], [
-AC_CHECK_LIB([gtk-3], [gtk_popover_popup],
-             [CB_VALA_FLAGS="$CB_VALA_FLAGS -D GTK322"],
-            )
-])
-
 
 AC_ARG_VAR([GLIB_COMPILE_RESOURCES],[the glib-compile-resources program])
 AC_PATH_PROG([GLIB_COMPILE_RESOURCES],[glib-compile-resources],[])
@@ -120,10 +111,10 @@ if test "$enable_debug" = "yes"; then
   CB_CFLAGS="$CB_CFLAGS -D DEBUG -D G_DISABLE_CAST_CHECKS"
 fi
 
-if test "$disable_spellcheck" = "no"; then
-  CB_VALA_FLAGS="$CB_VALA_FLAGS -D SPELLCHECK --pkg gspell-1"
-  CB_CFLAGS="$CB_CFLAGS -D SPELLCHECK"
-fi
+#if test "$disable_spellcheck" = "no"; then
+  #CB_VALA_FLAGS="$CB_VALA_FLAGS -D SPELLCHECK --pkg gspell-1"
+  #CB_CFLAGS="$CB_CFLAGS -D SPELLCHECK"
+#fi
 
 if test "$disable_gst_check" = "no"; then
   # Check for gtksink

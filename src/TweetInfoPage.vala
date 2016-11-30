@@ -29,9 +29,10 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
 
   public int unread_count { get {return 0;} }
   public int id           { get; set; }
-  public unowned MainWindow window {
+  private unowned MainWindow _main_window;
+  public unowned MainWindow main_window {
     set {
-      main_window = value;
+      _main_window = value;
     }
   }
   public unowned Account account;
@@ -40,7 +41,6 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
   private bool values_set = false;
   private Cb.Tweet tweet;
   private GLib.SimpleActionGroup actions;
-  private unowned MainWindow main_window;
   private GLib.Cancellable? cancellable = null;
 
   [GtkChild]
@@ -89,7 +89,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     this.bottom_list_box.delta_updater = delta_updater;
 
 
-    mm_widget.media_clicked.connect ((m, i) => TweetUtils.handle_media_click (tweet, main_window, i));
+    mm_widget.media_clicked.connect ((m, i) => TweetUtils.handle_media_click (tweet, _main_window, i));
     this.scroll_event.connect ((evt) => {
       if (evt.delta_y < 0 && this.vadjustment.value == 0 && reply_indicator.replies_available) {
         int inc = (int)(vadjustment.step_increment * (-evt.delta_y));
@@ -103,14 +103,14 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
       bundle.put_int ("mode", TweetInfoPage.BY_INSTANCE);
       bundle.put_object ("tweet", ((TweetListEntry)row).tweet);
       bundle.put_bool ("existing", true);
-      main_window.main_widget.switch_page (Page.TWEET_INFO, bundle);
+      _main_window.main_widget.switch_page (Page.TWEET_INFO, bundle);
     });
     top_list_box.row_activated.connect ((row) => {
       var bundle = new Bundle ();
       bundle.put_int ("mode", TweetInfoPage.BY_INSTANCE);
       bundle.put_object ("tweet", ((TweetListEntry)row).tweet);
       bundle.put_bool ("existing", true);
-      main_window.main_widget.switch_page (Page.TWEET_INFO, bundle);
+      _main_window.main_widget.switch_page (Page.TWEET_INFO, bundle);
     });
 
     this.actions = new GLib.SimpleActionGroup ();
@@ -247,14 +247,14 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
 
   [GtkCallback]
   private void reply_button_clicked_cb () {
-    ComposeTweetWindow ctw = new ComposeTweetWindow(main_window, this.account, this.tweet,
+    ComposeTweetWindow ctw = new ComposeTweetWindow(_main_window, this.account, this.tweet,
                                                     ComposeTweetWindow.Mode.REPLY);
     ctw.show ();
   }
 
   [GtkCallback]
   private bool link_activated_cb (string uri) {
-    return TweetUtils.activate_link (uri, main_window);
+    return TweetUtils.activate_link (uri, _main_window);
   }
 
   [GtkCallback]
@@ -273,7 +273,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     var bundle = new Bundle ();
     bundle.put_int64 ("user_id", id);
     bundle.put_string ("screen_name", screen_name);
-    main_window.main_widget.switch_page (Page.PROFILE, bundle);
+    _main_window.main_widget.switch_page (Page.PROFILE, bundle);
   }
 
   /**
@@ -415,7 +415,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
         if (e.message.strip () != "Forbidden" &&
             e.message.strip ().down () != "not found") {
           Utils.show_error_object (call.get_payload (), e.message,
-                                   GLib.Log.LINE, GLib.Log.FILE, this.main_window);
+                                   GLib.Log.LINE, GLib.Log.FILE, this._main_window);
         }
         bottom_list_box.visible = (bottom_list_box.get_children ().length () > 0);
         return;
@@ -496,14 +496,14 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
 
 
   private void quote_activated () {
-    ComposeTweetWindow ctw = new ComposeTweetWindow(main_window, this.account, this.tweet,
-                                                    ComposeTweetWindow.Mode.QUOTE);
+    ComposeTweetWindow ctw = new ComposeTweetWindow (_main_window, this.account, this.tweet,
+                                                     ComposeTweetWindow.Mode.QUOTE);
     ctw.show ();
   }
 
   private void reply_activated () {
-    ComposeTweetWindow ctw = new ComposeTweetWindow(main_window, this.account, this.tweet,
-                                                    ComposeTweetWindow.Mode.REPLY);
+    ComposeTweetWindow ctw = new ComposeTweetWindow (_main_window, this.account, this.tweet,
+                                                     ComposeTweetWindow.Mode.REPLY);
     ctw.show ();
   }
 
@@ -536,7 +536,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
       return;
     }
 
-    this.main_window.main_widget.remove_current_page ();
+    this._main_window.main_widget.remove_current_page ();
     TweetUtils.delete_tweet.begin (account, tweet, () => {
     });
   }
@@ -592,11 +592,11 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
       int64 tweet_id = root.get_object ().get_object_member ("delete")
                                          .get_object_member ("status")
                                            .get_int_member ("id");
-      if (tweet_id == this.tweet_id && main_window.cur_page_id == this.id) {
+      if (tweet_id == this.tweet_id && _main_window.cur_page_id == this.id) {
         /* TODO: We should probably remove this page with this bundle form the
                  history, even if it's not the currently visible page */
         debug ("Current tweet with id %s deleted!", tweet_id.to_string ());
-        this.main_window.main_widget.remove_current_page ();
+        this._main_window.main_widget.remove_current_page ();
       }
     } else if (type == StreamMessageType.EVENT_FAVORITE) {
       int64 id = root.get_object ().get_object_member ("target_object").get_int_member ("id");

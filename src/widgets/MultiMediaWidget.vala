@@ -19,7 +19,7 @@ public class MultiMediaWidget : Gtk.Box {
   public const int MAX_HEIGHT = 180;
   public int media_count { public get; private set; default = 0;}
   public bool restrict_height = false;
-  public unowned Gtk.Window window;
+  public unowned Gtk.Window parent_window;
   private MediaButton[] media_buttons;
 
   public signal void media_clicked (Cb.Media m, int index);
@@ -32,7 +32,6 @@ public class MultiMediaWidget : Gtk.Box {
   }
 
   public void set_all_media (Cb.Media[] medias) {
-    this.remove_all ();
     this.media_buttons = new MediaButton[medias.length];
     this.media_count = medias.length;
 
@@ -40,12 +39,6 @@ public class MultiMediaWidget : Gtk.Box {
       assert (medias[i] != null);
       set_media (i, medias[i]);
     }
-  }
-
-  private void remove_all () {
-    this.get_children ().foreach ((w) => {
-      this.remove (w);
-    });
   }
 
   public void set_media (int index, Cb.Media media) {
@@ -56,7 +49,7 @@ public class MultiMediaWidget : Gtk.Box {
 
     var button = new MediaButton (null, this.restrict_height);
     button.set_data ("pos", index);
-    button.window = this.window;
+    button.parent_window = this.parent_window;
     media_buttons[index] = button;
 
     if (media.loaded) {

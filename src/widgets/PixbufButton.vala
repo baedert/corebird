@@ -35,7 +35,6 @@ class PixbufButton : Gtk.Button {
   }
 
   construct {
-    this.border_width = 0;
     get_style_context ().add_class ("pixbuf-button");
   }
 

@@ -85,24 +85,32 @@ class AspectImage : Gtk.Widget {
     return t < 1.0;
   }
 
-  public override void get_preferred_height_for_width (int width,
-                                                       out int min_height,
-                                                       out int nat_height) {
+  public override void measure (Gtk.Orientation orientation,
+                                int             for_size,
+                                out int         min,
+                                out int         nat,
+                                out int         min_baseline = null,
+                                out int         nat_baseline = null) {
     if (pixbuf_surface == null) {
-      min_height = 0;
-      nat_height = 1;
+      min = 0;
+      nat = 1;
       return;
     }
 
-    double scale_x = width  / (double)pixbuf_surface.get_width ();
-    if (scale_x > 1)
-      scale_x = 1;
-    double final_height = scale_x * pixbuf_surface.get_height ();
+    if (orientation == Gtk.Orientation.HORIZONTAL) {
+      min = 1;
+      nat = pixbuf_surface.get_width ();
+    } else {
+      double scale_x = for_size  / (double)pixbuf_surface.get_width ();
+      if (scale_x > 1)
+        scale_x = 1;
 
-    min_height = (int)(final_height * _scale);
-    nat_height = (int)(final_height * _scale);
+      double final_height = scale_x * pixbuf_surface.get_height ();
+
+      min = (int)(final_height * _scale);
+      nat = (int)(final_height * _scale);
+    }
   }
-
 
   public override Gtk.SizeRequestMode get_request_mode () {
     return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;

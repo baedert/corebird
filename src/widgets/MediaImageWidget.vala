@@ -41,15 +41,15 @@ public class MediaImageWidget : Gtk.ScrolledWindow {
 
     int win_width  = 800;
     int win_height = 600;
-    if(img_width <= Gdk.Screen.width()*0.7) {
-      win_width = img_width;
-      this.hscrollbar_policy = Gtk.PolicyType.NEVER;
-    }
+    //if(img_width <= Gdk.Screen.width()*0.7) {
+      //win_width = img_width;
+      //this.hscrollbar_policy = Gtk.PolicyType.NEVER;
+    //}
 
-    if(img_height <= Gdk.Screen.height()*0.7) {
-      win_height = img_height;
-      this.vscrollbar_policy = Gtk.PolicyType.NEVER;
-    }
+    //if(img_height <= Gdk.Screen.height()*0.7) {
+      //win_height = img_height;
+      //this.vscrollbar_policy = Gtk.PolicyType.NEVER;
+    //}
 
     this.set_size_request(win_width, win_height);
   }

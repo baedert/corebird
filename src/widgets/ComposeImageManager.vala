@@ -143,55 +143,38 @@ class ComposeImageManager : Gtk.Container {
     }
   }
 
-  public override void get_preferred_height_for_width (int     width,
-                                                       out int minimum,
-                                                       out int natural) {
-    int min = 0;
-    int nat = 0;
+  public override void measure (Gtk.Orientation orientation,
+                                int             for_size,
+                                out int         min,
+                                out int         nat,
+                                out int         min_baseline,
+                                out int         nat_baseline) {
+
+    min = 0;
+    nat = 0;
+
     for (int i = 0; i < buttons.length; i ++) {
-      var btn = buttons.get (i);
       int m, n;
-      btn.get_preferred_height_for_width (width, out m, out n);
-      min = int.max (m, min);
-      nat = int.max (n, nat);
+      var btn = buttons.get (i);
+      btn.measure (orientation, for_size, out m, out n, null, null);
+
+      if (orientation == Gtk.Orientation.HORIZONTAL) {
+        min += m;
+        nat += n;
+      } else {
+        min = int.max (m, min);
+        nat = int.max (n, nat);
+      }
     }
 
-    /* We subtract BUTTON_DELTA in size_allocate again */
-    minimum = min + BUTTON_DELTA;
-    natural = nat + BUTTON_DELTA;
-  }
 
-  public override void get_preferred_height (out int minimum,
-                                             out int natural) {
-    int min = 0;
-    int nat = 0;
-    for (int i = 0; i < buttons.length; i ++) {
-      var btn = buttons.get (i);
-      int m, n;
-      btn.get_preferred_height (out m, out n);
-      min = int.max (m, min);
-      nat = int.max (n, nat);
+    if (orientation == Gtk.Orientation.HORIZONTAL) {
+      min += buttons.length * BUTTON_SPACING;
+      nat += buttons.length * BUTTON_SPACING;
+    } else {
+      min += BUTTON_DELTA;
+      nat += BUTTON_DELTA;
     }
-
-    /* We subtract BUTTON_DELTA in size_allocate again */
-    minimum = min + BUTTON_DELTA;
-    natural = nat + BUTTON_DELTA;
-  }
-
-  public override void get_preferred_width (out int minimum,
-                                            out int natural) {
-    int min = 0;
-    int nat = 0;
-    for (int i = 0; i < buttons.length; i ++) {
-      var btn = buttons.get (i);
-      int m, n;
-      btn.get_preferred_width (out m, out n);
-      min += m;
-      nat += n;
-    }
-
-    minimum = min + (buttons.length * BUTTON_SPACING);
-    natural = nat + (buttons.length * BUTTON_SPACING);
   }
 
   public override bool draw (Cairo.Context ct) {

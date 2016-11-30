@@ -38,19 +38,26 @@ class MaxSizeContainer : Gtk.Bin {
     return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
   }
 
-  public override void get_preferred_height_for_width (int width,
-                                                       out int min_height,
-                                                       out int nat_height) {
-    int min_child_height;
-    int nat_child_height;
-    get_child ().get_preferred_height_for_width (width, out min_child_height, out nat_child_height);
+  public override void measure (Gtk.Orientation orientation,
+                                int             for_size,
+                                out int         min,
+                                out int         nat,
+                                out int         min_baseline = null,
+                                out int         nat_baseline = null) {
+    int min_child, nat_child;
+    get_child ().measure (orientation, for_size, out min_child, out nat_child, null, null);
 
-    if (max_size >= min_child_height) {
-      min_height = min_child_height;
-      nat_height = nat_child_height;
+    if (orientation == Gtk.Orientation.HORIZONTAL) {
+      if (max_size >= min_child) {
+        min = min_child;
+        nat = nat_child;
+      } else {
+        min = max_size;
+        nat = max_size;
+      }
     } else {
-      nat_height = max_size;
-      min_height = max_size;
+      min = min_child;
+      nat = nat_child;
     }
   }
 
@@ -97,23 +104,11 @@ class MaxSizeContainer : Gtk.Bin {
     Gtk.Allocation alloc;
     this.get_allocation (out alloc);
 
-    Gdk.WindowAttr attr = {};
-    attr.x = alloc.x;
-    attr.y = alloc.y;
-    attr.width = alloc.width;
-    attr.height = alloc.height;
-    attr.window_type = Gdk.WindowType.CHILD;
-    attr.visual = this.get_visual ();
-    attr.wclass = Gdk.WindowWindowClass.INPUT_OUTPUT;
-    attr.event_mask = this.get_events ();
-
-    Gdk.WindowAttributesType attr_mask = Gdk.WindowAttributesType.X |
-                                         Gdk.WindowAttributesType.Y;
     Gdk.Window window = this.get_parent_window ();
     this.set_window (window);
     window.ref ();
 
-    this.event_window = new Gdk.Window (window, attr, attr_mask);
+    this.event_window = new Gdk.Window.child (window, this.get_events (), alloc);
     this.register_window (this.event_window);
 
     if (this.get_child () != null)
