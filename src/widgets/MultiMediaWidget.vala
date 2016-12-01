@@ -32,6 +32,7 @@ public class MultiMediaWidget : Gtk.Box {
   }
 
   public void set_all_media (Cb.Media[] medias) {
+    this.remove_all ();
     this.media_buttons = new MediaButton[medias.length];
     this.media_count = medias.length;
 
@@ -71,6 +72,9 @@ public class MultiMediaWidget : Gtk.Box {
     }
   }
 
+  private void remove_all () {
+    this.get_children ().foreach ((w) => this.remove(w));
+  }
 
   private void media_loaded_cb (Cb.Media source) {
     if (source.percent_loaded < 100)
