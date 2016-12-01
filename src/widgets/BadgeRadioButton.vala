@@ -47,35 +47,29 @@ public class BadgeRadioButton : Gtk.RadioButton {
     }
   }
 
-  // TODO: This doesn't work currently since even calling base.draw() doesn't have any effect.
-  //       The draw handlers are just empty and don't do anything because widgets moved
-  //       to ::snapshot. For the badge we'd best just use a child widget but that's currently
-  //       not possible.
+  public override void snapshot (Gtk.Snapshot snapshot) {
+    base.snapshot (snapshot);
 
+    if (show_badge && this.get_child () != null) {
+      Gtk.Allocation child_allocation;
+      Gtk.Allocation allocation;
+      this.get_child ().get_allocation (out child_allocation);
+      this.get_allocation (out allocation);
 
-  //public override bool draw (Cairo.Context ct) {
-    //base.draw (ct);
-    //if (!show_badge || this.get_child () == null)
-      //return Gdk.EVENT_PROPAGATE;
+      Graphene.Rect bounds = {};
+      bounds.origin.x = allocation.x - child_allocation.x + child_allocation.width - BADGE_SIZE;
+      bounds.origin.y = 5;
+      bounds.size.width  = BADGE_SIZE;
+      bounds.size.height = BADGE_SIZE;
 
+      snapshot.append (bounds, "badge", null);
+      var context = this.get_style_context ();
 
-    //Gtk.Allocation child_allocation;
-    //Gtk.Allocation allocation;
-    //this.get_child ().get_allocation (out child_allocation);
-    //this.get_allocation (out allocation);
-
-    //var context = this.get_style_context ();
-    //int x = allocation.x - child_allocation.x + child_allocation.width - BADGE_SIZE;
-    //int y = 5;
-
-    //base.draw (ct);
-
-    //context.save ();
-    //context.add_class ("badge");
-    //context.render_background (ct, x, y, BADGE_SIZE, BADGE_SIZE);
-    //context.render_frame      (ct, x, y, BADGE_SIZE, BADGE_SIZE);
-    //context.restore ();
-
-    //return Gdk.EVENT_PROPAGATE;
-  //}
+      context.save ();
+      context.add_class ("badge");
+      snapshot.render_background (context, bounds.origin.x, bounds.origin.y, BADGE_SIZE, BADGE_SIZE);
+      snapshot.render_frame      (context, bounds.origin.x, bounds.origin.y, BADGE_SIZE, BADGE_SIZE);
+      context.restore ();
+    }
+  }
 }
