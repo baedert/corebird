@@ -24,7 +24,8 @@
   },
   "cleanup" : [
     "/include", "/share/gir-1.0",
-    "/lib/pkgconfig", "/lib/girepository-1.0"
+    "/lib/pkgconfig", "/lib/girepository-1.0",
+    "/share/vala-0.36", "/share/vala/"
   ],
   "modules" : [
     {
