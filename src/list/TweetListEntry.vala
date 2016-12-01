@@ -594,7 +594,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
       if (this.tweet.quoted_tweet != null) {
         media_stack.margin_start = 12;
-        this.quote_grid.attach (media_stack, 0, 2, 2, 1);
+        this.quote_grid.attach (media_stack, 0, 2, 3, 1);
       } else {
         this.grid.attach (media_stack, 1, 6, 7, 1);
       }
@@ -604,7 +604,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
 
       if (this.tweet.quoted_tweet != null) {
         mm_widget.margin_start = 12;
-        this.quote_grid.attach (mm_widget, 0, 2, 2, 1);
+        this.quote_grid.attach (mm_widget, 0, 2, 3, 1);
       } else {
         this.grid.attach (mm_widget, 1, 6, 7, 1);
       }
