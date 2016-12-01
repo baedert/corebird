@@ -1,0 +1,2012 @@
+From 02080b17fe1a5e4df4c4f3ebb5ad396068a8fe0e Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Timm=20B=C3=A4der?= <mail@baedert.org>
+Date: Wed, 30 Nov 2016 17:21:59 +0100
+Subject: [PATCH] Add gtk4sink
+
+Which is essentially a copy+rename of gtksink with a few small adaptions
+to gtk+ API changes.
+---
+ configure.ac                 |  60 +++++-
+ ext/Makefile.am              |   8 +
+ ext/gtk4/Makefile.am         |  41 ++++
+ ext/gtk4/gstgtk4basesink.c   | 500 +++++++++++++++++++++++++++++++++++++++++++
+ ext/gtk4/gstgtk4basesink.h   |  94 ++++++++
+ ext/gtk4/gstgtk4sink.c       |  77 +++++++
+ ext/gtk4/gstgtk4sink.h       |  69 ++++++
+ ext/gtk4/gstgtk4utils.c      |  71 ++++++
+ ext/gtk4/gstgtk4utils.h      |  29 +++
+ ext/gtk4/gstplugin.c         |  43 ++++
+ ext/gtk4/gtk4gstbasewidget.c | 484 +++++++++++++++++++++++++++++++++++++++++
+ ext/gtk4/gtk4gstbasewidget.h |  97 +++++++++
+ ext/gtk4/gtk4gstwidget.c     | 190 ++++++++++++++++
+ ext/gtk4/gtk4gstwidget.h     |  68 ++++++
+ 14 files changed, 1830 insertions(+), 1 deletion(-)
+ create mode 100644 ext/gtk4/Makefile.am
+ create mode 100644 ext/gtk4/gstgtk4basesink.c
+ create mode 100644 ext/gtk4/gstgtk4basesink.h
+ create mode 100644 ext/gtk4/gstgtk4sink.c
+ create mode 100644 ext/gtk4/gstgtk4sink.h
+ create mode 100644 ext/gtk4/gstgtk4utils.c
+ create mode 100644 ext/gtk4/gstgtk4utils.h
+ create mode 100644 ext/gtk4/gstplugin.c
+ create mode 100644 ext/gtk4/gtk4gstbasewidget.c
+ create mode 100644 ext/gtk4/gtk4gstbasewidget.h
+ create mode 100644 ext/gtk4/gtk4gstwidget.c
+ create mode 100644 ext/gtk4/gtk4gstwidget.h
+
+diff --git a/configure.ac b/configure.ac
+index 6193302..8264f6f 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -224,13 +224,15 @@ dnl GTK is optional and used in examples
+ HAVE_GTK=NO
+ GTK2_REQ=2.14.0
+ GTK3_REQ=2.91.3
++GTK4_REQ=3.89
+ if test "x$BUILD_EXAMPLES" = "xyes"; then
+   AC_MSG_CHECKING([which gtk+ version to compile examples against (optional)])
+   AC_ARG_WITH([gtk],
+-    AS_HELP_STRING([--with-gtk=3.0|2.0],[which gtk+ version to compile against (default: 2.0)]),
++    AS_HELP_STRING([--with-gtk=3.0|2.0|4.0],[which gtk+ version to compile against (default: 2.0)]),
+     [case "$with_gtk" in
+         2.0) GTK_REQ=$GTK2_REQ ;;
+         3.0) GTK_REQ=$GTK3_REQ ;;
++        4.0) GTK_REQ=$GTK4_REQ ;;
+         *) AC_MSG_ERROR([invalid gtk+ version specified]);;
+     esac],
+     [with_gtk=2.0
+@@ -276,6 +278,23 @@ AC_SUBST(GTK3_CFLAGS)
+ AC_SUBST(HAVE_GTK3)
+ AM_CONDITIONAL(HAVE_GTK3, test "x$HAVE_GTK3" = "xyes")
+ 
++# Same thing for gtk4
++HAVE_GTK4=NO
++if test "x$BUILD_EXAMPLES" = "xyes"; then
++  PKG_CHECK_MODULES(GTK4, gtk+-4.0 >= GTK4_REQ, HAVE_GTK4=yes, HAVE_GTK4=no)
++  if test "x$HAVE_GTK4" = "xyes"; then
++    HAVE_GTK=yes
++    GTK_VERSION=`$PKG_CONFIG --variable=gtk_binary_version gtk+-4.0`
++    AC_SUBST(GTK_VERSION)
++    GTK_PREFIX=`$PKG_CONFIG --variable=prefix gdk-pixbuf-2.0`
++    AC_SUBST(GTK_BASE_DIR)
++  fi
++fi
++AC_SUBST(GTK4_LIBS)
++AC_SUBST(GTK4_CFLAGS)
++AC_SUBST(HAVE_GTK4)
++AM_CONDITIONAL(HAVE_GTK4, test "x$HAVE_GTK4" = "xyes")
++
+ dnl clutter is optional and used in examples
+ HAVE_CLUTTER=no
+ HAVE_CLUTTER_X11=no
+@@ -2832,6 +2851,42 @@ AG_GST_CHECK_FEATURE(GTK3, [Gtk+ elements], gtk, [
+ ])
+ AM_CONDITIONAL(USE_GTK3_GL, test "x$HAVE_GTK3_GL" = "xyes")
+ 
++HAVE_GTK4_GL="no"
++translit(dnm, m, l) AM_CONDITIONAL(USE_GTK4, true)
++AG_GST_CHECK_FEATURE(GTK4, [Gtk+ elements], gtk, [
++  PKG_CHECK_MODULES(GTK4, gtk+-4.0, [
++    AC_DEFINE([HAVE_GTK4], 1, [Define if Gtk+ 4.0 is installed])
++    HAVE_GTK4="yes"
++  ], [
++    HAVE_GTK4="no"
++  ])
++  PKG_CHECK_MODULES(GTK4_GL, gtk+-4.0 >= 3.89, [
++    GDK_WINDOWING="no"
++    if test "x$GST_GL_HAVE_WINDOW_X11" = "x1" -a "x$GST_GL_HAVE_PLATFORM_GLX" = "x1"; then
++      PKG_CHECK_MODULES(GTK4_X11, gtk+-x11-4.0, [
++        GTK4_CFLAGS="$GTK4_CFLAGS $GTK4_X11_CFLAGS"
++        GTK4_LIBS="$GTK4_LIBS $GTK4_X11_LIBS"
++        GDK_WINDOWING="yes"
++      ], [AC_MSG_NOTICE([Could not find Gtk X11 integration])])
++    fi
++    if test "x$GST_GL_HAVE_WINDOW_WAYLAND" = "x1" -a "x$GST_GL_HAVE_PLATFORM_EGL" = "x1"; then
++      PKG_CHECK_MODULES(GTK4_WAYLAND, gtk+-wayland-4.0, [
++        GTK4_CFLAGS="$GTK4_CFLAGS $GTK4_WAYLAND_CFLAGS"
++        GTK4_LIBS="$GTK4_LIBS $GTK4_WAYLAND_LIBS"
++        GDK_WINDOWING="yes"
++      ], [AC_MSG_NOTICE([Could not find Gtk Wayland integration])])
++    fi
++    if test "x$GDK_WINDOWING" = "xyes"; then
++      AC_DEFINE([HAVE_GTK4_GL], 1, [Define if Gtk+ 4.0 GL is installed])
++      HAVE_GTK4_GL="yes"
++    fi
++  ], [
++      HAVE_GTK4_GL="no"
++  ])
++])
++AM_CONDITIONAL(USE_GTK4_GL, test "x$HAVE_GTK4_GL" = "xyes")
++
++
+ dnl *** Qt ***
+ translit(dnm, m, l) AM_CONDITIONAL(USE_QT, true)
+ AG_GST_CHECK_FEATURE(QT, [Qt elements], qt, [
+@@ -3372,6 +3427,8 @@ AM_CONDITIONAL(USE_GL, false)
+ AM_CONDITIONAL(USE_GSM, false)
+ AM_CONDITIONAL(USE_GTK3, false)
+ AM_CONDITIONAL(USE_GTK3_GL, false)
++AM_CONDITIONAL(USE_GTK4, false)
++AM_CONDITIONAL(USE_GTK4_GL, false)
+ AM_CONDITIONAL(USE_HLS, false)
+ AM_CONDITIONAL(USE_KATE, false)
+ AM_CONDITIONAL(USE_TIGER, false)
+@@ -3682,6 +3739,7 @@ ext/daala/Makefile
+ ext/dts/Makefile
+ ext/gl/Makefile
+ ext/gtk/Makefile
++ext/gtk4/Makefile
+ ext/faac/Makefile
+ ext/faad/Makefile
+ ext/flite/Makefile
+diff --git a/ext/Makefile.am b/ext/Makefile.am
+index f97ef44..f7f4a14 100644
+--- a/ext/Makefile.am
++++ b/ext/Makefile.am
+@@ -88,6 +88,12 @@ else
+ GTK3_DIR=
+ endif
+ 
++if USE_GTK4
++GTK4_DIR=gtk4
++else
++GTK4_DIR=
++endif
++
+ if USE_QT
+ QT_DIR=qt
+ else
+@@ -431,6 +437,7 @@ SUBDIRS=\
+ 	$(RESINDVD_DIR) \
+ 	$(GL_DIR) \
+ 	$(GTK3_DIR) \
++	$(GTK4_DIR) \
+ 	$(QT_DIR) \
+ 	$(FAAC_DIR) \
+ 	$(FAAD_DIR) \
+@@ -510,6 +517,7 @@ DIST_SUBDIRS = \
+ 	dts \
+ 	gl \
+ 	gtk \
++	gtk4 \
+ 	qt \
+ 	modplug \
+ 	mimic \
+diff --git a/ext/gtk4/Makefile.am b/ext/gtk4/Makefile.am
+new file mode 100644
+index 0000000..df09917
+--- /dev/null
++++ b/ext/gtk4/Makefile.am
+@@ -0,0 +1,41 @@
++# preamble
++NULL =
++BUILT_SOURCES =
++CLEANFILES =
++EXTRA_DIST =
++DISTCLEANFILES =
++lib_LTLIBRARIES =
++
++# source
++sources = \
++	gtk4gstbasewidget.c \
++	gtk4gstbasewidget.h \
++	gtk4gstwidget.c \
++	gtk4gstwidget.h \
++	gstgtk4basesink.c \
++	gstgtk4basesink.h \
++	gstgtk4sink.c \
++	gstgtk4sink.h \
++	gstgtk4utils.c \
++	gstgtk4utils.h \
++	gstplugin.c \
++	$(NULL)
++
++libgstgtk4sink_la_CFLAGS = \
++	-I$(top_srcdir)/gst-libs \
++	-I$(top_builddir)/gst-libs \
++	$(GTK4_CFLAGS) \
++	$(GST_CFLAGS) \
++	$(GST_BASE_CFLAGS) \
++	$(GST_PLUGINS_BASE_CFLAGS)
++libgstgtk4sink_la_LIBADD = \
++	$(GTK4_LIBS) \
++	$(GST_BASE_LIBS) \
++	$(GST_PLUGINS_BASE_LIBS) \
++	-lgstvideo-$(GST_API_VERSION)
++
++libgstgtk4sink_la_SOURCES = $(sources)
++libgstgtk4sink_la_LDFLAGS = $(GST_PLUGIN_LDFLAGS)
++libgstgtk4sink_la_LIBTOOLFLAGS = $(GST_PLUGIN_LIBTOOLFLAGS)
++
++plugin_LTLIBRARIES = libgstgtk4sink.la
+diff --git a/ext/gtk4/gstgtk4basesink.c b/ext/gtk4/gstgtk4basesink.c
+new file mode 100644
+index 0000000..382de56
+--- /dev/null
++++ b/ext/gtk4/gstgtk4basesink.c
+@@ -0,0 +1,500 @@
++/*
++ * GStreamer
++ * Copyright (C) 2015 Matthew Waters <matthew@centricular.com>
++ *
++ * This library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Library General Public
++ * License as published by the Free Software Foundation; either
++ * version 2 of the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Library General Public License for more details.
++ *
++ * You should have received a copy of the GNU Library General Public
++ * License along with this library; if not, write to the
++ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
++ * Boston, MA 02110-1301, USA.
++ */
++
++/**
++ * SECTION:gtkgstsink
++ *
++ */
++
++#ifdef HAVE_CONFIG_H
++#include "config.h"
++#endif
++
++#include "gstgtk4basesink.h"
++#include "gstgtk4utils.h"
++
++GST_DEBUG_CATEGORY (gst_debug_gtk4_base_sink);
++#define GST_CAT_DEFAULT gst_debug_gtk4_base_sink
++
++#define DEFAULT_FORCE_ASPECT_RATIO  TRUE
++#define DEFAULT_PAR_N               0
++#define DEFAULT_PAR_D               1
++#define DEFAULT_IGNORE_ALPHA        TRUE
++
++static void gst_gtk4_base_sink_finalize (GObject * object);
++static void gst_gtk4_base_sink_set_property (GObject * object, guint prop_id,
++    const GValue * value, GParamSpec * param_spec);
++static void gst_gtk4_base_sink_get_property (GObject * object, guint prop_id,
++    GValue * value, GParamSpec * param_spec);
++
++static gboolean gst_gtk4_base_sink_start (GstBaseSink * bsink);
++static gboolean gst_gtk4_base_sink_stop (GstBaseSink * bsink);
++
++static GstStateChangeReturn
++gst_gtk4_base_sink_change_state (GstElement * element,
++    GstStateChange transition);
++
++static void gst_gtk4_base_sink_get_times (GstBaseSink * bsink, GstBuffer * buf,
++    GstClockTime * start, GstClockTime * end);
++static gboolean gst_gtk4_base_sink_set_caps (GstBaseSink * bsink,
++    GstCaps * caps);
++static GstFlowReturn gst_gtk4_base_sink_show_frame (GstVideoSink * bsink,
++    GstBuffer * buf);
++
++static void
++gst_gtk4_base_sink_navigation_interface_init (GstNavigationInterface * iface);
++
++enum
++{
++  PROP_0,
++  PROP_WIDGET,
++  PROP_FORCE_ASPECT_RATIO,
++  PROP_PIXEL_ASPECT_RATIO,
++  PROP_IGNORE_ALPHA,
++};
++
++#define gst_gtk4_base_sink_parent_class parent_class
++G_DEFINE_ABSTRACT_TYPE_WITH_CODE (GstGtk4BaseSink, gst_gtk4_base_sink,
++    GST_TYPE_VIDEO_SINK,
++    G_IMPLEMENT_INTERFACE (GST_TYPE_NAVIGATION,
++        gst_gtk4_base_sink_navigation_interface_init);
++    GST_DEBUG_CATEGORY_INIT (gst_debug_gtk4_base_sink,
++        "gtk4basesink", 0, "Gtk4 Video Sink base class"));
++
++
++static void
++gst_gtk4_base_sink_class_init (GstGtk4BaseSinkClass * klass)
++{
++  GObjectClass *gobject_class;
++  GstElementClass *gstelement_class;
++  GstBaseSinkClass *gstbasesink_class;
++  GstVideoSinkClass *gstvideosink_class;
++
++  gobject_class = (GObjectClass *) klass;
++  gstelement_class = (GstElementClass *) klass;
++  gstbasesink_class = (GstBaseSinkClass *) klass;
++  gstvideosink_class = (GstVideoSinkClass *) klass;
++
++  gobject_class->set_property = gst_gtk4_base_sink_set_property;
++  gobject_class->get_property = gst_gtk4_base_sink_get_property;
++
++  g_object_class_install_property (gobject_class, PROP_WIDGET,
++      g_param_spec_object ("widget", "Gtk Widget",
++          "The GtkWidget to place in the widget hierarchy "
++          "(must only be get from the GTK main thread)",
++          GTK_TYPE_WIDGET, G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
++
++  g_object_class_install_property (gobject_class, PROP_FORCE_ASPECT_RATIO,
++      g_param_spec_boolean ("force-aspect-ratio",
++          "Force aspect ratio",
++          "When enabled, scaling will respect original aspect ratio",
++          DEFAULT_FORCE_ASPECT_RATIO,
++          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
++
++  g_object_class_install_property (gobject_class, PROP_PIXEL_ASPECT_RATIO,
++      gst_param_spec_fraction ("pixel-aspect-ratio", "Pixel Aspect Ratio",
++          "The pixel aspect ratio of the device", DEFAULT_PAR_N, DEFAULT_PAR_D,
++          G_MAXINT, 1, 1, 1, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
++
++  g_object_class_install_property (gobject_class, PROP_IGNORE_ALPHA,
++      g_param_spec_boolean ("ignore-alpha", "Ignore Alpha",
++          "When enabled, alpha will be ignored and converted to black",
++          DEFAULT_IGNORE_ALPHA, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
++
++  gobject_class->finalize = gst_gtk4_base_sink_finalize;
++
++  gstelement_class->change_state = gst_gtk4_base_sink_change_state;
++  gstbasesink_class->set_caps = gst_gtk4_base_sink_set_caps;
++  gstbasesink_class->get_times = gst_gtk4_base_sink_get_times;
++  gstbasesink_class->start = gst_gtk4_base_sink_start;
++  gstbasesink_class->stop = gst_gtk4_base_sink_stop;
++
++  gstvideosink_class->show_frame = gst_gtk4_base_sink_show_frame;
++}
++
++static void
++gst_gtk4_base_sink_init (GstGtk4BaseSink * gtk4_sink)
++{
++  gtk4_sink->force_aspect_ratio = DEFAULT_FORCE_ASPECT_RATIO;
++  gtk4_sink->par_n = DEFAULT_PAR_N;
++  gtk4_sink->par_d = DEFAULT_PAR_D;
++  gtk4_sink->ignore_alpha = DEFAULT_IGNORE_ALPHA;
++}
++
++static void
++gst_gtk4_base_sink_finalize (GObject * object)
++{
++  GstGtk4BaseSink *gtk4_sink = GST_GTK4_BASE_SINK (object);
++
++  GST_OBJECT_LOCK (gtk4_sink);
++  if (gtk4_sink->window && gtk4_sink->window_destroy_id)
++    g_signal_handler_disconnect (gtk4_sink->window,
++        gtk4_sink->window_destroy_id);
++  if (gtk4_sink->widget && gtk4_sink->widget_destroy_id)
++    g_signal_handler_disconnect (gtk4_sink->widget,
++        gtk4_sink->widget_destroy_id);
++
++  g_clear_object (&gtk4_sink->widget);
++  GST_OBJECT_UNLOCK (gtk4_sink);
++
++  G_OBJECT_CLASS (parent_class)->finalize (object);
++}
++
++static void
++widget_destroy_cb (GtkWidget * widget, GstGtk4BaseSink * gtk4_sink)
++{
++  GST_OBJECT_LOCK (gtk4_sink);
++  g_clear_object (&gtk4_sink->widget);
++  GST_OBJECT_UNLOCK (gtk4_sink);
++}
++
++static void
++window_destroy_cb (GtkWidget * widget, GstGtk4BaseSink * gtk4_sink)
++{
++  GST_OBJECT_LOCK (gtk4_sink);
++  gtk4_sink->window = NULL;
++  GST_OBJECT_UNLOCK (gtk4_sink);
++}
++
++static Gtk4GstBaseWidget *
++gst_gtk4_base_sink_get_widget (GstGtk4BaseSink * gtk4_sink)
++{
++  if (gtk4_sink->widget != NULL)
++    return gtk4_sink->widget;
++
++  /* Ensure GTK is initialized, this has no side effect if it was already
++   * initialized. Also, we do that lazily, so the application can be first */
++  if (!gtk_init_check (NULL, NULL)) {
++    GST_ERROR_OBJECT (gtk4_sink, "Could not ensure GTK initialization.");
++    return NULL;
++  }
++
++  g_assert (GST_GTK4_BASE_SINK_GET_CLASS (gtk4_sink)->create_widget);
++  gtk4_sink->widget = (Gtk4GstBaseWidget *)
++      GST_GTK4_BASE_SINK_GET_CLASS (gtk4_sink)->create_widget ();
++
++  gtk4_sink->bind_aspect_ratio =
++      g_object_bind_property (gtk4_sink, "force-aspect-ratio",
++      gtk4_sink->widget, "force-aspect-ratio",
++      G_BINDING_BIDIRECTIONAL | G_BINDING_SYNC_CREATE);
++  gtk4_sink->bind_pixel_aspect_ratio =
++      g_object_bind_property (gtk4_sink, "pixel-aspect-ratio",
++      gtk4_sink->widget, "pixel-aspect-ratio",
++      G_BINDING_BIDIRECTIONAL | G_BINDING_SYNC_CREATE);
++  gtk4_sink->bind_ignore_alpha =
++      g_object_bind_property (gtk4_sink, "ignore-alpha",
++      gtk4_sink->widget, "ignore-alpha",
++      G_BINDING_BIDIRECTIONAL | G_BINDING_SYNC_CREATE);
++
++  /* Take the floating ref, other wise the destruction of the container will
++   * make this widget disapear possibly before we are done. */
++  gst_object_ref_sink (gtk4_sink->widget);
++  gtk4_sink->widget_destroy_id = g_signal_connect (gtk4_sink->widget, "destroy",
++      G_CALLBACK (widget_destroy_cb), gtk4_sink);
++
++  /* back pointer */
++  gtk4_gst_base_widget_set_element (GTK4_GST_BASE_WIDGET (gtk4_sink->widget),
++      GST_ELEMENT (gtk4_sink));
++
++  return gtk4_sink->widget;
++}
++
++static void
++gst_gtk4_base_sink_get_property (GObject * object, guint prop_id,
++    GValue * value, GParamSpec * pspec)
++{
++  GstGtk4BaseSink *gtk4_sink = GST_GTK4_BASE_SINK (object);
++
++  switch (prop_id) {
++    case PROP_WIDGET:
++    {
++      GObject *widget = NULL;
++
++      GST_OBJECT_LOCK (gtk4_sink);
++      if (gtk4_sink->widget != NULL)
++        widget = G_OBJECT (gtk4_sink->widget);
++      GST_OBJECT_UNLOCK (gtk4_sink);
++
++      if (!widget)
++        widget =
++            gst_gtk_invoke_on_main ((GThreadFunc) gst_gtk4_base_sink_get_widget,
++            gtk4_sink);
++
++      g_value_set_object (value, widget);
++      break;
++    }
++    case PROP_FORCE_ASPECT_RATIO:
++      g_value_set_boolean (value, gtk4_sink->force_aspect_ratio);
++      break;
++    case PROP_PIXEL_ASPECT_RATIO:
++      gst_value_set_fraction (value, gtk4_sink->par_n, gtk4_sink->par_d);
++      break;
++    case PROP_IGNORE_ALPHA:
++      g_value_set_boolean (value, gtk4_sink->ignore_alpha);
++      break;
++    default:
++      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
++      break;
++  }
++}
++
++static void
++gst_gtk4_base_sink_set_property (GObject * object, guint prop_id,
++    const GValue * value, GParamSpec * pspec)
++{
++  GstGtk4BaseSink *gtk4_sink = GST_GTK4_BASE_SINK (object);
++
++  switch (prop_id) {
++    case PROP_FORCE_ASPECT_RATIO:
++      gtk4_sink->force_aspect_ratio = g_value_get_boolean (value);
++      break;
++    case PROP_PIXEL_ASPECT_RATIO:
++      gtk4_sink->par_n = gst_value_get_fraction_numerator (value);
++      gtk4_sink->par_d = gst_value_get_fraction_denominator (value);
++      break;
++    case PROP_IGNORE_ALPHA:
++      gtk4_sink->ignore_alpha = g_value_get_boolean (value);
++      break;
++    default:
++      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
++      break;
++  }
++}
++
++static void
++gst_gtk4_base_sink_navigation_send_event (GstNavigation * navigation,
++    GstStructure * structure)
++{
++  GstGtk4BaseSink *sink = GST_GTK4_BASE_SINK (navigation);
++  GstEvent *event;
++  GstPad *pad;
++
++  event = gst_event_new_navigation (structure);
++  pad = gst_pad_get_peer (GST_VIDEO_SINK_PAD (sink));
++
++  GST_TRACE_OBJECT (sink, "navigation event %" GST_PTR_FORMAT, structure);
++
++  if (GST_IS_PAD (pad) && GST_IS_EVENT (event)) {
++    if (!gst_pad_send_event (pad, gst_event_ref (event))) {
++      /* If upstream didn't handle the event we'll post a message with it
++       * for the application in case it wants to do something with it */
++      gst_element_post_message (GST_ELEMENT_CAST (sink),
++          gst_navigation_message_new_event (GST_OBJECT_CAST (sink), event));
++    }
++    gst_event_unref (event);
++    gst_object_unref (pad);
++  }
++}
++
++static void
++gst_gtk4_base_sink_navigation_interface_init (GstNavigationInterface * iface)
++{
++  iface->send_event = gst_gtk4_base_sink_navigation_send_event;
++}
++
++static gboolean
++gst_gtk4_base_sink_start_on_main (GstBaseSink * bsink)
++{
++  GstGtk4BaseSink *gst_sink = GST_GTK4_BASE_SINK (bsink);
++  GstGtk4BaseSinkClass *klass = GST_GTK4_BASE_SINK_GET_CLASS (bsink);
++  GtkWidget *toplevel;
++
++  if (gst_gtk4_base_sink_get_widget (gst_sink) == NULL)
++    return FALSE;
++
++  /* After this point, gtk4_sink->widget will always be set */
++
++  toplevel = gtk_widget_get_toplevel (GTK_WIDGET (gst_sink->widget));
++  if (!gtk_widget_is_toplevel (toplevel)) {
++    /* sanity check */
++    g_assert (klass->window_title);
++
++    /* User did not add widget its own UI, let's popup a new GtkWindow to
++     * make gst-launch-1.0 work. */
++    gst_sink->window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
++    gtk_window_set_default_size (GTK_WINDOW (gst_sink->window), 640, 480);
++    gtk_window_set_title (GTK_WINDOW (gst_sink->window), klass->window_title);
++    gtk_container_add (GTK_CONTAINER (gst_sink->window), toplevel);
++    gst_sink->window_destroy_id = g_signal_connect (gst_sink->window, "destroy",
++        G_CALLBACK (window_destroy_cb), gst_sink);
++  }
++
++  return TRUE;
++}
++
++static gboolean
++gst_gtk4_base_sink_start (GstBaseSink * bsink)
++{
++  return ! !gst_gtk_invoke_on_main ((GThreadFunc)
++      gst_gtk4_base_sink_start_on_main, bsink);
++}
++
++static gboolean
++gst_gtk4_base_sink_stop_on_main (GstBaseSink * bsink)
++{
++  GstGtk4BaseSink *gst_sink = GST_GTK4_BASE_SINK (bsink);
++
++  if (gst_sink->window) {
++    gtk_widget_destroy (gst_sink->window);
++    gst_sink->window = NULL;
++    gst_sink->widget = NULL;
++  }
++
++  return TRUE;
++}
++
++static gboolean
++gst_gtk4_base_sink_stop (GstBaseSink * bsink)
++{
++  GstGtk4BaseSink *gst_sink = GST_GTK4_BASE_SINK (bsink);
++
++  if (gst_sink->window)
++    return ! !gst_gtk_invoke_on_main ((GThreadFunc)
++        gst_gtk4_base_sink_stop_on_main, bsink);
++
++  return TRUE;
++}
++
++static void
++gst_gtk4_widget_show_all_and_unref (GtkWidget * widget)
++{
++  gtk_widget_show_all (widget);
++  g_object_unref (widget);
++}
++
++static GstStateChangeReturn
++gst_gtk4_base_sink_change_state (GstElement * element,
++    GstStateChange transition)
++{
++  GstGtk4BaseSink *gtk4_sink = GST_GTK4_BASE_SINK (element);
++  GstStateChangeReturn ret = GST_STATE_CHANGE_SUCCESS;
++
++  GST_DEBUG_OBJECT (element, "changing state: %s => %s",
++      gst_element_state_get_name (GST_STATE_TRANSITION_CURRENT (transition)),
++      gst_element_state_get_name (GST_STATE_TRANSITION_NEXT (transition)));
++
++  ret = GST_ELEMENT_CLASS (parent_class)->change_state (element, transition);
++  if (ret == GST_STATE_CHANGE_FAILURE)
++    return ret;
++
++  switch (transition) {
++    case GST_STATE_CHANGE_READY_TO_PAUSED:
++    {
++      GtkWindow *window = NULL;
++
++      GST_OBJECT_LOCK (gtk4_sink);
++      if (gtk4_sink->window)
++        window = g_object_ref (gtk4_sink->window);
++      GST_OBJECT_UNLOCK (gtk4_sink);
++
++      if (window)
++        gst_gtk_invoke_on_main ((GThreadFunc)
++            gst_gtk4_widget_show_all_and_unref, window);
++
++      break;
++    }
++    case GST_STATE_CHANGE_PAUSED_TO_READY:
++      GST_OBJECT_LOCK (gtk4_sink);
++      if (gtk4_sink->widget)
++        gtk4_gst_base_widget_set_buffer (gtk4_sink->widget, NULL);
++      GST_OBJECT_UNLOCK (gtk4_sink);
++      break;
++    default:
++      break;
++  }
++
++  return ret;
++}
++
++static void
++gst_gtk4_base_sink_get_times (GstBaseSink * bsink, GstBuffer * buf,
++    GstClockTime * start, GstClockTime * end)
++{
++  GstGtk4BaseSink *gtk4_sink;
++
++  gtk4_sink = GST_GTK4_BASE_SINK (bsink);
++
++  if (GST_BUFFER_TIMESTAMP_IS_VALID (buf)) {
++    *start = GST_BUFFER_TIMESTAMP (buf);
++    if (GST_BUFFER_DURATION_IS_VALID (buf))
++      *end = *start + GST_BUFFER_DURATION (buf);
++    else {
++      if (GST_VIDEO_INFO_FPS_N (&gtk4_sink->v_info) > 0) {
++        *end = *start +
++            gst_util_uint64_scale_int (GST_SECOND,
++            GST_VIDEO_INFO_FPS_D (&gtk4_sink->v_info),
++            GST_VIDEO_INFO_FPS_N (&gtk4_sink->v_info));
++      }
++    }
++  }
++}
++
++gboolean
++gst_gtk4_base_sink_set_caps (GstBaseSink * bsink, GstCaps * caps)
++{
++  GstGtk4BaseSink *gtk4_sink = GST_GTK4_BASE_SINK (bsink);
++
++  GST_DEBUG ("set caps with %" GST_PTR_FORMAT, caps);
++
++  if (!gst_video_info_from_caps (&gtk4_sink->v_info, caps))
++    return FALSE;
++
++  GST_OBJECT_LOCK (gtk4_sink);
++
++  if (gtk4_sink->widget == NULL) {
++    GST_OBJECT_UNLOCK (gtk4_sink);
++    GST_ELEMENT_ERROR (gtk4_sink, RESOURCE, NOT_FOUND,
++        ("%s", "Output widget was destroyed"), (NULL));
++    return FALSE;
++  }
++
++  if (!gtk4_gst_base_widget_set_format (gtk4_sink->widget, &gtk4_sink->v_info)) {
++    GST_OBJECT_UNLOCK (gtk4_sink);
++    return FALSE;
++  }
++  GST_OBJECT_UNLOCK (gtk4_sink);
++
++  return TRUE;
++}
++
++static GstFlowReturn
++gst_gtk4_base_sink_show_frame (GstVideoSink * vsink, GstBuffer * buf)
++{
++  GstGtk4BaseSink *gtk4_sink;
++
++  GST_TRACE ("rendering buffer:%p", buf);
++
++  gtk4_sink = GST_GTK4_BASE_SINK (vsink);
++
++  GST_OBJECT_LOCK (vsink);
++
++  if (gtk4_sink->widget == NULL) {
++    GST_OBJECT_UNLOCK (gtk4_sink);
++    GST_ELEMENT_ERROR (gtk4_sink, RESOURCE, NOT_FOUND,
++        ("%s", "Output widget was destroyed"), (NULL));
++    return GST_FLOW_ERROR;
++  }
++
++  gtk4_gst_base_widget_set_buffer (gtk4_sink->widget, buf);
++
++  GST_OBJECT_UNLOCK (gtk4_sink);
++
++  return GST_FLOW_OK;
++}
+diff --git a/ext/gtk4/gstgtk4basesink.h b/ext/gtk4/gstgtk4basesink.h
+new file mode 100644
+index 0000000..dcb2d18
+--- /dev/null
++++ b/ext/gtk4/gstgtk4basesink.h
+@@ -0,0 +1,94 @@
++/*
++ * GStreamer
++ * Copyright (C) 2015 Matthew Waters <matthew@centricular.com>
++ *
++ * This library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Library General Public
++ * License as published by the Free Software Foundation; either
++ * version 2 of the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Library General Public License for more details.
++ *
++ * You should have received a copy of the GNU Library General Public
++ * License along with this library; if not, write to the
++ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
++ * Boston, MA 02110-1301, USA.
++ */
++
++#ifndef __GST_GTK_BASE_SINK_H__
++#define __GST_GTK_BASE_SINK_H__
++
++#include <gtk/gtk.h>
++#include <gst/gst.h>
++#include <gst/video/gstvideosink.h>
++#include <gst/video/video.h>
++
++#include "gtk4gstbasewidget.h"
++
++#define GST_TYPE_GTK4_BASE_SINK            (gst_gtk4_base_sink_get_type())
++#define GST_GTK4_BASE_SINK(obj)            (G_TYPE_CHECK_INSTANCE_CAST((obj),GST_TYPE_GTK4_BASE_SINK,GstGtk4BaseSink))
++#define GST_GTK4_BASE_SINK_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST((klass),GST_TYPE_GTK4_BASE_SINK,GstGtk4BaseSinkClass))
++#define GST_GTK4_BASE_SINK_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GST_TYPE_GTK4_BASE_SINK, GstGtk4BaseSinkClass))
++#define GST_IS_GTK4_BASE_SINK(obj)         (G_TYPE_CHECK_INSTANCE_TYPE((obj),GST_TYPE_GTK4_BASE_SINK))
++#define GST_IS_GTK4_BASE_SINK_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE((klass),GST_TYPE_GTK4_BASE_SINK))
++#define GST_GTK4_BASE_SINK_CAST(obj)       ((GstGtk4BaseSink*)(obj))
++
++G_BEGIN_DECLS
++
++typedef struct _GstGtk4BaseSink GstGtk4BaseSink;
++typedef struct _GstGtk4BaseSinkClass GstGtk4BaseSinkClass;
++
++GType gst_gtk4_base_sink_get_type (void);
++
++/**
++ * GstGtkBaseSink:
++ *
++ * Opaque #GstGtkBaseSink object
++ */
++struct _GstGtk4BaseSink
++{
++  /* <private> */
++  GstVideoSink         parent;
++
++  GstVideoInfo         v_info;
++
++  Gtk4GstBaseWidget    *widget;
++
++  /* properties */
++  gboolean             force_aspect_ratio;
++  GBinding             *bind_aspect_ratio;
++
++  gint                  par_n;
++  gint                  par_d;
++  GBinding             *bind_pixel_aspect_ratio;
++
++  gboolean              ignore_alpha;
++  GBinding             *bind_ignore_alpha;
++
++  GtkWidget            *window;
++  gulong               widget_destroy_id;
++  gulong               window_destroy_id;
++};
++
++/**
++ * GstGtkBaseSinkClass:
++ *
++ * The #GstGtkBaseSinkClass struct only contains private data
++ */
++struct _GstGtk4BaseSinkClass
++{
++  GstVideoSinkClass object_class;
++
++  /* metadata */
++  const gchar *window_title;
++
++  /* virtuals */
++  GtkWidget* (*create_widget) (void);
++};
++
++G_END_DECLS
++
++#endif /* __GST_GTK_BASE_SINK_H__ */
+diff --git a/ext/gtk4/gstgtk4sink.c b/ext/gtk4/gstgtk4sink.c
+new file mode 100644
+index 0000000..6a2f26a
+--- /dev/null
++++ b/ext/gtk4/gstgtk4sink.c
+@@ -0,0 +1,77 @@
++/*
++ * GStreamer
++ * Copyright (C) 2015 Matthew Waters <matthew@centricular.com>
++ *
++ * This library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Library General Public
++ * License as published by the Free Software Foundation; either
++ * version 2 of the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Library General Public License for more details.
++ *
++ * You should have received a copy of the GNU Library General Public
++ * License along with this library; if not, write to the
++ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
++ * Boston, MA 02110-1301, USA.
++ */
++
++/**
++ * SECTION:gtkgstsink
++ *
++ */
++
++#ifdef HAVE_CONFIG_H
++#include "config.h"
++#endif
++
++#include "gtk4gstwidget.h"
++#include "gstgtk4sink.h"
++
++GST_DEBUG_CATEGORY (gst_debug_gtk4_sink);
++#define GST_CAT_DEFAULT gst_debug_gtk4_sink
++
++#if G_BYTE_ORDER == G_LITTLE_ENDIAN
++#define FORMATS "{ BGRx, BGRA }"
++#else
++#define FORMATS "{ xRGB, ARGB }"
++#endif
++
++static GstStaticPadTemplate gst_gtk_sink_template =
++GST_STATIC_PAD_TEMPLATE ("sink",
++    GST_PAD_SINK,
++    GST_PAD_ALWAYS,
++    GST_STATIC_CAPS (GST_VIDEO_CAPS_MAKE (FORMATS))
++    );
++
++#define gst_gtk_sink_parent_class parent_class
++G_DEFINE_TYPE_WITH_CODE (GstGtk4Sink, gst_gtk4_sink, GST_TYPE_GTK4_BASE_SINK,
++    GST_DEBUG_CATEGORY_INIT (gst_debug_gtk4_sink, "gtk4sink", 0,
++        "Gtk Video Sink"));
++
++static void
++gst_gtk4_sink_class_init (GstGtk4SinkClass * klass)
++{
++  GstElementClass *gstelement_class;
++  GstGtk4BaseSinkClass *base_class;
++
++  gstelement_class = (GstElementClass *) klass;
++  base_class = (GstGtk4BaseSinkClass *) klass;
++
++  base_class->create_widget = gtk4_gst_widget_new;
++  base_class->window_title = "Gtk+ Cairo renderer";
++
++  gst_element_class_set_metadata (gstelement_class, "Gtk4 Video Sink",
++      "Sink/Video", "A video sink that renders to a GtkWidget",
++      "Matthew Waters <matthew@centricular.com>");
++
++  gst_element_class_add_static_pad_template (gstelement_class,
++      &gst_gtk_sink_template);
++}
++
++static void
++gst_gtk4_sink_init (GstGtk4Sink * gtk_sink)
++{
++}
+diff --git a/ext/gtk4/gstgtk4sink.h b/ext/gtk4/gstgtk4sink.h
+new file mode 100644
+index 0000000..fffc99c
+--- /dev/null
++++ b/ext/gtk4/gstgtk4sink.h
+@@ -0,0 +1,69 @@
++/*
++ * GStreamer
++ * Copyright (C) 2015 Matthew Waters <matthew@centricular.com>
++ *
++ * This library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Library General Public
++ * License as published by the Free Software Foundation; either
++ * version 2 of the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Library General Public License for more details.
++ *
++ * You should have received a copy of the GNU Library General Public
++ * License along with this library; if not, write to the
++ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
++ * Boston, MA 02110-1301, USA.
++ */
++
++#ifndef __GST4_GTK_SINK_H__
++#define __GST4_GTK_SINK_H__
++
++#include <gtk/gtk.h>
++#include <gst/gst.h>
++#include <gst/video/gstvideosink.h>
++#include <gst/video/video.h>
++
++#include "gstgtk4basesink.h"
++
++#define GST_TYPE_GTK4_SINK            (gst_gtk4_sink_get_type())
++#define GST_GTK4_SINK(obj)            (G_TYPE_CHECK_INSTANCE_CAST((obj),GST_TYPE_GTK4_SINK,GstGtk4Sink))
++#define GST_GTK4_SINK_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST((klass),GST_TYPE_GTK4_SINK,GstGtk4SinkClass))
++#define GST_IS_GTK4_SINK(obj)         (G_TYPE_CHECK_INSTANCE_TYPE((obj),GST_TYPE_GTK4_SINK))
++#define GST_IS_GTK4_SINK_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE((klass),GST_TYPE_GTK4_SINK))
++#define GST_GTK4_SINK_CAST(obj)       ((GstGtk4Sink*)(obj))
++
++G_BEGIN_DECLS
++
++typedef struct _GstGtk4Sink GstGtk4Sink;
++typedef struct _GstGtk4SinkClass GstGtk4SinkClass;
++
++GType gst_gtk4_sink_get_type (void);
++
++/**
++ * GstGtkSink:
++ *
++ * Opaque #GstGtkSink object
++ */
++struct _GstGtk4Sink
++{
++  /* <private> */
++  GstGtk4BaseSink       parent;
++};
++
++/**
++ * GstGtkSinkClass:
++ *
++ * The #GstGtkSinkClass struct only contains private data
++ */
++struct _GstGtk4SinkClass
++{
++  /* <private> */
++  GstGtk4BaseSinkClass object_class;
++};
++
++G_END_DECLS
++
++#endif /* __GST_GTK4_SINK_H__ */
+diff --git a/ext/gtk4/gstgtk4utils.c b/ext/gtk4/gstgtk4utils.c
+new file mode 100644
+index 0000000..3a71a74
+--- /dev/null
++++ b/ext/gtk4/gstgtk4utils.c
+@@ -0,0 +1,71 @@
++/*
++ * GStreamer
++ * Copyright (C) 2015 Matthew Waters <matthew@centricular.com>
++ * Copyright (C) 2015 Thibault Saunier <tsaunier@gnome.org>
++ *
++ * This library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Library General Public
++ * License as published by the Free Software Foundation; either
++ * version 2 of the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Library General Public License for more details.
++ *
++ * You should have received a copy of the GNU Library General Public
++ * License along with this library; if not, write to the
++ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
++ * Boston, MA 02110-1301, USA.
++ */
++
++#include "gstgtk4utils.h"
++
++struct invoke_context
++{
++  GThreadFunc func;
++  gpointer data;
++  GMutex lock;
++  GCond cond;
++  gboolean fired;
++
++  gpointer res;
++};
++
++static gboolean
++gst_gtk_invoke_func (struct invoke_context *info)
++{
++  g_mutex_lock (&info->lock);
++  info->res = info->func (info->data);
++  info->fired = TRUE;
++  g_cond_signal (&info->cond);
++  g_mutex_unlock (&info->lock);
++
++  return G_SOURCE_REMOVE;
++}
++
++gpointer
++gst_gtk_invoke_on_main (GThreadFunc func, gpointer data)
++{
++  GMainContext *main_context = g_main_context_default ();
++  struct invoke_context info;
++
++  g_mutex_init (&info.lock);
++  g_cond_init (&info.cond);
++  info.fired = FALSE;
++  info.func = func;
++  info.data = data;
++
++  g_main_context_invoke (main_context, (GSourceFunc) gst_gtk_invoke_func,
++      &info);
++
++  g_mutex_lock (&info.lock);
++  while (!info.fired)
++    g_cond_wait (&info.cond, &info.lock);
++  g_mutex_unlock (&info.lock);
++
++  g_mutex_clear (&info.lock);
++  g_cond_clear (&info.cond);
++
++  return info.res;
++}
+diff --git a/ext/gtk4/gstgtk4utils.h b/ext/gtk4/gstgtk4utils.h
+new file mode 100644
+index 0000000..7584ae2
+--- /dev/null
++++ b/ext/gtk4/gstgtk4utils.h
+@@ -0,0 +1,29 @@
++/*
++ * GStreamer
++ * Copyright (C) 2015 Matthew Waters <matthew@centricular.com>
++ * Copyright (C) 2015 Thibault Saunier <tsaunier@gnome.org>
++ *
++ * This library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Library General Public
++ * License as published by the Free Software Foundation; either
++ * version 2 of the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Library General Public License for more details.
++ *
++ * You should have received a copy of the GNU Library General Public
++ * License along with this library; if not, write to the
++ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
++ * Boston, MA 02110-1301, USA.
++ */
++
++#ifndef __GST_GTK_UTILS_H__
++#define __GST_GTK_UTILS_H__
++
++#include <glib.h>
++
++gpointer gst_gtk_invoke_on_main (GThreadFunc func, gpointer data);
++
++#endif /* __GST_GTK_UTILS_H__ */
+diff --git a/ext/gtk4/gstplugin.c b/ext/gtk4/gstplugin.c
+new file mode 100644
+index 0000000..4e03725
+--- /dev/null
++++ b/ext/gtk4/gstplugin.c
+@@ -0,0 +1,43 @@
++/*
++ * GStreamer
++ * Copyright (C) 2015 Matthew Waters <matthew@centricular.com>
++ *
++ * This library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Library General Public
++ * License as published by the Free Software Foundation; either
++ * version 2 of the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Library General Public License for more details.
++ *
++ * You should have received a copy of the GNU Library General Public
++ * License along with this library; if not, write to the
++ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
++ * Boston, MA 02110-1301, USA.
++ */
++
++#ifdef HAVE_CONFIG_H
++#include "config.h"
++#endif
++
++#include "gstgtk4sink.h"
++
++static gboolean
++plugin_init (GstPlugin * plugin)
++{
++  if (!gst_element_register (plugin, "gtk4sink",
++          GST_RANK_NONE, GST_TYPE_GTK4_SINK)) {
++    return FALSE;
++  }
++
++  return TRUE;
++}
++
++GST_PLUGIN_DEFINE (GST_VERSION_MAJOR,
++    GST_VERSION_MINOR,
++    gstgtk4,
++    "Gtk+ 4.0 sink",
++    plugin_init, PACKAGE_VERSION, GST_LICENSE, GST_PACKAGE_NAME,
++    GST_PACKAGE_ORIGIN)
+diff --git a/ext/gtk4/gtk4gstbasewidget.c b/ext/gtk4/gtk4gstbasewidget.c
+new file mode 100644
+index 0000000..f1294a1
+--- /dev/null
++++ b/ext/gtk4/gtk4gstbasewidget.c
+@@ -0,0 +1,484 @@
++/*
++ * GStreamer
++ * Copyright (C) 2015 Matthew Waters <matthew@centricular.com>
++ *
++ * This library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Library General Public
++ * License as published by the Free Software Foundation; either
++ * version 2 of the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Library General Public License for more details.
++ *
++ * You should have received a copy of the GNU Library General Public
++ * License along with this library; if not, write to the
++ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
++ * Boston, MA 02110-1301, USA.
++ */
++
++#ifdef HAVE_CONFIG_H
++#include "config.h"
++#endif
++
++#include <stdio.h>
++
++#include "gtk4gstbasewidget.h"
++
++GST_DEBUG_CATEGORY (gst_debug_gtk4_base_widget);
++#define GST_CAT_DEFAULT gst_debug_gtk4_base_widget
++
++#define DEFAULT_FORCE_ASPECT_RATIO  TRUE
++#define DEFAULT_PAR_N               0
++#define DEFAULT_PAR_D               1
++#define DEFAULT_IGNORE_ALPHA        TRUE
++
++enum
++{
++  PROP_0,
++  PROP_FORCE_ASPECT_RATIO,
++  PROP_PIXEL_ASPECT_RATIO,
++  PROP_IGNORE_ALPHA,
++};
++
++static void
++gtk4_gst_base_widget_measure (GtkWidget * widget,
++    GtkOrientation orientation,
++    int for_size,
++    int *minimum, int *natural, int *minimum_baseline, int *natural_baseline)
++{
++  Gtk4GstBaseWidget *gst_widget = (Gtk4GstBaseWidget *) widget;
++  int video_size = 10;          // Not negotiated
++
++  if (gst_widget->negotiated) {
++    if (orientation == GTK_ORIENTATION_HORIZONTAL)
++      video_size = gst_widget->display_width;
++    else
++      video_size = gst_widget->display_height;
++  }
++
++  *minimum = 1;
++  *natural = video_size;
++}
++
++static void
++gtk4_gst_base_widget_set_property (GObject * object, guint prop_id,
++    const GValue * value, GParamSpec * pspec)
++{
++  Gtk4GstBaseWidget *gtk_widget = GTK4_GST_BASE_WIDGET (object);
++
++  switch (prop_id) {
++    case PROP_FORCE_ASPECT_RATIO:
++      gtk_widget->force_aspect_ratio = g_value_get_boolean (value);
++      break;
++    case PROP_PIXEL_ASPECT_RATIO:
++      gtk_widget->par_n = gst_value_get_fraction_numerator (value);
++      gtk_widget->par_d = gst_value_get_fraction_denominator (value);
++      break;
++    case PROP_IGNORE_ALPHA:
++      gtk_widget->ignore_alpha = g_value_get_boolean (value);
++      break;
++    default:
++      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
++      break;
++  }
++}
++
++static void
++gtk4_gst_base_widget_get_property (GObject * object, guint prop_id,
++    GValue * value, GParamSpec * pspec)
++{
++  Gtk4GstBaseWidget *gtk_widget = GTK4_GST_BASE_WIDGET (object);
++
++  switch (prop_id) {
++    case PROP_FORCE_ASPECT_RATIO:
++      g_value_set_boolean (value, gtk_widget->force_aspect_ratio);
++      break;
++    case PROP_PIXEL_ASPECT_RATIO:
++      gst_value_set_fraction (value, gtk_widget->par_n, gtk_widget->par_d);
++      break;
++    case PROP_IGNORE_ALPHA:
++      g_value_set_boolean (value, gtk_widget->ignore_alpha);
++      break;
++    default:
++      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
++      break;
++  }
++}
++
++static gboolean
++_calculate_par (Gtk4GstBaseWidget * widget, GstVideoInfo * info)
++{
++  gboolean ok;
++  gint width, height;
++  gint par_n, par_d;
++  gint display_par_n, display_par_d;
++
++  width = GST_VIDEO_INFO_WIDTH (info);
++  height = GST_VIDEO_INFO_HEIGHT (info);
++
++  par_n = GST_VIDEO_INFO_PAR_N (info);
++  par_d = GST_VIDEO_INFO_PAR_D (info);
++
++  if (!par_n)
++    par_n = 1;
++
++  /* get display's PAR */
++  if (widget->par_n != 0 && widget->par_d != 0) {
++    display_par_n = widget->par_n;
++    display_par_d = widget->par_d;
++  } else {
++    display_par_n = 1;
++    display_par_d = 1;
++  }
++
++
++  ok = gst_video_calculate_display_ratio (&widget->display_ratio_num,
++      &widget->display_ratio_den, width, height, par_n, par_d, display_par_n,
++      display_par_d);
++
++  if (ok) {
++    GST_LOG ("PAR: %u/%u DAR:%u/%u", par_n, par_d, display_par_n,
++        display_par_d);
++    return TRUE;
++  }
++
++  return FALSE;
++}
++
++static void
++_apply_par (Gtk4GstBaseWidget * widget)
++{
++  guint display_ratio_num, display_ratio_den;
++  gint width, height;
++
++  width = GST_VIDEO_INFO_WIDTH (&widget->v_info);
++  height = GST_VIDEO_INFO_HEIGHT (&widget->v_info);
++
++  display_ratio_num = widget->display_ratio_num;
++  display_ratio_den = widget->display_ratio_den;
++
++  if (height % display_ratio_den == 0) {
++    GST_DEBUG ("keeping video height");
++    widget->display_width = (guint)
++        gst_util_uint64_scale_int (height, display_ratio_num,
++        display_ratio_den);
++    widget->display_height = height;
++  } else if (width % display_ratio_num == 0) {
++    GST_DEBUG ("keeping video width");
++    widget->display_width = width;
++    widget->display_height = (guint)
++        gst_util_uint64_scale_int (width, display_ratio_den, display_ratio_num);
++  } else {
++    GST_DEBUG ("approximating while keeping video height");
++    widget->display_width = (guint)
++        gst_util_uint64_scale_int (height, display_ratio_num,
++        display_ratio_den);
++    widget->display_height = height;
++  }
++
++  GST_DEBUG ("scaling to %dx%d", widget->display_width, widget->display_height);
++}
++
++static gboolean
++_queue_draw (Gtk4GstBaseWidget * widget)
++{
++  GTK4_GST_BASE_WIDGET_LOCK (widget);
++  widget->draw_id = 0;
++
++  if (widget->pending_resize) {
++    widget->pending_resize = FALSE;
++
++    widget->v_info = widget->pending_v_info;
++    widget->negotiated = TRUE;
++
++    _apply_par (widget);
++
++    gtk_widget_queue_resize (GTK_WIDGET (widget));
++  } else {
++    gtk_widget_queue_draw (GTK_WIDGET (widget));
++  }
++
++  GTK4_GST_BASE_WIDGET_UNLOCK (widget);
++
++  return G_SOURCE_REMOVE;
++}
++
++static const gchar *
++_gdk_key_to_navigation_string (guint keyval)
++{
++  /* TODO: expand */
++  switch (keyval) {
++#define KEY(key) case GDK_KEY_ ## key: return G_STRINGIFY(key)
++      KEY (Up);
++      KEY (Down);
++      KEY (Left);
++      KEY (Right);
++      KEY (Home);
++      KEY (End);
++#undef KEY
++    default:
++      return NULL;
++  }
++}
++
++static gboolean
++gtk4_gst_base_widget_key_event (GtkWidget * widget, GdkEventKey * event)
++{
++  Gtk4GstBaseWidget *base_widget = GTK4_GST_BASE_WIDGET (widget);
++  GstElement *element;
++
++  if ((element = g_weak_ref_get (&base_widget->element))) {
++    if (GST_IS_NAVIGATION (element)) {
++      const gchar *str = _gdk_key_to_navigation_string (event->keyval);
++      const gchar *key_type =
++          event->type == GDK_KEY_PRESS ? "key-press" : "key-release";
++
++      if (!str)
++        str = event->string;
++
++      gst_navigation_send_key_event (GST_NAVIGATION (element), key_type, str);
++    }
++    g_object_unref (element);
++  }
++
++  return FALSE;
++}
++
++static void
++_fit_stream_to_allocated_size (Gtk4GstBaseWidget * base_widget,
++    GtkAllocation * allocation, GstVideoRectangle * result)
++{
++  if (base_widget->force_aspect_ratio) {
++    GstVideoRectangle src, dst;
++
++    src.x = 0;
++    src.y = 0;
++    src.w = base_widget->display_width;
++    src.h = base_widget->display_height;
++
++    dst.x = 0;
++    dst.y = 0;
++    dst.w = allocation->width;
++    dst.h = allocation->height;
++
++    gst_video_sink_center_rect (src, dst, result, TRUE);
++  } else {
++    result->x = 0;
++    result->y = 0;
++    result->w = allocation->width;
++    result->h = allocation->height;
++  }
++}
++
++static void
++_display_size_to_stream_size (Gtk4GstBaseWidget * base_widget, gdouble x,
++    gdouble y, gdouble * stream_x, gdouble * stream_y)
++{
++  gdouble stream_width, stream_height;
++  GtkAllocation allocation;
++  GstVideoRectangle result;
++
++  gtk_widget_get_allocation (GTK_WIDGET (base_widget), &allocation);
++  _fit_stream_to_allocated_size (base_widget, &allocation, &result);
++
++  stream_width = (gdouble) GST_VIDEO_INFO_WIDTH (&base_widget->v_info);
++  stream_height = (gdouble) GST_VIDEO_INFO_HEIGHT (&base_widget->v_info);
++
++  /* from display coordinates to stream coordinates */
++  if (result.w > 0)
++    *stream_x = (x - result.x) / result.w * stream_width;
++  else
++    *stream_x = 0.;
++
++  /* clip to stream size */
++  if (*stream_x < 0.)
++    *stream_x = 0.;
++  if (*stream_x > GST_VIDEO_INFO_WIDTH (&base_widget->v_info))
++    *stream_x = GST_VIDEO_INFO_WIDTH (&base_widget->v_info);
++
++  /* same for y-axis */
++  if (result.h > 0)
++    *stream_y = (y - result.y) / result.h * stream_height;
++  else
++    *stream_y = 0.;
++
++  if (*stream_y < 0.)
++    *stream_y = 0.;
++  if (*stream_y > GST_VIDEO_INFO_HEIGHT (&base_widget->v_info))
++    *stream_y = GST_VIDEO_INFO_HEIGHT (&base_widget->v_info);
++
++  GST_TRACE ("transform %fx%f into %fx%f", x, y, *stream_x, *stream_y);
++}
++
++static gboolean
++gtk4_gst_base_widget_button_event (GtkWidget * widget, GdkEventButton * event)
++{
++  Gtk4GstBaseWidget *base_widget = GTK4_GST_BASE_WIDGET (widget);
++  GstElement *element;
++
++  if ((element = g_weak_ref_get (&base_widget->element))) {
++    if (GST_IS_NAVIGATION (element)) {
++      const gchar *key_type =
++          event->type ==
++          GDK_BUTTON_PRESS ? "mouse-button-press" : "mouse-button-release";
++      gdouble x, y;
++
++      _display_size_to_stream_size (base_widget, event->x, event->y, &x, &y);
++
++      gst_navigation_send_mouse_event (GST_NAVIGATION (element), key_type,
++          event->button, x, y);
++    }
++    g_object_unref (element);
++  }
++
++  return FALSE;
++}
++
++static gboolean
++gtk4_gst_base_widget_motion_event (GtkWidget * widget, GdkEventMotion * event)
++{
++  Gtk4GstBaseWidget *base_widget = GTK4_GST_BASE_WIDGET (widget);
++  GstElement *element;
++
++  if ((element = g_weak_ref_get (&base_widget->element))) {
++    if (GST_IS_NAVIGATION (element)) {
++      gdouble x, y;
++
++      _display_size_to_stream_size (base_widget, event->x, event->y, &x, &y);
++
++      gst_navigation_send_mouse_event (GST_NAVIGATION (element), "mouse-move",
++          0, x, y);
++    }
++    g_object_unref (element);
++  }
++
++  return FALSE;
++}
++
++void
++gtk4_gst_base_widget_class_init (Gtk4GstBaseWidgetClass * klass)
++{
++  GObjectClass *gobject_klass = (GObjectClass *) klass;
++  GtkWidgetClass *widget_klass = (GtkWidgetClass *) klass;
++
++  gobject_klass->set_property = gtk4_gst_base_widget_set_property;
++  gobject_klass->get_property = gtk4_gst_base_widget_get_property;
++
++  g_object_class_install_property (gobject_klass, PROP_FORCE_ASPECT_RATIO,
++      g_param_spec_boolean ("force-aspect-ratio",
++          "Force aspect ratio",
++          "When enabled, scaling will respect original aspect ratio",
++          DEFAULT_FORCE_ASPECT_RATIO,
++          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
++
++  g_object_class_install_property (gobject_klass, PROP_PIXEL_ASPECT_RATIO,
++      gst_param_spec_fraction ("pixel-aspect-ratio", "Pixel Aspect Ratio",
++          "The pixel aspect ratio of the device", DEFAULT_PAR_N, DEFAULT_PAR_D,
++          G_MAXINT, 1, 1, 1, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
++
++  g_object_class_install_property (gobject_klass, PROP_IGNORE_ALPHA,
++      g_param_spec_boolean ("ignore-alpha", "Ignore Alpha",
++          "When enabled, alpha will be ignored and converted to black",
++          DEFAULT_IGNORE_ALPHA, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
++
++  widget_klass->measure = gtk4_gst_base_widget_measure;
++  widget_klass->key_press_event = gtk4_gst_base_widget_key_event;
++  widget_klass->key_release_event = gtk4_gst_base_widget_key_event;
++  widget_klass->button_press_event = gtk4_gst_base_widget_button_event;
++  widget_klass->button_release_event = gtk4_gst_base_widget_button_event;
++  widget_klass->motion_notify_event = gtk4_gst_base_widget_motion_event;
++
++  GST_DEBUG_CATEGORY_INIT (gst_debug_gtk4_base_widget, "gtk4basewidget", 0,
++      "Gtk4 Video Base Widget");
++}
++
++void
++gtk4_gst_base_widget_init (Gtk4GstBaseWidget * widget)
++{
++  int event_mask;
++
++  widget->force_aspect_ratio = DEFAULT_FORCE_ASPECT_RATIO;
++  widget->par_n = DEFAULT_PAR_N;
++  widget->par_d = DEFAULT_PAR_D;
++  widget->ignore_alpha = DEFAULT_IGNORE_ALPHA;
++
++  gst_video_info_init (&widget->v_info);
++  gst_video_info_init (&widget->pending_v_info);
++
++  g_weak_ref_init (&widget->element, NULL);
++  g_mutex_init (&widget->lock);
++
++  gtk_widget_set_can_focus (GTK_WIDGET (widget), TRUE);
++  event_mask = gtk_widget_get_events (GTK_WIDGET (widget));
++  event_mask |= GDK_KEY_PRESS_MASK
++      | GDK_KEY_RELEASE_MASK
++      | GDK_BUTTON_PRESS_MASK
++      | GDK_BUTTON_RELEASE_MASK
++      | GDK_POINTER_MOTION_MASK | GDK_BUTTON_MOTION_MASK;
++  gtk_widget_set_events (GTK_WIDGET (widget), event_mask);
++}
++
++void
++gtk4_gst_base_widget_finalize (GObject * object)
++{
++  Gtk4GstBaseWidget *widget = GTK4_GST_BASE_WIDGET (object);
++
++  gst_buffer_replace (&widget->pending_buffer, NULL);
++  gst_buffer_replace (&widget->buffer, NULL);
++  g_mutex_clear (&widget->lock);
++  g_weak_ref_clear (&widget->element);
++
++  if (widget->draw_id)
++    g_source_remove (widget->draw_id);
++}
++
++void
++gtk4_gst_base_widget_set_element (Gtk4GstBaseWidget * widget,
++    GstElement * element)
++{
++  g_weak_ref_set (&widget->element, element);
++}
++
++gboolean
++gtk4_gst_base_widget_set_format (Gtk4GstBaseWidget * widget,
++    GstVideoInfo * v_info)
++{
++  GTK4_GST_BASE_WIDGET_LOCK (widget);
++
++  if (gst_video_info_is_equal (&widget->pending_v_info, v_info)) {
++    GTK4_GST_BASE_WIDGET_UNLOCK (widget);
++    return TRUE;
++  }
++
++  if (!_calculate_par (widget, v_info)) {
++    GTK4_GST_BASE_WIDGET_UNLOCK (widget);
++    return FALSE;
++  }
++
++  widget->pending_resize = TRUE;
++  widget->pending_v_info = *v_info;
++
++  GTK4_GST_BASE_WIDGET_UNLOCK (widget);
++
++  return TRUE;
++}
++
++void
++gtk4_gst_base_widget_set_buffer (Gtk4GstBaseWidget * widget, GstBuffer * buffer)
++{
++  /* As we have no type, this is better than no check */
++  g_return_if_fail (GTK_IS_WIDGET (widget));
++
++  GTK4_GST_BASE_WIDGET_LOCK (widget);
++
++  gst_buffer_replace (&widget->pending_buffer, buffer);
++
++  if (!widget->draw_id) {
++    widget->draw_id = g_idle_add_full (G_PRIORITY_DEFAULT,
++        (GSourceFunc) _queue_draw, widget, NULL);
++  }
++
++  GTK4_GST_BASE_WIDGET_UNLOCK (widget);
++}
+diff --git a/ext/gtk4/gtk4gstbasewidget.h b/ext/gtk4/gtk4gstbasewidget.h
+new file mode 100644
+index 0000000..50c11b2
+--- /dev/null
++++ b/ext/gtk4/gtk4gstbasewidget.h
+@@ -0,0 +1,97 @@
++/*
++ * GStreamer
++ * Copyright (C) 2015 Matthew Waters <matthew@centricular.com>
++ *
++ * This library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Library General Public
++ * License as published by the Free Software Foundation; either
++ * version 2 of the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Library General Public License for more details.
++ *
++ * You should have received a copy of the GNU Library General Public
++ * License along with this library; if not, write to the
++ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
++ * Boston, MA 02110-1301, USA.
++ */
++
++#ifndef __GTK4_GST_BASE_WIDGET_H__
++#define __GTK4_GST_BASE_WIDGET_H__
++
++#include <gtk/gtk.h>
++#include <gst/gst.h>
++#include <gst/video/video.h>
++
++#define GTK4_GST_BASE_WIDGET(w)         ((Gtk4GstBaseWidget *)(w))
++#define GTK4_GST_BASE_WIDGET_CLASS(k)   ((Gtk4GstBaseWidgetClass *)(k))
++#define GTK4_GST_BASE_WIDGET_LOCK(w)    g_mutex_lock(&((Gtk4GstBaseWidget*)(w))->lock)
++#define GTK4_GST_BASE_WIDGET_UNLOCK(w)  g_mutex_unlock(&((Gtk4GstBaseWidget*)(w))->lock)
++
++G_BEGIN_DECLS
++
++typedef struct _Gtk4GstBaseWidget Gtk4GstBaseWidget;
++typedef struct _Gtk4GstBaseWidgetClass Gtk4GstBaseWidgetClass;
++
++struct _Gtk4GstBaseWidget
++{
++  union {
++    GtkDrawingArea drawing_area;
++#if GTK_CHECK_VERSION(3, 15, 0)
++    GtkGLArea gl_area;
++#endif
++  } parent;
++
++  /* properties */
++  gboolean force_aspect_ratio;
++  gint par_n, par_d;
++  gboolean ignore_alpha;
++
++  gint display_width;
++  gint display_height;
++
++  gboolean negotiated;
++  GstBuffer *pending_buffer;
++  GstBuffer *buffer;
++  GstVideoInfo v_info;
++
++  /* resize */
++  gboolean pending_resize;
++  GstVideoInfo pending_v_info;
++  guint display_ratio_num;
++  guint display_ratio_den;
++
++  /*< private >*/
++  GMutex lock;
++  GWeakRef element;
++
++  /* Pending draw idles callback */
++  guint draw_id;
++};
++
++struct _Gtk4GstBaseWidgetClass
++{
++  union {
++    GtkDrawingAreaClass drawing_area_class;
++#if GTK_CHECK_VERSION(3, 15, 0)
++    GtkGLAreaClass gl_area_class;
++#endif
++  } parent_class;
++};
++
++/* For implementer */
++void            gtk4_gst_base_widget_class_init           (Gtk4GstBaseWidgetClass * klass);
++void            gtk4_gst_base_widget_init                 (Gtk4GstBaseWidget * widget);
++
++void            gtk4_gst_base_widget_finalize             (GObject * object);
++
++/* API */
++gboolean        gtk4_gst_base_widget_set_format           (Gtk4GstBaseWidget * widget, GstVideoInfo * v_info);
++void            gtk4_gst_base_widget_set_buffer           (Gtk4GstBaseWidget * widget, GstBuffer * buffer);
++void            gtk4_gst_base_widget_set_element          (Gtk4GstBaseWidget * widget, GstElement * element);
++
++G_END_DECLS
++
++#endif /* __GTK4_GST_BASE_WIDGET_H__ */
+diff --git a/ext/gtk4/gtk4gstwidget.c b/ext/gtk4/gtk4gstwidget.c
+new file mode 100644
+index 0000000..3185f50
+--- /dev/null
++++ b/ext/gtk4/gtk4gstwidget.c
+@@ -0,0 +1,190 @@
++/*
++ * GStreamer
++ * Copyright (C) 2015 Matthew Waters <matthew@centricular.com>
++ *
++ * This library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Library General Public
++ * License as published by the Free Software Foundation; either
++ * version 2 of the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Library General Public License for more details.
++ *
++ * You should have received a copy of the GNU Library General Public
++ * License along with this library; if not, write to the
++ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
++ * Boston, MA 02110-1301, USA.
++ */
++
++#ifdef HAVE_CONFIG_H
++#include "config.h"
++#endif
++
++#include <stdio.h>
++
++#include "gtk4gstwidget.h"
++#include <gst/video/video.h>
++
++/**
++ * SECTION:gtkgstwidget
++ * @short_description: a #GtkWidget that renders GStreamer video #GstBuffers
++ * @see_also: #GtkDrawingArea, #GstBuffer
++ *
++ * #Gtk4GstWidget is an #GtkWidget that renders GStreamer video buffers.
++ */
++
++G_DEFINE_TYPE (Gtk4GstWidget, gtk4_gst_widget, GTK_TYPE_DRAWING_AREA);
++
++static gboolean
++gtk4_gst_widget_draw (GtkWidget * widget, cairo_t * cr)
++{
++  Gtk4GstBaseWidget *gst_widget = (Gtk4GstBaseWidget *) widget;
++  guint widget_width, widget_height;
++  cairo_surface_t *surface;
++  GstVideoFrame frame;
++
++  widget_width = gtk_widget_get_allocated_width (widget);
++  widget_height = gtk_widget_get_allocated_height (widget);
++
++  GTK4_GST_BASE_WIDGET_LOCK (gst_widget);
++
++  /* There is not much to optimize in term of redisplay, so simply swap the
++   * pending_buffer with the active buffer */
++  if (gst_widget->pending_buffer) {
++    if (gst_widget->buffer)
++      gst_buffer_unref (gst_widget->buffer);
++    gst_widget->buffer = gst_widget->pending_buffer;
++    gst_widget->pending_buffer = NULL;
++  }
++
++  /* failed to map the video frame */
++  if (gst_widget->negotiated && gst_widget->buffer
++      && gst_video_frame_map (&frame, &gst_widget->v_info,
++          gst_widget->buffer, GST_MAP_READ)) {
++    gdouble scale_x = (gdouble) widget_width / gst_widget->display_width;
++    gdouble scale_y = (gdouble) widget_height / gst_widget->display_height;
++    GstVideoRectangle result;
++    cairo_format_t format;
++
++    gst_widget->v_info = frame.info;
++    if (frame.info.finfo->format == GST_VIDEO_FORMAT_ARGB ||
++        frame.info.finfo->format == GST_VIDEO_FORMAT_BGRA) {
++      format = CAIRO_FORMAT_ARGB32;
++    } else {
++      format = CAIRO_FORMAT_RGB24;
++    }
++
++    surface = cairo_image_surface_create_for_data (frame.data[0],
++        format, frame.info.width, frame.info.height, frame.info.stride[0]);
++
++    if (gst_widget->force_aspect_ratio) {
++      GstVideoRectangle src, dst;
++
++      src.x = 0;
++      src.y = 0;
++      src.w = gst_widget->display_width;
++      src.h = gst_widget->display_height;
++
++      dst.x = 0;
++      dst.y = 0;
++      dst.w = widget_width;
++      dst.h = widget_height;
++
++      gst_video_sink_center_rect (src, dst, &result, TRUE);
++
++      scale_x = scale_y = MIN (scale_x, scale_y);
++    } else {
++      result.x = 0;
++      result.y = 0;
++      result.w = widget_width;
++      result.h = widget_height;
++    }
++
++    if (gst_widget->ignore_alpha) {
++      GdkRGBA color = { 0.0, 0.0, 0.0, 1.0 };
++
++      gdk_cairo_set_source_rgba (cr, &color);
++      if (result.x > 0) {
++        cairo_rectangle (cr, 0, 0, result.x, widget_height);
++        cairo_fill (cr);
++      }
++      if (result.y > 0) {
++        cairo_rectangle (cr, 0, 0, widget_width, result.y);
++        cairo_fill (cr);
++      }
++      if (result.w < widget_width) {
++        cairo_rectangle (cr, result.x + result.w, 0, widget_width - result.w,
++            widget_height);
++        cairo_fill (cr);
++      }
++      if (result.h < widget_height) {
++        cairo_rectangle (cr, 0, result.y + result.h, widget_width,
++            widget_height - result.h);
++        cairo_fill (cr);
++      }
++    }
++
++    scale_x *= (gdouble) gst_widget->display_width / (gdouble) frame.info.width;
++    scale_y *=
++        (gdouble) gst_widget->display_height / (gdouble) frame.info.height;
++
++    cairo_translate (cr, result.x, result.y);
++    cairo_scale (cr, scale_x, scale_y);
++    cairo_rectangle (cr, 0, 0, result.w, result.h);
++    cairo_set_source_surface (cr, surface, 0, 0);
++    cairo_paint (cr);
++
++    cairo_surface_destroy (surface);
++
++    gst_video_frame_unmap (&frame);
++  } else {
++    GdkRGBA color;
++
++    if (gst_widget->ignore_alpha) {
++      color.red = color.blue = color.green = 0.0;
++      color.alpha = 1.0;
++    } else {
++      gtk_style_context_get_color (gtk_widget_get_style_context (widget),
++          &color);
++    }
++    gdk_cairo_set_source_rgba (cr, &color);
++    cairo_rectangle (cr, 0, 0, widget_width, widget_height);
++    cairo_fill (cr);
++  }
++
++  GTK4_GST_BASE_WIDGET_UNLOCK (gst_widget);
++  return FALSE;
++}
++
++static void
++gtk4_gst_widget_finalize (GObject * object)
++{
++  gtk4_gst_base_widget_finalize (object);
++
++  G_OBJECT_CLASS (gtk4_gst_widget_parent_class)->finalize (object);
++}
++
++static void
++gtk4_gst_widget_class_init (Gtk4GstWidgetClass * klass)
++{
++  GObjectClass *gobject_klass = (GObjectClass *) klass;
++  GtkWidgetClass *widget_klass = (GtkWidgetClass *) klass;
++
++  gtk4_gst_base_widget_class_init (GTK4_GST_BASE_WIDGET_CLASS (klass));
++  gobject_klass->finalize = gtk4_gst_widget_finalize;
++  widget_klass->draw = gtk4_gst_widget_draw;
++}
++
++static void
++gtk4_gst_widget_init (Gtk4GstWidget * widget)
++{
++  gtk4_gst_base_widget_init (GTK4_GST_BASE_WIDGET (widget));
++}
++
++GtkWidget *
++gtk4_gst_widget_new (void)
++{
++  return (GtkWidget *) g_object_new (GTK4_TYPE_GST_WIDGET, NULL);
++}
+diff --git a/ext/gtk4/gtk4gstwidget.h b/ext/gtk4/gtk4gstwidget.h
+new file mode 100644
+index 0000000..291a855
+--- /dev/null
++++ b/ext/gtk4/gtk4gstwidget.h
+@@ -0,0 +1,68 @@
++/*
++ * GStreamer
++ * Copyright (C) 2015 Matthew Waters <matthew@centricular.com>
++ *
++ * This library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Library General Public
++ * License as published by the Free Software Foundation; either
++ * version 2 of the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Library General Public License for more details.
++ *
++ * You should have received a copy of the GNU Library General Public
++ * License along with this library; if not, write to the
++ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
++ * Boston, MA 02110-1301, USA.
++ */
++
++#ifndef __GTK4_GST_WIDGET_H__
++#define __GTK4_GST_WIDGET_H__
++
++#include <gtk/gtk.h>
++#include <gst/gst.h>
++
++#include "gtk4gstbasewidget.h"
++
++G_BEGIN_DECLS
++
++GType gtk4_gst_widget_get_type (void);
++#define GTK4_TYPE_GST_WIDGET (gtk4_gst_widget_get_type())
++#define GTK4_GST_WIDGET(obj) (G_TYPE_CHECK_INSTANCE_CAST((obj),GTK4_TYPE_GST_WIDGET,Gtk4GstWidget))
++#define GTK4_GST_WIDGET_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST((klass),GTK4_TYPE_GST_WIDGET,Gtk4GstWidgetClass))
++#define GTK4_IS_GST_WIDGET(obj) (G_TYPE_CHECK_INSTANCE_TYPE((obj),GTK4_TYPE_GST_WIDGET))
++#define GST_IS_GST_WIDGET_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE((klass),GTK4_TYPE_GST_WIDGET))
++#define GTK4_GST_WIDGET_CAST(obj) ((Gtk4GstWidget*)(obj))
++
++typedef struct _Gtk4GstWidget Gtk4GstWidget;
++typedef struct _Gtk4GstWidgetClass Gtk4GstWidgetClass;
++
++/**
++ * GtkGstWidget:
++ *
++ * Opaque #GtkGstWidget object
++ */
++struct _Gtk4GstWidget
++{
++  /* <private> */
++  Gtk4GstBaseWidget base;
++};
++
++/**
++ * GtkGstWidgetClass:
++ *
++ * The #GtkGstWidgetClass struct only contains private data
++ */
++struct _Gtk4GstWidgetClass
++{
++  /* <private> */
++  Gtk4GstBaseWidgetClass base_class;
++};
++
++GtkWidget *     gtk4_gst_widget_new (void);
++
++G_END_DECLS
++
++#endif /* __GTK4_GST_WIDGET_H__ */
+-- 
+2.10.2
+

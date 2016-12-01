@@ -38,21 +38,6 @@
       ]
     },
     {
-      "name" : "gst-plugins-bad",
-      "config-opts" : ["--with-gtk=4.0", "--disable-gtk3", "--disable-qt"],
-      "sources" : [
-        {
-          "type"   : "git",
-          "url"    : "git://anongit.freedesktop.org/gstreamer/gst-plugins-bad",
-          "branch" : "1.8"
-        },
-        {
-          "type"   : "patch",
-          "path"   : "0001-Add-gtk4sink.patch"
-        }
-      ]
-    },
-    {
       "name"   : "graphene",
       "sources" : [
         {
@@ -64,6 +49,7 @@
     },
     {
       "name" : "gtk+",
+      "config-opts" : ["--disable-cloudprint", "--disable-broadway-backend", "--disable-modules", "--enable-wayland-backend", "--enable-x11-backend", "--disable-man"],
       "sources" : [
         {
           "type"   : "git",
@@ -78,11 +64,7 @@
         {
           "type"   : "git",
           "url"    : "git://git.gnome.org/gspell.git",
-          "branch" : "master"
-        },
-        {
-          "type"   : "patch",
-          "path"   : "0001-Build-against-gtk4.patch"
+          "branch" : "wip/gtk4"
         }
       ]
     },
@@ -93,6 +75,32 @@
           "type"   : "git",
           "url"    : "git://git.gnome.org/vala.git",
           "branch" : "master"
+        }
+      ]
+    },
+    {
+      "name" : "gst-plugins-bad",
+      "config-opts" : ["--disable-examples", "--with-gtk=4.0", "--disable-qt", "--disable-rsvg", "--disable-wininet", "--disable-camerabin2", "--disable-android_media", "--disable-bluez", "--disable-directsound", "--disable-audiovisualizers", "--disable-frei0r"],
+      "sources" : [
+        {
+          "type"   : "git",
+          "url"    : "git://anongit.freedesktop.org/gstreamer/gst-plugins-bad",
+          "branch" : "1.8"
+        },
+        {
+          "type"   : "patch",
+          "path"   : "0001-Add-gtk4sink.patch"
+        }
+      ]
+    },
+    {
+      "name" : "gst-libav",
+      "config-opts" : ["--with-libav-extra-configure='--disable-yasm'"],
+      "sources" : [
+        {
+          "type"   : "git",
+          "url"    : "git://anongit.freedesktop.org/gstreamer/gst-libav",
+          "branch" : "1.8"
         }
       ]
     },
