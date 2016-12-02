@@ -29,6 +29,11 @@
       <caption>Account settings can be configured</caption>
     </screenshot>
   </screenshots>
+  <kudos>
+    <kudo>AppMenu</kudo>
+    <kudo>HiDpiIcon</kudo>
+    <kudo>ModernToolkit</kudo>
+  </kudos>
   <update_contact>ryanlerch@fedoraproject.org</update_contact>
 
   <project_license>GPL-3.0+</project_license>
