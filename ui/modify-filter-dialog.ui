@@ -29,6 +29,7 @@
         <property name="visible">1</property>
         <property name="orientation">vertical</property>
         <property name="spacing">12</property>
+        <property name="margin">12</property>
         <child>
           <object class="GtkGrid" id="regex_grid">
             <property name="visible">1</property>
