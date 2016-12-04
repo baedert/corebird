@@ -89,6 +89,7 @@ class UserListsWidget : Gtk.Box {
     var call = account.proxy.new_call ();
     call.set_function ("1.1/lists/subscriptions.json");
     call.set_method ("GET");
+    call.add_param ("count", "200");
     call.add_param ("user_id", user_id.to_string ());
     TweetUtils.load_threaded.begin (call, null, (_, res) => {
       Json.Node? root = null;
@@ -116,6 +117,7 @@ class UserListsWidget : Gtk.Box {
     user_call.set_function ("1.1/lists/ownerships.json");
     user_call.set_method ("GET");
     user_call.add_param ("user_id", user_id.to_string ());
+    user_call.add_param ("count", "200");
     TweetUtils.load_threaded.begin (user_call, null, (_, res) => {
       Json.Node? root = null;
       try {
