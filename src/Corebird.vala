@@ -194,6 +194,7 @@ public class Corebird : Gtk.Application {
 
     new ComposeImageManager ();
     new LazyMenuButton ();
+    new Cb.CopyLabel ();
 
 #if DEBUG
     GLib.Environment.set_variable ("G_MESSAGES_DEBUG", "all", true);

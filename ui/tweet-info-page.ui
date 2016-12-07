@@ -108,7 +108,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="text_label">
+              <object class="CbCopyLabel" id="text_label">
                 <property name="visible">1</property>
                 <property name="can-focus">1</property>
                 <property name="margin-start">8</property>

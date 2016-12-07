@@ -163,5 +163,9 @@ namespace Cb {
     string text (string text, TextEntity[] entities, uint flags, size_t n_medias, int64 quote_id);
   }
 
-
+  [CCode (cprefix = "cb_copy_label_", cheader_filename = "widgets/CopyLabel.h")]
+  class CopyLabel : Gtk.Label {
+    public CopyLabel ();
+    public void set_tweet (Cb.Tweet tweet);
+  }
 }

@@ -141,7 +141,9 @@ libcorebird_la_SOURCES = \
 	TextTransform.c \
 	TextTransform.h \
 	CbTweet.c \
-	CbTweet.h
+	CbTweet.h \
+	widgets/CopyLabel.c \
+	widgets/CopyLabel.h
 
 libcorebird_la_vala.stamp: $(libcorebird_la_VALASOURCES) Makefile
 	@$(VALAC) \

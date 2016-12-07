@@ -48,7 +48,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
   [GtkChild]
   private MultiMediaWidget mm_widget;
   [GtkChild]
-  private Gtk.Label text_label;
+  private Cb.CopyLabel text_label;
   [GtkChild]
   private TextButton name_button;
   [GtkChild]
@@ -451,6 +451,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     }
 
     text_label.label = tweet.get_formatted_text ();
+    text_label.set_tweet (tweet);
     name_button.set_markup (tweet.get_user_name ());
     screen_name_label.label = "@" + tweet.get_screen_name ();
     Twitter.get ().get_avatar.begin (tweet.get_user_id (), tweet.avatar_url, avatar_image);
