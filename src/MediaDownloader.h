@@ -59,6 +59,7 @@ void cb_media_downloader_disable (CbMediaDownloader *downloader);
 
 gboolean is_media_candidate (const char *url);
 
+gboolean is_twitter_media_candidate (const char *url);
 
 G_END_DECLS
 
