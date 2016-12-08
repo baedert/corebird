@@ -30,9 +30,8 @@
         <!-- Interface page -->
         <child>
           <object class="GtkGrid" id="interface_grid">
-
             <property name="visible">1</property>
-            <property name="border-width">10</property>
+            <property name="margin">10</property>
             <property name="row-spacing">6</property>
             <property name="column-spacing">12</property>
             <property name="column-homogeneous">1</property>
