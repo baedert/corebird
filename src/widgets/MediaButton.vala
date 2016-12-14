@@ -30,7 +30,7 @@ private class MediaButton : Gtk.Widget {
       return _media;
     }
     set {
-      if (value != _media && _media != null) {
+      if (_media != null && media_progress_id != 0) {
         _media.disconnect (this.media_progress_id);
         this.media_progress_id = 0;
       }
@@ -84,7 +84,7 @@ private class MediaButton : Gtk.Widget {
   }
 
   ~MediaButton () {
-    if (this.media != null) {
+    if (_media != null && this.media_progress_id != 0) {
       _media.disconnect (this.media_progress_id);
       this.media_progress_id = 0;
     }
