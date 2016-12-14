@@ -22,22 +22,20 @@ private class MediaButton : Gtk.Widget {
   private const int MIN_HEIGHT     = 40;
   private const int MIN_WIDTH      = 40;
   private Gdk.Window? event_window = null;
-  private unowned Cb.Media? _media;
+  private unowned Cb.Media? _media = null;
   private static Cairo.Surface[] play_icons;
-  private ulong media_progress_id = 0;
   public unowned Cb.Media? media {
     get {
       return _media;
     }
     set {
-      if (_media != null && media_progress_id != 0) {
-        _media.disconnect (this.media_progress_id);
-        this.media_progress_id = 0;
+      if (_media != null) {
+        _media.progress.disconnect (media_progress_cb);
       }
       _media = value;
       if (value != null) {
         if (!media.loaded) {
-          media_progress_id = _media.progress.connect (media_progress_cb);
+          _media.progress.connect (media_progress_cb);
         } else {
           this.media_alpha = 1.0;
         }
@@ -84,9 +82,8 @@ private class MediaButton : Gtk.Widget {
   }
 
   ~MediaButton () {
-    if (_media != null && this.media_progress_id != 0) {
-      _media.disconnect (this.media_progress_id);
-      this.media_progress_id = 0;
+    if (_media != null) {
+      _media.progress.disconnect (media_progress_cb);
     }
   }
 
