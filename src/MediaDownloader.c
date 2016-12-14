@@ -433,10 +433,23 @@ is_media_candidate (const char *url)
 }
 
 static void
+downloader_cancelled (GCancellable *cancellable,
+                      gpointer      user_data)
+{
+  CbMediaDownloader *downloader = user_data;
+
+  g_debug ("downloader cancelled");
+}
+
+static void
 cb_media_downloader_init (CbMediaDownloader *downloader)
 {
   downloader->disabled     = FALSE;
   downloader->soup_session = soup_session_new ();
+  downloader->cancellable  = g_cancellable_new ();
+
+  g_signal_connect (downloader->cancellable, "cancelled",
+                    downloader_cancelled, downloader);
 }
 
 static void
