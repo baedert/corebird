@@ -14,7 +14,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "Media.h"
+#include "CbMedia.h"
 
 
 
