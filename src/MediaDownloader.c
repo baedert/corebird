@@ -408,6 +408,16 @@ cb_media_downloader_disable (CbMediaDownloader *downloader)
   downloader->disabled = TRUE;
 }
 
+void
+cb_media_downloader_shutdown (CbMediaDownloader *downloader)
+{
+  g_debug ("MediaDownloader shutdown");
+
+  soup_session_abort (downloader->soup_session);
+  // XXX OK?
+  g_object_unref (downloader);
+}
+
 gboolean
 is_media_candidate (const char *url)
 {

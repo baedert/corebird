@@ -56,6 +56,7 @@ gboolean cb_media_downloader_load_finish (CbMediaDownloader  *downloader,
                                           GError            **error);
 
 void cb_media_downloader_disable (CbMediaDownloader *downloader);
+void cb_media_downloader_shutdown (CbMediaDownloader *downloader);
 
 gboolean is_media_candidate (const char *url);
 

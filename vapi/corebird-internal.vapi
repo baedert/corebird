@@ -49,6 +49,7 @@ namespace Cb {
     public static unowned MediaDownloader get_default ();
     public async void load_async (Media media);
     public void disable ();
+    public void shutdown ();
   }
 
   [CCode (cprefix = "CbTextEntity", lower_case_cprefix = "cb_text_entity_", cheader_filename = "Types.h",
