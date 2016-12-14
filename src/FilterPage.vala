@@ -146,10 +146,10 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
   }
 
   /**
-   * Called when the user adds a new Filter via the AddFilterDialog
+   * Called when the user adds a new Cb.Filter via the AddFilterDialog
    *
    **/
-  private void filter_added_cb (Filter f, bool created) {
+  private void filter_added_cb (Cb.Filter f, bool created) {
     if (created) {
       var entry = new FilterListEntry (f, account, main_window);
       filter_list.add (entry);
@@ -160,8 +160,8 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
           continue;
 
         var le = (FilterListEntry) w;
-        if (le.filter.id == f.id) {
-          le.content = f.content;
+        if (le.filter.get_id () == f.get_id ()) {
+          le.content = f.get_contents ();
           break;
         }
       }

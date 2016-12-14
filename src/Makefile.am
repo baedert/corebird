@@ -53,7 +53,6 @@ libcorebird_la_VALASOURCES = \
 	ListStatusesPage.vala \
 	ListsPage.vala \
 	FavoritesTimeline.vala \
-	Filter.vala \
 	FilterPage.vala \
 	UserEventReceiver.vala \
 	SnippetManager.vala \
@@ -141,7 +140,9 @@ libcorebird_la_SOURCES = \
 	TextTransform.c \
 	TextTransform.h \
 	CbTweet.c \
-	CbTweet.h
+	CbTweet.h \
+	CbFilter.c \
+	CbFilter.h
 
 libcorebird_la_vala.stamp: $(libcorebird_la_VALASOURCES) Makefile
 	@$(VALAC) \

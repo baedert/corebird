@@ -226,13 +226,13 @@ const string TD1 = """
 // }}}
 
 void matches () {
-  var f = new Filter ("a+");
+  var f = new Cb.Filter ("a+");
   assert (f.matches ("a"));
 }
 
 void matches_tweet () {
   var acc = new Account (12345, "foobar", "Foo Bar");
-  var filter = new Filter ("a+");
+  var filter = new Cb.Filter ("a+");
   acc.add_filter (filter);
   var tweet = new Cb.Tweet ();
   var parser = new Json.Parser ();
@@ -248,7 +248,7 @@ void matches_tweet () {
 
 void same_user () {
   var acc = new Account (12345, "foobar", "Foo Bar");
-  var filter = new Filter ("a+");
+  var filter = new Cb.Filter ("a+");
   acc.add_filter (filter);
   var tweet = new Cb.Tweet ();
   var parser = new Json.Parser ();
@@ -270,7 +270,7 @@ void same_user () {
 
 void links () {
   var acc = new Account (12345, "foobar", "Foo Bar");
-  var filter = new Filter ("t\\.co");
+  var filter = new Cb.Filter ("t\\.co");
   acc.add_filter (filter);
   var tweet = new Cb.Tweet ();
   var parser = new Json.Parser ();
@@ -289,14 +289,14 @@ void links () {
 
   // ... which is also why it should match now
   //message (tweet.get_real_text ());
-  acc.add_filter (new Filter ("tmblr"));
+  acc.add_filter (new Cb.Filter ("tmblr"));
   assert (acc.filter_matches (tweet));
 }
 
 
 void hashtags () {
   var acc = new Account (12345, "foobar", "Foo Bar");
-  var filter = new Filter ("#foobar");
+  var filter = new Cb.Filter ("#foobar");
   acc.add_filter (filter);
   var tweet = new Cb.Tweet ();
   var parser = new Json.Parser ();
