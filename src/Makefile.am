@@ -136,8 +136,8 @@ libcorebird_la_SOURCES = \
 	CbMedia.h \
 	CbMediaDownloader.c \
 	CbMediaDownloader.h \
-	Types.c \
-	Types.h \
+	CbTypes.c \
+	CbTypes.h \
 	CbTextTransform.c \
 	CbTextTransform.h \
 	CbTweet.c \

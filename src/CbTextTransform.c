@@ -1,6 +1,6 @@
 #include "CbTextTransform.h"
 #include "CbMediaDownloader.h"
-#include "Types.h"
+#include "CbTypes.h"
 #include <string.h>
 #include <ctype.h>
 

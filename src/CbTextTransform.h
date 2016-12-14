@@ -3,7 +3,7 @@
 #define __TEXT_TRANSFORM_H
 
 #include <glib-object.h>
-#include "Types.h"
+#include "CbTypes.h"
 
 typedef enum {
   CB_TEXT_TRANSFORM_REMOVE_MEDIA_LINKS       = 1 << 0,
