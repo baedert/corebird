@@ -1,5 +1,5 @@
 #include "TextTransform.h"
-#include "MediaDownloader.h"
+#include "CbMediaDownloader.h"
 #include "Types.h"
 #include <string.h>
 #include <ctype.h>

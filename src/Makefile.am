@@ -134,8 +134,8 @@ $(libcorebird_la_VALASOURCES:.vala=.c): libcorebird_la_vala.stamp
 libcorebird_la_SOURCES = \
 	CbMedia.c \
 	CbMedia.h \
-	MediaDownloader.c \
-	MediaDownloader.h \
+	CbMediaDownloader.c \
+	CbMediaDownloader.h \
 	Types.c \
 	Types.h \
 	TextTransform.c \
