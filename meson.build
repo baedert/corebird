@@ -153,6 +153,8 @@ corebird_lib_sources = files([
   'src/CbTypes.h',
   'src/CbFilter.c',
   'src/CbFilter.h',
+  'src/CbAvatarCache.c',
+  'src/CbAvatarCache.h',
 ])
 
 # glib resources
