@@ -55,7 +55,6 @@ corebird_lib_sources = files([
   'src/DefaultTimeline.vala',
   'src/DeltaUpdater.vala',
   'src/FavoritesTimeline.vala',
-  'src/Filter.vala',
   'src/FilterPage.vala',
   'src/HomeTimeline.vala',
   'src/IMessageReceiver.vala',
@@ -144,14 +143,16 @@ corebird_lib_sources = files([
   # C Sources
   'src/CbTweet.c',
   'src/CbTweet.h',
-  'src/TextTransform.c',
-  'src/TextTransform.h',
-  'src/Media.c',
-  'src/Media.h',
-  'src/MediaDownloader.c',
-  'src/MediaDownloader.h',
-  'src/Types.c',
-  'src/Types.h',
+  'src/CbTextTransform.c',
+  'src/CbTextTransform.h',
+  'src/CbMedia.c',
+  'src/CbMedia.h',
+  'src/CbMediaDownloader.c',
+  'src/CbMediaDownloader.h',
+  'src/CbTypes.c',
+  'src/CbTypes.h',
+  'src/CbFilter.c',
+  'src/CbFilter.h',
 ])
 
 # glib resources
