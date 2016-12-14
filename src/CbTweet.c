@@ -16,7 +16,7 @@
  */
 
 #include "CbTweet.h"
-#include "TextTransform.h"
+#include "CbTextTransform.h"
 
 
 /* TODO: We might want to put this into a utils.c later */

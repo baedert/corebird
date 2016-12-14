@@ -151,14 +151,14 @@ namespace Cb {
       NSFW
     }
 
-  [CCode (cprefix = "CB_TEXT_TRANSFORM_", lower_case_cprefix = "CbTextTransformFlags", cheader_filename = "TextTransform.h")]
+  [CCode (cprefix = "CB_TEXT_TRANSFORM_", lower_case_cprefix = "CbTextTransformFlags", cheader_filename = "CbTextTransform.h")]
     public enum TransformFlags {
     REMOVE_TRAILING_HASHTAGS,
     EXPAND_LINKS,
     REMOVE_MEDIA_LINKS
   }
 
-  [CCode (cprefix = "cb_text_transform_", cheader_filename = "TextTransform.h")]
+  [CCode (cprefix = "cb_text_transform_", cheader_filename = "CbTextTransform.h")]
   namespace TextTransform {
     string tweet (ref MiniTweet tweet, uint flags, int64 quote_id);
     string text (string text, TextEntity[] entities, uint flags, size_t n_medias, int64 quote_id);
