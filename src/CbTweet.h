@@ -21,7 +21,7 @@
 #include <glib-object.h>
 #include <json-glib/json-glib.h>
 #include "Types.h"
-#include "Media.h"
+#include "CbMedia.h"
 
 #define CB_TWEET_MAX_LENGTH 140
 

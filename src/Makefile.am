@@ -132,8 +132,8 @@ $(libcorebird_la_VALASOURCES:.vala=.c): libcorebird_la_vala.stamp
 
 
 libcorebird_la_SOURCES = \
-	Media.c \
-	Media.h \
+	CbMedia.c \
+	CbMedia.h \
 	MediaDownloader.c \
 	MediaDownloader.h \
 	Types.c \

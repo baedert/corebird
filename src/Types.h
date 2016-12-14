@@ -20,7 +20,7 @@
 
 #include <glib-object.h>
 #include <json-glib/json-glib.h>
-#include "Media.h"
+#include "CbMedia.h"
 
 struct _CbUserIdentity
 {

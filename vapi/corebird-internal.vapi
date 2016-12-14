@@ -1,7 +1,7 @@
 
 [CCode (cprefix = "Cb", lower_case_cprefix = "cb_")]
 namespace Cb {
-  [CCode (cprefix = "CB_MEDIA_TYPE_", cheader_filename = "Media.h")]
+  [CCode (cprefix = "CB_MEDIA_TYPE_", cheader_filename = "CbMedia.h")]
   public enum MediaType {
     IMAGE,
     VINE,
@@ -13,7 +13,7 @@ namespace Cb {
     UNKNOWN
   }
 
-  [CCode (cprefix = "CbMedia_", lower_case_cprefix = "cb_media_", cheader_filename = "Media.h")]
+  [CCode (cprefix = "CbMedia_", lower_case_cprefix = "cb_media_", cheader_filename = "CbMedia.h")]
   public class Media : GLib.Object {
     public int64 length;
     public bool loaded;
