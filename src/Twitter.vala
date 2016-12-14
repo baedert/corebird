@@ -35,11 +35,11 @@ public class Twitter : GLib.Object {
   public const int max_media_per_upload   = 4;
   public static Cairo.Surface no_avatar;
   public static Gdk.Pixbuf no_banner;
-  private AvatarCache avatar_cache;
+  private Cb.AvatarCache avatar_cache;
 
 #if DEBUG
   public void debug () {
-    this.avatar_cache.print_debug ();
+    //this.avatar_cache.print_debug ();
   }
 #endif
 
@@ -54,7 +54,7 @@ public class Twitter : GLib.Object {
       error ("Error while loading assets: %s", e.message);
     }
 
-    this.avatar_cache = new AvatarCache ();
+    this.avatar_cache = new Cb.AvatarCache ();
   }
 
   public void ref_avatar (Cairo.Surface surface) {
@@ -213,145 +213,3 @@ public class Twitter : GLib.Object {
   }
 
 }
-
-
-/* Maps from int64 to {int, cairo_surface_t, char*} */
-public class AvatarCache : GLib.Object {
-  private GLib.Array<int64?> ids;
-  private GLib.GenericArray<Cairo.Surface?> surfaces;
-  private GLib.GenericArray<string> urls;
-  private GLib.Array<int?> refcounts;
-
-  public AvatarCache () {
-    this.ids       = new GLib.Array<int64?> ();
-    this.surfaces  = new GLib.GenericArray<Cairo.Surface?> ();
-    this.refcounts = new GLib.Array<int?> ();
-    this.urls      = new GLib.GenericArray<string> ();
-  }
-
-  private int get_index (int64 id) {
-    for (int i = 0; i < this.ids.length; i ++) {
-        if (this.ids.data[i] == id) {
-        return i;
-      }
-    }
-
-    return -1;
-  }
-
-  public Cairo.Surface? get_surface_for_id (int64 user_id, out bool found) {
-    assert (ids.length == surfaces.length &&
-            surfaces.length == refcounts.length &&
-            refcounts.length == urls.length);
-
-    int index = get_index (user_id);
-    if (index != -1) {
-      found = true;
-      /* the surface can be null anyway here */
-      return this.surfaces.data[index];
-    }
-
-    found = false;
-    return null;
-  }
-
-  public string? get_url_for_id (int64 user_id) {
-    int index = get_index (user_id);
-    if (index != -1) {
-      return this.urls[index];
-    }
-
-    return null;
-  }
-
-  public void add (int64 user_id, Cairo.Surface? surface, string? avatar_url) {
-
-    int index;
-    if ((index = get_index (user_id)) != -1) {
-      this.surfaces[index] = surface;
-      this.urls[index] = avatar_url;
-    } else {
-      this.ids.append_val (user_id);
-      this.surfaces.add (surface);
-      this.urls.add (avatar_url);
-      this.refcounts.append_val (0);
-    }
-
-    assert (ids.length == surfaces.length && surfaces.length == refcounts.length &&
-            refcounts.length == urls.length);
-  }
-
-  public void set_avatar (int64 id, Cairo.Surface? surface, string url) {
-    int index = get_index (id);
-    assert (index != -1);
-
-    this.surfaces[index] = surface;
-    this.urls[index] = url;
-  }
-
-  public void set_url (int64 id, string url) {
-    int index = get_index (id);
-    assert (index != -1);
-
-    this.urls[index] = url;
-  }
-
-  public void increase_refcount_for_surface (Cairo.Surface surface) {
-    int index = -1;
-    for (int i = 0; i < this.surfaces.length; i ++) {
-      if (this.surfaces.data[i] == surface) {
-        index = i;
-        break;
-      }
-    }
-
-    if (index != -1) {
-      this.refcounts.data[index] = this.refcounts.data[index] + 1;
-    } else {
-      //warning ("Surface %p not in cache", surface);
-    }
-  }
-
-  public void decrease_refcount_for_surface (Cairo.Surface surface) {
-    int index = -1;
-    for (int i = 0; i < this.surfaces.length; i ++) {
-      if (this.surfaces.data[i] == surface) {
-        index = i;
-        break;
-      }
-    }
-
-    if (index == -1) {
-      //warning ("Surface %p not in cache", surface);
-      return;
-    }
-
-    this.refcounts.data[index] = this.refcounts.data[index] - 1;
-
-    if (this.refcounts.data[index] == 0) {
-      debug ("Removing avatar with id %d from cache (Now: %u)", index, this.ids.length - 1);
-      this.ids.remove_index_fast (index);
-      this.surfaces.remove_index_fast (index);
-      this.urls.remove_index_fast (index);
-      this.refcounts.remove_index_fast (index);
-    }
-
-    assert (ids.length == surfaces.length && surfaces.length == refcounts.length &&
-            refcounts.length == urls.length);
-  }
-
-#if DEBUG
-  public void print_debug () {
-    message ("-----------------");
-    message ("Cached avatars: %d", this.surfaces.length);
-    message ("URLS:");
-    for (int i = 0; i < this.urls.length; i ++)
-      message ("%d: %s (id %s): %p", i, this.urls[i], this.ids.index (i).to_string (), this.surfaces[i]);
-
-    assert (ids.length == surfaces.length && surfaces.length == refcounts.length &&
-            refcounts.length == urls.length);
-  }
-#endif
-}
-
-
