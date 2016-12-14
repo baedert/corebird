@@ -27,10 +27,10 @@ class FilterListEntry : Gtk.ListBoxRow {
   [GtkChild]
   private Gtk.Box delete_box;
 
-  private unowned Filter _filter;
-  public unowned Filter filter {
+  private unowned Cb.Filter _filter;
+  public unowned Cb.Filter filter {
     set {
-      content_label.label = value.content;
+      content_label.label = value.get_contents ();
       _filter = value;
     }
     get {
@@ -47,9 +47,8 @@ class FilterListEntry : Gtk.ListBoxRow {
   }
   private unowned Account account;
   private unowned MainWindow main_window;
-  public signal void removed (Filter f);
 
-  public FilterListEntry (Filter     f,
+  public FilterListEntry (Cb.Filter  f,
                           Account    account,
                           MainWindow main_window) {
     this.filter = f;
@@ -81,10 +80,9 @@ class FilterListEntry : Gtk.ListBoxRow {
   private void delete_button_clicked_cb () {
     for (int i = 0; i < account.filters.length; i ++) {
       var f = account.filters.get (i);
-      if (f.id == this.filter.id) {
+      if (f.get_id () == this.filter.get_id ()) {
         account.filters.remove (f);
-        account.db.exec ("DELETE FROM `filters` WHERE `id`='%d'".printf (f.id));
-        //removed (f);
+        account.db.exec ("DELETE FROM `filters` WHERE `id`='%d'".printf (f.get_id ()));
         revealer.reveal_child = false;
         main_window.rerun_filters ();
         return;

@@ -419,12 +419,12 @@ namespace Utils {
   }
 
 
-  public Filter create_persistent_filter (string content, Account account) {
+  public Cb.Filter create_persistent_filter (string content, Account account) {
     int id = (int)account.db.insert ("filters")
                                .val ("content", content)
                                .run();
-    Filter f = new Filter (content);
-    f.id = id;
+    Cb.Filter f = new Cb.Filter (content);
+    f.set_id (id);
     account.add_filter (f);
 
     return f;

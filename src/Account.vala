@@ -36,7 +36,7 @@ public class Account : GLib.Object {
   public int64[] blocked;
   public int64[] muted;
   public int64[] disabled_rts;
-  public GLib.GenericArray<Filter> filters;
+  public GLib.GenericArray<Cb.Filter> filters;
   public signal void info_changed (string screen_name, string name,
                                    Cairo.Surface avatar_small, Cairo.Surface avatar);
 
@@ -44,7 +44,7 @@ public class Account : GLib.Object {
     this.id = id;
     this.screen_name = screen_name;
     this.name = name;
-    this.filters = new GLib.GenericArray<Filter> ();
+    this.filters = new GLib.GenericArray<Cb.Filter> ();
     this.event_receiver = new UserEventReceiver (this);
     this.notifications = new NotificationManager (this);
   }
@@ -360,14 +360,14 @@ public class Account : GLib.Object {
   private void load_filters () {
     this.db.select ("filters").cols ("content", "id")
               .order ("id").run ((cols) => {
-      Filter f = new Filter (cols[0]);
-      f.id = int.parse (cols[1]);
+      Cb.Filter f = new Cb.Filter (cols[0]);
+      f.set_id (int.parse (cols[1]));
       filters.add (f);
       return true;
     });
   }
 
-  public void add_filter (owned Filter f) {
+  public void add_filter (owned Cb.Filter f) {
     this.filters.add (f);
   }
 

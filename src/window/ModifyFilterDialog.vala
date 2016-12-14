@@ -27,21 +27,21 @@ class ModifyFilterDialog : Gtk.Dialog {
 
   private GLib.Regex regex;
   private unowned Account account;
-  private unowned Filter filter;
+  private unowned Cb.Filter filter;
   private unowned MainWindow main_window;
 
   /** created will be true if the filter has just been created by the user(i.e. not modified) */
-  public signal void filter_added (Filter filter, bool created);
+  public signal void filter_added (Cb.Filter filter, bool created);
 
   public ModifyFilterDialog (MainWindow parent,
                              Account    account,
-                             Filter?    filter = null) {
+                             Cb.Filter? filter = null) {
     GLib.Object (use_header_bar: Gtk.Settings.get_default ().gtk_dialogs_use_header ? 1 : 0);
     this.set_transient_for (parent);
     this.application = parent.get_application ();
     this.account = account;
     if (filter != null) {
-      regex_entry.text = filter.content;
+      regex_entry.text = filter.get_contents ();
       this.title = _("Modify Filter");
     }
     this.filter = filter;
@@ -83,23 +83,17 @@ class ModifyFilterDialog : Gtk.Dialog {
   private void save_filter () {
     string content = regex_entry.text;
     if (this.filter == null) {
-      Filter f = Utils.create_persistent_filter (content, account);
-      //int id = (int)account.db.insert ("filters")
-                               //.val ("content", content)
-                               //.run();
-      //Filter f = new Filter (content);
-      //f.id = id;
-      //account.add_filter (f);
+      Cb.Filter f = Utils.create_persistent_filter (content, account);
       filter_added (f, true);
     } else {
       /* We update the existing filter */
       account.db.update ("filters").val ("content", content)
-                                   .where_eq ("id", filter.id.to_string ())
+                                   .where_eq ("id", filter.get_id ().to_string ())
                                    .run ();
 
       for (int i = 0; i < account.filters.length; i ++) {
         var f = account.filters.get (i);
-        if (f.id == this.filter.id) {
+        if (f.get_id () == this.filter.get_id ()) {
           f.reset (content);
           filter_added (f, false);
           break;

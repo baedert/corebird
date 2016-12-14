@@ -164,5 +164,13 @@ namespace Cb {
     string text (string text, TextEntity[] entities, uint flags, size_t n_medias, int64 quote_id);
   }
 
-
+  [CCode (cprefix = "cb_filter_", cheader_filename = "CbFilter.h")]
+  public class Filter : GLib.Object {
+    public Filter(string expr);
+    public bool matches (string text);
+    public void reset (string expr);
+    public unowned string get_contents();
+    public int get_id ();
+    public void set_id (int id);
+  }
 }
