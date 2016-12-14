@@ -44,7 +44,7 @@ namespace Cb {
 
   /* Needed for unit tests */
   [CCode (cprefix = "CbMediaDownloader", lower_case_cprefix = "cb_media_downloader_",
-          cheader_filename = "MediaDownloader.h")]
+          cheader_filename = "CbMediaDownloader.h")]
   public class MediaDownloader : GLib.Object {
     public static unowned MediaDownloader get_default ();
     public async void load_async (Media media);

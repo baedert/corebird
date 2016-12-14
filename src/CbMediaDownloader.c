@@ -15,7 +15,7 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "MediaDownloader.h"
+#include "CbMediaDownloader.h"
 #include <libsoup/soup.h>
 #include <gdk/gdk.h>
 #include <string.h>

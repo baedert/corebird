@@ -16,7 +16,7 @@
  */
 
 #include "Types.h"
-#include "MediaDownloader.h"
+#include "CbMediaDownloader.h"
 #include <string.h>
 #include <stdlib.h>
 
