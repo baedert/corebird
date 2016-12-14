@@ -256,6 +256,11 @@ public class Corebird : Gtk.Application {
 
   }
 
+  public override void shutdown () {
+    Cb.MediaDownloader.get_default ().shutdown ();
+    base.shutdown ();
+  }
+
   /**
    * Open startup windows.
    * Semantics: Open a window for every account in the startup-accounts array.
