@@ -33,7 +33,7 @@ namespace Cb {
     public bool is_video ();
   }
 
-  [CCode (cprefix = "CbUserIdentity_", lower_case_cprefix = "cb_user_identity_", cheader_filename = "Types.h",
+  [CCode (cprefix = "CbUserIdentity_", lower_case_cprefix = "cb_user_identity_", cheader_filename = "CbTypes.h",
           destroy_function = "cb_user_identity_free")]
   public struct UserIdentity {
     public int64 id;
@@ -52,7 +52,7 @@ namespace Cb {
     public void shutdown ();
   }
 
-  [CCode (cprefix = "CbTextEntity", lower_case_cprefix = "cb_text_entity_", cheader_filename = "Types.h",
+  [CCode (cprefix = "CbTextEntity", lower_case_cprefix = "cb_text_entity_", cheader_filename = "CbTypes.h",
           destroy_function = "cb_text_entity_free")]
   public struct TextEntity {
     public uint from;
@@ -63,7 +63,7 @@ namespace Cb {
     public uint info;
   }
 
-  [CCode (cprefix = "CbMiniTweet", lower_case_cprefix = "cb_mini_tweet_", cheader_filename = "Types.h",
+  [CCode (cprefix = "CbMiniTweet", lower_case_cprefix = "cb_mini_tweet_", cheader_filename = "CbTypes.h",
           destroy_function = "cb_mini_tweet_free")]
   public struct MiniTweet {
     public int64 id;

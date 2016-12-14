@@ -21,7 +21,7 @@
 #include <glib-object.h>
 #include <libsoup/soup.h>
 #include "CbMedia.h"
-#include "Types.h"
+#include "CbTypes.h"
 
 G_BEGIN_DECLS
 
