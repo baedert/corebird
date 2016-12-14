@@ -173,4 +173,16 @@ namespace Cb {
     public int get_id ();
     public void set_id (int id);
   }
+
+  [CCode (cprefix = "cb_avatar_cache_", cheader_filename = "CbAvatarCache.h")]
+  class AvatarCache : GLib.Object {
+    public AvatarCache ();
+    public void add (int64 user_id, Cairo.Surface? surface, string? avatar_url);
+    public void increase_refcount_for_surface (Cairo.Surface surface);
+    public void decrease_refcount_for_surface (Cairo.Surface surface);
+    public void set_url (int64 user_id, string url);
+    public void set_avatar (int64 user_id, Cairo.Surface? surface, string url);
+    public Cairo.Surface? get_surface_for_id (int64 user_id, out bool found);
+    public unowned string? get_url_for_id (int64 user_id);
+  }
 }

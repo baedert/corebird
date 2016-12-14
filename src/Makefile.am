@@ -142,7 +142,9 @@ libcorebird_la_SOURCES = \
 	CbTweet.c \
 	CbTweet.h \
 	CbFilter.c \
-	CbFilter.h
+	CbFilter.h \
+	CbAvatarCache.c \
+	CbAvatarCache.h
 
 libcorebird_la_vala.stamp: $(libcorebird_la_VALASOURCES) Makefile
 	@$(VALAC) \
