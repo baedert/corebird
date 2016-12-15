@@ -45,6 +45,13 @@ cairo_surface_t * cb_avatar_cache_get_surface_for_id (CbAvatarCache *cache,
 const char *cb_avatar_cache_get_url_for_id (CbAvatarCache *cache,
                                             gint64         user_id);
 
+guint cb_avatar_cache_get_n_entries (CbAvatarCache *cache);
+
+void cb_avatar_cache_set_url (CbAvatarCache *cache,
+                              gint64         user_id,
+                              const char    *url);
+
+
 
 G_END_DECLS
 
