@@ -125,16 +125,21 @@ public class AvatarWidget : Gtk.Widget {
     return t < 1.0;
   }
 
-
-
-  public override bool draw (Cairo.Context ctx) {
+  // TODO: Properly port this to snapshot()
+  public override void snapshot (Gtk.Snapshot snapshot) {
     int width  = this.get_allocated_width ();
     int height = this.get_allocated_height ();
 
     if (this._surface == null) {
-      return Gdk.EVENT_PROPAGATE;
+      return;
     }
 
+    Graphene.Rect bounds = {};
+    bounds.origin.x = 0;
+    bounds.origin.y = 0;
+    bounds.size.width = width;
+    bounds.size.height = height;
+    var ctx = snapshot.append_cairo_node (bounds, "Avatar Surface", null);
     double surface_scale;
     this._surface.get_device_scale (out surface_scale, out surface_scale);
 
@@ -183,9 +188,6 @@ public class AvatarWidget : Gtk.Widget {
       ctx.paint_with_alpha (this.alpha);
     }
 
-    return Gdk.EVENT_PROPAGATE;
   }
 
 }
-
-
