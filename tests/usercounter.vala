@@ -3,26 +3,26 @@ void count () {
   var db = new Sql.Database (Dirs.config ("accounts/test-account.db"),
                              Sql.ACCOUNTS_INIT_FILE,
                              Sql.ACCOUNTS_SQL_VERSION);
-  var counter = new UserCounter ();
+  var counter = new Cb.UserCounter ();
   counter.user_seen (0, "baedert", "blabla");
-  int changed = counter.save (db);
+  int changed = counter.save (db.get_sqlite_db ());
   message ("Single change: %d", changed);
   assert (changed == 1);
-  assert (counter.save (db) == 0);
+  assert (counter.save (db.get_sqlite_db ()) == 0);
 
   counter.user_seen (1, "baedert", "");
   counter.user_seen (1, "baedert", "");
-  changed = counter.save (db);
+  changed = counter.save (db.get_sqlite_db ());
   message ("Double change: %d", changed);
   assert (changed == 1);
-  assert (counter.save (db) == 0);
+  assert (counter.save (db.get_sqlite_db ()) == 0);
 
   counter.user_seen (2, "baedert", "");
   counter.user_seen (3, "baedert", "");
-  changed = counter.save (db);
+  changed = counter.save (db.get_sqlite_db ());
   message ("Two users changed: %d", changed);
   assert (changed == 2);
-  assert (counter.save (db) == 0);
+  assert (counter.save (db.get_sqlite_db ()) == 0);
 
 }
 
@@ -31,14 +31,14 @@ void query_after_save () {
   var db = new Sql.Database (Dirs.config ("accounts/test-account.db"),
                              Sql.ACCOUNTS_INIT_FILE,
                              Sql.ACCOUNTS_SQL_VERSION);
-  var counter = new UserCounter ();
+  var counter = new Cb.UserCounter ();
   counter.user_seen (10, "baedert", "foobar");
   counter.user_seen (20, "baedert2", "foobar2");
-  counter.save (db);
+  counter.save (db.get_sqlite_db ());
 
-  int n_results;
-  UserInfo[] infos = counter.query_by_prefix (db, "b", 10, out n_results);
-  assert (n_results == 2);
+  Cb.UserInfo[] infos;
+  counter.query_by_prefix (db.get_sqlite_db (), "b", 10, out infos);
+  assert (infos.length == 2);
   assert (infos[0].screen_name == "baedert");
   assert (infos[1].screen_name == "baedert2");
 }
@@ -48,14 +48,14 @@ void query_no_save () {
   var db = new Sql.Database (Dirs.config ("accounts/test-account.db"),
                              Sql.ACCOUNTS_INIT_FILE,
                              Sql.ACCOUNTS_SQL_VERSION);
-  var counter = new UserCounter ();
+  var counter = new Cb.UserCounter ();
   counter.user_seen (10, "baedert", "foobar");
   counter.user_seen (10, "baedert", "foobar"); // See this one twice so the order makes sense
   counter.user_seen (20, "baedert2", "foobar2");
 
-  int n_results;
-  UserInfo[] infos = counter.query_by_prefix (db, "b", 10, out n_results);
-  assert (n_results == 2);
+  Cb.UserInfo[] infos;
+  counter.query_by_prefix (db.get_sqlite_db (), "b", 10, out infos);
+  assert (infos.length == 2);
   assert (infos[0].screen_name == "baedert");
   assert (infos[1].screen_name == "baedert2");
 }
@@ -65,32 +65,32 @@ void query_mixed () {
   var db = new Sql.Database (Dirs.config ("accounts/test-account.db"),
                              Sql.ACCOUNTS_INIT_FILE,
                              Sql.ACCOUNTS_SQL_VERSION);
-  var counter = new UserCounter ();
+  var counter = new Cb.UserCounter ();
   counter.user_seen (10, "baedert", "foobar");
   counter.user_seen (10, "baedert", "foobar");
   counter.user_seen (10, "baedert", "foobar");
   counter.user_seen (10, "baedert", "foobar");
   counter.user_seen (20, "baedert2", "foobar2");
-  counter.save (db);
+  counter.save (db.get_sqlite_db ());
 
   /* Make sure nothing's in memory anymore */
   db = new Sql.Database (Dirs.config ("accounts/test-account.db"),
                          Sql.ACCOUNTS_INIT_FILE,
                          Sql.ACCOUNTS_SQL_VERSION);
-  counter = new UserCounter ();
+  counter = new Cb.UserCounter ();
   counter.user_seen (11, "b_", "__");
   counter.user_seen (11, "b_", "__");
   counter.user_seen (11, "b_", "__");
   counter.user_seen (12, "ba", "bb");
   counter.user_seen (12, "ba", "bb");
 
-  int n_results;
-  UserInfo[] infos = counter.query_by_prefix (db, "b", 10, out n_results);
-  assert (n_results == 4);
-  assert (infos[0].id == 10);
-  assert (infos[1].id == 11);
-  assert (infos[2].id == 12);
-  assert (infos[3].id == 20);
+  Cb.UserInfo[] infos;
+  counter.query_by_prefix (db.get_sqlite_db (), "b", 10, out infos);
+  assert (infos.length == 4);
+  assert (infos[0].user_id == 10);
+  assert (infos[1].user_id == 11);
+  assert (infos[2].user_id == 12);
+  assert (infos[3].user_id == 20);
 }
 
 int main (string[] args) {

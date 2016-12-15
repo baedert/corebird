@@ -276,20 +276,21 @@ class CompletionTextView : Gtk.TextView {
       show_completion_window ();
       this.current_word = cur_word;
 
-      int corpus_size = 0;
-      var corpus = account.user_counter.query_by_prefix (account.db, cur_word, 10, out corpus_size);
+      Cb.UserInfo[] corpus;
+      account.user_counter.query_by_prefix (account.db.get_sqlite_db (),
+                                            cur_word, 10,
+                                            out corpus);
 
-      for (int i = 0; i < corpus_size; i++) {
+      for (int i = 0; i < corpus.length; i++) {
         var l = new Gtk.Label ("@" + corpus[i].screen_name);
         l.halign = Gtk.Align.START;
         completion_list.add (l);
       }
-      if (corpus_size > 0) {
+      if (corpus.length > 0) {
         completion_list.select_row (completion_list.get_row_at_index (0));
         current_match = 0;
       }
       completion_list.show_all ();
-
     }
   }
 

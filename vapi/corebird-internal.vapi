@@ -185,4 +185,25 @@ namespace Cb {
     public Cairo.Surface? get_surface_for_id (int64 user_id, out bool found);
     public unowned string? get_url_for_id (int64 user_id);
   }
+
+  [CCode (cprefix = "cb_user_counter_", cheader_filename = "CbUserCounter.h")]
+  public class UserCounter : GLib.Object {
+    public UserCounter ();
+    public void id_seen (ref Cb.UserIdentity id);
+    public void user_seen (int64 id, string screen_name, string user_name);
+    public int save (Sqlite.Database db);
+    public void query_by_prefix (Sqlite.Database db,
+                                 string prefix,
+                                 int max_results,
+                                 out Cb.UserInfo[] infos);
+  }
+
+  [CCode (cheader_filename = "CbUserCounter.h")]
+  public struct UserInfo {
+    int64 user_id;
+    string screen_name;
+    string user_name;
+    int score;
+    bool changed;
+  }
 }
