@@ -230,6 +230,8 @@ cb_avatar_cache_finalize (GObject *obj)
   CbAvatarCache *cache = CB_AVATAR_CACHE (obj);
 
   g_array_free (cache->entries, TRUE);
+
+  G_OBJECT_CLASS (cb_avatar_cache_parent_class)->finalize (obj);
 }
 
 static void
