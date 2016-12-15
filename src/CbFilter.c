@@ -11,6 +11,8 @@ cb_filter_finalize (GObject *obj)
   g_free (filter->contents);
   if (filter->regex != NULL)
     g_regex_unref (filter->regex);
+
+  G_OBJECT_CLASS (cb_filter_parent_class)->finalize (obj);
 }
 
 static void
