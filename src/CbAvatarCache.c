@@ -229,8 +229,13 @@ cb_avatar_cache_get_url_for_id (CbAvatarCache *cache,
   return entry->url;
 }
 
+guint
+cb_avatar_cache_get_n_entries (CbAvatarCache *cache)
+{
+  g_return_val_if_fail (CB_IS_AVATAR_CACHE (cache), 0);
 
-
+  return cache->entries->len;
+}
 
 static void
 cb_avatar_cache_finalize (GObject *obj)

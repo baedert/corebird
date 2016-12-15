@@ -152,7 +152,7 @@ namespace Cb {
     }
 
   [CCode (cprefix = "CB_TEXT_TRANSFORM_", lower_case_cprefix = "CbTextTransformFlags", cheader_filename = "CbTextTransform.h")]
-    public enum TransformFlags {
+  public enum TransformFlags {
     REMOVE_TRAILING_HASHTAGS,
     EXPAND_LINKS,
     REMOVE_MEDIA_LINKS
@@ -184,6 +184,7 @@ namespace Cb {
     public void set_avatar (int64 user_id, Cairo.Surface? surface, string url);
     public Cairo.Surface? get_surface_for_id (int64 user_id, out bool found);
     public unowned string? get_url_for_id (int64 user_id);
+    public uint get_n_entries ();
   }
 
   [CCode (cprefix = "cb_user_counter_", cheader_filename = "CbUserCounter.h")]
