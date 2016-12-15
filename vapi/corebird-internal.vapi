@@ -182,7 +182,7 @@ namespace Cb {
     public void decrease_refcount_for_surface (Cairo.Surface surface);
     public void set_url (int64 user_id, string url);
     public void set_avatar (int64 user_id, Cairo.Surface? surface, string url);
-    public Cairo.Surface? get_surface_for_id (int64 user_id, out bool found);
+    public unowned Cairo.Surface? get_surface_for_id (int64 user_id, out bool found);
     public unowned string? get_url_for_id (int64 user_id);
     public uint get_n_entries ();
   }
