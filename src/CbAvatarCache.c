@@ -64,6 +64,7 @@ cb_avatar_cache_add (CbAvatarCache   *cache,
       if (surface)
         entry->surface = cairo_surface_reference (surface);
       entry->url = g_strdup (url);
+      entry->refcount = 1;
     }
   else
     {
