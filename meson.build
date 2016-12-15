@@ -72,7 +72,6 @@ corebird_lib_sources = files([
   'src/SnippetManager.vala',
   'src/TweetInfoPage.vala',
   'src/Twitter.vala',
-  'src/UserCounter.vala',
   'src/UserEventReceiver.vala',
   'src/UserStream.vala',
   'src/async/Collect.vala',
@@ -155,6 +154,8 @@ corebird_lib_sources = files([
   'src/CbFilter.h',
   'src/CbAvatarCache.c',
   'src/CbAvatarCache.h',
+  'src/CbUserCounter.c',
+  'src/CbUserCounter.h',
 ])
 
 # glib resources
