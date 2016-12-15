@@ -190,7 +190,6 @@ void
 cb_avatar_cache_increase_refcount_for_surface (CbAvatarCache   *cache,
                                                cairo_surface_t *surface)
 {
-  CacheEntry *entry = NULL;
   guint i;
 
   g_return_if_fail (CB_IS_AVATAR_CACHE (cache));
@@ -202,14 +201,10 @@ cb_avatar_cache_increase_refcount_for_surface (CbAvatarCache   *cache,
 
       if (e->surface == surface)
         {
-          entry = e;
+          e->refcount ++;
           break;
         }
     }
-
-
-  if (entry != NULL)
-    entry->refcount ++;
 }
 
 const char *
