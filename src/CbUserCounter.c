@@ -193,6 +193,7 @@ cb_user_counter_query_by_prefix (CbUserCounter *counter,
 
   query_data.infos = g_array_new (FALSE, TRUE, sizeof (CbUserInfo));
   query_data.lowest_score = G_MAXINT;
+  g_array_set_clear_func (query_data.infos, (GDestroyNotify)cb_user_info_destroy);
 
   for (i = 0; i < counter->user_infos->len; i ++)
     {
