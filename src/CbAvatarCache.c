@@ -12,6 +12,14 @@ struct _CacheEntry
   cairo_surface_t *surface;
 };
 
+static void
+cache_entry_destroy (CacheEntry *entry)
+{
+  g_free (entry->url);
+  if (entry->surface)
+    cairo_surface_destroy (entry->surface);
+}
+
 static inline CacheEntry *
 get_entry_for_user_id (CbAvatarCache *cache,
                        gint64         user_id)
@@ -238,6 +246,7 @@ static void
 cb_avatar_cache_init (CbAvatarCache *cache)
 {
   cache->entries = g_array_new (FALSE, TRUE, sizeof (CacheEntry));
+  g_array_set_clear_func (cache->entries, (GDestroyNotify) cache_entry_destroy);
 }
 
 static void
