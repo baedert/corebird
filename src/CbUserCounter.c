@@ -140,13 +140,26 @@ query_sqlite_cb (void  *user_data,
     int lowest_score;
   } *query_data = user_data;
   CbUserInfo *ui;
+  guint i;
+  int user_id;
 
   g_assert (n_columns == 4);
+
+  user_id = atoi (columns[0]);
+
+  /* Check for duplicates first */
+  for (i = 0; i < query_data->infos->len; i ++)
+    {
+      CbUserInfo *_ui = &g_array_index (query_data->infos, CbUserInfo, i);
+      if (_ui->user_id == user_id)
+        return 0;
+    }
+
 
   g_array_set_size (query_data->infos, query_data->infos->len + 1);
   ui = &g_array_index (query_data->infos, CbUserInfo, query_data->infos->len - 1);
 
-  ui->user_id = atoi (columns[0]);
+  ui->user_id = user_id;
   ui->screen_name = g_strdup (columns[1]);
   ui->user_name = g_strdup (columns[2]);
   ui->score = atoi (columns[3]);
@@ -178,25 +191,8 @@ cb_user_counter_query_by_prefix (CbUserCounter *counter,
   g_return_if_fail (max_results > 0);
   g_return_if_fail (n_results != NULL);
 
-  sql = g_strdup_printf ("SELECT `id`, `screen_name`, `user_name`, `score` "
-                         "FROM `user_cache` WHERE `screen_name` LIKE '%s%%' "
-                         "OR `user_name` LIKE '%s%%' ORDER BY `score` DESC LIMIT %d "
-                         "COLLATE NOCASE;", prefix, prefix, max_results);
-
   query_data.infos = g_array_new (FALSE, TRUE, sizeof (CbUserInfo));
   query_data.lowest_score = G_MAXINT;
-
-  sqlite3_exec (db, sql, query_sqlite_cb, &query_data, &err);
-
-  if (err != NULL)
-    {
-      g_critical ("%s SQL Error: %s", __FUNCTION__, err);
-      sqlite3_free (err);
-    }
-  if (query_data.infos->len == 0)
-    query_data.lowest_score = -1;
-
-  g_message ("Results after db query: %d", query_data.infos->len);
 
   for (i = 0; i < counter->user_infos->len; i ++)
     {
@@ -235,7 +231,23 @@ cb_user_counter_query_by_prefix (CbUserCounter *counter,
       g_free (screen_name);
     }
 
-  g_message ("Results now: %d", query_data.infos->len);
+  if (query_data.infos->len == 0)
+    query_data.lowest_score = -1;
+
+  sql = g_strdup_printf ("SELECT `id`, `screen_name`, `user_name`, `score` "
+                         "FROM `user_cache` WHERE `screen_name` LIKE '%s%%' "
+                         "OR `user_name` LIKE '%s%%' ORDER BY `score` DESC LIMIT %d "
+                         "COLLATE NOCASE;", prefix, prefix, max_results);
+
+  sqlite3_exec (db, sql, query_sqlite_cb, &query_data, &err);
+
+  if (err != NULL)
+    {
+      g_critical ("%s SQL Error: %s", __FUNCTION__, err);
+      sqlite3_free (err);
+    }
+
+
 
   /* Now sort after score */
   g_array_sort (query_data.infos, score_sort);
