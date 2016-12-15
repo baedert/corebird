@@ -11,7 +11,8 @@ tests = [
   'texttransform',
   'avatardownload',
   'friends',
-  'highlighting'
+  'highlighting',
+  'avatarcache'
 ]
 
 foreach test_name : tests
