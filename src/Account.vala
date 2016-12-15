@@ -29,7 +29,7 @@ public class Account : GLib.Object {
   public Cairo.Surface avatar       {public get; public set;}
   public Rest.OAuthProxy proxy;
   public UserStream user_stream;
-  public UserCounter user_counter;
+  public Cb.UserCounter user_counter;
   private UserEventReceiver event_receiver;
   public NotificationManager notifications;
   public int64[] friends;
@@ -61,7 +61,7 @@ public class Account : GLib.Object {
     this.db = new Sql.Database (Dirs.config (@"accounts/$id.db"),
                                 Sql.ACCOUNTS_INIT_FILE,
                                 Sql.ACCOUNTS_SQL_VERSION);
-    user_counter = new UserCounter ();
+    user_counter = new Cb.UserCounter ();
     this.load_filters ();
   }
 
@@ -100,7 +100,7 @@ public class Account : GLib.Object {
 
   public void uninit () {
     this.proxy = null;
-    this.user_counter.save (this.db);
+    this.user_counter.save (this.db.get_sqlite_db ());
     this.user_stream.unregister (this.event_receiver);
     this.user_stream.stop ();
     this.user_stream = null;

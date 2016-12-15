@@ -43,7 +43,6 @@ libcorebird_la_VALASOURCES = \
 	UserStream.vala \
 	IMessageReceiver.vala \
 	IPage.vala \
-	UserCounter.vala \
 	DefaultTimeline.vala \
 	DMThreadsPage.vala \
 	Settings.vala \
@@ -145,7 +144,9 @@ libcorebird_la_SOURCES = \
 	CbFilter.c \
 	CbFilter.h \
 	CbAvatarCache.c \
-	CbAvatarCache.h
+	CbAvatarCache.h \
+	CbUserCounter.c \
+	CbUserCounter.h
 
 libcorebird_la_vala.stamp: $(libcorebird_la_VALASOURCES) Makefile
 	@$(VALAC) \

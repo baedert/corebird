@@ -24,7 +24,7 @@ namespace Sql {
   private const int STOP     = -1;
   private const int CONTINUE =  0;
 
-public class Database {
+public class Database : GLib.Object {
   private Sqlite.Database db;
 
 
@@ -95,6 +95,10 @@ public class Database {
 
   public void end_transaction () {
     db.exec ("END TRANSACTION;");
+  }
+
+  public unowned Sqlite.Database get_sqlite_db () {
+    return this.db;
   }
 }
 }

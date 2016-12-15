@@ -40,11 +40,13 @@ class UserCompletion : GLib.Object {
     if (name.has_prefix ("@"))
       name = name.substring (1);
     start_completion ();
-    int n_results;
-    UserInfo[] names = account.user_counter.query_by_prefix (account.db, name, 10, out n_results);
+    Cb.UserInfo[] names;
+    account.user_counter.query_by_prefix (account.db.get_sqlite_db (),
+                                          name, 10,
+                                          out names);
 
 
-    for (int i = 0; i < n_results; i++)
-      populate_completion (names[i].screen_name, names[i].name);
+    for (int i = 0; i < names.length; i++)
+      populate_completion (names[i].screen_name, names[i].user_name);
   }
 }
