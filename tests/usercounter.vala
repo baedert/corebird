@@ -93,6 +93,23 @@ void query_mixed () {
   assert (infos[3].user_id == 20);
 }
 
+void duplicates () {
+  FileUtils.remove (Dirs.config ("accounts/test-account.db"));
+  var db = new Sql.Database (Dirs.config ("accounts/test-account.db"),
+                             Sql.ACCOUNTS_INIT_FILE,
+                             Sql.ACCOUNTS_SQL_VERSION);
+  var counter = new Cb.UserCounter ();
+  counter.user_seen (10, "baedert", "foobar");
+  counter.save (db.get_sqlite_db ());
+
+  counter.user_seen (10, "baedert", "foobar");
+
+  // Now we have the same entry in memory and in the database.
+  Cb.UserInfo[] infos;
+  counter.query_by_prefix (db.get_sqlite_db (), "b", 2, out infos);
+  assert (infos.length == 1);
+}
+
 int main (string[] args) {
   GLib.Test.init (ref args);
   Dirs.create_dirs ();
@@ -100,6 +117,7 @@ int main (string[] args) {
   GLib.Test.add_func ("/usercounter/query-after-save", query_after_save);
   GLib.Test.add_func ("/usercounter/query-no-save", query_no_save);
   GLib.Test.add_func ("/usercounter/query-mixed", query_mixed);
+  GLib.Test.add_func ("/usercounter/duplicates", duplicates);
 
   return GLib.Test.run ();
 }
