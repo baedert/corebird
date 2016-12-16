@@ -32,6 +32,8 @@ const char *cb_filter_get_contents (CbFilter *filter);
 
 int cb_filter_get_id (CbFilter *filter);
 
+void cb_filter_set_id (CbFilter *filter, int id);
+
 G_END_DECLS
 
 #endif
