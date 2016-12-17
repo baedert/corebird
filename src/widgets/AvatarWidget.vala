@@ -94,6 +94,7 @@ public class AvatarWidget : Gtk.Widget {
     Settings.get ().bind ("round-avatars", this, "make_round",
                           GLib.SettingsBindFlags.DEFAULT);
     this.get_style_context ().add_class ("avatar");
+    this.get_style_context ().add_class ("avatar-round"); // default is TRUE
   }
 
   ~AvatarWidget () {
