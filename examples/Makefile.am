@@ -19,52 +19,19 @@ AM_VALAFLAGS = \
 	-C \
 	-g
 
-
-
-bin_PROGRAMS = \
-	tweetstates \
-	accountdialog
-
-tweetstates_vala.stamp:$(top_builddir)/src/libcorebird.la $(top_builddir)/src/corebird.vapi $(tweetstates_VALASOURCES) Makefile
-	@$(VALAC) \
-		$(AM_VALAFLAGS) $(CB_VALA_FLAGS) \
-		--pkg corebird \
-		$(filter %.vala %.c,$^)
-	touch $@
-
-accountdialog_vala.stamp:$(top_builddir)/src/libcorebird.la $(top_builddir)/src/corebird.vapi $(accountdialog_VALASOURCES) Makefile
-	@$(VALAC) \
-		$(AM_VALAFLAGS) $(CB_VALA_FLAGS) \
-		--pkg corebird \
-		$(filter %.vala %.c,$^)
-	touch $@
-
-
 resource_deps = $(shell $(GLIB_COMPILE_RESOURCES) --generate-dependencies --sourcedir=$(top_srcdir) $(top_srcdir)/corebird.gresource.xml)
 corebird-resources.c: $(top_srcdir)/corebird.gresource.xml $(resource_deps) Makefile
 	XMLLINT=$(XMLLINT) $(GLIB_COMPILE_RESOURCES) --target $@ --generate --sourcedir=$(top_srcdir) --c-name corebird $<
 
 
-$(tweetstates_VALASOURCES:.vala=.c): tweetstates_vala.stamp
+noinst_bin_PROGRAMS = \
+	tweetstates \
+	accountdialog
 
+noinst_bindir = $(abs_top_builddir)
 
+tweetstates_VALASOURCES = tweetstates.vala corebird-resources.c
+tweetstates_LDADD = $(CB_LIBS) $(top_builddir)/src/libcorebird.la
 
-tweetstates_VALASOURCES = tweetstates.vala
-tweetstates_SOURCES = \
-	$(tweetstates_VALASOURCES:.vala=.c) \
-	corebird-resources.c
-tweetstates_LDADD = \
-	$(CB_LIBS) \
-	$(top_builddir)/src/libcorebird.la
-
-
-
-$(accountdialog_VALASOURCES:.vala=.c): accountdialog_vala.stamp
-
-accountdialog_VALASOURCES = accountdialog.vala
-accountdialog_SOURCES = \
-	$(accountdialog_VALASOURCES:.vala=.c) \
-	corebird-resources.c
-accountdialog_LDADD = \
-	$(CB_LIBS) \
-	$(top_builddir)/src/libcorebird.la
+accountdialog_VALASOURCES = accountdialog.vala corebird-resources.c
+accountdialog_LDADD = $(CB_LIBS) $(top_builddir)/src/libcorebird.la
