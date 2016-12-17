@@ -52,8 +52,7 @@ class FollowButton : Gtk.Button {
 
     this.add (stack);
     this.get_style_context ().add_class ("text-button");
-    // Default: following = false
-    this.get_style_context ().add_class ("suggested-action");
+    this.get_style_context ().add_class ("suggested-action"); /* Default is false */
   }
 
 }
