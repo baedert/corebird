@@ -12,14 +12,6 @@
             <property name="visible">1</property>
             <property name="transition-type">slide-left-right</property>
             <child>
-              <object class="GtkFileChooserWidget" id="file_chooser">
-                <property name="visible">1</property>
-                <property name="vexpand">1</property>
-                <signal name="file_activated" handler="next"/>
-                <signal name="selection_changed" handler="selection_changed_cb"/>
-              </object>
-            </child>
-            <child>
               <object class="CropWidget" id="crop_widget">
                 <property name="visible">true</property>
                 <property name="vexpand">true</property>
@@ -55,26 +47,27 @@
         <property name="margin-end">6</property>
         <property name="margin-top">6</property>
         <child>
-          <object class="GtkButton" id="next_button">
+          <object class="GtkButton" id="save_button">
             <property name="visible">1</property>
-            <property name="label" translatable="yes">Next</property>
+            <property name="label" translatable="yes">Save</property>
             <property name="sensitive">0</property>
             <property name="can-default">1</property>
+            <signal name="clicked" handler="save_button_clicked_cb" />
           </object>
         </child>
       </object>
     </child>
     <child type="action">
-      <object class="GtkButton" id="back_button">
+      <object class="GtkButton" id="select_image_button">
         <property name="visible">1</property>
-        <property name="label" translatable="yes">Back</property>
-        <property name="sensitive">0</property>
+        <property name="label" translatable="yes">Select Image</property>
+        <signal name="clicked" handler="select_image_button_clicked_cb" />
       </object>
     </child>
     <action-widgets>
       <action-widget response="cancel">cancel_button</action-widget>
-      <action-widget response="1">back_button</action-widget>
-      <action-widget response="ok" default="true">next_button</action-widget>
+      <action-widget response="1">select_image_button</action-widget>
+      <action-widget response="ok" default="true">save_button</action-widget>
     </action-widgets>
   </template>
 </interface>
