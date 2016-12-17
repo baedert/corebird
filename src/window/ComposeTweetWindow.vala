@@ -172,7 +172,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     int length = TweetUtils.calc_tweet_length (text, add_url);
 
     length_label.label = (Cb.Tweet.MAX_LENGTH - length).to_string ();
-    if (length > 0 && length <= Cb.Tweet.MAX_LENGTH)
+    if ((length > 0 && length <= Cb.Tweet.MAX_LENGTH) || (compose_image_manager.n_images > 0 && length == 0))
       send_button.sensitive = true;
     else
       send_button.sensitive = false;
