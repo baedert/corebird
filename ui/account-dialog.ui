@@ -48,6 +48,7 @@
       <object class="GtkStack" id="content_stack">
         <property name="visible">1</property>
         <property name="transition-type">slide-left-right</property>
+        <property name="homogeneous">false</property>
         <child>
           <object class="GtkBox" id="info_box">
             <property name="visible">1</property>
