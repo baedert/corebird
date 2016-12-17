@@ -30,7 +30,6 @@
     <file preprocess="xml-stripblanks">ui/main-widget.ui</file>
     <file preprocess="xml-stripblanks">ui/account-dialog.ui</file>
     <file preprocess="xml-stripblanks">ui/media-dialog.ui</file>
-    <file preprocess="xml-stripblanks">ui/image-crop-dialog.ui</file>
     <file preprocess="xml-stripblanks">ui/modify-snippet-dialog.ui</file>
     <file preprocess="xml-stripblanks">ui/shortcuts-window.ui</file>
     <file preprocess="to-pixdata">data/16x16/apps/corebird-compose-symbolic.symbolic.png</file>
