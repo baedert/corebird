@@ -111,7 +111,6 @@ libcorebird_la_VALASOURCES = \
 	window/AboutDialog.vala \
 	window/AccountDialog.vala \
 	window/MediaDialog.vala \
-	window/ImageCropDialog.vala \
 	window/ModifySnippetDialog.vala \
 	sql/Database.vala \
 	sql/InsertStatement.vala \
