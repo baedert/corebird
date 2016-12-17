@@ -37,6 +37,10 @@ public class AccountDialog : Gtk.Window {
   private Gtk.Stack content_stack;
   [GtkChild]
   private Gtk.Box info_box;
+  [GtkChild]
+  private Gtk.Label error_label;
+  [GtkChild]
+  private Gtk.Button save_button;
 
   private unowned Account account;
   private string old_user_name;
@@ -322,21 +326,24 @@ public class AccountDialog : Gtk.Window {
           return;
         }
 
-        //if (image.get_width () >= min_width &&
-            //image.get_height () >= min_height) {
+        int min_width = 200;
+        int min_height = 100;
+
+        if (image.get_width () >= min_width &&
+            image.get_height () >= min_height) {
           crop_widget.set_image (image);
-          //save_button.sensitive = true;
-        //} else {
-          //string error_str = "";
-          //error_str += _("Image does not meet minimum size requirements:") + "\n";
-          //error_str += ngettext ("Minimum width: %d pixel", "Minimum width: %d pixels", min_width)
-                       //.printf (min_width) + "\n";
-          //error_str += ngettext ("Minimum height: %d pixel", "Minimum height: %d pixels", min_height)
-                       //.printf (min_height);
-          //error_label.label = error_str;
-          //stack.visible_child = error_label;
-          //save_button.sensitive = false;
-        //}
+          save_button.sensitive = true;
+        } else {
+          string error_str = "";
+          error_str += _("Image does not meet minimum size requirements:") + "\n";
+          error_str += ngettext ("Minimum width: %d pixel", "Minimum width: %d pixels", min_width)
+                       .printf (min_width) + "\n";
+          error_str += ngettext ("Minimum height: %d pixel", "Minimum height: %d pixels", min_height)
+                       .printf (min_height);
+          error_label.label = error_str;
+          content_stack.visible_child = error_label;
+          save_button.sensitive = false;
+        }
       } else if (id == Gtk.ResponseType.CANCEL) {
         content_stack.visible_child = info_box;
       }
@@ -375,7 +382,8 @@ public class AccountDialog : Gtk.Window {
 
   [GtkCallback]
   private void cancel_button_clicked_cb () {
-    if (content_stack.visible_child == crop_widget) {
+    if (content_stack.visible_child == crop_widget ||
+        content_stack.visible_child == error_label) {
       this.resize (old_width, old_height);
       old_width = 0;
       old_height = 0;
