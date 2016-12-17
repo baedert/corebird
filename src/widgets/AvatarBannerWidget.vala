@@ -29,6 +29,9 @@ public class AvatarBannerWidget : Gtk.Container {
   public signal void avatar_changed (Gdk.Pixbuf new_avatar);
   public signal void banner_changed (Gdk.Pixbuf new_banner);
 
+  public signal void avatar_clicked ();
+  public signal void banner_clicked ();
+
   construct {
     this.set_has_window (false);
     get_style_context ().add_class ("avatar");
@@ -136,29 +139,18 @@ public class AvatarBannerWidget : Gtk.Container {
   }
 
   private void banner_clicked_cb () {
-    ImageCropDialog dialog = new ImageCropDialog (2.0);
-    dialog.set_title (_("Select banner"));
-    dialog.set_min_size (200);
-    dialog.set_modal (true);
-    dialog.min_width = 200;
-    dialog.min_height = 100;
-    dialog.set_transient_for ((Gtk.Window)this.get_toplevel ());
-    dialog.image_cropped.connect ((img) => {
-      set_banner_button.set_pixbuf (img);
-      banner_changed (img);
-    });
-    dialog.show_all ();
+    this.banner_clicked ();
   }
 
   private void avatar_clicked_cb () {
-    ImageCropDialog dialog = new ImageCropDialog (1.0);
-    dialog.set_title (_("Select avatar"));
-    dialog.set_modal (true);
-    dialog.set_transient_for ((Gtk.Window)this.get_toplevel ());
-    dialog.image_cropped.connect ((img) => {
-      set_avatar_button.set_pixbuf (img);
-      avatar_changed (img);
-    });
-    dialog.show_all ();
+    this.avatar_clicked ();
+  }
+
+  public void set_avatar (Gdk.Pixbuf avatar) {
+    set_avatar_button.set_pixbuf (avatar);
+  }
+
+  public void set_banner (Gdk.Pixbuf banner) {
+    set_banner_button.set_pixbuf (banner);
   }
 }

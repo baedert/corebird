@@ -213,7 +213,7 @@ class CropWidget : Gtk.DrawingArea {
     this.queue_draw ();
   }
 
-  public void set_image (Gdk.Pixbuf image) {
+  public void set_image (Gdk.Pixbuf? image) {
     this.image = image;
     calculate_image_rect ();
 
@@ -233,7 +233,6 @@ class CropWidget : Gtk.DrawingArea {
 
     restrict_selection_size ();
     this.queue_draw ();
-
   }
 
 

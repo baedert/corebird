@@ -16,7 +16,7 @@
  */
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/account-dialog.ui")]
-class AccountDialog : Gtk.Dialog {
+public class AccountDialog : Gtk.Window {
   private const string PAGE_NORMAL = "normal";
   private const string PAGE_DELETE = "delete";
   [GtkChild]
@@ -31,6 +31,12 @@ class AccountDialog : Gtk.Dialog {
   private Gtk.Entry website_entry;
   [GtkChild]
   private CompletionTextView description_text_view;
+  [GtkChild]
+  private CropWidget crop_widget;
+  [GtkChild]
+  private Gtk.Stack content_stack;
+  [GtkChild]
+  private Gtk.Box info_box;
 
   private unowned Account account;
   private string old_user_name;
@@ -42,8 +48,6 @@ class AccountDialog : Gtk.Dialog {
 
 
   public AccountDialog (Account account) {
-    GLib.Object (use_header_bar: Gtk.Settings.get_default ().gtk_dialogs_use_header ? 1 : 0);
-    set_default_response (Gtk.ResponseType.CLOSE);
     this.account = account;
     name_entry.text = account.name;
     avatar_banner_widget.set_account (account);
@@ -84,14 +88,14 @@ class AccountDialog : Gtk.Dialog {
     description_text_view.get_buffer ().set_text (account.description ?? "");
   }
 
-  public override void response (int response_id) {
-    if (response_id == Gtk.ResponseType.CLOSE) {
-      save_data ();
-      this.destroy ();
-    } else if (response_id == Gtk.ResponseType.CANCEL) {
-      this.destroy ();
-    }
-  }
+  //public override void response (int response_id) {
+    //if (response_id == Gtk.ResponseType.CLOSE) {
+      //save_data ();
+      //this.destroy ();
+    //} else if (response_id == Gtk.ResponseType.CANCEL) {
+      //this.destroy ();
+    //}
+  //}
 
   [GtkCallback]
   private void delete_button_clicked_cb () {
@@ -291,6 +295,102 @@ class AccountDialog : Gtk.Dialog {
         }
       }
       Settings.get ().set_strv ("startup-accounts", new_startup_accounts);
+    }
+  }
+
+  private void show_crop_image_selector () {
+    var filechooser = new Gtk.FileChooserDialog (_("Select Banner Image"),
+                                                 this,
+                                                 Gtk.FileChooserAction.OPEN,
+                                                 _("Cancel"),
+                                                 Gtk.ResponseType.CANCEL,
+                                                 _("Open"),
+                                                 Gtk.ResponseType.ACCEPT);
+    filechooser.select_multiple = false;
+    filechooser.modal = true;
+
+    filechooser.response.connect ((id) => {
+      if (id == Gtk.ResponseType.ACCEPT) {
+        string selected_file = filechooser.get_filename ();
+        Gdk.Pixbuf? image = null;
+        try {
+          image = new Gdk.Pixbuf.from_file (selected_file);
+        } catch (GLib.Error e) {
+          warning (e.message);
+          return;
+        }
+
+        //if (image.get_width () >= min_width &&
+            //image.get_height () >= min_height) {
+          crop_widget.set_image (image);
+          //save_button.sensitive = true;
+        //} else {
+          //string error_str = "";
+          //error_str += _("Image does not meet minimum size requirements:") + "\n";
+          //error_str += ngettext ("Minimum width: %d pixel", "Minimum width: %d pixels", min_width)
+                       //.printf (min_width) + "\n";
+          //error_str += ngettext ("Minimum height: %d pixel", "Minimum height: %d pixels", min_height)
+                       //.printf (min_height);
+          //error_label.label = error_str;
+          //stack.visible_child = error_label;
+          //save_button.sensitive = false;
+        //}
+      } else if (id == Gtk.ResponseType.CANCEL) {
+        content_stack.visible_child = info_box;
+      }
+      filechooser.destroy ();
+    });
+
+    var filter = new Gtk.FileFilter ();
+    filter.add_mime_type ("image/png");
+    filter.add_mime_type ("image/jpeg");
+    filechooser.set_filter (filter);
+
+    filechooser.show_all ();
+  }
+
+  [GtkCallback]
+  private void avatar_clicked_cb () {
+    crop_widget.set_image (null);
+    crop_widget.desired_aspect_ratio = 1.0;
+    content_stack.visible_child = crop_widget;
+    show_crop_image_selector ();
+  }
+
+  [GtkCallback]
+  private void banner_clicked_cb () {
+    crop_widget.set_image (null);
+    crop_widget.desired_aspect_ratio = 2.0;
+    content_stack.visible_child = crop_widget;
+    show_crop_image_selector ();
+  }
+
+  [GtkCallback]
+  private void cancel_button_clicked_cb () {
+    if (content_stack.visible_child == crop_widget) {
+      /* Just go back */
+      content_stack.visible_child = info_box;
+    } else {
+      this.destroy ();
+    }
+  }
+
+  [GtkCallback]
+  private void save_button_cliicked_cb () {
+    if (content_stack.visible_child == crop_widget) {
+      if (crop_widget.desired_aspect_ratio == 1.0) {
+        /* Avatar */
+        avatar_banner_widget.set_avatar (crop_widget.get_cropped_image ());
+      } else if (crop_widget.desired_aspect_ratio == 2.0) {
+        avatar_banner_widget.set_banner (crop_widget.get_cropped_image ());
+        /* Banner */
+      } else {
+        GLib.assert_not_reached ();
+      }
+      content_stack.visible_child = info_box;
+    } else {
+      save_data ();
+      this.destroy ();
     }
   }
 }
