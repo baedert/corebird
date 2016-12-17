@@ -57,8 +57,8 @@
                     <child>
                       <object class="AvatarWidget" id="avatar_image">
                         <property name="visible">1</property>
-                        <property name="width-request">73</property>
-                        <property name="height-request">73</property>
+                        <property name="width-request">100</property>
+                        <property name="height-request">100</property>
                         <property name="can-focus">False</property>
                         <property name="margin-start">12</property>
                         <property name="margin-top">12</property>

@@ -229,14 +229,12 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     string avatar_url = root.get_string_member("profile_image_url");
     int scale = this.get_scale_factor ();
 
-    if (scale == 1)
-      avatar_url = avatar_url.replace("_normal", "_bigger");
-    else
-      avatar_url = avatar_url.replace ("_normal", "_200x200");
+    /* Always load the 200x200 px version even in loDPI since there's no 100x100px version */
+    avatar_url = avatar_url.replace ("_normal", "_200x200");
 
     // We don't use our AvatarCache here because this (73×73) avatar is only
     // ever loaded here.
-    TweetUtils.download_avatar.begin (avatar_url, 73 * scale, (obj, res) => {
+    TweetUtils.download_avatar.begin (avatar_url, 100 * scale, (obj, res) => {
       Cairo.Surface surface;
       try {
         var pixbuf = TweetUtils.download_avatar.end (res);
