@@ -21,9 +21,18 @@ AM_VALAFLAGS = \
 
 
 
-bin_PROGRAMS = tweetstates
+bin_PROGRAMS = \
+	tweetstates \
+	accountdialog
 
 tweetstates_vala.stamp:$(top_builddir)/src/libcorebird.la $(top_builddir)/src/corebird.vapi $(tweetstates_VALASOURCES) Makefile
+	@$(VALAC) \
+		$(AM_VALAFLAGS) $(CB_VALA_FLAGS) \
+		--pkg corebird \
+		$(filter %.vala %.c,$^)
+	touch $@
+
+accountdialog_vala.stamp:$(top_builddir)/src/libcorebird.la $(top_builddir)/src/corebird.vapi $(accountdialog_VALASOURCES) Makefile
 	@$(VALAC) \
 		$(AM_VALAFLAGS) $(CB_VALA_FLAGS) \
 		--pkg corebird \
@@ -45,5 +54,17 @@ tweetstates_SOURCES = \
 	$(tweetstates_VALASOURCES:.vala=.c) \
 	corebird-resources.c
 tweetstates_LDADD = \
+	$(CB_LIBS) \
+	$(top_builddir)/src/libcorebird.la
+
+
+
+$(accountdialog_VALASOURCES:.vala=.c): accountdialog_vala.stamp
+
+accountdialog_VALASOURCES = accountdialog.vala
+accountdialog_SOURCES = \
+	$(accountdialog_VALASOURCES:.vala=.c) \
+	corebird-resources.c
+accountdialog_LDADD = \
 	$(CB_LIBS) \
 	$(top_builddir)/src/libcorebird.la
