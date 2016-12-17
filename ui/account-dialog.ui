@@ -286,6 +286,17 @@
           </object>
         </child>
 
+        <child>
+          <object class="GtkLabel" id="error_label">
+            <property name="visible">1</property>
+            <property name="halign">center</property>
+            <property name="valign">center</property>
+            <property name="wrap">true</property>
+            <property name="wrap-mode">word-char</property>
+            <property name="margin">24</property>
+          </object>
+        </child>
+
       </object>
     </child> <!-- Stack -->
   </template>
