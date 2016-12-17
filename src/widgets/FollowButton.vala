@@ -16,7 +16,7 @@
  */
 
 class FollowButton : Gtk.Button {
-  private bool _following;
+  private bool _following = false;
   public bool following {
     get { return _following; }
     set {
@@ -52,6 +52,7 @@ class FollowButton : Gtk.Button {
 
     this.add (stack);
     this.get_style_context ().add_class ("text-button");
+    this.get_style_context ().add_class ("suggested-action"); /* Default is false */
   }
 
 }
