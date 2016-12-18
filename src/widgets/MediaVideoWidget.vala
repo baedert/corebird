@@ -165,8 +165,10 @@ class MediaVideoWidget : Gtk.Stack {
 
   private void stop () {
     cancellable.cancel ();
-    if (video_progress_id != 0)
+    if (video_progress_id != 0) {
       GLib.Source.remove (video_progress_id);
+      video_progress_id = 0;
+    }
 #if VIDEO
     src.set_state (Gst.State.NULL);
 #endif
