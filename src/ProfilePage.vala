@@ -103,17 +103,6 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     this.tweet_list.account = account;
     this.tweet_list.delta_updater = delta_updater;
 
-    this.scroll_event.connect ((evt) => {
-      if (evt.delta_y < 0 && this.vadjustment.value == 0) {
-        if (banner_image.scale >= 1.0) {
-          banner_image.scale = 1.0f;
-          return Gdk.EVENT_PROPAGATE;
-        }
-        banner_image.scale += 0.25f * (-evt.delta_y);
-        return Gdk.EVENT_STOP;
-      }
-      return Gdk.EVENT_PROPAGATE;
-    });
     this.scrolled_to_end.connect (() => {
       if (user_stack.visible_child == tweet_list) {
         this.load_older_tweets.begin ();
