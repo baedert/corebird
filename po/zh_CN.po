@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
-"POT-Creation-Date: 2016-11-14 17:33+0100\n"
+"POT-Creation-Date: 2016-12-18 16:41+0100\n"
 "PO-Revision-Date: 2016-07-30 08:17+0000\n"
 "Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/corebird/corebird/"
@@ -134,7 +134,7 @@ msgid "(%d unread)"
 msgid_plural "(%d unread)"
 msgstr[0] "(%d 条未读)"
 
-#: src/ListsPage.vala:120 src/ListsPage.vala:125 ui/profile-page.ui:356
+#: src/ListsPage.vala:120 src/ListsPage.vala:125 ui/profile-page.ui:364
 msgid "Lists"
 msgstr "列表"
 
@@ -168,11 +168,11 @@ msgstr "%s 提及了 %s"
 msgid "Mentions"
 msgstr "提及我的"
 
-#: src/ProfilePage.vala:266
+#: src/ProfilePage.vala:253
 msgid "Protected profile"
 msgstr "资料已受保护"
 
-#: src/ProfilePage.vala:321
+#: src/ProfilePage.vala:308
 #, c-format
 msgid "Tweet to @%s"
 msgstr "给 @%s 发推"
@@ -189,7 +189,7 @@ msgstr "无法显示推文"
 msgid "Retweets"
 msgstr "转推"
 
-#: src/TweetInfoPage.vala:494 src/widgets/MediaButton.vala:91
+#: src/TweetInfoPage.vala:494 src/widgets/MediaButton.vala:100
 msgid "Open in Browser"
 msgstr "浏览器中打开"
 
@@ -242,14 +242,6 @@ msgstr "PIN 码错误"
 msgid "Account already in use"
 msgstr "账户已在使用中"
 
-#: src/widgets/AvatarBannerWidget.vala:140
-msgid "Select banner"
-msgstr "选择横幅"
-
-#: src/widgets/AvatarBannerWidget.vala:155
-msgid "Select avatar"
-msgstr "选择头像"
-
 #: src/widgets/CompletionTextView.vala:40
 msgid "No users found"
 msgstr ""
@@ -262,7 +254,7 @@ msgstr "关注"
 msgid "Unfollow"
 msgstr "取消关注"
 
-#: src/widgets/MediaButton.vala:42
+#: src/widgets/MediaButton.vala:45
 msgid "Copy URL"
 msgstr ""
 
@@ -274,11 +266,11 @@ msgstr "复制链接"
 msgid "Loading..."
 msgstr "载入中..."
 
-#: src/widgets/TweetListBox.vala:102 src/widgets/TweetListBox.vala:150
+#: src/widgets/TweetListBox.vala:102 src/widgets/TweetListBox.vala:153
 msgid "No entries found"
 msgstr "未找到条目"
 
-#: src/widgets/TweetListBox.vala:110
+#: src/widgets/TweetListBox.vala:113
 msgid "Retry"
 msgstr "重试"
 
@@ -288,11 +280,10 @@ msgstr "引用推文"
 
 #: src/window/ComposeTweetWindow.vala:237
 #: src/window/ComposeTweetWindow.vala:262 src/window/UserListDialog.vala:47
-#: ui/account-dialog.ui:21 ui/account-dialog.ui:233 ui/compose-window.ui:41
-#: ui/filter-list-entry.ui:80 ui/image-crop-dialog.ui:46
-#: ui/list-list-entry.ui:98 ui/list-statuses-page.ui:173
-#: ui/modify-filter-dialog.ui:13 ui/modify-snippet-dialog.ui:14
-#: ui/user-filter-entry.ui:114
+#: ui/account-dialog.ui:25 ui/account-dialog.ui:247 ui/compose-window.ui:41
+#: ui/filter-list-entry.ui:80 ui/list-list-entry.ui:98
+#: ui/list-statuses-page.ui:173 ui/modify-filter-dialog.ui:13
+#: ui/modify-snippet-dialog.ui:14 ui/user-filter-entry.ui:114
 msgid "Cancel"
 msgstr "取消"
 
@@ -310,35 +301,9 @@ msgid ""
 "The selected image is too big. The maximum file size per image is %'d MB"
 msgstr ""
 
-#: src/window/ComposeTweetWindow.vala:290 ui/image-crop-dialog.ui:71
+#: src/window/ComposeTweetWindow.vala:290
 msgid "Back"
 msgstr "返回"
-
-#: src/window/ImageCropDialog.vala:58 ui/image-crop-dialog.ui:61
-msgid "Next"
-msgstr "下一个"
-
-#: src/window/ImageCropDialog.vala:98 src/window/UserListDialog.vala:48
-#: ui/account-dialog.ui:28 ui/list-statuses-page.ui:129
-#: ui/modify-filter-dialog.ui:20 ui/modify-snippet-dialog.ui:21
-msgid "Save"
-msgstr "保存"
-
-#: src/window/ImageCropDialog.vala:103
-msgid "Image does not meet minimum size requirements:"
-msgstr "图片不符合最小尺寸要求："
-
-#: src/window/ImageCropDialog.vala:104
-#, c-format
-msgid "Minimum width: %d pixel"
-msgid_plural "Minimum width: %d pixels"
-msgstr[0] "最小宽度：%d 像素"
-
-#: src/window/ImageCropDialog.vala:106
-#, c-format
-msgid "Minimum height: %d pixel"
-msgid_plural "Minimum height: %d pixels"
-msgstr[0] "最小高度：%d 像素"
 
 #: src/window/ModifyFilterDialog.vala:45
 msgid "Modify Filter"
@@ -382,6 +347,12 @@ msgstr "新版的 #Corebird 发布啦！\\ (•◡•) / #cool #newisalwaysbette
 msgid "Add to or Remove User From List"
 msgstr "添加或删除列表中的用户"
 
+#: src/window/UserListDialog.vala:48 ui/account-dialog.ui:33
+#: ui/list-statuses-page.ui:129 ui/modify-filter-dialog.ui:20
+#: ui/modify-snippet-dialog.ui:21
+msgid "Save"
+msgstr "保存"
+
 #: src/window/UserListDialog.vala:69
 msgid "You have no lists."
 msgstr "您还没有任何列表。"
@@ -406,30 +377,30 @@ msgstr "需要输入 PIN"
 msgid "Confirm"
 msgstr "确认"
 
-#: ui/account-dialog.ui:11
+#: ui/account-dialog.ui:19
 msgid "Account Settings"
 msgstr "账户设置"
 
-#: ui/account-dialog.ui:76
+#: ui/account-dialog.ui:90
 msgid "Name"
 msgstr "姓名"
 
-#: ui/account-dialog.ui:104
+#: ui/account-dialog.ui:118
 msgid "Website"
 msgstr "网站"
 
-#: ui/account-dialog.ui:158
+#: ui/account-dialog.ui:172
 msgid "Autostart"
 msgstr "自动登入"
 
-#: ui/account-dialog.ui:189 ui/account-dialog.ui:246 ui/filter-list-entry.ui:93
+#: ui/account-dialog.ui:203 ui/account-dialog.ui:260 ui/filter-list-entry.ui:93
 #: ui/list-list-entry.ui:132 ui/list-statuses-page.ui:166
 #: ui/modify-snippet-dialog.ui:108 ui/tweet-info-page.ui:10
 #: ui/tweet-list-entry.ui:10
 msgid "Delete"
 msgstr "删除"
 
-#: ui/account-dialog.ui:221
+#: ui/account-dialog.ui:235
 msgid "Do you really want to delete this account?"
 msgstr "您确定要删除此账户吗？"
 
@@ -573,119 +544,119 @@ msgstr "已静音"
 msgid "Retweets disabled"
 msgstr "转推已禁用"
 
-#: ui/profile-page.ui:159
+#: ui/profile-page.ui:167
 msgid "Follows you"
 msgstr "关注您"
 
-#: ui/profile-page.ui:233 ui/search-page.ui:74 ui/settings-dialog.ui:421
+#: ui/profile-page.ui:241 ui/search-page.ui:74 ui/settings-dialog.ui:420
 msgid "Tweets"
 msgstr "推文"
 
-#: ui/profile-page.ui:274
+#: ui/profile-page.ui:282
 msgid "Followers"
 msgstr "关注者"
 
-#: ui/profile-page.ui:315
+#: ui/profile-page.ui:323
 msgid "Following"
 msgstr "已关注"
 
-#: ui/settings-dialog.ui:60
+#: ui/settings-dialog.ui:59
 msgid "Show inline media"
 msgstr "显示内联媒体"
 
-#: ui/settings-dialog.ui:79
+#: ui/settings-dialog.ui:78
 msgid "Always show"
 msgstr "总是显示"
 
-#: ui/settings-dialog.ui:80
+#: ui/settings-dialog.ui:79
 msgid "Always hide"
 msgstr "总是隐藏"
 
-#: ui/settings-dialog.ui:81
+#: ui/settings-dialog.ui:80
 msgid "Hide in timeline"
 msgstr "从时间线上隐藏"
 
-#: ui/settings-dialog.ui:102
+#: ui/settings-dialog.ui:101
 msgid "Auto scroll on new tweets"
 msgstr "自动载入新推文"
 
-#: ui/settings-dialog.ui:132
+#: ui/settings-dialog.ui:131
 msgid "Double-click activation"
 msgstr "双击激活"
 
-#: ui/settings-dialog.ui:162
+#: ui/settings-dialog.ui:161
 msgid "Interface"
 msgstr "外观"
 
-#: ui/settings-dialog.ui:180
+#: ui/settings-dialog.ui:179
 msgid "On New Tweets"
 msgstr "新推文"
 
-#: ui/settings-dialog.ui:194
+#: ui/settings-dialog.ui:193
 msgid "Actions"
 msgstr "行为"
 
-#: ui/settings-dialog.ui:209
+#: ui/settings-dialog.ui:208
 msgid "On New Mentions"
 msgstr "新提及"
 
-#: ui/settings-dialog.ui:223
+#: ui/settings-dialog.ui:222
 msgid "On New Messages"
 msgstr "新消息"
 
-#: ui/settings-dialog.ui:267
+#: ui/settings-dialog.ui:266
 msgid "Never"
 msgstr "从不"
 
-#: ui/settings-dialog.ui:268
+#: ui/settings-dialog.ui:267
 msgid "Every"
 msgstr "间隔"
 
-#: ui/settings-dialog.ui:269
+#: ui/settings-dialog.ui:268
 msgid "Stack 5"
 msgstr "5 条"
 
-#: ui/settings-dialog.ui:270
+#: ui/settings-dialog.ui:269
 msgid "Stack 10"
 msgstr "10 条"
 
-#: ui/settings-dialog.ui:271
+#: ui/settings-dialog.ui:270
 msgid "Stack 25"
 msgstr "25 条"
 
-#: ui/settings-dialog.ui:272
+#: ui/settings-dialog.ui:271
 msgid "Stack 50"
 msgstr "50 条"
 
-#: ui/settings-dialog.ui:285
+#: ui/settings-dialog.ui:284
 msgid "Notifications"
 msgstr "通知"
 
-#: ui/settings-dialog.ui:312
+#: ui/settings-dialog.ui:311
 msgid "Round avatars"
 msgstr "圆形头像"
 
-#: ui/settings-dialog.ui:339
+#: ui/settings-dialog.ui:338
 msgid "Remove trailing hashtags"
 msgstr "移除尾部标签"
 
-#: ui/settings-dialog.ui:367
+#: ui/settings-dialog.ui:366
 msgid "Remove media links"
 msgstr "移除媒体链接"
 
-#: ui/settings-dialog.ui:395
+#: ui/settings-dialog.ui:394
 msgid "Hide inappropriate content"
 msgstr "隐藏不适宜内容"
 
-#: ui/settings-dialog.ui:442
+#: ui/settings-dialog.ui:441
 msgid "No snippets configured."
 msgstr "未配置任何插件。"
 
-#: ui/settings-dialog.ui:481
+#: ui/settings-dialog.ui:480
 msgid "You can activate snippets by writing the keyword and pressing TAB."
 msgstr "您可以通过键入关键词和按下 TAB 键来激活插件。"
 
-#: ui/settings-dialog.ui:495
+#: ui/settings-dialog.ui:494
 msgid "Snippets"
 msgstr "插件"
 
@@ -833,6 +804,26 @@ msgstr "已创建"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "订阅到"
+
+#~ msgid "Select banner"
+#~ msgstr "选择横幅"
+
+#~ msgid "Select avatar"
+#~ msgstr "选择头像"
+
+#~ msgid "Next"
+#~ msgstr "下一个"
+
+#~ msgid "Image does not meet minimum size requirements:"
+#~ msgstr "图片不符合最小尺寸要求："
+
+#~ msgid "Minimum width: %d pixel"
+#~ msgid_plural "Minimum width: %d pixels"
+#~ msgstr[0] "最小宽度：%d 像素"
+
+#~ msgid "Minimum height: %d pixel"
+#~ msgid_plural "Minimum height: %d pixels"
+#~ msgstr[0] "最小高度：%d 像素"
 
 #~ msgid "Using Font Awesome by Dave Gandy - http://fontawesome.io"
 #~ msgstr "感谢 Dave Gandy 的 Font Awesome 工具  - http://fontawesome.io"

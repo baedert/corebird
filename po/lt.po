@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
-"POT-Creation-Date: 2016-11-14 17:33+0100\n"
+"POT-Creation-Date: 2016-12-18 16:41+0100\n"
 "PO-Revision-Date: 2016-07-30 18:54+0000\n"
 "Last-Translator: Moo\n"
 "Language-Team: Lithuanian (http://www.transifex.com/corebird/corebird/"
@@ -139,7 +139,7 @@ msgstr[0] "(%d neperskaitytas)"
 msgstr[1] "(%d neperskaityti)"
 msgstr[2] "(%d neperskaitytų)"
 
-#: src/ListsPage.vala:120 src/ListsPage.vala:125 ui/profile-page.ui:356
+#: src/ListsPage.vala:120 src/ListsPage.vala:125 ui/profile-page.ui:364
 msgid "Lists"
 msgstr "Sąrašai"
 
@@ -173,11 +173,11 @@ msgstr "%s paminėjo %s"
 msgid "Mentions"
 msgstr "Paminėjimai"
 
-#: src/ProfilePage.vala:266
+#: src/ProfilePage.vala:253
 msgid "Protected profile"
 msgstr "Apsaugotas profilis"
 
-#: src/ProfilePage.vala:321
+#: src/ProfilePage.vala:308
 #, c-format
 msgid "Tweet to @%s"
 msgstr "Siųsti tauškalą naudotojui @%s"
@@ -194,7 +194,7 @@ msgstr "Nepavyko parodyti tauškalo"
 msgid "Retweets"
 msgstr "Persiųsti tauškalai"
 
-#: src/TweetInfoPage.vala:494 src/widgets/MediaButton.vala:91
+#: src/TweetInfoPage.vala:494 src/widgets/MediaButton.vala:100
 msgid "Open in Browser"
 msgstr "Atverti naršyklėje"
 
@@ -249,14 +249,6 @@ msgstr "Neteisingas PIN"
 msgid "Account already in use"
 msgstr "Paskyra jau yra naudojama"
 
-#: src/widgets/AvatarBannerWidget.vala:140
-msgid "Select banner"
-msgstr "Pasirinkite reklamjuostę"
-
-#: src/widgets/AvatarBannerWidget.vala:155
-msgid "Select avatar"
-msgstr "Pasirinkite avatarą"
-
 #: src/widgets/CompletionTextView.vala:40
 msgid "No users found"
 msgstr ""
@@ -269,7 +261,7 @@ msgstr "Sekti"
 msgid "Unfollow"
 msgstr "Nustoti sekti"
 
-#: src/widgets/MediaButton.vala:42
+#: src/widgets/MediaButton.vala:45
 msgid "Copy URL"
 msgstr ""
 
@@ -281,11 +273,11 @@ msgstr "Kopijuoti nuorodą"
 msgid "Loading..."
 msgstr "Įkeliama..."
 
-#: src/widgets/TweetListBox.vala:102 src/widgets/TweetListBox.vala:150
+#: src/widgets/TweetListBox.vala:102 src/widgets/TweetListBox.vala:153
 msgid "No entries found"
 msgstr "Nerasta įrašų"
 
-#: src/widgets/TweetListBox.vala:110
+#: src/widgets/TweetListBox.vala:113
 msgid "Retry"
 msgstr "Pakartoti"
 
@@ -295,11 +287,10 @@ msgstr "Cituoti tauškalą"
 
 #: src/window/ComposeTweetWindow.vala:237
 #: src/window/ComposeTweetWindow.vala:262 src/window/UserListDialog.vala:47
-#: ui/account-dialog.ui:21 ui/account-dialog.ui:233 ui/compose-window.ui:41
-#: ui/filter-list-entry.ui:80 ui/image-crop-dialog.ui:46
-#: ui/list-list-entry.ui:98 ui/list-statuses-page.ui:173
-#: ui/modify-filter-dialog.ui:13 ui/modify-snippet-dialog.ui:14
-#: ui/user-filter-entry.ui:114
+#: ui/account-dialog.ui:25 ui/account-dialog.ui:247 ui/compose-window.ui:41
+#: ui/filter-list-entry.ui:80 ui/list-list-entry.ui:98
+#: ui/list-statuses-page.ui:173 ui/modify-filter-dialog.ui:13
+#: ui/modify-snippet-dialog.ui:14 ui/user-filter-entry.ui:114
 msgid "Cancel"
 msgstr "Atsisakyti"
 
@@ -317,39 +308,9 @@ msgid ""
 "The selected image is too big. The maximum file size per image is %'d MB"
 msgstr ""
 
-#: src/window/ComposeTweetWindow.vala:290 ui/image-crop-dialog.ui:71
+#: src/window/ComposeTweetWindow.vala:290
 msgid "Back"
 msgstr "Grįžti"
-
-#: src/window/ImageCropDialog.vala:58 ui/image-crop-dialog.ui:61
-msgid "Next"
-msgstr "Kitas"
-
-#: src/window/ImageCropDialog.vala:98 src/window/UserListDialog.vala:48
-#: ui/account-dialog.ui:28 ui/list-statuses-page.ui:129
-#: ui/modify-filter-dialog.ui:20 ui/modify-snippet-dialog.ui:21
-msgid "Save"
-msgstr "Įrašyti"
-
-#: src/window/ImageCropDialog.vala:103
-msgid "Image does not meet minimum size requirements:"
-msgstr "Paveikslas neatitinka minimalių dydžio reikalavimų:"
-
-#: src/window/ImageCropDialog.vala:104
-#, c-format
-msgid "Minimum width: %d pixel"
-msgid_plural "Minimum width: %d pixels"
-msgstr[0] "Minimalus plotis: %d taškas"
-msgstr[1] "Minimalus plotis: %d taškai"
-msgstr[2] "Minimalus plotis: %d taškų"
-
-#: src/window/ImageCropDialog.vala:106
-#, c-format
-msgid "Minimum height: %d pixel"
-msgid_plural "Minimum height: %d pixels"
-msgstr[0] "Minimalus aukštis: %d taškas"
-msgstr[1] "Minimalus aukštis: %d taškai"
-msgstr[2] "Minimalus aukštis: %d taškų"
 
 #: src/window/ModifyFilterDialog.vala:45
 msgid "Modify Filter"
@@ -395,6 +356,12 @@ msgstr ""
 msgid "Add to or Remove User From List"
 msgstr "Pridėti į arba pašalinti naudotoją iš sąrašo"
 
+#: src/window/UserListDialog.vala:48 ui/account-dialog.ui:33
+#: ui/list-statuses-page.ui:129 ui/modify-filter-dialog.ui:20
+#: ui/modify-snippet-dialog.ui:21
+msgid "Save"
+msgstr "Įrašyti"
+
 #: src/window/UserListDialog.vala:69
 msgid "You have no lists."
 msgstr "Jūs neturite sąrašų."
@@ -419,30 +386,30 @@ msgstr "Užklausti PIN"
 msgid "Confirm"
 msgstr "Patvirtinti"
 
-#: ui/account-dialog.ui:11
+#: ui/account-dialog.ui:19
 msgid "Account Settings"
 msgstr "Paskyros nustatymai"
 
-#: ui/account-dialog.ui:76
+#: ui/account-dialog.ui:90
 msgid "Name"
 msgstr "Vardas"
 
-#: ui/account-dialog.ui:104
+#: ui/account-dialog.ui:118
 msgid "Website"
 msgstr "Svetainė"
 
-#: ui/account-dialog.ui:158
+#: ui/account-dialog.ui:172
 msgid "Autostart"
 msgstr "Paleisti įjungus"
 
-#: ui/account-dialog.ui:189 ui/account-dialog.ui:246 ui/filter-list-entry.ui:93
+#: ui/account-dialog.ui:203 ui/account-dialog.ui:260 ui/filter-list-entry.ui:93
 #: ui/list-list-entry.ui:132 ui/list-statuses-page.ui:166
 #: ui/modify-snippet-dialog.ui:108 ui/tweet-info-page.ui:10
 #: ui/tweet-list-entry.ui:10
 msgid "Delete"
 msgstr "Ištrinti"
 
-#: ui/account-dialog.ui:221
+#: ui/account-dialog.ui:235
 msgid "Do you really want to delete this account?"
 msgstr "Ar tikrai norite ištrinti šią paskyrą?"
 
@@ -586,119 +553,119 @@ msgstr ""
 msgid "Retweets disabled"
 msgstr "Tauškalų persiuntimas išjungtas"
 
-#: ui/profile-page.ui:159
+#: ui/profile-page.ui:167
 msgid "Follows you"
 msgstr "Seka paskui jus"
 
-#: ui/profile-page.ui:233 ui/search-page.ui:74 ui/settings-dialog.ui:421
+#: ui/profile-page.ui:241 ui/search-page.ui:74 ui/settings-dialog.ui:420
 msgid "Tweets"
 msgstr "Tauškalai"
 
-#: ui/profile-page.ui:274
+#: ui/profile-page.ui:282
 msgid "Followers"
 msgstr "Sekėjų"
 
-#: ui/profile-page.ui:315
+#: ui/profile-page.ui:323
 msgid "Following"
 msgstr "Seka"
 
-#: ui/settings-dialog.ui:60
+#: ui/settings-dialog.ui:59
 msgid "Show inline media"
 msgstr ""
 
-#: ui/settings-dialog.ui:79
+#: ui/settings-dialog.ui:78
 msgid "Always show"
 msgstr "Visada rodyti"
 
-#: ui/settings-dialog.ui:80
+#: ui/settings-dialog.ui:79
 msgid "Always hide"
 msgstr "Visada slėpti"
 
-#: ui/settings-dialog.ui:81
+#: ui/settings-dialog.ui:80
 msgid "Hide in timeline"
 msgstr ""
 
-#: ui/settings-dialog.ui:102
+#: ui/settings-dialog.ui:101
 msgid "Auto scroll on new tweets"
 msgstr "Automatiškai slinkti, esant naujiems tauškalams"
 
-#: ui/settings-dialog.ui:132
+#: ui/settings-dialog.ui:131
 msgid "Double-click activation"
 msgstr "Aktyvavimas dvikarčiu spustelėjimu"
 
-#: ui/settings-dialog.ui:162
+#: ui/settings-dialog.ui:161
 msgid "Interface"
 msgstr "Sąsaja"
 
-#: ui/settings-dialog.ui:180
+#: ui/settings-dialog.ui:179
 msgid "On New Tweets"
 msgstr "Esant naujiems tauškalams"
 
-#: ui/settings-dialog.ui:194
+#: ui/settings-dialog.ui:193
 msgid "Actions"
 msgstr "Veiksmai"
 
-#: ui/settings-dialog.ui:209
+#: ui/settings-dialog.ui:208
 msgid "On New Mentions"
 msgstr "Esant naujiems paminėjimams"
 
-#: ui/settings-dialog.ui:223
+#: ui/settings-dialog.ui:222
 msgid "On New Messages"
 msgstr "Esant naujiems pranešimams"
 
-#: ui/settings-dialog.ui:267
+#: ui/settings-dialog.ui:266
 msgid "Never"
 msgstr "Niekada"
 
-#: ui/settings-dialog.ui:268
+#: ui/settings-dialog.ui:267
 msgid "Every"
 msgstr "Kiekvienam"
 
-#: ui/settings-dialog.ui:269
+#: ui/settings-dialog.ui:268
 msgid "Stack 5"
 msgstr "Dėklui iš 5"
 
-#: ui/settings-dialog.ui:270
+#: ui/settings-dialog.ui:269
 msgid "Stack 10"
 msgstr "Dėklui iš 10"
 
-#: ui/settings-dialog.ui:271
+#: ui/settings-dialog.ui:270
 msgid "Stack 25"
 msgstr "Dėklui iš 25"
 
-#: ui/settings-dialog.ui:272
+#: ui/settings-dialog.ui:271
 msgid "Stack 50"
 msgstr "Dėklui iš 50"
 
-#: ui/settings-dialog.ui:285
+#: ui/settings-dialog.ui:284
 msgid "Notifications"
 msgstr "Perspėjimai"
 
-#: ui/settings-dialog.ui:312
+#: ui/settings-dialog.ui:311
 msgid "Round avatars"
 msgstr "Apvalinti avatarus"
 
-#: ui/settings-dialog.ui:339
+#: ui/settings-dialog.ui:338
 msgid "Remove trailing hashtags"
 msgstr "Šalinti besivelkančius saitažodžius"
 
-#: ui/settings-dialog.ui:367
+#: ui/settings-dialog.ui:366
 msgid "Remove media links"
 msgstr "Šalinti media nuorodas"
 
-#: ui/settings-dialog.ui:395
+#: ui/settings-dialog.ui:394
 msgid "Hide inappropriate content"
 msgstr "Slėpti netinkamą turinį"
 
-#: ui/settings-dialog.ui:442
+#: ui/settings-dialog.ui:441
 msgid "No snippets configured."
 msgstr "Nėra sukonfigūruotų iškarpų."
 
-#: ui/settings-dialog.ui:481
+#: ui/settings-dialog.ui:480
 msgid "You can activate snippets by writing the keyword and pressing TAB."
 msgstr "Aktyvinkite iškarpas, įrašę raktažodį ir nuspausdami TAB klavišą."
 
-#: ui/settings-dialog.ui:495
+#: ui/settings-dialog.ui:494
 msgid "Snippets"
 msgstr "Iškarpos"
 
@@ -846,6 +813,30 @@ msgstr "Sukurta"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "Jūsų prenumeratos"
+
+#~ msgid "Select banner"
+#~ msgstr "Pasirinkite reklamjuostę"
+
+#~ msgid "Select avatar"
+#~ msgstr "Pasirinkite avatarą"
+
+#~ msgid "Next"
+#~ msgstr "Kitas"
+
+#~ msgid "Image does not meet minimum size requirements:"
+#~ msgstr "Paveikslas neatitinka minimalių dydžio reikalavimų:"
+
+#~ msgid "Minimum width: %d pixel"
+#~ msgid_plural "Minimum width: %d pixels"
+#~ msgstr[0] "Minimalus plotis: %d taškas"
+#~ msgstr[1] "Minimalus plotis: %d taškai"
+#~ msgstr[2] "Minimalus plotis: %d taškų"
+
+#~ msgid "Minimum height: %d pixel"
+#~ msgid_plural "Minimum height: %d pixels"
+#~ msgstr[0] "Minimalus aukštis: %d taškas"
+#~ msgstr[1] "Minimalus aukštis: %d taškai"
+#~ msgstr[2] "Minimalus aukštis: %d taškų"
 
 #~ msgid ""
 #~ "Max file size exceeded\n"
