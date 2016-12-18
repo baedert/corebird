@@ -28,7 +28,7 @@ class StartConversationEntry : Gtk.ListBoxRow {
   private Gtk.Spinner go_spinner;
 
   private UserCompletion user_completion;
-  private Gtk.Window completion_window = new Gtk.Window (Gtk.WindowType.POPUP);
+  private Gtk.Window completion_window;
   private Gtk.ListBox completion_list = new Gtk.ListBox ();
   private int current_match = -1;
   public signal void start (int64 user_id, string screen_name, string name, string avatar_url);
@@ -36,6 +36,7 @@ class StartConversationEntry : Gtk.ListBoxRow {
 
   public StartConversationEntry (Account account) {
     this.account = account;
+    completion_window = new Gtk.Window (Gtk.WindowType.POPUP);
     completion_window.set_type_hint (Gdk.WindowTypeHint.COMBO);
     completion_window.set_screen (name_entry.get_screen ());
     completion_window.destroy_with_parent = true;
@@ -59,10 +60,10 @@ class StartConversationEntry : Gtk.ListBoxRow {
     user_completion = new UserCompletion (account, MAX_RESULTS);
     user_completion.connect_to (name_entry.buffer, "text");
     user_completion.start_completion.connect (() => {
-      completion_window.set_transient_for ((Gtk.Window)this.get_toplevel ());
       completion_window.set_attached_to (this.name_entry);
-      completion_window.show_all ();
+      completion_window.set_transient_for ((Gtk.Window)this.get_toplevel ());
       position_popup_window ();
+      completion_window.show_all ();
       completion_list.foreach ((w) => { completion_list.remove (w); });
     });
     user_completion.populate_completion.connect ((screen_name, name) => {
