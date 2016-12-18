@@ -164,6 +164,7 @@ public class AccountDialog : Gtk.Window {
       call.invoke_async.begin (null, (obj, res) => {
         try {
           call.invoke_async.end (res);
+          debug ("Avatar successfully updated");
         } catch (GLib.Error e) {
           Utils.show_error_object (call.get_payload (), "Could not update your avatar",
                                    GLib.Log.LINE, GLib.Log.FILE, this);
@@ -327,8 +328,15 @@ public class AccountDialog : Gtk.Window {
           return;
         }
 
+        /* Values for banner */
         int min_width = 200;
         int min_height = 100;
+
+        if (crop_widget.desired_aspect_ratio == 1.0) {
+          /* Avatar */
+          min_width = 48;
+          min_height = 48;
+        }
 
         if (image.get_width () >= min_width &&
             image.get_height () >= min_height) {
@@ -366,6 +374,7 @@ public class AccountDialog : Gtk.Window {
     crop_widget.set_image (null);
     crop_widget.set_size_request (-1, 400);
     crop_widget.desired_aspect_ratio = 1.0;
+    crop_widget.set_min_size (48);
     content_stack.visible_child = crop_widget;
     show_crop_image_selector ();
     save_button.label = _("Pick");
@@ -378,6 +387,7 @@ public class AccountDialog : Gtk.Window {
     crop_widget.set_size_request (700, 350);
     crop_widget.set_image (null);
     crop_widget.desired_aspect_ratio = 2.0;
+    crop_widget.set_min_size (200);
     content_stack.visible_child = crop_widget;
     show_crop_image_selector ();
     save_button.label = _("Pick");
