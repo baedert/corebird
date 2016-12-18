@@ -38,8 +38,6 @@ is_quote_link (const CbTextEntity *e, gint64 quote_id)
   char *suffix = g_strdup_printf ("/status/%ld", quote_id);
   gboolean ql;
 
-
-  /* TODO: Can we do this without the heap allocation? */
   ql = (e->target != NULL) &&
        (g_str_has_prefix (e->target, "https://twitter.com/") &&
         g_str_has_suffix (e->target, suffix));
