@@ -276,10 +276,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     main_window.main_widget.switch_page (Page.PROFILE, bundle);
   }
 
-  /**
-   * Loads the data of the tweet with the id tweet_id from the Twitter server.
-   */
-  private void query_tweet_info (bool existing) { //{{{
+  private void query_tweet_info (bool existing) {
     if (this.cancellable != null) {
       this.cancellable.cancel ();
     }
@@ -388,7 +385,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
 
     });
 
-  } //}}}
+  }
 
   /**
    * Loads the tweet this tweet is a reply to.
@@ -410,7 +407,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     call.invoke_async.begin (cancellable, (obj, res) => {
       try {
         call.invoke_async.end (res);
-      }catch (GLib.Error e) {
+      } catch (GLib.Error e) {
         critical(e.message);
         if (e.message.strip () != "Forbidden" &&
             e.message.strip ().down () != "not found") {
@@ -591,7 +588,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     } else if (type == StreamMessageType.DELETE) {
       int64 tweet_id = root.get_object ().get_object_member ("delete")
                                          .get_object_member ("status")
-                                           .get_int_member ("id");
+                                         .get_int_member ("id");
       if (tweet_id == this.tweet_id && main_window.cur_page_id == this.id) {
         /* TODO: We should probably remove this page with this bundle form the
                  history, even if it's not the currently visible page */
