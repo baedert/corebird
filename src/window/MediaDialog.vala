@@ -111,10 +111,10 @@ class MediaDialog : Gtk.Window {
       previous_media ();
     else if (evt.keyval == Gdk.Key.Right)
       next_media ();
-    else
-      this.destroy ();
+    //else
+      //this.destroy ();
 
-    return Gdk.EVENT_STOP;
+    return Gdk.EVENT_PROPAGATE;
   }
 
   [GtkCallback]

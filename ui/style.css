@@ -231,3 +231,12 @@
 .read-only .inline-media:disabled {
   opacity: 1.0;
 }
+
+progressbar.horizontal.embedded-progress,
+progressbar.horizontal.embedded-progress>trough,
+progressbar.horizontal.embedded-progress>trough>progress {
+  margin: 0px;
+  border-radius: 0px;
+  border-left-width: 0px;
+  border-right-width: 0px;
+}
