@@ -196,8 +196,9 @@ public class AccountDialog : Gtk.Window {
       call.invoke_async.begin (null, (obj, res) => {
         try {
           call.invoke_async.end (res);
+          debug ("Banner succesfully updated");
         } catch (GLib.Error e) {
-          Utils.show_error_object (call.get_payload (), "Could not update your avatar",
+          Utils.show_error_object (call.get_payload (), "Could not update your banner",
                                    GLib.Log.LINE, GLib.Log.FILE, this);
         }
       });
@@ -400,12 +401,15 @@ public class AccountDialog : Gtk.Window {
   [GtkCallback]
   private void save_button_clicked_cb () {
     if (content_stack.visible_child == crop_widget) {
+      Gdk.Pixbuf new_pixbuf = crop_widget.get_cropped_image ();
       if (crop_widget.desired_aspect_ratio == 1.0) {
         /* Avatar */
-        avatar_banner_widget.set_avatar (crop_widget.get_cropped_image ());
+        avatar_banner_widget.set_avatar (new_pixbuf);
+        new_avatar = new_pixbuf;
       } else if (crop_widget.desired_aspect_ratio == 2.0) {
-        avatar_banner_widget.set_banner (crop_widget.get_cropped_image ());
         /* Banner */
+        avatar_banner_widget.set_banner (new_pixbuf);
+        new_banner = new_pixbuf;
       } else {
         GLib.assert_not_reached ();
       }
