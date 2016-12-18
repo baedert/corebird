@@ -18,6 +18,7 @@
 public class AvatarWidget : Gtk.Widget {
   private const int SMALL = 0;
   private const int LARGE = 1;
+  private const int OVERLAP_DIST = 40;
   private bool _round = true;
   public bool make_round {
     get {
@@ -35,6 +36,7 @@ public class AvatarWidget : Gtk.Widget {
     }
   }
   public bool verified { get; set; default = false; }
+  public bool overlap  { get; set; default = false; }
 
   private Cairo.ImageSurface _surface;
   public Cairo.Surface surface {
@@ -165,13 +167,19 @@ public class AvatarWidget : Gtk.Widget {
               2 * Math.PI);        // Angle to
       ct.fill ();
 
-      this.get_style_context ().render_frame (ctx, 0, 0, width, height);
+      if (overlap)
+        this.get_style_context ().render_frame (ctx, 0, - OVERLAP_DIST, width, height);
+      else
+        this.get_style_context ().render_frame (ctx, 0, 0, width, height);
     }
 
-    ctx.set_source_surface (surface, 0, 0);
+    if (overlap)
+      ctx.set_source_surface (surface, 0, - OVERLAP_DIST);
+    else
+      ctx.set_source_surface (surface, 0, 0);
     ctx.paint_with_alpha (alpha);
 
-    if (verified) {
+    if (verified&& false) {
       int index = SMALL;
       if (width > 48)
         index = LARGE;
@@ -187,6 +195,15 @@ public class AvatarWidget : Gtk.Widget {
     return Gdk.EVENT_PROPAGATE;
   }
 
+  public override void size_allocate (Gtk.Allocation alloc) {
+    base.size_allocate (alloc);
+
+    if (overlap) {
+      alloc.y -= OVERLAP_DIST;
+      alloc.height += OVERLAP_DIST;
+      this.set_clip (alloc);
+    }
+  }
 }
 
 
