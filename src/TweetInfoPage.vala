@@ -589,7 +589,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
       int64 tweet_id = root.get_object ().get_object_member ("delete")
                                          .get_object_member ("status")
                                          .get_int_member ("id");
-      if (tweet_id == this.tweet_id && main_window.cur_page_id == this.id) {
+      if (tweet_id == this.tweet_id && _main_window.cur_page_id == this.id) {
         /* TODO: We should probably remove this page with this bundle form the
                  history, even if it's not the currently visible page */
         debug ("Current tweet with id %s deleted!", tweet_id.to_string ());
