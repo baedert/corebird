@@ -17,7 +17,7 @@
 
 class UserCompletion : GLib.Object {
   public signal void start_completion ();
-  public signal void populate_completion (string name, string screen_name);
+  public signal void populate_completion (string screen_name, string name);
   private unowned GLib.Object obj;
   private unowned Account account;
   private string name_property_name;
@@ -44,7 +44,6 @@ class UserCompletion : GLib.Object {
     account.user_counter.query_by_prefix (account.db.get_sqlite_db (),
                                           name, 10,
                                           out names);
-
 
     for (int i = 0; i < names.length; i++)
       populate_completion (names[i].screen_name, names[i].user_name);

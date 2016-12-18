@@ -65,8 +65,8 @@ class StartConversationEntry : Gtk.ListBoxRow {
       position_popup_window ();
       completion_list.foreach ((w) => { completion_list.remove (w); });
     });
-    user_completion.populate_completion.connect ((name, screen_name) => {
-      var l = new CompletionListEntry (name, screen_name);
+    user_completion.populate_completion.connect ((screen_name, name) => {
+      var l = new CompletionListEntry (screen_name, name);
       l.show_all ();
       completion_list.add (l);
     });
