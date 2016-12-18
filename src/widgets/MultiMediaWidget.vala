@@ -17,10 +17,10 @@
 
 public class MultiMediaWidget : Gtk.Box {
   public const int MAX_HEIGHT = 180;
-  public int media_count { public get; private set; default = 0;}
   public bool restrict_height = false;
   public unowned Gtk.Window window;
   private MediaButton[] media_buttons;
+  private int media_count = 0;
 
   public signal void media_clicked (Cb.Media m, int index);
   private bool media_invalid_fired = false;
