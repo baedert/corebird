@@ -464,8 +464,8 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     set_source_link (tweet.id, tweet.get_screen_name ());
 
     if (tweet.has_inline_media ()) {
-      mm_widget.set_all_media (tweet.get_medias ());
       this.mm_widget.visible = (Settings.get_media_visiblity () != MediaVisibility.HIDE);
+      mm_widget.set_all_media (tweet.get_medias ());
     } else {
       mm_widget.hide ();
     }
