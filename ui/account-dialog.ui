@@ -15,7 +15,7 @@
     <child type="titlebar">
       <object class="GtkHeaderBar">
         <property name="visible">1</property>
-        <property name="title" translatable="yes">AccountSettings</property>
+        <property name="title" translatable="yes">Account Settings</property>
         <child>
           <object class="GtkButton" id="cancel_button">
             <property name="visible">1</property>
