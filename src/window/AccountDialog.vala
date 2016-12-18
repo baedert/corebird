@@ -367,6 +367,7 @@ public class AccountDialog : Gtk.Window {
     crop_widget.desired_aspect_ratio = 1.0;
     content_stack.visible_child = crop_widget;
     show_crop_image_selector ();
+    save_button.label = _("Pick");
   }
 
   [GtkCallback]
@@ -378,6 +379,7 @@ public class AccountDialog : Gtk.Window {
     crop_widget.desired_aspect_ratio = 2.0;
     content_stack.visible_child = crop_widget;
     show_crop_image_selector ();
+    save_button.label = _("Pick");
   }
 
   [GtkCallback]
@@ -389,6 +391,7 @@ public class AccountDialog : Gtk.Window {
       old_height = 0;
       /* Just go back */
       content_stack.visible_child = info_box;
+      save_button.label = _("Save");
     } else {
       this.destroy ();
     }
@@ -406,6 +409,7 @@ public class AccountDialog : Gtk.Window {
       } else {
         GLib.assert_not_reached ();
       }
+      save_button.label = _("Save");
       content_stack.visible_child = info_box;
     } else {
       save_data ();
