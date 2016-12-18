@@ -32,7 +32,7 @@
             <property name="visible">1</property>
             <property name="label" translatable="yes">Save</property>
             <property name="can-default">1</property>
-            <signal name="clicked" handler="save_button_cliicked_cb" />
+            <signal name="clicked" handler="save_button_clicked_cb" />
             <style>
               <class name="suggested-action" />
             </style>

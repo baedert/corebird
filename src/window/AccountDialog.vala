@@ -398,7 +398,7 @@ public class AccountDialog : Gtk.Window {
   }
 
   [GtkCallback]
-  private void save_button_cliicked_cb () {
+  private void save_button_clicked_cb () {
     if (content_stack.visible_child == crop_widget) {
       if (crop_widget.desired_aspect_ratio == 1.0) {
         /* Avatar */
