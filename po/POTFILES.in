@@ -27,7 +27,6 @@ src/widgets/MediaButton.vala
 src/widgets/PixbufButton.vala
 src/widgets/TweetListBox.vala
 src/window/ComposeTweetWindow.vala
-src/window/ImageCropDialog.vala
 src/window/ModifyFilterDialog.vala
 src/window/ModifySnippetDialog.vala
 src/window/SettingsDialog.vala
@@ -39,7 +38,6 @@ ui/compose-window.ui
 ui/dm-page.ui
 ui/filter-list-entry.ui
 ui/filter-page.ui
-ui/image-crop-dialog.ui
 ui/list-list-entry.ui
 ui/list-statuses-page.ui
 ui/load-more-entry.ui

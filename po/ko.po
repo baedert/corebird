@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
-"POT-Creation-Date: 2016-11-14 17:33+0100\n"
+"POT-Creation-Date: 2016-12-18 16:41+0100\n"
 "PO-Revision-Date: 2016-07-30 08:17+0000\n"
 "Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
 "Language-Team: Korean (Korea) (http://www.transifex.com/corebird/corebird/"
@@ -131,7 +131,7 @@ msgid "(%d unread)"
 msgid_plural "(%d unread)"
 msgstr[0] "(%d 개의 읽지 않음)"
 
-#: src/ListsPage.vala:120 src/ListsPage.vala:125 ui/profile-page.ui:356
+#: src/ListsPage.vala:120 src/ListsPage.vala:125 ui/profile-page.ui:364
 msgid "Lists"
 msgstr "리스트"
 
@@ -165,11 +165,11 @@ msgstr ""
 msgid "Mentions"
 msgstr "멘션"
 
-#: src/ProfilePage.vala:266
+#: src/ProfilePage.vala:253
 msgid "Protected profile"
 msgstr "보호되는 프로필"
 
-#: src/ProfilePage.vala:321
+#: src/ProfilePage.vala:308
 #, c-format
 msgid "Tweet to @%s"
 msgstr "@%s 에게 트윗"
@@ -186,7 +186,7 @@ msgstr "트윗을 볼 수 없음"
 msgid "Retweets"
 msgstr "리트윗"
 
-#: src/TweetInfoPage.vala:494 src/widgets/MediaButton.vala:91
+#: src/TweetInfoPage.vala:494 src/widgets/MediaButton.vala:100
 msgid "Open in Browser"
 msgstr "브라우저에서 열기"
 
@@ -241,14 +241,6 @@ msgstr "올바르지 않은 PIN"
 msgid "Account already in use"
 msgstr "계정이 이미 사용 중"
 
-#: src/widgets/AvatarBannerWidget.vala:140
-msgid "Select banner"
-msgstr "배너 선택"
-
-#: src/widgets/AvatarBannerWidget.vala:155
-msgid "Select avatar"
-msgstr "아바타 선택"
-
 #: src/widgets/CompletionTextView.vala:40
 msgid "No users found"
 msgstr ""
@@ -261,7 +253,7 @@ msgstr "팔로우"
 msgid "Unfollow"
 msgstr "언팔로우"
 
-#: src/widgets/MediaButton.vala:42
+#: src/widgets/MediaButton.vala:45
 msgid "Copy URL"
 msgstr ""
 
@@ -273,11 +265,11 @@ msgstr "링크 복사"
 msgid "Loading..."
 msgstr "불러오는 중..."
 
-#: src/widgets/TweetListBox.vala:102 src/widgets/TweetListBox.vala:150
+#: src/widgets/TweetListBox.vala:102 src/widgets/TweetListBox.vala:153
 msgid "No entries found"
 msgstr "찾을수 없음"
 
-#: src/widgets/TweetListBox.vala:110
+#: src/widgets/TweetListBox.vala:113
 msgid "Retry"
 msgstr "재시도"
 
@@ -287,11 +279,10 @@ msgstr "트윗 인용"
 
 #: src/window/ComposeTweetWindow.vala:237
 #: src/window/ComposeTweetWindow.vala:262 src/window/UserListDialog.vala:47
-#: ui/account-dialog.ui:21 ui/account-dialog.ui:233 ui/compose-window.ui:41
-#: ui/filter-list-entry.ui:80 ui/image-crop-dialog.ui:46
-#: ui/list-list-entry.ui:98 ui/list-statuses-page.ui:173
-#: ui/modify-filter-dialog.ui:13 ui/modify-snippet-dialog.ui:14
-#: ui/user-filter-entry.ui:114
+#: ui/account-dialog.ui:25 ui/account-dialog.ui:247 ui/compose-window.ui:41
+#: ui/filter-list-entry.ui:80 ui/list-list-entry.ui:98
+#: ui/list-statuses-page.ui:173 ui/modify-filter-dialog.ui:13
+#: ui/modify-snippet-dialog.ui:14 ui/user-filter-entry.ui:114
 msgid "Cancel"
 msgstr "취소"
 
@@ -309,35 +300,9 @@ msgid ""
 "The selected image is too big. The maximum file size per image is %'d MB"
 msgstr ""
 
-#: src/window/ComposeTweetWindow.vala:290 ui/image-crop-dialog.ui:71
+#: src/window/ComposeTweetWindow.vala:290
 msgid "Back"
 msgstr "뒤로"
-
-#: src/window/ImageCropDialog.vala:58 ui/image-crop-dialog.ui:61
-msgid "Next"
-msgstr "다음"
-
-#: src/window/ImageCropDialog.vala:98 src/window/UserListDialog.vala:48
-#: ui/account-dialog.ui:28 ui/list-statuses-page.ui:129
-#: ui/modify-filter-dialog.ui:20 ui/modify-snippet-dialog.ui:21
-msgid "Save"
-msgstr "저장"
-
-#: src/window/ImageCropDialog.vala:103
-msgid "Image does not meet minimum size requirements:"
-msgstr "이미지가 최소 요구 크기에 맞지 않음:"
-
-#: src/window/ImageCropDialog.vala:104
-#, c-format
-msgid "Minimum width: %d pixel"
-msgid_plural "Minimum width: %d pixels"
-msgstr[0] "최소 넓이: %d 픽셀"
-
-#: src/window/ImageCropDialog.vala:106
-#, c-format
-msgid "Minimum height: %d pixel"
-msgid_plural "Minimum height: %d pixels"
-msgstr[0] "최소 높이: %d 픽셀"
 
 #: src/window/ModifyFilterDialog.vala:45
 msgid "Modify Filter"
@@ -382,6 +347,12 @@ msgstr ""
 msgid "Add to or Remove User From List"
 msgstr "리스트에서 사용자 추가 또는 삭제"
 
+#: src/window/UserListDialog.vala:48 ui/account-dialog.ui:33
+#: ui/list-statuses-page.ui:129 ui/modify-filter-dialog.ui:20
+#: ui/modify-snippet-dialog.ui:21
+msgid "Save"
+msgstr "저장"
+
 #: src/window/UserListDialog.vala:69
 msgid "You have no lists."
 msgstr "리스트 없음."
@@ -406,30 +377,30 @@ msgstr "PIN 요청"
 msgid "Confirm"
 msgstr "확인"
 
-#: ui/account-dialog.ui:11
+#: ui/account-dialog.ui:19
 msgid "Account Settings"
 msgstr "계정 설정"
 
-#: ui/account-dialog.ui:76
+#: ui/account-dialog.ui:90
 msgid "Name"
 msgstr "이름"
 
-#: ui/account-dialog.ui:104
+#: ui/account-dialog.ui:118
 msgid "Website"
 msgstr "웹사이트"
 
-#: ui/account-dialog.ui:158
+#: ui/account-dialog.ui:172
 msgid "Autostart"
 msgstr "자동 시작"
 
-#: ui/account-dialog.ui:189 ui/account-dialog.ui:246 ui/filter-list-entry.ui:93
+#: ui/account-dialog.ui:203 ui/account-dialog.ui:260 ui/filter-list-entry.ui:93
 #: ui/list-list-entry.ui:132 ui/list-statuses-page.ui:166
 #: ui/modify-snippet-dialog.ui:108 ui/tweet-info-page.ui:10
 #: ui/tweet-list-entry.ui:10
 msgid "Delete"
 msgstr "지우기"
 
-#: ui/account-dialog.ui:221
+#: ui/account-dialog.ui:235
 msgid "Do you really want to delete this account?"
 msgstr "정말 이 계정을 지울건가요?"
 
@@ -573,119 +544,119 @@ msgstr ""
 msgid "Retweets disabled"
 msgstr "리트윗 불가"
 
-#: ui/profile-page.ui:159
+#: ui/profile-page.ui:167
 msgid "Follows you"
 msgstr "당신을 팔로우함"
 
-#: ui/profile-page.ui:233 ui/search-page.ui:74 ui/settings-dialog.ui:421
+#: ui/profile-page.ui:241 ui/search-page.ui:74 ui/settings-dialog.ui:420
 msgid "Tweets"
 msgstr "트윗"
 
-#: ui/profile-page.ui:274
+#: ui/profile-page.ui:282
 msgid "Followers"
 msgstr "팔로워"
 
-#: ui/profile-page.ui:315
+#: ui/profile-page.ui:323
 msgid "Following"
 msgstr "팔로우 중"
 
-#: ui/settings-dialog.ui:60
+#: ui/settings-dialog.ui:59
 msgid "Show inline media"
 msgstr ""
 
-#: ui/settings-dialog.ui:79
+#: ui/settings-dialog.ui:78
 msgid "Always show"
 msgstr ""
 
-#: ui/settings-dialog.ui:80
+#: ui/settings-dialog.ui:79
 msgid "Always hide"
 msgstr ""
 
-#: ui/settings-dialog.ui:81
+#: ui/settings-dialog.ui:80
 msgid "Hide in timeline"
 msgstr ""
 
-#: ui/settings-dialog.ui:102
+#: ui/settings-dialog.ui:101
 msgid "Auto scroll on new tweets"
 msgstr "새로운 트윗으로 자동 스크롤"
 
-#: ui/settings-dialog.ui:132
+#: ui/settings-dialog.ui:131
 msgid "Double-click activation"
 msgstr "더블 클릭 활성화"
 
-#: ui/settings-dialog.ui:162
+#: ui/settings-dialog.ui:161
 msgid "Interface"
 msgstr "인터페이스"
 
-#: ui/settings-dialog.ui:180
+#: ui/settings-dialog.ui:179
 msgid "On New Tweets"
 msgstr "새로운 트윗"
 
-#: ui/settings-dialog.ui:194
+#: ui/settings-dialog.ui:193
 msgid "Actions"
 msgstr "액션"
 
-#: ui/settings-dialog.ui:209
+#: ui/settings-dialog.ui:208
 msgid "On New Mentions"
 msgstr "새로운 멘션"
 
-#: ui/settings-dialog.ui:223
+#: ui/settings-dialog.ui:222
 msgid "On New Messages"
 msgstr "새로운 메시지"
 
-#: ui/settings-dialog.ui:267
+#: ui/settings-dialog.ui:266
 msgid "Never"
 msgstr "절대 안함"
 
-#: ui/settings-dialog.ui:268
+#: ui/settings-dialog.ui:267
 msgid "Every"
 msgstr "매번"
 
-#: ui/settings-dialog.ui:269
+#: ui/settings-dialog.ui:268
 msgid "Stack 5"
 msgstr "스택 5"
 
-#: ui/settings-dialog.ui:270
+#: ui/settings-dialog.ui:269
 msgid "Stack 10"
 msgstr "스택 10"
 
-#: ui/settings-dialog.ui:271
+#: ui/settings-dialog.ui:270
 msgid "Stack 25"
 msgstr "스택 25"
 
-#: ui/settings-dialog.ui:272
+#: ui/settings-dialog.ui:271
 msgid "Stack 50"
 msgstr "스택 50"
 
-#: ui/settings-dialog.ui:285
+#: ui/settings-dialog.ui:284
 msgid "Notifications"
 msgstr "알림"
 
-#: ui/settings-dialog.ui:312
+#: ui/settings-dialog.ui:311
 msgid "Round avatars"
 msgstr "둥근 아바타"
 
-#: ui/settings-dialog.ui:339
+#: ui/settings-dialog.ui:338
 msgid "Remove trailing hashtags"
 msgstr "추적하는 해쉬태그 삭제"
 
-#: ui/settings-dialog.ui:367
+#: ui/settings-dialog.ui:366
 msgid "Remove media links"
 msgstr "미디어 링크 삭제"
 
-#: ui/settings-dialog.ui:395
+#: ui/settings-dialog.ui:394
 msgid "Hide inappropriate content"
 msgstr "부적절한 컨텐츠 숨기기"
 
-#: ui/settings-dialog.ui:442
+#: ui/settings-dialog.ui:441
 msgid "No snippets configured."
 msgstr "스니펫이 구성되지 않음."
 
-#: ui/settings-dialog.ui:481
+#: ui/settings-dialog.ui:480
 msgid "You can activate snippets by writing the keyword and pressing TAB."
 msgstr "키워드를 쓰고 TAB 을 눌러서 스니펫을 활성화할 수 있음."
 
-#: ui/settings-dialog.ui:495
+#: ui/settings-dialog.ui:494
 msgid "Snippets"
 msgstr "스니펫"
 
@@ -833,6 +804,26 @@ msgstr "만들어짐"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "을 구독함"
+
+#~ msgid "Select banner"
+#~ msgstr "배너 선택"
+
+#~ msgid "Select avatar"
+#~ msgstr "아바타 선택"
+
+#~ msgid "Next"
+#~ msgstr "다음"
+
+#~ msgid "Image does not meet minimum size requirements:"
+#~ msgstr "이미지가 최소 요구 크기에 맞지 않음:"
+
+#~ msgid "Minimum width: %d pixel"
+#~ msgid_plural "Minimum width: %d pixels"
+#~ msgstr[0] "최소 넓이: %d 픽셀"
+
+#~ msgid "Minimum height: %d pixel"
+#~ msgid_plural "Minimum height: %d pixels"
+#~ msgstr[0] "최소 높이: %d 픽셀"
 
 #~ msgid "Using Font Awesome by Dave Gandy - http://fontawesome.io"
 #~ msgstr "Dave Gandy 의 글꼴 Awesome 을 사용함 - http://fontawesome.io"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
-"POT-Creation-Date: 2016-11-14 17:33+0100\n"
+"POT-Creation-Date: 2016-12-18 16:41+0100\n"
 "PO-Revision-Date: 2016-07-30 08:37+0000\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos@iki.fi>\n"
 "Language-Team: Finnish (http://www.transifex.com/corebird/corebird/language/"
@@ -134,7 +134,7 @@ msgid_plural "(%d unread)"
 msgstr[0] "(%d lukematon)"
 msgstr[1] "(%d lukematonta)"
 
-#: src/ListsPage.vala:120 src/ListsPage.vala:125 ui/profile-page.ui:356
+#: src/ListsPage.vala:120 src/ListsPage.vala:125 ui/profile-page.ui:364
 msgid "Lists"
 msgstr "Listat"
 
@@ -168,11 +168,11 @@ msgstr "%s mainitsi %s"
 msgid "Mentions"
 msgstr "Maininnat"
 
-#: src/ProfilePage.vala:266
+#: src/ProfilePage.vala:253
 msgid "Protected profile"
 msgstr "Suojattu profiili"
 
-#: src/ProfilePage.vala:321
+#: src/ProfilePage.vala:308
 #, c-format
 msgid "Tweet to @%s"
 msgstr "Twiittaa käyttäjälle @%s"
@@ -189,7 +189,7 @@ msgstr "Twiitin näyttäminen epäonnistui"
 msgid "Retweets"
 msgstr "Uudelleentwiittaukset"
 
-#: src/TweetInfoPage.vala:494 src/widgets/MediaButton.vala:91
+#: src/TweetInfoPage.vala:494 src/widgets/MediaButton.vala:100
 msgid "Open in Browser"
 msgstr "Avaa selaimessa"
 
@@ -244,14 +244,6 @@ msgstr "Väärä PIN"
 msgid "Account already in use"
 msgstr "Tili on jo käytössä"
 
-#: src/widgets/AvatarBannerWidget.vala:140
-msgid "Select banner"
-msgstr "Valitse banneri"
-
-#: src/widgets/AvatarBannerWidget.vala:155
-msgid "Select avatar"
-msgstr "Valitse avatar"
-
 #: src/widgets/CompletionTextView.vala:40
 msgid "No users found"
 msgstr "Käyttäjiä ei löytynyt"
@@ -264,7 +256,7 @@ msgstr "Seuraa"
 msgid "Unfollow"
 msgstr "Lopeta seuraaminen"
 
-#: src/widgets/MediaButton.vala:42
+#: src/widgets/MediaButton.vala:45
 msgid "Copy URL"
 msgstr "Kopioi osoite"
 
@@ -276,11 +268,11 @@ msgstr "Kopioi linkki"
 msgid "Loading..."
 msgstr "Ladataan..."
 
-#: src/widgets/TweetListBox.vala:102 src/widgets/TweetListBox.vala:150
+#: src/widgets/TweetListBox.vala:102 src/widgets/TweetListBox.vala:153
 msgid "No entries found"
 msgstr "Kohteita ei löytynyt"
 
-#: src/widgets/TweetListBox.vala:110
+#: src/widgets/TweetListBox.vala:113
 msgid "Retry"
 msgstr "Yritä uudelleen"
 
@@ -290,11 +282,10 @@ msgstr "Lainaa twiittiä"
 
 #: src/window/ComposeTweetWindow.vala:237
 #: src/window/ComposeTweetWindow.vala:262 src/window/UserListDialog.vala:47
-#: ui/account-dialog.ui:21 ui/account-dialog.ui:233 ui/compose-window.ui:41
-#: ui/filter-list-entry.ui:80 ui/image-crop-dialog.ui:46
-#: ui/list-list-entry.ui:98 ui/list-statuses-page.ui:173
-#: ui/modify-filter-dialog.ui:13 ui/modify-snippet-dialog.ui:14
-#: ui/user-filter-entry.ui:114
+#: ui/account-dialog.ui:25 ui/account-dialog.ui:247 ui/compose-window.ui:41
+#: ui/filter-list-entry.ui:80 ui/list-list-entry.ui:98
+#: ui/list-statuses-page.ui:173 ui/modify-filter-dialog.ui:13
+#: ui/modify-snippet-dialog.ui:14 ui/user-filter-entry.ui:114
 msgid "Cancel"
 msgstr "Peru"
 
@@ -312,37 +303,9 @@ msgid ""
 "The selected image is too big. The maximum file size per image is %'d MB"
 msgstr ""
 
-#: src/window/ComposeTweetWindow.vala:290 ui/image-crop-dialog.ui:71
+#: src/window/ComposeTweetWindow.vala:290
 msgid "Back"
 msgstr "Takaisin"
-
-#: src/window/ImageCropDialog.vala:58 ui/image-crop-dialog.ui:61
-msgid "Next"
-msgstr "Seuraava"
-
-#: src/window/ImageCropDialog.vala:98 src/window/UserListDialog.vala:48
-#: ui/account-dialog.ui:28 ui/list-statuses-page.ui:129
-#: ui/modify-filter-dialog.ui:20 ui/modify-snippet-dialog.ui:21
-msgid "Save"
-msgstr "Tallenna"
-
-#: src/window/ImageCropDialog.vala:103
-msgid "Image does not meet minimum size requirements:"
-msgstr "Kuva ei täytä vähimmäiskokovaatimuksia:"
-
-#: src/window/ImageCropDialog.vala:104
-#, c-format
-msgid "Minimum width: %d pixel"
-msgid_plural "Minimum width: %d pixels"
-msgstr[0] "Vähimmäisleveys: %d pikseli"
-msgstr[1] "Vähimmäisleveys: %d pikseliä"
-
-#: src/window/ImageCropDialog.vala:106
-#, c-format
-msgid "Minimum height: %d pixel"
-msgid_plural "Minimum height: %d pixels"
-msgstr[0] "Vähimmäiskorkeus: %d pikseli"
-msgstr[1] "Vähimmäiskorkeus: %d pikseliä"
 
 #: src/window/ModifyFilterDialog.vala:45
 msgid "Modify Filter"
@@ -388,6 +351,12 @@ msgstr ""
 msgid "Add to or Remove User From List"
 msgstr "Lisää tai poista käyttäjä listalta"
 
+#: src/window/UserListDialog.vala:48 ui/account-dialog.ui:33
+#: ui/list-statuses-page.ui:129 ui/modify-filter-dialog.ui:20
+#: ui/modify-snippet-dialog.ui:21
+msgid "Save"
+msgstr "Tallenna"
+
 #: src/window/UserListDialog.vala:69
 msgid "You have no lists."
 msgstr "Sinulla ei ole listoja."
@@ -412,30 +381,30 @@ msgstr "Pyydä PIN"
 msgid "Confirm"
 msgstr "Vahvista"
 
-#: ui/account-dialog.ui:11
+#: ui/account-dialog.ui:19
 msgid "Account Settings"
 msgstr "Tilin asetukset"
 
-#: ui/account-dialog.ui:76
+#: ui/account-dialog.ui:90
 msgid "Name"
 msgstr "Nimi"
 
-#: ui/account-dialog.ui:104
+#: ui/account-dialog.ui:118
 msgid "Website"
 msgstr "Verkkosivusto"
 
-#: ui/account-dialog.ui:158
+#: ui/account-dialog.ui:172
 msgid "Autostart"
 msgstr "Käynnistä automaattisesti"
 
-#: ui/account-dialog.ui:189 ui/account-dialog.ui:246 ui/filter-list-entry.ui:93
+#: ui/account-dialog.ui:203 ui/account-dialog.ui:260 ui/filter-list-entry.ui:93
 #: ui/list-list-entry.ui:132 ui/list-statuses-page.ui:166
 #: ui/modify-snippet-dialog.ui:108 ui/tweet-info-page.ui:10
 #: ui/tweet-list-entry.ui:10
 msgid "Delete"
 msgstr "Poista"
 
-#: ui/account-dialog.ui:221
+#: ui/account-dialog.ui:235
 msgid "Do you really want to delete this account?"
 msgstr "Haluatko varmasti poistaa tämän tilin?"
 
@@ -579,120 +548,120 @@ msgstr "Mykistetty"
 msgid "Retweets disabled"
 msgstr "Uudelleentwiittaukset poistettu käytöstä"
 
-#: ui/profile-page.ui:159
+#: ui/profile-page.ui:167
 msgid "Follows you"
 msgstr "Seuraa sinua"
 
-#: ui/profile-page.ui:233 ui/search-page.ui:74 ui/settings-dialog.ui:421
+#: ui/profile-page.ui:241 ui/search-page.ui:74 ui/settings-dialog.ui:420
 msgid "Tweets"
 msgstr "Twiitit"
 
-#: ui/profile-page.ui:274
+#: ui/profile-page.ui:282
 msgid "Followers"
 msgstr "Seuraajia"
 
-#: ui/profile-page.ui:315
+#: ui/profile-page.ui:323
 msgid "Following"
 msgstr "Seuraa"
 
-#: ui/settings-dialog.ui:60
+#: ui/settings-dialog.ui:59
 msgid "Show inline media"
 msgstr "Näytä sisennetty media"
 
-#: ui/settings-dialog.ui:79
+#: ui/settings-dialog.ui:78
 msgid "Always show"
 msgstr "Näytä aina"
 
-#: ui/settings-dialog.ui:80
+#: ui/settings-dialog.ui:79
 msgid "Always hide"
 msgstr "Piilota aina"
 
-#: ui/settings-dialog.ui:81
+#: ui/settings-dialog.ui:80
 msgid "Hide in timeline"
 msgstr "Piilota aikajanalla"
 
-#: ui/settings-dialog.ui:102
+#: ui/settings-dialog.ui:101
 msgid "Auto scroll on new tweets"
 msgstr "Vieritä automaattisesti uusien twiittien myötä"
 
-#: ui/settings-dialog.ui:132
+#: ui/settings-dialog.ui:131
 msgid "Double-click activation"
 msgstr "Kaksoisnapsautuksen aktivointi"
 
-#: ui/settings-dialog.ui:162
+#: ui/settings-dialog.ui:161
 msgid "Interface"
 msgstr "Käyttöliittymä"
 
-#: ui/settings-dialog.ui:180
+#: ui/settings-dialog.ui:179
 msgid "On New Tweets"
 msgstr "Uusissa twiiteissä"
 
-#: ui/settings-dialog.ui:194
+#: ui/settings-dialog.ui:193
 msgid "Actions"
 msgstr "Toiminnot"
 
-#: ui/settings-dialog.ui:209
+#: ui/settings-dialog.ui:208
 msgid "On New Mentions"
 msgstr "Uusissa maininnoissa"
 
-#: ui/settings-dialog.ui:223
+#: ui/settings-dialog.ui:222
 msgid "On New Messages"
 msgstr "Uusissa viesteissä"
 
-#: ui/settings-dialog.ui:267
+#: ui/settings-dialog.ui:266
 msgid "Never"
 msgstr "Ei koskaan"
 
-#: ui/settings-dialog.ui:268
+#: ui/settings-dialog.ui:267
 msgid "Every"
 msgstr "Joka"
 
-#: ui/settings-dialog.ui:269
+#: ui/settings-dialog.ui:268
 msgid "Stack 5"
 msgstr "5 pino"
 
-#: ui/settings-dialog.ui:270
+#: ui/settings-dialog.ui:269
 msgid "Stack 10"
 msgstr "10 pino"
 
-#: ui/settings-dialog.ui:271
+#: ui/settings-dialog.ui:270
 msgid "Stack 25"
 msgstr "25 pino"
 
-#: ui/settings-dialog.ui:272
+#: ui/settings-dialog.ui:271
 msgid "Stack 50"
 msgstr "50 pino"
 
-#: ui/settings-dialog.ui:285
+#: ui/settings-dialog.ui:284
 msgid "Notifications"
 msgstr "Ilmoitukset"
 
-#: ui/settings-dialog.ui:312
+#: ui/settings-dialog.ui:311
 msgid "Round avatars"
 msgstr "Pyöreät avatarit"
 
-#: ui/settings-dialog.ui:339
+#: ui/settings-dialog.ui:338
 msgid "Remove trailing hashtags"
 msgstr "Poista lopussa olevat hashtagit"
 
-#: ui/settings-dialog.ui:367
+#: ui/settings-dialog.ui:366
 msgid "Remove media links"
 msgstr "Poista medialinkit"
 
-#: ui/settings-dialog.ui:395
+#: ui/settings-dialog.ui:394
 msgid "Hide inappropriate content"
 msgstr "Piilota asiaton sisältö"
 
-#: ui/settings-dialog.ui:442
+#: ui/settings-dialog.ui:441
 msgid "No snippets configured."
 msgstr "Tekstileikkeitä ei ole määritetty."
 
-#: ui/settings-dialog.ui:481
+#: ui/settings-dialog.ui:480
 msgid "You can activate snippets by writing the keyword and pressing TAB."
 msgstr ""
 "Voit aktivoida tekstileikkeet kirjoittamalla avainsanan ja painamalla TAB."
 
-#: ui/settings-dialog.ui:495
+#: ui/settings-dialog.ui:494
 msgid "Snippets"
 msgstr "Tekstileikkeet"
 
@@ -840,6 +809,28 @@ msgstr "Luotu"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "Tilannut"
+
+#~ msgid "Select banner"
+#~ msgstr "Valitse banneri"
+
+#~ msgid "Select avatar"
+#~ msgstr "Valitse avatar"
+
+#~ msgid "Next"
+#~ msgstr "Seuraava"
+
+#~ msgid "Image does not meet minimum size requirements:"
+#~ msgstr "Kuva ei täytä vähimmäiskokovaatimuksia:"
+
+#~ msgid "Minimum width: %d pixel"
+#~ msgid_plural "Minimum width: %d pixels"
+#~ msgstr[0] "Vähimmäisleveys: %d pikseli"
+#~ msgstr[1] "Vähimmäisleveys: %d pikseliä"
+
+#~ msgid "Minimum height: %d pixel"
+#~ msgid_plural "Minimum height: %d pixels"
+#~ msgstr[0] "Vähimmäiskorkeus: %d pikseli"
+#~ msgstr[1] "Vähimmäiskorkeus: %d pikseliä"
 
 #~ msgid ""
 #~ "Max file size exceeded\n"
