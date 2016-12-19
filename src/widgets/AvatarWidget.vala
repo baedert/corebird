@@ -37,6 +37,7 @@ public class AvatarWidget : Gtk.Widget {
   }
   public bool verified { get; set; default = false; }
   public bool overlap  { get; set; default = false; }
+  public int size      { get; set; default = 48;    }
 
   private Cairo.ImageSurface _surface;
   public Cairo.Surface surface {
@@ -130,8 +131,8 @@ public class AvatarWidget : Gtk.Widget {
 
   // TODO: Properly port this to snapshot()
   public override void snapshot (Gtk.Snapshot snapshot) {
-    int width  = this.get_allocated_width ();
-    int height = this.get_allocated_height ();
+    int width  = this.size;
+    int height = this.size;
 
     if (this._surface == null) {
       return;
@@ -206,6 +207,21 @@ public class AvatarWidget : Gtk.Widget {
       alloc.y -= OVERLAP_DIST;
       alloc.height += OVERLAP_DIST;
       this.set_clip (alloc);
+    }
+  }
+
+  public override void get_preferred_width (out int min, out int nat) {
+    min = size;
+    nat = size;
+  }
+
+  public override void get_preferred_height (out int min, out int nat) {
+    if (overlap) {
+      min = size - OVERLAP_DIST;
+      nat = size - OVERLAP_DIST;
+    } else {
+      min = size;
+      nat = size;
     }
   }
 }
