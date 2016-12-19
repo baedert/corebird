@@ -47,6 +47,8 @@ void  cb_user_counter_user_seen (CbUserCounter *counter,
   guint i;
 
   g_return_if_fail (CB_IS_USER_COUNTER (counter));
+  g_return_if_fail (screen_name != NULL);
+  g_return_if_fail (user_name != NULL);
 
   for (i = 0; i < counter->user_infos->len; i ++)
     {
@@ -83,7 +85,9 @@ cb_user_counter_save (CbUserCounter *counter,
 {
   int count = 0;
   guint i;
+
   g_return_val_if_fail (CB_IS_USER_COUNTER (counter), 0);
+  g_return_val_if_fail (db != NULL, 0);
 
   sqlite3_exec (db, "BEGIN TRANSACTION;", NULL, NULL, NULL);
 
