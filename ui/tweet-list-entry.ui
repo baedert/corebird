@@ -121,8 +121,7 @@
             <property name="margin">6</property>
             <child>
               <object class="AvatarWidget" id="avatar_image">
-                <property name="width-request">48</property>
-                <property name="height-request">48</property>
+                <property name="size">48</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="valign">start</property>
