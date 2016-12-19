@@ -129,7 +129,6 @@ public class AvatarWidget : Gtk.Widget {
     return t < 1.0;
   }
 
-  // TODO: Properly port this to snapshot()
   public override void snapshot (Gtk.Snapshot snapshot) {
     int width  = this.size;
     int height = this.size;
