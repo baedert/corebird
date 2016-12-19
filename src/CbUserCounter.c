@@ -38,10 +38,11 @@ cb_user_counter_id_seen (CbUserCounter        *counter,
   cb_user_counter_user_seen (counter, id->id, id->screen_name, id->user_name);
 }
 
-void  cb_user_counter_user_seen (CbUserCounter *counter,
-                                 gint64         user_id,
-                                 const char    *screen_name,
-                                 const char    *user_name)
+void
+cb_user_counter_user_seen (CbUserCounter *counter,
+                           gint64         user_id,
+                           const char    *screen_name,
+                           const char    *user_name)
 {
   gboolean found = FALSE;
   guint i;
