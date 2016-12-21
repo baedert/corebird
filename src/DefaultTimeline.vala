@@ -108,8 +108,14 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
       mark_seen (-1);
     }
 
-    if (last_focus_widget != null)
-      last_focus_widget.grab_focus ();
+    if (last_focus_widget != null) {
+      /* We might have a reference to a row that's been removed
+         from the listbox */
+      if (last_focus_widget.parent == tweet_list)
+        last_focus_widget.grab_focus ();
+      else
+        last_focus_widget = null;
+    }
 
     this.get_vadjustment ().value = this.last_value;
   }
