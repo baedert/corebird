@@ -24,7 +24,6 @@
     <property name="title">Corebird</property>
     <property name="icon-name">corebird</property>
     <property name="show-menubar">false</property>
-    <signal name="button-press-event" handler="button_press_event_cb" swapped="no"/>
     <signal name="delete_event" handler="window_delete_cb" swapped="no"/>
     <child type="titlebar">
       <object class="GtkHeaderBar" id="headerbar">
