@@ -31,12 +31,12 @@ public class Corebird : Gtk.Application {
     {"show-shortcuts",    show_shortcuts_activated         },
     {"quit",              quit_application                 },
     {"show-about-dialog", about_activated                  },
-    {"show-dm-thread",    show_dm_thread,          "(xx)"  },
-    {"show-window",       show_window,             "x"     },
-    {"mark-read",         mark_read_activated,     "(xx)"  },
+    {"show-dm-thread",    show_dm_thread,           "(xx)" },
+    {"show-window",       show_window,              "x"    },
+    {"mark-read",         mark_read_activated,      "(xx)" },
     {"reply-to-tweet",    reply_to_tweet_activated, "(xx)" },
 #if DEBUG
-    {"post-json",         post_json,               "(ss)"  },
+    {"post-json",         post_json,                "(ss)" },
     {"print-debug",       print_debug,                     },
 #endif
   };
