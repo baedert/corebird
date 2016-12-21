@@ -2,7 +2,7 @@
 
 # Oh god I hate bash.
 
-sizes=(16 20 24 32 36 40 48 64 96 128 192 512)
+sizes=(16  24 32 48 64 96 128 256)
 
 for size in ${sizes[@]}
 do
