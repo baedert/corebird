@@ -205,3 +205,4 @@ executable(
 )
 
 subdir('tests')
+subdir('data')
