@@ -53,6 +53,7 @@ public class MainWindow : Gtk.ApplicationWindow {
   public MainWidget main_widget;
   public unowned Account? account;
   private ComposeTweetWindow? compose_tweet_window = null;
+  private Gtk.GestureMultiPress thumb_button_gesture;
 
   public int cur_page_id {
     get {
@@ -135,6 +136,11 @@ public class MainWindow : Gtk.ApplicationWindow {
       }
       return false;
     });
+
+    this.thumb_button_gesture = new Gtk.GestureMultiPress (this);
+    thumb_button_gesture.set_button (0);
+    thumb_button_gesture.set_propagation_phase (Gtk.PropagationPhase.CAPTURE);
+    thumb_button_gesture.pressed.connect (thumb_button_pressed_cb);
 
     load_geometry ();
   }
@@ -268,19 +274,20 @@ public class MainWindow : Gtk.ApplicationWindow {
       warning ("account == null");
   }
 
-
-  [GtkCallback]
-  private bool button_press_event_cb (Gdk.EventButton evt) {
-    if (evt.button == 9) {
+  private void thumb_button_pressed_cb (Gtk.GestureMultiPress gesture,
+                                        int                   n_press,
+                                        double                x,
+                                        double                y) {
+    uint button = gesture.get_current_button ();
+    if (button == 9) {
       // Forward thumb button
       main_widget.switch_page (Page.NEXT);
-      return Gdk.EVENT_STOP;
-    } else if (evt.button == 8) {
+      gesture.set_state (Gtk.EventSequenceState.CLAIMED);
+    } else if (button == 8) {
       // backward thumb button
       main_widget.switch_page (Page.PREVIOUS);
-      return Gdk.EVENT_STOP;
+      gesture.set_state (Gtk.EventSequenceState.CLAIMED);
     }
-    return Gdk.EVENT_PROPAGATE;
   }
 
   private void show_hide_compose_window () {
