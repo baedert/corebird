@@ -17,14 +17,6 @@ appdata_DATA = $(appdata_in_files:.xml.in=.xml)
 	msgfmt --xml -d $(top_srcdir)/po \
 	--template $< -o $@
 
-# Actually, just ignore gschema translations...
-org.baedert.corebird.gschema.xml: org.baedert.corebird.gschema.xml.in
-	cp $^ $@
-#%.gschema.xml: %.gschema.xml.in
-#	msgfmt --xml -d $(top_srcdir)/po \
-#	--template $< -o $@
-
-
 man_MANS = corebird.1
 
 gsettings_SCHEMAS = org.baedert.corebird.gschema.xml
@@ -47,7 +39,7 @@ org.baedert.corebird.service: Makefile
 EXTRA_DIST = \
 	$(desktop_in_files) \
 	$(appdata_in_files) \
-	org.baedert.corebird.gschema.xml.in \
+	org.baedert.corebird.gschema.xml \
 	$(man_MANS)
 
 CLEANFILES = \
