@@ -75,7 +75,6 @@ class MediaVideoWidget : Gtk.Stack {
     this.add (surface_progress);
     this.add (error_label);
 
-
     this.visible_child = surface_progress;
   }
 
@@ -101,7 +100,7 @@ class MediaVideoWidget : Gtk.Stack {
 #if VIDEO
     assert (this.media_url != null);
     this.src.set ("uri", this.media_url);
-    /* We will set it to PLAYING once we hit 100% buffering */
+    /* We will set it to PLAYING once we get an ASYNC_DONE message */
     this.src.set_state (Gst.State.PAUSED);
 #endif
   }
@@ -187,11 +186,6 @@ class MediaVideoWidget : Gtk.Stack {
         msg.parse_buffering (out percent);
         debug ("Buffering: %d%%", percent);
         this.surface_progress.progress = double.max (percent / 100.0, this.surface_progress.progress);
-        if (percent == 100) {
-          debug ("Playing...");
-          this.src.set_state (Gst.State.PLAYING);
-          start_progress_timeout ();
-        }
       break;
 
       case Gst.MessageType.EOS:
@@ -203,6 +197,8 @@ class MediaVideoWidget : Gtk.Stack {
       case Gst.MessageType.ASYNC_DONE:
         debug ("ASYNC DONE");
         this.visible_child_name = "video";
+        start_progress_timeout ();
+        this.src.set_state (Gst.State.PLAYING);
       break;
 
       case Gst.MessageType.ERROR:
