@@ -4,6 +4,7 @@ gnome = import('gnome')
 
 add_global_arguments('-DGETTEXT_PACKAGE="corebird"', language: 'c')
 add_global_arguments('-DDATADIR="' + get_option('datadir') + '"', language: 'c')
+add_global_arguments('-DG_LOG_DOMAIN="corebird"', language: 'c')
 add_global_arguments('--enable-deprecated', language: 'vala')
 
 srcdir = include_directories('src')
