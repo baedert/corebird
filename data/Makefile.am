@@ -43,7 +43,6 @@ EXTRA_DIST = \
 	$(man_MANS)
 
 CLEANFILES = \
-	$(gsettings_SCHEMAS) \
 	gschemas.compiled \
 	org.baedert.corebird.gschema.valid \
 	$(desktop_DATA) \
