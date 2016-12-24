@@ -3,7 +3,8 @@ AM_CPPFLAGS = \
 	$(CB_CFLAGS) \
 	-include $(CONFIG_HEADER) \
 	-DDATADIR=\"$(datadir)\" \
-	-DPKGDATADIR=\"$(pkgdatadir)\"
+	-DPKGDATADIR=\"$(pkgdatadir)\" \
+	-DG_LOG_DOMAIN=\"corebird\"
 
 
 AM_VALAFLAGS = \
@@ -17,6 +18,7 @@ AM_VALAFLAGS = \
 	--basedir $(srcdir) \
 	--directory $(builddir) \
 	--gresources $(top_srcdir)/corebird.gresource.xml \
+	-D G_LOG_DOMAIN=\"corebird\" \
 	$(top_srcdir)/vapi/config.vapi \
 	$(top_srcdir)/vapi/corebird-internal.vapi \
 	-C \
