@@ -196,7 +196,7 @@ public class Corebird : Gtk.Application {
     new LazyMenuButton ();
 
 #if DEBUG
-    GLib.Environment.set_variable ("G_MESSAGES_DEBUG", "all", true);
+    GLib.Environment.set_variable ("G_MESSAGES_DEBUG", "corebird", true);
 #endif
 
     debug ("startup");
