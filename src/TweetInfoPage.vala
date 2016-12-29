@@ -216,11 +216,6 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
 
     favorite_button.sensitive = false;
 
-    if (favorite_button.active)
-      this.tweet.favorite_count ++;
-    else
-      this.tweet.favorite_count --;
-
     this.update_rt_fav_labels ();
 
     TweetUtils.set_favorite_status.begin (account, tweet, favorite_button.active, () => {
@@ -234,10 +229,6 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
       return;
 
     retweet_button.sensitive = false;
-    if (retweet_button.active)
-      this.tweet.retweet_count ++;
-    else
-      this.tweet.retweet_count --;
     this.update_rt_fav_labels ();
 
     TweetUtils.set_retweet_status.begin (account, tweet, retweet_button.active, () => {
