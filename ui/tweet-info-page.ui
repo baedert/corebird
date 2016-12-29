@@ -138,8 +138,8 @@
               <object class="MultiMediaWidget" id="mm_widget">
                 <property name="visible">true</property>
                 <property name="margin-bottom">12</property>
-                <property name="margin-start">10</property>
-                <property name="margin-end">10</property>
+                <property name="margin-start">8</property>
+                <property name="margin-end">8</property>
               </object>
               <packing>
                 <property name="left-attach">0</property>
@@ -183,102 +183,94 @@
                 <property name="width">2</property>
               </packing>
             </child>
+
+
             <child>
-              <object class="GtkLabel" id="rt_label">
+              <object class="GtkBox">
                 <property name="visible">1</property>
+                <property name="orientation">horizontal</property>
                 <property name="margin-start">8</property>
-                <property name="margin-end">8</property>
-                <property name="xalign">0</property>
-                <property name="use-markup">1</property>
-                <property name="halign">start</property>
-                <style>
-                  <class name="dim-label"/>
-                </style>
-              </object>
-              <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">7</property>
-                <property name="width">3</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="fav_label">
-                <property name="visible">1</property>
-                <property name="xalign">0</property>
-                <property name="use-markup">1</property>
-                <property name="halign">start</property>
+                <property name="halign">end</property>
                 <property name="hexpand">1</property>
                 <style>
-                  <class name="dim-label"/>
+                  <class name="linked" />
                 </style>
-              </object>
-              <packing>
-                <property name="left-attach">3</property>
-                <property name="top-attach">7</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToggleButton" id="retweet_button">
-                <property name="visible">1</property>
-                <property name="can-focus">1</property>
-                <property name="valign">baseline</property>
-                <property name="receives-default">1</property>
-                <property name="tooltip-text" translatable="yes">Retweet tweet</property>
-                <property name="relief">none</property>
-                <signal name="toggled" handler="retweet_button_toggled_cb" swapped="no"/>
                 <child>
-                  <object class="GtkImage">
+                 <object class="GtkToggleButton" id="retweet_button">
                     <property name="visible">1</property>
-                    <property name="icon-name">corebird-retweet-symbolic</property>
-                    <property name="icon-size">1</property>
+                    <property name="can-focus">1</property>
+                    <property name="tooltip-text" translatable="yes">Retweet tweet</property>
+                    <signal name="toggled" handler="retweet_button_toggled_cb" swapped="no"/>
+                    <child>
+                      <object class="GtkImage">
+                        <property name="visible">1</property>
+                        <property name="icon-name">corebird-retweet-symbolic</property>
+                        <property name="icon-size">1</property>
+                      </object>
+                    </child>
+                    <style>
+                      <class name="retweet-button"/>
+                    </style>
                   </object>
                 </child>
-                <style>
-                  <class name="retweet-button"/>
-                  <class name="dim-label"/>
-                  <class name="image-button"/>
-                </style>
+                <child>
+                  <object class="GtkToggleButton" id="rt_count_button">
+                    <property name="visible">1</property>
+                  </object>
+                </child>
               </object>
               <packing>
                 <property name="left-attach">4</property>
                 <property name="top-attach">7</property>
+                <property name="width">1</property>
               </packing>
             </child>
+
             <child>
-              <object class="GtkToggleButton" id="favorite_button">
-                <property name="visible">1</property>
-                <property name="can-focus">1</property>
-                <property name="valign">baseline</property>
-                <property name="receives-default">1</property>
-                <property name="tooltip-text" translatable="yes">Favorite tweet</property>
-                <property name="relief">none</property>
-                <signal name="toggled" handler="favorite_button_toggled_cb" swapped="no"/>
+              <object class="GtkBox">
+                <property name="visible">true</property>
+                <property name="orientation">horizontal</property>
+                <property name="margin-start">8</property>
+                <property name="halign">end</property>
+                <style>
+                  <class name="linked" />
+                </style>
                 <child>
-                  <object class="GtkImage">
-                    <property name="visible">1</property>
-                    <property name="icon-name">emblem-favorite-symbolic</property>
-                    <property name="icon-size">1</property>
+                  <object class="GtkToggleButton" id="favorite_button">
+                    <property name="visible">true</property>
+                    <property name="tooltip-text" translatable="yes">Favorite tweet</property>
+                    <signal name="toggled" handler="favorite_button_toggled_cb" swapped="no"/>
+                    <style>
+                      <class name="favorite-button" />
+                    </style>
+                    <child>
+                      <object class="GtkImage">
+                        <property name="visible">1</property>
+                        <property name="icon-name">emblem-favorite-symbolic</property>
+                        <property name="icon-size">1</property>
+                      </object>
+                    </child>
                   </object>
                 </child>
-                <style>
-                  <class name="favorite-button"/>
-                  <class name="dim-label"/>
-                  <class name="image-button"/>
-                </style>
+                <child>
+                  <object class="GtkToggleButton" id="fav_count_button">
+                    <property name="visible">true</property>
+                  </object>
+                </child>
               </object>
               <packing>
                 <property name="left-attach">5</property>
                 <property name="top-attach">7</property>
               </packing>
             </child>
+
             <child>
               <object class="GtkButton" id="reply_button">
                 <property name="visible">1</property>
                 <property name="can-focus">1</property>
-                <property name="valign">baseline</property>
-                <property name="receives-default">1</property>
+                <property name="margin-start">8</property>
+
                 <property name="tooltip-text" translatable="yes">Reply to tweet</property>
-                <property name="relief">none</property>
                 <signal name="clicked" handler="reply_button_clicked_cb" swapped="no"/>
                 <child>
                   <object class="GtkImage">
@@ -289,7 +281,6 @@
                 </child>
                 <style>
                   <class name="reply-button"/>
-                  <class name="dim-label"/>
                   <class name="image-button"/>
                 </style>
               </object>
@@ -303,8 +294,8 @@
                 <property name="visible">1</property>
                 <property name="can-focus">1</property>
                 <property name="valign">baseline</property>
-                <property name="margin-end">10</property>
-                <property name="relief">none</property>
+                <property name="margin-end">8</property>
+                <property name="margin-start">8</property>
                 <property name="menu-model">actions_menu</property>
                 <child>
                   <object class="GtkImage">
@@ -320,7 +311,6 @@
                 </child>
                 <style>
                   <class name="image-button"/>
-                  <class name="dim-label"/>
                 </style>
               </object>
               <packing>

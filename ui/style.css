@@ -117,15 +117,6 @@
   color: red;
 }
 
-/* Don't target :hover:active here */
-.favorite-button:checked,
-.retweet-button:checked:not(:hover) {
-  background-image: none;
-  background-color: transparent;
-  border-color: transparent;
-  box-shadow: none;
-}
-
 .reply-button:hover {
   color: blue;
 }

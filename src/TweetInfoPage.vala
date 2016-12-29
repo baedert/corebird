@@ -56,9 +56,9 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
   [GtkChild]
   private AvatarWidget avatar_image;
   [GtkChild]
-  private Gtk.Label rt_label;
+  private Gtk.ToggleButton rt_count_button;
   [GtkChild]
-  private Gtk.Label fav_label;
+  private Gtk.ToggleButton fav_count_button;
   [GtkChild]
   private TweetListBox bottom_list_box;
   [GtkChild]
@@ -216,7 +216,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
 
     favorite_button.sensitive = false;
 
-    this.update_rt_fav_labels ();
+    this.update_rt_fav_count_buttons ();
 
     TweetUtils.set_favorite_status.begin (account, tweet, favorite_button.active, () => {
       favorite_button.sensitive = true;
@@ -229,7 +229,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
       return;
 
     retweet_button.sensitive = false;
-    this.update_rt_fav_labels ();
+    this.update_rt_fav_count_buttons ();
 
     TweetUtils.set_retweet_status.begin (account, tweet, retweet_button.active, () => {
       retweet_button.sensitive = true;
@@ -442,7 +442,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     name_button.set_markup (tweet.get_user_name ());
     screen_name_label.label = "@" + tweet.get_screen_name ();
     Twitter.get ().get_avatar.begin (tweet.get_user_id (), tweet.avatar_url, avatar_image);
-    update_rt_fav_labels ();
+    update_rt_fav_count_buttons ();
     time_label.label = time_format;
     retweet_button.active  = tweet.is_flag_set (Cb.TweetState.RETWEETED);
     favorite_button.active = tweet.is_flag_set (Cb.TweetState.FAVORITED);
@@ -469,9 +469,9 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     }
   }
 
-  private void update_rt_fav_labels () {
-    rt_label.label = "<big><b>%'d</b></big> %s".printf (tweet.retweet_count, _("Retweets"));
-    fav_label.label = "<big><b>%'d</b></big> %s".printf (tweet.favorite_count, _("Favorites"));
+  private void update_rt_fav_count_buttons () {
+    rt_count_button.label  = "%'d".printf (tweet.retweet_count);
+    fav_count_button.label = "%'d".printf (tweet.favorite_count);
   }
 
   private void set_source_link (int64 id, string screen_name) {
@@ -508,7 +508,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     else
       this.tweet.favorite_count --;
 
-    this.update_rt_fav_labels ();
+    this.update_rt_fav_count_buttons ();
 
     TweetUtils.set_favorite_status.begin (account, tweet, favoriting, () => {
       favorite_button.sensitive = true;
@@ -593,7 +593,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
         this.values_set = false;
         this.favorite_button.active = true;
         this.tweet.favorite_count ++;
-        this.update_rt_fav_labels ();
+        this.update_rt_fav_count_buttons ();
         this.values_set = true;
       }
 
@@ -604,7 +604,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
         this.values_set = false;
         this.favorite_button.active = false;
         this.tweet.favorite_count --;
-        this.update_rt_fav_labels ();
+        this.update_rt_fav_count_buttons ();
         this.values_set = true;
       }
     }
