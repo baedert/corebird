@@ -79,6 +79,8 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
   private Gtk.Stack main_stack;
   [GtkChild]
   private Gtk.Label error_label;
+  [GtkChild]
+  private Gtk.Revealer rt_fav_revealer;
 
   public TweetInfoPage (int id, Account account, DeltaUpdater delta_updater) {
     this.id = id;
@@ -553,7 +555,34 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     to = source_str.index_of_char ('"', from + 1);
     if (to == -1 || from == -1)
       return source_str;
-    return source_str.substring (0, from-5) + source_str.substring(to + 1);
+
+    return source_str.substring (0, from - 5) + source_str.substring(to + 1);
+  }
+
+  [GtkCallback]
+  private void rt_count_button_toggled_cb () {
+    if (rt_count_button.active) {
+      fav_count_button.active = false;
+      rt_fav_revealer.visible = true;
+      rt_fav_revealer.reveal_child = true;
+    } else {
+      rt_fav_revealer.reveal_child = false;
+    }
+
+    message ("RT Active: %s", rt_count_button.active.to_string ());
+  }
+
+  [GtkCallback]
+  private void fav_count_button_toggled_cb () {
+    if (fav_count_button.active) {
+      rt_count_button.active = false;
+      rt_fav_revealer.visible = true;
+      rt_fav_revealer.reveal_child = true;
+    } else {
+      rt_fav_revealer.reveal_child = false;
+      // TODO: Hide when transition finished
+    }
+    message ("FAV Active: %s", fav_count_button.active.to_string ());
   }
 
   public void create_radio_button (Gtk.RadioButton? group) {}

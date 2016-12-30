@@ -184,7 +184,6 @@
               </packing>
             </child>
 
-
             <child>
               <object class="GtkBox">
                 <property name="visible">1</property>
@@ -216,19 +215,19 @@
                 <child>
                   <object class="GtkToggleButton" id="rt_count_button">
                     <property name="visible">1</property>
+                    <signal name="toggled" handler="rt_count_button_toggled_cb" />
                   </object>
                 </child>
               </object>
               <packing>
                 <property name="left-attach">4</property>
                 <property name="top-attach">7</property>
-                <property name="width">1</property>
               </packing>
             </child>
 
             <child>
               <object class="GtkBox">
-                <property name="visible">true</property>
+                <property name="visible">1</property>
                 <property name="orientation">horizontal</property>
                 <property name="margin-start">8</property>
                 <property name="halign">end</property>
@@ -254,7 +253,8 @@
                 </child>
                 <child>
                   <object class="GtkToggleButton" id="fav_count_button">
-                    <property name="visible">true</property>
+                    <property name="visible">1</property>
+                    <signal name="toggled" handler="fav_count_button_toggled_cb" />
                   </object>
                 </child>
               </object>
@@ -318,6 +318,44 @@
                 <property name="top-attach">7</property>
               </packing>
             </child>
+
+            <child>
+              <object class="GtkRevealer" id="rt_fav_revealer">
+                <property name="visible">0</property>
+                <property name="transition-type">slide-down</property>
+                <property name="no-show-all">1</property>
+                <property name="margin-start">8</property>
+                <property name="margin-end">8</property>
+                <child>
+                  <object class="GtkBox">
+                    <property name="visible">1</property>
+                    <property name="orientation">horizontal</property>
+                    <style>
+                      <class name="view" />
+                    </style>
+                    <child>
+                      <object class="GtkButton">
+                        <property name="visible">true</property>
+
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton">
+                        <property name="visible">true</property>
+
+                      </object>
+                    </child>
+
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">8</property>
+                <property name="width">8</property>
+              </packing>
+            </child>
+
             <child>
               <object class="TweetListBox" id="bottom_list_box">
                 <property name="visible">True</property>
@@ -327,7 +365,7 @@
               </object>
               <packing>
                 <property name="left-attach">0</property>
-                <property name="top-attach">8</property>
+                <property name="top-attach">9</property>
                 <property name="width">8</property>
               </packing>
             </child>
