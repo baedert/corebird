@@ -138,8 +138,8 @@
               <object class="MultiMediaWidget" id="mm_widget">
                 <property name="visible">true</property>
                 <property name="margin-bottom">12</property>
-                <property name="margin-start">10</property>
-                <property name="margin-end">10</property>
+                <property name="margin-start">8</property>
+                <property name="margin-end">8</property>
               </object>
               <packing>
                 <property name="left-attach">0</property>
