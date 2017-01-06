@@ -9,16 +9,14 @@ msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2016-12-18 16:41+0100\n"
-"PO-Revision-Date: 2016-07-30 14:11+0000\n"
+"PO-Revision-Date: 2016-12-19 13:39+0000\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
-"Language-Team: Polish (http://www.transifex.com/corebird/corebird/language/"
-"pl/)\n"
-"Language: pl\n"
+"Language-Team: Polish (http://www.transifex.com/corebird/corebird/language/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
-"|| n%100>=20) ? 1 : 2);\n"
+"Language: pl\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: data/org.baedert.corebird.appdata.xml.in:5
 #: data/org.baedert.corebird.desktop.in:3
@@ -34,18 +32,13 @@ msgstr "Klient Twittera"
 msgid ""
 "Corebird is a native GTK+ twitter client that provides vital features such "
 "as Direct Messages (DMs), tweet notifications, conversation views."
-msgstr ""
-"Corebird jest klientem Twittera natywnym dla biblioteki GTK+ dostarczającym "
-"takie ważne funkcje, jak prywatne wiadomości, powiadomienia o tweetach oraz "
-"widok rozmowy."
+msgstr "Corebird jest klientem Twittera natywnym dla biblioteki GTK+ dostarczającym takie ważne funkcje, jak prywatne wiadomości, powiadomienia o tweetach oraz widok rozmowy."
 
 #: data/org.baedert.corebird.appdata.xml.in:13
 msgid ""
-"Additional features include local viewing of videos, multiple inline images, "
-"Lists, Filters, multiple accounts, etc."
-msgstr ""
-"Dodatkowe funkcje obejmują lokalne wyświetlanie nagrań wideo i wielu obrazów "
-"osadzonych w tweetach oraz obsługę list, filtrów i wielu kont na raz."
+"Additional features include local viewing of videos, multiple inline images,"
+" Lists, Filters, multiple accounts, etc."
+msgstr "Dodatkowe funkcje obejmują lokalne wyświetlanie nagrań wideo i wielu obrazów osadzonych w tweetach oraz obsługę list, filtrów i wielu kont na raz."
 
 #: data/org.baedert.corebird.appdata.xml.in:21
 msgid "Generic timeline view when using Corebird"
@@ -61,7 +54,7 @@ msgstr "Można konfigurować ustawienia konta"
 
 #: data/org.baedert.corebird.desktop.in:5
 msgid "Use Twitter from within a normal desktop application"
-msgstr "Korzystanie z Twittera w zwykłym programie"
+msgstr "Korzystanie z Twittera w zwykłym programie"
 
 #: data/org.baedert.corebird.desktop.in:7
 msgid "twitter;"
@@ -196,7 +189,7 @@ msgstr "Podane dalej"
 
 #: src/TweetInfoPage.vala:494 src/widgets/MediaButton.vala:100
 msgid "Open in Browser"
-msgstr "Otwórz w przeglądarce"
+msgstr "Otwórz w przeglądarce"
 
 #: src/TweetInfoPage.vala:494
 msgid "Source"
@@ -230,11 +223,9 @@ msgstr "Utwórz konto"
 
 #: src/widgets/AccountCreateWidget.vala:55
 msgid ""
-"Unauthorized. Most of the time, this means that there's something wrong with "
-"the Twitter servers and you should try again later"
-msgstr ""
-"Brak upoważnienia. Zwykle oznacza to, że coś jest nie tak z serwerami "
-"Twittera i powinno się spróbować później"
+"Unauthorized. Most of the time, this means that there's something wrong with"
+" the Twitter servers and you should try again later"
+msgstr "Brak upoważnienia. Zwykle oznacza to, że coś jest nie tak z serwerami Twittera i powinno się spróbować później"
 
 #: src/widgets/AccountCreateWidget.vala:67
 #, c-format
@@ -306,7 +297,7 @@ msgstr "Otwórz"
 #, c-format
 msgid ""
 "The selected image is too big. The maximum file size per image is %'d MB"
-msgstr ""
+msgstr "Wybrany obraz jest za duży. Maksymalny rozmiar pliku na obraz to %'d MB."
 
 #: src/window/ComposeTweetWindow.vala:290
 msgid "Back"
@@ -352,7 +343,7 @@ msgstr "Hej, #Corebird ma nową wersję! \\ (•◡•) / #super #nowejestzawsze
 
 #: src/window/UserListDialog.vala:40
 msgid "Add to or Remove User From List"
-msgstr "Dodawanie lub usuwanie użytkowników z listy"
+msgstr "Dodawanie lub usuwanie użytkowników z listy"
 
 #: src/window/UserListDialog.vala:48 ui/account-dialog.ui:33
 #: ui/list-statuses-page.ui:129 ui/modify-filter-dialog.ui:20
@@ -366,7 +357,7 @@ msgstr "Nie ma żadnych list."
 
 #: ui/about-dialog.ui:6
 msgid "About Corebird"
-msgstr "O programie Corebird"
+msgstr "O programie Corebird"
 
 #: ui/account-create-widget.ui:16
 msgid "New Account"
@@ -400,10 +391,10 @@ msgstr "Strona WWW"
 msgid "Autostart"
 msgstr "Automatyczne uruchamianie"
 
-#: ui/account-dialog.ui:203 ui/account-dialog.ui:260 ui/filter-list-entry.ui:93
-#: ui/list-list-entry.ui:132 ui/list-statuses-page.ui:166
-#: ui/modify-snippet-dialog.ui:108 ui/tweet-info-page.ui:10
-#: ui/tweet-list-entry.ui:10
+#: ui/account-dialog.ui:203 ui/account-dialog.ui:260
+#: ui/filter-list-entry.ui:93 ui/list-list-entry.ui:132
+#: ui/list-statuses-page.ui:166 ui/modify-snippet-dialog.ui:108
+#: ui/tweet-info-page.ui:10 ui/tweet-list-entry.ui:10
 msgid "Delete"
 msgstr "Usuń"
 
@@ -497,7 +488,7 @@ msgstr "Skróty"
 
 #: ui/menus.ui:15
 msgid "About"
-msgstr "O programie"
+msgstr "O programie"
 
 #: ui/menus.ui:19
 msgid "Quit"
@@ -537,7 +528,7 @@ msgstr "Napisz prywatną wiadomość"
 
 #: ui/profile-page.ui:14
 msgid "Add to/Remove from List"
-msgstr "Dodaj/usuń z listy"
+msgstr "Dodaj/usuń z listy"
 
 #: ui/profile-page.ui:20
 msgid "Blocked"
@@ -569,7 +560,7 @@ msgstr "Obserwowanie"
 
 #: ui/settings-dialog.ui:59
 msgid "Show inline media"
-msgstr "Multimedia w wiadomościach"
+msgstr "Multimedia w wiadomościach"
 
 #: ui/settings-dialog.ui:78
 msgid "Always show"
@@ -661,8 +652,7 @@ msgstr "Nie skonfigurowano żadnych wstawek."
 
 #: ui/settings-dialog.ui:480
 msgid "You can activate snippets by writing the keyword and pressing TAB."
-msgstr ""
-"Można aktywować wstawkę pisząc słowo kluczowe i naciskając klawisz Tab."
+msgstr "Można aktywować wstawkę pisząc słowo kluczowe i naciskając klawisz Tab."
 
 #: ui/settings-dialog.ui:494
 msgid "Snippets"
@@ -734,10 +724,9 @@ msgid "Reply"
 msgstr "Odpowiadanie"
 
 #: ui/shortcuts-window.ui:100
-#, fuzzy
 msgctxt "shortcuts window"
 msgid "Quote"
-msgstr "Cytuj"
+msgstr "Cytowanie"
 
 #: ui/shortcuts-window.ui:107
 msgctxt "shortcuts window"
@@ -799,7 +788,7 @@ msgstr "Wyświetla ustawienia tego konta"
 
 #: ui/user-list-entry.ui:92
 msgid "Open in new window"
-msgstr "Otwiera w nowym oknie"
+msgstr "Otwiera w nowym oknie"
 
 #: ui/user-list-entry.ui:116
 msgid "Go to profile"
@@ -812,38 +801,3 @@ msgstr "Utworzono"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "Subskrybowano do"
-
-#~ msgid "Select banner"
-#~ msgstr "Wybór banera"
-
-#~ msgid "Select avatar"
-#~ msgstr "Wybór awatara"
-
-#~ msgid "Next"
-#~ msgstr "Dalej"
-
-#~ msgid "Image does not meet minimum size requirements:"
-#~ msgstr "Obraz nie spełnia minimalnych wymaganych wymiarów:"
-
-#~ msgid "Minimum width: %d pixel"
-#~ msgid_plural "Minimum width: %d pixels"
-#~ msgstr[0] "Minimalna szerokość: %d piksel"
-#~ msgstr[1] "Minimalna szerokość: %d piksele"
-#~ msgstr[2] "Minimalna szerokość: %d pikseli"
-
-#~ msgid "Minimum height: %d pixel"
-#~ msgid_plural "Minimum height: %d pixels"
-#~ msgstr[0] "Minimalna wysokość: %d piksel"
-#~ msgstr[1] "Minimalna wysokość: %d piksele"
-#~ msgstr[2] "Minimalna wysokość: %d pikseli"
-
-#~ msgid ""
-#~ "Max file size exceeded\n"
-#~ "(3MB)"
-#~ msgstr ""
-#~ "Przekroczono maksymalny rozmiar pliku\n"
-#~ "(3 MB)"
-
-#~ msgid "Using Font Awesome by Dave Gandy - http://fontawesome.io"
-#~ msgstr ""
-#~ "Używamy Font Awesome autorstwa Dave’a Gandy’ego — http://fontawesome.io"

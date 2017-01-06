@@ -5,22 +5,19 @@
 # Translators:
 # Med Touhami MAHDI <dragnucs@legtux.org>, 2014
 # mohammadA <mohammadAbdulhadi1@gmail.com>, 2016
-# Med Touhami MAHDI <dragnucs@legtux.org>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2016-12-18 16:41+0100\n"
-"PO-Revision-Date: 2016-07-30 08:17+0000\n"
-"Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
-"Language-Team: Arabic (http://www.transifex.com/corebird/corebird/language/"
-"ar/)\n"
-"Language: ar\n"
+"PO-Revision-Date: 2016-12-19 08:56+0000\n"
+"Last-Translator: baedert <mail@baedert.org>\n"
+"Language-Team: Arabic (http://www.transifex.com/corebird/corebird/language/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
-"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+"Language: ar\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
 #: data/org.baedert.corebird.appdata.xml.in:5
 #: data/org.baedert.corebird.desktop.in:3
@@ -36,14 +33,12 @@ msgstr "عامل تويتر"
 msgid ""
 "Corebird is a native GTK+ twitter client that provides vital features such "
 "as Direct Messages (DMs), tweet notifications, conversation views."
-msgstr ""
-"كوربرد عميل تويتر GTK+ أصيل يوفّر ميزات حيوية مثل الرسائل المباشرة  والإخطار "
-"بالتغريدات وعرض المحادثات."
+msgstr "كوربرد عميل تويتر GTK+ أصيل يوفّر ميزات حيوية مثل الرسائل المباشرة  والإخطار بالتغريدات وعرض المحادثات."
 
 #: data/org.baedert.corebird.appdata.xml.in:13
 msgid ""
-"Additional features include local viewing of videos, multiple inline images, "
-"Lists, Filters, multiple accounts, etc."
+"Additional features include local viewing of videos, multiple inline images,"
+" Lists, Filters, multiple accounts, etc."
 msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:21
@@ -238,11 +233,9 @@ msgstr "أنشئ واحدًا"
 
 #: src/widgets/AccountCreateWidget.vala:55
 msgid ""
-"Unauthorized. Most of the time, this means that there's something wrong with "
-"the Twitter servers and you should try again later"
-msgstr ""
-"غير مسموح. غالبا هذا يعني أن هناك خطأ ما في خوادم تويتر. المرجو المحاولة "
-"لاحقا."
+"Unauthorized. Most of the time, this means that there's something wrong with"
+" the Twitter servers and you should try again later"
+msgstr "غير مسموح. غالبا هذا يعني أن هناك خطأ ما في خوادم تويتر. المرجو المحاولة لاحقا."
 
 #: src/widgets/AccountCreateWidget.vala:67
 #, c-format
@@ -408,10 +401,10 @@ msgstr ""
 msgid "Autostart"
 msgstr ""
 
-#: ui/account-dialog.ui:203 ui/account-dialog.ui:260 ui/filter-list-entry.ui:93
-#: ui/list-list-entry.ui:132 ui/list-statuses-page.ui:166
-#: ui/modify-snippet-dialog.ui:108 ui/tweet-info-page.ui:10
-#: ui/tweet-list-entry.ui:10
+#: ui/account-dialog.ui:203 ui/account-dialog.ui:260
+#: ui/filter-list-entry.ui:93 ui/list-list-entry.ui:132
+#: ui/list-statuses-page.ui:166 ui/modify-snippet-dialog.ui:108
+#: ui/tweet-info-page.ui:10 ui/tweet-list-entry.ui:10
 msgid "Delete"
 msgstr "حذف"
 
@@ -741,10 +734,9 @@ msgid "Reply"
 msgstr ""
 
 #: ui/shortcuts-window.ui:100
-#, fuzzy
 msgctxt "shortcuts window"
 msgid "Quote"
-msgstr "إقتباس"
+msgstr ""
 
 #: ui/shortcuts-window.ui:107
 msgctxt "shortcuts window"
@@ -819,6 +811,3 @@ msgstr "تم الإنشاء"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "مشترك في"
-
-#~ msgid "Using Font Awesome by Dave Gandy - http://fontawesome.io"
-#~ msgstr "مع إستعمال Font Awesome ل Dave Gandy - http://fontawesome.io"

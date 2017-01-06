@@ -9,16 +9,14 @@ msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2016-12-18 16:41+0100\n"
-"PO-Revision-Date: 2016-07-30 18:54+0000\n"
+"PO-Revision-Date: 2016-12-19 18:56+0000\n"
 "Last-Translator: Moo\n"
-"Language-Team: Lithuanian (http://www.transifex.com/corebird/corebird/"
-"language/lt/)\n"
-"Language: lt\n"
+"Language-Team: Lithuanian (http://www.transifex.com/corebird/corebird/language/lt/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n"
-"%100<10 || n%100>=20) ? 1 : 2);\n"
+"Language: lt\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: data/org.baedert.corebird.appdata.xml.in:5
 #: data/org.baedert.corebird.desktop.in:3
@@ -34,30 +32,25 @@ msgstr "Twitter klientas"
 msgid ""
 "Corebird is a native GTK+ twitter client that provides vital features such "
 "as Direct Messages (DMs), tweet notifications, conversation views."
-msgstr ""
-"Corebird yra savas GTK+ twitter klientas, kuris suteikia svarbiausias "
-"ypatybes, tokias kaip Tiesioginiai Pranešimai (TP), tauškalų perspėjimai, "
-"pokalbių rodiniai."
+msgstr "Corebird yra savas GTK+ twitter klientas, kuris suteikia svarbiausias ypatybes, tokias kaip Tiesioginės Žinutės (TŽ), tauškalų pranešimai, pokalbių rodiniai."
 
 #: data/org.baedert.corebird.appdata.xml.in:13
 msgid ""
-"Additional features include local viewing of videos, multiple inline images, "
-"Lists, Filters, multiple accounts, etc."
-msgstr ""
-"Papildomas ypatybes sudaro vietinė vaizdo įrašų peržiūra, kelių įterptų "
-"paveikslėlių galimybė, Sąrašai, Filtrai, kelių paskyrų galimybė ir t. t."
+"Additional features include local viewing of videos, multiple inline images,"
+" Lists, Filters, multiple accounts, etc."
+msgstr "Papildomas ypatybes sudaro vietinė vaizdo įrašų peržiūra, kelių įterptų paveikslėlių galimybė, Sąrašai, filtrai, kelių paskyrų galimybė ir t. t."
 
 #: data/org.baedert.corebird.appdata.xml.in:21
 msgid "Generic timeline view when using Corebird"
-msgstr ""
+msgstr "Bendrinis laiko juostos rodinys, naudojant Corebird"
 
 #: data/org.baedert.corebird.appdata.xml.in:25
 msgid "Typical Twitter profile"
-msgstr ""
+msgstr "Tipinis Twitter profilis"
 
 #: data/org.baedert.corebird.appdata.xml.in:29
 msgid "Account settings can be configured"
-msgstr ""
+msgstr "Paskyros nustatymai gali būti konfigūruojami"
 
 #: data/org.baedert.corebird.desktop.in:5
 msgid "Use Twitter from within a normal desktop application"
@@ -83,18 +76,18 @@ msgstr "Tiesioginis pokalbis"
 #, c-format
 msgid "%d new Message from %s"
 msgid_plural "%d new Messages from %s"
-msgstr[0] "%d naujas pranešimas nuo %s"
-msgstr[1] "%d nauji pranešimai nuo %s"
-msgstr[2] "%d naujų pranešimų nuo %s"
+msgstr[0] "%d nauja žinutė nuo %s"
+msgstr[1] "%d naujos žinutės nuo %s"
+msgstr[2] "%d naujų žinučių nuo %s"
 
 #: src/DMThreadsPage.vala:213 src/UserEventReceiver.vala:94
 #, c-format
 msgid "New direct message from %s"
-msgstr "Naujas tiesioginis pranešimas nuo %s"
+msgstr "Nauja tiesioginė žinutė nuo %s"
 
 #: src/DMThreadsPage.vala:223 src/DMThreadsPage.vala:237
 msgid "Direct Messages"
-msgstr "Tiesioginiai pranešimai"
+msgstr "Tiesioginės žinutės"
 
 #: src/FavoritesTimeline.vala:67 src/FavoritesTimeline.vala:71
 #: src/TweetInfoPage.vala:486
@@ -154,7 +147,7 @@ msgstr "Blokuoti %s"
 
 #: src/list/TweetListEntry.vala:575
 msgid "This tweet contains images marked as inappropriate"
-msgstr ""
+msgstr "Šiame tauškale yra paveikslų, kurie yra pažymėti kaip netinkami"
 
 #: src/list/TweetListEntry.vala:582
 msgid "Show anyway"
@@ -162,7 +155,7 @@ msgstr "Vis tiek rodyti"
 
 #: src/MainWindow.vala:78
 msgid "Add new Account"
-msgstr ""
+msgstr "Pridėti naują paskyrą"
 
 #: src/MentionsTimeline.vala:91 src/UserEventReceiver.vala:111
 #, c-format
@@ -230,11 +223,9 @@ msgstr "Susikurkite paskyrą"
 
 #: src/widgets/AccountCreateWidget.vala:55
 msgid ""
-"Unauthorized. Most of the time, this means that there's something wrong with "
-"the Twitter servers and you should try again later"
-msgstr ""
-"Neleistina prieiga. Daugelyje atvejų, tai reiškia Twitter serveriuose "
-"įvykusius nesklandumus, tad vėliau, turėtumėte pabandyti dar kartą"
+"Unauthorized. Most of the time, this means that there's something wrong with"
+" the Twitter servers and you should try again later"
+msgstr "Neleistina prieiga. Daugelyje atvejų, tai reiškia Twitter serveriuose įvykusius nesklandumus, tad vėliau, turėtumėte pabandyti dar kartą"
 
 #: src/widgets/AccountCreateWidget.vala:67
 #, c-format
@@ -251,7 +242,7 @@ msgstr "Paskyra jau yra naudojama"
 
 #: src/widgets/CompletionTextView.vala:40
 msgid "No users found"
-msgstr ""
+msgstr "Naudotojų nerasta"
 
 #: src/widgets/FollowButton.vala:43
 msgid "Follow"
@@ -263,7 +254,7 @@ msgstr "Nustoti sekti"
 
 #: src/widgets/MediaButton.vala:45
 msgid "Copy URL"
-msgstr ""
+msgstr "Kopijuoti URL"
 
 #: src/widgets/PixbufButton.vala:52
 msgid "Copy link"
@@ -296,7 +287,7 @@ msgstr "Atsisakyti"
 
 #: src/window/ComposeTweetWindow.vala:259
 msgid "Select Image"
-msgstr ""
+msgstr "Pasirinkite paveikslą"
 
 #: src/window/ComposeTweetWindow.vala:264
 msgid "Open"
@@ -306,7 +297,7 @@ msgstr "Atverti"
 #, c-format
 msgid ""
 "The selected image is too big. The maximum file size per image is %'d MB"
-msgstr ""
+msgstr "Pasirinktas paveikslas yra per didelis. Didžiausias vieno paveikslo failo dydis yra %'d MB"
 
 #: src/window/ComposeTweetWindow.vala:290
 msgid "Back"
@@ -326,7 +317,7 @@ msgstr "Nesutampa"
 
 #: src/window/ModifySnippetDialog.vala:44
 msgid "Modify Snippet"
-msgstr ""
+msgstr "Keisti iškarpą"
 
 #: src/window/ModifySnippetDialog.vala:63
 msgid "Snippet can't be empty"
@@ -334,7 +325,7 @@ msgstr "Iškarpa negali būti tuščia"
 
 #: src/window/ModifySnippetDialog.vala:70
 msgid "Replacement can't be empty"
-msgstr ""
+msgstr "Pakeitimas negali būti tuščias"
 
 #: src/window/ModifySnippetDialog.vala:78
 msgid "Snippet may not contain whitespace"
@@ -348,13 +339,11 @@ msgstr "Iškarpa jau yra"
 msgid ""
 "Hey, check out this new #Corebird version! \\ (•◡•) / #cool "
 "#newisalwaysbetter"
-msgstr ""
-"Labas, pažvelk į šią naują #Corebird versiją! \\ (•◡•) / #jega "
-"#naujayravisadageriau"
+msgstr "Labas, pažvelk į šią naują #Corebird versiją! \\ (•◡•) / #jega #naujayravisadageriau"
 
 #: src/window/UserListDialog.vala:40
 msgid "Add to or Remove User From List"
-msgstr "Pridėti į arba pašalinti naudotoją iš sąrašo"
+msgstr "Pridėti į arba šalinti naudotoją iš sąrašo"
 
 #: src/window/UserListDialog.vala:48 ui/account-dialog.ui:33
 #: ui/list-statuses-page.ui:129 ui/modify-filter-dialog.ui:20
@@ -402,10 +391,10 @@ msgstr "Svetainė"
 msgid "Autostart"
 msgstr "Paleisti įjungus"
 
-#: ui/account-dialog.ui:203 ui/account-dialog.ui:260 ui/filter-list-entry.ui:93
-#: ui/list-list-entry.ui:132 ui/list-statuses-page.ui:166
-#: ui/modify-snippet-dialog.ui:108 ui/tweet-info-page.ui:10
-#: ui/tweet-list-entry.ui:10
+#: ui/account-dialog.ui:203 ui/account-dialog.ui:260
+#: ui/filter-list-entry.ui:93 ui/list-list-entry.ui:132
+#: ui/list-statuses-page.ui:166 ui/modify-snippet-dialog.ui:108
+#: ui/tweet-info-page.ui:10 ui/tweet-list-entry.ui:10
 msgid "Delete"
 msgstr "Ištrinti"
 
@@ -503,7 +492,7 @@ msgstr "Apie"
 
 #: ui/menus.ui:19
 msgid "Quit"
-msgstr "Baigti"
+msgstr "Išeiti"
 
 #: ui/modify-filter-dialog.ui:6
 msgid "Add New Filter"
@@ -535,7 +524,7 @@ msgstr "Sukurti"
 
 #: ui/profile-page.ui:6
 msgid "Write Direct Message"
-msgstr "Rašyti tiesioginį pranešimą"
+msgstr "Rašyti tiesioginę žinutę"
 
 #: ui/profile-page.ui:14
 msgid "Add to/Remove from List"
@@ -547,7 +536,7 @@ msgstr "Užblokuotas"
 
 #: ui/profile-page.ui:24
 msgid "Muted"
-msgstr ""
+msgstr "Nutildytas"
 
 #: ui/profile-page.ui:28
 msgid "Retweets disabled"
@@ -571,7 +560,7 @@ msgstr "Seka"
 
 #: ui/settings-dialog.ui:59
 msgid "Show inline media"
-msgstr ""
+msgstr "Rodyti įterptąją mediją"
 
 #: ui/settings-dialog.ui:78
 msgid "Always show"
@@ -583,7 +572,7 @@ msgstr "Visada slėpti"
 
 #: ui/settings-dialog.ui:80
 msgid "Hide in timeline"
-msgstr ""
+msgstr "Slėpti laiko juostoje"
 
 #: ui/settings-dialog.ui:101
 msgid "Auto scroll on new tweets"
@@ -611,7 +600,7 @@ msgstr "Esant naujiems paminėjimams"
 
 #: ui/settings-dialog.ui:222
 msgid "On New Messages"
-msgstr "Esant naujiems pranešimams"
+msgstr "Esant naujoms žinutėms"
 
 #: ui/settings-dialog.ui:266
 msgid "Never"
@@ -639,7 +628,7 @@ msgstr "Dėklui iš 50"
 
 #: ui/settings-dialog.ui:284
 msgid "Notifications"
-msgstr "Perspėjimai"
+msgstr "Pranešimai"
 
 #: ui/settings-dialog.ui:311
 msgid "Round avatars"
@@ -651,7 +640,7 @@ msgstr "Šalinti besivelkančius saitažodžius"
 
 #: ui/settings-dialog.ui:366
 msgid "Remove media links"
-msgstr "Šalinti media nuorodas"
+msgstr "Šalinti medijos nuorodas"
 
 #: ui/settings-dialog.ui:394
 msgid "Hide inappropriate content"
@@ -735,7 +724,6 @@ msgid "Reply"
 msgstr "Atsakyti"
 
 #: ui/shortcuts-window.ui:100
-#, fuzzy
 msgctxt "shortcuts window"
 msgid "Quote"
 msgstr "Cituoti"
@@ -813,37 +801,3 @@ msgstr "Sukurta"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "Jūsų prenumeratos"
-
-#~ msgid "Select banner"
-#~ msgstr "Pasirinkite reklamjuostę"
-
-#~ msgid "Select avatar"
-#~ msgstr "Pasirinkite avatarą"
-
-#~ msgid "Next"
-#~ msgstr "Kitas"
-
-#~ msgid "Image does not meet minimum size requirements:"
-#~ msgstr "Paveikslas neatitinka minimalių dydžio reikalavimų:"
-
-#~ msgid "Minimum width: %d pixel"
-#~ msgid_plural "Minimum width: %d pixels"
-#~ msgstr[0] "Minimalus plotis: %d taškas"
-#~ msgstr[1] "Minimalus plotis: %d taškai"
-#~ msgstr[2] "Minimalus plotis: %d taškų"
-
-#~ msgid "Minimum height: %d pixel"
-#~ msgid_plural "Minimum height: %d pixels"
-#~ msgstr[0] "Minimalus aukštis: %d taškas"
-#~ msgstr[1] "Minimalus aukštis: %d taškai"
-#~ msgstr[2] "Minimalus aukštis: %d taškų"
-
-#~ msgid ""
-#~ "Max file size exceeded\n"
-#~ "(3MB)"
-#~ msgstr ""
-#~ "Viršytas didžiausias leistinas dydis\n"
-#~ "(3MB)"
-
-#~ msgid "Using Font Awesome by Dave Gandy - http://fontawesome.io"
-#~ msgstr "Naudojamas Font Awesome pagal Dave Gandy - http://fontawesome.io"

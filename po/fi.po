@@ -9,14 +9,13 @@ msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2016-12-18 16:41+0100\n"
-"PO-Revision-Date: 2016-07-30 08:37+0000\n"
+"PO-Revision-Date: 2016-12-19 11:14+0000\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos@iki.fi>\n"
-"Language-Team: Finnish (http://www.transifex.com/corebird/corebird/language/"
-"fi/)\n"
-"Language: fi\n"
+"Language-Team: Finnish (http://www.transifex.com/corebird/corebird/language/fi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: fi\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: data/org.baedert.corebird.appdata.xml.in:5
@@ -33,17 +32,13 @@ msgstr "Twitter-sovellus"
 msgid ""
 "Corebird is a native GTK+ twitter client that provides vital features such "
 "as Direct Messages (DMs), tweet notifications, conversation views."
-msgstr ""
-"Corebird on GTK+:lla toteutettu Twitter-sovellus, joka tarjoaa muun muassa "
-"yksityisviestit, ilmoitukset twiiteistä ja keskustelunäkymän."
+msgstr "Corebird on GTK+:lla toteutettu Twitter-sovellus, joka tarjoaa muun muassa yksityisviestit, ilmoitukset twiiteistä ja keskustelunäkymän."
 
 #: data/org.baedert.corebird.appdata.xml.in:13
 msgid ""
-"Additional features include local viewing of videos, multiple inline images, "
-"Lists, Filters, multiple accounts, etc."
-msgstr ""
-"Lisäominaisuuksiin kuuluu muun muassa videoiden katselu suoraan "
-"sovelluksesta, useat upotetut kuvat, listat, suodattimet, useat tilit jne."
+"Additional features include local viewing of videos, multiple inline images,"
+" Lists, Filters, multiple accounts, etc."
+msgstr "Lisäominaisuuksiin kuuluu muun muassa videoiden katselu suoraan sovelluksesta, useat upotetut kuvat, listat, suodattimet, useat tilit jne."
 
 #: data/org.baedert.corebird.appdata.xml.in:21
 msgid "Generic timeline view when using Corebird"
@@ -225,11 +220,9 @@ msgstr "Luo uusi tili"
 
 #: src/widgets/AccountCreateWidget.vala:55
 msgid ""
-"Unauthorized. Most of the time, this means that there's something wrong with "
-"the Twitter servers and you should try again later"
-msgstr ""
-"Ei valtuutusta. Yleensä tämä tarkoittaa, että jotain on vialla Twitter-"
-"palvelimien kanssa, joten yritä uudelleen myöhemmin"
+"Unauthorized. Most of the time, this means that there's something wrong with"
+" the Twitter servers and you should try again later"
+msgstr "Ei valtuutusta. Yleensä tämä tarkoittaa, että jotain on vialla Twitter-palvelimien kanssa, joten yritä uudelleen myöhemmin"
 
 #: src/widgets/AccountCreateWidget.vala:67
 #, c-format
@@ -301,7 +294,7 @@ msgstr "Avaa"
 #, c-format
 msgid ""
 "The selected image is too big. The maximum file size per image is %'d MB"
-msgstr ""
+msgstr "Valittu kuva on liian suuri. Kuva voi olla kooltaan korkeintaan %'d Mt."
 
 #: src/window/ComposeTweetWindow.vala:290
 msgid "Back"
@@ -343,9 +336,7 @@ msgstr "Tekstileike on jo olemassa"
 msgid ""
 "Hey, check out this new #Corebird version! \\ (•◡•) / #cool "
 "#newisalwaysbetter"
-msgstr ""
-"Hei, #Corebird'in uusi versio on nyt saatavilla! \\ (•◡•) / #cool "
-"#newisalwaysbetter"
+msgstr "Hei, #Corebird'in uusi versio on nyt saatavilla! \\ (•◡•) / #cool #newisalwaysbetter"
 
 #: src/window/UserListDialog.vala:40
 msgid "Add to or Remove User From List"
@@ -397,10 +388,10 @@ msgstr "Verkkosivusto"
 msgid "Autostart"
 msgstr "Käynnistä automaattisesti"
 
-#: ui/account-dialog.ui:203 ui/account-dialog.ui:260 ui/filter-list-entry.ui:93
-#: ui/list-list-entry.ui:132 ui/list-statuses-page.ui:166
-#: ui/modify-snippet-dialog.ui:108 ui/tweet-info-page.ui:10
-#: ui/tweet-list-entry.ui:10
+#: ui/account-dialog.ui:203 ui/account-dialog.ui:260
+#: ui/filter-list-entry.ui:93 ui/list-list-entry.ui:132
+#: ui/list-statuses-page.ui:166 ui/modify-snippet-dialog.ui:108
+#: ui/tweet-info-page.ui:10 ui/tweet-list-entry.ui:10
 msgid "Delete"
 msgstr "Poista"
 
@@ -658,8 +649,7 @@ msgstr "Tekstileikkeitä ei ole määritetty."
 
 #: ui/settings-dialog.ui:480
 msgid "You can activate snippets by writing the keyword and pressing TAB."
-msgstr ""
-"Voit aktivoida tekstileikkeet kirjoittamalla avainsanan ja painamalla TAB."
+msgstr "Voit aktivoida tekstileikkeet kirjoittamalla avainsanan ja painamalla TAB."
 
 #: ui/settings-dialog.ui:494
 msgid "Snippets"
@@ -731,7 +721,6 @@ msgid "Reply"
 msgstr "Vastaa"
 
 #: ui/shortcuts-window.ui:100
-#, fuzzy
 msgctxt "shortcuts window"
 msgid "Quote"
 msgstr "Lainaa"
@@ -809,35 +798,3 @@ msgstr "Luotu"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "Tilannut"
-
-#~ msgid "Select banner"
-#~ msgstr "Valitse banneri"
-
-#~ msgid "Select avatar"
-#~ msgstr "Valitse avatar"
-
-#~ msgid "Next"
-#~ msgstr "Seuraava"
-
-#~ msgid "Image does not meet minimum size requirements:"
-#~ msgstr "Kuva ei täytä vähimmäiskokovaatimuksia:"
-
-#~ msgid "Minimum width: %d pixel"
-#~ msgid_plural "Minimum width: %d pixels"
-#~ msgstr[0] "Vähimmäisleveys: %d pikseli"
-#~ msgstr[1] "Vähimmäisleveys: %d pikseliä"
-
-#~ msgid "Minimum height: %d pixel"
-#~ msgid_plural "Minimum height: %d pixels"
-#~ msgstr[0] "Vähimmäiskorkeus: %d pikseli"
-#~ msgstr[1] "Vähimmäiskorkeus: %d pikseliä"
-
-#~ msgid ""
-#~ "Max file size exceeded\n"
-#~ "(3MB)"
-#~ msgstr ""
-#~ "Tiedoston enimmäiskoko ylitetty\n"
-#~ "(3 Mt)"
-
-#~ msgid "Using Font Awesome by Dave Gandy - http://fontawesome.io"
-#~ msgstr "Käyttää Dave Gandyn tekemää Font Awesomea - http://fontawesome.io"

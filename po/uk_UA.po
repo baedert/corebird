@@ -9,16 +9,14 @@ msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2016-12-18 16:41+0100\n"
-"PO-Revision-Date: 2016-07-30 08:17+0000\n"
-"Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
-"Language-Team: Ukrainian (Ukraine) (http://www.transifex.com/corebird/"
-"corebird/language/uk_UA/)\n"
-"Language: uk_UA\n"
+"PO-Revision-Date: 2016-12-19 08:56+0000\n"
+"Last-Translator: baedert <mail@baedert.org>\n"
+"Language-Team: Ukrainian (Ukraine) (http://www.transifex.com/corebird/corebird/language/uk_UA/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Language: uk_UA\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: data/org.baedert.corebird.appdata.xml.in:5
 #: data/org.baedert.corebird.desktop.in:3
@@ -34,17 +32,13 @@ msgstr "Twitter-клієнт"
 msgid ""
 "Corebird is a native GTK+ twitter client that provides vital features such "
 "as Direct Messages (DMs), tweet notifications, conversation views."
-msgstr ""
-"Corebird - Twitter-клієнт заснований на GTK+, який реалізує такі необхідні "
-"функції як приватні повідомлення (ПП), сповіщення, перегляд розмов."
+msgstr "Corebird - Twitter-клієнт заснований на GTK+, який реалізує такі необхідні функції як приватні повідомлення (ПП), сповіщення, перегляд розмов."
 
 #: data/org.baedert.corebird.appdata.xml.in:13
 msgid ""
-"Additional features include local viewing of videos, multiple inline images, "
-"Lists, Filters, multiple accounts, etc."
-msgstr ""
-"Додаткові функції включають у себе локальний перегляд відео, вбудовані "
-"зображення, списки, фільтри, робота з кількома акаунтами, тощо."
+"Additional features include local viewing of videos, multiple inline images,"
+" Lists, Filters, multiple accounts, etc."
+msgstr "Додаткові функції включають у себе локальний перегляд відео, вбудовані зображення, списки, фільтри, робота з кількома акаунтами, тощо."
 
 #: data/org.baedert.corebird.appdata.xml.in:21
 msgid "Generic timeline view when using Corebird"
@@ -229,11 +223,9 @@ msgstr "Створити акаунт"
 
 #: src/widgets/AccountCreateWidget.vala:55
 msgid ""
-"Unauthorized. Most of the time, this means that there's something wrong with "
-"the Twitter servers and you should try again later"
-msgstr ""
-"Не авторизовано. Частіше за все це значить, що щось не так із серверами "
-"Twitter, і вам варто спробувати ще, але пізніше."
+"Unauthorized. Most of the time, this means that there's something wrong with"
+" the Twitter servers and you should try again later"
+msgstr "Не авторизовано. Частіше за все це значить, що щось не так із серверами Twitter, і вам варто спробувати ще, але пізніше."
 
 #: src/widgets/AccountCreateWidget.vala:67
 #, c-format
@@ -347,8 +339,7 @@ msgstr ""
 msgid ""
 "Hey, check out this new #Corebird version! \\ (•◡•) / #cool "
 "#newisalwaysbetter"
-msgstr ""
-"Вау, заціни нову версію #Corebird ! \\ (•◡•) / #cool #newisalwaysbetter"
+msgstr "Вау, заціни нову версію #Corebird ! \\ (•◡•) / #cool #newisalwaysbetter"
 
 #: src/window/UserListDialog.vala:40
 msgid "Add to or Remove User From List"
@@ -400,10 +391,10 @@ msgstr "Вебсайт"
 msgid "Autostart"
 msgstr "Авто-старт"
 
-#: ui/account-dialog.ui:203 ui/account-dialog.ui:260 ui/filter-list-entry.ui:93
-#: ui/list-list-entry.ui:132 ui/list-statuses-page.ui:166
-#: ui/modify-snippet-dialog.ui:108 ui/tweet-info-page.ui:10
-#: ui/tweet-list-entry.ui:10
+#: ui/account-dialog.ui:203 ui/account-dialog.ui:260
+#: ui/filter-list-entry.ui:93 ui/list-list-entry.ui:132
+#: ui/list-statuses-page.ui:166 ui/modify-snippet-dialog.ui:108
+#: ui/tweet-info-page.ui:10 ui/tweet-list-entry.ui:10
 msgid "Delete"
 msgstr "Видалити"
 
@@ -733,10 +724,9 @@ msgid "Reply"
 msgstr "Відповісти"
 
 #: ui/shortcuts-window.ui:100
-#, fuzzy
 msgctxt "shortcuts window"
 msgid "Quote"
-msgstr "Цитувати"
+msgstr ""
 
 #: ui/shortcuts-window.ui:107
 msgctxt "shortcuts window"
@@ -811,31 +801,3 @@ msgstr "Створено"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "Підписано на"
-
-#~ msgid "Select banner"
-#~ msgstr "Вибрати банер"
-
-#~ msgid "Select avatar"
-#~ msgstr "Вибрати аватар"
-
-#~ msgid "Next"
-#~ msgstr "Далі"
-
-#~ msgid "Image does not meet minimum size requirements:"
-#~ msgstr "Зображення не відповідає вимогам мінімального розміру:"
-
-#~ msgid "Minimum width: %d pixel"
-#~ msgid_plural "Minimum width: %d pixels"
-#~ msgstr[0] "Мінімальна ширина: %d піксель"
-#~ msgstr[1] "Мінімальна ширина: %d пікселів"
-#~ msgstr[2] "Мінімальна ширина: %d пікселів"
-
-#~ msgid "Minimum height: %d pixel"
-#~ msgid_plural "Minimum height: %d pixels"
-#~ msgstr[0] "Мінімальна ширина: %d піксель"
-#~ msgstr[1] "Мінімальна ширина: %d пікселів"
-#~ msgstr[2] "Мінімальна висота: %d пікселів"
-
-#~ msgid "Using Font Awesome by Dave Gandy - http://fontawesome.io"
-#~ msgstr ""
-#~ "Використовуючи Font Awesome авторства Dave Gandy - http://fontawesome.io"

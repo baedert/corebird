@@ -9,14 +9,13 @@ msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2016-12-18 16:41+0100\n"
-"PO-Revision-Date: 2016-07-30 08:17+0000\n"
-"Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
-"Language-Team: Spanish (Venezuela) (http://www.transifex.com/corebird/"
-"corebird/language/es_VE/)\n"
-"Language: es_VE\n"
+"PO-Revision-Date: 2016-12-19 08:56+0000\n"
+"Last-Translator: baedert <mail@baedert.org>\n"
+"Language-Team: Spanish (Venezuela) (http://www.transifex.com/corebird/corebird/language/es_VE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: es_VE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: data/org.baedert.corebird.appdata.xml.in:5
@@ -33,18 +32,13 @@ msgstr "Cliente de Twitter"
 msgid ""
 "Corebird is a native GTK+ twitter client that provides vital features such "
 "as Direct Messages (DMs), tweet notifications, conversation views."
-msgstr ""
-"Corebird es un cliente nativo GTK+ de Twitter que proporciona funciones "
-"vitales tales como mensajes directos (DM), notificaciones, vistas de "
-"conversación."
+msgstr "Corebird es un cliente nativo GTK+ de Twitter que proporciona funciones vitales tales como mensajes directos (DM), notificaciones, vistas de conversación."
 
 #: data/org.baedert.corebird.appdata.xml.in:13
 msgid ""
-"Additional features include local viewing of videos, multiple inline images, "
-"Lists, Filters, multiple accounts, etc."
-msgstr ""
-"Las características adicionales incluyen la visión local de los vídeos, "
-"múltiples imágenes en línea, listas, filtros, múltiples cuentas, etc."
+"Additional features include local viewing of videos, multiple inline images,"
+" Lists, Filters, multiple accounts, etc."
+msgstr "Las características adicionales incluyen la visión local de los vídeos, múltiples imágenes en línea, listas, filtros, múltiples cuentas, etc."
 
 #: data/org.baedert.corebird.appdata.xml.in:21
 msgid "Generic timeline view when using Corebird"
@@ -226,11 +220,9 @@ msgstr "Crear una"
 
 #: src/widgets/AccountCreateWidget.vala:55
 msgid ""
-"Unauthorized. Most of the time, this means that there's something wrong with "
-"the Twitter servers and you should try again later"
-msgstr ""
-"No autorizado. La mayoría de las veces, esto significa que hay algo mal con "
-"los servidores de Twitter y usted debe intentarlo más tarde"
+"Unauthorized. Most of the time, this means that there's something wrong with"
+" the Twitter servers and you should try again later"
+msgstr "No autorizado. La mayoría de las veces, esto significa que hay algo mal con los servidores de Twitter y usted debe intentarlo más tarde"
 
 #: src/widgets/AccountCreateWidget.vala:67
 #, c-format
@@ -344,9 +336,7 @@ msgstr ""
 msgid ""
 "Hey, check out this new #Corebird version! \\ (•◡•) / #cool "
 "#newisalwaysbetter"
-msgstr ""
-"Hey, echa un vistazo a esta nueva versión #Corebird! \\ (• ◡ •) / #cool "
-"#newisalwaysbetter"
+msgstr "Hey, echa un vistazo a esta nueva versión #Corebird! \\ (• ◡ •) / #cool #newisalwaysbetter"
 
 #: src/window/UserListDialog.vala:40
 msgid "Add to or Remove User From List"
@@ -398,10 +388,10 @@ msgstr "Sitio Web"
 msgid "Autostart"
 msgstr "inicio automatico"
 
-#: ui/account-dialog.ui:203 ui/account-dialog.ui:260 ui/filter-list-entry.ui:93
-#: ui/list-list-entry.ui:132 ui/list-statuses-page.ui:166
-#: ui/modify-snippet-dialog.ui:108 ui/tweet-info-page.ui:10
-#: ui/tweet-list-entry.ui:10
+#: ui/account-dialog.ui:203 ui/account-dialog.ui:260
+#: ui/filter-list-entry.ui:93 ui/list-list-entry.ui:132
+#: ui/list-statuses-page.ui:166 ui/modify-snippet-dialog.ui:108
+#: ui/tweet-info-page.ui:10 ui/tweet-list-entry.ui:10
 msgid "Delete"
 msgstr "Borrar"
 
@@ -731,10 +721,9 @@ msgid "Reply"
 msgstr ""
 
 #: ui/shortcuts-window.ui:100
-#, fuzzy
 msgctxt "shortcuts window"
 msgid "Quote"
-msgstr "Cita"
+msgstr ""
 
 #: ui/shortcuts-window.ui:107
 msgctxt "shortcuts window"
@@ -809,28 +798,3 @@ msgstr "Creado"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "Suscrito a"
-
-#~ msgid "Select banner"
-#~ msgstr "Seleccione el banner"
-
-#~ msgid "Select avatar"
-#~ msgstr "Seleccione el avatar"
-
-#~ msgid "Next"
-#~ msgstr "Siguiente"
-
-#~ msgid "Image does not meet minimum size requirements:"
-#~ msgstr "La imagen no tiene el tamaño mínimos requerido:"
-
-#~ msgid "Minimum width: %d pixel"
-#~ msgid_plural "Minimum width: %d pixels"
-#~ msgstr[0] "Ancho minimo: %d pixel"
-#~ msgstr[1] "Ancho minimo: %d pixels"
-
-#~ msgid "Minimum height: %d pixel"
-#~ msgid_plural "Minimum height: %d pixels"
-#~ msgstr[0] "Alto mínimo: %d pixel"
-#~ msgstr[1] "Alto mínimo: %d pixels"
-
-#~ msgid "Using Font Awesome by Dave Gandy - http://fontawesome.io"
-#~ msgstr "Usando Font Awesome de Dave Gandy - http://fontawesome.io"

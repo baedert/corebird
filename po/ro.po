@@ -4,22 +4,19 @@
 #
 # Translators:
 # Iulian Vărzaru <me@iulianvarzaru.com>, 2015
-# Iulian Vărzaru <me@iulianvarzaru.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2016-12-18 16:41+0100\n"
-"PO-Revision-Date: 2016-07-30 08:17+0000\n"
-"Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
-"Language-Team: Romanian (Romania) (http://www.transifex.com/corebird/"
-"corebird/language/ro_RO/)\n"
-"Language: ro\n"
+"PO-Revision-Date: 2016-12-19 08:56+0000\n"
+"Last-Translator: baedert <mail@baedert.org>\n"
+"Language-Team: Romanian (Romania) (http://www.transifex.com/corebird/corebird/language/ro_RO/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?"
-"2:1));\n"
+"Language: ro_RO\n"
+"Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));\n"
 
 #: data/org.baedert.corebird.appdata.xml.in:5
 #: data/org.baedert.corebird.desktop.in:3
@@ -35,17 +32,13 @@ msgstr "Client Twitter"
 msgid ""
 "Corebird is a native GTK+ twitter client that provides vital features such "
 "as Direct Messages (DMs), tweet notifications, conversation views."
-msgstr ""
-"Corebird este un client de Twitter nativ GTK+ care furnizează caracteristici "
-"vitale ca Mesaje Directe (DM), notificări, pagina de conversaţii."
+msgstr "Corebird este un client de Twitter nativ GTK+ care furnizează caracteristici vitale ca Mesaje Directe (DM), notificări, pagina de conversaţii."
 
 #: data/org.baedert.corebird.appdata.xml.in:13
 msgid ""
-"Additional features include local viewing of videos, multiple inline images, "
-"Lists, Filters, multiple accounts, etc."
-msgstr ""
-"Caracteristici adiţionale includ vizualizarea videoclipurilor local, imagini "
-"in linie multiple, Liste, Filtre, conturi multiple, etc."
+"Additional features include local viewing of videos, multiple inline images,"
+" Lists, Filters, multiple accounts, etc."
+msgstr "Caracteristici adiţionale includ vizualizarea videoclipurilor local, imagini in linie multiple, Liste, Filtre, conturi multiple, etc."
 
 #: data/org.baedert.corebird.appdata.xml.in:21
 msgid "Generic timeline view when using Corebird"
@@ -230,11 +223,9 @@ msgstr "Creează unul"
 
 #: src/widgets/AccountCreateWidget.vala:55
 msgid ""
-"Unauthorized. Most of the time, this means that there's something wrong with "
-"the Twitter servers and you should try again later"
-msgstr ""
-"Neautorizat. În majoritatea timpului asta înseamnă că este o problemă cu "
-"serverele de la Twitter şi ar trebui să încerci mai târziu."
+"Unauthorized. Most of the time, this means that there's something wrong with"
+" the Twitter servers and you should try again later"
+msgstr "Neautorizat. În majoritatea timpului asta înseamnă că este o problemă cu serverele de la Twitter şi ar trebui să încerci mai târziu."
 
 #: src/widgets/AccountCreateWidget.vala:67
 #, c-format
@@ -400,10 +391,10 @@ msgstr "Website"
 msgid "Autostart"
 msgstr "Pornire automată"
 
-#: ui/account-dialog.ui:203 ui/account-dialog.ui:260 ui/filter-list-entry.ui:93
-#: ui/list-list-entry.ui:132 ui/list-statuses-page.ui:166
-#: ui/modify-snippet-dialog.ui:108 ui/tweet-info-page.ui:10
-#: ui/tweet-list-entry.ui:10
+#: ui/account-dialog.ui:203 ui/account-dialog.ui:260
+#: ui/filter-list-entry.ui:93 ui/list-list-entry.ui:132
+#: ui/list-statuses-page.ui:166 ui/modify-snippet-dialog.ui:108
+#: ui/tweet-info-page.ui:10 ui/tweet-list-entry.ui:10
 msgid "Delete"
 msgstr "Şterge"
 
@@ -661,8 +652,7 @@ msgstr "Nici un fragment de text configurat."
 
 #: ui/settings-dialog.ui:480
 msgid "You can activate snippets by writing the keyword and pressing TAB."
-msgstr ""
-"Poţi activa fragmentele de text scriinde cuvântul cheie si apasând tasta TAB."
+msgstr "Poţi activa fragmentele de text scriinde cuvântul cheie si apasând tasta TAB."
 
 #: ui/settings-dialog.ui:494
 msgid "Snippets"
@@ -734,10 +724,9 @@ msgid "Reply"
 msgstr ""
 
 #: ui/shortcuts-window.ui:100
-#, fuzzy
 msgctxt "shortcuts window"
 msgid "Quote"
-msgstr "Încorporează"
+msgstr ""
 
 #: ui/shortcuts-window.ui:107
 msgctxt "shortcuts window"
@@ -812,15 +801,3 @@ msgstr "Creat"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "Abonat la"
-
-#~ msgid "Select banner"
-#~ msgstr "Selectează banner"
-
-#~ msgid "Select avatar"
-#~ msgstr "Selectează avatar"
-
-#~ msgid "Next"
-#~ msgstr "Următorul"
-
-#~ msgid "Using Font Awesome by Dave Gandy - http://fontawesome.io"
-#~ msgstr "Foloseşte Font Awesome de Dave Gandy - http://fontawesome.io"

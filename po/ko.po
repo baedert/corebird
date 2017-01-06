@@ -3,26 +3,25 @@
 # This file is distributed under the same license as the corebird package.
 #
 # Translators:
-# irus, 2016
+# irus6, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2016-12-18 16:41+0100\n"
-"PO-Revision-Date: 2016-07-30 08:17+0000\n"
-"Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
-"Language-Team: Korean (Korea) (http://www.transifex.com/corebird/corebird/"
-"language/ko_KR/)\n"
-"Language: ko\n"
+"PO-Revision-Date: 2016-12-19 08:56+0000\n"
+"Last-Translator: baedert <mail@baedert.org>\n"
+"Language-Team: Korean (Korea) (http://www.transifex.com/corebird/corebird/language/ko_KR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: ko_KR\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: data/org.baedert.corebird.appdata.xml.in:5
 #: data/org.baedert.corebird.desktop.in:3
 msgid "Corebird"
-msgstr ""
+msgstr "코어버드"
 
 #: data/org.baedert.corebird.appdata.xml.in:6
 #: data/org.baedert.corebird.desktop.in:4
@@ -33,55 +32,51 @@ msgstr "트위터 클라이언트"
 msgid ""
 "Corebird is a native GTK+ twitter client that provides vital features such "
 "as Direct Messages (DMs), tweet notifications, conversation views."
-msgstr ""
-"Corebird 는 다이렉트 메시지 (DMs), 트윗 알림, 대화 보기 등의 중요 특징을 제공"
-"하는 순수 GTK+ 트위터 클라이언트 입니다."
+msgstr "Corebird 는 다이렉트 메시지 (DMs), 트윗 알림, 대화 보기 등의 중요 특징을 제공하는 순수 GTK+ 트위터 클라이언트 입니다."
 
 #: data/org.baedert.corebird.appdata.xml.in:13
 msgid ""
-"Additional features include local viewing of videos, multiple inline images, "
-"Lists, Filters, multiple accounts, etc."
-msgstr ""
-"추가적인 특징으로는 비디오 보기, 복수의 이미지, 리스트, 필터, 멀티 계정, 등등"
-"이 포함됩니다."
+"Additional features include local viewing of videos, multiple inline images,"
+" Lists, Filters, multiple accounts, etc."
+msgstr "추가적인 특징으로는 비디오 보기, 복수의 이미지, 리스트, 필터, 멀티 계정, 등등이 포함됩니다."
 
 #: data/org.baedert.corebird.appdata.xml.in:21
 msgid "Generic timeline view when using Corebird"
-msgstr ""
+msgstr "코어버드 사용시 일반 타임라인 보기"
 
 #: data/org.baedert.corebird.appdata.xml.in:25
 msgid "Typical Twitter profile"
-msgstr ""
+msgstr "전형적인 트위터 프로필"
 
 #: data/org.baedert.corebird.appdata.xml.in:29
 msgid "Account settings can be configured"
-msgstr ""
+msgstr "계정 환경이 설정 될 수 있음"
 
 #: data/org.baedert.corebird.desktop.in:5
 msgid "Use Twitter from within a normal desktop application"
-msgstr ""
+msgstr "일반 데스크탑 앱에서 트위터 사용하기"
 
 #: data/org.baedert.corebird.desktop.in:7
 msgid "twitter;"
-msgstr ""
+msgstr "트위터;"
 
 #: data/org.baedert.corebird.desktop.in:11
 msgid "corebird"
-msgstr ""
+msgstr "코어버드"
 
 #: src/DefaultTimeline.vala:359
 msgid "Could not load tweets"
-msgstr ""
+msgstr "트윗을 불러올 수 없습니다."
 
 #: src/DMPage.vala:330
 msgid "Direct Conversation"
 msgstr "다이렉트 대화"
 
 #: src/DMThreadsPage.vala:207
-#, fuzzy, c-format
+#, c-format
 msgid "%d new Message from %s"
 msgid_plural "%d new Messages from %s"
-msgstr[0] "%s 로부터 %d 개의 새로운 메시지"
+msgstr[0] "%2$s 로부터 %1$d 개의 새로운 메시지"
 
 #: src/DMThreadsPage.vala:213 src/UserEventReceiver.vala:94
 #, c-format
@@ -99,11 +94,11 @@ msgstr "즐겨찾기"
 
 #: src/FilterPage.vala:47
 msgid "Add new Filter"
-msgstr ""
+msgstr "새로운 필터 추가"
 
 #: src/FilterPage.vala:317 src/FilterPage.vala:323
 msgid "Filters"
-msgstr ""
+msgstr "필터"
 
 #: src/HomeTimeline.vala:140
 #, c-format
@@ -142,24 +137,24 @@ msgstr "리스트"
 #: src/list/TweetListEntry.vala:434
 #, c-format
 msgid "Block %s"
-msgstr ""
+msgstr "%s 차단"
 
 #: src/list/TweetListEntry.vala:575
 msgid "This tweet contains images marked as inappropriate"
-msgstr ""
+msgstr "이 트윗에 포함된 이미지는 적절하지 않다고 표시 되었습니다"
 
 #: src/list/TweetListEntry.vala:582
 msgid "Show anyway"
-msgstr ""
+msgstr "아무튼 보기"
 
 #: src/MainWindow.vala:78
 msgid "Add new Account"
-msgstr ""
+msgstr "새로운 계정 추가"
 
 #: src/MentionsTimeline.vala:91 src/UserEventReceiver.vala:111
 #, c-format
 msgid "%s mentioned %s"
-msgstr ""
+msgstr "%s 가(이) %s 을(를) 멘션함"
 
 #: src/MentionsTimeline.vala:108 src/MentionsTimeline.vala:112
 msgid "Mentions"
@@ -222,11 +217,9 @@ msgstr "하나 만들기"
 
 #: src/widgets/AccountCreateWidget.vala:55
 msgid ""
-"Unauthorized. Most of the time, this means that there's something wrong with "
-"the Twitter servers and you should try again later"
-msgstr ""
-"허용되지 않음. 이러한 문제는 대부분 트위터 서버 측의 문제이므로 나중에 다시 "
-"시도 하세요"
+"Unauthorized. Most of the time, this means that there's something wrong with"
+" the Twitter servers and you should try again later"
+msgstr "허용되지 않음. 이러한 문제는 대부분 트위터 서버 측의 문제이므로 나중에 다시 시도 하세요"
 
 #: src/widgets/AccountCreateWidget.vala:67
 #, c-format
@@ -243,7 +236,7 @@ msgstr "계정이 이미 사용 중"
 
 #: src/widgets/CompletionTextView.vala:40
 msgid "No users found"
-msgstr ""
+msgstr "사용자 없음"
 
 #: src/widgets/FollowButton.vala:43
 msgid "Follow"
@@ -255,7 +248,7 @@ msgstr "언팔로우"
 
 #: src/widgets/MediaButton.vala:45
 msgid "Copy URL"
-msgstr ""
+msgstr "URL 복사"
 
 #: src/widgets/PixbufButton.vala:52
 msgid "Copy link"
@@ -288,11 +281,11 @@ msgstr "취소"
 
 #: src/window/ComposeTweetWindow.vala:259
 msgid "Select Image"
-msgstr ""
+msgstr "이미지 선택"
 
 #: src/window/ComposeTweetWindow.vala:264
 msgid "Open"
-msgstr ""
+msgstr "열기"
 
 #: src/window/ComposeTweetWindow.vala:288
 #, c-format
@@ -318,30 +311,29 @@ msgstr "일치하지 않음"
 
 #: src/window/ModifySnippetDialog.vala:44
 msgid "Modify Snippet"
-msgstr ""
+msgstr "조각 수정"
 
 #: src/window/ModifySnippetDialog.vala:63
 msgid "Snippet can't be empty"
-msgstr ""
+msgstr "조각을 비울 수 없음"
 
 #: src/window/ModifySnippetDialog.vala:70
 msgid "Replacement can't be empty"
-msgstr ""
+msgstr "대체재를 비울 수 없음"
 
 #: src/window/ModifySnippetDialog.vala:78
 msgid "Snippet may not contain whitespace"
-msgstr ""
+msgstr "조각이 공백을 포함 하지 않음"
 
 #: src/window/ModifySnippetDialog.vala:86
 msgid "Snippet already exists"
-msgstr ""
+msgstr "조각이 이미 존재함"
 
 #: src/window/SettingsDialog.vala:83
 msgid ""
 "Hey, check out this new #Corebird version! \\ (•◡•) / #cool "
 "#newisalwaysbetter"
-msgstr ""
-"헤이, 새로운 #Corebird 버젼을 확인하세요! \\ (•◡•) / #cool #newisalwaysbetter"
+msgstr "헤이, 새로운 #Corebird 버젼을 확인하세요! \\ (•◡•) / #cool #newisalwaysbetter"
 
 #: src/window/UserListDialog.vala:40
 msgid "Add to or Remove User From List"
@@ -393,10 +385,10 @@ msgstr "웹사이트"
 msgid "Autostart"
 msgstr "자동 시작"
 
-#: ui/account-dialog.ui:203 ui/account-dialog.ui:260 ui/filter-list-entry.ui:93
-#: ui/list-list-entry.ui:132 ui/list-statuses-page.ui:166
-#: ui/modify-snippet-dialog.ui:108 ui/tweet-info-page.ui:10
-#: ui/tweet-list-entry.ui:10
+#: ui/account-dialog.ui:203 ui/account-dialog.ui:260
+#: ui/filter-list-entry.ui:93 ui/list-list-entry.ui:132
+#: ui/list-statuses-page.ui:166 ui/modify-snippet-dialog.ui:108
+#: ui/tweet-info-page.ui:10 ui/tweet-list-entry.ui:10
 msgid "Delete"
 msgstr "지우기"
 
@@ -462,7 +454,7 @@ msgstr "공용"
 
 #: ui/list-statuses-page.ui:296
 msgid "Description"
-msgstr ""
+msgstr "설명"
 
 #: ui/load-more-entry.ui:11
 msgid "Load more"
@@ -538,7 +530,7 @@ msgstr "차단됨"
 
 #: ui/profile-page.ui:24
 msgid "Muted"
-msgstr ""
+msgstr "음소거됨"
 
 #: ui/profile-page.ui:28
 msgid "Retweets disabled"
@@ -562,19 +554,19 @@ msgstr "팔로우 중"
 
 #: ui/settings-dialog.ui:59
 msgid "Show inline media"
-msgstr ""
+msgstr "인라인 미디어 보기"
 
 #: ui/settings-dialog.ui:78
 msgid "Always show"
-msgstr ""
+msgstr "항상 보이기"
 
 #: ui/settings-dialog.ui:79
 msgid "Always hide"
-msgstr ""
+msgstr "항상 가리기"
 
 #: ui/settings-dialog.ui:80
 msgid "Hide in timeline"
-msgstr ""
+msgstr "타임라인에서 가리기"
 
 #: ui/settings-dialog.ui:101
 msgid "Auto scroll on new tweets"
@@ -726,10 +718,9 @@ msgid "Reply"
 msgstr "답장"
 
 #: ui/shortcuts-window.ui:100
-#, fuzzy
 msgctxt "shortcuts window"
 msgid "Quote"
-msgstr "인용"
+msgstr ""
 
 #: ui/shortcuts-window.ui:107
 msgctxt "shortcuts window"
@@ -795,7 +786,7 @@ msgstr "새 창에서 열기"
 
 #: ui/user-list-entry.ui:116
 msgid "Go to profile"
-msgstr ""
+msgstr "프로필로 가기"
 
 #: ui/user-lists-widget.ui:14
 msgid "Created"
@@ -804,26 +795,3 @@ msgstr "만들어짐"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "을 구독함"
-
-#~ msgid "Select banner"
-#~ msgstr "배너 선택"
-
-#~ msgid "Select avatar"
-#~ msgstr "아바타 선택"
-
-#~ msgid "Next"
-#~ msgstr "다음"
-
-#~ msgid "Image does not meet minimum size requirements:"
-#~ msgstr "이미지가 최소 요구 크기에 맞지 않음:"
-
-#~ msgid "Minimum width: %d pixel"
-#~ msgid_plural "Minimum width: %d pixels"
-#~ msgstr[0] "최소 넓이: %d 픽셀"
-
-#~ msgid "Minimum height: %d pixel"
-#~ msgid_plural "Minimum height: %d pixels"
-#~ msgstr[0] "최소 높이: %d 픽셀"
-
-#~ msgid "Using Font Awesome by Dave Gandy - http://fontawesome.io"
-#~ msgstr "Dave Gandy 의 글꼴 Awesome 을 사용함 - http://fontawesome.io"

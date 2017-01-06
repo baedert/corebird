@@ -10,14 +10,13 @@ msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2016-12-18 16:41+0100\n"
-"PO-Revision-Date: 2016-07-30 08:17+0000\n"
-"Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
-"Language-Team: Turkish (Turkey) (http://www.transifex.com/corebird/corebird/"
-"language/tr_TR/)\n"
-"Language: tr\n"
+"PO-Revision-Date: 2016-12-19 08:56+0000\n"
+"Last-Translator: baedert <mail@baedert.org>\n"
+"Language-Team: Turkish (Turkey) (http://www.transifex.com/corebird/corebird/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: tr_TR\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: data/org.baedert.corebird.appdata.xml.in:5
@@ -34,17 +33,13 @@ msgstr "Twitter İstemcisi"
 msgid ""
 "Corebird is a native GTK+ twitter client that provides vital features such "
 "as Direct Messages (DMs), tweet notifications, conversation views."
-msgstr ""
-"Corebird, Direkt Mesajlar (DMS), Bildirimler, Konuşma Görünümleri Gibi "
-"Hayati Özellikler Taşıyan GTK+ Kullanan Yerel Bir Twitter İstemcisidir."
+msgstr "Corebird, Direkt Mesajlar (DMS), Bildirimler, Konuşma Görünümleri Gibi Hayati Özellikler Taşıyan GTK+ Kullanan Yerel Bir Twitter İstemcisidir."
 
 #: data/org.baedert.corebird.appdata.xml.in:13
 msgid ""
-"Additional features include local viewing of videos, multiple inline images, "
-"Lists, Filters, multiple accounts, etc."
-msgstr ""
-"Yerel Görüntüleme İçin Ek Özellikler Şunlardır, Videolar, Çoklu Resimler, "
-"Listeler, Çoklu Hesaplar ve Dahası."
+"Additional features include local viewing of videos, multiple inline images,"
+" Lists, Filters, multiple accounts, etc."
+msgstr "Yerel Görüntüleme İçin Ek Özellikler Şunlardır, Videolar, Çoklu Resimler, Listeler, Çoklu Hesaplar ve Dahası."
 
 #: data/org.baedert.corebird.appdata.xml.in:21
 msgid "Generic timeline view when using Corebird"
@@ -79,10 +74,10 @@ msgid "Direct Conversation"
 msgstr "Doğrudan Görüşme"
 
 #: src/DMThreadsPage.vala:207
-#, fuzzy, c-format
+#, c-format
 msgid "%d new Message from %s"
 msgid_plural "%d new Messages from %s"
-msgstr[0] "%s Kullanıcısından %d Yeni Mesaj"
+msgstr[0] "%2$s Kullanıcısından %1$d Yeni Mesaj"
 
 #: src/DMThreadsPage.vala:213 src/UserEventReceiver.vala:94
 #, c-format
@@ -223,11 +218,9 @@ msgstr "Yeni Bir Tane Oluştur."
 
 #: src/widgets/AccountCreateWidget.vala:55
 msgid ""
-"Unauthorized. Most of the time, this means that there's something wrong with "
-"the Twitter servers and you should try again later"
-msgstr ""
-"Yetkisiz. Çoğu Zaman Twitter Sunucularında Bir Problem Olmasından "
-"Kaynaklanır, Daha sonra tekrar deneyebilirsiniz."
+"Unauthorized. Most of the time, this means that there's something wrong with"
+" the Twitter servers and you should try again later"
+msgstr "Yetkisiz. Çoğu Zaman Twitter Sunucularında Bir Problem Olmasından Kaynaklanır, Daha sonra tekrar deneyebilirsiniz."
 
 #: src/widgets/AccountCreateWidget.vala:67
 #, c-format
@@ -341,9 +334,7 @@ msgstr ""
 msgid ""
 "Hey, check out this new #Corebird version! \\ (•◡•) / #cool "
 "#newisalwaysbetter"
-msgstr ""
-"Merhaba, #Corebird Uygulamasının Son Sürümüne Bakmanı Öneririm! \\ (•◡•) / "
-"#harika"
+msgstr "Merhaba, #Corebird Uygulamasının Son Sürümüne Bakmanı Öneririm! \\ (•◡•) / #harika"
 
 #: src/window/UserListDialog.vala:40
 msgid "Add to or Remove User From List"
@@ -395,10 +386,10 @@ msgstr "Website"
 msgid "Autostart"
 msgstr "Otomotik Başlat"
 
-#: ui/account-dialog.ui:203 ui/account-dialog.ui:260 ui/filter-list-entry.ui:93
-#: ui/list-list-entry.ui:132 ui/list-statuses-page.ui:166
-#: ui/modify-snippet-dialog.ui:108 ui/tweet-info-page.ui:10
-#: ui/tweet-list-entry.ui:10
+#: ui/account-dialog.ui:203 ui/account-dialog.ui:260
+#: ui/filter-list-entry.ui:93 ui/list-list-entry.ui:132
+#: ui/list-statuses-page.ui:166 ui/modify-snippet-dialog.ui:108
+#: ui/tweet-info-page.ui:10 ui/tweet-list-entry.ui:10
 msgid "Delete"
 msgstr "Sil"
 
@@ -656,9 +647,7 @@ msgstr "Yapılandırılmış Parçalar Yok."
 
 #: ui/settings-dialog.ui:480
 msgid "You can activate snippets by writing the keyword and pressing TAB."
-msgstr ""
-"Anahtar Kelimeleri Yazıp TAB Tuşuna Basabilir ve Parçacıkları Aktif "
-"Edebilirsiniz."
+msgstr "Anahtar Kelimeleri Yazıp TAB Tuşuna Basabilir ve Parçacıkları Aktif Edebilirsiniz."
 
 #: ui/settings-dialog.ui:494
 msgid "Snippets"
@@ -730,10 +719,9 @@ msgid "Reply"
 msgstr ""
 
 #: ui/shortcuts-window.ui:100
-#, fuzzy
 msgctxt "shortcuts window"
 msgid "Quote"
-msgstr "Alıntı"
+msgstr ""
 
 #: ui/shortcuts-window.ui:107
 msgctxt "shortcuts window"
@@ -808,27 +796,3 @@ msgstr "Oluşturuldu"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "Abone Olundu"
-
-#~ msgid "Select banner"
-#~ msgstr "Başlık Fotoğrafı Seç"
-
-#~ msgid "Select avatar"
-#~ msgstr "Avatar Seç"
-
-#~ msgid "Next"
-#~ msgstr "Devam"
-
-#~ msgid "Image does not meet minimum size requirements:"
-#~ msgstr "Resim Genişliği Minimum Gereksinimleri Karşılamıyor"
-
-#~ msgid "Minimum width: %d pixel"
-#~ msgid_plural "Minimum width: %d pixels"
-#~ msgstr[0] "Minimum Genişlik %d Piksel"
-
-#~ msgid "Minimum height: %d pixel"
-#~ msgid_plural "Minimum height: %d pixels"
-#~ msgstr[0] "Minimum Yükseklik %d Piksel"
-
-#~ msgid "Using Font Awesome by Dave Gandy - http://fontawesome.io"
-#~ msgstr ""
-#~ "Dave Gandy - http://fontawesome.io tarafınan Font Awesome Kullanıldı"

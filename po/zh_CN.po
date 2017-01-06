@@ -3,8 +3,7 @@
 # This file is distributed under the same license as the corebird package.
 #
 # Translators:
-# colindemian <colindemian@outlook.com>, 2016
-# colindemian <colindemian@outlook.com>, 2015
+# colindemian <colindemian@outlook.com>, 2015-2016
 # Dianjin Wang <1132321739qq@gmail.com>, 2014
 # hmingming1222 <hmingming1222@gmail.com>, 2015
 # S Shen, 2016
@@ -14,14 +13,13 @@ msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2016-12-18 16:41+0100\n"
-"PO-Revision-Date: 2016-07-30 08:17+0000\n"
-"Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
-"Language-Team: Chinese (China) (http://www.transifex.com/corebird/corebird/"
-"language/zh_CN/)\n"
-"Language: zh_CN\n"
+"PO-Revision-Date: 2016-12-19 08:56+0000\n"
+"Last-Translator: baedert <mail@baedert.org>\n"
+"Language-Team: Chinese (China) (http://www.transifex.com/corebird/corebird/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: data/org.baedert.corebird.appdata.xml.in:5
@@ -38,31 +36,29 @@ msgstr "Twitter 客户端"
 msgid ""
 "Corebird is a native GTK+ twitter client that provides vital features such "
 "as Direct Messages (DMs), tweet notifications, conversation views."
-msgstr ""
-"Corebird 是一款原生的 GTK+ Twitter 客户端，能提供多种基础功能如直接消息(私"
-"信)、提醒、会话视图等。"
+msgstr "Corebird 是一款原生的 GTK+ Twitter 客户端，能提供多种基础功能如直接消息(私信)、提醒、会话视图等。"
 
 #: data/org.baedert.corebird.appdata.xml.in:13
 msgid ""
-"Additional features include local viewing of videos, multiple inline images, "
-"Lists, Filters, multiple accounts, etc."
+"Additional features include local viewing of videos, multiple inline images,"
+" Lists, Filters, multiple accounts, etc."
 msgstr "高级功能包括本地观看视频、插入多个图片、列表、过滤、多帐号等。"
 
 #: data/org.baedert.corebird.appdata.xml.in:21
 msgid "Generic timeline view when using Corebird"
-msgstr ""
+msgstr "使用 Corebird 时启用常规时间线视图"
 
 #: data/org.baedert.corebird.appdata.xml.in:25
 msgid "Typical Twitter profile"
-msgstr ""
+msgstr "常见 Twitter 资料"
 
 #: data/org.baedert.corebird.appdata.xml.in:29
 msgid "Account settings can be configured"
-msgstr ""
+msgstr "账户设置可自定义"
 
 #: data/org.baedert.corebird.desktop.in:5
 msgid "Use Twitter from within a normal desktop application"
-msgstr ""
+msgstr "桌面应用般的 Twitter 使用体验"
 
 #: data/org.baedert.corebird.desktop.in:7
 msgid "twitter;"
@@ -81,10 +77,10 @@ msgid "Direct Conversation"
 msgstr "直接对话"
 
 #: src/DMThreadsPage.vala:207
-#, fuzzy, c-format
+#, c-format
 msgid "%d new Message from %s"
 msgid_plural "%d new Messages from %s"
-msgstr[0] "有来自 %s 的 %d 条新消息"
+msgstr[0] "有来自 %2$s 的 %1$d 条新消息"
 
 #: src/DMThreadsPage.vala:213 src/UserEventReceiver.vala:94
 #, c-format
@@ -102,11 +98,11 @@ msgstr "收藏"
 
 #: src/FilterPage.vala:47
 msgid "Add new Filter"
-msgstr ""
+msgstr "添加新过滤器"
 
 #: src/FilterPage.vala:317 src/FilterPage.vala:323
 msgid "Filters"
-msgstr ""
+msgstr "过滤器"
 
 #: src/HomeTimeline.vala:140
 #, c-format
@@ -145,19 +141,19 @@ msgstr "列表"
 #: src/list/TweetListEntry.vala:434
 #, c-format
 msgid "Block %s"
-msgstr ""
+msgstr "屏蔽 %s"
 
 #: src/list/TweetListEntry.vala:575
 msgid "This tweet contains images marked as inappropriate"
-msgstr ""
+msgstr "此推文包含被标记为“不适宜”的图片"
 
 #: src/list/TweetListEntry.vala:582
 msgid "Show anyway"
-msgstr ""
+msgstr "仍然显示"
 
 #: src/MainWindow.vala:78
 msgid "Add new Account"
-msgstr ""
+msgstr "添加新账户"
 
 #: src/MentionsTimeline.vala:91 src/UserEventReceiver.vala:111
 #, c-format
@@ -225,8 +221,8 @@ msgstr "注册一个"
 
 #: src/widgets/AccountCreateWidget.vala:55
 msgid ""
-"Unauthorized. Most of the time, this means that there's something wrong with "
-"the Twitter servers and you should try again later"
+"Unauthorized. Most of the time, this means that there's something wrong with"
+" the Twitter servers and you should try again later"
 msgstr "认证失败。此情况通常是 Twitter 服务器出了问题，请稍后重试。"
 
 #: src/widgets/AccountCreateWidget.vala:67
@@ -244,7 +240,7 @@ msgstr "账户已在使用中"
 
 #: src/widgets/CompletionTextView.vala:40
 msgid "No users found"
-msgstr ""
+msgstr "未找到用户"
 
 #: src/widgets/FollowButton.vala:43
 msgid "Follow"
@@ -256,7 +252,7 @@ msgstr "取消关注"
 
 #: src/widgets/MediaButton.vala:45
 msgid "Copy URL"
-msgstr ""
+msgstr "复制 URL"
 
 #: src/widgets/PixbufButton.vala:52
 msgid "Copy link"
@@ -289,11 +285,11 @@ msgstr "取消"
 
 #: src/window/ComposeTweetWindow.vala:259
 msgid "Select Image"
-msgstr ""
+msgstr "选择图片"
 
 #: src/window/ComposeTweetWindow.vala:264
 msgid "Open"
-msgstr ""
+msgstr "打开"
 
 #: src/window/ComposeTweetWindow.vala:288
 #, c-format
@@ -319,23 +315,23 @@ msgstr "不匹配"
 
 #: src/window/ModifySnippetDialog.vala:44
 msgid "Modify Snippet"
-msgstr ""
+msgstr "修改插件"
 
 #: src/window/ModifySnippetDialog.vala:63
 msgid "Snippet can't be empty"
-msgstr ""
+msgstr "插件不能为空"
 
 #: src/window/ModifySnippetDialog.vala:70
 msgid "Replacement can't be empty"
-msgstr ""
+msgstr "Replacement 不可为空"
 
 #: src/window/ModifySnippetDialog.vala:78
 msgid "Snippet may not contain whitespace"
-msgstr ""
+msgstr "插件不可包含空字符"
 
 #: src/window/ModifySnippetDialog.vala:86
 msgid "Snippet already exists"
-msgstr ""
+msgstr "插件已存在"
 
 #: src/window/SettingsDialog.vala:83
 msgid ""
@@ -393,10 +389,10 @@ msgstr "网站"
 msgid "Autostart"
 msgstr "自动登入"
 
-#: ui/account-dialog.ui:203 ui/account-dialog.ui:260 ui/filter-list-entry.ui:93
-#: ui/list-list-entry.ui:132 ui/list-statuses-page.ui:166
-#: ui/modify-snippet-dialog.ui:108 ui/tweet-info-page.ui:10
-#: ui/tweet-list-entry.ui:10
+#: ui/account-dialog.ui:203 ui/account-dialog.ui:260
+#: ui/filter-list-entry.ui:93 ui/list-list-entry.ui:132
+#: ui/list-statuses-page.ui:166 ui/modify-snippet-dialog.ui:108
+#: ui/tweet-info-page.ui:10 ui/tweet-list-entry.ui:10
 msgid "Delete"
 msgstr "删除"
 
@@ -726,10 +722,9 @@ msgid "Reply"
 msgstr "回复"
 
 #: ui/shortcuts-window.ui:100
-#, fuzzy
 msgctxt "shortcuts window"
 msgid "Quote"
-msgstr "引用"
+msgstr ""
 
 #: ui/shortcuts-window.ui:107
 msgctxt "shortcuts window"
@@ -804,26 +799,3 @@ msgstr "已创建"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "订阅到"
-
-#~ msgid "Select banner"
-#~ msgstr "选择横幅"
-
-#~ msgid "Select avatar"
-#~ msgstr "选择头像"
-
-#~ msgid "Next"
-#~ msgstr "下一个"
-
-#~ msgid "Image does not meet minimum size requirements:"
-#~ msgstr "图片不符合最小尺寸要求："
-
-#~ msgid "Minimum width: %d pixel"
-#~ msgid_plural "Minimum width: %d pixels"
-#~ msgstr[0] "最小宽度：%d 像素"
-
-#~ msgid "Minimum height: %d pixel"
-#~ msgid_plural "Minimum height: %d pixels"
-#~ msgstr[0] "最小高度：%d 像素"
-
-#~ msgid "Using Font Awesome by Dave Gandy - http://fontawesome.io"
-#~ msgstr "感谢 Dave Gandy 的 Font Awesome 工具  - http://fontawesome.io"

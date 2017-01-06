@@ -9,14 +9,13 @@ msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2016-12-18 16:41+0100\n"
-"PO-Revision-Date: 2016-07-30 08:17+0000\n"
-"Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
-"Language-Team: Catalan (Valencian) (http://www.transifex.com/corebird/"
-"corebird/language/ca@valencia/)\n"
-"Language: ca@valencia\n"
+"PO-Revision-Date: 2016-12-19 08:56+0000\n"
+"Last-Translator: baedert <mail@baedert.org>\n"
+"Language-Team: Catalan (Valencian) (http://www.transifex.com/corebird/corebird/language/ca@valencia/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: ca@valencia\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: data/org.baedert.corebird.appdata.xml.in:5
@@ -33,15 +32,12 @@ msgstr "Client del Twitter"
 msgid ""
 "Corebird is a native GTK+ twitter client that provides vital features such "
 "as Direct Messages (DMs), tweet notifications, conversation views."
-msgstr ""
-"El Corebird és un client del twitter natiu GTK+ que proveeix "
-"característiques bàsiques com missatges directes, notificacions de piulades "
-"i visualització de converses. "
+msgstr "El Corebird és un client del twitter natiu GTK+ que proveeix característiques bàsiques com missatges directes, notificacions de piulades i visualització de converses. "
 
 #: data/org.baedert.corebird.appdata.xml.in:13
 msgid ""
-"Additional features include local viewing of videos, multiple inline images, "
-"Lists, Filters, multiple accounts, etc."
+"Additional features include local viewing of videos, multiple inline images,"
+" Lists, Filters, multiple accounts, etc."
 msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:21
@@ -224,11 +220,9 @@ msgstr "Creeu-ne un"
 
 #: src/widgets/AccountCreateWidget.vala:55
 msgid ""
-"Unauthorized. Most of the time, this means that there's something wrong with "
-"the Twitter servers and you should try again later"
-msgstr ""
-"No s'ha autoritzat. Normalment això es produeix perquè alguna cosa no "
-"funciona bé als servidors del Twitter. Proveu més tard"
+"Unauthorized. Most of the time, this means that there's something wrong with"
+" the Twitter servers and you should try again later"
+msgstr "No s'ha autoritzat. Normalment això es produeix perquè alguna cosa no funciona bé als servidors del Twitter. Proveu més tard"
 
 #: src/widgets/AccountCreateWidget.vala:67
 #, c-format
@@ -394,10 +388,10 @@ msgstr "Lloc web"
 msgid "Autostart"
 msgstr "Inici automàtic"
 
-#: ui/account-dialog.ui:203 ui/account-dialog.ui:260 ui/filter-list-entry.ui:93
-#: ui/list-list-entry.ui:132 ui/list-statuses-page.ui:166
-#: ui/modify-snippet-dialog.ui:108 ui/tweet-info-page.ui:10
-#: ui/tweet-list-entry.ui:10
+#: ui/account-dialog.ui:203 ui/account-dialog.ui:260
+#: ui/filter-list-entry.ui:93 ui/list-list-entry.ui:132
+#: ui/list-statuses-page.ui:166 ui/modify-snippet-dialog.ui:108
+#: ui/tweet-info-page.ui:10 ui/tweet-list-entry.ui:10
 msgid "Delete"
 msgstr "Suprimeix"
 
@@ -727,10 +721,9 @@ msgid "Reply"
 msgstr ""
 
 #: ui/shortcuts-window.ui:100
-#, fuzzy
 msgctxt "shortcuts window"
 msgid "Quote"
-msgstr "Cita"
+msgstr ""
 
 #: ui/shortcuts-window.ui:107
 msgctxt "shortcuts window"
@@ -805,17 +798,3 @@ msgstr "Creat"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "Subscrit a"
-
-#~ msgid "Select banner"
-#~ msgstr "Seleccioneu un bàner"
-
-#~ msgid "Select avatar"
-#~ msgstr "Seleccioneu un avatar"
-
-#~ msgid "Next"
-#~ msgstr "Següent"
-
-#~ msgid "Using Font Awesome by Dave Gandy - http://fontawesome.io"
-#~ msgstr ""
-#~ "Fent servir el tipus de lletra Awesome per Dave Gandy - http://"
-#~ "fontawesome.io"
