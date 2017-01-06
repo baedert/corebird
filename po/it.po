@@ -11,14 +11,13 @@ msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2016-12-18 16:41+0100\n"
-"PO-Revision-Date: 2016-07-30 08:17+0000\n"
-"Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
-"Language-Team: Italian (http://www.transifex.com/corebird/corebird/language/"
-"it/)\n"
-"Language: it\n"
+"PO-Revision-Date: 2016-12-19 08:56+0000\n"
+"Last-Translator: baedert <mail@baedert.org>\n"
+"Language-Team: Italian (http://www.transifex.com/corebird/corebird/language/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: it\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: data/org.baedert.corebird.appdata.xml.in:5
@@ -35,14 +34,12 @@ msgstr "Client Twitter"
 msgid ""
 "Corebird is a native GTK+ twitter client that provides vital features such "
 "as Direct Messages (DMs), tweet notifications, conversation views."
-msgstr ""
-"Corebird è un client twitter nativo GTK+ che fornisce funzioni vitali come "
-"messaggi diretti (DM), notifiche dei tweet e vista delle conversazioni."
+msgstr "Corebird è un client twitter nativo GTK+ che fornisce funzioni vitali come messaggi diretti (DM), notifiche dei tweet e vista delle conversazioni."
 
 #: data/org.baedert.corebird.appdata.xml.in:13
 msgid ""
-"Additional features include local viewing of videos, multiple inline images, "
-"Lists, Filters, multiple accounts, etc."
+"Additional features include local viewing of videos, multiple inline images,"
+" Lists, Filters, multiple accounts, etc."
 msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:21
@@ -225,11 +222,9 @@ msgstr "Creane uno"
 
 #: src/widgets/AccountCreateWidget.vala:55
 msgid ""
-"Unauthorized. Most of the time, this means that there's something wrong with "
-"the Twitter servers and you should try again later"
-msgstr ""
-"Non autorizzato. Solitamente questo vuol dire che c'è qualche problema con i "
-"server di Twitter e dovesti riprovare più tardi."
+"Unauthorized. Most of the time, this means that there's something wrong with"
+" the Twitter servers and you should try again later"
+msgstr "Non autorizzato. Solitamente questo vuol dire che c'è qualche problema con i server di Twitter e dovesti riprovare più tardi."
 
 #: src/widgets/AccountCreateWidget.vala:67
 #, c-format
@@ -343,9 +338,7 @@ msgstr ""
 msgid ""
 "Hey, check out this new #Corebird version! \\ (•◡•) / #cool "
 "#newisalwaysbetter"
-msgstr ""
-"Ehi, scarica la nuova versione di #Corebird \\ (•◡•) / #cool "
-"#newisalwaysbetter"
+msgstr "Ehi, scarica la nuova versione di #Corebird \\ (•◡•) / #cool #newisalwaysbetter"
 
 #: src/window/UserListDialog.vala:40
 msgid "Add to or Remove User From List"
@@ -397,10 +390,10 @@ msgstr "Sito web"
 msgid "Autostart"
 msgstr "Avvio automatico"
 
-#: ui/account-dialog.ui:203 ui/account-dialog.ui:260 ui/filter-list-entry.ui:93
-#: ui/list-list-entry.ui:132 ui/list-statuses-page.ui:166
-#: ui/modify-snippet-dialog.ui:108 ui/tweet-info-page.ui:10
-#: ui/tweet-list-entry.ui:10
+#: ui/account-dialog.ui:203 ui/account-dialog.ui:260
+#: ui/filter-list-entry.ui:93 ui/list-list-entry.ui:132
+#: ui/list-statuses-page.ui:166 ui/modify-snippet-dialog.ui:108
+#: ui/tweet-info-page.ui:10 ui/tweet-list-entry.ui:10
 msgid "Delete"
 msgstr "Elimina"
 
@@ -658,9 +651,7 @@ msgstr "Nessuno snippet configurato."
 
 #: ui/settings-dialog.ui:480
 msgid "You can activate snippets by writing the keyword and pressing TAB."
-msgstr ""
-"Gli snippet si attivano digitando la parola chiave con la tastiera e "
-"premendo TAB."
+msgstr "Gli snippet si attivano digitando la parola chiave con la tastiera e premendo TAB."
 
 #: ui/settings-dialog.ui:494
 msgid "Snippets"
@@ -732,10 +723,9 @@ msgid "Reply"
 msgstr ""
 
 #: ui/shortcuts-window.ui:100
-#, fuzzy
 msgctxt "shortcuts window"
 msgid "Quote"
-msgstr "Cita"
+msgstr ""
 
 #: ui/shortcuts-window.ui:107
 msgctxt "shortcuts window"
@@ -810,28 +800,3 @@ msgstr "Creato"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "Sottoscritto a"
-
-#~ msgid "Select banner"
-#~ msgstr "Seleziona banner"
-
-#~ msgid "Select avatar"
-#~ msgstr "Seleziona avatar"
-
-#~ msgid "Next"
-#~ msgstr "Prossima"
-
-#~ msgid "Image does not meet minimum size requirements:"
-#~ msgstr "L'immagine non ha le dimensioni minime richieste:"
-
-#~ msgid "Minimum width: %d pixel"
-#~ msgid_plural "Minimum width: %d pixels"
-#~ msgstr[0] "Dimensione minima: %d pixel"
-#~ msgstr[1] "Dimensione minima: %d pixel"
-
-#~ msgid "Minimum height: %d pixel"
-#~ msgid_plural "Minimum height: %d pixels"
-#~ msgstr[0] "Altezza minima: %d pixel"
-#~ msgstr[1] "Altezza minima: %d pixel"
-
-#~ msgid "Using Font Awesome by Dave Gandy - http://fontawesome.io"
-#~ msgstr "Usa i Font Awesome di Dave Gandy - http://fontawesome.io"

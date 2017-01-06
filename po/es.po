@@ -3,31 +3,32 @@
 # This file is distributed under the same license as the corebird package.
 #
 # Translators:
+# Alejandro Moreno <amorenocuquerella@gmail.com>, 2016
 # auroszx <auros.andres@gmail.com>, 2014
+# baedert <mail@baedert.org>, 2016
 # Carlos C Soto <eclipxe13@gmail.com>, 2015
+# Guillem Arias <gariasfa7@alumnes.ub.edu>, 2016
 # Jose G. Jimenez S. <josegjimenez@gmail.com>, 2014-2015
 # Jose Manuel Calero Gonzalez <nosfe1984@gmail.com>, 2014-2015
-# baedert <mail@baedert.org>, 2016
 # Sebastian Reyes <sebaslander@gmail.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2016-12-18 16:41+0100\n"
-"PO-Revision-Date: 2016-07-30 08:17+0000\n"
-"Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
-"Language-Team: Spanish (http://www.transifex.com/corebird/corebird/language/"
-"es/)\n"
-"Language: es\n"
+"PO-Revision-Date: 2016-12-23 11:42+0000\n"
+"Last-Translator: Guillem Arias <gariasfa7@alumnes.ub.edu>\n"
+"Language-Team: Spanish (http://www.transifex.com/corebird/corebird/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: data/org.baedert.corebird.appdata.xml.in:5
 #: data/org.baedert.corebird.desktop.in:3
 msgid "Corebird"
-msgstr ""
+msgstr "Corebird"
 
 #: data/org.baedert.corebird.appdata.xml.in:6
 #: data/org.baedert.corebird.desktop.in:4
@@ -38,45 +39,41 @@ msgstr "Cliente Twitter"
 msgid ""
 "Corebird is a native GTK+ twitter client that provides vital features such "
 "as Direct Messages (DMs), tweet notifications, conversation views."
-msgstr ""
-"Corebird es un cliente nativo GTK+ para Twitter que provee funciones útiles "
-"como Mensajes Directos (DMs), notificación de tweets, y ver conversaciones."
+msgstr "Corebird es un cliente nativo GTK+ para Twitter que provee funciones útiles como Mensajes Directos (DMs), notificación de tweets, y ver conversaciones."
 
 #: data/org.baedert.corebird.appdata.xml.in:13
 msgid ""
-"Additional features include local viewing of videos, multiple inline images, "
-"Lists, Filters, multiple accounts, etc."
-msgstr ""
-"Las características adicionales incluyen la visualización local de los "
-"vídeos, múltiples imágenes en línea, listas, filtros, múltiples cuentas, etc."
+"Additional features include local viewing of videos, multiple inline images,"
+" Lists, Filters, multiple accounts, etc."
+msgstr "Las características adicionales incluyen la visualización local de los vídeos, múltiples imágenes en línea, listas, filtros, múltiples cuentas, etc."
 
 #: data/org.baedert.corebird.appdata.xml.in:21
 msgid "Generic timeline view when using Corebird"
-msgstr ""
+msgstr "Vista de timeline genérica al usar Corebird"
 
 #: data/org.baedert.corebird.appdata.xml.in:25
 msgid "Typical Twitter profile"
-msgstr ""
+msgstr "Perfil de Twitter típico"
 
 #: data/org.baedert.corebird.appdata.xml.in:29
 msgid "Account settings can be configured"
-msgstr ""
+msgstr "Los ajustes de la cuenta pueden ser configurados"
 
 #: data/org.baedert.corebird.desktop.in:5
 msgid "Use Twitter from within a normal desktop application"
-msgstr ""
+msgstr "Usa Twitter desde una aplicación de escritorio normal"
 
 #: data/org.baedert.corebird.desktop.in:7
 msgid "twitter;"
-msgstr ""
+msgstr "twitter;"
 
 #: data/org.baedert.corebird.desktop.in:11
 msgid "corebird"
-msgstr ""
+msgstr "corebird"
 
 #: src/DefaultTimeline.vala:359
 msgid "Could not load tweets"
-msgstr ""
+msgstr "No se pudieron cargar los tweets"
 
 #: src/DMPage.vala:330
 msgid "Direct Conversation"
@@ -105,11 +102,11 @@ msgstr "Favoritos"
 
 #: src/FilterPage.vala:47
 msgid "Add new Filter"
-msgstr ""
+msgstr "Añadir nuevo filtro"
 
 #: src/FilterPage.vala:317 src/FilterPage.vala:323
 msgid "Filters"
-msgstr ""
+msgstr "Filtros"
 
 #: src/HomeTimeline.vala:140
 #, c-format
@@ -150,24 +147,24 @@ msgstr "Lista"
 #: src/list/TweetListEntry.vala:434
 #, c-format
 msgid "Block %s"
-msgstr ""
+msgstr "Bloquear a %s"
 
 #: src/list/TweetListEntry.vala:575
 msgid "This tweet contains images marked as inappropriate"
-msgstr ""
+msgstr "Este tweet contiene imágenes que pueden herir la sensibilidad de algunas personas"
 
 #: src/list/TweetListEntry.vala:582
 msgid "Show anyway"
-msgstr ""
+msgstr "Mostrar de todas formas"
 
 #: src/MainWindow.vala:78
 msgid "Add new Account"
-msgstr ""
+msgstr "Añadir nueva cuenta"
 
 #: src/MentionsTimeline.vala:91 src/UserEventReceiver.vala:111
 #, c-format
 msgid "%s mentioned %s"
-msgstr ""
+msgstr "%s mencionó a %s"
 
 #: src/MentionsTimeline.vala:108 src/MentionsTimeline.vala:112
 msgid "Mentions"
@@ -230,11 +227,9 @@ msgstr "Crear una"
 
 #: src/widgets/AccountCreateWidget.vala:55
 msgid ""
-"Unauthorized. Most of the time, this means that there's something wrong with "
-"the Twitter servers and you should try again later"
-msgstr ""
-"Sin autorización. La mayoría de las veces, esto significa que hay un "
-"problema con los servidores de Twitter y debes volver a intentarlo más tarde."
+"Unauthorized. Most of the time, this means that there's something wrong with"
+" the Twitter servers and you should try again later"
+msgstr "Sin autorización. La mayoría de las veces, esto significa que hay un problema con los servidores de Twitter y debes volver a intentarlo más tarde."
 
 #: src/widgets/AccountCreateWidget.vala:67
 #, c-format
@@ -251,7 +246,7 @@ msgstr "La cuenta ya está en uso"
 
 #: src/widgets/CompletionTextView.vala:40
 msgid "No users found"
-msgstr ""
+msgstr "No se han encontrado usuarios"
 
 #: src/widgets/FollowButton.vala:43
 msgid "Follow"
@@ -263,7 +258,7 @@ msgstr "Dejar de seguir"
 
 #: src/widgets/MediaButton.vala:45
 msgid "Copy URL"
-msgstr ""
+msgstr "Copiar URL"
 
 #: src/widgets/PixbufButton.vala:52
 msgid "Copy link"
@@ -296,17 +291,17 @@ msgstr "Cancelar"
 
 #: src/window/ComposeTweetWindow.vala:259
 msgid "Select Image"
-msgstr ""
+msgstr "Seleccionar imagen"
 
 #: src/window/ComposeTweetWindow.vala:264
 msgid "Open"
-msgstr ""
+msgstr "Abrir"
 
 #: src/window/ComposeTweetWindow.vala:288
 #, c-format
 msgid ""
 "The selected image is too big. The maximum file size per image is %'d MB"
-msgstr ""
+msgstr "La imagen seleccionada es demasiado grande. El tamaño máximo por imagen es %'d MB"
 
 #: src/window/ComposeTweetWindow.vala:290
 msgid "Back"
@@ -326,31 +321,29 @@ msgstr "No concuerda"
 
 #: src/window/ModifySnippetDialog.vala:44
 msgid "Modify Snippet"
-msgstr ""
+msgstr "Modificar snippet"
 
 #: src/window/ModifySnippetDialog.vala:63
 msgid "Snippet can't be empty"
-msgstr ""
+msgstr "El snippet no puede estar vacío"
 
 #: src/window/ModifySnippetDialog.vala:70
 msgid "Replacement can't be empty"
-msgstr ""
+msgstr "El reemplazo no puede estar vacío"
 
 #: src/window/ModifySnippetDialog.vala:78
 msgid "Snippet may not contain whitespace"
-msgstr ""
+msgstr "El snippet puede no contener espacio en blanco"
 
 #: src/window/ModifySnippetDialog.vala:86
 msgid "Snippet already exists"
-msgstr ""
+msgstr "El snippet ya existe"
 
 #: src/window/SettingsDialog.vala:83
 msgid ""
 "Hey, check out this new #Corebird version! \\ (•◡•) / #cool "
 "#newisalwaysbetter"
-msgstr ""
-"¡Ey, revisa esta nueva versión de #Codebird! \\ (•◡•) / #cool "
-"#newisalwaysbetter"
+msgstr "¡Ey, revisa esta nueva versión de #Codebird! \\ (•◡•) / #cool #newisalwaysbetter"
 
 #: src/window/UserListDialog.vala:40
 msgid "Add to or Remove User From List"
@@ -402,10 +395,10 @@ msgstr "Página Web"
 msgid "Autostart"
 msgstr "Autoiniciar"
 
-#: ui/account-dialog.ui:203 ui/account-dialog.ui:260 ui/filter-list-entry.ui:93
-#: ui/list-list-entry.ui:132 ui/list-statuses-page.ui:166
-#: ui/modify-snippet-dialog.ui:108 ui/tweet-info-page.ui:10
-#: ui/tweet-list-entry.ui:10
+#: ui/account-dialog.ui:203 ui/account-dialog.ui:260
+#: ui/filter-list-entry.ui:93 ui/list-list-entry.ui:132
+#: ui/list-statuses-page.ui:166 ui/modify-snippet-dialog.ui:108
+#: ui/tweet-info-page.ui:10 ui/tweet-list-entry.ui:10
 msgid "Delete"
 msgstr "Eliminar"
 
@@ -423,7 +416,7 @@ msgstr "Enviar"
 
 #: ui/compose-window.ui:138
 msgid "Add Image"
-msgstr ""
+msgstr "Añadir imagen"
 
 #: ui/filter-page.ui:71 ui/search-page.ui:86
 msgid "Users"
@@ -471,7 +464,7 @@ msgstr "Público"
 
 #: ui/list-statuses-page.ui:296
 msgid "Description"
-msgstr ""
+msgstr "Descripción"
 
 #: ui/load-more-entry.ui:11
 msgid "Load more"
@@ -495,7 +488,7 @@ msgstr "Preferencias"
 
 #: ui/menus.ui:10
 msgid "Shortcuts"
-msgstr ""
+msgstr "Atajos"
 
 #: ui/menus.ui:15
 msgid "About"
@@ -547,7 +540,7 @@ msgstr "Bloqueado"
 
 #: ui/profile-page.ui:24
 msgid "Muted"
-msgstr ""
+msgstr "Slienciado"
 
 #: ui/profile-page.ui:28
 msgid "Retweets disabled"
@@ -571,19 +564,19 @@ msgstr "Siguiendo"
 
 #: ui/settings-dialog.ui:59
 msgid "Show inline media"
-msgstr ""
+msgstr "Mostrar media inline"
 
 #: ui/settings-dialog.ui:78
 msgid "Always show"
-msgstr ""
+msgstr "Mostrar siempre"
 
 #: ui/settings-dialog.ui:79
 msgid "Always hide"
-msgstr ""
+msgstr "Ocultar siempre"
 
 #: ui/settings-dialog.ui:80
 msgid "Hide in timeline"
-msgstr ""
+msgstr "Esconder en la timeline"
 
 #: ui/settings-dialog.ui:101
 msgid "Auto scroll on new tweets"
@@ -655,7 +648,7 @@ msgstr "Eliminar enlaces"
 
 #: ui/settings-dialog.ui:394
 msgid "Hide inappropriate content"
-msgstr ""
+msgstr "Ocultar contenido que pueda herir la sensibilidad de algunas personas"
 
 #: ui/settings-dialog.ui:441
 msgid "No snippets configured."
@@ -672,70 +665,69 @@ msgstr "Fragmentos"
 #: ui/shortcuts-window.ui:12
 msgctxt "shortcuts window"
 msgid "General"
-msgstr ""
+msgstr "General"
 
 #: ui/shortcuts-window.ui:17
 msgctxt "shortcuts window"
 msgid "Compose Tweet"
-msgstr ""
+msgstr "Escribir Tweet"
 
 #: ui/shortcuts-window.ui:24
 msgctxt "shortcuts window"
 msgid "Show Account settings"
-msgstr ""
+msgstr "Mostrar ajustes de la cuenta"
 
 #: ui/shortcuts-window.ui:31
 msgctxt "shortcuts window"
 msgid "Show Accounts Popover"
-msgstr ""
+msgstr "Mostrar ventana de cuentas"
 
 #: ui/shortcuts-window.ui:38
 msgctxt "shortcuts window"
 msgid "Show Application Settings"
-msgstr ""
+msgstr "Mostrar ajustes de la aplicación"
 
 #: ui/shortcuts-window.ui:45
 msgctxt "shortcuts window"
 msgid "Toggle Topbar"
-msgstr ""
+msgstr "Alternar TopBar"
 
 #: ui/shortcuts-window.ui:52
 msgctxt "shortcuts window"
 msgid "Go Back"
-msgstr ""
+msgstr "Volver"
 
 #: ui/shortcuts-window.ui:59
 msgctxt "shortcuts window"
 msgid "Go Forward"
-msgstr ""
+msgstr "Continuar"
 
 #: ui/shortcuts-window.ui:66
 msgctxt "shortcuts window"
 msgid "Go to nth page"
-msgstr ""
+msgstr "Ir a la página #"
 
 #: ui/shortcuts-window.ui:74
 msgctxt "shortcuts window"
 msgid "Tweets"
-msgstr ""
+msgstr "Tweets"
 
 #: ui/shortcuts-window.ui:79
 msgctxt "shortcuts window"
 msgid "Retweet"
-msgstr ""
+msgstr "Retwittear"
 
 #: ui/shortcuts-window.ui:86
 msgctxt "shortcuts window"
 msgid "Favorite"
-msgstr ""
+msgstr "Me gusta"
 
 #: ui/shortcuts-window.ui:93
 msgctxt "shortcuts window"
 msgid "Reply"
-msgstr ""
+msgstr "Responder"
 
 #: ui/shortcuts-window.ui:100
-#, fuzzy
 msgctxt "shortcuts window"
 msgid "Quote"
 msgstr "Citar"
@@ -743,12 +735,12 @@ msgstr "Citar"
 #: ui/shortcuts-window.ui:107
 msgctxt "shortcuts window"
 msgid "Show Details"
-msgstr ""
+msgstr "Mostrar detalles"
 
 #: ui/shortcuts-window.ui:114
 msgctxt "shortcuts window"
 msgid "Delete"
-msgstr ""
+msgstr "Eliminar"
 
 #: ui/start-conversation-entry.ui:29
 msgid "Start new conversation"
@@ -804,7 +796,7 @@ msgstr "Abrir en una nueva ventana"
 
 #: ui/user-list-entry.ui:116
 msgid "Go to profile"
-msgstr ""
+msgstr "Ir al perfil"
 
 #: ui/user-lists-widget.ui:14
 msgid "Created"
@@ -813,28 +805,3 @@ msgstr "Creada"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "Suscrito a"
-
-#~ msgid "Select banner"
-#~ msgstr "Seleccionar banner"
-
-#~ msgid "Select avatar"
-#~ msgstr "Seleccionar avatar"
-
-#~ msgid "Next"
-#~ msgstr "Siguiente"
-
-#~ msgid "Image does not meet minimum size requirements:"
-#~ msgstr "Imagen no cumple los requisitos mínimos de tamaño:"
-
-#~ msgid "Minimum width: %d pixel"
-#~ msgid_plural "Minimum width: %d pixels"
-#~ msgstr[0] "Ancho mínimo: %d pixel"
-#~ msgstr[1] "Ancho mínimo: %d píxeles"
-
-#~ msgid "Minimum height: %d pixel"
-#~ msgid_plural "Minimum height: %d pixels"
-#~ msgstr[0] "Altura mínima: %d pixel"
-#~ msgstr[1] "Altura mínima: %d píxeles"
-
-#~ msgid "Using Font Awesome by Dave Gandy - http://fontawesome.io"
-#~ msgstr "Usando Fuente Awesome de Dave Gandy - http://fontawesome.io"

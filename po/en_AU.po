@@ -9,14 +9,13 @@ msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2016-12-18 16:41+0100\n"
-"PO-Revision-Date: 2016-07-30 08:17+0000\n"
-"Last-Translator: Ryan Lerch <ryanlerch@gmail.com>\n"
-"Language-Team: English (Australia) (http://www.transifex.com/corebird/"
-"corebird/language/en_AU/)\n"
-"Language: en_AU\n"
+"PO-Revision-Date: 2016-12-19 08:56+0000\n"
+"Last-Translator: baedert <mail@baedert.org>\n"
+"Language-Team: English (Australia) (http://www.transifex.com/corebird/corebird/language/en_AU/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: en_AU\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: data/org.baedert.corebird.appdata.xml.in:5
@@ -37,8 +36,8 @@ msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:13
 msgid ""
-"Additional features include local viewing of videos, multiple inline images, "
-"Lists, Filters, multiple accounts, etc."
+"Additional features include local viewing of videos, multiple inline images,"
+" Lists, Filters, multiple accounts, etc."
 msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:21
@@ -221,11 +220,9 @@ msgstr ""
 
 #: src/widgets/AccountCreateWidget.vala:55
 msgid ""
-"Unauthorized. Most of the time, this means that there's something wrong with "
-"the Twitter servers and you should try again later"
-msgstr ""
-"Unauthorised. Most of the time, this means that there's something wrong with "
-"the Twitter servers and you should try again later"
+"Unauthorized. Most of the time, this means that there's something wrong with"
+" the Twitter servers and you should try again later"
+msgstr "Unauthorised. Most of the time, this means that there's something wrong with the Twitter servers and you should try again later"
 
 #: src/widgets/AccountCreateWidget.vala:67
 #, c-format
@@ -391,10 +388,10 @@ msgstr ""
 msgid "Autostart"
 msgstr ""
 
-#: ui/account-dialog.ui:203 ui/account-dialog.ui:260 ui/filter-list-entry.ui:93
-#: ui/list-list-entry.ui:132 ui/list-statuses-page.ui:166
-#: ui/modify-snippet-dialog.ui:108 ui/tweet-info-page.ui:10
-#: ui/tweet-list-entry.ui:10
+#: ui/account-dialog.ui:203 ui/account-dialog.ui:260
+#: ui/filter-list-entry.ui:93 ui/list-list-entry.ui:132
+#: ui/list-statuses-page.ui:166 ui/modify-snippet-dialog.ui:108
+#: ui/tweet-info-page.ui:10 ui/tweet-list-entry.ui:10
 msgid "Delete"
 msgstr "Delete"
 
@@ -724,10 +721,9 @@ msgid "Reply"
 msgstr ""
 
 #: ui/shortcuts-window.ui:100
-#, fuzzy
 msgctxt "shortcuts window"
 msgid "Quote"
-msgstr "Quote"
+msgstr ""
 
 #: ui/shortcuts-window.ui:107
 msgctxt "shortcuts window"
@@ -802,6 +798,3 @@ msgstr "Created"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "Subscribed to"
-
-#~ msgid "Using Font Awesome by Dave Gandy - http://fontawesome.io"
-#~ msgstr "Using Font Awesome by Dave Gandy - http://fontawesome.io"

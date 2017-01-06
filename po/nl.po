@@ -4,21 +4,19 @@
 #
 # Translators:
 # Geert Wirken <geert@gwirken.nl>, 2014
-# Heimen Stoffels <vistausss@outlook.com>, 2014-2015
-# Heimen Stoffels <vistausss@outlook.com>, 2015-2016
+# Heimen Stoffels <vistausss@outlook.com>, 2014-2015-2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2016-12-18 16:41+0100\n"
-"PO-Revision-Date: 2016-07-30 10:25+0000\n"
+"PO-Revision-Date: 2016-12-19 10:35+0000\n"
 "Last-Translator: Heimen Stoffels <vistausss@outlook.com>\n"
-"Language-Team: Dutch (http://www.transifex.com/corebird/corebird/language/"
-"nl/)\n"
-"Language: nl\n"
+"Language-Team: Dutch (http://www.transifex.com/corebird/corebird/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: data/org.baedert.corebird.appdata.xml.in:5
@@ -35,19 +33,13 @@ msgstr "Twitter-applicatie"
 msgid ""
 "Corebird is a native GTK+ twitter client that provides vital features such "
 "as Direct Messages (DMs), tweet notifications, conversation views."
-msgstr ""
-"Corebird is een geïntegreerde GTK+ Twitter-applicatie met ondersteuning voor "
-"de belangrijkste functionaliteiten, zoals Privéberichten (DM's), tweet-"
-"meldingen en gespreksweergaven."
+msgstr "Corebird is een geïntegreerde GTK+ Twitter-applicatie met ondersteuning voor de belangrijkste functionaliteiten, zoals Privéberichten (DM's), tweet-meldingen en gespreksweergaven."
 
 #: data/org.baedert.corebird.appdata.xml.in:13
 msgid ""
-"Additional features include local viewing of videos, multiple inline images, "
-"Lists, Filters, multiple accounts, etc."
-msgstr ""
-"Extra mogelijkheden zijn o.a. het weergeven van video's in de app zelf, "
-"meerdere bijgevoegde afbeeldingen, lijsten, filters, meerdere accounts en "
-"nog veel meer."
+"Additional features include local viewing of videos, multiple inline images,"
+" Lists, Filters, multiple accounts, etc."
+msgstr "Extra mogelijkheden zijn o.a. het weergeven van video's in de app zelf, meerdere bijgevoegde afbeeldingen, lijsten, filters, meerdere accounts en nog veel meer."
 
 #: data/org.baedert.corebird.appdata.xml.in:21
 msgid "Generic timeline view when using Corebird"
@@ -229,11 +221,9 @@ msgstr "Creëer dan een account"
 
 #: src/widgets/AccountCreateWidget.vala:55
 msgid ""
-"Unauthorized. Most of the time, this means that there's something wrong with "
-"the Twitter servers and you should try again later"
-msgstr ""
-"Niet-geautoriseerd. Meestal betekent dit dat er iets mis is met de Twitter-"
-"servers en dat u het later opnieuw moet proberen"
+"Unauthorized. Most of the time, this means that there's something wrong with"
+" the Twitter servers and you should try again later"
+msgstr "Niet-geautoriseerd. Meestal betekent dit dat er iets mis is met de Twitter-servers en dat u het later opnieuw moet proberen"
 
 #: src/widgets/AccountCreateWidget.vala:67
 #, c-format
@@ -305,7 +295,7 @@ msgstr "Openen"
 #, c-format
 msgid ""
 "The selected image is too big. The maximum file size per image is %'d MB"
-msgstr ""
+msgstr "De geselecteerde afbeelding is te groot. De maximale bestandsgrootte is %'d MB per afbeelding."
 
 #: src/window/ComposeTweetWindow.vala:290
 msgid "Back"
@@ -347,9 +337,7 @@ msgstr "Het fragment bestaat al"
 msgid ""
 "Hey, check out this new #Corebird version! \\ (•◡•) / #cool "
 "#newisalwaysbetter"
-msgstr ""
-"Hé! Moet je deze nieuwe #Corebird-versie een zien! \\ (•◡•) / #cool "
-"#nieuwisaltijdbeter"
+msgstr "Hé! Moet je deze nieuwe #Corebird-versie een zien! \\ (•◡•) / #cool #nieuwisaltijdbeter"
 
 #: src/window/UserListDialog.vala:40
 msgid "Add to or Remove User From List"
@@ -401,10 +389,10 @@ msgstr "Website"
 msgid "Autostart"
 msgstr "Automatisch opstarten"
 
-#: ui/account-dialog.ui:203 ui/account-dialog.ui:260 ui/filter-list-entry.ui:93
-#: ui/list-list-entry.ui:132 ui/list-statuses-page.ui:166
-#: ui/modify-snippet-dialog.ui:108 ui/tweet-info-page.ui:10
-#: ui/tweet-list-entry.ui:10
+#: ui/account-dialog.ui:203 ui/account-dialog.ui:260
+#: ui/filter-list-entry.ui:93 ui/list-list-entry.ui:132
+#: ui/list-statuses-page.ui:166 ui/modify-snippet-dialog.ui:108
+#: ui/tweet-info-page.ui:10 ui/tweet-list-entry.ui:10
 msgid "Delete"
 msgstr "Verwijderen"
 
@@ -662,9 +650,7 @@ msgstr "Er zijn geen fragmenten ingesteld."
 
 #: ui/settings-dialog.ui:480
 msgid "You can activate snippets by writing the keyword and pressing TAB."
-msgstr ""
-"U kunt fragmenten activeren door het sleutelwoord te typen en daarna op de "
-"TAB-toets te drukken."
+msgstr "U kunt fragmenten activeren door het sleutelwoord te typen en daarna op de TAB-toets te drukken."
 
 #: ui/settings-dialog.ui:494
 msgid "Snippets"
@@ -736,10 +722,9 @@ msgid "Reply"
 msgstr "Beantwoorden"
 
 #: ui/shortcuts-window.ui:100
-#, fuzzy
 msgctxt "shortcuts window"
 msgid "Quote"
-msgstr "Tweet citeren"
+msgstr "Citeren"
 
 #: ui/shortcuts-window.ui:107
 msgctxt "shortcuts window"
@@ -814,37 +799,3 @@ msgstr "Gecreëerd"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "Geabonneerd op"
-
-#~ msgid "Select banner"
-#~ msgstr "Omslagfoto selecteren"
-
-#~ msgid "Select avatar"
-#~ msgstr "Profielfoto selecteren"
-
-#~ msgid "Next"
-#~ msgstr "Volgende"
-
-#~ msgid "Image does not meet minimum size requirements:"
-#~ msgstr "De afbeelding voldoet niet aan de minimale grootte-vereisten:"
-
-#~ msgid "Minimum width: %d pixel"
-#~ msgid_plural "Minimum width: %d pixels"
-#~ msgstr[0] "Minimale breedte: %d pixel"
-#~ msgstr[1] "Minimale breedte: %d pixels"
-
-#~ msgid "Minimum height: %d pixel"
-#~ msgid_plural "Minimum height: %d pixels"
-#~ msgstr[0] "Minimale hoogte: %d pixel"
-#~ msgstr[1] "Minimale hoogte: %d pixels"
-
-#~ msgid ""
-#~ "Max file size exceeded\n"
-#~ "(3MB)"
-#~ msgstr ""
-#~ "De maximale bestandsgrootte is overschreden\n"
-#~ "(3MB)"
-
-#~ msgid "Using Font Awesome by Dave Gandy - http://fontawesome.io"
-#~ msgstr ""
-#~ "Corebird maakt gebruik van Font Awesome van Dave Gandy - http://"
-#~ "fontawesome.io"
