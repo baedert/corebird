@@ -100,7 +100,8 @@ class CompletionTextView : Gtk.TextView {
 #if SPELLCHECK
     var gspell_view = Gspell.TextView.get_from_gtk_text_view (this);
     gspell_view.set_inline_spell_checking (true);
-    gspell_view.set_enable_language_menu (true);
+    /* Disabled until we can rely on gspell 1.2
+       gspell_view.set_enable_language_menu (true); */
 
     var gspell_buffer = Gspell.TextBuffer.get_from_gtk_text_buffer (this.buffer);
     var checker = new Gspell.Checker (Gspell.Language.get_default ());
