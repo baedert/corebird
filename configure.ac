@@ -60,10 +60,9 @@ if test "$disable_video" = "no"; then
   pkg_modules="$pkg_modules gstreamer-video-1.0 >= 1.6"
 fi
 
-# XXX We disable gspell in the gtk4 branch since it depends on gtk3 and we can't have both.
-#if test "$disable_spellcheck" = "no"; then
-  #pkg_modules="$pkg_modules gspell-1"
-#fi
+if test "$disable_spellcheck" = "no"; then
+  pkg_modules="$pkg_modules gspell-1 >= 1.2"
+fi
 
 PKG_CHECK_MODULES(CB, [$pkg_modules])
 
