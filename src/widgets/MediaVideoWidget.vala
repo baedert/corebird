@@ -79,6 +79,7 @@ class MediaVideoWidget : Gtk.Stack {
   }
 
   private bool progress_timeout_cb () {
+#if VIDEO
     int64 duration_ns;
     int64 position_ns;
 
@@ -88,6 +89,7 @@ class MediaVideoWidget : Gtk.Stack {
       double fraction = (double) position_ns / (double) duration_ns;
       this.video_progress.set_fraction (fraction);
     }
+#endif
 
     return GLib.Source.CONTINUE;
   }
