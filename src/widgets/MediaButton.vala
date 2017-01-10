@@ -22,9 +22,9 @@ private class MediaButton : Gtk.Widget {
   private const int MIN_HEIGHT     = 40;
   private const int MIN_WIDTH      = 40;
   private Gdk.Window? event_window = null;
-  private unowned Cb.Media? _media = null;
+  private Cb.Media? _media = null;
   private static Cairo.Surface[] play_icons;
-  public unowned Cb.Media? media {
+  public Cb.Media? media {
     get {
       return _media;
     }
