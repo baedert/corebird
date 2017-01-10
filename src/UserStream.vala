@@ -213,7 +213,7 @@ public class UserStream : Object {
                              GLib.Error?    error) {
     if (buf == null) {
       if (!stopping) {
-        warning ("buf(%s) == NULL. Starting timeout...", this.account_name);
+        debug ("buf(%s) == NULL. Starting timeout...", this.account_name);
         this.start_network_timeout ();
       }
       return;
