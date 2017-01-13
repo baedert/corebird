@@ -2,11 +2,11 @@
 Name=Corebird
 GenericName=Twitter Client
 Comment=Use Twitter from within a normal desktop application
-# Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+# TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
 Keywords=twitter;
 Exec=corebird
 Type=Application
-# Translators: Do NOT translate or transliterate this text (this is an icon file name)!
+# TRANSLATORS: Do NOT translate or transliterate this text (this is an icon file name)!
 Icon=corebird
 Categories=Network;GTK;
 DBusActivatable=true
