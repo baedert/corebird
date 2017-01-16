@@ -74,7 +74,7 @@ msgstr ""
 
 #: data/org.baedert.corebird.desktop.in:11
 msgid "corebird"
-msgstr "Corebird"
+msgstr "corebird"
 
 #: src/DefaultTimeline.vala:359
 msgid "Could not load tweets"
