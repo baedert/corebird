@@ -209,18 +209,22 @@ public class AvatarWidget : Gtk.Widget {
     }
   }
 
-  public override void get_preferred_width (out int min, out int nat) {
-    min = size;
-    nat = size;
-  }
+  public override void measure (Gtk.Orientation orientation,
+                                int for_size,
+                                out int min, out int nat,
+                                out int min_baseline, out int nat_baseline) {
 
-  public override void get_preferred_height (out int min, out int nat) {
-    if (overlap) {
-      min = size - OVERLAP_DIST;
-      nat = size - OVERLAP_DIST;
-    } else {
+    if (orientation == Gtk.Orientation.HORIZONTAL) {
       min = size;
       nat = size;
+    } else {
+      if (overlap) {
+        min = size - OVERLAP_DIST;
+        nat = size - OVERLAP_DIST;
+      } else {
+        min = size;
+        nat = size;
+      }
     }
   }
 }

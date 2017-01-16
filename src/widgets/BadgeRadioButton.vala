@@ -62,7 +62,7 @@ public class BadgeRadioButton : Gtk.RadioButton {
       bounds.size.width  = BADGE_SIZE;
       bounds.size.height = BADGE_SIZE;
 
-      snapshot.append (bounds, "badge", null);
+      //snapshot.append (bounds, "badge", null);
       var context = this.get_style_context ();
 
       context.save ();
