@@ -429,4 +429,46 @@ namespace Utils {
 
     return f;
   }
+
+  public string get_media_display_name (Cb.Media media) {
+    unowned string url = media.target_url ?? media.url;
+    int last_slash_index = url.last_index_of_char ('/');
+
+    string filename = url.substring (last_slash_index + 1);
+    filename = filename.replace (":orig", "");
+
+    int last_dot_index = filename.last_index_of_char ('.');
+    if (last_dot_index == -1) {
+      // No file extension, guess!
+      if (media.is_video ()) {
+        filename += ".mp4";
+      } else {
+        filename += ".jpg";
+      }
+    }
+
+    return filename;
+  }
+
+  public async void download_file (string url, GLib.OutputStream out_stream) {
+    var msg = new Soup.Message ("GET", url);
+    GLib.SourceFunc cb = download_file.callback;
+
+    SOUP_SESSION.queue_message (msg, (_s, _msg) => {
+      try {
+        var in_stream = new MemoryInputStream.from_data (_msg.response_body.data,
+                                                         GLib.g_free);
+
+        out_stream.splice (in_stream,
+                           GLib.OutputStreamSpliceFlags.CLOSE_SOURCE |
+                           GLib.OutputStreamSpliceFlags.CLOSE_TARGET,
+                           null);
+      } catch (GLib.Error e) {
+        warning (e.message);
+      } finally {
+        cb ();
+      }
+    });
+    yield;
+  }
 }

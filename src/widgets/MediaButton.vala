@@ -39,6 +39,9 @@ private class MediaButton : Gtk.Widget {
         } else {
           this.media_alpha = 1.0;
         }
+        bool is_m3u8 = _media.url.has_suffix (".m3u8");
+        ((GLib.SimpleAction)actions.lookup_action ("save-as")).set_enabled (!is_m3u8);
+
       }
       if (value != null && (value.type == Cb.MediaType.IMAGE ||
                             value.type == Cb.MediaType.GIF)) {
@@ -100,7 +103,7 @@ private class MediaButton : Gtk.Widget {
     this.menu_model = new GLib.Menu ();
     menu_model.append (_("Open in Browser"), "media.open-in-browser");
 
-    menu_model.append (_("Save as"), "media.save-as");
+    menu_model.append (_("Save as…"), "media.save-as");
 
     this.layout = this.create_pango_layout ("0%");
     this.press_gesture = new Gtk.GestureMultiPress (this);
@@ -255,13 +258,48 @@ private class MediaButton : Gtk.Widget {
   }
 
   private void save_as_activated (GLib.SimpleAction a, GLib.Variant? v) {
-    // TODO: Show a file selection dialog
+    string title;
+    if (_media.is_video ())
+      title = _("Save Video");
+    else
+      title = _("Save Image");
 
-    string dest = "/home/baedert/foo.png";
+    var filechooser = new Gtk.FileChooserDialog (title,
+                                                 this.window,
+                                                 Gtk.FileChooserAction.SAVE,
+                                                 _("Cancel"),
+                                                 Gtk.ResponseType.CANCEL,
+                                                 _("Save"),
+                                                 Gtk.ResponseType.ACCEPT);
 
-    if (_media != null && _media.surface != null) {
-      _media.surface.write_to_png (dest);
-    }
+    filechooser.set_current_name (Utils.get_media_display_name (_media));
+    filechooser.response.connect ((id) => {
+      if (id == Gtk.ResponseType.ACCEPT) {
+        var file = GLib.File.new_for_path (filechooser.get_filename ());
+        // Download the file
+        Utils.get_media_display_name (_media);
+        string url = _media.target_url ?? _media.url;
+        debug ("Downloading %s to %s", url, filechooser.get_filename ());
+
+        GLib.OutputStream? out_stream = null;
+        try {
+          out_stream = file.create (0, null);
+        } catch (GLib.Error e) {
+          Utils.show_error_dialog (e.message, this.window);
+          warning (e.message);
+        }
+
+        if (out_stream != null) {
+          Utils.download_file.begin (url, out_stream, () => {
+            debug ("Download of %s finished", url);
+          });
+        }
+      }
+
+      filechooser.destroy ();
+    });
+
+    filechooser.show_all ();
   }
 
   public override Gtk.SizeRequestMode get_request_mode () {
