@@ -52,7 +52,8 @@ private class MediaButton : Gtk.Widget {
   private GLib.SimpleActionGroup actions;
   private const GLib.ActionEntry[] action_entries = {
     {"copy-url",        copy_url_activated},
-    {"open-in-browser", open_in_browser_activated}
+    {"open-in-browser", open_in_browser_activated},
+    {"save-as",         save_as_activated},
   };
   private Pango.Layout layout;
   private Gtk.GestureMultiPress press_gesture;
@@ -98,6 +99,8 @@ private class MediaButton : Gtk.Widget {
 
     this.menu_model = new GLib.Menu ();
     menu_model.append (_("Open in Browser"), "media.open-in-browser");
+
+    menu_model.append (_("Save as"), "media.save-as");
 
     this.layout = this.create_pango_layout ("0%");
     this.press_gesture = new Gtk.GestureMultiPress (this);
@@ -248,6 +251,16 @@ private class MediaButton : Gtk.Widget {
                     Gtk.get_current_event_time ());
     } catch (GLib.Error e) {
       critical (e.message);
+    }
+  }
+
+  private void save_as_activated (GLib.SimpleAction a, GLib.Variant? v) {
+    // TODO: Show a file selection dialog
+
+    string dest = "/home/baedert/foo.png";
+
+    if (_media != null && _media.surface != null) {
+      _media.surface.write_to_png (dest);
     }
   }
 
