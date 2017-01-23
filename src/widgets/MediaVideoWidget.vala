@@ -208,7 +208,7 @@ class MediaVideoWidget : Gtk.Stack {
         string debug;
         msg.parse_error (out error, out debug);
         show_error (debug);
-        critical (error.message);
+        critical ("%s: %s", error.message, debug);
       break;
     }
 
