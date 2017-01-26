@@ -121,7 +121,6 @@ public class TweetListBox : Gtk.ListBox {
     placeholder.add_named (error_box, "error");
 
     placeholder.visible_child_name = "spinner";
-    placeholder.show_all ();
     placeholder.set_valign (Gtk.Align.CENTER);
     placeholder.set_halign (Gtk.Align.CENTER);
     this.set_placeholder (placeholder);

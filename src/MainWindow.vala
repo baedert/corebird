@@ -77,7 +77,6 @@ public class MainWindow : Gtk.ApplicationWindow {
     account_list.set_sort_func (account_sort_func);
     account_list.set_header_func (default_header_func);
     var add_entry = new AddListEntry (_("Add new Account"));
-    add_entry.show_all ();
     account_list.add (add_entry);
 
     for (uint i = 0; i < Account.get_n (); i ++) {
@@ -168,7 +167,6 @@ public class MainWindow : Gtk.ApplicationWindow {
 
     if (account != null && account.screen_name != Account.DUMMY) {
       main_widget = new MainWidget (account, this, cb);
-      main_widget.show_all ();
       this.add (main_widget);
       main_widget.switch_page (0);
       this.set_window_title (main_widget.get_page (0).get_title ());
@@ -228,7 +226,7 @@ public class MainWindow : Gtk.ApplicationWindow {
       Account dummy_acc = new Account (0, Account.DUMMY, "name");
       var window = new MainWindow (application, dummy_acc);
       get_application ().add_window (window);
-      window.show_all ();
+      window.show ();
       return;
     }
     var e = (UserListEntry)row;
@@ -493,7 +491,7 @@ public class MainWindow : Gtk.ApplicationWindow {
 
     var ctw = new ComposeTweetWindow (this, this.account, tweet,
                                       ComposeTweetWindow.Mode.REPLY);
-    ctw.show_all ();
+    ctw.show ();
   }
 
   public void mark_tweet_as_read (int64 tweet_id) {

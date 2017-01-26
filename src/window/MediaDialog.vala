@@ -60,8 +60,6 @@ class MediaDialog : Gtk.Window {
       frame.add (new_widget);
     }
 
-    new_widget.show_all ();
-
     new_widget.get_size_request (out new_width, out new_height);
     if ((new_width != cur_width ||
         new_height != cur_height) && new_width > 0 && new_height > 0) {

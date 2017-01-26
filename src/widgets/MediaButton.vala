@@ -401,7 +401,7 @@ private class MediaButton : Gtk.Widget {
         this.menu = new Gtk.Menu.from_model (menu_model);
         this.menu.attach_to_widget (this, null);
       }
-      menu.show_all ();
+      menu.show ();
       menu.popup (null, null, null, button, Gtk.get_current_event_time ());
     } else {
       this.press_gesture.set_state (Gtk.EventSequenceState.DENIED);

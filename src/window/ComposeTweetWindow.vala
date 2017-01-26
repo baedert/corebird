@@ -303,6 +303,6 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     filter.add_mime_type ("image/gif");
     filechooser.set_filter (filter);
 
-    filechooser.show_all ();
+    filechooser.show ();
   }
 }

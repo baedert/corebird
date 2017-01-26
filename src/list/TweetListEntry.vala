@@ -567,6 +567,7 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     mm_widget.margin_top = 6;
 
     if (nsfw) {
+      mm_widget.hide ();
       this.media_stack = new Gtk.Stack ();
       media_stack.transition_type = Gtk.StackTransitionType.CROSSFADE;
       media_stack.add (mm_widget);
@@ -586,7 +587,6 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       box.add (button);
 
       media_stack.add_named (box, "nsfw");
-      media_stack.show_all ();
       if (Settings.hide_nsfw_content ())
         media_stack.visible_child_name = "nsfw";
       else
@@ -600,8 +600,6 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
       }
     } else {
       /* We will never have to hide mm_widget */
-      mm_widget.show_all ();
-
       if (this.tweet.quoted_tweet != null) {
         mm_widget.margin_start = 12;
         this.quote_grid.attach (mm_widget, 0, 2, 3, 1);
@@ -665,7 +663,6 @@ public class TweetListEntry : ITwitterItem, Gtk.ListBoxRow {
     quote_time_delta.get_style_context ().add_class ("dim-label");
     quote_grid.attach (quote_time_delta, 2, 0, 1, 1);
 
-    quote_grid.show_all ();
     this.grid.attach (quote_grid, 1, 3, 6, 1);
   }
 }

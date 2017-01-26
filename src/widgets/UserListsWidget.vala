@@ -52,12 +52,10 @@ class UserListsWidget : Gtk.Box {
 
   public void hide_user_list_entry () {
     new_list_entry.hide ();
-    new_list_entry.no_show_all = true;
     user_list_label.visible = true;
     //user_list_frame.margin_top = 24;
     show_create_entry = false;
     upper_separator.visible = false;
-    upper_separator.no_show_all = true;
   }
 
   [GtkCallback]

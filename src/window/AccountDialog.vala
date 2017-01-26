@@ -364,7 +364,7 @@ public class AccountDialog : Gtk.Window {
     filter.add_mime_type ("image/jpeg");
     filechooser.set_filter (filter);
 
-    filechooser.show_all ();
+    filechooser.show ();
   }
 
   [GtkCallback]

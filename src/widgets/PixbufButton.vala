@@ -51,7 +51,7 @@ class PixbufButton : Gtk.Button {
       var source_link_item = new Gtk.MenuItem.with_label (_("Copy link"));
       source_link_item.activate.connect (source_link_item_activate_cb);
       menu.add (source_link_item);
-      menu.show_all ();
+      menu.show ();
       menu.popup (null, null, null, evt.button, evt.time);
       return true;
     }

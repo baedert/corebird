@@ -649,13 +649,13 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
   private void tweet_to_activated (GLib.SimpleAction a, GLib.Variant? v) {
     var cw = new ComposeTweetWindow (_main_window, account, null);
     cw.set_text ("@" + screen_name + " ");
-    cw.show_all ();
+    cw.show ();
   }
 
   private void add_remove_list_activated (GLib.SimpleAction a, GLib.Variant? v) {
     var uld = new UserListDialog (_main_window, account, user_id);
     uld.load_lists ();
-    uld.show_all ();
+    uld.show ();
   }
 
 

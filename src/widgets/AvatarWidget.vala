@@ -142,7 +142,7 @@ public class AvatarWidget : Gtk.Widget {
     bounds.origin.y = 0;
     bounds.size.width = width;
     bounds.size.height = height;
-    var ctx = snapshot.append_cairo_node (bounds, "Avatar Surface", null);
+    var ctx = snapshot.append_cairo (bounds, "Avatar Surface", null);
     double surface_scale;
     this._surface.get_device_scale (out surface_scale, out surface_scale);
 

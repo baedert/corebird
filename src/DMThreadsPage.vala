@@ -179,7 +179,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
             this.progress_row = null;
           }
 
-          top_list.show_all ();
+          top_list.show ();
 
           foreach (Gtk.Widget w in thread_list.get_children ()) {
             w.show ();

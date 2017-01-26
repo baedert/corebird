@@ -85,7 +85,6 @@ public class Corebird : Gtk.Application {
       var opt_context = new OptionContext ("");
       opt_context.set_help_enabled (true);
       opt_context.add_main_entries (options, Config.GETTEXT_PACKAGE);
-      opt_context.add_group (Gtk.get_option_group (false));
 #if VIDEO
       opt_context.add_group (Gst.init_get_option_group ());
 #endif
@@ -173,7 +172,7 @@ public class Corebird : Gtk.Application {
     var ad = new AboutDialog ();
     ad.modal = true;
     ad.set_transient_for (active_window);
-    ad.show_all ();
+    ad.show ();
   }
 
   private void show_shortcuts_activated () {
@@ -286,7 +285,7 @@ public class Corebird : Gtk.Application {
       } else if (n_accounts == 0) {
         var window = new MainWindow (this, null);
         add_window (window);
-        window.show_all ();
+        window.show ();
       } else {
         /* We have multiple configured accounts but still none in autostart.
            This should never happen but we handle the case anyway by just opening
@@ -323,7 +322,7 @@ public class Corebird : Gtk.Application {
 
         var m = new MainWindow (this, null);
         add_window (m);
-        m.show_all ();
+        m.show ();
       }
     }
   }
@@ -353,7 +352,7 @@ public class Corebird : Gtk.Application {
   public void add_window_for_account (Account account) {
     var window = new MainWindow (this, account);
     this.add_window (window);
-    window.show_all ();
+    window.show ();
   }
 
   /**
@@ -496,7 +495,7 @@ public class Corebird : Gtk.Application {
       bundle.put_int64 ("sender_id", sender_id);
       main_window.main_widget.switch_page (Page.DM, bundle);
 
-      main_window.show_all ();
+      main_window.show ();
     }
   }
 
@@ -514,7 +513,7 @@ public class Corebird : Gtk.Application {
       }
       main_window = new MainWindow (this, account);
       this.add_window (main_window);
-      main_window.show_all ();
+      main_window.show ();
     }
   }
 

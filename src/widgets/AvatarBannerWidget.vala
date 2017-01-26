@@ -38,13 +38,11 @@ public class AvatarBannerWidget : Gtk.Container {
 
     /* set_banner_button */
     this.set_banner_button = new PixbufButton ();
-    set_banner_button.show_all ();
     set_banner_button.clicked.connect (banner_clicked_cb);
     this.add (set_banner_button);
 
     /* set_avatar_button */
     this.set_avatar_button = new PixbufButton ();
-    set_avatar_button.show_all ();
     set_avatar_button.clicked.connect (avatar_clicked_cb);
     this.add (set_avatar_button);
     Settings.get ().bind ("round-avatars", set_avatar_button, "round",

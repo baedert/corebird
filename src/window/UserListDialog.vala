@@ -83,7 +83,6 @@ class UserListDialog : Gtk.Dialog {
           l.disable ();
         list_list_box.add (l);
       }
-      this.show_all ();
     });
 
     var call = account.proxy.new_call ();

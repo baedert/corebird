@@ -118,7 +118,7 @@ void double_download () {
 int main (string[] args) {
   GLib.Test.init (ref args);
   GLib.Environment.set_variable ("GSETTINGS_BACKEND", "memory", true);
-  Gtk.init (ref args);
+  Gtk.init ();
   Settings.init ();
   Dirs.create_dirs ();
   Utils.init_soup_session ();

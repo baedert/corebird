@@ -49,12 +49,12 @@ class FilterPage : Gtk.ScrolledWindow, IPage, IMessageReceiver {
       if (row is AddListEntry) {
         var dialog = new ModifyFilterDialog (_main_window, account);
         dialog.filter_added.connect (filter_added_cb);
-        dialog.show_all ();
+        dialog.show ();
       } else if (row is FilterListEntry) {
         var filter_row = (FilterListEntry) row;
         var dialog = new ModifyFilterDialog (_main_window, account, filter_row.filter);
         dialog.filter_added.connect (filter_added_cb);
-        dialog.show_all ();
+        dialog.show ();
       }
     });
 

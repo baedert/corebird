@@ -237,7 +237,7 @@ class CompletionTextView : Gtk.TextView {
     completion_window.move (x - 1, y);
     completion_window.resize (alloc.width + 2, 50);
     completion_list.foreach ((w) => { completion_list.remove (w);});
-    completion_window.show_all ();
+    completion_window.show ();
   }
 
   private void hide_completion_window () {
@@ -291,7 +291,6 @@ class CompletionTextView : Gtk.TextView {
         completion_list.select_row (completion_list.get_row_at_index (0));
         current_match = 0;
       }
-      completion_list.show_all ();
     }
   }
 

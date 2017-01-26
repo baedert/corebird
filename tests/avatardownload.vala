@@ -60,7 +60,7 @@ void double_download ()
 
 int main (string[] args) {
   GLib.Test.init (ref args);
-  Gtk.init (ref args);
+  Gtk.init ();
   Settings.init ();
   Utils.init_soup_session ();
 

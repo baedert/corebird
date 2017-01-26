@@ -86,7 +86,7 @@ void non_default_mention () {
 
 void main (string[] args) {
   GLib.Test.init (ref args);
-  Gtk.init (ref args);
+  Gtk.init ();
   new Corebird ();
   GLib.Test.add_func ("/highlighting/normal", normal);
   GLib.Test.add_func ("/highlighting/mention", mention);
