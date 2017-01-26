@@ -33,20 +33,6 @@ class AspectImage : Gtk.Widget {
       this.queue_draw ();
     }
   }
-  private double _scale = 1.0;
-  public double scale {
-    get {
-      return _scale;
-    }
-    set {
-      if (value > 1.0)
-        value = 1.0;
-
-      this._scale = value;
-      this.queue_resize ();
-    }
-  }
-
   private Cairo.Surface? old_surface;
   private Cairo.ImageSurface pixbuf_surface;
 
@@ -101,14 +87,8 @@ class AspectImage : Gtk.Widget {
       min = 1;
       nat = pixbuf_surface.get_width ();
     } else {
-      double scale_x = for_size  / (double)pixbuf_surface.get_width ();
-      if (scale_x > 1)
-        scale_x = 1;
-
-      double final_height = scale_x * pixbuf_surface.get_height ();
-
-      min = (int)(final_height * _scale);
-      nat = (int)(final_height * _scale);
+      min_height = pixbuf_surface.get_height ();
+      nat_height = pixbuf_surface.get_height ();
     }
   }
 
@@ -125,20 +105,9 @@ class AspectImage : Gtk.Widget {
     int height = get_allocated_height ();
 
     double scale_x = width  / (double)pixbuf_surface.get_width ();
-    double scale_y = scale_x;
-    int y = 0;
 
-    /* Never scale it vertically down, instead move it up */
-    if (scale_y > 1) {
-      scale_y = 1;
-    }
-
-    int view_height = (int)(pixbuf_surface.get_height () * scale_y);
-    y = height - view_height;
-
-
-    ct.rectangle (0, 0, width, view_height);
-    ct.scale (scale_x, scale_y);
+    ct.rectangle (0, 0, width, height);
+    ct.scale (scale_x, 1.0);
 
 
     ct.push_group ();
