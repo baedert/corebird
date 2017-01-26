@@ -29,12 +29,20 @@ class AspectImage : Gtk.Widget {
 
         this.pixbuf_surface = (Cairo.ImageSurface)Gdk.cairo_surface_create_from_pixbuf (value, 1,
                                                                                         this.get_window ());
+        bg_color.alpha = 0.0;
       }
       this.queue_draw ();
     }
   }
+  public string color_string {
+    set {
+      bg_color.parse (value);
+    }
+  }
+
+  private Gdk.RGBA bg_color;
   private Cairo.Surface? old_surface;
-  private Cairo.ImageSurface pixbuf_surface;
+  private Cairo.ImageSurface? pixbuf_surface = null;
 
 
   public AspectImage () {}
@@ -97,14 +105,12 @@ class AspectImage : Gtk.Widget {
   }
 
   public override bool draw (Cairo.Context ct) {
-    if (this.pixbuf_surface == null)
-      return Gdk.EVENT_PROPAGATE;
-
-
     int width  = get_allocated_width ();
     int height = get_allocated_height ();
 
-    double scale_x = width  / (double)pixbuf_surface.get_width ();
+    double scale_x = 1.0;
+    if (bg_color.alpha == 0.0)
+      scale_x = width  / (double)pixbuf_surface.get_width ();
 
     ct.rectangle (0, 0, width, height);
     ct.scale (scale_x, 1.0);
@@ -118,8 +124,11 @@ class AspectImage : Gtk.Widget {
     } else
       alpha = 1.0;
 
+    if (bg_color.alpha == 0.0)
+      ct.set_source_surface (this.pixbuf_surface, 0, 0);
+    else
+      ct.set_source_rgba (bg_color.red, bg_color.green, bg_color.blue, bg_color.alpha);
 
-    ct.set_source_surface (this.pixbuf_surface, 0, 0);
     if (in_transition)
       ct.paint_with_alpha (alpha);
     else
