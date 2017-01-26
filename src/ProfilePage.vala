@@ -161,6 +161,10 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     this.user_id = user_id;
     follow_button.sensitive = (user_id != account.id);
 
+
+    loading_stack.visible_child_name = "progress";
+    progress_spinner.start ();
+
     set_banner (null);
     load_friendship.begin ();
     load_profile_data.begin (user_id);
@@ -192,9 +196,6 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
   }
 
   private async void load_profile_data (int64 user_id) {
-    loading_stack.visible_child_name = "progress";
-    progress_spinner.start ();
-
     follow_button.sensitive = false;
     var call = account.proxy.new_call ();
     call.set_method ("GET");
@@ -256,6 +257,9 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     if (root.has_member ("profile_banner_url")) {
       string banner_base_url = root.get_string_member ("profile_banner_url");
       load_profile_banner (banner_base_url, user_id);
+    } else {
+      string color = root.get_string_member ("profile_background_color");
+      banner_image.color_string = "#" + color;
     }
 
     string display_url = "";
