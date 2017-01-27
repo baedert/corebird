@@ -1,4 +1,4 @@
-# Corebird 1.4.1
+# Corebird 1.4.2
 
 
 [![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=baedert&url=http://github.com/baedert/corebird&title=corebird&language=vala&tags=github&category=software)
