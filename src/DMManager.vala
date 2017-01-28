@@ -104,7 +104,7 @@ class DMManager : GLib.Object {
     TweetUtils.load_threaded.begin (call, null, (obj, res) => {
       try {
         Json.Node? root = TweetUtils.load_threaded.end (res);
-        on_dm_result (root);
+        on_dm_result (root, true);
       } catch (GLib.Error e) {
         warning (e.message);
       }
@@ -121,7 +121,7 @@ class DMManager : GLib.Object {
     TweetUtils.load_threaded.begin (sent_call, null, (obj, res) => {
       try {
         Json.Node? root = TweetUtils.load_threaded.end (res);
-        on_dm_result (root);
+        on_dm_result (root, false);
       } catch (GLib.Error e) {
         warning (e.message);
       }
@@ -131,7 +131,7 @@ class DMManager : GLib.Object {
     yield;
   }
 
-  private void on_dm_result (Json.Node? root) {
+  private void on_dm_result (Json.Node? root, bool received) {
     var root_arr = root.get_array ();
     debug ("sent: %u", root_arr.get_length ());
     if (root_arr.get_length () > 0) {
@@ -139,7 +139,11 @@ class DMManager : GLib.Object {
       root_arr.foreach_element ((arr, pos, node) => {
         var dm_obj = node.get_object ();
         if (dm_obj.get_int_member ("sender_id") == account.id) {
-          save_message (dm_obj, true);
+          if (received) {
+            update_thread (dm_obj, true);
+          } else {
+            save_message (dm_obj, true);
+          }
         } else {
           update_thread (dm_obj, true);
         }
@@ -150,7 +154,8 @@ class DMManager : GLib.Object {
 
   public void insert_message (Json.Object dm_obj) {
     if (dm_obj.get_int_member ("sender_id") == account.id) {
-      save_message (dm_obj, false);
+      //save_message (dm_obj, false);
+      update_thread (dm_obj, false);
     } else {
       update_thread (dm_obj, false);
     }
@@ -160,7 +165,6 @@ class DMManager : GLib.Object {
   private void update_thread (Json.Object dm_obj, bool initial) {
     int64 sender_id  = dm_obj.get_int_member ("sender_id");
     int64 message_id = dm_obj.get_int_member ("id");
-    assert (sender_id != account.id);
 
     string source_text = dm_obj.get_string_member ("text");
 
@@ -220,7 +224,8 @@ class DMManager : GLib.Object {
 
     /* This will exctract the json data again, etc. but it's still easier than
      * replacing entities here... */
-    save_message (dm_obj, initial);
+    if (sender_id != account.id)
+      save_message (dm_obj, initial);
   }
 
 
