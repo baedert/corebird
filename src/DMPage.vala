@@ -218,12 +218,17 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
 
     var now = new GLib.DateTime.now_local ();
     // Load messages
-    account.db.select ("dms").cols ("from_id", "to_id", "text", "from_name", "from_screen_name",
-                                    "timestamp", "id")
-              .where (@"`from_id`='$user_id' OR `to_id`='$user_id'")
-              .order ("timestamp DESC")
-              .limit (35)
-              .run ((vals) => {
+    var query = account.db.select ("dms")
+                           .cols ("from_id", "to_id", "text", "from_name", "from_screen_name",
+                                  "timestamp", "id");
+    if (user_id == account.id)
+      query.where (@"`from_id`='$user_id' AND `to_id`='$user_id'");
+    else
+      query.where (@"`from_id`='$user_id' OR `to_id`='$user_id'");
+
+    query.order ("timestamp DESC")
+         .limit (35)
+         .run ((vals) => {
       int64 id = int64.parse (vals[6]);
       if (id < lowest_id)
         lowest_id = id;
