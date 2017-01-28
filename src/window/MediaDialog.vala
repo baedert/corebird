@@ -21,12 +21,26 @@ class MediaDialog : Gtk.Window {
   private Gtk.Frame frame;
   private unowned Cb.Tweet tweet;
   private int cur_index = 0;
+  private Gtk.GestureMultiPress button_gesture;
 
   public MediaDialog (Cb.Tweet tweet, int start_media_index) {
     Cb.Media cur_media = tweet.get_medias()[start_media_index];
     this.tweet = tweet;
     this.cur_index = start_media_index;
+    this.button_gesture = new Gtk.GestureMultiPress (this);
+    this.button_gesture.set_button (0);
+    this.button_gesture.set_propagation_phase (Gtk.PropagationPhase.CAPTURE);
+    this.button_gesture.pressed.connect (button_pressed_cb);
+
     change_media (cur_media);
+  }
+
+  private void button_pressed_cb (Gtk.GestureMultiPress gesture,
+                                  int                   n_press,
+                                  double                x,
+                                  double                y) {
+    button_gesture.set_state (Gtk.EventSequenceState.CLAIMED);
+    this.destroy ();
   }
 
   private void change_media (Cb.Media media) {
@@ -84,11 +98,4 @@ class MediaDialog : Gtk.Window {
 
     return Gdk.EVENT_PROPAGATE;
   }
-
-  [GtkCallback]
-  private bool button_press_event_cb () {
-    this.destroy ();
-    return Gdk.EVENT_STOP;
-  }
-
 }

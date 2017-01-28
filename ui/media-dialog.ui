@@ -5,7 +5,6 @@
     <property name="type-hint">dialog</property>
     <property name="decorated">False</property>
     <signal name="key-press-event" handler="key_press_event_cb"/>
-    <signal name="button-press-event" handler="button_press_event_cb"/>
     <child>
       <object class="GtkFrame" id="frame">
         <property name="visible">1</property>
