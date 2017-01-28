@@ -112,6 +112,10 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
       if (obj.get_int_member ("sender_id") != this.user_id)
         return;
 
+      /* Writing with ourselves, we have the message already */
+      if (this.user_id == this.account.id)
+        return;
+
       var text = obj.get_string_member ("text");
       if (obj.has_member ("entities")) {
         var urls = obj.get_object_member ("entities").get_array_member ("urls");
