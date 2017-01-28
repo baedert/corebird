@@ -18,16 +18,7 @@
 [GtkTemplate (ui = "/org/baedert/corebird/ui/media-dialog.ui")]
 class MediaDialog : Gtk.Window {
   [GtkChild]
-  //private Gtk.Overlay overlay;
   private Gtk.Frame frame;
-  //[GtkChild]
-  //private Gtk.Button next_button;
-  //[GtkChild]
-  //private Gtk.Button back_button;
-  //[GtkChild]
-  //private Gtk.Revealer back_revealer;
-  //[GtkChild]
-  //private Gtk.Revealer next_revealer;
   private unowned Cb.Tweet tweet;
   private int cur_index = 0;
 
@@ -66,16 +57,6 @@ class MediaDialog : Gtk.Window {
       this.resize (new_width, new_height);
     }
     this.queue_resize ();
-
-    //if (cur_index >= tweet.medias.length - 1)
-      //next_button.hide ();
-    //else
-      //next_button.show ();
-
-    //if (cur_index <= 0)
-      //back_button.hide ();
-    //else
-      //back_button.show ();
   }
 
   private void next_media () {
@@ -91,17 +72,6 @@ class MediaDialog : Gtk.Window {
       change_media (tweet.get_medias ()[cur_index]);
     }
   }
-
-  //[GtkCallback]
-  //private void next_button_clicked_cb () {
-    //next_media ();
-  //}
-
-  //[GtkCallback]
-  //private void back_button_clicked_cb () {
-    //previous_media ();
-  //}
-
 
   [GtkCallback]
   private bool key_press_event_cb (Gdk.EventKey evt) {
@@ -120,32 +90,5 @@ class MediaDialog : Gtk.Window {
     this.destroy ();
     return Gdk.EVENT_STOP;
   }
-
-  [GtkCallback]
-  private bool leave_notify_cb () {
-    //back_revealer.reveal_child= false;
-    //next_revealer.reveal_child= false;
-    return Gdk.EVENT_PROPAGATE;
-  }
-
-  [GtkCallback]
-  private bool enter_notify_cb () {
-    //back_revealer.reveal_child= true;
-    //next_revealer.reveal_child= true;
-    return Gdk.EVENT_PROPAGATE;
-  }
-
-
-  /* Fake handlers to route events from the overlay box down to
-     the actual child of the GtkOverlay */
-  //[GtkCallback]
-  //private bool fake_button_press_cb (Gdk.EventButton e) {
-    //return overlay.get_child ().event (e);
-  //}
-
-  //[GtkCallback]
-  //private bool fake_scroll_event_cb (Gdk.EventScroll e) {
-    //return overlay.get_child ().event (e);
-  //}
 
 }
