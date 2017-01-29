@@ -37,12 +37,6 @@ public class Twitter : GLib.Object {
   public static Gdk.Pixbuf no_banner;
   private Cb.AvatarCache avatar_cache;
 
-#if DEBUG
-  public void debug () {
-    //this.avatar_cache.print_debug ();
-  }
-#endif
-
   public void init () {
     try {
       Twitter.no_avatar = Gdk.cairo_surface_create_from_pixbuf (
