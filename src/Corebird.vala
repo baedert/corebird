@@ -37,7 +37,6 @@ public class Corebird : Gtk.Application {
     {"reply-to-tweet",    reply_to_tweet_activated, "(xx)" },
 #if DEBUG
     {"post-json",         post_json,                "(ss)" },
-    {"print-debug",       print_debug,                     },
 #endif
   };
 
@@ -551,10 +550,6 @@ public class Corebird : Gtk.Application {
   }
 
 #if DEBUG
-  private void print_debug (GLib.SimpleAction a, GLib.Variant? v) {
-    Twitter.get ().debug ();
-  }
-
   private void post_json (GLib.SimpleAction a, GLib.Variant? value) {
     string screen_name = value.get_child_value (0).get_string ();
     string json = value.get_child_value (1).get_string ();
