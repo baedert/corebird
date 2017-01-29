@@ -222,7 +222,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     /* Always load the 200x200 px version even in loDPI since there's no 100x100px version */
     avatar_url = avatar_url.replace ("_normal", "_200x200");
 
-    // We don't use our AvatarCache here because this (73×73) avatar is only
+    // We don't use our AvatarCache here because this (100×100) avatar is only
     // ever loaded here.
     TweetUtils.download_avatar.begin (avatar_url, 100 * scale, (obj, res) => {
       Cairo.Surface surface;
@@ -256,7 +256,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
 
     if (root.has_member ("profile_banner_url")) {
       string banner_base_url = root.get_string_member ("profile_banner_url");
-      load_profile_banner (banner_base_url, user_id);
+      load_profile_banner (banner_base_url);
     } else {
       string color = root.get_string_member ("profile_background_color");
       banner_image.color_string = "#" + color;
@@ -508,7 +508,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     this.following_loading = false;
   }
 
-  private void load_profile_banner (string base_url, int64 user_id) {
+  private void load_profile_banner (string base_url) {
     string banner_url  = base_url + "/mobile_retina";
     Utils.download_pixbuf.begin (banner_url, null, (obj, res) => {
       Gdk.Pixbuf? banner = Utils.download_pixbuf.end (res);
