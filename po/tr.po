@@ -1,17 +1,17 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Timm Bäder
 # This file is distributed under the same license as the corebird package.
-#
+# 
 # Translators:
-# adem demir <scripard@gmail.com>, 2015
-# Ali GÖREN <goren.ali@yandex.com>, 2015
+# adem demir <scripard@gmail.com>, 2015,2017
+# Ali GOREN <goren.ali@yandex.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
-"POT-Creation-Date: 2016-12-18 16:41+0100\n"
-"PO-Revision-Date: 2016-12-19 08:56+0000\n"
-"Last-Translator: baedert <mail@baedert.org>\n"
+"POT-Creation-Date: 2017-01-13 17:50+0100\n"
+"PO-Revision-Date: 2017-01-19 08:48+0000\n"
+"Last-Translator: adem demir <scripard@gmail.com>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/corebird/corebird/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -57,15 +57,19 @@ msgstr ""
 msgid "Use Twitter from within a normal desktop application"
 msgstr ""
 
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or
+#. localize the semicolons! The list MUST also end with a semicolon!
 #: data/org.baedert.corebird.desktop.in:7
 msgid "twitter;"
 msgstr ""
 
+#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon
+#. file name)!
 #: data/org.baedert.corebird.desktop.in:11
 msgid "corebird"
 msgstr ""
 
-#: src/DefaultTimeline.vala:359
+#: src/DefaultTimeline.vala:365
 msgid "Could not load tweets"
 msgstr ""
 
@@ -77,7 +81,7 @@ msgstr "Doğrudan Görüşme"
 #, c-format
 msgid "%d new Message from %s"
 msgid_plural "%d new Messages from %s"
-msgstr[0] "%2$s Kullanıcısından %1$d Yeni Mesaj"
+msgstr[0] "%s Kullanıcısından %d Yeni Mesaj"
 
 #: src/DMThreadsPage.vala:213 src/UserEventReceiver.vala:94
 #, c-format
@@ -89,7 +93,7 @@ msgid "Direct Messages"
 msgstr "Direkt Mesajlar"
 
 #: src/FavoritesTimeline.vala:67 src/FavoritesTimeline.vala:71
-#: src/TweetInfoPage.vala:486
+#: src/TweetInfoPage.vala:479
 msgid "Favorites"
 msgstr "Favoriler"
 
@@ -127,7 +131,7 @@ msgid "(%d unread)"
 msgid_plural "(%d unread)"
 msgstr[0] "(%d Okunmamış)"
 
-#: src/ListsPage.vala:120 src/ListsPage.vala:125 ui/profile-page.ui:364
+#: src/ListsPage.vala:120 src/ListsPage.vala:125 ui/profile-page.ui:365
 msgid "Lists"
 msgstr "Listeler"
 
@@ -148,7 +152,7 @@ msgstr ""
 msgid "Show anyway"
 msgstr ""
 
-#: src/MainWindow.vala:78
+#: src/MainWindow.vala:79
 msgid "Add new Account"
 msgstr ""
 
@@ -174,23 +178,23 @@ msgstr "@%s Kullanıcısına Tweetle"
 msgid "Search"
 msgstr "Ara"
 
-#: src/TweetInfoPage.vala:302
+#: src/TweetInfoPage.vala:295
 msgid "Could not show tweet"
 msgstr "Tweet Gösterilemiyor"
 
-#: src/TweetInfoPage.vala:485
+#: src/TweetInfoPage.vala:478
 msgid "Retweets"
 msgstr "Yeniden Tweetlenenler"
 
-#: src/TweetInfoPage.vala:494 src/widgets/MediaButton.vala:100
+#: src/TweetInfoPage.vala:487 src/widgets/MediaButton.vala:100
 msgid "Open in Browser"
 msgstr "Tarayıcıda Aç"
 
-#: src/TweetInfoPage.vala:494
+#: src/TweetInfoPage.vala:487
 msgid "Source"
 msgstr "Kaynak"
 
-#: src/TweetInfoPage.vala:545
+#: src/TweetInfoPage.vala:533
 msgid "Tweet Details"
 msgstr "Tweet Detayları"
 
@@ -210,7 +214,7 @@ msgstr "%dh"
 
 #: src/widgets/AccountCreateWidget.vala:40
 msgid "Don't have an account yet?"
-msgstr "Henüz Bir Hesabınız Yok Mu?"
+msgstr "Henüz bir hesabınız yok mu?"
 
 #: src/widgets/AccountCreateWidget.vala:40
 msgid "Create one"
@@ -461,15 +465,15 @@ msgstr ""
 msgid "Load more"
 msgstr "Daha Fazla Getir"
 
-#: ui/main-window.ui:65
+#: ui/main-window.ui:64
 msgid "Show configured accounts"
 msgstr "Hesap Yapılandırmalarını Göster"
 
-#: ui/main-window.ui:84
+#: ui/main-window.ui:82
 msgid "Compose tweet"
 msgstr "Tweet Oluştur"
 
-#: ui/main-window.ui:101
+#: ui/main-window.ui:99
 msgid "New tweet"
 msgstr "Yeni Tweet"
 
@@ -539,17 +543,17 @@ msgstr "Retweetler Kapalı"
 
 #: ui/profile-page.ui:167
 msgid "Follows you"
-msgstr "Seni Takip Edenler"
+msgstr "Takip edenler"
 
-#: ui/profile-page.ui:241 ui/search-page.ui:74 ui/settings-dialog.ui:420
+#: ui/profile-page.ui:242 ui/search-page.ui:74 ui/settings-dialog.ui:420
 msgid "Tweets"
 msgstr "Tweetler"
 
-#: ui/profile-page.ui:282
+#: ui/profile-page.ui:283
 msgid "Followers"
 msgstr "Takipçiler"
 
-#: ui/profile-page.ui:323
+#: ui/profile-page.ui:324
 msgid "Following"
 msgstr "Takiptekiler"
 

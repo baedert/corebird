@@ -1,23 +1,24 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Timm Bäder
 # This file is distributed under the same license as the corebird package.
-#
+# 
 # Translators:
-# Alex Baranov <albar@joybits.org>, 2016
 # Alexander <atrigub@gmail.com>, 2016
+# Alex Baranov <albar@joybits.org>, 2016
 # Andrew Makarov, 2015
 # Dmitry Kireev <dinimito@mail.ru>, 2015
 # Ivlev Denis <ivlevdenis.ru@gmail.com>, 2015
 # Max Koloskov <mirrherow@gmail.com>, 2015
 # Mikhail Ivanov <mivanov@mirantis.com>, 2016
 # NetFoHack <vanek316@gmail.com>, 2015
+# Yevgeny Kvitchenko <kvit4.ko@gmail.com>, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
-"POT-Creation-Date: 2016-12-18 16:41+0100\n"
-"PO-Revision-Date: 2016-12-19 08:56+0000\n"
-"Last-Translator: baedert <mail@baedert.org>\n"
+"POT-Creation-Date: 2017-01-13 17:50+0100\n"
+"PO-Revision-Date: 2017-01-17 17:35+0000\n"
+"Last-Translator: Yevgeny Kvitchenko <kvit4.ko@gmail.com>\n"
 "Language-Team: Russian (http://www.transifex.com/corebird/corebird/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -49,7 +50,7 @@ msgstr "Дополнительные функции включают в себя
 
 #: data/org.baedert.corebird.appdata.xml.in:21
 msgid "Generic timeline view when using Corebird"
-msgstr ""
+msgstr "Общий вид ленты при использовании Corebird"
 
 #: data/org.baedert.corebird.appdata.xml.in:25
 msgid "Typical Twitter profile"
@@ -63,15 +64,19 @@ msgstr "Настройки аккаунта можно изменить"
 msgid "Use Twitter from within a normal desktop application"
 msgstr "Пользуйтесь Твиттером как обычным приложением"
 
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or
+#. localize the semicolons! The list MUST also end with a semicolon!
 #: data/org.baedert.corebird.desktop.in:7
 msgid "twitter;"
 msgstr "twitter;"
 
+#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon
+#. file name)!
 #: data/org.baedert.corebird.desktop.in:11
 msgid "corebird"
 msgstr "corebird"
 
-#: src/DefaultTimeline.vala:359
+#: src/DefaultTimeline.vala:365
 msgid "Could not load tweets"
 msgstr "Не получается загрузить твиты"
 
@@ -98,7 +103,7 @@ msgid "Direct Messages"
 msgstr "Сообщения"
 
 #: src/FavoritesTimeline.vala:67 src/FavoritesTimeline.vala:71
-#: src/TweetInfoPage.vala:486
+#: src/TweetInfoPage.vala:479
 msgid "Favorites"
 msgstr "Избранные"
 
@@ -142,7 +147,7 @@ msgstr[1] "(%d не прочитано)"
 msgstr[2] "(%d не прочитано)"
 msgstr[3] "(%d не прочитано)"
 
-#: src/ListsPage.vala:120 src/ListsPage.vala:125 ui/profile-page.ui:364
+#: src/ListsPage.vala:120 src/ListsPage.vala:125 ui/profile-page.ui:365
 msgid "Lists"
 msgstr "Списки"
 
@@ -153,7 +158,7 @@ msgstr "Список"
 #: src/list/TweetListEntry.vala:434
 #, c-format
 msgid "Block %s"
-msgstr ""
+msgstr "Блокировать %s"
 
 #: src/list/TweetListEntry.vala:575
 msgid "This tweet contains images marked as inappropriate"
@@ -163,7 +168,7 @@ msgstr "Медиафайлы могут носить деликатный хар
 msgid "Show anyway"
 msgstr "Все равно показать"
 
-#: src/MainWindow.vala:78
+#: src/MainWindow.vala:79
 msgid "Add new Account"
 msgstr "Добавить новый аккаунт"
 
@@ -189,23 +194,23 @@ msgstr "Твитнуть @%s "
 msgid "Search"
 msgstr "Поиск"
 
-#: src/TweetInfoPage.vala:302
+#: src/TweetInfoPage.vala:295
 msgid "Could not show tweet"
 msgstr "Не удалось показать Твит"
 
-#: src/TweetInfoPage.vala:485
+#: src/TweetInfoPage.vala:478
 msgid "Retweets"
 msgstr "Ретвиты"
 
-#: src/TweetInfoPage.vala:494 src/widgets/MediaButton.vala:100
+#: src/TweetInfoPage.vala:487 src/widgets/MediaButton.vala:100
 msgid "Open in Browser"
 msgstr "Открыть в браузере"
 
-#: src/TweetInfoPage.vala:494
+#: src/TweetInfoPage.vala:487
 msgid "Source"
 msgstr "Источник"
 
-#: src/TweetInfoPage.vala:545
+#: src/TweetInfoPage.vala:533
 msgid "Tweet Details"
 msgstr "Подробности твита"
 
@@ -307,7 +312,7 @@ msgstr "Открыть"
 #, c-format
 msgid ""
 "The selected image is too big. The maximum file size per image is %'d MB"
-msgstr ""
+msgstr "Выбранное изображение слишком велико. Максимальный размер файла изображения %'d MB"
 
 #: src/window/ComposeTweetWindow.vala:290
 msgid "Back"
@@ -327,23 +332,23 @@ msgstr "Не совпадает"
 
 #: src/window/ModifySnippetDialog.vala:44
 msgid "Modify Snippet"
-msgstr ""
+msgstr "Изменить сниппет"
 
 #: src/window/ModifySnippetDialog.vala:63
 msgid "Snippet can't be empty"
-msgstr ""
+msgstr "Сниппет не может быть пустым"
 
 #: src/window/ModifySnippetDialog.vala:70
 msgid "Replacement can't be empty"
-msgstr ""
+msgstr "Замена не может быть пустой"
 
 #: src/window/ModifySnippetDialog.vala:78
 msgid "Snippet may not contain whitespace"
-msgstr ""
+msgstr "Сниппет не может содержать пробелы"
 
 #: src/window/ModifySnippetDialog.vala:86
 msgid "Snippet already exists"
-msgstr ""
+msgstr "Сниппеты уже существуют"
 
 #: src/window/SettingsDialog.vala:83
 msgid ""
@@ -476,15 +481,15 @@ msgstr "Описание"
 msgid "Load more"
 msgstr "Ещё..."
 
-#: ui/main-window.ui:65
+#: ui/main-window.ui:64
 msgid "Show configured accounts"
 msgstr "Настройки аккаунтов"
 
-#: ui/main-window.ui:84
+#: ui/main-window.ui:82
 msgid "Compose tweet"
 msgstr "Написать твит"
 
-#: ui/main-window.ui:101
+#: ui/main-window.ui:99
 msgid "New tweet"
 msgstr "Новый твит"
 
@@ -546,7 +551,7 @@ msgstr "Заблокирован"
 
 #: ui/profile-page.ui:24
 msgid "Muted"
-msgstr ""
+msgstr "Беззвучно"
 
 #: ui/profile-page.ui:28
 msgid "Retweets disabled"
@@ -556,21 +561,21 @@ msgstr "Ретвиты отключены"
 msgid "Follows you"
 msgstr "Читают тебя"
 
-#: ui/profile-page.ui:241 ui/search-page.ui:74 ui/settings-dialog.ui:420
+#: ui/profile-page.ui:242 ui/search-page.ui:74 ui/settings-dialog.ui:420
 msgid "Tweets"
 msgstr "Твиты"
 
-#: ui/profile-page.ui:282
+#: ui/profile-page.ui:283
 msgid "Followers"
 msgstr "Избранные"
 
-#: ui/profile-page.ui:323
+#: ui/profile-page.ui:324
 msgid "Following"
 msgstr "Читаешь"
 
 #: ui/settings-dialog.ui:59
 msgid "Show inline media"
-msgstr ""
+msgstr "Показать встроенные средства"
 
 #: ui/settings-dialog.ui:78
 msgid "Always show"
@@ -582,7 +587,7 @@ msgstr "Всегда скрывать"
 
 #: ui/settings-dialog.ui:80
 msgid "Hide in timeline"
-msgstr ""
+msgstr "Скрыть в ленте"
 
 #: ui/settings-dialog.ui:101
 msgid "Auto scroll on new tweets"
@@ -662,7 +667,7 @@ msgstr "Настроенных сниппетов нет."
 
 #: ui/settings-dialog.ui:480
 msgid "You can activate snippets by writing the keyword and pressing TAB."
-msgstr "Вы можете отметить и переместить слово в тексте нажав клавишуTAB"
+msgstr "Вы можете отметить и переместить слово в тексте нажав клавишу TAB"
 
 #: ui/settings-dialog.ui:494
 msgid "Snippets"
@@ -686,7 +691,7 @@ msgstr "Показать настройки аккаунта"
 #: ui/shortcuts-window.ui:31
 msgctxt "shortcuts window"
 msgid "Show Accounts Popover"
-msgstr ""
+msgstr "Показать всплывающее окно аккаунтов"
 
 #: ui/shortcuts-window.ui:38
 msgctxt "shortcuts window"
@@ -736,7 +741,7 @@ msgstr "Ответить"
 #: ui/shortcuts-window.ui:100
 msgctxt "shortcuts window"
 msgid "Quote"
-msgstr ""
+msgstr "Цитировать"
 
 #: ui/shortcuts-window.ui:107
 msgctxt "shortcuts window"

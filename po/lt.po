@@ -1,14 +1,14 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Timm Bäder
 # This file is distributed under the same license as the corebird package.
-#
+# 
 # Translators:
 # Moo, 2014-2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
-"POT-Creation-Date: 2016-12-18 16:41+0100\n"
+"POT-Creation-Date: 2017-01-13 17:50+0100\n"
 "PO-Revision-Date: 2016-12-19 18:56+0000\n"
 "Last-Translator: Moo\n"
 "Language-Team: Lithuanian (http://www.transifex.com/corebird/corebird/language/lt/)\n"
@@ -56,15 +56,19 @@ msgstr "Paskyros nustatymai gali būti konfigūruojami"
 msgid "Use Twitter from within a normal desktop application"
 msgstr "Naudokitės Twitter normalioje darbalaukio programoje"
 
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or
+#. localize the semicolons! The list MUST also end with a semicolon!
 #: data/org.baedert.corebird.desktop.in:7
 msgid "twitter;"
 msgstr "twitter;"
 
+#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon
+#. file name)!
 #: data/org.baedert.corebird.desktop.in:11
 msgid "corebird"
 msgstr "corebird"
 
-#: src/DefaultTimeline.vala:359
+#: src/DefaultTimeline.vala:365
 msgid "Could not load tweets"
 msgstr "Nepavyko įkelti tauškalų"
 
@@ -90,7 +94,7 @@ msgid "Direct Messages"
 msgstr "Tiesioginės žinutės"
 
 #: src/FavoritesTimeline.vala:67 src/FavoritesTimeline.vala:71
-#: src/TweetInfoPage.vala:486
+#: src/TweetInfoPage.vala:479
 msgid "Favorites"
 msgstr "Mėgstami"
 
@@ -132,7 +136,7 @@ msgstr[0] "(%d neperskaitytas)"
 msgstr[1] "(%d neperskaityti)"
 msgstr[2] "(%d neperskaitytų)"
 
-#: src/ListsPage.vala:120 src/ListsPage.vala:125 ui/profile-page.ui:364
+#: src/ListsPage.vala:120 src/ListsPage.vala:125 ui/profile-page.ui:365
 msgid "Lists"
 msgstr "Sąrašai"
 
@@ -153,7 +157,7 @@ msgstr "Šiame tauškale yra paveikslų, kurie yra pažymėti kaip netinkami"
 msgid "Show anyway"
 msgstr "Vis tiek rodyti"
 
-#: src/MainWindow.vala:78
+#: src/MainWindow.vala:79
 msgid "Add new Account"
 msgstr "Pridėti naują paskyrą"
 
@@ -179,23 +183,23 @@ msgstr "Siųsti tauškalą naudotojui @%s"
 msgid "Search"
 msgstr "Paieška"
 
-#: src/TweetInfoPage.vala:302
+#: src/TweetInfoPage.vala:295
 msgid "Could not show tweet"
 msgstr "Nepavyko parodyti tauškalo"
 
-#: src/TweetInfoPage.vala:485
+#: src/TweetInfoPage.vala:478
 msgid "Retweets"
 msgstr "Persiųsti tauškalai"
 
-#: src/TweetInfoPage.vala:494 src/widgets/MediaButton.vala:100
+#: src/TweetInfoPage.vala:487 src/widgets/MediaButton.vala:100
 msgid "Open in Browser"
 msgstr "Atverti naršyklėje"
 
-#: src/TweetInfoPage.vala:494
+#: src/TweetInfoPage.vala:487
 msgid "Source"
 msgstr "Šaltinis"
 
-#: src/TweetInfoPage.vala:545
+#: src/TweetInfoPage.vala:533
 msgid "Tweet Details"
 msgstr "Išsamiau apie tauškalą"
 
@@ -466,15 +470,15 @@ msgstr "Aprašas"
 msgid "Load more"
 msgstr "Įkelti daugiau"
 
-#: ui/main-window.ui:65
+#: ui/main-window.ui:64
 msgid "Show configured accounts"
 msgstr "Rodyti konfigūruotas paskyras"
 
-#: ui/main-window.ui:84
+#: ui/main-window.ui:82
 msgid "Compose tweet"
 msgstr "Rašyti tauškalą"
 
-#: ui/main-window.ui:101
+#: ui/main-window.ui:99
 msgid "New tweet"
 msgstr "Naujas tauškalas"
 
@@ -546,15 +550,15 @@ msgstr "Tauškalų persiuntimas išjungtas"
 msgid "Follows you"
 msgstr "Seka paskui jus"
 
-#: ui/profile-page.ui:241 ui/search-page.ui:74 ui/settings-dialog.ui:420
+#: ui/profile-page.ui:242 ui/search-page.ui:74 ui/settings-dialog.ui:420
 msgid "Tweets"
 msgstr "Tauškalai"
 
-#: ui/profile-page.ui:282
+#: ui/profile-page.ui:283
 msgid "Followers"
 msgstr "Sekėjų"
 
-#: ui/profile-page.ui:323
+#: ui/profile-page.ui:324
 msgid "Following"
 msgstr "Seka"
 

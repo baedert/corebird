@@ -1,9 +1,10 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Timm Bäder
 # This file is distributed under the same license as the corebird package.
-#
+# 
 # Translators:
-# colindemian <colindemian@outlook.com>, 2015-2016
+# colindemian <colindemian@outlook.com>, 2016
+# colindemian <colindemian@outlook.com>, 2015
 # Dianjin Wang <1132321739qq@gmail.com>, 2014
 # hmingming1222 <hmingming1222@gmail.com>, 2015
 # S Shen, 2016
@@ -12,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
-"POT-Creation-Date: 2016-12-18 16:41+0100\n"
+"POT-Creation-Date: 2017-01-13 17:50+0100\n"
 "PO-Revision-Date: 2016-12-19 08:56+0000\n"
 "Last-Translator: baedert <mail@baedert.org>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/corebird/corebird/language/zh_CN/)\n"
@@ -60,15 +61,19 @@ msgstr "账户设置可自定义"
 msgid "Use Twitter from within a normal desktop application"
 msgstr "桌面应用般的 Twitter 使用体验"
 
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or
+#. localize the semicolons! The list MUST also end with a semicolon!
 #: data/org.baedert.corebird.desktop.in:7
 msgid "twitter;"
 msgstr "twitter;"
 
+#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon
+#. file name)!
 #: data/org.baedert.corebird.desktop.in:11
 msgid "corebird"
 msgstr "corebird"
 
-#: src/DefaultTimeline.vala:359
+#: src/DefaultTimeline.vala:365
 msgid "Could not load tweets"
 msgstr "无法加载推文"
 
@@ -80,7 +85,7 @@ msgstr "直接对话"
 #, c-format
 msgid "%d new Message from %s"
 msgid_plural "%d new Messages from %s"
-msgstr[0] "有来自 %2$s 的 %1$d 条新消息"
+msgstr[0] "有来自 %s 的 %d 条新消息"
 
 #: src/DMThreadsPage.vala:213 src/UserEventReceiver.vala:94
 #, c-format
@@ -92,7 +97,7 @@ msgid "Direct Messages"
 msgstr "私信"
 
 #: src/FavoritesTimeline.vala:67 src/FavoritesTimeline.vala:71
-#: src/TweetInfoPage.vala:486
+#: src/TweetInfoPage.vala:479
 msgid "Favorites"
 msgstr "收藏"
 
@@ -130,7 +135,7 @@ msgid "(%d unread)"
 msgid_plural "(%d unread)"
 msgstr[0] "(%d 条未读)"
 
-#: src/ListsPage.vala:120 src/ListsPage.vala:125 ui/profile-page.ui:364
+#: src/ListsPage.vala:120 src/ListsPage.vala:125 ui/profile-page.ui:365
 msgid "Lists"
 msgstr "列表"
 
@@ -151,7 +156,7 @@ msgstr "此推文包含被标记为“不适宜”的图片"
 msgid "Show anyway"
 msgstr "仍然显示"
 
-#: src/MainWindow.vala:78
+#: src/MainWindow.vala:79
 msgid "Add new Account"
 msgstr "添加新账户"
 
@@ -177,23 +182,23 @@ msgstr "给 @%s 发推"
 msgid "Search"
 msgstr "搜索"
 
-#: src/TweetInfoPage.vala:302
+#: src/TweetInfoPage.vala:295
 msgid "Could not show tweet"
 msgstr "无法显示推文"
 
-#: src/TweetInfoPage.vala:485
+#: src/TweetInfoPage.vala:478
 msgid "Retweets"
 msgstr "转推"
 
-#: src/TweetInfoPage.vala:494 src/widgets/MediaButton.vala:100
+#: src/TweetInfoPage.vala:487 src/widgets/MediaButton.vala:100
 msgid "Open in Browser"
 msgstr "浏览器中打开"
 
-#: src/TweetInfoPage.vala:494
+#: src/TweetInfoPage.vala:487
 msgid "Source"
 msgstr "来源"
 
-#: src/TweetInfoPage.vala:545
+#: src/TweetInfoPage.vala:533
 msgid "Tweet Details"
 msgstr "详情"
 
@@ -464,15 +469,15 @@ msgstr "描述"
 msgid "Load more"
 msgstr "加载更多"
 
-#: ui/main-window.ui:65
+#: ui/main-window.ui:64
 msgid "Show configured accounts"
 msgstr "显示已配置的账户"
 
-#: ui/main-window.ui:84
+#: ui/main-window.ui:82
 msgid "Compose tweet"
 msgstr "撰写推文"
 
-#: ui/main-window.ui:101
+#: ui/main-window.ui:99
 msgid "New tweet"
 msgstr "新推文"
 
@@ -544,15 +549,15 @@ msgstr "转推已禁用"
 msgid "Follows you"
 msgstr "关注您"
 
-#: ui/profile-page.ui:241 ui/search-page.ui:74 ui/settings-dialog.ui:420
+#: ui/profile-page.ui:242 ui/search-page.ui:74 ui/settings-dialog.ui:420
 msgid "Tweets"
 msgstr "推文"
 
-#: ui/profile-page.ui:282
+#: ui/profile-page.ui:283
 msgid "Followers"
 msgstr "关注者"
 
-#: ui/profile-page.ui:323
+#: ui/profile-page.ui:324
 msgid "Following"
 msgstr "已关注"
 
