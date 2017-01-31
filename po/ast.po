@@ -1,11 +1,11 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Timm Bäder
 # This file is distributed under the same license as the corebird package.
-# 
+#
 # Translators:
 # enolp <enolp@softastur.org>, 2014-2016
-# Ḷḷumex03 <tornes@opmbx.org>, 2014
 # Xuacu Saturio <xuacusk8@gmail.com>, 2015
+# Ḷḷumex03 <tornes@opmbx.org>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"

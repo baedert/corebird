@@ -1,20 +1,20 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Timm Bäder
 # This file is distributed under the same license as the corebird package.
-# 
+#
 # Translators:
+# baedert <mail@baedert.org>, 2014-2015
+# brainscript <niklas.higi@web.de>, 2016
+# encbladexp <service+transifex@stefan-betz.net>, 2014
 # fgreinus <florian.greinus@googlemail.com>, 2015
 # Heiko Adams <HeikoAdams@users.noreply.github.com>, 2016
 # jupaja, 2014-2015
-# baedert <mail@baedert.org>, 2014-2015,2017
 # Matthias Kellermann <matthias.kellermann@outlook.com>, 2016
 # Michael <michaelbaer89@gmail.com>, 2014
-# brainscript <niklas.higi@web.de>, 2016
 # Peter Ludikovsky, 2015
 # Peter S <peter@schwindt-net.de>, 2015
 # Philip Gillißen <guerda@freenet.de>, 2015
 # Richard Schwab <mail@w.tf-w.tf>, 2014
-# encbladexp <service+transifex@stefan-betz.net>, 2014
 # Trolli Schmittlauch <spiollinux@googlemail.com>, 2016
 msgid ""
 msgstr ""

@@ -1,13 +1,10 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Timm Bäder
 # This file is distributed under the same license as the corebird package.
-# 
+#
 # Translators:
 # Med Touhami MAHDI <dragnucs@legtux.org>, 2014
-# Med Touhami MAHDI <dragnucs@legtux.org>, 2014
-# Med Touhami MAHDI <dragnucs@legtux.org>, 2014
 # mohammadA <mohammadAbdulhadi1@gmail.com>, 2016
-# Med Touhami MAHDI <dragnucs@legtux.org>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"

@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Timm Bäder
 # This file is distributed under the same license as the corebird package.
-# 
+#
 # Translators:
 # Estanislau Trepat <estanis@etrepat.com>, 2015
 # Guillem Arias <gariasfa7@alumnes.ub.edu>, 2016

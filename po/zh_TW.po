@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Timm Bäder
 # This file is distributed under the same license as the corebird package.
-# 
+#
 # Translators:
 # HybridGlucose <a07051226@gmail.com>, 2016
 msgid ""
@@ -80,7 +80,7 @@ msgstr "對話"
 #, c-format
 msgid "%d new Message from %s"
 msgid_plural "%d new Messages from %s"
-msgstr[0] "%s 傳送了 %d 則新訊息"
+msgstr[0] "%2$s 傳送了 %1$d 則新訊息"
 
 #: src/DMThreadsPage.vala:213 src/UserEventReceiver.vala:94
 #, c-format

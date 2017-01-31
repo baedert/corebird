@@ -1,10 +1,10 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Timm Bäder
 # This file is distributed under the same license as the corebird package.
-# 
+#
 # Translators:
-# Alexander <atrigub@gmail.com>, 2016
 # Alex Baranov <albar@joybits.org>, 2016
+# Alexander <atrigub@gmail.com>, 2016
 # Andrew Makarov, 2015
 # Dmitry Kireev <dinimito@mail.ru>, 2015
 # Ivlev Denis <ivlevdenis.ru@gmail.com>, 2015

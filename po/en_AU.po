@@ -1,9 +1,8 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Timm Bäder
 # This file is distributed under the same license as the corebird package.
-# 
+#
 # Translators:
-# Ryan Lerch <ryanlerch@gmail.com>, 2014
 # Ryan Lerch <ryanlerch@gmail.com>, 2014
 msgid ""
 msgstr ""
