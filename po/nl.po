@@ -1,15 +1,16 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Timm Bäder
 # This file is distributed under the same license as the corebird package.
-#
+# 
 # Translators:
 # Geert Wirken <geert@gwirken.nl>, 2014
-# Heimen Stoffels <vistausss@outlook.com>, 2014-2015-2015
+# Heimen Stoffels <vistausss@outlook.com>, 2014-2015
+# Heimen Stoffels <vistausss@outlook.com>, 2015-2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
-"POT-Creation-Date: 2016-12-18 16:41+0100\n"
+"POT-Creation-Date: 2017-01-13 17:50+0100\n"
 "PO-Revision-Date: 2016-12-19 10:35+0000\n"
 "Last-Translator: Heimen Stoffels <vistausss@outlook.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/corebird/corebird/language/nl/)\n"
@@ -57,15 +58,19 @@ msgstr "Accountinstellingen kunnen worden ingesteld"
 msgid "Use Twitter from within a normal desktop application"
 msgstr "Twitter gebruiken vanuit een normale desktop-applicatie"
 
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or
+#. localize the semicolons! The list MUST also end with a semicolon!
 #: data/org.baedert.corebird.desktop.in:7
 msgid "twitter;"
 msgstr "twitter;"
 
+#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon
+#. file name)!
 #: data/org.baedert.corebird.desktop.in:11
 msgid "corebird"
 msgstr "corebird"
 
-#: src/DefaultTimeline.vala:359
+#: src/DefaultTimeline.vala:365
 msgid "Could not load tweets"
 msgstr "De tweets kunnen niet worden geladen"
 
@@ -90,7 +95,7 @@ msgid "Direct Messages"
 msgstr "Privéberichten"
 
 #: src/FavoritesTimeline.vala:67 src/FavoritesTimeline.vala:71
-#: src/TweetInfoPage.vala:486
+#: src/TweetInfoPage.vala:479
 msgid "Favorites"
 msgstr "Vind-ik-leuks"
 
@@ -130,7 +135,7 @@ msgid_plural "(%d unread)"
 msgstr[0] "(%d ongelezen)"
 msgstr[1] "(%d ongelezen)"
 
-#: src/ListsPage.vala:120 src/ListsPage.vala:125 ui/profile-page.ui:364
+#: src/ListsPage.vala:120 src/ListsPage.vala:125 ui/profile-page.ui:365
 msgid "Lists"
 msgstr "Lijsten"
 
@@ -151,7 +156,7 @@ msgstr "Deze tweet bevat afbeeldingen die gemarkeerd zijn als gevoelig"
 msgid "Show anyway"
 msgstr "Tóch weergeven"
 
-#: src/MainWindow.vala:78
+#: src/MainWindow.vala:79
 msgid "Add new Account"
 msgstr "Nieuw account toevoegen"
 
@@ -177,23 +182,23 @@ msgstr "Verstuur een tweet naar @%s"
 msgid "Search"
 msgstr "Zoeken"
 
-#: src/TweetInfoPage.vala:302
+#: src/TweetInfoPage.vala:295
 msgid "Could not show tweet"
 msgstr "De tweet kan niet worden weergegeven"
 
-#: src/TweetInfoPage.vala:485
+#: src/TweetInfoPage.vala:478
 msgid "Retweets"
 msgstr "Retweets"
 
-#: src/TweetInfoPage.vala:494 src/widgets/MediaButton.vala:100
+#: src/TweetInfoPage.vala:487 src/widgets/MediaButton.vala:100
 msgid "Open in Browser"
 msgstr "Openen in webbrowser"
 
-#: src/TweetInfoPage.vala:494
+#: src/TweetInfoPage.vala:487
 msgid "Source"
 msgstr "Bron"
 
-#: src/TweetInfoPage.vala:545
+#: src/TweetInfoPage.vala:533
 msgid "Tweet Details"
 msgstr "Details van tweet"
 
@@ -464,15 +469,15 @@ msgstr "Omschrijving"
 msgid "Load more"
 msgstr "Meer laden"
 
-#: ui/main-window.ui:65
+#: ui/main-window.ui:64
 msgid "Show configured accounts"
 msgstr "Ingestelde accounts weergeven"
 
-#: ui/main-window.ui:84
+#: ui/main-window.ui:82
 msgid "Compose tweet"
 msgstr "Tweet opstellen"
 
-#: ui/main-window.ui:101
+#: ui/main-window.ui:99
 msgid "New tweet"
 msgstr "Nieuwe tweet"
 
@@ -544,15 +549,15 @@ msgstr "Retweets zijn uitgeschakeld"
 msgid "Follows you"
 msgstr "Volgt jou"
 
-#: ui/profile-page.ui:241 ui/search-page.ui:74 ui/settings-dialog.ui:420
+#: ui/profile-page.ui:242 ui/search-page.ui:74 ui/settings-dialog.ui:420
 msgid "Tweets"
 msgstr "Tweets"
 
-#: ui/profile-page.ui:282
+#: ui/profile-page.ui:283
 msgid "Followers"
 msgstr "Volgers"
 
-#: ui/profile-page.ui:323
+#: ui/profile-page.ui:324
 msgid "Following"
 msgstr "Volgend"
 

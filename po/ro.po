@@ -1,14 +1,15 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Timm Bäder
 # This file is distributed under the same license as the corebird package.
-#
+# 
 # Translators:
+# Iulian Vărzaru <me@iulianvarzaru.com>, 2015
 # Iulian Vărzaru <me@iulianvarzaru.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
-"POT-Creation-Date: 2016-12-18 16:41+0100\n"
+"POT-Creation-Date: 2017-01-13 17:50+0100\n"
 "PO-Revision-Date: 2016-12-19 08:56+0000\n"
 "Last-Translator: baedert <mail@baedert.org>\n"
 "Language-Team: Romanian (Romania) (http://www.transifex.com/corebird/corebird/language/ro_RO/)\n"
@@ -56,15 +57,19 @@ msgstr ""
 msgid "Use Twitter from within a normal desktop application"
 msgstr ""
 
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or
+#. localize the semicolons! The list MUST also end with a semicolon!
 #: data/org.baedert.corebird.desktop.in:7
 msgid "twitter;"
 msgstr ""
 
+#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon
+#. file name)!
 #: data/org.baedert.corebird.desktop.in:11
 msgid "corebird"
 msgstr ""
 
-#: src/DefaultTimeline.vala:359
+#: src/DefaultTimeline.vala:365
 msgid "Could not load tweets"
 msgstr ""
 
@@ -90,7 +95,7 @@ msgid "Direct Messages"
 msgstr "Mesaje directe"
 
 #: src/FavoritesTimeline.vala:67 src/FavoritesTimeline.vala:71
-#: src/TweetInfoPage.vala:486
+#: src/TweetInfoPage.vala:479
 msgid "Favorites"
 msgstr "Apreciate"
 
@@ -132,7 +137,7 @@ msgstr[0] "(%d necitit)"
 msgstr[1] "(%d necitite)"
 msgstr[2] "(%d necitite)"
 
-#: src/ListsPage.vala:120 src/ListsPage.vala:125 ui/profile-page.ui:364
+#: src/ListsPage.vala:120 src/ListsPage.vala:125 ui/profile-page.ui:365
 msgid "Lists"
 msgstr "Liste"
 
@@ -153,7 +158,7 @@ msgstr ""
 msgid "Show anyway"
 msgstr ""
 
-#: src/MainWindow.vala:78
+#: src/MainWindow.vala:79
 msgid "Add new Account"
 msgstr ""
 
@@ -179,23 +184,23 @@ msgstr ""
 msgid "Search"
 msgstr "Caută"
 
-#: src/TweetInfoPage.vala:302
+#: src/TweetInfoPage.vala:295
 msgid "Could not show tweet"
 msgstr "Nu am putut afişa tweet"
 
-#: src/TweetInfoPage.vala:485
+#: src/TweetInfoPage.vala:478
 msgid "Retweets"
 msgstr ""
 
-#: src/TweetInfoPage.vala:494 src/widgets/MediaButton.vala:100
+#: src/TweetInfoPage.vala:487 src/widgets/MediaButton.vala:100
 msgid "Open in Browser"
 msgstr "Deschide în Browser"
 
-#: src/TweetInfoPage.vala:494
+#: src/TweetInfoPage.vala:487
 msgid "Source"
 msgstr "Sursă"
 
-#: src/TweetInfoPage.vala:545
+#: src/TweetInfoPage.vala:533
 msgid "Tweet Details"
 msgstr "Detalii tweet"
 
@@ -466,15 +471,15 @@ msgstr ""
 msgid "Load more"
 msgstr "Încarcă mai multe"
 
-#: ui/main-window.ui:65
+#: ui/main-window.ui:64
 msgid "Show configured accounts"
 msgstr "Arată conturile configurate"
 
-#: ui/main-window.ui:84
+#: ui/main-window.ui:82
 msgid "Compose tweet"
 msgstr "Compune tweet"
 
-#: ui/main-window.ui:101
+#: ui/main-window.ui:99
 msgid "New tweet"
 msgstr "Tweet nou"
 
@@ -546,15 +551,15 @@ msgstr ""
 msgid "Follows you"
 msgstr "Te urmăreşte"
 
-#: ui/profile-page.ui:241 ui/search-page.ui:74 ui/settings-dialog.ui:420
+#: ui/profile-page.ui:242 ui/search-page.ui:74 ui/settings-dialog.ui:420
 msgid "Tweets"
 msgstr "Tweeturi"
 
-#: ui/profile-page.ui:282
+#: ui/profile-page.ui:283
 msgid "Followers"
 msgstr "Urmăritori"
 
-#: ui/profile-page.ui:323
+#: ui/profile-page.ui:324
 msgid "Following"
 msgstr "Urmăriţi"
 

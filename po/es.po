@@ -1,21 +1,21 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Timm Bäder
 # This file is distributed under the same license as the corebird package.
-#
+# 
 # Translators:
 # Alejandro Moreno <amorenocuquerella@gmail.com>, 2016
 # auroszx <auros.andres@gmail.com>, 2014
-# baedert <mail@baedert.org>, 2016
 # Carlos C Soto <eclipxe13@gmail.com>, 2015
 # Guillem Arias <gariasfa7@alumnes.ub.edu>, 2016
 # Jose G. Jimenez S. <josegjimenez@gmail.com>, 2014-2015
 # Jose Manuel Calero Gonzalez <nosfe1984@gmail.com>, 2014-2015
+# baedert <mail@baedert.org>, 2016
 # Sebastian Reyes <sebaslander@gmail.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
-"POT-Creation-Date: 2016-12-18 16:41+0100\n"
+"POT-Creation-Date: 2017-01-13 17:50+0100\n"
 "PO-Revision-Date: 2016-12-23 11:42+0000\n"
 "Last-Translator: Guillem Arias <gariasfa7@alumnes.ub.edu>\n"
 "Language-Team: Spanish (http://www.transifex.com/corebird/corebird/language/es/)\n"
@@ -63,15 +63,19 @@ msgstr "Los ajustes de la cuenta pueden ser configurados"
 msgid "Use Twitter from within a normal desktop application"
 msgstr "Usa Twitter desde una aplicación de escritorio normal"
 
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or
+#. localize the semicolons! The list MUST also end with a semicolon!
 #: data/org.baedert.corebird.desktop.in:7
 msgid "twitter;"
 msgstr "twitter;"
 
+#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon
+#. file name)!
 #: data/org.baedert.corebird.desktop.in:11
 msgid "corebird"
 msgstr "corebird"
 
-#: src/DefaultTimeline.vala:359
+#: src/DefaultTimeline.vala:365
 msgid "Could not load tweets"
 msgstr "No se pudieron cargar los tweets"
 
@@ -96,7 +100,7 @@ msgid "Direct Messages"
 msgstr "Mensajes directos"
 
 #: src/FavoritesTimeline.vala:67 src/FavoritesTimeline.vala:71
-#: src/TweetInfoPage.vala:486
+#: src/TweetInfoPage.vala:479
 msgid "Favorites"
 msgstr "Favoritos"
 
@@ -136,7 +140,7 @@ msgid_plural "(%d unread)"
 msgstr[0] "(%d sin leer)"
 msgstr[1] "(%d sin leer)"
 
-#: src/ListsPage.vala:120 src/ListsPage.vala:125 ui/profile-page.ui:364
+#: src/ListsPage.vala:120 src/ListsPage.vala:125 ui/profile-page.ui:365
 msgid "Lists"
 msgstr "Listas"
 
@@ -157,7 +161,7 @@ msgstr "Este tweet contiene imágenes que pueden herir la sensibilidad de alguna
 msgid "Show anyway"
 msgstr "Mostrar de todas formas"
 
-#: src/MainWindow.vala:78
+#: src/MainWindow.vala:79
 msgid "Add new Account"
 msgstr "Añadir nueva cuenta"
 
@@ -183,23 +187,23 @@ msgstr "Tweet para @%s"
 msgid "Search"
 msgstr "Buscar"
 
-#: src/TweetInfoPage.vala:302
+#: src/TweetInfoPage.vala:295
 msgid "Could not show tweet"
 msgstr "No se puede mostrar este Tweet"
 
-#: src/TweetInfoPage.vala:485
+#: src/TweetInfoPage.vala:478
 msgid "Retweets"
 msgstr "Retweets"
 
-#: src/TweetInfoPage.vala:494 src/widgets/MediaButton.vala:100
+#: src/TweetInfoPage.vala:487 src/widgets/MediaButton.vala:100
 msgid "Open in Browser"
 msgstr "Abrir en navegador"
 
-#: src/TweetInfoPage.vala:494
+#: src/TweetInfoPage.vala:487
 msgid "Source"
 msgstr "Fuente"
 
-#: src/TweetInfoPage.vala:545
+#: src/TweetInfoPage.vala:533
 msgid "Tweet Details"
 msgstr "Detalles del tweet"
 
@@ -470,15 +474,15 @@ msgstr "Descripción"
 msgid "Load more"
 msgstr "Cargar más"
 
-#: ui/main-window.ui:65
+#: ui/main-window.ui:64
 msgid "Show configured accounts"
 msgstr "Mostrar cuentas configuradas"
 
-#: ui/main-window.ui:84
+#: ui/main-window.ui:82
 msgid "Compose tweet"
 msgstr "Redactar tweet"
 
-#: ui/main-window.ui:101
+#: ui/main-window.ui:99
 msgid "New tweet"
 msgstr "Nuevo tweet"
 
@@ -550,15 +554,15 @@ msgstr "Retweets desactivados"
 msgid "Follows you"
 msgstr "Te sigue"
 
-#: ui/profile-page.ui:241 ui/search-page.ui:74 ui/settings-dialog.ui:420
+#: ui/profile-page.ui:242 ui/search-page.ui:74 ui/settings-dialog.ui:420
 msgid "Tweets"
 msgstr "Tweets"
 
-#: ui/profile-page.ui:282
+#: ui/profile-page.ui:283
 msgid "Followers"
 msgstr "Seguidores"
 
-#: ui/profile-page.ui:323
+#: ui/profile-page.ui:324
 msgid "Following"
 msgstr "Siguiendo"
 
