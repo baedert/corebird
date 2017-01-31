@@ -1,18 +1,16 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Timm Bäder
 # This file is distributed under the same license as the corebird package.
-# 
+#
 # Translators:
 # akern <alex.thierry@openmailbox.org>, 2016
-# Skyward <ccolin@fastmail.com>, 2016
-# Étienne Deparis <etienne@depar.is>, 2017
-# Guillaume Hayot, 2016
-# Guillaume Hayot, 2015
+# Guillaume Hayot, 2015-2016
 # newincpp <bruder_r@epitech.eu>, 2014
 # rc spam <rcspams@gmail.com>, 2016
 # RoPP <rodolphe+transifex@damsy.net>, 2015
 # Seboss666 <sebastien_verdet@seboss666.info>, 2015
-# Seboss666 <sebastien_verdet@seboss666.info>, 2015
+# Skyward <ccolin@fastmail.com>, 2016
+# Étienne Deparis <etienne@depar.is>, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"

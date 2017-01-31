@@ -1,9 +1,9 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Timm Bäder
 # This file is distributed under the same license as the corebird package.
-# 
+#
 # Translators:
-# adem demir <scripard@gmail.com>, 2015,2017
+# adem demir <scripard@gmail.com>, 2015
 # Ali GOREN <goren.ali@yandex.com>, 2015
 msgid ""
 msgstr ""
@@ -81,7 +81,7 @@ msgstr "Doğrudan Görüşme"
 #, c-format
 msgid "%d new Message from %s"
 msgid_plural "%d new Messages from %s"
-msgstr[0] "%s Kullanıcısından %d Yeni Mesaj"
+msgstr[0] "%2$s Kullanıcısından %1$d Yeni Mesaj"
 
 #: src/DMThreadsPage.vala:213 src/UserEventReceiver.vala:94
 #, c-format

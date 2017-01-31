@@ -1,9 +1,8 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Timm Bäder
 # This file is distributed under the same license as the corebird package.
-# 
+#
 # Translators:
-# irus6, 2016
 # irus6, 2016
 msgid ""
 msgstr ""
@@ -81,7 +80,7 @@ msgstr "다이렉트 대화"
 #, c-format
 msgid "%d new Message from %s"
 msgid_plural "%d new Messages from %s"
-msgstr[0] "%s 로부터 %d 개의 새로운 메시지"
+msgstr[0] "%2$s 로부터 %1$d 개의 새로운 메시지"
 
 #: src/DMThreadsPage.vala:213 src/UserEventReceiver.vala:94
 #, c-format

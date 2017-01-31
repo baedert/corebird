@@ -1,15 +1,15 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Timm Bäder
 # This file is distributed under the same license as the corebird package.
-# 
+#
 # Translators:
 # Alejandro Moreno <amorenocuquerella@gmail.com>, 2016
 # auroszx <auros.andres@gmail.com>, 2014
+# baedert <mail@baedert.org>, 2016
 # Carlos C Soto <eclipxe13@gmail.com>, 2015
 # Guillem Arias <gariasfa7@alumnes.ub.edu>, 2016
 # Jose G. Jimenez S. <josegjimenez@gmail.com>, 2014-2015
 # Jose Manuel Calero Gonzalez <nosfe1984@gmail.com>, 2014-2015
-# baedert <mail@baedert.org>, 2016
 # Sebastian Reyes <sebaslander@gmail.com>, 2016
 msgid ""
 msgstr ""

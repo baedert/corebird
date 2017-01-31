@@ -1,10 +1,9 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Timm Bäder
 # This file is distributed under the same license as the corebird package.
-# 
+#
 # Translators:
-# colindemian <colindemian@outlook.com>, 2016
-# colindemian <colindemian@outlook.com>, 2015
+# colindemian <colindemian@outlook.com>, 2015-2016
 # Dianjin Wang <1132321739qq@gmail.com>, 2014
 # hmingming1222 <hmingming1222@gmail.com>, 2015
 # S Shen, 2016
@@ -85,7 +84,7 @@ msgstr "直接对话"
 #, c-format
 msgid "%d new Message from %s"
 msgid_plural "%d new Messages from %s"
-msgstr[0] "有来自 %s 的 %d 条新消息"
+msgstr[0] "有来自 %2$s 的 %1$d 条新消息"
 
 #: src/DMThreadsPage.vala:213 src/UserEventReceiver.vala:94
 #, c-format
