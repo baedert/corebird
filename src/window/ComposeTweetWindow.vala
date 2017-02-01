@@ -142,6 +142,8 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
       if (this.compose_image_manager.n_images == 0)
         this.compose_image_manager.hide ();
+
+      this.recalc_tweet_length();
     });
 
     this.add_accel_group (ag);
@@ -161,10 +163,16 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     tweet_text.buffer.get_bounds (out start, out end);
     string text = tweet_text.buffer.get_text (start, end, true);
 
-    int length = TweetUtils.calc_tweet_length (text);
+    bool add_url = false;
+    //We can only add an image or a quoted URL as an attachment, so if we
+    //have both then the quoted tweet must become an inline URL
+    if (compose_image_manager.n_images > 0 && mode == Mode.QUOTE)
+      add_url = true;
+
+    int length = TweetUtils.calc_tweet_length (text, add_url);
 
     length_label.label = (Cb.Tweet.MAX_LENGTH - length).to_string ();
-    if (length > 0 && length <= Cb.Tweet.MAX_LENGTH)
+    if ((length > 0 && length <= Cb.Tweet.MAX_LENGTH) || (compose_image_manager.n_images > 0 && length == 0))
       send_button.sensitive = true;
     else
       send_button.sensitive = false;
@@ -295,6 +303,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
         }
       }
       filechooser.destroy ();
+      this.recalc_tweet_length();
     });
 
     var filter = new Gtk.FileFilter ();
