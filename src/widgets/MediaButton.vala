@@ -265,7 +265,7 @@ private class MediaButton : Gtk.Widget {
       title = _("Save Image");
 
     var filechooser = new Gtk.FileChooserDialog (title,
-                                                 this.window,
+                                                 this.parent_window,
                                                  Gtk.FileChooserAction.SAVE,
                                                  _("Cancel"),
                                                  Gtk.ResponseType.CANCEL,
@@ -285,7 +285,7 @@ private class MediaButton : Gtk.Widget {
         try {
           out_stream = file.create (0, null);
         } catch (GLib.Error e) {
-          Utils.show_error_dialog (e.message, this.window);
+          Utils.show_error_dialog (e.message, this.parent_window);
           warning (e.message);
         }
 
@@ -299,7 +299,7 @@ private class MediaButton : Gtk.Widget {
       filechooser.destroy ();
     });
 
-    filechooser.show_all ();
+    filechooser.show ();
   }
 
   public override Gtk.SizeRequestMode get_request_mode () {
