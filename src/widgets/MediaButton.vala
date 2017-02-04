@@ -109,6 +109,8 @@ private class MediaButton : Gtk.Widget {
     this.press_gesture = new Gtk.GestureMultiPress (this);
     this.press_gesture.set_exclusive (true);
     this.press_gesture.set_button (0);
+    this.press_gesture.set_propagation_phase (Gtk.PropagationPhase.CAPTURE);
+    this.press_gesture.released.connect (gesture_released_cb);
     this.press_gesture.pressed.connect (gesture_pressed_cb);
   }
 
@@ -473,7 +475,6 @@ private class MediaButton : Gtk.Widget {
   private void gesture_pressed_cb (int    n_press,
                                    double x,
                                    double y) {
-
     Gdk.EventSequence sequence = this.press_gesture.get_current_sequence ();
     Gdk.Event event = this.press_gesture.get_last_event (sequence);
     uint button = this.press_gesture.get_current_button ();
@@ -481,10 +482,7 @@ private class MediaButton : Gtk.Widget {
     if (this._media == null)
       return;
 
-    if (button == Gdk.BUTTON_PRIMARY) {
-      this.press_gesture.set_state (Gtk.EventSequenceState.CLAIMED);
-      this.clicked (this);
-    } else if (event.triggers_context_menu ()) {
+    if (event.triggers_context_menu ()) {
       this.press_gesture.set_state (Gtk.EventSequenceState.CLAIMED);
 
       if (this.menu == null) {
@@ -493,8 +491,22 @@ private class MediaButton : Gtk.Widget {
       }
       menu.show_all ();
       menu.popup (null, null, null, button, Gtk.get_current_event_time ());
-    } else {
-      this.press_gesture.set_state (Gtk.EventSequenceState.DENIED);
+    }
+  }
+
+  private void gesture_released_cb (int    n_press,
+                                    double x,
+                                    double y) {
+    Gdk.EventSequence sequence = this.press_gesture.get_current_sequence ();
+    Gdk.Event event = this.press_gesture.get_last_event (sequence);
+    uint button = this.press_gesture.get_current_button ();
+
+    if (this._media == null || event == null)
+      return;
+
+    if (button == Gdk.BUTTON_PRIMARY) {
+      this.press_gesture.set_state (Gtk.EventSequenceState.CLAIMED);
+      this.clicked (this);
     }
   }
 
@@ -508,6 +520,3 @@ private class MediaButton : Gtk.Widget {
     return Gdk.EVENT_PROPAGATE;
   }
 }
-
-
-
