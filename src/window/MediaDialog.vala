@@ -30,17 +30,16 @@ class MediaDialog : Gtk.Window {
     this.button_gesture = new Gtk.GestureMultiPress (this);
     this.button_gesture.set_button (0);
     this.button_gesture.set_propagation_phase (Gtk.PropagationPhase.CAPTURE);
-    this.button_gesture.pressed.connect (button_pressed_cb);
+    this.button_gesture.released.connect (button_released_cb);
 
     change_media (cur_media);
   }
 
-  private void button_pressed_cb (Gtk.GestureMultiPress gesture,
-                                  int                   n_press,
-                                  double                x,
-                                  double                y) {
-    button_gesture.set_state (Gtk.EventSequenceState.CLAIMED);
+  private void button_released_cb (int    n_press,
+                                   double x,
+                                   double y) {
     this.destroy ();
+    button_gesture.set_state (Gtk.EventSequenceState.CLAIMED);
   }
 
   private void change_media (Cb.Media media) {

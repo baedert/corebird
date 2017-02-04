@@ -160,6 +160,8 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     this.set_default_size (DEFAULT_WIDTH, (int)(DEFAULT_WIDTH / 2.5));
   }
 
+
+
   private void recalc_tweet_length () {
     Gtk.TextIter start, end;
     tweet_text.buffer.get_bounds (out start, out end);
