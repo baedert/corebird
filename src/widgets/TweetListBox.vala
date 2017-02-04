@@ -34,6 +34,7 @@ public class TweetListBox : Gtk.ListBox {
   public unowned DeltaUpdater delta_updater;
   public unowned Account account;
   public TweetModel model = new TweetModel ();
+  private Gtk.GestureMultiPress press_gesture;
 
   public TweetListBox (bool show_placeholder = true) {
     if (show_placeholder) {
@@ -45,7 +46,10 @@ public class TweetListBox : Gtk.ListBox {
   construct {
     add_placeholder ();
     this.set_selection_mode (Gtk.SelectionMode.NONE);
-    this.button_press_event.connect (button_press_cb);
+    this.press_gesture = new Gtk.GestureMultiPress (this);
+    this.press_gesture.set_button (0);
+    this.press_gesture.set_propagation_phase (Gtk.PropagationPhase.BUBBLE);
+    this.press_gesture.pressed.connect (gesture_pressed_cb);
     Settings.get ().bind ("double-click-activation",
                           this, "activate-on-single-click",
                           GLib.SettingsBindFlags.INVERT_BOOLEAN);
@@ -61,12 +65,17 @@ public class TweetListBox : Gtk.ListBox {
     });
   }
 
-  private bool button_press_cb (Gdk.EventButton evt) {
-    if (evt.triggers_context_menu ()) {
+  private void gesture_pressed_cb (int    n_press,
+                                   double x,
+                                   double y) {
+    Gdk.EventSequence sequence = this.press_gesture.get_current_sequence ();
+    Gdk.EventButton event = (Gdk.EventButton)this.press_gesture.get_last_event (sequence);
+
+    if (event.triggers_context_menu ()) {
       /* From gtklistbox.c */
-      Gdk.Window? event_window = evt.window;
+      Gdk.Window? event_window = event.window;
       Gdk.Window window = this.get_window ();
-      double relative_y = evt.y;
+      double relative_y = event.y;
       double parent_y;
 
       while ((event_window != null) && (event_window != window)) {
@@ -86,10 +95,10 @@ public class TweetListBox : Gtk.ListBox {
           this._action_entry = tle;
         else
           this._action_entry = null;
-        return true;
+
+        this.press_gesture.set_state (Gtk.EventSequenceState.CLAIMED);
       }
     }
-    return false;
   }
 
 
