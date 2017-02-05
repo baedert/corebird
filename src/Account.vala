@@ -145,7 +145,7 @@ public class Account : GLib.Object {
    */
   public async void query_user_info_by_screen_name (string? screen_name = null) {
     if (proxy == null)
-      error ("Proxy not initied");
+      error ("Proxy not initialized");
 
     var call = proxy.new_call ();
     call.set_function ("1.1/users/show.json");
