@@ -114,7 +114,10 @@ class AspectImage : Gtk.Widget {
     if (this.old_surface != null) {
       ct.set_source_surface (this.old_surface, 0, 0);
       ct.paint ();
-    } else
+    } else if (bg_color.alpha > 0.0) {
+      ct.set_source_rgba (bg_color.red, bg_color.green, bg_color.blue, bg_color.alpha);
+      ct.fill ();
+    }else
       alpha = 1.0;
 
     if (bg_color.alpha == 0.0)
