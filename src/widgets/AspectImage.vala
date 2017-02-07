@@ -105,6 +105,8 @@ class AspectImage : Gtk.Widget {
     if (bg_color.alpha == 0.0)
       scale_x = width  / (double)pixbuf_surface.get_width ();
 
+    scale_x = double.max (scale_x, 1.0);
+
     ct.rectangle (0, 0, width, height);
     ct.scale (scale_x, 1.0);
 
@@ -120,9 +122,11 @@ class AspectImage : Gtk.Widget {
     }else
       alpha = 1.0;
 
-    if (bg_color.alpha == 0.0)
-      ct.set_source_surface (this.pixbuf_surface, 0, 0);
-    else
+
+    if (bg_color.alpha == 0.0) {
+      int x = (int)(width - (pixbuf_surface.get_width () * scale_x)) / 2;
+      ct.set_source_surface (this.pixbuf_surface, x, 0);
+    } else
       ct.set_source_rgba (bg_color.red, bg_color.green, bg_color.blue, bg_color.alpha);
 
     if (in_transition)
