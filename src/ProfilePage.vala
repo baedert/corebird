@@ -254,12 +254,12 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
       tweet_list.set_placeholder_text (_("Protected profile"));
     }
 
+    string color = root.get_string_member ("profile_background_color");
+    banner_image.color_string = "#" + color;
+
     if (root.has_member ("profile_banner_url")) {
       string banner_base_url = root.get_string_member ("profile_banner_url");
       load_profile_banner (banner_base_url);
-    } else {
-      string color = root.get_string_member ("profile_background_color");
-      banner_image.color_string = "#" + color;
     }
 
     string display_url = "";
