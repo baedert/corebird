@@ -10,3 +10,4 @@ Type=Application
 Icon=corebird
 Categories=Network;GTK;
 DBusActivatable=true
+StartupWMClass=corebird
