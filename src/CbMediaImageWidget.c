@@ -82,8 +82,6 @@ cb_media_image_widget_class_init (CbMediaImageWidgetClass *klass)
 static void
 cb_media_image_widget_init (CbMediaImageWidget *self)
 {
-  GtkWidget *event_box;
-
   self->image = gtk_image_new ();
   gtk_container_add (GTK_CONTAINER (self), self->image);
 
