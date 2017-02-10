@@ -23,11 +23,11 @@ class AddListEntry : Gtk.ListBoxRow {
     img.margin_start = 10;
     img.hexpand = true;
     img.halign = Gtk.Align.END;
-    box.pack_start (img);
+    box.add (img);
     var l = new Gtk.Label (label);
     l.hexpand = true;
     l.halign = Gtk.Align.START;
-    box.pack_start (l);
+    box.add (l);
     box.margin_bottom = 4;
     box.margin_top = 4;
     add (box);

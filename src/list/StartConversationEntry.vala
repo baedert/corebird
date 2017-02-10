@@ -217,8 +217,8 @@ class CompletionListEntry : Gtk.ListBoxRow {
     name_label.set_valign (Gtk.Align.BASELINE);
     screen_name_label.set_valign (Gtk.Align.BASELINE);
     screen_name_label.get_style_context ().add_class ("dim-label");
-    box.pack_start (name_label, false, false);
-    box.pack_start (screen_name_label, false, false);
+    box.add (name_label);
+    box.add (screen_name_label);
     add (box);
   }
   public string get_screen_name () {
