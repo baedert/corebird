@@ -154,7 +154,7 @@ corebird_lib_sources = files([
   'src/CbFilter.c',
   'src/CbAvatarCache.h',
   'src/CbAvatarCache.c',
-  'src/CMediaImageWidget.h',
+  'src/CbMediaImageWidget.h',
   'src/CbMediaImageWidget.c',
 ])
 
