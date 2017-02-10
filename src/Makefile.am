@@ -74,7 +74,6 @@ libcorebird_la_VALASOURCES = \
 	widgets/MultiMediaWidget.vala \
 	widgets/AvatarWidget.vala \
 	widgets/AvatarBannerWidget.vala \
-	widgets/MediaImageWidget.vala \
 	widgets/MediaVideoWidget.vala \
 	widgets/CropWidget.vala \
 	widgets/AddImageButton.vala \
@@ -146,7 +145,9 @@ libcorebird_la_SOURCES = \
 	CbAvatarCache.c \
 	CbAvatarCache.h \
 	CbUserCounter.c \
-	CbUserCounter.h
+	CbUserCounter.h \
+	CbMediaImageWidget.h \
+	CbMediaImageWidget.c
 
 libcorebird_la_vala.stamp: $(libcorebird_la_VALASOURCES) Makefile
 	@$(VALAC) \

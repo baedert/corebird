@@ -118,7 +118,6 @@ corebird_lib_sources = files([
   'src/widgets/LazyMenuButton.vala',
   'src/widgets/MaxSizeContainer.vala',
   'src/widgets/MediaButton.vala',
-  'src/widgets/MediaImageWidget.vala',
   'src/widgets/MediaVideoWidget.vala',
   'src/widgets/MultiMediaWidget.vala',
   'src/widgets/PixbufButton.vala',
@@ -154,7 +153,9 @@ corebird_lib_sources = files([
   'src/CbFilter.h',
   'src/CbFilter.c',
   'src/CbAvatarCache.h',
-  'src/CbAvatarCache.c'
+  'src/CbAvatarCache.c',
+  'src/CMediaImageWidget.h',
+  'src/CbMediaImageWidget.c',
 ])
 
 # glib resources
