@@ -275,7 +275,9 @@ public class TweetModel : GLib.Object, GLib.ListModel {
   public void clear () {
     int s = this.tweets.length;
     this.tweets.remove_range (0, tweets.length);
-    this.hidden_tweets.remove_range (0, hidden_tweets.length);
+    if (hidden_tweets.length > 0) {
+      this.hidden_tweets.remove_range (0, hidden_tweets.length);
+    }
     this.min_id = int64.MAX;
     this.max_id = int64.MIN;
     this.items_changed (0, s, 0);
@@ -308,7 +310,9 @@ public class TweetModel : GLib.Object, GLib.ListModel {
       this.remove_at_pos (pos);
       this.items_changed (pos, 1, 0);
       /* Remove hidden tweet(s) with an id greater than the one of the just removed tweet */
-      if (tweets.length == 0) {
+      if (hidden_tweets.length == 0) {
+        return;
+      } else if (tweets.length == 0) {
         hidden_tweets.remove_range (0, hidden_tweets.length);
       } else {
         for (int i = 0; i < hidden_tweets.length; i ++) {
