@@ -207,4 +207,11 @@ namespace Cb {
     int score;
     bool changed;
   }
+
+
+  [CCode (cprefix = "CbMediaImageWidget_", lower_case_cprefix = "cb_media_image_widget_", cheader_filename =
+          "CbMediaImageWidget.h")]
+    public class MediaImageWidget : Gtk.ScrolledWindow {
+      public MediaImageWidget (Media media);
+    }
 }

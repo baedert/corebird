@@ -29,7 +29,7 @@ class MediaDialog : Gtk.Window {
     this.cur_index = start_media_index;
     this.button_gesture = new Gtk.GestureMultiPress (this);
     this.button_gesture.set_button (0);
-    this.button_gesture.set_propagation_phase (Gtk.PropagationPhase.CAPTURE);
+    this.button_gesture.set_propagation_phase (Gtk.PropagationPhase.BUBBLE);
     this.button_gesture.released.connect (button_released_cb);
 
     change_media (cur_media);
@@ -60,7 +60,7 @@ class MediaDialog : Gtk.Window {
       frame.add (new_widget);
       ((MediaVideoWidget)new_widget).init ();
     } else {
-      new_widget = new MediaImageWidget (media);
+      new_widget = new Cb.MediaImageWidget (media);
       frame.add (new_widget);
     }
 
