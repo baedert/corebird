@@ -33,7 +33,7 @@ class FavoritesTimeline : IMessageReceiver, DefaultTimeline {
       Json.Node tweet_obj = root.get_object ().get_member ("target_object");
       int64 tweet_id = tweet_obj.get_object ().get_int_member ("id");
 
-      Cb.Tweet? existing_tweet = this.tweet_list.model.get_from_id (tweet_id, 0);
+      Cb.Tweet? existing_tweet = this.tweet_list.model.get_for_id (tweet_id, 0);
       if (existing_tweet != null) {
         /* This tweet is already in the model, so just mark it as favorited */
         tweet_list.model.set_tweet_flag (existing_tweet, Cb.TweetState.FAVORITED);

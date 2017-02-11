@@ -119,7 +119,6 @@ libcorebird_la_VALASOURCES = \
 	sql/SelectStatement.vala \
 	async/Collect.vala \
 	async/ComposeJob.vala \
-	model/TweetModel.vala \
 	model/DMThreadsModel.vala
 
 nodist_libcorebird_la_SOURCES = \
@@ -148,7 +147,9 @@ libcorebird_la_SOURCES = \
 	CbUserCounter.c \
 	CbUserCounter.h \
 	CbMediaImageWidget.h \
-	CbMediaImageWidget.c
+	CbMediaImageWidget.c \
+	CbTweetModel.h \
+	CbTweetModel.c
 
 libcorebird_la_vala.stamp: $(libcorebird_la_VALASOURCES) Makefile
 	@$(VALAC) \

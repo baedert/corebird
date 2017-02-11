@@ -65,7 +65,7 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
     Cb.Tweet t = new Cb.Tweet ();
     t.load_from_json (obj, this.account.id, now);
 
-    /* We don't use the set_state version from TweetModel here since
+    /* We don't use the set_state version from Cb.TweetModel here since
        we just decide the initial visibility of the tweet */
     if (t.retweeted_tweet != null) {
       t.set_flag (get_rt_flags (t));
@@ -156,27 +156,27 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
   }
 
   public void hide_tweets_from (int64 user_id, Cb.TweetState reason) {
-    TweetModel tm = (TweetModel) tweet_list.model;
+    Cb.TweetModel tm = (Cb.TweetModel) tweet_list.model;
 
-    tm.toggle_flag_on_tweet (user_id, reason, true);
+    tm.toggle_flag_on_user_tweets (user_id, reason, true);
   }
 
   public void show_tweets_from (int64 user_id, Cb.TweetState reason) {
-    TweetModel tm = (TweetModel) tweet_list.model;
+    Cb.TweetModel tm = (Cb.TweetModel) tweet_list.model;
 
-    tm.toggle_flag_on_tweet (user_id, reason, false);
+    tm.toggle_flag_on_user_tweets (user_id, reason, false);
   }
 
   public void hide_retweets_from (int64 user_id, Cb.TweetState reason) {
-    TweetModel tm = (TweetModel) tweet_list.model;
+    Cb.TweetModel tm = (Cb.TweetModel) tweet_list.model;
 
-    tm.toggle_flag_on_retweet (user_id, reason, true);
+    tm.toggle_flag_on_user_retweets (user_id, reason, true);
   }
 
   public void show_retweets_from (int64 user_id, Cb.TweetState reason) {
-    TweetModel tm = (TweetModel) tweet_list.model;
+    Cb.TweetModel tm = (Cb.TweetModel) tweet_list.model;
 
-    tm.toggle_flag_on_retweet (user_id, reason, false);
+    tm.toggle_flag_on_user_retweets (user_id, reason, false);
   }
 
   public override string get_title () {

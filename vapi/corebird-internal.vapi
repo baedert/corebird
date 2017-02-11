@@ -211,7 +211,29 @@ namespace Cb {
 
   [CCode (cprefix = "CbMediaImageWidget_", lower_case_cprefix = "cb_media_image_widget_", cheader_filename =
           "CbMediaImageWidget.h")]
-    public class MediaImageWidget : Gtk.ScrolledWindow {
-      public MediaImageWidget (Media media);
-    }
+  public class MediaImageWidget : Gtk.ScrolledWindow {
+    public MediaImageWidget (Media media);
+  }
+
+  [CCode (cprefix = "CbTweetModel_", lower_case_cprefix = "cb_tweet_model_", cheader_filename =
+          "CbTweetModel.h")]
+  public class TweetModel : GLib.Object, GLib.ListModel {
+    public int64 min_id;
+    public int64 max_id;
+    public GLib.GenericArray<Tweet> hidden_tweets;
+
+    public TweetModel ();
+    public bool contains_id (int64 id);
+    public void clear ();
+    public Tweet? get_for_id (int64 id, int diff = -1);
+    public void add (Tweet t);
+    public void remove_last_n_visible (uint amount);
+    public bool delete_id (int64 id, out bool seen);
+    public bool set_tweet_flag (Tweet t, TweetState flag);
+    public bool unset_tweet_flag (Tweet t, TweetState flag);
+    public void remove_tweet (Tweet t);
+    public void remove_tweets_above (int64 id);
+    public void toggle_flag_on_user_tweets (int64 user_id, TweetState flag, bool active);
+    public void toggle_flag_on_user_retweets (int64 user_id, TweetState flag, bool active);
+  }
 }

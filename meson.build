@@ -89,7 +89,6 @@ corebird_lib_sources = files([
   'src/list/UserFilterEntry.vala',
   'src/list/UserListEntry.vala',
   'src/model/DMThreadsModel.vala',
-  'src/model/TweetModel.vala',
   'src/sql/Database.vala',
   'src/sql/InsertStatement.vala',
   'src/sql/SelectStatement.vala',
@@ -157,6 +156,9 @@ corebird_lib_sources = files([
   'src/CbUserCounter.h',
   'src/CbMediaImageWidget.h',
   'src/CbMediaImageWidget.c',
+  'src/CbTweetModel.h',
+  'src/CbTweetModel.c',
+
 ])
 
 # glib resources
