@@ -512,8 +512,8 @@ public class MainWindow : Gtk.ApplicationWindow {
 
   public void reply_to_tweet (int64 tweet_id) {
     Cb.Tweet? tweet = null;
-    tweet = ((DefaultTimeline)this.main_widget.get_page(Page.STREAM)).tweet_list.model.get_from_id (tweet_id,
-                                                                                                    0);
+    tweet = ((DefaultTimeline)this.main_widget.get_page(Page.STREAM)).tweet_list.model.get_for_id (tweet_id,
+                                                                                                   0);
     if (tweet == null) {
       warning ("tweet with id %s could not be found", tweet_id.to_string ());
       return;
@@ -528,16 +528,16 @@ public class MainWindow : Gtk.ApplicationWindow {
     DefaultTimeline home_timeline     = ((DefaultTimeline)this.main_widget.get_page(Page.STREAM));
     DefaultTimeline mentions_timeline = ((DefaultTimeline)this.main_widget.get_page(Page.MENTIONS));
     Cb.Tweet? tweet = null;
-    tweet = home_timeline.tweet_list.model.get_from_id (tweet_id,
-                                                        0);
+    tweet = home_timeline.tweet_list.model.get_for_id (tweet_id,
+                                                       0);
     if (tweet != null) {
       tweet.set_seen (true);
       home_timeline.unread_count --;
     }
 
     // and now with the MentionsTimeline
-    tweet = mentions_timeline.tweet_list.model.get_from_id (tweet_id,
-                                                            0);
+    tweet = mentions_timeline.tweet_list.model.get_for_id (tweet_id,
+                                                           0);
     if (tweet != null) {
       tweet.set_seen (true);
       mentions_timeline.unread_count --;

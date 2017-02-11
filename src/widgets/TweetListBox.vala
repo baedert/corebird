@@ -33,7 +33,7 @@ public class TweetListBox : Gtk.ListBox {
 
   public unowned DeltaUpdater delta_updater;
   public unowned Account account;
-  public TweetModel model = new TweetModel ();
+  public Cb.TweetModel model = new Cb.TweetModel ();
   private Gtk.GestureMultiPress press_gesture;
 
   public TweetListBox (bool show_placeholder = true) {

@@ -208,7 +208,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
 
   public void toggle_favorite (int64 id, bool mode) {
 
-    Cb.Tweet? t = this.tweet_list.model.get_from_id (id, 0);
+    Cb.Tweet? t = this.tweet_list.model.get_for_id (id, 0);
     if (t != null) {
       if (mode)
         this.tweet_list.model.set_tweet_flag (t, Cb.TweetState.FAVORITED);
@@ -306,7 +306,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
     call.set_function (this.function);
     call.set_method ("GET");
     call.add_param ("count", "1");
-    call.add_param ("since_id", (this.tweet_list.model.greatest_id + 1).to_string ());
+    call.add_param ("since_id", (this.tweet_list.model.max_id + 1).to_string ());
     call.add_param ("trim_user", "true");
     call.add_param ("contributor_details", "false");
     call.add_param ("include_entities", "false");
@@ -355,7 +355,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
     call.add_param ("contributor_details", "true");
     call.add_param ("include_my_retweet", "true");
     call.add_param ("tweet_mode", "extended");
-    call.add_param ("max_id", (tweet_list.model.lowest_id - 1).to_string ());
+    call.add_param ("max_id", (tweet_list.model.min_id - 1).to_string ());
 
     Json.Node? root_node = null;
     try {
@@ -388,7 +388,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
     call.add_param ("count", requested_tweet_count.to_string ());
     call.add_param ("include_my_retweet", "true");
     call.add_param ("tweet_mode", "extended");
-    call.add_param ("max_id", (tweet_list.model.lowest_id - 1).to_string ());
+    call.add_param ("max_id", (tweet_list.model.min_id - 1).to_string ());
 
     Json.Node? root_node = null;
 
@@ -437,7 +437,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
   }
 
   public void rerun_filters () {
-    TweetModel tm = tweet_list.model;
+    Cb.TweetModel tm = tweet_list.model;
 
     for (uint i = 0; i < tm.get_n_items (); i ++) {
       var tweet = (Cb.Tweet) tm.get_object (i);

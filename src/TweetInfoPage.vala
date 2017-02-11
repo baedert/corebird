@@ -189,7 +189,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
       // add the direct successor to the top_list
       top_list_box.model.clear ();
       top_list_box.show ();
-      var t = bottom_list_box.model.get_from_id (new_id, -1);
+      var t = bottom_list_box.model.get_for_id (new_id, -1);
       if (t != null) {
         top_list_box.model.add (t);
       } else {
