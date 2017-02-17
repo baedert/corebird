@@ -403,7 +403,6 @@ cb_tweet_model_remove_tweet (CbTweetModel *self,
       g_assert (pos != -1);
 
       remove_tweet_at_pos (self, pos);
-      emit_items_changed (self, pos, 1, 0);
     }
 }
 
@@ -704,6 +703,5 @@ cb_tweet_model_remove_tweets_above (CbTweetModel *self,
         break;
 
       remove_tweet_at_pos (self, 0);
-      emit_items_changed (self, 0, 1, 0);
     }
 }
