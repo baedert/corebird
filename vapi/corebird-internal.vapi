@@ -225,7 +225,7 @@ namespace Cb {
     public TweetModel ();
     public bool contains_id (int64 id);
     public void clear ();
-    public Tweet? get_for_id (int64 id, int diff = -1);
+    public unowned Tweet? get_for_id (int64 id, int diff = -1);
     public void add (Tweet t);
     public void remove_last_n_visible (uint amount);
     public bool delete_id (int64 id, out bool seen);

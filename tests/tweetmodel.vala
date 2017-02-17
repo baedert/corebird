@@ -240,11 +240,10 @@ void get_for_id () {
   assert (((Cb.Tweet)tm.get_item (0)).id == 100);
   assert (((Cb.Tweet)tm.get_item (1)).id == 10);
 
-  var result = tm.get_for_id (10, -1);
+  var result = tm.get_for_id (10);
 
   assert (result != null);
   assert (result.id == 100);
-
 }
 
 void min_max_id () {
@@ -425,7 +424,7 @@ int main (string[] args) {
   GLib.Test.add_func ("/tweetmodel/remove-hidden", remove_hidden);
   GLib.Test.add_func ("/tweetmodel/remove-own-retweet", remove_own_retweet);
   GLib.Test.add_func ("/tweetmodel/hide-rt", hide_rt);
-  GLib.Test.add_func ("/tweetmodel/get-from-id", get_for_id);
+  GLib.Test.add_func ("/tweetmodel/get-for-id", get_for_id);
   GLib.Test.add_func ("/tweetmodel/min-max-id", min_max_id);
   GLib.Test.add_func ("/tweetmodel/sorting", sorting);
   GLib.Test.add_func ("/tweetmodel/min-max-remove", min_max_remove);
