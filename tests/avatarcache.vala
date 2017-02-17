@@ -10,9 +10,6 @@ void simple () {
   assert (cache.get_n_entries () == 1);
 
   cache.decrease_refcount_for_surface (surface);
-  assert (cache.get_n_entries () == 1);
-
-  cache.decrease_refcount_for_surface (surface);
   assert (cache.get_n_entries () == 0);
 }
 
@@ -30,6 +27,7 @@ void deferred_surface () {
 
   cache.set_avatar (1337, surface, "some_url");
   assert (cache.get_n_entries () == 1);
+  cache.increase_refcount_for_surface (surface);
 
   cached_surface = cache.get_surface_for_id (1337, out found);
   assert (cached_surface == surface);
@@ -37,7 +35,6 @@ void deferred_surface () {
 
   cache.decrease_refcount_for_surface (surface);
   assert (cache.get_n_entries () == 0);
-
 
   cached_surface = cache.get_surface_for_id (1337, out found);
   assert (cached_surface == null);

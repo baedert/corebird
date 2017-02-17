@@ -64,7 +64,9 @@ cb_avatar_cache_add (CbAvatarCache   *cache,
       if (surface)
         entry->surface = cairo_surface_reference (surface);
       entry->url = g_strdup (url);
-      entry->refcount = 1;
+      /* The subsequence incrase_refcount will push this up to 1. Entries with
+       * refcount 0 won't be removed from the cache until a decrease_refcount call */
+      entry->refcount = 0;
     }
   else
     {
