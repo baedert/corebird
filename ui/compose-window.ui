@@ -132,15 +132,40 @@
                 <property name="top-attach">2</property>
               </packing>
             </child>
+
+
+
+
             <child>
-              <object class="GtkButton" id="add_image_button">
-                <property name="visible">1</property>
-                <property name="label" translatable="yes">Add Image</property>
-                <property name="halign">end</property>
-                <property name="valign">baseline</property>
+              <object class="GtkBox">
+                <property name="visible">true</property>
                 <property name="margin-end">10</property>
                 <property name="margin-bottom">10</property>
-                <signal name="clicked" handler="add_image_clicked_cb"/>
+                <property name="halign">end</property>
+                <style>
+                  <class name="linked" />
+                </style>
+                <child>
+                  <object class="GtkButton" id="add_image_button">
+                    <property name="visible">1</property>
+                    <property name="label" translatable="yes">Add Image</property>
+                    <property name="valign">baseline</property>
+                    <signal name="clicked" handler="add_image_clicked_cb"/>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkButton">
+                    <property name="visible">1</property>
+                    <property name="tooltip-text" translatable="yes">Show favorite images</property>
+                    <child>
+                      <object class="GtkImage">
+                        <property name="visible">1</property>
+                        <property name="icon-name">emblem-favorite-symbolic</property>
+                        <property name="icon-size">1</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
               </object>
               <packing>
                 <property name="left-attach">1</property>
