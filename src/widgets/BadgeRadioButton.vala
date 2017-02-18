@@ -36,7 +36,7 @@ public class BadgeRadioButton : Gtk.RadioButton {
     this.get_style_context ().add_class ("image-button");
     var i = new Gtk.Image.from_icon_name (icon_name, Gtk.IconSize.BUTTON);
     this.add (i);
-    this.set_mode (false);
+    this.set_draw_indicator (false);
     this.focus_on_click = false;
     this.hexpand = true;
 
