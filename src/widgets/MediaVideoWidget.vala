@@ -154,11 +154,6 @@ class MediaVideoWidget : Gtk.Stack {
     this.visible_child = error_label;
   }
 
-  public override bool button_press_event (Gdk.EventButton evt) {
-    stop ();
-    return Gdk.EVENT_PROPAGATE;
-  }
-
   public override bool key_press_event (Gdk.EventKey evt) {
     stop ();
     return Gdk.EVENT_STOP;
