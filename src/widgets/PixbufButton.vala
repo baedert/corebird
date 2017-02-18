@@ -17,8 +17,6 @@
 
 class PixbufButton : Gtk.Button {
   private Cairo.ImageSurface bg;
-  private Gtk.Menu menu;
-  private string menu_string;
   private bool _round = false;
   public bool round {
     get {
@@ -39,31 +37,7 @@ class PixbufButton : Gtk.Button {
     get_style_context ().add_class ("pixbuf-button");
   }
 
-  public PixbufButton (bool show_menu = false, string? menu_string = null) {
-    if (show_menu) {
-      this.button_press_event.connect (button_release_cb);
-      this.menu_string = menu_string;
-    }
-  }
-
-  private bool button_release_cb (Gdk.EventButton evt) {
-    if (evt.button == Gdk.BUTTON_SECONDARY) {
-      menu = new Gtk.Menu ();
-      var source_link_item = new Gtk.MenuItem.with_label (_("Copy link"));
-      source_link_item.activate.connect (source_link_item_activate_cb);
-      menu.add (source_link_item);
-      menu.show_all ();
-      menu.popup (null, null, null, evt.button, evt.time);
-      return true;
-    }
-    return false;
-  }
-
-  private void source_link_item_activate_cb () {
-    Gtk.Clipboard clipboard = Gtk.Clipboard.get_for_display (Gdk.Display.get_default (),
-                                                             Gdk.SELECTION_CLIPBOARD);
-    clipboard.set_text (menu_string, -1);
-  }
+  public PixbufButton () {}
 
   public override bool draw (Cairo.Context ct) {
     var sc = this.get_style_context ();
