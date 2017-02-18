@@ -60,11 +60,15 @@
   opacity: 0.9;
   box-shadow: none;
   border: none;
+  border-bottom: 2px solid transparent;
+  border-top: 2px solid transparent;
 }
 
 .inline-media:hover {
   opacity: 1.0;
   box-shadow: none;
+  border-top: 2px solid grey;
+  border-bottom: 2px solid grey;
 }
 
 .image-progress {
