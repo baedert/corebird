@@ -18,6 +18,7 @@
 class CropWidget : Gtk.DrawingArea {
   private const int MIN_SIZE = 48;
 
+  private Gtk.GestureDrag drag_gesture;
   private Gdk.Pixbuf? image;
   private Gdk.Rectangle selection_rect;
   private Gdk.Rectangle image_rect;
@@ -33,6 +34,8 @@ class CropWidget : Gtk.DrawingArea {
   private bool resize_area_hovered = false;
   private double current_scale = 1.0;
   private int min_width  = MIN_SIZE;
+  private double drag_start_x;
+  private double drag_start_y;
   /**
    * Ratio of the width to the height, i.e. (width/height)
    * => values >1.0 for landscape pictures
@@ -47,8 +50,6 @@ class CropWidget : Gtk.DrawingArea {
                                         | Gdk.EventMask.BUTTON_PRESS_MASK
                                         | Gdk.EventMask.BUTTON_RELEASE_MASK);
     this.motion_notify_event.connect (mouse_motion_cb);
-    this.button_press_event.connect (button_press_cb);
-    this.button_release_event.connect (button_release_cb);
     this.drag_cursor = new Gdk.Cursor.for_display (this.get_display (),
                                                    Gdk.CursorType.FLEUR);
     this.default_cursor = new Gdk.Cursor.for_display (this.get_display (),
@@ -57,12 +58,44 @@ class CropWidget : Gtk.DrawingArea {
                                                      Gdk.CursorType.BOTTOM_RIGHT_CORNER);
     this.image_rect = Gdk.Rectangle ();
     this.selection_rect = Gdk.Rectangle ();
+
+    this.drag_gesture = new Gtk.GestureDrag (this);
+    this.drag_gesture.set_button (Gdk.BUTTON_PRIMARY);
+    this.drag_gesture.drag_begin.connect (drag_gesture_begin_cb);
+    this.drag_gesture.drag_end.connect (drag_gesture_end_cb);
+    this.drag_gesture.drag_update.connect (drag_gesture_update_cb);
   }
 
+  private bool mouse_motion_cb (Gdk.EventMotion event) {
+    /* Just check whether the cursor is over the drag or resize area (or not)
+       and change the cursor accordingly */
 
-  private bool mouse_motion_cb (Gdk.EventMotion evt) {
-    double x = evt.x;
-    double y = evt.y;
+    if (over_resize_area (event.x, event.y)) {
+      set_cursor (resize_cursor);
+      resize_area_hovered = true;
+      queue_draw ();
+      return false; /* Don't check resize area */
+    } else if (resize_area_hovered) {
+      resize_area_hovered = false;
+      set_cursor (default_cursor);
+      queue_draw ();
+    }
+
+
+    if (cursor_in_selection (event.x, event.y)) {
+      set_cursor (drag_cursor);
+    } else {
+      set_cursor (default_cursor);
+    }
+
+    return false;
+  }
+
+  private void drag_gesture_update_cb (Gtk.GestureDrag gesture,
+                                       double          offset_x,
+                                       double          offset_y) {
+    double x = drag_start_x + offset_x; // XXX start_x + offset_x ?
+    double y = drag_start_y + offset_y;
 
     /* Resizing */
     if (resize_area_grabbed) {
@@ -71,8 +104,8 @@ class CropWidget : Gtk.DrawingArea {
 
     /* Dragging the selection */
     if (selection_grabbed) {
-      selection_rect.x = (int) evt.x - drag_diff_x;
-      selection_rect.y = (int) evt.y - drag_diff_y;
+      selection_rect.x = (int) x - drag_diff_x;
+      selection_rect.y = (int) y - drag_diff_y;
 
       /* Limit to image boundaries */
       if (selection_rect.x < image_rect.x)
@@ -88,74 +121,54 @@ class CropWidget : Gtk.DrawingArea {
         selection_rect.y = image_rect.y + image_rect.height - selection_rect.height;
 
       this.queue_draw ();
-      return true;
+      return;
     }
-
-    if (over_resize_area (x, y) || resize_area_grabbed) {
-      resize_area_hovered = true;
-      set_cursor (resize_cursor);
-      this.queue_draw ();
-      return true;
-    } else {
-      set_cursor (default_cursor);
-      resize_area_hovered = false;
-      this.queue_draw ();
-    }
-
-
-
-    /* Check if cursor is over resize position */
-
-    if (cursor_in_selection (x, y)) {
-      set_cursor (drag_cursor);
-    } else {
-      set_cursor (default_cursor);
-    }
-
-    return false;
   }
 
-  private bool button_press_cb (Gdk.EventButton evt) {
-    if (evt.button != Gdk.BUTTON_PRIMARY) {
-      selection_grabbed = false;
-      resize_area_grabbed = false;
-      return false;
-    }
+  private void drag_gesture_begin_cb (Gtk.GestureDrag gesture,
+                                      double          x,
+                                      double          y) {
+    this.drag_start_x = x;
+    this.drag_start_y = y;
 
     /* Check for the resize area(s) first */
-    if (over_resize_area (evt.x, evt.y)) {
+    if (over_resize_area (x, y)) {
       resize_area_grabbed = true;
-      resize_diff_x = (int)evt.x - (selection_rect.x + selection_rect.width);
-      resize_diff_y = (int)evt.y - (selection_rect.y + selection_rect.height);
-      return true;
+      resize_diff_x = (int)x - (selection_rect.x + selection_rect.width);
+      resize_diff_y = (int)y - (selection_rect.y + selection_rect.height);
+      gesture.set_state (Gtk.EventSequenceState.CLAIMED);
+      set_cursor (resize_cursor);
+      return;
     }
-
 
     /* Now the selection rect */
-    if (cursor_in_selection (evt.x, evt.y)) {
+    if (cursor_in_selection (x, y)) {
       selection_grabbed = true;
-      drag_diff_x = (int)(evt.x - selection_rect.x);
-      drag_diff_y = (int)(evt.y - selection_rect.y);
-      return true;
+      drag_diff_x = (int)(x - selection_rect.x);
+      drag_diff_y = (int)(y - selection_rect.y);
+      gesture.set_state (Gtk.EventSequenceState.CLAIMED);
+      set_cursor (drag_cursor);
+      return;
     }
-    return false;
+
+    gesture.set_state (Gtk.EventSequenceState.DENIED);
   }
 
-  private bool button_release_cb (Gdk.EventButton evt) {
+  private void drag_gesture_end_cb (Gtk.GestureDrag gesture,
+                                    double          offset_x,
+                                    double          offset_y) {
     if (selection_grabbed) {
       selection_grabbed = false;
       set_cursor (default_cursor);
-      return true;
+      return;
     }
 
     if (resize_area_grabbed) {
       resize_area_grabbed = false;
       set_cursor (default_cursor);
-      return true;
+      return;
     }
-    return false;
   }
-
 
   private inline void restrict_selection_size () {
     if (selection_rect.width > image_rect.width)
@@ -169,7 +182,6 @@ class CropWidget : Gtk.DrawingArea {
       selection_rect.width = (int)(min_width * current_scale);
       selection_rect.height = (int)(min_width * current_scale / desired_aspect_ratio);
     }
-
 
     if (selection_rect.x < image_rect.x)
       selection_rect.x = image_rect.x;
@@ -330,6 +342,7 @@ class CropWidget : Gtk.DrawingArea {
     this.image_rect.x      = (widget_width - image_rect.width) / 2;
     this.image_rect.y      = (widget_height - image_rect.height) / 2;
   }
+
   private bool over_resize_area (double x, double y) {
 
     if (x > selection_rect.x + selection_rect.width  - 15 &&
@@ -364,7 +377,6 @@ class CropWidget : Gtk.DrawingArea {
 
     return final_image;
   }
-
 
   public void set_min_size (int min_width) {
     this.min_width = min_width;
