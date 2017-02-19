@@ -27,7 +27,7 @@ class FavImageRow : Gtk.ListBoxRow {
 
   public FavImageRow(string path, string display_name) {
     this.file_path = path;
-    box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
+    box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 12);
     box.margin = 6;
     image = new Gtk.Image ();
     label = new Gtk.Label (display_name);
