@@ -402,7 +402,6 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
           /* Explicitly check whether the destination file already exists, and rename
              it if it does */
           var dest_file = dest_dir.get_child (file_info.get_name ());
-          message ("checking for %s", dest_file.get_path ());
           if (GLib.FileUtils.test (dest_file.get_path (), GLib.FileTest.EXISTS)) {
             debug ("File '%s' already exists", dest_file.get_path ());
             dest_file = dest_dir.get_child ("%s_%s".printf (GLib.get_monotonic_time ().to_string (),
