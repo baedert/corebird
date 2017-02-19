@@ -47,7 +47,7 @@ class FavImageRow : Gtk.ListBoxRow {
   }
 
   public unowned string get_image_path () {
-    return label.get_text ();
+    return file_path;
   }
 
   private async void load_image () {
