@@ -52,8 +52,6 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   [GtkChild]
   private Gtk.Button cancel_button;
   [GtkChild]
-  private Gtk.ScrolledWindow fav_image_scroller;
-  [GtkChild]
   private Gtk.ListBox fav_image_list;
   [GtkChild]
   private Gtk.Button fav_image_button;
@@ -249,7 +247,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       this.cancellable.cancel ();
 
     if (stack.visible_child == image_error_grid ||
-        stack.visible_child == fav_image_scroller) {
+        stack.visible_child_name == "fav-images") {
       stack.visible_child = content_grid;
       cancel_button.label = _("Cancel");
       /* Use this instead of just setting send_button.sensitive to true to avoid
@@ -330,7 +328,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   [GtkCallback]
   public void fav_image_button_clicked_cb () {
     cancel_button.label = _("Back");
-    stack.visible_child = fav_image_scroller;
+    stack.visible_child_name = "fav-images";
     this.load_fav_images ();
   }
 
@@ -348,7 +346,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   }
 
   private void load_fav_images () {
-    if (fav_image_list.get_children ().length() > 0)
+    if (fav_image_list.get_children ().length () > 0)
       return;
 
     const int MAX_IMAGES = 50;
@@ -379,5 +377,59 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     } catch (GLib.Error e) {
       warning (e.message);
     }
+  }
+
+  [GtkCallback]
+  private void new_fav_image_button_clicked_cb () {
+    var filechooser = new Gtk.FileChooserDialog (_("Select Image"),
+                                                 this,
+                                                 Gtk.FileChooserAction.OPEN,
+                                                 _("Cancel"),
+                                                 Gtk.ResponseType.CANCEL,
+                                                 _("Open"),
+                                                 Gtk.ResponseType.ACCEPT);
+    filechooser.select_multiple = false;
+    filechooser.modal = true;
+
+    filechooser.response.connect ((id) => {
+      if (id == Gtk.ResponseType.ACCEPT) {
+        try {
+          /* First, take the selected file and copy it into the image-favorites folder */
+          var file = GLib.File.new_for_path (filechooser.get_filename ());
+          var file_info = file.query_info ("standard::name", GLib.FileQueryInfoFlags.NONE);
+          var dest_dir = GLib.File.new_for_path (Dirs.config ("image-favorites"));
+
+          /* Explicitly check whether the destination file already exists, and rename
+             it if it does */
+          var dest_file = dest_dir.get_child (file_info.get_name ());
+          message ("checking for %s", dest_file.get_path ());
+          if (GLib.FileUtils.test (dest_file.get_path (), GLib.FileTest.EXISTS)) {
+            debug ("File '%s' already exists", dest_file.get_path ());
+            dest_file = dest_dir.get_child ("%s_%s".printf (GLib.get_monotonic_time ().to_string (),
+                                                            file_info.get_name ()));
+            debug ("New name: '%s'", dest_file.get_path ());
+          }
+
+          file.copy (dest_file, GLib.FileCopyFlags.NONE);
+
+          var dest_info = dest_file.query_info ("standard::display-name", GLib.FileQueryInfoFlags.NONE);
+          var row = new FavImageRow (dest_file.get_path (), dest_info.get_display_name ());
+          row.show_all ();
+          fav_image_list.add (row);
+
+        } catch (GLib.Error e) {
+          warning (e.message);
+        }
+      }
+      filechooser.destroy ();
+    });
+
+    var filter = new Gtk.FileFilter ();
+    filter.add_mime_type ("image/png");
+    filter.add_mime_type ("image/jpeg");
+    filter.add_mime_type ("image/gif");
+    filechooser.set_filter (filter);
+
+    filechooser.show_all ();
   }
 }
