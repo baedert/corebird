@@ -355,20 +355,28 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     string fav_image_dir = Dirs.config ("image-favorites/");
     try {
       var dir = File.new_for_path (fav_image_dir);
-      var iter = dir.enumerate_children ("standard::name",
+      var iter = dir.enumerate_children ("standard::name,standard::content-type",
                                          GLib.FileQueryInfoFlags.NONE);
 
       int i = 0;
       FileInfo? info = null;
       while ((info = iter.next_file ()) != null) {
-        var file = dir.get_child (info.get_name ());
-        var row = new FavImageRow (file.get_path ());
-        row.show_all ();
-        fav_image_list.add (row);
+        var content_type = info.get_content_type ();
 
-        i ++;
-        if (i >= MAX_IMAGES)
-          break;
+        if (content_type == "image/jpeg" ||
+            content_type == "image/png" ||
+            content_type == "image/gif") {
+          var file = dir.get_child (info.get_name ());
+          var row = new FavImageRow (file.get_path ());
+          row.show_all ();
+          fav_image_list.add (row);
+
+          message (info.get_content_type ());
+
+          i ++;
+          if (i >= MAX_IMAGES)
+            break;
+        }
       }
     } catch (GLib.Error e) {
       warning (e.message);
