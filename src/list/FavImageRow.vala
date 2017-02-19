@@ -22,12 +22,14 @@ class FavImageRow : Gtk.ListBoxRow {
   private Gtk.Box box;
   private Gtk.Image image;
   private Gtk.Label label;
+  private string file_path;
 
-  public FavImageRow(string path) {
+  public FavImageRow(string path, string display_name) {
+    this.file_path = path;
     box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
     box.margin = 6;
     image = new Gtk.Image ();
-    label = new Gtk.Label (path);
+    label = new Gtk.Label (display_name);
 
     image.set_size_request (THUMB_WIDTH, THUMB_HEIGHT);
     image.show ();
@@ -50,7 +52,7 @@ class FavImageRow : Gtk.ListBoxRow {
 
   private async void load_image () {
     try {
-      var in_stream = GLib.File.new_for_path (label.get_text ()).read ();
+      var in_stream = GLib.File.new_for_path (file_path).read ();
       var pixbuf = yield new Gdk.Pixbuf.from_stream_at_scale_async (in_stream, THUMB_WIDTH, THUMB_HEIGHT, true);
       in_stream.close ();
 
