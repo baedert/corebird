@@ -22,6 +22,7 @@ class FavImageRow : Gtk.ListBoxRow {
   private Gtk.Box box;
   private Gtk.Image image;
   private Gtk.Label label;
+  private Gtk.Button delete_button;
   private string file_path;
 
   public FavImageRow(string path, string display_name) {
@@ -40,6 +41,27 @@ class FavImageRow : Gtk.ListBoxRow {
     label.ellipsize = Pango.EllipsizeMode.END;
     label.show ();
     box.add (label);
+
+    this.delete_button = new Gtk.Button.from_icon_name ("list-remove-symbolic",
+                                                        Gtk.IconSize.BUTTON);
+    delete_button.valign = Gtk.Align.CENTER;
+    delete_button.relief = Gtk.ReliefStyle.NONE;
+    delete_button.clicked.connect (() => {
+      var listbox = this.get_parent ();
+      if (!(listbox is Gtk.ListBox)) {
+        warning ("Parent is not a listbox");
+        return;
+      }
+
+      try {
+        var file = GLib.File.new_for_path (this.file_path);
+        file.trash ();
+        listbox.remove (this);
+      } catch (GLib.Error e) {
+        warning (e.message);
+      }
+    });
+    box.add (delete_button);
 
     this.add (box);
 
