@@ -87,6 +87,7 @@ corebird_lib_sources = files([
   'src/list/TweetListEntry.vala',
   'src/list/UserFilterEntry.vala',
   'src/list/UserListEntry.vala',
+  'src/list/FavImageRow.vala',
   'src/model/DMThreadsModel.vala',
   'src/sql/Database.vala',
   'src/sql/InsertStatement.vala',

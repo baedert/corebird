@@ -22,6 +22,7 @@ namespace Dirs {
   public void create_dirs () {
     create_folder (config (""));
     create_folder (config ("accounts/"));
+    create_folder (config ("image-favorites/"));
   }
 
   public string config (string path) {
