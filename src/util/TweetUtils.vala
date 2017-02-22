@@ -226,6 +226,7 @@ namespace TweetUtils {
   }
 
   bool activate_link (string uri, MainWindow window) {
+    debug ("Activating '%s'", uri);
     uri = uri._strip ();
     string term = uri.substring (1);
 
