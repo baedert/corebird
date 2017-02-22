@@ -344,7 +344,7 @@ public class AccountDialog : Gtk.Window {
           content_stack.visible_child = error_label;
           save_button.sensitive = false;
         }
-      } else if (id == Gtk.ResponseType.CANCEL) {
+      } else {
         content_stack.visible_child = info_box;
       }
       filechooser.destroy ();
