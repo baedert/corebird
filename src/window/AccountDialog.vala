@@ -94,15 +94,6 @@ public class AccountDialog : Gtk.Window {
     description_text_view.get_buffer ().set_text (account.description ?? "");
   }
 
-  //public override void response (int response_id) {
-    //if (response_id == Gtk.ResponseType.CLOSE) {
-      //save_data ();
-      //this.destroy ();
-    //} else if (response_id == Gtk.ResponseType.CANCEL) {
-      //this.destroy ();
-    //}
-  //}
-
   [GtkCallback]
   private void delete_button_clicked_cb () {
     delete_stack.visible_child_name = PAGE_DELETE;
