@@ -222,20 +222,20 @@
                 <property name="hscrollbar-policy">never</property>
                 <property name="vexpand">1</property>
                 <child>
-                  <object class="GtkListBox" id="fav_image_list">
+                  <object class="GtkFlowBox" id="fav_image_list">
                     <property name="visible">1</property>
                     <property name="selection-mode">none</property>
-                    <signal name="row-activated" handler="fav_image_list_row_activated_cb" />
+                    <!--<signal name="row-activated" handler="fav_image_list_row_activated_cb" />-->
 
-                    <child type="placeholder">
-                      <object class="GtkLabel">
-                        <property name="visible">1</property>
-                        <property name="label" translatable="yes">No favorite images</property>
-                        <style>
-                          <class name="dim-label" />
-                        </style>
-                      </object>
-                    </child>
+                    <!--<child type="placeholder">-->
+                      <!--<object class="GtkLabel">-->
+                        <!--<property name="visible">1</property>-->
+                        <!--<property name="label" translatable="yes">No favorite images</property>-->
+                        <!--<style>-->
+                          <!--<class name="dim-label" />-->
+                        <!--</style>-->
+                      <!--</object>-->
+                    <!--</child>-->
                   </object>
                 </child>
               </object>

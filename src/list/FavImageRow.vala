@@ -15,56 +15,58 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class FavImageRow : Gtk.ListBoxRow {
+class FavImageRow : Gtk.FlowBoxChild {
   private const int THUMB_WIDTH  = 80;
   private const int THUMB_HEIGHT = 50;
 
-  private Gtk.Box box;
   private Gtk.Image image;
-  private Gtk.Label label;
   private Gtk.Button delete_button;
   private string file_path;
 
   public FavImageRow(string path, string display_name) {
     this.file_path = path;
-    box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 12);
-    box.margin = 6;
     image = new Gtk.Image ();
-    label = new Gtk.Label (display_name);
 
     image.set_size_request (THUMB_WIDTH, THUMB_HEIGHT);
+    image.set_halign (Gtk.Align.CENTER);
+    image.set_valign (Gtk.Align.CENTER);
+    image.margin = 3;
     image.show ();
-    box.add (image);
-    label.hexpand = true;
-    label.xalign = 0;
-    label.halign = Gtk.Align.START;
-    label.ellipsize = Pango.EllipsizeMode.END;
-    label.show ();
-    box.add (label);
+    this.add (image);
 
-    this.delete_button = new Gtk.Button.from_icon_name ("list-remove-symbolic",
-                                                        Gtk.IconSize.BUTTON);
-    delete_button.valign = Gtk.Align.CENTER;
-    delete_button.relief = Gtk.ReliefStyle.NONE;
-    delete_button.clicked.connect (() => {
-      var listbox = this.get_parent ();
-      if (!(listbox is Gtk.ListBox)) {
-        warning ("Parent is not a listbox");
-        return;
-      }
+    this.set_valign (Gtk.Align.START);
+    //box.add (image);
+    //label.hexpand = true;
+    //label.xalign = 0;
+    //label.halign = Gtk.Align.START;
+    //label.ellipsize = Pango.EllipsizeMode.END;
+    //label.show ();
+    //box.add (label);
 
-      try {
-        var file = GLib.File.new_for_path (this.file_path);
-        file.trash ();
-        listbox.remove (this);
-      } catch (GLib.Error e) {
-        warning (e.message);
-      }
-    });
-    box.add (delete_button);
+    //this.delete_button = new Gtk.Button.from_icon_name ("list-remove-symbolic",
+                                                        //Gtk.IconSize.BUTTON);
+    //delete_button.valign = Gtk.Align.CENTER;
+    //delete_button.relief = Gtk.ReliefStyle.NONE;
+    //delete_button.clicked.connect (() => {
+      //var listbox = this.get_parent ();
+      //if (!(listbox is Gtk.ListBox)) {
+        //warning ("Parent is not a listbox");
+        //return;
+      //}
 
-    this.add (box);
+      //try {
+        //var file = GLib.File.new_for_path (this.file_path);
+        //file.trash ();
+        //listbox.remove (this);
+      //} catch (GLib.Error e) {
+        //warning (e.message);
+      //}
+    //});
+    //box.add (delete_button);
 
+    //this.add (box);
+
+    this.get_style_context ().add_class ("fav-image-item");
     load_image.begin ();
   }
 
