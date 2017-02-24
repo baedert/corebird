@@ -52,7 +52,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   [GtkChild]
   private Gtk.Button cancel_button;
   [GtkChild]
-  private Gtk.ListBox fav_image_list;
+  private Gtk.FlowBox fav_image_list;
   [GtkChild]
   private Gtk.Button fav_image_button;
   private unowned Account account;
@@ -332,7 +332,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     this.load_fav_images ();
   }
 
-  [GtkCallback]
+  //[GtkCallback]
   public void fav_image_list_row_activated_cb (Gtk.ListBoxRow _row) {
     FavImageRow row = (FavImageRow) _row;
 

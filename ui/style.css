@@ -236,3 +236,11 @@ progressbar.horizontal.embedded-progress>trough>progress {
   border-left-width: 0px;
   border-right-width: 0px;
 }
+
+.fav-image-item {
+  border: 1px solid grey;
+}
+
+.fav-image-item:hover {
+  background-image: red;
+}
