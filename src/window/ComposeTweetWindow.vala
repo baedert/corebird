@@ -352,7 +352,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
             content_type == "image/png" ||
             content_type == "image/gif") {
           var file = dir.get_child (info.get_name ());
-          var row = new FavImageRow (file.get_path (), info.get_display_name ());
+          var row = new FavImageRow (file.get_path ());
           row.show_all ();
           fav_image_list.add (row);
 
@@ -398,8 +398,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
           file.copy (dest_file, GLib.FileCopyFlags.NONE);
 
-          var dest_info = dest_file.query_info ("standard::display-name", GLib.FileQueryInfoFlags.NONE);
-          var row = new FavImageRow (dest_file.get_path (), dest_info.get_display_name ());
+          var row = new FavImageRow (dest_file.get_path ());
           row.show_all ();
           fav_image_list.add (row);
 
