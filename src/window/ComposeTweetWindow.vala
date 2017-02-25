@@ -332,19 +332,6 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     this.load_fav_images ();
   }
 
-  //[GtkCallback]
-  public void fav_image_list_row_activated_cb (Gtk.ListBoxRow _row) {
-    FavImageRow row = (FavImageRow) _row;
-
-    cancel_clicked ();
-    this.compose_image_manager.show ();
-    this.compose_image_manager.load_image (row.get_image_path (), null);
-    if (this.compose_image_manager.n_images >= Twitter.max_media_per_upload) {
-      this.add_image_button.sensitive = false;
-      this.fav_image_button.sensitive = false;
-    }
-  }
-
   private void load_fav_images () {
     if (fav_image_list.get_children ().length () > 0)
       return;
@@ -430,5 +417,18 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     filechooser.set_filter (filter);
 
     filechooser.show_all ();
+  }
+
+  [GtkCallback]
+  private void fav_image_box_child_activated_cb (Gtk.FlowBoxChild _child) {
+    FavImageRow child = (FavImageRow) _child;
+
+    cancel_clicked ();
+    this.compose_image_manager.show ();
+    this.compose_image_manager.load_image (child.get_image_path (), null);
+    if (this.compose_image_manager.n_images >= Twitter.max_media_per_upload) {
+      this.add_image_button.sensitive = false;
+      this.fav_image_button.sensitive = false;
+    }
   }
 }

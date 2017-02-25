@@ -224,19 +224,15 @@
                   <object class="GtkFlowBox" id="fav_image_list">
                     <property name="visible">1</property>
                     <property name="selection-mode">none</property>
-                    <!--<signal name="row-activated" handler="fav_image_list_row_activated_cb" />-->
-
-                    <!--<child type="placeholder">-->
-                      <!--<object class="GtkLabel">-->
-                        <!--<property name="visible">1</property>-->
-                        <!--<property name="label" translatable="yes">No favorite images</property>-->
-                        <!--<style>-->
-                          <!--<class name="dim-label" />-->
-                        <!--</style>-->
-                      <!--</object>-->
-                    <!--</child>-->
+                    <signal name="child-activated" handler="fav_image_box_child_activated_cb" />
                   </object>
                 </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkSeparator">
+                <property name="visible">1</property>
+                <property name="orientation">horizontal</property>
               </object>
             </child>
             <child>

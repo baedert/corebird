@@ -20,7 +20,6 @@ class FavImageRow : Gtk.FlowBoxChild {
   private const int THUMB_HEIGHT = 50;
 
   private Gtk.Image image;
-  private Gtk.Button delete_button;
   private string file_path;
 
   public FavImageRow(string path, string display_name) {
@@ -35,13 +34,6 @@ class FavImageRow : Gtk.FlowBoxChild {
     this.add (image);
 
     this.set_valign (Gtk.Align.START);
-    //box.add (image);
-    //label.hexpand = true;
-    //label.xalign = 0;
-    //label.halign = Gtk.Align.START;
-    //label.ellipsize = Pango.EllipsizeMode.END;
-    //label.show ();
-    //box.add (label);
 
     //this.delete_button = new Gtk.Button.from_icon_name ("list-remove-symbolic",
                                                         //Gtk.IconSize.BUTTON);
