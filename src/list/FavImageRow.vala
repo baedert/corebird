@@ -19,19 +19,25 @@ class FavImageRow : Gtk.FlowBoxChild {
   private const int THUMB_WIDTH  = 80;
   private const int THUMB_HEIGHT = 50;
 
+  private Gtk.EventBox event_box;
   private Gtk.Image image;
   private string file_path;
 
-  public FavImageRow(string path, string display_name) {
+  public FavImageRow(string path) {
     this.file_path = path;
-    image = new Gtk.Image ();
 
+    event_box = new Gtk.EventBox ();
+    event_box.show ();
+
+
+    image = new Gtk.Image ();
     image.set_size_request (THUMB_WIDTH, THUMB_HEIGHT);
     image.set_halign (Gtk.Align.CENTER);
     image.set_valign (Gtk.Align.CENTER);
     image.margin = 3;
     image.show ();
-    this.add (image);
+    event_box.add (image);
+    this.add (event_box);
 
     this.set_valign (Gtk.Align.START);
 
