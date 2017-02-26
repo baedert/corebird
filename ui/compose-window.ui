@@ -224,6 +224,7 @@
                 <child>
                   <object class="GtkFlowBox" id="fav_image_list">
                     <property name="visible">1</property>
+                    <property name="margin">6</property>
                     <property name="selection-mode">none</property>
                     <signal name="child-activated" handler="fav_image_box_child_activated_cb" />
                   </object>
