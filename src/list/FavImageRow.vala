@@ -22,6 +22,7 @@ class FavImageRow : Gtk.FlowBoxChild {
   private Gtk.EventBox event_box;
   private Gtk.Image image;
   private string file_path;
+  private Gtk.GestureMultiPress gesture;
 
   public FavImageRow(string path) {
     this.file_path = path;
@@ -41,28 +42,73 @@ class FavImageRow : Gtk.FlowBoxChild {
 
     this.set_valign (Gtk.Align.START);
 
-    //this.delete_button = new Gtk.Button.from_icon_name ("list-remove-symbolic",
-                                                        //Gtk.IconSize.BUTTON);
-    //delete_button.valign = Gtk.Align.CENTER;
-    //delete_button.relief = Gtk.ReliefStyle.NONE;
-    //delete_button.clicked.connect (() => {
-      //var listbox = this.get_parent ();
-      //if (!(listbox is Gtk.ListBox)) {
-        //warning ("Parent is not a listbox");
-        //return;
-      //}
+    /* Sigh */
+    event_box.enter_notify_event.connect (() => {
+      var flags = this.get_state_flags ();
+      this.set_state_flags (flags | Gtk.StateFlags.PRELIGHT, true);
 
-      //try {
-        //var file = GLib.File.new_for_path (this.file_path);
-        //file.trash ();
-        //listbox.remove (this);
-      //} catch (GLib.Error e) {
-        //warning (e.message);
-      //}
-    //});
-    //box.add (delete_button);
+      return false;
+    });
 
-    //this.add (box);
+    event_box.leave_notify_event.connect (() => {
+      this.unset_state_flags (Gtk.StateFlags.PRELIGHT);
+
+      return false;
+    });
+
+    gesture = new Gtk.GestureMultiPress (event_box);
+    gesture.set_propagation_phase (Gtk.PropagationPhase.CAPTURE);
+    gesture.set_button (0);
+    gesture.pressed.connect (() => {
+      Gdk.EventSequence sequence = this.gesture.get_current_sequence ();
+      Gdk.EventButton event = (Gdk.EventButton)this.gesture.get_last_event (sequence);
+
+      if (event.triggers_context_menu ()) {
+        var menu = new Gtk.Menu ();
+        var delete_item = new Gtk.MenuItem.with_label (_("Delete"));
+        delete_item.activate.connect (() => {
+          var flowbox = this.get_parent ();
+          if (!(flowbox is Gtk.FlowBox)) {
+            warning ("Parent is not a flowbox");
+            return;
+          }
+
+          try {
+            var file = GLib.File.new_for_path (this.file_path);
+            file.trash ();
+            flowbox.remove (this);
+          } catch (GLib.Error e) {
+            warning (e.message);
+          }
+        });
+        menu.add (delete_item);
+        menu.attach_to_widget (this, null);
+        menu.show_all ();
+        menu.popup (null,
+                    null,
+                    null,
+                    event.button,
+                    event.time);
+      } else {
+        this.set_state_flags (this.get_state_flags () | Gtk.StateFlags.ACTIVE, true);
+      }
+
+      gesture.set_state (Gtk.EventSequenceState.CLAIMED);
+    });
+
+    gesture.released.connect (() => {
+      Gdk.EventSequence sequence = this.gesture.get_current_sequence ();
+      Gdk.EventButton? event = (Gdk.EventButton?)this.gesture.get_last_event (sequence);
+
+      this.unset_state_flags (Gtk.StateFlags.ACTIVE);
+
+      if (event != null && event.button == Gdk.BUTTON_PRIMARY) {
+        /* This gesture blocks the flowbox gesture so implement activating manually. */
+        if (this.get_parent () is Gtk.FlowBox) {
+          ((Gtk.FlowBox)this.get_parent ()).child_activated (this);
+        }
+      }
+    });
 
     this.get_style_context ().add_class ("fav-image-item");
     load_image.begin ();
