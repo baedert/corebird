@@ -76,14 +76,14 @@ class FavImageRow : Gtk.FlowBoxChild {
           try {
             var file = GLib.File.new_for_path (this.file_path);
             file.trash ();
-            flowbox.remove (this);
+            ((Gtk.Container)flowbox).remove (this);
           } catch (GLib.Error e) {
             warning (e.message);
           }
         });
         menu.add (delete_item);
         menu.attach_to_widget (this, null);
-        menu.show_all ();
+        menu.show ();
         menu.popup (null,
                     null,
                     null,
