@@ -252,6 +252,7 @@ parse_created_at (const char *_in)
         break;
 
       default:
+        month = 0;
         g_warn_if_reached ();
         break;
     }
