@@ -29,6 +29,7 @@ cb_deps = [
 enable_debug = get_option('enable-debug')
 if (enable_debug)
   add_global_arguments('-DDEBUG', language: 'c')
+  add_global_arguments('-DG_DISABLE_CAST_CHECKS', language: 'c')
   add_global_arguments('-D', 'DEBUG', language: 'vala')
 endif
 
