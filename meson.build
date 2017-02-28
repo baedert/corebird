@@ -140,26 +140,15 @@ corebird_lib_sources = files([
 
   # C Sources
   'src/CbTweet.c',
-  'src/CbTweet.h',
   'src/CbTextTransform.c',
-  'src/CbTextTransform.h',
   'src/CbMedia.c',
-  'src/CbMedia.h',
   'src/CbMediaDownloader.c',
-  'src/CbMediaDownloader.h',
   'src/CbTypes.c',
-  'src/CbTypes.h',
-  'src/CbUserCounter.h',
   'src/CbUserCounter.c',
-  'src/CbFilter.h',
   'src/CbFilter.c',
-  'src/CbAvatarCache.h',
   'src/CbAvatarCache.c',
-  'src/CbMediaImageWidget.h',
   'src/CbMediaImageWidget.c',
-  'src/CbTweetModel.h',
   'src/CbTweetModel.c',
-
 ])
 
 # glib resources
