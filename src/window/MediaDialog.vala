@@ -36,6 +36,11 @@ class MediaDialog : Gtk.Window {
     this.button_gesture.set_propagation_phase (Gtk.PropagationPhase.BUBBLE);
     this.button_gesture.released.connect (button_released_cb);
 
+    if (tweet.get_medias ().length == 1) {
+      next_revealer.hide ();
+      previous_revealer.hide ();
+    }
+
     change_media (cur_media);
   }
 
@@ -76,6 +81,9 @@ class MediaDialog : Gtk.Window {
       this.resize (new_width, new_height);
     }
     this.queue_resize ();
+
+    next_revealer.set_visible (cur_index != tweet.get_medias ().length - 1);
+    previous_revealer.set_visible (cur_index != 0);
   }
 
   private void next_media () {
