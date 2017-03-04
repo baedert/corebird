@@ -245,3 +245,10 @@ progressbar.horizontal.embedded-progress>trough>progress {
 .fav-image-item:active {
   background-color: alpha(white, 0.9);
 }
+
+.nobg {
+  /* Hide background for really fucked up themes */
+  background: none;
+  box-shadow: none;
+  border: none;
+}
