@@ -19,6 +19,10 @@
 class MediaDialog : Gtk.Window {
   [GtkChild]
   private Gtk.Frame frame;
+  [GtkChild]
+  private Gtk.Revealer next_revealer;
+  [GtkChild]
+  private Gtk.Revealer previous_revealer;
   private unowned Cb.Tweet tweet;
   private int cur_index = 0;
   private Gtk.GestureMultiPress button_gesture;
@@ -98,5 +102,29 @@ class MediaDialog : Gtk.Window {
       this.destroy ();
 
     return Gdk.EVENT_PROPAGATE;
+  }
+
+  [GtkCallback]
+  private void next_button_clicked_cb () {
+    next_media ();
+  }
+
+  [GtkCallback]
+  private void previous_button_clicked_cb () {
+    previous_media ();
+  }
+
+  public override bool enter_notify_event (Gdk.EventCrossing event) {
+    next_revealer.reveal_child = true;
+    previous_revealer.reveal_child = true;
+
+    return false;
+  }
+
+  public override bool leave_notify_event (Gdk.EventCrossing event) {
+    next_revealer.reveal_child = false;
+    previous_revealer.reveal_child = false;
+
+    return false;
   }
 }
