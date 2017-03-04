@@ -36,10 +36,7 @@ public class TweetListBox : Gtk.ListBox {
   public Cb.TweetModel model = new Cb.TweetModel ();
   private Gtk.GestureMultiPress press_gesture;
 
-  public TweetListBox (bool show_placeholder = true) {
-    if (show_placeholder) {
-      add_placeholder ();
-    }
+  public TweetListBox () {
   }
 
 
