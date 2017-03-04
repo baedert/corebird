@@ -89,11 +89,17 @@ cb_media_image_widget_init (CbMediaImageWidget *self)
 GtkWidget *
 cb_media_image_widget_new (CbMedia *media)
 {
-  CbMediaImageWidget *self = CB_MEDIA_IMAGE_WIDGET (g_object_new (CB_TYPE_MEDIA_IMAGE_WIDGET, NULL));
+  CbMediaImageWidget *self;
   int img_width;
   int img_height;
   int win_width;
   int win_height;
+
+  g_return_val_if_fail (CB_IS_MEDIA (media), NULL);
+  g_return_val_if_fail (!media->invalid, NULL);
+  g_return_val_if_fail (media->surface != NULL, NULL);
+
+  self = CB_MEDIA_IMAGE_WIDGET (g_object_new (CB_TYPE_MEDIA_IMAGE_WIDGET, NULL));
 
   if (media->type == CB_MEDIA_TYPE_GIF)
     gtk_image_set_from_animation (GTK_IMAGE (self->image), media->animation);
