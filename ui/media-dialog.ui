@@ -77,9 +77,6 @@
             </child>
 
           </object>
-          <packing>
-            <property name="pass-through">1</property>
-          </packing>
         </child>
 
       </object>
