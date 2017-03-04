@@ -246,14 +246,21 @@ public class UserStream : Object {
       /* For whatever reason, we sometimes receive "OK"
          from the server. I can't find an explanation
          for this but it doesn't seem to cause any harm. */
-      if (data.str.strip () == "OK") {
+      var actual_data =  data.str.strip ();
+      if (actual_data == "OK") {
+        data.erase ();
+        return;
+      } else if (actual_data == "Exceeded connection limit for user") {
+        /* This normally only happens when quickly quitting and restarting Corebird,
+           so ignore and try restarting the stream. */
+        restart ();
         data.erase ();
         return;
       }
 
       var parser = new Json.Parser ();
       try {
-        parser.load_from_data (data.str);
+        parser.load_from_data (actual_data);
       } catch (GLib.Error e) {
         critical (e.message);
         critical (data.str);
