@@ -108,7 +108,7 @@
 }
 
 /* Don't target :hover:active here */
-.favorite-button:checked,
+.favorite-button:checked:not(:hover),
 .retweet-button:checked:not(:hover) {
   background-image: none;
   background-color: transparent;
