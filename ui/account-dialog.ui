@@ -53,8 +53,6 @@
           <object class="GtkBox" id="info_box">
             <property name="visible">1</property>
             <property name="orientation">vertical</property>
-            <property name="margin">0</property>
-            <property name="border-width">0</property>
             <!-- Avatar -->
             <child>
               <object class="AvatarBannerWidget" id="avatar_banner_widget">
