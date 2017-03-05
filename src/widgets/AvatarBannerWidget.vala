@@ -16,10 +16,10 @@
  */
 
 public class AvatarBannerWidget : Gtk.Container {
-  private const int MIN_HEIGHT = 150;
-  private const int MAX_HEIGHT = 250;
+  private const int MIN_HEIGHT      = 150;
+  private const int MAX_HEIGHT      = 250;
   private const double BANNER_RATIO = 0.5; /* 320/640 */
-  public int avatar_size { get; set; default = 48; }
+  private const int AVATAR_SIZE     = 48;
 
   private unowned Account account;
 
@@ -64,11 +64,11 @@ public class AvatarBannerWidget : Gtk.Container {
   }
 
   private int get_avatar_x () {
-    return (get_allocated_width () / 2) - (avatar_size / 2);
+    return (get_allocated_width () / 2) - (AVATAR_SIZE / 2);
   }
 
   private int get_avatar_y () {
-    return get_allocated_height () - avatar_size;
+    return get_allocated_height () - AVATAR_SIZE;
   }
 
 
@@ -83,10 +83,10 @@ public class AvatarBannerWidget : Gtk.Container {
                                 out int         min_baseline = null,
                                 out int         nat_baseline = null) {
     if (orientation == Gtk.Orientation.HORIZONTAL) {
-      min = nat = avatar_size + 40; // 20px margin on either side
+      min = nat = AVATAR_SIZE + 40; // 20px margin on either side
     } else {
-      min = (avatar_size / 3) + MIN_HEIGHT;
-      nat = int.max (min, int.min (MAX_HEIGHT, (int)(for_size * BANNER_RATIO) + (avatar_size / 3)));
+      min = (AVATAR_SIZE / 3) + MIN_HEIGHT;
+      nat = int.max (min, int.min (MAX_HEIGHT, (int)(for_size * BANNER_RATIO) + (AVATAR_SIZE / 3)));
     }
   }
 
@@ -112,7 +112,7 @@ public class AvatarBannerWidget : Gtk.Container {
     child_allocation.y = allocation.y;
     child_allocation.width = int.max (allocation.width, child_requisition.width);
     child_allocation.height = (int)(allocation.width * BANNER_RATIO);
-    child_allocation.height = int.max (allocation.height - (avatar_size / 2), child_requisition.height);
+    child_allocation.height = int.max (allocation.height - (AVATAR_SIZE / 2), child_requisition.height);
     set_banner_button.size_allocate (child_allocation);
 
 
@@ -120,8 +120,8 @@ public class AvatarBannerWidget : Gtk.Container {
     set_avatar_button.get_preferred_size (out child_requisition, null);
     child_allocation.x = get_avatar_x () + allocation.x;
     child_allocation.y = get_avatar_y () + allocation.y;
-    child_allocation.width = avatar_size;
-    child_allocation.height = avatar_size;
+    child_allocation.width = AVATAR_SIZE;
+    child_allocation.height = AVATAR_SIZE;
     set_avatar_button.size_allocate (child_allocation);
   }
 
