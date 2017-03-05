@@ -16,7 +16,7 @@
  */
 
 public class AvatarBannerWidget : Gtk.Container {
-  private const int MIN_HEIGHT      = 150;
+  private const int MIN_HEIGHT      = 200;
   private const int MAX_HEIGHT      = 250;
   private const double BANNER_RATIO = 0.5; /* 320/640 */
   private const int AVATAR_SIZE     = 48;
@@ -81,7 +81,8 @@ public class AvatarBannerWidget : Gtk.Container {
 
   public override void get_preferred_width (out int min,
                                             out int nat) {
-    min = nat = AVATAR_SIZE + 40; // 20px margin on either side
+    min = AVATAR_SIZE + 40; // 20px margin on either side
+    nat = (int)(MIN_HEIGHT * (1 / BANNER_RATIO));
   }
 
   public override void get_preferred_height_for_width (int width,
