@@ -16,7 +16,7 @@
  */
 
 public class AvatarBannerWidget : Gtk.Container {
-  private const int MIN_HEIGHT      = 150;
+  private const int MIN_HEIGHT      = 200;
   private const int MAX_HEIGHT      = 250;
   private const double BANNER_RATIO = 0.5; /* 320/640 */
   private const int AVATAR_SIZE     = 48;
@@ -83,7 +83,8 @@ public class AvatarBannerWidget : Gtk.Container {
                                 out int         min_baseline = null,
                                 out int         nat_baseline = null) {
     if (orientation == Gtk.Orientation.HORIZONTAL) {
-      min = nat = AVATAR_SIZE + 40; // 20px margin on either side
+      min = AVATAR_SIZE + 40; // 20px margin on either side
+      nat = (int)(MIN_HEIGHT * (1 / BANNER_RATIO));
     } else {
       min = (AVATAR_SIZE / 3) + MIN_HEIGHT;
       nat = int.max (min, int.min (MAX_HEIGHT, (int)(for_size * BANNER_RATIO) + (AVATAR_SIZE / 3)));
