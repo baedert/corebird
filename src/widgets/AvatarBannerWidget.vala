@@ -62,7 +62,8 @@ public class AvatarBannerWidget : Gtk.Container {
   public override bool draw (Cairo.Context ct) {
     this.propagate_draw (set_banner_button, ct);
     this.propagate_draw (set_avatar_button, ct);
-    return true;
+
+    return Gdk.EVENT_PROPAGATE;
   }
 
   private int get_avatar_x () {
