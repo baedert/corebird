@@ -84,6 +84,16 @@ public class AccountDialog : Gtk.Window {
         set_transient_data (account.website, account.description);
       });
     }
+
+    Gtk.AccelGroup ag = new Gtk.AccelGroup ();
+    ag.connect (Gdk.Key.Escape, 0, Gtk.AccelFlags.LOCKED, escape_pressed_cb);
+
+    this.add_accel_group (ag);
+  }
+
+  private bool escape_pressed_cb () {
+    this.destroy ();
+    return Gdk.EVENT_STOP;
   }
 
   private void set_transient_data (string? website, string? description) {
