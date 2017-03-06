@@ -182,7 +182,7 @@ cb_lib = static_library(
     meson.source_root() + '/vapi/corebird-internal.vapi',
     meson.source_root() + '/vapi/config.vapi',
     '--vapidir=vapi/',
-    '--target-glib=2.38',
+    '--target-glib=2.44',
     '--gresources=' + meson.source_root() + '/corebird.gresource.xml',
   ],
 )
