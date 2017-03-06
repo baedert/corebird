@@ -74,7 +74,7 @@ CB_VALA_FLAGS=" \
   --pkg sqlite3 \
   --pkg libsoup-2.4 \
   --pkg glib-2.0 \
-  --target-glib=2.38"
+  --target-glib=2.44"
 
 
 AC_SUBST(CB_CFLAGS)
