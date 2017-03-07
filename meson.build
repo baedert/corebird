@@ -196,7 +196,8 @@ executable(
   include_directories: srcdir,
   vala_args: [
     meson.source_root() + '/vapi/corebird-internal.vapi',
-  ]
+  ],
+  install: true
 )
 
 subdir('tests')
