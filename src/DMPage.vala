@@ -46,7 +46,7 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
     this.account = account;
     this.delta_updater = delta_updater;
     text_view.buffer.changed.connect (recalc_length);
-    messages_list.set_sort_func (ITwitterItem.sort_func_inv);
+    messages_list.set_sort_func (twitter_item_sort_func_inv);
     placeholder_box.show ();
     messages_list.set_placeholder(placeholder_box);
     scroll_widget.scrolled_to_start.connect (load_older);

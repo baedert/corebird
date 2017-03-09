@@ -61,6 +61,18 @@ void default_header_func (Gtk.ListBoxRow  row,
   row.set_header (header);
 }
 
+int twitter_item_sort_func (Gtk.ListBoxRow a, Gtk.ListBoxRow b) {
+  if(((ITwitterItem)a).sort_factor < ((ITwitterItem)b).sort_factor)
+    return 1;
+  return -1;
+}
+
+int twitter_item_sort_func_inv (Gtk.ListBoxRow a, Gtk.ListBoxRow b) {
+  if(((ITwitterItem)a).sort_factor < ((ITwitterItem)b).sort_factor)
+    return -1;
+  return 1;
+}
+
 
 
 Cairo.Surface? load_surface (string path)
