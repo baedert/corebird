@@ -14,6 +14,14 @@ i18n.merge_file(
   install: true,
   install_dir: join_paths(get_option('datadir'), 'applications')
 )
+i18n.merge_file(
+  input:  'org.baedert.corebird.appdata.xml.in',
+  output: 'org.baedert.corebird.appdata.xml',
+  po_dir: '../po/',
+  type:   'xml',
+  install: true,
+  install_dir: join_paths(get_option('datadir'), 'appdata')
+)
 
 # Install all application icons in one go
 # TODO: This will unfortunately also install the Makefile{.am} files which are still in hicolor/...
