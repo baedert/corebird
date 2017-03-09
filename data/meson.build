@@ -1,14 +1,19 @@
-
+i18n = import('i18n')
 
 install_data(
   'org.baedert.corebird.gschema.xml',
   install_dir: join_paths(get_option('datadir'), 'glib-2.0', 'schemas')
 )
-install_data(
-  'org.baedert.corebird.desktop',
+meson.add_install_script('meson_post_install.py')
+
+i18n.merge_file(
+  input:  'org.baedert.corebird.desktop.in',
+  output: 'org.baedert.corebird.desktop',
+  po_dir: '../po/',
+  type:   'desktop',
+  install: true,
   install_dir: join_paths(get_option('datadir'), 'applications')
 )
-meson.add_install_script('meson_post_install.py')
 
 # Install all application icons in one go
 # TODO: This will unfortunately also install the Makefile{.am} files which are still in hicolor/...
