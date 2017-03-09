@@ -200,5 +200,6 @@ executable(
   install: true
 )
 
-subdir('tests')
 subdir('data')
+subdir('po')
+subdir('tests')
