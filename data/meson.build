@@ -4,6 +4,10 @@ install_data(
   'org.baedert.corebird.gschema.xml',
   install_dir: join_paths(get_option('datadir'), 'glib-2.0', 'schemas')
 )
+install_data(
+  'org.baedert.corebird.desktop',
+  install_dir: join_paths(get_option('datadir'), 'applications')
+)
 meson.add_install_script('meson_post_install.py')
 
 # Install all application icons in one go
