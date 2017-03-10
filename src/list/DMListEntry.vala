@@ -84,6 +84,10 @@ class DMListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
   public int64 get_sort_factor () {
     return timestamp;
   }
+
+  public int64 get_timestamp () {
+    return timestamp;
+  }
 }
 
 

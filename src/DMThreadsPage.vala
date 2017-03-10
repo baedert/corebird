@@ -36,7 +36,6 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     }
   }
   public unowned Account account;
-  public unowned DeltaUpdater delta_updater;
   public int id                             { get; set; }
   private BadgeRadioButton radio_button;
   private StartConversationEntry start_conversation_entry;
@@ -49,10 +48,9 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
   private DMManager manager;
 
 
-  public DMThreadsPage (int id, Account account, DeltaUpdater delta_updater) {
+  public DMThreadsPage (int id, Account account) {
     this.id = id;
     this.account = account;
-    this.delta_updater = delta_updater;
     this.manager = new DMManager.for_account (account);
     this.manager.message_received.connect (dm_received_cb);
     this.manager.thread_changed.connect (thread_changed_cb);

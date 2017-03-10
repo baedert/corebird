@@ -39,7 +39,6 @@ libcorebird_la_VALASOURCES = \
 	MentionsTimeline.vala \
 	SearchPage.vala \
 	DMPage.vala \
-	DeltaUpdater.vala \
 	UserStream.vala \
 	IMessageReceiver.vala \
 	IPage.vala \
@@ -87,7 +86,6 @@ libcorebird_la_VALASOURCES = \
 	util/Utils.vala \
 	util/BundleHistory.vala \
 	util/UserCompletion.vala \
-	util/WeakRef.vala \
 	util/Dirs.vala \
 	util/Bundle.vala \
 	util/UserUtils.vala \
@@ -150,7 +148,9 @@ libcorebird_la_SOURCES = \
 	CbTweetModel.h \
 	CbTweetModel.c \
 	CbTwitterItem.h \
-	CbTwitterItem.c
+	CbTwitterItem.c \
+	CbDeltaUpdater.h \
+	CbDeltaUpdater.c
 
 libcorebird_la_vala.stamp: $(libcorebird_la_VALASOURCES) Makefile
 	@$(VALAC) \

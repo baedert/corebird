@@ -80,13 +80,11 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
   [GtkChild]
   private Gtk.Label error_label;
 
-  public TweetInfoPage (int id, Account account, DeltaUpdater delta_updater) {
+  public TweetInfoPage (int id, Account account) {
     this.id = id;
     this.account = account;
     this.top_list_box.account = account;
     this.bottom_list_box.account = account;
-    this.top_list_box.delta_updater = delta_updater;
-    this.bottom_list_box.delta_updater = delta_updater;
 
 
     mm_widget.media_clicked.connect ((m, i) => TweetUtils.handle_media_click (tweet, main_window, i));

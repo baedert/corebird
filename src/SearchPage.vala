@@ -44,7 +44,7 @@ class SearchPage : IPage, Gtk.Box {
   [GtkChild]
   private ScrollWidget scroll_widget;
   private Gtk.RadioButton radio_button;
-  public DeltaUpdater delta_updater;
+  public Cb.DeltaUpdater delta_updater;
   private GLib.Cancellable? cancellable = null;
   private LoadMoreEntry load_more_entry = new LoadMoreEntry ();
   private string search_query;
@@ -59,10 +59,10 @@ class SearchPage : IPage, Gtk.Box {
   private bool loading_users  = false;
 
 
-  public SearchPage (int id, Account account, DeltaUpdater delta_updater) {
+  public SearchPage (int id, Account account) {
     this.id = id;
     this.account = account;
-    this.delta_updater = delta_updater;
+    this.delta_updater = new Cb.DeltaUpdater (tweet_list);
 
     /* We are slightly abusing the TweetListBox here */
     tweet_list.bind_model (null, null);
@@ -332,7 +332,6 @@ class SearchPage : IPage, Gtk.Box {
         if (tweet.id < lowest_tweet_id)
           lowest_tweet_id = tweet.id;
         var entry = new TweetListEntry (tweet, main_window, account);
-        delta_updater.add (entry);
         if (!collect_obj.done)
           entry.visible = false;
         else
@@ -403,5 +402,8 @@ class LoadMoreEntry : Gtk.ListBoxRow, Cb.TwitterItem {
   public int update_time_delta (GLib.DateTime? now = null) {return 0;}
   public int64 get_sort_factor () {
     return int64.MAX - 2;
+  }
+  public int64 get_timestamp () {
+    return 0;
   }
 }

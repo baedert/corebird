@@ -96,12 +96,11 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
   private Cursor? following_cursor = null;
   private GLib.SimpleActionGroup actions;
 
-  public ProfilePage (int id, Account account, DeltaUpdater delta_updater) {
+  public ProfilePage (int id, Account account) {
     this.id = id;
     this.account = account;
     this.user_lists.account = account;
     this.tweet_list.account = account;
-    this.tweet_list.delta_updater = delta_updater;
 
     this.scrolled_to_end.connect (() => {
       if (user_stack.visible_child == tweet_list) {

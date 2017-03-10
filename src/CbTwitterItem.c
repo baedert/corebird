@@ -32,8 +32,10 @@ default_update_time_delta (CbTwitterItem *self,
 static void
 cb_twitter_item_default_init (CbTwitterItemInterface *self)
 {
+  self->last_set_timediff = 0;
   self->get_sort_factor   = NULL;
   self->update_time_delta = default_update_time_delta;
+  self->get_timestamp     = NULL;
 }
 
 gint64
@@ -61,3 +63,39 @@ cb_twitter_item_update_time_delta (CbTwitterItem *self,
   return iface->update_time_delta (self, now);
 }
 
+gint64
+cb_twitter_item_get_timestamp (CbTwitterItem *self)
+{
+  CbTwitterItemInterface *iface;
+
+  g_return_val_if_fail (CB_IS_TWITTER_ITEM (self), 0);
+
+  iface = CB_TWITTER_ITEM_GET_IFACE (self);
+
+  return iface->get_timestamp (self);
+}
+
+void
+cb_twitter_item_set_last_set_timediff (CbTwitterItem *self,
+                                       GTimeSpan      span)
+{
+  CbTwitterItemInterface *iface;
+
+  g_return_if_fail (CB_IS_TWITTER_ITEM (self));
+
+  iface = CB_TWITTER_ITEM_GET_IFACE (self);
+
+  iface->last_set_timediff = span;
+}
+
+GTimeSpan
+cb_twitter_item_get_last_set_timediff (CbTwitterItem *self)
+{
+  CbTwitterItemInterface *iface;
+
+  g_return_val_if_fail (CB_IS_TWITTER_ITEM (self), 0);
+
+  iface = CB_TWITTER_ITEM_GET_IFACE (self);
+
+  return iface->last_set_timediff;
+}
