@@ -60,7 +60,6 @@ corebird_lib_sources = files([
   'src/HomeTimeline.vala',
   'src/IMessageReceiver.vala',
   'src/IPage.vala',
-  'src/ITwitterItem.vala',
   'src/ListStatusesPage.vala',
   'src/ListsPage.vala',
   'src/MainWidget.vala',
@@ -149,6 +148,7 @@ corebird_lib_sources = files([
   'src/CbAvatarCache.c',
   'src/CbMediaImageWidget.c',
   'src/CbTweetModel.c',
+  'src/CbTwitterItem.c',
 ])
 
 # glib resources

@@ -386,10 +386,7 @@ class SearchPage : IPage, Gtk.Box {
 }
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/load-more-entry.ui")]
-class LoadMoreEntry : Gtk.ListBoxRow, ITwitterItem {
-  public int64 sort_factor {
-    get { return int64.MAX-2; }
-  }
+class LoadMoreEntry : Gtk.ListBoxRow, Cb.TwitterItem {
   public bool seen {
     get { return true; }
     set {}
@@ -404,4 +401,7 @@ class LoadMoreEntry : Gtk.ListBoxRow, ITwitterItem {
     return load_more_button;
   }
   public int update_time_delta (GLib.DateTime? now = null) {return 0;}
+  public int64 get_sort_factor () {
+    return int64.MAX - 2;
+  }
 }

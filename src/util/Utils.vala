@@ -62,13 +62,13 @@ void default_header_func (Gtk.ListBoxRow  row,
 }
 
 int twitter_item_sort_func (Gtk.ListBoxRow a, Gtk.ListBoxRow b) {
-  if(((ITwitterItem)a).sort_factor < ((ITwitterItem)b).sort_factor)
+  if(((Cb.TwitterItem)a).get_sort_factor () < ((Cb.TwitterItem)b).get_sort_factor ())
     return 1;
   return -1;
 }
 
 int twitter_item_sort_func_inv (Gtk.ListBoxRow a, Gtk.ListBoxRow b) {
-  if(((ITwitterItem)a).sort_factor < ((ITwitterItem)b).sort_factor)
+  if(((Cb.TwitterItem)a).get_sort_factor () < ((Cb.TwitterItem)b).get_sort_factor ())
     return -1;
   return 1;
 }

@@ -16,7 +16,7 @@
  */
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/user-list-entry.ui")]
-class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
+class UserListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
   [GtkChild]
   private Gtk.Label name_label;
   [GtkChild]
@@ -60,10 +60,6 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
   public bool seen {
     get { return true; }
     set {}
-  }
-
-  public int64 sort_factor {
-    get{ return int64.MAX-1; }
   }
 
   public bool show_settings {
@@ -124,6 +120,10 @@ class UserListEntry : Gtk.ListBoxRow, ITwitterItem {
   }
 
   public int update_time_delta (GLib.DateTime? now = null) {return 0;}
+
+  public int64 get_sort_factor () {
+    return int64.MAX-1;
+  }
 
   private void update_window_button_sensitivity (Gtk.Window window, bool new_value) {
     if (((MainWindow)window).account.screen_name == this.account.screen_name) {

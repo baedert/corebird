@@ -236,4 +236,11 @@ namespace Cb {
     public void toggle_flag_on_user_tweets (int64 user_id, TweetState flag, bool active);
     public void toggle_flag_on_user_retweets (int64 user_id, TweetState flag, bool active);
   }
+
+  [CCode (cprefix = "CbTwitterItemInterface_", lower_case_cprefix = "cb_twitter_item_", cheader_filename =
+          "CbTwitterItem.h", type_cname = "CbTwitterItemInterface")]
+  public interface TwitterItem : GLib.Object {
+    public abstract int64 get_sort_factor();
+    public abstract int update_time_delta (GLib.DateTime? now = null);
+  }
 }
