@@ -25,7 +25,7 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
     }
   }
   public unowned Account account;
-  public unowned DeltaUpdater delta_updater;
+  public Cb.DeltaUpdater delta_updater;
   public int id                             { get; set; }
   [GtkChild]
   private Gtk.Button send_button;
@@ -41,10 +41,10 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
   private int64 lowest_id = int64.MAX;
   private bool was_scrolled_down = false;
 
-  public DMPage (int id, Account account, DeltaUpdater delta_updater) {
+  public DMPage (int id, Account account) {
     this.id = id;
     this.account = account;
-    this.delta_updater = delta_updater;
+    this.delta_updater = new Cb.DeltaUpdater (messages_list);
     text_view.buffer.changed.connect (recalc_length);
     messages_list.set_sort_func (twitter_item_sort_func_inv);
     placeholder_box.show ();
@@ -148,7 +148,6 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
       new_msg.user_id = sender.get_int_member ("id");
       new_msg.update_time_delta ();
       new_msg.load_avatar (sender.get_string_member ("profile_image_url"));
-      delta_updater.add (new_msg);
       messages_list.add (new_msg);
       if (scroll_widget.scrolled_down)
         scroll_widget.scroll_down_next ();
@@ -192,7 +191,6 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
         Cairo.Surface? s = Twitter.get ().load_avatar_for_user_id.end (res);
         entry.avatar = s;
       });
-      delta_updater.add (entry);
       messages_list.add (entry);
       return true;
     });
@@ -261,7 +259,6 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
         Cairo.Surface? s = Twitter.get ().load_avatar_for_user_id.end (res);
         entry.avatar = s;
       });
-      delta_updater.add (entry);
       messages_list.add (entry);
       return true;
     });
@@ -299,7 +296,6 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
     entry.name = account.name;
     entry.avatar = account.avatar;
     entry.update_time_delta ();
-    delta_updater.add (entry);
     messages_list.add (entry);
     var call = account.proxy.new_call ();
     call.set_function ("1.1/direct_messages/new.json");

@@ -24,25 +24,31 @@
 
 G_DECLARE_INTERFACE (CbTwitterItem, cb_twitter_item, CB, TWITTER_ITEM, GObject)
 
-//typedef struct _CbTwitterItemInterface CbTwitterItemInterface;
 struct _CbTwitterItemInterface
 {
   GTypeInterface base_iface;
+  GTimeSpan last_set_timediff; /* In minutes! */
 
-  gint64 (*get_sort_factor) (CbTwitterItem *iface);
 
-  int    (*update_time_delta) (CbTwitterItem *iface,
+  gint64 (*get_sort_factor) (CbTwitterItem *self);
+
+  int    (*update_time_delta) (CbTwitterItem *self,
                                GDateTime     *now);
+
+  gint64 (*get_timestamp) (CbTwitterItem *self);
 };
 
+gint64 cb_twitter_item_get_sort_factor (CbTwitterItem *self);
 
-
-//GType  cb_twitter_item_get_type (void);
-
-gint64 cb_twitter_item_get_sort_factor (CbTwitterItem *iface);
-
-int    cb_twitter_item_update_time_delta (CbTwitterItem *iface,
+int    cb_twitter_item_update_time_delta (CbTwitterItem *self,
                                           GDateTime     *now);
+
+gint64 cb_twitter_item_get_timestamp (CbTwitterItem *self);
+
+/* Basically just for CbDeltaUpdater */
+void   cb_twitter_item_set_last_set_timediff (CbTwitterItem *self,
+                                              GTimeSpan      span);
+GTimeSpan cb_twitter_item_get_last_set_timediff (CbTwitterItem *self);
 
 
 

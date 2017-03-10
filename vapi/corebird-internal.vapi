@@ -241,6 +241,13 @@ namespace Cb {
           "CbTwitterItem.h", type_cname = "CbTwitterItemInterface")]
   public interface TwitterItem : GLib.Object {
     public abstract int64 get_sort_factor();
+    public abstract int64 get_timestamp();
     public abstract int update_time_delta (GLib.DateTime? now = null);
+  }
+
+  [CCode (cprefix = "CbDeltaUpdater_", lower_case_cprefix = "cb_delta_updater_", cheader_filename =
+          "CbDeltaUpdater.h")]
+  public class DeltaUpdater : GLib.Object {
+    public DeltaUpdater (Gtk.Widget listbox);
   }
 }

@@ -41,16 +41,6 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
   public unowned Account account;
   protected BadgeRadioButton radio_button;
   protected uint tweet_remove_timeout = 0;
-  private DeltaUpdater _delta_updater;
-  public DeltaUpdater delta_updater {
-    get {
-      return _delta_updater;
-    }
-    set {
-      this._delta_updater = value;
-      tweet_list.delta_updater = value;
-    }
-  }
   protected abstract string function     { get;      }
   protected bool loading = false;
   protected Gtk.Widget? last_focus_widget = null;

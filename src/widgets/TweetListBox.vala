@@ -31,7 +31,7 @@ public class TweetListBox : Gtk.ListBox {
 
   public signal void retry_button_clicked ();
 
-  public unowned DeltaUpdater delta_updater;
+  public Cb.DeltaUpdater delta_updater;
   public unowned Account account;
   public Cb.TweetModel model = new Cb.TweetModel ();
   private Gtk.GestureMultiPress press_gesture;
@@ -47,6 +47,7 @@ public class TweetListBox : Gtk.ListBox {
     this.press_gesture.set_button (0);
     this.press_gesture.set_propagation_phase (Gtk.PropagationPhase.BUBBLE);
     this.press_gesture.pressed.connect (gesture_pressed_cb);
+    this.delta_updater = new Cb.DeltaUpdater (this);
     Settings.get ().bind ("double-click-activation",
                           this, "activate-on-single-click",
                           GLib.SettingsBindFlags.INVERT_BOOLEAN);
@@ -56,7 +57,6 @@ public class TweetListBox : Gtk.ListBox {
       var row = new TweetListEntry ((Cb.Tweet) obj,
                                     (MainWindow) get_toplevel (),
                                     this.account);
-      delta_updater.add (row);
       row.fade_in ();
       return row;
     });

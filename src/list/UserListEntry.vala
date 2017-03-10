@@ -122,7 +122,11 @@ class UserListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
   public int update_time_delta (GLib.DateTime? now = null) {return 0;}
 
   public int64 get_sort_factor () {
-    return int64.MAX-1;
+    return int64.MAX - 1;
+  }
+
+  public int64 get_timestamp () {
+    return 0;
   }
 
   private void update_window_button_sensitivity (Gtk.Window window, bool new_value) {

@@ -509,6 +509,10 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
     return tweet.source_tweet.id;
   }
 
+  public int64 get_timestamp () {
+    return tweet.source_tweet.created_at;
+  }
+
   public void toggle_mode () {
     if (this._read_only)
       return;

@@ -62,6 +62,7 @@ class UserFilterEntry : Gtk.ListBoxRow, Cb.TwitterItem {
 
   public int update_time_delta (GLib.DateTime? now = null) {return 0;}
   public int64 get_sort_factor () { return 2; }
+  public int64 get_timestamp () { return 0; }
 
   [GtkCallback]
   private void menu_button_clicked_cb () {

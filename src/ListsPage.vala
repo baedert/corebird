@@ -29,7 +29,7 @@ class ListsPage : IPage, ScrollWidget, IMessageReceiver {
     }
   }
   public unowned Account account            { get; set; }
-  public unowned DeltaUpdater delta_updater { get; set; }
+  public unowned Cb.DeltaUpdater delta_updater { get; set; }
   public int id                             { get; set; }
   private bool inited = false;
   private int64 user_id;

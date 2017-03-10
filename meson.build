@@ -55,7 +55,6 @@ corebird_lib_sources = files([
   'src/DMPage.vala',
   'src/DMThreadsPage.vala',
   'src/DefaultTimeline.vala',
-  'src/DeltaUpdater.vala',
   'src/FavoritesTimeline.vala',
   'src/FilterPage.vala',
   'src/HomeTimeline.vala',
@@ -102,7 +101,6 @@ corebird_lib_sources = files([
   'src/util/UserCompletion.vala',
   'src/util/UserUtils.vala',
   'src/util/Utils.vala',
-  'src/util/WeakRef.vala',
   'src/widgets/AccountCreateWidget.vala',
   'src/widgets/AddImageButton.vala',
   'src/widgets/AspectImage.vala',
@@ -155,6 +153,7 @@ corebird_lib_sources = files([
   'src/CbUserCounter.c',
   'src/CbTweetModel.c',
   'src/CbTwitterItem.c',
+  'src/CbDeltaUpdater.c',
 ])
 
 # glib resources

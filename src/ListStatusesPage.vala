@@ -74,11 +74,10 @@ class ListStatusesPage : ScrollWidget, IPage {
   private bool loading = false;
 
 
-  public ListStatusesPage (int id, Account account, DeltaUpdater delta_updater) {
+  public ListStatusesPage (int id, Account account) {
     this.id = id;
     this.account = account;
     this.tweet_list.account = account;
-    this.tweet_list.delta_updater = delta_updater;
     this.scroll_event.connect (scroll_event_cb);
     this.scrolled_to_end.connect (load_older);
     this.scrolled_to_start.connect (handle_scrolled_to_start);
