@@ -16,7 +16,7 @@
  */
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/user-filter-entry.ui")]
-class UserFilterEntry : Gtk.ListBoxRow, ITwitterItem {
+class UserFilterEntry : Gtk.ListBoxRow, Cb.TwitterItem {
   [GtkChild]
   private Gtk.Label name_label;
   [GtkChild]
@@ -49,10 +49,6 @@ class UserFilterEntry : Gtk.ListBoxRow, ITwitterItem {
     set {}
   }
 
-  public int64 sort_factor {
-    get{ return 2; }
-  }
-
   public int64 user_id;
 
   public signal void deleted (int64 id);
@@ -65,6 +61,7 @@ class UserFilterEntry : Gtk.ListBoxRow, ITwitterItem {
   }
 
   public int update_time_delta (GLib.DateTime? now = null) {return 0;}
+  public int64 get_sort_factor () { return 2; }
 
   [GtkCallback]
   private void menu_button_clicked_cb () {

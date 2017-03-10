@@ -18,11 +18,11 @@
 class WeakRef : GLib.Object {
   private GLib.WeakRef wr;
 
-  public WeakRef (ITwitterItem obj) {
+  public WeakRef (Cb.TwitterItem obj) {
     this.wr = GLib.WeakRef (obj);
   }
 
-  public new ITwitterItem get () {
-    return (ITwitterItem) wr.get ();
+  public new Cb.TwitterItem? get_ref () {
+    return (Cb.TwitterItem) wr.get ();
   }
 }

@@ -41,7 +41,6 @@ libcorebird_la_VALASOURCES = \
 	SearchPage.vala \
 	DMPage.vala \
 	DeltaUpdater.vala \
-	ITwitterItem.vala \
 	UserStream.vala \
 	IMessageReceiver.vala \
 	IPage.vala \
@@ -150,7 +149,9 @@ libcorebird_la_SOURCES = \
 	CbMediaImageWidget.h \
 	CbMediaImageWidget.c \
 	CbTweetModel.h \
-	CbTweetModel.c
+	CbTweetModel.c \
+	CbTwitterItem.h \
+	CbTwitterItem.c
 
 libcorebird_la_vala.stamp: $(libcorebird_la_VALASOURCES) Makefile
 	@$(VALAC) \

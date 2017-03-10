@@ -25,10 +25,11 @@ public class DeltaUpdater : GLib.Object {
     minutely_id = GLib.Timeout.add (60 * 1000, () => {
       for (int i = 0, size = minutely.length; i < size; i++) {
         WeakRef item_ref = minutely.get (i);
-        ITwitterItem item = item_ref.get ();
-        if (!(item is ITwitterItem)) {
+        Cb.TwitterItem? item = item_ref.get_ref ();
+        if (item == null || !(item is Cb.TwitterItem)) {
           minutely.remove (item_ref);
           size --;
+          i --;
           continue;
         }
         int seconds = item.update_time_delta ();
@@ -36,6 +37,7 @@ public class DeltaUpdater : GLib.Object {
           minutely.remove (item_ref);
           hourly.add (item_ref);
           size --;
+          i --;
         }
       }
       return GLib.Source.CONTINUE;
@@ -44,10 +46,11 @@ public class DeltaUpdater : GLib.Object {
     hourly_id = GLib.Timeout.add (60 * 60 * 1000, () => {
       for (int i = 0, size = hourly.length; i < size; i++) {
         WeakRef item_ref = hourly.get (i);
-        ITwitterItem? item = item_ref.get ();
-        if (!(item is ITwitterItem)) {
+        Cb.TwitterItem? item = item_ref.get_ref ();
+        if (item == null || !(item is Cb.TwitterItem)) {
           hourly.remove (item_ref);
           size --;
+          i --;
           continue;
         }
         item.update_time_delta ();
@@ -65,10 +68,10 @@ public class DeltaUpdater : GLib.Object {
 
 
 
-  public void add (ITwitterItem entry) {
+  public void add (Cb.TwitterItem entry) {
     // TODO: This sucks
     GLib.DateTime now  = new GLib.DateTime.now_local ();
-    int64 sort_factor = entry.sort_factor;
+    int64 sort_factor = entry.get_sort_factor ();
     // Fuck.
     if (entry is TweetListEntry) {
       var e = (TweetListEntry)entry;
