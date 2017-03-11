@@ -51,15 +51,18 @@ public class TweetListBox : Gtk.ListBox {
     Settings.get ().bind ("double-click-activation",
                           this, "activate-on-single-click",
                           GLib.SettingsBindFlags.INVERT_BOOLEAN);
-    this.bind_model (this.model, (obj) => {
-      assert (obj is Cb.Tweet);
+    this.bind_model (this.model, widget_create_func); // XXX This emits a ref() on the listbox and we leak it
+                                                      //     later on...
+  }
 
-      var row = new TweetListEntry ((Cb.Tweet) obj,
-                                    (MainWindow) get_toplevel (),
-                                    this.account);
-      row.fade_in ();
-      return row;
-    });
+  private Gtk.Widget widget_create_func (GLib.Object obj) {
+    assert (obj is Cb.Tweet);
+
+    var row = new TweetListEntry ((Cb.Tweet) obj,
+                                  (MainWindow) get_toplevel (),
+                                  this.account);
+    row.fade_in ();
+    return row;
   }
 
   private void gesture_pressed_cb (int    n_press,
