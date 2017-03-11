@@ -93,7 +93,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     });
 
 
-    thread_list.bind_model (manager.get_threads_model (), thread_widget_func);
+    Cb.Utils.bind_model (thread_list, manager.get_threads_model (), thread_widget_func);
 
     top_list.add (start_conversation_entry);
 

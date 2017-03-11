@@ -154,6 +154,7 @@ corebird_lib_sources = files([
   'src/CbTweetModel.c',
   'src/CbTwitterItem.c',
   'src/CbDeltaUpdater.c',
+  'src/CbUtils.c'
 ])
 
 # glib resources
