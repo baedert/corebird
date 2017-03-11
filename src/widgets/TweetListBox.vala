@@ -51,8 +51,8 @@ public class TweetListBox : Gtk.ListBox {
     Settings.get ().bind ("double-click-activation",
                           this, "activate-on-single-click",
                           GLib.SettingsBindFlags.INVERT_BOOLEAN);
-    this.bind_model (this.model, widget_create_func); // XXX This emits a ref() on the listbox and we leak it
-                                                      //     later on...
+
+    Cb.Utils.bind_model (this, this.model, widget_create_func);
   }
 
   private Gtk.Widget widget_create_func (GLib.Object obj) {

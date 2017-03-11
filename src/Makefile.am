@@ -150,7 +150,9 @@ libcorebird_la_SOURCES = \
 	CbTwitterItem.h \
 	CbTwitterItem.c \
 	CbDeltaUpdater.h \
-	CbDeltaUpdater.c
+	CbDeltaUpdater.c \
+	CbUtils.h \
+	CbUtils.c
 
 libcorebird_la_vala.stamp: $(libcorebird_la_VALASOURCES) Makefile
 	@$(VALAC) \

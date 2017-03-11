@@ -250,4 +250,10 @@ namespace Cb {
   public class DeltaUpdater : GLib.Object {
     public DeltaUpdater (Gtk.Widget listbox);
   }
+
+  [CCode (cprefix = "CbUtils_", lower_case_cprefix = "cb_utils_", cheader_filename =
+          "CbUtils.h")]
+  namespace Utils {
+    public void bind_model (Gtk.Widget listbox, GLib.ListModel model, Gtk.ListBoxCreateWidgetFunc func);
+  }
 }
