@@ -121,15 +121,21 @@ class MediaDialog : Gtk.Window {
   }
 
   public override bool enter_notify_event (Gdk.EventCrossing event) {
-    next_revealer.reveal_child = true;
-    previous_revealer.reveal_child = true;
+    if (event.window == this.get_window () &&
+        event.detail != Gdk.NotifyType.INFERIOR) {
+      next_revealer.reveal_child = true;
+      previous_revealer.reveal_child = true;
+    }
 
     return false;
   }
 
   public override bool leave_notify_event (Gdk.EventCrossing event) {
-    next_revealer.reveal_child = false;
-    previous_revealer.reveal_child = false;
+    if (event.window == this.get_window () &&
+        event.detail != Gdk.NotifyType.INFERIOR) {
+      next_revealer.reveal_child = false;
+      previous_revealer.reveal_child = false;
+    }
 
     return false;
   }
