@@ -26,21 +26,21 @@ cb_deps = [
   soup_dep
 ]
 
-enable_debug = get_option('enable-debug')
+enable_debug = get_option('debug')
 if (enable_debug)
   add_global_arguments('-DDEBUG', language: 'c')
   add_global_arguments('-DG_DISABLE_CAST_CHECKS', language: 'c')
   add_global_arguments('-D', 'DEBUG', language: 'vala')
 endif
 
-enable_video = get_option('enable-video')
+enable_video = get_option('video')
 if (enable_video)
   add_global_arguments('-DVIDEO', language: 'c')
   add_global_arguments('-D', 'VIDEO', language: 'vala')
   cb_deps += [dependency('gstreamer-video-1.0', version: '>= 1.6')]
 endif
 
-enable_spellcheck = get_option('enable-spellcheck')
+enable_spellcheck = get_option('spellcheck')
 # if (enable_spellcheck)
   # add_global_arguments('-DSPELLCHECK', language: 'c')
   # add_global_arguments('-D', 'SPELLCHECK', language: 'vala')
