@@ -1,4 +1,5 @@
-project('Corebird', ['vala', 'c'])
+project('Corebird', ['vala', 'c'],
+        version: '1.4.2')
 
 gnome = import('gnome')
 
