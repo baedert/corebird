@@ -8,6 +8,7 @@ add_global_arguments('-DDATADIR="' + get_option('datadir') + '"', language: 'c')
 add_global_arguments('-DG_LOG_DOMAIN="corebird"', language: 'c')
 add_global_arguments('--enable-deprecated', language: 'vala')
 add_global_arguments('--disable-since-check', language: 'vala')
+add_global_arguments('-D', 'GTK322', language: 'vala')
 
 srcdir = include_directories('src')
 
