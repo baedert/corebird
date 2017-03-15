@@ -19,7 +19,7 @@
 public class MainWindow : Gtk.ApplicationWindow {
   private const GLib.ActionEntry[] win_entries = {
     {"compose-tweet",       show_hide_compose_window},
-    {"toggle-sidebar",      Settings.toggle_sidebar_visible},
+    {"toggle-topbar",       Settings.toggle_topbar_visible},
     {"switch-page",         simple_switch_page, "i"},
     {"show-account-dialog", show_account_dialog},
     {"show-account-list",   show_account_list},
