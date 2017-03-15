@@ -68,7 +68,7 @@ public class Settings : GLib.Object {
     return settings.get_double ("max-media-size");
   }
 
-  public static void toggle_sidebar_visible () {
+  public static void toggle_topbar_visible () {
     settings.set_boolean ("sidebar-visible", !settings.get_boolean ("sidebar-visible"));
   }
 

@@ -213,7 +213,7 @@ public class Corebird : Gtk.Application {
     Twitter.get ().init ();
 
     this.set_accels_for_action ("win.compose-tweet", {Settings.get_accel ("compose-tweet")});
-    this.set_accels_for_action ("win.toggle-sidebar", {Settings.get_accel ("toggle-sidebar")});
+    this.set_accels_for_action ("win.toggle-topbar", {Settings.get_accel ("toggle-sidebar")});
     this.set_accels_for_action ("win.switch-page(0)", {"<Alt>1"});
     this.set_accels_for_action ("win.switch-page(1)", {"<Alt>2"});
     this.set_accels_for_action ("win.switch-page(2)", {"<Alt>3"});
