@@ -686,7 +686,7 @@ cb_tweet_model_remove_last_n_visible (CbTweetModel *self,
                             size_before - amount,
                             amount);
   emit_items_changed (self, size_before - amount, amount, 0);
-  /*update_min_max_id (self);*/
+  update_min_max_id (self, self->min_id);
 }
 
 void
