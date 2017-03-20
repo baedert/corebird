@@ -12,7 +12,8 @@ tests = [
   'avatardownload',
   'friends',
   'highlighting',
-  'avatarcache'
+  'avatarcache',
+  'twitteritem'
 ]
 
 foreach test_name : tests
