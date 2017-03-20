@@ -31,6 +31,9 @@ void time_delta () {
   delta = Utils.get_time_delta (then, now);
   assert (delta == "20h");
 
+  then = now;
+  delta = Utils.get_time_delta (then, now);
+  assert (delta == "Now");
 }
 
 
@@ -39,7 +42,6 @@ int main (string[] args) {
   GLib.Test.init (ref args);
   GLib.Test.add_func ("/utils/file-type", file_type);
   GLib.Test.add_func ("/utils/time-delta", time_delta);
-
 
   return GLib.Test.run ();
 }
