@@ -4,7 +4,6 @@ namespace Cb {
   [CCode (cprefix = "CB_MEDIA_TYPE_", cheader_filename = "CbMedia.h")]
   public enum MediaType {
     IMAGE,
-    VINE,
     GIF,
     ANIMATED_GIF,
     TWITTER_VIDEO,

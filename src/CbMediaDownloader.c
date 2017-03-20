@@ -283,8 +283,7 @@ cb_media_downloader_load_threaded (CbMediaDownloader *downloader,
   else if (g_str_has_prefix (url, "ow.ly/i/") ||
            g_str_has_prefix (url, "flickr.com/photos/") ||
            g_str_has_prefix (url, "flic.kr/p/") ||
-           g_str_has_prefix (url, "flic.kr/s/") ||
-           g_str_has_prefix (url, "vine.co/v/"))
+           g_str_has_prefix (url, "flic.kr/s/"))
     {
       cb_media_downloader_load_real_url (downloader, media,
                                          "<meta property=\"og:image\" content=\"(.*?)\"", 1);
@@ -432,7 +431,6 @@ is_media_candidate (const char *url)
          g_str_has_prefix (url, "flic.kr/p/") ||
          g_str_has_prefix (url, "flic.kr/s/") ||
 #ifdef VIDEO
-         g_str_has_prefix (url, "vine.co/v/") ||
          g_str_has_prefix (url, "/photo/1/") ||
          g_str_has_prefix (url, "video.twimg.com/ext_tw_video") ||
 #endif

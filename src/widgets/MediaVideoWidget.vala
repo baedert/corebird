@@ -48,10 +48,6 @@ class MediaVideoWidget : Gtk.Stack {
         /* Video will be started in init() */
       break;
 
-      case Cb.MediaType.VINE:
-        fetch_real_url.begin (media.url, "<meta property=\"twitter:player:stream\" content=\"(.*?)\"");
-      break;
-
       case Cb.MediaType.ANIMATED_GIF:
         fetch_real_url.begin (media.url, "<source video-src=\"(.*?)\" type=\"video/mp4\"");
       break;

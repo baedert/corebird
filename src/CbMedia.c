@@ -83,7 +83,6 @@ cb_media_is_video (CbMedia *media)
   switch (media->type)
     {
       case CB_MEDIA_TYPE_ANIMATED_GIF:
-      case CB_MEDIA_TYPE_VINE:
       case CB_MEDIA_TYPE_TWITTER_VIDEO:
       case CB_MEDIA_TYPE_INSTAGRAM_VIDEO:
         return TRUE;
@@ -133,10 +132,6 @@ cb_media_loading_finished (CbMedia *media)
 CbMediaType
 cb_media_type_from_url (const char *url)
 {
-  if (g_str_has_prefix (url, "https://vine.co/v/") ||
-      g_str_has_prefix (url, "http://vine.co/v/"))
-    return CB_MEDIA_TYPE_VINE;
-
   if (g_str_has_suffix (url, "/photo/1"))
     return CB_MEDIA_TYPE_ANIMATED_GIF;
 
