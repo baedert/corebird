@@ -386,6 +386,7 @@ class SearchPage : IPage, Gtk.Box {
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/load-more-entry.ui")]
 class LoadMoreEntry : Gtk.ListBoxRow, Cb.TwitterItem {
+  private GLib.TimeSpan last_timediff;
   public bool seen {
     get { return true; }
     set {}
@@ -405,5 +406,13 @@ class LoadMoreEntry : Gtk.ListBoxRow, Cb.TwitterItem {
   }
   public int64 get_timestamp () {
     return 0;
+  }
+
+  public GLib.TimeSpan get_last_set_timediff () {
+    return this.last_timediff;
+  }
+
+  public void set_last_set_timediff (GLib.TimeSpan span) {
+    this.last_timediff = span;
   }
 }

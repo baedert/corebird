@@ -32,10 +32,11 @@ default_update_time_delta (CbTwitterItem *self,
 static void
 cb_twitter_item_default_init (CbTwitterItemInterface *self)
 {
-  self->last_set_timediff = 0;
-  self->get_sort_factor   = NULL;
-  self->update_time_delta = default_update_time_delta;
-  self->get_timestamp     = NULL;
+  self->get_sort_factor       = NULL;
+  self->update_time_delta     = default_update_time_delta;
+  self->get_timestamp         = NULL;
+  self->set_last_set_timediff = NULL;
+  self->get_last_set_timediff = NULL;
 }
 
 gint64
@@ -85,7 +86,7 @@ cb_twitter_item_set_last_set_timediff (CbTwitterItem *self,
 
   iface = CB_TWITTER_ITEM_GET_IFACE (self);
 
-  iface->last_set_timediff = span;
+  iface->set_last_set_timediff (self, span);
 }
 
 GTimeSpan
@@ -97,5 +98,5 @@ cb_twitter_item_get_last_set_timediff (CbTwitterItem *self)
 
   iface = CB_TWITTER_ITEM_GET_IFACE (self);
 
-  return iface->last_set_timediff;
+  return iface->get_last_set_timediff (self);
 }

@@ -47,6 +47,7 @@ class DMListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
     set {}
   }
 
+  private GLib.TimeSpan last_timediff;
   public int64 timestamp;
   public int64 id;
   public int64 user_id;
@@ -87,6 +88,14 @@ class DMListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
 
   public int64 get_timestamp () {
     return timestamp;
+  }
+
+  public GLib.TimeSpan get_last_set_timediff () {
+    return this.last_timediff;
+  }
+
+  public void set_last_set_timediff (GLib.TimeSpan span) {
+    this.last_timediff = span;
   }
 }
 

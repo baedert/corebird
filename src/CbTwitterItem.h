@@ -27,8 +27,6 @@ G_DECLARE_INTERFACE (CbTwitterItem, cb_twitter_item, CB, TWITTER_ITEM, GObject)
 struct _CbTwitterItemInterface
 {
   GTypeInterface base_iface;
-  GTimeSpan last_set_timediff; /* In minutes! */
-
 
   gint64 (*get_sort_factor) (CbTwitterItem *self);
 
@@ -36,6 +34,11 @@ struct _CbTwitterItemInterface
                                GDateTime     *now);
 
   gint64 (*get_timestamp) (CbTwitterItem *self);
+
+  void   (*set_last_set_timediff) (CbTwitterItem *self,
+                                   GTimeSpan      span);
+
+  GTimeSpan (*get_last_set_timediff) (CbTwitterItem *self);
 };
 
 gint64 cb_twitter_item_get_sort_factor (CbTwitterItem *self);

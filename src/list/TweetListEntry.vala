@@ -91,6 +91,7 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
   public Cb.Tweet tweet;
   private bool values_set = false;
   private bool delete_first_activated = false;
+  private GLib.TimeSpan last_timediff;
   [Signal (action = true)]
   private signal void reply_tweet ();
   [Signal (action = true)]
@@ -511,6 +512,14 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
 
   public int64 get_timestamp () {
     return tweet.source_tweet.created_at;
+  }
+
+  public GLib.TimeSpan get_last_set_timediff () {
+    return this.last_timediff;
+  }
+
+  public void set_last_set_timediff (GLib.TimeSpan span) {
+    this.last_timediff = span;
   }
 
   public void toggle_mode () {

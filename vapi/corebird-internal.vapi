@@ -242,6 +242,8 @@ namespace Cb {
     public abstract int64 get_sort_factor();
     public abstract int64 get_timestamp();
     public abstract int update_time_delta (GLib.DateTime? now = null);
+    public abstract void set_last_set_timediff (GLib.TimeSpan span);
+    public abstract GLib.TimeSpan get_last_set_timediff ();
   }
 
   [CCode (cprefix = "CbDeltaUpdater_", lower_case_cprefix = "cb_delta_updater_", cheader_filename =
