@@ -41,8 +41,9 @@ escape_ampersand (const char *in)
       c = g_utf8_get_char (p);
     }
 
-  result = g_malloc (bytes + (n_ampersands * 4) + 1);
-  result[bytes + (n_ampersands * 4)] = '\0';
+  /* 'amp;' and not '&amp;' since the input already contains the '&' */
+  result = g_malloc (bytes + (n_ampersands * strlen ("amp;")) + 1);
+  result[bytes + (n_ampersands * strlen ("amp;"))] = '\0';
 
   p = in;
   c = g_utf8_get_char (p);
@@ -73,7 +74,6 @@ escape_ampersand (const char *in)
 
   return result;
 }
-
 
 
 void
