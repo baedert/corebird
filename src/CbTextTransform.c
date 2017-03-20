@@ -1,6 +1,7 @@
 #include "CbTextTransform.h"
 #include "CbMediaDownloader.h"
 #include "CbTypes.h"
+#include "CbUtils.h"
 #include <string.h>
 #include <ctype.h>
 
@@ -168,11 +169,13 @@ cb_text_transform_text (const char   *text,
           if (entity->tooltip_text != NULL)
             {
               char *c = escape_ampersand (entity->tooltip_text);
+              char *cc = cb_utils_escape_quotes (c);
 
               g_string_append (str, " title=\"");
-              g_string_append (str, c);
+              g_string_append (str, cc);
               g_string_append (str, "\"");
 
+              g_free (cc);
               g_free (c);
             }
 

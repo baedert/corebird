@@ -26,4 +26,7 @@ void cb_utils_bind_model (GtkWidget                  *listbox,
                           GtkListBoxCreateWidgetFunc  func,
                           void                       *data);
 
+
+char * cb_utils_escape_quotes (const char *in);
+
 #endif

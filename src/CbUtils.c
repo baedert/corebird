@@ -16,6 +16,7 @@
  */
 
 #include "CbUtils.h"
+#include <string.h>
 
 void
 cb_utils_bind_model (GtkWidget                  *listbox,
@@ -34,4 +35,60 @@ cb_utils_bind_model (GtkWidget                  *listbox,
                            func,
                            data,
                            NULL);
+}
+
+char *
+cb_utils_escape_quotes (const char *in)
+{
+  gsize bytes = strlen (in);
+  gsize n_quotes = 0;
+  const char *p = in;
+  gunichar c;
+  char *result;
+  const char *last;
+  char *out_pos;
+
+  c = g_utf8_get_char (p);
+  while (c != '\0')
+    {
+      if (c == '"')
+        n_quotes ++;
+
+      p = g_utf8_next_char (p);
+      c = g_utf8_get_char (p);
+    }
+
+  result = g_malloc (bytes + (n_quotes * 5) + 1);
+  result[bytes + (n_quotes * 5)] = '\0';
+
+  p = in;
+  c = g_utf8_get_char (p);
+  last = p;
+  out_pos = result;
+  while (c != '\0')
+    {
+
+      if (c == '"')
+        {
+          int bytes = p - last;
+          memcpy (out_pos, last, bytes);
+          last = p;
+          out_pos[bytes + 0] = '&';
+          out_pos[bytes + 1] = 'q';
+          out_pos[bytes + 2] = 'u';
+          out_pos[bytes + 3] = 'o';
+          out_pos[bytes + 4] = 't';
+          out_pos[bytes + 5] = ';';
+          last += 1; /* Skip " */
+
+          out_pos += bytes + 6;
+        }
+
+      p = g_utf8_next_char (p);
+      c = g_utf8_get_char (p);
+    }
+
+  memcpy (out_pos, last, p - last);
+
+  return result;
 }
