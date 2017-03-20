@@ -71,6 +71,7 @@ class UserListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
   }
 
   public int64 user_id { get; set; }
+  private GLib.TimeSpan last_timediff;
 
   public signal void action_clicked ();
 
@@ -127,6 +128,14 @@ class UserListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
 
   public int64 get_timestamp () {
     return 0;
+  }
+
+  public GLib.TimeSpan get_last_set_timediff () {
+    return this.last_timediff;
+  }
+
+  public void set_last_set_timediff (GLib.TimeSpan span) {
+    this.last_timediff = span;
   }
 
   private void update_window_button_sensitivity (Gtk.Window window, bool new_value) {
