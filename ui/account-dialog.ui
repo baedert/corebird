@@ -103,6 +103,7 @@
                         <property name="can-focus">1</property>
                         <property name="halign">start</property>
                         <property name="valign">baseline</property>
+                        <property name="max-length">20</property>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
