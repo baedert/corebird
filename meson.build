@@ -178,9 +178,10 @@ cb_lib = static_library(
   include_directories: srcdir,
   vala_args: [
     meson.source_root() + '/vapi/config.vapi',
-    '--vapidir=vapi/',
     '--target-glib=' + min_glib_version,
+    '--vapidir=' + meson.source_root() + '/vapi/',
     '--gresources=' + meson.source_root() + '/corebird.gresource.xml',
+    '--enable-experimental'
   ],
 )
 cb_dep = declare_dependency(
