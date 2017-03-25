@@ -167,7 +167,7 @@ namespace Rest {
 		public void set_function (string function);
 		public void set_method (string method);
 		public bool sync () throws GLib.Error;
-		public bool upload ([CCode (delegate_target_pos = 2.1, scope = "async")] Rest.ProxyCallUploadCallback callback, GLib.Object weak_object) throws GLib.Error;
+		public bool upload ([CCode (delegate_target_pos = 2.1)] Rest.ProxyCallUploadCallback callback, GLib.Object weak_object) throws GLib.Error;
 		[NoAccessorMethod]
 		public Rest.Proxy proxy { owned get; construct; }
 	}
