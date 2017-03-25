@@ -1,5 +1,11 @@
 @define-color topbar_bg #333;
 
+* {
+  /* The default for this style property for gtk3 is 150
+   * so we have to get rid of that. */
+  -GtkProgressBar-min-horizontal-bar-width: 0;
+}
+
 .avatar-round {
   border: 1px solid grey;
   border-radius: 48px;
