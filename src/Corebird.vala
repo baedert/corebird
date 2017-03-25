@@ -61,18 +61,21 @@ public class Corebird : Gtk.Application {
     bool start_service = false;
     bool stop_service = false;
     bool print_startup_accounts = false;
+    string? account_name = null;
 
-    OptionEntry[] options = new OptionEntry[5];
+    OptionEntry[] options = new OptionEntry[6];
     options[0] = {"tweet", 't', 0, OptionArg.STRING, ref compose_screen_name,
-                  "Shows only the 'compose tweet' window for the given account, nothing else.", "SCREEN_NAME"};
+                  "Shows only the 'compose tweet' window for the given account, nothing else.", "account name"};
     options[1] = {"start-service", 's', 0, OptionArg.NONE, ref start_service,
                   "Start service", null};
     options[2] = {"stop-service", 'p', 0, OptionArg.NONE, ref stop_service,
                   "Stop service, if it has been started as a service", null};
     options[3] = {"print-startup-accounts", 'a', 0, OptionArg.NONE, ref print_startup_accounts,
                   "Print configured startup accounts", null};
+    options[4] = {"account", 'c', 0, OptionArg.STRING, ref account_name,
+                  "Open the window for the given account", "account name"};
 
-    options[4] = {null};
+    options[5] = {null};
 
     string[] args = cmd.get_arguments ();
     string*[] _args = new string[args.length];
@@ -118,7 +121,7 @@ public class Corebird : Gtk.Application {
       this.started_as_service = true;
       this.activate ();
     } else {
-      open_startup_windows (compose_screen_name);
+      open_startup_windows (compose_screen_name, account_name);
     }
 
     return 0;
@@ -146,7 +149,7 @@ public class Corebird : Gtk.Application {
         }
       }
     } else {
-      open_startup_windows (null);
+      open_startup_windows (null, null);
     }
   }
 
@@ -263,12 +266,17 @@ public class Corebird : Gtk.Application {
    * If that array is empty, look at all the account and if there is one, open that one.
    * If there is none, open a MainWindow with a null account.
    */
-  private void open_startup_windows (string? compose_screen_name = null) {
+  private void open_startup_windows (string? compose_screen_name, string? account_name) {
+    /* Explicitly prefer compose-name over account-name */
+    if (compose_screen_name != null && account_name != null) {
+      account_name = null;
+    }
+
     if (compose_screen_name != null) {
       Account? acc = Account.query_account (compose_screen_name);
       if (acc == null) {
         critical ("No account named `%s` is configured. Exiting.",
-                  compose_screen_name);
+                  account_name);
         return;
       }
       acc.init_proxy ();
@@ -277,6 +285,20 @@ public class Corebird : Gtk.Application {
                                        ComposeTweetWindow.Mode.NORMAL);
       cw.show ();
       this.add_window (cw);
+      return;
+    }
+
+    if (account_name != null) {
+      Account? acc = Account.query_account (account_name);
+      if (acc == null) {
+        critical ("No account named `%s` is configured. Exiting.",
+                  compose_screen_name);
+        return;
+      }
+
+      acc.init_proxy ();
+      acc.query_user_info_by_screen_name.begin ();
+      add_window_for_account (acc);
       return;
     }
 
