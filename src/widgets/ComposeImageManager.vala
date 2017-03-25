@@ -162,13 +162,17 @@ class ComposeImageManager : Gtk.Container {
 
 
       /* Progress bar */
+      int button_width, button_height;
+      double scale;
+      aib.get_draw_size (out button_width, out button_height, out scale);
       Gtk.Widget bar = this.progress_bars.get (i);
       Gtk.Allocation bar_allocation = {0};
       bar_allocation.x = child_allocation.x + 6;
-      bar_allocation.y = child_allocation.y + child_allocation.height - 6;
       bar.get_preferred_width (out bar_allocation.width, out n);
-      bar_allocation.width = int.max (child_allocation.width - 10, bar_allocation.width);
+      bar_allocation.width = int.max (button_width - 12, bar_allocation.width);
       bar.get_preferred_height (out bar_allocation.height, out n);
+      bar_allocation.y = child_allocation.y + button_height - bar_allocation.height - 6;
+
       bar.size_allocate (bar_allocation);
 
       child_allocation.x += child_allocation.width + BUTTON_SPACING;
