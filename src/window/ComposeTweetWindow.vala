@@ -201,7 +201,9 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     title_spinner.start ();
     send_button.sensitive = false;
     tweet_text.sensitive = false;
-    content_grid.sensitive = false;
+    fav_image_button.sensitive = false;
+    add_image_button.sensitive = false;
+
 
     Gtk.TextIter start, end;
     tweet_text.buffer.get_start_iter (out start);
@@ -214,6 +216,10 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
     job.image_upload_started.connect ((path) => {
       this.compose_image_manager.start_progress (path);
+    });
+
+    job.image_progress.connect ((path, progress) => {
+      this.compose_image_manager.set_image_progress (path, progress);
     });
 
     job.image_upload_finished.connect ((path, error_msg) => {

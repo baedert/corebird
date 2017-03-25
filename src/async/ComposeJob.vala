@@ -22,6 +22,7 @@ class ComposeJob : GLib.Object {
   public int64? reply_id = null;
   private GLib.GenericArray<string> image_paths = new GLib.GenericArray<string> ();
   public signal void image_upload_started  (string path);
+  public signal void image_progress  (string path, double progress);
   public signal void image_upload_finished (string path, string? error_message = null);
 
   public ComposeJob (Account account) {
@@ -63,6 +64,8 @@ class ComposeJob : GLib.Object {
 
       if (cancellable.is_cancelled ())
         call.cancel ();
+
+      this.image_progress (path, percent);
 
       if (uploaded == total) {
         debug ("%s", call.get_payload ());

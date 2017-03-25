@@ -19,6 +19,11 @@ rest_dep = dependency('rest-0.7')
 sql_dep  = dependency('sqlite3')
 soup_dep = dependency('libsoup-2.4')
 
+if (rest_dep.version() >= '0.8.1')
+  add_global_arguments('-D', 'REST081', language: 'vala')
+  add_global_arguments('-DREST081', language: 'c')
+endif
+
 cb_deps = [
   glib_dep,
   gtk_dep,
@@ -30,6 +35,7 @@ cb_deps = [
 
 enable_debug = get_option('debug')
 if (enable_debug)
+  add_global_arguments('-g', language: 'c')
   add_global_arguments('-DDEBUG', language: 'c')
   add_global_arguments('-DG_DISABLE_CAST_CHECKS', language: 'c')
   add_global_arguments('-D', 'DEBUG', language: 'vala')
