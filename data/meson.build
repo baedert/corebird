@@ -23,6 +23,8 @@ i18n.merge_file(
   install_dir: join_paths(get_option('datadir'), 'appdata')
 )
 
+install_man('corebird.1')
+
 # Install all application icons in one go
 # TODO: This will unfortunately also install the Makefile{.am} files which are still in hicolor/...
 install_subdir(
