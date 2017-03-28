@@ -150,7 +150,8 @@ corebird_lib_sources = files([
   'src/CbTweetModel.c',
   'src/CbTwitterItem.c',
   'src/CbDeltaUpdater.c',
-  'src/CbUtils.c'
+  'src/CbUtils.c',
+  'vapi/corebird-internal.vapi'
 ])
 
 # glib resources
@@ -175,7 +176,6 @@ cb_lib = static_library(
   dependencies: cb_deps,
   include_directories: srcdir,
   vala_args: [
-    meson.source_root() + '/vapi/corebird-internal.vapi',
     meson.source_root() + '/vapi/config.vapi',
     '--vapidir=vapi/',
     '--target-glib=2.44',
