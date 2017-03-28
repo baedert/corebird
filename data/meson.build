@@ -25,6 +25,18 @@ i18n.merge_file(
 
 install_man('corebird.1')
 
+conf = configuration_data()
+conf.set_quoted('bindir', join_paths(get_option('prefix'), 'bin'))
+
+configure_file(
+  input: 'org.baedert.corebird.service.in',
+  output: 'org.baedert.corebird.service',
+  configuration: conf,
+  install_dir: join_paths(get_option('datadir'), 'dbus-1/services')
+)
+
+gnome.compile_schemas()
+
 # Install all application icons in one go
 # TODO: This will unfortunately also install the Makefile{.am} files which are still in hicolor/...
 install_subdir(
