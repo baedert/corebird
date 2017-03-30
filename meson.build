@@ -174,7 +174,6 @@ configure_file(
 cb_lib = static_library(
   'libcorebird',
   corebird_lib_sources,
-  cb_resources,
   dependencies: cb_deps,
   include_directories: srcdir,
   vala_args: [
