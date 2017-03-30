@@ -24,7 +24,7 @@ namespace Benchmark {
       var ts = new GLib.DateTime.now_local ().difference (first);
       int64 ms = (ts / 1000);
 
-      debug (@"$(this.name) took $ms ms");
+      debug (@"$(this.name) took $ms ms ($ts us)");
 #endif
     }
   }
