@@ -11,10 +11,12 @@ add_global_arguments('-D', 'GTK322', language: 'vala')
 
 srcdir = include_directories('src')
 
-glib_dep = dependency('glib-2.0')
-gtk_dep  = dependency('gtk+-3.0')
+min_glib_version = '2.44'
+
+glib_dep = dependency('glib-2.0', version: '>=' + min_glib_version)
+gtk_dep  = dependency('gtk+-3.0', version: '>=3.18')
 json_dep = dependency('json-glib-1.0')
-rest_dep = dependency('rest-0.7')
+rest_dep = dependency('rest-0.7', version: '>=0.7.91')
 sql_dep  = dependency('sqlite3')
 soup_dep = dependency('libsoup-2.4')
 
@@ -177,7 +179,7 @@ cb_lib = static_library(
   vala_args: [
     meson.source_root() + '/vapi/config.vapi',
     '--vapidir=vapi/',
-    '--target-glib=2.44',
+    '--target-glib=' + min_glib_version,
     '--gresources=' + meson.source_root() + '/corebird.gresource.xml',
   ],
 )
