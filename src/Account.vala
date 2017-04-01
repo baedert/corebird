@@ -632,7 +632,8 @@ public class Account : GLib.Object {
     for (uint i = 0; i < accounts.length; i ++) {
       unowned Account a = accounts.get (i);
 
-      if (screen_name == a.screen_name)
+      if (screen_name == a.screen_name ||
+          screen_name == "@" + a.screen_name)
         return a;
     }
     return null;
