@@ -292,7 +292,7 @@ public class Corebird : Gtk.Application {
       Account? acc = Account.query_account (account_name);
       if (acc == null) {
         critical ("No account named `%s` is configured. Exiting.",
-                  compose_screen_name);
+                  account_name);
         return;
       }
 
