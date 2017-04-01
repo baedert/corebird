@@ -443,7 +443,10 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
             }
 
           if (duplicate)
-            continue;
+            {
+              g_free (url_str);
+              continue;
+            }
 
           t->entities[url_index].from = json_array_get_int_element (indices, 0);
           t->entities[url_index].to   = json_array_get_int_element (indices, 1);
