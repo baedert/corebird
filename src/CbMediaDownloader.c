@@ -269,8 +269,6 @@ cb_media_downloader_load_threaded (CbMediaDownloader *downloader,
   g_return_if_fail (CB_IS_MEDIA (media));
   g_return_if_fail (media->url != NULL);
 
-  g_object_ref (media);
-
   url = canonicalize_url (media->url);
 
   /* For these, we first need to download some html and get the real
@@ -368,9 +366,11 @@ cb_media_downloader_load_async (CbMediaDownloader   *downloader,
 
   g_return_if_fail (CB_IS_MEDIA_DOWNLOADER (downloader));
   g_return_if_fail (CB_IS_MEDIA (media));
+  g_return_if_fail (!media->loaded);
+  g_return_if_fail (media->surface == NULL);
 
   task = g_task_new (downloader, NULL, callback, user_data);
-  g_task_set_task_data (task, media, g_object_unref);
+  g_task_set_task_data (task, g_object_ref (media), g_object_unref);
 
   g_task_run_in_thread (task, load_in_thread);
 }

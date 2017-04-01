@@ -33,7 +33,9 @@ void download_twice () {
   media.url = url;
 
   Cb.MediaDownloader.get_default ().load_async.begin (media, () => {
-    Cb.MediaDownloader.get_default ().load_async.begin (media, () => {
+    var media2 = new Cb.Media ();
+    media2.url = url;
+    Cb.MediaDownloader.get_default ().load_async.begin (media2, () => {
       main_loop.quit ();
     });
   });
@@ -54,27 +56,36 @@ void double_download () {
     collect_obj.emit ();
   });
 
+  media = new Cb.Media ();
+  media.url = url;
   Cb.MediaDownloader.get_default ().load_async.begin (media, () => {
     assert (!media.invalid);
     collect_obj.emit ();
   });
 
-
+  media = new Cb.Media ();
+  media.url = url;
   Cb.MediaDownloader.get_default ().load_async.begin (media, () => {
     assert (!media.invalid);
     collect_obj.emit ();
   });
 
+  media = new Cb.Media ();
+  media.url = url;
   Cb.MediaDownloader.get_default ().load_async.begin (media, () => {
     assert (!media.invalid);
     collect_obj.emit ();
   });
 
+  media = new Cb.Media ();
+  media.url = url;
   Cb.MediaDownloader.get_default ().load_async.begin (media, () => {
     assert (!media.invalid);
     collect_obj.emit ();
   });
 
+  media = new Cb.Media ();
+  media.url = url;
   collect_obj.finished.connect (() => {
     main_loop.quit ();
   });
