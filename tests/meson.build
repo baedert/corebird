@@ -10,6 +10,7 @@ tests = [
   'filters',
   'texttransform',
   'avatardownload',
+  'avatarcache',
   'friends',
   'highlighting',
   'avatarcache',
