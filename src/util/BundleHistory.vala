@@ -83,10 +83,11 @@ public class BundleHistory {
   }
 
   public bool at_end () {
-    if (pos == elements.length -1)
+    if (pos == elements.length - 1)
       return true;
 
-    if (elements[pos] == -1 ||
+    if (pos == -1 ||
+        elements[pos] == -1 ||
         elements[pos + 1] == -1)
       return true;
 
