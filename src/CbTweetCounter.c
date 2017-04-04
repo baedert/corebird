@@ -17,6 +17,51 @@
 
 #include "CbTweetCounter.h"
 
+static inline gboolean
+splits_word (gunichar c)
+{
+  switch (c)
+    {
+      case ':':
+      case '[':
+      case ']':
+      case '(':
+      case ')':
+      case ' ':
+      case '\t':
+      case '\n':
+        return TRUE;
+
+
+      default: return FALSE;
+    }
+
+  return FALSE;
+}
+
+static const char *
+read_next_word (const char *from,
+                gsize      *word_length)
+{
+  gunichar current_char;
+  const char *ret;
+
+  ret = from;
+  current_char = g_utf8_get_char (from);
+
+  while (current_char != '\0')
+    {
+      if (splits_word (current_char))
+        break;
+
+      ret = g_utf8_next_char (ret);
+      current_char = g_utf8_get_char (ret);
+      *word_length = *word_length + 1;
+    }
+
+  return ret;
+}
+
 gsize
 cb_tweet_counter_count_chars (const char *text)
 {
@@ -32,7 +77,13 @@ cb_tweet_counter_count_chars (const char *text)
 
   while (current_char != '\0')
     {
-      text_length ++;
+      const char *word_end;
+      gsize n_word_chars = 0;
+
+      word_end = read_next_word (p, &n_word_chars);
+
+      text_length += n_word_chars;
+      p = word_end;
 
       p = g_utf8_next_char (p);
       current_char = g_utf8_get_char (p);
