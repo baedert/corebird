@@ -257,4 +257,10 @@ namespace Cb {
   namespace Utils {
     public void bind_model (Gtk.Widget listbox, GLib.ListModel model, Gtk.ListBoxCreateWidgetFunc func);
   }
+
+  [CCode (cprefix = "CbTweetCounter_", lower_case_cprefix = "cb_tweet_counter_", cheader_filename =
+          "CbTweetCounter.h")]
+  namespace TweetCounter {
+    int count_chars (string text);
+  }
 }

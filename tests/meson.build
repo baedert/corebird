@@ -13,17 +13,18 @@ tests = [
   'avatarcache',
   'friends',
   'highlighting',
-  'twitteritem'
+  'twitteritem',
+  'tweetcounter',
 ]
 
 foreach test_name : tests
   testcase = executable(
     test_name,
     test_name + '.vala',
+    join_paths(meson.source_root(), 'vapi', 'corebird-internal.vapi'),
     cb_resources,
     dependencies: cb_dep,
     vala_args: [
-      meson.source_root() + '/vapi/corebird-internal.vapi',
       '--gresources=' + meson.source_root() + '/corebird.gresource.xml',
     ]
   )

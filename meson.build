@@ -153,6 +153,7 @@ corebird_lib_sources = files([
   'src/CbTwitterItem.c',
   'src/CbDeltaUpdater.c',
   'src/CbUtils.c',
+  'src/CbTweetCounter.c',
   'vapi/corebird-internal.vapi'
 ])
 
