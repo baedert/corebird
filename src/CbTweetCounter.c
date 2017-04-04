@@ -16,12 +16,27 @@
  */
 
 #include "CbTweetCounter.h"
-#include <glib.h>
 
-int
+gsize
 cb_tweet_counter_count_chars (const char *text)
 {
+  gsize text_length = 0;
+  gunichar current_char;
+  gsize current_pos = 0;
+  const char *p = text;
+
   g_return_val_if_fail (text != NULL, 0);
 
-  return 0;
+  /* Character at the beginning of @text */
+  current_char = g_utf8_get_char (p);
+
+  while (current_char != '\0')
+    {
+      text_length ++;
+
+      p = g_utf8_next_char (p);
+      current_char = g_utf8_get_char (p);
+    }
+
+  return text_length;
 }

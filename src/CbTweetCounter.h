@@ -18,6 +18,8 @@
 #ifndef CB_TWEET_COUNTER_H
 #define CB_TWEET_COUNTER_H
 
-int cb_tweet_counter_count_chars (const char *text);
+#include <glib.h>
+
+gsize cb_tweet_counter_count_chars (const char *text);
 
 #endif
