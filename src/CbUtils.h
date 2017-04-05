@@ -21,6 +21,18 @@
 #include <gtk/gtk.h>
 #include <glib-object.h>
 
+typedef struct _utf8iter utf8iter;
+struct _utf8iter {
+  const char *p;     /* pointer to the text */
+  const char *cur_p; /* Pointer to the beginning of the current character */
+  gunichar cur;      /* Current character */
+  guint done : 1;
+};
+
+
+void     utf8_iter_init (utf8iter *self, const char *text);
+gboolean utf8_iter_next (utf8iter *self);
+
 void cb_utils_bind_model (GtkWidget                  *listbox,
                           GListModel                 *model,
                           GtkListBoxCreateWidgetFunc  func,

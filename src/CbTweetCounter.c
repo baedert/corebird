@@ -16,10 +16,32 @@
  */
 
 #include "CbTweetCounter.h"
+#include "CbUtils.h"
 #include <string.h>
 #include <ctype.h>
 
 #define TWEET_URL_LENGTH 23
+
+static const char *TLDS[] = {
+  "com",  "net",  "org",    "xxx",  "sexy", "pro",
+  "biz",  "name", "info",   "arpa", "gov",  "aero",
+  "asia", "cat",  "coop",   "edu",  "int",  "jobs",
+  "mil",  "mobi", "museum", "post", "tel",  "travel"
+};
+
+static inline gboolean
+is_tld (const char *str)
+{
+  guint i;
+
+  for (i = 0; i < G_N_ELEMENTS (TLDS); i ++)
+    {
+      if (strcmp (TLDS[i], str) == 0)
+        return TRUE;
+    }
+
+  return FALSE;
+}
 
 static inline gboolean
 splits_word (gunichar c)
@@ -35,6 +57,7 @@ splits_word (gunichar c)
       case '.':
       case '?':
       case '\\':
+      case '#':
       case ' ':
       case '\t':
       case '\n':
@@ -47,115 +70,269 @@ splits_word (gunichar c)
   return FALSE;
 }
 
-static const char *
-read_next_word (const char *from,
-                gsize      *word_length,
-                gunichar   *current_char)
+void
+read_next_word (utf8iter *iter,
+                gsize    *word_length)
 {
-  const char *ret = from;
-
-  while (*current_char != '\0')
+  /* Handle the case of a splitting char at the beginning
+   * of the word specially
+   */
+  if (splits_word (iter->cur))
     {
-      if (splits_word (*current_char))
-        break;
-
-      ret = g_utf8_next_char (ret);
-      *current_char = g_utf8_get_char (ret);
-      *word_length = *word_length + 1;
-    }
-
-  if (*word_length == 0)
-    {
-      /* If the current character already splits, the word is
-       * still that one character long.
-       */
       *word_length = 1;
+      utf8_iter_next (iter);
+      return;
     }
 
-  return ret;
+  do {
+    utf8_iter_next (iter);
+    *word_length = *word_length + 1;
+
+    if (splits_word (iter->cur))
+      break;
+
+  } while (iter->cur != '\0');
 }
 
-const char *
-parse_link (const char *text,
-            gsize      *link_size,
-            gunichar   *current_char)
+#if 0
+void
+parse_protocol_link (utf8iter *iter,
+                     gsize    *link_size)
 {
-  const char *p;
   /* Link start with either 'http:' or 'https:'.
    * That is, if they have a protocol attached. http and https are the only
    * protocols Twitter considers.
    */
-  g_assert (*current_char == ':');
 
-  /* Links extend to the next whitespace character */
+  if (iter->cur != ':')
+    return;
 
-  p = text;
-  *current_char = g_utf8_get_char (p);
+  utf8_iter_next (iter);
+  *link_size = *link_size + 1;
 
-  while (*current_char != '\0' &&
-         !isspace (*current_char))
+  if (iter->cur != '/')
+    return;
+
+  utf8_iter_next (iter);
+  *link_size = *link_size + 1;
+
+  if (iter->cur != '/')
+    return;
+
+  while (iter->cur != '\0' &&
+         !isspace (iter->cur))
     {
-      p = g_utf8_next_char (p);
-      *current_char = g_utf8_get_char (p);
-
+      utf8_iter_next (iter);
       *link_size = *link_size + 1;
     }
 
-  return p;
+
+  /* If we reach this point then yes, this really was a link. */
+  *link_size = TWEET_URL_LENGTH;
 }
+
+#endif
+
+static gsize
+parse_protocol_link (GPtrArray *words,
+                     guint     *i)
+{
+  const char *w;
+  gsize cur_len;
+  gboolean have_link = FALSE;
+  int parens = 0;
+  gsize first_paren_index = 0;
+
+  g_assert (*i < words->len);
+
+
+  cur_len = g_utf8_strlen ((char *)g_ptr_array_index (words, *i), -1);
+
+  // TODO: Check indices
+  // TODO: Return failure?
+  if (strcmp ((char *)g_ptr_array_index (words, *i + 1), ":") != 0)
+    return cur_len;
+
+  *i = *i + 1;
+  cur_len ++;
+
+  if (strcmp ((char *)g_ptr_array_index (words, *i + 1), "/") != 0)
+    return cur_len;
+
+  *i = *i + 1;
+  cur_len ++;
+
+  if (strcmp ((char *)g_ptr_array_index (words, *i + 1), "/") != 0)
+    return cur_len;
+
+  *i = *i + 1;
+  cur_len ++;
+
+  /* Skip current '/' */
+  *i = *i + 1;
+
+  /* We have 'https(s)://', so we need to parse until we find a valid TLD,
+   * then parse the rest until the next whitespace.
+   * If we can't find a valid TLD, or it appears too early, i.e. as part of a subdomain,
+   * this is not a link. */
+
+
+  /*
+   * First, we need to find the correct TLD.
+   * After that, special rules apply, e.g. when open/closed parentheses
+   * count as part of the link or not.
+   *
+   * If we find a valid TLD, we at least have a link.
+   */
+  for (; *i < words->len; *i = *i + 1)
+    {
+      const char *word = g_ptr_array_index (words, *i);
+
+      cur_len += g_utf8_strlen (word, -1);
+
+      if (is_tld (word) &&
+          strcmp ((const char *)g_ptr_array_index (words, (*i) - 1), ".") == 0)
+        {
+          have_link = TRUE;
+          /* Skip it */
+          *i = *i + 1;
+          break;
+        }
+    }
+
+  if (!have_link)
+    return cur_len;
+
+  /* End of string? */
+  if (*i == words->len)
+    return TWEET_URL_LENGTH;
+
+  /* Port */
+#if 0
+  w = g_ptr_array_index (words, *i);
+  if (strcmp (w, ":") == 0)
+    {
+      /* Must be followed by all-numbers */
+    }
+
+#endif
+
+  /* Now that we know the TLD is there, we need to apply special rules for some characters,
+   * see the unit tests for way too many examples */
+
+  /* Current word has to be a '/' or a '?' */
+  w = g_ptr_array_index (words, *i);
+  g_message ("'%s'", w);
+  if (strcmp (w, "/") != 0 &&
+      strcmp (w, "?") != 0)
+    {
+      /* The part until now is still a valid link.
+       * Return the tweet url length and go one word back
+       * so the main loop catches that one again */
+      *i = *i - 1;
+      return TWEET_URL_LENGTH;
+    }
+  *i = *i + 1;
+
+  /* we have a valid link, now parse the part after the TLD */
+
+  for (; *i < words->len; *i = *i + 1)
+    {
+      const char *word = g_ptr_array_index (words, *i);
+
+      if (strcmp (word, "(") == 0)
+        {
+          if (parens == 0)
+            first_paren_index = *i;
+          parens ++;
+        }
+      else if (strcmp (word, ")") == 0)
+        {
+          if (parens == 0)
+            first_paren_index = *i;
+          parens --;
+        }
+
+      if (parens < 0)
+        {
+          *i = *i - 1;
+          /* Wrong. not a link anymore from this point forward */
+          return TWEET_URL_LENGTH;
+        }
+    }
+
+  if (parens != 0)
+    {
+      /* Unbalanced sequence of parens */
+      *i = first_paren_index - 1;
+      return TWEET_URL_LENGTH;
+    }
+
+  if (have_link)
+    return TWEET_URL_LENGTH;
+
+  return cur_len;
+}
+
 
 gsize
 cb_tweet_counter_count_chars (const char *text)
 {
+  utf8iter iter;
   gsize text_length = 0;
-  gunichar current_char;
-  const char *p = text;
+  guint i;
+  GPtrArray *words = g_ptr_array_new_with_free_func (g_free);
 
   g_return_val_if_fail (text != NULL, 0);
 
-  /* Character at the beginning of @text */
-  current_char = g_utf8_get_char (p);
+  utf8_iter_init (&iter, text);
 
-  while (current_char != '\0')
+  /* Split the input string into a sequence of words */
+
+  while (!iter.done)
     {
-      const char *word_end;
+      const char *saved = iter.cur_p;
       gsize n_word_chars = 0;
-      /*gsize word_byte_length;*/
 
-      word_end = read_next_word (p, &n_word_chars, &current_char);
+      /* TODO: Possible Optimization: Save a string + length pair in the GPtrArray
+       *       and use that utf8 length later on, since we are already computing it here. */
+      read_next_word (&iter, &n_word_chars);
 
-      /*word_byte_length = word_end - p + 1;*/
+      g_ptr_array_add (words, g_strndup (saved, iter.cur_p - saved));
+    }
 
-      /*g_message ("Word: '%.*s'", (int)word_byte_length, p);*/
+  g_message ("Words: %u", words->len);
 
-      /* XXX This can read over the boundaries of p, right? */
-      if (memcmp (p, "http:",  strlen ("http:"))  == 0 ||
-          memcmp (p, "https:", strlen ("https:")) == 0)
+  for (i = 0; i < words->len; i ++)
+    g_message ("Word %u: '%s'", i, (char*)g_ptr_array_index (words, i));
+
+
+  for (i = 0; i < words->len; i ++)
+    {
+      const char *word = g_ptr_array_index (words, i);
+
+      g_message ("Main: Checking '%s'", word);
+
+      if (strcmp (word, "http")  == 0 ||
+          strcmp (word, "https") == 0)
         {
-          /*const char *link_start = p;*/
-          const char *link_end;
-          gsize n_link_chars = 0;
-          link_end = parse_link (p, &n_link_chars, &current_char);
+          /* Next 3 words should be ':', '/' and '/' respectively.
+           * Otherwise this is not even the start of a link */
+          gsize link_length = parse_protocol_link (words, &i);
 
-          /*g_message ("Link: '%.*s'", (int)(link_end - link_start), link_start);*/
+          g_message ("Link length: %ld", link_length);
+          g_message ("i: %u/%u", i, words->len);
 
-          p = link_end;
-          text_length += TWEET_URL_LENGTH;
+          text_length += link_length;
         }
       else
         {
-          /* This was a normal word */
-          text_length += n_word_chars;
-          p = word_end;
+          /* Normal word, just add its length to the text length */
+          text_length += g_utf8_strlen (word, -1);
         }
-
-      if (current_char == '\0')
-        break;
-
-      /* Skip to the next character */
-      p = g_utf8_next_char (p);
-      current_char = g_utf8_get_char (p);
     }
+
+  g_ptr_array_unref (words);
 
   return text_length;
 }

@@ -19,6 +19,29 @@
 #include <string.h>
 
 void
+utf8_iter_init (utf8iter *self, const char *text)
+{
+  self->cur_p = text;
+  self->cur   = g_utf8_get_char (self->cur_p);
+  self->p     = g_utf8_next_char (self->cur_p);
+  self->done  = self->cur == '\0';
+}
+
+gboolean
+utf8_iter_next (utf8iter *self)
+{
+  if (self->cur == '\0')
+    return FALSE;
+
+  self->cur_p = self->p;
+  self->cur   = g_utf8_get_char (self->cur_p);
+  self->p     = g_utf8_next_char (self->p);
+  self->done  = self->cur == '\0';
+
+  return TRUE;
+}
+
+void
 cb_utils_bind_model (GtkWidget                  *listbox,
                      GListModel                 *model,
                      GtkListBoxCreateWidgetFunc  func,
