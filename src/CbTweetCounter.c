@@ -52,9 +52,7 @@ read_next_word (const char *from,
                 gsize      *word_length,
                 gunichar   *current_char)
 {
-  const char *ret;
-
-  ret = from;
+  const char *ret = from;
 
   while (*current_char != '\0')
     {
@@ -64,6 +62,14 @@ read_next_word (const char *from,
       ret = g_utf8_next_char (ret);
       *current_char = g_utf8_get_char (ret);
       *word_length = *word_length + 1;
+    }
+
+  if (*word_length == 0)
+    {
+      /* If the current character already splits, the word is
+       * still that one character long.
+       */
+      *word_length = 1;
     }
 
   return ret;
@@ -122,6 +128,7 @@ cb_tweet_counter_count_chars (const char *text)
 
       /*g_message ("Word: '%.*s'", (int)word_byte_length, p);*/
 
+      /* XXX This can read over the boundaries of p, right? */
       if (memcmp (p, "http:",  strlen ("http:"))  == 0 ||
           memcmp (p, "https:", strlen ("https:")) == 0)
         {
