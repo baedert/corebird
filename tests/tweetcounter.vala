@@ -3,7 +3,6 @@ void simple () {
   var text = "abc";
   var length = Cb.TweetCounter.count_chars (text);
 
-  message ("Length: %d", length);
   assert (length == 3);
 }
 
