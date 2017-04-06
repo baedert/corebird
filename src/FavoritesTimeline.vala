@@ -68,6 +68,6 @@ class FavoritesTimeline : IMessageReceiver, DefaultTimeline {
   }
 
   public override void create_radio_button (Gtk.RadioButton? group) {
-    radio_button = new BadgeRadioButton(group, "emblem-favorite-symbolic", _("Favorites"));
+    radio_button = new BadgeRadioButton(group, "corebird-favorite-symbolic", _("Favorites"));
   }
 }
