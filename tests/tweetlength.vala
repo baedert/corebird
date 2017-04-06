@@ -21,7 +21,7 @@ void https_link () {
   string text = "https://foobar.org/thisissolong/itsnotevenfunnyanymore";
   int  l = TweetUtils.calc_tweet_length (text);
   message ("Https link length: %d", l);
-  assert (l == Twitter.short_url_length_https);
+  assert (l == Twitter.short_url_length);
 }
 
 void tld1 () {
