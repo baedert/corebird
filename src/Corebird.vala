@@ -232,9 +232,6 @@ public class Corebird : Gtk.Application {
     // TweetInfoPage
     this.set_accels_for_action ("tweet.reply",    {"r"});
     this.set_accels_for_action ("tweet.favorite", {"f"});
-#if DEBUG
-    this.set_accels_for_action ("app.print-debug", {"<Primary>D"});
-#endif
 
     this.add_action_entries (app_entries, this);
 
