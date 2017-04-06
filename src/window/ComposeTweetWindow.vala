@@ -260,8 +260,13 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   }
 
   private bool escape_pressed_cb () {
-    this.save_last_tweet ();
-    this.destroy ();
+
+    if (stack.visible_child_name == "fav-images") {
+      stack.visible_child = content_grid;
+    } else {
+      this.save_last_tweet ();
+      this.destroy ();
+    }
     return Gdk.EVENT_STOP;
   }
 
