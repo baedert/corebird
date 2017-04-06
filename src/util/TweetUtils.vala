@@ -201,12 +201,10 @@ namespace TweetUtils {
   }
 
   private int get_word_length (string s) {
-    if (s.has_prefix ("www.") || s.has_prefix ("http://"))
+    if (s.has_prefix ("www.")    ||
+        s.has_prefix ("http://") ||
+        s.has_prefix ("https://"))
       return Twitter.short_url_length;
-
-    if (s.has_prefix ("https://"))
-      return Twitter.short_url_length_https;
-
 
     string[] parts = s.split ("/");
     if (parts.length > 0) {

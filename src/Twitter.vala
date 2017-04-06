@@ -31,7 +31,6 @@ public class Twitter : GLib.Object {
 
   public const int MAX_BYTES_PER_IMAGE    = 1024 * 1024 * 3;
   public const int short_url_length       = 23;
-  public const int short_url_length_https = 23;
   public const int max_media_per_upload   = 4;
   public static Cairo.Surface no_avatar;
   public static Gdk.Pixbuf no_banner;
