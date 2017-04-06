@@ -68,7 +68,7 @@
                   <object class="GtkImage">
                     <property name="visible">1</property>
                     <property name="pixel-size">16</property>
-                    <property name="icon-name">emblem-favorite-symbolic</property>
+                    <property name="icon-name">corebird-favorite-symbolic</property>
                   </object>
                 </child>
               </object>
@@ -178,7 +178,7 @@
                 <property name="valign">center</property>
                 <property name="margin-end">6</property>
                 <property name="pixel-size">12</property>
-                <property name="icon-name">emblem-favorite-symbolic</property>
+                <property name="icon-name">corebird-favorite-symbolic</property>
                 <property name="no-show-all">1</property>
                 <style>
                   <class name="dim-label"/>

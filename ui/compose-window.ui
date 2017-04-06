@@ -161,7 +161,7 @@
                     <child>
                       <object class="GtkImage">
                         <property name="visible">1</property>
-                        <property name="icon-name">emblem-favorite-symbolic</property>
+                        <property name="icon-name">corebird-favorite-symbolic</property>
                         <property name="icon-size">1</property>
                       </object>
                     </child>
