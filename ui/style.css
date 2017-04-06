@@ -247,13 +247,17 @@ progressbar.horizontal.embedded-progress>trough>progress {
   border-right-width: 0px;
 }
 
+.fav-image-box {
+  padding: 6px;
+}
+
 /* GtkFlowBox doesn't handle the hover state of its children so... */
 .fav-image-item:hover {
-  background-color: alpha(white, 0.7);
+  background-color: alpha(black, 0.1);
 }
 
 .fav-image-item:active {
-  background-color: alpha(white, 0.9);
+  background-color: alpha(black, 0.3);
 }
 
 .nobg {
