@@ -11,7 +11,7 @@
 | `Back`             | Go one page back (this can be triggered via the back button on the keyboard, the back thumb button on the mouse or  `Alt + Left`)           |
 | `Forward`          | Go one page forward (this can be triggered via the forward button on the keyboard, the forward thumb button on the mouse or  `Alt + Right`) |
 | `Alt + num`        | Go to page `num` (between 1 and 7 at the moment)                                                                                            |
-| `Ctrl + Shift + s` | Show/Hide sidebar                                                                                                                           |
+| `Ctrl + Shift + s` | Show/Hide topbar                                                                                                                            |
 | `Ctrl + p`         | Show account settings                                                                                                                       |
 | `Ctrl + k`         | Show account list                                                                                                                           |
 | `Ctrl + Shift + p` | Show application settings                                                                                                                   |
