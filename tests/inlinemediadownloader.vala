@@ -108,5 +108,11 @@ int main (string[] args) {
   GLib.Test.add_func ("/media/download-twice", download_twice);
   GLib.Test.add_func ("/media/double-download", double_download);
 
-  return GLib.Test.run ();
+
+
+  int retval = GLib.Test.run ();
+
+  Cb.MediaDownloader.get_default ().shutdown ();
+
+  return retval;
 }
