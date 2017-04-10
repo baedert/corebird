@@ -18,6 +18,7 @@
 class ComposeImageManager : Gtk.Container {
   private const int BUTTON_DELTA = 10;
   private const int BUTTON_SPACING = 12;
+  private bool _upload_started = false;
   private GLib.GenericArray<AddImageButton> buttons;
   private GLib.GenericArray<Gtk.Button> close_buttons;
   private GLib.GenericArray<Gtk.ProgressBar> progress_bars;
@@ -25,6 +26,12 @@ class ComposeImageManager : Gtk.Container {
   public int n_images {
     get {
       return this.buttons.length;
+    }
+  }
+  public bool upload_started {
+    set {
+      this._upload_started = value;
+      this.queue_draw ();
     }
   }
 
@@ -225,9 +232,11 @@ class ComposeImageManager : Gtk.Container {
     }
 
 #if REST081
-    for (int i = 0, p = this.progress_bars.length; i < p; i ++) {
-      var bar = this.progress_bars.get (i);
-      this.propagate_draw (bar, ct);
+    if (_upload_started) {
+      for (int i = 0, p = this.progress_bars.length; i < p; i ++) {
+        var bar = this.progress_bars.get (i);
+        this.propagate_draw (bar, ct);
+      }
     }
 #endif
 

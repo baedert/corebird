@@ -226,6 +226,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       this.compose_image_manager.end_progress (path, error_msg);
     });
 
+    this.compose_image_manager.upload_started = true;
     job.start.begin (cancellable, (obj, res) => {
       bool success = job.start.end (res);
       debug ("Tweet sent.");
