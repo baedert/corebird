@@ -24,7 +24,7 @@ class FavImageRow : Gtk.FlowBoxChild {
   private string file_path;
   private Gtk.GestureMultiPress gesture;
 
-  public FavImageRow(string path) {
+  public FavImageRow (string path) {
     this.file_path = path;
 
     event_box = new Gtk.EventBox ();
