@@ -26,7 +26,7 @@ i18n.merge_file(
 install_man('corebird.1')
 
 conf = configuration_data()
-conf.set_quoted('bindir', join_paths(get_option('prefix'), 'bin'))
+conf.set('bindir', join_paths(get_option('prefix'), 'bin'))
 
 configure_file(
   input: 'org.baedert.corebird.service.in',
