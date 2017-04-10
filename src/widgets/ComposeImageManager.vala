@@ -34,6 +34,21 @@ class ComposeImageManager : Gtk.Container {
       this.queue_draw ();
     }
   }
+  public bool full {
+    get {
+      var has_gif = false;
+      /* Only one gif per tweet is allowed */
+      for (int i = 0; i < buttons.length; i ++) {
+        if (buttons.get (i).image_path.has_suffix (".gif")) {
+          has_gif = true;
+          break;
+        }
+      }
+
+      return this.buttons.length == Twitter.max_media_per_upload ||
+             has_gif;
+    }
+  }
 
   public signal void image_removed ();
 
@@ -262,6 +277,10 @@ class ComposeImageManager : Gtk.Container {
   // }}}
 
   public void load_image (string path, Gdk.Pixbuf? image) {
+#if DEBUG
+    assert (!this.full);
+#endif
+
     Cairo.ImageSurface surface;
     if (image == null)
       surface = (Cairo.ImageSurface) load_surface (path);
