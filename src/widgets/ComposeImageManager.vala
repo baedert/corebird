@@ -34,19 +34,21 @@ class ComposeImageManager : Gtk.Container {
       this.queue_draw ();
     }
   }
-  public bool full {
+  public bool has_gif {
     get {
-      var has_gif = false;
-      /* Only one gif per tweet is allowed */
       for (int i = 0; i < buttons.length; i ++) {
         if (buttons.get (i).image_path.has_suffix (".gif")) {
-          has_gif = true;
-          break;
+          return true;
         }
       }
+      return false;
 
+    }
+  }
+  public bool full {
+    get {
       return this.buttons.length == Twitter.max_media_per_upload ||
-             has_gif;
+             this.has_gif;
     }
   }
 

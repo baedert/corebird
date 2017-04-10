@@ -150,8 +150,10 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
         this.fav_image_button.sensitive = true;
       }
 
-      if (this.compose_image_manager.n_images == 0)
+      if (this.compose_image_manager.n_images == 0) {
         this.compose_image_manager.hide ();
+        this.enable_fav_gifs ();
+      }
     });
 
     this.add_accel_group (ag);
@@ -294,8 +296,8 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     filechooser.modal = true;
 
     filechooser.response.connect ((id) => {
+      var filename = filechooser.get_filename ();
       if (id == Gtk.ResponseType.ACCEPT) {
-        var filename = filechooser.get_filename ();
         debug ("Loading %s", filename);
 
         /* Get file size */
@@ -316,9 +318,18 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
                                     .printf (Twitter.MAX_BYTES_PER_IMAGE / 1024 / 1024);
           cancel_button.label = _("Back");
           send_button.sensitive = false;
+        } else if (filename.has_suffix (".gif") &&
+                   this.compose_image_manager.n_images > 0) {
+          stack.visible_child = image_error_grid;
+          image_error_label.label = _("Only one GIF file per tweet is allowed.");
+          cancel_button.label = _("Back");
+          send_button.sensitive = false;
         } else {
           this.compose_image_manager.show ();
           this.compose_image_manager.load_image (filename, null);
+          if (this.compose_image_manager.n_images > 0) {
+            this.disable_fav_gifs ();
+          }
           if (this.compose_image_manager.full) {
             this.add_image_button.sensitive = false;
             this.fav_image_button.sensitive = false;
@@ -365,6 +376,9 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
             content_type == "image/gif") {
           var file = dir.get_child (info.get_name ());
           var row = new FavImageRow (file.get_path ());
+          if (this.compose_image_manager.n_images > 0)
+            row.set_sensitive (false);
+
           row.show_all ();
           fav_image_list.add (row);
 
@@ -411,6 +425,9 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
           file.copy (dest_file, GLib.FileCopyFlags.NONE);
 
           var row = new FavImageRow (dest_file.get_path ());
+          if (this.compose_image_manager.n_images > 0)
+            row.set_sensitive (false);
+
           row.show_all ();
           fav_image_list.add (row);
 
@@ -440,6 +457,27 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     if (this.compose_image_manager.full) {
       this.add_image_button.sensitive = false;
       this.fav_image_button.sensitive = false;
+    }
+
+    if (this.compose_image_manager.n_images > 0)
+      this.disable_fav_gifs ();
+  }
+
+  private void disable_fav_gifs () {
+    foreach (var child in this.fav_image_list.get_children ()) {
+      var btn = (FavImageRow) child;
+      if (btn.get_image_path ().down ().has_suffix (".gif")) {
+        btn.set_sensitive (false);
+      }
+    }
+  }
+
+  private void enable_fav_gifs () {
+    foreach (var child in this.fav_image_list.get_children ()) {
+      var btn = (FavImageRow) child;
+      if (btn.get_image_path ().down ().has_suffix (".gif")) {
+        btn.set_sensitive (true);
+      }
     }
   }
 }
