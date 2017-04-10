@@ -145,7 +145,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
         () => {start_send_tweet (); return true;});
 
     this.compose_image_manager.image_removed.connect (() => {
-      if (this.compose_image_manager.n_images < Twitter.max_media_per_upload) {
+      if (!this.compose_image_manager.full) {
         this.add_image_button.sensitive = true;
         this.fav_image_button.sensitive = true;
       }
@@ -319,7 +319,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
         } else {
           this.compose_image_manager.show ();
           this.compose_image_manager.load_image (filename, null);
-          if (this.compose_image_manager.n_images >= Twitter.max_media_per_upload) {
+          if (this.compose_image_manager.full) {
             this.add_image_button.sensitive = false;
             this.fav_image_button.sensitive = false;
           }
@@ -437,7 +437,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     cancel_clicked ();
     this.compose_image_manager.show ();
     this.compose_image_manager.load_image (child.get_image_path (), null);
-    if (this.compose_image_manager.n_images >= Twitter.max_media_per_upload) {
+    if (this.compose_image_manager.full) {
       this.add_image_button.sensitive = false;
       this.fav_image_button.sensitive = false;
     }
