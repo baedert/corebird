@@ -75,7 +75,7 @@ public class ListListEntry : Gtk.ListBoxRow {
     creator_screen_name = user.get_string_member ("screen_name");
     n_subscribers = (int)obj.get_int_member ("subscriber_count");
     n_members = (int)obj.get_int_member ("member_count");
-    created_at = Utils.parse_date (obj.get_string_member ("created_at")).to_unix ();
+    created_at = Cb.Utils.parse_date (obj.get_string_member ("created_at")).to_unix ();
     mode = obj.get_string_member ("mode");
     bool following = obj.get_boolean_member ("following");
 
