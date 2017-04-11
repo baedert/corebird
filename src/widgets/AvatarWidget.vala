@@ -25,6 +25,9 @@ public class AvatarWidget : Gtk.Widget {
       return _round;
     }
     set {
+      if (value == _round)
+        return;
+
       if (value) {
         this.get_style_context ().add_class ("avatar-round");
       } else {
