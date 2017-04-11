@@ -266,7 +266,7 @@ class DMManager : GLib.Object {
               .val ("to_screen_name", dm_obj.get_string_member ("recipient_screen_name"))
               .val ("from_name", sender.get_string_member ("name"))
               .val ("to_name", recipient.get_string_member ("name"))
-              .vali64 ("timestamp", Utils.parse_date (dm_obj.get_string_member ("created_at")).to_unix ())
+              .vali64 ("timestamp", Cb.Utils.parse_date (dm_obj.get_string_member ("created_at")).to_unix ())
               .val ("text", text)
               .run ();
 

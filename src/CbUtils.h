@@ -29,4 +29,6 @@ void cb_utils_bind_model (GtkWidget                  *listbox,
 
 char * cb_utils_escape_quotes (const char *in);
 
+GDateTime * cb_utils_parse_date (const char *_in);
+
 #endif

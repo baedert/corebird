@@ -143,7 +143,7 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
       new_msg.text = text;
       new_msg.name = sender.get_string_member ("name");
       new_msg.screen_name = sender.get_string_member ("screen_name");
-      new_msg.timestamp = Utils.parse_date (obj.get_string_member ("created_at")).to_unix ();
+      new_msg.timestamp = Cb.Utils.parse_date (obj.get_string_member ("created_at")).to_unix ();
       new_msg.main_window = main_window;
       new_msg.user_id = sender.get_int_member ("id");
       new_msg.update_time_delta ();

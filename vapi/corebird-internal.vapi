@@ -256,5 +256,6 @@ namespace Cb {
           "CbUtils.h")]
   namespace Utils {
     public void bind_model (Gtk.Widget listbox, GLib.ListModel model, Gtk.ListBoxCreateWidgetFunc func);
+    public GLib.DateTime parse_date (string _in);
   }
 }
