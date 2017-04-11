@@ -30,8 +30,9 @@ class MediaVideoWidget : Gtk.Stack {
   private string? media_url = null;
 
   public MediaVideoWidget (Cb.Media media) {
+    GLib.return_if_fail (media.surface != null);
+
     this.cancellable = new GLib.Cancellable ();
-    assert (media.surface != null);
     var image_surface = (Cairo.ImageSurface) media.surface;
     video_progress.show ();
     int h;
