@@ -120,6 +120,10 @@ private class MediaButton : Gtk.Widget {
     if (this._media.percent_loaded >= 1.0) {
       if (!_media.invalid && _media.surface != null) {
         this.start_fade ();
+      } else {
+        /* Invalid media. */
+        this.hide ();
+        this.set_sensitive (false);
       }
 
       this.queue_resize ();
