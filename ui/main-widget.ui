@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <template class="MainWidget" parent="GtkBox">
-    <property name="visible">True</property>
-    <property name="can-focus">False</property>
+    <property name="visible">1</property>
+    <property name="can-focus">0</property>
     <property name="orientation">vertical</property>
     <child>
       <object class="GtkRevealer" id="sidebar_revealer">

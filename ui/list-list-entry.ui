@@ -9,8 +9,8 @@
     </widgets>
   </object>
   <template class="ListListEntry" parent="GtkListBoxRow">
-    <property name="visible">True</property>
-    <property name="can-focus">True</property>
+    <property name="visible">1</property>
+    <property name="can-focus">1</property>
     <signal name="focus_out_event" handler="focus_out_cb" swapped="false"/>
     <child>
       <object class="GtkStack" id="stack">

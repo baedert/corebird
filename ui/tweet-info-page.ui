@@ -13,7 +13,7 @@
     </section>
   </menu>
   <template class="TweetInfoPage" parent="ScrollWidget">
-    <property name="can-focus">True</property>
+    <property name="can-focus">1</property>
     <property name="hscrollbar-policy">never</property>
     <child>
       <object class="GtkStack" id="main_stack">

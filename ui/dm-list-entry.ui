@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <template class="DMListEntry" parent="GtkListBoxRow">
-    <property name="visible">True</property>
-    <property name="can-focus">True</property>
-    <property name="activatable">false</property>
+    <property name="visible">1</property>
+    <property name="can-focus">1</property>
+    <property name="activatable">0</property>
     <style>
       <class name="tweet"/>
     </style>

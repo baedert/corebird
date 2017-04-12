@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <template class="ListsPage" parent="ScrollWidget">
-    <property name="can-focus">True</property>
+    <property name="can-focus">1</property>
     <property name="hscrollbar-policy">never</property>
     <child>
       <object class="UserListsWidget" id="user_lists_widget"/>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <template class="AccountCreateWidget" parent="GtkBox">
-    <property name="visible">True</property>
-    <property name="can-focus">False</property>
+    <property name="visible">1</property>
+    <property name="can-focus">0</property>
     <property name="halign">center</property>
     <property name="orientation">vertical</property>
     <property name="margin-top">50</property>
