@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <template class="UserListEntry" parent="GtkListBoxRow">
-    <property name="visible">True</property>
-    <property name="can-focus">True</property>
+    <property name="visible">1</property>
+    <property name="can-focus">1</property>
     <child>
       <object class="GtkGrid" id="grid">
         <property name="visible">1</property>

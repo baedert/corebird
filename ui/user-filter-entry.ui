@@ -7,9 +7,9 @@
     </widgets>
   </object>
   <template class="UserFilterEntry" parent="GtkListBoxRow">
-    <property name="visible">True</property>
-    <property name="can-focus">True</property>
-    <property name="activatable">false</property>
+    <property name="visible">1</property>
+    <property name="can-focus">1</property>
+    <property name="activatable">0</property>
     <child>
       <object class="GtkRevealer" id="revealer">
         <property name="visible">1</property>

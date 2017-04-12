@@ -7,8 +7,8 @@
     </widgets>
   </object>
   <template class="FilterListEntry" parent="GtkListBoxRow">
-    <property name="visible">True</property>
-    <property name="can-focus">true</property>
+    <property name="visible">1</property>
+    <property name="can-focus">1</property>
     <property name="tooltip-text" translatable="Yes">Click to edit</property>
     <child>
       <object class="GtkRevealer" id="revealer">

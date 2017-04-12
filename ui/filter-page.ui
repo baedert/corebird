@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <template class="FilterPage" parent="GtkScrolledWindow">
-    <property name="can-focus">False</property>
+    <property name="can-focus">1</property>
     <child>
       <object class="GtkBox" id="box">
         <property name="visible">1</property>

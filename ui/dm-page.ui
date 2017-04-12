@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <template class="DMPage" parent="GtkBox">
-    <property name="can-focus">False</property>
+    <property name="can-focus">0</property>
     <property name="orientation">vertical</property>
     <child>
       <object class="ScrollWidget" id="scroll_widget">
