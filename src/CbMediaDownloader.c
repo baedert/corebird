@@ -431,7 +431,7 @@ is_media_candidate (const char *url)
          g_str_has_prefix (url, "flic.kr/p/") ||
          g_str_has_prefix (url, "flic.kr/s/") ||
 #ifdef VIDEO
-         g_str_has_prefix (url, "/photo/1/") ||
+         g_str_has_suffix (url, "/photo/1/") ||
          g_str_has_prefix (url, "video.twimg.com/ext_tw_video") ||
 #endif
          g_str_has_prefix (url, "pbs.twimg.com/media/") ||
