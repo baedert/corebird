@@ -117,7 +117,7 @@ private class MediaButton : Gtk.Widget {
   private void media_progress_cb () {
     this.queue_draw ();
 
-    if (this._media.percent_loaded >= 1.0) {
+    if (this._media.loaded) {
       if (!_media.invalid && _media.surface != null) {
         this.start_fade ();
       } else {
