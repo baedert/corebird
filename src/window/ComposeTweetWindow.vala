@@ -102,36 +102,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       content_grid.attach (reply_list, 0, 0, 2, 1);
     }
 
-    if (mode == Mode.REPLY) {
-      StringBuilder mention_builder = new StringBuilder ();
-      if (reply_to.get_screen_name () != account.screen_name) {
-        mention_builder.append ("@").append (reply_to.get_screen_name ());
-      }
-
-      if (reply_to.retweeted_tweet != null) {
-        if (mention_builder.len > 0)
-          mention_builder.append (" ");
-
-        mention_builder.append ("@").append (reply_to.source_tweet.author.screen_name);
-      }
-
-      foreach (unowned string s in reply_to.get_mentions ()) {
-        if (s == "@" + account.screen_name ||
-            s == "@" + reply_to.get_screen_name () ||
-            (reply_to.retweeted_tweet != null && reply_to.source_tweet.author.screen_name != s))
-          continue;
-
-        if (mention_builder.len > 0)
-          mention_builder.append (" ");
-
-        mention_builder.append (s);
-      }
-      /* Only add a space if we actually added some screen names */
-      if (mention_builder.len > 0)
-        mention_builder.append (" ");
-
-      tweet_text.buffer.text = mention_builder.str;
-    } else if (mode == Mode.QUOTE) {
+    if (mode == Mode.QUOTE) {
       assert (reply_to != null);
       this.title_label.label = _("Quote tweet");
     }
