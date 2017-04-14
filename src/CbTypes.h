@@ -57,6 +57,7 @@ struct _CbMiniTweet
   guint n_entities;
   CbMedia **medias;
   guint n_medias;
+  guint display_range_start;
 };
 typedef struct _CbMiniTweet CbMiniTweet;
 void cb_mini_tweet_free (CbMiniTweet *tweet);

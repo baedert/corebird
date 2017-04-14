@@ -23,6 +23,7 @@ char *cb_text_transform_text  (const char   *text,
                                gsize         n_entities,
                                guint         flags,
                                gsize         n_medias,
-                               gint64        quote_id);
+                               gint64        quote_id,
+                               guint         display_range_start);
 
 #endif
