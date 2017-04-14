@@ -32,7 +32,8 @@ cb_text_transform_tweet (const CbMiniTweet *tweet,
                                  tweet->n_entities,
                                  flags,
                                  tweet->n_medias,
-                                 quote_id);
+                                 quote_id,
+                                 tweet->display_range_start);
 }
 
 const int TRAILING = 1 << 0;
@@ -94,7 +95,8 @@ cb_text_transform_text (const char   *text,
                         gsize         n_entities,
                         guint         flags,
                         gsize         n_medias,
-                        gint64        quote_id)
+                        gint64        quote_id,
+                        guint         display_range_start)
 {
   GString *str;
   const  guint text_len   = g_utf8_strlen (text, -1);
@@ -111,10 +113,15 @@ cb_text_transform_text (const char   *text,
 
   for (i = (int)n_entities - 1; i >= 0; i --)
     {
-      char *btw = g_utf8_substring (text,
-                                    entities[i].to,
-                                    cur_end);
+      char *btw;
       gsize btw_length = cur_end - entities[i].to;
+
+      if (entities[i].to < display_range_start)
+        continue;
+
+      btw = g_utf8_substring (text,
+                              entities[i].to,
+                              cur_end);
 
       if (!is_whitespace (btw) && btw_length > 0)
         {
@@ -143,6 +150,9 @@ cb_text_transform_text (const char   *text,
   for (i = 0; i < (int)n_entities; i ++)
     {
       CbTextEntity *entity = &entities[i];
+
+      if (entity->to < display_range_start)
+        continue;
 
       char *before = g_utf8_substring (text, last_end, entity->from);
 
