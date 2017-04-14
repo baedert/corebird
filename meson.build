@@ -2,27 +2,17 @@ project('Corebird', ['vala', 'c'],
         version: '1.4.2')
 
 gnome = import('gnome')
-
-add_global_arguments('-DGETTEXT_PACKAGE="corebird"', language: 'c')
-add_global_arguments('-DDATADIR="' + get_option('datadir') + '"', language: 'c')
-add_global_arguments('-DG_LOG_DOMAIN="corebird"', language: 'c')
-add_global_arguments('--enable-deprecated', language: 'vala')
-add_global_arguments('--disable-since-check', language: 'vala')
-add_global_arguments('-D', 'GTK322', language: 'vala')
-
 srcdir = include_directories('src')
 
-glib_dep = dependency('glib-2.0')
-gtk_dep  = dependency('gtk+-4.0', version: '>= 3.89')
+
+min_glib_version = '2.44'
+
+glib_dep = dependency('glib-2.0', version: '>=' + min_glib_version)
+gtk_dep  = dependency('gtk+-4.0', version: '>=3.90')
 json_dep = dependency('json-glib-1.0')
 rest_dep = dependency('rest-0.7')
 sql_dep  = dependency('sqlite3')
 soup_dep = dependency('libsoup-2.4')
-
-if (rest_dep.version() >= '0.8.1')
-  add_global_arguments('-D', 'REST081', language: 'vala')
-  add_global_arguments('-DREST081', language: 'c')
-endif
 
 cb_deps = [
   glib_dep,
@@ -33,27 +23,40 @@ cb_deps = [
   soup_dep
 ]
 
+# Project arguments
+
+add_project_arguments('-DGETTEXT_PACKAGE="corebird"', language: 'c')
+add_project_arguments('-DDATADIR="' + get_option('datadir') + '"', language: 'c')
+add_project_arguments('-DG_LOG_DOMAIN="corebird"', language: 'c')
+add_project_arguments('--enable-deprecated', language: 'vala')
+add_project_arguments('-D', 'GTK322', language: 'vala')
+
+if (rest_dep.version() >= '0.8.1')
+  add_project_arguments('-D', 'REST081', language: 'vala')
+  add_project_arguments('-DREST081', language: 'c')
+endif
+
 enable_debug = get_option('debug')
 if (enable_debug)
-  add_global_arguments('-g', language: 'c')
-  add_global_arguments('-DDEBUG', language: 'c')
-  add_global_arguments('-DG_DISABLE_CAST_CHECKS', language: 'c')
-  add_global_arguments('-D', 'DEBUG', language: 'vala')
+  add_project_arguments('-g', language: 'c')
+  add_project_arguments('-DDEBUG', language: 'c')
+  add_project_arguments('-DG_DISABLE_CAST_CHECKS', language: 'c')
+  add_project_arguments('-D', 'DEBUG', language: 'vala')
 endif
 
 enable_video = get_option('video')
 if (enable_video)
-  add_global_arguments('-DVIDEO', language: 'c')
-  add_global_arguments('-D', 'VIDEO', language: 'vala')
+  add_project_arguments('-DVIDEO', language: 'c')
+  add_project_arguments('-D', 'VIDEO', language: 'vala')
   cb_deps += [dependency('gstreamer-video-1.0', version: '>= 1.6')]
 endif
 
 enable_spellcheck = get_option('spellcheck')
-# if (enable_spellcheck)
-  # add_global_arguments('-DSPELLCHECK', language: 'c')
-  # add_global_arguments('-D', 'SPELLCHECK', language: 'vala')
-  # cb_deps += [dependency('gspell-1')]
-# endif
+#if (enable_spellcheck)
+  #add_project_arguments('-DSPELLCHECK', language: 'c')
+  #add_project_arguments('-D', 'SPELLCHECK', language: 'vala')
+  #cb_deps += [dependency('gspell-1')]
+#endif
 
 
 corebird_lib_sources = files([
