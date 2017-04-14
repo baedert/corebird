@@ -158,6 +158,7 @@ class ComposeJob : GLib.Object {
     var call = this.account.proxy.new_call ();
     call.set_method ("POST");
     call.set_function ("1.1/statuses/update.json");
+    call.add_param ("auto_populate_reply_metadata", "true");
 
     if (this.reply_id != null) {
       call.add_param ("in_reply_to_status_id", this.reply_id.to_string ());
