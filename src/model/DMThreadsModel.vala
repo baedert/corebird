@@ -33,7 +33,8 @@ class DMThread : GLib.Object {
     this.avatar_surface = yield Twitter.get ().load_avatar_for_user_id (account,
                                                                         user.id,
                                                                         48 * scale_factor);
-    Twitter.get ().ref_avatar (this.avatar_surface);
+    if (this.avatar_surface != null)
+      Twitter.get ().ref_avatar (this.avatar_surface);
   }
 
   ~DMThread () {
