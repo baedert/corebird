@@ -360,13 +360,6 @@ namespace Utils {
     return back;
   }
 
-  public int get_json_array_size (Json.Object node, string object_name) {
-    if (!node.has_member (object_name))
-      return 0;
-
-    return (int)node.get_array_member (object_name).get_length ();
-  }
-
   /**
    * Checks if @value is existing in @node and if it is, non-null.
    *
