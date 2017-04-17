@@ -519,7 +519,7 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
     {
       CbTextEntity *e = &t->entities[i];
 
-      if (e->from > t->display_range_start)
+      if (e->from >= t->display_range_start)
         {
           e->from -= t->display_range_start;
           e->to   -= t->display_range_start;
