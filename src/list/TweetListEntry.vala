@@ -50,10 +50,6 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
   private Gtk.Stack stack;
   [GtkChild]
   private Gtk.Box action_box;
-  [GtkChild]
-  private Gtk.Label reply_label;
-  [GtkChild]
-  private Gtk.Image reply_image;
 
   /* Conditionally created widgets... */
   private Gtk.Label? quote_label = null;
@@ -140,21 +136,6 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
       rt_label.label = buff.str;
     }
 
-    if (tweet.reply_id != 0) {
-      var buff = new StringBuilder ();
-      //buff.append (_("In reply to "));
-      if (tweet.reply_user_id == tweet.source_tweet.author.id) {
-        buff.append ("SELF");
-      }
-      foreach (var e in tweet.source_tweet.entities) {
-        if (e.to < tweet.source_tweet.display_range_start)
-          buff.append_c (' ').append (e.display_text);
-      }
-      reply_label.label = buff.str;
-      reply_label.show ();
-      reply_image.show ();
-    }
-
     if (tweet.quoted_tweet != null) {
       this.create_quote_grid ();
       quote_label.label = Cb.TextTransform.tweet (ref tweet.quoted_tweet,
@@ -182,9 +163,9 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
 
       if (text_label.label.length == 0 && tweet.quoted_tweet == null) {
         if (this.media_stack == null)
-          this.grid.child_set (mm_widget, "top-attach", 2);
+          this.grid.child_set (mm_widget, "top-attach", 1);
         else
-          this.grid.child_set (media_stack, "top-attach", 2);
+          this.grid.child_set (media_stack, "top-attach", 1);
       }
 
       if (tweet.is_flag_set (Cb.TweetState.NSFW))
@@ -255,9 +236,9 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
 
     if (this.mm_widget != null && this.tweet.quoted_tweet == null) {
       if (text_label.label.length == 0)
-        this.grid.child_set (mm_widget, "top-attach", 2);
+        this.grid.child_set (mm_widget, "top-attach", 1);
       else
-        this.grid.child_set (mm_widget, "top-attach", 8);
+        this.grid.child_set (mm_widget, "top-attach", 7);
     }
   }
 
@@ -622,9 +603,9 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
 
       if (this.tweet.quoted_tweet != null) {
         media_stack.margin_start = 12;
-        this.quote_grid.attach (media_stack, 0, 3, 3, 1);
+        this.quote_grid.attach (media_stack, 0, 2, 3, 1);
       } else {
-        this.grid.attach (media_stack, 1, 7, 7, 1);
+        this.grid.attach (media_stack, 1, 6, 7, 1);
       }
     } else {
       /* We will never have to hide mm_widget */
@@ -632,9 +613,9 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
 
       if (this.tweet.quoted_tweet != null) {
         mm_widget.margin_start = 12;
-        this.quote_grid.attach (mm_widget, 0, 3, 3, 1);
+        this.quote_grid.attach (mm_widget, 0, 2, 3, 1);
       } else {
-        this.grid.attach (mm_widget, 1, 7, 7, 1);
+        this.grid.attach (mm_widget, 1, 6, 7, 1);
       }
     }
   }

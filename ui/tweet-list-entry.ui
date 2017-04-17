@@ -120,32 +120,6 @@
             <property name="visible">1</property>
             <property name="margin">6</property>
             <child>
-              <object class="GtkImage" id="reply_image">
-                <property name="visible">0</property>
-                <property name="icon-name">corebird-conversation-symbolic</property>
-                <property name="icon-size">1</property>
-                <property name="halign">end</property>
-                <style>
-                  <class name="dim-label" />
-                </style>
-              </object>
-            </child>
-            <child>
-              <object class="GtkLabel" id="reply_label">
-                <property name="visible">0</property>
-                <property name="halign">start</property>
-                <property name="xalign">0</property>
-                <style>
-                  <class name="dim-label" />
-                </style>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">0</property>
-                <property name="width">7</property>
-              </packing>
-            </child>
-            <child>
               <object class="AvatarWidget" id="avatar_image">
                 <property name="size">48</property>
                 <property name="visible">True</property>
@@ -158,7 +132,7 @@
               </object>
               <packing>
                 <property name="left-attach">0</property>
-                <property name="top-attach">1</property>
+                <property name="top-attach">0</property>
                 <property name="height">2</property>
               </packing>
             </child>
@@ -175,7 +149,7 @@
               </object>
               <packing>
                 <property name="left-attach">1</property>
-                <property name="top-attach">1</property>
+                <property name="top-attach">0</property>
               </packing>
             </child>
             <child>
@@ -195,7 +169,7 @@
               </object>
               <packing>
                 <property name="left-attach">2</property>
-                <property name="top-attach">1</property>
+                <property name="top-attach">0</property>
               </packing>
             </child>
             <child>
@@ -210,10 +184,6 @@
                   <class name="dim-label"/>
                 </style>
               </object>
-              <packing>
-                <property name="left-attach">3</property>
-                <property name="top-attach">1</property>
-              </packing>
             </child>
             <child>
               <object class="GtkImage" id="rt_status_image">
@@ -227,10 +197,6 @@
                   <class name="dim-label"/>
                 </style>
               </object>
-              <packing>
-                <property name="left-attach">4</property>
-                <property name="top-attach">1</property>
-              </packing>
             </child>
             <child>
               <object class="GtkLabel" id="time_delta_label">
@@ -246,7 +212,7 @@
               </object>
               <packing>
                 <property name="left-attach">6</property>
-                <property name="top-attach">1</property>
+                <property name="top-attach">0</property>
               </packing>
             </child>
             <child>
@@ -267,7 +233,7 @@
               </object>
               <packing>
                 <property name="left-attach">1</property>
-                <property name="top-attach">2</property>
+                <property name="top-attach">1</property>
                 <property name="width">6</property>
               </packing>
             </child>
@@ -286,7 +252,7 @@
               </object>
               <packing>
                 <property name="left-attach">0</property>
-                <property name="top-attach">6</property>
+                <property name="top-attach">5</property>
               </packing>
             </child>
             <child>
@@ -306,7 +272,7 @@
               </object>
               <packing>
                 <property name="left-attach">1</property>
-                <property name="top-attach">6</property>
+                <property name="top-attach">5</property>
                 <property name="width">6</property>
               </packing>
             </child>
