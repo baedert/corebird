@@ -77,6 +77,7 @@ struct _CbTweet
   guint seen : 1;
   /** if 0, this tweet is NOT part of a conversation */
   gint64 reply_id;
+  gint64 reply_user_id;
   guint retweet_count;
   guint favorite_count;
 

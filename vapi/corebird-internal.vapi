@@ -67,6 +67,7 @@ namespace Cb {
   public struct MiniTweet {
     public int64 id;
     public int64 created_at;
+    public uint display_range_start;
     public Cb.UserIdentity author;
     public string text;
     [CCode (array_length_cname = "n_entities", array_length_type = "size_t")]
@@ -90,6 +91,7 @@ namespace Cb {
       public int64 id;
       public int64 my_retweet;
       public int64 reply_id;
+      public int64 reply_user_id;
       public int favorite_count;
       public int retweet_count;
       public string avatar_url;
