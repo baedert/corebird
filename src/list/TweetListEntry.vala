@@ -142,11 +142,18 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
       var buff = new StringBuilder ();
       buff.append (_("Replying to "));
       if (tweet.reply_user_id == tweet.source_tweet.author.id) {
-        buff.append (tweet.get_screen_name ());
+        buff.append_c ('@').append (tweet.get_screen_name ());
       }
+      bool first_mention = false;
       foreach (var e in tweet.source_tweet.entities) {
-        if (e.to < tweet.source_tweet.display_range_start)
+        if (e.to < tweet.source_tweet.display_range_start) {
           buff.append_c (' ').append (e.display_text);
+          first_mention = true;
+          break;
+        }
+      }
+      if (first_mention && tweet.source_tweet.entities.length > 1) {
+        buff.append (_(" and %d others").printf (tweet.source_tweet.entities.length - 1));
       }
       reply_label.label = buff.str;
       reply_label.show ();
