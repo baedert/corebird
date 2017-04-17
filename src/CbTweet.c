@@ -220,7 +220,10 @@ cb_tweet_load_from_json (CbTweet   *tweet,
         tweet->state |= CB_TWEET_STATE_VERIFIED;
 
       if (!json_object_get_null_member (rt, "in_reply_to_status_id"))
-        tweet->reply_id = json_object_get_int_member (rt, "in_reply_to_status_id");
+        {
+          tweet->reply_id = json_object_get_int_member (rt, "in_reply_to_status_id");
+          tweet->reply_user_id = json_object_get_int_member (rt, "in_reply_to_user_id");
+        }
 
       if (usable_json_value (rt, "possibly_sensitive") &&
           json_object_get_boolean_member (rt, "possibly_sensitive"))
@@ -238,7 +241,10 @@ cb_tweet_load_from_json (CbTweet   *tweet,
         tweet->state |= CB_TWEET_STATE_VERIFIED;
 
       if (!json_object_get_null_member (status, "in_reply_to_status_id"))
-        tweet->reply_id = json_object_get_int_member (status, "in_reply_to_status_id");
+        {
+          tweet->reply_id = json_object_get_int_member (status, "in_reply_to_status_id");
+          tweet->reply_user_id = json_object_get_int_member (status, "in_reply_to_user_id");
+        }
 
       if (usable_json_value (status, "possibly_sensitive") &&
           json_object_get_boolean_member (status, "possibly_sensitive"))
@@ -478,6 +484,7 @@ cb_tweet_init (CbTweet *tweet)
   tweet->quoted_tweet = NULL;
   tweet->retweeted_tweet = NULL;
   tweet->reply_id = 0;
+  tweet->reply_user_id = 0;
   tweet->notification_id = NULL;
   tweet->seen = TRUE;
 }
