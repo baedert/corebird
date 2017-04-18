@@ -227,7 +227,12 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
       Cairo.Surface surface;
       try {
         var pixbuf = TweetUtils.download_avatar.end (res);
-        surface = Gdk.cairo_surface_create_from_pixbuf (pixbuf, scale, null);
+        if (pixbuf == null) {
+          surface = scale_surface ((Cairo.ImageSurface)Twitter.no_avatar,
+                                   100, 100);
+        } else {
+          surface = Gdk.cairo_surface_create_from_pixbuf (pixbuf, scale, null);
+        }
       } catch (GLib.Error e) {
         warning (e.message);
         surface = Twitter.no_avatar;
