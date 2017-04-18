@@ -102,10 +102,16 @@ void main (string[] args) {
     list3.add (row);
   }
 
-
   {
     // Reply to ONE user.
     var tweet = parse_tweet (REPLY);
+    var row = new TweetListEntry (tweet, null, fake_acount);
+    list3.add (row);
+  }
+
+  {
+    // Reply to TWO users.
+    var tweet = parse_tweet (REPLY_TO_TWO);
     var row = new TweetListEntry (tweet, null, fake_acount);
     list3.add (row);
   }
@@ -3126,6 +3132,128 @@ const string REPLY = """
   "is_quote_status" : false,
   "retweet_count" : 0,
   "favorite_count" : 0,
+  "favorited" : false,
+  "retweeted" : false,
+  "lang" : "en"
+}
+""";
+
+const string REPLY_TO_TWO = """
+{
+  "created_at" : "Mon Apr 17 13:01:46 +0000 2017",
+  "id" : 853956655020748801,
+  "id_str" : "853956655020748801",
+  "full_text" : "@kaidjohnson @gnome Not everyone feels as confident switching to Linux. UKUI gives them a comfort blanket of familiarity.",
+  "truncated" : false,
+  "display_text_range" : [
+    20,
+    121
+  ],
+  "entities" : {
+    "hashtags" : [
+    ],
+    "symbols" : [
+    ],
+    "user_mentions" : [
+      {
+        "screen_name" : "kaidjohnson",
+        "name" : "Kai Johnson",
+        "id" : 34798045,
+        "id_str" : "34798045",
+        "indices" : [
+          0,
+          12
+        ]
+      },
+      {
+        "screen_name" : "gnome",
+        "name" : "GNOME",
+        "id" : 12579252,
+        "id_str" : "12579252",
+        "indices" : [
+          13,
+          19
+        ]
+      }
+    ],
+    "urls" : [
+    ]
+  },
+  "source" : "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>",
+  "in_reply_to_status_id" : 853956134323048452,
+  "in_reply_to_status_id_str" : "853956134323048452",
+  "in_reply_to_user_id" : 34798045,
+  "in_reply_to_user_id_str" : "34798045",
+  "in_reply_to_screen_name" : "kaidjohnson",
+  "user" : {
+    "id" : 72915446,
+    "id_str" : "72915446",
+    "name" : "OMG! UBUNTU!",
+    "screen_name" : "omgubuntu",
+    "location" : "US/UK",
+    "description" : "Your #1 source for the latest #Ubuntu Linux news, apps, tips, gaming & more. Got news? joey[at]ohso.io",
+    "url" : "https://t.co/E0SDJKEG9w",
+    "entities" : {
+      "url" : {
+        "urls" : [
+          {
+            "url" : "https://t.co/E0SDJKEG9w",
+            "expanded_url" : "http://www.omgubuntu.co.uk",
+            "display_url" : "omgubuntu.co.uk",
+            "indices" : [
+              0,
+              23
+            ]
+          }
+        ]
+      },
+      "description" : {
+        "urls" : [
+        ]
+      }
+    },
+    "protected" : false,
+    "followers_count" : 94994,
+    "friends_count" : 54,
+    "listed_count" : 3816,
+    "created_at" : "Wed Sep 09 18:26:36 +0000 2009",
+    "favourites_count" : 2689,
+    "utc_offset" : 3600,
+    "time_zone" : "London",
+    "geo_enabled" : true,
+    "verified" : false,
+    "statuses_count" : 12699,
+    "lang" : "en",
+    "contributors_enabled" : false,
+    "is_translator" : false,
+    "is_translation_enabled" : false,
+    "profile_background_color" : "4D1F41",
+    "profile_background_image_url" : "http://pbs.twimg.com/profile_background_images/458275648939622400/g2-00Dua.png",
+    "profile_background_image_url_https" : "https://pbs.twimg.com/profile_background_images/458275648939622400/g2-00Dua.png",
+    "profile_background_tile" : false,
+    "profile_image_url" : "http://pbs.twimg.com/profile_images/627831364692389888/L3tujQ89_normal.png",
+    "profile_image_url_https" : "https://pbs.twimg.com/profile_images/627831364692389888/L3tujQ89_normal.png",
+    "profile_banner_url" : "https://pbs.twimg.com/profile_banners/72915446/1485460019",
+    "profile_link_color" : "009999",
+    "profile_sidebar_border_color" : "FFFFFF",
+    "profile_sidebar_fill_color" : "FFFFFF",
+    "profile_text_color" : "303030",
+    "profile_use_background_image" : true,
+    "has_extended_profile" : false,
+    "default_profile" : false,
+    "default_profile_image" : false,
+    "following" : true,
+    "follow_request_sent" : false,
+    "notifications" : false,
+    "translator_type" : "regular"
+  },
+  "geo" : null,
+  "coordinates" : null,
+  "place" : null,
+  "contributors" : null,
+  "is_quote_status" : false,
+  "retweet_count" : 0,
+  "favorite_count" : 1,
   "favorited" : false,
   "retweeted" : false,
   "lang" : "en"
