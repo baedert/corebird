@@ -92,6 +92,7 @@ namespace Cb {
       public int64 my_retweet;
       public int64 reply_id;
       public int64 reply_user_id;
+      public string reply_screen_name;
       public int favorite_count;
       public int retweet_count;
       public string avatar_url;
