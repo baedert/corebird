@@ -140,20 +140,31 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
 
     if (tweet.reply_id != 0) {
       var buff = new StringBuilder ();
-      buff.append (_("Replying to "));
-      if (tweet.reply_user_id == tweet.source_tweet.author.id) {
-        buff.append_c ('@').append (tweet.get_screen_name ());
-      }
-      bool first_mention = false;
+      /* Use the user we directly reply to in any case */
+      buff.append (_("Replying to @"));
+      buff.append (tweet.reply_screen_name);
+
+      /* And just a number for the rest */
+      int n_mentions = 0;
+      string? second_mention = null;
       foreach (var e in tweet.source_tweet.entities) {
-        if (e.to < tweet.source_tweet.display_range_start) {
-          buff.append_c (' ').append (e.display_text);
-          first_mention = true;
-          break;
+        if (e.to < tweet.source_tweet.display_range_start &&
+            e.display_text != "@" + tweet.reply_screen_name) {
+          n_mentions ++;
+
+          if (second_mention == null) {
+            second_mention = e.display_text;
+          }
         }
       }
-      if (first_mention && tweet.source_tweet.entities.length > 1) {
-        buff.append (_(" and %d others").printf (tweet.source_tweet.entities.length - 1));
+      if (n_mentions > 0) {
+        if (n_mentions == 1 && second_mention != null) {
+          /* From display_text, includes '@' */
+          buff.append (_(" and %s").printf (second_mention));
+        } else {
+          /* 2 or more */
+          buff.append (_(" and %d others").printf (n_mentions));
+        }
       }
       reply_label.label = buff.str;
       reply_label.show ();
