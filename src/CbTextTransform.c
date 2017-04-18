@@ -114,13 +114,16 @@ cb_text_transform_text (const char   *text,
   for (i = (int)n_entities - 1; i >= 0; i --)
     {
       char *btw;
+      guint entity_to;
       gsize btw_length = cur_end - entities[i].to;
 
       if (entities[i].to < display_range_start)
         continue;
 
+      entity_to = entities[i].to - display_range_start;
+
       btw = g_utf8_substring (text,
-                              entities[i].to,
+                              entity_to,
                               cur_end);
 
       if (!is_whitespace (btw) && btw_length > 0)
@@ -129,13 +132,13 @@ cb_text_transform_text (const char   *text,
           break;
         }
       else
-        cur_end = entities[i].to;
+        cur_end = entity_to;
 
       if (entities[i].to == cur_end &&
           (is_hashtag (entities[i].display_text) || is_link (entities[i].target)))
           {
             entities[i].info |= TRAILING;
-            cur_end = entities[i].from;
+            cur_end = entities[i].from - display_range_start;
           }
       else
         {
@@ -150,11 +153,16 @@ cb_text_transform_text (const char   *text,
   for (i = 0; i < (int)n_entities; i ++)
     {
       CbTextEntity *entity = &entities[i];
+      char *before;
+      guint entity_to;
 
       if (entity->to < display_range_start)
         continue;
 
-      char *before = g_utf8_substring (text, last_end, entity->from);
+      entity_to = entity->to - display_range_start;
+      before = g_utf8_substring (text,
+                                 last_end,
+                                 entity->from - display_range_start);
 
       if (!(last_entity_was_trailing && is_whitespace (before)))
         g_string_append (str, before);
@@ -163,7 +171,7 @@ cb_text_transform_text (const char   *text,
           (entity->info & TRAILING) > 0 &&
           is_hashtag (entity->display_text))
         {
-          last_end = entity->to;
+          last_end = entity_to;
           last_entity_was_trailing = TRUE;
           g_free (before);
           continue;
@@ -175,7 +183,7 @@ cb_text_transform_text (const char   *text,
            is_media_url (entity->target, entity->display_text, n_medias)) ||
           (quote_id != 0 && is_quote_link (entity, quote_id)))
         {
-          last_end = entity->to;
+          last_end = entity_to;
           g_free (before);
           continue;
         }
@@ -211,7 +219,7 @@ cb_text_transform_text (const char   *text,
           g_string_append (str,"</a></span>");
         }
 
-      last_end = entity->to;
+      last_end = entity_to;
       g_free (before);
     }
 

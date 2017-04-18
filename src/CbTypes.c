@@ -514,18 +514,6 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
   if (t->n_medias > 0)
     cb_media_downloader_load_all (cb_media_downloader_get_default (), t);
 
-  /* Fix all the .to / .from fields for entities */
-  for (i = 0; i < t->n_entities; i ++)
-    {
-      CbTextEntity *e = &t->entities[i];
-
-      if (e->from >= t->display_range_start)
-        {
-          e->from -= t->display_range_start;
-          e->to   -= t->display_range_start;
-        }
-    }
-
   if (t->n_entities > 0)
     {
       guint i, k;
