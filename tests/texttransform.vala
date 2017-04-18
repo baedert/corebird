@@ -181,7 +181,6 @@ void remove_only_trailing_hashtags () {
                                          entities,
                                          Cb.TransformFlags.REMOVE_TRAILING_HASHTAGS,
                                          0, 0);
-  message (result);
 
   assert (result.contains (">@baedert<")); // Mention should still be a link
   assert (result.contains (">#totally<"));
@@ -400,10 +399,40 @@ void no_quoted_link () {
 
   string result = t.get_trimmed_text (Settings.get_text_transform_flags ());
 
-  message (result);
-
   assert (!result.contains ("1337"));
   assert (result.length > 0);
+}
+
+void new_reply () {
+  /*
+   * This tests a the 'new reply' behavior, see
+   * https://dev.twitter.com/overview/api/upcoming-changes-to-tweets
+   */
+  var t = new Cb.Tweet ();
+  var parser = new Json.Parser ();
+  try {
+    parser.load_from_data (REPLY_TWEET_DATA);
+    t.load_from_json (parser.get_root (), 1337, new GLib.DateTime.now_local ());
+  } catch (GLib.Error e) {
+    assert (false);
+  }
+
+  assert (t.source_tweet.display_range_start == 115);
+
+  message ("Entities:");
+  foreach (var e in t.source_tweet.entities) {
+    message ("'%s': %u, %u", e.display_text, e.from, e.to);
+  }
+
+  var text = t.get_trimmed_text (Cb.TransformFlags.EXPAND_LINKS);
+  message (text);
+
+  /* Should not contain any mention */
+  assert (!text.contains ("@"));
+
+  /* One of the entities is a URL, the expanded link should point to
+   * eventbrite.com, not t.co */
+  assert (!text.contains ("t.co"));
 }
 
 int main (string[] args) {
@@ -423,6 +452,222 @@ int main (string[] args) {
   GLib.Test.add_func ("/tt/whitespace-between-trailing-hashtags", whitespace_hashtags);
   GLib.Test.add_func ("/tt/trailing-hashtags-media-link-after", trailing_hashtags_link_after);
   GLib.Test.add_func ("/tt/no-quoted-link", no_quoted_link);
+  GLib.Test.add_func ("/tt/new-reply", new_reply);
 
   return GLib.Test.run ();
 }
+
+// {{{
+const string REPLY_TWEET_DATA = """
+{
+  "created_at" : "Mon Apr 17 15:16:18 +0000 2017",
+  "id" : 853990508326252550,
+  "id_str" : "853990508326252550",
+  "full_text" : "@jjdesmond @_UBRAS_ @franalsworth @4Apes @katy4apes @theAliceRoberts @JaneGoodallUK @Jane_Goodall @JaneGoodallInst And here's the link for tickets again ... https://t.co/a9lOVMouNK",
+  "truncated" : false,
+  "display_text_range" : [
+    115,
+    180
+  ],
+  "entities" : {
+    "hashtags" : [
+    ],
+    "symbols" : [
+    ],
+    "user_mentions" : [
+      {
+        "screen_name" : "jjdesmond",
+        "name" : "Jimmy Jenny Desmond",
+        "id" : 21278482,
+        "id_str" : "21278482",
+        "indices" : [
+          0,
+          10
+        ]
+      },
+      {
+        "screen_name" : "_UBRAS_",
+        "name" : "Roots and Shoots UOB",
+        "id" : 803329927974096896,
+        "id_str" : "803329927974096896",
+        "indices" : [
+          11,
+          19
+        ]
+      },
+      {
+        "screen_name" : "franalsworth",
+        "name" : "Fran",
+        "id" : 776983919287754752,
+        "id_str" : "776983919287754752",
+        "indices" : [
+          20,
+          33
+        ]
+      },
+      {
+        "screen_name" : "4Apes",
+        "name" : "Ian Redmond",
+        "id" : 155889035,
+        "id_str" : "155889035",
+        "indices" : [
+          34,
+          40
+        ]
+      },
+      {
+        "screen_name" : "katy4apes",
+        "name" : "Katy Jedamzik",
+        "id" : 159608654,
+        "id_str" : "159608654",
+        "indices" : [
+          41,
+          51
+        ]
+      },
+      {
+        "screen_name" : "theAliceRoberts",
+        "name" : "Prof Alice Roberts",
+        "id" : 260211154,
+        "id_str" : "260211154",
+        "indices" : [
+          52,
+          68
+        ]
+      },
+      {
+        "screen_name" : "JaneGoodallUK",
+        "name" : "Roots & Shoots UK",
+        "id" : 423423823,
+        "id_str" : "423423823",
+        "indices" : [
+          69,
+          83
+        ]
+      },
+      {
+        "screen_name" : "Jane_Goodall",
+        "name" : "Jane Goodall",
+        "id" : 235157216,
+        "id_str" : "235157216",
+        "indices" : [
+          84,
+          97
+        ]
+      },
+      {
+        "screen_name" : "JaneGoodallInst",
+        "name" : "JaneGoodallInstitute",
+        "id" : 39822897,
+        "id_str" : "39822897",
+        "indices" : [
+          98,
+          114
+        ]
+      }
+    ],
+    "urls" : [
+      {
+        "url" : "https://t.co/a9lOVMouNK",
+        "expanded_url" : "https://www.eventbrite.com/e/working-with-apes-tickets-33089771397",
+        "display_url" : "eventbrite.com/e/working-with…",
+        "indices" : [
+          157,
+          180
+        ]
+      }
+    ]
+  },
+  "source" : "<a href=\"http://twitter.com/download/iphone\" rel=\"nofollow\">Twitter for iPhone</a>",
+  "in_reply_to_status_id" : 853925036696141824,
+  "in_reply_to_status_id_str" : "853925036696141824",
+  "in_reply_to_user_id" : 21278482,
+  "in_reply_to_user_id_str" : "21278482",
+  "in_reply_to_screen_name" : "jjdesmond",
+  "user" : {
+    "id" : 415472140,
+    "id_str" : "415472140",
+    "name" : "Ben Garrod",
+    "screen_name" : "Ben_garrod",
+    "location" : "Bristol&Norfolk",
+    "description" : "Monkey-chaser, TV-talker, bone geek and Teaching Fellow at @AngliaRuskin https://t.co/FXbftdxxTJ",
+    "url" : "https://t.co/1B9SDHfWoF",
+    "entities" : {
+      "url" : {
+        "urls" : [
+          {
+            "url" : "https://t.co/1B9SDHfWoF",
+            "expanded_url" : "http://www.josarsby.com/ben-garrod",
+            "display_url" : "josarsby.com/ben-garrod",
+            "indices" : [
+              0,
+              23
+            ]
+          }
+        ]
+      },
+      "description" : {
+        "urls" : [
+          {
+            "url" : "https://t.co/FXbftdxxTJ",
+            "expanded_url" : "http://www.anglia.ac.uk/science-and-technology/about/life-sciences/our-staff/ben-garrod",
+            "display_url" : "anglia.ac.uk/science-and-te…",
+            "indices" : [
+              73,
+              96
+            ]
+          }
+        ]
+      }
+    },
+    "protected" : false,
+    "followers_count" : 6526,
+    "friends_count" : 1016,
+    "listed_count" : 128,
+    "created_at" : "Fri Nov 18 11:30:48 +0000 2011",
+    "favourites_count" : 25292,
+    "utc_offset" : 3600,
+    "time_zone" : "London",
+    "geo_enabled" : true,
+    "verified" : true,
+    "statuses_count" : 17224,
+    "lang" : "en",
+    "contributors_enabled" : false,
+    "is_translator" : false,
+    "is_translation_enabled" : false,
+    "profile_background_color" : "C0DEED",
+    "profile_background_image_url" : "http://pbs.twimg.com/profile_background_images/590945579024257024/2F1itaGz.jpg",
+    "profile_background_image_url_https" : "https://pbs.twimg.com/profile_background_images/590945579024257024/2F1itaGz.jpg",
+    "profile_background_tile" : false,
+    "profile_image_url" : "http://pbs.twimg.com/profile_images/615498558385557505/cwSloac3_normal.jpg",
+    "profile_image_url_https" : "https://pbs.twimg.com/profile_images/615498558385557505/cwSloac3_normal.jpg",
+    "profile_banner_url" : "https://pbs.twimg.com/profile_banners/415472140/1477223840",
+    "profile_link_color" : "0084B4",
+    "profile_sidebar_border_color" : "FFFFFF",
+    "profile_sidebar_fill_color" : "DDEEF6",
+    "profile_text_color" : "333333",
+    "profile_use_background_image" : false,
+    "has_extended_profile" : false,
+    "default_profile" : false,
+    "default_profile_image" : false,
+    "following" : false,
+    "follow_request_sent" : false,
+    "notifications" : false,
+    "translator_type" : "none"
+  },
+  "geo" : null,
+  "coordinates" : null,
+  "place" : null,
+  "contributors" : null,
+  "is_quote_status" : false,
+  "retweet_count" : 6,
+  "favorite_count" : 7,
+  "favorited" : false,
+  "retweeted" : false,
+  "possibly_sensitive" : false,
+  "lang" : "en"
+}
+
+""";
+
+// }}}
