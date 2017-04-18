@@ -102,6 +102,16 @@ void main (string[] args) {
     list3.add (row);
   }
 
+
+  {
+    // Reply to ONE user.
+    var tweet = parse_tweet (REPLY);
+    var row = new TweetListEntry (tweet, null, fake_acount);
+    list3.add (row);
+  }
+
+
+
   list.set_size_request  (500, -1);
   list2.set_size_request (500, -1);
   list2.set_size_request (500, -1);
@@ -3007,6 +3017,117 @@ const string VIDEO_AND_THUMBNAIL =
   "retweeted" : false,
   "possibly_sensitive" : false,
   "possibly_sensitive_appealable" : false,
+  "lang" : "en"
+}
+""";
+
+const string REPLY = """
+{
+  "created_at" : "Sat Jan 28 09:23:50 +0000 2017",
+  "id" : 825273167560208384,
+  "id_str" : "825273167560208384",
+  "full_text" : "@explodingwalrus \"definitely\" as in \"xdg-settings get default-url-scheme-handler https\" returns chrome's desktop file?",
+  "truncated" : false,
+  "display_text_range" : [
+    17,
+    118
+  ],
+  "entities" : {
+    "hashtags" : [
+    ],
+    "symbols" : [
+    ],
+    "user_mentions" : [
+      {
+        "screen_name" : "explodingwalrus",
+        "name" : "Carl Draper",
+        "id" : 44823886,
+        "id_str" : "44823886",
+        "indices" : [
+          0,
+          16
+        ]
+      }
+    ],
+    "urls" : [
+    ]
+  },
+  "source" : "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>",
+  "in_reply_to_status_id" : 825269440556081153,
+  "in_reply_to_status_id_str" : "825269440556081153",
+  "in_reply_to_user_id" : 44823886,
+  "in_reply_to_user_id_str" : "44823886",
+  "in_reply_to_screen_name" : "explodingwalrus",
+  "user" : {
+    "id" : 2877682863,
+    "id_str" : "2877682863",
+    "name" : "Corebird",
+    "screen_name" : "corebirdclient",
+    "location" : "",
+    "description" : "If there's no bug report for it, it doesn't exist.\n\nThis account is run by a highly-paid intern, not @baedert himself.\n\nStill not CoreBird. Or @Corebird.",
+    "url" : "https://t.co/yGvX7Nf6i3",
+    "entities" : {
+      "url" : {
+        "urls" : [
+          {
+            "url" : "https://t.co/yGvX7Nf6i3",
+            "expanded_url" : "http://corebird.baedert.org",
+            "display_url" : "corebird.baedert.org",
+            "indices" : [
+              0,
+              23
+            ]
+          }
+        ]
+      },
+      "description" : {
+        "urls" : [
+        ]
+      }
+    },
+    "protected" : false,
+    "followers_count" : 430,
+    "friends_count" : 3,
+    "listed_count" : 24,
+    "created_at" : "Sat Nov 15 08:08:32 +0000 2014",
+    "favourites_count" : 22,
+    "utc_offset" : 7200,
+    "time_zone" : "Ljubljana",
+    "geo_enabled" : false,
+    "verified" : false,
+    "statuses_count" : 376,
+    "lang" : "en",
+    "contributors_enabled" : false,
+    "is_translator" : false,
+    "is_translation_enabled" : false,
+    "profile_background_color" : "FAB81E",
+    "profile_background_image_url" : "http://abs.twimg.com/images/themes/theme1/bg.png",
+    "profile_background_image_url_https" : "https://abs.twimg.com/images/themes/theme1/bg.png",
+    "profile_background_tile" : false,
+    "profile_image_url" : "http://pbs.twimg.com/profile_images/533595923679432704/bIWqAMTk_normal.png",
+    "profile_image_url_https" : "https://pbs.twimg.com/profile_images/533595923679432704/bIWqAMTk_normal.png",
+    "profile_link_color" : "000000",
+    "profile_sidebar_border_color" : "000000",
+    "profile_sidebar_fill_color" : "000000",
+    "profile_text_color" : "000000",
+    "profile_use_background_image" : true,
+    "has_extended_profile" : false,
+    "default_profile" : false,
+    "default_profile_image" : false,
+    "following" : true,
+    "follow_request_sent" : false,
+    "notifications" : false,
+    "translator_type" : "none"
+  },
+  "geo" : null,
+  "coordinates" : null,
+  "place" : null,
+  "contributors" : null,
+  "is_quote_status" : false,
+  "retweet_count" : 0,
+  "favorite_count" : 0,
+  "favorited" : false,
+  "retweeted" : false,
   "lang" : "en"
 }
 """;
