@@ -227,6 +227,9 @@
                 <property name="visible">0</property>
                 <property name="halign">start</property>
                 <property name="xalign">0</property>
+                <property name="use-markup">1</property>
+                <property name="track-visited-links">0</property>
+                <signal name="activate-link" handler="link_activated_cb"/>
                 <style>
                   <class name="dim-label" />
                 </style>
