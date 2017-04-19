@@ -232,6 +232,7 @@
                 <signal name="activate-link" handler="link_activated_cb"/>
                 <style>
                   <class name="dim-label" />
+                  <class name="invisible-links" />
                 </style>
               </object>
               <packing>

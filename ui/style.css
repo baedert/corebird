@@ -273,3 +273,7 @@ progressbar.horizontal.embedded-progress>trough>progress {
   box-shadow: none;
   border: none;
 }
+
+.invisible-links link:link {
+  color:inherit;
+}
