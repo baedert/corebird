@@ -454,6 +454,7 @@ cb_tweet_get_reply_screen_names (CbTweet *tweet,
   char **mentions;
 
   g_return_val_if_fail (CB_IS_TWEET (tweet), NULL);
+  g_return_val_if_fail (n_replies != NULL, NULL);
 
   /* TODO: Care about retweets */
   for (i = 0; i < tweet->source_tweet.n_entities; i ++)
