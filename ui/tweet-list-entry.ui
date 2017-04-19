@@ -143,7 +143,6 @@
                 <property name="halign">start</property>
                 <property name="valign">baseline</property>
                 <property name="margin-top">4</property>
-                <property name="margin-bottom">1</property>
                 <signal name="clicked" handler="name_button_clicked_cb" swapped="no"/>
               </object>
               <packing>
@@ -245,6 +244,7 @@
                 <property name="visible">1</property>
                 <property name="margin-end">6</property>
                 <property name="margin-bottom">4</property>
+                <property name="margin-top">4</property>
                 <property name="hexpand">1</property>
                 <property name="vexpand">1</property>
                 <property name="xalign">0</property>
