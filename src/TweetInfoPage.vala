@@ -79,6 +79,8 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
   private Gtk.Stack main_stack;
   [GtkChild]
   private Gtk.Label error_label;
+  [GtkChild]
+  private Gtk.Label reply_label;
 
   public TweetInfoPage (int id, Account account) {
     this.id = id;
@@ -451,8 +453,21 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     favorite_button.active = tweet.is_flag_set (Cb.TweetState.FAVORITED);
     avatar_image.verified  = tweet.is_flag_set (Cb.TweetState.VERIFIED);
 
-
     set_source_link (tweet.id, tweet.get_screen_name ());
+
+    if (tweet.reply_id != 0) {
+      reply_label.show ();
+      var buff = new StringBuilder ();
+      buff.append (_("Replying to"));
+      var screen_names = tweet.get_reply_screen_names ();
+
+      foreach (unowned string screen_name in screen_names) {
+        buff.append_c (' ').append (screen_name);
+      }
+      reply_label.label = buff.str;
+    } else {
+      reply_label.hide ();
+    }
 
     if (tweet.has_inline_media ()) {
       this.mm_widget.visible = (Settings.get_media_visiblity () != MediaVisibility.HIDE);
