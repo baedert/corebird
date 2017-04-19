@@ -1036,6 +1036,218 @@ const string TD6 =
   "lang" : "en"
 }
 """;
+
+const string REPLY_TWEET_DATA = """
+{
+  "created_at" : "Mon Apr 17 15:16:18 +0000 2017",
+  "id" : 853990508326252550,
+  "id_str" : "853990508326252550",
+  "full_text" : "@jjdesmond @_UBRAS_ @franalsworth @4Apes @katy4apes @theAliceRoberts @JaneGoodallUK @Jane_Goodall @JaneGoodallInst And here's the link for tickets again ... https://t.co/a9lOVMouNK",
+  "truncated" : false,
+  "display_text_range" : [
+    115,
+    180
+  ],
+  "entities" : {
+    "hashtags" : [
+    ],
+    "symbols" : [
+    ],
+    "user_mentions" : [
+      {
+        "screen_name" : "jjdesmond",
+        "name" : "Jimmy Jenny Desmond",
+        "id" : 21278482,
+        "id_str" : "21278482",
+        "indices" : [
+          0,
+          10
+        ]
+      },
+      {
+        "screen_name" : "_UBRAS_",
+        "name" : "Roots and Shoots UOB",
+        "id" : 803329927974096896,
+        "id_str" : "803329927974096896",
+        "indices" : [
+          11,
+          19
+        ]
+      },
+      {
+        "screen_name" : "franalsworth",
+        "name" : "Fran",
+        "id" : 776983919287754752,
+        "id_str" : "776983919287754752",
+        "indices" : [
+          20,
+          33
+        ]
+      },
+      {
+        "screen_name" : "4Apes",
+        "name" : "Ian Redmond",
+        "id" : 155889035,
+        "id_str" : "155889035",
+        "indices" : [
+          34,
+          40
+        ]
+      },
+      {
+        "screen_name" : "katy4apes",
+        "name" : "Katy Jedamzik",
+        "id" : 159608654,
+        "id_str" : "159608654",
+        "indices" : [
+          41,
+          51
+        ]
+      },
+      {
+        "screen_name" : "theAliceRoberts",
+        "name" : "Prof Alice Roberts",
+        "id" : 260211154,
+        "id_str" : "260211154",
+        "indices" : [
+          52,
+          68
+        ]
+      },
+      {
+        "screen_name" : "JaneGoodallUK",
+        "name" : "Roots & Shoots UK",
+        "id" : 423423823,
+        "id_str" : "423423823",
+        "indices" : [
+          69,
+          83
+        ]
+      },
+      {
+        "screen_name" : "Jane_Goodall",
+        "name" : "Jane Goodall",
+        "id" : 235157216,
+        "id_str" : "235157216",
+        "indices" : [
+          84,
+          97
+        ]
+      },
+      {
+        "screen_name" : "JaneGoodallInst",
+        "name" : "JaneGoodallInstitute",
+        "id" : 39822897,
+        "id_str" : "39822897",
+        "indices" : [
+          98,
+          114
+        ]
+      }
+    ],
+    "urls" : [
+      {
+        "url" : "https://t.co/a9lOVMouNK",
+        "expanded_url" : "https://www.eventbrite.com/e/working-with-apes-tickets-33089771397",
+        "display_url" : "eventbrite.com/e/working-with…",
+        "indices" : [
+          157,
+          180
+        ]
+      }
+    ]
+  },
+  "source" : "<a href=\"http://twitter.com/download/iphone\" rel=\"nofollow\">Twitter for iPhone</a>",
+  "in_reply_to_status_id" : 853925036696141824,
+  "in_reply_to_status_id_str" : "853925036696141824",
+  "in_reply_to_user_id" : 21278482,
+  "in_reply_to_user_id_str" : "21278482",
+  "in_reply_to_screen_name" : "jjdesmond",
+  "user" : {
+    "id" : 415472140,
+    "id_str" : "415472140",
+    "name" : "Ben Garrod",
+    "screen_name" : "Ben_garrod",
+    "location" : "Bristol&Norfolk",
+    "description" : "Monkey-chaser, TV-talker, bone geek and Teaching Fellow at @AngliaRuskin https://t.co/FXbftdxxTJ",
+    "url" : "https://t.co/1B9SDHfWoF",
+    "entities" : {
+      "url" : {
+        "urls" : [
+          {
+            "url" : "https://t.co/1B9SDHfWoF",
+            "expanded_url" : "http://www.josarsby.com/ben-garrod",
+            "display_url" : "josarsby.com/ben-garrod",
+            "indices" : [
+              0,
+              23
+            ]
+          }
+        ]
+      },
+      "description" : {
+        "urls" : [
+          {
+            "url" : "https://t.co/FXbftdxxTJ",
+            "expanded_url" : "http://www.anglia.ac.uk/science-and-technology/about/life-sciences/our-staff/ben-garrod",
+            "display_url" : "anglia.ac.uk/science-and-te…",
+            "indices" : [
+              73,
+              96
+            ]
+          }
+        ]
+      }
+    },
+    "protected" : false,
+    "followers_count" : 6526,
+    "friends_count" : 1016,
+    "listed_count" : 128,
+    "created_at" : "Fri Nov 18 11:30:48 +0000 2011",
+    "favourites_count" : 25292,
+    "utc_offset" : 3600,
+    "time_zone" : "London",
+    "geo_enabled" : true,
+    "verified" : true,
+    "statuses_count" : 17224,
+    "lang" : "en",
+    "contributors_enabled" : false,
+    "is_translator" : false,
+    "is_translation_enabled" : false,
+    "profile_background_color" : "C0DEED",
+    "profile_background_image_url" : "http://pbs.twimg.com/profile_background_images/590945579024257024/2F1itaGz.jpg",
+    "profile_background_image_url_https" : "https://pbs.twimg.com/profile_background_images/590945579024257024/2F1itaGz.jpg",
+    "profile_background_tile" : false,
+    "profile_image_url" : "http://pbs.twimg.com/profile_images/615498558385557505/cwSloac3_normal.jpg",
+    "profile_image_url_https" : "https://pbs.twimg.com/profile_images/615498558385557505/cwSloac3_normal.jpg",
+    "profile_banner_url" : "https://pbs.twimg.com/profile_banners/415472140/1477223840",
+    "profile_link_color" : "0084B4",
+    "profile_sidebar_border_color" : "FFFFFF",
+    "profile_sidebar_fill_color" : "DDEEF6",
+    "profile_text_color" : "333333",
+    "profile_use_background_image" : false,
+    "has_extended_profile" : false,
+    "default_profile" : false,
+    "default_profile_image" : false,
+    "following" : false,
+    "follow_request_sent" : false,
+    "notifications" : false,
+    "translator_type" : "none"
+  },
+  "geo" : null,
+  "coordinates" : null,
+  "place" : null,
+  "contributors" : null,
+  "is_quote_status" : false,
+  "retweet_count" : 6,
+  "favorite_count" : 7,
+  "favorited" : false,
+  "retweeted" : false,
+  "possibly_sensitive" : false,
+  "lang" : "en"
+}
+
+""";
 // """
 // }}}
 
@@ -1143,6 +1355,25 @@ void special_quote () {
   assert (t.retweeted_tweet.medias.length > 0);
 }
 
+void reply_screen_names () {
+  var now = new GLib.DateTime.now_local ();
+  var t = new Cb.Tweet ();
+
+  var parser = new Json.Parser ();
+  try {
+    parser.load_from_data (REPLY_TWEET_DATA);
+  } catch (GLib.Error e) {
+    critical (e.message);
+  }
+  var root = parser.get_root ();
+
+  t.load_from_json (root, 0, now);
+
+  var reply_screen_names = t.get_reply_screen_names ();
+
+  assert (reply_screen_names.length == 9);
+}
+
 int main (string[] args) {
   GLib.Test.init (ref args);
   Settings.init ();
@@ -1156,6 +1387,7 @@ int main (string[] args) {
   GLib.Test.add_func ("/tweet-parsing/media-count", media_count);
   GLib.Test.add_func ("/tweet-parsing/double-media", double_media);
   GLib.Test.add_func ("/tweet-parsing/special-quote", special_quote);
+  GLib.Test.add_func ("/tweet-parsing/reply-screen-names", reply_screen_names);
 
   return GLib.Test.run ();
 }
