@@ -156,6 +156,7 @@
   border-radius: 0px;
   border-bottom: 1px solid transparent;
   min-height: 0px;
+  margin-bottom: -1px;
 }
 
 .text-only-button:hover {
