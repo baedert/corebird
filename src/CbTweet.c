@@ -445,6 +445,43 @@ cb_tweet_set_seen (CbTweet *tweet, gboolean value)
   tweet->seen = value;
 }
 
+char **
+cb_tweet_get_reply_screen_names (CbTweet *tweet,
+                                 guint   *n_replies)
+{
+  guint n = 0;
+  guint i;
+  char **mentions;
+
+  g_return_val_if_fail (CB_IS_TWEET (tweet), NULL);
+
+  /* TODO: Care about retweets */
+  for (i = 0; i < tweet->source_tweet.n_entities; i ++)
+    {
+      CbTextEntity *e = &tweet->source_tweet.entities[i];
+
+      if (e->to < tweet->source_tweet.display_range_start)
+        n ++;
+    }
+
+  mentions = g_malloc (sizeof (char *) * n);
+  *n_replies = n;
+
+  n = 0;
+  for (i = 0; i < tweet->source_tweet.n_entities; i ++)
+    {
+      CbTextEntity *e = &tweet->source_tweet.entities[i];
+
+      if (e->to < tweet->source_tweet.display_range_start)
+        {
+          mentions[n] = e->display_text + 1; /* Strip off the @ */
+          n ++;
+        }
+    }
+
+  return mentions;
+}
+
 CbTweet *
 cb_tweet_new (void)
 {
