@@ -141,7 +141,8 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
     if (tweet.reply_id != 0) {
       var buff = new StringBuilder ();
       /* Use the user we directly reply to in any case */
-      buff.append (_("Replying to @"));
+      buff.append (_("Replying to"));
+      buff.append (" @");
       buff.append (tweet.reply_screen_name);
 
       /* And just a number for the rest */
