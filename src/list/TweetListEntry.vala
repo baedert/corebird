@@ -143,29 +143,43 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
       /* Use the user we directly reply to in any case */
       /* TRANSLATORS: This is the start of a "Replying to" line in a tweet */
       buff.append (_("Replying to"));
-      buff.append (" @");
-      buff.append (tweet.reply_screen_name);
+      buff.append_c (' ');
+      buff.append ("<span underline='none'><a href=\"@")
+          .append (tweet.reply_user_id.to_string ())
+          .append ("/@")
+          .append (tweet.reply_screen_name)
+          .append ("\">@")
+          .append (tweet.reply_screen_name)
+          .append ("</a></span>");
 
       /* And just a number for the rest */
       int n_mentions = 0;
-      string? second_mention = null;
+      Cb.TextEntity? second_mention = null;
       foreach (var e in tweet.source_tweet.entities) {
         if (e.to < tweet.source_tweet.display_range_start &&
             e.display_text != "@" + tweet.reply_screen_name) {
           n_mentions ++;
 
           if (second_mention == null) {
-            second_mention = e.display_text;
+            second_mention = e;
           }
         }
       }
       if (n_mentions > 0) {
         if (n_mentions == 1 && second_mention != null) {
           /* From display_text, includes '@' */
+          buff.append_c (' ');
           /* TRANSLATORS: This gets appended to the "replying to" line
              in a tweet. Example: "Replying to Foo and Bar" where
              "and Bar" comes from this string. */
-          buff.append (_(" and %s").printf (second_mention));
+          buff.append (_("and"))
+              .append (" <span underline='none'><a href=\"")
+              .append (second_mention.target)
+              .append ("\" title=\"")
+              .append (second_mention.tooltip_text)
+              .append ("\">")
+              .append (second_mention.display_text)
+              .append ("</a></span>");
         } else {
           /* 2 or more */
           /* TRANSLATORS: This gets appended to the "replying to" line
