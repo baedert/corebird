@@ -141,6 +141,7 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
     if (tweet.reply_id != 0) {
       var buff = new StringBuilder ();
       /* Use the user we directly reply to in any case */
+      /* TRANSLATORS: This is the start of a "Replying to" line in a tweet */
       buff.append (_("Replying to"));
       buff.append (" @");
       buff.append (tweet.reply_screen_name);
@@ -161,9 +162,14 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
       if (n_mentions > 0) {
         if (n_mentions == 1 && second_mention != null) {
           /* From display_text, includes '@' */
+          /* TRANSLATORS: This gets appended to the "replying to" line
+             in a tweet. Example: "Replying to Foo and Bar" where
+             "and Bar" comes from this string. */
           buff.append (_(" and %s").printf (second_mention));
         } else {
           /* 2 or more */
+          /* TRANSLATORS: This gets appended to the "replying to" line
+             in a tweet */
           buff.append (_(" and %d others").printf (n_mentions));
         }
       }
