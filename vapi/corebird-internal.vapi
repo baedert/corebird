@@ -115,6 +115,8 @@ namespace Cb {
       public string get_real_text ();
       public string get_filter_text ();
 
+      public (unowned string)[] get_reply_screen_names ();
+
       public unowned Cb.Media[] get_medias();
       public string[] get_mentions();
 
