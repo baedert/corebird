@@ -135,7 +135,7 @@
             </child>
 
             <child>
-              <object class="GtkBox">
+              <object class="GtkBox" id="reply_box">
                 <property name="visible">1</property>
                 <property name="margin-start">8</property>
                 <property name="margin-end">6</property>

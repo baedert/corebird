@@ -81,6 +81,8 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
   private Gtk.Label error_label;
   [GtkChild]
   private Gtk.Label reply_label;
+  [GtkChild]
+  private Gtk.Box reply_box;
 
   public TweetInfoPage (int id, Account account) {
     this.id = id;
@@ -456,7 +458,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     set_source_link (tweet.id, tweet.get_screen_name ());
 
     if (tweet.reply_id != 0) {
-      reply_label.show ();
+      reply_box.show ();
       var buff = new StringBuilder ();
       buff.append (_("Replying to"));
       var screen_names = tweet.get_reply_screen_names ();
@@ -476,7 +478,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
 
       reply_label.label = buff.str;
     } else {
-      reply_label.hide ();
+      reply_box.hide ();
     }
 
     if (tweet.has_inline_media ()) {
