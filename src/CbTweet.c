@@ -445,13 +445,13 @@ cb_tweet_set_seen (CbTweet *tweet, gboolean value)
   tweet->seen = value;
 }
 
-char **
+CbTextEntity **
 cb_tweet_get_reply_screen_names (CbTweet *tweet,
                                  guint   *n_replies)
 {
   guint n = 0;
   guint i;
-  char **mentions;
+  CbTextEntity **mentions;
 
   g_return_val_if_fail (CB_IS_TWEET (tweet), NULL);
   g_return_val_if_fail (n_replies != NULL, NULL);
@@ -465,7 +465,7 @@ cb_tweet_get_reply_screen_names (CbTweet *tweet,
         n ++;
     }
 
-  mentions = g_malloc (sizeof (char *) * n);
+  mentions = g_malloc (sizeof (CbTextEntity *) * n);
   *n_replies = n;
 
   n = 0;
@@ -475,7 +475,7 @@ cb_tweet_get_reply_screen_names (CbTweet *tweet,
 
       if (e->to < tweet->source_tweet.display_range_start)
         {
-          mentions[n] = e->display_text + 1; /* Strip off the @ */
+          mentions[n] = e;
           n ++;
         }
     }
