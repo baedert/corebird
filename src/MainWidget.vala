@@ -77,10 +77,6 @@ public class MainWidget : Gtk.Box {
           }
         });
       }
-
-
-      if (!(page is DefaultTimeline))
-        continue;
     }
 
     Settings.get ().bind ("sidebar-visible", sidebar_revealer, "reveal-child",
