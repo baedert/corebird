@@ -17,6 +17,7 @@
 
 #include "CbTweet.h"
 #include "CbTextTransform.h"
+#include <string.h>
 
 
 /* TODO: We might want to put this into a utils.c later */
@@ -455,13 +456,15 @@ cb_tweet_get_reply_screen_names (CbTweet *tweet,
 
   g_return_val_if_fail (CB_IS_TWEET (tweet), NULL);
   g_return_val_if_fail (n_replies != NULL, NULL);
+  g_return_val_if_fail (tweet->reply_id != 0, NULL);
 
   /* TODO: Care about retweets */
   for (i = 0; i < tweet->source_tweet.n_entities; i ++)
     {
       CbTextEntity *e = &tweet->source_tweet.entities[i];
 
-      if (e->to < tweet->source_tweet.display_range_start)
+      if (e->to < tweet->source_tweet.display_range_start &&
+          strcmp (e->display_text + 1, tweet->reply_screen_name) != 0)
         n ++;
     }
 
@@ -473,7 +476,8 @@ cb_tweet_get_reply_screen_names (CbTweet *tweet,
     {
       CbTextEntity *e = &tweet->source_tweet.entities[i];
 
-      if (e->to < tweet->source_tweet.display_range_start)
+      if (e->to < tweet->source_tweet.display_range_start &&
+          strcmp (e->display_text + 1, tweet->reply_screen_name) != 0)
         {
           mentions[n] = e;
           n ++;

@@ -466,7 +466,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
       buff.append (" @");
       buff.append (tweet.reply_screen_name);
 
-      if (screen_names.length > 1) {
+      if (screen_names.length > 0) {
         for (int i = 0; i < screen_names.length - 1; i ++) {
           if (screen_names[i]->display_text !=
               "@" + tweet.reply_screen_name) {
