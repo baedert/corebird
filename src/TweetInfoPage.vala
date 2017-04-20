@@ -461,9 +461,19 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
       buff.append (_("Replying to"));
       var screen_names = tweet.get_reply_screen_names ();
 
-      foreach (unowned string screen_name in screen_names) {
-        buff.append_c (' ').append (screen_name);
+      buff.append_c (' ');
+      buff.append (screen_names[0]->display_text);
+
+      if (screen_names.length > 1) {
+        for (int i = 1; i < screen_names.length - 1; i ++) {
+          buff.append (", ")
+              .append (screen_names[i]->display_text);
+        }
+
+        buff.append (" and ")
+            .append (screen_names[screen_names.length - 1]->display_text);
       }
+
       reply_label.label = buff.str;
     } else {
       reply_label.hide ();
