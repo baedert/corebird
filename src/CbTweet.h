@@ -118,7 +118,8 @@ char       *cb_tweet_get_filter_text (CbTweet *tweet);
 gboolean    cb_tweet_get_seen (CbTweet *tweet);
 void        cb_tweet_set_seen (CbTweet *tweet, gboolean value);
 
-char      **cb_tweet_get_reply_screen_names (CbTweet *tweet, guint *n_mentions);
+CbTextEntity **cb_tweet_get_reply_screen_names (CbTweet *tweet,
+                                                guint   *n_replies);
 
 #endif
 
