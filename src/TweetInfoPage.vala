@@ -463,13 +463,16 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
       buff.append (_("Replying to"));
       var screen_names = tweet.get_reply_screen_names ();
 
-      buff.append_c (' ');
-      buff.append (screen_names[0]->display_text);
+      buff.append (" @");
+      buff.append (tweet.reply_screen_name);
 
       if (screen_names.length > 1) {
-        for (int i = 1; i < screen_names.length - 1; i ++) {
-          buff.append (", ")
-              .append (screen_names[i]->display_text);
+        for (int i = 0; i < screen_names.length - 1; i ++) {
+          if (screen_names[i]->display_text !=
+              "@" + tweet.reply_screen_name) {
+            buff.append (", ")
+                .append (screen_names[i]->display_text);
+          }
         }
 
         buff.append (" and ")
