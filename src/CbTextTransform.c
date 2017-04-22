@@ -117,7 +117,7 @@ cb_text_transform_text (const char   *text,
       guint entity_to;
       gsize btw_length = cur_end - entities[i].to;
 
-      if (entities[i].to < display_range_start)
+      if (entities[i].to <= display_range_start)
         continue;
 
       entity_to = entities[i].to - display_range_start;
@@ -156,7 +156,7 @@ cb_text_transform_text (const char   *text,
       char *before;
       guint entity_to;
 
-      if (entity->to < display_range_start)
+      if (entity->to <= display_range_start)
         continue;
 
       entity_to = entity->to - display_range_start;
