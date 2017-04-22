@@ -1371,7 +1371,7 @@ void reply_screen_names () {
 
   var reply_screen_names = t.get_reply_screen_names ();
 
-  assert (reply_screen_names.length == 9);
+  assert (reply_screen_names.length == 8);
 }
 
 int main (string[] args) {
