@@ -7,6 +7,7 @@ src/FavoritesTimeline.c
 src/FilterPage.c
 src/HomeTimeline.c
 src/list/DMThreadEntry.c
+src/list/FavImageRow.c
 src/ListsPage.c
 src/ListStatusesPage.c
 src/list/TweetListEntry.c
@@ -24,8 +25,8 @@ src/widgets/FollowButton.c
 src/widgets/MediaButton.c
 src/widgets/PixbufButton.c
 src/widgets/TweetListBox.c
+src/window/AccountDialog.c
 src/window/ComposeTweetWindow.c
-src/window/ImageCropDialog.c
 src/window/ModifyFilterDialog.c
 src/window/ModifySnippetDialog.c
 src/window/SettingsDialog.c
