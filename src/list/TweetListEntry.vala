@@ -182,9 +182,10 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
               .append ("</a></span>");
         } else {
           /* 2 or more */
+          buff.append_c (' ');
           /* TRANSLATORS: This gets appended to the "replying to" line
              in a tweet */
-          buff.append (_(" and %d others").printf (n_mentions));
+          buff.append (_("and %d others").printf (n_mentions));
         }
       }
       reply_label.label = buff.str;
