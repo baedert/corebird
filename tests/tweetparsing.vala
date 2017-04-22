@@ -1248,6 +1248,198 @@ const string REPLY_TWEET_DATA = """
 }
 
 """;
+
+const string TD7 = """
+{
+  "created_at" : "Mon Feb 13 07:59:35 +0000 2017",
+  "id" : 831050171744149504,
+  "id_str" : "831050171744149504",
+  "full_text" : "@GOP https://t.co/e2fTVgNC3D",
+  "truncated" : false,
+  "display_text_range" : [
+    4,
+    4
+  ],
+  "entities" : {
+    "hashtags" : [
+    ],
+    "symbols" : [
+    ],
+    "user_mentions" : [
+      {
+        "screen_name" : "GOP",
+        "name" : "GOP",
+        "id" : 11134252,
+        "id_str" : "11134252",
+        "indices" : [
+          0,
+          4
+        ]
+      }
+    ],
+    "urls" : [
+    ],
+    "media" : [
+      {
+        "id" : 831050167918923776,
+        "id_str" : "831050167918923776",
+        "indices" : [
+          5,
+          28
+        ],
+        "media_url" : "http://pbs.twimg.com/media/C4h7uYFWEAA1Af6.jpg",
+        "media_url_https" : "https://pbs.twimg.com/media/C4h7uYFWEAA1Af6.jpg",
+        "url" : "https://t.co/e2fTVgNC3D",
+        "display_url" : "pic.twitter.com/e2fTVgNC3D",
+        "expanded_url" : "https://twitter.com/CBoyForeman/status/831050171744149504/photo/1",
+        "type" : "photo",
+        "sizes" : {
+          "large" : {
+            "w" : 576,
+            "h" : 357,
+            "resize" : "fit"
+          },
+          "small" : {
+            "w" : 576,
+            "h" : 357,
+            "resize" : "fit"
+          },
+          "thumb" : {
+            "w" : 150,
+            "h" : 150,
+            "resize" : "crop"
+          },
+          "medium" : {
+            "w" : 576,
+            "h" : 357,
+            "resize" : "fit"
+          }
+        }
+      }
+    ]
+  },
+  "extended_entities" : {
+    "media" : [
+      {
+        "id" : 831050167918923776,
+        "id_str" : "831050167918923776",
+        "indices" : [
+          5,
+          28
+        ],
+        "media_url" : "http://pbs.twimg.com/media/C4h7uYFWEAA1Af6.jpg",
+        "media_url_https" : "https://pbs.twimg.com/media/C4h7uYFWEAA1Af6.jpg",
+        "url" : "https://t.co/e2fTVgNC3D",
+        "display_url" : "pic.twitter.com/e2fTVgNC3D",
+        "expanded_url" : "https://twitter.com/CBoyForeman/status/831050171744149504/photo/1",
+        "type" : "photo",
+        "sizes" : {
+          "large" : {
+            "w" : 576,
+            "h" : 357,
+            "resize" : "fit"
+          },
+          "small" : {
+            "w" : 576,
+            "h" : 357,
+            "resize" : "fit"
+          },
+          "thumb" : {
+            "w" : 150,
+            "h" : 150,
+            "resize" : "crop"
+          },
+          "medium" : {
+            "w" : 576,
+            "h" : 357,
+            "resize" : "fit"
+          }
+        }
+      }
+    ]
+  },
+  "source" : "<a href=\"http://twitter.com/download/android\" rel=\"nofollow\">Twitter for Android</a>",
+  "in_reply_to_status_id" : 830800137291194368,
+  "in_reply_to_status_id_str" : "830800137291194368",
+  "in_reply_to_user_id" : 11134252,
+  "in_reply_to_user_id_str" : "11134252",
+  "in_reply_to_screen_name" : "GOP",
+  "user" : {
+    "id" : 77301204,
+    "id_str" : "77301204",
+    "name" : "Chrissy Boy",
+    "screen_name" : "CBoyForeman",
+    "location" : "Brighton",
+    "description" : "Musician, allegedly.",
+    "url" : "https://t.co/wkTvkNumcF",
+    "entities" : {
+      "url" : {
+        "urls" : [
+          {
+            "url" : "https://t.co/wkTvkNumcF",
+            "expanded_url" : "http://www.madness.co.uk/chris-cupboard/",
+            "display_url" : "madness.co.uk/chris-cupboard/",
+            "indices" : [
+              0,
+              23
+            ]
+          }
+        ]
+      },
+      "description" : {
+        "urls" : [
+        ]
+      }
+    },
+    "protected" : false,
+    "followers_count" : 8605,
+    "friends_count" : 42,
+    "listed_count" : 54,
+    "created_at" : "Fri Sep 25 20:19:11 +0000 2009",
+    "favourites_count" : 71,
+    "utc_offset" : 3600,
+    "time_zone" : "London",
+    "geo_enabled" : true,
+    "verified" : false,
+    "statuses_count" : 1079,
+    "lang" : "en",
+    "contributors_enabled" : false,
+    "is_translator" : false,
+    "is_translation_enabled" : false,
+    "profile_background_color" : "95B6C7",
+    "profile_background_image_url" : "http://abs.twimg.com/images/themes/theme1/bg.png",
+    "profile_background_image_url_https" : "https://abs.twimg.com/images/themes/theme1/bg.png",
+    "profile_background_tile" : true,
+    "profile_image_url" : "http://pbs.twimg.com/profile_images/542792449907638272/AsxM39Oz_normal.jpeg",
+    "profile_image_url_https" : "https://pbs.twimg.com/profile_images/542792449907638272/AsxM39Oz_normal.jpeg",
+    "profile_banner_url" : "https://pbs.twimg.com/profile_banners/77301204/1387963265",
+    "profile_link_color" : "89C9FA",
+    "profile_sidebar_border_color" : "EEEEEE",
+    "profile_sidebar_fill_color" : "EFEFEF",
+    "profile_text_color" : "333333",
+    "profile_use_background_image" : true,
+    "has_extended_profile" : true,
+    "default_profile" : false,
+    "default_profile_image" : false,
+    "following" : false,
+    "follow_request_sent" : false,
+    "notifications" : false,
+    "translator_type" : "none"
+  },
+  "geo" : null,
+  "coordinates" : null,
+  "place" : null,
+  "contributors" : null,
+  "is_quote_status" : false,
+  "retweet_count" : 0,
+  "favorite_count" : 2,
+  "favorited" : false,
+  "retweeted" : false,
+  "possibly_sensitive" : false,
+  "lang" : "und"
+}
+""";
+
 // """
 // }}}
 
@@ -1374,6 +1566,26 @@ void reply_screen_names () {
   assert (reply_screen_names.length == 8);
 }
 
+void empty_display_range () {
+  var now = new GLib.DateTime.now_local ();
+  var t = new Cb.Tweet ();
+
+  var parser = new Json.Parser ();
+  try {
+    parser.load_from_data (TD7);
+  } catch (GLib.Error e) {
+    critical (e.message);
+  }
+  var root = parser.get_root ();
+
+  t.load_from_json (root, 0, now);
+
+  // This should NOT break.
+  var s = t.get_filter_text ();
+
+  assert (s.length > 0);
+}
+
 int main (string[] args) {
   GLib.Test.init (ref args);
   Settings.init ();
@@ -1388,6 +1600,7 @@ int main (string[] args) {
   GLib.Test.add_func ("/tweet-parsing/double-media", double_media);
   GLib.Test.add_func ("/tweet-parsing/special-quote", special_quote);
   GLib.Test.add_func ("/tweet-parsing/reply-screen-names", reply_screen_names);
+  GLib.Test.add_func ("/tweet-parsing/empty-display-range", empty_display_range);
 
   return GLib.Test.run ();
 }
