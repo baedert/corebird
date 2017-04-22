@@ -55,9 +55,9 @@ class DMListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
 
   public DMListEntry () {
     name_button.clicked.connect (() => {
-      var bundle = new Bundle ();
-      bundle.put_int64 ("user_id", user_id);
-      bundle.put_string ("screen_name", screen_name_label.label.substring (1));
+      var bundle = new Cb.Bundle ();
+      bundle.put_int64 (ProfilePage.KEY_USER_ID, user_id);
+      bundle.put_string (ProfilePage.KEY_SCREEN_NAME, screen_name_label.label.substring (1));
       main_window.main_widget.switch_page (Page.PROFILE, bundle);
     });
   }

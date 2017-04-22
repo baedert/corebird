@@ -105,7 +105,6 @@ corebird_lib_sources = files([
   'src/sql/SelectStatement.vala',
   'src/sql/UpdateStatement.vala',
   'src/util/Benchmark.vala',
-  'src/util/Bundle.vala',
   'src/util/BundleHistory.vala',
   'src/util/Dirs.vala',
   'src/util/TweetUtils.vala',
@@ -161,6 +160,7 @@ corebird_lib_sources = files([
   'src/CbTwitterItem.c',
   'src/CbDeltaUpdater.c',
   'src/CbUtils.c',
+  'src/CbBundle.c',
   'vapi/corebird-internal.vapi'
 ])
 

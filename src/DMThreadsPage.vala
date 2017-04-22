@@ -73,8 +73,8 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
             GLib.Application.get_default ().withdraw_notification (notification_id);
         }
 
-        var bundle = new Bundle ();
-        bundle.put_int64 ("sender_id", entry.user_id);
+        var bundle = new Cb.Bundle ();
+        bundle.put_int64 (DMPage.KEY_SENDER_ID, entry.user_id);
         main_window.main_widget.switch_page (Page.DM, bundle);
       } else
         warning ("activated row is not a DMThreadEntry");
@@ -84,11 +84,11 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       if (manager.has_thread (user_id)) {
         this.unread_count -= manager.reset_unread_count (user_id);
       }
-      var bundle = new Bundle ();
-      bundle.put_int64 ("sender_id", user_id);
-      bundle.put_string ("screen_name", screen_name);
-      bundle.put_string ("name", name);
-      bundle.put_string ("avatar_url", avatar_url);
+      var bundle = new Cb.Bundle ();
+      bundle.put_int64 (DMPage.KEY_SENDER_ID, user_id);
+      bundle.put_string (DMPage.KEY_SCREEN_NAME, screen_name);
+      bundle.put_string (DMPage.KEY_USER_NAME, name);
+      bundle.put_string (DMPage.KEY_AVATAR_URL, avatar_url);
       main_window.main_widget.switch_page (Page.DM, bundle);
     });
 
@@ -150,7 +150,7 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
     }
   }
 
-  public void on_join (int page_id, Bundle? args) {
+  public void on_join (int page_id, Cb.Bundle? args) {
     if (!GLib.NetworkMonitor.get_default ().get_network_available ())
       return;
 

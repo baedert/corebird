@@ -86,7 +86,6 @@ libcorebird_la_VALASOURCES = \
 	util/BundleHistory.vala \
 	util/UserCompletion.vala \
 	util/Dirs.vala \
-	util/Bundle.vala \
 	util/UserUtils.vala \
 	list/TweetListEntry.vala \
 	list/DMListEntry.vala \
@@ -151,7 +150,9 @@ libcorebird_la_SOURCES = \
 	CbDeltaUpdater.h \
 	CbDeltaUpdater.c \
 	CbUtils.h \
-	CbUtils.c
+	CbUtils.c \
+	CbBundle.h \
+	CbBundle.c
 
 libcorebird_la_vala.stamp: $(libcorebird_la_VALASOURCES) Makefile
 	@$(VALAC) \

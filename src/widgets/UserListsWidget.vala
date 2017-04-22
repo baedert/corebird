@@ -66,16 +66,17 @@ class UserListsWidget : Gtk.Box {
       ((NewListEntry)row).reveal ();
     } else {
       var entry = (ListListEntry) row;
-      var bundle = new Bundle ();
-      bundle.put_int64 ("list_id", entry.id);
-      bundle.put_string ("name", entry.name);
-      bundle.put_bool ("user_list", entry.user_list);
-      bundle.put_string ("description", entry.description);
-      bundle.put_string ("creator", entry.creator_screen_name);
-      bundle.put_int ("n_subscribers", entry.n_subscribers);
-      bundle.put_int ("n_members", entry.n_members);
-      bundle.put_int64 ("created_at", entry.created_at);
-      bundle.put_string ("mode", entry.mode);
+      var bundle = new Cb.Bundle ();
+      bundle.put_int64 (ListStatusesPage.KEY_LIST_ID, entry.id);
+      bundle.put_string (ListStatusesPage.KEY_NAME, entry.name);
+      bundle.put_bool (ListStatusesPage.KEY_USER_LIST, entry.user_list);
+      bundle.put_string (ListStatusesPage.KEY_DESCRIPTION, entry.description);
+      bundle.put_string (ListStatusesPage.KEY_CREATOR, entry.creator_screen_name);
+      bundle.put_int (ListStatusesPage.KEY_N_SUBSCRIBERS, entry.n_subscribers);
+      bundle.put_int (ListStatusesPage.KEY_N_MEMBERS, entry.n_members);
+      bundle.put_int64 (ListStatusesPage.KEY_CREATED_AT, entry.created_at);
+      bundle.put_string (ListStatusesPage.KEY_MODE, entry.mode);
+
       main_window.main_widget.switch_page (Page.LIST_STATUSES, bundle);
     }
   }
@@ -304,16 +305,16 @@ class UserListsWidget : Gtk.Box {
       var entry = new ListListEntry.from_json_data (root, account);
       add_list (entry);
 
-      var bundle = new Bundle ();
-      bundle.put_int64 ("list_id", entry.id);
-      bundle.put_string ("name", entry.name);
-      bundle.put_bool ("user_list", true);
-      bundle.put_string ("description", entry.description);
-      bundle.put_string ("creator", entry.creator_screen_name);
-      bundle.put_int ("n_subscribers", entry.n_subscribers);
-      bundle.put_int ("n_members", entry.n_members);
-      bundle.put_int64 ("created_at", entry.created_at);
-      bundle.put_string ("mode", entry.mode);
+      var bundle = new Cb.Bundle ();
+      bundle.put_int64 (ListStatusesPage.KEY_LIST_ID, entry.id);
+      bundle.put_string (ListStatusesPage.KEY_NAME, entry.name);
+      bundle.put_bool (ListStatusesPage.KEY_USER_LIST, true);
+      bundle.put_string (ListStatusesPage.KEY_DESCRIPTION, entry.description);
+      bundle.put_string (ListStatusesPage.KEY_CREATOR, entry.creator_screen_name);
+      bundle.put_int (ListStatusesPage.KEY_N_SUBSCRIBERS, entry.n_subscribers);
+      bundle.put_int (ListStatusesPage.KEY_N_MEMBERS, entry.n_members);
+      bundle.put_int64 (ListStatusesPage.KEY_CREATED_AT, entry.created_at);
+      bundle.put_string (ListStatusesPage.KEY_MODE, entry.mode);
 
       main_window.main_widget.switch_page (Page.LIST_STATUSES, bundle);
       new_list_entry.sensitive = true;

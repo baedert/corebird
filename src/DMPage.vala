@@ -17,6 +17,11 @@
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/dm-page.ui")]
 class DMPage : IPage, IMessageReceiver, Gtk.Box {
+  public const int KEY_SENDER_ID   = 0;
+  public const int KEY_SCREEN_NAME = 1;
+  public const int KEY_USER_NAME   = 2;
+  public const int KEY_AVATAR_URL  = 3;
+
   public int unread_count                   { get { return 0; } }
   private unowned MainWindow main_window;
   public unowned MainWindow window {
@@ -197,8 +202,8 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
 
   }
 
-  public void on_join (int page_id, Bundle? args) {
-    int64 user_id = args.get_int64 ("sender_id");
+  public void on_join (int page_id, Cb.Bundle? args) {
+    int64 user_id = args.get_int64 (KEY_SENDER_ID);
     if (user_id == 0)
       return;
 
@@ -206,12 +211,12 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
     this.user_id = user_id;
     string screen_name;
     string name = null;
-    if ((screen_name = args.get_string ("screen_name")) != null) {
-      name = args.get_string ("name");
+    if ((screen_name = args.get_string (KEY_SCREEN_NAME)) != null) {
+      name = args.get_string (KEY_USER_NAME);
       placeholder_box.user_id = user_id;
       placeholder_box.screen_name = screen_name;
       placeholder_box.name = name;
-      placeholder_box.avatar_url = args.get_string ("avatar_url");
+      placeholder_box.avatar_url = args.get_string (KEY_AVATAR_URL);
       placeholder_box.load_avatar ();
     }
 

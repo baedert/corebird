@@ -17,6 +17,7 @@
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/search-page.ui")]
 class SearchPage : IPage, Gtk.Box {
+  public const int KEY_QUERY = 0;
   private const int USER_COUNT = 3;
   /** The unread count here is always zero */
   public int unread_count {
@@ -94,8 +95,8 @@ class SearchPage : IPage, Gtk.Box {
   /**
    * see IPage#onJoin
    */
-  public void on_join (int page_id, Bundle? args) {
-    string? term = args != null ? args.get_string ("query") : null;
+  public void on_join (int page_id, Cb.Bundle? args) {
+    string? term = args != null ? args.get_string (KEY_QUERY) : null;
 
     if (this.remove_content_timeout != 0) {
       GLib.Source.remove (this.remove_content_timeout);
@@ -173,14 +174,14 @@ class SearchPage : IPage, Gtk.Box {
 
   private void row_activated_cb (Gtk.ListBoxRow row) {
     this.last_focus_widget = row;
-    var bundle = new Bundle ();
+    var bundle = new Cb.Bundle ();
     if (row is UserListEntry) {
-      bundle.put_int64 ("user_id", ((UserListEntry)row).user_id);
-      bundle.put_string ("screen_name", ((UserListEntry)row).screen_name);
+      bundle.put_int64 (ProfilePage.KEY_USER_ID, ((UserListEntry)row).user_id);
+      bundle.put_string (ProfilePage.KEY_SCREEN_NAME, ((UserListEntry)row).screen_name);
       main_window.main_widget.switch_page (Page.PROFILE, bundle);
     } else if (row is TweetListEntry) {
-      bundle.put_int ("mode", TweetInfoPage.BY_INSTANCE);
-      bundle.put_object ("tweet", ((TweetListEntry)row).tweet);
+      bundle.put_int (TweetInfoPage.KEY_MODE, TweetInfoPage.BY_INSTANCE);
+      bundle.put_object (TweetInfoPage.KEY_TWEET, ((TweetListEntry)row).tweet);
       main_window.main_widget.switch_page (Page.TWEET_INFO, bundle);
     }
   }

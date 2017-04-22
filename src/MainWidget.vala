@@ -91,7 +91,7 @@ public class MainWidget : Gtk.Box {
    *                See the Page.* constants.
    *
    */
-  public void switch_page (int page_id, Bundle? args = null) {
+  public void switch_page (int page_id, Cb.Bundle? args = null) {
     if (page_id == history.current) {
       if (pages[page_id].handles_double_open ())
         pages[page_id].double_open ();

@@ -263,4 +263,27 @@ namespace Cb {
     public void bind_model (Gtk.Widget listbox, GLib.ListModel model, Gtk.ListBoxCreateWidgetFunc func);
     public GLib.DateTime parse_date (string _in);
   }
+
+  [CCode (cprefix = "CbBundle_", lower_case_cprefix = "cb_bundle_", cheader_filename =
+          "CbBundle.h")]
+  public class Bundle : GLib.Object {
+    public Bundle ();
+
+    public void put_string (int key, string val);
+    public unowned string get_string (int key);
+
+    public void put_int (int key, int val);
+    public int get_int (int key);
+
+    public void put_int64 (int key, int64 val);
+    public int64 get_int64 (int key);
+
+    public void put_bool (int key, bool val);
+    public bool get_bool (int key);
+
+    public void put_object (int key, GLib.Object val);
+    public unowned GLib.Object get_object (int key);
+
+    public bool equals (Bundle? other);
+  }
 }
