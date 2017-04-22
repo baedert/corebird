@@ -481,7 +481,9 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
           }
         }
 
-        buff.append (" and ")
+        buff.append_c (' ')
+            .append (_("and"))
+            .append_c (' ')
             .append (screen_names[screen_names.length - 1]->display_text);
       }
 
