@@ -17,6 +17,12 @@
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/tweet-info-page.ui")]
 class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
+  public const int KEY_MODE        = 0;
+  public const int KEY_TWEET       = 1;
+  public const int KEY_EXISTING    = 2;
+  public const int KEY_TWEET_ID    = 3;
+  public const int KEY_SCREEN_NAME = 4;
+
   public const int BY_INSTANCE = 1;
   public const int BY_ID       = 2;
 
@@ -101,17 +107,17 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
       return false;
     });
     bottom_list_box.row_activated.connect ((row) => {
-      var bundle = new Bundle ();
-      bundle.put_int ("mode", TweetInfoPage.BY_INSTANCE);
-      bundle.put_object ("tweet", ((TweetListEntry)row).tweet);
-      bundle.put_bool ("existing", true);
+      var bundle = new Cb.Bundle ();
+      bundle.put_int (KEY_MODE, TweetInfoPage.BY_INSTANCE);
+      bundle.put_object (KEY_TWEET, ((TweetListEntry)row).tweet);
+      bundle.put_bool (KEY_EXISTING, true);
       _main_window.main_widget.switch_page (Page.TWEET_INFO, bundle);
     });
     top_list_box.row_activated.connect ((row) => {
-      var bundle = new Bundle ();
-      bundle.put_int ("mode", TweetInfoPage.BY_INSTANCE);
-      bundle.put_object ("tweet", ((TweetListEntry)row).tweet);
-      bundle.put_bool ("existing", true);
+      var bundle = new Cb.Bundle ();
+      bundle.put_int (KEY_MODE, TweetInfoPage.BY_INSTANCE);
+      bundle.put_object (KEY_TWEET, ((TweetListEntry)row).tweet);
+      bundle.put_bool (KEY_EXISTING, true);
       _main_window.main_widget.switch_page (Page.TWEET_INFO, bundle);
     });
 
@@ -130,15 +136,15 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
       this.mm_widget.show ();
   }
 
-  public void on_join (int page_id, Bundle? args) {
-    int mode = args.get_int ("mode");
+  public void on_join (int page_id, Cb.Bundle? args) {
+    int mode = args.get_int (KEY_MODE);
 
     if (mode == 0)
       return;
 
     values_set = false;
 
-    bool existing = args.get_bool ("existing", false);
+    bool existing = args.get_bool (KEY_EXISTING);
 
     reply_indicator.replies_available = false;
     max_size_container.max_size = 0;
@@ -147,7 +153,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
 
     if (existing) {
       // Only possible BY_INSTANCE
-      var tweet = (Cb.Tweet) args.get_object ("tweet");
+      var tweet = (Cb.Tweet) args.get_object (KEY_TWEET);
       rearrange_tweets (tweet.id);
     } else {
       bottom_list_box.model.clear ();
@@ -157,7 +163,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     }
 
     if (mode == BY_INSTANCE) {
-      Cb.Tweet tweet = (Cb.Tweet)args.get_object ("tweet");
+      Cb.Tweet tweet = (Cb.Tweet)args.get_object (KEY_TWEET);
 
       if (tweet.retweeted_tweet != null)
         this.tweet_id = tweet.retweeted_tweet.id;
@@ -169,8 +175,8 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
       set_tweet_data (tweet);
     } else if (mode == BY_ID) {
       this.tweet = null;
-      this.tweet_id = args.get_int64 ("tweet_id");
-      this.screen_name = args.get_string ("screen_name");
+      this.tweet_id = args.get_int64 (KEY_TWEET_ID);
+      this.screen_name = args.get_string (KEY_SCREEN_NAME);
     }
 
 
@@ -268,9 +274,9 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
       screen_name = this.tweet.source_tweet.author.screen_name;
     }
 
-    var bundle = new Bundle ();
-    bundle.put_int64 ("user_id", id);
-    bundle.put_string ("screen_name", screen_name);
+    var bundle = new Cb.Bundle ();
+    bundle.put_int64 (ProfilePage.KEY_USER_ID, id);
+    bundle.put_string (ProfilePage.KEY_SCREEN_NAME, screen_name);
     _main_window.main_widget.switch_page (Page.PROFILE, bundle);
   }
 

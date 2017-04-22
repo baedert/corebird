@@ -495,8 +495,8 @@ public class Corebird : Gtk.Application {
     int64 sender_id  = value.get_child_value (1).get_int64 ();
     MainWindow main_window;
     if (is_window_open_for_user_id (account_id, out main_window)) {
-      var bundle = new Bundle ();
-      bundle.put_int64 ("sender_id", sender_id);
+      var bundle = new Cb.Bundle ();
+      bundle.put_int64 (DMPage.KEY_SENDER_ID, sender_id);
       main_window.main_widget.switch_page (Page.DM, bundle);
       main_window.present ();
     } else {
@@ -508,8 +508,8 @@ public class Corebird : Gtk.Application {
       }
       main_window = new MainWindow (this, account);
       this.add_window (main_window);
-      var bundle = new Bundle ();
-      bundle.put_int64 ("sender_id", sender_id);
+      var bundle = new Cb.Bundle ();
+      bundle.put_int64 (DMPage.KEY_SENDER_ID, sender_id);
       main_window.main_widget.switch_page (Page.DM, bundle);
 
       main_window.show ();

@@ -169,9 +169,9 @@ class UserListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
     var active_window = ((Gtk.Application)GLib.Application.get_default ()).active_window;
     if (active_window is MainWindow) {
       var mw = (MainWindow) active_window;
-      var bundle = new Bundle ();
-      bundle.put_int64 ("user_id", this.user_id);
-      bundle.put_string ("screen_name", this.screen_name);
+      var bundle = new Cb.Bundle ();
+      bundle.put_int64 (ProfilePage.KEY_USER_ID, this.user_id);
+      bundle.put_string (ProfilePage.KEY_SCREEN_NAME, this.screen_name);
       mw.main_widget.switch_page (Page.PROFILE, bundle);
     }
   }

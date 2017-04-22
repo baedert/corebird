@@ -22,6 +22,9 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     {"tweet-to", tweet_to_activated},
     {"add-remove-list", add_remove_list_activated},
   };
+  public const int KEY_SCREEN_NAME = 0;
+  public const int KEY_USER_ID     = 1;
+
 
   public int unread_count {
     get { return 0; }
@@ -113,21 +116,21 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
     });
 
     tweet_list.row_activated.connect ((row) => {
-      var bundle = new Bundle ();
-      bundle.put_int ("mode", TweetInfoPage.BY_INSTANCE);
-      bundle.put_object ("tweet", ((TweetListEntry)row).tweet);
+      var bundle = new Cb.Bundle ();
+      bundle.put_int (TweetInfoPage.KEY_MODE, TweetInfoPage.BY_INSTANCE);
+      bundle.put_object (TweetInfoPage.KEY_TWEET, ((TweetListEntry)row).tweet);
       _main_window.main_widget.switch_page (Page.TWEET_INFO, bundle);
     });
     followers_list.row_activated.connect ((row) => {
-      var bundle = new Bundle ();
-      bundle.put_int64 ("user_id", ((UserListEntry)row).user_id);
-      bundle.put_string ("screen_name", ((UserListEntry)row).screen_name);
+      var bundle = new Cb.Bundle ();
+      bundle.put_int64 (ProfilePage.KEY_USER_ID, ((UserListEntry)row).user_id);
+      bundle.put_string (ProfilePage.KEY_SCREEN_NAME, ((UserListEntry)row).screen_name);
       _main_window.main_widget.switch_page (Page.PROFILE, bundle);
     });
     following_list.row_activated.connect ((row) => {
-      var bundle = new Bundle ();
-      bundle.put_int64 ("user_id", ((UserListEntry)row).user_id);
-      bundle.put_string ("screen_name", ((UserListEntry)row).screen_name);
+      var bundle = new Cb.Bundle ();
+      bundle.put_int64 (ProfilePage.KEY_USER_ID, ((UserListEntry)row).user_id);
+      bundle.put_string (ProfilePage.KEY_SCREEN_NAME, ((UserListEntry)row).screen_name);
       _main_window.main_widget.switch_page (Page.PROFILE, bundle);
     });
 
@@ -578,12 +581,12 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
   /**
    * see IPage#onJoin
    */
-  public void on_join (int page_id, Bundle? args) {
-    int64 user_id = args.get_int64 ("user_id");
+  public void on_join (int page_id, Cb.Bundle? args) {
+    int64 user_id = args.get_int64 (KEY_USER_ID);
     if (user_id == -1)
       return;
 
-    string? screen_name = args.get_string ("screen_name");
+    string? screen_name = args.get_string (KEY_SCREEN_NAME);
     if (screen_name != null) {
       this.screen_name = screen_name;
     }
@@ -647,11 +650,11 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
   }
 
   private void write_dm_activated (GLib.SimpleAction a, GLib.Variant? v) {
-    var bundle = new Bundle ();
-    bundle.put_int64 ("sender_id", user_id);
-    bundle.put_string ("screen_name", screen_name);
-    bundle.put_string ("name", name);
-    bundle.put_string ("avatar_url", avatar_url.replace ("_bigger", "_normal"));
+    var bundle = new Cb.Bundle ();
+    bundle.put_int64 (DMPage.KEY_SENDER_ID, user_id);
+    bundle.put_string (DMPage.KEY_SCREEN_NAME, screen_name);
+    bundle.put_string (DMPage.KEY_USER_NAME, name);
+    bundle.put_string (DMPage.KEY_AVATAR_URL, avatar_url.replace ("_bigger", "_normal"));
     _main_window.main_widget.switch_page (Page.DM, bundle);
   }
 

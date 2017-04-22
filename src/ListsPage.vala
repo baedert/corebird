@@ -17,6 +17,9 @@
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/lists-page.ui")]
 class ListsPage : IPage, ScrollWidget, IMessageReceiver {
+  public const int KEY_MODE = 0;
+  public const int KEY_LIST_ID = 1;
+
   public const int MODE_DELETE = 1;
 
   private BadgeRadioButton radio_button;
@@ -43,21 +46,21 @@ class ListsPage : IPage, ScrollWidget, IMessageReceiver {
     this.user_lists_widget.account = account;
   }
 
-  public void on_join (int page_id, Bundle? args) {
+  public void on_join (int page_id, Cb.Bundle? args) {
     int mode = 0;
 
     if (!GLib.NetworkMonitor.get_default ().get_network_available ())
       return;
 
     if (args != null)
-      mode = args.get_int ("mode");
+      mode = args.get_int (KEY_MODE);
 
     if (mode == 0 && !inited) {
       inited = true;
       this.user_id = account.id;
       load_newest.begin ();
     } else if (mode  == MODE_DELETE) {
-      int64 list_id = args.get_int64 ("list_id");
+      int64 list_id = args.get_int64 (KEY_LIST_ID);
       message (@"Deleting list with id $list_id");
       user_lists_widget.remove_list (list_id);
     }

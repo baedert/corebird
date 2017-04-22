@@ -417,17 +417,17 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
       screen_name = tweet.source_tweet.author.screen_name;
     }
 
-    var bundle = new Bundle ();
-    bundle.put_int64 ("user_id", user_id);
-    bundle.put_string ("screen_name", screen_name);
+    var bundle = new Cb.Bundle ();
+    bundle.put_int64 (ProfilePage.KEY_USER_ID, user_id);
+    bundle.put_string (ProfilePage.KEY_SCREEN_NAME, screen_name);
     main_window.main_widget.switch_page (Page.PROFILE, bundle);
   }
 
   private void quote_name_button_clicked_cb () {
     assert (tweet.quoted_tweet != null);
-    var bundle = new Bundle ();
-    bundle.put_int64 ("user_id", tweet.quoted_tweet.author.id);
-    bundle.put_string ("screen_name", tweet.quoted_tweet.author.screen_name);
+    var bundle = new Cb.Bundle ();
+    bundle.put_int64 (ProfilePage.KEY_USER_ID, tweet.quoted_tweet.author.id);
+    bundle.put_string (ProfilePage.KEY_SCREEN_NAME, tweet.quoted_tweet.author.screen_name);
     main_window.main_widget.switch_page (Page.PROFILE, bundle);
   }
 

@@ -17,7 +17,7 @@
 
 public class BundleHistory {
   private int[] elements;
-  private Bundle[] bundles;
+  private Cb.Bundle[] bundles;
   private int pos = -1;
 
   public int current {
@@ -29,7 +29,7 @@ public class BundleHistory {
     }
   }
 
-  public Bundle? current_bundle {
+  public Cb.Bundle? current_bundle {
     get {
       if (pos == -1)
         return null;
@@ -44,10 +44,10 @@ public class BundleHistory {
     for (int i = 0; i < size; i++)
       elements[i] = -1;
 
-    bundles = new Bundle[size];
+    bundles = new Cb.Bundle[size];
   }
 
-  public void push (int v, Bundle? b) {
+  public void push (int v, Cb.Bundle? b) {
     if (pos < elements.length - 1) {
       pos ++;
       elements[pos] = v;
@@ -108,6 +108,7 @@ public class BundleHistory {
     }
   }
 
+/*
   public string to_string () {
     string a = "[";
     for (int i = 0; i < elements.length; i++) {
@@ -120,4 +121,5 @@ public class BundleHistory {
     a += "]";
     return a;
   }
+*/
 }

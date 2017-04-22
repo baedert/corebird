@@ -224,19 +224,20 @@ namespace TweetUtils {
 
     if (uri.has_prefix ("@")) {
       int slash_index = uri.index_of ("/");
-      var bundle = new Bundle ();
+      var bundle = new Cb.Bundle ();
       if (slash_index == -1) {
-        bundle.put_int64 ("user_id", int64.parse (term));
+        bundle.put_int64 (ProfilePage.KEY_USER_ID, int64.parse (term));
         window.main_widget.switch_page (Page.PROFILE, bundle);
       } else {
-        bundle.put_int64 ("user_id", int64.parse (term.substring (0, slash_index - 1)));
-        bundle.put_string ("screen_name", term.substring (slash_index + 1, term.length - slash_index - 1));
+        bundle.put_int64 (ProfilePage.KEY_USER_ID, int64.parse (term.substring (0, slash_index - 1)));
+        bundle.put_string (ProfilePage.KEY_SCREEN_NAME,
+                           term.substring (slash_index + 1, term.length - slash_index - 1));
         window.main_widget.switch_page (Page.PROFILE, bundle);
       }
       return true;
     } else if (uri.has_prefix ("#")) {
-      var bundle = new Bundle ();
-      bundle.put_string ("query", uri);
+      var bundle = new Cb.Bundle ();
+      bundle.put_string (SearchPage.KEY_QUERY, uri);
       window.main_widget.switch_page (Page.SEARCH, bundle);
       return true;
     } else if (uri.has_prefix ("https://twitter.com/")) {
@@ -245,10 +246,10 @@ namespace TweetUtils {
       if (parts[4] == "status") {
         /* Treat it as a tweet link and hope it'll work out */
         int64 tweet_id = int64.parse (parts[5]);
-        var bundle = new Bundle ();
-        bundle.put_int ("mode", TweetInfoPage.BY_ID);
-        bundle.put_int64 ("tweet_id", tweet_id);
-        bundle.put_string ("screen_name", parts[3]);
+        var bundle = new Cb.Bundle ();
+        bundle.put_int (TweetInfoPage.KEY_MODE, TweetInfoPage.BY_ID);
+        bundle.put_int64 (TweetInfoPage.KEY_TWEET_ID, tweet_id);
+        bundle.put_string (TweetInfoPage.KEY_SCREEN_NAME, parts[3]);
         window.main_widget.switch_page (Page.TWEET_INFO,
                                         bundle);
         return true;

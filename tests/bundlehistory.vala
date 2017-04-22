@@ -50,32 +50,32 @@ void end () {
 }
 
 void equals () {
-  var bundle1 = new Bundle ();
-  bundle1.put_string ("a", "1");
-  bundle1.put_string ("b", "3");
+  var bundle1 = new Cb.Bundle ();
+  bundle1.put_string (0, "1");
+  bundle1.put_string (1, "3");
 
-  var bundle2 = new Bundle ();
-  bundle2.put_string ("b", "3");
-  bundle2.put_string ("a", "1");
+  var bundle2 = new Cb.Bundle ();
+  bundle2.put_string (1, "3");
+  bundle2.put_string (0, "1");
 
   assert (bundle1.equals (bundle2));
   assert (!bundle1.equals (null));
 
-  var bundle3 = new Bundle ();
+  var bundle3 = new Cb.Bundle ();
   assert (!bundle3.equals (bundle1));
 }
 
 void remove_current () {
   var history = new BundleHistory (5);
 
-  var bundle1 = new Bundle ();
-  bundle1.put_string ("a", "a");
-  bundle1.put_string ("b", "b");
+  var bundle1 = new Cb.Bundle ();
+  bundle1.put_string (0, "a");
+  bundle1.put_string (1, "b");
   history.push (1, bundle1);
 
-  var bundle2 = new Bundle ();
-  bundle2.put_string ("c", "c");
-  bundle2.put_string ("d", "d");
+  var bundle2 = new Cb.Bundle ();
+  bundle2.put_string (3, "c");
+  bundle2.put_string (4, "d");
   history.push (2, bundle2);
 
   // push advances
@@ -112,12 +112,12 @@ void remove_current () {
   assert (history.at_end ());
   assert (history.at_start ());
 
-  var bundle3 = new Bundle ();
-  bundle3.put_string ("_", "_");
-  var bundle4 = new Bundle ();
-  bundle4.put_string ("_)", "__");
-  var bundle5 = new Bundle ();
-  bundle5.put_string ("___", "___");
+  var bundle3 = new Cb.Bundle ();
+  bundle3.put_string (0, "_");
+  var bundle4 = new Cb.Bundle ();
+  bundle4.put_string (7, "__");
+  var bundle5 = new Cb.Bundle ();
+  bundle5.put_string (10, "___");
 
   history.push (3, bundle3);
   history.push (4, bundle4);
