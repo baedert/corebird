@@ -16,15 +16,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
-"POT-Creation-Date: 2017-01-13 17:50+0100\n"
+"POT-Creation-Date: 2017-04-22 07:09+0200\n"
 "PO-Revision-Date: 2017-01-17 17:35+0000\n"
 "Last-Translator: Yevgeny Kvitchenko <kvit4.ko@gmail.com>\n"
-"Language-Team: Russian (http://www.transifex.com/corebird/corebird/language/ru/)\n"
+"Language-Team: Russian (http://www.transifex.com/corebird/corebird/language/"
+"ru/)\n"
+"Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ru\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
+"%100>=11 && n%100<=14)? 2 : 3);\n"
 
 #: data/org.baedert.corebird.appdata.xml.in:5
 #: data/org.baedert.corebird.desktop.in:3
@@ -40,13 +43,17 @@ msgstr "Клиент Твиттер"
 msgid ""
 "Corebird is a native GTK+ twitter client that provides vital features such "
 "as Direct Messages (DMs), tweet notifications, conversation views."
-msgstr "Corebird является родным GTK + клиентом Twitter, который поддерживает такие функции,  как прямые сообщения (DMS), уведомления и беседы."
+msgstr ""
+"Corebird является родным GTK + клиентом Twitter, который поддерживает такие "
+"функции,  как прямые сообщения (DMS), уведомления и беседы."
 
 #: data/org.baedert.corebird.appdata.xml.in:13
 msgid ""
-"Additional features include local viewing of videos, multiple inline images,"
-" Lists, Filters, multiple accounts, etc."
-msgstr "Дополнительные функции включают в себя:  просмотр видео и изображений в клиенте, списки, фильтры, несколько учетных записей и т.д."
+"Additional features include local viewing of videos, multiple inline images, "
+"Lists, Filters, multiple accounts, etc."
+msgstr ""
+"Дополнительные функции включают в себя:  просмотр видео и изображений в "
+"клиенте, списки, фильтры, несколько учетных записей и т.д."
 
 #: data/org.baedert.corebird.appdata.xml.in:21
 msgid "Generic timeline view when using Corebird"
@@ -60,31 +67,33 @@ msgstr "Типичный профиль Twitter"
 msgid "Account settings can be configured"
 msgstr "Настройки аккаунта можно изменить"
 
+#: data/org.baedert.corebird.appdata.xml.in:41
+msgid "Timm Bäder"
+msgstr ""
+
 #: data/org.baedert.corebird.desktop.in:5
 msgid "Use Twitter from within a normal desktop application"
 msgstr "Пользуйтесь Твиттером как обычным приложением"
 
-#. TRANSLATORS: Search terms to find this application. Do NOT translate or
-#. localize the semicolons! The list MUST also end with a semicolon!
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
 #: data/org.baedert.corebird.desktop.in:7
 msgid "twitter;"
 msgstr "twitter;"
 
-#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon
-#. file name)!
+#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon file name)!
 #: data/org.baedert.corebird.desktop.in:11
 msgid "corebird"
 msgstr "corebird"
 
-#: src/DefaultTimeline.vala:365
+#: src/DefaultTimeline.vala:357
 msgid "Could not load tweets"
 msgstr "Не получается загрузить твиты"
 
-#: src/DMPage.vala:330
+#: src/DMPage.vala:341
 msgid "Direct Conversation"
 msgstr "Личная беседа"
 
-#: src/DMThreadsPage.vala:207
+#: src/DMThreadsPage.vala:205
 #, c-format
 msgid "%d new Message from %s"
 msgid_plural "%d new Messages from %s"
@@ -93,17 +102,17 @@ msgstr[1] "%d новых сообщения от %s"
 msgstr[2] "%d новых сообщений от %s"
 msgstr[3] "%d новых сообщений от %s"
 
-#: src/DMThreadsPage.vala:213 src/UserEventReceiver.vala:94
+#: src/DMThreadsPage.vala:211 src/UserEventReceiver.vala:94
 #, c-format
 msgid "New direct message from %s"
 msgstr "Новое сообщение от %s"
 
-#: src/DMThreadsPage.vala:223 src/DMThreadsPage.vala:237
+#: src/DMThreadsPage.vala:221 src/DMThreadsPage.vala:235
 msgid "Direct Messages"
 msgstr "Сообщения"
 
 #: src/FavoritesTimeline.vala:67 src/FavoritesTimeline.vala:71
-#: src/TweetInfoPage.vala:479
+#: src/TweetInfoPage.vala:507
 msgid "Favorites"
 msgstr "Избранные"
 
@@ -147,24 +156,44 @@ msgstr[1] "(%d не прочитано)"
 msgstr[2] "(%d не прочитано)"
 msgstr[3] "(%d не прочитано)"
 
-#: src/ListsPage.vala:120 src/ListsPage.vala:125 ui/profile-page.ui:365
+#: src/ListsPage.vala:120 src/ListsPage.vala:125 ui/profile-page.ui:364
 msgid "Lists"
 msgstr "Списки"
 
-#: src/ListStatusesPage.vala:369
+#: src/ListStatusesPage.vala:368
 msgid "List"
 msgstr "Список"
 
-#: src/list/TweetListEntry.vala:434
+#. TRANSLATORS: This is the start of a "Replying to" line in a tweet
+#: src/list/TweetListEntry.vala:145 src/TweetInfoPage.vala:463
+#, fuzzy
+msgid "Replying to"
+msgstr "Ответить"
+
+#. TRANSLATORS: This gets appended to the "replying to" line
+#. in a tweet. Example: "Replying to Foo and Bar" where
+#. "and Bar" comes from this string.
+#: src/list/TweetListEntry.vala:175
+msgid "and"
+msgstr ""
+
+#. TRANSLATORS: This gets appended to the "replying to" line
+#. in a tweet
+#: src/list/TweetListEntry.vala:188
+#, c-format
+msgid "and %d others"
+msgstr ""
+
+#: src/list/TweetListEntry.vala:484
 #, c-format
 msgid "Block %s"
 msgstr "Блокировать %s"
 
-#: src/list/TweetListEntry.vala:575
+#: src/list/TweetListEntry.vala:640
 msgid "This tweet contains images marked as inappropriate"
 msgstr "Медиафайлы могут носить деликатный характер"
 
-#: src/list/TweetListEntry.vala:582
+#: src/list/TweetListEntry.vala:647
 msgid "Show anyway"
 msgstr "Все равно показать"
 
@@ -181,49 +210,49 @@ msgstr "%s упомянул %s"
 msgid "Mentions"
 msgstr "Упоминания"
 
-#: src/ProfilePage.vala:253
+#: src/ProfilePage.vala:258
 msgid "Protected profile"
 msgstr "Защищённый профиль"
 
-#: src/ProfilePage.vala:308
+#: src/ProfilePage.vala:316
 #, c-format
 msgid "Tweet to @%s"
 msgstr "Твитнуть @%s "
 
-#: src/SearchPage.vala:371 src/SearchPage.vala:380 ui/search-page.ui:24
+#: src/SearchPage.vala:370 src/SearchPage.vala:379 ui/search-page.ui:24
 msgid "Search"
 msgstr "Поиск"
 
-#: src/TweetInfoPage.vala:295
+#: src/TweetInfoPage.vala:297
 msgid "Could not show tweet"
 msgstr "Не удалось показать Твит"
 
-#: src/TweetInfoPage.vala:478
+#: src/TweetInfoPage.vala:506
 msgid "Retweets"
 msgstr "Ретвиты"
 
-#: src/TweetInfoPage.vala:487 src/widgets/MediaButton.vala:100
+#: src/TweetInfoPage.vala:515 src/widgets/MediaButton.vala:104
 msgid "Open in Browser"
 msgstr "Открыть в браузере"
 
-#: src/TweetInfoPage.vala:487
+#: src/TweetInfoPage.vala:515
 msgid "Source"
 msgstr "Источник"
 
-#: src/TweetInfoPage.vala:533
+#: src/TweetInfoPage.vala:561
 msgid "Tweet Details"
 msgstr "Подробности твита"
 
-#: src/util/Utils.vala:195
+#: src/util/Utils.vala:168
 msgid "Now"
 msgstr "Сейчас"
 
-#: src/util/Utils.vala:197
+#: src/util/Utils.vala:170
 #, c-format
 msgid "%dm"
 msgstr "%dм"
 
-#: src/util/Utils.vala:201
+#: src/util/Utils.vala:174
 #, c-format
 msgid "%dh"
 msgstr "%dч"
@@ -238,9 +267,11 @@ msgstr "Создать"
 
 #: src/widgets/AccountCreateWidget.vala:55
 msgid ""
-"Unauthorized. Most of the time, this means that there's something wrong with"
-" the Twitter servers and you should try again later"
-msgstr "Не авторизован. Возможно серверы Твиттер поломались, попробуй немного позднее."
+"Unauthorized. Most of the time, this means that there's something wrong with "
+"the Twitter servers and you should try again later"
+msgstr ""
+"Не авторизован. Возможно серверы Твиттер поломались, попробуй немного "
+"позднее."
 
 #: src/widgets/AccountCreateWidget.vala:67
 #, c-format
@@ -267,44 +298,62 @@ msgstr "Читать"
 msgid "Unfollow"
 msgstr "Не читать"
 
-#: src/widgets/MediaButton.vala:45
+#: src/widgets/MediaButton.vala:48
 msgid "Copy URL"
 msgstr "Копировать URL"
 
-#: src/widgets/PixbufButton.vala:52
-msgid "Copy link"
-msgstr "Скопировать ссылку"
+#: src/widgets/MediaButton.vala:106
+msgid "Save as…"
+msgstr ""
 
-#: src/widgets/TweetListBox.vala:99
-msgid "Loading..."
-msgstr "Загрузка..."
+#: src/widgets/MediaButton.vala:269
+msgid "Save Video"
+msgstr ""
 
-#: src/widgets/TweetListBox.vala:102 src/widgets/TweetListBox.vala:153
-msgid "No entries found"
-msgstr "Нет записей"
+#: src/widgets/MediaButton.vala:271
+#, fuzzy
+msgid "Save Image"
+msgstr "Выбрать изображение"
 
-#: src/widgets/TweetListBox.vala:113
-msgid "Retry"
-msgstr "Повтор"
-
-#: src/window/ComposeTweetWindow.vala:128
-msgid "Quote tweet"
-msgstr "Цитировать tweet"
-
-#: src/window/ComposeTweetWindow.vala:237
-#: src/window/ComposeTweetWindow.vala:262 src/window/UserListDialog.vala:47
-#: ui/account-dialog.ui:25 ui/account-dialog.ui:247 ui/compose-window.ui:41
+#: src/widgets/MediaButton.vala:276 src/window/ComposeTweetWindow.vala:232
+#: src/window/ComposeTweetWindow.vala:262
+#: src/window/ComposeTweetWindow.vala:371 src/window/UserListDialog.vala:47
+#: ui/account-dialog.ui:25 ui/account-dialog.ui:246 ui/compose-window.ui:41
 #: ui/filter-list-entry.ui:80 ui/list-list-entry.ui:98
 #: ui/list-statuses-page.ui:173 ui/modify-filter-dialog.ui:13
 #: ui/modify-snippet-dialog.ui:14 ui/user-filter-entry.ui:114
 msgid "Cancel"
 msgstr "Отмена"
 
+#: src/widgets/MediaButton.vala:278 src/window/UserListDialog.vala:48
+#: ui/account-dialog.ui:33 ui/list-statuses-page.ui:129
+#: ui/modify-filter-dialog.ui:20 ui/modify-snippet-dialog.ui:21
+msgid "Save"
+msgstr "Сохранить"
+
+#: src/widgets/TweetListBox.vala:123
+msgid "Loading..."
+msgstr "Загрузка..."
+
+#: src/widgets/TweetListBox.vala:126 src/widgets/TweetListBox.vala:177
+msgid "No entries found"
+msgstr "Нет записей"
+
+#: src/widgets/TweetListBox.vala:137
+msgid "Retry"
+msgstr "Повтор"
+
+#: src/window/ComposeTweetWindow.vala:107
+msgid "Quote tweet"
+msgstr "Цитировать tweet"
+
 #: src/window/ComposeTweetWindow.vala:259
+#: src/window/ComposeTweetWindow.vala:368
 msgid "Select Image"
 msgstr "Выбрать изображение"
 
 #: src/window/ComposeTweetWindow.vala:264
+#: src/window/ComposeTweetWindow.vala:373
 msgid "Open"
 msgstr "Открыть"
 
@@ -312,11 +361,19 @@ msgstr "Открыть"
 #, c-format
 msgid ""
 "The selected image is too big. The maximum file size per image is %'d MB"
-msgstr "Выбранное изображение слишком велико. Максимальный размер файла изображения %'d MB"
+msgstr ""
+"Выбранное изображение слишком велико. Максимальный размер файла изображения "
+"%'d MB"
 
 #: src/window/ComposeTweetWindow.vala:290
+#: src/window/ComposeTweetWindow.vala:296
+#: src/window/ComposeTweetWindow.vala:324
 msgid "Back"
 msgstr "Назад"
+
+#: src/window/ComposeTweetWindow.vala:295
+msgid "Only one GIF file per tweet is allowed."
+msgstr ""
 
 #: src/window/ModifyFilterDialog.vala:45
 msgid "Modify Filter"
@@ -354,23 +411,18 @@ msgstr "Сниппеты уже существуют"
 msgid ""
 "Hey, check out this new #Corebird version! \\ (•◡•) / #cool "
 "#newisalwaysbetter"
-msgstr "Привет, появилась новая версия #Corebird! \\ (•◡•) / #cool #newisalwaysbetter"
+msgstr ""
+"Привет, появилась новая версия #Corebird! \\ (•◡•) / #cool #newisalwaysbetter"
 
 #: src/window/UserListDialog.vala:40
 msgid "Add to or Remove User From List"
 msgstr "Добавить или удалить пользователя из списка"
 
-#: src/window/UserListDialog.vala:48 ui/account-dialog.ui:33
-#: ui/list-statuses-page.ui:129 ui/modify-filter-dialog.ui:20
-#: ui/modify-snippet-dialog.ui:21
-msgid "Save"
-msgstr "Сохранить"
-
 #: src/window/UserListDialog.vala:69
 msgid "You have no lists."
 msgstr "У вас нет списков."
 
-#: ui/about-dialog.ui:6
+#: ui/about-dialog.ui:5
 msgid "About Corebird"
 msgstr "О Corebird"
 
@@ -394,26 +446,26 @@ msgstr "Подтвердить"
 msgid "Account Settings"
 msgstr "Настройки аккаунта"
 
-#: ui/account-dialog.ui:90
+#: ui/account-dialog.ui:88
 msgid "Name"
 msgstr "Имя"
 
-#: ui/account-dialog.ui:118
+#: ui/account-dialog.ui:117
 msgid "Website"
 msgstr "Вебсайт"
 
-#: ui/account-dialog.ui:172
+#: ui/account-dialog.ui:171
 msgid "Autostart"
 msgstr "Автозапуск"
 
-#: ui/account-dialog.ui:203 ui/account-dialog.ui:260
-#: ui/filter-list-entry.ui:93 ui/list-list-entry.ui:132
-#: ui/list-statuses-page.ui:166 ui/modify-snippet-dialog.ui:108
-#: ui/tweet-info-page.ui:10 ui/tweet-list-entry.ui:10
+#: ui/account-dialog.ui:202 ui/account-dialog.ui:259 ui/filter-list-entry.ui:93
+#: ui/list-list-entry.ui:132 ui/list-statuses-page.ui:166
+#: ui/modify-snippet-dialog.ui:108 ui/tweet-info-page.ui:10
+#: ui/tweet-list-entry.ui:10
 msgid "Delete"
 msgstr "Удалить"
 
-#: ui/account-dialog.ui:235
+#: ui/account-dialog.ui:234
 msgid "Do you really want to delete this account?"
 msgstr "Вы действительно хотите удалить данный аккаунт?"
 
@@ -425,9 +477,13 @@ msgstr "Написать твит"
 msgid "Send"
 msgstr "Отправить"
 
-#: ui/compose-window.ui:138
+#: ui/compose-window.ui:151
 msgid "Add Image"
 msgstr "Добавить изображение"
+
+#: ui/compose-window.ui:159
+msgid "Show favorite images"
+msgstr ""
 
 #: ui/filter-page.ui:71 ui/search-page.ui:86
 msgid "Users"
@@ -557,19 +613,19 @@ msgstr "Беззвучно"
 msgid "Retweets disabled"
 msgstr "Ретвиты отключены"
 
-#: ui/profile-page.ui:167
+#: ui/profile-page.ui:166
 msgid "Follows you"
 msgstr "Читают тебя"
 
-#: ui/profile-page.ui:242 ui/search-page.ui:74 ui/settings-dialog.ui:420
+#: ui/profile-page.ui:241 ui/search-page.ui:74 ui/settings-dialog.ui:420
 msgid "Tweets"
 msgstr "Твиты"
 
-#: ui/profile-page.ui:283
+#: ui/profile-page.ui:282
 msgid "Followers"
 msgstr "Избранные"
 
-#: ui/profile-page.ui:324
+#: ui/profile-page.ui:323
 msgid "Following"
 msgstr "Читаешь"
 
@@ -769,19 +825,19 @@ msgstr "Вперед"
 msgid "Quote"
 msgstr "Цитата"
 
-#: ui/tweet-info-page.ui:226
+#: ui/tweet-info-page.ui:260
 msgid "Retweet tweet"
 msgstr "Ретвитнуть"
 
-#: ui/tweet-info-page.ui:253
+#: ui/tweet-info-page.ui:287
 msgid "Favorite tweet"
 msgstr "В избранное"
 
-#: ui/tweet-info-page.ui:280
+#: ui/tweet-info-page.ui:314
 msgid "Reply to tweet"
 msgstr "Ответить"
 
-#: ui/tweet-info-page.ui:318
+#: ui/tweet-info-page.ui:352
 msgid "More"
 msgstr "Ещё..."
 
@@ -816,3 +872,6 @@ msgstr "Создан"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "Подписаться"
+
+#~ msgid "Copy link"
+#~ msgstr "Скопировать ссылку"

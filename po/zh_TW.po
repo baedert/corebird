@@ -8,14 +8,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
-"POT-Creation-Date: 2017-01-13 17:50+0100\n"
+"POT-Creation-Date: 2017-04-22 07:09+0200\n"
 "PO-Revision-Date: 2016-12-19 08:56+0000\n"
 "Last-Translator: baedert <mail@baedert.org>\n"
-"Language-Team: Chinese (Taiwan) (http://www.transifex.com/corebird/corebird/language/zh_TW/)\n"
+"Language-Team: Chinese (Taiwan) (http://www.transifex.com/corebird/corebird/"
+"language/zh_TW/)\n"
+"Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: zh_TW\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: data/org.baedert.corebird.appdata.xml.in:5
@@ -36,8 +37,8 @@ msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:13
 msgid ""
-"Additional features include local viewing of videos, multiple inline images,"
-" Lists, Filters, multiple accounts, etc."
+"Additional features include local viewing of videos, multiple inline images, "
+"Lists, Filters, multiple accounts, etc."
 msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:21
@@ -52,47 +53,49 @@ msgstr ""
 msgid "Account settings can be configured"
 msgstr ""
 
+#: data/org.baedert.corebird.appdata.xml.in:41
+msgid "Timm Bäder"
+msgstr ""
+
 #: data/org.baedert.corebird.desktop.in:5
 msgid "Use Twitter from within a normal desktop application"
 msgstr ""
 
-#. TRANSLATORS: Search terms to find this application. Do NOT translate or
-#. localize the semicolons! The list MUST also end with a semicolon!
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
 #: data/org.baedert.corebird.desktop.in:7
 msgid "twitter;"
 msgstr ""
 
-#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon
-#. file name)!
+#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon file name)!
 #: data/org.baedert.corebird.desktop.in:11
 msgid "corebird"
 msgstr ""
 
-#: src/DefaultTimeline.vala:365
+#: src/DefaultTimeline.vala:357
 msgid "Could not load tweets"
 msgstr ""
 
-#: src/DMPage.vala:330
+#: src/DMPage.vala:341
 msgid "Direct Conversation"
 msgstr "對話"
 
-#: src/DMThreadsPage.vala:207
+#: src/DMThreadsPage.vala:205
 #, c-format
 msgid "%d new Message from %s"
 msgid_plural "%d new Messages from %s"
 msgstr[0] "%2$s 傳送了 %1$d 則新訊息"
 
-#: src/DMThreadsPage.vala:213 src/UserEventReceiver.vala:94
+#: src/DMThreadsPage.vala:211 src/UserEventReceiver.vala:94
 #, c-format
 msgid "New direct message from %s"
 msgstr "%s 傳送了新訊息"
 
-#: src/DMThreadsPage.vala:223 src/DMThreadsPage.vala:237
+#: src/DMThreadsPage.vala:221 src/DMThreadsPage.vala:235
 msgid "Direct Messages"
 msgstr "訊息"
 
 #: src/FavoritesTimeline.vala:67 src/FavoritesTimeline.vala:71
-#: src/TweetInfoPage.vala:479
+#: src/TweetInfoPage.vala:507
 msgid "Favorites"
 msgstr "喜歡"
 
@@ -130,24 +133,44 @@ msgid "(%d unread)"
 msgid_plural "(%d unread)"
 msgstr[0] "(%d 未讀)"
 
-#: src/ListsPage.vala:120 src/ListsPage.vala:125 ui/profile-page.ui:365
+#: src/ListsPage.vala:120 src/ListsPage.vala:125 ui/profile-page.ui:364
 msgid "Lists"
 msgstr "列表"
 
-#: src/ListStatusesPage.vala:369
+#: src/ListStatusesPage.vala:368
 msgid "List"
 msgstr "列表"
 
-#: src/list/TweetListEntry.vala:434
+#. TRANSLATORS: This is the start of a "Replying to" line in a tweet
+#: src/list/TweetListEntry.vala:145 src/TweetInfoPage.vala:463
+#, fuzzy
+msgid "Replying to"
+msgstr "回覆"
+
+#. TRANSLATORS: This gets appended to the "replying to" line
+#. in a tweet. Example: "Replying to Foo and Bar" where
+#. "and Bar" comes from this string.
+#: src/list/TweetListEntry.vala:175
+msgid "and"
+msgstr ""
+
+#. TRANSLATORS: This gets appended to the "replying to" line
+#. in a tweet
+#: src/list/TweetListEntry.vala:188
+#, c-format
+msgid "and %d others"
+msgstr ""
+
+#: src/list/TweetListEntry.vala:484
 #, c-format
 msgid "Block %s"
 msgstr ""
 
-#: src/list/TweetListEntry.vala:575
+#: src/list/TweetListEntry.vala:640
 msgid "This tweet contains images marked as inappropriate"
 msgstr ""
 
-#: src/list/TweetListEntry.vala:582
+#: src/list/TweetListEntry.vala:647
 msgid "Show anyway"
 msgstr ""
 
@@ -164,49 +187,49 @@ msgstr ""
 msgid "Mentions"
 msgstr "提及"
 
-#: src/ProfilePage.vala:253
+#: src/ProfilePage.vala:258
 msgid "Protected profile"
 msgstr "受保護的個人檔案"
 
-#: src/ProfilePage.vala:308
+#: src/ProfilePage.vala:316
 #, c-format
 msgid "Tweet to @%s"
 msgstr "推文給 @%s"
 
-#: src/SearchPage.vala:371 src/SearchPage.vala:380 ui/search-page.ui:24
+#: src/SearchPage.vala:370 src/SearchPage.vala:379 ui/search-page.ui:24
 msgid "Search"
 msgstr "搜尋"
 
-#: src/TweetInfoPage.vala:295
+#: src/TweetInfoPage.vala:297
 msgid "Could not show tweet"
 msgstr "無法顯示推文"
 
-#: src/TweetInfoPage.vala:478
+#: src/TweetInfoPage.vala:506
 msgid "Retweets"
 msgstr "轉推"
 
-#: src/TweetInfoPage.vala:487 src/widgets/MediaButton.vala:100
+#: src/TweetInfoPage.vala:515 src/widgets/MediaButton.vala:104
 msgid "Open in Browser"
 msgstr "在瀏覽器中開啟"
 
-#: src/TweetInfoPage.vala:487
+#: src/TweetInfoPage.vala:515
 msgid "Source"
 msgstr "來源"
 
-#: src/TweetInfoPage.vala:533
+#: src/TweetInfoPage.vala:561
 msgid "Tweet Details"
 msgstr "推文詳細"
 
-#: src/util/Utils.vala:195
+#: src/util/Utils.vala:168
 msgid "Now"
 msgstr "現在"
 
-#: src/util/Utils.vala:197
+#: src/util/Utils.vala:170
 #, c-format
 msgid "%dm"
 msgstr "%d分鐘"
 
-#: src/util/Utils.vala:201
+#: src/util/Utils.vala:174
 #, c-format
 msgid "%dh"
 msgstr "%d小時"
@@ -221,8 +244,8 @@ msgstr "註冊一個"
 
 #: src/widgets/AccountCreateWidget.vala:55
 msgid ""
-"Unauthorized. Most of the time, this means that there's something wrong with"
-" the Twitter servers and you should try again later"
+"Unauthorized. Most of the time, this means that there's something wrong with "
+"the Twitter servers and you should try again later"
 msgstr "驗證失敗。通常這是因為Twitter伺服器出錯，請稍後再試。"
 
 #: src/widgets/AccountCreateWidget.vala:67
@@ -250,44 +273,62 @@ msgstr "跟隨"
 msgid "Unfollow"
 msgstr "取消跟隨"
 
-#: src/widgets/MediaButton.vala:45
+#: src/widgets/MediaButton.vala:48
 msgid "Copy URL"
 msgstr ""
 
-#: src/widgets/PixbufButton.vala:52
-msgid "Copy link"
-msgstr "複製連結"
+#: src/widgets/MediaButton.vala:106
+msgid "Save as…"
+msgstr ""
 
-#: src/widgets/TweetListBox.vala:99
-msgid "Loading..."
-msgstr "讀取中..."
+#: src/widgets/MediaButton.vala:269
+msgid "Save Video"
+msgstr ""
 
-#: src/widgets/TweetListBox.vala:102 src/widgets/TweetListBox.vala:153
-msgid "No entries found"
-msgstr "沒有找到條目"
+#: src/widgets/MediaButton.vala:271
+#, fuzzy
+msgid "Save Image"
+msgstr "新增圖片"
 
-#: src/widgets/TweetListBox.vala:113
-msgid "Retry"
-msgstr "重試"
-
-#: src/window/ComposeTweetWindow.vala:128
-msgid "Quote tweet"
-msgstr "引用推文"
-
-#: src/window/ComposeTweetWindow.vala:237
-#: src/window/ComposeTweetWindow.vala:262 src/window/UserListDialog.vala:47
-#: ui/account-dialog.ui:25 ui/account-dialog.ui:247 ui/compose-window.ui:41
+#: src/widgets/MediaButton.vala:276 src/window/ComposeTweetWindow.vala:232
+#: src/window/ComposeTweetWindow.vala:262
+#: src/window/ComposeTweetWindow.vala:371 src/window/UserListDialog.vala:47
+#: ui/account-dialog.ui:25 ui/account-dialog.ui:246 ui/compose-window.ui:41
 #: ui/filter-list-entry.ui:80 ui/list-list-entry.ui:98
 #: ui/list-statuses-page.ui:173 ui/modify-filter-dialog.ui:13
 #: ui/modify-snippet-dialog.ui:14 ui/user-filter-entry.ui:114
 msgid "Cancel"
 msgstr "取消"
 
+#: src/widgets/MediaButton.vala:278 src/window/UserListDialog.vala:48
+#: ui/account-dialog.ui:33 ui/list-statuses-page.ui:129
+#: ui/modify-filter-dialog.ui:20 ui/modify-snippet-dialog.ui:21
+msgid "Save"
+msgstr "儲存"
+
+#: src/widgets/TweetListBox.vala:123
+msgid "Loading..."
+msgstr "讀取中..."
+
+#: src/widgets/TweetListBox.vala:126 src/widgets/TweetListBox.vala:177
+msgid "No entries found"
+msgstr "沒有找到條目"
+
+#: src/widgets/TweetListBox.vala:137
+msgid "Retry"
+msgstr "重試"
+
+#: src/window/ComposeTweetWindow.vala:107
+msgid "Quote tweet"
+msgstr "引用推文"
+
 #: src/window/ComposeTweetWindow.vala:259
+#: src/window/ComposeTweetWindow.vala:368
 msgid "Select Image"
 msgstr ""
 
 #: src/window/ComposeTweetWindow.vala:264
+#: src/window/ComposeTweetWindow.vala:373
 msgid "Open"
 msgstr ""
 
@@ -298,8 +339,14 @@ msgid ""
 msgstr ""
 
 #: src/window/ComposeTweetWindow.vala:290
+#: src/window/ComposeTweetWindow.vala:296
+#: src/window/ComposeTweetWindow.vala:324
 msgid "Back"
 msgstr "返回"
+
+#: src/window/ComposeTweetWindow.vala:295
+msgid "Only one GIF file per tweet is allowed."
+msgstr ""
 
 #: src/window/ModifyFilterDialog.vala:45
 msgid "Modify Filter"
@@ -343,17 +390,11 @@ msgstr "嘿，#Corebird 推出了新版本！ \\ (•◡•) / #cool #newisalway
 msgid "Add to or Remove User From List"
 msgstr "從列表中加入或移除成員"
 
-#: src/window/UserListDialog.vala:48 ui/account-dialog.ui:33
-#: ui/list-statuses-page.ui:129 ui/modify-filter-dialog.ui:20
-#: ui/modify-snippet-dialog.ui:21
-msgid "Save"
-msgstr "儲存"
-
 #: src/window/UserListDialog.vala:69
 msgid "You have no lists."
 msgstr "你沒有任何列表"
 
-#: ui/about-dialog.ui:6
+#: ui/about-dialog.ui:5
 msgid "About Corebird"
 msgstr "關於Corebird"
 
@@ -377,26 +418,26 @@ msgstr "確認"
 msgid "Account Settings"
 msgstr "帳戶設定"
 
-#: ui/account-dialog.ui:90
+#: ui/account-dialog.ui:88
 msgid "Name"
 msgstr "名稱"
 
-#: ui/account-dialog.ui:118
+#: ui/account-dialog.ui:117
 msgid "Website"
 msgstr "網站"
 
-#: ui/account-dialog.ui:172
+#: ui/account-dialog.ui:171
 msgid "Autostart"
 msgstr "自動啟動"
 
-#: ui/account-dialog.ui:203 ui/account-dialog.ui:260
-#: ui/filter-list-entry.ui:93 ui/list-list-entry.ui:132
-#: ui/list-statuses-page.ui:166 ui/modify-snippet-dialog.ui:108
-#: ui/tweet-info-page.ui:10 ui/tweet-list-entry.ui:10
+#: ui/account-dialog.ui:202 ui/account-dialog.ui:259 ui/filter-list-entry.ui:93
+#: ui/list-list-entry.ui:132 ui/list-statuses-page.ui:166
+#: ui/modify-snippet-dialog.ui:108 ui/tweet-info-page.ui:10
+#: ui/tweet-list-entry.ui:10
 msgid "Delete"
 msgstr "刪除"
 
-#: ui/account-dialog.ui:235
+#: ui/account-dialog.ui:234
 msgid "Do you really want to delete this account?"
 msgstr "你確定要刪除這個帳戶？"
 
@@ -408,9 +449,13 @@ msgstr "撰寫新推文"
 msgid "Send"
 msgstr "推文"
 
-#: ui/compose-window.ui:138
+#: ui/compose-window.ui:151
 msgid "Add Image"
 msgstr "新增圖片"
+
+#: ui/compose-window.ui:159
+msgid "Show favorite images"
+msgstr ""
 
 #: ui/filter-page.ui:71 ui/search-page.ui:86
 msgid "Users"
@@ -540,19 +585,19 @@ msgstr ""
 msgid "Retweets disabled"
 msgstr "禁止轉推"
 
-#: ui/profile-page.ui:167
+#: ui/profile-page.ui:166
 msgid "Follows you"
 msgstr "跟隨你"
 
-#: ui/profile-page.ui:242 ui/search-page.ui:74 ui/settings-dialog.ui:420
+#: ui/profile-page.ui:241 ui/search-page.ui:74 ui/settings-dialog.ui:420
 msgid "Tweets"
 msgstr "推文"
 
-#: ui/profile-page.ui:283
+#: ui/profile-page.ui:282
 msgid "Followers"
 msgstr "跟隨者"
 
-#: ui/profile-page.ui:324
+#: ui/profile-page.ui:323
 msgid "Following"
 msgstr "正在關注"
 
@@ -752,19 +797,19 @@ msgstr "開始"
 msgid "Quote"
 msgstr "引用"
 
-#: ui/tweet-info-page.ui:226
+#: ui/tweet-info-page.ui:260
 msgid "Retweet tweet"
 msgstr "轉推"
 
-#: ui/tweet-info-page.ui:253
+#: ui/tweet-info-page.ui:287
 msgid "Favorite tweet"
 msgstr "喜歡"
 
-#: ui/tweet-info-page.ui:280
+#: ui/tweet-info-page.ui:314
 msgid "Reply to tweet"
 msgstr "回覆"
 
-#: ui/tweet-info-page.ui:318
+#: ui/tweet-info-page.ui:352
 msgid "More"
 msgstr "更多"
 
@@ -799,3 +844,6 @@ msgstr "建立"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "訂閱的"
+
+#~ msgid "Copy link"
+#~ msgstr "複製連結"
