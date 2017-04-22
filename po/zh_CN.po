@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
-"POT-Creation-Date: 2017-04-22 07:09+0200\n"
+"POT-Creation-Date: 2017-04-22 20:19+0200\n"
 "PO-Revision-Date: 2016-12-19 08:56+0000\n"
 "Last-Translator: baedert <mail@baedert.org>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/corebird/corebird/"
@@ -81,7 +81,7 @@ msgstr "corebird"
 msgid "Could not load tweets"
 msgstr "无法加载推文"
 
-#: src/DMPage.vala:341
+#: src/DMPage.vala:346
 msgid "Direct Conversation"
 msgstr "直接对话"
 
@@ -101,7 +101,7 @@ msgid "Direct Messages"
 msgstr "私信"
 
 #: src/FavoritesTimeline.vala:67 src/FavoritesTimeline.vala:71
-#: src/TweetInfoPage.vala:507
+#: src/TweetInfoPage.vala:531
 msgid "Favorites"
 msgstr "收藏"
 
@@ -139,16 +139,24 @@ msgid "(%d unread)"
 msgid_plural "(%d unread)"
 msgstr[0] "(%d 条未读)"
 
-#: src/ListsPage.vala:120 src/ListsPage.vala:125 ui/profile-page.ui:364
+#: src/list/FavImageRow.vala:68 ui/account-dialog.ui:202
+#: ui/account-dialog.ui:259 ui/filter-list-entry.ui:93
+#: ui/list-list-entry.ui:132 ui/list-statuses-page.ui:166
+#: ui/modify-snippet-dialog.ui:108 ui/tweet-info-page.ui:10
+#: ui/tweet-list-entry.ui:10
+msgid "Delete"
+msgstr "删除"
+
+#: src/ListsPage.vala:123 src/ListsPage.vala:128 ui/profile-page.ui:364
 msgid "Lists"
 msgstr "列表"
 
-#: src/ListStatusesPage.vala:368
+#: src/ListStatusesPage.vala:378
 msgid "List"
 msgstr "列表"
 
 #. TRANSLATORS: This is the start of a "Replying to" line in a tweet
-#: src/list/TweetListEntry.vala:145 src/TweetInfoPage.vala:463
+#: src/list/TweetListEntry.vala:145 src/TweetInfoPage.vala:470
 #, fuzzy
 msgid "Replying to"
 msgstr "回复推文"
@@ -156,27 +164,27 @@ msgstr "回复推文"
 #. TRANSLATORS: This gets appended to the "replying to" line
 #. in a tweet. Example: "Replying to Foo and Bar" where
 #. "and Bar" comes from this string.
-#: src/list/TweetListEntry.vala:175
+#: src/list/TweetListEntry.vala:176 src/TweetInfoPage.vala:496
 msgid "and"
 msgstr ""
 
 #. TRANSLATORS: This gets appended to the "replying to" line
 #. in a tweet
-#: src/list/TweetListEntry.vala:188
+#: src/list/TweetListEntry.vala:189
 #, c-format
 msgid "and %d others"
 msgstr ""
 
-#: src/list/TweetListEntry.vala:484
+#: src/list/TweetListEntry.vala:485
 #, c-format
 msgid "Block %s"
 msgstr "屏蔽 %s"
 
-#: src/list/TweetListEntry.vala:640
+#: src/list/TweetListEntry.vala:641
 msgid "This tweet contains images marked as inappropriate"
 msgstr "此推文包含被标记为“不适宜”的图片"
 
-#: src/list/TweetListEntry.vala:647
+#: src/list/TweetListEntry.vala:648
 msgid "Show anyway"
 msgstr "仍然显示"
 
@@ -193,36 +201,36 @@ msgstr "%s 提及了 %s"
 msgid "Mentions"
 msgstr "提及我的"
 
-#: src/ProfilePage.vala:258
+#: src/ProfilePage.vala:261
 msgid "Protected profile"
 msgstr "资料已受保护"
 
-#: src/ProfilePage.vala:316
+#: src/ProfilePage.vala:319
 #, c-format
 msgid "Tweet to @%s"
 msgstr "给 @%s 发推"
 
-#: src/SearchPage.vala:370 src/SearchPage.vala:379 ui/search-page.ui:24
+#: src/SearchPage.vala:371 src/SearchPage.vala:380 ui/search-page.ui:24
 msgid "Search"
 msgstr "搜索"
 
-#: src/TweetInfoPage.vala:297
+#: src/TweetInfoPage.vala:303
 msgid "Could not show tweet"
 msgstr "无法显示推文"
 
-#: src/TweetInfoPage.vala:506
+#: src/TweetInfoPage.vala:530
 msgid "Retweets"
 msgstr "转推"
 
-#: src/TweetInfoPage.vala:515 src/widgets/MediaButton.vala:104
+#: src/TweetInfoPage.vala:539 src/widgets/MediaButton.vala:104
 msgid "Open in Browser"
 msgstr "浏览器中打开"
 
-#: src/TweetInfoPage.vala:515
+#: src/TweetInfoPage.vala:539
 msgid "Source"
 msgstr "来源"
 
-#: src/TweetInfoPage.vala:561
+#: src/TweetInfoPage.vala:585
 msgid "Tweet Details"
 msgstr "详情"
 
@@ -296,7 +304,8 @@ msgstr ""
 msgid "Save Image"
 msgstr "选择图片"
 
-#: src/widgets/MediaButton.vala:276 src/window/ComposeTweetWindow.vala:232
+#: src/widgets/MediaButton.vala:276 src/window/AccountDialog.vala:314
+#: src/window/ComposeTweetWindow.vala:232
 #: src/window/ComposeTweetWindow.vala:262
 #: src/window/ComposeTweetWindow.vala:371 src/window/UserListDialog.vala:47
 #: ui/account-dialog.ui:25 ui/account-dialog.ui:246 ui/compose-window.ui:41
@@ -306,7 +315,8 @@ msgstr "选择图片"
 msgid "Cancel"
 msgstr "取消"
 
-#: src/widgets/MediaButton.vala:278 src/window/UserListDialog.vala:48
+#: src/widgets/MediaButton.vala:278 src/window/AccountDialog.vala:406
+#: src/window/AccountDialog.vala:427 src/window/UserListDialog.vala:48
 #: ui/account-dialog.ui:33 ui/list-statuses-page.ui:129
 #: ui/modify-filter-dialog.ui:20 ui/modify-snippet-dialog.ui:21
 msgid "Save"
@@ -324,6 +334,36 @@ msgstr "未找到条目"
 msgid "Retry"
 msgstr "重试"
 
+#: src/window/AccountDialog.vala:311
+#, fuzzy
+msgid "Select Banner Image"
+msgstr "选择图片"
+
+#: src/window/AccountDialog.vala:316 src/window/ComposeTweetWindow.vala:264
+#: src/window/ComposeTweetWindow.vala:373
+msgid "Open"
+msgstr "打开"
+
+#: src/window/AccountDialog.vala:348
+msgid "Image does not meet minimum size requirements:"
+msgstr ""
+
+#: src/window/AccountDialog.vala:349
+#, c-format
+msgid "Minimum width: %d pixel"
+msgid_plural "Minimum width: %d pixels"
+msgstr[0] ""
+
+#: src/window/AccountDialog.vala:351
+#, c-format
+msgid "Minimum height: %d pixel"
+msgid_plural "Minimum height: %d pixels"
+msgstr[0] ""
+
+#: src/window/AccountDialog.vala:381 src/window/AccountDialog.vala:394
+msgid "Pick"
+msgstr ""
+
 #: src/window/ComposeTweetWindow.vala:107
 msgid "Quote tweet"
 msgstr "引用推文"
@@ -332,11 +372,6 @@ msgstr "引用推文"
 #: src/window/ComposeTweetWindow.vala:368
 msgid "Select Image"
 msgstr "选择图片"
-
-#: src/window/ComposeTweetWindow.vala:264
-#: src/window/ComposeTweetWindow.vala:373
-msgid "Open"
-msgstr "打开"
 
 #: src/window/ComposeTweetWindow.vala:288
 #, c-format
@@ -435,13 +470,6 @@ msgstr "网站"
 #: ui/account-dialog.ui:171
 msgid "Autostart"
 msgstr "自动登入"
-
-#: ui/account-dialog.ui:202 ui/account-dialog.ui:259 ui/filter-list-entry.ui:93
-#: ui/list-list-entry.ui:132 ui/list-statuses-page.ui:166
-#: ui/modify-snippet-dialog.ui:108 ui/tweet-info-page.ui:10
-#: ui/tweet-list-entry.ui:10
-msgid "Delete"
-msgstr "删除"
 
 #: ui/account-dialog.ui:234
 msgid "Do you really want to delete this account?"
@@ -803,19 +831,19 @@ msgstr "前往"
 msgid "Quote"
 msgstr "引用"
 
-#: ui/tweet-info-page.ui:260
+#: ui/tweet-info-page.ui:265
 msgid "Retweet tweet"
 msgstr "转推"
 
-#: ui/tweet-info-page.ui:287
+#: ui/tweet-info-page.ui:292
 msgid "Favorite tweet"
 msgstr "收藏推文"
 
-#: ui/tweet-info-page.ui:314
+#: ui/tweet-info-page.ui:319
 msgid "Reply to tweet"
 msgstr "回复推文"
 
-#: ui/tweet-info-page.ui:352
+#: ui/tweet-info-page.ui:357
 msgid "More"
 msgstr "更多"
 
