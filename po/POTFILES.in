@@ -9,6 +9,7 @@ src/FavoritesTimeline.vala
 src/FilterPage.vala
 src/HomeTimeline.vala
 src/list/DMThreadEntry.vala
+src/list/FavImageRow.vala
 src/ListsPage.vala
 src/ListStatusesPage.vala
 src/list/TweetListEntry.vala
@@ -26,6 +27,7 @@ src/widgets/FollowButton.vala
 src/widgets/MediaButton.vala
 src/widgets/PixbufButton.vala
 src/widgets/TweetListBox.vala
+src/window/AccountDialog.vala
 src/window/ComposeTweetWindow.vala
 src/window/ModifyFilterDialog.vala
 src/window/ModifySnippetDialog.vala
