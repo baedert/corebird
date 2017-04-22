@@ -165,6 +165,7 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
           }
         }
       }
+      // TODO: Remove the 2 .replace() calls here, since they are slow
       if (n_mentions > 0) {
         if (n_mentions == 1 && second_mention != null) {
           /* From display_text, includes '@' */
@@ -176,7 +177,7 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
               .append (" <span underline='none'><a href=\"")
               .append (second_mention.target)
               .append ("\" title=\"")
-              .append (second_mention.tooltip_text)
+              .append (second_mention.tooltip_text.replace ("&", "&amp;").replace ("\"", "&quot;"))
               .append ("\">")
               .append (second_mention.display_text)
               .append ("</a></span>");
