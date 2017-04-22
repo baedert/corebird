@@ -122,7 +122,7 @@
                     <property name="visible">1</property>
                     <property name="icon-name">corebird-conversation-symbolic</property>
                     <property name="icon-size">1</property>
-                    <property name="valign">center</property>
+                    <property name="valign">start</property>
                   </object>
                 </child>
                 <child>
