@@ -21,7 +21,7 @@ public class MainWidget : Gtk.Box {
 
   private Gtk.RadioButton dummy_button  = new Gtk.RadioButton (null);
   private IPage[] pages;
-  private BundleHistory history         = new BundleHistory (5);
+  private BundleHistory history         = new BundleHistory (10);
   private bool page_switch_lock         = false;
   private ImpostorWidget stack_impostor  = new ImpostorWidget ();
 
