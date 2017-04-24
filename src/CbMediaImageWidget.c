@@ -94,6 +94,8 @@ cb_media_image_widget_new (CbMedia *media)
   int img_height;
   int win_width;
   int win_height;
+  GdkMonitor *monitor;
+  GdkRectangle workarea;
 
   g_return_val_if_fail (CB_IS_MEDIA (media), NULL);
   g_return_val_if_fail (!media->invalid, NULL);
@@ -112,9 +114,23 @@ cb_media_image_widget_new (CbMedia *media)
   win_width = 800;
   win_height = 600;
 
-  /* TODO: Replace the GdkScreen usage here */
+  /* TODO: This (and the old code) are not monitor-aware, so the values we use
+   *       might make the widget look bad on a non-primary monitor.
+   *       We should instead do these calculations after the widget has been added
+   *       to a toplevel and use the widget's display. */
 
-  if (img_width <= gdk_screen_get_width (gdk_screen_get_default ()) * 0.7)
+  monitor = gdk_display_get_primary_monitor (gdk_screen_get_display (gdk_screen_get_default ()));
+  if (monitor != NULL)
+    {
+      gdk_monitor_get_workarea (monitor, &workarea);
+    }
+  else
+    {
+      workarea.width = win_width;
+      workarea.height = win_height;
+    }
+
+  if (img_width <= workarea.width * 0.7)
     {
       win_width = img_width;
       g_object_set (self,
@@ -122,7 +138,7 @@ cb_media_image_widget_new (CbMedia *media)
                     NULL);
     }
 
-  if (img_height <= gdk_screen_get_height (gdk_screen_get_default ()) * 0.7)
+  if (img_height <= workarea.height * 0.7)
     {
       win_height = img_height;
       g_object_set (self,
