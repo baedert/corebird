@@ -84,7 +84,6 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       if (manager.has_thread (user_id)) {
         this.unread_count -= manager.reset_unread_count (user_id);
       }
-      _main_window.main_widget.switch_page (Page.DM, bundle);
       var bundle = new Cb.Bundle ();
       bundle.put_int64 (DMPage.KEY_SENDER_ID, user_id);
       bundle.put_string (DMPage.KEY_SCREEN_NAME, screen_name);
