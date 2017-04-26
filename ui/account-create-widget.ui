@@ -18,11 +18,6 @@
           <attribute name="scale" value="3"/>
         </attributes>
       </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">0</property>
-      </packing>
     </child>
     <child>
       <object class="GtkBox">
@@ -93,11 +88,6 @@
           </packing>
         </child>
       </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">1</property>
-      </packing>
     </child>
     <child>
       <object class="GtkLabel" id="error_label">
@@ -108,11 +98,6 @@
         <property name="wrap-mode">word-char</property>
         <property name="selectable">1</property>
       </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">2</property>
-      </packing>
     </child>
     <child>
       <object class="GtkLabel" id="info_label">
@@ -123,11 +108,6 @@
           <class name="dim-label"/>
         </style>
       </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">3</property>
-      </packing>
     </child>
   </template>
   <object class="GtkSizeGroup">

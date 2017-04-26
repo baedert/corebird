@@ -26,10 +26,6 @@
         <property name="visible">1</property>
         <property name="vexpand">1</property>
       </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-      </packing>
     </child>
   </template>
 </interface>

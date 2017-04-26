@@ -14,11 +14,6 @@
         <property name="can-focus">False</property>
         <property name="halign">center</property>
       </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">0</property>
-      </packing>
     </child>
     <child>
       <object class="GtkLabel" id="name_label">
@@ -28,11 +23,6 @@
           <attribute name="weight" value="bold"/>
         </attributes>
       </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">1</property>
-      </packing>
     </child>
     <child>
       <object class="GtkLabel" id="screen_name_label">
@@ -42,11 +32,6 @@
           <class name="dim-label"/>
         </style>
       </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">2</property>
-      </packing>
     </child>
   </template>
 </interface>

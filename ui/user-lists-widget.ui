@@ -13,11 +13,6 @@
         <property name="margin-bottom">6</property>
         <property name="label" translatable="yes">Created</property>
       </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">0</property>
-      </packing>
     </child>
     <child>
       <object class="GtkFrame" id="user_list_frame">
@@ -70,11 +65,6 @@
           </object>
         </child>
       </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">1</property>
-      </packing>
     </child>
     <child>
       <object class="GtkLabel" id="subscribed_list_label">
@@ -86,11 +76,6 @@
         <property name="label" translatable="yes">Subscribed to</property>
         <property name="ellipsize">end</property>
       </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">2</property>
-      </packing>
     </child>
     <child>
       <object class="GtkFrame" id="subscribed_list_frame">
@@ -107,11 +92,6 @@
           </object>
         </child>
       </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">3</property>
-      </packing>
     </child>
   </template>
 </interface>
