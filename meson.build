@@ -190,6 +190,9 @@ cb_lib = static_library(
     '--vapidir=' + meson.source_root() + '/vapi/',
     '--gresources=' + meson.source_root() + '/corebird.gresource.xml',
   ],
+  c_args: [
+    '-Werror=implicit-function-declaration'
+  ]
 )
 cb_dep = declare_dependency(
   link_with: cb_lib,
