@@ -94,6 +94,63 @@ cb_utils_escape_quotes (const char *in)
   return result;
 }
 
+/* TODO: Code duplication here with escape_quotes */
+char *
+cb_utils_escape_ampersands (const char *in)
+{
+  gsize bytes = strlen (in);
+  gsize n_ampersands = 0;
+  const char *p = in;
+  gunichar c;
+  char *result;
+  const char *last;
+  char *out_pos;
+
+  c = g_utf8_get_char (p);
+  while (c != '\0')
+    {
+      if (c == '&')
+        n_ampersands ++;
+
+      p = g_utf8_next_char (p);
+      c = g_utf8_get_char (p);
+    }
+
+  /* 'amp;' and not '&amp;' since the input already contains the '&' */
+  result = g_malloc (bytes + (n_ampersands * strlen ("amp;")) + 1);
+  result[bytes + (n_ampersands * strlen ("amp;"))] = '\0';
+
+  p = in;
+  c = g_utf8_get_char (p);
+  last = p;
+  out_pos = result;
+  while (c != '\0')
+    {
+
+      if (c == '&')
+        {
+          int bytes = p - last;
+          memcpy (out_pos, last, bytes);
+          last = p;
+          out_pos[bytes + 0] = '&';
+          out_pos[bytes + 1] = 'a';
+          out_pos[bytes + 2] = 'm';
+          out_pos[bytes + 3] = 'p';
+          out_pos[bytes + 4] = ';';
+          last += 1; /* Skip & */
+          out_pos += bytes + 5;
+        }
+
+      p = g_utf8_next_char (p);
+      c = g_utf8_get_char (p);
+    }
+
+  memcpy (out_pos, last, p - last);
+
+  return result;
+
+}
+
 
 GDateTime *
 cb_utils_parse_date (const char *_in)

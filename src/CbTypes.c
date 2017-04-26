@@ -21,62 +21,6 @@
 #include <string.h>
 #include <stdlib.h>
 
-char *
-escape_ampersand (const char *in)
-{
-  gsize bytes = strlen (in);
-  gsize n_ampersands = 0;
-  const char *p = in;
-  gunichar c;
-  char *result;
-  const char *last;
-  char *out_pos;
-
-  c = g_utf8_get_char (p);
-  while (c != '\0')
-    {
-      if (c == '&')
-        n_ampersands ++;
-
-      p = g_utf8_next_char (p);
-      c = g_utf8_get_char (p);
-    }
-
-  /* 'amp;' and not '&amp;' since the input already contains the '&' */
-  result = g_malloc (bytes + (n_ampersands * strlen ("amp;")) + 1);
-  result[bytes + (n_ampersands * strlen ("amp;"))] = '\0';
-
-  p = in;
-  c = g_utf8_get_char (p);
-  last = p;
-  out_pos = result;
-  while (c != '\0')
-    {
-
-      if (c == '&')
-        {
-          int bytes = p - last;
-          memcpy (out_pos, last, bytes);
-          last = p;
-          out_pos[bytes + 0] = '&';
-          out_pos[bytes + 1] = 'a';
-          out_pos[bytes + 2] = 'm';
-          out_pos[bytes + 3] = 'p';
-          out_pos[bytes + 4] = ';';
-          last += 1; /* Skip & */
-          out_pos += bytes + 5;
-        }
-
-      p = g_utf8_next_char (p);
-      c = g_utf8_get_char (p);
-    }
-
-  memcpy (out_pos, last, p - last);
-
-  return result;
-}
-
-
 void
 cb_user_identity_free (CbUserIdentity *id)
 {
@@ -99,7 +43,7 @@ void cb_user_identity_parse (CbUserIdentity *id,
 {
   id->id = json_object_get_int_member (user_obj, "id");
   id->screen_name = g_strdup (json_object_get_string_member (user_obj, "screen_name"));
-  id->user_name = escape_ampersand (json_object_get_string_member (user_obj, "name"));
+  id->user_name = cb_utils_escape_ampersands (json_object_get_string_member (user_obj, "name"));
 }
 
 
@@ -299,9 +243,9 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
       indices = json_object_get_array_member (url, "indices");
       t->entities[url_index].from = json_array_get_int_element (indices, 0);
       t->entities[url_index].to   = json_array_get_int_element (indices, 1);
-      t->entities[url_index].display_text = escape_ampersand (json_object_get_string_member (url, "display_url"));
-      t->entities[url_index].tooltip_text = escape_ampersand (expanded_url);
-      t->entities[url_index].target = escape_ampersand (expanded_url);
+      t->entities[url_index].display_text = cb_utils_escape_ampersands (json_object_get_string_member (url, "display_url"));
+      t->entities[url_index].tooltip_text = cb_utils_escape_ampersands (expanded_url);
+      t->entities[url_index].target = cb_utils_escape_ampersands (expanded_url);
 
       url_index ++;
     }
@@ -333,7 +277,7 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
       t->entities[url_index].from = json_array_get_int_element (indices, 0);
       t->entities[url_index].to   = json_array_get_int_element (indices, 1);
       t->entities[url_index].display_text = g_strdup_printf ("@%s", screen_name);
-      t->entities[url_index].tooltip_text = escape_ampersand (json_object_get_string_member (mention, "name"));
+      t->entities[url_index].tooltip_text = cb_utils_escape_ampersands (json_object_get_string_member (mention, "name"));
       t->entities[url_index].target = g_strdup_printf ("@%s/@%s", id_str, screen_name);
       url_index ++;
     }
@@ -347,7 +291,7 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
         {
           JsonObject *url = json_node_get_object (json_array_get_element (medias, i));
           JsonArray  *indices = json_object_get_array_member (url, "indices");
-          char *url_str = escape_ampersand (json_object_get_string_member (url, "url"));
+          char *url_str = cb_utils_escape_ampersands (json_object_get_string_member (url, "url"));
           int k;
           gboolean duplicate = FALSE;
 
@@ -370,7 +314,7 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
 
           t->entities[url_index].from = json_array_get_int_element (indices, 0);
           t->entities[url_index].to   = json_array_get_int_element (indices, 1);
-          t->entities[url_index].display_text = escape_ampersand (json_object_get_string_member (url, "display_url"));
+          t->entities[url_index].display_text = cb_utils_escape_ampersands (json_object_get_string_member (url, "display_url"));
           t->entities[url_index].target = url_str;
 
           url_index ++;

@@ -66,6 +66,4 @@ void cb_mini_tweet_init (CbMiniTweet *t);
 void cb_mini_tweet_parse (CbMiniTweet *t, JsonObject *obj);
 void cb_mini_tweet_parse_entities (CbMiniTweet *t, JsonObject *obj);
 
-char *escape_ampersand (const char *in);
-
 #endif
