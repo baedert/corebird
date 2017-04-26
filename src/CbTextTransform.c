@@ -203,7 +203,7 @@ cb_text_transform_text (const char   *text,
 
           if (entity->tooltip_text != NULL)
             {
-              char *c = escape_ampersand (entity->tooltip_text);
+              char *c = cb_utils_escape_ampersands (entity->tooltip_text);
               char *cc = cb_utils_escape_quotes (c);
 
               g_string_append (str, " title=\"");
