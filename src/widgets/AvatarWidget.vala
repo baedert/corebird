@@ -166,6 +166,12 @@ public class AvatarWidget : Gtk.Widget {
     ct.set_source_surface (this._surface, 0, 0);
     ct.fill();
 
+    int y;
+    if (overlap)
+      y = - OVERLAP_DIST;
+    else
+      y = 0;
+
     if (_round) {
       ct.scale (1.0/scale, 1.0/scale);
       ct.set_operator (Cairo.Operator.DEST_IN);
@@ -175,19 +181,14 @@ public class AvatarWidget : Gtk.Widget {
               2 * Math.PI);        // Angle to
       ct.fill ();
 
-      if (overlap)
-        this.get_style_context ().render_frame (ctx, 0, - OVERLAP_DIST, width, height);
-      else
-        this.get_style_context ().render_frame (ctx, 0, 0, width, height);
+      this.get_style_context ().render_frame (ctx, 0, y, width, height);
     }
 
-    if (overlap)
-      ctx.set_source_surface (surface, 0, - OVERLAP_DIST);
-    else
-      ctx.set_source_surface (surface, 0, 0);
+
+    ctx.set_source_surface (surface, 0, y);
     ctx.paint_with_alpha (alpha);
 
-    if (verified&& false) {
+    if (verified) {
       int index = SMALL;
       if (width > 48)
         index = LARGE;
@@ -196,7 +197,7 @@ public class AvatarWidget : Gtk.Widget {
       Cairo.Surface verified_img = verified_icons[scale_factor * 2 + index];
       ctx.set_source_surface (verified_img,
                               width - VERIFIED_SIZES[index],
-                              0);
+                              y);
       ctx.paint_with_alpha (this.alpha);
     }
 
