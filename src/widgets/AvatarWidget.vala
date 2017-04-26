@@ -73,7 +73,7 @@ public class AvatarWidget : Gtk.Widget {
 
 
   static Cairo.Surface[] verified_icons;
-  const int[] VERIFIED_SIZES = {12, 18};
+  const int[] VERIFIED_SIZES = {12, 25};
   static construct {
     try {
       verified_icons = {
