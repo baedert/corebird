@@ -411,7 +411,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
       return;
 
     // We HAVE to use widgets here.
-    tweet_list.forall_internal (false, (w) => {
+    tweet_list.forall_internal ((w) => {
       if (!(w is TweetListEntry))
         return;
 

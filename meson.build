@@ -8,7 +8,7 @@ srcdir = include_directories('src')
 min_glib_version = '2.44'
 
 glib_dep = dependency('glib-2.0', version: '>=' + min_glib_version)
-gtk_dep  = dependency('gtk+-4.0', version: '>=3.90')
+gtk_dep  = dependency('gtk+-4.0')
 json_dep = dependency('json-glib-1.0')
 rest_dep = dependency('rest-0.7')
 sql_dep  = dependency('sqlite3')
@@ -186,6 +186,7 @@ cb_lib = static_library(
   dependencies: cb_deps,
   include_directories: srcdir,
   vala_args: [
+    '--use-header',
     meson.source_root() + '/vapi/config.vapi',
     '--target-glib=' + min_glib_version,
     '--vapidir=' + meson.source_root() + '/vapi/',

@@ -61,7 +61,7 @@ public class MultiMediaWidget : Gtk.Box {
     }
     button.visible = true;
     button.clicked.connect (button_clicked_cb);
-    this.pack_start (button, true, true);
+    this.add (button);
     this.queue_draw ();
   }
 

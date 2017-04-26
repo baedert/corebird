@@ -134,7 +134,7 @@ public class AvatarBannerWidget : Gtk.Container {
     w.unparent ();
   }
 
-  public override void forall_internal (bool include_internals, Gtk.Callback cb) {
+  public override void forall_internal (Gtk.Callback cb) {
     cb (set_banner_button);
     cb (set_avatar_button);
   }

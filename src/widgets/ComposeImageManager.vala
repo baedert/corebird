@@ -88,7 +88,7 @@ class ComposeImageManager : Gtk.Container {
   }
 
   // GtkContainer API {{{
-  public override void forall_internal (bool include_internals, Gtk.Callback cb) {
+  public override void forall_internal (Gtk.Callback cb) {
     assert (buttons.length == close_buttons.length);
     assert (buttons.length == progress_bars.length);
 
