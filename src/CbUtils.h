@@ -20,12 +20,15 @@
 
 #include <gtk/gtk.h>
 #include <glib-object.h>
+#include "CbTypes.h"
 
 void cb_utils_bind_model (GtkWidget                  *listbox,
                           GListModel                 *model,
                           GtkListBoxCreateWidgetFunc  func,
                           void                       *data);
 
+void cb_utils_linkify_user (const CbUserIdentity *user,
+                            GString              *str);
 
 char * cb_utils_escape_quotes (const char *in);
 char * cb_utils_escape_ampersands (const char *in);

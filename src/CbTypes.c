@@ -119,6 +119,7 @@ cb_mini_tweet_copy (CbMiniTweet *t1, CbMiniTweet *t2)
 void
 cb_mini_tweet_init (CbMiniTweet *t)
 {
+  t->reply_id = 0;
   t->medias = NULL;
   t->n_medias = 0;
   t->entities = NULL;

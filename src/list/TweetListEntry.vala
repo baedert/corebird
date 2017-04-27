@@ -138,56 +138,30 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
       rt_label.label = buff.str;
     }
 
-    if (tweet.reply_id != 0) {
+    if ((tweet.retweeted_tweet != null &&
+         tweet.retweeted_tweet.reply_id != 0) ||
+        tweet.source_tweet.reply_id != 0) {
+      var reply_users = tweet.get_reply_users ();
       var buff = new StringBuilder ();
       /* Use the user we directly reply to in any case */
       /* TRANSLATORS: This is the start of a "Replying to" line in a tweet */
       buff.append (_("Replying to"));
       buff.append_c (' ');
-      buff.append ("<span underline='none'><a href=\"@")
-          .append (tweet.reply_user_id.to_string ())
-          .append ("/@")
-          .append (tweet.reply_screen_name)
-          .append ("\">@")
-          .append (tweet.reply_screen_name)
-          .append ("</a></span>");
+      Cb.Utils.linkify_user (ref reply_users[0], buff);
 
-      /* And just a number for the rest */
-      int n_mentions = 0;
-      Cb.TextEntity? second_mention = null;
-      foreach (var e in tweet.source_tweet.entities) {
-        if (e.to < tweet.source_tweet.display_range_start &&
-            e.display_text != "@" + tweet.reply_screen_name) {
-          n_mentions ++;
-
-          if (second_mention == null) {
-            second_mention = e;
-          }
-        }
-      }
-      // TODO: Remove the 2 .replace() calls here, since they are slow
-      if (n_mentions > 0) {
-        if (n_mentions == 1 && second_mention != null) {
-          /* From display_text, includes '@' */
-          buff.append_c (' ');
-          /* TRANSLATORS: This gets appended to the "replying to" line
-             in a tweet. Example: "Replying to Foo and Bar" where
-             "and Bar" comes from this string. */
-          buff.append (_("and"))
-              .append (" <span underline='none'><a href=\"")
-              .append (second_mention.target)
-              .append ("\" title=\"")
-              .append (second_mention.tooltip_text.replace ("&", "&amp;").replace ("\"", "&quot;"))
-              .append ("\">")
-              .append (second_mention.display_text)
-              .append ("</a></span>");
-        } else {
-          /* 2 or more */
-          buff.append_c (' ');
-          /* TRANSLATORS: This gets appended to the "replying to" line
-             in a tweet */
-          buff.append (_("and %d others").printf (n_mentions));
-        }
+      if (reply_users.length == 2) {
+        buff.append_c (' ');
+        /* TRANSLATORS: This gets appended to the "replying to" line
+           in a tweet. Example: "Replying to Foo and Bar" where
+           "and Bar" comes from this string. */
+        buff.append (_("and"));
+        buff.append_c (' ');
+        Cb.Utils.linkify_user (ref reply_users[1], buff);
+      } else if (reply_users.length > 2) {
+        buff.append_c (' ');
+        /* TRANSLATORS: This gets appended to the "replying to" line
+           in a tweet */
+        buff.append (_("and %d others").printf (reply_users.length - 1));
       }
       reply_label.label = buff.str;
       reply_label.show ();
