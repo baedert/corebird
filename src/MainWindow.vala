@@ -24,7 +24,8 @@ public class MainWindow : Gtk.ApplicationWindow {
     {"show-account-dialog", show_account_dialog},
     {"show-account-list",   show_account_list},
     {"previous",            previous},
-    {"next",                next}
+    {"next",                next},
+    {"save-state",          save_state},
   };
   [GtkChild]
   private Gtk.HeaderBar headerbar;
@@ -542,6 +543,19 @@ public class MainWindow : Gtk.ApplicationWindow {
     if (tweet != null) {
       tweet.set_seen (true);
       mentions_timeline.unread_count --;
+    }
+  }
+
+  private void save_state () {
+    HomeTimeline home_timeline = ((HomeTimeline)this.main_widget.get_page(Page.STREAM));
+    var model = home_timeline.tweet_list.model;
+    string dir = Dirs.cache ("state");
+    for (uint i = 0; i < model.get_n_items (); i ++) {
+      var v = ((Cb.Tweet)model.get_object (i)).serialize ();
+      GLib.FileUtils.set_contents (dir + i.to_string () + ".cbtweet",
+                                   (string)v.get_data (),
+                                   (ssize_t)v.get_size ());
+
     }
   }
 }

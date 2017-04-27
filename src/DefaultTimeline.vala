@@ -81,7 +81,22 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
 
   public virtual void on_join (int page_id, Cb.Bundle? args) {
     if (!initialized) {
-      load_newest ();
+      if (!(this is HomeTimeline)) {
+        load_newest ();
+      } else {
+        string dir = Dirs.cache ("state");
+        var directory = File.new_for_path (dir);
+        var enumerator = directory.enumerate_children (FileAttribute.STANDARD_NAME, 0);
+        FileInfo file_info;
+        while ((file_info = enumerator.next_file ()) != null) {
+            uint8[] input;
+            GLib.FileUtils.get_data (dir + "/" + file_info.get_name (),
+                                     out input);
+            var bytes = new GLib.Bytes.take (input);
+            var t = Cb.Tweet.deserialize_from_bytes (bytes);
+            this.tweet_list.model.add (t);
+        }
+      }
 
       if (!Settings.auto_scroll_on_new_tweets ()) {
         /* we are technically not scrolling up, but due to missing content,

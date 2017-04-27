@@ -120,6 +120,7 @@ CbUserIdentity *cb_tweet_get_reply_users (CbTweet *tweet,
                                           guint   *n_reply_users);
 GVariant   *cb_tweet_serialize (CbTweet *tweet);
 CbTweet    *cb_tweet_deserialize (GVariant *variant);
+CbTweet    *cb_tweet_deserialize_from_bytes (GBytes *bytes);
 
 #endif
 

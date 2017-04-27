@@ -35,6 +35,10 @@ namespace Dirs {
     return config_dir + path;
   }
 
+  public string cache (string path) {
+    return GLib.Environment.get_user_cache_dir () + "/corebird/" + path;
+  }
+
   private void create_folder (string path) {
     if (FileUtils.test (path, FileTest.EXISTS))
       return;

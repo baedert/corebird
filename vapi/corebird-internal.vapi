@@ -131,7 +131,10 @@ namespace Cb {
 #if DEBUG
       public string json_data;
 #endif
-      public GLib.Variant serialize();
+      public GLib.Variant serialize ();
+
+      public static Cb.Tweet deserialize  ();
+      public static Cb.Tweet deserialize_from_bytes  (GLib.Bytes bytes);
     }
 
     [CCode (cprefix = "CB_TWEET_STATE_", lower_case_cprefix = "CbTweetState", cheader_filename = "CbTweet.h")]

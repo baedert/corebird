@@ -19,6 +19,8 @@
 #include "CbTextTransform.h"
 #include <string.h>
 
+#define CB_TWEET_VARIANT_TYPE "(uxv)"
+
 
 /* TODO: We might want to put this into a utils.c later */
 static gboolean
@@ -456,7 +458,7 @@ cb_tweet_get_reply_users (CbTweet *tweet,
 GVariant *
 cb_tweet_serialize (CbTweet *tweet)
 {
-  return g_variant_new ("(uxv)",
+  return g_variant_new (CB_TWEET_VARIANT_TYPE,
                         tweet->state,
                         tweet->id,
                         cb_mini_tweet_serialize (&tweet->source_tweet));
@@ -465,7 +467,31 @@ cb_tweet_serialize (CbTweet *tweet)
 CbTweet *
 cb_tweet_deserialize (GVariant *variant)
 {
+  guint state;
+  CbTweet *t = cb_tweet_new ();
+  GVariant *source_tweet_variant;
 
+  g_variant_get (variant, CB_TWEET_VARIANT_TYPE,
+                 &state,
+                 &t->id,
+                 &source_tweet_variant);
+
+  t->state = state;
+  cb_mini_tweet_deserialize (source_tweet_variant, &t->source_tweet);
+
+  return t;
+}
+
+CbTweet *
+cb_tweet_deserialize_from_bytes (GBytes *bytes)
+{
+  GVariant *variant;
+
+  variant = g_variant_new_from_bytes (G_VARIANT_TYPE (CB_TWEET_VARIANT_TYPE),
+                                      bytes,
+                                      TRUE); /* XXX Really? */
+
+  return cb_tweet_deserialize (variant);
 }
 
 CbTweet *
