@@ -123,7 +123,12 @@ void main (string[] args) {
     list3.add (row);
   }
 
-
+  {
+    // Retweet of a tweet that replies to multiple users (2!)
+    var tweet = parse_tweet (REPLY3);
+    var row = new TweetListEntry (tweet, null, fake_acount);
+    list3.add (row);
+  }
 
 
   list.set_size_request  (500, -1);
@@ -3477,4 +3482,230 @@ const string REPLY2 = """
   "possibly_sensitive" : false,
   "lang" : "en"
 }
+""";
+
+const string REPLY3 = """
+{
+  "created_at" : "Mon Apr 24 11:40:53 +0000 2017",
+  "id" : 856473014560591872,
+  "id_str" : "856473014560591872",
+  "full_text" : "RT @corebirdgtk: @baedert and @corebirdclient so?",
+  "truncated" : false,
+  "display_text_range" : [
+    0,
+    49
+  ],
+  "entities" : {
+    "hashtags" : [
+    ],
+    "symbols" : [
+    ],
+    "user_mentions" : [
+      {
+        "screen_name" : "corebirdgtk",
+        "name" : "Z??!@*(&*²³¤²³¤",
+        "id" : 993713617,
+        "id_str" : "993713617",
+        "indices" : [
+          3,
+          15
+        ]
+      },
+      {
+        "screen_name" : "baedert",
+        "name" : "Schupp & Wupp",
+        "id" : 118055879,
+        "id_str" : "118055879",
+        "indices" : [
+          17,
+          25
+        ]
+      },
+      {
+        "screen_name" : "corebirdclient",
+        "name" : "Corebird",
+        "id" : 2877682863,
+        "id_str" : "2877682863",
+        "indices" : [
+          30,
+          45
+        ]
+      }
+    ],
+    "urls" : [
+    ]
+  },
+  "source" : "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>",
+  "in_reply_to_status_id" : null,
+  "in_reply_to_status_id_str" : null,
+  "in_reply_to_user_id" : null,
+  "in_reply_to_user_id_str" : null,
+  "in_reply_to_screen_name" : null,
+  "user" : {
+    "id" : 993713617,
+    "id_str" : "993713617",
+    "name" : "Z??!@*(&*²³¤²³¤",
+    "screen_name" : "corebirdgtk",
+    "location" : "",
+    "description" : "&lt;asdf",
+    "url" : null,
+    "entities" : {
+      "description" : {
+        "urls" : [
+        ]
+      }
+    },
+    "protected" : true,
+    "followers_count" : 3,
+    "friends_count" : 4,
+    "listed_count" : 0,
+    "created_at" : "Thu Dec 06 19:47:16 +0000 2012",
+    "favourites_count" : 9,
+    "utc_offset" : 7200,
+    "time_zone" : "Amsterdam",
+    "geo_enabled" : false,
+    "verified" : false,
+    "statuses_count" : 909,
+    "lang" : "en",
+    "contributors_enabled" : false,
+    "is_translator" : false,
+    "is_translation_enabled" : true,
+    "profile_background_color" : "C0DEED",
+    "profile_background_image_url" : "http://abs.twimg.com/images/themes/theme1/bg.png",
+    "profile_background_image_url_https" : "https://abs.twimg.com/images/themes/theme1/bg.png",
+    "profile_background_tile" : false,
+    "profile_image_url" : "http://pbs.twimg.com/profile_images/655270693341417472/h6BbZKJy_normal.png",
+    "profile_image_url_https" : "https://pbs.twimg.com/profile_images/655270693341417472/h6BbZKJy_normal.png",
+    "profile_banner_url" : "https://pbs.twimg.com/profile_banners/993713617/1413106147",
+    "profile_link_color" : "1DA1F2",
+    "profile_sidebar_border_color" : "C0DEED",
+    "profile_sidebar_fill_color" : "DDEEF6",
+    "profile_text_color" : "333333",
+    "profile_use_background_image" : true,
+    "has_extended_profile" : false,
+    "default_profile" : true,
+    "default_profile_image" : false,
+    "following" : true,
+    "follow_request_sent" : false,
+    "notifications" : false,
+    "translator_type" : "none"
+  },
+  "geo" : null,
+  "coordinates" : null,
+  "place" : null,
+  "contributors" : null,
+  "retweeted_status" : {
+    "created_at" : "Mon Apr 24 11:35:17 +0000 2017",
+    "id" : 856471602883686400,
+    "id_str" : "856471602883686400",
+    "full_text" : "@baedert and @corebirdclient so?",
+    "truncated" : false,
+    "display_text_range" : [
+      9,
+      32
+    ],
+    "entities" : {
+      "hashtags" : [
+      ],
+      "symbols" : [
+      ],
+      "user_mentions" : [
+        {
+          "screen_name" : "baedert",
+          "name" : "Schupp & Wupp",
+          "id" : 118055879,
+          "id_str" : "118055879",
+          "indices" : [
+            0,
+            8
+          ]
+        },
+        {
+          "screen_name" : "corebirdclient",
+          "name" : "Corebird",
+          "id" : 2877682863,
+          "id_str" : "2877682863",
+          "indices" : [
+            13,
+            28
+          ]
+        }
+      ],
+      "urls" : [
+      ]
+    },
+    "source" : "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>",
+    "in_reply_to_status_id" : 853198126106148864,
+    "in_reply_to_status_id_str" : "853198126106148864",
+    "in_reply_to_user_id" : 993713617,
+    "in_reply_to_user_id_str" : "993713617",
+    "in_reply_to_screen_name" : "corebirdgtk",
+    "user" : {
+      "id" : 993713617,
+      "id_str" : "993713617",
+      "name" : "Z??!@*(&*²³¤²³¤",
+      "screen_name" : "corebirdgtk",
+      "location" : "",
+      "description" : "&lt;asdf",
+      "url" : null,
+      "entities" : {
+        "description" : {
+          "urls" : [
+          ]
+        }
+      },
+      "protected" : true,
+      "followers_count" : 3,
+      "friends_count" : 4,
+      "listed_count" : 0,
+      "created_at" : "Thu Dec 06 19:47:16 +0000 2012",
+      "favourites_count" : 9,
+      "utc_offset" : 7200,
+      "time_zone" : "Amsterdam",
+      "geo_enabled" : false,
+      "verified" : false,
+      "statuses_count" : 909,
+      "lang" : "en",
+      "contributors_enabled" : false,
+      "is_translator" : false,
+      "is_translation_enabled" : true,
+      "profile_background_color" : "C0DEED",
+      "profile_background_image_url" : "http://abs.twimg.com/images/themes/theme1/bg.png",
+      "profile_background_image_url_https" : "https://abs.twimg.com/images/themes/theme1/bg.png",
+      "profile_background_tile" : false,
+      "profile_image_url" : "http://pbs.twimg.com/profile_images/655270693341417472/h6BbZKJy_normal.png",
+      "profile_image_url_https" : "https://pbs.twimg.com/profile_images/655270693341417472/h6BbZKJy_normal.png",
+      "profile_banner_url" : "https://pbs.twimg.com/profile_banners/993713617/1413106147",
+      "profile_link_color" : "1DA1F2",
+      "profile_sidebar_border_color" : "C0DEED",
+      "profile_sidebar_fill_color" : "DDEEF6",
+      "profile_text_color" : "333333",
+      "profile_use_background_image" : true,
+      "has_extended_profile" : false,
+      "default_profile" : true,
+      "default_profile_image" : false,
+      "following" : true,
+      "follow_request_sent" : false,
+      "notifications" : false,
+      "translator_type" : "none"
+    },
+    "geo" : null,
+    "coordinates" : null,
+    "place" : null,
+    "contributors" : null,
+    "is_quote_status" : false,
+    "retweet_count" : 1,
+    "favorite_count" : 0,
+    "favorited" : false,
+    "retweeted" : false,
+    "lang" : "en"
+  },
+  "is_quote_status" : false,
+  "retweet_count" : 1,
+  "favorite_count" : 0,
+  "favorited" : false,
+  "retweeted" : false,
+  "lang" : "en"
+}
+
 """;
