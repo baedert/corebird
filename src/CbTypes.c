@@ -581,9 +581,11 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
 GVariant *
 cb_mini_tweet_serialize (const CbMiniTweet *t)
 {
-  return g_variant_new ("(xxvs)",
+  return g_variant_new ("(xxuxvs)",
                         t->id,
                         t->created_at,
+                        t->display_range_start,
+                        t->reply_id,
                         cb_user_identity_serialize (&t->author),
                         t->text); /* TODO: Other stuff */
 }
@@ -597,6 +599,8 @@ cb_mini_tweet_deserialize (GVariant    *variant,
   g_variant_get (variant, "(xxvs)",
                  &t->id,
                  &t->created_at,
+                 &t->display_range_start,
+                 &t->reply_id,
                  &author_variant,
                  &t->text);
 
