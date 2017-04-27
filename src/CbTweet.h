@@ -66,20 +66,20 @@ struct _CbTweet
   GObject parent_instance;
 
   guint state : 16;
+  guint seen : 1;
 
   /* TODO: Remove this field, it doens't make sense (comes from source_tweet
    *       or something else) */
   gint64 id;
+  gint64 my_retweet;
+  guint retweet_count;
+  guint favorite_count;
+  char *avatar_url;
+  char *notification_id;
+
   CbMiniTweet source_tweet;
   CbMiniTweet *retweeted_tweet;
   CbMiniTweet *quoted_tweet;
-  char *avatar_url;
-  gint64 my_retweet;
-  char *notification_id;
-  guint seen : 1;
-
-  guint retweet_count;
-  guint favorite_count;
 
 #ifdef DEBUG
   /* In debug mode, we save the entire json we got from Twitter so we can later look at it */

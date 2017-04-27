@@ -19,7 +19,7 @@
 #include "CbTextTransform.h"
 #include <string.h>
 
-#define CB_TWEET_VARIANT_TYPE "(uxv)"
+#define CB_TWEET_VARIANT_TYPE "(uuxxuus(ms)v)"
 
 
 /* TODO: We might want to put this into a utils.c later */
@@ -460,7 +460,13 @@ cb_tweet_serialize (CbTweet *tweet)
 {
   return g_variant_new (CB_TWEET_VARIANT_TYPE,
                         tweet->state,
+                        tweet->seen,
                         tweet->id,
+                        tweet->my_retweet,
+                        tweet->retweet_count,
+                        tweet->favorite_count,
+                        tweet->avatar_url,
+                        tweet->notification_id,
                         cb_mini_tweet_serialize (&tweet->source_tweet));
 }
 
@@ -468,15 +474,23 @@ CbTweet *
 cb_tweet_deserialize (GVariant *variant)
 {
   guint state;
+  guint seen;
   CbTweet *t = cb_tweet_new ();
   GVariant *source_tweet_variant;
 
   g_variant_get (variant, CB_TWEET_VARIANT_TYPE,
                  &state,
+                 &seen,
                  &t->id,
+                 &t->my_retweet,
+                 &t->retweet_count,
+                 &t->favorite_count,
+                 &t->avatar_url,
+                 &t->notification_id,
                  &source_tweet_variant);
 
   t->state = state;
+  t->seen = seen;
   cb_mini_tweet_deserialize (source_tweet_variant, &t->source_tweet);
 
   return t;

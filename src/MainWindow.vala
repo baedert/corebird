@@ -549,7 +549,7 @@ public class MainWindow : Gtk.ApplicationWindow {
   private void save_state () {
     HomeTimeline home_timeline = ((HomeTimeline)this.main_widget.get_page(Page.STREAM));
     var model = home_timeline.tweet_list.model;
-    string dir = Dirs.cache ("state");
+    string dir = Dirs.cache ("state/");
     for (uint i = 0; i < model.get_n_items (); i ++) {
       var v = ((Cb.Tweet)model.get_object (i)).serialize ();
       GLib.FileUtils.set_contents (dir + i.to_string () + ".cbtweet",
