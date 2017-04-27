@@ -129,6 +129,18 @@ cb_media_loading_finished (CbMedia *media)
   cb_media_update_progress (media, 1.0);
 }
 
+GVariant *
+cb_media_serialize (CbMedia *media)
+{
+
+}
+
+CbMedia *
+cb_media_deserialize (GVariant *variant)
+{
+
+}
+
 CbMediaType
 cb_media_type_from_url (const char *url)
 {
