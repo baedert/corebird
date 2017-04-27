@@ -50,13 +50,15 @@ cb_user_identity_parse (CbUserIdentity *id,
 GVariant *
 cb_user_identity_serialize (const CbUserIdentity *id)
 {
-
+  return g_variant_new ("(xss)", id->id, id->screen_name, id->user_name);
 }
 
-CbUserIdentity *
-cb_user_identity_deserialize (const GVariant *variant)
+void
+cb_user_identity_deserialize (GVariant       *variant,
+                              CbUserIdentity *result)
 {
-
+  g_variant_get (variant, "(xss)",
+                 &result->id, &result->screen_name, &result->user_name);
 }
 
 
@@ -85,13 +87,19 @@ cb_text_entity_copy (CbTextEntity *e1, CbTextEntity *e2)
 GVariant *
 cb_text_entity_serialize (const CbTextEntity *e)
 {
-
+  /* TODO: How to handle ->info? Not at all? */
+  return g_variant_new ("(uusss)",
+                        e->from, e->to,
+                        e->display_text, e->tooltip_text, e->target);
 }
 
-CbTextEntity *
-cb_text_entity_deserialize (const GVariant *variant)
+void
+cb_text_entity_deserialize (GVariant     *variant,
+                            CbTextEntity *e)
 {
-
+  g_variant_get (variant, "(uuusss)",
+                 &e->from, &e->to,
+                 &e->display_text, &e->tooltip_text, &e->target);
 }
 
 void
