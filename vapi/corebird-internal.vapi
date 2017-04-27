@@ -68,12 +68,15 @@ namespace Cb {
     public int64 id;
     public int64 created_at;
     public uint display_range_start;
+    public int64 reply_id;
     public Cb.UserIdentity author;
     public string text;
     [CCode (array_length_cname = "n_entities", array_length_type = "size_t")]
     public Cb.TextEntity[] entities;
     [CCode (array_length_cname = "n_medias", array_length_type = "size_t")]
     public Cb.Media[] medias;
+    [CCode (array_length_cname = "n_reply_users", array_length_type = "size_t")]
+    public Cb.UserIdentity[] reply_users;
 
     [CCode (cname = "cb_mini_tweet_init")]
     public MiniTweet();
@@ -90,9 +93,6 @@ namespace Cb {
       public Cb.MiniTweet? quoted_tweet;
       public int64 id;
       public int64 my_retweet;
-      public int64 reply_id;
-      public int64 reply_user_id;
-      public string reply_screen_name;
       public int favorite_count;
       public int retweet_count;
       public string avatar_url;
@@ -115,7 +115,7 @@ namespace Cb {
       public string get_real_text ();
       public string get_filter_text ();
 
-      public (unowned Cb.TextEntity*)[] get_reply_screen_names ();
+      public unowned Cb.UserIdentity[] get_reply_users ();
 
       public unowned Cb.Media[] get_medias();
       public string[] get_mentions();
@@ -261,6 +261,7 @@ namespace Cb {
           "CbUtils.h")]
   namespace Utils {
     public void bind_model (Gtk.Widget listbox, GLib.ListModel model, Gtk.ListBoxCreateWidgetFunc func);
+    public void linkify_user (ref Cb.UserIdentity id, GLib.StringBuilder str);
     public GLib.DateTime parse_date (string _in);
   }
 

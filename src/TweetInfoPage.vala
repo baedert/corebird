@@ -325,8 +325,12 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
 
       set_tweet_data (tweet, with);
 
-      if (!existing)
-        load_replied_to_tweet (tweet.reply_id);
+      if (!existing) {
+        if (tweet.retweeted_tweet == null)
+          load_replied_to_tweet (tweet.source_tweet.reply_id);
+        else
+          load_replied_to_tweet (tweet.retweeted_tweet.reply_id);
+      }
 
       values_set = true;
     });
@@ -434,7 +438,10 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
       var tweet = new Cb.Tweet ();
       tweet.load_from_json (parser.get_root (), account.id, new GLib.DateTime.now_local ());
       bottom_list_box.model.add (tweet);
-      load_replied_to_tweet (tweet.reply_id);
+      if (tweet.retweeted_tweet == null)
+        load_replied_to_tweet (tweet.source_tweet.reply_id);
+      else
+        load_replied_to_tweet (tweet.retweeted_tweet.reply_id);
     });
   }
 
@@ -463,44 +470,26 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
 
     set_source_link (tweet.id, tweet.get_screen_name ());
 
-    // TODO: Refactor link creation (here and in TweetListEntry)
-    if (tweet.reply_id != 0) {
+    if ((tweet.retweeted_tweet != null &&
+         tweet.retweeted_tweet.reply_id != 0) ||
+        tweet.source_tweet.reply_id != 0) {
+      var reply_users = tweet.get_reply_users ();
       reply_box.show ();
       var buff = new StringBuilder ();
       buff.append (_("Replying to"));
-      var screen_names = tweet.get_reply_screen_names ();
+      buff.append_c (' ');
+      Cb.Utils.linkify_user (ref reply_users[0], buff);
 
-      buff.append (" <span underline='none'><a href=\"@")
-          .append (tweet.reply_user_id.to_string ())
-          .append ("/@")
-          .append (tweet.reply_screen_name)
-          .append ("\">@")
-          .append (tweet.reply_screen_name)
-          .append ("</a></span>");
+      for (int i = 1; i < reply_users.length - 1; i ++) {
+        buff.append (", ");
+        Cb.Utils.linkify_user (ref reply_users[i], buff);
+      }
 
-      if (screen_names.length > 0) {
-        for (int i = 0; i < screen_names.length - 1; i ++) {
-          if (screen_names[i]->display_text !=
-              "@" + tweet.reply_screen_name) {
-            buff.append (", <span underline='none'><a href=\"")
-                .append (screen_names[i]->target)
-                .append ("\" title=\"")
-                .append (screen_names[i]->tooltip_text)
-                .append ("\">")
-                .append (screen_names[i]->display_text)
-                .append ("</a></span>");
-          }
-        }
-
+      if (reply_users.length > 1) {
+        /* Last one */
         buff.append_c (' ')
-            .append (_("and"))
-            .append (" <span underline='none'><a href=\"")
-            .append (screen_names[screen_names.length - 1]->target)
-            .append ("\" title=\"")
-            .append (screen_names[screen_names.length - 1]->tooltip_text)
-            .append ("\">")
-            .append (screen_names[screen_names.length - 1]->display_text)
-            .append ("</a></span>");
+            .append (_("and"));
+        Cb.Utils.linkify_user (ref reply_users[reply_users.length - 1], buff);
       }
 
       reply_label.label = buff.str;

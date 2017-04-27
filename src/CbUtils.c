@@ -38,6 +38,42 @@ cb_utils_bind_model (GtkWidget                  *listbox,
                            NULL);
 }
 
+void
+cb_utils_linkify_user (const CbUserIdentity *user,
+                       GString              *str)
+{
+  g_string_append (str, "<span underline='none'><a href='@");
+  g_string_append_printf (str, "%ld", user->id);
+  g_string_append (str, "/@");
+  g_string_append (str, user->screen_name);
+  g_string_append (str, "' ");
+
+  if (strlen (user->user_name) > 0)
+    {
+      char *s1, *s2, *s3, *s4;
+
+      /* TODO: Write one function doing all 4 things, since we need that often
+       *       and execute it often? */
+      s1 = cb_utils_escape_quotes (user->user_name);
+      s2 = cb_utils_escape_ampersands (s1);
+      s3 = cb_utils_escape_quotes (s2);
+      s4 = cb_utils_escape_ampersands (s3);
+
+      g_string_append (str, "title='");
+      g_string_append (str, s4);
+      g_string_append_c (str, '\'');
+
+      g_free (s1);
+      g_free (s2);
+      g_free (s3);
+      g_free (s4);
+    }
+
+  g_string_append (str, ">@");
+  g_string_append (str, user->screen_name);
+  g_string_append (str, "</a></span>");
+}
+
 char *
 cb_utils_escape_quotes (const char *in)
 {

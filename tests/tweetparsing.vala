@@ -1696,7 +1696,7 @@ void retweet () {
   assert (!t.is_flag_set (Cb.TweetState.FAVORITED));
   assert (!t.is_flag_set (Cb.TweetState.RETWEETED));
   assert (!t.is_flag_set (Cb.TweetState.VERIFIED));
-  assert (t.reply_id == 0);
+  assert (t.source_tweet.reply_id == 0);
   assert (t.my_retweet == 0);
   //assert (!t.has_inline_media);
 }
@@ -1772,7 +1772,7 @@ void special_quote () {
   assert (t.retweeted_tweet.medias.length > 0);
 }
 
-void reply_screen_names () {
+void reply_users () {
   var now = new GLib.DateTime.now_local ();
   var t = new Cb.Tweet ();
 
@@ -1786,9 +1786,12 @@ void reply_screen_names () {
 
   t.load_from_json (root, 0, now);
 
-  var reply_screen_names = t.get_reply_screen_names ();
-
-  assert (reply_screen_names.length == 8);
+  var reply_users = t.get_reply_users ();
+  message (reply_users.length.to_string ());
+  foreach (Cb.UserIdentity id in reply_users) {
+    message ("User: %s @%s", id.user_name, id.screen_name);
+  }
+  assert (reply_users.length == 9);
 }
 
 void empty_display_range () {
@@ -1834,12 +1837,18 @@ void rt_reply () {
    * The result we want is that the CbTweet is a reply to all the
    * users the retweeted tweet was a reply to, so both @corebirdgtk and @baedert.
    */
+  assert (t.retweeted_tweet.reply_users.length == 2);
+  message (t.retweeted_tweet.reply_users[0].screen_name);
+  message (t.retweeted_tweet.reply_users[1].screen_name);
+  /* It's a direct reply to @corebirdgtk, so that should be first */
+  assert (t.retweeted_tweet.reply_users[0].screen_name == "corebirdgtk");
+  assert (t.retweeted_tweet.reply_users[1].screen_name == "baedert");
 
-  var reply_screen_names = t.get_reply_screen_names ();
-  foreach (var e in reply_screen_names) {
-    message (e.display_text);
-  }
-  assert (reply_screen_names.length == 2);
+  /* Consequently, the ones returned by get_reply_users should be the same. */
+  var reply_users = t.get_reply_users ();
+  assert (reply_users.length == 2);
+  assert (reply_users[0].screen_name == "corebirdgtk");
+  assert (reply_users[1].screen_name == "baedert");
 }
 
 int main (string[] args) {
@@ -1855,7 +1864,7 @@ int main (string[] args) {
   GLib.Test.add_func ("/tweet-parsing/media-count", media_count);
   GLib.Test.add_func ("/tweet-parsing/double-media", double_media);
   GLib.Test.add_func ("/tweet-parsing/special-quote", special_quote);
-  GLib.Test.add_func ("/tweet-parsing/reply-screen-names", reply_screen_names);
+  GLib.Test.add_func ("/tweet-parsing/reply-users", reply_users);
   GLib.Test.add_func ("/tweet-parsing/empty-display-range", empty_display_range);
   GLib.Test.add_func ("/tweet-parsing/rt-reply", rt_reply);
 
