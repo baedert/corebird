@@ -67,6 +67,8 @@ struct _CbTweet
 
   guint state : 16;
 
+  /* TODO: Remove this field, it doens't make sense (comes from source_tweet
+   *       or something else) */
   gint64 id;
   CbMiniTweet source_tweet;
   CbMiniTweet *retweeted_tweet;
@@ -116,6 +118,8 @@ void        cb_tweet_set_seen (CbTweet *tweet, gboolean value);
 
 CbUserIdentity *cb_tweet_get_reply_users (CbTweet *tweet,
                                           guint   *n_reply_users);
+GVariant   *cb_tweet_serialize (CbTweet *tweet);
+CbTweet    *cb_tweet_deserialize (GVariant *variant);
 
 #endif
 

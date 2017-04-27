@@ -67,7 +67,7 @@ CbMedia    *cb_media_new (void);
 gboolean    cb_media_is_video (CbMedia *media);
 void        cb_media_loading_finished (CbMedia *media);
 void        cb_media_update_progress (CbMedia *media, double progress);
-GVariant   *cb_media_serialize (const CbMedia *media);
+GVariant   *cb_media_serialize (CbMedia *media);
 CbMedia    *cb_media_deserialize (GVariant *variant);
 
 CbMediaType cb_media_type_from_url (const char *url);
