@@ -220,13 +220,6 @@ cb_tweet_load_from_json (CbTweet   *tweet,
       if (json_object_get_boolean_member (rt_user, "verified"))
         tweet->state |= CB_TWEET_STATE_VERIFIED;
 
-      if (!json_object_get_null_member (rt, "in_reply_to_status_id"))
-        {
-          tweet->reply_id = json_object_get_int_member (rt, "in_reply_to_status_id");
-          tweet->reply_user_id = json_object_get_int_member (rt, "in_reply_to_user_id");
-          tweet->reply_screen_name = g_strdup (json_object_get_string_member (rt, "in_reply_to_screen_name"));
-        }
-
       if (usable_json_value (rt, "possibly_sensitive") &&
           json_object_get_boolean_member (rt, "possibly_sensitive"))
         tweet->state |= CB_TWEET_STATE_NSFW;
@@ -241,13 +234,6 @@ cb_tweet_load_from_json (CbTweet   *tweet,
 
       if (json_object_get_boolean_member (user, "verified"))
         tweet->state |= CB_TWEET_STATE_VERIFIED;
-
-      if (!json_object_get_null_member (status, "in_reply_to_status_id"))
-        {
-          tweet->reply_id = json_object_get_int_member (status, "in_reply_to_status_id");
-          tweet->reply_user_id = json_object_get_int_member (status, "in_reply_to_user_id");
-          tweet->reply_screen_name = g_strdup (json_object_get_string_member (status, "in_reply_to_screen_name"));
-        }
 
       if (usable_json_value (status, "possibly_sensitive") &&
           json_object_get_boolean_member (status, "possibly_sensitive"))
@@ -446,45 +432,25 @@ cb_tweet_set_seen (CbTweet *tweet, gboolean value)
   tweet->seen = value;
 }
 
-CbTextEntity **
-cb_tweet_get_reply_screen_names (CbTweet *tweet,
-                                 guint   *n_replies)
+CbUserIdentity *
+cb_tweet_get_reply_users (CbTweet *tweet,
+                          guint   *n_reply_users)
 {
-  guint n = 0;
-  guint i;
-  CbTextEntity **mentions;
-
   g_return_val_if_fail (CB_IS_TWEET (tweet), NULL);
-  g_return_val_if_fail (n_replies != NULL, NULL);
-  g_return_val_if_fail (tweet->reply_id != 0, NULL);
+  g_return_val_if_fail (n_reply_users != NULL, NULL);
 
-  /* TODO: Care about retweets */
-  for (i = 0; i < tweet->source_tweet.n_entities; i ++)
+  if (tweet->retweeted_tweet != NULL)
     {
-      CbTextEntity *e = &tweet->source_tweet.entities[i];
-
-      if (e->to < tweet->source_tweet.display_range_start &&
-          strcmp (e->display_text + 1, tweet->reply_screen_name) != 0)
-        n ++;
+      *n_reply_users = tweet->retweeted_tweet->n_reply_users;
+      return tweet->retweeted_tweet->reply_users;
+    }
+  else
+    {
+      *n_reply_users = tweet->source_tweet.n_reply_users;
+      return tweet->source_tweet.reply_users;
     }
 
-  mentions = g_malloc (sizeof (CbTextEntity *) * n);
-  *n_replies = n;
-
-  n = 0;
-  for (i = 0; i < tweet->source_tweet.n_entities; i ++)
-    {
-      CbTextEntity *e = &tweet->source_tweet.entities[i];
-
-      if (e->to < tweet->source_tweet.display_range_start &&
-          strcmp (e->display_text + 1, tweet->reply_screen_name) != 0)
-        {
-          mentions[n] = e;
-          n ++;
-        }
-    }
-
-  return mentions;
+  return NULL; /* shrug */
 }
 
 CbTweet *
@@ -500,7 +466,6 @@ cb_tweet_finalize (GObject *object)
 
   g_free (tweet->avatar_url);
   g_free (tweet->notification_id);
-  g_free (tweet->reply_screen_name);
   cb_mini_tweet_free (&tweet->source_tweet);
 
   if (tweet->retweeted_tweet != NULL)
@@ -528,9 +493,6 @@ cb_tweet_init (CbTweet *tweet)
   tweet->state = 0;
   tweet->quoted_tweet = NULL;
   tweet->retweeted_tweet = NULL;
-  tweet->reply_id = 0;
-  tweet->reply_user_id = 0;
-  tweet->reply_screen_name = NULL;
   tweet->notification_id = NULL;
   tweet->seen = TRUE;
 }

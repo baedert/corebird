@@ -51,15 +51,19 @@ struct _CbMiniTweet
 {
   gint64 id;
   gint64 created_at;
+  guint display_range_start;
   CbUserIdentity author;
   char *text;
+  gint64 reply_id;
+
   CbTextEntity *entities;
   guint n_entities;
+
   CbMedia **medias;
   guint n_medias;
+
   CbUserIdentity *reply_users;
   guint n_reply_users;
-  guint display_range_start;
 };
 typedef struct _CbMiniTweet CbMiniTweet;
 void cb_mini_tweet_free (CbMiniTweet *tweet);
