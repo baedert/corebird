@@ -86,6 +86,10 @@ cb_mini_tweet_free (CbMiniTweet *t)
     cb_text_entity_free (&t->entities[i]);
   g_free (t->entities);
 
+  for (i = 0; i < t->n_reply_users; i ++)
+    cb_user_identity_free (&t->reply_users[i]);
+  g_free (t->reply_users);
+
   cb_user_identity_free (&t->author);
 }
 
@@ -119,6 +123,8 @@ cb_mini_tweet_init (CbMiniTweet *t)
   t->n_medias = 0;
   t->entities = NULL;
   t->n_entities = 0;
+  t->reply_users = NULL;
+  t->n_reply_users = 0;
 }
 
 void
@@ -194,6 +200,8 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
   guint i, p;
   int url_index = 0;
   guint n_media_arrays = 0;
+  guint n_reply_users = 0;
+  guint non_reply_mentions = 0;
   int max_entities;
 
   if (json_object_has_member (status, "extended_tweet"))
@@ -207,12 +215,53 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
 
 
   if (json_object_has_member (status, "extended_entities"))
-    media_count +=  json_object_get_member_size (json_object_get_object_member (status, "extended_entities"),
-                                                 "media");
+    media_count += json_object_get_member_size (json_object_get_object_member (status, "extended_entities"),
+                                                "media");
+
+  if (json_object_has_member (status, "in_reply_to_status_id") &&
+      !json_object_get_null_member (status, "in_reply_to_status_id"))
+    {
+      guint reply_index;
+      /* Check how many of the user mentions are reply mentions */
+
+      n_reply_users = 1;
+      for (i = 0, p = json_array_get_length (user_mentions); i < p; i ++)
+        {
+          JsonObject *mention = json_node_get_object (json_array_get_element (user_mentions, i));
+          JsonArray  *indices = json_object_get_array_member (mention, "indices");
+
+          if (json_array_get_int_element (indices, 1) <= t->display_range_start)
+              n_reply_users ++;
+          else
+            break;
+        }
+
+      t->reply_users = g_new0 (CbUserIdentity, n_reply_users);
+      t->n_reply_users = n_reply_users;
+
+      /* Now fill ->reply_users. The very first entry is always the user this tweet
+       * *actually* replies to. */
+      t->reply_users[0].id = json_object_get_int_member (status, "in_reply_to_user_id");
+      t->reply_users[0].screen_name = g_strdup (json_object_get_string_member (status, "in_reply_to_screen_name"));
+      t->reply_users[0].user_name = g_strdup (""); /* XXX Tweet json doesn't contain that information... */
+
+      /* TODO: The in_reply_to_user_id user can be in this list twice... right? */
+      reply_index = 1;
+      for (i = 0; i < n_reply_users - 1; i ++)
+        {
+          JsonObject *mention = json_node_get_object (json_array_get_element (user_mentions, i));
+          t->reply_users[reply_index].id = json_object_get_int_member (mention, "id");
+          t->reply_users[reply_index].screen_name = g_strdup (json_object_get_string_member (mention, "screen_name"));
+          t->reply_users[reply_index].user_name = g_strdup (json_object_get_string_member (mention, "name"));
+          reply_index ++;
+        }
+
+      non_reply_mentions = n_reply_users - 1;
+    }
 
   max_entities = json_array_get_length (urls) +
                                       json_array_get_length (hashtags) +
-                                      json_array_get_length (user_mentions) +
+                                      json_array_get_length (user_mentions) - non_reply_mentions +
                                       media_count;
   media_count += (int)json_array_get_length (urls);
 
@@ -267,7 +316,9 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
     }
 
   /* USER MENTIONS */
-  for (i = 0, p = json_array_get_length (user_mentions); i < p; i ++)
+  /* TODO: We're starting at n_reply_users - 1 here since the directly-replied-to
+   * user is the one we get from in_reply_to_user_id, but it might also be in this list. */
+  for (i = n_reply_users - 1, p = json_array_get_length (user_mentions); i < p; i ++)
     {
       JsonObject *mention = json_node_get_object (json_array_get_element (user_mentions, i));
       JsonArray  *indices = json_object_get_array_member (mention, "indices");
