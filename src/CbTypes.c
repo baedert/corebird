@@ -260,9 +260,9 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
     }
 
   max_entities = json_array_get_length (urls) +
-                                      json_array_get_length (hashtags) +
-                                      json_array_get_length (user_mentions) - non_reply_mentions +
-                                      media_count;
+                 json_array_get_length (hashtags) +
+                 json_array_get_length (user_mentions) - non_reply_mentions +
+                 media_count;
   media_count += (int)json_array_get_length (urls);
 
 
