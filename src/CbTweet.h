@@ -75,10 +75,6 @@ struct _CbTweet
   gint64 my_retweet;
   char *notification_id;
   guint seen : 1;
-  /** if 0, this tweet is NOT part of a conversation */
-  gint64 reply_id;
-  gint64 reply_user_id;
-  char  *reply_screen_name;
 
   guint retweet_count;
   guint favorite_count;
@@ -118,8 +114,8 @@ char       *cb_tweet_get_filter_text (CbTweet *tweet);
 gboolean    cb_tweet_get_seen (CbTweet *tweet);
 void        cb_tweet_set_seen (CbTweet *tweet, gboolean value);
 
-CbTextEntity **cb_tweet_get_reply_screen_names (CbTweet *tweet,
-                                                guint   *n_replies);
+CbUserIdentity *cb_tweet_get_reply_users (CbTweet *tweet,
+                                          guint   *n_reply_users);
 
 #endif
 

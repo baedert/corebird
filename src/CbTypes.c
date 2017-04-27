@@ -221,14 +221,22 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
   if (json_object_has_member (status, "in_reply_to_status_id") &&
       !json_object_get_null_member (status, "in_reply_to_status_id"))
     {
-      guint reply_index;
-      /* Check how many of the user mentions are reply mentions */
+      guint reply_index = 0;
+      gboolean direct_duplicate = FALSE;
+      gint64 reply_to_user_id = 0;
 
-      n_reply_users = 1;
+      reply_to_user_id = json_object_get_int_member (status, "in_reply_to_user_id");
+
+      /* Check how many of the user mentions are reply mentions */
+      t->reply_id = json_object_get_int_member (status, "in_reply_to_status_id");
       for (i = 0, p = json_array_get_length (user_mentions); i < p; i ++)
         {
           JsonObject *mention = json_node_get_object (json_array_get_element (user_mentions, i));
           JsonArray  *indices = json_object_get_array_member (mention, "indices");
+          gint64 user_id = json_object_get_int_member (mention, "id");
+
+          if (i == 0 && user_id == reply_to_user_id)
+            direct_duplicate = TRUE;
 
           if (json_array_get_int_element (indices, 1) <= t->display_range_start)
               n_reply_users ++;
@@ -236,18 +244,25 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
             break;
         }
 
+      if (!direct_duplicate)
+        n_reply_users ++;
+
       t->reply_users = g_new0 (CbUserIdentity, n_reply_users);
       t->n_reply_users = n_reply_users;
 
+      if (!direct_duplicate)
+        {
+          t->reply_users[0].id = reply_to_user_id;
+          t->reply_users[0].screen_name = g_strdup (json_object_get_string_member (status, "in_reply_to_screen_name"));
+          t->reply_users[0].user_name = g_strdup ("");
+          reply_index = 1;
+        }
+
       /* Now fill ->reply_users. The very first entry is always the user this tweet
        * *actually* replies to. */
-      t->reply_users[0].id = json_object_get_int_member (status, "in_reply_to_user_id");
-      t->reply_users[0].screen_name = g_strdup (json_object_get_string_member (status, "in_reply_to_screen_name"));
-      t->reply_users[0].user_name = g_strdup (""); /* XXX Tweet json doesn't contain that information... */
-
-      /* TODO: The in_reply_to_user_id user can be in this list twice... right? */
-      reply_index = 1;
-      for (i = 0; i < n_reply_users - 1; i ++)
+      for (i = 0;
+           i < n_reply_users - (direct_duplicate ? 0 : 1);
+           i ++)
         {
           JsonObject *mention = json_node_get_object (json_array_get_element (user_mentions, i));
           t->reply_users[reply_index].id = json_object_get_int_member (mention, "id");
