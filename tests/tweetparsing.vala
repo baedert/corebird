@@ -1665,6 +1665,118 @@ const string TD8 = """
 }
 """;
 
+const string TD9 = """
+{
+  "created_at" : "Thu Apr 27 17:00:15 +0000 2017",
+  "id" : 857640546793177088,
+  "id_str" : "857640546793177088",
+  "full_text" : "Hey @zillow, I get why you make it so hard to close my profile, but it's so transparent and just seems scammy. Scammy, scammy, scammy.",
+  "truncated" : false,
+  "display_text_range" : [
+    0,
+    134
+  ],
+  "entities" : {
+    "hashtags" : [
+    ],
+    "symbols" : [
+    ],
+    "user_mentions" : [
+      {
+        "screen_name" : "zillow",
+        "name" : "Zillow",
+        "id" : 19262500,
+        "id_str" : "19262500",
+        "indices" : [
+          4,
+          11
+        ]
+      }
+    ],
+    "urls" : [
+    ]
+  },
+  "source" : "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>",
+  "in_reply_to_status_id" : null,
+  "in_reply_to_status_id_str" : null,
+  "in_reply_to_user_id" : null,
+  "in_reply_to_user_id_str" : null,
+  "in_reply_to_screen_name" : null,
+  "user" : {
+    "id" : 14498432,
+    "id_str" : "14498432",
+    "name" : "Kristian Høgsberg",
+    "screen_name" : "hoegsberg",
+    "location" : "Portland OR",
+    "description" : "Casually Defiant, Inadvertently Pretentious",
+    "url" : "https://t.co/z672MnpkDP",
+    "entities" : {
+      "url" : {
+        "urls" : [
+          {
+            "url" : "https://t.co/z672MnpkDP",
+            "expanded_url" : "http://hoegsberg.blogspot.com",
+            "display_url" : "hoegsberg.blogspot.com",
+            "indices" : [
+              0,
+              23
+            ]
+          }
+        ]
+      },
+      "description" : {
+        "urls" : [
+        ]
+      }
+    },
+    "protected" : false,
+    "followers_count" : 689,
+    "friends_count" : 210,
+    "listed_count" : 25,
+    "created_at" : "Wed Apr 23 18:29:05 +0000 2008",
+    "favourites_count" : 717,
+    "utc_offset" : -14400,
+    "time_zone" : "Eastern Time (US & Canada)",
+    "geo_enabled" : true,
+    "verified" : false,
+    "statuses_count" : 2685,
+    "lang" : "en",
+    "contributors_enabled" : false,
+    "is_translator" : false,
+    "is_translation_enabled" : false,
+    "profile_background_color" : "352726",
+    "profile_background_image_url" : "http://abs.twimg.com/images/themes/theme5/bg.gif",
+    "profile_background_image_url_https" : "https://abs.twimg.com/images/themes/theme5/bg.gif",
+    "profile_background_tile" : false,
+    "profile_image_url" : "http://pbs.twimg.com/profile_images/679383568016130049/DcwLkGhB_normal.jpg",
+    "profile_image_url_https" : "https://pbs.twimg.com/profile_images/679383568016130049/DcwLkGhB_normal.jpg",
+    "profile_banner_url" : "https://pbs.twimg.com/profile_banners/14498432/1450812639",
+    "profile_link_color" : "D02B54",
+    "profile_sidebar_border_color" : "829D5E",
+    "profile_sidebar_fill_color" : "99CC33",
+    "profile_text_color" : "3E4415",
+    "profile_use_background_image" : true,
+    "has_extended_profile" : false,
+    "default_profile" : false,
+    "default_profile_image" : false,
+    "following" : true,
+    "follow_request_sent" : false,
+    "notifications" : false,
+    "translator_type" : "none"
+  },
+  "geo" : null,
+  "coordinates" : null,
+  "place" : null,
+  "contributors" : null,
+  "is_quote_status" : false,
+  "retweet_count" : 0,
+  "favorite_count" : 0,
+  "favorited" : false,
+  "retweeted" : false,
+  "lang" : "en"
+}
+""";
+
 // """
 // }}}
 
@@ -1851,6 +1963,25 @@ void rt_reply () {
   assert (reply_users[1].screen_name == "baedert");
 }
 
+void entity_count () {
+  var now = new GLib.DateTime.now_local ();
+  var t = new Cb.Tweet ();
+
+  var parser = new Json.Parser ();
+  try {
+    parser.load_from_data (TD9);
+  } catch (GLib.Error e) {
+    critical (e.message);
+  }
+  var root = parser.get_root ();
+
+  t.load_from_json (root, 0, now);
+
+  assert (t.source_tweet.entities.length == 1);
+}
+
+
+
 int main (string[] args) {
   GLib.Test.init (ref args);
   Settings.init ();
@@ -1867,6 +1998,7 @@ int main (string[] args) {
   GLib.Test.add_func ("/tweet-parsing/reply-users", reply_users);
   GLib.Test.add_func ("/tweet-parsing/empty-display-range", empty_display_range);
   GLib.Test.add_func ("/tweet-parsing/rt-reply", rt_reply);
+  GLib.Test.add_func ("/tweet-parsing/entity-count", entity_count);
 
   return GLib.Test.run ();
 }

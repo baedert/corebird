@@ -332,9 +332,7 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
     }
 
   /* USER MENTIONS */
-  /* TODO: We're starting at n_reply_users - 1 here since the directly-replied-to
-   * user is the one we get from in_reply_to_user_id, but it might also be in this list. */
-  for (i = n_reply_users - 1, p = json_array_get_length (user_mentions); i < p; i ++)
+  for (i = n_reply_users, p = json_array_get_length (user_mentions); i < p; i ++)
     {
       JsonObject *mention = json_node_get_object (json_array_get_element (user_mentions, i));
       JsonArray  *indices = json_object_get_array_member (mention, "indices");
