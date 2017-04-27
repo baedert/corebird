@@ -31,8 +31,9 @@ struct _CbUserIdentity
 typedef struct _CbUserIdentity CbUserIdentity;
 void cb_user_identity_free (CbUserIdentity *id);
 void cb_user_identity_copy (CbUserIdentity *id, CbUserIdentity *id2);
-
 void cb_user_identity_parse (CbUserIdentity *id, JsonObject *user_obj);
+GVariant *cb_user_identity_serialize (const CbUserIdentity *id);
+CbUserIdentity *cb_user_identity_deserialize (const GVariant *variant);
 
 struct _CbTextEntity
 {
@@ -46,6 +47,9 @@ struct _CbTextEntity
 typedef struct _CbTextEntity CbTextEntity;
 void cb_text_entity_free (CbTextEntity *e);
 void cb_text_entity_copy (CbTextEntity *e1, CbTextEntity *e2);
+GVariant *cb_text_entity_serialize (const CbTextEntity *e);
+CbTextEntity *cb_text_entity_deserialize (const GVariant *variant);
+
 
 struct _CbMiniTweet
 {
@@ -71,5 +75,7 @@ void cb_mini_tweet_copy (CbMiniTweet *t1, CbMiniTweet *t2);
 void cb_mini_tweet_init (CbMiniTweet *t);
 void cb_mini_tweet_parse (CbMiniTweet *t, JsonObject *obj);
 void cb_mini_tweet_parse_entities (CbMiniTweet *t, JsonObject *obj);
+GVariant *cb_mini_tweet_serialize (const CbMiniTweet *t);
+CbMiniTweet *cb_mini_tweet_deserialize (const GVariant *variant);
 
 #endif
