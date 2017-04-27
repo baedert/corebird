@@ -335,6 +335,11 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
             message ("Media: %p", m);
           }
         }
+
+        var variant = tweet.serialize ();
+        GLib.FileUtils.set_contents (tweet.source_tweet.id.to_string () + ".cbtweet",
+                                     (string)variant.get_data (),
+                                     (ssize_t)variant.get_size ());
         return Gdk.EVENT_STOP;
     }
 #endif
