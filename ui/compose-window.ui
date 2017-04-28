@@ -226,6 +226,7 @@
                     <property name="visible">1</property>
                     <property name="selection-mode">none</property>
                     <signal name="child-activated" handler="fav_image_box_child_activated_cb" />
+                    <signal name="drag-data-received" handler="fav_image_box_drag_data_received_cb" />
                     <style>
                       <class name="view" />
                       <class name="fav-image-box" />
