@@ -1777,6 +1777,344 @@ const string TD9 = """
 }
 """;
 
+const string TD10 = """
+{
+  "created_at" : "Fri Apr 28 19:40:04 +0000 2017",
+  "id" : 858043155547140096,
+  "id_str" : "858043155547140096",
+  "full_text" : ".@archillect\nhttps://t.co/8sOpx6hIV8\nhttps://t.co/LazmRudPfL\nhttps://t.co/Q2C5FM0OJO\nhttps://t.co/Vq6aJdD766\nhttps://t.co/otr3LIJ15c",
+  "truncated" : false,
+  "display_text_range" : [
+    0,
+    132
+  ],
+  "entities" : {
+    "hashtags" : [
+    ],
+    "symbols" : [
+    ],
+    "user_mentions" : [
+      {
+        "screen_name" : "archillect",
+        "name" : "Archillect",
+        "id" : 2907774137,
+        "id_str" : "2907774137",
+        "indices" : [
+          1,
+          12
+        ]
+      }
+    ],
+    "urls" : [
+      {
+        "url" : "https://t.co/8sOpx6hIV8",
+        "expanded_url" : "http://www.pbs.org/newshour/art/photos-dying-art-neon-hong-kong/",
+        "display_url" : "pbs.org/newshour/art/p…",
+        "indices" : [
+          13,
+          36
+        ]
+      },
+      {
+        "url" : "https://t.co/LazmRudPfL",
+        "expanded_url" : "http://www.neonsigns.hk/media/upload/2014/05/shya-5.jpg",
+        "display_url" : "neonsigns.hk/media/upload/2…",
+        "indices" : [
+          37,
+          60
+        ]
+      },
+      {
+        "url" : "https://t.co/Q2C5FM0OJO",
+        "expanded_url" : "http://t.umblr.com/redirect?z=http%3A%2F%2Fwww.neonsigns.hk%2Fmy-neon-city%2Fwing-shya%2F%3Flang%3Den&t=YmUzYTFmNTM1NmJjODlkYjlkNGJiMzYyNzRjZmU3OTllOGZhZmIwYyw5ODIzODIzNzg5NQ%3D%3D&b=t%3AYGx1bpY-ynhca0q3r41odw&p=http%3A%2F%2Fotakugangsta.com%2Fpost%2F98238237895&m=0",
+        "display_url" : "t.umblr.com/redirect?z=htt…",
+        "indices" : [
+          61,
+          84
+        ]
+      },
+      {
+        "url" : "https://t.co/Vq6aJdD766",
+        "expanded_url" : "https://www.pinterest.com/pin/47569339794350377/",
+        "display_url" : "pinterest.com/pin/4756933979…",
+        "indices" : [
+          85,
+          108
+        ]
+      },
+      {
+        "url" : "https://t.co/otr3LIJ15c",
+        "expanded_url" : "https://twitter.com/archillect/status/858043152820826113",
+        "display_url" : "twitter.com/archillect/sta…",
+        "indices" : [
+          109,
+          132
+        ]
+      }
+    ]
+  },
+  "source" : "<a href=\"http://machinu.net\" rel=\"nofollow\">archillinks</a>",
+  "in_reply_to_status_id" : 858043152820826113,
+  "in_reply_to_status_id_str" : "858043152820826113",
+  "in_reply_to_user_id" : 2907774137,
+  "in_reply_to_user_id_str" : "2907774137",
+  "in_reply_to_screen_name" : "archillect",
+  "user" : {
+    "id" : 808595043560857600,
+    "id_str" : "808595043560857600",
+    "name" : "Archillect Links",
+    "screen_name" : "archillinks",
+    "location" : "",
+    "description" : "The Ocular Engine // Links",
+    "url" : "https://t.co/U7Oh7xumQp",
+    "entities" : {
+      "url" : {
+        "urls" : [
+          {
+            "url" : "https://t.co/U7Oh7xumQp",
+            "expanded_url" : "http://archillect.com",
+            "display_url" : "archillect.com",
+            "indices" : [
+              0,
+              23
+            ]
+          }
+        ]
+      },
+      "description" : {
+        "urls" : [
+        ]
+      }
+    },
+    "protected" : false,
+    "followers_count" : 9481,
+    "friends_count" : 2,
+    "listed_count" : 107,
+    "created_at" : "Tue Dec 13 08:50:56 +0000 2016",
+    "favourites_count" : 0,
+    "utc_offset" : null,
+    "time_zone" : null,
+    "geo_enabled" : false,
+    "verified" : false,
+    "statuses_count" : 17980,
+    "lang" : "en",
+    "contributors_enabled" : false,
+    "is_translator" : false,
+    "is_translation_enabled" : false,
+    "profile_background_color" : "000000",
+    "profile_background_image_url" : "http://abs.twimg.com/images/themes/theme1/bg.png",
+    "profile_background_image_url_https" : "https://abs.twimg.com/images/themes/theme1/bg.png",
+    "profile_background_tile" : false,
+    "profile_image_url" : "http://pbs.twimg.com/profile_images/808595805942714368/PuH1r_aQ_normal.jpg",
+    "profile_image_url_https" : "https://pbs.twimg.com/profile_images/808595805942714368/PuH1r_aQ_normal.jpg",
+    "profile_banner_url" : "https://pbs.twimg.com/profile_banners/808595043560857600/1481619199",
+    "profile_link_color" : "111111",
+    "profile_sidebar_border_color" : "000000",
+    "profile_sidebar_fill_color" : "000000",
+    "profile_text_color" : "000000",
+    "profile_use_background_image" : false,
+    "has_extended_profile" : false,
+    "default_profile" : false,
+    "default_profile_image" : false,
+    "following" : false,
+    "follow_request_sent" : false,
+    "notifications" : false,
+    "translator_type" : "none"
+  },
+  "geo" : null,
+  "coordinates" : null,
+  "place" : null,
+  "contributors" : null,
+  "is_quote_status" : true,
+  "quoted_status_id" : 858043152820826113,
+  "quoted_status_id_str" : "858043152820826113",
+  "quoted_status" : {
+    "created_at" : "Fri Apr 28 19:40:03 +0000 2017",
+    "id" : 858043152820826113,
+    "id_str" : "858043152820826113",
+    "full_text" : "https://t.co/4Kk2ol4YDf",
+    "truncated" : false,
+    "display_text_range" : [
+      0,
+      0
+    ],
+    "entities" : {
+      "hashtags" : [
+      ],
+      "symbols" : [
+      ],
+      "user_mentions" : [
+      ],
+      "urls" : [
+      ],
+      "media" : [
+        {
+          "id" : 858043148114808833,
+          "id_str" : "858043148114808833",
+          "indices" : [
+            0,
+            23
+          ],
+          "media_url" : "http://pbs.twimg.com/media/C-hhsnVXUAESrBA.jpg",
+          "media_url_https" : "https://pbs.twimg.com/media/C-hhsnVXUAESrBA.jpg",
+          "url" : "https://t.co/4Kk2ol4YDf",
+          "display_url" : "pic.twitter.com/4Kk2ol4YDf",
+          "expanded_url" : "https://twitter.com/archillect/status/858043152820826113/photo/1",
+          "type" : "photo",
+          "sizes" : {
+            "large" : {
+              "w" : 1280,
+              "h" : 960,
+              "resize" : "fit"
+            },
+            "small" : {
+              "w" : 680,
+              "h" : 510,
+              "resize" : "fit"
+            },
+            "medium" : {
+              "w" : 1200,
+              "h" : 900,
+              "resize" : "fit"
+            },
+            "thumb" : {
+              "w" : 150,
+              "h" : 150,
+              "resize" : "crop"
+            }
+          }
+        }
+      ]
+    },
+    "extended_entities" : {
+      "media" : [
+        {
+          "id" : 858043148114808833,
+          "id_str" : "858043148114808833",
+          "indices" : [
+            0,
+            23
+          ],
+          "media_url" : "http://pbs.twimg.com/media/C-hhsnVXUAESrBA.jpg",
+          "media_url_https" : "https://pbs.twimg.com/media/C-hhsnVXUAESrBA.jpg",
+          "url" : "https://t.co/4Kk2ol4YDf",
+          "display_url" : "pic.twitter.com/4Kk2ol4YDf",
+          "expanded_url" : "https://twitter.com/archillect/status/858043152820826113/photo/1",
+          "type" : "photo",
+          "sizes" : {
+            "large" : {
+              "w" : 1280,
+              "h" : 960,
+              "resize" : "fit"
+            },
+            "small" : {
+              "w" : 680,
+              "h" : 510,
+              "resize" : "fit"
+            },
+            "medium" : {
+              "w" : 1200,
+              "h" : 900,
+              "resize" : "fit"
+            },
+            "thumb" : {
+              "w" : 150,
+              "h" : 150,
+              "resize" : "crop"
+            }
+          }
+        }
+      ]
+    },
+    "source" : "<a href=\"http://machinu.net\" rel=\"nofollow\">Archillect</a>",
+    "in_reply_to_status_id" : null,
+    "in_reply_to_status_id_str" : null,
+    "in_reply_to_user_id" : null,
+    "in_reply_to_user_id_str" : null,
+    "in_reply_to_screen_name" : null,
+    "user" : {
+      "id" : 2907774137,
+      "id_str" : "2907774137",
+      "name" : "Archillect",
+      "screen_name" : "archillect",
+      "location" : "Meta",
+      "description" : "The ocular engine. Sources: @archillinks",
+      "url" : "https://t.co/U7Oh7xumQp",
+      "entities" : {
+        "url" : {
+          "urls" : [
+            {
+              "url" : "https://t.co/U7Oh7xumQp",
+              "expanded_url" : "http://archillect.com",
+              "display_url" : "archillect.com",
+              "indices" : [
+                0,
+                23
+              ]
+            }
+          ]
+        },
+        "description" : {
+          "urls" : [
+          ]
+        }
+      },
+      "protected" : false,
+      "followers_count" : 332778,
+      "friends_count" : 1,
+      "listed_count" : 4168,
+      "created_at" : "Sat Dec 06 14:07:45 +0000 2014",
+      "favourites_count" : 10461,
+      "utc_offset" : 10800,
+      "time_zone" : "Istanbul",
+      "geo_enabled" : false,
+      "verified" : false,
+      "statuses_count" : 119611,
+      "lang" : "en",
+      "contributors_enabled" : false,
+      "is_translator" : false,
+      "is_translation_enabled" : false,
+      "profile_background_color" : "050505",
+      "profile_background_image_url" : "http://abs.twimg.com/images/themes/theme19/bg.gif",
+      "profile_background_image_url_https" : "https://abs.twimg.com/images/themes/theme19/bg.gif",
+      "profile_background_tile" : false,
+      "profile_image_url" : "http://pbs.twimg.com/profile_images/542430526057881602/mjWPm56H_normal.png",
+      "profile_image_url_https" : "https://pbs.twimg.com/profile_images/542430526057881602/mjWPm56H_normal.png",
+      "profile_banner_url" : "https://pbs.twimg.com/profile_banners/2907774137/1418102176",
+      "profile_link_color" : "191919",
+      "profile_sidebar_border_color" : "000000",
+      "profile_sidebar_fill_color" : "000000",
+      "profile_text_color" : "000000",
+      "profile_use_background_image" : false,
+      "has_extended_profile" : false,
+      "default_profile" : false,
+      "default_profile_image" : false,
+      "following" : false,
+      "follow_request_sent" : false,
+      "notifications" : false,
+      "translator_type" : "none"
+    },
+    "geo" : null,
+    "coordinates" : null,
+    "place" : null,
+    "contributors" : null,
+    "is_quote_status" : false,
+    "retweet_count" : 48,
+    "favorite_count" : 68,
+    "favorited" : false,
+    "retweeted" : false,
+    "possibly_sensitive" : false,
+    "lang" : "und"
+  },
+  "retweet_count" : 0,
+  "favorite_count" : 0,
+  "favorited" : false,
+  "retweeted" : false,
+  "possibly_sensitive" : false,
+  "lang" : "und"
+}
+""";
+
 // """
 // }}}
 
@@ -1974,6 +2312,34 @@ void entity_count () {
   assert (t.source_tweet.entities.length == 1);
 }
 
+void reply_id () {
+  var now = new GLib.DateTime.now_local ();
+  var t = new Cb.Tweet ();
+
+  var parser = new Json.Parser ();
+  try {
+    parser.load_from_data (TD10);
+  } catch (GLib.Error e) {
+    critical (e.message);
+  }
+  var root = parser.get_root ();
+
+  t.load_from_json (root, 0, now);
+
+  /* The source tweet is a reply, but the quoted one isn't */
+
+  assert (t.source_tweet.reply_id == 858043152820826113);
+  assert (t.quoted_tweet != null);
+  assert (t.quoted_tweet.reply_id == 0);
+
+  /* source_tweet is a reply, so should definitely have >0 reply_users.
+   * This is interesting for this tweet since the tweet text contains
+   * a user mention, but it's part of the tweet text and not before
+   * the display_range_start.
+   */
+  assert (t.source_tweet.reply_users.length == 1);
+}
+
 
 
 int main (string[] args) {
@@ -1993,6 +2359,7 @@ int main (string[] args) {
   GLib.Test.add_func ("/tweet-parsing/empty-display-range", empty_display_range);
   GLib.Test.add_func ("/tweet-parsing/rt-reply", rt_reply);
   GLib.Test.add_func ("/tweet-parsing/entity-count", entity_count);
+  GLib.Test.add_func ("/tweet-parsing/reply-id", reply_id);
 
   return GLib.Test.run ();
 }
