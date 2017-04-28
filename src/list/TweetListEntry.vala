@@ -674,7 +674,7 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
     quote_grid.attach (quote_screen_name, 1, 0, 1, 1);
 
     if (reply) {
-      this.quote_reply_label = new Gtk.Label ("OMG");
+      this.quote_reply_label = new Gtk.Label ("");
       quote_reply_label.halign = Gtk.Align.START;
       quote_reply_label.set_use_markup (true);
       quote_reply_label.xalign = 0;
@@ -683,6 +683,7 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
       quote_reply_label.activate_link.connect (quote_link_activated_cb);
       quote_reply_label.get_style_context ().add_class ("dim-label");
       quote_reply_label.get_style_context ().add_class ("invisible-links");
+      quote_reply_label.set_no_show_all (true);
 
       quote_grid.attach (quote_reply_label, 0, 1, 3, 1);
     }
