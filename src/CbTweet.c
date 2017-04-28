@@ -19,8 +19,7 @@
 #include "CbTextTransform.h"
 #include <string.h>
 
-/*#define CB_TWEET_VARIANT_TYPE "(ubxxuus(ms)v(mv)(mv))"*/
-#define CB_TWEET_VARIANT_TYPE "(ubxxuusv)"
+#define CB_TWEET_VARIANT_TYPE "(ubxxuusmsvmvmv)"
 
 
 /* TODO: We might want to put this into a utils.c later */
@@ -467,10 +466,10 @@ cb_tweet_serialize (CbTweet *tweet)
                         tweet->retweet_count,
                         tweet->favorite_count,
                         tweet->avatar_url,
-                        /*tweet->notification_id,*/
-                        cb_mini_tweet_serialize (&tweet->source_tweet));
-                        /*tweet->retweeted_tweet ? cb_mini_tweet_serialize (tweet->retweeted_tweet) : NULL,*/
-                        /*tweet->quoted_tweet ? cb_mini_tweet_serialize (tweet->quoted_tweet) : NULL);*/
+                        tweet->notification_id,
+                        cb_mini_tweet_serialize (&tweet->source_tweet),
+                        tweet->retweeted_tweet ? cb_mini_tweet_serialize (tweet->retweeted_tweet) : NULL,
+                        tweet->quoted_tweet ? cb_mini_tweet_serialize (tweet->quoted_tweet) : NULL);
 }
 
 CbTweet *
@@ -491,11 +490,10 @@ cb_tweet_deserialize (GVariant *variant)
                  &t->retweet_count,
                  &t->favorite_count,
                  &t->avatar_url,
-                 /*&t->notification_id,*/
-                 &source_tweet_variant);
-
-                 /*&retweet_variant,*/
-                 /*&quote_variant);*/
+                 &t->notification_id,
+                 &source_tweet_variant,
+                 &retweet_variant,
+                 &quote_variant);
 
   t->state = state;
   t->seen = seen;
@@ -503,6 +501,20 @@ cb_tweet_deserialize (GVariant *variant)
   g_assert (source_tweet_variant != NULL);
 
   cb_mini_tweet_deserialize (source_tweet_variant, &t->source_tweet);
+
+  if (retweet_variant != NULL)
+    {
+      t->retweeted_tweet = g_malloc (sizeof (CbMiniTweet));
+      cb_mini_tweet_init (t->retweeted_tweet); /* TODO: This should be unnecessary */
+      cb_mini_tweet_deserialize (retweet_variant, t->retweeted_tweet);
+    }
+
+  if (quote_variant != NULL)
+    {
+      t->quoted_tweet = g_malloc (sizeof (CbMiniTweet));
+      cb_mini_tweet_init (t->quoted_tweet); /* TODO: This should be unnecessary */
+      cb_mini_tweet_deserialize (quote_variant, t->quoted_tweet);
+    }
 
   return t;
 }
