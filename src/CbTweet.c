@@ -19,7 +19,8 @@
 #include "CbTextTransform.h"
 #include <string.h>
 
-#define CB_TWEET_VARIANT_TYPE "(uuxxuus(ms)v)"
+/*#define CB_TWEET_VARIANT_TYPE "(ubxxuus(ms)v(mv)(mv))"*/
+#define CB_TWEET_VARIANT_TYPE "(ubxxuusv)"
 
 
 /* TODO: We might want to put this into a utils.c later */
@@ -466,8 +467,10 @@ cb_tweet_serialize (CbTweet *tweet)
                         tweet->retweet_count,
                         tweet->favorite_count,
                         tweet->avatar_url,
-                        tweet->notification_id,
+                        /*tweet->notification_id,*/
                         cb_mini_tweet_serialize (&tweet->source_tweet));
+                        /*tweet->retweeted_tweet ? cb_mini_tweet_serialize (tweet->retweeted_tweet) : NULL,*/
+                        /*tweet->quoted_tweet ? cb_mini_tweet_serialize (tweet->quoted_tweet) : NULL);*/
 }
 
 CbTweet *
@@ -476,7 +479,9 @@ cb_tweet_deserialize (GVariant *variant)
   guint state;
   guint seen;
   CbTweet *t = cb_tweet_new ();
-  GVariant *source_tweet_variant;
+  GVariant *source_tweet_variant = NULL;
+  GVariant *retweet_variant = NULL;
+  GVariant *quote_variant = NULL;
 
   g_variant_get (variant, CB_TWEET_VARIANT_TYPE,
                  &state,
@@ -486,11 +491,17 @@ cb_tweet_deserialize (GVariant *variant)
                  &t->retweet_count,
                  &t->favorite_count,
                  &t->avatar_url,
-                 &t->notification_id,
+                 /*&t->notification_id,*/
                  &source_tweet_variant);
+
+                 /*&retweet_variant,*/
+                 /*&quote_variant);*/
 
   t->state = state;
   t->seen = seen;
+
+  g_assert (source_tweet_variant != NULL);
+
   cb_mini_tweet_deserialize (source_tweet_variant, &t->source_tweet);
 
   return t;
@@ -503,7 +514,7 @@ cb_tweet_deserialize_from_bytes (GBytes *bytes)
 
   variant = g_variant_new_from_bytes (G_VARIANT_TYPE (CB_TWEET_VARIANT_TYPE),
                                       bytes,
-                                      TRUE); /* XXX Really? */
+                                      FALSE); /* XXX Really? */
 
   return cb_tweet_deserialize (variant);
 }

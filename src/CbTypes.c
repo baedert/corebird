@@ -21,6 +21,20 @@
 #include <string.h>
 #include <stdlib.h>
 
+#define CB_USER_IDENTITY_VARIANT_TYPE   "xss"
+#define CB_USER_IDENTITY_VARIANT_STRING "(" CB_USER_IDENTITY_VARIANT_TYPE ")"
+
+#define CB_TEXT_ENTITY_VARIANT_TYPE     "uusss"
+#define CB_TEXT_ENTITY_VARIANT_STRING   "(" CB_TEXT_ENTITY_VARIANT_TYPE ")"
+
+#define CB_MINI_TWEET_VARIANT_TYPE     "xxuxs"\
+                                       "v" /* Author */
+                                       /*CB_USER_IDENTITY_VARIANT_TYPE\*/
+                                       /*"a(" CB_MEDIA_VARIANT_TYPE ")"*/
+                                       /*"a(" CB_USER_IDENTITY_VARIANT_TYPE ")"*/
+
+#define CB_MINI_TWEET_VARIANT_STRING   "(" CB_MINI_TWEET_VARIANT_TYPE ")"
+
 void
 cb_user_identity_free (CbUserIdentity *id)
 {
@@ -50,14 +64,15 @@ cb_user_identity_parse (CbUserIdentity *id,
 GVariant *
 cb_user_identity_serialize (const CbUserIdentity *id)
 {
-  return g_variant_new ("(xss)", id->id, id->screen_name, id->user_name);
+  return g_variant_new (CB_USER_IDENTITY_VARIANT_STRING,
+                        id->id, id->screen_name, id->user_name);
 }
 
 void
 cb_user_identity_deserialize (GVariant       *variant,
                               CbUserIdentity *result)
 {
-  g_variant_get (variant, "(xss)",
+  g_variant_get (variant, CB_USER_IDENTITY_VARIANT_STRING,
                  &result->id, &result->screen_name, &result->user_name);
 }
 
@@ -88,7 +103,7 @@ GVariant *
 cb_text_entity_serialize (const CbTextEntity *e)
 {
   /* TODO: How to handle ->info? Not at all? */
-  return g_variant_new ("(uusss)",
+  return g_variant_new (CB_TEXT_ENTITY_VARIANT_STRING,
                         e->from, e->to,
                         e->display_text, e->tooltip_text, e->target);
 }
@@ -97,7 +112,7 @@ void
 cb_text_entity_deserialize (GVariant     *variant,
                             CbTextEntity *e)
 {
-  g_variant_get (variant, "(uuusss)",
+  g_variant_get (variant, CB_TEXT_ENTITY_VARIANT_STRING,
                  &e->from, &e->to,
                  &e->display_text, &e->tooltip_text, &e->target);
 }
@@ -581,13 +596,40 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
 GVariant *
 cb_mini_tweet_serialize (const CbMiniTweet *t)
 {
-  return g_variant_new ("(xxuxvs)",
+  guint i;
+  GVariantBuilder entities_builder;
+  GVariantBuilder media_builder;
+  GVariantBuilder reply_users_builder;
+
+  /*g_variant_builder_init (&entities_builder, G_VARIANT_TYPE_ARRAY);*/
+  /*g_variant_builder_init (&media_builder, G_VARIANT_TYPE ("a(" CB_MEDIA_VARIANT_TYPE ")"));*/
+  /*G_VARIANT_TYPE_ARRAY);*/
+  /*g_variant_builder_init (&reply_users_builder, G_VARIANT_TYPE_ARRAY);*/
+
+  /*for (i = 0; i < t->n_entities; i ++)*/
+    /*g_variant_builder_add_value (&entities_builder, cb_text_entity_serialize (&t->entities[i]));*/
+
+  /*g_message ("Entities: %u", t->n_entities);*/
+
+  /*for (i = 0; i < t->n_medias; i ++)*/
+    /*g_variant_builder_add_value (&media_builder, cb_media_serialize (t->medias[i]));*/
+
+  g_message ("Medias: %u", t->n_medias);
+
+  /*for (i = 0; i < t->n_reply_users; i ++)*/
+    /*g_variant_builder_add_value (&reply_users_builder, cb_user_identity_serialize (&t->reply_users[i]));*/
+
+
+
+  return g_variant_new (CB_MINI_TWEET_VARIANT_STRING,
                         t->id,
                         t->created_at,
                         t->display_range_start,
-                        t->reply_id,
-                        cb_user_identity_serialize (&t->author),
-                        t->text); /* TODO: Other stuff */
+                        /*t->reply_id,*/
+                        0,
+                        t->text,
+                        cb_user_identity_serialize (&t->author)
+                       );
 }
 
 void
@@ -596,13 +638,13 @@ cb_mini_tweet_deserialize (GVariant    *variant,
 {
   GVariant *author_variant;
 
-  g_variant_get (variant, "(xxvs)",
+  g_variant_get (variant, CB_MINI_TWEET_VARIANT_STRING,
                  &t->id,
                  &t->created_at,
                  &t->display_range_start,
                  &t->reply_id,
-                 &author_variant,
-                 &t->text);
+                 &t->text,
+                 &author_variant);
 
   cb_user_identity_deserialize (author_variant, &t->author);
 }

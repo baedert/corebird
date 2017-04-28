@@ -132,13 +132,29 @@ cb_media_loading_finished (CbMedia *media)
 GVariant *
 cb_media_serialize (CbMedia *media)
 {
-
+  /* We only save these values and ignore the rest
+   * since we also don't save the surfaces to disk... */
+  g_message ("%s, %s, %s", media->thumb_url, media->thumb_url, media->target_url);
+  return g_variant_new (CB_MEDIA_VARIANT_STRING,
+                        media->url,
+                        media->thumb_url,
+                        media->target_url,
+                        media->width,
+                        media->height);
 }
 
 CbMedia *
 cb_media_deserialize (GVariant *variant)
 {
+  CbMedia *media = cb_media_new ();
 
+  g_variant_get (variant, CB_MEDIA_VARIANT_STRING,
+                 &media->url,
+                 &media->thumb_url,
+                 &media->target_url,
+                 &media->width,
+                 &media->height);
+  return media;
 }
 
 CbMediaType

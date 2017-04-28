@@ -84,6 +84,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
       if (!(this is HomeTimeline)) {
         load_newest ();
       } else {
+        load_newest ();
         string dir = Dirs.cache ("state");
         var directory = File.new_for_path (dir);
         var enumerator = directory.enumerate_children (FileAttribute.STANDARD_NAME, 0);
