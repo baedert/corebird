@@ -85,6 +85,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
         load_newest ();
       } else {
         load_newest ();
+        var b = Benchmark.start ("Loading tweets");
         string dir = Dirs.cache ("state");
         var directory = File.new_for_path (dir);
         var enumerator = directory.enumerate_children (FileAttribute.STANDARD_NAME, 0);
@@ -97,6 +98,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
             var t = Cb.Tweet.deserialize_from_bytes (bytes);
             this.tweet_list.model.add (t);
         }
+        b.stop ();
       }
 
       if (!Settings.auto_scroll_on_new_tweets ()) {
