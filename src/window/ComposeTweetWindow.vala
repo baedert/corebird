@@ -136,6 +136,16 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     }
 
 
+    var image_target_list = new Gtk.TargetList (null);
+    image_target_list.add_image_targets (0, false);
+    image_target_list.add_text_targets (1);
+
+    Gtk.drag_dest_set (fav_image_list,
+                       Gtk.DestDefaults.ALL,
+                       null,
+                       Gdk.DragAction.COPY);
+    Gtk.drag_dest_set_target_list (fav_image_list, image_target_list);
+
     this.set_default_size (DEFAULT_WIDTH, (int)(DEFAULT_WIDTH / 2.5));
   }
 
@@ -432,6 +442,33 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
     if (this.compose_image_manager.n_images > 0)
       this.disable_fav_gifs ();
+  }
+
+  [GtkCallback]
+  private void fav_image_box_drag_data_received_cb (Gdk.DragContext   context,
+                                                    int               x,
+                                                    int               y,
+                                                    Gtk.SelectionData selection_data,
+                                                    uint              info,
+                                                    uint              time) {
+    if (info == 0) {
+      /* Image */
+    } else if (info == 1) {
+      /* Text */
+      string? text = selection_data.get_text ().strip ();
+      if (text.has_prefix ("file://")) {
+        var row = new FavImageRow (GLib.File.new_for_uri (text).get_path ());
+        if (this.compose_image_manager.n_images > 0)
+          row.set_sensitive (false);
+
+        row.show_all ();
+        fav_image_list.add (row);
+      } else {
+        debug ("Can't handle '%s'", text);
+      }
+    } else {
+      warning ("Unknown drag data info %u", info);
+    }
   }
 
   private void disable_fav_gifs () {
