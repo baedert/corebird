@@ -2338,6 +2338,12 @@ void reply_id () {
    * the display_range_start.
    */
   assert (t.source_tweet.reply_users.length == 1);
+
+  /* Sanity check: The source_tweet's user mention should still end up being
+   * a text entity of course. */
+  assert (t.source_tweet.entities.length > 0);
+  /* It's the first one. I'm sure. */
+  assert (t.source_tweet.entities[0].display_text == "@archillect");
 }
 
 
