@@ -120,7 +120,7 @@ public class TweetListBox : Gtk.ListBox {
   private void add_placeholder () {
     placeholder = new Gtk.Stack ();
     placeholder.transition_type = Gtk.StackTransitionType.CROSSFADE;
-    var loading_label = new Gtk.Label (_("Loading..."));
+    var loading_label = new Gtk.Label (_("Loading…"));
     loading_label.get_style_context ().add_class ("dim-label");
     placeholder.add_named (loading_label, "spinner");
     no_entries_label  = new Gtk.Label (_("No entries found"));
