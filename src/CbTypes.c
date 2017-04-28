@@ -204,6 +204,7 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
   guint n_reply_users = 0;
   guint non_reply_mentions = 0;
   int max_entities;
+  gboolean direct_duplicate = FALSE;
 
   if (json_object_has_member (status, "extended_tweet"))
     extended_obj = json_object_get_object_member (status, "extended_tweet");
@@ -223,7 +224,6 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
       !json_object_get_null_member (status, "in_reply_to_status_id"))
     {
       guint reply_index = 0;
-      gboolean direct_duplicate = FALSE;
       gint64 reply_to_user_id = 0;
 
       reply_to_user_id = json_object_get_int_member (status, "in_reply_to_user_id");
@@ -332,7 +332,12 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
     }
 
   /* USER MENTIONS */
-  for (i = n_reply_users, p = json_array_get_length (user_mentions); i < p; i ++)
+  if (direct_duplicate)
+    i = n_reply_users;
+  else
+    i = n_reply_users == 0 ? 0 : n_reply_users - 1;
+
+  for (p = json_array_get_length (user_mentions); i < p; i ++)
     {
       JsonObject *mention = json_node_get_object (json_array_get_element (user_mentions, i));
       JsonArray  *indices = json_object_get_array_member (mention, "indices");
