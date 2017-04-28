@@ -58,6 +58,7 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
   private TextButton? quote_name = null;
   private Gtk.Label? quote_time_delta = null;
   private Gtk.Label? quote_screen_name = null;
+  private Gtk.Label? quote_reply_label = null;
   private Gtk.Grid? quote_grid = null;
   private Gtk.Stack? media_stack = null;
   private MultiMediaWidget? mm_widget = null;
@@ -153,12 +154,17 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
     }
 
     if (tweet.quoted_tweet != null) {
-      this.create_quote_grid ();
+      this.create_quote_grid (tweet.quoted_tweet.reply_id != 0);
       quote_label.label = Cb.TextTransform.tweet (ref tweet.quoted_tweet,
                                                  Settings.get_text_transform_flags (),
                                                  0);
       quote_name.set_markup (tweet.quoted_tweet.author.user_name);
       quote_screen_name.label = "@" + tweet.quoted_tweet.author.screen_name;
+      if (tweet.quoted_tweet.reply_id != 0) {
+        var buff = new GLib.StringBuilder ();
+        Cb.Utils.write_reply_text (ref tweet.quoted_tweet, buff);
+        quote_reply_label.label = buff.str;
+      }
     }
 
     retweet_button.active    =   tweet.is_flag_set (Cb.TweetState.RETWEETED);
@@ -648,7 +654,7 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
     return TweetUtils.activate_link (uri, main_window);
   }
 
-  private void create_quote_grid () {
+  private void create_quote_grid (bool reply) {
     this.quote_grid = new Gtk.Grid ();
     quote_grid.margin_top = 6;
     quote_grid.margin_end = 6;
@@ -669,6 +675,20 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
     quote_screen_name.get_style_context ().add_class ("dim-label");
     quote_grid.attach (quote_screen_name, 1, 0, 1, 1);
 
+    if (reply) {
+      this.quote_reply_label = new Gtk.Label ("OMG");
+      quote_reply_label.halign = Gtk.Align.START;
+      quote_reply_label.set_use_markup (true);
+      quote_reply_label.xalign = 0;
+      quote_reply_label.set_margin_start (12);
+      quote_reply_label.set_margin_bottom (4);
+      quote_reply_label.activate_link.connect (quote_link_activated_cb);
+      quote_reply_label.get_style_context ().add_class ("dim-label");
+      quote_reply_label.get_style_context ().add_class ("invisible-links");
+
+      quote_grid.attach (quote_reply_label, 0, 1, 3, 1);
+    }
+
     this.quote_label = new Gtk.Label ("");
     quote_label.halign = Gtk.Align.START;
     quote_label.hexpand = true;
@@ -683,7 +703,10 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
     var attrs = new Pango.AttrList ();
     attrs.insert (Pango.attr_style_new (Pango.Style.ITALIC));
     quote_label.set_attributes (attrs);
-    quote_grid.attach (quote_label, 0, 1, 3, 1);
+    if (reply)
+      quote_grid.attach (quote_label, 0, 2, 3, 1);
+    else
+      quote_grid.attach (quote_label, 0, 1, 3, 1);
 
     this.quote_time_delta = new Gtk.Label ("");
     quote_time_delta.halign = Gtk.Align.END;
