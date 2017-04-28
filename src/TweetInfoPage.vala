@@ -488,7 +488,8 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
       if (reply_users.length > 1) {
         /* Last one */
         buff.append_c (' ')
-            .append (_("and"));
+            .append (_("and"))
+            .append_c (' ');
         Cb.Utils.linkify_user (ref reply_users[reply_users.length - 1], buff);
       }
 
