@@ -1899,10 +1899,6 @@ void reply_users () {
   t.load_from_json (root, 0, now);
 
   var reply_users = t.get_reply_users ();
-  message (reply_users.length.to_string ());
-  foreach (Cb.UserIdentity id in reply_users) {
-    message ("User: %s @%s", id.user_name, id.screen_name);
-  }
   assert (reply_users.length == 9);
 }
 
@@ -1950,8 +1946,6 @@ void rt_reply () {
    * users the retweeted tweet was a reply to, so both @corebirdgtk and @baedert.
    */
   assert (t.retweeted_tweet.reply_users.length == 2);
-  message (t.retweeted_tweet.reply_users[0].screen_name);
-  message (t.retweeted_tweet.reply_users[1].screen_name);
   /* It's a direct reply to @corebirdgtk, so that should be first */
   assert (t.retweeted_tweet.reply_users[0].screen_name == "corebirdgtk");
   assert (t.retweeted_tweet.reply_users[1].screen_name == "baedert");
