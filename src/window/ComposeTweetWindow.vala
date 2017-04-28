@@ -137,8 +137,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
 
     var image_target_list = new Gtk.TargetList (null);
-    image_target_list.add_image_targets (0, false);
-    image_target_list.add_text_targets (1);
+    image_target_list.add_text_targets (0);
 
     Gtk.drag_dest_set (fav_image_list,
                        Gtk.DestDefaults.ALL,
@@ -452,8 +451,6 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
                                                     uint              info,
                                                     uint              time) {
     if (info == 0) {
-      /* Image */
-    } else if (info == 1) {
       /* Text */
       string? text = selection_data.get_text ().strip ();
       if (text.has_prefix ("file://")) {
