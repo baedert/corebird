@@ -30,9 +30,13 @@ void cb_utils_bind_model (GtkWidget                  *listbox,
 void cb_utils_linkify_user (const CbUserIdentity *user,
                             GString              *str);
 
+void cb_utils_write_reply_text (const CbMiniTweet *t,
+                                GString           *str);
+
 char * cb_utils_escape_quotes (const char *in);
 char * cb_utils_escape_ampersands (const char *in);
 
 GDateTime * cb_utils_parse_date (const char *_in);
+
 
 #endif

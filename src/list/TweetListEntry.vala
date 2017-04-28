@@ -141,28 +141,13 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
     if ((tweet.retweeted_tweet != null &&
          tweet.retweeted_tweet.reply_id != 0) ||
         tweet.source_tweet.reply_id != 0) {
-      var reply_users = tweet.get_reply_users ();
       var buff = new StringBuilder ();
-      /* Use the user we directly reply to in any case */
-      /* TRANSLATORS: This is the start of a "Replying to" line in a tweet */
-      buff.append (_("Replying to"));
-      buff.append_c (' ');
-      Cb.Utils.linkify_user (ref reply_users[0], buff);
 
-      if (reply_users.length == 2) {
-        buff.append_c (' ');
-        /* TRANSLATORS: This gets appended to the "replying to" line
-           in a tweet. Example: "Replying to Foo and Bar" where
-           "and Bar" comes from this string. */
-        buff.append (_("and"));
-        buff.append_c (' ');
-        Cb.Utils.linkify_user (ref reply_users[1], buff);
-      } else if (reply_users.length > 2) {
-        buff.append_c (' ');
-        /* TRANSLATORS: This gets appended to the "replying to" line
-           in a tweet */
-        buff.append (_("and %d others").printf (reply_users.length - 1));
-      }
+      if (tweet.retweeted_tweet != null)
+        Cb.Utils.write_reply_text (ref tweet.retweeted_tweet, buff);
+      else
+        Cb.Utils.write_reply_text (ref tweet.source_tweet, buff);
+
       reply_label.label = buff.str;
       reply_label.show ();
     }

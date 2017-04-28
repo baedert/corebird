@@ -262,6 +262,7 @@ namespace Cb {
   namespace Utils {
     public void bind_model (Gtk.Widget listbox, GLib.ListModel model, Gtk.ListBoxCreateWidgetFunc func);
     public void linkify_user (ref Cb.UserIdentity id, GLib.StringBuilder str);
+    public void write_reply_text (ref Cb.MiniTweet t, GLib.StringBuilder str);
     public GLib.DateTime parse_date (string _in);
   }
 
